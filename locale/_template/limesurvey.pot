@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2023-07-27 07:56:26+00:00\n"
+"POT-Creation-Date: 2023-07-28 10:53:46+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -18,7 +18,7 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 
 #: application/controllers/AdminController.php:98
-#: application/controllers/UserManagementController.php:1073
+#: application/controllers/UserManagementController.php:1069
 #: application/controllers/admin/DataEntry.php:196
 #: application/controllers/admin/DataEntry.php:1740
 #: application/controllers/admin/DataEntry.php:1743
@@ -78,7 +78,7 @@ msgstr ""
 #: application/views/surveyAdministration/surveyActivation/_activateSurveyCheckFailed.php:9
 #: application/views/userManagement/partial/error.php:11
 #: application/views/userRole/partials/error.php:11
-#: tmp/runtime/twig_cache/42/42e7f93a4cd720931998bbf8421fe868926c9eb1d24d035782db4185e5edb52c.php:40
+#: tmp/runtime/twig_cache/cf/cfe26f198a16f0512893f91016482ccd55ed671050342b8816ba9a31ddcd79a9.php:40
 msgid "Error"
 msgstr ""
 
@@ -89,7 +89,7 @@ msgstr ""
 #: application/views/surveyAdministration/importSurveyResources_view.php:35
 #: application/views/surveyAdministration/importSurveyResources_view.php:82
 #: application/views/surveyAdministration/importSurveyResources_view.php:118
-#: tmp/runtime/twig_cache/4c/4cc1a8824c0fcaf32825694a6687f04cc1630de069744ca6be776db7aa8a982d.php:42
+#: tmp/runtime/twig_cache/51/51144ae6a9af9e920c6f5cd1de9f0cf8aebfdbf6532feb2d1b061f7666048d34.php:42
 msgid "Back"
 msgstr ""
 
@@ -150,22 +150,22 @@ msgstr ""
 #: application/controllers/UserManagementController.php:131
 #: application/controllers/UserManagementController.php:245
 #: application/controllers/UserManagementController.php:434
-#: application/controllers/UserManagementController.php:458
-#: application/controllers/UserManagementController.php:486
-#: application/controllers/UserManagementController.php:541
-#: application/controllers/UserManagementController.php:574
-#: application/controllers/UserManagementController.php:611
-#: application/controllers/UserManagementController.php:643
-#: application/controllers/UserManagementController.php:685
-#: application/controllers/UserManagementController.php:722
-#: application/controllers/UserManagementController.php:753
-#: application/controllers/UserManagementController.php:842
-#: application/controllers/UserManagementController.php:923
-#: application/controllers/UserManagementController.php:1000
-#: application/controllers/UserManagementController.php:1053
-#: application/controllers/UserManagementController.php:1101
-#: application/controllers/UserManagementController.php:1155
-#: application/controllers/UserManagementController.php:1329
+#: application/controllers/UserManagementController.php:454
+#: application/controllers/UserManagementController.php:482
+#: application/controllers/UserManagementController.php:537
+#: application/controllers/UserManagementController.php:570
+#: application/controllers/UserManagementController.php:607
+#: application/controllers/UserManagementController.php:639
+#: application/controllers/UserManagementController.php:681
+#: application/controllers/UserManagementController.php:718
+#: application/controllers/UserManagementController.php:749
+#: application/controllers/UserManagementController.php:838
+#: application/controllers/UserManagementController.php:919
+#: application/controllers/UserManagementController.php:996
+#: application/controllers/UserManagementController.php:1049
+#: application/controllers/UserManagementController.php:1097
+#: application/controllers/UserManagementController.php:1151
+#: application/controllers/UserManagementController.php:1325
 #: application/controllers/UserRoleController.php:146
 #: application/controllers/UserRoleController.php:193
 #: application/controllers/UserRoleController.php:310
@@ -384,7 +384,7 @@ msgstr ""
 #: application/views/admin/survey/copySurvey_view.php:54
 #: application/views/assessment/assessments_view.php:14
 #: application/views/surveyAdministration/importSurvey_view.php:115
-#: tmp/runtime/twig_cache/b9/b9e1730ef531c180b58d27b1c5799495799b2bbd23a16f9e73ac41218c0ad725.php:40
+#: tmp/runtime/twig_cache/b7/b79511876b75ea6fe4534351728b38e476bf76d8eb3e3ba156ed780dae3fe89e.php:40
 msgid "Assessments"
 msgstr ""
 
@@ -393,8 +393,8 @@ msgstr ""
 #: application/models/Assessment.php:106 application/models/Box.php:146
 #: application/views/questionAdministration/partial/topbarBtns/questionTopbarRight_view.php:17
 #: application/views/questionGroupsAdministration/partial/topbarBtns/groupTopbarRight_view.php:9
-#: tmp/runtime/twig_cache/c1/c18945ff005ada4b5e82b5975538e2f83afef86aea2409c8bf775f78b30519fc.php:215
-#: tmp/runtime/twig_cache/c1/c18945ff005ada4b5e82b5975538e2f83afef86aea2409c8bf775f78b30519fc.php:337
+#: tmp/runtime/twig_cache/19/19dadb73036eb5bf2697b58142f4e8fef7fdc4f3a7a4c40548e3ed615573b58c.php:215
+#: tmp/runtime/twig_cache/19/19dadb73036eb5bf2697b58142f4e8fef7fdc4f3a7a4c40548e3ed615573b58c.php:337
 msgid "Edit"
 msgstr ""
 
@@ -514,7 +514,7 @@ msgstr ""
 #: application/models/TemplateManifest.php:164
 #: application/views/admin/update/updater/_progress.php:11
 #: application/views/installer/sidebar_view.php:13
-#: tmp/runtime/twig_cache/31/319b713b21cc7c69addd493f1e6811dbdf121a147068bf20e80555c84e4467c2.php:40
+#: tmp/runtime/twig_cache/f8/f8f890c6646f481ba03ab0e7120d080e72635e1a53ba3b359e1f498bc4562d0a.php:40
 msgid "Welcome"
 msgstr ""
 
@@ -1051,7 +1051,7 @@ msgstr ""
 #: application/controllers/SurveyAdministrationController.php:2162
 #: application/controllers/SurveyAdministrationController.php:2259
 #: application/controllers/UserGroupController.php:401
-#: application/controllers/UserManagementController.php:1213
+#: application/controllers/UserManagementController.php:1209
 #: application/controllers/admin/ParticipantsAction.php:628
 #: application/controllers/admin/SurveymenuController.php:53
 #: application/controllers/admin/SurveymenuController.php:123
@@ -1190,7 +1190,7 @@ msgstr ""
 
 #: application/controllers/QuestionAdministrationController.php:1372
 #: application/controllers/SurveyAdministrationController.php:265
-#: application/controllers/UserManagementController.php:946
+#: application/controllers/UserManagementController.php:942
 #: application/controllers/UserRoleController.php:391
 msgid "Deleted"
 msgstr ""
@@ -1231,12 +1231,12 @@ msgstr ""
 #: application/controllers/SurveyAdministrationController.php:279
 #: application/controllers/ThemeOptionsController.php:209
 #: application/controllers/ThemeOptionsController.php:251
-#: application/controllers/UserManagementController.php:940
-#: application/controllers/UserManagementController.php:976
-#: application/controllers/UserManagementController.php:1030
-#: application/controllers/UserManagementController.php:1077
-#: application/controllers/UserManagementController.php:1132
-#: application/controllers/UserManagementController.php:1178
+#: application/controllers/UserManagementController.php:936
+#: application/controllers/UserManagementController.php:972
+#: application/controllers/UserManagementController.php:1026
+#: application/controllers/UserManagementController.php:1073
+#: application/controllers/UserManagementController.php:1128
+#: application/controllers/UserManagementController.php:1174
 #: application/controllers/UserRoleController.php:385
 #: application/extensions/admin/survey/ListSurveysWidget/views/listSurveys.php:58
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_action_results.php:10
@@ -1258,8 +1258,8 @@ msgstr ""
 #: application/controllers/SurveyAdministrationController.php:293
 #: application/controllers/ThemeOptionsController.php:248
 #: application/controllers/ThemeOptionsController.php:257
-#: application/controllers/UserManagementController.php:973
-#: application/controllers/UserManagementController.php:982
+#: application/controllers/UserManagementController.php:969
+#: application/controllers/UserManagementController.php:978
 #: application/extensions/admin/grid/MassiveActionsWidget/views/_selected_items.php:31
 #: application/views/themeOptions/index.php:256
 msgid "Selected"
@@ -1384,7 +1384,7 @@ msgstr ""
 #: application/views/assessment/assessments_edit.php:87
 #: application/views/questionGroupsAdministration/addGroup_view.php:30
 #: application/views/quotas/_form_langsettings.php:16
-#: tmp/runtime/twig_cache/1d/1defbbd233f905e3b6cd66a65ca58ee6407738450985b52a28a20efd397fc7c1.php:57
+#: tmp/runtime/twig_cache/e1/e117cf1f1bd41e21c33502f177879079e18fbc1a42c69071ea6c508da0f126a1.php:57
 msgid "Base language"
 msgstr ""
 
@@ -1478,12 +1478,12 @@ msgstr ""
 #: application/models/TemplateManifest.php:166 application/models/Token.php:102
 #: application/views/admin/token/exportdialog.php:17
 #: application/views/quotas/index.php:84
-#: tmp/runtime/twig_cache/53/53dfa993abccf7ac4f946056aa24d0b1e6fa7647c00dc766d3b23534ad7c0d3c.php:40
+#: tmp/runtime/twig_cache/79/7929bb116af81fa0b4c307e350c319f427bd14c6e0049d3176a866637982a662.php:40
 msgid "Completed"
 msgstr ""
 
 #: application/controllers/QuotasController.php:116
-#: tmp/runtime/twig_cache/55/55deeeaec380f8fee1f3cd3388790f19f7611fab8c30580d3fe866cad7f5a613.php:48
+#: tmp/runtime/twig_cache/68/6879b8c2d91ce79fcfad21258d878cea3f53bfea487505dc06a4bec98f2c89d4.php:48
 msgid "Remaining"
 msgstr ""
 
@@ -1606,7 +1606,7 @@ msgstr ""
 #: application/models/SurveyLink.php:233 application/models/Token.php:96
 #: application/models/TokenDynamic.php:666
 #: application/views/admin/dataentry/caption_view.php:31
-#: tmp/runtime/twig_cache/65/65be86a87b7797de1bd0d75a2fdedfb6ecbc21ef0fb6fa94e0047de3f7e3b090.php:113
+#: tmp/runtime/twig_cache/87/8769ef321929b2cb9911bae6d720532ca35e19f2084859d786c6d928f3a6ec77.php:113
 msgid "Access code"
 msgstr ""
 
@@ -1620,7 +1620,7 @@ msgstr ""
 #: application/views/admin/token/dummytokenform.php:42
 #: application/views/responses/partial/responseListTable.php:155
 #: application/views/responses/partial/responseListTable.php:165
-#: tmp/runtime/twig_cache/7a/7a35f13940f0000c480d1b8011a7517352ca03071d4acc89d199b52f9438e928.php:83
+#: tmp/runtime/twig_cache/63/63247846d5ff401d0faf6649c406918e710ddb6f957a7ce10657764eb64dd564.php:83
 msgid "First name"
 msgstr ""
 
@@ -1634,7 +1634,7 @@ msgstr ""
 #: application/views/admin/token/dummytokenform.php:50
 #: application/views/responses/partial/responseListTable.php:169
 #: application/views/responses/partial/responseListTable.php:179
-#: tmp/runtime/twig_cache/7a/7a35f13940f0000c480d1b8011a7517352ca03071d4acc89d199b52f9438e928.php:106
+#: tmp/runtime/twig_cache/63/63247846d5ff401d0faf6649c406918e710ddb6f957a7ce10657764eb64dd564.php:106
 msgid "Last name"
 msgstr ""
 
@@ -1675,8 +1675,8 @@ msgstr ""
 #: application/views/admin/notification/index.php:26
 #: application/views/homepageSettings/index.php:60
 #: application/views/questionGroupsAdministration/group_view.php:14
-#: tmp/runtime/twig_cache/c1/c18945ff005ada4b5e82b5975538e2f83afef86aea2409c8bf775f78b30519fc.php:113
-#: tmp/runtime/twig_cache/c1/c18945ff005ada4b5e82b5975538e2f83afef86aea2409c8bf775f78b30519fc.php:199
+#: tmp/runtime/twig_cache/19/19dadb73036eb5bf2697b58142f4e8fef7fdc4f3a7a4c40548e3ed615573b58c.php:113
+#: tmp/runtime/twig_cache/19/19dadb73036eb5bf2697b58142f4e8fef7fdc4f3a7a4c40548e3ed615573b58c.php:199
 msgid "Title"
 msgstr ""
 
@@ -1689,8 +1689,8 @@ msgstr ""
 #: application/helpers/update/updatedb_helper.php:649
 #: application/helpers/update/updatedb_helper.php:905
 #: application/views/admin/dataentry/content_view.php:210
-#: tmp/runtime/twig_cache/c1/c18945ff005ada4b5e82b5975538e2f83afef86aea2409c8bf775f78b30519fc.php:122
-#: tmp/runtime/twig_cache/c1/c18945ff005ada4b5e82b5975538e2f83afef86aea2409c8bf775f78b30519fc.php:203
+#: tmp/runtime/twig_cache/19/19dadb73036eb5bf2697b58142f4e8fef7fdc4f3a7a4c40548e3ed615573b58c.php:122
+#: tmp/runtime/twig_cache/19/19dadb73036eb5bf2697b58142f4e8fef7fdc4f3a7a4c40548e3ed615573b58c.php:203
 msgid "Comment"
 msgstr ""
 
@@ -1698,8 +1698,8 @@ msgstr ""
 #: application/controllers/UploaderController.php:322
 #: application/controllers/admin/DataEntry.php:1014
 #: application/views/admin/emailtemplates/email_language_template_tab.php:87
-#: tmp/runtime/twig_cache/c1/c18945ff005ada4b5e82b5975538e2f83afef86aea2409c8bf775f78b30519fc.php:128
-#: tmp/runtime/twig_cache/c1/c18945ff005ada4b5e82b5975538e2f83afef86aea2409c8bf775f78b30519fc.php:207
+#: tmp/runtime/twig_cache/19/19dadb73036eb5bf2697b58142f4e8fef7fdc4f3a7a4c40548e3ed615573b58c.php:128
+#: tmp/runtime/twig_cache/19/19dadb73036eb5bf2697b58142f4e8fef7fdc4f3a7a4c40548e3ed615573b58c.php:207
 msgid "File name"
 msgstr ""
 
@@ -1797,7 +1797,7 @@ msgstr ""
 #: application/views/admin/themes/templateeditor_printoutput_view.php:3
 #: application/views/questionAdministration/textElements.php:5
 #: application/views/quotas/viewquotas_quota_members.php:32
-#: tmp/runtime/twig_cache/d3/d3dd120824148a64aa446e4b74ee7d491d2cb709e1e0230e4c7fb841da79ebf6.php:40
+#: tmp/runtime/twig_cache/82/827c5076e180d3542cd3d770267abb6e082c43f5d73066d6cc19a4f3b6a86165.php:40
 msgid "Question"
 msgstr ""
 
@@ -1866,7 +1866,7 @@ msgstr ""
 #: application/models/TemplateManifest.php:170
 #: application/views/admin/super/welcome.php:194
 #: application/views/surveyAdministration/listSurveys_view.php:15
-#: tmp/runtime/twig_cache/28/289661a8dbcc284c1793b97e2780c658c3d75fb14782ffd79046298e97cf5fc3.php:40
+#: tmp/runtime/twig_cache/b5/b53fc5f4649fde028ecd1d17d4b255d466f00b2677259f3a909684a7196a217d.php:40
 msgid "Survey list"
 msgstr ""
 
@@ -2305,12 +2305,12 @@ msgstr ""
 #: application/views/userGroup/partial/topbarBtns_manageGroup/leftSideButtons.php:54
 #: application/views/userManagement/massiveAction/_selector.php:18
 #: application/views/userManagement/massiveAction/_updatepermissions.php:33
-#: application/views/userManagement/partial/confirmuserdelete.php:16
+#: application/views/userManagement/partial/confirmuserdelete.php:15
 #: application/views/userManagement/partial/editpermissions.php:22
 #: application/views/userRole/massiveAction/_selector.php:17
 #: application/views/userRole/massiveAction/_updatepermissions.php:35
 #: application/views/userRole/partials/_permissions.php:36
-#: tmp/runtime/twig_cache/c1/c18945ff005ada4b5e82b5975538e2f83afef86aea2409c8bf775f78b30519fc.php:211
+#: tmp/runtime/twig_cache/19/19dadb73036eb5bf2697b58142f4e8fef7fdc4f3a7a4c40548e3ed615573b58c.php:211
 msgid "Delete"
 msgstr ""
 
@@ -2726,7 +2726,7 @@ msgstr ""
 #: application/views/quotas/_form.php:53 application/views/quotas/_form.php:69
 #: application/views/responses/partial/responseListTable.php:134
 #: application/views/userManagement/partial/addedituser.php:91
-#: tmp/runtime/twig_cache/af/af800346ccddc50dd5ce330a766ea4dc75d4bc26364af1867ba7c9931ddffb79.php:101
+#: tmp/runtime/twig_cache/79/7992b3640cb350e38a71ba940d27d89109fc77842eaa6e65a6e3d7ee7b819c34.php:101
 msgid "No"
 msgstr ""
 
@@ -2878,7 +2878,7 @@ msgstr ""
 #: tests/functional/acceptance/14782-override-translation/LSMessageSourceTest.php:25
 #: tests/functional/acceptance/14782-override-translation/LSMessageSourceTest.php:48
 #: tests/functional/acceptance/14782-override-translation/LSMessageSourceTest.php:49
-#: tmp/runtime/twig_cache/af/af800346ccddc50dd5ce330a766ea4dc75d4bc26364af1867ba7c9931ddffb79.php:101
+#: tmp/runtime/twig_cache/79/7992b3640cb350e38a71ba940d27d89109fc77842eaa6e65a6e3d7ee7b819c34.php:101
 msgid "Yes"
 msgstr ""
 
@@ -2915,7 +2915,7 @@ msgid "Decimal mark"
 msgstr ""
 
 #: application/controllers/SurveyAdministrationController.php:3147
-#: tmp/runtime/twig_cache/e5/e51f5e18b196433b45f0c7e6cfb732bca785b02aa3f73c96148deb880d50292c.php:40
+#: tmp/runtime/twig_cache/d7/d781b4f6e228bff92f731538b4bd8972f0f7e3cdfd9969ef4447dae56c2f73a7.php:40
 msgid "End url"
 msgstr ""
 
@@ -3069,7 +3069,7 @@ msgstr ""
 #: application/views/userManagement/partial/edittemplatepermissions.php:53
 #: application/views/userRole/partials/_form.php:12
 #: application/views/userRole/partials/_permissions.php:118
-#: tmp/runtime/twig_cache/58/585ecf7a4cf0f19e7b62728cf65b8b1afffbae71aa190cce257925c72d51eb22.php:40
+#: tmp/runtime/twig_cache/d7/d765c08a04abdf1dd42ae229da03faad652a0ddd700650a374c9bebfe2c0c275.php:40
 msgid "Save"
 msgstr ""
 
@@ -3157,14 +3157,14 @@ msgstr ""
 #: application/views/userManagement/partial/adddummyuser.php:32
 #: application/views/userManagement/partial/addedituser.php:141
 #: application/views/userManagement/partial/addrole.php:49
-#: application/views/userManagement/partial/confirmuserdelete.php:15
+#: application/views/userManagement/partial/confirmuserdelete.php:14
 #: application/views/userManagement/partial/editpermissions.php:82
 #: application/views/userManagement/partial/edittemplatepermissions.php:51
 #: application/views/userManagement/partial/importuser.php:51
 #: application/views/userRole/partials/_form.php:55
 #: application/views/userRole/partials/_import.php:26
 #: application/views/userRole/partials/_permissions.php:115
-#: tmp/runtime/twig_cache/32/329210cb9fd62b65df80feee0eacbd862a4dca819694bda3bde69bfe583a4d93.php:185
+#: tmp/runtime/twig_cache/6d/6d411ce752889ce4e9d325a3e57930345bcdc8536f1d2ae8d7d6954fb562a74e.php:185
 msgid "Cancel"
 msgstr ""
 
@@ -3578,7 +3578,7 @@ msgstr ""
 #: application/views/quickTranslation/index.php:46
 #: application/views/surveyPermissions/index.php:32
 #: application/views/surveyPermissions/index.php:65
-#: tmp/runtime/twig_cache/22/2286e233f6de8fbe066104d9d8c6390a01f9da7ecd0572725e13eb99b1a4d311.php:65
+#: tmp/runtime/twig_cache/0f/0f7a416f72fc36f5d8c57f11bcc559ca74d16171e76c6e364eb8e886b3b6e0a2.php:65
 msgid "Please choose..."
 msgstr ""
 
@@ -3673,7 +3673,7 @@ msgstr ""
 
 #: application/controllers/UserManagementController.php:109
 #: application/controllers/UserManagementController.php:310
-#: application/controllers/UserManagementController.php:1201
+#: application/controllers/UserManagementController.php:1197
 msgid "User does not exist"
 msgstr ""
 
@@ -3698,46 +3698,46 @@ msgstr ""
 msgid "All of the user's surveys were transferred to %s."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:494
+#: application/controllers/UserManagementController.php:490
 #: application/views/userManagement/massiveAction/_updatepermissions.php:6
 #: application/views/userRole/massiveAction/_updatepermissions.php:6
 msgid "Note: You can only give limited permissions to other users because your own permissions are limited, too."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:558
+#: application/controllers/UserManagementController.php:554
 msgid "Saved permissions successfully."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:623
+#: application/controllers/UserManagementController.php:619
 msgid "Saved template permissions successfully."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:726
+#: application/controllers/UserManagementController.php:722
 msgid "Please make sure that your CSV contains the fields '%s', '%s', '%s', '%s', and '%s'"
 msgstr ""
 
-#: application/controllers/UserManagementController.php:730
+#: application/controllers/UserManagementController.php:726
 msgid "Please make sure that your JSON arrays contain the fields '%s', '%s', '%s', '%s', and '%s'"
 msgstr ""
 
-#: application/controllers/UserManagementController.php:768
+#: application/controllers/UserManagementController.php:764
 msgid "No user definition found in file."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:823
+#: application/controllers/UserManagementController.php:819
 msgid "Users imported successfully."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:936
+#: application/controllers/UserManagementController.php:932
 msgid "You cannot delete yourself or a protected user."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:940
-#: application/controllers/UserManagementController.php:976
-#: application/controllers/UserManagementController.php:1030
-#: application/controllers/UserManagementController.php:1077
-#: application/controllers/UserManagementController.php:1132
-#: application/controllers/UserManagementController.php:1178
+#: application/controllers/UserManagementController.php:936
+#: application/controllers/UserManagementController.php:972
+#: application/controllers/UserManagementController.php:1026
+#: application/controllers/UserManagementController.php:1073
+#: application/controllers/UserManagementController.php:1128
+#: application/controllers/UserManagementController.php:1174
 #: application/core/plugins/TwoFactorAdminLogin/models/TFAUser.php:17
 #: application/core/plugins/TwoFactorAdminLogin/models/TFAUserKey.php:48
 #: application/models/User.php:133 application/models/User.php:675
@@ -3745,13 +3745,13 @@ msgstr ""
 msgid "User ID"
 msgstr ""
 
-#: application/controllers/UserManagementController.php:940
-#: application/controllers/UserManagementController.php:976
-#: application/controllers/UserManagementController.php:1030
-#: application/controllers/UserManagementController.php:1077
-#: application/controllers/UserManagementController.php:1132
-#: application/controllers/UserManagementController.php:1178
-#: application/core/LsDefaultDataSets.php:2831
+#: application/controllers/UserManagementController.php:936
+#: application/controllers/UserManagementController.php:972
+#: application/controllers/UserManagementController.php:1026
+#: application/controllers/UserManagementController.php:1073
+#: application/controllers/UserManagementController.php:1128
+#: application/controllers/UserManagementController.php:1174
+#: application/core/LsDefaultDataSets.php:2830
 #: application/core/plugins/AuthLDAP/AuthLDAP.php:378
 #: application/core/plugins/Authdb/Authdb.php:135
 #: application/core/plugins/TwoFactorAdminLogin/models/TFAUser.php:110
@@ -3768,70 +3768,70 @@ msgstr ""
 msgid "Username"
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1013
+#: application/controllers/UserManagementController.php:1009
 msgid "Error! Please change your password from your profile settings."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1017
+#: application/controllers/UserManagementController.php:1013
 msgid "Error! You do not have the permission to edit this user."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1023
+#: application/controllers/UserManagementController.php:1019
 msgid "Error: New password could not be sent to %s"
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1036
+#: application/controllers/UserManagementController.php:1032
 msgid "Email successfully sent."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1083
+#: application/controllers/UserManagementController.php:1079
 #: application/views/userManagement/partial/permissionsuccess.php:8
 #: application/views/userManagement/partial/success.php:4
 #: application/views/userRole/partials/success.php:2
 msgid "Saved successfully"
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1119
+#: application/controllers/UserManagementController.php:1115
 msgid "User is already a member of the group."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1128
+#: application/controllers/UserManagementController.php:1124
 msgid "No user group selected."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1138
+#: application/controllers/UserManagementController.php:1134
 msgid "Usergroup updated"
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1170
+#: application/controllers/UserManagementController.php:1166
 msgid "The superadmin role cannot be changed."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1184
+#: application/controllers/UserManagementController.php:1180
 msgid "Role updated"
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1360
+#: application/controllers/UserManagementController.php:1356
 msgid "User successfully created"
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1390
+#: application/controllers/UserManagementController.php:1386
 msgid "Error: User was not created"
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1407
+#: application/controllers/UserManagementController.php:1403
 msgid "You do not have permission for this action."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1418
+#: application/controllers/UserManagementController.php:1414
 msgid "A username was not supplied or the username is invalid."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1427
+#: application/controllers/UserManagementController.php:1423
 msgid "A user with this username already exists."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1434
+#: application/controllers/UserManagementController.php:1430
 #: application/core/plugins/AuthLDAP/AuthLDAP.php:285
 #: application/core/plugins/AuthLDAP/AuthLDAP.php:300
 #: application/core/plugins/Authdb/Authdb.php:72
@@ -3839,7 +3839,7 @@ msgstr ""
 msgid "Failed to add user"
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1435
+#: application/controllers/UserManagementController.php:1431
 msgid "Plugin is not active"
 msgstr ""
 
@@ -3907,7 +3907,7 @@ msgstr ""
 #: application/views/themeOptions/index.php:201
 #: application/views/themeOptions/installedthemelist.php:44
 #: application/views/themeOptions/surveythemelist.php:51
-#: tmp/runtime/twig_cache/1a/1a49bd76bda4d55e512882e9adcc3e06f440355c87bfc96ee9e8e1f82fb1f3c1.php:200
+#: tmp/runtime/twig_cache/d0/d0b2f465fcfe06e9bf888c74d9e20b74c1b0c1fbc7d171782323a96cfe74eef0.php:200
 msgid "Name"
 msgstr ""
 
@@ -4311,8 +4311,8 @@ msgstr ""
 #: application/helpers/userstatistics_helper.php:1357
 #: application/helpers/userstatistics_helper.php:1581
 #: application/views/admin/dataentry/content_view.php:51
-#: tmp/runtime/twig_cache/c3/c338690abaf6a24a83ab28b09672c6c379e88641ac859b75e3fdf3ba906a888f.php:142
-#: tmp/runtime/twig_cache/e9/e9683518987e675f8878bf72610918b27c05b706f62bb672a7cc8820f13c136b.php:109
+#: tmp/runtime/twig_cache/3f/3fc676bc06ffac6bcd73d8add9dd48b672e734bed296d498c2df8e42a9c5e055.php:109
+#: tmp/runtime/twig_cache/87/87b727b41043311161db6e065eecf9d03673c7a7ab197efc716cf65b2ebc4c73.php:142
 msgid "No answer"
 msgstr ""
 
@@ -4512,8 +4512,8 @@ msgstr ""
 #: application/models/services/Quotas.php:120
 #: application/views/admin/dataentry/content_view.php:90
 #: application/views/admin/export/statistics_subviews/_question.php:349
-#: tmp/runtime/twig_cache/c3/c338690abaf6a24a83ab28b09672c6c379e88641ac859b75e3fdf3ba906a888f.php:74
-#: tmp/runtime/twig_cache/e9/e9683518987e675f8878bf72610918b27c05b706f62bb672a7cc8820f13c136b.php:64
+#: tmp/runtime/twig_cache/3f/3fc676bc06ffac6bcd73d8add9dd48b672e734bed296d498c2df8e42a9c5e055.php:64
+#: tmp/runtime/twig_cache/87/87b727b41043311161db6e065eecf9d03673c7a7ab197efc716cf65b2ebc4c73.php:74
 msgid "Female"
 msgstr ""
 
@@ -4532,8 +4532,8 @@ msgstr ""
 #: application/models/services/Quotas.php:119
 #: application/views/admin/dataentry/content_view.php:91
 #: application/views/admin/export/statistics_subviews/_question.php:355
-#: tmp/runtime/twig_cache/c3/c338690abaf6a24a83ab28b09672c6c379e88641ac859b75e3fdf3ba906a888f.php:107
-#: tmp/runtime/twig_cache/e9/e9683518987e675f8878bf72610918b27c05b706f62bb672a7cc8820f13c136b.php:85
+#: tmp/runtime/twig_cache/3f/3fc676bc06ffac6bcd73d8add9dd48b672e734bed296d498c2df8e42a9c5e055.php:85
+#: tmp/runtime/twig_cache/87/87b727b41043311161db6e065eecf9d03673c7a7ab197efc716cf65b2ebc4c73.php:107
 msgid "Male"
 msgstr ""
 
@@ -4690,7 +4690,7 @@ msgstr ""
 #: application/helpers/expressions/em_manager_helper.php:2907
 #: application/helpers/expressions/em_manager_helper.php:3079
 #: application/views/admin/dataentry/content_view.php:476
-#: tmp/runtime/twig_cache/8c/8c1d246d7723a901664b56fa31cb66e100801e9322bf46d966a66c133c595225.php:92
+#: tmp/runtime/twig_cache/aa/aaff4dce982ce1ba3b8eee8a4d7835840325c07712865728574cfde7ae38fd55.php:92
 msgid "Only numbers may be entered in this field."
 msgstr ""
 
@@ -4950,7 +4950,7 @@ msgstr ""
 
 #: application/controllers/admin/EmailTemplates.php:253
 #: application/models/TemplateManifest.php:173
-#: tmp/runtime/twig_cache/91/91272372b40f5bdbf1b66b3ec76215d65d5992f97a3b838dd20b3695f0fbf85c.php:40
+#: tmp/runtime/twig_cache/3e/3e59dd10fd460a1a0934d65f19496df9095bf03453acb597ca9986b7b2f0022f.php:40
 msgid "Registration"
 msgstr ""
 
@@ -5070,8 +5070,8 @@ msgstr ""
 #: application/views/admin/survey/queXMLSurvey_view.php:4
 #: application/views/admin/survey/queXMLSurvey_view.php:6
 #: application/views/admin/survey/surveybar_displayexport.php:75
-#: tmp/runtime/twig_cache/77/772ba6697beb9b4f52aa8612fe98cdc11fbcc5b7036c2ccf7276a467a21ecd91.php:98
-#: tmp/runtime/twig_cache/d4/d49029ffa07d927d2daffa1a7dc98de526c17436cc613f44e22fe94c114272e6.php:106
+#: tmp/runtime/twig_cache/7f/7f274b2b4733cc8cc80033d11f1b9932624db347261529d914498819eadf883c.php:106
+#: tmp/runtime/twig_cache/d7/d73e5419549ba6cddedf08b199706109c2049962bec5477660c2bf6394be9e68.php:98
 msgid "queXML PDF export"
 msgstr ""
 
@@ -5634,13 +5634,13 @@ msgstr ""
 #: application/views/userRole/partials/_view.php:37
 #: application/views/userRole/partials/error.php:37
 #: application/views/userRole/partials/success.php:32
-#: tmp/runtime/twig_cache/1d/1defbbd233f905e3b6cd66a65ca58ee6407738450985b52a28a20efd397fc7c1.php:555
-#: tmp/runtime/twig_cache/22/2233993ae2363c294b2ea1095be4c3b034968c0aa7248ffac961b6df8d5ac2de.php:71
-#: tmp/runtime/twig_cache/32/329210cb9fd62b65df80feee0eacbd862a4dca819694bda3bde69bfe583a4d93.php:153
-#: tmp/runtime/twig_cache/3e/3e91d3fa5e0377cc5e2df3c41bccb9a3c2af506e761de22c508d3dacd48e19b5.php:71
-#: tmp/runtime/twig_cache/63/63afbdb21f4fc7ef702a4971f97bdbab455c572c9ce6a09eca2587588e127a29.php:120
-#: tmp/runtime/twig_cache/c5/c52ac5a5cfa30353e32d20bab8d195d815a556240c1572c3b0501c12a59e876b.php:133
-#: tmp/runtime/twig_cache/cb/cb7bc4ecc8a244c5c1ffb399b8e0eb85d2b77f82465dd422aa77bf25d0acefc9.php:153
+#: tmp/runtime/twig_cache/2b/2bcf9fd12e2191bb8ce7c457b0e2d59e023ceaea8189476db0edd92ca9e0f3af.php:71
+#: tmp/runtime/twig_cache/30/30ecfb4f832c775b3657e5be7f348dd554cad033c676fdda7be3f5c05904bb3a.php:153
+#: tmp/runtime/twig_cache/4a/4a1f5d94796793570840150b6c89bf5b541aebbd047803b29ad1555d0b6176ad.php:120
+#: tmp/runtime/twig_cache/6d/6d411ce752889ce4e9d325a3e57930345bcdc8536f1d2ae8d7d6954fb562a74e.php:153
+#: tmp/runtime/twig_cache/9c/9cd4c4eb6b6d9d667d3a1d4f29a8a13081febba93083c7290da03a9407e93022.php:71
+#: tmp/runtime/twig_cache/e1/e117cf1f1bd41e21c33502f177879079e18fbc1a42c69071ea6c508da0f126a1.php:555
+#: tmp/runtime/twig_cache/e8/e80ebe492f7419e6a1e559a2e99371997d6a3368907f8a918e10565aa0860e23.php:133
 msgid "Close"
 msgstr ""
 
@@ -5925,8 +5925,8 @@ msgid "Please choose the appropriate response for each item:"
 msgstr ""
 
 #: application/controllers/admin/PrintableSurvey.php:1286
-#: tmp/runtime/twig_cache/7b/7b1c2b990cecd8549695c8b74956f24a8c1775fd554376a23f1cb2ee5d5d3f31.php:124
-#: tmp/runtime/twig_cache/dc/dcee5c0988eb941b9247c3bfb4b7ff12cde01e43fbcc53610caca192b1465b74.php:125
+#: tmp/runtime/twig_cache/45/456149d1e8233096d0db1c345b954357e9e0eb2289bc0788727e585e3b22957e.php:125
+#: tmp/runtime/twig_cache/97/97cdc7a1c1278f42da9c9b729f8511e9b0c46610c2ede883d9ef89783f734b05.php:124
 msgid "There are %s questions in this survey."
 msgstr ""
 
@@ -6231,7 +6231,7 @@ msgid "Invalid screen name"
 msgstr ""
 
 #: application/controllers/admin/Themes.php:1162
-#: tmp/runtime/twig_cache/72/728086c94c456ad58b58e2c036af286cced4e64da378e20849c0cedd126aede7.php:40
+#: tmp/runtime/twig_cache/4a/4af67ad77773fbb65c21097825f96580ae5a81232c6a22356b1d0f66816ae66f.php:40
 msgid "How many roads must a man walk down?"
 msgstr ""
 
@@ -6730,11 +6730,11 @@ msgstr ""
 #: application/views/admin/update/updater/welcome/_welcome.php:111
 #: application/views/quotas/newanswererror_view.php:11
 #: application/views/quotas/newanswertwo_view.php:18
-#: tmp/runtime/twig_cache/0d/0d09031d14ae04cc48229ec9c226b637913562087b9635d1d108e6f504c88707.php:299
-#: tmp/runtime/twig_cache/65/65be86a87b7797de1bd0d75a2fdedfb6ecbc21ef0fb6fa94e0047de3f7e3b090.php:268
-#: tmp/runtime/twig_cache/79/79f542bde76f068c32b88ac79bcd0c0e85b5e48fae8d327cd9d90c75801e9785.php:246
-#: tmp/runtime/twig_cache/82/829ab18d975b254ad78fceba7278d280d8ad935b74de4fcbf93c4cf9318240e2.php:248
-#: tmp/runtime/twig_cache/ef/ef5121b1843240a77fd049690764449745e5ed393285306efc9094caf3fe46d5.php:281
+#: tmp/runtime/twig_cache/03/03a61e9f425659cc9d7e312e4cdb304264f85b19abf9bf0814a213aaf11b0cfa.php:246
+#: tmp/runtime/twig_cache/05/05c54ee344bb8bdcd6ea55ae1db310415bba8b42b99c4af6c879d5054f1ba781.php:281
+#: tmp/runtime/twig_cache/4d/4d2b1933f87b690f5008eb3c3b5b67c3178c27728cef12ec15512ddb1b4b5bf0.php:299
+#: tmp/runtime/twig_cache/87/8769ef321929b2cb9911bae6d720532ca35e19f2084859d786c6d928f3a6ec77.php:268
+#: tmp/runtime/twig_cache/e4/e4d9efb37679e0d0917f480232c067369f371e45bdaebbd0be3bca49d923a628.php:248
 msgid "Continue"
 msgstr ""
 
@@ -7139,7 +7139,7 @@ msgid "Open the general survey overview"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:52
-#: tmp/runtime/twig_cache/3f/3f05e201d4c58e16ed35fa2dc0593726e1f8e9a9252b71df1f4b8ab74af4064a.php:47
+#: tmp/runtime/twig_cache/90/90d5a67da416448455725c0de1c5f13b886301d8783a6c30c538a56e94525516.php:47
 msgid "General survey settings"
 msgstr ""
 
@@ -7153,12 +7153,12 @@ msgstr ""
 
 #: application/core/LsDefaultDataSets.php:80
 #: application/core/LsDefaultDataSets.php:82 application/models/Survey.php:2227
-#: tmp/runtime/twig_cache/62/6202c74a67c98f2818b333914ecab36c8f9c18a1e2dd6406fc82c01ef8724118.php:49
+#: tmp/runtime/twig_cache/6f/6f172ba55a468b0cf2e85a0cbc8ecabfa435cbc772c4f31f40b1d9f88ebcaf5e.php:49
 msgid "Survey text elements"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:81
-#: tmp/runtime/twig_cache/62/6202c74a67c98f2818b333914ecab36c8f9c18a1e2dd6406fc82c01ef8724118.php:45
+#: tmp/runtime/twig_cache/6f/6f172ba55a468b0cf2e85a0cbc8ecabfa435cbc772c4f31f40b1d9f88ebcaf5e.php:45
 msgid "Text elements"
 msgstr ""
 
@@ -7167,8 +7167,8 @@ msgid "Privacy policy settings"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:109
-#: tmp/runtime/twig_cache/63/63afbdb21f4fc7ef702a4971f97bdbab455c572c9ce6a09eca2587588e127a29.php:95
-#: tmp/runtime/twig_cache/c5/c52ac5a5cfa30353e32d20bab8d195d815a556240c1572c3b0501c12a59e876b.php:110
+#: tmp/runtime/twig_cache/4a/4a1f5d94796793570840150b6c89bf5b541aebbd047803b29ad1555d0b6176ad.php:95
+#: tmp/runtime/twig_cache/e8/e80ebe492f7419e6a1e559a2e99371997d6a3368907f8a918e10565aa0860e23.php:110
 msgid "Privacy policy"
 msgstr ""
 
@@ -7610,799 +7610,799 @@ msgstr ""
 msgid "Edit themes"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1035
+#: application/core/LsDefaultDataSets.php:1034
 #: application/helpers/update/updates/Update_609.php:28
-#: tmp/runtime/twig_cache/d6/d64b216ddb515ed373a40dd31c0f1ca116c800294dd30141e9c0bd7e1cf0c588.php:39
+#: tmp/runtime/twig_cache/0b/0b6af03e2d71f2a73cb1aeaf28d89ffbf18b3800abf6ed0a7270b98cfab075fc.php:39
 msgid "A clean and simple base that can be used by developers to create their own Bootstrap based theme."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1054
+#: application/core/LsDefaultDataSets.php:1053
 #: application/helpers/update/updates/Update_609.php:37
-#: tmp/runtime/twig_cache/96/9612d0d89b5d1e72c62fadc3558f59542ea77bd52cd06e6665295c1a3b8a87b2.php:39
+#: tmp/runtime/twig_cache/8a/8acb3abc48e0bd6f3a84d8d20b6ca3bac67040fb3b4c3c98135b2b46d99f1d7c.php:39
 msgid "A fruity theme for a flexible use. This theme offers monochromes variations and many options for easy customizations."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1073
+#: application/core/LsDefaultDataSets.php:1072
 #: application/helpers/update/updates/Update_609.php:46
 msgid "Based on BootsWatch Themes:"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1073
+#: application/core/LsDefaultDataSets.php:1072
 #: application/helpers/update/updates/Update_609.php:46
 msgid "Visit Bootswatch page"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1092
+#: application/core/LsDefaultDataSets.php:1091
 #: application/helpers/update/updates/Update_609.php:117
-#: tmp/runtime/twig_cache/5e/5ef55a026b7988f8a0e233cf1be37ce1816437b6062e8d5dfbc89b56208284b4.php:39
+#: tmp/runtime/twig_cache/67/672ff52465cb3fbbe7e83a89ec256c65cbca1d158a3d1cebb398b87eb4ceae1a.php:39
 msgid "Our default theme for a fruity and flexible use. This theme offers single color variations"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1106
+#: application/core/LsDefaultDataSets.php:1105
 msgid "Beginner tour"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1116
+#: application/core/LsDefaultDataSets.php:1115
 msgid "End tour"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1122
+#: application/core/LsDefaultDataSets.php:1121
 #: application/views/installer/dbconfig_view.php:111
 #: application/views/installer/license_view.php:16
 #: application/views/installer/populatedb_view.php:20
 #: application/views/installer/precheck_view.php:154
 #: application/views/survey/system/actionButton/movePrevious.php:11
-#: tmp/runtime/twig_cache/1b/1b85a3043c3b33d0c62a65f80137c5f848794d4a9cad01763205e265f42e126f.php:137
-#: tmp/runtime/twig_cache/55/55a702c76970688ea034f7b4508efaf1f77eea8233d3d432e213ca356ba57470.php:79
-#: tmp/runtime/twig_cache/b3/b3a74255c8908d4c8c7d23fc09961077c5e0bfa000768ef8f0ec084d4d6bb1ee.php:79
-#: tmp/runtime/twig_cache/c4/c4dcea097c3c801c9dcd5e41628a30c6e9bdde72eed20c3ddad86ac2bfe9d8b5.php:137
+#: tmp/runtime/twig_cache/05/0532b4f09df9502aca984e2098a6ad999285884e90bebc93c2aeec477c8a49f6.php:79
+#: tmp/runtime/twig_cache/67/67ccbe7d7884517f83d455423b9e29e790fb06accf27ec0833d00cfdad511886.php:137
+#: tmp/runtime/twig_cache/98/9899064ee8433e98d6c652c6c62620aef3289b9acc52ec1c2a3e93e441d5dfc1.php:79
+#: tmp/runtime/twig_cache/9e/9ea2025897bd35206b4ef5f67365b90554ce36908c0e286cfdc165824cbed4e3.php:137
 msgid "Previous"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1123
+#: application/core/LsDefaultDataSets.php:1122
 #: application/views/installer/dbconfig_view.php:116
 #: application/views/installer/optconfig_view.php:88
 #: application/views/installer/precheck_view.php:162
 #: application/views/quotas/newanswer_view.php:34
 #: application/views/quotas/newanswertwo_view.php:51
 #: application/views/survey/system/actionButton/moveNext.php:11
-#: tmp/runtime/twig_cache/55/55a702c76970688ea034f7b4508efaf1f77eea8233d3d432e213ca356ba57470.php:150
-#: tmp/runtime/twig_cache/b3/b3a74255c8908d4c8c7d23fc09961077c5e0bfa000768ef8f0ec084d4d6bb1ee.php:150
+#: tmp/runtime/twig_cache/05/0532b4f09df9502aca984e2098a6ad999285884e90bebc93c2aeec477c8a49f6.php:150
+#: tmp/runtime/twig_cache/98/9899064ee8433e98d6c652c6c62620aef3289b9acc52ec1c2a3e93e441d5dfc1.php:150
 msgid "Next"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1146
+#: application/core/LsDefaultDataSets.php:1145
 msgid "Welcome to LimeSurvey!"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1147
+#: application/core/LsDefaultDataSets.php:1146
 msgid "This tour will help you to easily get a basic understanding of LimeSurvey."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1148
+#: application/core/LsDefaultDataSets.php:1147
 msgid "We would like to help you with a quick tour of the most essential functions and features."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1163
+#: application/core/LsDefaultDataSets.php:1162
 msgid "The basic functions"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1164
+#: application/core/LsDefaultDataSets.php:1163
 msgid "The three top boxes are the most basic functions of LimeSurvey."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1165
+#: application/core/LsDefaultDataSets.php:1164
 msgid "From left to right it should be 'Create survey', 'List surveys' and 'Global settings'. Best we start by creating a survey."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1166
+#: application/core/LsDefaultDataSets.php:1165
 msgid "Click on the 'Create survey' box - or 'Next' in this tutorial"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1178
+#: application/core/LsDefaultDataSets.php:1177
 msgid "The survey title"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1179
+#: application/core/LsDefaultDataSets.php:1178
 msgid "This is the title of your survey."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1180
+#: application/core/LsDefaultDataSets.php:1179
 msgid "Your participants will see this title in the browser's title bar and on the welcome screen."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1181
+#: application/core/LsDefaultDataSets.php:1180
 msgid "You have to put in at least a title for the survey to be saved."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1201
+#: application/core/LsDefaultDataSets.php:1200
 msgid "The survey description"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1202
+#: application/core/LsDefaultDataSets.php:1201
 msgid "In this field you may type a short description of your survey."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1203
+#: application/core/LsDefaultDataSets.php:1202
 msgid "The text inserted here will be displayed on the welcome screen, which is the first thing that your respondents will see when they access your survey.."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1204
+#: application/core/LsDefaultDataSets.php:1203
 msgid "Describe your survey, but do not ask any question yet."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1215
+#: application/core/LsDefaultDataSets.php:1214
 msgid "Create a sample question and question group"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1216
+#: application/core/LsDefaultDataSets.php:1215
 msgid "We will be creating a question group and a question in this tutorial. There is need to automatically create them."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1226
+#: application/core/LsDefaultDataSets.php:1225
 msgid "The welcome message"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1227
+#: application/core/LsDefaultDataSets.php:1226
 msgid "This message is shown directly below the survey description on the welcome page. You may leave this blank for now but it is a good way to introduce your participants to the survey."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1238
+#: application/core/LsDefaultDataSets.php:1237
 msgid "The end message"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1239
+#: application/core/LsDefaultDataSets.php:1238
 msgid "This message is shown at the end of your survey to every participant. It's a great way to say thank you or give some links or hints where to go next."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1250
+#: application/core/LsDefaultDataSets.php:1249
 msgid "Now save your survey"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1251
+#: application/core/LsDefaultDataSets.php:1250
 msgid "You may play around with more settings, but let's save and start adding questions to your survey now. Just click on 'Save'."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1269
+#: application/core/LsDefaultDataSets.php:1268
 msgid "The sidebar"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1270
+#: application/core/LsDefaultDataSets.php:1269
 msgid "This is the sidebar."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1271
+#: application/core/LsDefaultDataSets.php:1270
 msgid "All important settings can be reached in this sidebar."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1272
+#: application/core/LsDefaultDataSets.php:1271
 msgid "The most important settings of your survey can be reached from this sidebar: the survey settings menu and the survey structure menu. You may resize it to fit your screen to easily navigate through the available options. If the size of the sidebar is too small, the options get collapsed and the quick-menu is displayed. If you wish to work from the quick-menu, either click on the arrow button or drag it to the left."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1288
+#: application/core/LsDefaultDataSets.php:1287
 msgid "The settings tab with the survey menu"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1289
+#: application/core/LsDefaultDataSets.php:1288
 msgid "If you click on this tab, the survey settings menu will be displayed. The most important settings of your survey are accessible from this menu."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1290
+#: application/core/LsDefaultDataSets.php:1289
 msgid "If you want to know more about them, check our manual."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1301
+#: application/core/LsDefaultDataSets.php:1300
 msgid "The top bar"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1302
+#: application/core/LsDefaultDataSets.php:1301
 msgid "This is the top bar."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1303
+#: application/core/LsDefaultDataSets.php:1302
 msgid "This bar will change as you move through the functionalities. The current bar corresponds to the \"overview\" tab. It contains the most important LimeSurvey functionalities such as preview and activate survey."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1314
+#: application/core/LsDefaultDataSets.php:1313
 msgid "The survey structure"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1315
+#: application/core/LsDefaultDataSets.php:1314
 msgid "This is the structure view of your survey. Here you can see all your groups and questions."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1329
+#: application/core/LsDefaultDataSets.php:1328
 msgid "Let's add a question group"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1330
+#: application/core/LsDefaultDataSets.php:1329
 msgid "What good would your survey be without questions?"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1331
+#: application/core/LsDefaultDataSets.php:1330
 msgid "In LimeSurvey a survey is organized in groups and questions. To begin creating questions, we first need a question group."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1332
+#: application/core/LsDefaultDataSets.php:1331
 msgid "Click on the 'Add group' button"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1349
+#: application/core/LsDefaultDataSets.php:1348
 msgid "Enter a title for your first question group"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1350
+#: application/core/LsDefaultDataSets.php:1349
 msgid "The title of the question group is visible to your survey participants (this setting can be changed later and it cannot be empty). Question groups are important because they allow the survey administrators to logically group the questions. By default, each question group (including its questions) is shown on its own page (this setting can be changed later)."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1366
+#: application/core/LsDefaultDataSets.php:1365
 msgid "A description for your question group"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1367
+#: application/core/LsDefaultDataSets.php:1366
 msgid "This description is also visible to your participants."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1368
+#: application/core/LsDefaultDataSets.php:1367
 msgid "You do not need to add a description to your question group, but sometimes it makes sense to add a little extra information for your participants."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1379
+#: application/core/LsDefaultDataSets.php:1378
 msgid "Advanced settings"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1380
+#: application/core/LsDefaultDataSets.php:1379
 msgid "For now it's best to leave these additional settings as they are. If you want to know more about randomization and relevance settings, have a look at our manual."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1391
+#: application/core/LsDefaultDataSets.php:1390
 msgid "Save and add a new question"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1392
+#: application/core/LsDefaultDataSets.php:1391
 msgid "Now when you are finished click on 'Save and add question'."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1393
+#: application/core/LsDefaultDataSets.php:1392
 msgid "This will directly add a question to the current question group."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1394
+#: application/core/LsDefaultDataSets.php:1393
 msgid "Now click on 'Save and add question'."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1411
+#: application/core/LsDefaultDataSets.php:1410
 msgid "Set your question type."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1412
+#: application/core/LsDefaultDataSets.php:1411
 msgid "LimeSurvey offers you a lot of different question types."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1413
+#: application/core/LsDefaultDataSets.php:1412
 msgid "As you can see, the preselected question type is the 'Long free text' one. We will use in this example the 'Array' question type."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1414
+#: application/core/LsDefaultDataSets.php:1413
 msgid "This type of question allows you to add multiple subquestions and a set of answers."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1415
+#: application/core/LsDefaultDataSets.php:1414
 msgid "Please select the 'Array'-type."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1431
+#: application/core/LsDefaultDataSets.php:1430
 msgid "The title of your question"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1433
+#: application/core/LsDefaultDataSets.php:1432
 msgid "This code is normally not shown to your participants, still it is necessary and has to be unique for the survey."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1434
+#: application/core/LsDefaultDataSets.php:1433
 msgid "This code is also the name of the variable that will be exported to SPSS or Excel."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1435
+#: application/core/LsDefaultDataSets.php:1434
 msgid "Please type in a code that consists only of letters and numbers, and doesn't start with a number."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1447
+#: application/core/LsDefaultDataSets.php:1446
 msgid "The actual question text"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1448
+#: application/core/LsDefaultDataSets.php:1447
 msgid "The content of this box is the actual question text shown to your participants. It may be empty, but that is not recommended. You may use all the power of our WYSIWYG editor to make your question shine."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1459
+#: application/core/LsDefaultDataSets.php:1458
 msgid "An additional help text for your question"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1460
+#: application/core/LsDefaultDataSets.php:1459
 msgid "You can add some additional help text to your question. If you decide not to offer any additional question hints, then no help text will be displayed to your respondents."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1471
+#: application/core/LsDefaultDataSets.php:1470
 msgid "Now save the created question"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1472
+#: application/core/LsDefaultDataSets.php:1471
 msgid "Next, we will create subquestions and answer options."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1473
+#: application/core/LsDefaultDataSets.php:1472
 msgid "Please remember that in order to have a valid code, it must contain only letters and numbers, also please check that it starts with a letter."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1491
+#: application/core/LsDefaultDataSets.php:1490
 msgid "The question bar"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1492
+#: application/core/LsDefaultDataSets.php:1491
 msgid "This is the question bar."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1493
+#: application/core/LsDefaultDataSets.php:1492
 msgid "The most important question-related options are displayed here."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1494
+#: application/core/LsDefaultDataSets.php:1493
 msgid "The availability of options is related to the type of question you previously chose."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1507
+#: application/core/LsDefaultDataSets.php:1506
 msgid "Add some subquestions to your question"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1508
+#: application/core/LsDefaultDataSets.php:1507
 msgid "The array question is a type that creates a matrix for the participant."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1509
+#: application/core/LsDefaultDataSets.php:1508
 msgid "To fully use it, you have to add subquestions as well as answer options."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1510
+#: application/core/LsDefaultDataSets.php:1509
 msgid "Let's start with subquestions."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1511
+#: application/core/LsDefaultDataSets.php:1510
 msgid "Click on the 'Edit subquestions' button."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1533
+#: application/core/LsDefaultDataSets.php:1532
 msgid "Edit subquestions"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1534
+#: application/core/LsDefaultDataSets.php:1533
 msgid "You should add some subquestions for your question here."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1535
+#: application/core/LsDefaultDataSets.php:1534
 msgid "Every row is one subquestion. We recommend the usage of logical or numerical codes for subquestions. Your participants cannot see the subquestion code, only the subquestion text itself."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1536
+#: application/core/LsDefaultDataSets.php:1535
 msgid "Pro tip: The subquestion may even contain HTML code."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1549
+#: application/core/LsDefaultDataSets.php:1548
 msgid "Add subquestion row"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1550
+#: application/core/LsDefaultDataSets.php:1549
 msgid "Click on the plus sign %s to add another subquestion to your question."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1551
+#: application/core/LsDefaultDataSets.php:1550
 msgid "Please add at least two subquestions"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1562
+#: application/core/LsDefaultDataSets.php:1561
 msgid "Now save the subquestions"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1563
+#: application/core/LsDefaultDataSets.php:1562
 msgid "You may save empty subquestions, but that would be pointless."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1564
+#: application/core/LsDefaultDataSets.php:1563
 msgid "Save and close now and let's edit the answer options."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1581
+#: application/core/LsDefaultDataSets.php:1580
 msgid "Add some answer options to your question"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1582
+#: application/core/LsDefaultDataSets.php:1581
 msgid "Now that we've got some subquestions, we have to add answer options as well."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1583
+#: application/core/LsDefaultDataSets.php:1582
 msgid "The answer options will be shown for each subquestion."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1584
+#: application/core/LsDefaultDataSets.php:1583
 msgid "Click on the 'Edit answer options' button."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1606
+#: application/core/LsDefaultDataSets.php:1605
 msgid "Edit answer options"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1607
+#: application/core/LsDefaultDataSets.php:1606
 msgid "As you can see, editing answer options is quite similar to editing subquestions."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1608
+#: application/core/LsDefaultDataSets.php:1607
 msgid "Remember the plus button"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1609
+#: application/core/LsDefaultDataSets.php:1608
 msgid "Please add at least two answer options to proceed."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1622
+#: application/core/LsDefaultDataSets.php:1621
 msgid "Now save the answer options"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1623
+#: application/core/LsDefaultDataSets.php:1622
 msgid "Click on 'Save and close' or 'Next' to proceed."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1640
+#: application/core/LsDefaultDataSets.php:1639
 #: application/core/SurveyCommonAction.php:725
 #: application/core/TopbarConfiguration.php:180
 #: application/views/surveyAdministration/partial/topbar/previewOrRunButton_view.php:39
 msgid "Preview survey"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1641
+#: application/core/LsDefaultDataSets.php:1640
 msgid "Let's have a look at your first survey."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1642
+#: application/core/LsDefaultDataSets.php:1641
 msgid "Just click on this button and a new window will open, where you can test run your survey."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1643
+#: application/core/LsDefaultDataSets.php:1642
 msgid "Please be aware that your answers will not be saved, because the survey isn't active yet."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1644
+#: application/core/LsDefaultDataSets.php:1643
 msgid "Click on 'Preview survey' and return to this window when you are done testing."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1660
+#: application/core/LsDefaultDataSets.php:1659
 msgid "Easy navigation with the \"breadcrumbs\""
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1661
+#: application/core/LsDefaultDataSets.php:1660
 msgid "You can see the \"breadcrumbs\" In the top bar of the admin interface."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1662
+#: application/core/LsDefaultDataSets.php:1661
 msgid "They represent an easy way to get back to any previous setting, and provide a general overview of where you are."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1663
+#: application/core/LsDefaultDataSets.php:1662
 msgid "Click on the name of your survey to get back to the survey settings overview."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1680
+#: application/core/LsDefaultDataSets.php:1679
 msgid "Finally, activate your survey"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1681
+#: application/core/LsDefaultDataSets.php:1680
 msgid "Now, activate your survey."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1682
+#: application/core/LsDefaultDataSets.php:1681
 msgid "You can create as many surveys as you like."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1683
+#: application/core/LsDefaultDataSets.php:1682
 msgid "Click on 'Activate this survey'"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1702
+#: application/core/LsDefaultDataSets.php:1701
 msgid "Activation settings"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1703
+#: application/core/LsDefaultDataSets.php:1702
 msgid "These settings cannot be changed once the survey is online."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1704
+#: application/core/LsDefaultDataSets.php:1703
 msgid "For this simple survey the default settings are ok, but read the disclaimer carefully when you activate your own surveys."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1705
+#: application/core/LsDefaultDataSets.php:1704
 msgid "For more information consult our manual, or our forums."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1706
+#: application/core/LsDefaultDataSets.php:1705
 msgid "Now click on \"Save & activate survey\""
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1728
+#: application/core/LsDefaultDataSets.php:1727
 msgid "Activate survey participants table"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1729
+#: application/core/LsDefaultDataSets.php:1728
 msgid "Here you can select to start your survey in closed access mode."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1730
+#: application/core/LsDefaultDataSets.php:1729
 msgid "For our simple survey it is better to start in open access mode."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1731
+#: application/core/LsDefaultDataSets.php:1730
 msgid "The closed access mode needs a participant list, which you may create by clicking on the menu entry 'Participants'."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1732
+#: application/core/LsDefaultDataSets.php:1731
 msgid "For more information please consult our manual or our forum."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1733
+#: application/core/LsDefaultDataSets.php:1732
 msgid "Click on 'No, thanks'"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1755
+#: application/core/LsDefaultDataSets.php:1754
 msgid "Share this link"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1756
+#: application/core/LsDefaultDataSets.php:1755
 msgid "Just share this link with some of your friends and of course, test it yourself."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1757
+#: application/core/LsDefaultDataSets.php:1756
 msgid "Thank you for taking the tour!"
+msgstr ""
+
+#: application/core/LsDefaultDataSets.php:1841
+#: application/core/LsDefaultDataSets.php:1848
+msgid "Strongly disagree"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:1842
 #: application/core/LsDefaultDataSets.php:1849
-msgid "Strongly disagree"
-msgstr ""
-
-#: application/core/LsDefaultDataSets.php:1843
-#: application/core/LsDefaultDataSets.php:1850
 msgid "Disagree"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1844
+#: application/core/LsDefaultDataSets.php:1843
 msgid "Neither agree nor disagree"
+msgstr ""
+
+#: application/core/LsDefaultDataSets.php:1844
+#: application/core/LsDefaultDataSets.php:1850
+msgid "Agree"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:1845
 #: application/core/LsDefaultDataSets.php:1851
-msgid "Agree"
-msgstr ""
-
-#: application/core/LsDefaultDataSets.php:1846
-#: application/core/LsDefaultDataSets.php:1852
 msgid "Strongly agree"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2765
+#: application/core/LsDefaultDataSets.php:2764
 msgid "Bootstrap dropdown"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2766
+#: application/core/LsDefaultDataSets.php:2765
 msgid "Bootstrap buttons"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2767
+#: application/core/LsDefaultDataSets.php:2766
 msgid "Image select list (Radio)"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2768
+#: application/core/LsDefaultDataSets.php:2767
 msgid "Image select multiple choice"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2769
+#: application/core/LsDefaultDataSets.php:2768
 msgid "Browser detection"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2770
+#: application/core/LsDefaultDataSets.php:2769
 msgid "Input on demand"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2771
+#: application/core/LsDefaultDataSets.php:2770
 msgid "Ranking advanced"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2773
+#: application/core/LsDefaultDataSets.php:2772
 msgid "Survey container"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2774
-#: application/core/LsDefaultDataSets.php:2790
+#: application/core/LsDefaultDataSets.php:2773
+#: application/core/LsDefaultDataSets.php:2789
 msgid "Hide privacy info"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2775
+#: application/core/LsDefaultDataSets.php:2774
 msgid "Show popups"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2776
+#: application/core/LsDefaultDataSets.php:2775
 #: application/views/admin/globalsettings/_general.php:234
 msgid "Popup"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2777
+#: application/core/LsDefaultDataSets.php:2776
 msgid "On page"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2778
+#: application/core/LsDefaultDataSets.php:2777
 msgid "Fix automatically numeric value"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2779
+#: application/core/LsDefaultDataSets.php:2778
 msgid "For expression"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2780
+#: application/core/LsDefaultDataSets.php:2779
 msgid "Brandlogo"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2781
+#: application/core/LsDefaultDataSets.php:2780
 msgid "Brandlogo file"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2782
+#: application/core/LsDefaultDataSets.php:2781
 #: application/views/themeOptions/options_core.php:217
 msgid "Preview image"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2783
+#: application/core/LsDefaultDataSets.php:2782
 msgid "Bootstrap theme"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2784
+#: application/core/LsDefaultDataSets.php:2783
 msgid "Bootswatch theme"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2785
+#: application/core/LsDefaultDataSets.php:2784
 msgid "Question borders"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2786
+#: application/core/LsDefaultDataSets.php:2785
 msgid "Question shadow"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2787
+#: application/core/LsDefaultDataSets.php:2786
 msgid "Zebra-striped questions"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2788
+#: application/core/LsDefaultDataSets.php:2787
 msgid "Sticky array headers"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2789
+#: application/core/LsDefaultDataSets.php:2788
 msgid "Dim answered array rows"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2791
+#: application/core/LsDefaultDataSets.php:2790
 msgid "Cross-hover in matrix questions"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2792
+#: application/core/LsDefaultDataSets.php:2791
 msgid "Background color"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2793
+#: application/core/LsDefaultDataSets.php:2792
 msgid "Font color"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2794
+#: application/core/LsDefaultDataSets.php:2793
 msgid "Question background color"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2795
+#: application/core/LsDefaultDataSets.php:2794
 msgid "Check icon"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2796
+#: application/core/LsDefaultDataSets.php:2795
 msgid "Background image"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2797
+#: application/core/LsDefaultDataSets.php:2796
 msgid "Background image file"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2798
+#: application/core/LsDefaultDataSets.php:2797
 msgid "Logo"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2799
+#: application/core/LsDefaultDataSets.php:2798
 msgid "Logo file"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2800
+#: application/core/LsDefaultDataSets.php:2799
 msgid "Animate body"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2801
+#: application/core/LsDefaultDataSets.php:2800
 msgid "Body animation"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2802
+#: application/core/LsDefaultDataSets.php:2801
 msgid "Duration"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2803
+#: application/core/LsDefaultDataSets.php:2802
 msgid "Animate question"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2804
+#: application/core/LsDefaultDataSets.php:2803
 msgid "Question animation"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2805
+#: application/core/LsDefaultDataSets.php:2804
 msgid "Animate alert"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2806
-#: application/core/LsDefaultDataSets.php:2808
+#: application/core/LsDefaultDataSets.php:2805
+#: application/core/LsDefaultDataSets.php:2807
 msgid "Alert animation"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2807
+#: application/core/LsDefaultDataSets.php:2806
 msgid "Animate checkbox"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2809
+#: application/core/LsDefaultDataSets.php:2808
 msgid "Animate radio buttons"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2810
+#: application/core/LsDefaultDataSets.php:2809
 msgid "Radio button animation"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2811
+#: application/core/LsDefaultDataSets.php:2810
 msgid "Select font:"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2812
+#: application/core/LsDefaultDataSets.php:2811
 msgid "Select variation:"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2813
+#: application/core/LsDefaultDataSets.php:2812
 msgid "Fruity fonts"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2814
+#: application/core/LsDefaultDataSets.php:2813
 msgid "Fruity variations"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2828
+#: application/core/LsDefaultDataSets.php:2827
 msgid "Hello"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2829
+#: application/core/LsDefaultDataSets.php:2828
 msgid "This is an automated email notification that a user has been created for you on the website %s."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2830
+#: application/core/LsDefaultDataSets.php:2829
 msgid "You can use now the following credentials to log in:"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2834
+#: application/core/LsDefaultDataSets.php:2833
 msgid "Click here to set your password"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2835
+#: application/core/LsDefaultDataSets.php:2834
 msgid "If you have any questions regarding this email, please do not hesitate to contact the site administrator at"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2836
+#: application/core/LsDefaultDataSets.php:2835
 msgid "Thank you"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2839
+#: application/core/LsDefaultDataSets.php:2838
 msgid "User registration at '%s'"
 msgstr ""
 
@@ -8520,7 +8520,7 @@ msgstr ""
 
 #: application/core/QuestionTypes/RankingStyle/RenderRanking.php:125
 #: application/helpers/qanda_helper.php:1353
-#: tmp/runtime/twig_cache/90/90f4d4cd0c664a30f2ae946bbb05f5ee4822d30f7eb6395c45d13e431f1ebd81.php:172
+#: tmp/runtime/twig_cache/6a/6a743c51ac351b5e6c2b2427cb76ece4c78b0da594d8d3ce995e25ff92d0f382.php:172
 msgid "Double-click or drag-and-drop items in the left list to move them to the right - your highest ranking item should be on the top right, moving through to your lowest ranking item."
 msgstr ""
 
@@ -8637,8 +8637,8 @@ msgstr ""
 #: application/views/admin/authentication/newPassword.php:35
 #: application/views/admin/user/modifyuser.php:55
 #: application/views/userManagement/partial/createdrandoms.php:30
-#: tmp/runtime/twig_cache/1a/1a49bd76bda4d55e512882e9adcc3e06f440355c87bfc96ee9e8e1f82fb1f3c1.php:254
-#: tmp/runtime/twig_cache/71/717312b3cc52d55b39dc9e7bc336f9f0419677ee4f9f988dfaeaef2157dce8d1.php:215
+#: tmp/runtime/twig_cache/a3/a3f4386be29d48c3fa0d4456101d644c5e93a945ce027a2590a607da856ebf75.php:215
+#: tmp/runtime/twig_cache/d0/d0b2f465fcfe06e9bf888c74d9e20b74c1b0c1fbc7d171782323a96cfe74eef0.php:254
 msgid "Password"
 msgstr ""
 
@@ -8678,7 +8678,7 @@ msgstr ""
 #: application/core/plugins/Authdb/Authdb.php:232
 #: application/models/TemplateManifest.php:175
 #: application/views/admin/export/statistics_subviews/_mainoptions.php:30
-#: tmp/runtime/twig_cache/82/82c3756d5d1fee0cbd6fffda25a524f971fdf2e13a4784f13756b2753db998a3.php:40
+#: tmp/runtime/twig_cache/cd/cd910a8cf8bc70749a14f724b1c8980c12808b6cf194831ac3cea3f5f38d85d4.php:40
 msgid "PDF"
 msgstr ""
 
@@ -9297,24 +9297,24 @@ msgstr ""
 #: application/extensions/GeneralOptionWidget/settings/MandatoryGeneralOption.php:15
 #: application/models/Question.php:1079
 #: application/views/survey/system/required.php:6
-#: tmp/runtime/twig_cache/1a/1a49bd76bda4d55e512882e9adcc3e06f440355c87bfc96ee9e8e1f82fb1f3c1.php:212
-#: tmp/runtime/twig_cache/1a/1a49bd76bda4d55e512882e9adcc3e06f440355c87bfc96ee9e8e1f82fb1f3c1.php:266
-#: tmp/runtime/twig_cache/1a/1a49bd76bda4d55e512882e9adcc3e06f440355c87bfc96ee9e8e1f82fb1f3c1.php:318
-#: tmp/runtime/twig_cache/1a/1a54309b25e674603442ed2724ba87e23601940267ccacd035789ea7371470e9.php:50
-#: tmp/runtime/twig_cache/45/45a5058c6d461432729b3549daab5d5d212cdc5dd319744df4bd1a0b834742e1.php:180
-#: tmp/runtime/twig_cache/45/45a5058c6d461432729b3549daab5d5d212cdc5dd319744df4bd1a0b834742e1.php:229
-#: tmp/runtime/twig_cache/60/60b0d7d792ece9a52d0cdc0833fd2c3bf910b4ee6b8e9bf99dfc02efa7f96eb6.php:214
-#: tmp/runtime/twig_cache/60/60b0d7d792ece9a52d0cdc0833fd2c3bf910b4ee6b8e9bf99dfc02efa7f96eb6.php:269
-#: tmp/runtime/twig_cache/60/60b0d7d792ece9a52d0cdc0833fd2c3bf910b4ee6b8e9bf99dfc02efa7f96eb6.php:323
-#: tmp/runtime/twig_cache/65/65be86a87b7797de1bd0d75a2fdedfb6ecbc21ef0fb6fa94e0047de3f7e3b090.php:127
-#: tmp/runtime/twig_cache/65/65be86a87b7797de1bd0d75a2fdedfb6ecbc21ef0fb6fa94e0047de3f7e3b090.php:203
-#: tmp/runtime/twig_cache/71/717312b3cc52d55b39dc9e7bc336f9f0419677ee4f9f988dfaeaef2157dce8d1.php:178
-#: tmp/runtime/twig_cache/71/717312b3cc52d55b39dc9e7bc336f9f0419677ee4f9f988dfaeaef2157dce8d1.php:227
-#: tmp/runtime/twig_cache/79/79f542bde76f068c32b88ac79bcd0c0e85b5e48fae8d327cd9d90c75801e9785.php:189
-#: tmp/runtime/twig_cache/82/829ab18d975b254ad78fceba7278d280d8ad935b74de4fcbf93c4cf9318240e2.php:186
-#: tmp/runtime/twig_cache/dd/ddeead2bdb8c3a46fbd7a9176fcf4ec14565e5078fc22110bd55ceec1ac2ae17.php:50
-#: tmp/runtime/twig_cache/ef/ef5121b1843240a77fd049690764449745e5ed393285306efc9094caf3fe46d5.php:132
-#: tmp/runtime/twig_cache/ef/ef5121b1843240a77fd049690764449745e5ed393285306efc9094caf3fe46d5.php:214
+#: tmp/runtime/twig_cache/03/03a61e9f425659cc9d7e312e4cdb304264f85b19abf9bf0814a213aaf11b0cfa.php:189
+#: tmp/runtime/twig_cache/05/05c54ee344bb8bdcd6ea55ae1db310415bba8b42b99c4af6c879d5054f1ba781.php:132
+#: tmp/runtime/twig_cache/05/05c54ee344bb8bdcd6ea55ae1db310415bba8b42b99c4af6c879d5054f1ba781.php:214
+#: tmp/runtime/twig_cache/55/551b4d0109b24e39ec58893432fbdcef4b8e0edbca72e54ba6c55a394b6381e9.php:50
+#: tmp/runtime/twig_cache/87/8769ef321929b2cb9911bae6d720532ca35e19f2084859d786c6d928f3a6ec77.php:127
+#: tmp/runtime/twig_cache/87/8769ef321929b2cb9911bae6d720532ca35e19f2084859d786c6d928f3a6ec77.php:203
+#: tmp/runtime/twig_cache/a3/a3f4386be29d48c3fa0d4456101d644c5e93a945ce027a2590a607da856ebf75.php:178
+#: tmp/runtime/twig_cache/a3/a3f4386be29d48c3fa0d4456101d644c5e93a945ce027a2590a607da856ebf75.php:227
+#: tmp/runtime/twig_cache/d0/d0b2f465fcfe06e9bf888c74d9e20b74c1b0c1fbc7d171782323a96cfe74eef0.php:212
+#: tmp/runtime/twig_cache/d0/d0b2f465fcfe06e9bf888c74d9e20b74c1b0c1fbc7d171782323a96cfe74eef0.php:266
+#: tmp/runtime/twig_cache/d0/d0b2f465fcfe06e9bf888c74d9e20b74c1b0c1fbc7d171782323a96cfe74eef0.php:318
+#: tmp/runtime/twig_cache/dd/ddf130dc9ad7a1ce64bdf96708ac65c422b26389b7886d553841016fd013cdcd.php:50
+#: tmp/runtime/twig_cache/e0/e0d33d6956f70beaf569e97b14ed49356b6190fb3200a06520d07c615226f4f4.php:214
+#: tmp/runtime/twig_cache/e0/e0d33d6956f70beaf569e97b14ed49356b6190fb3200a06520d07c615226f4f4.php:269
+#: tmp/runtime/twig_cache/e0/e0d33d6956f70beaf569e97b14ed49356b6190fb3200a06520d07c615226f4f4.php:323
+#: tmp/runtime/twig_cache/e4/e4d9efb37679e0d0917f480232c067369f371e45bdaebbd0be3bca49d923a628.php:186
+#: tmp/runtime/twig_cache/ef/effc9a203579285438a2cdbf05e9617f094a05323d80db376d95066a15932d9c.php:180
+#: tmp/runtime/twig_cache/ef/effc9a203579285438a2cdbf05e9617f094a05323d80db376d95066a15932d9c.php:229
 msgid "Mandatory"
 msgstr ""
 
@@ -9739,9 +9739,9 @@ msgid "Unknown view!"
 msgstr ""
 
 #: application/helpers/SurveyRuntimeHelper.php:333
-#: tmp/runtime/twig_cache/b5/b5ea5f32696df8e692f755d2a7d4c168efe920b79ffcc9df011959867d755042.php:59
-#: tmp/runtime/twig_cache/b7/b7d8eac4e9fb62da4542914387080d85b1e2a3e2ad579dcf520b82db307cb375.php:61
-#: tmp/runtime/twig_cache/b7/b7d8eac4e9fb62da4542914387080d85b1e2a3e2ad579dcf520b82db307cb375.php:65
+#: tmp/runtime/twig_cache/8b/8b412f308cc23366a7f83e03a86189492a5a2c8ac2c81bfdcfd50a2a592efb2b.php:61
+#: tmp/runtime/twig_cache/8b/8b412f308cc23366a7f83e03a86189492a5a2c8ac2c81bfdcfd50a2a592efb2b.php:65
+#: tmp/runtime/twig_cache/92/92bc1e9634f8d37406f7f8f1dff6733f7ebde2cf91383b5606a2de6e1d1bce72.php:59
 msgid "You have completed %s%% of this survey"
 msgstr ""
 
@@ -9770,8 +9770,8 @@ msgid "Saving responses is disabled if survey is not activated."
 msgstr ""
 
 #: application/helpers/SurveyRuntimeHelper.php:1278
-#: tmp/runtime/twig_cache/1c/1c7ee3956126574402ebb3f1b2c9aadd314ac2f78676547688e40232a2e8854d.php:184
-#: tmp/runtime/twig_cache/bd/bdc93218279f9f068f339b193f02a8587b35c96318f0b99a822b8fbe837a2c79.php:188
+#: tmp/runtime/twig_cache/0f/0fe9cbdf19392ba5cc5cb45ec2ab4d47f6cd9c4dc1d6ff04ff879018766e4ea2.php:188
+#: tmp/runtime/twig_cache/ff/fffc095570dfc710c963263138c84ba6cc8e67ac8b1f744d180d300d54af88f8.php:184
 msgid "Print your answers."
 msgstr ""
 
@@ -9781,8 +9781,8 @@ msgid "Note: This link only works if the survey is activated."
 msgstr ""
 
 #: application/helpers/SurveyRuntimeHelper.php:1286
-#: tmp/runtime/twig_cache/1c/1c7ee3956126574402ebb3f1b2c9aadd314ac2f78676547688e40232a2e8854d.php:223
-#: tmp/runtime/twig_cache/bd/bdc93218279f9f068f339b193f02a8587b35c96318f0b99a822b8fbe837a2c79.php:227
+#: tmp/runtime/twig_cache/0f/0fe9cbdf19392ba5cc5cb45ec2ab4d47f6cd9c4dc1d6ff04ff879018766e4ea2.php:227
+#: tmp/runtime/twig_cache/ff/fffc095570dfc710c963263138c84ba6cc8e67ac8b1f744d180d300d54af88f8.php:223
 msgid "View the statistics for this survey."
 msgstr ""
 
@@ -9907,7 +9907,7 @@ msgid "Start HTML editor in a popup window"
 msgstr ""
 
 #: application/helpers/admin/htmleditor_helper.php:280
-#: tmp/runtime/twig_cache/ed/ed55a9f9da2f794b5d61cdf2be3606cd1c5520397ad9588193d0ff17d1e330e8.php:123
+#: tmp/runtime/twig_cache/a5/a519e2516c862bb3d9289eeec05aafb5d391cd1446410bb0799a9eca7a54639e.php:123
 msgid "Open editor"
 msgstr ""
 
@@ -11219,13 +11219,13 @@ msgid "Invalid PERL Regular Expression: %s"
 msgstr ""
 
 #: application/helpers/expressions/em_manager_helper.php:2896
-#: tmp/runtime/twig_cache/78/788fca2b9712e547d627aea8a888e7ca11886644ed6707c33d43bcd9e5b919b1.php:53
+#: tmp/runtime/twig_cache/6a/6a6b2d21cfe7f555dfcd89e4317995a23f17c4dc6485c178eb8caac7794d8e5c.php:53
 msgid "Choose your language"
 msgstr ""
 
 #: application/helpers/expressions/em_manager_helper.php:2901
-#: tmp/runtime/twig_cache/a1/a1a76dccf284a6328d2cd42d91ed89f5908999b2484c55871002a224a7ecc069.php:42
-#: tmp/runtime/twig_cache/d4/d4cf2cfb3d63b6f5f24854cc9ce1655cd0c08634b4586b84c93bf5c464e56dac.php:40
+#: tmp/runtime/twig_cache/9b/9b4cc2e3225becd23a58cbf3288bf7b7b61d202efe4ccf002212c229390c496d.php:40
+#: tmp/runtime/twig_cache/ef/efee9bed7c838a91bad49f824e6483ae069cb31f81a4a883ff90b36d50d77fd2.php:42
 msgid "Choose one of the following answers"
 msgstr ""
 
@@ -11513,13 +11513,13 @@ msgstr ""
 #: application/views/questionGroupsAdministration/group_view.php:21
 #: application/views/userGroup/addUserGroup_view.php:21
 #: application/views/userGroup/editUserGroup_view.php:16
-#: tmp/runtime/twig_cache/62/6202c74a67c98f2818b333914ecab36c8f9c18a1e2dd6406fc82c01ef8724118.php:64
+#: tmp/runtime/twig_cache/6f/6f172ba55a468b0cf2e85a0cbc8ecabfa435cbc772c4f31f40b1d9f88ebcaf5e.php:64
 msgid "Description:"
 msgstr ""
 
 #: application/helpers/expressions/em_manager_helper.php:9034
 #: application/views/admin/survey/editLocalSettings_view.php:132
-#: tmp/runtime/twig_cache/62/6202c74a67c98f2818b333914ecab36c8f9c18a1e2dd6406fc82c01ef8724118.php:87
+#: tmp/runtime/twig_cache/6f/6f172ba55a468b0cf2e85a0cbc8ecabfa435cbc772c4f31f40b1d9f88ebcaf5e.php:87
 msgid "Welcome:"
 msgstr ""
 
@@ -11527,14 +11527,14 @@ msgstr ""
 #: application/models/services/QuickTranslation.php:501
 #: application/views/admin/survey/editLocalSettings_view.php:144
 #: application/views/admin/survey/editLocalSettings_view.php:153
-#: tmp/runtime/twig_cache/62/6202c74a67c98f2818b333914ecab36c8f9c18a1e2dd6406fc82c01ef8724118.php:111
+#: tmp/runtime/twig_cache/6f/6f172ba55a468b0cf2e85a0cbc8ecabfa435cbc772c4f31f40b1d9f88ebcaf5e.php:111
 msgid "End message:"
 msgstr ""
 
 #: application/helpers/expressions/em_manager_helper.php:9056
 #: application/views/admin/survey/editLocalSettings_view.php:162
 #: application/views/admin/survey/subview/accordion/_generaloptions_panel.php:230
-#: tmp/runtime/twig_cache/1d/1defbbd233f905e3b6cd66a65ca58ee6407738450985b52a28a20efd397fc7c1.php:128
+#: tmp/runtime/twig_cache/e1/e117cf1f1bd41e21c33502f177879079e18fbc1a42c69071ea6c508da0f126a1.php:128
 msgid "End URL:"
 msgstr ""
 
@@ -11757,8 +11757,8 @@ msgid "This survey cannot be tested or completed for the following reason(s):"
 msgstr ""
 
 #: application/helpers/frontend_helper.php:1435
-#: tmp/runtime/twig_cache/7b/7b1c2b990cecd8549695c8b74956f24a8c1775fd554376a23f1cb2ee5d5d3f31.php:111
-#: tmp/runtime/twig_cache/dc/dcee5c0988eb941b9247c3bfb4b7ff12cde01e43fbcc53610caca192b1465b74.php:112
+#: tmp/runtime/twig_cache/45/456149d1e8233096d0db1c345b954357e9e0eb2289bc0788727e585e3b22957e.php:112
+#: tmp/runtime/twig_cache/97/97cdc7a1c1278f42da9c9b729f8511e9b0c46610c2ede883d9ef89783f734b05.php:111
 msgid "There are no questions in this survey."
 msgstr ""
 
@@ -11823,7 +11823,7 @@ msgid "Your time to answer this question has nearly expired. You have {TIME} rem
 msgstr ""
 
 #: application/helpers/qanda_helper.php:1792
-#: tmp/runtime/twig_cache/c1/c18945ff005ada4b5e82b5975538e2f83afef86aea2409c8bf775f78b30519fc.php:151
+#: tmp/runtime/twig_cache/19/19dadb73036eb5bf2697b58142f4e8fef7fdc4f3a7a4c40548e3ed615573b58c.php:151
 msgid "Upload file|Upload files"
 msgstr ""
 
@@ -12022,8 +12022,8 @@ msgstr ""
 #: application/helpers/questionHelper.php:128
 #: application/models/SurveysGroupsettings.php:409
 #: application/views/admin/survey/subview/accordion/_presentation_panel.php:32
-#: tmp/runtime/twig_cache/1d/1defbbd233f905e3b6cd66a65ca58ee6407738450985b52a28a20efd397fc7c1.php:354
-#: tmp/runtime/twig_cache/1d/1defbbd233f905e3b6cd66a65ca58ee6407738450985b52a28a20efd397fc7c1.php:407
+#: tmp/runtime/twig_cache/e1/e117cf1f1bd41e21c33502f177879079e18fbc1a42c69071ea6c508da0f126a1.php:354
+#: tmp/runtime/twig_cache/e1/e117cf1f1bd41e21c33502f177879079e18fbc1a42c69071ea6c508da0f126a1.php:407
 msgid "Disabled"
 msgstr ""
 
@@ -13224,7 +13224,7 @@ msgstr ""
 #: application/helpers/replacements_helper.php:159
 #: application/helpers/replacements_helper.php:377
 #: application/helpers/replacements_helper.php:379
-#: tmp/runtime/twig_cache/ca/ca69d9a40af87005677cb8e5d53dac595d06e5fd4c9e5cee396fef5b4a937db3.php:321
+#: tmp/runtime/twig_cache/e7/e7221e38087200d582ecda7e5813bdcf5ab45b10e54883e55db723b7dba0cc95.php:321
 msgid "Please contact %s ( %s ) for further assistance."
 msgstr ""
 
@@ -13250,14 +13250,14 @@ msgid "Note: Print will not include items on this page"
 msgstr ""
 
 #: application/helpers/replacements_helper.php:282
-#: tmp/runtime/twig_cache/6f/6f438a41c44738b721bd75a01429b081906d2656fb490fea4790e14be872b693.php:54
-#: tmp/runtime/twig_cache/87/8753afc2cd1623b7f58f88f28c8d12efecf457c10e29ddf04a3af26bc91d1085.php:54
+#: tmp/runtime/twig_cache/4c/4c1d520ffa6eaab7685ea060f3782745a48be98264765e33c497bd7da9dd2bf2.php:54
+#: tmp/runtime/twig_cache/56/56e7993d6bbeb9c92f8806e621f9501622147e68a6abc7050aa0c57e0d354b37.php:54
 msgid "Answers cleared"
 msgstr ""
 
 #: application/helpers/replacements_helper.php:283
-#: tmp/runtime/twig_cache/2d/2d498c29ca07009610477c3dbd1edcc397d38ff2c1082566f76365b94d107579.php:65
-#: tmp/runtime/twig_cache/5e/5e1db84a51f8ec82bfc16ca2ba6a99758040040e5aefaa5a0e7f41ae2c9ab202.php:65
+#: tmp/runtime/twig_cache/8a/8a160910858d363d966bd942642a7312b1ac18bc53c2cbdc177e6558413a1b35.php:65
+#: tmp/runtime/twig_cache/a3/a3a472654e8909e9f5999d5513d5c196eabdfb60702e342c43d04dbfcc08a93d.php:65
 msgid "Your assessment"
 msgstr ""
 
@@ -14436,7 +14436,7 @@ msgstr ""
 
 #: application/models/Participant.php:179 application/models/SurveyLink.php:234
 #: application/views/admin/participants/attributeMap_view.php:161
-#: tmp/runtime/twig_cache/7b/7bda9a553584846a087c1b76ea251abe7b7a374440e5b1525ba3abe544d13483.php:40
+#: tmp/runtime/twig_cache/be/be724f307491b3a62be3bc56881c7d67dcf75b95b3b19b730681e3115d09432f.php:40
 msgid "Participant"
 msgstr ""
 
@@ -15698,24 +15698,24 @@ msgid "No preview available"
 msgstr ""
 
 #: application/models/TemplateManifest.php:167
-#: tmp/runtime/twig_cache/db/db82c3114c4c6f01d41ccf0a07ce3d8b2d7831507abb5983a451621168402bb1.php:40
+#: tmp/runtime/twig_cache/ad/adce7d51adccc78f2f42712fe9d6ece3e5201ef65c6a0e3a4ac5766275bee93f.php:40
 msgid "Clear all"
 msgstr ""
 
 #: application/models/TemplateManifest.php:168
-#: tmp/runtime/twig_cache/b7/b7bf0b037ececb1a7d4dfdfe12a8dd67b4383af473b9b6ead4cf21253e4d2ae3.php:40
+#: tmp/runtime/twig_cache/7c/7c46b1cb412196eca0acca1462ee0157f4dbce89b6ea8eb85d7a253d5f13fb99.php:40
 msgid "Load"
 msgstr ""
 
 #: application/models/TemplateManifest.php:174
-#: tmp/runtime/twig_cache/72/7215055cdba8f7137f24aa1ada02541bf2341e35a1e68d0f7d737be80ef8f718.php:42
-#: tmp/runtime/twig_cache/cb/cbd8354454f405c7bee2970866a9413030688be3212cf41d9a174873c710a84c.php:40
+#: tmp/runtime/twig_cache/2f/2fe2186f4a181705147a64c95425494ee82fc5c82c336bc777a66337d15c4335.php:40
+#: tmp/runtime/twig_cache/e0/e0a3063e40564c6e03f07a01f23d3478820a4355dd401c8461243a5bd377312e.php:42
 msgid "Print answers"
 msgstr ""
 
 #: application/models/TemplateManifest.php:176
 #: application/views/admin/survey/subview/accordion/_presentation_panel.php:221
-#: tmp/runtime/twig_cache/01/0132acc9dbffcc7549963846ef482c634ec4a4f476d53494ff6a22d7f4690515.php:40
+#: tmp/runtime/twig_cache/1e/1e4778f529d40b4a5b1940382018ca0cb123b69088e9052f982a10b5434cd981.php:40
 msgid "Navigation"
 msgstr ""
 
@@ -15748,42 +15748,42 @@ msgid "This is an error message example"
 msgstr ""
 
 #: application/models/TemplateManifest.php:422
-#: tmp/runtime/twig_cache/de/decc8c939ce1972d4818efa821f06521777fb2f2c8fa0f8812b8393fe9d77d72.php:40
+#: tmp/runtime/twig_cache/5b/5b4e705baa2be3dcba1901b351539d2934c5e3ea2b8852874980938cf42baa83.php:40
 msgid "Welcome to the Assessment"
 msgstr ""
 
 #: application/models/TemplateManifest.php:425
-#: tmp/runtime/twig_cache/5d/5daf7dc556184a59b6736333542d009e0d70df42108b96600128d712548176ae.php:40
-#: tmp/runtime/twig_cache/a6/a644a8b206ab2505ad0dd76d97a1c4b5de22b055ed98c6be7d0c488e511717ea.php:42
+#: tmp/runtime/twig_cache/ae/ae8b1fc45e9bd9d6a9b223e799c16a6054eb3f5330f98a174ee0dae64e73a0fc.php:42
+#: tmp/runtime/twig_cache/f2/f24ca7e02d3e42980aabcca1c8ad4dff8cd5d051a14472f351d5c424bd1e172e.php:40
 msgid "You got {TOTAL} points out of 3 possible points."
 msgstr ""
 
 #: application/models/TemplateManifest.php:436
-#: tmp/runtime/twig_cache/55/55065a871ed386798b8dec577a232535acfdd6b1c55a0810a5dc37a9ab929ed6.php:40
+#: tmp/runtime/twig_cache/7b/7b08664804381a927cdbfbc3ae56876ecb8489686e7ae7ff5bd63e4bf2717c51.php:40
 msgid "Template Sample"
 msgstr ""
 
 #: application/models/TemplateManifest.php:438
-#: tmp/runtime/twig_cache/90/9078cbda456d7b4a0ff6838ed1f94a5f4157a4f40b5f02bbd8ad962df86b87c7.php:40
-#: tmp/runtime/twig_cache/ba/bab8500e3c3f083f141fcedd8f2636834e81e696e47f9c49607892b313af23ba.php:42
+#: tmp/runtime/twig_cache/92/92e02faba263fcf2979179090a5b16e4cfa447118b19607175b9d918b4744f34.php:42
+#: tmp/runtime/twig_cache/c1/c15b53f008570fccad4d4929918ccd255703add3f0b3fe51608fc2abd0441b01.php:40
 msgid "This is a sample survey description. It could be quite long."
 msgstr ""
 
 #: application/models/TemplateManifest.php:439
-#: tmp/runtime/twig_cache/90/9078cbda456d7b4a0ff6838ed1f94a5f4157a4f40b5f02bbd8ad962df86b87c7.php:42
-#: tmp/runtime/twig_cache/ba/bab8500e3c3f083f141fcedd8f2636834e81e696e47f9c49607892b313af23ba.php:44
+#: tmp/runtime/twig_cache/92/92e02faba263fcf2979179090a5b16e4cfa447118b19607175b9d918b4744f34.php:44
+#: tmp/runtime/twig_cache/c1/c15b53f008570fccad4d4929918ccd255703add3f0b3fe51608fc2abd0441b01.php:42
 msgid "But this one isn't."
 msgstr ""
 
 #: application/models/TemplateManifest.php:441
-#: tmp/runtime/twig_cache/1c/1c93c81f47f210bce6ea18b7f14a10684dcb9a7a137fa21249c17bf139aedb2b.php:40
-#: tmp/runtime/twig_cache/ef/ef9be1b62e0d4a9e49d7e5babb494fa5d8563984ccb5b261c3c5dc0ef6810da2.php:42
+#: tmp/runtime/twig_cache/15/15180bd3f69817a903a44a199bc9358e07a63e771bf4731d2f8350181614d8b0.php:40
+#: tmp/runtime/twig_cache/db/db52379a6afd2ea6e75e9e8dadacc0e28927a597e4d693dc83f12ca3ea5ba851.php:42
 msgid "Welcome to this sample survey"
 msgstr ""
 
 #: application/models/TemplateManifest.php:442
-#: tmp/runtime/twig_cache/1c/1c93c81f47f210bce6ea18b7f14a10684dcb9a7a137fa21249c17bf139aedb2b.php:42
-#: tmp/runtime/twig_cache/ef/ef9be1b62e0d4a9e49d7e5babb494fa5d8563984ccb5b261c3c5dc0ef6810da2.php:44
+#: tmp/runtime/twig_cache/15/15180bd3f69817a903a44a199bc9358e07a63e771bf4731d2f8350181614d8b0.php:42
+#: tmp/runtime/twig_cache/db/db52379a6afd2ea6e75e9e8dadacc0e28927a597e4d693dc83f12ca3ea5ba851.php:44
 msgid "You should have a great time doing this"
 msgstr ""
 
@@ -16284,8 +16284,8 @@ msgid "Answer options"
 msgstr ""
 
 #: application/models/services/Quotas.php:280
-#: tmp/runtime/twig_cache/b7/b78e7a5031ef2d5e93ea36045bfa458350b6b785e31eae8a7e666a109e3895db.php:42
-#: tmp/runtime/twig_cache/ec/ec8e5cbe41bbd86460ba60447a58800e8e7e089c088281a1cfb39393a616e668.php:40
+#: tmp/runtime/twig_cache/3e/3ecce40525f3cdd2069ba8de6ca24de2f8cbd5594039708e4b7f6962e86dead4.php:40
+#: tmp/runtime/twig_cache/c1/c1c60c462c81dc59739d780b66908561ebf8ed1779f7dc0471f04c716eb1fcba.php:42
 msgid "Sorry your responses have exceeded a quota on this survey."
 msgstr ""
 
@@ -16436,8 +16436,8 @@ msgid "Set password"
 msgstr ""
 
 #: application/views/admin/authentication/newPassword.php:41
-#: tmp/runtime/twig_cache/1a/1a49bd76bda4d55e512882e9adcc3e06f440355c87bfc96ee9e8e1f82fb1f3c1.php:306
-#: tmp/runtime/twig_cache/1a/1a49bd76bda4d55e512882e9adcc3e06f440355c87bfc96ee9e8e1f82fb1f3c1.php:330
+#: tmp/runtime/twig_cache/d0/d0b2f465fcfe06e9bf888c74d9e20b74c1b0c1fbc7d171782323a96cfe74eef0.php:306
+#: tmp/runtime/twig_cache/d0/d0b2f465fcfe06e9bf888c74d9e20b74c1b0c1fbc7d171782323a96cfe74eef0.php:330
 msgid "Repeat password"
 msgstr ""
 
@@ -16822,7 +16822,7 @@ msgstr ""
 #: application/views/admin/export/statistics_subviews/_general_filters.php:15
 #: application/views/admin/export/statistics_subviews/_response_filters.php:33
 #: application/views/surveyAdministration/partial/topbar_statistics/rightSideButtons.php:53
-#: tmp/runtime/twig_cache/32/329210cb9fd62b65df80feee0eacbd862a4dca819694bda3bde69bfe583a4d93.php:189
+#: tmp/runtime/twig_cache/6d/6d411ce752889ce4e9d325a3e57930345bcdc8536f1d2ae8d7d6954fb562a74e.php:189
 msgid "Clear"
 msgstr ""
 
@@ -16969,8 +16969,8 @@ msgstr ""
 #: application/views/admin/globalsettings/_bounce.php:52
 #: application/views/admin/token/bounce.php:84
 #: application/views/installer/success_view.php:15
-#: tmp/runtime/twig_cache/45/45a5058c6d461432729b3549daab5d5d212cdc5dd319744df4bd1a0b834742e1.php:215
-#: tmp/runtime/twig_cache/60/60b0d7d792ece9a52d0cdc0833fd2c3bf910b4ee6b8e9bf99dfc02efa7f96eb6.php:255
+#: tmp/runtime/twig_cache/e0/e0d33d6956f70beaf569e97b14ed49356b6190fb3200a06520d07c615226f4f4.php:255
+#: tmp/runtime/twig_cache/ef/effc9a203579285438a2cdbf05e9617f094a05323d80db376d95066a15932d9c.php:215
 msgid "Password:"
 msgstr ""
 
@@ -16995,8 +16995,8 @@ msgstr ""
 #: application/views/admin/update/manage/subscribe.php:47
 #: application/views/admin/update/updater/welcome/_subscribe.php:44
 #: application/views/survey/system/actionButton/moveSubmit.php:11
-#: tmp/runtime/twig_cache/55/55a702c76970688ea034f7b4508efaf1f77eea8233d3d432e213ca356ba57470.php:133
-#: tmp/runtime/twig_cache/b3/b3a74255c8908d4c8c7d23fc09961077c5e0bfa000768ef8f0ec084d4d6bb1ee.php:133
+#: tmp/runtime/twig_cache/05/0532b4f09df9502aca984e2098a6ad999285884e90bebc93c2aeec477c8a49f6.php:133
+#: tmp/runtime/twig_cache/98/9899064ee8433e98d6c652c6c62620aef3289b9acc52ec1c2a3e93e441d5dfc1.php:133
 msgid "Submit"
 msgstr ""
 
@@ -17485,8 +17485,8 @@ msgstr ""
 #: application/views/admin/token/massive_actions/_update.php:142
 #: application/views/admin/token/tokenform.php:217
 #: application/views/survey/system/LanguageChanger/LanguageChanger.php:16
-#: tmp/runtime/twig_cache/9b/9bd0473ce146de8d90baf0766193595568b993bcb50a8241aad25776411c4cb1.php:74
-#: tmp/runtime/twig_cache/f9/f95d407e224ddd7272a49849b8c2bbe737b5238b491cc21648330ff5c7c5eb96.php:58
+#: tmp/runtime/twig_cache/10/105a0034070817962c323c7fb953703571e4897bc36e4a80383738a23d3259c9.php:74
+#: tmp/runtime/twig_cache/c3/c31e4d6147d13d9bae7368c016b4b0294a9893295f9082f3405247415153674a.php:58
 msgid "Language:"
 msgstr ""
 
@@ -18905,7 +18905,7 @@ msgstr ""
 #: application/views/admin/token/ldapform.php:83
 #: application/views/themeOptions/advanced.php:25
 #: application/views/themeOptions/options_core.php:245
-#: tmp/runtime/twig_cache/c1/c18945ff005ada4b5e82b5975538e2f83afef86aea2409c8bf775f78b30519fc.php:164
+#: tmp/runtime/twig_cache/19/19dadb73036eb5bf2697b58142f4e8fef7fdc4f3a7a4c40548e3ed615573b58c.php:164
 msgid "Upload"
 msgstr ""
 
@@ -19094,14 +19094,14 @@ msgstr ""
 #: application/views/admin/participants/modal_subviews/_editParticipant.php:38
 #: application/views/admin/token/massive_actions/_update.php:116
 #: application/views/admin/token/tokenform.php:161
-#: tmp/runtime/twig_cache/0d/0d09031d14ae04cc48229ec9c226b637913562087b9635d1d108e6f504c88707.php:82
+#: tmp/runtime/twig_cache/4d/4d2b1933f87b690f5008eb3c3b5b67c3178c27728cef12ec15512ddb1b4b5bf0.php:82
 msgid "First name:"
 msgstr ""
 
 #: application/views/admin/participants/modal_subviews/_editParticipant.php:44
 #: application/views/admin/token/massive_actions/_update.php:129
 #: application/views/admin/token/tokenform.php:175
-#: tmp/runtime/twig_cache/0d/0d09031d14ae04cc48229ec9c226b637913562087b9635d1d108e6f504c88707.php:105
+#: tmp/runtime/twig_cache/4d/4d2b1933f87b690f5008eb3c3b5b67c3178c27728cef12ec15512ddb1b4b5bf0.php:105
 msgid "Last name:"
 msgstr ""
 
@@ -19114,7 +19114,7 @@ msgid "Blacklist user:"
 msgstr ""
 
 #: application/views/admin/participants/modal_subviews/_editParticipant.php:91
-#: tmp/runtime/twig_cache/3f/3f05e201d4c58e16ed35fa2dc0593726e1f8e9a9252b71df1f4b8ab74af4064a.php:62
+#: tmp/runtime/twig_cache/90/90d5a67da416448455725c0de1c5f13b886301d8783a6c30c538a56e94525516.php:62
 msgid "Owner:"
 msgstr ""
 
@@ -19317,7 +19317,7 @@ msgstr ""
 #: application/views/admin/pluginmanager/uploadConfirm.php:38
 #: application/views/userGroup/addUserGroup_view.php:10
 #: application/views/userGroup/editUserGroup_view.php:11
-#: tmp/runtime/twig_cache/60/60b0d7d792ece9a52d0cdc0833fd2c3bf910b4ee6b8e9bf99dfc02efa7f96eb6.php:200
+#: tmp/runtime/twig_cache/e0/e0d33d6956f70beaf569e97b14ed49356b6190fb3200a06520d07c615226f4f4.php:200
 msgid "Name:"
 msgstr ""
 
@@ -19849,7 +19849,7 @@ msgid "Error: You are trying to use duplicate subquestion codes."
 msgstr ""
 
 #: application/views/admin/survey/Question/_subQuestionsAndAnwsersJsVariables.php:31
-#: tmp/runtime/twig_cache/c0/c0fe9ec6cb087b631ad5503b2f8e67bd30e7e75699fe8c42c331f1fb240da178.php:235
+#: tmp/runtime/twig_cache/70/70275123311bad1f6ecff2af6f7c5138d3d84c410ddbfe45ba7bdc80f0bc679f.php:235
 msgid "Click to expand"
 msgstr ""
 
@@ -20271,7 +20271,7 @@ msgstr ""
 #: application/views/admin/survey/subview/accordion/_generaloptions_panel.php:154
 #: application/views/admin/survey/subview/accordion/_generaloptions_panel.php:262
 #: application/views/surveyAdministration/tabCreate_view.php:99
-#: tmp/runtime/twig_cache/3f/3f05e201d4c58e16ed35fa2dc0593726e1f8e9a9252b71df1f4b8ab74af4064a.php:79
+#: tmp/runtime/twig_cache/90/90d5a67da416448455725c0de1c5f13b886301d8783a6c30c538a56e94525516.php:79
 msgid "Administrator:"
 msgstr ""
 
@@ -20304,7 +20304,7 @@ msgstr ""
 
 #: application/views/admin/survey/subview/accordion/_generaloptions_panel.php:320
 #: application/views/admin/themes/templateeditorbar_view.php:70
-#: tmp/runtime/twig_cache/3f/3f05e201d4c58e16ed35fa2dc0593726e1f8e9a9252b71df1f4b8ab74af4064a.php:96
+#: tmp/runtime/twig_cache/90/90d5a67da416448455725c0de1c5f13b886301d8783a6c30c538a56e94525516.php:96
 msgid "Theme:"
 msgstr ""
 
@@ -20433,8 +20433,8 @@ msgid "Participants may print answers:"
 msgstr ""
 
 #: application/views/admin/survey/subview/accordion/_presentation_panel.php:305
-#: tmp/runtime/twig_cache/3d/3d1d76bb854bfad4ea209aed1eb46fc49d90dbe6e39daea6a1cf617f27e7f1d6.php:40
-#: tmp/runtime/twig_cache/62/6235e540151d7293fcce80727f9abe840bdb067c8636a516c5d172a4b1b3609f.php:42
+#: tmp/runtime/twig_cache/1f/1f4bc89866c38e7c247ab01d8ae58a65c820938e886639fc7d65f680a9522c2c.php:42
+#: tmp/runtime/twig_cache/88/88c249e48470ec34747d830ccba06147bacac3e003038656e31e941cdb2e901a.php:40
 msgid "Public statistics"
 msgstr ""
 
@@ -20451,7 +20451,7 @@ msgid "Publication date"
 msgstr ""
 
 #: application/views/admin/survey/subview/accordion/_publication_panel.php:30
-#: tmp/runtime/twig_cache/af/af800346ccddc50dd5ce330a766ea4dc75d4bc26364af1867ba7c9931ddffb79.php:61
+#: tmp/runtime/twig_cache/79/7992b3640cb350e38a71ba940d27d89109fc77842eaa6e65a6e3d7ee7b819c34.php:61
 msgid "Start date/time:"
 msgstr ""
 
@@ -21144,13 +21144,13 @@ msgid "Note that this assessment section will only show if assessment rules have
 msgstr ""
 
 #: application/views/admin/themes/templateeditor_completed_view.php:2
-#: tmp/runtime/twig_cache/1c/1c7ee3956126574402ebb3f1b2c9aadd314ac2f78676547688e40232a2e8854d.php:116
+#: tmp/runtime/twig_cache/ff/fffc095570dfc710c963263138c84ba6cc8e67ac8b1f744d180d300d54af88f8.php:116
 msgid "Thank you!"
 msgstr ""
 
 #: application/views/admin/themes/templateeditor_completed_view.php:4
-#: tmp/runtime/twig_cache/1c/1c7ee3956126574402ebb3f1b2c9aadd314ac2f78676547688e40232a2e8854d.php:122
-#: tmp/runtime/twig_cache/bd/bdc93218279f9f068f339b193f02a8587b35c96318f0b99a822b8fbe837a2c79.php:126
+#: tmp/runtime/twig_cache/0f/0fe9cbdf19392ba5cc5cb45ec2ab4d47f6cd9c4dc1d6ff04ff879018766e4ea2.php:126
+#: tmp/runtime/twig_cache/ff/fffc095570dfc710c963263138c84ba6cc8e67ac8b1f744d180d300d54af88f8.php:122
 msgid "Your survey responses have been recorded."
 msgstr ""
 
@@ -21507,7 +21507,7 @@ msgstr ""
 
 #: application/views/admin/token/dummytokenform.php:59
 #: application/views/admin/user/personalsettings.php:130
-#: tmp/runtime/twig_cache/0d/0d09031d14ae04cc48229ec9c226b637913562087b9635d1d108e6f504c88707.php:131
+#: tmp/runtime/twig_cache/4d/4d2b1933f87b690f5008eb3c3b5b67c3178c27728cef12ec15512ddb1b4b5bf0.php:131
 msgid "Email address:"
 msgstr ""
 
@@ -21519,8 +21519,8 @@ msgstr ""
 
 #: application/views/admin/token/dummytokenform.php:111
 #: application/views/admin/token/dummytokenform.php:134
-#: tmp/runtime/twig_cache/3e/3ee1848d83a53eed10bfe10bc326d8d35d469643ce670895b5afb612eb51ea3c.php:87
-#: tmp/runtime/twig_cache/3f/3f3e8fd899f1684f49e9c383d4771cae82da6a741360f3e6fb12f4544407c33b.php:92
+#: tmp/runtime/twig_cache/9e/9efdd85704a95a8498d7dd78298409d6935a3fc3390cfdbdd1e626ee772de2f1.php:87
+#: tmp/runtime/twig_cache/d5/d5176c742866eefa7e218b45a6e88b912047d4b7d2c42ad0740ded288024f4b2.php:92
 msgid "Format: %s"
 msgstr ""
 
@@ -21818,7 +21818,7 @@ msgid "Participant expiration date can't be lower than the \"Valid from\" date"
 msgstr ""
 
 #: application/views/admin/token/tokenform.php:191
-#: tmp/runtime/twig_cache/ef/ef5121b1843240a77fd049690764449745e5ed393285306efc9094caf3fe46d5.php:121
+#: tmp/runtime/twig_cache/05/05c54ee344bb8bdcd6ea55ae1db310415bba8b42b99c4af6c879d5054f1ba781.php:121
 msgid "Access code:"
 msgstr ""
 
@@ -23534,8 +23534,8 @@ msgstr ""
 msgid "Question code / ID"
 msgstr ""
 
-#: application/views/quickTranslation/translatetabs_view.php:69
-#: application/views/quickTranslation/translatetabs_view.php:77
+#: application/views/quickTranslation/translatetabs_view.php:72
+#: application/views/quickTranslation/translatetabs_view.php:80
 msgid "Nothing to translate on this page"
 msgstr ""
 
@@ -23808,8 +23808,8 @@ msgid "Batch deletion"
 msgstr ""
 
 #: application/views/statistics_user_view.php:11
-#: tmp/runtime/twig_cache/7c/7c72654cd9de41cee695734ee8e785e97b0a4954db049d8922a210ad3037ce7f.php:54
-#: tmp/runtime/twig_cache/f8/f8f2ad175d941250b25045cd8fd431252dd9128209e66abba83bf0284b576621.php:54
+#: tmp/runtime/twig_cache/1e/1eca2f3839e7198955814111a7b7d0e3d67b7cc40b30452ecef746ffdeb241e9.php:54
+#: tmp/runtime/twig_cache/af/af1a108f8bd46a150da1649c12aa14b86ff3cfc63ceec2b3599e87d6d28db5f4.php:54
 msgid "Total records in survey"
 msgstr ""
 
@@ -23818,31 +23818,31 @@ msgid "You can upload %s under %s KB each."
 msgstr ""
 
 #: application/views/survey/system/LanguageChanger/LanguageChanger.php:24
-#: tmp/runtime/twig_cache/47/47a38095ee078e384cd748d0bd6a52e3db8bfa51dfe8de9d296f1ba49bc1e984.php:78
+#: tmp/runtime/twig_cache/e9/e95884cee036f8066b02f781f308b671d9ec40db39dabc0dc35545c04b03e6b4.php:78
 msgid "Change language"
 msgstr ""
 
 #: application/views/survey/system/no-javascript.php:7
-#: tmp/runtime/twig_cache/1d/1da2208e730ece4cd934e4d9696db79c0a475ebd3ed45ef0751958620fd9f1b0.php:50
-#: tmp/runtime/twig_cache/7d/7d6ea038bd8b10bf3d2ad52fe5e4b8215c2fd6241d3e6379c600e624ba2f54d4.php:50
+#: tmp/runtime/twig_cache/0e/0eeafb266d3c33d26e4f4e2949175fd7d69831ce8c0dde6f05c9700d8d053b34.php:50
+#: tmp/runtime/twig_cache/e4/e44a6dc08117f294de02c9c10e766eb85af23c56ce9aa6969d83453617d4bb47.php:50
 msgid "Caution: JavaScript execution is disabled in your browser or for this website. You may not be able to answer all questions in this survey. Please, verify your browser parameters."
 msgstr ""
 
 #: application/views/survey/system/privacy/heading.php:7
-#: tmp/runtime/twig_cache/01/010a67975b643bba597e33ba066e8db56b10c9a3b51d3a63e183dfbac5dcd197.php:91
-#: tmp/runtime/twig_cache/66/666a76e9b655f3a7dc4f79885361ccec8173bd4090ff491203424b842a21988d.php:89
+#: tmp/runtime/twig_cache/38/382173c8c2f82a8f983b562decd62a796c4500cb0d17a3d390b566635dded170.php:89
+#: tmp/runtime/twig_cache/f0/f04849df7c72f155cdd091f006fd428481a09953b71d41ea364e2ad55c802499.php:91
 msgid "This survey is anonymous."
 msgstr ""
 
 #: application/views/survey/system/privacy/message.php:6
-#: tmp/runtime/twig_cache/01/010a67975b643bba597e33ba066e8db56b10c9a3b51d3a63e183dfbac5dcd197.php:103
-#: tmp/runtime/twig_cache/66/666a76e9b655f3a7dc4f79885361ccec8173bd4090ff491203424b842a21988d.php:101
+#: tmp/runtime/twig_cache/38/382173c8c2f82a8f983b562decd62a796c4500cb0d17a3d390b566635dded170.php:101
+#: tmp/runtime/twig_cache/f0/f04849df7c72f155cdd091f006fd428481a09953b71d41ea364e2ad55c802499.php:103
 msgid "The record of your survey responses does not contain any identifying information about you, unless a specific survey question explicitly asked for it."
 msgstr ""
 
 #: application/views/survey/system/privacy/message.php:7
-#: tmp/runtime/twig_cache/01/010a67975b643bba597e33ba066e8db56b10c9a3b51d3a63e183dfbac5dcd197.php:112
-#: tmp/runtime/twig_cache/66/666a76e9b655f3a7dc4f79885361ccec8173bd4090ff491203424b842a21988d.php:111
+#: tmp/runtime/twig_cache/38/382173c8c2f82a8f983b562decd62a796c4500cb0d17a3d390b566635dded170.php:111
+#: tmp/runtime/twig_cache/f0/f04849df7c72f155cdd091f006fd428481a09953b71d41ea364e2ad55c802499.php:112
 msgid "If you used an identifying access code to access this survey, please rest assured that this code will not be stored together with your responses. It is managed in a separate database and will only be updated to indicate whether you did (or did not) complete this survey. There is no way of matching identification access codes with survey responses."
 msgstr ""
 
@@ -24398,8 +24398,8 @@ msgstr ""
 
 #: application/views/surveyPermissions/partial/editpermission.php:72
 #: application/views/surveyPermissions/settingsPermission.php:35
-#: tmp/runtime/twig_cache/1a/1a49bd76bda4d55e512882e9adcc3e06f440355c87bfc96ee9e8e1f82fb1f3c1.php:489
-#: tmp/runtime/twig_cache/60/60b0d7d792ece9a52d0cdc0833fd2c3bf910b4ee6b8e9bf99dfc02efa7f96eb6.php:468
+#: tmp/runtime/twig_cache/d0/d0b2f465fcfe06e9bf888c74d9e20b74c1b0c1fbc7d171782323a96cfe74eef0.php:489
+#: tmp/runtime/twig_cache/e0/e0d33d6956f70beaf569e97b14ed49356b6190fb3200a06520d07c615226f4f4.php:468
 msgid "Save Now"
 msgstr ""
 
@@ -24970,553 +24970,553 @@ msgstr ""
 msgid "Test"
 msgstr ""
 
-#: tmp/runtime/twig_cache/03/03cefb47818330761f2cc90720174b689db01289294064f30b3ca08e4490081d.php:40
-msgid "Group 1: The first lot of questions"
-msgstr ""
-
-#: tmp/runtime/twig_cache/0b/0b8b476b1cfe74ec5645e3d482764ec9328263a9aa14fc63ff277bc3861f34cc.php:43
-msgid "Database usage"
-msgstr ""
-
-#: tmp/runtime/twig_cache/0b/0b8b476b1cfe74ec5645e3d482764ec9328263a9aa14fc63ff277bc3861f34cc.php:66
-#: tmp/runtime/twig_cache/0b/0b8b476b1cfe74ec5645e3d482764ec9328263a9aa14fc63ff277bc3861f34cc.php:109
-msgid "Table column usage"
-msgstr ""
-
-#: tmp/runtime/twig_cache/0b/0b8b476b1cfe74ec5645e3d482764ec9328263a9aa14fc63ff277bc3861f34cc.php:84
-msgid "Table size usage"
-msgstr ""
-
-#: tmp/runtime/twig_cache/0b/0b8b476b1cfe74ec5645e3d482764ec9328263a9aa14fc63ff277bc3861f34cc.php:132
-msgid "No info or no data found"
-msgstr ""
-
-#: tmp/runtime/twig_cache/0d/0d09031d14ae04cc48229ec9c226b637913562087b9635d1d108e6f504c88707.php:227
-#: tmp/runtime/twig_cache/65/65be86a87b7797de1bd0d75a2fdedfb6ecbc21ef0fb6fa94e0047de3f7e3b090.php:189
-#: tmp/runtime/twig_cache/79/79f542bde76f068c32b88ac79bcd0c0e85b5e48fae8d327cd9d90c75801e9785.php:173
-#: tmp/runtime/twig_cache/7a/7a35f13940f0000c480d1b8011a7517352ca03071d4acc89d199b52f9438e928.php:228
-#: tmp/runtime/twig_cache/82/829ab18d975b254ad78fceba7278d280d8ad935b74de4fcbf93c4cf9318240e2.php:172
-#: tmp/runtime/twig_cache/ef/ef5121b1843240a77fd049690764449745e5ed393285306efc9094caf3fe46d5.php:196
-msgid "Please solve the following equation:"
-msgstr ""
-
-#: tmp/runtime/twig_cache/0d/0d09031d14ae04cc48229ec9c226b637913562087b9635d1d108e6f504c88707.php:254
-#: tmp/runtime/twig_cache/65/65be86a87b7797de1bd0d75a2fdedfb6ecbc21ef0fb6fa94e0047de3f7e3b090.php:216
-#: tmp/runtime/twig_cache/79/79f542bde76f068c32b88ac79bcd0c0e85b5e48fae8d327cd9d90c75801e9785.php:207
-#: tmp/runtime/twig_cache/7a/7a35f13940f0000c480d1b8011a7517352ca03071d4acc89d199b52f9438e928.php:248
-#: tmp/runtime/twig_cache/82/829ab18d975b254ad78fceba7278d280d8ad935b74de4fcbf93c4cf9318240e2.php:205
-#: tmp/runtime/twig_cache/ef/ef5121b1843240a77fd049690764449745e5ed393285306efc9094caf3fe46d5.php:229
-msgid "Reload captcha"
-msgstr ""
-
-#: tmp/runtime/twig_cache/0d/0d09031d14ae04cc48229ec9c226b637913562087b9635d1d108e6f504c88707.php:280
-#: tmp/runtime/twig_cache/7a/7a35f13940f0000c480d1b8011a7517352ca03071d4acc89d199b52f9438e928.php:276
-msgid "Fields marked with an asterisk are mandatory."
-msgstr ""
-
-#: tmp/runtime/twig_cache/18/186cd2cda49146510e83652160c82ebd139abf0dbf5a51a350046daa1cb36a83.php:48
-#: tmp/runtime/twig_cache/45/45a5058c6d461432729b3549daab5d5d212cdc5dd319744df4bd1a0b834742e1.php:58
-#: tmp/runtime/twig_cache/71/717312b3cc52d55b39dc9e7bc336f9f0419677ee4f9f988dfaeaef2157dce8d1.php:58
-#: tmp/runtime/twig_cache/7e/7e23499a7fa22d9a0496ceee3d1c84286fddd5c0317646c9d29fb6813064eef2.php:46
-#: tmp/runtime/twig_cache/a6/a6c6d7836c0bcfaf2e2487bada9164c189388eb5eda67c5a1fc0bb056df76f2e.php:50
-#: tmp/runtime/twig_cache/d6/d64bb9ad41f51c0bb199c36ff1955f4e377b2833b8bfb91d639d5cf981ac78ee.php:50
-msgid "Load unfinished survey"
-msgstr ""
-
-#: tmp/runtime/twig_cache/18/186cd2cda49146510e83652160c82ebd139abf0dbf5a51a350046daa1cb36a83.php:65
-#: tmp/runtime/twig_cache/7e/7e23499a7fa22d9a0496ceee3d1c84286fddd5c0317646c9d29fb6813064eef2.php:60
-#: tmp/runtime/twig_cache/a6/a6c6d7836c0bcfaf2e2487bada9164c189388eb5eda67c5a1fc0bb056df76f2e.php:67
-#: tmp/runtime/twig_cache/d6/d64bb9ad41f51c0bb199c36ff1955f4e377b2833b8bfb91d639d5cf981ac78ee.php:67
-msgid "Resume later"
-msgstr ""
-
-#: tmp/runtime/twig_cache/1a/1a49bd76bda4d55e512882e9adcc3e06f440355c87bfc96ee9e8e1f82fb1f3c1.php:67
-#: tmp/runtime/twig_cache/60/60b0d7d792ece9a52d0cdc0833fd2c3bf910b4ee6b8e9bf99dfc02efa7f96eb6.php:67
-msgid "Save your unfinished survey"
-msgstr ""
-
-#: tmp/runtime/twig_cache/1a/1a49bd76bda4d55e512882e9adcc3e06f440355c87bfc96ee9e8e1f82fb1f3c1.php:79
-#: tmp/runtime/twig_cache/60/60b0d7d792ece9a52d0cdc0833fd2c3bf910b4ee6b8e9bf99dfc02efa7f96eb6.php:79
-msgid "Enter a name and password for this survey and click save below."
-msgstr ""
-
-#: tmp/runtime/twig_cache/1a/1a49bd76bda4d55e512882e9adcc3e06f440355c87bfc96ee9e8e1f82fb1f3c1.php:85
-#: tmp/runtime/twig_cache/60/60b0d7d792ece9a52d0cdc0833fd2c3bf910b4ee6b8e9bf99dfc02efa7f96eb6.php:85
-msgid "Your survey will be saved using that name and password, and can be completed later by logging in with the same name and password."
-msgstr ""
-
-#: tmp/runtime/twig_cache/1a/1a49bd76bda4d55e512882e9adcc3e06f440355c87bfc96ee9e8e1f82fb1f3c1.php:93
-#: tmp/runtime/twig_cache/60/60b0d7d792ece9a52d0cdc0833fd2c3bf910b4ee6b8e9bf99dfc02efa7f96eb6.php:93
-msgid "If you give an email address, an email containing the details will be sent to you."
-msgstr ""
-
-#: tmp/runtime/twig_cache/1a/1a49bd76bda4d55e512882e9adcc3e06f440355c87bfc96ee9e8e1f82fb1f3c1.php:99
-#: tmp/runtime/twig_cache/60/60b0d7d792ece9a52d0cdc0833fd2c3bf910b4ee6b8e9bf99dfc02efa7f96eb6.php:99
-msgid "After having clicked the save button you can either close this browser window or continue filling out the survey."
-msgstr ""
-
-#: tmp/runtime/twig_cache/1a/1a49bd76bda4d55e512882e9adcc3e06f440355c87bfc96ee9e8e1f82fb1f3c1.php:110
-#: tmp/runtime/twig_cache/60/60b0d7d792ece9a52d0cdc0833fd2c3bf910b4ee6b8e9bf99dfc02efa7f96eb6.php:110
-msgid "To remain anonymous please use a pseudonym as your username, also an email address is not required."
-msgstr ""
-
-#: tmp/runtime/twig_cache/1a/1a49bd76bda4d55e512882e9adcc3e06f440355c87bfc96ee9e8e1f82fb1f3c1.php:224
-#: tmp/runtime/twig_cache/71/717312b3cc52d55b39dc9e7bc336f9f0419677ee4f9f988dfaeaef2157dce8d1.php:195
-msgid "Enter your name"
-msgstr ""
-
-#: tmp/runtime/twig_cache/1a/1a49bd76bda4d55e512882e9adcc3e06f440355c87bfc96ee9e8e1f82fb1f3c1.php:279
-msgid "Enter password"
-msgstr ""
-
-#: tmp/runtime/twig_cache/1a/1a49bd76bda4d55e512882e9adcc3e06f440355c87bfc96ee9e8e1f82fb1f3c1.php:358
-msgid "Your e-mail address"
-msgstr ""
-
-#: tmp/runtime/twig_cache/1a/1a49bd76bda4d55e512882e9adcc3e06f440355c87bfc96ee9e8e1f82fb1f3c1.php:370
-#: tmp/runtime/twig_cache/7a/7a35f13940f0000c480d1b8011a7517352ca03071d4acc89d199b52f9438e928.php:142
-msgid "Enter e-mail address"
-msgstr ""
-
-#: tmp/runtime/twig_cache/1a/1a49bd76bda4d55e512882e9adcc3e06f440355c87bfc96ee9e8e1f82fb1f3c1.php:402
-#: tmp/runtime/twig_cache/71/717312b3cc52d55b39dc9e7bc336f9f0419677ee4f9f988dfaeaef2157dce8d1.php:263
-msgid "Security question"
-msgstr ""
-
-#: tmp/runtime/twig_cache/1a/1a49bd76bda4d55e512882e9adcc3e06f440355c87bfc96ee9e8e1f82fb1f3c1.php:436
-#: tmp/runtime/twig_cache/65/65be86a87b7797de1bd0d75a2fdedfb6ecbc21ef0fb6fa94e0047de3f7e3b090.php:232
-#: tmp/runtime/twig_cache/71/717312b3cc52d55b39dc9e7bc336f9f0419677ee4f9f988dfaeaef2157dce8d1.php:299
-#: tmp/runtime/twig_cache/7a/7a35f13940f0000c480d1b8011a7517352ca03071d4acc89d199b52f9438e928.php:258
-#: tmp/runtime/twig_cache/82/829ab18d975b254ad78fceba7278d280d8ad935b74de4fcbf93c4cf9318240e2.php:221
-msgid "Enter result here - numbers only"
-msgstr ""
-
-#: tmp/runtime/twig_cache/1a/1a49bd76bda4d55e512882e9adcc3e06f440355c87bfc96ee9e8e1f82fb1f3c1.php:464
-#: tmp/runtime/twig_cache/45/45a5058c6d461432729b3549daab5d5d212cdc5dd319744df4bd1a0b834742e1.php:355
-#: tmp/runtime/twig_cache/60/60b0d7d792ece9a52d0cdc0833fd2c3bf910b4ee6b8e9bf99dfc02efa7f96eb6.php:494
-#: tmp/runtime/twig_cache/71/717312b3cc52d55b39dc9e7bc336f9f0419677ee4f9f988dfaeaef2157dce8d1.php:329
-#: tmp/runtime/twig_cache/c1/c18945ff005ada4b5e82b5975538e2f83afef86aea2409c8bf775f78b30519fc.php:195
-msgid "Return to survey"
-msgstr ""
-
-#: tmp/runtime/twig_cache/1b/1b2b01065c0a732dccb5d7813549cf0d84d9cab48182250a799821f9546680a7.php:152
-#: tmp/runtime/twig_cache/21/2111412e1f96eeba0721b2d341dd48b19c21ca71e472b4ce2942621111fb9784.php:147
-msgid "For further information please contact %s:"
-msgstr ""
-
-#: tmp/runtime/twig_cache/1b/1b928d74720eb35983c2d72f22db5809ebc04a6c76953f16ddae830399afa0e5.php:42
-#: tmp/runtime/twig_cache/9e/9e216ee68ae97c0804bf70a0bd530765b9794f3b780ed0b27198f9cfe3449b09.php:40
-msgid "Hint when response is not valid"
-msgstr ""
-
-#: tmp/runtime/twig_cache/1b/1bc234604a4bc71f98bc10b6dd1221099a54b199bca2e65669ab3a74b3149def.php:60
-#: tmp/runtime/twig_cache/23/23e3b3b2214857c8ac31f11c0ad7c71969f913fdecc72aa1fbb15a767b6b394c.php:62
-#: tmp/runtime/twig_cache/2b/2bf13cbf674ee56fb4ea367e069bf24398ff3df098f59faa2238b162d3876d7d.php:54
-#: tmp/runtime/twig_cache/32/329210cb9fd62b65df80feee0eacbd862a4dca819694bda3bde69bfe583a4d93.php:172
-#: tmp/runtime/twig_cache/ce/cea0cd565af2e0b0bdff0d35a03019a25f3cb8ee9126a1d777565d53cfdcc17b.php:69
-msgid "Exit and clear survey"
-msgstr ""
-
-#: tmp/runtime/twig_cache/1d/1defbbd233f905e3b6cd66a65ca58ee6407738450985b52a28a20efd397fc7c1.php:44
-#: tmp/runtime/twig_cache/1d/1defbbd233f905e3b6cd66a65ca58ee6407738450985b52a28a20efd397fc7c1.php:197
-msgid "Share survey"
-msgstr ""
-
-#: tmp/runtime/twig_cache/1d/1defbbd233f905e3b6cd66a65ca58ee6407738450985b52a28a20efd397fc7c1.php:145
-msgid "Number of questions/groups:"
-msgstr ""
-
-#: tmp/runtime/twig_cache/1d/1defbbd233f905e3b6cd66a65ca58ee6407738450985b52a28a20efd397fc7c1.php:162
-msgid "Sharing panel:"
-msgstr ""
-
-#: tmp/runtime/twig_cache/1d/1defbbd233f905e3b6cd66a65ca58ee6407738450985b52a28a20efd397fc7c1.php:178
-msgid "Open sharing panel"
-msgstr ""
-
-#: tmp/runtime/twig_cache/1d/1defbbd233f905e3b6cd66a65ca58ee6407738450985b52a28a20efd397fc7c1.php:206
-msgid "Share QR-code:"
-msgstr ""
-
-#: tmp/runtime/twig_cache/1d/1defbbd233f905e3b6cd66a65ca58ee6407738450985b52a28a20efd397fc7c1.php:234
-#: tmp/runtime/twig_cache/1d/1defbbd233f905e3b6cd66a65ca58ee6407738450985b52a28a20efd397fc7c1.php:289
-msgid "Generate QR-Code"
-msgstr ""
-
-#: tmp/runtime/twig_cache/1d/1defbbd233f905e3b6cd66a65ca58ee6407738450985b52a28a20efd397fc7c1.php:321
-msgid "Share on Facebook:"
-msgstr ""
-
-#: tmp/runtime/twig_cache/1d/1defbbd233f905e3b6cd66a65ca58ee6407738450985b52a28a20efd397fc7c1.php:327
-msgid "Enable"
-msgstr ""
-
-#: tmp/runtime/twig_cache/1d/1defbbd233f905e3b6cd66a65ca58ee6407738450985b52a28a20efd397fc7c1.php:438
-msgid "Share on Twitter:"
-msgstr ""
-
-#: tmp/runtime/twig_cache/1d/1defbbd233f905e3b6cd66a65ca58ee6407738450985b52a28a20efd397fc7c1.php:466
-#: tmp/runtime/twig_cache/1d/1defbbd233f905e3b6cd66a65ca58ee6407738450985b52a28a20efd397fc7c1.php:522
-msgid "Thanks for taking this survey!"
-msgstr ""
-
-#: tmp/runtime/twig_cache/1d/1defbbd233f905e3b6cd66a65ca58ee6407738450985b52a28a20efd397fc7c1.php:472
-#: tmp/runtime/twig_cache/1d/1defbbd233f905e3b6cd66a65ca58ee6407738450985b52a28a20efd397fc7c1.php:528
-msgid "Tweet it"
-msgstr ""
-
-#: tmp/runtime/twig_cache/22/2201609b4ee0e13a071801ff8898953b0ca63212f96c64f11ae06b7ba6b29119.php:44
-#: tmp/runtime/twig_cache/7b/7b8a48ed6de26cc0834a31ab77b072ee87aa86b726c27522e88c31a5f789cbbf.php:42
-msgid "(This question is mandatory)"
-msgstr ""
-
-#: tmp/runtime/twig_cache/23/23e3b3b2214857c8ac31f11c0ad7c71969f913fdecc72aa1fbb15a767b6b394c.php:58
-#: tmp/runtime/twig_cache/32/329210cb9fd62b65df80feee0eacbd862a4dca819694bda3bde69bfe583a4d93.php:179
-#: tmp/runtime/twig_cache/ce/cea0cd565af2e0b0bdff0d35a03019a25f3cb8ee9126a1d777565d53cfdcc17b.php:58
-msgid "Please confirm you want to clear your response?"
-msgstr ""
-
-#: tmp/runtime/twig_cache/2a/2a769de324cbd749525186b3c8840c631dc5b9b7bf906bda689e87884ecb657c.php:44
-msgid "Hints and warnings"
-msgstr ""
-
-#: tmp/runtime/twig_cache/32/329210cb9fd62b65df80feee0eacbd862a4dca819694bda3bde69bfe583a4d93.php:128
-#: tmp/runtime/twig_cache/55/55a702c76970688ea034f7b4508efaf1f77eea8233d3d432e213ca356ba57470.php:116
-#: tmp/runtime/twig_cache/b3/b3a74255c8908d4c8c7d23fc09961077c5e0bfa000768ef8f0ec084d4d6bb1ee.php:116
-#: tmp/runtime/twig_cache/cb/cb7bc4ecc8a244c5c1ffb399b8e0eb85d2b77f82465dd422aa77bf25d0acefc9.php:128
-msgid "Continue without answering"
-msgstr ""
-
-#: tmp/runtime/twig_cache/32/329210cb9fd62b65df80feee0eacbd862a4dca819694bda3bde69bfe583a4d93.php:136
-#: tmp/runtime/twig_cache/cb/cb7bc4ecc8a244c5c1ffb399b8e0eb85d2b77f82465dd422aa77bf25d0acefc9.php:136
-msgid "Answer question"
-msgstr ""
-
-#: tmp/runtime/twig_cache/34/34f41bfb6e573d92464cc484aacd21f0b98425a25c27f92a468ef71c3ee6894e.php:153
-msgid "Add line"
-msgstr ""
-
-#: tmp/runtime/twig_cache/3b/3b09e2ba49fea8804b6395553ecd22ae04eb4c4061d3f38a3850df36415607b2.php:43
-#: tmp/runtime/twig_cache/79/793fc46e9eeeb0804c9e14bd391c723cf18e4b0df76a6a38d6fb806323d8d54c.php:43
-msgid "Error: This question has no answers."
-msgstr ""
-
-#: tmp/runtime/twig_cache/3e/3ee1848d83a53eed10bfe10bc326d8d35d469643ce670895b5afb612eb51ea3c.php:54
-msgid "Date format: %s"
-msgstr ""
-
-#: tmp/runtime/twig_cache/3e/3ee1848d83a53eed10bfe10bc326d8d35d469643ce670895b5afb612eb51ea3c.php:76
-msgid "Open date/time selector"
-msgstr ""
-
-#: tmp/runtime/twig_cache/3f/3f05e201d4c58e16ed35fa2dc0593726e1f8e9a9252b71df1f4b8ab74af4064a.php:43
-msgid "Survey general settings"
-msgstr ""
-
-#: tmp/runtime/twig_cache/3f/3f05e201d4c58e16ed35fa2dc0593726e1f8e9a9252b71df1f4b8ab74af4064a.php:123
-msgid "Edit theme options"
-msgstr ""
-
-#: tmp/runtime/twig_cache/3f/3f05e201d4c58e16ed35fa2dc0593726e1f8e9a9252b71df1f4b8ab74af4064a.php:129
-msgid "Open theme editor in new window"
-msgstr ""
-
-#: tmp/runtime/twig_cache/3f/3f05e201d4c58e16ed35fa2dc0593726e1f8e9a9252b71df1f4b8ab74af4064a.php:144
-msgid "Error: Theme \"%s\" is not installed."
-msgstr ""
-
-#: tmp/runtime/twig_cache/3f/3f3e8fd899f1684f49e9c383d4771cae82da6a741360f3e6fb12f4544407c33b.php:70
-msgid "Date in the format: %s"
-msgstr ""
-
-#: tmp/runtime/twig_cache/41/41dd4fa3126652a0a1f8b847c65096dcc771010105a1378a9a0534e96270b5f7.php:40
-msgid "Please explain something in detail:"
-msgstr ""
-
-#: tmp/runtime/twig_cache/45/45a5058c6d461432729b3549daab5d5d212cdc5dd319744df4bd1a0b834742e1.php:70
-#: tmp/runtime/twig_cache/71/717312b3cc52d55b39dc9e7bc336f9f0419677ee4f9f988dfaeaef2157dce8d1.php:70
-msgid "You can load a survey that you have previously saved from this screen."
-msgstr ""
-
-#: tmp/runtime/twig_cache/45/45a5058c6d461432729b3549daab5d5d212cdc5dd319744df4bd1a0b834742e1.php:76
-#: tmp/runtime/twig_cache/71/717312b3cc52d55b39dc9e7bc336f9f0419677ee4f9f988dfaeaef2157dce8d1.php:76
-msgid "Type in the 'name' you used to save the survey, and the password."
-msgstr ""
-
-#: tmp/runtime/twig_cache/45/45a5058c6d461432729b3549daab5d5d212cdc5dd319744df4bd1a0b834742e1.php:166
-msgid "Saved name:"
-msgstr ""
-
-#: tmp/runtime/twig_cache/45/45a5058c6d461432729b3549daab5d5d212cdc5dd319744df4bd1a0b834742e1.php:263
-#: tmp/runtime/twig_cache/60/60b0d7d792ece9a52d0cdc0833fd2c3bf910b4ee6b8e9bf99dfc02efa7f96eb6.php:406
-msgid "Security question:"
-msgstr ""
-
-#: tmp/runtime/twig_cache/45/45a5058c6d461432729b3549daab5d5d212cdc5dd319744df4bd1a0b834742e1.php:327
-#: tmp/runtime/twig_cache/71/717312b3cc52d55b39dc9e7bc336f9f0419677ee4f9f988dfaeaef2157dce8d1.php:354
-msgid "Load now"
-msgstr ""
-
-#: tmp/runtime/twig_cache/47/47a38095ee078e384cd748d0bd6a52e3db8bfa51dfe8de9d296f1ba49bc1e984.php:127
-#: tmp/runtime/twig_cache/9b/9bd0473ce146de8d90baf0766193595568b993bcb50a8241aad25776411c4cb1.php:96
-msgid "Change the language"
-msgstr ""
-
-#: tmp/runtime/twig_cache/52/5205335c2de99bfa903047aa27e310c75909b2a91c89649a7bdcb63d0a63d055.php:42
-#: tmp/runtime/twig_cache/9c/9c8545c7d09e8478137b4dba7aaddc0aa895ebb45e5455463ccaa29c52b9d7d5.php:40
-msgid "Quotas exceeded"
-msgstr ""
-
-#: tmp/runtime/twig_cache/55/55deeeaec380f8fee1f3cd3388790f19f7611fab8c30580d3fe866cad7f5a613.php:123
-msgid "Total:"
-msgstr ""
-
-#: tmp/runtime/twig_cache/59/594e19179672acaf58bff8ecd774ef3508d09244c73bb142b97d27038696c07c.php:42
-#: tmp/runtime/twig_cache/8c/8cf4a344f84f19bc82f04c648b5bc7abf8965068b4145a588c2d83797ee59e00.php:40
-msgid "Show privacy policy"
-msgstr ""
-
-#: tmp/runtime/twig_cache/59/597a066d8637768eaa312eb03f1b8415b94b19f15969e1ae4b92a6969507baf1.php:89
-#: tmp/runtime/twig_cache/c9/c940b261bfb2d56d4d6eb6ff281a163afe8212ea2821dc0c7e367b86a7a1d188.php:89
-msgid "default"
-msgstr ""
-
-#: tmp/runtime/twig_cache/5f/5f95ab32dc92a2c4de3517a7c2b1ef5340d3367df2e4f6539bf2e04e81d60d8c.php:47
-msgid "Thank you for registering. You will receive an email shortly."
-msgstr ""
-
-#: tmp/runtime/twig_cache/5f/5f95ab32dc92a2c4de3517a7c2b1ef5340d3367df2e4f6539bf2e04e81d60d8c.php:58
-#: tmp/runtime/twig_cache/fd/fd1fa8c25aee71a4dcdc67f46ada3b72cb02406f62a54a609e964cc5481e7754.php:69
-msgid "You may register for this survey but you have to wait for the {{sStartDate}} before starting the survey."
-msgstr ""
-
-#: tmp/runtime/twig_cache/5f/5f95ab32dc92a2c4de3517a7c2b1ef5340d3367df2e4f6539bf2e04e81d60d8c.php:66
-msgid "You may register for this survey if you wish to take part."
-msgstr ""
-
-#: tmp/runtime/twig_cache/5f/5f95ab32dc92a2c4de3517a7c2b1ef5340d3367df2e4f6539bf2e04e81d60d8c.php:74
-msgid "Enter your details below, and an email containing the link to participate in this survey will be sent immediately."
-msgstr ""
-
-#: tmp/runtime/twig_cache/60/60b0d7d792ece9a52d0cdc0833fd2c3bf910b4ee6b8e9bf99dfc02efa7f96eb6.php:309
-msgid "Repeat password:"
-msgstr ""
-
-#: tmp/runtime/twig_cache/60/60b0d7d792ece9a52d0cdc0833fd2c3bf910b4ee6b8e9bf99dfc02efa7f96eb6.php:362
-msgid "Your email address:"
-msgstr ""
-
-#: tmp/runtime/twig_cache/60/60f2b82d7070e5e4c34118885f5d942c4ee9b43f8944546b411006b5c265fe59.php:40
-#: tmp/runtime/twig_cache/be/be3ae12bfeb8262174e0da17a34a6994cdc7bc015d574e2b1f75be3508f07abe.php:42
-msgid "This group description is fairly vacuous, but quite important."
-msgstr ""
-
-#: tmp/runtime/twig_cache/62/6202c74a67c98f2818b333914ecab36c8f9c18a1e2dd6406fc82c01ef8724118.php:138
-msgid "Privacy policy text:"
-msgstr ""
-
-#: tmp/runtime/twig_cache/62/6202c74a67c98f2818b333914ecab36c8f9c18a1e2dd6406fc82c01ef8724118.php:161
-msgid "Privacy policy error text:"
-msgstr ""
-
-#: tmp/runtime/twig_cache/62/6202c74a67c98f2818b333914ecab36c8f9c18a1e2dd6406fc82c01ef8724118.php:184
-msgid "Privacy policy label text:"
-msgstr ""
-
-#: tmp/runtime/twig_cache/63/63afbdb21f4fc7ef702a4971f97bdbab455c572c9ce6a09eca2587588e127a29.php:111
-#: tmp/runtime/twig_cache/c5/c52ac5a5cfa30353e32d20bab8d195d815a556240c1572c3b0501c12a59e876b.php:127
-msgid "Accept"
-msgstr ""
-
-#: tmp/runtime/twig_cache/65/65be86a87b7797de1bd0d75a2fdedfb6ecbc21ef0fb6fa94e0047de3f7e3b090.php:55
-msgid "Please enter your access code to participate in this survey."
-msgstr ""
-
-#: tmp/runtime/twig_cache/65/65be86a87b7797de1bd0d75a2fdedfb6ecbc21ef0fb6fa94e0047de3f7e3b090.php:77
-#: tmp/runtime/twig_cache/ef/ef5121b1843240a77fd049690764449745e5ed393285306efc9094caf3fe46d5.php:77
-msgid "If you have been issued an access code, please enter it in the box below and click continue."
-msgstr ""
-
-#: tmp/runtime/twig_cache/65/65be86a87b7797de1bd0d75a2fdedfb6ecbc21ef0fb6fa94e0047de3f7e3b090.php:83
-#: tmp/runtime/twig_cache/ef/ef5121b1843240a77fd049690764449745e5ed393285306efc9094caf3fe46d5.php:83
-msgid "Please confirm the access code by answering the security question below and click continue."
-msgstr ""
-
-#: tmp/runtime/twig_cache/65/65be86a87b7797de1bd0d75a2fdedfb6ecbc21ef0fb6fa94e0047de3f7e3b090.php:147
-msgid "Enter access code"
-msgstr ""
-
-#: tmp/runtime/twig_cache/66/664db2db0d6ad5a988c094f51a2422c843d959532884c1505aa77ce562fa9c37.php:48
-#: tmp/runtime/twig_cache/ca/cafda7686f48b682df8765a11e5abfb34b017a86f88738d1e862b42ccd3b1ce1.php:48
-msgid "Survey name (ID):"
-msgstr ""
-
-#: tmp/runtime/twig_cache/6f/6f438a41c44738b721bd75a01429b081906d2656fb490fea4790e14be872b693.php:64
-#: tmp/runtime/twig_cache/87/8753afc2cd1623b7f58f88f28c8d12efecf457c10e29ddf04a3af26bc91d1085.php:64
-msgid "Restart this survey"
-msgstr ""
-
-#: tmp/runtime/twig_cache/71/717312b3cc52d55b39dc9e7bc336f9f0419677ee4f9f988dfaeaef2157dce8d1.php:166
-msgid "Saved name"
-msgstr ""
-
-#: tmp/runtime/twig_cache/71/717312b3cc52d55b39dc9e7bc336f9f0419677ee4f9f988dfaeaef2157dce8d1.php:239
-msgid "Enter your password"
-msgstr ""
-
-#: tmp/runtime/twig_cache/77/772ba6697beb9b4f52aa8612fe98cdc11fbcc5b7036c2ccf7276a467a21ecd91.php:80
-#: tmp/runtime/twig_cache/d4/d49029ffa07d927d2daffa1a7dc98de526c17436cc613f44e22fe94c114272e6.php:81
-msgid "Export these responses as PDF:"
-msgstr ""
-
-#: tmp/runtime/twig_cache/77/772ba6697beb9b4f52aa8612fe98cdc11fbcc5b7036c2ccf7276a467a21ecd91.php:82
-#: tmp/runtime/twig_cache/d4/d49029ffa07d927d2daffa1a7dc98de526c17436cc613f44e22fe94c114272e6.php:86
-msgid "PDF export"
-msgstr ""
-
-#: tmp/runtime/twig_cache/77/772ba6697beb9b4f52aa8612fe98cdc11fbcc5b7036c2ccf7276a467a21ecd91.php:96
-#: tmp/runtime/twig_cache/d4/d49029ffa07d927d2daffa1a7dc98de526c17436cc613f44e22fe94c114272e6.php:101
-msgid "Export these responses as queXML PDF:"
-msgstr ""
-
-#: tmp/runtime/twig_cache/79/79f542bde76f068c32b88ac79bcd0c0e85b5e48fae8d327cd9d90c75801e9785.php:137
-#: tmp/runtime/twig_cache/82/829ab18d975b254ad78fceba7278d280d8ad935b74de4fcbf93c4cf9318240e2.php:137
-msgid "Before you start, please prove you are human."
-msgstr ""
-
-#: tmp/runtime/twig_cache/7a/7a35f13940f0000c480d1b8011a7517352ca03071d4acc89d199b52f9438e928.php:88
-msgid "Enter your first name"
-msgstr ""
-
-#: tmp/runtime/twig_cache/7a/7a35f13940f0000c480d1b8011a7517352ca03071d4acc89d199b52f9438e928.php:114
-msgid "Enter your last name"
-msgstr ""
-
-#: tmp/runtime/twig_cache/7a/7a35f13940f0000c480d1b8011a7517352ca03071d4acc89d199b52f9438e928.php:132
-msgid "E-mail"
-msgstr ""
-
-#: tmp/runtime/twig_cache/7a/7a35f13940f0000c480d1b8011a7517352ca03071d4acc89d199b52f9438e928.php:295
-msgid "Register now"
-msgstr ""
-
-#: tmp/runtime/twig_cache/7b/7b1c2b990cecd8549695c8b74956f24a8c1775fd554376a23f1cb2ee5d5d3f31.php:118
-#: tmp/runtime/twig_cache/dc/dcee5c0988eb941b9247c3bfb4b7ff12cde01e43fbcc53610caca192b1465b74.php:119
-msgid "There is 1 question in this survey."
-msgstr ""
-
-#: tmp/runtime/twig_cache/af/af800346ccddc50dd5ce330a766ea4dc75d4bc26364af1867ba7c9931ddffb79.php:43
-msgid "Publication and access settings"
-msgstr ""
-
-#: tmp/runtime/twig_cache/af/af800346ccddc50dd5ce330a766ea4dc75d4bc26364af1867ba7c9931ddffb79.php:47
-msgid "Edit publication and access settings"
-msgstr ""
-
-#: tmp/runtime/twig_cache/af/af800346ccddc50dd5ce330a766ea4dc75d4bc26364af1867ba7c9931ddffb79.php:78
-msgid "Expiration date/time:"
-msgstr ""
-
-#: tmp/runtime/twig_cache/af/af800346ccddc50dd5ce330a766ea4dc75d4bc26364af1867ba7c9931ddffb79.php:95
-msgid "Listed publicly:"
-msgstr ""
-
-#: tmp/runtime/twig_cache/ba/ba849b252ca60c05e064def6386b32b9b9d7198de5d7a2b287128b3f0e9b0f8c.php:59
-#: tmp/runtime/twig_cache/fe/fe5d2cdd2fe8170fe556624bc38ebd1a5dc9130ddab5278246773e4d51a80885.php:59
+#: tmp/runtime/twig_cache/02/02064095def96c7cad4f9bf66fd7e257e0acda6438cb86308ab65e2ba0174c1e.php:59
+#: tmp/runtime/twig_cache/d5/d53508e169bfca07d5fd2033a7551a2f1998e15ae0ea782ea09561a266f207c8.php:59
 msgid "This survey is currently not active. You will not be able to save your responses."
 msgstr ""
 
-#: tmp/runtime/twig_cache/bd/bdc93218279f9f068f339b193f02a8587b35c96318f0b99a822b8fbe837a2c79.php:118
-msgid "Thank you."
+#: tmp/runtime/twig_cache/03/03a61e9f425659cc9d7e312e4cdb304264f85b19abf9bf0814a213aaf11b0cfa.php:137
+#: tmp/runtime/twig_cache/e4/e4d9efb37679e0d0917f480232c067369f371e45bdaebbd0be3bca49d923a628.php:137
+msgid "Before you start, please prove you are human."
 msgstr ""
 
-#: tmp/runtime/twig_cache/c0/c0fe9ec6cb087b631ad5503b2f8e67bd30e7e75699fe8c42c331f1fb240da178.php:212
-msgid "Some example subquestion"
+#: tmp/runtime/twig_cache/03/03a61e9f425659cc9d7e312e4cdb304264f85b19abf9bf0814a213aaf11b0cfa.php:173
+#: tmp/runtime/twig_cache/05/05c54ee344bb8bdcd6ea55ae1db310415bba8b42b99c4af6c879d5054f1ba781.php:196
+#: tmp/runtime/twig_cache/4d/4d2b1933f87b690f5008eb3c3b5b67c3178c27728cef12ec15512ddb1b4b5bf0.php:227
+#: tmp/runtime/twig_cache/63/63247846d5ff401d0faf6649c406918e710ddb6f957a7ce10657764eb64dd564.php:228
+#: tmp/runtime/twig_cache/87/8769ef321929b2cb9911bae6d720532ca35e19f2084859d786c6d928f3a6ec77.php:189
+#: tmp/runtime/twig_cache/e4/e4d9efb37679e0d0917f480232c067369f371e45bdaebbd0be3bca49d923a628.php:172
+msgid "Please solve the following equation:"
 msgstr ""
 
-#: tmp/runtime/twig_cache/c0/c0fe9ec6cb087b631ad5503b2f8e67bd30e7e75699fe8c42c331f1fb240da178.php:222
-msgid "Subquestion:"
+#: tmp/runtime/twig_cache/03/03a61e9f425659cc9d7e312e4cdb304264f85b19abf9bf0814a213aaf11b0cfa.php:207
+#: tmp/runtime/twig_cache/05/05c54ee344bb8bdcd6ea55ae1db310415bba8b42b99c4af6c879d5054f1ba781.php:229
+#: tmp/runtime/twig_cache/4d/4d2b1933f87b690f5008eb3c3b5b67c3178c27728cef12ec15512ddb1b4b5bf0.php:254
+#: tmp/runtime/twig_cache/63/63247846d5ff401d0faf6649c406918e710ddb6f957a7ce10657764eb64dd564.php:248
+#: tmp/runtime/twig_cache/87/8769ef321929b2cb9911bae6d720532ca35e19f2084859d786c6d928f3a6ec77.php:216
+#: tmp/runtime/twig_cache/e4/e4d9efb37679e0d0917f480232c067369f371e45bdaebbd0be3bca49d923a628.php:205
+msgid "Reload captcha"
 msgstr ""
 
-#: tmp/runtime/twig_cache/c0/c0fe9ec6cb087b631ad5503b2f8e67bd30e7e75699fe8c42c331f1fb240da178.php:279
-msgid "Insert a new subquestion after this one"
+#: tmp/runtime/twig_cache/05/0532b4f09df9502aca984e2098a6ad999285884e90bebc93c2aeec477c8a49f6.php:116
+#: tmp/runtime/twig_cache/30/30ecfb4f832c775b3657e5be7f348dd554cad033c676fdda7be3f5c05904bb3a.php:128
+#: tmp/runtime/twig_cache/6d/6d411ce752889ce4e9d325a3e57930345bcdc8536f1d2ae8d7d6954fb562a74e.php:128
+#: tmp/runtime/twig_cache/98/9899064ee8433e98d6c652c6c62620aef3289b9acc52ec1c2a3e93e441d5dfc1.php:116
+msgid "Continue without answering"
 msgstr ""
 
-#: tmp/runtime/twig_cache/c0/c0fe9ec6cb087b631ad5503b2f8e67bd30e7e75699fe8c42c331f1fb240da178.php:283
-msgid "Delete this subquestion"
-msgstr ""
-
-#: tmp/runtime/twig_cache/c1/c18945ff005ada4b5e82b5975538e2f83afef86aea2409c8bf775f78b30519fc.php:171
-msgid "Save changes"
-msgstr ""
-
-#: tmp/runtime/twig_cache/c1/c18945ff005ada4b5e82b5975538e2f83afef86aea2409c8bf775f78b30519fc.php:191
-msgid "Upload your files"
-msgstr ""
-
-#: tmp/runtime/twig_cache/c4/c418e14ed752a31f9cae336d4fa1dde66681e8cd35e8553184cccd732bb21add.php:61
-#: tmp/runtime/twig_cache/c4/c418e14ed752a31f9cae336d4fa1dde66681e8cd35e8553184cccd732bb21add.php:150
-#: tmp/runtime/twig_cache/c9/c962eb9a3db30dc3909b184b74c73490dead5792e98d25f6dc422b250b62cc49.php:43
-#: tmp/runtime/twig_cache/db/db1675322fbf39d45c72c1930f0ed8bd60d3e63b7d69140ab8467dcb898fbd97.php:61
-#: tmp/runtime/twig_cache/db/db1675322fbf39d45c72c1930f0ed8bd60d3e63b7d69140ab8467dcb898fbd97.php:153
-#: tmp/runtime/twig_cache/e4/e40ff966083257a84ed668e4dbe02eea976861774fda67baad85e6c3c98760a8.php:43
-msgid "Question index"
-msgstr ""
-
-#: tmp/runtime/twig_cache/c4/c418e14ed752a31f9cae336d4fa1dde66681e8cd35e8553184cccd732bb21add.php:247
-#: tmp/runtime/twig_cache/db/db1675322fbf39d45c72c1930f0ed8bd60d3e63b7d69140ab8467dcb898fbd97.php:248
-msgid "Question by question mode not yet supported."
-msgstr ""
-
-#: tmp/runtime/twig_cache/ca/ca69d9a40af87005677cb8e5d53dac595d06e5fd4c9e5cee396fef5b4a937db3.php:239
-msgid "The following surveys are available:"
-msgstr ""
-
-#: tmp/runtime/twig_cache/ca/ca69d9a40af87005677cb8e5d53dac595d06e5fd4c9e5cee396fef5b4a937db3.php:285
-msgid "Start survey"
-msgstr ""
-
-#: tmp/runtime/twig_cache/ce/cea0cd565af2e0b0bdff0d35a03019a25f3cb8ee9126a1d777565d53cfdcc17b.php:67
-msgid "This action need to be confirmed."
-msgstr ""
-
-#: tmp/runtime/twig_cache/d5/d5493993d04a49c4322cd3ad4b0475a9874bec37018194fbcb4d4170527d218e.php:83
-msgid "Survey options"
-msgstr ""
-
-#: tmp/runtime/twig_cache/e3/e36328d2f3f4c1c9eb73ff0f6cd9c65f145ec451cb3786167fbe5faa969d6791.php:40
-#: tmp/runtime/twig_cache/f5/f5fcf879a1ec1befc5e67e0605e44c215033c8a8c3497e31f474dcf4057cac5b.php:42
-msgid "Your privacy policy text is shown here."
-msgstr ""
-
-#: tmp/runtime/twig_cache/eb/ebe9c19c2bfb587e6cc93bf1745758f5c0be635b77cd004a8c1bc7fa38dc3d37.php:54
-msgid "Select language"
-msgstr ""
-
-#: tmp/runtime/twig_cache/ed/ed55a9f9da2f794b5d61cdf2be3606cd1c5520397ad9588193d0ff17d1e330e8.php:132
-msgid "Add label"
-msgstr ""
-
-#: tmp/runtime/twig_cache/ed/ed55a9f9da2f794b5d61cdf2be3606cd1c5520397ad9588193d0ff17d1e330e8.php:138
-msgid "Delete label"
-msgstr ""
-
-#: tmp/runtime/twig_cache/ef/ef5121b1843240a77fd049690764449745e5ed393285306efc9094caf3fe46d5.php:55
+#: tmp/runtime/twig_cache/05/05c54ee344bb8bdcd6ea55ae1db310415bba8b42b99c4af6c879d5054f1ba781.php:55
 msgid "To participate in this restricted survey, you need a valid access code."
 msgstr ""
 
-#: tmp/runtime/twig_cache/fd/fd1fa8c25aee71a4dcdc67f46ada3b72cb02406f62a54a609e964cc5481e7754.php:49
+#: tmp/runtime/twig_cache/05/05c54ee344bb8bdcd6ea55ae1db310415bba8b42b99c4af6c879d5054f1ba781.php:77
+#: tmp/runtime/twig_cache/87/8769ef321929b2cb9911bae6d720532ca35e19f2084859d786c6d928f3a6ec77.php:77
+msgid "If you have been issued an access code, please enter it in the box below and click continue."
+msgstr ""
+
+#: tmp/runtime/twig_cache/05/05c54ee344bb8bdcd6ea55ae1db310415bba8b42b99c4af6c879d5054f1ba781.php:83
+#: tmp/runtime/twig_cache/87/8769ef321929b2cb9911bae6d720532ca35e19f2084859d786c6d928f3a6ec77.php:83
+msgid "Please confirm the access code by answering the security question below and click continue."
+msgstr ""
+
+#: tmp/runtime/twig_cache/0d/0df99e8f779d3207753d3cfadc9bbf7ccb3c3a8663428b5da5c3c59d4dcc106a.php:42
+#: tmp/runtime/twig_cache/2a/2a6ae2aa3fc146edddace90f8488b83a9c10ac32fa9385fc1a5497987cbf4a45.php:40
+msgid "Hint when response is not valid"
+msgstr ""
+
+#: tmp/runtime/twig_cache/0f/0fe9cbdf19392ba5cc5cb45ec2ab4d47f6cd9c4dc1d6ff04ff879018766e4ea2.php:118
+msgid "Thank you."
+msgstr ""
+
+#: tmp/runtime/twig_cache/10/105a0034070817962c323c7fb953703571e4897bc36e4a80383738a23d3259c9.php:96
+#: tmp/runtime/twig_cache/e9/e95884cee036f8066b02f781f308b671d9ec40db39dabc0dc35545c04b03e6b4.php:127
+msgid "Change the language"
+msgstr ""
+
+#: tmp/runtime/twig_cache/19/19dadb73036eb5bf2697b58142f4e8fef7fdc4f3a7a4c40548e3ed615573b58c.php:171
+msgid "Save changes"
+msgstr ""
+
+#: tmp/runtime/twig_cache/19/19dadb73036eb5bf2697b58142f4e8fef7fdc4f3a7a4c40548e3ed615573b58c.php:191
+msgid "Upload your files"
+msgstr ""
+
+#: tmp/runtime/twig_cache/19/19dadb73036eb5bf2697b58142f4e8fef7fdc4f3a7a4c40548e3ed615573b58c.php:195
+#: tmp/runtime/twig_cache/a3/a3f4386be29d48c3fa0d4456101d644c5e93a945ce027a2590a607da856ebf75.php:329
+#: tmp/runtime/twig_cache/d0/d0b2f465fcfe06e9bf888c74d9e20b74c1b0c1fbc7d171782323a96cfe74eef0.php:464
+#: tmp/runtime/twig_cache/e0/e0d33d6956f70beaf569e97b14ed49356b6190fb3200a06520d07c615226f4f4.php:494
+#: tmp/runtime/twig_cache/ef/effc9a203579285438a2cdbf05e9617f094a05323d80db376d95066a15932d9c.php:355
+msgid "Return to survey"
+msgstr ""
+
+#: tmp/runtime/twig_cache/1e/1e89664e1589737b180a71819717ee709fc066080c8f9f59956c47ecff989e47.php:58
+#: tmp/runtime/twig_cache/6d/6d411ce752889ce4e9d325a3e57930345bcdc8536f1d2ae8d7d6954fb562a74e.php:179
+#: tmp/runtime/twig_cache/b8/b8c4c89fb4bda7e583cb4744261e38e248920236b9b7b3e4e61cfcffa136a12a.php:58
+msgid "Please confirm you want to clear your response?"
+msgstr ""
+
+#: tmp/runtime/twig_cache/1e/1e89664e1589737b180a71819717ee709fc066080c8f9f59956c47ecff989e47.php:67
+msgid "This action need to be confirmed."
+msgstr ""
+
+#: tmp/runtime/twig_cache/1e/1e89664e1589737b180a71819717ee709fc066080c8f9f59956c47ecff989e47.php:69
+#: tmp/runtime/twig_cache/46/465365caafe7b3b12acff2bbf1aaffceb706b68db2443a73da97f12800c78f89.php:54
+#: tmp/runtime/twig_cache/6d/6d411ce752889ce4e9d325a3e57930345bcdc8536f1d2ae8d7d6954fb562a74e.php:172
+#: tmp/runtime/twig_cache/b8/b8c4c89fb4bda7e583cb4744261e38e248920236b9b7b3e4e61cfcffa136a12a.php:62
+#: tmp/runtime/twig_cache/f4/f429cfe313fcb8ed91fc18a83a2b7286381f6873c09342062e82ecab22cf6e96.php:60
+msgid "Exit and clear survey"
+msgstr ""
+
+#: tmp/runtime/twig_cache/22/22d6402397a3ee44bffab91bbe9358fc52fd28221f06b9d51a2d396548f147fd.php:50
+#: tmp/runtime/twig_cache/42/423acc787ba4e38bb6b1f2a14bbe2ced42965cce1d240573b14f50b2d30e7534.php:46
+#: tmp/runtime/twig_cache/49/4916babd3e3138a0d77221a454ca4aa13a7c144f702820a6f3f1171f4e694438.php:50
+#: tmp/runtime/twig_cache/a3/a3f4386be29d48c3fa0d4456101d644c5e93a945ce027a2590a607da856ebf75.php:58
+#: tmp/runtime/twig_cache/b5/b5ae71ddc8c39cfb4a3ad79db2b7e66bc6438116a5e6100fa926179e6f082032.php:48
+#: tmp/runtime/twig_cache/ef/effc9a203579285438a2cdbf05e9617f094a05323d80db376d95066a15932d9c.php:58
+msgid "Load unfinished survey"
+msgstr ""
+
+#: tmp/runtime/twig_cache/22/22d6402397a3ee44bffab91bbe9358fc52fd28221f06b9d51a2d396548f147fd.php:67
+#: tmp/runtime/twig_cache/42/423acc787ba4e38bb6b1f2a14bbe2ced42965cce1d240573b14f50b2d30e7534.php:60
+#: tmp/runtime/twig_cache/49/4916babd3e3138a0d77221a454ca4aa13a7c144f702820a6f3f1171f4e694438.php:67
+#: tmp/runtime/twig_cache/b5/b5ae71ddc8c39cfb4a3ad79db2b7e66bc6438116a5e6100fa926179e6f082032.php:65
+msgid "Resume later"
+msgstr ""
+
+#: tmp/runtime/twig_cache/2b/2bc8eb843465452aba7e9fdbee60d3e5ee27ae9956dd8803cfea20d33668dab4.php:147
+#: tmp/runtime/twig_cache/39/398205b2c4df66fc3fb224e7662d7a450660f0e800884b2c72127b95ad0a21aa.php:152
+msgid "For further information please contact %s:"
+msgstr ""
+
+#: tmp/runtime/twig_cache/2c/2ce03446a0c0117ddd07fbe52e3c46941a2e7d029bb2bd1b7dfb1198f8343dde.php:43
+#: tmp/runtime/twig_cache/42/42c1337280809e6b3a6123fa5e164e2559858eb4d2116ced4ae8007b0924ff47.php:61
+#: tmp/runtime/twig_cache/42/42c1337280809e6b3a6123fa5e164e2559858eb4d2116ced4ae8007b0924ff47.php:150
+#: tmp/runtime/twig_cache/8d/8d0505d967dc589716c991d88503a6230ff4d8c9b5a69a483d9a52fffa53d895.php:43
+#: tmp/runtime/twig_cache/c1/c1efd044cf4b9c598101e5e671154406c00eac755d21a674b726ccc8b0db971b.php:61
+#: tmp/runtime/twig_cache/c1/c1efd044cf4b9c598101e5e671154406c00eac755d21a674b726ccc8b0db971b.php:153
+msgid "Question index"
+msgstr ""
+
+#: tmp/runtime/twig_cache/30/30ecfb4f832c775b3657e5be7f348dd554cad033c676fdda7be3f5c05904bb3a.php:136
+#: tmp/runtime/twig_cache/6d/6d411ce752889ce4e9d325a3e57930345bcdc8536f1d2ae8d7d6954fb562a74e.php:136
+msgid "Answer question"
+msgstr ""
+
+#: tmp/runtime/twig_cache/42/42c1337280809e6b3a6123fa5e164e2559858eb4d2116ced4ae8007b0924ff47.php:247
+#: tmp/runtime/twig_cache/c1/c1efd044cf4b9c598101e5e671154406c00eac755d21a674b726ccc8b0db971b.php:248
+msgid "Question by question mode not yet supported."
+msgstr ""
+
+#: tmp/runtime/twig_cache/43/4325da5b41d8b7936680e9bfbec13f078c39ee9f4735022bfc3b7dc4fe58b6e5.php:47
+msgid "Thank you for registering. You will receive an email shortly."
+msgstr ""
+
+#: tmp/runtime/twig_cache/43/4325da5b41d8b7936680e9bfbec13f078c39ee9f4735022bfc3b7dc4fe58b6e5.php:58
+#: tmp/runtime/twig_cache/c3/c38632b3ba47850d4ff5b41124f1a456b05f2cb848926aa30ad3a0a6a6d91cb8.php:69
+msgid "You may register for this survey but you have to wait for the {{sStartDate}} before starting the survey."
+msgstr ""
+
+#: tmp/runtime/twig_cache/43/4325da5b41d8b7936680e9bfbec13f078c39ee9f4735022bfc3b7dc4fe58b6e5.php:66
+msgid "You may register for this survey if you wish to take part."
+msgstr ""
+
+#: tmp/runtime/twig_cache/43/4325da5b41d8b7936680e9bfbec13f078c39ee9f4735022bfc3b7dc4fe58b6e5.php:74
+msgid "Enter your details below, and an email containing the link to participate in this survey will be sent immediately."
+msgstr ""
+
+#: tmp/runtime/twig_cache/45/456149d1e8233096d0db1c345b954357e9e0eb2289bc0788727e585e3b22957e.php:119
+#: tmp/runtime/twig_cache/97/97cdc7a1c1278f42da9c9b729f8511e9b0c46610c2ede883d9ef89783f734b05.php:118
+msgid "There is 1 question in this survey."
+msgstr ""
+
+#: tmp/runtime/twig_cache/4a/4a1f5d94796793570840150b6c89bf5b541aebbd047803b29ad1555d0b6176ad.php:111
+#: tmp/runtime/twig_cache/e8/e80ebe492f7419e6a1e559a2e99371997d6a3368907f8a918e10565aa0860e23.php:127
+msgid "Accept"
+msgstr ""
+
+#: tmp/runtime/twig_cache/4a/4a3edd340c0b6dfeb11bd0dfa444cb21eb18d731f19fb5d9d76e168f7b8d2a66.php:40
+msgid "Group 1: The first lot of questions"
+msgstr ""
+
+#: tmp/runtime/twig_cache/4b/4b5d5dbd26f2e6021a5ce670ed855d48543ec4c1e58390e7d92f16c5af8542a2.php:83
+msgid "Survey options"
+msgstr ""
+
+#: tmp/runtime/twig_cache/4c/4c1d520ffa6eaab7685ea060f3782745a48be98264765e33c497bd7da9dd2bf2.php:64
+#: tmp/runtime/twig_cache/56/56e7993d6bbeb9c92f8806e621f9501622147e68a6abc7050aa0c57e0d354b37.php:64
+msgid "Restart this survey"
+msgstr ""
+
+#: tmp/runtime/twig_cache/4d/4d2b1933f87b690f5008eb3c3b5b67c3178c27728cef12ec15512ddb1b4b5bf0.php:280
+#: tmp/runtime/twig_cache/63/63247846d5ff401d0faf6649c406918e710ddb6f957a7ce10657764eb64dd564.php:276
+msgid "Fields marked with an asterisk are mandatory."
+msgstr ""
+
+#: tmp/runtime/twig_cache/63/63247846d5ff401d0faf6649c406918e710ddb6f957a7ce10657764eb64dd564.php:88
+msgid "Enter your first name"
+msgstr ""
+
+#: tmp/runtime/twig_cache/63/63247846d5ff401d0faf6649c406918e710ddb6f957a7ce10657764eb64dd564.php:114
+msgid "Enter your last name"
+msgstr ""
+
+#: tmp/runtime/twig_cache/63/63247846d5ff401d0faf6649c406918e710ddb6f957a7ce10657764eb64dd564.php:132
+msgid "E-mail"
+msgstr ""
+
+#: tmp/runtime/twig_cache/63/63247846d5ff401d0faf6649c406918e710ddb6f957a7ce10657764eb64dd564.php:142
+#: tmp/runtime/twig_cache/d0/d0b2f465fcfe06e9bf888c74d9e20b74c1b0c1fbc7d171782323a96cfe74eef0.php:370
+msgid "Enter e-mail address"
+msgstr ""
+
+#: tmp/runtime/twig_cache/63/63247846d5ff401d0faf6649c406918e710ddb6f957a7ce10657764eb64dd564.php:258
+#: tmp/runtime/twig_cache/87/8769ef321929b2cb9911bae6d720532ca35e19f2084859d786c6d928f3a6ec77.php:232
+#: tmp/runtime/twig_cache/a3/a3f4386be29d48c3fa0d4456101d644c5e93a945ce027a2590a607da856ebf75.php:299
+#: tmp/runtime/twig_cache/d0/d0b2f465fcfe06e9bf888c74d9e20b74c1b0c1fbc7d171782323a96cfe74eef0.php:436
+#: tmp/runtime/twig_cache/e4/e4d9efb37679e0d0917f480232c067369f371e45bdaebbd0be3bca49d923a628.php:221
+msgid "Enter result here - numbers only"
+msgstr ""
+
+#: tmp/runtime/twig_cache/63/63247846d5ff401d0faf6649c406918e710ddb6f957a7ce10657764eb64dd564.php:295
+msgid "Register now"
+msgstr ""
+
+#: tmp/runtime/twig_cache/63/63f3c4c9dc86efa535f4e7a1441c568987ca38ec1c6e372c4287c57825251266.php:48
+#: tmp/runtime/twig_cache/c2/c22d9d1fde705bd83ba7dd09ae6671d922ba0355a1f6e701b621aadcce2d55e6.php:48
+msgid "Survey name (ID):"
+msgstr ""
+
+#: tmp/runtime/twig_cache/65/6536c473e9fd64e8ee26c1ef9827aa9ba19ab8804c2868f790b76e9f3ffeacdc.php:43
+#: tmp/runtime/twig_cache/85/85640b46a6d5d9a7adbc970cd1f44c4ccb0f3159f51e4401638baa0ab8ac4443.php:43
+msgid "Error: This question has no answers."
+msgstr ""
+
+#: tmp/runtime/twig_cache/68/6824d9d8c643b8a29f2bcf5e2d30d6ee5eeb881103345099b3582e28ba36c989.php:89
+#: tmp/runtime/twig_cache/ab/ab04123e9c6d18a0832af8772d9627c022b979ecaf5b7ffe82495cd2b6e08a83.php:89
+msgid "default"
+msgstr ""
+
+#: tmp/runtime/twig_cache/68/6879b8c2d91ce79fcfad21258d878cea3f53bfea487505dc06a4bec98f2c89d4.php:123
+msgid "Total:"
+msgstr ""
+
+#: tmp/runtime/twig_cache/6f/6f172ba55a468b0cf2e85a0cbc8ecabfa435cbc772c4f31f40b1d9f88ebcaf5e.php:138
+msgid "Privacy policy text:"
+msgstr ""
+
+#: tmp/runtime/twig_cache/6f/6f172ba55a468b0cf2e85a0cbc8ecabfa435cbc772c4f31f40b1d9f88ebcaf5e.php:161
+msgid "Privacy policy error text:"
+msgstr ""
+
+#: tmp/runtime/twig_cache/6f/6f172ba55a468b0cf2e85a0cbc8ecabfa435cbc772c4f31f40b1d9f88ebcaf5e.php:184
+msgid "Privacy policy label text:"
+msgstr ""
+
+#: tmp/runtime/twig_cache/70/70275123311bad1f6ecff2af6f7c5138d3d84c410ddbfe45ba7bdc80f0bc679f.php:212
+msgid "Some example subquestion"
+msgstr ""
+
+#: tmp/runtime/twig_cache/70/70275123311bad1f6ecff2af6f7c5138d3d84c410ddbfe45ba7bdc80f0bc679f.php:222
+msgid "Subquestion:"
+msgstr ""
+
+#: tmp/runtime/twig_cache/70/70275123311bad1f6ecff2af6f7c5138d3d84c410ddbfe45ba7bdc80f0bc679f.php:279
+msgid "Insert a new subquestion after this one"
+msgstr ""
+
+#: tmp/runtime/twig_cache/70/70275123311bad1f6ecff2af6f7c5138d3d84c410ddbfe45ba7bdc80f0bc679f.php:283
+msgid "Delete this subquestion"
+msgstr ""
+
+#: tmp/runtime/twig_cache/72/72d69217bdd73425fa9c24994467f0137576ad39e0f32d260628702460721bca.php:42
+#: tmp/runtime/twig_cache/ac/ac2aa3c86cc183ad81a4e9bf548ccbe82f3936046067ac2b2132c7c45b1476d1.php:40
+msgid "Quotas exceeded"
+msgstr ""
+
+#: tmp/runtime/twig_cache/79/7992b3640cb350e38a71ba940d27d89109fc77842eaa6e65a6e3d7ee7b819c34.php:43
+msgid "Publication and access settings"
+msgstr ""
+
+#: tmp/runtime/twig_cache/79/7992b3640cb350e38a71ba940d27d89109fc77842eaa6e65a6e3d7ee7b819c34.php:47
+msgid "Edit publication and access settings"
+msgstr ""
+
+#: tmp/runtime/twig_cache/79/7992b3640cb350e38a71ba940d27d89109fc77842eaa6e65a6e3d7ee7b819c34.php:78
+msgid "Expiration date/time:"
+msgstr ""
+
+#: tmp/runtime/twig_cache/79/7992b3640cb350e38a71ba940d27d89109fc77842eaa6e65a6e3d7ee7b819c34.php:95
+msgid "Listed publicly:"
+msgstr ""
+
+#: tmp/runtime/twig_cache/7e/7ed7acb45f937120ad0ecba279054080002681756c9b8fe14c090b0f37f37f8e.php:40
+#: tmp/runtime/twig_cache/83/838c7747f304ca3d38a54aea3bed7d8c8a4ab9b3f53c5de06e66795312cfa42c.php:42
+msgid "Your privacy policy text is shown here."
+msgstr ""
+
+#: tmp/runtime/twig_cache/7f/7f274b2b4733cc8cc80033d11f1b9932624db347261529d914498819eadf883c.php:81
+#: tmp/runtime/twig_cache/d7/d73e5419549ba6cddedf08b199706109c2049962bec5477660c2bf6394be9e68.php:80
+msgid "Export these responses as PDF:"
+msgstr ""
+
+#: tmp/runtime/twig_cache/7f/7f274b2b4733cc8cc80033d11f1b9932624db347261529d914498819eadf883c.php:86
+#: tmp/runtime/twig_cache/d7/d73e5419549ba6cddedf08b199706109c2049962bec5477660c2bf6394be9e68.php:82
+msgid "PDF export"
+msgstr ""
+
+#: tmp/runtime/twig_cache/7f/7f274b2b4733cc8cc80033d11f1b9932624db347261529d914498819eadf883c.php:101
+#: tmp/runtime/twig_cache/d7/d73e5419549ba6cddedf08b199706109c2049962bec5477660c2bf6394be9e68.php:96
+msgid "Export these responses as queXML PDF:"
+msgstr ""
+
+#: tmp/runtime/twig_cache/7f/7fd1f2c6803340eb5faf059e0bd331b6ef598de0673a5f7c17627f2e7f7204fe.php:44
+msgid "Hints and warnings"
+msgstr ""
+
+#: tmp/runtime/twig_cache/84/842814332984f281709adf2125eb3ba4668a14ee976b2e93565669d64791e1be.php:42
+#: tmp/runtime/twig_cache/aa/aa294cd33091dbb19c96ec37d23d4156bdd12876ed63fd96e4579b63da8d2037.php:40
+msgid "This group description is fairly vacuous, but quite important."
+msgstr ""
+
+#: tmp/runtime/twig_cache/87/8769ef321929b2cb9911bae6d720532ca35e19f2084859d786c6d928f3a6ec77.php:55
+msgid "Please enter your access code to participate in this survey."
+msgstr ""
+
+#: tmp/runtime/twig_cache/87/8769ef321929b2cb9911bae6d720532ca35e19f2084859d786c6d928f3a6ec77.php:147
+msgid "Enter access code"
+msgstr ""
+
+#: tmp/runtime/twig_cache/8e/8ecae3c2fca750c97eca3aea5d2213cb335da02ace546ea6cec2f54dde33d997.php:44
+#: tmp/runtime/twig_cache/d7/d7197e0a0534fd890d03b88266cae148c95ba29f1f296d82ea77cdfca7428536.php:42
+msgid "(This question is mandatory)"
+msgstr ""
+
+#: tmp/runtime/twig_cache/90/90d5a67da416448455725c0de1c5f13b886301d8783a6c30c538a56e94525516.php:43
+msgid "Survey general settings"
+msgstr ""
+
+#: tmp/runtime/twig_cache/90/90d5a67da416448455725c0de1c5f13b886301d8783a6c30c538a56e94525516.php:123
+msgid "Edit theme options"
+msgstr ""
+
+#: tmp/runtime/twig_cache/90/90d5a67da416448455725c0de1c5f13b886301d8783a6c30c538a56e94525516.php:129
+msgid "Open theme editor in new window"
+msgstr ""
+
+#: tmp/runtime/twig_cache/90/90d5a67da416448455725c0de1c5f13b886301d8783a6c30c538a56e94525516.php:144
+msgid "Error: Theme \"%s\" is not installed."
+msgstr ""
+
+#: tmp/runtime/twig_cache/9e/9efdd85704a95a8498d7dd78298409d6935a3fc3390cfdbdd1e626ee772de2f1.php:54
+msgid "Date format: %s"
+msgstr ""
+
+#: tmp/runtime/twig_cache/9e/9efdd85704a95a8498d7dd78298409d6935a3fc3390cfdbdd1e626ee772de2f1.php:76
+msgid "Open date/time selector"
+msgstr ""
+
+#: tmp/runtime/twig_cache/a3/a3f4386be29d48c3fa0d4456101d644c5e93a945ce027a2590a607da856ebf75.php:70
+#: tmp/runtime/twig_cache/ef/effc9a203579285438a2cdbf05e9617f094a05323d80db376d95066a15932d9c.php:70
+msgid "You can load a survey that you have previously saved from this screen."
+msgstr ""
+
+#: tmp/runtime/twig_cache/a3/a3f4386be29d48c3fa0d4456101d644c5e93a945ce027a2590a607da856ebf75.php:76
+#: tmp/runtime/twig_cache/ef/effc9a203579285438a2cdbf05e9617f094a05323d80db376d95066a15932d9c.php:76
+msgid "Type in the 'name' you used to save the survey, and the password."
+msgstr ""
+
+#: tmp/runtime/twig_cache/a3/a3f4386be29d48c3fa0d4456101d644c5e93a945ce027a2590a607da856ebf75.php:166
+msgid "Saved name"
+msgstr ""
+
+#: tmp/runtime/twig_cache/a3/a3f4386be29d48c3fa0d4456101d644c5e93a945ce027a2590a607da856ebf75.php:195
+#: tmp/runtime/twig_cache/d0/d0b2f465fcfe06e9bf888c74d9e20b74c1b0c1fbc7d171782323a96cfe74eef0.php:224
+msgid "Enter your name"
+msgstr ""
+
+#: tmp/runtime/twig_cache/a3/a3f4386be29d48c3fa0d4456101d644c5e93a945ce027a2590a607da856ebf75.php:239
+msgid "Enter your password"
+msgstr ""
+
+#: tmp/runtime/twig_cache/a3/a3f4386be29d48c3fa0d4456101d644c5e93a945ce027a2590a607da856ebf75.php:263
+#: tmp/runtime/twig_cache/d0/d0b2f465fcfe06e9bf888c74d9e20b74c1b0c1fbc7d171782323a96cfe74eef0.php:402
+msgid "Security question"
+msgstr ""
+
+#: tmp/runtime/twig_cache/a3/a3f4386be29d48c3fa0d4456101d644c5e93a945ce027a2590a607da856ebf75.php:354
+#: tmp/runtime/twig_cache/ef/effc9a203579285438a2cdbf05e9617f094a05323d80db376d95066a15932d9c.php:327
+msgid "Load now"
+msgstr ""
+
+#: tmp/runtime/twig_cache/a5/a519e2516c862bb3d9289eeec05aafb5d391cd1446410bb0799a9eca7a54639e.php:132
+msgid "Add label"
+msgstr ""
+
+#: tmp/runtime/twig_cache/a5/a519e2516c862bb3d9289eeec05aafb5d391cd1446410bb0799a9eca7a54639e.php:138
+msgid "Delete label"
+msgstr ""
+
+#: tmp/runtime/twig_cache/a5/a598c67a7f7ae61119af06c83f35574bd4c621b761f6c7c1fc532051b35f8d1f.php:54
+msgid "Select language"
+msgstr ""
+
+#: tmp/runtime/twig_cache/b9/b932ea29512690cb5f2c060dad5d81140991632ce0556fd365b9ab25737281e4.php:153
+msgid "Add line"
+msgstr ""
+
+#: tmp/runtime/twig_cache/c3/c38632b3ba47850d4ff5b41124f1a456b05f2cb848926aa30ad3a0a6a6d91cb8.php:49
 msgid "Thank you for registering."
 msgstr ""
 
-#: tmp/runtime/twig_cache/fd/fd1fa8c25aee71a4dcdc67f46ada3b72cb02406f62a54a609e964cc5481e7754.php:54
+#: tmp/runtime/twig_cache/c3/c38632b3ba47850d4ff5b41124f1a456b05f2cb848926aa30ad3a0a6a6d91cb8.php:54
 msgid "You will receive an email shortly."
 msgstr ""
 
-#: tmp/runtime/twig_cache/fd/fd1fa8c25aee71a4dcdc67f46ada3b72cb02406f62a54a609e964cc5481e7754.php:75
+#: tmp/runtime/twig_cache/c3/c38632b3ba47850d4ff5b41124f1a456b05f2cb848926aa30ad3a0a6a6d91cb8.php:75
 msgid "You may have to register to take part in this survey."
 msgstr ""
 
-#: tmp/runtime/twig_cache/fd/fd1fa8c25aee71a4dcdc67f46ada3b72cb02406f62a54a609e964cc5481e7754.php:81
+#: tmp/runtime/twig_cache/c3/c38632b3ba47850d4ff5b41124f1a456b05f2cb848926aa30ad3a0a6a6d91cb8.php:81
 msgid "Please fill in the information and we’ll send you a link immediately."
+msgstr ""
+
+#: tmp/runtime/twig_cache/cc/cc1b928f2d66433e52a385d657a718357b2ee5a84be9897fe4307b213cc0a6e2.php:43
+msgid "Database usage"
+msgstr ""
+
+#: tmp/runtime/twig_cache/cc/cc1b928f2d66433e52a385d657a718357b2ee5a84be9897fe4307b213cc0a6e2.php:66
+#: tmp/runtime/twig_cache/cc/cc1b928f2d66433e52a385d657a718357b2ee5a84be9897fe4307b213cc0a6e2.php:109
+msgid "Table column usage"
+msgstr ""
+
+#: tmp/runtime/twig_cache/cc/cc1b928f2d66433e52a385d657a718357b2ee5a84be9897fe4307b213cc0a6e2.php:84
+msgid "Table size usage"
+msgstr ""
+
+#: tmp/runtime/twig_cache/cc/cc1b928f2d66433e52a385d657a718357b2ee5a84be9897fe4307b213cc0a6e2.php:132
+msgid "No info or no data found"
+msgstr ""
+
+#: tmp/runtime/twig_cache/d0/d0b2f465fcfe06e9bf888c74d9e20b74c1b0c1fbc7d171782323a96cfe74eef0.php:67
+#: tmp/runtime/twig_cache/e0/e0d33d6956f70beaf569e97b14ed49356b6190fb3200a06520d07c615226f4f4.php:67
+msgid "Save your unfinished survey"
+msgstr ""
+
+#: tmp/runtime/twig_cache/d0/d0b2f465fcfe06e9bf888c74d9e20b74c1b0c1fbc7d171782323a96cfe74eef0.php:79
+#: tmp/runtime/twig_cache/e0/e0d33d6956f70beaf569e97b14ed49356b6190fb3200a06520d07c615226f4f4.php:79
+msgid "Enter a name and password for this survey and click save below."
+msgstr ""
+
+#: tmp/runtime/twig_cache/d0/d0b2f465fcfe06e9bf888c74d9e20b74c1b0c1fbc7d171782323a96cfe74eef0.php:85
+#: tmp/runtime/twig_cache/e0/e0d33d6956f70beaf569e97b14ed49356b6190fb3200a06520d07c615226f4f4.php:85
+msgid "Your survey will be saved using that name and password, and can be completed later by logging in with the same name and password."
+msgstr ""
+
+#: tmp/runtime/twig_cache/d0/d0b2f465fcfe06e9bf888c74d9e20b74c1b0c1fbc7d171782323a96cfe74eef0.php:93
+#: tmp/runtime/twig_cache/e0/e0d33d6956f70beaf569e97b14ed49356b6190fb3200a06520d07c615226f4f4.php:93
+msgid "If you give an email address, an email containing the details will be sent to you."
+msgstr ""
+
+#: tmp/runtime/twig_cache/d0/d0b2f465fcfe06e9bf888c74d9e20b74c1b0c1fbc7d171782323a96cfe74eef0.php:99
+#: tmp/runtime/twig_cache/e0/e0d33d6956f70beaf569e97b14ed49356b6190fb3200a06520d07c615226f4f4.php:99
+msgid "After having clicked the save button you can either close this browser window or continue filling out the survey."
+msgstr ""
+
+#: tmp/runtime/twig_cache/d0/d0b2f465fcfe06e9bf888c74d9e20b74c1b0c1fbc7d171782323a96cfe74eef0.php:110
+#: tmp/runtime/twig_cache/e0/e0d33d6956f70beaf569e97b14ed49356b6190fb3200a06520d07c615226f4f4.php:110
+msgid "To remain anonymous please use a pseudonym as your username, also an email address is not required."
+msgstr ""
+
+#: tmp/runtime/twig_cache/d0/d0b2f465fcfe06e9bf888c74d9e20b74c1b0c1fbc7d171782323a96cfe74eef0.php:279
+msgid "Enter password"
+msgstr ""
+
+#: tmp/runtime/twig_cache/d0/d0b2f465fcfe06e9bf888c74d9e20b74c1b0c1fbc7d171782323a96cfe74eef0.php:358
+msgid "Your e-mail address"
+msgstr ""
+
+#: tmp/runtime/twig_cache/d5/d5176c742866eefa7e218b45a6e88b912047d4b7d2c42ad0740ded288024f4b2.php:70
+msgid "Date in the format: %s"
+msgstr ""
+
+#: tmp/runtime/twig_cache/da/da1c2df1376215a9137a2fdbc6023c5dc3ec9322dc43acf41a314886b6463a1e.php:42
+#: tmp/runtime/twig_cache/f1/f19a8c9cf34f0833964f574d5877c4ca4fa3a297322fcddb2474dbd4a0d4529f.php:40
+msgid "Show privacy policy"
+msgstr ""
+
+#: tmp/runtime/twig_cache/de/de1ab97230609a478c0323d0f01c4eda2df5a67edad2deeb0568129586471e25.php:40
+msgid "Please explain something in detail:"
+msgstr ""
+
+#: tmp/runtime/twig_cache/e0/e0d33d6956f70beaf569e97b14ed49356b6190fb3200a06520d07c615226f4f4.php:309
+msgid "Repeat password:"
+msgstr ""
+
+#: tmp/runtime/twig_cache/e0/e0d33d6956f70beaf569e97b14ed49356b6190fb3200a06520d07c615226f4f4.php:362
+msgid "Your email address:"
+msgstr ""
+
+#: tmp/runtime/twig_cache/e0/e0d33d6956f70beaf569e97b14ed49356b6190fb3200a06520d07c615226f4f4.php:406
+#: tmp/runtime/twig_cache/ef/effc9a203579285438a2cdbf05e9617f094a05323d80db376d95066a15932d9c.php:263
+msgid "Security question:"
+msgstr ""
+
+#: tmp/runtime/twig_cache/e1/e117cf1f1bd41e21c33502f177879079e18fbc1a42c69071ea6c508da0f126a1.php:44
+#: tmp/runtime/twig_cache/e1/e117cf1f1bd41e21c33502f177879079e18fbc1a42c69071ea6c508da0f126a1.php:197
+msgid "Share survey"
+msgstr ""
+
+#: tmp/runtime/twig_cache/e1/e117cf1f1bd41e21c33502f177879079e18fbc1a42c69071ea6c508da0f126a1.php:145
+msgid "Number of questions/groups:"
+msgstr ""
+
+#: tmp/runtime/twig_cache/e1/e117cf1f1bd41e21c33502f177879079e18fbc1a42c69071ea6c508da0f126a1.php:162
+msgid "Sharing panel:"
+msgstr ""
+
+#: tmp/runtime/twig_cache/e1/e117cf1f1bd41e21c33502f177879079e18fbc1a42c69071ea6c508da0f126a1.php:178
+msgid "Open sharing panel"
+msgstr ""
+
+#: tmp/runtime/twig_cache/e1/e117cf1f1bd41e21c33502f177879079e18fbc1a42c69071ea6c508da0f126a1.php:206
+msgid "Share QR-code:"
+msgstr ""
+
+#: tmp/runtime/twig_cache/e1/e117cf1f1bd41e21c33502f177879079e18fbc1a42c69071ea6c508da0f126a1.php:234
+#: tmp/runtime/twig_cache/e1/e117cf1f1bd41e21c33502f177879079e18fbc1a42c69071ea6c508da0f126a1.php:289
+msgid "Generate QR-Code"
+msgstr ""
+
+#: tmp/runtime/twig_cache/e1/e117cf1f1bd41e21c33502f177879079e18fbc1a42c69071ea6c508da0f126a1.php:321
+msgid "Share on Facebook:"
+msgstr ""
+
+#: tmp/runtime/twig_cache/e1/e117cf1f1bd41e21c33502f177879079e18fbc1a42c69071ea6c508da0f126a1.php:327
+msgid "Enable"
+msgstr ""
+
+#: tmp/runtime/twig_cache/e1/e117cf1f1bd41e21c33502f177879079e18fbc1a42c69071ea6c508da0f126a1.php:438
+msgid "Share on Twitter:"
+msgstr ""
+
+#: tmp/runtime/twig_cache/e1/e117cf1f1bd41e21c33502f177879079e18fbc1a42c69071ea6c508da0f126a1.php:466
+#: tmp/runtime/twig_cache/e1/e117cf1f1bd41e21c33502f177879079e18fbc1a42c69071ea6c508da0f126a1.php:522
+msgid "Thanks for taking this survey!"
+msgstr ""
+
+#: tmp/runtime/twig_cache/e1/e117cf1f1bd41e21c33502f177879079e18fbc1a42c69071ea6c508da0f126a1.php:472
+#: tmp/runtime/twig_cache/e1/e117cf1f1bd41e21c33502f177879079e18fbc1a42c69071ea6c508da0f126a1.php:528
+msgid "Tweet it"
+msgstr ""
+
+#: tmp/runtime/twig_cache/e7/e7221e38087200d582ecda7e5813bdcf5ab45b10e54883e55db723b7dba0cc95.php:239
+msgid "The following surveys are available:"
+msgstr ""
+
+#: tmp/runtime/twig_cache/e7/e7221e38087200d582ecda7e5813bdcf5ab45b10e54883e55db723b7dba0cc95.php:285
+msgid "Start survey"
+msgstr ""
+
+#: tmp/runtime/twig_cache/ef/effc9a203579285438a2cdbf05e9617f094a05323d80db376d95066a15932d9c.php:166
+msgid "Saved name:"
 msgstr ""
