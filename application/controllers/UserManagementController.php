@@ -722,6 +722,9 @@ class UserManagementController extends LSBaseController
                 ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
             );
         }
+       if( !in_array($importFormat,['csv','json'])) {
+               throw new LSUserException(400, gT("Invalid format"));
+       }
 
         switch ($importFormat) {
             case "json":
@@ -732,7 +735,6 @@ class UserManagementController extends LSBaseController
             default:
                 $importNote = sprintf(gT("Please make sure that your CSV contains the fields '%s', '%s', '%s', '%s', and '%s'"), '<b>users_name</b>', '<b>full_name</b>', '<b>email</b>', '<b>lang</b>', '<b>password</b>');
                 $allowFileType = ".csv";
-                $importFormat = 'csv'; /* Fix usage of importFormat in view */
         }
         return $this->renderPartial('partial/importuser', [
             "note"         => $importNote,
