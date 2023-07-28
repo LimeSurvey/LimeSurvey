@@ -131,7 +131,9 @@ table.ls-answers {
 
 /* class replace multiple tag */
 /* Basic alignment base horizontal due to no-more-table*/
-
+.ls-answers tbody td {
+    text-align: center
+}
 
 .ls-answers td .form-control {
     margin-left: auto;
@@ -369,4 +371,8 @@ only screen and (max-width: 760px),
 .datapolicy-links a:hover {
     cursor: pointer;
     text-decoration: none;
+}
+
+.dir-rtl .uploadedfiles tbody tr td {
+    text-align: right;
 }

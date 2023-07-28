@@ -88,6 +88,10 @@ img.uploaded {
     padding: 5px;
 }
 
+.uploadedfiles tbody tr td {
+    text-align: left;
+}
+
 .uploadedfiles thead tr th {
     font-weight: bold;
 }
