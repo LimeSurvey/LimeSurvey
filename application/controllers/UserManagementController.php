@@ -767,7 +767,9 @@ class UserManagementController extends LSBaseController
                 ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
             );
         }
-
+        if (!in_array($importFormat, ['csv', 'json'])) {
+            throw new LSUserException(400, gT("Invalid format"));
+        }
         $overwriteUsers = boolval(App()->getRequest()->getPost('overwrite'));
 
         switch ($importFormat) {
