@@ -34,6 +34,12 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.28.66 (build 230719) to 3.28.67 (build 230728) July 28, 2023
+#Updated translation: Hungarian by DenisChenu
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+
+
 Changes from 3.28.65 (build 230712) to 3.28.66 (build 230719) July 17, 2023
 #Updated translation: Thai by tomzt
 #Updated translation: Swedish by maxzomborszki
