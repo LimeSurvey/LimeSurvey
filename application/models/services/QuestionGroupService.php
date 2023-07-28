@@ -5,6 +5,7 @@ namespace LimeSurvey\Models\Services;
 use LimeSurvey\Models\Services\Proxy\ProxyExpressionManager;
 use LimeSurvey\Models\Services\Proxy\ProxyQuestionGroup;
 use LSYii_Application;
+use phpDocumentor\Reflection\Types\Boolean;
 use Survey;
 use Permission;
 use Question;
@@ -79,7 +80,13 @@ class QuestionGroupService
     {
         $survey = $this->getSurvey($surveyId);
 
-        if (!$this->modelPermission->hasSurveyPermission($survey->sid, 'surveycontent', 'update')) {
+        if (
+            !$this->modelPermission->hasSurveyPermission(
+                $survey->sid,
+                'surveycontent',
+                'update'
+            )
+        ) {
             throw new PermissionDeniedException(
                 'Permission denied'
             );
@@ -92,8 +99,14 @@ class QuestionGroupService
             );
         }
 
-        $questionGroup = $this->updateQuestionGroup($questionGroup, $input['questionGroup']);
-        $this->updateQuestionGroupLanguages($questionGroup, $input['questionGroupI10N']);
+        $questionGroup = $this->updateQuestionGroup(
+            $questionGroup,
+            $input['questionGroup']
+        );
+        $this->updateQuestionGroupLanguages(
+            $questionGroup,
+            $input['questionGroupI10N']
+        );
 
         return $questionGroup;
     }
@@ -121,7 +134,13 @@ class QuestionGroupService
      */
     public function createGroup(int $surveyId, array $input)
     {
-        if (!$this->modelPermission->hasSurveyPermission($surveyId, 'surveycontent', 'update')) {
+        if (
+            !$this->modelPermission->hasSurveyPermission(
+                $surveyId,
+                'surveycontent',
+                'update'
+            )
+        ) {
             throw new PermissionDeniedException(
                 'Permission denied'
             );
@@ -142,7 +161,13 @@ class QuestionGroupService
      */
     public function deleteGroup(int $questionGroupId, int $surveyId)
     {
-        if (!$this->modelPermission->hasSurveyPermission($surveyId, 'surveycontent', 'delete')) {
+        if (
+            !$this->modelPermission->hasSurveyPermission(
+                $surveyId,
+                'surveycontent',
+                'delete'
+            )
+        ) {
             throw new PermissionDeniedException(
                 gT("You are not authorized to delete questions.")
             );
@@ -150,7 +175,10 @@ class QuestionGroupService
 
         $this->proxyExpressionManager->revertUpgradeConditionsToRelevance($surveyId);
 
-        $deletedGroups = $this->proxyQuestionGroup->deleteQuestionGroupWithDependency($questionGroupId, $surveyId);
+        $deletedGroups = $this->proxyQuestionGroup->deleteQuestionGroupWithDependency(
+            $questionGroupId,
+            $surveyId
+        );
         if ($deletedGroups > 0) {
             $this->modelQuestionGroup->updateGroupOrder($surveyId);
         }
@@ -217,12 +245,20 @@ class QuestionGroupService
 
         if (strtolower($sExtension) !== 'lsg') {
             $fatalerror = gT("Unknown file extension");
-        } elseif ($_FILES['the_file']['error'] == 1 || $_FILES['the_file']['error'] == 2) {
+        } elseif (
+            $_FILES['the_file']['error'] == 1
+            || $_FILES['the_file']['error'] == 2
+        ) {
             $fatalerror = sprintf(
                 gT("Sorry, this file is too large. Only files up to %01.2f MB are allowed."),
                 getMaximumFileUploadSize() / 1024 / 1024
             );
-        } elseif (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $sFullFilepath)) {
+        } elseif (
+            !@move_uploaded_file(
+                $_FILES['the_file']['tmp_name'],
+                $sFullFilepath
+            )
+        ) {
             $fatalerror = gT(
                 "An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder."
             );
@@ -307,27 +343,10 @@ class QuestionGroupService
                     $aQuestionGroup['questions'] = $aQuestionGroup['questions'] ?? [];
 
                     foreach ($aQuestionGroup['questions'] as $aQuestion) {
-                        $aQuestions = $this->modelQuestion->findAll(
-                            "qid=:qid AND sid=:sid",
-                            [':qid' => $aQuestion['qid'], ':sid' => $surveyId]
-                        );
-                        array_walk(
-                            $aQuestions,
-                            function ($oQuestion) use ($aQuestion, &$success) {
-                                $oQuestion->question_order = $aQuestion['question_order'];
-                                $oQuestion->gid = $aQuestion['gid'];
-                                if (safecount($oQuestion->subquestions) > 0) {
-                                    $aSubquestions = $oQuestion->subquestions;
-                                    array_walk(
-                                        $aSubquestions,
-                                        function ($oSubQuestion) use ($aQuestion, &$success) {
-                                            $oSubQuestion->gid = $aQuestion['gid'];
-                                            $success = $success && $oSubQuestion->save(true);
-                                        }
-                                    );
-                                }
-                                $success = $success && $oQuestion->save(true);
-                            }
+                        $success = $this->updateQuestionsForReorder(
+                            $aQuestion,
+                            $surveyId,
+                            $success
                         );
                     }
                 }
@@ -343,6 +362,41 @@ class QuestionGroupService
     }
 
     /**
+     * Gets array with question related parameters (qid, question_order, gid)
+     * and updates them in those questions and their subquestions
+     * @param array $aQuestion
+     * @param int $surveyId
+     * @param bool $success
+     * @return bool
+     */
+    private function updateQuestionsForReorder(array $aQuestion, int $surveyId, bool $success)
+    {
+        $aQuestions = $this->modelQuestion->findAll(
+            "qid=:qid AND sid=:sid",
+            [':qid' => $aQuestion['qid'], ':sid' => $surveyId]
+        );
+        array_walk(
+            $aQuestions,
+            function ($oQuestion) use ($aQuestion, &$success) {
+                $oQuestion->question_order = $aQuestion['question_order'];
+                $oQuestion->gid = $aQuestion['gid'];
+                if (safecount($oQuestion->subquestions) > 0) {
+                    $aSubquestions = $oQuestion->subquestions;
+                    array_walk(
+                        $aSubquestions,
+                        function ($oSubQuestion) use ($aQuestion, &$success) {
+                            $oSubQuestion->gid = $aQuestion['gid'];
+                            $success = $success && $oSubQuestion->save(true);
+                        }
+                    );
+                }
+                $success = $success && $oQuestion->save(true);
+            }
+        );
+        return $success;
+    }
+
+    /**
      * Method to store and filter questionGroupData for editing a questionGroup
      *
      * @param QuestionGroup $oQuestionGroup
@@ -355,7 +409,9 @@ class QuestionGroupService
     {
         $oQuestionGroup->setAttributes($aQuestionGroupData, false);
         if ($oQuestionGroup == null) {
-            throw new PersistErrorException("Object update failed, input array malformed or invalid");
+            throw new PersistErrorException(
+                "Object update failed, input array malformed or invalid"
+            );
         }
 
         $saved = $oQuestionGroup->save();
@@ -389,7 +445,9 @@ class QuestionGroupService
         $oQuestionGroup->setAttributes($aQuestionGroupData, false);
 
         if ($oQuestionGroup == null) {
-            throw new PersistErrorException("Object creation failed, input array malformed or invalid");
+            throw new PersistErrorException(
+                "Object creation failed, input array malformed or invalid"
+            );
         }
         // Always add at the end
         $oQuestionGroup->group_order = safecount($survey->groups) + 1;

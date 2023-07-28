@@ -17,7 +17,10 @@ class QuestionGroupDataTest extends TestBaseClass
             'language' => 'en'
         ]);
         $questionGroupService = (new QuestionGroupFactory())->make($mockSet);
-        $returnedGroup = $questionGroupService->getGroupData($mockSet->survey, ['group_name' => 'group1']);
+        $returnedGroup = $questionGroupService->getGroupData(
+            $mockSet->survey,
+            ['group_name' => 'group1']
+        );
 
         $this->assertEquals(
             'group1',
@@ -52,7 +55,10 @@ class QuestionGroupDataTest extends TestBaseClass
         ];
         $mockSet = (new QuestionGroupMockSetFactory())->make();
         $questionGroupService = (new QuestionGroupFactory())->make($mockSet);
-        $returnedBoolean = $questionGroupService->updateQuestionGroupLanguages($mockSet->questionGroup, $dataSet);
+        $returnedBoolean = $questionGroupService->updateQuestionGroupLanguages(
+            $mockSet->questionGroup,
+            $dataSet
+        );
 
         $this->assertTrue($returnedBoolean);
     }
@@ -65,7 +71,10 @@ class QuestionGroupDataTest extends TestBaseClass
         $mockSet = (new QuestionGroupMockSetFactory())->make();
         $questionGroupService = (new QuestionGroupFactory())->make($mockSet);
         $mockSet->survey->setAttributes(['sid' => 123456]);
-        $returnedGroup = $questionGroupService->newQuestionGroup(123456, ['gid' => 12]);
+        $returnedGroup = $questionGroupService->newQuestionGroup(
+            123456,
+            ['gid' => 12]
+        );
 
         $this->assertEquals(123456, $returnedGroup->sid);
         $this->assertEquals(1, $returnedGroup->group_order);
@@ -78,7 +87,10 @@ class QuestionGroupDataTest extends TestBaseClass
     {
         $mockSet = (new QuestionGroupMockSetFactory())->make();
         $questionGroupService = (new QuestionGroupFactory())->make($mockSet);
-        $returnedGroup = $questionGroupService->updateQuestionGroup($mockSet->questionGroup, []);
+        $returnedGroup = $questionGroupService->updateQuestionGroup(
+            $mockSet->questionGroup,
+            []
+        );
 
         $this->assertInstanceOf('QuestionGroup', $returnedGroup);
     }
@@ -91,7 +103,10 @@ class QuestionGroupDataTest extends TestBaseClass
         $mockSet = (new QuestionGroupMockSetFactory())->make();
         $mockSet->survey->setAttributes(['active' => 'N']);
         $questionGroupService = (new QuestionGroupFactory())->make($mockSet);
-        $returnedArray = $questionGroupService->reorderQuestionGroups(123456, []);
+        $returnedArray = $questionGroupService->reorderQuestionGroups(
+            123456,
+            []
+        );
 
         $this->assertEquals('', $returnedArray['message']);
         $this->assertEquals(true, $returnedArray['success']);

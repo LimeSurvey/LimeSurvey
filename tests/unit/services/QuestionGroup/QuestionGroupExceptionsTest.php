@@ -98,7 +98,11 @@ class QuestionGroupExceptionsTest extends TestBaseClass
         );
 
         $questionGroupService = $this->getMockedServiceForQuestionGroupPersistError();
-        $questionGroupService->updateGroup(1, 1, ['questionGroup' => []]);
+        $questionGroupService->updateGroup(
+            1,
+            1,
+            ['questionGroup' => []]
+        );
     }
 
     /**
