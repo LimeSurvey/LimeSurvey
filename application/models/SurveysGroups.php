@@ -441,6 +441,21 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
     }
 
     /**
+     * permission scope for this model
+     * @access public
+     * @param int $loginID
+     * @return CActiveRecord
+     */
+    public function permission($loginID)
+    {
+        $loginID = (int) $loginID;
+        $criteria = $this->getDBCriteria();
+        $criteriaPerm = self::getPermissionCriteria($loginID);
+        $criteria->mergeWith($criteriaPerm, 'AND');
+        return $this;
+    }
+
+    /**
      * Get Permission data for SurveysGroup
      * @return array
      */
