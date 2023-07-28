@@ -722,9 +722,9 @@ class UserManagementController extends LSBaseController
                 ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
             );
         }
-       if( !in_array($importFormat,['csv','json'])) {
-               throw new LSUserException(400, gT("Invalid format"));
-       }
+        if (!in_array($importFormat, ['csv', 'json'])) {
+            throw new LSUserException(400, gT("Invalid format"));
+        }
 
         switch ($importFormat) {
             case "json":
@@ -758,7 +758,9 @@ class UserManagementController extends LSBaseController
                 ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
             );
         }
-
+        if (!in_array($importFormat, ['csv', 'json'])) {
+            throw new LSUserException(400, gT("Invalid format"));
+        }
         $overwriteUsers = boolval(App()->getRequest()->getPost('overwrite'));
 
         switch ($importFormat) {
@@ -768,7 +770,6 @@ class UserManagementController extends LSBaseController
             case "csv":
             default:
                 $aNewUsers = UserParser::getDataFromCSV($_FILES);
-                $importFormat = 'csv'; /* Fix usage of importFormat in view */
         }
         if (empty($aNewUsers)) {
             Yii::app()->setFlashMessage(gT("No user definition found in file."), 'error');
