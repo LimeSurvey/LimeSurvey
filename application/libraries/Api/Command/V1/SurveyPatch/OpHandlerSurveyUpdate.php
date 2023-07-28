@@ -12,11 +12,11 @@ use Survey;
 
 class OpHandlerSurveyUpdate implements OpHandlerInterface
 {
-    protected $transformer = null;
-    protected $entity = null;
-    protected $model = null;
+    protected ?TransformerInterface $transformer = null;
+    protected string $entity;
+    protected CModel $model;
 
-    public function __construct($entity, CModel $model, TransformerInterface $transformer = null)
+    public function __construct(string $entity, CModel $model, TransformerInterface $transformer = null)
     {
         $this->entity = $entity;
         $this->model = $model;
@@ -36,7 +36,7 @@ class OpHandlerSurveyUpdate implements OpHandlerInterface
      * @param OpInterface $op
      * @throws OpHandlerException
      */
-    public function handle(OpInterface $op)
+    public function handle(OpInterface $op) :void
     {
         $survey = $this->model->findByPk($op->getEntityId());
         //here we should get the props from the op

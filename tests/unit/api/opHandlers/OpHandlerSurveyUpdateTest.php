@@ -22,7 +22,6 @@ protected OpInterface $op;
     public function testSurveyUpdate()
     {
         $this->initializePatcher();
-        $this->diContainer = $this->diFactory->make(ContainerInterface::class);
         // Import survey (it doesn't matter which survey)
         $surveyFile = self::$surveysFolder . '/limesurvey_survey_QuestionAttributeTestSurvey.lss';
         self::importSurvey($surveyFile);
@@ -37,6 +36,8 @@ protected OpInterface $op;
 
     private function initializePatcher()
     {
+        $this->diFactory = $this->createMock(FactoryInterface::class);
+        $this->diContainer = $this->diFactory->make(ContainerInterface::class);
         $this->op = OpStandard::factory(
             'survey',
             'update',
