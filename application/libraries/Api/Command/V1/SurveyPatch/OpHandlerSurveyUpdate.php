@@ -23,6 +23,12 @@ class OpHandlerSurveyUpdate implements OpHandlerInterface
         $this->transformer = $transformer;
     }
 
+    /**
+     * Checks if the operation is applicable for the given entity.
+     *
+     * @param OpInterface $op
+     * @return bool
+     */
     public function canHandle(OpInterface $op): bool
     {
         $isUpdateOperation = $op->getType()->getId() === OpTypeUpdate::ID;
@@ -30,13 +36,14 @@ class OpHandlerSurveyUpdate implements OpHandlerInterface
 
         return $isUpdateOperation && $isSurveyEntity;
     }
+
     /**
      * Saves the changes to the database.
      *
      * @param OpInterface $op
      * @throws OpHandlerException
      */
-    public function handle(OpInterface $op) :void
+    public function handle(OpInterface $op): void
     {
         $survey = $this->model->findByPk($op->getEntityId());
         //here we should get the props from the op
