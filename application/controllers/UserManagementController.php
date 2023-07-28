@@ -732,9 +732,9 @@ class UserManagementController extends LSBaseController
                 ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
             );
         }
-       if( !in_array($importFormat,['csv','json'])) {
-               throw new LSUserException(400, gT("Invalid format"));
-       }
+        if (!in_array($importFormat, ['csv', 'json'])) {
+            throw new LSUserException(400, gT("Invalid format"));
+        }
         switch ($importFormat) {
             case "json":
                 $importNote = sprintf(gT("Please make sure that your JSON arrays contain the fields '%s', '%s', '%s', '%s', and '%s'"), '<b>users_name</b>', '<b>full_name</b>', '<b>email</b>', '<b>lang</b>', '<b>password</b>');
