@@ -1,7 +1,5 @@
 <?php
 
-/*require_once "application/helpers/common_helper.php";
-require_once "application/helpers/admin/import_helper.php";*/
 Yii::import('application.helpers.replacements_helper', true);
 Yii::import('application.helpers.expressions.em_manager_helper', true);
 Yii::import('application.helpers.common_helper', true);
