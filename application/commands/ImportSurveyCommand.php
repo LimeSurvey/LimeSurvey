@@ -15,11 +15,23 @@ class ImportSurveyCommand extends CConsoleCommand
      * 
      * Sample command: php application/commands/console.php importsurvey import-file abcf.lss
      */
-    protected function importFile($filename)
+    protected function importFile($filename, $furtherParams)
     {
+        $params = [
+            "bTranslateLinkFields" => false,
+            "sNewSurveyName" => null,
+            "DestSurveyID" => null,
+        ];
+        if ($json = json_decode($furtherParams ?? "{}", true)) {
+            foreach ($params as $key => $value) {
+                $params[$key] = $json[$key] ?? $params[$key];
+            }
+        }
         importSurveyFile(
             Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . "templates" . DIRECTORY_SEPARATOR . $filename,
-            false
+            $params["bTranslateLinkFields"],
+            $params["sNewSurveyName"],
+            $params["DestSurveyID"],
         );
     }
 
@@ -41,7 +53,8 @@ class ImportSurveyCommand extends CConsoleCommand
                 if (!preg_match('/^[a-zA-Z0-9_\.]*$/', $filename)) {
                     throw new Exception("Your filename can only contain letters, digits and dot");
                 }
-                $this->importFile($filename);
+                $furtherParams = $sArgument[2] ?? null;
+                $this->importFile($filename, $furtherParams);
             } break;
         }
     }
