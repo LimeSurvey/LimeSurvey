@@ -366,13 +366,9 @@ class Database extends SurveyCommonAction
             'bounce_email' => $request->getPost('bounce_email'),
             'format' => $request->getPost('format'),
             'owner_id' => $request->getPost('owner_id'),
+            'gsid' => $request->getPost('gsid'),
             'template' => $request->getPost('template')
         ];
-        if (SurveysGroups::model()->permission(App()->user->getId())->findByPk(intval($request->getPost('gsid')))) {
-            $input['gsid'] = $request->getPost('gsid');
-        } else {
-            App()->setFlashMessage(gT("Invalid survey group"), 'warning');
-        }
         try {
             $surveyUpdater->update(
                 $surveyId,
