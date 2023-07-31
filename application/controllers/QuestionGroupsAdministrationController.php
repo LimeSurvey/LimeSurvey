@@ -274,10 +274,20 @@ class QuestionGroupsAdministrationController extends LSBaseController
     {
         $action = App()->request->getPost('action', '');
         $aData = $this->setSurveyIdAndObject([], (int) App()->request->getPost('sid', null));
-
-        if (!Permission::model()->hasSurveyPermission($aData['surveyid'], 'surveycontent', 'import')) {
+        if (
+            !Permission::model()->hasSurveyPermission(
+                $aData['surveyid'],
+                'surveycontent',
+                'import'
+            )
+        ) {
             App()->user->setFlash('error', gT("Access denied"));
-            $this->redirect(array('questionAdministration/listQuestions/surveyid/' . $aData['surveyid']));
+            $this->redirect(
+                $this->createUrl(
+                    'questionAdministration/listQuestions/',
+                    ['surveyid' => $aData['surveyid'], 'activeTab' => 'groups']
+                )
+            );
         }
 
         if ($action == 'importgroup') {
@@ -341,7 +351,12 @@ class QuestionGroupsAdministrationController extends LSBaseController
             $this->render('importGroup_view', $aData);
         } else {
             App()->user->setFlash('error', gT("Access denied"));
-            $this->redirect(array('questionAdministration/listQuestions/surveyid/' . $aData['surveyid']));
+            $this->redirect(
+                $this->createUrl(
+                    'questionAdministration/listQuestions/',
+                    ['surveyid' => $aData['surveyid'], 'activeTab' => 'groups']
+                )
+            );
         }
     }
 
