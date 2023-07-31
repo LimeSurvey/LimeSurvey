@@ -1,10 +1,20 @@
 <?php
 
-include "application/helpers/admin/import_helper.php";
+/*require_once "application/helpers/common_helper.php";
+require_once "application/helpers/admin/import_helper.php";*/
+Yii::import('application.helpers.replacements_helper', true);
+Yii::import('application.helpers.expressions.em_manager_helper', true);
+Yii::import('application.helpers.common_helper', true);
+Yii::import('application.helpers.admin.import_helper', true);
 
 class ImportSurveyCommand extends CConsoleCommand
 {
 
+    /**
+     * @param string $filename
+     * 
+     * Sample command: php application/commands/console.php importsurvey import-file abcf.lss
+     */
     protected function importFile($filename)
     {
         importSurveyFile(
@@ -13,6 +23,9 @@ class ImportSurveyCommand extends CConsoleCommand
         );
     }
 
+    /**
+     * @param array $aArguments
+     */
     public function run($sArgument)
     {
         if (!count($sArgument)) {
@@ -25,7 +38,7 @@ class ImportSurveyCommand extends CConsoleCommand
                     throw new Exception("You need to specify the file to import from");
                 }
                 $filename = $sArgument[1];
-                if (!preg_match('/^[a-zA-Z0-9\.]*$/', $filename)) {
+                if (!preg_match('/^[a-zA-Z0-9_\.]*$/', $filename)) {
                     throw new Exception("Your filename can only contain letters, digits and dot");
                 }
                 $this->importFile($filename);
