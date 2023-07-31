@@ -14,6 +14,7 @@ class ImportSurveyCommand extends CConsoleCommand
      * @param string $filename
      * 
      * Sample command: php application/commands/console.php importsurvey import-file abcf.lss
+     *                 php application/commands/console.php importsurvey import-file limesurvey_survey_979573.lss '{"bTranslateLinkFields": true, "sNewSurveyName": "Orsson", "DestSurveyID": 666999}'
      */
     protected function importFile($filename, $furtherParams)
     {
@@ -56,6 +57,7 @@ class ImportSurveyCommand extends CConsoleCommand
                 $furtherParams = $sArgument[2] ?? null;
                 $this->importFile($filename, $furtherParams);
             } break;
+            default: throw new Exception("Unsupported command");
         }
     }
 }
