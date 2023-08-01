@@ -30,7 +30,7 @@
             <div class='{{ aSurveyInfo.class.registerformcolrow }} col-md-6 col-12 mb-3 mb-md-0' {{ aSurveyInfo.attr.registerformcolrow }}>
                 <label for='register_firstname' class='{{ aSurveyInfo.class.registerformcolrowlabel }} control-label '>{{ gT("First name") }}</label>
                 <div class="">
-                    {{ C.Html.textField('register_firstname', aSurveyInfo.sFirstName, ({'id' : 'register_firstname','class' : 'form-control ls-important-field', 'placeholder' : gT('enter your first name') })) }}
+                    {{ C.Html.textField('register_firstname', aSurveyInfo.sFirstName, ({'id' : 'register_firstname','class' : 'form-control ls-important-field', 'placeholder' : gT('Enter your first name') })) }}
                 </div>
             </div>
 
@@ -38,7 +38,7 @@
             <div class='{{ aSurveyInfo.class.registerformcolrowb }} col-md-6 col-12' {{ aSurveyInfo.attr.registerformcolrowb }}>
                 <label {{ aSurveyInfo.attr.registerformcolrowblabel }}  class='{{ aSurveyInfo.class.registerformcolrowblabel }} control-label '>{{ gT("Last name") }}</label>
                 <div {{ aSurveyInfo.attr.registerformcolrowbdiv }} >
-                    {{ C.Html.textField('register_lastname', aSurveyInfo.sLastName, ({'id' : 'register_lastname', 'class' : 'form-control ls-important-field', 'placeholder' : gT('enter your last name')})) }}
+                    {{ C.Html.textField('register_lastname', aSurveyInfo.sLastName, ({'id' : 'register_lastname', 'class' : 'form-control ls-important-field', 'placeholder' : gT('Enter your last name')})) }}
                 </div>
             </div>
         </div>
@@ -46,7 +46,7 @@
         <div class='{{ aSurveyInfo.class.registerformcolrowc }} row' {{ aSurveyInfo.attr.registerformcolrowc }}>
             <label {{ aSurveyInfo.attr.registerformcolrowclabel }} class='{{ aSurveyInfo.class.registerformcolrowclabel }}  control-label'> {{ gT("E-mail") }} {{ include('./subviews/registration/required.twig') }}</label>
             <div {{ aSurveyInfo.attr.registerformcolrowcdiv }}  >
-                {{ C.Html.emailField('register_email', aSurveyInfo.sEmail, ({'id' : 'register_email','class' : 'form-control ls-important-field','required' : true, 'placeholder' : gT('enter e-mail address')})) }}
+                {{ C.Html.emailField('register_email', aSurveyInfo.sEmail, ({'id' : 'register_email','class' : 'form-control ls-important-field','required' : true, 'placeholder' : gT('Enter e-mail address')})) }}
             </div>
         </div>
 
@@ -64,14 +64,14 @@
         {# Captcha box #}
         {% if aSurveyInfo.bCaptcha %}
             <div class="{{ aSurveyInfo.class.registerformcaptcha }} " {{ aSurveyInfo.attr.maincolformdivb }}>
-                <label class='{{ aSurveyInfo.class.registerformcaptchalabel }} control-label ' {{ aSurveyInfo.attr.registerformcaptchalabel }} >{{ gT("Please solve the following equation") }} {{ include('./subviews/registration/required.twig') }}</label>
+                <label class='{{ aSurveyInfo.class.registerformcaptchalabel }} control-label ' {{ aSurveyInfo.attr.registerformcaptchalabel }} >{{ gT("Please solve the following equation:") }} {{ include('./subviews/registration/required.twig') }}</label>
                 <div class="row" {{ aSurveyInfo.attr.registerformcaptchadiv }}>
                     <div class="{{ aSurveyInfo.class.registerformcaptchadivb }} captcha-container col-xl-2 col-lg-3 col-md-12 align-items-center" {{ aSurveyInfo.attr.registerformcaptchadivb }}>
                             {{ renderCaptcha().renderOut() }}
                         <a href="#" class="btn btn-outline-secondary" id="reloadCaptcha" title="{{ gT("Reload captcha") }}" data-toggle="captcha"><i class="ri-refresh-line"></i></a>
                     </div>
                     <div class="col-xl-10 col-lg-9 col-md-12 captcha-input align-self-center">
-                        <input class='form-control ls-important-field {{ aSurveyInfo.class.registerformcaptchainput }}' {{ aSurveyInfo.attr.registerformcaptchainput }} placeholder="{{ gT("enter result here - numbers only") }}">
+                        <input class='form-control ls-important-field {{ aSurveyInfo.class.registerformcaptchainput }}' {{ aSurveyInfo.attr.registerformcaptchainput }} placeholder="{{ gT("Enter result here - numbers only") }}">
                     </div>
                 </div>
             </div>
