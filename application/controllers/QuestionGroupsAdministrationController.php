@@ -2,6 +2,8 @@
 
 use LimeSurvey\Models\Services\QuestionGroupService;
 
+use LimeSurvey\Models\Services\Exception\NotFoundException;
+
 class QuestionGroupsAdministrationController extends LSBaseController
 {
     /**
@@ -113,7 +115,7 @@ class QuestionGroupsAdministrationController extends LSBaseController
         try {
             $questionGroupService = $this->getQuestionGroupServiceClass();
             $aData['oQuestionGroup'] = $oQuestionGroup = $questionGroupService->getQuestionGroupObject($surveyid, $gid);
-        } catch (Exception $e) {
+        } catch (NotFoundException $e) {
             App()->user->setFlash('error', gT("Question group does not exists"));
             $this->redirect(App()->request->urlReferrer);
         }
