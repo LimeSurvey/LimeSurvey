@@ -61,17 +61,17 @@ class QuestionGroupService
      * @param int $surveyId the survey id
      * @param int $questionGroupId the question group id
      * @param array $input has the data for a question group, including an array for languages
-     *                     ['questionGroup']
-     *                          [gid]
-     *                          [sid]
-     *                          [group_order]
-     *                          [randomization_group]
-     *                          [grelevance]
-     *                     ['questionGroupI10N']
-     *                         [en]
-     *                            [group_name]
-     *                            [description]
-     *                         [...]    //more languages
+     *      ['questionGroup']
+     *          [gid]
+     *          [sid]
+     *          [group_order]
+     *          [randomization_group]
+     *          [grelevance]
+     *      ['questionGroupI10N']
+     *          [en]
+     *              [group_name]
+     *              [description]
+     *          [...]    //more languages
      * @return QuestionGroup
      * @throws NotFoundException
      * @throws PermissionDeniedException
@@ -116,18 +116,19 @@ class QuestionGroupService
      * Creates a question group and all the languages.
      *
      * @param int $surveyId the survey id
-     * @param array $input has the data for a question group, including an array for languages
-     *                     ['questionGroup']
-     *                          [gid]
-     *                          [sid]
-     *                          [group_order]
-     *                          [randomization_group]
-     *                          [grelevance]
-     *                     ['questionGroupI10N']
-     *                         [en]
-     *                            [group_name]
-     *                            [description]
-     *                         [...]    //more languages
+     * @param array $input has the data for a question group,
+     *  including an array for languages
+     *      ['questionGroup']
+     *          [gid]
+     *          [sid]
+     *          [group_order]
+     *          [randomization_group]
+     *          [grelevance]
+     *      ['questionGroupI10N']
+     *          [en]
+     *              [group_name]
+     *              [description]
+     *          [...]    //more languages
      * @return QuestionGroup
      * @throws NotFoundException
      * @throws PermissionDeniedException
@@ -146,8 +147,14 @@ class QuestionGroupService
                 'Permission denied'
             );
         }
-        $questionGroup = $this->newQuestionGroup($surveyId, $input['questionGroup']);
-        $this->updateQuestionGroupLanguages($questionGroup, $input['questionGroupI10N']);
+        $questionGroup = $this->newQuestionGroup(
+            $surveyId,
+            $input['questionGroup']
+        );
+        $this->updateQuestionGroupLanguages(
+            $questionGroup,
+            $input['questionGroupI10N']
+        );
 
         return $questionGroup;
     }
@@ -170,7 +177,7 @@ class QuestionGroupService
             )
         ) {
             throw new PermissionDeniedException(
-                gT("You are not authorized to delete questions.")
+                gT('You are not authorized to delete questions.')
             );
         }
 
@@ -193,7 +200,6 @@ class QuestionGroupService
      *
      * @param int $surveyId
      * @param int | null $questionGroupId ID of group
-     *
      * @return QuestionGroup
      * @throws NotFoundException
      */
@@ -201,7 +207,7 @@ class QuestionGroupService
     {
         $oQuestionGroup = $this->modelQuestionGroup->findByPk($questionGroupId);
         if (is_int($questionGroupId) && $oQuestionGroup === null) {
-            throw new NotFoundException(gT("Invalid ID"));
+            throw new NotFoundException(gT('Invalid ID'));
         } elseif ($oQuestionGroup == null) {
             $oQuestionGroup = $this->modelQuestionGroup;
             $oQuestionGroup->sid = $surveyId;
@@ -211,8 +217,10 @@ class QuestionGroupService
     }
 
     /**
-     * Returns question group data for dataprovider of gridview in "Overview question and groups".
-     * search input parameter is taken into account.
+     * Returns question group data for dataprovider of gridview in
+     * "Overview question and groups". Search input parameter is taken
+     * into account.
+     *
      * @param Survey $survey
      * @param array $questionGroupArray
      * @return QuestionGroup
@@ -231,13 +239,18 @@ class QuestionGroupService
     }
 
     /**
-     * imports an uploaded question group. Returns array of import results.
+     * Imports an uploaded question group. Returns array of import results.
+     *
      * @param int $surveyId
      * @param string $tmpDir
      * @param string $transLinksFields
      * @return array
      */
-    public function importQuestionGroup(int $surveyId, string $tmpDir, string $transLinksFields)
+    public function importQuestionGroup(
+        int $surveyId,
+        string $tmpDir,
+        string $transLinksFields
+    )
     {
         $importResults = [];
         $sFullFilepath = $tmpDir . DIRECTORY_SEPARATOR . randomChars(20);
@@ -251,7 +264,10 @@ class QuestionGroupService
             || $_FILES['the_file']['error'] == 2
         ) {
             $fatalerror = sprintf(
-                gT("Sorry, this file is too large. Only files up to %01.2f MB are allowed."),
+                gT(
+                    'Sorry, this file is too large. '
+                    . 'Only files up to %01.2f MB are allowed.'
+                ),
                 getMaximumFileUploadSize() / 1024 / 1024
             );
         } elseif (
@@ -261,7 +277,9 @@ class QuestionGroupService
             )
         ) {
             $fatalerror = gT(
-                "An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder."
+                'An error occurred uploading your file. '
+                . 'This may be caused by incorrect permissions '
+                . 'for the application /tmp folder.'
             );
         }
 
@@ -278,7 +296,8 @@ class QuestionGroupService
             } catch (Exception $e) {
                 $importResults['fatalerror'] = print_r($e->getMessage(), true);
             }
-            $this->proxyExpressionManager->setDirtyFlag(); // so refreshes syntax highlighting
+            // so refreshes syntax highlighting
+            $this->proxyExpressionManager->setDirtyFlag();
             fixLanguageConsistency($surveyId);
         }
         $importResults['extension'] = $sExtension;
@@ -294,7 +313,10 @@ class QuestionGroupService
      * @param array $dataSet array with languages
      * @return bool true if ALL languages could be saved, false otherwise
      */
-    public function updateQuestionGroupLanguages(QuestionGroup $oQuestionGroup, array $dataSet)
+    public function updateQuestionGroupLanguages(
+        QuestionGroup $oQuestionGroup,
+        array $dataSet
+    )
     {
         $storeValid = true;
 
@@ -370,7 +392,11 @@ class QuestionGroupService
      * @param bool $success
      * @return bool
      */
-    private function updateQuestionsForReorder(array $aQuestion, int $surveyId, bool $success)
+    private function updateQuestionsForReorder(
+        array $aQuestion,
+        int $surveyId,
+        bool $success
+    )
     {
         $aQuestions = $this->modelQuestion->findAll(
             "qid=:qid AND sid=:sid",
@@ -406,7 +432,10 @@ class QuestionGroupService
      * @return QuestionGroup
      * @throws PersistErrorException
      */
-    public function updateQuestionGroup(QuestionGroup $oQuestionGroup, array $aQuestionGroupData)
+    public function updateQuestionGroup(
+        QuestionGroup $oQuestionGroup,
+        array $aQuestionGroupData
+    )
     {
         $oQuestionGroup->setAttributes($aQuestionGroupData, false);
         if ($oQuestionGroup == null) {
