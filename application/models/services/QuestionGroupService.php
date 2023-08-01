@@ -2,16 +2,17 @@
 
 namespace LimeSurvey\Models\Services;
 
-use LimeSurvey\Models\Services\Proxy\ProxyExpressionManager;
-use LimeSurvey\Models\Services\Proxy\ProxyQuestionGroup;
 use LSYii_Application;
-use phpDocumentor\Reflection\Types\Boolean;
 use Survey;
 use Permission;
 use Question;
 use QuestionGroup;
 use QuestionGroupL10n;
 use Exception;
+use LimeSurvey\Models\Services\{
+    Proxy\ProxyExpressionManager,
+    Proxy\ProxyQuestionGroup
+};
 use LimeSurvey\Models\Services\Exception\{
     PersistErrorException,
     NotFoundException,
@@ -20,7 +21,7 @@ use LimeSurvey\Models\Services\Exception\{
 
 /**
  * @TODO There is a separate service GroupHelper.php whose function(s)
- * @TODO should be moved here in the future
+ *  should be moved here in the future
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  */
 class QuestionGroupService
