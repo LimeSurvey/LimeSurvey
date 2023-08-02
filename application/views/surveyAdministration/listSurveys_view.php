@@ -111,9 +111,9 @@ if (Yii::app()->session['templatetoken'] ?? null) {
                     sendRequest("POST", "/index.php?r=admin/installTemplateByToken", function() {
                         if (this.readyState === 4) {
                             if (this.responseText === 'success') {
-                                sendRequest("/index.php?r=admin/removeTemplateToken", undefined, true, `${LS.data.csrfTokenName}=${LS.data.csrfToken}`);
+                                jQuery('#dialog-close').click();
                             } else {
-                                document.getElementById('#dialog').innerHTML = 'Failed to install template';
+                                document.getElementById('dialog').innerHTML = this.responseText;
                             }
                         }
                     }, true, `${LS.data.csrfTokenName}=${LS.data.csrfToken}`);

@@ -127,11 +127,18 @@ class AdminController extends LSYii_Controller
 
     public function actionInstallTemplateByToken()
     {
-        //exec("ls", $output);
         if (isset(Yii::app()->session['templatetoken'])) {
             Yii::import('application.helpers.admin.token_helper', true);
             $filename = decodeFilename(Yii::app()->session['templatetoken']);
-            echo "php application/commands/console.php importsurvey import-file {$filename}";
+            $this->actionRemoveTemplateToken();
+            if (!preg_match('/^[a-zA-Z0-9_\.]*$/', $filename)) {
+                echo "badly formatted file";
+            } else {
+                exec("php application/commands/console.php importsurvey import-file {$filename}", $output);
+                echo ((!implode("", $output)) ? "success" : "failed to import file");
+            }
+        } else {
+            echo "Token was not found";
         }
     }
 
