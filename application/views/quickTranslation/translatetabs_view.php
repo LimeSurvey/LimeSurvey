@@ -48,7 +48,10 @@ extract($tabData);
             //table content should be rendered here translatefields_view
             //content of translatefields_view
             if (isset($singleTabFieldsData)) {
+                $allFieldsEmpty = false;
                 foreach ($singleTabFieldsData as $fieldData) {
+                    // @todo: use all_fields_empty in this loop?
+                    $allFieldsEmpty = $fieldData['all_fields_empty'] && $allFieldsEmpty;
                     $textfrom = $fieldData['fieldData']['textfrom'];
                     $textfrom2 = $fieldData['fieldData']['textfrom2'];
                     foreach ($fieldData['translateFields'] as $field) {
@@ -65,7 +68,7 @@ extract($tabData);
     </div>
     <?php
     if (isset($singleTabFieldsData)) {
-        if ($singleTabFieldsData[0]['all_fields_empty']) : ?>
+        if ($allFieldsEmpty) : ?>
             <p><?php eT("Nothing to translate on this page"); ?></p><br/>
         <?php endif; ?>
         <input type='hidden' name='<?php echo $type; ?>_size' value='<?php echo count($singleTabFieldsData) - 1; ?>'/>

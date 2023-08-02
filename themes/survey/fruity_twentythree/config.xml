@@ -104,7 +104,8 @@
         </brandlogofile>
         <!-- fonts -->
         <!--  When adding new items, please keep them ordered alphabetically -->
-        <font type="dropdown" category="Fonts" width="12" title="Fonts" parent="font">ibm-sans
+        <font type="dropdown" category="Fonts" width="12" title="Fonts" parent="font">
+            ibm-sans
             <dropdownoptions>
                 <optgroup label="User browser">
                     <option class="font-arial           " value="arial" data-font-package="websafe">Arial</option>
@@ -133,11 +134,14 @@
             </dropdownoptions>
         </font>
         <cssframework type="dropdown" category="Simple options" width="12" title="Variations" parent="cssframework">
+            Apple
             <dropdownoptions>
-                <option data-value="css/variations/theme_apple.css" value="apple">Apple</option>
-                <option data-value="css/variations/theme_blueberry.css" value="blueberry">Blueberry</option>
-                <option data-value="css/variations/theme_grape.css" value="grape">Grape</option>
-                <option data-value="css/variations/theme_mango.css" value="mango">Mango</option>
+                <optgroup>
+                    <option data-value="css/variations/theme_apple.css" value="apple">Apple</option>
+                    <option data-value="css/variations/theme_blueberry.css" value="blueberry">Blueberry</option>
+                    <option data-value="css/variations/theme_grape.css" value="grape">Grape</option>
+                    <option data-value="css/variations/theme_mango.css" value="mango">Mango</option>
+                </optgroup>
             </dropdownoptions>
         </cssframework>
     </options>
