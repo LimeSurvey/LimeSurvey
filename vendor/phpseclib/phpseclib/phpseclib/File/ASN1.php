@@ -21,7 +21,6 @@
 
 namespace phpseclib3\File;
 
-use DateTime;
 use phpseclib3\Common\Functions\Strings;
 use phpseclib3\File\ASN1\Element;
 use phpseclib3\Math\BigInteger;
@@ -205,7 +204,7 @@ abstract class ASN1
             return null;
         }
 
-        return [self::decode_ber($encoded)];
+        return [$decoded];
     }
 
     /**

@@ -304,7 +304,7 @@ var UserManagement = function () {
             var modalSize = $(this).data('modalsize');
             openModal(href, modalSize);
         });
-        bindListItemclick();
+ 
     };
 
     var bindModals = function () {

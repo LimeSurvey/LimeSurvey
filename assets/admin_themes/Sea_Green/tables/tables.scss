@@ -1,4 +1,6 @@
 table {
+    border-collapse: separate;
+    border-spacing: 0;
     .ls-sticky-column {
         &:first-child {
             position         : sticky;

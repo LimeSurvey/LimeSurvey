@@ -21,7 +21,7 @@ $listOfActions = $this->render('listOfActions', get_defined_vars(), true);
     'dropDownIcon' => 'ri-arrow-down-s-fill',
     'dropDownContent' => $listOfActions,
     'htmlOptions' => [
-    'class' => 'btn btn-outline-secondary btntooltip',
+    'class' => 'btn btn-outline-secondary btntooltip disabled massiveAction',
     ],
     ]); ?>
 

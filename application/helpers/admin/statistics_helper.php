@@ -452,7 +452,9 @@ function buildSelects($allfields, $surveyid, $language)
                 $pvParts = explode(",", str_replace('*', '%', str_replace(' OR ', ',', (string) $_POST[$pv])));
                 if (is_array($pvParts) and count($pvParts)) {
                     foreach ($pvParts as $pvPart) {
-                        $selectSubs[] = Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv))) . " LIKE " . App()->db->quoteValue($pvPart);
+                        $columnName = substr($pv, 1, strlen($pv));
+                        $encryptedValue = getEncryptedCondition($responseModel, $columnName, $pvPart);
+                        $selectSubs[] = Yii::app()->db->quoteColumnName($columnName) . " LIKE " . App()->db->quoteValue($encryptedValue);
                     }
                     if (count($selectSubs)) {
                         $selects[] = ' (' . implode(' OR ', $selectSubs) . ') ';
@@ -746,10 +748,7 @@ class statistics_helper
             list($qsid, $qgid, $qqid) = explode("X", substr($rt, 1, strlen($rt)), 3);
 
             //select details for this question
-            /**
-            FIXME $iQuestionIDlength not defined!!
-             */
-            $nresult = Question::model()->find('language=:language AND parent_qid=0 AND qid=:qid', array(':language' => $language, ':qid' => substr($qqid, 0, $iQuestionIDlength)));
+            $nresult = Question::model()->find('language=:language AND parent_qid=0 AND qid=:qid', array(':language' => $language, ':qid' => substr($qqid, 0)));
             $qtitle = $nresult->title;
             $qtype = $nresult->type;
             $qquestion = flattenText($nresult->question);
@@ -860,10 +859,7 @@ class statistics_helper
         elseif ($sQuestionType == "N" || $sQuestionType == "K") {
             //NUMERICAL TYPE
             //Zero handling
-            if (!isset($excludezeros)) {
-                //If this hasn't been set, set it to on as default:
-                $excludezeros = 1;
-            }
+            $excludezeros = 1;
             //check last character, greater/less/equals don't need special treatment
             if (substr($rt, -1) == "G" || substr($rt, -1) == "L" || substr($rt, -1) == "=") {
                 //DO NOTHING
@@ -1120,8 +1116,6 @@ class statistics_helper
                         default:
                             break;
                     }
-
-                    unset($showem);
                 }
             }    //end else -> check last character, greater/less/equals don't need special treatment
         }    //end else-if -> multiple numerical types
@@ -1455,6 +1449,7 @@ class statistics_helper
      * @param integer $usegraph
      * @param boolean $browse
      * @return array
+     * @psalm-suppress UndefinedVariable
      */
     protected function displaySimpleResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $usegraph, $browse, $sLanguage)
     {
@@ -1466,43 +1461,21 @@ class statistics_helper
 
         //loop though the array which contains all answer data
         $ColumnName_RM = array();
-        //check filter option
-        $criteria = new CDbCriteria();
-        if (incompleteAnsFilterState() == "incomplete") {
-            $criteria->addCondition("submitdate is null");
-        } elseif (incompleteAnsFilterState() == "complete") {
-            $criteria->addCondition("submitdate is not null");
-        }
-        // prepare and decrypt data
-        $oResponses = Response::model($surveyid)->findAll($criteria);
-        foreach ($oResponses as $key => $oResponse) {
-            $oResponses[$key] = $oResponse->decrypt();
-        }
+
+        $responseModel = SurveyDynamic::model($surveyid);
 
         foreach ($outputs['alist'] as $al) {
-            $row = 0;
+
             if (isset($al[2]) && $al[2]) {
                 //handling for "other" option
                 if ($al[0] == gT("Other")) {
                     if ($outputs['qtype'] == Question::QT_EXCLAMATION_LIST_DROPDOWN || $outputs['qtype'] == Question::QT_L_LIST) {
-                        // It is better for single choice question types to filter on the number of '-oth-' entries, than to
-                        // just count the number of 'other' values - that way with failing Javascript the statistics don't get messed up
-                        /* This query selects a count of responses where "other" has been selected */
-                        foreach ($oResponses as $oResponse) {
-                            $otherValueColumn = $al[2];
-                            $answerOptionColumn = substr((string) $otherValueColumn, 0, strlen((string) $otherValueColumn) - 5);
-                            if (!empty($oResponse->$answerOptionColumn) && $oResponse->$answerOptionColumn == '-oth-') {
-                                $row += 1;
-                            }
-                        }
+                        $columnName = substr((string) $al[2], 0, strlen((string) $al[2]) - 5);
+                        $othEncrypted = getEncryptedCondition($responseModel, $columnName, '-oth-');
+                        $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ".Yii::app()->db->quoteColumnName($columnName)."='$othEncrypted'";
                     } else {
-                        //get data - select a count of responses where no answer is provided
-                        foreach ($oResponses as $oResponse) {
-                            $sResponseColumn = $al[2];
-                            if ($oResponse->$sResponseColumn != '') {
-                                $row += 1;
-                            }
-                        }
+                        $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ";
+                        $query .= ($sDatabaseType == "mysql") ?  Yii::app()->db->quoteColumnName($al[2])." != ''" : "NOT (".Yii::app()->db->quoteColumnName($al[2])." LIKE '')";
                     }
                 }
 
@@ -1519,43 +1492,25 @@ class statistics_helper
 
                     //free text answers
                     if ($al[0] == "Answer") {
-                        foreach ($oResponses as $oResponse) {
-                            $sResponseColumn = $al[2];
-                            if ($oResponse->$sResponseColumn != '') {
-                                $row += 1;
-                            }
-                        }
+                        $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ";
+                        $query .= ($sDatabaseType == "mysql") ?  Yii::app()->db->quoteColumnName($al[2])." != ''" : "NOT (".Yii::app()->db->quoteColumnName($al[2])." LIKE '')";
                     }
                     //"no answer" handling
                     elseif ($al[0] == "NoAnswer") {
-                        foreach ($oResponses as $oResponse) {
-                            $sResponseColumn = $al[2];
-                            if ($oResponse->$sResponseColumn === '') {
-                                $row += 1;
-                            }
-                        }
+                        $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ( ";
+                        $query .= ($sDatabaseType == "mysql") ?  Yii::app()->db->quoteColumnName($al[2])." = '')" : " (".Yii::app()->db->quoteColumnName($al[2])." LIKE ''))";
                     }
                 } elseif ($outputs['qtype'] == Question::QT_O_LIST_WITH_COMMENT) {
-                    foreach ($oResponses as $oResponse) {
-                        $sResponseColumn = $al[2];
-                        if ($oResponse->$sResponseColumn != '') {
-                            $row += 1;
-                        }
-                    }
+                    $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ( ";
+                    $query .= ($sDatabaseType == "mysql") ?  Yii::app()->db->quoteColumnName($al[2])." <> '')" : " (".Yii::app()->db->quoteColumnName($al[2])." NOT LIKE ''))";
                 // all other question types
                 } else {
-                    foreach ($oResponses as $oResponse) {
-                        $sResponseColumn = $al[2];
-                        if (substr((string) $rt, 0, 1) == "R") {
-                            $sSubquestionCode = $al[0];
-                            if ($oResponse->$sResponseColumn == $sSubquestionCode) {
-                                $row += 1;
-                            }
-                        } else {
-                            if ($oResponse->$sResponseColumn == 'Y') {
-                                $row += 1;
-                            }
-                        }
+                    $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ".Yii::app()->db->quoteColumnName($al[2])." =";
+                    //ranking question?
+                    if (substr((string) $rt, 0, 1) == "R") {
+                        $query .= " '$al[0]'";
+                    } else {
+                        $query .= " 'Y'";
                     }
                 }
             }    //end if -> alist set
@@ -1563,12 +1518,12 @@ class statistics_helper
             else {
                 if ($al[0] != "") {
                     //get more data
-                    foreach ($oResponses as $oResponse) {
-                        $sResponseColumn = $rt;
-                        $sSubquestionCode = $al[0];
-                        if ($oResponse->$sResponseColumn == $sSubquestionCode) {
-                            $row += 1;
-                        }
+                    $sDatabaseType = Yii::app()->db->getDriverName();
+                    if ($sDatabaseType == 'mssql' || $sDatabaseType == 'sqlsrv' || $sDatabaseType == 'dblib') {
+                        // mssql cannot compare text blobs so we have to cast here
+                        $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE cast(".Yii::app()->db->quoteColumnName($rt)." as varchar)= '$al[0]'";
+                    } else {
+                        $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ".Yii::app()->db->quoteColumnName($rt)." = '$al[0]'";
                     }
                 } else {
                     // This is for the 'NoAnswer' case
@@ -1579,19 +1534,27 @@ class statistics_helper
                     //  ==> value is ''
                     // * NoAnswer due to conditions, or a page not displayed
                     //  ==> value is NULL
-                    foreach ($oResponses as $oResponse) {
-                        $sResponseColumn = $rt;
-                        if ($oResponse->$sResponseColumn === '' || $oResponse->$sResponseColumn == ' ') {
-                            $row += 1;
-                        }
+                    if ($sDatabaseType == 'mssql' || $sDatabaseType == 'sqlsrv' || $sDatabaseType == 'dblib') {
+                        // mssql cannot compare text blobs so we have to cast here
+                        $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ( "
+                            . "cast(".Yii::app()->db->quoteColumnName($rt)." as varchar) = '' "
+                            . "OR cast(".Yii::app()->db->quoteColumnName($rt)." as varchar) = ' ' )";
+                    } else {
+                        $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ( "
+                            . " ".Yii::app()->db->quoteColumnName($rt)." = '' "
+                            . "OR ".Yii::app()->db->quoteColumnName($rt)." = ' ') ";
                     }
                 }
             }
+
+            if (incompleteAnsFilterState() == "incomplete") {$query .= " AND submitdate is null"; } elseif (incompleteAnsFilterState() == "complete") {$query .= " AND submitdate is not null"; }
 
             //check for any "sql" that has been passed from another script
             if (!empty($sql)) {
                 $query .= " AND $sql";
             }
+
+            $row = (int) Yii::app()->db->createCommand($query)->queryScalar();
 
             //store temporarily value of answer count of question type '5' and 'A'.
             $tempcount = -1; //count can't be less han zero
@@ -2166,8 +2129,7 @@ class statistics_helper
      * @param mixed $surveyid
      * @param mixed $sql
      * @param integer $usegraph
-     *
-     *
+     * @psalm-suppress UndefinedVariable
      */
     protected function displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $usegraph, $browse, $sLanguage)
     {
@@ -2231,27 +2193,9 @@ class statistics_helper
         $tableXLS  = array();
         $tablePDF2 = array();
 
-        //check filter option
-        $criteria = new CDbCriteria();
-        if (incompleteAnsFilterState() == "incomplete") {
-            $criteria->addCondition("submitdate is null");
-        } elseif (incompleteAnsFilterState() == "complete") {
-            $criteria->addCondition("submitdate is not null");
-        }
-
-        //check for any "sql" that has been passed from another script
-        if (!empty($sql)) {
-            $criteria->addCondition($sql);
-        }
-
-        // prepare and decrypt data
-        $oResponses = Response::model($surveyid)->findAll($criteria);
-        foreach ($oResponses as $key => $oResponse) {
-            $oResponses[$key] = $oResponse->decrypt();
-        }
+        $responseModel = SurveyDynamic::model($surveyid);
 
         foreach ($outputs['alist'] as $al) {
-            $row = 0;
             //picks out answer list ($outputs['alist']/$al)) that come from the multiple list above
             if (isset($al[2]) && $al[2]) {
                 //handling for "other" option
@@ -2260,21 +2204,13 @@ class statistics_helper
                         // It is better for single choice question types to filter on the number of '-oth-' entries, than to
                         // just count the number of 'other' values - that way with failing Javascript the statistics don't get messed up
                         /* This query selects a count of responses where "other" has been selected */
-                        foreach ($oResponses as $oResponse) {
-                            $otherValueColumn = $al[2];
-                            $answerOptionColumn = substr((string) $otherValueColumn, 0, strlen((string) $otherValueColumn) - 5);
-                            if (!empty($oResponse->$answerOptionColumn) && $oResponse->$answerOptionColumn == '-oth-') {
-                                $row += 1;
-                            }
-                        }
+                        $columnName = substr((string) $al[2], 0, strlen((string) $al[2]) - 5);
+                        $othEncrypted = getEncryptedCondition($responseModel, $columnName, '-oth-');
+                        $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ".Yii::app()->db->quoteColumnName($columnName)."='{$othEncrypted}'";
                     } else {
                         //get data - select a count of responses where no answer is provided
-                        foreach ($oResponses as $oResponse) {
-                            $sResponseColumn = $al[2];
-                            if ($oResponse->$sResponseColumn != '') {
-                                $row += 1;
-                            }
-                        }
+                        $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ";
+                        $query .= ($sDatabaseType == "mysql") ?  Yii::app()->db->quoteColumnName($al[2])." != ''" : "NOT (".Yii::app()->db->quoteColumnName($al[2])." LIKE '')";
                     }
                 }
 
@@ -2291,43 +2227,26 @@ class statistics_helper
 
                     //free text answers
                     if ($al[0] == "Answer") {
-                        foreach ($oResponses as $oResponse) {
-                            $sResponseColumn = $al[2];
-                            if ($oResponse->$sResponseColumn != '') {
-                                $row += 1;
-                            }
-                        }
+                        $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ";
+                        $query .= ($sDatabaseType == "mysql") ?  Yii::app()->db->quoteColumnName($al[2])." != ''" : "NOT (".Yii::app()->db->quoteColumnName($al[2])." LIKE '')";
                     }
                     //"no answer" handling
                     elseif ($al[0] == "NoAnswer") {
-                        foreach ($oResponses as $oResponse) {
-                            $sResponseColumn = $al[2];
-                            if ($oResponse->$sResponseColumn === '') {
-                                $row += 1;
-                            }
-                        }
+                        $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ( ";
+                        $query .= ($sDatabaseType == "mysql") ?  Yii::app()->db->quoteColumnName($al[2])." = '')" : " (".Yii::app()->db->quoteColumnName($al[2])." LIKE ''))";
                     }
                 } elseif ($outputs['qtype'] == Question::QT_O_LIST_WITH_COMMENT) {
-                    foreach ($oResponses as $oResponse) {
-                        $sResponseColumn = $al[2];
-                        if ($oResponse->$sResponseColumn != '') {
-                            $row += 1;
-                        }
-                    }
+                    $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ( ";
+                    $query .= ($sDatabaseType == "mysql") ?  Yii::app()->db->quoteColumnName($al[2])." <> '')" : " (".Yii::app()->db->quoteColumnName($al[2])." NOT LIKE ''))";
                 // all other question types
                 } else {
-                    foreach ($oResponses as $oResponse) {
-                        $sResponseColumn = $al[2];
-                        if (substr((string) $rt, 0, 1) == "R") {
-                            $sSubquestionCode = $al[0];
-                            if ($oResponse->$sResponseColumn == $sSubquestionCode) {
-                                $row += 1;
-                            }
-                        } else {
-                            if ($oResponse->$sResponseColumn == 'Y') {
-                                $row += 1;
-                            }
-                        }
+                    $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ".Yii::app()->db->quoteColumnName($al[2])." =";
+
+                    //ranking question?
+                    if (substr((string) $rt, 0, 1) == "R") {
+                        $query .= " '$al[0]'";
+                    } else {
+                        $query .= " 'Y'";
                     }
                 }
             }    //end if -> alist set
@@ -2335,12 +2254,13 @@ class statistics_helper
             else {
                 if ($al[0] != "") {
                     //get more data
-                    foreach ($oResponses as $oResponse) {
-                        $sResponseColumn = $rt;
-                        $sSubquestionCode = $al[0];
-                        if ($oResponse->$sResponseColumn == $sSubquestionCode) {
-                            $row += 1;
-                        }
+                    $sDatabaseType = Yii::app()->db->getDriverName();
+                    $encryptedValue = getEncryptedCondition($responseModel, $rt, $al[0]);
+                    if ($sDatabaseType == 'mssql' || $sDatabaseType == 'sqlsrv' || $sDatabaseType == 'dblib') {
+                        // mssql cannot compare text blobs so we have to cast here
+                        $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE cast(".Yii::app()->db->quoteColumnName($rt)." as varchar)= '$encryptedValue'";
+                    } else {
+                        $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ".Yii::app()->db->quoteColumnName($rt)." = '$encryptedValue'";
                     }
                 } else {
                     // This is for the 'NoAnswer' case
@@ -2351,13 +2271,39 @@ class statistics_helper
                     //  ==> value is ''
                     // * NoAnswer due to conditions, or a page not displayed
                     //  ==> value is NULL
-                    foreach ($oResponses as $oResponse) {
-                        $sResponseColumn = $rt;
-                        if ($oResponse->$sResponseColumn === '' || $oResponse->$sResponseColumn == ' ') {
-                            $row += 1;
-                        }
+                    if ($sDatabaseType == 'mssql' || $sDatabaseType == 'sqlsrv' || $sDatabaseType == 'dblib') {
+                        // mssql cannot compare text blobs so we have to cast here
+                        //$query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE (".sanitize_int($rt)." IS NULL "
+                        $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ( "
+                        //                                    . "OR cast(".sanitize_int($rt)." as varchar) = '' "
+                        . "cast(".Yii::app()->db->quoteColumnName($rt)." as varchar) = '' "
+                        . "OR cast(".Yii::app()->db->quoteColumnName($rt)." as varchar) = ' ' )";
+                    } elseif ($sDatabaseType == 'pgsql') {
+                        $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ( "
+                        //                                    . "OR ".sanitize_int($rt)." = '' "
+                        . " ".Yii::app()->db->quoteColumnName($rt)."::text = '' "
+                        . "OR ".Yii::app()->db->quoteColumnName($rt)."::text = ' ') ";
+                    } else {
+                        $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ( "
+                        //                                    . "OR ".sanitize_int($rt)." = '' "
+                        . " ".Yii::app()->db->quoteColumnName($rt)." = '' "
+                        . "OR ".Yii::app()->db->quoteColumnName($rt)." = ' ') ";
                     }
                 }
+            }
+
+            //check filter option
+            if (incompleteAnsFilterState() == "incomplete") {$query .= " AND submitdate is null"; } elseif (incompleteAnsFilterState() == "complete") {$query .= " AND submitdate is not null"; }
+
+            //check for any "sql" that has been passed from another script
+            if (!empty($sql)) {$query .= " AND $sql"; }
+
+            //get data
+            try {
+                $row = Yii::app()->db->createCommand($query)->queryScalar();
+            } catch (Exception $ex) {
+                $row = 0;
+                Yii::app()->setFlashMessage('Faulty query: '.htmlspecialchars($query), 'error');
             }
 
             //store temporarily value of answer count of question type '5' and 'A'.
@@ -3547,6 +3493,7 @@ class statistics_helper
 
     /**
      * Generates statistics with subviews
+     * @psalm-suppress UndefinedVariable
      */
     public function generate_html_chartjs_statistics($surveyid, $allfields, $q2show = 'all', $usegraph = 0, $outputType = 'pdf', $pdfOutput = 'I', $sLanguageCode = null, $browse = true)
     {
@@ -3772,6 +3719,7 @@ class statistics_helper
      * @param string $outputType Optional - Can be xls, html or pdf - Defaults to pdf
      * @param mixed $browse  Show browse buttons
      * @return string
+     * @psalm-suppress UndefinedVariable
      */
     public function generate_statistics($surveyid, $allfields, $q2show = 'all', $usegraph = 0, $outputType = 'pdf', $outputTarget = 'I', $sLanguageCode = null, $browse = true)
     {

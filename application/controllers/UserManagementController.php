@@ -69,9 +69,8 @@ class UserManagementController extends LSBaseController
 
 
         $aData['topbar']['title'] = gT('User management');
-
+        $aData['topbar']['backLink'] = App()->createUrl('admin/index');
         $aData['topbar']['middleButtons'] = $this->renderPartial('partial/topbarBtns/leftSideButtons', [], true);
-        $aData['topbar']['rightButtons'] = $this->renderPartial('partial/topbarBtns/rightSideButtons', [], true);
 
         //this is really important, so we have the aData also before rendering the content
         $this->aData = $aData;
@@ -371,7 +370,7 @@ class UserManagementController extends LSBaseController
             }
         }
 
-        $message = '';
+        $messages = [];
         $transferTo = Yii::app()->request->getPost('transfer_surveys_to');
 
         if (empty($transferTo)) {
@@ -405,31 +404,18 @@ class UserManagementController extends LSBaseController
             $iSurveysTransferred = Survey::model()->updateAll(array('owner_id' => $transferTo), 'owner_id=' . $userId);
             if ($iSurveysTransferred) {
                 $sTransferredTo = User::model()->findByPk($transferTo)->users_name;
-                $message = sprintf(gT("All of the user's surveys were transferred to %s."), $sTransferredTo) . " ";
+                $messages[] = sprintf(gT("All of the user's surveys were transferred to %s."), $sTransferredTo);
             }
         }
 
-        $siteAdminName = User::model()->findByPk(1)->users_name;
+        $userManager = new UserManager();
+        $result = $userManager->deleteUser($userId);
+        $messages = array_merge($messages, $result->getRawMessages());
 
-        // Transfer any User Groups owned by this user to site's admin
-        $userGroupsTranferred = UserGroup::model()->updateAll(['owner_id' => 1], 'owner_id = :owner_id', [':owner_id' => $userId]);
-        if ($userGroupsTranferred) {
-            $message .= sprintf(gT("All of the user's user groups were transferred to %s."), $siteAdminName) . " ";
-        }
-
-        // Transfer any Participants owned by this user to site's admin
-        $participantsTranferred = Participant::model()->updateAll(['owner_uid' => 1], 'owner_uid = :owner_uid', [':owner_uid' => $userId]);
-        if ($participantsTranferred) {
-            $message .= sprintf(gT("All participants owned by this user were transferred to %s."), $siteAdminName) . " ";
-        }
-
-        //todo REFACTORING user permissions should be deleted also ... (in table permissions)
-        $oUser->delete();
-        $message .= gT("User successfully deleted.");
         return App()->getController()->renderPartial('/admin/super/_renderJson', [
             'data' => [
-                'success' => true,
-                'message' => $message,
+                'success' => $result->isSuccess(),
+                'message' => implode(" ", $messages),
             ]
         ]);
     }
@@ -449,11 +435,7 @@ class UserManagementController extends LSBaseController
             );
         }
         $userId = Yii::app()->request->getParam('userid');
-        $sUserName = flattenText(Yii::app()->request->getParam("user"));
-
         $aData['userId'] = $userId;
-        $aData['sUserName'] = $sUserName;
-
         return $this->renderPartial('partial/confirmuserdelete', $aData);
     }
 
@@ -736,15 +718,20 @@ class UserManagementController extends LSBaseController
                 ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
             );
         }
-
-        $importNote = sprintf(gT("Please make sure that your CSV contains the fields '%s', '%s', '%s', '%s', and '%s'"), '<b>users_name</b>', '<b>full_name</b>', '<b>email</b>', '<b>lang</b>', '<b>password</b>');
-        $allowFileType = ".csv";
-
-        if ($importFormat == 'json') {
-            $importNote = sprintf(gT("Please make sure that your JSON arrays contain the fields '%s', '%s', '%s', '%s', and '%s'"), '<b>users_name</b>', '<b>full_name</b>', '<b>email</b>', '<b>lang</b>', '<b>password</b>');
-            $allowFileType = ".json,application/json";
+        if (!in_array($importFormat, ['csv', 'json'])) {
+            throw new LSUserException(400, gT("Invalid format"));
         }
 
+        switch ($importFormat) {
+            case "json":
+                $importNote = sprintf(gT("Please make sure that your JSON arrays contain the fields '%s', '%s', '%s', '%s', and '%s'"), '<b>users_name</b>', '<b>full_name</b>', '<b>email</b>', '<b>lang</b>', '<b>password</b>');
+                $allowFileType = ".json,application/json";
+                break;
+            case "csv":
+            default:
+                $importNote = sprintf(gT("Please make sure that your CSV contains the fields '%s', '%s', '%s', '%s', and '%s'"), '<b>users_name</b>', '<b>full_name</b>', '<b>email</b>', '<b>lang</b>', '<b>password</b>');
+                $allowFileType = ".csv";
+        }
         return $this->renderPartial('partial/importuser', [
             "note"         => $importNote,
             "importFormat" => $importFormat,
@@ -767,7 +754,9 @@ class UserManagementController extends LSBaseController
                 ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
             );
         }
-
+        if (!in_array($importFormat, ['csv', 'json'])) {
+            throw new LSUserException(400, gT("Invalid format"));
+        }
         $overwriteUsers = boolval(App()->getRequest()->getPost('overwrite'));
 
         switch ($importFormat) {
@@ -776,7 +765,7 @@ class UserManagementController extends LSBaseController
                 break;
             case "csv":
             default:
-                $aNewUsers = UserParser::getDataFromCSV($_FILES); //importFormat default is csv ...
+                $aNewUsers = UserParser::getDataFromCSV($_FILES);
         }
         if (empty($aNewUsers)) {
             Yii::app()->setFlashMessage(gT("No user definition found in file."), 'error');
@@ -1289,11 +1278,9 @@ class UserManagementController extends LSBaseController
             return false;
         }
 
-        // Transfer any Participants owned by this user to site's admin
-        Participant::model()->updateAll(['owner_uid' => 1], 'owner_uid = :owner_uid', [':owner_uid' => $userId]);
-
-        //todo REFACTORING user permissions should be deleted also ... (in table permissions)
-        return $oUser->delete();
+        $userManager = new UserManager();
+        $result = $userManager->deleteUser($userId);
+        return $result->isSuccess();
     }
 
     /**

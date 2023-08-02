@@ -34,7 +34,7 @@
         <input type='hidden' name='action' value='modlabelsetanswers'/>
 
         <!-- tab content -->
-        <?php $this->renderPartial("./labels/_labelviewtabcontent_view", ['lslanguages' => $lslanguages, 'results' => $results, 'action' => $action]); ?>
+        <?php $this->renderPartial("./labels/_labelviewtabcontent_view", ['lslanguages' => $lslanguages, 'results' => $results, 'action' => $action, 'updatePermission' => $model->hasPermission('update')]); ?>
         <?php echo CHtml::endForm() ?>
 
         <!-- For javascript -->
@@ -49,7 +49,7 @@
     </div>
 
     <!-- Bottom content -->
-    <?php if (Permission::model()->hasGlobalPermission('labelsets', 'update')) { ?>
+    <?php if ($model->hasPermission('update')) { ?>
         <?php $this->renderPartial("./labels/_labelviewrightcontent_view", ['lid' => $lid]); ?>
     <?php }; ?>
 </div>

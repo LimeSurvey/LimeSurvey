@@ -429,9 +429,12 @@ class QuickTranslationController extends LSBaseController
         }
     }
 
-    /*
+    /**
      * translateGoogleApi.php
      * Creates a JSON interface for the auto-translate feature
+     *
+     * @psalm-suppress UndefinedClass TODO: Dead code?
+     * @psalm-suppress MissingFile
      */
     private function translateGoogleApi()
     {
@@ -449,6 +452,8 @@ class QuickTranslationController extends LSBaseController
         try {
             require_once(APPPATH . '/../vendor/gtranslate-api/GTranslate.php');
             $gtranslate = new Gtranslate();
+            // use curl because http with fopen is disabled
+            $gtranslate->setRequestType('curl');
             $objGt = $gtranslate;
 
             // Gtranslate requires you to run function named XXLANG_to_XXLANG

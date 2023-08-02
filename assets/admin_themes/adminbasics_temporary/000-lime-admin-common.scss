@@ -17,12 +17,6 @@
     text-decoration: underline;
 }
 
-.list-group {
-    border-radius: 0px !important;
-}
-.list-group-item {
-    border: none !important;
-}
 .hidden {
     display: none !important;
 }
@@ -75,13 +69,6 @@
 
 .ls-survey-menu-item.menu-label{
     padding-left: 33px !important;
-}
-
-.list-group-item.disabled {
-    color: #777;
-    cursor: not-allowed;
-    background-color: $white !important;
-    pointer-events: auto !important;
 }
 
 #ls-loading {
@@ -2131,10 +2118,6 @@ table#responsedetail tr td {
     margin-bottom: 30px;
 }
 
-#insertmethod-container {
-    display: none;
-}
-
 
 /* Some printing optimization */
 @media print {
@@ -3452,18 +3435,6 @@ table.dataTable thead .sorting_desc:after {
 html[dir="rtl"] .dropdown-menu,
 html[dir="rtl"] th {
     text-align: initial;
-}
-
-.list-group-item.disabled {
-    color: #777;
-    cursor: not-allowed;
-    background-color: #eee;
-}
-
-.list-group-item.disabled {
-    color: #777;
-    cursor: not-allowed;
-    background-color: #eee;
 }
 
 #survey-nav {

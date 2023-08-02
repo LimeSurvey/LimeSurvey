@@ -277,7 +277,7 @@ var onClickListAction =  function () {
  * So, when refreshing the grid, the bootstrap-switch must be re-applyed to the elements
  *
  */
-
+// TODO: It seems below two functions are not used and can be deleted. Please confirm.
  function prepareBsSwitchBoolean($gridid){
      // Bootstrap switch with class "bootstrap-switch-boolean" will use the default boolean values.
      // e.g: question mandatory, question other, etc
@@ -304,6 +304,8 @@ function prepareBsSwitchInteger($gridid){
         });
     });
 }
+// =================================================================================
+
 
 function prepareBsDateTimePicker($gridid){
     var dateTimeSettings = getDefaultDateTimePickerSettings();
@@ -362,5 +364,29 @@ $(document).off('pjax:scriptcomplete.listActions').on('pjax:scriptcomplete.listA
 });
 
 $(document).off('bindscroll.listActions').on('bindscroll.listActions, ready ', function () {
+    var checkboxes = $('input[type="checkbox"]');
+    var actionButton = $('.massiveAction');
+    // Attach an onchange event handler to all checkboxes
+    checkboxes.on('change', function() {
+      if (isAnyCheckboxChecked()) {
+        actionButton.removeClass('disabled');
+      } else {
+        actionButton.addClass('disabled');
+      }
+    });
+  
+    // Function to check if at least one checkbox is checked
+    function isAnyCheckboxChecked() {
+      var isChecked = false;
+      checkboxes.each(function() {
+        if ($(this).is(':checked')) {
+          isChecked = true;
+          return false; // Break out of the loop
+        }
+      });
+      return isChecked;
+    }
+    
+
     bindListItemclick();
 });

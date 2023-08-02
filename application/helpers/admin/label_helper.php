@@ -95,8 +95,8 @@ function insertlabelset()
 {
     $postlabel_name = flattenText(Yii::app()->getRequest()->getPost('label_name'), false, true, 'UTF-8', true);
     $labelSet = new LabelSet();
-
     $labelSet->label_name = $postlabel_name;
+    $labelSet->owner_id = App()->user->getId();
     $labelSet->languages = sanitize_languagecodeS(implode(' ', Yii::app()->getRequest()->getPost('languageids', array('en'))));
     if (!$labelSet->save()) {
         Yii::app()->session['flashmessage'] = gT("Inserting the label set failed.");
