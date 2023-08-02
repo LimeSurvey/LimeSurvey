@@ -10,6 +10,8 @@
 echo viewHelper::getViewTestTag('listSurveys');
 
 ?>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
 <div class="ls-space list-surveys">
     <ul class="nav nav-tabs" id="surveysystem" role="tablist">
         <li class="nav-item"><a class="nav-link active" href="#surveys" aria-controls="surveys" role="tab" data-bs-toggle="tab"><?php eT('Survey list'); ?></a></li>
@@ -53,6 +55,17 @@ echo viewHelper::getViewTestTag('listSurveys');
         </div>
     </div>
 </div>
+<?php
+if (Yii::app()->session['templatetoken'] ?? null) {
+    Yii::import('application.helpers.admin.token_helper', true);
+    $filename = decodeFilename(Yii::app()->session['templatetoken']);
+    ?>
+    <div id="dialog" title="Import template?">
+        <?php echo "Shall we import the template file of {$filename}?"; ?>
+    </div>
+    <?php
+}
+?>
 <script type="text/javascript">
     $('#surveysystem a').on('shown.bs.tab', function () {
         var tabId = $(this).attr('href');
@@ -63,7 +76,15 @@ echo viewHelper::getViewTestTag('listSurveys');
         if(window.location.hash){
             $('#surveysystem').find('a[href='+window.location.hash+']').trigger('click');
         }
-    })
+    });
+    function sendRequest(type, url, callback, async = true, params = "") {
+        if (async !== false) async = true;
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = callback;
+        xhttp.open(type, url, async);
+        xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhttp.send(params);
+    }
 </script>
 <!-- To update rows per page via ajax -->
 <script type="text/javascript">
@@ -71,6 +92,40 @@ echo viewHelper::getViewTestTag('listSurveys');
         jQuery(document).on("change", '#surveygroups--pageSize', function(){
             $.fn.yiiGridView.update('surveygroups--gridview',{ data:{ pageSize: $(this).val() }});
         });
+        <?php
+        if (Yii::app()->session['templatetoken'] ?? null) {
+        ?>
+        jQuery("#dialog").dialog({
+            open: function() {
+                jQuery(this).closest(".ui-dialog")
+                .find(".ui-dialog-titlebar-close")
+                .removeClass("ui-dialog-titlebar-close")
+                .html("<span class=\'ui-button-icon-primary ui-icon ui-icon-closethick\' id=\'dialog-close\'></span>");
+                jQuery(this).parent().find(".ui-dialog-title").css("width", "calc(100% - 32px)");
+            },
+            close: function() {
+                sendRequest("POST", "/index.php?r=admin/removeTemplateToken", undefined, true, `${LS.data.csrfTokenName}=${LS.data.csrfToken}`);
+            },
+            buttons: {
+                Yes: function() {
+                    sendRequest("POST", "/index.php?r=admin/installTemplateByToken", function() {
+                        if (this.readyState === 4) {
+                            if (this.responseText === 'success') {
+                                sendRequest("/index.php?r=admin/removeTemplateToken", undefined, true, `${LS.data.csrfTokenName}=${LS.data.csrfToken}`);
+                            } else {
+                                document.getElementById('#dialog').innerHTML = 'Failed to install template';
+                            }
+                        }
+                    }, true, `${LS.data.csrfTokenName}=${LS.data.csrfToken}`);
+                },
+                No: function() {
+                    jQuery('#dialog-close').click();
+                }
+            }
+        })
+        <?php
+        }
+        ?>
     });
     //show tooltip for gridview icons
     var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))

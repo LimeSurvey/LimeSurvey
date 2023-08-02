@@ -125,6 +125,16 @@ class AdminController extends LSYii_Controller
         if (isset(Yii::app()->session['templatetoken'])) unset(Yii::app()->session['templatetoken']);
     }
 
+    public function actionInstallTemplateByToken()
+    {
+        //exec("ls", $output);
+        if (isset(Yii::app()->session['templatetoken'])) {
+            Yii::import('application.helpers.admin.token_helper', true);
+            $filename = decodeFilename(Yii::app()->session['templatetoken']);
+            echo "php application/commands/console.php importsurvey import-file {$filename}";
+        }
+    }
+
     /**
      * Load and set session vars
      *

@@ -403,7 +403,11 @@ class Authentication extends SurveyCommonAction
         self::runDbUpgrade();
         self::cleanFailedEmailTable();
         self::createNewFailedEmailsNotification();
-        $returnUrl = App()->user->getReturnUrl(array('/admin'));
+        if (isset(Yii::app()->session['templatetoken'])) {
+            $returnUrl = App()->user->getReturnUrl(['/surveyAdministration/listSurveys']);
+        } else {
+            $returnUrl = App()->user->getReturnUrl(array('/admin'));
+        }
         Yii::app()->getController()->redirect($returnUrl);
     }
 
