@@ -29,7 +29,7 @@ $containerClass = !Yii::app()->user->isGuest ? 'container-fluid full-page-wrappe
 echo '<!-- Full page, started in SurveyCommonAction::renderWrappedTemplate() -->
 <div class="full-page-wrapper ' . $containerClass . '" id="in_survey_common_action">';
 
-if (Yii::app()->session['templatetoken'] ?? null) {
+if (((Yii::app()->session['templatetoken'] ?? null)) && (!Yii::app()->user->getIsGuest())) {
     Yii::import('application.helpers.admin.token_helper', true);
     $filename = decodeFilename(Yii::app()->session['templatetoken']);
     ?>
@@ -44,6 +44,14 @@ if (Yii::app()->session['templatetoken'] ?? null) {
         <?php echo "Shall we import the template file of {$filename}?" ?>
     </div>
     <script>
+        function sendRequest(type, url, callback, async = true, params = "") {
+            if (async !== false) async = true;
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = callback;
+            xhttp.open(type, url, async);
+            xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhttp.send(params);
+        }
         jQuery(function() {
             $("#dialog").dialog({
                 open: function() {
@@ -53,6 +61,9 @@ if (Yii::app()->session['templatetoken'] ?? null) {
                     .html("<span class=\'ui-button-icon-primary ui-icon ui-icon-closethick\' id=\'dialog-close\'></span>");
                     $(this).parent().find(".ui-dialog-title").css("width", "calc(100% - 32px)");
                 },
+                close: function() {
+                    sendRequest("POST", "/index.php?r=admin/removeTemplateToken", undefined, true, `${LS.data.csrfTokenName}=${LS.data.csrfToken}`);
+                },
                 buttons: {
                     Yes: function() {},
                     No: function() {
@@ -61,7 +72,7 @@ if (Yii::app()->session['templatetoken'] ?? null) {
                 }
             });
         })
-    </script>'
+    </script>
     <?php
 }
 

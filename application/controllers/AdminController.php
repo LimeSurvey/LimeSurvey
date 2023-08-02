@@ -120,6 +120,11 @@ class AdminController extends LSYii_Controller
         Yii::app()->end();
     }
 
+    public function actionRemoveTemplateToken()
+    {
+        if (isset(Yii::app()->session['templatetoken'])) unset(Yii::app()->session['templatetoken']);
+    }
+
     /**
      * Load and set session vars
      *
