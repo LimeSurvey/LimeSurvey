@@ -23,7 +23,7 @@ $line-height-52: 52px;
 $border-radius: 4px;
 
 // Typography START
-$ibm-sans-font-family: "IBMPlexSans",
+$ibm-sans-serif-font-family : "IBMPlexSans",
   // Cross-platform generic font family (default user interface font)
   system-ui,
   // Safari for macOS and iOS (San Francisco)
@@ -64,3 +64,5 @@ $ibm-serif-font-family: "IBMPlexSerif",
   // Emoji fonts
   "Apple Color Emoji",
   "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !default;
+
+$font-family-sans-serif: $ibm-sans-serif-font-family;
