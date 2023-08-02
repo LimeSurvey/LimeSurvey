@@ -435,11 +435,7 @@ class UserManagementController extends LSBaseController
             );
         }
         $userId = Yii::app()->request->getParam('userid');
-        $sUserName = flattenText(Yii::app()->request->getParam("user"));
-
         $aData['userId'] = $userId;
-        $aData['sUserName'] = $sUserName;
-
         return $this->renderPartial('partial/confirmuserdelete', $aData);
     }
 
@@ -722,15 +718,20 @@ class UserManagementController extends LSBaseController
                 ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
             );
         }
-
-        $importNote = sprintf(gT("Please make sure that your CSV contains the fields '%s', '%s', '%s', '%s', and '%s'"), '<b>users_name</b>', '<b>full_name</b>', '<b>email</b>', '<b>lang</b>', '<b>password</b>');
-        $allowFileType = ".csv";
-
-        if ($importFormat == 'json') {
-            $importNote = sprintf(gT("Please make sure that your JSON arrays contain the fields '%s', '%s', '%s', '%s', and '%s'"), '<b>users_name</b>', '<b>full_name</b>', '<b>email</b>', '<b>lang</b>', '<b>password</b>');
-            $allowFileType = ".json,application/json";
+        if (!in_array($importFormat, ['csv', 'json'])) {
+            throw new LSUserException(400, gT("Invalid format"));
         }
 
+        switch ($importFormat) {
+            case "json":
+                $importNote = sprintf(gT("Please make sure that your JSON arrays contain the fields '%s', '%s', '%s', '%s', and '%s'"), '<b>users_name</b>', '<b>full_name</b>', '<b>email</b>', '<b>lang</b>', '<b>password</b>');
+                $allowFileType = ".json,application/json";
+                break;
+            case "csv":
+            default:
+                $importNote = sprintf(gT("Please make sure that your CSV contains the fields '%s', '%s', '%s', '%s', and '%s'"), '<b>users_name</b>', '<b>full_name</b>', '<b>email</b>', '<b>lang</b>', '<b>password</b>');
+                $allowFileType = ".csv";
+        }
         return $this->renderPartial('partial/importuser', [
             "note"         => $importNote,
             "importFormat" => $importFormat,
@@ -753,7 +754,9 @@ class UserManagementController extends LSBaseController
                 ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
             );
         }
-
+        if (!in_array($importFormat, ['csv', 'json'])) {
+            throw new LSUserException(400, gT("Invalid format"));
+        }
         $overwriteUsers = boolval(App()->getRequest()->getPost('overwrite'));
 
         switch ($importFormat) {
@@ -762,7 +765,7 @@ class UserManagementController extends LSBaseController
                 break;
             case "csv":
             default:
-                $aNewUsers = UserParser::getDataFromCSV($_FILES); //importFormat default is csv ...
+                $aNewUsers = UserParser::getDataFromCSV($_FILES);
         }
         if (empty($aNewUsers)) {
             Yii::app()->setFlashMessage(gT("No user definition found in file."), 'error');
