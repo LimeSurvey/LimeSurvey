@@ -585,11 +585,10 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
             if (strpos($this->Body, "<html>") === false) {
                 $this->Body = "<html>" . $this->Body . "</html>";
             }
-            $this->msgHTML($this->Body, App()->getConfig("publicdir")); // This allow embedded image if we remove the servername from image
-            if (empty($this->AltBody)) {
-                $html = new \Html2Text\Html2Text($this->Body);
-                $this->AltBody = $html->getText();
-            }
+            $this->msgHTML($this->Body, App()->getConfig("publicdir"), function($html) {
+                return (new \Html2Text\Html2Text($html))->getText();
+            }); // This allow embedded image if we remove the servername from image
+
         }
         return $this->Send();
     }
