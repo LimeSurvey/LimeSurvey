@@ -872,7 +872,7 @@ class TokenDynamic extends LSActiveRecord
                 'data-toggle' => "tooltip",
                 'title' => gT("Send email reminder")
             ),
-            'visible' => $baseView . ' && !($data->sent== "N" || empty($data->sent)) && $data->canBeMailed()',
+            'visible' => $baseView . ' && !($data->sent== "N" || empty($data->sent)) && $data->canBeEmailed()',
         );
         $gridButtons['mailspacer'] = array(
             'label' => '<span class="fa fa-envelope-o text-muted" aria-hidden="true"></span>',
