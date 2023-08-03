@@ -123,11 +123,12 @@ class LSYiiApplicationTest extends TestBaseClass
     {
         $tmpPublicUrl = Yii::app()->getConfig('publicurl');
 
-        $scriptUrl = Yii::app()->getRequest()->getScriptUrl();
+        //$scriptUrl = Yii::app()->getRequest()->getScriptUrl();
         Yii::app()->setConfig('publicurl', 'http://www.example.com/');
         $url = Yii::app()->createPublicUrl('controller/action');
 
-        $this->assertSame($url, 'http://www.example.com' . $scriptUrl . '/controller/action', 'Unexpected url. The url does not correspond with a public url and a route.');
+        $expectedRelativeUrl = Yii::app()->createUrl('controller/action');
+        $this->assertSame($url, 'http://www.example.com' . $expectedRelativeUrl, 'Unexpected url. The url does not correspond with a public url and a route.');
 
         // Restore original values.
         Yii::app()->setConfig('publicurl', $tmpPublicUrl);
@@ -165,6 +166,8 @@ class LSYiiApplicationTest extends TestBaseClass
 
         $scriptUrl = Yii::app()->getRequest()->getScriptUrl();
         $url = Yii::app()->createPublicUrl('controller/action', array('param_one' => 1, 'param_two' => 2), 'http');
+
+        $test = Yii::app()->createUrl('controller/action');
 
         $this->assertSame($url, 'http://www.example.com' . $scriptUrl . '/controller/action?param_one=1&param_two=2', 'Unexpected url. The url does not correspond with a public url, a route and two parameters.');
 
