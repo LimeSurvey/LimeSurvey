@@ -63,17 +63,17 @@ if (Yii::app()->session['templatetoken'] ?? null) {
         <!-- Modal content-->
         <div class="modal-content" style="text-align:left; color:#000">
             <div class="modal-header">
-                <h1 class="modal-title">Import Survey?</h1>
+                <h1 class="modal-title"><?php eT('Import Survey?'); ?></h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                <div class="modal-body-text"><?php echo "Shall we import the template file of {$filename}?"; ?></div>
+                <div class="modal-body-text"><?php echo sprintf(gT('Shall we import the template file of %s?'), $filename); ?></div>
                 <div class="preview" style="display: none;">mypreview</div>
             </div>
             
             <div class="modal-footer modal-footer-buttons">
-                <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">No</button>
-                <a role="button" class="btn btn-danger btn-ok">Yes</a>
+                <button type="button" class="btn btn-cancel" data-bs-dismiss="modal"><?php eT('No'); ?></button>
+                <a role="button" class="btn btn-danger btn-ok"><?php eT('Yes'); ?></a>
             </div>
         </div>
     </div>
@@ -136,7 +136,7 @@ if (Yii::app()->session['templatetoken'] ?? null) {
                     if (this.responseText === 'success') {
                         context.querySelector('.modal-body-text').style.display = 'none';
                         context.querySelector('.preview').style.display = 'block';
-                        context.querySelector('.modal-title').innerText = 'Question preview';
+                        context.querySelector('.modal-title').innerText = '<?php eT('Question preview'); ?>';
                         for (let btn of context.querySelectorAll('.btn')) btn.style.display = 'none';
                         isPreview = true;
                     } else {
