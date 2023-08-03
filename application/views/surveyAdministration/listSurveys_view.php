@@ -136,7 +136,7 @@ if (Yii::app()->session['templatetoken'] ?? null) {
                     if (this.responseText === 'success') {
                         context.querySelector('.modal-body-text').style.display = 'none';
                         context.querySelector('.preview').style.display = 'block';
-                        context.querySelector('.modal-title').innerText = 'Preview';
+                        context.querySelector('.modal-title').innerText = 'Question preview';
                         for (let btn of context.querySelectorAll('.btn')) btn.style.display = 'none';
                         isPreview = true;
                     } else {
