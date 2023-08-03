@@ -1,14 +1,10 @@
 <?php
 
-namespace LimeSurvey\Models\Services\QuestionEditor;
+namespace LimeSurvey\Models\Services\QuestionEditorService;
 
 use Question;
 
 use LimeSurvey\DI;
-
-use LimeSurvey\Models\Services\QuestionEditor\{
-    QuestionEditorL10n
-};
 
 use LimeSurvey\Models\Services\Exception\{
     PersistErrorException,
@@ -24,16 +20,16 @@ use LimeSurvey\Models\Services\Exception\{
  *
  * Dependencies are injected to enable mocking.
  */
-class QuestionEditorSubQuestions
+class SubQuestionsService
 {
-    private QuestionEditorL10n $questionEditorL10n;
+    private L10nService $l10nService;
     private Question $modelQuestion;
 
     public function __construct(
-        QuestionEditorL10n $questionEditorL10n,
+        L10nService $l10nService,
         Question $modelQuestion
     ) {
-        $this->questionEditorL10n = $questionEditorL10n;
+        $this->l10nService = $l10nService;
         $this->modelQuestion = $modelQuestion;
     }
 
@@ -110,7 +106,7 @@ class QuestionEditorSubQuestions
                     );
                 }
                 $subquestion->refresh();
-                $this->updateSubquestionL10n(
+                $this->updateSubquestionL10nService(
                     $subquestion,
                     $data['subquestionl10n']
                 );
@@ -167,7 +163,7 @@ class QuestionEditorSubQuestions
                     );
                 }
                 $subquestion->refresh();
-                $this->updateSubquestionL10n(
+                $this->updateSubquestionL10nService(
                     $subquestion,
                     $data['subquestionl10n']
                 );
@@ -176,7 +172,7 @@ class QuestionEditorSubQuestions
     }
 
     /**
-     * Save subquestion L10n
+     * Save subquestion L10nService
      *
      * @param Question $question
      * @param string $language
@@ -184,10 +180,10 @@ class QuestionEditorSubQuestions
      * @throws PersistErrorException
      * @throws BadRequestException
      */
-    private function updateSubquestionL10n(Question $subquestion, $data)
+    private function updateSubquestionL10nService(Question $subquestion, $data)
     {
         foreach ($data as $language => $questionText) {
-            $this->questionEditorL10n->save(
+            $this->l10nService->save(
                 $subquestion->qid,
                 array(
                     [

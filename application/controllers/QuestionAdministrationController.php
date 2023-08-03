@@ -1,6 +1,6 @@
 <?php
 
-use \LimeSurvey\Models\Services\QuestionEditor;
+use \LimeSurvey\Models\Services\QuestionEditorService;
 
 use LimeSurvey\Models\Services\Exception\{
     PermissionDeniedException
@@ -473,12 +473,12 @@ class QuestionAdministrationController extends LSBaseController
         $data = !empty($_POST) ? $_POST : [];
 
         $diContainer = \LimeSurvey\DI::getContainer();
-        $questionEditor = $diContainer->get(
-            QuestionEditor::class
+        $questionEditorService = $diContainer->get(
+            QuestionEditorService::class
         );
 
         try {
-            $question = $questionEditor->save($data);
+            $question = $questionEditorService->save($data);
 
             $tabOverviewEditorValue = $request->getPost('tabOverviewEditor');
             // only those two values are valid

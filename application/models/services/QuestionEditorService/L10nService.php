@@ -1,6 +1,6 @@
 <?php
 
-namespace LimeSurvey\Models\Services\QuestionEditor;
+namespace LimeSurvey\Models\Services\QuestionEditorService;
 
 use QuestionL10n;
 
@@ -15,7 +15,7 @@ use LimeSurvey\Models\Services\Exception\{
  * Question Editor L10n
  *
  */
-class QuestionEditorL10n
+class L10nService
 {
     private QuestionL10n $modelQuestionL10n;
 

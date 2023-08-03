@@ -1,6 +1,6 @@
 <?php
 
-namespace ls\tests\unit\services\QuestionEditor\Question;
+namespace ls\tests\unit\services\QuestionEditorService\Question;
 
 use Question;
 use QuestionL10n;
@@ -14,7 +14,7 @@ use LimeSurvey\Models\Services\Proxy\{
     ProxyQuestion
 };
 
-use LimeSurvey\Models\Services\QuestionEditor\QuestionEditorL10n;
+use LimeSurvey\Models\Services\QuestionEditorService\L10nService;
 
 /**
  * Question Editor Mock Factory
@@ -46,9 +46,9 @@ class QuestionMockSetFactory
             ? $init->modelQuestionL10n
             : $this->getMockQuestionL10n();
 
-        $mockSet->questionEditorL10n = ($init && isset($init->questionEditorL10n))
-            ? $init->questionEditorL10n
-            : $this->getMockQuestionEditorL10n();
+        $mockSet->l10nService = ($init && isset($init->l10nService))
+            ? $init->l10nService
+            : $this->getMockL10nService();
 
         $mockSet->proxySettingsUser = ($init && isset($init->proxySettingsUser))
             ? $init->proxySettingsUser
@@ -71,9 +71,9 @@ class QuestionMockSetFactory
             ->makePartial();
     }
 
-    private function getMockQuestionEditorL10n(): QuestionEditorL10n
+    private function getMockL10nService(): L10nService
     {
-        return Mockery::mock(QuestionEditorL10n::class)
+        return Mockery::mock(L10nService::class)
             ->makePartial();
     }
 

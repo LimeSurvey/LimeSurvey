@@ -1,6 +1,6 @@
 <?php
 
-namespace ls\tests\unit\services\QuestionEditor;
+namespace ls\tests\unit\services\QuestionEditorService;
 
 use Mockery;
 use Question;
@@ -9,9 +9,9 @@ use LimeSurvey\DI;
 
 use ls\tests\TestBaseClass;
 
-use LimeSurvey\Models\Services\QuestionEditor\{
-    QuestionEditorSubquestions,
-    QuestionEditorL10n
+use LimeSurvey\Models\Services\QuestionEditorService\{
+    SubquestionsService,
+    L10nService
 };
 
 use LimeSurvey\Models\Services\Exception\{
@@ -23,7 +23,7 @@ use LimeSurvey\Models\Services\Exception\{
 /**
  * @group services
  */
-class QuestionEditorSubquestionsTest extends TestBaseClass
+class SubquestionsServiceTest extends TestBaseClass
 {
     /**
      * @testdox save() throws PersistErrorException on create failure
@@ -36,8 +36,8 @@ class QuestionEditorSubquestionsTest extends TestBaseClass
 
         // Model question is a required dependency
         // but is not relevant to this test
-        $questionEditorL10n = Mockery::mock(
-            QuestionEditorL10n::class
+        $l10nService = Mockery::mock(
+            L10nService::class
         )->makePartial();
 
         // Model question is a required dependency
@@ -81,8 +81,8 @@ class QuestionEditorSubquestionsTest extends TestBaseClass
             false
         );
 
-        $questionEditorSubquestions = new QuestionEditorSubquestions(
-            $questionEditorL10n,
+        $subquestionsService = new SubquestionsService(
+            $l10nService,
             $modelQuestion
         );
 
@@ -94,7 +94,7 @@ class QuestionEditorSubquestionsTest extends TestBaseClass
                 ]
             ]
         ];
-        $questionEditorSubquestions->save(
+        $subquestionsService->save(
             $question,
             $subquestions
         );
@@ -111,8 +111,8 @@ class QuestionEditorSubquestionsTest extends TestBaseClass
 
         // Model question is a required dependency
         // but is not relevant to this test
-        $questionEditorL10n = Mockery::mock(
-            QuestionEditorL10n::class
+        $l10nService = Mockery::mock(
+            L10nService::class
         )->makePartial();
 
         // The code under test updates a Question.
@@ -146,8 +146,8 @@ class QuestionEditorSubquestionsTest extends TestBaseClass
             false
         );
 
-        $questionEditorSubquestions = new QuestionEditorSubquestions(
-            $questionEditorL10n,
+        $subquestionsService = new SubquestionsService(
+            $l10nService,
             $modelQuestion
         );
 
@@ -159,7 +159,7 @@ class QuestionEditorSubquestionsTest extends TestBaseClass
                 ]
             ]
         ];
-        $questionEditorSubquestions->save(
+        $subquestionsService->save(
             $question,
             $subquestions
         );
@@ -176,8 +176,8 @@ class QuestionEditorSubquestionsTest extends TestBaseClass
 
         // Model question is a required dependency
         // but is not relevant to this test
-        $questionEditorL10n = Mockery::mock(
-            QuestionEditorL10n::class
+        $l10nService = Mockery::mock(
+            L10nService::class
         )->makePartial();
 
         // The code under test updates a Question.
@@ -216,8 +216,8 @@ class QuestionEditorSubquestionsTest extends TestBaseClass
             false
         );
 
-        $questionEditorSubquestions = new QuestionEditorSubquestions(
-            $questionEditorL10n,
+        $subquestionsService = new SubquestionsService(
+            $l10nService,
             $modelQuestion
         );
 
@@ -229,7 +229,7 @@ class QuestionEditorSubquestionsTest extends TestBaseClass
                 ]
             ]
         ];
-        $questionEditorSubquestions->save(
+        $subquestionsService->save(
             $question,
             $subquestions
         );
@@ -246,8 +246,8 @@ class QuestionEditorSubquestionsTest extends TestBaseClass
 
         // Model question is a required dependency
         // but is not relevant to this test
-        $questionEditorL10n = Mockery::mock(
-            QuestionEditorL10n::class
+        $l10nService = Mockery::mock(
+            L10nService::class
         )->makePartial();
 
         // Model question is a required dependency
@@ -276,8 +276,8 @@ class QuestionEditorSubquestionsTest extends TestBaseClass
             false
         );
 
-        $questionEditorSubquestions = new QuestionEditorSubquestions(
-            $questionEditorL10n,
+        $subquestionsService = new SubquestionsService(
+            $l10nService,
             $modelQuestion
         );
 
@@ -288,7 +288,7 @@ class QuestionEditorSubquestionsTest extends TestBaseClass
                 ]
             ]
         ];
-        $questionEditorSubquestions->save(
+        $subquestionsService->save(
             $question,
             $subquestions
         );
@@ -305,8 +305,8 @@ class QuestionEditorSubquestionsTest extends TestBaseClass
 
         // Model question is a required dependency
         // but is not relevant to this test
-        $questionEditorL10n = Mockery::mock(
-            QuestionEditorL10n::class
+        $l10nService = Mockery::mock(
+            L10nService::class
         )->makePartial();
 
         // The code under test updates a Question.
@@ -340,8 +340,8 @@ class QuestionEditorSubquestionsTest extends TestBaseClass
             false
         );
 
-        $questionEditorSubquestions = new QuestionEditorSubquestions(
-            $questionEditorL10n,
+        $subquestionsService = new SubquestionsService(
+            $l10nService,
             $modelQuestion
         );
 
@@ -352,7 +352,7 @@ class QuestionEditorSubquestionsTest extends TestBaseClass
                 ]
             ]
         ];
-        $questionEditorSubquestions->save(
+        $subquestionsService->save(
             $question,
             $subquestions
         );

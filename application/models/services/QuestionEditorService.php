@@ -6,12 +6,12 @@ use Permission;
 use Question;
 use CDbConnection;
 
-use LimeSurvey\Models\Services\QuestionEditor\{
-    QuestionEditorQuestion,
-    QuestionEditorL10n,
-    QuestionEditorAttributes,
-    QuestionEditorAnswers,
-    QuestionEditorSubQuestions
+use LimeSurvey\Models\Services\QuestionEditorService\{
+    QuestionService,
+    L10nService,
+    AttributesService,
+    AnswersService,
+    SubQuestionsService
 };
 
 use LimeSurvey\Models\Services\Proxy\{
@@ -31,24 +31,24 @@ use LimeSurvey\Models\Services\Exception\{
  *
  * Dependencies are injected to enable mocking.
  */
-class QuestionEditor
+class QuestionEditorService
 {
-    private QuestionEditorQuestion $questionEditorQuestion;
-    private QuestionEditorL10n $questionEditorL10n;
-    private QuestionEditorAttributes $questionEditorAttributes;
-    private QuestionEditorAnswers $questionEditorAnswers;
-    private QuestionEditorSubQuestions $questionEditorSubQuestions;
+    private QuestionService $questionEditorQuestion;
+    private L10nService $questionEditorL10n;
+    private AttributesService $questionEditorAttributes;
+    private AnswersService $questionEditorAnswers;
+    private SubQuestionsService $questionEditorSubQuestions;
     private Permission $modelPermission;
     private Question $modelQuestion;
     private ProxyExpressionManager $proxyExpressionManager;
     private CDbConnection $yiiDb;
 
     public function __construct(
-        QuestionEditorQuestion $questionEditorQuestion,
-        QuestionEditorL10n $questionEditorL10n,
-        QuestionEditorAttributes $questionEditorAttributes,
-        QuestionEditorAnswers $questionEditorAnswers,
-        QuestionEditorSubQuestions $questionEditorSubQuestions,
+        QuestionService $questionEditorQuestion,
+        L10nService $questionEditorL10n,
+        AttributesService $questionEditorAttributes,
+        AnswersService $questionEditorAnswers,
+        SubQuestionsService $questionEditorSubQuestions,
         Question $modelQuestion,
         Permission $modelPermission,
         ProxyExpressionManager $proxyExpressionManager,
@@ -138,7 +138,7 @@ class QuestionEditor
         $question = $this->modelQuestion
             ->findByPk((int) $data['question']['qid']);
         if ($question) {
-            $data['question']['sid'] = $$question->sid;
+            $data['question']['sid'] = $question->sid;
         }
 
         $this->checkPermissions($data['question']['sid']);

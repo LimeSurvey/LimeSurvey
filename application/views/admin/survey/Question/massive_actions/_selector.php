@@ -141,7 +141,7 @@
 
     if(!$oSurvey->isActive) {
         // Set other
-        // DEPEND IF SURVEY IS ACTIVE !!!! (checked by questionEditor/changeMultipleQuestionOtherState )
+        // DEPEND IF SURVEY IS ACTIVE !!!! (checked by QuestionService/changeMultipleQuestionOtherState )
         // TODO: don't show that action if survey is active
         $aActions[] = array(
             // li element
@@ -161,7 +161,7 @@
             'sModalTitle' => gT('Set "Other" state'),
             'htmlModalBody' => $this->renderPartial('/admin/survey/Question/massive_actions/_set_questions_other', ['model' => $model], true),
         );
-    }    
+    }
 
     // Set subquestions/answers sort options
     $aActions[] = array(

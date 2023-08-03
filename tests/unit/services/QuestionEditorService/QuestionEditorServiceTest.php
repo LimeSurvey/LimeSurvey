@@ -1,16 +1,11 @@
 <?php
 
-namespace ls\tests\unit\services\SurveyUpdater\GeneralSettings;
+namespace ls\tests\unit\services\QuestionEditorService;
 
 use ls\tests\TestBaseClass;
-use ls\tests\unit\services\QuestionEditor\{
-    QuestionEditorMockSetFactory,
-    QuestionEditorFactory
-};
 
 use Mockery;
 use Permission;
-
 use LimeSurvey\Models\Services\Exception\{
     PermissionDeniedException
 };
@@ -18,7 +13,7 @@ use LimeSurvey\Models\Services\Exception\{
 /**
  * @group services
  */
-class QuestionEditorExceptionsTest extends TestBaseClass
+class QuestionEditorServiceTest extends TestBaseClass
 {
     /**
      * @testdox save() throws PermissionDeniedException
@@ -34,10 +29,10 @@ class QuestionEditorExceptionsTest extends TestBaseClass
         $modelPermission->shouldReceive('hasSurveyPermission')
             ->andReturn(false);
 
-        $mockSet = (new QuestionEditorMockSetFactory)->make();
+        $mockSet = (new MockSetFactory)->make();
         $mockSet->modelPermission = $modelPermission;
 
-        $questionEditor = (new QuestionEditorFactory)->make( $mockSet);
+        $questionEditor = (new Factory)->make($mockSet);
 
         $questionEditor->save([]);
     }

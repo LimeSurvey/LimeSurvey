@@ -1,6 +1,6 @@
 <?php
 
-namespace LimeSurvey\Models\Services\QuestionEditor;
+namespace LimeSurvey\Models\Services\QuestionEditorService;
 
 use Question;
 use Survey;
@@ -8,10 +8,6 @@ use Condition;
 use LSYii_Application;
 
 use LimeSurvey\DI;
-
-use LimeSurvey\Models\Services\QuestionEditor\{
-    QuestionEditorL10n
-};
 
 use LimeSurvey\Models\Services\Proxy\{
     ProxySettingsUser,
@@ -31,12 +27,12 @@ use LimeSurvey\Models\Services\Exception\{
  *
  * Dependencies are injected to enable mocking.
  */
-class QuestionEditorQuestion
+class QuestionService
 {
     private Question $modelQuestion;
     private Survey $modelSurvey;
     private Condition $modelCondition;
-    private QuestionEditorL10n $questionEditorL10n;
+    private L10nService $l10nService;
     private ProxySettingsUser $proxySettingsUser;
     private ProxyQuestion $proxyQuestion;
     private LSYii_Application $yiiApp;
@@ -45,7 +41,7 @@ class QuestionEditorQuestion
         Question $modelQuestion,
         Survey $modelSurvey,
         Condition $modelCondition,
-        QuestionEditorL10n $questionEditorL10n,
+        L10nService $l10nService,
         ProxySettingsUser $proxySettingsUser,
         ProxyQuestion $proxyQuestion,
         LSYii_Application $yiiApp
@@ -53,7 +49,7 @@ class QuestionEditorQuestion
         $this->modelQuestion = $modelQuestion;
         $this->modelSurvey = $modelSurvey;
         $this->modelCondition = $modelCondition;
-        $this->questionEditorL10n = $questionEditorL10n;
+        $this->l10nService = $l10nService;
         $this->proxySettingsUser = $proxySettingsUser;
         $this->proxyQuestion = $proxyQuestion;
         $this->yiiApp = $yiiApp;
@@ -180,7 +176,7 @@ class QuestionEditorQuestion
 
         $question = $this->saveQuestionData($data,$questionGroupId);
 
-        $this->initL10n($survey,$question->qid);
+        $this->initL10nService($survey,$question->qid);
 
         return $question;
     }
@@ -228,16 +224,16 @@ class QuestionEditorQuestion
     }
 
     /**
-     * Init L10n for a question
+     * Init L10nService for a question
      *
      * @param Survey $survey
      * @param int $questionId
      * @return void
      */
-    private function initL10n($survey, $questionId)
+    private function initL10nService($survey, $questionId)
     {
         foreach ($survey->allLanguages as $language) {
-            $this->questionEditorL10n->save(
+            $this->l10nService->save(
                 $questionId,
                 array(
                     [

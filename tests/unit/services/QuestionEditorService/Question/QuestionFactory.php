@@ -1,8 +1,8 @@
 <?php
 
-namespace ls\tests\unit\services\QuestionEditor\Question;
+namespace ls\tests\unit\services\QuestionEditorService\Question;
 
-use LimeSurvey\Models\Services\QuestionEditor\QuestionEditorQuestion;
+use LimeSurvey\Models\Services\QuestionEditorService\QuestionService;
 
 /**
  * Question Factory
@@ -12,15 +12,15 @@ class QuestionFactory
     /**
      * @param ?QuestionMockSet $init
      */
-    public function make(QuestionMockSet $mockSet = null): QuestionEditorQuestion
+    public function make(QuestionMockSet $mockSet = null): QuestionService
     {
         $mockSet = (new QuestionMockSetFactory())->make($mockSet);
 
-        return new QuestionEditorQuestion(
+        return new QuestionService(
             $mockSet->modelQuestion,
             $mockSet->modelSurvey,
             $mockSet->modelCondition,
-            $mockSet->questionEditorL10n,
+            $mockSet->l10nService,
             $mockSet->proxySettingsUser,
             $mockSet->proxyQuestion,
             $mockSet->yiiApp,

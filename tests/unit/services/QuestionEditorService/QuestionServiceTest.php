@@ -1,6 +1,6 @@
 <?php
 
-namespace ls\tests\unit\services\QuestionEditor;
+namespace ls\tests\unit\services\QuestionEditorService;
 
 use Mockery;
 use Question;
@@ -9,7 +9,7 @@ use LimeSurvey\DI;
 
 use ls\tests\TestBaseClass;
 
-use ls\tests\unit\services\QuestionEditor\Question\{
+use ls\tests\unit\services\QuestionEditorService\Question\{
     QuestionMockSet,
     QuestionMockSetFactory,
     QuestionFactory
@@ -22,7 +22,7 @@ use LimeSurvey\Models\Services\Exception\{
 /**
  * @group services
  */
-class QuestionEditorQuestionTest extends TestBaseClass
+class QuestionServiceTest extends TestBaseClass
 {
     /**
      * @testdox save() throws PersistErrorException on create failure

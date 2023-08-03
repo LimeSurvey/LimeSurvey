@@ -1,6 +1,6 @@
 <?php
 
-namespace ls\tests\unit\services\QuestionEditor;
+namespace ls\tests\unit\services\QuestionEditorService;
 
 use Mockery;
 use Question;
@@ -8,7 +8,7 @@ use QuestionAttribute;
 
 use ls\tests\TestBaseClass;
 
-use LimeSurvey\Models\Services\QuestionEditor\QuestionEditorAttributes;
+use LimeSurvey\Models\Services\QuestionEditorService\AttributesService;
 
 use LimeSurvey\Models\Services\Exception\{
     PersistErrorException
@@ -17,7 +17,7 @@ use LimeSurvey\Models\Services\Exception\{
 /**
  * @group services
  */
-class QuestionEditorAttributesTest extends TestBaseClass
+class AttributesServiceTest extends TestBaseClass
 {
     /**
      * @testdox saveAdvanced() throws PersistErrorException on question save failure
@@ -36,11 +36,11 @@ class QuestionEditorAttributesTest extends TestBaseClass
         $question->shouldReceive('save')
             ->andReturn(false);
 
-        $questionEditorAttributes = new QuestionEditorAttributes(
+        $attributesServices = new AttributesService(
             $modelQuestionAttribute
         );
 
-        $questionEditorAttributes->saveAdvanced($question, []);
+        $attributesServices->saveAdvanced($question, []);
     }
 
     /**
@@ -60,11 +60,11 @@ class QuestionEditorAttributesTest extends TestBaseClass
         $question->shouldReceive('save')
            ->andReturn(false);
 
-        $questionEditorAttributes = new QuestionEditorAttributes(
+        $attributesServices = new AttributesService(
             $modelQuestionAttribute
         );
 
-        $questionEditorAttributes->save($question, []);
+        $attributesServices->save($question, []);
     }
 
     /**
@@ -84,11 +84,11 @@ class QuestionEditorAttributesTest extends TestBaseClass
         $question = Mockery::mock(Question::class)
             ->makePartial();
 
-        $questionEditorAttributes = new QuestionEditorAttributes(
+        $attributesServices = new AttributesService(
             $modelQuestionAttribute
         );
 
-        $questionEditorAttributes->save($question, [
+        $attributesServices->save($question, [
             'some-attribute' => [
                 'en' => 'some value',
                 'de' => 'some other value'
@@ -113,11 +113,11 @@ class QuestionEditorAttributesTest extends TestBaseClass
         $question = Mockery::mock(Question::class)
             ->makePartial();
 
-        $questionEditorAttributes = new QuestionEditorAttributes(
+        $attributesServices = new AttributesService(
             $modelQuestionAttribute
         );
 
-        $questionEditorAttributes->save($question, [
+        $attributesServices->save($question, [
             'some-attribute' => 'some value'
         ]);
     }

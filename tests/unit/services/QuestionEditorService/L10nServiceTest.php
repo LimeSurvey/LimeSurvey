@@ -1,6 +1,6 @@
 <?php
 
-namespace ls\tests\unit\services\QuestionEditor;
+namespace ls\tests\unit\services\QuestionEditorService;
 
 use Mockery;
 use QuestionL10n;
@@ -9,7 +9,7 @@ use LimeSurvey\DI;
 
 use ls\tests\TestBaseClass;
 
-use LimeSurvey\Models\Services\QuestionEditor\QuestionEditorL10n;
+use LimeSurvey\Models\Services\QuestionEditorService\L10nService;
 
 use LimeSurvey\Models\Services\Exception\{
     PersistErrorException,
@@ -19,7 +19,7 @@ use LimeSurvey\Models\Services\Exception\{
 /**
  * @group services
  */
-class QuestionEditorL10nTest extends TestBaseClass
+class L10nServiceTest extends TestBaseClass
 {
     /**
      * @testdox save() throws PersistErrorException on create failure
@@ -48,11 +48,11 @@ class QuestionEditorL10nTest extends TestBaseClass
             }
         );
 
-        $questionEditorL10n = new QuestionEditorL10n(
+        $l10nService = new L10nService(
             $modelQuestionL10n
         );
 
-        $questionEditorL10n->save(1, [
+        $l10nService->save(1, [
             'en' => []
         ]);
     }
@@ -76,11 +76,11 @@ class QuestionEditorL10nTest extends TestBaseClass
         $modelQuestionL10n->shouldReceive('findByAttributes')
             ->andReturn($questionL10n);
 
-        $questionEditorL10n = new QuestionEditorL10n(
+        $l10nService = new L10nService(
             $modelQuestionL10n
         );
 
-        $questionEditorL10n->save(1, [
+        $l10nService->save(1, [
             'en' => []
         ]);
     }
@@ -100,11 +100,11 @@ class QuestionEditorL10nTest extends TestBaseClass
         $modelQuestionL10n->shouldReceive('findByAttributes')
             ->andReturn(false);
 
-        $questionEditorL10n = new QuestionEditorL10n(
+        $l10nService = new L10nService(
             $modelQuestionL10n
         );
 
-        $questionEditorL10n->save(
+        $l10nService->save(
             1,
             ['en' => []],
             false

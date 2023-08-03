@@ -1,6 +1,6 @@
 <?php
 
-namespace LimeSurvey\Models\Services\QuestionEditor;
+namespace LimeSurvey\Models\Services\QuestionEditorService;
 
 use Question;
 use Answer;
@@ -22,7 +22,7 @@ use LimeSurvey\Models\Services\Exception\{
  *
  * Dependencies are injected to enable mocking.
  */
-class QuestionEditorAnswers
+class AnswersService
 {
     /**
      * Based on QuestionAdministrationController::actionSaveQuestionData()

@@ -1,6 +1,6 @@
 <?php
 
-namespace ls\tests\unit\services\QuestionEditor;
+namespace ls\tests\unit\services\QuestionEditorService;
 
 use Answer;
 use AnswerL10n;
@@ -12,7 +12,7 @@ use LimeSurvey\DI;
 
 use ls\tests\TestBaseClass;
 
-use LimeSurvey\Models\Services\QuestionEditor\QuestionEditorAnswers;
+use LimeSurvey\Models\Services\QuestionEditorService\AnswersService;
 
 use LimeSurvey\Models\Services\Exception\{
     PersistErrorException,
@@ -22,7 +22,7 @@ use LimeSurvey\Models\Services\Exception\{
 /**
  * @group services
  */
-class QuestionEditorAnswersTest extends TestBaseClass
+class AnswersServiceTest extends TestBaseClass
 {
     /**
      * @testdox save() throws BadRequestException missing code
@@ -51,11 +51,11 @@ class QuestionEditorAnswersTest extends TestBaseClass
         $question->shouldReceive('deleteAllAnswers')->once();
 
 
-        $questionEditorAnswers = new QuestionEditorAnswers(
+        $answersService = new AnswersService(
             $modelQuestionAttribute
         );
 
-        $questionEditorAnswers->save($question, [
+        $answersService->save($question, [
             [
                 123 => ['not-code' => 'ABC123']
             ]
@@ -101,11 +101,11 @@ class QuestionEditorAnswersTest extends TestBaseClass
             }
         );
 
-        $questionEditorAnswers = new QuestionEditorAnswers(
+        $answersService = new AnswersService(
             $modelQuestionAttribute
         );
 
-        $questionEditorAnswers->save($question, [
+        $answersService->save($question, [
             [
                 123 => ['code' => 'ABC123']
             ]
@@ -162,11 +162,11 @@ class QuestionEditorAnswersTest extends TestBaseClass
             }
         );
 
-        $questionEditorAnswers = new QuestionEditorAnswers(
+        $answersService = new AnswersService(
             $modelQuestionAttribute
         );
 
-        $questionEditorAnswers->save($question, [
+        $answersService->save($question, [
             [
                 123 => [
                     'code' => 'ABC123',

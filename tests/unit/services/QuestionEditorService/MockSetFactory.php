@@ -1,8 +1,8 @@
 <?php
 
-namespace ls\tests\unit\services\QuestionEditor;
+namespace ls\tests\unit\services\QuestionEditorService;
 
-use ls\tests\unit\services\QuestionEditor\Question\QuestionFactory;
+use ls\tests\unit\services\QuestionEditorService\Question\QuestionFactory;
 
 use Permission;
 use Question;
@@ -12,11 +12,11 @@ use Mockery;
 
 use LimeSurvey\Models\Services\Proxy\ProxyExpressionManager;
 
-use LimeSurvey\Models\Services\QuestionEditor\{
-    QuestionEditorL10n,
-    QuestionEditorAttributes,
-    QuestionEditorAnswers,
-    QuestionEditorSubQuestions
+use LimeSurvey\Models\Services\QuestionEditorService\{
+    L10nService,
+    AttributesService,
+    AnswersService,
+    SubQuestionsService
 };
 
 /**
@@ -24,34 +24,34 @@ use LimeSurvey\Models\Services\QuestionEditor\{
  *
  * Reusable initialisation of mock dependencies for use in QuestionEditor tests.
  */
-class QuestionEditorMockSetFactory
+class MockSetFactory
 {
     /**
      * @param ?QuestionEditorMockSet $init
      */
-    public function make(QuestionEditorMockSet $init = null): QuestionEditorMockSet
+    public function make(MockSet $init = null): MockSet
     {
-        $mockSet = new QuestionEditorMockSet;
+        $mockSet = new MockSet;
 
-        $mockSet->questionEditorQuestion = ($init && isset($init->questionEditorQuestion))
-            ? $init->questionEditorQuestion
+        $mockSet->questionService = ($init && isset($init->questionService))
+            ? $init->questionService
             : (new QuestionFactory)->make();
 
-        $mockSet->questionEditorL10n = ($init && isset($init->questionEditorL10n))
-            ? $init->questionEditorL10n
-            : $this->getMockQuestionEditorL10n();
+        $mockSet->l10nService = ($init && isset($init->l10nService))
+            ? $init->l10nService
+            : $this->getMockL10nService();
 
-        $mockSet->questionEditorAttributes = ($init && isset($init->questionEditorAttributes))
-            ? $init->questionEditorAttributes
-            : $this->getMockQuestionEditorAttributes();
+        $mockSet->attributesService = ($init && isset($init->attributesService))
+            ? $init->attributesService
+            : $this->getMockAttributesService();
 
-        $mockSet->questionEditorAnswers = ($init && isset($init->questionEditorAnswers))
-            ? $init->questionEditorAnswers
-            : $this->getMockQuestionEditorAnswers();
+        $mockSet->answersService = ($init && isset($init->answersService))
+            ? $init->answersService
+            : $this->getMockAnswersService();
 
-        $mockSet->questionEditorSubQuestions = ($init && isset($init->questionEditorSubQuestions))
-            ? $init->questionEditorSubQuestions
-            : $this->getMockQuestionEditorSubQuestions();
+        $mockSet->subQuestionsService = ($init && isset($init->subQuestionsService))
+            ? $init->subQuestionsService
+            : $this->getMockSubQuestionsService();
 
         $mockSet->modelQuestion = ($init && isset($init->modelQuestion))
             ? $init->modelQuestion
@@ -72,16 +72,16 @@ class QuestionEditorMockSetFactory
         return $mockSet;
     }
 
-    private function getMockQuestionEditorL10n(): QuestionEditorL10n
+    private function getMockL10nService(): L10nService
     {
-        return Mockery::mock(QuestionEditorL10n::class)
+        return Mockery::mock(L10nService::class)
             ->makePartial();
     }
 
-    private function getMockQuestionEditorAttributes(): QuestionEditorAttributes
+    private function getMockAttributesService(): AttributesService
     {
         return Mockery::mock(
-            QuestionEditorAttributes::class,
+            AttributesService::class,
             [
                 $this->getMockModelQuestionAttribute()
             ]
@@ -95,15 +95,15 @@ class QuestionEditorMockSetFactory
         )->makePartial();
     }
 
-    private function getMockQuestionEditorAnswers(): QuestionEditorAnswers
+    private function getMockAnswersService(): AnswersService
     {
-        return Mockery::mock(QuestionEditorAnswers::class)
+        return Mockery::mock(AnswersService::class)
             ->makePartial();
     }
 
-    private function getMockQuestionEditorSubQuestions(): QuestionEditorSubQuestions
+    private function getMockSubQuestionsService(): SubQuestionsService
     {
-        return  Mockery::mock(QuestionEditorSubQuestions::class)
+        return  Mockery::mock(SubQuestionsService::class)
             ->makePartial();
     }
 

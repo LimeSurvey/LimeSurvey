@@ -1,6 +1,6 @@
 <?php
 
-namespace LimeSurvey\Models\Services\QuestionEditor;
+namespace LimeSurvey\Models\Services\QuestionEditorService;
 
 use Question;
 use QuestionAttribute;
@@ -14,7 +14,7 @@ use LimeSurvey\Models\Services\Exception\PersistErrorException;
  *
  * Based on QuestionAdministrationController::unparseAndSetAdvancedOptions()
  */
-class QuestionEditorAttributes
+class AttributesService
 {
     private QuestionAttribute $modelQuestionAttribute;
 
