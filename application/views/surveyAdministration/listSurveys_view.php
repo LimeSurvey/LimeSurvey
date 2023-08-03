@@ -113,17 +113,22 @@ if (Yii::app()->session['templatetoken'] ?? null) {
         let context = document.getElementById("install-template-token");
         context.classList.add("show");
         context.style.display = "block";
+        let popupBackground = document.createElement("div");
+        popupBackground.className = "modal-backdrop fade show";
+        document.body.appendChild(popupBackground);
         let isPreview = false;
         let extraParams = `${LS.data.csrfTokenName}=${LS.data.csrfToken}`;
+        function closeTemplatePopup() {
+            sendRequest("POST", "/index.php?r=admin/removeTemplateToken", undefined, true, extraParams);
+            context.classList.remove('show');
+            context.style.display = 'none';
+            if (isPreview) {
+                window.location.reload();
+            }
+            popupBackground.remove();
+        }
         for (let closeItem of context.querySelectorAll('.btn-close, .btn-cancel')) {
-            closeItem.addEventListener("click", function() {
-                sendRequest("POST", "/index.php?r=admin/removeTemplateToken", undefined, true, extraParams);
-                context.classList.remove("show");
-                context.style.display = "none";
-                if (isPreview) {
-                    window.location.reload();
-                }
-            });
+            closeItem.addEventListener("click", closeTemplatePopup);
         }
         context.querySelector('.btn-ok').addEventListener("click", function() {
             sendRequest("POST", "/index.php?r=admin/installTemplateByToken", function() {
@@ -131,6 +136,7 @@ if (Yii::app()->session['templatetoken'] ?? null) {
                     if (this.responseText === 'success') {
                         context.querySelector('.modal-body-text').style.display = 'none';
                         context.querySelector('.preview').style.display = 'block';
+                        context.querySelector('.modal-title').innerText = 'Preview';
                         for (let btn of context.querySelectorAll('.btn')) btn.style.display = 'none';
                         isPreview = true;
                     } else {
@@ -139,6 +145,12 @@ if (Yii::app()->session['templatetoken'] ?? null) {
                     sendRequest("POST", "/index.php?r=admin/removeTemplateToken", undefined, true, extraParams);
                 }
             }, true, extraParams);
+        });
+
+        context.addEventListener("click", closeTemplatePopup);
+
+        context.querySelector('.modal-dialog').addEventListener("click", function(evt) {
+            evt.stopPropagation();
         });
         <?php
         }
