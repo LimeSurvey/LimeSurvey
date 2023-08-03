@@ -42,15 +42,14 @@ class Authentication extends SurveyCommonAction
         }
         /* Checking whether we have any templates to import */
         if (($templatetoken = Yii::app()->request->getParam('templatetoken', 'default')) !== 'default') {
-
             $url = Yii::app()->request->url;
             $questionPosition = strpos($url, "?");
             Yii::app()->session['templatetoken'] = Yii::app()->request->getParam('templatetoken', 'default');
-            $target = implode("?", [substr($url, 0, $questionPosition), implode("&", array_filter(explode("&", substr($url, $questionPosition + 1)), function($v, $k) {
+            $target = implode("?", [substr($url, 0, $questionPosition), implode("&", array_filter(explode("&", substr($url, $questionPosition + 1)), function ($v, $k) {
                 return strpos($v, 'templatetoken') !== 0;
             }, ARRAY_FILTER_USE_BOTH))]);
             $this->runDbUpgrade();
-            header('Location: '.$target);
+            header('Location: ' . $target);
         }
         // The page should be shown only for non logged in users
         $this->redirectIfLoggedIn();

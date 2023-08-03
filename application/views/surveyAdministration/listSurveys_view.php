@@ -10,8 +10,6 @@
 echo viewHelper::getViewTestTag('listSurveys');
 
 ?>
-<link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
-<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
 <div class="ls-space list-surveys">
     <ul class="nav nav-tabs" id="surveysystem" role="tablist">
         <li class="nav-item"><a class="nav-link active" href="#surveys" aria-controls="surveys" role="tab" data-bs-toggle="tab"><?php eT('Survey list'); ?></a></li>
@@ -60,8 +58,25 @@ if (Yii::app()->session['templatetoken'] ?? null) {
     Yii::import('application.helpers.admin.token_helper', true);
     $filename = decodeFilename(Yii::app()->session['templatetoken']);
     ?>
-    <div id="dialog" title="Import template?">
-        <?php echo "Shall we import the template file of {$filename}?"; ?>
+    <div id="install-template-token" class="modal fade" role="dialog">
+    <div class="modal-dialog ">
+        <!-- Modal content-->
+        <div class="modal-content" style="text-align:left; color:#000">
+            <div class="modal-header">
+                <h1 class="modal-title">Import Survey?</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body-text"><?php echo "Shall we import the template file of {$filename}?"; ?></div>
+                <div class="preview" style="display: none;">mypreview</div>
+            </div>
+            
+            <div class="modal-footer modal-footer-buttons">
+                <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">No</button>
+                <a role="button" class="btn btn-danger btn-ok">Yes</a>
+            </div>
+        </div>
+    </div>
     </div>
     <?php
 }
@@ -95,34 +110,36 @@ if (Yii::app()->session['templatetoken'] ?? null) {
         <?php
         if (Yii::app()->session['templatetoken'] ?? null) {
         ?>
-        jQuery("#dialog").dialog({
-            open: function() {
-                jQuery(this).closest(".ui-dialog")
-                .find(".ui-dialog-titlebar-close")
-                .removeClass("ui-dialog-titlebar-close")
-                .html("<span class=\'ui-button-icon-primary ui-icon ui-icon-closethick\' id=\'dialog-close\'></span>");
-                jQuery(this).parent().find(".ui-dialog-title").css("width", "calc(100% - 32px)");
-            },
-            close: function() {
-                sendRequest("POST", "/index.php?r=admin/removeTemplateToken", undefined, true, `${LS.data.csrfTokenName}=${LS.data.csrfToken}`);
-            },
-            buttons: {
-                Yes: function() {
-                    sendRequest("POST", "/index.php?r=admin/installTemplateByToken", function() {
-                        if (this.readyState === 4) {
-                            if (this.responseText === 'success') {
-                                jQuery('#dialog-close').click();
-                            } else {
-                                document.getElementById('dialog').innerHTML = this.responseText;
-                            }
-                        }
-                    }, true, `${LS.data.csrfTokenName}=${LS.data.csrfToken}`);
-                },
-                No: function() {
-                    jQuery('#dialog-close').click();
+        let context = document.getElementById("install-template-token");
+        context.classList.add("show");
+        context.style.display = "block";
+        let isPreview = false;
+        let extraParams = `${LS.data.csrfTokenName}=${LS.data.csrfToken}`;
+        for (let closeItem of context.querySelectorAll('.btn-close, .btn-cancel')) {
+            closeItem.addEventListener("click", function() {
+                sendRequest("POST", "/index.php?r=admin/removeTemplateToken", undefined, true, extraParams);
+                context.classList.remove("show");
+                context.style.display = "none";
+                if (isPreview) {
+                    window.location.reload();
                 }
-            }
-        })
+            });
+        }
+        context.querySelector('.btn-ok').addEventListener("click", function() {
+            sendRequest("POST", "/index.php?r=admin/installTemplateByToken", function() {
+                if (this.readyState === 4) {
+                    if (this.responseText === 'success') {
+                        context.querySelector('.modal-body-text').style.display = 'none';
+                        context.querySelector('.preview').style.display = 'block';
+                        for (let btn of context.querySelectorAll('.btn')) btn.style.display = 'none';
+                        isPreview = true;
+                    } else {
+                        context.querySelector('.modal-body-text').innerHTML = this.responseText;
+                    }
+                    sendRequest("POST", "/index.php?r=admin/removeTemplateToken", undefined, true, extraParams);
+                }
+            }, true, extraParams);
+        });
         <?php
         }
         ?>
