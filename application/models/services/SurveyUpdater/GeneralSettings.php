@@ -313,7 +313,7 @@ class GeneralSettings
             case static::FIELD_TYPE_DATETIME:
                 $value = !empty($value)
                     ? $this->formatDateTimeInput($value)
-                    : $default;
+                    : null;
                 break;
             case static::FIELD_TYPE_YN:
                 if (!in_array('' . $value, ['Y', 'N', 'I'])) {
