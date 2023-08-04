@@ -588,7 +588,7 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
             $this->msgHTML($this->Body, App()->getConfig("publicdir"), function($html) {
                 return (new \Html2Text\Html2Text($html))->getText();
             }); // This allow embedded image if we remove the servername from image
-
+            // TODO: Original AltBody is overwritten by msgHTML. Do we need to set it again if there was one?
         }
         return $this->Send();
     }
