@@ -393,10 +393,12 @@ class SurveyTest extends TestBaseClass
         $tmpPublicUrl = Yii::app()->getConfig('publicurl');
         Yii::app()->setConfig('publicurl', 'http://example.com');
 
-        $url = self::$testSurvey->getSurveyUrl(null, array('param_1' => 1, 'param_2' => 2));
-        $expectedRelativeUrl = Yii::app()->createUrl('survey/index', array('sid' => self::$surveyId, 'param_1' => 1, 'param_2' => 2, 'lang' => 'en'));
+        $params = array('param_1' => 1, 'param_2' => 2);
+        $url = self::$testSurvey->getSurveyUrl(null, $params);
+        $urlParams = array_merge($params, ['sid' => self::$surveyId, 'lang' => 'en']);
+        $expectedUrl = App()->createPublicUrl('survey/index', $urlParams);
 
-        $this->assertSame($url, 'http://example.com' . $expectedRelativeUrl, 'Unexpected url. The url does not correspond with a public survey url.');
+        $this->assertSame($url, $expectedUrl, 'Unexpected url. The url does not correspond with a public survey url.');
 
         // Reset original value.
         Yii::app()->setConfig('publicurl', $tmpPublicUrl);
