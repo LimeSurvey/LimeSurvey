@@ -1,13 +1,10 @@
 <?php
 
-namespace ls\tests\unit\services\QuestionEditorService;
+namespace ls\tests\unit\services\QuestionAggregateService\Save;
 
-use Permission;
 use Question;
-use QuestionL10n;
-use CDbConnection;
 
-use LimeSurvey\Models\Services\QuestionEditorService\{
+use LimeSurvey\Models\Services\QuestionAggregateService\{
     QuestionService,
     L10nService,
     AttributesService,
@@ -17,7 +14,7 @@ use LimeSurvey\Models\Services\QuestionEditorService\{
 
 use LimeSurvey\Models\Services\Proxy\ProxyExpressionManager;
 
-class MockSet
+class SaveMockSet
 {
     public QuestionService $questionService;
     public L10nService $l10nService;
@@ -25,8 +22,5 @@ class MockSet
     public AnswersService $answersService;
     public SubQuestionsService $subQuestionsService;
     public Question $modelQuestion;
-    public QuestionL10n $modelQuestionL10n;
-    public Permission $modelPermission;
     public ProxyExpressionManager $proxyExpressionManager;
-    public CDbConnection $yiiDb;
 }

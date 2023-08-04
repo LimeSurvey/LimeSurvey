@@ -1,6 +1,6 @@
 <?php
 
-namespace ls\tests\unit\services\QuestionEditorService\Question;
+namespace ls\tests\unit\services\QuestionAggregateService\Question;
 
 use Question;
 use QuestionL10n;
@@ -8,7 +8,7 @@ use Survey;
 use Condition;
 use LSYii_Application;
 
-use LimeSurvey\Models\Services\QuestionEditorService\L10nService;
+use LimeSurvey\Models\Services\QuestionAggregateService\L10nService;
 
 use LimeSurvey\Models\Services\Proxy\{
     ProxySettingsUser,

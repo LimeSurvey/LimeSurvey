@@ -1,6 +1,6 @@
 <?php
 
-namespace LimeSurvey\Models\Services\QuestionEditorService;
+namespace LimeSurvey\Models\Services\QuestionAggregateService;
 
 use Question;
 use Answer;
@@ -16,7 +16,7 @@ use LimeSurvey\Models\Services\Exception\{
 };
 
 /**
- * Question Editor Service
+ * Question Aggregate Service
  *
  * Service class for editing question data.
  *

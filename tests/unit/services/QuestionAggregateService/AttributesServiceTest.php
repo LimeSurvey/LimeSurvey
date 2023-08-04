@@ -1,6 +1,6 @@
 <?php
 
-namespace ls\tests\unit\services\QuestionEditorService;
+namespace ls\tests\unit\services\QuestionAggregateService;
 
 use Mockery;
 use Question;
@@ -8,7 +8,7 @@ use QuestionAttribute;
 
 use ls\tests\TestBaseClass;
 
-use LimeSurvey\Models\Services\QuestionEditorService\AttributesService;
+use LimeSurvey\Models\Services\QuestionAggregateService\AttributesService;
 
 use LimeSurvey\Models\Services\Exception\{
     PersistErrorException

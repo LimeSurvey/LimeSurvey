@@ -1,6 +1,6 @@
 <?php
 
-use \LimeSurvey\Models\Services\QuestionEditorService;
+use \LimeSurvey\Models\Services\QuestionAggregateService;
 
 use LimeSurvey\Models\Services\Exception\{
     PermissionDeniedException
@@ -474,7 +474,7 @@ class QuestionAdministrationController extends LSBaseController
 
         $diContainer = \LimeSurvey\DI::getContainer();
         $questionEditorService = $diContainer->get(
-            QuestionEditorService::class
+            QuestionAggregateService::class
         );
 
         try {

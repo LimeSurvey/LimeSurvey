@@ -1,6 +1,6 @@
 <?php
 
-namespace ls\tests\unit\services\QuestionEditorService;
+namespace ls\tests\unit\services\QuestionAggregateService;
 
 use ls\tests\TestBaseClass;
 
@@ -33,8 +33,8 @@ class ExceptionsTest extends TestBaseClass
         $mockSet = (new MockSetFactory)->make();
         $mockSet->modelPermission = $modelPermission;
 
-        $questionEditor = (new Factory)->make( $mockSet);
+        $questionAggregateService = (new Factory)->make( $mockSet);
 
-        $questionEditor->save([]);
+        $questionAggregateService->save([]);
     }
 }

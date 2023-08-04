@@ -1,18 +1,16 @@
 <?php
 
-namespace ls\tests\unit\services\QuestionEditorService;
+namespace ls\tests\unit\services\QuestionAggregateService\Save;
 
-use ls\tests\unit\services\QuestionEditorService\Question\QuestionFactory;
+use ls\tests\unit\services\QuestionAggregateService\Question\QuestionFactory;
 
-use Permission;
 use Question;
 use QuestionAttribute;
-use CDbConnection;
 use Mockery;
 
 use LimeSurvey\Models\Services\Proxy\ProxyExpressionManager;
 
-use LimeSurvey\Models\Services\QuestionEditorService\{
+use LimeSurvey\Models\Services\QuestionAggregateService\{
     L10nService,
     AttributesService,
     AnswersService,
@@ -20,18 +18,16 @@ use LimeSurvey\Models\Services\QuestionEditorService\{
 };
 
 /**
- * Question Editor Mock Factory
- *
- * Reusable initialisation of mock dependencies for use in QuestionEditor tests.
+ * Save Mock Factory
  */
-class MockSetFactory
+class SaveMockSetFactory
 {
     /**
-     * @param ?QuestionEditorMockSet $init
+     * @param ?SaveMockSet $init
      */
-    public function make(MockSet $init = null): MockSet
+    public function make(SaveMockSet $init = null): SaveMockSet
     {
-        $mockSet = new MockSet;
+        $mockSet = new SaveMockSet;
 
         $mockSet->questionService = ($init && isset($init->questionService))
             ? $init->questionService
@@ -57,17 +53,9 @@ class MockSetFactory
             ? $init->modelQuestion
             : $this->getMockModelQuestion();
 
-        $mockSet->modelPermission = ($init && isset($init->modelPermission))
-            ? $init->modelPermission
-            : $this->getMockModelPermission();
-
         $mockSet->proxyExpressionManager = ($init && isset($init->proxyExpressionManager))
             ? $init->proxyExpressionManager
             : $this->getMockProxyExpressionManager();
-
-        $mockSet->yiiDb = ($init && isset($init->yiiDb))
-            ? $init->yiiDb
-            : $this->getMockYiiDb();
 
         return $mockSet;
     }
@@ -107,12 +95,6 @@ class MockSetFactory
             ->makePartial();
     }
 
-    private function getMockModelPermission(): Permission
-    {
-        return Mockery::mock(Permission::class)
-            ->makePartial();
-    }
-
     private function getMockModelQuestion(): Question
     {
         return Mockery::mock(Question::class)
@@ -122,12 +104,6 @@ class MockSetFactory
     private function getMockProxyExpressionManager(): ProxyExpressionManager
     {
         return Mockery::mock(ProxyExpressionManager::class)
-            ->makePartial();
-    }
-
-    private function getMockYiiDb(): CDbConnection
-    {
-        return Mockery::mock(CDbConnection::class)
             ->makePartial();
     }
 }

@@ -7,55 +7,32 @@ use Question;
 use CDbConnection;
 
 use LimeSurvey\Models\Services\{
-    QuestionEditorService\QuestionService,
-    QuestionEditorService\L10nService,
-    QuestionEditorService\AttributesService,
-    QuestionEditorService\AnswersService,
-    QuestionEditorService\SubQuestionsService,
-    Proxy\ProxyExpressionManager,
+    QuestionAggregateService\SaveService,
     Exception\PersistErrorException,
     Exception\NotFoundException,
     Exception\PermissionDeniedException
 };
 
 /**
- * Question Editor Service
+ * Question Aggregate Service
  *
  * Service class for editing question data.
  *
  * Dependencies are injected to enable mocking.
  */
-class QuestionEditorService
+class QuestionAggregateService
 {
-    private QuestionService $questionService;
-    private L10nService $l10nService;
-    private AttributesService $attributesService;
-    private AnswersService $answersService;
-    private SubQuestionsService $subQuestionsService;
+    private SaveService $saveService;
     private Permission $modelPermission;
-    private Question $modelQuestion;
-    private ProxyExpressionManager $proxyExpressionManager;
     private CDbConnection $yiiDb;
 
     public function __construct(
-        QuestionService $questionService,
-        L10nService $l10nService,
-        AttributesService $attributesService,
-        AnswersService $answersService,
-        SubQuestionsService $subQuestionsService,
-        Question $modelQuestion,
+        SaveService $saveService,
         Permission $modelPermission,
-        ProxyExpressionManager $proxyExpressionManager,
         CDbConnection $yiiDb
     ) {
-        $this->questionService = $questionService;
-        $this->l10nService = $l10nService;
-        $this->attributesService = $attributesService;
-        $this->answersService = $answersService;
-        $this->subQuestionsService = $subQuestionsService;
-        $this->modelQuestion = $modelQuestion;
+        $this->saveService = $saveService;
         $this->modelPermission = $modelPermission;
-        $this->proxyExpressionManager = $proxyExpressionManager;
         $this->yiiDb = $yiiDb;
     }
 
@@ -127,88 +104,19 @@ class QuestionEditorService
      */
     public function save($input)
     {
-        $data = $this->normaliseInput($input);
-
-        if (isset($data['question']) && !empty($data['question']['qid'])) {
-            $question = $this->modelQuestion
-                ->findByPk($data['question']['qid']);
-            if ($question) {
-                $data['question']['sid'] = $question->sid;
-            }
-        }
-
+        $data = $this->saveService->normaliseInput($input);
         $this->checkPermissions($data['question']['sid']);
 
-        // Rollback at failure.
         $transaction = $this->yiiDb->beginTransaction();
         try {
-            $question = $this->questionService
-                ->save($data);
-            $question->refresh();
-
-            $this->l10nService->save(
-                $question->qid,
-                $data['questionL10n']
-            );
-
-            $this->attributesService
-                ->saveAdvanced(
-                    $question,
-                    $data['advancedSettings']
-                );
-
-
-            $this->attributesService
-                ->save(
-                    $question,
-                    $data['question']
-                );
-
-            if (isset($input['answeroptions'])) {
-                $this->answersService->save(
-                    $question,
-                    $input['answeroptions']
-                );
-            }
-
-            if (isset($input['subquestions'])) {
-                $this->subQuestionsService->save(
-                    $question,
-                    $input['subquestions']
-                );
-            }
-
+            $question = $this->saveService->save($data);
             $transaction->commit();
-            $question->refresh();
         } catch (\Exception $e) {
             $transaction->rollback();
             throw $e;
         }
-        $this->proxyExpressionManager->setDirtyFlag();
 
         return $question;
-    }
-
-    /**
-     * Normalise input
-     *
-     * @param array
-     * @return array
-     */
-    private function normaliseInput($input)
-    {
-        $input  = $input ?? [];
-
-        $data = [];
-        $data['question']         = $input['question'] ?? [];
-        $data['question']['sid']  = $input['sid'] ?? 0;
-        $data['question']['qid']  = $data['question']['qid'] ?? null;
-        $data['questionL10n']     = $input['questionL10n'] ?? [];
-        $data['advancedSettings'] = $input['advancedSettings'] ?? [];
-        $data['answeroptions']    = $input['answeroptions'] ?? null;
-        $data['subquestions']     = $input['subquestions'] ?? null;
-
-        return $data;
     }
 
     /**

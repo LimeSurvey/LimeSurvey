@@ -1,6 +1,6 @@
 <?php
 
-namespace LimeSurvey\Models\Services\QuestionEditorService;
+namespace LimeSurvey\Models\Services\QuestionAggregateService;
 
 use QuestionL10n;
 
@@ -12,7 +12,7 @@ use LimeSurvey\Models\Services\Exception\{
 };
 
 /**
- * Question Editor L10n
+ * Question Aggregate L10n
  *
  */
 class L10nService

@@ -1,6 +1,6 @@
 <?php
 
-namespace ls\tests\unit\services\QuestionEditorService;
+namespace ls\tests\unit\services\QuestionAggregateService;
 
 use ls\tests\TestBaseClass;
 
@@ -13,7 +13,7 @@ use LimeSurvey\Models\Services\Exception\{
 /**
  * @group services
  */
-class QuestionEditorServiceTest extends TestBaseClass
+class QuestionAggregateServiceTest extends TestBaseClass
 {
     /**
      * @testdox save() throws PermissionDeniedException

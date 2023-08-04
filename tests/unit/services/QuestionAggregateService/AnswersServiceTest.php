@@ -1,6 +1,6 @@
 <?php
 
-namespace ls\tests\unit\services\QuestionEditorService;
+namespace ls\tests\unit\services\QuestionAggregateService;
 
 use Answer;
 use AnswerL10n;
@@ -12,7 +12,7 @@ use LimeSurvey\DI;
 
 use ls\tests\TestBaseClass;
 
-use LimeSurvey\Models\Services\QuestionEditorService\AnswersService;
+use LimeSurvey\Models\Services\QuestionAggregateService\AnswersService;
 
 use LimeSurvey\Models\Services\Exception\{
     PersistErrorException,

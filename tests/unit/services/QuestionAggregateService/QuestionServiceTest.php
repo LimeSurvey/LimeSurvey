@@ -1,6 +1,6 @@
 <?php
 
-namespace ls\tests\unit\services\QuestionEditorService;
+namespace ls\tests\unit\services\QuestionAggregateService;
 
 use Mockery;
 use Question;
@@ -9,7 +9,7 @@ use LimeSurvey\DI;
 
 use ls\tests\TestBaseClass;
 
-use ls\tests\unit\services\QuestionEditorService\Question\{
+use ls\tests\unit\services\QuestionAggregateService\Question\{
     QuestionMockSet,
     QuestionMockSetFactory,
     QuestionFactory

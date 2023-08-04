@@ -1,6 +1,6 @@
 <?php
 
-namespace LimeSurvey\Models\Services\QuestionEditorService;
+namespace LimeSurvey\Models\Services\QuestionAggregateService;
 
 use Question;
 use QuestionAttribute;
@@ -8,7 +8,7 @@ use QuestionAttribute;
 use LimeSurvey\Models\Services\Exception\PersistErrorException;
 
 /**
- * Question Editor Attributes Service
+ * Question Aggregate Attributes Service
  *
  * Service class for editing question attributes data.
  *
@@ -153,5 +153,7 @@ class AttributesService
                 gT('Could not save question')
             );
         }
+
+        $question->refresh();
     }
 }

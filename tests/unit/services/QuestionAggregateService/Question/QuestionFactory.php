@@ -1,8 +1,8 @@
 <?php
 
-namespace ls\tests\unit\services\QuestionEditorService\Question;
+namespace ls\tests\unit\services\QuestionAggregateService\Question;
 
-use LimeSurvey\Models\Services\QuestionEditorService\QuestionService;
+use LimeSurvey\Models\Services\QuestionAggregateService\QuestionService;
 
 /**
  * Question Factory
