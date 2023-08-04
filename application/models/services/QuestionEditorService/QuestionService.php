@@ -176,7 +176,7 @@ class QuestionService
 
         $question = $this->saveQuestionData($data,$questionGroupId);
 
-        $this->initL10nService($survey,$question->qid);
+        $this->initL10nService($survey,$question->gid);
 
         return $question;
     }
@@ -219,6 +219,8 @@ class QuestionService
                 gT('Could not save question')
             );
         }
+
+        $question->refresh();
 
         return $question;
     }

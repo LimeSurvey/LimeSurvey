@@ -6,22 +6,16 @@ use Permission;
 use Question;
 use CDbConnection;
 
-use LimeSurvey\Models\Services\QuestionEditorService\{
-    QuestionService,
-    L10nService,
-    AttributesService,
-    AnswersService,
-    SubQuestionsService
-};
-
-use LimeSurvey\Models\Services\Proxy\{
-    ProxyExpressionManager
-};
-
-use LimeSurvey\Models\Services\Exception\{
-    PersistErrorException,
-    NotFoundException,
-    PermissionDeniedException
+use LimeSurvey\Models\Services\{
+    QuestionEditorService\QuestionService,
+    QuestionEditorService\L10nService,
+    QuestionEditorService\AttributesService,
+    QuestionEditorService\AnswersService,
+    QuestionEditorService\SubQuestionsService,
+    Proxy\ProxyExpressionManager,
+    Exception\PersistErrorException,
+    Exception\NotFoundException,
+    Exception\PermissionDeniedException
 };
 
 /**
@@ -33,32 +27,32 @@ use LimeSurvey\Models\Services\Exception\{
  */
 class QuestionEditorService
 {
-    private QuestionService $questionEditorQuestion;
-    private L10nService $questionEditorL10n;
-    private AttributesService $questionEditorAttributes;
-    private AnswersService $questionEditorAnswers;
-    private SubQuestionsService $questionEditorSubQuestions;
+    private QuestionService $questionService;
+    private L10nService $l10nService;
+    private AttributesService $attributesService;
+    private AnswersService $answersService;
+    private SubQuestionsService $subQuestionsService;
     private Permission $modelPermission;
     private Question $modelQuestion;
     private ProxyExpressionManager $proxyExpressionManager;
     private CDbConnection $yiiDb;
 
     public function __construct(
-        QuestionService $questionEditorQuestion,
-        L10nService $questionEditorL10n,
-        AttributesService $questionEditorAttributes,
-        AnswersService $questionEditorAnswers,
-        SubQuestionsService $questionEditorSubQuestions,
+        QuestionService $questionService,
+        L10nService $l10nService,
+        AttributesService $attributesService,
+        AnswersService $answersService,
+        SubQuestionsService $subQuestionsService,
         Question $modelQuestion,
         Permission $modelPermission,
         ProxyExpressionManager $proxyExpressionManager,
         CDbConnection $yiiDb
     ) {
-        $this->questionEditorQuestion = $questionEditorQuestion;
-        $this->questionEditorL10n = $questionEditorL10n;
-        $this->questionEditorAttributes = $questionEditorAttributes;
-        $this->questionEditorAnswers = $questionEditorAnswers;
-        $this->questionEditorSubQuestions = $questionEditorSubQuestions;
+        $this->questionService = $questionService;
+        $this->l10nService = $l10nService;
+        $this->attributesService = $attributesService;
+        $this->answersService = $answersService;
+        $this->subQuestionsService = $subQuestionsService;
         $this->modelQuestion = $modelQuestion;
         $this->modelPermission = $modelPermission;
         $this->proxyExpressionManager = $proxyExpressionManager;
@@ -135,10 +129,12 @@ class QuestionEditorService
     {
         $data = $this->normaliseInput($input);
 
-        $question = $this->modelQuestion
-            ->findByPk((int) $data['question']['qid']);
-        if ($question) {
-            $data['question']['sid'] = $question->sid;
+        if (isset($data['question']) && !empty($data['question']['qid'])) {
+            $question = $this->modelQuestion
+                ->findByPk($data['question']['qid']);
+            if ($question) {
+                $data['question']['sid'] = $question->sid;
+            }
         }
 
         $this->checkPermissions($data['question']['sid']);
@@ -146,48 +142,50 @@ class QuestionEditorService
         // Rollback at failure.
         $transaction = $this->yiiDb->beginTransaction();
         try {
-            $question = $this->questionEditorQuestion
+            $question = $this->questionService
                 ->save($data);
+            $question->refresh();
 
-            $this->questionEditorL10n->save(
+            $this->l10nService->save(
                 $question->qid,
                 $data['questionL10n']
             );
 
-            $this->questionEditorAttributes
+            $this->attributesService
                 ->saveAdvanced(
                     $question,
                     $data['advancedSettings']
                 );
 
-            $this->questionEditorAttributes
+
+            $this->attributesService
                 ->save(
                     $question,
                     $data['question']
                 );
 
             if (isset($input['answeroptions'])) {
-                $this->questionEditorAnswers->save(
+                $this->answersService->save(
                     $question,
                     $input['answeroptions']
                 );
             }
 
             if (isset($input['subquestions'])) {
-                $this->questionEditorSubQuestions->save(
+                $this->subQuestionsService->save(
                     $question,
                     $input['subquestions']
                 );
             }
 
             $transaction->commit();
-            // All done, redirect to edit form.
             $question->refresh();
-            $this->proxyExpressionManager->setDirtyFlag();
         } catch (\Exception $e) {
             $transaction->rollback();
             throw $e;
         }
+        $this->proxyExpressionManager->setDirtyFlag();
+
         return $question;
     }
 

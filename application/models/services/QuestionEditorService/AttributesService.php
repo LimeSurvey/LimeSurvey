@@ -102,7 +102,11 @@ class AttributesService
         $questionBaseAttributes = $question->attributes;
 
         foreach ($dataSet as $attributeKey => $attributeValue) {
-            if ($attributeKey === 'debug' || !isset($attributeValue)) {
+            if (
+                $attributeKey === 'qid' ||
+                $attributeKey === 'debug' ||
+                !isset($attributeValue)
+            ) {
                 continue;
             }
 
