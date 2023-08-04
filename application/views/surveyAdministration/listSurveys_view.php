@@ -35,12 +35,20 @@ echo viewHelper::getViewTestTag('listSurveys');
         overflow:auto;
     }
 
-    #install-template-token:not(.preview-outer) .modal-footer .btn.btn-close {
+    #install-template-token:not(.preview-outer) .modal-footer .btn.btn-collapse {
         display: none;
     }
 
-    #install-template-token.preview-outer .modal-footer .btn:not(.btn-close) {
+    #install-template-token.preview-outer .modal-footer .btn:not(.btn-collapse) {
         display: none;
+    }
+
+    .btn.btn-collapse {
+        border: 1px solid #212529;
+    }
+
+    .btn.btn-collapse:hover {
+        color: #212529;
     }
 
 </style>
@@ -97,6 +105,7 @@ if (Yii::app()->session['templatetoken'] ?? null) {
         <div class="modal-content" style="text-align:left; color:#000;">
             <div class="modal-header">
                 <h1 class="modal-title"><?php eT('Import Survey?'); ?></h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
                 <div class="modal-body-text"><?php echo sprintf(gT('%sPlease confirm that you want to create your template.%s'), "<p>", "</p>"); ?></div>
@@ -106,7 +115,7 @@ if (Yii::app()->session['templatetoken'] ?? null) {
             <div class="modal-footer modal-footer-buttons">
                 <a role="button" class="btn btn-primary btn-ok"><?php eT('Use This Template'); ?></a>
                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal" style="color: white;"><?php eT('No'); ?></button>
-                <button type="button" class="btn btn-close" data-bs-dismiss="modal"><?php eT('Close'); ?></button>
+                <button type="button" class="btn btn-collapse" data-bs-dismiss="modal"><?php eT('Close'); ?></button>
             </div>
         </div>
     </div>
@@ -160,7 +169,7 @@ if (Yii::app()->session['templatetoken'] ?? null) {
             }
             popupBackground.remove();
         }
-        for (let closeItem of context.querySelectorAll('.btn-close, .btn-cancel')) {
+        for (let closeItem of context.querySelectorAll('.btn-close, .btn-collapse, .btn-danger')) {
             closeItem.addEventListener("click", closeTemplatePopup);
         }
         context.querySelector('.btn-ok').addEventListener("click", function() {
