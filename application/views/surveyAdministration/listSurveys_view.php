@@ -10,6 +10,40 @@
 echo viewHelper::getViewTestTag('listSurveys');
 
 ?>
+<style>
+    #install-template-token .modal-dialog {
+        transition: max-width 1s;
+    }
+    #install-template-token.preview-outer .modal-dialog {
+        max-width: 50%;
+    }
+
+    #install-template-token .modal-dialog .modal-content {
+        transition: height 1s;
+        height: 77%;
+    }
+
+    #install-template-token.preview-outer .modal-dialog {
+        height:60vh;
+    }
+
+    #install-template-token.preview-outer .modal-dialog .modal-content {
+        height: 90%;
+    }
+    #install-template-token.preview-outer .modal-dialog .modal-body {
+        height:100%;
+        overflow:auto;
+    }
+
+    #install-template-token:not(.preview-outer) .modal-footer .btn.btn-close {
+        display: none;
+    }
+
+    #install-template-token.preview-outer .modal-footer .btn:not(.btn-close) {
+        display: none;
+    }
+
+</style>
 <div class="ls-space list-surveys">
     <ul class="nav nav-tabs" id="surveysystem" role="tablist">
         <li class="nav-item"><a class="nav-link active" href="#surveys" aria-controls="surveys" role="tab" data-bs-toggle="tab"><?php eT('Survey list'); ?></a></li>
@@ -56,24 +90,23 @@ echo viewHelper::getViewTestTag('listSurveys');
 <?php
 if (Yii::app()->session['templatetoken'] ?? null) {
     Yii::import('application.helpers.admin.token_helper', true);
-    $filename = decodeFilename(Yii::app()->session['templatetoken']);
     ?>
     <div id="install-template-token" class="modal fade" role="dialog">
-    <div class="modal-dialog ">
+    <div class="modal-dialog" style="transform: translate(0, 98px);">
         <!-- Modal content-->
-        <div class="modal-content" style="text-align:left; color:#000">
+        <div class="modal-content" style="text-align:left; color:#000;">
             <div class="modal-header">
                 <h1 class="modal-title"><?php eT('Import Survey?'); ?></h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                <div class="modal-body-text"><?php echo sprintf(gT('Shall we import the template file of %s?'), $filename); ?></div>
-                <div class="preview" style="display: none;">mypreview</div>
+                <div class="modal-body-text"><?php echo sprintf(gT('%sPlease confirm that you want to create your template.%s'), "<p>", "</p>"); ?></div>
+                <div class="preview" style="display: none;"><img src="https://mdbcdn.b-cdn.net/img/Photos/Thumbnails/Slides/2.webp" class="w-100"/></div>
             </div>
             
             <div class="modal-footer modal-footer-buttons">
-                <button type="button" class="btn btn-cancel" data-bs-dismiss="modal"><?php eT('No'); ?></button>
-                <a role="button" class="btn btn-danger btn-ok"><?php eT('Yes'); ?></a>
+                <a role="button" class="btn btn-primary btn-ok"><?php eT('Use This Template'); ?></a>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal" style="color: white;"><?php eT('No'); ?></button>
+                <button type="button" class="btn btn-close" data-bs-dismiss="modal"><?php eT('Close'); ?></button>
             </div>
         </div>
     </div>
@@ -135,10 +168,14 @@ if (Yii::app()->session['templatetoken'] ?? null) {
                 if (this.readyState === 4) {
                     if (this.responseText === 'success') {
                         context.querySelector('.modal-body-text').style.display = 'none';
-                        context.querySelector('.preview').style.display = 'block';
+                        let preview = context.querySelector('.preview');
+                        preview.style.display = 'block';
                         context.querySelector('.modal-title').innerText = '<?php eT('Question preview'); ?>';
-                        for (let btn of context.querySelectorAll('.btn')) btn.style.display = 'none';
+                        for (let btn of context.querySelectorAll('.modal-footer .btn')) {
+                            btn.classList[btn.classList.contains('invisible') ? 'add' : 'remove']('invisible');
+                        };
                         isPreview = true;
+                        context.classList.add('preview-outer');
                     } else {
                         context.querySelector('.modal-body-text').innerHTML = this.responseText;
                     }
