@@ -11,7 +11,7 @@
 #}
 
 <!-- answer_td -->
-<td class="answer_cell_{{ ld }}{% if ld=="" %} noanswer-item{% endif %} answer-item radio-item">
+<td class="answer_cell_{{ ld }}{% if ld=="" %} noanswer-item{% endif %} {% if evenColumn %} ls-even{% else %} ls-odd{% endif %} answer-item radio-item">
     <input
         type="radio"
         name="{{ myfname }}"

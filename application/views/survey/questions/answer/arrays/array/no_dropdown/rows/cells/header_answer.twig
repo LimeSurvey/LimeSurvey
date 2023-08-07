@@ -9,6 +9,6 @@
  * @var $oAnswer
  */
 #}
-<th class="{{ class }}" {% if not isrepeat %} id="answer{{ basename }}-{{ code }}" role="columnheader" {% endif %}>
-    {{ processString(content) }}
+<th class="{{ class }} {% if even %} ls-even{% else %} ls-odd{% endif %}" {% if not isrepeat %} id="answer{{ basename }}-{{ code }}" role="columnheader" {% endif %}>
+	{{ processString(content) }}
 </th>

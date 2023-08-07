@@ -85,7 +85,7 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
         $this->columnswidth = 100 - $this->answerwidth;
 
         if ($this->rightExists) {
-        /* put the right answer to same width : take place in answer width only if it's not default */
+            /* put the right answer to same width : take place in answer width only if it's not default */
             if ($this->defaultWidth) {
                 $this->columnswidth -= $this->answerwidth;
             } else {
@@ -131,7 +131,7 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
             ]
         );
 
-        foreach ($this->aAnswerOptions[0] as $oAnswer) {
+        foreach ($this->aAnswerOptions[0] as $j => $oAnswer) {
             $sHeader  .= Yii::app()->twigRenderer->renderQuestion(
                 $this->getMainView() . '/rows/cells/header_answer',
                 [
@@ -140,7 +140,9 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
                     'content' => $oAnswer->answerl10ns[$this->sLanguage]->answer,
                     'code' => $oAnswer->code,
                     'isrepeat' => $isrepeat,
-                    'oAnswer' => $oAnswer
+                    'oAnswer' => $oAnswer,
+                    'even'     => ($j % 2 - 1), // true for odd, false for even
+
                 ]
             );
         }
@@ -168,7 +170,9 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
                     'content' => gT('No answer'),
                     'isrepeat' => $isrepeat,
                     'code' => '',
-                    'oAnswer' => null
+                    'oAnswer' => null,
+                    'even'     => count($this->aAnswerOptions[0]) % 2 - 1 // true for odd, false for even
+
                 ]
             );
         }
@@ -288,7 +292,7 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
                     'code' => $oAnswer->code,
                     'label' => $oAnswer->answerl10ns[$this->sLanguage]->answer,
                     'checked' => ($value == $oAnswer->code) ? 'checked' : '',
-                    );
+                );
             }
 
             $aNoAnswerColumn = [];
@@ -318,7 +322,7 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
                     'error'      => $error,
                     'odd'        => ($i % 2), // true for odd, false for even
                 )
-                ];
+            ];
 
             $this->inputnames[] = $myfname;
         }
@@ -335,7 +339,7 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
                 'class'     => $oddEven ? 'ls-col-even' : 'ls-col-odd',
                 'cellwidth' => $this->cellwidth,
             );
-                $oddEven = !$oddEven;
+            $oddEven = !$oddEven;
         }
 
         if ($this->rightExists) {
@@ -381,7 +385,7 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
             'right_exists' => $this->rightExists,
             'coreClass'  => $this->sCoreClass,
             'sHeaders'   => $this->sHeaders,
-            ), true);
+        ), true);
 
         $this->registerAssets();
         return array($answer, $this->inputnames);
