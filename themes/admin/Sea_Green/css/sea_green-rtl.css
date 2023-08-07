@@ -17003,9 +17003,8 @@ tr.info, tr.danger {
   border-bottom: none;
 }
 .modal-header .btn-close {
-  position: absolute;
-  top: 11px;
-  left: 11px;
+  align-self: flex-start;
+  margin: 0 auto -0.75rem -0.75rem;
   color: #1E1E1E;
   width: 0.75em;
   height: 0.75em;
