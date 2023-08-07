@@ -17026,6 +17026,9 @@ tr.info, tr.danger {
   border-bottom: none;
 }
 .modal-header .btn-close {
+  position: absolute;
+  top: 11px;
+  right: 11px;
   color: #1E1E1E;
   width: 0.75em;
   height: 0.75em;
