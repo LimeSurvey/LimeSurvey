@@ -90,3 +90,27 @@ function emailTokens($iSurveyID, $aResultTokens, $sType, $continueOnError = fals
     }
     return $aResult;
 }
+
+/**
+ * This method encodes a filename
+ * 
+ * @param string $filename
+ * 
+ * @return string The encoded filename
+ */
+function encodeFilename($filename)
+{
+    return base64_encode($filename);
+}
+
+/**
+ * This method decodes a filename
+ * 
+ * @param string $encoded
+ * 
+ * @return string The decoded filename
+ */
+function decodeFileName($encoded)
+{
+    return base64_decode($encoded);
+}

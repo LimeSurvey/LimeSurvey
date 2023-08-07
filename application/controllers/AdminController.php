@@ -120,6 +120,30 @@ class AdminController extends LSYii_Controller
         Yii::app()->end();
     }
 
+    public function actionRemoveTemplateToken()
+    {
+        if (isset(Yii::app()->session['templatetoken'])) {
+            unset(Yii::app()->session['templatetoken']);
+        }
+    }
+
+    public function actionInstallTemplateByToken()
+    {
+        if (isset(Yii::app()->session['templatetoken'])) {
+            Yii::import('application.helpers.admin.token_helper', true);
+            $filename = decodeFilename(Yii::app()->session['templatetoken']);
+            $this->actionRemoveTemplateToken();
+            if (!preg_match('/^[a-zA-Z0-9_\.]*$/', $filename)) {
+                echo "badly formatted file";
+            } else {
+                exec("php application/commands/console.php importsurvey import-file {$filename}", $output);
+                echo ((!implode("", $output)) ? "success" : "failed to import file");
+            }
+        } else {
+            echo "Token was not found";
+        }
+    }
+
     /**
      * Load and set session vars
      *

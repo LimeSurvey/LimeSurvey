@@ -10,6 +10,48 @@
 echo viewHelper::getViewTestTag('listSurveys');
 
 ?>
+<style>
+    #install-template-token .modal-dialog {
+        transition: max-width 1s;
+    }
+    #install-template-token.preview-outer .modal-dialog {
+        max-width: 50%;
+    }
+
+    #install-template-token .modal-dialog .modal-content {
+        transition: height 1s;
+        height: 77%;
+    }
+
+    #install-template-token.preview-outer .modal-dialog {
+        height:60vh;
+    }
+
+    #install-template-token.preview-outer .modal-dialog .modal-content {
+        height: 90%;
+    }
+    #install-template-token.preview-outer .modal-dialog .modal-body {
+        height:100%;
+        overflow:auto;
+    }
+
+    #install-template-token:not(.preview-outer) .modal-footer .btn.btn-collapse {
+        display: none;
+    }
+
+    #install-template-token.preview-outer .modal-footer .btn:not(.btn-collapse) {
+        display: none;
+    }
+
+    .btn.btn-collapse {
+        border: 1px solid #212529;
+    }
+
+    .btn.btn-collapse:hover {
+        color: #212529;
+    }
+
+</style>
 <div class="ls-space list-surveys">
     <ul class="nav nav-tabs" id="surveysystem" role="tablist">
         <li class="nav-item"><a class="nav-link active" href="#surveys" aria-controls="surveys" role="tab" data-bs-toggle="tab"><?php eT('Survey list'); ?></a></li>
@@ -53,6 +95,34 @@ echo viewHelper::getViewTestTag('listSurveys');
         </div>
     </div>
 </div>
+<?php
+if (Yii::app()->session['templatetoken'] ?? null) {
+    Yii::import('application.helpers.admin.token_helper', true);
+    ?>
+    <div id="install-template-token" class="modal fade" role="dialog">
+    <div class="modal-dialog" style="transform: translate(0, 98px);">
+        <!-- Modal content-->
+        <div class="modal-content" style="text-align:left; color:#000;">
+            <div class="modal-header">
+                <h1 class="modal-title"><?php eT('Import Survey?'); ?></h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body-text"><?php echo sprintf(gT('%sPlease confirm that you want to create your template.%s'), "<p>", "</p>"); ?></div>
+                <div class="preview" style="display: none;"><img src="https://mdbcdn.b-cdn.net/img/Photos/Thumbnails/Slides/2.webp" class="w-100"/></div>
+            </div>
+            
+            <div class="modal-footer modal-footer-buttons">
+                <a role="button" class="btn btn-primary btn-ok"><?php eT('Use This Template'); ?></a>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal" style="color: white;"><?php eT('No'); ?></button>
+                <button type="button" class="btn btn-collapse" data-bs-dismiss="modal"><?php eT('Close'); ?></button>
+            </div>
+        </div>
+    </div>
+    </div>
+    <?php
+}
+?>
 <script type="text/javascript">
     $('#surveysystem a').on('shown.bs.tab', function () {
         var tabId = $(this).attr('href');
@@ -63,7 +133,15 @@ echo viewHelper::getViewTestTag('listSurveys');
         if(window.location.hash){
             $('#surveysystem').find('a[href='+window.location.hash+']').trigger('click');
         }
-    })
+    });
+    function sendRequest(type, url, callback, async = true, params = "") {
+        if (async !== false) async = true;
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = callback;
+        xhttp.open(type, url, async);
+        xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhttp.send(params);
+    }
 </script>
 <!-- To update rows per page via ajax -->
 <script type="text/javascript">
@@ -71,6 +149,58 @@ echo viewHelper::getViewTestTag('listSurveys');
         jQuery(document).on("change", '#surveygroups--pageSize', function(){
             $.fn.yiiGridView.update('surveygroups--gridview',{ data:{ pageSize: $(this).val() }});
         });
+        <?php
+        if (Yii::app()->session['templatetoken'] ?? null) {
+        ?>
+        let context = document.getElementById("install-template-token");
+        context.classList.add("show");
+        context.style.display = "block";
+        let popupBackground = document.createElement("div");
+        popupBackground.className = "modal-backdrop fade show";
+        document.body.appendChild(popupBackground);
+        let isPreview = false;
+        let extraParams = `${LS.data.csrfTokenName}=${LS.data.csrfToken}`;
+        function closeTemplatePopup() {
+            sendRequest("POST", "/index.php?r=admin/removeTemplateToken", undefined, true, extraParams);
+            context.classList.remove('show');
+            context.style.display = 'none';
+            if (isPreview) {
+                window.location.reload();
+            }
+            popupBackground.remove();
+        }
+        for (let closeItem of context.querySelectorAll('.btn-close, .btn-collapse, .btn-danger')) {
+            closeItem.addEventListener("click", closeTemplatePopup);
+        }
+        context.querySelector('.btn-ok').addEventListener("click", function() {
+            sendRequest("POST", "/index.php?r=admin/installTemplateByToken", function() {
+                if (this.readyState === 4) {
+                    if (this.responseText === 'success') {
+                        context.querySelector('.modal-body-text').style.display = 'none';
+                        let preview = context.querySelector('.preview');
+                        preview.style.display = 'block';
+                        context.querySelector('.modal-title').innerText = '<?php eT('Question preview'); ?>';
+                        for (let btn of context.querySelectorAll('.modal-footer .btn')) {
+                            btn.classList[btn.classList.contains('invisible') ? 'add' : 'remove']('invisible');
+                        };
+                        isPreview = true;
+                        context.classList.add('preview-outer');
+                    } else {
+                        context.querySelector('.modal-body-text').innerHTML = this.responseText;
+                    }
+                    sendRequest("POST", "/index.php?r=admin/removeTemplateToken", undefined, true, extraParams);
+                }
+            }, true, extraParams);
+        });
+
+        context.addEventListener("click", closeTemplatePopup);
+
+        context.querySelector('.modal-dialog').addEventListener("click", function(evt) {
+            evt.stopPropagation();
+        });
+        <?php
+        }
+        ?>
     });
     //show tooltip for gridview icons
     var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))

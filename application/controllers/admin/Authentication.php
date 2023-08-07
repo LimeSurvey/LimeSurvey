@@ -40,6 +40,17 @@ class Authentication extends SurveyCommonAction
             Yii::app()->session['adminlang'] = Yii::app()->request->getParam('loginlang', 'default');
             Yii::app()->setLanguage(Yii::app()->session["adminlang"]);
         }
+        /* Checking whether we have any templates to import */
+        if (($templatetoken = Yii::app()->request->getParam('templatetoken', 'default')) !== 'default') {
+            $url = Yii::app()->request->url;
+            $questionPosition = strpos($url, "?");
+            Yii::app()->session['templatetoken'] = Yii::app()->request->getParam('templatetoken', 'default');
+            $target = implode("?", [substr($url, 0, $questionPosition), implode("&", array_filter(explode("&", substr($url, $questionPosition + 1)), function ($v, $k) {
+                return strpos($v, 'templatetoken') !== 0;
+            }, ARRAY_FILTER_USE_BOTH))]);
+            $this->runDbUpgrade();
+            header('Location: ' . $target);
+        }
         // The page should be shown only for non logged in users
         $this->redirectIfLoggedIn();
 
@@ -391,7 +402,11 @@ class Authentication extends SurveyCommonAction
         self::runDbUpgrade();
         self::cleanFailedEmailTable();
         self::createNewFailedEmailsNotification();
-        $returnUrl = App()->user->getReturnUrl(array('/admin'));
+        if (isset(Yii::app()->session['templatetoken'])) {
+            $returnUrl = App()->user->getReturnUrl(['/surveyAdministration/listSurveys']);
+        } else {
+            $returnUrl = App()->user->getReturnUrl(array('/admin'));
+        }
         Yii::app()->getController()->redirect($returnUrl);
     }
 
