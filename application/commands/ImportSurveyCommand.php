@@ -8,13 +8,18 @@ Yii::import('application.helpers.admin.import_helper', true);
 class ImportSurveyCommand extends CConsoleCommand
 {
 
+    const SUPPORTED_CATEGORIES = [
+        'Business',
+        /* Further categories here */
+    ];
+
     /**
      * @param string $filename
      * 
-     * Sample command: php application/commands/console.php importsurvey import-file abcf.lss
-     *                 php application/commands/console.php importsurvey import-file limesurvey_survey_979573.lss '{"bTranslateLinkFields": true, "sNewSurveyName": "Orsson", "DestSurveyID": 666999}'
+     * Sample command: php application/commands/console.php importsurvey import-file Business abcf.lss
+     *                 php application/commands/console.php importsurvey import-file Business limesurvey_survey_979573.lss '{"bTranslateLinkFields": true, "sNewSurveyName": "Orsson", "DestSurveyID": 666999}'
      */
-    protected function importFile($filename, $furtherParams)
+    protected function importFile($category, $filename, $furtherParams)
     {
         $params = [
             "bTranslateLinkFields" => false,
@@ -27,7 +32,7 @@ class ImportSurveyCommand extends CConsoleCommand
             }
         }
         importSurveyFile(
-            Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . "templates" . DIRECTORY_SEPARATOR . $filename,
+            "assets" . DIRECTORY_SEPARATOR . "templates" . DIRECTORY_SEPARATOR . $category . DIRECTORY_SEPARATOR . $filename,
             $params["bTranslateLinkFields"],
             $params["sNewSurveyName"],
             $params["DestSurveyID"],
@@ -45,15 +50,19 @@ class ImportSurveyCommand extends CConsoleCommand
         $command = $sArgument[0];
         switch ($command) {
             case "import-file": {
-                if (count($sArgument) < 2) {
-                    throw new Exception("You need to specify the file to import from");
+                if (count($sArgument) < 3) {
+                    throw new Exception("You need to specify the category and the file to import from");
                 }
-                $filename = $sArgument[1];
+                $category = $sArgument[1];
+                if (!in_array($category, self::SUPPORTED_CATEGORIES)) {
+                    throw new Exception("Unsupported category");
+                }
+                $filename = $sArgument[2];
                 if (!preg_match('/^[a-zA-Z0-9_\.]*$/', $filename)) {
                     throw new Exception("Your filename can only contain letters, digits and dot");
                 }
-                $furtherParams = $sArgument[2] ?? null;
-                $this->importFile($filename, $furtherParams);
+                $furtherParams = $sArgument[3] ?? null;
+                $this->importFile($category, $filename, $furtherParams);
             } break;
             default: throw new Exception("Unsupported command");
         }
