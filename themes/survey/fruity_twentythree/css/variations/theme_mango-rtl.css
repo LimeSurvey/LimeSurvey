@@ -13939,6 +13939,10 @@ body .imageselect-listitem label::after {
   margin-right: 0;
 }
 
+.uploadedfiles tbody tr td {
+  text-align: right;
+}
+
 .answer-container .bootstrap-select .bs-searchbox .form-control {
   padding: 0.375rem 0.75rem;
   margin-bottom: 4px;
