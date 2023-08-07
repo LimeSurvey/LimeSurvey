@@ -427,11 +427,54 @@ class SurveyTest extends TestBaseClass
     }
 
     /**
-     * Get tha alias survey url for a specific language.
+     * Get the alias survey url for a specific language.
+     * Using the get format.
      */
-    public function testGetAliasSurveyUrl()
+    public function testGetAliasSurveyUrlGet()
     {
+        $urlManager = Yii::app()->getUrlManager();
+
         $tmpArSurveyAlias = self::$testSurvey->languagesettings['ar']->surveyls_alias;
+        $tmpUrlFormat = $urlManager->getUrlFormat();
+
+        $urlManager->urlFormat = \CUrlManager::GET_FORMAT;
+
+        self::$testSurvey->languagesettings['ar']->surveyls_alias = 'my-arabic-survey';
+
+        $tmpPublicUrl = Yii::app()->getConfig('publicurl');
+        Yii::app()->setConfig('publicurl', 'http://example.com');
+
+        $params = [$urlManager->routeVar => 'my-arabic-survey'];
+        $query = $urlManager->createPathInfo($params, '=', '&');
+        $expectedUrl = Yii::app()->getPublicBaseUrl(true) . '?' . $query;
+
+        $url = self::$testSurvey->getSurveyUrl('ar');
+        $this->assertSame($url, $expectedUrl, 'Unexpected url. The url does not correspond with a public survey url.');
+
+        // No alias assert.
+        $url = self::$testSurvey->getSurveyUrl('ar', array(), false);
+        $expectedRelativeUrl = Yii::app()->createUrl('survey/index', array('sid' => self::$surveyId, 'lang' => 'ar'));
+        $this->assertSame($url, 'http://example.com' . $expectedRelativeUrl, 'Unexpected url. The url does not correspond with a public survey url.');
+
+        // Reset original value.
+        self::$testSurvey->languagesettings['ar']->surveyls_alias = $tmpArSurveyAlias;
+        Yii::app()->setConfig('publicurl', $tmpPublicUrl);
+        $urlManager->urlFormat = $tmpUrlFormat;
+    }
+
+    /**
+     * Get the alias survey url for a specific language.
+     * Using the path format.
+     */
+    public function testGetAliasSurveyUrlPath()
+    {
+        $urlManager = Yii::app()->getUrlManager();
+
+        $tmpArSurveyAlias = self::$testSurvey->languagesettings['ar']->surveyls_alias;
+        $tmpUrlFormat = $urlManager->getUrlFormat();
+
+        $urlManager->urlFormat = \CUrlManager::PATH_FORMAT;
+
         self::$testSurvey->languagesettings['ar']->surveyls_alias = 'my-arabic-survey';
 
         $tmpPublicUrl = Yii::app()->getConfig('publicurl');
@@ -440,7 +483,7 @@ class SurveyTest extends TestBaseClass
         $url = self::$testSurvey->getSurveyUrl('ar');
         $this->assertSame($url, 'http://example.com/my-arabic-survey', 'Unexpected url. The url does not correspond with a public survey url.');
 
-        // No alias test.
+        // No alias assert.
         $url = self::$testSurvey->getSurveyUrl('ar', array(), false);
         $expectedRelativeUrl = Yii::app()->createUrl('survey/index', array('sid' => self::$surveyId, 'lang' => 'ar'));
         $this->assertSame($url, 'http://example.com' . $expectedRelativeUrl, 'Unexpected url. The url does not correspond with a public survey url.');
@@ -448,5 +491,6 @@ class SurveyTest extends TestBaseClass
         // Reset original value.
         self::$testSurvey->languagesettings['ar']->surveyls_alias = $tmpArSurveyAlias;
         Yii::app()->setConfig('publicurl', $tmpPublicUrl);
+        $urlManager->urlFormat = $tmpUrlFormat;
     }
 }
