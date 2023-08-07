@@ -160,4 +160,46 @@ class OperationResultTest extends TestBaseClass
         $this->assertIsArray($operationRawResultMessages, 'The result messages should be in an array.');
         $this->assertCount(3, $operationRawResultMessages, 'All raw messages should have been returned.');
     }
+
+    public function testGetRawMessages()
+    {
+        $messages = self::$messages;
+
+        $operationResult = new OperationResult(true, $messages);
+
+        $operationResultRawMessages = $operationResult->getRawMessages();
+
+        $this->assertIsArray($operationResultRawMessages, 'The result raw messages should be in an array.');
+        $this->assertCount(4, $operationResultRawMessages, 'All raw messages should have been returned.');
+    }
+
+    public function testGetSuccessRawMessages()
+    {
+        $messages = self::$messages;
+
+        $operationResult = new OperationResult(true, $messages);
+
+        $operationResultRawMessages = $operationResult->getRawMessages('success');
+
+        $this->assertIsArray($operationResultRawMessages, 'The result raw messages should be in an array.');
+        $this->assertCount(2, $operationResultRawMessages, 'Success raw messages should have been returned.');
+
+        $this->assertSame($operationResultRawMessages[0], 'Success message one', 'Unexpected message. The message does not match.');
+        $this->assertSame($operationResultRawMessages[1], 'Success message two', 'Unexpected message. The message does not match.');
+    }
+
+    public function testGetErrorRawMessages()
+    {
+        $messages = self::$messages;
+
+        $operationResult = new OperationResult(true, $messages);
+
+        $operationResultRawMessages = $operationResult->getRawMessages('error');
+
+        $this->assertIsArray($operationResultRawMessages, 'The result raw messages should be in an array.');
+        $this->assertCount(2, $operationResultRawMessages, 'Error raw messages should have been returned.');
+
+        $this->assertSame($operationResultRawMessages[0], 'Error message one', 'Unexpected message. The message does not match.');
+        $this->assertSame($operationResultRawMessages[1], 'Error message two', 'Unexpected message. The message does not match.');
+    }
 }
