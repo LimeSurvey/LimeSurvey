@@ -34,6 +34,20 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.2.0 (build 230732) to 6.2.1 (build 230807) August 7, 2023
+-Fixed issue #CR-1279: Row link doesn't work when executing Ajax calls in grid view (Patrick Teichmann)
+-Fixed issue #CR-1265: File upload question RTL (#3315) (Tim Willig)
+-Fixed issue #CR-1257: Ownership typo (#3322) (Mohab E)
+-Fixed issue #18985: [security] Reflected XSS (#3309) (Denis Chenu)
+-Fixed issue #18979: [security] User can put survey in survey group without access permission (#3304) (Denis Chenu)
+-Fixed issue #18888: General issues with different questions (#3317) (Gabriel Jenik)
+#Updated translation: Turkish by bulent, c_schmitz, kayazeren
+#Updated translation: Slovak by jelen1
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
 Changes from 6.1.8 (build 230717) to 6.2.0 (build 230732) July 31, 2023
 +New feature: Update the style of the admin file manager (#3093) (jack-han-115)
 +New feature: Combine question list, group list, and reorder into one page (#3070) (jack-han-115)
