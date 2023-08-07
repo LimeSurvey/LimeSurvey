@@ -141,7 +141,8 @@ class AdminController extends LSYii_Controller
                 echo "badly formatted file";
             } else {
                 exec("php application/commands/console.php importsurvey import-file {$filePath[0]} {$filePath[1]}", $output);
-                echo ((!implode("", $output)) ? "success" : "failed to import file");
+                $result = implode("", $output);
+                echo ((preg_match("/^[\d]*$/", $result)) ? $result : "failed to import file");
             }
         } else {
             echo "Token was not found";

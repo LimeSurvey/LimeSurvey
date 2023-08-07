@@ -31,7 +31,7 @@ class ImportSurveyCommand extends CConsoleCommand
                 $params[$key] = $json[$key] ?? $params[$key];
             }
         }
-        importSurveyFile(
+        return importSurveyFile(
             "assets" . DIRECTORY_SEPARATOR . "templates" . DIRECTORY_SEPARATOR . $category . DIRECTORY_SEPARATOR . $filename,
             $params["bTranslateLinkFields"],
             $params["sNewSurveyName"],
@@ -62,7 +62,12 @@ class ImportSurveyCommand extends CConsoleCommand
                     throw new Exception("Your filename can only contain letters, digits and dot");
                 }
                 $furtherParams = $sArgument[3] ?? null;
-                $this->importFile($category, $filename, $furtherParams);
+                $result = $this->importFile($category, $filename, $furtherParams);
+                if (is_array($result) && isset($result['newsid'])) {
+                    echo $result['newsid'];
+                } else {
+                    echo "something went wrong";
+                }
             } break;
             default: throw new Exception("Unsupported command");
         }

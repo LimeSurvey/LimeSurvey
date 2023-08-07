@@ -51,6 +51,15 @@ echo viewHelper::getViewTestTag('listSurveys');
         color: #212529;
     }
 
+    #actual-preview {
+        width: 100%;
+        height: 100%;
+    }
+
+    .modal-body .preview {
+        height: 100%;
+    }
+
 </style>
 <div class="ls-space list-surveys">
     <ul class="nav nav-tabs" id="surveysystem" role="tablist">
@@ -109,7 +118,9 @@ if (Yii::app()->session['templatetoken'] ?? null) {
             </div>
             <div class="modal-body">
                 <div class="modal-body-text"><?php echo sprintf(gT('%sPlease confirm that you want to create your template.%s'), "<p>", "</p>"); ?></div>
-                <div class="preview" style="display: none;"><img src="https://mdbcdn.b-cdn.net/img/Photos/Thumbnails/Slides/2.webp" class="w-100"/></div>
+                <div class="preview" style="display: none;">
+                    <iframe id="actual-preview"></iframe>
+                </div>
             </div>
             
             <div class="modal-footer modal-footer-buttons">
@@ -175,7 +186,7 @@ if (Yii::app()->session['templatetoken'] ?? null) {
         context.querySelector('.btn-ok').addEventListener("click", function() {
             sendRequest("POST", "/index.php?r=admin/installTemplateByToken", function() {
                 if (this.readyState === 4) {
-                    if (this.responseText === 'success') {
+                    if (!isNaN(this.responseText)) {
                         context.querySelector('.modal-body-text').style.display = 'none';
                         let preview = context.querySelector('.preview');
                         preview.style.display = 'block';
@@ -185,6 +196,7 @@ if (Yii::app()->session['templatetoken'] ?? null) {
                         };
                         isPreview = true;
                         context.classList.add('preview-outer');
+                        document.getElementById('actual-preview').src = `index.php?r=survey/index&sid=${this.responseText}&newtest=Y&lang=en`;
                     } else {
                         context.querySelector('.modal-body-text').innerHTML = this.responseText;
                     }
