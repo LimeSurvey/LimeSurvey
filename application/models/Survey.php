@@ -1319,7 +1319,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
      */
     public function getIsHtmlEmail()
     {
-        return ($this->oOptions->htmlemail === 'Y');
+        return (($this->oOptions->htmlemail ?? 'N') === 'Y');
     }
     /**
      * @return bool
@@ -1340,7 +1340,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
      */
     public function getIsAssessments()
     {
-        return ($this->oOptions->assessments === 'Y');
+        return (($this->oOptions->assessments ?? 'N') === 'Y');
     }
     /**
      * @return bool
