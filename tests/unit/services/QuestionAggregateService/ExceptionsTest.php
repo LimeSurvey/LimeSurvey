@@ -35,6 +35,6 @@ class ExceptionsTest extends TestBaseClass
 
         $questionAggregateService = (new Factory)->make( $mockSet);
 
-        $questionAggregateService->save([]);
+        $questionAggregateService->save(1, []);
     }
 }

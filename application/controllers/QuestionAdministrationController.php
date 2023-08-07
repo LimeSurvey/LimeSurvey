@@ -3,6 +3,7 @@
 use \LimeSurvey\Models\Services\QuestionAggregateService;
 
 use LimeSurvey\Models\Services\Exception\{
+    NotFoundException,
     PermissionDeniedException,
     QuestionHasConditionsException
 };
@@ -479,7 +480,10 @@ class QuestionAdministrationController extends LSBaseController
         );
 
         try {
-            $question = $questionAggregateService->save($data);
+            $question = $questionAggregateService->save(
+                $surveyId,
+                $data
+            );
 
             $tabOverviewEditorValue = $request->getPost('tabOverviewEditor');
             // only those two values are valid
@@ -1326,8 +1330,6 @@ class QuestionAdministrationController extends LSBaseController
         );
     }
 
-
-
     /**
      * Function responsible for deleting a question.
      *
@@ -1340,20 +1342,17 @@ class QuestionAdministrationController extends LSBaseController
      */
     public function actionDelete($qid = null, $massAction = false, $redirectTo = null)
     {
+        if (!Yii::app()->getRequest()->isPostRequest) {
+            throw new CHttpException(405, gT('Invalid action'));
+        }
         if (is_null($qid)) {
             $qid = Yii::app()->getRequest()->getPost('qid');
         }
+
+        // @todo: request should specify the survey id of the question to be deleted
+        // - survey id is verified before deletion
         $oQuestion = Question::model()->findByPk($qid);
-        if (empty($oQuestion)) {
-            throw new CHttpException(404, gT("Invalid question id"));
-        }
         $surveyid = $oQuestion->sid;
-        if (!Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'delete')) {
-            throw new CHttpException(403, gT("You are not authorized to delete questions."));
-        }
-        if (!Yii::app()->getRequest()->isPostRequest) {
-            throw new CHttpException(405, gT("Invalid action"));
-        }
 
         if (empty($redirectTo)) {
             $redirectTo = Yii::app()->getRequest()->getPost('redirectTo', 'questionlist');
@@ -1383,7 +1382,9 @@ class QuestionAdministrationController extends LSBaseController
         );
 
         try {
-            $questionAggregateService->delete($qid);
+            $questionAggregateService->delete($surveyid, $qid);
+        } catch (NotFoundException $e) {
+            throw new CHttpException(404, gT('Invalid question id'));
         } catch (QuestionHasConditionsException $e) {
             $message = gT(
                 'Question could not be deleted. '
@@ -1394,6 +1395,11 @@ class QuestionAdministrationController extends LSBaseController
             );
             Yii::app()->setFlashMessage($message, 'error');
             $this->redirect($redirect);
+        } catch (PermissionDeniedException $e) {
+            throw new CHttpException(
+                403,
+                gT('You are not authorized to delete questions.')
+            );
         }
 
         $message = gT(

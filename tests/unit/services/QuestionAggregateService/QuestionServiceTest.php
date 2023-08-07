@@ -47,10 +47,12 @@ class QuestionServiceTest extends TestBaseClass
         );
 
         $mockSet = (new QuestionMockSetFactory)->make();
-        $questionEditor = (new QuestionFactory)->make($mockSet);
+        $questionService = (new QuestionFactory)->make($mockSet);
 
-        $questionEditor->save([
-            'question' => []
+        $questionService->save([
+            'question' => [
+                'sid' => 1
+            ]
         ]);
     }
 
@@ -70,7 +72,7 @@ class QuestionServiceTest extends TestBaseClass
 
         $modelQuestion = Mockery::mock(Question::class)
             ->makePartial();
-        $modelQuestion->shouldReceive('findByPk')
+        $modelQuestion->shouldReceive('findByAttributes')
             ->andReturn($question);
 
         $mockSetInit = new QuestionMockSet();
@@ -78,11 +80,12 @@ class QuestionServiceTest extends TestBaseClass
 
         $mockSet = (new QuestionMockSetFactory)->make($mockSetInit);
 
-        $questionEditor = (new QuestionFactory)->make($mockSet);
+        $questionService = (new QuestionFactory)->make($mockSet);
 
-        $questionEditor->save([
+        $questionService->save([
             'question' => [
-                'qid' => 1
+                'qid' => 1,
+                'sid' => 1
             ]
         ]);
     }

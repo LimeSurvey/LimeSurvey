@@ -18,7 +18,7 @@ class QuestionAggregateServiceTest extends TestBaseClass
     /**
      * @testdox save() throws PermissionDeniedException
      */
-    public function testThrowsExceptionPermissionDenied()
+    public function testSaveThrowsExceptionPermissionDenied()
     {
         $this->expectException(
             PermissionDeniedException::class
@@ -34,6 +34,6 @@ class QuestionAggregateServiceTest extends TestBaseClass
 
         $questionEditor = (new Factory)->make($mockSet);
 
-        $questionEditor->save([]);
+        $questionEditor->save(1, []);
     }
 }

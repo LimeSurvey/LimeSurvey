@@ -8,6 +8,7 @@ use QuestionL10n;
 
 use LimeSurvey\Models\Services\{
     Proxy\ProxyExpressionManager,
+    Exception\NotFoundException,
     Exception\PersistErrorException,
     Exception\QuestionHasConditionsException
 };
@@ -37,16 +38,20 @@ class DeleteService
     /**
      * Function responsible for deleting a question.
      *
+     * @param int $surveyId
      * @param int $questionId
      * @throws PersistErrorException
      * @throws QuestionHasConditionsException
      * @return void
      */
-    public function delete($questionId)
+    public function delete($surveyId, $questionId)
     {
-        $question = $this->modelQuestion->findByPk($questionId);
+        $question = $this->modelQuestion->findByAttributes([
+            'qid' => $questionId,
+            'sid' => $surveyId
+        ]);
         if (empty($question)) {
-            throw new PersistErrorException();
+            throw new NotFoundException();
         }
 
         $this->proxyExpressionManager
@@ -71,6 +76,8 @@ class DeleteService
         $this->modelQuestionL10n
             ->deleteAllByAttributes(['qid' => $questionId]);
 
-        $question->delete();
+        if (!$question->delete()) {
+            throw new PersistErrorException();
+        }
     }
 }

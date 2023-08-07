@@ -43,6 +43,7 @@ class QuestionAggregateService
     /**
      * Based on QuestionAdministrationController::actionSaveQuestionData()
      *
+     * @param int $surveyId
      * @param array{
      *  sid: int,
      *  ?question: array{
@@ -106,14 +107,31 @@ class QuestionAggregateService
      * @throws PermissionDeniedException
      * @return Question
      */
-    public function save($input)
+    public function save($surveyId, $input)
     {
-        $data = $this->saveService->normaliseInput($input);
-        $this->checkPermissions($data['question']['sid']);
+        if (
+            !$this->modelPermission->hasSurveyPermission(
+            $surveyId,
+            'surveycontent',
+            'update'
+            )
+        ) {
+            throw new PermissionDeniedException(
+                'Access denied'
+            );
+        }
+
+        $data = $this->saveService->normaliseInput(
+            $surveyId,
+            $input
+        );
 
         $transaction = $this->yiiDb->beginTransaction();
         try {
-            $question = $this->saveService->save($data);
+            $question = $this->saveService->save(
+                $surveyId,
+                $data
+            );
             $transaction->commit();
         } catch (\Exception $e) {
             $transaction->rollback();
@@ -129,9 +147,12 @@ class QuestionAggregateService
      * @throws QuestionHasConditionsException
      * @return void
      */
-    public function delete($questionId)
+    public function delete($surveyId, $questionId)
     {
-       $this->deleteMany([$questionId]);
+        $this->deleteMany(
+        $surveyId,
+        [$questionId]
+        );
     }
 
     /*
@@ -140,39 +161,29 @@ class QuestionAggregateService
      * @throws QuestionHasConditionsException
      * @return void
      */
-    public function deleteMany($questionIds)
+    public function deleteMany($surveyId, $questionIds)
     {
-        $transaction = $this->yiiDb->beginTransaction();
-        try {
-            foreach ($questionIds as $questionId) {
-                $this->deleteService->delete($questionId);
-            }
-            $transaction->commit();
-        } catch (\Exception $e) {
-            $transaction->rollback();
-            throw $e;
-        }
-    }
-
-    /**
-     * Check permissions
-     *
-     * @param int $surveyId
-     */
-    private function checkPermissions($surveyId)
-    {
-        // Different permission check when sid vs qid is given.
-        // This double permission check is needed if user manipulates the post data.
         if (
             !$this->modelPermission->hasSurveyPermission(
             $surveyId,
             'surveycontent',
-            'update'
+            'delete'
             )
         ) {
             throw new PermissionDeniedException(
                 'Access denied'
             );
+        }
+
+        $transaction = $this->yiiDb->beginTransaction();
+        try {
+            foreach ($questionIds as $questionId) {
+                $this->deleteService->delete($surveyId, $questionId);
+            }
+            $transaction->commit();
+        } catch (\Exception $e) {
+            $transaction->rollback();
+            throw $e;
         }
     }
 }

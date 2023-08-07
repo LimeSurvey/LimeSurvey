@@ -22,7 +22,6 @@ class SaveFactory
             $mockSet->attributesService,
             $mockSet->answersService,
             $mockSet->subQuestionsService,
-            $mockSet->modelQuestion,
             $mockSet->proxyExpressionManager
         );
     }

@@ -26,7 +26,6 @@ class SaveService
     private AttributesService $attributesService;
     private AnswersService $answersService;
     private SubQuestionsService $subQuestionsService;
-    private Question $modelQuestion;
     private ProxyExpressionManager $proxyExpressionManager;
 
     public function __construct(
@@ -35,7 +34,6 @@ class SaveService
         AttributesService $attributesService,
         AnswersService $answersService,
         SubQuestionsService $subQuestionsService,
-        Question $modelQuestion,
         ProxyExpressionManager $proxyExpressionManager
     ) {
         $this->questionService = $questionService;
@@ -43,13 +41,13 @@ class SaveService
         $this->attributesService = $attributesService;
         $this->answersService = $answersService;
         $this->subQuestionsService = $subQuestionsService;
-        $this->modelQuestion = $modelQuestion;
         $this->proxyExpressionManager = $proxyExpressionManager;
     }
 
     /**
      * Based on QuestionAdministrationController::actionSaveQuestionData()
      *
+     * @param int $surveyId
      * @param array{
      *  sid: int,
      *  ?question: array{
@@ -113,9 +111,9 @@ class SaveService
      * @throws PermissionDeniedException
      * @return Question
      */
-    public function save($input)
+    public function save($surveyId, $input)
     {
-        $data = $this->normaliseInput($input);
+        $data = $this->normaliseInput($surveyId, $input);
 
         $question = $this->questionService
             ->save($data);
@@ -162,29 +160,18 @@ class SaveService
      * @param array
      * @return array
      */
-    public function normaliseInput($input)
+    public function normaliseInput($surveyId, $input)
     {
         $input  = $input ?? [];
 
         $data = [];
         $data['question']         = $input['question'] ?? [];
-        $data['question']['sid']  = $data['question']['sid'] ?? ($input['sid'] ?? 0);
+        $data['question']['sid']  = $surveyId;
         $data['question']['qid']  = $data['question']['qid'] ?? null;
         $data['questionL10n']     = $input['questionL10n'] ?? [];
         $data['advancedSettings'] = $input['advancedSettings'] ?? [];
         $data['answeroptions']    = $input['answeroptions'] ?? null;
         $data['subquestions']     = $input['subquestions'] ?? null;
-
-        if (
-            !empty($data['question']['qid']) &&
-            empty($data['question']['sid'])
-        ) {
-            $question = $this->modelQuestion
-                ->findByPk($data['question']['qid']);
-            if ($question) {
-                $data['question']['sid'] = $question->sid;
-            }
-        }
 
         return $data;
     }

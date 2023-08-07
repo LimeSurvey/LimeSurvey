@@ -4,7 +4,6 @@ namespace ls\tests\unit\services\QuestionAggregateService\Save;
 
 use ls\tests\unit\services\QuestionAggregateService\Question\QuestionFactory;
 
-use Question;
 use QuestionAttribute;
 use Mockery;
 
@@ -49,10 +48,6 @@ class SaveMockSetFactory
             ? $init->subQuestionsService
             : $this->getMockSubQuestionsService();
 
-        $mockSet->modelQuestion = ($init && isset($init->modelQuestion))
-            ? $init->modelQuestion
-            : $this->getMockModelQuestion();
-
         $mockSet->proxyExpressionManager = ($init && isset($init->proxyExpressionManager))
             ? $init->proxyExpressionManager
             : $this->getMockProxyExpressionManager();
@@ -92,12 +87,6 @@ class SaveMockSetFactory
     private function getMockSubQuestionsService(): SubQuestionsService
     {
         return  Mockery::mock(SubQuestionsService::class)
-            ->makePartial();
-    }
-
-    private function getMockModelQuestion(): Question
-    {
-        return Mockery::mock(Question::class)
             ->makePartial();
     }
 

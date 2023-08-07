@@ -101,7 +101,20 @@ class QuestionService
             );
         } else {
             $question = $this->modelQuestion
-                ->findByPk((int) $data['question']['qid']);
+                ->findByAttributes([
+                    'qid' => $data['question']['qid'],
+                    'sid' => $data['question']['sid']
+                ]);
+
+            if (!$question) {
+                throw new NotFoundException(
+                    sprintf(
+                        'Could not find question with id "%s" in survey id "%s"',
+                        $data['question']['qid'],
+                        $data['question']['sid']
+                    )
+                );
+            }
 
             $question = $this->updateQuestionData(
                 $question,
