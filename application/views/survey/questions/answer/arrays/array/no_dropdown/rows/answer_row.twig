@@ -27,7 +27,8 @@
 
 	{% for aAnswerColumn in aAnswerColumns %}
 		{% include 'survey/questions/answer/arrays/array/no_dropdown/rows/cells/answer_td.twig' with 
-            {'aAnswerColumn': aAnswerColumn, 'evenColumn': loop.index % 2 } %}
+            {'ld': aAnswerColumn.ld,"myfname": myfname, 'basename': aAnswerColumn.basename, 'evenColumn': loop.index % 2 } 
+         %}
 	{% endfor %}
 	{# Defined in answer_td view #}
 
@@ -38,7 +39,8 @@
 	{# No answer should come after right text at bipolar question #}
 	{% if aNoAnswerColumn is not empty %}
 		{% include 'survey/questions/answer/arrays/array/no_dropdown/rows/cells/answer_td.twig' with 
-            {'aNoAnswerColumn': aNoAnswerColumn, 'evenColumn': numAnswerColumns % 2 } %}
+            {'ld': aNoAnswerColumn.ld, "myfname": myfname, 'basename': aNoAnswerColumn.basename, 'evenColumn': numAnswerColumns % 2 } 
+        %}
 	{% endif %}
 
 </tr>
