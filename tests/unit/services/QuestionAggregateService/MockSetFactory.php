@@ -5,7 +5,10 @@ namespace ls\tests\unit\services\QuestionAggregateService;
 use Permission;
 use CDbConnection;
 use Mockery;
-use ls\tests\unit\services\QuestionAggregateService\Save\SaveFactory;
+use ls\tests\unit\services\QuestionAggregateService\{
+    Save\SaveFactory,
+    Delete\DeleteFactory
+};
 
 /**
  * Question Aggregate Mock Factory
@@ -24,6 +27,10 @@ class MockSetFactory
         $mockSet->saveService = ($init && isset($init->saveService))
             ? $init->saveService
             : (new SaveFactory)->make();
+
+        $mockSet->deleteService = ($init && isset($init->deleteService))
+            ? $init->deleteService
+            : (new DeleteFactory)->make();
 
         $mockSet->modelPermission = ($init && isset($init->modelPermission))
             ? $init->modelPermission

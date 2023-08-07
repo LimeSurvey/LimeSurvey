@@ -85,4 +85,16 @@ class ProxyExpressionManager
     {
         LimeExpressionManager::SetDirtyFlag();
     }
+
+    /**
+     * @param int $questionId
+     * @return void
+     */
+    public function revertUpgradeConditionsToRelevance($questionId)
+    {
+        LimeExpressionManager::RevertUpgradeConditionsToRelevance(
+            null,
+            $questionId
+        );
+    }
 }

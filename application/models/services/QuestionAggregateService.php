@@ -8,6 +8,7 @@ use CDbConnection;
 
 use LimeSurvey\Models\Services\{
     QuestionAggregateService\SaveService,
+    QuestionAggregateService\DeleteService,
     Exception\PersistErrorException,
     Exception\NotFoundException,
     Exception\PermissionDeniedException
@@ -23,15 +24,18 @@ use LimeSurvey\Models\Services\{
 class QuestionAggregateService
 {
     private SaveService $saveService;
+    private DeleteService $deleteService;
     private Permission $modelPermission;
     private CDbConnection $yiiDb;
 
     public function __construct(
         SaveService $saveService,
+        DeleteService $deleteService,
         Permission $modelPermission,
         CDbConnection $yiiDb
     ) {
         $this->saveService = $saveService;
+        $this->deleteService = $deleteService;
         $this->modelPermission = $modelPermission;
         $this->yiiDb = $yiiDb;
     }
@@ -117,6 +121,37 @@ class QuestionAggregateService
         }
 
         return $question;
+    }
+
+    /*
+     * @param int $questionIds
+     * @throws PersistErrorException
+     * @throws QuestionHasConditionsException
+     * @return void
+     */
+    public function delete($questionId)
+    {
+       $this->deleteMany([$questionId]);
+    }
+
+    /*
+     * @param array $questionIds
+     * @throws PersistErrorException
+     * @throws QuestionHasConditionsException
+     * @return void
+     */
+    public function deleteMany($questionIds)
+    {
+        $transaction = $this->yiiDb->beginTransaction();
+        try {
+            foreach ($questionIds as $questionId) {
+                $this->deleteService->delete($questionId);
+            }
+            $transaction->commit();
+        } catch (\Exception $e) {
+            $transaction->rollback();
+            throw $e;
+        }
     }
 
     /**

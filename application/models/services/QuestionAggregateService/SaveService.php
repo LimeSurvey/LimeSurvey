@@ -17,11 +17,7 @@ use LimeSurvey\Models\Services\{
 };
 
 /**
- * Question Aggregate Service
- *
- * Service class for editing question data.
- *
- * Dependencies are injected to enable mocking.
+ * Question Aggregate Save Service
  */
 class SaveService
 {

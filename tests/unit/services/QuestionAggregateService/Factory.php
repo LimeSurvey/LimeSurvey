@@ -18,6 +18,7 @@ class Factory
 
         return new QuestionAggregateService(
             $mockSet->saveService,
+            $mockSet->deleteService,
             $mockSet->modelPermission,
             $mockSet->yiiDb
         );
