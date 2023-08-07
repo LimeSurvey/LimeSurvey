@@ -27,7 +27,7 @@ class QuestionServiceTest extends TestBaseClass
     /**
      * @testdox save() throws PersistErrorException on create failure
      */
-    public function testThrowsExceptionPersistErrorOnCreateFailure()
+    public function testSaveThrowsExceptionPersistErrorOnCreateFailure()
     {
         $this->expectException(
             PersistErrorException::class
@@ -59,7 +59,7 @@ class QuestionServiceTest extends TestBaseClass
     /**
      * @testdox save() throws PersistErrorException on update failure
      */
-    public function testThrowsExceptionPersistErrorOnUpdateFailure()
+    public function testDeleteThrowsExceptionPersistErrorOnUpdateFailure()
     {
         $this->expectException(
             PersistErrorException::class
