@@ -3,7 +3,8 @@
 use \LimeSurvey\Models\Services\QuestionAggregateService;
 
 use LimeSurvey\Models\Services\Exception\{
-    PermissionDeniedException
+    PermissionDeniedException,
+    QuestionHasConditionsException
 };
 
 /**
@@ -473,12 +474,12 @@ class QuestionAdministrationController extends LSBaseController
         $data = !empty($_POST) ? $_POST : [];
 
         $diContainer = \LimeSurvey\DI::getContainer();
-        $questionEditorService = $diContainer->get(
+        $questionAggregateService = $diContainer->get(
             QuestionAggregateService::class
         );
 
         try {
-            $question = $questionEditorService->save($data);
+            $question = $questionAggregateService->save($data);
 
             $tabOverviewEditorValue = $request->getPost('tabOverviewEditor');
             // only those two values are valid
@@ -1325,14 +1326,15 @@ class QuestionAdministrationController extends LSBaseController
         );
     }
 
+
+
     /**
      * Function responsible for deleting a question.
      *
      * @access public
      * @param int $qid
      * @param bool $massAction
-     * @param string $redirectTo Redirect to question list ('questionlist' or empty), or group overview ('groupoverview')
-     * @return array|void
+     * @param string $redirectTo 'questionlist' or 'groupoverview' or empty
      * @throws CDbException
      * @throws CHttpException
      */
@@ -1345,7 +1347,6 @@ class QuestionAdministrationController extends LSBaseController
         if (empty($oQuestion)) {
             throw new CHttpException(404, gT("Invalid question id"));
         }
-        /* Test the surveyid from question, not from submitted value */
         $surveyid = $oQuestion->sid;
         if (!Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'delete')) {
             throw new CHttpException(403, gT("You are not authorized to delete questions."));
@@ -1376,39 +1377,45 @@ class QuestionAdministrationController extends LSBaseController
             );
         }
 
+        $diContainer = \LimeSurvey\DI::getContainer();
+        $questionAggregateService = $diContainer->get(
+            QuestionAggregateService::class
+        );
 
-        LimeExpressionManager::RevertUpgradeConditionsToRelevance(null, $qid);
-
-        // Check if any other questions have conditions which rely on this question. Don't delete if there are.
-        $oConditions = Condition::model()->findAllByAttributes(['cqid' => $qid]);
-        $iConditionsCount = count($oConditions);
-        // There are conditions dependent on this question
-        if ($iConditionsCount) {
-            $sMessage = gT("Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed.");
-            Yii::app()->setFlashMessage($sMessage, 'error');
+        try {
+            $questionAggregateService->delete($qid);
+        } catch (QuestionHasConditionsException $e) {
+            $message = gT(
+                'Question could not be deleted. '
+                . 'There are conditions for other questions that rely '
+                . 'on this question. '
+                . 'You cannot delete this question until those conditions '
+                . 'are removed.'
+            );
+            Yii::app()->setFlashMessage($message, 'error');
             $this->redirect($redirect);
-        } else {
-            QuestionL10n::model()->deleteAllByAttributes(['qid' => $qid]);
-            $result = $oQuestion->delete();
-            $sMessage = gT("Question was successfully deleted.");
         }
+
+        $message = gT(
+            'Question was successfully deleted.'
+        );
 
         if ($massAction) {
             return [
-                'message' => $sMessage,
-                'status'  => $result
+                'message' => $message,
+                'status'  => true
             ];
         }
         if (Yii::app()->request->isAjaxRequest) {
             $this->renderJSON(
                 [
                     'status'   => true,
-                    'message'  => $sMessage,
+                    'message'  => $message,
                     'redirect' => $redirect
                 ]
             );
         }
-        Yii::app()->session['flashmessage'] = $sMessage;
+        Yii::app()->session['flashmessage'] = $message;
         $this->redirect($redirect);
     }
 
