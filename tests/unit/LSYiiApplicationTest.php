@@ -126,6 +126,9 @@ class LSYiiApplicationTest extends TestBaseClass
         Yii::app()->setConfig('publicurl', 'http://www.example.com/');
         $url = Yii::app()->createPublicUrl('controller/action');
 
+        echo PHP_EOL . 'Base url: ' . Yii::app()->getBaseUrl(true) . PHP_EOL;
+        echo PHP_EOL . 'Public url: ' . $tmpPublicUrl . PHP_EOL;
+
         $expectedRelativeUrl = Yii::app()->createUrl('controller/action');
         $this->assertSame($url, 'http://www.example.com' . $expectedRelativeUrl, 'Unexpected url. The url does not correspond with a public url and a route.');
 
