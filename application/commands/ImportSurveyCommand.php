@@ -9,8 +9,19 @@ class ImportSurveyCommand extends CConsoleCommand
 {
 
     const SUPPORTED_CATEGORIES = [
-        'Business',
-        /* Further categories here */
+        'business',
+        'corporate',
+        'customer',
+        'education',
+        'events',
+        'healthcare',
+        "human resources",
+        'marketing',
+        "market research",
+        'nonprofit',
+        'online',
+        'product',
+        'sports'
     ];
 
     /**
@@ -58,7 +69,7 @@ class ImportSurveyCommand extends CConsoleCommand
                     throw new Exception("Unsupported category");
                 }
                 $filename = $sArgument[2];
-                if (!preg_match('/^[a-zA-Z0-9_\.]*$/', $filename)) {
+                if (!preg_match('/^[a-zA-Z0-9_\. ]*$/', $filename)) {
                     throw new Exception("Your filename can only contain letters, digits and dot");
                 }
                 $furtherParams = $sArgument[3] ?? null;

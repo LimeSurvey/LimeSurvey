@@ -137,11 +137,14 @@ class AdminController extends LSYii_Controller
                 return;
             }
             $this->actionRemoveTemplateToken();
-            if (!preg_match('/^[a-zA-Z0-9_\.]*$/', $filename)) {
+            if (!preg_match('/^[a-zA-Z0-9_\. ]*$/', $filePath[1])) {
                 echo "badly formatted file";
             } else {
-                exec("php application/commands/console.php importsurvey import-file {$filePath[0]} {$filePath[1]}", $output);
+                exec("php application/commands/console.php importsurvey import-file \"{$filePath[0]}\" \"{$filePath[1]}\"", $output);
                 $result = implode("", $output);
+                //echo json_encode([$result, "php application/commands/console.php importsurvey import-file \"{$filePath[0]}\" \"{$filePath[1]}\""]);
+                //echo "php application/commands/console.php importsurvey import-file \"{$filePath[0]}\" \"$filePath[1]\"";
+                //echo ($result);
                 echo ((preg_match("/^[\d]*$/", $result)) ? $result : "failed to import file");
             }
         } else {
