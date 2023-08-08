@@ -792,4 +792,119 @@ class UserManagerServiceTest extends \ls\tests\TestBaseClass
         // Deleting group.
         $existingGroupAfterDeletion->delete();
     }
+
+    /**
+     * Test deleting a user and its participants.
+     */
+    public function testDeleteUserAndParticipants()
+    {
+        // Creating target user.
+        $targetUserName = \Yii::app()->securityManager->generateRandomString(8);
+
+        $targetUserData = array(
+            'users_name' => $targetUserName,
+            'full_name'  => $targetUserName,
+            'email'      => $targetUserName . '@example.com',
+        );
+
+        $targetUser = self::createUserWithPermissions($targetUserData);
+        $userId = $targetUser->uid;
+
+        // Creating participant.
+        $participantName = \Yii::app()->securityManager->generateRandomString(8);
+        $participantData = array(
+            'participant_id' => 'participant_' . $participantName,
+            'firstname' => $participantName,
+            'email' => $participantName . '@example.com',
+            'blacklisted' => 'N',
+            'owner_uid' => $userId,
+            'created_by' => $userId,
+        );
+
+        $participant = \Participant::model()->insertParticipant($participantData);
+        $participantId = $participant->participant_id;
+
+        // Checking that user exists.
+        $existingUser = \User::model()->findByPk($userId);
+        $this->assertThat($existingUser, $this->isInstanceOf('\User'), 'Unexpected. A user should have been found.');
+
+        // Checking that a participant for this user exists.
+        $existingParticipant = \Participant::model()->findByAttributes(array('owner_uid' => $userId));
+        $this->assertThat($existingParticipant, $this->isInstanceOf('\Participant'), 'Unexpected. A participant should have been found.');
+
+        $userManager = new userManager();
+        $operationResult = $userManager->deleteUser($userId);
+        $messages = $operationResult->getMessages();
+
+        // Checking that user no longer exists.
+        $existingUser = \User::model()->findByPk($userId);
+        $this->assertNull($existingUser, 'User should have been deleted.');
+
+        // Checking that the participant still exists but no longer belongs to the deleted user.
+        $existingParticipantAfterDeletion = \Participant::model()->findByPk($participantId);
+        $this->assertThat($existingParticipantAfterDeletion, $this->isInstanceOf('\Participant'), 'Unexpected. A participant should have been found.');
+        $this->assertNotSame($existingParticipantAfterDeletion->owner_uid, $userId, 'The participant should not belong to the deleted user anymore.');
+
+        // Checking messages.
+        $siteAdminName = \User::model()->findByPk(1)->users_name;
+
+        $this->assertIsArray($messages, 'The operation result messages should be in an array.');
+        $this->assertCount(2, $messages, 'There should be two messages.');
+        $this->assertThat($messages, $this->containsOnlyInstancesOf('LimeSurvey\Datavalueobjects\TypedMessage'));
+        $this->assertSame($messages[0]->getMessage(), sprintf(gT("All participants owned by this user were transferred to %s."), $siteAdminName));
+
+        // Delete participant.
+        $participant->delete();
+    }
+
+    /**
+     * Test deleting a user in a group.
+     */
+    public function testDeleteAUserInAGroup()
+    {
+        // Creating target user.
+        $targetUserName = \Yii::app()->securityManager->generateRandomString(8);
+
+        $targetUserData = array(
+            'users_name' => $targetUserName,
+            'full_name'  => $targetUserName,
+            'email'      => $targetUserName . '@example.com',
+        );
+
+        $targetUser = self::createUserWithPermissions($targetUserData);
+        $userId = $targetUser->uid;
+
+        // Creating user group.
+        $groupId = \UserGroup::model()->addGroup('Test', 'A test user group.');
+
+        // Add user to group.
+        $userGroup = \UserGroup::model()->findByPk($groupId);
+        $userGroup->addUser($userId);
+
+        // Checking that user exists.
+        $existingUser = \User::model()->findByPk($userId);
+        $this->assertThat($existingUser, $this->isInstanceOf('\User'), 'Unexpected. A user should have been found.');
+
+        // Checking that user belongs to group.
+        $this->assertTrue($userGroup->hasUser($userId), 'The user should belong to the group.');
+
+        $userManager = new userManager();
+        $operationResult = $userManager->deleteUser($userId);
+        $messages = $operationResult->getMessages();
+
+        // Checking that user no longer exists.
+        $existingUser = \User::model()->findByPk($userId);
+        $this->assertNull($existingUser, 'User should have been deleted.');
+
+        // Checking that user does not belong to group any more.
+        $this->assertFalse($userGroup->hasUser($userId), 'The user should not belong to the group any more.');
+
+        // Checking messages.
+        $this->assertIsArray($messages, 'The operation result messages should be in an array.');
+        $this->assertCount(1, $messages, 'There should be two messages.');
+        $this->assertThat($messages, $this->containsOnlyInstancesOf('LimeSurvey\Datavalueobjects\TypedMessage'));
+
+        // Deleting group.
+        $userGroup->delete();
+    }
 }
