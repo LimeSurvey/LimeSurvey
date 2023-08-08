@@ -703,4 +703,93 @@ class UserManagerServiceTest extends \ls\tests\TestBaseClass
         //Delete target user.
         $targetUser->delete();
     }
+
+    /**
+     * Test deleting a user.
+     */
+    public function testSuccessfullyDeleteUser()
+    {
+        // Creating target user.
+        $targetUserName = \Yii::app()->securityManager->generateRandomString(8);
+
+        $targetUserData = array(
+            'users_name' => $targetUserName,
+            'full_name'  => $targetUserName,
+            'email'      => $targetUserName . '@example.com',
+        );
+
+        $targetUser = self::createUserWithPermissions($targetUserData);
+        $userId = $targetUser->uid;
+
+        // Checking that user exists.
+        $existingUser = \User::model()->findByPk($userId);
+        $this->assertThat($existingUser, $this->isInstanceOf('\User'), 'Unexpected. A user should have been found.');
+
+        $userManager = new userManager();
+        $operationResult = $userManager->deleteUser($userId);
+        $message = $operationResult->getMessages()[0];
+
+        // Checking that user no longer exists.
+        $existingUser = \User::model()->findByPk($userId);
+        $this->assertNull($existingUser, 'User should have been deleted.');
+
+        // Checking messages.
+        $this->assertTrue($operationResult->isSuccess(), 'The operation should have been successful.');
+        $this->assertSame('success', $message->getType(), 'Unexpected message type for a successful operation.');
+        $this->assertSame(gT('User successfully deleted.'), $message->getMessage(), 'Unexpected message for a successful operation.');
+    }
+
+    /**
+     * Test deleting a user and its groups.
+     */
+    public function testDeleteUserAndGroups()
+    {
+        // Creating target user.
+        $targetUserName = \Yii::app()->securityManager->generateRandomString(8);
+
+        $targetUserData = array(
+            'users_name' => $targetUserName,
+            'full_name'  => $targetUserName,
+            'email'      => $targetUserName . '@example.com',
+        );
+
+        $targetUser = self::createUserWithPermissions($targetUserData);
+        $userId = $targetUser->uid;
+
+        // Checking that user exists.
+        $existingUser = \User::model()->findByPk($userId);
+        $this->assertThat($existingUser, $this->isInstanceOf('\User'), 'Unexpected. A user should have been found.');
+
+        // Creating user group.
+        \Yii::app()->session['loginID'] = $userId;
+        $groupId = \UserGroup::model()->addGroup('Test', 'A test user group.');
+
+        // Checking that a group for this user exists.
+        $existingGroup = \UserGroup::model()->findByAttributes(array('owner_id' => $userId));
+        $this->assertThat($existingGroup, $this->isInstanceOf('\UserGroup'), 'Unexpected. A user group should have been found.');
+
+        $userManager = new userManager();
+        $operationResult = $userManager->deleteUser($userId);
+        $messages = $operationResult->getMessages();
+
+        // Checking that user no longer exists.
+        $existingUser = \User::model()->findByPk($userId);
+        $this->assertNull($existingUser, 'User should have been deleted.');
+
+        // Checking that the group exists but no longer belongs to the deleted user.
+        $existingGroupAfterDeletion = \UserGroup::model()->findByPk($groupId);
+        $this->assertThat($existingGroupAfterDeletion, $this->isInstanceOf('\UserGroup'), 'Unexpected. A user group should have been found.');
+        $this->assertNotSame($existingGroupAfterDeletion->owner_id, $userId, 'The group should not belong to the deleted user anymore.');
+
+        // Checking messages.
+        $siteAdminName = \User::model()->findByPk(1)->users_name;
+
+        $this->assertIsArray($messages, 'The operation result messages should be in an array.');
+        $this->assertCount(2, $messages, 'There should be two messages.');
+        $this->assertThat($messages, $this->containsOnlyInstancesOf('LimeSurvey\Datavalueobjects\TypedMessage'));
+        $this->assertSame($messages[0]->getMessage(), sprintf(gT("All of the user's user groups were transferred to %s."), $siteAdminName));
+
+        // Deleting group.
+        $existingGroupAfterDeletion->delete();
+    }
 }
