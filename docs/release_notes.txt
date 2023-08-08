@@ -34,6 +34,20 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.6.32 (build 230731) to 5.6.33 (build 230808) August 7, 2023
+-Fixed issue #19001: Participant list won't show since update 230731 - version 5.6.32 (#3323) (Gabriel Jenik)
+-Fixed issue #18985: [security] shown real import format needed (#3310) (Denis Chenu)
+-Fixed issue #18979: [security] User can put survey in survey group without access permission (#3303) (Denis Chenu)
+-Fixed issue #18936: User count in group is not OK after deleting a user (#3306) (Gabriel Jenik)
+-Fixed issue #18888: General issues with different questions (#3288) (Gabriel Jenik)
+#Updated translation: Turkish by kayazeren
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: French (France) by DenisChenu
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+
+
 Changes from 5.6.31 (build 230718) to 5.6.32 (build 230731) July 31, 2023
 -Fixed issue #18974: [security] Stored XSS via user's Full Name (#3301) (Denis Chenu)
 -Fixed issue #18967: [security] XSS in User role (#3293) (Denis Chenu)
