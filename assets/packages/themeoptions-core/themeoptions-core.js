@@ -138,7 +138,7 @@ var ThemeOptions = function () {
 
     //Parses the option value for an item
     var parseOptionValue = function (item, fallbackValue) {
-        fallbackValue = fallbackValue || false;
+        if (fallbackValue == undefined) fallbackValue = false;
         // If general inherit, then the value of the dropdown is inherit, else it's the value defined in advanced options
         var itemValue = generalInherit() ? 'inherit' : optionObject[$(item).attr('name')];
 
@@ -163,9 +163,15 @@ var ThemeOptions = function () {
 
     // Update values in the form to the template options
     // selector_option_value_field are the select dropdown (like variations and fonts)
+    // TODO: This seems to be designed for select fields only, but it is also used for other input types. Should be reviewed.
     var prepareSelectField = function () {
         globalForm.find('.selector_option_value_field').each(function (i, item) {
-            var itemValue = parseOptionValue(item);
+            // Workaround for text inputs showing "false" when the default value is empty
+            var fallbackValue = false;
+            if (item.tagName == 'INPUT' && item.getAttribute("type") == 'text') {
+                fallbackValue = '';
+            }
+            var itemValue = parseOptionValue(item, fallbackValue);
             $(item).val(itemValue);
             applyColorPickerValue(item);
         });
