@@ -199,7 +199,10 @@ foreach ($aOptionAttributes['categories'] as $key => $category) { ?>
                                         </i> )
                                     </div>
                                     </div>';
-                } elseif ($attribute['type'] == 'input') {
+                } elseif ($attribute['type'] == 'text') {
+                    echo '<div class="col-12">
+                            <input type="text" class="form-control selector-text-input selector_option_value_field" data-parent="' . $attribute['parent'] . '" id="simple_edit_options_' . $attributeKey . '" name="' . $attributeKey . '" title="' . gT("inherited value:") . ' ' . $sParentOption . '" />
+                        </div>';
                 } elseif ($attribute['type'] == 'duration') {
                     echo '<div class="col-12">
                                <input type="text" class="form-control selector-numerical-input selector_option_value_field selector_radio_childfield" data-parent="' . $attribute['parent'] . '" id="simple_edit_options_' . $attributeKey . '" name="' . $attributeKey . '" title="' . gT("inherited value:") . ' ' . $sParentOption . '" />
