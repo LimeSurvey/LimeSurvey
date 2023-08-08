@@ -6,8 +6,6 @@ use Mockery;
 use Condition;
 use Question;
 
-use LimeSurvey\DI;
-
 use ls\tests\TestBaseClass;
 
 use ls\tests\unit\services\QuestionAggregateService\Delete\{
