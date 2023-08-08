@@ -18,14 +18,15 @@
         </li>
     <?php endif; ?>
     <li class="nav-item ms-auto">
-        <?php foreach($oSurvey->allLanguages as $lang): ?>
-            <h5 class="lang-hide lang-<?= $lang; ?>" style="<?= $lang != $oSurvey->language ? 'display: none;' : '' ?>">
-                <span class="badge bg-secondary"><?= strtoupper($lang) ?></span>
-            </h5>
-        <?php endforeach; ?>
+        <!-- Language selector -->
+        <?php
+        $this->renderPartial(
+            "languageselector",
+            ['oSurvey' => $oSurvey]
+        ); ?>
     </li>
 </ul>
-<div class="tab-content">
+<div class="tab-content bg-white ps-2 pe-2">
     <!-- Question text tab content -->
     <div role="tabpanel" class="tab-pane show active" id="question-tab">
         <?php foreach($oSurvey->allLanguages as $lang): ?>
@@ -115,7 +116,13 @@
                             </div>
                         </div>
                     <?php else: ?>
-                        <div class="alert alert-warning same-script-alert d-none"><?= gT('The script for this language will not be used because "Use for all languages" is set on the base language\'s script.') ?></div>
+                        <?php
+                        $this->widget('ext.AlertWidget.AlertWidget', [
+                            'text' => gT('The script for this language will not be used because "Use for all languages" is set on the base language\'s script.'),
+                            'type' => 'warning',
+                            'htmlOptions' => ['class' => 'same-script-alert d-none']
+                        ]);
+                        ?>
                     <?php endif; ?>
 
                     <?= CHtml::textArea(
@@ -128,11 +135,13 @@
                             'data-filetype' => 'javascript',
                             'class' => 'ace form-control',
                             'style' => 'width: 100%',
-                            'data-lang' => "$lang"
+                            'data-lang' => "$lang",
+                            'readonly' => !App()->user->isScriptUpdateAllowed()
                         ]
                     ); ?>
                     <p class="alert well">
-                        <?= gT("This optional script field will be wrapped, so that the script is correctly executed after the question is on the screen. If you do not have the correct permissions, this will be ignored"); ?>
+                        <?= gT("This optional script field will be wrapped, so that the script is correctly executed after the question is displayed."); ?>
+                        <?= !App()->user->isScriptUpdateAllowed() ? gT("You do not have sufficient permissions to update the script.") : ""; ?>
                     </p>
                 </div>
             </div>
