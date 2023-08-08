@@ -42,22 +42,33 @@ class DeleteMockSetFactory
 
     private function getMockModelQuestion(): Question
     {
-        return Mockery::mock(Question::class)
+        $modelQuestion = Mockery::mock(Question::class)
             ->makePartial();
+        $modelQuestion->shouldReceive('findByAttributes')
+            ->andReturn(
+                Mockery::mock(Question::class)->makePartial()
+            );
+        return $modelQuestion;
     }
 
     private function getMockModelQuestionL10n(): QuestionL10n
     {
-        return Mockery::mock(
+        $modelQuestionL10n = Mockery::mock(
             QuestionL10n::class
         )->makePartial();
+        $modelQuestionL10n->shouldReceive('deleteAllByAttributes');
+        return $modelQuestionL10n;
     }
 
     private function getMockModelCondition(): Condition
     {
-        return Mockery::mock(
-            Condition::class
-        )->makePartial();
+        $modelCondition = Mockery::mock(Condition::class)
+            ->makePartial();
+        $modelCondition->shouldReceive('findAllByAttributes')
+            ->andReturn(
+                []
+            );
+        return $modelCondition;
     }
 
     private function getMockProxyExpressionManager(): ProxyExpressionManager
