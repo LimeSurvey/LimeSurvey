@@ -18,15 +18,14 @@
         </li>
     <?php endif; ?>
     <li class="nav-item ms-auto">
-        <!-- Language selector -->
-        <?php
-        $this->renderPartial(
-            "languageselector",
-            ['oSurvey' => $oSurvey]
-        ); ?>
+        <?php foreach($oSurvey->allLanguages as $lang): ?>
+            <h5 class="lang-hide lang-<?= $lang; ?>" style="<?= $lang != $oSurvey->language ? 'display: none;' : '' ?>">
+                <span class="badge bg-secondary"><?= strtoupper($lang) ?></span>
+            </h5>
+        <?php endforeach; ?>
     </li>
 </ul>
-<div class="tab-content bg-white ps-2 pe-2">
+<div class="tab-content">
     <!-- Question text tab content -->
     <div role="tabpanel" class="tab-pane show active" id="question-tab">
         <?php foreach($oSurvey->allLanguages as $lang): ?>
@@ -34,7 +33,7 @@
             <div class="mb-3">
                 <div class="input-group w-100">
                     <?= CHtml::textArea(
-                        "questionL10n[$lang][question]",
+                        "questionI10N[$lang][question]",
                         $question->questionl10ns[$lang]->question ?? '',
                         [
                             'class' => 'form-control',
@@ -67,7 +66,7 @@
             <div class="mb-3">
                 <div class="input-group w-100">
                     <?= CHtml::textArea(
-                        "questionL10n[$lang][help]",
+                        "questionI10N[$lang][help]",
                         $question->questionl10ns[$lang]->help ?? '',
                         [
                             'class' => 'form-control',
@@ -116,32 +115,24 @@
                             </div>
                         </div>
                     <?php else: ?>
-                        <?php
-                        $this->widget('ext.AlertWidget.AlertWidget', [
-                            'text' => gT('The script for this language will not be used because "Use for all languages" is set on the base language\'s script.'),
-                            'type' => 'warning',
-                            'htmlOptions' => ['class' => 'same-script-alert d-none']
-                        ]);
-                        ?>
+                        <div class="alert alert-warning same-script-alert d-none"><?= gT('The script for this language will not be used because "Use for all languages" is set on the base language\'s script.') ?></div>
                     <?php endif; ?>
 
                     <?= CHtml::textArea(
-                        "questionL10n[$lang][script]",
+                        "questionI10N[$lang][script]",
                         $question->questionl10ns[$lang]->script,
                         [
-                            'id' => CHtml::getIdByName("questionL10n[{$lang}][script]"),
+                            'id' => CHtml::getIdByName("questionI10N[{$lang}][script]"),
                             'rows' => '10',
                             'cols' => '20',
                             'data-filetype' => 'javascript',
                             'class' => 'ace form-control',
                             'style' => 'width: 100%',
-                            'data-lang' => "$lang",
-                            'readonly' => !App()->user->isScriptUpdateAllowed()
+                            'data-lang' => "$lang"
                         ]
                     ); ?>
                     <p class="alert well">
-                        <?= gT("This optional script field will be wrapped, so that the script is correctly executed after the question is displayed."); ?>
-                        <?= !App()->user->isScriptUpdateAllowed() ? gT("You do not have sufficient permissions to update the script.") : ""; ?>
+                        <?= gT("This optional script field will be wrapped, so that the script is correctly executed after the question is on the screen. If you do not have the correct permissions, this will be ignored"); ?>
                     </p>
                 </div>
             </div>
