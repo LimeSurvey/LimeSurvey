@@ -369,11 +369,6 @@ class Database extends SurveyCommonAction
             'gsid' => $request->getPost('gsid'),
             'template' => $request->getPost('template')
         ];
-        if (empty($input['adminemail']) || empty($input['bounce_email'])) {
-            Yii::app()
-                ->setFlashMessage(gT("The email address is not valid."), 'error');
-            Yii::app()->end();
-        }
         try {
             $surveyUpdater->update(
                 $surveyId,
