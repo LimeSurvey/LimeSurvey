@@ -760,7 +760,15 @@ function buildXMLFromQuery($xmlwriter, $Query, $tagname = '', $excludes = array(
                 $result[] = $row->decrypt()->attributes;
             }
         } else {
-            $QueryResult = Yii::app()->db->createCommand($Query)->limit($iChunkSize, $iStart)->query();
+            /** @var CDbConnection $db */
+            $db = Yii::app()->db;
+            if(is_string($Query)) {
+                $commandBuilder = $db->getCommandBuilder();
+                $limitedQuery = $commandBuilder->applyLimit($Query, $iChunkSize, $iStart);
+                $QueryResult = $db->createCommand($limitedQuery)->query();
+            } else {
+                $QueryResult = $db->createCommand($Query)->limit($iChunkSize, $iStart)->query();
+            }
             $result = $QueryResult->readAll();
         }
 
