@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2023-08-07 08:39:16+00:00\n"
+"POT-Creation-Date: 2023-08-08 08:31:47+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -9650,7 +9650,7 @@ msgstr ""
 
 #: application/extensions/admin/survey/ListSurveysWidget/views/searchBox.php:41
 #: application/helpers/common_helper.php:170 application/models/Quota.php:96
-#: application/models/Survey.php:1198 tests/unit/models/SurveyTest.php:151
+#: application/models/Survey.php:1198 tests/unit/models/SurveyTest.php:156
 msgid "Active"
 msgstr ""
 
@@ -9660,7 +9660,7 @@ msgstr ""
 
 #: application/extensions/admin/survey/ListSurveysWidget/views/searchBox.php:47
 #: application/helpers/common_helper.php:178 application/models/Survey.php:1160
-#: tests/unit/models/SurveyTest.php:137
+#: tests/unit/models/SurveyTest.php:142
 msgid "Inactive"
 msgstr ""
 
@@ -15131,26 +15131,26 @@ msgstr ""
 msgid "Google Analytics Tracking ID may only contain alphanumeric characters and hyphens."
 msgstr ""
 
-#: application/models/Survey.php:1180 tests/unit/models/SurveyTest.php:169
-#: tests/unit/models/SurveyTest.php:177
+#: application/models/Survey.php:1180 tests/unit/models/SurveyTest.php:174
+#: tests/unit/models/SurveyTest.php:182
 msgid "End: Never"
 msgstr ""
 
-#: application/models/Survey.php:1181 tests/unit/models/SurveyTest.php:197
-#: tests/unit/models/SurveyTest.php:207 tests/unit/models/SurveyTest.php:230
-#: tests/unit/models/SurveyTest.php:240
+#: application/models/Survey.php:1181 tests/unit/models/SurveyTest.php:202
+#: tests/unit/models/SurveyTest.php:212 tests/unit/models/SurveyTest.php:235
+#: tests/unit/models/SurveyTest.php:245
 msgid "End: %s"
 msgstr ""
 
-#: application/models/Survey.php:1182 tests/unit/models/SurveyTest.php:322
-#: tests/unit/models/SurveyTest.php:331 tests/unit/models/SurveyTest.php:352
-#: tests/unit/models/SurveyTest.php:362
+#: application/models/Survey.php:1182 tests/unit/models/SurveyTest.php:327
+#: tests/unit/models/SurveyTest.php:336 tests/unit/models/SurveyTest.php:357
+#: tests/unit/models/SurveyTest.php:367
 msgid "Expired: %s"
 msgstr ""
 
-#: application/models/Survey.php:1183 tests/unit/models/SurveyTest.php:260
-#: tests/unit/models/SurveyTest.php:270 tests/unit/models/SurveyTest.php:292
-#: tests/unit/models/SurveyTest.php:302
+#: application/models/Survey.php:1183 tests/unit/models/SurveyTest.php:265
+#: tests/unit/models/SurveyTest.php:275 tests/unit/models/SurveyTest.php:297
+#: tests/unit/models/SurveyTest.php:307
 msgid "Start: %s"
 msgstr ""
 
