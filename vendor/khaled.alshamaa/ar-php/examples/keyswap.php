@@ -28,7 +28,8 @@ typo chars in converted text.</p>
 </div><br />
 
 <div class="Paragraph" dir="rtl">
-<h2 dir="ltr">Example Output 1 (a):</h2>
+<h2 dir="ltr" id="example-1-a">
+<a href="#example-1-a" class="anchor"><img src="./images/link_icon.png" width="16" border="0"></a>Example Output 1 (a):</h2>
 <?php
 error_reporting(E_STRICT);
 
@@ -68,10 +69,15 @@ END;
 highlight_string($code);
 
 ?>
+<hr/><i>Related Documentation: 
+<a href="https://khaled-alshamaa.github.io/ar-php/classes/ArPHP-I18N-Arabic.html#method_swapEa" target="_blank">swapEa</a>
+</i>
 </div>
 <br />
+
 <div class="Paragraph" dir="rtl">
-<h2 dir="ltr">Example Output 1 (b):</h2>
+<h2 dir="ltr" id="example-1-b">
+<a href="#example-1-b" class="anchor"><img src="./images/link_icon.png" width="16" border="0"></a>Example Output 1 (b):</h2>
 <?php
 $str = 'Hpf lk hgkhs hgljùvtdkK Hpf hg²dk dldg;k fmgdjil Ygn 
 ;p$hkd, hgHl;v tb drt;k ljv$$dk fdk krdadk/';
@@ -101,10 +107,15 @@ END;
 highlight_string($code);
 
 ?>
+<hr/><i>Related Documentation: 
+<a href="https://khaled-alshamaa.github.io/ar-php/classes/ArPHP-I18N-Arabic.html#method_swapFa" target="_blank">swapFa</a>
+</i>
 </div>
 <br />
+
 <div class="Paragraph">
-<h2 dir="ltr">Example Output 2:</h2>
+<h2 dir="ltr" id="example-2">
+<a href="#example-2" class="anchor"><img src="./images/link_icon.png" width="16" border="0"></a>Example Output 2:</h2>
 <?php
     $str = "ِىغ هىفثممهلثىف بخخم ؤشى ةشنث فاهىلس لاهللثق ةخقث ؤخةحمثء شىي ةخقث رهخمثىفز ÷ف فشنثس ش فخعؤا خب لثىهعس شىي ش مخف خب ؤخعقشلث فخ ةخرث هى فاث خححخسهفث يهقثؤفهخىز";
     echo "<u><i>Before:</i></u><br />$str<br /><br />";
@@ -133,10 +144,15 @@ END;
 highlight_string($code);
 
 ?>
+<hr/><i>Related Documentation: 
+<a href="https://khaled-alshamaa.github.io/ar-php/classes/ArPHP-I18N-Arabic.html#method_swapAe" target="_blank">swapAe</a>
+</i>
 </div>
 <br />
+
 <div class="Paragraph">
-<h2 dir="ltr">Example Output 3:</h2>
+<h2 dir="ltr" id="example-3">
+<a href="#example-3" class="anchor"><img src="./images/link_icon.png" width="16" border="0"></a>Example Output 3:</h2>
 <?php
     $examples = array("ff'z g;k fefhj", "FF'Z G;K FEFHJ", 'ٍمخصمغ لاعف سعقثمغ', 'sLOWLY BUT SURELY');
 
@@ -169,6 +185,9 @@ END;
 
 highlight_string($code);
 ?>
+<hr/><i>Related Documentation: 
+<a href="https://khaled-alshamaa.github.io/ar-php/classes/ArPHP-I18N-Arabic.html#method_fixKeyboardLang" target="_blank">fixKeyboardLang</a>
+</i>
 </div>
 <footer><i><a href="https://github.com/khaled-alshamaa/ar-php">Ar-PHP</a>, an open-source library for website developers to process Arabic content</i></footer>
 </body>

@@ -288,6 +288,16 @@ class LSYii_Application extends CWebApplication
         return $this->config[$name] ?? $default;
     }
 
+    /**
+     * Returns the array of available configurations
+     *
+     * @access public
+     * @return array
+     */
+    public function getAvailableConfigs()
+    {
+        return $this->config;
+    }
 
     /**
      * For future use, cache the language app wise as well.
@@ -301,11 +311,11 @@ class LSYii_Application extends CWebApplication
         // This method is also called from AdminController and LSUser
         // But if a param is defined, it should always have the priority
         // eg: index.php/admin/authentication/sa/login/&lang=de
-        if ($this->request->getParam('lang') !== null && in_array('authentication', explode('/', Yii::app()->request->url))) {
+        if ($this->request->getParam('lang') !== null && in_array('authentication', explode('/', (string) Yii::app()->request->url))) {
             $sLanguage = $this->request->getParam('lang');
         }
 
-        $sLanguage = preg_replace('/[^a-z0-9-]/i', '', $sLanguage);
+        $sLanguage = preg_replace('/[^a-z0-9-]/i', '', (string) $sLanguage);
         App()->session['_lang'] = $sLanguage; // See: http://www.yiiframework.com/wiki/26/setting-and-maintaining-the-language-in-application-i18n/
         parent::setLanguage($sLanguage);
     }
@@ -468,7 +478,7 @@ class LSYii_Application extends CWebApplication
         $files = array();
 
         foreach ($iterator as $info) {
-            $ext = pathinfo($info->getPathname(), PATHINFO_EXTENSION);
+            $ext = pathinfo((string) $info->getPathname(), PATHINFO_EXTENSION);
             if ($ext == 'xml') {
                 $CustomTwigExtensionsManifestFiles[] = $info->getPathname();
             }
@@ -655,5 +665,45 @@ class LSYii_Application extends CWebApplication
         App()->getSession()->setCookieParams([
             'lifetime' => $lifetime
         ]);
+    }
+
+    /**
+     * Creates an absolute URL based on the given controller and action information.
+     * @param string $route the URL route. This should be in the format of 'ControllerID/ActionID'.
+     * @param array $params additional GET parameters (name=>value). Both the name and value will be URL-encoded.
+     * @param string $schema schema to use (e.g. http, https). If empty, the schema used for the current request will be used.
+     * @param string $ampersand the token separating name-value pairs in the URL.
+     * @return string the constructed URL
+     */
+    public function createPublicUrl($route, $params = array(), $schema = '', $ampersand = '&')
+    {
+        $sPublicUrl = $this->getPublicBaseUrl(true);
+        $sActualBaseUrl = Yii::app()->getBaseUrl(true);
+        if ($sPublicUrl !== $sActualBaseUrl) {
+            $url = parent::createAbsoluteUrl($route, $params, $schema, $ampersand);
+            if (substr((string)$url, 0, strlen((string)$sActualBaseUrl)) == $sActualBaseUrl) {
+                $url = substr((string)$url, strlen((string)$sActualBaseUrl));
+            }
+            return trim((string)$sPublicUrl, "/") . $url;
+        } else {
+            return parent::createAbsoluteUrl($route, $params, $schema, $ampersand);
+        }
+    }
+
+    /**
+     * Returns the relative URL for the application while
+     * considering if a "publicurl" config parameter is set to a valid url
+     * @param boolean $absolute whether to return an absolute URL. Defaults to false, meaning returning a relative one.
+     * @return string the relative or the configured public URL for the application
+     */
+    public function getPublicBaseUrl($absolute = false)
+    {
+        $sPublicUrl = Yii::app()->getConfig("publicurl");
+        $aPublicUrl = parse_url($sPublicUrl);
+        $baseUrl = parent::getBaseUrl($absolute);
+        if (isset($aPublicUrl['scheme']) && isset($aPublicUrl['host'])) {
+            $baseUrl = $sPublicUrl;
+        }
+        return $baseUrl;
     }
 }

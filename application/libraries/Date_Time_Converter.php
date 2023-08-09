@@ -116,7 +116,7 @@ class Date_Time_Converter
      */
     private function _month_num($themonth, $return_two_digit = false)
     {
-        switch (strtolower($themonth)) {
+        switch (strtolower((string) $themonth)) {
             case 'jan':
             case 'jan.':
             case 'january':
@@ -226,14 +226,14 @@ class Date_Time_Converter
         );
 
         // this will give us a mask with full length fields
-        $mask = str_replace(array_keys($all), $all, $mask);
+        $mask = str_replace(array_keys($all), $all, (string) $mask);
 
         $vals = array();
 
         //loop through each character of $mask starting at the beginning
-        for ($i = 0; $i < strlen($mask_orig); $i++) {
+        for ($i = 0; $i < strlen((string) $mask_orig); $i++) {
             //get the current character
-            $thischar = substr($mask_orig, $i, 1);
+            $thischar = substr((string) $mask_orig, $i, 1);
 
             //if the character is not in the $all array, skip it
             if (array_key_exists($thischar, $all)) {
@@ -246,13 +246,13 @@ class Date_Time_Converter
                 }
 
                 // find the value from $thedate
-                $val = substr(trim($thedate), $pos, strlen($chars));
+                $val = substr(trim((string) $thedate), $pos, strlen($chars));
 
                 /*      START FIX FOR UNITS WITHOUT LEADING ZEROS       */
                 if ($type == "n" || $type == "j" || $type == "g" || $type == "G") {
                     //if its not numeric, try a shorter digit
                     if (!is_numeric($val) || strval(intval($val)) !== $val) {
-                        $val = substr($thedate, $pos, strlen($chars) - 1);
+                        $val = substr((string) $thedate, $pos, strlen($chars) - 1);
                         $mask = str_replace($chars, $type, $mask);
                     } else {
                         //try numeric value checking
@@ -260,28 +260,28 @@ class Date_Time_Converter
                             case "n":
                                 if ($val > 12 || $val < 1) {
 //month must be between 1-12
-                                    $val = substr($thedate, $pos, strlen($chars) - 1);
+                                    $val = substr((string) $thedate, $pos, strlen($chars) - 1);
                                     $mask = str_replace($chars, $type, $mask);
                                 }
                                 break;
                             case "j":
                                 if ($val > 31 || $val < 1) {
 //day must be between 1-31
-                                    $val = substr($thedate, $pos, strlen($chars) - 1);
+                                    $val = substr((string) $thedate, $pos, strlen($chars) - 1);
                                     $mask = str_replace($chars, $type, $mask);
                                 }
                                 break;
                             case "g":
                                 if ($val > 12 || $val < 1) {
 //day must be between 1-12
-                                    $val = substr($thedate, $pos, strlen($chars) - 1);
+                                    $val = substr((string) $thedate, $pos, strlen($chars) - 1);
                                     $mask = str_replace($chars, $type, $mask);
                                 }
                                 break;
                             case "G":
                                 if ($val > 24 || $val < 1) {
 //day must be between 1-24
-                                    $val = substr($thedate, $pos, strlen($chars) - 1);
+                                    $val = substr((string) $thedate, $pos, strlen($chars) - 1);
                                     $mask = str_replace($chars, $type, $mask);
                                 }
                                 break;
@@ -343,18 +343,18 @@ class Date_Time_Converter
             }
         }
 
-        if (strtolower($this->ampm) == "pm" && $this->hours < 12) {
+        if (strtolower((string) $this->ampm) == "pm" && $this->hours < 12) {
 //if its pm, add 12 hours
             $this->hours = $this->hours + 12;
         }
 
         $make_stamp = adodb_mktime(
-            (int) ltrim($this->hours, "0"),
-            (int) ltrim($this->minutes, "0"),
-            (int) ltrim($this->seconds, "0"),
-            (int) ltrim($this->months, "0"),
-            (int) ltrim($this->days, "0"),
-            (int) ltrim($this->years, "0")
+            (int) ltrim((string) $this->hours, "0"),
+            (int) ltrim((string) $this->minutes, "0"),
+            (int) ltrim((string) $this->seconds, "0"),
+            (int) ltrim((string) $this->months, "0"),
+            (int) ltrim((string) $this->days, "0"),
+            (int) ltrim((string) $this->years, "0")
         );
 
         return $make_stamp;

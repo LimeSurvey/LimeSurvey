@@ -73,10 +73,6 @@ class Save
         $thisstep    = $_SESSION['survey_' . $iSurveyId]['step'] ?? 0;
         $clienttoken = $_SESSION['survey_' . $iSurveyId]['token'] ?? '';
 
-        $oSurvey   = Survey::model()->findByPk($iSurveyId);
-        $sTemplate = $oSurvey->template;
-        $oTemplate = Template::model()->getInstance($sTemplate);
-
         $aSaveForm['aErrors'] = $this->aSaveErrors;
         $this->launchSaveFormEvent($iSurveyId);
         /* Construction of the form */
@@ -140,8 +136,8 @@ class Save
         $duplicate = SavedControl::model()->findByAttributes(array('sid' => $surveyid, 'identifier' => $this->saveData['identifier']));
         // Check name
         if (
-            strpos($this->saveData['identifier'], '/') !== false || strpos($this->saveData['identifier'], '/') !== false || strpos($this->saveData['identifier'], '&') !== false || strpos($this->saveData['identifier'], '&') !== false
-            || strpos($this->saveData['identifier'], '\\') !== false || strpos($this->saveData['identifier'], '\\') !== false
+            strpos((string) $this->saveData['identifier'], '/') !== false || strpos((string) $this->saveData['identifier'], '/') !== false || strpos((string) $this->saveData['identifier'], '&') !== false || strpos((string) $this->saveData['identifier'], '&') !== false
+            || strpos((string) $this->saveData['identifier'], '\\') !== false || strpos((string) $this->saveData['identifier'], '\\') !== false
         ) {
             $this->aSaveErrors[] = gT("You may not use slashes or ampersands in your name or password.");
         } elseif (!empty($duplicate) && $duplicate->count() > 0) {
@@ -231,7 +227,7 @@ class Save
                     $errormsg .= gT('Error: Email failed, this may indicate a PHP Mail Setup problem on the server. Your survey details have still been saved, however you will not get an email with the details. You should note the "name" and "password" you just used for future reference.');
                     if (Permission::model()->hasSurveyPermission($thissurvey['sid'], 'surveysettings')) {
                         $errormsg .= sprintf(gT("Email error message %s"), $mailer->getError());
-                        if (trim($thissurvey['adminemail']) == '') {
+                        if (trim((string) $thissurvey['adminemail']) == '') {
                             $errormsg .= gT('(Reason: Administrator email address empty)');
                         }
                     }

@@ -19,31 +19,28 @@
 
 <div class="{{ coreClass }} {{ extraclass }} row" role="group" aria-labelledby="ls-question-text-{{ basename }}">
 
-    <div class="geoname_search col-sm-12 " >
+    <div class="geoname_search col-12 " >
         <div class="input-group">
-            <div class="input-group-addon search-icon">
-                <span class="fa fa-search"></span>
+            <div class="input-group-text search-icon">
+                <span class="fa fa-search ri-search-line"></span>
             </div>
                 <input
                     id="searchbox_{{ name }}"
                     placeholder="{{ gT("Search (3 characters minimum)") }}"
-                    class="form-control"
+                    class="form-control ls-geoloc-search"
                     type="text"
                  />
 
-            <div class="input-group-addon checkbox">
-                    <label for="restrictToExtent_{{ name }}">
-                    <input
-                        type="checkbox"
-                        id="restrictToExtent_{{ name }}"
-                        />
-                        {{ gT("Restrict search to map extent") }}
-                    </label>
+            <div class="input-group-text checkbox">
+                <label for="restrictToExtent_{{ name }}">
+                    <input type="checkbox" id="restrictToExtent_{{ name }}"/>
+                    {{ gT("Restrict search to map extent") }}
+                </label>
             </div>
         </div>
     </div>
 
-    <div class="col-sm-12 form-inline">
+    <div class="col-12">
         <!-- No javascript need a way to answer -->
         {# Where is the answer-item ? answer-item geoloc-item */ #}
         <input
@@ -61,7 +58,7 @@
             value="{{ location_value }}"
             />
                 <!-- readonly untill update a value can update the coordinate -->
-                <div class="coordinate-item form-group">
+                <div class="coordinate-item mb-3">
                     <label for="answer_lat{{ name }}_c" class="control-label">
                         {{ gT("Latitude:") }}
                     </label>
@@ -75,7 +72,7 @@
                     />
                 </div>
 
-                <div class="coordinate-item form-group">
+                <div class="coordinate-item mb-3">
                     <label for="answer_lng{{ name }}_c" class="control-label">
                         {{ gT("Longitude:") }}
                     </label>
@@ -104,14 +101,14 @@
             value="{{ location_mapservice }}"
             />
     </div>
-    <div class="col-sm-12">
+    <div class="col-12">
     <!-- Map -->
         <div id="map_{{ name }}" style="width: 100%; height: {{ location_mapheight }}px;">
     </div>
     </div>
 
     {% if questionHelp %}
-        <div class="questionhelp col-sm-12">
+        <div class="questionhelp col-12">
             {{ question_text_help }}
         </div>
     {% endif %}

@@ -231,8 +231,8 @@ class QuestionTheme extends LSActiveRecord
         $sLoadLink = CHtml::form(array("themeOptions/importManifest/"), 'post', array('id' => 'forminstallquestiontheme', 'name' => 'forminstallquestiontheme')) .
             "<input type='hidden' name='templatefolder' value='" . $this->xml_path . "'>
             <input type='hidden' name='theme' value='questiontheme'>
-            <button id='template_options_link_" . $this->name . "'class='btn btn-default btn-block'>
-            <span class='fa fa-download text-warning'></span>
+            <button id='template_options_link_" . $this->name . "'class='btn btn-outline-secondary btn-block'>
+            <span class='ri-download-fill'></span>
             " . gT('Install') . "
             </button>
             </form>";
@@ -369,7 +369,7 @@ class QuestionTheme extends LSActiveRecord
     {
         $questionDirectories = self::getQuestionThemeDirectories();
         foreach ($questionDirectories as $key => $questionDirectory) {
-            $questionDirectories[$key] = str_replace('\\', '/', $questionDirectory);
+            $questionDirectories[$key] = str_replace('\\', '/', (string) $questionDirectory);
         }
 
         $pathToXmlFolder = str_replace('\\', '/', $pathToXmlFolder);
@@ -426,14 +426,14 @@ class QuestionTheme extends LSActiveRecord
         ]);
 
         // override MetaData depending on directory
-        if (substr($pathToXmlFolder, 0, strlen($questionDirectories['coreQuestion'])) === $questionDirectories['coreQuestion']) {
+        if (substr($pathToXmlFolder, 0, strlen((string) $questionDirectories['coreQuestion'])) === $questionDirectories['coreQuestion']) {
             $questionMetaData['coreTheme'] = 1;
             $questionMetaData['image_path'] = App()->getConfig("imageurl") . '/screenshots/' . self::getQuestionThemeImageName($questionMetaData['questionType']);
         }
-        if (substr($pathToXmlFolder, 0, strlen($questionDirectories['customCoreTheme'])) === $questionDirectories['customCoreTheme']) {
+        if (substr($pathToXmlFolder, 0, strlen((string) $questionDirectories['customCoreTheme'])) === $questionDirectories['customCoreTheme']) {
             $questionMetaData['coreTheme'] = 1;
         }
-        if (substr($pathToXmlFolder, 0, strlen($questionDirectories['customUserTheme'])) === $questionDirectories['customUserTheme']) {
+        if (substr($pathToXmlFolder, 0, strlen((string) $questionDirectories['customUserTheme'])) === $questionDirectories['customUserTheme']) {
             $questionMetaData['coreTheme'] = 0;
         }
 
@@ -479,9 +479,9 @@ class QuestionTheme extends LSActiveRecord
                 $directory = new RecursiveDirectoryIterator($questionThemeDirectory);
                 $iterator = new RecursiveIteratorIterator($directory);
                 foreach ($iterator as $info) {
-                    $ext = pathinfo($info->getPathname(), PATHINFO_EXTENSION);
+                    $ext = pathinfo((string) $info->getPathname(), PATHINFO_EXTENSION);
                     if ($ext == 'xml') {
-                        $questionDirectoriesAndPaths[$questionThemeDirectory][] = dirname($info->getPathname());
+                        $questionDirectoriesAndPaths[$questionThemeDirectory][] = dirname((string) $info->getPathname());
                     }
                 }
             }
@@ -596,7 +596,7 @@ class QuestionTheme extends LSActiveRecord
         $aQuestionsIndexedByType = [];
 
         foreach ($baseQuestions as $baseQuestion) {
-            $baseQuestion->settings = json_decode($baseQuestion['settings']);
+            $baseQuestion->settings = json_decode((string) $baseQuestion['settings']);
             $aQuestionsIndexedByType[$baseQuestion->question_type] = $baseQuestion;
         }
 
@@ -635,7 +635,7 @@ class QuestionTheme extends LSActiveRecord
         $questionTheme->group = gT($questionTheme->group, "html", $language);
 
         // decode settings json
-        $questionTheme->settings = json_decode($questionTheme->settings);
+        $questionTheme->settings = json_decode((string) $questionTheme->settings);
 
         return $questionTheme;
     }
@@ -681,7 +681,7 @@ class QuestionTheme extends LSActiveRecord
             $baseQuestion['group'] = gT($baseQuestion['group'], "html");
 
             // decode settings json
-            $baseQuestion['settings'] = json_decode($baseQuestion['settings']);
+            $baseQuestion['settings'] = json_decode((string) $baseQuestion['settings']);
 
             $baseQuestion['image_path'] = str_replace(
                 '//',
@@ -727,8 +727,8 @@ class QuestionTheme extends LSActiveRecord
             'visible'       => 'Y',
             'xml_path'      => $questionMetaData['xml_path'],
             'image_path'    => $questionMetaData['image_path'] ?? '',
-            'title'         => $questionMetaData['title'],
-            'creation_date' => date('Y-m-d H:i:s', strtotime($questionMetaData['creationDate'])),
+            'title'         => $questionMetaData['title'] ?? '',
+            'creation_date' => date('Y-m-d H:i:s', strtotime((string) $questionMetaData['creationDate'])),
             'author'        => $questionMetaData['author'] ?? '',
             'author_email'  => $questionMetaData['authorEmail'] ?? '',
             'author_url'    => $questionMetaData['authorUrl'] ?? '',
@@ -891,12 +891,18 @@ class QuestionTheme extends LSActiveRecord
         };
 
         // set compatibility version
-        if (count($oThemeConfig->compatibility->version) > 1) {
+        if (
+            $oThemeConfig->compatibility->version
+            && count($oThemeConfig->compatibility->version) > 1
+        ) {
             $length = count($oThemeConfig->compatibility->version);
             $compatibility = $oThemeConfig->addChild('compatibility');
             $compatibility->addChild('version');
             $oThemeConfig->compatibility->version[$length] = '5.0';
-        } elseif (count($oThemeConfig->compatibility->version) === 1) {
+        } elseif (
+            $oThemeConfig->compatibility->version
+            && count($oThemeConfig->compatibility->version) === 1
+        ) {
             $oThemeConfig->compatibility->version = '5.0';
         } else {
             $compatibility = $oThemeConfig->addChild('compatibility');
@@ -1038,7 +1044,7 @@ class QuestionTheme extends LSActiveRecord
 
     public static function getThemeDirectoryPath($sQuestionConfigFilePath)
     {
-        $sQuestionConfigFilePath = str_replace('\\', '/', $sQuestionConfigFilePath);
+        $sQuestionConfigFilePath = str_replace('\\', '/', (string) $sQuestionConfigFilePath);
         $aMatches = array();
         $sThemeDirectoryName = '';
         if (preg_match('$questions/answer/(.*)/config.xml$', $sQuestionConfigFilePath, $aMatches)) {

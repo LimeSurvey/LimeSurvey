@@ -30,7 +30,8 @@ and more personality.</p>
 </div><br />
 
 <div class="Paragraph" dir="rtl">
-<h2 dir="ltr">Example Output 1: المعدود مذكر مرفوع</h2>
+<h2 dir="ltr" id="example-1">
+<a href="#example-1" class="anchor"><img src="./images/link_icon.png" width="16" border="0"></a>Example Output 1: المعدود مذكر مرفوع</h2>
 <?php
 
 error_reporting(E_STRICT);
@@ -74,10 +75,16 @@ END;
 highlight_string($code);
 
 ?>
+<hr/><i>Related Documentation: 
+<a href="https://khaled-alshamaa.github.io/ar-php/classes/ArPHP-I18N-Arabic.html#method_setNumberFeminine" target="_blank">setNumberFeminine</a>,
+<a href="https://khaled-alshamaa.github.io/ar-php/classes/ArPHP-I18N-Arabic.html#method_setNumberFormat" target="_blank">setNumberFormat</a>,
+<a href="https://khaled-alshamaa.github.io/ar-php/classes/ArPHP-I18N-Arabic.html#method_int2str" target="_blank">int2str</a>
+</i>
 </div>
 <br />
 <div class="Paragraph" dir="rtl">
-<h2 dir="ltr">Example Output 2: المعدود مؤنث منصوب أو مجرور</h2>
+<h2 dir="ltr" id="example-2">
+<a href="#example-2" class="anchor"><img src="./images/link_icon.png" width="16" border="0"></a>Example Output 2: المعدود مؤنث منصوب أو مجرور</h2>
 <?php
     $Arabic->setNumberFeminine(2);
     $Arabic->setNumberFormat(2);
@@ -110,10 +117,16 @@ END;
 highlight_string($code);
 
 ?>
+<hr/><i>Related Documentation: 
+<a href="https://khaled-alshamaa.github.io/ar-php/classes/ArPHP-I18N-Arabic.html#method_setNumberFeminine" target="_blank">setNumberFeminine</a>,
+<a href="https://khaled-alshamaa.github.io/ar-php/classes/ArPHP-I18N-Arabic.html#method_setNumberFormat" target="_blank">setNumberFormat</a>,
+<a href="https://khaled-alshamaa.github.io/ar-php/classes/ArPHP-I18N-Arabic.html#method_int2str" target="_blank">int2str</a>
+</i>
 </div><br />
 
 <div class="Paragraph" dir="rtl">
-<h2 dir="ltr">Example Output 3: المعدود مؤنث منصوب أو مجرور وهو سالب بفاصلة عشرية</h2>
+<h2 dir="ltr" id="example-3">
+<a href="#example-3" class="anchor"><img src="./images/link_icon.png" width="16" border="0"></a>Example Output 3: المعدود مؤنث منصوب أو مجرور وهو سالب بفاصلة عشرية</h2>
 <?php
     $Arabic->setNumberFeminine(2);
     $Arabic->setNumberFormat(2);
@@ -146,10 +159,16 @@ END;
 highlight_string($code);
 
 ?>
+<hr/><i>Related Documentation: 
+<a href="https://khaled-alshamaa.github.io/ar-php/classes/ArPHP-I18N-Arabic.html#method_setNumberFeminine" target="_blank">setNumberFeminine</a>,
+<a href="https://khaled-alshamaa.github.io/ar-php/classes/ArPHP-I18N-Arabic.html#method_setNumberFormat" target="_blank">setNumberFormat</a>,
+<a href="https://khaled-alshamaa.github.io/ar-php/classes/ArPHP-I18N-Arabic.html#method_int2str" target="_blank">int2str</a>
+</i>
 </div><br />
 
 <div class="Paragraph" dir="rtl">
-<h2 dir="ltr">Example Output 4: العملات العربية</h2>
+<h2 dir="ltr" id="example-4">
+<a href="#example-4" class="anchor"><img src="./images/link_icon.png" width="16" border="0"></a>Example Output 4: العملات العربية</h2>
 <?php
     $Arabic->setNumberFeminine(1);
     $Arabic->setNumberFormat(1);
@@ -180,10 +199,18 @@ END;
 highlight_string($code);
 
 ?>
+<hr/><i>Related Documentation: 
+<a href="https://khaled-alshamaa.github.io/ar-php/classes/ArPHP-I18N-Arabic.html#method_setNumberFeminine" target="_blank">setNumberFeminine</a>,
+<a href="https://khaled-alshamaa.github.io/ar-php/classes/ArPHP-I18N-Arabic.html#method_setNumberFormat" target="_blank">setNumberFormat</a>,
+<a href="https://khaled-alshamaa.github.io/ar-php/classes/ArPHP-I18N-Arabic.html#method_money2str" target="_blank">money2str</a>
+</i>
 </div><br />
 
 <div class="Paragraph" dir="rtl">
-<h2 dir="ltr">Example Output 5: صيغ الجمع</h2>
+<h2 dir="ltr" id="example-5">
+<a href="#example-5" class="anchor"><img src="./images/link_icon.png" width="16" border="0"></a>
+Example Output 5: صيغ الجمع
+</h2>
 <?php
     $number = 9;
     $text   = $Arabic->arPlural('تعليق', $number);
@@ -222,10 +249,14 @@ END;
 highlight_string($code);
 
 ?>
+<hr/><i>Related Documentation: 
+<a href="https://khaled-alshamaa.github.io/ar-php/classes/ArPHP-I18N-Arabic.html#method_arPlural" target="_blank">arPlural</a>
+</i>
 </div><br />
 
 <div class="Paragraph" dir="rtl">
-<h2 dir="ltr">Example Output 6: الأرقام الهندية</h2>
+<h2 dir="ltr" id="example-6">
+<a href="#example-6" class="anchor"><img src="./images/link_icon.png" width="16" border="0"></a>Example Output 6: الأرقام الهندية</h2>
 <?php
     $text1 = '1975/8/2 9:43 صباحا';
     $text2 = $Arabic->int2indic($text1);
@@ -250,10 +281,14 @@ END;
 highlight_string($code);
 
 ?>
+<hr/><i>Related Documentation: 
+<a href="https://khaled-alshamaa.github.io/ar-php/classes/ArPHP-I18N-Arabic.html#method_int2indic" target="_blank">int2indic</a>
+</i>
 </div><br />
 
 <div class="Paragraph" dir="rtl">
-<h2 dir="ltr">Example Output 7: ترتيب لمعدود مؤنث منصوب أو مجرور</h2>
+<h2 dir="ltr" id="example-7">
+<a href="#example-7" class="anchor"><img src="./images/link_icon.png" width="16" border="0"></a>Example Output 7: ترتيب لمعدود مؤنث منصوب أو مجرور</h2>
 <?php
     $Arabic->setNumberFeminine(2);
     $Arabic->setNumberFormat(2);
@@ -265,7 +300,6 @@ highlight_string($code);
     
     echo "<p align=center>$integer<br />$text</p>";
 ?>
-
 </div><br />
 <div class="Paragraph">
 <h2>Example Code 7:</h2>
@@ -288,10 +322,17 @@ END;
 highlight_string($code);
 
 ?>
+<hr/><i>Related Documentation: 
+<a href="https://khaled-alshamaa.github.io/ar-php/classes/ArPHP-I18N-Arabic.html#method_setNumberFeminine" target="_blank">setNumberFeminine</a>,
+<a href="https://khaled-alshamaa.github.io/ar-php/classes/ArPHP-I18N-Arabic.html#method_setNumberFormat" target="_blank">setNumberFormat</a>,
+<a href="https://khaled-alshamaa.github.io/ar-php/classes/ArPHP-I18N-Arabic.html#method_setNumberOrder" target="_blank">setNumberOrder</a>,
+<a href="https://khaled-alshamaa.github.io/ar-php/classes/ArPHP-I18N-Arabic.html#method_int2str" target="_blank">int2str</a>
+</i>
 </div><br />
 
 <div class="Paragraph" dir="rtl">
-<h2 dir="ltr">Example Output 8: تحويل الرقم المكتوب إلى عدد صحيح من جديد</h2>
+<h2 dir="ltr" id="example-8">
+<a href="#example-8" class="anchor"><img src="./images/link_icon.png" width="16" border="0"></a>Example Output 8: تحويل الرقم المكتوب إلى عدد صحيح من جديد</h2>
 <?php
     $string  = 'مليار ومئتين وخمسة وستين مليون وثلاثمئة وثمانية وخمسين ألف وتسعمئة وتسعة وسبعين';
 
@@ -317,7 +358,9 @@ END;
 
 highlight_string($code);
 ?>
-
+<hr/><i>Related Documentation: 
+<a href="https://khaled-alshamaa.github.io/ar-php/classes/ArPHP-I18N-Arabic.html#method_str2int" target="_blank">str2int</a>
+</i>
 </div>
 <footer><i><a href="https://github.com/khaled-alshamaa/ar-php">Ar-PHP</a>, an open-source library for website developers to process Arabic content</i></footer>
 </body>

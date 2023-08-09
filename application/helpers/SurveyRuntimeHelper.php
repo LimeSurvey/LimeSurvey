@@ -178,6 +178,8 @@ class SurveyRuntimeHelper
     private $groupname;
     private $groupdescription;
 
+    private $thissurvey;
+
     /**
      * Main function
      *
@@ -438,7 +440,7 @@ class SurveyRuntimeHelper
             $showgroupdesc_ = $showgroupinfo_ == 'B' /* both */ || $showgroupinfo_ == 'D'; /* (group-) description */
 
             $aGroup['showgroupinfo'] = $showgroupinfo_;
-            $aGroup['showdescription']  = (!$this->previewquestion && trim($gl['description']) != "" && $showgroupdesc_);
+            $aGroup['showdescription']  = (!$this->previewquestion && trim((string) $gl['description']) != "" && $showgroupdesc_);
             $aGroup['description']      = $gl['description'];
 
             // one entry per QID
@@ -447,7 +449,7 @@ class SurveyRuntimeHelper
                     $qid             = $qa[4];
                     $qinfo           = LimeExpressionManager::GetQuestionStatus($qid);
                     $lemQuestionInfo = LimeExpressionManager::GetQuestionStatus($qid);
-                    $lastgrouparray  = explode("X", $qa[7]);
+                    $lastgrouparray  = explode("X", (string) $qa[7]);
                     $lastgroup       = $lastgrouparray[0] . "X" . $lastgrouparray[1]; // id of the last group, derived from question id
                     $lastanswer      = $qa[7];
 
@@ -1127,6 +1129,13 @@ class SurveyRuntimeHelper
             $this->aMoveResult = LimeExpressionManager::JumpTo($_SESSION[$this->LEMsessid]['step'], false); // by jumping to current step, saves data so far
 
             if (!isset($_SESSION[$this->LEMsessid]['scid']) && (!$bTokenAnswerPersitance || $bAnonymized)) {
+                if (!isset($this->aSurveyInfo['EM']['ScriptsAndHiddenInputs'])) {
+                    $this->aSurveyInfo['EM']['ScriptsAndHiddenInputs'] = "<!-- emScriptsAndHiddenInputs -->";
+                }
+                // There is a submit button at the beginning of the form (see start_form.twig) setting 'move' to 'default'.
+                // If the form is submitted without clicking a different button, the 'move' attribute is sent in the POST
+                // and causes the processing to fail. So we need to add a hidden field to override that.
+                $this->aSurveyInfo['EM']['ScriptsAndHiddenInputs'] .= CHtml::hiddenField('move', '');
                 Yii::import("application.libraries.Save");
                 $cSave = new Save();
                 // $cSave->showsaveform($this->aSurveyInfo['sid']); // generates a form and exits, awaiting input
@@ -1213,15 +1222,15 @@ class SurveyRuntimeHelper
 
         if (!$this->aMoveResult['finished']) {
             $unansweredSQList = $this->aMoveResult['unansweredSQs']; // A list of the unanswered responses created via the global variable $notanswered. Should be $oResponse->unanswereds
-            if (strlen($unansweredSQList) > 0) {
-                $this->notanswered = explode('|', $unansweredSQList);
+            if (strlen((string) $unansweredSQList) > 0) {
+                $this->notanswered = explode('|', (string) $unansweredSQList);
             } else {
                 $this->notanswered = array();
             }
             //CHECK INPUT
             $invalidSQList = $this->aMoveResult['invalidSQs']; // Invalid answered, fed from $moveResult(LEM). Its logic should be in Response model.
-            if (strlen($invalidSQList) > 0) {
-                $this->notvalidated = explode('|', $invalidSQList);
+            if (strlen((string) $invalidSQList) > 0) {
+                $this->notvalidated = explode('|', (string) $invalidSQList);
             } else {
                 $this->notvalidated = array();
             }
@@ -1244,7 +1253,7 @@ class SurveyRuntimeHelper
                 $this->aSurveyInfo['aAssessments'] = doAssessment($this->iSurveyid, false);
             }
             // End text
-            if (trim(str_replace(array('<p>', '</p>'), '', $this->aSurveyInfo['surveyls_endtext'])) == '') {
+            if (trim(str_replace(array('<p>', '</p>'), '', (string) $this->aSurveyInfo['surveyls_endtext'])) == '') {
                 $this->aSurveyInfo['aCompleted']['showDefault'] = true;
             } else {
                 $this->aSurveyInfo['aCompleted']['showDefault'] = false;
@@ -1293,24 +1302,22 @@ class SurveyRuntimeHelper
             $redata['completed'] = $this->completed;
             // event afterSurveyComplete
             $blocks = array();
-            if ($surveyActive) { // @todo : enable event even when survey is not active, but broke API
-                $event = new PluginEvent('afterSurveyComplete');
-                if ($surveyActive && isset($_SESSION[$this->LEMsessid]['srid'])) {
-                    $event->set('responseId', $_SESSION[$this->LEMsessid]['srid']);
-                }
-                $event->set('surveyId', $this->iSurveyid);
-                App()->getPluginManager()->dispatchEvent($event);
-                foreach ($event->getAllContent() as $blockData) {
-                    /* @var $blockData PluginEventContent */
-                    $blocks[] = CHtml::tag('div', array('id' => $blockData->getCssId(), 'class' => $blockData->getCssClass()), $blockData->getContent());
-                }
+            $event = new PluginEvent('afterSurveyComplete');
+            if ($surveyActive && isset($_SESSION[$this->LEMsessid]['srid'])) {
+                $event->set('responseId', $_SESSION[$this->LEMsessid]['srid']);
+            }
+            $event->set('surveyId', $this->iSurveyid);
+            App()->getPluginManager()->dispatchEvent($event);
+            foreach ($event->getAllContent() as $blockData) {
+                /* @var $blockData PluginEventContent */
+                $blocks[] = CHtml::tag('div', array('id' => $blockData->getCssId(), 'class' => $blockData->getCssClass()), $blockData->getContent());
             }
 
             $this->aSurveyInfo['aCompleted']['sPluginHTML']  = implode("\n", $blocks) . "\n";
-            $this->aSurveyInfo['aCompleted']['sSurveylsUrl'] = $this->aSurveyInfo['surveyls_url'];
             $this->aSurveyInfo['surveyls_url']               = passthruReplace($this->aSurveyInfo['surveyls_url'], $this->aSurveyInfo);
             $this->aSurveyInfo['surveyls_url']               = $this->processString($this->aSurveyInfo['surveyls_url'], 3, 1);
             $this->aSurveyInfo['aCompleted']['sSurveylsUrl'] = $this->aSurveyInfo['surveyls_url'];
+            $this->aSurveyInfo['surveyls_urldescription'] = $this->processString($this->aSurveyInfo['surveyls_urldescription'], 3, 1);
             $this->aSurveyInfo['aCompleted']['sSurveylsUrlDescription'] = $this->aSurveyInfo['surveyls_urldescription'];
             if ($this->aSurveyInfo['aCompleted']['sSurveylsUrlDescription'] == "") {
                 $this->aSurveyInfo['aCompleted']['sSurveylsUrlDescription'] = $this->aSurveyInfo['surveyls_url'];
@@ -1489,6 +1496,7 @@ class SurveyRuntimeHelper
      */
     private function manageClearAll()
     {
+        global $token;
         $sessionSurvey = Yii::app()->session["survey_{$this->iSurveyid}"];
         if (App()->request->getPost('confirm-clearall') != 'confirm') {
             /* Save current response, and come back to survey if clearll is not confirmed */
@@ -1522,7 +1530,6 @@ class SurveyRuntimeHelper
 
             killSurveySession($this->iSurveyid);
 
-            global $token;
             if ($token) {
                 $restartparam['token'] = Token::sanitizeToken($token);
             }

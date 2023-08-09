@@ -18,8 +18,10 @@ use Twig\Node\Expression\BlockReferenceExpression;
 use Twig\Node\Expression\ConstantExpression;
 use Twig\Node\Expression\FunctionExpression;
 use Twig\Node\Expression\GetAttrExpression;
+use Twig\Node\Expression\MethodCallExpression;
 use Twig\Node\Expression\NameExpression;
 use Twig\Node\Expression\TestExpression;
+use Twig\Node\Node;
 
 /**
  * Checks if a variable is defined in the current context.
@@ -33,7 +35,7 @@ use Twig\Node\Expression\TestExpression;
  */
 class DefinedTest extends TestExpression
 {
-    public function __construct(\Twig_NodeInterface $node, $name, ?\Twig_NodeInterface $arguments, $lineno)
+    public function __construct(Node $node, string $name, ?Node $arguments, int $lineno)
     {
         if ($node instanceof NameExpression) {
             $node->setAttribute('is_defined_test', true);
@@ -46,6 +48,8 @@ class DefinedTest extends TestExpression
             $node->setAttribute('is_defined_test', true);
         } elseif ($node instanceof ConstantExpression || $node instanceof ArrayExpression) {
             $node = new ConstantExpression(true, $node->getTemplateLine());
+        } elseif ($node instanceof MethodCallExpression) {
+            $node->setAttribute('is_defined_test', true);
         } else {
             throw new SyntaxError('The "defined" test only works with simple variables.', $lineno);
         }
@@ -53,8 +57,9 @@ class DefinedTest extends TestExpression
         parent::__construct($node, $name, $arguments, $lineno);
     }
 
-    protected function changeIgnoreStrictCheck(GetAttrExpression $node)
+    private function changeIgnoreStrictCheck(GetAttrExpression $node)
     {
+        $node->setAttribute('optimizable', false);
         $node->setAttribute('ignore_strict_check', true);
 
         if ($node->getNode('node') instanceof GetAttrExpression) {
@@ -62,10 +67,8 @@ class DefinedTest extends TestExpression
         }
     }
 
-    public function compile(Compiler $compiler)
+    public function compile(Compiler $compiler): void
     {
         $compiler->subcompile($this->getNode('node'));
     }
 }
-
-class_alias('Twig\Node\Expression\Test\DefinedTest', 'Twig_Node_Expression_Test_Defined');

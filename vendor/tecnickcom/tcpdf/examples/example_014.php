@@ -22,6 +22,9 @@
  * @abstract TCPDF - Example: Javascript Form and user rights (only works on Adobe Acrobat)
  * @author Nicola Asuni
  * @since 2008-03-04
+ * @group javascript
+ * @group form
+ * @group pdf
  */
 
 
@@ -70,7 +73,7 @@ if (@file_exists(dirname(__FILE__).'/lang/eng.php')) {
 // IMPORTANT: disable font subsetting to allow users editing the document
 $pdf->setFontSubsetting(false);
 
-// set font
+// set font. 'helvetica' MUST be used to avoid a PHP notice from PHP 7.4+
 $pdf->setFont('helvetica', '', 10, '', false);
 
 // add a page

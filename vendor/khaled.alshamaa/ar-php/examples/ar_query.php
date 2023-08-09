@@ -67,21 +67,8 @@ Inc., 319 North First Ave., Sandpoint, Idaho, USA, 208-263-8178, Fax: 208-263-63
 </div><br />
 
 <div class="Paragraph" dir="rtl">
-<h2 dir="ltr">Example Output:</h2>
-    <font face="Tahoma" size="2">
-    <form action="ar_query.php" method="GET" name="search">
-        إبحث عن (Search for): <input type="text" name="keyword" value="<?php echo $_GET['keyword']; ?>"> 
-        <input type="submit" value="بحث (Go)" name="submit" />
-         (مثال: فلسطينيون)<br />
-        <blockquote><blockquote><blockquote>
-            <input type="radio" name="mode" value="0" <?php if ($_GET['mode'] == '0' || !isset($_GET['mode'])) echo "checked"; ?> /> أي من الكلمات (Any word)
-            <input type="radio" name="mode" value="1" <?php if ($_GET['mode'] == '1') echo "checked"; ?> /> كل الكلمات (All words)
-        </blockquote></blockquote></blockquote>
-    </form>
-
-<?php if (!isset($_GET['keyword'])) { $_GET['keyword'] = 'فلسطينيون'; } ?>
-    <hr />
-    نتائج البحث عن (Results of) <b><?php echo $_GET['keyword']; ?></b>:<br />
+<h2 dir="ltr" id="example-1">
+<a href="#example-1" class="anchor"><img src="./images/link_icon.png" width="16" border="0"></a>Example Output 1:</h2>
 <?php
     /*
       // Autoload files using Composer autoload
@@ -91,54 +78,59 @@ Inc., 319 North First Ave., Sandpoint, Idaho, USA, 208-263-8178, Fax: 208-263-63
     require '../src/Arabic.php';
     $Arabic = new \ArPHP\I18N\Arabic();
         
-    echo $Arabic->arQueryAllForms($_GET['keyword']);
-    $keyword = $_GET['keyword'];
+    echo 'نتائج البحث عن <b>فلسطينيون</b>:<br />';
+    echo $Arabic->arQueryAllForms('فلسطينيون');
+    
+    $keyword = 'فلسطينيون';
     $keyword = str_replace('\"', '"', $keyword);
 
     $Arabic->setQueryStrFields('field');
-    $Arabic->setQueryMode($_GET['mode']);
+    $Arabic->setQueryMode(0); // 0 for any word, 1 for all words
 
     $strCondition = $Arabic->arQueryWhereCondition($keyword);
     $strOrderBy   = $Arabic->arQueryOrderBy($keyword);
 
     $StrSQL = "SELECT `field` FROM `table` WHERE $strCondition ORDER BY $strOrderBy";
+    
+    echo '<hr />صيغة استعلام قاعدة البيانات <span dir="ltr">(SQL Query Statement)</span><br />';
+    echo '<pre dir="ltr" style="background-color: #e0e0e0; padding: 5px">' . $StrSQL . '</pre>';
 ?>
-
-    <hr />
-    صيغة استعلام قاعدة البيانات <span dir="ltr">(SQL Query Statement)</span>
-    <br /><textarea dir="ltr" align="left" cols="80" rows="4"><?php echo $StrSQL; ?></textarea>
-
 </div><br />
 <div class="Paragraph">
-<h2>Example Code:</h2>
+<h2 dir="ltr">Example Code 1:</h2>
 <?php
 $code = <<< END
 <?php
     \$Arabic = new \\ArPHP\\I18N\\Arabic();
         
-    echo \$Arabic->arQueryAllForms(\$_GET['keyword']);
-    \$keyword = \$_GET['keyword'];
+    echo 'نتائج البحث عن <b>فلسطينيون</b>:<br />';
+    echo \$Arabic->arQueryAllForms('فلسطينيون');
+    
+    \$keyword = 'فلسطينيون';
     \$keyword = str_replace('\\"', '"', \$keyword);
 
     \$Arabic->setQueryStrFields('field');
-    \$Arabic->setQueryMode(\$_GET['mode']);
+    \$Arabic->setQueryMode(0);  // 0 for any word, 1 for all words
 
     \$strCondition = \$Arabic->arQueryWhereCondition(\$keyword);
     \$strOrderBy   = \$Arabic->arQueryOrderBy(\$keyword);
 
-    \$SQL = "SELECT `field` FROM `table` WHERE \$strCondition ORDER BY \$strOrderBy";
+    \$StrSQL = "SELECT `field` FROM `table` WHERE \$strCondition ORDER BY \$strOrderBy";
+    
+    echo '<hr />صيغة استعلام قاعدة البيانات <span dir="ltr">(SQL Query Statement)</span><br />';
+    echo '<pre dir="ltr" style="background-color: #e0e0e0; padding: 5px">' . \$StrSQL . '</pre>';
 END;
 
 highlight_string($code);
 
-$time_end = microtime(true);
-$time = $time_end - $time_start;
-
-echo "<hr />Total execution time is $time seconds<br />\n";
-echo 'Amount of memory allocated to this script is ' . memory_get_usage() . ' bytes';
-
 ?>
-
+<hr/><i>Related Documentation: 
+<a href="https://khaled-alshamaa.github.io/ar-php/classes/ArPHP-I18N-Arabic.html#method_arQueryAllForms" target="_blank">arQueryAllForms</a>,
+<a href="https://khaled-alshamaa.github.io/ar-php/classes/ArPHP-I18N-Arabic.html#method_setQueryStrFields" target="_blank">setQueryStrFields</a>,
+<a href="https://khaled-alshamaa.github.io/ar-php/classes/ArPHP-I18N-Arabic.html#method_setQueryMode" target="_blank">setQueryMode</a>,
+<a href="https://khaled-alshamaa.github.io/ar-php/classes/ArPHP-I18N-Arabic.html#method_arQueryWhereCondition" target="_blank">arQueryWhereCondition</a>,
+<a href="https://khaled-alshamaa.github.io/ar-php/classes/ArPHP-I18N-Arabic.html#method_arQueryOrderBy" target="_blank">arQueryOrderBy</a>
+</i>
 </div>
 <footer><i><a href="https://github.com/khaled-alshamaa/ar-php">Ar-PHP</a>, an open-source library for website developers to process Arabic content</i></footer>
 </body>

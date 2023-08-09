@@ -1,0 +1,1 @@
+Not clear if this script is needed at all. looks like a polyfill

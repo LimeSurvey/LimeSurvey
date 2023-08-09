@@ -832,6 +832,15 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['es']['radixpoint'] = 1;
     $supportedLanguages['es']['momentjs'] = 'es';
 
+    // Spanish (informal)
+    $supportedLanguages['es-informal']['description'] = gT('Spanish (informal)');
+    $supportedLanguages['es-informal']['nativedescription'] = 'Espa&#241;ol (informal)';
+    $supportedLanguages['es-informal']['rtl'] = false;
+    $supportedLanguages['es-informal']['dateformat'] = 5;
+    $supportedLanguages['es-informal']['radixpoint'] = 1;
+    $supportedLanguages['es-informal']['momentjs'] = 'es';
+
+
     // Spanish (Argentina)
     $supportedLanguages['es-AR']['description'] = gT('Spanish (Argentina)');
     $supportedLanguages['es-AR']['nativedescription'] = 'Espa&#241;ol rioplatense';
@@ -1003,6 +1012,14 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['sah']['momentjs'] = 'null';
 
     // Zulu
+    $supportedLanguages['yor']['description'] = gT('Yoruba');
+    $supportedLanguages['yor']['nativedescription'] = '&#xC8;d&#xE8; Yor&#xF9;b&#xE1;';
+    $supportedLanguages['yor']['rtl'] = false;
+    $supportedLanguages['yor']['dateformat'] = 5;
+    $supportedLanguages['yor']['radixpoint'] = 1;
+    $supportedLanguages['yor']['momentjs'] = null;
+
+    // Zulu
     $supportedLanguages['zu']['description'] = gT('Zulu');
     $supportedLanguages['zu']['nativedescription'] = 'isiZulu';
     $supportedLanguages['zu']['rtl'] = false;
@@ -1134,9 +1151,9 @@ function getJSDateFromDateFormat($sDateformat)
      */
 function getDateFormatDataForQID($aQidAttributes, $mThisSurvey, $language = '')
 {
-    if (isset($aQidAttributes['date_format']) && trim($aQidAttributes['date_format']) != '') {
+    if (isset($aQidAttributes['date_format']) && trim((string) $aQidAttributes['date_format']) != '') {
         $aDateFormatDetails = array();
-        $aDateFormatDetails['dateformat'] = trim($aQidAttributes['date_format']);
+        $aDateFormatDetails['dateformat'] = trim((string) $aQidAttributes['date_format']);
         $aDateFormatDetails['phpdate'] = getPHPDateFromDateFormat($aDateFormatDetails['dateformat']);
         $aDateFormatDetails['jsdate'] = getJSDateFromDateFormat($aDateFormatDetails['dateformat']);
     } else {
@@ -1288,8 +1305,8 @@ function getLanguageDataRestricted($bOrderByNative = false, $sDetail = 'full')
 {
     $aLanguageData = getLanguageData($bOrderByNative);
 
-    if (trim(Yii::app()->getConfig('restrictToLanguages')) != '') {
-        foreach (explode(' ', trim(Yii::app()->getConfig('restrictToLanguages'))) as $key) {
+    if (trim((string) Yii::app()->getConfig('restrictToLanguages')) != '') {
+        foreach (explode(' ', trim((string) Yii::app()->getConfig('restrictToLanguages'))) as $key) {
             $aResult[$key] = $aLanguageData[$key];
         }
     } else {

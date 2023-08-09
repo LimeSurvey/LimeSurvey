@@ -1,40 +1,40 @@
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <strong>{{gT("Publication and access settings")}}:</strong>
-        <a class="pull-right btn btn-default btn-xs pjax" data-toggle="tooltip" title="{{gT('Edit publication and access settings')}}" href="{{createUrl('surveyAdministration/rendersidemenulink', {'subaction':'publication', 'surveyid':surveyid})}}">
-            <i class="fa fa-cogs"></i>
+<div class="card card-primary h-100">
+    <div class="card-header">
+        <h5 class="card-title">{{gT("Publication and access settings")}}</h5>
+        <a class="float-end btn btn-outline-secondary btn-xs pjax" data-bs-toggle="tooltip" title="{{gT('Edit publication and access settings')}}" href="{{createUrl('surveyAdministration/rendersidemenulink', {'subaction':'publication', 'surveyid':surveyid})}}">
+           <i class="ri-key-line"></i>
         </a>
     </div>
-    <ul class="list-group">
+    <ul class="list-group list-group-flush">
         <!-- Start date/time -->
-        <li class="list-group-item">
+        <li class="list-group-item p-0 border-0">
             <div class="ls-flex-row col-12">
-                <div class="col-4">
+               <div class="col-4 card-label">
                     {{gT("Start date/time:")}}
                 </div>
-                <div class="col-8">
+                <div class="col-8 ls-card-grid__description">
                     {{startdate}}
                 </div>
             </div>
         </li>
         <!-- Expiration date/time -->
-        <li class="list-group-item">
+        <li class="list-group-item p-0 border-0">
             <div class="ls-flex-row col-12">
-                <div class="col-4">
+               <div class="col-4 card-label">
                     {{gT("Expiration date/time:")}}
                 </div>
-                <div class="col-8">
+                <div class="col-8 ls-card-grid__description">
                     {{expdate}}
                 </div>
             </div>
         </li>
         <!-- Publicly available -->
-        <li class="list-group-item">
+        <li class="list-group-item p-0 border-0">
             <div class="ls-flex-row col-12">
-                <div class="col-4">
+               <div class="col-4 card-label">
                     {{gT("Listed publicly:")}}
                 </div>
-                <div class="col-8">
+                <div class="col-8 ls-card-grid__description">
                     {{oSurvey.isListPublic ? gT('Yes') : gT('No')}}
                 </div>
             </div>

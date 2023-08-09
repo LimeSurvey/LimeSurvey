@@ -79,9 +79,9 @@ function ldap_readattr($attr)
 {
 
     if (is_array($attr)) {
-        return trim($attr[0]);
+        return trim((string) $attr[0]);
     } else {
-        return trim($attr);
+        return trim((string) $attr);
     }
 }
 
@@ -128,7 +128,7 @@ function ldap_doTokenSearch($ds, $ldapq, &$ResArray, $surveyid)
 
     $aTokenAttr = getAttributeFieldNames($surveyid);
     foreach ($aTokenAttr as $thisattrfieldname) {
-        $attridx = substr($thisattrfieldname, 10); // the 'attribute_' prefix is 10 chars long
+        $attridx = substr((string) $thisattrfieldname, 10); // the 'attribute_' prefix is 10 chars long
         $userparams[] = "attr" . $attridx;
     }
 
@@ -233,7 +233,7 @@ function ldap_doTokenSearch($ds, $ldapq, &$ResArray, $surveyid)
                         $ldap_queries[$ldapq]['userbase'] != ''
                     ) {
                         // get user's rdn
-                        $user_dn_tab = explode(",", $user);
+                        $user_dn_tab = explode(",", (string) $user);
                         $user_rdn = $user_dn_tab[0];
                         $userfilter_rdn = "(&("
                         . $user_rdn . ")" . $userfilter . ")";

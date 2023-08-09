@@ -450,7 +450,7 @@
             <expression>1</expression>
             <i18n>1</i18n>
             <default></default>
-            <help>Replace choice header (default: &amp;quot;Your choices&amp;quot;)</help>
+            <help>Replace choice header (default: &amp;quot;Available items&amp;quot;)</help>
             <caption>Choice header</caption>
             <readonly></readonly>
             <readonly_when_active></readonly_when_active>

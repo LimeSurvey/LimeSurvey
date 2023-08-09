@@ -1,0 +1,36 @@
+{#
+    LimeSurvey
+    Copyright (C) 2007-2017 The LimeSurvey Project Team / Louis Gac
+    All rights reserved.
+    License: GNU/GPL License v2 or later, see LICENSE.php
+    LimeSurvey is free software. This version may have been modified pursuant
+    to the GNU General Public License, and as distributed it includes or
+    is derivative of works licensed under the GNU General Public License or
+    other free or open source software licenses.
+    See COPYRIGHT.php for copyright notices and details.
+
+    (¯`·._.·(¯`·._.· Registration Content  ·._.·´¯)·._.·´¯)
+
+    This file displays the page shown to user when a participant registers for taking a survey.
+    
+    NOTE: This content is included inside mainrow.twig
+    NOTE: see layout_global.twig for more infos
+#}
+    <div class="{{ aSurveyInfo.class.register }} container" {{ aSurveyInfo.attr.register }}>
+        {# This will display the script and the hidden inputs needed for ExpressionScript Engine #}
+        {{ aSurveyInfo.EM.ScriptsAndHiddenInputs  }}
+
+        <div class="{{ aSurveyInfo.class.registerrow }} row" {{ aSurveyInfo.attr.registerrow }}>
+            <div class='{{ aSurveyInfo.class.registerrowjumbotron }}' {{ aSurveyInfo.attr.registerrowjumbotron }}>
+                <div class="{{ aSurveyInfo.class.registerrowjumbotrondiv }} clearfix" {{ aSurveyInfo.attr.registerrowjumbotrondiv }}>
+                    {{ include('./subviews/registration/register_head.twig') }}
+                    {{ include('./subviews/registration/register_message.twig') }}
+                </div>
+            </div>
+        </div>
+        {{ include('./subviews/registration/register_error.twig') }}
+
+        {% set sViewContent =  './subviews/registration/' ~ aSurveyInfo.registration_view ~ '.twig' %}
+        {% include sViewContent %}
+
+    </div>

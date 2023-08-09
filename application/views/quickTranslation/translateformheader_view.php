@@ -20,14 +20,14 @@ extract($viewData);
 <script type="text/javascript">
     sGoogleApiError = "<?php eT("There was an error using the Google API.");?>";
     sDetailedError = "<?php eT("Detailed Error");?>";
-    translateJsonUrl = "<?php echo $this->createUrl("quickTranslation/ajaxtranslategoogleapi"); ?>";
+    translateJsonUrl = "<?php echo $this->createUrl("quickTranslation/ajaxtranslategoogleapi", ['surveyid' => $surveyid]); ?>";
 </script>
 
 <div id="translationtabs">
     <ul class="nav nav-tabs">
         <?php for ($i = 0, $len = count($tab_names); $i < $len; $i++) { ?>
-            <li <?php echo ($i == 0) ? 'class="active"' : '' ?> >
-                <a data-toggle="tab" href="#tab-<?php echo $tab_names[$i]; ?>">
+            <li class="nav-item" >
+                <a class="nav-link <?php echo ($i == 0) ? 'active' : '' ?>" data-bs-toggle="tab" href="#tab-<?php echo $tab_names[$i]; ?>">
                 <span>
                     <?php echo $amTypeOptions[$i]["description"]; ?>
                 </span>
@@ -53,7 +53,7 @@ extract($viewData);
         ?>
     </div>
     <p>
-        <input type='submit' class='standardbtn hidden' value='<?php eT("Save");?>' <?php if ($bReadOnly){?>disabled='disabled'<?php }?>/>
+        <input type='submit' class='standardbtn d-none' value='<?php eT("Save");?>' <?php if ($bReadOnly){?>disabled='disabled'<?php }?>/>
     </p>
 </div>
 <?php

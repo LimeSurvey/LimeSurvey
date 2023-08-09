@@ -191,7 +191,7 @@ class SurveyPermissionsServiceTest extends \ls\tests\TestBaseClass
     }
 
     /**
-     * Test valid usergroups (how many usergroups could still be inserted for
+     * Test valid user groups (how many user groups could still be inserted for
      * survey permissions)
      *
      * @return void
@@ -216,7 +216,7 @@ class SurveyPermissionsServiceTest extends \ls\tests\TestBaseClass
     }
 
     /**
-     * Test no valid usergroups (how many usergroups could still be inserted for
+     * Test no valid user groups (how many user groups could still be inserted for
      * survey permissions)
      *
      * @return void

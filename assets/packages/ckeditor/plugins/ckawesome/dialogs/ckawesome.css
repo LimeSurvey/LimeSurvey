@@ -1,5 +1,0 @@
-div.cke_dialog_ui_input_select, .cke_dialog_ui_input_select{ width: 100%; }
-.select2-drop, .select2-dropdown, .select2-container{ z-index: 100000 !important; }
-.select2-dropdown{ 	margin-left: 8px; }
-.select2-chosen{ margin-top: 7px; }
-.select2-results__option span{ color: #000; font-size: 12px !important; font-family: Arial; display:block; white-space: nowrap; overflow:hidden; }

@@ -22,6 +22,8 @@
  * @abstract TCPDF - Example: Certification Signature (experimental)
  * @author Nicola Asuni
  * @since 2009-05-07
+ * @group security
+ * @group pdf
  */
 
 // Include the main TCPDF library (search for installation path).
@@ -87,7 +89,7 @@ $info = array(
 // set document signature
 $pdf->setSignature($certificate, $certificate, 'tcpdfdemo', '', 2, $info);
 
-// set font
+// set font. 'helvetica' MUST be used to avoid a PHP notice from PHP 7.4+
 $pdf->setFont('helvetica', '', 12);
 
 // add a page

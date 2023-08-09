@@ -30,7 +30,6 @@ return array(
             'css/ranking.css',
         ),
         'js'=>array(
-            'scripts/sortable.min.js',
             'scripts/ranking.js',
         ),
         'depends' => array(

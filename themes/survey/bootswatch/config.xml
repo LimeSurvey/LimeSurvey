@@ -11,7 +11,7 @@
     <!-- Those metadata are displayed in the theme configuration page.  -->
     <metadata>
         <name>bootswatch</name>
-        <title>Bootswatch Theme</title>
+        <title>Bootswatch</title>
         <type>theme</type>
         <creationDate>08/01/2016</creationDate>
         <author>LimeSurvey GmbH</author>
@@ -21,10 +21,14 @@
         <license>GNU General Public License version 2 or later</license>
         <version>3.0</version>
         <apiVersion>3</apiVersion>
-        <description><![CDATA[<strong>{{gT("LimeSurvey Bootwatch Theme")}}</strong><br>{{gT("Based on BootsWatch Themes:")}} <a href='https://bootswatch.com/3/'>{{gT("Visit BootsWatch page")}}</a> ]]></description>
+        <description><![CDATA[{{gT("Based on BootsWatch Themes:")}} <br><a href='https://bootswatch.com/3/'>{{gT("Visit Bootswatch page")}}</a> ]]></description>
         <lastUpdate>2019-10-24 12:00:00</lastUpdate>
         <extends>vanilla</extends>
     </metadata>
+
+    <compatibility>
+        <version>6.0</version>
+    </compatibility>
 
     <!--
         Here the list of the css/js files to add to the template package.

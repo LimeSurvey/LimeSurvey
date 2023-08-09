@@ -66,10 +66,6 @@ class SurveymenuEntryController extends SurveyCommonAction
                     'reorder'      => true,
                 ],
             ],
-            'returnbutton' => [
-                'url'  => 'admin/index',
-                'text' => gT('Back'),
-            ],
         ];
         App()->getClientScript()->registerPackage('surveymenufunctions');
         $this->renderWrappedTemplate(null, array('surveymenu_entries/index'), $data);
@@ -123,8 +119,9 @@ class SurveymenuEntryController extends SurveyCommonAction
             $this->getController()->redirect(Yii::app()->createUrl('/admin'));
         }
         //Update or create
+        $id = (int) $id;
         if ($id != 0) {
-            $model = $this->loadModel($id);
+            $model = SurveymenuEntries::model()->findByPk($id);
         } else {
             $model = new SurveymenuEntries();
         }
@@ -170,7 +167,7 @@ class SurveymenuEntryController extends SurveyCommonAction
 
     public function batchEdit()
     {
-        $aSurveyMenuEntryIds = json_decode(Yii::app()->request->getPost('sItems'));
+        $aSurveyMenuEntryIds = json_decode(Yii::app()->request->getPost('sItems', '')) ?? [];
         $aResults = array();
         $oBaseModel = SurveymenuEntries::model();
         if (Permission::model()->hasGlobalPermission('settings', 'update')) {
@@ -182,7 +179,7 @@ class SurveymenuEntryController extends SurveyCommonAction
             $aCoreTokenFields = array('menu_id', 'menu_class', 'permission', 'permission_grade', 'language');
 
             foreach ($aCoreTokenFields as $sCoreTokenField) {
-                if (trim(Yii::app()->request->getPost($sCoreTokenField, 'lskeep')) != 'lskeep') {
+                if (trim((string) Yii::app()->request->getPost($sCoreTokenField, 'lskeep')) != 'lskeep') {
                     $aData[$sCoreTokenField] = flattenText(Yii::app()->request->getPost($sCoreTokenField));
                 }
             }
@@ -228,6 +225,9 @@ class SurveymenuEntryController extends SurveyCommonAction
             $this->getController()->redirect(Yii::app()->createUrl('/admin'));
         }
 
+        //get model to do the work
+        $model = SurveymenuEntries::model();
+
         if (Yii::app()->request->isPostRequest) {
             //Check for permission!
             if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
@@ -246,8 +246,6 @@ class SurveymenuEntryController extends SurveyCommonAction
                     false
                 );
             }
-            //get model to do the work
-            $model = SurveymenuEntries::model();
             $success = $model->restoreDefaults();
             return Yii::app()->getController()->renderPartial(
                 '/admin/super/_renderJson',
@@ -277,14 +275,18 @@ class SurveymenuEntryController extends SurveyCommonAction
         }
 
         if (Yii::app()->request->isPostRequest) {
-            $aSurveyMenuEntryIds = json_decode(Yii::app()->request->getPost('sItems'));
+            $aSurveyMenuEntryIds = json_decode(Yii::app()->request->getPost('sItems', '')) ?? [];
             $success = [];
             foreach ($aSurveyMenuEntryIds as $menuEntryid) {
-                $model = $this->loadModel($menuEntryid);
-                $success[$menuEntryid] = $model->delete();
+                $model = SurveymenuEntries::model()->findByPk((int)$menuEntryid);
+                $success[$menuEntryid] = false;
+                if ($model !== null) {
+                    $model->delete();
+                    $success[$menuEntryid] = true;
+                }
             }
 
-            $debug = $userConfig['config']['debug'] ?? 0;
+            $debug = App()->getConfig('debug');
             $returnData = array(
                 'data' => [
                     'success' => $success,
@@ -323,14 +325,16 @@ class SurveymenuEntryController extends SurveyCommonAction
         if (Yii::app()->request->isPostRequest) {
             $menuEntryid = Yii::app()->request->getPost('menuEntryid', 0);
             $success = false;
-            $model = $this->loadModel($menuEntryid);
+            $model = SurveymenuEntries::model()->findByPk((int)$menuEntryid);
             //Don't delete  main menu entries when not superadmin
             if (($model->menu_id == 1 || $model->menu_id == 2) && !Permission::model()->hasGlobalPermission('superadmin', 'read')) {
                 Yii::app()->user->setFlash('error', gT("Access denied"));
                 $this->getController()->redirect(Yii::app()->createUrl('/admin'));
             }
-            $success = $model->delete();
-            $debug = $userConfig['config']['debug'] ?? 0;
+            $debug = App()->getConfig('debug');
+            if ($model !== null) {
+                $success = $model->delete();
+            }
 
             $returnData = array(
                 'data' => [
@@ -370,7 +374,7 @@ class SurveymenuEntryController extends SurveyCommonAction
         if (Yii::app()->request->isPostRequest) {
             $model = SurveymenuEntries::model();
             $success = $model->reorder();
-            $debug = $userConfig['config']['debug'] ?? 0;
+            $debug = App()->getConfig('debug');
 
             $returnData = array(
                 'data' => [
@@ -404,6 +408,7 @@ class SurveymenuEntryController extends SurveyCommonAction
      * @param integer $id the ID of the model to be loaded
      * @return SurveymenuEntries the loaded model
      * @throws CHttpException
+     * * @deprecated do not use this function in future
      */
     public function loadModel($id)
     {

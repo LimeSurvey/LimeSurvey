@@ -1,0 +1,157 @@
+$table-hover-bg-factor:       .075 !default;
+
+.ls-even{
+    background-color:$g-100;
+}
+
+.ls-answers .ls-heading th, .ls-answers th {
+    color: $g-700;
+}
+
+.table {
+    > {
+        thead > tr,
+        tbody > tr,
+        tfoot > tr, {
+            &.active > {
+                td, th {
+                    background-color : $g-200;
+                }
+            }
+            &.success > {
+                td, th {
+                    background-color : $success;
+                }
+            }
+            &.info > {
+                td, th {
+                    background-color : $grape;
+                }
+            }
+            &.warning > {
+                td, th {
+                    background-color : $warning;
+                }
+            }
+            &.danger > {
+                td, th {
+                    background-color : $error;
+                }
+            }
+            > {
+                td, th {
+                    &.active {
+                        background-color : $g-200;
+                    }
+                    &.success {
+                        background-color : $success;
+                    }
+                    &.info {
+                        background-color : $grape;
+                    }
+                    &.warning {
+                        background-color : $warning;
+                    }
+                    &.danger {
+                        background-color : $error;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.table-hover > tbody > tr {
+    &:hover > {
+        td {
+            background-color : $g-200;
+        }
+        th {
+            background-color: $g-200;
+            color: $g-700;
+        }
+    }
+    &.active:hover > {
+        td, th {
+            background-color : $g-200;
+            color: inherit;
+        }
+    }
+    &.success:hover > {
+        td, th {
+            background-color : mix($g-200, $success, percentage($table-hover-bg-factor));
+        }
+    }
+    &.info:hover > {
+        td, th {
+            background-color : mix($g-200, $grape, percentage($table-hover-bg-factor));
+        }
+    }
+    &.warning:hover > {
+        td, th {
+            background-color : mix($g-200, $warning, percentage($table-hover-bg-factor));
+        }
+    }
+    &.danger:hover > {
+        td, th {
+            background-color : mix($g-200, $error, percentage($table-hover-bg-factor));
+        }
+    }
+    > {
+        td, th {
+            &.active:hover {
+                background-color : $g-200;
+            }
+            &.success:hover {
+                background-color : mix($g-200, $success, percentage($table-hover-bg-factor));
+            }
+            &.info:hover {
+                background-color : mix($g-200, $grape, percentage($table-hover-bg-factor));
+            }
+            &.warning:hover {
+                background-color : mix($g-200, $warning, percentage($table-hover-bg-factor));
+            }
+            &.danger:hover {
+                background-color : mix($g-200, $error, percentage($table-hover-bg-factor));
+            }
+        }
+    }
+}
+
+//.table-bordered {
+//    border: 1px solid $color_alto_approx;
+//    > {
+//        thead > tr > {
+//            th {
+//                border: 1px solid $color_alto_approx;
+//            }
+//            td {
+//                border: 1px solid $color_alto_approx;
+//            }
+//        }
+//        tbody > tr > {
+//            th {
+//                border: 1px solid $color_alto_approx;
+//            }
+//            td {
+//                border: 1px solid $color_alto_approx;
+//            }
+//        }
+//        tfoot > tr > {
+//            th {
+//                border: 1px solid $color_alto_approx;
+//            }
+//            td {
+//                border: 1px solid $color_alto_approx;
+//            }
+//        }
+//    }
+//}
+
+@media
+only screen and (max-width: 760px),
+(min-device-width: 768px) and (max-device-width: 1024px)  {
+    .ls-answers > tbody > tr.ls-even:hover {
+        background-color:#f9f9f9;
+    }
+}

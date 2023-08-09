@@ -37,7 +37,8 @@ to a 64 bit integer, for example) before the clock ticks the dreaded doomsday se
 </div><br />
 
 <div class="Paragraph">
-<h2 dir="ltr">Example Output:</h2>
+<h2 dir="ltr" id="example-1">
+<a href="#example-1" class="anchor"><img src="./images/link_icon.png" width="16" border="0"></a>Example Output 1:</h2>
 
 <?php
 
@@ -65,8 +66,9 @@ echo "That Ramadan has $days days in total";
 
 ?>
 </div><br />
+
 <div class="Paragraph">
-<h2>Example Code:</h2>
+<h2 dir="ltr">Example Code 1:</h2>
 <?php
 $code = <<< END
 <?php
@@ -87,6 +89,11 @@ END;
 
 highlight_string($code);
 ?>
+<hr/><i>Related Documentation: 
+<a href="https://khaled-alshamaa.github.io/ar-php/classes/ArPHP-I18N-Arabic.html#method_mktimeCorrection" target="_blank">mktimeCorrection</a>,
+<a href="https://khaled-alshamaa.github.io/ar-php/classes/ArPHP-I18N-Arabic.html#method_mktime" target="_blank">mktime</a>,
+<a href="https://khaled-alshamaa.github.io/ar-php/classes/ArPHP-I18N-Arabic.html#method_hijriMonthDays" target="_blank">hijriMonthDays</a>
+</i>
 </div>
 <footer><i><a href="https://github.com/khaled-alshamaa/ar-php">Ar-PHP</a>, an open-source library for website developers to process Arabic content</i></footer>
 </body>

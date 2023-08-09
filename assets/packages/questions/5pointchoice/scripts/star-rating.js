@@ -53,7 +53,7 @@ function doRatingStar(qID) {
     //Add no-answer-option to stars List
     if (itemNoAnswer) {
         starsHtmlElement
-            .append("<div class='star-rating star-cancel' data-star='" + (numberOfPossibleAnswers) + "' title='" + $('#question' + qID + ' .noanswer-item label').html() + "'><i class='fa fa-ban'></i></div>");
+            .append("<div class='star-rating star-cancel' data-star='" + (numberOfPossibleAnswers) + "' title='" + $('#question' + qID + ' .noanswer-item label').html() + "'><i class='fa fa-ban ri-forbid-2-line'></i></div>");
     } else {
         numberOfPossibleAnswers++;
     }
@@ -71,7 +71,7 @@ function doRatingStar(qID) {
             classes += " star-rated-on star-thisrated";
         }
         //append the element
-        starsHtmlElement.append("<div class='star-" + i + " " + classes + "' data-star='" + i + "' title='" + i + "'><i class='fa fa-star'></i></div>");
+        starsHtmlElement.append("<div class='star-" + i + " " + classes + "' data-star='" + i + "' title='" + i + "'><i class='fa fa-star ri-star-fill'></i></div>");
     }
 
     answersList.after(starsHtmlElement);
@@ -128,5 +128,5 @@ function doRatingStar(qID) {
         });
 
     //hide the standard-items
-    answersList.addClass("starred-list sr-only");
+    answersList.addClass("starred-list visually-hidden");
 }

@@ -17,11 +17,9 @@ Yii::app()->getController()->renderPartial(
 ) ?>
 
 <div class="modal-body selector--edit-permissions-container">
-    <div class="container-center">
-        <input type='hidden' name='ptid' value='<?php
-        echo(isset($oModel) ? $oModel->ptid : ''); ?>'/>
-        <table id='RoleControl--permissions-table' class='activecell table table-striped'>
-            <thead>
+    <input type='hidden' name='ptid' value='<?php echo (isset($oModel) ? $oModel->ptid : ''); ?>' />
+    <table id='RoleControl--permissions-table' class='activecell table table-striped'>
+        <thead>
             <tr>
                 <th></th>
                 <th><?php
@@ -41,86 +39,83 @@ Yii::app()->getController()->renderPartial(
                 <th><?php
                     eT("Export"); ?></th>
             </tr>
-            </thead>
+        </thead>
 
-            <!-- Permissions -->
-            <?php
-            foreach ($aBasePermissions as $sPermissionKey => $aCRUDPermissions): ?>
-                <tr>
-                    <!-- Icon -->
-                    <td>
-                        <i class="<?php
-                        echo $aCRUDPermissions['img']; ?> text-success"></i>
-                        <?php
-                        echo $aCRUDPermissions['description']; ?>
-                    </td>
-
-                    <!-- Warning super admin -->
-                    <td>
-                        <?php
-                        if ($sPermissionKey == 'superadmin') { ?> <span class='warning'> <?php
-                            };
-                            echo $aCRUDPermissions['title'];
-                            if ($sPermissionKey == 'superadmin') { ?> </span> <?php
-                    }; ?>
-                    </td>
-
-                    <!-- checkbox  -->
-                    <td>
-                        <input type="checkbox" class="general-row-selector" id='all_<?php
-                        echo $sPermissionKey; ?>' name='PermissionAll[<?php
-                        echo $sPermissionKey; ?>]'/>
-                    </td>
-
-                    <!-- CRUD -->
+        <!-- Permissions -->
+        <?php
+        foreach ($aBasePermissions as $sPermissionKey => $aCRUDPermissions) : ?>
+            <tr>
+                <!-- Icon -->
+                <td>
+                    <i class="<?php
+                                echo $aCRUDPermissions['img']; ?> text-success"></i>
                     <?php
-                    foreach ($aCRUDPermissions as $sCRUDKey => $CRUDValue): ?>
+                    echo $aCRUDPermissions['description']; ?>
+                </td>
+
+                <!-- Warning super admin -->
+                <td>
+                    <?php
+                    if ($sPermissionKey == 'superadmin') { ?> <span class='warning'> <?php
+                                                                                    };
+                                                                                    echo $aCRUDPermissions['title'];
+                                                                                    if ($sPermissionKey == 'superadmin') { ?> </span> <?php
+                                                                                                                                    }; ?>
+                </td>
+
+                <!-- checkbox  -->
+                <td>
+                    <input type="checkbox" class="general-row-selector" id='all_<?php
+                                                                                echo $sPermissionKey; ?>' name='PermissionAll[<?php
+                                                                                                                                echo $sPermissionKey; ?>]' />
+                </td>
+
+                <!-- CRUD -->
+                <?php
+                foreach ($aCRUDPermissions as $sCRUDKey => $CRUDValue) : ?>
+                    <?php
+                    if (!in_array($sCRUDKey, array('create', 'read', 'update', 'delete', 'import', 'export'))) {
+                        continue;
+                    } ?>
+
+                    <!-- Extended container -->
+                    <td class='specific-settings-block'>
                         <?php
-                        if (!in_array($sCRUDKey, array('create', 'read', 'update', 'delete', 'import', 'export'))) {
-                            continue;
-                        } ?>
-
-                        <!-- Extended container -->
-                        <td class='specific-settings-block'>
+                        if ($CRUDValue) : ?>
                             <?php
-                            if ($CRUDValue): ?>
-                                <?php
-                                if (!($sPermissionKey == 'survey' && $sCRUDKey == 'read')): ?>
+                            if (!($sPermissionKey == 'survey' && $sCRUDKey == 'read')) : ?>
 
-                                    <!-- checkbox -->
-                                    <input type="checkbox" class="specific-permission-selector" name='Permission[<?php
-                                    echo $sPermissionKey . '][' . $sCRUDKey; ?>]' id='perm_<?php
-                                    echo $sPermissionKey . '_' . $sCRUDKey; ?>'
-                                        <?php
-                                        if (Permission::model()->roleHasPermission(
-                                            $oModel->ptid,
-                                            $sPermissionKey,
-                                            $sCRUDKey
-                                        )): ?>
-                                            checked="checked"
-                                        <?php
-                                        endif; ?>
-                                        <?php
-                                        if (substr($sPermissionKey, 0, 5) === 'auth_' && $sCRUDKey === 'read'): ?>
-                                            style="visibility:hidden"
-                                        <?php
-                                        endif; ?>/>
-                                <?php
-                                endif; ?>
+                                <!-- checkbox -->
+                                <input type="checkbox" class="specific-permission-selector" name='Permission[<?php
+                                                                                                                echo $sPermissionKey . '][' . $sCRUDKey; ?>]' id='perm_<?php
+                                                                                                                                                                        echo $sPermissionKey . '_' . $sCRUDKey; ?>' <?php
+                                                                                                                                                                                                                    if (Permission::model()->roleHasPermission(
+                                                                                                                                                                                                                        $oModel->ptid,
+                                                                                                                                                                                                                        $sPermissionKey,
+                                                                                                                                                                                                                        $sCRUDKey
+                                                                                                                                                                                                                    )) : ?> checked="checked" <?php
+                                                                                                                                                                                                                    endif; ?> <?php
+                                                                                                                                                    if (substr((string) $sPermissionKey, 0, 5) === 'auth_' && $sCRUDKey === 'read') : ?> style="visibility:hidden" <?php
+                                                                                                                                                                                                endif; ?> />
                             <?php
                             endif; ?>
-                        </td>
-                    <?php
-                    endforeach; ?>
-                </tr>
-            <?php
-            endforeach; ?>
+                        <?php
+                        endif; ?>
+                    </td>
+                <?php
+                endforeach; ?>
+            </tr>
+        <?php
+        endforeach; ?>
 
-        </table>
-    </div>
+    </table>
 </div>
 <div class="modal-footer modal-footer-buttons" style="margin-top: 15px;">
-    <button class="btn btn-cancel selector--exitForm" id="exitForm"><?= gT('Cancel') ?></button>
-    <button class="btn btn-success selector--submitForm" id="submitForm"><?= gT('Save') ?></button>
+    <button class="btn btn-cancel selector--exitForm" id="exitForm" data-bs-dismiss="modal">
+        <?= gT('Cancel') ?>
+    </button>
+    <button class="btn btn-primary selector--submitForm" id="submitForm">
+        <?= gT('Save') ?>
+    </button>
 </div>
 </form>

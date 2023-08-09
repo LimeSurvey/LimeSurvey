@@ -6,9 +6,15 @@ authors:
   - family-names: Al-Shamaa
     given-names: Khaled
     orcid: "https://orcid.org/0000-0002-7668-3798"
-version: 6.2.0
-date-released: "2021-06-20"
+version: 6.3.3
+date-released: "2023-04-01"
 identifiers:
+  - description: Ar-PHP version 6.3.3
+    type: doi
+    value: "10.5281/zenodo.7790300"
+  - description: Ar-PHP version 6.3.0
+    type: doi
+    value: "10.5281/zenodo.6657842"
   - description: Ar-PHP version 6.2.0
     type: doi
     value: "10.5281/zenodo.5001594"

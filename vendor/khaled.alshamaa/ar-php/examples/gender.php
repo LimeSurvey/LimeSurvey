@@ -19,7 +19,8 @@ an inanimate noun is masculine or feminine is mostly arbitrary.</p>
 </div><br />
 
 <div class="Paragraph">
-<h2>Example Output:</h2>
+<h2 dir="ltr" id="example-1">
+<a href="#example-1" class="anchor"><img src="./images/link_icon.png" width="16" border="0"></a>Example Output 1:</h2>
 <?php
 
 error_reporting(E_STRICT);
@@ -78,7 +79,7 @@ echo '</table></center>';
 ?>
 </div><br />
 <div class="Paragraph">
-<h2>Example Code:</h2>
+<h2 dir="ltr">Example Code 1:</h2>
 <?php
 $code = <<< ENDALL
 <?php
@@ -131,6 +132,9 @@ ENDALL;
 
 highlight_string($code);
 ?>
+<hr/><i>Related Documentation: 
+<a href="https://khaled-alshamaa.github.io/ar-php/classes/ArPHP-I18N-Arabic.html#method_isFemale" target="_blank">isFemale</a>
+</i>
 </div>
 <footer><i><a href="https://github.com/khaled-alshamaa/ar-php">Ar-PHP</a>, an open-source library for website developers to process Arabic content</i></footer>
 </body>
