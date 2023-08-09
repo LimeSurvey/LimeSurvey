@@ -73,7 +73,9 @@ class DeleteMockSetFactory
 
     private function getMockProxyExpressionManager(): ProxyExpressionManager
     {
-        return Mockery::mock(ProxyExpressionManager::class)
+        $mock = Mockery::mock(ProxyExpressionManager::class)
             ->makePartial();
+        $mock->shouldReceive('revertUpgradeConditionsToRelevance');
+        return $mock;
     }
 }

@@ -87,11 +87,11 @@ class ProxyExpressionManager
 
     /**
      * @see \LimeExpressionManager::UpgradeConditionsToRelevance
-     * @param int $surveyId
+     * @param int|null $surveyId
      * @param int|null $qid
      * @return void
      */
-    public function upgradeConditionsToRelevance(int $surveyId, ?int $qid = null)
+    public function upgradeConditionsToRelevance(?int $surveyId = null, ?int $qid = null)
     {
         LimeExpressionManager::UpgradeConditionsToRelevance($surveyId, $qid);
     }

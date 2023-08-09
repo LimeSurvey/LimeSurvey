@@ -55,7 +55,7 @@ class DeleteService
         }
 
         $this->proxyExpressionManager
-            ->revertUpgradeConditionsToRelevance($questionId);
+            ->revertUpgradeConditionsToRelevance($surveyId, $questionId);
 
         // Check if any other questions have conditions which rely on this question.
         // - Don't delete if there are.
