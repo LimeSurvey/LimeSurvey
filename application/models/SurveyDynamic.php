@@ -655,7 +655,7 @@ class SurveyDynamic extends LSActiveRecord
     {
 
         $pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
-        $criteria = new CDbCriteria();
+        $criteria = new LSDbCriteria();
         $sort     = new CSort();
         $sort->defaultOrder = 'id ASC';
 
