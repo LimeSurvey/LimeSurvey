@@ -109,7 +109,7 @@ if (Yii::app()->session['templatetoken'] ?? null) {
             </div>
             <div class="modal-body">
                 <div class="modal-body-text"><?php echo sprintf(gT('%sPlease confirm that you want to create your template.%s'), "<p>", "</p>"); ?></div>
-                <div class="preview" style="display: none;"><img src="https://mdbcdn.b-cdn.net/img/Photos/Thumbnails/Slides/2.webp" class="w-100"/></div>
+                <div class="preview" style="display: none;">Import Succeeded</div>
             </div>
             
             <div class="modal-footer modal-footer-buttons">
