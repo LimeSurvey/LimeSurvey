@@ -614,6 +614,23 @@ class TemplateManifest extends TemplateConfiguration
     }
 
     /**
+     * Returns the complete URL path to a given template name
+     *
+     * @return string template url
+     * @throws CException
+     */
+    public function getTemplateURL()
+    {
+        Yii::import('application.helpers.SurveyThemeHelper');
+        // By default, theme folder is always the folder name. @See:TemplateConfig::importManifest().
+        if (SurveyThemeHelper::isStandardTemplate($this->sTemplateName)) {
+            return App()->getConfig("standardthemerooturl") . '/' . $this->sTemplateName . '/';
+        }
+
+        return  App()->getConfig("userthemerooturl") . '/' . $this->sTemplateName . '/';
+    }
+
+    /**
      * Get buttons/actions for the "Available admin themes", not installed
      * @return string
      * @throws CException

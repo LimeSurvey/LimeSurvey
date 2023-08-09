@@ -36,7 +36,7 @@
                     <ul>
                         <li><?php printf(gT("Responses & participant information %swill be kept.%s"), '<b>', '</b>'); ?></li>
                         <li><?php printf(gT("%sCannot%s be %saccessed%s by %sparticipants%s anymore."), '<b>', '</b>', '<b>', '</b>', '<b>', '</b>'); ?></li>
-                        <li><?php printf(gT("The %sability%s to %schange questions%s, groups and parameters is %slimited%s. A message will be displayed stating that the survey has expired."),
+                        <li><?php printf(gT("The %sability%s to %schange questions%s, groups and settings is %slimited%s. A message will be displayed stating that the survey has expired."),
                                 '<b>', '</b>', '<b>', '</b>', '<b>', '</b>'); ?></li>
                         <li><?php eT("It is still possible to perform statistical analysis on responses."); ?></li>
                     </ul>
@@ -69,11 +69,11 @@
                                 '<b>', '</b>','<b>', '</b>', '<b>', '</b>'); ?></li>
                         <li><?php printf(
                             gT(
-                            "%sQuestions%s, %sgroups%s and %sparameters%s can be %sedited%s again."),
+                            "%sQuestions%s, %sgroups%s and %ssettings%s can be %sedited%s again."),
                                 '<b>', '</b>','<b>', '</b>', '<b>', '</b>', '<b>', '</b>'
                             ); ?></li>
                         <p class="mt-4">
-                            <?php et('Important: export your responses before deactivating your survey.') ?>
+                            <?php et('Important: Export your responses before deactivating your survey.') ?>
                             <a href='<?php echo $this->createUrl('admin/export/sa/exportresults/surveyid/' . $surveyid) ?>'>
                                 <?php eT("See details.") ?>
                             </a>
