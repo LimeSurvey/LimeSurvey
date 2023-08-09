@@ -260,7 +260,6 @@ export default {
         },
         dragoverQuestion($event, questionObject, questionGroupObject) {
             if (this.questionDragging) {
-                if(this.questionDragging.gid !== questionObject.gid && window.SideMenuData.isActive) {return;}
                 let orderSwap = questionObject.question_order;
                 questionObject.question_order = this.draggedQuestion.question_order;
                 this.draggedQuestion.question_order = orderSwap;
