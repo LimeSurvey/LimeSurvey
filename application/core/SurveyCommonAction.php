@@ -963,7 +963,7 @@ class SurveyCommonAction extends CAction
     protected function listquestiongroups(array $aData)
     {
         if (isset($aData['display']['menu_bars']['listquestiongroups'])) {
-            $this->getController()->renderPartial("/questionGroupsAdministration/listquestiongroups", $aData);
+            $this->getController()->renderPartial("/questionAdministration/listQuestions", $aData);
         }
     }
 

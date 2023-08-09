@@ -160,6 +160,8 @@ class QuestionGroup extends LSActiveRecord
     }
 
     /**
+     * Deletes a question group and all its dependencies.
+     * Returns affected rows of question group table (should be 1 or null)
      * @param integer $groupId
      * @param integer $surveyId
      * @return int|null
