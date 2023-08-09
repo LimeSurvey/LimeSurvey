@@ -1614,6 +1614,7 @@ class SurveyAdministrationController extends LSBaseController
                 $aData['surveyid'] = $iSurveyID;
                 $aData['date'] = $date;
                 $aData['dbprefix'] = Yii::app()->db->tablePrefix;
+                $aData['sNewSurveyTableName'] = Yii::app()->db->tablePrefix . "old_survey_{$iSurveyID}_{$date}";
                 $aData['step1'] = true;
             } else {
                 //See if there is a tokens table for this survey
