@@ -330,6 +330,7 @@ echo viewHelper::getViewTestTag('templateOptions');
 <script>
     $('#themelist a').click(function (e) {
         var target = $(e.target).attr("href");
+        $("#uploadandinstall").show();
         if (target === "#questionthemes") {
             $("#uploadandinstall").attr('data-bs-target', '#importQuestionModal');
         }
@@ -338,6 +339,7 @@ echo viewHelper::getViewTestTag('templateOptions');
         }
         if(target === "#adminthemes") { //no upload$install for adminthemes
             $("#uploadandinstall").attr('data-bs-target', '');
+            $("#uploadandinstall").hide();
         }
     });
 </script>
