@@ -140,6 +140,7 @@ class LSYiiValidatorsTest extends TestBaseClass
         $userName = \Yii::app()->securityManager->generateRandomString(8);
 
         $userData = array(
+            'full_name'  => $userName,
             'users_name' => $userName,
             'email'      => $userName . '@example.org'
         );

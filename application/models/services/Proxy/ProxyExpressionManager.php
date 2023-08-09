@@ -75,26 +75,33 @@ class ProxyExpressionManager
     }
 
     /**
-     * Set Dirty flag
-     *
-     * Wraps static method making functionality injectable.
-     *
+     * @see \LimeExpressionManager::RevertUpgradeConditionsToRelevance
+     * @param int|null $surveyId
+     * @param int|null $qid
+     * @return void
+     */
+    public function revertUpgradeConditionsToRelevance(?int $surveyId = null, ?int $qid = null)
+    {
+        LimeExpressionManager::RevertUpgradeConditionsToRelevance($surveyId, $qid);
+    }
+
+    /**
+     * @see \LimeExpressionManager::UpgradeConditionsToRelevance
+     * @param int $surveyId
+     * @param int|null $qid
+     * @return void
+     */
+    public function upgradeConditionsToRelevance(int $surveyId, ?int $qid = null)
+    {
+        LimeExpressionManager::UpgradeConditionsToRelevance($surveyId, $qid);
+    }
+
+    /**
+     * @see \LimeExpressionManager::SetDirtyFlag
      * @return void
      */
     public function setDirtyFlag()
     {
         LimeExpressionManager::SetDirtyFlag();
-    }
-
-    /**
-     * @param int $questionId
-     * @return void
-     */
-    public function revertUpgradeConditionsToRelevance($questionId)
-    {
-        LimeExpressionManager::RevertUpgradeConditionsToRelevance(
-            null,
-            $questionId
-        );
     }
 }

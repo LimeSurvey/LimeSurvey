@@ -810,11 +810,7 @@ class TokenDynamic extends LSActiveRecord
             'iconClass'        => 'ri-eye-fill',
             'enabledCondition' => $permission_reponses_create
                 && !$this->survey->isActive
-                && !empty($this->token)
-                && ($this->completed == "N"
-                    || empty($this->completed)
-                    || $this->survey->alloweditaftercompletion == "Y"
-                )
+                && $this->canBeUsed()
         ];
         $dropdownItems[] = [
             'title'            => gT('Launch the survey with this participant'),
@@ -827,10 +823,7 @@ class TokenDynamic extends LSActiveRecord
             'iconClass'        => 'ri-play-fill',
             'enabledCondition' => $permission_reponses_create
                 && $this->survey->isActive
-                && !empty($this->token)
-                && ($this->completed === "N"
-                    || empty($this->completed)
-                    || $this->survey->alloweditaftercompletion === "Y")
+                && $this->canBeUsed()
         ];
         $dropdownItems[] = [
             'title'            => gT('Send email invitation'),
@@ -840,18 +833,8 @@ class TokenDynamic extends LSActiveRecord
             ]),
             'iconClass'        => 'ri-mail-send-fill',
             'enabledCondition' => $permission_tokens_update
-                && !empty($this->token)
                 && ($this->sent === "N" || empty($this->sent))
-                && $this->emailstatus === "OK"
-                && $this->email
-                && $this->completed === "N"
-                && ($this->usesleft > 0 || $this->survey->alloweditaftercompletion === "Y")
-                && $this->survey->isActive
-                && !empty($this->token)
-                && ($this->completed === "N"
-                    || empty($this->completed)
-                    || $this->survey->alloweditaftercompletion === "Y"
-                )
+                && $this->canBeEmailed()
         ];
         $dropdownItems[] = [
             'title'            => gT('Send email reminder'),
@@ -861,12 +844,8 @@ class TokenDynamic extends LSActiveRecord
             ]),
             'iconClass'        => 'ri-mail-send-fill',
             'enabledCondition' => $permission_tokens_update
-                && !empty($this->token)
                 && !($this->sent === "N" || empty($this->sent))
-                && $this->emailstatus === "OK"
-                && $this->email
-                && $this->completed === "N"
-                && ($this->usesleft > 0 || $this->survey->alloweditaftercompletion === "Y")
+                && $this->canBeEmailed()
         ];
         $dropdownItems[] = [
             'title'            => gT('Edit this survey participant'),
@@ -1078,5 +1057,31 @@ class TokenDynamic extends LSActiveRecord
     public function getSurveyId()
     {
         return self::$sid;
+    }
+
+    /**
+     * Returns true if the token can be used
+     * @return bool
+     */
+    public function canBeUsed()
+    {
+        return !empty($this->token)
+            && (
+                $this->completed == "N"
+                || empty($this->completed)
+                || $this->survey->isAllowEditAfterCompletion
+            );
+    }
+
+    public function canBeEmailed()
+    {
+        return !empty($this->token)
+            && $this->emailstatus == "OK"
+            && $this->email
+            && $this->completed == "N"
+            && (
+                $this->usesleft > 0
+                || $this->survey->isAllowEditAfterCompletion
+            );
     }
 }
