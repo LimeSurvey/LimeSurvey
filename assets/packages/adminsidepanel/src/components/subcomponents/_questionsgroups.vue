@@ -3,7 +3,7 @@ import _ from "lodash";
 import ajaxMethods from "../../mixins/runAjax.js";
 
 export default {
-  
+
     mixins: [ajaxMethods],
     data(){
         return {
@@ -40,13 +40,29 @@ export default {
                 ["asc"]
             );
         },
-        createQuestionAllowed() {
-            return (
-                this.$store.state.questiongroups.length > 0 &&
-                (this.createQuestionLink != undefined &&
-                    this.createQuestionLink.length > 1)
-            );
-        },
+		createQuestionAllowed() {
+			return (
+					this.$store.state.questiongroups.length > 0
+					&& (this.createQuestionLink != undefined
+							&& this.createQuestionLink.length > 1
+					)
+			);
+		},
+		createQuestionAllowedClass() {
+			if (this.createQuestionAllowed) {
+				return '';
+			} else {
+				return 'disabled';
+			}
+		},
+		createQuestionGroupAllowedClass() {
+			if (this.createQuestionGroupLink != undefined
+					&& this.createQuestionGroupLink.length > 1) {
+				return '';
+			} else {
+				return 'disabled';
+			}
+		},
         createAllowance() {
             let createGroupAllowed =
                 this.createQuestionGroupLink != undefined &&
@@ -292,31 +308,28 @@ export default {
             </button>
           </div>
         </div>
-        <div
-            class="ls-flex-row wrap align-content-center align-items-center button-sub-bar"
-            v-if="createAllowance != ''"
-        >
-            <div class="scoped-toolbuttons-left mb-2">
-                <a
-                    id="adminsidepanel__sidebar--selectorCreateQuestion"
-                    v-if="createQuestionAllowed"
-                    :href="createFullQuestionLink()"
-                    class="btn btn-primary ms-2 me-2 pjax"
-                >
-                    <i class="ri-add-circle-fill"></i>
-                    &nbsp;
-                    {{"createQuestion"|translate}}
-                </a>
-                
+		<div class="ls-flex-row wrap align-content-center align-items-center button-sub-bar">
+			<div class="scoped-toolbuttons-left mb-2">
+				<a
+					id="adminsidepanel__sidebar--selectorCreateQuestion"
+					:href="createFullQuestionLink()"
+					class="btn btn-primary ms-2 me-2 pjax"
+					v-bind:class="createQuestionAllowedClass"
+				>
+					<i class="ri-add-circle-fill"></i>
+					&nbsp;
+					{{ 'createQuestion'|translate }}
+				</a>
+
                 <a
                     id="adminsidepanel__sidebar--selectorCreateQuestionGroup"
-                    v-if="( createQuestionGroupLink!=undefined && createQuestionGroupLink.length>1 )"
+                    v-bind:class="createQuestionGroupAllowedClass"
                     :href="createQuestionGroupLink" class="btn btn-secondary pjax"
                 >
                     <!-- <i class="ri-add-line"></i> -->
                     {{"createPage"|translate}}
                 </a>
-             
+
             </div>
         </div>
         <div class="ls-flex-row ls-space padding all-0">
@@ -336,8 +349,8 @@ export default {
 
                   <div class="q-group d-flex nowrap ls-space padding right-5 bottom-5 bg-white ms-2 p-2"
                        v-on:mouseover="onMouseOverQuestionGroup($event, questiongroup)"
-                       v-on:mouseleave ="onMouseLeave" 
-                  
+                       v-on:mouseleave ="onMouseLeave"
+
                   >
                     <div
                         v-if="!surveyIsActive"
@@ -364,7 +377,7 @@ export default {
                         >
                         {{ questiongroup.group_name }}
                         </span>
-                    
+
                       </a>
 
                     <div  class="dropdown position-absolute top-0 d-flex" style="right:5px" >
@@ -390,7 +403,7 @@ export default {
                             </li>
 
                             <li v-else-if="key === 'delete'" :class=" value.disabled ? 'disabled' : '' ">
-                                <a 
+                                <a
                                     v-if="!value.disabled"
                                     href="#"
                                     onclick="return false;"
@@ -406,7 +419,7 @@ export default {
                                     <span :class="value.icon"></span>
                                     {{value.label}}
                                 </a>
-                                <a 
+                                <a
                                     v-else-if="value.disabled"
                                     href="#"
                                     onclick="return false;"
@@ -423,7 +436,7 @@ export default {
                             </li>
                         </ul>
                     </div>
-                                
+
 
                     </div>
                   </div>
@@ -440,9 +453,9 @@ export default {
                                 v-bind:class="questionItemClasses(question)"
                                 data-bs-toggle="tooltip"
                                 v-on:mouseover="onMouseOverQuestion($event, question)"
-                                v-on:mouseleave ="onMouseLeave" 
+                                v-on:mouseleave ="onMouseLeave"
 
-                                
+
                                 class="list-group-item question-question-list-item ls-flex-row align-itmes-flex-start"
                                 :data-is-hidden="question.hidden"
                                 :data-questiontype="question.type"
@@ -488,11 +501,11 @@ export default {
                                                <span :class="value.icon"></span>
                                                  {{value.label}}
                                             </a>
-                                      
+
                                         </li>
 
                                         <li v-else-if="key === 'delete'"  :class=" value.disabled ? 'disabled' : '' ">
-                                            <a 
+                                            <a
                                                v-if="!value.disabled"
                                                 href="#"
                                                 onclick="return false;"
@@ -508,7 +521,7 @@ export default {
                                                 <span :class="value.icon"></span>
                                                 {{value.label}}
                                             </a>
-                                            <a 
+                                            <a
                                                v-else-if="value.disabled"
                                                 href="#"
                                                 onclick="return false;"
@@ -534,7 +547,7 @@ export default {
                                                 </a>
                                             </li>
                                         </div>
-                                     
+
                                     </ul>
 
                                 </div>

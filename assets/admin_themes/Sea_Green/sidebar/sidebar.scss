@@ -144,12 +144,20 @@
     }
     .subpanel {
         font-size : 14px;
-        .wrapper {
+        .list-group-item .wrapper {
             .title {
                 color : $g-700;
             }
+            .title.disabled {
+                color : $g-400;
+            }
             .icon {
                 color : $g-700;
+            }
+        }
+        .list-group-item.disabled .wrapper {
+            .title {
+                color : $g-400;
             }
         }
         &.level-0 {
@@ -198,13 +206,4 @@
             font-size : 24px;
         }
     }
-}
-
-// Globally or only in sidemenu?
-.list-group {
-    border-radius : 0px !important;
-}
-
-.list-group-item {
-    border : none !important;
 }

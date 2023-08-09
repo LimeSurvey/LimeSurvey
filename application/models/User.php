@@ -184,8 +184,8 @@ class User extends LSActiveRecord
      * @param string $new_user
      * @param string $new_pass
      * @param string $new_full_name
-     * @param string $new_email
      * @param int $parent_user
+     * @param string $new_email
      * @param string|null $expires
      * @return integer|boolean User ID if success
      */
@@ -573,7 +573,7 @@ class User extends LSActiveRecord
                 'data-user'      => CHtml::encode($this->full_name),
                 'data-action'    => 'deluser',
                 'data-onclick'   => "LS.UserManagement.triggerRunAction(\"#UserManagement--takeown-$this->uid\")",
-                'data-message'   => gT('Do you want to take ownerschip of this user?'),
+                'data-message'   => gT('Do you want to take ownership of this user?'),
             ],
             'enabledCondition' =>
                 ($permission_superadmin_read

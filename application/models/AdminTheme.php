@@ -392,19 +392,6 @@ class AdminTheme extends CFormModel
      */
     private function isStandardAdminTheme($sAdminThemeName)
     {
-        return in_array(
-            $sAdminThemeName,
-            array(
-                'Apple_Blossom',
-                'Bay_of_Many',
-                'Black_Pearl',
-                'Dark_Sky',
-                'Free_Magenta',
-                'Noto_All_Languages',
-                'Purple_Tentacle',
-                'Sea_Green',
-                'Sunset_Orange',
-            )
-        );
+        return $sAdminThemeName === 'Sea_Green';
     }
 }

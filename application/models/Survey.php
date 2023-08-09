@@ -501,6 +501,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
             //array('bounce_email', 'LSYii_EmailIDNAValidator', 'allowEmpty'=>true),
             array('active', 'in', 'range' => array('Y', 'N'), 'allowEmpty' => true),
             array('gsid', 'numerical', 'min' => '0', 'allowEmpty' => true),
+            array('gsid', 'in', 'range' => array_keys(SurveysGroups::getSurveyGroupsList()), 'allowEmpty' => true, 'message' => gT("You are not allowed to use this group")),
             array('anonymized', 'in', 'range' => array('Y', 'N', 'I'), 'allowEmpty' => true),
             array('savetimings', 'in', 'range' => array('Y', 'N', 'I'), 'allowEmpty' => true),
             array('datestamp', 'in', 'range' => array('Y', 'N', 'I'), 'allowEmpty' => true),
@@ -1107,8 +1108,8 @@ class Survey extends LSActiveRecord implements PermissionInterface
 
             // Time comparison
             $oNow   = new DateTime($sNow);
-            $oStop  = new DateTime($sStop);
-            $oStart = new DateTime($sStart);
+            $oStop  = empty($sStop) ? null : new DateTime($sStop);
+            $oStart = empty($sStart) ? null : new DateTime($sStart);
 
             $bExpired = (!is_null($sStop) && $oStop < $oNow);
             $bWillRun = (!is_null($sStart) && $oStart > $oNow);

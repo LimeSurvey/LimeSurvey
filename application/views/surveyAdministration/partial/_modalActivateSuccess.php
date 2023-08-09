@@ -13,7 +13,7 @@
             <?php
             App()->getController()->renderPartial(
                 '/layouts/partial_modals/modal_header',
-                ['modalTitle' => gt('Congrats! Your survey has been activated')]
+                ['modalTitle' => gt('Congrats! Your survey has been activated.')]
             );
             ?>
 
@@ -25,13 +25,13 @@
                     </a>
                 </div>
                 <div class="row">
-                    <p><?php et('Statistics and responses are now active.');?></p>
+                    <p><?php et('Statistics and responses are now accessible.');?></p>
                     <a href="<?php App()->getController()->createUrl('responses/browse', ['surveyid' => $surveyId])?>">
                         <?= gt('See all responses and statistics') ?><i class="ri-arrow-right-line"></i>
                     </a>
                 </div>
                 <div class="row">
-                    <p><?php et('By default, surveys are activated in open-access mode and participants do not need an inviation code.');?></p>
+                    <p><?php et('By default, surveys are activated in open-access mode and participants do not need an invitaion code.');?></p>
                 </div>
             </div>
 

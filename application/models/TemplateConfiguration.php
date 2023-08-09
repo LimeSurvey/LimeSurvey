@@ -1708,7 +1708,7 @@ class TemplateConfiguration extends TemplateConfig
      * And it will publish the CSS and the JS defined in config.xml. So CSS can use relative path for pictures.
      * The publication of the package itself is in LSETwigViewRenderer::renderTemplateFromString()
      *
-     * @param TemplateConfiguration $oTemplate TemplateManifest
+     * @param TemplateConfiguration|TemplateManifest $oTemplate TemplateManifest
      */
     protected function createTemplatePackage($oTemplate)
     {
