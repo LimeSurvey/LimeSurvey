@@ -147,11 +147,11 @@ class QuestionGroupService
         }
         $questionGroup = $this->newQuestionGroup(
             $surveyId,
-            $input['questionGroup']
+            $input['questionGroup'] ?? []
         );
         $this->updateQuestionGroupLanguages(
             $questionGroup,
-            $input['questionGroupI10N']
+            $input['questionGroupI10N'] ?? []
         );
 
         return $questionGroup;
