@@ -130,23 +130,24 @@ class AdminController extends LSYii_Controller
     public function actionInstallTemplateByToken()
     {
         if (isset(Yii::app()->session['templatetoken'])) {
-            Yii::import('application.helpers.admin.token_helper', true);
-            $filePath = explode("/", decodeFilename(Yii::app()->session['templatetoken']));
-            if (count($filePath) < 2) {
-                echo "Token was not found";
-                return;
+            if (Permission::model()->hasGlobalPermission('superadmin')) {
+                Yii::import('application.helpers.admin.token_helper', true);
+                $filePath = explode("/", decodeFilename(Yii::app()->session['templatetoken']));
+                if (count($filePath) < 2) {
+                    echo "Token was not found";
+                    return;
+                }
+                if (!preg_match('/^[a-zA-Z0-9_\. ]*$/', $filePath[1])) {
+                    echo "badly formatted file";
+                } else {
+                    exec("php application/commands/console.php importsurvey import-file \"{$filePath[0]}\" \"{$filePath[1]}\"", $output);
+                    $result = implode("", $output);
+                    echo ((preg_match("/^[\d]*$/", $result)) ? $result : "failed to import file");
+                }
+            } else {
+                echo "lacking privileges";
             }
             $this->actionRemoveTemplateToken();
-            if (!preg_match('/^[a-zA-Z0-9_\. ]*$/', $filePath[1])) {
-                echo "badly formatted file";
-            } else {
-                exec("php application/commands/console.php importsurvey import-file \"{$filePath[0]}\" \"{$filePath[1]}\"", $output);
-                $result = implode("", $output);
-                //echo json_encode([$result, "php application/commands/console.php importsurvey import-file \"{$filePath[0]}\" \"{$filePath[1]}\""]);
-                //echo "php application/commands/console.php importsurvey import-file \"{$filePath[0]}\" \"$filePath[1]\"";
-                //echo ($result);
-                echo ((preg_match("/^[\d]*$/", $result)) ? $result : "failed to import file");
-            }
         } else {
             echo "Token was not found";
         }
