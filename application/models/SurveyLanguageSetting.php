@@ -334,4 +334,29 @@ class SurveyLanguageSetting extends LSActiveRecord
             $this->oldAlias = $this->surveyls_alias;
         }
     }
+
+    /**
+     * Returns the array of email attachments data without exposing sensitive paths
+     * @return array<string,array<string,mixed>>
+     */
+    public function getAttachmentsData()
+    {
+        if (empty($this->attachments)) {
+            return [];
+        }
+        $attachments = unserialize($this->attachments);
+        if (is_array($attachments)) {
+            $uploadDir = realpath(Yii::app()->getConfig('uploaddir'));
+            foreach ($attachments as &$template) {
+                foreach ($template as &$attachment) {
+                    if (substr($attachment['url'], 0, strlen($uploadDir)) == $uploadDir) {
+                        $url = substr($attachment['url'], strlen($uploadDir));
+                        $url = ltrim($url, "/\\");
+                        $attachment['url'] = $url;
+                    }
+                }
+            }
+        }
+        return $attachments;
+    }
 }
