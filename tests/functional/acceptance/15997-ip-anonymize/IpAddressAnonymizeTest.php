@@ -143,7 +143,11 @@ class IpAddressAnonymizeTest extends TestBaseClassWeb
         $overview->click();
 
         //modal has been opend, activate survey in open-access mode
-        $overview = self::$webDriver->findElement(WebDriverBy::id('saveactivateBtn'));
+        $overview = self::$webDriver->wait(5)->until(
+            WebDriverExpectedCondition::visibilityOfElementLocated(
+                WebDriverBy::id('saveactivateBtn')
+            )
+        );
         $overview->click();
 
         /**

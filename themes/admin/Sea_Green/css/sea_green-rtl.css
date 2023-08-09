@@ -17191,21 +17191,29 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
 
 .footer {
   z-index: 100;
-  position: absolute;
   bottom: 0;
-  width: 100%;
+  margin-top: 36px;
+  padding-top: 12px;
+  padding-left: 84px;
   padding-bottom: 24px;
   padding-right: 20px;
 }
 
 .sub_footer {
   width: 100%;
+  width: 100%;
+}
+.sub_footer .sub_footer_border {
+  border-top: 1px solid #1E1E1E;
 }
 .sub_footer .sub_footer_border {
   border-top: 1px solid #1E1E1E;
 }
 
 @media print {
+  footer.footer {
+    display: none;
+  }
   footer.footer {
     display: none;
   }

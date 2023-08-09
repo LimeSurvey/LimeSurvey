@@ -42,5 +42,10 @@ class GridActionsWidget extends CWidget
             App()->getConfig("extensionsurl") . 'admin/grid/GridActionsWidget/assets/action_dropdown.js',
             CClientScript::POS_END
         );
+        // Link for each row
+        App()->clientScript->registerScriptFile(
+            App()->getConfig("extensionsurl") . 'admin/grid/assets/rowLink.js',
+            CClientScript::POS_END
+        );
     }
 }
