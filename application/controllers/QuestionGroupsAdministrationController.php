@@ -1,8 +1,9 @@
 <?php
 
-use LimeSurvey\Models\Services\QuestionGroupService;
-
-use LimeSurvey\Models\Services\Exception\NotFoundException;
+use LimeSurvey\Models\Services\{
+    QuestionGroupService,
+    Exception\NotFoundException
+};
 
 class QuestionGroupsAdministrationController extends LSBaseController
 {

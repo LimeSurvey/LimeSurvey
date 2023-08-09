@@ -11,12 +11,10 @@ use QuestionGroupL10n;
 use Exception;
 use LimeSurvey\Models\Services\{
     Proxy\ProxyExpressionManager,
-    Proxy\ProxyQuestionGroup
-};
-use LimeSurvey\Models\Services\Exception\{
-    PersistErrorException,
-    NotFoundException,
-    PermissionDeniedException
+    Proxy\ProxyQuestionGroup,
+    Exception\PersistErrorException,
+    Exception\NotFoundException,
+    Exception\PermissionDeniedException
 };
 
 /**
