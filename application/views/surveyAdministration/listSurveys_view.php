@@ -196,7 +196,7 @@ if (Yii::app()->session['templatetoken'] ?? null) {
                         };
                         isPreview = true;
                         context.classList.add('preview-outer');
-                        document.getElementById('actual-preview').src = `index.php?r=survey/index&sid=${this.responseText}&newtest=Y&lang=en`;
+                        document.getElementById('actual-preview').src = `index.php?r=survey/index&sid=${this.responseText}&newtest=Y&lang=en&popuppreview=true`;
                     } else {
                         context.querySelector('.modal-body-text').innerHTML = this.responseText;
                     }

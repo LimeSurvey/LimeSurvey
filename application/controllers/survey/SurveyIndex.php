@@ -630,6 +630,8 @@ class SurveyIndex extends CAction
         //Send local variables to the appropriate survey type
         unset($redata);
         $redata = compact(array_keys(get_defined_vars()));
+        $redata['popuppreview'] = Yii::app()->request->getParam('popuppreview', false);
+
         Yii::import('application.helpers.SurveyRuntimeHelper');
         $tmp = new SurveyRuntimeHelper();
         // try {

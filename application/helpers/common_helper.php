@@ -749,9 +749,10 @@ function getUserList($outputformat = 'fullinfoarray')
 * @param integer $surveyid  The survey ID
 * @param string $languagecode The language code - if not given the base language of the particular survey is used
 * @param boolean $force If true, don't use memoization
+* @param boolean $showFullPopupPreview If true, we override settings for the purpose of a popup use-case
 * @return array|bool Returns array with survey info or false, if survey does not exist
 */
-function getSurveyInfo($surveyid, $languagecode = '', $force = false)
+function getSurveyInfo($surveyid, $languagecode = '', $force = false, $showFullPopupPreview = false)
 {
     static $staticSurveyInfo = array(); // Use some static
 
@@ -833,6 +834,13 @@ function getSurveyInfo($surveyid, $languagecode = '', $force = false)
         }
     }
     $thissurvey['oSurvey'] = $oSurvey;
+    if ($showFullPopupPreview) {
+        $thissurvey['showxquestions'] = 'N';
+        $thissurvey['shownoanswer'] = 'N';
+        $thissurvey['showwelcome'] = 'N';
+        $thissurvey['showprogress'] = 'N';
+    }
+    
     return $thissurvey;
 }
 
