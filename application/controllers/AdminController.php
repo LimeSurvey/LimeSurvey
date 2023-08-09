@@ -129,16 +129,20 @@ class AdminController extends LSYii_Controller
 
     public function actionInstallTemplateByToken()
     {
-        if ((Permission::model()->hasGlobalPermission('superadmin')) && (isset(Yii::app()->session['templatetoken']))) {
-            Yii::import('application.helpers.admin.token_helper', true);
-            $filename = decodeFilename(Yii::app()->session['templatetoken']);
-            $this->actionRemoveTemplateToken();
-            if (!preg_match('/^[a-zA-Z0-9_\.]*$/', $filename)) {
-                echo "badly formatted file";
+        if (isset(Yii::app()->session['templatetoken'])) {
+            if (Permission::model()->hasGlobalPermission('superadmin')) {
+                Yii::import('application.helpers.admin.token_helper', true);
+                $filename = decodeFilename(Yii::app()->session['templatetoken']);
+                if (!preg_match('/^[a-zA-Z0-9_\.]*$/', $filename)) {
+                    echo "badly formatted file";
+                } else {
+                    exec("php application/commands/console.php importsurvey import-file {$filename}", $output);
+                    echo ((!implode("", $output)) ? "success" : "failed to import file");
+                }
             } else {
-                exec("php application/commands/console.php importsurvey import-file {$filename}", $output);
-                echo ((!implode("", $output)) ? "success" : "failed to import file");
+                echo "lacking privileges";
             }
+            $this->actionRemoveTemplateToken();
         } else {
             echo "Token was not found";
         }
