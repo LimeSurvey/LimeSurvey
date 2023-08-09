@@ -1569,7 +1569,7 @@ class LimeExpressionManager
                                 // date_min: Determine whether we have an expression, a full date (YYYY-MM-DD) or only a year(YYYY)
                                 if (trim((string) $qattr['date_min']) != '') {
                                     $mindate = $qattr['date_min'];
-                                    if ((strlen((string) $mindate) == 4) && ($mindate >= 1900) && ($mindate <= 2099)) {
+                                    if ((strlen($mindate)==4)) {
                                         // backward compatibility: if only a year is given, add month and day
                                         $date_min = '\'' . $mindate . '-01-01' . ' 00:00\'';
                                     } elseif (preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])/", (string) $mindate)) {
@@ -1627,7 +1627,7 @@ class LimeExpressionManager
                                 // date_max: Determine whether we have an expression, a full date (YYYY-MM-DD) or only a year(YYYY)
                                 if (trim((string) $qattr['date_max']) != '') {
                                     $maxdate = $qattr['date_max'];
-                                    if ((strlen((string) $maxdate) == 4) && ($maxdate >= 1900) && ($maxdate <= 2099)) {
+                                    if ((strlen($maxdate)==4)) {
                                         // backward compatibility: if only a year is given, add month and day
                                         $date_max = '\'' . $maxdate . '-12-31 23:59' . '\'';
                                     } elseif (preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])/", (string) $maxdate)) {
