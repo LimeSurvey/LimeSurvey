@@ -364,12 +364,11 @@ class Database extends SurveyCommonAction
             'admin' => $request->getPost('admin'),
             'adminemail' => $request->getPost('adminemail'),
             'bounce_email' => $request->getPost('bounce_email'),
-            'gsid' => $request->getPost('gsid'),
             'format' => $request->getPost('format'),
             'owner_id' => $request->getPost('owner_id'),
+            'gsid' => $request->getPost('gsid'),
             'template' => $request->getPost('template')
         ];
-
         try {
             $surveyUpdater->update(
                 $surveyId,
