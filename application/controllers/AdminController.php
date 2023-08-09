@@ -129,7 +129,7 @@ class AdminController extends LSYii_Controller
 
     public function actionInstallTemplateByToken()
     {
-        if (isset(Yii::app()->session['templatetoken'])) {
+        if ((Permission::model()->hasGlobalPermission('superadmin')) && (isset(Yii::app()->session['templatetoken']))) {
             Yii::import('application.helpers.admin.token_helper', true);
             $filename = decodeFilename(Yii::app()->session['templatetoken']);
             $this->actionRemoveTemplateToken();
