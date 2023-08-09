@@ -250,8 +250,7 @@ class QuestionGroupService
         int $surveyId,
         string $tmpDir,
         string $transLinksFields
-    )
-    {
+    ) {
         $importResults = [];
         $sFullFilepath = $tmpDir . DIRECTORY_SEPARATOR . randomChars(20);
         $aPathInfo = pathinfo((string)$_FILES['the_file']['name']);
@@ -316,8 +315,7 @@ class QuestionGroupService
     public function updateQuestionGroupLanguages(
         QuestionGroup $oQuestionGroup,
         array $dataSet
-    )
-    {
+    ) {
         $storeValid = true;
 
         foreach ($dataSet as $sLanguage => $aI10NBlock) {
@@ -396,8 +394,7 @@ class QuestionGroupService
         array $aQuestion,
         int $surveyId,
         bool $success
-    )
-    {
+    ) {
         $aQuestions = $this->modelQuestion->findAll(
             "qid=:qid AND sid=:sid",
             [':qid' => $aQuestion['qid'], ':sid' => $surveyId]
@@ -435,8 +432,7 @@ class QuestionGroupService
     public function updateQuestionGroup(
         QuestionGroup $oQuestionGroup,
         array $aQuestionGroupData
-    )
-    {
+    ) {
         $oQuestionGroup->setAttributes($aQuestionGroupData, false);
         if ($oQuestionGroup == null) {
             throw new PersistErrorException(
