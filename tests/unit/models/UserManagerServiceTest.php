@@ -726,7 +726,7 @@ class UserManagerServiceTest extends \ls\tests\TestBaseClass
         $this->assertThat($existingUser, $this->isInstanceOf('\User'), 'Unexpected. A user should have been found.');
 
         $userManager = new userManager();
-        $operationResult = $userManager->deleteUser($userId);
+        $operationResult = $userManager->deleteUser($existingUser);
         $message = $operationResult->getMessages()[0];
 
         // Checking that user no longer exists.
@@ -769,7 +769,7 @@ class UserManagerServiceTest extends \ls\tests\TestBaseClass
         $this->assertThat($existingGroup, $this->isInstanceOf('\UserGroup'), 'Unexpected. A user group should have been found.');
 
         $userManager = new userManager();
-        $operationResult = $userManager->deleteUser($userId);
+        $operationResult = $userManager->deleteUser($existingUser);
         $messages = $operationResult->getMessages();
 
         // Checking that user no longer exists.
@@ -833,7 +833,7 @@ class UserManagerServiceTest extends \ls\tests\TestBaseClass
         $this->assertThat($existingParticipant, $this->isInstanceOf('\Participant'), 'Unexpected. A participant should have been found.');
 
         $userManager = new userManager();
-        $operationResult = $userManager->deleteUser($userId);
+        $operationResult = $userManager->deleteUser($existingUser);
         $messages = $operationResult->getMessages();
 
         // Checking that user no longer exists.
@@ -889,7 +889,7 @@ class UserManagerServiceTest extends \ls\tests\TestBaseClass
         $this->assertTrue($userGroup->hasUser($userId), 'The user should belong to the group.');
 
         $userManager = new userManager();
-        $operationResult = $userManager->deleteUser($userId);
+        $operationResult = $userManager->deleteUser($existingUser);
         $messages = $operationResult->getMessages();
 
         // Checking that user no longer exists.
