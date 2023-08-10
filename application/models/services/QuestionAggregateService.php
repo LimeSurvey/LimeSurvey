@@ -148,10 +148,7 @@ class QuestionAggregateService
      */
     public function delete($surveyId, $questionId)
     {
-        $this->deleteMany(
-        $surveyId,
-        [$questionId]
-        );
+        $this->deleteMany($surveyId, [$questionId]);
     }
 
     /*
