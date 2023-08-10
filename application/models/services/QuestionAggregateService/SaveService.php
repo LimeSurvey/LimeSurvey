@@ -3,7 +3,6 @@
 namespace LimeSurvey\Models\Services\QuestionAggregateService;
 
 use Question;
-
 use LimeSurvey\Models\Services\{
     QuestionAggregateService\QuestionService,
     QuestionAggregateService\L10nService,

@@ -6,18 +6,13 @@ use Question;
 use Survey;
 use Condition;
 use LSYii_Application;
-
 use LimeSurvey\DI;
-
-use LimeSurvey\Models\Services\Proxy\{
-    ProxySettingsUser,
-    ProxyQuestion
-};
-
-use LimeSurvey\Models\Services\Exception\{
-    PersistErrorException,
-    NotFoundException,
-    PermissionDeniedException
+use LimeSurvey\Models\Services\{
+    Proxy\ProxySettingsUser,
+    Proxy\ProxyQuestion,
+    Exception\PersistErrorException,
+    Exception\NotFoundException,
+    Exception\PermissionDeniedException
 };
 
 /**

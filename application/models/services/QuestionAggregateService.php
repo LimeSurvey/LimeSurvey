@@ -5,7 +5,6 @@ namespace LimeSurvey\Models\Services;
 use Permission;
 use Question;
 use CDbConnection;
-
 use LimeSurvey\Models\Services\{
     QuestionAggregateService\SaveService,
     QuestionAggregateService\DeleteService,

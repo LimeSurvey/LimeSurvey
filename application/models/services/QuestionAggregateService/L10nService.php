@@ -3,9 +3,7 @@
 namespace LimeSurvey\Models\Services\QuestionAggregateService;
 
 use QuestionL10n;
-
 use LimeSurvey\DI;
-
 use LimeSurvey\Models\Services\Exception\{
     PersistErrorException,
     NotFoundException

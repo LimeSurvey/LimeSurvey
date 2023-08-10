@@ -5,7 +5,6 @@ namespace LimeSurvey\Models\Services\QuestionAggregateService;
 use Condition;
 use Question;
 use QuestionL10n;
-
 use LimeSurvey\Models\Services\{
     Proxy\ProxyExpressionManager,
     Exception\NotFoundException,

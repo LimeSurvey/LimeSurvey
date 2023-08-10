@@ -4,7 +4,6 @@ namespace LimeSurvey\Models\Services\QuestionAggregateService;
 
 use Question;
 use QuestionAttribute;
-
 use LimeSurvey\Models\Services\Exception\PersistErrorException;
 
 /**
