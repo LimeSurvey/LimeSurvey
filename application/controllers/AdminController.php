@@ -202,6 +202,10 @@ class AdminController extends LSYii_Controller
         }
 
 
+        $furtherParams = "";
+        if (Yii::app()->request->getParam('templatetoken', false)) {
+            $furtherParams = "&templatetoken=" . Yii::app()->request->getParam('templatetoken');
+        }
         if ($action != "databaseupdate" && $action != "db") {
             if (empty($this->user_id) && $action != "authentication" && $action != "remotecontrol") {
                 if (!empty($action) && $action != 'index') {
@@ -219,16 +223,19 @@ class AdminController extends LSYii_Controller
                     return;
                 }
 
-                $this->redirect(array('/admin/authentication/sa/login'));
+                $this->redirect(array('/admin/authentication/sa/login' . $furtherParams));
             } elseif (!empty($this->user_id) && $action != "remotecontrol") {
                 if (Yii::app()->session['session_hash'] != hash('sha256', getGlobalSetting('SessionName') . Yii::app()->user->getName() . Yii::app()->user->getId())) {
                     Yii::app()->session->clear();
                     Yii::app()->session->close();
-                    $this->redirect(array('/admin/authentication/sa/login'));
+                    $this->redirect(array('/admin/authentication/sa/login' . $furtherParams));
                 }
             }
         }
 
+        if ((Yii::app()->request->getParam('r') === 'admin') && (!empty($this->user_id)) && isset(Yii::app()->session['templatetoken'])) {
+            $this->redirect(['/surveyAdministration/listSurveys']);
+        }
         $this->runModuleController($action);
 
 

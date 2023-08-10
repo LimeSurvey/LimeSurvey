@@ -1,3 +1,9 @@
+<?php
+$params = [];
+if (Yii::app()->session['templatetoken'] ?? false) {
+    $params['templatetoken'] = Yii::app()->session['templatetoken'];
+}
+?>
 <div class="row">
     <div class="col-lg-3">
         <?php $this->renderPartial('/installer/sidebar_view', compact('progressValue', 'classesForStep')); ?>
@@ -15,7 +21,7 @@
         <?php eT("Password:"); ?> <?php echo $pwd; ?>
 
         <div style="text-align: center">
-            <a id="ls-administration" href="<?php echo $this->createUrl("/admin"); ?>" class="btn btn-outline-secondary btn btn-outline-secondary-default btn btn-outline-secondary-lg"><?php eT("Administration")?></a>
+        <a id="ls-administration" href="<?php echo $this->createUrl("/admin", $params); ?>" class="btn btn-outline-secondary btn btn-outline-secondary-default btn btn-outline-secondary-lg"><?php eT("Administration")?></a>
         </div>
     </div>
 
