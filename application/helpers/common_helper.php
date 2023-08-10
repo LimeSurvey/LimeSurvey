@@ -839,6 +839,7 @@ function getSurveyInfo($surveyid, $languagecode = '', $force = false, $showFullP
         $thissurvey['shownoanswer'] = 'N';
         $thissurvey['showwelcome'] = 'N';
         $thissurvey['showprogress'] = 'N';
+        $thissurvey['format'] = 'A';
     }
     
     return $thissurvey;
