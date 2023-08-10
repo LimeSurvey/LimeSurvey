@@ -27,6 +27,7 @@ class LSYii_FilterValidator extends CFilterValidator
      * is null or an empty string.
      */
     public $skipOnEmpty = false;
+    public $allowOnlyEmail = false;
 
     /**
      * @inheritdoc
@@ -36,6 +37,22 @@ class LSYii_FilterValidator extends CFilterValidator
         if ($this->skipOnEmpty && empty($object->$attribute)) {
             return;
         }
+
+        if (!empty($object->$attribute)) {
+            if ($object->$attribute == 'inherit') {
+                return;
+            }
+            elseif ($this->allowOnlyEmail) {
+                $emailRegex = '/^([a-zA-Z0-9.!#$%&’*+\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+))(,([a-zA-Z0-9.!#$%&’*+\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)))*$/';
+                $isValid = preg_match($emailRegex, (string) $object->$attribute);
+                if (!$isValid)
+                {
+                    Yii::app()->setFlashMessage(gT("Invalid email address."), 'error');
+                    Yii::app()->end();
+                }
+            }
+        }
+
         return parent::validateAttribute($object, $attribute);
     }
 }
