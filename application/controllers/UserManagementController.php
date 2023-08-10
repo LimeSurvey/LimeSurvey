@@ -1150,7 +1150,8 @@ class UserManagementController extends LSBaseController
      */
     public function actionBatchApplyRoles()
     {
-        if (!Permission::model()->hasGlobalPermission('users', 'update')) {
+        /* Need super admin roles */
+        if (!Permission::model()->hasGlobalPermission('superadmin')) {
             return $this->renderPartial(
                 'partial/error',
                 ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
@@ -1165,8 +1166,8 @@ class UserManagementController extends LSBaseController
             $model = $this->loadModel($sItem);
             $aResults[$sItem]['title'] = $model->users_name;
 
-            //check if user is admin otherwhise change the role
-            if (intval($sItem) == 1) {  //todo REFACTORING is admin id always 1?? is there another possibility to check for admin user?
+            if (Permission::isForcedSuperAdmin($sItem)) {
+                /* Show an error for forced super admin, this don't disable for DB superadmin */
                 $aResults[$sItem]['result'] = false;
                 $aResults[$sItem]['error'] = gT('The superadmin role cannot be changed.');
             } else {
