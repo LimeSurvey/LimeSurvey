@@ -114,8 +114,7 @@ class AnswersService
             $answer->refresh();
 
             foreach (
-                $data['answeroptionl10n']
-                 as $language => $answerOptionText
+                $data['answeroptionl10n'] as $language => $answerOptionText
             ) {
                 $this->storeAnswerL10n(
                     $answer,
