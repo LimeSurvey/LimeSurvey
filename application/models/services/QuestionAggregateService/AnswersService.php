@@ -5,9 +5,7 @@ namespace LimeSurvey\Models\Services\QuestionAggregateService;
 use Question;
 use Answer;
 use AnswerL10n;
-
 use LimeSurvey\DI;
-
 use LimeSurvey\Models\Services\Exception\{
     BadRequestException,
     PersistErrorException,
@@ -117,7 +115,7 @@ class AnswersService
 
             foreach (
                 $data['answeroptionl10n']
-                as $language => $answerOptionText
+                 as $language => $answerOptionText
             ) {
                 $this->storeAnswerL10n(
                     $answer,

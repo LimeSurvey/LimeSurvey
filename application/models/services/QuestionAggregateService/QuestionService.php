@@ -182,9 +182,9 @@ class QuestionService
                 ->getMaxQuestionOrder($questionGroupId);
         }
 
-        $question = $this->saveQuestionData($data,$questionGroupId);
+        $question = $this->saveQuestionData($data, $questionGroupId);
 
-        $this->initL10nService($survey,$question->gid);
+        $this->initL10nService($survey, $question->gid);
 
         return $question;
     }

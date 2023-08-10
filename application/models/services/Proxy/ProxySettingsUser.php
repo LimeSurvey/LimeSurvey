@@ -28,8 +28,7 @@ class ProxySettingsUser
         $entity = null,
         $entity_id = null,
         $default = null
-    )
-    {
+    ) {
         return SettingsUser::getUserSettingValue(
             $stg_name,
             $uid,

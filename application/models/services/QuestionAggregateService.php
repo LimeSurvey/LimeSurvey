@@ -110,9 +110,9 @@ class QuestionAggregateService
     {
         if (
             !$this->modelPermission->hasSurveyPermission(
-            $surveyId,
-            'surveycontent',
-            'update'
+                $surveyId,
+                'surveycontent',
+                'update'
             )
         ) {
             throw new PermissionDeniedException(
@@ -164,9 +164,9 @@ class QuestionAggregateService
     {
         if (
             !$this->modelPermission->hasSurveyPermission(
-            $surveyId,
-            'surveycontent',
-            'delete'
+                $surveyId,
+                'surveycontent',
+                'delete'
             )
         ) {
             throw new PermissionDeniedException(
