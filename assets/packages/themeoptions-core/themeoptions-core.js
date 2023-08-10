@@ -166,12 +166,7 @@ var ThemeOptions = function () {
     // TODO: This seems to be designed for select fields only, but it is also used for other input types. Should be reviewed.
     var prepareSelectField = function () {
         globalForm.find('.selector_option_value_field').each(function (i, item) {
-            // Workaround for text inputs showing "false" when the default value is empty
-            var fallbackValue = false;
-            if (item.tagName == 'INPUT' && item.getAttribute("type") == 'text') {
-                fallbackValue = '';
-            }
-            var itemValue = parseOptionValue(item, fallbackValue);
+            var itemValue = parseOptionValue(item);
             $(item).val(itemValue);
             applyColorPickerValue(item);
         });
@@ -224,6 +219,14 @@ var ThemeOptions = function () {
             }
         }
 
+    };
+
+    // Update values of 'text' options in the form
+    var prepareTextField = function () {
+        globalForm.find('.selector_text_option_value_field').each(function (i, item) {
+            var itemValue = parseOptionValue(item, "");
+            $(item).val(itemValue);
+        });
     };
 
     ///////////////
@@ -459,6 +462,7 @@ var ThemeOptions = function () {
         parseParentSwitchFields();
         prepareFontField();
         prepareFruityThemeField();
+        prepareTextField();
         showInheritedValue();
 
         bind();
