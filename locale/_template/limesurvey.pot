@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2023-08-07 08:39:29+00:00\n"
+"POT-Creation-Date: 2023-08-11 07:48:44+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -187,8 +187,8 @@ msgstr ""
 #: application/controllers/UserManagementController.php:1001
 #: application/controllers/UserManagementController.php:1054
 #: application/controllers/UserManagementController.php:1102
-#: application/controllers/UserManagementController.php:1156
-#: application/controllers/UserManagementController.php:1329
+#: application/controllers/UserManagementController.php:1157
+#: application/controllers/UserManagementController.php:1330
 #: application/controllers/UserRoleController.php:139
 #: application/controllers/UserRoleController.php:186
 #: application/controllers/UserRoleController.php:303
@@ -1024,7 +1024,7 @@ msgstr ""
 #: application/controllers/SurveyAdministrationController.php:1998
 #: application/controllers/SurveyAdministrationController.php:2068
 #: application/controllers/UserGroupController.php:407
-#: application/controllers/UserManagementController.php:1214
+#: application/controllers/UserManagementController.php:1215
 #: application/controllers/admin/Labels.php:531
 #: application/controllers/admin/ParticipantsAction.php:630
 #: application/controllers/admin/SurveymenuController.php:53
@@ -1240,7 +1240,7 @@ msgstr ""
 #: application/controllers/UserManagementController.php:1031
 #: application/controllers/UserManagementController.php:1078
 #: application/controllers/UserManagementController.php:1133
-#: application/controllers/UserManagementController.php:1179
+#: application/controllers/UserManagementController.php:1180
 #: application/extensions/admin/survey/ListSurveysWidget/views/listSurveys.php:63
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_action_results.php:10
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_export_archive_results.php:14
@@ -3603,7 +3603,7 @@ msgstr ""
 
 #: application/controllers/UserManagementController.php:107
 #: application/controllers/UserManagementController.php:307
-#: application/controllers/UserManagementController.php:1202
+#: application/controllers/UserManagementController.php:1203
 msgid "User does not exist"
 msgstr ""
 
@@ -3668,7 +3668,7 @@ msgstr ""
 #: application/controllers/UserManagementController.php:1031
 #: application/controllers/UserManagementController.php:1078
 #: application/controllers/UserManagementController.php:1133
-#: application/controllers/UserManagementController.php:1179
+#: application/controllers/UserManagementController.php:1180
 #: application/core/plugins/TwoFactorAdminLogin/models/TFAUser.php:17
 #: application/core/plugins/TwoFactorAdminLogin/models/TFAUserKey.php:48
 #: application/models/User.php:132 application/models/User.php:770
@@ -3681,7 +3681,7 @@ msgstr ""
 #: application/controllers/UserManagementController.php:1031
 #: application/controllers/UserManagementController.php:1078
 #: application/controllers/UserManagementController.php:1133
-#: application/controllers/UserManagementController.php:1179
+#: application/controllers/UserManagementController.php:1180
 #: application/core/LsDefaultDataSets.php:2937
 #: application/core/plugins/AuthLDAP/AuthLDAP.php:378
 #: application/core/plugins/Authdb/Authdb.php:135
@@ -3733,35 +3733,35 @@ msgstr ""
 msgid "Usergroup updated"
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1171
+#: application/controllers/UserManagementController.php:1172
 msgid "The superadmin role cannot be changed."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1185
+#: application/controllers/UserManagementController.php:1186
 msgid "Role updated"
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1360
+#: application/controllers/UserManagementController.php:1361
 msgid "User successfully created"
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1390
+#: application/controllers/UserManagementController.php:1391
 msgid "Error: User was not created"
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1407
+#: application/controllers/UserManagementController.php:1408
 msgid "You do not have permission for this action."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1418
+#: application/controllers/UserManagementController.php:1419
 msgid "A username was not supplied or the username is invalid."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1427
+#: application/controllers/UserManagementController.php:1428
 msgid "A user with this username already exists."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1434
+#: application/controllers/UserManagementController.php:1435
 #: application/core/plugins/AuthLDAP/AuthLDAP.php:285
 #: application/core/plugins/AuthLDAP/AuthLDAP.php:300
 #: application/core/plugins/Authdb/Authdb.php:72
@@ -3769,7 +3769,7 @@ msgstr ""
 msgid "Failed to add user"
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1435
+#: application/controllers/UserManagementController.php:1436
 msgid "Plugin is not active"
 msgstr ""
 
