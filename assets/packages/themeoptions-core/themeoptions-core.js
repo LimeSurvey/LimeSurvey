@@ -394,9 +394,10 @@ var ThemeOptions = function () {
             var filesField = selectedThemeMode == 'add' ? '#TemplateConfiguration_files_css' : '#TemplateConfiguration_cssframework_css';
             removeVariationsFromField('#TemplateConfiguration_files_css');
             removeVariationsFromField('#TemplateConfiguration_cssframework_css');
-            if (selectedTheme != 'inherit') {
-                addVariationToField(selectedTheme, filesField, selectedThemeMode);
+            if (selectedTheme == 'inherit') {
+                selectedTheme = $('#simple_edit_options_cssframework').data('inheritvalue');
             }
+            addVariationToField(selectedTheme, filesField, selectedThemeMode);
         });
     }
 
