@@ -967,8 +967,7 @@ class QuestionGroupsAdministrationController extends LSBaseController
                 false,
                 false
             );
-        }
-        else {
+        } else {
             return $this->renderPartial(
                 '/admin/super/_renderJson',
                 array(
