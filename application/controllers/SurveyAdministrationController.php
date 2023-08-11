@@ -1592,10 +1592,6 @@ class SurveyAdministrationController extends LSBaseController
         $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $iSurveyID . ")";
         $aData['topBar']['hide'] = true;
 
-        if (empty($_SESSION['sNewSurveyTableName'])) {
-            $_SESSION['sNewSurveyTableName'] = Yii::app()->db->tablePrefix . "old_survey_{$iSurveyID}_{$date}";
-        }
-
         // Fire event beforeSurveyDeactivate
         $beforeSurveyDeactivate = new PluginEvent('beforeSurveyDeactivate');
         $beforeSurveyDeactivate->set('surveyId', $iSurveyID);
@@ -1615,6 +1611,12 @@ class SurveyAdministrationController extends LSBaseController
                 $this->redirect($this->createUrl("surveyAdministration/view/surveyid/{$iSurveyID}"));
             }
             if (Yii::app()->request->getPost('ok') == '') {
+
+                if (!empty($_SESSION['sNewSurveyTableName']))
+                    unset($_SESSION['sNewSurveyTableName']);
+
+                $_SESSION['sNewSurveyTableName'] = Yii::app()->db->tablePrefix . "old_survey_{$iSurveyID}_{$date}";
+
                 $aData['surveyid'] = $iSurveyID;
                 $aData['date'] = $date;
                 $aData['dbprefix'] = Yii::app()->db->tablePrefix;
