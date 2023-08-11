@@ -194,7 +194,7 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
                                 <div class="row">
                                     <div class="form-group">
                                         <?php echo $form->labelEx($model, 'files_css'); ?>
-                                        <?php echo $form->textArea($model, 'files_css', ['rows' => 6, 'cols' => 50]); ?>
+                                        <?php echo $form->textArea($model, 'files_css', ['rows' => 6, 'cols' => 50, 'data-inherit-source' => 'optionCssFiles']); ?>
                                         <?php echo $form->error($model, 'files_css'); ?>
                                     </div>
                                 </div>
@@ -229,7 +229,7 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
                                 <div class="row">
                                     <div class="form-group">
                                         <?php echo $form->labelEx($model, 'cssframework_css'); ?>
-                                        <?php echo $form->textArea($model, 'cssframework_css', ['rows' => 6, 'cols' => 50]); ?>
+                                        <?php echo $form->textArea($model, 'cssframework_css', ['rows' => 6, 'cols' => 50, 'data-inherit-source' => 'optionCssFramework']); ?>
                                         <?php echo $form->error($model, 'cssframework_css'); ?>
                                     </div>
                                 </div>

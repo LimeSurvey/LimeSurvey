@@ -336,9 +336,16 @@ var ThemeOptions = function () {
     }
 
     var removeVariationsFromField = function (fieldSelector) {
-        if ($(fieldSelector).val() === 'inherit') return;
+        var plainValue = $(fieldSelector).val();
+        if (plainValue === 'inherit') {
+            var inheritSource = $(fieldSelector).data('inherit-source');
+            if (!inheritSource) {
+                return;
+            }
+            plainValue = JSON.parse($('#' + inheritSource).val());
+        }
         try {
-            var currentValue = JSON.parse($(fieldSelector).val());
+            var currentValue = JSON.parse(plainValue);
         } catch (error) {
             var currentValue = {};
         }
