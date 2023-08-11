@@ -1592,6 +1592,10 @@ class SurveyAdministrationController extends LSBaseController
         $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $iSurveyID . ")";
         $aData['topBar']['hide'] = true;
 
+        if (empty($_SESSION['sNewSurveyTableName'])) {
+            $_SESSION['sNewSurveyTableName'] = Yii::app()->db->tablePrefix . "old_survey_{$iSurveyID}_{$date}";
+        }
+
         // Fire event beforeSurveyDeactivate
         $beforeSurveyDeactivate = new PluginEvent('beforeSurveyDeactivate');
         $beforeSurveyDeactivate->set('surveyId', $iSurveyID);
@@ -1614,7 +1618,7 @@ class SurveyAdministrationController extends LSBaseController
                 $aData['surveyid'] = $iSurveyID;
                 $aData['date'] = $date;
                 $aData['dbprefix'] = Yii::app()->db->tablePrefix;
-                $aData['sNewSurveyTableName'] = Yii::app()->db->tablePrefix . "old_survey_{$iSurveyID}_{$date}";
+                $aData['sNewSurveyTableName'] = $_SESSION['sNewSurveyTableName'];
                 $aData['step1'] = true;
             } else {
                 //See if there is a tokens table for this survey
@@ -1656,7 +1660,7 @@ class SurveyAdministrationController extends LSBaseController
                 // IF there are any records in the saved_control table related to this survey, they have to be deleted
                 SavedControl::model()->deleteSomeRecords(array('sid' => $iSurveyID)); //Yii::app()->db->createCommand($query)->query();
                 $sOldSurveyTableName = Yii::app()->db->tablePrefix . "survey_{$iSurveyID}";
-                $sNewSurveyTableName = Yii::app()->db->tablePrefix . "old_survey_{$iSurveyID}_{$date}";
+                $sNewSurveyTableName = $_SESSION['sNewSurveyTableName'];
                 $aData['sNewSurveyTableName'] = $sNewSurveyTableName;
 
                 $query = "SELECT id FROM " . Yii::app()->db->quoteTableName($sOldSurveyTableName) . " ORDER BY id desc";
@@ -1716,6 +1720,7 @@ class SurveyAdministrationController extends LSBaseController
 
                 //after deactivation redirect to survey overview and show message...
                 //$this->redirect(['surveyAdministration/view', 'surveyid' => $iSurveyID]);
+                unset($_SESSION['sNewSurveyTableName']);
             }
 
             $aData['sidemenu']['state'] = false;
