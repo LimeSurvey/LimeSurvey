@@ -1611,9 +1611,9 @@ class SurveyAdministrationController extends LSBaseController
                 $this->redirect($this->createUrl("surveyAdministration/view/surveyid/{$iSurveyID}"));
             }
             if (Yii::app()->request->getPost('ok') == '') {
-
-                if (!empty($_SESSION['sNewSurveyTableName']))
+                if (!empty($_SESSION['sNewSurveyTableName'])) {
                     unset($_SESSION['sNewSurveyTableName']);
+                }
 
                 $_SESSION['sNewSurveyTableName'] = Yii::app()->db->tablePrefix . "old_survey_{$iSurveyID}_{$date}";
 
