@@ -907,4 +907,48 @@ class UserManagerServiceTest extends \ls\tests\TestBaseClass
         // Deleting group.
         $userGroup->delete();
     }
+
+    /**
+     * Test for a failing operation.
+     * The delete function will return false.
+     */
+    public function testErrorDeletingUser()
+    {
+        $userPartialMock = $this->createPartialMock(\User::class, ['delete']);
+
+        $userPartialMock->expects($this->once())
+                                ->method('delete')
+                                ->willReturn(false);
+
+        $userManager = new userManager();
+        $operationResult = $userManager->deleteUser($userPartialMock);
+        $message = $operationResult->getMessages()[0];
+
+        // Checking messages.
+        $this->assertFalse($operationResult->isSuccess(), 'The operation should not have been successful.');
+        $this->assertSame('error', $message->getType(), 'Unexpected message type for an unsuccessful operation.');
+        $this->assertSame(gT("User could not be deleted."), $message->getMessage(), 'Unexpected message for an unsuccessful operation.');
+    }
+
+    /**
+     * Test for a failing operation.
+     * The delete function will throw an exception.
+     */
+    public function testExceptionDeletingUser()
+    {
+        $userPartialMock = $this->createPartialMock(\User::class, ['delete']);
+
+        $userPartialMock->expects($this->once())
+                                ->method('delete')
+                                ->willThrowException(new \Exception('Mock exception.'));
+
+        $userManager = new userManager();
+        $operationResult = $userManager->deleteUser($userPartialMock);
+        $message = $operationResult->getMessages()[0];
+
+        // Checking messages.
+        $this->assertFalse($operationResult->isSuccess(), 'The operation should not have been successful.');
+        $this->assertSame('error', $message->getType(), 'Unexpected message type for an unsuccessful operation.');
+        $this->assertSame(gT("An error occurred while deleting the user."), $message->getMessage(), 'Unexpected message for an unsuccessful operation.');
+    }
 }
