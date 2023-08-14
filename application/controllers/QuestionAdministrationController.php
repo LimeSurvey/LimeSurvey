@@ -1,7 +1,6 @@
 <?php
 
-use \LimeSurvey\Models\Services\QuestionAggregateService;
-
+use LimeSurvey\Models\Services\QuestionAggregateService;
 use LimeSurvey\Models\Services\Exception\{
     NotFoundException,
     PermissionDeniedException,
