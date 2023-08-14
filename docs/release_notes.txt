@@ -34,6 +34,14 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.28.68 (build 230809) to 3.28.69 (build 230815) August 14, 2023
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Khmer by PawelAtroszko
+#Updated translation: Italian by maren.fritz
+#Updated translation: Italian (Informal) by lfanfoni
+
+
 Changes from 3.28.67 (build 230728) to 3.28.68 (build 230809) August 7, 2023
 #Updated translation: Turkish by kayazeren
 
