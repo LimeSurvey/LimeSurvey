@@ -101,7 +101,7 @@ class AnswersService
                     isset($data['assessment'])
                     ? $data['assessment']
                     : 0,
-                'scaleid' => $scaleId
+                'scale_id' => $scaleId
             ]);
             $count++;
 

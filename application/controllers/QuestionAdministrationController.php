@@ -438,7 +438,6 @@ class QuestionAdministrationController extends LSBaseController
     public function actionSaveQuestionData()
     {
         $request = App()->request;
-        $question = (int) $request->getPost('question');
         $calledWithAjax = (int) $request->getPost('ajax');
         $sScenario = $request->getPost('scenario', '');
         $surveyId = (int) $request->getPost('sid');
@@ -472,6 +471,7 @@ class QuestionAdministrationController extends LSBaseController
             QuestionAggregateService::class
         );
 
+        $question = null;
         try {
             $question = $questionAggregateService->save(
                 $surveyId,
