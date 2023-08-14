@@ -120,11 +120,8 @@ class SurveyDynamic extends LSActiveRecord
             $record->$k = $v;
         }
 
-        if ($record->encryptSave()) {
-            return $record->id;
-        } else {
-            throw new \Exception('There was an error, the record could not be saved.', 1);
-        }
+        $record->encryptSave();
+        return $record->id;
     }
 
     /**
