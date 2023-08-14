@@ -34,6 +34,20 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.6.33 (build 230808) to 5.6.34 (build 230816) August 14, 2023
+-Fixed issue 18821: Public url is not used for SURVEYURL (Lapiu Dev)
+-Fixed issue #18977: [security] Improper Authorization in add role function leads to privilege escalation (#3308) (Denis Chenu)
+-Fixed issue #18949: Responses filters are case sensitive (#3311) (Gabriel Jenik)
+#Updated translation: Portuguese (Portugal) by c_schmitz, samarta
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Khmer by PawelAtroszko
+#Updated translation: Japanese by d_inoue, hl_sales, nomoto
+#Updated translation: Italian by lfanfoni, maren.fritz
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 5.6.32 (build 230731) to 5.6.33 (build 230808) August 7, 2023
 -Fixed issue #19001: Participant list won't show since update 230731 - version 5.6.32 (#3323) (Gabriel Jenik)
 -Fixed issue #18985: [security] shown real import format needed (#3310) (Denis Chenu)
