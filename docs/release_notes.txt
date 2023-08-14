@@ -34,6 +34,31 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.2.1 (build 230807) to 6.2.2 (build 230814) August 14, 2023
+-Fixed issue #18821: Public URL is not used for SURVEYURL (Tests) (#3340) (Gabriel Jenik)
+-Fixed issue #CR-1282: Side menu: Loading animation is in the wrong position (#3337) (Mohab E)
+-Fixed issue #CR-1267: Facebook buttons size (#3328) (Mohab E)
+-Fixed issue #CR-1253: There is no validation on admin email, bounce email in general survey settings (#3331) (Mohab E)
+-Fixed issue #CR-1236: Layout issue: Close modal button (x) on confirmation modal (#3338) (Mohab E)
+-Fixed issue #CR-1219: Privacy policy checkbox on starting page of survey is always green when unchecked (#3343) (Mohab E)
+-Fixed issue #19000: Privacy policy view is not rendered per tab, it is stacked below each other in the same view. (#3333) (Gabriel Jenik)
+-Fixed issue #18977: [security] Improper Authorization in add role function leads to privilege escalation (#3307) (Denis Chenu)
+-Fixed issue #18958: Multiple numerical input text input box width not having an effect (#3297) (Adam Zammit)
+-Fixed issue #18949: Responses filters are case sensitive (#3339) (Gabriel Jenik)
+-Fixed issue #18931: Send test email in global settings not working (#3287) (Gabriel Jenik)
+-Fixed issue #18832: Participants can't re-enter a submitted survey if setting is using "inherit" at participant settings (#3312) (Gabriel Jenik)
+-Fixed issue #18610: Email attachments expose absolute path when exporting LSS (#3003) (Gabriel Jenik)
+-Fixed issue #18315: Uses left value goes to negative (#3060) (Gabriel Jenik)
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Khmer by PawelAtroszko
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Italian by lfanfoni, maren.fritz
+#Updated translation: Italian (Informal) by lfanfoni, myliserta
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 6.2.0 (build 230732) to 6.2.1 (build 230807) August 7, 2023
 -Fixed issue #CR-1279: Row link doesn't work when executing Ajax calls in grid view (Patrick Teichmann)
 -Fixed issue #CR-1265: File upload question RTL (#3315) (Tim Willig)
