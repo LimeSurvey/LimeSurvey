@@ -10,6 +10,8 @@
 .modal-header {
   border-bottom: none;
   .btn-close {
+    align-self: flex-start;
+    margin: 0 -0.75rem -0.75rem auto;
     color: $g-900;
     width: 0.75em;
     height: 0.75em;
