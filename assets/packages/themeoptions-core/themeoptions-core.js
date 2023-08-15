@@ -88,6 +88,15 @@ var ThemeOptions = function () {
 
         });
 
+        globalForm.find('.selector_text_option_value_field').each(function (i, item) {
+            //disabled items should be inherit or false
+            if ($(item).prop('disabled')) {
+                $(item).val((inheritPossible ? 'inherit' : false));
+            }
+
+            optionObject[$(item).attr('name')] = $(item).val();
+        });
+
         var newOptionObject = $.extend(true, {}, optionObject);
         delete newOptionObject.general_inherit;
 
@@ -259,7 +268,7 @@ var ThemeOptions = function () {
     // hotswapping the fields
     var hotSwapFields = function () {
 
-        globalForm.find('.selector_option_value_field').on('change', function (evt) {
+        globalForm.find('.selector_option_value_field, .selector_text_option_value_field').on('change', function (evt) {
             updateFieldSettings();
             parseNumeric(this);
         });
@@ -459,10 +468,10 @@ var ThemeOptions = function () {
         startupGeneralInherit();
 
         prepareSelectField();
+        prepareTextField();
         parseParentSwitchFields();
         prepareFontField();
         prepareFruityThemeField();
-        prepareTextField();
         showInheritedValue();
 
         bind();
