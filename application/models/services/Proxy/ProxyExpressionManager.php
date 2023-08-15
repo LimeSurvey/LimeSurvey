@@ -73,4 +73,35 @@ class ProxyExpressionManager
         EmCacheHelper::init(['sid' => $surveyId, 'active' => 'Y']);
         EmCacheHelper::flush();
     }
+
+    /**
+     * @see \LimeExpressionManager::RevertUpgradeConditionsToRelevance
+     * @param int $surveyId
+     * @param int|null $qid
+     * @return void
+     */
+    public function revertUpgradeConditionsToRelevance(int $surveyId, ?int $qid = null)
+    {
+        LimeExpressionManager::RevertUpgradeConditionsToRelevance($surveyId, $qid);
+    }
+
+    /**
+     * @see \LimeExpressionManager::UpgradeConditionsToRelevance
+     * @param int $surveyId
+     * @param int|null $qid
+     * @return void
+     */
+    public function upgradeConditionsToRelevance(int $surveyId, ?int $qid = null)
+    {
+        LimeExpressionManager::UpgradeConditionsToRelevance($surveyId, $qid);
+    }
+
+    /**
+     * @see \LimeExpressionManager::SetDirtyFlag
+     * @return void
+     */
+    public function setDirtyFlag()
+    {
+        LimeExpressionManager::SetDirtyFlag();
+    }
 }

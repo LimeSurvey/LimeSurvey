@@ -34,6 +34,96 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.2.1 (build 230807) to 6.2.2 (build 230814) August 14, 2023
+-Fixed issue #18821: Public URL is not used for SURVEYURL (Tests) (#3340) (Gabriel Jenik)
+-Fixed issue #CR-1282: Side menu: Loading animation is in the wrong position (#3337) (Mohab E)
+-Fixed issue #CR-1267: Facebook buttons size (#3328) (Mohab E)
+-Fixed issue #CR-1253: There is no validation on admin email, bounce email in general survey settings (#3331) (Mohab E)
+-Fixed issue #CR-1236: Layout issue: Close modal button (x) on confirmation modal (#3338) (Mohab E)
+-Fixed issue #CR-1219: Privacy policy checkbox on starting page of survey is always green when unchecked (#3343) (Mohab E)
+-Fixed issue #19000: Privacy policy view is not rendered per tab, it is stacked below each other in the same view. (#3333) (Gabriel Jenik)
+-Fixed issue #18977: [security] Improper Authorization in add role function leads to privilege escalation (#3307) (Denis Chenu)
+-Fixed issue #18958: Multiple numerical input text input box width not having an effect (#3297) (Adam Zammit)
+-Fixed issue #18949: Responses filters are case sensitive (#3339) (Gabriel Jenik)
+-Fixed issue #18931: Send test email in global settings not working (#3287) (Gabriel Jenik)
+-Fixed issue #18832: Participants can't re-enter a submitted survey if setting is using "inherit" at participant settings (#3312) (Gabriel Jenik)
+-Fixed issue #18610: Email attachments expose absolute path when exporting LSS (#3003) (Gabriel Jenik)
+-Fixed issue #18315: Uses left value goes to negative (#3060) (Gabriel Jenik)
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Khmer by PawelAtroszko
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Italian by lfanfoni, maren.fritz
+#Updated translation: Italian (Informal) by lfanfoni, myliserta
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Catalan by qualitatuvic
+
+
+Changes from 6.2.0 (build 230732) to 6.2.1 (build 230807) August 7, 2023
+-Fixed issue #CR-1279: Row link doesn't work when executing Ajax calls in grid view (Patrick Teichmann)
+-Fixed issue #CR-1265: File upload question RTL (#3315) (Tim Willig)
+-Fixed issue #CR-1257: Ownership typo (#3322) (Mohab E)
+-Fixed issue #18985: [security] Reflected XSS (#3309) (Denis Chenu)
+-Fixed issue #18979: [security] User can put survey in survey group without access permission (#3304) (Denis Chenu)
+-Fixed issue #18888: General issues with different questions (#3317) (Gabriel Jenik)
+#Updated translation: Turkish by bulent, c_schmitz, kayazeren
+#Updated translation: Slovak by jelen1
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
+Changes from 6.1.8 (build 230717) to 6.2.0 (build 230732) July 31, 2023
++New feature: Update the style of the admin file manager (#3093) (jack-han-115)
++New feature: Combine question list, group list, and reorder into one page (#3070) (jack-han-115)
++New feature #18742: Allow "User Admins" to see Users' Roles (#3048) (Valerio Bozzolan)
+-Fixed issue: show no survey menu when no survey options are available (twilligls)
+-Fixed issue: removed potential PHP notices for printanswers view (twilligls)
+-Fixed issue: image-select checkbox design was broken (twilligls)
+-Fixed issue: group description spacing wrong in mobile view (twilligls)
+-Fixed issue: changed 766px breakpoint to valid 767px (twilligls)
+-Fixed issue: captcha cols and button icon alignment (twilligls)
+-Fixed issue: Typo in vanilla save form (twilligls)
+-Fixed issue #CR-999: 5pointquestion on mobile devices (twilligls)
+-Fixed issue #CR-1283: Ensure surveyActivated is passed to views/admin/survey/organizeGroupsAndQuestions_view (#3305) (tiborpacalat)
+-Fixed issue #CR-1211: Language switcher renders differently in firefox… (#3254) (Tim Willig)
+-Fixed issue #CR-1156: error and save pages were loading twig files of wrong su… (#3164) (Tim Willig)
+-Fixed issue #18974: [security] Stored XSS via user's Full Name (#3300) (Denis Chenu)
+-Fixed issue #CR-1287: fixed invalid options string throwing errors when exporting a survey (Patrick Teichmann)
+-Fixed issue #CR-1266: Remove exclamation icon from instructions for em_tip text (Patrick Teichmann)
+-Fixed issue #CR-1210: fixed sizing and spacing of navbar, top-container, body (Patrick Teichmann)
+-Fixed issue #CR-1181: Bootstrap is loaded twice in ls6_surveytheme (Patrick Teichmann)
+-Fixed issue #CR-1049: footer positioned incorrectly and not at the end of visible page (#3039) (jack-han-115)
+-Fixed issue #18967: [security] User can import User Roles having permission (#3295) (Denis Chenu)
+-Fixed issue #18967: [security] User can add malicious content in User Roles (#3292) (Denis Chenu)
+-Fixed issue #18963: On PHP 8.2 new DateTime() can not be invoked with null (#3291) (Johannes Weberhofer)
+-Fixed issue #18936: User count in group is not OK after deleting a user (#3286) (Gabriel Jenik)
+-Fixed issue #18876: Plugin expose full path when an error is reported in the plugin list (#3283) (Gabriel Jenik)
+-Fixed issue #18798: Out-of-memory problem in statistics export (#3231) (#3267) (Gabriel Jenik)
+-Fixed issue #18725: Reorder questions/question groups can break survey (tests) (#3178) (Gabriel Jenik)
+-Fixed issue #18694: Invalid HTML for list radio questions due to missing closing ul element (#3226) (Gabriel Jenik)
+-Fixed issue #18573: Insert new box with overlapping position, makes the dashboard to show duplicate boxes (#3289) (Gabriel Jenik)
+-Fixed issue #18495: configuration tab is not visible to a user with only create label set permission (#3185) (Denis Chenu)
+-Fixed issue #18278: Quick translation - "Nothing to translate" appears wrongly (#3296) (Gabriel Jenik)
+#Updated translation: Slovak by jelen1
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Khmer by PawelAtroszko
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: German by gerzess, maren.fritz
+#Updated translation: German by c_schmitz, gerzess, maren.fritz
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz, gerzess
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Albanian by darliv
+#Updated translation and removed one file (dead code)
+#Updated translation (#3299)
+#Updated translation
+
+
 Changes from 6.1.7 (build 230710) to 6.1.8 (build 230717) July 17, 2023
 -Fixed issue #18942: Roles - Permissions Modal is too narrow (#3276) (Gabriel Jenik)
 -Fixed issue #18937: Action menu stop work after any action on any user (#3282) (Gabriel Jenik)

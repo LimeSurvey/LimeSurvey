@@ -13939,6 +13939,10 @@ body .imageselect-listitem label::after {
   margin-right: 0;
 }
 
+.uploadedfiles tbody tr td {
+  text-align: right;
+}
+
 .answer-container .bootstrap-select .bs-searchbox .form-control {
   padding: 0.375rem 0.75rem;
   margin-bottom: 4px;
@@ -15323,7 +15327,7 @@ html, body {
   margin-bottom: 0;
 }
 .privacy .checkbox-item label::before {
-  border: 3px solid #14AE5C;
+  border: 3px solid #ED5046;
 }
 
 .datasecurity-checkbox-container {
