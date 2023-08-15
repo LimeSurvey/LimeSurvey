@@ -280,15 +280,22 @@ class GeneralSettings
             ? $fieldOpts
             : [];
 
-        // Composite inputs always have to be processed
-        // - even if the field itself is not provided
-        $isCompositeInput = (
-            isset($fieldOpts['compositeInputs'])
-        );
+        // Composite inputs should be processed
+        // - if all composite fields are provided
+        $isCompositeInput = isset($fieldOpts['compositeInputs']);
+        $compositeInputsSet = true;
+        if ($isCompositeInput) {
+            foreach ($fieldOpts['compositeInputs'] as $compositeInput) {
+                if (!isset($input[$compositeInput])) {
+                    $compositeInputsSet = false;
+                    break;
+                }
+            }
+        }
 
         if (
             !isset($input[$field])
-            && !$isCompositeInput
+            && (!$isCompositeInput || !$compositeInputsSet)
         ) {
             return $meta;
         }
@@ -296,10 +303,9 @@ class GeneralSettings
         $type = !empty($fieldOpts['type'])
             ? $fieldOpts['type']
             : null;
-        $initValue = $survey->{$field} ?? '';
         $default = !empty($fieldOpts['default'])
             ? $fieldOpts['default']
-            : $initValue;
+            : null;
 
         if (
             isset($fieldOpts['canUpdate'])
