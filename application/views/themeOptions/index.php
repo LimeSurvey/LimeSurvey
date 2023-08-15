@@ -298,9 +298,10 @@ echo viewHelper::getViewTestTag('templateOptions');
             <div class="col-12 list-surveys">
                 <?php echo '<h3>' . gT('Question themes:') . '</h3>'; ?>
                 <!-- Installed Question Themes -->
-            <?php $this->renderPartial('./installedthemelist', array('oQuestionTheme' => $oQuestionTheme, 'pageSize' => $pageSize)); ?>
-            <!-- Available Quesiton Themes and broken question themes-->
-            <?php $this->renderPartial('./availablethemelist', array('oQuestionTheme' => $oQuestionTheme, 'pageSize' => $pageSize)); ?>
+                <?php $this->renderPartial('./installedthemelist', array('oQuestionTheme' => $oQuestionTheme, 'pageSize' => $pageSize)); ?>
+                <!-- Available Quesiton Themes and broken question themes-->
+                <?php $this->renderPartial('./availablethemelist', array('oQuestionTheme' => $oQuestionTheme, 'pageSize' => $pageSize)); ?>
+            </div>
         </div>
     </div>
 </div>
