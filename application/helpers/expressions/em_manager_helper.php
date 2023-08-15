@@ -5057,11 +5057,9 @@ class LimeExpressionManager
 
             try {
                 $iNewID = $oSurvey->insertRecords($sdata);
-
                 if (!$iNewID) {
                     throw new Exception("Error, no entry id was returned.", 1);
                 }
-
                 $srid = $iNewID;
                 $_SESSION[$this->sessid]['srid'] = $iNewID;
             } catch (Exception $e) {
