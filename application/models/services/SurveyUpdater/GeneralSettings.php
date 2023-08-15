@@ -285,7 +285,6 @@ class GeneralSettings
         $isCompositeInput = (
             isset($fieldOpts['compositeInputs'])
         );
-
         if (
             !isset($input[$field])
             && !$isCompositeInput
@@ -296,10 +295,9 @@ class GeneralSettings
         $type = !empty($fieldOpts['type'])
             ? $fieldOpts['type']
             : null;
-        $initValue = $survey->{$field} ?? '';
         $default = !empty($fieldOpts['default'])
             ? $fieldOpts['default']
-            : $initValue;
+            : null;
 
         if (
             isset($fieldOpts['canUpdate'])
