@@ -97,6 +97,9 @@ export default {
         itemActivated(question){
             return  this.$store.state.lastQuestionOpen === question.qid;
         },
+        groupActivated(questionGroup) {
+            return  this.$store.state.lastQuestionGroupOpen === questionGroup.gid;
+        },
 
         questionItemClasses(question) {
             let classes = "";
@@ -341,10 +344,8 @@ export default {
                     v-for="questiongroup in orderedQuestionGroups"
                     v-bind:key="questiongroup.gid"
                     class="list-group-item ls-flex-column"
-
                     v-bind:class="questionGroupItemClasses(questiongroup)"
                     @dragenter="dragoverQuestiongroup($event, questiongroup)"
-                    style=" background: linear-gradient(90deg, #14AE5C 0%, #14AE5C 5px, #EEEFF7 5px, #EEEFF7 100%); padding: 0;"
                 >
 
                   <div class="q-group d-flex nowrap ls-space padding right-5 bottom-5 bg-white ms-2 p-2"
@@ -389,7 +390,7 @@ export default {
                             </span>
                         </div>
 
-                        <div class="ls-questiongroup-tools cursor-pointer" id="dropdownMenuButton1" data-bs-toggle="dropdown"
+                        <div v-if="groupActivated(questiongroup)||(hoveredQuestionGroup && hoveredQuestionGroup.gid === questiongroup.gid)" class="ls-questiongroup-tools cursor-pointer" id="dropdownMenuButton1" data-bs-toggle="dropdown"
                         aria-expanded="false">
                              <i class="ri-more-fill"></i>
                         </div>
@@ -479,7 +480,7 @@ export default {
                                     </div>
                                 <a
                                     :href="question.link"
-                                    class="col-9 pjax question-question-list-item-link display-as-container ls-text-underline-hover"
+                                    class="col-9 pjax question-question-list-item-link display-as-container"
                                     @click.stop.prevent="openQuestion(question)"
                                 >
                                     <span

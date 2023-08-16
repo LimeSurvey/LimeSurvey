@@ -18200,6 +18200,14 @@ input[type=number] {
 #sidebar {
   width: 100%;
 }
+#sidebar .questiongroup-list-group > li {
+  background: linear-gradient(to left, #14AE5C 0px, #14AE5C 8px, #fff 8px, #fff 100%);
+  padding: 0;
+}
+#sidebar .questiongroup-list-group > li > div:hover {
+  box-shadow: inset 0 0 0 1px rgba(123, 97, 255, 0.4);
+  background: linear-gradient(to left, rgba(123, 97, 255, 0.4) 0px, rgba(123, 97, 255, 0.4) 4px, #fff 4px, #fff 100%) !important;
+}
 #sidebar .button-sub-bar {
   min-height: 32px;
 }
@@ -18224,6 +18232,10 @@ input[type=number] {
 }
 #sidebar .question-question-list .question-question-list-item.selected .question-question-list-item-drag {
   margin: 10px 5px 10px 10px;
+}
+#sidebar .question-question-list .question-question-list-item.selected:hover {
+  box-shadow: inset 0 0 0 1px rgba(123, 97, 255, 0.4);
+  background: linear-gradient(to left, rgba(123, 97, 255, 0.4) 0px, rgba(123, 97, 255, 0.4) 8px, #fff 8px, #fff 100%);
 }
 #sidebar .question-question-list .question-question-list-item .question-question-list-item-link {
   padding: 10px 10px 10px 25px;
