@@ -1611,16 +1611,15 @@ class SurveyAdministrationController extends LSBaseController
                 $this->redirect($this->createUrl("surveyAdministration/view/surveyid/{$iSurveyID}"));
             }
             if (Yii::app()->request->getPost('ok') == '') {
-                if (!empty($_SESSION['sNewSurveyTableName'])) {
-                    unset($_SESSION['sNewSurveyTableName']);
+                if (!empty(Yii::app()->session->get('sNewSurveyTableName'))) {
+                    Yii::app()->session->remove('sNewSurveyTableName');
                 }
 
-                $_SESSION['sNewSurveyTableName'] = Yii::app()->db->tablePrefix . "old_survey_{$iSurveyID}_{$date}";
-
+                Yii::app()->session->add('sNewSurveyTableName', Yii::app()->db->tablePrefix . "old_survey_{$iSurveyID}_{$date}");
                 $aData['surveyid'] = $iSurveyID;
                 $aData['date'] = $date;
                 $aData['dbprefix'] = Yii::app()->db->tablePrefix;
-                $aData['sNewSurveyTableName'] = $_SESSION['sNewSurveyTableName'];
+                $aData['sNewSurveyTableName'] = Yii::app()->session->get('sNewSurveyTableName');
                 $aData['step1'] = true;
             } else {
                 //See if there is a tokens table for this survey
@@ -1662,7 +1661,7 @@ class SurveyAdministrationController extends LSBaseController
                 // IF there are any records in the saved_control table related to this survey, they have to be deleted
                 SavedControl::model()->deleteSomeRecords(array('sid' => $iSurveyID)); //Yii::app()->db->createCommand($query)->query();
                 $sOldSurveyTableName = Yii::app()->db->tablePrefix . "survey_{$iSurveyID}";
-                $sNewSurveyTableName = $_SESSION['sNewSurveyTableName'];
+                $sNewSurveyTableName = Yii::app()->session->get('sNewSurveyTableName');
                 $aData['sNewSurveyTableName'] = $sNewSurveyTableName;
 
                 $query = "SELECT id FROM " . Yii::app()->db->quoteTableName($sOldSurveyTableName) . " ORDER BY id desc";
@@ -1722,7 +1721,7 @@ class SurveyAdministrationController extends LSBaseController
 
                 //after deactivation redirect to survey overview and show message...
                 //$this->redirect(['surveyAdministration/view', 'surveyid' => $iSurveyID]);
-                unset($_SESSION['sNewSurveyTableName']);
+                Yii::app()->session->remove('sNewSurveyTableName');
             }
 
             $aData['sidemenu']['state'] = false;
