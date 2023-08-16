@@ -50,7 +50,7 @@ class OpHandlerSurveyUpdateTest extends TestBaseClass
             Survey::model(),
             new TransformerInputSurvey()
         );
-        self::assertTrue($opHandler->canHandle($this->op));
+        self::assertFalse($opHandler->canHandle($this->op));
     }
 
     private function initializePatcher()
