@@ -4,6 +4,8 @@ namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
 use CModel;
 use LimeSurvey\Api\Transformer\TransformerInterface;
+use LimeSurvey\Models\Services\Exception\PersistErrorException;
+use LimeSurvey\Models\Services\SurveyUpdater;
 use LimeSurvey\ObjectPatch\Op\OpInterface;
 use LimeSurvey\ObjectPatch\OpHandler\OpHandlerException;
 use LimeSurvey\ObjectPatch\OpHandler\OpHandlerInterface;
@@ -12,11 +14,11 @@ use Survey;
 
 class OpHandlerSurveyUpdate implements OpHandlerInterface
 {
-    protected ?TransformerInterface $transformer = null;
+    protected TransformerInterface $transformer;
     protected string $entity;
     protected CModel $model;
 
-    public function __construct(string $entity, CModel $model, TransformerInterface $transformer = null)
+    public function __construct(string $entity, CModel $model, TransformerInterface $transformer)
     {
         $this->entity = $entity;
         $this->model = $model;
@@ -42,13 +44,20 @@ class OpHandlerSurveyUpdate implements OpHandlerInterface
      *
      * @param OpInterface $op
      * @throws OpHandlerException
+     * @throws PersistErrorException
      */
     public function handle(OpInterface $op): void
     {
-        $survey = $this->model->findByPk($op->getEntityId());
+        $diContainer = \LimeSurvey\DI::getContainer();
+        $surveyUpdater = $diContainer->get(
+            SurveyUpdater::class
+        );
+
         //here we should get the props from the op
-        $props = $op ->getProps();
-        if ($props === null) {
+        $props = $op->getProps();
+        $transformedProps = $this->transformer->transform($props);
+
+        if ($props === null || $transformedProps === null) {
             throw new OpHandlerException(
                 printf(
                     'No values to update for entity %s',
@@ -56,14 +65,10 @@ class OpHandlerSurveyUpdate implements OpHandlerInterface
                 )
             );
         }
-        $survey->setAttributes($props);
-        if (!$survey->save()) {
-            throw new OpHandlerException(
-                printf(
-                    'Could not update survey (id: %s)',
-                    $op->getEntityId()
-                )
-            );
-        }
+
+        $surveyUpdater->update(
+            $op->getEntityId(),
+            $transformedProps
+        );
     }
 }

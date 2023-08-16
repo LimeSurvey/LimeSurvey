@@ -12,15 +12,21 @@ use Survey;
 
 class OpHandlerSurveyUpdateTest extends TestBaseClass
 {
+    protected OpInterface $op;
 
-protected OpInterface $op;
-
-    public static function setUpBeforeClass(): void
+    public function testSurveyUpdateThrowsNoValuesException()
     {
-        parent::setUpBeforeClass();
-        // Import survey (it doesn't matter which survey)
-        $surveyFile = self::$surveysFolder . '/limesurvey_survey_QuestionAttributeTestSurvey.lss';
-        self::importSurvey($surveyFile);
+        $this->expectException(
+            OpHandlerException::class
+        );
+        $this->initializeWrongPatcher();
+        $opHandler = new OpHandlerSurveyUpdate(
+            'survey',
+            Survey::model(),
+            new TransformerInputSurvey()
+        );
+
+        $opHandler->handle($this->op);
     }
 
     public function testSurveyUpdateCanHandle()
@@ -35,24 +41,16 @@ protected OpInterface $op;
         self::assertTrue($opHandler->canHandle($this->op));
     }
 
-    /**
-     * @throws OpHandlerException
-     */
-    public function testSurveyUpdateHandles()
+    public function testSurveyUpdateCanNotHandle()
     {
-        $this->initializePatcher();
+        $this->initializeWrongPatcher();
 
         $opHandler = new OpHandlerSurveyUpdate(
-          'survey',
+            'survey',
             Survey::model(),
             new TransformerInputSurvey()
         );
-
-        $opHandler->handle($this->op);
-
-        //check if survey has been updated
-        self::assertEquals(self::$testSurvey->ipanonymize, 'Y');
-        self::assertEquals(self::$testSurvey->expires,'2020-01-01 00:00');
+        self::assertTrue($opHandler->canHandle($this->op));
     }
 
     private function initializePatcher()
@@ -64,6 +62,19 @@ protected OpInterface $op;
             [
                 'expires' => '2020-01-01 00:00',
                 'ipanonymize' => true,
+            ]
+        );
+    }
+
+    private function initializeWrongPatcher()
+    {
+        $this->op = OpStandard::factory(
+            'survey',
+            'create',
+            self::$testSurvey->sid,
+            [
+                'xxx' => '2020-01-01 00:00',
+                'yyy' => true,
             ]
         );
     }
