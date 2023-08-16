@@ -260,6 +260,7 @@ export default {
         },
         dragoverQuestion($event, questionObject, questionGroupObject) {
             if (this.questionDragging) {
+                if(window.SideMenuData.isActive && this.draggedQuestion.gid != questionObject.gid) {return;}
                 let orderSwap = questionObject.question_order;
                 questionObject.question_order = this.draggedQuestion.question_order;
                 this.draggedQuestion.question_order = orderSwap;
@@ -352,7 +353,6 @@ export default {
 
                   >
                     <div
-                        v-if="!surveyIsActive"
                         class="bigIcons dragPointer me-3"
                         :class=" allowOrganizer ? '' : 'disabled' "
                         :draggable="allowOrganizer"
