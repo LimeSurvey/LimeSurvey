@@ -14326,9 +14326,12 @@ body.error-page {
   margin: 0;
   padding: 0;
   background: #ffffff;
-  display: flex;
   height: 100vh;
   font-family: Arial, Helvetica, sans-serif;
+}
+body.error-page .container {
+  display: flex;
+  height: 90%;
 }
 body.error-page .error-title {
   font-weight: 600;
