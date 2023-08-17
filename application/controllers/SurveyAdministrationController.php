@@ -1023,7 +1023,7 @@ class SurveyAdministrationController extends LSBaseController
                             [
                                 'id' => 'default_value_button',
                                 'label' => gT("Edit default answers"),
-                                'icon' => $configData['hasSurveyContentUpdatePermission'] && $hasdefaultvalues > 0 ? 'ri-grid-line ' : 'ri-grid-line disable',
+                                'icon' => 'ri-grid-line ',
                                 'url' => Yii::App()->createUrl("questionAdministration/editdefaultvalues/surveyid/$iSurveyID/gid/$question->gid/qid/$question->qid"),
                                 'active' => $configData['hasSurveyContentUpdatePermission'] && $hasdefaultvalues > 0 ? 1 : 0
                             ];
