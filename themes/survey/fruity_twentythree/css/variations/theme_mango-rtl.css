@@ -10479,6 +10479,10 @@ textarea.form-control-lg {
   margin: 0 auto;
 }
 
+.footer-wrapper {
+  max-width: 750px;
+}
+
 .question-item .other-label {
   margin: 0px;
   padding: 0px;
