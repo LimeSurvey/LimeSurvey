@@ -2,8 +2,7 @@
 #sidebar {
     width : 100%;
     .questiongroup-list-group > li {
-        //  background: linear-gradient(90deg, #14AE5C 0%, #14AE5C 5px, #EEEFF7 5px, #EEEFF7 100%); 
-         background: linear-gradient(to right, $active-green 0px, $active-green 8px, $white 8px, $white 100%);
+         background: linear-gradient(90deg, $active-green 0%, $active-green 5px, $g-200 5px, $g-200 100%); 
          padding: 0;
     }
 
@@ -24,6 +23,25 @@
         }
     }
     .question-question-list {
+        .selected {
+            padding-left               : 20px;
+            background                 : /*!rtl:linear-gradient(to left, $primary 0px, $primary 8px, $white 8px, $white 100%)*/
+                linear-gradient(to right, $g-300 0px, $g-300 8px, $white 8px, $white 100%);
+            &.activated {
+                background : /*!rtl:linear-gradient(to left, $primary 0px, $primary 8px, $white 8px, $white 100%)*/
+                    linear-gradient(to right, $active-green 0px, $active-green 8px, $white 8px, $white 100%);
+    
+            }
+            &.disabled {
+                background : linear-gradient(to right, $g-400 0px, $g-400 8px, $white 8px, $white 100%) !important
+            }
+            transition-property        : all;
+            transition-duration        : .25s;
+            transition-timing-function : cubic-bezier(1, 0.5, 0.5, 1);
+    
+        
+        }
+
         .question-question-list-item {
             margin      : 2px 2px 2px 12px;
             display     : flex;
@@ -107,24 +125,7 @@
         animation-duration : 450ms;
         background         : radial-gradient(circle at center, $primary-bg_menuopen 0px, $primary-bg_menuopen 8px, $white 9px, $white 100%);
     }
-    .selected {
-        padding-left               : 20px;
-        background                 : /*!rtl:linear-gradient(to left, $primary 0px, $primary 8px, $white 8px, $white 100%)*/
-            linear-gradient(to right, $g-300 0px, $g-300 8px, $white 8px, $white 100%);
-        &.activated {
-            background : /*!rtl:linear-gradient(to left, $primary 0px, $primary 8px, $white 8px, $white 100%)*/
-                linear-gradient(to right, $active-green 0px, $active-green 8px, $white 8px, $white 100%);
-
-        }
-        &.disabled {
-            background : linear-gradient(to right, $g-400 0px, $g-400 8px, $white 8px, $white 100%) !important
-        }
-        transition-property        : all;
-        transition-duration        : .25s;
-        transition-timing-function : cubic-bezier(1, 0.5, 0.5, 1);
-
-    
-    }
+   
     a:not(.btn, .nav-tabs .nav-link) {
         color       : $g-900;
         font-weight : $font-weight-normal;
