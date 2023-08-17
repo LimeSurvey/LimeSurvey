@@ -1018,17 +1018,15 @@ class SurveyAdministrationController extends LSBaseController
                                     'icon' => 'ri-git-branch-fill icon',
                                     'url' => Yii::App()->createUrl("admin/conditions/sa/index/subaction/editconditionsform/surveyid/$iSurveyID/gid/$question->gid/qid/$question->qid")
                                 ];
-
-                            if ($hasdefaultvalues > 0) {
-                                $curQuestion['questionDropdown']['editDefault'] =
-                                    [
-                                        'id' => 'default_value_button',
-                                        'label' => gT("Edit default answers"),
-                                        'icon' => 'ri-grid-line',
-                                        'url' => Yii::App()->createUrl("questionAdministration/editdefaultvalues/surveyid/$iSurveyID/gid/$question->gid/qid/$question->qid")
-                                    ];
-                            }
                         }
+                        $curQuestion['questionDropdown']['editDefault'] =
+                            [
+                                'id' => 'default_value_button',
+                                'label' => gT("Edit default answers"),
+                                'icon' => $configData['hasSurveyContentUpdatePermission'] && $hasdefaultvalues > 0 ? 'ri-grid-line ' : 'ri-grid-line disable',
+                                'url' => Yii::App()->createUrl("questionAdministration/editdefaultvalues/surveyid/$iSurveyID/gid/$question->gid/qid/$question->qid"),
+                                'active' => $configData['hasSurveyContentUpdatePermission'] && $hasdefaultvalues > 0 ? 1 : 0
+                            ];
 
                         if ($configData['hasSurveyContentExportPermission']) {
                             $curQuestion['questionDropdown']['export'] =
