@@ -8,6 +8,7 @@ use LimeSurvey\ObjectPatch\Op\OpInterface;
 use LimeSurvey\ObjectPatch\Op\OpStandard;
 use LimeSurvey\ObjectPatch\OpHandler\OpHandlerException;
 use ls\tests\TestBaseClass;
+use ls\tests\unit\services\SurveyUpdater\GeneralSettings\GeneralSettingsMockSetFactory;
 use Survey;
 
 class OpHandlerSurveyUpdateTest extends TestBaseClass
@@ -20,11 +21,7 @@ class OpHandlerSurveyUpdateTest extends TestBaseClass
             OpHandlerException::class
         );
         $this->initializeWrongPatcher();
-        $opHandler = new OpHandlerSurveyUpdate(
-            'survey',
-            Survey::model(),
-            new TransformerInputSurvey()
-        );
+        $opHandler = $this->getOpHandler();
 
         $opHandler->handle($this->op);
     }
@@ -33,11 +30,7 @@ class OpHandlerSurveyUpdateTest extends TestBaseClass
     {
         $this->initializePatcher();
 
-        $opHandler = new OpHandlerSurveyUpdate(
-            'survey',
-            Survey::model(),
-            new TransformerInputSurvey()
-        );
+        $opHandler = $this->getOpHandler();
         self::assertTrue($opHandler->canHandle($this->op));
     }
 
@@ -45,11 +38,7 @@ class OpHandlerSurveyUpdateTest extends TestBaseClass
     {
         $this->initializeWrongPatcher();
 
-        $opHandler = new OpHandlerSurveyUpdate(
-            'survey',
-            Survey::model(),
-            new TransformerInputSurvey()
-        );
+        $opHandler = $this->getOpHandler();
         self::assertFalse($opHandler->canHandle($this->op));
     }
 
@@ -58,7 +47,7 @@ class OpHandlerSurveyUpdateTest extends TestBaseClass
         $this->op = OpStandard::factory(
             'survey',
             'update',
-            self::$testSurvey->sid,
+            12345,
             [
                 'expires' => '2020-01-01 00:00',
                 'ipanonymize' => true,
@@ -71,11 +60,25 @@ class OpHandlerSurveyUpdateTest extends TestBaseClass
         $this->op = OpStandard::factory(
             'survey',
             'create',
-            self::$testSurvey->sid,
+            12345,
             [
                 'xxx' => '2020-01-01 00:00',
                 'yyy' => true,
             ]
+        );
+    }
+
+    /**
+     * @return OpHandlerSurveyUpdate
+     */
+    private function getOpHandler()
+    {
+        $mockSet = (new GeneralSettingsMockSetFactory())->make();
+
+        return new OpHandlerSurveyUpdate(
+            'survey',
+            $mockSet->modelSurvey,
+            new TransformerInputSurvey()
         );
     }
 }
