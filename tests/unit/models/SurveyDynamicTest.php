@@ -21,11 +21,6 @@ class SurveyDynamicTest extends TestBaseClass
 
     public static function tearDownAfterClass(): void
     {
-        // Expire survey and delete response table.
-        self::$testSurvey->expire();
-        $responseTableName = \SurveyDynamic::model(self::$surveyId)->tableName();
-        \Yii::app()->db->createCommand()->dropTable($responseTableName);
-
         parent::tearDownAfterClass();
     }
 
