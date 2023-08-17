@@ -15250,6 +15250,9 @@ html, body {
 #outerframeContainer {
   min-height: 88%;
 }
+#outerframeContainer .main-content {
+  max-width: 750px;
+}
 
 .ls-logo {
   width: 30%;

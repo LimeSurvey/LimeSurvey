@@ -5,6 +5,10 @@ html, body {
 
 #outerframeContainer {
     min-height: 88%;
+
+    .main-content {
+        max-width: 750px;
+    }
 }
 
 .ls-logo {
