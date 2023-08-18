@@ -896,7 +896,13 @@ class Database extends SurveyCommonAction
             $oSurvey->owner_id == Yii::app()->session['loginID']
             || Permission::model()->hasGlobalPermission('superadmin', 'read')
         ) {
-            $oSurvey->owner_id = $request->getPost('owner_id');
+            $ownerId = $request->getPost('owner_id');
+            // Before setting the owner, check if the user exists and can be seen
+            // by the current user (in case the request was forged)
+            $owner = \User::model()->findByPk($ownerId);
+            if (isset($owner) && in_array($ownerId, getUserList('onlyuidarray'))) {
+                $oSurvey->owner_id = $ownerId;
+            }
         }
 
         // If the base language is changing, we may need the current title to avoid the survey
