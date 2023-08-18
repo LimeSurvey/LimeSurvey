@@ -665,6 +665,7 @@ JAVASCRIPT
     {
         $sNewName = sanitize_dirname(App()->getRequest()->getPost('newname'));
         $sOldName = sanitize_dirname(App()->getRequest()->getPost('copydir'));
+        $this->checkTemplateName($sNewName);
         if (Permission::model()->hasGlobalPermission('templates', 'update')) {
             if ($sNewName && $sOldName) {
                 $sNewDirectoryPath = Yii::app()->getConfig('userthemerootdir') . DIRECTORY_SEPARATOR . $sNewName;
@@ -709,6 +710,7 @@ JAVASCRIPT
 
         if (Permission::model()->hasGlobalPermission('templates', 'create')) {
             $newname = sanitize_dirname(Yii::app()->request->getPost("newname"));
+            $this->checkTemplateName($newname);
 
             Yii::import('application.helpers.SurveyThemeHelper');
             if (SurveyThemeHelper::isStandardTemplate($newname)) {
@@ -834,6 +836,7 @@ JAVASCRIPT
     public function deleteAvailableTheme()
     {
         $templatename = trim(App()->request->getPost('templatename', ''));
+        $templatename = urldecode($templatename);
 
         if (Permission::model()->hasGlobalPermission('templates', 'delete')) {
             $completeFileName = realpath(App()->getConfig('userthemerootdir') . "/" . $templatename);
@@ -1454,5 +1457,17 @@ JAVASCRIPT
             }
         }
         return null;
+    }
+
+    /**
+     * @param String $sNewName
+     * @return void
+     */
+    public function checkTemplateName($sNewName){
+        if (!Template::validateTemplateName($sNewName)) {
+            Yii::app()->setFlashMessage(sprintf(gT("Invalid theme name")), 'error');
+            Yii::app()->getController()->redirect(array('themeOptions/index'));
+            Yii::app()->end();
+        }
     }
 }

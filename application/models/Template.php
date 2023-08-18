@@ -48,6 +48,8 @@ class Template extends LSActiveRecord
     /** @var Template - The instance of template object */
     private static $instance;
 
+    public static $sTemplateNameRegex = '/^[a-zA-Z0-9_ -]+$/';
+
     /**
      * @return string the associated database table name
      */
@@ -64,7 +66,8 @@ class Template extends LSActiveRecord
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('name, title, creation_date', 'required'),
+            array('name', 'checkTemplateName'),
+            array('title, creation_date', 'required'),
             array('owner_id', 'numerical', 'integerOnly' => true),
             array('name, author, extends', 'length', 'max' => 150),
             array('folder, version, api_version, view_folder, files_folder', 'length', 'max' => 45),
@@ -75,6 +78,23 @@ class Template extends LSActiveRecord
             // @todo Please remove those attributes that should not be searched.
             array('name, folder, title, creation_date, author, author_email, author_url, copyright, license, version, api_version, view_folder, files_folder, description, last_update, owner_id, extends', 'safe', 'on' => 'search'),
         );
+    }
+
+    public function checkTemplateName($attributes, $params)
+    {
+        if (!Template::validateTemplateName($this->name)) {
+            Yii::app()->setFlashMessage(sprintf(gT("Invalid theme name")), 'error');
+            Yii::app()->getController()->redirect(array('themeOptions/index'));
+            Yii::app()->end();
+        }
+    }
+
+    public static function validateTemplateName($templateName)
+    {
+        if (!preg_match(Template::$sTemplateNameRegex, (string) $templateName)) {
+            return false;
+        }
+        return true;
     }
 
     /**
