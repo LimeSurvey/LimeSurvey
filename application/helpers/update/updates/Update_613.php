@@ -14,7 +14,7 @@ class Update_613 extends DatabaseUpdateBase
             'generalsettings' => 'ri-tools-line',
             'surveytexts' => 'ri-text-spacing',
             'datasecurity' => 'ri-shield-line',
-            'theme_options' => 'ri-brush-line',
+            'theme_options' => 'ri-contrast-drop-fill',
             'presentation' => 'ri-slideshow-line',
             'tokens' => 'ri-body-scan-fill',
             'notification' => 'ri-notification-line',
