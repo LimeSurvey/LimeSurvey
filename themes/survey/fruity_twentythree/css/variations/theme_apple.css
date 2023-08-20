@@ -10502,6 +10502,10 @@ textarea.form-control-lg {
   margin: 0 auto;
 }
 
+#welcome-container {
+  max-width: 750px;
+}
+
 .footer-wrapper {
   max-width: 750px;
 }
@@ -12903,6 +12907,7 @@ body {
   font-weight: 400;
   font-size: 1.14rem;
   line-height: 24px;
+  font-family: "IBMPlexSans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
 h1,
