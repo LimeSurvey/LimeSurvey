@@ -330,6 +330,10 @@ export default {
 
                     <div class="q-group d-flex nowrap ls-space padding right-5 bottom-5 bg-white ms-2 p-2"
                         v-on:mouseover="onMouseOverQuestionGroup($event, questiongroup)" v-on:mouseleave="onMouseLeave">
+                        <div class="cursor-pointer me-1"
+                            :style="isOpen(questiongroup.gid) ? 'transform: rotate(90deg)' : 'transform: rotate(0deg)'">
+                            <i class="ri-arrow-right-s-fill"></i>
+                        </div>
                         <div v-if="!surveyIsActive" class="bigIcons dragPointer me-3"
                             :class="allowOrganizer ? '' : 'disabled'" :draggable="allowOrganizer"
                             @dragend="endDraggingGroup($event, questiongroup)"
@@ -389,10 +393,7 @@ export default {
 
                                     </li>
                                 </ul>
-                                <div class="cursor-pointer"
-                                    :style="isOpen(questiongroup.gid) ? 'transform: rotate(90deg)' : 'transform: rotate(0deg)'">
-                                    <i class="ri-arrow-right-s-line"></i>
-                                </div>
+         
 
                             </div>
                         </div>
