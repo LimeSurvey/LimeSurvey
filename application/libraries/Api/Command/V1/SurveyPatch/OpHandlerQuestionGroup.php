@@ -83,6 +83,12 @@ class OpHandlerQuestionGroup implements OpHandlerInterface
         }
     }
 
+    /**
+     * Reads the operation type from the given operation,
+     * and sets the corresponding flags.
+     * @param OpInterface $op
+     * @return void
+     */
     private function setOperationTypes(OpInterface $op)
     {
         $this->isUpdateOperation = $op->getType()->getId() === OpTypeUpdate::ID;
@@ -90,8 +96,15 @@ class OpHandlerQuestionGroup implements OpHandlerInterface
         $this->isDeleteOperation = $op->getType()->getId() === OpTypeDelete::ID;
     }
 
+    /**
+     * Makes use of the transformers dependent on the passed structure of props
+     * @param OpInterface $op
+     * @return array|mixed
+     * @throws OpHandlerException
+     */
     private function getTransformedProps(OpInterface $op)
     {
+        $transformedProps = [];
         $props = $op->getProps();
         if (
             array_key_exists('questionGroupI10N', $props)

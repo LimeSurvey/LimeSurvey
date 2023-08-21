@@ -98,7 +98,7 @@ class QuestionGroupService
      * Checks permissions for updating, and returns a specific question group.
      * @param int $surveyId
      * @param int $questionGroupId
-     * @return array|\CActiveRecord|mixed|QuestionGroup
+     * @return QuestionGroup
      * @throws NotFoundException
      * @throws PermissionDeniedException
      */
