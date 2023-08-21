@@ -1463,7 +1463,8 @@ JAVASCRIPT
      * @param String $sNewName
      * @return void
      */
-    public function checkTemplateName($sNewName){
+    public function checkTemplateName($sNewName)
+    {
         if (!Template::validateTemplateName($sNewName)) {
             Yii::app()->setFlashMessage(sprintf(gT("Invalid theme name")), 'error');
             Yii::app()->getController()->redirect(array('themeOptions/index'));
