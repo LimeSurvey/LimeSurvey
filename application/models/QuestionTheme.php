@@ -427,14 +427,14 @@ class QuestionTheme extends LSActiveRecord
         ]);
 
         // override MetaData depending on directory
-        if (substr($pathToXmlFolder, 0, strlen($questionDirectories['coreQuestion'])) === $questionDirectories['coreQuestion']) {
+        if (substr($pathToXmlFolder, 0, strlen($questionDirectories[self::THEME_TYPE_CORE])) === $questionDirectories[self::THEME_TYPE_CORE]) {
             $questionMetaData['coreTheme'] = 1;
             $questionMetaData['image_path'] = App()->getConfig("imageurl") . '/screenshots/' . self::getQuestionThemeImageName($questionMetaData['questionType']);
         }
-        if (substr($pathToXmlFolder, 0, strlen($questionDirectories['customCoreTheme'])) === $questionDirectories['customCoreTheme']) {
+        if (substr($pathToXmlFolder, 0, strlen($questionDirectories[self::THEME_TYPE_CUSTOM])) === $questionDirectories[self::THEME_TYPE_CUSTOM]) {
             $questionMetaData['coreTheme'] = 1;
         }
-        if (substr($pathToXmlFolder, 0, strlen($questionDirectories['customUserTheme'])) === $questionDirectories['customUserTheme']) {
+        if (substr($pathToXmlFolder, 0, strlen($questionDirectories[self::THEME_TYPE_USER])) === $questionDirectories[self::THEME_TYPE_USER]) {
             $questionMetaData['coreTheme'] = 0;
         }
 
@@ -460,15 +460,15 @@ class QuestionTheme extends LSActiveRecord
         $questionDirectories = self::getQuestionThemeDirectories();
         $questionDirectoriesAndPaths = [];
         if ($core) {
-            $coreQuestionsPath = $questionDirectories['coreQuestion'];
+            $coreQuestionsPath = $questionDirectories[self::THEME_TYPE_CORE];
             $selectedQuestionDirectories[] = $coreQuestionsPath;
         }
         if ($custom) {
-            $customQuestionThemesPath = $questionDirectories['customCoreTheme'];
+            $customQuestionThemesPath = $questionDirectories[self::THEME_TYPE_CUSTOM];
             $selectedQuestionDirectories[] = $customQuestionThemesPath;
         }
         if ($user) {
-            $userQuestionThemesPath = $questionDirectories['customUserTheme'];
+            $userQuestionThemesPath = $questionDirectories[self::THEME_TYPE_USER];
             if (!is_dir($userQuestionThemesPath)) {
                 mkdir($userQuestionThemesPath, 0777, true);
             }
@@ -701,9 +701,9 @@ class QuestionTheme extends LSActiveRecord
      */
     public static function getQuestionThemeDirectories()
     {
-        $questionThemeDirectories['coreQuestion'] = App()->getConfig('corequestiontypedir') . '/survey/questions/answer';
-        $questionThemeDirectories['customCoreTheme'] = App()->getConfig('customquestionthemedir');
-        $questionThemeDirectories['customUserTheme'] = App()->getConfig('userquestionthemerootdir');
+        $questionThemeDirectories[self::THEME_TYPE_CORE] = App()->getConfig('corequestiontypedir') . '/survey/questions/answer';
+        $questionThemeDirectories[self::THEME_TYPE_CUSTOM] = App()->getConfig('customquestionthemedir');
+        $questionThemeDirectories[self::THEME_TYPE_USER] = App()->getConfig('userquestionthemerootdir');
 
         return $questionThemeDirectories;
     }
