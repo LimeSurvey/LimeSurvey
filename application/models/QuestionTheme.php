@@ -427,14 +427,14 @@ class QuestionTheme extends LSActiveRecord
         ]);
 
         // override MetaData depending on directory
-        if (substr($pathToXmlFolder, 0, strlen($questionDirectories[self::THEME_TYPE_CORE])) === $questionDirectories[self::THEME_TYPE_CORE]) {
+        if (substr($pathToXmlFolder, 0, strlen((string) $questionDirectories[self::THEME_TYPE_CORE])) === $questionDirectories[self::THEME_TYPE_CORE]) {
             $questionMetaData['coreTheme'] = 1;
             $questionMetaData['image_path'] = App()->getConfig("imageurl") . '/screenshots/' . self::getQuestionThemeImageName($questionMetaData['questionType']);
         }
-        if (substr($pathToXmlFolder, 0, strlen($questionDirectories[self::THEME_TYPE_CUSTOM])) === $questionDirectories[self::THEME_TYPE_CUSTOM]) {
+        if (substr($pathToXmlFolder, 0, strlen((string) $questionDirectories[self::THEME_TYPE_CUSTOM])) === $questionDirectories[self::THEME_TYPE_CUSTOM]) {
             $questionMetaData['coreTheme'] = 1;
         }
-        if (substr($pathToXmlFolder, 0, strlen($questionDirectories[self::THEME_TYPE_USER])) === $questionDirectories[self::THEME_TYPE_USER]) {
+        if (substr($pathToXmlFolder, 0, strlen((string) $questionDirectories[self::THEME_TYPE_USER])) === $questionDirectories[self::THEME_TYPE_USER]) {
             $questionMetaData['coreTheme'] = 0;
         }
 
