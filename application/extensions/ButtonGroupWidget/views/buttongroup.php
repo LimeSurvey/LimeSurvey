@@ -9,7 +9,7 @@
  */
 ?>
 
-<div class="btn-group <?= $htmlOptions['class'] ?? '' ?>"
+<div class="btn-group <?= $htmlOptions['class'] ?? '' ?>" data-bs-toggle="tooltip" title="<?= $htmlOptions['title'] ?? '' ?>"
      id="<?= $id ?>" role="group"
      aria-label="<?= $ariaLabel ?? '' ?>"
     <?= isset($htmlOptions['data-url']) ? "data-url='" . $htmlOptions["data-url"] . "'" : '' ?>>
