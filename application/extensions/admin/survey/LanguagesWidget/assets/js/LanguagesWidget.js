@@ -164,10 +164,7 @@ $.fn.select2.amd.define(
       data.selected = false;
 
       if (data.isBaseLanguage) {
-        LS.LsGlobalNotifier.create(
-          this.messages.cannotRemoveBaseLanguage,
-          'well-lg bg-danger text-center'
-        );
+        LS.LsGlobalNotifier.createAlert(this.messages.cannotRemoveBaseLanguage, 'danger', {showCloseButton: true});
         return;
       } else {
         $.fn.bsconfirm(

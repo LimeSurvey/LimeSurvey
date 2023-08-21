@@ -523,6 +523,15 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['ko']['radixpoint'] = 0;
     $supportedLanguages['ko']['momentjs'] = 'ko';
 
+    // Khmer
+    $supportedLanguages['km']['description'] = gT('Khmer');
+    $supportedLanguages['km']['nativedescription'] = 'Khmer';
+    $supportedLanguages['km']['rtl'] = false;
+    $supportedLanguages['km']['dateformat'] = 5;
+    $supportedLanguages['km']['radixpoint'] = 1;
+    $supportedLanguages['km']['cldr'] = 'km';
+    $supportedLanguages['km']['momentjs'] = null;
+
     // Kirundi
     $supportedLanguages['run']['description'] = gT('Kirundi');
     $supportedLanguages['run']['nativedescription'] = 'Ikirundi';
