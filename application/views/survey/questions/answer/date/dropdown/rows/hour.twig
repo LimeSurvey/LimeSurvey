@@ -7,21 +7,23 @@
  */
 #}
 <!-- hour -->
-<label for="hour{{ hourId }}" class="sr-only control-label">
-    {{ gT('Hour') }}
-</label>
-<select id="hour{{ hourId }}" name="hour{{ hourId }}" class="hour form-control">
-    <option value="">{{ gT('Hour') }}</option>
-    {% for i in 0..23 %}
-        {# currenthour are sent as padded integer ( '00','01'), i is integer, need testing !== '' and intval #}
-        <option value="{{ i }}"{% if (currenthour is not same as('') and i == intval(currenthour)) %} selected{% endif %}>
-            {% if (datepart=='H') %}
-                {{sprintf('%02d', i)}}
-            {% else %}
-                {{ i }}
-            {% endif %}
-        </option>
-    {% endfor %}
-</select>
-
+<div class="col-12">
+    <label for="hour{{ hourId }}" class="visually-hidden control-label">
+        {{ gT('Hour') }}
+    </label>
+    <select id="hour{{ hourId }}" name="hour{{ hourId }}" class="hour form-select">
+        <option value="">{{ gT('Hour') }}</option>
+        {% for i in 0..23 %}
+            {# currenthour are sent as padded integer ( '00','01'), i is integer, need testing !== '' and intval #}
+            <option
+                value="{{ i }}"{% if (currenthour is not same as('') and i == intval(currenthour)) %} selected{% endif %}>
+                {% if (datepart=='H') %}
+                    {{ sprintf('%02d', i) }}
+                {% else %}
+                    {{ i }}
+                {% endif %}
+            </option>
+        {% endfor %}
+    </select>
+</div>
 <!-- end of hour -->

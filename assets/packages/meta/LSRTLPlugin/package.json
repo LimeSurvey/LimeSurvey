@@ -8,9 +8,9 @@
   "license": "GPL-2.0-or-later",
   "dependencies": {
     "lodash": "^4.17.15",
-    "rtlcss": "^2.4.0"
+    "rtlcss": "^3.5.0"
   },
   "devDependencies": {
-    "webpack-sources": "^1.4.3"
+    "webpack-sources": "^3.2.3"
   }
 }

@@ -582,7 +582,7 @@
             <readonly_when_active></readonly_when_active>
         </attribute>
         <!-- Timer Attributes END -->
-        <!-- Input Atributes START -->
+        <!-- Input Attributes START -->
         <attribute>
             <name>maximum_chars</name>
             <category>Input</category>
@@ -596,7 +596,7 @@
             <readonly_when_active></readonly_when_active>
             <expression></expression>
         </attribute>
-        <!-- Input Atributes END -->
+        <!-- Input Attributes END -->
     </attributes>
 
     <!-- Core question js/css configuration -->

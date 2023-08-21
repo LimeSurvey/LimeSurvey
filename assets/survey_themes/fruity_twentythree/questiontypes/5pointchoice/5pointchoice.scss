@@ -1,0 +1,7 @@
+.choice-5-pt-radio {
+    @media screen and (max-width: 767px) {
+        .list-group-horizontal {
+            flex-direction : column;
+        }
+    }
+}

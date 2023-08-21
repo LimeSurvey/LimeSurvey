@@ -1,20 +1,14 @@
 <script>
-import $ from 'jquery';
 import _ from "lodash";
 import ajaxMixin from "../mixins/runAjax.js";
-import pjaxMixins from "../mixins/pjaxMixins.js";
-import Questionexplorer from "./subcomponents/questionexplorer/_questionExplorer.vue";
+import Questionexplorer from "./subcomponents/_questionsgroups.vue";
 import SidebarStateToggle from "./subcomponents/_sidebarStateToggle.vue";
 import Sidemenu from "./subcomponents/_sidemenu.vue";
 import Quickmenu from "./subcomponents/_quickmenu.vue";
-import EventBus from "../../eventbus.js";
 
 export default {
-    name: 'SideBar',
     props: {
         landOnTab: String,
-        isSideMenuElementActive: Boolean,
-        activeSideMenuElement: String,
     },
     components: {
         questionexplorer: Questionexplorer,
@@ -22,7 +16,7 @@ export default {
         quickmenu: Quickmenu,
         SidebarStateToggle
     },
-    mixins: [ajaxMixin, pjaxMixins],
+    mixins: [ajaxMixin],
     data() {
         return {
             activeMenuIndex: 0,
@@ -42,9 +36,7 @@ export default {
     },
     computed: {
         useMobileView() { return window.innerWidth < 768; },
-        isActive() {
-            return this.$store.state.SideMenuData.isActive;
-        },
+        isActive(){ return window.SideMenuData.isActive; },
         questiongroups() { return this.$store.state.questiongroups },
         sidemenus: {
             get(){return this.$store.state.sidemenus; },
@@ -56,15 +48,13 @@ export default {
         },
         currentTab: {
             get() { return this.$store.state.currentTab; },
-            set(tab) {
-                this.$store.commit("changeCurrentTab", tab);
-            }
+            set(tab) { this.$store.commit("changeCurrentTab", tab); }
         },
         getSideBarWidth() {
             return this.$store.getters.isCollapsed ? "98" : this.sideBarWidth;
         },
         sortedMenus() {
-            return _.orderBy(
+            return LS.ld.orderBy(
                 this.menues,
                 a => {
                     return parseInt(a.order || 999999);
@@ -86,7 +76,7 @@ export default {
         },
         calculateSideBarMenuHeight() {
             let currentSideBar = this.$store.state.sideBarHeight;
-            return _.min(currentSideBar, Math.floor(screen.height * 2)) + "px";
+            return LS.ld.min(currentSideBar, Math.floor(screen.height * 2)) + "px";
         },
         getWindowHeight() {
             return screen.height * 2 + "px";
@@ -107,10 +97,10 @@ export default {
         },
         changedQuestionGroupOrder() {
             const self = this;
-            const onlyGroupsArray = _.map(
+            const onlyGroupsArray = LS.ld.map(
                 this.questiongroups,
                 (questiongroup, count) => {
-                    const questions = _.map(
+                    const questions = LS.ld.map(
                         questiongroup.questions,
                         (question, i) => {
                             return {
@@ -159,9 +149,9 @@ export default {
 
             //Check for corresponding menuItem
             let lastMenuItemObject = false;
-            _.each(this.sidemenus, (itm, i) => {
-                _.each(itm.entries, (itmm, j) => {
-                    lastMenuItemObject = _.endsWith(currentUrl, itmm.link)
+            LS.ld.each(this.sidemenus, (itm, i) => {
+                LS.ld.each(itm.entries, (itmm, j) => {
+                    lastMenuItemObject = LS.ld.endsWith(currentUrl, itmm.link)
                         ? itmm
                         : lastMenuItemObject;
                 });
@@ -169,9 +159,9 @@ export default {
 
             //check for quickmenu menuLinks
             let lastQuickMenuItemObject = false;
-            _.each(this.collapsedmenus, (itm, i) => {
-                _.each(itm.entries, (itmm, j) => {
-                    lastQuickMenuItemObject = _.endsWith(currentUrl, itmm.link)
+            LS.ld.each(this.collapsedmenus, (itm, i) => {
+                LS.ld.each(itm.entries, (itmm, j) => {
+                    lastQuickMenuItemObject = LS.ld.endsWith(currentUrl, itmm.link)
                         ? itmm
                         : lastQuickMenuItemObject;
                 });
@@ -179,7 +169,7 @@ export default {
 
             //check for corresponding question group object
             let lastQuestionGroupObject = false;
-            _.each(this.questiongroups, (itm, i) => {
+            LS.ld.each(this.questiongroups, (itm, i) => {
                 let regTest = new RegExp(
                     'questionGroupsAdministration/view\\?surveyid=\\d*&gid=' + itm.gid +
                     '|questionGroupsAdministration/edit\\?surveyid=\\d*&gid=' + itm.gid +
@@ -187,15 +177,18 @@ export default {
                     '|questionGroupsAdministration/edit/surveyid/\\d*/gid/' + itm.gid
                 );
                 lastQuestionGroupObject =
-                    regTest.test(currentUrl) || _.endsWith(currentUrl, itm.link)
+                    regTest.test(currentUrl) || LS.ld.endsWith(currentUrl, itm.link)
                         ? itm
                         : lastQuestionGroupObject;
+                if (lastQuestionGroupObject !== false) {
+                    return false;
+                }
             });
 
             //check for corresponding question group
             let lastQuestionObject = false;
-            _.each(this.questiongroups, (itm, i) => {
-                _.each(itm.questions, (itmm, j) => {
+            LS.ld.each(this.questiongroups, (itm, i) => {
+                LS.ld.each(itm.questions, (itmm, j) => {
                     let regTest = new RegExp(
                         'questionAdministration/edit\\?questionId=' + itmm.qid +
                         '|questionAdministration/view\\?surveyid=\\d*&gid=\\d*&qid=' + itmm.qid +
@@ -203,14 +196,19 @@ export default {
                         '|questionAdministration/view/surveyid/\\d*/gid/\\d*/qid/' + itmm.qid
                     );
                     lastQuestionObject =
-                        _.endsWith(currentUrl, itmm.link) ||
+                        LS.ld.endsWith(currentUrl, itmm.link) ||
                         regTest.test(currentUrl)
                             ? itmm
                             : lastQuestionObject;
                     if (lastQuestionObject != false) {
                         lastQuestionGroupObject = itm;
+                        return false;
                     }
                 });
+                if (lastQuestionObject != false) {
+                    lastQuestionGroupObject = itm;
+                    return false;
+                }
             });
 
             //unload every selection
@@ -225,8 +223,6 @@ export default {
                 this.$store.getters.isCollapsed == true
             )
                 this.$store.commit("lastMenuItemOpen", lastQuickMenuItemObject);
-            if (lastQuestionObject != false)
-                this.$store.commit("lastQuestionOpen", lastQuestionObject);
             if (lastQuestionGroupObject != false) {
                 this.$store.commit(
                     "lastQuestionGroupOpen",
@@ -237,6 +233,8 @@ export default {
                     lastQuestionGroupObject
                 );
             }
+            if (lastQuestionObject != false)
+                this.$store.commit("lastQuestionOpen", lastQuestionObject);
         },
         editEntity() {
             this.setActiveMenuIndex(null, "question");
@@ -323,7 +321,7 @@ export default {
                         this.$store.commit("maxSideBarWidth", true);
                         return;
                     }
-                    self.sideBarWidth = e.pageX + 8 + "px";
+                    self.sideBarWidth = e.pageX - 4 + "px";
                     this.$store.commit("changeSidebarwidth", self.sideBarWidth);
                     this.$store.commit("maxSideBarWidth", false);
                 }
@@ -332,10 +330,10 @@ export default {
                 self.isMouseDownTimeOut = null;
             }
         },
-        setBaseMenuPosition(entries, position) {
+        setBaseMenuPosition(entries, position){
             switch(position) {
                 case 'side' : 
-                    this.sidemenus = _.orderBy(
+                    this.sidemenus = LS.ld.orderBy(
                         entries,
                         a => {
                             return parseInt(a.order || 999999);
@@ -344,7 +342,7 @@ export default {
                     );
                     break;
                 case 'collapsed':
-                    this.collapsedmenus = _.orderBy(
+                    this.collapsedmenus = LS.ld.orderBy(
                         entries,
                         a => {
                             return parseInt(a.order || 999999);
@@ -362,23 +360,7 @@ export default {
             }
 
             this.currentTab = tab;
-        },
-        /**
-         * Filters against the active menus in sidemenu.
-         * It will return the actual index of it.
-         * @param {bool} isSideMenuActive Activity state of the sidemenu 
-         * @return int
-         */
-        filterAgainstMenus(isSideMenuActive) {
-            let result = 0;
-            if (isSideMenuActive) {
-                let sidemenu = self.sidemenus;
-                result = _.findIndex(sidemenu, function(element) {
-                    return element.name == self.activeSideMenuElement;
-                });
-            }
-            return result;
-        },
+        }
     },
     created() {
         const self = this;
@@ -386,32 +368,31 @@ export default {
             this.$store.commit("changeIsCollapsed", false);
         }
         self.$store.commit('setSurveyActiveState', (parseInt(this.isActive)===1));
+        // self.$log.debug(this.$store.state);
         this.activeMenuIndex = this.$store.state.lastMenuOpen;
         if (this.$store.getters.isCollapsed) {
             this.sideBarWidth = "98";
         } else {
+          console.log('Created: ' + self.$store.state.sidebarwidth);
             this.sideBarWidth = self.$store.state.sidebarwidth;
         }
-        _.each(this.$store.state.SideMenuData.basemenus, this.setBaseMenuPosition);
-
-        // select right menu entry
-        this.activeMenuIndex = this.filterAgainstMenus(this.isSideMenuActive);
+        LS.ld.each(window.SideMenuData.basemenus, this.setBaseMenuPosition)
     },
     mounted() {
         const self = this;
 
-        EventBus.$on('updateSideBar', (payload) => {
+        LS.EventBus.$on('updateSideBar', (payload) => {
             this.loading = true;
             const promises = [
                 Promise.resolve()
             ];
-            if (payload.updateQuestions) {
+            if(payload.updateQuestions) {
                 promises.push(this.$store.dispatch('getQuestions'));
             }
-            if (payload.collectMenus) {
+            if(payload.collectMenus) {
                 promises.push(this.$store.dispatch('collectMenus'));
             }
-            if (payload.activeMenuIndex) {
+            if(payload.activeMenuIndex) {
                 this.controlActiveLink();
                 promises.push(Promise.resolve());
             }
@@ -425,6 +406,7 @@ export default {
                 })
         });
 
+
         $(document).trigger("sidebar:mounted");
         //Calculate the sidebar height and bin it to the resize event
         self.calculateHeight(self);
@@ -432,8 +414,9 @@ export default {
             self.calculateHeight(self);
         });
         
+
         $(document).on("pjax:send", () => {
-            if (this.useMobileView && this.smallScreenHidden) {
+            if(this.useMobileView && this.smallScreenHidden) {
                 this.smallScreenHidden = false
             }
         });
@@ -446,7 +429,7 @@ export default {
             this.$log.log('vue-reload-remote');
             this.$store.dispatch('getQuestions');
             this.$store.dispatch('collectMenus');
-            this.updatePjaxLinks(this.$store);
+            this.updatePjaxLinks();
         });
 
         $(document).on("vue-redraw", () => {
@@ -457,7 +440,7 @@ export default {
 
         //control the active link
         this.controlActiveLink();
-        this.updatePjaxLinks(this.$store);
+        this.updatePjaxLinks();
         $("body").on("mousemove", event => {
             self.mousemove(event, self);
         });
@@ -470,12 +453,13 @@ export default {
             this.controlActiveLink();
         });
     }
-}
+};
 </script>
+
 <template>
     <div 
         id="sidebar" 
-        class="ls-flex ls-ba ls-space padding left-0 col-md-4 nofloat transition-animate-width scoped-hide-on-small" 
+        class="d-flex col-lg-4 ls-ba position-relative transition-animate-width"
         :class=" smallScreenHidden ? 'toggled' : ''"
         :style="{'max-height': $store.state.inSurveyViewHeight, 'display': hiddenStateToggleDisplay}" 
         @mouseleave="mouseleave" 
@@ -489,15 +473,14 @@ export default {
                 :style="{width: getSideBarWidth, height: getloaderHeight}" 
             >
                 <div class="ls-flex ls-flex-column fill align-content-center align-items-center">
-                    <i class="fa fa-circle-o-notch fa-2x fa-spin"></i>
+                    <i class="ri-loader-2-fill remix-2x remix-spin"></i>
                 </div>
             </div>
             <div 
-                class="col-12 fill-height ls-space padding all-0 mainContentContainer" 
-                style="height: 100%" 
+                class="col-12 mainContentContainer"
                 key="mainContentContainer"
             >
-                <div class="mainMenu container-fluid col-12 ls-space padding right-0 fill-height">
+                <div class="mainMenu col-12 position-relative" >
                     <sidebar-state-toggle @collapse="toggleCollapse"/>
                     <transition name="slide-fade">
                         <sidemenu 
@@ -517,38 +500,36 @@ export default {
                             @questiongrouporder="changedQuestionGroupOrder"
                         />
                     </transition>
-                    <transition name="slide-fade">
-                        <quickmenu 
-                            v-show="$store.getters.isCollapsed" 
-                            :loading="loading" 
-                            :style="{'min-height': calculateSideBarMenuHeight}" 
-                            @changeLoadingState="applyLoadingState" 
-                        />
-                    </transition>
-                </div>
-            </div>
-        </template>
-        <div 
+                    <div 
             v-if="(useMobileView && !smallScreenHidden) || !useMobileView"
             class="resize-handle ls-flex-column" 
             key="resizeHandle"
-            :style="{'height': calculateSideBarMenuHeight, 'max-height': getWindowHeight}" 
+            :style="{'height': calculateSideBarMenuHeight}"
         >
             <button 
                 v-show="!$store.getters.isCollapsed" 
-                class="btn btn-default" 
+                class="btn " 
                 @mousedown="mousedown" @click.prevent="()=>{return false;}"
             >
-                <i class="fa fa-ellipsis-v" />
+              <svg width="9" height="14" viewBox="0 0 9 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M0.4646 0.125H3.24762V2.625H0.4646V0.125ZM6.03064 0.125H8.81366V2.625H6.03064V0.125ZM0.4646 5.75H3.24762V8.25H0.4646V5.75ZM6.03064 5.75H8.81366V8.25H6.03064V5.75ZM0.4646 11.375H3.24762V13.875H0.4646V11.375ZM6.03064 11.375H8.81366V13.875H6.03064V11.375Z" fill="currentColor"/>
+              </svg>
             </button>
         </div>
+                </div>
+            </div>
+        </template>
+      
         <div class="scoped-placeholder-greyed-area" 
             v-if="(useMobileView && smallScreenHidden)" 
             @click="toggleSmallScreenHide" 
             v-html="' '"
         />
+        <!-- this is used for fixing resize handler bug -->
+        <div v-if="isMouseDown" style="position:fixed; inset: 0;" />
     </div>
     
+
 </template>
 <style lang="scss" scoped>
     .sidebar_loader {

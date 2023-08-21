@@ -304,7 +304,7 @@
     <gid><![CDATA[297]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[sq1]]></title>
-    <question><![CDATA[First sub-question]]></question>
+    <question><![CDATA[First subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -322,7 +322,7 @@
     <gid><![CDATA[297]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[sq2]]></title>
-    <question><![CDATA[Second sub-question]]></question>
+    <question><![CDATA[Second subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -340,7 +340,7 @@
     <gid><![CDATA[297]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[sq3]]></title>
-    <question><![CDATA[Third sub-question]]></question>
+    <question><![CDATA[Third subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -358,7 +358,7 @@
     <gid><![CDATA[297]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[sq4]]></title>
-    <question><![CDATA[Fourth sub-question]]></question>
+    <question><![CDATA[Fourth subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -376,7 +376,7 @@
     <gid><![CDATA[297]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[sq5]]></title>
-    <question><![CDATA[Fifth sub-question]]></question>
+    <question><![CDATA[Fifth subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -394,7 +394,7 @@
     <gid><![CDATA[297]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[sq1]]></title>
-    <question><![CDATA[First sub-question]]></question>
+    <question><![CDATA[First subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -412,7 +412,7 @@
     <gid><![CDATA[297]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[sq2]]></title>
-    <question><![CDATA[Second sub-question]]></question>
+    <question><![CDATA[Second subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -430,7 +430,7 @@
     <gid><![CDATA[297]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[sq3]]></title>
-    <question><![CDATA[Third sub-question]]></question>
+    <question><![CDATA[Third subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -448,7 +448,7 @@
     <gid><![CDATA[297]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[sq4]]></title>
-    <question><![CDATA[Fourth sub-question]]></question>
+    <question><![CDATA[Fourth subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -466,7 +466,7 @@
     <gid><![CDATA[297]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[sq5]]></title>
-    <question><![CDATA[Fifth sub-question]]></question>
+    <question><![CDATA[Fifth subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -484,7 +484,7 @@
     <gid><![CDATA[297]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[sq1]]></title>
-    <question><![CDATA[First sub-question]]></question>
+    <question><![CDATA[First subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -502,7 +502,7 @@
     <gid><![CDATA[297]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[sq2]]></title>
-    <question><![CDATA[Second sub-question]]></question>
+    <question><![CDATA[Second subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -520,7 +520,7 @@
     <gid><![CDATA[297]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[sq3]]></title>
-    <question><![CDATA[Third sub-question]]></question>
+    <question><![CDATA[Third subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -538,7 +538,7 @@
     <gid><![CDATA[297]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[sq4]]></title>
-    <question><![CDATA[Fourth sub-question]]></question>
+    <question><![CDATA[Fourth subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -556,7 +556,7 @@
     <gid><![CDATA[297]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[sq5]]></title>
-    <question><![CDATA[Fifth sub-question]]></question>
+    <question><![CDATA[Fifth subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -574,7 +574,7 @@
     <gid><![CDATA[298]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[sq1]]></title>
-    <question><![CDATA[First sub-question]]></question>
+    <question><![CDATA[First subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -592,7 +592,7 @@
     <gid><![CDATA[298]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[sq2]]></title>
-    <question><![CDATA[Second sub-question]]></question>
+    <question><![CDATA[Second subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -610,7 +610,7 @@
     <gid><![CDATA[298]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[sq3]]></title>
-    <question><![CDATA[Third sub-question]]></question>
+    <question><![CDATA[Third subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -628,7 +628,7 @@
     <gid><![CDATA[298]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[sq4]]></title>
-    <question><![CDATA[Fourth sub-question]]></question>
+    <question><![CDATA[Fourth subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -646,7 +646,7 @@
     <gid><![CDATA[298]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[sq5]]></title>
-    <question><![CDATA[Fifth sub-question]]></question>
+    <question><![CDATA[Fifth subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -664,7 +664,7 @@
     <gid><![CDATA[298]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[sq1]]></title>
-    <question><![CDATA[First sub-question]]></question>
+    <question><![CDATA[First subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -682,7 +682,7 @@
     <gid><![CDATA[298]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[sq2]]></title>
-    <question><![CDATA[Second sub-question]]></question>
+    <question><![CDATA[Second subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -700,7 +700,7 @@
     <gid><![CDATA[298]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[sq3]]></title>
-    <question><![CDATA[Third sub-question]]></question>
+    <question><![CDATA[Third subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -718,7 +718,7 @@
     <gid><![CDATA[298]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[sq4]]></title>
-    <question><![CDATA[Fourth sub-question]]></question>
+    <question><![CDATA[Fourth subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -736,7 +736,7 @@
     <gid><![CDATA[298]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[sq5]]></title>
-    <question><![CDATA[Fifth sub-question]]></question>
+    <question><![CDATA[Fifth subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -754,7 +754,7 @@
     <gid><![CDATA[297]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[sq1]]></title>
-    <question><![CDATA[First sub-question]]></question>
+    <question><![CDATA[First subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -772,7 +772,7 @@
     <gid><![CDATA[297]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[sq2]]></title>
-    <question><![CDATA[Second sub-question]]></question>
+    <question><![CDATA[Second subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -790,7 +790,7 @@
     <gid><![CDATA[297]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[sq3]]></title>
-    <question><![CDATA[Third sub-question]]></question>
+    <question><![CDATA[Third subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -808,7 +808,7 @@
     <gid><![CDATA[297]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[sq4]]></title>
-    <question><![CDATA[Fourth sub-question]]></question>
+    <question><![CDATA[Fourth subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -826,7 +826,7 @@
     <gid><![CDATA[297]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[sq5]]></title>
-    <question><![CDATA[Fifth sub-question]]></question>
+    <question><![CDATA[Fifth subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>

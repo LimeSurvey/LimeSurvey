@@ -10,50 +10,26 @@
  * @var $value                          $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$name]
  */
 #}
-<ul class="{{ coreClass }} list-unstyled btn-group btn-group-justified" data-toggle="buttons" role="radiogroup" aria-labelledby="ls-question-text-{{ basename }}">
-    <!-- Yes -->
-    <li id="javatbd{{ name }}Y" class="button-item form-group btn btn-primary {% if yChecked %}active{% endif %}">
-        <input
-            type="radio"
-            name="{{ name }}"
-            id="answer{{ name }}Y"
-            value="Y"
-            {{ yChecked }}
-        />
-        <label for="answer{{ name }}Y">
-            <span class="fa fa-check ls-icon" aria-hidden="true"></span> {{ gT('Yes') }}
-        </label>
-    </li>
-    <!-- No -->
-    <li id="javatbd{{ name }}N" class="button-item form-group btn btn-primary {% if nChecked %}active{% endif %}">
-        <input
-            type="radio"
-            name="{{ name }}"
-            id="answer{{ name }}N"
-            value="N"
-            {{ nChecked }}
-        />
-        <label for="answer{{ name }}N">
-            <span class="fa fa-ban ls-icon" aria-hidden="true"></span> {{ gT('No') }}
-        </label>
-    </li>
 
+<div class="ls-answers answers-list yesno-button btn-group btn-group-justified" role="radiogroup" aria-labelledby="ls-question-text-{{ basename }}">
+    <!-- Yes -->
+    <input type="radio" class="btn-check ls-button-radio" name="{{ name }}" id="answer{{ name }}Y" value="Y" {{ yChecked }}>
+    <label class="btn btn-primary mb-3 answer-item ls-button-label" id="javatbd{{ name }}Y" for="answer{{ name }}Y">
+        <span class="fa fa-check ls-icon ri-checkbox-circle-line" aria-hidden="true"></span> {{ gT('Yes') }}
+    </label>
+    <!-- No -->
+    <input type="radio" class="btn-check ls-button-radio" name="{{ name }}" id="answer{{ name }}N" value="N" {{ nChecked }}>
+    <label class="btn btn-primary mb-3 answer-item ls-button-label" id="javatbd{{ name }}N" for="answer{{ name }}N">
+        <span class="fa fa-ban ri-close-circle-line ls-icon" aria-hidden="true"></span> {{ gT('No') }}
+    </label>
     <!-- No answer -->
     {% if noAnswer %}
-        <li id="javatbd{{ name }}" class="button-item form-group btn btn-primary {% if naChecked %}active{% endif %}">
-            <input
-                type="radio"
-                name="{{ name }}"
-                id="answer{{ name }}"
-                value=""
-                {{ naChecked }}
-            />
-            <label for="answer{{ name }}">
-                <span class="fa fa-circle-thin ls-icon" aria-hidden="true"></span> {{ gT('No answer') }}
-            </label>
-        </li>
+        <input type="radio" class="btn-check ls-button-radio" name="{{ name }}" id="answer{{ name }}" value="" {{ naChecked }}>
+        <label class="btn btn-primary mb-3 answer-item ls-button-label" id="javatbd{{ name }}" for="answer{{ name }}">
+            <span class="fa fa-circle-thin ri-checkbox-blank-circle-line ls-icon" aria-hidden="true"></span> {{ gT('No answer') }}
+        </label>
     {% endif %}
-</ul>
+</div>
 {# Value for expression manager javascript (use id) ; no need to submit #}
 {{ C.Html.hiddenField("java"~name,value,({
     'id' : "java"~name,

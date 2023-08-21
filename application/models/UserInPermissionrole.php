@@ -3,7 +3,7 @@
 /**
  * This is the model class for table "{{user_in_permissionrole}}".
  *
- * The followings are the available columns in table '{{user_in_permissionrole}}':
+ * The following are the available columns in table '{{user_in_permissionrole}}':
  * @property integer $ptid
  * @property integer $uid
  */
@@ -54,6 +54,8 @@ class UserInPermissionrole extends CActiveRecord
         return array(
             'ptid' => 'Ptid',
             'uid' => 'Uid',
+            'name' => gT('Name'),
+            'description' => gT('Description')
         );
     }
 

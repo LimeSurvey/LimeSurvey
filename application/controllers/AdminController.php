@@ -19,8 +19,8 @@ class AdminController extends LSYii_Controller
     public $layout = false;
     public $aAdminModulesClasses = array();
     protected $user_id = 0;
-    protected $aOverridenCoreActions = array(); // Contains the list of controller's actions overriden by custom modules
-    protected $currentModuleAction = '';        // Name of the current action overriden by a custom module
+    protected $aOverridenCoreActions = array(); // Contains the list of controller's actions overridden by custom modules
+    protected $currentModuleAction = '';        // Name of the current action overridden by a custom module
 
     /**
      * Initialises this controller, does some basic checks and setups
@@ -203,7 +203,7 @@ class AdminController extends LSYii_Controller
     }
 
     /**
-     * Starting with LS4, 3rd party developper can extends any of the LimeSurve controllers.
+     * Starting with LS4, 3rd party developer can extends any of the LimeSurve controllers.
      *
      *  REFACTORED ( in LSBaseController)
      *
@@ -243,7 +243,7 @@ class AdminController extends LSYii_Controller
     {
         if (!empty($this->currentModuleAction)) {
           // Standard: the views are stored in a folder that has the same name as the controler file.
-          // TODO: check if it is the case for all controllers, if not normalize it, so 3rd party coder can easely extend any LS Core controller/action/view.
+          // TODO: check if it is the case for all controllers, if not normalize it, so 3rd party coder can easily extend any LS Core controller/action/view.
             $sParsedView = explode(DIRECTORY_SEPARATOR, $view);
             $sAction = (empty($sParsedView[1])) ? '' : $sParsedView[1];
 
@@ -278,10 +278,10 @@ class AdminController extends LSYii_Controller
             $aActions[$action] = "application.controllers.admin.{$class}";
         }
 
-        // But now, they can be in a module added by a third pary developper.
+        // But now, they can be in a module added by a third pary developer.
         $aModuleActions = $this->getModulesActions();
 
-        // We keep a trace of the overriden actions and their path. It will be used in the rendering logic (SurveyCommonAction, renderPartial, etc)
+        // We keep a trace of the overridden actions and their path. It will be used in the rendering logic (SurveyCommonAction, renderPartial, etc)
         foreach ($aModuleActions as $sAction => $sActionClass) {
           // Module override existing action
             if (!empty($aActions[$sAction])) {
@@ -318,7 +318,7 @@ class AdminController extends LSYii_Controller
     }
 
     /**
-     * Return the list of overriden actions from modules, and generate it if needed
+     * Return the list of overridden actions from modules, and generate it if needed
      *
      * REFACTORED ( in LSYiiController)
      *
@@ -359,6 +359,7 @@ class AdminController extends LSYii_Controller
             'questionthemes'   => 'QuestionThemes',
             'quotas'           => 'Quotas',
             'remotecontrol'    => 'RemoteControl',
+            'saved'            => 'Saved',
             'statistics'       => 'Statistics',
             'surveypermission' => 'SurveyPermission',
             'user'             => 'UserAction',

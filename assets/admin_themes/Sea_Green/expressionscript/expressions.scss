@@ -1,0 +1,23 @@
+/* See https://manual.limesurvey.org/Expression_Manager#Syntax_Highlighting for color,  */
+.em-expression{background:#eee8aa ;display:inline-block;border:1px dotted #ccc}
+.em-haveerror{border-color: #ff4500}
+.em-function{color: #0000ff}
+.em-var-string{color: #808080}
+.em-var-static,a.em-var-static{color:#a0522d}/* Static */
+.em-var-before,a.em-var-before{color:#9370db}/* Var used before set */
+.em-var-after,a.em-var-after{color:#008000}/* Var used after - no js except for survey */
+.em-var-inpage,a.em-var-inpage{color:#4169e1} /* Javascript used in survey or group mode*/
+.em-var-error,a.em-var-error{color: #ff0000;font-weight:700} /* Maybe font-weight:400 */
+.em-warning{color: #ff4500}
+.em-error{border: 2px solid #ff0000}
+.em-error .em-error{border: 1px solid #ff0000}
+
+#logicfiletable .em-expression {
+  @include expression;
+}
+
+.summary-table .em-expression {
+  @include expression;
+  line-height : $line-height-16;
+  font-size   : $font-size-xs;
+}

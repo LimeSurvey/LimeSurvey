@@ -26,7 +26,7 @@
         <div class="ls-input-group">
     {% endif %}
         <!-- Prefix -->
-        {% if processString("trim(" ~ prefix ~ ")") != '' %}
+        {% if prefix != '' %}
             <div class='ls-input-group-extra prefix-text prefix'>{{ processString(prefix) }}</div>
         {% endif %}
 
@@ -40,11 +40,12 @@
             placeholder="{{ flatString(processString(placeholder,1),1) }}"
             {% if inputsize %}size="{{ inputsize }}" {% endif %}
             {% if maxlength %}maxlength="{{ maxlength }}" {% endif %}
+            {% if numberonly %}data-number="1" {% endif %}
             aria-labelledby="ls-question-text-{{ basename }}"
         />
 
         <!-- Suffix -->
-        {% if processString("trim(" ~ suffix ~ ")") != '' %}
+        {% if suffix %}
             <div class='ls-input-group-extra suffix-text suffix'>{{ processString(suffix) }}</div>
         {% endif %}
     {% if prefix != '' or suffix != '' %}

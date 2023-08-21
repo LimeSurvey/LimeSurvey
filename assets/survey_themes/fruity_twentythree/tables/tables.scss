@@ -1,0 +1,119 @@
+.table > tbody > tr > th {
+    vertical-align : middle;
+}
+
+tbody, td, tfoot, th, thead, tr, .table > :not(:first-child) {
+    border : none;
+}
+
+table > tbody > tr > td.ddprefix {
+    padding-right  : 1em;
+    vertical-align : middle;
+}
+
+.js td.radio-item, .js td.checkbox-item {
+    cursor : pointer;
+}
+
+.ls-answers .ls-heading th, .ls-answers th {
+    @include h2
+}
+
+.ls-answers tbody .answertext {
+    text-align : left;
+}
+
+/**
+ * On big screen only, iPad and up
+ */
+@media only screen and (min-width : 761px) {
+
+    .table-dual-scale .separator {
+        width : 6%;
+    }
+
+    table > tbody > tr > td.ddsuffix {
+        padding-left   : 1em;
+        vertical-align : middle;
+    }
+
+}
+
+/**
+ * No more tables
+ * OBS: Media specific CSS must be last in this file.
+ * iPad has width 768px (according to Chrome dev tool)
+ * Google Nexus 10 has width 800px.
+ * (Both in portrait mode.)
+ * We don't have to collapse tables on pads.
+ */
+@media only screen and (max-width : 760px),
+(min-device-width : 768px) and (max-device-width : 1024px) {
+    table.ls-answers tbody {
+        padding : 0 1em 0 1em;
+    }
+
+    table.ls-answers tr {
+        padding : 1em;
+    }
+
+    table.ls-answers tr th {
+        font-size  : 1.1em;
+        text-align : center;
+    }
+
+    table.ls-answers tbody {
+        padding : 0;
+    }
+
+    table.ls-answers tr {
+        padding       : 0;
+        margin-bottom : 1em;
+    }
+
+    /* Line header ; color is h4 color */
+    table.ls-answers tr th {
+        font-size  : 1.1em;
+        text-align : left;
+    }
+
+    table.ls-answers td {
+        /* Behave  like a "row" */
+        min-height     : 2em;
+        position       : relative;
+        /*padding-left: 95%;*/
+        padding-bottom : 1em;
+        white-space    : normal;
+        text-align     : left;
+    }
+
+    /* Hide the first column in array-by-column */
+    .array-by-columns-table tr > *:nth-child(1) {
+        display : none;
+    }
+}
+
+/** On small phones, leave some more space */
+@media only screen and (max-width : 400px) {
+    .no-more-tables tbody {
+        padding-left  : 0;
+        padding-right : 0;
+    }
+}
+
+@media only screen and (max-device-width : 760px) {
+    .ls-answers tbody:last-child tr:last-child {
+        margin-bottom : 0;
+    }
+
+    .ls-answers > tbody > tr > td.radio-item,
+    .ls-answers > tbody > tr > td.checkbox-item {
+        min-height   : 44px; /*minimal height for touching with finger */
+        padding-top  : 10px;
+        padding-left : 28px;
+    }
+
+    .ls-answers.table > tbody + tbody {
+        border-top : none; /*overriding Bootstrap */
+    }
+}

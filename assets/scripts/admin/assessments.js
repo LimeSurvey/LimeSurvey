@@ -52,7 +52,12 @@ var bindAction = function(){
                 $.each(responseData.editData, function(key, value){
                     var itemToChange = $('#assessmentsform').find('[name='+key+']');
                     if(!itemToChange.is('input[type=checkbox]') && !itemToChange.is('input[type=radio]')) {
-                        itemToChange.val(value).trigger('change');
+                        const oCKeditor_itemToChange = CKEDITOR.instances[key];
+                        if (oCKeditor_itemToChange) {
+                            oCKeditor_itemToChange.setData(value);
+                        } else {
+                            itemToChange.val(value).trigger('change');
+                        }
                     } else {
                         $('#assessmentsform').find('[name='+key+'][value='+value+']').prop('checked',true).trigger('change');
                     }
@@ -89,7 +94,14 @@ var bindAction = function(){
             url : url,
             method: 'post',
             data: params,
-            success : function(){
+            success : function(result) {
+                if (result.success) {
+                    window.LS.ajaxAlerts(result.success, 'success');
+                } else {
+                    var errorMsg = result.error.message ? result.error.message : result.error;
+                    if (!errorMsg) errorMsg = "Unexpected error";
+                    window.LS.ajaxAlerts(errorMsg, 'danger');
+                }
                 $('#assessmentsdeleteform').find('input[name=id]').val(' ');
                 $('#assesements-delete').modal('hide');
                 $.fn.yiiGridView.update('assessments-grid');

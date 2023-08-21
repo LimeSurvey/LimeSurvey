@@ -85,10 +85,10 @@ class LSUserIdentity extends CUserIdentity
             regenerateCSRFToken();
             $this->postLogin();
             // Reset counter after successful login
-            FailedLoginAttempt::model()->deleteAttempts();
+            FailedLoginAttempt::model()->deleteAttempts(FailedLoginAttempt::TYPE_LOGIN);
         } else {
             // Log a failed attempt
-            FailedLoginAttempt::model()->addAttempt();
+            FailedLoginAttempt::model()->addAttempt(FailedLoginAttempt::TYPE_LOGIN);
             regenerateCSRFToken();
             App()->session->regenerateID(); // Handled on login by Yii
         }
@@ -137,7 +137,7 @@ class LSUserIdentity extends CUserIdentity
                 'user_id' => App()->user->id,
                 'importance' => Notification::HIGH_IMPORTANCE,
                 'title' => 'Password warning',
-                'message' => '<span class="fa fa-exclamation-circle text-warning"></span>&nbsp;' .
+                'message' => '<span class="ri-error-warning-fill"></span>&nbsp;' .
                     gT("Warning: You are still using the default password ('password'). Please change your password and re-login again.")
             ));
             $not->save();

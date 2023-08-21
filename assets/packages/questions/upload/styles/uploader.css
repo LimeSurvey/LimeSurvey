@@ -39,10 +39,6 @@ margin:0;
     }
 }
 
-.file-preview {
-    display: flex;
-    align-items: center;
-}
 .file-preview span {
     margin-left: 1em;
 }
@@ -96,6 +92,11 @@ img.uploaded {
     text-align: left;
 }
 
+.dir-rtl .uploadedfiles tbody tr td {
+    text-align: right;
+}
+
 .uploadedfiles thead tr th {
     font-weight: bold;
 }
+

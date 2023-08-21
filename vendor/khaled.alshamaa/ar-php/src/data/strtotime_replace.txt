@@ -1,0 +1,111 @@
+ا
+ا
+ا
+ه
++
+next
+next
+next
+last
+last
+last
+-
+-
+1 day
+days
+1 hour
+2 hours
+2 hours
+hours
+1 minute
+2 days
+2 minutes
+2 minutes
+minutes
+1 second
+2 seconds
+2 seconds
+seconds
+2 weeks
+2 weeks
+weeks
+1 week
+2 months
+2 months
+months
+months
+1 month
+1 year
+2 years
+2 years
+years
+years
+am
+am
+am
+pm
+pm
+pm
+pm
+tomorrow
+yesterday
+yesterday
+ago
+ago
+this
+this
+now
+now
+first
+third
+fourth
+fifth
+sixth
+seventh
+eighth
+ninth
+tenth
+eleventh
+eleventh
+twelfth
+twelfth
+saturday
+sunday
+monday
+tuesday
+wednesday
+thursday
+friday
+3
+4
+5
+6
+7
+8
+9
+10
+january
+february
+march
+april
+may
+june
+july
+august
+september
+october
+november
+december
+january
+february
+march
+april
+may
+june
+july
+august
+september
+october
+november
+december
++

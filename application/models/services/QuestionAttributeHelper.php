@@ -172,7 +172,7 @@ class QuestionAttributeHelper
      */
     public function attributeAppliesToQuestionType($attribute, $questionType)
     {
-        return isset($attribute['types']) && stripos($attribute['types'], $questionType) !== false;
+        return isset($attribute['types']) && stripos((string) $attribute['types'], $questionType) !== false;
     }
 
     /**
@@ -230,10 +230,10 @@ class QuestionAttributeHelper
     protected function categorySort($a, $b)
     {
         $categoryOrders = $this->getCategoryOrders();
-        $orderA = isset($categoryOrders[$a['category']]) ? $categoryOrders[$a['category']] : PHP_INT_MAX;
-        $orderB = isset($categoryOrders[$b['category']]) ? $categoryOrders[$b['category']] : PHP_INT_MAX;
+        $orderA = $categoryOrders[$a['category']] ?? PHP_INT_MAX;
+        $orderB = $categoryOrders[$b['category']] ?? PHP_INT_MAX;
         if ($orderA == $orderB) {
-            $result = strnatcasecmp($a['category'], $b['category']);
+            $result = strnatcasecmp((string) $a['category'], (string) $b['category']);
             if ($result == 0) {
                 $result = $a['sortorder'] - $b['sortorder'];
             }
@@ -276,5 +276,28 @@ class QuestionAttributeHelper
         $attributesCopy = $attributes;
         uasort($attributesCopy, [$this, 'categorySort']);
         return $attributesCopy;
+    }
+
+    /**
+     * Returns the user's default values for the specified question type
+     * @param string $questionType
+     * @return array<string,mixed>
+     */
+    public function getUserDefaultsForQuestionType($questionType)
+    {
+        $defaultValues = [];
+        $userDefaultQuestionAttributes = \SettingsUser::getUserSettingValue('question_default_values_' . $questionType);
+        if ($userDefaultQuestionAttributes !== null) {
+            $defaultValuesByCategory = json_decode((string) $userDefaultQuestionAttributes, true);
+            foreach ($defaultValuesByCategory as $attributes) {
+                foreach ($attributes as $attribute => $value) {
+                    if (!is_array($value)) {
+                        $value = ['' => $value];
+                    }
+                    $defaultValues[$attribute] = $value;
+                }
+            }
+        }
+        return $defaultValues;
     }
 }

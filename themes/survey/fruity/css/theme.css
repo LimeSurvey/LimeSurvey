@@ -29,7 +29,7 @@
 */
 body {
      padding-bottom: 10px;
-     padding-top: 60px;/* now is redefine in JS to fit any title length */
+     padding-top: 90px;/* now is redefine in JS to fit any title length */
 }
 
 
@@ -48,10 +48,7 @@ element.style {
 /* specific for survey listing */
 @media (min-width: 761px) {
   .surveys-list .btn-group {
-    width: 50%;
-  }
-  .language_change_container{
-      height: 90vh;
+    width: 49%;
   }
 }
 
@@ -146,7 +143,6 @@ element.style {
   position: relative;
 }
 
-.ls-question-help,
 .ls-questionhelp{
   margin-bottom:5px;
 }
@@ -303,6 +299,7 @@ element.style {
 }
 
 .slider-item {
+    margin-bottom: 20px;
     min-height: 50px;
 }
 
@@ -348,11 +345,13 @@ only screen and (max-width: 760px),
  */
 
 /* General */
-.button-item .ls-icon {
+.button-item .ls-icon, .ls-button-label .ls-icon {
     display: block;
 }
-.button-item .ls-icon {
+
+.button-item .ls-icon, .ls-button-label .ls-icon {
     font-size: 1.4em;
+    line-height: 1.4em;
 }
 
 html body .navbar.navbar-default.navbar-fixed-top {
@@ -602,7 +601,6 @@ div.yes-no .btn-group label {
     //padding-bottom:0.5em;
   }
 
-  .ls-question-help,
   .ls-questionhelp{
     font-size:14px;
   }
@@ -666,8 +664,6 @@ p.return-to-survey{
     font-size: 50%;
     vertical-align: top;
 }
-}
-
 
 /* Remove question container*/
 #navbar {
@@ -727,4 +723,8 @@ body .checkbox-item label::after {
     border-left: none;
     border-right: none;
     outline: none;
+}
+
+label {
+    font-weight: bold;
 }

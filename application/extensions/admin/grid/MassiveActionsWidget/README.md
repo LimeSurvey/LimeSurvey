@@ -23,7 +23,7 @@
 
 This will generate a dropup button of this kind :
 ```html
-    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
       Selected items(s)...    <span class="caret"></span>
     </button>
     <ul class="dropdown-menu listActions" aria-labelledby="muhListActions">
@@ -60,12 +60,12 @@ The array of actions and modals can accept different types of items :
 
 This will generate a dropup button of this kind :
 ```html
-    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
       Selected items(s)...    <span class="caret"></span>
     </button>
     <ul class="dropdown-menu listActions" aria-labelledby="muhListActions">
         <!-- Separator -->
-        <li role="separator" class="divider"></li>        
+        <li role="separator" class="dropdown-divider"></li>        
 
         <!-- Header -->
         <li class="dropdown-header">Muh Header</li>
@@ -79,13 +79,16 @@ The action definition consists in two parts: defining the link in the dropup lis
 The link, to be defined, need:
 
 - a text for the Actions (eg: *Set muh value*)
-- a classes for the icon in front of the text (eg: *fa fa-muh-icon*)
+- a classes for the icon in front of the text (eg: *ri-muh-fill*)
 - the url of the action to apply (for redirection, or ajax request. eg: */admin/muhController/sa/setMultipleMuhValue/*)
 - the action type (redirect, fill sessions and redirect, or modal).
 
 There is currently 3 action types (they are the result of the refactorisation of the old jQgrid massive actions) :
 
-- **redirect** : when clicking on the action link, user will be redirected to the wanted url in a blank windows. The list of the checked items will be posted in a string separated by |. This is used only for tokens right now (send email...).
+- **redirect** : when clicking on the action link, user will be redirected to the wanted url in a blank windows. The list of the checked items will be posted in a string separated by `|` (by default). This is used only for tokens right now (send email...), extra parameters in data of the link : 
+    - `input-name` : name of the input created
+    - `input-separator` : separator used to separate checked item (defult to `|`)
+    - `target` : target set of the action : default `_blanck`, use `_self` to use current windows
 - **fill-session-and-redirect** : basically the same than redirect, but calling first an action on a controller to fill the session with the checked items before redirecting. This is used only for tokens "add participant to CPDB" for now.
 - **modal** : This is the most used case. It raises a modal to first confirm the action, then submit an ajax request to the defined url, and closes it OR shows an array of results.
 
@@ -96,7 +99,7 @@ array(
     'type'        => 'action',                                                        
     'action'      => 'set-muhvalue',
     'url'         => App()->createUrl('/admin/muhController/sa/setMultipleMuhValue/'),     // The url to reach the action method
-    'iconClasses' => 'fa fa-muh-icon',                                                  // The class to define the icon that will be show next to the action link in the dropUp button
+    'iconClasses' => 'ri-muh-fill',                                                  // The class to define the icon that will be show next to the action link in the dropUp button
     'text'        => gT('Set muh value'),                                               // The text of the action link in the dropUp button
 
     // modal
@@ -108,7 +111,7 @@ array(
 
 This will generate a dropup button of this kind :
 ```html
-    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
       Selected items(s)...    <span class="caret"></span>
     </button>
     <ul class="dropdown-menu listActions" aria-labelledby="muhListActions">
@@ -120,7 +123,7 @@ This will generate a dropup button of this kind :
                 data-type="modal"
                 ...
             >
-                <span class="ui-icon fa fa-muh-icon"></span>
+                <span class="ui-icon ri-muh-icon"></span>
                 Set muh value
             </a>
         </li>
@@ -147,7 +150,7 @@ array(
 
 This will generate a dropup button of this kind :
 ```html
-    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
       Selected items(s)...    <span class="caret"></span>
     </button>
     <ul class="dropdown-menu listActions" aria-labelledby="muhListActions">
@@ -160,7 +163,7 @@ This will generate a dropup button of this kind :
                 data-specific-data = "specific-data-value"
                 data-another-specific-data = "another-specific-data-value"
             >
-                <span class="ui-icon fa fa-muh-icon"></span>
+                <span class="ui-icon ri-muh-icon"></span>
                 Set muh value
             </a>
         </li>
@@ -204,9 +207,9 @@ The form will not be posted to the url directly by the ajax request. Indeed, the
 ```html
 <!-- The form itself is optional-->
 <form class="custom-modal-datas">                                               
-    <div class="form-group">
-        <label class="col-sm-4 control-label"><?php eT("Muh Value:"); ?></label>
-        <div class="col-sm-8">
+    <div class="mb-3">
+        <label class="col-md-4 control-label"><?php eT("Muh Value:"); ?></label>
+        <div class="col-md-8">
             <!-- Thoses input have the class "custom-data", they will be posted by the ajax request -->
             <input type="text" class="form-control custom-data" id="muhvalue" name="muhvalue" value="">         
             <input type="hidden" name="sid" value="<?php echo $_GET['surveyid']; ?>" class="custom-data"/>

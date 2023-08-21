@@ -74,8 +74,8 @@ gulp.task('sass:production', function (cb) {
 });
 
 gulp.task('webpack', function (cb) {
-    process.env.NODE_ENV = 'developement';
-    process.env.WEBPACK_ENV = 'developement';
+    process.env.NODE_ENV = 'development';
+    process.env.WEBPACK_ENV = 'development';
     pump(
         [
             gulp.src('src/adminsidepanelmain.js'),

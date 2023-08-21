@@ -77,6 +77,9 @@ class QuestionType extends StaticModel
     /** @var integer $subquestions whether has subquestions //TODO make it boolean instead */
     public $subquestions;
 
+    /** @var boolean $other allow other (and add subquetsion title other if Y)*/
+    public $other = false;
+
     /** @var integer $assessable whether it can be used inside Assessments / Quizmode */
     public $assessable;
 
@@ -96,8 +99,17 @@ class QuestionType extends StaticModel
      */
     public function attributeNames()
     {
-        return ['code', 'description', 'group', 'subquestions', 'assessable',
-            'hasdefaultvalues', 'answerscales', 'class'];
+        return [
+            'code',
+            'description',
+            'group',
+            'subquestions',
+            'other',
+            'assessable',
+            'hasdefaultvalues',
+            'answerscales',
+            'class'
+        ];
     }
 
     /**
@@ -124,9 +136,9 @@ class QuestionType extends StaticModel
     /**
      * @param string $language
      * @return array
+     * Still used in QuestionAdministrationController
      *
-     * @deprecated use the new xml-version implemented in function findQuestionMetaData($type) in QuestionTheme
-     *
+     * TODO choose between self::modelsAttributes and QuestionTheme::findQuestionMetaData or QuestionTheme::getAllQuestionMetaData
      * TODO QuestionTheme 1591616914305: Needs to be replaced by @link QuestionTheme::getAllQuestionMetaData() however translations inside the xml need to be inserted first
      */
 
@@ -138,6 +150,7 @@ class QuestionType extends StaticModel
                 'description' => gT("Array dual scale", "html", $language),
                 'group' => gT('Arrays'),
                 'subquestions' => 1,
+                'other' => false,
                 'assessable' => 1,
                 'hasdefaultvalues' => 0,
                 'answerscales' => 2,
@@ -148,6 +161,7 @@ class QuestionType extends StaticModel
                 'description' => gT("5 point choice", "html", $language),
                 'group' => gT("Single choice questions"),
                 'subquestions' => 0,
+                'other' => false,
                 'hasdefaultvalues' => 0,
                 'assessable' => 0,
                 'answerscales' => 0,
@@ -158,6 +172,7 @@ class QuestionType extends StaticModel
                 'description' => gT("Array (5 point choice)", "html", $language),
                 'group' => gT('Arrays'),
                 'subquestions' => 1,
+                'other' => false,
                 'hasdefaultvalues' => 0,
                 'assessable' => 1,
                 'answerscales' => 0,
@@ -168,6 +183,7 @@ class QuestionType extends StaticModel
                 'description' => gT("Array (10 point choice)", "html", $language),
                 'group' => gT('Arrays'),
                 'subquestions' => 1,
+                'other' => false,
                 'hasdefaultvalues' => 0,
                 'assessable' => 1,
                 'answerscales' => 0,
@@ -178,6 +194,7 @@ class QuestionType extends StaticModel
                 'description' => gT("Array (Yes/No/Uncertain)", "html", $language),
                 'group' => gT('Arrays'),
                 'subquestions' => 1,
+                'other' => false,
                 'hasdefaultvalues' => 0,
                 'assessable' => 1,
                 'answerscales' => 0,
@@ -188,6 +205,7 @@ class QuestionType extends StaticModel
                 'description' => gT("Date/Time", "html", $language),
                 'group' => gT("Mask questions"),
                 'subquestions' => 0,
+                'other' => false,
                 'hasdefaultvalues' => 1,
                 'assessable' => 0,
                 'answerscales' => 0,
@@ -198,6 +216,7 @@ class QuestionType extends StaticModel
                 'description' => gT("Array (Increase/Same/Decrease)", "html", $language),
                 'group' => gT('Arrays'),
                 'subquestions' => 1,
+                'other' => false,
                 'hasdefaultvalues' => 0,
                 'assessable' => 1,
                 'answerscales' => 0,
@@ -208,6 +227,7 @@ class QuestionType extends StaticModel
                 'description' => gT("Array", "html", $language),
                 'group' => gT('Arrays'),
                 'subquestions' => 1,
+                'other' => false,
                 'hasdefaultvalues' => 0,
                 'assessable' => 1,
                 'answerscales' => 1,
@@ -218,6 +238,7 @@ class QuestionType extends StaticModel
                 'description' => gT("Gender", "html", $language),
                 'group' => gT("Mask questions"),
                 'subquestions' => 0,
+                'other' => false,
                 'hasdefaultvalues' => 0,
                 'assessable' => 0,
                 'answerscales' => 0,
@@ -229,6 +250,7 @@ class QuestionType extends StaticModel
                 'group' => gT('Arrays'),
                 'hasdefaultvalues' => 0,
                 'subquestions' => 1,
+                'other' => false,
                 'assessable' => 1,
                 'answerscales' => 1,
                 'class' => 'array-flexible-column'
@@ -239,6 +261,7 @@ class QuestionType extends StaticModel
                 'group' => gT("Mask questions"),
                 'hasdefaultvalues' => 0,
                 'subquestions' => 0,
+                'other' => false,
                 'assessable' => 0,
                 'answerscales' => 0,
                 'class' => 'language'
@@ -249,6 +272,7 @@ class QuestionType extends StaticModel
                 'group' => gT("Mask questions"),
                 'hasdefaultvalues' => 1,
                 'subquestions' => 1,
+                'other' => false,
                 'assessable' => 1,
                 'answerscales' => 0,
                 'class' => 'numeric-multi'
@@ -258,6 +282,7 @@ class QuestionType extends StaticModel
                 'description' => gT("List (Radio)", "html", $language),
                 'group' => gT("Single choice questions"),
                 'subquestions' => 0,
+                'other' => true,
                 'hasdefaultvalues' => 1,
                 'assessable' => 1,
                 'answerscales' => 1,
@@ -268,6 +293,7 @@ class QuestionType extends StaticModel
                 'description' => gT("Multiple choice", "html", $language),
                 'group' => gT("Multiple choice questions"),
                 'subquestions' => 1,
+                'other' => true,
                 'hasdefaultvalues' => 1,
                 'assessable' => 1,
                 'answerscales' => 0,
@@ -278,6 +304,7 @@ class QuestionType extends StaticModel
                 'description' => gT("Numerical input", "html", $language),
                 'group' => gT("Mask questions"),
                 'subquestions' => 0,
+                'other' => false,
                 'hasdefaultvalues' => 1,
                 'assessable' => 0,
                 'answerscales' => 0,
@@ -288,6 +315,7 @@ class QuestionType extends StaticModel
                 'description' => gT("List with comment", "html", $language),
                 'group' => gT("Single choice questions"),
                 'subquestions' => 0,
+                'other' => false,
                 'hasdefaultvalues' => 1,
                 'assessable' => 1,
                 'answerscales' => 1,
@@ -298,6 +326,7 @@ class QuestionType extends StaticModel
                 'description' => gT("Multiple choice with comments", "html", $language),
                 'group' => gT("Multiple choice questions"),
                 'subquestions' => 1,
+                'other' => true,
                 'hasdefaultvalues' => 1,
                 'assessable' => 1,
                 'answerscales' => 0,
@@ -308,6 +337,7 @@ class QuestionType extends StaticModel
                 'description' => gT("Multiple short text", "html", $language),
                 'group' => gT("Text questions"),
                 'subquestions' => 1,
+                'other' => false,
                 'hasdefaultvalues' => 1,
                 'assessable' => 0,
                 'answerscales' => 0,
@@ -318,6 +348,7 @@ class QuestionType extends StaticModel
                 'description' => gT("Ranking", "html", $language),
                 'group' => gT("Mask questions"),
                 'subquestions' => 0,
+                'other' => false,
                 'hasdefaultvalues' => 0,
                 'assessable' => 1,
                 'answerscales' => 1,
@@ -328,6 +359,7 @@ class QuestionType extends StaticModel
                 'description' => gT("Short free text", "html", $language),
                 'group' => gT("Text questions"),
                 'subquestions' => 0,
+                'other' => false,
                 'hasdefaultvalues' => 1,
                 'assessable' => 0,
                 'answerscales' => 0,
@@ -338,6 +370,7 @@ class QuestionType extends StaticModel
                 'description' => gT("Long free text", "html", $language),
                 'group' => gT("Text questions"),
                 'subquestions' => 0,
+                'other' => false,
                 'hasdefaultvalues' => 1,
                 'assessable' => 0,
                 'answerscales' => 0,
@@ -348,6 +381,7 @@ class QuestionType extends StaticModel
                 'description' => gT("Huge free text", "html", $language),
                 'group' => gT("Text questions"),
                 'subquestions' => 0,
+                'other' => false,
                 'hasdefaultvalues' => 1,
                 'assessable' => 0,
                 'answerscales' => 0,
@@ -358,6 +392,7 @@ class QuestionType extends StaticModel
                 'description' => gT("Text display", "html", $language),
                 'group' => gT("Mask questions"),
                 'subquestions' => 0,
+                'other' => false,
                 'hasdefaultvalues' => 0,
                 'assessable' => 0,
                 'answerscales' => 0,
@@ -368,6 +403,7 @@ class QuestionType extends StaticModel
                 'description' => gT("Yes/No", "html", $language),
                 'group' => gT("Mask questions"),
                 'subquestions' => 0,
+                'other' => false,
                 'hasdefaultvalues' => 1,
                 'assessable' => 0,
                 'answerscales' => 0,
@@ -378,6 +414,7 @@ class QuestionType extends StaticModel
                 'description' => gT("List (Dropdown)", "html", $language),
                 'group' => gT("Single choice questions"),
                 'subquestions' => 0,
+                'other' => true,
                 'hasdefaultvalues' => 1,
                 'assessable' => 1,
                 'answerscales' => 1,
@@ -388,6 +425,7 @@ class QuestionType extends StaticModel
                 'description' => gT("Array (Numbers)", "html", $language),
                 'group' => gT('Arrays'),
                 'subquestions' => 2,
+                'other' => false,
                 'hasdefaultvalues' => 0,
                 'assessable' => 1,
                 'answerscales' => 0,
@@ -398,6 +436,7 @@ class QuestionType extends StaticModel
                 'description' => gT("Array (Texts)", "html", $language),
                 'group' => gT('Arrays'),
                 'subquestions' => 2,
+                'other' => false,
                 'hasdefaultvalues' => 0,
                 'assessable' => 0,
                 'answerscales' => 0,
@@ -408,6 +447,7 @@ class QuestionType extends StaticModel
                 'description' => gT("File upload", "html", $language),
                 'group' => gT("Mask questions"),
                 'subquestions' => 0,
+                'other' => false,
                 'hasdefaultvalues' => 0,
                 'assessable' => 0,
                 'answerscales' => 0,
@@ -418,6 +458,7 @@ class QuestionType extends StaticModel
                 'description' => gT("Equation", "html", $language),
                 'group' => gT("Mask questions"),
                 'subquestions' => 0,
+                'other' => false,
                 'hasdefaultvalues' => 0,
                 'assessable' => 0,
                 'answerscales' => 0,

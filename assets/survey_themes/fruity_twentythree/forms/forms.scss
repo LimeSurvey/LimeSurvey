@@ -1,0 +1,74 @@
+$input-padding-y    : 10px;
+$input-padding-x    : 12px;
+$input-line-height  : 16px;
+$input-border-width : 2px;
+$dropdown-font-size: $font-size-sm;
+// input field
+.form-control {
+    padding      : $input-padding-y $input-padding-x;
+    border-width : $input-border-width;
+    line-height  : $input-line-height;
+    font-size : $font-size-base;
+}
+
+.form-control.ls-important-field {
+    height      : 44px;
+    padding     : 14px 12px;
+    font-weight : 400;
+    font-size   : 14px;
+    line-height : $line-height-16;
+}
+
+.input-group-text {
+    padding      : $input-padding-y $input-padding-x;
+    border-width : $input-border-width;
+    line-height  : $input-line-height;
+}
+.input-group>:not(:first-child):not(.dropdown-menu):not(.valid-tooltip):not(.valid-feedback):not(.invalid-tooltip):not(.invalid-feedback){
+    margin-left: -$input-border-width;
+    border-top-left-radius: 0;
+    border-top-right-radius: $border-radius;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: $border-radius;
+}
+
+.input-group:not(.has-validation) > :not(:last-child):not(.dropdown-toggle):not(.dropdown-menu), .input-group:not(.has-validation) > .dropdown-toggle:nth-last-child(n+3) {
+    border-top-left-radius: $border-radius;
+    border-top-right-radius: 0;
+    border-bottom-left-radius: $border-radius;
+    border-bottom-right-radius: 0;
+}
+
+.ls-answers label, .answer-item label, .control-label {
+    @include h2;
+
+    .radio-label {
+        padding-left : 12px;
+    }
+}
+
+textarea {
+    resize: both;
+    max-width: 100%;
+}
+
+// select
+.form-select {
+    font-weight  : $font-weight-normal;
+    font-size    : $dropdown-font-size;
+    line-height  : $line-height-16;
+    border-width : $input-border-width;
+    padding: $form-select-padding-y $form-select-indicator-padding $form-select-padding-y $form-select-padding-x;
+}
+
+.question-item.mb-3 {
+    padding-top: 0;
+}
+
+.form-heading {
+    @include formheading;
+}
+
+.control-label {
+    @include control-label;
+}

@@ -190,7 +190,6 @@ class CreateSurvey
         $this->survey->template = 'inherit'; //default template from default group is set to 'fruity'
         $this->survey->active = self::STRING_VALUE_FOR_NO_FALSE;
         $this->survey->anonymized = self::STRING_VALUE_FOR_NO_FALSE;
-        $this->survey->faxto = null;
         $this->survey->format = self::STRING_SHORT_VALUE_INHERIT; //inherits value from survey group
         $this->survey->savetimings = self::STRING_SHORT_VALUE_INHERIT; //could also be 'I' for inherit from survey group ...
         $this->survey->language = $this->simpleSurveyValues->baseLanguage;

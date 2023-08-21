@@ -16,7 +16,9 @@
  *      perform an ajax request and show the result in the modal
  */
 var onClickListAction =  function () {
+    console.log('onClickListAction');
     if($(this).data('disabled')) {
+        console.log('disabled');
         return;
     }
     var $that          = $(this);                                                             // The clicked link
@@ -25,14 +27,16 @@ var onClickListAction =  function () {
     var $gridid        = $('#'+$(this).closest('div.listActions').data('grid-id'));
     var $grididvalue   = $gridid.attr('id');
     var $oCheckedItems = $gridid.yiiGridView('getChecked', $(this).closest('div.listActions').data('pk')); // List of the clicked checkbox
-    var $oCheckedItems = JSON.stringify($oCheckedItems);
+    $oCheckedItems = JSON.stringify($oCheckedItems);
     var actionType     = $that.data('actionType');   
     var selectedList   = $(".selected-items-list");
 
     if ($oCheckedItems == '[]') {
         //If no item selected, the error modal "please select first an item" is shown
         // TODO: add a variable in the widget to replace "item" by the item type (e.g: survey, question, token, etc.)
-        $('#error-first-select' + $grididvalue).modal();
+        console.log('error first');
+        const modal = new bootstrap.Modal(document.getElementById('error-first-select' + $grididvalue), {})
+        modal.show();
         return;
     }
     
@@ -48,11 +52,11 @@ var onClickListAction =  function () {
         $oCheckedItems = $gridid.yiiGridView('getChecked', $('.listActions').data('pk')); // So we can join
         var newForm = jQuery('<form>', {
             'action': $actionUrl,
-            'target': '_blank',
+            'target': $that.data('target') ?? '_blank',
             'method': 'POST'
         }).append(jQuery('<input>', {
             'name': $that.data('input-name'),
-            'value': $oCheckedItems.join("|"),
+            'value': $oCheckedItems.join($that.data('input-separator') ?? '|'),
             'type': 'hidden'
         })).append(jQuery('<input>', {
             'name': LS.data.csrfTokenName,
@@ -60,6 +64,7 @@ var onClickListAction =  function () {
             'type': 'hidden'
         })).appendTo('body');
         newForm.submit();
+        console.log('redirect');
         return;
     }
 
@@ -73,12 +78,14 @@ var onClickListAction =  function () {
             itemsid:$oCheckedItems},function(){
                 $(location).attr('href',$actionUrl);
             });
+        console.log('fill session');
         return;
     }
 
     // Set window location href. Used by download files in responses list view.
     if (actionType == 'window-location-href') {
         var $oCheckedItems = $gridid.yiiGridView('getChecked', $('.listActions').data('pk')); // So we can join
+        console.log('href = ...');
         window.location.href = $actionUrl + $oCheckedItems.join(',');
         return;
     }
@@ -92,6 +99,7 @@ var onClickListAction =  function () {
         var func = eval(js);
         var itemIds = $gridid.yiiGridView('getChecked', $('.listActions').data('pk'));
         func(itemIds);
+        console.log('func itemIds');
         return;
     }
 
@@ -122,6 +130,7 @@ var onClickListAction =  function () {
         //clear selected list view 
         selectedList.empty();
 
+        console.log('before ajax');
         //ajaxpost to set data in the selected items div 
         $.ajax({
             url :$modalSelectedUrl,
@@ -155,12 +164,18 @@ var onClickListAction =  function () {
     /* Define what should be done when user confirm the mass action */
     /* remove all existing action before adding the new one */
     $modalButton.off('click').on('click', function(){
+        var $form = $modal.find('form');
+        if ($form.data('trigger-validation')) {
+            if (!$form[0].reportValidity()) {
+                return;
+            }
+        }
 
         // Custom datas comming from the modal (like sid)
         var $postDatas  = {sItems:$oCheckedItems};
         $modal.find('.custom-data').each(function(i, el)
         {
-            if ($(this).hasClass('btn-group')){ // yiiwheels.widgets.buttongroup.WhButtonGroup
+            if ($(this).hasClass('btn-group')){ // ext.ButtonGroupWidget.ButtonGroupWidget
                 $(this).find('input:checked').each(function(i, el)
                 {
                     $postDatas[$(this).attr('name')]=$(this).val();
@@ -234,8 +249,11 @@ var onClickListAction =  function () {
         });
     });
 
-    // open the modal
-    $modal.modal();
+    // Open the modal
+    const modalId = $that.data('modal-id');
+    console.log('modalId = ', modalId);
+    var modal = new bootstrap.Modal(document.getElementById(modalId), {})
+    modal.show();
 };
 
 /**
@@ -259,12 +277,11 @@ var onClickListAction =  function () {
  * So, when refreshing the grid, the bootstrap-switch must be re-applyed to the elements
  *
  */
-
+// TODO: It seems below two functions are not used and can be deleted. Please confirm.
  function prepareBsSwitchBoolean($gridid){
      // Bootstrap switch with class "bootstrap-switch-boolean" will use the default boolean values.
      // e.g: question mandatory, question other, etc
      $('.bootstrap-switch-boolean').each(function(){
-         $(this).bootstrapSwitch();
          $(this).attr('value', false);                                           // we specify its value in a "visible" way (see point 1)
 
          // Switch change
@@ -278,7 +295,6 @@ function prepareBsSwitchInteger($gridid){
     // Bootstrap switch with class "bootstrap-switch-integer" will use integer values
     // e.g: question statistics_showgraph, question public_statistics, etc
     $('.bootstrap-switch-integer').each(function(){
-        $(this).bootstrapSwitch();
         $(this).attr('value', 0);                                               // we specify its value in a "visible" way (see point 1)
 
         // Switch change
@@ -288,6 +304,8 @@ function prepareBsSwitchInteger($gridid){
         });
     });
 }
+// =================================================================================
+
 
 function prepareBsDateTimePicker($gridid){
     var dateTimeSettings = getDefaultDateTimePickerSettings();
@@ -345,3 +363,30 @@ $(document).off('pjax:scriptcomplete.listActions').on('pjax:scriptcomplete.listA
     bindListItemclick();
 });
 
+$(document).off('bindscroll.listActions').on('bindscroll.listActions, ready ', function () {
+    var checkboxes = $('input[type="checkbox"]');
+    var actionButton = $('.massiveAction');
+    // Attach an onchange event handler to all checkboxes
+    checkboxes.on('change', function() {
+      if (isAnyCheckboxChecked()) {
+        actionButton.removeClass('disabled');
+      } else {
+        actionButton.addClass('disabled');
+      }
+    });
+  
+    // Function to check if at least one checkbox is checked
+    function isAnyCheckboxChecked() {
+      var isChecked = false;
+      checkboxes.each(function() {
+        if ($(this).is(':checked')) {
+          isChecked = true;
+          return false; // Break out of the loop
+        }
+      });
+      return isChecked;
+    }
+    
+
+    bindListItemclick();
+});

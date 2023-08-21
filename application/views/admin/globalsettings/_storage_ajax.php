@@ -32,26 +32,26 @@
 </table>
 
 
-<?php if ($surveys): ?>
+<?php if ($surveys) : ?>
     <label><?php eT('Survey storage'); ?></label>
     <table class='table table-striped table-bordered'>
-        <?php foreach ($surveys as $survey): ?>
+        <?php foreach ($surveys as $survey) : ?>
         <tr>
             <td style='width: 70%;'>
                 <?php echo $survey['name']; ?>
-                <?php if ($survey['deleted']): ?>
+                <?php if ($survey['deleted']) : ?>
                     (<?php echo $survey['sid']; ?>)
-                <?php else: ?>
-                    (<a href="<?php echo $this->createUrl('admin/survey', array('sa' => 'view', 'surveyid' => $survey['sid'])); ?>"><?php echo $survey['sid']; ?></a>)
+                <?php else : ?>
+                    (<a href="<?php echo $this->createUrl('surveyAdministration/view', array('surveyid' => $survey['sid'])); ?>"><?php echo $survey['sid']; ?></a>)
                 <?php endif; ?>
             </td>
             <td>
                 <?php echo $survey['size']; ?>
-                <?php if ($survey['showPurgeButton']): ?>
+                <?php if ($survey['showPurgeButton']) : ?>
                     <span
-                        class='fa fa-trash text-danger pull-right btn btn-default btn-xs'
-                        data-toggle='tooltip'
-                        onclick='window.location = "<?php echo $this->createUrl('admin/survey', array('sa' => 'purge', 'purge_sid' => $survey['sid'])); ?>"'
+                        class='ri-delete-bin-fill text-danger float-end btn btn-outline-secondary btn-xs'
+                        data-bs-toggle='tooltip'
+                        onclick='window.location = "<?php echo $this->createUrl('surveyAdministration/purge', array('purge_sid' => $survey['sid'])); ?>"'
                         title='<?php eT('Delete survey files'); ?>'
                     >
                     </span>
@@ -62,10 +62,10 @@
     </table>
 <?php endif; ?>
 
-<?php if ($templates): ?>
+<?php if ($templates) : ?>
     <label><?php eT('Themes storage'); ?></label>
     <table class='table table-striped table-bordered'>
-        <?php foreach ($templates as $templates): ?>
+        <?php foreach ($templates as $templates) : ?>
         <tr>
             <td style='width: 70%;'><?php echo $templates['name']; ?></td>
             <td><?php echo $templates['size']; ?></td>

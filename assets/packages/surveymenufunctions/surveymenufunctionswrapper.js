@@ -81,9 +81,9 @@ function runActions(targetCreateModal, targetGrid, urls)
             });
         },
         runRestoreModal :  function (urlMenu, urlMenuEntry) {
-            $('#restoremodalsurveymenu').find('.modal-content').html('<div ' + 'class="ls-flex align-items-center align-content-center" style="height:200px"><i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i></div>')
+            $('#restoremodalsurveymenu').find('.modal-content').html('<div ' + 'class="ls-flex align-items-center align-content-center" style="height:200px"><i class="fa fa-spinner fa-pulse fa-3x fa-fw ri-loader-fill remix-pulse ri-3x"></i></div>')
             //url is depending on which tab is active
-            let active_tab = $('#menueslist li.active a').attr('href');
+            let active_tab = $('#menueslist a.active').attr('href');
             var urlRestore = '';
             if (active_tab === '#surveymenues') {
                 urlRestore = urlMenu;

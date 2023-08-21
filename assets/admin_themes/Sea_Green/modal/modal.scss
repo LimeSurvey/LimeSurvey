@@ -1,0 +1,40 @@
+.modal-content {
+  background-color: $white;
+  border: none;
+  box-shadow: none;
+  border-radius: 0px;
+}
+.modal-backdrop {
+  background-color: $black;
+}
+.modal-header {
+  border-bottom: none;
+  .btn-close {
+    align-self: flex-start;
+    margin: 0 -0.75rem -0.75rem auto;
+    color: $g-900;
+    width: 0.75em;
+    height: 0.75em;
+    opacity: 1;
+    font-size: $btn-font-size-sm;
+    &:focus {
+      box-shadow: none;
+    }
+    &:hover {
+      background-color: $g-200;
+    }
+  }
+}
+.modal-title {
+  color: $g-900;
+  line-height: $line-height-26;
+}
+
+.modal-footer {
+  border-top: none;
+  padding: $modal-inner-padding;
+}
+
+#selector__exportTypeSelector-modal .modal-dialog {
+  border : 1px solid $g-900;
+}

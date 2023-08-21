@@ -154,7 +154,7 @@ class SurveyThemeHelper
                 if (empty($categoryPath)) {
                     continue;
                 }
-                $categoryPath = $categoryPath . '/';
+                $categoryPath = $categoryPath . DIRECTORY_SEPARATOR;
                 if (strpos($absolutePath, $categoryPath) === 0) {
                     $virtualPath = str_replace($categoryPath, $category->pathPrefix, $absolutePath);
                     return new ThemeFileInfo($absolutePath, $virtualPath, $category);
@@ -181,7 +181,7 @@ class SurveyThemeHelper
             if (empty($categoryPath)) {
                 continue;
             }
-            $categoryPath = $categoryPath . '/';
+            $categoryPath = $categoryPath . DIRECTORY_SEPARATOR;
 
             // Get the realpath for the file.
             $realPath = realpath($categoryPath . $path);
@@ -278,7 +278,7 @@ class SurveyThemeHelper
                 return null;    // No category matched the path's prefix
             }
             $category = reset($filteredCategories);
-            $categoryPath = realpath($category->path) . '/';
+            $categoryPath = realpath($category->path) . DIRECTORY_SEPARATOR;
 
             // Validate that the file exists
             $realPath = realpath($categoryPath . '/' . substr($path, strlen($prefix)));
@@ -412,7 +412,7 @@ class SurveyThemeHelper
             // and try to get a valid virtual path from that.
             if (preg_match($pattern, $value, $m)) {
                 foreach ($alternatives as $replacement) {
-                    $path = preg_replace($pattern, $replacement, $value);
+                    $path = preg_replace($pattern, (string) $replacement, $value);
                     $virtualPath = self::getVirtualThemeFilePath($path, $themeName, $sid);
                     if (!empty($virtualPath)) {
                         $value = $virtualPath;

@@ -19,7 +19,7 @@ class Update_480 extends DatabaseUpdateBase
             '{{message}}',
             [
                 'id' => "integer NOT NULL",
-                'language' => "string(16)",
+                'language' => "string(50) NOT NULL default ''",
                 'translation' => "text",
             ],
             $this->options

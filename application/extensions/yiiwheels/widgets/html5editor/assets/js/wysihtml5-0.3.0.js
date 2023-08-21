@@ -5295,7 +5295,7 @@ wysihtml5.dom.replaceWithChildNodes = function(node) {
  * Sandbox for executing javascript, parsing css styles and doing dom operations in a secure way
  *
  * Browser Compatibility:
- *  - Secure in MSIE 6+, but only when the user hasn't made changes to his security level "restricted"
+ *  - Secure in MSIE 6+, but only when the user hasn't made changes to their security level "restricted"
  *  - Partially secure in other browsers (Firefox, Opera, Safari, Chrome, ...)
  *
  * Please note that this class can't benefit from the HTML5 sandbox attribute for the following reasons:

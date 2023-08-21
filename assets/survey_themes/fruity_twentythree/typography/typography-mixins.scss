@@ -1,0 +1,29 @@
+@mixin h1 {
+  font-weight : $font-weight-600;
+  font-size   : $font-size-lg;
+  line-height : $line-height-26;
+}
+
+@mixin h2 {
+  font-weight : $font-weight-600;
+  font-size   : $font-size-base;
+  line-height : $line-height-20;
+}
+
+@mixin h3 {
+  font-weight : $font-weight-500;
+  font-size   : $font-size-sm;
+  line-height : $line-height-20;
+}
+
+@mixin formheading {
+  font-weight : $font-weight-normal;
+  font-size   : $font-size-md;
+  line-height : $line-height-24;
+}
+
+@mixin largeheading {
+  font-weight: $font-weight-600;
+  font-size: $font-size-2xl;
+  line-height: $line-height-52;
+}

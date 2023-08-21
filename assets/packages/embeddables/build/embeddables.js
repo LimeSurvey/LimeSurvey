@@ -1,7 +1,7 @@
 (function (factory) {
 	typeof define === 'function' && define.amd ? define(factory) :
 	factory();
-}((function () { 'use strict';
+})((function () { 'use strict';
 
 	var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
 
@@ -11,7 +11,7 @@
 
 	var embedo = createCommonjsModule(function (module) {
 	(function (root, factory) {
-	  if ( module.exports) {
+	  if (module.exports) {
 	    module.exports = factory();
 	  } else if (root) {
 	    root.Embedo = window.Embedo = factory();
@@ -1920,4 +1920,4 @@
 	  });
 	});
 
-})));
+}));

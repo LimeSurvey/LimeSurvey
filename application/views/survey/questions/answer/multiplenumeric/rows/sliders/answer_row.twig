@@ -1,4 +1,3 @@
-
 {#
 /**
  * Multiple short texts question, item input text Html
@@ -30,77 +29,54 @@
  */
 #}
 
-<li id='javatbd{{ myfname }}' class="question-item answer-item numeric-item text-item slider-item form-group {{ extraclass }}{% if alert %} ls-error-mandatory has-error {% endif %}">
-    <label id="label-{{ myfname }}" class='control-label col-xs-12 col-sm-{{ sLabelWidth }}{% if sLabelWidth == 0 %} hidden{% endif %}' for="answer{{myfname}}">
-        {{ processString(labelText) }}
-    </label>
-    <div class="col-xs-12 col-sm-{{ sInputContainerWidth }} container-fluid">
-            {% if sliderleft is not empty %}
-                <div class='col-xs-12 col-sm-2 slider-left text-right'>{{ sliderleft }}</div>
-            {% endif %}
-
-            <div class="slider-container slider-{{slider_orientation}} ls-input-group col-xs-12 col-sm-{{sliderWidth}}" id="answer{{myfname}}slid-container">
-                    {{ C.Html.textField( myfname ~ 'slid', dispVal ,{
-                            'class': 'form-control answer-item numeric-item hidden',
-                            'id' : "answer" ~ myfname ~ "slid", 
-                        })
-                    }}
-                    {{ C.Html.textField( myfname, dispVal ,{
-                            'class': 'form-control answer-item numeric-item ls-js-hidden slider-untouched',
-                            'id' : "answer" ~ myfname,
-                            'aria-labelledby' : 'label-' ~ myfname
-                        })
-                    }}
-                {% if slider_showminmax %}
-                    <div class="slider-min-max-container">
-                        <div class='help-block slider-min-block'> {{ slider_reversed == 'false' ? slider_min : slider_max}}</div>
-                        <div class='help-block slider-max-block'> {{ slider_reversed == 'false' ? slider_max : slider_min}}</div>
-                    </div>
+<li id='javatbd{{ myfname }}' class="row question-item answer-item numeric-item text-item slider-item {{ extraclass }}{% if alert %} ls-error-mandatory has-error {% endif %}">
+    <div class="col-12">
+        <div class="row ls-slider-item-row">
+            <label id="label-{{ myfname }}" class='control-label col-12 col-md-{{ sLabelWidth }}{% if sLabelWidth == 0 %} d-none{% endif %}' for="answer{{ myfname }}">
+                {{ processString(labelText) }}
+            </label>
+            <div class='col-md-{{ sInputContainerWidth }} px-md-5'>
+                {% if slider_orientation is same as('horizontal') %}
+                    {% include '/survey/questions/answer/multiplenumeric/rows/sliders/horizontal_slider.twig' %}
                 {% endif %}
-                {% if slider_reset %}
-                    <div class="ls-input-group-extra ls-no-js-hidden ls-input-group-reset">
-                    <button id="answer{{ myfname }}_resetslider" class='btn btn-default btn-sm btn-slider-reset'>
-                        <i class='fa fa-times slider-reset-icon' aria-hidden='true'></i><span class="slider-reset-text">&nbsp;{{ gT("Reset") }}</span>
-                    </button>
-                    </div>
+                {% if slider_orientation is same as('vertical') %}
+                    {% include '/survey/questions/answer/multiplenumeric/rows/sliders/vertical_slider.twig' %}
                 {% endif %}
             </div>
-            {% if sliderright is not empty %}
-                <div class='col-xs-12 col-sm-2 slider-right text-left'>{{ sliderright }}</div>
-            {% endif %}
+        </div>
     </div>
 </li>
 
 {% set script %}
     window.activeSliders = window.activeSliders || {};
-    if(window.activeSliders.s{{myfname}}){
-        window.activeSliders.s{{myfname}}.unsetSlider();
-        delete window.activeSliders.s{{myfname}};
+    if(window.activeSliders.s{{ myfname }}){
+    window.activeSliders.s{{ myfname }}.unsetSlider();
+    delete window.activeSliders.s{{ myfname }};
     }
-    window.activeSliders.s{{myfname}} = new LSSlider({
-        'qid': "{{qid}}",
-        'element': "{{myfname}}slid",
-        'rootElement': "{{myfname}}",
-        'labelElement': "label-{{ myfname }}",
-        'value' : '{{slider_value}}',
-        'min' : {{slider_min}},
-        'max' : {{slider_max}},
-        'step' : {{slider_step}},
-        'orientation' : "{{slider_orientation}}",
-        'handle' : "{{slider_handle}}",
-        'tooltip' : 'always',
-        'reset' : "{{slider_reset}}",
-        'prefix' : "{{ processString(prefix,1) }}",
-        'suffix' : "{{ processString(suffix,1) }}",
-        'separator' : "{{sSeparator}}",
-        'number' : true,
-        'integer' : {{integeronly}},
-        'position' : parseInt({{slider_position}}),
-        'custom_handle' : "{{slider_custom_handle}}",
-        'setPosition' : "{{slider_default_set}}",
-        'reversed' : {{slider_reversed}},
+    window.activeSliders.s{{ myfname }} = new LSSlider({
+    'qid': "{{ qid }}",
+    'element': "{{ myfname }}slid",
+    'rootElement': "{{ myfname }}",
+    'labelElement': "label-{{ myfname }}",
+    'value' : '{{ slider_value }}',
+    'min' : {{ slider_min }},
+    'max' : {{ slider_max }},
+    'step' : {{ slider_step }},
+    'orientation' : "{{ slider_orientation }}",
+    'handle' : "{{ slider_handle }}",
+    'tooltip' : 'always',
+    'reset' : "{{ slider_reset }}",
+    'prefix' : "{{ processString(prefix,1) }}",
+    'suffix' : "{{ processString(suffix,1) }}",
+    'separator' : "{{ sSeparator }}",
+    'number' : true,
+    'integer' : {{ integeronly }},
+    'position' : parseFloat({{ slider_position }}),
+    'custom_handle' : "{{ slider_custom_handle }}",
+    'setPosition' : "{{ slider_default_set }}",
+    'reversed' : {{ slider_reversed }},
     });
-    window.activeSliders.s{{myfname}}.init();
+    window.activeSliders.s{{ myfname }}.init();
 {% endset %}
 {{ registerScript( 'SliderQuestion'~myfname, script, 'POS_POSTSCRIPT') }}
 

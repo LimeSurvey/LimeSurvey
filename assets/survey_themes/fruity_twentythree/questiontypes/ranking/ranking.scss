@@ -1,0 +1,24 @@
+.select-sortable-lists:not(.ranking-advanced-style) {
+    .list-group-item {
+        border-radius : 2px;
+        margin-bottom : 10px;
+        padding       : 6px 20px 6px 20px;
+        @include h2
+    }
+
+    .selector__dragHandle.d-none {
+        display     : inline-block !important;
+        margin-left : 8px;
+        position    : absolute;
+        top         : 50%;
+        transform   : translateY(-50%);
+        right       : 6px;
+        svg {
+            vertical-align : baseline;
+        }
+    }
+
+    .sortable-rank-subtitle {
+        display : none;
+    }
+}

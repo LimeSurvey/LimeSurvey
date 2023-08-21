@@ -5,8 +5,10 @@ namespace ls\tests;
 use Question;
 use PHPUnit\Framework\TestCase;
 
-class QuestionTest extends TestCase
+class QuestionTest extends BaseModelTestCase
 {
+    protected $modelClassName = Question::class;
+
     public static function setupBeforeClass(): void
     {
         \Yii::import('application.helpers.common_helper', true);

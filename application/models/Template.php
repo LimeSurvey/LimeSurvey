@@ -127,13 +127,16 @@ class Template extends LSActiveRecord
     }
 
     /**
-     * Filter the template name : test if template if exist
+     * Filter the template name : test if template exists
      *
      * @param string $sTemplateName
      * @return string existing $sTemplateName
+     * @throws Exception
      */
     public static function templateNameFilter($sTemplateName)
     {
+        $sTemplateName = sanitize_filename($sTemplateName, false, false, false);
+
         // If the names has already been filtered, we skip the process
         if (!empty(self::$aNamesFiltered[$sTemplateName])) {
             return self::$aNamesFiltered[$sTemplateName];
@@ -145,7 +148,7 @@ class Template extends LSActiveRecord
         /* Validate if template is OK in user dir, DIRECTORY_SEPARATOR not needed "/" is OK */
         $oTemplate = self::model()->findByPk($sTemplateName);
 
-        if (is_object($oTemplate) && $oTemplate->checkTemplate() && (self::checkTemplateXML($oTemplate->folder))) {
+        if (!empty($oTemplate) && $oTemplate->checkTemplate() && (self::checkTemplateXML($oTemplate->name, $oTemplate->folder))) {
             self::$aNamesFiltered[$sTemplateName] = $sTemplateName;
             return self::$aNamesFiltered[$sTemplateName];
         }
@@ -205,21 +208,25 @@ class Template extends LSActiveRecord
      */
     public function checkTemplateExtends()
     {
-        if (!empty($this->extends)) {
-            $oRTemplate = self::model()->findByPk($this->extends);
-            if (empty($oRTemplate)) {
-                // Why? it blocks the user at login screen....
-                // It should return false and show a nice warning message.
-
-                /*throw new Exception(
-                    sprintf(
-                        'Extended template "%s" is not installed.',
-                        $this->extends
-                    )
-                );*/
-            }
-        }
+        /**
+         * TODO: the following code needs to be rewritten, currently the only thing it does is return true, that why it is commented out
+         */
         return true;
+//        if (!empty($this->extends)) {
+//            $oRTemplate = self::model()->findByPk($this->extends);
+//            if (empty($oRTemplate)) {
+//                // Why? it blocks the user at login screen....
+//                // It should return false and show a nice warning message.
+//
+//                /*throw new Exception(
+//                    sprintf(
+//                        'Extended template "%s" is not installed.',
+//                        $this->extends
+//                    )
+//                );*/
+//            }
+//        }
+//        return true;
     }
 
     /**
@@ -241,14 +248,32 @@ class Template extends LSActiveRecord
 
     /**
      * Check if a given Template has a valid XML File
-     * @TODO: check api version
      *
-     * @param string $sTemplateFolder the template forder name where to look for the XML
+     * @param string $templateName the template name
+     * @param string $templateFolder the template folder name where to look for the XML
      * @return boolean
+     * @throws CDbException
      */
-    public static function checkTemplateXML($sTemplateFolder)
+    public static function checkTemplateXML($templateName, $templateFolder)
     {
-        return (is_file(Yii::app()->getConfig("userthemerootdir") . DIRECTORY_SEPARATOR . $sTemplateFolder . DIRECTORY_SEPARATOR . 'config.xml') || is_file(Yii::app()->getConfig("standardthemerootdir") . DIRECTORY_SEPARATOR . $sTemplateFolder . DIRECTORY_SEPARATOR . 'config.xml'));
+        // check if the configuration can be found
+        $userThemePath = App()->getConfig("userthemerootdir") . DIRECTORY_SEPARATOR . $templateFolder . DIRECTORY_SEPARATOR . 'config.xml';
+        $standardThemePath = App()->getConfig("standardthemerootdir") . DIRECTORY_SEPARATOR . $templateFolder . DIRECTORY_SEPARATOR . 'config.xml';
+        if (is_file($userThemePath)) {
+            $currentThemePath = $userThemePath;
+        } elseif (is_file($standardThemePath)) {
+            $currentThemePath = $standardThemePath;
+        } else {
+            return false;
+        }
+
+        // check compatability with current limesurvey version
+        if (!TemplateConfig::validateTheme($templateName, $currentThemePath)) {
+            return false;
+        }
+
+        // all checks succeeded, continue loading the theme
+        return true;
     }
 
     /**
@@ -265,13 +290,15 @@ class Template extends LSActiveRecord
     }
 
     /**
-     * Get the template path for any template : test if template if exist
+     * Get the template path for any template : test if template exists
      *
      * @param string $sTemplateName
      * @return string template path
+     * @throws Exception
      */
     public static function getTemplatePath($sTemplateName = "")
     {
+        $sTemplateName = self::templateNameFilter($sTemplateName);
         // Make sure template name is valid
         if (!self::checkIfTemplateExists($sTemplateName)) {
             throw new \CException("Invalid {$sTemplateName} template directory");
@@ -303,16 +330,16 @@ class Template extends LSActiveRecord
      * If it's not the case (template probably doesn't exist), it will load the default template configuration
      * TODO : more tests should be done, with a call to private function _is_valid_template(), testing not only if it has a config.xml, but also id this file is correct, if the files refered in css exist, etc.
      *
-     * @param string $sTemplateName     the name of the template to load. The string come from the template selector in survey settings
-     * @param integer $iSurveyId        the id of the survey.
-     * @param integer $iSurveyId        the id of the survey.
-     * @param boolean $bForceXML        the id of the survey.
-     * @return TemplateConfiguration
+     * @param string $sTemplateName the name of the template to load. The string come from the template selector in survey settings
+     * @param integer $iSurveyId the id of the survey.
+     * @param integer $iSurveyId the id of the survey.
+     * @param boolean $bForceXML the id of the survey.
+     * @return TemplateConfiguration|TemplateManifest
      */
     public static function getTemplateConfiguration($sTemplateName = null, $iSurveyId = null, $iSurveyGroupId = null, $bForceXML = false, $abstractInstance = false)
     {
 
-        // First we try to get a confifuration row from DB
+        // First we try to get a configuration row from DB
         if (!$bForceXML) {
             // The name need to be filtred only for DB version. From TemplateEditor, the template is not installed.
             $sTemplateName = (empty($sTemplateName)) ? null : self::templateNameFilter($sTemplateName);
@@ -322,7 +349,7 @@ class Template extends LSActiveRecord
 
         // If no row found, or if the template folder for this configuration row doesn't exist we load the XML config (which will load the default XML)
         if ($bForceXML || !is_a($oTemplateConfigurationModel, 'TemplateConfiguration') || !$oTemplateConfigurationModel->checkTemplate()) {
-            $oTemplateConfigurationModel = new TemplateManifest();
+            $oTemplateConfigurationModel = new TemplateManifest(null);
             $oTemplateConfigurationModel->setBasics($sTemplateName, $iSurveyId);
         }
 
@@ -363,6 +390,7 @@ class Template extends LSActiveRecord
      */
     public static function getTemplateURL($sTemplateName = "")
     {
+        $sTemplateName = self::templateNameFilter($sTemplateName);
         // Make sure template name is valid
         if (!self::checkIfTemplateExists($sTemplateName)) {
             throw new \CException("Invalid {$sTemplateName} template directory");
@@ -489,7 +517,7 @@ class Template extends LSActiveRecord
     {
 
         if ($bForceXML === null) {
-          // Template developper could prefer to work with XML rather than DB as a first step, for quick and easy changes
+          // Template developer could prefer to work with XML rather than DB as a first step, for quick and easy changes
             $bForceXML = (App()->getConfig('force_xmlsettings_for_survey_rendering')) ? true : false;
         }
         // The error page from default template can be called when no survey found with a specific ID.
@@ -549,7 +577,7 @@ class Template extends LSActiveRecord
 
     /**
     * Alias function for resetAssetVersion()
-    * Don't delete this one to maintain updgrade compatibilty
+    * Don't delete this one to maintain updgrade compatibility
     * @return void
     */
     public function forceAssets()
@@ -656,6 +684,7 @@ class Template extends LSActiveRecord
         Yii::import('application.helpers.sanitize_helper', true);
         $this->deleteAssetVersion();
         Survey::model()->updateAll(array('template' => $sNewName), "template = :oldname", array(':oldname' => $this->name));
+        SurveysGroupsettings::model()->updateAll(['template' => $sNewName], "template = :oldname", [':oldname' => $this->name]);
         Template::model()->updateAll(array('name' => $sNewName, 'folder' => $sNewName), "name = :oldname", array(':oldname' => $this->name));
         Template::model()->updateAll(array('extends' => $sNewName), "extends = :oldname", array(':oldname' => $this->name));
         TemplateConfiguration::rename($this->name, $sNewName);
@@ -708,7 +737,7 @@ class Template extends LSActiveRecord
      */
     public static function getDeprecatedTemplates()
     {
-        $usertemplaterootdir     = Yii::app()->getConfig("uploaddir") . DIRECTORY_SEPARATOR . "templates";
+        $usertemplaterootdir     = App()->getConfig("uploaddir") . DIRECTORY_SEPARATOR . "templates";
         $aTemplateList = array();
 
         if ((is_dir($usertemplaterootdir)) && $usertemplaterootdir && $handle = opendir($usertemplaterootdir)) {
@@ -731,7 +760,7 @@ class Template extends LSActiveRecord
     public static function getBrokenThemes($sFolder = null)
     {
         $aBrokenTemplateList = array();
-        $sFolder    =  (empty($sFolder)) ? Yii::app()->getConfig("userthemerootdir") : $sFolder;
+        $sFolder    =  (empty($sFolder)) ? App()->getConfig("userthemerootdir") : $sFolder;
 
         if ($sFolder && $handle = opendir($sFolder)) {
             while (false !== ($sFileName = readdir($handle))) {

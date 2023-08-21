@@ -1,0 +1,30 @@
+// Footer
+.footer {
+    z-index        : 100;
+    bottom         : 0;
+    margin-top     : 36px;
+    padding-top    : 12px;
+    padding-right  : 84px;
+    padding-bottom : 24px;
+    padding-left   : 20px;
+}
+
+.sub_footer {
+    width : 100%;
+    .sub_footer_border {
+        border-top : 1px solid $g-900;
+    }
+    width : 100%;
+    .sub_footer_border {
+        border-top : 1px solid $g-900;
+    }
+}
+
+@media print {
+    footer.footer {
+        display : none;
+    }
+    footer.footer {
+        display : none;
+    }
+}

@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<psalm
+    errorLevel="2"
+    resolveFromConfigFile="true"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="https://getpsalm.org/schema/config"
+    xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
+    autoloader="tests/phpstan/phpstan_bootstrap.php"
+>
+    <projectFiles>
+        <file name="application/models/FailedEmail.php" />
+        <file name="application/controllers/FailedEmailController.php" />
+        <file name="application/controllers/RestController.php" />
+        <file name="application/models/services/SurveyPermissions.php" />
+        <file name="application/extensions/AlertWidget/AlertWidget.php" />
+        <file name="application/extensions/BreadcrumbWidget/BreadcrumbWidget.php" />
+        <file name="application/controllers/AjaxAlertController.php" />
+        <directory name="application/libraries/FormExtension" />
+        <directory name="application/libraries/Api" />
+        <ignoreFiles>
+            <directory name="vendor" />
+        </ignoreFiles>
+    </projectFiles>
+</psalm>
