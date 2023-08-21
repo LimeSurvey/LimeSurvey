@@ -330,11 +330,7 @@ export default {
 
                     <div class="q-group d-flex nowrap ls-space padding right-5 bottom-5 bg-white ms-2 p-2"
                         v-on:mouseover="onMouseOverQuestionGroup($event, questiongroup)" v-on:mouseleave="onMouseLeave">
-                        <div class="cursor-pointer me-1"
-                            :style="isOpen(questiongroup.gid) ? 'transform: rotate(90deg)' : 'transform: rotate(0deg)'">
-                            <i class="ri-arrow-right-s-fill"></i>
-                        </div>
-                        <div v-if="!surveyIsActive" class="bigIcons dragPointer me-3"
+                        <div v-if="!surveyIsActive" class="bigIcons dragPointer me-1"
                             :class="allowOrganizer ? '' : 'disabled'" :draggable="allowOrganizer"
                             @dragend="endDraggingGroup($event, questiongroup)"
                             @dragstart="startDraggingGroup($event, questiongroup)" @click.stop.prevent="() => false">
@@ -343,6 +339,10 @@ export default {
                                     d="M0.4646 0.125H3.24762V2.625H0.4646V0.125ZM6.03064 0.125H8.81366V2.625H6.03064V0.125ZM0.4646 5.75H3.24762V8.25H0.4646V5.75ZM6.03064 5.75H8.81366V8.25H6.03064V5.75ZM0.4646 11.375H3.24762V13.875H0.4646V11.375ZM6.03064 11.375H8.81366V13.875H6.03064V11.375Z"
                                     fill="currentColor" />
                             </svg>
+                        </div>
+                        <div class="cursor-pointer me-1"
+                            :style="isOpen(questiongroup.gid) ? 'transform: rotate(90deg)' : 'transform: rotate(0deg)'">
+                            <i class="ri-arrow-right-s-fill"></i>
                         </div>
                         <div class="w-100 position-relative">
                             <a class="d-flex pjax" :href="questiongroup.link">
