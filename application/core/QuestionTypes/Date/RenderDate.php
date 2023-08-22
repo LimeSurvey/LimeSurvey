@@ -152,7 +152,7 @@ class RenderDate extends QuestionBaseRenderer
         * expressions are not supported because contents of dropbox cannot be easily updated dynamically
         */
         $yearmin = (int) substr((string) $this->minDate, 0, 4);
-        if (!isset($yearmin) || $yearmin < 1900 || $yearmin > 2187) {
+        if (!isset($yearmin)) {
             $yearmin = 1900;
         }
 
