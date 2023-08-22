@@ -52,7 +52,7 @@ export default {
             if (this.createQuestionAllowed) {
                 return '';
             } 
-            return 'Disable your survey to enable this setting';
+            return 'Deactivate your survey to enable this setting';
         },
 
         createQuestionAllowedClass() {
