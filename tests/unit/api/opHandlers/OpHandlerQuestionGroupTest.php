@@ -36,7 +36,7 @@ class OpHandlerQuestionGroupTest extends TestBaseClass
 
     public function testOpQuestionGroupCanNotHandle()
     {
-        $this->initializeWrongTypePatcher();
+        $this->initializeWrongEntityPatcher();
 
         $opHandler = $this->getOpHandler();
         self::assertFalse($opHandler->canHandle($this->op));
@@ -124,11 +124,11 @@ class OpHandlerQuestionGroupTest extends TestBaseClass
         );
     }
 
-    private function initializeWrongTypePatcher()
+    private function initializeWrongEntityPatcher()
     {
         $this->op = OpStandard::factory(
-            'questionGroup',
-            'wrongType',
+            'survey',
+            'update',
             12345,
             [
                 'unknownA' => '2020-01-01 00:00',
