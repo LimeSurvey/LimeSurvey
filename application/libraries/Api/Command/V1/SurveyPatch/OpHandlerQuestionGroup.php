@@ -89,7 +89,7 @@ class OpHandlerQuestionGroup implements OpHandlerInterface
      * @param OpInterface $op
      * @return void
      */
-    private function setOperationTypes(OpInterface $op)
+    public function setOperationTypes(OpInterface $op)
     {
         $this->isUpdateOperation = $op->getType()->getId() === OpTypeUpdate::ID;
         $this->isCreateOperation = $op->getType()->getId() === OpTypeCreate::ID;
@@ -102,7 +102,7 @@ class OpHandlerQuestionGroup implements OpHandlerInterface
      * @return array|mixed
      * @throws OpHandlerException
      */
-    private function getTransformedProps(OpInterface $op)
+    public function getTransformedProps(OpInterface $op)
     {
         $transformedProps = [];
         $props = $op->getProps();
@@ -194,8 +194,8 @@ class OpHandlerQuestionGroup implements OpHandlerInterface
      * {
      *      "questionGroup": {
      *          "sid": "113258",
-     *          "randomization_group": "",
-     *          "grelevance": ""
+     *          "randomizationGroup": "",
+     *          "gRelevance": ""
      *      },
      *      "questionGroupI10N": {
      *          "en": {
