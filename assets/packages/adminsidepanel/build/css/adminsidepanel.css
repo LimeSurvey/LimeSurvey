@@ -5,6 +5,9 @@
   flex: 3 0 auto;
   align-self: flex-start;
 }
+.scoped-toolbuttons-left .create-question {
+  width: 161px;
+}
 .scoped-toolbuttons-left .btn {
   flex: 1;
 }
@@ -97,8 +100,7 @@
 
 .ls-ba .list-group {
   padding-right: 0;
-  -webkit-padding-start: 0;
-          padding-inline-start: 0;
+  padding-inline-start: 0;
 }
 .ls-ba .list-group > .list-group-item {
   padding-right: 0;
