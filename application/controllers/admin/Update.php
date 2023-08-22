@@ -291,12 +291,34 @@ class Update extends DynamicSurveyCommonAction
                 $updateModel = new UpdateForm();
                 $changelog = $updateModel->getChangeLog($destinationBuild);
 
+                // calculate latest major version number
+                $destinationChangelog = end($changelog->changelogentries);
+                reset($changelog->changelogentries);
+                $destinationVersion = $destinationChangelog->versionnumber;
+                $destinationMajorVersion = substr($destinationVersion, 0, 1);
+
+                // get the current version number
+                $currentVersionnumber = App()->getConfig("versionnumber");
+                $currentMajorVersion = substr($currentVersionnumber, 0, 1);
+
+                // check if we are doing a major version upgrade
+                if ($destinationMajorVersion > $currentMajorVersion){
+                    $aData['destinationMajorVersion'] = $destinationMajorVersion;
+                }
+
+                // check if there is a major version info file for the destination major version ($destinationMajorVersion)
+                $majorVersionInfoPath = App()->getConfig("adminviews") . DIRECTORY_SEPARATOR . 'update' . DIRECTORY_SEPARATOR . 'updater' . DIRECTORY_SEPARATOR . 'major_version_info' . DIRECTORY_SEPARATOR . $destinationMajorVersion . '.php';
+                if (file_exists($majorVersionInfoPath)) {
+                    $aData['versionInfoPath'] = '/admin/update/updater/major_version_info/' . $destinationMajorVersion;
+                }
+
                 if ($changelog->result) {
                     $aData['errors'] = false;
                     $aData['changelogs'] = $changelog;
                     $aData['html_from_server'] = $changelog->html;
                     $aData['destinationBuild'] = $destinationBuild;
                     $aData['access_token'] = $access_token;
+                    $aData['currentVersionNumber'] = App()->getConfig("versionnumber");
                 } else {
                     return $this->renderError($changelog);
                 }
