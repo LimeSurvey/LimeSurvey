@@ -9,6 +9,8 @@ use Yii;
  */
 class GenerateSimpleStatisticsTest extends TestBaseClass
 {
+    private static $questions = array();
+
     public static function setUpBeforeClass(): void
     {
         Yii::app()->loadHelper('admin/statistics');
@@ -21,6 +23,57 @@ class GenerateSimpleStatisticsTest extends TestBaseClass
         // Import survey
         $filename = self::$surveysFolder . '/survey_simple_statistics.lsa';
         self::importSurvey($filename);
+
+        $questionGroups = \QuestionGroup::model()->findAllByAttributes(['sid' => self::$surveyId]);
+
+        foreach ($questionGroups as $group) {
+            self::$questions[$group->getprimaryTitle()] = \Question::model()->findAllByAttributes(['gid' => $group->gid, 'parent_qid' => 0]);
+        }
+    }
+
+    public function testGenerateSimpleStatisticsForSingleChoiceQuestions()
+    {
+        $questions = self::$questions['Arrays'];
+
+        // Form SGQA identifiers.
+        $summary = createCompleteSGQA(self::$surveyId, $question, null);
+
+        $helper = new \statistics_helper();
+        $statistics = $helper->generate_simple_statistics(self::$surveyId, $summary, $summary, 1, 'html', 'DD');
+
+        foreach ($questions as $question) {
+            $doc = new \DOMDocument();
+            $doc->loadHtml($statistics);
+
+            $scripts = $doc->getElementsByTagName('script');
+
+            $statisticsData = $this->getStatisticsData($question, $scripts);
+        }
+
+        $this->assertTrue(true);
+    }
+
+    private function getStatisticsData($question, $scripts)
+    {
+        $questionsLength = count($scripts);
+        $statisticsData = array();
+        for ($i = 0; $i < $questionsLength; $i++) {
+            $subquestions = $question->subquestions;
+
+            if (empty($subquestions)) {
+                $statisticsData[$i]['script'] = trim($scripts->item($i)->nodeValue);
+                $statisticsData[$i]['quid'] = $questions[$i]->qid;
+                continue;
+            }
+
+            $subquestionsLength = count($subquestions);
+            for ($j = 0; $j < $subquestionsLength; $j++) { 
+                $statisticsData[$i . $j]['script'] = trim($scripts->item($j)->nodeValue);
+                $statisticsData[$i . $j]['quid'] = $questions[$i]->qid . $subquestions[$j]->title;
+            }
+        }
+
+        return $statisticsData;
     }
 
     public function testStatisticsForThreeQuestions()
