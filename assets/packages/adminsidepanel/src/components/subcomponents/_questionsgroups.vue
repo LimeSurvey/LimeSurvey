@@ -502,6 +502,7 @@ export default {
     flex: 3 0 auto;
     align-self: flex-start;
 
+    /* this is added for tooltip position top not working issue. if remove this, tooltip position is always right */
     .create-question {
         width: 161px;
     }
