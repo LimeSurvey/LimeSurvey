@@ -83,6 +83,9 @@ export default {
         collapseAll() {
             this.active = [];
         },
+        collapseSelected() {
+
+        },
         createFullQuestionLink() {
             if (LS.reparsedParameters().combined.gid) {
                 return this.createQuestionLink + '&gid=' + LS.reparsedParameters().combined.gid;
@@ -165,10 +168,28 @@ export default {
             }
             this.$store.commit("questionGroupOpenArray", this.active);
         },
-        openQuestionGroup(questionGroup) {
+        toggleQuestionGroup(questionGroup) {
+            if (!this.isOpen(questionGroup.gid)) {
+                this.addActive(questionGroup.gid);
+                this.$store.commit("lastQuestionGroupOpen", questionGroup);
+                this.updatePjaxLinks();
+            } else {
+                // collapse opened question group
+                const newActive = this.active.filter((gid)=>gid !== questionGroup.gid);
+                this.active = [...newActive];
+                this.$store.commit("questionGroupOpenArray", this.active);
+            }
+ 
+        },
+        collapseQuestionGroup(questionGroup) {
             this.addActive(questionGroup.gid);
             this.$store.commit("lastQuestionGroupOpen", questionGroup);
             this.updatePjaxLinks();
+
+            if (!this.isOpen(questionGroupId)) {
+                this.active.push(questionGroupId);
+            }
+            this.$store.commit("questionGroupOpenArray", this.active);
         },
         openQuestion(question) {
             this.addActive(question.gid);
@@ -341,20 +362,21 @@ export default {
                             </svg>
                         </div>
                         <div class="cursor-pointer me-1"
+                            @click="toggleQuestionGroup(questiongroup)"
                             :style="isOpen(questiongroup.gid) ? 'transform: rotate(90deg)' : 'transform: rotate(0deg)'">
                             <i class="ri-arrow-right-s-fill"></i>
                         </div>
-                        <div class="w-100 position-relative">
-                            <a class="d-flex pjax" :href="questiongroup.link">
-                                <span class="question_text_ellipsize" :style="{ 'max-width': itemWidth }"
-                                    @click.stop="openQuestionGroup(questiongroup)">
-                                    {{ questiongroup.group_name }}
-                                </span>
-                            </a>
+                        <div class="w-100 position-relative" >
+                            <div class="w-100 position-relative cursor-pointer" @click="toggleQuestionGroup(questiongroup)">
+                                <a class="d-flex pjax" href="#">
+                                    <span class="question_text_ellipsize" :style="{ 'max-width': itemWidth }">
+                                        {{ questiongroup.group_name }}
+                                    </span>
+                                  </a>
+                            </div>
                             <div class="dropdown position-absolute top-0 d-flex align-items-center" style="right:5px">
                                 <div class="">
-                                    <span class="badge reverse-color ls-space margin right-5"
-                                        @click.prevent="toggleActivation(questiongroup.gid)">
+                                    <span class="badge reverse-color ls-space margin right-5">
                                         {{ questiongroup.questions.length }}
                                     </span>
                                 </div>
