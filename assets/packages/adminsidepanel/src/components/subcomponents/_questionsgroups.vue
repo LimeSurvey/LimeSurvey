@@ -374,7 +374,7 @@ export default {
                                     </span>
                                   </a>
                             </div>
-                            <div class="dropdown position-absolute top-0 d-flex align-items-center" style="right:5px">
+                            <div class="dropdown position-absolute top-0 d-flex align-items-center" style="right:5px"  @click="toggleQuestionGroup(questiongroup)">
                                 <div class="">
                                     <span class="badge reverse-color ls-space margin right-5">
                                         {{ questiongroup.questions.length }}
