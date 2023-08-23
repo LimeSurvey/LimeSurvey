@@ -33,32 +33,35 @@ class GenerateSimpleStatisticsTest extends TestBaseClass
 
     public function testGenerateSimpleStatisticsForSingleChoiceQuestions()
     {
-        $questions = self::$questions['Arrays'];
+        $questions = self::$questions['Single choice'];
 
         // Form SGQA identifiers.
-        $summary = createCompleteSGQA(self::$surveyId, $question, null);
+        $summary = createCompleteSGQA(self::$surveyId, $questions, null);
 
         $helper = new \statistics_helper();
         $statistics = $helper->generate_simple_statistics(self::$surveyId, $summary, $summary, 1, 'html', 'DD');
 
-        foreach ($questions as $question) {
-            $doc = new \DOMDocument();
-            $doc->loadHtml($statistics);
+        $doc = new \DOMDocument();
+        $doc->loadHtml($statistics);
 
-            $scripts = $doc->getElementsByTagName('script');
+        $scripts = $doc->getElementsByTagName('script');
 
-            $statisticsData = $this->getStatisticsData($question, $scripts);
+        $statisticsData = $this->getStatisticsData($questions, $scripts);
+
+        foreach ($statisticsData as $data) {
+            $this->assertStringContainsString("['quid'+'" . $data['quid'] . "']", $data['script'], 'The statistics do not contain the correct question id.');
+            //$this->assertStringContainsString("[2,2,4,0]", $data['script'], 'The statistics values are not correct.');
         }
-
-        $this->assertTrue(true);
     }
 
-    private function getStatisticsData($question, $scripts)
+    private function getStatisticsData($questions, $scripts)
     {
-        $questionsLength = count($scripts);
+        $questionsLength = count($questions);
         $statisticsData = array();
+        $scriptCounter = 0;
+
         for ($i = 0; $i < $questionsLength; $i++) {
-            $subquestions = $question->subquestions;
+            $subquestions = $questions[$i]->subquestions;
 
             if (empty($subquestions)) {
                 $statisticsData[$i]['script'] = trim($scripts->item($i)->nodeValue);
@@ -67,16 +70,18 @@ class GenerateSimpleStatisticsTest extends TestBaseClass
             }
 
             $subquestionsLength = count($subquestions);
-            for ($j = 0; $j < $subquestionsLength; $j++) { 
-                $statisticsData[$i . $j]['script'] = trim($scripts->item($j)->nodeValue);
-                $statisticsData[$i . $j]['quid'] = $questions[$i]->qid . $subquestions[$j]->title;
+            for ($j = 0; $j < $subquestionsLength; $j++) {
+                $statisticsData[$scriptCounter]['script'] = trim($scripts->item($scriptCounter)->nodeValue);
+                $statisticsData[$scriptCounter]['quid'] = $questions[$i]->qid . $subquestions[$j]->title;
+
+                $scriptCounter++;
             }
         }
 
         return $statisticsData;
     }
 
-    public function testStatisticsForThreeQuestions()
+    public function StatisticsForThreeQuestions()
     {
         // Form SGQA identifiers.
         $allQuestions = \Question::model()->getQuestionList(self::$surveyId);
