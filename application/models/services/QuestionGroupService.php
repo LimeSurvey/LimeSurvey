@@ -340,40 +340,40 @@ class QuestionGroupService
      */
     public function reorderQuestionGroups(int $surveyId, array $groupArray)
     {
-        $survey = $this->getSurvey($surveyId);
         $success = true;
         $message = '';
-        if (!$survey->isActive) {
-            if (!empty($groupArray)) {
-                foreach ($groupArray as $aQuestionGroup) {
-                    //first set up the ordering for questiongroups
-                    $oQuestionGroups = $this->modelQuestionGroup->findAll(
-                        "gid=:gid AND sid=:sid",
-                        [':gid' => $aQuestionGroup['gid'], ':sid' => $surveyId]
-                    );
-                    array_map(
-                        function ($oQuestionGroup) use ($aQuestionGroup, &$success) {
-                            $oQuestionGroup->group_order = $aQuestionGroup['group_order'];
-                            $success = $success && $oQuestionGroup->save();
-                        },
-                        $oQuestionGroups
-                    );
+        if (!empty($groupArray)) {
+            foreach ($groupArray as $aQuestionGroup) {
+                //first set up the ordering for questiongroups
+                $oQuestionGroups = $this->modelQuestionGroup->findAll(
+                    "gid=:gid AND sid=:sid",
+                    [':gid' => $aQuestionGroup['gid'], ':sid' => $surveyId]
+                );
+                array_map(
+                    function ($oQuestionGroup) use (
+                        $aQuestionGroup,
+                        &$success
+                    ) {
+                        $oQuestionGroup->group_order = $aQuestionGroup['group_order'];
+                        $success = $success && $oQuestionGroup->save();
+                    },
+                    $oQuestionGroups
+                );
 
-                    $aQuestionGroup['questions'] = $aQuestionGroup['questions'] ?? [];
+                $aQuestionGroup['questions'] = $aQuestionGroup['questions'] ?? [];
 
-                    foreach ($aQuestionGroup['questions'] as $aQuestion) {
-                        $success = $this->updateQuestionsForReorder(
-                            $aQuestion,
-                            $surveyId,
-                            $success
-                        );
-                    }
+                foreach ($aQuestionGroup['questions'] as $aQuestion) {
+                    $success = $this->updateQuestionsForReorder(
+                        $aQuestion,
+                        $surveyId,
+                        $success
+                    );
                 }
             }
-            $this->modelQuestionGroup->cleanOrder($surveyId);
         } else {
-            $message = gT("You can't reorder in an active survey");
+            $message = gT("Nothing to reorder.");
         }
+        $this->modelQuestionGroup->cleanOrder($surveyId);
         return [
             'success' => $success,
             'message' => $message
