@@ -45,7 +45,7 @@ class GeneralSettingsDispatchesEventsTest extends TestBaseClass
 
         $generalSettings = (new GeneralSettingsFactory)->make($mockSet);
 
-        $generalSettings->update(1, []);
+        $generalSettings->update(1, ['printanswers' => 'Y']);
 
         $this->assertContains('beforeSurveySettingsSave', $eventsTriggered);
     }

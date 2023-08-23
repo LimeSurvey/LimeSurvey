@@ -43,16 +43,12 @@ class LSYii_FilterValidator extends CFilterValidator
                 return;
             }
             elseif ($this->allowOnlyEmail) {
-                $emailRegex = '/^([a-zA-Z0-9.!#$%&’*+\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+))(,([a-zA-Z0-9.!#$%&’*+\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)))*$/';
-                $isValid = preg_match($emailRegex, (string) $object->$attribute);
-                if (!$isValid)
-                {
+                if (!filter_var((string) $object->$attribute, FILTER_VALIDATE_EMAIL)) {
                     Yii::app()->setFlashMessage(gT("Invalid email address."), 'error');
                     Yii::app()->end();
                 }
             }
         }
-
         return parent::validateAttribute($object, $attribute);
     }
 }
