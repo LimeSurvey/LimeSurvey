@@ -34,6 +34,20 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.2.3 (build 230821) to 6.2.4 (build 230825) August 23, 2023
++New feature: Import survey lss file via command line (lajosarpad)
+-Fixed issue #CR-1285: User should be able to reorder questions within a group of an activated survey (#3346) (Mohab E)
+-Fixed issue #CR-1285: Allow the user to rearrange questions within an activated survey within a group (Mohab E)
+-Fixed issue #CR-1272: Upload & Install button on admin theme tab shouldn't be there (#3348) (Mohab E)
+-Fixed issue #CR-1243: Fix survey default languages removal alert (#3350) (Mohab E)
+-Fixed issue #CR-1230: Deactivate survey - wrong name of the responses table (#3347) (Mohab E)
+-Fixed issue #19028: Send email only to participants with partial responses - should not be available for anonymous surveys (Kevin Foster)
+-Fixed issue #19003: [security] XSS Reflected via import file function (#3369) (Gabriel Jenik)
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: German by c_schmitz, maren.fritz
+
+
 Changes from 6.2.2 (build 230814) to 6.2.3 (build 230821) August 21, 2023
 -Fixed issue #CR-1253: Fix email validation (#3360) (Mohab E)
 -Fixed issue #19009: General settings default value is NULL (#3355) (K Foster)
