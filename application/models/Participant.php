@@ -383,16 +383,16 @@ class Participant extends LSActiveRecord
                 $col_array["filter"] = TbHtml::textField("extraAttribute[" . $name . "]", $extraAttributeParams[$name]);
             }
             $cols[] = $col_array;
-            $cols[] = [
-                "name"              => 'buttons',
-                "type"              => 'raw',
-                "header"            => gT("Action"),
-                "filter"            => false,
-                'filterHtmlOptions' => ['class' => 'ls-sticky-column'],
-                'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
-                'htmlOptions'       => ['class' => 'ls-sticky-column'],
-            ];
         }
+        $cols[] = [
+            "name"              => 'buttons',
+            "type"              => 'raw',
+            "header"            => gT("Action"),
+            "filter"            => false,
+            'filterHtmlOptions' => ['class' => 'ls-sticky-column'],
+            'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
+            'htmlOptions'       => ['class' => 'ls-sticky-column'],
+        ];
         return $cols;
     }
 
