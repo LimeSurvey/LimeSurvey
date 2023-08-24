@@ -112,7 +112,7 @@ echo viewHelper::getViewTestTag('templateOptions');
                                                 <?php if (Permission::model()->hasGlobalPermission('templates', 'delete')) : ?>
                                                     <a id="template_editor_link_<?= $oTemplate->sTemplateName ?>"
                                                        href="<?php echo Yii::app()->getController()->createUrl('admin/themes/sa/deleteAvailableTheme/') ?>"
-                                                       data-post='{ "templatename": "<?= urlencode($oTemplate->sTemplateName) ?>" }'
+                                                       data-post='{ "templatename": "<?= CHtml::encode($oTemplate->sTemplateName) ?>" }'
                                                        data-text="<?php eT('Are you sure you want to delete this theme?'); ?>"
                                                        data-button-no="<?= gT('Cancel'); ?>"
                                                        data-button-yes="<?= gT('Delete'); ?>"
@@ -171,7 +171,7 @@ echo viewHelper::getViewTestTag('templateOptions');
                                             <?php if (Permission::model()->hasGlobalPermission('templates', 'delete')) : ?>
                                                 <a id="button-delete"
                                                    href="<?php echo Yii::app()->getController()->createUrl('admin/themes/sa/deleteBrokenTheme/'); ?>"
-                                                   data-post='{ "templatename": "<?php echo urlencode($sName); ?>" }'
+                                                   data-post='{ "templatename": "<?php echo CHtml::encode($sName); ?>" }'
                                                    data-text="<?php eT('Are you sure you want to delete this theme?'); ?>"
                                                    data-button-no="<?= gT('Cancel'); ?>"
                                                    data-button-yes="<?= gT('Delete'); ?>"

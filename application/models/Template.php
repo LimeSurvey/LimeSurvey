@@ -48,7 +48,7 @@ class Template extends LSActiveRecord
     /** @var Template - The instance of template object */
     private static $instance;
 
-    public static $sTemplateNameRegex = '/^[a-zA-Z0-9_ -]+$/';
+    public static $sTemplateNameIllegalChars = "#$%^&*()+=[]';,./{}|:<>?~";
 
     /**
      * @return string the associated database table name
@@ -91,7 +91,7 @@ class Template extends LSActiveRecord
 
     public static function validateTemplateName($templateName)
     {
-        if (!preg_match(Template::$sTemplateNameRegex, (string) $templateName)) {
+        if (strpbrk((string) $templateName, Template::$sTemplateNameIllegalChars)) {
             return false;
         }
         return true;
