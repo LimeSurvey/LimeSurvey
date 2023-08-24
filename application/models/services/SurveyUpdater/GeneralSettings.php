@@ -29,7 +29,6 @@ class GeneralSettings
     private Survey $modelSurvey;
     private LSYii_Application $yiiApp;
     private CHttpSession $session;
-    //private PluginManager $pluginManager;
     private LanguageConsistency $languageConsistency;
 
     const FIELD_TYPE_YN = 'yesorno';
