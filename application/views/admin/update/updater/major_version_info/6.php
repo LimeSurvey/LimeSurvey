@@ -24,7 +24,7 @@
         <li><b>Custom Themes:</b> Customized admin and survey themes will be uninstalled, but can be updated to achieve compatibility.</li>
         <li><b>Custom Plugins:</b> Any previously installed custom plugins will be deactivated. Contact the plugin author for upgrade details.</li>
         <li><b>Custom question themes:</b> Please check the compatibility of your custom question themes.</li>
-        <li><b>Achieving Compatibility:</b> Follow the instructions here [https://manual.limesurvey.org/Extension_compatibility]</li>
+        <li><b>Achieving Compatibility:</b> Follow the instructions here <a href="https://manual.limesurvey.org/Major_version_upgrade" target="_blank">https://manual.limesurvey.org/Major_version_upgrade</a></li>
     </ul>
     <br>
 </div>
