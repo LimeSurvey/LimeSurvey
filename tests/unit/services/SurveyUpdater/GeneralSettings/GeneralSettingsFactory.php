@@ -22,7 +22,6 @@ class GeneralSettingsFactory
             $mockSet->modelSurvey,
             $mockSet->yiiApp,
             $mockSet->session,
-            $mockSet->pluginManager,
             $mockSet->languageConsistency
         );
     }
