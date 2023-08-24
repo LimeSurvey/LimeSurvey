@@ -235,8 +235,24 @@ class Database extends SurveyCommonAction
     private function actionUpdateSurveyLocaleSettings($surveyId, $input = [])
     {
         $diContainer = \LimeSurvey\DI::getContainer();
-        $surveyUpdater = $diContainer->get(
-            LimeSurvey\Models\Services\SurveyUpdater::class
+
+        /**
+         * The environment plugin manager must be injected
+         * since it has the events to fire.
+         */
+        $pluginManager = App()->getPluginManager();
+        $generalSettings = $diContainer->make(
+            'LimeSurvey\Models\Services\SurveyUpdater\GeneralSettings',
+            [
+                'pluginManager' => $pluginManager
+            ]
+        );
+
+        $surveyUpdater = $diContainer->make(
+            'LimeSurvey\Models\Services\SurveyUpdater',
+            [
+                'generalSettings' => $generalSettings
+            ]
         );
 
         $surveyModel = $diContainer->get(Survey::class);
