@@ -96,7 +96,7 @@ class QuestionGroupDataTest extends TestBaseClass
     }
 
     /**
-     * @testdox  reorderQuestionGroups() check valid save
+     * @testdox  reorderQuestionGroups() check when nothing is changed
      */
     public function testReorderQuestionGroups()
     {
@@ -108,7 +108,7 @@ class QuestionGroupDataTest extends TestBaseClass
             []
         );
 
-        $this->assertEquals('', $returnedArray['message']);
+        $this->assertEquals('Nothing to reorder.', $returnedArray['message']);
         $this->assertEquals(true, $returnedArray['success']);
     }
 }
