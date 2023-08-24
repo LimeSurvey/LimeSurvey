@@ -2,65 +2,49 @@
 
 namespace LimeSurvey\Helpers\Update;
 
-use CException;
-
 class Update_613 extends DatabaseUpdateBase
 {
     /**
      * @inheritDoc
-     * @throws CException
      */
     public function up()
     {
-        $templateConfigurations = $this->db->createCommand()
-            ->select('id, template_name, options')
-            ->from('{{template_configuration}}')
-            ->where(['in', 'template_name', ['vanilla', 'fruity', 'bootswatch']])
-            ->andWhere(['NOT IN', 'options', 'inherit'])
-            ->queryAll();
+        $fixedIcons = [
+            'overview' => 'ri-bar-chart-horizontal-line',
+            'generalsettings' => 'ri-tools-line',
+            'surveytexts' => 'ri-text-spacing',
+            'datasecurity' => 'ri-shield-line',
+            'theme_options' => 'ri-contrast-drop-fill',
+            'presentation' => 'ri-slideshow-line',
+            'tokens' => 'ri-body-scan-fill',
+            'notification' => 'ri-notification-line',
+            'publication' => 'ri-key-line',
+            'surveypermissions' => 'ri-lock-password-line',
+            'listQuestions' => '',
+            'listQuestionGroups' => '',
+            'reorder' => '',
+            'participants' => '',
+            'emailtemplates' => '',
+            'failedemail' => '',
+            'quotas' => '',
+            'assessments' => '',
+            'panelintegration' => '',
+            'responses' => '',
+            'statistics' => '',
+            'resources' => '',
+            'plugins' => '',
+        ];
 
-        if (!empty($templateConfigurations)) {
-            foreach ($templateConfigurations as $templateConfiguration) {
-                if ($templateConfiguration['options'] !== 'inherit') {
-                    if ($templateConfiguration['template_name'] == 'vanilla') {
-                        $sOptionsJson = $templateConfiguration['options'];
-                        $oOldOptions = json_decode($sOptionsJson);
-                        $oOldOptions->animatebody = 'off';
-                        $oOldOptions->fixnumauto = 'enable';
-                        $oNewOtionsJson = json_encode($oOldOptions);
-                        $this->db->createCommand()->update(
-                            '{{template_configuration}}',
-                            ['options' => $oNewOtionsJson],
-                            'id = :id',
-                            [':id' => $templateConfiguration['id']]
-                        );
-                    } elseif ($templateConfiguration['template_name'] == 'fruity') {
-                        $sOptionsJson = $templateConfiguration['options'];
-                        $oOldOptions = json_decode($sOptionsJson);
-                        $oOldOptions->fixnumauto = 'enable';
-                        $oNewOtionsJson = json_encode($oOldOptions);
-                        $this->db->createCommand()->update(
-                            '{{template_configuration}}',
-                            ['options' => $oNewOtionsJson],
-                            'id = :id',
-                            [':id' => $templateConfiguration['id']]
-                        );
-                    } elseif ($templateConfiguration['template_name'] == 'bootswatch') {
-                        $sOptionsJson = $templateConfiguration['options'];
-                        $oOldOptions = json_decode($sOptionsJson);
-                        $oOldOptions->fixnumauto = 'enable';
-                        $oOldOptions->hideprivacyinfo = 'off';
-                        $oNewOtionsJson = json_encode($oOldOptions);
-                        $this->db->createCommand()->update(
-                            '{{template_configuration}}',
-                            ['options' => $oNewOtionsJson],
-                            'id = :id',
-                            [':id' => $templateConfiguration['id']]
-                        );
-                    }
-
-                }
-            }
+        foreach ($fixedIcons as $entryName => $newIcon) {
+            $this->db->createCommand()->update(
+                '{{surveymenu_entries}}',
+                [
+                    "menu_icon_type" => "remix",
+                    "menu_icon" => $newIcon,
+                ],
+                'name=:name',
+                [':name' => $entryName]
+            );
         }
     }
 }

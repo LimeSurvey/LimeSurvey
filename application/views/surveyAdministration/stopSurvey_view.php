@@ -3,6 +3,7 @@
 /** @var int $surveyid */
 /** @var string $dbprefix */
 /** @var string $date */
+/** @var string $sNewSurveyTableName */
 
 ?>
 <div class='side-body stop-survey-body <?php echo getSideBodyClass(false); ?>'>
@@ -62,8 +63,8 @@
                 </div>
                 <div class="card-body px-0  d-flex">
                     <ul>
-                        <li><?php printf(gT('%sResponses%s are %sno longer accessible%s.%s Your response table will be renamed to: %s%s_old_%d_%s%s'),
-                                '<b>', '</b>', '<b>', '</b>','<br />', '<span class="table-rename">', $dbprefix, $surveyid, $date, '</span>'); ?></li>
+                        <li><?php printf(gT('%sResponses%s are %sno longer accessible%s.%s Your response table will be renamed to: %s%s'),
+                                '<b>', '</b>', '<b>', '</b>','<br />', '<b>', $sNewSurveyTableName, '</b>'); ?></li>
                         <li><?php printf(gT("All %sparticipant information will be lost%s."), '<b>', '</b>'); ?></li>
                         <li><?php printf(gT("%sCannot%s be %saccessed%s by %sparticipants%s. A message will be displayed stating that the survey has been closed."),
                                 '<b>', '</b>','<b>', '</b>', '<b>', '</b>'); ?></li>
