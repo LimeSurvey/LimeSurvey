@@ -71,15 +71,26 @@
 
                     <!-- Only partial responses -->
                     <div class='form-group'>
-                        <label class='control-label ' for='partialonly'><?php eT("Send email only to participants with partial responses:"); ?></label>
-                        <div class=''>
+                        <label
+                            class='control-label'
+                            for='partialonly'>
+                            <?php eT("Send email only to participants with partial responses:"); ?>
+                        </label>
+                        <div
+                            data-toggle='tooltip'
+                            data-placement='left'
+                            data-original-title='<?php echo $thissurvey['anonymized'] == 'Y' ? gT('Not possible for anonymized surveys') : ''?>'
+                        >
                             <?php
                             $this->widget('yiiwheels.widgets.switch.WhSwitch', [
                                 'name' => "partialonly",
                                 'id' => "partialonly",
                                 'value' => '0',
                                 'onLabel' => gT('On'),
-                                'offLabel' => gT('Off')
+                                'offLabel' => gT('Off'),
+                                'htmlOptions' => [
+                                    'disabled' => $thissurvey['anonymized'] == 'Y' ? '1' : '0',
+                                ],
                             ]);
                             ?>
                         </div>
@@ -199,6 +210,6 @@ App()->getClientScript()->registerScript("Tokens:BindReminderView", "
         LS.renderBootstrapSwitch();
         $('#send-reminders-button').on('click', function(){
             $('#sendreminder').submit();
-        })
+        });
 ", LSYii_ClientScript::POS_POSTSCRIPT );
 ?>
