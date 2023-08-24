@@ -29,7 +29,7 @@ class GeneralSettings
     private Survey $modelSurvey;
     private LSYii_Application $yiiApp;
     private CHttpSession $session;
-    private PluginManager $pluginManager;
+    //private PluginManager $pluginManager;
     private LanguageConsistency $languageConsistency;
 
     const FIELD_TYPE_YN = 'yesorno';
@@ -44,14 +44,12 @@ class GeneralSettings
         Survey $modelSurvey,
         LSYii_Application $yiiApp,
         CHttpSession $session,
-        PluginManager $pluginManager,
         LanguageConsistency $languageConsistency
     ) {
         $this->modelPermission = $modelPermission;
         $this->modelSurvey = $modelSurvey;
         $this->yiiApp = $yiiApp;
         $this->session = $session;
-        $this->pluginManager = $pluginManager;
         $this->languageConsistency = $languageConsistency;
     }
 
@@ -429,8 +427,17 @@ class GeneralSettings
             $settingsEvent = new PluginEvent('newSurveySettings');
             $settingsEvent->set('settings', $settings);
             $settingsEvent->set('survey', $surveyId);
-            $this->pluginManager
-                ->dispatchEvent($settingsEvent, $plugin);
+
+            /**
+             * Picking up PluginManager form App() as to have
+             * the plugin manager already initiliazed and loaded
+             * with the plugin events.
+             *
+             * If PluginManager was injected,
+             * a new instance would be received,
+             * but it would be empty (not initialized).
+             */
+            $this->yiiApp->getPluginManager()->dispatchEvent($settingsEvent, $plugin);
         }
     }
 
@@ -444,7 +451,7 @@ class GeneralSettings
     {
         $event = new PluginEvent('beforeSurveySettingsSave');
         $event->set('modifiedSurvey', $survey);
-        $this->pluginManager->dispatchEvent($event);
+        $this->yiiApp->getPluginManager()->dispatchEvent($event);
     }
 
     /**
