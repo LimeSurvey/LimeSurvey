@@ -118,6 +118,8 @@ class SurveysGroupsController extends SurveyCommonAction
                 throw new CHttpException(403, gT("You do not have permission to access this page."));
             }
             $postSurveysGroups = App()->getRequest()->getPost('SurveysGroups');
+            // Remove name from post data, as it shouldn't be updated
+            unset($postSurveysGroups['name']);
             /* Mimic survey system : only owner and superadmin can update owner … */
             /* After update : potential loose of rights on SurveysGroups */
             if (
