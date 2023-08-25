@@ -14,7 +14,7 @@ class SurveymenuController extends SurveyCommonAction
     {
         parent::__construct($controller, $id);
 
-        if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
+        if (!Permission::model()->hasGlobalPermission('settings', 'read')) {
             throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
     }
