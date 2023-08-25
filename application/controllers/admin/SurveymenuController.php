@@ -6,6 +6,20 @@
 class SurveymenuController extends SurveyCommonAction
 {
     /**
+     * SurveymenuController Constructor
+     * @param $controller
+     * @param $id
+     **/
+    public function __construct($controller, $id)
+    {
+        parent::__construct($controller, $id);
+
+        if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
+        }
+    }
+
+    /**
      * @return string[] action filters
      */
     public function filters()
