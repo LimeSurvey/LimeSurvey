@@ -8,7 +8,6 @@ class Update_614 extends DatabaseUpdateBase
 {
     /**
      * @inheritDoc
-
      * @throws CException
      */
     public function up()
@@ -26,8 +25,12 @@ class Update_614 extends DatabaseUpdateBase
                     if ($templateConfiguration['template_name'] == 'vanilla') {
                         $sOptionsJson = $templateConfiguration['options'];
                         $oOldOptions = json_decode($sOptionsJson);
-                        $oOldOptions->animatebody = 'off';
-                        $oOldOptions->fixnumauto = 'enable';
+                        if (!$oOldOptions->animatebody) {
+                            $oOldOptions->animatebody = 'off';
+                        }
+                        if (!$oOldOptions->fixnumauto) {
+                            $oOldOptions->fixnumauto = 'enable';
+                        }
                         $oNewOtionsJson = json_encode($oOldOptions);
                         $this->db->createCommand()->update(
                             '{{template_configuration}}',
@@ -38,7 +41,9 @@ class Update_614 extends DatabaseUpdateBase
                     } elseif ($templateConfiguration['template_name'] == 'fruity') {
                         $sOptionsJson = $templateConfiguration['options'];
                         $oOldOptions = json_decode($sOptionsJson);
-                        $oOldOptions->fixnumauto = 'enable';
+                        if (!$oOldOptions->fixnumauto) {
+                            $oOldOptions->fixnumauto = 'enable';
+                        }
                         $oNewOtionsJson = json_encode($oOldOptions);
                         $this->db->createCommand()->update(
                             '{{template_configuration}}',
@@ -49,8 +54,12 @@ class Update_614 extends DatabaseUpdateBase
                     } elseif ($templateConfiguration['template_name'] == 'bootswatch') {
                         $sOptionsJson = $templateConfiguration['options'];
                         $oOldOptions = json_decode($sOptionsJson);
-                        $oOldOptions->fixnumauto = 'enable';
-                        $oOldOptions->hideprivacyinfo = 'off';
+                        if (!$oOldOptions->hideprivacyinfo) {
+                            $oOldOptions->hideprivacyinfo = 'off';
+                        }
+                        if (!$oOldOptions->fixnumauto) {
+                            $oOldOptions->fixnumauto = 'enable';
+                        }
                         $oNewOtionsJson = json_encode($oOldOptions);
                         $this->db->createCommand()->update(
                             '{{template_configuration}}',
