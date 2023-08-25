@@ -3,6 +3,7 @@
 namespace LimeSurvey\ObjectPatch\OpHandler;
 
 use CModel;
+use LimeSurvey\Api\Command\V1\SurveyPatch\OpApiHelper;
 use LimeSurvey\Api\Transformer\TransformerInterface;
 use LimeSurvey\ObjectPatch\{
     OpHandler\OpHandlerInterface,
@@ -34,7 +35,7 @@ class OpHandlerActiveRecordUpdate implements OpHandlerInterface
     {
         $record = is_array($op->getEntityId())
             ? $this->model->findByAttributes(
-                \OpApiHelper::getEntityId($op, $this->transformer)
+                OpApiHelper::getEntityId($op, $this->transformer)
             )
             : $this->model->findByPk(
                 $op->getEntityId()

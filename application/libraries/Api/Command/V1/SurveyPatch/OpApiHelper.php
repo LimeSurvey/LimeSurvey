@@ -1,5 +1,7 @@
 <?php
 
+namespace LimeSurvey\Api\Command\V1\SurveyPatch;
+
 use LimeSurvey\Api\Transformer\TransformerInterface;
 use LimeSurvey\ObjectPatch\Op\OpInterface;
 
