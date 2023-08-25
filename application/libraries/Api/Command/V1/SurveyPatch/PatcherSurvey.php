@@ -93,7 +93,7 @@ class PatcherSurvey extends Patcher
     private function addOpHandlerQuestionGroupL10n(FactoryInterface $diFactory, ContainerInterface $diContainer): void
     {
         $this->addOpHandler($diFactory->make(
-            OpHandlerActiveRecordUpdate::class,
+            OpHandlerQuestionGroupL10n::class,
             [
                 'entity' => 'questionGroupL10n',
                 'model' => QuestionGroupL10n::model(),

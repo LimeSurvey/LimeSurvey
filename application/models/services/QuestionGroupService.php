@@ -65,7 +65,7 @@ class QuestionGroupService
      *          [group_order]
      *          [randomization_group]
      *          [grelevance]
-     *      ['questionGroupI10N']
+     *      ['questionGroupL10N']
      *          [en]
      *              [group_name]
      *              [description]
@@ -77,11 +77,37 @@ class QuestionGroupService
      */
     public function updateGroup(int $surveyId, int $questionGroupId, array $input)
     {
-        $survey = $this->getSurvey($surveyId);
+        $questionGroup = $this->getQuestionGroupForUpdate(
+            $surveyId,
+            $questionGroupId
+        );
+
+        $questionGroup = $this->updateQuestionGroup(
+            $questionGroup,
+            $input['questionGroup']
+        );
+        $this->updateQuestionGroupLanguages(
+            $questionGroup,
+            $input['questionGroupI10N']
+        );
+
+        return $questionGroup;
+    }
+
+    /**
+     * Checks permissions for updating, and returns a specific question group.
+     * @param int $surveyId
+     * @param int $questionGroupId
+     * @return QuestionGroup
+     * @throws NotFoundException
+     * @throws PermissionDeniedException
+     */
+    public function getQuestionGroupForUpdate(int $surveyId, int $questionGroupId)
+    {
 
         if (
             !$this->modelPermission->hasSurveyPermission(
-                $survey->sid,
+                $surveyId,
                 'surveycontent',
                 'update'
             )
@@ -98,15 +124,6 @@ class QuestionGroupService
             );
         }
 
-        $questionGroup = $this->updateQuestionGroup(
-            $questionGroup,
-            $input['questionGroup']
-        );
-        $this->updateQuestionGroupLanguages(
-            $questionGroup,
-            $input['questionGroupI10N']
-        );
-
         return $questionGroup;
     }
 
@@ -122,7 +139,7 @@ class QuestionGroupService
      *          [group_order]
      *          [randomization_group]
      *          [grelevance]
-     *      ['questionGroupI10N']
+     *      ['questionGroupL10N']
      *          [en]
      *              [group_name]
      *              [description]
@@ -151,7 +168,7 @@ class QuestionGroupService
         );
         $this->updateQuestionGroupLanguages(
             $questionGroup,
-            $input['questionGroupI10N'] ?? []
+            $input['questionGroupL10N'] ?? []
         );
 
         return $questionGroup;
@@ -316,15 +333,15 @@ class QuestionGroupService
     ) {
         $storeValid = true;
 
-        foreach ($dataSet as $sLanguage => $aI10NBlock) {
-            $i10N = $this->modelQuestionGroupL10n->findByAttributes(
+        foreach ($dataSet as $sLanguage => $aL10NBlock) {
+            $l10N = $this->modelQuestionGroupL10n->findByAttributes(
                 ['gid' => $oQuestionGroup->gid, 'language' => $sLanguage]
             );
-            $i10N->setAttributes([
-                'group_name'  => $aI10NBlock['group_name'],
-                'description' => $aI10NBlock['description'],
+            $l10N->setAttributes([
+                'group_name'  => $aL10NBlock['group_name'],
+                'description' => $aL10NBlock['description'],
             ], false);
-            $storeValid = $storeValid && $i10N->save();
+            $storeValid = $storeValid && $l10N->save();
         }
 
         return $storeValid;
@@ -448,7 +465,8 @@ class QuestionGroupService
     }
 
     /**
-     * Method to store and filter questionData for a new question
+     * Creates a new question group, and also adds plain entries for the required
+     * QuestionGroupL10n data
      *
      * @param int $surveyId
      * @param array|null $aQuestionGroupData
@@ -483,16 +501,16 @@ class QuestionGroupService
             );
         }
 
-        $i10N = [];
+        $l10N = [];
         foreach ($survey->allLanguages as $sLanguage) {
-            $i10N[$sLanguage] = clone $this->modelQuestionGroupL10n;
-            $i10N[$sLanguage]->setAttributes([
+            $l10N[$sLanguage] = clone $this->modelQuestionGroupL10n;
+            $l10N[$sLanguage]->setAttributes([
                 'gid'         => $oQuestionGroup->gid,
                 'language'    => $sLanguage,
                 'group_name'  => '',
                 'description' => '',
             ], false);
-            $i10N[$sLanguage]->save();
+            $l10N[$sLanguage]->save();
         }
 
         return $oQuestionGroup;
