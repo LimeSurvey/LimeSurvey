@@ -34,7 +34,7 @@ class OpHandlerActiveRecordUpdate implements OpHandlerInterface
     {
         $record = is_array($op->getEntityId())
             ? $this->model->findByAttributes(
-                $op->getEntityId($this->transformer)
+                \OpApiHelper::getEntityId($op, $this->transformer)
             )
             : $this->model->findByPk(
                 $op->getEntityId()

@@ -2,7 +2,6 @@
 
 namespace LimeSurvey\ObjectPatch\Op;
 
-use LimeSurvey\Api\Transformer\TransformerInterface;
 use LimeSurvey\ObjectPatch\ObjectPatchException;
 use LimeSurvey\ObjectPatch\OpType\OpTypeInterface;
 use LimeSurvey\ObjectPatch\OpType\OpType;
@@ -29,15 +28,9 @@ class OpStandard implements OpInterface
         return $this->entityType;
     }
 
-    /**
-     * @param TransformerInterface|null $transformer
-     * @return array|mixed|null
-     */
-    public function getEntityId(?TransformerInterface $transformer = null)
+    public function getEntityId()
     {
-        return is_array($this->entityId) && $transformer
-            ? $transformer->transform($this->entityId)
-            : $this->entityId;
+        return $this->entityId;
     }
 
     public function getType(): OpTypeInterface
