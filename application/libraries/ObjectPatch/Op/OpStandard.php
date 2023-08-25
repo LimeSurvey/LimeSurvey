@@ -2,6 +2,7 @@
 
 namespace LimeSurvey\ObjectPatch\Op;
 
+use LimeSurvey\Api\Transformer\TransformerInterface;
 use LimeSurvey\ObjectPatch\ObjectPatchException;
 use LimeSurvey\ObjectPatch\OpType\OpTypeInterface;
 use LimeSurvey\ObjectPatch\OpType\OpType;
@@ -12,13 +13,15 @@ class OpStandard implements OpInterface
     private $type = null;
     private $entityId = null;
     private $props = null;
+    private $context = null;
 
-    public function __construct($entityType, OpTypeInterface $type, $entityId, $props)
+    public function __construct($entityType, OpTypeInterface $type, $entityId, $props, $context)
     {
         $this->entityType = $entityType;
         $this->type = $type;
         $this->entityId = $entityId;
         $this->props = $props;
+        $this->context = $context;
     }
 
     public function getEntityType()
@@ -26,9 +29,15 @@ class OpStandard implements OpInterface
         return $this->entityType;
     }
 
-    public function getEntityId()
+    /**
+     * @param TransformerInterface|null $transformer
+     * @return array|mixed|null
+     */
+    public function getEntityId(?TransformerInterface $transformer = null)
     {
-        return $this->entityId;
+        return is_array($this->entityId) && $transformer
+            ? $transformer->transform($this->entityId)
+            : $this->entityId;
     }
 
     public function getType(): OpTypeInterface
@@ -41,6 +50,11 @@ class OpStandard implements OpInterface
         return $this->props;
     }
 
+    public function getContext()
+    {
+        return $this->context;
+    }
+
     /**
      * Factory
      *
@@ -48,17 +62,19 @@ class OpStandard implements OpInterface
      * @param string $type
      * @param mixed $entityId
      * @param array $props
+     * @param array $context
      * @throws ObjectPatchException
      * @return OpStandard
      */
-    public static function factory($entityType, $type, $entityId, $props)
+    public static function factory($entityType, $type, $entityId, $props, $context)
     {
         $opType = OpType::factory($type);
         return new static(
             $entityType,
             $opType,
             $entityId,
-            $props
+            $props,
+            $context
         );
     }
 }
