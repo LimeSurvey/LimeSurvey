@@ -12,13 +12,7 @@ class Update_614 extends DatabaseUpdateBase
      */
     public function up()
     {
-        $templateConfigurations = $this->db->createCommand()
-            ->select('id, template_name, options')
-            ->from('{{template_configuration}}')
-            ->where(['in', 'template_name', ['vanilla', 'fruity', 'bootswatch']])
-            ->andWhere(['NOT IN', 'options', 'inherit'])
-            ->queryAll();
-
+        $templateConfigurations = $this->getThemes();
         if (!empty($templateConfigurations)) {
             foreach ($templateConfigurations as $templateConfiguration) {
                 if ($templateConfiguration['options'] !== 'inherit') {
@@ -71,5 +65,15 @@ class Update_614 extends DatabaseUpdateBase
                 }
             }
         }
+    }
+
+    public function getThemes()
+    {
+        return $this->db->createCommand()
+            ->select('id, template_name, options')
+            ->from('{{template_configuration}}')
+            ->where(['in', 'template_name', ['vanilla', 'fruity', 'bootswatch']])
+            ->andWhere(['NOT IN', 'options', 'inherit'])
+            ->queryAll();
     }
 }
