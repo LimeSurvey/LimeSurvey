@@ -11093,7 +11093,7 @@ body {
 }
 
 .selector_openSharePanel {
-  width: 150px;
+  display: inline-block;
 }
 
 .summary-table {

@@ -5,9 +5,6 @@
   flex: 3 0 auto;
   align-self: flex-start;
 }
-.scoped-toolbuttons-left .create-question {
-  width: 161px;
-}
 .scoped-toolbuttons-left .btn {
   flex: 1;
 }

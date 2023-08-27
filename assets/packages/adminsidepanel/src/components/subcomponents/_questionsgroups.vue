@@ -52,7 +52,7 @@ export default {
             if (this.createQuestionAllowed) {
                 return '';
             } 
-            return 'Deactivate your survey to enable this setting';
+            return this.translate('deactivateSurvey');
         },
 		createQuestionAllowedClass() {
 			if (this.createQuestionAllowed) {
@@ -326,9 +326,9 @@ export default {
         </div>
 		<div class="ls-flex-row wrap align-content-center align-items-center button-sub-bar">
 			<div class="scoped-toolbuttons-left mb-2 d-flex align-items-center">
-                <div class="create-question" data-bs-toggle="tooltip" data-bs-placement="top" :title="createQuestionTooltip">
+                <div class="create-question px-3" data-bs-toggle="tooltip" data-bs-placement="top" :title="createQuestionTooltip">
                     <a id="adminsidepanel__sidebar--selectorCreateQuestion" :href="createFullQuestionLink()"
-                        class="btn btn-primary ms-2 me-2 pjax" v-bind:class="createQuestionAllowedClass">
+                        class="btn btn-primary pjax" v-bind:class="createQuestionAllowedClass">
                         <i class="ri-add-circle-fill"></i>
                         &nbsp;
                         {{ 'createQuestion' | translate }}
@@ -563,9 +563,6 @@ export default {
 .scoped-toolbuttons-left {
     flex: 3 0 auto;
     align-self: flex-start;
-    .create-question {
-        width: 161px;
-    }
     .btn {
         flex: 1;
     }
