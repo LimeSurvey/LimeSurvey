@@ -77,6 +77,33 @@ class QuestionGroupService
      */
     public function updateGroup(int $surveyId, int $questionGroupId, array $input)
     {
+        $questionGroup = $this->getQuestionGroupForUpdate(
+            $surveyId,
+            $questionGroupId
+        );
+
+        $questionGroup = $this->updateQuestionGroup(
+            $questionGroup,
+            $input['questionGroup']
+        );
+        $this->updateQuestionGroupLanguages(
+            $questionGroup,
+            $input['questionGroupI10N']
+        );
+
+        return $questionGroup;
+    }
+
+    /**
+     * Checks permissions for updating, and returns a specific question group.
+     * @param int $surveyId
+     * @param int $questionGroupId
+     * @return QuestionGroup
+     * @throws NotFoundException
+     * @throws PermissionDeniedException
+     */
+    public function getQuestionGroupForUpdate(int $surveyId, int $questionGroupId)
+    {
         $survey = $this->getSurvey($surveyId);
 
         if (
@@ -97,15 +124,6 @@ class QuestionGroupService
                 'Group not found'
             );
         }
-
-        $questionGroup = $this->updateQuestionGroup(
-            $questionGroup,
-            $input['questionGroup']
-        );
-        $this->updateQuestionGroupLanguages(
-            $questionGroup,
-            $input['questionGroupI10N']
-        );
 
         return $questionGroup;
     }
@@ -448,7 +466,8 @@ class QuestionGroupService
     }
 
     /**
-     * Method to store and filter questionData for a new question
+     * Creates a new question group, and also adds plain entries for the required
+     * QuestionGroupL10n data
      *
      * @param int $surveyId
      * @param array|null $aQuestionGroupData
