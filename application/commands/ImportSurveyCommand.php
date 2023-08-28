@@ -40,7 +40,7 @@ class ImportSurveyCommand extends CConsoleCommand
         if (is_array($result) && isset($result['newsid'])) {
             echo $result['newsid'];
         } else {
-            echo gT("Something went wrong");
+            echo gT("The import has failed");
         }
     }
 }

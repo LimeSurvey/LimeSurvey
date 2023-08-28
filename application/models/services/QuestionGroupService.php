@@ -77,6 +77,33 @@ class QuestionGroupService
      */
     public function updateGroup(int $surveyId, int $questionGroupId, array $input)
     {
+        $questionGroup = $this->getQuestionGroupForUpdate(
+            $surveyId,
+            $questionGroupId
+        );
+
+        $questionGroup = $this->updateQuestionGroup(
+            $questionGroup,
+            $input['questionGroup']
+        );
+        $this->updateQuestionGroupLanguages(
+            $questionGroup,
+            $input['questionGroupI10N']
+        );
+
+        return $questionGroup;
+    }
+
+    /**
+     * Checks permissions for updating, and returns a specific question group.
+     * @param int $surveyId
+     * @param int $questionGroupId
+     * @return QuestionGroup
+     * @throws NotFoundException
+     * @throws PermissionDeniedException
+     */
+    public function getQuestionGroupForUpdate(int $surveyId, int $questionGroupId)
+    {
         $survey = $this->getSurvey($surveyId);
 
         if (
@@ -97,15 +124,6 @@ class QuestionGroupService
                 'Group not found'
             );
         }
-
-        $questionGroup = $this->updateQuestionGroup(
-            $questionGroup,
-            $input['questionGroup']
-        );
-        $this->updateQuestionGroupLanguages(
-            $questionGroup,
-            $input['questionGroupI10N']
-        );
 
         return $questionGroup;
     }
@@ -340,40 +358,40 @@ class QuestionGroupService
      */
     public function reorderQuestionGroups(int $surveyId, array $groupArray)
     {
-        $survey = $this->getSurvey($surveyId);
         $success = true;
         $message = '';
-        if (!$survey->isActive) {
-            if (!empty($groupArray)) {
-                foreach ($groupArray as $aQuestionGroup) {
-                    //first set up the ordering for questiongroups
-                    $oQuestionGroups = $this->modelQuestionGroup->findAll(
-                        "gid=:gid AND sid=:sid",
-                        [':gid' => $aQuestionGroup['gid'], ':sid' => $surveyId]
-                    );
-                    array_map(
-                        function ($oQuestionGroup) use ($aQuestionGroup, &$success) {
-                            $oQuestionGroup->group_order = $aQuestionGroup['group_order'];
-                            $success = $success && $oQuestionGroup->save();
-                        },
-                        $oQuestionGroups
-                    );
+        if (!empty($groupArray)) {
+            foreach ($groupArray as $aQuestionGroup) {
+                //first set up the ordering for questiongroups
+                $oQuestionGroups = $this->modelQuestionGroup->findAll(
+                    "gid=:gid AND sid=:sid",
+                    [':gid' => $aQuestionGroup['gid'], ':sid' => $surveyId]
+                );
+                array_map(
+                    function ($oQuestionGroup) use (
+                        $aQuestionGroup,
+                        &$success
+                    ) {
+                        $oQuestionGroup->group_order = $aQuestionGroup['group_order'];
+                        $success = $success && $oQuestionGroup->save();
+                    },
+                    $oQuestionGroups
+                );
 
-                    $aQuestionGroup['questions'] = $aQuestionGroup['questions'] ?? [];
+                $aQuestionGroup['questions'] = $aQuestionGroup['questions'] ?? [];
 
-                    foreach ($aQuestionGroup['questions'] as $aQuestion) {
-                        $success = $this->updateQuestionsForReorder(
-                            $aQuestion,
-                            $surveyId,
-                            $success
-                        );
-                    }
+                foreach ($aQuestionGroup['questions'] as $aQuestion) {
+                    $success = $this->updateQuestionsForReorder(
+                        $aQuestion,
+                        $surveyId,
+                        $success
+                    );
                 }
             }
-            $this->modelQuestionGroup->cleanOrder($surveyId);
         } else {
-            $message = gT("You can't reorder in an active survey");
+            $message = gT("Nothing to reorder.");
         }
+        $this->modelQuestionGroup->cleanOrder($surveyId);
         return [
             'success' => $success,
             'message' => $message
@@ -448,7 +466,8 @@ class QuestionGroupService
     }
 
     /**
-     * Method to store and filter questionData for a new question
+     * Creates a new question group, and also adds plain entries for the required
+     * QuestionGroupL10n data
      *
      * @param int $surveyId
      * @param array|null $aQuestionGroupData
