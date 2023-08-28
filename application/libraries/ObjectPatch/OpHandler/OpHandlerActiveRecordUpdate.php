@@ -41,7 +41,6 @@ class OpHandlerActiveRecordUpdate implements OpHandlerInterface
             : $this->model->findByPk(
                 $op->getEntityId()
             );
-        ;
         if (!$record) {
             throw new OpHandlerException(
                 printf(
