@@ -97,7 +97,9 @@ export default {
         itemActivated(question){
             return  this.$store.state.lastQuestionOpen === question.qid;
         },
-
+        groupActivated(questionGroup) {
+            return this.$store.state.lastQuestionGroupOpen === questionGroup.gid;
+        },
         questionItemClasses(question) {
             let classes = "";
             classes +=
@@ -162,10 +164,18 @@ export default {
             }
             this.$store.commit("questionGroupOpenArray", this.active);
         },
-        openQuestionGroup(questionGroup) {
-            this.addActive(questionGroup.gid);
-            this.$store.commit("lastQuestionGroupOpen", questionGroup);
-            this.updatePjaxLinks();
+        toggleQuestionGroup(questionGroup) {
+            if (!this.isOpen(questionGroup.gid)) {
+                this.addActive(questionGroup.gid);
+                this.$store.commit("lastQuestionGroupOpen", questionGroup);
+                this.updatePjaxLinks();
+            } else {
+                // collapse opened question group
+                const newActive = this.active.filter((gid)=>gid !== questionGroup.gid);
+                this.active = [...newActive];
+                this.$store.commit("questionGroupOpenArray", this.active);
+            }
+ 
         },
         openQuestion(question) {
             this.addActive(question.gid);
@@ -344,7 +354,6 @@ export default {
 
                     v-bind:class="questionGroupItemClasses(questiongroup)"
                     @dragenter="dragoverQuestiongroup($event, questiongroup)"
-                    style=" background: linear-gradient(90deg, #14AE5C 0%, #14AE5C 5px, #EEEFF7 5px, #EEEFF7 100%); padding: 0;"
                 >
 
                   <div class="q-group d-flex nowrap ls-space padding right-5 bottom-5 bg-white ms-2 p-2"
@@ -353,7 +362,7 @@ export default {
 
                   >
                     <div
-                        class="bigIcons dragPointer me-3"
+                        class="bigIcons dragPointer me-1"
                         :class=" allowOrganizer ? '' : 'disabled' "
                         :draggable="allowOrganizer"
                         @dragend="endDraggingGroup($event, questiongroup)"
@@ -364,79 +373,65 @@ export default {
                         <path fill-rule="evenodd" clip-rule="evenodd" d="M0.4646 0.125H3.24762V2.625H0.4646V0.125ZM6.03064 0.125H8.81366V2.625H6.03064V0.125ZM0.4646 5.75H3.24762V8.25H0.4646V5.75ZM6.03064 5.75H8.81366V8.25H6.03064V5.75ZM0.4646 11.375H3.24762V13.875H0.4646V11.375ZM6.03064 11.375H8.81366V13.875H6.03064V11.375Z" fill="currentColor"/>
                       </svg>
                     </div>
-                    <div class="w-100 position-relative">
-                      <a
-                          class="d-flex pjax"
-                          :href="questiongroup.link"
-                      >
-                        <span
-                            class="question_text_ellipsize"
-                            :style="{ 'max-width': itemWidth }"
-                            @click.stop="openQuestionGroup(questiongroup)"
-                        >
-                        {{ questiongroup.group_name }}
-                        </span>
-
-                      </a>
-
-                    <div  class="dropdown position-absolute top-0 d-flex" style="right:5px" >
-
-                        <div class="">
-                            <span class="badge reverse-color ls-space margin right-5"
-                                @click.prevent="toggleActivation(questiongroup.gid)">
-                                {{ questiongroup.questions.length }}
-                            </span>
-                        </div>
-
-                        <div class="ls-questiongroup-tools cursor-pointer" id="dropdownMenuButton1" data-bs-toggle="dropdown"
-                        aria-expanded="false">
-                             <i class="ri-more-fill"></i>
-                        </div>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                            <li  v-if="key !== 'delete'"  v-for="(value, key) in questiongroup.groupDropdown" :key="key">
-                                <a   class="dropdown-item" :id="value.id" :href="value.url">
-                                    <span :class="value.icon"></span>
-                                    {{value.label}}
-                                </a>
-
-                            </li>
-
-                            <li v-else-if="key === 'delete'" :class=" value.disabled ? 'disabled' : '' ">
-                                <a
-                                    v-if="!value.disabled"
-                                    href="#"
-                                    onclick="return false;"
-                                    class="dropdown-item"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#confirmation-modal"
-                                    data-btnclass="btn-danger"
-                                    :data-title="value.dataTitle"
-                                    :data-btntext="value.dataBtnText"
-                                    :data-onclick="value.dataOnclick"
-                                    :data-message="value.dataMessage"
-                                >
-                                    <span :class="value.icon"></span>
-                                    {{value.label}}
-                                </a>
-                                <a
-                                    v-else-if="value.disabled"
-                                    href="#"
-                                    onclick="return false;"
-                                    class="dropdown-item"
-                                    data-btnclass="btn-danger"
-                                    data-bs-toggle="tooltip"
-                                    data-bs-placement="bottom"
-                                    :title="value.title"
-                                >
-                                    <span :class="value.icon"></span>
-                                    {{value.label}}
-                                </a>
-
-                            </li>
-                        </ul>
+                    <div class="cursor-pointer me-1" @click="toggleQuestionGroup(questiongroup)" 
+                         :style="isOpen(questiongroup.gid) ? 'transform: rotate(90deg)' : 'transform: rotate(0deg)'">
+                         <i class="ri-arrow-right-s-fill"></i>
                     </div>
+                    <div class="w-100 position-relative">
+                        <div class="cursor-pointer">
+                            <a
+                                class="d-flex pjax"
+                                :href="questiongroup.link"
+                            >
+                                <span class="question_text_ellipsize" :style="{ 'max-width': itemWidth }">
+                                    {{ questiongroup.group_name }}
+                                </span>
+                            </a>
+                        </div>
+                        <div class="dropdown position-absolute top-0 d-flex align-items-center" style="right:5px">
+                            <div class=""  @click="toggleQuestionGroup(questiongroup)">
+                                <span class="badge reverse-color ls-space margin right-5">
+                                    {{ questiongroup.questions.length }}
+                                </span>
+                            </div>
 
+                            <div v-if="groupActivated(questiongroup) || (hoveredQuestionGroup && hoveredQuestionGroup.gid === questiongroup.gid)"
+                                class="ls-questiongroup-tools cursor-pointer" id="dropdownMenuButton1"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="ri-more-fill"></i>
+                            </div>
 
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                <li v-if="key !== 'delete'" v-for="(value, key) in questiongroup.groupDropdown"
+                                    :key="key">
+                                    <a class="dropdown-item" :id="value.id" :href="value.url">
+                                        <span :class="value.icon"></span>
+                                        {{ value.label }}
+                                    </a>
+
+                                </li>
+
+                                <li v-else-if="key === 'delete'" :class="value.disabled ? 'disabled' : ''">
+                                    <a v-if="!value.disabled" href="#" onclick="return false;" class="dropdown-item"
+                                        data-bs-toggle="modal" data-bs-target="#confirmation-modal"
+                                        data-btnclass="btn-danger" :data-title="value.dataTitle"
+                                        :data-btntext="value.dataBtnText" :data-onclick="value.dataOnclick"
+                                        :data-message="value.dataMessage">
+                                        <span :class="value.icon"></span>
+                                        {{ value.label }}
+                                    </a>
+                                    <a v-else-if="value.disabled" href="#" onclick="return false;" class="dropdown-item"
+                                        data-btnclass="btn-danger" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                        :title="value.title">
+                                        <span :class="value.icon"></span>
+                                        {{ value.label }}
+                                    </a>
+
+                                </li>
+                            </ul>
+        
+
+                        </div>
                     </div>
                   </div>
                     <transition name="slide-fade-down">
@@ -478,7 +473,7 @@ export default {
                                     </div>
                                 <a
                                     :href="question.link"
-                                    class="col-9 pjax question-question-list-item-link display-as-container ls-text-underline-hover"
+                                    class="col-9 pjax question-question-list-item-link display-as-container"
                                     @click.stop.prevent="openQuestion(question)"
                                 >
                                     <span
