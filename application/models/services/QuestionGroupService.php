@@ -88,7 +88,7 @@ class QuestionGroupService
         );
         $this->updateQuestionGroupLanguages(
             $questionGroup,
-            $input['questionGroupI10N']
+            $input['questionGroupL10N']
         );
 
         return $questionGroup;
@@ -104,6 +104,7 @@ class QuestionGroupService
      */
     public function getQuestionGroupForUpdate(int $surveyId, int $questionGroupId)
     {
+        $survey = $this->getSurvey($surveyId);
 
         if (
             !$this->modelPermission->hasSurveyPermission(
