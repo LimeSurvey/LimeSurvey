@@ -381,6 +381,7 @@ class SurveymenuController extends SurveyCommonAction
      **/
     public function index()
     {
+        // Permission check is done in the constructor.
         $this->getController()->redirect(array('admin/menus/sa/view'));
     }
 
@@ -390,6 +391,8 @@ class SurveymenuController extends SurveyCommonAction
      */
     public function view()
     {
+        // Permission check is done in the constructor.
+
         $aData = array();
         $aData['model'] = Surveymenu::model();
 
