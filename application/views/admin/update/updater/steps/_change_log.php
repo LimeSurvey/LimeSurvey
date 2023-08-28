@@ -21,14 +21,9 @@
 <?php endif; ?>
 <div class="row">
     <div class="col-lg-12">
-        <?php if (isset($versionInfoPath)) : ?>
-            <?php App()->getController()->renderPartial($versionInfoPath, $_data_) ?>
-        <?php endif; ?>
 
-        <?php if ($html_from_server != "") : ?>
-            <div>
-                <?php echo $html_from_server; ?>
-            </div>
+        <?php if (!empty($html_from_server)) : ?>
+                <?= $html_from_server ?>
         <?php endif; ?>
 
         <?php if (isset($destinationMajorVersion)) : ?>

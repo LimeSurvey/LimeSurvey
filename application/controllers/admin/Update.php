@@ -306,12 +306,6 @@ class Update extends DynamicSurveyCommonAction
                     $aData['destinationMajorVersion'] = $destinationMajorVersion;
                 }
 
-                // check if there is a major version info file for the destination major version ($destinationMajorVersion)
-                $majorVersionInfoPath = App()->getConfig("adminviews") . DIRECTORY_SEPARATOR . 'update' . DIRECTORY_SEPARATOR . 'updater' . DIRECTORY_SEPARATOR . 'major_version_info' . DIRECTORY_SEPARATOR . $destinationMajorVersion . '.php';
-                if (file_exists($majorVersionInfoPath)) {
-                    $aData['versionInfoPath'] = '/admin/update/updater/major_version_info/' . $destinationMajorVersion;
-                }
-
                 if ($changelog->result) {
                     $aData['errors'] = false;
                     $aData['changelogs'] = $changelog;
