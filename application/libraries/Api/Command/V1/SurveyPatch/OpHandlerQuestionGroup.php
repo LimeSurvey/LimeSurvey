@@ -68,8 +68,6 @@ class OpHandlerQuestionGroup implements OpHandlerInterface
             QuestionGroupService::class
         );
 
-
-
         switch (true) {
             case $this->isUpdateOperation:
                 $this->update($op, $questionGroupService);
@@ -142,7 +140,7 @@ class OpHandlerQuestionGroup implements OpHandlerInterface
     private function getSurveyIdFromContext(OpInterface $op)
     {
         $context = $op->getContext();
-        $surveyId = $context['id'] ? (int) $context['id'] : null;
+        $surveyId = $context['id'] ? (int)$context['id'] : null;
         if ($surveyId === null) {
             throw new OpHandlerException(
                 printf(
@@ -180,7 +178,7 @@ class OpHandlerQuestionGroup implements OpHandlerInterface
         $transformedProps = $this->getTransformedProps($op);
         $questionGroup = $groupService->getQuestionGroupForUpdate(
             $surveyId,
-            $op->getEntityId()['gid']
+            $this->getQuestionGroupId($op)
         );
         $groupService->updateQuestionGroup(
             $questionGroup,
@@ -243,8 +241,27 @@ class OpHandlerQuestionGroup implements OpHandlerInterface
     {
         $surveyId = $this->getSurveyIdFromContext($op);
         $groupService->deleteGroup(
-            $op->getEntityId()['gid'],
+            $this->getQuestionGroupId($op),
             $surveyId
         );
+    }
+
+    /**
+     * Extracts and returns gid (question group id) from passed id parameter
+     * @param OpInterface $op
+     * @return int
+     * @throws OpHandlerException
+     **/
+    private function getQuestionGroupId(OpInterface $op)
+    {
+        $id = $op->getEntityId();
+        if (is_array($id)) {
+            if (array_key_exists('gid', $id)) {
+                $id = $id['gid'];
+            } else {
+                throw new OpHandlerException('no gid provided');
+            }
+        }
+        return $id;
     }
 }
