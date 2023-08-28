@@ -51,6 +51,9 @@ class OpHandlerSurveyUpdateTest extends TestBaseClass
             [
                 'expires' => '2020-01-01 00:00',
                 'ipanonymize' => true,
+            ],
+            [
+                'id' => 123456,
             ]
         );
     }
@@ -64,6 +67,9 @@ class OpHandlerSurveyUpdateTest extends TestBaseClass
             [
                 'xxx' => '2020-01-01 00:00',
                 'yyy' => true,
+            ],
+            [
+                'id' => 123456,
             ]
         );
     }
