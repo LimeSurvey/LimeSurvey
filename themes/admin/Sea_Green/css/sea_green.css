@@ -11115,6 +11115,10 @@ body {
   padding-bottom: 70px;
 }
 
+.selector_openSharePanel {
+  display: inline-block;
+}
+
 .summary-table {
   font-size: 0.9975rem;
   padding-left: 0.5rem;
