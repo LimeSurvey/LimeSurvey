@@ -1415,6 +1415,9 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
         }
     }
 
+    // Single flag to indicate if the attachements format is wrong, to avoid showing the warning multiple times
+    $wrongAttachmentsFormat = false;
+
     // Import survey languagesettings table ===================================================================================
     foreach ($xml->surveys_languagesettings->rows->row as $row) {
         $insertdata = array();
@@ -1484,6 +1487,28 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             }
         }
 
+        // Email attachments are with relative paths on the file, but are currently expected to be saved as absolute.
+        // Transforming them from relative paths to absolute paths.
+        if (!empty($insertdata['attachments'])) {
+            // NOTE: Older LSS files have attachments as a serialized array, while newer ones have it as a JSON string.
+            // Serialized attachments are not supported anymore.
+            $attachments = json_decode($insertdata['attachments'], true);
+            if (!empty($attachments) && is_array($attachments)) {
+                $uploadDir = realpath(Yii::app()->getConfig('uploaddir'));
+                foreach ($attachments as &$template) {
+                    foreach ($template as &$attachment) {
+                        if (!isAbsolutePath($attachment['url'])) {
+                            $attachment['url'] = $uploadDir . DIRECTORY_SEPARATOR . $attachment['url'];
+                        }
+                    }
+                }
+            } elseif (is_null($attachments)) {
+                // JSON decode failed. Most probably the attachments were in the PHP serialization format.
+                $wrongAttachmentsFormat = true;
+            }
+            $insertdata['attachments'] = serialize($attachments);
+        }
+
         if (isset($insertdata['surveyls_attributecaptions']) && substr((string) $insertdata['surveyls_attributecaptions'], 0, 1) != '{') {
             unset($insertdata['surveyls_attributecaptions']);
         }
@@ -1512,6 +1537,9 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
         }
     }
 
+    if ($wrongAttachmentsFormat) {
+        $results['importwarnings'][] = gT("The email attachments have not been imported because they were in an old format.");
+    }
 
     // Import groups table ===================================================================================
     if (isset($xml->groups->rows->row)) {
