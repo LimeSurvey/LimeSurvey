@@ -46,46 +46,53 @@ class GenerateSimpleStatisticsTest extends TestBaseClass
 
         $scripts = $doc->getElementsByTagName('script');
 
-        $statisticsData = $this->getStatisticsData($questions, $scripts);
+        $scriptQ1 = trim($scripts->item(0)->nodeValue);
+        $scriptQ2 = trim($scripts->item(1)->nodeValue);
 
-        foreach ($statisticsData as $data) {
-            $this->assertStringContainsString("['quid'+'" . $data['quid'] . "']", $data['script'], 'The statistics do not contain the correct question id.');
-            //$this->assertStringContainsString("[2,2,4,0]", $data['script'], 'The statistics values are not correct.');
-        }
+        $questionId1 = $questions[0]->qid;
+        $questionId2 = $questions[1]->qid;
+
+        $this->assertStringContainsString("['quid'+'" . $questionId1 . "']", $scriptQ1, 'The statistics do not contain the correct question id.');
+        $this->assertStringContainsString("['quid'+'" . $questionId1 . "']", $scriptQ1, 'The statistics do not contain the correct question id.');
+
+        $this->assertStringContainsString("[2,2,0,0]", $scriptQ1, 'The statistics values are not correct.');
+        $this->assertStringContainsString("[3,0,2,0]", $scriptQ2, 'The statistics values are not correct.');
     }
 
-    private function getStatisticsData($questions, $scripts)
+    public function testGenetareSimpleStatisticsForMultipliChoiceQuestions()
     {
-        $questionsLength = count($questions);
-        $statisticsData = array();
-        $scriptCounter = 0;
+        $questions = self::$questions['Multiple choice'];
 
-        for ($i = 0; $i < $questionsLength; $i++) {
-            $subquestions = $questions[$i]->subquestions;
-
-            if (empty($subquestions)) {
-                $statisticsData[$i]['script'] = trim($scripts->item($i)->nodeValue);
-                $statisticsData[$i]['quid'] = $questions[$i]->qid;
-                continue;
-            }
-
-            $subquestionsLength = count($subquestions);
-            for ($j = 0; $j < $subquestionsLength; $j++) {
-                $statisticsData[$scriptCounter]['script'] = trim($scripts->item($scriptCounter)->nodeValue);
-                $statisticsData[$scriptCounter]['quid'] = $questions[$i]->qid . $subquestions[$j]->title;
-
-                $scriptCounter++;
-            }
-        }
-
-        return $statisticsData;
-    }
-
-    public function StatisticsForThreeQuestions()
-    {
         // Form SGQA identifiers.
-        $allQuestions = \Question::model()->getQuestionList(self::$surveyId);
-        $summary = createCompleteSGQA(self::$surveyId, $allQuestions, null);
+        $summary = createCompleteSGQA(self::$surveyId, $questions, null);
+
+        $helper = new \statistics_helper();
+        $statistics = $helper->generate_simple_statistics(self::$surveyId, $summary, $summary, 1, 'html', 'DD');
+
+        $doc = new \DOMDocument();
+        $doc->loadHtml($statistics);
+
+        $scripts = $doc->getElementsByTagName('script');
+
+        $scriptQ1 = trim($scripts->item(0)->nodeValue);
+        $scriptQ2 = trim($scripts->item(1)->nodeValue);
+
+        $questionId1 = $questions[0]->qid;
+        $questionId2 = $questions[1]->qid;
+
+        $this->assertStringContainsString("['quid'+'" . $questionId1 . "']", $scriptQ1, 'The statistics do not contain the correct question id.');
+        $this->assertStringContainsString("['quid'+'" . $questionId1 . "']", $scriptQ1, 'The statistics do not contain the correct question id.');
+
+        $this->assertStringContainsString("[3,3,2]", $scriptQ1, 'The statistics values are not correct.');
+        $this->assertStringContainsString("[3,3,2]", $scriptQ2, 'The statistics values are not correct.');
+    }
+
+    public function testGenetareSimpleStatisticsForArrayQuestions()
+    {
+        $questions = self::$questions['Arrays'];
+
+        // Form SGQA identifiers.
+        $summary = createCompleteSGQA(self::$surveyId, $questions, null);
 
         $helper = new \statistics_helper();
         $statistics = $helper->generate_simple_statistics(self::$surveyId, $summary, $summary, 1, 'html', 'DD');
@@ -98,18 +105,15 @@ class GenerateSimpleStatisticsTest extends TestBaseClass
         $scriptQ1 = trim($scripts->item(0)->nodeValue);
         $scriptQ2 = trim($scripts->item(1)->nodeValue);
         $scriptQ3 = trim($scripts->item(2)->nodeValue);
+        $scriptQ4 = trim($scripts->item(3)->nodeValue);
+        $scriptQ5 = trim($scripts->item(4)->nodeValue);
+        $scriptQ6 = trim($scripts->item(5)->nodeValue);
 
-        $questionId1 = $allQuestions[0]->qid;
-        $questionId2 = $allQuestions[1]->qid;
-        $questionId3 = $allQuestions[2]->qid;
+        $questionId1 = $questions[0]->qid;
 
-        $this->assertStringContainsString("['quid'+'" . $questionId1 . "']", $scriptQ1, 'The statistics do not contain the correct question id.');
-        $this->assertStringContainsString("[2,2,4,0]", $scriptQ1, 'The statistics values are not correct.');
+        $subquestions = $questions[0]->subquestions;
 
-        $this->assertStringContainsString("['quid'+'" . $questionId2 . "']", $scriptQ2, 'The statistics do not contain the correct question id.');
-        $this->assertStringContainsString("[5,3,1,0]", $scriptQ2, 'The statistics values are not correct.');
-
-        $this->assertStringContainsString("['quid'+'" . $questionId3 . "']", $scriptQ3, 'The statistics do not contain the correct question id.');
-        $this->assertStringContainsString("[1,5,3,0]", $scriptQ3, 'The statistics values are not correct.');
+        $this->assertStringContainsString("['quid'+'" . $questionId1 . $subquestions[0]->title . "']", $scriptQ1, 'The statistics do not contain the correct question id.');
+        $this->assertStringContainsString("['quid'+'" . $questionId1 . $subquestions[1]->title . "']", $scriptQ2, 'The statistics do not contain the correct question id.');
     }
 }
