@@ -2,10 +2,12 @@ body.error-page {
   margin: 0;
   padding: 0;
   background: $white;
-  display: flex;
   height: 100vh;
   font-family: Arial, Helvetica, sans-serif;
-
+  .container {
+    display: flex;
+    height: 90%;
+  }
   .error-title {
     font-weight: $font-weight-600;
     font-size: $font-size-2xl;
