@@ -688,6 +688,23 @@ class ThemeOptionsController extends LSBaseController
     }
 
     /**
+     * Preview Tag.
+     *
+     * @return string | string[] | null
+     * @throws CException
+     */
+    public function actionGetVariantsOptions()
+    {
+
+        $templatename = App()->request->getPost('templatename');
+        $oTemplate = TemplateConfiguration::getInstanceFromTemplateName($templatename);
+        if(App()->request->isAjaxRequest) {
+            echo $oTemplate->getVariants();
+        }
+        return $oTemplate->getVariants();
+    }
+
+    /**
      * Updates Common.
      *
      * @param TemplateConfiguration $model Template Configuration

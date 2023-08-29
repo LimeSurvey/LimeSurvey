@@ -21,4 +21,31 @@ class TemplateConfiguration
             $surveyId
         );
     }
+
+    /**
+     * Update Variant
+     *
+     * @param int $surveyId
+     * @param array $input
+     * @return void
+     */
+    public function updateVariant($surveyId, $input)
+    {
+        $variant = $input['variant'];
+        $variant_css = $input['variant_css'];
+        $oSurvey = \Survey::model()->findByPk($surveyId);
+        $sTemplateName = $oSurvey->template;
+
+        $oSurveyConfig = \TemplateConfiguration::getInstance($sTemplateName, null, $surveyId);
+        if ($oSurveyConfig->options === 'inherit') {
+            $oSurveyConfig->setOptionKeysToInherit();
+        }
+        if ($variant) {
+            $oSurveyConfig->setOption('cssframework', $variant);
+        }
+        if ($variant_css) {
+            $oSurveyConfig->files_css = "{\"add\":[\"$variant_css\"]}";
+        }
+        $oSurveyConfig->save();
+    }
 }

@@ -21,6 +21,12 @@ $(document).on('ready  pjax:scriptcomplete', function () {
     $('#template').on('change keyup', function (event) {
         console.ls.log('TEMPLATECHANGE', event);
         templatechange($(this));
+        variantchange($(this));
+    });
+
+    $('#simple_edit_options_cssframework').on('change keyup', function (event) {
+        var selectedOptionCssFile = $('#simple_edit_options_cssframework option:selected').attr('data-value');
+        $('#optionCssFile').val(selectedOptionCssFile);
     });
 
     $('[data-copy]').each(function () {
@@ -70,6 +76,33 @@ function templatechange($element) {
             $('#preview-image-container').html(data.image);
         },
         error: console.ls.error
+    });
+}
+
+function variantchange($element) {
+    $('#preview-variant-container .variant').prop('disabled', true);
+    $('#preview-variant-container').show();
+    let templateName = $element.val();
+    if (templateName === 'inherit')
+    {
+        templateName = $element.data('inherit-template-name');
+    }
+    $.ajax({
+        url: $element.data('updatevariant'),
+        data: {templatename: templateName},
+        method: 'POST',
+        dataType: 'html',
+        success: function (data) {
+            if (data){
+                $('#preview-variant-container .variant').html(data);
+                $('#preview-variant-container').show();
+                $('#preview-variant-container .variant').prop('disabled', false);
+            }
+            else {
+                $('#preview-variant-container').hide();
+            }
+        },
+        error: console.error
     });
 }
 

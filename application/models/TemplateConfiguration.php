@@ -1652,6 +1652,21 @@ class TemplateConfiguration extends TemplateConfig
     }
 
     /**
+     * @todo document me
+     * @return array|mixed|string|null
+     */
+    public function getVariants()
+    {
+        $oTemplate = Template::model()->getInstance($this->template->name);
+        $oTemplateOptionAttributes = TemplateManifest::getOptionAttributes($oTemplate->path);
+        $dropdownoptions = $oTemplateOptionAttributes['optionAttributes']['cssframework']['dropdownoptions'];
+        if ($dropdownoptions) {
+            return $dropdownoptions;
+        }
+        return false;
+    }
+
+    /**
      * Prepare all the needed datas to render the temple
      * If any problem (like template doesn't exist), it will load the default theme configuration
      * NOTE 1: This function will create/update all the packages needed to render the template, which imply to do the

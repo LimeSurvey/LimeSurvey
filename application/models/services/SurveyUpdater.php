@@ -79,6 +79,13 @@ class SurveyUpdater
         $this->templateConfiguration
             ->update($surveyId);
 
+        if (!empty($input['variant'] || !empty($input['variant_css']))) {
+            $this->templateConfiguration->updateVariant(
+                $surveyId,
+                $input
+            );
+        }
+
         return $meta;
     }
 }

@@ -321,7 +321,7 @@ Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", 
             <div class="">
                 <?php $themeConf = TemplateConfiguration::getInstanceFromTemplateName(($oSurvey->template === 'inherit') ? $oSurveyOptions->template : $oSurvey->template) ?>
                 <select id='template' style="width:100%;" class="form-select activate-search" name='template' data-updateurl='<?php echo App()->createUrl('themeOptions/getPreviewTag') ?>'
-                        data-inherit-template-name='<?= $themeConf->template_name ?>'>
+                        data-inherit-template-name='<?= $themeConf->template_name ?>' data-updatevariant='<?php echo App()->createUrl('themeOptions/getVariantsOptions') ?>'>
                     <?php if ($bShowInherited) : ?>
                         <option value="inherit" <?= ($oSurvey->template == 'inherit') ? 'selected="selected"' : ''; ?>>
                             <?= gT('Inherit') . ' [' . $themeConf->template_name . ']'; ?>
@@ -344,6 +344,19 @@ Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", 
                     <?php } ?>
                 </select>
             </div>
+
+            <?php
+                $option = \TemplateConfiguration::getInstance($themeConf->template_name, null, $oSurvey->sid)->options;
+                $option = json_decode($option);
+                $variants = $themeConf->getVariants();
+            ?>
+            <div class="col-md-6 mt-4 w-100" id="preview-variant-container" <?php if($variants === false): ?>style="display: none;"<?php endif; ?>>
+                <label class=" form-label" for='variant'><?php eT("Variants:"); ?></label>
+                <select id="simple_edit_options_cssframework" name="variant" class="variant form-select activate-search" data-preselected-variant="<?php echo $option->cssframework ?>">
+                    <?php echo $variants ?>
+                </select>
+                <?php echo CHtml::hiddenField('optionCssFile', ''); ?>
+            </div>
             <div class="col-md-6 mt-4 w-100" id="preview-image-container">
                 <?php echo $themeConf->getPreview() ?>
             </div>
@@ -356,4 +369,10 @@ Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", 
 
     </div>
 </div>
+<script>
+    let variant = $('#simple_edit_options_cssframework').data('preselected-variant');
+    console.log(variant)
+    $("#simple_edit_options_cssframework option[value=\""+variant+"\"]").attr('selected', 'selected');
+    console.log(variant)
+</script>
 <?php $this->renderPartial('/surveyAdministration/_inherit_sub_footer'); ?>

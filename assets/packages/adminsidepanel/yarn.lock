@@ -6765,6 +6765,15 @@ postcss@^8.3.11:
     picocolors "^1.0.0"
     source-map-js "^1.0.2"
 
+postcss@^8.4.21:
+  version "8.4.28"
+  resolved "https://registry.yarnpkg.com/postcss/-/postcss-8.4.28.tgz#c6cc681ed00109072816e1557f889ef51cf950a5"
+  integrity sha512-Z7V5j0cq8oEKyejIKfpD8b4eBy9cwW2JWPk0+fB1HOAMsfHbnAXLLS+PfVWlzMSLQaWttKDt607I0XHmpE67Vw==
+  dependencies:
+    nanoid "^3.3.6"
+    picocolors "^1.0.0"
+    source-map-js "^1.0.2"
+
 prelude-ls@~1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/prelude-ls/-/prelude-ls-1.1.2.tgz#21932a549f5e52ffd9a827f570e04be62a97da54"
@@ -7279,6 +7288,16 @@ rtlcss@^3.5.0:
     find-up "^5.0.0"
     picocolors "^1.0.0"
     postcss "^8.3.11"
+    strip-json-comments "^3.1.1"
+
+rtlcss@^4.1.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/rtlcss/-/rtlcss-4.1.0.tgz#f69b78d9752c970ddfe2aa590896f44353ab1c98"
+  integrity sha512-W+N4hh0nVqVrrn3mRkHakxpB+c9cQ4CRT67O39kgA+1DjyhrdsqyCqIuHXyvWaXn4/835n+oX3fYJCi4+G/06A==
+  dependencies:
+    escalade "^3.1.1"
+    picocolors "^1.0.0"
+    postcss "^8.4.21"
     strip-json-comments "^3.1.1"
 
 run-async@^2.2.0:
