@@ -123,7 +123,6 @@ class OpHandlerQuestionGroupL10n implements OpHandlerInterface
                         $this->entity,
                         print_r($op->getEntityId(), true)
                     )
-
                 );
             }
             foreach ($transformedProps as $key => $value) {
