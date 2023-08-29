@@ -15,7 +15,8 @@
 ?>
 
 <?php if (isset($destinationMajorVersion)) : ?>
-    <h3 class="maintitle">Welcome to LimeSurvey <?= $destinationMajorVersion ?>!</h3>
+
+    <h3 class="maintitle"><?= sprintf(gT('Welcome to LimeSurvey %s!'), $destinationMajorVersion) ?></h3>
 <?php else : ?>
     <h3 class="maintitle"><?= gT('Change log') ?></h3>
 <?php endif; ?>
