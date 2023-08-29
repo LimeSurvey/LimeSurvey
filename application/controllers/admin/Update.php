@@ -285,11 +285,26 @@ class Update extends DynamicSurveyCommonAction
             // We use request rather than post, because this step can be called by url by displayComfortStep.js
             if (isset($_REQUEST['destinationBuild'])) {
                 $destinationBuild = $_REQUEST['destinationBuild'];
-                $access_token     = $_REQUEST['access_token'];
+                $access_token = $_REQUEST['access_token'];
 
                 // We get the change log from the ComfortUpdate server
                 $updateModel = new UpdateForm();
                 $changelog = $updateModel->getChangeLog($destinationBuild);
+
+                // calculate latest major version number
+                $destinationChangelog = end($changelog->changelogentries);
+                reset($changelog->changelogentries);
+                $destinationVersion = $destinationChangelog->versionnumber;
+                $destinationMajorVersion = substr($destinationVersion, 0, 1);
+
+                // get the current version number
+                $currentVersionnumber = App()->getConfig("versionnumber");
+                $currentMajorVersion = substr($currentVersionnumber, 0, 1);
+
+                // check if we are doing a major version upgrade
+                if ($destinationMajorVersion > $currentMajorVersion) {
+                    $aData['destinationMajorVersion'] = $destinationMajorVersion;
+                }
 
                 if ($changelog->result) {
                     $aData['errors'] = false;
@@ -297,6 +312,7 @@ class Update extends DynamicSurveyCommonAction
                     $aData['html_from_server'] = $changelog->html;
                     $aData['destinationBuild'] = $destinationBuild;
                     $aData['access_token'] = $access_token;
+                    $aData['currentVersionNumber'] = App()->getConfig("versionnumber");
                 } else {
                     return $this->renderError($changelog);
                 }
