@@ -92,7 +92,15 @@ class OpHandlerQuestionGroupL10n implements OpHandlerInterface
             $transformedIdArray = $this->transformer->transform(
                 $op->getEntityId()
             );
-            return $transformedIdArray['gid'];
+            if (
+                is_array($transformedIdArray)
+                && array_key_exists(
+                    'gid',
+                    $transformedIdArray
+                )
+            ) {
+                return $transformedIdArray['gid'];
+            }
         } else {
             throw new OpHandlerException('no gid provided');
         }
@@ -101,10 +109,11 @@ class OpHandlerQuestionGroupL10n implements OpHandlerInterface
     /**
      * Builds and returns the data array for the update operation as the
      * service class expects it.
-     * @param $op
+     * @param OpInterface $op
      * @return array
+     * @throws OpHandlerException
      */
-    public function getDataArray($op)
+    public function getDataArray(OpInterface $op)
     {
         $dataSet = [];
         $entityIdArray = $op->getEntityId();
