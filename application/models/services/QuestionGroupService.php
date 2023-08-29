@@ -88,7 +88,7 @@ class QuestionGroupService
         );
         $this->updateQuestionGroupLanguages(
             $questionGroup,
-            $input['questionGroupL10N']
+            $input['questionGroupI10N']
         );
 
         return $questionGroup;
