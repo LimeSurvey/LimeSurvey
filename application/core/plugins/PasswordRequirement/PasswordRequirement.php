@@ -98,7 +98,7 @@ class PasswordRequirement extends \LimeSurvey\PluginManager\PluginBase
             $this->get('needsNumber', null, null, true),
             $this->get('needsUppercase', null, null, true),
             $this->get('needsNonAlphanumeric', null, null, false),
-            $this->get('minimumSize', null, null, 12)
+            $this->get('minimumSize', null, null, 8)
         );
         if ($errors) {
             $oEvent->set('passwordOk', false);
