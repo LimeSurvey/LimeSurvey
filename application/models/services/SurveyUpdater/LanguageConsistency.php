@@ -114,8 +114,6 @@ class LanguageConsistency
             $initBaseLanguage
         );
 
-        // Delete removed language cleanLanguagesFromSurvey do it
-        // already why redo it (cleanLanguagesFromSurvey must be moved to model)
         $oCriteria = new CDbCriteria();
         $oCriteria->compare(
             'surveyls_survey_id',
@@ -125,13 +123,18 @@ class LanguageConsistency
             'surveyls_language',
             $aAvailableLanguages
         );
-        $this->modelSurveyLanguageSetting
-            ->deleteAll($oCriteria);
+        // Delete removed language cleanLanguagesFromSurvey do it
+        // already why redo it (cleanLanguagesFromSurvey must be moved to model)
+        // $this->modelSurveyLanguageSetting ->deleteAll($oCriteria);
 
         // Language fix : remove and add question/group
         cleanLanguagesFromSurvey(
             $survey->sid,
-            implode(' ', $survey->additionalLanguages)
+            implode(
+                ' ',
+                $survey->additionalLanguages
+            ),
+            $survey->language
         );
     }
 }
