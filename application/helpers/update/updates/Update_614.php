@@ -19,10 +19,10 @@ class Update_614 extends DatabaseUpdateBase
                     if ($templateConfiguration['template_name'] == 'vanilla') {
                         $sOptionsJson = $templateConfiguration['options'];
                         $oOldOptions = json_decode($sOptionsJson);
-                        if (!$oOldOptions->animatebody) {
+                        if (empty($oOldOptions->animatebody)) {
                             $oOldOptions->animatebody = 'off';
                         }
-                        if (!$oOldOptions->fixnumauto) {
+                        if (empty($oOldOptions->fixnumauto)) {
                             $oOldOptions->fixnumauto = 'enable';
                         }
                         $oNewOtionsJson = json_encode($oOldOptions);
@@ -35,7 +35,7 @@ class Update_614 extends DatabaseUpdateBase
                     } elseif ($templateConfiguration['template_name'] == 'fruity') {
                         $sOptionsJson = $templateConfiguration['options'];
                         $oOldOptions = json_decode($sOptionsJson);
-                        if (!$oOldOptions->fixnumauto) {
+                        if (empty($oOldOptions->fixnumauto)) {
                             $oOldOptions->fixnumauto = 'enable';
                         }
                         $oNewOtionsJson = json_encode($oOldOptions);
@@ -48,10 +48,10 @@ class Update_614 extends DatabaseUpdateBase
                     } elseif ($templateConfiguration['template_name'] == 'bootswatch') {
                         $sOptionsJson = $templateConfiguration['options'];
                         $oOldOptions = json_decode($sOptionsJson);
-                        if (!$oOldOptions->hideprivacyinfo) {
+                        if (empty($oOldOptions->hideprivacyinfo)) {
                             $oOldOptions->hideprivacyinfo = 'off';
                         }
-                        if (!$oOldOptions->fixnumauto) {
+                        if (empty($oOldOptions->fixnumauto)) {
                             $oOldOptions->fixnumauto = 'enable';
                         }
                         $oNewOtionsJson = json_encode($oOldOptions);
