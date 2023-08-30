@@ -44,19 +44,30 @@ class GenerateSimpleStatisticsTest extends TestBaseClass
         $doc = new \DOMDocument();
         $doc->loadHtml($statistics);
 
+        // Get the script string based on the question id and order the data by title.
+        $assertions = array();
         $scripts = $doc->getElementsByTagName('script');
 
-        $scriptQ1 = trim($scripts->item(0)->nodeValue);
-        $scriptQ2 = trim($scripts->item(1)->nodeValue);
+        foreach ($questions as $question) {
+            $assertions[$question->title]['qid'] = $question->qid;
 
-        $questionId1 = $questions[0]->qid;
-        $questionId2 = $questions[1]->qid;
+            foreach ($scripts as $script) {
+                if (str_contains($script->nodeValue, "['quid'+'" . $question->qid . "']")) {
+                    $assertions[$question->title]['script'] = trim($script->nodeValue);
+                    break;
+                }
+            }
+        }
 
-        $this->assertStringContainsString("['quid'+'" . $questionId1 . "']", $scriptQ1, 'The statistics do not contain the correct question id.');
-        $this->assertStringContainsString("['quid'+'" . $questionId1 . "']", $scriptQ1, 'The statistics do not contain the correct question id.');
+        // SCRQ stands for single choice radio question.
+        $this->assertArrayHasKey('SCRQ', $assertions, 'Apparently the single choice radio question was not set.');
+        // SCDQ stands for single choice dropdown question.
+        $this->assertArrayHasKey('SCDQ', $assertions, 'Apparently the single choice dropdown question was not set.');
 
-        $this->assertStringContainsString("[2,2,0,0]", $scriptQ1, 'The statistics values are not correct.');
-        $this->assertStringContainsString("[3,0,2,0]", $scriptQ2, 'The statistics values are not correct.');
+        // Asserting the data for the single choice dropdown question is correct.
+        $this->assertStringContainsString('[3,0,2,0]', $assertions['SCDQ']['script'], 'The statistics values are not correct.');
+        // Asserting the data for the single choice radio question is correct.
+        $this->assertStringContainsString('[2,2,0,0]', $assertions['SCRQ']['script'], 'The statistics values are not correct.');
     }
 
     public function testGenetareSimpleStatisticsForMultipliChoiceQuestions()
@@ -72,19 +83,30 @@ class GenerateSimpleStatisticsTest extends TestBaseClass
         $doc = new \DOMDocument();
         $doc->loadHtml($statistics);
 
+        // Get the script string based on the question id and order the data by title.
+        $assertions = array();
         $scripts = $doc->getElementsByTagName('script');
 
-        $scriptQ1 = trim($scripts->item(0)->nodeValue);
-        $scriptQ2 = trim($scripts->item(1)->nodeValue);
+        foreach ($questions as $question) {
+            $assertions[$question->title]['qid'] = $question->qid;
 
-        $questionId1 = $questions[0]->qid;
-        $questionId2 = $questions[1]->qid;
+            foreach ($scripts as $script) {
+                if (str_contains($script->nodeValue, "['quid'+'" . $question->qid . "']")) {
+                    $assertions[$question->title]['script'] = trim($script->nodeValue);
+                    break;
+                }
+            }
+        }
 
-        $this->assertStringContainsString("['quid'+'" . $questionId1 . "']", $scriptQ1, 'The statistics do not contain the correct question id.');
-        $this->assertStringContainsString("['quid'+'" . $questionId1 . "']", $scriptQ1, 'The statistics do not contain the correct question id.');
+        // MCBQ stands for multiple choice bootstrap button question.
+        $this->assertArrayHasKey('MCBQ', $assertions, 'Apparently the multiple choice bootstrap button question was not set.');
+        // MCCQ stands for multiple choice checkbox question.
+        $this->assertArrayHasKey('MCCQ', $assertions, 'Apparently the multiple choice checkbox question was not set.');
 
-        $this->assertStringContainsString("[3,3,2]", $scriptQ1, 'The statistics values are not correct.');
-        $this->assertStringContainsString("[3,3,2]", $scriptQ2, 'The statistics values are not correct.');
+        // Asserting the data for the multiple choice bootstrap button question is correct.
+        $this->assertStringContainsString('[3,3,2,"1"]', $assertions['MCBQ']['script'], 'The statistics values are not correct.');
+        // Asserting the data for the multiple choice checkbox question is correct.
+        $this->assertStringContainsString('[4,3,2]', $assertions['MCCQ']['script'], 'The statistics values are not correct.');
     }
 
     public function testGenetareSimpleStatisticsForArrayQuestions()
