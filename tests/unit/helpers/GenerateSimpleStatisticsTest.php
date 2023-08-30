@@ -86,8 +86,6 @@ class GenerateSimpleStatisticsTest extends TestBaseClass
         $scripts = $doc->getElementsByTagName('script');
 
         foreach ($questions as $question) {
-            $assertions[$question->title]['qid'] = $question->qid;
-
             foreach ($scripts as $script) {
                 if (str_contains($script->nodeValue, "['quid'+'" . $question->qid . "']")) {
                     $assertions[$question->title]['script'] = trim($script->nodeValue);
@@ -138,8 +136,6 @@ class GenerateSimpleStatisticsTest extends TestBaseClass
             }
 
             foreach ($subquestions as $subquestion) {
-                $assertions[$question->qid . $subquestion->title]['qid'] = $question->qid;
-
                 foreach ($scripts as $script) {
                     if (str_contains($script->nodeValue, "['quid'+'" . $question->qid . $subquestion->title . "']")) {
                         $assertions[$question->qid . $subquestion->title]['script'] = trim($script->nodeValue);
