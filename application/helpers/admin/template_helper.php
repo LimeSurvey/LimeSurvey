@@ -134,10 +134,6 @@ function templateExtractFilter($p_event, &$p_header)
     $aAllowExtensions[] = 'twig';
     $info = pathinfo($p_header['filename']);
 
-    if (isset($info['extension'])) {
-        $p_header['filename'] = preg_replace('/\.\w+$/', '.' . strtolower($info['extension']), $p_header['filename']);
-    }
-
     if ($p_header['folder'] || !isset($info['extension']) || in_array(strtolower($info['extension']), $aAllowExtensions)) {
         return 1;
     } else {
