@@ -49,8 +49,6 @@ class GenerateSimpleStatisticsTest extends TestBaseClass
         $scripts = $doc->getElementsByTagName('script');
 
         foreach ($questions as $question) {
-            $assertions[$question->title]['qid'] = $question->qid;
-
             foreach ($scripts as $script) {
                 if (str_contains($script->nodeValue, "['quid'+'" . $question->qid . "']")) {
                     $assertions[$question->title]['script'] = trim($script->nodeValue);
@@ -122,20 +120,51 @@ class GenerateSimpleStatisticsTest extends TestBaseClass
         $doc = new \DOMDocument();
         $doc->loadHtml($statistics);
 
+        // Get the script string based on the question id and order the data by title.
+        $assertions = array();
         $scripts = $doc->getElementsByTagName('script');
 
-        $scriptQ1 = trim($scripts->item(0)->nodeValue);
-        $scriptQ2 = trim($scripts->item(1)->nodeValue);
-        $scriptQ3 = trim($scripts->item(2)->nodeValue);
-        $scriptQ4 = trim($scripts->item(3)->nodeValue);
-        $scriptQ5 = trim($scripts->item(4)->nodeValue);
-        $scriptQ6 = trim($scripts->item(5)->nodeValue);
+        $arrayQuestionId = '';
+        $arrayByColumnQuestionId = '';
 
-        $questionId1 = $questions[0]->qid;
+        foreach ($questions as $key => $question) {
+            $subquestions = $question->subquestions;
 
-        $subquestions = $questions[0]->subquestions;
+            // AGAQ stands for array group, array question.
+            if ($question->title === 'AGAQ') {
+                $arrayQuestionId = $question->qid;
+            } elseif ($question->title === 'AGCQ') { // Array group column question.
+                $arrayByColumnQuestionId = $question->qid;
+            }
 
-        $this->assertStringContainsString("['quid'+'" . $questionId1 . $subquestions[0]->title . "']", $scriptQ1, 'The statistics do not contain the correct question id.');
-        $this->assertStringContainsString("['quid'+'" . $questionId1 . $subquestions[1]->title . "']", $scriptQ2, 'The statistics do not contain the correct question id.');
+            foreach ($subquestions as $subquestion) {
+                $assertions[$question->qid . $subquestion->title]['qid'] = $question->qid;
+
+                foreach ($scripts as $script) {
+                    if (str_contains($script->nodeValue, "['quid'+'" . $question->qid . $subquestion->title . "']")) {
+                        $assertions[$question->qid . $subquestion->title]['script'] = trim($script->nodeValue);
+                        break;
+                    }
+                }
+            }
+        }
+
+        // Asserting the data for subquestion one in array question is correct.
+        $this->assertStringContainsString('[1,1,1,0]', $assertions[$arrayQuestionId . 'SQ001']['script'], 'The statistics values are not correct.');
+
+        // Asserting the data for subquestion two in array question is correct.
+        $this->assertStringContainsString('[2,2,1,0]', $assertions[$arrayQuestionId . 'SQ002']['script'], 'The statistics values are not correct.');
+
+        // Asserting the data for subquestion three in array question is correct.
+        $this->assertStringContainsString('[1,2,2,0]', $assertions[$arrayQuestionId . 'SQ003']['script'], 'The statistics values are not correct.');
+
+        // Asserting the data for subquestion one in array by column question is correct.
+        $this->assertStringContainsString('[2,2,1,0]', $assertions[$arrayByColumnQuestionId . 'SQ001']['script'], 'The statistics values are not correct.');
+
+        // Asserting the data for subquestion two in array by column question is correct.
+        $this->assertStringContainsString('[1,2,1,0]', $assertions[$arrayByColumnQuestionId . 'SQ002']['script'], 'The statistics values are not correct.');
+
+        // Asserting the data for subquestion three in array by column question is correct.
+        $this->assertStringContainsString('[2,0,2,0]', $assertions[$arrayByColumnQuestionId . 'SQ003']['script'], 'The statistics values are not correct.');
     }
 }
