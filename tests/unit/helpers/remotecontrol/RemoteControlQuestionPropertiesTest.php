@@ -244,8 +244,8 @@ class RemoteControlQuestionPropertiesTest extends BaseTest
             'scale_id' => '0'
         );
 
-        $subquestionsRestult = array_values($result['subquestions'])[0];
-        $this->assertEquals($subquestions, $subquestionsRestult, 'The returned subquestion is not correct.');
+        $subquestionsResult = array_values($result['subquestions'])[0];
+        $this->assertEquals($subquestions, $subquestionsResult, 'The returned subquestion is not correct.');
 
         //Checking other properties
         $this->assertSame('F', $result['type'], 'The question type is not correct.');
@@ -371,9 +371,9 @@ class RemoteControlQuestionPropertiesTest extends BaseTest
             )
         );
 
-        $englishSubquestionsRestult = array_values($result['subquestions']);
+        $englishSubquestionsResult = array_values($result['subquestions']);
 
-        $this->assertEquals($subquestions, $subquestionsRestult, 'The returned subquestions are not correct.');
+        $this->assertEquals($subquestions, $subquestionsResult, 'The returned subquestions are not correct.');
 
         $spanishSubquestions = array(
             array(
@@ -399,12 +399,12 @@ class RemoteControlQuestionPropertiesTest extends BaseTest
         );
 
         $spanishResult = $this->handler->get_question_properties($sessionKey, $qid, null, 'es');
-        $spanishSubquestionsRestult = array_values($spanishResult['subquestions']);
+        $spanishSubquestionsResult = array_values($spanishResult['subquestions']);
 
-        $title = array_column($spanishSubquestionsRestult, 'title');
-        array_multisort($title, SORT_ASC, $spanishSubquestionsRestult);
+        $title = array_column($spanishSubquestionsResult, 'title');
+        array_multisort($title, SORT_ASC, $spanishSubquestionsResult);
 
-        $this->assertEquals($spanishSubquestions, $spanishSubquestionsRestult, 'The returned subquestions (multilanguage) are not correct.');
+        $this->assertEquals($spanishSubquestions, $spanishSubquestionsResult, 'The returned subquestions (multilanguage) are not correct.');
 
         //Checking other properties
         $this->assertSame('M', $result['type'], 'The question type is not correct.');
