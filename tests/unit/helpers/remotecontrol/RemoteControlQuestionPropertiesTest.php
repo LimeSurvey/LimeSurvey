@@ -401,6 +401,9 @@ class RemoteControlQuestionPropertiesTest extends BaseTest
         $spanishResult = $this->handler->get_question_properties($sessionKey, $qid, null, 'es');
         $spanishSubquestionsRestult = array_values($spanishResult['subquestions']);
 
+        $title = array_column($spanishSubquestionsRestult, 'title');
+        array_multisort($title, SORT_ASC, $spanishSubquestionsRestult);
+
         $this->assertEquals($spanishSubquestions, $spanishSubquestionsRestult, 'The returned subquestions (multilanguage) are not correct.');
 
         //Checking other properties
