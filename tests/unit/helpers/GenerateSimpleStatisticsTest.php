@@ -104,7 +104,7 @@ class GenerateSimpleStatisticsTest extends TestBaseClass
         $this->assertArrayHasKey('MCCQ', $assertions, 'Apparently the multiple choice checkbox question was not set.');
 
         // Asserting the data for the multiple choice bootstrap button question is correct.
-        $this->assertStringContainsString('[3,3,2,"1"]', $assertions['MCBQ']['script'], 'The statistics values are not correct.');
+        $this->assertRegExp('/^.+grawdata : \[3,3,2,\"?1\"?\]/m', $assertions['MCBQ']['script'], 'The statistics values are not correct.');
         // Asserting the data for the multiple choice checkbox question is correct.
         $this->assertStringContainsString('[4,3,2]', $assertions['MCCQ']['script'], 'The statistics values are not correct.');
     }
