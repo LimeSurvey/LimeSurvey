@@ -65,10 +65,12 @@
                     {{ gT("Sharing panel:") }}
                 </div>
                 <div class="col-8 ls-card-grid__description">
-                    <a href="#sharingdialog" class="btn btn-outline-secondary selector_openSharePanel {{ oSurvey.active == 'Y' ? '' : 'disabled' }}" data-bs-toggle="modal"
-                       id="sharePanelButton_{{ oSurvey.sid }}" data-surveyid="{{ oSurvey.sid }}">
-                        {{ gT("Open sharing panel") }}
-                    </a>
+                   <div class='selector_openSharePanel'  data-bs-toggle="tooltip" data-bs-placement="top" title="{{ oSurvey.active == 'Y' ? '' : gT('Activate your survey to open this panel') }}">
+                        <a href="#sharingdialog" class="btn btn-outline-secondary {{ oSurvey.active == 'Y' ? '' : 'disabled' }}" data-bs-toggle="modal"
+                        id="sharePanelButton_{{ oSurvey.sid }}" data-surveyid="{{ oSurvey.sid }}">
+                            {{ gT("Open sharing panel") }}
+                        </a>
+                    </div>
                 </div>
             </div>
         </li>
