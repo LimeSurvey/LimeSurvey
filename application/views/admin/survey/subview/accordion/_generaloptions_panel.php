@@ -344,22 +344,43 @@ Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", 
                     <?php } ?>
                 </select>
             </div>
+        </div>
 
-            <?php
-                $option = \TemplateConfiguration::getInstance($themeConf->template_name, null, $oSurvey->sid)->options;
-                $option = json_decode($option);
-                $variants = $themeConf->getVariants();
-            ?>
-            <div class="col-md-6 mt-4 w-100" id="preview-variant-container" <?php if($variants === false): ?>style="display: none;"<?php endif; ?>>
-                <label class=" form-label" for='variant'><?php eT("Variants:"); ?></label>
-                <select id="simple_edit_options_cssframework" name="variant" class="variant form-select activate-search" data-preselected-variant="<?php echo $option->cssframework ?>">
-                    <?php echo $variants ?>
-                </select>
-                <?php echo CHtml::hiddenField('optionCssFile', ''); ?>
+        <?php
+            $option = \TemplateConfiguration::getInstance($themeConf->template_name, null, $oSurvey->sid)->options;
+            $option = json_decode($option);
+            $variants = $themeConf->getVariants();
+            $darkmode = !empty($option->darkmode) ? $option->darkmode : 'N';
+        ?>
+        <!-- Variants -->
+        <div class="mb-3" <?php if($variants === false): ?>style="display: none;"<?php endif; ?>>
+            <div class="row">
+                <div class="col-12 col-lg-8 content-right">
+                    <div id="preview-variant-container">
+                        <label class=" form-label" for='variant'><?php eT("Variants:"); ?></label>
+                        <select id="simple_edit_options_cssframework" style="width:100%;" name="variant" class="variant form-select" data-preselected-variant="<?php echo $option->cssframework ?>">
+                            <?php echo $variants ?>
+                        </select>
+                        <?php echo CHtml::hiddenField('optionCssFile', ''); ?>
+                    </div>
+                </div>
+                <div id="dark-mode-switch" class="col-12 col-lg-4 content-right">
+                    <label class=" form-label content-center col-12" for='admin'><?php eT("Dark mode:"); ?></label>
+                    <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                        'name'          => 'darkmode',
+                        'checkedOption' => $darkmode,
+                        'selectOptions' => $optionsOnOff,
+                        'htmlOptions'   => [
+                            'class' => 'text-option-inherit'
+                        ]
+                    ]); ?>
+                </div>
             </div>
-            <div class="col-md-6 mt-4 w-100" id="preview-image-container">
-                <?php echo $themeConf->getPreview() ?>
-            </div>
+        </div>
+
+        <!-- Preview -->
+        <div class="col-md-6 mt-4 w-100" id="preview-image-container">
+            <?php echo $themeConf->getPreview() ?>
         </div>
         <?php
         /* @todo : add a js var with standard template list name */
@@ -370,9 +391,51 @@ Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", 
     </div>
 </div>
 <script>
-    let variant = $('#simple_edit_options_cssframework').data('preselected-variant');
-    console.log(variant)
-    $("#simple_edit_options_cssframework option[value=\""+variant+"\"]").attr('selected', 'selected');
-    console.log(variant)
+    function showVariants() {
+        let isDarkMode = $('#darkmode input[name="darkmode"]:checked').val()
+        let options = $("#simple_edit_options_cssframework option");
+        $.each(options, function( i, option ) {
+            let currentOption = $("#simple_edit_options_cssframework option[value='"+options[i].value+"']");
+            if (isDarkMode == 'Y') {
+                if(options[i].value.toLowerCase().includes('dark'))
+                    currentOption.show()
+                else
+                    currentOption.hide()
+            }
+            else {
+                if(options[i].value.toLowerCase().includes('dark'))
+                    currentOption.hide()
+                else
+                    currentOption.show()
+            }
+        });
+    }
+
+    function showDarkmodeSwitcher() {
+        let seletctedTheme = $("#template option:selected").val()
+        if (seletctedTheme != 'fruity_twentythree') {
+            $('#dark-mode-switch').hide()
+        }
+        else {
+            $('#dark-mode-switch').show()
+        }
+    }
+
+    function markPreselectedVariant() {
+        let preselectedVariant = $('#simple_edit_options_cssframework').data('preselected-variant');
+        $("#simple_edit_options_cssframework option[value=\""+preselectedVariant+"\"]").attr('selected', 'selected');
+    }
+
+    $('#template').on('change keyup', function () {
+        showDarkmodeSwitcher()
+    });
+
+    $("#dark-mode-switch").click(function(){
+        showVariants()
+    });
+
+    showVariants()
+    showDarkmodeSwitcher()
+    markPreselectedVariant()
 </script>
 <?php $this->renderPartial('/surveyAdministration/_inherit_sub_footer'); ?>
