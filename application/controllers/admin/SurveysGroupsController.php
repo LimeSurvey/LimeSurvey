@@ -263,7 +263,7 @@ class SurveysGroupsController extends SurveyCommonAction
 
         $sPartial = Yii::app()->request->getParam('partial', '_generaloptions_panel');
 
-        /** @var SurveysGroupsettings $oSurvey */id="generalsettings"
+        /** @var SurveysGroupsettings $oSurvey */
         $oSurvey = SurveysGroupsettings::model()->findByPk($model->gsid);
         $oSurvey->setOptions(); //this gets the "values" from the group that inherits to this group ...
         $oSurvey->owner_id = $model->owner_id;
