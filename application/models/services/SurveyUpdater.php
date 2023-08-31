@@ -79,7 +79,7 @@ class SurveyUpdater
         $this->templateConfiguration
             ->update($surveyId);
 
-        if (!empty($input['variant'] || !empty($input['variant_css']) || !empty($input['darkmode']))) {
+        if (!empty($input['variant']) || !empty($input['variant_css']) || !empty($input['darkmode'])) {
             $this->templateConfiguration->updateGeneralSettings(
                 $surveyId,
                 $input

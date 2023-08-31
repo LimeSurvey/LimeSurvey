@@ -698,7 +698,7 @@ class ThemeOptionsController extends LSBaseController
 
         $templatename = App()->request->getPost('templatename');
         $oTemplate = TemplateConfiguration::getInstanceFromTemplateName($templatename);
-        if(App()->request->isAjaxRequest) {
+        if (App()->request->isAjaxRequest) {
             echo $oTemplate->getVariants();
         }
         return $oTemplate->getVariants();
