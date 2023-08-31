@@ -11,10 +11,16 @@ use ls\tests\TestBaseClass;
 use LimeSurvey\ObjectPatch\OpHandler\OpHandlerException;
 use ls\tests\unit\services\QuestionGroup\QuestionGroupMockSetFactory;
 
+/**
+ * @testdox Op Handler Question Group Reorder
+ */
 class OpHandlerQuestionGroupReorderTest extends TestBaseClass
 {
     protected OpInterface $op;
 
+    /**
+     * @testdox throws exception when no valid values are provided
+     */
     public function testOpQuestionGroupReorderThrowsNoValuesException()
     {
         $this->expectException(
@@ -27,6 +33,9 @@ class OpHandlerQuestionGroupReorderTest extends TestBaseClass
         $opHandler->getGroupReorderData($this->op);
     }
 
+    /**
+     * @testdox throws exception when group parameters are missing
+     */
     public function testOpQuestionGroupReorderThrowsMissingGroupValException()
     {
         $this->expectException(
@@ -39,6 +48,9 @@ class OpHandlerQuestionGroupReorderTest extends TestBaseClass
         $opHandler->getGroupReorderData($this->op);
     }
 
+    /**
+     * @testdox throws exception when question parameters are missing
+     */
     public function testOpQuestionGroupReorderThrowsMissingQuestionValException()
     {
         $this->expectException(
@@ -51,6 +63,9 @@ class OpHandlerQuestionGroupReorderTest extends TestBaseClass
         $opHandler->getGroupReorderData($this->op);
     }
 
+    /**
+     * @testdox getGroupReorderData() is expected to return a certain data structure
+     */
     public function testOpQuestionGroupReorderDataStructure()
     {
         $this->initializePatcher(
@@ -60,9 +75,18 @@ class OpHandlerQuestionGroupReorderTest extends TestBaseClass
         $transformedData = $opHandler->getGroupReorderData($this->op);
         $this->assertArrayHasKey('gid', $transformedData['1']);
         $this->assertArrayHasKey('group_order', $transformedData['1']);
-        $this->assertArrayHasKey('qid', $transformedData['1']['questions']);
-        $this->assertArrayHasKey('gid', $transformedData['1']['questions']);
-        $this->assertArrayHasKey('question_order', $transformedData['1']['questions']);
+        $this->assertArrayHasKey(
+            'qid',
+            $transformedData['1']['questions'][0]
+        );
+        $this->assertArrayHasKey(
+            'gid',
+            $transformedData['1']['questions'][0]
+        );
+        $this->assertArrayHasKey(
+            'question_order',
+            $transformedData['1']['questions'][0]
+        );
     }
 
     /**
