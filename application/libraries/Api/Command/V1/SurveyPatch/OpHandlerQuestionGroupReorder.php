@@ -164,7 +164,7 @@ class OpHandlerQuestionGroupReorder implements OpHandlerInterface
                         'Required parameter "%s" is missing. Entity "%s"',
                         $param,
                         $op->getEntityType()
-                    ) . print_r($data, true)
+                    )
                 );
             }
         }
