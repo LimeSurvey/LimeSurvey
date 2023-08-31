@@ -1432,23 +1432,16 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                             $attachment['url'] = translateLinks('survey', $iOldSID, $iNewSID, $attachment['url'], true);
                         }
                     }
+                    // If links are not translated and the email templates have attachments, we need to show a warning
+                    if (!$bTranslateInsertansTags && !empty($template)) {
+                        $hasOldAttachments = true;
+                    }
                 }
             } elseif (is_null($attachments)) {
                 // JSON decode failed. Most probably the attachments were in the PHP serialization format.
                 $wrongAttachmentsFormat = true;
             }
             $insertdata['attachments'] = serialize($attachments);
-        } else {
-            // If links are not translated and the email templates have attachments, we need to show a warning
-            if (isset($insertdata['attachments'])) {
-                $attachments = unserialize($insertdata['attachments']);
-                foreach ($attachments as $typeAttachments) {
-                    if (!empty($typeAttachments)) {
-                        $hasOldAttachments = true;
-                        break;
-                    }
-                }
-            }
         }
 
         if (isset($insertdata['surveyls_attributecaptions']) && substr($insertdata['surveyls_attributecaptions'], 0, 1) != '{') {
