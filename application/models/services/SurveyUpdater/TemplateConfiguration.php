@@ -29,16 +29,20 @@ class TemplateConfiguration
      * @param array $input
      * @return void
      */
-    public function updateVariant($surveyId, $input)
+    public function updateGeneralSettings($surveyId, $input)
     {
         $variant = $input['variant'];
         $variant_css = $input['variant_css'];
+        $darkmode = $input['darkmode'];
         $oSurvey = \Survey::model()->findByPk($surveyId);
         $sTemplateName = $oSurvey->template;
 
         $oSurveyConfig = \TemplateConfiguration::getInstance($sTemplateName, null, $surveyId);
         if ($oSurveyConfig->options === 'inherit') {
             $oSurveyConfig->setOptionKeysToInherit();
+        }
+        if ($darkmode) {
+            $oSurveyConfig->setOption('darkmode', $darkmode);
         }
         if ($variant) {
             $oSurveyConfig->setOption('cssframework', $variant);

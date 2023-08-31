@@ -141,6 +141,10 @@
                     <option data-value="css/variations/theme_blueberry.css" value="blueberry">Blueberry</option>
                     <option data-value="css/variations/theme_grape.css" value="grape">Grape</option>
                     <option data-value="css/variations/theme_mango.css" value="mango">Mango</option>
+                    <option data-value="css/variations/theme_apple-dark.css" value="dark apple">Dark Apple</option>
+                    <option data-value="css/variations/theme_blueberry-dark.css" value="dark blueberry">Dark Blueberry</option>
+                    <option data-value="css/variations/theme_grape-dark.css" value="dark grape">Dark Grape</option>
+                    <option data-value="css/variations/theme_mango-dark.css" value="dark mango">Dark Mango</option>
                 </optgroup>
             </dropdownoptions>
         </cssframework>

@@ -369,7 +369,8 @@ class Database extends SurveyCommonAction
             'gsid' => $request->getPost('gsid'),
             'template' => $request->getPost('template'),
             'variant' => $request->getPost('variant', null),
-            'variant_css' => $request->getPost('optionCssFile', null)
+            'variant_css' => $request->getPost('optionCssFile', null),
+            'darkmode' => $request->getPost('darkmode', null)
         ];
         try {
             $surveyUpdater->update(
