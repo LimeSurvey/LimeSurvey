@@ -61,7 +61,7 @@ class QuestionAggregateService
      *      ?clear_default: string,
      *      ...<array-key, mixed>
      *  },
-     *  ?questionL10n: array{
+     *  ?questionL10N: array{
      *      ...<array-key, array{
      *          question: string,
      *          help: string,
@@ -120,16 +120,11 @@ class QuestionAggregateService
             );
         }
 
-        $data = $this->saveService->normaliseInput(
-            $surveyId,
-            $input
-        );
-
         $transaction = $this->yiiDb->beginTransaction();
         try {
             $question = $this->saveService->save(
                 $surveyId,
-                $data
+                $input
             );
             $transaction->commit();
         } catch (\Exception $e) {

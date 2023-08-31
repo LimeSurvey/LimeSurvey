@@ -65,7 +65,7 @@ class SaveService
      *      ?clear_default: string,
      *      ...<array-key, mixed>
      *  },
-     *  ?questionL10n: array{
+     *  ?questionL10N: array{
      *      ...<array-key, array{
      *          question: string,
      *          help: string,
@@ -167,7 +167,8 @@ class SaveService
         $data['question']         = $input['question'] ?? [];
         $data['question']['sid']  = $surveyId;
         $data['question']['qid']  = $data['question']['qid'] ?? null;
-        $data['questionL10n']     = $input['questionL10n'] ?? [];
+        // / questionI10N  needs to be updatecd in the interface to questionL10n
+        $data['questionL10n']     = $input['questionI10N'] ?? [];
         $data['advancedSettings'] = $input['advancedSettings'] ?? [];
         $data['answeroptions']    = $input['answeroptions'] ?? null;
         $data['subquestions']     = $input['subquestions'] ?? null;
