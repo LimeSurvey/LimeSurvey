@@ -87,8 +87,6 @@ class OpHandlerQuestionGroupReorderTest extends TestBaseClass
             'question_order',
             $transformedData['1']['questions'][0]
         );
-        //DEBUG
-        fwrite(STDERR, print_r($transformedData, true));
     }
 
     /**
