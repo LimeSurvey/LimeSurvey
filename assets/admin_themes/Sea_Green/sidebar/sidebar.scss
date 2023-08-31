@@ -1,11 +1,16 @@
 // Admin Sidepanel
 #sidebar {
     width : 100%;
-    .questiongroup-list-group > li.selected {
-        // opacity: 0.9;
-        // &.activated {
-        //   opacity: 1;
-        // }
+    .questiongroup-list-group > li {
+         background: linear-gradient(90deg, $active-green 0%, $active-green 5px, $g-200 5px, $g-200 100%); 
+         padding: 0;
+    }
+
+    .questiongroup-list-group > li > div {
+        &:hover {
+            box-shadow    : inset 0 0 0 1px $grape75;
+            background : linear-gradient(to right, $grape75 0px, $grape75 4px, $white 4px, $white 100%) !important;
+        }
     }
     .button-sub-bar {
         min-height : 32px;
@@ -18,6 +23,25 @@
         }
     }
     .question-question-list {
+        .selected {
+            padding-left               : 20px;
+            background                 : /*!rtl:linear-gradient(to left, $primary 0px, $primary 8px, $white 8px, $white 100%)*/
+                linear-gradient(to right, $g-300 0px, $g-300 8px, $white 8px, $white 100%);
+            &.activated {
+                background : /*!rtl:linear-gradient(to left, $primary 0px, $primary 8px, $white 8px, $white 100%)*/
+                    linear-gradient(to right, $active-green 0px, $active-green 8px, $white 8px, $white 100%);
+    
+            }
+            &.disabled {
+                background : linear-gradient(to right, $g-400 0px, $g-400 8px, $white 8px, $white 100%) !important
+            }
+            transition-property        : all;
+            transition-duration        : .25s;
+            transition-timing-function : cubic-bezier(1, 0.5, 0.5, 1);
+    
+        
+        }
+
         .question-question-list-item {
             margin      : 2px 2px 2px 12px;
             display     : flex;
@@ -30,6 +54,10 @@
                 padding-left : 20px;
                 .question-question-list-item-drag {
                     margin : 10px 10px 10px 5px;
+                }
+                &:hover {
+                    box-shadow    : inset 0 0 0 1px $grape75;
+                    background : linear-gradient(to right, $grape75 0px, $grape75 8px, $white 8px, $white 100%);
                 }
             }
             .question-question-list-item-link {
@@ -97,21 +125,7 @@
         animation-duration : 450ms;
         background         : radial-gradient(circle at center, $primary-bg_menuopen 0px, $primary-bg_menuopen 8px, $white 9px, $white 100%);
     }
-    .selected {
-        padding-left               : 20px;
-        background                 : /*!rtl:linear-gradient(to left, $primary 0px, $primary 8px, $white 8px, $white 100%)*/
-            linear-gradient(to right, $g-300 0px, $g-300 8px, $white 8px, $white 100%);
-        &.activated {
-            background : /*!rtl:linear-gradient(to left, $primary 0px, $primary 8px, $white 8px, $white 100%)*/
-                linear-gradient(to right, $active-green 0px, $active-green 8px, $white 8px, $white 100%);
-        }
-        &.disabled {
-            background : linear-gradient(to right, $g-400 0px, $g-400 8px, $white 8px, $white 100%) !important
-        }
-        transition-property        : all;
-        transition-duration        : .25s;
-        transition-timing-function : cubic-bezier(1, 0.5, 0.5, 1);
-    }
+   
     a:not(.btn, .nav-tabs .nav-link) {
         color       : $g-900;
         font-weight : $font-weight-normal;
@@ -204,6 +218,7 @@
     .ls-questiongroup-tools, .ls-question-tools {
         i {
             font-size : 24px;
+            color: $g-700;
         }
     }
 }

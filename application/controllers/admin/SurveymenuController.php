@@ -6,6 +6,20 @@
 class SurveymenuController extends SurveyCommonAction
 {
     /**
+     * SurveymenuController Constructor
+     * @param $controller
+     * @param $id
+     **/
+    public function __construct($controller, $id)
+    {
+        parent::__construct($controller, $id);
+
+        if (!Permission::model()->hasGlobalPermission('settings', 'read')) {
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
+        }
+    }
+
+    /**
      * @return string[] action filters
      */
     public function filters()
@@ -367,6 +381,7 @@ class SurveymenuController extends SurveyCommonAction
      **/
     public function index()
     {
+        // Permission check is done in the constructor.
         $this->getController()->redirect(array('admin/menus/sa/view'));
     }
 
@@ -376,6 +391,8 @@ class SurveymenuController extends SurveyCommonAction
      */
     public function view()
     {
+        // Permission check is done in the constructor.
+
         $aData = array();
         $aData['model'] = Surveymenu::model();
 

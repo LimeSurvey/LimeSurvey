@@ -27,7 +27,7 @@ Yii::app()->getController()->renderPartial(
         <?php if ($oUser->isNewRecord) : ?>
             <?= $form->textField($oUser, 'users_name', ['id' => 'User_Form_users_name', 'required' => 'required']) ?>
         <?php else : ?>
-            <input class="form-control" type="text" value="<?= $oUser->users_name ?>" disabled="true"/>
+            <input class="form-control" type="text" value="<?= CHtml::encode($oUser->users_name) ?>" disabled="true"/>
         <?php endif; ?>
 
         <?php echo $form->error($oUser, 'users_name'); ?>
