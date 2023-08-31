@@ -12,6 +12,8 @@ use LimeSurvey\ObjectPatch\OpType\OpTypeUpdate;
 
 class OpHandlerQuestionGroupL10n implements OpHandlerInterface
 {
+    use OpHandlerSurveyTrait;
+
     protected TransformerInterface $transformer;
     protected string $entity;
     protected CModel $model;
@@ -147,26 +149,5 @@ class OpHandlerQuestionGroupL10n implements OpHandlerInterface
             );
         }
         return $dataSet;
-    }
-
-    /**
-     * Extracts and returns surveyId from context
-     * @param OpInterface $op
-     * @return int
-     * @throws OpHandlerException
-     */
-    private function getSurveyIdFromContext(OpInterface $op)
-    {
-        $context = $op->getContext();
-        $surveyId = $context['id'] ? (int)$context['id'] : null;
-        if ($surveyId === null) {
-            throw new OpHandlerException(
-                printf(
-                    'Missing survey id in context for entity %s',
-                    $op->getEntityType()
-                )
-            );
-        }
-        return $surveyId;
     }
 }
