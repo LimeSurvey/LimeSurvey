@@ -5,7 +5,7 @@ namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 use LimeSurvey\ObjectPatch\Op\OpInterface;
 use LimeSurvey\ObjectPatch\OpHandler\OpHandlerException;
 
-class OpApiHelper
+trait OpHandlerSurveyTrait
 {
     /**
      * Extracts and returns surveyId from context
@@ -13,7 +13,7 @@ class OpApiHelper
      * @return int
      * @throws OpHandlerException
      */
-    public static function getSurveyIdFromContext(OpInterface $op)
+    public function getSurveyIdFromContext(OpInterface $op)
     {
         $context = $op->getContext();
         $surveyId = $context['id'] ? (int)$context['id'] : null;
