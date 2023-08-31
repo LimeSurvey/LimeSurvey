@@ -350,5 +350,4 @@ class EmailTemplates extends SurveyCommonAction
 
         return false;
     }
-
 }
