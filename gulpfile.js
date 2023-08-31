@@ -179,6 +179,10 @@ function survey_theme_ls6() {
         ["blueberry", "#5076FF"],
         ["grape", "#8146F6"],
         ["mango", "#ED5046"],
+        ["apple-dark", "#B2FF8E"],
+        ["blueberry-dark", "#A3C8FF"],
+        ["grape-dark", "#FF9AA2"],
+        ["mango-dark", "#FFBA68"],
     ];
     let plugins = [
         autoprefixer(),

@@ -1,4 +1,110 @@
-.darkmode-on {
+body {
     background-color: $g-800;
     color: white;
+}
+button {
+    color: $g-800 !important;
+}
+.navbar {
+    background-color: inherit !important;
+}
+
+.form-change-lang #lang-select {
+    background-color: inherit;
+}
+
+h1, h2, h3, h4, h5,
+.h1, .h2, .h3, .h4, .h5, p, span, label {
+    color: white;
+}
+
+span, label, .text-muted {
+    font-weight: 600;
+    color: white !important;
+}
+
+th {
+    color: white !important;
+    font-weight: 600;
+    font-size: 0.6em;
+}
+
+.table-hover tbody tr:hover,
+.table-hover tbody th:hover,
+.table-hover tbody tr:hover th{
+     color: black !important;
+}
+
+select {
+    background-color: $g-800 !important;
+    color:white !important;
+}
+
+.form-select {
+    color:white !important;
+    background-color: $g-800 !important;
+    background-image: url("data:image/svg+xml;utf8,<svg viewBox='0 0 140 140' width='24' height='24' xmlns='http://www.w3.org/2000/svg'><g><path d='m121.3,34.6c-1.6-1.6-4.2-1.6-5.8,0l-51,51.1-51.1-51.1c-1.6-1.6-4.2-1.6-5.8,0-1.6,1.6-1.6,4.2 0,5.8l53.9,53.9c0.8,0.8 1.8,1.2 2.9,1.2 1,0 2.1-0.4 2.9-1.2l53.9-53.9c1.7-1.6 1.7-4.2 0.1-5.8z' fill='white'/></g></svg>")
+}
+
+.tempus-dominus-widget {
+    background-color: $g-800 !important;
+}
+
+.ls-even {
+    background-color: #333641;
+}
+
+div {
+    color: white !important;
+}
+
+textarea, input[type="text"],
+textarea.form-control, .form-control {
+    background-color: $g-800 !important;
+    border-color: $g-400 !important;
+    color: white !important;
+}
+
+.dropdown button,
+.sortable-choice.sortable-list.list-group li,
+.ranking-advanced-available-items,
+.ranking-sorted-items{
+    background-color: $g-800 !important;
+    border: 1px solid $g-700 !important;
+    border-radius: 5px;
+    color: white !important;
+}
+
+.ranking-sorted-items {
+    border-color: $base-color;
+}
+
+.sortable-subtitle.sortable-rank-subtitle {
+    color: white !important;
+}
+
+.modal-dialog {
+    color: black;
+    .modal-body, p {
+        color: black !important;
+    }
+}
+
+.completed-wrapper p.completed-heading,
+.completed-wrapper p.completed-Content {
+    color: $base-color;
+}
+
+.checkbox-item input[type='checkbox']:checked + label::before,
+.checkbox-item input[type='checkbox'] + label::before,
+.radio-item input[type='radio']:checked + label::before,
+.radio-item input[type='radio'] + label::before,
+.form-check input[type='radio'] + label,
+.ls-answers.checkbox-list.answers-list .form-check input[type='checkbox'] + label {
+    background-color: $g-800 !important;
+}
+
+.form-check input[type='radio']:checked + label,
+.ls-answers.checkbox-list.answers-list .form-check input[type='checkbox']:checked + label {
+    background-color: $base-color !important;
 }
