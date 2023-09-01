@@ -89,3 +89,4 @@ echo viewHelper::getViewTestTag('displayParticipants');
     </div>
     <span id="locator" data-location="participants">&nbsp;</span>
 </div>
+<script src="<?php echo Yii::app()->getConfig('extensionsurl') . 'admin/grid/GridActionsWidget/assets/action_dropdown.js' ?>" type="text/javascript"></script>
