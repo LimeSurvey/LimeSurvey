@@ -11,7 +11,7 @@ use ls\tests\TestBaseClass;
 use ls\tests\unit\services\SurveyUpdater\GeneralSettings\GeneralSettingsMockSetFactory;
 
 /**
- * @testdox OpHandlerLanguageSettingsUpdate Test
+ * @testdox OpHandlerLanguageSettingsUpdate
  */
 class OpHandlerLanguageSettingsUpdateTest extends TestBaseClass
 {
@@ -65,7 +65,7 @@ class OpHandlerLanguageSettingsUpdateTest extends TestBaseClass
     }
 
     /**
-     * @testdox has correct data output when provided with single language
+     * @testdox has correct data output when provided with multiple languages
      */
     public function testLanguageSettingsUpdateDataStructureMultiple()
     {
