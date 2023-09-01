@@ -137,6 +137,9 @@ class QuotasController extends LSBaseController
             Yii::app()->user->setFlash('error', gT("Access denied."));
             $this->redirect(Yii::app()->request->urlReferrer);
         }
+
+        \Yii::app()->loadHelper('admin.htmleditor');
+
         $oSurvey = Survey::model()->findByPk($surveyid);
         $aData['surveyid'] = $oSurvey->sid;
         $aData['thissurvey'] = getSurveyInfo($surveyid);

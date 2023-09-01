@@ -16,6 +16,20 @@ $this->widget('ext.AlertWidget.AlertWidget', ['errorSummaryModel' => $oQuotaLang
     <div class=''>
         <?php echo $form->textArea($oQuotaLanguageSetting,'['.$language.']quotals_message',array('class'=>'form-control custom-data')); ?>
         <?php echo $form->error($oQuotaLanguageSetting,'['.$language.']quotals_message'); ?>
+        <?php echo CHtml::textArea(
+            'quota_message_en',
+            '',
+            array('class' => 'form-control', 'cols' => '80', 'rows' => '15', 'id' => "quota_message_en")
+        ); ?>
+        <?php echo getEditor(
+            'quota_message',
+            'quota_message_en',
+            "[" . gT("End message:", "js") . "](en)",
+            153519,
+            '',
+            '',
+            'AddNewQuota'
+        ); ?>
     </div>
 </div>
 
