@@ -5,7 +5,7 @@ import ajaxMethods from "../../mixins/runAjax.js";
 export default {
 
     mixins: [ajaxMethods],
-    data(){
+    data() {
         return {
             active: [],
             questiongroupDragging: false,
@@ -13,14 +13,14 @@ export default {
             questionDragging: false,
             draggedQuestion: null,
             draggedQuestionsGroup: null,
-            hoveredQuestion : null,
-            hoveredQuestionGroup : null,
+            hoveredQuestion: null,
+            hoveredQuestionGroup: null,
 
         };
     },
     computed: {
-        allowOrganizer() {return this.$store.state.allowOrganizer===1},
-        surveyIsActive() {return window.SideMenuData.isActive; },
+        allowOrganizer() { return this.$store.state.allowOrganizer === 1 },
+        surveyIsActive() { return window.SideMenuData.isActive; },
         createQuestionGroupLink() {
             return window.SideMenuData.createQuestionGroupLink
         },
@@ -40,33 +40,33 @@ export default {
                 ["asc"]
             );
         },
-		createQuestionAllowed() {
-			return (
-					this.$store.state.questiongroups.length > 0
-					&& (this.createQuestionLink != undefined
-							&& this.createQuestionLink.length > 1
-					)
-			);
-		},
-		createQuestionAllowedClass() {
-			if (this.createQuestionAllowed) {
-				return '';
-			} else {
-				return 'disabled';
-			}
-		},
-		createQuestionGroupAllowedClass() {
-			if (this.createQuestionGroupLink != undefined
-					&& this.createQuestionGroupLink.length > 1) {
-				return '';
-			} else {
-				return 'disabled';
-			}
-		},
+        createQuestionAllowed() {
+            return (
+                this.$store.state.questiongroups.length > 0
+                && (this.createQuestionLink != undefined
+                    && this.createQuestionLink.length > 1
+                )
+            );
+        },
+        createQuestionAllowedClass() {
+            if (this.createQuestionAllowed) {
+                return '';
+            } else {
+                return 'disabled';
+            }
+        },
+        createQuestionGroupAllowedClass() {
+            if (this.createQuestionGroupLink != undefined
+                && this.createQuestionGroupLink.length > 1) {
+                return '';
+            } else {
+                return 'disabled';
+            }
+        },
         createAllowance() {
             let createGroupAllowed =
                 this.createQuestionGroupLink != undefined &&
-                this.createQuestionGroupLink.length > 1
+                    this.createQuestionGroupLink.length > 1
                     ? "g"
                     : "";
             let createQuestionAllowed = this.createQuestionAllowed ? "q" : "";
@@ -77,7 +77,7 @@ export default {
         }
     },
     methods: {
-        toggleOrganizer(){
+        toggleOrganizer() {
             this.$store.dispatch('unlockLockOrganizer');
         },
         collapseAll() {
@@ -94,10 +94,12 @@ export default {
             return question.relevance !== '1';
         },
 
-        itemActivated(question){
-            return  this.$store.state.lastQuestionOpen === question.qid;
+        itemActivated(question) {
+            return this.$store.state.lastQuestionOpen === question.qid;
         },
-
+        groupActivated(questionGroup) {
+            return this.$store.state.lastQuestionGroupOpen === questionGroup.gid;
+        },
         questionItemClasses(question) {
             let classes = "";
             classes +=
@@ -162,10 +164,18 @@ export default {
             }
             this.$store.commit("questionGroupOpenArray", this.active);
         },
-        openQuestionGroup(questionGroup) {
-            this.addActive(questionGroup.gid);
-            this.$store.commit("lastQuestionGroupOpen", questionGroup);
-            this.updatePjaxLinks();
+        toggleQuestionGroup(questionGroup) {
+            if (!this.isOpen(questionGroup.gid)) {
+                this.addActive(questionGroup.gid);
+                this.$store.commit("lastQuestionGroupOpen", questionGroup);
+                this.updatePjaxLinks();
+            } else {
+                // collapse opened question group
+                const newActive = this.active.filter((gid)=>gid !== questionGroup.gid);
+                this.active = [...newActive];
+                this.$store.commit("questionGroupOpenArray", this.active);
+            }
+ 
         },
         openQuestion(question) {
             this.addActive(question.gid);
@@ -187,24 +197,24 @@ export default {
             }
         },
         dragoverQuestiongroup($event, questiongroupObject) {
-            if(this.draggedQuestion == undefined || this.draggedQuestion == null) {
+            if (this.draggedQuestion == undefined || this.draggedQuestion == null) {
                 this.$log.log({
                     this: this,
                     questiongroupObject: questiongroupObject,
                     draggedQuestion: this.draggedQuestion
-                    });
+                });
             }
 
             if (this.questiongroupDragging) {
                 const targetPosition = parseInt(questiongroupObject.group_order);
                 const currentPosition = parseInt(this.draggedQuestionGroup.group_order);
-                if(Math.abs(parseInt(targetPosition)-parseInt(currentPosition)) == 1){
+                if (Math.abs(parseInt(targetPosition) - parseInt(currentPosition)) == 1) {
                     questiongroupObject.group_order = currentPosition;
                     this.draggedQuestionGroup.group_order = targetPosition
                 }
 
             } else {
-                if(window.SideMenuData.isActive) {return;}
+                if (window.SideMenuData.isActive) { return; }
                 this.addActive(questiongroupObject.gid);
                 if (this.draggedQuestion.gid !== questiongroupObject.gid) {
                     const removedFromInital = LS.ld.remove(
@@ -260,20 +270,20 @@ export default {
         },
         dragoverQuestion($event, questionObject, questionGroupObject) {
             if (this.questionDragging) {
-                if(this.questionDragging.gid !== questionObject.gid && window.SideMenuData.isActive) {return;}
+                if(window.SideMenuData.isActive && this.draggedQuestion.gid != questionObject.gid) {return;}
                 let orderSwap = questionObject.question_order;
                 questionObject.question_order = this.draggedQuestion.question_order;
                 this.draggedQuestion.question_order = orderSwap;
             }
         },
-        onMouseOverQuestionGroup($event, group){
+        onMouseOverQuestionGroup($event, group) {
             this.hoveredQuestionGroup = group;
         },
 
-        onMouseOverQuestion($event, question){
+        onMouseOverQuestion($event, question) {
             this.hoveredQuestion = question;
         },
-        onMouseLeave(){
+        onMouseLeave() {
             this.hoveredQuestion = null;
             this.hoveredQuestionGroup = null;
         }
@@ -291,45 +301,35 @@ export default {
 <template>
     <div id="questionexplorer" class="ls-flex-column fill ls-ba menu-pane h-100 pt-2">
         <div class="ls-flex-row button-sub-bar mb-2">
-          <div class="scoped-toolbuttons-right me-2">
-            <button
-                class="btn btn-sm btn-outline-secondary"
-                @click="toggleOrganizer"
-                :title="translate(allowOrganizer ? 'lockOrganizerTitle' : 'unlockOrganizerTitle')"
-            >
-              <i :class="allowOrganizer ? 'ri-lock-unlock-fill' : 'ri-lock-fill'" />
-            </button>
-            <button
-                class="btn btn-sm btn-outline-secondary me-2"
-                @click="collapseAll"
-                :title="translate('collapseAll')"
-            >
-              <i class="ri-link-unlink" />
-            </button>
-          </div>
+            <div class="scoped-toolbuttons-right me-2">
+                <button class="btn btn-sm btn-outline-secondary" @click="toggleOrganizer"
+                    :title="translate(allowOrganizer ? 'lockOrganizerTitle' : 'unlockOrganizerTitle')">
+                    <i :class="allowOrganizer ? 'ri-lock-unlock-fill' : 'ri-lock-fill'" />
+                </button>
+                <button class="btn btn-sm btn-outline-secondary me-2" @click="collapseAll"
+                    :title="translate('collapseAll')">
+                    <i class="ri-link-unlink" />
+                </button>
+            </div>
         </div>
 		<div class="ls-flex-row wrap align-content-center align-items-center button-sub-bar">
-			<div class="scoped-toolbuttons-left mb-2">
-				<a
-					id="adminsidepanel__sidebar--selectorCreateQuestion"
-					:href="createFullQuestionLink()"
-					class="btn btn-primary ms-2 me-2 pjax"
-					v-bind:class="createQuestionAllowedClass"
-				>
-					<i class="ri-add-circle-fill"></i>
-					&nbsp;
-					{{ 'createQuestion'|translate }}
-				</a>
+			<div class="scoped-toolbuttons-left mb-2 d-flex align-items-center">
+                <div class="create-question px-3" data-bs-toggle="tooltip" data-bs-placement="top" :title="translate(createQuestionAllowed ? '' : 'deactivateSurvey')">
+                    <a id="adminsidepanel__sidebar--selectorCreateQuestion" :href="createFullQuestionLink()"
+                        class="btn btn-primary pjax" v-bind:class="createQuestionAllowedClass">
+                        <i class="ri-add-circle-fill"></i>
+                        &nbsp;
+                        {{ 'createQuestion' | translate }}
+                    </a>
+                </div>
 
-                <a
-                    id="adminsidepanel__sidebar--selectorCreateQuestionGroup"
-                    v-bind:class="createQuestionGroupAllowedClass"
-                    :href="createQuestionGroupLink" class="btn btn-secondary pjax"
-                >
-                    <!-- <i class="ri-add-line"></i> -->
-                    {{"createPage"|translate}}
-                </a>
-
+                <div data-bs-toggle="tooltip" data-bs-placement="top" :title="translate(createQuestionAllowed ? '' : 'deactivateSurvey')">
+                    <a id="adminsidepanel__sidebar--selectorCreateQuestionGroup" v-bind:class="createQuestionGroupAllowedClass"
+                        :href="createQuestionGroupLink" class="btn btn-secondary pjax">
+                        <!-- <i class="ri-add-line"></i> -->
+                        {{ "createPage" | translate }}
+                    </a>
+                </div>  
             </div>
         </div>
         <div class="ls-flex-row ls-space padding all-0">
@@ -341,21 +341,17 @@ export default {
                     v-for="questiongroup in orderedQuestionGroups"
                     v-bind:key="questiongroup.gid"
                     class="list-group-item ls-flex-column"
-
                     v-bind:class="questionGroupItemClasses(questiongroup)"
                     @dragenter="dragoverQuestiongroup($event, questiongroup)"
-                    style=" background: linear-gradient(90deg, #14AE5C 0%, #14AE5C 5px, #EEEFF7 5px, #EEEFF7 100%); padding: 0;"
                 >
 
                   <div class="q-group d-flex nowrap ls-space padding right-5 bottom-5 bg-white ms-2 p-2"
                        v-on:mouseover="onMouseOverQuestionGroup($event, questiongroup)"
                        v-on:mouseleave ="onMouseLeave"
-
                   >
-                    <div
-                        v-if="!surveyIsActive"
-                        class="bigIcons dragPointer me-3"
-                        :class=" allowOrganizer ? '' : 'disabled' "
+                    <div v-if="!surveyIsActive"
+                        class="bigIcons dragPointer me-1"
+                        :class="allowOrganizer ? '' : 'disabled' "
                         :draggable="allowOrganizer"
                         @dragend="endDraggingGroup($event, questiongroup)"
                         @dragstart="startDraggingGroup($event, questiongroup)"
@@ -365,79 +361,65 @@ export default {
                         <path fill-rule="evenodd" clip-rule="evenodd" d="M0.4646 0.125H3.24762V2.625H0.4646V0.125ZM6.03064 0.125H8.81366V2.625H6.03064V0.125ZM0.4646 5.75H3.24762V8.25H0.4646V5.75ZM6.03064 5.75H8.81366V8.25H6.03064V5.75ZM0.4646 11.375H3.24762V13.875H0.4646V11.375ZM6.03064 11.375H8.81366V13.875H6.03064V11.375Z" fill="currentColor"/>
                       </svg>
                     </div>
-                    <div class="w-100 position-relative">
-                      <a
-                          class="d-flex pjax"
-                          :href="questiongroup.link"
-                      >
-                        <span
-                            class="question_text_ellipsize"
-                            :style="{ 'max-width': itemWidth }"
-                            @click.stop="openQuestionGroup(questiongroup)"
-                        >
-                        {{ questiongroup.group_name }}
-                        </span>
-
-                      </a>
-
-                    <div  class="dropdown position-absolute top-0 d-flex" style="right:5px" >
-
-                        <div class="">
-                            <span class="badge reverse-color ls-space margin right-5"
-                                @click.prevent="toggleActivation(questiongroup.gid)">
-                                {{ questiongroup.questions.length }}
-                            </span>
-                        </div>
-
-                        <div class="ls-questiongroup-tools cursor-pointer" id="dropdownMenuButton1" data-bs-toggle="dropdown"
-                        aria-expanded="false">
-                             <i class="ri-more-fill"></i>
-                        </div>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                            <li  v-if="key !== 'delete'"  v-for="(value, key) in questiongroup.groupDropdown" :key="key">
-                                <a   class="dropdown-item" :id="value.id" :href="value.url">
-                                    <span :class="value.icon"></span>
-                                    {{value.label}}
-                                </a>
-
-                            </li>
-
-                            <li v-else-if="key === 'delete'" :class=" value.disabled ? 'disabled' : '' ">
-                                <a
-                                    v-if="!value.disabled"
-                                    href="#"
-                                    onclick="return false;"
-                                    class="dropdown-item"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#confirmation-modal"
-                                    data-btnclass="btn-danger"
-                                    :data-title="value.dataTitle"
-                                    :data-btntext="value.dataBtnText"
-                                    :data-onclick="value.dataOnclick"
-                                    :data-message="value.dataMessage"
-                                >
-                                    <span :class="value.icon"></span>
-                                    {{value.label}}
-                                </a>
-                                <a
-                                    v-else-if="value.disabled"
-                                    href="#"
-                                    onclick="return false;"
-                                    class="dropdown-item"
-                                    data-btnclass="btn-danger"
-                                    data-bs-toggle="tooltip"
-                                    data-bs-placement="bottom"
-                                    :title="value.title"
-                                >
-                                    <span :class="value.icon"></span>
-                                    {{value.label}}
-                                </a>
-
-                            </li>
-                        </ul>
+                    <div class="cursor-pointer me-1" @click="toggleQuestionGroup(questiongroup)" 
+                         :style="isOpen(questiongroup.gid) ? 'transform: rotate(90deg)' : 'transform: rotate(0deg)'">
+                         <i class="ri-arrow-right-s-fill"></i>
                     </div>
+                    <div class="w-100 position-relative">
+                        <div class="cursor-pointer">
+                            <a class="d-flex pjax" :href="questiongroup.link">
+                                <span class="question_text_ellipsize" :style="{ 'max-width': itemWidth }"
+                                    @click.stop="openQuestionGroup(questiongroup)">
+                                    {{ questiongroup.group_name }}
+                                </span>
 
+                            </a>
+                          </div>
+                      <div class="dropdown position-absolute top-0 d-flex align-items-center" style="right:5px">
+                              <div class="" @click="toggleQuestionGroup(questiongroup)">
+                                    <span class="badge reverse-color ls-space margin right-5"
+                                         @click.prevent="toggleActivation(questiongroup.gid)">
+                                        {{ questiongroup.questions.length }}
+                                </span>
+                            </div>
 
+                            <div v-if="groupActivated(questiongroup) || (hoveredQuestionGroup && hoveredQuestionGroup.gid === questiongroup.gid)"
+                                class="ls-questiongroup-tools cursor-pointer" id="dropdownMenuButton1"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="ri-more-fill"></i>
+                            </div>
+
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                <li v-if="key !== 'delete'" v-for="(value, key) in questiongroup.groupDropdown"
+                                    :key="key">
+                                    <a class="dropdown-item" :id="value.id" :href="value.url">
+                                        <span :class="value.icon"></span>
+                                        {{ value.label }}
+                                    </a>
+
+                                </li>
+
+                                <li v-else-if="key === 'delete'" :class="value.disabled ? 'disabled' : ''">
+                                    <a v-if="!value.disabled" href="#" onclick="return false;" class="dropdown-item"
+                                        data-bs-toggle="modal" data-bs-target="#confirmation-modal"
+                                        data-btnclass="btn-danger" :data-title="value.dataTitle"
+                                        :data-btntext="value.dataBtnText" :data-onclick="value.dataOnclick"
+                                        :data-message="value.dataMessage">
+                                        <span :class="value.icon"></span>
+                                        {{ value.label }}
+                                    </a>
+                                    <a v-else-if="value.disabled" href="#" onclick="return false;" class="dropdown-item"
+                                        data-btnclass="btn-danger" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                        :title="value.title">
+                                        <span :class="value.icon"></span>
+                                        {{ value.label }}
+                                    </a>
+
+                                </li>
+                            </ul>
+        
+
+                        </div>
                     </div>
                   </div>
                     <transition name="slide-fade-down">
@@ -479,7 +461,7 @@ export default {
                                     </div>
                                 <a
                                     :href="question.link"
-                                    class="col-9 pjax question-question-list-item-link display-as-container ls-text-underline-hover"
+                                    class="col-9 pjax question-question-list-item-link display-as-container"
                                     @click.stop.prevent="openQuestion(question)"
                                 >
                                     <span
@@ -490,21 +472,21 @@ export default {
                                         [{{question.title}}] &rsaquo; {{ question.question_flat }}
                                     </span>
                                 </a>
-                                <div v-if="itemActivated(question)||(hoveredQuestion && hoveredQuestion.qid === question.qid)" class="dropdown position-absolute" style="right:10px" >
+                                <div v-if="itemActivated(question) || (hoveredQuestion && hoveredQuestion.qid === question.qid)" class="dropdown position-absolute" style="right:10px" >
                                     <div class="ls-question-tools ms-auto position-relative cursor-pointer" id="dropdownMenuButton1" data-bs-toggle="dropdown"
                                      aria-expanded="false">
                                         <i class="ri-more-fill"></i>
                                     </div>
                                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                        <li  v-if="key !== 'delete' && !(key === 'language' && Array.isArray(value))"  v-for="(value, key) in question.questionDropdown" :key="key">
-                                            <a   class="dropdown-item" :id="value.id" :href="value.url">
+                                        <li v-if="key !== 'delete' && !(key === 'language' && Array.isArray(value))"  v-for="(value, key) in question.questionDropdown" :key="key">
+                                            <a class="dropdown-item" :id="value.id" :href="value.url">
                                                <span :class="value.icon"></span>
-                                                 {{value.label}}
+                                            {{value.label}}
                                             </a>
 
                                         </li>
 
-                                        <li v-else-if="key === 'delete'"  :class=" value.disabled ? 'disabled' : '' ">
+                                        <li v-else-if="key === 'delete'" :class="value.disabled ? 'disabled' : '' ">
                                             <a
                                                v-if="!value.disabled"
                                                 href="#"
@@ -533,17 +515,17 @@ export default {
 
                                             >
                                                 <span :class="value.icon"></span>
-                                                {{value.label}}
+                                                {{ value.label }}
                                             </a>
 
                                         </li>
                                         <div v-else-if="key === 'language' && Array.isArray(value)">
-                                            <li role="separator" class="dropdown-divider"  ></li>
+                                            <li role="separator" class="dropdown-divider"></li>
                                             <li class="dropdown-header">Survey logic file</li>
-                                            <li v-for="language in value" >
+                                            <li v-for="language in value">
                                                 <a class="dropdown-item" :id="language.id" :href="language.url">
-                                                  <span :class="language.icon"></span>
-                                                    {{language.label}}
+                                                    <span :class="language.icon"></span>
+                                                    {{ language.label }}
                                                 </a>
                                             </li>
                                         </div>

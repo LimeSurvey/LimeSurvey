@@ -4,7 +4,7 @@ namespace LimeSurvey;
 
 use CActiveRecord;
 use LSYii_Application;
-use PluginManager;
+use LimeSurvey\PluginManager\PluginManager;
 use CHttpSession;
 
 

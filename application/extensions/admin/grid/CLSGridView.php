@@ -71,6 +71,7 @@ class CLSGridView extends TbGridView
                 $this->afterAjaxUpdate .= $jsCode;
             }
             $this->afterAjaxUpdate .= 'LS.actionDropdown.create();';
+            $this->afterAjaxUpdate .= 'LS.rowlink.create();';
             $this->afterAjaxUpdate .= '}';
         } else {
             // trigger action_dropdown() as a default although no lsAfterAjaxUpdate param passed.
@@ -102,13 +103,6 @@ class CLSGridView extends TbGridView
             App()->getConfig("extensionsurl") . 'admin/grid/assets/gridScrollbar.js',
             CClientScript::POS_BEGIN
         );
-        // Link for each row
-        if (!empty($this->rowLink)) {
-            App()->clientScript->registerScriptFile(
-                App()->getConfig("extensionsurl") . 'admin/grid/assets/rowLink.js',
-                CClientScript::POS_BEGIN
-            );
-        }
 
         // ========== this is added for pagination size working by referencing from old limegridview  ==============
         $id = $this->getId();

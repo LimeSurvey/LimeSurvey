@@ -485,12 +485,15 @@ class Question extends LSActiveRecord
     /**
      * Delete all subquestions that belong to this question.
      *
+     * @param ?array $exceptIds Don't delete subquestions with these ids.
      * @return void
      * @todo Duplication from delete()
      */
-    public function deleteAllSubquestions()
+    public function deleteAllSubquestions($exceptIds = [])
     {
-        $ids = $this->allSubQuestionIds;
+        $ids = !empty($exceptIds)
+            ? array_diff($this->allSubQuestionIds, $exceptIds)
+            : $this->allSubQuestionIds;
         $qidsCriteria = (new CDbCriteria())->addInCondition('qid', $ids);
         $res = Question::model()->deleteAll((new CDbCriteria())->addInCondition('qid', $ids));
         QuestionAttribute::model()->deleteAll($qidsCriteria);

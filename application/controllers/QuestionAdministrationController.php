@@ -332,10 +332,20 @@ class QuestionAdministrationController extends LSBaseController
         $aData['surveybar'] = [];
 
         // for newly combined groups and reorder parts
-        $aData['groupModel'] = $this->getGroupData($oSurvey);
+        $diContainer = \LimeSurvey\DI::getContainer();
+        $questionGroupService = $diContainer->get(
+            LimeSurvey\Models\Services\QuestionGroupService::class
+        );
+
+        if (App()->request->getParam('pageSize', 0) > 0) {
+            App()->user->setState('pageSize', (int)$pageSize);
+        }
+        $aData['groupModel'] = $questionGroupService->getGroupData(
+            $aData['oSurvey'],
+            App()->request->getParam('QuestionGroup', [])
+        );
         $aData['aGroupsAndQuestions'] = $this->getReorderData($oSurvey);
         $aData['surveyActivated'] = $oSurvey->getIsActive();
-
         $this->aData = $aData;
 
          $aData['hasSurveyContentCreatePermission'] = Permission::model()->hasSurveyPermission(
@@ -346,23 +356,6 @@ class QuestionAdministrationController extends LSBaseController
 
 
         $this->render("listquestions", $aData);
-    }
-
-    public function getGroupData($oSurvey)
-    {
-        $model    = new QuestionGroup('search');
-
-        if (isset($_GET['QuestionGroup']['group_name'])) {
-            $model->group_name = $_GET['QuestionGroup']['group_name'];
-        }
-
-        if (isset($_GET['pageSize'])) {
-            Yii::app()->user->setState('pageSize', (int) $_GET['pageSize']);
-        }
-        $model['sid'] = $oSurvey->primaryKey;
-        $model['language'] = $oSurvey->language;
-
-        return $model;
     }
 
     public function getReorderData($oSurvey)
@@ -533,8 +526,6 @@ class QuestionAdministrationController extends LSBaseController
             }
 
             if ($question->survey->active == 'N') {
-                // Clean subquestions before save.
-                $question->deleteAllSubquestions();
                 // If question type has subquestions, save them.
                 if ($question->questionType->subquestions > 0) {
                     $this->storeSubquestions(
@@ -2857,9 +2848,21 @@ class QuestionAdministrationController extends LSBaseController
     {
         $questionOrder = 0;
         $errorQuestions = [];
-        foreach ($subquestionsArray as $subquestionId => $subquestionArray) {
+        $subquestionIds = [];
+        foreach ($subquestionsArray as $subquestionArray) {
             foreach ($subquestionArray as $scaleId => $data) {
-                $subquestion = new Question();
+                $subquestion = null;
+                if (isset($data['oldcode'])) {
+                    $subquestion = Question::model()->findByAttributes([
+                        'sid' => $question->sid,
+                        'parent_qid' => $question->qid,
+                        'title' => $data['oldcode']
+                    ]);
+                }
+                if (!$subquestion) {
+                    $subquestion = new Question();
+                }
+
                 $subquestion->sid        = $question->sid;
                 $subquestion->gid        = $question->gid;
                 $subquestion->parent_qid = $question->qid;
@@ -2881,8 +2884,13 @@ class QuestionAdministrationController extends LSBaseController
                     continue;
                 }
                 $subquestion->refresh();
+                $subquestionIds[] = $subquestion->qid;
                 foreach ($data['subquestionl10n'] as $lang => $questionText) {
-                    $l10n = new QuestionL10n();
+                    $l10n = QuestionL10n::model()->findByAttributes([
+                        'qid' => $subquestion->qid,
+                        'language' => $lang
+                    ]);
+                    $l10n = $l10n ?? new QuestionL10n();
                     $l10n->qid = $subquestion->qid;
                     $l10n->language = $lang;
                     $l10n->question = $questionText;
@@ -2893,6 +2901,7 @@ class QuestionAdministrationController extends LSBaseController
                 }
             }
         }
+        $question->deleteAllSubquestions($subquestionIds);
         foreach ($errorQuestions as $errorQuestion) {
             throw (new LSUserException(500, gT("Could not save subquestion")))
                 ->setDetailedErrorsFromModel($errorQuestion);

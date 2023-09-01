@@ -827,7 +827,7 @@ function getSurveyInfo($surveyid, $languagecode = '', $force = false)
             } else {
                 $thissurvey['owner_username'] = '';
             }
-            
+
 
             $staticSurveyInfo[$surveyid][$languagecode] = $thissurvey;
         }
@@ -3644,11 +3644,11 @@ function replaceExpressionCodes($iSurveyID, $aCodeMap)
 * @param string $availlangs - space separated list of additional languages in survey
 * @return void
 */
-function cleanLanguagesFromSurvey($iSurveyID, $availlangs)
+function cleanLanguagesFromSurvey($iSurveyID, $availlangs, $baselang = null)
 {
     Yii::app()->loadHelper('database');
     $iSurveyID = (int) $iSurveyID;
-    $baselang = Survey::model()->findByPk($iSurveyID)->language;
+    $baselang = $baselang ?? Survey::model()->findByPk($iSurveyID)->language;
     $aLanguages = [];
     if (!empty($availlangs) && $availlangs != " ") {
         $availlangs = sanitize_languagecodeS($availlangs);
@@ -3667,8 +3667,8 @@ function cleanLanguagesFromSurvey($iSurveyID, $availlangs)
     }
 
     // Remove From Answer Table
-    $sQuery = "SELECT ls.id from {{answer_l10ns}} ls 
-            JOIN {{answers}} a on ls.aid=a.aid 
+    $sQuery = "SELECT ls.id from {{answer_l10ns}} ls
+            JOIN {{answers}} a on ls.aid=a.aid
             JOIN {{questions}} q on a.qid=q.qid
             WHERE sid={$iSurveyID} AND {$sqllang}";
     $result = Yii::app()->db->createCommand($sQuery)->queryAll();
@@ -3676,7 +3676,7 @@ function cleanLanguagesFromSurvey($iSurveyID, $availlangs)
         Yii::app()->db->createCommand('delete from {{answer_l10ns}} where id =' . $row['id'])->execute();
     }
     // Remove From Questions Table
-    $sQuery = "SELECT ls.id from {{question_l10ns}} ls 
+    $sQuery = "SELECT ls.id from {{question_l10ns}} ls
             JOIN {{questions}} q on ls.qid=q.qid
             WHERE sid={$iSurveyID} AND {$sqllang}";
     $result = Yii::app()->db->createCommand($sQuery)->queryAll();
@@ -3686,7 +3686,7 @@ function cleanLanguagesFromSurvey($iSurveyID, $availlangs)
 
     // Remove From Questions Table
     $quotedGroups = Yii::app()->db->quoteTableName('{{groups}}');
-    $sQuery = "SELECT ls.id from {{group_l10ns}} ls 
+    $sQuery = "SELECT ls.id from {{group_l10ns}} ls
             JOIN $quotedGroups g on ls.gid=g.gid
             WHERE sid={$iSurveyID} AND {$sqllang}";
     $result = Yii::app()->db->createCommand($sQuery)->queryAll();
@@ -3761,9 +3761,9 @@ function fixLanguageConsistency($sid, $availlangs = '', $baselang = '')
         }
     }
 
-    $query = "SELECT * FROM {{answers}} a 
-    JOIN {{answer_l10ns}} ls ON ls.aid=a.aid 
-    JOIN  {{questions}} q on a.qid=q.qid 
+    $query = "SELECT * FROM {{answers}} a
+    JOIN {{answer_l10ns}} ls ON ls.aid=a.aid
+    JOIN  {{questions}} q on a.qid=q.qid
     WHERE language='{$baselang}' and q.sid={$sid}";
     $result = Yii::app()->db->createCommand($query)->query();
     foreach ($result->readAll() as $answer) {
@@ -4612,7 +4612,7 @@ function getIPAddress()
 /**
  * This function returns the real IP address and should mainly be used for security sensitive purposes
  * If you want to use the IP address for language detection or similar, use getIPAddress() instead
- * 
+ *
  * @return  string  Client IP Address
  */
 function getRealIPAddress()
@@ -5080,4 +5080,27 @@ function standardDeviation(array $numbers): float
     }
 
     return sqrt($variance / $numberOfElements);
+}
+
+/**
+ * Checks if the specified path is absolute.
+ * It handles both Unix and Windows paths.
+ * @param string $path the path to be checked
+ * @return bool whether the path is absolute
+ */
+function isAbsolutePath($path)
+{
+    if (strlen($path) == 0) {
+        // Empty path is relative by definition
+        return false;
+    } elseif ($path[0] == '/') {
+        // Absolute path on Unix-based systems
+        return true;
+    } elseif (preg_match('/^[a-zA-Z]:\\\\/', $path)) {
+        // Absolute path on Windows systems, e.g. C:\path\to\file
+        return true;
+    } else {
+        // Relative path
+        return false;
+    }
 }
