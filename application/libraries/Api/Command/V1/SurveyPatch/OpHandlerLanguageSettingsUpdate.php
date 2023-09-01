@@ -19,7 +19,7 @@ class OpHandlerLanguageSettingsUpdate implements OpHandlerInterface
 {
     use OpHandlerSurveyTrait;
 
-    protected ?TransformerInterface $transformer;
+    protected TransformerInterface $transformer;
     protected string $entity;
     protected CModel $model;
 
@@ -95,7 +95,7 @@ class OpHandlerLanguageSettingsUpdate implements OpHandlerInterface
 
         $languageSettings->update(
             $this->getSurveyIdFromContext($op),
-            $this->getLanguageSettingData($op)
+            $this->getLanguageSettingsData($op)
         );
     }
 
@@ -105,7 +105,7 @@ class OpHandlerLanguageSettingsUpdate implements OpHandlerInterface
      * @return array
      * @throws OpHandlerException
      */
-    public function getLanguageSettingData(OpInterface $op)
+    public function getLanguageSettingsData(OpInterface $op)
     {
         $data = [];
         $entityId = $op->getEntityId();
