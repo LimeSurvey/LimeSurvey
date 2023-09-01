@@ -602,6 +602,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields)
 function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array('autorename' => false,'translinkfields' => true))
 {
     $sBaseLanguage = Survey::model()->findByPk($iNewSID)->language;
+    $surveyLanguages = Survey::model()->findByPk($iNewSID)->allLanguages;
     $sXMLdata = file_get_contents($sFullFilePath);
     $xml = simplexml_load_string($sXMLdata, 'SimpleXMLElement', LIBXML_NONET);
     if ($xml->LimeSurveyDocType != 'Question') {
@@ -742,6 +743,12 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
             if ($insertdata['gid'] == 0) {
                 continue;
             }
+
+            // Avoid inserting question if its language is not in the survey.
+            if (!in_array($insertdata['language'], $surveyLanguages)) {
+                continue;
+            }
+
             if (!isset($insertdata['mandatory']) || trim($insertdata['mandatory']) == '') {
                 $insertdata['mandatory'] = 'N';
             }
@@ -846,7 +853,6 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
 
     //  Import question_l10ns
     if (isset($xml->question_l10ns->rows->row)) {
-        $surveyLanguages = Survey::model()->findByPk($iNewSID)->allLanguages;
         foreach ($xml->question_l10ns->rows->row as $row) {
             $insertdata = array();
             foreach ($row as $key => $value) {
