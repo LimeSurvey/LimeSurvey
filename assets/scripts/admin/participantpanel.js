@@ -336,7 +336,7 @@ LS.CPDB = (function() {
         });
         $('.action_attributeNames_editModal').on('click', function(e){
             e.preventDefault();
-            var data = {modalTarget: 'editattribute','attribute_id' : $(this).closest('tr').data('attribute_id')};
+            var data = {modalTarget: 'editattribute','attribute_id' : $(this).data('attribute_id')};
             runBaseModal(
                 openModalParticipantPanel,
                 data,
