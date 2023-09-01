@@ -19,14 +19,14 @@ class OpHandlerLanguageSettingsUpdate implements OpHandlerInterface
 {
     use OpHandlerSurveyTrait;
 
-    protected ?TransformerInterface $transformer = null;
+    protected ?TransformerInterface $transformer;
     protected string $entity;
     protected CModel $model;
 
     public function __construct(
         string $entity,
         CModel $model,
-        TransformerInterface $transformer = null
+        TransformerInterface $transformer
     ) {
         $this->entity = $entity;
         $this->model = $model;
