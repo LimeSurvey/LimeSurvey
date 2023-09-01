@@ -369,28 +369,28 @@ $(document).off('pjax:scriptcomplete.listActions').on('pjax:scriptcomplete.listA
 
 
 function switchStatusOfListActions(e) {
-    var checkboxes = $('input[type="checkbox"]');
-    var actionButton = $('.massiveAction');
+    var checkboxSelector = $('#usermanagement--action-toggleAllUsers, .usermanagement--selector-userCheckbox');
     // Attach an onchange event handler to all checkboxes
-    checkboxes.on('change', function () {
+    $(document).on('change', checkboxSelector, function () {
+        var actionButton = $('.massiveAction');
         if (isAnyCheckboxChecked()) {
             actionButton.removeClass('disabled');
         } else {
             actionButton.addClass('disabled');
         }
     });
+}
 
-    // Function to check if at least one checkbox is checked
-    function isAnyCheckboxChecked() {
-        var isChecked = false;
-        checkboxes.each(function () {
-            if ($(this).is(':checked')) {
-                isChecked = true;
-                return false; // Break out of the loop
-            }
-        });
-        return isChecked;
-    }
+// Function to check if at least one checkbox is checked
+function isAnyCheckboxChecked() {
+    var isChecked = false;
+    $('.usermanagement--selector-userCheckbox').each(function () {
+        if ($(this).is(':checked')) {
+            isChecked = true;
+            return false; // Break out of the loop
+        }
+    });
+    return isChecked;
 }
 
 document.addEventListener("DOMContentLoaded", () => {
