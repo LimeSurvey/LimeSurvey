@@ -846,12 +846,19 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
 
     //  Import question_l10ns
     if (isset($xml->question_l10ns->rows->row)) {
+        $surveyLanguages = Survey::model()->findByPk($iNewSID)->allLanguages;
         foreach ($xml->question_l10ns->rows->row as $row) {
             $insertdata = array();
             foreach ($row as $key => $value) {
                 $insertdata[(string) $key] = (string) $value;
             }
             unset($insertdata['id']);
+
+            // Avoid inserting question if its language is not in the survey.
+            if (!in_array($insertdata['language'], $surveyLanguages)) {
+                continue;
+            }
+
             // now translate any links
             // TODO: Should this depend on $options['translinkfields']?
             $insertdata['question'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['question']);
