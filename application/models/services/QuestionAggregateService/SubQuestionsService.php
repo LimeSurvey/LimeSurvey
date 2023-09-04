@@ -85,7 +85,6 @@ class SubQuestionsService
                     'parent_qid' => $question->qid,
                     'title' => $code
                 ]);
-
                 if (!$subquestion) {
                     if ($surveyActive) {
                         throw new NotFoundException(
@@ -98,7 +97,6 @@ class SubQuestionsService
                         $subquestion->title = $code;
                     }
                 }
-
                 $subquestion->sid = $question->sid;
                 $subquestion->gid = $question->gid;
                 $subquestion->parent_qid = $question->qid;
