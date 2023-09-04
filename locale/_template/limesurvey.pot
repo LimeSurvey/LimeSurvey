@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2023-08-28 08:09:59+00:00\n"
+"POT-Creation-Date: 2023-09-04 08:49:52+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -38,23 +38,23 @@ msgstr ""
 #: application/helpers/admin/import_helper.php:205
 #: application/helpers/admin/import_helper.php:304
 #: application/helpers/admin/import_helper.php:788
-#: application/helpers/admin/import_helper.php:1434
-#: application/helpers/admin/import_helper.php:1437
-#: application/helpers/admin/import_helper.php:1475
-#: application/helpers/admin/import_helper.php:1601
-#: application/helpers/admin/import_helper.php:1707
-#: application/helpers/admin/import_helper.php:1895
-#: application/helpers/admin/import_helper.php:1902
-#: application/helpers/admin/import_helper.php:2003
-#: application/helpers/admin/import_helper.php:2034
-#: application/helpers/admin/import_helper.php:2060
-#: application/helpers/admin/import_helper.php:2120
-#: application/helpers/admin/import_helper.php:2143
-#: application/helpers/admin/import_helper.php:2246
-#: application/helpers/admin/import_helper.php:2427
-#: application/helpers/admin/import_helper.php:2789
-#: application/helpers/admin/import_helper.php:3420
-#: application/helpers/admin/import_helper.php:3465
+#: application/helpers/admin/import_helper.php:1468
+#: application/helpers/admin/import_helper.php:1471
+#: application/helpers/admin/import_helper.php:1516
+#: application/helpers/admin/import_helper.php:1642
+#: application/helpers/admin/import_helper.php:1748
+#: application/helpers/admin/import_helper.php:1936
+#: application/helpers/admin/import_helper.php:1943
+#: application/helpers/admin/import_helper.php:2044
+#: application/helpers/admin/import_helper.php:2075
+#: application/helpers/admin/import_helper.php:2101
+#: application/helpers/admin/import_helper.php:2161
+#: application/helpers/admin/import_helper.php:2184
+#: application/helpers/admin/import_helper.php:2287
+#: application/helpers/admin/import_helper.php:2468
+#: application/helpers/admin/import_helper.php:2830
+#: application/helpers/admin/import_helper.php:3461
+#: application/helpers/admin/import_helper.php:3506
 #: application/models/TemplateManifest.php:171
 #: application/models/TemplateManifest.php:418
 #: application/models/services/PasswordManagement.php:85
@@ -268,7 +268,7 @@ msgstr ""
 #: application/controllers/SurveyAdministrationController.php:3193
 #: application/controllers/SurveyPermissionsController.php:70
 #: application/controllers/SurveyPermissionsController.php:216
-#: application/controllers/admin/EmailTemplates.php:84
+#: application/controllers/admin/EmailTemplates.php:89
 #: application/controllers/admin/Export.php:1249
 #: application/controllers/admin/Expressions.php:132
 #: application/controllers/admin/PluginHelper.php:31
@@ -1524,7 +1524,7 @@ msgstr ""
 
 #: application/controllers/ResponsesController.php:155
 #: application/helpers/common_helper.php:1358
-#: application/helpers/common_helper.php:2888
+#: application/helpers/common_helper.php:2893
 #: application/models/SurveyLink.php:233 application/models/Token.php:96
 #: application/models/TokenDynamic.php:677
 #: application/views/admin/dataentry/caption_view.php:36
@@ -1532,7 +1532,7 @@ msgid "Access code"
 msgstr ""
 
 #: application/controllers/ResponsesController.php:156
-#: application/helpers/common_helper.php:2868
+#: application/helpers/common_helper.php:2873
 #: application/models/Participant.php:249
 #: application/models/ParticipantShare.php:231 application/models/Token.php:92
 #: application/models/TokenDynamic.php:643
@@ -1545,7 +1545,7 @@ msgid "First name"
 msgstr ""
 
 #: application/controllers/ResponsesController.php:157
-#: application/helpers/common_helper.php:2873
+#: application/helpers/common_helper.php:2878
 #: application/models/Participant.php:250
 #: application/models/ParticipantShare.php:226 application/models/Token.php:93
 #: application/models/TokenDynamic.php:651
@@ -1580,7 +1580,7 @@ msgstr ""
 #: application/controllers/admin/DataEntry.php:524
 #: application/controllers/admin/Quotas.php:259
 #: application/controllers/admin/Tokens.php:1612
-#: application/helpers/common_helper.php:2918
+#: application/helpers/common_helper.php:2923
 #: application/models/TemplateManifest.php:166 application/models/Token.php:102
 #: application/views/admin/quotas/viewquotas_view.php:81
 #: application/views/admin/token/exportdialog.php:17
@@ -1617,7 +1617,7 @@ msgstr ""
 #: application/controllers/admin/DataEntry.php:997
 #: application/helpers/common_helper.php:1584
 #: application/helpers/common_helper.php:1833
-#: application/helpers/export_helper.php:1317
+#: application/helpers/export_helper.php:1329
 #: application/helpers/update/updatedb_helper.php:648
 #: application/helpers/update/updatedb_helper.php:904
 #: application/views/admin/dataentry/content_view.php:223
@@ -1629,7 +1629,7 @@ msgstr ""
 #: application/controllers/ResponsesController.php:223
 #: application/controllers/UploaderController.php:321
 #: application/controllers/admin/DataEntry.php:1000
-#: application/views/admin/emailtemplates/email_language_template_tab.php:81
+#: application/views/admin/emailtemplates/email_language_template_tab.php:97
 #: tmp/runtime/twig_cache/08/087d16a87b013fc04e2ec8597f05be454aa62ec75b1ae2a32fcfe9098c1cbfd3.php:119
 #: tmp/runtime/twig_cache/08/087d16a87b013fc04e2ec8597f05be454aa62ec75b1ae2a32fcfe9098c1cbfd3.php:196
 msgid "File name"
@@ -2401,8 +2401,8 @@ msgstr ""
 #: application/helpers/common_helper.php:1074
 #: application/helpers/export_helper.php:409
 #: application/helpers/export_helper.php:413
-#: application/helpers/export_helper.php:1945
-#: application/helpers/export_helper.php:1966
+#: application/helpers/export_helper.php:1957
+#: application/helpers/export_helper.php:1978
 #: application/helpers/expressions/em_manager_helper.php:3351
 #: application/helpers/expressions/em_manager_helper.php:3355
 #: application/helpers/questionHelper.php:64
@@ -2564,8 +2564,8 @@ msgstr ""
 #: application/helpers/export_helper.php:399
 #: application/helpers/export_helper.php:408
 #: application/helpers/export_helper.php:412
-#: application/helpers/export_helper.php:1945
-#: application/helpers/export_helper.php:1966
+#: application/helpers/export_helper.php:1957
+#: application/helpers/export_helper.php:1978
 #: application/helpers/expressions/em_manager_helper.php:3350
 #: application/helpers/expressions/em_manager_helper.php:3354
 #: application/helpers/questionHelper.php:65
@@ -2813,7 +2813,7 @@ msgstr ""
 #: application/models/TokenDynamic.php:626 application/models/User.php:761
 #: application/models/User.php:826
 #: application/views/SurveysGroupsPermission/subviews/currentUsersList.php:7
-#: application/views/admin/emailtemplates/email_language_template_tab.php:80
+#: application/views/admin/emailtemplates/email_language_template_tab.php:96
 #: application/views/admin/labels/_labelviewtabcontent_view.php:21
 #: application/views/admin/labels/labelsets_view.php:38
 #: application/views/admin/pluginmanager/index.php:87
@@ -2902,7 +2902,7 @@ msgstr ""
 #: application/views/admin/authentication/newPassword.php:62
 #: application/views/admin/conditions/conditionshead_view.php:60
 #: application/views/admin/dataentry/includes/editdata/edit.php:1
-#: application/views/admin/emailtemplates/email_language_template_tab.php:126
+#: application/views/admin/emailtemplates/email_language_template_tab.php:142
 #: application/views/admin/emailtemplates/emailtemplates_view.php:61
 #: application/views/admin/labels/editlabel_view.php:75
 #: application/views/admin/participants/blacklist_view.php:141
@@ -2999,7 +2999,7 @@ msgstr ""
 #: application/views/admin/update/manage/subscribe.php:41
 #: application/views/admin/update/updater/_error.php:162
 #: application/views/admin/update/updater/steps/_backup.php:76
-#: application/views/admin/update/updater/steps/_change_log.php:59
+#: application/views/admin/update/updater/steps/_change_log.php:61
 #: application/views/admin/update/updater/steps/_check_local_errors.php:170
 #: application/views/admin/update/updater/steps/_check_local_errors.php:198
 #: application/views/admin/update/updater/steps/_fileSystem.php:39
@@ -4318,7 +4318,7 @@ msgstr ""
 #: application/helpers/admin/statistics_helper.php:1215
 #: application/helpers/common_helper.php:1077
 #: application/helpers/export_helper.php:414
-#: application/helpers/export_helper.php:1966
+#: application/helpers/export_helper.php:1978
 #: application/helpers/expressions/em_manager_helper.php:3356
 #: application/helpers/userstatistics_helper.php:1167
 #: application/views/admin/dataentry/content_view.php:692
@@ -4336,7 +4336,7 @@ msgstr ""
 #: application/helpers/admin/statistics_helper.php:1231
 #: application/helpers/common_helper.php:1084
 #: application/helpers/export_helper.php:417
-#: application/helpers/export_helper.php:1971
+#: application/helpers/export_helper.php:1983
 #: application/helpers/expressions/em_manager_helper.php:3359
 #: application/helpers/userstatistics_helper.php:1179
 #: application/views/admin/dataentry/content_view.php:716
@@ -4354,7 +4354,7 @@ msgstr ""
 #: application/helpers/admin/statistics_helper.php:1232
 #: application/helpers/common_helper.php:1090
 #: application/helpers/export_helper.php:418
-#: application/helpers/export_helper.php:1971
+#: application/helpers/export_helper.php:1983
 #: application/helpers/expressions/em_manager_helper.php:3360
 #: application/helpers/userstatistics_helper.php:1180
 #: application/views/admin/dataentry/content_view.php:717
@@ -4372,7 +4372,7 @@ msgstr ""
 #: application/helpers/admin/statistics_helper.php:1233
 #: application/helpers/common_helper.php:1087
 #: application/helpers/export_helper.php:419
-#: application/helpers/export_helper.php:1971
+#: application/helpers/export_helper.php:1983
 #: application/helpers/expressions/em_manager_helper.php:3361
 #: application/helpers/userstatistics_helper.php:1181
 #: application/views/admin/dataentry/content_view.php:718
@@ -4418,7 +4418,7 @@ msgstr ""
 #: application/helpers/admin/statistics_helper.php:1331
 #: application/helpers/common_helper.php:1062
 #: application/helpers/export_helper.php:404
-#: application/helpers/export_helper.php:1950
+#: application/helpers/export_helper.php:1962
 #: application/helpers/expressions/em_manager_helper.php:3347
 #: application/helpers/userstatistics_helper.php:1271
 #: application/views/admin/dataentry/content_view.php:103
@@ -4438,7 +4438,7 @@ msgstr ""
 #: application/helpers/admin/statistics_helper.php:1332
 #: application/helpers/common_helper.php:1059
 #: application/helpers/export_helper.php:405
-#: application/helpers/export_helper.php:1950
+#: application/helpers/export_helper.php:1962
 #: application/helpers/expressions/em_manager_helper.php:3346
 #: application/helpers/userstatistics_helper.php:1272
 #: application/views/admin/dataentry/content_view.php:104
@@ -4464,10 +4464,10 @@ msgstr ""
 #: application/helpers/common_helper.php:1104
 #: application/helpers/common_helper.php:1550
 #: application/helpers/common_helper.php:1858
-#: application/helpers/export_helper.php:1216
-#: application/helpers/export_helper.php:1226
-#: application/helpers/export_helper.php:1354
-#: application/helpers/export_helper.php:1371
+#: application/helpers/export_helper.php:1228
+#: application/helpers/export_helper.php:1238
+#: application/helpers/export_helper.php:1366
+#: application/helpers/export_helper.php:1383
 #: application/helpers/qanda_helper.php:1681
 #: application/helpers/questionHelper.php:693
 #: application/helpers/questionHelper.php:704
@@ -4501,8 +4501,8 @@ msgstr ""
 
 #: application/controllers/admin/ConditionsAction.php:1758
 #: application/views/admin/conditions/includes/conditions_edit.php:20
-#: application/views/admin/emailtemplates/email_language_template_tab.php:112
-#: application/views/admin/emailtemplates/email_language_template_tab.php:113
+#: application/views/admin/emailtemplates/email_language_template_tab.php:128
+#: application/views/admin/emailtemplates/email_language_template_tab.php:129
 #: application/views/admin/emailtemplates/emailtemplates_view.php:20
 msgid "Edit condition"
 msgstr ""
@@ -5058,117 +5058,122 @@ msgstr ""
 msgid "Survey language could not be created."
 msgstr ""
 
-#: application/controllers/admin/EmailTemplates.php:87
+#: application/controllers/admin/EmailTemplates.php:75
+#: application/models/services/UploadValidator.php:52
+msgid "File not found."
+msgstr ""
+
+#: application/controllers/admin/EmailTemplates.php:92
 #: application/extensions/TopbarWidget/views/includes/tokensTopbarLeft_view.php:113
 #: application/views/admin/emailtemplates/emailtemplates_view.php:25
 msgid "Edit email templates"
 msgstr ""
 
-#: application/controllers/admin/EmailTemplates.php:172
+#: application/controllers/admin/EmailTemplates.php:177
 msgid "Failed to update email templates. Message: %s"
 msgstr ""
 
-#: application/controllers/admin/EmailTemplates.php:176
+#: application/controllers/admin/EmailTemplates.php:181
 msgid "Email templates successfully saved."
 msgstr ""
 
-#: application/controllers/admin/EmailTemplates.php:208
+#: application/controllers/admin/EmailTemplates.php:213
 msgid "Invitation"
 msgstr ""
 
-#: application/controllers/admin/EmailTemplates.php:209
+#: application/controllers/admin/EmailTemplates.php:214
 msgid "Invitation email subject:"
 msgstr ""
 
-#: application/controllers/admin/EmailTemplates.php:210
+#: application/controllers/admin/EmailTemplates.php:215
 msgid "Invitation email body:"
 msgstr ""
 
-#: application/controllers/admin/EmailTemplates.php:211
+#: application/controllers/admin/EmailTemplates.php:216
 msgid "Invitation attachments:"
 msgstr ""
 
-#: application/controllers/admin/EmailTemplates.php:222
+#: application/controllers/admin/EmailTemplates.php:227
 msgid "Reminder"
 msgstr ""
 
-#: application/controllers/admin/EmailTemplates.php:223
+#: application/controllers/admin/EmailTemplates.php:228
 msgid "Reminder email subject:"
 msgstr ""
 
-#: application/controllers/admin/EmailTemplates.php:224
+#: application/controllers/admin/EmailTemplates.php:229
 msgid "Reminder email body:"
 msgstr ""
 
-#: application/controllers/admin/EmailTemplates.php:225
+#: application/controllers/admin/EmailTemplates.php:230
 msgid "Reminder attachments:"
 msgstr ""
 
-#: application/controllers/admin/EmailTemplates.php:236
+#: application/controllers/admin/EmailTemplates.php:241
 msgid "Confirmation"
 msgstr ""
 
-#: application/controllers/admin/EmailTemplates.php:237
+#: application/controllers/admin/EmailTemplates.php:242
 msgid "Confirmation email subject:"
 msgstr ""
 
-#: application/controllers/admin/EmailTemplates.php:238
+#: application/controllers/admin/EmailTemplates.php:243
 msgid "Confirmation email body:"
 msgstr ""
 
-#: application/controllers/admin/EmailTemplates.php:239
+#: application/controllers/admin/EmailTemplates.php:244
 msgid "Confirmation attachments:"
 msgstr ""
 
-#: application/controllers/admin/EmailTemplates.php:250
+#: application/controllers/admin/EmailTemplates.php:255
 #: application/models/TemplateManifest.php:173
 #: tmp/runtime/twig_cache/e2/e24ada7222e8b868e2a6f4b066e29cf3f10db152fe7530d039d3729616117ac0.php:33
 msgid "Registration"
 msgstr ""
 
-#: application/controllers/admin/EmailTemplates.php:251
+#: application/controllers/admin/EmailTemplates.php:256
 msgid "Registration email subject:"
 msgstr ""
 
-#: application/controllers/admin/EmailTemplates.php:252
+#: application/controllers/admin/EmailTemplates.php:257
 msgid "Registration email body:"
 msgstr ""
 
-#: application/controllers/admin/EmailTemplates.php:253
+#: application/controllers/admin/EmailTemplates.php:258
 msgid "Registration attachments:"
 msgstr ""
 
-#: application/controllers/admin/EmailTemplates.php:264
+#: application/controllers/admin/EmailTemplates.php:269
 #: application/models/services/QuickTranslation.php:511
 msgid "Basic admin notification"
 msgstr ""
 
-#: application/controllers/admin/EmailTemplates.php:265
+#: application/controllers/admin/EmailTemplates.php:270
 msgid "Basic admin notification subject:"
 msgstr ""
 
-#: application/controllers/admin/EmailTemplates.php:266
+#: application/controllers/admin/EmailTemplates.php:271
 msgid "Basic admin notification email body:"
 msgstr ""
 
-#: application/controllers/admin/EmailTemplates.php:267
+#: application/controllers/admin/EmailTemplates.php:272
 msgid "Basic notification attachments:"
 msgstr ""
 
-#: application/controllers/admin/EmailTemplates.php:278
+#: application/controllers/admin/EmailTemplates.php:283
 #: application/models/services/QuickTranslation.php:513
 msgid "Detailed admin notification"
 msgstr ""
 
-#: application/controllers/admin/EmailTemplates.php:279
+#: application/controllers/admin/EmailTemplates.php:284
 msgid "Detailed admin notification subject:"
 msgstr ""
 
-#: application/controllers/admin/EmailTemplates.php:280
+#: application/controllers/admin/EmailTemplates.php:285
 msgid "Detailed admin notification email body:"
 msgstr ""
 
-#: application/controllers/admin/EmailTemplates.php:281
+#: application/controllers/admin/EmailTemplates.php:286
 msgid "Detailed notification attachments:"
 msgstr ""
 
@@ -5422,7 +5427,7 @@ msgstr ""
 #: application/helpers/replacements_helper.php:436
 #: application/models/TemplateConfig.php:609
 #: application/models/TemplateConfig.php:610
-#: application/views/admin/emailtemplates/email_language_template_tab.php:126
+#: application/views/admin/emailtemplates/email_language_template_tab.php:142
 #: application/views/admin/emailtemplates/emailtemplates_view.php:105
 #: application/views/admin/globalsettings/_emailTestConfirmation.php:14
 #: application/views/admin/labels/labelsetsbar_view.php:123
@@ -6970,7 +6975,7 @@ msgstr ""
 #: application/views/admin/token/emailpost.php:19
 #: application/views/admin/token/emailwarning.php:11
 #: application/views/admin/update/updater/steps/_backup.php:79
-#: application/views/admin/update/updater/steps/_change_log.php:64
+#: application/views/admin/update/updater/steps/_change_log.php:66
 #: application/views/admin/update/updater/steps/_check_local_errors.php:202
 #: application/views/admin/update/updater/steps/_fileSystem.php:55
 #: application/views/admin/update/updater/welcome/_key_updated.php:16
@@ -10463,25 +10468,25 @@ msgstr ""
 #: application/helpers/admin/import_helper.php:209
 #: application/helpers/admin/import_helper.php:308
 #: application/helpers/admin/import_helper.php:792
-#: application/helpers/admin/import_helper.php:1605
-#: application/helpers/admin/import_helper.php:1711
+#: application/helpers/admin/import_helper.php:1646
+#: application/helpers/admin/import_helper.php:1752
 msgid "Error while saving: "
 msgstr ""
 
 #: application/helpers/admin/import_helper.php:223
 #: application/helpers/admin/import_helper.php:671
-#: application/helpers/admin/import_helper.php:1619
+#: application/helpers/admin/import_helper.php:1660
 msgid "Question code %s was updated to %s."
 msgstr ""
 
 #: application/helpers/admin/import_helper.php:323
 #: application/helpers/admin/import_helper.php:808
-#: application/helpers/admin/import_helper.php:1726
+#: application/helpers/admin/import_helper.php:1767
 msgid "Title of subquestion %s was updated to %s."
 msgstr ""
 
 #: application/helpers/admin/import_helper.php:555
-#: application/helpers/admin/import_helper.php:2260
+#: application/helpers/admin/import_helper.php:2301
 msgid "Attention: Several question codes were updated. Please check these carefully as the update  may not be perfect with customized expressions."
 msgstr ""
 
@@ -10502,103 +10507,111 @@ msgstr ""
 msgid "This is not a valid LimeSurvey survey structure XML file."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:1354
+#: application/helpers/admin/import_helper.php:1356
 msgid "This survey setting has not been imported: %s => %s"
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:1361
+#: application/helpers/admin/import_helper.php:1363
 msgid "The desired survey ID was already in use, therefore a random one was assigned."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:1364
+#: application/helpers/admin/import_helper.php:1366
 msgid "Unable to import survey."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:1427
+#: application/helpers/admin/import_helper.php:1461
 msgid "The survey alias for '%s' has been cleared because it was already in use by another survey."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:1517
+#: application/helpers/admin/import_helper.php:1476
+msgid "The email attachments have not been imported because they were in an old format."
+msgstr ""
+
+#: application/helpers/admin/import_helper.php:1480
+msgid "Email templates have attachments but the resources have not been copied. Please update the attachments manually."
+msgstr ""
+
+#: application/helpers/admin/import_helper.php:1558
 msgid "Error while saving group: "
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2094
-#: application/helpers/admin/import_helper.php:2098
+#: application/helpers/admin/import_helper.php:2135
+#: application/helpers/admin/import_helper.php:2139
 #: application/views/admin/databaseupdate/verify.php:21
 msgid "Error:"
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2166
+#: application/helpers/admin/import_helper.php:2207
 msgid "Error when saving %s for plugin %s"
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2169
+#: application/helpers/admin/import_helper.php:2210
 msgid "Plugin %s didn't exist, settings not imported"
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2309
+#: application/helpers/admin/import_helper.php:2350
 msgid "This is not a valid participant data XML file."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2353
+#: application/helpers/admin/import_helper.php:2394
 msgid "Skipped participant entry:"
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2396
+#: application/helpers/admin/import_helper.php:2437
 msgid "This is not a valid response data XML file."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2446
+#: application/helpers/admin/import_helper.php:2487
 #: application/views/surveyAdministration/_activation_error.php:13
 msgid "The survey response table could not be created."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2446
+#: application/helpers/admin/import_helper.php:2487
 #: application/views/surveyAdministration/_activation_error.php:14
 msgid "Usually this is caused by having too many (sub-)questions in your survey. Please try removing questions from your survey."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2495
+#: application/helpers/admin/import_helper.php:2536
 msgid "File is empty or you selected an invalid character set (%s)."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2508
+#: application/helpers/admin/import_helper.php:2549
 msgid "File seems empty or has only one line"
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2558
+#: application/helpers/admin/import_helper.php:2599
 msgid "Import failed: Forced import was requested but the input file doesn't contain enough columns to fill the survey."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2565
+#: application/helpers/admin/import_helper.php:2606
 msgid "Import failed: No answers could be mapped."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2725
+#: application/helpers/admin/import_helper.php:2766
 msgid "%s response lines in your file."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2727
+#: application/helpers/admin/import_helper.php:2768
 msgid "No response lines in your file."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2730
+#: application/helpers/admin/import_helper.php:2771
 msgid "%s responses were inserted."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2734
+#: application/helpers/admin/import_helper.php:2775
 msgid "%s responses were updated."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2737
+#: application/helpers/admin/import_helper.php:2778
 msgid "%s responses cannot be inserted or updated."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2740
+#: application/helpers/admin/import_helper.php:2781
 msgid "%s responses already exist."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2757
+#: application/helpers/admin/import_helper.php:2798
 msgid "This is not a valid timings data XML file."
 msgstr ""
 
@@ -11070,7 +11083,7 @@ msgstr ""
 msgid "Question time"
 msgstr ""
 
-#: application/helpers/common_helper.php:2878
+#: application/helpers/common_helper.php:2883
 #: application/models/Participant.php:251
 #: application/models/ParticipantShare.php:236
 #: application/models/SavedControl.php:185 application/models/Token.php:94
@@ -11081,185 +11094,185 @@ msgstr ""
 msgid "Email address"
 msgstr ""
 
-#: application/helpers/common_helper.php:2883 application/models/Token.php:95
+#: application/helpers/common_helper.php:2888 application/models/Token.php:95
 #: application/models/TokenDynamic.php:668
 msgid "Email status"
 msgstr ""
 
-#: application/helpers/common_helper.php:2893 application/models/Token.php:97
+#: application/helpers/common_helper.php:2898 application/models/Token.php:97
 msgid "Language code"
 msgstr ""
 
-#: application/helpers/common_helper.php:2898 application/models/Token.php:99
+#: application/helpers/common_helper.php:2903 application/models/Token.php:99
 msgid "Invitation sent date"
 msgstr ""
 
-#: application/helpers/common_helper.php:2903 application/models/Token.php:100
+#: application/helpers/common_helper.php:2908 application/models/Token.php:100
 msgid "Last reminder sent date"
 msgstr ""
 
-#: application/helpers/common_helper.php:2908 application/models/Token.php:101
+#: application/helpers/common_helper.php:2913 application/models/Token.php:101
 msgid "Total numbers of sent reminders"
 msgstr ""
 
-#: application/helpers/common_helper.php:2913 application/models/Token.php:103
+#: application/helpers/common_helper.php:2918 application/models/Token.php:103
 #: application/models/TokenDynamic.php:728
 msgid "Uses left"
 msgstr ""
 
-#: application/helpers/common_helper.php:4267
+#: application/helpers/common_helper.php:4272
 msgid "SQL command failed: %s"
 msgstr ""
 
-#: application/helpers/common_helper.php:4482
+#: application/helpers/common_helper.php:4487
 msgid "ARMSCII-8 Armenian"
 msgstr ""
 
-#: application/helpers/common_helper.php:4483
+#: application/helpers/common_helper.php:4488
 msgid "US ASCII"
 msgstr ""
 
-#: application/helpers/common_helper.php:4484
+#: application/helpers/common_helper.php:4489
 msgid "Big5 Traditional Chinese"
 msgstr ""
 
-#: application/helpers/common_helper.php:4485
+#: application/helpers/common_helper.php:4490
 msgid "Binary pseudo charset"
 msgstr ""
 
-#: application/helpers/common_helper.php:4486
+#: application/helpers/common_helper.php:4491
 msgid "Windows Central European (Windows-1250)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4487
+#: application/helpers/common_helper.php:4492
 msgid "Windows Cyrillic (Windows-1251)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4488
+#: application/helpers/common_helper.php:4493
 msgid "Windows Arabic (Windows-1256)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4489
+#: application/helpers/common_helper.php:4494
 msgid "Windows Baltic (Windows-1257)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4490
+#: application/helpers/common_helper.php:4495
 msgid "DOS West European (cp850)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4491
+#: application/helpers/common_helper.php:4496
 msgid "DOS Central European (cp852)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4492
+#: application/helpers/common_helper.php:4497
 msgid "DOS Cyrillic (cp866)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4493
+#: application/helpers/common_helper.php:4498
 msgid "Windows-31J - SJIS for Windows Japanese (cp932)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4494
+#: application/helpers/common_helper.php:4499
 msgid "DEC West European"
 msgstr ""
 
-#: application/helpers/common_helper.php:4495
+#: application/helpers/common_helper.php:4500
 msgid "UJIS for Windows Japanese"
 msgstr ""
 
-#: application/helpers/common_helper.php:4496
+#: application/helpers/common_helper.php:4501
 msgid "EUC-KR Korean"
 msgstr ""
 
-#: application/helpers/common_helper.php:4497
+#: application/helpers/common_helper.php:4502
 msgid "GB2312 Simplified Chinese"
 msgstr ""
 
-#: application/helpers/common_helper.php:4498
+#: application/helpers/common_helper.php:4503
 msgid "GBK Simplified Chinese"
 msgstr ""
 
-#: application/helpers/common_helper.php:4499
+#: application/helpers/common_helper.php:4504
 msgid "GEOSTD8 Georgian"
 msgstr ""
 
-#: application/helpers/common_helper.php:4500
+#: application/helpers/common_helper.php:4505
 msgid "ISO 8859-7 Greek"
 msgstr ""
 
-#: application/helpers/common_helper.php:4501
+#: application/helpers/common_helper.php:4506
 msgid "ISO 8859-8 Hebrew"
 msgstr ""
 
-#: application/helpers/common_helper.php:4502
+#: application/helpers/common_helper.php:4507
 msgid "HP West European"
 msgstr ""
 
-#: application/helpers/common_helper.php:4503
+#: application/helpers/common_helper.php:4508
 msgid "DOS Kamenicky Czech-Slovak (cp895)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4504
+#: application/helpers/common_helper.php:4509
 msgid "KOI8-R Relcom Russian"
 msgstr ""
 
-#: application/helpers/common_helper.php:4505
+#: application/helpers/common_helper.php:4510
 msgid "KOI8-U Ukrainian"
 msgstr ""
 
-#: application/helpers/common_helper.php:4506
+#: application/helpers/common_helper.php:4511
 msgid "ISO 8859-1 West European (latin1)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4507
+#: application/helpers/common_helper.php:4512
 msgid "ISO 8859-2 Central European (latin2)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4508
+#: application/helpers/common_helper.php:4513
 msgid "ISO 8859-9 Turkish (latin5)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4509
+#: application/helpers/common_helper.php:4514
 msgid "ISO 8859-13 Baltic (latin7)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4510
+#: application/helpers/common_helper.php:4515
 msgid "Mac Central European"
 msgstr ""
 
-#: application/helpers/common_helper.php:4511
+#: application/helpers/common_helper.php:4516
 msgid "Mac West European"
 msgstr ""
 
-#: application/helpers/common_helper.php:4512
+#: application/helpers/common_helper.php:4517
 msgid "Shift-JIS Japanese"
 msgstr ""
 
-#: application/helpers/common_helper.php:4513
+#: application/helpers/common_helper.php:4518
 msgid "7bit Swedish"
 msgstr ""
 
-#: application/helpers/common_helper.php:4514
+#: application/helpers/common_helper.php:4519
 msgid "TIS620 Thai"
 msgstr ""
 
-#: application/helpers/common_helper.php:4515
+#: application/helpers/common_helper.php:4520
 msgid "UCS-2 Unicode"
 msgstr ""
 
-#: application/helpers/common_helper.php:4516
+#: application/helpers/common_helper.php:4521
 msgid "EUC-JP Japanese"
 msgstr ""
 
-#: application/helpers/common_helper.php:4517
+#: application/helpers/common_helper.php:4522
 msgid "UTF-8 Unicode"
 msgstr ""
 
-#: application/helpers/common_helper.php:4521
+#: application/helpers/common_helper.php:4526
 msgid "(Automatic)"
 msgstr ""
 
-#: application/helpers/export_helper.php:1597
+#: application/helpers/export_helper.php:1609
 msgid "Only answer the following question if:"
 msgstr ""
 
@@ -16733,10 +16746,6 @@ msgstr ""
 msgid "No file was uploaded or the request exceeded %01.2f MB."
 msgstr ""
 
-#: application/models/services/UploadValidator.php:52
-msgid "File not found."
-msgstr ""
-
 #: application/models/services/UserManager.php:105
 msgid "All of the user's user groups were transferred to %s."
 msgstr ""
@@ -17580,32 +17589,36 @@ msgstr ""
 msgid "Cannot import the VVExport file."
 msgstr ""
 
-#: application/views/admin/emailtemplates/email_language_template_tab.php:35
+#: application/views/admin/emailtemplates/email_language_template_tab.php:29
+msgid "There are errors with this template's attachments. Please check them below."
+msgstr ""
+
+#: application/views/admin/emailtemplates/email_language_template_tab.php:61
 msgid "Actions:"
 msgstr ""
 
-#: application/views/admin/emailtemplates/email_language_template_tab.php:38
+#: application/views/admin/emailtemplates/email_language_template_tab.php:64
 msgid "Validate ExpressionScript"
 msgstr ""
 
-#: application/views/admin/emailtemplates/email_language_template_tab.php:42
+#: application/views/admin/emailtemplates/email_language_template_tab.php:68
 msgid "Reset this template"
 msgstr ""
 
-#: application/views/admin/emailtemplates/email_language_template_tab.php:56
+#: application/views/admin/emailtemplates/email_language_template_tab.php:82
 msgid "Add file"
 msgstr ""
 
-#: application/views/admin/emailtemplates/email_language_template_tab.php:82
+#: application/views/admin/emailtemplates/email_language_template_tab.php:98
 msgid "Size"
 msgstr ""
 
-#: application/views/admin/emailtemplates/email_language_template_tab.php:83
+#: application/views/admin/emailtemplates/email_language_template_tab.php:99
 msgid "Relevance"
 msgstr ""
 
-#: application/views/admin/emailtemplates/email_language_template_tab.php:99
-#: application/views/admin/emailtemplates/email_language_template_tab.php:100
+#: application/views/admin/emailtemplates/email_language_template_tab.php:115
+#: application/views/admin/emailtemplates/email_language_template_tab.php:116
 #: application/views/admin/emailtemplates/emailtemplates_view.php:19
 msgid "Remove attachment"
 msgstr ""
@@ -22841,7 +22854,8 @@ msgid "New key"
 msgstr ""
 
 #: application/views/admin/update/updater/_progress.php:19
-#: application/views/admin/update/updater/steps/_change_log.php:13
+#: application/views/admin/update/updater/steps/_change_log.php:21
+#: application/views/admin/update/updater/steps/_change_log.php:31
 msgid "Change log"
 msgstr ""
 
@@ -22907,6 +22921,10 @@ msgstr ""
 
 #: application/views/admin/update/updater/steps/_backup.php:67
 msgid "Please check any problems above and then proceed to the final step."
+msgstr ""
+
+#: application/views/admin/update/updater/steps/_change_log.php:19
+msgid "Welcome to LimeSurvey %s!"
 msgstr ""
 
 #: application/views/admin/update/updater/steps/_check_local_errors.php:16
