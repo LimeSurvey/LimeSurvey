@@ -25,7 +25,10 @@ class OpHandlerLanguageSettingsUpdate implements OpHandlerInterface
     protected SurveyLanguageSetting $model;
     protected TransformerInterface $transformer;
 
-    public function __construct(SurveyLanguageSetting $model, TransformerInputSurveyLanguageSettings $transformer)
+    public function __construct(
+        SurveyLanguageSetting $model,
+        TransformerInputSurveyLanguageSettings $transformer
+    )
     {
         $this->entity = 'languageSetting';
         $this->model = $model;
