@@ -16,7 +16,6 @@ use LimeSurvey\ObjectPatch\OpHandler\OpHandlerException;
 use LimeSurvey\ObjectPatch\OpHandler\OpHandlerInterface;
 use LimeSurvey\ObjectPatch\OpType\OpTypeUpdate;
 
-
 class OpHandlerLanguageSettingsUpdate implements OpHandlerInterface
 {
     use OpHandlerSurveyTrait;
@@ -28,8 +27,7 @@ class OpHandlerLanguageSettingsUpdate implements OpHandlerInterface
     public function __construct(
         SurveyLanguageSetting $model,
         TransformerInputSurveyLanguageSettings $transformer
-    )
-    {
+    ) {
         $this->entity = 'languageSetting';
         $this->model = $model;
         $this->transformer = $transformer;
