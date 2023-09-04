@@ -1678,7 +1678,7 @@ class QuestionAdministrationController extends LSBaseController
         if (isset($savePressed) && $savePressed !== null) {
             $newTitle = Yii::app()->request->getParam('question')['title'];
 
-            $newQuestionL10n = Yii::app()->request->getParam('questionL10n');
+            $newQuestionL10n = Yii::app()->request->getParam('questionI10N');
             $copyQuestionTextValues = [];
             if (!empty($newQuestionL10n)) {
                 foreach ($newQuestionL10n as $lang => $texts) {
