@@ -36,15 +36,15 @@ class OpHandlerLanguageSettingsUpdate implements OpHandlerInterface
     public function canHandle(OpInterface $op): bool
     {
         $isUpdateOperation = $op->getType()->getId() === OpTypeUpdate::ID;
-        $isSurveyEntity = $op->getEntityType() === 'languageSetting';
+        $isLanguageSettingEntity = $op->getEntityType() === 'languageSetting';
 
-        return $isUpdateOperation && $isSurveyEntity;
+        return $isUpdateOperation && $isLanguageSettingEntity;
     }
 
     /**
      * This handler accepts two different approaches to update the language settings:
      * Approach 1 (single language):
-     *  - in this case the language needs to be part of the id array
+     * - in this case the language needs to be part of the id array
      * - patch structure:
      *      {
      *          "entity": "languageSetting",
@@ -111,7 +111,10 @@ class OpHandlerLanguageSettingsUpdate implements OpHandlerInterface
         $entityId = $op->getEntityId();
         if (is_array($entityId) && array_key_exists('language', $entityId)) {
             // indicator for variant 1
-            $data[$entityId['language']] = $this->getTransformedProps($op, $op->getProps());
+            $data[$entityId['language']] = $this->getTransformedProps(
+                $op,
+                $op->getProps()
+            );
         } else {
             // variant 2
             foreach ($op->getProps() as $language => $props) {
@@ -132,7 +135,7 @@ class OpHandlerLanguageSettingsUpdate implements OpHandlerInterface
     {
         $transformedProps = $this->transformer->transform($props);
         if ($props === null || $transformedProps === null) {
-            throw new OpHandlerException(printf(
+            throw new OpHandlerException(sprintf(
                 'No values to update for entity %s',
                 $op->getEntityType()
             ));

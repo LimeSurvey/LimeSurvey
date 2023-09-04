@@ -8,7 +8,6 @@ use LimeSurvey\ObjectPatch\Op\OpInterface;
 use LimeSurvey\ObjectPatch\Op\OpStandard;
 use LimeSurvey\ObjectPatch\OpHandler\OpHandlerException;
 use ls\tests\TestBaseClass;
-use ls\tests\unit\services\SurveyUpdater\GeneralSettings\GeneralSettingsMockSetFactory;
 
 /**
  * @testdox OpHandlerLanguageSettingsUpdate
