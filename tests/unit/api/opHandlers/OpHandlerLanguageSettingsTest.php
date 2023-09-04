@@ -156,7 +156,6 @@ class OpHandlerLanguageSettingsUpdateTest extends TestBaseClass
         )->makePartial();
 
         return new OpHandlerLanguageSettingsUpdate(
-            'languageSetting',
             $modelSurveyLanguageSetting,
             new TransformerInputSurveyLanguageSettings()
         );

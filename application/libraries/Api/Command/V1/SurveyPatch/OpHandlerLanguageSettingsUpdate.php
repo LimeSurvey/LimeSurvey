@@ -2,9 +2,10 @@
 
 namespace LimeSurvey\Libraries\Api\Command\V1\SurveyPatch;
 
-use CModel;
 use DI\DependencyException;
 use DI\NotFoundException;
+use SurveyLanguageSetting;
+use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputSurveyLanguageSettings;
 use LimeSurvey\Api\Command\V1\SurveyPatch\OpHandlerSurveyTrait;
 use LimeSurvey\Api\Transformer\TransformerInterface;
 use LimeSurvey\Models\Services\Exception\PermissionDeniedException;
@@ -15,20 +16,18 @@ use LimeSurvey\ObjectPatch\OpHandler\OpHandlerException;
 use LimeSurvey\ObjectPatch\OpHandler\OpHandlerInterface;
 use LimeSurvey\ObjectPatch\OpType\OpTypeUpdate;
 
+
 class OpHandlerLanguageSettingsUpdate implements OpHandlerInterface
 {
     use OpHandlerSurveyTrait;
 
-    protected TransformerInterface $transformer;
     protected string $entity;
-    protected CModel $model;
+    protected SurveyLanguageSetting $model;
+    protected TransformerInterface $transformer;
 
-    public function __construct(
-        string $entity,
-        CModel $model,
-        TransformerInterface $transformer
-    ) {
-        $this->entity = $entity;
+    public function __construct(SurveyLanguageSetting $model, TransformerInputSurveyLanguageSettings $transformer)
+    {
+        $this->entity = 'languageSetting';
         $this->model = $model;
         $this->transformer = $transformer;
     }
