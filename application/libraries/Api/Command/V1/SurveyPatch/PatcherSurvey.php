@@ -2,7 +2,6 @@
 
 namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
-use LimeSurvey\Libraries\Api\Command\V1\SurveyPatch\OpHandlerLanguageSettingsUpdate;
 use Survey;
 use SurveyLanguageSetting;
 use Answer;
