@@ -34,6 +34,22 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.6.36 (build 230830) to 5.6.37 (build 230905) September 4, 2023
+-Fixed issue #19036: Stored XSS via user's username (#3394) (Gabriel Jenik)
+-Fixed issue #18905: Create automatic test for XSS Purifier: Broken HTML (#3410) (Gabriel Jenik)
+-Fixed issue #18610: Email attachments expose absolute path when exporting LSS (#3392) (Gabriel Jenik)
+-Fixed issue #18602: When surveys are copied without copying attachments, attachment info is copied but not updated (#3418) (Gabriel Jenik)
+-Fixed issue #18557: Email Template Attachments appear to carry over with copied survey, but do not work (#3403) (Gabriel Jenik)
+#Updated translation: Spanish (Spain) by ireneoh
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: French (France) by DenisChenu
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1
+#Updated translation: Chinese (Simplified) by Bobo001, c_schmitz, huageorg, johnxan, microk, yanglaw, Zoctan
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 5.6.35 (build 230822) to 5.6.36 (build 230830) August 28, 2023
 -Fixed issue: input-on-demand arrow-row-icon arrow-down typo (Kevin Foster)
 -Fixed issue #19028:  Send email only to participants with partial responses - should not be available for anonymous surveys (Kevin Foster)
