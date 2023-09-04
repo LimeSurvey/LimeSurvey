@@ -3,7 +3,6 @@
 namespace ls\tests\unit\services\SurveyUpdater\GeneralSettings;
 
 use ls\tests\TestBaseClass;
-use LimeSurvey\Models\Services\SurveyUpdater\GeneralSettings;
 
 class GeneralSettingsUpdateCaptchaTest extends TestBaseClass
 {

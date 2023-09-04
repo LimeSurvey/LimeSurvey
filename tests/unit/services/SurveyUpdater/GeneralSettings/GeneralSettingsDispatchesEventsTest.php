@@ -6,6 +6,9 @@ use ls\tests\TestBaseClass;
 use LimeSurvey\PluginManager\PluginManager;
 use Mockery;
 
+/**
+ * @group services
+ */
 class GeneralSettingsDispatchesEventsTest extends TestBaseClass
 {
     public function testDispatchesNewSurveySettings()
