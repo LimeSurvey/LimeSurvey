@@ -1275,6 +1275,8 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
     $results['theme_options_differences'] = array();
     $sTemplateName = '';
 
+    /** @var bool Indicates if the email templates have attachments with untranslated URLs or not */
+    $hasOldAttachments = false;
 
     $aLanguagesSupported = array();
     foreach ($xml->languages->language as $language) {
@@ -1430,6 +1432,10 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                             $attachment['url'] = translateLinks('survey', $iOldSID, $iNewSID, $attachment['url'], true);
                         }
                     }
+                    // If links are not translated and the email templates have attachments, we need to show a warning
+                    if (!$bTranslateInsertansTags && !empty($template)) {
+                        $hasOldAttachments = true;
+                    }
                 }
             } elseif (is_null($attachments)) {
                 // JSON decode failed. Most probably the attachments were in the PHP serialization format.
@@ -1468,6 +1474,10 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
 
     if ($wrongAttachmentsFormat) {
         $results['importwarnings'][] = gT("The email attachments have not been imported because they were in an old format.");
+    }
+
+    if ($hasOldAttachments) {
+        $results['importwarnings'][] = gT("Email templates have attachments but the resources have not been copied. Please update the attachments manually.");
     }
 
     // Import groups table ===================================================================================
