@@ -16,7 +16,7 @@ trait OpHandlerSurveyTrait
     public function getSurveyIdFromContext(OpInterface $op)
     {
         $context = $op->getContext();
-        $surveyId = $context['id'] ? (int)$context['id'] : null;
+        $surveyId = isset($context['id']) ? (int) $context['id'] : null;
         if ($surveyId === null) {
             throw new OpHandlerException(
                 printf(
