@@ -370,7 +370,7 @@ $(document).off('pjax:scriptcomplete.listActions').on('pjax:scriptcomplete.listA
 
 function switchStatusOfListActions(e) {
     // TODO: Define classes for the checkboxes. Both for the header and the rows. Must be set in each table.
-    var checkboxSelector = $('.grid-view-ls input[type="checkbox"]');
+    var checkboxSelector = '.grid-view-ls input[type="checkbox"]';
     // Attach an onchange event handler to all checkboxes
     $(document).on('change', checkboxSelector, function () {
         var actionButton = $('.massiveAction');
