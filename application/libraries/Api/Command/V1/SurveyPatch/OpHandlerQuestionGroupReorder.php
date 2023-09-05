@@ -2,7 +2,7 @@
 
 namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
-use CModel;
+use QuestionGroup;
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestion;
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestionGroup;
 use LimeSurvey\Api\Transformer\TransformerInterface;
@@ -20,18 +20,17 @@ class OpHandlerQuestionGroupReorder implements OpHandlerInterface
 {
     use OpHandlerSurveyTrait;
 
+    protected string $entity;
+    protected QuestionGroup $model;
     protected TransformerInterface $transformerGroup;
     protected TransformerInterface $transformerQuestion;
-    protected string $entity;
-    protected CModel $model;
 
     public function __construct(
-        string $entity,
-        CModel $model,
+        QuestionGroup $model,
         TransformerInputQuestionGroup $transformerGroup,
         TransformerInputQuestion $transformerQuestion
     ) {
-        $this->entity = $entity;
+        $this->entity = 'questionGroupReorder';
         $this->model = $model;
         $this->transformerGroup = $transformerGroup;
         $this->transformerQuestion = $transformerQuestion;
@@ -45,7 +44,7 @@ class OpHandlerQuestionGroupReorder implements OpHandlerInterface
      */
     public function canHandle(OpInterface $op): bool
     {
-        return $op->getEntityType() === 'questionGroupReorder'
+        return $op->getEntityType() === $this->entity
             && $op->getType()->getId() === OpTypeUpdate::ID;
     }
 

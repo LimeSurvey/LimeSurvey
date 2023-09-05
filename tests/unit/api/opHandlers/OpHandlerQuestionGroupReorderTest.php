@@ -204,7 +204,6 @@ class OpHandlerQuestionGroupReorderTest extends TestBaseClass
         $mockSet = (new QuestionGroupMockSetFactory())->make();
 
         return new OpHandlerQuestionGroupReorder(
-            'questionGroupReorder',
             $mockSet->modelQuestionGroup,
             new TransformerInputQuestionGroup(),
             new TransformerInputQuestion()
