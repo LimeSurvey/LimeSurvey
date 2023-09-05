@@ -33,9 +33,12 @@
                     )
                 ),
             'ajaxUpdate'            => 'survey-grid',
-            'afterAjaxUpdate'       => 'function(id, data){window.LS.doToolTip();bindListItemclick();}',
-            'lsAfterAjaxUpdate'          => ['window.LS.doToolTip();', 'bindListItemclick();'],
-            'rowLink' => 'Yii::app()->createUrl("surveyAdministration/view/",array("iSurveyID"=>$data->sid))',
+            'lsAfterAjaxUpdate'     => [
+                'window.LS.doToolTip();',
+                'bindListItemclick();',
+                'switchStatusOfListActions();'
+            ],
+            'rowLink'               => 'Yii::app()->createUrl("surveyAdministration/view/",array("iSurveyID"=>$data->sid))',
             // 'template'  => $this->template,
             'massiveActionTemplate' => $this->render('massive_actions/_selector', [], true, false),
             'columns'               => [

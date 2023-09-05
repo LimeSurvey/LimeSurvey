@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2023-08-24 14:46:46+00:00\n"
+"POT-Creation-Date: 2023-09-04 08:49:37+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -184,6 +184,7 @@ msgstr ""
 #: application/controllers/admin/Statistics.php:517
 #: application/controllers/admin/Statistics.php:556
 #: application/controllers/admin/Statistics.php:661
+#: application/controllers/admin/SurveymenuController.php:18
 #: application/controllers/admin/SurveymenuEntryController.php:18
 #: application/controllers/admin/SurveysGroupsController.php:47
 #: application/controllers/admin/SurveysGroupsController.php:120
@@ -774,7 +775,7 @@ msgstr ""
 #: application/controllers/LimereplacementfieldsController.php:426
 #: application/controllers/SurveyAdministrationController.php:279
 #: application/controllers/SurveyAdministrationController.php:3339
-#: application/extensions/admin/survey/ListSurveysWidget/views/listSurveys.php:51
+#: application/extensions/admin/survey/ListSurveysWidget/views/listSurveys.php:54
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_export_archive_results.php:12
 #: application/models/SurveyLink.php:232
 #: application/views/admin/token/massive_actions/_delete_results.php:10
@@ -1053,11 +1054,11 @@ msgstr ""
 #: application/controllers/UserGroupController.php:401
 #: application/controllers/UserManagementController.php:1215
 #: application/controllers/admin/ParticipantsAction.php:628
-#: application/controllers/admin/SurveymenuController.php:53
-#: application/controllers/admin/SurveymenuController.php:123
-#: application/controllers/admin/SurveymenuController.php:181
-#: application/controllers/admin/SurveymenuController.php:230
-#: application/controllers/admin/SurveymenuController.php:274
+#: application/controllers/admin/SurveymenuController.php:67
+#: application/controllers/admin/SurveymenuController.php:137
+#: application/controllers/admin/SurveymenuController.php:195
+#: application/controllers/admin/SurveymenuController.php:244
+#: application/controllers/admin/SurveymenuController.php:288
 #: application/controllers/admin/SurveymenuEntryController.php:118
 #: application/controllers/admin/SurveymenuEntryController.php:130
 #: application/controllers/admin/SurveymenuEntryController.php:224
@@ -1146,7 +1147,7 @@ msgstr ""
 #: application/controllers/admin/Export.php:977
 #: application/controllers/admin/Export.php:989
 #: application/controllers/admin/QuestionThemes.php:13
-#: application/controllers/admin/SurveymenuController.php:168
+#: application/controllers/admin/SurveymenuController.php:182
 #: application/controllers/admin/SurveymenuEntryController.php:211
 #: application/controllers/admin/Themes.php:33
 #: application/controllers/admin/Themes.php:72
@@ -1238,7 +1239,7 @@ msgstr ""
 #: application/controllers/UserManagementController.php:1135
 #: application/controllers/UserManagementController.php:1180
 #: application/controllers/UserRoleController.php:385
-#: application/extensions/admin/survey/ListSurveysWidget/views/listSurveys.php:58
+#: application/extensions/admin/survey/ListSurveysWidget/views/listSurveys.php:61
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_action_results.php:10
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_export_archive_results.php:14
 #: application/models/FailedEmail.php:80 application/models/FailedEmail.php:145
@@ -1384,7 +1385,7 @@ msgstr ""
 #: application/views/assessment/assessments_edit.php:87
 #: application/views/questionGroupsAdministration/addGroup_view.php:30
 #: application/views/quotas/_form_langsettings.php:16
-#: tmp/runtime/twig_cache/d7/d77a1e4f8f82a9399190ba089acd085a249010d83464be7be1bdc3b59a39c3aa.php:57
+#: tmp/runtime/twig_cache/42/42299aa249ef219e1b217a10da24bb770e118b37ada9bc29bb8b700567ef9165.php:57
 msgid "Base language"
 msgstr ""
 
@@ -1663,7 +1664,7 @@ msgstr ""
 #: application/controllers/ResponsesController.php:202
 #: application/controllers/UploaderController.php:320
 #: application/controllers/admin/DataEntry.php:1008
-#: application/extensions/admin/survey/ListSurveysWidget/views/listSurveys.php:66
+#: application/extensions/admin/survey/ListSurveysWidget/views/listSurveys.php:69
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_action_results.php:10
 #: application/models/Notification.php:166
 #: application/models/Surveymenu.php:345
@@ -1775,7 +1776,7 @@ msgid "Total time"
 msgstr ""
 
 #: application/controllers/ResponsesController.php:886
-#: application/extensions/admin/survey/ListSurveysWidget/views/listSurveys.php:73
+#: application/extensions/admin/survey/ListSurveysWidget/views/listSurveys.php:76
 #: application/helpers/admin/export/HtmlWriter.php:72
 #: application/models/Assessment.php:145 application/models/Question.php:1076
 #: application/models/QuestionType.php:123
@@ -1809,7 +1810,7 @@ msgstr ""
 #: application/controllers/SurveyAdministrationController.php:3336
 #: application/core/plugins/TwoFactorAdminLogin/models/TFAUser.php:138
 #: application/core/plugins/TwoFactorAdminLogin/models/TFAUserKey.php:101
-#: application/extensions/admin/survey/ListSurveysWidget/views/listSurveys.php:126
+#: application/extensions/admin/survey/ListSurveysWidget/views/listSurveys.php:129
 #: application/models/Assessment.php:169 application/models/FailedEmail.php:191
 #: application/models/Participant.php:389
 #: application/models/ParticipantAttributeName.php:283
@@ -5323,7 +5324,7 @@ msgid "Participant deleted"
 msgstr ""
 
 #: application/controllers/admin/ParticipantsAction.php:676
-#: application/controllers/admin/SurveymenuController.php:156
+#: application/controllers/admin/SurveymenuController.php:170
 #: application/controllers/admin/SurveymenuEntryController.php:199
 #: application/controllers/admin/Tokens.php:567
 #: application/models/FailedEmail.php:81 application/models/FailedEmail.php:164
@@ -5331,7 +5332,7 @@ msgid "Updated"
 msgstr ""
 
 #: application/controllers/admin/ParticipantsAction.php:684
-#: application/controllers/admin/SurveymenuController.php:164
+#: application/controllers/admin/SurveymenuController.php:178
 #: application/controllers/admin/SurveymenuEntryController.php:207
 #: application/controllers/admin/Tokens.php:579
 msgid "Nothing to update"
@@ -5641,10 +5642,10 @@ msgstr ""
 #: application/views/userRole/partials/success.php:32
 #: tmp/runtime/twig_cache/2b/2bcf9fd12e2191bb8ce7c457b0e2d59e023ceaea8189476db0edd92ca9e0f3af.php:71
 #: tmp/runtime/twig_cache/30/30ecfb4f832c775b3657e5be7f348dd554cad033c676fdda7be3f5c05904bb3a.php:153
+#: tmp/runtime/twig_cache/42/42299aa249ef219e1b217a10da24bb770e118b37ada9bc29bb8b700567ef9165.php:560
 #: tmp/runtime/twig_cache/4a/4a1f5d94796793570840150b6c89bf5b541aebbd047803b29ad1555d0b6176ad.php:120
 #: tmp/runtime/twig_cache/6d/6d411ce752889ce4e9d325a3e57930345bcdc8536f1d2ae8d7d6954fb562a74e.php:153
 #: tmp/runtime/twig_cache/9c/9cd4c4eb6b6d9d667d3a1d4f29a8a13081febba93083c7290da03a9407e93022.php:71
-#: tmp/runtime/twig_cache/d7/d77a1e4f8f82a9399190ba089acd085a249010d83464be7be1bdc3b59a39c3aa.php:555
 #: tmp/runtime/twig_cache/e8/e80ebe492f7419e6a1e559a2e99371997d6a3368907f8a918e10565aa0860e23.php:133
 msgid "Close"
 msgstr ""
@@ -5995,22 +5996,22 @@ msgstr ""
 msgid "Statistics"
 msgstr ""
 
-#: application/controllers/admin/SurveymenuController.php:100
-#: application/controllers/admin/SurveymenuController.php:318
+#: application/controllers/admin/SurveymenuController.php:114
+#: application/controllers/admin/SurveymenuController.php:332
 msgid "Default survey menus restored."
 msgstr ""
 
-#: application/controllers/admin/SurveymenuController.php:100
-#: application/controllers/admin/SurveymenuController.php:318
+#: application/controllers/admin/SurveymenuController.php:114
+#: application/controllers/admin/SurveymenuController.php:332
 msgid "Something went wrong!"
 msgstr ""
 
-#: application/controllers/admin/SurveymenuController.php:291
+#: application/controllers/admin/SurveymenuController.php:305
 #: application/controllers/admin/SurveymenuEntryController.php:242
 msgid "You don't have the right to restore the settings to default"
 msgstr ""
 
-#: application/controllers/admin/SurveymenuController.php:393
+#: application/controllers/admin/SurveymenuController.php:410
 #: application/views/admin/super/_configuration_menu.php:292
 #: application/views/admin/surveymenu/index.php:23
 msgid "Survey menus"
@@ -9482,14 +9483,14 @@ msgstr ""
 msgid "No surveys found."
 msgstr ""
 
-#: application/extensions/admin/survey/ListSurveysWidget/views/listSurveys.php:80
+#: application/extensions/admin/survey/ListSurveysWidget/views/listSurveys.php:83
 #: application/models/FailedEmail.php:157
 #: application/models/Notification.php:163
 #: application/models/Permissiontemplates.php:264
 msgid "Created"
 msgstr ""
 
-#: application/extensions/admin/survey/ListSurveysWidget/views/listSurveys.php:87
+#: application/extensions/admin/survey/ListSurveysWidget/views/listSurveys.php:90
 #: application/models/Participant.php:336
 #: application/models/SurveysGroups.php:99
 #: application/models/SurveysGroups.php:166
@@ -9497,12 +9498,12 @@ msgstr ""
 msgid "Owner"
 msgstr ""
 
-#: application/extensions/admin/survey/ListSurveysWidget/views/listSurveys.php:94
+#: application/extensions/admin/survey/ListSurveysWidget/views/listSurveys.php:97
 #: application/views/surveyAdministration/surveyActivation/_activateSurveyOptions.php:42
 msgid "Anonymized responses"
 msgstr ""
 
-#: application/extensions/admin/survey/ListSurveysWidget/views/listSurveys.php:101
+#: application/extensions/admin/survey/ListSurveysWidget/views/listSurveys.php:104
 #: application/models/SurveymenuEntries.php:196
 #: application/views/admin/labels/importlabelresources_view.php:18
 #: application/views/admin/themes/importuploaded_view.php:11
@@ -9510,7 +9511,7 @@ msgstr ""
 msgid "Partial"
 msgstr ""
 
-#: application/extensions/admin/survey/ListSurveysWidget/views/listSurveys.php:107
+#: application/extensions/admin/survey/ListSurveysWidget/views/listSurveys.php:110
 #: application/models/SurveysGroupsettings.php:409
 #: application/views/admin/globalsettings/_general.php:271
 #: application/views/admin/globalsettings/_general.php:289
@@ -9519,7 +9520,7 @@ msgstr ""
 msgid "Full"
 msgstr ""
 
-#: application/extensions/admin/survey/ListSurveysWidget/views/listSurveys.php:113
+#: application/extensions/admin/survey/ListSurveysWidget/views/listSurveys.php:116
 #: application/helpers/qanda_helper.php:3626
 #: application/helpers/qanda_helper.php:3659
 #: application/helpers/qanda_helper.php:3697
@@ -9531,7 +9532,7 @@ msgstr ""
 msgid "Total"
 msgstr ""
 
-#: application/extensions/admin/survey/ListSurveysWidget/views/listSurveys.php:119
+#: application/extensions/admin/survey/ListSurveysWidget/views/listSurveys.php:122
 msgid "Closed group"
 msgstr ""
 
@@ -11544,7 +11545,7 @@ msgstr ""
 #: application/helpers/expressions/em_manager_helper.php:9056
 #: application/views/admin/survey/editLocalSettings_view.php:162
 #: application/views/admin/survey/subview/accordion/_generaloptions_panel.php:230
-#: tmp/runtime/twig_cache/d7/d77a1e4f8f82a9399190ba089acd085a249010d83464be7be1bdc3b59a39c3aa.php:128
+#: tmp/runtime/twig_cache/42/42299aa249ef219e1b217a10da24bb770e118b37ada9bc29bb8b700567ef9165.php:128
 msgid "End URL:"
 msgstr ""
 
@@ -12032,8 +12033,8 @@ msgstr ""
 #: application/helpers/questionHelper.php:128
 #: application/models/SurveysGroupsettings.php:409
 #: application/views/admin/survey/subview/accordion/_presentation_panel.php:32
-#: tmp/runtime/twig_cache/d7/d77a1e4f8f82a9399190ba089acd085a249010d83464be7be1bdc3b59a39c3aa.php:354
-#: tmp/runtime/twig_cache/d7/d77a1e4f8f82a9399190ba089acd085a249010d83464be7be1bdc3b59a39c3aa.php:407
+#: tmp/runtime/twig_cache/42/42299aa249ef219e1b217a10da24bb770e118b37ada9bc29bb8b700567ef9165.php:359
+#: tmp/runtime/twig_cache/42/42299aa249ef219e1b217a10da24bb770e118b37ada9bc29bb8b700567ef9165.php:412
 msgid "Disabled"
 msgstr ""
 
@@ -23206,6 +23207,10 @@ msgstr ""
 msgid "It is not possible to add groups to an active survey."
 msgstr ""
 
+#: application/views/layouts/sidemenu.php:75
+msgid "Deactivate your survey to enable this setting"
+msgstr ""
+
 #: application/views/limereplacementfields/limeReplacementFields_view.php:19
 msgid "No replacement variable available for this field"
 msgstr ""
@@ -25132,6 +25137,58 @@ msgstr ""
 msgid "Answer question"
 msgstr ""
 
+#: tmp/runtime/twig_cache/42/42299aa249ef219e1b217a10da24bb770e118b37ada9bc29bb8b700567ef9165.php:44
+#: tmp/runtime/twig_cache/42/42299aa249ef219e1b217a10da24bb770e118b37ada9bc29bb8b700567ef9165.php:202
+msgid "Share survey"
+msgstr ""
+
+#: tmp/runtime/twig_cache/42/42299aa249ef219e1b217a10da24bb770e118b37ada9bc29bb8b700567ef9165.php:145
+msgid "Number of questions/groups:"
+msgstr ""
+
+#: tmp/runtime/twig_cache/42/42299aa249ef219e1b217a10da24bb770e118b37ada9bc29bb8b700567ef9165.php:162
+msgid "Sharing panel:"
+msgstr ""
+
+#: tmp/runtime/twig_cache/42/42299aa249ef219e1b217a10da24bb770e118b37ada9bc29bb8b700567ef9165.php:168
+msgid "Activate your survey to open this panel"
+msgstr ""
+
+#: tmp/runtime/twig_cache/42/42299aa249ef219e1b217a10da24bb770e118b37ada9bc29bb8b700567ef9165.php:182
+msgid "Open sharing panel"
+msgstr ""
+
+#: tmp/runtime/twig_cache/42/42299aa249ef219e1b217a10da24bb770e118b37ada9bc29bb8b700567ef9165.php:211
+msgid "Share QR-code:"
+msgstr ""
+
+#: tmp/runtime/twig_cache/42/42299aa249ef219e1b217a10da24bb770e118b37ada9bc29bb8b700567ef9165.php:239
+#: tmp/runtime/twig_cache/42/42299aa249ef219e1b217a10da24bb770e118b37ada9bc29bb8b700567ef9165.php:294
+msgid "Generate QR-Code"
+msgstr ""
+
+#: tmp/runtime/twig_cache/42/42299aa249ef219e1b217a10da24bb770e118b37ada9bc29bb8b700567ef9165.php:326
+msgid "Share on Facebook:"
+msgstr ""
+
+#: tmp/runtime/twig_cache/42/42299aa249ef219e1b217a10da24bb770e118b37ada9bc29bb8b700567ef9165.php:332
+msgid "Enable"
+msgstr ""
+
+#: tmp/runtime/twig_cache/42/42299aa249ef219e1b217a10da24bb770e118b37ada9bc29bb8b700567ef9165.php:443
+msgid "Share on Twitter:"
+msgstr ""
+
+#: tmp/runtime/twig_cache/42/42299aa249ef219e1b217a10da24bb770e118b37ada9bc29bb8b700567ef9165.php:471
+#: tmp/runtime/twig_cache/42/42299aa249ef219e1b217a10da24bb770e118b37ada9bc29bb8b700567ef9165.php:527
+msgid "Thanks for taking this survey!"
+msgstr ""
+
+#: tmp/runtime/twig_cache/42/42299aa249ef219e1b217a10da24bb770e118b37ada9bc29bb8b700567ef9165.php:477
+#: tmp/runtime/twig_cache/42/42299aa249ef219e1b217a10da24bb770e118b37ada9bc29bb8b700567ef9165.php:533
+msgid "Tweet it"
+msgstr ""
+
 #: tmp/runtime/twig_cache/42/42c1337280809e6b3a6123fa5e164e2559858eb4d2116ced4ae8007b0924ff47.php:247
 #: tmp/runtime/twig_cache/c1/c1efd044cf4b9c598101e5e671154406c00eac755d21a674b726ccc8b0db971b.php:248
 msgid "Question by question mode not yet supported."
@@ -25467,54 +25524,6 @@ msgstr ""
 
 #: tmp/runtime/twig_cache/d5/d5176c742866eefa7e218b45a6e88b912047d4b7d2c42ad0740ded288024f4b2.php:70
 msgid "Date in the format: %s"
-msgstr ""
-
-#: tmp/runtime/twig_cache/d7/d77a1e4f8f82a9399190ba089acd085a249010d83464be7be1bdc3b59a39c3aa.php:44
-#: tmp/runtime/twig_cache/d7/d77a1e4f8f82a9399190ba089acd085a249010d83464be7be1bdc3b59a39c3aa.php:197
-msgid "Share survey"
-msgstr ""
-
-#: tmp/runtime/twig_cache/d7/d77a1e4f8f82a9399190ba089acd085a249010d83464be7be1bdc3b59a39c3aa.php:145
-msgid "Number of questions/groups:"
-msgstr ""
-
-#: tmp/runtime/twig_cache/d7/d77a1e4f8f82a9399190ba089acd085a249010d83464be7be1bdc3b59a39c3aa.php:162
-msgid "Sharing panel:"
-msgstr ""
-
-#: tmp/runtime/twig_cache/d7/d77a1e4f8f82a9399190ba089acd085a249010d83464be7be1bdc3b59a39c3aa.php:178
-msgid "Open sharing panel"
-msgstr ""
-
-#: tmp/runtime/twig_cache/d7/d77a1e4f8f82a9399190ba089acd085a249010d83464be7be1bdc3b59a39c3aa.php:206
-msgid "Share QR-code:"
-msgstr ""
-
-#: tmp/runtime/twig_cache/d7/d77a1e4f8f82a9399190ba089acd085a249010d83464be7be1bdc3b59a39c3aa.php:234
-#: tmp/runtime/twig_cache/d7/d77a1e4f8f82a9399190ba089acd085a249010d83464be7be1bdc3b59a39c3aa.php:289
-msgid "Generate QR-Code"
-msgstr ""
-
-#: tmp/runtime/twig_cache/d7/d77a1e4f8f82a9399190ba089acd085a249010d83464be7be1bdc3b59a39c3aa.php:321
-msgid "Share on Facebook:"
-msgstr ""
-
-#: tmp/runtime/twig_cache/d7/d77a1e4f8f82a9399190ba089acd085a249010d83464be7be1bdc3b59a39c3aa.php:327
-msgid "Enable"
-msgstr ""
-
-#: tmp/runtime/twig_cache/d7/d77a1e4f8f82a9399190ba089acd085a249010d83464be7be1bdc3b59a39c3aa.php:438
-msgid "Share on Twitter:"
-msgstr ""
-
-#: tmp/runtime/twig_cache/d7/d77a1e4f8f82a9399190ba089acd085a249010d83464be7be1bdc3b59a39c3aa.php:466
-#: tmp/runtime/twig_cache/d7/d77a1e4f8f82a9399190ba089acd085a249010d83464be7be1bdc3b59a39c3aa.php:522
-msgid "Thanks for taking this survey!"
-msgstr ""
-
-#: tmp/runtime/twig_cache/d7/d77a1e4f8f82a9399190ba089acd085a249010d83464be7be1bdc3b59a39c3aa.php:472
-#: tmp/runtime/twig_cache/d7/d77a1e4f8f82a9399190ba089acd085a249010d83464be7be1bdc3b59a39c3aa.php:528
-msgid "Tweet it"
 msgstr ""
 
 #: tmp/runtime/twig_cache/da/da1c2df1376215a9137a2fdbc6023c5dc3ec9322dc43acf41a314886b6463a1e.php:42
