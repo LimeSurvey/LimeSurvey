@@ -3,6 +3,8 @@
 namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
 use CModel;
+use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestion;
+use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestionGroup;
 use LimeSurvey\Api\Transformer\TransformerInterface;
 use LimeSurvey\Models\Services\QuestionGroupService;
 use LimeSurvey\ObjectPatch\Op\OpInterface;
@@ -26,8 +28,8 @@ class OpHandlerQuestionGroupReorder implements OpHandlerInterface
     public function __construct(
         string $entity,
         CModel $model,
-        TransformerInterface $transformerGroup,
-        TransformerInterface $transformerQuestion
+        TransformerInputQuestionGroup $transformerGroup,
+        TransformerInputQuestion $transformerQuestion
     ) {
         $this->entity = $entity;
         $this->model = $model;
@@ -54,43 +56,36 @@ class OpHandlerQuestionGroupReorder implements OpHandlerInterface
      *      {
      *          "entity": "questionGroupReorder",
      *          "op": "update",
-     *          "id": 981949, // not relevant at all
+     *          "id": 123456,
      *          "props": {
-     *              "50" : {
-     *                  "gid": "50",
-     *                  "groupOrder": "0",
-     *                  "questions": [
-     *                      {
-     *                      "qid": "722",
-     *                      "gid": "50",
-     *                      "questionOrder": "2"
+     *              "50": { // question group id
+     *                  "sortOrder": 2,
+     *                  "questions": {
+     *                      "723": { // question id
+     *                          "sortOrder": 0
      *                      },
-     *                      {
-     *                      "qid": "723",
-     *                      "gid": "50",
-     *                      "questionOrder": "1"
+     *                      "722": { // question id
+     *                          "sortOrder": 1
      *                      }
-     *                  ]
+     *                  }
      *              },
-     *              "59" : {
-     *                  "gid": "59",
-     *                  "groupOrder": "2",
-     *                  "questions": [
-     *                      {
-     *                      "qid": "726",
-     *                      "gid": "59",
-     *                      "questionOrder": "1"
+     *              "59": {
+     *                  "sortOrder": 1,
+     *                  "questions": {
+     *                      "726": {
+     *                          "sortOrder": 3
      *                      },
-     *                      {
-     *                      "qid": "727",
-     *                      "gid": "59",
-     *                      "questionOrder": "2"
+     *                      "727": {
+     *                          "sortOrder": 2
      *                      }
-     *                  ]
+     *                  }
      *              }
      *          }
      *      }
      * ]
+     *
+     * "questions" can also be left out or be empty.
+     *  Also you don't have to pass all groups / all questions.
      *
      * @param OpInterface $op
      * @throws OpHandlerException
@@ -119,17 +114,32 @@ class OpHandlerQuestionGroupReorder implements OpHandlerInterface
     public function getGroupReorderData(OpInterface $op)
     {
         $groupReorderData = [];
-        foreach ($op->getProps() as $i => $groupData) {
+        $i = 0;
+        foreach ($op->getProps() as $gid => $groupData) {
+            $k = 0;
+            if (is_numeric($gid) && $gid > 0) {
+                $groupData['gid'] = $gid;
+            }
             $tfGroupData = $this->transformerGroup->transform($groupData);
             $this->checkGroupReorderData($op, $tfGroupData, 'group');
             $groupReorderData[$i] = $tfGroupData;
-            foreach ($groupData['questions'] as $k => $questionData) {
-                $tfQuestionData = $this->transformerQuestion->transform(
-                    $questionData
-                );
-                $this->checkGroupReorderData($op, $tfQuestionData, 'question');
-                $groupReorderData[$i]['questions'][$k] = $tfQuestionData;
+            if (array_key_exists('questions', $groupData)) {
+                foreach ($groupData['questions'] as $qid => $questionData) {
+                    $questionData['gid'] = $gid;
+                    $questionData['qid'] = $qid;
+                    $tfQuestionData = $this->transformerQuestion->transform(
+                        $questionData
+                    );
+                    $this->checkGroupReorderData(
+                        $op,
+                        $tfQuestionData,
+                        'question'
+                    );
+                    $groupReorderData[$i]['questions'][$k] = $tfQuestionData;
+                    $k++;
+                }
             }
+            $i++;
         }
         return $groupReorderData;
     }
@@ -151,7 +161,7 @@ class OpHandlerQuestionGroupReorder implements OpHandlerInterface
         $required = $type === 'group' ? $requiredForGroup : $requiredForQuestion;
         if (!is_array($data)) {
             throw new OpHandlerException(
-                printf(
+                sprintf(
                     'No values to update for entity "%s"',
                     $op->getEntityType()
                 )
@@ -160,7 +170,7 @@ class OpHandlerQuestionGroupReorder implements OpHandlerInterface
         foreach ($required as $param) {
             if (!array_key_exists($param, $data)) {
                 throw new OpHandlerException(
-                    printf(
+                    sprintf(
                         'Required parameter "%s" is missing. Entity "%s"',
                         $param,
                         $op->getEntityType()

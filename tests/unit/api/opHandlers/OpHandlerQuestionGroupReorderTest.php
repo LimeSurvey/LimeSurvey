@@ -104,18 +104,13 @@ class OpHandlerQuestionGroupReorderTest extends TestBaseClass
             [
                 '1' => $groupParams,
                 '2' => [
-                    'gid'        => '2',
-                    'groupOrder' => '10',
+                    'sortOrder' => '10',
                     'questions'  => [
-                        [
-                            'qid'           => '4',
-                            'gid'           => '2',
-                            'questionOrder' => '10'
+                        '4' => [
+                            'sortOrder' => '10'
                         ],
-                        [
-                            'qid'           => '5',
-                            'gid'           => '2',
-                            'questionOrder' => '20'
+                        '5' => [
+                            'sortOrder' => '20'
                         ]
                     ]
                 ]
@@ -132,18 +127,13 @@ class OpHandlerQuestionGroupReorderTest extends TestBaseClass
     private function getStandardGroupParamsArray()
     {
         return [
-            'gid'        => '1',
-            'groupOrder' => '10',
+            'sortOrder' => '10',
             'questions'  => [
-                [
-                    'qid'           => '2',
-                    'gid'           => '1',
-                    'questionOrder' => '10'
+                '2' => [
+                    'sortOrder' => '10'
                 ],
-                [
-                    'qid'           => '3',
-                    'gid'           => '1',
-                    'questionOrder' => '20'
+                '3' => [
+                    'sortOrder' => '20'
                 ]
             ]
         ];
@@ -155,17 +145,12 @@ class OpHandlerQuestionGroupReorderTest extends TestBaseClass
     private function getMissingRequiredGroupParamsArray()
     {
         return [
-            'gid'       => '1',
             'questions' => [
-                [
-                    'qid'           => '2',
-                    'gid'           => '1',
-                    'questionOrder' => '10'
+                '2' => [
+                    'sortOrder' => '10'
                 ],
-                [
-                    'qid'           => '3',
-                    'gid'           => '1',
-                    'questionOrder' => '20'
+                '3' => [
+                    'sortOrder' => '20'
                 ]
             ]
         ];
@@ -177,17 +162,13 @@ class OpHandlerQuestionGroupReorderTest extends TestBaseClass
     private function getMissingRequiredQuestionParamsArray()
     {
         return [
-            'gid'        => '1',
-            'groupOrder' => '10',
+            'sortOrder' => '10',
             'questions'  => [
-                [
-                    'gid'           => '1',
-                    'questionOrder' => '10'
+                '2' => [
+                    'foo' => '10'
                 ],
-                [
-                    'qid'           => '3',
-                    'gid'           => '1',
-                    'questionOrder' => '20'
+                '3' => [
+                    'sortOrder' => '20'
                 ]
             ]
         ];
@@ -199,9 +180,8 @@ class OpHandlerQuestionGroupReorderTest extends TestBaseClass
     private function getFullWrongParamsArray()
     {
         return [
-            'x' => '1',
-            'y' => '10',
-            'z' => [
+            'sortOrder' => '1',
+            'questions' => [
                 [
                     'a' => '2',
                     'b' => '1',
