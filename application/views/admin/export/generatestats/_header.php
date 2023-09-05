@@ -30,7 +30,8 @@
         <?php echo CHtml::form(["responses/browse/", 'surveyId' => $surveyid], 'post') . "\n"; ?>
         <p>
             <?php Yii::app()->user->setState('sql_' . $surveyid, $sql); ?>
-            <input type='submit' class='btn btn-outline-secondary d-print-none' value='<?php eT("Browse"); ?>'/>
+            <input type='submit' class='btn btn-outline-secondary d-print-none statistics-browse' value='<?php eT("Browse"); ?>'
+                   data-browseurl='<?php echo App()->createUrl('responses/browse/', ['surveyId' => $surveyid]) ?>'/>
             <input type='hidden' name='subaction' value='all'/>
         </p>
         <?php echo CHtml::endForm() ?>
