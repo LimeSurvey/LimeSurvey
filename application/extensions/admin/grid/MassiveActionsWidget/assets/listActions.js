@@ -369,7 +369,8 @@ $(document).off('pjax:scriptcomplete.listActions').on('pjax:scriptcomplete.listA
 
 
 function switchStatusOfListActions(e) {
-    var checkboxSelector = $('#usermanagement--action-toggleAllUsers, .usermanagement--selector-userCheckbox');
+    // TODO: Define classes for the checkboxes. Both for the header and the rows. Must be set in each table.
+    var checkboxSelector = $('.grid-view-ls input[type="checkbox"]');
     // Attach an onchange event handler to all checkboxes
     $(document).on('change', checkboxSelector, function () {
         var actionButton = $('.massiveAction');
@@ -383,14 +384,7 @@ function switchStatusOfListActions(e) {
 
 // Function to check if at least one checkbox is checked
 function isAnyCheckboxChecked() {
-    var isChecked = false;
-    $('.usermanagement--selector-userCheckbox').each(function () {
-        if ($(this).is(':checked')) {
-            isChecked = true;
-            return false; // Break out of the loop
-        }
-    });
-    return isChecked;
+    return $('.grid-view-ls table tbody input[type="checkbox"]:checked').length > 0;
 }
 
 document.addEventListener("DOMContentLoaded", () => {
