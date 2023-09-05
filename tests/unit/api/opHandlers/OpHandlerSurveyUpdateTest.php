@@ -9,7 +9,6 @@ use LimeSurvey\ObjectPatch\Op\OpStandard;
 use LimeSurvey\ObjectPatch\OpHandler\OpHandlerException;
 use ls\tests\TestBaseClass;
 use ls\tests\unit\services\SurveyUpdater\GeneralSettings\GeneralSettingsMockSetFactory;
-use Survey;
 
 class OpHandlerSurveyUpdateTest extends TestBaseClass
 {
@@ -82,7 +81,6 @@ class OpHandlerSurveyUpdateTest extends TestBaseClass
         $mockSet = (new GeneralSettingsMockSetFactory())->make();
 
         return new OpHandlerSurveyUpdate(
-            'survey',
             $mockSet->modelSurvey,
             new TransformerInputSurvey()
         );

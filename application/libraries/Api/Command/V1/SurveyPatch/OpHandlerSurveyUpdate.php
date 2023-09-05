@@ -58,7 +58,7 @@ class OpHandlerSurveyUpdate implements OpHandlerInterface
 
         if ($props === null || $transformedProps === null) {
             throw new OpHandlerException(
-                printf(
+                sprintf(
                     'No values to update for entity %s',
                     $op->getEntityType()
                 )
