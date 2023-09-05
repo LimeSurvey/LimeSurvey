@@ -278,8 +278,8 @@ LS.Statistics2 = function () {
 
     $('.statistics-browse').click(function (e) {
         e.preventDefault();
-        $group_to_hide = $(this).data('browseurl');
-        window.location.replace($group_to_hide);
+        $browseurl = $(this).data('browseurl');
+        window.location.replace($browseurl);
     });
 
     $('#generate-statistics').submit(function () {
