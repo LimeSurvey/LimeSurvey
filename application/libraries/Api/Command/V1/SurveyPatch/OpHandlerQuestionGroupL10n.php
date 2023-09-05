@@ -2,28 +2,29 @@
 
 namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
-use CModel;
-use LimeSurvey\Api\Transformer\TransformerInterface;
+use QuestionGroupL10n;
+use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestionGroupL10ns;
 use LimeSurvey\Models\Services\QuestionGroupService;
-use LimeSurvey\ObjectPatch\Op\OpInterface;
-use LimeSurvey\ObjectPatch\OpHandler\OpHandlerException;
-use LimeSurvey\ObjectPatch\OpHandler\OpHandlerInterface;
-use LimeSurvey\ObjectPatch\OpType\OpTypeUpdate;
+use LimeSurvey\ObjectPatch\{
+    Op\OpInterface,
+    OpHandler\OpHandlerException,
+    OpHandler\OpHandlerInterface,
+    OpType\OpTypeUpdate
+};
 
 class OpHandlerQuestionGroupL10n implements OpHandlerInterface
 {
     use OpHandlerSurveyTrait;
 
-    protected TransformerInterface $transformer;
     protected string $entity;
-    protected CModel $model;
+    protected QuestionGroupL10n $model;
+    protected TransformerInputQuestionGroupL10ns $transformer;
 
     public function __construct(
-        string $entity,
-        CModel $model,
-        TransformerInterface $transformer
+        QuestionGroupL10n $model,
+        TransformerInputQuestionGroupL10ns $transformer
     ) {
-        $this->entity = $entity;
+        $this->entity = 'questionGroupL10n';
         $this->model = $model;
         $this->transformer = $transformer;
     }
@@ -36,9 +37,8 @@ class OpHandlerQuestionGroupL10n implements OpHandlerInterface
      */
     public function canHandle(OpInterface $op): bool
     {
-        return
-            $op->getType()->getId() === OpTypeUpdate::ID
-            && $op->getEntityType() === 'questionGroupL10n';
+        return $op->getType()->getId() === OpTypeUpdate::ID
+            && $op->getEntityType() === $this->entity;
     }
 
     /**
@@ -71,6 +71,7 @@ class OpHandlerQuestionGroupL10n implements OpHandlerInterface
             $this->getSurveyIdFromContext($op),
             $this->getQuestionGroupId($op)
         );
+
         $questionGroupService->updateQuestionGroupLanguages(
             $questionGroup,
             $this->getDataArray($op)
@@ -129,7 +130,7 @@ class OpHandlerQuestionGroupL10n implements OpHandlerInterface
             $transformedProps = $this->transformer->transform($op->getProps());
             if ($transformedProps == null) {
                 throw new OpHandlerException(
-                    printf(
+                    sprintf(
                         'no transformable props provided for %s with id "%s"',
                         $this->entity,
                         print_r($op->getEntityId(), true)
@@ -141,7 +142,7 @@ class OpHandlerQuestionGroupL10n implements OpHandlerInterface
             }
         } else {
             throw new OpHandlerException(
-                printf(
+                sprintf(
                     'no language parameter provided within id parameter for %s with id "%s"',
                     $this->entity,
                     print_r($op->getEntityId(), true)

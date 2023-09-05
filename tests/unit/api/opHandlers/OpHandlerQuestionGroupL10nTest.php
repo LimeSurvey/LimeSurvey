@@ -14,7 +14,7 @@ class OpHandlerQuestionGroupL10nTest extends TestBaseClass
 {
     protected OpInterface $op;
 
-    public function testOpQuestionGroupL10nL10nThrowsNoValuesException()
+    public function testOpQuestionGroupL10nThrowsNoValuesException()
     {
         $this->expectException(
             OpHandlerException::class
@@ -24,7 +24,7 @@ class OpHandlerQuestionGroupL10nTest extends TestBaseClass
         $opHandler->getDataArray($this->op);
     }
 
-    public function testOpQuestionGroupL10nL10nThrowsMissingLanguageException()
+    public function testOpQuestionGroupL10nThrowsMissingLanguageException()
     {
         $this->expectException(
             OpHandlerException::class
@@ -142,7 +142,6 @@ class OpHandlerQuestionGroupL10nTest extends TestBaseClass
         $mockSet = (new QuestionGroupMockSetFactory())->make();
 
         return new OpHandlerQuestionGroupL10n(
-            'questionGroupL10n',
             $mockSet->modelQuestionGroupL10n,
             new TransformerInputQuestionGroupL10ns()
         );
