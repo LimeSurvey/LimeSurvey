@@ -63,15 +63,16 @@ class SurveysGroupsController extends SurveyCommonAction
                 new SurveysGroupsettings()
             );
             if ($service->save()) {
+                $this->getController()->redirect(
+                    App()->createUrl("admin/surveysgroups/sa/update", array('id' => $model->gsid, '#' => 'settingsForThisGroup'))
+                );
+            } else {
                 $errors = $service->getMessages('error');
                 if (!empty($errors)) {
                     foreach ($errors as $error) {
                         Yii::app()->setFlashMessage($error->getMessage(), 'error');
                     }
                 }
-                $this->getController()->redirect(
-                    App()->createUrl("admin/surveysgroups/sa/update", array('id' => $model->gsid, '#' => 'settingsForThisGroup'))
-                );
             }
         } else {
             $model->name = SurveysGroups::getNewCode();

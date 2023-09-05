@@ -2,6 +2,7 @@
 
 namespace LimeSurvey\Models\Services;
 
+use CHtml;
 use LimeSurvey\Datavalueobjects\TypedMessage;
 use LSHttpRequest;
 use LSWebUser;
@@ -55,32 +56,21 @@ class SurveysGroupCreator
      */
     public function save()
     {
-        $attributes = $this->request->getPost('SurveysGroups');
-
-        // Check if the parent group is valid
-        if (!empty($attributes['parent_id'])) {
-            $parentId = $attributes['parent_id'] ;
-            /* Check permission */
-            $availableParents = $this->surveysGroup->getParentGroupOptions();
-            if (!array_key_exists($parentId, $availableParents)) {
-                // TODO: Is sprintf() really needed here? The message is set like this in the update action in SurveysGroupsController,
-                // so there is a chance that some translations actually have the param.
-                // Also, the message itself is not clear. It should be something like "You don't have rights on the parent group".
-                $this->messages[] = new TypedMessage(sprintf(gT("You don't have rights on Survey group"), \CHtml::encode($parentId)), 'error');
-                // Clear the parent_id to avoid saving it
-                $attributes['parent_id'] = null;
-            }
-        }
-
-        $this->surveysGroup->attributes = $attributes;
+        $this->surveysGroup->attributes = $this->request->getPost('SurveysGroups');
         $this->surveysGroup->created_by = $this->user->id;
         if ($this->surveysGroup->save()) {
             // Save new SurveysGroupsettings record
             $this->surveysGroupsettings->gsid = $this->surveysGroup->gsid;
             $this->surveysGroupsettings->setToInherit();
 
-            return $this->surveysGroupsettings->save();
+            if ($this->surveysGroupsettings->save()) {
+                return true;
+            } else {
+                $this->messages[] = new TypedMessage(CHtml::errorSummary($this->surveysGroupsettings), 'error');
+                return false;
+            }
         } else {
+            $this->messages[] = new TypedMessage(CHtml::errorSummary($this->surveysGroup), 'error');
             return false;
         }
     }

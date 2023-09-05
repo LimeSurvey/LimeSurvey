@@ -66,6 +66,7 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
             array('title', 'length', 'max' => 100),
             array('alwaysavailable', 'boolean'),
             array('description, created, modified', 'safe'),
+            array('parent_id', 'in', 'range' => array_keys(self::getSurveyGroupsList()), 'allowEmpty' => true, 'message' => gT("You are not allowed to use this group")),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
             array('gsid, name, title, description, owner_id, parent_id, created, modified, created_by', 'safe', 'on' => 'search'),
