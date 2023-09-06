@@ -2,25 +2,24 @@
 
 namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
-use CModel;
-use LimeSurvey\Api\Transformer\TransformerInterface;
+use Survey;
+use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputSurvey;
 use LimeSurvey\Models\Services\Exception\PersistErrorException;
 use LimeSurvey\Models\Services\SurveyUpdater;
 use LimeSurvey\ObjectPatch\Op\OpInterface;
 use LimeSurvey\ObjectPatch\OpHandler\OpHandlerException;
 use LimeSurvey\ObjectPatch\OpHandler\OpHandlerInterface;
 use LimeSurvey\ObjectPatch\OpType\OpTypeUpdate;
-use Survey;
 
 class OpHandlerSurveyUpdate implements OpHandlerInterface
 {
-    protected TransformerInterface $transformer;
     protected string $entity;
-    protected CModel $model;
+    protected Survey $model;
+    protected TransformerInputSurvey $transformer;
 
-    public function __construct(string $entity, CModel $model, TransformerInterface $transformer)
+    public function __construct(Survey $model, TransformerInputSurvey $transformer)
     {
-        $this->entity = $entity;
+        $this->entity = 'survey';
         $this->model = $model;
         $this->transformer = $transformer;
     }
@@ -59,7 +58,7 @@ class OpHandlerSurveyUpdate implements OpHandlerInterface
 
         if ($props === null || $transformedProps === null) {
             throw new OpHandlerException(
-                printf(
+                sprintf(
                     'No values to update for entity %s',
                     $op->getEntityType()
                 )
