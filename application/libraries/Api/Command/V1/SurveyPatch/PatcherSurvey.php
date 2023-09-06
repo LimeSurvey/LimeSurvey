@@ -41,6 +41,7 @@ class PatcherSurvey extends Patcher
         $this->addOpHandlerQuestionL10n($diFactory, $diContainer);
         $this->addOpHandlerQuestionAttribute($diFactory, $diContainer);
         $this->addOpHandlerQuestionAnswer($diFactory, $diContainer);
+        $this->addOpHandlerQuestionGroupReorder($diContainer);
     }
 
     private function addOpHandlerSurvey(ContainerInterface $diContainer): void
@@ -139,6 +140,14 @@ class PatcherSurvey extends Patcher
                     TransformerInputAnswer::class
                 )
             ]
+        ));
+    }
+
+    private function addOpHandlerQuestionGroupReorder(
+        ContainerInterface $diContainer
+    ): void {
+        $this->addOpHandler($diContainer->get(
+            OpHandlerQuestionGroupReorder::class
         ));
     }
 }

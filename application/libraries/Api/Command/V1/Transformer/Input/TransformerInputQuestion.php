@@ -24,6 +24,7 @@ class TransformerInputQuestion extends Transformer
             'mandatory' => ['formatter' => $formatterYn],
             'encrypted' => ['formatter' => $formatterYn],
             'questionOrder' => ['key' => 'question_order', 'type' => 'int'],
+            'sortOrder' => ['key' => 'question_order', 'type' => 'int'],
             'scaleId' => ['key' => 'scale_id', 'type' => 'int'],
             'sameDefault' => ['key' => 'same_default', 'formatter' => $formatterYn],
             'questionThemeName' => 'question_theme_name',
