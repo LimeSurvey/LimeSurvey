@@ -5,7 +5,6 @@ namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 use Survey;
 use SurveyLanguageSetting;
 use Answer;
-use QuestionGroup;
 use QuestionGroupL10n;
 use Question;
 use QuestionL10n;
@@ -13,7 +12,6 @@ use QuestionAttribute;
 use LimeSurvey\Api\Command\V1\Transformer\Input\{
     TransformerInputSurvey,
     TransformerInputAnswer,
-    TransformerInputQuestionGroup,
     TransformerInputQuestionGroupL10ns,
     TransformerInputQuestion,
     TransformerInputQuestionL10ns,
@@ -39,7 +37,7 @@ class PatcherSurvey extends Patcher
     {
         $this->addOpHandlerSurvey($diFactory, $diContainer);
         $this->addOpHandlerLanguageSetting($diFactory, $diContainer);
-        $this->addOpHandlerQuestionGroup($diFactory, $diContainer);
+        $this->addOpHandlerQuestionGroup( $diContainer);
         $this->addOpHandlerQuestionGroupL10n($diFactory, $diContainer);
         $this->addOpHandlerQuestion($diFactory, $diContainer);
         $this->addOpHandlerQuestionL10n($diFactory, $diContainer);
@@ -75,20 +73,10 @@ class PatcherSurvey extends Patcher
         ));
     }
 
-    private function addOpHandlerQuestionGroup(FactoryInterface $diFactory, ContainerInterface $diContainer): void
+    private function addOpHandlerQuestionGroup(ContainerInterface $diContainer): void
     {
-        $this->addOpHandler($diFactory->make(
-            OpHandlerQuestionGroup::class,
-            [
-                'entity' => 'questionGroup',
-                'model' => QuestionGroup::model(),
-                'transformer' => $diContainer->get(
-                    TransformerInputQuestionGroup::class
-                ),
-                'transformerI10N' => $diContainer->get(
-                    TransformerInputQuestionGroupL10ns::class
-                )
-            ]
+        $this->addOpHandler($diContainer->get(
+            OpHandlerQuestionGroup::class
         ));
     }
 

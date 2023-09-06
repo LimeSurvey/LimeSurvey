@@ -2,39 +2,43 @@
 
 namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
-use CModel;
-use LimeSurvey\Api\Transformer\TransformerInterface;
+use QuestionGroup;
 use LimeSurvey\Models\Services\QuestionGroupService;
-use LimeSurvey\ObjectPatch\Op\OpInterface;
-use LimeSurvey\ObjectPatch\OpHandler\OpHandlerException;
-use LimeSurvey\ObjectPatch\OpHandler\OpHandlerInterface;
-use LimeSurvey\ObjectPatch\OpType\OpTypeCreate;
-use LimeSurvey\ObjectPatch\OpType\OpTypeDelete;
-use LimeSurvey\ObjectPatch\OpType\OpTypeUpdate;
+use LimeSurvey\Api\Command\V1\Transformer\Input\{
+    TransformerInputQuestionGroup,
+    TransformerInputQuestionGroupL10ns
+};
+use LimeSurvey\ObjectPatch\{
+    Op\OpInterface,
+    OpHandler\OpHandlerException,
+    OpHandler\OpHandlerInterface,
+    OpType\OpTypeCreate,
+    OpType\OpTypeDelete,
+    OpType\OpTypeUpdate
+};
 
 class OpHandlerQuestionGroup implements OpHandlerInterface
 {
     use OpHandlerSurveyTrait;
 
-    protected TransformerInterface $transformer;
-    protected TransformerInterface $transformerI10N;
+    protected TransformerInputQuestionGroup $transformer;
+    protected TransformerInputQuestionGroupL10ns $transformerL10n;
     protected string $entity;
-    protected CModel $model;
+    protected QuestionGroup $model;
 
     private bool $isUpdateOperation = false;
     private bool $isCreateOperation = false;
     private bool $isDeleteOperation = false;
 
     public function __construct(
-        string $entity,
-        CModel $model,
-        TransformerInterface $transformer,
-        TransformerInterface $transformerI10N
+        QuestionGroup $model,
+        TransformerInputQuestionGroup $transformer,
+        TransformerInputQuestionGroupL10ns $transformerL10n
     ) {
-        $this->entity = $entity;
+        $this->entity = 'questionGroup';
         $this->model = $model;
         $this->transformer = $transformer;
-        $this->transformerI10N = $transformerI10N;
+        $this->transformerL10n = $transformerL10n;
     }
 
     /**
@@ -46,7 +50,7 @@ class OpHandlerQuestionGroup implements OpHandlerInterface
     public function canHandle(OpInterface $op): bool
     {
         $this->setOperationTypes($op);
-        $isQuestionGroupEntity = $op->getEntityType() === 'questionGroup';
+        $isQuestionGroupEntity = $op->getEntityType() === $this->entity;
 
         return
             (
@@ -115,7 +119,7 @@ class OpHandlerQuestionGroup implements OpHandlerInterface
                 $props['questionGroup']
             );
             foreach ($props['questionGroupI10N'] as $lang => $questionGroupI10N) {
-                $transformedProps['questionGroupI10N'][$lang] = $this->transformerI10N->transform(
+                $transformedProps['questionGroupI10N'][$lang] = $this->transformerL10n->transform(
                     $questionGroupI10N
                 );
             }
@@ -124,7 +128,7 @@ class OpHandlerQuestionGroup implements OpHandlerInterface
         }
         if ($props === null || $transformedProps === null) {
             throw new OpHandlerException(
-                printf(
+                sprintf(
                     'No values to update for entity %s',
                     $op->getEntityType()
                 )
@@ -138,9 +142,7 @@ class OpHandlerQuestionGroup implements OpHandlerInterface
      *  {
      *      "entity": "questionGroup",
      *      "op": "update",
-     *      "id": {
-     *              "gid": 43
-     *      },
+     *      "id": 43,
      *      "props": {
      *          "groupOrder": 1000
      *      }
@@ -210,9 +212,7 @@ class OpHandlerQuestionGroup implements OpHandlerInterface
      *  {
      *      "entity": "questionGroup",
      *      "op": "delete",
-     *      "id": {
-     *          "gid": 43
-     *      }
+     *      "id": 43
      *  }
      * @param OpInterface $op
      * @param QuestionGroupService $groupService
@@ -236,12 +236,8 @@ class OpHandlerQuestionGroup implements OpHandlerInterface
     private function getQuestionGroupId(OpInterface $op)
     {
         $id = $op->getEntityId();
-        if (is_array($id)) {
-            if (array_key_exists('gid', $id)) {
-                $id = $id['gid'];
-            } else {
-                throw new OpHandlerException('no gid provided');
-            }
+        if (!isset($id)) {
+            throw new OpHandlerException('no gid provided');
         }
         return $id;
     }

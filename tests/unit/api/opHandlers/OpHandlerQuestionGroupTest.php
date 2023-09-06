@@ -3,11 +3,15 @@
 namespace ls\tests\unit\api\opHandlers;
 
 use LimeSurvey\Api\Command\V1\SurveyPatch\OpHandlerQuestionGroup;
-use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestionGroup;
-use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestionGroupL10ns;
-use LimeSurvey\ObjectPatch\Op\OpInterface;
-use LimeSurvey\ObjectPatch\Op\OpStandard;
-use LimeSurvey\ObjectPatch\OpHandler\OpHandlerException;
+use LimeSurvey\Api\Command\V1\Transformer\{
+    Input\TransformerInputQuestionGroup,
+    Input\TransformerInputQuestionGroupL10ns
+};
+use LimeSurvey\ObjectPatch\{
+    Op\OpInterface,
+    Op\OpStandard,
+    OpHandler\OpHandlerException
+};
 use ls\tests\TestBaseClass;
 use ls\tests\unit\services\QuestionGroup\QuestionGroupMockSetFactory;
 
@@ -80,9 +84,7 @@ class OpHandlerQuestionGroupTest extends TestBaseClass
         $this->op = OpStandard::factory(
             'questionGroup',
             'create',
-            [
-                'gid' => 1
-            ],
+            1,
             [
                 'sid'        => 12345,
                 'groupOrder' => '1000'
@@ -98,9 +100,7 @@ class OpHandlerQuestionGroupTest extends TestBaseClass
         $this->op = OpStandard::factory(
             'questionGroup',
             'create',
-            [
-                'gid' => 1
-            ],
+            1,
             [
                 'questionGroup'     => [
                     'sid'                => 12345,
@@ -129,7 +129,7 @@ class OpHandlerQuestionGroupTest extends TestBaseClass
         $this->op = OpStandard::factory(
             'survey',
             'update',
-            12345,
+            null,
             [
                 'unknownA' => '2020-01-01 00:00',
                 'unknownB' => true,
@@ -164,7 +164,6 @@ class OpHandlerQuestionGroupTest extends TestBaseClass
         $mockSet = (new QuestionGroupMockSetFactory())->make();
 
         return new OpHandlerQuestionGroup(
-            'questionGroup',
             $mockSet->modelQuestionGroup,
             new TransformerInputQuestionGroup(),
             new TransformerInputQuestionGroupL10ns()
