@@ -2,7 +2,10 @@
 
 namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
+use LimeSurvey\ObjectPatch\OpHandler\OpHandlerActiveRecordUpdate;
+use LimeSurvey\ObjectPatch\Patcher;
 use Survey;
+use SurveyLanguageSetting;
 use Answer;
 use QuestionGroup;
 use QuestionGroupL10n;
@@ -10,17 +13,12 @@ use Question;
 use QuestionL10n;
 use QuestionAttribute;
 use LimeSurvey\Api\Command\V1\Transformer\Input\{
-    TransformerInputSurvey,
     TransformerInputAnswer,
     TransformerInputQuestionGroup,
     TransformerInputQuestionGroupL10ns,
     TransformerInputQuestion,
     TransformerInputQuestionL10ns,
     TransformerInputQuestionAttribute
-};
-use LimeSurvey\ObjectPatch\{
-    Patcher,
-    OpHandler\OpHandlerActiveRecordUpdate
 };
 use DI\FactoryInterface;
 use Psr\Container\ContainerInterface;
@@ -35,7 +33,7 @@ class PatcherSurvey extends Patcher
      */
     public function __construct(FactoryInterface $diFactory, ContainerInterface $diContainer)
     {
-        $this->addOpHandlerSurvey($diFactory, $diContainer);
+        $this->addOpHandlerSurvey($diContainer);
         $this->addOpHandlerLanguageSetting($diContainer);
         $this->addOpHandlerQuestionGroup($diFactory, $diContainer);
         $this->addOpHandlerQuestionGroupL10n($diFactory, $diContainer);
@@ -44,19 +42,13 @@ class PatcherSurvey extends Patcher
         $this->addOpHandlerQuestionL10n($diFactory, $diContainer);
         $this->addOpHandlerQuestionAttribute($diFactory, $diContainer);
         $this->addOpHandlerQuestionAnswer($diFactory, $diContainer);
+        $this->addOpHandlerQuestionGroupReorder($diContainer);
     }
 
-    private function addOpHandlerSurvey(FactoryInterface $diFactory, ContainerInterface $diContainer): void
+    private function addOpHandlerSurvey(ContainerInterface $diContainer): void
     {
-        $this->addOpHandler($diFactory->make(
-            OpHandlerActiveRecordUpdate::class,
-            [
-                'entity' => 'survey',
-                'model' => Survey::model(),
-                'transformer' => $diContainer->get(
-                    TransformerInputSurvey::class
-                )
-            ]
+        $this->addOpHandler($diContainer->get(
+            OpHandlerSurveyUpdate::class
         ));
     }
 
@@ -172,6 +164,14 @@ class PatcherSurvey extends Patcher
                     TransformerInputAnswer::class
                 )
             ]
+        ));
+    }
+
+    private function addOpHandlerQuestionGroupReorder(
+        ContainerInterface $diContainer
+    ): void {
+        $this->addOpHandler($diContainer->get(
+            OpHandlerQuestionGroupReorder::class
         ));
     }
 }
