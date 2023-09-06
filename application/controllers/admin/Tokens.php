@@ -1081,7 +1081,8 @@ class Tokens extends SurveyCommonAction
                 [
                     'showSaveAndCloseButton' => true,
                     'showWhiteCloseButton' => true,
-                    'showSaveButton' => true,
+                    // Save button doesn’t apply to this screen
+                    'showSaveButton' => false,
                     'closeUrl' => Yii::app()->createUrl(
                         "admin/tokens",
                         [
