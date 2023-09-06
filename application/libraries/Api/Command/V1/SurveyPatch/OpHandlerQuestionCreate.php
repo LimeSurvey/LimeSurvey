@@ -6,12 +6,10 @@ use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputAnswer;
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestion;
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestionAttribute;
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestionL10ns;
-use LimeSurvey\Api\Transformer\TransformerInterface;
 use LimeSurvey\Models\Services\QuestionAggregateService;
-use LimeSurvey\Models\Services\QuestionAggregateService\QuestionService;
 use LimeSurvey\ObjectPatch\Op\OpInterface;
+use LimeSurvey\ObjectPatch\OpHandler\OpHandlerException;
 use LimeSurvey\ObjectPatch\OpType\OpTypeCreate;
-use LimeSurvey\ObjectPatch\OpType\OpTypeUpdate;
 
 class OpHandlerQuestionCreate
 {
@@ -31,7 +29,7 @@ class OpHandlerQuestionCreate
         TransformerInputQuestionAttribute $transformerAttribute,
         TransformerInputAnswer $transformerAnswer
     ) {
-        $this->entity = 'languageSetting';
+        $this->entity = 'question';
         $this->model = $model;
         $this->transformer = $transformer;
         $this->transformerL10n = $transformerL10n;
@@ -53,10 +51,10 @@ class OpHandlerQuestionCreate
         $questionService = $diContainer->get(
             QuestionAggregateService::class
         );
-        $data = $this->prepareData($op);
+
         $questionService->save(
             $this->getSurveyIdFromContext($op),
-            $data
+            $this->prepareData($op)
         );
     }
 
@@ -65,9 +63,81 @@ class OpHandlerQuestionCreate
      *
      * @param OpInterface $op
      * @return array
+     * @throws OpHandlerException
      */
     public function prepareData(OpInterface $op)
     {
-        return [];
+        $allData = $op->getProps();
+        $this->checkRawPropsForRequiredEntities($op, $allData);
+        $preparedData = [];
+        $dataEntityTransformers = [
+            'question'         => $this->transformer,
+            'questionL10n'     => $this->transformerL10n,
+            'advancedSettings' => $this->transformerAttribute,
+            'answeroptions'    => $this->transformerAnswer,
+            'subquestions'     => $this->transformer,
+        ];
+
+        foreach ($dataEntityTransformers as $name => $transformerClass) {
+            $entityData = [];
+            if (array_key_exists($name, $allData)) {
+                $entityData = $transformerClass->transform($allData[$name]);
+                // check transformed props
+                $this->checkRequiredData($op, $entityData, $name);
+            }
+            $preparedData[$name] = $entityData;
+        }
+
+        return $preparedData;
+    }
+
+    /**
+     * @param OpInterface $op
+     * @param array|null $data
+     * @param string $name
+     * @return void
+     * @throws OpHandlerException
+     */
+    private function checkRequiredData(
+        OpInterface $op,
+        ?array $data,
+        string $name
+    ): void {
+        if (
+            array_key_exists($name, $this->gettRequiredEntitiesArray())
+            && $data === null
+        ) {
+            throw new OpHandlerException(
+                sprintf(
+                    'No values to update for %s in entity %s',
+                    $name,
+                    $op->getEntityType()
+                )
+            );
+        }
+    }
+
+    private function checkRawPropsForRequiredEntities($op, array $rawProps): void
+    {
+        foreach ($this->gettRequiredEntitiesArray() as $requiredEntity) {
+            if (!array_key_exists($requiredEntity, $rawProps)) {
+                throw new OpHandlerException(
+                    sprintf(
+                        'Missing entity %s in props of %s',
+                        $requiredEntity,
+                        $op->getEntityType()
+                    )
+                );
+            }
+        }
+    }
+
+    private function gettRequiredEntitiesArray()
+    {
+        return [
+            'question',
+            'questionL10n',
+            'advancedSettings',
+        ];
     }
 }
