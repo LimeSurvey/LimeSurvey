@@ -65,23 +65,17 @@ class CLSGridView extends TbGridView
      */
     protected function lsAfterAjaxUpdate(): void
     {
-        $this->afterAjaxUpdate = 'function(id, data){';
+        // this will override afterAjaxUpdate if lsAfterAjaxUpdate is defined
+        // please do not override afterAjaxUpdate by default to keep compatibility with base functionality of yii
         if (isset($this->lsAfterAjaxUpdate)) {
+            $this->afterAjaxUpdate = 'function(id, data){';
             foreach ($this->lsAfterAjaxUpdate as $jsCode) {
                 $this->afterAjaxUpdate .= $jsCode;
             }
+            $this->afterAjaxUpdate .= 'LS.actionDropdown.create();';
             $this->afterAjaxUpdate .= 'LS.rowlink.create();';
+            $this->afterAjaxUpdate .= '}';
         }
-        // trigger action_dropdown() as a default although no lsAfterAjaxUpdate param passed.
-        // this method is useful for preventing action dropdown cut off && overlapped in other browsers like firefox
-        $this->afterAjaxUpdate .= 'LS.actionDropdown.create();';
-        $this->afterAjaxUpdate .= 'LS.CPDB.bindButtons();';
-        $this->afterAjaxUpdate .= 'LS.CPDB.participantPanel();';
-        // rebind participant action dropdown buttons
-        $this->afterAjaxUpdate .= 'bindListItemclick();';
-        // rebind attribute action dropdown buttons
-        $this->afterAjaxUpdate .= 'LS.CPDB.attributePanel();';
-        $this->afterAjaxUpdate .= '}';
     }
 
     /**
