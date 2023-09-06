@@ -47,6 +47,10 @@ class SurveyInheritanceMechanismTest extends TestBaseClass
         self::$surveysGroupSettings->delete();
     }
 
+    /**
+     * Testing that a survey inherits the global
+     * settings correctly.
+     */
     public function testSetGlobalGroupOptions()
     {
         $survey = new \Survey();
@@ -69,6 +73,10 @@ class SurveyInheritanceMechanismTest extends TestBaseClass
         $this->assertSame($instance->showInherited, $survey->showInherited, 'The showInherited attribute was not correctly initialized.');
     }
 
+    /**
+     * Testing that a survey inherits the settings
+     * from the default surveys group correctly.
+     */
     public function testSetDefaultGroupOptions()
     {
         $survey = new \Survey();
@@ -90,6 +98,10 @@ class SurveyInheritanceMechanismTest extends TestBaseClass
         $this->assertSame($instance->showInherited, $survey->showInherited, 'The showInherited attribute was not correctly initialized.');
     }
 
+    /**
+     * Testing that a survey inherits the settings
+     * from a surveys group correctly.
+     */
     public function testSetSpecificGroupOptions()
     {
         $survey = new \Survey();
@@ -116,6 +128,10 @@ class SurveyInheritanceMechanismTest extends TestBaseClass
         $this->assertSame('bootswatch', $survey->aOptions['template'], 'The template attribute was set to bootswatch in the group.');
     }
 
+    /**
+     * Testing that a survey with the bShowRealOptionValues set to true
+     * doesn't inherit the settings from a given surveys group.
+     */
     public function testSetSpecificGroupOptionsButShowingRealOptionValues()
     {
         $survey = new \Survey();
