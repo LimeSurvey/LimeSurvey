@@ -19,7 +19,9 @@ class OpHandlerQuestionGroupL10nTest extends TestBaseClass
         $this->expectException(
             OpHandlerException::class
         );
-        $this->initializeWrongPropsPatcher();
+        $this->initializePatcher(
+            $this->getWrongProps()
+        );
         $opHandler = $this->getOpHandler();
         $opHandler->getDataArray($this->op);
     }
@@ -29,14 +31,18 @@ class OpHandlerQuestionGroupL10nTest extends TestBaseClass
         $this->expectException(
             OpHandlerException::class
         );
-        $this->initializeMissingLanguagePatcher();
+        $this->initializePatcher(
+            $this->getMissingLanguageProps()
+        );
         $opHandler = $this->getOpHandler();
         $opHandler->getDataArray($this->op);
     }
 
     public function testOpQuestionGroupL10nCanHandle()
     {
-        $this->initializePatcher();
+        $this->initializePatcher(
+            $this->getDefaultProps()
+        );
 
         $opHandler = $this->getOpHandler();
         self::assertTrue($opHandler->canHandle($this->op));
@@ -44,7 +50,10 @@ class OpHandlerQuestionGroupL10nTest extends TestBaseClass
 
     public function testOpQuestionGroupL10nCanNotHandle()
     {
-        $this->initializeWrongEntityTypePatcher();
+        $this->initializePatcher(
+            $this->getDefaultProps(),
+            'create'
+        );
 
         $opHandler = $this->getOpHandler();
         self::assertFalse($opHandler->canHandle($this->op));
@@ -52,86 +61,68 @@ class OpHandlerQuestionGroupL10nTest extends TestBaseClass
 
     public function testOpQuestionGroupL10nDataStructure()
     {
-        $this->initializePatcher();
+        $this->initializePatcher(
+            $this->getDefaultProps()
+        );
 
         $opHandler = $this->getOpHandler();
         $transformedDataArray = $opHandler->getDataArray($this->op);
         self::assertArrayHasKey('en', $transformedDataArray);
     }
 
-    private function initializePatcher()
-    {
+    private function initializePatcher(
+        array $propsArray,
+        string $type = 'update'
+    ) {
         $this->op = OpStandard::factory(
             'questionGroupL10n',
-            'update',
+            $type,
             [
-                'gid'      => 1,
-                'language' => 'en'
+                'gid' => 123
             ],
+            $propsArray,
+            [
+                'id' => 123456
+            ]
+        );
+    }
+
+    private function getDefaultProps()
+    {
+        return [
+            'en' => [
+                'groupName'   => 'Name of group',
+                'description' => 'Description of group'
+            ],
+            'de' => [
+                'groupName'   => 'Gruppenname',
+                'description' => 'Gruppenbeschreibung'
+            ]
+        ];
+    }
+
+    private function getMissingLanguageProps()
+    {
+        return [
             [
                 'groupName'   => 'Name of group',
                 'description' => 'Description of group'
             ],
             [
-                'id' => 123456
+                'groupName'   => 'Gruppenname',
+                'description' => 'Gruppenbeschreibung'
             ]
-        );
+        ];
     }
 
-    private function initializeWrongEntityTypePatcher()
+    private function getWrongProps()
     {
-        $this->op = OpStandard::factory(
-            'questionGroupL10n',
-            'create',
-            [
-                'gid'      => 1,
-                'language' => 'en'
-            ],
-            [
+        return [
+            'en' => [
                 'unknownA' => '2020-01-01 00:00',
                 'unknownB' => true,
-            ],
-            [
-                'id' => 123456
             ]
-        );
-    }
-
-    private function initializeMissingLanguagePatcher()
-    {
-        $this->op = OpStandard::factory(
-            'questionGroupL10n',
-            'update',
-            [
-                'gid' => 1,
-            ],
-            [
-                'groupName'   => 'Name of group',
-                'description' => 'Description of group'
-            ],
-            [
-                'id' => 123456
-            ]
-        );
-    }
-
-    private function initializeWrongPropsPatcher()
-    {
-        $this->op = OpStandard::factory(
-            'questionGroupL10n',
-            'update',
-            [
-                'gid'      => 1,
-                'language' => 'en'
-            ],
-            [
-                'unknownA' => '2020-01-01 00:00',
-                'unknownB' => true,
-            ],
-            [
-                'id' => 123456
-            ]
-        );
+        ];
     }
 
     /**

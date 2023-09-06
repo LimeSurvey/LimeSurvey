@@ -48,12 +48,17 @@ class OpHandlerQuestionGroupL10n implements OpHandlerInterface
      *      "entity": "questionGroupL10n",
      *      "op": "update",
      *      "id": {
-     *          "gid": 50,
-     *          "language": "de"
+     *          "gid": 50
      *      },
      *      "props": {
+     *          en": {
+     *          "groupName": "Name of group",
+     *          "description": "English description"
+     *         },
+     *        de": {
      *          "groupName": "Gruppenname",
      *          "description": "Deutsche Beschreibung"
+     *         }
      *      }
      * }
      *
@@ -119,15 +124,18 @@ class OpHandlerQuestionGroupL10n implements OpHandlerInterface
     public function getDataArray(OpInterface $op)
     {
         $dataSet = [];
-        $entityIdArray = $op->getEntityId();
-        if (
-            is_array($entityIdArray)
-            && array_key_exists(
-                'language',
-                $entityIdArray
-            )
-        ) {
-            $transformedProps = $this->transformer->transform($op->getProps());
+        $languagesArray = $op->getProps();
+        foreach ($languagesArray as $lang => $props) {
+            if (is_numeric($lang)) {
+                throw new OpHandlerException(
+                    sprintf(
+                        'no indexes for language provided within props for %s with id "%s"',
+                        $this->entity,
+                        print_r($op->getEntityId(), true)
+                    )
+                );
+            }
+            $transformedProps = $this->transformer->transform($props);
             if ($transformedProps == null) {
                 throw new OpHandlerException(
                     sprintf(
@@ -138,16 +146,8 @@ class OpHandlerQuestionGroupL10n implements OpHandlerInterface
                 );
             }
             foreach ($transformedProps as $key => $value) {
-                $dataSet[$entityIdArray['language']][$key] = $value;
+                $dataSet[$lang][$key] = $value;
             }
-        } else {
-            throw new OpHandlerException(
-                sprintf(
-                    'no language parameter provided within id parameter for %s with id "%s"',
-                    $this->entity,
-                    print_r($op->getEntityId(), true)
-                )
-            );
         }
         return $dataSet;
     }
