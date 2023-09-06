@@ -47,18 +47,16 @@ class OpHandlerQuestionGroupL10n implements OpHandlerInterface
      * {
      *      "entity": "questionGroupL10n",
      *      "op": "update",
-     *      "id": {
-     *          "gid": 50
-     *      },
+     *      "id": 1,
      *      "props": {
      *          en": {
-     *          "groupName": "Name of group",
-     *          "description": "English description"
-     *         },
-     *        de": {
-     *          "groupName": "Gruppenname",
-     *          "description": "Deutsche Beschreibung"
-     *         }
+     *              "groupName": "Name of group",
+     *              "description": "English description"
+     *          },
+     *          de": {
+     *              "groupName": "Gruppenname",
+     *              "description": "Deutsche Beschreibung"
+     *          }
      *      }
      * }
      *
@@ -74,44 +72,13 @@ class OpHandlerQuestionGroupL10n implements OpHandlerInterface
 
         $questionGroup = $questionGroupService->getQuestionGroupForUpdate(
             $this->getSurveyIdFromContext($op),
-            $this->getQuestionGroupId($op)
+            $op->getEntityId()
         );
 
         $questionGroupService->updateQuestionGroupLanguages(
             $questionGroup,
             $this->getDataArray($op)
         );
-    }
-
-    /**
-     * @param OpInterface $op
-     * @return mixed
-     * @throws OpHandlerException
-     */
-    private function getQuestionGroupId(OpInterface $op)
-    {
-        if (
-            is_array($op->getEntityId())
-            && array_key_exists(
-                'gid',
-                $op->getEntityId()
-            )
-        ) {
-            $transformedIdArray = $this->transformer->transform(
-                $op->getEntityId()
-            );
-            if (
-                is_array($transformedIdArray)
-                && array_key_exists(
-                    'gid',
-                    $transformedIdArray
-                )
-            ) {
-                return $transformedIdArray['gid'];
-            }
-        } else {
-            throw new OpHandlerException('no gid provided');
-        }
     }
 
     /**
