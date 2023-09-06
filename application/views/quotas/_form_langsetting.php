@@ -25,7 +25,7 @@ $this->widget('ext.AlertWidget.AlertWidget', ['errorSummaryModel' => $oQuotaLang
         echo getEditor(
             'quota_message',
             $htmlOptions['id'],
-            "[" . gT("End message:", "js") . "](" . $language . ")",
+            "[" . gT("Quota message:", "js") . "](" . $language . ")",
             $oQuota->sid,
             '',
             '',
