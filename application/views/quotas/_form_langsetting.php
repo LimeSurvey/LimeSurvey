@@ -17,6 +17,7 @@ $this->widget('ext.AlertWidget.AlertWidget', ['errorSummaryModel' => $oQuotaLang
         <?php
         $htmlOptions = array('class' => 'form-control custom-data');
         $attribute = '[' . $language . ']quotals_message';
+        $action = $this->action->id;
 
         CHtml::resolveNameID($oQuotaLanguageSetting, $attribute, $htmlOptions);
         echo CHtml::activeTextArea($oQuotaLanguageSetting, $attribute, $htmlOptions);
@@ -28,7 +29,7 @@ $this->widget('ext.AlertWidget.AlertWidget', ['errorSummaryModel' => $oQuotaLang
             $oQuota->sid,
             '',
             '',
-            'AddNewQuota'
+            $action
         );
         ?>
     <?php echo $form->error($oQuotaLanguageSetting,'['.$language.']quotals_message'); ?>
