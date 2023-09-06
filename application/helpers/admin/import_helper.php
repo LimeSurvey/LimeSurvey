@@ -744,7 +744,7 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
                 continue;
             }
 
-            // Avoid inserting question if its language is not in the survey.
+            // Avoid inserting attribute if the language of the question is not in the survey.
             if (!in_array($insertdata['language'], $surveyLanguages)) {
                 continue;
             }
@@ -860,7 +860,7 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
             }
             unset($insertdata['id']);
 
-            // Avoid inserting question if its language is not in the survey.
+            // Avoid inserting attribute if the language of the question is not in the survey.
             if (!in_array($insertdata['language'], $surveyLanguages)) {
                 continue;
             }
@@ -952,7 +952,7 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
             }
             unset($insertdata['id']);
 
-            // Avoid inserting answer if its language is not in the survey.
+            // Avoid inserting attribute if the language of the question is not in the survey.
             if (!in_array($insertdata['language'], $surveyLanguages)) {
                 continue;
             }
