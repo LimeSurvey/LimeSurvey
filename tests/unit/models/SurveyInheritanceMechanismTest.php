@@ -6,39 +6,12 @@ use Yii;
 
 class SurveyInheritanceMechanismTest extends TestBaseClass
 {
-    private static $globalSurveyGroupSettings;
-    private static $defaultSurveyGroupSettings;
     private static $surveysGroup;
     private static $surveysGroupSettings;
 
     public static function setUpBeforeClass(): void
     {
         parent::setUpBeforeClass();
-
-        // Getting values from default surveys group.
-        $defaultSurveyGroup = \SurveysGroups::model()->findByAttributes(array('name' => 'default'));
-        $defaultSurveyGroupSettings = \SurveysGroupsettings::model()->findByAttributes(array('gsid' => $defaultSurveyGroup->gsid));
-        $globalSurveyGroupSettings = \SurveysGroupsettings::model()->findByAttributes(array('gsid' => 0));
-
-        // Getting values from global group in case they are inherited.
-        if ($defaultSurveyGroupSettings->anonymized == 'I') {
-            $defaultSurveyGroupSettings->anonymized = $globalSurveyGroupSettings->anonymized;
-        }
-
-        if ($defaultSurveyGroupSettings->format == 'I') {
-            $defaultSurveyGroupSettings->format = $globalSurveyGroupSettings->format;
-        }
-
-        if ($defaultSurveyGroupSettings->savetimings == 'I') {
-            $defaultSurveyGroupSettings->savetimings = $globalSurveyGroupSettings->savetimings;
-        }
-
-        if ($defaultSurveyGroupSettings->template == 'inherit') {
-            $defaultSurveyGroupSettings->template = $globalSurveyGroupSettings->template;
-        }
-
-        self::$globalSurveyGroupSettings = $globalSurveyGroupSettings;
-        self::$defaultSurveyGroupSettings = $defaultSurveyGroupSettings;
 
         // Creating a new custom group.
         $surveysGroup = new \SurveysGroups();
@@ -87,19 +60,13 @@ class SurveyInheritanceMechanismTest extends TestBaseClass
         $survey->bShowRealOptionValues = false;
         $survey->setOptions(0);
 
-        // Asserting that the options have been initialized.
-        $this->assertInstanceOf('stdClass', $survey->oOptions, 'The oOptions attribute should be an object of class stdClass.');
-        $this->assertInstanceOf('stdClass', $survey->oOptionLabels, 'The oOptionLabels attribute should be an object of class stdClass.');
-        $this->assertIsArray($survey->aOptions, 'The aOptions attribute should be an array.');
+        // Asserting that the options have been initialized correctly.
+        $instance = \SurveysGroupsettings::getInstance(0, $survey, null, 1, $survey->bShowRealOptionValues);
 
-        $this->assertSame(self::$globalSurveyGroupSettings->anonymized, $survey->oOptions->anonymized, 'The value should have been inherited from the default surveys group.');
-        $this->assertSame(self::$globalSurveyGroupSettings->anonymized, $survey->aOptions['anonymized'], 'The value should have been inherited from the default surveys group.');
-        $this->assertSame(self::$globalSurveyGroupSettings->format, $survey->oOptions->format, 'The value should have been inherited from the default surveys group.');
-        $this->assertSame(self::$globalSurveyGroupSettings->format, $survey->aOptions['format'], 'The value should have been inherited from the default surveys group.');
-        $this->assertSame(self::$globalSurveyGroupSettings->savetimings, $survey->oOptions->savetimings, 'The value should have been inherited from the default surveys group.');
-        $this->assertSame(self::$globalSurveyGroupSettings->savetimings, $survey->aOptions['savetimings'], 'The value should have been inherited from the default surveys group.');
-        $this->assertSame(self::$globalSurveyGroupSettings->template, $survey->oOptions->template, 'The value should have been inherited from the default surveys group.');
-        $this->assertSame(self::$globalSurveyGroupSettings->template, $survey->aOptions['template'], 'The value should have been inherited from the default surveys group.');
+        $this->assertEquals($instance->oOptions, $survey->oOptions, 'The options object was not correctly initialized.');
+        $this->assertEquals($instance->oOptionLabels, $survey->oOptionLabels, 'The option labels object was not correctly initialized.');
+        $this->assertEquals((array)$instance->oOptions, $survey->aOptions, 'The options array was not correctly initialized.');
+        $this->assertSame($instance->showInherited, $survey->showInherited, 'The showInherited attribute was not correctly initialized.');
     }
 
     public function testSetDefaultGroupOptions()
@@ -114,19 +81,13 @@ class SurveyInheritanceMechanismTest extends TestBaseClass
         // Initializing
         $survey->setOptions();
 
-        // Asserting that the options have been initialized.
-        $this->assertInstanceOf('stdClass', $survey->oOptions, 'The oOptions attribute should be an object of class stdClass.');
-        $this->assertInstanceOf('stdClass', $survey->oOptionLabels, 'The oOptionLabels attribute should be an object of class stdClass.');
-        $this->assertIsArray($survey->aOptions, 'The aOptions attribute should be an array.');
+        // Asserting that the options have been initialized correctly.
+        $instance = \SurveysGroupsettings::getInstance(1, $survey, null, 1, $survey->bShowRealOptionValues);
 
-        $this->assertSame(self::$defaultSurveyGroupSettings->anonymized, $survey->oOptions->anonymized, 'The value should have been inherited from the default surveys group.');
-        $this->assertSame(self::$defaultSurveyGroupSettings->anonymized, $survey->aOptions['anonymized'], 'The value should have been inherited from the default surveys group.');
-        $this->assertSame(self::$defaultSurveyGroupSettings->format, $survey->oOptions->format, 'The value should have been inherited from the default surveys group.');
-        $this->assertSame(self::$defaultSurveyGroupSettings->format, $survey->aOptions['format'], 'The value should have been inherited from the default surveys group.');
-        $this->assertSame(self::$defaultSurveyGroupSettings->savetimings, $survey->oOptions->savetimings, 'The value should have been inherited from the default surveys group.');
-        $this->assertSame(self::$defaultSurveyGroupSettings->savetimings, $survey->aOptions['savetimings'], 'The value should have been inherited from the default surveys group.');
-        $this->assertSame(self::$defaultSurveyGroupSettings->template, $survey->oOptions->template, 'The value should have been inherited from the default surveys group.');
-        $this->assertSame(self::$defaultSurveyGroupSettings->template, $survey->aOptions['template'], 'The value should have been inherited from the default surdefaultSeys group.');
+        $this->assertEquals($instance->oOptions, $survey->oOptions, 'The options object was not correctly initialized.');
+        $this->assertEquals($instance->oOptionLabels, $survey->oOptionLabels, 'The option labels object was not correctly initialized.');
+        $this->assertEquals((array)$instance->oOptions, $survey->aOptions, 'The options array was not correctly initialized.');
+        $this->assertSame($instance->showInherited, $survey->showInherited, 'The showInherited attribute was not correctly initialized.');
     }
 
     public function testSetSpecificGroupOptions()
@@ -141,19 +102,18 @@ class SurveyInheritanceMechanismTest extends TestBaseClass
 
         $survey->setOptions((int)self::$surveysGroup->gsid);
 
-        // Asserting that the options have been initialized.
-        $this->assertInstanceOf('stdClass', $survey->oOptions, 'The oOptions attribute should be an object of class stdClass.');
-        $this->assertInstanceOf('stdClass', $survey->oOptionLabels, 'The oOptionLabels attribute should be an object of class stdClass.');
-        $this->assertIsArray($survey->aOptions, 'The aOptions attribute should be an array.');
+        // Asserting that the options have been initialized correctly.
+        $instance = \SurveysGroupsettings::getInstance((int)self::$surveysGroup->gsid, $survey, null, 1, $survey->bShowRealOptionValues);
 
-        $this->assertSame(self::$surveysGroupSettings->anonymized, $survey->oOptions->anonymized, 'The value should have been inherited from the default surveys group.');
-        $this->assertSame(self::$surveysGroupSettings->anonymized, $survey->aOptions['anonymized'], 'The value should have been inherited from the default surveys group.');
-        $this->assertSame(self::$surveysGroupSettings->format, $survey->oOptions->format, 'The value should have been inherited from the default surveys group.');
-        $this->assertSame(self::$surveysGroupSettings->format, $survey->aOptions['format'], 'The value should have been inherited from the default surveys group.');
-        $this->assertSame(self::$surveysGroupSettings->savetimings, $survey->oOptions->savetimings, 'The value should have been inherited from the default surveys group.');
-        $this->assertSame(self::$surveysGroupSettings->savetimings, $survey->aOptions['savetimings'], 'The value should have been inherited from the default surveys group.');
-        $this->assertSame(self::$surveysGroupSettings->template, $survey->oOptions->template, 'The value should have been inherited from the default surveys group.');
-        $this->assertSame(self::$surveysGroupSettings->template, $survey->aOptions['template'], 'The value should have been inherited from the default surveys group.');
+        $this->assertEquals($instance->oOptions, $survey->oOptions, 'The options object was not correctly initialized.');
+        $this->assertEquals($instance->oOptionLabels, $survey->oOptionLabels, 'The option labels object was not correctly initialized.');
+        $this->assertEquals((array)$instance->oOptions, $survey->aOptions, 'The options array was not correctly initialized.');
+        $this->assertSame($instance->showInherited, $survey->showInherited, 'The showInherited attribute was not correctly initialized.');
+
+        // Checking specific custom group values.
+        $this->assertSame('Y', $survey->oOptions->anonymized, 'The anonymized attribute was set to Y in the group.');
+        $this->assertSame('Y', $survey->aOptions['savetimings'], 'The savetimings attribute was set to Y in the group.');
+        $this->assertSame('bootswatch', $survey->aOptions['template'], 'The template attribute was set to bootswatch in the group.');
     }
 
     public function testSetSpecificGroupOptionsButShowingRealOptionValues()
@@ -170,16 +130,16 @@ class SurveyInheritanceMechanismTest extends TestBaseClass
 
         $survey->setOptions((int)self::$surveysGroup->gsid);
 
-        // Asserting that the options have been initialized.
-        $this->assertInstanceOf('stdClass', $survey->oOptions, 'The oOptions attribute should be an object of class stdClass.');
-        $this->assertInstanceOf('stdClass', $survey->oOptionLabels, 'The oOptionLabels attribute should be an object of class stdClass.');
-        $this->assertIsArray($survey->aOptions, 'The aOptions attribute should be an array.');
+        // Asserting that the options have been initialized correctly.
+        $instance = \SurveysGroupsettings::getInstance((int)self::$surveysGroup->gsid, $survey, null, 1, $survey->bShowRealOptionValues);
 
-        $this->assertSame(self::$defaultSurveyGroupSettings->anonymized, $survey->oOptions->anonymized, 'The value should have been inherited from the default surveys group.');
-        $this->assertSame(self::$defaultSurveyGroupSettings->anonymized, $survey->aOptions['anonymized'], 'The value should have been inherited from the default surveys group.');
-        $this->assertSame(self::$defaultSurveyGroupSettings->format, $survey->oOptions->format, 'The value should have been inherited from the default surveys group.');
-        $this->assertSame(self::$defaultSurveyGroupSettings->format, $survey->aOptions['format'], 'The value should have been inherited from the default surveys group.');
-        $this->assertSame(self::$defaultSurveyGroupSettings->savetimings, $survey->oOptions->savetimings, 'The value should have been inherited from the default surveys group.');
-        $this->assertSame(self::$defaultSurveyGroupSettings->savetimings, $survey->aOptions['savetimings'], 'The value should have been inherited from the default surveys group.');
+        $this->assertEquals($instance->oOptions, $survey->oOptions, 'The options object was not correctly initialized.');
+        $this->assertEquals($instance->oOptionLabels, $survey->oOptionLabels, 'The option labels object was not correctly initialized.');
+        $this->assertEquals((array)$instance->oOptions, $survey->aOptions, 'The options array was not correctly initialized.');
+        $this->assertSame($instance->showInherited, $survey->showInherited, 'The showInherited attribute was not correctly initialized.');
+
+        // Checking specific custom group values.
+        $this->assertNotSame('Y', $survey->oOptions->anonymized, 'The anonymized attribute should not be taken from the custom group.');
+        $this->assertNotSame('Y', $survey->aOptions['savetimings'], 'The savetimings attribute should not be taken from the custom group.');
     }
 }
