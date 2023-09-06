@@ -13,6 +13,9 @@ use LimeSurvey\Models\Services\Exception\{
     PermissionDeniedException
 };
 
+/**
+ * @group services
+ */
 class GeneralSettingsExceptionsTest extends TestBaseClass
 {
     /**

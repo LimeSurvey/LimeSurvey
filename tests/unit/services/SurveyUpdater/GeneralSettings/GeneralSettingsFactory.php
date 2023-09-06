@@ -3,6 +3,7 @@
 namespace ls\tests\unit\services\SurveyUpdater\GeneralSettings;
 
 use LimeSurvey\Models\Services\SurveyUpdater\GeneralSettings;
+
 /**
  * General Settings Mock Factory
  *

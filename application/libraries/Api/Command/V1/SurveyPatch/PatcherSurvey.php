@@ -5,7 +5,6 @@ namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 use LimeSurvey\ObjectPatch\OpHandler\OpHandlerActiveRecordUpdate;
 use LimeSurvey\ObjectPatch\Patcher;
 use Survey;
-use SurveyLanguageSetting;
 use Answer;
 use QuestionGroup;
 use QuestionGroupL10n;
@@ -19,8 +18,7 @@ use LimeSurvey\Api\Command\V1\Transformer\Input\{
     TransformerInputQuestionGroupL10ns,
     TransformerInputQuestion,
     TransformerInputQuestionL10ns,
-    TransformerInputQuestionAttribute,
-    TransformerInputSurveyLanguageSettings
+    TransformerInputQuestionAttribute
 };
 use DI\FactoryInterface;
 use Psr\Container\ContainerInterface;
@@ -36,7 +34,7 @@ class PatcherSurvey extends Patcher
     public function __construct(FactoryInterface $diFactory, ContainerInterface $diContainer)
     {
         $this->addOpHandlerSurvey($diFactory, $diContainer);
-        $this->addOpHandlerLanguageSetting($diFactory, $diContainer);
+        $this->addOpHandlerLanguageSetting($diContainer);
         $this->addOpHandlerQuestionGroup($diFactory, $diContainer);
         $this->addOpHandlerQuestionGroupL10n($diFactory, $diContainer);
         $this->addOpHandlerQuestion($diFactory, $diContainer);
@@ -59,17 +57,10 @@ class PatcherSurvey extends Patcher
         ));
     }
 
-    private function addOpHandlerLanguageSetting(FactoryInterface $diFactory, ContainerInterface $diContainer): void
+    private function addOpHandlerLanguageSetting(ContainerInterface $diContainer): void
     {
-        $this->addOpHandler($diFactory->make(
-            OpHandlerActiveRecordUpdate::class,
-            [
-                'entity' => 'languageSetting',
-                'model' => SurveyLanguageSetting::model(),
-                'transformer' => $diContainer->get(
-                    TransformerInputSurveyLanguageSettings::class
-                )
-            ]
+        $this->addOpHandler($diContainer->get(
+            OpHandlerLanguageSettingsUpdate::class
         ));
     }
 
