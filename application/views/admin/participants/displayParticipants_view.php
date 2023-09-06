@@ -68,7 +68,7 @@ echo viewHelper::getViewTestTag('displayParticipants');
                     'dataProvider' => $model->search(),
                     'columns' => $model->columns,
                     'massiveActionTemplate' => $massiveAction,
-                    'afterAjaxUpdate'          => 'function(id, data){LS.CPDB.bindButtons;LS.CPDB.participantPanel();bindListItemclick();}',
+                    'afterAjaxUpdate'          => 'function(id, data){LS.CPDB.bindButtons;LS.CPDB.participantPanel();bindListItemclick();switchStatusOfListActions();}',
                     'ajaxType'                 => 'POST',
                     'rowHtmlOptionsExpression' => '["data-participant_id" => $data->id]',
                     'beforeAjaxUpdate'         => 'insertSearchCondition',
