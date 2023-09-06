@@ -951,6 +951,12 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
                 $insertdata[(string) $key] = (string) $value;
             }
             unset($insertdata['id']);
+
+            // Avoid inserting answer if its language is not in the survey.
+            if (!in_array($insertdata['language'], $surveyLanguages)) {
+                continue;
+            }
+
             // now translate any links
             if ($options['translinkfields']) {
                 $insertdata['answer'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['answer']);
