@@ -225,7 +225,12 @@ foreach ($aOptionAttributes['categories'] as $key => $category) { ?>
                         $sParentOption = 'N/A';
                     }
                     echo '<div class="col-12">';
-                    echo '<select class="form-select selector_option_value_field selector_radio_childfield selector_image_selector" data-parent="' . $attribute['parent'] . '" data-inheritvalue=\'' . $sParentOption . '\' id="simple_edit_options_' . $attributeKey . '" name="' . $attributeKey . '"  >';
+                    // Fields linked to a parent option (Yes/No switch) need a class and data-parent attribute
+                    if (!empty($attribute['parent'])) {
+                        echo '<select class="form-select selector_option_value_field selector_radio_childfield selector_image_selector" data-parent="' . $attribute['parent'] . '" data-inheritvalue=\'' . $sParentOption . '\' id="simple_edit_options_' . $attributeKey . '" name="' . $attributeKey . '"  >';
+                    } else {
+                        echo '<select class="form-select selector_option_value_field selector_image_selector" data-inheritvalue=\'' . $sParentOption . '\' id="simple_edit_options_' . $attributeKey . '" name="' . $attributeKey . '"  >';
+                    }
                     if ($bInherit) {
                         if (isset($attribute['preview'])) {
                             $inheritedValue = $attribute['preview'];
