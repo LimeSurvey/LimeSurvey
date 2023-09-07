@@ -208,6 +208,7 @@ class ExpressionManager
             'countif' => array('exprmgr_countif', 'LEMcountif', gT('Count the number of answered questions in the list equal the first argument'), 'number countif(matches, arg1, arg2, ... argN)', '', -2),
             'countifop' => array('exprmgr_countifop', 'LEMcountifop', gT('Count the number of answered questions in the list which pass the critiera (arg op value)'), 'number countifop(op, value, arg1, arg2, ... argN)', '', -3),
             'date' => array('exprmgr_date', 'date', gT('Format a local date/time'), 'string date(format [, timestamp=time()])', 'http://php.net/date', 1, 2),
+            'abs' => array('exprmgr_abs', 'abs', gT('Absolute value'), 'int|float abs(int|float num)', 'http://php.net/abs', 1, 2),
             'exp' => array('exp', 'Decimal.asNum.exp', gT('Calculates the exponent of e'), 'number exp(number)', 'http://php.net/exp', 1),
             'fixnum' => array('exprmgr_fixnum', 'LEMfixnum', gT('Display numbers with comma as decimal separator, if needed'), 'string fixnum(number)', '', 1),
             'floatval' => array('floatval', 'LEMfloatval', gT('Get float value of a variable'), 'number floatval(number)', 'http://php.net/floatval', 1),
@@ -2965,6 +2966,17 @@ function exprmgr_date($format, $timestamp = null)
         return false;
     }
     return date($format, $timestamp);
+}
+
+function exprmgr_abs($num)
+{
+    if (!is_numeric($num)) {
+        return false;
+    }
+
+    // Trying to cast either to int or float, depending on the value.
+    $num = $num + 0;
+    return abs($num);
 }
 
 /**
