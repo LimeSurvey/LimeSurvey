@@ -169,7 +169,7 @@
         #outerframeContainer {
             animation-name: {{ aSurveyInfo.options.bodyanimation  }};
             animation-duration: {{ bodyanimationduration }}ms;
-            animation-fill-mode: none;
+            animation-fill-mode: none;  /* Issue #18648: Unable to upload a file with theme animations enabled - Set it to none to avoid overlay */
         }
     {% endif %}
 
