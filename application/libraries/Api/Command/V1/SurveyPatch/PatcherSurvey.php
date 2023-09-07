@@ -102,7 +102,7 @@ class PatcherSurvey extends Patcher
         ));
     }
 
-    private function addOpHandlerQuestionCreate(FactoryInterface $diFactory, ContainerInterface $diContainer): void
+    private function addOpHandlerQuestionCreate(ContainerInterface $diContainer): void
     {
         $this->addOpHandler($diContainer->get(
             OpHandlerQuestionCreate::class

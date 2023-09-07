@@ -104,7 +104,7 @@ class OpHandlerQuestionCreate
         string $name
     ): void {
         if (
-            array_key_exists($name, $this->gettRequiredEntitiesArray())
+            array_key_exists($name, $this->getRequiredEntitiesArray())
             && $data === null
         ) {
             throw new OpHandlerException(
@@ -117,9 +117,9 @@ class OpHandlerQuestionCreate
         }
     }
 
-    private function checkRawPropsForRequiredEntities($op, array $rawProps): void
+    private function checkRawPropsForRequiredEntities(OpInterface $op, array $rawProps): void
     {
-        foreach ($this->gettRequiredEntitiesArray() as $requiredEntity) {
+        foreach ($this->getRequiredEntitiesArray() as $requiredEntity) {
             if (!array_key_exists($requiredEntity, $rawProps)) {
                 throw new OpHandlerException(
                     sprintf(
@@ -132,7 +132,10 @@ class OpHandlerQuestionCreate
         }
     }
 
-    private function gettRequiredEntitiesArray()
+    /**
+     * @return array
+     */
+    private function getRequiredEntitiesArray(): array
     {
         return [
             'question',
