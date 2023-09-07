@@ -2,25 +2,17 @@
 
 namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
-use Survey;
-use SurveyLanguageSetting;
+use LimeSurvey\ObjectPatch\OpHandler\OpHandlerActiveRecordUpdate;
+use LimeSurvey\ObjectPatch\Patcher;
 use Answer;
-use QuestionGroupL10n;
 use Question;
 use QuestionL10n;
 use QuestionAttribute;
 use LimeSurvey\Api\Command\V1\Transformer\Input\{
-    TransformerInputSurvey,
     TransformerInputAnswer,
-    TransformerInputQuestionGroupL10ns,
     TransformerInputQuestion,
     TransformerInputQuestionL10ns,
-    TransformerInputQuestionAttribute,
-    TransformerInputSurveyLanguageSettings
-};
-use LimeSurvey\ObjectPatch\{
-    Patcher,
-    OpHandler\OpHandlerActiveRecordUpdate
+    TransformerInputQuestionAttribute
 };
 use DI\FactoryInterface;
 use Psr\Container\ContainerInterface;
@@ -35,41 +27,28 @@ class PatcherSurvey extends Patcher
      */
     public function __construct(FactoryInterface $diFactory, ContainerInterface $diContainer)
     {
-        $this->addOpHandlerSurvey($diFactory, $diContainer);
-        $this->addOpHandlerLanguageSetting($diFactory, $diContainer);
+        $this->addOpHandlerSurvey($diContainer);
+        $this->addOpHandlerLanguageSetting($diContainer);
         $this->addOpHandlerQuestionGroup($diContainer);
-        $this->addOpHandlerQuestionGroupL10n($diFactory, $diContainer);
+        $this->addOpHandlerQuestionGroupL10n($diContainer);
         $this->addOpHandlerQuestion($diFactory, $diContainer);
         $this->addOpHandlerQuestionL10n($diFactory, $diContainer);
         $this->addOpHandlerQuestionAttribute($diFactory, $diContainer);
         $this->addOpHandlerQuestionAnswer($diFactory, $diContainer);
+        $this->addOpHandlerQuestionGroupReorder($diContainer);
     }
 
-    private function addOpHandlerSurvey(FactoryInterface $diFactory, ContainerInterface $diContainer): void
+    private function addOpHandlerSurvey(ContainerInterface $diContainer): void
     {
-        $this->addOpHandler($diFactory->make(
-            OpHandlerActiveRecordUpdate::class,
-            [
-                'entity' => 'survey',
-                'model' => Survey::model(),
-                'transformer' => $diContainer->get(
-                    TransformerInputSurvey::class
-                )
-            ]
+        $this->addOpHandler($diContainer->get(
+            OpHandlerSurveyUpdate::class
         ));
     }
 
-    private function addOpHandlerLanguageSetting(FactoryInterface $diFactory, ContainerInterface $diContainer): void
+    private function addOpHandlerLanguageSetting(ContainerInterface $diContainer): void
     {
-        $this->addOpHandler($diFactory->make(
-            OpHandlerActiveRecordUpdate::class,
-            [
-                'entity' => 'languageSetting',
-                'model' => SurveyLanguageSetting::model(),
-                'transformer' => $diContainer->get(
-                    TransformerInputSurveyLanguageSettings::class
-                )
-            ]
+        $this->addOpHandler($diContainer->get(
+            OpHandlerLanguageSettingsUpdate::class
         ));
     }
 
@@ -80,18 +59,10 @@ class PatcherSurvey extends Patcher
         ));
     }
 
-
-    private function addOpHandlerQuestionGroupL10n(FactoryInterface $diFactory, ContainerInterface $diContainer): void
+    private function addOpHandlerQuestionGroupL10n(ContainerInterface $diContainer): void
     {
-        $this->addOpHandler($diFactory->make(
-            OpHandlerActiveRecordUpdate::class,
-            [
-                'entity' => 'questionGroupL10n',
-                'model' => QuestionGroupL10n::model(),
-                'transformer' => $diContainer->get(
-                    TransformerInputQuestionGroupL10ns::class
-                )
-            ]
+        $this->addOpHandler($diContainer->get(
+            OpHandlerQuestionGroupL10n::class
         ));
     }
 
@@ -148,6 +119,14 @@ class PatcherSurvey extends Patcher
                     TransformerInputAnswer::class
                 )
             ]
+        ));
+    }
+
+    private function addOpHandlerQuestionGroupReorder(
+        ContainerInterface $diContainer
+    ): void {
+        $this->addOpHandler($diContainer->get(
+            OpHandlerQuestionGroupReorder::class
         ));
     }
 }
