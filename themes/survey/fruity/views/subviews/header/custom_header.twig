@@ -139,7 +139,7 @@
         .question-container {
             animation-name: {{ aSurveyInfo.options.questionanimation  }};
             animation-duration: {{ questionanimationduration }}ms;
-            animation-fill-mode: none;
+            animation-fill-mode: none; /* Issue #18648: Unable to upload a file with theme animations enabled - Set it to none to avoid overlay */
         }
     {% endif %}
 
