@@ -1500,6 +1500,9 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                         if (!isAbsolutePath($attachment['url'])) {
                             $attachment['url'] = $uploadDir . DIRECTORY_SEPARATOR . $attachment['url'];
                         }
+                        if ($bTranslateInsertansTags) {
+                            $attachment['url'] = translateLinks('survey', $iOldSID, $iNewSID, $attachment['url'], true);
+                        }
                     }
                 }
             } elseif (is_null($attachments)) {
