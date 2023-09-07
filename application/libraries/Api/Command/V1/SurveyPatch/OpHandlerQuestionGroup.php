@@ -113,15 +113,14 @@ class OpHandlerQuestionGroup implements OpHandlerInterface
     {
         $transformedProps = [];
         $props = $op->getProps();
-        if(isset($props['questionGroup'])) {
+        if (isset($props['questionGroup'])) {
             $transformedProps['questionGroup'] = $this->transformer->transform(
                 $props['questionGroup']
             );
         }
-        if(isset($props['questionGroupL10n'])) {
+        if (isset($props['questionGroupL10n'])) {
             foreach (
-                $props['questionGroupL10n']
-                as $lang => $questionGroupL10n
+                $props['questionGroupL10n'] as $lang => $questionGroupL10n
             ) {
                 $transformedProps['questionGroupI10N'][$lang]
                     = $this->transformerL10n->transform(
@@ -178,7 +177,8 @@ class OpHandlerQuestionGroup implements OpHandlerInterface
      * @throws \LimeSurvey\Models\Services\Exception\PermissionDeniedException
      * @throws \LimeSurvey\Models\Services\Exception\PersistErrorException
      */
-    private function update(OpInterface $op) {
+    private function update(OpInterface $op)
+    {
         $surveyId = $this->getSurveyIdFromContext($op);
         $transformedProps = $this->getTransformedProps($op);
         $questionGroup = $this->questionGroupService->getQuestionGroupForUpdate(

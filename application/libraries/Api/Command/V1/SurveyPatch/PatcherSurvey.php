@@ -37,7 +37,7 @@ class PatcherSurvey extends Patcher
     {
         $this->addOpHandlerSurvey($diFactory, $diContainer);
         $this->addOpHandlerLanguageSetting($diFactory, $diContainer);
-        $this->addOpHandlerQuestionGroup( $diContainer);
+        $this->addOpHandlerQuestionGroup($diContainer);
         $this->addOpHandlerQuestionGroupL10n($diFactory, $diContainer);
         $this->addOpHandlerQuestion($diFactory, $diContainer);
         $this->addOpHandlerQuestionL10n($diFactory, $diContainer);
