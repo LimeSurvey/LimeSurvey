@@ -72,22 +72,6 @@ class OpHandlerQuestionGroupTest extends TestBaseClass
         );
     }
 
-    private function initializePatcherCreateSimple()
-    {
-        $this->op = OpStandard::factory(
-            'questionGroup',
-            'create',
-            1,
-            [
-                'sid'        => 12345,
-                'groupOrder' => '1000'
-            ],
-            [
-                'id' => 123456
-            ]
-        );
-    }
-
     private function initializePatcherCreateI10N()
     {
         $this->op = OpStandard::factory(
