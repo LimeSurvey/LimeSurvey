@@ -276,12 +276,6 @@ LS.Statistics2 = function () {
         toggleSection($('#statistics-render-chevron'), $('#statisticsoutput'));
     });
 
-    $('.statistics-browse').click(function (e) {
-        e.preventDefault();
-        $browseurl = $(this).data('browseurl');
-        window.location.replace($browseurl);
-    });
-
     $('#generate-statistics').submit(function () {
         hideSection($('#generalfilters-chevron'), $('#statisticsgeneralfilters'));
         hideSection($('#responsefilters-chevron'), $('#filterchoices'))
