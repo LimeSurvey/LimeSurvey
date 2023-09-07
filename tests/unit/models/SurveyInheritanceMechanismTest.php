@@ -71,6 +71,12 @@ class SurveyInheritanceMechanismTest extends TestBaseClass
         $this->assertEquals($instance->oOptionLabels, $survey->oOptionLabels, 'The option labels object was not correctly initialized.');
         $this->assertEquals((array)$instance->oOptions, $survey->aOptions, 'The options array was not correctly initialized.');
         $this->assertSame($instance->showInherited, $survey->showInherited, 'The showInherited attribute was not correctly initialized.');
+
+        // Checking specific values.
+        $globalOptions = \SurveysGroupsettings::model()->findByAttributes(array('gsid' => 0));
+        $this->assertSame($globalOptions->anonymized, $survey->oOptions->anonymized, 'The survey anonymized attribute should correspond to the global attribute.');
+        $this->assertSame($globalOptions->savetimings, $survey->aOptions['savetimings'], 'The survey savetimings attribute should correspond to the global attribute.');
+        $this->assertSame($globalOptions->template, $survey->aOptions['template'], 'The survey template attribute should correspond to the global attribute.');
     }
 
     /**
@@ -96,6 +102,26 @@ class SurveyInheritanceMechanismTest extends TestBaseClass
         $this->assertEquals($instance->oOptionLabels, $survey->oOptionLabels, 'The option labels object was not correctly initialized.');
         $this->assertEquals((array)$instance->oOptions, $survey->aOptions, 'The options array was not correctly initialized.');
         $this->assertSame($instance->showInherited, $survey->showInherited, 'The showInherited attribute was not correctly initialized.');
+
+        // Checking specific values.
+        $defaultOptions = \SurveysGroupsettings::model()->findByAttributes(array('gsid' => 1));
+        $globalOptions = \SurveysGroupsettings::model()->findByAttributes(array('gsid' => 0));
+
+        if ($defaultOptions->anonymized === 'I') {
+            $defaultOptions->anonymized = $globalOptions->anonymized;
+        }
+
+        if ($defaultOptions->savetimings === 'I') {
+            $defaultOptions->savetimings = $globalOptions->savetimings;
+        }
+
+        if ($defaultOptions->template === 'inherit') {
+            $defaultOptions->template = $globalOptions->template;
+        }
+
+        $this->assertSame($defaultOptions->anonymized, $survey->oOptions->anonymized, 'The survey anonymized attribute should correspond to the global attribute.');
+        $this->assertSame($defaultOptions->savetimings, $survey->aOptions['savetimings'], 'The survey savetimings attribute should correspond to the global attribute.');
+        $this->assertSame($defaultOptions->template, $survey->aOptions['template'], 'The survey template attribute should correspond to the global attribute.');
     }
 
     /**
@@ -135,6 +161,9 @@ class SurveyInheritanceMechanismTest extends TestBaseClass
     public function testSetSpecificGroupOptionsButShowingRealOptionValues()
     {
         $survey = new \Survey();
+        $survey->usecookie = 'Y';
+        $survey->allowregister = 'Y';
+        $survey->allowsave = 'N';
 
         // Asserting that the options have not been initialized yet.
         $this->assertNull($survey->oOptions, 'The survey options object should be null since it has not been initialized yet.');
@@ -157,5 +186,10 @@ class SurveyInheritanceMechanismTest extends TestBaseClass
         // Checking specific custom group values.
         $this->assertNotSame('Y', $survey->oOptions->anonymized, 'The anonymized attribute should not be taken from the custom group.');
         $this->assertNotSame('Y', $survey->aOptions['savetimings'], 'The savetimings attribute should not be taken from the custom group.');
+
+        // Asserting that survey defined values were not overwritten.
+        $this->assertSame('Y', $survey->oOptions->usecookie, 'The usecookie attribute should have been preserved.');
+        $this->assertSame('Y', $survey->aOptions['allowregister'], 'The allowregister attribute should have been preserved.');
+        $this->assertSame('N', $survey->aOptions['allowsave'], 'The allowsave attribute should have been preserved.');
     }
 }
