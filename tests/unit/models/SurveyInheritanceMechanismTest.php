@@ -192,4 +192,46 @@ class SurveyInheritanceMechanismTest extends TestBaseClass
         $this->assertSame('Y', $survey->aOptions['allowregister'], 'The allowregister attribute should have been preserved.');
         $this->assertSame('N', $survey->aOptions['allowsave'], 'The allowsave attribute should have been preserved.');
     }
+
+    /**
+     * Testing that the options are correctly inherited.
+     */
+    public function testSetInheritedGroupOptions()
+    {
+        // Asserting that the template attribute was not previously changed.
+        $this->assertSame('bootswatch', self::$surveysGroupSettings->template, 'The template attribute in the custom surveys group should not be changed.');
+
+        // Changing the template attribute in the custom group.
+        self::$surveysGroupSettings->template = 'inherit';
+        self::$surveysGroupSettings->save();
+        self::$surveysGroupSettings->refresh();
+
+        // Asserting that the attribute was actually changed.
+        $this->assertSame('inherit', self::$surveysGroupSettings->template, 'The template attribute was not changed.');
+
+        $survey = new \Survey();
+        $survey->usecookie = 'I';
+        $survey->bShowRealOptionValues = false;
+
+        // Asserting that the survey template attribute is set to inherit.
+        $this->assertSame('inherit', $survey->template, 'The survey should iherit the template attribute.');
+
+        $survey->setOptions((int)self::$surveysGroup->gsid);
+
+        // Checking specific values.
+        $defaultOptions = \SurveysGroupsettings::model()->findByAttributes(array('gsid' => 1));
+        $globalOptions = \SurveysGroupsettings::model()->findByAttributes(array('gsid' => 0));
+
+        if ($defaultOptions->template === 'inherit') {
+            $defaultOptions->template = $globalOptions->template;
+        }
+
+        if ($defaultOptions->usecookie === 'I') {
+            $defaultOptions->usecookie = $globalOptions->usecookie;
+        }
+
+        // Asserting that the options were inherited.
+        $this->assertSame($defaultOptions->template, $survey->oOptions->template);
+        $this->assertSame($defaultOptions->usecookie, $survey->oOptions->usecookie);
+    }
 }
