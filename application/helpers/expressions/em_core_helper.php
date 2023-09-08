@@ -2193,6 +2193,7 @@ class ExpressionManager
                                     case 'sin':
                                     case 'sqrt':
                                     case 'tan':
+                                    case 'ceil':
                                         if (is_numeric($params[0])) {
                                             $result = $funcName(floatval($params[0]));
                                         } else {
