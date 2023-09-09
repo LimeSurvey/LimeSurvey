@@ -1809,7 +1809,7 @@ class remotecontrol_handle
         if ($this->_checkSessionKey($sSessionKey)) {
             Yii::app()->loadHelper("surveytranslator");
             $iQuestionID = (int) $iQuestionID;
-            $oQuestion = Question::model()->findByAttributes(array('qid' => $iQuestionID));
+            $oQuestion = Question::model()->with('questionl10ns')->findByAttributes(array('qid' => $iQuestionID));
             if (is_null($oQuestion)) {
                             return array('status' => 'Error: Invalid group ID');
             }
@@ -1830,6 +1830,61 @@ class remotecontrol_handle
                                     return array('status' => 'Error: Invalid questionid');
                 }
 
+                // Backwards compatibility for L10n data
+                if (!empty($aQuestionData['language'])) {
+                    $language = $aQuestionData['language'];
+                    $aQuestionData['questionl10ns'][$language] = array(
+                        'language' => $language,
+                        'question' => $aQuestionData['question'] ?? '',
+                        'help' => $aQuestionData['help'] ?? '',
+                    );
+                }
+
+                // Process L10n data
+                if (!empty($aQuestionData['questionl10ns']) && is_array($aQuestionData['questionl10ns'])) {
+                    $aL10nDestinationFields = array_flip(QuestionL10n::model()->tableSchema->columnNames);
+                    foreach ($aQuestionData['questionl10ns'] as $language => $aLanguageData) {
+                        // Get existing L10n data or create new
+                        if (isset($oQuestion->questionl10ns[$language])) {
+                            $oQuestionL10n = $oQuestion->questionl10ns[$language];
+                        } else {
+                            $oQuestionL10n = new QuestionL10n();
+                            $oQuestionL10n->qid = $iQuestionID;
+                            $oQuestionL10n->setAttribute('language', $language);
+                            $oQuestionL10n->setAttribute('question', '');
+                            $oQuestionL10n->setAttribute('help', '');
+                            if (!$oQuestionL10n->save()) {
+                                $aResult['questionl10ns'][$language] = false;
+                                continue;
+                            }
+                        }
+
+                        // Remove invalid fields
+                        $aQuestionL10nData = array_intersect_key($aLanguageData, $aL10nDestinationFields);
+                        if (empty($aQuestionL10nData)) {
+                            $aResult['questionl10ns'][$language] = 'Empty question L10n data';
+                            continue;
+                        }
+
+                        $aQuestionL10nAttributes = $oQuestionL10n->getAttributes();
+                        foreach ($aQuestionL10nData as $sFieldName => $sValue) {
+                            $oQuestionL10n->setAttribute($sFieldName, $sValue);
+                            try {
+                                // save the change to database - one by one to allow for validation to work
+                                $bSaveResult = $oQuestionL10n->save();
+                                $aResult['questionl10ns'][$language][$sFieldName] = $bSaveResult;
+                                //unset failed values
+                                if (!$bSaveResult) {
+                                    $oQuestionL10n->$sFieldName = $aQuestionL10nAttributes[$sFieldName];
+                                }
+                            } catch (Exception $e) {
+                                //unset values that cause exception
+                                $oQuestionL10n->$sFieldName = $aQuestionL10nAttributes[$sFieldName];
+                            }
+                        }
+                    }
+                }
+
                 // Remove fields that may not be modified
                 unset($aQuestionData['qid']);
                 unset($aQuestionData['gid']);
@@ -1837,6 +1892,7 @@ class remotecontrol_handle
                 unset($aQuestionData['parent_qid']);
                 unset($aQuestionData['language']);
                 unset($aQuestionData['type']);
+
                 // Remove invalid fields
                 $aDestinationFields = array_flip(Question::model()->tableSchema->columnNames);
                 $aQuestionData = array_intersect_key($aQuestionData, $aDestinationFields);
