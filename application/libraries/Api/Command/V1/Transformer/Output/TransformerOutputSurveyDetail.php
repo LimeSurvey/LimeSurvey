@@ -68,9 +68,11 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
         );
 
         foreach ($data->groups as $questionGroupModel) {
-            // order of groups from the model relation may be different than from the transformed data
+            // Order of groups from the model relation may be different than from the transformed data
             // - so we use the lookup to get a reference to the required entity without needing to
             // - know its position in the output array
+            // If we don't assign by reference here the, additions to $group will create a new array
+            // - rather than modifying the original array
             $group = &$groupLookup[$questionGroupModel->gid];
 
             $group['l10ns'] = $this->transformerQuestionGroupL10ns->transformAll(
@@ -110,6 +112,8 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
             // questions from the model relation may be different than from the transformed data
             // - so we use the lookup to get a reference to the required entity without needing to
             // - know its position in the output array
+            // If we don't assign by reference here the, additions to $question will create a new array
+            // - rather than modifying the original array
             $question = &$questionLookup[$questionModel->qid];
 
             $question['l10ns'] = $this->transformerQuestionL10ns->transformAll(
@@ -147,10 +151,10 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
      * Returns an array of entity references indexed by the specified key.
      *
      * @param string $key
-     * @param array &$entityArray
+     * @param array $entityArray
      * @return array Entity reference
      */
-    private function createCollectionLookup($key, &$entityArray)
+    private function createCollectionLookup($key, $entityArray)
     {
         $output = [];
         foreach ($entityArray as &$entity) {
