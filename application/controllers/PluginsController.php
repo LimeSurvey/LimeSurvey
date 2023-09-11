@@ -6,6 +6,8 @@
  */
 class PluginsController extends LSYii_Controller
 {
+    /** @var array  import for all new controllers/actions (REFACTORING) to pass data before rendering the content*/
+    public $aData = [];
     /**
      * Launch the event newDirectRequest
      * @param $plugin : the target
