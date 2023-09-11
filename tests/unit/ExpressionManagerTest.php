@@ -93,7 +93,8 @@ class ExpressionManagerTest extends TestBaseClass
 
     public function testJuggling()
     {
-        $equalities = array(
+        // Original test array.
+        /*$equalities = array(
             '"1" == 1' => 1,
             '"5" + "2"' => 52,
             '"1" == 0' => '', // False is an empty string.
@@ -101,6 +102,18 @@ class ExpressionManagerTest extends TestBaseClass
             '1 + "2"' => 12,
             '"1" + "a"' => '1a',
             '1 + "a"' => '1a',
+        );*/
+
+        $equalities = array(
+            '"1" == 1' => 1,
+            '"5" + "2"' => 52, // String concatenation.
+            '"1" == 0' => '', // False is an empty string.
+            '1 == "1"' => 1,
+            '1 + "2"' => 12,
+            '"1" + "a"' => '1a',
+            '1 + "a"' => '1a',
+            '"05" + "1"' => "051", // String concatenation.
+            '"" + "1" + "2"' => 12
         );
 
         foreach ($equalities as $expression => $expected) {
