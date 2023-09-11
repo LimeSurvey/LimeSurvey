@@ -585,9 +585,7 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
             if (strpos($this->Body, "<html>") === false) {
                 $this->Body = "<html>" . $this->Body . "</html>";
             }
-            $this->msgHTML($this->Body, App()->getConfig("publicdir"), function($html) {
-                return (new \Html2Text\Html2Text($html))->getText();
-            }); // This allow embedded image if we remove the servername from image
+            $this->msgHTML($this->Body, App()->getConfig("publicdir")); // This allow embedded image if we remove the servername from image
             // TODO: Original AltBody is overwritten by msgHTML. Do we need to set it again if there was one?
         }
         return $this->Send();
@@ -986,5 +984,18 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
             }
         }
         return $aOutList;
+    }
+
+    /**
+     * @inheritdoc
+     * Override to use a better html to text converter (ex. doesn't removes links)
+     */
+    public function html2text($html, $advanced = false)
+    {
+        if (is_callable($advanced)) {
+            return call_user_func($advanced, $html);
+        }
+
+        return (new \Html2Text\Html2Text($html))->getText();
     }
 }
