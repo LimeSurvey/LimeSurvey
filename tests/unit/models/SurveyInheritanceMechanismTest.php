@@ -108,20 +108,20 @@ class SurveyInheritanceMechanismTest extends TestBaseClass
         $globalOptions = \SurveysGroupsettings::model()->findByAttributes(array('gsid' => 0));
 
         if ($defaultOptions->anonymized === 'I') {
-            $defaultOptions->anonymized = $globalOptions->anonymized;
+            $expectedAnonymizedOption = $globalOptions->anonymized;
         }
 
         if ($defaultOptions->savetimings === 'I') {
-            $defaultOptions->savetimings = $globalOptions->savetimings;
+            $expectedSavetimingsOption = $globalOptions->savetimings;
         }
 
         if ($defaultOptions->template === 'inherit') {
-            $defaultOptions->template = $globalOptions->template;
+            $expectedTemplate = $globalOptions->template;
         }
 
-        $this->assertSame($defaultOptions->anonymized, $survey->oOptions->anonymized, 'The survey anonymized attribute should correspond to the global attribute.');
-        $this->assertSame($defaultOptions->savetimings, $survey->aOptions['savetimings'], 'The survey savetimings attribute should correspond to the global attribute.');
-        $this->assertSame($defaultOptions->template, $survey->aOptions['template'], 'The survey template attribute should correspond to the global attribute.');
+        $this->assertSame($expectedAnonymizedOption, $survey->oOptions->anonymized, 'The survey anonymized attribute should correspond to the global attribute.');
+        $this->assertSame($expectedSavetimingsOption, $survey->aOptions['savetimings'], 'The survey savetimings attribute should correspond to the global attribute.');
+        $this->assertSame($expectedTemplate, $survey->aOptions['template'], 'The survey template attribute should correspond to the global attribute.');
     }
 
     /**
@@ -223,15 +223,15 @@ class SurveyInheritanceMechanismTest extends TestBaseClass
         $globalOptions = \SurveysGroupsettings::model()->findByAttributes(array('gsid' => 0));
 
         if ($defaultOptions->template === 'inherit') {
-            $defaultOptions->template = $globalOptions->template;
+            $expectedTemplate = $globalOptions->template;
         }
 
         if ($defaultOptions->usecookie === 'I') {
-            $defaultOptions->usecookie = $globalOptions->usecookie;
+            $expectedUsecookieOption = $globalOptions->usecookie;
         }
 
         // Asserting that the options were inherited.
-        $this->assertSame($defaultOptions->template, $survey->oOptions->template);
-        $this->assertSame($defaultOptions->usecookie, $survey->oOptions->usecookie);
+        $this->assertSame($expectedTemplate, $survey->oOptions->template);
+        $this->assertSame($expectedUsecookieOption, $survey->oOptions->usecookie);
     }
 }
