@@ -175,9 +175,9 @@ LS.CPDB = (function() {
             return false;
         });
 
-        $('#list_central_participants').on('click', '.action_participant_editModal', function(e){
+        $('.action_participant_editModal').on('click', function(e){
             e.preventDefault();
-            var data = {modalTarget: 'editparticipant', 'participant_id' : $(this).closest('tr').data('participant_id')};
+            var data = {modalTarget: 'editparticipant', 'participant_id' : $(this).data('participantId')};
             //url, data, idString, actionButtonClass, formId, gridViewId
             runBaseModal(
                 openModalParticipantPanel,
@@ -193,9 +193,9 @@ LS.CPDB = (function() {
             );
         });
 
-        $('#list_central_participants').on('click', '.action_participant_deleteModal', function(e) {
+        $('.action_participant_deleteModal').on('click', function(e) {
             e.preventDefault();
-            var data = {modalTarget: 'showdeleteparticipant', 'participant_id' : $(this).closest('tr').data('participant_id')};
+            var data = {modalTarget: 'showdeleteparticipant', 'participant_id' : $(this).data('participantId')};
             //url, data, idString, actionButtonClass, formId, gridViewId
             runBaseModal(
                 openModalParticipantPanel,
@@ -210,11 +210,11 @@ LS.CPDB = (function() {
                 }
                 );
         });
-        $('#list_central_participants').on('click', '.action_participant_infoModal', function(e) {
+        $('.action_participant_infoModal').on('click', function(e) {
             e.preventDefault();
             var data = {
                 modalTarget: 'showparticipantsurveys',
-                participant_id: $(this).closest('tr').data('participant_id')
+                participant_id: $(this).data('participantId')
             };
             //url, data, idString, actionButtonClass, formId, gridViewId
             runBaseModal(
@@ -225,9 +225,9 @@ LS.CPDB = (function() {
                     'list_central_participants'
                     );
         });
-        $('#list_central_participants').on('click', '.action_participant_shareParticipant', function(e) {
+        $('.action_participant_shareParticipant').on('click', function(e) {
             e.preventDefault();
-            var data = {modalTarget: 'shareparticipant', 'participant_id' : $(this).closest('tr').data('participant_id')};
+            var data = {modalTarget: 'shareparticipant', 'participant_id' : $(this).data('participantId')};
             //url, data, idString, actionButtonClass, formId, gridViewId
             runBaseModal(
                 openModalParticipantPanel,
@@ -267,10 +267,10 @@ LS.CPDB = (function() {
         /**
          * Small icon, add participant to a survey
          */
-        $('#list_central_participants').on('click', '.action_participant_addToSurvey', function(e) {
+        $('.action_participant_addToSurvey').on('click', function(e) {
             var data = {
                 modalTarget: 'addToSurvey',
-                participant_id: $(this).closest('tr').data('participant_id')
+                participant_id: $(this).data('participantId')
             };
             //url, data, idString, actionButtonClass, formId, gridViewId
             runBaseModal(
