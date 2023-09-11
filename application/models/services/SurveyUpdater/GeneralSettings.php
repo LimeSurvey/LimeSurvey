@@ -267,7 +267,7 @@ class GeneralSettings
      * @SuppressWarnings("php:S3776") Cognitive Complexity
      * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
-    private function setField($field, $input, Survey $survey, $meta, $fieldOpts = null)
+    private function setField($field, &$input, Survey $survey, $meta, $fieldOpts = null)
     {
         $meta = is_array($meta) ? $meta : [
             'updateFields' => []
@@ -364,24 +364,25 @@ class GeneralSettings
                 : $value
             );
         }
+
+        // Convert additional_languages array to string
         if (
             $field == 'additional_languages'
             && is_array($value)
         ) {
-            if (
-                (
-                    $index = array_search(
-                        $survey->language,
-                        $value
-                    )
-                ) !== false
-            ) {
-                unset($value[$index]);
-            }
             $value = implode(
                 ' ',
                 $value
             );
+        }
+        // Ensure all other languages are in additional_languages
+        // - primary language is removed from additional_languages
+        if ($field == 'language') {
+            $input['additional_languages']
+                = $this->getAdditionalLanguagesArray(
+                    $input,
+                    $survey
+                );
         }
 
         $survey->{$field} = $value;
@@ -396,6 +397,33 @@ class GeneralSettings
         }
 
         return $meta;
+    }
+
+    private function getAdditionalLanguagesArray($input, Survey $survey)
+    {
+        $additionalLanguages  = isset($input['additional_languages'])
+            && is_array($input['additional_languages'])
+            ? $input['additional_languages']
+            : [];
+        $languages = array_unique(array_merge(
+            $additionalLanguages,
+            $survey->getAllLanguages()
+        ));
+
+        // If the 'language' is in the array remove it
+        $language = $input['language'] ?? $survey->language;
+        if (
+            (
+                $index = array_search(
+                    $language,
+                    $languages
+                )
+            ) !== false
+        ) {
+            unset($languages[$index]);
+        }
+
+        return $languages;
     }
 
     /**
