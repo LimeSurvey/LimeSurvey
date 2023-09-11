@@ -74,9 +74,16 @@
                         <label class='form-label '
                                for='partialonly'><?php eT("Send email only to participants with partial responses:"); ?></label>
                         <div>
+                            <?php
+                                $disabledTip = gT('Not supported for anonymous surveys.');
+                            ?>
                             <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
-                                'name'          => 'partialonly',
+                                'name' => 'partialonly',
                                 'checkedOption' => '0',
+                                'htmlOptions' => [
+                                    'title' => $oSurvey->anonymized == 'Y' ? $disabledTip : '',
+                                    'disabled' => $oSurvey->anonymized == 'Y' ? '1' : '0',
+                                ],
                                 'selectOptions' => [
                                     '1' => gT('On'),
                                     '0' => gT('Off'),

@@ -827,7 +827,7 @@ function getSurveyInfo($surveyid, $languagecode = '', $force = false)
             } else {
                 $thissurvey['owner_username'] = '';
             }
-            
+
 
             $staticSurveyInfo[$surveyid][$languagecode] = $thissurvey;
         }
@@ -2620,12 +2620,13 @@ function hasTemplateManageRights($userid, $sThemeFolder)
 * Translate links which are in any answer/question/survey/email template/label set to their new counterpart
 *
 * @param string $sType 'survey' or 'label'
-* @param mixed $iOldSurveyID
-* @param mixed $iNewSurveyID
-* @param string $sString A string or null
+* @param mixed $iOldSurveyID Source SurveyId to be replaced
+* @param mixed $iNewSurveyID New SurveyId to be used
+* @param string $sString Link (url or local path) to be translated
+* @param bool $isLocalPath Indicates if the link ($sString) is a local path or a url.
 * @return string
 */
-function translateLinks($sType, $iOldSurveyID, $iNewSurveyID, $sString)
+function translateLinks($sType, $iOldSurveyID, $iNewSurveyID, $sString, $isLocalPath = false)
 {
     if ($sString == '') {
         return $sString;
@@ -2633,11 +2634,15 @@ function translateLinks($sType, $iOldSurveyID, $iNewSurveyID, $sString)
     $iOldSurveyID = (int) $iOldSurveyID;
     $iNewSurveyID = (int) $iNewSurveyID; // To avoid injection of a /e regex modifier without having to check all execution paths
     if ($sType == 'survey') {
-        $sPattern = '(http(s)?:\/\/)?(([a-z0-9\/\.])*(?=(\/upload))\/upload\/surveys\/' . $iOldSurveyID . '\/)';
-        $sReplace = Yii::app()->getConfig("publicurl") . "upload/surveys/{$iNewSurveyID}/";
+        $sPattern = '(http(s)?:\/\/)?(([a-z0-9\/\.\-\_])*(?=(\/upload))\/upload\/surveys\/' . $iOldSurveyID . '\/)';
+        if ($isLocalPath) {
+            $sReplace = Yii::app()->getConfig("uploaddir") . "/surveys/{$iNewSurveyID}/";
+        } else {
+            $sReplace = Yii::app()->getConfig("publicurl") . "upload/surveys/{$iNewSurveyID}/";
+        }
         return preg_replace('/' . $sPattern . '/u', $sReplace, $sString);
     } elseif ($sType == 'label') {
-        $sPattern = '(http(s)?:\/\/)?(([a-z0-9\/\.])*(?=(\/upload))\/upload\/labels\/' . $iOldSurveyID . '\/)';
+        $sPattern = '(http(s)?:\/\/)?(([a-z0-9\/\.\-\_])*(?=(\/upload))\/upload\/labels\/' . $iOldSurveyID . '\/)';
         $sReplace = Yii::app()->getConfig("publicurl") . "upload/labels/{$iNewSurveyID}/";
         return preg_replace("/" . $sPattern . "/u", $sReplace, $sString);
     } else // unknown type
@@ -3644,11 +3649,11 @@ function replaceExpressionCodes($iSurveyID, $aCodeMap)
 * @param string $availlangs - space separated list of additional languages in survey
 * @return void
 */
-function cleanLanguagesFromSurvey($iSurveyID, $availlangs)
+function cleanLanguagesFromSurvey($iSurveyID, $availlangs, $baselang = null)
 {
     Yii::app()->loadHelper('database');
     $iSurveyID = (int) $iSurveyID;
-    $baselang = Survey::model()->findByPk($iSurveyID)->language;
+    $baselang = $baselang ?? Survey::model()->findByPk($iSurveyID)->language;
     $aLanguages = [];
     if (!empty($availlangs) && $availlangs != " ") {
         $availlangs = sanitize_languagecodeS($availlangs);
@@ -3667,8 +3672,8 @@ function cleanLanguagesFromSurvey($iSurveyID, $availlangs)
     }
 
     // Remove From Answer Table
-    $sQuery = "SELECT ls.id from {{answer_l10ns}} ls 
-            JOIN {{answers}} a on ls.aid=a.aid 
+    $sQuery = "SELECT ls.id from {{answer_l10ns}} ls
+            JOIN {{answers}} a on ls.aid=a.aid
             JOIN {{questions}} q on a.qid=q.qid
             WHERE sid={$iSurveyID} AND {$sqllang}";
     $result = Yii::app()->db->createCommand($sQuery)->queryAll();
@@ -3676,7 +3681,7 @@ function cleanLanguagesFromSurvey($iSurveyID, $availlangs)
         Yii::app()->db->createCommand('delete from {{answer_l10ns}} where id =' . $row['id'])->execute();
     }
     // Remove From Questions Table
-    $sQuery = "SELECT ls.id from {{question_l10ns}} ls 
+    $sQuery = "SELECT ls.id from {{question_l10ns}} ls
             JOIN {{questions}} q on ls.qid=q.qid
             WHERE sid={$iSurveyID} AND {$sqllang}";
     $result = Yii::app()->db->createCommand($sQuery)->queryAll();
@@ -3686,7 +3691,7 @@ function cleanLanguagesFromSurvey($iSurveyID, $availlangs)
 
     // Remove From Questions Table
     $quotedGroups = Yii::app()->db->quoteTableName('{{groups}}');
-    $sQuery = "SELECT ls.id from {{group_l10ns}} ls 
+    $sQuery = "SELECT ls.id from {{group_l10ns}} ls
             JOIN $quotedGroups g on ls.gid=g.gid
             WHERE sid={$iSurveyID} AND {$sqllang}";
     $result = Yii::app()->db->createCommand($sQuery)->queryAll();
@@ -3761,9 +3766,9 @@ function fixLanguageConsistency($sid, $availlangs = '', $baselang = '')
         }
     }
 
-    $query = "SELECT * FROM {{answers}} a 
-    JOIN {{answer_l10ns}} ls ON ls.aid=a.aid 
-    JOIN  {{questions}} q on a.qid=q.qid 
+    $query = "SELECT * FROM {{answers}} a
+    JOIN {{answer_l10ns}} ls ON ls.aid=a.aid
+    JOIN  {{questions}} q on a.qid=q.qid
     WHERE language='{$baselang}' and q.sid={$sid}";
     $result = Yii::app()->db->createCommand($query)->query();
     foreach ($result->readAll() as $answer) {
@@ -4612,7 +4617,7 @@ function getIPAddress()
 /**
  * This function returns the real IP address and should mainly be used for security sensitive purposes
  * If you want to use the IP address for language detection or similar, use getIPAddress() instead
- * 
+ *
  * @return  string  Client IP Address
  */
 function getRealIPAddress()

@@ -343,9 +343,13 @@ function getDefaultDateTimePickerSettings() {
     return mydata;
 }
 
-function bindListItemclick(){
-    $( '.listActions a').off('click.listactions').on('click.listactions', onClickListAction);
-    $( '.listActions .disabled a').off('click.listactions').on('click.listactions', function(e){ e.preventDefault(); });
+function bindListItemclick() {
+    let listActions = $('.listActions a');
+    let listActionsDisabled = $('.listActions .disabled a');
+    listActions.off('click.listactions').on('click.listactions', onClickListAction);
+    listActionsDisabled.off('click.listactions').on('click.listactions', function (e) {
+        e.preventDefault();
+    });
 }
 
 
@@ -363,30 +367,32 @@ $(document).off('pjax:scriptcomplete.listActions').on('pjax:scriptcomplete.listA
     bindListItemclick();
 });
 
-$(document).off('bindscroll.listActions').on('bindscroll.listActions, ready ', function () {
+
+function switchStatusOfListActions(e) {
     var checkboxes = $('input[type="checkbox"]');
     var actionButton = $('.massiveAction');
     // Attach an onchange event handler to all checkboxes
-    checkboxes.on('change', function() {
-      if (isAnyCheckboxChecked()) {
-        actionButton.removeClass('disabled');
-      } else {
-        actionButton.addClass('disabled');
-      }
+    checkboxes.on('change', function () {
+        if (isAnyCheckboxChecked()) {
+            actionButton.removeClass('disabled');
+        } else {
+            actionButton.addClass('disabled');
+        }
     });
-  
+
     // Function to check if at least one checkbox is checked
     function isAnyCheckboxChecked() {
-      var isChecked = false;
-      checkboxes.each(function() {
-        if ($(this).is(':checked')) {
-          isChecked = true;
-          return false; // Break out of the loop
-        }
-      });
-      return isChecked;
+        var isChecked = false;
+        checkboxes.each(function () {
+            if ($(this).is(':checked')) {
+                isChecked = true;
+                return false; // Break out of the loop
+            }
+        });
+        return isChecked;
     }
-    
+}
 
-    bindListItemclick();
+document.addEventListener("DOMContentLoaded", () => {
+    switchStatusOfListActions();
 });
