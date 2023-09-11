@@ -194,44 +194,68 @@ class SurveyInheritanceMechanismTest extends TestBaseClass
     }
 
     /**
-     * Testing that the options are correctly inherited.
+     * Testing that the global options are correctly inherited.
      */
-    public function testSetInheritedGroupOptions()
+    public function testSetInheritedGlobalGroupOptions()
     {
-        // Asserting that the template attribute was not previously changed.
-        $this->assertSame('bootswatch', self::$surveysGroupSettings->template, 'The template attribute in the custom surveys group should not be changed.');
+        // Setting temporary global options for the test.
+        $globalOptions = \SurveysGroupsettings::model()->findByAttributes(array('gsid' => 0));
 
-        // Changing the template attribute in the custom group.
+        $tmpGlobalTemplate = $globalOptions->template;
+        $tmpGlobalUsecookie = $globalOptions->usecookie;
+        $tmpGlobalAllowsave = $globalOptions->allowsave;
+
+        $globalOptions->template = 'test_global_template';
+        $globalOptions->usecookie = 'Y';
+        $globalOptions->allowsave = 'N';
+
+        $globalOptions->save();
+
+        // Setting default options to inherit temporarily.
+        $defaultOptions = \SurveysGroupsettings::model()->findByAttributes(array('gsid' => 1));
+
+        $tmpDefaultTemplate = $defaultOptions->template;
+        $tmpDefaultUsecookie = $defaultOptions->usecookie;
+        $tmpDefaultAllowsave = $defaultOptions->allowsave;
+
+        $defaultOptions->template = 'inherit';
+        $defaultOptions->usecookie = 'I';
+        $defaultOptions->allowsave = 'I';
+
+        $defaultOptions->save();
+
+        // Changing attributes in the custom group.
         self::$surveysGroupSettings->template = 'inherit';
+        self::$surveysGroupSettings->usecookie = 'I';
+        self::$surveysGroupSettings->allowsave = 'I';
+
         self::$surveysGroupSettings->save();
         self::$surveysGroupSettings->refresh();
 
-        // Asserting that the attribute was actually changed.
-        $this->assertSame('inherit', self::$surveysGroupSettings->template, 'The template attribute was not changed.');
-
         $survey = new \Survey();
+        $survey->template = 'inherit';
         $survey->usecookie = 'I';
+        $survey->allowsave = 'I';
         $survey->bShowRealOptionValues = false;
-
-        // Asserting that the survey template attribute is set to inherit.
-        $this->assertSame('inherit', $survey->template, 'The survey should iherit the template attribute.');
 
         $survey->setOptions((int)self::$surveysGroup->gsid);
 
-        // Checking specific values.
-        $defaultOptions = \SurveysGroupsettings::model()->findByAttributes(array('gsid' => 1));
-        $globalOptions = \SurveysGroupsettings::model()->findByAttributes(array('gsid' => 0));
+        // Asserting that the options were inherited from the global context.
+        $this->assertSame('test_global_template', $survey->oOptions->template);
+        $this->assertSame('Y', $survey->oOptions->usecookie);
+        $this->assertSame('N', $survey->oOptions->allowsave);
 
-        if ($defaultOptions->template === 'inherit') {
-            $expectedTemplate = $globalOptions->template;
-        }
+        // Restoring options.
+        $globalOptions->template = $tmpGlobalTemplate;
+        $globalOptions->usecookie = $tmpGlobalUsecookie;
+        $globalOptions->allowsave = $tmpGlobalAllowsave;
 
-        if ($defaultOptions->usecookie === 'I') {
-            $expectedUsecookieOption = $globalOptions->usecookie;
-        }
+        $globalOptions->save();
 
-        // Asserting that the options were inherited.
-        $this->assertSame($expectedTemplate, $survey->oOptions->template);
-        $this->assertSame($expectedUsecookieOption, $survey->oOptions->usecookie);
+        $defaultOptions->template = $tmpDefaultTemplate;
+        $defaultOptions->usecookie = $tmpDefaultUsecookie;
+        $defaultOptions->allowsave = $tmpDefaultAllowsave;
+
+        $defaultOptions->save();
     }
 }
