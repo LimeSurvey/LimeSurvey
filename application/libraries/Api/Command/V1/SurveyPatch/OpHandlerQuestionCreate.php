@@ -423,7 +423,7 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
                             $answerL10n
                         );
                         $transformedAnswer['answeroptionl10n'][$lang] =
-                            $tfAnswerL10n['answer'];
+                            $tfAnswerL10n['answer'] ?? null;
                     }
                 }
                 /**
@@ -469,7 +469,7 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
                             $subL10n
                         );
                         $tfSubQuestion['subquestionl10n'][$lang] =
-                            $tfAnswerL10n['question'];
+                            $tfAnswerL10n['question'] ?? null;
                     }
                 }
                 $preparedSubQuestions[$index][0] = $tfSubQuestion;

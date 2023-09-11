@@ -160,8 +160,8 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
 
     /**
      * Adds the language specific data of answer_l10ns to the answers array
-     * @param $answerLookup
-     * @param $answers
+     * @param array $answerLookup
+     * @param array $answers
      * @return void
      */
     private function transformAnswersL10n($answerLookup, $answers)
