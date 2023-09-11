@@ -11,9 +11,9 @@ class TransformerInputQuestionAggregate extends Transformer
         $this->setDataMap([
             'question' => true,
             'questionL10n' => 'questionI10N',
-            'advancedSettings' => true,
-            'answerOptions' => 'answeroptions',
-            'subQuestions' => 'subquestions'
+            'attributes' => 'advancedSettings',
+            'answers' => 'answeroptions',
+            'subquestions' => true
         ]);
     }
 }

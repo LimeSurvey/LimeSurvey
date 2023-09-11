@@ -4,15 +4,21 @@ namespace LimeSurvey\Api\Command\V1\Transformer\Input;
 
 use LimeSurvey\Api\Transformer\Transformer;
 
+/**
+ * Class TransformerInputSubQuestion
+ * Although subquestions are handled as questions from the db, the expected
+ * structure by the service is totally different.
+ */
 class TransformerInputSubQuestion extends Transformer
 {
     public function __construct()
     {
         $this->setDataMap([
             'oldCode' => 'oldcode',
-            'code' => true,
+            'title' => 'code',
             'relevance' => true,
-            'subQuestionL10n' => 'subquestionl10n'
+            'questionOrder' => ['key' => 'question_order', 'type' => 'int'],
+            'sortOrder' => ['key' => 'question_order', 'type' => 'int']
         ]);
     }
 }
