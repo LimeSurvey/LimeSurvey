@@ -2194,6 +2194,8 @@ class ExpressionManager
                                     case 'sqrt':
                                     case 'tan':
                                     case 'ceil':
+                                    case 'floor':
+                                    case 'round':
                                         if (is_numeric($params[0])) {
                                             $result = $funcName(floatval($params[0]));
                                         } else {
@@ -2210,6 +2212,7 @@ class ExpressionManager
                             if (!$this->RDP_onlyparse) {
                                 switch ($funcName) {
                                     case 'atan2':
+                                    case 'pow':
                                         if (is_numeric($params[0]) && is_numeric($params[1])) {
                                             $result = $funcName(floatval($params[0]), floatval($params[1]));
                                         } else {
