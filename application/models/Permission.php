@@ -583,6 +583,13 @@ class Permission extends LSActiveRecord
                 ),
                 $bPermission
             );
+            /* get it by roles if exist */
+            $aRolesList = CHtml::listData(self::getUserRole($iUserID), 'ptid', 'ptid');
+            if ($aRolesList) {
+                /* Do it only for read and create : roles can remove permission */
+                $aPermissionStatic[0]['global'][$iUserID]['superadmin']['read_p'] = self::getPermissionByRoles($aRolesList, 'superadmin', 'read');
+                $aPermissionStatic[0]['global'][$iUserID]['superadmin']['create_p'] = self::getPermissionByRoles($aRolesList, 'superadmin', 'create');
+            }
         }
         /* If it's a superadmin Permission : get and return */
         if ($sPermission == 'superadmin') {
@@ -783,6 +790,23 @@ class Permission extends LSActiveRecord
     public static function getUserRole($iUserID)
     {
         return UserInPermissionrole::model()->getRoleForUser($iUserID);
+    }
+
+        /**
+     * get permission by user roles
+     * @param integer[] $rolesIds array of roles id
+     * @param string $permission;
+     * @param string $crud
+     * @return boolean
+     */
+    public static function getPermissionByRoles($rolesIds, $permission, $crud = 'read')
+    {
+        $criteria = new CDbCriteria();
+        $criteria->compare("entity", "role");
+        $criteria->compare("permission", $permission);
+        $criteria->addInCondition('entity_id', $rolesIds);
+        $criteria->compare($crud . '_p', 1);
+        return boolval(self::model()->count($criteria));
     }
 
     /**
