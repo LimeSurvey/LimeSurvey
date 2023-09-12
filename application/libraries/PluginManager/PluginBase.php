@@ -3,6 +3,7 @@
 namespace LimeSurvey\PluginManager;
 
 use LSActiveRecord;
+use Yii;
 
 /**
  * Base class for plugins.
@@ -367,7 +368,31 @@ abstract class PluginBase implements iPlugin
     }
 
     /**
-     * Look for views in plugin views/ folder and render it
+     * Look for views in plugin views/ folder and renders a page
+     *
+     * @param string $viewfile Filename of view in views folder of the plugin
+     * @param array $data data to be extracted into PHP variables and made available to the view script
+     * @param boolean $return whether the rendering result should be returned instead of being displayed to end users.
+     * @return string the rendering result. Null if the rendering result is not required.
+     */
+    public function render($viewfile, $data, $return = false)
+    {
+        $alias = 'plugin_views_folder' . $this->id;
+        Yii::setPathOfAlias($alias, $this->getDir());
+        $fullAlias = $alias . '.views.' . $viewfile;
+
+        if (isset($data['plugin'])) {
+            throw new InvalidArgumentException("Key 'plugin' in data variable is for plugin base only. Please use another key name.");
+        }
+        // Provide this so we can use $plugin->gT() in plugin views
+        $data['plugin'] = $this;
+        $controller = App()->controller;
+        $controller->layout = 'main';
+        return $controller->render($fullAlias, $data, $return);
+    }
+
+    /**
+     * Look for views in plugin views/ folder and renders a partial
      *
      * @param string $viewfile Filename of view in views/ folder
      * @param array $data
