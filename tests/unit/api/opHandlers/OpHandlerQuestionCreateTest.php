@@ -87,10 +87,10 @@ class OpHandlerQuestionCreateTest extends TestBaseClass
         );
         $this->assertArrayHasKey(
             'public_statistics',
-            $preparedData[0]
+            $preparedData['advancedSettings'][0]
         );
         $this->assertIsNotArray(
-            $preparedData[0]['public_statistics']
+            $preparedData['advancedSettings'][0]['public_statistics']
         );
     }
 
