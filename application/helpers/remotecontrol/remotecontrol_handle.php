@@ -1899,7 +1899,11 @@ class remotecontrol_handle
                 $aQuestionAttributes = $oQuestion->getAttributes();
 
                 if (empty($aQuestionData)) {
-                                    return array('status' => 'No valid Data');
+                    if (empty($aResult)) {
+                        return array('status' => 'No valid Data');
+                    } else {
+                        return $aResult;
+                    }
                 }
 
                 foreach ($aQuestionData as $sFieldName => $sValue) {
