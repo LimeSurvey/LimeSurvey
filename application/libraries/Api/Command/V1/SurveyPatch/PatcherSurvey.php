@@ -27,42 +27,27 @@ class PatcherSurvey extends Patcher
      */
     public function __construct(FactoryInterface $diFactory, ContainerInterface $diContainer)
     {
-        $this->addOpHandlerSurvey($diContainer);
-        $this->addOpHandlerLanguageSetting($diContainer);
-        $this->addOpHandlerQuestionGroup($diContainer);
-        $this->addOpHandlerQuestionGroupL10n($diContainer);
+        $this->addOpHandler($diContainer->get(
+            OpHandlerSurveyUpdate::class
+        ));
+        $this->addOpHandler($diContainer->get(
+            OpHandlerLanguageSettingsUpdate::class
+        ));
+        $this->addOpHandler($diContainer->get(
+            OpHandlerQuestionGroup::class
+        ));
+        $this->addOpHandler($diContainer->get(
+            OpHandlerQuestionGroupL10n::class
+        ));
+        $this->addOpHandler($diContainer->get(
+            OpHandlerQuestionDelete::class
+        ));
         $this->addOpHandlerQuestion($diFactory, $diContainer);
         $this->addOpHandlerQuestionL10n($diFactory, $diContainer);
         $this->addOpHandlerQuestionAttribute($diFactory, $diContainer);
         $this->addOpHandlerQuestionAnswer($diFactory, $diContainer);
-        $this->addOpHandlerQuestionGroupReorder($diContainer);
-    }
-
-    private function addOpHandlerSurvey(ContainerInterface $diContainer): void
-    {
         $this->addOpHandler($diContainer->get(
-            OpHandlerSurveyUpdate::class
-        ));
-    }
-
-    private function addOpHandlerLanguageSetting(ContainerInterface $diContainer): void
-    {
-        $this->addOpHandler($diContainer->get(
-            OpHandlerLanguageSettingsUpdate::class
-        ));
-    }
-
-    private function addOpHandlerQuestionGroup(ContainerInterface $diContainer): void
-    {
-        $this->addOpHandler($diContainer->get(
-            OpHandlerQuestionGroup::class
-        ));
-    }
-
-    private function addOpHandlerQuestionGroupL10n(ContainerInterface $diContainer): void
-    {
-        $this->addOpHandler($diContainer->get(
-            OpHandlerQuestionGroupL10n::class
+            OpHandlerQuestionGroupReorder::class
         ));
     }
 
@@ -119,14 +104,6 @@ class PatcherSurvey extends Patcher
                     TransformerInputAnswer::class
                 )
             ]
-        ));
-    }
-
-    private function addOpHandlerQuestionGroupReorder(
-        ContainerInterface $diContainer
-    ): void {
-        $this->addOpHandler($diContainer->get(
-            OpHandlerQuestionGroupReorder::class
         ));
     }
 }
