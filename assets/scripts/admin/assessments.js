@@ -45,7 +45,7 @@ var bindAction = function(){
         var loadEditUrl = linkLoadEditUrl.dataset.editurl;
         $.ajax({
             url: loadEditUrl,
-            data: {id: $(this).closest('tr').data('assessment-id')},// crsf is already in ajaxsetup
+            data: {id: $(this).data('assesment-id')},// crsf is already in ajaxsetup
             method: 'GET',
             success: function(responseData){
                 $("#in_survey_common").css({cursor: ""});

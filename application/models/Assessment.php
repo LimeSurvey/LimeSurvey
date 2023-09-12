@@ -111,6 +111,7 @@ class Assessment extends LSActiveRecord
             'linkId'            => 'loadEditUrl_forModalView',
             'linkAttributes'   => [
                 'data-editurl' => App()->createUrl("assessment/edit/", ["surveyid" => $this->sid]),
+                'data-assesment-id' => $this->id
             ]
         ];
         $dropdownItems[] = [
