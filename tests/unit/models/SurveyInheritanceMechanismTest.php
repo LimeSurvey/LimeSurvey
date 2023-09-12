@@ -258,4 +258,43 @@ class SurveyInheritanceMechanismTest extends TestBaseClass
 
         $defaultOptions->save();
     }
+
+    /**
+     * Testing that the default options are correctly inherited.
+     */
+    public function testSetInheritedDefaultGroupOptions()
+    {
+        // Setting temporary default options for the test.
+        $defaultOptions = \SurveysGroupsettings::model()->findByAttributes(array('gsid' => 0));
+
+        $tmpDefaultTemplate = $defaultOptions->template;
+        $tmpDefaultUsecookie = $defaultOptions->usecookie;
+        $tmpDefaultAllowsave = $defaultOptions->allowsave;
+
+        $defaultOptions->template = 'test_default_template';
+        $defaultOptions->usecookie = 'Y';
+        $defaultOptions->allowsave = 'N';
+
+        $defaultOptions->save();
+
+        $survey = new \Survey();
+        $survey->template = 'inherit';
+        $survey->usecookie = 'I';
+        $survey->allowsave = 'I';
+        $survey->bShowRealOptionValues = false;
+
+        $survey->setOptions((int)self::$surveysGroup->gsid);
+
+        // Asserting that the options were inherited from the global context.
+        $this->assertSame('test_default_template', $survey->oOptions->template);
+        $this->assertSame('Y', $survey->oOptions->usecookie);
+        $this->assertSame('N', $survey->oOptions->allowsave);
+
+        // Restoring options.
+        $defaultOptions->template = $tmpDefaultTemplate;
+        $defaultOptions->usecookie = $tmpDefaultUsecookie;
+        $defaultOptions->allowsave = $tmpDefaultAllowsave;
+
+        $defaultOptions->save();
+    }
 }
