@@ -423,7 +423,11 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
                             $answerL10n
                         );
                         $transformedAnswer['answeroptionl10n'][$lang] =
-                            $tfAnswerL10n['answer'] ?? null;
+                            (
+                                is_array($tfAnswerL10n)
+                                && isset($tfAnswerL10n['answer'])
+                            ) ?
+                                $tfAnswerL10n['answer'] : null;
                     }
                 }
                 /**
@@ -465,11 +469,15 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
                     ) && is_array($subQuestion['l10ns'])
                 ) {
                     foreach ($subQuestion['l10ns'] as $lang => $subL10n) {
-                        $tfAnswerL10n = $this->transformerL10n->transform(
+                        $tfSubL10n = $this->transformerL10n->transform(
                             $subL10n
                         );
                         $tfSubQuestion['subquestionl10n'][$lang] =
-                            $tfAnswerL10n['question'] ?? null;
+                            (
+                                is_array($tfSubL10n)
+                                && isset($tfSubL10n['question'])
+                            ) ?
+                                $tfSubL10n['question'] : null;
                     }
                 }
                 $preparedSubQuestions[$index][0] = $tfSubQuestion;
