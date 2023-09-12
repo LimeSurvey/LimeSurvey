@@ -1,0 +1,10 @@
+.MuiTextField-root {
+  min-width: 100% !important;
+  .MuiInputBase-input {
+    padding: 10px 12px;
+  }
+  .MuiOutlinedInput-notchedOutline {
+    border-radius: 2px !important;
+    border: 2px solid $g-700 !important;
+  }
+}

@@ -1,0 +1,60 @@
+.question-type-selector-container {
+  width: 280px;
+  border-width: 2;
+  .popover-body {
+    padding: 0px;
+  }
+}
+
+// This needs to be defined outside of the container because the selector
+// - is not always displayed within the container (storybook)
+.question-type-selector {
+  .search {
+    padding: 1em 1em 0 1em;
+  }
+  h6 {
+    text-transform: uppercase;
+    font-size: 0.8em;
+    font-weight: 200;
+  }
+  .list {
+    font-size: 0.9em;
+    padding: 0 1em 0 1em;
+    overflow-y: scroll;
+    max-height: 360px;
+  }
+  ::-webkit-scrollbar {
+    width: 5px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #888;
+  }
+  .list-group-item {
+    display: flex;
+    align-items: center;
+    border: 0;
+    padding-left: 0.25em;
+    text-transform: uppercase;
+    cursor: pointer;
+    svg {
+      margin-right: 1em;
+    }
+  }
+  .list-group-item:hover {
+    color: blue;
+  }
+
+  .list-group-item:last-child {
+    margin-bottom: 0.5em;
+  }
+
+  .qe-input-group {
+    input {
+      background-color: #f0f0f0;
+    }
+
+    .qe-input-icon-right {
+      margin-right: 0.5em;
+    }
+  }
+}

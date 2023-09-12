@@ -1,0 +1,207 @@
+// sea_green variables copied from limesurvey core
+$white: #fff;
+$black: #000;
+$aubergine: #25003e; // background
+$zucchini: #003e24; // background
+$focus: #3bffb7; // background
+$grape: #8146f6; // background secondary
+$grape-light: #d3c5fa; // background secondary
+$litschi: #ff9aa2; // background secondary
+$blueberry: #a3c8ff; // background passive
+$orange: #ffba68; // tertiary
+$banana: #ffe872; // tertiary
+$apple: #b2ff8e; // tertiary
+$success: #4dd753; // success
+$warning: #ffe046; // warning
+$error: #ff515f; // danger/error
+$lime-green: #7ff409; // links on dark
+$action: #4200ff; // links on light
+$active-green: #14ae5c; // buttons & links
+$active-green-hover: #12a155; // buttons & links
+$elevation-shadow: rgba(66, 0, 255, 0.2); // LSD/Elevation/Shadow
+$elevation-shadow-soft: rgba(0, 0, 0, 0.2); // LSD/Elevation/ShadowSoft
+
+$white: #fff;
+$black: #000;
+$black60: #666666; // rgba(0, 0, 0, 0.6);
+$black75: rgba(0, 0, 0, 0.75);
+$grape75: rgba(123, 97, 255, 0.4);
+$heading-title-color: #152536;
+$heading-sub-title-color: #182535;
+
+$g-900: #1e1e1e;
+$g-800: #333641;
+$g-700: #6e748c;
+$g-600: #9094a7;
+$g-500: #a7aaad;
+$g-400: #d3d5da;
+$g-300: #dddee8;
+$g-200: #eeeff7;
+$g-100: #f9f9fb;
+
+$b-900: #3858e9;
+
+$theme-colors: (
+  'primary': $grape,
+  'secondary': $g-700,
+  'success': $active-green,
+  'danger': $error,
+  'warning': $warning,
+  'info': $action,
+  'light': $g-200,
+  'dark': $g-900,
+  'grey': $g-100,
+  'black60': $black60,
+  'cancel': $g-600,
+  // replace with secondary
+);
+
+$border-radius: 4px;
+
+// Typography START
+$ibm-font-family: 'IBMPlexSans',
+  // Cross-platform generic font family (default user interface font)
+  system-ui,
+  // Safari for macOS and iOS (San Francisco)
+  -apple-system,
+  // Windows
+  'Segoe UI',
+  // Android
+  Roboto,
+  // Basic web fallback
+  'Helvetica Neue',
+  Arial,
+  // Linux
+  'Noto Sans',
+  'Liberation Sans',
+  // Sans serif fallback
+  sans-serif,
+  // Emoji fonts
+  'Apple Color Emoji',
+  'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji' !default;
+
+$font-size-base: 1.14rem; // 16px, Browser default usually is 14px
+$font-size-xs: $font-size-base * 0.75; // 12px
+$font-size-sm: $font-size-base * 0.875; // 14px
+$font-size-md: $font-size-base * 1.125; // 18px
+$font-size-lg: $font-size-base * 1.25; // 20px
+$font-size-xl: $font-size-base * 1.5; // 24px
+
+$font-style-base: normal;
+
+$font-weight-300: 300;
+$font-weight-normal: 400;
+$font-weight-500: 500;
+$font-weight-600: 600;
+
+$line-height-16: 16px;
+$line-height-20: 20px;
+$line-height-24: 24px;
+$line-height-26: 26px;
+$line-height-32: 32px;
+// Typography End
+
+// Buttons START
+$line-height-16: 16px;
+$line-height-20: 20px;
+$line-height-28: 28px;
+$line-height-38: 38px;
+
+$btn-font-weight: 500;
+
+$btn-height-sm: 24px;
+$btn-height: 36px;
+$btn-height-lg: 44px;
+$btn-height-xl: 52px;
+
+$btn-font-size: $font-size-sm;
+$btn-font-size-sm: $font-size-xs;
+// Buttons END
+
+// Shadows START
+$boxshadow: 8px 8px $g-200;
+$overview-boxShadow: 0px 2px 6px rgb(0 0 0 / 20%);
+$boxshadow-hover: 8px 8px $grape-light;
+$boxshadow-small: 4px 4px $g-200;
+$boxshadow-small-hover: 4px 4px $grape-light;
+$btn-hover-boxshadow: 0px 0px 0px 3px rgba(123, 97, 255, 0.4);
+$btn-focus-boxshadow: 4px 4px 0px rgba(123, 97, 255, 0.4);
+// Shadows END
+
+$dropdown-font-size: $font-size-sm;
+
+$tooltip-bg: $g-900;
+// $tooltip-border-radius:             $border-radius;
+$tooltip-opacity: 1;
+$tooltip-padding-y: $spacer * 0.5;
+$tooltip-padding-x: $spacer * 1.25;
+
+$tooltip-arrow-color: $tooltip-bg;
+// $tooltip-arrow-color:               null; // Deprecated in Bootstrap 5.2.0 for CSS variables
+
+// links
+$link-color-action: $action !default;
+$link-color: $active-green !default;
+$link-decoration: none !default;
+$link-shade-percentage: 20% !default;
+$link-hover-color-action: shift-color(
+  $link-color-action,
+  $link-shade-percentage
+) !default;
+$link-hover-color: shift-color($link-color, $link-shade-percentage) !default;
+
+// breadcrumb variables
+$breadcrumb-font-size: $font-size-sm;
+$breadcrumb-spacing: 6px;
+$breadcrumb-divider-color: $g-600;
+$breadcrumb-active-color: $g-900;
+$breadcrumb-link-color: $link-color;
+
+// forms
+// input variables
+$input-padding-y: 10px;
+$input-padding-x: 12px;
+$input-color: $g-900;
+$input-border-radius: 4px;
+$input-font-weight: 400;
+$input-border-width: 1px;
+$input-border-color: $g-900;
+$input-border-color-disabled: $g-600;
+$input-focus-color: $g-900;
+$input-focus-border-color: $g-900;
+
+// tabs
+$nav-tabs-link-active-color: $g-900;
+// modal
+$modal-inner-padding: 1.5rem; // 24px
+$modal-lg: 900px;
+
+// badge
+$badge-padding-y: 2px;
+$badge-padding-x: 5px;
+
+//card
+$card-header-line-height: 26px;
+
+// navbar
+$navbar-bg-color: $g-800;
+$navbar-color: $white;
+$navbar-badges-bg-color: $white;
+$navbar-badges-color: $navbar-bg-color;
+$navbar-link-hover-color: shift-color(
+  $navbar-color,
+  $link-shade-percentage
+) !default;
+
+// table
+$table-hover-bg: $g-200;
+$table-border-color: $g-400;
+
+// Main spacing
+$container-padding: 20px;
+
+// below add new variables
+
+$top-bar-height: 56px;
+$left-side-bar-width: 350px;
+$right-side-bar-width: 282px;

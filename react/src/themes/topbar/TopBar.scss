@@ -1,0 +1,41 @@
+.top-bar {
+  position: fixed;
+  background-color: white;
+  align-items: center;
+  z-index: 999;
+  top: 0;
+  width: 100vw;
+  &-left {
+    width: $left-side-bar-width;
+    // z-index is set due to middle part
+    z-index: 2;
+  }
+  &-middle {
+    width: 100%;
+    position: absolute;
+  }
+  &-right {
+    z-index: 2;
+  }
+  height: $top-bar-height;
+
+  .top-bar-select {
+    border: 0;
+    background-color: transparent;
+    max-width: 250px;
+    margin: auto;
+    font-weight: $font-weight-500;
+    font-size: $font-size-sm;
+  }
+
+  box-shadow: 0 1px 2px -2px gray;
+  div.logo {
+    background-image: url('../../assets/icons/logo-icon.svg');
+    width: 220px;
+    height: 40px;
+    margin-left: 10px;
+    background-repeat: no-repeat;
+    background-size: 120px;
+    background-position: left;
+  }
+}

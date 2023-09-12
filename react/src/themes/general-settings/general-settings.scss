@@ -1,0 +1,13 @@
+.question-type-general-settings {
+  .overlay-trigger-button {
+    border: solid 2px $g-700;
+    font-weight: 400;
+
+    &:hover,
+    &:focus,
+    &:active {
+      background-color: white;
+      color: black;
+    }
+  }
+}

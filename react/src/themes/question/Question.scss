@@ -1,0 +1,121 @@
+.question {
+  // svg {
+  //   // fill: $grape !important;
+  //   // path {
+  //   //   fill: $grape !important;
+  //   // }
+  // }
+
+  .star-rating {
+    cursor: pointer;
+  }
+  .star-rating-counter {
+    font-size: $font-size-lg;
+  }
+  .star-rating.active-rate {
+    .star-rating-counter {
+      color: $grape !important;
+    }
+  }
+
+  .question-header {
+    .question-number {
+      color: $grape;
+      font-size: 14px;
+      font-weight: 500;
+    }
+  }
+
+  .question-description {
+    padding-left: 3rem;
+    margin-bottom: 1.3rem;
+    font-size: 13px;
+    font-weight: 400;
+    width: 100%;
+  }
+
+  .question-body {
+    font-size: 16px;
+    padding-bottom: 1.5rem;
+    padding-left: 3rem;
+    padding-right: 2rem;
+  }
+
+  .question-body .question-footer {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+
+  .question-footer {
+    img {
+      cursor: pointer;
+      transition: transform 0.5s;
+    }
+
+    .footer-icon {
+      font-size: $font-size-base;
+      color: $g-700;
+      font-weight: $font-weight-300;
+    }
+
+    .footer-icon.active-icon {
+      color: $grape;
+    }
+
+    .form-check {
+      align-items: center;
+      gap: 10px;
+      margin-top: 2px;
+
+      .form-check-label {
+        font-size: 14px;
+        color: #000;
+        font-weight: 400;
+      }
+
+      .form-check-input {
+        display: block;
+        margin-bottom: 2px;
+
+        &:after {
+          border: none !important;
+        }
+
+        &:checked {
+          border-color: #14ae5c;
+          background-color: #14ae5c;
+          &:after {
+            background-color: #14ae5c;
+          }
+        }
+      }
+    }
+
+    .question-type-selector {
+      max-width: max-content;
+      min-width: 200px !important;
+      display: block;
+      text-align: center;
+      padding: 2spx 10px;
+      cursor: pointer;
+      border: #25003e solid 1px;
+      height: 30px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      font-size: 14px;
+      border-radius: 3px;
+    }
+  }
+
+  .multiple-choice-question {
+    .multiple-choice-question-answer {
+      &:hover {
+        .remove-option-button {
+          opacity: 1 !important;
+        }
+      }
+    }
+  }
+}

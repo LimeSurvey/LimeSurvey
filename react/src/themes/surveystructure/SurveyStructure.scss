@@ -1,0 +1,30 @@
+.survey-structure {
+  font-size: 0.8rem;
+
+  .sidebar-row-tag {
+    color: $g-900;
+    background-color: $g-100;
+  }
+
+  .focus-bg-purple {
+    background-color: $grape !important;
+    color: $white !important;
+    border-radius: 4px;
+    font-weight: 500;
+
+    svg {
+      fill: $white;
+
+      path {
+        fill: $white;
+      }
+    }
+  }
+
+  .question-body-content {
+    background-color: $g-100;
+    color: $black;
+    border-radius: 4px;
+    font-weight: 500;
+  }
+}

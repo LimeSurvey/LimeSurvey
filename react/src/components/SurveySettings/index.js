@@ -1,0 +1,6 @@
+export { GeneralSettings } from './GeneralSettings/GeneralSettings'
+export { PresentationSettings } from './PresentationSettings/PresentationSettings'
+export { PrivacyPolicySettings } from './PrivacyPolicy'
+export { ParticipantsSettings } from './Participants'
+export { PublicationAccessSettings } from './PublicationAccess'
+export { AdvancedOptionsSettings } from './AdvancedOptions'

@@ -1,0 +1,179 @@
+.survey {
+  .survey-section {
+    z-index: 3;
+    position: relative;
+    margin: 2rem 0 2rem 0;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 24px;
+  }
+
+  .survey-section:last-of-type {
+    border-bottom: 0;
+  }
+
+  .survey-card {
+    border: 1px rgb(220, 220, 220) solid;
+    background-color: white;
+
+    .image {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      z-index: 1;
+      min-width: 304px;
+      background-color: rgb(215, 215, 215);
+      font-size: 0.9rem;
+      color: #9d9d9d;
+
+      svg {
+        margin-right: 0.5rem;
+        color: #9d9d9d;
+      }
+    }
+
+    .header {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+      padding: 0.8rem 20px 0.8rem 20px;
+      width: 100%;
+
+      .title {
+        font-weight: 600;
+      }
+    }
+
+    .right {
+      flex-grow: 1;
+    }
+
+    .body {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      padding-top: 2rem;
+      padding-bottom: 2rem;
+
+      h6 {
+        font-weight: 300;
+        font-size: 1.2rem;
+      }
+
+      p {
+        color: #757575;
+      }
+
+      button {
+        border-color: #aaa9a9;
+        color: #1e1e1e;
+        min-width: 110px;
+        border-radius: 0;
+      }
+
+      .description {
+        padding: 0 2rem;
+        margin-bottom: 2em;
+      }
+
+      .question {
+        h1 {
+          color: #1e1e1e;
+          font-weight: 300;
+          padding: 0 2rem;
+        }
+      }
+    }
+
+    &.welcome,
+    &.thankyou {
+      height: 388px;
+      padding: 0;
+      display: flex;
+      flex-direction: row;
+
+      .title {
+        width: 100%;
+      }
+
+      .body {
+        min-height: 315px;
+      }
+
+      .welcome-body {
+        padding-right: 2rem;
+        padding-left: 2rem;
+      }
+
+      .body {
+        padding-right: 2rem;
+        padding-left: 2rem;
+      }
+    }
+  }
+
+  .add-question {
+    display: block;
+    position: relative;
+
+    .add-question-button {
+      margin: 0 !important;
+
+      svg {
+        fill: $white;
+
+        path {
+          fill: $white;
+        }
+      }
+
+      &:before {
+        position: absolute;
+        content: '';
+        left: 0;
+        top: 49%;
+        right: 50%;
+        margin-right: 10px;
+        border-top: 2px solid $grape;
+        border-radius: 2px;
+        border-color: inherit;
+        color: $grape;
+        pointer-events: none;
+      }
+
+      &:after {
+        position: absolute;
+        content: '';
+        left: 50%;
+        margin-left: 10px;
+        top: 49%;
+        right: 0;
+        border-top: 2px solid $grape;
+        border-radius: 2px;
+        border-color: inherit;
+        color: $grape;
+        pointer-events: none;
+      }
+
+      &:hover {
+        &:before {
+          color: #6e3cd1;
+        }
+
+        &:after {
+          color: #6e3cd1;
+        }
+      }
+    }
+  }
+
+  .save-survey-button {
+    display: none;
+    padding-right: 2rem;
+    padding-left: 2rem;
+  }
+}

@@ -1,0 +1,16 @@
+$sidebar-padding: 0 0.25rem 0 0.25rem;
+$sidebar-row-padding: 0 0.5rem 0 1.5rem;
+
+.survey-settings {
+  font-size: 0.8rem;
+
+  .sidebar-section {
+    button {
+      border-radius: 0;
+      min-width: 110px;
+    }
+    select {
+      border-radius: 0;
+    }
+  }
+}

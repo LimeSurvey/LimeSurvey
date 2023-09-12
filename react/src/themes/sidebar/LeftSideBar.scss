@@ -1,0 +1,14 @@
+.sidebar-left {
+  padding-top: 4px;
+  border-right: 1px #eeeeee solid;
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  // width: $left-side-bar-width;
+  margin-top: 2px;
+  overflow-y: auto;
+  max-height: calc(100vh - $top-bar-height);
+  @media only screen and (max-width: 1480px) {
+    // width: 350px;
+  }
+}

@@ -1,0 +1,22 @@
+.right-side-bar {
+  position: fixed;
+  right: 0;
+  width: $right-side-bar-width;
+  margin-top: 2px;
+  overflow-y: auto;
+  max-height: calc(100vh - $top-bar-height); // 56px is the topbar height.
+  background: $g-100;
+  opacity: 1 !important;
+
+  .focused-question-code {
+    cursor: pointer;
+  }
+
+  a {
+    color: black;
+  }
+}
+
+.right-side-bar.active-side-bar {
+  background: $white !important;
+}

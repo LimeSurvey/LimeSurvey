@@ -1,0 +1,42 @@
+.survey-container {
+  .survey-header-container {
+    width: 100%;
+    padding-left: 2rem;
+    padding-right: 2rem;
+
+    .start-button {
+      width: 116px;
+      height: 36px;
+      border-radius: 2px;
+      color: $black75;
+      font-weight: 400;
+      transition: box-shadow 0.2s;
+
+      &:hover {
+        background: transparent;
+        box-shadow: 1px 1px 2px 1px $grape;
+      }
+    }
+
+    h6,
+    h4 {
+      font-weight: 400;
+      color: #757575;
+    }
+
+    h4 {
+      color: $black75 !important;
+    }
+  }
+
+  .collapse-control {
+    color: $g-700;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 24px;
+  }
+
+  .border-bottom {
+    border-bottom: 1px rgb(220, 220, 220) solid;
+  }
+}

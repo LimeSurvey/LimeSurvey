@@ -1,0 +1,28 @@
+.array-question {
+  overflow-x: auto;
+  .array-question-answers {
+    overflow-wrap: break-word;
+    white-space: normal;
+  }
+
+  .array-question-item {
+    &:hover {
+      .remove-item-button {
+        opacity: 1 !important;
+      }
+    }
+  }
+
+  .array-add-row {
+    border-radius: 2px;
+    border: 1px dashed rgba(129, 70, 246, 0.2);
+    background-color: $g-200;
+    height: 33px;
+  }
+
+  .array-add-column {
+    border-radius: 2px;
+    border: 1px dashed $grape;
+    width: 140px;
+  }
+}
