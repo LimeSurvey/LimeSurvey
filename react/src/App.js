@@ -3,7 +3,9 @@ import { RouterProvider } from 'react-router-dom'
 import ThemeProvider from 'react-bootstrap/ThemeProvider'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client'
+import { CookiesProvider } from 'react-cookie';
 import { queryClient, persistOptions } from 'query'
+
 
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'themes/index.scss'
@@ -27,7 +29,9 @@ function App() {
         client={queryClient}
         persistOptions={persistOptions}
       >
-        <RouterProvider router={router} />
+        <CookiesProvider defaultSetOptions={{ path: '/' }}>
+            <RouterProvider router={router} />
+        </CookiesProvider>
         <ReactQueryDevtools initialIsOpen={false} />
       </PersistQueryClientProvider>
     </ThemeProvider>

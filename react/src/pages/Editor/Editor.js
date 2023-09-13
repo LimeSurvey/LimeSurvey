@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import Container from 'react-bootstrap/Container'
 
+import { AuthGate } from 'components/AuthGate'
 import { Survey } from 'components/Survey'
 import { useAppState, useElementClick, useFocused } from 'hooks'
 
@@ -30,6 +31,7 @@ export const Editor = () => {
 
   return (
     <React.Fragment>
+    <AuthGate>
       <TopBar surveyId={surveyId} />
       <Container className="p-0" fluid>
         <div id="content" className="d-flex">
@@ -45,6 +47,10 @@ export const Editor = () => {
           <RightSideBar surveyId={surveyId} />
         </div>
       </Container>
+    </AuthGate>
+    <AuthGate authorised={false}>
+        Please Login
+    </AuthGate>
     </React.Fragment>
   )
 }
