@@ -32,6 +32,7 @@ class OpHandlerQuestionL10nUpdateTest extends TestBaseClass
         $opHandler = $this->getOpHandler();
         $opHandler->getTransformedLanguageProps(
             $this->op,
+            new TransformerInputQuestionL10ns(),
             'questionL10n'
         );
     }

@@ -77,7 +77,11 @@ class OpHandlerQuestionGroupL10n implements OpHandlerInterface
 
         $questionGroupService->updateQuestionGroupLanguages(
             $questionGroup,
-            $this->getTransformedLanguageProps($op, $this->entity)
+            $this->getTransformedLanguageProps(
+                $op,
+                $this->transformer,
+                $this->entity
+            )
         );
     }
 }

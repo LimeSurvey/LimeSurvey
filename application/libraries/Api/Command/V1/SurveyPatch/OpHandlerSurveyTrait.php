@@ -31,9 +31,15 @@ trait OpHandlerSurveyTrait
 
     /**
      * transforms language related props to array
+     * @param OpInterface $op
+     * @param TransformerInterface $transformer
+     * @param string $entity
+     * @return array
+     * @throws OpHandlerException
      */
     public function getTransformedLanguageProps(
         OpInterface $op,
+        TransformerInterface $transformer,
         string $entity
     ): array {
         $dataSet = [];
@@ -48,7 +54,7 @@ trait OpHandlerSurveyTrait
                     )
                 );
             }
-            $transformedProps = $this->transformer->transform($properties);
+            $transformedProps = $transformer->transform($properties);
             if ($transformedProps == null) {
                 throw new OpHandlerException(
                     sprintf(

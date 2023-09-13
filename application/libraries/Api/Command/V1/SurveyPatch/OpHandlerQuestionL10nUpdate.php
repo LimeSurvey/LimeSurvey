@@ -75,6 +75,7 @@ class OpHandlerQuestionL10nUpdate implements OpHandlerInterface
             (int)$op->getEntityId(),
             $this->getTransformedLanguageProps(
                 $op,
+                $this->transformer,
                 'questionL10n'
             )
         );
