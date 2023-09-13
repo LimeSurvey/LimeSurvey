@@ -53,20 +53,6 @@ class PatcherSurvey extends Patcher
         ));
     }
 
-    private function addOpHandlerQuestion(FactoryInterface $diFactory, ContainerInterface $diContainer): void
-    {
-        $this->addOpHandler($diFactory->make(
-            OpHandlerActiveRecordUpdate::class,
-            [
-                'entity' => 'question',
-                'model' => Question::model(),
-                'transformer' => $diContainer->get(
-                    TransformerInputQuestion::class
-                )
-            ]
-        ));
-    }
-
     private function addOpHandlerQuestionL10n(FactoryInterface $diFactory, ContainerInterface $diContainer): void
     {
         $this->addOpHandler($diFactory->make(
