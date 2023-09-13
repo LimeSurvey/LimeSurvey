@@ -82,7 +82,15 @@ class OpHandlerQuestionUpdate implements OpHandlerInterface
                 )
             );
         }
-            $transformedProps['qid'] ?? $op->getEntityId();
+        if (
+            !array_key_exists(
+                'qid',
+                $transformedProps
+            )
+            || $transformedProps['qid'] === null
+        ) {
+            $transformedProps['qid'] = $op->getEntityId();
+        }
 
         return ['question' => $transformedProps];
     }
