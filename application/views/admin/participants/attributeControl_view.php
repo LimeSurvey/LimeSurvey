@@ -20,7 +20,7 @@ echo viewHelper::getViewTestTag('participantsAttributeControl');
             'rowHtmlOptionsExpression' => '["data-attribute_id" => $data->attribute_id]',
             'massiveActionTemplate' => $massiveAction,
             'emptyText'                => gT('No attributes found.'),
-            'afterAjaxUpdate' => 'LS.CPDB.bindButtons',
+            'lsAfterAjaxUpdate' => ['LS.CPDB.bindButtons();', 'LS.CPDB.attributePanel();', 'switchStatusOfListActions();'],
             'summaryText'     => gT('Displaying {start}-{end} of {count} result(s).') . ' '
                 . sprintf(
                     gT('%s rows per page'),
