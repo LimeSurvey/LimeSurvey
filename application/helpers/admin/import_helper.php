@@ -739,13 +739,13 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
                 if (!in_array($insertdata['language'], $aLanguagesSupported)) {
                     continue;
                 }
+
+                // Avoid inserting attribute if the language of the question is not in the survey.
+                if (!in_array($insertdata['language'], $surveyLanguages)) {
+                    continue;
+                }
             }
             if ($insertdata['gid'] == 0) {
-                continue;
-            }
-
-            // Avoid inserting attribute if the language of the question is not in the survey.
-            if (!in_array($insertdata['language'], $surveyLanguages)) {
                 continue;
             }
 
