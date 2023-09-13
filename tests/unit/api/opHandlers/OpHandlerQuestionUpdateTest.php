@@ -25,7 +25,7 @@ class OpHandlerQuestionUpdateTest extends TestBaseClass
     /**
      * @testdox throws exception when no valid values are provided
      */
-    public function testOpQuestionCreateThrowsNoValuesException()
+    public function testOpQuestionUpdateThrowsNoValuesException()
     {
         $this->expectException(
             OpHandlerException::class
@@ -55,7 +55,7 @@ class OpHandlerQuestionUpdateTest extends TestBaseClass
     /**
      * @testdox can handle a question update
      */
-    public function testOpQuestionCreateCanHandle()
+    public function testOpQuestionUpdateCanHandle()
     {
         $this->initializePatcher(
             $this->getCorrectPropsArray()
@@ -68,7 +68,7 @@ class OpHandlerQuestionUpdateTest extends TestBaseClass
     /**
      * @testdox cannot handle a question create
      */
-    public function testOpQuestionCreateCanNotHandle()
+    public function testOpQuestionUpdateCanNotHandle()
     {
         $this->initializePatcher(
             $this->getCorrectPropsArray(),
