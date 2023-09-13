@@ -12,10 +12,16 @@ use LimeSurvey\ObjectPatch\{
 use ls\tests\TestBaseClass;
 use ls\tests\unit\services\QuestionGroup\QuestionGroupMockSetFactory;
 
+/**
+ * @testdox OpHandlerQuestionGroupL10n
+ */
 class OpHandlerQuestionGroupL10nTest extends TestBaseClass
 {
     protected OpInterface $op;
 
+    /**
+     * @testdox getTransformedLanguageProps throws no values exception
+     */
     public function testOpQuestionGroupL10nThrowsNoValuesException()
     {
         $this->expectException(
@@ -25,9 +31,15 @@ class OpHandlerQuestionGroupL10nTest extends TestBaseClass
             $this->getWrongProps()
         );
         $opHandler = $this->getOpHandler();
-        $opHandler->getDataArray($this->op);
+        $opHandler->getTransformedLanguageProps(
+            $this->op,
+            'questionGroupL10n'
+        );
     }
 
+    /**
+     * @testdox getTransformedLanguageProps throws missing language exception
+     */
     public function testOpQuestionGroupL10nThrowsMissingLanguageException()
     {
         $this->expectException(
@@ -37,9 +49,15 @@ class OpHandlerQuestionGroupL10nTest extends TestBaseClass
             $this->getMissingLanguageProps()
         );
         $opHandler = $this->getOpHandler();
-        $opHandler->getDataArray($this->op);
+        $opHandler->getTransformedLanguageProps(
+            $this->op,
+            'questionGroupL10n'
+        );
     }
 
+    /**
+     * @testdox can handle a questionGroupL10n update
+     */
     public function testOpQuestionGroupL10nCanHandle()
     {
         $this->initializePatcher(
@@ -50,6 +68,9 @@ class OpHandlerQuestionGroupL10nTest extends TestBaseClass
         self::assertTrue($opHandler->canHandle($this->op));
     }
 
+    /**
+     * @testdox can not handle a questionGroupL10n create
+     */
     public function testOpQuestionGroupL10nCanNotHandle()
     {
         $this->initializePatcher(
@@ -61,6 +82,9 @@ class OpHandlerQuestionGroupL10nTest extends TestBaseClass
         self::assertFalse($opHandler->canHandle($this->op));
     }
 
+    /**
+     * @testdox getTransformedLanguageProps returns the expected array
+     */
     public function testOpQuestionGroupL10nDataStructure()
     {
         $this->initializePatcher(
@@ -68,7 +92,10 @@ class OpHandlerQuestionGroupL10nTest extends TestBaseClass
         );
 
         $opHandler = $this->getOpHandler();
-        $transformedDataArray = $opHandler->getDataArray($this->op);
+        $transformedDataArray = $opHandler->getTransformedLanguageProps(
+            $this->op,
+            'questionGroupL10n'
+        );
         self::assertArrayHasKey('en', $transformedDataArray);
     }
 
