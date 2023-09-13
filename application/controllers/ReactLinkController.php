@@ -50,10 +50,9 @@ class ReactLinkController extends LSYii_Controller
     {
         $this->setReactAuthKeyInitCookie();
         $route = Yii::app()->request->getQuery('route');
-        $path = '/app/#'. $route;
+        $path = '/app/#' . $route;
         $url = Yii::app()->request->baseUrl . $path;
         $this->redirect($url);
-
     }
     /**
      * Create and set react auth token to cookie.
