@@ -91,9 +91,7 @@ class OpHandlerQuestionUpdateTest extends TestBaseClass
             'question',
             $type,
             "77",
-            [
-                $props
-            ],
+            $props,
             [
                 'id' => 666
             ]
