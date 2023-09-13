@@ -195,7 +195,7 @@ class ExpressionManager
         // If the value is -1, the function must have a least one argument but can have an unlimited number of them
         // -2 means that at least one argument is required.  -3 means at least two arguments are required, etc.
         $this->RDP_ValidFunctions = array(
-            'abs' => array('abs', 'Decimal.asNum.abs', gT('Absolute value'), 'number abs(number)', 'http://php.net/abs', 1),
+            'abs' => array('exprmgr_abs', 'Decimal.asNum.abs', gT('Absolute value'), 'number abs(number)', 'http://php.net/abs', 1),
             'acos' => array('acos', 'Decimal.asNum.acos', gT('Arc cosine'), 'number acos(number)', 'http://php.net/acos', 1),
             'addslashes' => array('addslashes', gT('addslashes'), 'Quote string with slashes', 'string addslashes(string)', 'http://php.net/addslashes', 1),
             'asin' => array('asin', 'Decimal.asNum.asin', gT('Arc sine'), 'number asin(number)', 'http://php.net/asin', 1),
@@ -208,7 +208,6 @@ class ExpressionManager
             'countif' => array('exprmgr_countif', 'LEMcountif', gT('Count the number of answered questions in the list equal the first argument'), 'number countif(matches, arg1, arg2, ... argN)', '', -2),
             'countifop' => array('exprmgr_countifop', 'LEMcountifop', gT('Count the number of answered questions in the list which pass the critiera (arg op value)'), 'number countifop(op, value, arg1, arg2, ... argN)', '', -3),
             'date' => array('exprmgr_date', 'date', gT('Format a local date/time'), 'string date(format [, timestamp=time()])', 'http://php.net/date', 1, 2),
-            'abs' => array('exprmgr_abs', 'abs', gT('Absolute value'), 'int|float abs(int|float num)', 'http://php.net/abs', 1, 2),
             'exp' => array('exp', 'Decimal.asNum.exp', gT('Calculates the exponent of e'), 'number exp(number)', 'http://php.net/exp', 1),
             'fixnum' => array('exprmgr_fixnum', 'LEMfixnum', gT('Display numbers with comma as decimal separator, if needed'), 'string fixnum(number)', '', 1),
             'floatval' => array('floatval', 'LEMfloatval', gT('Get float value of a variable'), 'number floatval(number)', 'http://php.net/floatval', 1),
