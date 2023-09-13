@@ -76,7 +76,7 @@ class ReactLinkController extends LSYii_Controller
 
         $cookieDataJson = json_encode([
             'token' => $session->id,
-            'expires' => $sessionExpires->format(DATE_ATOM)
+            'expires' => $sessionExpires->format('Y-m-d\TH:i:s.000\Z')
         ]);
 
         $cookie = new CHttpCookie($cookieName, $cookieDataJson);

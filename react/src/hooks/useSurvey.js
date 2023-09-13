@@ -30,11 +30,6 @@ export const useSurvey = (id) => {
     })
   }
 
-  // const persistCurrentState = async () =>
-  //   fetch('/data/survey.json', {
-  //     method: 'POST',
-  //     body: JSON.stringify(survey),
-  //   })
   const persistCurrentState = () => {
     queryClient.setQueryData(['survey', id], { ...data.survey })
   }

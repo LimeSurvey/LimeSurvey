@@ -4,7 +4,7 @@ import { queryClient } from 'query'
 import { useCookies } from 'react-cookie';
 
 export const useAuth = () => {
-  const [ cookies, removeCookie ] = useCookies(['LS_AUTH_INIT'])
+  const [ cookies ] = useCookies(['LS_AUTH_INIT'])
 
   const { data: auth } = useQuery({
     queryKey: ['auth'],
@@ -46,8 +46,7 @@ export const useAuth = () => {
     setAuth({
       token: cookies.LS_AUTH_INIT.token,
       expires: cookies.LS_AUTH_INIT.expires
-    });
-    removeCookie('LS_AUTH_INIT')
+    })
   }
 
   const login = () => {

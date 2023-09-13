@@ -31,26 +31,24 @@ export const Editor = () => {
 
   return (
     <React.Fragment>
-    <AuthGate>
-      <TopBar surveyId={surveyId} />
-      <Container className="p-0" fluid>
-        <div id="content" className="d-flex">
-          <LeftSideBar surveyId={surveyId} />
-          <div className="main-body">
-            <div className="survey-part">
-              <Survey id={surveyId} />
+      <AuthGate>
+        <TopBar surveyId={surveyId} />
+        <Container className="p-0" fluid>
+          <div id="content" className="d-flex">
+            <LeftSideBar surveyId={surveyId} />
+            <div className="main-body">
+              <div className="survey-part">
+                <Survey id={surveyId} />
+              </div>
+              {!editorSettingsPanelOpen && (
+                <div className="inner-wrap" ref={ref} />
+              )}
             </div>
-            {!editorSettingsPanelOpen && (
-              <div className="inner-wrap" ref={ref} />
-            )}
+            <RightSideBar surveyId={surveyId} />
           </div>
-          <RightSideBar surveyId={surveyId} />
-        </div>
-      </Container>
-    </AuthGate>
-    <AuthGate authorised={false}>
-        Please Login
-    </AuthGate>
+        </Container>
+      </AuthGate>
+      <AuthGate authorised={false}>Please Login</AuthGate>
     </React.Fragment>
   )
 }
