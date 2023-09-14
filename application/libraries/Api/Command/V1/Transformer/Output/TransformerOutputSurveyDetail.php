@@ -2,6 +2,7 @@
 
 namespace LimeSurvey\Api\Command\V1\Transformer\Output;
 
+use LimeSurvey\Models\Services\QuestionAggregateService\QuestionService;
 use Survey;
 use LimeSurvey\Api\Transformer\Output\TransformerOutputActiveRecord;
 
@@ -17,6 +18,7 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
     private TransformerOutputQuestionL10ns $transformerQuestionL10ns;
     private TransformerOutputQuestionAttribute $transformerQuestionAttribute;
     private TransformerOutputAnswer $transformerAnswer;
+    private QuestionService $questionService;
 
     /**
      * Construct
@@ -28,7 +30,8 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
         TransformerOutputQuestion $transformerOutputQuestion,
         TransformerOutputQuestionL10ns $transformerOutputQuestionL10ns,
         TransformerOutputQuestionAttribute $transformerOutputQuestionAttribute,
-        TransformerOutputAnswer $transformerOutputAnswer
+        TransformerOutputAnswer $transformerOutputAnswer,
+        QuestionService $questionService
     ) {
         $this->transformerSurvey = $transformerOutputSurvey;
         $this->transformerQuestionGroup = $transformerOutputQuestionGroup;
@@ -37,6 +40,7 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
         $this->transformerQuestionL10ns = $transformerOutputQuestionL10ns;
         $this->transformerQuestionAttribute = $transformerOutputQuestionAttribute;
         $this->transformerAnswer = $transformerOutputAnswer;
+        $this->questionService = $questionService;
     }
 
     /**
@@ -50,7 +54,7 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
             return null;
         }
 
-        $survey =  $this->transformerSurvey->transform($data);
+        $survey = $this->transformerSurvey->transform($data);
 
         $survey['languages'] = $data->allLanguages;
 
@@ -121,7 +125,9 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
             );
 
             $question['attributes'] = $this->transformerQuestionAttribute->transformAll(
-                $questionModel->questionattributes
+                $this->questionService->getQuestionAttributes(
+                    $questionModel->qid
+                )
             );
 
             if ($questionModel->subquestions) {
