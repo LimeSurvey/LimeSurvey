@@ -69,121 +69,125 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
      * An example patch with all(!) possible entities:
      *
      * {
-     *     "entity": "question",
-     *     "op": "create",
-     *     "id": 0,
-     *     "props": {
-     *         "question": {
-     *             "qid": "0",
-     *             "title": "G01Q06",
-     *             "type": "1",
-     *             "question_theme_name": "arrays\/dualscale",
-     *             "gid": "50",
-     *             "mandatory": false,
-     *             "relevance": "1",
-     *             "encrypted": false,
-     *             "save_as_default": false
-     *         },
-     *         "questionL10n": {
-     *             "en": {
-     *                 "question": "Array Question",
-     *                 "help": "Help text"
-     *             },
-     *             "de": {
-     *                 "question": "Array ger",
-     *                 "help": "help ger"
-     *             }
-     *         },
-     *         "attributes": {
-     *             "dualscale_headerA": {
-     *                 "de": {
-     *                     "value": "A ger"
+     *     "patch": [
+     *         {
+     *             "entity": "question",
+     *             "op": "create",
+     *             "id": "0",
+     *             "props": {
+     *                 "question": {
+     *                     "qid": "0",
+     *                     "title": "G01Q06",
+     *                     "type": "1",
+     *                     "question_theme_name": "arrays\/dualscale",
+     *                     "gid": "1",
+     *                     "mandatory": false,
+     *                     "relevance": "1",
+     *                     "encrypted": false,
+     *                     "save_as_default": false
      *                 },
-     *                 "en": {
-     *                     "value": "A"
-     *                 }
-     *             },
-     *             "dualscale_headerB": {
-     *                 "de": {
-     *                     "value": "B ger"
-     *                 },
-     *                 "en": {
-     *                     "value": "B"
-     *                 }
-     *             },
-     *             "public_statistics": {
-     *                 "": {
-     *                     "value": "1"
-     *                 }
-     *             }
-     *         },
-     *         "answers": {
-     *             "0": {
-     *                 "code": "AO01",
-     *                 "sortOrder": 0,
-     *                 "assessmentValue": 0,
-     *                 "scaleId": 0,
-     *                 "l10ns": {
-     *                     "de": {
-     *                         "answer": "antwort1",
-     *                         "language": "de"
-     *                     },
+     *                 "questionL10n": {
      *                     "en": {
-     *                         "answer": "answer1",
-     *                         "language": "en"
-     *                     }
-     *                 }
-     *             },
-     *             "1": {
-     *                 "code": "AO02",
-     *                 "sortOrder": 1,
-     *                 "assessmentValue": 0,
-     *                 "scaleId": 0,
-     *                 "l10ns": {
-     *                     "de": {
-     *                         "answer": "antwort1.2",
-     *                         "language": "de"
+     *                             "question": "Array Question",
+     *                             "help": "Help text"
      *                     },
-     *                     "en": {
-     *                         "answer": "answer1.2",
-     *                         "language": "en"
-     *                     }
-     *                 }
-     *             }
-     *         },
-     *         "subquestions": {
-     *             "0": {
-     *                 "title": "SQ001",
-     *                 "sortOrder": 0,
-     *                 "relevance": "1",
-     *                 "l10ns": {
-     *                     "de": {
-     *                         "question": "subger1",
-     *                         "language": "de"
-     *                     },
-     *                     "en": {
-     *                         "question": "sub1",
-     *                         "language": "en"
+     *                     "de-informal": {
+     *                             "question": "Array ger",
+     *                             "help": "help ger"
      *                     }
      *                 },
-     *             },
-     *             "1": {
-     *                 "title": "SQ002",
-     *                 "sortOrder": 1,
-     *                 "relevance": "1",
-     *                 "l10ns": {
-     *                     "de": {
-     *                         "question": "subger2",
-     *                         "language": "de"
+     *                 "attributes": {
+     *                     "dualscale_headerA": {
+     *                             "de-informal": {
+     *                                 "value": "A ger"
+     *                             },
+     *                             "en": {
+     *                                 "value": "A"
+     *                             }
      *                     },
-     *                     "en": {
-     *                         "question": "sub2",
-     *                         "language": "en"
+     *                     "dualscale_headerB": {
+     *                             "de-informal": {
+     *                                 "value": "B ger"
+     *                             },
+     *                             "en": {
+     *                                 "value": "B"
+     *                             }
+     *                     },
+     *                     "public_statistics": {
+     *                             "": {
+     *                                 "value": "1"
+     *                             }
      *                     }
      *                 },
+     *                 "answers": {
+     *                     "0": {
+     *                         "code": "AO01",
+     *                         "sortOrder": 0,
+     *                         "assessmentValue": 0,
+     *                         "scaleId": 0,
+     *                         "l10ns": {
+     *                             "de": {
+     *                                 "answer": "antwort1",
+     *                                 "language": "de"
+     *                             },
+     *                             "en": {
+     *                                 "answer": "answer1",
+     *                                 "language": "en"
+     *                             }
+     *                         }
+     *                     },
+     *                     "1": {
+     *                         "code": "AO02",
+     *                         "sortOrder": 1,
+     *                         "assessmentValue": 0,
+     *                         "scaleId": 0,
+     *                         "l10ns": {
+     *                             "de": {
+     *                                 "answer": "antwort1.2",
+     *                                 "language": "de"
+     *                             },
+     *                             "en": {
+     *                                 "answer": "answer1.2",
+     *                                 "language": "en"
+     *                             }
+     *                         }
+     *                     }
+     *                 },
+     *                 "subquestions": {
+     *                     "0": {
+     *                         "title": "SQ001",
+     *                         "sortOrder": 0,
+     *                         "relevance": "1",
+     *                         "l10ns": {
+     *                             "de-informal": {
+     *                                 "question": "subger1",
+     *                                 "language": "de"
+     *                             },
+     *                             "en": {
+     *                                 "question": "sub1",
+     *                                 "language": "en"
+     *                             }
+     *                         }
+     *                     },
+     *                     "1": {
+     *                         "title": "SQ002",
+     *                         "sortOrder": 1,
+     *                         "relevance": "1",
+     *                         "l10ns": {
+     *                             "de-informal": {
+     *                                 "question": "subger2",
+     *                                 "language": "de"
+     *                             },
+     *                             "en": {
+     *                                 "question": "sub2",
+     *                                 "language": "en"
+     *                             }
+     *                         }
+     *                     }
+     *                 }
      *             }
      *         }
-     *     }
+     *     ]
      * }
      *
      * @param OpInterface $op
