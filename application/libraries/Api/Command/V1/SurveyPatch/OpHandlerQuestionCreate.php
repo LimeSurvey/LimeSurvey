@@ -2,18 +2,22 @@
 
 namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
-use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputAnswer;
-use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputAnswerL10ns;
-use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestion;
-use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestionAggregate;
-use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestionAttribute;
-use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestionL10ns;
-use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputSubQuestion;
+use LimeSurvey\Api\Command\V1\Transformer\{
+    Input\TransformerInputAnswer,
+    Input\TransformerInputAnswerL10ns,
+    Input\TransformerInputQuestion,
+    Input\TransformerInputQuestionAggregate,
+    Input\TransformerInputQuestionAttribute,
+    Input\TransformerInputQuestionL10ns,
+    Input\TransformerInputSubQuestion
+};
+use LimeSurvey\ObjectPatch\{
+    Op\OpInterface,
+    OpType\OpTypeCreate,
+    OpHandler\OpHandlerException,
+    OpHandler\OpHandlerInterface
+};
 use LimeSurvey\Models\Services\QuestionAggregateService;
-use LimeSurvey\ObjectPatch\Op\OpInterface;
-use LimeSurvey\ObjectPatch\OpHandler\OpHandlerException;
-use LimeSurvey\ObjectPatch\OpHandler\OpHandlerInterface;
-use LimeSurvey\ObjectPatch\OpType\OpTypeCreate;
 use Question;
 
 class OpHandlerQuestionCreate implements OpHandlerInterface
