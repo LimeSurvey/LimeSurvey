@@ -44,7 +44,9 @@ class PatcherSurvey extends Patcher
         ));
         $this->addOpHandlerQuestion($diFactory, $diContainer);
         $this->addOpHandlerQuestionL10n($diFactory, $diContainer);
-        $this->addOpHandlerQuestionAttribute($diFactory, $diContainer);
+        $this->addOpHandler($diContainer->get(
+            OpHandlerQuestionAttributeUpdate::class
+        ));
         $this->addOpHandlerQuestionAnswer($diFactory, $diContainer);
         $this->addOpHandler($diContainer->get(
             OpHandlerQuestionGroupReorder::class
@@ -74,20 +76,6 @@ class PatcherSurvey extends Patcher
                 'model' => QuestionL10n::model(),
                 'transformer' => $diContainer->get(
                     TransformerInputQuestionL10ns::class
-                )
-            ]
-        ));
-    }
-
-    private function addOpHandlerQuestionAttribute(FactoryInterface $diFactory, ContainerInterface $diContainer): void
-    {
-        $this->addOpHandler($diFactory->make(
-            OpHandlerActiveRecordUpdate::class,
-            [
-                'entity' => 'questionAttribute',
-                'model' => QuestionAttribute::model(),
-                'transformer' => $diContainer->get(
-                    TransformerInputQuestionAttribute::class
                 )
             ]
         ));
