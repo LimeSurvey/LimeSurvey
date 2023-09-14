@@ -749,11 +749,6 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
                 continue;
             }
 
-            // Avoid inserting attribute if the language of the question is not in the survey.
-            if (!in_array($insertdata['language'], $surveyLanguages)) {
-                continue;
-            }
-
             if (!isset($insertdata['mandatory']) || trim($insertdata['mandatory']) == '') {
                 $insertdata['mandatory'] = 'N';
             }
@@ -784,6 +779,12 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
                 $oQuestionL10n->help = $insertdata['help'];
                 $oQuestionL10n->language = $insertdata['language'];
             }
+
+            // Avoid inserting attribute if the language of the question is not in the survey.
+            if (!in_array($insertdata['language'], $surveyLanguages)) {
+                unset($oQuestionL10n);
+            }
+
             if (!$options['autorename']) {
                 $sScenario = 'archiveimport';
             } else {
