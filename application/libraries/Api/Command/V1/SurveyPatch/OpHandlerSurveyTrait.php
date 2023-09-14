@@ -2,6 +2,7 @@
 
 namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
+use LimeSurvey\Models\Services\QuestionAggregateService\QuestionService;
 use LimeSurvey\ObjectPatch\Op\OpInterface;
 use LimeSurvey\ObjectPatch\OpHandler\OpHandlerException;
 use Question;
@@ -40,7 +41,11 @@ trait OpHandlerSurveyTrait
     {
         $surveyId = $this->getSurveyIdFromContext($op);
         $questionId = $op->getEntityId();
-        $question = $this->questionService->getQuestionBySidAndQid(
+        $diContainer = \LimeSurvey\DI::getContainer();
+        $questionService = $diContainer->get(
+            QuestionService::class
+        );
+        $question = $questionService->getQuestionBySidAndQid(
             $surveyId,
             $questionId
         );
