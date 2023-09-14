@@ -2611,7 +2611,12 @@ function XMLImportResponses($sFullFilePath, $iSurveyID, $aFieldReMap = array())
                                 }
                             }
                         }
-                        if (!SurveyDynamic::model($iSurveyID)->insertRecords($aInsertData)) {
+                        try {
+                            $iNewID = SurveyDynamic::model($iSurveyID)->insertRecords($aInsertData);
+                            if (!$iNewID) {
+                                throw new Exception("Error, no entry id was returned.", 1);
+                            }
+                        } catch (Exception $e) {
                             throw new Exception(gT("Error") . ": Failed to insert data in response table<br />");
                         }
                         $results['responses']++;

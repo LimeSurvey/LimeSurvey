@@ -120,12 +120,8 @@ class SurveyDynamic extends LSActiveRecord
             $record->$k = $v;
         }
 
-        try {
-            $record->encryptSave();
-            return $record->id;
-        } catch (Exception $e) {
-            return false;
-        }
+        $res = $record->encryptSave();
+        return $res ? $record->id : $res;
     }
 
     /**

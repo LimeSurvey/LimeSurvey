@@ -5055,15 +5055,21 @@ class LimeExpressionManager
             SurveyDynamic::sid($this->sid);
             $oSurvey = new SurveyDynamic();
 
-            $iNewID = $oSurvey->insertRecords($sdata);
-            if ($iNewID) {    // Checked
+            try {
+                $iNewID = $oSurvey->insertRecords($sdata);
+                if (!$iNewID) {
+                    throw new Exception("Error, no entry id was returned.", 1);
+                }
                 $srid = $iNewID;
                 $_SESSION[$this->sessid]['srid'] = $iNewID;
-            } else {
+            } catch (Exception $e) {
                 $srid = null;
                 $message .= $this->gT("Unable to insert record into survey table"); // TODO - add SQL error?
-                submitfailed($this->gT("Unable to insert record into survey table"));
+                $query = $e->getMessage();
+                $trace = $e->getTraceAsString();
+                submitfailed($this->gT("Unable to insert record into survey table"), $query . "\n\n" . $trace);
             }
+
             //Insert Row for Timings, if needed
             if ($this->surveyOptions['savetimings']) {
                 SurveyTimingDynamic::sid($this->sid);
