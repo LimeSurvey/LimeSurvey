@@ -12,7 +12,7 @@ import { RightSideBar } from './RightSideBar/RightSideBar'
 
 export const Editor = () => {
   const params = useParams()
-  const [surveyId, setSurveyId] = useState(params.id)
+  const [surveyId, setSurveyId] = useState(params.id ? params.id : 282267)
   const [editorSettingsPanelOpen] = useAppState('editorSettingsPanelOpen', true)
 
   const { unFocus } = useFocused()

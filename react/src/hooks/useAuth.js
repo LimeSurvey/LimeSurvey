@@ -1,7 +1,7 @@
 import { useQuery, useMutation } from '@tanstack/react-query'
+import { useCookies } from 'react-cookie'
 
 import { queryClient } from 'query'
-import { useCookies } from 'react-cookie';
 
 export const useAuth = () => {
   const [ cookies ] = useCookies(['LS_AUTH_INIT'])
@@ -9,7 +9,7 @@ export const useAuth = () => {
   const { data: auth } = useQuery({
     queryKey: ['auth'],
     queryFn: () => {
-      return { token: null }
+      return { token: null, expires: null }
     },
     staleTime: Infinity,
     cacheTime: Infinity,
@@ -61,7 +61,14 @@ export const useAuth = () => {
     }
   }
 
-  return { isLoggedIn, isPending, login, loginMutation, setAuth }
+  return {
+    isLoggedIn,
+    isPending,
+    login,
+    loginMutation,
+    setAuth,
+    token: auth ? auth.token : null
+  }
 }
 
 export default useAuth

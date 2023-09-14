@@ -2,6 +2,7 @@
 
 namespace LimeSurvey\Api\Rest;
 
+use LimeSurvey\Api\Rest\Renderer\RendererBasic;
 use LimeSurvey\Api\Command\{
     CommandInterface,
     Request\Request
@@ -53,10 +54,16 @@ class Endpoint
      */
     protected function getResponseRenderer()
     {
-        $apiVersion = ucfirst($this->config['apiVersion']);
-        $class = 'LimeSurvey\Api\Rest\\'
-            . $apiVersion
-            . '\RestRenderer' . $apiVersion;
+        $apiVersion = isset($this->config['apiVersion'])
+            ? ucfirst($this->config['apiVersion'])
+            : false;
+        if ($apiVersion) {
+            $class = 'LimeSurvey\Api\Rest\\'
+                . $apiVersion
+                . '\RestRenderer' . $apiVersion;
+        } else {
+            $class = RendererBasic::class;
+        }
         return $this->diContainer->get($class);
     }
 
