@@ -3,17 +3,13 @@
 namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestionL10ns;
-use Survey;
-use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputSurvey;
 use LimeSurvey\Models\Services\{Exception\NotFoundException,
     QuestionAggregateService,
-    SurveyUpdater,
     Exception\PersistErrorException
 };
 use LimeSurvey\ObjectPatch\{Op\OpInterface,
     OpHandler\OpHandlerException,
     OpHandler\OpHandlerInterface,
-    OpType\OpTypeDelete,
     OpType\OpTypeUpdate
 };
 
