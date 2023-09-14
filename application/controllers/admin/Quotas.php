@@ -251,6 +251,7 @@ class Quotas extends SurveyCommonAction
         $aData['totalcompleted'] = $totalcompleted;
 
         if ($quickreport == false) {
+            Yii::app()->loadHelper('admin.htmleditor');
             $this->renderWrappedTemplate('quotas', $aViewUrls, $aData);
         } else {
             /* Export a quickly done csv file */
@@ -392,7 +393,7 @@ class Quotas extends SurveyCommonAction
         $aData['surveybar']['savebutton']['form'] = 'frmeditgroup';
         $aData['topBar']['showSaveButton'] = true;
 
-
+        Yii::app()->loadHelper('admin.htmleditor');
         $this->renderWrappedTemplate('quotas', $aViewUrls, $aData);
     }
 
@@ -522,6 +523,7 @@ class Quotas extends SurveyCommonAction
             $aData['aQuotaLanguageSettings'][$language] = $oQuotaLanguageSetting;
         }
 
+        Yii::app()->loadHelper('admin.htmleditor');
         $this->renderWrappedTemplate('quotas', 'newquota_view', $aData);
     }
 
