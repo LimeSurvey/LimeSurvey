@@ -364,7 +364,11 @@ class QuestionService
      */
     public function getQuestionAttributes(int $questionId)
     {
-        $model = new QuestionAttribute();
+        // We use the container to create a model instance
+        // allowing us to mock the model instance via
+        // container configuration in unit tests
+        $model = DI::getContainer()
+            ->make(QuestionAttribute::class);
         $model->resetScope();
         return $model->findAllByAttributes(['qid' => $questionId]);
     }
