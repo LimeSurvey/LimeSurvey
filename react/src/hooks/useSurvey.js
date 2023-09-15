@@ -9,20 +9,23 @@ export const useSurvey = (id) => {
   let { data } = useQuery(
     ['survey', id],
     async () => {
-      // temporary way to have multiple surveys
-      //const url = id
-      //  ? './data/empty-survey-detail.json'
-      //  : './data/survey-detail.json'
+      if (process.env.REACT_APP_DEMO_MODE) {
+        const url = id
+          ? './data/survey-detail-empty.json'
+          : './data/survey-detail.json'
 
-      const url = 'http://ls-ce/index.php/rest/v1/survey-detail/' + id
-
-      if (auth && auth.token) {
-        let headers = {
-            mode: 'cors',
-            Authorization: 'Bearer ' + auth.token
-        }
-        const res = await fetch(url, {headers})
+        const res = await fetch(url)
         return await res.json()
+      } else {
+        const url = 'http://ls-ce/index.php/rest/v1/survey-detail/' + id
+        if (auth && auth.token) {
+          let headers = {
+              mode: 'cors',
+              Authorization: 'Bearer ' + auth.token
+          }
+          const res = await fetch(url, {headers})
+          return await res.json()
+        }
       }
     },
     {
