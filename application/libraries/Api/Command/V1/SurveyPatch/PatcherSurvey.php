@@ -5,13 +5,9 @@ namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 use LimeSurvey\ObjectPatch\OpHandler\OpHandlerActiveRecordUpdate;
 use LimeSurvey\ObjectPatch\Patcher;
 use Answer;
-use Question;
-use QuestionL10n;
 use QuestionAttribute;
 use LimeSurvey\Api\Command\V1\Transformer\Input\{
     TransformerInputAnswer,
-    TransformerInputQuestion,
-    TransformerInputQuestionL10ns,
     TransformerInputQuestionAttribute
 };
 use DI\FactoryInterface;
@@ -42,7 +38,12 @@ class PatcherSurvey extends Patcher
         $this->addOpHandler($diContainer->get(
             OpHandlerQuestionDelete::class
         ));
-        $this->addOpHandlerQuestion($diFactory, $diContainer);
+        $this->addOpHandler($diContainer->get(
+            OpHandlerQuestionCreate::class
+        ));
+        $this->addOpHandler($diContainer->get(
+            OpHandlerQuestionUpdate::class
+        ));
         $this->addOpHandler($diContainer->get(
             OpHandlerQuestionL10nUpdate::class
         ));
@@ -50,20 +51,6 @@ class PatcherSurvey extends Patcher
         $this->addOpHandlerQuestionAnswer($diFactory, $diContainer);
         $this->addOpHandler($diContainer->get(
             OpHandlerQuestionGroupReorder::class
-        ));
-    }
-
-    private function addOpHandlerQuestion(FactoryInterface $diFactory, ContainerInterface $diContainer): void
-    {
-        $this->addOpHandler($diFactory->make(
-            OpHandlerActiveRecordUpdate::class,
-            [
-                'entity' => 'question',
-                'model' => Question::model(),
-                'transformer' => $diContainer->get(
-                    TransformerInputQuestion::class
-                )
-            ]
         ));
     }
 
