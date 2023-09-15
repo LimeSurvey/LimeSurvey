@@ -158,10 +158,10 @@ class EndpointFactory
         ];
 
         return array_merge(
-            $query ?? [],
-            $params ?? [],
-            $content ?? [],
-            $source ?? []
+            $query,
+            $params,
+            $content,
+            $source
         );
     }
 
