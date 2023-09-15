@@ -506,8 +506,10 @@ class UserManagementController extends LSBaseController
                 }
             }
             $aBasePermissions = $aFilteredPermissions;
+        } elseif(!Permission::model()->hasGlobalPermission('superadmin', 'create')) {
+            /* superadmin permission always need create */
+            unset($aBasePermissions['superadmin']);
         }
-
         return $this->renderPartial(
             'partial/editpermissions',
             [
@@ -1557,6 +1559,10 @@ class UserManagementController extends LSBaseController
             },
             $aGlobalPermissions
         );
+        /* superadmin permission always need create */
+        if (!Permission::model()->hasGlobalPermission('superadmin', 'create')) {
+            unset($aAllowedPermissions['superadmin']);
+        }
         $aCruds = array('create', 'read', 'update', 'delete', 'import', 'export');
         if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
             // if not superadmin filter the available permissions as no admin may give more permissions than he owns
