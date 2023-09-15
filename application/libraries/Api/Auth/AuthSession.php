@@ -44,6 +44,7 @@ class AuthSession
     /**
      * Create session key
      *
+     * @param string $sUsername The username
      * @return Session
      */
     public function createSession($username)
