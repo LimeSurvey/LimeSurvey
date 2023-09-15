@@ -1361,6 +1361,8 @@ class ParticipantsAction extends SurveyCommonAction
      */
     public function attributeControl()
     {
+        $this->checkPermission('read');
+
         $model = new ParticipantAttributeName();
         if (Yii::app()->request->getParam('ParticipantAttributeName')) {
             $model->attributes = Yii::app()->request->getParam('ParticipantAttributeName');
