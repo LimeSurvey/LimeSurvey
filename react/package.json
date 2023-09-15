@@ -46,8 +46,8 @@
     "web-vitals": "^3.3.2"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "export BUILD_PATH=../app; react-scripts build",
+    "start": "export REACT_APP_DEMO_MODE=1; react-scripts start",
+    "build": "export REACT_APP_DEMO_MODE=1 BUILD_PATH=../app; react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "storybook": "storybook dev -p 6006",

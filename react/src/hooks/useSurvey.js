@@ -6,13 +6,15 @@ export const useSurvey = (id) => {
   let { data } = useQuery(
     ['survey', id],
     async () => {
-      // temporary way to have multiple surveys
-      const link = id
-        ? './data/empty-survey-detail.json'
-        : './data/survey-detail.json'
+      if (process.env.REACT_APP_DEMO_MODE) {
+        // temporary way to have multiple surveys
+        const link = id
+          ? './data/survey-detail-empty.json'
+          : './data/survey-detail.json'
 
-      const res = await fetch(link)
-      return await res.json()
+        const res = await fetch(link)
+        return await res.json()
+      }
     },
     {
       staleTime: Infinity,
