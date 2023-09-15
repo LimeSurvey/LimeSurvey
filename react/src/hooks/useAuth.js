@@ -36,7 +36,8 @@ export const useAuth = () => {
     },
   })
 
-  const isLoggedIn = !!auth && !!auth.token
+  const isLoggedIn = process.env.REACT_APP_DEMO_MODE
+    || (!!auth && !!auth.token)
   const isPending =
     loginMutation && (loginMutation.isLoading || loginMutation.isError)
 

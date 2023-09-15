@@ -11,8 +11,8 @@ export const useSurvey = (id) => {
     async () => {
       if (process.env.REACT_APP_DEMO_MODE) {
         const url = id
-          ? './data/survey-detail-empty.json'
-          : './data/survey-detail.json'
+          ? './data/survey-detail.json'
+          : './data/survey-detail-empty.json'
 
         const res = await fetch(url)
         return await res.json()
