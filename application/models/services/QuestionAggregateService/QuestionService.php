@@ -95,11 +95,10 @@ class QuestionService
                 $data['question']
             );
         } else {
-            $question = $this->modelQuestion
-                ->findByAttributes([
-                    'qid' => $data['question']['qid'],
-                    'sid' => $data['question']['sid']
-                ]);
+            $question = $this->getQuestionBySidAndQid(
+                $data['question']['sid'],
+                $data['question']['qid']
+            );
 
             if (!$question) {
                 throw new NotFoundException(
@@ -336,5 +335,20 @@ class QuestionService
                     . $data['question']['type']
             );
         }
+    }
+
+    /**
+     * Returns a question if it exists within the survey.
+     * @param int $sid
+     * @param int $qid
+     * @return Question|null
+     */
+    public function getQuestionBySidAndQid(int $sid, int $qid)
+    {
+        return $this->modelQuestion
+            ->findByAttributes([
+                'qid' => $qid,
+                'sid' => $sid
+            ]);
     }
 }
