@@ -37,13 +37,14 @@ class AuthSession
             }
             throw new ExceptionInvalidUser('Invalid user name or password');
         } else {
-            return ($this->createSessionKey($sUsername))->id;
+            return ($this->createSession($sUsername))->id;
         }
     }
 
     /**
      * Create session key
      *
+     * @param string $username The username
      * @return Session
      */
     public function createSession($username)
