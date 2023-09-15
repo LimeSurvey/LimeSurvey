@@ -77,45 +77,11 @@ class OpHandlerQuestionGroupL10n implements OpHandlerInterface
 
         $questionGroupService->updateQuestionGroupLanguages(
             $questionGroup,
-            $this->getDataArray($op)
+            $this->getTransformedLanguageProps(
+                $op,
+                $this->transformer,
+                $this->entity
+            )
         );
-    }
-
-    /**
-     * Builds and returns the data array for the update operation as the
-     * service class expects it.
-     * @param OpInterface $op
-     * @return array
-     * @throws OpHandlerException
-     */
-    public function getDataArray(OpInterface $op)
-    {
-        $dataSet = [];
-        $languagesArray = $op->getProps();
-        foreach ($languagesArray as $lang => $props) {
-            if (is_numeric($lang)) {
-                throw new OpHandlerException(
-                    sprintf(
-                        'no indexes for language provided within props for %s with id "%s"',
-                        $this->entity,
-                        print_r($op->getEntityId(), true)
-                    )
-                );
-            }
-            $transformedProps = $this->transformer->transform($props);
-            if ($transformedProps == null) {
-                throw new OpHandlerException(
-                    sprintf(
-                        'no transformable props provided for %s with id "%s"',
-                        $this->entity,
-                        print_r($op->getEntityId(), true)
-                    )
-                );
-            }
-            foreach ($transformedProps as $key => $value) {
-                $dataSet[$lang][$key] = $value;
-            }
-        }
-        return $dataSet;
     }
 }
