@@ -96,12 +96,11 @@ class GeneralSettings
 
         // Before setting the owner, check if the user exists and can be seen
         // by the current user (in case the request was forged)
-        $ownerId = $input['owner_id'];
         // NOTE: Internally, the withListRight method will use objects (like the Yii App and Permission model) that
         //       currently may differ from the ones injected in this service.
         //       That's why we set the user id explicitely from the injected model instead of having
         //       the withListRight to use the user from Yii App
-        $owner = $this->modelUser->withListRight($this->yiiApp->user->id)->findByPk($ownerId);
+        $owner = $this->modelUser->withListRight($this->yiiApp->user->id)->findByPk($input['owner_id']);
         if (!isset($owner)) {
             throw new PermissionDeniedException(
                 'Permission denied'

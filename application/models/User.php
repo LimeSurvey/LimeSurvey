@@ -1017,12 +1017,12 @@ class User extends LSActiveRecord
     /**
      * Uses for scope in list and search
      * This don't mean user are allowed to read all information or any other Permission
-     * @param integer $userid
+     * @param integer $userId
      * @return self
      */
-    public function withListRight($userid = null)
+    public function withListRight($userId = null)
     {
-        $this->getDbCriteria()->mergeWith(self::getPermissionCriteria($userid));
+        $this->getDbCriteria()->mergeWith(self::getPermissionCriteria($userId));
         return $this;
     }
 }
