@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2023-09-13 12:27:30+00:00\n"
+"POT-Creation-Date: 2023-09-15 13:42:36+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -98,7 +98,7 @@ msgstr ""
 #: application/controllers/admin/PluginManagerController.php:156
 #: application/controllers/admin/SurveymenuController.php:406
 #: application/controllers/admin/SurveymenuEntryController.php:71
-#: application/controllers/admin/SurveysGroupsController.php:179
+#: application/controllers/admin/SurveysGroupsController.php:181
 #: application/extensions/TopbarWidget/views/includes/addGroupTopbarRight_view.php:17
 #: application/extensions/TopbarWidget/views/includes/surveyTopbarRight_view.php:34
 #: application/views/admin/labels/importlabelresources_view.php:72
@@ -211,10 +211,10 @@ msgstr ""
 #: application/controllers/admin/SurveymenuEntryController.php:18
 #: application/controllers/admin/SurveysGroupsController.php:47
 #: application/controllers/admin/SurveysGroupsController.php:118
-#: application/controllers/admin/SurveysGroupsController.php:234
-#: application/controllers/admin/SurveysGroupsController.php:255
-#: application/controllers/admin/SurveysGroupsController.php:370
-#: application/controllers/admin/SurveysGroupsController.php:443
+#: application/controllers/admin/SurveysGroupsController.php:236
+#: application/controllers/admin/SurveysGroupsController.php:257
+#: application/controllers/admin/SurveysGroupsController.php:372
+#: application/controllers/admin/SurveysGroupsController.php:445
 #: application/controllers/admin/Tokens.php:45
 #: application/controllers/admin/Tokens.php:243
 #: application/controllers/admin/Tokens.php:266
@@ -301,7 +301,7 @@ msgstr ""
 #: application/models/Notification.php:158
 #: application/models/SavedControl.php:168
 #: application/models/SurveymenuEntries.php:182
-#: application/models/SurveysGroups.php:94
+#: application/models/SurveysGroups.php:95
 #: application/models/TokenDynamic.php:634
 #: application/views/admin/survey/surveySummary_view.php:32
 #: application/views/surveyAdministration/surveySummary_view.php:37
@@ -1213,7 +1213,7 @@ msgstr ""
 #: application/controllers/SurveysGroupsPermissionController.php:353
 #: application/controllers/SurveysGroupsPermissionController.php:367
 #: application/controllers/admin/Saved.php:87
-#: application/controllers/admin/SurveysGroupsController.php:415
+#: application/controllers/admin/SurveysGroupsController.php:417
 #: application/core/SurveyCommonAction.php:1201
 msgid "Invalid action"
 msgstr ""
@@ -1600,8 +1600,8 @@ msgstr ""
 #: application/models/Notification.php:166
 #: application/models/Surveymenu.php:341
 #: application/models/SurveymenuEntries.php:186
-#: application/models/SurveysGroups.php:96
-#: application/models/SurveysGroups.php:149
+#: application/models/SurveysGroups.php:97
+#: application/models/SurveysGroups.php:150
 #: application/models/TutorialEntry.php:60
 #: application/views/admin/labels/_labelviewtabcontent_view.php:20
 #: application/views/admin/notification/index.php:24
@@ -1711,7 +1711,7 @@ msgstr ""
 #: application/helpers/admin/export/HtmlWriter.php:72
 #: application/models/Assessment.php:143 application/models/Question.php:1040
 #: application/models/QuestionType.php:123
-#: application/models/SurveysGroups.php:438
+#: application/models/SurveysGroups.php:439
 #: application/views/assessment/assessments_edit.php:34
 msgid "Group"
 msgstr ""
@@ -2708,7 +2708,7 @@ msgid "You need to add questions"
 msgstr ""
 
 #: application/controllers/SurveyAdministrationController.php:2978
-#: application/controllers/admin/SurveysGroupsController.php:298
+#: application/controllers/admin/SurveysGroupsController.php:300
 #: application/core/plugins/expressionFixedDbVar/expressionFixedDbVar.php:168
 #: application/views/admin/survey/subview/accordion/_generaloptions_panel.php:35
 #: application/views/admin/survey/subview/accordion/_generaloptions_panel.php:313
@@ -2773,8 +2773,8 @@ msgstr ""
 #: application/models/Permissiontemplates.php:264
 #: application/models/QuestionType.php:122
 #: application/models/Surveymenu.php:343
-#: application/models/SurveysGroups.php:97
-#: application/models/SurveysGroups.php:156
+#: application/models/SurveysGroups.php:98
+#: application/models/SurveysGroups.php:157
 #: application/models/UserGroup.php:299
 #: application/views/admin/pluginmanager/index.php:104
 #: application/views/homepageSettings/index.php:81
@@ -2809,7 +2809,7 @@ msgstr ""
 #: application/models/Surveymenu.php:399
 #: application/models/SurveymenuEntries.php:194
 #: application/models/SurveymenuEntries.php:207
-#: application/models/SurveysGroups.php:123
+#: application/models/SurveysGroups.php:124
 #: application/models/TokenDynamic.php:626 application/models/User.php:761
 #: application/models/User.php:826
 #: application/views/SurveysGroupsPermission/subviews/currentUsersList.php:7
@@ -4039,7 +4039,7 @@ msgid "There is no matching survey."
 msgstr ""
 
 #: application/controllers/admin/CheckIntegrity.php:991
-#: application/models/SurveysGroups.php:365
+#: application/models/SurveysGroups.php:366
 msgid "No parent group"
 msgstr ""
 
@@ -5041,7 +5041,7 @@ msgid "Texts for language %s could not be updated:"
 msgstr ""
 
 #: application/controllers/admin/Database.php:777
-#: application/controllers/admin/Database.php:951
+#: application/controllers/admin/Database.php:957
 msgid "Survey settings were successfully saved."
 msgstr ""
 
@@ -5050,11 +5050,11 @@ msgid "Survey settings were saved, but there where errors with some languages."
 msgstr ""
 
 #: application/controllers/admin/Database.php:782
-#: application/controllers/admin/Database.php:953
+#: application/controllers/admin/Database.php:959
 msgid "Survey could not be updated, please fix the following error:"
 msgstr ""
 
-#: application/controllers/admin/Database.php:926
+#: application/controllers/admin/Database.php:932
 msgid "Survey language could not be created."
 msgstr ""
 
@@ -6316,47 +6316,47 @@ msgstr ""
 msgid "Create survey group"
 msgstr ""
 
-#: application/controllers/admin/SurveysGroupsController.php:139
+#: application/controllers/admin/SurveysGroupsController.php:141
 msgid "You don't have rights on Survey group"
 msgstr ""
 
-#: application/controllers/admin/SurveysGroupsController.php:146
+#: application/controllers/admin/SurveysGroupsController.php:148
 msgid "A child group can't be set as parent group"
 msgstr ""
 
-#: application/controllers/admin/SurveysGroupsController.php:164
+#: application/controllers/admin/SurveysGroupsController.php:166
 msgid "Update survey group: "
 msgstr ""
 
-#: application/controllers/admin/SurveysGroupsController.php:269
+#: application/controllers/admin/SurveysGroupsController.php:271
 msgid "You do not have permission to update survey settings."
 msgstr ""
 
-#: application/controllers/admin/SurveysGroupsController.php:329
+#: application/controllers/admin/SurveysGroupsController.php:331
 #: application/controllers/admin/globalsettings.php:522
 #: application/core/LsDefaultDataSets.php:895
-#: application/models/Survey.php:2274 application/models/SurveysGroups.php:314
-#: application/models/SurveysGroups.php:449
+#: application/models/Survey.php:2274 application/models/SurveysGroups.php:315
+#: application/models/SurveysGroups.php:450
 msgid "Survey settings"
 msgstr ""
 
-#: application/controllers/admin/SurveysGroupsController.php:353
+#: application/controllers/admin/SurveysGroupsController.php:355
 msgid "Survey settings for group: "
 msgstr ""
 
-#: application/controllers/admin/SurveysGroupsController.php:376
+#: application/controllers/admin/SurveysGroupsController.php:378
 msgid "You can't delete the default survey group!"
 msgstr ""
 
-#: application/controllers/admin/SurveysGroupsController.php:379
+#: application/controllers/admin/SurveysGroupsController.php:381
 msgid "You can't delete a group if it's not empty!"
 msgstr ""
 
-#: application/controllers/admin/SurveysGroupsController.php:382
+#: application/controllers/admin/SurveysGroupsController.php:384
 msgid "You can't delete a group because one or more groups depend on it as parent!"
 msgstr ""
 
-#: application/controllers/admin/SurveysGroupsController.php:388
+#: application/controllers/admin/SurveysGroupsController.php:390
 msgid "The survey group '%s' was deleted."
 msgstr ""
 
@@ -9960,7 +9960,7 @@ msgstr ""
 
 #: application/extensions/UserPermissionsWidget/views/table.php:7
 #: application/models/SurveymenuEntries.php:198
-#: application/models/SurveysGroups.php:311
+#: application/models/SurveysGroups.php:312
 #: application/views/admin/user/setuserpermissions.php:24
 #: application/views/userManagement/massiveAction/_updatepermissions.php:29
 #: application/views/userManagement/partial/editpermissions.php:18
@@ -10038,8 +10038,8 @@ msgstr ""
 
 #: application/extensions/admin/survey/ListSurveysWidget/views/listSurveys.php:99
 #: application/models/Participant.php:400
-#: application/models/SurveysGroups.php:99
-#: application/models/SurveysGroups.php:180
+#: application/models/SurveysGroups.php:100
+#: application/models/SurveysGroups.php:181
 #: application/models/UserGroup.php:306
 #: application/views/userGroup/usergroups_view.php:74
 msgid "Owner"
@@ -11689,19 +11689,19 @@ msgstr ""
 msgid "Function must have at least %s argument|Function must have at least %s arguments"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:2239
+#: application/helpers/expressions/em_core_helper.php:2243
 msgid "Function does not support %s arguments"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:2240
+#: application/helpers/expressions/em_core_helper.php:2244
 msgid "Function supports this many arguments, where -1=unlimited: %s"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:2452
+#: application/helpers/expressions/em_core_helper.php:2456
 msgid "Tried to pop value off of empty stack"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:3240
+#: application/helpers/expressions/em_core_helper.php:3255
 msgid "Invalid PERL Regular Expression: %s"
 msgstr ""
 
@@ -14944,7 +14944,7 @@ msgstr ""
 
 #: application/models/Participant.php:256 application/models/Surveymenu.php:346
 #: application/models/SurveymenuEntries.php:205
-#: application/models/SurveysGroups.php:102 application/models/User.php:786
+#: application/models/SurveysGroups.php:103 application/models/User.php:786
 #: application/models/User.php:859
 msgid "Created on"
 msgstr ""
@@ -15267,8 +15267,8 @@ msgid "Group / Question order"
 msgstr ""
 
 #: application/models/Question.php:1020 application/models/QuestionType.php:121
-#: application/models/SurveysGroups.php:95
-#: application/models/SurveysGroups.php:141
+#: application/models/SurveysGroups.php:96
+#: application/models/SurveysGroups.php:142
 #: application/views/admin/labels/_labelviewtabcontent_view.php:18
 #: application/views/questionAdministration/questionCode.php:6
 msgid "Code"
@@ -15796,7 +15796,7 @@ msgstr ""
 
 #: application/models/Surveymenu.php:338
 #: application/models/SurveymenuEntries.php:185
-#: application/models/SurveysGroups.php:188
+#: application/models/SurveysGroups.php:189
 msgid "Order"
 msgstr ""
 
@@ -15820,7 +15820,7 @@ msgstr ""
 
 #: application/models/Surveymenu.php:347
 #: application/models/SurveymenuEntries.php:206
-#: application/models/SurveysGroups.php:104 application/models/User.php:791
+#: application/models/SurveysGroups.php:105 application/models/User.php:791
 #: application/models/User.php:854
 #: application/views/userManagement/partial/showuser.php:15
 msgid "Created by"
@@ -15880,7 +15880,7 @@ msgid "GET data method"
 msgstr ""
 
 #: application/models/SurveymenuEntries.php:203
-#: application/models/SurveysGroups.php:103
+#: application/models/SurveysGroups.php:104
 msgid "Modified on"
 msgstr ""
 
@@ -15921,54 +15921,54 @@ msgstr ""
 msgid "Group code can contain only alphanumeric character, underscore or dot. Spaces are not allowed."
 msgstr ""
 
-#: application/models/SurveysGroups.php:98
+#: application/models/SurveysGroups.php:99
 msgid "Sort order"
 msgstr ""
 
-#: application/models/SurveysGroups.php:100
-#: application/models/SurveysGroups.php:164
+#: application/models/SurveysGroups.php:101
+#: application/models/SurveysGroups.php:165
 msgid "Parent group"
 msgstr ""
 
-#: application/models/SurveysGroups.php:101
+#: application/models/SurveysGroups.php:102
 msgid "Always available"
 msgstr ""
 
-#: application/models/SurveysGroups.php:131
+#: application/models/SurveysGroups.php:132
 msgid "Survey group ID"
 msgstr ""
 
-#: application/models/SurveysGroups.php:172
+#: application/models/SurveysGroups.php:173
 msgid "Available"
 msgstr ""
 
-#: application/models/SurveysGroups.php:308
+#: application/models/SurveysGroups.php:309
 msgid "Edit survey group"
 msgstr ""
 
-#: application/models/SurveysGroups.php:318
+#: application/models/SurveysGroups.php:319
 msgid "Delete survey group"
 msgstr ""
 
-#: application/models/SurveysGroups.php:318
+#: application/models/SurveysGroups.php:319
 #: application/models/TemplateConfiguration.php:786
 #: application/models/TemplateConfiguration.php:800
 msgid "Do you want to continue?"
 msgstr ""
 
-#: application/models/SurveysGroups.php:439
+#: application/models/SurveysGroups.php:440
 msgid "Permission to update name/description of this group or to delete this group. Read permission is used to give access to this group."
 msgstr ""
 
-#: application/models/SurveysGroups.php:450
+#: application/models/SurveysGroups.php:451
 msgid "Permission to update survey settings for this group"
 msgstr ""
 
-#: application/models/SurveysGroups.php:460
+#: application/models/SurveysGroups.php:461
 msgid "Survey group security"
 msgstr ""
 
-#: application/models/SurveysGroups.php:461
+#: application/models/SurveysGroups.php:462
 msgid "Permission to modify survey group security settings"
 msgstr ""
 
