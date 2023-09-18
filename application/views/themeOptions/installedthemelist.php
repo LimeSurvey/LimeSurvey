@@ -96,12 +96,8 @@
                                         $url = $(this).attr("data-url");
                                         $.ajax({
                                             url : $url,
-                                            type : "GET",
-                                            dataType : "html",
-                                
-                                            // html contains the buttons
-                                            success : function(html, statut){
-                                            }
+                                            method: "POST",
+                                            data: "",
                                         });
                                     });
                                 }',
@@ -121,12 +117,8 @@
                     $url = $(this).attr("data-url");
                     $.ajax({
                         url : $url,
-                        type : "GET",
-                        dataType : "html",
-            
-                        // html contains the buttons
-                        success : function(html, statut){
-                        }
+                        method: "POST",
+                        data: "",
                     });
                 });
                 ';
