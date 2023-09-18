@@ -34,6 +34,27 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.6.37 (build 230905) to 5.6.38 (build 230919) September 18, 2023
+-Fixed issue #19037: [security] Reflected XSS in LimeSurvey via userid parameter (#3412) (Gabriel Jenik)
+-Fixed issue #18995: [security] Confidentiality issue about username (#3368) (Gabriel Jenik)
+-Fixed issue #18981: Using ngT to translate plurals loads wrong locale folder (#3326) (Gabriel Jenik)
+-Fixed issue #18978: User is able to change survey group's code that is by default unchangeable (#3401) (Gabriel Jenik)
+-Fixed issue #18942: Roles - Permissions Modal is too narrow (#3320) (Gabriel Jenik)
+-Fixed issue #18593: Float attributes are not supported anymore (#3202) (Gabriel Jenik)
+-Fixed issue #18494: TypeError during demo survey "ls205_em_tailoring" (#3441) (Gabriel Jenik)
+#Updated translation: Turkish by bulent, kayazeren
+#Updated translation: Swedish by maxzomborszki
+#Updated translation: Spanish (Spain) by ireneoh
+#Updated translation: Slovak by jelen1
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Japanese by nomoto
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
 Changes from 5.6.36 (build 230830) to 5.6.37 (build 230905) September 4, 2023
 -Fixed issue #19036: Stored XSS via user's username (#3394) (Gabriel Jenik)
 -Fixed issue #18905: Create automatic test for XSS Purifier: Broken HTML (#3410) (Gabriel Jenik)
