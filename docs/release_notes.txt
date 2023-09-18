@@ -34,6 +34,17 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.28.73 (build 230906) to 3.28.74 (build 230920) September 18, 2023
+#Updated translation: Uighur by walkingdead
+#Updated translation: Turkish by kayazeren
+#Updated translation: Swedish by maxzomborszki
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Japanese by hl_sales
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
 Changes from 3.28.72 (build 230829) to 3.28.73 (build 230906) September 4, 2023
 #Updated translation: French (France) by DenisChenu
 #Updated translation: Catalan by qualitatuvic
