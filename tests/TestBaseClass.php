@@ -140,6 +140,8 @@ class TestBaseClass extends TestCase
         \Yii::app()->session['loginID'] = 1;
 
         if (self::$testSurvey) {
+            // Clear database cache.
+            \Yii::app()->db->schema->refresh();
             if (!self::$testSurvey->delete()) {
                 self::assertTrue(
                     false,
