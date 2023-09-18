@@ -1212,7 +1212,7 @@ function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyNam
             $aImportResults = [];
 
             if (!is_array($aFiles)) {
-                $aImportResults['error'] = gT("This is not a valid LimeSurvey survey structure lsa file.");
+                $aImportResults['error'] = gT("This is not a valid LimeSurvey LSA file.");
                 return $aImportResults;
             }
             // Step 1 - import the LSS file and activate the survey
