@@ -2,10 +2,9 @@
 
 namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
-use LimeSurvey\Models\Services\QuestionAggregateService\QuestionService;
+use LimeSurvey\Api\Transformer\TransformerInterface;
 use LimeSurvey\ObjectPatch\Op\OpInterface;
 use LimeSurvey\ObjectPatch\OpHandler\OpHandlerException;
-use Question;
 
 trait OpHandlerSurveyTrait
 {
@@ -31,32 +30,42 @@ trait OpHandlerSurveyTrait
     }
 
     /**
-     * Gets a question from the question service, if the entity id is the qid,
-     * and the survey contains this question.
+     * transforms language related props to array
      * @param OpInterface $op
-     * @return Question
+     * @param TransformerInterface $transformer
+     * @param string $entity
+     * @return array
      * @throws OpHandlerException
      */
-    public function getQuestion(OpInterface $op)
-    {
-        $surveyId = $this->getSurveyIdFromContext($op);
-        $questionId = $op->getEntityId();
-        $diContainer = \LimeSurvey\DI::getContainer();
-        $questionService = $diContainer->get(
-            QuestionService::class
-        );
-        $question = $questionService->getQuestionBySidAndQid(
-            $surveyId,
-            $questionId
-        );
-        if ($question === null) {
-            throw new OpHandlerException(
-                printf(
-                    'No question found for entity %s',
-                    $op->getEntityType()
-                )
-            );
+    public function getTransformedLanguageProps(
+        OpInterface $op,
+        TransformerInterface $transformer,
+        string $entity
+    ): array {
+        $dataSet = [];
+        $props = $op->getProps();
+        foreach ($props as $language => $properties) {
+            if (is_numeric($language)) {
+                throw new OpHandlerException(
+                    sprintf(
+                        'no indexes for language provided within props for %s with id "%s"',
+                        $entity,
+                        print_r($op->getEntityId(), true)
+                    )
+                );
+            }
+            $transformedProps = $transformer->transform($properties);
+            if ($transformedProps == null) {
+                throw new OpHandlerException(
+                    sprintf(
+                        'no transformable props provided for %s with id "%s"',
+                        $entity,
+                        print_r($op->getEntityId(), true)
+                    )
+                );
+            }
+            $dataSet[$language] = $transformedProps;
         }
-        return $question;
+        return $dataSet;
     }
 }

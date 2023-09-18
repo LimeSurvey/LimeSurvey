@@ -2,8 +2,8 @@
 
 namespace LimeSurvey\Api\Command\V1\Transformer\Output;
 
-use LimeSurvey\Models\Services\QuestionAggregateService\QuestionService;
 use Survey;
+use LimeSurvey\Models\Services\QuestionAggregateService\QuestionService;
 use LimeSurvey\Api\Transformer\Output\TransformerOutputActiveRecord;
 
 /**
@@ -19,6 +19,7 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
     private TransformerOutputQuestionAttribute $transformerQuestionAttribute;
     private TransformerOutputAnswer $transformerAnswer;
     private QuestionService $questionService;
+    private TransformerOutputAnswerL10ns $transformerAnswerL10ns;
 
     /**
      * Construct
@@ -31,7 +32,8 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
         TransformerOutputQuestionL10ns $transformerOutputQuestionL10ns,
         TransformerOutputQuestionAttribute $transformerOutputQuestionAttribute,
         TransformerOutputAnswer $transformerOutputAnswer,
-        QuestionService $questionService
+        TransformerOutputAnswerL10ns $transformerOutputAnswerL10ns,
+        QuestionService $questionService,
     ) {
         $this->transformerSurvey = $transformerOutputSurvey;
         $this->transformerQuestionGroup = $transformerOutputQuestionGroup;
@@ -40,6 +42,7 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
         $this->transformerQuestionL10ns = $transformerOutputQuestionL10ns;
         $this->transformerQuestionAttribute = $transformerOutputQuestionAttribute;
         $this->transformerAnswer = $transformerOutputAnswer;
+        $this->transformerAnswerL10ns = $transformerOutputAnswerL10ns;
         $this->questionService = $questionService;
     }
 
@@ -147,6 +150,33 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
 
             $question['answers'] = $this->transformerAnswer->transformAll(
                 $questionModel->answers
+            );
+
+            $answerLookup = $this->createCollectionLookup(
+                'aid',
+                $question['answers']
+            );
+
+            $this->transformAnswersL10n(
+                $answerLookup,
+                $questionModel->answers
+            );
+        }
+    }
+
+    /**
+     * Adds the language specific data of answer_l10ns to the answers array
+     * @param array $answerLookup
+     * @param array $answers
+     * @return void
+     */
+    private function transformAnswersL10n($answerLookup, $answers)
+    {
+        foreach ($answers as $answerModel) {
+            $answer = &$answerLookup[$answerModel->aid];
+
+            $answer['l10ns'] = $this->transformerAnswerL10ns->transformAll(
+                $answerModel->answerl10ns
             );
         }
     }
