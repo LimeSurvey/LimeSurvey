@@ -3,6 +3,7 @@
 namespace LimeSurvey\Models\Services\QuestionAggregateService;
 
 use Question;
+use QuestionAttribute;
 use Survey;
 use Condition;
 use LSYii_Application;
@@ -350,5 +351,25 @@ class QuestionService
                 'qid' => $qid,
                 'sid' => $sid
             ]);
+    }
+
+    /**
+     * Returns all(!) question attributes to a question.
+     * The default scope on QuestionAttribute which is reset here
+     * caused missing data.
+     * We need to use this function in TransformerOutputSurveyDetail instead of
+     * accessing the attributes with "$questionModel->questionattributes"
+     * @param int $questionId
+     * @return QuestionAttribute[]
+     */
+    public function getQuestionAttributes(int $questionId)
+    {
+        // We use the container to create a model instance
+        // allowing us to mock the model instance via
+        // container configuration in unit tests
+        $model = DI::getContainer()
+            ->make(QuestionAttribute::class);
+        $model->resetScope();
+        return $model->findAllByAttributes(['qid' => $questionId]);
     }
 }
