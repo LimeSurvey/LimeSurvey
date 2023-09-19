@@ -23,6 +23,7 @@ use Question;
 class OpHandlerQuestionCreate implements OpHandlerInterface
 {
     use OpHandlerSurveyTrait;
+    use OpHandlerQuestionTrait;
 
     protected string $entity;
     protected Question $model;
@@ -225,7 +226,11 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
         $this->checkRawPropsForRequiredEntities($op, $allData);
         $preparedData = [];
         $entities = [
-            'question', 'questionL10n', 'attributes', 'answers', 'subquestions'
+            'question',
+            'questionL10n',
+            'attributes',
+            'answers',
+            'subquestions'
         ];
 
         foreach ($entities as $name) {
@@ -262,38 +267,16 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
             case 'attributes':
                 return $this->prepareAdvancedSettings($op, $data);
             case 'answers':
-                return $this->prepareAnswers($op, $data);
+                return $this->prepareAnswers(
+                    $op,
+                    $data,
+                    $this->transformerAnswer,
+                    $this->transformerAnswerL10n
+                );
             case 'subquestions':
                 return $this->prepareSubQuestions($op, $data);
         }
         return $data;
-    }
-
-    /**
-     * Checks required entities' data to be not empty.
-     * @param OpInterface $op
-     * @param array|null $data
-     * @param string $name
-     * @return void
-     * @throws OpHandlerException
-     */
-    private function checkRequiredData(
-        OpInterface $op,
-        ?array $data,
-        string $name
-    ): void {
-        if (
-            in_array($name, $this->getRequiredEntitiesArray())
-            && empty($data)
-        ) {
-            throw new OpHandlerException(
-                sprintf(
-                    'No values to update for %s in entity %s',
-                    $name,
-                    $op->getEntityType()
-                )
-            );
-        }
     }
 
     /**
@@ -318,19 +301,6 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
                 );
             }
         }
-    }
-
-    /**
-     * For creating a question without breaking the app, we need at least
-     * "question"", "questionL10n" entities.
-     * @return array
-     */
-    private function getRequiredEntitiesArray(): array
-    {
-        return [
-            'question',
-            'questionL10n'
-        ];
     }
 
     /**
@@ -398,56 +368,6 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
             }
         }
         return $preparedSettings;
-    }
-
-    /**
-     * Converts the answers from the raw data to the expected format.
-     * @param OpInterface $op
-     * @param array|null $data
-     * @return array
-     * @throws OpHandlerException
-     */
-    private function prepareAnswers(OpInterface $op, ?array $data): array
-    {
-        $preparedAnswers = [];
-        if (is_array($data)) {
-            foreach ($data as $index => $answer) {
-                $transformedAnswer = $this->transformerAnswer->transform(
-                    $answer
-                );
-                $this->checkRequiredData(
-                    $op,
-                    $transformedAnswer,
-                    'answers'
-                );
-                if (
-                    is_array($answer) && array_key_exists(
-                        'l10ns',
-                        $answer
-                    ) && is_array($answer['l10ns'])
-                ) {
-                    foreach ($answer['l10ns'] as $lang => $answerL10n) {
-                        $tfAnswerL10n = $this->transformerAnswerL10n->transform(
-                            $answerL10n
-                        );
-                        $transformedAnswer['answeroptionl10n'][$lang] =
-                            (
-                                is_array($tfAnswerL10n)
-                                && isset($tfAnswerL10n['answer'])
-                            ) ?
-                                $tfAnswerL10n['answer'] : null;
-                    }
-                }
-                /**
-                 * $index can sometimes determine where the answer is positioned
-                 * (e.g.:array dualscale)
-                 * index is used twice because of the structure the service
-                 * expects the data to be in
-                 */
-                $preparedAnswers[$index][$index] = $transformedAnswer;
-            }
-        }
-        return $preparedAnswers;
     }
 
     /**
