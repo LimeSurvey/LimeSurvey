@@ -57,7 +57,7 @@ trait OpHandlerQuestionTrait
                 $scaleId = array_key_exists(
                     'scaleId',
                     $transformedAnswer
-                ) ? $transformedAnswer['scaleId'] : 1;
+                ) ? $transformedAnswer['scaleId'] : 0;
                 $preparedAnswers[$index][$scaleId] = $transformedAnswer;
             }
         }
