@@ -15,20 +15,15 @@ class AddNotificationCommand extends CConsoleCommand
      */
     public function run($arguments)
     {
+        $title = $arguments[0];
+        $body  = $arguments[1];
+        $importance = (int) $arguments[2] ?? Notification::NORMAL_IMPORTANCE;
+
         $not = new Notification([
             'user_id' => 1,
-            'title' => 'New survey template imported',
-            'importance' => Notification::NAG_ONCE_IMPORTANCE,
-            'message' => <<<HTML
-                Redirecting...
-                <script>
-                    // Wait 1 sec so that notification has time to be marked as read via Ajax.
-                    setTimeout(
-                        () => window.location.href = "https://localhost/index.php?r=surveyAdministration/view/surveyid/455171&popuppreview=true",
-                        1000
-                    );
-                </script>
-HTML
+            'title' => $title,
+            'importance' => $importance,
+            'message' => $body
         ]);
         $not->save();
     }
