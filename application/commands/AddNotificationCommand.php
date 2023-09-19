@@ -1,10 +1,5 @@
 <?php
 
-Yii::import('application.helpers.replacements_helper', true);
-Yii::import('application.helpers.expressions.em_manager_helper', true);
-Yii::import('application.helpers.common_helper', true);
-Yii::import('application.helpers.admin.import_helper', true);
-
 class AddNotificationCommand extends CConsoleCommand
 {
     /**
