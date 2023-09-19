@@ -2,6 +2,9 @@
 
 namespace LimeSurvey\Models\Services\QuestionAggregateService;
 
+use Answer;
+use AnswerL10n;
+use CDbCriteria;
 use Condition;
 use Question;
 use QuestionL10n;
@@ -39,9 +42,9 @@ class DeleteService
      *
      * @param int $surveyId
      * @param int $questionId
-     * @throws PersistErrorException
-     * @throws QuestionHasConditionsException
      * @return void
+     * @throws QuestionHasConditionsException*@throws \CDbException
+     * @throws PersistErrorException
      */
     public function delete($surveyId, $questionId)
     {
@@ -76,6 +79,28 @@ class DeleteService
             ->deleteAllByAttributes(['qid' => $questionId]);
 
         if (!$question->delete()) {
+            throw new PersistErrorException();
+        }
+    }
+
+    /**
+     * Function responsible for deleting an answer from a question.
+     * It also deletes all languages for this answer.
+     *
+     * @param int $surveyId
+     * @param int $questionId
+     * @param int $answerId
+     * @throws PersistErrorException
+     *
+     */
+    public function deleteAnswer($answerId)
+    {
+        $answer = Answer::model()->findByAttributes(['aid' => $answerId]);
+        $aidsCriteria = (new CDbCriteria())->addInCondition('aid', [$answerId]);
+        AnswerL10n::model()->deleteAll($aidsCriteria);
+        try {
+            $answer->delete();
+        }catch (\CDbException $e) {
             throw new PersistErrorException();
         }
     }
