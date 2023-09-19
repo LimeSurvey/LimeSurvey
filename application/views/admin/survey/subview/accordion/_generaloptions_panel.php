@@ -32,6 +32,7 @@ $formatSelectOptions = array(
     'G' => gT('Group by Group', 'unescaped'),
     'A' => gT('All in one', 'unescaped')
 );
+$bGlobalSettings = !empty($this->currentModuleAction) && $this->currentModuleAction == 'globalsettings';
 if ($bShowInherited) {
     $formatSelectOptions['I'] = $oSurveyOptions->format . " ᴵ";
 }
@@ -314,17 +315,22 @@ Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", 
                 ]); ?>
             </div>
         </div>
-
+        <?php
+            $themeConf = TemplateConfiguration::getInstanceFromTemplateName(($oSurvey->template === 'inherit') ? $oSurveyOptions->template : $oSurvey->template);
+            $inheritThemeName = $oSurveyOptions->template;
+            if ($oSurveyOptions->template == 'inherit') {
+                $inheritThemeName = Yii::app()->getConfig('defaulttheme');
+            }
+        ?>
         <!-- Theme -->
         <div class="mb-3" >
             <label class=" form-label" for='template'><?php eT("Theme:"); ?></label>
             <div class="">
-                <?php $themeConf = TemplateConfiguration::getInstanceFromTemplateName(($oSurvey->template === 'inherit') ? $oSurveyOptions->template : $oSurvey->template) ?>
                 <select id='template' style="width:100%;" class="form-select activate-search" name='template' data-updateurl='<?php echo App()->createUrl('themeOptions/getPreviewTag') ?>'
                         data-inherit-template-name='<?= $themeConf->template_name ?>'>
-                    <?php if ($bShowInherited) : ?>
+                    <?php if ($bShowInherited || $bGlobalSettings) : ?>
                         <option value="inherit" <?= ($oSurvey->template == 'inherit') ? 'selected="selected"' : ''; ?>>
-                            <?= gT('Inherit') . ' [' . $themeConf->template_name . ']'; ?>
+                            <?= gT('Inherit') . ' [' . $inheritThemeName . ']'; ?>
                         </option>
                     <?php endif; ?>
                     <?php
