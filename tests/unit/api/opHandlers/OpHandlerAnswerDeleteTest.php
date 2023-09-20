@@ -2,8 +2,6 @@
 
 namespace ls\tests\unit\api\opHandlers;
 
-use LimeSurvey\Api\Command\V1\SurveyPatch\OpHandlerQuestionUpdate;
-use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestion;
 use LimeSurvey\Libraries\Api\Command\V1\SurveyPatch\OpHandlerAnswerDelete;
 use LimeSurvey\Models\Services\QuestionAggregateService;
 use LimeSurvey\ObjectPatch\ObjectPatchException;
@@ -15,11 +13,18 @@ class OpHandlerAnswerDeleteTest extends TestBaseClass
 {
     protected OpInterface $op;
 
-    public function tesCanHandleAnswer()
+    public function testCanHandleAnswer()
     {
-        $this->initializePatcher();
+        $this->initializePatcher('answer');
         $opHandler = $this->getOpHandler();
         $this->assertTrue($opHandler->canHandle($this->op));
+    }
+
+    public function testCanNotHandleAnswer()
+    {
+        $this->initializePatcher('question');
+        $opHandler = $this->getOpHandler();
+        $this->assertFalse($opHandler->canHandle($this->op));
     }
 
     /**
@@ -34,6 +39,8 @@ class OpHandlerAnswerDeleteTest extends TestBaseClass
             $entityType,
             $operation,
             "77",
+            [],
+            ['id' => 666]
         );
     }
 

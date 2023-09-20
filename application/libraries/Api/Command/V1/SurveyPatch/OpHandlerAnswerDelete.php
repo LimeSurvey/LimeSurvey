@@ -3,8 +3,10 @@
 namespace LimeSurvey\Libraries\Api\Command\V1\SurveyPatch;
 
 use LimeSurvey\Api\Command\V1\SurveyPatch\OpHandlerSurveyTrait;
+use LimeSurvey\Models\Services\Exception\PermissionDeniedException;
 use LimeSurvey\Models\Services\QuestionAggregateService;
 use LimeSurvey\ObjectPatch\Op\OpInterface;
+use LimeSurvey\ObjectPatch\OpHandler\OpHandlerException;
 use LimeSurvey\ObjectPatch\OpHandler\OpHandlerInterface;
 use LimeSurvey\ObjectPatch\OpType\OpTypeDelete;
 
@@ -14,11 +16,18 @@ class OpHandlerAnswerDelete implements OpHandlerInterface
 
     protected QuestionAggregateService $questionAggregateService;
 
+    /**
+     * @param QuestionAggregateService $questionAggregateService
+     */
     public function __construct(QuestionAggregateService $questionAggregateService)
     {
         $this->questionAggregateService = $questionAggregateService;
     }
 
+    /**
+     * @param OpInterface $op
+     * @return bool
+     */
     public function canHandle(OpInterface $op): bool
     {
         $isDeleteOperation = $op->getType()->getId() === OpTypeDelete::ID;
@@ -40,10 +49,8 @@ class OpHandlerAnswerDelete implements OpHandlerInterface
      *
      * @param OpInterface $op
      * @return void
-     * @throws \DI\DependencyException
-     * @throws \DI\NotFoundException
-     * @throws \LimeSurvey\Models\Services\Exception\PermissionDeniedException
-     * @throws \LimeSurvey\ObjectPatch\OpHandler\OpHandlerException
+     * @throws PermissionDeniedException
+     * @throws OpHandlerException
      */
     public function handle(OpInterface $op)
     {
