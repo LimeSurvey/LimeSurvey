@@ -13,9 +13,12 @@
 */
 class DemomodeCommand extends CConsoleCommand
 {
-    public function run($sArgument)
+    /**
+     * @return int
+     */
+    public function run($args)
     {
-        if (isset($sArgument) && isset($sArgument[0]) && $sArgument[0] = 'yes') {
+        if (isset($args) && isset($args[0]) && $args[0] = 'yes') {
             echo "\n###### Restoring installation to demomode #####\n";
             echo "|| Resetting Database\n";
             $this->resetDatabase();
@@ -24,10 +27,12 @@ class DemomodeCommand extends CConsoleCommand
             echo "|| Installing demo surveys\n";
             $this->createDemo();
             echo "##### Done recreating demo state #####\n";
+            return 0;
         } else {
             // TODO: a valid error process
             echo 'This CLI command wipes a LimeSurvey installation clean (including all user except for the user ID 1 and user-uploaded content). '
                . 'For security reasons this command can only started if you add the parameter \'yes\' to the command line.';
+            return 1;
         }
     }
 

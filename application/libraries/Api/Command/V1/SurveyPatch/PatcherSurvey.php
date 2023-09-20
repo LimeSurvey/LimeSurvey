@@ -5,14 +5,8 @@ namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 use LimeSurvey\ObjectPatch\OpHandler\OpHandlerActiveRecordUpdate;
 use LimeSurvey\ObjectPatch\Patcher;
 use Answer;
-use Question;
-use QuestionL10n;
-use QuestionAttribute;
 use LimeSurvey\Api\Command\V1\Transformer\Input\{
     TransformerInputAnswer,
-    TransformerInputQuestion,
-    TransformerInputQuestionL10ns,
-    TransformerInputQuestionAttribute
 };
 use DI\FactoryInterface;
 use Psr\Container\ContainerInterface;
@@ -42,44 +36,22 @@ class PatcherSurvey extends Patcher
         $this->addOpHandler($diContainer->get(
             OpHandlerQuestionDelete::class
         ));
-        $this->addOpHandlerQuestion($diFactory, $diContainer);
-        $this->addOpHandlerQuestionL10n($diFactory, $diContainer);
         $this->addOpHandler($diContainer->get(
-            OpHandlerQuestionAttributeUpdate::class
+            OpHandlerQuestionCreate::class
         ));
+        $this->addOpHandler($diContainer->get(
+            OpHandlerQuestionUpdate::class
+        ));
+        $this->addOpHandler($diContainer->get(
+            OpHandlerQuestionL10nUpdate::class
+        ));
+        $this->addOpHandlerQuestionAttribute($diFactory, $diContainer);
         $this->addOpHandlerQuestionAnswer($diFactory, $diContainer);
         $this->addOpHandler($diContainer->get(
             OpHandlerQuestionGroupReorder::class
         ));
     }
 
-    private function addOpHandlerQuestion(FactoryInterface $diFactory, ContainerInterface $diContainer): void
-    {
-        $this->addOpHandler($diFactory->make(
-            OpHandlerActiveRecordUpdate::class,
-            [
-                'entity' => 'question',
-                'model' => Question::model(),
-                'transformer' => $diContainer->get(
-                    TransformerInputQuestion::class
-                )
-            ]
-        ));
-    }
-
-    private function addOpHandlerQuestionL10n(FactoryInterface $diFactory, ContainerInterface $diContainer): void
-    {
-        $this->addOpHandler($diFactory->make(
-            OpHandlerActiveRecordUpdate::class,
-            [
-                'entity' => 'questionL10n',
-                'model' => QuestionL10n::model(),
-                'transformer' => $diContainer->get(
-                    TransformerInputQuestionL10ns::class
-                )
-            ]
-        ));
-    }
 
     private function addOpHandlerQuestionAnswer(FactoryInterface $diFactory, ContainerInterface $diContainer): void
     {

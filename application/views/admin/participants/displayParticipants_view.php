@@ -63,27 +63,27 @@ echo viewHelper::getViewTestTag('displayParticipants');
             <?php
             echo "<input type='hidden' id='searchcondition' name='searchcondition[]' value='" . join("||", $searchcondition) . "' />";
 
-                $this->widget('application.extensions.admin.grid.CLSGridView', [
-                    'id' => 'list_central_participants',
-                    'dataProvider' => $model->search(),
-                    'columns' => $model->columns,
-                    'massiveActionTemplate' => $massiveAction,
-                    'afterAjaxUpdate'          => 'function(id, data){LS.CPDB.bindButtons;LS.CPDB.participantPanel();bindListItemclick();}',
-                    'ajaxType'                 => 'POST',
-                    'rowHtmlOptionsExpression' => '["data-participant_id" => $data->id]',
-                    'beforeAjaxUpdate'         => 'insertSearchCondition',
-                    'filter' => $model,
-                    'summaryText' => gT('Displaying {start}-{end} of {count} result(s).') . ' '
-                        . sprintf(
-                            gT('%s rows per page'),
-                            CHtml::dropDownList(
-                                'pageSizeParticipantView',
-                                Yii::app()->user->getState('pageSizeParticipantView', Yii::app()->params['defaultPageSize']),
-                                App()->params['pageSizeOptions'],
-                                array('class' => 'changePageSize form-select', 'style' => 'display: inline; width: auto')
-                            )
-                        ),
-                ]);
+            $this->widget('application.extensions.admin.grid.CLSGridView', [
+                'id'                       => 'list_central_participants',
+                'dataProvider'             => $model->search(),
+                'columns'                  => $model->columns,
+                'massiveActionTemplate'    => $massiveAction,
+                'lsAfterAjaxUpdate'        => ['LS.CPDB.bindButtons;', 'LS.CPDB.participantPanel();', 'bindListItemclick();', 'switchStatusOfListActions();'],
+                'ajaxType'                 => 'POST',
+                'rowHtmlOptionsExpression' => '["data-participant_id" => $data->id]',
+                'beforeAjaxUpdate'         => 'insertSearchCondition',
+                'filter'                   => $model,
+                'summaryText'              => gT('Displaying {start}-{end} of {count} result(s).') . ' '
+                    . sprintf(
+                        gT('%s rows per page'),
+                        CHtml::dropDownList(
+                            'pageSizeParticipantView',
+                            Yii::app()->user->getState('pageSizeParticipantView', Yii::app()->params['defaultPageSize']),
+                            App()->params['pageSizeOptions'],
+                            ['class' => 'changePageSize form-select', 'style' => 'display: inline; width: auto']
+                        )
+                    ),
+            ]);
 
             ?>
     </div>
