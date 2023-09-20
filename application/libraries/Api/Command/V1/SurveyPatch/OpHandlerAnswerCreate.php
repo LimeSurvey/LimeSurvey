@@ -14,7 +14,6 @@ use LimeSurvey\ObjectPatch\{
     OpHandler\OpHandlerInterface
 };
 use LimeSurvey\Models\Services\QuestionAggregateService\AnswersService;
-use Question;
 
 class OpHandlerAnswerCreate implements OpHandlerInterface
 {
@@ -51,10 +50,10 @@ class OpHandlerAnswerCreate implements OpHandlerInterface
     /**
      *
      * Example patch:
-     * "id" is the qid, so we are only allowing answers for one question in
+     * "id" is the qid, so we are only allowing answers for a single question in
      * the patch.
-     * Attention: Currently all answers not provided in the patch will be deleted
-     * by the service.
+     * Attention: Currently all answers not provided in the patch
+     *            will be deleted by the service.
      * {
      *     "patch": [{
      *             "entity": "answer",
@@ -114,12 +113,11 @@ class OpHandlerAnswerCreate implements OpHandlerInterface
             $op->getEntityId()
         );
         if ($question) {
-            $data = $op->getProps();
             $this->answersService->save(
                 $question,
                 $this->prepareAnswers(
                     $op,
-                    $data,
+                    $op->getProps(),
                     $this->transformerAnswer,
                     $this->transformerAnswerL10n,
                     ['answer', 'answerL10n']
