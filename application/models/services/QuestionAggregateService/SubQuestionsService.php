@@ -83,7 +83,8 @@ class SubQuestionsService
                 $subquestion = $this->modelQuestion->findByAttributes([
                     'sid' => $question->sid,
                     'parent_qid' => $question->qid,
-                    'title' => $code
+                    'title' => $code,
+                    'scale_id' => $scaleId
                 ]);
                 if (!$subquestion) {
                     if ($surveyActive) {
