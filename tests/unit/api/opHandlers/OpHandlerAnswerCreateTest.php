@@ -47,7 +47,7 @@ class OpHandlerAnswerCreateTest extends TestBaseClass
     }
 
     /**
-     * @testdox scaleId is used as second index of produced array
+     * @testdox scale_id is used as second index of produced array
      */
     public function testAnswerCreateDataStructure()
     {
@@ -64,7 +64,11 @@ class OpHandlerAnswerCreateTest extends TestBaseClass
             new TransformerInputAnswerL10ns(),
             ['answer', 'answerL10n']
         );
-//        $this->assertArrayHasKey('answer', $preparedData);
+        self::assertIsArray($preparedData);
+        self::assertArrayHasKey(0, $preparedData);
+        self::assertArrayHasKey(1, $preparedData);
+        self::assertArrayHasKey(0, $preparedData[0]);
+        self::assertArrayHasKey(1, $preparedData[1]);
     }
 
     /**
@@ -115,22 +119,6 @@ class OpHandlerAnswerCreateTest extends TestBaseClass
                         'answer' => 'answerger'
                     ]
                 ]
-            ]
-        ];
-    }
-
-    /**
-     * @return array[]
-     */
-    private function getIncompleteProps()
-    {
-        return [
-            'question' => [
-                'title'               => 'G01Q01',
-                'type'                => '1',
-                'question_theme_name' => 'arrays\/dualscale',
-                'gid'                 => '50',
-                'mandatory'           => false
             ]
         ];
     }

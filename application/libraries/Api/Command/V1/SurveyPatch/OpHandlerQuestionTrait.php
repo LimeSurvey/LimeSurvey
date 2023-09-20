@@ -55,9 +55,9 @@ trait OpHandlerQuestionTrait
                  * second array index needs to be the scaleId
                  */
                 $scaleId = array_key_exists(
-                    'scaleId',
+                    'scale_id',
                     $transformedAnswer
-                ) ? $transformedAnswer['scaleId'] : 0;
+                ) ? $transformedAnswer['scale_id'] : 0;
                 $preparedAnswers[$index][$scaleId] = $transformedAnswer;
             }
         }
