@@ -113,16 +113,18 @@ class OpHandlerAnswerCreate implements OpHandlerInterface
             $this->getSurveyIdFromContext($op),
             $op->getEntityId()
         );
-        $data = $op->getProps();
-        $this->answersService->save(
-            $question,
-            $this->prepareAnswers(
-                $op,
-                $data,
-                $this->transformerAnswer,
-                $this->transformerAnswerL10n,
-                ['answer', 'answerL10n']
-            )
-        );
+        if ($question) {
+            $data = $op->getProps();
+            $this->answersService->save(
+                $question,
+                $this->prepareAnswers(
+                    $op,
+                    $data,
+                    $this->transformerAnswer,
+                    $this->transformerAnswerL10n,
+                    ['answer', 'answerL10n']
+                )
+            );
+        }
     }
 }

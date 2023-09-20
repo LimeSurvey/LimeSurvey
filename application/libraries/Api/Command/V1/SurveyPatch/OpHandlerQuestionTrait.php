@@ -64,12 +64,20 @@ trait OpHandlerQuestionTrait
         return $preparedAnswers;
     }
 
+    /**
+     * @param OpInterface $op
+     * @param array $AnswerL10nArray
+     * @param TransformerInputAnswerL10ns $transformerAnswerL10n
+     * @param array|null $additionalRequiredEntities
+     * @return array
+     * @throws OpHandlerException
+     */
     private function prepareAnswerL10n(
         OpInterface $op,
         array $AnswerL10nArray,
         TransformerInputAnswerL10ns $transformerAnswerL10n,
         ?array $additionalRequiredEntities
-    ) {
+    ): array {
         $prepared = [];
         foreach ($AnswerL10nArray as $lang => $answerL10n) {
             $tfAnswerL10n = $transformerAnswerL10n->transform(
