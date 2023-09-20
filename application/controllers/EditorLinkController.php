@@ -1,5 +1,4 @@
 <?php
-
 /*
  * LimeSurvey
  * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -18,7 +17,7 @@ use LimeSurvey\Api\Auth\AuthSession;
 // phpcs:ignore
 class ReactLinkController extends LSYii_Controller
 {
-    const REACT_APP_BASE_PATH = '/app/#/';
+    const REACT_APP_BASE_PATH = '/editor/#/';
 
     /**
      * @return array
@@ -49,7 +48,7 @@ class ReactLinkController extends LSYii_Controller
      */
     public function actionTo()
     {
-        $this->setReactAuthKeyInitCookie();
+        $this->setAuthInitCookie();
         $route = Yii::app()->request->getQuery('route');
         $path = static::REACT_APP_BASE_PATH . $route;
         $url = Yii::app()->request->baseUrl . $path;
@@ -61,7 +60,7 @@ class ReactLinkController extends LSYii_Controller
      *
      * @return void
      */
-    private function setReactAuthKeyInitCookie()
+    private function setAuthInitCookie()
     {
         $cookieName = 'LS_AUTH_INIT';
 
