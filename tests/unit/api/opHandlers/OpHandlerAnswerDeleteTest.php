@@ -33,8 +33,10 @@ class OpHandlerAnswerDeleteTest extends TestBaseClass
      * @return void
      * @throws ObjectPatchException
      */
-    private function initializePatcher(string $entityType = 'answer', string $operation = 'delete')
-    {
+    private function initializePatcher(
+        string $entityType = 'answer',
+        string $operation = 'delete'
+    ){
         $this->op = OpStandard::factory(
             $entityType,
             $operation,

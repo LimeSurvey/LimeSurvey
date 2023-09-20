@@ -19,8 +19,9 @@ class OpHandlerAnswerDelete implements OpHandlerInterface
     /**
      * @param QuestionAggregateService $questionAggregateService
      */
-    public function __construct(QuestionAggregateService $questionAggregateService)
-    {
+    public function __construct(
+        QuestionAggregateService $questionAggregateService
+    ) {
         $this->questionAggregateService = $questionAggregateService;
     }
 
