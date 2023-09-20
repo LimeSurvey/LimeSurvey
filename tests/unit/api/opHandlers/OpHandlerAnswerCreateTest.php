@@ -5,6 +5,7 @@ namespace ls\tests\unit\api\opHandlers;
 use LimeSurvey\Api\Command\V1\SurveyPatch\OpHandlerAnswerCreate;
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputAnswer;
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputAnswerL10ns;
+use LimeSurvey\Models\Services\Exception\BadRequestException;
 use LimeSurvey\Models\Services\QuestionAggregateService\AnswersService;
 use LimeSurvey\Models\Services\QuestionAggregateService\QuestionService;
 use LimeSurvey\ObjectPatch\Op\OpInterface;
@@ -64,8 +65,10 @@ class OpHandlerAnswerCreateTest extends TestBaseClass
             new TransformerInputAnswerL10ns(),
             ['answer', 'answerL10n']
         );
+        throw new OpHandlerException(
+            print_r($preparedData, true)
+        );
         self::assertIsArray($preparedData);
-        fwrite(STDERR, print_r($preparedData, true));
         self::assertArrayHasKey(0, $preparedData);
         self::assertArrayHasKey(1, $preparedData);
         self::assertArrayHasKey(0, $preparedData[0]);
