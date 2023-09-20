@@ -65,8 +65,9 @@ class OpHandlerAnswerCreateTest extends TestBaseClass
             ['answer', 'answerL10n']
         );
         self::assertIsArray($preparedData);
+        fwrite(STDERR, print_r($preparedData, true));
         self::assertArrayHasKey(0, $preparedData);
-        self::assertArrayHasKey(1, $preparedData, print_r($preparedData, true));
+        self::assertArrayHasKey(1, $preparedData);
         self::assertArrayHasKey(0, $preparedData[0]);
         self::assertArrayHasKey(1, $preparedData[1]);
     }
