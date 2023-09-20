@@ -179,12 +179,13 @@ class QuestionAggregateService
     }
 
     /**
+     * Delete answer from a question.
+     * All language entries for this answer will be deleted.
      * @param $surveyId
-     * @param $questionId
      * @param $answerId
      * @return void
      */
-    public function deleteAnswer($surveyId, $questionId, $answerId)
+    public function deleteAnswer($surveyId, $answerId)
     {
         if (
             !$this->modelPermission->hasSurveyPermission(

@@ -6,23 +6,18 @@ use LimeSurvey\Api\Command\V1\SurveyPatch\OpHandlerSurveyTrait;
 use LimeSurvey\Models\Services\QuestionAggregateService;
 use LimeSurvey\ObjectPatch\Op\OpInterface;
 use LimeSurvey\ObjectPatch\OpHandler\OpHandlerInterface;
-use LimeSurvey\ObjectPatch\OpType\OpTypeCreate;
 use LimeSurvey\ObjectPatch\OpType\OpTypeDelete;
 
 class OpHandlerAnswerDelete implements OpHandlerInterface
 {
+    use OpHandlerSurveyTrait;
 
-    use OpHandlerSurveyTrait; //todo: not sure if this one will be used
-
-    /*
     protected QuestionAggregateService $questionAggregateService;
 
-    public function __construct(
-        QuestionAggregateService $questionAggregateService
-    ) {
+    public function __construct(QuestionAggregateService $questionAggregateService)
+    {
         $this->questionAggregateService = $questionAggregateService;
     }
-    */
 
     public function canHandle(OpInterface $op): bool
     {
@@ -52,17 +47,9 @@ class OpHandlerAnswerDelete implements OpHandlerInterface
      */
     public function handle(OpInterface $op)
     {
-        $diContainer = \LimeSurvey\DI::getContainer();
-        $questionService = $diContainer->get(
-            QuestionAggregateService::class
-        );
-
-        /**
         $this->questionAggregateService->deleteAnswer(
             $this->getSurveyIdFromContext($op),
             $op->getEntityId()
-        ); **/
-
-        $questionService->deleteAnswer($this->getSurveyIdFromContext(), $op->getEntityId());
+        );
     }
 }
