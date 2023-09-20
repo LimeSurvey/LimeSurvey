@@ -5,12 +5,10 @@ namespace ls\tests\unit\api\opHandlers;
 use LimeSurvey\Api\Command\V1\SurveyPatch\OpHandlerAnswerCreate;
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputAnswer;
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputAnswerL10ns;
-use LimeSurvey\Models\Services\Exception\BadRequestException;
 use LimeSurvey\Models\Services\QuestionAggregateService\AnswersService;
 use LimeSurvey\Models\Services\QuestionAggregateService\QuestionService;
 use LimeSurvey\ObjectPatch\Op\OpInterface;
 use LimeSurvey\ObjectPatch\Op\OpStandard;
-use LimeSurvey\ObjectPatch\OpHandler\OpHandlerException;
 use ls\tests\TestBaseClass;
 
 /**
@@ -65,9 +63,7 @@ class OpHandlerAnswerCreateTest extends TestBaseClass
             new TransformerInputAnswerL10ns(),
             ['answer', 'answerL10n']
         );
-        throw new OpHandlerException(
-            print_r($preparedData, true)
-        );
+
         self::assertIsArray($preparedData);
         self::assertArrayHasKey(0, $preparedData);
         self::assertArrayHasKey(1, $preparedData);
@@ -102,7 +98,7 @@ class OpHandlerAnswerCreateTest extends TestBaseClass
         return [
             '0' => [
                 'code'     => 'AO01',
-                'scale_id' => '0',
+                'scaleId' => '0',
                 'l10ns'    => [
                     'en' => [
                         'answer' => 'answer'
@@ -114,7 +110,7 @@ class OpHandlerAnswerCreateTest extends TestBaseClass
             ],
             '1' => [
                 'code'     => 'AO01',
-                'scale_id' => '1',
+                'scaleId' => '1',
                 'l10ns'    => [
                     'en' => [
                         'answer' => 'answer'
