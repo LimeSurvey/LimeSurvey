@@ -61,9 +61,15 @@ class RendererBasic implements RendererInterface
      */
     protected function renderJSON($data, $responseCode = 200)
     {
+        header('Access-Control-Allow-Origin: *');
+        header('Access-Control-Allow-Headers: *');
+        header('Access-Control-Allow-Methods: GET, POST, PUT, PATCH, DELETE, OPTIONS');
         http_response_code($responseCode);
-        header('Content-type: application/json');
-        echo CJSON::encode($data);
+
+        if ($data !== null) {
+            header('Content-type: application/json');
+            echo CJSON::encode($data);
+        }
 
         /** @var LSYii_Application */
         $app = Yii::app();
@@ -87,6 +93,9 @@ class RendererBasic implements RendererInterface
         switch ($status->getCode()) {
             case 'success':
                 $httpCode = 200;
+                break;
+            case 'success_no_content':
+                $httpCode = 204;
                 break;
             case 'success_created':
                 $httpCode = 201;
