@@ -80,21 +80,31 @@ class Template extends LSActiveRecord
         );
     }
 
+    /**
+     * Template name rule function.
+     */
     public function checkTemplateName($attributes, $params)
     {
-        if (!Template::validateTemplateName($this->name)) {
-            Yii::app()->setFlashMessage(sprintf(gT("Invalid theme name")), 'error');
-            Yii::app()->getController()->redirect(array('themeOptions/index'));
-            Yii::app()->end();
-        }
+        Template::validateTemplateName($this->name);
+        return true;
     }
 
+    /**
+     * Validate the template name.
+     *
+     * @param string $templateName The name of the template
+     */
     public static function validateTemplateName($templateName)
     {
         if (strpbrk((string) $templateName, Template::$sTemplateNameIllegalChars)) {
-            return false;
+            Yii::app()->setFlashMessage(sprintf(gT("The name contains special characters.")), 'error');
+            Yii::app()->getController()->redirect(array('themeOptions/index'));
+            Yii::app()->end();
+        } elseif (strlen((string)$templateName) > 45) {
+            Yii::app()->setFlashMessage(sprintf(gT("The name is too long.")), 'error');
+            Yii::app()->getController()->redirect(array('themeOptions/index'));
+            Yii::app()->end();
         }
-        return true;
     }
 
     /**
