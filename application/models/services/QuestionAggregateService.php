@@ -101,25 +101,14 @@ class QuestionAggregateService
      *      ...<array-key, mixed>
      *  }
      * } $input
-     * @throws PersistErrorException
+     * @return Question
      * @throws NotFoundException
      * @throws PermissionDeniedException
-     * @return Question
+     * @throws PersistErrorException
      */
     public function save($surveyId, $input)
     {
-        if (
-            !$this->modelPermission->hasSurveyPermission(
-                $surveyId,
-                'surveycontent',
-                'update'
-            )
-        ) {
-            throw new PermissionDeniedException(
-                'Access denied'
-            );
-        }
-
+        $this->checkUpdatePermission($surveyId);
         $transaction = $this->yiiDb->beginTransaction();
         try {
             $question = $this->saveService->save(
@@ -175,6 +164,26 @@ class QuestionAggregateService
         } catch (\Exception $e) {
             $transaction->rollback();
             throw $e;
+        }
+    }
+
+    /**
+     * @param $surveyId
+     * @return void
+     * @throws PermissionDeniedException
+     */
+    public function checkUpdatePermission($surveyId)
+    {
+        if (
+            !$this->modelPermission->hasSurveyPermission(
+                $surveyId,
+                'surveycontent',
+                'update'
+            )
+        ) {
+            throw new PermissionDeniedException(
+                'Access denied'
+            );
         }
     }
 }
