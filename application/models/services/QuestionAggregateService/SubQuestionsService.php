@@ -74,9 +74,7 @@ class SubQuestionsService
                 'Access denied'
             );
         }
-
         $this->deleteSubquestion($surveyId, $subquestionId);
-
     }
 
     /**
