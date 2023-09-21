@@ -43,7 +43,8 @@ class DeleteService
      * @param int $surveyId
      * @param int $questionId
      * @return void
-     * @throws QuestionHasConditionsException*@throws \CDbException
+     * @throws QuestionHasConditionsException
+     * @throws \CDbException
      * @throws PersistErrorException
      */
     public function delete($surveyId, $questionId)
