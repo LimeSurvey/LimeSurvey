@@ -76,7 +76,7 @@ $dateformatdata                  = getDateFormatData(Yii::app()->session['datefo
                 <select class="form-select" name="admintheme" id="admintheme">
                     <?php foreach ($aListOfThemeObjects as $templatename => $templateconfig): ?>
                         <option value='<?php echo $templatename; ?>' <?php echo ($thisadmintheme == $templatename) ? "selected='selected'" : "" ?> >
-                            <?php echo $templateconfig->metadata->name; ?>
+                            <?php echo CHtml::encode($templateconfig->metadata->name); ?>
                         </option>
                     <?php endforeach; ?>
                 </select>
