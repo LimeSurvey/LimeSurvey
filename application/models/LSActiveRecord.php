@@ -508,7 +508,7 @@ class LSActiveRecord extends CActiveRecord
             }
         }
     }
-    
+
     /**
      * Encrypt the values of attributes
      */
