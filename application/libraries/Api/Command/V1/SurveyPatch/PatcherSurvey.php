@@ -2,6 +2,7 @@
 
 namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
+use LimeSurvey\Libraries\Api\Command\V1\SurveyPatch\OpHandlerSubquestionDelete;
 use LimeSurvey\ObjectPatch\OpHandler\OpHandlerActiveRecordUpdate;
 use LimeSurvey\ObjectPatch\Patcher;
 use Answer;
@@ -51,6 +52,9 @@ class PatcherSurvey extends Patcher
         $this->addOpHandlerQuestionAnswer($diFactory, $diContainer);
         $this->addOpHandler($diContainer->get(
             OpHandlerQuestionGroupReorder::class
+        ));
+        $this->addOpHandler($diContainer->get(
+            OpHandlerSubquestionDelete::class
         ));
     }
 
