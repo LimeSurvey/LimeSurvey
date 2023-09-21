@@ -14,8 +14,7 @@
 
 use LimeSurvey\Api\Auth\AuthSession;
 
-// phpcs:ignore
-class ReactLinkController extends LSYii_Controller
+class EditorLinkController extends LSYii_Controller
 {
     const REACT_APP_BASE_PATH = '/editor/#/';
 
@@ -46,7 +45,7 @@ class ReactLinkController extends LSYii_Controller
      *
      * @return void
      */
-    public function actionTo()
+    public function run($action)
     {
         $this->setAuthInitCookie();
         $route = Yii::app()->request->getQuery('route');
