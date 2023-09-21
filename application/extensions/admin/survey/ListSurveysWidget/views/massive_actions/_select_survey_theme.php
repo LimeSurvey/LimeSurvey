@@ -13,8 +13,8 @@
                     $athemeList = Template::getTemplateListWithPreviews();
                     foreach ($athemeList as $themeName => $preview) {
                         if (Permission::model()->hasGlobalPermission('themes','read') || Permission::model()->hasTemplatePermission($themeName) ) { ?>
-                            <option value='<?php echo $themeName; ?>'>
-                                <?php echo $themeName; ?>
+                            <option value='<?php echo CHtml::encode($themeName); /* sanitize_filename aloow single quote */?>'>
+                                <?php echo CHtml::encode($themeName); ?>
                             </option>
                             <?php }
                         }
