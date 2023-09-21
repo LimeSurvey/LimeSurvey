@@ -3,6 +3,7 @@
 namespace LimeSurvey\Libraries\Api\Command\V1\SurveyPatch;
 
 use LimeSurvey\Api\Command\V1\SurveyPatch\OpHandlerSurveyTrait;
+use LimeSurvey\Models\Services\QuestionAggregateService\SubQuestionsService;
 use LimeSurvey\ObjectPatch\Op\OpInterface;
 use LimeSurvey\ObjectPatch\OpHandler\OpHandlerInterface;
 use LimeSurvey\ObjectPatch\OpType\OpTypeDelete;
@@ -10,6 +11,17 @@ use LimeSurvey\ObjectPatch\OpType\OpTypeDelete;
 class OpHandlerSubquestionDelete implements OpHandlerInterface
 {
     use OpHandlerSurveyTrait;
+
+    protected SubQuestionsService $subQuestionsService;
+
+    /**
+     * @param SubQuestionsService $subQuestionsService
+     */
+    public function __construct(
+        SubQuestionsService $subQuestionsService
+    ) {
+        $this->subQuestionsService = $subQuestionsService;
+    }
 
     /**
      * @param OpInterface $op
@@ -34,6 +46,9 @@ class OpHandlerSubquestionDelete implements OpHandlerInterface
      */
     public function handle(OpInterface $op)
     {
-        // TODO: Implement handle() method.
+        $this->subQuestionsService->delete(
+            $this->getSurveyIdFromContext($op),
+            $op->getEntityId()
+        );
     }
 }

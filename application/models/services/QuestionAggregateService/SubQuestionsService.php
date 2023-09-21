@@ -54,6 +54,32 @@ class SubQuestionsService
     }
 
     /**
+     * Deletes a subquestion.
+     *
+     * @param int $surveyId
+     * @param int $subquestionId
+     * @throws PermissionDeniedException
+     * @throws NotFoundException
+     */
+    public function delete($surveyId, $subquestionId)
+    {
+        if (
+            !\Permission::model()->hasSurveyPermission(
+                $surveyId,
+                'surveycontent',
+                'delete'
+            )
+        ) {
+            throw new PermissionDeniedException(
+                'Access denied'
+            );
+        }
+
+        $this->deleteSubquestion($surveyId, $subquestionId);
+
+    }
+
+    /**
      * Save subquestions.
      * Used when survey is *not* activated.
      *
@@ -176,5 +202,32 @@ class SubQuestionsService
                 )
             );
         }
+    }
+
+    /**
+     * Deletes a subquestion.
+     *
+     * @param int $surveyId
+     * @param int $subQuestionId
+     * @throws NotFoundException|\CDbException
+     */
+    private function deleteSubquestion($surveyId, $subQuestionId)
+    {
+        $criteria = new \CDbCriteria();
+        $criteria->compare('qid', $subQuestionId);
+        $criteria->compare('sid', $surveyId);
+        $criteria->addNotInCondition('parent_qid', [0]);
+
+        $subQuestion = $this->modelQuestion->find($criteria);
+        if (empty($subQuestion)) {
+            throw new NotFoundException();
+        }
+        $subquestionL10ns = \QuestionL10n::model()->findAllByAttributes(
+            ['qid' => $subQuestionId]
+        );
+        foreach ($subquestionL10ns as $subquestionL10n) {
+            $subquestionL10n->delete();
+        }
+        $subQuestion->delete();
     }
 }
