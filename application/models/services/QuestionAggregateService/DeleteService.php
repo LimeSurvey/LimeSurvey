@@ -100,7 +100,7 @@ class DeleteService
         AnswerL10n::model()->deleteAll($aidsCriteria);
         try {
             $answer->delete();
-        }catch (\CDbException $e) {
+        } catch (\CDbException $e) {
             throw new PersistErrorException();
         }
     }
