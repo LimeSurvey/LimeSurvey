@@ -42,7 +42,7 @@ $dateformatdata=getDateFormatData(Yii::app()->session['dateformat']);
                     <select class="form-control" name="defaulttheme" id="defaulttheme">
                         <?php foreach ($templatenames as $templatename) : ?>
                         <option value='<?php echo $templatename; ?>' <?php echo ($thisdefaulttheme==$templatename) ? "selected='selected'" : ""?> >
-                            <?php echo $templatename; ?>
+                            <?php echo CHtml::encode($templatename); ?>
                         </option>
                         <?php endforeach; ?>
                     </select>
@@ -80,7 +80,7 @@ $dateformatdata=getDateFormatData(Yii::app()->session['dateformat']);
                     <select class="form-control" name="admintheme" id="admintheme">
                         <?php  foreach($aListOfThemeObjects as $templatename => $templateconfig): ?>
                         <option value='<?php echo $templatename; ?>' <?php echo ($thisadmintheme==$templatename)? "selected='selected'" : "" ?> >
-                            <?php echo $templateconfig->metadata->name; ?>
+                            <?php echo CHtml::encode($templateconfig->metadata->name); ?>
                         </option>
                         <?php endforeach; ?>
                     </select>
