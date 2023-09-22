@@ -34,15 +34,19 @@ class OpHandlerSubquestionDelete implements OpHandlerInterface
     }
 
     /**
-     *  Handle subquestion delete operation.
+     * Handle subquestion delete operation.
      *
-     *  Expects a patch structure like this:
-     *  {
-     *       "entity": "subquestion",
-     *       "op": "delete",
-     *       "id": 1
-     *  }
+     *   Expects a patch structure like this:
+     *   {
+     *        "entity": "subquestion",
+     *        "op": "delete",
+     *        "id": 1
+     *   }
      * @param OpInterface $op
+     * @return void
+     * @throws \LimeSurvey\Models\Services\Exception\NotFoundException
+     * @throws \LimeSurvey\Models\Services\Exception\PermissionDeniedException
+     * @throws \LimeSurvey\ObjectPatch\OpHandler\OpHandlerException
      */
     public function handle(OpInterface $op)
     {
