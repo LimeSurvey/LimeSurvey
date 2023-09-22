@@ -3888,7 +3888,6 @@ class remotecontrol_handle
         if ($remove) {
             $allParticipants = Participant::model()->getParticipantsWithoutLimit();
             foreach ($allParticipants as $dbParticipant) {
-
                 if (!array_search($dbParticipant["participant_id"], array_column($participants, "participant_id"))) {
                     Participant::model()->deleteParticipants($dbParticipant["participant_id"]);
                     $aResponse['RemoveCount']++;
