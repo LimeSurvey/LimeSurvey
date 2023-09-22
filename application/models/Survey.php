@@ -157,7 +157,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
      * @var array $findByPkCache
      */
     protected $findByPkCache = array();
-
+    protected static $cacheSurvey = array();
 
     // survey options
     public $oOptions;
@@ -988,12 +988,12 @@ class Survey extends LSActiveRecord implements PermissionInterface
     {
         /** @var self $model */
         if (empty($condition) && empty($params)) {
-            if (array_key_exists($pk, $this->findByPkCache)) {
-                return $this->findByPkCache[$pk];
+            if (array_key_exists($pk, self::$cacheSurvey)) {
+                return self::$cacheSurvey[$pk];
             } else {
                 $model = parent::findByPk($pk, $condition, $params);
                 if (!is_null($model)) {
-                    $this->findByPkCache[$pk] = $model;
+                    self::$cacheSurvey[$pk] = $model;
                 }
                 return $model;
             }
