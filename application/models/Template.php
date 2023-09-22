@@ -165,7 +165,7 @@ class Template extends LSActiveRecord
      */
     public static function templateNameFilter($sTemplateName)
     {
-        $sTemplateName = sanitize_filename($sTemplateName, false, false, false);
+        $sTemplateName = sanitize_filename($sTemplateName, false, false, false, true);
 
         // If the names has already been filtered, we skip the process
         if (!empty(self::$aNamesFiltered[$sTemplateName])) {
