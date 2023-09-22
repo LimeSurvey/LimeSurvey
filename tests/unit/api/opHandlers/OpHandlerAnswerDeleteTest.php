@@ -2,7 +2,7 @@
 
 namespace ls\tests\unit\api\opHandlers;
 
-use LimeSurvey\Libraries\Api\Command\V1\SurveyPatch\OpHandlerAnswerDelete;
+use LimeSurvey\Api\Command\V1\SurveyPatch\OpHandlerAnswerDelete;
 use LimeSurvey\Models\Services\QuestionAggregateService;
 use LimeSurvey\ObjectPatch\{
     ObjectPatchException,
