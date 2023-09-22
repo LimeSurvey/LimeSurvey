@@ -177,4 +177,35 @@ class QuestionAggregateService
             throw $e;
         }
     }
+
+    /**
+     * Delete answer from a question.
+     * All language entries for this answer will be deleted.
+     * @param $surveyId
+     * @param $answerId
+     * @return void
+     */
+    public function deleteAnswer($surveyId, $answerId)
+    {
+        if (
+            !$this->modelPermission->hasSurveyPermission(
+                $surveyId,
+                'surveycontent',
+                'delete'
+            )
+        ) {
+            throw new PermissionDeniedException(
+                'Access denied'
+            );
+        }
+
+        $transaction = $this->yiiDb->beginTransaction();
+        try {
+            $this->deleteService->deleteAnswer($answerId);
+            $transaction->commit();
+        } catch (\Exception $e) {
+            $transaction->rollback();
+            throw $e;
+        }
+    }
 }
