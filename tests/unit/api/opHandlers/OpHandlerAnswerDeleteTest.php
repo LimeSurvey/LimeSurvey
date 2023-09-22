@@ -4,9 +4,11 @@ namespace ls\tests\unit\api\opHandlers;
 
 use LimeSurvey\Libraries\Api\Command\V1\SurveyPatch\OpHandlerAnswerDelete;
 use LimeSurvey\Models\Services\QuestionAggregateService;
-use LimeSurvey\ObjectPatch\ObjectPatchException;
-use LimeSurvey\ObjectPatch\Op\OpInterface;
-use LimeSurvey\ObjectPatch\Op\OpStandard;
+use LimeSurvey\ObjectPatch\{
+    ObjectPatchException,
+    Op\OpInterface,
+    Op\OpStandard
+};
 use ls\tests\TestBaseClass;
 
 class OpHandlerAnswerDeleteTest extends TestBaseClass

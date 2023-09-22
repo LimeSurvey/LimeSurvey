@@ -3,12 +3,16 @@
 namespace LimeSurvey\Libraries\Api\Command\V1\SurveyPatch;
 
 use LimeSurvey\Api\Command\V1\SurveyPatch\OpHandlerSurveyTrait;
-use LimeSurvey\Models\Services\Exception\PermissionDeniedException;
-use LimeSurvey\Models\Services\QuestionAggregateService;
-use LimeSurvey\ObjectPatch\Op\OpInterface;
-use LimeSurvey\ObjectPatch\OpHandler\OpHandlerException;
-use LimeSurvey\ObjectPatch\OpHandler\OpHandlerInterface;
-use LimeSurvey\ObjectPatch\OpType\OpTypeDelete;
+use LimeSurvey\Models\Services\{
+    Exception\PermissionDeniedException,
+    QuestionAggregateService
+};
+use LimeSurvey\ObjectPatch\{
+    Op\OpInterface,
+    OpHandler\OpHandlerException,
+    OpHandler\OpHandlerInterface,
+    OpType\OpTypeDelete
+};
 
 class OpHandlerAnswerDelete implements OpHandlerInterface
 {
