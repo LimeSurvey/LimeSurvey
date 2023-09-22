@@ -3780,6 +3780,7 @@ class remotecontrol_handle
     }
 
 
+
     /**
      * Import a participant into the LimeSurvey CPDB
      *
@@ -3791,9 +3792,10 @@ class remotecontrol_handle
      * @param array $aParticipants
      * [[0] => ["email"=>"dummy-02222@limesurvey.com","firstname"=>"max","lastname"=>"mustermann"]]
      * @param bool $update
+     * @param bool $remove
      * @return array with status
      */
-    public function cpd_importParticipants($sSessionKey, $participants, $update = false)
+    public function cpd_importParticipants($sSessionKey, $participants, $update = false, $remove = false)
     {
         if (!$this->_checkSessionKey($sSessionKey)) {
             return array('status' => self::INVALID_SESSION_KEY);
@@ -3802,7 +3804,8 @@ class remotecontrol_handle
         $aDefaultFields = array('participant_id', 'firstname', 'lastname', 'email', 'language', 'blacklisted');
         $aResponse = array(
             'ImportCount' => 0,
-            'UpdateCount' => 0
+            'UpdateCount' => 0,
+            'RemoveCount' => 0
         );
 
         $aAttributeRecords = ParticipantAttributeName::model()
@@ -3877,6 +3880,18 @@ class remotecontrol_handle
                     $aResponse['ImportCount']++;
                 } else {
                     $aResponse['UpdateCount']++;
+                }
+            }
+        }
+
+        //
+        if ($remove) {
+            $allParticipants = Participant::model()->getParticipantsWithoutLimit();
+            foreach ($allParticipants as $dbParticipant) {
+
+                if (!array_search($dbParticipant["participant_id"], array_column($participants, "participant_id"))) {
+                    Participant::model()->deleteParticipants($dbParticipant["participant_id"]);
+                    $aResponse['RemoveCount']++;
                 }
             }
         }
