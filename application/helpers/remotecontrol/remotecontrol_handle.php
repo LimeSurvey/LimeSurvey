@@ -3780,7 +3780,6 @@ class remotecontrol_handle
     }
 
 
-
     /**
      * Import a participant into the LimeSurvey CPDB
      *
@@ -3884,7 +3883,8 @@ class remotecontrol_handle
             }
         }
 
-        //
+        // Remove param is set to True
+        // Remove all participants whose ID does not appear in the import list.
         if ($remove) {
             $allParticipants = Participant::model()->getParticipantsWithoutLimit();
             foreach ($allParticipants as $dbParticipant) {
