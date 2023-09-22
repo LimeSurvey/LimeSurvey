@@ -34,6 +34,27 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.2.7 (build 230918) to 6.2.8 (build 230921) September 21, 2023
+-Fixed issue: theme breaks when filepath inside the config includes linebreaks and empty spaces (Patrick Teichmann)
+-Fixed issue: Subquestions are not stored when saving saving and the same code exists in different scales (Carsten Schmitz)
+-Fixed issue: Iterate survey button not visible (Carsten Schmitz)
+-Fixed issue #CT-337: Wrong survey being picked up when using alias (#3427) (Gabriel Jenik)
+-Fixed issue #19096: Array by column answer options are not processed by EM before display (#3464) (Matthew)
+-Fixed issue #19025: When there are question themes installed, can't upload survey themes (#3358) (Gabriel Jenik)
+-Fixed issue #18984: [security] CSRF in Question Themes function (#3459) (Gabriel Jenik)
+-Fixed issue CR-1310: re-bind attributePanel buttons (Mohab E)
+-Fixed issue CR-1310: Fixed edit attribute bug (Mohab E)
+-Fixed issue #CR-1310: Can't edit Attribute at admin/participants/sa/attributeControl (Mohab E)
+#Updated translation: Slovak by jelen1
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Hungarian by kkd
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
 Changes from 6.2.6 (build 230904) to 6.2.7 (build 230918) September 18, 2023
 -Fixed issue #CT-374: ckeditor prevents iframes from working by adding sandbox="" (twilligls)
 -Fixed issue #CR-1308: Batch actions dropdown is disabled executing any table action (Mohab E)
