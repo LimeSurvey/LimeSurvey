@@ -171,6 +171,11 @@ class User extends LSActiveRecord
             "uid = :uid",
             [":uid" => $this->uid]
         );
+        /* User in group */
+        UserInGroup::model()->deleteAll(
+            "uid = :uid",
+            [":uid" => $this->uid]
+        );
     }
     /**
      * @return string
