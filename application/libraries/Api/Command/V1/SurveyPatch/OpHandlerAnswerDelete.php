@@ -1,6 +1,6 @@
 <?php
 
-namespace LimeSurvey\Libraries\Api\Command\V1\SurveyPatch;
+namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
 use LimeSurvey\Api\Command\V1\SurveyPatch\OpHandlerSurveyTrait;
 use LimeSurvey\Models\Services\{
