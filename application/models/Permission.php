@@ -35,6 +35,9 @@ class Permission extends LSActiveRecord
     /* @var array[]|null The global base Permission LimeSurvey installation */
     protected static $aGlobalBasePermissions;
 
+/* @var interger| null the current userId for all permission check */
+    private static $currentUserId;
+
     /** @inheritdoc */
     public function tableName()
     {
@@ -264,6 +267,7 @@ class Permission extends LSActiveRecord
      * @param mixed $aPermissions
      * @param boolean $bBypassCheck : by pass control of current permission for current user only for global permission
      * @throw Exception
+     *
      * @return null|boolean
      */
     public static function setPermissions($iUserID, $iEntityID, $sEntityName, $aPermissions, $bBypassCheck = false)
@@ -720,15 +724,35 @@ class Permission extends LSActiveRecord
     public function getUserId($iUserID = null)
     {
         if (empty($iUserID)) {
-            if (Yii::app() instanceof CConsoleApplication) {
-                /* Alt : return 1st forcedAdmin ? */
+            if (App() instanceof CConsoleApplication) {
+                /* Alt : return 1st forcedSuperAdmin ? */
                 throw new Exception('Permission must not be tested with console application.');
             }
-            /* See TestBaseClass tearDownAfterClass */
-            $iUserID = Yii::app()->session['loginID'];
+            return self::getCurrentUserId();
         }
         return $iUserID;
     }
+
+    /**
+     * get the current id of connected user
+     * @return int|null user id
+     * @throws Exception
+     */
+    public static function getCurrentUserId()
+    {
+        if (App() instanceof CConsoleApplication) {
+            return null;
+        }
+        if (!is_null(self::$currentUserId)) {
+            return self::$currentUserId;
+        }
+        self::$currentUserId = App()->user->getId();
+        if (!User::model()->findByPk(self::$currentUserId)) {
+            self::$currentUserId = 0;
+        }
+        return self::$currentUserId;
+    }
+
     /**
      * get the connected user role
      * @param integer $iUserID user id
