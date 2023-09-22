@@ -485,7 +485,7 @@ class UserManagementController extends LSBaseController
         // Check permissions
         $aBasePermissions = Permission::model()->getGlobalBasePermissions();
         // superadmin permission always need create
-        if(!Permission::model()->hasGlobalPermission('superadmin', 'create')) {
+        if (!Permission::model()->hasGlobalPermission('superadmin', 'create')) {
             unset($aBasePermissions['superadmin']);
         }
         if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
