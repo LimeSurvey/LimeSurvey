@@ -170,6 +170,43 @@ class TemplateConfiguration extends TemplateConfig
     }
 
     /**
+     * This method is invoked before saving a record (after validation, if any).
+     * The default implementation raises the {@link onBeforeSave} event.
+     * You may override this method to do any preparation work for record saving.
+     * Use {@link isNewRecord} to determine whether the saving is
+     * for inserting or updating record.
+     * Make sure you call the parent implementation so that the event is raised properly.
+     * @return boolean whether the saving should be executed. Defaults to true.
+     */
+    protected function beforeSave()
+    {
+        $bIsValid = parent::beforeSave();
+        $aAttributes = $this->attributes;
+        unset($aAttributes["id"]);
+        $iEntriesCount = (int) $this->countByAttributes($aAttributes);
+        if ($iEntriesCount > 0) {
+            $bIsValid = false;
+        }
+        // this should only be triggered if there are false/duplicate entries, cleans up duplicates
+        if ($iEntriesCount > 1) {
+            $limit = 1000;
+            while ($iEntriesCount > 1) {
+                $iEntriesCount = $this->countByAttributes($aAttributes);
+                if ($iEntriesCount <= $limit && $iEntriesCount > 1) {
+                    --$iEntriesCount;
+                    $limit = $iEntriesCount;
+                }
+                $conditionsArray = [
+                    'limit' => $limit,
+                ];
+                $this->deleteAllByAttributes($aAttributes, $conditionsArray);
+            }
+        }
+
+        return $bIsValid;
+    }
+
+    /**
      * Gets an instance of a templateconfiguration by name
      *
      * @param string $sTemplateName
@@ -272,20 +309,12 @@ class TemplateConfiguration extends TemplateConfig
 
         $oTemplateConfigurationModel = TemplateConfiguration::model()->find($criteria);
 
-        // No specific template configuration for this surveygroup => create one
-        // TODO: Move to SurveyGroup creation, right now the 'lazy loading' approach is ok.
-        if (!is_a($oTemplateConfigurationModel, 'TemplateConfiguration') && $sTemplateName != null) {
+        // If the TemplateConfiguration could not be found go up the inheritance hierarchy
+        if (empty($oTemplateConfigurationModel)) {
             $oTemplateConfigurationModel = TemplateConfiguration::getInstanceFromTemplateName(
                 $sTemplateName,
                 $abstractInstance
             );
-            $oTemplateConfigurationModel->bUseMagicInherit = false;
-            $oTemplateConfigurationModel->id = null;
-            $oTemplateConfigurationModel->isNewRecord = true;
-            $oTemplateConfigurationModel->gsid = null;
-            $oTemplateConfigurationModel->sid = $iSurveyId;
-            $oTemplateConfigurationModel->setToInherit();
-            $oTemplateConfigurationModel->save();
         }
 
         return $oTemplateConfigurationModel;
@@ -344,6 +373,7 @@ class TemplateConfiguration extends TemplateConfig
     public static function checkAndcreateSurveyConfig($iSurveyId)
     {
         //if a template name is given also check against that
+
         $oSurvey = Survey::model()->findByPk($iSurveyId);
         $sTemplateName  = $oSurvey->oOptions->template;
         $iSurveyGroupId = $oSurvey->gsid;
