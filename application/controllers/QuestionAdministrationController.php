@@ -2858,8 +2858,16 @@ class QuestionAdministrationController extends LSBaseController
         $subquestionIds = [];
         foreach ($subquestionsArray as $subquestionArray) {
             foreach ($subquestionArray as $scaleId => $data) {
-                $subquestion = null;
-                if (isset($data['oldcode'])) {
+                // If the subquestion with given code already exists, update it.
+                $subquestion =  Question::model()->findByAttributes([
+                    'sid' => $question->sid,
+                    'parent_qid' => $question->qid,
+                    'title' => $data['code'],
+                    'scale_id' => $scaleId
+                ]);
+                if (!$subquestion && isset($data['oldcode'])) {
+                    // If the subquestion with given code does not exist
+                    // - but subquestion with old code exists, update it.
                     $subquestion = Question::model()->findByAttributes([
                         'sid' => $question->sid,
                         'parent_qid' => $question->qid,
@@ -2871,8 +2879,8 @@ class QuestionAdministrationController extends LSBaseController
                     $subquestion = new Question();
                 }
 
-                $subquestion->sid        = $question->sid;
-                $subquestion->gid        = $question->gid;
+                $subquestion->sid = $question->sid;
+                $subquestion->gid = $question->gid;
                 $subquestion->parent_qid = $question->qid;
                 $subquestion->question_order = $questionOrder;
                 $questionOrder++;
@@ -2882,11 +2890,11 @@ class QuestionAdministrationController extends LSBaseController
                         'Internal error: Missing mandatory field code for question: ' . json_encode($data)
                     );
                 }
-                $subquestion->title      = $data['code'];
+                $subquestion->title = $data['code'];
                 if ($scaleId === 0) {
-                    $subquestion->relevance  = $data['relevance'];
+                    $subquestion->relevance = $data['relevance'];
                 }
-                $subquestion->scale_id   = $scaleId;
+                $subquestion->scale_id = $scaleId;
                 if (!$subquestion->save()) {
                     array_push($errorQuestions, $subquestion);
                     continue;
