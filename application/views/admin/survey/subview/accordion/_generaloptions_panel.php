@@ -324,7 +324,7 @@ Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", 
                         data-inherit-template-name='<?= $themeConf->template_name ?>'>
                     <?php if ($bShowInherited) : ?>
                         <option value="inherit" <?= ($oSurvey->template == 'inherit') ? 'selected="selected"' : ''; ?>>
-                            <?= gT('Inherit') . ' [' . $themeConf->template_name . ']'; ?>
+                            <?= gT('Inherit') . ' [' . CHtml::encode($themeConf->template_name) . ']'; ?>
                         </option>
                     <?php endif; ?>
                     <?php
@@ -332,13 +332,13 @@ Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", 
                     foreach ($aTemplateList as $templateName => $preview) {
                         if (Permission::model()->hasGlobalPermission('templates', 'read') || Permission::model()->hasTemplatePermission($templateName
                             ) || $oSurvey->template == htmlspecialchars((string) $templateName)) { ?>
-                            <option value='<?php echo $templateName; ?>'
+                            <option value='<?php echo CHtml::encode($templateName); ?>'
                                 <?php if ($oSurvey->template && htmlspecialchars((string) $templateName) === $themeConf->template_name && $oSurvey->template !== 'inherit') { ?>
                                     selected='selected'
                                 <?php } elseif (!$oSurvey->template && $templateName === App()->getConfig('defaulttheme') && $oSurvey->template !== 'inherit') { ?>
                                     selected='selected'
                                 <?php } ?>
-                            ><?php echo $templateName; ?></option>
+                            ><?php echo CHtml::encode($templateName); ?></option>
                         <?php } ?>
 
                     <?php } ?>
