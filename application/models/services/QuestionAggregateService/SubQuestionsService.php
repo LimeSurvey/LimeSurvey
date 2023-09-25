@@ -113,12 +113,23 @@ class SubQuestionsService
                 'Missing mandatory field "code" for question'
             );
         }
-        $subquestion = $this->modelQuestion->findByAttributes([
+        // If the subquestion with given code already exists, update it.
+        $subquestion =  $this->modelQuestion->findByAttributes([
             'sid' => $question->sid,
             'parent_qid' => $question->qid,
-            'title' => $code,
+            'title' => $data['code'] ?? '',
             'scale_id' => $scaleId
         ]);
+        if (!$subquestion && isset($data['oldcode'])) {
+            // If the subquestion with given code does not exist
+            // - but subquestion with old code exists, update it.
+            $subquestion = $this->modelQuestion->findByAttributes([
+                'sid' => $question->sid,
+                'parent_qid' => $question->qid,
+                'title' => $data['oldcode'],
+                'scale_id' => $scaleId
+            ]);
+        }
         if (!$subquestion) {
             if ($surveyActive) {
                 throw new NotFoundException(
