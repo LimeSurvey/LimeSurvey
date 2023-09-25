@@ -1,5 +1,9 @@
 // $Id: saved.js 9330 2010-10-24 22:23:56Z c_schmitz $
 
+/**
+ * NOTE: After updating this file, generate the "minified" version with:
+ * uglifyjs -c -- emailtemplates.js > emailtemplates.min.js
+ */
 
 // Namespace
 var LS = LS || {  onDocumentReady: {} };
@@ -71,7 +75,7 @@ var PrepEmailTemplates = function(){
      * @param size
      * @return void
      */
-    addAttachment = function (target, url, relevance, size)
+    addAttachment = function (target, url, relevance, size, error)
     {
         if (typeof relevance == 'undefined')
         {
@@ -102,6 +106,9 @@ var PrepEmailTemplates = function(){
     
             $(newrow).find('input.relevance').val(relevance).attr('name', 'attachments' + templatetype + '[' + index + '][relevance]');
             $(newrow).find('input.filename').attr('name', 'attachments' + templatetype + '[' + index + '][url]');
+            if (error) {
+                $(newrow).find('input.filename').parent().append($("<span class='fa fa-exclamation-triangle text-danger' title='" + error + "'></span>"));
+            }
             $(newrow).appendTo($(target).find('tbody'));
             const modal = bootstrap.Modal.getOrCreateInstance(document.getElementById('kc-modal-open'));
             modal.hide();

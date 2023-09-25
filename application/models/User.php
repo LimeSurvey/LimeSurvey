@@ -457,6 +457,7 @@ class User extends LSActiveRecord
     public function getManagementButtons()
     {
         $permission_superadmin_read = Permission::model()->hasGlobalPermission('superadmin', 'read');
+        $permission_users_read = Permission::model()->hasGlobalPermission('users', 'read');
         $permission_users_update = Permission::model()->hasGlobalPermission('users', 'update');
         $permission_users_delete = Permission::model()->hasGlobalPermission('users', 'delete');
         // User is owned or created by you
@@ -480,7 +481,7 @@ class User extends LSActiveRecord
                 'data-href' => $detailUrl,
             ],
             'enabledCondition' =>
-                $permission_superadmin_read
+                $permission_superadmin_read || $permission_users_read
                 || ($permission_superadmin_read
                     && (Permission::isForcedSuperAdmin($this->uid)
                         || $this->uid == App()->user->getId()

@@ -435,6 +435,7 @@ class UserManagementController extends LSBaseController
             );
         }
         $userId = Yii::app()->request->getParam('userid');
+        $userId = sanitize_int($userId);
         $aData['userId'] = $userId;
         return $this->renderPartial('partial/confirmuserdelete', $aData);
     }
@@ -485,6 +486,10 @@ class UserManagementController extends LSBaseController
 
         // Check permissions
         $aBasePermissions = Permission::model()->getGlobalBasePermissions();
+        // superadmin permission always need create
+        if (!Permission::model()->hasGlobalPermission('superadmin', 'create')) {
+            unset($aBasePermissions['superadmin']);
+        }
         if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
             // if not superadmin filter the available permissions as no admin may give more permissions than he owns
             Yii::app()->session['flashmessage'] = gT("Note: You can only give limited permissions to other users because your own permissions are limited, too.");
@@ -1548,16 +1553,20 @@ class UserManagementController extends LSBaseController
         $aAllowedPermissions = array_map(
             function ($aGlobalPermission) {
                 return array(
-                    'create' => $aGlobalPermission['read'],
+                    'create' => $aGlobalPermission['create'],
                     'read' => $aGlobalPermission['read'],
-                    'update' => $aGlobalPermission['read'],
-                    'delete' => $aGlobalPermission['read'],
-                    'import' => $aGlobalPermission['read'],
-                    'export' => $aGlobalPermission['read'],
+                    'update' => $aGlobalPermission['update'],
+                    'delete' => $aGlobalPermission['delete'],
+                    'import' => $aGlobalPermission['import'],
+                    'export' => $aGlobalPermission['export'],
                 );
             },
             $aGlobalPermissions
         );
+        // superadmin permission always need create
+        if (!Permission::model()->hasGlobalPermission('superadmin', 'create')) {
+            unset($aAllowedPermissions['superadmin']);
+        }
         $aCruds = array('create', 'read', 'update', 'delete', 'import', 'export');
         if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
             // if not superadmin filter the available permissions as no admin may give more permissions than he owns
