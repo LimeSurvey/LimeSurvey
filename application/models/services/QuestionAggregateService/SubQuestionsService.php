@@ -130,30 +130,34 @@ class SubQuestionsService
         $surveyActive = false
     ) {
         $subquestion = null;
-        $code = $data['oldcode'] ?? ($data['code'] ?? null);
-        if (!isset($code)) {
-            throw new BadRequestException(
-                'Internal error: ' .
-                'Missing mandatory field "code" for question'
-            );
+        if (!isset($data['code'])) {
+            throw new BadRequestException('Internal error: Missing mandatory field "code" for question');
         }
+        // If the subquestion with given code already exists, update it.
         $subquestion = $this->modelQuestion->findByAttributes([
             'sid' => $question->sid,
             'parent_qid' => $question->qid,
-            'title' => $code,
+            'title' => $data['code'],
             'scale_id' => $scaleId
         ]);
+        if (!$subquestion && isset($data['oldcode'])) {
+            // If the subquestion with given code does not exist
+            // - but subquestion with old code exists, update it.
+            $subquestion = $this->modelQuestion->findByAttributes([
+                'sid' => $question->sid,
+                'parent_qid' => $question->qid,
+                'title' => $data['oldcode'],
+                'scale_id' => $scaleId
+            ]);
+        }
         if (!$subquestion) {
             if ($surveyActive) {
-                throw new NotFoundException(
-                    'Subquestion with code "' . $code . '" not found'
-                );
+                throw new NotFoundException('Subquestion with code "' . $data['code'] . '" not found');
             } else {
-                $subquestion = DI::getContainer()
-                    ->make(Question::class);
-                $subquestion->title = $code;
+                $subquestion = DI::getContainer()->make(Question::class);
             }
         }
+        $subquestion->title = $data['code'];
         $subquestion->sid = $question->sid;
         $subquestion->gid = $question->gid;
         $subquestion->parent_qid = $question->qid;
@@ -164,9 +168,7 @@ class SubQuestionsService
         }
         $subquestion->scale_id = $scaleId;
         if (!$subquestion->save()) {
-            throw new PersistErrorException(
-                'Could not save subquestion'
-            );
+            throw new PersistErrorException('Could not save subquestion');
         }
         $subquestion->refresh();
         $this->updateSubquestionL10nService(
