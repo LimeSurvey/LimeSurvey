@@ -34,6 +34,18 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.6.38 (build 230919) to 5.6.39 (build 230926) September 25, 2023
+-Fixed issue #19099: [security] XSS vulnerability caused by themeOptions/importManifest (#3472) (Denis Chenu)
+-Fixed issue #19096: Array by column answer options are not processed by EM before display (#3464) (#3476) (Matthew)
+-Fixed issue #19063: Import of broken lsa file yields success message (but inactive "Go to survey" button) (#3463) (Gabriel Jenik)
+-Fixed issue #19019: [security] Stored XSS in description of theme (#3444) (Gabriel Jenik)
+-Fixed issue #18986: [security] superadmin without create superadmin can create superadmin (#3448) (Denis Chenu)
+-Fixed issue #18984: [security] CSRF in Question Themes function (#3473) (Gabriel Jenik)
+-Fixed issue #18957: Ranking Advanced: Visualization Types are not working (#3460) (Gabriel Jenik)
+-Fixed issue #18938: question_template_attribute show only default value (#3468) (Denis Chenu)
+-Fixed issue #18601: No editor available when defining quota messages. (#3453) (Gabriel Jenik)
+
+
 Changes from 5.6.37 (build 230905) to 5.6.38 (build 230919) September 18, 2023
 -Fixed issue #19037: [security] Reflected XSS in LimeSurvey via userid parameter (#3412) (Gabriel Jenik)
 -Fixed issue #18995: [security] Confidentiality issue about username (#3368) (Gabriel Jenik)
