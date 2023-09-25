@@ -400,7 +400,7 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
     {
         $criteriaPerm = new CDbCriteria();
         if (!Permission::model()->hasGlobalPermission("surveys", 'read') || !Permission::model()->hasGlobalPermission("surveysgroups", 'read')) {
-            $userid = Permission::getCurrentUserId();
+            $userid = App()->getCurrentUserId();
             /* owner of surveygroup */
             $criteriaPerm->compare('t.owner_id', $userid, false);
             /* Simple permission on SurveysGroup inside a group */

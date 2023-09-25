@@ -1698,7 +1698,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
     protected static function getPermissionCriteria($userid = null)
     {
         if (!$userid) {
-            $userid = Permission::getCurrentUserId();
+            $userid = App()->getCurrentUserId();
         }
         // Note: reflect Permission::hasPermission
         $criteriaPerm = new CDbCriteria();

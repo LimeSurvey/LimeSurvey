@@ -728,29 +728,9 @@ class Permission extends LSActiveRecord
                 /* Alt : return 1st forcedSuperAdmin ? */
                 throw new Exception('Permission must not be tested with console application.');
             }
-            return self::getCurrentUserId();
+            return App()->getCurrentUserId();
         }
         return $iUserID;
-    }
-
-    /**
-     * get the current id of connected user
-     * @return int|null user id
-     * @throws Exception
-     */
-    public static function getCurrentUserId()
-    {
-        if (App() instanceof CConsoleApplication) {
-            return null;
-        }
-        if (!is_null(self::$currentUserId)) {
-            return self::$currentUserId;
-        }
-        self::$currentUserId = App()->user->getId();
-        if (!User::model()->findByPk(self::$currentUserId)) {
-            self::$currentUserId = 0;
-        }
-        return self::$currentUserId;
     }
 
     /**
