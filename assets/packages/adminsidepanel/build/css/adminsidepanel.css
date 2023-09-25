@@ -29,6 +29,9 @@
   /* z-index: 2; */
   min-height: 100vh;
 }
+.question-question-list-item .dropdown-menu li a.disabled {
+  opacity: 0.5;
+}
 .loader-adminpanel.loader-quickmenu .contain-pulse {
   width: 2em;
 }
@@ -97,7 +100,8 @@
 
 .ls-ba .list-group {
   padding-right: 0;
-  padding-inline-start: 0;
+  -webkit-padding-start: 0;
+          padding-inline-start: 0;
 }
 .ls-ba .list-group > .list-group-item {
   padding-right: 0;
