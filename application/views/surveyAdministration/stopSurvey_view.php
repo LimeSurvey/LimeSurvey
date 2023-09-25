@@ -63,8 +63,8 @@
                 </div>
                 <div class="card-body px-0  d-flex">
                     <ul>
-                        <li><?php printf(gT('%sResponses%s are %sno longer accessible%s.%s Your response table will be renamed to: %s%s'),
-                                '<b>', '</b>', '<b>', '</b>','<br />', '<b>', $sNewSurveyTableName, '</b>'); ?></li>
+                        <li><?php printf(gT('Responses  are %sno longer accessible.%s Your response table will be renamed to: %s%s%s'),
+                                '<b>', '<b><br>','<b>', $sNewSurveyTableName,'</b>'); ?></li>
                         <li><?php printf(gT("All %sparticipant information will be lost%s."), '<b>', '</b>'); ?></li>
                         <li><?php printf(gT("%sCannot%s be %saccessed%s by %sparticipants%s. A message will be displayed stating that the survey has been closed."),
                                 '<b>', '</b>','<b>', '</b>', '<b>', '</b>'); ?></li>
