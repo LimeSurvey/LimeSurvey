@@ -71,7 +71,9 @@ class TemplateManifest extends TemplateConfiguration
 
         foreach ($filesFromXML as $file) {
             if ($file->attributes()->type == $sType) {
-                $aScreenFiles[] = (string) $file;
+                // prevent accidental linebreaks and empty spaces in xml file string from breaking file path when loading it
+                $file = trim(str_replace(["\r", "\n"], '', $file));
+                $aScreenFiles[] = $file;
             }
         }
 
