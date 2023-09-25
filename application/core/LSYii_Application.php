@@ -715,7 +715,7 @@ class LSYii_Application extends CWebApplication
         if (App() instanceof CConsoleApplication) {
             return null;
         }
-        if (!is_null($this->currentUserId)) {
+        if (!is_null($this->currentUserId) && $this->currentUserId == App()->session['loginID']) {
             return $this->currentUserId;
         }
         $this->currentUserId = App()->session['loginID'];
