@@ -108,10 +108,7 @@ class SubQuestionsService
         $subquestion = null;
         $code = $data['oldcode'] ?? ($data['code'] ?? null);
         if (!isset($code)) {
-            throw new BadRequestException(
-                'Internal error: ' .
-                'Missing mandatory field "code" for question'
-            );
+            throw new BadRequestException('Internal error: Missing mandatory field "code" for question');
         }
         // If the subquestion with given code already exists, update it.
         $subquestion =  $this->modelQuestion->findByAttributes([
@@ -132,12 +129,9 @@ class SubQuestionsService
         }
         if (!$subquestion) {
             if ($surveyActive) {
-                throw new NotFoundException(
-                    'Subquestion with code "' . $code . '" not found'
-                );
+                throw new NotFoundException('Subquestion with code "' . $code . '" not found');
             } else {
-                $subquestion = DI::getContainer()
-                    ->make(Question::class);
+                $subquestion = DI::getContainer()->make(Question::class);
                 $subquestion->title = $code;
             }
         }
@@ -151,9 +145,7 @@ class SubQuestionsService
         }
         $subquestion->scale_id = $scaleId;
         if (!$subquestion->save()) {
-            throw new PersistErrorException(
-                'Could not save subquestion'
-            );
+            throw new PersistErrorException('Could not save subquestion');
         }
         $subquestion->refresh();
         $this->updateSubquestionL10nService(
