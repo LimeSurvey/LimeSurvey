@@ -769,8 +769,7 @@ class Permission extends LSActiveRecord
                 /* Alt : return 1st forcedAdmin ? */
                 throw new Exception('Permission must not be tested with console application.');
             }
-            /* See TestBaseClass tearDownAfterClass */
-            $iUserID = Yii::app()->session['loginID'];
+            return App()->getCurrentUserId();
         }
         return $iUserID;
     }

@@ -56,6 +56,9 @@ class LSYii_Application extends CWebApplication
      */
     protected $dbVersion;
 
+    /* @var integer| null the current userId for all action */
+    private $currentUserId;
+
     /**
      *
      * Initiates the application
@@ -710,5 +713,29 @@ class LSYii_Application extends CWebApplication
             $baseUrl = $sPublicUrl;
         }
         return $baseUrl;
+    }
+
+    /**
+     * get the current id of connected user,
+     * check if user exist before return for security
+     * @return int|null user id
+     */
+    public function getCurrentUserId()
+    {
+        if (App() instanceof CConsoleApplication) {
+            return null;
+        }
+        if(empty(App()->session['loginID'])) {
+            // NULL for guest
+            return App()->session['loginID'];
+        }
+        if (!is_null($this->currentUserId) && $this->currentUserId == App()->session['loginID']) {
+            return $this->currentUserId;
+        }
+        $this->currentUserId = App()->session['loginID'];
+        if ($this->currentUserId && !User::model()->findByPk($this->currentUserId)) {
+            $this->currentUserId = 0;
+        }
+        return $this->currentUserId;
     }
 }
