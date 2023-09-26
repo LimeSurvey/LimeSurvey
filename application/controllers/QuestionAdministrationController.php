@@ -2853,13 +2853,10 @@ class QuestionAdministrationController extends LSBaseController
      */
     private function storeSubquestions($question, $subquestionsArray)
     {
+        $this->validateSubquestionCodes($subquestionsArray);
         $questionOrder = 0;
         $errorQuestions = [];
         $subquestions = [];
-        // To avoid duplicate code errors when moving codes
-        // - by typing instead of dragging, we add a temporary code prefix
-        // - which is later removed after the question is saved
-        $tempCodePrefix = 'X';
         foreach ($subquestionsArray as $subquestionArray) {
             foreach ($subquestionArray as $scaleId => $data) {
                 $subquestion = null;
@@ -2885,11 +2882,12 @@ class QuestionAdministrationController extends LSBaseController
                         'Internal error: Missing mandatory field code for question: ' . json_encode($data)
                     );
                 }
-                $subquestion->title = $tempCodePrefix . $data['code'];
+                $subquestion->title = $data['code'];
                 if ($scaleId === 0) {
                     $subquestion->relevance = $data['relevance'];
                 }
                 $subquestion->scale_id = $scaleId;
+                $subquestion->setScenario('save-set');
                 if (!$subquestion->save()) {
                     array_push($errorQuestions, $subquestion);
                     continue;
@@ -2912,14 +2910,6 @@ class QuestionAdministrationController extends LSBaseController
                 }
             }
         }
-        // Remove temporary code prefix
-        foreach ($subquestions as $subquestion) {
-            $subquestion->title = substr($subquestion->title, strlen($tempCodePrefix));
-            if (!$subquestion->save()) {
-                array_push($errorQuestions, $subquestion);
-                continue;
-            }
-        }
         $subquestionIds = array_map(function ($subquestion) {
             return $subquestion->qid;
         }, $subquestions);
@@ -2927,6 +2917,33 @@ class QuestionAdministrationController extends LSBaseController
         foreach ($errorQuestions as $errorQuestion) {
             throw (new LSUserException(500, gT("Could not save subquestion")))
                 ->setDetailedErrorsFromModel($errorQuestion);
+        }
+    }
+
+    /**
+     * Validate subquestion codes.
+     *
+     * @param array $subquestionsArray Data from request.
+     * @return void
+     * @throws LSUserException
+     */
+    private function validateSubquestionCodes($subquestionsArray)
+    {
+        // ensure uniquness of codes
+        foreach ($subquestionsArray as $subquestionArray) {
+            $codes = [];
+            foreach ($subquestionArray as $data) {
+                if (in_array($data['code'], $codes)) {
+                    throw (new LSUserException(
+                        500,
+                        gT('Could not save subquestion')
+                        )
+                    )->setDetailedErrorsFromModel(
+                        'Subquestion codes must be unique.'
+                    );
+                }
+                $codes[] = $data['code'];
+            }
         }
     }
 
