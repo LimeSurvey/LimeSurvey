@@ -35,9 +35,6 @@ class Permission extends LSActiveRecord
     /* @var array[]|null The global base Permission LimeSurvey installation */
     protected static $aGlobalBasePermissions;
 
-/* @var interger| null the current userId for all permission check */
-    private static $currentUserId;
-
     /** @inheritdoc */
     public function tableName()
     {
