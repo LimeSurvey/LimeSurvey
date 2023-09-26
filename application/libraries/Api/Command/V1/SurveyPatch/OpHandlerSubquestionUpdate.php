@@ -2,9 +2,19 @@
 
 namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
-use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestion;
-use LimeSurvey\Models\Services\QuestionAggregateService;
-use LimeSurvey\ObjectPatch\{Op\OpInterface,
+use LimeSurvey\Api\Command\V1\Transformer\Input\{
+    TransformerInputSubQuestion,
+    TransformerInputQuestionL10ns
+};
+use LimeSurvey\Models\Services\{
+    Exception\NotFoundException,
+    Exception\PermissionDeniedException,
+    Exception\PersistErrorException,
+    QuestionAggregateService,
+    QuestionAggregateService\QuestionService,
+    QuestionAggregateService\SubQuestionsService};
+use LimeSurvey\ObjectPatch\{
+    Op\OpInterface,
     OpHandler\OpHandlerException,
     OpHandler\OpHandlerInterface,
     OpType\OpTypeUpdate
@@ -13,16 +23,26 @@ use LimeSurvey\ObjectPatch\{Op\OpInterface,
 class OpHandlerSubquestionUpdate implements OpHandlerInterface
 {
     use OpHandlerSurveyTrait;
+    use OpHandlerQuestionTrait;
 
     protected QuestionAggregateService $questionAggregateService;
-    protected TransformerInputQuestion $transformer;
+    protected SubQuestionsService $subQuestionsService;
+    protected QuestionService $questionService;
+    protected TransformerInputSubQuestion $transformer;
+    protected TransformerInputQuestionL10ns $transformerL10ns;
 
     public function __construct(
         QuestionAggregateService $questionAggregateService,
-        TransformerInputQuestion $transformer
+        SubQuestionsService $subQuestionsService,
+        QuestionService $questionService,
+        TransformerInputQuestionL10ns $transformerL10n,
+        TransformerInputSubQuestion $transformer
     ) {
         $this->questionAggregateService = $questionAggregateService;
+        $this->subQuestionsService = $subQuestionsService;
+        $this->questionService = $questionService;
         $this->transformer = $transformer;
+        $this->transformerL10ns = $transformerL10n;
     }
 
     /**
@@ -45,7 +65,7 @@ class OpHandlerSubquestionUpdate implements OpHandlerInterface
      *     "patch": [{
      *             "entity": "subquestion",
      *             "op": "update",
-     *             "id": "0", //not relevant at all
+     *             "id": 722, //parent qid
      *             "props": {
      *                 "0": {
      *                     "qid": 728,
@@ -82,44 +102,28 @@ class OpHandlerSubquestionUpdate implements OpHandlerInterface
      *
      * @param OpInterface $op
      * @throws OpHandlerException
+     * @throws NotFoundException
+     * @throws PermissionDeniedException
+     * @throws PersistErrorException
      */
     public function handle(OpInterface $op): void
     {
-        $this->questionAggregateService->save(
-            $this->getSurveyIdFromContext($op),
-            $this->getPreparedData($op)
+        $surveyId = $this->getSurveyIdFromContext($op);
+        $this->questionAggregateService->checkUpdatePermission($surveyId);
+        $preparedData = $this->prepareSubQuestions(
+            $op,
+            $this->transformer,
+            $this->transformerL10ns,
+            $op->getProps(),
+            ['subquestions']
         );
-    }
-
-    /**
-     * Organizes the patch data into the structure which
-     * is expected by the service.
-     * @param OpInterface $op
-     * @return array
-     */
-    public function getPreparedData(OpInterface $op): array
-    {
-        $props = $op->getProps();
-        $transformedProps = $this->transformer->transform($props);
-
-        if ($props === null || $transformedProps === null) {
-            throw new OpHandlerException(
-                sprintf(
-                    'No values to update for entity %s',
-                    $op->getEntityType()
-                )
-            );
-        }
-        if (
-            !array_key_exists(
-                'qid',
-                $transformedProps
-            )
-            || $transformedProps['qid'] === null
-        ) {
-            $transformedProps['qid'] = $op->getEntityId();
-        }
-
-        return ['question' => $transformedProps];
+        $questionId = $op->getEntityId();
+        $this->subQuestionsService->save(
+            $this->questionService->getQuestionBySidAndQid(
+                $surveyId,
+                $questionId
+            ),
+            $preparedData
+        );
     }
 }

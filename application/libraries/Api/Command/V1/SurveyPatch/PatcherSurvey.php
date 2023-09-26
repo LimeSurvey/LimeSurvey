@@ -55,6 +55,9 @@ class PatcherSurvey extends Patcher
         $this->addOpHandler($diContainer->get(
             OpHandlerAnswerDelete::class
         ));
+        $this->addOpHandler($diContainer->get(
+            OpHandlerSubquestionUpdate::class
+        ));
     }
 
     private function addOpHandlerQuestionAttribute(FactoryInterface $diFactory, ContainerInterface $diContainer): void
