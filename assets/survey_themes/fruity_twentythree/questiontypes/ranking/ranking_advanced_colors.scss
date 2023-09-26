@@ -1,0 +1,28 @@
+.ranking-advanced-style {
+    div.ls-choice.sortable-block {
+        background: unset;
+        background-color: #fff;
+    }
+    .sortable-rank,
+    .ranking-advanced-sorted-items .sortable-item {
+        border : 2px solid $base-color;
+        .selector__dragHandle.d-none,
+        .selector__index_row {
+            color: $base-color;
+        }
+    }
+    .ranking-advanced-available-items {
+        background-color : $g-100;
+        .sortable-rank-subtitle {
+            color: $g-700;
+        }
+        .sortable-item {
+            border : 2px solid $g-700;
+        }
+        .selector__dragHandle.d-none,
+        .selector__index_row {
+            color: $g-700;
+        }
+    }
+
+}

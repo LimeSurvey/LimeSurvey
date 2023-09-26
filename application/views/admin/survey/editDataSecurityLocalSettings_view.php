@@ -90,3 +90,4 @@ echo viewHelper::getViewTestTag('surveyTexts');
 
         </div>
     </div>
+</div>

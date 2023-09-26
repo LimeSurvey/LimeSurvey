@@ -3,6 +3,7 @@
 /** @var int $surveyid */
 /** @var string $dbprefix */
 /** @var string $date */
+/** @var string $sNewSurveyTableName */
 
 ?>
 <div class='side-body stop-survey-body <?php echo getSideBodyClass(false); ?>'>
@@ -36,7 +37,7 @@
                     <ul>
                         <li><?php printf(gT("Responses & participant information %swill be kept.%s"), '<b>', '</b>'); ?></li>
                         <li><?php printf(gT("%sCannot%s be %saccessed%s by %sparticipants%s anymore."), '<b>', '</b>', '<b>', '</b>', '<b>', '</b>'); ?></li>
-                        <li><?php printf(gT("The %sability%s to %schange questions%s, groups and parameters is %slimited%s. A message will be displayed stating that the survey has expired."),
+                        <li><?php printf(gT("The %sability%s to %schange questions%s, groups and settings is %slimited%s. A message will be displayed stating that the survey has expired."),
                                 '<b>', '</b>', '<b>', '</b>', '<b>', '</b>'); ?></li>
                         <li><?php eT("It is still possible to perform statistical analysis on responses."); ?></li>
                     </ul>
@@ -62,18 +63,18 @@
                 </div>
                 <div class="card-body px-0  d-flex">
                     <ul>
-                        <li><?php printf(gT('%sResponses%s are %sno longer accessible%s.%s Your response table will be renamed to: %s%s_old_%d_%s%s'),
-                                '<b>', '</b>', '<b>', '</b>','<br />', '<span class="table-rename">', $dbprefix, $surveyid, $date, '</span>'); ?></li>
+                        <li><?php printf(gT('Responses are %sno longer accessible.%s Your response table will be renamed to: %s%s%s'),
+                                '<b>', '</b><br>','<b>', $sNewSurveyTableName,'</b>'); ?></li>
                         <li><?php printf(gT("All %sparticipant information will be lost%s."), '<b>', '</b>'); ?></li>
                         <li><?php printf(gT("%sCannot%s be %saccessed%s by %sparticipants%s. A message will be displayed stating that the survey has been closed."),
                                 '<b>', '</b>','<b>', '</b>', '<b>', '</b>'); ?></li>
                         <li><?php printf(
                             gT(
-                            "%sQuestions%s, %sgroups%s and %sparameters%s can be %sedited%s again."),
+                            "%sQuestions%s, %sgroups%s and %ssettings%s can be %sedited%s again."),
                                 '<b>', '</b>','<b>', '</b>', '<b>', '</b>', '<b>', '</b>'
                             ); ?></li>
                         <p class="mt-4">
-                            <?php et('Important: export your responses before deactivating your survey.') ?>
+                            <?php et('Important: Export your responses before deactivating your survey.') ?>
                             <a href='<?php echo $this->createUrl('admin/export/sa/exportresults/surveyid/' . $surveyid) ?>'>
                                 <?php eT("See details.") ?>
                             </a>

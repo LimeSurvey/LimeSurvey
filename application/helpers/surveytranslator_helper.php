@@ -523,6 +523,15 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['ko']['radixpoint'] = 0;
     $supportedLanguages['ko']['momentjs'] = 'ko';
 
+    // Khmer
+    $supportedLanguages['km']['description'] = gT('Khmer');
+    $supportedLanguages['km']['nativedescription'] = 'Khmer';
+    $supportedLanguages['km']['rtl'] = false;
+    $supportedLanguages['km']['dateformat'] = 5;
+    $supportedLanguages['km']['radixpoint'] = 1;
+    $supportedLanguages['km']['cldr'] = 'km';
+    $supportedLanguages['km']['momentjs'] = null;
+
     // Kirundi
     $supportedLanguages['run']['description'] = gT('Kirundi');
     $supportedLanguages['run']['nativedescription'] = 'Ikirundi';
@@ -838,6 +847,7 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['es-informal']['rtl'] = false;
     $supportedLanguages['es-informal']['dateformat'] = 5;
     $supportedLanguages['es-informal']['radixpoint'] = 1;
+    $supportedLanguages['es-informal']['cldr'] = 'es';
     $supportedLanguages['es-informal']['momentjs'] = 'es';
 
 
@@ -1010,6 +1020,14 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['sah']['dateformat'] = 5;
     $supportedLanguages['sah']['radixpoint'] = 1;
     $supportedLanguages['sah']['momentjs'] = 'null';
+
+    // Zulu
+    $supportedLanguages['yor']['description'] = gT('Yoruba');
+    $supportedLanguages['yor']['nativedescription'] = '&#xC8;d&#xE8; Yor&#xF9;b&#xE1;';
+    $supportedLanguages['yor']['rtl'] = false;
+    $supportedLanguages['yor']['dateformat'] = 5;
+    $supportedLanguages['yor']['radixpoint'] = 1;
+    $supportedLanguages['yor']['momentjs'] = null;
 
     // Zulu
     $supportedLanguages['zu']['description'] = gT('Zulu');

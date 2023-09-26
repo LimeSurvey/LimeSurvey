@@ -90,7 +90,7 @@ $config['deleteblacklisted']         = 'N'; // Delete globally blacklisted parti
 $config['allowunblacklist']          = 'N'; // Allow participant to unblacklist himself/herself
 $config['userideditable']            = 'N'; // Allow editing of user IDs
 
-$config['defaulttheme']              = 'fruity'; // This setting specifys the default theme used for the 'public list' of surveys
+$config['defaulttheme']              = 'fruity_twentythree'; // This setting specifys the default theme used for the 'public list' of surveys
 $config['createsample']              = true;
 $config['customassetversionnumber']  = 1;        // Used to generate the path of tmp assets (see: LSYii_AssetManager::generatePath()  )
 

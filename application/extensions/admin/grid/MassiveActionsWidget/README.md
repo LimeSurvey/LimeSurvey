@@ -79,7 +79,7 @@ The action definition consists in two parts: defining the link in the dropup lis
 The link, to be defined, need:
 
 - a text for the Actions (eg: *Set muh value*)
-- a classes for the icon in front of the text (eg: *fa fa-muh-icon*)
+- a classes for the icon in front of the text (eg: *ri-muh-fill*)
 - the url of the action to apply (for redirection, or ajax request. eg: */admin/muhController/sa/setMultipleMuhValue/*)
 - the action type (redirect, fill sessions and redirect, or modal).
 
@@ -99,7 +99,7 @@ array(
     'type'        => 'action',                                                        
     'action'      => 'set-muhvalue',
     'url'         => App()->createUrl('/admin/muhController/sa/setMultipleMuhValue/'),     // The url to reach the action method
-    'iconClasses' => 'fa fa-muh-icon',                                                  // The class to define the icon that will be show next to the action link in the dropUp button
+    'iconClasses' => 'ri-muh-fill',                                                  // The class to define the icon that will be show next to the action link in the dropUp button
     'text'        => gT('Set muh value'),                                               // The text of the action link in the dropUp button
 
     // modal
@@ -123,7 +123,7 @@ This will generate a dropup button of this kind :
                 data-type="modal"
                 ...
             >
-                <span class="ui-icon fa fa-muh-icon"></span>
+                <span class="ui-icon ri-muh-icon"></span>
                 Set muh value
             </a>
         </li>
@@ -163,7 +163,7 @@ This will generate a dropup button of this kind :
                 data-specific-data = "specific-data-value"
                 data-another-specific-data = "another-specific-data-value"
             >
-                <span class="ui-icon fa fa-muh-icon"></span>
+                <span class="ui-icon ri-muh-icon"></span>
                 Set muh value
             </a>
         </li>

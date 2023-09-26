@@ -81,8 +81,11 @@
 		],
 		"phpunit": "./vendor/bin/phpunit --testdox --coverage-text",
 		"phpunit-api": "./vendor/bin/phpunit --testdox --coverage-text tests/unit/api/",
+		"phpunit-services": "./vendor/bin/phpunit --testdox --coverage-text tests/unit/services/",
+		"psalm-services": "./vendor/bin/psalm application/models/services -c psalm-strict.xml",
 		"psalm-strict": "./vendor/bin/psalm -c psalm-strict.xml",
 		"test-api": "./vendor/bin/phpmd application/libraries/Api/ text tests/rulesets/phpmd_ruleset_strict.xml",
+		"test-services": "./vendor/bin/phpmd application/models/services/ text tests/rulesets/phpmd_ruleset_strict.xml",
         "test": [
             "./tests/bin/lint-tests",
             "./tests/bin/lint-application",

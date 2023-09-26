@@ -17886,7 +17886,7 @@
 	  //Current options object
 	  const options = _parseOptions(e);
 	  //Set the message if available
-	  $(this).find('.modal-body-text').html(options.message);
+	  $(this).find('.modal-body-text').text(options.message);
 	  //first remove both classes
 	  $(this).find('.btn-ok').removeClass("btn-primary btn-danger");
 	  if (options.btnclass !== null) {
@@ -21424,6 +21424,14 @@
 	        const importance = $(that).data('importance');
 	        const status = $(that).data('status');
 
+	        // Important 2 = nag only once (used e.g. for redirect).
+	        if (importance == 2 && status == 'new') {
+	          __showNotificationModal(that, url);
+	          __notificationIsRead(that);
+	          adminCoreLSConsole.log('stoploop');
+	          return false; // Stop loop
+	        }
+
 	        // Important notifications are shown as pop-up on load
 	        if (importance == 3 && status == 'new') {
 	          __showNotificationModal(that, url);
@@ -21467,9 +21475,11 @@
 	      $('#notification-inner-li').css('height', height - 60 + 'px');
 	    },
 	    deleteAllNotifications = (url, updateUrl) => {
+	      let data = document.querySelector('#notification-clear-all > a').getAttribute('data-params');
 	      return $.ajax({
 	        url: url,
-	        method: 'GET',
+	        data: data,
+	        method: 'POST',
 	        success: response => {
 	          adminCoreLSConsole.log('response', response);
 	        }

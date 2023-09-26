@@ -30,23 +30,17 @@ class OpHandlerActiveRecordUpdate implements OpHandlerInterface
             && $op->getType()->getId() == OpTypeUpdate::ID;
     }
 
-    private function getEntityId(OpInterface $op)
-    {
-        return is_array($op->getEntityId()) && $this->transformer
-            ? $this->transformer->transform($op->getEntityId())
-            : $op->getEntityId();
-    }
-
     public function handle(OpInterface $op)
     {
         $record = is_array($op->getEntityId())
             ? $this->model->findByAttributes(
-                $this->getEntityId($op)
+                $this->transformer->transform(
+                    $op->getEntityId()
+                )
             )
             : $this->model->findByPk(
                 $op->getEntityId()
             );
-        ;
         if (!$record) {
             throw new OpHandlerException(
                 printf(

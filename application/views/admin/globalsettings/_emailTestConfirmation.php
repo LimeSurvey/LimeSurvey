@@ -9,7 +9,7 @@
     </div>
 </div>
 <div class="modal-footer">
-    <a class="btn btn-primary btn-ok" href="<?php echo \Yii::app()->createUrl('admin/globalsettings', array("sa" => "sendTestEmail")); ?>">
+    <a role="button" class="btn btn-primary btn-ok" href="<?php echo \Yii::app()->createUrl('admin/globalsettings', array("sa" => "sendTestEmail")); ?>">
         <span class='ri-check-fill'></span>
         &nbsp;<?php eT("Send email"); ?>
     </a>

@@ -10,7 +10,7 @@
         <div class="card card-primary border-left-success">
             <div class="card-header ">
                 <h2>
-                    <?php printf(gT("Your survey(%d) was deactivated."), $surveyid); ?>
+                    <?php printf(gT("Your survey (%d) was deactivated."), $surveyid); ?>
                 </h2>
             </div>
             <div class="card-body d-flex">

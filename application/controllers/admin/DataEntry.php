@@ -425,7 +425,7 @@ class DataEntry extends SurveyCommonAction
                 }
                 Yii::app()->session['flashmessage'] = sprintf(gT("%s old response(s) and according timings were successfully imported."), $imported, $iRecordCountT);
             }
-            $this->getController()->redirect(["/responses/index/", 'surveyId' => $surveyid]);
+            $this->getController()->redirect(["/responses/browse/", 'surveyId' => $surveyid]);
         }
     }
 

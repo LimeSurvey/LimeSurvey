@@ -20,12 +20,6 @@ use LimeSurvey\DI;
 // phpcs:ignore
 class RestController extends LSYii_Controller
 {
-    public function beforeAction($action)
-    {
-        Yii::app()->request->enableCsrfValidation = false;
-        return parent::beforeAction($action);
-    }
-
     /**
      * Run REST controller action.
      *

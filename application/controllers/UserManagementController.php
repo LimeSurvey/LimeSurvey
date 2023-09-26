@@ -370,7 +370,7 @@ class UserManagementController extends LSBaseController
             }
         }
 
-        $message = '';
+        $messages = [];
         $transferTo = Yii::app()->request->getPost('transfer_surveys_to');
 
         if (empty($transferTo)) {
@@ -404,24 +404,18 @@ class UserManagementController extends LSBaseController
             $iSurveysTransferred = Survey::model()->updateAll(array('owner_id' => $transferTo), 'owner_id=' . $userId);
             if ($iSurveysTransferred) {
                 $sTransferredTo = User::model()->findByPk($transferTo)->users_name;
-                $message = sprintf(gT("All of the user's surveys were transferred to %s."), $sTransferredTo) . " ";
+                $messages[] = sprintf(gT("All of the user's surveys were transferred to %s."), $sTransferredTo);
             }
         }
 
-        // Transfer any Participants owned by this user to site's admin
-        $participantsTranferred = Participant::model()->updateAll(['owner_uid' => 1], 'owner_uid = :owner_uid', [':owner_uid' => $userId]);
-        if ($participantsTranferred) {
-            $transferredToName = User::model()->findByPk(1)->users_name;
-            $message .= sprintf(gT("All participants owned by this user were transferred to %s."), $transferredToName) . " ";
-        }
+        $userManager = new UserManager();
+        $result = $userManager->deleteUser($userId);
+        $messages = array_merge($messages, $result->getRawMessages());
 
-        //todo REFACTORING user permissions should be deleted also ... (in table permissions)
-        $oUser->delete();
-        $message .= gT("User successfully deleted.");
         return App()->getController()->renderPartial('/admin/super/_renderJson', [
             'data' => [
-                'success' => true,
-                'message' => $message,
+                'success' => $result->isSuccess(),
+                'message' => implode(" ", $messages),
             ]
         ]);
     }
@@ -441,11 +435,8 @@ class UserManagementController extends LSBaseController
             );
         }
         $userId = Yii::app()->request->getParam('userid');
-        $sUserName = flattenText(Yii::app()->request->getParam("user"));
-
+        $userId = sanitize_int($userId);
         $aData['userId'] = $userId;
-        $aData['sUserName'] = $sUserName;
-
         return $this->renderPartial('partial/confirmuserdelete', $aData);
     }
 
@@ -495,6 +486,10 @@ class UserManagementController extends LSBaseController
 
         // Check permissions
         $aBasePermissions = Permission::model()->getGlobalBasePermissions();
+        // superadmin permission always need create
+        if (!Permission::model()->hasGlobalPermission('superadmin', 'create')) {
+            unset($aBasePermissions['superadmin']);
+        }
         if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
             // if not superadmin filter the available permissions as no admin may give more permissions than he owns
             Yii::app()->session['flashmessage'] = gT("Note: You can only give limited permissions to other users because your own permissions are limited, too.");
@@ -728,15 +723,20 @@ class UserManagementController extends LSBaseController
                 ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
             );
         }
-
-        $importNote = sprintf(gT("Please make sure that your CSV contains the fields '%s', '%s', '%s', '%s', and '%s'"), '<b>users_name</b>', '<b>full_name</b>', '<b>email</b>', '<b>lang</b>', '<b>password</b>');
-        $allowFileType = ".csv";
-
-        if ($importFormat == 'json') {
-            $importNote = sprintf(gT("Please make sure that your JSON arrays contain the fields '%s', '%s', '%s', '%s', and '%s'"), '<b>users_name</b>', '<b>full_name</b>', '<b>email</b>', '<b>lang</b>', '<b>password</b>');
-            $allowFileType = ".json,application/json";
+        if (!in_array($importFormat, ['csv', 'json'])) {
+            throw new LSUserException(400, gT("Invalid format"));
         }
 
+        switch ($importFormat) {
+            case "json":
+                $importNote = sprintf(gT("Please make sure that your JSON arrays contain the fields '%s', '%s', '%s', '%s', and '%s'"), '<b>users_name</b>', '<b>full_name</b>', '<b>email</b>', '<b>lang</b>', '<b>password</b>');
+                $allowFileType = ".json,application/json";
+                break;
+            case "csv":
+            default:
+                $importNote = sprintf(gT("Please make sure that your CSV contains the fields '%s', '%s', '%s', '%s', and '%s'"), '<b>users_name</b>', '<b>full_name</b>', '<b>email</b>', '<b>lang</b>', '<b>password</b>');
+                $allowFileType = ".csv";
+        }
         return $this->renderPartial('partial/importuser', [
             "note"         => $importNote,
             "importFormat" => $importFormat,
@@ -759,7 +759,9 @@ class UserManagementController extends LSBaseController
                 ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
             );
         }
-
+        if (!in_array($importFormat, ['csv', 'json'])) {
+            throw new LSUserException(400, gT("Invalid format"));
+        }
         $overwriteUsers = boolval(App()->getRequest()->getPost('overwrite'));
 
         switch ($importFormat) {
@@ -768,7 +770,7 @@ class UserManagementController extends LSBaseController
                 break;
             case "csv":
             default:
-                $aNewUsers = UserParser::getDataFromCSV($_FILES); //importFormat default is csv ...
+                $aNewUsers = UserParser::getDataFromCSV($_FILES);
         }
         if (empty($aNewUsers)) {
             Yii::app()->setFlashMessage(gT("No user definition found in file."), 'error');
@@ -1155,7 +1157,8 @@ class UserManagementController extends LSBaseController
      */
     public function actionBatchApplyRoles()
     {
-        if (!Permission::model()->hasGlobalPermission('users', 'update')) {
+        /* Need super admin roles */
+        if (!Permission::model()->hasGlobalPermission('superadmin')) {
             return $this->renderPartial(
                 'partial/error',
                 ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
@@ -1169,9 +1172,8 @@ class UserManagementController extends LSBaseController
             $aResults[$sItem]['title'] = '';
             $model = $this->loadModel($sItem);
             $aResults[$sItem]['title'] = $model->users_name;
-
-            //check if user is admin otherwhise change the role
-            if (intval($sItem) == 1) {  //todo REFACTORING is admin id always 1?? is there another possibility to check for admin user?
+            if (Permission::isForcedSuperAdmin($sItem)) {
+                /* Show an error for forced super admin, this don't disable for DB superadmin */
                 $aResults[$sItem]['result'] = false;
                 $aResults[$sItem]['error'] = gT('The superadmin role cannot be changed.');
             } else {
@@ -1180,7 +1182,6 @@ class UserManagementController extends LSBaseController
                 }
             }
         }
-
         $tableLabels = array(gT('User ID'), gT('Username'), gT('Status'));
 
         Yii::app()->getController()->renderPartial(
@@ -1281,11 +1282,9 @@ class UserManagementController extends LSBaseController
             return false;
         }
 
-        // Transfer any Participants owned by this user to site's admin
-        Participant::model()->updateAll(['owner_uid' => 1], 'owner_uid = :owner_uid', [':owner_uid' => $userId]);
-
-        //todo REFACTORING user permissions should be deleted also ... (in table permissions)
-        return $oUser->delete();
+        $userManager = new UserManager();
+        $result = $userManager->deleteUser($userId);
+        return $result->isSuccess();
     }
 
     /**
@@ -1554,16 +1553,20 @@ class UserManagementController extends LSBaseController
         $aAllowedPermissions = array_map(
             function ($aGlobalPermission) {
                 return array(
-                    'create' => $aGlobalPermission['read'],
+                    'create' => $aGlobalPermission['create'],
                     'read' => $aGlobalPermission['read'],
-                    'update' => $aGlobalPermission['read'],
-                    'delete' => $aGlobalPermission['read'],
-                    'import' => $aGlobalPermission['read'],
-                    'export' => $aGlobalPermission['read'],
+                    'update' => $aGlobalPermission['update'],
+                    'delete' => $aGlobalPermission['delete'],
+                    'import' => $aGlobalPermission['import'],
+                    'export' => $aGlobalPermission['export'],
                 );
             },
             $aGlobalPermissions
         );
+        // superadmin permission always need create
+        if (!Permission::model()->hasGlobalPermission('superadmin', 'create')) {
+            unset($aAllowedPermissions['superadmin']);
+        }
         $aCruds = array('create', 'read', 'update', 'delete', 'import', 'export');
         if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
             // if not superadmin filter the available permissions as no admin may give more permissions than he owns

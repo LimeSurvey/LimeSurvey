@@ -496,11 +496,12 @@ class Survey extends LSActiveRecord implements PermissionInterface
             array('expires', 'default', 'value' => null),
             array('admin', 'LSYii_Validators'),
             array('admin', 'length', 'min' => 1, 'max' => 50),
-            array('adminemail', 'LSYii_FilterValidator', 'filter' => 'trim', 'skipOnEmpty' => true),
-            array('bounce_email', 'LSYii_FilterValidator', 'filter' => 'trim', 'skipOnEmpty' => true),
+            array('adminemail', 'LSYii_FilterValidator', 'filter' => 'trim', 'skipOnEmpty' => true, 'allowOnlyEmail' => true),
+            array('bounce_email', 'LSYii_FilterValidator', 'filter' => 'trim', 'skipOnEmpty' => true, 'allowOnlyEmail' => true),
             //array('bounce_email', 'LSYii_EmailIDNAValidator', 'allowEmpty'=>true),
             array('active', 'in', 'range' => array('Y', 'N'), 'allowEmpty' => true),
             array('gsid', 'numerical', 'min' => '0', 'allowEmpty' => true),
+            array('gsid', 'in', 'range' => array_keys(SurveysGroups::getSurveyGroupsList()), 'allowEmpty' => true, 'message' => gT("You are not allowed to use this group")),
             array('anonymized', 'in', 'range' => array('Y', 'N', 'I'), 'allowEmpty' => true),
             array('savetimings', 'in', 'range' => array('Y', 'N', 'I'), 'allowEmpty' => true),
             array('datestamp', 'in', 'range' => array('Y', 'N', 'I'), 'allowEmpty' => true),
@@ -511,6 +512,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
             array('allowprev', 'in', 'range' => array('Y', 'N', 'I'), 'allowEmpty' => true),
             array('printanswers', 'in', 'range' => array('Y', 'N', 'I'), 'allowEmpty' => true),
             array('ipaddr', 'in', 'range' => array('Y', 'N', 'I'), 'allowEmpty' => true),
+            array('ipanonymize', 'in', 'range' => array('Y', 'N', 'I'), 'allowEmpty' => true),
             array('refurl', 'in', 'range' => array('Y', 'N', 'I'), 'allowEmpty' => true),
             array('publicstatistics', 'in', 'range' => array('Y', 'N', 'I'), 'allowEmpty' => true),
             array('publicgraphs', 'in', 'range' => array('Y', 'N', 'I'), 'allowEmpty' => true),
@@ -1106,8 +1108,8 @@ class Survey extends LSActiveRecord implements PermissionInterface
 
             // Time comparison
             $oNow   = new DateTime($sNow);
-            $oStop  = new DateTime($sStop);
-            $oStart = new DateTime($sStart);
+            $oStop  = empty($sStop) ? null : new DateTime($sStop);
+            $oStart = empty($sStart) ? null : new DateTime($sStart);
 
             $bExpired = (!is_null($sStop) && $oStop < $oNow);
             $bWillRun = (!is_null($sStart) && $oStart > $oNow);
@@ -1599,12 +1601,21 @@ class Survey extends LSActiveRecord implements PermissionInterface
                 'join' => $groupJoins,
             ]);
             $groupCondition = "t.gsid=:gsid";
-            $groupCondition .= " OR parentGroup2.gsid=:gsid";
-            $groupCondition .= " OR parentGroup3.gsid=:gsid";
-            $groupCondition .= " OR parentGroup4.gsid=:gsid";
-            $groupCondition .= " OR parentGroup5.gsid=:gsid";
+            $groupCondition .= " OR parentGroup2.gsid=:gsid2"; // MSSQL issue with single param for multiple value, issue #19072
+            $groupCondition .= " OR parentGroup3.gsid=:gsid3";
+            $groupCondition .= " OR parentGroup4.gsid=:gsid4";
+            $groupCondition .= " OR parentGroup5.gsid=:gsid5";
             $criteria->addCondition($groupCondition, 'AND');
-            $criteria->params = array_merge($criteria->params, [':gsid' => $this->gsid]);
+            $criteria->params = array_merge(
+                $criteria->params,
+                [
+                    ':gsid' => $this->gsid,
+                    ':gsid2' => $this->gsid,
+                    ':gsid3' => $this->gsid,
+                    ':gsid4' => $this->gsid,
+                    ':gsid5' => $this->gsid
+                ]
+            );
         }
 
         // Active filter

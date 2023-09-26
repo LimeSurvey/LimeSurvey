@@ -18,7 +18,7 @@ $baseLanguage = $oSurvey->language;
     <ul class="nav nav-tabs  mt-4" role="tablist">
         <li id='overviewTab' class="nav-item"><a class="nav-link active" href="#questions" aria-controls="questions" role="tab" data-bs-toggle="tab"><?php eT('Questions'); ?></a></li>
         <li id='overviewTab' class="nav-item"><a class="nav-link" href="#groups" aria-controls="groups" role="tab" data-bs-toggle="tab"><?php eT('Groups'); ?></a></li>
-        <li id='overviewTab' class='nav-item <?php echo  $oSurvey->active === 'Y' ? 'ls-tab-disabled' : '' ?>'><a class="nav-link" href="#reorder" aria-controls="reorder" role="tab" data-bs-toggle="tab"><?php eT('Reorder'); ?></a></li>
+        <li id='overviewTab' class='nav-item'><a class="nav-link" href="#reorder" aria-controls="reorder" role="tab" data-bs-toggle="tab"><?php eT('Reorder'); ?></a></li>
     </ul>
     <div class="tab-content p-4 h-100">
         <div id="questions" class="tab-pane show fade active row">
@@ -42,8 +42,8 @@ $baseLanguage = $oSurvey->language;
         <div id="reorder" class="tab-pane row">
             <?php $this->renderPartial('/admin/survey/organizeGroupsAndQuestions_view',[
                 'surveyid' => $surveyid,
+                'surveyActivated' => $surveyActivated,
                 'aGroupsAndQuestions' => $aGroupsAndQuestions,
-
             ]) ?>
         </div>
     </div>

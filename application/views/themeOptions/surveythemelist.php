@@ -1,5 +1,9 @@
 
 <?php
+/**
+ * @var $oSurveyTheme TemplateConfiguration
+ */
+
 $massiveAction = App()->getController()->renderPartial(
     '/themeOptions/_selector',
     [
@@ -46,8 +50,9 @@ $this->widget('application.extensions.admin.grid.CLSGridView',
             [
                 'header' => gT('Name'),
                 'name' => 'template_name',
-                'value' => '$data->template_name',
-                'htmlOptions' => ['class' => 'col-lg-2 text-center'],
+                'value' => '"<strong>".CHtml::encode($data->template->title)."</strong>" ."<br>" .CHtml::encode($data->template_name)',
+                'htmlOptions' => ['class' => 'col-lg-2'],
+                'type' => 'raw',
             ],
 
             [

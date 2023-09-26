@@ -1018,17 +1018,15 @@ class SurveyAdministrationController extends LSBaseController
                                     'icon' => 'ri-git-branch-fill icon',
                                     'url' => Yii::App()->createUrl("admin/conditions/sa/index/subaction/editconditionsform/surveyid/$iSurveyID/gid/$question->gid/qid/$question->qid")
                                 ];
-
-                            if ($hasdefaultvalues > 0) {
-                                $curQuestion['questionDropdown']['editDefault'] =
-                                    [
-                                        'id' => 'default_value_button',
-                                        'label' => gT("Edit default answers"),
-                                        'icon' => 'ri-grid-line',
-                                        'url' => Yii::App()->createUrl("questionAdministration/editdefaultvalues/surveyid/$iSurveyID/gid/$question->gid/qid/$question->qid")
-                                    ];
-                            }
                         }
+                        $curQuestion['questionDropdown']['editDefault'] =
+                            [
+                                'id' => 'default_value_button',
+                                'label' => gT("Edit default answers"),
+                                'icon' => 'ri-grid-line ',
+                                'url' => Yii::App()->createUrl("questionAdministration/editdefaultvalues/surveyid/$iSurveyID/gid/$question->gid/qid/$question->qid"),
+                                'active' => $configData['hasSurveyContentUpdatePermission'] && $hasdefaultvalues > 0 ? 1 : 0
+                            ];
 
                         if ($configData['hasSurveyContentExportPermission']) {
                             $curQuestion['questionDropdown']['export'] =
@@ -1611,9 +1609,15 @@ class SurveyAdministrationController extends LSBaseController
                 $this->redirect($this->createUrl("surveyAdministration/view/surveyid/{$iSurveyID}"));
             }
             if (Yii::app()->request->getPost('ok') == '') {
+                if (!empty(Yii::app()->session->get('sNewSurveyTableName'))) {
+                    Yii::app()->session->remove('sNewSurveyTableName');
+                }
+
+                Yii::app()->session->add('sNewSurveyTableName', Yii::app()->db->tablePrefix . "old_survey_{$iSurveyID}_{$date}");
                 $aData['surveyid'] = $iSurveyID;
                 $aData['date'] = $date;
                 $aData['dbprefix'] = Yii::app()->db->tablePrefix;
+                $aData['sNewSurveyTableName'] = Yii::app()->session->get('sNewSurveyTableName');
                 $aData['step1'] = true;
             } else {
                 //See if there is a tokens table for this survey
@@ -1655,7 +1659,7 @@ class SurveyAdministrationController extends LSBaseController
                 // IF there are any records in the saved_control table related to this survey, they have to be deleted
                 SavedControl::model()->deleteSomeRecords(array('sid' => $iSurveyID)); //Yii::app()->db->createCommand($query)->query();
                 $sOldSurveyTableName = Yii::app()->db->tablePrefix . "survey_{$iSurveyID}";
-                $sNewSurveyTableName = Yii::app()->db->tablePrefix . "old_survey_{$iSurveyID}_{$date}";
+                $sNewSurveyTableName = Yii::app()->session->get('sNewSurveyTableName');
                 $aData['sNewSurveyTableName'] = $sNewSurveyTableName;
 
                 $query = "SELECT id FROM " . Yii::app()->db->quoteTableName($sOldSurveyTableName) . " ORDER BY id desc";
@@ -1715,6 +1719,7 @@ class SurveyAdministrationController extends LSBaseController
 
                 //after deactivation redirect to survey overview and show message...
                 //$this->redirect(['surveyAdministration/view', 'surveyid' => $iSurveyID]);
+                Yii::app()->session->remove('sNewSurveyTableName');
             }
 
             $aData['sidemenu']['state'] = false;
@@ -2139,6 +2144,7 @@ class SurveyAdministrationController extends LSBaseController
     /**
      * Load ordering of question group screen.
      * questiongroup::organize()
+     * @TODO Reordering should be handled by existing function in new QuestionGroupService class
      *
      * @param int $iSurveyID Given Survey ID
      *
