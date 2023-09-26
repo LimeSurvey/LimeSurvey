@@ -90,21 +90,40 @@ class SubQuestionsService
      */
     private function storeSubquestions(Question $question, $subquestionsArray, $surveyActive = false)
     {
+        // To avoid duplicate code errors when moving codes
+        // - by typing instead of dragging, we add a temporary code prefix
+        // - which is later removed after the question is saved
+        $tempCodePrefix = 'X';
         $questionOrder = 0;
-        $subquestionIds = [];
+        $subquestions = [];
         foreach ($subquestionsArray as $subquestionArray) {
             foreach ($subquestionArray as $scaleId => $data) {
-                $subquestionId = $this->storeSubquestion(
+                $subquestion = $this->storeSubquestion(
                     $question,
                     $scaleId,
                     $data,
+                    $tempCodePrefix,
                     $questionOrder,
                     $surveyActive
                 );
-                $subquestionIds[] = $subquestionId;
+                $subquestions[] = $subquestion;
+            }
+        }
+        // Remove temporary code prefix
+        foreach ($subquestions as $subquestion) {
+            $subquestion->title = substr(
+                $subquestion->title,
+                strlen($tempCodePrefix)
+            );
+            if (!$subquestion->save()) {
+                array_push($errorQuestions, $subquestion);
+                continue;
             }
         }
         if (false == $surveyActive) {
+            $subquestionIds = array_map(function ($subquestion) {
+                return $subquestion->qid;
+            }, $subquestions);
             $question->deleteAllSubquestions($subquestionIds);
         }
     }
@@ -118,7 +137,7 @@ class SubQuestionsService
      * @param array $data
      * @param int &$questionOrder
      * @param boolean $surveyActive
-     * @return int
+     * @return Subquestion
      * @throws PersistErrorException
      * @throws BadRequestException
      */
@@ -126,6 +145,7 @@ class SubQuestionsService
         Question $question,
         $scaleId,
         $data,
+        $tempCodePrefix,
         &$questionOrder,
         $surveyActive = false
     ) {
@@ -133,14 +153,7 @@ class SubQuestionsService
         if (!isset($data['code'])) {
             throw new BadRequestException('Internal error: Missing mandatory field "code" for question');
         }
-        // If the subquestion with given code already exists, update it.
-        $subquestion = $this->modelQuestion->findByAttributes([
-            'sid' => $question->sid,
-            'parent_qid' => $question->qid,
-            'title' => $data['code'],
-            'scale_id' => $scaleId
-        ]);
-        if (!$subquestion && isset($data['oldcode'])) {
+        if (isset($data['oldcode'])) {
             // If the subquestion with given code does not exist
             // - but subquestion with old code exists, update it.
             $subquestion = $this->modelQuestion->findByAttributes([
@@ -157,7 +170,7 @@ class SubQuestionsService
                 $subquestion = DI::getContainer()->make(Question::class);
             }
         }
-        $subquestion->title = $data['code'];
+        $subquestion->title = $tempCodePrefix . $data['code'];
         $subquestion->sid = $question->sid;
         $subquestion->gid = $question->gid;
         $subquestion->parent_qid = $question->qid;
@@ -176,7 +189,7 @@ class SubQuestionsService
             $data['subquestionl10n']
         );
 
-        return $subquestion->qid;
+        return $subquestion;
     }
 
     /**
