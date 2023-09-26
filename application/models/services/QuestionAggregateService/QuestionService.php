@@ -342,15 +342,21 @@ class QuestionService
      * Returns a question if it exists within the survey.
      * @param int $sid
      * @param int $qid
-     * @return Question|null
+     * @return Question
      */
     public function getQuestionBySidAndQid(int $sid, int $qid)
     {
-        return $this->modelQuestion
+        $question = $this->modelQuestion
             ->findByAttributes([
                 'qid' => $qid,
                 'sid' => $sid
             ]);
+        if (!$question) {
+            throw new NotFoundException(
+                'Question not found'
+            );
+        }
+        return $question;
     }
 
     /**
