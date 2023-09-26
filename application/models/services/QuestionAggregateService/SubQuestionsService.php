@@ -116,8 +116,9 @@ class SubQuestionsService
                 strlen($tempCodePrefix)
             );
             if (!$subquestion->save()) {
-                array_push($errorQuestions, $subquestion);
-                continue;
+                throw new PersistErrorException(
+                    sprintf('Could not save subquestion %s', $subquestion->qid)
+                );
             }
         }
         if (false == $surveyActive) {
