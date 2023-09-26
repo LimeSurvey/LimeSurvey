@@ -82,10 +82,6 @@ class TestBaseClass extends TestCase
             throw new Exception(sprintf('Survey file %s not found', $surveyFile));
         }
 
-        // Reset the cache to prevent import from failing if there is a cached survey and it's active.
-        // When importing, activating, deleting and importing again (usual with automated tests),
-        // as using the same SID, it was picking up the cached (old) version of the survey
-        \Survey::model()->resetCache();
         $translateLinksFields = false;
         $newSurveyName = null;
         $result = \importSurveyFile(
@@ -98,7 +94,6 @@ class TestBaseClass extends TestCase
             if (!empty($result['error'])) {
                 throw new Exception(sprintf('Could not import survey %s: %s', $fileName, $result['error']));
             }
-            \Survey::model()->resetCache(); // Reset the cache so findByPk doesn't return a previously cached survey
             self::$testSurvey = \Survey::model()->findByPk($result['newsid']);
             self::$surveyId = $result['newsid'];
         } else {

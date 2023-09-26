@@ -58,7 +58,6 @@ class ShortUrlTest extends TestBaseClassWeb
         // Cleanup
         self::$testSurvey->delete();
         self::$testSurvey = null;
-        \Survey::model()->resetCache();
     }
 
     /**
@@ -107,7 +106,6 @@ class ShortUrlTest extends TestBaseClassWeb
         // Cleanup
         self::$testSurvey->delete();
         self::$testSurvey = null;
-        \Survey::model()->resetCache();
     }
 
     /**
@@ -158,7 +156,6 @@ class ShortUrlTest extends TestBaseClassWeb
         // Cleanup
         self::$testSurvey->delete();
         self::$testSurvey = null;
-        \Survey::model()->resetCache();
     }
 
     /**
@@ -208,7 +205,6 @@ class ShortUrlTest extends TestBaseClassWeb
         // Cleanup
         self::$testSurvey->delete();
         self::$testSurvey = null;
-        \Survey::model()->resetCache();
     }
 
     /**

@@ -149,15 +149,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
 {
     use PermissionTrait;
 
-    /**
-     * This is a static cache, it lasts only during the active request. If you ever need
-     * to clear it, like on activation of a survey when in the same request a row is read,
-     * saved and read again you can use resetCache() method.
-     *
-     * @var array $findByPkCache
-     */
-    protected $findByPkCache = array();
-    protected static $cacheSurvey = array();
+    protected static $cacheSurvey = [];
 
     // survey options
     public $oOptions;
@@ -334,11 +326,6 @@ class Survey extends LSActiveRecord implements PermissionInterface
             rmdirr(Yii::app()->getConfig('uploaddir') . '/surveys/' . $this->sid);
             // Delete all failed email notifications
             FailedEmail::model()->deleteAllByAttributes(array('surveyid' => $this->sid));
-        }
-
-        // Remove from cache
-        if (array_key_exists($this->sid, $this->findByPkCache)) {
-            unset($this->findByPkCache[$this->sid]);
         }
 
         return true;
@@ -1000,14 +987,6 @@ class Survey extends LSActiveRecord implements PermissionInterface
         }
         $model = parent::findByPk($pk, $condition, $params);
         return $model;
-    }
-
-    /**
-     * findByPk uses a cache to store a result. Use this method to force clearing that cache.
-     */
-    public function resetCache()
-    {
-        $this->findByPkCache = array();
     }
 
     /**

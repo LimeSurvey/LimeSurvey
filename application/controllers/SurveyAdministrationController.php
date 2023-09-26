@@ -1864,8 +1864,6 @@ class SurveyAdministrationController extends LSBaseController
             $survey->savetimings = Yii::app()->request->getPost('savetimings');
             $survey->save();
 
-            // Make sure the saved values will be picked up
-            Survey::model()->resetCache();
             $survey->setOptions();
         }
 

@@ -140,7 +140,6 @@ class TestHelper extends TestCase
         $survey->refurl = '';
         $survey->savetimings = '';
         $survey->save();
-        \Survey::model()->resetCache();  // Make sure the saved values will be picked up
 
         $surveyActivator = new SurveyActivator($survey);
         $result = $surveyActivator->activate();

@@ -170,43 +170,6 @@ class TemplateConfiguration extends TemplateConfig
     }
 
     /**
-     * This method is invoked before saving a record (after validation, if any).
-     * The default implementation raises the {@link onBeforeSave} event.
-     * You may override this method to do any preparation work for record saving.
-     * Use {@link isNewRecord} to determine whether the saving is
-     * for inserting or updating record.
-     * Make sure you call the parent implementation so that the event is raised properly.
-     * @return boolean whether the saving should be executed. Defaults to true.
-     */
-    protected function beforeSave()
-    {
-        $bIsValid = parent::beforeSave();
-        $aAttributes = $this->attributes;
-        unset($aAttributes["id"]);
-        $iEntriesCount = (int) $this->countByAttributes($aAttributes);
-        if ($iEntriesCount > 0) {
-            $bIsValid = false;
-        }
-        // this should only be triggered if there are false/duplicate entries, cleans up duplicates
-        if ($iEntriesCount > 1) {
-            $limit = 1000;
-            while ($iEntriesCount > 1) {
-                $iEntriesCount = $this->countByAttributes($aAttributes);
-                if ($iEntriesCount <= $limit && $iEntriesCount > 1) {
-                    --$iEntriesCount;
-                    $limit = $iEntriesCount;
-                }
-                $conditionsArray = [
-                    'limit' => $limit,
-                ];
-                $this->deleteAllByAttributes($aAttributes, $conditionsArray);
-            }
-        }
-
-        return $bIsValid;
-    }
-
-    /**
      * Gets an instance of a templateconfiguration by name
      *
      * @param string $sTemplateName
@@ -383,7 +346,7 @@ class TemplateConfiguration extends TemplateConfig
         $criteria->addCondition('template_name=:template_name');
         $criteria->params = array('sid' => $iSurveyId, 'template_name' => $sTemplateName);
 
-        $oTemplateConfigurationModel = TemplateConfiguration::model()->find($criteria);
+        $oTemplateConfigurationModel = TemplateConfiguration::model()->findAll($criteria);
 
         // TODO: Move to SurveyGroup creation, right now the 'lazy loading' approach is ok.
         if (!is_a($oTemplateConfigurationModel, 'TemplateConfiguration') && $sTemplateName != null) {
