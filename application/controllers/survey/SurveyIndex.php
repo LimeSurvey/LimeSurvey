@@ -333,7 +333,12 @@ class SurveyIndex extends CAction
         }
 
         //SET THE TEMPLATE DIRECTORY
-        $oTemplate  = Template::model()->getInstance('', $surveyid);
+        if ($thissurvey['template'] == 'inherit') {
+            /* Load default theme (Global settings -> Default theme) */
+            $oTemplate  = Template::model()->getInstance();
+        } else {
+            $oTemplate  = Template::model()->getInstance('', $surveyid);
+        }
         $timeadjust = Yii::app()->getConfig("timeadjust");
 
         //MAKE SURE SURVEY HASN'T EXPIRED
