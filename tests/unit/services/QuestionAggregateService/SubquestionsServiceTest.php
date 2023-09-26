@@ -171,7 +171,7 @@ class SubquestionsServiceTest extends TestBaseClass
     public function testSaveThrowsNotFoundExceptionOnSubquestionNotFound()
     {
         $this->expectException(
-            PersistErrorException::class
+            NotFoundException::class
         );
 
         // Model question is a required dependency

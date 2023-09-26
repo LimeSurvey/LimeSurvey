@@ -138,7 +138,7 @@ class SubQuestionsService
      * @param array $data
      * @param int &$questionOrder
      * @param boolean $surveyActive
-     * @return Subquestion
+     * @return Question
      * @throws PersistErrorException
      * @throws BadRequestException
      */
