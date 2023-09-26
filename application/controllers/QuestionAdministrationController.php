@@ -2855,19 +2855,15 @@ class QuestionAdministrationController extends LSBaseController
     {
         $questionOrder = 0;
         $errorQuestions = [];
-        $subquestionIds = [];
+        $subquestions = [];
+        // To avoid duplicate code errors when moving codes
+        // - by typing instead of dragging, we add a temporary code prefix
+        // - which is later removed after the question is saved
+        $tempCodePrefix = 'X';
         foreach ($subquestionsArray as $subquestionArray) {
             foreach ($subquestionArray as $scaleId => $data) {
-                // If the subquestion with given code already exists, update it.
-                $subquestion =  Question::model()->findByAttributes([
-                    'sid' => $question->sid,
-                    'parent_qid' => $question->qid,
-                    'title' => $data['code'],
-                    'scale_id' => $scaleId
-                ]);
-                if (!$subquestion && isset($data['oldcode'])) {
-                    // If the subquestion with given code does not exist
-                    // - but subquestion with old code exists, update it.
+                $subquestion = null;
+                if (isset($data['oldcode'])) {
                     $subquestion = Question::model()->findByAttributes([
                         'sid' => $question->sid,
                         'parent_qid' => $question->qid,
@@ -2878,7 +2874,6 @@ class QuestionAdministrationController extends LSBaseController
                 if (!$subquestion) {
                     $subquestion = new Question();
                 }
-
                 $subquestion->sid = $question->sid;
                 $subquestion->gid = $question->gid;
                 $subquestion->parent_qid = $question->qid;
@@ -2890,7 +2885,7 @@ class QuestionAdministrationController extends LSBaseController
                         'Internal error: Missing mandatory field code for question: ' . json_encode($data)
                     );
                 }
-                $subquestion->title = $data['code'];
+                $subquestion->title = $tempCodePrefix . $data['code'];
                 if ($scaleId === 0) {
                     $subquestion->relevance = $data['relevance'];
                 }
@@ -2900,7 +2895,7 @@ class QuestionAdministrationController extends LSBaseController
                     continue;
                 }
                 $subquestion->refresh();
-                $subquestionIds[] = $subquestion->qid;
+                $subquestions[] = $subquestion;
                 foreach ($data['subquestionl10n'] as $lang => $questionText) {
                     $l10n = QuestionL10n::model()->findByAttributes([
                         'qid' => $subquestion->qid,
@@ -2917,6 +2912,17 @@ class QuestionAdministrationController extends LSBaseController
                 }
             }
         }
+        // Remove temporary code prefix
+        foreach ($subquestions as $subquestion) {
+            $subquestion->title = substr($subquestion->title, strlen($tempCodePrefix));
+            if (!$subquestion->save()) {
+                array_push($errorQuestions, $subquestion);
+                continue;
+            }
+        }
+        $subquestionIds = array_map(function ($subquestion) {
+            return $subquestion->qid;
+        }, $subquestions);
         $question->deleteAllSubquestions($subquestionIds);
         foreach ($errorQuestions as $errorQuestion) {
             throw (new LSUserException(500, gT("Could not save subquestion")))
