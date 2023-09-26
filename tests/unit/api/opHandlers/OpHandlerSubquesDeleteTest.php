@@ -2,14 +2,20 @@
 
 namespace ls\tests\unit\api\opHandlers;
 
-use LimeSurvey\Libraries\Api\Command\V1\SurveyPatch\OpHandlerSubquestionDelete;
+use LimeSurvey\Api\Command\V1\SurveyPatch\OpHandlerSubquestionDelete;
 use LimeSurvey\Models\Services\QuestionAggregateService\SubQuestionsService;
 use LimeSurvey\ObjectPatch\Op\OpStandard;
 use ls\tests\TestBaseClass;
 
+/**
+ * @testdox OpHandlerSubquestionDelete
+ */
 class OpHandlerSubquesDeleteTest extends TestBaseClass
 {
 
+    /**
+     * @testdox Can handle a subquestion delete
+     */
     public function testCanHandleAnswer()
     {
         $this->initializePatcher('subquestion');
@@ -17,6 +23,9 @@ class OpHandlerSubquesDeleteTest extends TestBaseClass
         $this->assertTrue($opHandler->canHandle($this->op));
     }
 
+    /**
+     * @testdox Can not handle a question delete
+     */
     public function testCanNotHandleAnswer()
     {
         $this->initializePatcher('question');

@@ -4,7 +4,6 @@ namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
 use Answer;
 use QuestionAttribute;
-use LimeSurvey\Libraries\Api\Command\V1\SurveyPatch\OpHandlerSubquestionDelete;
 use LimeSurvey\ObjectPatch\{
     OpHandler\OpHandlerActiveRecordUpdate,
     Patcher

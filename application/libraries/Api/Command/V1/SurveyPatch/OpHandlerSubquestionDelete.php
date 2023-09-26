@@ -1,12 +1,13 @@
 <?php
 
-namespace LimeSurvey\Libraries\Api\Command\V1\SurveyPatch;
+namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
-use LimeSurvey\Api\Command\V1\SurveyPatch\OpHandlerSurveyTrait;
 use LimeSurvey\Models\Services\QuestionAggregateService\SubQuestionsService;
-use LimeSurvey\ObjectPatch\Op\OpInterface;
-use LimeSurvey\ObjectPatch\OpHandler\OpHandlerInterface;
-use LimeSurvey\ObjectPatch\OpType\OpTypeDelete;
+use LimeSurvey\ObjectPatch\{
+    Op\OpInterface,
+    OpHandler\OpHandlerInterface,
+    OpType\OpTypeDelete
+};
 
 class OpHandlerSubquestionDelete implements OpHandlerInterface
 {
