@@ -541,7 +541,7 @@ class User extends LSActiveRecord
                 'data-href' => $editUrl,
             ],
             'enabledCondition' => $this->canEdit()
-                                && $this->uid != App()->user->getId()
+                                && $this->uid != App()->user->getId() // To update self : must use personal settings
         ];
         $dropdownItems[] = [
             'title'            => gT('Template permissions'),
