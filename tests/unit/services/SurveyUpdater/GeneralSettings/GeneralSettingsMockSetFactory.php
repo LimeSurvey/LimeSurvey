@@ -9,6 +9,7 @@ use CHttpSession;
 use Mockery;
 use LimeSurvey\PluginManager\PluginManager;
 use LimeSurvey\Models\Services\SurveyUpdater\LanguageConsistency;
+use User;
 
 /**
  * General Settings Mock Factory
@@ -51,6 +52,14 @@ class GeneralSettingsMockSetFactory
         $mockSet->languageConsistency = ($init && isset($init->languageConsistency))
             ? $init->languageConsistency
             : $this->getMockLanguageConsistency();
+
+        $mockSet->user = ($init && isset($init->user))
+            ? $init->user
+            : $this->getMockUser();
+
+        $mockSet->modelUser = ($init && isset($init->modelUser))
+            ? $init->modelUser
+            : $this->getMockModelUser($mockSet->user);
 
         return $mockSet;
     }
@@ -124,5 +133,23 @@ class GeneralSettingsMockSetFactory
         $mockLanguageConsistency->shouldReceive('update')
             ->andReturn(null);
         return $mockLanguageConsistency;
+    }
+
+    private function getMockUser(): User
+    {
+        $mockUser = Mockery::mock(User::class)
+            ->makePartial();
+        return $mockUser;
+    }
+
+    private function getMockModelUser(User $user): User
+    {
+        $mockModelUser = Mockery::mock(User::class)
+            ->makePartial();
+        $mockModelUser->shouldReceive('findByPk')
+            ->andReturn($user);
+        $mockModelUser->shouldReceive('withListRight')
+            ->andReturn($mockModelUser);
+        return $mockModelUser;
     }
 }
