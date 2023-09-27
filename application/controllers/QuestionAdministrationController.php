@@ -159,7 +159,7 @@ class QuestionAdministrationController extends LSBaseController
      * @throws CException
      * @todo Move to service class
      */
-    public function renderFormAux(Question $question)
+    private function renderFormAux(Question $question)
     {
         Yii::app()->loadHelper("admin.htmleditor");
         Yii::app()->getClientScript()->registerPackage('ace');
@@ -260,6 +260,32 @@ class QuestionAdministrationController extends LSBaseController
         $this->render(
             'create',
             $viewData
+        );
+    }
+
+    public function actionAjaxLoadExtraOptions($questionId)
+    {
+        $questionId = (int) $questionId;
+        $question = Question::model()->findByPk($questionId);
+        if (empty($question)) {
+            throw new CHttpException(404, gT('Invalid question id'));
+        }
+
+        if (!Permission::model()->hasSurveyPermission($question->sid, 'surveycontent', 'update')) {
+            Yii::app()->user->setFlash('error', gT("Access denied"));
+            $this->redirect(Yii::app()->request->urlReferrer);
+        }
+        Yii::app()->loadHelper("admin.htmleditor");
+        PrepareEditorScript(false, $this);
+        App()->session['FileManagerContext'] = "edit:survey:{$question->sid}";
+        initKcfinder();
+
+        $this->renderPartial(
+            'extraOptions',
+            [
+                'question' => $question,
+                'survey' => $question->survey,
+            ]
         );
     }
 
