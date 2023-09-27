@@ -28,7 +28,6 @@ class CLSGridView extends TbGridView
     public function init()
     {
         parent::init();
-        $this->registerGridviewScripts();
 
         $this->pager = ['class' => 'application.extensions.admin.grid.CLSYiiPager'];
         $this->htmlOptions['class'] = 'grid-view-ls';
@@ -44,6 +43,7 @@ class CLSGridView extends TbGridView
                 $this->itemsCssClass = $classes;
             }
         }
+        $this->registerGridviewScripts();
     }
 
     /**
@@ -132,6 +132,8 @@ class CLSGridView extends TbGridView
             }
         }
 
+        if ($this->afterAjaxUpdate)
+            $options['afterAjaxUpdate'] = new CJavaScriptExpression($this->afterAjaxUpdate);
         $options = CJavaScript::encode($options);
 
         $cs = Yii::app()->getClientScript();
