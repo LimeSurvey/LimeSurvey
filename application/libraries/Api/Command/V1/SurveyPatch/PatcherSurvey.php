@@ -61,7 +61,7 @@ class PatcherSurvey extends Patcher
             OpHandlerAnswerDelete::class
         ));
         $this->addOpHandler($diContainer->get(
-            OpHandlerSubquestionUpdate::class
+            OpHandlerSubQuestion::class
         ));
     }
 

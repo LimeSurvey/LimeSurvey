@@ -12,15 +12,20 @@ use LimeSurvey\Models\Services\{
     Exception\PersistErrorException,
     QuestionAggregateService,
     QuestionAggregateService\QuestionService,
-    QuestionAggregateService\SubQuestionsService};
-use LimeSurvey\ObjectPatch\{
-    Op\OpInterface,
+    QuestionAggregateService\SubQuestionsService
+};
+use LimeSurvey\ObjectPatch\{Op\OpInterface,
     OpHandler\OpHandlerException,
     OpHandler\OpHandlerInterface,
+    OpType\OpTypeCreate,
     OpType\OpTypeUpdate
 };
 
-class OpHandlerSubquestionUpdate implements OpHandlerInterface
+/**
+ * Class OpHandlerSubQuestion can handle create and update
+ * of subquestions which belong to a single question.
+ */
+class OpHandlerSubQuestion implements OpHandlerInterface
 {
     use OpHandlerSurveyTrait;
     use OpHandlerQuestionTrait;
@@ -53,13 +58,19 @@ class OpHandlerSubquestionUpdate implements OpHandlerInterface
      */
     public function canHandle(OpInterface $op): bool
     {
-        return $op->getType()->getId() === OpTypeUpdate::ID
+        return (
+                $op->getType()->getId() === OpTypeUpdate::ID
+                || $op->getType()->getId() === OpTypeCreate::ID
+            )
             && $op->getEntityType() === 'subquestion';
     }
 
     /**
-     * Handle subquestion update operation.
+     * Handle subquestion create or update operation.
      * Attention: subquestions not present in the patch will be deleted.
+     * For a proper update the props should contain "oldCode"
+     * additional to the "title". If "oldCode" is not provided,
+     * the SubQuestionService will do a create operation.
      * Expects a patch structure like this:
      * {
      *     "patch": [{
@@ -69,6 +80,7 @@ class OpHandlerSubquestionUpdate implements OpHandlerInterface
      *             "props": {
      *                 "0": {
      *                     "qid": 728,
+     *                     "oldCode": "SQ001",
      *                     "title": "SQ001new",
      *                     "l10ns": {
      *                         "de": {
@@ -83,6 +95,7 @@ class OpHandlerSubquestionUpdate implements OpHandlerInterface
      *                 },
      *                 "1": {
      *                     "qid": 729,
+     *                     "oldCode": "SQ002",
      *                     "title": "SQ002new",
      *                     "l10ns": {
      *                         "de": {

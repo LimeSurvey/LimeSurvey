@@ -2,22 +2,18 @@
 
 namespace ls\tests\unit\api\opHandlers;
 
-use LimeSurvey\Api\Command\V1\SurveyPatch\OpHandlerQuestionGroupL10n;
-use LimeSurvey\Api\Command\V1\SurveyPatch\OpHandlerSubquestionUpdate;
-use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestionGroupL10ns;
+use LimeSurvey\Api\Command\V1\SurveyPatch\OpHandlerSubQuestion;
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestionL10ns;
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputSubQuestion;
 use LimeSurvey\Models\Services\QuestionAggregateService;
 use LimeSurvey\ObjectPatch\{
     Op\OpInterface,
     Op\OpStandard,
-    OpHandler\OpHandlerException
 };
 use ls\tests\TestBaseClass;
-use ls\tests\unit\services\QuestionGroup\QuestionGroupMockSetFactory;
 
 /**
- * @testdox OpHandlerSubquestionUpdate
+ * @testdox OpHandlerSubQuestion
  */
 class OpHandlerSubquestionUpdateTest extends TestBaseClass
 {
@@ -37,13 +33,27 @@ class OpHandlerSubquestionUpdateTest extends TestBaseClass
     }
 
     /**
-     * @testdox can not handle a subquestion create
+     * @testdox can handle a subquestion create
      */
-    public function testOpSubquestionUpdateCanNotHandle()
+    public function testOpSubquestionCreateCanHandle()
     {
         $this->initializePatcher(
             $this->getDefaultProps(),
             'create'
+        );
+
+        $opHandler = $this->getOpHandler();
+        self::assertFalse($opHandler->canHandle($this->op));
+    }
+
+    /**
+     * @testdox can not handle a subquestion delete
+     */
+    public function testOpSubquestionCanNotHandle()
+    {
+        $this->initializePatcher(
+            $this->getDefaultProps(),
+            'delete'
         );
 
         $opHandler = $this->getOpHandler();
@@ -70,7 +80,8 @@ class OpHandlerSubquestionUpdateTest extends TestBaseClass
         return [
             '0' => [
                 'qid' => 126,
-                'title' => 'SQ001',
+                'oldCode' => 'SQ001',
+                'title' => 'SQ001new',
                 'l10ns' => [
                     'en' => [
                         'question' => 'sub 1'
@@ -84,7 +95,7 @@ class OpHandlerSubquestionUpdateTest extends TestBaseClass
     }
 
     /**
-     * @return OpHandlerSubquestionUpdate
+     * @return OpHandlerSubQuestion
      */
     private function getOpHandler()
     {
@@ -98,7 +109,7 @@ class OpHandlerSubquestionUpdateTest extends TestBaseClass
             QuestionAggregateService\QuestionService::class
         )->makePartial();
 
-        return new OpHandlerSubquestionUpdate(
+        return new OpHandlerSubQuestion(
             $mockQuestionAggregateService,
             $mockSubQuestionsService,
             $mockQuestionService,
