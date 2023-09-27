@@ -43,7 +43,7 @@ class OpHandlerSubquestionUpdateTest extends TestBaseClass
         );
 
         $opHandler = $this->getOpHandler();
-        self::assertFalse($opHandler->canHandle($this->op));
+        self::assertTrue($opHandler->canHandle($this->op));
     }
 
     /**
