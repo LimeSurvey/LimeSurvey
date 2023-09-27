@@ -540,13 +540,8 @@ class User extends LSActiveRecord
             'linkAttributes'   => [
                 'data-href' => $editUrl,
             ],
-            'enabledCondition' =>
-                ($permission_superadmin_read
-                    && $this->uid != 1
-                )
-                || (!$permission_superadmin_read
-                    && $this->canEdit(App()->session['loginID'])
-                )
+            'enabledCondition' => $this->canEdit()
+                                && $this->uid != App()->user->getId()
         ];
         $dropdownItems[] = [
             'title'            => gT('Template permissions'),
@@ -972,15 +967,12 @@ class User extends LSActiveRecord
     /**
      * Returns true if logged in user with id $loginId can edit this user
      *
-     * @param int $loginId
      * @return bool
      */
-    public function canEdit($loginId)
+    public function canEdit()
     {
-        return
-            Permission::model()->hasGlobalPermission('superadmin', 'read')
-            || $this->uid == $loginId
-            || (Permission::model()->hasGlobalPermission('users', 'update') && $this->parent_id == $loginId);
+        $userManager = new UserManager(App()->getUser(), $this);
+        return $userManager->canEdit();
     }
 
     /**
