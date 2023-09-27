@@ -19,7 +19,7 @@
         <group>Single choice questions</group>
         <subquestions>0</subquestions>
         <answerscales>0</answerscales>
-        <hasdefaultvalues>0</hasdefaultvalues>
+        <hasdefaultvalues>1</hasdefaultvalues>
         <assessable>0</assessable>
         <class>choice-5-pt-radio</class>
     </metadata>
