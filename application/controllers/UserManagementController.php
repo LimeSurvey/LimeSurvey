@@ -1310,21 +1310,18 @@ class UserManagementController extends LSBaseController
     /**
      * Update admin-user
      *
-     * REFACTORED (in UserManagementController)
-     *
      * @param array $aUser array with user details
      * @return object user - updated user object
      * @throws CException
      */
     public function updateAdminUser(array $aUser): User
     {
-        $oUser = User::model()->findByPk($aUser['uid']);
+        $oUser = $this->loadModel($aUser['uid']);
         // Abort if logged in user has no access to this user.
         // Using same logic as User::getButtons().
-        $userManager = new UserManager(Yii::app()->user, $oUser);
         if (
-            !$userManager->canEdit()
-            || $aUser['uid'] == Yii::app()->user->id // To update self : must use personal settings
+            !$oUser->canEdit()
+            || $aUser['uid'] == App()->user->id // To update self : must use personal settings
         ) {
             throw new CHttpException(403, gT("You do not have permission to access this page."));
         }

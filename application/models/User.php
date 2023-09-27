@@ -965,14 +965,39 @@ class User extends LSActiveRecord
     }
 
     /**
-     * Returns true if logged in user with id $loginId can edit this user
+     * Return true if user with id $managerId can edit this user
+     * @param int|null $managerId default to current user
      *
      * @return bool
      */
-    public function canEdit()
+    public function canEdit($managerId = null)
     {
-        $userManager = new UserManager(App()->getUser(), $this);
-        return $userManager->canEdit();
+        if (is_null($managerId)) {
+            Permission::model()->getUserId();
+        }
+        /* user can update himself */
+        if ($managerId == $this->uid) {
+            return true;
+        }
+        /* forcedsuperamdin (user #1) can always update all */
+        if (Permission::isForcedSuperAdmin($managerId)) {
+            return true;
+        }
+        /* forcedsuperamdin can not be update (except by another forcedsuperamdin done before) */
+        if (Permission::isForcedSuperAdmin($this->uid)) {
+            return false;
+        }
+        /* If target user is superamdin : managingUser must be allowed to create superadmin */
+        if (Permission::model()->hasGlobalPermission('superadmin', 'read', $this->uid)) {
+            return Permission::model()->hasGlobalPermission('superadmin', 'create', $managerId);
+        }
+        /* superamin can update all othert user */
+        if (Permission::model()->hasGlobalPermission('superadmin', 'read', $managerId)) {
+            return true;
+        }
+        /* Finally : simple user can update only childs users */
+        return Permission::model()->hasGlobalPermission('users', 'update', $managerId)
+                && $this->parent_id == $managerId;
     }
 
     /**

@@ -77,29 +77,7 @@ class UserManager
         if (empty($this->managingUser) || empty($this->targetUser)) {
             return false;
         }
-        /* user can update himself */
-        if ($this->managingUser == $this->targetUser) {
-            return true;
-        }
-        /* forcedsuperamdin (user #1) can always update all */
-        if (Permission::isForcedSuperAdmin($this->managingUser->id)) {
-            return true;
-        }
-        /* forcedsuperamdin can not be update (except by another forcedsuperamdin done before) */
-        if (Permission::isForcedSuperAdmin($this->targetUser->uid)) {
-            return false;
-        }
-        /* If target user is superamdin : managingUser must be allowed to create superadmin */
-        if (Permission::model()->hasGlobalPermission('superadmin', 'read', $this->targetUser->uid)) {
-            return Permission::model()->hasGlobalPermission('superadmin', 'create', $this->managingUser->id);
-        }
-        /* superamin can update all othert user */
-        if (Permission::model()->hasGlobalPermission('superadmin', 'read', $this->managingUser->id)) {
-            return true;
-        }
-        /* Finally : simple user can update only childs users */
-        return Permission::model()->hasGlobalPermission('users', 'update', $this->managingUser->id)
-                && $this->targetUser->parent_id == $this->managingUser->id;
+        return $this->targetUser->canEdit($this->managingUser->id);
     }
 
     /**
