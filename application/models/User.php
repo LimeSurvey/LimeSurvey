@@ -987,11 +987,12 @@ class User extends LSActiveRecord
         if (Permission::isForcedSuperAdmin($this->uid)) {
             return false;
         }
-        /* If target user is superamdin : managingUser must be allowed to create superadmin */
+        /* If target user is superamdin : managingUser must be allowed to create superadmin and be parent */
         if (Permission::model()->hasGlobalPermission('superadmin', 'read', $this->uid)) {
-            return Permission::model()->hasGlobalPermission('superadmin', 'create', $managerId);
+            return Permission::model()->hasGlobalPermission('superadmin', 'create', $managerId)
+                && $this->parent_id == $managerId;
         }
-        /* superamin can update all othert user */
+        /* superamin can update all other user */
         if (Permission::model()->hasGlobalPermission('superadmin', 'read', $managerId)) {
             return true;
         }
