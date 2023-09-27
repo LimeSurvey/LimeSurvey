@@ -2,11 +2,13 @@
 
 namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
-use LimeSurvey\ObjectPatch\OpHandler\OpHandlerActiveRecordUpdate;
-use LimeSurvey\ObjectPatch\Patcher;
 use Answer;
+use LimeSurvey\ObjectPatch\{
+    OpHandler\OpHandlerActiveRecordUpdate,
+    Patcher
+};
 use LimeSurvey\Api\Command\V1\Transformer\Input\{
-    TransformerInputAnswer,
+    TransformerInputAnswer
 };
 use DI\FactoryInterface;
 use Psr\Container\ContainerInterface;
@@ -51,6 +53,12 @@ class PatcherSurvey extends Patcher
         $this->addOpHandlerQuestionAnswer($diFactory, $diContainer);
         $this->addOpHandler($diContainer->get(
             OpHandlerQuestionGroupReorder::class
+        ));
+        $this->addOpHandler($diContainer->get(
+            OpHandlerSubquestionDelete::class
+        ));
+        $this->addOpHandler($diContainer->get(
+            OpHandlerAnswerDelete::class
         ));
     }
 

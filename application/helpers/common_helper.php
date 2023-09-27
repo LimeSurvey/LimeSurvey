@@ -665,77 +665,36 @@ function getGroupListLang($gid, $language, $surveyid)
  */
 function getUserList($outputformat = 'fullinfoarray')
 {
-    if (!empty(Yii::app()->session['loginID'])) {
-        $myuid = sanitize_int(Yii::app()->session['loginID']);
-    }
-    $usercontrolSameGroupPolicy = App()->getConfig('usercontrolSameGroupPolicy');
-    if (
-        !Permission::model()->hasGlobalPermission('superadmin', 'read') && isset($usercontrolSameGroupPolicy) &&
-        $usercontrolSameGroupPolicy == true
-    ) {
-        if (isset($myuid)) {
-            $sDatabaseType = Yii::app()->db->getDriverName();
-            if ($sDatabaseType == 'mssql' || $sDatabaseType == "sqlsrv" || $sDatabaseType == "dblib") {
-                $sSelectFields = 'users_name,uid,email,full_name,parent_id,CAST(password as varchar) as password';
-            } else {
-                $sSelectFields = 'users_name,uid,email,full_name,parent_id,password';
-            }
-
-            // List users from same group as me + all my childs
-            // a subselect is used here because MSSQL does not like to group by text
-            // also Postgres does like this one better
-            $uquery = " SELECT {$sSelectFields} from {{users}} where uid in (
-                SELECT uid from {{user_in_groups}} where ugid in (
-                    SELECT ugid from {{user_in_groups}} where uid={$myuid}
-                    )
-                )
-            UNION
-            SELECT {$sSelectFields} from {{users}} v where v.parent_id={$myuid}
-            UNION
-            SELECT {$sSelectFields} from {{users}} v where uid={$myuid}";
-        } else {
-            return array(); // Or die maybe
-        }
-    } else {
-        $uquery = "SELECT * FROM {{users}} ORDER BY uid";
-    }
-
-    $uresult = Yii::app()->db->createCommand($uquery)->query()->readAll(); //Checked
-
-    if (count($uresult) == 0 && !empty($myuid)) {
-//user is not in a group and usercontrolSameGroupPolicy is activated - at least show their own userinfo
-        $uquery = "SELECT u.* FROM {{users}} AS u WHERE u.uid=" . $myuid;
-        $uresult = Yii::app()->db->createCommand($uquery)->query()->readAll(); //Checked
-    }
+    $users = User::model()->withListRight()->findAll();
 
     $userlist = array();
     $userlist[0] = "Reserved for logged in user";
-    foreach ($uresult as $srow) {
+    foreach ($users as $user) {
         if ($outputformat != 'onlyuidarray') {
-            if ($srow['uid'] != Yii::app()->session['loginID']) {
+            if ($user->uid != Yii::app()->session['loginID']) {
                 $userlist[] = array(
-                    "user" => $srow['users_name'],
-                    "uid" => $srow['uid'],
-                    "email" => $srow['email'],
-                    "password" => $srow['password'],
-                    "full_name" => $srow['full_name'],
-                    "parent_id" => $srow['parent_id']
+                    "user" => $user->users_name,
+                    "uid" => $user->uid,
+                    "email" => $user->email,
+                    "password" => $user->password,
+                    "full_name" => $user->full_name,
+                    "parent_id" => $user->parent_id
                 );
             } else {
                 $userlist[0] = array(
-                    "user" => $srow['users_name'],
-                    "uid" => $srow['uid'],
-                    "email" => $srow['email'],
-                    "password" => $srow['password'],
-                    "full_name" => $srow['full_name'],
-                    "parent_id" => $srow['parent_id']
+                    "user" => $user->users_name,
+                    "uid" => $user->uid,
+                    "email" => $user->email,
+                    "password" => $user->password,
+                    "full_name" => $user->full_name,
+                    "parent_id" => $user->parent_id
                 );
             }
         } else {
-            if ($srow['uid'] != Yii::app()->session['loginID']) {
-                $userlist[] = $srow['uid'];
+            if ($user->uid != Yii::app()->session['loginID']) {
+                $userlist[] = $user->uid;
             } else {
-                $userlist[0] = $srow['uid'];
+                $userlist[0] = $user->uid;
             }
         }
     }
