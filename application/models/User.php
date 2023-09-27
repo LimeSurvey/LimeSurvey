@@ -982,4 +982,48 @@ class User extends LSActiveRecord
             || $this->uid == $loginId
             || (Permission::model()->hasGlobalPermission('users', 'update') && $this->parent_id == $loginId);
     }
+
+    /**
+     * Get criteria from Permission
+     * @param $userId for this user id , if not set : get current one
+     * @todo : move to PermissionInterface
+     * @todo : create an event
+     * @return CDbCriteria
+     */
+    protected static function getPermissionCriteria($userId = null)
+    {
+        if (empty($userId)) {
+            $userId = Yii::app()->user->id;
+        }
+
+        $criteriaPerm = new CDbCriteria();
+        $userControlSameGroupPolicy = Yii::app()->getConfig('usercontrolSameGroupPolicy');
+        if (
+            !Permission::model()->hasGlobalPermission('superadmin', 'read')
+            && !empty($userControlSameGroupPolicy)
+        ) {
+            $condition = "uid in (SELECT uid from {{user_in_groups}} where ugid in (
+                SELECT ugid from {{user_in_groups}} where uid=:permCriteriaUserId
+            ))";
+            $condition .= " OR t.parent_id=:permCriteriaUserId";
+            $condition .= " OR t.uid=:permCriteriaUserId";
+            $criteriaPerm->addCondition($condition);
+            $criteriaPerm->params = array(':permCriteriaUserId' => $userId);
+        }
+
+        /* Place for a new event */
+        return $criteriaPerm;
+    }
+
+    /**
+     * Uses for scope in list and search
+     * This don't mean user are allowed to read all information or any other Permission
+     * @param integer $userId
+     * @return self
+     */
+    public function withListRight($userId = null)
+    {
+        $this->getDbCriteria()->mergeWith(self::getPermissionCriteria($userId));
+        return $this;
+    }
 }
