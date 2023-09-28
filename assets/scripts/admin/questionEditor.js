@@ -1876,6 +1876,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
               $('#extra-options-container').replaceWith( response );
               $('.btnaddsubquestion').off('click.subquestions').on('click.subquestions', addSubquestionInput);
               $('.btndelsubquestion').off('click.subquestions').on('click.subquestions', deleteSubquestionInput);
+              makeAnswersTableSortable();
               // Hide loading gif.
               $('#ls-loading').hide();
             },

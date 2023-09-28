@@ -2883,17 +2883,9 @@ class QuestionAdministrationController extends LSBaseController
         $questionOrder = 0;
         $errorQuestions = [];
         $subquestions = [];
-        foreach ($subquestionsArray as $subquestionArray) {
+        foreach ($subquestionsArray as $subquestionId => $subquestionArray) {
             foreach ($subquestionArray as $scaleId => $data) {
-                $subquestion = null;
-                if (isset($data['oldcode'])) {
-                    $subquestion = Question::model()->findByAttributes([
-                        'sid' => $question->sid,
-                        'parent_qid' => $question->qid,
-                        'title' => $data['oldcode'],
-                        'scale_id' => $scaleId
-                    ]);
-                }
+                $subquestion = Question::model()->findByPk($subquestionId);
                 if (!$subquestion) {
                     $subquestion = new Question();
                 }
@@ -2956,19 +2948,31 @@ class QuestionAdministrationController extends LSBaseController
     private function validateSubquestionCodes($subquestionsArray)
     {
         // ensure uniquness of codes
-        foreach ($subquestionsArray as $subquestionArray) {
-            $codes = [];
-            foreach ($subquestionArray as $data) {
-                if (in_array($data['code'], $codes)) {
-                    throw (new LSUserException(
+        $codes = [];
+        foreach ($subquestionsArray as $subquestionId => $subquestionArray) {
+            if (!isset($codes[$subquestionId])) {
+                $codes[$subquestionId] = [];
+            }
+            foreach ($subquestionArray as $scaleId => $data) {
+                if (!isset($codes[$scaleId])) {
+                    $codes[$subquestionId][$scaleId] = [];
+                }
+                if (
+                    in_array(
+                        $data['code'],
+                        $codes[$subquestionId][$scaleId]
+                    )
+                ) {
+                    throw (
+                        new LSUserException(
                         500,
                         gT('Could not save subquestion')
                         )
-                    )->setDetailedErrorsFromModel(
-                        'Subquestion codes must be unique.'
+                    )->setDetailedErrors(
+                        ['Subquestion codes must be unique.']
                     );
                 }
-                $codes[] = $data['code'];
+                $codes[$subquestionId][$scaleId][] = $data['code'];
             }
         }
     }
