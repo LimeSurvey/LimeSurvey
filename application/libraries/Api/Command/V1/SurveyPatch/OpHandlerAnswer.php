@@ -7,15 +7,14 @@ use LimeSurvey\Api\Command\V1\Transformer\{
     Input\TransformerInputAnswerL10ns,
 };
 use LimeSurvey\Models\Services\QuestionAggregateService\QuestionService;
-use LimeSurvey\ObjectPatch\{
-    Op\OpInterface,
+use LimeSurvey\ObjectPatch\{Op\OpInterface,
     OpType\OpTypeCreate,
     OpHandler\OpHandlerException,
-    OpHandler\OpHandlerInterface
-};
+    OpHandler\OpHandlerInterface,
+    OpType\OpTypeUpdate};
 use LimeSurvey\Models\Services\QuestionAggregateService\AnswersService;
 
-class OpHandlerAnswerCreate implements OpHandlerInterface
+class OpHandlerAnswer implements OpHandlerInterface
 {
     use OpHandlerSurveyTrait;
     use OpHandlerQuestionTrait;
@@ -42,9 +41,10 @@ class OpHandlerAnswerCreate implements OpHandlerInterface
     public function canHandle(OpInterface $op): bool
     {
         $isCreateOperation = $op->getType()->getId() === OpTypeCreate::ID;
+        $isUpdateOperation = $op->getType()->getId() === OpTypeUpdate::ID;
         $isAnswerEntity = $op->getEntityType() === $this->entity;
 
-        return $isCreateOperation && $isAnswerEntity;
+        return ($isCreateOperation || $isUpdateOperation) && $isAnswerEntity;
     }
 
     /**
@@ -54,10 +54,11 @@ class OpHandlerAnswerCreate implements OpHandlerInterface
      * the patch.
      * Attention: Currently all answers not provided in the patch
      *            will be deleted by the service.
+     * Update and create is basically the same.
      * {
      *     "patch": [{
      *             "entity": "answer",
-     *             "op": "create",
+     *             "op": "create", // "update"
      *             "id": "726", // qid(!)
      *             "props": {
      *                 "0": {

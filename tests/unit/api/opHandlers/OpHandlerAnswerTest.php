@@ -2,7 +2,7 @@
 
 namespace ls\tests\unit\api\opHandlers;
 
-use LimeSurvey\Api\Command\V1\SurveyPatch\OpHandlerAnswerCreate;
+use LimeSurvey\Api\Command\V1\SurveyPatch\OpHandlerAnswer;
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputAnswer;
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputAnswerL10ns;
 use LimeSurvey\Models\Services\QuestionAggregateService\AnswersService;
@@ -12,16 +12,16 @@ use LimeSurvey\ObjectPatch\Op\OpStandard;
 use ls\tests\TestBaseClass;
 
 /**
- * @testdox OpHandlerAnswerCreate
+ * @testdox OpHandlerAnswer
  */
-class OpHandlerAnswerCreateTest extends TestBaseClass
+class OpHandlerAnswerTest extends TestBaseClass
 {
     protected OpInterface $op;
 
     /**
-     * @testdox can handle correct patch
+     * @testdox can handle create
      */
-    public function testAnswerCreateCanHandle()
+    public function testAnswerCanHandle()
     {
         $this->initializePatcher(
             $this->getCorrectProps()
@@ -32,13 +32,27 @@ class OpHandlerAnswerCreateTest extends TestBaseClass
     }
 
     /**
-     * @testdox can not handle incorrect patch
+     * @testdox can handle update
      */
-    public function testAnswerCreateCanNotHandle()
+    public function testAnswerCanHandleUpdate()
     {
         $this->initializePatcher(
             $this->getCorrectProps(),
             'update'
+        );
+
+        $opHandler = $this->getOpHandler();
+        self::assertTrue($opHandler->canHandle($this->op));
+    }
+
+    /**
+     * @testdox can not handle delete
+     */
+    public function testAnswerCanNotHandle()
+    {
+        $this->initializePatcher(
+            $this->getCorrectProps(),
+            'delete'
         );
 
         $opHandler = $this->getOpHandler();
@@ -48,7 +62,7 @@ class OpHandlerAnswerCreateTest extends TestBaseClass
     /**
      * @testdox scale_id is used as second index of produced array
      */
-    public function testAnswerCreateDataStructure()
+    public function testAnswerDataStructure()
     {
         $this->initializePatcher(
             $this->getCorrectProps()
@@ -124,9 +138,9 @@ class OpHandlerAnswerCreateTest extends TestBaseClass
     }
 
     /**
-     * @return OpHandlerAnswerCreate
+     * @return OpHandlerAnswer
      */
-    private function getOpHandler(): OpHandlerAnswerCreate
+    private function getOpHandler(): OpHandlerAnswer
     {
         $mockAnswersService = \Mockery::mock(
             AnswersService::class
@@ -134,7 +148,7 @@ class OpHandlerAnswerCreateTest extends TestBaseClass
         $mockQuestionService = \Mockery::mock(
             QuestionService::class
         )->makePartial();
-        return new OpHandlerAnswerCreate(
+        return new OpHandlerAnswer(
             new TransformerInputAnswer(),
             new TransformerInputAnswerL10ns(),
             $mockAnswersService,
