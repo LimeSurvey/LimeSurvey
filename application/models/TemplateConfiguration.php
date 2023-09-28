@@ -336,7 +336,6 @@ class TemplateConfiguration extends TemplateConfig
     public static function checkAndcreateSurveyConfig($iSurveyId)
     {
         //if a template name is given also check against that
-
         $oSurvey = Survey::model()->findByPk($iSurveyId);
         $sTemplateName  = $oSurvey->oOptions->template;
         $iSurveyGroupId = $oSurvey->gsid;
@@ -346,7 +345,7 @@ class TemplateConfiguration extends TemplateConfig
         $criteria->addCondition('template_name=:template_name');
         $criteria->params = array('sid' => $iSurveyId, 'template_name' => $sTemplateName);
 
-        $oTemplateConfigurationModel = TemplateConfiguration::model()->findAll($criteria);
+        $oTemplateConfigurationModel = TemplateConfiguration::model()->find($criteria);
 
         // TODO: Move to SurveyGroup creation, right now the 'lazy loading' approach is ok.
         if (!is_a($oTemplateConfigurationModel, 'TemplateConfiguration') && $sTemplateName != null) {

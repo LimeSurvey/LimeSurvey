@@ -149,7 +149,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
 {
     use PermissionTrait;
 
-    protected static $cacheSurvey = [];
+    protected static array $findByPkCache = [];
 
     // survey options
     public $oOptions;
@@ -328,6 +328,10 @@ class Survey extends LSActiveRecord implements PermissionInterface
             FailedEmail::model()->deleteAllByAttributes(array('surveyid' => $this->sid));
         }
 
+        // Remove from cache
+        if (array_key_exists($this->sid, self::$findByPkCache)) {
+            unset(self::$findByPkCache[$this->sid]);
+        }
         return true;
     }
 
@@ -975,18 +979,26 @@ class Survey extends LSActiveRecord implements PermissionInterface
     {
         /** @var self $model */
         if (empty($condition) && empty($params)) {
-            if (array_key_exists($pk, self::$cacheSurvey)) {
-                return self::$cacheSurvey[$pk];
+            if (array_key_exists($pk, self::$findByPkCache)) {
+                return self::$findByPkCache[$pk];
             } else {
                 $model = parent::findByPk($pk, $condition, $params);
                 if (!is_null($model)) {
-                    self::$cacheSurvey[$pk] = $model;
+                    self::$findByPkCache[$pk] = $model;
                 }
                 return $model;
             }
         }
         $model = parent::findByPk($pk, $condition, $params);
         return $model;
+    }
+
+    /**
+     * cacheSurvey uses a cache to store a result. Use this method to force clearing that cache.
+     */
+    public function resetCache(): void
+    {
+        self::$findByPkCache = [];
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace ls\tests;
 
+use Survey;
 use Yii;
 use Exception;
 use Facebook\WebDriver\Exception\WebDriverException;
@@ -140,6 +141,8 @@ class TestHelper extends TestCase
         $survey->refurl = '';
         $survey->savetimings = '';
         $survey->save();
+        // Make sure the saved values will be picked up
+        Survey::model()->resetCache();
 
         $surveyActivator = new SurveyActivator($survey);
         $result = $surveyActivator->activate();
