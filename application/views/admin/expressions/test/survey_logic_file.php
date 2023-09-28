@@ -3,8 +3,8 @@
  * Important functionailites are set in core now, this is just to render the output
  */
 
- $gid = isset($gid) ? $gid : NULL;
- $qid = isset($qid) ? $qid : NULL;
+ $gid = $gid ?? NULL;
+ $qid = $qid ?? NULL;
 
 // DO NOT REMOVE This is for automated testing to validate we see that page
 echo viewHelper::getViewTestTag('surveyLogicFile');

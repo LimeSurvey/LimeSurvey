@@ -27,9 +27,9 @@ echo viewHelper::getViewTestTag('surveyTexts');
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-12 col-lg-6">
-                <!-- Survey data policy checkbox label -->
+                <!-- Privacy policy checkbox label -->
                 <div class="form-group">
-                    <label class="control-label"><?php eT("Survey data policy checkbox label:"); ?></label>
+                    <label class="control-label"><?php eT("Privacy policy checkbox label:"); ?></label>
                     <div class="">
                         <?php echo CHtml::textField("dataseclabel_{$aSurveyLanguageSettings['surveyls_language']}",$aSurveyLanguageSettings['surveyls_policy_notice_label'],array('class'=>'form-control','size'=>"80",'id'=>"dataseclabel_{$aSurveyLanguageSettings['surveyls_language']}")); ?>
                     </div>
@@ -37,31 +37,31 @@ echo viewHelper::getViewTestTag('surveyTexts');
             </div>
             <div class="col-sm-12 col-lg-6">
                 <div class="well">
-                    <?=gT('If you want to specify a link to the survey data policy, set "Show survey policy text with mandatory checkbox" to "Collapsible text" and use the placeholders {STARTPOLICYLINK} and {ENDPOLICYLINK} in the "Survey data policy checkbox label" field to define the link that opens the policy popup. If there is no placeholder given, there will be an appendix.')?>
+                    <?=gT('If you want to specify a link to the privacy policy, set "Show privacy policy text with mandatory checkbox" to "Collapsible text" and use the placeholders {STARTPOLICYLINK} and {ENDPOLICYLINK} in the "Privacy policy checkbox label" field to define the link that opens the policy popup. If there is no placeholder given, there will be an appendix.')?>
                 </div>
             </div>
         </div>
         <div class="row">
             <div class="col-sm-12 col-lg-6">
-                <!-- Survey data policy message -->
+                <!-- Privacy policy message -->
                 <div class="form-group">
-                    <label class=" control-label" for='datasec_<?php echo $aSurveyLanguageSettings['surveyls_language']; ?>'><?php eT("Survey data policy message:"); ?></label>
+                    <label class=" control-label" for='datasec_<?php echo $aSurveyLanguageSettings['surveyls_language']; ?>'><?php eT("Privacy policy message:"); ?></label>
                     <div class="">
                     <div class="htmleditor input-group">
                         <?php echo CHtml::textArea("datasec_{$aSurveyLanguageSettings['surveyls_language']}",$aSurveyLanguageSettings['surveyls_policy_notice'],array('class'=>'form-control','cols'=>'80','rows'=>'20','id'=>"datasec_{$aSurveyLanguageSettings['surveyls_language']}")); ?>
-                        <?php echo getEditor("survey-datasec","datasec_".$aSurveyLanguageSettings['surveyls_language'], "[".gT("Survey data policy:", "js")."](".$aSurveyLanguageSettings['surveyls_language'].")",$surveyid,'','',$action); ?>
+                        <?php echo getEditor("survey-datasec","datasec_".$aSurveyLanguageSettings['surveyls_language'], "[".gT("Privacy policy:", "js")."](".$aSurveyLanguageSettings['surveyls_language'].")",$surveyid,'','',$action); ?>
                     </div>
                     </div>
                 </div>
             </div>
             <div class="col-sm-12 col-lg-6">
-                <!-- Survey data policy error message -->
+                <!-- Privacy policy error message -->
                 <div class="form-group">
-                    <label class=" control-label" for='datasecerror_<?php echo $aSurveyLanguageSettings['surveyls_language']; ?>'><?php eT("Survey data policy error message:"); ?></label>
+                    <label class=" control-label" for='datasecerror_<?php echo $aSurveyLanguageSettings['surveyls_language']; ?>'><?php eT("Privacy policy error message:"); ?></label>
                     <div class="">
                     <div class="htmleditor input-group">
                         <?php echo CHtml::textArea("datasecerror_{$aSurveyLanguageSettings['surveyls_language']}",$aSurveyLanguageSettings['surveyls_policy_error'],array('class'=>'form-control','cols'=>'80','rows'=>'15','id'=>"datasecerror_{$aSurveyLanguageSettings['surveyls_language']}")); ?>
-                        <?php echo getEditor("survey-datasec-error","datasecerror_".$aSurveyLanguageSettings['surveyls_language'], "[".gT("Survey data policy error:", "js")."](".$aSurveyLanguageSettings['surveyls_language'].")",$surveyid,'','',$action); ?>
+                        <?php echo getEditor("survey-datasec-error","datasecerror_".$aSurveyLanguageSettings['surveyls_language'], "[".gT("Privacy policy error:", "js")."](".$aSurveyLanguageSettings['surveyls_language'].")",$surveyid,'','',$action); ?>
                     </div>
                     </div>
                 </div>

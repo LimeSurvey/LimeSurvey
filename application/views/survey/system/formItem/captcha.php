@@ -2,8 +2,8 @@
 /**
  * For new Captcha system
  */
-$labelWidth=isset($labelWidth) ? $labelWidth : 5;
-$inputgroupWidth=isset($inputgroupWidth) ? $inputgroupWidth : 7;
+$labelWidth=$labelWidth ?? 5;
+$inputgroupWidth=$inputgroupWidth ?? 7;
 
 ?>
 <div class='form-group captcha-item'>

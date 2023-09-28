@@ -62,12 +62,12 @@ class LSYii_CompareInsensitiveValidator extends CValidator
             case '=':
             case '==':
                 if ($value != $compareValue) {
-                                    $message = $this->message !== null ? $this->message : sprintf(gT('%s must be case-insensitive equal to %s'), $attribute, $compareTo);
+                                    $message = $this->message ?? sprintf(gT('%s must be case-insensitive equal to %s'), $attribute, $compareTo);
                 }
                 break;
             case '!=':
                 if ($value == $compareValue) {
-                                    $message = $this->message !== null ? $this->message : sprintf(gT('%s must not be case-insensitive equal to %s'), $attribute, $compareTo);
+                                    $message = $this->message ?? sprintf(gT('%s must not be case-insensitive equal to %s'), $attribute, $compareTo);
                 }
                 break;
             default:

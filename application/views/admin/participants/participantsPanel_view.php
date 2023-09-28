@@ -26,6 +26,7 @@
     var exportToCSVURL = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/exporttocsv"); ?>";
     var openModalParticipantPanel = "<?php echo ls\ajax\AjaxHelper::createUrl("/admin/participants/sa/openModalParticipantPanel"); ?>";
     var editValueParticipantPanel = "<?php echo Yii::app()->getController()->createUrl("/admin/participants/sa/editValueParticipantPanel"); ?>";
+    var deleteLanguageFromAttributeUrl = "<?php echo Yii::app()->getController()->createUrl("/admin/participants/sa/deleteLanguageFromAttribute"); ?>";
 
     var translate_blacklisted = "<?php echo '<i class=\"fa fa-undo\"></i> ' . gT('Remove from blacklist?'); ?>";
     var translate_notBlacklisted = "<?php echo '<i class=\"fa fa-ban\"></i> ' . gT('Add to blacklist?'); ?>";
@@ -102,12 +103,15 @@
                     <?php eT("Blacklist settings"); ?>
                 </a>
 
+            <?php endif; ?>
+
+            <?php if (Permission::model()->hasGlobalPermission('participantpanel', 'read')) : ?>
                 <!-- Attribute management -->
                 <a class="btn btn-default" href="<?php echo $this->createUrl("admin/participants/sa/attributeControl"); ?>" role="button">
                     <span class="fa fa-tag text-success"></span>
                     <?php eT("Attributes"); ?>
                 </a>
-
+                
             <?php endif; ?>
 
             <!-- Share panel -->

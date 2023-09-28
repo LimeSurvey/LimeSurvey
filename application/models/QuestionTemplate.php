@@ -285,7 +285,7 @@ class QuestionTemplate extends CFormModel
                     $this->aCustomAttributes = array();
                     foreach ($this->oConfig->attributes->attribute as $oCustomAttribute) {
                         $attribute_name = (string) $oCustomAttribute->name;
-                        if (isset($oCustomAttribute->i18n) && $oCustomAttribute->i18n) {
+                        if (isset($oCustomAttribute->i18n) && strval($oCustomAttribute->i18n)) {
                             $sLang = App()->language;
                             $oAttributeValue = QuestionAttribute::model()->find("qid=:qid and attribute=:custom_attribute and language =:language", array('qid' => $oQuestion->qid, 'custom_attribute' => $attribute_name, 'language' => $sLang));
                         } else {

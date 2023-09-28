@@ -186,8 +186,8 @@ class ThemeOptionsController extends LSBaseController
                     $templatename = $model->name;
                     $aResults[$template]['title'] = $templatename;
                     $aUninstallResult = QuestionTheme::uninstall($model);
-                    $aResults[$template]['result'] = isset($aUninstallResult['result']) ? $aUninstallResult['result'] : false;
-                    $aResults[$template]['error'] = isset($aUninstallResult['error']) ? $aUninstallResult['error'] : null;
+                    $aResults[$template]['result'] = $aUninstallResult['result'] ?? false;
+                    $aResults[$template]['error'] = $aUninstallResult['error'] ?? null;
                 } elseif ($gridid === 'themeoptions-grid') {
                     $aResults[$template]['title'] = $model->template_name;
                     $templatename = $model->template_name;
@@ -367,8 +367,8 @@ class ThemeOptionsController extends LSBaseController
             if (empty($gsid)) {
                 throw new CHttpException(403, gT("You do not have permission to access this page."));
             }
-            $oSurveysInGroup = SurveysInGroup::model()->findByPk($gsid);
-            if (empty($oSurveysInGroup) && !$oSurveysInGroup->hasPermission('surveys', 'update')) {
+            $oSurveysGroups = SurveysGroups::model()->findByPk($gsid);
+            if (empty($oSurveysGroups) || !$oSurveysGroups->hasPermission('surveysettings', 'update')) {
                 throw new CHttpException(403, gT("You do not have permission to access this page."));
             }
         }
@@ -623,8 +623,8 @@ class ThemeOptionsController extends LSBaseController
             if (empty($gsid)) {
                 throw new CHttpException(403, gT("You do not have permission to access this page."));
             }
-            $oSurveysInGroup = SurveysInGroup::model()->findByPk($gsid);
-            if (empty($oSurveysInGroup) && !$oSurveysInGroup->hasPermission('surveys', 'update')) {
+            $oSurveysGroups = SurveysGroups::model()->findByPk($gsid);
+            if (empty($oSurveysGroups) || !$oSurveysGroups->hasPermission('surveysettings', 'update')) {
                 throw new CHttpException(403, gT("You do not have permission to access this page."));
             }
         }

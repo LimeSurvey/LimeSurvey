@@ -102,6 +102,9 @@ class LSYii_Application extends CWebApplication
         if (!isset($aApplicationConfig['components']['assetManager']['basePath'])) {
             App()->getAssetManager()->setBasePath($this->config['tempdir'] . '/assets');
         }
+
+        // Load common helper
+        $this->loadHelper("common");
     }
 
     /* @inheritdoc */
@@ -282,7 +285,7 @@ class LSYii_Application extends CWebApplication
      */
     public function getConfig($name, $default = false)
     {
-        return isset($this->config[$name]) ? $this->config[$name] : $default;
+        return $this->config[$name] ?? $default;
     }
 
 
@@ -400,7 +403,7 @@ class LSYii_Application extends CWebApplication
         }
         // Handle specific exception cases, like "user friendly" exceptions and exceptions on ajax requests
         $this->handleSpecificExceptions($event->exception);
-        $statusCode = isset($event->exception->statusCode) ? $event->exception->statusCode : null; // Needed ?
+        $statusCode = $event->exception->statusCode ?? null; // Needed ?
         if (Yii::app()->getConfig('debug') > 1) {
             /* Can restrict to admin ? */
             /* debug ro 2 : always send Yii debug even 404 */
@@ -509,6 +512,62 @@ class LSYii_Application extends CWebApplication
     }
 
     /**
+     * @inheritdoc
+     * Special handling for SEO friendly URLs
+     */
+    public function createController($route, $owner=null)
+    {
+        $controller = parent::createController($route, $owner);
+
+        // If no controller is found by standard ways, check if the route matches
+        // an existing survey's alias.
+        if (is_null($controller)) {
+            $controller = $this->createControllerFromShortUrl($route);
+        }
+
+        return $controller;
+    }
+
+    /**
+     * Create controller from short url if the route matches a survey alias.
+     * @param string $route the route of the request.
+     * @return array<mixed>|null
+     */
+    private function createControllerFromShortUrl($route)
+    {
+        $route = ltrim($route, "/");
+        $alias = explode("/", $route)[0];
+        if (empty($alias)) {
+            return null;
+        }
+
+        // When updating from versions that didn't support short urls, this code runs before the update process,
+        // so we cannot asume the field exists. We try to retrieve the Survey Language Settings and, if it fails,
+        // just don't do anything.
+        try {
+            $criteria = new CDbCriteria();
+            $criteria->addCondition('surveyls_alias = :alias');
+            $criteria->params[':alias'] = $alias;
+            $criteria->index = 'surveyls_language';
+
+            $languageSettings = SurveyLanguageSetting::model()->find($criteria);
+        } catch (CDbException $ex) {
+            // It's probably just because the field doesn't exist, so don't do anything.
+        }
+
+        if (empty($languageSettings)) {
+            return null;
+        }
+
+        // If no language is specified in the request, add a GET param based on the survey's language for this alias
+        $language = $this->request->getParam('lang');
+        if (empty($language)) {
+            $_GET['lang'] = $languageSettings->surveyls_language;
+        }
+        return parent::createController("survey/index/sid/" . $languageSettings->surveyls_survey_id);
+    }
+
+    /**
      * Handles specific exception cases, like "user friendly" exceptions and exceptions on ajax requests.
      *
      * @param CException $exception
@@ -601,5 +660,45 @@ class LSYii_Application extends CWebApplication
         App()->getSession()->setCookieParams([
             'lifetime' => $lifetime
         ]);
+    }
+
+    /**
+     * Creates an absolute URL based on the given controller and action information.
+     * @param string $route the URL route. This should be in the format of 'ControllerID/ActionID'.
+     * @param array $params additional GET parameters (name=>value). Both the name and value will be URL-encoded.
+     * @param string $schema schema to use (e.g. http, https). If empty, the schema used for the current request will be used.
+     * @param string $ampersand the token separating name-value pairs in the URL.
+     * @return string the constructed URL
+     */
+    public function createPublicUrl($route, $params = array(), $schema = '', $ampersand = '&')
+    {
+        $sPublicUrl = $this->getPublicBaseUrl(true);
+        $sActualBaseUrl = Yii::app()->getBaseUrl(true);
+        if ($sPublicUrl !== $sActualBaseUrl) {
+            $url = parent::createAbsoluteUrl($route, $params, $schema, $ampersand);
+            if (substr((string)$url, 0, strlen((string)$sActualBaseUrl)) == $sActualBaseUrl) {
+                $url = substr((string)$url, strlen((string)$sActualBaseUrl));
+            }
+            return trim((string)$sPublicUrl, "/") . $url;
+        } else {
+            return parent::createAbsoluteUrl($route, $params, $schema, $ampersand);
+        }
+    }
+
+    /**
+     * Returns the relative URL for the application while
+     * considering if a "publicurl" config parameter is set to a valid url
+     * @param boolean $absolute whether to return an absolute URL. Defaults to false, meaning returning a relative one.
+     * @return string the relative or the configured public URL for the application
+     */
+    public function getPublicBaseUrl($absolute = false)
+    {
+        $sPublicUrl = Yii::app()->getConfig("publicurl");
+        $aPublicUrl = parse_url($sPublicUrl);
+        $baseUrl = parent::getBaseUrl($absolute);
+        if (isset($aPublicUrl['scheme']) && isset($aPublicUrl['host'])) {
+            $baseUrl = $sPublicUrl;
+        }
+        return $baseUrl;
     }
 }

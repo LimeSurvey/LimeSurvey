@@ -193,7 +193,7 @@ function showError(msg) {
  * Validates that mandatory additional attributes are filled
  */
 function validateAdditionalAttributes() {
-    const validationErrorMsg = $('#edittoken').attr('data-validation-error');
+    const validationErrorMsg = $('#edittoken').attr('data-additional-attributes-validation-error');
 
     let valid = true;
     $('.mandatory-attribute').each(function () {
@@ -318,25 +318,61 @@ $(document).on('ready  pjax:scriptcomplete', function(){
 
     $(document).off('submit.edittoken', '#edittoken').on('submit.edittoken', '#edittoken', function(event, params){
         var eventParams = params || {};
+        // When saving from the Edit Participant modal, handle the event in submitEditToken().
         if($('#editTokenModal').length > 0 ){
             event.preventDefault();
             submitEditToken();
             return;
         }
+        // Validate additional (custom) participant attributes
         if (!validateAdditionalAttributes()) {
             event.preventDefault();
             return false;
         }
+        // Validate expiration date isn't lower than the "Valid from" date
+        if (
+            !LS.validateEndDateHigherThanStart(
+                $('#validfrom').data('DateTimePicker'),
+                $('#validuntil').data('DateTimePicker'),
+                () => {
+                    showError($('#edittoken').attr('data-expiration-validation-error'));
+                    $('#validuntil').trigger('invalid');
+                }
+            )
+        ) {
+            event.preventDefault();
+            return false;
+        }
+
         if (!eventParams.confirm_empty_save && !validateNotEmptyTokenForm()) {
             return false;
         }
+    });
+
+    // Disable Save and Close button on click
+    $("#save-and-close-button").on('click', function() {
+        $(this).addClass('disabled');
+    });
+
+    /**
+     * Handle form inputs 'invalid' event.
+     */
+    $('#edittoken').find('button, input, select, textarea').on('invalid', function () {
+        // Enable the Save and Close button
+        $("#save-and-close-button").removeClass("disabled");
     });
 
     /**
      * Save token
      */
     $("#save-edittoken").off('click.token-save').on('click.token-save', function() {
-        if (validateAdditionalAttributes()) {
+        const valid = validateAdditionalAttributes()
+            && LS.validateEndDateHigherThanStart(
+                $('#validfrom').data('DateTimePicker'),
+                $('#validuntil').data('DateTimePicker'),
+                () => {showError($('#edittoken').attr('data-expiration-validation-error'))}
+            );
+        if (valid) {
             submitEditToken();
         }
     });

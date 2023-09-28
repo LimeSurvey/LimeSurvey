@@ -10,7 +10,7 @@ foreach ($extraMenus as $menu): ?>
     <?php
     /** @var Menu $menu */
     if (($prependedMenu && $menu->isPrepended()) || (!$prependedMenu && !$menu->isPrepended())) : ?>
-        <li class="dropdown">
+        <li class="dropdown ls-extraMenuEntry">
             <?php
             if ($menu->isDropDown()): ?>
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
@@ -51,14 +51,17 @@ foreach ($extraMenus as $menu): ?>
                 /** @var MenuButton $menuButton */
                 $target = $menuButton->getOpenInNewTab() ? '_blank' : '_self';
                 ?>
-                <p class="navbar-btn"><a id="<?= $menuButton->getButtonId() ?>"
-                                         href="<?= $menuButton->getHref(); ?>"
-                                         class="<?= $menuButton->getButtonClass() ?>"
-                                         title="<?= $menuButton->getTooltip() ?>"
-                                         onclick="<?= $menuButton->getOnClick() ?>"
-                                         target="<?= $target ?>">
+                <div class="navbar-btn">
+                    <a id="<?= $menuButton->getButtonId() ?>"
+                       href="<?= $menuButton->getHref(); ?>"
+                       class="<?= $menuButton->getButtonClass() ?>"
+                       title="<?= $menuButton->getTooltip() ?>"
+                       data-toggle="tooltip"
+                       data-placement="bottom"
+                       onclick="<?= $menuButton->getOnClick() ?>"
+                       target="<?= $target ?>">
                         <?= $menuButton->getLabel(); ?></a>
-                </p>
+                </div>
             <?php
             else: ?>
                 <a href="<?= $menu->getHref(); ?>">

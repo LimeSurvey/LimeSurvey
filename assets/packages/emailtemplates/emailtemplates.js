@@ -1,5 +1,9 @@
 // $Id: saved.js 9330 2010-10-24 22:23:56Z c_schmitz $
 
+/**
+ * NOTE: After updating this file, generate the "minified" version with:
+ * uglifyjs -c -- emailtemplates.js > emailtemplates.min.js
+ */
 
 // Namespace
 var LS = LS || {  onDocumentReady: {} };
@@ -70,7 +74,7 @@ var PrepEmailTemplates = function(){
      * @param size
      * @return void
      */
-    addAttachment = function (target, url, relevance, size)
+    addAttachment = function (target, url, relevance, size, error)
     {
         if (typeof relevance == 'undefined')
         {
@@ -101,6 +105,9 @@ var PrepEmailTemplates = function(){
     
             $(newrow).find('input.relevance').val(relevance).attr('name', 'attachments' + templatetype + '[' + index + '][relevance]');
             $(newrow).find('input.filename').attr('name', 'attachments' + templatetype + '[' + index + '][url]');
+            if (error) {
+                $(newrow).find('input.filename').parent().append($("<span class='fa fa-exclamation-triangle text-danger' title='" + error + "'></span>"));
+            }
             $(newrow).appendTo($(target).find('tbody'));
             $('#kc-modal-open').modal('hide');
         }
@@ -117,7 +124,7 @@ var PrepEmailTemplates = function(){
             e.preventDefault();
             var target = $(this).parents('tr');
             var ckTarget = $(this).parents('table').data('ck-target');
-            uri = LS.data.baseUrl + '/third_party/kcfinder/browse.php?opener=custom&type=files&CKEditor='+ckTarget+'&langCode='+sKCFinderLanguage;
+            uri = LS.data.baseUrl + '/vendor/kcfinder/browse.php?opener=custom&type=files&CKEditor='+ckTarget+'&langCode='+sKCFinderLanguage;
             openKCFinder_singleFile(target, uri);
         });
     
@@ -200,7 +207,7 @@ var PrepEmailTemplates = function(){
             e.preventDefault();
             var target = $($(this).data('target'));
             var ckTarget =  $(this).data('ck-target');
-            var uri = LS.data.baseUrl + '/third_party/kcfinder/browse.php?opener=custom&type=files&CKEditor='+ckTarget+'&langCode='+sKCFinderLanguage
+            var uri = LS.data.baseUrl + '/vendor/kcfinder/browse.php?opener=custom&type=files&CKEditor='+ckTarget+'&langCode='+sKCFinderLanguage
 
             openKCFinder_singleFile(target, uri);
 

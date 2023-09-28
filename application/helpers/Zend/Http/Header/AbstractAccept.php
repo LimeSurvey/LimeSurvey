@@ -146,7 +146,7 @@ abstract class AbstractAccept implements HeaderInterface
                             'subtype'    => $subtype,
                             'subtypeRaw' => $subtypeWhole,
                             'format'     => $format,
-                            'priority'   => isset($params['q']) ? $params['q'] : 1,
+                            'priority'   => $params['q'] ?? 1,
                             'params'     => $params,
                             'raw'        => trim($raw)
         );

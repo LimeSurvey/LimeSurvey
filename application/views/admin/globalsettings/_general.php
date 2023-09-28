@@ -3,6 +3,10 @@
 * This view generate the 'general' tab inside global settings.
 *
 */
+
+use LimeSurvey\Libraries\FormExtension\FormExtensionWidget;
+use LimeSurvey\Libraries\FormExtension\Inputs\GlobalSettingsRenderer;
+
 ?>
 <?php
 $thisdefaulttheme=getGlobalSetting('defaulttheme');
@@ -37,8 +41,8 @@ $dateformatdata=getDateFormatData(Yii::app()->session['dateformat']);
                 <div class="col-sm-12">
                     <select class="form-control" name="defaulttheme" id="defaulttheme">
                         <?php foreach ($templatenames as $templatename) : ?>
-                        <option value='<?php echo $templatename; ?>' <?php echo ($thisdefaulttheme==$templatename) ? "selected='selected'" : ""?> >
-                            <?php echo $templatename; ?>
+                        <option value='<?php echo CHtml::encode($templatename); ?>' <?php echo ($thisdefaulttheme==$templatename) ? "selected='selected'" : ""?> >
+                            <?php echo CHtml::encode($templatename); ?>
                         </option>
                         <?php endforeach; ?>
                     </select>
@@ -75,8 +79,8 @@ $dateformatdata=getDateFormatData(Yii::app()->session['dateformat']);
                 <div class="col-sm-12">
                     <select class="form-control" name="admintheme" id="admintheme">
                         <?php  foreach($aListOfThemeObjects as $templatename => $templateconfig): ?>
-                        <option value='<?php echo $templatename; ?>' <?php echo ($thisadmintheme==$templatename)? "selected='selected'" : "" ?> >
-                            <?php echo $templateconfig->metadata->name; ?>
+                        <option value='<?php echo CHtml::encode($templatename); ?>' <?php echo ($thisadmintheme==$templatename)? "selected='selected'" : "" ?> >
+                            <?php echo CHtml::encode($templateconfig->metadata->name); ?>
                         </option>
                         <?php endforeach; ?>
                     </select>
@@ -368,6 +372,14 @@ Full lock - none of participants are allowed to take survey, even if they alread
             </div>
         <?php endif; ?>
     </div>
+
+    <div class="ls-flex-column ls-space padding left-5 right-5 col-md-7">
+        <?= FormExtensionWidget::render(
+            App()->formExtensionService->getAll('globalsettings.general'),
+            new GlobalSettingsRenderer()
+        ); ?>
+    </div>
+    
 </div>
 
 <?php if (Yii::app()->getConfig("demoMode")==true):?>

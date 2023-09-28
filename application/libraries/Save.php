@@ -70,8 +70,8 @@ class Save
     {
         //Show 'SAVE FORM' only when click the 'Save so far' button the first time, or when duplicate is found on SAVE FORM.
         //~ global $errormsg, $thissurvey, $surveyid, $clienttoken, $thisstep;
-        $thisstep    = isset($_SESSION['survey_' . $iSurveyId]['step']) ? $_SESSION['survey_' . $iSurveyId]['step'] : 0;
-        $clienttoken = isset($_SESSION['survey_' . $iSurveyId]['token']) ? $_SESSION['survey_' . $iSurveyId]['token'] : '';
+        $thisstep    = $_SESSION['survey_' . $iSurveyId]['step'] ?? 0;
+        $clienttoken = $_SESSION['survey_' . $iSurveyId]['token'] ?? '';
 
         $oSurvey   = Survey::model()->findByPk($iSurveyId);
         $sTemplate = $oSurvey->template;
@@ -167,7 +167,7 @@ class Save
                     "datestamp"     => $today,
                     "ipaddr"        => getIPAddress(),
                     "startlanguage" => $_SESSION['survey_' . $surveyid]['s_lang'],
-                    "refurl"        => ((isset($_SESSION['survey_' . $surveyid]['refurl'])) ? $_SESSION['survey_' . $surveyid]['refurl'] : getenv('HTTP_REFERER'))
+                    "refurl"        => ($_SESSION['survey_' . $surveyid]['refurl'] ?? getenv('HTTP_REFERER'))
                 );
 
                 if (SurveyDynamic::model($thissurvey['sid'])->insert($sdata)) {

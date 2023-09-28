@@ -69,6 +69,7 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
             array('gsid, name, title, description, owner_id, parent_id, created, modified, created_by', 'safe', 'on' => 'search'),
+            array('name', 'unsafe' , 'on' => ['update']),
         );
     }
 
@@ -331,7 +332,7 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
         $criteria = new CDbCriteria();
         $criteriaPerm = self::getPermissionCriteria();
         $criteria->mergeWith($criteriaPerm, 'AND');
-
+        $criteria->order = 'title ASC';
         $oSurveyGroups = self::model()->findAll($criteria);
 
         foreach ($oSurveyGroups as $oSurveyGroup) {

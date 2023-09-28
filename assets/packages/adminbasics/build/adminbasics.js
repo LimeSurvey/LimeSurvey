@@ -29722,6 +29722,9 @@
       $('[data-tooltip="true"]').tooltip();
       $('[data-toggle="tooltip"]').tooltip();
     },
+    doSelect2: function doSelect2() {
+      $("select.activate-search").select2();
+    },
     // finds any duplicate array elements using the fewest possible comparison
     arrHasDupes: function arrHasDupes(arrayToCheck) {
       return _.uniq(arrayToCheck).length !== arrayToCheck.length;
@@ -29781,6 +29784,34 @@
         if (e.target != this) return;
         $('#accordion').find('.panel-collapse.collapse').not('#' + $(this).attr('id')).collapse('hide');
       });
+    },
+
+    /**
+     * Validates that an end date is not lower than a start date
+     * @param {Object} startDatePicker Start datepicker object
+     * @param {Object} endDatePicker End datepicker object
+     * @param {?function} errorCallback Optional function to call in case of error
+     */
+    validateEndDateHigherThanStart: function validateEndDateHigherThanStart(startDatePicker, endDatePicker, errorCallback) {
+      if (!startDatePicker || !startDatePicker.date()) {
+        return true;
+      }
+
+      if (!endDatePicker || !endDatePicker.date()) {
+        return true;
+      }
+
+      var difference = endDatePicker.date().diff(startDatePicker.date());
+
+      if (difference >= 0) {
+        return true;
+      }
+
+      if (typeof errorCallback === 'function') {
+        errorCallback();
+      }
+
+      return false;
     }
   };
   var globalStartUpMethods = {
@@ -29801,6 +29832,9 @@
 
         $("div", this).html(pValue + "%");
       });
+      /* set default for select2 */
+
+      $.fn.select2.defaults.set("theme", "bootstrap");
       globalWindowMethods.tableCellAdapters();
     }
   };
@@ -31040,6 +31074,13 @@
         stopDisplayLoadingState = function stopDisplayLoadingState() {
       LS.EventBus.$emit('loadingFinished'); // $('.lsLoadingStateIndicator').each((i,item) => {$(item).remove();});
     },
+        bindInvalidFormHandler = function bindInvalidFormHandler($form) {
+      var $submittableElements = $form.find('button, input, select, textarea');
+      $submittableElements.off('invalid.save').on('invalid.save', function () {
+        stopDisplayLoadingState();
+        $submittableElements.off('invalid.save');
+      });
+    },
         //###########PRIVATE
     checks = function checks() {
       return {
@@ -31074,13 +31115,23 @@
               }
             } catch (e) {
               console.ls.log('Seems no CKEDITOR4 is loaded');
+            } // If the form has the 'data-trigger-validation' attribute set, trigger the standard form
+            // validation and quit if it fails.
+
+
+            if ($form.attr('data-trigger-validation')) {
+              if (!$form[0].reportValidity()) {
+                return;
+              }
             }
 
             if ($form.data('isvuecomponent') == true) {
               LS.EventBus.$emit('componentFormSubmit', button);
             } else {
-              $form.find('[type="submit"]:not(.ck)').first().trigger('click');
+              // Attach handler to detect validation errors on the form and re-enable the button
+              bindInvalidFormHandler($form);
               displayLoadingState(this);
+              $form.find('[type="submit"]:not(.ck)').first().trigger('click');
             }
           },
           on: 'click'
@@ -33275,9 +33326,11 @@
       $('#notification-inner-li').css('height', height - 60 + 'px');
     },
         deleteAllNotifications = function deleteAllNotifications(url, updateUrl) {
+      var data = document.querySelector('#notification-clear-all > a').getAttribute('data-params');
       return $.ajax({
         url: url,
-        method: 'GET',
+        data: data,
+        method: 'POST',
         success: function success(response) {
           adminCoreLSConsole.log('response', response);
         }
@@ -41942,6 +41995,7 @@
       appendToLoad(notificationSystem.initNotification);
       appendToLoad(activateSubSubMenues);
       appendToLoad(globalWindowMethods.fixAccordionPosition);
+      appendToLoad(globalWindowMethods.doSelect2);
     },
         appendToLoad = function appendToLoad(fn, event, root, delay) {
       event = event || 'pjax:scriptcomplete ready';

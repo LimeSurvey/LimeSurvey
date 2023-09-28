@@ -158,7 +158,10 @@ class UserGroup extends LSActiveRecord
     }
 
     /**
-     * TODO should be in controller
+     * TODO should be in controller?
+     * When user is allowed to edit the group,
+     * it will be updated in the database.
+     * Returns true, when it was possible to save.
      * @param string $name
      * @param string $description
      * @param integer $ugId
@@ -166,18 +169,26 @@ class UserGroup extends LSActiveRecord
      */
     public function updateGroup($name, $description, $ugId)
     {
-        $group = UserGroup::model()->findByPk($ugId);
-        $group->name = $name;
-        $group->description = $description;
-        $group->save();
-        if ($group->getErrors()) {
-                    return false;
-        } else {
-                    return true;
+        $group = $this->requestEditGroup($ugId, App()->user->id);
+        if ($group !== null) {
+            $group->name = $name;
+            $group->description = $description;
+            $group->save();
+            if ($group->getErrors()) {
+                return false;
+            } else {
+                return true;
+            }
         }
+        return false;
     }
 
     /**
+     * Works as permission check on db level for editing user groups.
+     * The usergroup needs to exist, and if the user is not a superadmin,
+     * user also has to be the owner of that group.
+     * If successful, the usergroup is returned.
+     *
      * @param integer $ugId
      * @param integer $ownerId
      * @return static
@@ -195,14 +206,15 @@ class UserGroup extends LSActiveRecord
 
         $aParams[':ugid'] = $ugId;
         $criteria->params = $aParams;
-        $result = UserGroup::model()->find($criteria);
-        return $result;
+
+        return UserGroup::model()->find($criteria);
     }
 
     /**
      * @param integer $ugId
      * @param integer $userId
      * @return array
+     * @deprecated Not needed anymore
      */
     public function requestViewGroup($ugId, $userId)
     {
@@ -293,7 +305,7 @@ class UserGroup extends LSActiveRecord
             array(
                 'header' => gT('Owner'),
                 'name' => 'owner',
-                'value' => '$data->owner->users_name',
+                'value' => '$data->owner ? $data->owner->users_name : gT("(Deleted user)")',
                 'htmlOptions' => array('class' => 'col-md-1'),
             ),
 

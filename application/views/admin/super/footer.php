@@ -12,7 +12,7 @@ $systemInfos = [
     gT('PHP version') => phpversion(),
     gT('Web server name') => $_SERVER['SERVER_NAME'],
     gT('Web server software') => $_SERVER['SERVER_SOFTWARE'],
-    gT('Web server info') => isset($_SERVER['SERVER_SIGNATURE']) ? $_SERVER['SERVER_SIGNATURE'] : $_SERVER['SERVER_PROTOCOL']
+    gT('Web server info') => $_SERVER['SERVER_SIGNATURE'] ?? $_SERVER['SERVER_PROTOCOL']
 ];
 
 // MSSQL does not support some of these attributes, so much
@@ -97,8 +97,8 @@ foreach ($systemInfos as $key => $systemInfo) {
                 <div class="h3 modal-title"><?php eT("System information"); ?></div>
             </div>
             <div class="modal-body">
-                <?php if (Permission::model()->hasGlobalPermission('superadmin', 'read')) { ?>
-                    <h4><?php eT("Your system configuration:")?></h4>
+			<?php if (Permission::model()->hasGlobalPermission('superadmin', 'read') && !Yii::app()->getConfig('demoMode')) { ?> 
+           		<h4><?php eT("Your system configuration:")?></h4>
                     <ul class="list-group">
                         <?php foreach ($systemInfos as $name => $systemInfo) { ?>
                             <li class="list-group-item">

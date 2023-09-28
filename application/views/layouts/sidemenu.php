@@ -6,7 +6,7 @@
 ?>
 <?php
     // todo $showSideMenu is not used by vue sidebar.vue? normally set by $aData['sidemenu']['state']
-    $sidemenu['state'] = isset($sidemenu['state']) ? $sidemenu['state'] : true;
+    $sidemenu['state'] = $sidemenu['state'] ?? true;
     if (
         $sideMenuBehaviour == 'alwaysClosed'
         || ($sideMenuBehaviour == 'adaptive'
@@ -30,11 +30,11 @@
         $createQuestionGroupLink = "";
         $createQuestionLink = "";
     }
-    $landOnSideMenuTab = (isset($sidemenu['landOnSideMenuTab']) ? $sidemenu['landOnSideMenuTab'] : '');
-    
+    $landOnSideMenuTab = ($sidemenu['landOnSideMenuTab'] ?? '');
+
     // Set the active Sidemenu (for deeper navigation)
-    $isSideMenuElementActive = isset($sidemenu['isSideMenuElementActive']) ? $sidemenu['isSideMenuElementActive'] : false;
-    $activeSideMenuElement   = isset($sidemenu['activeSideMenuElement'])   ? $sidemenu['activeSideMenuElement']   : '';
+    $isSideMenuElementActive = $sidemenu['isSideMenuElementActive'] ?? false;
+    $activeSideMenuElement   = $sidemenu['activeSideMenuElement'] ?? '';
 
     $menuObjectArray =  [
         "side" => [],
@@ -45,7 +45,7 @@
     foreach ($menuObjectArray as $position => $arr) {
         $menuObjectArray[$position] = Survey::model()->findByPk($surveyid)->getSurveyMenus($position);
     }
-    
+
     Yii::app()->getClientScript()->registerScript('SideBarGlobalObject', '
         window.SideMenuData = {
             getQuestionsUrl: "'.$getQuestionsUrl.'",
@@ -54,7 +54,7 @@
             createQuestionLink: "'.$createQuestionLink.'",
             buttonDisabledTooltipQuestions: "'. gt('It is not possible to add questions to an active survey.') .'",
             buttonDisabledTooltipGroups: "'. gt('It is not possible to add groups to an active survey.') . '",
-            gid: '.(isset($gid) ? $gid : 'null').',
+            gid: '.($gid ?? 'null').',
             options: [],
             surveyid: '.$surveyid.',
             isActive: '.(Survey::model()->findByPk($surveyid)->isActive ? "true" : "false").',

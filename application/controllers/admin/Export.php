@@ -136,7 +136,7 @@ class Export extends SurveyCommonAction
      */
     public function exportresults()
     {
-        $iSurveyID = sanitize_int(Yii::app()->request->getParam('surveyid')) ??
+        $iSurveyID = sanitize_int(App()->request->getParam('surveyid')) ??
             sanitize_int(Yii::app()->request->getParam('surveyId'));
         $survey = Survey::model()->findByPk($iSurveyID);
 
@@ -145,13 +145,6 @@ class Export extends SurveyCommonAction
         }
         if (!isset($iSurveyID)) {
             $iSurveyID = returnGlobal('sid');
-        }
-
-        if (!isset($convertyto1)) {
-            $convertyto1 = returnGlobal('convertyto1');
-        }
-        if (!isset($convertnto2)) {
-            $convertnto2 = returnGlobal('convertnto2');
         }
         if (!isset($convertyto)) {
             $convertyto = returnGlobal('convertyto');
@@ -224,7 +217,7 @@ class Export extends SurveyCommonAction
                 $aFieldsOptions[$sFieldName] = array('title' => viewHelper::getFieldText($fieldinfo), 'data-fieldname' => $fieldinfo['fieldname'], 'data-emcode' => viewHelper::getFieldCode($fieldinfo, array('LEMcompat' => true))); // No need to filter title : Yii do it (remove all tag)
             }
 
-            $data['SingleResponse'] = (int) returnGlobal('id');
+            $data['SingleResponse'] = intval(App()->getRequest()->getParam('id'));
             $data['selecthide'] = $selecthide;
             $data['selectshow'] = $selectshow;
             $data['selectinc'] = $selectinc;
@@ -354,7 +347,6 @@ class Export extends SurveyCommonAction
         } else {
             $sFilter = '';
         }
-
         viewHelper::disableHtmlLogging();
         $resultsService->exportResponses($iSurveyID, $explang, $sExportType, $options, $sFilter);
 
@@ -387,7 +379,7 @@ class Export extends SurveyCommonAction
             // Default to 2 (16 and up)
             Yii::app()->session['spssversion'] = 2;
         }
-        $spssver = Yii::app()->request->getParam('spssver', Yii::app()->session['spssversion']);
+        $spssver = CHtml::encode(Yii::app()->request->getParam('spssver', Yii::app()->session['spssversion']));
         Yii::app()->session['spssversion'] = $spssver;
 
         $length_varlabel = '231'; // Set the max text length of Variable Labels
@@ -631,7 +623,7 @@ class Export extends SurveyCommonAction
                         echo "* Variable name was incorrect and was changed from {$field['title']} to $ftitle .\n";
                     }
 
-                    echo "RENAME VARIABLE ( " . $field['id'] . ' = ' . $ftitle . " ).\n";
+                    echo "RENAME VARIABLES ( " . $field['id'] . ' = ' . $ftitle . " ).\n";
                 }
             }
             echo "RESTORE LOCALE.\n";
@@ -1285,7 +1277,9 @@ class Export extends SurveyCommonAction
                 $quexmlpdf->$method(Yii::app()->request->getPost($s));
             }
 
-            $lang = Yii::app()->request->getPost('save_language');
+            $lang = sanitize_languagecode(
+                Yii::app()->request->getPost('save_language')
+            );
 
             // Setting the selected language for printout
             App()->setLanguage($lang);

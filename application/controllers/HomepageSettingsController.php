@@ -28,6 +28,16 @@ class HomepageSettingsController extends LSBaseController
     }
 
     /**
+     * @return string[] action filters
+     */
+    public function filters()
+    {
+        return [
+            'postOnly + resetAllBoxes', // Only allow resetAllBoxes via POST request
+        ];
+    }
+
+    /**
      * Register js script before rendering
      *
      * @param string $view

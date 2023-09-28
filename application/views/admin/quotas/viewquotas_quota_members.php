@@ -11,7 +11,7 @@ if ($oQuota->action == Quota::ACTION_TERMINATE){
     $tooltip = gT("Terminate survey");
     $icon = 'fa-exclamation-circle';
 } elseif ($oQuota->action == Quota::ACTION_CONFIRM_TERMINATE){
-    $tooltip = gT("Allow user to modify his last answers before terminate survey.");
+    $tooltip = gT("Allow user to modify their last answers before terminating the survey.");
     $icon = 'fa-exclamation-triangle';
 }
 ?>

@@ -12,7 +12,24 @@
 <div class="form-group">
     <?php echo $form->labelEx($oQuotaLanguageSetting,'['.$language.']quotals_message',array('class'=>'control-label')); ?>
     <div class=''>
-        <?php echo $form->textArea($oQuotaLanguageSetting,'['.$language.']quotals_message',array('class'=>'form-control custom-data')); ?>
+        <?php
+        $htmlOptions = array('class' => 'form-control custom-data');
+        $attribute = '[' . $language . ']quotals_message';
+        $action = $this->action->id;
+
+        CHtml::resolveNameID($oQuotaLanguageSetting, $attribute, $htmlOptions);
+        echo CHtml::activeTextArea($oQuotaLanguageSetting, $attribute, $htmlOptions);
+
+        echo getEditor(
+            'quota_message',
+            $htmlOptions['id'],
+            "[" . gT("Quota message:", "js") . "](" . $language . ")",
+            $oQuota->sid,
+            '',
+            '',
+            $action
+        );
+        ?>
         <?php echo $form->error($oQuotaLanguageSetting,'['.$language.']quotals_message'); ?>
     </div>
 </div>

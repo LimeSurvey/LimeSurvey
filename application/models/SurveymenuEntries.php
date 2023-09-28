@@ -90,8 +90,8 @@ class SurveymenuEntries extends LSActiveRecord
         $oSurveymenuEntries->menu_link = $menuEntryArray['menu_link'];
 
         //permissions [optional]
-        $oSurveymenuEntries->permission = isset($menuEntryArray['permission']) ? $menuEntryArray['permission'] : '';
-        $oSurveymenuEntries->permission_grade = isset($menuEntryArray['permission_grade']) ? $menuEntryArray['permission_grade'] : '';
+        $oSurveymenuEntries->permission = $menuEntryArray['permission'] ?? '';
+        $oSurveymenuEntries->permission_grade = $menuEntryArray['permission_grade'] ?? '';
 
 
 
@@ -108,7 +108,7 @@ class SurveymenuEntries extends LSActiveRecord
         }
 
         //pjax optional
-        $oMenuEntryData->pjaxed = isset($menuEntryArray['pjaxed']) ? $menuEntryArray['pjaxed'] : true;
+        $oMenuEntryData->pjaxed = $menuEntryArray['pjaxed'] ?? true;
         $oSurveymenuEntries->data = $oMenuEntryData->createOptionJson($menuEntryArray['addSurveyId'], $menuEntryArray['addQuestionGroupId'], $menuEntryArray['addQuestionId']);
 
         $oSurveymenuEntries->changed_at = date('Y-m-d H:i:s');

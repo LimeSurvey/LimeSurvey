@@ -70,20 +70,21 @@
 # if you want to add a new distributed plugin : add the directory here
 /plugins/*
 !/plugins/index.html
+!/plugins/Demo/
 
 #ignore old styles
 /styles/
 
 #ignore most of the js-build stuff
 node_modules/
-third_party/**/docs/
-third_party/**/scripts/
-third_party/**/tests/
-third_party/**/scss/
-third_party/**/less/
-third_party/**/*.sh
-third_party/**/*.md
-third_party/**/gulpfile.js
+vendor/**/docs/
+vendor/**/scripts/
+vendor/**/tests/
+vendor/**/scss/
+vendor/**/less/
+vendor/**/*.sh
+vendor/**/*.md
+vendor/**/gulpfile.js
 yarn-error.log
 
 # Test stuff
@@ -114,37 +115,37 @@ enabletests
 
 ## Ignore files and dependencies for testing
 composer.lock
-third_party/bin/phpcbf
-third_party/bin/phpcs
-third_party/squizlabs/
-third_party/amphp/
-third_party/bin/
-third_party/composer/autoload_files.php
-third_party/composer/installed\.json
-third_party/composer/package-versions-deprecated/
-third_party/composer/semver/
-third_party/composer/xdebug-handler/
-third_party/doctrine/
-third_party/dnoegel/
-third_party/felixfbecker/
-third_party/myclabs/
-third_party/netresearch/
-third_party/nikic/
-third_party/ocramius/
-third_party/openlss/
-third_party/pdepend/
-third_party/phar-io/
-third_party/php-webdriver/
-third_party/phpdocumentor/
-third_party/phpmd/
-third_party/phpspec/
-third_party/phpunit/
-third_party/psr/
-third_party/sebastian/
-third_party/theseer/
-third_party/vimeo/
-third_party/webmozart/
-third_party/misantron/
+vendor/bin/phpcbf
+vendor/bin/phpcs
+vendor/squizlabs/
+vendor/amphp/
+vendor/bin/
+vendor/composer/autoload_files.php
+vendor/composer/installed\.json
+vendor/composer/package-versions-deprecated/
+vendor/composer/semver/
+vendor/composer/xdebug-handler/
+vendor/doctrine/
+vendor/dnoegel/
+vendor/felixfbecker/
+vendor/myclabs/
+vendor/netresearch/
+vendor/nikic/
+vendor/ocramius/
+vendor/openlss/
+vendor/pdepend/
+vendor/phar-io/
+vendor/php-webdriver/
+vendor/phpdocumentor/
+vendor/phpmd/
+vendor/phpspec/
+vendor/phpunit/
+vendor/psr/
+vendor/sebastian/
+vendor/theseer/
+vendor/vimeo/
+vendor/webmozart/
+vendor/misantron/
 upload/templates/
 assets/packages/ckeditor/samples
 

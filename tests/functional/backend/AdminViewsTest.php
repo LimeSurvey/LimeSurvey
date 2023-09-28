@@ -126,24 +126,6 @@ class AdminViewsTest extends TestBaseClassView
     /**
      * @param string $name
      * @param array$view
-     * @dataProvider addUsersViews
-     */
-    public function testUserViews($name,$view){
-        // use Admin user
-        $uid = 1;
-        // non-adminuser for some views
-        if(in_array($name,['setUserPermissions','setUserTemplates'])){
-            // FIXME need to crate another user
-            $this->markTestSkipped();
-            $uid = 2;
-        }
-        $view['route'] = ReplaceFields($view['route'],['{UID}'=>$uid]);
-        $this->findViewTag($name, $view);
-    }
-
-    /**
-     * @param string $name
-     * @param array$view
      * @dataProvider addGeneralSettingsViews
      */
     public function testGeneralSettingsViews($name, $view)

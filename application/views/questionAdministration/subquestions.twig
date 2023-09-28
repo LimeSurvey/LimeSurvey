@@ -3,10 +3,12 @@
 
 {% set first = true %}
 {% set scale_id = 0 %}
+{# TODO: Add question type attribute to indicate if the type supports relevance on subquestions #}
+{% set supportsRelevance = question.questionType.code != 'H' %}
 
 <!-- Loop all language, and then hide all but the current selected one with JS. -->
 {% for lang in allLanguages %}
-    <div class="lang-hide lang-{{ lang }}">
+    <div class="lang-hide lang-{{ lang }} {{ first ? 'base-lang' : 'extra-lang' }}">
         {% for scale_id in range(0, scalecount - 1) %}
             {% set anscount = subquestions|length %}
             {# TODO : check the rendering of XSCALES / Y SCALES #}
@@ -28,7 +30,7 @@
             <!-- NB: Both questions and answer options uses class "answertable". -->
             <div class="subquestions-table-wrapper" style="max-height: 414px;">
                 <table
-                    class='answertable subquestions-table table table-responsive'
+                    class='answertable subquestions-table table table-responsive  {{ supportsRelevance ? '' : 'hide-relevance' }}'
                     id='subquestions_{{lang}}_{{scale_id}}'
                     data-scaleid='{{ scale_id }}'
                     data-input-data-id='add-subquestion-input-javascript-datas'
@@ -69,7 +71,6 @@
                                 'subquestionl10n': subquestion.questionl10ns[lang],
                                 'language'  : lang,
                                 'oldCode'   : true,
-                                'supportsRelevance' : question.questionType.code != 'H',
                             } %}
 
                             {% set position = position + 1 %}

@@ -233,6 +233,10 @@ class UserRoleController extends LSBaseController
      */
     public function actionRunExport($ptid)
     {
+        if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
+            Yii::app()->session['flashmessage'] = gT('You have no access to the role management!');
+            $this->redirect(['/admin']);
+        }
         $oModel = $this->loadModel($ptid);
         $oXML = $oModel->compileExportXML();
         $filename = preg_replace("/[^a-zA-Z0-9-_]*/", '', $oModel->name);
@@ -295,6 +299,9 @@ class UserRoleController extends LSBaseController
      */
     public function actionImportXML()
     {
+        if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
+        }
         $sRandomFileName = randomChars(20);
         $sFilePath = Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $sRandomFileName;
         $aPathinfo = pathinfo($_FILES['the_file']['name']);

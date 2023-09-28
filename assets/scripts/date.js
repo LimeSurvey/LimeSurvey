@@ -10,7 +10,7 @@ function doPopupDate(qId) {
         var format=$(this).data("DateTimePicker").format();
         /* unsure of this part : don't need format ? */
         minDate = moment(minDate.substr(0,10), "YYYY-MM-DD");
-        maxDate = moment(maxDate.substr(0,10), "YYYY-MM-DD");
+        maxDate = moment(maxDate.substr(0,10) + " " + "23:59:59.999", "YYYY-MM-DD hh:mm:ss.SSS");
         $(this).data("DateTimePicker").minDate(minDate);
         $(this).data("DateTimePicker").maxDate(maxDate);
     });

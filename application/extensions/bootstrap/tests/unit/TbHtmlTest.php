@@ -3294,7 +3294,7 @@ class TbHtmlTest extends TbTestCase
                     array(
                         'data-toggle' => 'tab',
                         'tabindex' => '-1',
-                        'href' => '#' . (isset($tabs[$i]['id']) ? $tabs[$i]['id'] : 'tab_' . ($i + 1)),
+                        'href' => '#' . ($tabs[$i]['id'] ?? 'tab_' . ($i + 1)),
                     )
                 );
                 $I->seeNodeText($a, $tabs[$i]['label']);

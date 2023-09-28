@@ -227,7 +227,7 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
 
         // Try to connect
         $ldapconn = $this->createConnection();
-        if (!is_resource($ldapconn)) {
+        if (is_array($ldapconn)) {
             $oEvent->set('errorCode', self::ERROR_LDAP_CONNECTION);
             $oEvent->set('errorMessageTitle', '');
             $oEvent->set('errorMessageBody', $ldapconn['errorMessage']);
@@ -238,8 +238,7 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
         if (empty($ldapmode) || $ldapmode == 'simplebind') {
             // Use the user's account for LDAP search
             $ldapbindsearch = @ldap_bind($ldapconn, $prefix . $new_user . $suffix, $password);
-        }
-        else if (empty($binddn)) {
+        } elseif (empty($binddn)) {
             // There is no account defined to do the LDAP search,
             // let's use anonymous bind instead
             $ldapbindsearch = @ldap_bind($ldapconn);
@@ -312,9 +311,10 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
     }
 
     /**
-     * Create LDAP connection
+     * Create LDAP connection and return it
+     * In case of error : return an array with errorCode
      *
-     * @return mixed
+     * @return array|Class|resource, array id error.
      */
     private function createConnection()
     {
@@ -334,7 +334,7 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
             $ldapserver = 'ldap://' . $ldapserver;
         }
         $ldapconn = ldap_connect($ldapserver . ':' . (int) $ldapport);
-        if (false == $ldapconn) {
+        if ($ldapconn === false) {
             // LDAP connect does not connect, but just checks the URI
             // A real connection is only created on the first following ldap_* command
             return array("errorCode" => 2, "errorMessage" => gT('LDAP URI could not be parsed.'));
@@ -361,7 +361,6 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
                 return array("errorCode" => 100, 'errorMessage' => ldap_error($ldapconn));
             }
         }
-
         return $ldapconn;
     }
 
@@ -478,9 +477,9 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
         $groupsearchbase        = $this->get('groupsearchbase');
         $groupsearchfilter      = $this->get('groupsearchfilter');
 
-        // Try to connect
+        /* Get the conexion, createConnection return an error in array, never return false */
         $ldapconn = $this->createConnection();
-        if (!is_resource($ldapconn)) {
+        if (is_array($ldapconn)) {
             $this->setAuthFailure($ldapconn['errorCode'], gT($ldapconn['errorMessage']));
             return;
         }

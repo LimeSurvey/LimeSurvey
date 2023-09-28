@@ -34,8 +34,8 @@
                 var sReplacementFieldButton = '<?php eT('Insert/edit placeholder field','js');?>';
                 $(document).on('ready pjax:scriptcomplete', function(){
                     //console.log('iGroupId: '+iGroupId);
-            // Better use try/catch to not crash JS completely
-            /*
+                // Better use try/catch to not crash JS completely
+                /*
                 try{ console.log('iGroupId: '+iGroupId); } catch (e){ console.log(e); }
                 */
                 if($('textarea').length > 0){
@@ -46,9 +46,9 @@
                         toolbarStartupExpanded : true,
                         ToolbarCanCollapse : false,
                         toolbar : '<?php echo $toolbarname; ?>',
-                        LimeReplacementFieldsSID : "<?php echo $iSurveyId; ?>",
-                        LimeReplacementFieldsGID : "<?php echo $iGroupId; ?>",
-                        LimeReplacementFieldsQID : "<?php echo $iQuestionId; ?>",
+                        LimeReplacementFieldsSID : "<?php echo intval($iSurveyId); ?>",
+                        LimeReplacementFieldsGID : "<?php echo intval($iGroupId); ?>",
+                        LimeReplacementFieldsQID : "<?php echo intval($iQuestionId); ?>",
                         LimeReplacementFieldsType: "<?php echo $sFieldType; ?>",
                         LimeReplacementFieldsAction: "<?php echo $sAction; ?>",
                         LimeReplacementFieldsPath : "<?php echo $this->createUrl("/limereplacementfields/index"); ?>",

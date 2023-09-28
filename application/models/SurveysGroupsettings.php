@@ -408,9 +408,10 @@ class SurveysGroupsettings extends LSActiveRecord
             return str_replace(array('B', 'D', 'N', 'X'), array(gT("Show both"), gT("Show group description only"), gT("Show group name only"), gT("Hide both")), $value);
         } elseif ($attribute == 'showqnumcode') {
             return str_replace(array('B', 'C', 'N', 'X'), array(gT("Show both"), gT("Show question code only"), gT("Show question number only"), gT("Hide both")), $value);
-        } else {
+        } elseif ($value == 'N' || $value == 'Y') {
             return str_replace(array('Y', 'N'), array(gT("On"), gT("Off")), $value);
         }
+        return $value;
     }
 
     /**

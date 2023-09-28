@@ -15,6 +15,9 @@
  * @property string $status status in which this entry is default 'SEND FAILED'
  * @property string $updated datetime when it was last updated
  * @property Survey $survey the surveyobject related to the entry
+ * @property string $resend_vars json encoded values needed to resend the email [message_type,Subject,uniqueid,boundary[1],boundary[2],boundary[3],MIMEBody]
+ *
+ * @psalm-suppress InvalidScalarArgument
  */
 class FailedEmail extends LSActiveRecord
 {
@@ -40,7 +43,7 @@ class FailedEmail extends LSActiveRecord
     public function rules(): array
     {
         return [
-            ['id, surveyid, responseid, email_type, recipient, error_message, created', 'required'],
+            ['id, surveyid, responseid, email_type, recipient, error_message, created, resend_vars', 'required'],
             ['email_type', 'length', 'max' => 200],
             ['recipient', 'length', 'max' => 320],
             ['status', 'length', 'max' => 20],
@@ -207,10 +210,15 @@ class FailedEmail extends LSActiveRecord
      */
     public function getResponseUrl(): string
     {
-        $response = Response::model($this->surveyid)->findByPk($this->responseid);
-        if (!empty($response)) {
-            $responseUrl = App()->createUrl("responses/view/", ['surveyId' => $this->surveyid, 'id' => $this->responseid]);
-            $responseLink = '<a href="' . $responseUrl . '" role="button" data-toggle="tooltip" title="' . gT('View response details') . '">' . $this->responseid . '</a>';
+        $survey = Survey::model()->findByPk($this->surveyid);
+        if ($survey !== null && $survey->hasResponsesTable) {
+            $response = Response::model($this->surveyid)->findByPk($this->responseid);
+            if (!empty($response)) {
+                $responseUrl = App()->createUrl("responses/view/", ['surveyId' => $this->surveyid, 'id' => $this->responseid]);
+                $responseLink = '<a href="' . $responseUrl . '" role="button" data-toggle="tooltip" title="' . gT('View response details') . '">' . $this->responseid . '</a>';
+            } else {
+                $responseLink = (string)$this->responseid;
+            }
         } else {
             $responseLink = (string)$this->responseid;
         }
@@ -225,12 +233,9 @@ class FailedEmail extends LSActiveRecord
     public function getRawMailBody(): string
     {
         $mailer = \LimeMailer::getInstance();
-        $rawMail = '';
-        if ($mailer) {
-            $mailer->setSurvey($this->surveyid);
-            $mailer->setTypeWithRaw($this->email_type, $this->language);
-            $rawMail = $mailer->rawBody;
-        }
+        $mailer->setSurvey($this->surveyid);
+        $mailer->setTypeWithRaw($this->email_type, $this->language);
+        $rawMail = $mailer->rawBody;
         return $rawMail;
     }
 
