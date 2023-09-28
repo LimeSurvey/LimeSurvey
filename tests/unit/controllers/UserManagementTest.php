@@ -114,19 +114,19 @@ class UserManagementTest extends TestBaseClass
         $oUserManagementController = new \UserManagementController('userManagement');
         $aChangeDataSet = $this->dataSet['change_admin_user'];
         $aChangeDataSet['uid'] = 1;
-        \Yii::app()->session['loginID'] = self::$newUserId;
+        $this->setUserId(self::$newUserId);
         try {
             $oUserManagementController->updateAdminUser($aChangeDataSet);
         } catch(\CException $exception) {
             if($exception->getCode() == 500) {
                 
-                \Yii::app()->session['loginID'] = 1;
+                $this->setUserId(1);
                 $this->assertTrue(true);
                 return;
             }
         }
 
-        \Yii::app()->session['loginID'] = 1;
+        $this->setUserId(1);
         throw new \Exception( 
             "Test ".__METHOD__ ." failed: \n"
             ."The admin user has been changed"

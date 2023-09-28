@@ -274,4 +274,16 @@ class TestBaseClass extends TestCase
         }
         return $results;
     }
+
+    /**
+     * Set user id
+     * @param integer $userid
+     * return void
+     */
+    public function setUserId($userid)
+    {
+        /* @todo check if session can be set */
+        \Yii::app()->session['loginID'] = $userid;
+        \Yii::app()->user->setId($userid);
+    }
 }
