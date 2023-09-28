@@ -1002,7 +1002,7 @@ class TokenDynamic extends LSActiveRecord
                 'desc' => $sColName . ' desc',
             );
         }
-        $this->setAttributeValuesToEncrypted();
+        $this->decryptEncryptAttributes('encrypt');
 
         $criteria = new LSDbCriteria();
         $criteria->compare('tid', $this->tid, false);

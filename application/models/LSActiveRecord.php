@@ -508,13 +508,4 @@ class LSActiveRecord extends CActiveRecord
             }
         }
     }
-
-    /**
-     * Encrypt the values of attributes
-     */
-    public function setAttributeValuesToEncrypted()
-    {
-        $encryptedAttributes = $this->encryptAttributeValues($this->attributes);
-        $this->setAttributes($encryptedAttributes);
-    }
 }
