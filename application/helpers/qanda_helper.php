@@ -4593,7 +4593,12 @@ function do_arraycolumns($ia)
             $aData['checkconditionFunction'] = $checkconditionFunction;
 
             // TODO: What is this? What is happening here?
-            foreach ($labels as $ansrow) {
+            foreach ($labels as $labelIdx => $ansrow) {
+
+                // create the html ids for the table rows, which are
+                // the answer options for this question type
+                $aData['labels'][$labelIdx]['myfname'] = $ia[1] . $ansrow['code'];
+
                 // AnswerCode
                 foreach ($anscode as $j => $ld) {
                     $myfname = $ia[1] . $ld;
