@@ -92,7 +92,7 @@ abstract class LSYii_Controller extends CController
 
         $dieoutput = '';
         if (version_compare(PHP_VERSION, '5.3.3', '<')) {
-                    $dieoutput .= 'This script can only be run on PHP version 5.3.3 or later! Your version: ' . PHP_VERSION . '<br />';
+            $dieoutput .= 'This script can only be run on PHP version 5.3.3 or later! Your version: ' . PHP_VERSION . '<br />';
         }
 
         if (!function_exists('mb_convert_encoding')) {
@@ -103,17 +103,15 @@ abstract class LSYii_Controller extends CController
             throw new CException($dieoutput);
         }
 
-        if (ini_get("max_execution_time") < Yii::app()->getConfig('max_execution_time')) {
-            try {
-                set_time_limit(Yii::app()->getConfig('max_execution_time')); // Maximum execution time - works only if safe_mode is off
-            } catch (Exception $e) {
-            };
+        if (ini_get("max_execution_time") < App()->getConfig('max_execution_time')) {
+            if(!@set_time_limit(App()->getConfig('max_execution_time'))) {
+                Yii::log("Unable to set time limit to " . App()->getConfig('max_execution_time'), \CLogger::LEVEL_WARNING, 'application.controller');
+            }
         }
         if (ini_get('memory_limit') != -1 && convertPHPSizeToBytes(ini_get("memory_limit")) < convertPHPSizeToBytes(Yii::app()->getConfig('memory_limit') . 'M')) {
-            try {
-                ini_set("memory_limit", Yii::app()->getConfig('memory_limit') . 'M'); // Set Memory Limit for big surveys
-            } catch (Exception $e) {
-            };
+            if (@ini_set("memory_limit", Yii::app()->getConfig('memory_limit') . 'M') === false) {
+                Yii::log("Unable to set memory_limit to " . App()->getConfig('memory_limit') . 'M', \CLogger::LEVEL_WARNING, 'application.controller');
+            }
         }
 
         // The following function (when called) includes FireBug Lite if true
@@ -131,11 +129,11 @@ abstract class LSYii_Controller extends CController
         enforceSSLMode(); // This really should be at the top but for it to utilise getGlobalSetting() it has to be here
 
         if (Yii::app()->getConfig('debug') == 1) {
-//For debug purposes - switch on in config.php
+            //For debug purposes - switch on in config.php
             @ini_set("display_errors", '1');
             error_reporting(E_ALL);
         } elseif (Yii::app()->getConfig('debug') == 2) {
-//For debug purposes - switch on in config.php
+            //For debug purposes - switch on in config.php
             @ini_set("display_errors", '1');
             error_reporting(E_ALL | E_STRICT);
         } else {
