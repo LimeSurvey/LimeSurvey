@@ -24,10 +24,10 @@ $scriptVariables = [
     'lspickurl'        => Yii::app()->createUrl('/questionAdministration/getLabelsetPicker'),
     'sCheckLabelURL'   => Yii::app()->createUrl('/questionAdministration/checkLabel'),
     'lsextraoptionsurl'     => Yii::app()->createUrl(
-            'questionAdministration/ajaxLoadExtraOptions',
-            [
-                'questionId' => Yii::app()->request->getParam('questionId')
-            ]
+        'questionAdministration/ajaxLoadExtraOptions',
+        [
+            'questionId' => Yii::app()->request->getParam('qid')
+        ]
     ),
     'subquestions'     => [
         'newansweroption_text'     => gT('New subquestion','js'),

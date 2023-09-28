@@ -114,9 +114,9 @@ class QuestionAdministrationController extends LSBaseController
      * @return void
      * @throws CHttpException
      */
-    public function actionEdit(int $questionId, string $tabOverviewEditor = null)
+    public function actionEdit(int $qid, string $tabOverviewEditor = null)
     {
-        $questionId = (int) $questionId;
+        $questionId = (int) $qid;
         if (!in_array($tabOverviewEditor, ['overview', 'editor'], true)) {
             $tabOverviewEditor = null;
         }
