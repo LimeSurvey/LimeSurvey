@@ -21,14 +21,20 @@ For the survey navigator ("Next", "Back", etc.), see: navigation/navigator.twig
     {% set navClass = "navbar-default bg-primary" %}
 {% endif %}
 <!-- Bootstrap Navigation Bar -->
+{# ShowMenu used for navbar-toggler and navbar-collapse #}
+{% set ShowMenu = (aSurveyInfo.aNavigator.load.show == "Y" or aSurveyInfo.aNavigator.save.show == "Y")
+    or ((aSurveyInfo.bShowClearAll == true or aSurveyInfo.bShowClearAll == null) and aSurveyInfo.options.showclearall == 'on')
+    or (aSurveyInfo.aQuestionIndex.bShow == true and aSurveyInfo.format != 'A')
+    or (aSurveyInfo.alanguageChanger.show)
+%}
 <div id="survey-nav" class="navbar {{ navClass }} navbar-expand-md fixed-top border-bottom pt-0 pb-0">
     <div class="container-fluid">
-     <a class="navbar-brand" href="#"></a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar"
-                aria-controls="small-screens-menus" aria-expanded="false">
-
-            <span class="navbar-toggler-icon"></span>
-        </button>
+        {% if ShowMenu %}
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar"
+                    aria-controls="small-screens-menus" aria-expanded="false">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        {% endif %}
         {# Logo option #}
         {% if( aSurveyInfo.options.brandlogo == "on") %}
             <div class="navbar-brand logo-container d-none d-md-block">
@@ -39,13 +45,15 @@ For the survey navigator ("Next", "Back", etc.), see: navigation/navigator.twig
                 {{ aSurveyInfo.name }}
             </div>
         {% endif %}
-        <div id="navbar" class="collapse navbar-collapse navbar-nav-scroll pt-2">
-            <ul class="nav navbar-nav navbar-action-link navbar-right ms-auto">
-                {{ include('./subviews/navigation/save_links.twig') }}
-                {{ include('./subviews/navigation/clearall_links.twig') }}
-                {{ include('./subviews/navigation/question_index_menu.twig') }}
-                {{ include('./subviews/navigation/language_changer_top_menu.twig') }}
-            </ul>
-        </div>
+        {% if ShowMenu %}
+            <div id="navbar" class="collapse navbar-collapse navbar-nav-scroll pt-2">
+                <ul class="nav navbar-nav navbar-action-link navbar-right ms-auto">
+                    {{ include('./subviews/navigation/save_links.twig') }}
+                    {{ include('./subviews/navigation/clearall_links.twig') }}
+                    {{ include('./subviews/navigation/question_index_menu.twig') }}
+                    {{ include('./subviews/navigation/language_changer_top_menu.twig') }}
+                </ul>
+            </div>
+        {% endif %}
     </div>
 </div>
