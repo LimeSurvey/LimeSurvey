@@ -712,9 +712,6 @@ class LSYii_Application extends CWebApplication
      */
     public function getCurrentUserId()
     {
-        if (App() instanceof CConsoleApplication) {
-            return null;
-        }
         if(empty(App()->session['loginID'])) {
             // NULL for guest
             return App()->session['loginID'];
