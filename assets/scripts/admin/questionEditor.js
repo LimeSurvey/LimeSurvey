@@ -1925,16 +1925,16 @@ $(document).on('ready pjax:scriptcomplete', function () {
 
             // Update the side-bar.
             LS.EventBus.$emit('updateSideBar', {'updateQuestions': true});
+            reloadExtraOptions();
 
             if (textStatus === 'success') {
               // Show confirm message.
-              LS.LsGlobalNotifier.createAlert(json.message + 'test', 'success', {showCloseButton: true});
+              LS.LsGlobalNotifier.createAlert(json.message, 'success', {showCloseButton: true});
             } else {
               // Show error message.
               LS.LsGlobalNotifier.createAlert(json.message, 'danger', {showCloseButton: true});
             }
             updateQuestionSummary();
-            reloadExtraOptions();
           },
           error: (data) => {
             $('#ls-loading').hide();
