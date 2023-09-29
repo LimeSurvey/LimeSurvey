@@ -118,14 +118,14 @@ class UserManagementTest extends TestBaseClass
         try {
             $oUserManagementController->updateAdminUser($aChangeDataSet);
         } catch(\CException $exception) {
-            if($exception->getCode() == 403) {
-                
+            if($exception->statusCode == 403) {
                 \Yii::app()->session['loginID'] = 1;
                 $this->assertTrue(true);
                 return;
             }
+            /* throw the exception : user was not updated, but bad exception happen */
+            throw $exception;
         }
-
         \Yii::app()->session['loginID'] = 1;
         throw new \Exception( 
             "Test ".__METHOD__ ." failed: \n"

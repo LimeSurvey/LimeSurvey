@@ -973,7 +973,7 @@ class User extends LSActiveRecord
     public function canEdit($managerId = null)
     {
         if (is_null($managerId)) {
-            Permission::model()->getUserId();
+            $managerId = Permission::model()->getUserId();
         }
         /* user can update himself */
         if ($managerId == $this->uid) {
