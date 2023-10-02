@@ -994,7 +994,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
     }
 
     /**
-     * cacheSurvey uses a cache to store a result. Use this method to force clearing that cache.
+     * findByPk uses a cache to store a result. Use this method to force clearing that cache.
      */
     public function resetCache(): void
     {
