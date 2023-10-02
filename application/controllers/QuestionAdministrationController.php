@@ -2964,11 +2964,13 @@ class QuestionAdministrationController extends LSBaseController
                     )
                 ) {
                     throw (
-                    new LSUserException(
-                        500,
-                        gT('Could not save subquestion')
-                    )
-                    )->setDetailedErrors(['Subquestion codes must be unique.']);
+                        new LSUserException(
+                            500,
+                            gT('Could not save subquestion')
+                        )
+                    )->setDetailedErrors(
+                        ['Subquestion codes must be unique.']
+                    );
                 }
                 $codes[$subquestionId][$scaleId][] = $data['code'];
             }
