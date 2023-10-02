@@ -26,7 +26,7 @@ $scriptVariables = [
     'lsextraoptionsurl'     => Yii::app()->createUrl(
         'questionAdministration/ajaxLoadExtraOptions',
         [
-            'questionId' => Yii::app()->request->getParam('qid')
+            'questionId' => $qid
         ]
     ),
     'subquestions'     => [

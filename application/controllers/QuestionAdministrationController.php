@@ -114,9 +114,9 @@ class QuestionAdministrationController extends LSBaseController
      * @return void
      * @throws CHttpException
      */
-    public function actionEdit(int $qid, string $tabOverviewEditor = null)
+    public function actionEdit(int $questionId, string $tabOverviewEditor = null)
     {
-        $questionId = (int) $qid;
+        $questionId = (int) $questionId;
         if (!in_array($tabOverviewEditor, ['overview', 'editor'], true)) {
             $tabOverviewEditor = null;
         }
@@ -195,6 +195,7 @@ class QuestionAdministrationController extends LSBaseController
         $jsVariablesHtml = $this->renderPartial(
             '/admin/survey/Question/_subQuestionsAndAnwsersJsVariables',
             [
+                'qid'               => $question->qid,
                 'anslangs'          => $question->survey->allLanguages,
                 // TODO
                 'assessmentvisible' => false,
