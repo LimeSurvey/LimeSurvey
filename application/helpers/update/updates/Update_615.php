@@ -19,6 +19,7 @@ class Update_615 extends DatabaseUpdateBase
     /**
      * @throws CDbException
      * @throws CException
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     private function deleteDuplicateTemplateConfigurationEntries()
     {
