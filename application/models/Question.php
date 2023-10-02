@@ -190,7 +190,7 @@ class Question extends LSActiveRecord
                         )
                     ),
                     'message' => gT('Subquestion codes must be unique.'),
-                    'except' => 'save-set'
+                    'except' => 'save-all'
             );
             /* Disallow other title if question allow other */
             $oParentQuestion = Question::model()->findByPk(array("qid" => $this->parent_qid));
