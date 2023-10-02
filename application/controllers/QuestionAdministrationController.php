@@ -272,7 +272,7 @@ class QuestionAdministrationController extends LSBaseController
             throw new CHttpException(404, gT('Invalid question id'));
         }
 
-        if (!Permission::model()->hasSurveyPermission($question->sid, 'surveycontent', 'update')) {
+        if (!Permission::model()->hasSurveyPermission($question->sid, 'surveycontent', 'read')) {
             Yii::app()->user->setFlash('error', gT("Access denied"));
             $this->redirect(Yii::app()->request->urlReferrer);
         }
