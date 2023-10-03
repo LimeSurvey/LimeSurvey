@@ -1114,18 +1114,29 @@ class UserManagementController extends LSBaseController
 
         if ($iUserGroupId) {
             $oUserGroup = UserGroup::model()->findByPk($iUserGroupId);
-            $aResults = [];
-
-            foreach ($aItems as $sItem) {
-                $aResults[$sItem]['title'] = '';
-                $model = $this->loadModel($sItem);
-                $aResults[$sItem]['title'] = $model->users_name;
-                if (!$oUserGroup->hasUser($sItem)) {
-                    $aResults[$sItem]['result'] = $oUserGroup->addUser($sItem);
-                } else {
-                    $aResults[$sItem]['result'] = false;
-                    $aResults[$sItem]['error'] = gT('User is already a member of the group.');
+            /* check if have permission */
+            if (
+                Permission::model()->hasGlobalPermission('usergroups', 'update') /* Global update permission @see UserGroupController->actionEdit */
+                || $oUserGroup->requestEditGroup($oUserGroup->ugid, Yii::app()->session['loginID'])  /* This user group permission */
+            ) {
+                $aResults = [];
+                foreach ($aItems as $sItem) {
+                    $aResults[$sItem]['title'] = '';
+                    $model = $this->loadModel($sItem);
+                    $aResults[$sItem]['title'] = $model->users_name;
+                    if (!$oUserGroup->hasUser($sItem)) {
+                        $aResults[$sItem]['result'] = $oUserGroup->addUser($sItem);
+                    } else {
+                        $aResults[$sItem]['result'] = false;
+                        $aResults[$sItem]['error'] = gT('User is already a member of the group.');
+                    }
                 }
+            } else {
+                $aResults[0] = [
+                    'title' => gT("All"),
+                    'result' => false,
+                    'error' => gT('You don\'t have permission on this group.')
+                ];
             }
         } else {
             foreach ($aItems as $sItem) {
