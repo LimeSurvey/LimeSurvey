@@ -2906,7 +2906,7 @@ class QuestionAdministrationController extends LSBaseController
                     $subquestion->relevance = $data['relevance'];
                 }
                 $subquestion->scale_id = $scaleId;
-                $subquestion->setScenario('save-all');
+                $subquestion->setScenario('saveall');
                 if (!$subquestion->save()) {
                     array_push($errorQuestions, $subquestion);
                     continue;
