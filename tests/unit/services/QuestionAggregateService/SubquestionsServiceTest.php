@@ -180,19 +180,13 @@ class SubquestionsServiceTest extends TestBaseClass
             L10nService::class
         )->makePartial();
 
-        // The code under test updates a Question.
-        // Configure mock model question to return mock
-        // - question for update
-        $updateQuestion = Mockery::mock(Question::class)
-            ->makePartial();
-        $updateQuestion
-            ->shouldReceive('update')
-            ->andReturn(false);
+        // findByAttributes should return false
+        // - to simulate subquestion not found
         $modelQuestion = Mockery::mock(Question::class)
             ->makePartial();
         $modelQuestion
             ->shouldReceive('findByAttributes')
-            ->andReturn($updateQuestion);
+            ->andReturn(false);
 
         // Create a mock of the question we are editing
         $question = Mockery::mock(Question::class)
