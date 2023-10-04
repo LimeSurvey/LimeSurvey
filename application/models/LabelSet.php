@@ -289,7 +289,7 @@ class LabelSet extends LSActiveRecord implements PermissionInterface
     }
 
     /**
-     * Sanitize string for any attribute
+     * Sanitize string for any attribute, XSS and XSS in javascript function too.
      * @todo create a Validator to be used for all such element : no need HTML, informative input used only for admin purpose.
      * @param string $attribute to sanitize
      * @return string sanitized attribute
