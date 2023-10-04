@@ -635,7 +635,7 @@ class UserManagementController extends LSBaseController
         $oUser = User::model()->findByPk($userId);
 
         $userManager = new UserManager(Yii::app()->user, $oUser);
-        if (!$userManager->canAssignRole()) {
+        if (!$userManager->canAssignRole() || $oUser->uid == App()->user->getId()) {
             return $this->renderPartial(
                 'partial/error',
                 ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
