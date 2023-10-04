@@ -90,35 +90,20 @@ class SubQuestionsService
      */
     private function storeSubquestions(Question $question, $subquestionsArray, $surveyActive = false)
     {
-        // To avoid duplicate code errors when moving codes
-        // - by typing instead of dragging, we add a temporary code prefix
-        // - which is later removed after the question is saved
-        $tempCodePrefix = 'X';
+        $this->validateSubquestionCodes($subquestionsArray);
         $questionOrder = 0;
         $subquestions = [];
-        foreach ($subquestionsArray as $subquestionArray) {
+        foreach ($subquestionsArray as $subquestionId => $subquestionArray) {
             foreach ($subquestionArray as $scaleId => $data) {
                 $subquestion = $this->storeSubquestion(
                     $question,
+                    $subquestionId,
                     $scaleId,
                     $data,
-                    $tempCodePrefix,
                     $questionOrder,
                     $surveyActive
                 );
                 $subquestions[] = $subquestion;
-            }
-        }
-        // Remove temporary code prefix
-        foreach ($subquestions as $subquestion) {
-            $subquestion->title = substr(
-                $subquestion->title,
-                strlen($tempCodePrefix)
-            );
-            if (!$subquestion->save()) {
-                throw new PersistErrorException(
-                    sprintf('Could not save subquestion %s', $subquestion->qid)
-                );
             }
         }
         if (false == $surveyActive) {
@@ -134,6 +119,7 @@ class SubQuestionsService
      * Used when survey is *not* activated.
      *
      * @param Question $question
+     * @param int $subquestionId
      * @param int $scaleId
      * @param array $data
      * @param int &$questionOrder
@@ -144,34 +130,31 @@ class SubQuestionsService
      */
     private function storeSubquestion(
         Question $question,
+        $subquestionId,
         $scaleId,
         $data,
-        $tempCodePrefix,
         &$questionOrder,
         $surveyActive = false
     ) {
-        $subquestion = null;
         if (!isset($data['code'])) {
             throw new BadRequestException('Internal error: Missing mandatory field "code" for question');
         }
-        if (isset($data['oldcode'])) {
-            // If the subquestion with given code does not exist
-            // - but subquestion with old code exists, update it.
-            $subquestion = $this->modelQuestion->findByAttributes([
-                'sid' => $question->sid,
-                'parent_qid' => $question->qid,
-                'title' => $data['oldcode'],
-                'scale_id' => $scaleId
-            ]);
-        }
+        // If the subquestion with given code does not exist
+        // - but subquestion with old code exists, update it.
+        $subquestion = $this->modelQuestion->findByAttributes([
+            'qid' => $subquestionId,
+            'scale_id' => $scaleId,
+            'sid' => $question->sid,
+            'parent_qid' => $question->qid
+        ]);
         if (!$subquestion) {
             if ($surveyActive) {
-                throw new NotFoundException('Subquestion with code "' . $data['code'] . '" not found');
+                throw new NotFoundException('Subquestion with id "' . $subquestionId . '" not found');
             } else {
                 $subquestion = DI::getContainer()->make(Question::class);
             }
         }
-        $subquestion->title = $tempCodePrefix . $data['code'];
+        $subquestion->title = $data['code'];
         $subquestion->sid = $question->sid;
         $subquestion->gid = $question->gid;
         $subquestion->parent_qid = $question->qid;
@@ -181,6 +164,7 @@ class SubQuestionsService
             $subquestion->relevance = $data['relevance'];
         }
         $subquestion->scale_id = $scaleId;
+        $subquestion->setScenario('saveall');
         if (!$subquestion->save()) {
             throw new PersistErrorException('Could not save subquestion');
         }
@@ -191,6 +175,40 @@ class SubQuestionsService
         );
 
         return $subquestion;
+    }
+
+    /**
+     * Validate subquestion codes.
+     *
+     * @param array $subquestionsArray Data from request.
+     * @return void
+     * @throws PersistErrorException
+     */
+    private function validateSubquestionCodes($subquestionsArray)
+    {
+        // ensure uniqueness of codes
+        $codes = [];
+        foreach ($subquestionsArray as $subquestionId => $subquestionArray) {
+            if (!isset($codes[$subquestionId])) {
+                $codes[$subquestionId] = [];
+            }
+            foreach ($subquestionArray as $scaleId => $data) {
+                if (!isset($codes[$subquestionId][$scaleId])) {
+                    $codes[$subquestionId][$scaleId] = [];
+                }
+                if (
+                    in_array(
+                        $data['code'],
+                        $codes[$subquestionId][$scaleId]
+                    )
+                ) {
+                    throw new PersistErrorException(
+                        'Subquestion codes must be unique'
+                    );
+                }
+                $codes[$subquestionId][$scaleId][] = $data['code'];
+            }
+        }
     }
 
     /**
