@@ -468,8 +468,6 @@ class QuestionAdministrationController extends LSBaseController
             }
 
             if ($question->survey->active == 'N') {
-                // Clean subquestions before save.
-                $question->deleteAllSubquestions();
                 // If question type has subquestions, save them.
                 if ($question->questionType->subquestions > 0) {
                     $this->storeSubquestions(
@@ -2766,9 +2764,21 @@ class QuestionAdministrationController extends LSBaseController
     private function storeSubquestions($question, $subquestionsArray)
     {
         $questionOrder = 0;
-        foreach ($subquestionsArray as $subquestionId => $subquestionArray) {
+        $subquestionIds = [];
+        foreach ($subquestionsArray as $subquestionArray) {
             foreach ($subquestionArray as $scaleId => $data) {
-                $subquestion = new Question();
+                $subquestion = null;
+                if (isset($data['oldcode'])) {
+                    $subquestion = Question::model()->findByAttributes([
+                        'sid' => $question->sid,
+                        'parent_qid' => $question->qid,
+                        'title' => $data['oldcode']
+                    ]);
+                }
+                if (!$subquestion) {
+                    $subquestion = new Question();
+                }
+
                 $subquestion->sid        = $question->sid;
                 $subquestion->gid        = $question->gid;
                 $subquestion->parent_qid = $question->qid;
@@ -2790,8 +2800,13 @@ class QuestionAdministrationController extends LSBaseController
                         ->setDetailedErrorsFromModel($subquestion);
                 }
                 $subquestion->refresh();
+                $subquestionIds[] = $subquestion->qid;
                 foreach ($data['subquestionl10n'] as $lang => $questionText) {
-                    $l10n = new QuestionL10n();
+                    $l10n = QuestionL10n::model()->findByAttributes([
+                        'qid' => $subquestion->qid,
+                        'language' => $lang
+                    ]);
+                    $l10n = $l10n ?? new QuestionL10n();
                     $l10n->qid = $subquestion->qid;
                     $l10n->language = $lang;
                     $l10n->question = $questionText;
@@ -2802,6 +2817,7 @@ class QuestionAdministrationController extends LSBaseController
                 }
             }
         }
+        $question->deleteAllSubquestions($subquestionIds);
     }
 
     /**
