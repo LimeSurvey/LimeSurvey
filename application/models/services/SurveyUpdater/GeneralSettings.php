@@ -100,11 +100,13 @@ class GeneralSettings
         //       currently may differ from the ones injected in this service.
         //       That's why we set the user id explicitely from the injected model instead of having
         //       the withListRight to use the user from Yii App
-        $owner = $this->modelUser->withListRight($this->yiiApp->user->id)->findByPk($input['owner_id']);
-        if (!isset($owner)) {
-            throw new PermissionDeniedException(
-                'Permission denied'
-            );
+        if (!empty($input['owner_id'])) {
+            $owner = $this->modelUser->withListRight($this->yiiApp->user->id)->findByPk($input['owner_id']);
+            if (!isset($owner)) {
+                throw new PermissionDeniedException(
+                    'Permission denied'
+                );
+            }
         }
 
         return $this->updateGeneralSettings(
