@@ -329,7 +329,7 @@ class SurveysGroupsettings extends LSActiveRecord
                 $instance->showInherited = 1;
             }
 
-            // set instance options from survey model, used for frontend redering
+            // set instance options from survey model, used for frontend rendering
             if (($oSurvey !== null && $bRealValues)) {
                 foreach ($instance->optionAttributes as $key => $attribute) {
                     $instance->oOptions->{$attribute} = $oSurvey->$attribute;
@@ -353,6 +353,13 @@ class SurveysGroupsettings extends LSActiveRecord
                     $instance->oOptions->{$attribute} = $model->$attribute;
                     $instance->oOptionLabels->{$attribute} = self::translateOptionLabels($instance, $attribute, $model->$attribute);
                 }
+            }
+        }
+
+        if (!$instance->shouldInherit('template')
+            && !Template::checkIfTemplateExists($instance->oOptions->template)) {
+            if ((!empty($model->SurveysGroups) && $model->SurveysGroups->parent_id !== null) || $iSurveyGroupId === 0) {
+                $instance->oOptions->template = 'inherit';
             }
         }
 
