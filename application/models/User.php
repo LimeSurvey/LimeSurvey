@@ -460,7 +460,6 @@ class User extends LSActiveRecord
         $permission_users_read = Permission::model()->hasGlobalPermission('users', 'read');
         $permission_users_update = Permission::model()->hasGlobalPermission('users', 'update');
         $permission_users_delete = Permission::model()->hasGlobalPermission('users', 'delete');
-
         // User is owned or created by you
         $ownedOrCreated = $this->parent_id == App()->session['loginID'];
 
