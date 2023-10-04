@@ -34,6 +34,13 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.6.39 (build 230926) to 5.6.40 (build 231005) October 4, 2023
+-Fixed issue #18817: Editing a question deletes default answers (#3457) (Gabriel Jenik)
+-Fixed issue #18648: Unable to upload a file with theme animations enabled (#3356) (Gabriel Jenik)
+-Fixed issue #18439: Link set when create user are unusuable in text view (#3335) (Gabriel Jenik)
+-Fixed issue #18294: User was not added to group created automatically (#2581) (Denis Chenu)
+
+
 Changes from 5.6.38 (build 230919) to 5.6.39 (build 230926) September 25, 2023
 -Fixed issue #19099: [security] XSS vulnerability caused by themeOptions/importManifest (#3472) (Denis Chenu)
 -Fixed issue #19096: Array by column answer options are not processed by EM before display (#3464) (#3476) (Matthew)
