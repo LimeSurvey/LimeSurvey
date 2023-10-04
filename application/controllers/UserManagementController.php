@@ -676,7 +676,7 @@ class UserManagementController extends LSBaseController
         $oUser = User::model()->findByPk($iUserId);
 
         $userManager = new UserManager(Yii::app()->user, $oUser);
-        if (!$userManager->canAssignRole()) {
+        if (!$userManager->canAssignRole() || $oUser->uid == App()->user->getId()) {
             return Yii::app()->getController()->renderPartial('/admin/super/_renderJson', [
                 "data" => [
                     'success' => false,

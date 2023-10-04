@@ -562,6 +562,7 @@ class User extends LSActiveRecord
         $changeOwnershipUrl = Yii::app()->getController()->createUrl('userManagement/takeOwnership');
         $setTemplatePermissionsUrl = Yii::app()->getController()->createUrl('userManagement/userTemplatePermissions', ['userid' => $this->uid]);
         $deleteUrl = Yii::app()->getController()->createUrl('userManagement/deleteConfirm', ['userid' => $this->uid, 'user' => $this->full_name]);
+        $userManager = new UserManager(App()->user, $this);
 
         $iconBtnRow = "<div class='icon-btn-row'>";
         $iconBtnRowEnd = "</div>";
@@ -629,7 +630,7 @@ class User extends LSActiveRecord
         // Superadmins can do everything, no need to do further filtering
         if (Permission::model()->hasGlobalPermission('superadmin', 'read')) {
             //Prevent users from modifying the original superadmin. Original superadmin can change the password on their account setting!
-            if ($this->uid == 1) {
+            if (Permission::isForcedSuperAdmin($this->uid)) {
                 $editUserButton = "";
             }
 
@@ -641,7 +642,7 @@ class User extends LSActiveRecord
                 $iconBtnRow,
                 $editUserButton,
                 $editPermissionButton,
-                $addRoleButton,
+                $userManager->canAssignRole() ? $addRoleButton : '',
                 "\n",
                 $userDetail,
                 $editTemplatePermissionButton,
