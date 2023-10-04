@@ -34,6 +34,36 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.2.9 (build 230925) to 6.2.10 (build 231004) October 4, 2023
+-Fixed issue: Error on deactivation with message "11 arguments are required, 9 given" (#3490) (Mohab E)
+-Fixed issue #CR-1305: Always show "Edit default answers" option (Mohab E)
+-Fixed issue #CR-1305: Activated defaultvalues for 5pointchoice & gender (Mohab E)
+-Fixed issue #CR-1319: Global surveytheme is not inherited by global survey surveytheme (#3465) (Mohab E)
+-Fixed issue #CR-1305: Structure tab question menu should always show "Edit default answers" option (#3367) (Mohab E)
+-Fixed issue #19136: Undefined variable in admin global settings general subview (#3499) (Matthew)
+-Fixed issue #19115: Menu toggler appears when not needed (#3494) (Denis Chenu)
+-Fixed issue #19112: [security] Store XSS at Label sets list (#3503) (Denis Chenu)
+-Fixed issue #19098: Add XSD files to allowed files for plugin uploads (Marko Bischof)
+-Fixed issue #18995: [security] Confidentiality issue about username (#3447) (Gabriel Jenik)
+-Fixed issue #18294: User can not see group created and user in group created (#3504) (Denis Chenu)
+-Fixed issue #18268: Unable to get any page debug set an set_time_limit disable (#2540) (Denis Chenu)
+#Updated translation: Welsh by ChrisWilliams
+#Updated translation: Ukrainian by DermanskiyIM
+#Updated translation: Turkish by kayazeren
+#Updated translation: Slovak by jelen1
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Greek by baltzis
+#Updated translation: German by c_schmitz, DerOlli
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
 Changes from 6.2.8 (build 230921) to 6.2.9 (build 230925) September 25, 2023
 -Fixed issue #19100: [security] Store DOM XSS when creating a survey (#3469) (Denis Chenu)
 -Fixed issue #19099: [security] XSS vulnerability caused by themeOptions/importManifest (#3483) (Denis Chenu)
