@@ -182,7 +182,7 @@ class SubQuestionsService
      *
      * @param array $subquestionsArray Data from request.
      * @return void
-     * @throws LSUserException
+     * @throws PersistErrorException
      */
     private function validateSubquestionCodes($subquestionsArray)
     {
