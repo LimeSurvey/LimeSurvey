@@ -64,7 +64,7 @@ class UserManager
             return false;
         }
 
-        return Permission::model()->hasGlobalPermission('superadmin', 'create', $this->managingUser->id);
+        return Permission::model()->hasGlobalPermission('superadmin', 'read', $this->managingUser->id);
     }
 
     /**
