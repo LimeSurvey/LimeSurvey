@@ -527,7 +527,7 @@ class User extends LSActiveRecord
             'linkAttributes'   => [
                 'data-href' => $setRoleUrl,
             ],
-            'enabledCondition' => $userManager->canAssignRole() && $this->uid != App()->user->getId()
+            'enabledCondition' =>
                 ($permission_superadmin_read
                     && !(Permission::isForcedSuperAdmin($this->uid)
                         || $this->uid == App()->user->getId()
