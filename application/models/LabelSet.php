@@ -296,6 +296,6 @@ class LabelSet extends LSActiveRecord implements PermissionInterface
      */
     public static function sanitizeAttribute($attribute)
     {
-        return str_replace( ['<','>','&','\'','"'], "", $attribute);
+        return str_replace(['<','>','&','\'','"'], "", $attribute);
     }
 }
