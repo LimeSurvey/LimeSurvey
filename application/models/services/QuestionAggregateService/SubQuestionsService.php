@@ -188,25 +188,22 @@ class SubQuestionsService
     {
         // ensure uniqueness of codes
         $codes = [];
-        foreach ($subquestionsArray as $subquestionId => $subquestionArray) {
-            if (!isset($codes[$subquestionId])) {
-                $codes[$subquestionId] = [];
-            }
+        foreach ($subquestionsArray as $subquestionArray) {
             foreach ($subquestionArray as $scaleId => $data) {
-                if (!isset($codes[$subquestionId][$scaleId])) {
-                    $codes[$subquestionId][$scaleId] = [];
+                if (!isset($codes[$scaleId])) {
+                    $codes[$scaleId] = [];
                 }
                 if (
                     in_array(
                         $data['code'],
-                        $codes[$subquestionId][$scaleId]
+                        $codes[$scaleId]
                     )
                 ) {
                     throw new PersistErrorException(
                         'Subquestion codes must be unique'
                     );
                 }
-                $codes[$subquestionId][$scaleId][] = $data['code'];
+                $codes[$scaleId][] = $data['code'];
             }
         }
     }
