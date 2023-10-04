@@ -1166,6 +1166,11 @@ class QuestionAdministrationController extends LSBaseController
         $iSurveyID = (int) App()->request->getPost('sid', 0);
         $gid = (int) App()->request->getPost('gid', 0);
 
+        if (!Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'import')) {
+            App()->user->setFlash('error', gT("Access denied"));
+            $this->redirect(array('questionAdministration/importView?surveyid=' . $iSurveyID . '&groupid=' . $gid));
+        }
+
         $jumptoquestion = (bool)App()->request->getPost('jumptoquestion', 1);
 
         $oSurvey = Survey::model()->findByPk($iSurveyID);
