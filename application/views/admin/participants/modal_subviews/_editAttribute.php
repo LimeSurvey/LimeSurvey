@@ -137,7 +137,7 @@
                         <label class=" form-label" for="ParticipantAttributeNameLanguages_'.$languageKey.'">'.getLanguageNameFromCode($languageKey,false).'</label>
                         <div class="d-flex flex-row align-items-center flex-wrap">
                             <div class=" col-11">
-                                <input class="form-control" name="ParticipantAttributeNameLanguages['.$languageKey.']" id="ParticipantAttributeNameLanguages_'.$languageKey.'" type="text" value="'.$languageOfAttribute.'">
+                                <input class="form-control" name="ParticipantAttributeNameLanguages['.$languageKey.']" id="ParticipantAttributeNameLanguages_'.$languageKey.'" type="text" value="'.CHtml::encode($languageOfAttribute).'">
                             </div>
                             <div class="col-1">
                                 <button class="btn btn-outline-secondary ex-form-group ms-2 action_delLanguageField">
