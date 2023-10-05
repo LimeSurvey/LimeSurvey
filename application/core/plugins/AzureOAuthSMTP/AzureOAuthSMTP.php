@@ -118,7 +118,7 @@ class AzureOAuthSMTP extends SmtpOAuthPluginBase
             'accessType' => 'offline',
             'prompt' => 'consent',
         ];
-        return new Greew\OAuth2\Client\Provider\Azure($params);
+        return new \Greew\OAuth2\Client\Provider\Azure($params);
     }
 
     /**
