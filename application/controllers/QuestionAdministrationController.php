@@ -1168,7 +1168,14 @@ class QuestionAdministrationController extends LSBaseController
 
         if (!Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'import')) {
             App()->user->setFlash('error', gT("Access denied"));
-            $this->redirect(array('questionAdministration/importView?surveyid=' . $iSurveyID . '&groupid=' . $gid));
+            $redirect = Yii::app()->createUrl(
+                'questionAdministration/importView',
+                [
+                    'surveyid' => $iSurveyID,
+                    'groupid' => $gid,
+                ]
+            );
+            $this->redirect($redirect);
         }
 
         $jumptoquestion = (bool)App()->request->getPost('jumptoquestion', 1);
