@@ -23,6 +23,8 @@ use LimeSurvey\Models\Services\Exception\{
  */
 class AnswersService
 {
+    use ValidateTrait;
+
     /**
      * Based on QuestionAdministrationController::actionSaveQuestionData()
      *
@@ -58,6 +60,7 @@ class AnswersService
      */
     private function storeAnswerOptions(Question $question, $optionsArray)
     {
+        $this->validateCodes($optionsArray);
         $answerIds = [];
         $count = 0;
         foreach ($optionsArray as $answerId => $optionArray) {
@@ -76,7 +79,7 @@ class AnswersService
      * Different from update during active survey?
      *
      * @param Question $question
-     * @param int $answerId
+     * @param $answerId
      * @param array $optionArray
      * @param int &$count
      * @return int
@@ -87,7 +90,7 @@ class AnswersService
      */
     private function storeAnswerOption(
         Question $question,
-        int $answerId,
+        $answerId,
         array $optionArray,
         int &$count
     ): int {
@@ -118,6 +121,7 @@ class AnswersService
                         : 0,
                 'scale_id'         => $scaleId
             ]);
+            $answer->setScenario('saveall');
             $count++;
 
             if (!$answer->save()) {
