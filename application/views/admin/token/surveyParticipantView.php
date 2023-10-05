@@ -131,7 +131,7 @@ echo viewHelper::getViewTestTag('surveyParticipantsIndex');
                     'columns'               => $model->getAttributesForGrid(),
                     'ajaxUpdate'            => 'token-grid',
                     'ajaxType'              => 'POST',
-                    'lsAfterAjaxUpdate'       => ['onUpdateTokenGrid();']
+                    'lsAfterAjaxUpdate'       => ['onUpdateTokenGrid();', 'switchStatusOfListActions();']
                 ]);
                 ?>
             </div>

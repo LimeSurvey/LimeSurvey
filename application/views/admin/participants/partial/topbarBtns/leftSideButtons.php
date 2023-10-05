@@ -73,7 +73,9 @@ if (Permission::model()->hasGlobalPermission('superadmin', 'read')) {
             ],
         ]
     );
+}
 
+if (Permission::model()->hasGlobalPermission('participantpanel', 'read')) {
     $this->widget(
         'ext.ButtonWidget.ButtonWidget',
         [

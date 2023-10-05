@@ -1601,12 +1601,21 @@ class Survey extends LSActiveRecord implements PermissionInterface
                 'join' => $groupJoins,
             ]);
             $groupCondition = "t.gsid=:gsid";
-            $groupCondition .= " OR parentGroup2.gsid=:gsid";
-            $groupCondition .= " OR parentGroup3.gsid=:gsid";
-            $groupCondition .= " OR parentGroup4.gsid=:gsid";
-            $groupCondition .= " OR parentGroup5.gsid=:gsid";
+            $groupCondition .= " OR parentGroup2.gsid=:gsid2"; // MSSQL issue with single param for multiple value, issue #19072
+            $groupCondition .= " OR parentGroup3.gsid=:gsid3";
+            $groupCondition .= " OR parentGroup4.gsid=:gsid4";
+            $groupCondition .= " OR parentGroup5.gsid=:gsid5";
             $criteria->addCondition($groupCondition, 'AND');
-            $criteria->params = array_merge($criteria->params, [':gsid' => $this->gsid]);
+            $criteria->params = array_merge(
+                $criteria->params,
+                [
+                    ':gsid' => $this->gsid,
+                    ':gsid2' => $this->gsid,
+                    ':gsid3' => $this->gsid,
+                    ':gsid4' => $this->gsid,
+                    ':gsid5' => $this->gsid
+                ]
+            );
         }
 
         // Active filter

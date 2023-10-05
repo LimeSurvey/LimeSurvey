@@ -52,6 +52,6 @@ class TransformerOutputQuestion extends TransformerOutputActiveRecord
             $output[$value['qid']] = $value;
         }
 
-        return (object) $collection;
+        return (object) $output;
     }
 }

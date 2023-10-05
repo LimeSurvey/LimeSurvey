@@ -4,12 +4,16 @@ namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
 use Survey;
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputSurvey;
-use LimeSurvey\Models\Services\Exception\PersistErrorException;
-use LimeSurvey\Models\Services\SurveyUpdater;
-use LimeSurvey\ObjectPatch\Op\OpInterface;
-use LimeSurvey\ObjectPatch\OpHandler\OpHandlerException;
-use LimeSurvey\ObjectPatch\OpHandler\OpHandlerInterface;
-use LimeSurvey\ObjectPatch\OpType\OpTypeUpdate;
+use LimeSurvey\Models\Services\{
+    SurveyUpdater,
+    Exception\PersistErrorException
+};
+use LimeSurvey\ObjectPatch\{
+    Op\OpInterface,
+    OpHandler\OpHandlerException,
+    OpHandler\OpHandlerInterface,
+    OpType\OpTypeUpdate
+};
 
 class OpHandlerSurveyUpdate implements OpHandlerInterface
 {

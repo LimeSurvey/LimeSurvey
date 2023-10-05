@@ -111,6 +111,7 @@ class Assessment extends LSActiveRecord
             'linkId'            => 'loadEditUrl_forModalView',
             'linkAttributes'   => [
                 'data-editurl' => App()->createUrl("assessment/edit/", ["surveyid" => $this->sid]),
+                'data-assessment-id' => $this->id
             ]
         ];
         $dropdownItems[] = [
@@ -119,6 +120,9 @@ class Assessment extends LSActiveRecord
             'iconClass'        => 'ri-delete-bin-fill text-danger',
             'enabledCondition' => $permission_assessment_delete,
             'linkClass'         => 'action_assessments_deleteModal',
+            'linkAttributes'   => [
+                'data-assessment-id' => $this->id
+            ]
         ];
 
         return App()->getController()->widget(

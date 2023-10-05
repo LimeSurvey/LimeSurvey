@@ -3,6 +3,7 @@
 namespace LimeSurvey\Models\Services\QuestionAggregateService;
 
 use Question;
+use QuestionAttribute;
 use Survey;
 use Condition;
 use LSYii_Application;
@@ -95,11 +96,10 @@ class QuestionService
                 $data['question']
             );
         } else {
-            $question = $this->modelQuestion
-                ->findByAttributes([
-                    'qid' => $data['question']['qid'],
-                    'sid' => $data['question']['sid']
-                ]);
+            $question = $this->getQuestionBySidAndQid(
+                $data['question']['sid'],
+                $data['question']['qid']
+            );
 
             if (!$question) {
                 throw new NotFoundException(
@@ -336,5 +336,40 @@ class QuestionService
                     . $data['question']['type']
             );
         }
+    }
+
+    /**
+     * Returns a question if it exists within the survey.
+     * @param int $sid
+     * @param int $qid
+     * @return Question|null
+     */
+    public function getQuestionBySidAndQid(int $sid, int $qid)
+    {
+        return $this->modelQuestion
+            ->findByAttributes([
+                'qid' => $qid,
+                'sid' => $sid
+            ]);
+    }
+
+    /**
+     * Returns all(!) question attributes to a question.
+     * The default scope on QuestionAttribute which is reset here
+     * caused missing data.
+     * We need to use this function in TransformerOutputSurveyDetail instead of
+     * accessing the attributes with "$questionModel->questionattributes"
+     * @param int $questionId
+     * @return QuestionAttribute[]
+     */
+    public function getQuestionAttributes(int $questionId)
+    {
+        // We use the container to create a model instance
+        // allowing us to mock the model instance via
+        // container configuration in unit tests
+        $model = DI::getContainer()
+            ->make(QuestionAttribute::class);
+        $model->resetScope();
+        return $model->findAllByAttributes(['qid' => $questionId]);
     }
 }
