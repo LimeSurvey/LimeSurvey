@@ -995,7 +995,7 @@ class TemplateConfig extends CActiveRecord
             $oNewTemplateConfiguration->cssframework_name = $aDatas['cssframework_name'];
             $oNewTemplateConfiguration->cssframework_css  = self::formatToJsonArray($aDatas['cssframework_css']);
             $oNewTemplateConfiguration->cssframework_js   = self::formatToJsonArray($aDatas['cssframework_js']);
-            $oNewTemplateConfiguration->options           = self::formatToJsonArray($aDatas['aOptions'], true);
+            $oNewTemplateConfiguration->options           = self::convertOptionsToJson($aDatas['aOptions']);
             $oNewTemplateConfiguration->packages_to_load  = self::formatToJsonArray($aDatas['packages_to_load']);
 
 
@@ -1052,6 +1052,24 @@ class TemplateConfig extends CActiveRecord
             $jFiled = str_replace('{}', '""', $jFiled);
         }
         return $jFiled;
+    }
+
+    /**
+     * Convert the theme options to json.
+     * @param array|object $options the filed to convert
+     * @return string  json
+     */
+    public static function convertOptionsToJson($options)
+    {
+        $optionsArray = [];
+        foreach ($options as $option => $optionValue) {
+            // Clean every value from newlines, tabs and blank spaces for options
+            $optionsArray[$option] = trim(preg_replace('/[ \t]+/', ' ', preg_replace('/\s*$^\s*/m', "", $optionValue)));
+        }
+        if (empty($optionsArray)) {
+            return '""';
+        }
+        return json_encode($optionsArray);
     }
 
     /**
