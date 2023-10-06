@@ -148,8 +148,6 @@ class GeneralSettingsMockSetFactory
             ->makePartial();
         $mockModelUser->shouldReceive('findByPk')
             ->andReturn($user);
-        $mockModelUser->shouldReceive('withListRight')
-            ->andReturn($mockModelUser);
         return $mockModelUser;
     }
 }
