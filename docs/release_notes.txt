@@ -34,6 +34,27 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.2.10 (build 231004) to 6.2.11 (build 231007) October 6, 2023
+-Fixed issue: Server side subquestion unique code validation (Kevin Foster)
+-Fixed issue #CT-380: Registers necessary client scripts customization for CLSGridview (Mohab E)
+-Fixed issue #CT-380: Quotas validation modal (Mohab E)
+-Fixed issue #CT-380: Fixed the GridSettings & Added afterAjaxUpdate to grid view options (Mohab E)
+-Fixed issue #CR-1351: actions in tables not working when called through the sidemenu or ajax (#3496) (Mohab E)
+-Fixed issue #CR-1339: some actions not working for survey permissions and survey menu entries (#3474) (Mohab E)
+-Fixed issue #CR-1320: comfort update message overlapping with dropdown actions and can not be muted for a session (Patrick Teichmann)
+-Fixed issue #CR-1117: restrict naming of themes because it causes errors in some cases (#3376) (Mohab E)
+-Fixed issue #CR-1117: template name trimming & validate against any invalid characters (Mohab E)
+-Fixed issue #CR-1117: Validate theme name (Mohab E)
+-Fixed issue #CR-1117: Template name length validation (Mohab E)
+-Fixed issue #CR-1117: Fix templatename sanitization (Mohab E)
+-Fixed issue #19153: Question list edit URL expects questionId not qid (Kevin Foster)
+-Fixed issue #19134: [security] User with "Users" permission only can add arbitrary users to the not owned user group (#3509) (Denis Chenu)
+-Fixed issue #19126: [security] Incorrect Authorization check in add User role (#3506) (Denis Chenu)
+-Fixed issue #18957: Ranking Advanced: Visualization Types are not working (#3479) (Gabriel Jenik)
+#Updated translation: German by c_schmitz
+#Updated translation: Finnish by Jmantysalo
+
+
 Changes from 6.2.9 (build 230925) to 6.2.10 (build 231004) October 4, 2023
 -Fixed issue: Error on deactivation with message "11 arguments are required, 9 given" (#3490) (Mohab E)
 -Fixed issue #CR-1305: Always show "Edit default answers" option (Mohab E)
