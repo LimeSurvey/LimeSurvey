@@ -136,7 +136,7 @@ $(document).on('ready  pjax:scriptcomplete', function(){
             var iconId = $(ev.currentTarget).attr('data-iconId');
 
             // Set icon preview and hidden input
-            $('input[name="Box[ico]"]').val(iconId);
+            $('input[name="Box[ico]"]').val(icon);
             $('#chosen-icon').attr('class', icon + ' text-success');
         });
     }
