@@ -638,7 +638,7 @@ class UserManagementController extends LSBaseController
         $oUser = User::model()->findByPk($userId);
 
         $userManager = new UserManager(Yii::app()->user, $oUser);
-        if (!$userManager->canAssignRole()) {
+        if (!$userManager->canAssignRole() || $oUser->uid == App()->user->getId()) {
             return $this->renderPartial(
                 'partial/error',
                 ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
@@ -679,11 +679,11 @@ class UserManagementController extends LSBaseController
         $oUser = User::model()->findByPk($iUserId);
 
         $userManager = new UserManager(Yii::app()->user, $oUser);
-        if (!$userManager->canAssignRole()) {
+        if (!$userManager->canAssignRole() || $oUser->uid == App()->user->getId()) {
             return Yii::app()->getController()->renderPartial('/admin/super/_renderJson', [
                 "data" => [
                     'success' => false,
-                    'errors' => [gT("You do not have permission to access this page.")],
+                    'errors' => gT("You do not have permission to access this page."),
                 ]
             ]);
         }
@@ -1114,18 +1114,29 @@ class UserManagementController extends LSBaseController
 
         if ($iUserGroupId) {
             $oUserGroup = UserGroup::model()->findByPk($iUserGroupId);
-            $aResults = [];
-
-            foreach ($aItems as $sItem) {
-                $aResults[$sItem]['title'] = '';
-                $model = $this->loadModel($sItem);
-                $aResults[$sItem]['title'] = $model->users_name;
-                if (!$oUserGroup->hasUser($sItem)) {
-                    $aResults[$sItem]['result'] = $oUserGroup->addUser($sItem);
-                } else {
-                    $aResults[$sItem]['result'] = false;
-                    $aResults[$sItem]['error'] = gT('User is already a member of the group.');
+            /* check if have permission */
+            if (
+                Permission::model()->hasGlobalPermission('usergroups', 'update') /* Global update permission @see UserGroupController->actionEdit */
+                || $oUserGroup->requestEditGroup($oUserGroup->ugid, Yii::app()->session['loginID'])  /* This user group permission */
+            ) {
+                $aResults = [];
+                foreach ($aItems as $sItem) {
+                    $aResults[$sItem]['title'] = '';
+                    $model = $this->loadModel($sItem);
+                    $aResults[$sItem]['title'] = $model->users_name;
+                    if (!$oUserGroup->hasUser($sItem)) {
+                        $aResults[$sItem]['result'] = $oUserGroup->addUser($sItem);
+                    } else {
+                        $aResults[$sItem]['result'] = false;
+                        $aResults[$sItem]['error'] = gT('User is already a member of the group.');
+                    }
                 }
+            } else {
+                $aResults[0] = [
+                    'title' => gT("All"),
+                    'result' => false,
+                    'error' => gT('You don\'t have permission on this group.')
+                ];
             }
         } else {
             foreach ($aItems as $sItem) {
