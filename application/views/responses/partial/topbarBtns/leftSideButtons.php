@@ -74,5 +74,26 @@ if ($hasResponsesDeletePermission) {
                 ],
             ]
         );
+    } else {
+        // Show a disabled button if the survey is anonymized or token persistence is disabled
+        ?> 
+        <span class="btntooltip" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php eT("This survey is anonymized and/or token persistence is disabled."); ?>" style="display: inline-block" data-bs-toggle="tooltip" data-bs-placement="bottom">
+        <?php
+        $this->widget(
+            'ext.ButtonWidget.ButtonWidget',
+            [
+                'name' => 'response-saved',
+                'id' => 'response-saved',
+                'text' => gT('Iterate survey'),
+                'icon' => 'ri-repeat-fill',
+                'htmlOptions' => [
+                    'class' => 'btn btn-outline-secondary disabled btntooltip',
+                    'role' => 'button',
+                    'disabled' => 'disabled'                ],
+            ]
+        );
+        ?>
+        </span>
+        <?php
     }
 }

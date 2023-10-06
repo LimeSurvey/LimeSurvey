@@ -34,6 +34,109 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.2.9 (build 230925) to 6.2.10 (build 231004) October 4, 2023
+-Fixed issue: Error on deactivation with message "11 arguments are required, 9 given" (#3490) (Mohab E)
+-Fixed issue #CR-1305: Always show "Edit default answers" option (Mohab E)
+-Fixed issue #CR-1305: Activated defaultvalues for 5pointchoice & gender (Mohab E)
+-Fixed issue #CR-1319: Global surveytheme is not inherited by global survey surveytheme (#3465) (Mohab E)
+-Fixed issue #CR-1305: Structure tab question menu should always show "Edit default answers" option (#3367) (Mohab E)
+-Fixed issue #19136: Undefined variable in admin global settings general subview (#3499) (Matthew)
+-Fixed issue #19115: Menu toggler appears when not needed (#3494) (Denis Chenu)
+-Fixed issue #19112: [security] Store XSS at Label sets list (#3503) (Denis Chenu)
+-Fixed issue #19098: Add XSD files to allowed files for plugin uploads (Marko Bischof)
+-Fixed issue #18995: [security] Confidentiality issue about username (#3447) (Gabriel Jenik)
+-Fixed issue #18294: User can not see group created and user in group created (#3504) (Denis Chenu)
+-Fixed issue #18268: Unable to get any page debug set an set_time_limit disable (#2540) (Denis Chenu)
+#Updated translation: Welsh by ChrisWilliams
+#Updated translation: Ukrainian by DermanskiyIM
+#Updated translation: Turkish by kayazeren
+#Updated translation: Slovak by jelen1
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Greek by baltzis
+#Updated translation: German by c_schmitz, DerOlli
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
+Changes from 6.2.8 (build 230921) to 6.2.9 (build 230925) September 25, 2023
+-Fixed issue #19100: [security] Store DOM XSS when creating a survey (#3469) (Denis Chenu)
+-Fixed issue #19099: [security] XSS vulnerability caused by themeOptions/importManifest (#3483) (Denis Chenu)
+-Fixed issue #19063: Import of broken lsa file yields success message (but inactive "Go to survey" button) (#3461) (Gabriel Jenik)
+-Fixed issue #19004: Can not delete or edit assessment rules  (#3456) (Gabriel Jenik)
+-Fixed issue #18986: [security] superadmin without create superadmin can create superadminu (#3485) (Denis Chenu)
+-Fixed issue #18968: User with "View/read Users" permission needs to have "User details" action available for all users, not just itself (#3475) (Gabriel Jenik)
+-Fixed issue #18938: question_template_attribute show only default value (#3481) (Denis Chenu)
+-Fixed issue #18494: TypeError during demo survey "ls205_em_tailoring" (#3452) (Gabriel Jenik)
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Italian by internet.redazione, lfanfoni
+#Updated translation: Italian (Informal) by internet.redazione, lfanfoni
+#Updated translation: Hungarian by kkd
+
+
+Changes from 6.2.7 (build 230918) to 6.2.8 (build 230921) September 21, 2023
+-Fixed issue: theme breaks when filepath inside the config includes linebreaks and empty spaces (Patrick Teichmann)
+-Fixed issue: Subquestions are not stored when saving saving and the same code exists in different scales (Carsten Schmitz)
+-Fixed issue: Iterate survey button not visible (Carsten Schmitz)
+-Fixed issue #CT-337: Wrong survey being picked up when using alias (#3427) (Gabriel Jenik)
+-Fixed issue #19096: Array by column answer options are not processed by EM before display (#3464) (Matthew)
+-Fixed issue #19025: When there are question themes installed, can't upload survey themes (#3358) (Gabriel Jenik)
+-Fixed issue #18984: [security] CSRF in Question Themes function (#3459) (Gabriel Jenik)
+-Fixed issue CR-1310: re-bind attributePanel buttons (Mohab E)
+-Fixed issue CR-1310: Fixed edit attribute bug (Mohab E)
+-Fixed issue #CR-1310: Can't edit Attribute at admin/participants/sa/attributeControl (Mohab E)
+#Updated translation: Slovak by jelen1
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Hungarian by kkd
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
+Changes from 6.2.6 (build 230904) to 6.2.7 (build 230918) September 18, 2023
+-Fixed issue #CT-374: ckeditor prevents iframes from working by adding sandbox="" (twilligls)
+-Fixed issue #CR-1308: Batch actions dropdown is disabled executing any table action (Mohab E)
+-Fixed issue #19072: CDbException with Microsoft SQL Server (#3431) (Denis Chenu)
+-Fixed issue #19068: Batch actions dropdown is disabled after first use on User management page (#3421) (Gabriel Jenik)
+-Fixed issue #19056: Save button in create dummy participants page actually saves and closes (#3426) (Gabriel Jenik)
+-Fixed issue #19052: Statistic navigate button doesn't redirect to responses (#3425) (Mohab E)
+-Fixed issue #19041: Action dropdown is blocked after filter or changing rows per page (#3398) (Gabriel Jenik)
+-Fixed issue #19039: Action Links Drop Down Menu Not Working In CPM(CPDB) (#3397) (Gabriel Jenik)
+-Fixed issue #19037: [security] Reflected XSS in LimeSurvey via user id parameter (#3406) (Gabriel Jenik)
+-Fixed issue #19033: After performing an action inside attribute table, other actions were not possible (#3424) (Mohab E)
+-Fixed issue #19031: Massive action not possible after doing another action in the survey paticipants table (#3437) (Mohab E)
+-Fixed issue #19030: Batch actions dropdown is disabled executing any table action (#3419) (Mohab E)
+-Fixed issue #19019: [security] Stored XSS in description of theme (#3359) (Gabriel Jenik)
+-Fixed issue #19018: Postgres - trying to update from 5.6.31 to master caused an error (#3370) (Gabriel Jenik)
+-Fixed issue #18981: Using ngT to translate plurals loads wrong locale folder (#3363) (Gabriel Jenik)
+-Fixed issue #18978: User is able to change survey group's code that is by default unchangeable (#3400) (Gabriel Jenik)
+-Fixed issue #18904: [security] Stored XSS with Expression Script in End page (#3402) (Gabriel Jenik)
+-Fixed issue #18602: When surveys are copied without copying attachments, attachment info is copied but not updated (#3430) (Gabriel Jenik)
+-Fixed issue #18601: No editor available when defining quota messages. (#3429) (Gabriel Jenik)
+-Fixed issue #18593: Float attributes are not supported anymore (#3411) (Gabriel Jenik)
+-Fixed issue #18557: Email Template Attachments appear to carry over with copied survey, but do not work (#2861) (Gabriel Jenik)
+-Fixed issue #18494: TypeError during demo survey "ls205_em_tailoring"  (#3443) (Gabriel Jenik)
+-Fixed issue #15310: Display dropdown boxes - Date/Time question type not working correctly if minimum date < 1900 (#3353) (Gabriel Jenik)
+#Updated translation: Turkish by bulent, kayazeren
+#Updated translation: Swedish by maxzomborszki
+#Updated translation: Spanish (Spain) by aesteban, c_schmitz, ireneoh, segui, valdomir
+#Updated translation: Slovak by jelen1
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Japanese by d_inoue
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1, slansky
+#Updated translation: Czech (Informal) by jelen1
+
+
 Changes from 6.2.5 (build 230828) to 6.2.6 (build 230904) September 4, 2023
 -Fixed issue #CR-925: Inherited options do not match value inherited (#3362) (Mohab E)
 -Fixed issue #19036: Stored XSS via user's username (#3393) (Gabriel Jenik)

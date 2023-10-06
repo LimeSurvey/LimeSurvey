@@ -488,10 +488,10 @@ export default {
                                     </div>
                                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                                         <li  v-if="key !== 'delete' && !(key === 'language' && Array.isArray(value))"  v-for="(value, key) in question.questionDropdown" :key="key">
-                                            <a   class="dropdown-item" :id="value.id" :href="value.url">
-                                               <span :class="value.icon"></span>
-                                                 {{value.label}}
-                                            </a>
+                                          <a   class="dropdown-item" :id="value.id" :href="key == 'editDefault' && value.active == 0 ? '#' : value.url" :class=" key == 'editDefault' &&  value.active == 0 ? 'disabled' : '' ">
+                                            <span :class="value.icon"></span>
+                                            {{value.label}}
+                                          </a>
 
                                         </li>
 
@@ -583,5 +583,7 @@ export default {
     /* z-index: 2; */
     min-height: 100vh;
 }
-
+.question-question-list-item .dropdown-menu li a.disabled {
+  opacity: 0.5;
+}
 </style>

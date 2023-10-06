@@ -1210,6 +1210,11 @@ function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyNam
                 unset($pclzip);
             }
             $aImportResults = [];
+
+            if (!is_array($aFiles)) {
+                $aImportResults['error'] = gT("This is not a valid LimeSurvey LSA file.");
+                return $aImportResults;
+            }
             // Step 1 - import the LSS file and activate the survey
             foreach ($aFiles as $aFile) {
                 if (pathinfo((string) $aFile['filename'], PATHINFO_EXTENSION) == 'lss') {
@@ -2611,7 +2616,12 @@ function XMLImportResponses($sFullFilePath, $iSurveyID, $aFieldReMap = array())
                                 }
                             }
                         }
-                        if (!SurveyDynamic::model($iSurveyID)->insertRecords($aInsertData)) {
+                        try {
+                            $iNewID = SurveyDynamic::model($iSurveyID)->insertRecords($aInsertData);
+                            if (!$iNewID) {
+                                throw new Exception("Error, no entry id was returned.", 1);
+                            }
+                        } catch (Exception $e) {
                             throw new Exception(gT("Error") . ": Failed to insert data in response table<br />");
                         }
                         $results['responses']++;
