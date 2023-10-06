@@ -704,7 +704,7 @@ class Question extends LSActiveRecord
         $url         = App()->createUrl("questionAdministration/view/surveyid/$this->sid/gid/$this->gid/qid/$this->qid");
         $previewUrl  = Yii::app()->createUrl("survey/index/action/previewquestion/sid/");
         $previewUrl .= '/' . $this->sid . '/gid/' . $this->gid . '/qid/' . $this->qid;
-        $editurl     = Yii::app()->createUrl("questionAdministration/edit/qid/$this->qid/tabOverviewEditor/editor");
+        $editurl     = Yii::app()->createUrl("questionAdministration/edit/questionId/$this->qid/tabOverviewEditor/editor");
 
         $permission_edit_question = Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'update');
         $permission_summary_question = Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'read');
