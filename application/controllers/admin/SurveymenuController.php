@@ -284,6 +284,8 @@ class SurveymenuController extends SurveyCommonAction
      */
     public function restore()
     {
+        $this->requirePostRequest();
+
         if (!(Permission::model()->hasGlobalPermission('settings', 'delete') && Permission::model()->hasGlobalPermission('settings', 'update'))) {
             Yii::app()->user->setFlash('error', gT("Access denied"));
             $this->getController()->redirect(Yii::app()->createUrl('/admin'));
