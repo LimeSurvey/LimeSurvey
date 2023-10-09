@@ -396,6 +396,8 @@ function isAnyCheckboxChecked() {
     return $('.grid-view-ls table tbody input[type="checkbox"]:checked').length > 0;
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-    switchStatusOfListActions();
+['DOMContentLoaded','ready', 'pjax:scriptcomplete'].forEach(function (e) {
+    document.addEventListener(e, () => {
+        switchStatusOfListActions();
+    });
 });
