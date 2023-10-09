@@ -18,6 +18,7 @@
  */
 
 require_once(dirname(dirname(__FILE__)) . '/helpers/globals.php');
+require_once __DIR__ . '/Traits/LSApplicationTrait.php';
 
 /**
 * Implements global config
@@ -36,6 +37,8 @@ require_once(dirname(dirname(__FILE__)) . '/helpers/globals.php');
 */
 class LSYii_Application extends CWebApplication
 {
+    use LSApplicationTrait;
+
     protected $config = array();
 
     /**

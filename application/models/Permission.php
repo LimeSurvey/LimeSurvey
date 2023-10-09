@@ -264,6 +264,7 @@ class Permission extends LSActiveRecord
      * @param mixed $aPermissions
      * @param boolean $bBypassCheck : by pass control of current permission for current user only for global permission
      * @throw Exception
+     *
      * @return null|boolean
      */
     public static function setPermissions($iUserID, $iEntityID, $sEntityName, $aPermissions, $bBypassCheck = false)
@@ -720,15 +721,15 @@ class Permission extends LSActiveRecord
     public function getUserId($iUserID = null)
     {
         if (empty($iUserID)) {
-            if (Yii::app() instanceof CConsoleApplication) {
-                /* Alt : return 1st forcedAdmin ? */
+            if (App() instanceof CConsoleApplication) {
+                /* Alt : return 1st forcedSuperAdmin ? */
                 throw new Exception('Permission must not be tested with console application.');
             }
-            /* See TestBaseClass tearDownAfterClass */
-            $iUserID = Yii::app()->session['loginID'];
+            return App()->getCurrentUserId();
         }
         return $iUserID;
     }
+
     /**
      * get the connected user role
      * @param integer $iUserID user id
