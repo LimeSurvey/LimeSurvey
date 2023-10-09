@@ -21,6 +21,7 @@ class SurveymenuController extends SurveyCommonAction
 
     /**
      * @return string[] action filters
+     * @todo: Review if this code is actually running.
      */
     public function filters()
     {
