@@ -116,7 +116,8 @@ $(document).on('ready  pjax:scriptcomplete', function(){
         $errorMessage = $('#boxeserrormessage').data('ajaxerrormessage');
         $.ajax({
             url : $url+'/boxesbyrow/'+$iBoxesByRow+'/boxesoffset/'+$iBoxesOffset,
-            type : 'GET',
+            method: "POST",
+            data: "",
             dataType : 'html',
             // html contains the buttons
             success : function(html, statut){
