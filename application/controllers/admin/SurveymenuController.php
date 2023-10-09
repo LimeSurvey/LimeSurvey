@@ -292,46 +292,19 @@ class SurveymenuController extends SurveyCommonAction
         }
 
         $model = Surveymenu::model();
-        if (Yii::app()->request->isPostRequest) {
-            //Check for permission!
-            if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
-                $debug = App()->getConfig('debug');
-                $returnData = array(
-                    'data' => [
-                        'success' => 0,
-                        'redirect' => false,
-                        'settings' => array(
-                            'extrasettings' => false,
-                            'parseHTML' => false,
-                        ),
-                        'message' => gT("You don't have the right to restore the settings to default")
-                    ]
-                );
 
-                if ($debug > 0) {
-                    $returnData['data']['debug'] = [$model, $_POST];
-                    $returnData['data']['debugErrors'] = $model->getErrors();
-                }
-
-                return Yii::app()->getController()->renderPartial(
-                    '/admin/super/_renderJson',
-                    $returnData,
-                    false,
-                    false
-                );
-            }
-            //get model to do the work
-            $success = $model->restoreDefaults();
+        //Check for permission!
+        if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
             $debug = App()->getConfig('debug');
             $returnData = array(
                 'data' => [
-                    'success' => $success,
+                    'success' => 0,
                     'redirect' => false,
                     'settings' => array(
                         'extrasettings' => false,
                         'parseHTML' => false,
                     ),
-                    'message' =>  ($success ? gT("Default survey menus restored.") : gT("Something went wrong!"))
+                    'message' => gT("You don't have the right to restore the settings to default")
                 ]
             );
 
@@ -347,6 +320,32 @@ class SurveymenuController extends SurveyCommonAction
                 false
             );
         }
+        //get model to do the work
+        $success = $model->restoreDefaults();
+        $debug = App()->getConfig('debug');
+        $returnData = array(
+            'data' => [
+                'success' => $success,
+                'redirect' => false,
+                'settings' => array(
+                    'extrasettings' => false,
+                    'parseHTML' => false,
+                ),
+                'message' =>  ($success ? gT("Default survey menus restored.") : gT("Something went wrong!"))
+            ]
+        );
+
+        if ($debug > 0) {
+            $returnData['data']['debug'] = [$model, $_POST];
+            $returnData['data']['debugErrors'] = $model->getErrors();
+        }
+
+        return Yii::app()->getController()->renderPartial(
+            '/admin/super/_renderJson',
+            $returnData,
+            false,
+            false
+        );
     }
 
     /**
