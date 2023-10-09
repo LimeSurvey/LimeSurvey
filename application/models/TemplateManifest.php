@@ -681,7 +681,7 @@ class TemplateManifest extends TemplateConfiguration
             $sDeleteLink = '<a
               id="template_delete_link_' . $this->sTemplateName . '"
               href="' . $sDeleteUrl . '"
-              data-post=\'{ "templatename": "' . $this->sTemplateName . '" }\'
+              data-post=\'{ "templatename": "' . CHtml::encode($this->sTemplateName) . '" }\'
               data-text="' . gT('Are you sure you want to delete this theme? ') . '"
               data-button-no="' . gt('Cancel') . '"  
               data-button-yes="' . gt('Delete') . '"
@@ -1493,12 +1493,12 @@ class TemplateManifest extends TemplateConfiguration
     {
         $sDescription = $this->config->metadata->description;
 
-          // If wrong Twig in manifest, we don't want to block the whole list rendering
-          // Note: if no twig statement in the description, twig will just render it as usual
+        // If wrong Twig in manifest, we don't want to block the whole list rendering
+        // Note: if no twig statement in the description, twig will just render it as usual
         try {
             $sDescription = App()->twigRenderer->convertTwigToHtml($this->config->metadata->description);
         } catch (\Exception $e) {
-          // It should never happen, but let's avoid to anoy final user in production mode :)
+            // It should never happen, but let's avoid to anoy final user in production mode :)
             if (YII_DEBUG) {
                 App()->setFlashMessage(
                     "Twig error in template " .

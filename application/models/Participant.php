@@ -453,6 +453,7 @@ class Participant extends LSActiveRecord
                 'desc' => 't.created desc'
             )
         );
+        $this->decryptEncryptAttributes('encrypt');
 
         $criteria = new CDbCriteria();
         $criteria->join = 'LEFT JOIN {{users}} as owner on uid=owner_uid LEFT JOIN {{participant_shares}} AS shares ON t.participant_id = shares.participant_id AND (shares.share_uid = ' . Yii::app()->user->id . ' OR shares.share_uid = -1)';
@@ -536,6 +537,8 @@ class Participant extends LSActiveRecord
         }
 
         $pageSize = Yii::app()->user->getState('pageSizeParticipantView', Yii::app()->params['defaultPageSize']);
+        $this->decryptEncryptAttributes();
+
         return new LSCActiveDataProvider($this, array(
             'criteria' => $criteria,
             'sort' => $sort,

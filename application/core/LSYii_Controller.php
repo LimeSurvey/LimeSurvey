@@ -103,8 +103,8 @@ abstract class LSYii_Controller extends CController
             throw new CException($dieoutput);
         }
 
-        if (ini_get("max_execution_time") < App()->getConfig('max_execution_time')) {
-            if(!@set_time_limit(App()->getConfig('max_execution_time'))) {
+        if (ini_get("max_execution_time") < intval(App()->getConfig('max_execution_time'))) {
+            if(!@set_time_limit(intval(App()->getConfig('max_execution_time')))) {
                 Yii::log("Unable to set time limit to " . App()->getConfig('max_execution_time'), \CLogger::LEVEL_WARNING, 'application.controller');
             }
         }

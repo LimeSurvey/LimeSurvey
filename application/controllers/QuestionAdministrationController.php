@@ -159,7 +159,7 @@ class QuestionAdministrationController extends LSBaseController
      * @throws CException
      * @todo Move to service class
      */
-    public function renderFormAux(Question $question)
+    private function renderFormAux(Question $question)
     {
         Yii::app()->loadHelper("admin.htmleditor");
         Yii::app()->getClientScript()->registerPackage('ace');
@@ -195,6 +195,7 @@ class QuestionAdministrationController extends LSBaseController
         $jsVariablesHtml = $this->renderPartial(
             '/admin/survey/Question/_subQuestionsAndAnwsersJsVariables',
             [
+                'qid'               => $question->qid,
                 'anslangs'          => $question->survey->allLanguages,
                 // TODO
                 'assessmentvisible' => false,
@@ -260,6 +261,32 @@ class QuestionAdministrationController extends LSBaseController
         $this->render(
             'create',
             $viewData
+        );
+    }
+
+    public function actionAjaxLoadExtraOptions($questionId)
+    {
+        $questionId = (int) $questionId;
+        $question = Question::model()->findByPk($questionId);
+        if (empty($question)) {
+            throw new CHttpException(404, gT('Invalid question id'));
+        }
+
+        if (!Permission::model()->hasSurveyPermission($question->sid, 'surveycontent', 'read')) {
+            Yii::app()->user->setFlash('error', gT("Access denied"));
+            $this->redirect(Yii::app()->request->urlReferrer);
+        }
+        Yii::app()->loadHelper("admin.htmleditor");
+        PrepareEditorScript(false, $this);
+        App()->session['FileManagerContext'] = "edit:survey:{$question->sid}";
+        initKcfinder();
+
+        $this->renderPartial(
+            'extraOptions',
+            [
+                'question' => $question,
+                'survey' => $question->survey,
+            ]
         );
     }
 
@@ -2853,24 +2880,13 @@ class QuestionAdministrationController extends LSBaseController
      */
     private function storeSubquestions($question, $subquestionsArray)
     {
+        $this->validateSubquestionCodes($subquestionsArray);
         $questionOrder = 0;
         $errorQuestions = [];
         $subquestions = [];
-        // To avoid duplicate code errors when moving codes
-        // - by typing instead of dragging, we add a temporary code prefix
-        // - which is later removed after the question is saved
-        $tempCodePrefix = 'X';
-        foreach ($subquestionsArray as $subquestionArray) {
+        foreach ($subquestionsArray as $subquestionId => $subquestionArray) {
             foreach ($subquestionArray as $scaleId => $data) {
-                $subquestion = null;
-                if (isset($data['oldcode'])) {
-                    $subquestion = Question::model()->findByAttributes([
-                        'sid' => $question->sid,
-                        'parent_qid' => $question->qid,
-                        'title' => $data['oldcode'],
-                        'scale_id' => $scaleId
-                    ]);
-                }
+                $subquestion = Question::model()->findByPk($subquestionId);
                 if (!$subquestion) {
                     $subquestion = new Question();
                 }
@@ -2885,11 +2901,12 @@ class QuestionAdministrationController extends LSBaseController
                         'Internal error: Missing mandatory field code for question: ' . json_encode($data)
                     );
                 }
-                $subquestion->title = $tempCodePrefix . $data['code'];
+                $subquestion->title = $data['code'];
                 if ($scaleId === 0) {
                     $subquestion->relevance = $data['relevance'];
                 }
                 $subquestion->scale_id = $scaleId;
+                $subquestion->setScenario('saveall');
                 if (!$subquestion->save()) {
                     array_push($errorQuestions, $subquestion);
                     continue;
@@ -2912,14 +2929,6 @@ class QuestionAdministrationController extends LSBaseController
                 }
             }
         }
-        // Remove temporary code prefix
-        foreach ($subquestions as $subquestion) {
-            $subquestion->title = substr($subquestion->title, strlen($tempCodePrefix));
-            if (!$subquestion->save()) {
-                array_push($errorQuestions, $subquestion);
-                continue;
-            }
-        }
         $subquestionIds = array_map(function ($subquestion) {
             return $subquestion->qid;
         }, $subquestions);
@@ -2927,6 +2936,42 @@ class QuestionAdministrationController extends LSBaseController
         foreach ($errorQuestions as $errorQuestion) {
             throw (new LSUserException(500, gT("Could not save subquestion")))
                 ->setDetailedErrorsFromModel($errorQuestion);
+        }
+    }
+
+    /**
+     * Validate subquestion codes.
+     *
+     * @param array $subquestionsArray Data from request.
+     * @return void
+     * @throws LSUserException
+     */
+    private function validateSubquestionCodes($subquestionsArray)
+    {
+        // ensure uniquness of codes
+        $codes = [];
+        foreach ($subquestionsArray as $subquestionArray) {
+            foreach ($subquestionArray as $scaleId => $data) {
+                if (!isset($codes[$scaleId])) {
+                    $codes[$scaleId] = [];
+                }
+                if (
+                    in_array(
+                        $data['code'],
+                        $codes[$scaleId]
+                    )
+                ) {
+                    throw (
+                        new LSUserException(
+                            500,
+                            gT('Could not save subquestion')
+                        )
+                    )->setDetailedErrors(
+                        ['Subquestion codes must be unique.']
+                    );
+                }
+                $codes[$scaleId][] = $data['code'];
+            }
         }
     }
 
