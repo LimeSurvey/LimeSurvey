@@ -44,7 +44,7 @@ export default {
         orderedQuestionGroups() {
             return LS.ld.orderBy(
                 this.$store.state.questiongroups,
-                a => parseIntOr999999(a),
+                a => parseIntOr999999(a.group_order),
                 ["asc"]
             );
         },
@@ -140,7 +140,7 @@ export default {
         orderQuestions(questionList) {
             return LS.ld.orderBy(
                 questionList,
-                a => parseIntOr999999(a),
+                a => parseIntOr999999(a.question_order),
                 ["asc"]
             );
         },
