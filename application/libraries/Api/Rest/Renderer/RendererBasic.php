@@ -55,7 +55,7 @@ class RendererBasic implements RendererInterface
     /**
      * Return data to browser as JSON and end application.
      *
-     * @param array $data
+     * @param ?array $data
      * @param int $responseCode
      * @return void
      */
