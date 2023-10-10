@@ -150,6 +150,36 @@ class User extends LSActiveRecord
     }
 
     /**
+     * @inheritDoc
+     * Delete user in related model after deletion
+     * return void
+     **/
+    protected function afterDelete()
+    {
+        parent::afterDelete();
+        /* Delete all permission */
+        Permission::model()->deleteAll(
+            "uid = :uid",
+            [":uid" => $this->uid]
+        );
+        /* Delete potential roles */
+        UserInPermissionrole::model()->deleteAll(
+            "uid = :uid",
+            [":uid" => $this->uid]
+        );
+        /* User settings */
+        SettingsUser::model()->deleteAll(
+            "uid = :uid",
+            [":uid" => $this->uid]
+        );
+        /* User in group */
+        UserInGroup::model()->deleteAll(
+            "uid = :uid",
+            [":uid" => $this->uid]
+        );
+    }
+
+    /**
      * @return string
      */
     public function getSurveysCreated()
@@ -460,6 +490,8 @@ class User extends LSActiveRecord
         $permission_users_read = Permission::model()->hasGlobalPermission('users', 'read');
         $permission_users_update = Permission::model()->hasGlobalPermission('users', 'update');
         $permission_users_delete = Permission::model()->hasGlobalPermission('users', 'delete');
+        $userManager = new UserManager(App()->user, $this);
+
         // User is owned or created by you
         $ownedOrCreated = $this->parent_id == App()->session['loginID'];
 
@@ -526,12 +558,7 @@ class User extends LSActiveRecord
             'linkAttributes'   => [
                 'data-href' => $setRoleUrl,
             ],
-            'enabledCondition' =>
-                ($permission_superadmin_read
-                    && !(Permission::isForcedSuperAdmin($this->uid)
-                        || $this->uid == App()->user->getId()
-                    )
-                )
+            'enabledCondition' => $userManager->canAssignRole() && $this->uid != App()->user->getId()
         ];
         $dropdownItems[] = [
             'title'            => gT('Edit user'),
@@ -981,49 +1008,5 @@ class User extends LSActiveRecord
             Permission::model()->hasGlobalPermission('superadmin', 'read')
             || $this->uid == $loginId
             || (Permission::model()->hasGlobalPermission('users', 'update') && $this->parent_id == $loginId);
-    }
-
-    /**
-     * Get criteria from Permission
-     * @param $userId for this user id , if not set : get current one
-     * @todo : move to PermissionInterface
-     * @todo : create an event
-     * @return CDbCriteria
-     */
-    protected static function getPermissionCriteria($userId = null)
-    {
-        if (empty($userId)) {
-            $userId = Yii::app()->user->id;
-        }
-
-        $criteriaPerm = new CDbCriteria();
-        $userControlSameGroupPolicy = Yii::app()->getConfig('usercontrolSameGroupPolicy');
-        if (
-            !Permission::model()->hasGlobalPermission('superadmin', 'read')
-            && !empty($userControlSameGroupPolicy)
-        ) {
-            $condition = "uid in (SELECT uid from {{user_in_groups}} where ugid in (
-                SELECT ugid from {{user_in_groups}} where uid=:permCriteriaUserId
-            ))";
-            $condition .= " OR t.parent_id=:permCriteriaUserId";
-            $condition .= " OR t.uid=:permCriteriaUserId";
-            $criteriaPerm->addCondition($condition);
-            $criteriaPerm->params = array(':permCriteriaUserId' => $userId);
-        }
-
-        /* Place for a new event */
-        return $criteriaPerm;
-    }
-
-    /**
-     * Uses for scope in list and search
-     * This don't mean user are allowed to read all information or any other Permission
-     * @param integer $userId
-     * @return self
-     */
-    public function withListRight($userId = null)
-    {
-        $this->getDbCriteria()->mergeWith(self::getPermissionCriteria($userId));
-        return $this;
     }
 }

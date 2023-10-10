@@ -63,8 +63,8 @@ class UserManager
         if (empty($this->managingUser)) {
             return false;
         }
-
-        return Permission::model()->hasGlobalPermission('superadmin', 'read', $this->managingUser->id);
+        /* roles can have superadmin permission, then need superadmin/create permission */
+        return Permission::model()->hasGlobalPermission('superadmin', 'create', $this->managingUser->id);
     }
 
     /**

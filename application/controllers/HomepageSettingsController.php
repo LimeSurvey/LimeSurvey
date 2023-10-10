@@ -33,7 +33,7 @@ class HomepageSettingsController extends LSBaseController
     public function filters()
     {
         return [
-            'postOnly + resetAllBoxes', // Only allow resetAllBoxes via POST request
+            'postOnly + resetAllBoxes, updateBoxesSettings', // Only allow resetAllBoxes via POST request
         ];
     }
 

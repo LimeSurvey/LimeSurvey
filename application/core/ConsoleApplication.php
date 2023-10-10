@@ -6,11 +6,14 @@
 */
 
 require_once(dirname(dirname(__FILE__)) . '/helpers/globals.php');
+require_once __DIR__ . '/Traits/LSApplicationTrait.php';
 
 use LimeSurvey\PluginManager\LimesurveyApi;
 
 class ConsoleApplication extends CConsoleApplication
 {
+    use LSApplicationTrait;
+
     protected $config = array();
 
     /**

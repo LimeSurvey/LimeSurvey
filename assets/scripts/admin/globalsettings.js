@@ -110,20 +110,22 @@ function UpdateRestrictedLanguages(){
 
 function Emailchange(ui,evt)
 {
-    smtp_enabled=($('#emailmethod input:radio:checked').val()=='smtp');
-    if (smtp_enabled==true) {
-        smtp_enabled='';
+    const selectedMethod = $('#emailmethod input:radio:checked').val();
+
+    const smtp_enabled = (selectedMethod == 'smtp');
+    if (smtp_enabled) {
         $('#emailsmtpssl label').removeClass('disabled');
         $('#emailsmtpdebug label').removeClass('disabled');
-    }
-    else {
+    } else {
         $('#emailsmtpdebug label').addClass('disabled');
         $('#emailsmtpssl label').addClass('disabled');
-        smtp_enabled='disabled';
     }
-    $("#emailsmtphost").prop('disabled',smtp_enabled);
-    $("#emailsmtpuser").prop('disabled',smtp_enabled);
-    $("#emailsmtppassword").prop('disabled',smtp_enabled);
+    $("#emailsmtphost").prop('disabled', true);
+    $("#emailsmtpuser").prop('disabled', true);
+    $("#emailsmtppassword").prop('disabled', true);
+
+    const plugin_enabled = (selectedMethod == 'plugin');
+    $("#emailplugin").prop('disabled', !plugin_enabled);
 }
 
 function BounceChange(ui,evt)
