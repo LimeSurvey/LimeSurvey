@@ -6,9 +6,9 @@ use GoldSpecDigital\ObjectOrientedOAS\Objects\Schema;
 
 class SchemaFactoryQuestionAttribute
 {
-    public function make(): Schema
+    public function make($key = ''): Schema
     {
-        return Schema::create()
+        return Schema::create($key)
             ->title('Question Attribute')
             ->description('Question Attribute')
             ->type(Schema::TYPE_OBJECT)
