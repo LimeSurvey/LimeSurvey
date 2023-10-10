@@ -1072,7 +1072,7 @@ class QuestionAdministrationController extends LSBaseController
     {
         $iSurveyID = (int) App()->request->getPost('sid', 0);
         $gid = (int) App()->request->getPost('gid', 0);
-        
+
         if (!Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'import')) {
             App()->user->setFlash('error', gT("Access denied"));
             $redirect = Yii::app()->createUrl(
