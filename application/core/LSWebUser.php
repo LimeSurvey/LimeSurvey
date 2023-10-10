@@ -44,6 +44,16 @@ class LSWebUser extends CWebUser
 
     /**
      * @inheritDoc
+     * Set id in session too
+     */
+    public function setId($id)
+    {
+        parent::setId($id);
+        \Yii::app()->session['loginID'] = $id;
+    }
+
+    /**
+     * @inheritDoc
      * Add the specific plugin event and regerenaret CRSF
      */
     public function logout($destroySession = true)
