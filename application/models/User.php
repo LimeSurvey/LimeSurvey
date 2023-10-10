@@ -127,6 +127,19 @@ class User extends LSActiveRecord
         );
     }
 
+    /** @inheritdoc */
+    public function scopes()
+    {
+        return array(
+            'active' => array(
+                'condition' => "expires > :now OR expires IS NULL",
+                'params' => array(
+                    'now' => dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig("timeadjust")),
+                )
+            )
+        );
+    }
+
     public function attributeLabels()
     {
         return [
