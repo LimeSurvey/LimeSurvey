@@ -270,17 +270,8 @@ class Authentication extends SurveyCommonAction
      */
     public function logout()
     {
-        /* Adding beforeLogout event */
-        $beforeLogout = new PluginEvent('beforeLogout');
-        App()->getPluginManager()->dispatchEvent($beforeLogout);
-        regenerateCSRFToken();
         App()->user->logout();
         App()->user->setFlash('loginmessage', gT('Logout successful.'));
-
-        /* Adding afterLogout event */
-        $event = new PluginEvent('afterLogout');
-        App()->getPluginManager()->dispatchEvent($event);
-
         $this->getController()->redirect(array('/admin/authentication/sa/login'));
     }
 
