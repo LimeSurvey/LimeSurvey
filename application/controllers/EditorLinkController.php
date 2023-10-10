@@ -19,6 +19,8 @@ class EditorLinkController extends LSYii_Controller
     const REACT_APP_BASE_PATH = '/editor/#/';
 
     /**
+     * Access Rules
+     *
      * @return array
      */
     public function accessRules()
