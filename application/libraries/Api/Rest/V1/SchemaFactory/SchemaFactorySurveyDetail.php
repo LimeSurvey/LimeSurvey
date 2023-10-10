@@ -35,7 +35,6 @@ class SchemaFactorySurveyDetail
             $questionsSchema
         );
 
-
         $surveySchema = AllOf::create('survey')->schemas(
             (new SchemaFactorySurvey())->make(
                 Schema::array('languages')->items(
