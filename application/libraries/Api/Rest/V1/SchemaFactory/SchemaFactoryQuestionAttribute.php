@@ -6,6 +6,12 @@ use GoldSpecDigital\ObjectOrientedOAS\Objects\Schema;
 
 class SchemaFactoryQuestionAttribute
 {
+    /**
+     * Create Schema
+     *
+     * @param string $key
+     * @return Schema
+     */
     public function make($key = ''): Schema
     {
         return Schema::create($key)
