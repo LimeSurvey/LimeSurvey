@@ -610,7 +610,7 @@ class TemplateConfiguration extends TemplateConfig
     }
 
     /**
-     * @todo document me
+     * Sets bUseMagicInherit sTemplate isStandard and path of the theme
      *
      * @param string $sTemplateName
      * @param string $iSurveyId
