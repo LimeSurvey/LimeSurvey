@@ -31,11 +31,6 @@ class TransformerOutputAnswer extends TransformerOutputActiveRecord
             }
         );
 
-        $output = [];
-        foreach ($collection as $value) {
-            $output[$value['aid']] = $value;
-        }
-
-        return (object) $output;
+        return $collection;
     }
 }

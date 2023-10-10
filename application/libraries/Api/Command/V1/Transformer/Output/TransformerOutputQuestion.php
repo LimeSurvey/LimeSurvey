@@ -47,11 +47,6 @@ class TransformerOutputQuestion extends TransformerOutputActiveRecord
             }
         );
 
-        $output = [];
-        foreach ($collection as $value) {
-            $output[$value['qid']] = $value;
-        }
-
-        return (object) $output;
+        return $collection;
     }
 }
