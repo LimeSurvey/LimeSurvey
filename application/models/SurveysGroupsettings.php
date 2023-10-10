@@ -359,7 +359,7 @@ class SurveysGroupsettings extends LSActiveRecord
         // check the global configuration for template inheritance if surveygroup is 0 (global survey) and template set to inherit
         if ($iSurveyGroupId === 0
             && $instance->shouldInherit('template')) {
-                $instance->oOptions->template = App()->getConfig('defaulttheme');
+            $instance->oOptions->template = App()->getConfig('defaulttheme');
         }
 
         // fetch parent instance only if parent_id exists
