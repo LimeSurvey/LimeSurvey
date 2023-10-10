@@ -1014,7 +1014,7 @@ class TemplateConfiguration extends TemplateConfig
             foreach ($fileList as $file) {
                 $imageInfo = $this->getImageInfo($basePath . $file['name'], $pathPrefix);
                 if ($imageInfo) {
-                    $aData['imageFileList'][] = array_merge(
+                    $aData['imageFileList'][$imageInfo['filepath']] = array_merge(
                         [
                             'group' => $category->title,
                         ],
