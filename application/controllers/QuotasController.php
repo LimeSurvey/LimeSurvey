@@ -84,6 +84,7 @@ class QuotasController extends LSBaseController
             true
         );
 
+        Yii::app()->loadHelper('admin.htmleditor');
         $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title .
             " (" . gT("ID") . ":" . $surveyid . ")";
         $aData['subaction'] = gT("Survey quotas");
@@ -137,6 +138,9 @@ class QuotasController extends LSBaseController
             Yii::app()->user->setFlash('error', gT("Access denied."));
             $this->redirect(Yii::app()->request->urlReferrer);
         }
+
+        Yii::app()->loadHelper('admin.htmleditor');
+
         $oSurvey = Survey::model()->findByPk($surveyid);
         $aData['surveyid'] = $oSurvey->sid;
         $aData['thissurvey'] = getSurveyInfo($surveyid);
@@ -240,6 +244,7 @@ class QuotasController extends LSBaseController
             true
         );
 
+        Yii::app()->loadHelper('admin.htmleditor');
         $this->aData = $aData;
         $this->render('editquota_view', [
             'oQuota' => $oQuota,

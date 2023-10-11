@@ -159,7 +159,7 @@ class QuestionAdministrationController extends LSBaseController
      * @throws CException
      * @todo Move to service class
      */
-    public function renderFormAux(Question $question)
+    private function renderFormAux(Question $question)
     {
         Yii::app()->loadHelper("admin.htmleditor");
         Yii::app()->getClientScript()->registerPackage('ace');
@@ -195,6 +195,7 @@ class QuestionAdministrationController extends LSBaseController
         $jsVariablesHtml = $this->renderPartial(
             '/admin/survey/Question/_subQuestionsAndAnwsersJsVariables',
             [
+                'qid'               => $question->qid,
                 'anslangs'          => $question->survey->allLanguages,
                 // TODO
                 'assessmentvisible' => false,
@@ -263,6 +264,32 @@ class QuestionAdministrationController extends LSBaseController
         );
     }
 
+    public function actionAjaxLoadExtraOptions($questionId)
+    {
+        $questionId = (int) $questionId;
+        $question = Question::model()->findByPk($questionId);
+        if (empty($question)) {
+            throw new CHttpException(404, gT('Invalid question id'));
+        }
+
+        if (!Permission::model()->hasSurveyPermission($question->sid, 'surveycontent', 'read')) {
+            Yii::app()->user->setFlash('error', gT("Access denied"));
+            $this->redirect(Yii::app()->request->urlReferrer);
+        }
+        Yii::app()->loadHelper("admin.htmleditor");
+        PrepareEditorScript(false, $this);
+        App()->session['FileManagerContext'] = "edit:survey:{$question->sid}";
+        initKcfinder();
+
+        $this->renderPartial(
+            'extraOptions',
+            [
+                'question' => $question,
+                'survey' => $question->survey,
+            ]
+        );
+    }
+
     /**
      * Load list questions view for a specified survey by $surveyid
      *
@@ -309,28 +336,15 @@ class QuestionAdministrationController extends LSBaseController
         $aData['title_bar']['title']    = $oSurvey->currentLanguageSettings->surveyls_title .
             " (" . gT("ID") . ":" . $iSurveyID . ")";
 
-        $aData['topbar']['middleButtons'] = $this->renderPartial(
-            'partial/topbarBtns/listquestionsTopbarLeft_view',
-            [
-                'oSurvey' => $oSurvey,
-                'hasSurveyContentCreatePermission' => Permission::model()->hasSurveyPermission(
-                    $iSurveyID,
-                    'surveycontent',
-                    'create'
-                ),
-            ],
-            true
-        );
-
         // The DataProvider will be build from the Question model, search method
-        $model = new Question('search');
+        $questionModel = new Question('search');
         // Global filter
         if (isset($_GET['Question'])) {
-            $model->setAttributes($_GET['Question'], false);
+            $questionModel->setAttributes($_GET['Question'], false);
         }
         // Filter group
         if (isset($_GET['gid'])) {
-            $model->gid = $_GET['gid'];
+            $questionModel->gid = $_GET['gid'];
         }
         // Set number of page
         if (isset($_GET['pageSize'])) {
@@ -338,12 +352,85 @@ class QuestionAdministrationController extends LSBaseController
         }
         $aData['pageSize'] = App()->user->getState('pageSize', App()->params['defaultPageSize']);
         // We filter the current survey id
-        $model->sid = $oSurvey->sid;
-        $aData['model'] = $model;
+        $questionModel->sid = $oSurvey->sid;
+        $aData['questionModel'] = $questionModel;
+
+        $aData['surveyid'] = $iSurveyID;
+        $aData['surveybar'] = [];
+
+        // for newly combined groups and reorder parts
+        $aData['groupModel'] = $this->getGroupData($oSurvey);
+        $aData['aGroupsAndQuestions'] = $this->getReorderData($oSurvey);
+        $aData['surveyActivated'] = $oSurvey->getIsActive();
 
         $this->aData = $aData;
 
+         $aData['hasSurveyContentCreatePermission'] = Permission::model()->hasSurveyPermission(
+             $iSurveyID,
+             'surveycontent',
+             'create'
+         );
+
+
         $this->render("listquestions", $aData);
+    }
+
+    public function getGroupData($oSurvey)
+    {
+        $model    = new QuestionGroup('search');
+
+        if (isset($_GET['QuestionGroup']['group_name'])) {
+            $model->group_name = $_GET['QuestionGroup']['group_name'];
+        }
+
+        if (isset($_GET['pageSize'])) {
+            Yii::app()->user->setState('pageSize', (int) $_GET['pageSize']);
+        }
+        $model['sid'] = $oSurvey->primaryKey;
+        $model['language'] = $oSurvey->language;
+
+        return $model;
+    }
+
+    public function getReorderData($oSurvey)
+    {
+        $iSurveyID = $oSurvey->primaryKey;
+        $baselang = $oSurvey->language;
+        // cloned below content from surveyAdministrationController line#2550
+        $groups = $oSurvey->groups;
+        $groupData = [];
+        $initializedReplacementFields = false;
+        foreach ($groups as $iGID => $oGroup) {
+            $groupData[$iGID]['gid'] = $oGroup->gid;
+            $groupData[$iGID]['group_text'] = $oGroup->gid . ' ' . $oGroup->questiongroupl10ns[$baselang]->group_name;
+            LimeExpressionManager::StartProcessingGroup($oGroup->gid, false, $iSurveyID);
+            if (!$initializedReplacementFields) {
+                templatereplace("{SITENAME}"); // Hack to ensure the EM sets values of LimeReplacementFields
+                $initializedReplacementFields = true;
+            }
+
+            $qs = array();
+
+            foreach ($oGroup->questions as $question) {
+                $relevance = $question->relevance == '' ? 1 : $question->relevance;
+                $questionText = sprintf(
+                    '[{%s}] %s % s',
+                    $relevance,
+                    $question->title,
+                    $question->questionl10ns[$baselang]->question
+                );
+                LimeExpressionManager::ProcessString($questionText, $question->qid);
+                $questionData['question'] = viewHelper::stripTagsEM(LimeExpressionManager::GetLastPrettyPrintExpression());
+                $questionData['gid'] = $oGroup->gid;
+                $questionData['qid'] = $question->qid;
+                $questionData['title'] = $question->title;
+                $qs[] = $questionData;
+            }
+            $groupData[$iGID]['questions'] = $qs;
+            LimeExpressionManager::FinishProcessingGroup();
+        }
+
+        return $groupData;
     }
 
     /****
@@ -473,8 +560,6 @@ class QuestionAdministrationController extends LSBaseController
             }
 
             if ($question->survey->active == 'N') {
-                // Clean subquestions before save.
-                $question->deleteAllSubquestions();
                 // If question type has subquestions, save them.
                 if ($question->questionType->subquestions > 0) {
                     $this->storeSubquestions(
@@ -2795,13 +2880,18 @@ class QuestionAdministrationController extends LSBaseController
      */
     private function storeSubquestions($question, $subquestionsArray)
     {
+        $this->validateSubquestionCodes($subquestionsArray);
         $questionOrder = 0;
         $errorQuestions = [];
+        $subquestions = [];
         foreach ($subquestionsArray as $subquestionId => $subquestionArray) {
             foreach ($subquestionArray as $scaleId => $data) {
-                $subquestion = new Question();
-                $subquestion->sid        = $question->sid;
-                $subquestion->gid        = $question->gid;
+                $subquestion = Question::model()->findByPk($subquestionId);
+                if (!$subquestion) {
+                    $subquestion = new Question();
+                }
+                $subquestion->sid = $question->sid;
+                $subquestion->gid = $question->gid;
                 $subquestion->parent_qid = $question->qid;
                 $subquestion->question_order = $questionOrder;
                 $questionOrder++;
@@ -2811,18 +2901,24 @@ class QuestionAdministrationController extends LSBaseController
                         'Internal error: Missing mandatory field code for question: ' . json_encode($data)
                     );
                 }
-                $subquestion->title      = $data['code'];
+                $subquestion->title = $data['code'];
                 if ($scaleId === 0) {
-                    $subquestion->relevance  = $data['relevance'];
+                    $subquestion->relevance = $data['relevance'];
                 }
-                $subquestion->scale_id   = $scaleId;
+                $subquestion->scale_id = $scaleId;
+                $subquestion->setScenario('saveall');
                 if (!$subquestion->save()) {
                     array_push($errorQuestions, $subquestion);
                     continue;
                 }
                 $subquestion->refresh();
+                $subquestions[] = $subquestion;
                 foreach ($data['subquestionl10n'] as $lang => $questionText) {
-                    $l10n = new QuestionL10n();
+                    $l10n = QuestionL10n::model()->findByAttributes([
+                        'qid' => $subquestion->qid,
+                        'language' => $lang
+                    ]);
+                    $l10n = $l10n ?? new QuestionL10n();
                     $l10n->qid = $subquestion->qid;
                     $l10n->language = $lang;
                     $l10n->question = $questionText;
@@ -2833,9 +2929,49 @@ class QuestionAdministrationController extends LSBaseController
                 }
             }
         }
+        $subquestionIds = array_map(function ($subquestion) {
+            return $subquestion->qid;
+        }, $subquestions);
+        $question->deleteAllSubquestions($subquestionIds);
         foreach ($errorQuestions as $errorQuestion) {
             throw (new LSUserException(500, gT("Could not save subquestion")))
                 ->setDetailedErrorsFromModel($errorQuestion);
+        }
+    }
+
+    /**
+     * Validate subquestion codes.
+     *
+     * @param array $subquestionsArray Data from request.
+     * @return void
+     * @throws LSUserException
+     */
+    private function validateSubquestionCodes($subquestionsArray)
+    {
+        // ensure uniquness of codes
+        $codes = [];
+        foreach ($subquestionsArray as $subquestionArray) {
+            foreach ($subquestionArray as $scaleId => $data) {
+                if (!isset($codes[$scaleId])) {
+                    $codes[$scaleId] = [];
+                }
+                if (
+                    in_array(
+                        $data['code'],
+                        $codes[$scaleId]
+                    )
+                ) {
+                    throw (
+                        new LSUserException(
+                            500,
+                            gT('Could not save subquestion')
+                        )
+                    )->setDetailedErrors(
+                        ['Subquestion codes must be unique.']
+                    );
+                }
+                $codes[$scaleId][] = $data['code'];
+            }
         }
     }
 

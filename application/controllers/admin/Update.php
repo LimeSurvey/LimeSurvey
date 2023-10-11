@@ -71,6 +71,7 @@ if (class_exists('SurveyCommonAction')) {
     }
 } else {
     // try to include the old one
+    /** @psalm-suppress UndefinedClass */ 
     class DynamicSurveyCommonAction extends Survey_Common_Action
     {
     }
@@ -380,7 +381,7 @@ class Update extends DynamicSurveyCommonAction
                         $aData['access_token'] = $access_token;
                         return $this->controller->renderPartial('update/updater/steps/_backup', $aData, false, false);
                     } else {
-                        $error = $backup->error;
+                        $error = $backupInfos->error;
                     }
                 } else {
                     $error = "no_updates_infos";

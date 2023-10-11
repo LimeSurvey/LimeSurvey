@@ -1,0 +1,20 @@
+.list-group-item {
+    background-color : $white;
+    border           : 1px solid $g-900;
+}
+.list-group-item-success {
+    color            : $white;
+    background-color : $base-color;
+}
+.list-group-item-info {
+    color            : $white;
+    background-color : $grape;
+}
+.list-group-item-warning {
+    color            : $g-900;
+    background-color : $warning;
+}
+.list-group-item-danger {
+    color            : $g-900;
+    background-color : $error;
+}

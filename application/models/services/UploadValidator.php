@@ -13,8 +13,8 @@ class UploadValidator
     /**
      * UploadValidator constructor.
      *
-     * @param array<string,mixed>|null  $post   HTTP POST variables. If null, $_POST is used.
-     * @param array<string,mixed>|null  $post   HTTP File Upload variables. If null, $_FILES is used.
+     * @param array|null $post   HTTP POST variables. If null, $_POST is used.
+     * @param array|null $files  HTTP File Upload variables. If null, $_FILES is used.
      */
     public function __construct($post = null, $files = null)
     {

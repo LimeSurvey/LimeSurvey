@@ -16,8 +16,8 @@
 <!-- Date, selector layout -->
 
 <!-- answer -->
-<div class='{{ coreClass }} mb-3 row row-cols-lg-auto g-1 align-items-center'>
-    <div class="col-3">
+<div class='{{ coreClass }} mb-3 row g-1 align-items-center'>
+    <div class="col-12 col-sm-auto">
         <label for='answer{{ name }}' class='visually-hidden control-label'>
             {{ sprintf(gT('Date format: %s'), dateformatdetails) }}
         </label>
@@ -29,7 +29,7 @@
                 'aria-describedby' : "ls-question-text-" ~ name,
             }) }}
             <div class="input-group-addon btn btn-primary">
-                <i class="fa fa-calendar" aria-hidden="true"></i>
+                <i class="fa fa-calendar ri-calendar-2-fill" aria-hidden="true"></i>
                 <span class="visually-hidden"> {{ gT("Open date/time selector") }}</span>
             </div>
         </div>

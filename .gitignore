@@ -136,6 +136,7 @@ yarn-error.log
 
 # Test stuff
 chromedriver
+cov.xml
 
 # RFC and commons directory and files
 /.well-known/
@@ -187,7 +188,6 @@ vendor/phpdocumentor/
 vendor/phpmd/
 vendor/phpspec/
 vendor/phpunit/
-vendor/psr/
 vendor/sebastian/
 vendor/theseer/
 vendor/vimeo/

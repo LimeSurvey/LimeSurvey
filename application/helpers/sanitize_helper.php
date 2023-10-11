@@ -116,7 +116,7 @@ function nice_addslashes($string)
  *     $force_lowercase - Force the string to lowercase?
  *     $alphanumeric - If set to *true*, will remove all non-alphanumeric characters.
  */
-function sanitize_filename($filename, $force_lowercase = true, $alphanumeric = false, $beautify = true)
+function sanitize_filename($filename, $force_lowercase = true, $alphanumeric = false, $beautify = true, $directory=false)
 {
     // sanitize filename
     $filename = mb_ereg_replace(
@@ -138,7 +138,8 @@ function sanitize_filename($filename, $force_lowercase = true, $alphanumeric = f
     }
     // maximise filename length to 255 bytes http://serverfault.com/a/9548/44086
     $ext = pathinfo((string) $filename, PATHINFO_EXTENSION);
-    $filename = mb_strcut(pathinfo((string) $filename, PATHINFO_FILENAME), 0, 255 - ($ext ? strlen($ext) + 1 : 0), mb_detect_encoding((string) $filename)) . ($ext ? '.' . $ext : '');
+    $filename_info = $directory ? $filename : pathinfo((string) $filename, PATHINFO_FILENAME);
+    $filename = mb_strcut($filename_info, 0, 255 - ($ext ? strlen($ext) + 1 : 0), mb_detect_encoding((string) $filename)) . ($ext ? '.' . $ext : '');
     $filename = ($alphanumeric) ? mb_ereg_replace("[^a-zA-Z0-9]", "", $filename) : $filename;
 
     if ($force_lowercase) {
@@ -189,7 +190,7 @@ function beautify_filename($filename)
 function sanitize_dirname($string, $force_lowercase = false, $alphanumeric = false)
 {
     $string = str_replace(".", "", (string) $string);
-    return sanitize_filename($string, $force_lowercase, $alphanumeric, false);
+    return sanitize_filename($string, $force_lowercase, $alphanumeric, false, true);
 }
 
 
@@ -416,15 +417,6 @@ function check_html_string($input, $min = '', $max = '')
 }
 
 
-function check_ldap_string($input, $min = '', $max = '')
-{
-    // FIXME undefined function sanitize_string
-    if ($input != sanitize_string($input, $min, $max)) {
-        return false;
-    }
-    return true;
-}
-
 function check_system_string($input, $min = '', $max = '')
 {
     if ($input != sanitize_system_string($input, $min, $max)) {
@@ -440,13 +432,14 @@ function check_system_string($input, $min = '', $max = '')
  * @param string $min
  * @param string $max
  * @return bool
- * @deprecated  2018-01-29 has undefined function my_utf8_decode inside !!
+ * @throws Exception
  */
 function check($input, $flags, $min = '', $max = '')
 {
     $oldput = $input;
     if ($flags & UTF8) {
-        $input = my_utf8_decode($input);
+        // This case used before function my_utf8_decode, which doesn't exist.
+        throw new Exception('UTF8 not supported');
     }
     if ($flags & PARANOID) {
         $input = sanitize_paranoid_string($input, $min, $max);

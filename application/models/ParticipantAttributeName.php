@@ -108,7 +108,10 @@ class ParticipantAttributeName extends LSActiveRecord
             'title'            => gT('Edit this attribute'),
             'linkClass'        => 'action_attributeNames_editModal',
             'iconClass'        => 'ri-pencil-fill',
-            'enabledCondition' => $isNotCoreAttribute
+            'enabledCondition' => $isNotCoreAttribute,
+            'linkAttributes'   => [
+                'data-attribute_id'   => $this->attribute_id,
+            ]
         ];
         $dropdownItems[] = [
             'title'            => gT('Delete this attribute'),

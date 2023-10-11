@@ -337,6 +337,9 @@ CKEDITOR.editorConfig = function (a) {
         ];
         a.extraPlugins = "limereplacementfields,lsswitchtoolbars";
         a.removePlugins = 'sourcearea';
+        a.iframe_attributes = {
+            sandbox: 'allow-scripts allow-same-origin'
+        }
 }
 
 CKEDITOR.on("instanceReady", function (event) {

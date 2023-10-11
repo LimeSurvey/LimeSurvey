@@ -28,7 +28,10 @@ echo viewHelper::getViewTestTag('usersIndex');
             'dataProvider' => $model->search(),
             'columns' => $model->getManagementColums(),
             'massiveActionTemplate' => $massiveAction,
-            'lsAfterAjaxUpdate' => ['LS.UserManagement.bindButtons();'],
+            'lsAfterAjaxUpdate' => [
+                'bindListItemclick();',
+                'LS.UserManagement.bindButtons();',
+            ],
             'filter' => $model,
             'summaryText' => gT('Displaying {start}-{end} of {count} result(s).') . ' '
                 . sprintf(

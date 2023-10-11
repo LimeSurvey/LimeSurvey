@@ -33,7 +33,7 @@ class HomepageSettingsController extends LSBaseController
     public function filters()
     {
         return [
-            'postOnly + resetAllBoxes', // Only allow resetAllBoxes via POST request
+            'postOnly + resetAllBoxes, updateBoxesSettings', // Only allow resetAllBoxes via POST request
         ];
     }
 
@@ -69,6 +69,8 @@ class HomepageSettingsController extends LSBaseController
         $dataProviderBox = new CActiveDataProvider('Box');
 
         $aData['topbar']['title'] = gT('Dashboard');
+        $aData['topbar']['backLink'] = App()->createUrl('admin/index');
+
         $aData['topbar']['rightButtons'] = $this->renderPartial('partial/topbarBtns/rightSideButtons', [], true);
         $aData['topbar']['middleButtons'] = $this->renderPartial('partial/topbarBtns/leftSideButtons', [], true);
         $this->aData = $aData;

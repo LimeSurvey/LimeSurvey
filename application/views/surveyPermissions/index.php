@@ -3,7 +3,7 @@
 /* @var $userCreatePermission bool true if current user has permission to set survey permission for other users */
 /* @var $surveyid int */
 /* @var $userList array users that could be added to survey permissions */
-/* @var $userGroupList array usergroups that could be added to survey permissions */
+/* @var $userGroupList array user groups that could be added to survey permissions */
 /* @var $tableContent CActiveDataProvider dataProvider for the gridview (table) */
 /* @var $oSurveyPermissions \LimeSurvey\Models\Services\SurveyPermissions */
 
@@ -152,6 +152,7 @@
                     ]
 
                 ], $baseColumns),
+                'lsAfterAjaxUpdate' => ['LS.UserManagement.bindButtons();']
 
             ]
         );
@@ -160,4 +161,10 @@
     </div>
     <?php $this->renderPartial('/surveyAdministration/_user_management_sub_footer'); ?>
 
+</div>
+<div id='UserManagement-action-modal' class="modal fade UserManagement--selector--modal" tabindex="-1" role="dialog">
+    <div id="usermanagement-modal-doalog" class="modal-dialog" role="document">
+        <div class="modal-content">
+        </div>
+    </div>
 </div>

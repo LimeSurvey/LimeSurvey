@@ -13,6 +13,8 @@
 *
 */
 
+use LimeSurvey\Models\Services\UserManager;
+
 /**
  * Class User
  *
@@ -148,6 +150,36 @@ class User extends LSActiveRecord
     }
 
     /**
+     * @inheritDoc
+     * Delete user in related model after deletion
+     * return void
+     **/
+    protected function afterDelete()
+    {
+        parent::afterDelete();
+        /* Delete all permission */
+        Permission::model()->deleteAll(
+            "uid = :uid",
+            [":uid" => $this->uid]
+        );
+        /* Delete potential roles */
+        UserInPermissionrole::model()->deleteAll(
+            "uid = :uid",
+            [":uid" => $this->uid]
+        );
+        /* User settings */
+        SettingsUser::model()->deleteAll(
+            "uid = :uid",
+            [":uid" => $this->uid]
+        );
+        /* User in group */
+        UserInGroup::model()->deleteAll(
+            "uid = :uid",
+            [":uid" => $this->uid]
+        );
+    }
+
+    /**
      * @return string
      */
     public function getSurveysCreated()
@@ -182,8 +214,8 @@ class User extends LSActiveRecord
      * @param string $new_user
      * @param string $new_pass
      * @param string $new_full_name
-     * @param string $new_email
      * @param int $parent_user
+     * @param string $new_email
      * @param string|null $expires
      * @return integer|boolean User ID if success
      */
@@ -455,8 +487,11 @@ class User extends LSActiveRecord
     public function getManagementButtons()
     {
         $permission_superadmin_read = Permission::model()->hasGlobalPermission('superadmin', 'read');
+        $permission_users_read = Permission::model()->hasGlobalPermission('users', 'read');
         $permission_users_update = Permission::model()->hasGlobalPermission('users', 'update');
         $permission_users_delete = Permission::model()->hasGlobalPermission('users', 'delete');
+        $userManager = new UserManager(App()->user, $this);
+
         // User is owned or created by you
         $ownedOrCreated = $this->parent_id == App()->session['loginID'];
 
@@ -478,7 +513,7 @@ class User extends LSActiveRecord
                 'data-href' => $detailUrl,
             ],
             'enabledCondition' =>
-                $permission_superadmin_read
+                $permission_superadmin_read || $permission_users_read
                 || ($permission_superadmin_read
                     && (Permission::isForcedSuperAdmin($this->uid)
                         || $this->uid == App()->user->getId()
@@ -523,12 +558,7 @@ class User extends LSActiveRecord
             'linkAttributes'   => [
                 'data-href' => $setRoleUrl,
             ],
-            'enabledCondition' =>
-                ($permission_superadmin_read
-                    && !(Permission::isForcedSuperAdmin($this->uid)
-                        || $this->uid == App()->user->getId()
-                    )
-                )
+            'enabledCondition' => $userManager->canAssignRole() && $this->uid != App()->user->getId()
         ];
         $dropdownItems[] = [
             'title'            => gT('Edit user'),
@@ -571,7 +601,7 @@ class User extends LSActiveRecord
                 'data-user'      => CHtml::encode($this->full_name),
                 'data-action'    => 'deluser',
                 'data-onclick'   => "LS.UserManagement.triggerRunAction(\"#UserManagement--takeown-$this->uid\")",
-                'data-message'   => gT('Do you want to take ownerschip of this user?'),
+                'data-message'   => gT('Do you want to take ownership of this user?'),
             ],
             'enabledCondition' =>
                 ($permission_superadmin_read
@@ -695,17 +725,37 @@ class User extends LSActiveRecord
             ],
         ];
 
-        if (Permission::model()->hasGlobalPermission('superadmin', 'read')) {
+        // NOTE: Super Administrators with just the "read" flag also have these flags
+        $permission_read_users      = Permission::model()->hasGlobalPermission('users', 'read');
+        $permission_read_usergroups = Permission::model()->hasGlobalPermission('usergroups', 'read');
+        $permission_read_surveys    = Permission::model()->hasGlobalPermission('surveys', 'read');
+
+        // Number of Surveys
+        // This info is already guessable by people able to list all Surveys
+        if ($permission_read_surveys) {
             $cols[] = array(
                 "name" => 'surveysCreated',
                 "header" => gT("No of surveys"),
                 'filter' => false
             );
+        }
+
+        // Usergroups Names
+        // This info is safe to be shown to who can read all Users and Groups.
+        // TODO: When there will be a more robust Group permissions system,
+        //       this column could be enabled by default, since each Group would
+        //       be checked individually.
+        if ($permission_read_users && $permission_read_usergroups) {
             $cols[] = array(
                 "name" => 'groupList',
                 "header" => gT("Usergroups"),
                 'filter' => false
             );
+        }
+
+        // Role Names
+        // Knowing this info makes sense if you can read all Users
+        if ($permission_read_users) {
             $cols[] = array(
                 "name" => 'roleList',
                 "header" => gT("Applied role"),
@@ -932,7 +982,7 @@ class User extends LSActiveRecord
                 'data-post-url'  => App()->createUrl("userGroup/deleteUserFromGroup"),
                 'data-post-datas' => json_encode(['ugid' => $userGroupId, 'uid' => $currentUserId]),
                 'data-message'   => sprintf(
-                    gT("Are you sure you want to delete user '%s' from usergroup '%s'?"),
+                    gT("Are you sure you want to delete user '%s' from user group '%s'?"),
                     CHtml::encode($this->users_name),
                     CHtml::encode($userGroup->name)
                 ),

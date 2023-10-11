@@ -190,6 +190,7 @@ class LayoutHelper
     public function renderTopbarTemplate($aData)
     {
         $titleTextBreadcrumb = null;
+        $titleBackLink = null;
         $isBreadCrumb = isset($aData['title_bar']); //only the existence is important, indicator for breadcrumb
 
         if (isset($aData['topbar']['title'])) {
@@ -197,6 +198,10 @@ class LayoutHelper
         } elseif ($isBreadCrumb) {
             $titleTextBreadcrumb = App()->getController()->renderPartial("/layouts/title_bar", $aData, true);
         }
+        if (isset($aData['topbar']['backLink'])) {
+            $titleBackLink = $aData['topbar']['backLink'];
+        }
+
         $middle = $aData['topbar']['middleButtons'] ?? '';
         $rightSide = $aData['topbar']['rightButtons'] ?? '';
         if ($titleTextBreadcrumb !== null) {
@@ -221,7 +226,8 @@ class LayoutHelper
                     'leftSide'     => $titleTextBreadcrumb,
                     'middle'       => $middle, //array of ButtonWidget
                     'rightSide'    => $rightSide, //array of ButtonWidget
-                    'isBreadCrumb' => $isBreadCrumb
+                    'isBreadCrumb' => $isBreadCrumb,
+                    'titleBackLink' => $titleBackLink
                 ],
                 true
             );
@@ -231,6 +237,7 @@ class LayoutHelper
 
     /**
      * Display the update notification
+     * @throws CException
      */
     public function updatenotification()
     {
@@ -258,7 +265,8 @@ class LayoutHelper
             $updateNotification = $updateModel->updateNotification;
 
             if ($updateNotification->result) {
-                return Yii::app()->getController()->renderPartial(
+                App()->getClientScript()->registerScriptFile(App()->getConfig('packages') . DIRECTORY_SEPARATOR . 'comfort_update' . DIRECTORY_SEPARATOR . 'comfort_update.js');
+                return App()->getController()->renderPartial(
                     "/admin/update/_update_notification",
                     array('security_update_available' => $updateNotification->security_update)
                 );
@@ -306,10 +314,12 @@ class LayoutHelper
      * @access protected
      * @param string $url
      * @param bool $return
+     * @param bool $questionEditor if footer is on question editor layout page
      * @return string|null
      */
-    public function getAdminFooter(string $url, bool $return = false): ?string
+    public function getAdminFooter(string $url, bool $return = false, bool $questionEditor = false): ?string
     {
+        $aData['questionEditor'] = $questionEditor;
         $aData['versionnumber'] = Yii::app()->getConfig("versionnumber");
 
         $aData['buildtext'] = "";

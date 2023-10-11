@@ -687,7 +687,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
             $bodyItem.append(`<h2>${labelSet.label_name}</h2>`);  // jshint ignore: line
             $itemList.appendTo($bodyItem);
           });
-          
+
           if (isEmpty) {
             showLabelSetAlert(languageJson.labelSetEmpty);
           } else {
@@ -726,7 +726,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
 
   /**
    * Hides the alert in the label set's modal
-   * 
+   *
    * @return {void}
    */
   function hideLabelSetAlert() /*: void */ {
@@ -1240,9 +1240,9 @@ $(document).on('ready pjax:scriptcomplete', function () {
                 <select class="form-select" name="laname">
                   <option value=""></option>
                 </select>
-              </div>' 
+              </div>'
             `;
-            // 
+            //
             child = template.content.firstElementChild;
             if (child) {
               targetParent.after(child);
@@ -1253,7 +1253,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
                 alert('Found no <select>');
                 throw 'abort';
             }
-            $.getJSON(languageJson.lanameurl, (data) => {
+            $.getJSON(languageJson.lanrestrictedurl, (data) => {
               $.each(data, (key, val) => {
                 if (typeof val === 'string') {
                   $(select).append(`<option value="${key}">${val}</option>`);
@@ -1539,7 +1539,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
     });
     return duplicateCodes.length == 0;
   }
-  
+
   /**
    * Return a function that can be used to check code uniqueness.
    * Used by subquestions and answer options.
@@ -1866,6 +1866,28 @@ $(document).on('ready pjax:scriptcomplete', function () {
         });
       };
 
+      const reloadExtraOptions = () => {
+        // Show loading gif.
+        $('#ls-loading').show();
+        // Post complete form to controller.
+        $.get({
+            url: languageJson.lsextraoptionsurl,
+            success: (response /*: string */, textStatus /*: string */) => {
+              $('#extra-options-container').replaceWith( response );
+              $('.btnaddsubquestion').off('click.subquestions').on('click.subquestions', addSubquestionInput);
+              $('.btndelsubquestion').off('click.subquestions').on('click.subquestions', deleteSubquestionInput);
+              makeAnswersTableSortable();
+              // Hide loading gif.
+              $('#ls-loading').hide();
+            },
+            error: (data) => {
+              $('#ls-loading').hide();
+              alert('Internal error from saveFormWithAjax: no data.responseJSON found');
+              throw 'abort';
+            }
+        });
+      };
+
       // Helper function after unique check.
       const saveFormWithAjax /*: (void) => (void) */ = () => {
         const data = {};
@@ -1903,6 +1925,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
 
             // Update the side-bar.
             LS.EventBus.$emit('updateSideBar', {'updateQuestions': true});
+            reloadExtraOptions();
 
             if (textStatus === 'success') {
               // Show confirm message.
@@ -2125,7 +2148,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
       $('#' + id).width(width).height(height);
       $('#' + id).closest('.jquery-ace-wrapper').width(width).height(height);
     });
-    
+
     $('#relevance').on('keyup', showConditionsWarning);
 
     $(document).on('focusout', '#subquestions table.subquestions-table:first-of-type td.code-title input.code', syncAnswerSubquestionCode);

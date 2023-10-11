@@ -119,6 +119,9 @@ class TemplateConfiguration extends TemplateConfig
         return array(
             array('template_name', 'required'),
             array('id, sid, gsid', 'numerical', 'integerOnly' => true),
+            array('template_name', 'filter', 'filter' => function ($value) {
+                return sanitize_filename($value, false, false, false);
+            }),
             array('template_name', 'length', 'max' => 150),
             array('cssframework_name', 'length', 'max' => 45),
             array('files_css, files_js, files_print_css, options, cssframework_css, cssframework_js, packages_to_load',
@@ -501,7 +504,12 @@ class TemplateConfiguration extends TemplateConfig
         }
 
         $criteria->compare('id', $this->id);
-        $criteria->compare('template_name', $this->template_name, true);
+        if (!empty($this->template_name)) {
+            $templateNameEscaped = strtr($this->template_name, ['%' => '\%', '_' => '\_', '\\' => '\\\\']);
+            $criteria->addCondition('template.name LIKE :templatename1 OR template.title LIKE :templatename2');
+            $criteria->params[':templatename1'] = '%' . $templateNameEscaped . '%';
+            $criteria->params[':templatename2'] = '%' . $templateNameEscaped . '%';
+        }
         $criteria->compare('files_css', $this->files_css, true);
         $criteria->compare('files_js', $this->files_js, true);
         $criteria->compare('files_print_css', $this->files_print_css, true);
@@ -540,6 +548,7 @@ class TemplateConfiguration extends TemplateConfig
           // Note: if no twig statement in the description, twig will just render it as usual
         try {
             $sDescription = App()->twigRenderer->convertTwigToHtml($this->template->description);
+            $sDescription = viewHelper::purified($sDescription);
         } catch (\Exception $e) {
           // It should never happen, but let's avoid to anoy final user in production mode :)
             if (YII_DEBUG) {
@@ -617,7 +626,7 @@ class TemplateConfiguration extends TemplateConfig
     }
 
     /**
-     * @todo document me
+     * Check if the template exists and is valid
      *
      * @return bool
      */
@@ -627,7 +636,7 @@ class TemplateConfiguration extends TemplateConfig
             $this->bTemplateCheckResult = true;
             if (
                 !is_object($this->template) ||
-                (is_object($this->template) && !Template::checkTemplateXML($this->template->folder))
+                (is_object($this->template) && !Template::checkTemplateXML($this->template->name, $this->template->folder))
             ) {
                 $this->bTemplateCheckResult = false;
             }
@@ -718,7 +727,8 @@ class TemplateConfiguration extends TemplateConfig
                 return '';
             }
         }
-        $templateName = CHtml::encode($this->template_name);
+        /* Use sanitized filename for previous bad upload */
+        $templateName = sanitize_filename($this->template_name, false, false, false);
         $sEditorUrl = App()->getController()->createUrl(
             'admin/themes/sa/view',
             array("templatename" => $templateName)
@@ -741,7 +751,7 @@ class TemplateConfiguration extends TemplateConfig
         $dropdownItems[] = [
             'title'            => gT('Theme editor'),
             'url'              => $sEditorUrl,
-            'linkId'           => 'template_editor_link_' . $templateName,
+            'linkId'           => 'template_editor_link_' . $this->id,
             'linkClass'        => '',
             'iconClass'        => 'ri-brush-fill',
             'enabledCondition' => App()->getController()->action->id !== "surveysgroups",
@@ -751,7 +761,7 @@ class TemplateConfiguration extends TemplateConfig
         $dropdownItems[] = [
             'title'            => gT('Theme options'),
             'url'              => $sOptionUrl,
-            'linkId'           => 'template_options_link_' . $templateName ,
+            'linkId'           => 'template_options_link_' . $this->id ,
             'linkClass'        => '',
             'iconClass'        => 'ri-dashboard-3-fill',
             'enabledCondition' => $this->getHasOptionPage(),
@@ -761,7 +771,7 @@ class TemplateConfiguration extends TemplateConfig
         $dropdownItems[] = [
             'title'            => gT('Extend'),
             'url'              => $sExtendUrl,
-            'linkId'           => 'extendthis_' . $templateName,
+            'linkId'           => 'extendthis_' . $this->id,
             'linkClass'        => 'selector--ConfirmModal ',
             'iconClass'        => 'ri-file-copy-line text-success',
             'enabledCondition' => App()->getController()->action->id !== "surveysgroups",
@@ -784,7 +794,7 @@ class TemplateConfiguration extends TemplateConfig
         $dropdownItems[] = [
             'title'            => gT('Uninstall'),
             'url'              => $sUninstallUrl,
-            'linkId'           => 'remove_fromdb_link_' . $templateName,
+            'linkId'           => 'remove_fromdb_link_' . $this->id,
             'linkClass'        => 'selector--ConfirmModal ',
             'iconClass'        => 'ri-delete-bin-fill text-danger',
             'enabledCondition' => App()->getController()->action->id !== "surveysgroups" &&
@@ -803,7 +813,7 @@ class TemplateConfiguration extends TemplateConfig
         $dropdownItems[] = [
             'title'            => gT('Reset'),
             'url'              => $sResetUrl,
-            'linkId'           => 'remove_fromdb_link_' . $templateName,
+            'linkId'           => 'remove_fromdb_link_' . $this->id,
             'linkClass'        => 'selector--ConfirmModal ',
             'iconClass'        => 'ri-refresh-line text-warning',
             'enabledCondition' => App()->getController()->action->id !== "surveysgroups",
@@ -820,7 +830,7 @@ class TemplateConfiguration extends TemplateConfig
     }
 
     /**
-     * @todo document me
+     * Returns true if this theme or any mothertemplate has a TemplateConfiguration set
      *
      * @return bool
      * @throws Exception
@@ -1036,7 +1046,6 @@ class TemplateConfiguration extends TemplateConfig
 
         $oTemplate->setToInherit();
         $oTemplate->setOptions();
-        $oTemplate->setOptionInheritance();
 
         $oOptions = (array) $oSimpleInheritanceTemplate->oOptions;
 
@@ -1212,7 +1221,7 @@ class TemplateConfiguration extends TemplateConfig
             ),
             'error'
         );
-        App()->getController()->redirect(array("admin/themeoptions"));
+        App()->getController()->redirect(array("themeOptions/index", "#" => "surveythemes"));
         App()->end();
     }
 
@@ -1223,14 +1232,11 @@ class TemplateConfiguration extends TemplateConfig
      */
     protected function setThisTemplate()
     {
-        $this->apiVersion       = (!empty($this->template->api_version)) ?
-            $this->template->api_version : null; // Mandtory setting in config XML
-        $this->viewPath         = $this->path . $this->getTemplateConfigurationForAttribute($this, 'view_folder')
-                ->template->view_folder . DIRECTORY_SEPARATOR;
-        $this->filesPath        = $this->path . $this->getTemplateConfigurationForAttribute($this, 'files_folder')
-                ->template->files_folder . DIRECTORY_SEPARATOR;
-        $this->generalFilesPath = App()->getConfig("userthemerootdir")
-            . DIRECTORY_SEPARATOR . 'generalfiles' . DIRECTORY_SEPARATOR;
+        // Mandatory setting in config XML
+        $this->apiVersion = (!empty($this->template->api_version)) ? $this->template->api_version : null;
+        $this->viewPath = $this->path . $this->getTemplateConfigurationForAttribute($this, 'view_folder')->template->view_folder . DIRECTORY_SEPARATOR;
+        $this->filesPath = $this->path . $this->getTemplateConfigurationForAttribute($this, 'files_folder')->template->files_folder . DIRECTORY_SEPARATOR;
+        $this->generalFilesPath = App()->getConfig("userthemerootdir") . DIRECTORY_SEPARATOR . 'generalfiles' . DIRECTORY_SEPARATOR;
         // Options are optional
         $this->setOptions();
 
@@ -1243,7 +1249,7 @@ class TemplateConfiguration extends TemplateConfig
                 $this->packages = array_merge($templateToLoadPackages->add, $this->packages);
             }
             if (!empty($templateToLoadPackages->remove)) {
-                $this->packages =  array_diff($this->packages, $templateToLoadPackages->remove);
+                $this->packages = array_diff($this->packages, $templateToLoadPackages->remove);
             }
         }
 
@@ -1271,7 +1277,8 @@ class TemplateConfiguration extends TemplateConfig
     }
 
     /**
-     * @todo document me
+     * Decodes json string from the database field "options" and stores it inside $this->oOptions
+     * Also triggers inheritence checks
      * @return void
      */
     protected function setOptions()
@@ -1287,7 +1294,8 @@ class TemplateConfiguration extends TemplateConfig
     }
 
     /**
-     * @todo document me
+     * Loop through all theme options defined, trigger check for inheritance and write the new value back to the options object
+     * @return void
      */
     protected function setOptionInheritance()
     {
@@ -1295,14 +1303,13 @@ class TemplateConfiguration extends TemplateConfig
 
         if (!empty($oOptions)) {
             foreach ($oOptions as $sKey => $sOption) {
-                $oOptions->$sKey = $this->getOptionKey($sKey);
+                $this->oOptions->$sKey = $this->getOptionKey($sKey);
             }
         }
     }
 
     /**
-     * @todo document me
-     *
+     * Search through the inheritence chain and find the inherited value for theme option
      * @param string $key
      * @return mixed
      */
@@ -1326,7 +1333,7 @@ class TemplateConfiguration extends TemplateConfig
     }
 
     /**
-     * @todo document me
+     * loads the main theme template from the parent theme that it is extending, as a package. Ready to be registered
      *
      * @param string[] $packages
      * @return string[]
@@ -1706,7 +1713,7 @@ class TemplateConfiguration extends TemplateConfig
      * And it will publish the CSS and the JS defined in config.xml. So CSS can use relative path for pictures.
      * The publication of the package itself is in LSETwigViewRenderer::renderTemplateFromString()
      *
-     * @param TemplateConfiguration $oTemplate TemplateManifest
+     * @param TemplateConfiguration|TemplateManifest $oTemplate TemplateManifest
      */
     protected function createTemplatePackage($oTemplate)
     {
@@ -1742,8 +1749,8 @@ class TemplateConfiguration extends TemplateConfig
               $aJsFiles  = $this->changeMotherConfiguration('js', $aJsFiles);
         }
 
-        // Then we add the direction files if they exist
-        // TODO: attribute system rather than specific fields for RTL
+        //For fruity_twentythree surveytheme we completely replace the variation theme css file:
+        $aCssFiles = $this->replaceVariationFilesWithRtl($aCssFiles);
 
         $this->sPackageName = 'survey-template-' . $this->sTemplateName;
         $sTemplateurl       = $oTemplate->getTemplateURL();
@@ -1760,5 +1767,25 @@ class TemplateConfiguration extends TemplateConfig
             'js'          => $aJsFiles,
             'depends'     => $aDepends,
         ));
+    }
+
+    /**
+     * When rtl language is chosen:
+     * if a css file in folder variations is in array cssFiles, then it will be replaced with the
+     * *-rtl version
+     * @param array $cssFiles
+     * @return array
+     */
+    private function replaceVariationFilesWithRtl(array $cssFiles)
+    {
+        if (getLanguageRTL(App()->getLanguage()) == 'rtl') {
+            foreach ($cssFiles as $index => $cssFile) {
+                if (strpos($cssFile, 'css/variations/theme_') !== false) {
+                    $cssFileSplitArray = explode('.', $cssFile);
+                    $cssFiles[$index] =  $cssFileSplitArray[0] . '-rtl.css';
+                }
+            }
+        }
+        return $cssFiles;
     }
 }

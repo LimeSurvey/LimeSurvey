@@ -19,6 +19,7 @@ class Update_601 extends DatabaseUpdateBase
             // Column already exists - ignore
             rollBackToTransactionBookmark();
         }
+
         $this->updateCreateSurvey();
         $this->updateSurveyList();
         $this->updateGlobalSettings();

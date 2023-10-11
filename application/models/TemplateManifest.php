@@ -71,7 +71,9 @@ class TemplateManifest extends TemplateConfiguration
 
         foreach ($filesFromXML as $file) {
             if ($file->attributes()->type == $sType) {
-                $aScreenFiles[] = (string) $file;
+                // prevent accidental linebreaks and empty spaces in xml file string from breaking file path when loading it
+                $file = trim(str_replace(["\r", "\n"], '', $file));
+                $aScreenFiles[] = $file;
             }
         }
 
@@ -613,25 +615,28 @@ class TemplateManifest extends TemplateConfiguration
         return $otherfiles;
     }
 
-
     /**
+     * Returns the complete URL path to a given template name
      *
+     * @return string template url
+     * @throws CException
      */
     public function getTemplateURL()
     {
         Yii::import('application.helpers.SurveyThemeHelper');
         // By default, theme folder is always the folder name. @See:TemplateConfig::importManifest().
         if (SurveyThemeHelper::isStandardTemplate($this->sTemplateName)) {
-            return Yii::app()->getConfig("standardthemerooturl") . '/' . $this->sTemplateName . '/';
-        } else {
-            return  Yii::app()->getConfig("userthemerooturl") . '/' . $this->sTemplateName . '/';
+            return App()->getConfig("standardthemerooturl") . '/' . $this->sTemplateName . '/';
         }
 
-    //    return Template::getTemplateURL($this->sTemplateName);
+        return  App()->getConfig("userthemerooturl") . '/' . $this->sTemplateName . '/';
     }
 
-
-    // TODO: please write documentation here, seems to be no entrypoints for this
+    /**
+     * Get buttons/actions for the "Available admin themes", not installed
+     * @return string
+     * @throws CException
+     */
     public function getButtons()
     {
         $sEditorUrl  = Yii::app()->getController()->createUrl('admin/themes/sa/view', array("templatename" => $this->sTemplateName));
@@ -676,7 +681,7 @@ class TemplateManifest extends TemplateConfiguration
             $sDeleteLink = '<a
               id="template_delete_link_' . $this->sTemplateName . '"
               href="' . $sDeleteUrl . '"
-              data-post=\'{ "templatename": "' . $this->sTemplateName . '" }\'
+              data-post=\'{ "templatename": "' . CHtml::encode($this->sTemplateName) . '" }\'
               data-text="' . gT('Are you sure you want to delete this theme? ') . '"
               data-button-no="' . gt('Cancel') . '"  
               data-button-yes="' . gt('Delete') . '"
@@ -692,6 +697,7 @@ class TemplateManifest extends TemplateConfiguration
     }
 
     /**
+     * Installs an available theme
      * Create a new entry in {{templates}} and {{template_configuration}} table using the template manifest
      * @param string $sTemplateName the name of the template to import
      * @return boolean true on success | exception
@@ -715,6 +721,7 @@ class TemplateManifest extends TemplateConfiguration
         $aDatas['version']          = (string) $oTemplate->config->metadata->version;
         $aDatas['license']          = (string) $oTemplate->config->metadata->license;
         $aDatas['description']      = (string) $oTemplate->config->metadata->description;
+        $aDatas['title']            = (string) $oTemplate->config->metadata->title;
 
         // Engine, files, and options can be inherited from a moter template
         // It means that the while field should always be inherited, not a subfield (eg: all files, not only css add)
@@ -1440,7 +1447,7 @@ class TemplateManifest extends TemplateConfiguration
         $fontOptions = '';
         $fontPackages = App()->getClientScript()->fontPackages;
         $coreFontPackages = $fontPackages['core'];
-        // TODO: Why not set?
+        // user fonts can only be added while manually inserting files into the uploaddir see fonts.php
         if (isset($fontPackages['user'])) {
             $userFontPackages = $fontPackages['user'];
         } else {
@@ -1486,12 +1493,12 @@ class TemplateManifest extends TemplateConfiguration
     {
         $sDescription = $this->config->metadata->description;
 
-          // If wrong Twig in manifest, we don't want to block the whole list rendering
-          // Note: if no twig statement in the description, twig will just render it as usual
+        // If wrong Twig in manifest, we don't want to block the whole list rendering
+        // Note: if no twig statement in the description, twig will just render it as usual
         try {
             $sDescription = App()->twigRenderer->convertTwigToHtml($this->config->metadata->description);
         } catch (\Exception $e) {
-          // It should never happen, but let's avoid to anoy final user in production mode :)
+            // It should never happen, but let's avoid to anoy final user in production mode :)
             if (YII_DEBUG) {
                 App()->setFlashMessage(
                     "Twig error in template " .

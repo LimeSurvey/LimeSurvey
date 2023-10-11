@@ -32,6 +32,7 @@ $formatSelectOptions = array(
     'G' => gT('Group by Group', 'unescaped'),
     'A' => gT('All in one', 'unescaped')
 );
+$bGlobalSettings = !empty($this->currentModuleAction) && $this->currentModuleAction == 'globalsettings';
 if ($bShowInherited) {
     $formatSelectOptions['I'] = $oSurveyOptions->format . " ᴵ";
 }
@@ -314,36 +315,43 @@ Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", 
                 ]); ?>
             </div>
         </div>
-
+        <?php
+            $themeConf = TemplateConfiguration::getInstanceFromTemplateName(($oSurvey->template === 'inherit') ? $oSurveyOptions->template : $oSurvey->template);
+            $inheritThemeName = $oSurveyOptions->template;
+            if ($oSurveyOptions->template == 'inherit') {
+                $inheritThemeName = Yii::app()->getConfig('defaulttheme');
+            }
+        ?>
         <!-- Theme -->
         <div class="mb-3" >
             <label class=" form-label" for='template'><?php eT("Theme:"); ?></label>
             <div class="">
                 <select id='template' style="width:100%;" class="form-select activate-search" name='template' data-updateurl='<?php echo App()->createUrl('themeOptions/getPreviewTag') ?>'
-                        data-inherit-template-name='<?php echo $oSurveyOptions->template ?>'>
-                    <?php if ($bShowInherited) { ?>
-                        <option value="inherit" <?php echo ($oSurvey->template == 'inherit') ? 'selected="selected"' : ''; ?>><?php echo eT('Inherit'
-                                ) . ' [' . $oSurveyOptions->template . ']'; ?></option>
-                    <?php } ?>
+                        data-inherit-template-name='<?= $themeConf->template_name ?>'>
+                    <?php if ($bShowInherited || $bGlobalSettings) : ?>
+                        <option value="inherit" <?= ($oSurvey->template == 'inherit') ? 'selected="selected"' : ''; ?>>
+                            <?= gT('Inherit') . ' [' . CHtml::encode($inheritThemeName) . ']' ?>
+                        </option>
+                    <?php endif; ?>
                     <?php
                     $aTemplateList = Template::getTemplateListWithPreviews();
                     foreach ($aTemplateList as $templateName => $preview) {
                         if (Permission::model()->hasGlobalPermission('templates', 'read') || Permission::model()->hasTemplatePermission($templateName
                             ) || $oSurvey->template == htmlspecialchars((string) $templateName)) { ?>
-                            <option value='<?php echo $templateName; ?>'
-                                <?php if ($oSurvey->template && htmlspecialchars((string) $templateName) == $oSurvey->template && $oSurvey->template != 'inherit') { ?>
+                            <option value='<?php echo CHtml::encode($templateName); ?>'
+                                <?php if ($oSurvey->template && htmlspecialchars((string) $templateName) === $themeConf->template_name && $oSurvey->template !== 'inherit') { ?>
                                     selected='selected'
-                                <?php } elseif (!$oSurvey->template && $templateName == getGlobalSetting('defaulttheme') && $oSurvey->template != 'inherit') { ?>
+                                <?php } elseif (!$oSurvey->template && $templateName === App()->getConfig('defaulttheme') && $oSurvey->template !== 'inherit') { ?>
                                     selected='selected'
                                 <?php } ?>
-                            ><?php echo $templateName; ?></option>
+                            ><?php echo CHtml::encode($templateName); ?></option>
                         <?php } ?>
 
                     <?php } ?>
                 </select>
             </div>
             <div class="col-md-6 mt-4 w-100" id="preview-image-container">
-                <?php echo TemplateConfiguration::getInstanceFromTemplateName(($oSurvey->template == 'inherit') ? $oSurveyOptions->template : $oSurvey->template)->getPreview() ?>
+                <?php echo $themeConf->getPreview() ?>
             </div>
         </div>
         <?php

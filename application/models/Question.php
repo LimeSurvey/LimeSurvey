@@ -27,6 +27,7 @@ use LimeSurvey\Helpers\questionHelper;
  * @property string $other Other option enabled for question (Y/N)
  * @property string $mandatory Whether question is mandatory (Y/S/N)
  * @property string $encrypted Whether question is encrypted (Y/N)
+ * @property string $question_theme_name
  * @property integer $question_order Question order in greoup
  * @property integer $parent_qid Questions parent question ID eg for subquestions
  * @property integer $scale_id  The scale ID
@@ -126,7 +127,13 @@ class Question extends LSActiveRecord
             'parent' => array(self::HAS_ONE, 'Question', array("qid" => "parent_qid")),
             'questionattributes' => array(self::HAS_MANY, 'QuestionAttribute', 'qid'),
             'questionl10ns' => array(self::HAS_MANY, 'QuestionL10n', 'qid', 'together' => true),
-            'subquestions' => array(self::HAS_MANY, 'Question', array('parent_qid' => 'qid'), 'order' => App()->getDb()->quoteColumnName('subquestions.question_order') . ' ASC'),
+            'subquestions' => array(
+                self::HAS_MANY,
+                'Question',
+                array('parent_qid' => 'qid'),
+                'order' => 'subquestions.question_order ASC',
+                'together' => false
+            ),
             'conditions' => array(self::HAS_MANY, 'Condition', 'qid'),
             'answers' => array(self::HAS_MANY, 'Answer', 'qid'),
             // This relation will fail for non saved questions, which is often the case
@@ -143,8 +150,8 @@ class Question extends LSActiveRecord
     {
         /* Basic rules */
         $aRules = array(
-            array('title', 'required', 'on' => 'update, insert', 'message' => gT('The question code is mandatory.', 'unescaped')),
-            array('title', 'length', 'min' => 1, 'max' => 20, 'on' => 'update, insert'),
+            array('title', 'required', 'on' => 'update, insert, saveall', 'message' => gT('The question code is mandatory.', 'unescaped')),
+            array('title', 'length', 'min' => 1, 'max' => 20, 'on' => 'update, insert, saveall'),
             array('qid,sid,gid,parent_qid', 'numerical', 'integerOnly' => true),
             array('qid', 'unique','message' => sprintf(gT("Question id (qid) : '%s' is already in use."), $this->qid)),// Still needed ?
             array('other', 'in', 'range' => array('Y', 'N'), 'allowEmpty' => true),
@@ -182,7 +189,8 @@ class Question extends LSActiveRecord
                         ':scale_id' => $this->scale_id
                         )
                     ),
-                    'message' => gT('Subquestion codes must be unique.')
+                    'message' => gT('Subquestion codes must be unique.'),
+                    'except' => 'saveall'
             );
             /* Disallow other title if question allow other */
             $oParentQuestion = Question::model()->findByPk(array("qid" => $this->parent_qid));
@@ -259,7 +267,7 @@ class Question extends LSActiveRecord
                 'except' => 'archiveimport'
             );
             $aRules[] = array(
-                'title', 'match', 'pattern' => '/^[[:alnum:]]*$/',
+                'title', 'match', 'pattern' => '/^[a-zA-z0-9]*$/',
                 'message' => gT('Subquestion codes may only contain alphanumeric characters.'),
                 'except' => 'archiveimport'
             );
@@ -478,12 +486,15 @@ class Question extends LSActiveRecord
     /**
      * Delete all subquestions that belong to this question.
      *
+     * @param ?array $exceptIds Don't delete subquestions with these ids.
      * @return void
      * @todo Duplication from delete()
      */
-    public function deleteAllSubquestions()
+    public function deleteAllSubquestions($exceptIds = [])
     {
-        $ids = $this->allSubQuestionIds;
+        $ids = !empty($exceptIds)
+            ? array_diff($this->allSubQuestionIds, $exceptIds)
+            : $this->allSubQuestionIds;
         $qidsCriteria = (new CDbCriteria())->addInCondition('qid', $ids);
         $res = Question::model()->deleteAll((new CDbCriteria())->addInCondition('qid', $ids));
         QuestionAttribute::model()->deleteAll($qidsCriteria);
