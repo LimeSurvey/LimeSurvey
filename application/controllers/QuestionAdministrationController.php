@@ -2772,6 +2772,7 @@ class QuestionAdministrationController extends LSBaseController
                     $subquestion = Question::model()->findByAttributes([
                         'sid' => $question->sid,
                         'parent_qid' => $question->qid,
+                        'scale_id' => $scaleId,
                         'title' => $data['oldcode']
                     ]);
                 }
