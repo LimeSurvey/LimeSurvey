@@ -665,36 +665,64 @@ function getGroupListLang($gid, $language, $surveyid)
  */
 function getUserList($outputformat = 'fullinfoarray')
 {
-    $users = User::model()->withListRight()->findAll();
+    if (!empty(Yii::app()->session['loginID'])) {
+        $myuid = sanitize_int(Yii::app()->session['loginID']);
+    }
+    $usercontrolSameGroupPolicy = App()->getConfig('usercontrolSameGroupPolicy');
+    if (
+        !Permission::model()->hasGlobalPermission('superadmin', 'read') && isset($usercontrolSameGroupPolicy) &&
+        $usercontrolSameGroupPolicy == true
+    ) {
+        if (isset($myuid)) {
+            $userGroupList = getUserGroupList();
+            $criteria = new CDBCriteria();
+            $criteria->order = 'full_name, users_name, t.uid';
+            $criteria->with = 'groups';
+            /* users in usergroup */
+            $criteria->addInCondition('groups.ugid', $userGroupList);
+            /* childs of this user */
+            $criteria->compare('parent_id', $myuid, false, 'OR');
+            /* himself */
+            $criteria->compare('t.uid', $myuid, false, 'OR');
+            $oUsers = User::model()->findAll($criteria);
+        } else {
+            return array(); // Or die maybe
+        }
+    } else {
+        $oUsers = User::model()->findAll([
+            'order' => 'full_name, users_name, t.uid'
+        ]);
+    }
 
     $userlist = array();
     $userlist[0] = "Reserved for logged in user";
-    foreach ($users as $user) {
+    foreach ($oUsers as $oUser) {
+        $srow = $oUser->getAttributes();
         if ($outputformat != 'onlyuidarray') {
-            if ($user->uid != Yii::app()->session['loginID']) {
+            if ($srow['uid'] != Yii::app()->session['loginID']) {
                 $userlist[] = array(
-                    "user" => $user->users_name,
-                    "uid" => $user->uid,
-                    "email" => $user->email,
-                    "password" => $user->password,
-                    "full_name" => $user->full_name,
-                    "parent_id" => $user->parent_id
+                    "user" => $srow['users_name'],
+                    "uid" => $srow['uid'],
+                    "email" => $srow['email'],
+                    "password" => $srow['password'],
+                    "full_name" => $srow['full_name'],
+                    "parent_id" => $srow['parent_id']
                 );
             } else {
                 $userlist[0] = array(
-                    "user" => $user->users_name,
-                    "uid" => $user->uid,
-                    "email" => $user->email,
-                    "password" => $user->password,
-                    "full_name" => $user->full_name,
-                    "parent_id" => $user->parent_id
+                    "user" => $srow['users_name'],
+                    "uid" => $srow['uid'],
+                    "email" => $srow['email'],
+                    "password" => $srow['password'],
+                    "full_name" => $srow['full_name'],
+                    "parent_id" => $srow['parent_id']
                 );
             }
         } else {
-            if ($user->uid != Yii::app()->session['loginID']) {
-                $userlist[] = $user->uid;
+            if ($srow['uid'] != Yii::app()->session['loginID']) {
+                $userlist[] = $srow['uid'];
             } else {
-                $userlist[0] = $user->uid;
+                $userlist[0] = $srow['uid'];
             }
         }
     }
@@ -4164,7 +4192,8 @@ function getUserGroupList()
     $sQuery = "SELECT distinct a.ugid, a.name, a.owner_id FROM {{user_groups}} AS a LEFT JOIN {{user_in_groups}} AS b ON a.ugid = b.ugid WHERE 1=1 ";
     if (shouldFilterUserGroupList()) {
         $userid = intval(App()->session['loginID']);
-        $sQuery .= "AND (b.uid = {$userid})";
+        $sQuery .= " AND (b.uid = {$userid})";
+        $sQuery .= " OR (a.owner_id = {$userid})";
     }
     $sQuery .= " ORDER BY name";
 

@@ -26,7 +26,7 @@ class Themes extends SurveyCommonAction
 {
     public function runWithParams($params)
     {
-        $sTemplateName = Yii::app()->request->getPost('templatename', '');
+        $sTemplateName = trim(Yii::app()->request->getPost('templatename', ''));
         if (Permission::model()->hasGlobalPermission('templates', 'read') || Permission::model()->hasTemplatePermission($sTemplateName)) {
             parent::runWithParams($params);
         } else {
@@ -174,7 +174,7 @@ class Themes extends SurveyCommonAction
             App()->getController()->forward("/surveyAdministration/uploadimagefile/");
             App()->end();
         }
-        $sTemplateName = App()->request->getPost('templatename');
+        $sTemplateName = trim(App()->request->getPost('templatename'));
         if (Permission::model()->hasGlobalPermission('templates', 'import') || Permission::model()->hasTemplatePermission($sTemplateName)) {
             App()->loadHelper('admin/template');
             // NB: lid = label id
@@ -616,7 +616,7 @@ JAVASCRIPT
     public function templatefiledelete()
     {
         if (Permission::model()->hasGlobalPermission('templates', 'update')) {
-            $sTemplateName   = Template::templateNameFilter(App()->request->getPost('templatename'));
+            $sTemplateName   = Template::templateNameFilter(trim(App()->request->getPost('templatename')));
             $oEditedTemplate = Template::getInstance($sTemplateName);
             $templatedir     = $oEditedTemplate->viewPath;
             $sPostedFiletype = CHtml::decode(App()->request->getPost('filetype'));
@@ -663,8 +663,10 @@ JAVASCRIPT
      */
     public function templaterename()
     {
-        $sNewName = sanitize_dirname(App()->getRequest()->getPost('newname'));
+        $sNewName = trim(sanitize_dirname(App()->getRequest()->getPost('newname')));
         $sOldName = sanitize_dirname(App()->getRequest()->getPost('copydir'));
+        $sNewName = CHtml::encode($sNewName);
+        Template::validateTemplateName($sNewName);
         if (Permission::model()->hasGlobalPermission('templates', 'update')) {
             if ($sNewName && $sOldName) {
                 $sNewDirectoryPath = Yii::app()->getConfig('userthemerootdir') . DIRECTORY_SEPARATOR . $sNewName;
@@ -708,7 +710,9 @@ JAVASCRIPT
         $copydir = sanitize_dirname(Yii::app()->request->getPost("copydir"));
 
         if (Permission::model()->hasGlobalPermission('templates', 'create')) {
-            $newname = sanitize_dirname(Yii::app()->request->getPost("newname"));
+            $newname = trim(sanitize_dirname(Yii::app()->request->getPost("newname")));
+            $newname = CHtml::encode($newname);
+            Template::validateTemplateName($newname);
 
             Yii::import('application.helpers.SurveyThemeHelper');
             if (SurveyThemeHelper::isStandardTemplate($newname)) {
@@ -834,6 +838,7 @@ JAVASCRIPT
     public function deleteAvailableTheme()
     {
         $templatename = trim(App()->request->getPost('templatename', ''));
+        $templatename = CHtml::decode($templatename);
 
         if (Permission::model()->hasGlobalPermission('templates', 'delete')) {
             $completeFileName = realpath(App()->getConfig('userthemerootdir') . "/" . $templatename);
@@ -882,7 +887,7 @@ JAVASCRIPT
             $action               = returnGlobal('action');
             $editfile             = returnGlobal('editfile');
             $relativePathEditfile = returnGlobal('relativePathEditfile');
-            $sTemplateName        = Template::templateNameFilter(App()->request->getPost('templatename'));
+            $sTemplateName        = Template::templateNameFilter(trim(App()->request->getPost('templatename')));
             $screenname           = returnGlobal('screenname');
             $oEditedTemplate      = Template::model()->getTemplateConfiguration($sTemplateName, null, null, true)->prepareTemplateRendering($sTemplateName);
 

@@ -11669,11 +11669,6 @@ html {
   margin: 0;
 }
 
-#update-container {
-  margin-top: 10px;
-  z-index: 999;
-}
-
 #update-container .alert {
   margin-bottom: 5px;
 }
@@ -18897,6 +18892,10 @@ table [class^=ri-], table [class*=" ri-"] {
 
 .no-simple-graph {
   height: 300px;
+}
+
+#update-container {
+  margin-top: 10px;
 }
 
 .accordion {
