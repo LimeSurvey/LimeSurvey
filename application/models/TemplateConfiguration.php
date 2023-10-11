@@ -350,7 +350,7 @@ class TemplateConfiguration extends TemplateConfig
         self::getInstanceFromSurveyId($iSurveyId, $sTemplateName);
 
         // load or create a new entry if none is found based on $iSurveyGroupId
-       $oGroupTemplateConfigurationModel = self::getInstanceFromSurveyGroup($iSurveyGroupId, $sTemplateName);
+        $oGroupTemplateConfigurationModel = self::getInstanceFromSurveyGroup($iSurveyGroupId, $sTemplateName);
 
         return $oGroupTemplateConfigurationModel;
     }

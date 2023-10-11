@@ -102,12 +102,12 @@ class SurveysGroupsettings extends LSActiveRecord
             array('expires, startdate, datecreated, attributedescriptions, emailresponseto, emailnotificationto', 'safe'),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('gsid, owner_id, admin, expires, startdate, adminemail, anonymized, format, 
-			savetimings, template, datestamp, usecookie, allowregister, allowsave, autonumber_start, 
-			autoredirect, allowprev, printanswers, ipaddr, refurl, datecreated, showsurveypolicynotice, 
-			publicstatistics, publicgraphs, listpublic, htmlemail, sendconfirmation, tokenanswerspersistence, 
-			assessments, usecaptcha, bounce_email, attributedescriptions, emailresponseto, emailnotificationto, 
-			tokenlength, showxquestions, showgroupinfo, shownoanswer, showqnumcode, showwelcome, showprogress, 
+            array('gsid, owner_id, admin, expires, startdate, adminemail, anonymized, format,
+			savetimings, template, datestamp, usecookie, allowregister, allowsave, autonumber_start,
+			autoredirect, allowprev, printanswers, ipaddr, refurl, datecreated, showsurveypolicynotice,
+			publicstatistics, publicgraphs, listpublic, htmlemail, sendconfirmation, tokenanswerspersistence,
+			assessments, usecaptcha, bounce_email, attributedescriptions, emailresponseto, emailnotificationto,
+			tokenlength, showxquestions, showgroupinfo, shownoanswer, showqnumcode, showwelcome, showprogress,
 			questionindex, navigationdelay, nokeyboard, alloweditaftercompletion', 'safe', 'on' => 'search'),
         );
     }
@@ -357,8 +357,10 @@ class SurveysGroupsettings extends LSActiveRecord
         }
 
         // check the global configuration for template inheritance if surveygroup is 0 (global survey) and template set to inherit
-        if ($iSurveyGroupId === 0
-            && $instance->shouldInherit('template')) {
+        if (
+            $iSurveyGroupId === 0
+            && $instance->shouldInherit('template')
+        ) {
             $instance->oOptions->template = App()->getConfig('defaulttheme');
         }
 
