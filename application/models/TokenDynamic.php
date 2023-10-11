@@ -1002,6 +1002,7 @@ class TokenDynamic extends LSActiveRecord
                 'desc' => $sColName . ' desc',
             );
         }
+        $this->decryptEncryptAttributes('encrypt');
 
         $criteria = new LSDbCriteria();
         $criteria->compare('tid', $this->tid, false);
@@ -1046,6 +1047,7 @@ class TokenDynamic extends LSActiveRecord
                 'pageSize' => $pageSizeTokenView,
             ),
         ));
+        $this->decryptEncryptAttributes();
 
         return $dataProvider;
     }
