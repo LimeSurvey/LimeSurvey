@@ -1,6 +1,15 @@
 <?php
 
 if (Permission::model()->hasGlobalPermission('users', 'create')) {
+    $userHtmlOptions = [
+        'class' => 'btn btn-primary UserManagement--action--openmodal',
+        'data-bs-toggle' => 'modal',
+        'data-href' => $this->createUrl("userManagement/addEditUser")
+    ];
+
+    if ($showUpgradeModal) {
+        $userHtmlOptions['onclick'] = "modalPlanUpgradeOpen()";
+    }
     $this->widget(
         'ext.ButtonWidget.ButtonWidget',
         [
@@ -8,13 +17,18 @@ if (Permission::model()->hasGlobalPermission('users', 'create')) {
             'id' => 'ls-question-tools-button',
             'text' => gT('Add user'),
             'icon' => 'ri-user-add-line',
-            'htmlOptions' => [
-                'class' => 'btn btn-primary UserManagement--action--openmodal',
-                'data-bs-toggle' => 'modal',
-                'data-href' => $this->createUrl("userManagement/addEditUser")
-            ],
+            'htmlOptions' => $userHtmlOptions,
         ]
     );
+
+    $dummyUserHtmlOptions = [
+        'class' => 'btn btn-secondary UserManagement--action--openmodal',
+        'data-bs-toggle' => 'modal',
+        'data-href' => $this->createUrl("userManagement/addDummyUser")
+    ];
+    if ($showUpgradeModal) {
+        $dummyUserHtmlOptions['onclick'] = "modalPlanUpgradeOpen()";
+    }
 
     $this->widget(
         'ext.ButtonWidget.ButtonWidget',
@@ -23,11 +37,7 @@ if (Permission::model()->hasGlobalPermission('users', 'create')) {
             'id' => 'ls-question-tools-button',
             'text' => gT('Add dummy user'),
             'icon' => 'ri-user-add-line',
-            'htmlOptions' => [
-                'class' => 'btn btn-secondary UserManagement--action--openmodal',
-                'data-bs-toggle' => 'modal',
-                'data-href' => $this->createUrl("userManagement/addDummyUser")
-            ],
+            'htmlOptions' => $dummyUserHtmlOptions,
         ]
     );
 

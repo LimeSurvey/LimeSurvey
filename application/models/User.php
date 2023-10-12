@@ -43,6 +43,7 @@ use LimeSurvey\Models\Services\UserManager;
  * @property string $last_login
  * @property Permissiontemplates[] $roles
  * @property UserGroup[] $groups
+ * @property bool $active
  */
 class User extends LSActiveRecord
 {
@@ -59,6 +60,8 @@ class User extends LSActiveRecord
      * @var string $lang Default value for user language
      */
     public $lang = 'auto';
+
+    public $active;
     public $searched_value;
 
     /**
@@ -146,6 +149,7 @@ class User extends LSActiveRecord
             'modified' => gT('Modified at'),
             'last_login' => gT('Last recorded login'),
             'expires' => gT("Expiry date/time:"),
+            'active' => gT("active"),
         ];
     }
 
@@ -219,7 +223,7 @@ class User extends LSActiveRecord
      * @param string|null $expires
      * @return integer|boolean User ID if success
      */
-    public static function insertUser($new_user, $new_pass, $new_full_name, $parent_user, $new_email, $expires = null)
+    public static function insertUser($new_user, $new_pass, $new_full_name, $parent_user, $new_email, $expires = null, $active = true)
     {
         $oUser = new self();
         $oUser->users_name = $new_user;
@@ -231,6 +235,7 @@ class User extends LSActiveRecord
         $oUser->created = date('Y-m-d H:i:s');
         $oUser->modified = date('Y-m-d H:i:s');
         $oUser->expires = $expires;
+        $oUser->active = $active;
         if ($oUser->save()) {
             return $oUser->uid;
         } else {
@@ -502,7 +507,7 @@ class User extends LSActiveRecord
         $setTemplatePermissionsUrl = App()->getController()->createUrl('userManagement/userTemplatePermissions', ['userid' => $this->uid]);
         $changeOwnershipUrl = App()->getController()->createUrl('userManagement/takeOwnership');
         $deleteUrl = App()->getController()->createUrl('userManagement/deleteConfirm', ['userid' => $this->uid, 'user' => $this->full_name]);
-
+        $activateUrl = App()->getController()->createUrl('userManagement/activationConfirm', ['userid' => $this->uid, 'action' => $this->active]);
 
         $dropdownItems = [];
         $dropdownItems[] = [
@@ -527,6 +532,26 @@ class User extends LSActiveRecord
                     )
                 )
         ];
+        if ($this->active || in_array($this->uid, App()->getConfig('forcedsuperadmin'))) {
+            $dropdownItems[] = [
+                'title'            => gT('Deactivate'),
+                'iconClass'        => "ri-user-unfollow-fill text-danger",
+                'linkClass'        => "UserManagement--action--openmodal UserManagement--action--status",
+                'linkAttributes'   => [
+                    'data-href' => $activateUrl,
+                ],
+                'enabledCondition' => (!in_array($this->uid, App()->getConfig('forcedsuperadmin')))
+            ];
+        } else {
+            $dropdownItems[] = [
+                'title'            => gT('Activate'),
+                'iconClass'        => "ri-user-follow-fill",
+                'linkClass'        => "UserManagement--action--openmodal UserManagement--action--status",
+                'linkAttributes'   => [
+                    'data-href' => $activateUrl,
+                ]
+            ];
+        }
         $dropdownItems[] = [
             'title'            => gT('Edit permissions'),
             'iconClass'        => "ri-lock-fill",
@@ -713,6 +738,12 @@ class User extends LSActiveRecord
             [
                 "name"   => 'full_name',
                 "header" => gT("Full name")
+            ],
+            [
+                "name"   => "active",
+                "header" => gT("Active"),
+                'headerHtmlOptions' => ['class' => 'hidden'],
+                'htmlOptions'       => ['class' => 'hidden activation']
             ],
             [
                 "name"   => "created",
@@ -1008,5 +1039,23 @@ class User extends LSActiveRecord
             Permission::model()->hasGlobalPermission('superadmin', 'read')
             || $this->uid == $loginId
             || (Permission::model()->hasGlobalPermission('users', 'update') && $this->parent_id == $loginId);
+    }
+
+    /**
+     * Set user activation status
+     *
+     * @param string $status
+     * @return bool
+     */
+    public function setActivationStatus($status = 'activate')
+    {
+        $datePlusMaxExpiration = new DateTime();
+        if ($status == 'activate') {
+            $this->active = 1;
+        } else {
+            $this->active = 0;
+        }
+
+        return $this->save();
     }
 }

@@ -62,11 +62,12 @@ class Authdb extends AuthPluginBase
             $new_email = flattenText($preCollectedUserArray['email']);
             $new_full_name = flattenText($preCollectedUserArray['full_name']);
             $presetPassword = flattenText($preCollectedUserArray['password']);
+            $active = $preCollectedUserArray['active'];
             if (!empty($preCollectedUserArray['expires'])) {
                 $expires = $preCollectedUserArray['expires'];
             }
         }
-        
+
         if (!LimeMailer::validateAddress($new_email)) {
             $oEvent->set('errorCode', self::ERROR_INVALID_EMAIL);
             $oEvent->set('errorMessageTitle', gT("Failed to add user"));
@@ -75,7 +76,7 @@ class Authdb extends AuthPluginBase
         }
 
         $new_pass = $presetPassword ?? createPassword();
-        $iNewUID = User::insertUser($new_user, $new_pass, $new_full_name, Yii::app()->session['loginID'], $new_email, $expires);
+        $iNewUID = User::insertUser($new_user, $new_pass, $new_full_name, Yii::app()->session['loginID'], $new_email, $expires, $active);
         if (!$iNewUID) {
             $oEvent->set('errorCode', self::ERROR_ALREADY_EXISTING_USER);
             $oEvent->set('errorMessageTitle', '');

@@ -67,10 +67,14 @@ class UserManagementController extends LSBaseController
             false
         );
 
+        $oEvent = new PluginEvent('beforeAdminUserActivation');
+        $oEvent->set('request', App()->request);
+        App()->getPluginManager()->dispatchEvent($oEvent);
+        $isUserLimitReached = $oEvent->get('is_user_limit_reached', null);
 
         $aData['topbar']['title'] = gT('User management');
         $aData['topbar']['backLink'] = App()->createUrl('admin/index');
-        $aData['topbar']['middleButtons'] = $this->renderPartial('partial/topbarBtns/leftSideButtons', [], true);
+        $aData['topbar']['middleButtons'] = $this->renderPartial('partial/topbarBtns/leftSideButtons', ['showUpgradeModal' => $isUserLimitReached], true);
 
         //this is really important, so we have the aData also before rendering the content
         $this->aData = $aData;
@@ -419,6 +423,193 @@ class UserManagementController extends LSBaseController
             ]
         ]);
     }
+
+    /**
+     * Show user activation confirmation
+     *
+     * @return void|string
+     * @throws CException
+     */
+    public function actionActivationConfirm()
+    {
+        if (!Permission::model()->hasGlobalPermission('users', 'delete')) {
+            return $this->renderPartial(
+                'partial/error',
+                ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
+            );
+        }
+        $userId = Yii::app()->request->getParam('userid');
+        $action = Yii::app()->request->getParam('action');
+        $userId = sanitize_int($userId);
+
+        $aData['userId'] = $userId;
+        $aData['action'] = $action ? 'deactivate' : 'activate' ;
+
+        return $this->renderPartial('partial/confirmuseractivation', $aData);
+    }
+
+
+    /**
+     * Stores the status settings
+     *
+     * @return void|string
+     * @throws CException
+     */
+    public function actionUserActivateDeactivate()
+    {
+        if (!Permission::model()->hasGlobalPermission('users', 'delete')) {
+            return $this->renderPartial(
+                'partial/error',
+                ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
+            );
+        }
+        $userId = sanitize_int(Yii::app()->request->getParam('userid'));
+        $action = Yii::app()->request->getParam('action');
+        $oUser = User::model()->findByPk($userId);
+
+        if ($oUser) {
+            if ($action == 'activate') {
+                $oEvent = new PluginEvent('beforeAdminUserActivation');
+                $oEvent->set('request', App()->request);
+                App()->getPluginManager()->dispatchEvent($oEvent);
+                if ($oEvent->get('success') == false) {
+                    return $this->renderPartial(
+                        '/admin/super/_renderJson',
+                        [
+                            'data' => [
+                                'success' => false,
+                                'message' => gT('Please upgrade your plan to activate more users.'),
+                                'errors' => gT('Please upgrade your plan to activate more users.')
+                            ]
+                        ]
+                    );
+                }
+            }
+
+            if ($oUser->setActivationStatus($action)) {
+                return App()->getController()->renderPartial('/admin/super/_renderJson', [
+                    'data' => [
+                        'success' => true,
+                        'message' => gT('Status successfully updated')
+                    ]
+                ]);
+            };
+        }
+        return App()->getController()->renderPartial('/admin/super/_renderJson', [
+            'data' => [
+                'success' => false
+            ]
+        ]);
+    }
+
+    /**
+     * Stores the status settings run via MassEdit
+     *
+     * @return string
+     * @throws CException
+     */
+    public function actionBatchStatus()
+    {
+        if (!Permission::model()->hasGlobalPermission('users', 'update')) {
+            return $this->renderPartial(
+                'partial/error',
+                ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
+            );
+        }
+
+        $userIds = json_decode(Yii::app()->request->getPost('sItems', "[]"));
+        $status = Yii::app()->request->getPost('status_selector', '');
+        if ($status == 'activate') {
+            $oEvent = new PluginEvent('beforeAdminUserActivation');
+            $oEvent->set('request', App()->request);
+            App()->getPluginManager()->dispatchEvent($oEvent);
+            if (!empty($oEvent->get('limit'))) {
+                $limit = $oEvent->get('limit');
+            }
+        }
+
+        if (isset($limit)) {
+            $results = $this->limitedUserActivation($userIds, $status, $limit);
+        } else {
+            $results = $this->unlimitedUserActivation($userIds, $status);
+        }
+
+        $error = null;
+        foreach ($results as $result) {
+            if (isset($result['error']) && $result['error'] == 'Reached the limit') {
+                $error = true;
+            }
+        }
+
+        $tableLabels = array(gT('User ID'), gT('Username'), gT('Status'));
+
+        $data = array(
+            'aResults'     => $results,
+            'successLabel' => gT('Saved successfully'),
+            'tableLabels' =>  $tableLabels,
+        );
+
+        if ($error) {
+            $data['additionalMessage'] = $this->renderPartial('/userManagement/partial/planupgradebutton');
+        }
+
+        Yii::app()->getController()->renderPartial('ext.admin.survey.ListSurveysWidget.views.massive_actions._action_results', $data);
+    }
+
+    /**
+     * Activate / deactivate user
+     *
+     * @return array
+     */
+    public function unlimitedUserActivation($userIds, $operation)
+    {
+        $results = [];
+        foreach ($userIds as $iUserId) {
+            $oUser = User::model()->findByPk($iUserId);
+            $results[$iUserId]['title'] = $oUser->users_name;
+            if (in_array($iUserId, App()->getConfig('forcedsuperadmin')) || $oUser->uid == App()->user->getId()) {
+                $results[$iUserId]['error'] = gT('Unauthorized');
+                $results[$iUserId]['result'] = false;
+                continue;
+            }
+            $results[$iUserId]['result'] = $oUser->setActivationStatus($operation);
+            if (!$results[$iUserId]['result']) {
+                $results[$iUserId]['error'] = gT('Error');
+            }
+        }
+        return $results;
+    }
+
+    /**
+     * Handle user activation with regard to users limit
+     *
+     * @return array
+     */
+    public function limitedUserActivation($userIds, $operation, $limit)
+    {
+        $results = [];
+        $limit = $limit - 1; // default admin user
+        foreach ($userIds as $iUserId) {
+            $oUser = User::model()->findByPk($iUserId);
+            $results[$iUserId]['title'] = $oUser->users_name;
+            if (in_array($iUserId, App()->getConfig('forcedsuperadmin')) || $oUser->uid == App()->user->getId()) {
+                $results[$iUserId]['error'] = gT('Unauthorized');
+                $results[$iUserId]['result'] = false;
+                continue;
+            }
+            if ($operation == 'deactivate') {
+                $results[$iUserId]['result'] = $oUser->setActivationStatus($operation);
+            } elseif ($operation == 'activate' && $limit > 0) {
+                $results[$iUserId]['result'] = $oUser->setActivationStatus($operation);
+                $limit = $limit - 1;
+            } else {
+                $results[$iUserId]['error'] = gT('Reached the limit');
+                $results[$iUserId]['result'] = false;
+            }
+        }
+        return $results;
+    }
+
 
     /**
      * Show user delete confirmation
@@ -1446,6 +1637,12 @@ class UserManagementController extends LSBaseController
                 ]
             ]);
         }
+
+        $oEvent = new PluginEvent('beforeAdminUserActivation');
+        $oEvent->set('request', App()->request);
+        App()->getPluginManager()->dispatchEvent($oEvent);
+        $isUserLimitReached = $oEvent->get('is_user_limit_reached', null);
+        $aUser['active'] = !$isUserLimitReached;
 
         $event = new PluginEvent('createNewUser');
         $event->set('errorCode', AuthPluginBase::ERROR_NOT_ADDED);

@@ -246,6 +246,7 @@ App()->getController()->renderPartial('/surveyAdministration/partial/topbar/_mod
 
 <?php
 $this->renderPartial('/admin/htmleditor/modal_editor_partial');
+$this->renderPartial('/userManagement/partial/planupgrade');
 ?>
 
 </body>
