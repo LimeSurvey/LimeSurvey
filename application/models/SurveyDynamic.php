@@ -407,7 +407,7 @@ class SurveyDynamic extends LSActiveRecord
                     $url = App()->createUrl("responses/downloadfile", ["surveyId" => self::$sid, "responseId" => $this->id, "qid" => $oFieldMap->qid, "index" => $iFileIndex]);
                     $filename = CHtml::encode(rawurldecode($aFilesInfo[$iFileIndex]['name']));
                     $size = "";
-                    if($aFilesInfo[$iFileIndex]['size'] && strval(floatval($aFilesInfo[$iFileIndex]['size'])) == strval($aFilesInfo[$iFileIndex]['size'])) {
+                    if ($aFilesInfo[$iFileIndex]['size'] && strval(floatval($aFilesInfo[$iFileIndex]['size'])) == strval($aFilesInfo[$iFileIndex]['size'])) {
                         // avoid to throw PHP error if size is invalid
                         $size = sprintf('%s Mb', round($aFilesInfo[$iFileIndex]['size'] / 1000, 2));
                     }
