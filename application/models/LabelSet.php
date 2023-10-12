@@ -51,6 +51,7 @@ class LabelSet extends LSActiveRecord
     {
         return array(
             array('label_name', 'required'),
+            array('label_name', 'filter', 'filter' => array(self::class, 'sanitizeAttribute')),
             array('label_name', 'length', 'min' => 1, 'max' => 100),
             array('label_name', 'LSYii_Validators'),
             array('languages', 'required'),
@@ -201,5 +202,15 @@ class LabelSet extends LSActiveRecord
             $oLabel->delete();
         }
         rmdirr(App()->getConfig('uploaddir') . '/labels/' . $this->lid);
+    }
+
+    /**
+     * Sanitize string for any attribute (XSS)
+     * @param string $attribute to sanitize
+     * @return string sanitized attribute
+     */
+    public static function sanitizeAttribute($attribute)
+    {
+        return str_replace(['<','>','&','\'','"'], "", $attribute);
     }
 }
