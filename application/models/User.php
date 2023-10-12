@@ -689,6 +689,9 @@ class User extends LSActiveRecord
                 Permission::model()->hasGlobalPermission('users', 'update')     //Global permission to view users given
                 && $this->parent_id == Yii::app()->session['loginID']           //AND User is owned or created by you
             )
+            || (
+                Permission::model()->hasGlobalPermission('users', 'read')     //Global permission to view users
+            )
         ) {
             $buttonArray[] = $userDetail;
         }
