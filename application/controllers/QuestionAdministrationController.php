@@ -2767,34 +2767,34 @@ class QuestionAdministrationController extends LSBaseController
         $subquestionIds = [];
         foreach ($subquestionsArray as $subquestionArray) {
             foreach ($subquestionArray as $scaleId => $data) {
-                $subquestion = null;
-                if (isset($data['oldcode'])) {
-                    $subquestion = Question::model()->findByAttributes([
-                        'sid' => $question->sid,
-                        'parent_qid' => $question->qid,
-                        'title' => $data['oldcode']
-                    ]);
-                }
-                if (!$subquestion) {
-                    $subquestion = new Question();
-                }
-
-                $subquestion->sid        = $question->sid;
-                $subquestion->gid        = $question->gid;
-                $subquestion->parent_qid = $question->qid;
-                $subquestion->question_order = $questionOrder;
-                $questionOrder++;
                 if (!isset($data['code'])) {
                     throw new CHttpException(
                         500,
                         'Internal error: Missing mandatory field code for question: ' . json_encode($data)
                     );
                 }
-                $subquestion->title      = $data['code'];
-                if ($scaleId === 0) {
-                    $subquestion->relevance  = $data['relevance'];
+                $subquestion = null;
+                if (isset($data['oldcode'])) {
+                    $subquestion = Question::model()->findByAttributes([
+                        'sid' => $question->sid,
+                        'parent_qid' => $question->qid,
+                        'scale_id' => $scaleId,
+                        'title' => $data['oldcode']
+                    ]);
                 }
-                $subquestion->scale_id   = $scaleId;
+                if (!$subquestion) {
+                    $subquestion = new Question();
+                }
+                $subquestion->sid = $question->sid;
+                $subquestion->gid = $question->gid;
+                $subquestion->parent_qid = $question->qid;
+                $subquestion->scale_id = $scaleId;
+                $subquestion->question_order = $questionOrder;
+                $questionOrder++;
+                $subquestion->title = $data['code'];
+                if ($scaleId === 0) {
+                    $subquestion->relevance = $data['relevance'];
+                }
                 if (!$subquestion->save()) {
                     throw (new LSUserException(500, gT("Could not save subquestion")))
                         ->setDetailedErrorsFromModel($subquestion);
