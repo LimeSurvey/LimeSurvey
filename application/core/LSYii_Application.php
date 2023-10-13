@@ -717,4 +717,90 @@ class LSYii_Application extends CWebApplication
         }
         return $baseUrl;
     }
+
+	/**
+	 * Is REST request
+	 *
+	 * @return boolean
+	 */
+    public function isRestRequest()
+    {
+        $headers = getallheaders();
+        $acceptsJson = isset($headers['Accept'])
+            && strpos($headers['Accept'], 'application/json') !== false;
+
+        $isRestUrl = !isset($_SERVER) ||
+            !isset($_SERVER['REQUEST_URI']) ||
+            strstr($_SERVER['REQUEST_URI'], '/rest/');
+
+        return $acceptsJson || $isRestUrl;
+    }
+
+	/**
+	 * Handles uncaught PHP exceptions.
+	 *
+	 * @param Exception $exception exception that is not caught
+	 */
+    public function handleException($exception)
+	{
+        restore_error_handler();
+		restore_exception_handler();
+
+        if ($this->isRestRequest()) {
+            $this->jsonErrorResponse(
+                $exception->getCode(),
+                $exception->getMessage(),
+                $exception->getFile(),
+                $exception->getLine()
+            );
+            return;
+        }
+        parent::handleException($exception);
+    }
+
+    /**
+	 * Handles PHP execution errors such as warnings, notices.
+	 *
+	 * @param integer $code the level of the error raised
+	 * @param string $message the error message
+	 * @param string $file the filename that the error was raised in
+	 * @param integer $line the line number the error was raised at
+	 */
+    public function handleError($code, $message, $file, $line)
+	{
+        restore_error_handler();
+		restore_exception_handler();
+
+        if($code && error_reporting() && $this->isRestRequest()) {
+            $this->jsonErrorResponse($code, $message, $file, $line);
+            return;
+        }
+        parent::handleError($code, $message, $file, $line);
+    }
+    /**
+	 * JSON error response.
+	 *
+	 * @param integer $code the level of the error raised
+	 * @param string $message the error message
+	 * @param string $file the filename that the error was raised in
+	 * @param integer $line the line number the error was raised at
+	 */
+    public function jsonErrorResponse($code, $message, $file, $line)
+    {
+        http_response_code(500);
+        $responseData = [
+            'error' => 'Unknown Error'
+        ];
+        if (Yii::app()->getConfig('debug') > 1) {
+            $responseData['error'] = [
+                'code' => $code,
+                'message' => $message,
+                'file' => $file,
+                'line' => $line
+            ];
+        }
+
+        header('Content-Type: application/json');
+        echo json_encode($responseData);
+    }
 }
