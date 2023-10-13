@@ -23,8 +23,8 @@ class LSWebUser extends CWebUser
             return parent::getId();
         }
         $id = App()->getCurrentUserId();
-        if (empty($id)) {
-            /* If still connected but invalid : logout */
+        if ($id === 0) {
+            /* User is still connected but invalid : logout */
             $this->logout();
         }
         return $id;
