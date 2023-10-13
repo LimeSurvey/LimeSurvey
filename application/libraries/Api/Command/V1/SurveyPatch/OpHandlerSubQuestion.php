@@ -123,6 +123,7 @@ class OpHandlerSubQuestion implements OpHandlerInterface
     {
         $surveyId = $this->getSurveyIdFromContext($op);
         $this->questionAggregateService->checkUpdatePermission($surveyId);
+        $probs = $op->getProps();
         $preparedData = $this->prepareSubQuestions(
             $op,
             $this->transformer,
@@ -130,6 +131,11 @@ class OpHandlerSubQuestion implements OpHandlerInterface
             $op->getProps(),
             ['subquestions']
         );
+        //be careful here! if for any reason the incoming data is not prepared
+        //as it should, all existing subquestions will be deleted!
+        if (count($preparedData) === 0) {
+            throw new OpHandlerException('No data to create or update a subquestion');
+        }
         $questionId = $op->getEntityId();
         $this->subQuestionsService->save(
             $this->questionService->getQuestionBySidAndQid(
