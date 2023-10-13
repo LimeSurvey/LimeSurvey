@@ -5573,6 +5573,8 @@
                                         $aFiles[$i]->name = html_entity_decode($aFiles[$i]->name, ENT_QUOTES);
                                         $aFiles[$i]->filename = html_entity_decode($aFiles[$i]->filename, ENT_QUOTES);
                                         $aFiles[$i]->ext = html_entity_decode($aFiles[$i]->ext, ENT_QUOTES);
+                                        /* Filter some parameters */
+                                        $aFiles[$i]->size = floatval($aFiles[$i]->size);
                                     }
                                     $val = ls_json_encode($aFiles);
                                 }
