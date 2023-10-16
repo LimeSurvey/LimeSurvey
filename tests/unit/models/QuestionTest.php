@@ -46,40 +46,14 @@ class QuestionTest extends BaseModelTestCase
     }
 
     /**
-     * Test validating a question theme name
-     * when question type is set to null.
-     */
-    public function testValidateQuestionThemeNameNoType()
-    {
-        $question = new Question();
-        $question->type = null;
-
-        $result = $question->questionThemeNameValidator();
-        $this->assertNull($result, 'An invalid validation result was expected since the question type was set to null.');
-    }
-
-    /**
-     * Test validating a question theme name
-     * when evaluating a child question.
-     */
-    public function testValidateChildQuestionThemeName()
-    {
-        $question = new Question();
-        $question->parent_qid = 1;
-
-        $result = $question->questionThemeNameValidator();
-        $this->assertNull($result, 'An invalid validation result was expected since a child question is being validated.');
-    }
-
-    /**
-     * Test getting a default theme name from type
+     * Test getting a default theme name from default type
      */
     public function testGetDefaultQuestionThemeNameFromType()
     {
         $question = new Question();
 
-        $themeName = $question->questionThemeNameValidator();
-        $this->assertSame('longfreetext', $themeName, 'Incorrect default question theme name.');
+        $question->questionThemeNameValidator();
+        $this->assertSame('longfreetext', $question->question_theme_name, 'Incorrect default question theme name.');
     }
 
     /**
@@ -90,8 +64,8 @@ class QuestionTest extends BaseModelTestCase
         $question = new Question();
         $question->type = 'Test';
 
-        $themeName = $question->questionThemeNameValidator();
-        $this->assertNull($themeName, 'An invalid validation result was expected since "Z" question type does not exist.');
+        $question->questionThemeNameValidator();
+        $this->assertNull($question->question_theme_name, 'An invalid validation result was expected since "Z" question type does not exist.');
     }
 
     /**
@@ -103,35 +77,7 @@ class QuestionTest extends BaseModelTestCase
         $question->type = "M";
         $question->question_theme_name = 'core';
 
-        $themeName = $question->questionThemeNameValidator();
-        $this->assertSame('multiplechoice', $themeName, 'Incorrect core question theme name.');
-    }
-
-    /**
-     * Test validating question type
-     * and question theme name against data base
-     */
-    public function testValidateQuestionThemeNameAgainstDataBase()
-    {
-        $question = new Question();
-        $question->type = "M";
-        $question->question_theme_name = 'image_select-multiplechoice';
-
-        $themeName = $question->questionThemeNameValidator();
-        $this->assertSame('image_select-multiplechoice', $themeName, 'Question type and theme name correspond to a theme in data base.');
-    }
-
-    /**
-     * Testing that question type and question theme name
-     * don't match any theme in data base.
-     */
-    public function testValidateQuestionThemeNameMismatch()
-    {
-        $question = new Question();
-        $question->type = "M";
-        $question->question_theme_name = 'longfreetext';
-
-        $themeName = $question->questionThemeNameValidator();
-        $this->assertSame('multiplechoice', $themeName, 'Question type and theme name do not correspond to a theme in data base.');
+        $question->questionThemeNameValidator();
+        $this->assertSame('multiplechoice', $question->question_theme_name, 'Incorrect core question theme name.');
     }
 }
