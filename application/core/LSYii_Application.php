@@ -789,7 +789,10 @@ class LSYii_Application extends CWebApplication
     {
         http_response_code(500);
         $responseData = [
-            'error' => 'Unknown Error'
+            'error' => [
+                'code' => 0,
+                'message' => 'Server error',
+            ]
         ];
         if (Yii::app()->getConfig('debug') > 1) {
             $responseData['error'] = [
