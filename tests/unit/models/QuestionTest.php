@@ -53,6 +53,7 @@ class QuestionTest extends BaseModelTestCase
         $question = new Question();
 
         $question->questionThemeNameValidator();
+        $this->assertSame('T', $question->type, 'Incorrect default question type');
         $this->assertSame('longfreetext', $question->question_theme_name, 'Incorrect default question theme name.');
     }
 
