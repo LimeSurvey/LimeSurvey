@@ -8,6 +8,35 @@ use ls\tests\TestBaseClass;
 
 class GeneralSettingsUpdateOwnerTest extends TestBaseClass
 {
+    /** @var User */
+    private static $dummyOwner;
+
+    public static function setUpBeforeClass(): void
+    {
+        parent::setUpBeforeClass();
+
+        /**
+         * GeneralSettings service relies on getUserList() to check if the owner is
+         * visible to the current user. That function is not mockable, so we need to
+         * create a dummy user that will be visible to the current user.
+         */
+        self::$dummyOwner = self::createUserWithPermissions(
+            [
+                "users_name" => "updateownertest",
+                "full_name" => "updateownertest",
+                "email" => "updateownertest@example.com",
+                "lang" => "auto",
+                "password" => "updateownertest",
+                "parent_id" => 123,
+            ],
+            [
+                'auth_db' => [
+                    'read' => 'on'
+                ],
+            ]
+        );
+    }
+
     public function testCanUpdateOwnerIdIfUserIsCurrentOwner()
     {
         $mockSet = (new GeneralSettingsMockSetFactory)->make();
@@ -25,12 +54,12 @@ class GeneralSettingsUpdateOwnerTest extends TestBaseClass
         $generalSettings = (new GeneralSettingsFactory)->make($mockSet);
 
         $generalSettings->update(1, [
-            'owner_id' => 456
+            'owner_id' => self::$dummyOwner->uid
         ]);
 
         $attributes = $mockSet->survey->getAttributes();
 
-        $this->assertEquals(456, $attributes['owner_id']);
+        $this->assertEquals(self::$dummyOwner->uid, $attributes['owner_id']);
     }
 
     public function testCanNotUpdateOwnerIdIfUserIsNotCurrentOwner()
@@ -45,7 +74,7 @@ class GeneralSettingsUpdateOwnerTest extends TestBaseClass
         $mockSet = (new GeneralSettingsMockSetFactory)->make();
         $mockSet->modelPermission = $modelPermission;
 
-        $mockSet->session['loginID'] = 456;
+        $mockSet->session['loginID'] = self::$dummyOwner->uid;
 
         $mockSet->survey->setAttributes([
             'sid' => 1,
@@ -55,7 +84,7 @@ class GeneralSettingsUpdateOwnerTest extends TestBaseClass
         $generalSettings = (new GeneralSettingsFactory)->make($mockSet);
 
         $generalSettings->update(1, [
-            'owner_id' => 456
+            'owner_id' => self::$dummyOwner->uid
         ]);
 
         $attributes = $mockSet->survey->getAttributes();
