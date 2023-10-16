@@ -38,7 +38,7 @@ class ErrorHandler
             /* Activate since DBVersion for 2.50 and up (i know it include previous line, but stay clear) */
             return;
         }
-        if ($this->isRestRequest()) {
+        if (Yii::app()->getRequest()->isRestRequest()) {
             $this->handleRestException($event);
         } else {
             $this->handleWebException($event);
@@ -70,7 +70,7 @@ class ErrorHandler
             /* Activate since DBVersion for 2.50 and up (i know it include previous line, but stay clear) */
             return;
         }
-        if ($this->isRestRequest()) {
+        if (Yii::app()->getRequest()->isRestRequest()) {
             $this->handleRestError($event);
         }
     }
@@ -219,18 +219,5 @@ class ErrorHandler
         header('Content-Type: application/json');
         echo json_encode($responseData);
         Yii::app()->end();
-    }
-
-    /**
-	 * Is REST request
-	 *
-	 * @return boolean
-	 */
-    private function isRestRequest()
-    {
-        $headers = getallheaders();
-        $acceptsJson = isset($headers['Accept'])
-            && strpos($headers['Accept'], 'application/json') !== false;
-        return $acceptsJson;
     }
 }
