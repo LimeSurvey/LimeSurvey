@@ -62,6 +62,7 @@ class User extends LSActiveRecord
     public $lang = 'auto';
 
     public $active;
+
     public $searched_value;
 
     /**
@@ -149,38 +150,8 @@ class User extends LSActiveRecord
             'modified' => gT('Modified at'),
             'last_login' => gT('Last recorded login'),
             'expires' => gT("Expiry date/time:"),
-            'active' => gT("active"),
+            'status' => gT("Status"),
         ];
-    }
-
-    /**
-     * @inheritDoc
-     * Delete user in related model after deletion
-     * return void
-     **/
-    protected function afterDelete()
-    {
-        parent::afterDelete();
-        /* Delete all permission */
-        Permission::model()->deleteAll(
-            "uid = :uid",
-            [":uid" => $this->uid]
-        );
-        /* Delete potential roles */
-        UserInPermissionrole::model()->deleteAll(
-            "uid = :uid",
-            [":uid" => $this->uid]
-        );
-        /* User settings */
-        SettingsUser::model()->deleteAll(
-            "uid = :uid",
-            [":uid" => $this->uid]
-        );
-        /* User in group */
-        UserInGroup::model()->deleteAll(
-            "uid = :uid",
-            [":uid" => $this->uid]
-        );
     }
 
     /**
@@ -223,7 +194,7 @@ class User extends LSActiveRecord
      * @param string|null $expires
      * @return integer|boolean User ID if success
      */
-    public static function insertUser($new_user, $new_pass, $new_full_name, $parent_user, $new_email, $expires = null, $active = true)
+    public static function insertUser($new_user, $new_pass, $new_full_name, $parent_user, $new_email, $expires = null, $status = true)
     {
         $oUser = new self();
         $oUser->users_name = $new_user;
@@ -235,7 +206,7 @@ class User extends LSActiveRecord
         $oUser->created = date('Y-m-d H:i:s');
         $oUser->modified = date('Y-m-d H:i:s');
         $oUser->expires = $expires;
-        $oUser->active = $active;
+        $oUser->status = $status;
         if ($oUser->save()) {
             return $oUser->uid;
         } else {
@@ -305,6 +276,13 @@ class User extends LSActiveRecord
             $this->setPassword($sPassword, true);
             return true;
         }
+
+        // If password comes from the Joomla user, use this to check.
+        // TODO: Method copied from Authdb plugin.
+        if ($this->joomlaVerifyPassword($sPassword, $this->password)) {
+            return true;
+        }
+
         return false;
     }
 
@@ -431,6 +409,57 @@ class User extends LSActiveRecord
     }
 
     /**
+     * Copied from Authdb.php.
+     * @param   string   $password  The plaintext password to check.
+     * @param   string   $hash      The hash to verify against.
+     * @return  boolean  True if the password and hash match, false otherwise
+     */
+    protected function joomlaVerifyPassword($password, $hash)
+    {
+        //$rehash = false;
+        $match = false;
+
+        // If we are using phpass
+        if (strpos($hash, '$P$') === 0) {
+            // Use PHPass's portable hashes with a cost of 10.
+            $phpass = Yii::app()->phpass; //new PasswordHash(10, true);
+
+            $match = $phpass->CheckPassword($password, $hash);
+
+            //$rehash = true;
+        } elseif ($hash[0] == '$') {
+            // JCrypt::hasStrongPasswordSupport() includes a fallback for us in the worst case
+            //JCrypt::hasStrongPasswordSupport();
+            $match = password_verify($password, $hash);
+
+            // Uncomment this line if we actually move to bcrypt.
+            //$rehash = password_needs_rehash($hash, PASSWORD_DEFAULT);
+        } elseif (substr($hash, 0, 8) == '{SHA256}') {
+            // Check the password
+            $parts     = explode(':', $hash);
+            $crypt     = $parts[0];
+            $salt      = @$parts[1];
+            $testcrypt = static::getCryptedPassword($password, $salt, 'sha256', true);
+
+            //$match = JCrypt::timingSafeCompare($hash, $testcrypt);
+            $match = hash_equals((string) $hash, (string) $testcrypt);
+        } else {
+            // Check the password
+            $parts = explode(':', $hash);
+            $crypt = $parts[0];
+            $salt  = @$parts[1];
+
+            // Compile the hash to compare
+            // If the salt is empty AND there is a ':' in the original hash, we must append ':' at the end
+            $testcrypt = md5($password . $salt) . ($salt ? ':' . $salt : (strpos($hash, ':') !== false ? ':' : ''));
+
+            $match = hash_equals((string) $hash, (string) $testcrypt);
+        }
+
+        return $match;
+    }
+
+    /**
      * Adds user record
      *
      * @access public
@@ -495,8 +524,6 @@ class User extends LSActiveRecord
         $permission_users_read = Permission::model()->hasGlobalPermission('users', 'read');
         $permission_users_update = Permission::model()->hasGlobalPermission('users', 'update');
         $permission_users_delete = Permission::model()->hasGlobalPermission('users', 'delete');
-        $userManager = new UserManager(App()->user, $this);
-
         // User is owned or created by you
         $ownedOrCreated = $this->parent_id == App()->session['loginID'];
 
@@ -507,7 +534,6 @@ class User extends LSActiveRecord
         $setTemplatePermissionsUrl = App()->getController()->createUrl('userManagement/userTemplatePermissions', ['userid' => $this->uid]);
         $changeOwnershipUrl = App()->getController()->createUrl('userManagement/takeOwnership');
         $deleteUrl = App()->getController()->createUrl('userManagement/deleteConfirm', ['userid' => $this->uid, 'user' => $this->full_name]);
-        $activateUrl = App()->getController()->createUrl('userManagement/activationConfirm', ['userid' => $this->uid, 'action' => $this->active]);
 
         $dropdownItems = [];
         $dropdownItems[] = [
@@ -532,7 +558,9 @@ class User extends LSActiveRecord
                     )
                 )
         ];
-        if ($this->active || in_array($this->uid, App()->getConfig('forcedsuperadmin'))) {
+
+        if ($this->status || in_array($this->uid, App()->getConfig('forcedsuperadmin'))) {
+            $activateUrl = App()->getController()->createUrl('userManagement/activationConfirm', ['userid' => $this->uid, 'action' => 'deactivate']);
             $dropdownItems[] = [
                 'title'            => gT('Deactivate'),
                 'iconClass'        => "ri-user-unfollow-fill text-danger",
@@ -543,6 +571,7 @@ class User extends LSActiveRecord
                 'enabledCondition' => (!in_array($this->uid, App()->getConfig('forcedsuperadmin')))
             ];
         } else {
+            $activateUrl = App()->getController()->createUrl('userManagement/activationConfirm', ['userid' => $this->uid, 'action' => 'activate']);
             $dropdownItems[] = [
                 'title'            => gT('Activate'),
                 'iconClass'        => "ri-user-follow-fill",
@@ -583,7 +612,12 @@ class User extends LSActiveRecord
             'linkAttributes'   => [
                 'data-href' => $setRoleUrl,
             ],
-            'enabledCondition' => $userManager->canAssignRole() && $this->uid != App()->user->getId()
+            'enabledCondition' =>
+                ($permission_superadmin_read
+                    && !(Permission::isForcedSuperAdmin($this->uid)
+                        || $this->uid == App()->user->getId()
+                    )
+                )
         ];
         $dropdownItems[] = [
             'title'            => gT('Edit user'),
@@ -740,12 +774,6 @@ class User extends LSActiveRecord
                 "header" => gT("Full name")
             ],
             [
-                "name"   => "active",
-                "header" => gT("Active"),
-                'headerHtmlOptions' => ['class' => 'hidden'],
-                'htmlOptions'       => ['class' => 'hidden activation']
-            ],
-            [
                 "name"   => "created",
                 "header" => gT("Created on"),
                 "value"  => '$data->formattedDateCreated',
@@ -753,6 +781,12 @@ class User extends LSActiveRecord
             [
                 "name"   => "parentUserName",
                 "header" => gT("Created by"),
+            ],
+            [
+                "name"   => "status",
+                "header" => gT("Status"),
+                'headerHtmlOptions' => ['class' => ''],
+                'htmlOptions'       => ['class' => ' activation']
             ],
         ];
 
@@ -889,7 +923,7 @@ class User extends LSActiveRecord
 
         $getUser = Yii::app()->request->getParam('User');
         if (!empty($getUser['parentUserName'])) {
-             $getParentName = $getUser['parentUserName'];
+            $getParentName = $getUser['parentUserName'];
             $criteria->join = "LEFT JOIN {{users}} u ON t.parent_id = u.uid";
             $criteria->compare('u.users_name', $getParentName, true, 'OR');
         }
@@ -1049,11 +1083,10 @@ class User extends LSActiveRecord
      */
     public function setActivationStatus($status = 'activate')
     {
-        $datePlusMaxExpiration = new DateTime();
         if ($status == 'activate') {
-            $this->active = 1;
+            $this->status = 1;
         } else {
-            $this->active = 0;
+            $this->status = 0;
         }
 
         return $this->save();

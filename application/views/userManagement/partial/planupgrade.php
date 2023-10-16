@@ -1,5 +1,5 @@
-<div id="modalPlanUpgrade" class="modal fade border-10" role="dialog" style="margin: auto; background-color:rgba(200, 200, 200, 0.5);">
-    <div class="modal-dialog border border-light border-2" style="margin-top: 2%;">
+<div id="modalPlanUpgrade" class="modal fade border-10" role="dialog" style="margin: auto; background-color:rgba(0, 0, 0, 0.5);">
+    <div class="modal-dialog border border-light border-2" style="margin-top: 3em;">
         <!-- Modal content-->
         <div class="modal-content">
             <?php
@@ -47,15 +47,14 @@
 </div>
 
 <script>
-    function hideAllModals() {
-        $('.modal').each(function(i) {
-            $(this).hide();
-        });
-    }
     function modalPlanUpgradeOpen() {
-        // hideAllModals();
-        console.log('modalPlanUpgrade')
-        var modal = new bootstrap.Modal(document.getElementById('modalPlanUpgrade'), {})
+        var id = '#modalPlanUpgrade'
+        var modal = new bootstrap.Modal(id)
         modal.show();
+
+        // to prevent stackable modal from opening after the Plan upgrade modal
+        $(id).off('click.dismiss.bs.modal').on('click.dismiss.bs.modal', function (e) {
+            e.preventDefault()
+        });
     }
 </script>

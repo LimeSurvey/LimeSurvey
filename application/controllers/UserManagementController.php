@@ -445,6 +445,15 @@ class UserManagementController extends LSBaseController
         $aData['userId'] = $userId;
         $aData['action'] = $action ? 'deactivate' : 'activate' ;
 
+        if (!$action) {
+            $oEvent = new PluginEvent('beforeAdminUserActivation');
+            $oEvent->set('request', App()->request);
+            App()->getPluginManager()->dispatchEvent($oEvent);
+            $isUserLimitReached = $oEvent->get('is_user_limit_reached', false);
+
+            $aData['showUpgradeModal'] = (bool)$isUserLimitReached;
+        }
+
         return $this->renderPartial('partial/confirmuseractivation', $aData);
     }
 
@@ -467,12 +476,15 @@ class UserManagementController extends LSBaseController
         $action = Yii::app()->request->getParam('action');
         $oUser = User::model()->findByPk($userId);
 
+
+
         if ($oUser) {
             if ($action == 'activate') {
                 $oEvent = new PluginEvent('beforeAdminUserActivation');
                 $oEvent->set('request', App()->request);
                 App()->getPluginManager()->dispatchEvent($oEvent);
-                if ($oEvent->get('success') == false) {
+                $result = $oEvent->get('success', null);
+                if (!empty($result) && $oEvent->get('success') == false) {
                     return $this->renderPartial(
                         '/admin/super/_renderJson',
                         [
@@ -490,7 +502,7 @@ class UserManagementController extends LSBaseController
                 return App()->getController()->renderPartial('/admin/super/_renderJson', [
                     'data' => [
                         'success' => true,
-                        'message' => gT('Status successfully updated')
+                        'message' => gT('Status successfully updated') . ' ' .$action
                     ]
                 ]);
             };
@@ -1642,7 +1654,7 @@ class UserManagementController extends LSBaseController
         $oEvent->set('request', App()->request);
         App()->getPluginManager()->dispatchEvent($oEvent);
         $isUserLimitReached = $oEvent->get('is_user_limit_reached', null);
-        $aUser['active'] = !$isUserLimitReached;
+        $aUser['status'] = !$isUserLimitReached;
 
         $event = new PluginEvent('createNewUser');
         $event->set('errorCode', AuthPluginBase::ERROR_NOT_ADDED);

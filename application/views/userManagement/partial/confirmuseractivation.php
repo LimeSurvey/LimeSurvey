@@ -13,6 +13,10 @@ Yii::app()->getController()->renderPartial(
     <input type="hidden" name="userid" value="<?= $userId ?>" />
     <input type="hidden" name="action" value="<?= $action ?>" />
     <button type="button"  class="btn btn-cancel" data-bs-dismiss="modal">&nbsp;<?php eT("Cancel"); ?></button>
-    <button class="btn btn-primary" id="submitForm">&nbsp;<?php eT("Save"); ?></button>
+    <?php if (isset($showUpgradeModal) && $showUpgradeModal): ?>
+        <button class="btn btn-primary" id="modalPlanUpgradeOpenAfterSave" data-bs-dismiss="modal" data-stackmodal="#modalPlanUpgrade" onclick="modalPlanUpgradeOpen()">&nbsp;<?php eT("Save"); ?></button>
+    <?php else: ?>
+        <button class="btn btn-primary">&nbsp;<?php eT("Save"); ?></button>
+    <?php endif; ?>
     </form>
 </div>

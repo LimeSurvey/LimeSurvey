@@ -62,7 +62,7 @@ class Authdb extends AuthPluginBase
             $new_email = flattenText($preCollectedUserArray['email']);
             $new_full_name = flattenText($preCollectedUserArray['full_name']);
             $presetPassword = flattenText($preCollectedUserArray['password']);
-            $active = $preCollectedUserArray['active'];
+            $status = $preCollectedUserArray['status'];
             if (!empty($preCollectedUserArray['expires'])) {
                 $expires = $preCollectedUserArray['expires'];
             }
@@ -76,7 +76,7 @@ class Authdb extends AuthPluginBase
         }
 
         $new_pass = $presetPassword ?? createPassword();
-        $iNewUID = User::insertUser($new_user, $new_pass, $new_full_name, Yii::app()->session['loginID'], $new_email, $expires, $active);
+        $iNewUID = User::insertUser($new_user, $new_pass, $new_full_name, Yii::app()->session['loginID'], $new_email, $expires, $status);
         if (!$iNewUID) {
             $oEvent->set('errorCode', self::ERROR_ALREADY_EXISTING_USER);
             $oEvent->set('errorMessageTitle', '');
@@ -172,7 +172,7 @@ class Authdb extends AuthPluginBase
             $this->setAuthFailure(self::ERROR_USERNAME_INVALID);
             return;
         }
-        if ($user->isExpired()) {
+        if ($user->isExpired() || (isset($user->status) && !$user->status)) {
             // TODO: Should we show the actual error? Taking a conservative approach of not revealing the actual cause for now.
             $this->setAuthFailure(self::ERROR_USERNAME_INVALID);
             return;

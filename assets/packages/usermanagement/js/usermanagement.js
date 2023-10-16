@@ -302,9 +302,21 @@ var UserManagement = function () {
         $('.UserManagement--action--openmodal').on('click', function () {
             var href = $(this).data('href');
             var modalSize = $(this).data('modalsize');
-            openModal(href, modalSize);
+            var stackablemodal = $(this).data('stackmodal');
+
+            if (stackablemodal !== undefined) {
+                var modal = $(stackablemodal)
+                var modal_bs = new bootstrap.Modal(modal)
+                modal_bs.show()
+
+                modal.off('click.dismiss.bs.modal').on('click.dismiss.bs.modal', function () {
+                    openModal(href, modalSize);
+                });
+                $('.modal-backdrop').remove();
+            } else {
+                openModal(href, modalSize);
+            }
         });
- 
     };
 
     var bindModals = function () {

@@ -14,10 +14,10 @@ class Update_616 extends DatabaseUpdateBase
     {
         $surveymenuTable = \Yii::app()->db->schema->getTable('{{users}}');
 
-        if (!isset($surveymenuTable->columns['active'])) {
-            $this->db->createCommand()->addColumn('{{users}}', 'active', 'BOOLEAN DEFAULT TRUE');
+        if (!isset($surveymenuTable->columns['status'])) {
+            $this->db->createCommand()->addColumn('{{users}}', 'status', 'BOOLEAN DEFAULT TRUE');
         }
 
-        $this->db->createCommand()->update('{{users}}', array('active' => 0), "expires is not null");
+        $this->db->createCommand()->update('{{users}}', array('status' => 0), "expires is not null");
     }
 }
