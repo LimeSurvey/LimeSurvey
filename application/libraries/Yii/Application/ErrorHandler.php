@@ -223,8 +223,6 @@ class ErrorHandler
 
     /**
 	 * Is REST request
-     *
-     * This is a hacked solution
 	 *
 	 * @return boolean
 	 */
@@ -233,7 +231,6 @@ class ErrorHandler
         $headers = getallheaders();
         $acceptsJson = isset($headers['Accept'])
             && strpos($headers['Accept'], 'application/json') !== false;
-
         return $acceptsJson;
     }
 }
