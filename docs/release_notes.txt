@@ -34,6 +34,10 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.28.75 (build 231006) to 3.28.76 (build 231018) October 16, 2023
+-Fixed issue #19094: [security] Input Validation Vulnerability Leading to 500 on responses page (#3466) (Denis Chenu)
+
+
 Changes from 3.28.74 (build 230920) to 3.28.75 (build 231006) October 4, 2023
 #Updated translation: Hungarian by kkd
 #Updated translation: Dutch by Han
