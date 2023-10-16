@@ -440,10 +440,11 @@ class UserManagementController extends LSBaseController
         }
         $userId = Yii::app()->request->getParam('userid');
         $action = Yii::app()->request->getParam('action');
+
         $userId = sanitize_int($userId);
 
         $aData['userId'] = $userId;
-        $aData['action'] = $action ? 'deactivate' : 'activate' ;
+        $aData['action'] = $action;
 
         if (!$action) {
             $oEvent = new PluginEvent('beforeAdminUserActivation');

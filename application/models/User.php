@@ -785,8 +785,8 @@ class User extends LSActiveRecord
             [
                 "name"   => "status",
                 "header" => gT("Status"),
-                'headerHtmlOptions' => ['class' => ''],
-                'htmlOptions'       => ['class' => ' activation']
+                'headerHtmlOptions' => ['class' => 'hidden'],
+                'htmlOptions'       => ['class' => 'hidden activation']
             ],
         ];
 
