@@ -10,7 +10,8 @@ class TransformerInputQuestionAttribute extends Transformer
     {
         $this->setDataMap([
             'qaid' => ['type' => 'int'],
-            'attribute' => ['type' => 'int'],
+            'qid' => ['type' => 'int'],
+            'attribute' => true,
             'value' => true,
             'language' => true
         ]);

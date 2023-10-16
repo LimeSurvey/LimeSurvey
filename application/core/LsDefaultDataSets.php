@@ -2655,7 +2655,7 @@ class LsDefaultDataSets
             array(
                 "name" => "image_select-listradio",
                 "visible" => "Y",
-                "xml_path" => "themes/question/image_select/survey/questions/answer/listradio",
+                "xml_path" => "themes/question/image_select-listradio/survey/questions/answer/listradio",
                 "image_path" => "/assets/images/screenshots/L.png",
                 "title" => "Image select list (Radio)",
                 "creation_date" => "1970-01-01 01:00:00",
@@ -2679,7 +2679,7 @@ class LsDefaultDataSets
             array(
                 "name" => "image_select-multiplechoice",
                 "visible" => "Y",
-                "xml_path" => "themes/question/image_select/survey/questions/answer/multiplechoice",
+                "xml_path" => "themes/question/image_select-multiplechoice/survey/questions/answer/multiplechoice",
                 "image_path" => "/assets/images/screenshots/M.png",
                 "title" => "Image select multiple choice",
                 "creation_date" => "1970-01-01 01:00:00",
