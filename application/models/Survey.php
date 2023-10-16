@@ -171,6 +171,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
 
     public $showsurveypolicynotice = 0;
 
+    // Whether to show the option values of the survey or the inherited ones, if applicable.
     public $bShowRealOptionValues = true;
 
 
