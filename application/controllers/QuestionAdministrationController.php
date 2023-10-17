@@ -2832,6 +2832,7 @@ class QuestionAdministrationController extends LSBaseController
     private function updateSubquestions($question, $subquestionsArray)
     {
         $questionOrder = 0;
+        $subquestionIds = [];
         foreach ($subquestionsArray as $subquestionId => $subquestionArray) {
             foreach ($subquestionArray as $scaleId => $data) {
                 $subquestion = Question::model()->findByAttributes(
@@ -2865,6 +2866,7 @@ class QuestionAdministrationController extends LSBaseController
                         ->setDetailedErrorsFromModel($subquestion);
                 }
                 $subquestion->refresh();
+                $subquestionIds[] = $subquestion->qid;
                 foreach ($data['subquestionl10n'] as $lang => $questionText) {
                     $l10n = QuestionL10n::model()->findByAttributes(
                         [
@@ -2885,6 +2887,7 @@ class QuestionAdministrationController extends LSBaseController
                 }
             }
         }
+        $question->deleteAllSubquestions($subquestionIds);
     }
 
     /**
