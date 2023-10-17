@@ -446,7 +446,7 @@ class UserManagementController extends LSBaseController
         $aData['userId'] = $userId;
         $aData['action'] = $action;
 
-        if (!$action) {
+        if ($action = 'activate') {
             $oEvent = new PluginEvent('beforeAdminUserActivation');
             $oEvent->set('request', App()->request);
             App()->getPluginManager()->dispatchEvent($oEvent);
@@ -476,16 +476,13 @@ class UserManagementController extends LSBaseController
         $userId = sanitize_int(Yii::app()->request->getParam('userid'));
         $action = Yii::app()->request->getParam('action');
         $oUser = User::model()->findByPk($userId);
-
-
-
         if ($oUser) {
             if ($action == 'activate') {
                 $oEvent = new PluginEvent('beforeAdminUserActivation');
                 $oEvent->set('request', App()->request);
                 App()->getPluginManager()->dispatchEvent($oEvent);
-                $result = $oEvent->get('success', null);
-                if (!empty($result) && $oEvent->get('success') == false) {
+                $result = $oEvent->get('is_user_limit_reached', null);
+                if (!empty($result) && $oEvent->get('is_user_limit_reached') == true) {
                     return $this->renderPartial(
                         '/admin/super/_renderJson',
                         [
@@ -616,6 +613,7 @@ class UserManagementController extends LSBaseController
                 $results[$iUserId]['result'] = $oUser->setActivationStatus($operation);
                 $limit = $limit - 1;
             } else {
+                $oUser->setActivationStatus('deactivate');
                 $results[$iUserId]['error'] = gT('Reached the limit');
                 $results[$iUserId]['result'] = false;
             }
