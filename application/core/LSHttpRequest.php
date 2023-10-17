@@ -251,4 +251,21 @@ class LSHttpRequest extends CHttpRequest
     {
         $this->queryParams = $values;
     }
+
+    /**
+	 * Is REST request
+     *
+     * @todo This method should parse the request URI and determine
+     * if the path matches a REST request. This is not simple because of
+     * the urlFormat differences (get/path) and there not being an each way
+     * to parse the controller and action names.
+	 *
+	 * @return boolean
+	 */
+    public function isRestRequest()
+    {
+        $headers = getallheaders();
+        return isset($headers['Accept'])
+            && strpos($headers['Accept'], 'application/json') !== false;
+    }
 }
