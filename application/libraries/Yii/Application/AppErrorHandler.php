@@ -8,9 +8,9 @@ use CHttpException;
 use LSUserException;
 
 /**
- * Trait for Application error handling
+ * Application error handling logic
  */
-class ErrorHandler
+class AppErrorHandler
 {
     /**
      * @see http://www.yiiframework.com/doc/api/1.1/CApplication#onException-detail

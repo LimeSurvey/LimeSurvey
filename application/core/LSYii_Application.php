@@ -20,7 +20,7 @@
 require_once(dirname(dirname(__FILE__)) . '/helpers/globals.php');
 require_once __DIR__ . '/Traits/LSApplicationTrait.php';
 
-use LimeSurvey\Yii\Application\ErrorHandler;
+use LimeSurvey\Yii\Application\AppErrorHandler;
 
 /**
 * Implements global config
@@ -403,7 +403,7 @@ class LSYii_Application extends CWebApplication
      */
     public function onException($event)
     {
-        (new ErrorHandler)->onException($this->dbVersion, $event);
+        (new AppErrorHandler)->onException($this->dbVersion, $event);
     }
 
     /**
@@ -414,7 +414,7 @@ class LSYii_Application extends CWebApplication
      */
     public function onError($event)
     {
-        (new ErrorHandler)->onError($this->dbVersion, $event);
+        (new AppErrorHandler)->onError($this->dbVersion, $event);
     }
 
     /**
