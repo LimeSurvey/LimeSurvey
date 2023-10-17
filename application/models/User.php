@@ -43,7 +43,7 @@ use LimeSurvey\Models\Services\UserManager;
  * @property string $last_login
  * @property Permissiontemplates[] $roles
  * @property UserGroup[] $groups
- * @property bool $active
+ * @property bool $status
  */
 class User extends LSActiveRecord
 {
@@ -61,7 +61,7 @@ class User extends LSActiveRecord
      */
     public $lang = 'auto';
 
-    public $active;
+    public $status;
 
     public $searched_value;
 
