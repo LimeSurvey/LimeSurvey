@@ -365,6 +365,7 @@ class remotecontrol_handle
 
                     $sResult = file_get_contents($aZIPFileName);
 					unlink($aZIPFileName);
+                    unlink($aZIPFileName);
                 } else {
                     $aData['bFailed'] = true;
                     $aData['sErrorMessage'] = 'Error creating lsa archive';
