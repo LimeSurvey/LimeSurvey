@@ -570,7 +570,7 @@ function centerInfoDialog() {
 
 function onUpdateTokenGrid() {
     reinstallParticipantsFilterDatePicker();
-    ('.edit-token').off('click.edittoken').on('click.edittoken', function () {
+    $('.edit-token').off('click.edittoken').on('click.edittoken', function (event) {
         startEditToken(event, $(this));
     });
 }

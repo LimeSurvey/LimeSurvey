@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <metadata>
+        <name>GoogleOAuthSMTP</name>
+        <type>plugin</type>
+        <creationDate>2023-01-03</creationDate>
+        <last_update>2023-01-03</last_update>
+        <author>LimeSurvey GmbH</author>
+        <authorUrl>https://www.limesurvey.org</authorUrl>
+        <version>1.0.0</version>
+        <license>GNU General Public License version 2 or later</license>
+        <description><![CDATA[Core: Adds Google OAuth support for email sending]]></description>
+    </metadata>
+
+    <compatibility>
+        <version>6.0</version>
+    </compatibility>
+
+    <updaters disabled="disabled">
+    </updaters>
+</config>

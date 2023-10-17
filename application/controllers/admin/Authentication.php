@@ -35,6 +35,10 @@ class Authentication extends SurveyCommonAction
      */
     public function index()
     {
+        // if the session is not readeable clear browser cookies
+        if (!session_id()) {
+            App()->request->cookies->clear();
+        }
         /* Set adminlang to the one set in dropdown */
         if (Yii::app()->request->getParam('loginlang', 'default') != 'default') {
             Yii::app()->session['adminlang'] = Yii::app()->request->getParam('loginlang', 'default');

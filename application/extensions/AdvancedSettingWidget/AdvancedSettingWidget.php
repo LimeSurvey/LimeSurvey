@@ -11,6 +11,7 @@ class AdvancedSettingWidget extends CWidget
     const SINGLEINPUTTYPE = array(
         'columns',
         'integer',
+        'float',
         'singleselect',
         'text',
         'textarea'

@@ -674,43 +674,30 @@ function getUserList($outputformat = 'fullinfoarray')
         $usercontrolSameGroupPolicy == true
     ) {
         if (isset($myuid)) {
-            $sDatabaseType = Yii::app()->db->getDriverName();
-            if ($sDatabaseType == 'mssql' || $sDatabaseType == "sqlsrv" || $sDatabaseType == "dblib") {
-                $sSelectFields = 'users_name,uid,email,full_name,parent_id,CAST(password as varchar) as password';
-            } else {
-                $sSelectFields = 'users_name,uid,email,full_name,parent_id,password';
-            }
-
-            // List users from same group as me + all my childs
-            // a subselect is used here because MSSQL does not like to group by text
-            // also Postgres does like this one better
-            $uquery = " SELECT {$sSelectFields} from {{users}} where uid in (
-                SELECT uid from {{user_in_groups}} where ugid in (
-                    SELECT ugid from {{user_in_groups}} where uid={$myuid}
-                    )
-                )
-            UNION
-            SELECT {$sSelectFields} from {{users}} v where v.parent_id={$myuid}
-            UNION
-            SELECT {$sSelectFields} from {{users}} v where uid={$myuid}";
+            $userGroupList = getUserGroupList();
+            $criteria = new CDBCriteria();
+            $criteria->order = 'full_name, users_name, t.uid';
+            $criteria->with = 'groups';
+            /* users in usergroup */
+            $criteria->addInCondition('groups.ugid', $userGroupList);
+            /* childs of this user */
+            $criteria->compare('parent_id', $myuid, false, 'OR');
+            /* himself */
+            $criteria->compare('t.uid', $myuid, false, 'OR');
+            $oUsers = User::model()->findAll($criteria);
         } else {
             return array(); // Or die maybe
         }
     } else {
-        $uquery = "SELECT * FROM {{users}} ORDER BY uid";
-    }
-
-    $uresult = Yii::app()->db->createCommand($uquery)->query()->readAll(); //Checked
-
-    if (count($uresult) == 0 && !empty($myuid)) {
-//user is not in a group and usercontrolSameGroupPolicy is activated - at least show their own userinfo
-        $uquery = "SELECT u.* FROM {{users}} AS u WHERE u.uid=" . $myuid;
-        $uresult = Yii::app()->db->createCommand($uquery)->query()->readAll(); //Checked
+        $oUsers = User::model()->findAll([
+            'order' => 'full_name, users_name, t.uid'
+        ]);
     }
 
     $userlist = array();
     $userlist[0] = "Reserved for logged in user";
-    foreach ($uresult as $srow) {
+    foreach ($oUsers as $oUser) {
+        $srow = $oUser->getAttributes();
         if ($outputformat != 'onlyuidarray') {
             if ($srow['uid'] != Yii::app()->session['loginID']) {
                 $userlist[] = array(
@@ -827,7 +814,7 @@ function getSurveyInfo($surveyid, $languagecode = '', $force = false)
             } else {
                 $thissurvey['owner_username'] = '';
             }
-            
+
 
             $staticSurveyInfo[$surveyid][$languagecode] = $thissurvey;
         }
@@ -1117,8 +1104,13 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage)
                             if (!isset($file['comment'])) {
                                 $file['comment'] = '';
                             }
+                            $size = "";
+                            if($file['size'] && strval(floatval($file['size'])) == strval($file['size'])) {
+                                // avoid to throw PHP error if size is invalid
+                                $size = sprintf('%s KB', round($file['size']));
+                            }
                             $sValue .= rawurldecode((string) $file['name']) .
-                            ' (' . round($file['size']) . 'KB) ' .
+                            ' (' . $size .' ) ' .
                             strip_tags((string) $file['title']);
                             if (trim(strip_tags((string) $file['comment'])) != "") {
                                 $sValue .= ' - ' . strip_tags((string) $file['comment']);
@@ -2620,12 +2612,13 @@ function hasTemplateManageRights($userid, $sThemeFolder)
 * Translate links which are in any answer/question/survey/email template/label set to their new counterpart
 *
 * @param string $sType 'survey' or 'label'
-* @param mixed $iOldSurveyID
-* @param mixed $iNewSurveyID
-* @param string $sString A string or null
+* @param mixed $iOldSurveyID Source SurveyId to be replaced
+* @param mixed $iNewSurveyID New SurveyId to be used
+* @param string $sString Link (url or local path) to be translated
+* @param bool $isLocalPath Indicates if the link ($sString) is a local path or a url.
 * @return string
 */
-function translateLinks($sType, $iOldSurveyID, $iNewSurveyID, $sString)
+function translateLinks($sType, $iOldSurveyID, $iNewSurveyID, $sString, $isLocalPath = false)
 {
     if ($sString == '') {
         return $sString;
@@ -2633,11 +2626,15 @@ function translateLinks($sType, $iOldSurveyID, $iNewSurveyID, $sString)
     $iOldSurveyID = (int) $iOldSurveyID;
     $iNewSurveyID = (int) $iNewSurveyID; // To avoid injection of a /e regex modifier without having to check all execution paths
     if ($sType == 'survey') {
-        $sPattern = '(http(s)?:\/\/)?(([a-z0-9\/\.])*(?=(\/upload))\/upload\/surveys\/' . $iOldSurveyID . '\/)';
-        $sReplace = Yii::app()->getConfig("publicurl") . "upload/surveys/{$iNewSurveyID}/";
+        $sPattern = '(http(s)?:\/\/)?(([a-z0-9\/\.\-\_])*(?=(\/upload))\/upload\/surveys\/' . $iOldSurveyID . '\/)';
+        if ($isLocalPath) {
+            $sReplace = Yii::app()->getConfig("uploaddir") . "/surveys/{$iNewSurveyID}/";
+        } else {
+            $sReplace = Yii::app()->getConfig("publicurl") . "upload/surveys/{$iNewSurveyID}/";
+        }
         return preg_replace('/' . $sPattern . '/u', $sReplace, $sString);
     } elseif ($sType == 'label') {
-        $sPattern = '(http(s)?:\/\/)?(([a-z0-9\/\.])*(?=(\/upload))\/upload\/labels\/' . $iOldSurveyID . '\/)';
+        $sPattern = '(http(s)?:\/\/)?(([a-z0-9\/\.\-\_])*(?=(\/upload))\/upload\/labels\/' . $iOldSurveyID . '\/)';
         $sReplace = Yii::app()->getConfig("publicurl") . "upload/labels/{$iNewSurveyID}/";
         return preg_replace("/" . $sPattern . "/u", $sReplace, $sString);
     } else // unknown type
@@ -3644,11 +3641,11 @@ function replaceExpressionCodes($iSurveyID, $aCodeMap)
 * @param string $availlangs - space separated list of additional languages in survey
 * @return void
 */
-function cleanLanguagesFromSurvey($iSurveyID, $availlangs)
+function cleanLanguagesFromSurvey($iSurveyID, $availlangs, $baselang = null)
 {
     Yii::app()->loadHelper('database');
     $iSurveyID = (int) $iSurveyID;
-    $baselang = Survey::model()->findByPk($iSurveyID)->language;
+    $baselang = $baselang ?? Survey::model()->findByPk($iSurveyID)->language;
     $aLanguages = [];
     if (!empty($availlangs) && $availlangs != " ") {
         $availlangs = sanitize_languagecodeS($availlangs);
@@ -3667,8 +3664,8 @@ function cleanLanguagesFromSurvey($iSurveyID, $availlangs)
     }
 
     // Remove From Answer Table
-    $sQuery = "SELECT ls.id from {{answer_l10ns}} ls 
-            JOIN {{answers}} a on ls.aid=a.aid 
+    $sQuery = "SELECT ls.id from {{answer_l10ns}} ls
+            JOIN {{answers}} a on ls.aid=a.aid
             JOIN {{questions}} q on a.qid=q.qid
             WHERE sid={$iSurveyID} AND {$sqllang}";
     $result = Yii::app()->db->createCommand($sQuery)->queryAll();
@@ -3676,7 +3673,7 @@ function cleanLanguagesFromSurvey($iSurveyID, $availlangs)
         Yii::app()->db->createCommand('delete from {{answer_l10ns}} where id =' . $row['id'])->execute();
     }
     // Remove From Questions Table
-    $sQuery = "SELECT ls.id from {{question_l10ns}} ls 
+    $sQuery = "SELECT ls.id from {{question_l10ns}} ls
             JOIN {{questions}} q on ls.qid=q.qid
             WHERE sid={$iSurveyID} AND {$sqllang}";
     $result = Yii::app()->db->createCommand($sQuery)->queryAll();
@@ -3686,7 +3683,7 @@ function cleanLanguagesFromSurvey($iSurveyID, $availlangs)
 
     // Remove From Questions Table
     $quotedGroups = Yii::app()->db->quoteTableName('{{groups}}');
-    $sQuery = "SELECT ls.id from {{group_l10ns}} ls 
+    $sQuery = "SELECT ls.id from {{group_l10ns}} ls
             JOIN $quotedGroups g on ls.gid=g.gid
             WHERE sid={$iSurveyID} AND {$sqllang}";
     $result = Yii::app()->db->createCommand($sQuery)->queryAll();
@@ -3761,9 +3758,9 @@ function fixLanguageConsistency($sid, $availlangs = '', $baselang = '')
         }
     }
 
-    $query = "SELECT * FROM {{answers}} a 
-    JOIN {{answer_l10ns}} ls ON ls.aid=a.aid 
-    JOIN  {{questions}} q on a.qid=q.qid 
+    $query = "SELECT * FROM {{answers}} a
+    JOIN {{answer_l10ns}} ls ON ls.aid=a.aid
+    JOIN  {{questions}} q on a.qid=q.qid
     WHERE language='{$baselang}' and q.sid={$sid}";
     $result = Yii::app()->db->createCommand($query)->query();
     foreach ($result->readAll() as $answer) {
@@ -4200,7 +4197,8 @@ function getUserGroupList()
     $sQuery = "SELECT distinct a.ugid, a.name, a.owner_id FROM {{user_groups}} AS a LEFT JOIN {{user_in_groups}} AS b ON a.ugid = b.ugid WHERE 1=1 ";
     if (shouldFilterUserGroupList()) {
         $userid = intval(App()->session['loginID']);
-        $sQuery .= "AND (b.uid = {$userid})";
+        $sQuery .= " AND (b.uid = {$userid})";
+        $sQuery .= " OR (a.owner_id = {$userid})";
     }
     $sQuery .= " ORDER BY name";
 
@@ -4612,7 +4610,7 @@ function getIPAddress()
 /**
  * This function returns the real IP address and should mainly be used for security sensitive purposes
  * If you want to use the IP address for language detection or similar, use getIPAddress() instead
- * 
+ *
  * @return  string  Client IP Address
  */
 function getRealIPAddress()

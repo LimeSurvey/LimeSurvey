@@ -119,6 +119,9 @@ class TemplateConfiguration extends TemplateConfig
         return array(
             array('template_name', 'required'),
             array('id, sid, gsid', 'numerical', 'integerOnly' => true),
+            array('template_name', 'filter', 'filter' => function ($value) {
+                return sanitize_filename($value, false, false, false);
+            }),
             array('template_name', 'length', 'max' => 150),
             array('cssframework_name', 'length', 'max' => 45),
             array('files_css, files_js, files_print_css, options, cssframework_css, cssframework_js, packages_to_load',
@@ -545,6 +548,7 @@ class TemplateConfiguration extends TemplateConfig
           // Note: if no twig statement in the description, twig will just render it as usual
         try {
             $sDescription = App()->twigRenderer->convertTwigToHtml($this->template->description);
+            $sDescription = viewHelper::purified($sDescription);
         } catch (\Exception $e) {
           // It should never happen, but let's avoid to anoy final user in production mode :)
             if (YII_DEBUG) {
@@ -723,7 +727,8 @@ class TemplateConfiguration extends TemplateConfig
                 return '';
             }
         }
-        $templateName = CHtml::encode($this->template_name);
+        /* Use sanitized filename for previous bad upload */
+        $templateName = sanitize_filename($this->template_name, false, false, false);
         $sEditorUrl = App()->getController()->createUrl(
             'admin/themes/sa/view',
             array("templatename" => $templateName)
@@ -746,7 +751,7 @@ class TemplateConfiguration extends TemplateConfig
         $dropdownItems[] = [
             'title'            => gT('Theme editor'),
             'url'              => $sEditorUrl,
-            'linkId'           => 'template_editor_link_' . $templateName,
+            'linkId'           => 'template_editor_link_' . $this->id,
             'linkClass'        => '',
             'iconClass'        => 'ri-brush-fill',
             'enabledCondition' => App()->getController()->action->id !== "surveysgroups",
@@ -756,7 +761,7 @@ class TemplateConfiguration extends TemplateConfig
         $dropdownItems[] = [
             'title'            => gT('Theme options'),
             'url'              => $sOptionUrl,
-            'linkId'           => 'template_options_link_' . $templateName ,
+            'linkId'           => 'template_options_link_' . $this->id ,
             'linkClass'        => '',
             'iconClass'        => 'ri-dashboard-3-fill',
             'enabledCondition' => $this->getHasOptionPage(),
@@ -766,7 +771,7 @@ class TemplateConfiguration extends TemplateConfig
         $dropdownItems[] = [
             'title'            => gT('Extend'),
             'url'              => $sExtendUrl,
-            'linkId'           => 'extendthis_' . $templateName,
+            'linkId'           => 'extendthis_' . $this->id,
             'linkClass'        => 'selector--ConfirmModal ',
             'iconClass'        => 'ri-file-copy-line text-success',
             'enabledCondition' => App()->getController()->action->id !== "surveysgroups",
@@ -789,7 +794,7 @@ class TemplateConfiguration extends TemplateConfig
         $dropdownItems[] = [
             'title'            => gT('Uninstall'),
             'url'              => $sUninstallUrl,
-            'linkId'           => 'remove_fromdb_link_' . $templateName,
+            'linkId'           => 'remove_fromdb_link_' . $this->id,
             'linkClass'        => 'selector--ConfirmModal ',
             'iconClass'        => 'ri-delete-bin-fill text-danger',
             'enabledCondition' => App()->getController()->action->id !== "surveysgroups" &&
@@ -808,7 +813,7 @@ class TemplateConfiguration extends TemplateConfig
         $dropdownItems[] = [
             'title'            => gT('Reset'),
             'url'              => $sResetUrl,
-            'linkId'           => 'remove_fromdb_link_' . $templateName,
+            'linkId'           => 'remove_fromdb_link_' . $this->id,
             'linkClass'        => 'selector--ConfirmModal ',
             'iconClass'        => 'ri-refresh-line text-warning',
             'enabledCondition' => App()->getController()->action->id !== "surveysgroups",
