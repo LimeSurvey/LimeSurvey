@@ -689,6 +689,9 @@ class User extends LSActiveRecord
                 Permission::model()->hasGlobalPermission('users', 'update')     //Global permission to view users given
                 && $this->parent_id == Yii::app()->session['loginID']           //AND User is owned or created by you
             )
+            || (
+                Permission::model()->hasGlobalPermission('users', 'read')     //Global permission to view users
+            )
         ) {
             $buttonArray[] = $userDetail;
         }
@@ -936,6 +939,19 @@ class User extends LSActiveRecord
                 'pageSize' => $pageSize
             )
         ));
+    }
+
+    /** @inheritdoc */
+    public function scopes()
+    {
+        return array(
+            'active' => array(
+                'condition' => "expires > :now OR expires IS NULL",
+                'params' => array(
+                    'now' => dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig("timeadjust")),
+                )
+            )
+        );
     }
 
     /**
