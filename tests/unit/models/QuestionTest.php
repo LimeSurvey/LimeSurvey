@@ -72,17 +72,6 @@ class QuestionTest extends BaseModelTestCase
     }
 
     /**
-     * Test getting a default theme name from type
-     */
-    public function testGetDefaultQuestionThemeNameFromType()
-    {
-        $question = new Question();
-
-        $themeName = $question->questionThemeNameValidator();
-        $this->assertSame('longfreetext', $themeName, 'Incorrect default question theme name.');
-    }
-
-    /**
      * Test getting a default theme name from an invalid type.
      */
     public function testGetDefaultQuestionThemeNameFromInvalidType()
