@@ -1690,6 +1690,8 @@ class SurveyAdministrationController extends LSBaseController
                 $archivedTokenSettings->properties = json_encode(Response::getEncryptedAttributes($iSurveyID));
                 $archivedTokenSettings->save();
 
+                // Load the active record again, as there have been sporadic errors with the dataset not being updated
+                $survey = Survey::model()->findByAttributes(array('sid' => $iSurveyID));
                 $survey->active = 'N';
                 $survey->save();
 
