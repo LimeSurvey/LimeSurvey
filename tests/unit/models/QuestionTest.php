@@ -80,7 +80,7 @@ class QuestionTest extends BaseModelTestCase
         $question->type = 'Test';
 
         $themeName = $question->questionThemeNameValidator();
-        $this->assertNull($themeName, 'An invalid validation result was expected since "Z" question type does not exist.');
+        $this->assertNull($themeName, 'An invalid validation result was expected since "Test" question type does not exist.');
     }
 
     /**
@@ -112,7 +112,8 @@ class QuestionTest extends BaseModelTestCase
 
     /**
      * Testing that question type and question theme name
-     * don't match any theme in data base.
+     * don't match any theme in data base. 
+     * Expecting to use default theme name from type
      */
     public function testValidateQuestionThemeNameMismatch()
     {
@@ -121,6 +122,6 @@ class QuestionTest extends BaseModelTestCase
         $question->question_theme_name = 'longfreetext';
 
         $themeName = $question->questionThemeNameValidator();
-        $this->assertSame('multiplechoice', $themeName, 'Question type and theme name do not correspond to a theme in data base.');
+        $this->assertSame('multiplechoice', $themeName, 'Question theme was not auto corrected and derived from the type\'s default theme.');
     }
 }
