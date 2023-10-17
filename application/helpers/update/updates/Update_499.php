@@ -11,7 +11,7 @@ class Update_499 extends DatabaseUpdateBase
                 \alterColumn(
                     '{{failed_emails}}',
                     'resend_vars',
-                    'longtext',
+                    'mediumtext',
                     false
                 );
                 break;
