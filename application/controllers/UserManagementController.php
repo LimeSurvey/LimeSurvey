@@ -432,7 +432,7 @@ class UserManagementController extends LSBaseController
      */
     public function actionActivationConfirm()
     {
-        if (!Permission::model()->hasGlobalPermission('users', 'delete')) {
+        if (!Permission::model()->hasGlobalPermission('users', 'update')) {
             return $this->renderPartial(
                 'partial/error',
                 ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
@@ -446,7 +446,7 @@ class UserManagementController extends LSBaseController
         $aData['userId'] = $userId;
         $aData['action'] = $action;
 
-        if ($action = 'activate') {
+        if ($action == 'activate') {
             $oEvent = new PluginEvent('beforeAdminUserActivation');
             $oEvent->set('request', App()->request);
             App()->getPluginManager()->dispatchEvent($oEvent);
@@ -500,7 +500,7 @@ class UserManagementController extends LSBaseController
                 return App()->getController()->renderPartial('/admin/super/_renderJson', [
                     'data' => [
                         'success' => true,
-                        'message' => gT('Status successfully updated') . ' ' .$action
+                        'message' => gT('Status successfully updated')
                     ]
                 ]);
             };
@@ -529,13 +529,12 @@ class UserManagementController extends LSBaseController
 
         $userIds = json_decode(Yii::app()->request->getPost('sItems', "[]"));
         $status = Yii::app()->request->getPost('status_selector', '');
-        if ($status == 'activate') {
-            $oEvent = new PluginEvent('beforeAdminUserActivation');
-            $oEvent->set('request', App()->request);
-            App()->getPluginManager()->dispatchEvent($oEvent);
-            if (!empty($oEvent->get('limit'))) {
-                $limit = $oEvent->get('limit');
-            }
+
+        $oEvent = new PluginEvent('beforeAdminUserActivation');
+        $oEvent->set('request', App()->request);
+        App()->getPluginManager()->dispatchEvent($oEvent);
+        if (!empty($oEvent->get('limit'))) {
+            $limit = $oEvent->get('limit');
         }
 
         if (isset($limit)) {
@@ -577,7 +576,7 @@ class UserManagementController extends LSBaseController
         foreach ($userIds as $iUserId) {
             $oUser = User::model()->findByPk($iUserId);
             $results[$iUserId]['title'] = $oUser->users_name;
-            if (in_array($iUserId, App()->getConfig('forcedsuperadmin')) || $oUser->uid == App()->user->getId()) {
+            if (!$this->isAllowedToEdit($oUser)) {
                 $results[$iUserId]['error'] = gT('Unauthorized');
                 $results[$iUserId]['result'] = false;
                 continue;
@@ -598,11 +597,13 @@ class UserManagementController extends LSBaseController
     public function limitedUserActivation($userIds, $operation, $limit)
     {
         $results = [];
-        $limit = $limit - 1; // default admin user
         foreach ($userIds as $iUserId) {
             $oUser = User::model()->findByPk($iUserId);
             $results[$iUserId]['title'] = $oUser->users_name;
-            if (in_array($iUserId, App()->getConfig('forcedsuperadmin')) || $oUser->uid == App()->user->getId()) {
+            if (!$this->isAllowedToEdit($oUser)) {
+                if ($oUser->status) {
+                    $limit = $limit - 1;
+                }
                 $results[$iUserId]['error'] = gT('Unauthorized');
                 $results[$iUserId]['result'] = false;
                 continue;
@@ -621,6 +622,24 @@ class UserManagementController extends LSBaseController
         return $results;
     }
 
+    /**
+     * Check if the current user allowed to update $user
+     *
+     * @return boolean
+     */
+    private function isAllowedToEdit($user)
+    {
+        $permission_superadmin_read = Permission::model()->hasGlobalPermission('superadmin', 'read');
+        $permission_users_update = Permission::model()->hasGlobalPermission('users', 'update');
+        $ownedOrCreated = $user->parent_id == App()->session['loginID']; // User is owned or created by you
+
+        return ( $permission_superadmin_read && !(Permission::isForcedSuperAdmin($user->uid) || $user->uid == App()->user->getId()))
+            || (!$permission_superadmin_read && ($user->uid != App()->session['loginID'] //Can't change your own permissions
+                    && ( $permission_users_update && $ownedOrCreated)
+                    && !Permission::isForcedSuperAdmin($user->uid)
+                )
+            );
+    }
 
     /**
      * Show user delete confirmation

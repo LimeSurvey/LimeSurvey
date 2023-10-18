@@ -559,26 +559,34 @@ class User extends LSActiveRecord
                 )
         ];
 
+        $permission = ( $permission_superadmin_read && !(Permission::isForcedSuperAdmin($this->uid) || $this->uid == App()->user->getId()))
+            || (!$permission_superadmin_read && ($this->uid != App()->session['loginID'] //Can't change your own permissions
+                    && ( $permission_users_update && $ownedOrCreated)
+                    && !Permission::isForcedSuperAdmin($this->uid)
+                )
+            );
+
         if ($this->status || in_array($this->uid, App()->getConfig('forcedsuperadmin'))) {
             $activateUrl = App()->getController()->createUrl('userManagement/activationConfirm', ['userid' => $this->uid, 'action' => 'deactivate']);
             $dropdownItems[] = [
                 'title'            => gT('Deactivate'),
                 'iconClass'        => "ri-user-unfollow-fill text-danger",
-                'linkClass'        => "UserManagement--action--openmodal UserManagement--action--status",
+                'linkClass'        => $permission ? "UserManagement--action--openmodal UserManagement--action--status" : '',
                 'linkAttributes'   => [
-                    'data-href' => $activateUrl,
+                    'data-href' => $permission ? $activateUrl : '#',
                 ],
-                'enabledCondition' => (!in_array($this->uid, App()->getConfig('forcedsuperadmin')))
+                'enabledCondition' => $permission
             ];
         } else {
             $activateUrl = App()->getController()->createUrl('userManagement/activationConfirm', ['userid' => $this->uid, 'action' => 'activate']);
             $dropdownItems[] = [
                 'title'            => gT('Activate'),
                 'iconClass'        => "ri-user-follow-fill",
-                'linkClass'        => "UserManagement--action--openmodal UserManagement--action--status",
+                'linkClass'        => $permission ? "UserManagement--action--openmodal UserManagement--action--status" : '',
                 'linkAttributes'   => [
-                    'data-href' => $activateUrl,
-                ]
+                    'data-href' => $permission ? $activateUrl : '#',
+                ],
+                'enabledCondition' => $permission
             ];
         }
         $dropdownItems[] = [
