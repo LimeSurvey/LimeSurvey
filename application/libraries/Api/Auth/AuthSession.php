@@ -54,11 +54,7 @@ class AuthSession
             ->generateRandomString(32);
         $session = new Session();
         $session->id = $sessionKey;
-        $session->expire = time() + (int) Yii::app()
-            ->getConfig(
-                'iSessionExpirationTime',
-                ini_get('session.gc_maxlifetime')
-            );
+        $session->expire = time() + (60 * 60 * 24 * 7);
         $session->data = $username;
         $session->save();
         return $session;
