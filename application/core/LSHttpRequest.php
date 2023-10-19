@@ -164,7 +164,10 @@ class LSHttpRequest extends CHttpRequest
             // $validationParams['request'] = 'acs';
 
             foreach ($validationRoutes as $cr) {
-                if (preg_match('#' . $cr . '#', (string) $route)) {
+                // The rule should either match the whole route, or the start of the route followed by a slash.
+                // For example the routes "rest" or "rest/..." should be matched by the rule "rest", but the
+                // route "surveymenu/restore" should not.
+                if (preg_match('#^' . $cr . '$|^' . $cr . '/#', (string) $route)) {
                     Yii::app()->detachEventHandler(
                         'onBeginRequest',
                         array($this, 'validateCsrfToken')
