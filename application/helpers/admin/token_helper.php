@@ -55,6 +55,7 @@ function emailTokens($iSurveyID, $aResultTokens, $sType, $continueOnError = fals
                 'name' => $aTokenRow["firstname"] . " " . $aTokenRow["lastname"],
                 'email' => $aTokenRow["email"],
                 'status' => 'fail',
+                'warning' => null,
                 'error' => 'Token not valid anymore'
             );
             if ($continueOnError) {
@@ -83,14 +84,16 @@ function emailTokens($iSurveyID, $aResultTokens, $sType, $continueOnError = fals
                 'name' => $aTokenRow["firstname"] . " " . $aTokenRow["lastname"],
                 'email' => $aTokenRow["email"],
                 'status' => 'OK',
-                'warning' => $warnings
+                'warning' => $warnings,
+                'error' => null,
             );
         } else {
             $aResult[$aTokenRow['tid']] = array(
                 'name' => $aTokenRow["firstname"] . " " . $aTokenRow["lastname"],
                 'email' => $aTokenRow["email"],
                 'status' => 'fail',
-                'error' => $mail->getError(),
+                'warning' => null,
+                'error' => $mail->getError()
             );
         }
     }
