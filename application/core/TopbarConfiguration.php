@@ -93,7 +93,7 @@ class TopbarConfiguration
         if (!empty($sid)) {
             $config['sid'] = $sid;
         }
-     
+
         return new self($config);
     }
 
@@ -204,6 +204,15 @@ class TopbarConfiguration
             || $hasSurveyContentPermission
             || !is_null($extraToolsMenuItems);
 
+        $editorEnabled = Yii::app()->getConfig('editorEnabled') ?? false;
+
+        $editorUrl = Yii::app()->request->getUrlReferrer(
+            Yii::app()->createUrl(
+                'editorlink/index',
+                ['route' => 'survey/' . $sid]
+            )
+        );
+
         return array(
             'sid' => $sid,
             'oSurvey' => $oSurvey,
@@ -233,6 +242,8 @@ class TopbarConfiguration
             'beforeSurveyBarRender' => $beforeSurveyBarRender ?? [],
             'showToolsMenu' => $showToolsMenu,
             'surveyLanguages' => self::getSurveyLanguagesArray($oSurvey),
+            'editorEnabled' => $editorEnabled,
+            'editorUrl' => $editorUrl
         );
     }
 
@@ -286,10 +297,15 @@ class TopbarConfiguration
             return [];
         }
 
-        $closeUrl = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl("responses/browse/", ['surveyId' => $sid]));
+        $closeUrl = Yii::app()->request->getUrlReferrer(
+            Yii::app()->createUrl(
+                "responses/browse/",
+                ['surveyId' => $sid]
+            )
+        );
 
         return array(
-            'closeUrl' => $closeUrl,
+            'closeUrl' => $closeUrl
         );
     }
 
