@@ -2039,10 +2039,10 @@ $(document).on('ready pjax:scriptcomplete', function () {
 
     makeAnswersTableSortable();
 
-    $('.btnaddsubquestion').on('click.subquestions', addSubquestionInput);
-    $('.btndelsubquestion').on('click.subquestions', deleteSubquestionInput);
-    $('.btnaddanswer').on('click.subquestions', addAnswerOptionInput);
-    $('.btndelanswer').on('click.subquestions', deleteAnswerOptionInput);
+    $('.btnaddsubquestion').off('click.subquestions').on('click.subquestions', addSubquestionInput);
+    $('.btndelsubquestion').off('click.subquestions').on('click.subquestions', deleteSubquestionInput);
+    $('.btnaddanswer').off('click.subquestions').on('click.subquestions', addAnswerOptionInput);
+    $('.btndelanswer').off('click.subquestions').on('click.subquestions', deleteAnswerOptionInput);
 
     $('#labelsetbrowserModal').on('hidden.bs.modal.', labelSetDestruct);
 
