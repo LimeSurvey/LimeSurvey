@@ -338,6 +338,11 @@ class LayoutHelper
 
         $aData['imageurl'] = Yii::app()->getConfig("imageurl");
         $aData['url'] = $url;
+
+        $oEvent = new PluginEvent('beforeFooterRender');
+        App()->getPluginManager()->dispatchEvent($oEvent);
+        $aData['currentPlan'] = $oEvent->get('current_plan', 'free');
+
         return Yii::app()->getController()->renderPartial("/admin/super/footer", $aData, $return);
     }
 

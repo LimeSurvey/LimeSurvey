@@ -305,11 +305,11 @@ var UserManagement = function () {
             var stackablemodal = $(this).data('stackmodal');
 
             if (stackablemodal !== undefined) {
-                var modal = $(stackablemodal)
-                var modal_bs = new bootstrap.Modal(modal)
-                modal_bs.show()
+                var modal = $(stackablemodal);
+                var modalBs = new bootstrap.Modal(modal);
+                modalBs.show();
 
-                modal.off('click.dismiss.bs.modal').on('click.dismiss.bs.modal', function () {
+                modal.off('hidden.bs.modal').on('hidden.bs.modal', function () {
                     openModal(href, modalSize);
                 });
                 $('.modal-backdrop').remove();
