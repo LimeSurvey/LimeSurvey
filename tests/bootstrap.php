@@ -219,6 +219,12 @@ if (substr(sprintf('%o', fileperms(BASEPATH . '../../../../tests/tmp/')), -4) !=
     die('tests/tmp folder not set to 777');
 }
 
+// Unit tests suddenly started failing with exception "CHttpRequest is unable to determine the request URI."
+// - Initialising $_SERVER makes the exception go away (kfoster - 2023-05-22)
+$_SERVER['SCRIPT_FILENAME'] = 'index-test.php';
+$_SERVER['SCRIPT_NAME'] =  '/index-test.php';
+$_SERVER['REQUEST_URI'] = 'index-test.php';
+
 Yii::$enableIncludePath = false;
 Yii::createApplication('LSYii_Application', $config);
 
