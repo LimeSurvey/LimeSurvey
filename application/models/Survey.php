@@ -175,8 +175,6 @@ class Survey extends LSActiveRecord implements PermissionInterface
     public $bShowRealOptionValues = true;
 
 
-    private $sSurveyUrl;
-
     /**
      * Set defaults
      * @inheritdoc
@@ -1895,23 +1893,6 @@ class Survey extends LSActiveRecord implements PermissionInterface
     }
 
     /**
-     * TODO: Not used anywhere. Deprecate it?
-     */
-    public function getsSurveyUrl()
-    {
-        if ($this->sSurveyUrl == '') {
-            if (!in_array(App()->language, $this->getAllLanguages())) {
-                $surveylang = $this->language;
-            } else {
-                $surveylang = App()->language;
-            }
-            $this->sSurveyUrl = App()->createUrl('survey/index', array('sid' => $this->sid, 'lang' => $surveylang));
-        }
-        return $this->sSurveyUrl;
-    }
-
-
-    /**
      * @return Question[]
      */
     public function getQuotableQuestions()
@@ -2316,6 +2297,35 @@ class Survey extends LSActiveRecord implements PermissionInterface
     }
 
     /**
+     * Returns the survey alias for the specified language.
+     * @param string|null $language
+     * @return string|null
+     */
+    public function getAliasForLanguage($language = null)
+    {
+        if (!empty($language) && !empty($this->languagesettings[$language]->surveyls_alias)) {
+            return $this->languagesettings[$language]->surveyls_alias;
+        }
+        if (!empty($this->languagesettings[$this->language]->surveyls_alias)) {
+            return $this->languagesettings[$this->language]->surveyls_alias;
+        }
+        return null;
+    }
+
+    /**
+     * Validates the Expiration Date is not lower than the Start Date
+     */
+    public function checkExpireAfterStart($attributes, $params)
+    {
+        if (empty($this->startdate) || empty($this->expires)) {
+            return true;
+        }
+        if ($this->expires < $this->startdate) {
+            $this->addError('expires', gT("Expiration date can't be lower than the start date", 'unescaped'));
+        }
+    }
+
+    /**
      * Returns the survey URL with the specified params.
      * If $preferShortUrl is true (default), and an alias is available, it returns the short
      * version of the URL.
@@ -2323,6 +2333,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
      * @param array<string,mixed> $params   Optional parameters to include in the URL.
      * @param bool $preferShortUrl  If true, tries to return the short URL instead of the traditional one.
      * @return string
+     * @deprecated please use the new service class SurveyUrl
      */
     public function getSurveyUrl($language = null, $params = [], $preferShortUrl = true)
     {
@@ -2367,34 +2378,5 @@ class Survey extends LSActiveRecord implements PermissionInterface
         $url = App()->createPublicUrl('survey/index', $urlParams);
 
         return $url;
-    }
-
-    /**
-     * Returns the survey alias for the specified language.
-     * @param string|null $language
-     * @return string|null
-     */
-    public function getAliasForLanguage($language = null)
-    {
-        if (!empty($language) && !empty($this->languagesettings[$language]->surveyls_alias)) {
-            return $this->languagesettings[$language]->surveyls_alias;
-        }
-        if (!empty($this->languagesettings[$this->language]->surveyls_alias)) {
-            return $this->languagesettings[$this->language]->surveyls_alias;
-        }
-        return null;
-    }
-
-    /**
-     * Validates the Expiration Date is not lower than the Start Date
-     */
-    public function checkExpireAfterStart($attributes, $params)
-    {
-        if (empty($this->startdate) || empty($this->expires)) {
-            return true;
-        }
-        if ($this->expires < $this->startdate) {
-            $this->addError('expires', gT("Expiration date can't be lower than the start date", 'unescaped'));
-        }
     }
 }

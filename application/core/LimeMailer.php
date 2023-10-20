@@ -857,9 +857,19 @@ class LimeMailer extends PHPMailer
         $aTokenReplacements["GLOBALOPTINURL"] = App()->getController()
             ->createAbsoluteUrl("/optin/participants", array("surveyid" => $this->surveyId, "token" => $token,"langcode" => $language));
         $this->addUrlsPlaceholders("GLOBALOPTINURL");
-        $aTokenReplacements["SURVEYURL"] = $survey->getSurveyUrl($language, ["token" => $token]);
+        $surveyUrlCreator = new \LimeSurvey\Models\Services\SurveyUrl($language, ["token" => $token]);
+        $aTokenReplacements["SURVEYURL"] = $surveyUrlCreator->getUrl(
+            $survey->sid,
+            $survey->languagesettings,
+            $survey->getAliasForLanguage()
+        );
         $this->addUrlsPlaceholders("SURVEY");
-        $aTokenReplacements["SURVEYIDURL"] = $survey->getSurveyUrl($language, ["token" => $token], false);
+        $surveyUrlCreator = new \LimeSurvey\Models\Services\SurveyUrl($language, ["token" => $token], false);
+        $aTokenReplacements["SURVEYIDURL"] = $surveyUrlCreator->getUrl(
+            $survey->sid,
+            $survey->languagesettings,
+            $survey->getAliasForLanguage()
+        );
         $this->addUrlsPlaceholders("SURVEYID");
         return $aTokenReplacements;
     }
