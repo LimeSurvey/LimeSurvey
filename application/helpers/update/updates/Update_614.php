@@ -34,11 +34,12 @@ class Update_614 extends DatabaseUpdateBase
                         );
                     } elseif ($templateConfiguration['template_name'] == 'fruity') {
                         $sOptionsJson = $templateConfiguration['options'];
-                        $oOldOptions = json_decode($sOptionsJson);
-                        if (empty($oOldOptions->fixnumauto)) {
-                            $oOldOptions->fixnumauto = 'enable';
+                        // fixnumauto is not guaranteed to exist in older version of fruity, so rather decode as array, not as object
+                        $oldOptions = json_decode($sOptionsJson, true);
+                        if (!isset($oldOptions['fixnumauto']) || empty($oldOptions['fixnumauto'])) {
+                            $oldOptions['fixnumauto'] = 'enable';
                         }
-                        $oNewOtionsJson = json_encode($oOldOptions);
+                        $oNewOtionsJson = json_encode($oldOptions);
                         $this->db->createCommand()->update(
                             '{{template_configuration}}',
                             ['options' => $oNewOtionsJson],
