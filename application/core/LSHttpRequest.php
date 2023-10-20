@@ -166,7 +166,7 @@ class LSHttpRequest extends CHttpRequest
             foreach ($validationRoutes as $cr) {
                 // The rule should either match the whole route, or the start of the route followed by a slash.
                 // For example the routes "rest" or "rest/..." should be matched by the rule "rest", but the
-                // route "surveymenu/restore" should not.
+                // route "admin/menus/sa/restore" should not.
                 if (preg_match('#^' . $cr . '$|^' . $cr . '/#', (string) $route)) {
                     Yii::app()->detachEventHandler(
                         'onBeginRequest',
