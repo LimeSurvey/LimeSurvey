@@ -4168,7 +4168,8 @@ function shouldFilterUserGroupList()
 {
     $bUserControlSameGroupPolicy = App()->getConfig('usercontrolSameGroupPolicy', true);
     $bUserHasSuperAdminReadPermissions = Permission::model()->hasGlobalPermission('superadmin', 'read');
-    return $bUserControlSameGroupPolicy && !$bUserHasSuperAdminReadPermissions;
+    $hasUserReadPermission = \Permission::model()->hasGlobalPermission('users', 'read');
+    return $bUserControlSameGroupPolicy && !$bUserHasSuperAdminReadPermissions && !$hasUserReadPermission;
 }
 
 /**

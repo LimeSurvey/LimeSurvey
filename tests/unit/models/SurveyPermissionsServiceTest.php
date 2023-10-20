@@ -126,6 +126,7 @@ class SurveyPermissionsServiceTest extends \ls\tests\TestBaseClass
     {
         foreach (self::$userIds as $uid) {
             \User::model()->findByPk($uid)->delete();
+            \Permission::model()->deleteAll('uid = :userId', array(':userId' => $uid));
         }
     }
 
@@ -270,6 +271,595 @@ class SurveyPermissionsServiceTest extends \ls\tests\TestBaseClass
 
         self::assertEquals(0, $oSurveyPermissions->deleteUserPermissions(self::$userIds[4]));
         self::assertLessThan($oSurveyPermissions->deleteUserPermissions(self::$userIds[0]), 0);
+    }
+
+    /**
+     * Testing methods in the following context:
+     *
+     * Users prviously created for this test: 5
+     * Users added to group: 3
+     * Users given permissions: 2
+     *
+     * Users / read permission: Yes
+     * User in group: No
+     * Same group policy: Yes
+     */
+    public function testReadPermissionNotInGroupSameGroupPolicy()
+    {
+        $usersReadPermission = true;
+        $inGroup = false;
+        $sameGroupPolicy = true;
+
+        $contextData = $this->setContext($usersReadPermission, $inGroup, $sameGroupPolicy);
+
+        // List users without permissions for this survey
+        // Four users are expected since getSurveyUserList additionally returns the current logged in user.
+        $surveyPermissions = $contextData['surveyPermissions'];
+        $usersWithoutPermissions = $surveyPermissions->getSurveyUserList();
+        $this->assertCount(4, $usersWithoutPermissions, 'The number of users which still not have survey permissions is incorrect.');
+
+        // List permissions for this survey
+        // Three permission objects are expected since getUserPermissionCriteria additionally returns criteria for user 1.
+        $permissionCriteria = $surveyPermissions->getUserPermissionCriteria();
+        $usersWithPermissions = \Permission::model()->findAll($permissionCriteria);
+        $this->assertCount(3, $usersWithPermissions, 'The number of users with permissions for the current survey is incorrect.');
+
+        // List user groups which could still be added to survey permissions.
+        $userGroups = $surveyPermissions->getSurveyUserGroupList();
+        $this->assertCount(1, $userGroups, 'Users in test group can still be given survey permissions.');
+
+        // User can manage survey permissions for a normal user.
+        $managePermissions = $surveyPermissions->canManageSurveyPermissionsForUser(self::$userIds[3]);
+        $this->assertTrue($managePermissions, 'The user should be able to manage permissions for a normal user in this context.');
+
+        // User can manage survey permissions for a user in the same group.
+        $managePermissions = $surveyPermissions->canManageSurveyPermissionsForUser(self::$userIds[0]);
+        $this->assertTrue($managePermissions, 'The user should be able to manage permissions for a user in the same group in this context.');
+
+        // Test if the list of user groups will need filtering before viewing.
+        $shouldFilterUserGroupList = shouldFilterUserGroupList();
+        $this->assertFalse($shouldFilterUserGroupList, 'User group list should not be filtered in this context.');
+
+        // Test if all user groups are returned or if they are filtered by usercontrolSameGroupPolicy
+        $userGroup = new \UserGroup();
+        $userGroup->name = 'TestUserGroup2';
+        $userGroup->description = 'some nice description';
+        $userGroup->owner_id = 1; //admin owns this group
+        $userGroup->save();
+
+        $userGroupList = getUserGroupList();
+        $this->assertCount(2, $userGroupList, 'User group list should not be filtered in this context.');
+
+        $userGroup->delete();
+
+        // Test if one user is returned (The current logged in user since it is not in a group and same group policy is set to true.)
+        $userList = getUserList();
+        $this->assertCount(1, $userList, 'The user does not belong to a group, just one user should have been returned.');
+
+        $this->restoreContext($contextData);
+    }
+
+    /**
+     * Testing methods in the following context:
+     *
+     * Users prviously created for this test: 5
+     * Users added to group: 3
+     * Users given permissions: 2
+     *
+     * Users / read permission: Yes
+     * User in group: No
+     * Same group policy: No
+     */
+    public function testReadPermissionNotInGroupNoSameGroupPolicy()
+    {
+        $usersReadPermission = true;
+        $inGroup = false;
+        $sameGroupPolicy = false;
+
+        $contextData = $this->setContext($usersReadPermission, $inGroup, $sameGroupPolicy);
+
+        // List users without permissions for this survey
+        // Four users are expected since getSurveyUserList additionally returns the current logged in user.
+        $surveyPermissions = $contextData['surveyPermissions'];
+        $users = $surveyPermissions->getSurveyUserList();
+        $this->assertCount(4, $users, 'The number of users which still not have survey permissions is incorrect.');
+
+        // List permissions for this survey
+        // Three permission objects are expected since getUserPermissionCriteria additionally returns criteria for user 1.
+        $permissionCriteria = $surveyPermissions->getUserPermissionCriteria();
+        $usersWithPermissions = \Permission::model()->findAll($permissionCriteria);
+        $this->assertCount(3, $usersWithPermissions, 'The number of users with permissions for the current survey is incorrect.');
+
+        // List user groups which could still be added to survey permissions.
+        $userGroups = $surveyPermissions->getSurveyUserGroupList();
+        $this->assertCount(1, $userGroups, 'Users in test group can still be given survey permissions.');
+
+        // User can manage survey permissions for a normal user.
+        $managePermissions = $surveyPermissions->canManageSurveyPermissionsForUser(self::$userIds[3]);
+        $this->assertTrue($managePermissions, 'The user should be able to manage permissions for a normal user in this context.');
+
+        // User can manage survey permissions for a user in the same group.
+        $managePermissions = $surveyPermissions->canManageSurveyPermissionsForUser(self::$userIds[0]);
+        $this->assertTrue($managePermissions, 'The user should be able to manage permissions for a user in the same group in this context.');
+
+        // Test if the list of user groups will need filtering before viewing.
+        $shouldFilterUserGroupList = shouldFilterUserGroupList();
+        $this->assertFalse($shouldFilterUserGroupList, 'User group list should not be filtered in this context.');
+
+        // Test if all user groups are returned or if they are filtered by usercontrolSameGroupPolicy
+        $userGroup = new \UserGroup();
+        $userGroup->name = 'TestUserGroup2';
+        $userGroup->description = 'some nice description';
+        $userGroup->owner_id = 1; //admin owns this group
+        $userGroup->save();
+
+        $userGroupList = getUserGroupList();
+        $this->assertCount(2, $userGroupList, 'User group list should not be filtered in this context.');
+
+        $userGroup->delete();
+
+        // Test if an array with seven users is returned
+        // since the current logged in user is not in a group and same group policy is set to false.
+        $userList = getUserList();
+        $this->assertCount(7, $userList, 'The user does not belong to a group, just one user should have been returned.');
+
+        $this->restoreContext($contextData);
+    }
+
+    /**
+     * Testing methods in the following context:
+     *
+     * Users prviously created for this test: 5
+     * Users added to group: 3
+     * Users given permissions: 2
+     *
+     * Users / read permission: Yes
+     * User in group: Yes
+     * Same group policy: Yes
+     */
+    public function testReadPermissionInGroupSameGroupPolicy()
+    {
+        $usersReadPermission = true;
+        $inGroup = true;
+        $sameGroupPolicy = true;
+
+        $contextData = $this->setContext($usersReadPermission, $inGroup, $sameGroupPolicy);
+
+        // List users without permissions for this survey
+        // Four users are expected since getSurveyUserList additionally returns the current logged in user.
+        $surveyPermissions = $contextData['surveyPermissions'];
+        $users = $surveyPermissions->getSurveyUserList();
+        $this->assertCount(4, $users, 'The number of users which still not have survey permissions is incorrect.');
+
+        // List permissions for this survey
+        // Three permission objects are expected since getUserPermissionCriteria additionally returns criteria for user 1.
+        $permissionCriteria = $surveyPermissions->getUserPermissionCriteria();
+        $usersWithPermissions = \Permission::model()->findAll($permissionCriteria);
+        $this->assertCount(3, $usersWithPermissions, 'The number of users with permissions for the current survey is incorrect.');
+
+        // List user groups which could still be added to survey permissions.
+        $userGroups = $surveyPermissions->getSurveyUserGroupList();
+        $this->assertCount(1, $userGroups, 'Users in test group can still be given survey permissions.');
+
+        // User can manage survey permissions for a normal user.
+        $managePermissions = $surveyPermissions->canManageSurveyPermissionsForUser(self::$userIds[3]);
+        $this->assertTrue($managePermissions, 'The user should be able to manage permissions for a normal user in this context.');
+
+        // User can manage survey permissions for a user in the same group.
+        $managePermissions = $surveyPermissions->canManageSurveyPermissionsForUser(self::$userIds[0]);
+        $this->assertTrue($managePermissions, 'The user should be able to manage permissions for a user in the same group in this context.');
+
+        // Test if the list of user groups will need filtering before viewing.
+        $shouldFilterUserGroupList = shouldFilterUserGroupList();
+        $this->assertFalse($shouldFilterUserGroupList, 'User group list should not be filtered in this context.');
+
+        // Test if all user groups are returned or if they are filtered by usercontrolSameGroupPolicy
+        $userGroup = new \UserGroup();
+        $userGroup->name = 'TestUserGroup2';
+        $userGroup->description = 'some nice description';
+        $userGroup->owner_id = 1; //admin owns this group
+        $userGroup->save();
+
+        $userGroupList = getUserGroupList();
+        $this->assertCount(2, $userGroupList, 'User group list should not be filtered in this context.');
+
+        $userGroup->delete();
+
+        // Test if an array with four users is returned
+        // since the current logged in user is in a group and same group policy is set to true.
+        $userList = getUserList();
+        $this->assertCount(4, $userList, 'The user does not belong to a group, just one user should have been returned.');
+
+        $this->restoreContext($contextData);
+    }
+
+    /**
+     * Testing methods in the following context:
+     *
+     * Users prviously created for this test: 5
+     * Users added to group: 3
+     * Users given permissions: 2
+     *
+     * Users / read permission: Yes
+     * User in group: Yes
+     * Same group policy: No
+     */
+    public function testReadPermissionInGroupNoSameGroupPolicy()
+    {
+        $usersReadPermission = true;
+        $inGroup = true;
+        $sameGroupPolicy = false;
+
+        $contextData = $this->setContext($usersReadPermission, $inGroup, $sameGroupPolicy);
+
+        // List users without permissions for this survey
+        // Four users are expected since getSurveyUserList additionally returns the current logged in user.
+        $surveyPermissions = $contextData['surveyPermissions'];
+        $users = $surveyPermissions->getSurveyUserList();
+        $this->assertCount(4, $users, 'The number of users which still not have survey permissions is incorrect.');
+
+        // List permissions for this survey
+        // Three permission objects are expected since getUserPermissionCriteria additionally returns criteria for user 1.
+        $permissionCriteria = $surveyPermissions->getUserPermissionCriteria();
+        $usersWithPermissions = \Permission::model()->findAll($permissionCriteria);
+        $this->assertCount(3, $usersWithPermissions, 'The number of users with permissions for the current survey is incorrect.');
+
+        // List user groups which could still be added to survey permissions.
+        $userGroups = $surveyPermissions->getSurveyUserGroupList();
+        $this->assertCount(1, $userGroups, 'Users in test group can still be given survey permissions.');
+
+        // User can manage survey permissions for a normal user.
+        $managePermissions = $surveyPermissions->canManageSurveyPermissionsForUser(self::$userIds[3]);
+        $this->assertTrue($managePermissions, 'The user should be able to manage permissions for a normal user in this context.');
+
+        // User can manage survey permissions for a user in the same group.
+        $managePermissions = $surveyPermissions->canManageSurveyPermissionsForUser(self::$userIds[0]);
+        $this->assertTrue($managePermissions, 'The user should be able to manage permissions for a user in the same group in this context.');
+
+        // Test if the list of user groups will need filtering before viewing.
+        $shouldFilterUserGroupList = shouldFilterUserGroupList();
+        $this->assertFalse($shouldFilterUserGroupList, 'User group list should not be filtered in this context.');
+
+        // Test if all user groups are returned or if they are filtered by usercontrolSameGroupPolicy
+        $userGroup = new \UserGroup();
+        $userGroup->name = 'TestUserGroup2';
+        $userGroup->description = 'some nice description';
+        $userGroup->owner_id = 1; //admin owns this group
+        $userGroup->save();
+
+        $userGroupList = getUserGroupList();
+        $this->assertCount(2, $userGroupList, 'User group list should not be filtered in this context.');
+
+        $userGroup->delete();
+
+        // Test if an array with seven users is returned
+        // since the current logged in user is in a group and same group policy is set to false.
+        $userList = getUserList();
+        $this->assertCount(7, $userList, 'The user does not belong to a group, just one user should have been returned.');
+
+        $this->restoreContext($contextData);
+    }
+
+    /**
+     * Testing methods in the following context:
+     *
+     * Users prviously created for this test: 5
+     * Users added to group: 3
+     * Users given permissions: 2
+     *
+     * Users / read permission: No
+     * User in group: No
+     * Same group policy: Yes
+     */
+    public function testNoReadPermissionNotInGroupSameGroupPolicy()
+    {
+        $usersReadPermission = false;
+        $inGroup = false;
+        $sameGroupPolicy = true;
+
+        $contextData = $this->setContext($usersReadPermission, $inGroup, $sameGroupPolicy);
+
+        // List users without permissions for this survey
+        // Just the current logged in user is expected in this context.
+        $surveyPermissions = $contextData['surveyPermissions'];
+        $users = $surveyPermissions->getSurveyUserList();
+        $this->assertCount(1, $users, 'The number of users which still not have survey permissions is incorrect.');
+
+        // List permissions for this survey
+        $permissionCriteria = $surveyPermissions->getUserPermissionCriteria();
+        $usersWithPermissions = \Permission::model()->findAll($permissionCriteria);
+        $this->assertEmpty($usersWithPermissions, 'The user should not be able to list survey permissions in this context.');
+
+        // List user groups which could still be added to survey permissions.
+        $userGroups = $surveyPermissions->getSurveyUserGroupList();
+        $this->assertEmpty($userGroups, 'User in this context can not list user groups.');
+
+        // User can't manage survey permissions for a normal user.
+        $managePermissions = $surveyPermissions->canManageSurveyPermissionsForUser(self::$userIds[3]);
+        $this->assertFalse($managePermissions, 'The user should not be able to manage permissions for a normal user in this context.');
+
+        // Test if the list of user groups will need filtering before viewing.
+        $shouldFilterUserGroupList = shouldFilterUserGroupList();
+        $this->assertTrue($shouldFilterUserGroupList, 'User group list should be filtered in this context.');
+
+        // Test if all user groups are returned or if they are filtered by usercontrolSameGroupPolicy
+        $userGroup = new \UserGroup();
+        $userGroup->name = 'TestUserGroup2';
+        $userGroup->description = 'some nice description';
+        $userGroup->owner_id = 1; //admin owns this group
+        $userGroup->save();
+
+        $userGroupList = getUserGroupList();
+        $this->assertCount(0, $userGroupList, 'User group list should be filtered in this context.');
+
+        $userGroup->delete();
+
+        // Test if one user is returned (The current logged in user since it is not in a group and same group policy is set to true.)
+        $userList = getUserList();
+        $this->assertCount(1, $userList, 'The user does not belong to a group, just one user should have been returned.');
+
+        $this->restoreContext($contextData);
+    }
+
+    /**
+     * Testing methods in the following context:
+     *
+     * Users prviously created for this test: 5
+     * Users added to group: 3
+     * Users given permissions: 2
+     *
+     * Users / read permission: No
+     * User in group: No
+     * Same group policy: No
+     */
+    public function testNoReadPermissionNotInGroupNoSameGroupPolicy()
+    {
+        $usersReadPermission = false;
+        $inGroup = false;
+        $sameGroupPolicy = false;
+
+        $contextData = $this->setContext($usersReadPermission, $inGroup, $sameGroupPolicy);
+
+        // List users without permissions for this survey
+        // No users expected in this context.
+        $surveyPermissions = $contextData['surveyPermissions'];
+        $users = $surveyPermissions->getSurveyUserList();
+        $this->assertEmpty($users, 'The number of users which still not have survey permissions is incorrect.');
+
+        // List permissions for this survey
+        // Three permission objects are expected since getUserPermissionCriteria additionally returns criteria for user 1.
+        $permissionCriteria = $surveyPermissions->getUserPermissionCriteria();
+        $usersWithPermissions = \Permission::model()->findAll($permissionCriteria);
+        $this->assertCount(3, $usersWithPermissions, 'The number of users with permissions for the current survey is incorrect.');
+
+        // List user groups which could still be added to survey permissions.
+        $userGroups = $surveyPermissions->getSurveyUserGroupList();
+        $this->assertEmpty($userGroups, 'User in this context can not list user groups.');
+
+        // User can't manage survey permissions for a normal user.
+        $managePermissions = $surveyPermissions->canManageSurveyPermissionsForUser(self::$userIds[3]);
+        $this->assertFalse($managePermissions, 'The user should not be able to manage permissions for a normal user in this context.');
+
+        // Test if the list of user groups will need filtering before viewing.
+        $shouldFilterUserGroupList = shouldFilterUserGroupList();
+        $this->assertFalse($shouldFilterUserGroupList, 'User group list should not be filtered in this context.');
+
+        // Test if all user groups are returned or if they are filtered by usercontrolSameGroupPolicy
+        $userGroup = new \UserGroup();
+        $userGroup->name = 'TestUserGroup2';
+        $userGroup->description = 'some nice description';
+        $userGroup->owner_id = 1; //admin owns this group
+        $userGroup->save();
+
+        $userGroupList = getUserGroupList();
+        $this->assertCount(2, $userGroupList, 'User group list should  not be filtered in this context.');
+
+        $userGroup->delete();
+
+        // Test if an array with seven users is returned
+        // since the current logged in user is not in a group and same group policy is set to false.
+        $userList = getUserList();
+        $this->assertCount(7, $userList, 'The user does not belong to a group, just one user should have been returned.');
+
+        $this->restoreContext($contextData);
+    }
+
+    /**
+     * Testing methods in the following context:
+     *
+     * Users prviously created for this test: 5
+     * Users added to group: 3
+     * Users given permissions: 2
+     * Users in group: 3
+     * Users from group given permission: 1
+     *
+     * Users / read permission: No
+     * User in group: Yes
+     * Same group policy: Yes
+     */
+    public function testNoReadPermissionUserInGroupSameGroupPolicy()
+    {
+        $usersReadPermission = false;
+        $inGroup = true;
+        $sameGroupPolicy = true;
+
+        $contextData = $this->setContext($usersReadPermission, $inGroup, $sameGroupPolicy);
+
+        // List users without permissions for this survey
+        // Two users are expected since getSurveyUserList additionally returns the current logged in user.
+        $surveyPermissions = $contextData['surveyPermissions'];
+        $users = $surveyPermissions->getSurveyUserList();
+        $this->assertCount(2, $users, 'The number of users which still not have survey permissions is incorrect.');
+
+        // List permissions for this survey
+        // Two permission objects are expected (For the users in the group).
+        $permissionCriteria = $surveyPermissions->getUserPermissionCriteria();
+        $usersWithPermissions = \Permission::model()->findAll($permissionCriteria);
+        $this->assertCount(2, $usersWithPermissions, 'The number of users in this group with permissions for the current survey is incorrect.');
+
+        // List user groups which could still be added to survey permissions.
+        $userGroups = $surveyPermissions->getSurveyUserGroupList();
+        $this->assertCount(1, $userGroups, 'Users in test group can still be given survey permissions.');
+
+        // User can't manage survey permissions for a normal user.
+        $managePermissions = $surveyPermissions->canManageSurveyPermissionsForUser(self::$userIds[3]);
+        $this->assertFalse($managePermissions, 'The user should not be able to manage permissions for a normal user in this context.');
+
+        // User can manage survey permissions for a user in the same group.
+        $managePermissions = $surveyPermissions->canManageSurveyPermissionsForUser(self::$userIds[0]);
+        $this->assertTrue($managePermissions, 'The user should be able to manage permissions for a user in the same group in this context.');
+
+        // Test if the list of user groups will need filtering before viewing.
+        $shouldFilterUserGroupList = shouldFilterUserGroupList();
+        $this->assertTrue($shouldFilterUserGroupList, 'User group list should be filtered in this context.');
+
+        // Test if all user groups are returned or if they are filtered by usercontrolSameGroupPolicy
+        $userGroup = new \UserGroup();
+        $userGroup->name = 'TestUserGroup2';
+        $userGroup->description = 'some nice description';
+        $userGroup->owner_id = 1; //admin owns this group
+        $userGroup->save();
+
+        $userGroupList = getUserGroupList();
+        $this->assertCount(1, $userGroupList, 'User group list should be filtered in this context.');
+
+        // Test if an array with four users is returned
+        // since the current logged in user is in a group and same group policy is set to true.
+        $userList = getUserList();
+        $this->assertCount(4, $userList, 'The user does not belong to a group, just one user should have been returned.');
+
+        $userGroup->delete();
+
+        $this->restoreContext($contextData);
+    }
+
+    /**
+     * Testing methods in the following context:
+     *
+     * Users prviously created for this test: 5
+     * Users added to group: 3
+     * Users given permissions: 2
+     *
+     * Users / read permission: No
+     * User in group: Yes
+     * Same group policy: No
+     */
+    public function testNoReadPermissionUserInGroupNoSameGroupPolicy()
+    {
+        $usersReadPermission = false;
+        $inGroup = true;
+        $sameGroupPolicy = false;
+
+        $contextData = $this->setContext($usersReadPermission, $inGroup, $sameGroupPolicy);
+
+        // List users without permissions for this survey
+        // No users expected in this context
+        $surveyPermissions = $contextData['surveyPermissions'];
+        $users = $surveyPermissions->getSurveyUserList();
+        $this->assertEmpty($users, 'The number of users which still not have survey permissions is incorrect.');
+
+        // List permissions for this survey
+        // Three permission objects are expected since getUserPermissionCriteria additionally returns criteria for user 1.
+        $permissionCriteria = $surveyPermissions->getUserPermissionCriteria();
+        $usersWithPermissions = \Permission::model()->findAll($permissionCriteria);
+        $this->assertCount(3, $usersWithPermissions, 'The number of users with permissions for the current survey is incorrect.');
+
+        // List user groups which could still be added to survey permissions.
+        $userGroups = $surveyPermissions->getSurveyUserGroupList();
+        $this->assertEmpty($userGroups, 'User in this context can not list user groups.');
+
+        // User can't manage survey permissions for a normal user.
+        $managePermissions = $surveyPermissions->canManageSurveyPermissionsForUser(self::$userIds[3]);
+        $this->assertFalse($managePermissions, 'The user should not be able to manage permissions for a normal user in this context.');
+
+        // User can't manage survey permissions for a user in the same group in this context.
+        $managePermissions = $surveyPermissions->canManageSurveyPermissionsForUser(self::$userIds[0]);
+        $this->assertFalse($managePermissions, 'The user should not be able to manage permissions for a user in the same group in this context.');
+
+        // Test if the list of user groups will need filtering before viewing.
+        $shouldFilterUserGroupList = shouldFilterUserGroupList();
+        $this->assertFalse($shouldFilterUserGroupList, 'User group list should not be filtered in this context.');
+
+        // Test if all user groups are returned or if they are filtered by usercontrolSameGroupPolicy
+        $userGroup = new \UserGroup();
+        $userGroup->name = 'TestUserGroup2';
+        $userGroup->description = 'some nice description';
+        $userGroup->owner_id = 1; //admin owns this group
+        $userGroup->save();
+
+        $userGroupList = getUserGroupList();
+        $this->assertCount(2, $userGroupList, 'User group list should not be filtered in this context.');
+
+        $userGroup->delete();
+
+        // Test if an array with seven users is returned
+        // since the current logged in user is in a group and same group policy is set to false.
+        $userList = getUserList();
+        $this->assertCount(7, $userList, 'The user does not belong to a group, just one user should have been returned.');
+
+        $this->restoreContext($contextData);
+    }
+
+    private function setContext($usersReadPermission, $inGroup, $sameGroupPolicy)
+    {
+        $contextData = array();
+
+        // Create user
+        $userName = \Yii::app()->securityManager->generateRandomString(8);
+        $password = createPassword();
+
+        $userData = array(
+            'users_name' => $userName,
+            'full_name' => $userName,
+            'email' => $userName . '@example.com',
+            'lang' => 'auto',
+            'password' => $password
+        );
+
+        $permissions = array(
+            'users' => array(
+                'read' => $usersReadPermission
+            )
+        );
+
+        $user = self::createUserWithPermissions($userData, $permissions);
+
+        if ($inGroup) {
+            $userInGroup = new \UserInGroup();
+            $userInGroup->ugid = self::$userGroupId;
+            $userInGroup->uid = $user->uid;
+            $userInGroup->save();
+        }
+
+        // Login
+        $contextData['restore']['sessionUidTmp'] = \Yii::app()->session['loginID'];
+        $contextData['restore']['userIdTmp'] = \Yii::app()->user->id;
+
+        \Yii::app()->session['loginID'] = $user->uid;
+        \Yii::app()->user->id = $user->uid;
+
+        $contextData['surveyPermissions'] = new SurveyPermissions(self::$testSurvey, $sameGroupPolicy);
+        $contextData['restore']['userControlSameGroupPolicyTmp'] = App()->getConfig('usercontrolSameGroupPolicy', true);
+        App()->setConfig('usercontrolSameGroupPolicy', $sameGroupPolicy);
+
+        $contextData['restore']['user'] = $user;
+
+        return $contextData;
+    }
+
+    private function restoreContext($contextData)
+    {
+        // Restore data
+        \Yii::app()->session['loginID'] = $contextData['restore']['sessionUidTmp'];
+        \Yii::app()->user->id = $contextData['restore']['userIdTmp'];
+
+        App()->setConfig('usercontrolSameGroupPolicy', $contextData['restore']['userControlSameGroupPolicyTmp']);
+
+        //Delete permissions
+        \Permission::model()->deleteAll('uid = :userId', array(':userId' => $contextData['restore']['user']->uid));
+
+        //Delete user
+        $contextData['restore']['user']->delete();
     }
 
     public static function tearDownAfterClass(): void

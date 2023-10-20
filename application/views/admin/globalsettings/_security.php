@@ -62,7 +62,7 @@
 
 <div class="form-group">
     <label class=" control-label"
-           for='usercontrolSameGroupPolicy'><?php eT("Group member can only see own group:"); ?></label>
+           for='usercontrolSameGroupPolicy'><?php eT("Group member can see users from own group:"); ?></label>
     <div class="">
         <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
             'name' => 'usercontrolSameGroupPolicy',
@@ -72,6 +72,7 @@
             'offLabel' => gT('Off')));
         ?>
     </div>
+    <span class='hint'><?= gT("Allows a user who belongs to a group to view the members of his group, even if he does not have global permissions to view users."); ?></span>
 </div>
 
 <div class="form-group">
