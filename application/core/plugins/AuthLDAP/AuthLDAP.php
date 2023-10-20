@@ -76,6 +76,11 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
             'type' => 'string',
             'label' => 'Optional extra LDAP filter to be ANDed to the basic (searchuserattribute=username) filter. Don\'t forget the outmost enclosing parentheses'
         ),
+        'ldapreadonboundconn' => array(
+            'type' => 'boolean',
+            'label' => 'Read entry attributes on user-bound connection.',
+            'default' => 0,
+        ),
         'binddn' => array(
             'type' => 'string',
             'label' => 'Optional DN of the LDAP account used to search for the end-user\'s DN. An anonymous bind is performed if empty.'
@@ -211,12 +216,13 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
      * @param string $password
      * @return null|integer New user ID
      */
-    private function _createNewUser($oEvent, $new_user, $password = null)
+    private function _createNewUser($oEvent, $new_user, $password = null, $boundconn=null)
     {
         // Get configuration settings:
         $ldapmode = $this->get('ldapmode');
         $searchuserattribute = $this->get('searchuserattribute');
         $extrauserfilter = $this->get('extrauserfilter');
+        $ldapreadonboundconn = $this->get('ldapreadonboundconn');
         $usersearchbase = $this->get('usersearchbase');
         $binddn         = $this->get('binddn');
         $bindpwd        = $this->get('bindpwd');
@@ -225,34 +231,39 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
         $suffix             = $this->get('domainsuffix');
         $prefix             = $this->get('userprefix');
 
-        // Try to connect
-        $ldapconn = $this->createConnection();
-        if (is_array($ldapconn)) {
-            $oEvent->set('errorCode', self::ERROR_LDAP_CONNECTION);
-            $oEvent->set('errorMessageTitle', '');
-            $oEvent->set('errorMessageBody', $ldapconn['errorMessage']);
-            return null;
-        }
+	if (is_null($boundconn)) {
+	    // Try to connect
+            $ldapconn = $this->createConnection();
+            if (is_array($ldapconn)) {
+                $oEvent->set('errorCode', self::ERROR_LDAP_CONNECTION);
+                $oEvent->set('errorMessageTitle', '');
+                $oEvent->set('errorMessageBody', $ldapconn['errorMessage']);
+                return null;
+            }
 
-        // Search email address and full name
-        if (empty($ldapmode) || $ldapmode == 'simplebind') {
-            // Use the user's account for LDAP search
-            $ldapbindsearch = @ldap_bind($ldapconn, $prefix . $new_user . $suffix, $password);
-        } elseif (empty($binddn)) {
-            // There is no account defined to do the LDAP search,
-            // let's use anonymous bind instead
-            $ldapbindsearch = @ldap_bind($ldapconn);
+            // Search email address and full name
+            if (empty($ldapmode) || $ldapmode == 'simplebind') {
+                // Use the user's account for LDAP search
+                $ldapbindsearch = @ldap_bind($ldapconn, $prefix . $new_user . $suffix, $password);
+            } elseif (empty($binddn)) {
+                // There is no account defined to do the LDAP search,
+                // let's use anonymous bind instead
+                $ldapbindsearch = @ldap_bind($ldapconn);
+            } else {
+                // An account is defined to do the LDAP search, let's use it
+                $ldapbindsearch = @ldap_bind($ldapconn, $binddn, $bindpwd);
+            }
+            if (!$ldapbindsearch) {
+                $oEvent->set('errorCode', self::ERROR_LDAP_NO_BIND);
+                $oEvent->set('errorMessageTitle', gT('Could not connect to LDAP server.'));
+                $oEvent->set('errorMessageBody', gT(ldap_error($ldapconn)));
+                ldap_close($ldapconn); // all done? close connection
+                return null;
+    	    }
         } else {
-            // An account is defined to do the LDAP search, let's use it
-            $ldapbindsearch = @ldap_bind($ldapconn, $binddn, $bindpwd);
-        }
-        if (!$ldapbindsearch) {
-            $oEvent->set('errorCode', self::ERROR_LDAP_NO_BIND);
-            $oEvent->set('errorMessageTitle', gT('Could not connect to LDAP server.'));
-            $oEvent->set('errorMessageBody', gT(ldap_error($ldapconn)));
-            ldap_close($ldapconn); // all done? close connection
-            return null;
-        }
+            // Use already existing and bound connection
+	    $ldapconn = $boundconn;
+	}
         // Now prepare the search fitler
         if ($extrauserfilter != "") {
             $usersearchfilter = "(&($searchuserattribute=$new_user)$extrauserfilter)";
@@ -471,6 +482,7 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
         $prefix             = $this->get('userprefix');
         $searchuserattribute = $this->get('searchuserattribute');
         $extrauserfilter = $this->get('extrauserfilter');
+	$ldapreadonboundconn = $this->get('ldapreadonboundconn');
         $usersearchbase = $this->get('usersearchbase');
         $binddn = $this->get('binddn');
         $bindpwd = $this->get('bindpwd');
@@ -555,8 +567,10 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
             return;
         }
 
-        ldap_close($ldapconn); // all done? close connection
-
+	if (!$ldapreadonboundconn) {
+            ldap_close($ldapconn); // all done? close connection
+            $ldapconn = null; // and set it to null
+        }
         // Finally, if user didn't exist and auto creation (i.e. autoCreateFlag == true) is enabled, we create it
         if ($autoCreateFlag) {
             // This event can be cast to string in auth failure message to give more info.
@@ -569,7 +583,7 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
                     return json_encode($this->warnings);
                 }
             };
-            if (($iNewUID = $this->_createNewUser($dummyEvent, $username, $password)) && $this->get('automaticsurveycreation', null, null, false)) {
+            if (($iNewUID = $this->_createNewUser($dummyEvent, $username, $password, $ldapconn)) && $this->get('automaticsurveycreation', null, null, false)) {
                 Permission::model()->setGlobalPermission($iNewUID, 'surveys', array('create_p'));
             }
             $user = $this->api->getUserByName($username);
