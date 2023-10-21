@@ -72,6 +72,18 @@ var ThemeOptions = function () {
             }
 
             optionObject[$(item).attr('name')] = $(item).val();
+
+            // disable the preview image button if the image
+            // selected could not be mapped to one of the images
+            // that actually exists within the theme
+            const src = $(item).find('option:selected').data('lightbox-src');
+            const missing = src === '';
+            const itemId = $(item).attr('id');
+            const button = $(`button[data-bs-target="#${itemId}"]`);
+            button.prop('disabled', missing);
+
+            // add some feedback to the user, mark field invalid
+            $(item).toggleClass('is-invalid', missing);
         });
 
         globalForm.find('.selector_option_radio_field ').each(function (i, item) {

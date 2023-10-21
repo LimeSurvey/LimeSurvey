@@ -2,17 +2,13 @@
 
 $bInherit = (!empty($aTemplateConfiguration['sid']) || !empty($aTemplateConfiguration['gsid']));
 
-
 $dropdown_options['font'] = ($bInherit ? '<option value="inherit">' . gT("Inherit") . ' [' . gT(
     "inherited value:"
 ) . ' ' . (isset($oParentOptions['font']) ? $oParentOptions['font'] : '') . ']</option>' : '');
 
-
 // background file
 $backgroundImageFile           = '';
-$backgroundfileOptionsInherit  = '';
 $backgroundfileInheritPreview  = '';
-$backgroundfileInheritFilename = '';
 $optgroup                      = '';
 foreach ($aTemplateConfiguration['imageFileList'] as $image) {
     if ($image['group'] != $optgroup) {
@@ -24,10 +20,11 @@ foreach ($aTemplateConfiguration['imageFileList'] as $image) {
     }
 
     $backgroundImageFile .= '</optgroup>';
+
     if (isset($oParentOptions['backgroundimagefile']) && $oParentOptions['backgroundimagefile'] == $image['filepath']) {
-        $backgroundfileInheritPreview  = $backgroundimagefileInheritPreview . $image['preview'];
-        $backgroundfileInheritFilename = $backgroundimagefileInheritFilename . $image['filename'];
+        $backgroundfileInheritPreview = $image['preview'];
     }
+
     $backgroundImageFile .= '<option data-lightbox-src="' . $image['preview'] . '" value="' . $image['filepath'] . '">' . $image['filename'] . '</option>';
 }
 
@@ -35,9 +32,7 @@ $aOptionAttributes['optionAttributes']['backgroundimagefile']['dropdownoptions']
 
 // brand logo file
 $brandlogo               = '';
-$logofileOptionsInherit  = '';
 $logofileInheritPreview  = '';
-$logofileInheritFilename = '';
 $optgroup                = '';
 foreach ($aTemplateConfiguration['imageFileList'] as $image) {
     if ($image['group'] != $optgroup) {
@@ -49,10 +44,11 @@ foreach ($aTemplateConfiguration['imageFileList'] as $image) {
     }
 
     $brandlogo .= '</optgroup>';
-    if ($oParentOptions['brandlogo'] == $image['filepath']) {
-        $logofileInheritPreview  = $logofileInheritPreview . $image['preview'];
-        $logofileInheritFilename = $logofileInheritFilename . $image['filename'];
+
+    if (isset($oParentOptions['brandlogofile']) && $oParentOptions['brandlogofile'] == $image['filepath']) {
+        $logofileInheritPreview  = $image['preview'];
     }
+
     $brandlogo .= '<option data-lightbox-src="' . $image['preview'] . '" value="' . $image['filepath'] . '">' . $image['filename'] . '</option>';
 }
 
@@ -100,7 +96,6 @@ foreach ($aOptionAttributes['categories'] as $key => $category) { ?>
             echo '<div class="action_hide_on_inherit_wrapper ls-option-disabled">';
             echo '</div>';
         }
-
 
         foreach ($aOptionAttributes['optionAttributes'] as $attributeKey => $attribute) {
             $sParentOption = array_key_exists($attributeKey, $oParentOptions) ? $oParentOptions[$attributeKey] : '';
@@ -171,14 +166,17 @@ foreach ($aOptionAttributes['categories'] as $key => $category) { ?>
                     echo ' <div class="col-12">
                                 <select class="form-select selector_option_value_field selector_radio_childfield selector_image_selector" data-parent="' . $attribute['parent'] . '" data-inheritvalue=\'' . ($attributeKey == 'font' && isset($sPackagesToLoad) ? $sPackagesToLoad : $sParentOption) . '\' id="simple_edit_options_' . $attributeKey . '" name="' . $attributeKey . '"  >';
                     if ($bInherit) {
-                        if ($attributeKey == 'backgroundimagefile') {
-                            $inheritedValue = isset($backgroundfileInheritPreview) ? $backgroundfileInheritPreview : '';
-                        } elseif ($attributeKey == 'backgroundimagefile') {
-                            $inheritedValue = isset($logofileInheritPreview) ? $logofileInheritPreview : '';
-                        } else {
-                            $inheritedValue = isset($sParentOption) ? $sParentOption : '';
+
+                        $sLightboxSrc = '';
+                        $inheritedValue = isset($sParentOption) ? $sParentOption : '';
+
+                        if ($attributeKey == 'backgroundimagefile' && !empty($backgroundfileInheritPreview)) {
+                            $sLightboxSrc = $backgroundfileInheritPreview;
+                        } elseif ($attributeKey == 'brandlogofile' && !empty($logofileInheritPreview)) {
+                            $sLightboxSrc =  $logofileInheritPreview;
                         }
-                        echo '<option value="inherit">' . gT("Inherit") . ' [' . gT("inherited value:") . ' ' . $inheritedValue . ']</option>';
+
+                        echo '<option data-lightbox-src="' . $sLightboxSrc . '" value="inherit">' . gT("Inherit") . ' [' . gT("inherited value:") . ' ' . $inheritedValue . ']</option>';
                     }
                     // dropdown options from config.xml file
                     echo $aOptionAttributes['optionAttributes'][$attributeKey]['dropdownoptions'];
