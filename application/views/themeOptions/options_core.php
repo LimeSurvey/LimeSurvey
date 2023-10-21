@@ -23,8 +23,8 @@ $bInherit = (!empty($aTemplateConfiguration['sid']) || !empty($aTemplateConfigur
 
         $backgroundImageFile .= '</optgroup>';
         if (isset($oParentOptions['backgroundimagefile']) && $oParentOptions['backgroundimagefile'] == $image['filepath']){ 
-            $backgroundfileInheritPreview = $backgroundimagefileInheritPreview . $image['preview'];
-            $backgroundfileInheritFilename = $backgroundimagefileInheritFilename . $image['filename']; 
+            $backgroundfileInheritPreview = $backgroundfileInheritPreview . $image['preview'];
+            $backgroundfileInheritFilename = $backgroundfileInheritFilename . $image['filename']; 
         }
         $backgroundImageFile .=  '<option data-lightbox-src="' . $image['preview'] . '" value="' . $image['filepath'] . '">' . $image['filename'] . '</option>';
     }
