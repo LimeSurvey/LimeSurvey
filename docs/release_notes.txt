@@ -34,6 +34,17 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.6.41 (build 231017) to 5.6.42 (build 231024) October 23, 2023
+-Fixed issue: Failed emails resend vars column needs to be mediumtext for mysql (#3544) (Tim Willig)
+-Fixed issue: Adding cldr "fr_lu" for lb language (twilligls)
+-Fixed issue: Survey sometimes not completely deactivated, throwing error for missing response table (Carsten Schmitz)
+-Fixed issue #CT-256: Problems with ini parsing for GTranslate.php (twilligls)
+-Fixed issue #19170: Inserting a subquestion/answer option creates multiple rows (#3536) (Matthew)
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 5.6.40 (build 231005) to 5.6.41 (build 231017) October 16, 2023
 -Fixed issue #CR-1320: Comfort update message overlapping with dropdown actions and can not be muted for a session (Patrick Teichmann)
 -Fixed issue #19160: Subquestion save, scale id code (#3532) (K Foster)
