@@ -376,7 +376,7 @@ class Database extends SurveyCommonAction
             );
             Yii::app()
                 ->setFlashMessage(gT('Survey settings were successfully saved.'));
-        } catch (PersistErrorException $e) {
+        } catch (Throwable $e) {
             Yii::app()->setFlashMessage(
                 $e->getMessage(),
                 'error'
