@@ -185,7 +185,6 @@ abstract class Response extends Dynamic
         $filesData = $this->getFilesAndSqga();
 
         foreach ($filesData as $sgqa => $aQuestion) {
-
             [
                 'files' => $files,
                 'encrypted' => $encrypted,
@@ -200,12 +199,11 @@ abstract class Response extends Dynamic
                     if (!$result) {
                         $errors[] = $fileInfo['filename'];
                     } else {
-                        //$filesData[$sgqa][$i]['filename'] = 'deleted';
                         $files[$i]['name'] = $fileInfo['name'] . sprintf(' (%s)', gT('deleted'));
 
                         $sEncoded = json_encode($files);
 
-                        if($encrypted) {
+                        if ($encrypted) {
                             $sEncoded = self::encryptSingle($sEncoded);
                         }
 
