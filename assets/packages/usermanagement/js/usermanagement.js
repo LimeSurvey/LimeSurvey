@@ -302,9 +302,9 @@ var UserManagement = function () {
         $('.UserManagement--action--openmodal').on('click', function () {
             var href = $(this).data('href');
             var modalSize = $(this).data('modalsize');
-            var stackablemodal = $(this).data('stackmodal');
 
-            if (stackablemodal !== undefined) {
+            if ($(this).attr("data-stackmodal") !== undefined) {
+                var stackablemodal = $(this).data('stackmodal');
                 var modal = $(stackablemodal);
                 var modalBs = new bootstrap.Modal(modal);
                 modalBs.show();
@@ -346,6 +346,34 @@ var UserManagement = function () {
         });
     };
 
+    var updateUserLimitCount = function (active_user, user_limit) {
+        $('#user-limit-count').html(active_user.toString()  + ' / ' + user_limit.toString());
+    };
+
+    var updateUserLimitModal = function (displayModalPlanUpgrade) {
+        if (displayModalPlanUpgrade) {
+            $('.btn.UserManagement--action--openmodal').each(function () {
+                $(this).attr('data-stackmodal', '#modalPlanUpgrade');
+            });
+        } else {
+            $('.btn.UserManagement--action--openmodal').each(function () {
+                $(this).removeAttr('data-stackmodal');
+            });
+        }
+    };
+
+    var updateUserLimit = function () {
+        var href = '/userManagement/userLimit'
+        $.ajax({
+            url: href,
+            dataType: "json",
+            success: function (data) {
+                updateUserLimitCount(data.active_user, data.user_limit);
+                updateUserLimitModal(data.active_user === data.user_limit);
+            }
+        });
+    };
+
     $(document).on('ready  pjax:scriptcomplete', function () {
         bindButtons();
         bindModals();
@@ -358,6 +386,7 @@ var UserManagement = function () {
         wirePermissions: wirePermissions,
         wireMassPermissions: wireMassPermissions,
         wireForm: wireForm,
+        updateUserLimit: updateUserLimit,
     };
 };
 

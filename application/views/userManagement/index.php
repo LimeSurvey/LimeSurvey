@@ -31,7 +31,8 @@ echo viewHelper::getViewTestTag('usersIndex');
             'lsAfterAjaxUpdate' => [
                 'bindListItemclick();',
                 'LS.UserManagement.bindButtons();',
-                'showDeactivatedUserTooltip();'
+                'showDeactivatedUserTooltip();',
+                'LS.UserManagement.updateUserLimit();',
             ],
             'filter' => $model,
             'summaryText' => gT('Displaying {start}-{end} of {count} result(s).') . ' '

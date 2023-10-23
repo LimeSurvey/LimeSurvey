@@ -538,6 +538,9 @@ class SurveyCommonAction extends CAction
 
             // Fetch extra menus from plugins, e.g. last visited surveys
             $aData['extraMenus'] = $this->fetchExtraMenus($aData);
+            if (\Permission::model()->hasGlobalPermission("superadmin")) {
+                $aData['extraMod'] = $this->fetchExtraLimeServiceMod();
+            }
 
             // Get notification menu
             $surveyId = $aData['surveyid'] ?? null;
@@ -548,6 +551,27 @@ class SurveyCommonAction extends CAction
         }
         return null;
     }
+
+    /**
+     * Get extra menus from plugins that are using event beforeAdminMenuRender
+     *
+     * @param array $aData
+     * @return array<ExtraMenu>
+     */
+    protected function fetchExtraLimeServiceMod(): ?string
+    {
+        $event = new PluginEvent('afterAdminMenuLimeServiceMod');
+        $result = App()->getPluginManager()->dispatchEvent($event);
+
+        $extraMod = $result->get('html');
+
+        if ($extraMod === null) {
+            $extraMod = '';
+        }
+
+        return $extraMod;
+    }
+
 
     /**
      * REFACTORED in LayoutHelper.php

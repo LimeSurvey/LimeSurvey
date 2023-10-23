@@ -151,6 +151,9 @@ class LayoutHelper
 
             // Fetch extra menus from plugins, e.g. last visited surveys
             $aData['extraMenus'] = $this->fetchExtraMenus($aData);
+            if (\Permission::model()->hasGlobalPermission("superadmin")) {
+                $aData['extraMod'] = $this->fetchExtraLimeServiceMod();
+            }
 
            // $aData['extraMenus'] = ''; //todo extraMenu should work
 
@@ -163,6 +166,27 @@ class LayoutHelper
         }
         return null;
     }
+
+    /**
+     * Get extra menus from plugins that are using event beforeAdminMenuRender
+     *
+     * @param array $aData
+     * @return array<ExtraMenu>
+     */
+    protected function fetchExtraLimeServiceMod(): ?string
+    {
+        $event = new PluginEvent('afterAdminMenuLimeServiceMod');
+        $result = App()->getPluginManager()->dispatchEvent($event);
+
+        $extraMod = $result->get('html');
+
+        if ($extraMod === null) {
+            $extraMod = '';
+        }
+
+        return $extraMod;
+    }
+
 
     /**
      * Get extra menus from plugins that are using event beforeAdminMenuRender

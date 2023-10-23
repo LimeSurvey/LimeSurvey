@@ -70,7 +70,7 @@ class UserManagementController extends LSBaseController
         $oEvent = new PluginEvent('beforeAdminUserActivation');
         $oEvent->set('request', App()->request);
         App()->getPluginManager()->dispatchEvent($oEvent);
-        $isUserLimitReached = $oEvent->get('is_user_limit_reached', null);
+        $isUserLimitReached = $oEvent->get('disable', null);
 
         $aData['topbar']['title'] = gT('User management');
         $aData['topbar']['backLink'] = App()->createUrl('admin/index');
@@ -450,7 +450,7 @@ class UserManagementController extends LSBaseController
             $oEvent = new PluginEvent('beforeAdminUserActivation');
             $oEvent->set('request', App()->request);
             App()->getPluginManager()->dispatchEvent($oEvent);
-            $isUserLimitReached = $oEvent->get('is_user_limit_reached', false);
+            $isUserLimitReached = $oEvent->get('disable', false);
 
             $aData['showUpgradeModal'] = (bool)$isUserLimitReached;
         }
@@ -481,8 +481,8 @@ class UserManagementController extends LSBaseController
                 $oEvent = new PluginEvent('beforeAdminUserActivation');
                 $oEvent->set('request', App()->request);
                 App()->getPluginManager()->dispatchEvent($oEvent);
-                $result = $oEvent->get('is_user_limit_reached', null);
-                if (!empty($result) && $oEvent->get('is_user_limit_reached') == true) {
+                $result = $oEvent->get('disable', null);
+                if (!empty($result) && $oEvent->get('disable') == true) {
                     return $this->renderPartial(
                         '/admin/super/_renderJson',
                         [
@@ -515,7 +515,6 @@ class UserManagementController extends LSBaseController
     /**
      * Stores the status settings run via MassEdit
      *
-     * @return string
      * @throws CException
      */
     public function actionBatchStatus()
@@ -564,6 +563,37 @@ class UserManagementController extends LSBaseController
 
         Yii::app()->getController()->renderPartial('ext.admin.survey.ListSurveysWidget.views.massive_actions._action_results', $data);
     }
+
+    /**
+     * Get the users limit & active users count
+     *
+     * @return string | JSON
+     * @throws CException
+     */
+    public function actionUserLimit()
+    {
+        if (!Permission::model()->hasGlobalPermission('users', 'update')) {
+            return $this->renderPartial(
+                'partial/error',
+                ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
+            );
+        }
+
+        $oEvent = new PluginEvent('beforeAdminUserActivation');
+        $oEvent->set('request', App()->request);
+        App()->getPluginManager()->dispatchEvent($oEvent);
+        $limit = $oEvent->get('limit', INF);
+        $count = $oEvent->get('count', 0);
+
+        $data = [
+            'active_user' => $count,
+            'user_limit' => $limit
+        ];
+        return App()->getController()->renderPartial('/admin/super/_renderJson', [
+            "data" => $data
+        ]);
+    }
+
 
     /**
      * Activate / deactivate user
@@ -1671,7 +1701,7 @@ class UserManagementController extends LSBaseController
         $oEvent = new PluginEvent('beforeAdminUserActivation');
         $oEvent->set('request', App()->request);
         App()->getPluginManager()->dispatchEvent($oEvent);
-        $isUserLimitReached = $oEvent->get('is_user_limit_reached', null);
+        $isUserLimitReached = $oEvent->get('disable', null);
         $aUser['status'] = !$isUserLimitReached;
 
         $event = new PluginEvent('createNewUser');

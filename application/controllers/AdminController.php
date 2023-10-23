@@ -498,6 +498,10 @@ class AdminController extends LSYii_Controller
             $aData['versiontitle'] = gT('Version');
         }
 
+        $oEvent = new PluginEvent('beforeFooterRender');
+        App()->getPluginManager()->dispatchEvent($oEvent);
+        $aData['currentPlan'] = $oEvent->get('current_plan', 'free');
+
         $aData['imageurl'] = Yii::app()->getConfig("imageurl");
         $aData['url'] = $url;
         return $this->renderPartial("/admin/super/footer", $aData, $return);
