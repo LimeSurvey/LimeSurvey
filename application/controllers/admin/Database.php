@@ -296,6 +296,7 @@ class Database extends SurveyCommonAction
                 ->setFlashMessage(gT('Survey settings were successfully saved.'));
         } catch (PersistErrorException $e) {
             // @todo: Should we be catching only this kind of exceptions or all Throwable?
+            // BUt that could show sensitive information
             Yii::app()->setFlashMessage(
                 $e->getMessage(),
                 'error'
@@ -377,7 +378,7 @@ class Database extends SurveyCommonAction
             );
             Yii::app()
                 ->setFlashMessage(gT('Survey settings were successfully saved.'));
-        } catch (Throwable $e) {
+        } catch (PersistErrorException $e) {
             Yii::app()->setFlashMessage(
                 $e->getMessage(),
                 'error'
