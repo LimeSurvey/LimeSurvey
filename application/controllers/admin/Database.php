@@ -295,6 +295,7 @@ class Database extends SurveyCommonAction
             Yii::app()
                 ->setFlashMessage(gT('Survey settings were successfully saved.'));
         } catch (PersistErrorException $e) {
+            // @todo: Should we be catching only this kind of exceptions or all Throwable?
             Yii::app()->setFlashMessage(
                 $e->getMessage(),
                 'error'
