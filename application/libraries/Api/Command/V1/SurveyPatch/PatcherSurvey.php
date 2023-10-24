@@ -50,7 +50,6 @@ class PatcherSurvey extends Patcher
         $this->addOpHandler($diContainer->get(
             OpHandlerAnswer::class
         ));
-        $this->addOpHandlerQuestionAttribute($diFactory, $diContainer);
         $this->addOpHandler($diContainer->get(
             OpHandlerQuestionAttributeUpdate::class
         ));
