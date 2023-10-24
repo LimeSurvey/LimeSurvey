@@ -37,7 +37,7 @@ class HtmlEditorPop extends SurveyCommonAction
             $aData['htmlformatoption'] = '';
             $contentsLangDirection = App()->request->getQuery('contdir');
             if (!in_array(strtolower((string) $contentsLangDirection), ['ltr', 'rtl'])) {
-                $contentsLangDirection = null;
+                $contentsLangDirection = getLanguageRTL(Yii::app()->session['adminlang']) ? 'rtl' : 'ltr';
             }
             $aData['contentsLangDirection'] = $contentsLangDirection;
             if (in_array($aData['sFieldType'], array('email-invitation', 'email-registration', 'email-confirmation', 'email-reminder'))) {
