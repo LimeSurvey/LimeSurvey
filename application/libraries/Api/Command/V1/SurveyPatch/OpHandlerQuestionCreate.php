@@ -23,6 +23,7 @@ use Question;
 class OpHandlerQuestionCreate implements OpHandlerInterface
 {
     use OpHandlerSurveyTrait;
+    use OpHandlerQuestionTrait;
 
     protected string $entity;
     protected Question $model;
@@ -225,7 +226,11 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
         $this->checkRawPropsForRequiredEntities($op, $allData);
         $preparedData = [];
         $entities = [
-            'question', 'questionL10n', 'attributes', 'answers', 'subquestions'
+            'question',
+            'questionL10n',
+            'attributes',
+            'answers',
+            'subquestions'
         ];
 
         foreach ($entities as $name) {
@@ -260,40 +265,17 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
             case 'questionL10n':
                 return $this->prepareQuestionL10n($op, $data);
             case 'attributes':
-                return $this->prepareAdvancedSettings($op, $data);
+                return $this->prepareAdvancedSettings(
+                    $op,
+                    $this->transformerAttribute,
+                    $data
+                );
             case 'answers':
                 return $this->prepareAnswers($op, $data);
             case 'subquestions':
                 return $this->prepareSubQuestions($op, $data);
         }
         return $data;
-    }
-
-    /**
-     * Checks required entities' data to be not empty.
-     * @param OpInterface $op
-     * @param array|null $data
-     * @param string $name
-     * @return void
-     * @throws OpHandlerException
-     */
-    private function checkRequiredData(
-        OpInterface $op,
-        ?array $data,
-        string $name
-    ): void {
-        if (
-            in_array($name, $this->getRequiredEntitiesArray())
-            && empty($data)
-        ) {
-            throw new OpHandlerException(
-                sprintf(
-                    'No values to update for %s in entity %s',
-                    $name,
-                    $op->getEntityType()
-                )
-            );
-        }
     }
 
     /**
@@ -321,19 +303,6 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
     }
 
     /**
-     * For creating a question without breaking the app, we need at least
-     * "question"", "questionL10n" entities.
-     * @return array
-     */
-    private function getRequiredEntitiesArray(): array
-    {
-        return [
-            'question',
-            'questionL10n'
-        ];
-    }
-
-    /**
      * @param OpInterface $op
      * @param array|null $data
      * @return array
@@ -356,48 +325,6 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
         }
 
         return $preparedL10n;
-    }
-
-    /**
-     * Converts the advanced settings from the raw data to the expected format.
-     * @param OpInterface $op
-     * @param array|null $data
-     * @return array
-     * @throws OpHandlerException
-     */
-    private function prepareAdvancedSettings(
-        OpInterface $op,
-        ?array $data
-    ): array {
-        $preparedSettings = [];
-        if (is_array($data)) {
-            foreach ($data as $attrName => $languages) {
-                foreach ($languages as $lang => $advancedSetting) {
-                    $transformedSetting = $this->transformerAttribute->transform(
-                        $advancedSetting
-                    );
-                    $this->checkRequiredData(
-                        $op,
-                        $transformedSetting,
-                        'attributes'
-                    );
-                    if (
-                        is_array($transformedSetting) && array_key_exists(
-                            'value',
-                            $transformedSetting
-                        )
-                    ) {
-                        $value = $transformedSetting['value'];
-                        if ($lang !== '') {
-                            $preparedSettings[0][$attrName][$lang] = $value;
-                        } else {
-                            $preparedSettings[0][$attrName] = $value;
-                        }
-                    }
-                }
-            }
-        }
-        return $preparedSettings;
     }
 
     /**

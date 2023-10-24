@@ -13,13 +13,15 @@
  *
  */
 
-
 use LimeSurvey\Api\Auth\AuthSession;
 
-// phpcs:ignore
-class ReactLinkController extends LSYii_Controller
+class EditorLinkController extends LSYii_Controller
 {
+    const REACT_APP_BASE_PATH = '/editor/#/';
+
     /**
+     * Access Rules
+     *
      * @return array
      */
     public function accessRules()
@@ -46,28 +48,41 @@ class ReactLinkController extends LSYii_Controller
      *
      * @return void
      */
-    public function actionTo()
+    public function run($action)
     {
-        $this->setReactAuthKeyInitCookie();
+        $this->setAuthInitCookie();
         $route = Yii::app()->request->getQuery('route');
-        $path = '/app/#' . $route;
+        $path = static::REACT_APP_BASE_PATH . $route;
         $url = Yii::app()->request->baseUrl . $path;
         $this->redirect($url);
     }
+
     /**
      * Create and set react auth token to cookie.
      *
      * @return void
      */
-    private function setReactAuthKeyInitCookie()
+    private function setAuthInitCookie()
     {
+        $cookieName = 'LS_AUTH_INIT';
+
         $authSession = new AuthSession();
-        $cookieName = 'reactAuthKeyInit';
-        $reactAuthKeyInitCookie = $authSession->createSessionKey(
+        $session = $authSession->createSession(
             Yii::app()->session['user']
         );
-        $cookie = new CHttpCookie($cookieName, $reactAuthKeyInitCookie);
-        $cookie->expire = time() + (60 * 2);
+
+        $sessionExpires = new \DateTime(
+            date('c', $session->expire)
+        );
+
+        $cookieDataJson = json_encode([
+            'token' => $session->id,
+            'expires' => $sessionExpires->format('Y-m-d\TH:i:s.000\Z')
+        ]);
+
+        $cookie = new CHttpCookie($cookieName, $cookieDataJson);
+        $cookie->expire = time() + (60 * 2); // 2 minutes
+
         Yii::app()->request->cookies[$cookieName] = $cookie;
     }
 }

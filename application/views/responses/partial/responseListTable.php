@@ -264,7 +264,9 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                 'lsAfterAjaxUpdate'     => [
                     "afterAjaxResponsesReload();",
                     "onUpdateTokenGrid();",
-                    '$("#responses-grid [data-bs-toggle=\'popover\']").popover();'
+                    '$("#responses-grid [data-bs-toggle=\'popover\']").popover();',
+                    'bindListItemclick();',
+                    'switchStatusOfListActions();'
                 ],
                 'massiveActionTemplate' => $massiveAction . $filterColumns,
                 'summaryText'           => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(

@@ -152,6 +152,7 @@
                     ]
 
                 ], $baseColumns),
+                'lsAfterAjaxUpdate' => ['LS.UserManagement.bindButtons();']
 
             ]
         );

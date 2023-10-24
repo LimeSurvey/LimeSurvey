@@ -19,7 +19,10 @@ $layoutHelper = new LayoutHelper();
 echo $layoutHelper->renderTopbarTemplate($aData);
 echo "<!-- BEGIN LAYOUT_MAIN -->";
 
+echo "<div class='container-fluid'>\n";
 $this->updatenotification();
+echo "</div>\n";
+
 $this->notifications();
 
 //The load indicator for pjax

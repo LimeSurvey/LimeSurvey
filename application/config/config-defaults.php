@@ -708,7 +708,7 @@ $config['uploadurl']              = $config['publicurl'] . 'upload';
 $config['standardthemerooturl']   = $config['publicurl'] . 'themes/survey'; // Location of the standard themes
 $config['adminscripts']           = $config['publicurl'] . 'assets/scripts/admin/';
 $config['generalscripts']         = $config['publicurl'] . 'assets/scripts/';
-$config['packages']               = $config['publicurl'] . 'packages/';
+$config['packages']               = $config['publicurl'] . 'assets' . DIRECTORY_SEPARATOR . 'packages';
 $config['vendor']                 = $config['publicurl'] . 'vendor/';
 $config['styleurl']               = $config['publicurl'] . 'themes/admin/';
 $config['publicstyle']            = $config['publicurl'] . $config['assets'] . 'styles-public/';
@@ -827,6 +827,9 @@ $config['passwordValidationRules'] = array(
     'numeric' => 0,
     'symbol' => 0,
 );
+
+// Enable or disable single page application editor
+$config['editorEnabled'] = false;
 
 return $config;
 //settings deleted

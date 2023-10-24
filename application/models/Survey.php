@@ -171,6 +171,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
 
     public $showsurveypolicynotice = 0;
 
+    // Whether to show the option values of the survey or the inherited ones, if applicable.
     public $bShowRealOptionValues = true;
 
 
@@ -1677,7 +1678,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
     protected static function getPermissionCriteria($userid = null)
     {
         if (!$userid) {
-            $userid = Yii::app()->user->id;
+            $userid = App()->getCurrentUserId();
         }
         // Note: reflect Permission::hasPermission
         $criteriaPerm = new CDbCriteria();

@@ -336,10 +336,16 @@ class QuestionGroupService
             $l10N = $this->modelQuestionGroupL10n->findByAttributes(
                 ['gid' => $oQuestionGroup->gid, 'language' => $sLanguage]
             );
-            $l10N->setAttributes([
-                'group_name'  => $aL10NBlock['group_name'],
-                'description' => $aL10NBlock['description'],
-            ], false);
+            if (isset($aL10NBlock['group_name'])) {
+                $l10N->setAttributes([
+                    'group_name'  => $aL10NBlock['group_name']
+                ], false);
+            }
+            if (isset($aL10NBlock['description'])) {
+                $l10N->setAttributes([
+                    'description' => $aL10NBlock['description']
+                ], false);
+            }
             $storeValid = $storeValid && $l10N->save();
         }
 

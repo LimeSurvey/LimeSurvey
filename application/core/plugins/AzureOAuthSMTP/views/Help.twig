@@ -1,0 +1,34 @@
+<div class="col-8 offset-2 mb-3">
+    <div class="accordion" id="accordionExample">
+        <div class="accordion-item border border-info">
+            <h2 class="accordion-header" id="headingOne">
+                <button class="accordion-button fw-bold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                    {{ gT("Help") }}
+                </button>
+            </h2>
+            <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                    <p>
+                        <strong>{{ gT("Prerequisites:") }}</strong>
+                        <ul>
+                            <li>{{ gT("Access LimeSurvey over HTTPS.") }} {{ isHttps ? "<span class='fa fa-check text-success'></span>" : "<span class='fa fa-exclamation-triangle text-danger' data-bs-toggle='tooltip' title='" ~ gT("Currently not served over HTTPS") ~ "'></span>" }}</li>
+                        </ul>
+                    </p>
+                    <p>
+                        <strong>{{ gT("Instructions:") }}</strong>
+                        <ol>
+                            <li>
+                                <div>{{ sprintf(gT("Setup the OAuth 2.0 Web Application in %s."), '<a href="https://portal.azure.com/" target="_blank">' ~ gT("Azure Portal") ~ ' <span class="fa fa-external-link"></span></a>') }}</div>
+                                <div class="text-break"><strong>{{ gT("Redirect URI:") }}</strong> {{ redirectUri }}</div>
+                            </li>
+                            <li>{{ gT("Activate the plugin.") }}</li>
+                            <li>{{ gT("Set the 'Client ID', 'Client Secret' and 'Tenant ID' below and save the settings.") }}</li>
+                            <li>{{ gT("At plugin's overview page, click the 'Get new token' link to open Azure's consent screen in a new window.") }}</li>
+                            <li>{{ gT("Follow the steps in the consent screen and check the requested permissions.") }}</li>
+                        </ol>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

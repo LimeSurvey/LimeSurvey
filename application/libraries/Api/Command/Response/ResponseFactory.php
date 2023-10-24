@@ -6,6 +6,7 @@ use LimeSurvey\Api\Command\Response\{
     Response,
     Status,
     Status\StatusSuccess,
+    Status\StatusSuccessNoContent,
     Status\StatusError,
     Status\StatusErrorNotFound,
     Status\StatusErrorBadRequest,
@@ -22,6 +23,17 @@ class ResponseFactory
         return $this->make(
             $data,
             new StatusSuccess()
+        );
+    }
+
+    /**
+     *
+     */
+    public function makeSuccessNoContent(): Response
+    {
+        return $this->make(
+            null,
+            new StatusSuccessNoContent()
         );
     }
 
