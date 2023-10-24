@@ -248,9 +248,36 @@ trait OpHandlerQuestionTrait
                                 $tfSubL10n['question'] : null;
                     }
                 }
-                $preparedSubQuestions[$index][0] = $tfSubQuestion;
+                $qid = $this->getQidFromData($index, $tfSubQuestion);
+                $scaleId = $this->getScaleIdFromData($tfSubQuestion);
+                $preparedSubQuestions[$qid][$scaleId] = $tfSubQuestion;
             }
         }
         return $preparedSubQuestions;
+    }
+
+    /**
+ * @param int $index
+ * @param array $questionData
+ * @return int
+ */
+    private function getQidFromData(int $index, array $questionData)
+    {
+        return array_key_exists(
+            'qid',
+            $questionData
+        ) ? (int)$questionData['qid'] : $index;
+    }
+
+    /**
+     * @param array $questionData
+     * @return int
+     */
+    private function getScaleIdFromData(array $questionData)
+    {
+        return array_key_exists(
+            'scale_id',
+            $questionData
+        ) ? (int)$questionData['scale_id'] : 0;
     }
 }

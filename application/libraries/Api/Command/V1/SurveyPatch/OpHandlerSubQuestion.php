@@ -123,7 +123,6 @@ class OpHandlerSubQuestion implements OpHandlerInterface
     {
         $surveyId = $this->getSurveyIdFromContext($op);
         $this->questionAggregateService->checkUpdatePermission($surveyId);
-        $probs = $op->getProps();
         $preparedData = $this->prepareSubQuestions(
             $op,
             $this->transformer,
