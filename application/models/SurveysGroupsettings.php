@@ -356,6 +356,16 @@ class SurveysGroupsettings extends LSActiveRecord
             }
         }
 
+        // check if the template actually exists and modify it if invalid
+        if (!$instance->shouldInherit('template')
+            && !Template::checkIfTemplateExists($instance->oOptions->template)) {
+            if ($iSurveyGroupId === 0) {
+                $instance->oOptions->template = App()->getConfig('defaulttheme');
+            } else {
+                $instance->oOptions->template = 'inherit';
+            }
+        }
+
         // check the global configuration for template inheritance if surveygroup is 0 (global survey) and template set to inherit
         if (
             $iSurveyGroupId === 0
