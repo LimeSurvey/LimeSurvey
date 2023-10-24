@@ -6,7 +6,6 @@ use LimeSurvey\Helpers\Update\DatabaseUpdateBase;
 
 class Update_617 extends DatabaseUpdateBase
 {
-
     /**
      * @inheritDoc
      */
