@@ -34,8 +34,8 @@
         </tr>
     </thead>
     <tbody>
-        {% for key, ansrow in labels %}
-            <tr id="javatbd{{ aQuestions[key].myfname }}" class="answers-list">
+        {% for ansrow in labels %}
+            <tr id="javatbd{{ ansrow.myfname }}" class="answers-list">
                 <th id="label-{{ ansrow.code }}" class="answertext{% if answerwidth==0 %} sr-only{% endif %}">
                     {{ processString(ansrow.answer) }}
                 </th>
