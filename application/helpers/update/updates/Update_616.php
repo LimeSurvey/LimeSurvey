@@ -12,11 +12,8 @@ class Update_616 extends DatabaseUpdateBase
      */
     public function up()
     {
-        $usersTable = \Yii::app()->db->schema->getTable('{{users}}');
-        if (!isset($usersTable->columns['status'])) {
-            $this->db->createCommand()->addColumn('{{users}}', 'status', 'BOOLEAN DEFAULT TRUE');
-        }
-
+        $this->db->createCommand()->addColumn('{{users}}', 'status', 'BOOLEAN DEFAULT TRUE');
+//
 //        $users = \Yii::app()->db->createCommand("SELECT * FROM {{users}}")->queryAll();
 //        foreach ($users as $user) {
 //            if (isset($user['status'])) {
