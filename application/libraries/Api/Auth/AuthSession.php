@@ -37,27 +37,27 @@ class AuthSession
             }
             throw new ExceptionInvalidUser('Invalid user name or password');
         } else {
-            return $this->createSessionKey($sUsername);
+            return ($this->createSession($sUsername))->id;
         }
     }
 
     /**
      * Create session key
      *
-     * @param string $sUsername The username
-     * @return string
+     * @param string $username The username
+     * @return Session
      */
-    public function createSessionKey($sUsername)
+    public function createSession($username)
     {
-        $this->jumpStartSession($sUsername);
-        $sSessionKey = (string) Yii::app()->securityManager->generateRandomString(32);
+        $this->jumpStartSession($username);
+        $sessionKey = (string) Yii::app()->securityManager
+            ->generateRandomString(32);
         $session = new Session();
-        $session->id = $sSessionKey;
-        $session->expire = time() + (int) Yii::app()
-            ->getConfig('iSessionExpirationTime', ini_get('session.gc_maxlifetime'));
-        $session->data = $sUsername;
+        $session->id = $sessionKey;
+        $session->expire = time() + (60 * 60 * 24 * 7);
+        $session->data = $username;
         $session->save();
-        return $sSessionKey;
+        return $session;
     }
 
     /**

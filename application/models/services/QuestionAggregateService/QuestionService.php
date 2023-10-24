@@ -74,19 +74,19 @@ class QuestionService
      *      ...<array-key, mixed>
      *  }
      * } $input
-     * @throws PersistErrorException
+     * @return Question
      * @throws NotFoundException
      * @throws PermissionDeniedException
-     * @return Question
+     * @throws PersistErrorException
      */
     public function save($input)
     {
-        $input  = $input ?? [];
+        $input = $input ?? [];
 
         $data = [];
-        $data['question']         = $input['question'] ?? [];
-        $data['question']['sid']  = $data['question']['sid'] ?? ($input['sid'] ?? null);
-        $data['question']['qid']  = $data['question']['qid'] ?? null;
+        $data['question'] = $input['question'] ?? [];
+        $data['question']['sid'] = $data['question']['sid'] ?? ($input['sid'] ?? null);
+        $data['question']['qid'] = $data['question']['qid'] ?? null;
 
         // Store changes to the actual question data,
         // by either creating it, or updating an existing one
@@ -249,8 +249,8 @@ class QuestionService
                     [
                         'language' => $language,
                         'question' => '',
-                        'help' => '',
-                        'script' => ''
+                        'help'     => '',
+                        'script'   => ''
                     ]
                 )
             );
@@ -319,7 +319,7 @@ class QuestionService
         ) {
             $this->proxySettingsUser->setUserSetting(
                 'question_default_values_'
-                    . $data['question']['type'],
+                . $data['question']['type'],
                 ls_json_encode(
                     $data['advancedSettings']
                 )
@@ -333,7 +333,7 @@ class QuestionService
         ) {
             $this->proxySettingsUser->deleteUserSetting(
                 'question_default_values_'
-                    . $data['question']['type']
+                . $data['question']['type']
             );
         }
     }
@@ -343,6 +343,7 @@ class QuestionService
      * @param int $sid
      * @param int $qid
      * @return Question
+     * @throws NotFoundException
      */
     public function getQuestionBySidAndQid(int $sid, int $qid)
     {

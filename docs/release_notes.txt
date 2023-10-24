@@ -34,6 +34,49 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.3.0 (build 231016) to 6.3.1 (build 231023) October 23, 2023
+-Fixed issue: Failed emails resend vars column needs to be mediumtext for mysql (#3545) (Tim Willig)
+-Fixed issue: Adding cldr "fr_lu" for lb language (twilligls)
+-Fixed issue: Upgrade fails on old fruity templates with error message 'cannot assign property fixnum to null' (Carsten Schmitz)
+-Fixed issue: Survey sometimes not completely deactivated, throwing error for missing response table (Carsten Schmitz)
+-Fixed issue: Core plugins AzureOAuthSMTP & GoogleOAuthSMTP not properly listed as core plugins (Carsten Schmitz)
+-Fixed issue #CT-386: missing closing div caused blank page on simple statistics for questions with more than 70 labels (twilligls)
+-Fixed issue #CT-256: Problems with ini parsing for GTranslate.php (#3555) (Tim Willig)
+-Fixed issue #19180: SMTP settings are not enabled when SMTP is selected in global settings (#3551) (Matthew)
+-Fixed issue #19170: Inserting a subquestion/answer option creates multiple rows (#3535) (Matthew)
+-Fixed issue #19114: [security] Admin with Settings & Plugins permission only can store XSS in Survey menus (#3542) (Gabriel Jenik)
+#Updated translation: Slovak by jelen1
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Japanese by d_inoue
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Catalan by mymast, qualitatuvic
+
+
+Changes from 6.2.11 (build 231007) to 6.3.0 (build 231016) October 16, 2023
++New feature #15664: Google OAuth plugin for emails (#3054) (Gabriel Jenik)
+-Fixed issue CR-1355: Image question types were gone on fresh install (#3518) (Tim Willig)
+-Fixed issue #19146: [security] Store XSS when editing label set (#3505) (Denis Chenu)
+-Fixed issue #19142: [security] CSRF in Save Box Settings (#3516) (Gabriel Jenik)
+-Fixed issue #19106: [security] Deleted account still has permissions (#3493) (Denis Chenu)
+-Fixed issue #19094: [security] Input Validation Vulnerability Leading to 500 on responses page (#3520) (Denis Chenu)
+-Fixed issue #19038: [security] Privilege escalation bug to creation survey-group with others group as parent (#3423) (Gabriel Jenik)
+-Fixed issue #18776: Question ordering not correct (#3522) (Matthew)
+-Fixed issue #18648: Unable to upload a file with theme animations enabled (#3529) (Gabriel Jenik)
+-Fixed issue #18439: Link set when create user are unusuable in text view (#3510) (Gabriel Jenik)
+-Fixed issue #18193: Question theme error - Missing metadata (Type: X) (#3252) (Denis Chenu)
+#Updated translation: Slovak by jelen1
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Japanese by d_inoue
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
 Changes from 6.2.10 (build 231004) to 6.2.11 (build 231007) October 6, 2023
 -Fixed issue: Server side subquestion unique code validation (Kevin Foster)
 -Fixed issue #CT-380: Registers necessary client scripts customization for CLSGridview (Mohab E)

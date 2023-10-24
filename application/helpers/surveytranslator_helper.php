@@ -588,6 +588,7 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['lb']['rtl'] = false;
     $supportedLanguages['lb']['dateformat'] = 1;
     $supportedLanguages['lb']['radixpoint'] = 1;
+    $supportedLanguages['lb']['cldr'] = 'fr_lu';
     $supportedLanguages['lb']['momentjs'] = 'lb';
 
     // Macedonian

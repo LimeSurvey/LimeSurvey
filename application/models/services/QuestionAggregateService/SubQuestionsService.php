@@ -20,6 +20,8 @@ use LimeSurvey\Models\Services\Exception\{
  */
 class SubQuestionsService
 {
+    use ValidateTrait;
+
     private L10nService $l10nService;
     private Question $modelQuestion;
 
@@ -90,7 +92,7 @@ class SubQuestionsService
      */
     private function storeSubquestions(Question $question, $subquestionsArray, $surveyActive = false)
     {
-        $this->validateSubquestionCodes($subquestionsArray);
+        $this->validateCodes($subquestionsArray);
         $questionOrder = 0;
         $subquestions = [];
         foreach ($subquestionsArray as $subquestionId => $subquestionArray) {
@@ -175,37 +177,6 @@ class SubQuestionsService
         );
 
         return $subquestion;
-    }
-
-    /**
-     * Validate subquestion codes.
-     *
-     * @param array $subquestionsArray Data from request.
-     * @return void
-     * @throws PersistErrorException
-     */
-    private function validateSubquestionCodes($subquestionsArray)
-    {
-        // ensure uniqueness of codes
-        $codes = [];
-        foreach ($subquestionsArray as $subquestionArray) {
-            foreach ($subquestionArray as $scaleId => $data) {
-                if (!isset($codes[$scaleId])) {
-                    $codes[$scaleId] = [];
-                }
-                if (
-                    in_array(
-                        $data['code'],
-                        $codes[$scaleId]
-                    )
-                ) {
-                    throw new PersistErrorException(
-                        'Subquestion codes must be unique'
-                    );
-                }
-                $codes[$scaleId][] = $data['code'];
-            }
-        }
     }
 
     /**

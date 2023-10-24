@@ -2,6 +2,16 @@
 import _ from "lodash";
 import ajaxMethods from "../../mixins/runAjax.js";
 
+const parseIntOr999999 = (val) => {
+    const intVal = parseInt(val);
+
+    if(isNaN(intVal)) {
+        return 999999;
+    }
+
+    return intVal;
+}
+
 export default {
 
     mixins: [ajaxMethods],
@@ -34,9 +44,7 @@ export default {
         orderedQuestionGroups() {
             return LS.ld.orderBy(
                 this.$store.state.questiongroups,
-                a => {
-                    return parseInt(a.group_order || 999999);
-                },
+                a => parseIntOr999999(a.group_order),
                 ["asc"]
             );
         },
@@ -132,9 +140,7 @@ export default {
         orderQuestions(questionList) {
             return LS.ld.orderBy(
                 questionList,
-                a => {
-                    return parseInt(a.question_order || 999999);
-                },
+                a => parseIntOr999999(a.question_order),
                 ["asc"]
             );
         },
