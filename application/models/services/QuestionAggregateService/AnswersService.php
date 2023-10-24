@@ -2,6 +2,7 @@
 
 namespace LimeSurvey\Models\Services\QuestionAggregateService;
 
+use DI\DependencyException;
 use Question;
 use Answer;
 use AnswerL10n;
@@ -22,6 +23,8 @@ use LimeSurvey\Models\Services\Exception\{
  */
 class AnswersService
 {
+    use ValidateTrait;
+
     /**
      * Based on QuestionAdministrationController::actionSaveQuestionData()
      *
@@ -36,7 +39,6 @@ class AnswersService
     {
         // Clean answer options before save.
         // NB: Still inside a database transaction.
-        $question->deleteAllAnswers();
         // If question type has answeroptions, save them.
         if ($question->questionType->answerscales > 0) {
             $this->storeAnswerOptions(
@@ -58,28 +60,40 @@ class AnswersService
      */
     private function storeAnswerOptions(Question $question, $optionsArray)
     {
+        $this->validateCodes($optionsArray);
+        $answerIds = [];
         $count = 0;
-        foreach ($optionsArray as $optionArray) {
-            $this->storeAnswerOption(
+        foreach ($optionsArray as $answerId => $optionArray) {
+            $answerIds[] = $this->storeAnswerOption(
                 $question,
+                $answerId,
                 $optionArray,
                 $count
             );
         }
+        $question->deleteAllAnswers($answerIds);
     }
 
     /**
-     * Store new answer options.
+     * Stores a single answer.
      * Different from update during active survey?
      *
      * @param Question $question
-     * @param array $optionsArray
+     * @param $answerId
+     * @param array $optionArray
      * @param int &$count
-     * @return void
+     * @return int
+     * @throws BadRequestException
      * @throws PersistErrorException
+     * @throws DependencyException
+     * @throws \DI\NotFoundException
      */
-    private function storeAnswerOption(Question $question, $optionArray, &$count)
-    {
+    private function storeAnswerOption(
+        Question $question,
+        $answerId,
+        array $optionArray,
+        int &$count
+    ): int {
         foreach ($optionArray as $scaleId => $data) {
             if (!isset($data['code'])) {
                 throw new BadRequestException(
@@ -92,17 +106,22 @@ class AnswersService
             // allowing us to mock the model instance via
             // container configuration in unit tests
             $answer = DI::getContainer()
-                ->make(Answer::class);
+                ->make(Answer::class)->findByPk($answerId);
+            if (!$answer) {
+                $answer = DI::getContainer()
+                    ->make(Answer::class);
+            }
             $answer->setAttributes([
-                'qid' => $question->qid,
-                'code' => $data['code'],
-                'sortorder' => $count,
+                'qid'              => $question->qid,
+                'code'             => $data['code'],
+                'sortorder'        => $count,
                 'assessment_value' =>
                     isset($data['assessment'])
-                    ? $data['assessment']
-                    : 0,
-                'scale_id' => $scaleId
+                        ? $data['assessment']
+                        : 0,
+                'scale_id'         => $scaleId
             ]);
+            $answer->setScenario('saveall');
             $count++;
 
             if (!$answer->save()) {
@@ -122,7 +141,9 @@ class AnswersService
                     $answerOptionText
                 );
             }
+            return $answer->aid;
         }
+        return 0;
     }
 
     /**
@@ -137,7 +158,15 @@ class AnswersService
     private function storeAnswerL10n(Answer $answer, $language, $text)
     {
         $l10n = DI::getContainer()
-            ->make(AnswerL10n::class);
+            ->make(AnswerL10n::class)->findByAttributes(
+                [
+                    'aid' => $answer->aid,
+                    'language' => $language
+                ]
+            );
+        if (!$l10n) {
+            $l10n = DI::getContainer()->make(AnswerL10n::class);
+        }
         $l10n->setAttributes([
             'aid' => $answer->aid,
             'language' => $language,

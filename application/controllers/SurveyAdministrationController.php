@@ -1018,17 +1018,15 @@ class SurveyAdministrationController extends LSBaseController
                                     'icon' => 'ri-git-branch-fill icon',
                                     'url' => Yii::App()->createUrl("admin/conditions/sa/index/subaction/editconditionsform/surveyid/$iSurveyID/gid/$question->gid/qid/$question->qid")
                                 ];
-
-                            if ($hasdefaultvalues > 0) {
-                                $curQuestion['questionDropdown']['editDefault'] =
-                                    [
-                                        'id' => 'default_value_button',
-                                        'label' => gT("Edit default answers"),
-                                        'icon' => 'ri-grid-line',
-                                        'url' => Yii::App()->createUrl("questionAdministration/editdefaultvalues/surveyid/$iSurveyID/gid/$question->gid/qid/$question->qid")
-                                    ];
-                            }
                         }
+                        $curQuestion['questionDropdown']['editDefault'] =
+                            [
+                                'id' => 'default_value_button',
+                                'label' => gT("Edit default answers"),
+                                'icon' => 'ri-grid-line ',
+                                'url' => Yii::App()->createUrl("questionAdministration/editdefaultvalues/surveyid/$iSurveyID/gid/$question->gid/qid/$question->qid"),
+                                'active' => $configData['hasSurveyContentUpdatePermission'] && $hasdefaultvalues > 0 ? 1 : 0
+                            ];
 
                         if ($configData['hasSurveyContentExportPermission']) {
                             $curQuestion['questionDropdown']['export'] =
@@ -1692,6 +1690,8 @@ class SurveyAdministrationController extends LSBaseController
                 $archivedTokenSettings->properties = json_encode(Response::getEncryptedAttributes($iSurveyID));
                 $archivedTokenSettings->save();
 
+                // Load the active record again, as there have been sporadic errors with the dataset not being updated
+                $survey = Survey::model()->findByAttributes(array('sid' => $iSurveyID));
                 $survey->active = 'N';
                 $survey->save();
 

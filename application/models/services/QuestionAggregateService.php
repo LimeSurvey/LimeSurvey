@@ -101,25 +101,14 @@ class QuestionAggregateService
      *      ...<array-key, mixed>
      *  }
      * } $input
-     * @throws PersistErrorException
+     * @return Question
      * @throws NotFoundException
      * @throws PermissionDeniedException
-     * @return Question
+     * @throws PersistErrorException
      */
     public function save($surveyId, $input)
     {
-        if (
-            !$this->modelPermission->hasSurveyPermission(
-                $surveyId,
-                'surveycontent',
-                'update'
-            )
-        ) {
-            throw new PermissionDeniedException(
-                'Access denied'
-            );
-        }
-
+        $this->checkUpdatePermission($surveyId);
         $transaction = $this->yiiDb->beginTransaction();
         try {
             $question = $this->saveService->save(
@@ -171,6 +160,57 @@ class QuestionAggregateService
             foreach ($questionIds as $questionId) {
                 $this->deleteService->delete($surveyId, $questionId);
             }
+            $transaction->commit();
+        } catch (\Exception $e) {
+            $transaction->rollback();
+            throw $e;
+        }
+    }
+
+    /**
+     * @param $surveyId
+     * @return void
+     * @throws PermissionDeniedException
+     */
+    public function checkUpdatePermission($surveyId)
+    {
+        if (
+            !$this->modelPermission->hasSurveyPermission(
+                $surveyId,
+                'surveycontent',
+                'update'
+            )
+        ) {
+            throw new PermissionDeniedException(
+                'Access denied'
+            );
+        }
+    }
+
+    /**
+     * Delete answer from a question.
+     * All language entries for this answer will be deleted.
+     * @param $surveyId
+     * @param $answerId
+     * @return void
+     */
+    public function deleteAnswer($surveyId, $answerId)
+    {
+        if (
+            !$this->modelPermission->hasSurveyPermission(
+                $surveyId,
+                'surveycontent',
+                'delete'
+            )
+        ) {
+            throw new PermissionDeniedException(
+                'Access denied'
+            );
+        }
+
+        $transaction = $this->yiiDb->beginTransaction();
+        try {
+            $this->deleteService->deleteAnswer($answerId);
             $transaction->commit();
         } catch (\Exception $e) {
             $transaction->rollback();

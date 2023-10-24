@@ -20,6 +20,8 @@ use LimeSurvey\Models\Services\Exception\{
  */
 class SubQuestionsService
 {
+    use ValidateTrait;
+
     private L10nService $l10nService;
     private Question $modelQuestion;
 
@@ -53,9 +55,32 @@ class SubQuestionsService
         }
     }
 
+    /**
+     * Deletes a subquestion.
+     *
+     * @param int $surveyId
+     * @param int $subquestionId
+     * @throws PermissionDeniedException
+     * @throws NotFoundException
+     */
+    public function delete($surveyId, $subquestionId)
+    {
+        if (
+            !\Permission::model()->hasSurveyPermission(
+                $surveyId,
+                'surveycontent',
+                'delete'
+            )
+        ) {
+            throw new PermissionDeniedException(
+                'Access denied'
+            );
+        }
+        $this->deleteSubquestion($surveyId, $subquestionId);
+    }
 
     /**
-     * Save subquestion.
+     * Save subquestions.
      * Used when survey is *not* activated.
      *
      * @param Question $question
@@ -67,62 +92,91 @@ class SubQuestionsService
      */
     private function storeSubquestions(Question $question, $subquestionsArray, $surveyActive = false)
     {
+        $this->validateCodes($subquestionsArray);
         $questionOrder = 0;
-        $subquestionIds = [];
-        foreach ($subquestionsArray as $subquestionArray) {
+        $subquestions = [];
+        foreach ($subquestionsArray as $subquestionId => $subquestionArray) {
             foreach ($subquestionArray as $scaleId => $data) {
-                $subquestion = null;
-                $code = $data['oldcode'] ?? ($data['code'] ?? null);
-                if (!isset($code)) {
-                    throw new BadRequestException(
-                        'Internal error: ' .
-                        'Missing mandatory field "code" for question'
-                    );
-                }
-
-                $subquestion = $this->modelQuestion->findByAttributes([
-                    'sid' => $question->sid,
-                    'parent_qid' => $question->qid,
-                    'title' => $code
-                ]);
-                if (!$subquestion) {
-                    if ($surveyActive) {
-                        throw new NotFoundException(
-                            'Subquestion with code "'
-                            . $code . '" not found'
-                        );
-                    } else {
-                        $subquestion = DI::getContainer()
-                            ->make(Question::class);
-                        $subquestion->title = $code;
-                    }
-                }
-                $subquestion->sid = $question->sid;
-                $subquestion->gid = $question->gid;
-                $subquestion->parent_qid = $question->qid;
-                $subquestion->question_order = $questionOrder;
-                $questionOrder++;
-
-                if ($scaleId === 0) {
-                    $subquestion->relevance = $data['relevance'];
-                }
-                $subquestion->scale_id = $scaleId;
-                if (!$subquestion->save()) {
-                    throw new PersistErrorException(
-                        'Could not save subquestion'
-                    );
-                }
-                $subquestion->refresh();
-                $subquestionIds[] = $subquestion->qid;
-                $this->updateSubquestionL10nService(
-                    $subquestion,
-                    $data['subquestionl10n']
+                $subquestion = $this->storeSubquestion(
+                    $question,
+                    $subquestionId,
+                    $scaleId,
+                    $data,
+                    $questionOrder,
+                    $surveyActive
                 );
+                $subquestions[] = $subquestion;
             }
         }
         if (false == $surveyActive) {
+            $subquestionIds = array_map(function ($subquestion) {
+                return $subquestion->qid;
+            }, $subquestions);
             $question->deleteAllSubquestions($subquestionIds);
         }
+    }
+
+    /**
+     * Save subquestion.
+     * Used when survey is *not* activated.
+     *
+     * @param Question $question
+     * @param int $subquestionId
+     * @param int $scaleId
+     * @param array $data
+     * @param int &$questionOrder
+     * @param boolean $surveyActive
+     * @return Question
+     * @throws PersistErrorException
+     * @throws BadRequestException
+     */
+    private function storeSubquestion(
+        Question $question,
+        $subquestionId,
+        $scaleId,
+        $data,
+        &$questionOrder,
+        $surveyActive = false
+    ) {
+        if (!isset($data['code'])) {
+            throw new BadRequestException('Internal error: Missing mandatory field "code" for question');
+        }
+        // If the subquestion with given code does not exist
+        // - but subquestion with old code exists, update it.
+        $subquestion = $this->modelQuestion->findByAttributes([
+            'qid' => $subquestionId,
+            'scale_id' => $scaleId,
+            'sid' => $question->sid,
+            'parent_qid' => $question->qid
+        ]);
+        if (!$subquestion) {
+            if ($surveyActive) {
+                throw new NotFoundException('Subquestion with id "' . $subquestionId . '" not found');
+            } else {
+                $subquestion = DI::getContainer()->make(Question::class);
+            }
+        }
+        $subquestion->title = $data['code'];
+        $subquestion->sid = $question->sid;
+        $subquestion->gid = $question->gid;
+        $subquestion->parent_qid = $question->qid;
+        $subquestion->question_order = $questionOrder;
+        $questionOrder++;
+        if ($scaleId === 0) {
+            $subquestion->relevance = $data['relevance'];
+        }
+        $subquestion->scale_id = $scaleId;
+        $subquestion->setScenario('saveall');
+        if (!$subquestion->save()) {
+            throw new PersistErrorException('Could not save subquestion');
+        }
+        $subquestion->refresh();
+        $this->updateSubquestionL10nService(
+            $subquestion,
+            $data['subquestionl10n']
+        );
+
+        return $subquestion;
     }
 
     /**
@@ -148,5 +202,32 @@ class SubQuestionsService
                 )
             );
         }
+    }
+
+    /**
+     * Deletes a subquestion.
+     *
+     * @param int $surveyId
+     * @param int $subQuestionId
+     * @throws NotFoundException|\CDbException
+     */
+    private function deleteSubquestion($surveyId, $subQuestionId)
+    {
+        $criteria = new \CDbCriteria();
+        $criteria->compare('qid', $subQuestionId);
+        $criteria->compare('sid', $surveyId);
+        $criteria->addNotInCondition('parent_qid', [0]);
+
+        $subQuestion = $this->modelQuestion->find($criteria);
+        if (empty($subQuestion)) {
+            throw new NotFoundException();
+        }
+        $subquestionL10ns = \QuestionL10n::model()->findAllByAttributes(
+            ['qid' => $subQuestionId]
+        );
+        foreach ($subquestionL10ns as $subquestionL10n) {
+            $subquestionL10n->delete();
+        }
+        $subQuestion->delete();
     }
 }

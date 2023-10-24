@@ -31,7 +31,7 @@ class GroupHelper
                 $qid = (int) substr($ID, 1);
                 $gid = (int) substr((string) $parent, 1);
                 if (!isset($aQuestionOrder[$gid])) {
-                    $aQuestionOrder[$gid] = 0;
+                    $aQuestionOrder[$gid] = 1;
                 }
 
                 $oQuestion = \Question::model()->findByPk($qid);

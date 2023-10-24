@@ -150,6 +150,36 @@ class User extends LSActiveRecord
     }
 
     /**
+     * @inheritDoc
+     * Delete user in related model after deletion
+     * return void
+     **/
+    protected function afterDelete()
+    {
+        parent::afterDelete();
+        /* Delete all permission */
+        Permission::model()->deleteAll(
+            "uid = :uid",
+            [":uid" => $this->uid]
+        );
+        /* Delete potential roles */
+        UserInPermissionrole::model()->deleteAll(
+            "uid = :uid",
+            [":uid" => $this->uid]
+        );
+        /* User settings */
+        SettingsUser::model()->deleteAll(
+            "uid = :uid",
+            [":uid" => $this->uid]
+        );
+        /* User in group */
+        UserInGroup::model()->deleteAll(
+            "uid = :uid",
+            [":uid" => $this->uid]
+        );
+    }
+
+    /**
      * @return string
      */
     public function getSurveysCreated()
@@ -457,8 +487,11 @@ class User extends LSActiveRecord
     public function getManagementButtons()
     {
         $permission_superadmin_read = Permission::model()->hasGlobalPermission('superadmin', 'read');
+        $permission_users_read = Permission::model()->hasGlobalPermission('users', 'read');
         $permission_users_update = Permission::model()->hasGlobalPermission('users', 'update');
         $permission_users_delete = Permission::model()->hasGlobalPermission('users', 'delete');
+        $userManager = new UserManager(App()->user, $this);
+
         // User is owned or created by you
         $ownedOrCreated = $this->parent_id == App()->session['loginID'];
 
@@ -480,7 +513,7 @@ class User extends LSActiveRecord
                 'data-href' => $detailUrl,
             ],
             'enabledCondition' =>
-                $permission_superadmin_read
+                $permission_superadmin_read || $permission_users_read
                 || ($permission_superadmin_read
                     && (Permission::isForcedSuperAdmin($this->uid)
                         || $this->uid == App()->user->getId()
@@ -525,12 +558,7 @@ class User extends LSActiveRecord
             'linkAttributes'   => [
                 'data-href' => $setRoleUrl,
             ],
-            'enabledCondition' =>
-                ($permission_superadmin_read
-                    && !(Permission::isForcedSuperAdmin($this->uid)
-                        || $this->uid == App()->user->getId()
-                    )
-                )
+            'enabledCondition' => $userManager->canAssignRole() && $this->uid != App()->user->getId()
         ];
         $dropdownItems[] = [
             'title'            => gT('Edit user'),

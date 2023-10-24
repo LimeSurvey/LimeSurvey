@@ -12,29 +12,31 @@ $aQuestionThemes = $oQuestionTheme->getAvailableQuestionThemes();
             <div id="templates_no_db" >
                 <table class="items table table-hover">
                     <thead>
-                    <tr>
-                        <th><?php eT('Preview'); ?></th>
-                        <th><?php eT('Folder'); ?></th>
-                        <th><?php eT('Description'); ?></th>
-                        <th><?php eT('Type'); ?></th>
-                        <th><?php eT('Extends'); ?></th>
-                        <th></th>
-                    </tr>
+                        <tr>
+                            <th><?php eT('Preview'); ?></th>
+                            <th><?php eT('Folder'); ?></th>
+                            <th><?php eT('Description'); ?></th>
+                            <th><?php eT('Type'); ?></th>
+                            <th><?php eT('Extends'); ?></th>
+                            <th></th>
+                        </tr>
                     </thead>
 
-            <tbody>
-            <?php foreach ($aQuestionThemes['available_themes'] as $oTheme): ?>
-                <tr class="odd">
-                    <td class="col-lg-1">preview</td>
-                    <td class="col-lg-2"><?php echo $oTheme->name; ?></td>
-                    <td class="col-lg-3"><?php echo $oTheme->description; ?></td>
-                    <td class="col-lg-2"><?php eT('XML themes'); ?></td>
-                    <td class="col-lg-2"><?php echo $oTheme->extends; ?></td>
-                    <td class="col-lg-1"><?php echo $oTheme->manifestbuttons; ?></td>
-                </tr>
-            <?php endforeach; ?>
-            </tbody>
-        </table>
+                    <tbody>
+                    <?php foreach ($aQuestionThemes['available_themes'] as $oTheme): ?>
+                        <tr class="odd">
+                            <td class="col-lg-1">preview</td>
+                            <td class="col-lg-2"><?php echo $oTheme->name; ?></td>
+                            <td class="col-lg-3"><?php echo $oTheme->description; ?></td>
+                            <td class="col-lg-2"><?php eT('XML themes'); ?></td>
+                            <td class="col-lg-2"><?php echo $oTheme->extends; ?></td>
+                            <td class="col-lg-1"><?php echo $oTheme->manifestbuttons; ?></td>
+                        </tr>
+                    <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 <?php endif; ?>
 
