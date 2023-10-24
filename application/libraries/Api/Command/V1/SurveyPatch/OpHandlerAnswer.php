@@ -54,7 +54,7 @@ class OpHandlerAnswer implements OpHandlerInterface
      * the patch.
      * Attention: Currently all answers not provided in the patch
      *            will be deleted by the service.
-     * Update and create is basically the same.
+     * All existing answers are needed independently from "update" or "create".
      * {
      *     "patch": [{
      *             "entity": "answer",
