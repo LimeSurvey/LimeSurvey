@@ -34,6 +34,27 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.3.0 (build 231016) to 6.3.1 (build 231023) October 23, 2023
+-Fixed issue: Failed emails resend vars column needs to be mediumtext for mysql (#3545) (Tim Willig)
+-Fixed issue: Adding cldr "fr_lu" for lb language (twilligls)
+-Fixed issue: Upgrade fails on old fruity templates with error message 'cannot assign property fixnum to null' (Carsten Schmitz)
+-Fixed issue: Survey sometimes not completely deactivated, throwing error for missing response table (Carsten Schmitz)
+-Fixed issue: Core plugins AzureOAuthSMTP & GoogleOAuthSMTP not properly listed as core plugins (Carsten Schmitz)
+-Fixed issue #CT-386: missing closing div caused blank page on simple statistics for questions with more than 70 labels (twilligls)
+-Fixed issue #CT-256: Problems with ini parsing for GTranslate.php (#3555) (Tim Willig)
+-Fixed issue #19180: SMTP settings are not enabled when SMTP is selected in global settings (#3551) (Matthew)
+-Fixed issue #19170: Inserting a subquestion/answer option creates multiple rows (#3535) (Matthew)
+-Fixed issue #19114: [security] Admin with Settings & Plugins permission only can store XSS in Survey menus (#3542) (Gabriel Jenik)
+#Updated translation: Slovak by jelen1
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Japanese by d_inoue
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Catalan by mymast, qualitatuvic
+
+
 Changes from 6.2.11 (build 231007) to 6.3.0 (build 231016) October 16, 2023
 +New feature #15664: Google OAuth plugin for emails (#3054) (Gabriel Jenik)
 -Fixed issue CR-1355: Image question types were gone on fresh install (#3518) (Tim Willig)
