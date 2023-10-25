@@ -27,12 +27,11 @@ class OpHandlerAnswer implements OpHandlerInterface
     protected QuestionService $questionService;
 
     public function __construct(
-        TransformerInputAnswer      $transformerAnswer,
+        TransformerInputAnswer $transformerAnswer,
         TransformerInputAnswerL10ns $transformerAnswerL10n,
-        AnswersService              $answersService,
-        QuestionService             $questionService
-    )
-    {
+        AnswersService $answersService,
+        QuestionService $questionService
+    ) {
         $this->entity = 'answer';
         $this->transformerAnswer = $transformerAnswer;
         $this->transformerAnswerL10n = $transformerAnswerL10n;
