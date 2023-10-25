@@ -9,7 +9,6 @@ use LimeSurvey\Api\Command\V1\Transformer\{
     Input\TransformerInputQuestionAggregate,
     Input\TransformerInputQuestionAttribute,
     Input\TransformerInputQuestionL10ns,
-    Input\TransformerInputSubQuestion
 };
 use LimeSurvey\ObjectPatch\{
     Op\OpInterface,
@@ -32,7 +31,6 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
     protected TransformerInputQuestionAttribute $transformerAttribute;
     protected TransformerInputAnswer $transformerAnswer;
     protected TransformerInputAnswerL10ns $transformerAnswerL10n;
-    protected TransformerInputSubQuestion $transformerSubQuestion;
     protected TransformerInputQuestionAggregate $transformerInputQuestionAggregate;
 
     public function __construct(
@@ -42,7 +40,6 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
         TransformerInputQuestionAttribute $transformerAttribute,
         TransformerInputAnswer $transformerAnswer,
         TransformerInputAnswerL10ns $transformerAnswerL10n,
-        TransformerInputSubQuestion $transformerSubQuestion,
         TransformerInputQuestionAggregate $transformerInputQuestionAggregate
     ) {
         $this->entity = 'question';
@@ -52,7 +49,6 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
         $this->transformerAttribute = $transformerAttribute;
         $this->transformerAnswer = $transformerAnswer;
         $this->transformerAnswerL10n = $transformerAnswerL10n;
-        $this->transformerSubQuestion = $transformerSubQuestion;
         $this->transformerInputQuestionAggregate = $transformerInputQuestionAggregate;
     }
 
@@ -277,7 +273,7 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
             case 'subquestions':
                 return $this->prepareSubQuestions(
                     $op,
-                    $this->transformerSubQuestion,
+                    $this->transformer,
                     $this->transformerL10n,
                     $data
                 );

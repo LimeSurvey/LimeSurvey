@@ -4,9 +4,9 @@ namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputAnswer;
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputAnswerL10ns;
+use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestion;
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestionAttribute;
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestionL10ns;
-use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputSubQuestion;
 use LimeSurvey\ObjectPatch\Op\OpInterface;
 use LimeSurvey\ObjectPatch\OpHandler\OpHandlerException;
 
@@ -204,8 +204,8 @@ trait OpHandlerQuestionTrait
     /**
      * Converts the subquestions from the raw data to the expected format.
      * @param OpInterface $op
-     * @param TransformerInputSubQuestion $transformerSubQuestion
-     * @param TransformerInputQuestionL10ns $transformerQuestionL10n
+     * @param TransformerInputQuestion $transformerQuestion
+     * @param TransformerInputQuestionL10ns $transformerL10n
      * @param array|null $data
      * @param array|null $additionalRequiredEntities
      * @return array
@@ -213,7 +213,7 @@ trait OpHandlerQuestionTrait
      */
     private function prepareSubQuestions(
         OpInterface $op,
-        TransformerInputSubQuestion $transformerSubQuestion,
+        TransformerInputQuestion $transformerQuestion,
         TransformerInputQuestionL10ns $transformerL10n,
         ?array $data,
         ?array $additionalRequiredEntities = null
@@ -221,9 +221,12 @@ trait OpHandlerQuestionTrait
         $preparedSubQuestions = [];
         if (is_array($data)) {
             foreach ($data as $index => $subQuestion) {
-                $tfSubQuestion = $transformerSubQuestion->transform(
+                $tfSubQuestion = $transformerQuestion->transform(
                     $subQuestion
                 );
+                if (array_key_exists('title', $tfSubQuestion)) {
+                    $tfSubQuestion['code'] = $tfSubQuestion['title'];
+                }
                 $this->checkRequiredData(
                     $op,
                     $tfSubQuestion,

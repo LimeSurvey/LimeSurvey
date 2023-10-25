@@ -18,7 +18,6 @@ class TransformerInputQuestion extends Transformer
             'parentQid' => ['key' => 'parent_qid', 'type' => 'int'],
             'sid' => ['type' => 'int'],
             'type' => true,
-            'oldCode' => 'oldcode',
             'title' => true,
             'preg' => true,
             'other' => ['formatter' => $formatterYn],

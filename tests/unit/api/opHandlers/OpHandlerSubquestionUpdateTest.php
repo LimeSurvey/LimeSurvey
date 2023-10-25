@@ -4,7 +4,7 @@ namespace ls\tests\unit\api\opHandlers;
 
 use LimeSurvey\Api\Command\V1\SurveyPatch\OpHandlerSubQuestion;
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestionL10ns;
-use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputSubQuestion;
+use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestion;
 use LimeSurvey\Models\Services\QuestionAggregateService;
 use LimeSurvey\ObjectPatch\{
     Op\OpInterface,
@@ -114,7 +114,7 @@ class OpHandlerSubquestionUpdateTest extends TestBaseClass
             $mockSubQuestionsService,
             $mockQuestionService,
             new TransformerInputQuestionL10ns(),
-            new TransformerInputSubQuestion()
+            new TransformerInputQuestion()
         );
     }
 }

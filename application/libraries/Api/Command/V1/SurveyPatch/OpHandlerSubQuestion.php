@@ -3,7 +3,7 @@
 namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
 use LimeSurvey\Api\Command\V1\Transformer\Input\{
-    TransformerInputSubQuestion,
+    TransformerInputQuestion,
     TransformerInputQuestionL10ns
 };
 use LimeSurvey\Models\Services\{
@@ -33,7 +33,7 @@ class OpHandlerSubQuestion implements OpHandlerInterface
     protected QuestionAggregateService $questionAggregateService;
     protected SubQuestionsService $subQuestionsService;
     protected QuestionService $questionService;
-    protected TransformerInputSubQuestion $transformer;
+    protected TransformerInputQuestion $transformer;
     protected TransformerInputQuestionL10ns $transformerL10ns;
 
     public function __construct(
@@ -41,7 +41,7 @@ class OpHandlerSubQuestion implements OpHandlerInterface
         SubQuestionsService $subQuestionsService,
         QuestionService $questionService,
         TransformerInputQuestionL10ns $transformerL10n,
-        TransformerInputSubQuestion $transformer
+        TransformerInputQuestion $transformer
     ) {
         $this->questionAggregateService = $questionAggregateService;
         $this->subQuestionsService = $subQuestionsService;
@@ -68,10 +68,7 @@ class OpHandlerSubQuestion implements OpHandlerInterface
     /**
      * Handle subquestion create or update operation.
      * Attention: subquestions not present in the patch will be deleted.
-     * For a proper update the props should contain "oldCode"
-     * additional to the "title". If "oldCode" is not provided,
-     * the SubQuestionService will do a create operation.
-     * Expects a patch structure like this:
+     * Expects a patch structure like this for update:
      * {
      *     "patch": [{
      *             "entity": "subquestion",
@@ -80,7 +77,6 @@ class OpHandlerSubQuestion implements OpHandlerInterface
      *             "props": {
      *                 "0": {
      *                     "qid": 728,
-     *                     "oldCode": "SQ001",
      *                     "title": "SQ001new",
      *                     "l10ns": {
      *                         "de": {
@@ -95,7 +91,6 @@ class OpHandlerSubQuestion implements OpHandlerInterface
      *                 },
      *                 "1": {
      *                     "qid": 729,
-     *                     "oldCode": "SQ002",
      *                     "title": "SQ002new",
      *                     "l10ns": {
      *                         "de": {
@@ -104,6 +99,44 @@ class OpHandlerSubQuestion implements OpHandlerInterface
      *                         },
      *                         "en": {
      *                             "question": "sub2updated",
+     *                             "language": "en"
+     *                         }
+     *                     }
+     *                 }
+     *             }
+     *         }
+     *     ]
+     * }
+     *
+     * Expects a patch structure like this for update:
+     * {
+     *     "patch": [{
+     *             "entity": "subquestion",
+     *             "op": "create",
+     *             "id": 722,
+     *             "props": {
+     *                 "0": {
+     *                     "title": "SQ011",
+     *                     "l10ns": {
+     *                         "de": {
+     *                             "question": "germanized1",
+     *                             "language": "de"
+     *                         },
+     *                         "en": {
+     *                             "question": "englishized",
+     *                             "language": "en"
+     *                         }
+     *                     }
+     *                 },
+     *                 "1": {
+     *                     "title": "SQ012",
+     *                     "l10ns": {
+     *                         "de": {
+     *                             "question": "germanized2",
+     *                             "language": "de"
+     *                         },
+     *                         "en": {
+     *                             "question": "englishized2",
      *                             "language": "en"
      *                         }
      *                     }
