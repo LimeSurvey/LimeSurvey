@@ -56,7 +56,16 @@ class Patcher
             if (!$opHandler->canHandle($op)) {
                 continue;
             }
-            $opHandler->handle($op);
+            if ($opHandler->isValidPatch($op)) {
+                $opHandler->handle($op);
+            } else {
+                throw new ObjectPatchException(
+                    sprintf(
+                        'Invalid patch for handler (entityType: %s)',
+                        $op->getEntityType()
+                    )
+                );
+            }
             $handled = true;
             break;
         }

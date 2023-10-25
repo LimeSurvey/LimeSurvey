@@ -84,4 +84,17 @@ class OpHandlerQuestionGroupL10n implements OpHandlerInterface
             )
         );
     }
+
+    /**
+     * Checks if patch is valid for this operation.
+     * @param OpInterface $op
+     * @return bool
+     */
+    public function isValidPatch(OpInterface $op): bool
+    {
+        // TODO: Implement isValidPatch() method.
+        return true;
+    }
+
+
 }
