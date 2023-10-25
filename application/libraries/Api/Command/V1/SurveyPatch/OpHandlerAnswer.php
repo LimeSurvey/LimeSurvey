@@ -11,7 +11,8 @@ use LimeSurvey\ObjectPatch\{Op\OpInterface,
     OpType\OpTypeCreate,
     OpHandler\OpHandlerException,
     OpHandler\OpHandlerInterface,
-    OpType\OpTypeUpdate};
+    OpType\OpTypeUpdate
+};
 use LimeSurvey\Models\Services\QuestionAggregateService\AnswersService;
 
 class OpHandlerAnswer implements OpHandlerInterface
@@ -26,11 +27,12 @@ class OpHandlerAnswer implements OpHandlerInterface
     protected QuestionService $questionService;
 
     public function __construct(
-        TransformerInputAnswer $transformerAnswer,
+        TransformerInputAnswer      $transformerAnswer,
         TransformerInputAnswerL10ns $transformerAnswerL10n,
-        AnswersService $answersService,
-        QuestionService $questionService
-    ) {
+        AnswersService              $answersService,
+        QuestionService             $questionService
+    )
+    {
         $this->entity = 'answer';
         $this->transformerAnswer = $transformerAnswer;
         $this->transformerAnswerL10n = $transformerAnswerL10n;
@@ -113,17 +115,15 @@ class OpHandlerAnswer implements OpHandlerInterface
             $this->getSurveyIdFromContext($op),
             $op->getEntityId()
         );
-        if ($question) {
-            $this->answersService->save(
-                $question,
-                $this->prepareAnswers(
-                    $op,
-                    $op->getProps(),
-                    $this->transformerAnswer,
-                    $this->transformerAnswerL10n,
-                    ['answer', 'answerL10n']
-                )
-            );
-        }
+        $this->answersService->save(
+            $question,
+            $this->prepareAnswers(
+                $op,
+                $op->getProps(),
+                $this->transformerAnswer,
+                $this->transformerAnswerL10n,
+                ['answer', 'answerL10n']
+            )
+        );
     }
 }

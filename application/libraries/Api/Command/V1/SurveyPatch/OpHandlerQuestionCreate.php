@@ -267,15 +267,12 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
             case 'attributes':
                 return $this->prepareAdvancedSettings(
                     $op,
-                    $this->transformerAttribute,
                     $data
                 );
             case 'answers':
                 return $this->prepareAnswers(
                     $op,
                     $data,
-                    $this->transformerAnswer,
-                    $this->transformerAnswerL10n
                 );
             case 'subquestions':
                 return $this->prepareSubQuestions($op, $data);
