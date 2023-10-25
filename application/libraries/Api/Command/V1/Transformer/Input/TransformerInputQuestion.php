@@ -2,16 +2,16 @@
 
 namespace LimeSurvey\Api\Command\V1\Transformer\Input;
 
-use LimeSurvey\Api\Transformer\{
+use LimeSurvey\Api\Transformer\{Formatter\FormatterMandatory,
     Transformer,
-    Formatter\FormatterYnToBool
-};
+    Formatter\FormatterYnToBool};
 
 class TransformerInputQuestion extends Transformer
 {
     public function __construct()
     {
         $formatterYn = new FormatterYnToBool(true);
+        $formatterMandatory = new FormatterMandatory();
 
         $this->setDataMap([
             'qid' => ['type' => 'int'],
@@ -21,7 +21,7 @@ class TransformerInputQuestion extends Transformer
             'title' => true,
             'preg' => true,
             'other' => ['formatter' => $formatterYn],
-            'mandatory' => ['formatter' => $formatterYn],
+            'mandatory' => ['formatter' => $formatterMandatory],
             'encrypted' => ['formatter' => $formatterYn],
             'questionOrder' => ['key' => 'question_order', 'type' => 'int'],
             'sortOrder' => ['key' => 'question_order', 'type' => 'int'],
