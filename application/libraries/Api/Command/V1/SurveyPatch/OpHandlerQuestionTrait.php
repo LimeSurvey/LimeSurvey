@@ -224,7 +224,12 @@ trait OpHandlerQuestionTrait
                 $tfSubQuestion = $transformerQuestion->transform(
                     $subQuestion
                 );
-                if (array_key_exists('title', $tfSubQuestion)) {
+                if (
+                    is_array($tfSubQuestion) && array_key_exists(
+                        'title',
+                        $tfSubQuestion
+                    )
+                ) {
                     $tfSubQuestion['code'] = $tfSubQuestion['title'];
                 }
                 $this->checkRequiredData(
