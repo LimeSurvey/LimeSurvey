@@ -267,11 +267,13 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
             case 'attributes':
                 return $this->prepareAdvancedSettings(
                     $op,
-                    $this->transformerAttribute,
                     $data
                 );
             case 'answers':
-                return $this->prepareAnswers($op, $data);
+                return $this->prepareAnswers(
+                    $op,
+                    $data,
+                );
             case 'subquestions':
                 return $this->prepareSubQuestions($op, $data);
         }
@@ -325,6 +327,48 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
         }
 
         return $preparedL10n;
+    }
+
+    /**
+     * Converts the advanced settings from the raw data to the expected format.
+     * @param OpInterface $op
+     * @param array|null $data
+     * @return array
+     * @throws OpHandlerException
+     */
+    private function prepareAdvancedSettings(
+        OpInterface $op,
+        ?array $data
+    ): array {
+        $preparedSettings = [];
+        if (is_array($data)) {
+            foreach ($data as $attrName => $languages) {
+                foreach ($languages as $lang => $advancedSetting) {
+                    $transformedSetting = $this->transformerAttribute->transform(
+                        $advancedSetting
+                    );
+                    $this->checkRequiredData(
+                        $op,
+                        $transformedSetting,
+                        'attributes'
+                    );
+                    if (
+                        is_array($transformedSetting) && array_key_exists(
+                            'value',
+                            $transformedSetting
+                        )
+                    ) {
+                        $value = $transformedSetting['value'];
+                        if ($lang !== '') {
+                            $preparedSettings[0][$attrName][$lang] = $value;
+                        } else {
+                            $preparedSettings[0][$attrName] = $value;
+                        }
+                    }
+                }
+            }
+        }
+        return $preparedSettings;
     }
 
     /**
