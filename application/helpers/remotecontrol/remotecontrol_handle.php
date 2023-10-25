@@ -286,11 +286,15 @@ class remotecontrol_handle
      * @param string $sSessionKey Auth credentials
      * @param int $iSurveyID_org Id of the source survey
      * @param string $sNewname name of the new survey
+     * @param integer $DestSurveyID  (optional) This is the new ID of the survey - if already used a random one will be taken instead
      * @return array On success: new $iSurveyID in array['newsid']. On failure array with error information
      * */
-    public function copy_survey($sSessionKey, $iSurveyID_org, $sNewname)
+    public function copy_survey($sSessionKey, $iSurveyID_org, $sNewname, $DestSurveyID = null)
     {
         $iSurveyID = (int) $iSurveyID_org;
+        if (!is_null($DestSurveyID)) {
+            $DestSurveyID = (int) $DestSurveyID;
+        }
         if (!$this->_checkSessionKey($sSessionKey)) {
             return array('status' => self::INVALID_SESSION_KEY);
         }
@@ -313,7 +317,7 @@ class remotecontrol_handle
             $copysurveydata = surveyGetXMLData($iSurveyID, $aExcludes);
             if ($copysurveydata) {
                 Yii::app()->loadHelper('admin/import');
-                $aImportResults = XMLImportSurvey('', $copysurveydata, $sNewSurveyName, null, $btranslinksfields);
+                $aImportResults = XMLImportSurvey('', $copysurveydata, $sNewSurveyName, $DestSurveyID, $btranslinksfields);
                 if (isset($aExcludes['conditions'])) {
                     Question::model()->updateAll(array('relevance' => '1'), 'sid=' . $aImportResults['newsid']);
                     QuestionGroup::model()->updateAll(array('grelevance' => '1'), 'sid=' . $aImportResults['newsid']);
