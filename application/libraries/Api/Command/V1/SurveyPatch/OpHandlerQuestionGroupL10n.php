@@ -95,6 +95,4 @@ class OpHandlerQuestionGroupL10n implements OpHandlerInterface
         // TODO: Implement isValidPatch() method.
         return true;
     }
-
-
 }
