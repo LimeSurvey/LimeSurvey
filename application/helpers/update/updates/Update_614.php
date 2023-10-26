@@ -49,10 +49,10 @@ class Update_614 extends DatabaseUpdateBase
                     } elseif ($templateConfiguration['template_name'] == 'bootswatch') {
                         $sOptionsJson = $templateConfiguration['options'];
                         $oOldOptions = json_decode($sOptionsJson);
-                        if (empty($oOldOptions->hideprivacyinfo)) {
+                        if (!isset($oOldOptions->hideprivacyinfo) || empty($oOldOptions->hideprivacyinfo)) {
                             $oOldOptions->hideprivacyinfo = 'off';
                         }
-                        if (empty($oOldOptions->fixnumauto)) {
+                        if (!isset($oOldOptions->fixnumauto) || empty($oOldOptions->fixnumauto)) {
                             $oOldOptions->fixnumauto = 'enable';
                         }
                         $oNewOtionsJson = json_encode($oOldOptions);
