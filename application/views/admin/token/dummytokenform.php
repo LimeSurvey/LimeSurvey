@@ -24,7 +24,7 @@
                 <div class="mb-3 col-6">
                     <label  class=" form-label" for='amount'><?php eT("Number of participants:"); ?></label>
                     <div class="">
-                        <input class='form-control' type='text' size='20' id='amount' name='amount' value="<?php echo $amount; ?>" />
+                        <input class='form-control' type='number' min='1' size='20' id='amount' name='amount' value="<?php echo $amount; ?>" />
                     </div>
                 </div>
 
