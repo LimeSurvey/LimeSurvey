@@ -52,7 +52,7 @@
                     $uploadSummary .= "<div class='badtokenlist' id='invalidemaillist'><ul>";
                     foreach ($invalidemaillist as $data)
                     {
-                        $uploadSummary.= "<li>" . $data . "</li>";
+                        $uploadSummary.= "<li>" . CHtml::encode($data) . "</li>";
                     }
                     $uploadSummary .= "</ul></div></li>";
                 }
@@ -62,7 +62,7 @@
                     $uploadSummary .="<div class='badtokenlist' id='invalidattributelist' ><ul>";
                     foreach ($invalidattribute as $data)
                     {
-                        $uploadSummary.= "<li>" . $data . "</li>";
+                        $uploadSummary.= "<li>" . CHtml::encode($data) . "</li>";
                     }
                     $uploadSummary .= "</ul></div></li>";
                 }
