@@ -1124,7 +1124,7 @@ class UserManagementController extends LSBaseController
         $iUserGroupId = intval(App()->request->getPost('addtousergroup'));
         $oUserGroup = UserGroup::model()->findByPk($iUserGroupId);
 
-        if ($iUserGroupId && $oUserGroup) {
+        if (!$iUserGroupId || !$oUserGroup) {
             return $this->renderPartial(
                 'partial/error',
                 ['errors' => [gT("Group not found")], 'noButton' => true]
