@@ -67,14 +67,10 @@ class UserManagementController extends LSBaseController
             false
         );
 
-        $oEvent = new PluginEvent('beforeAdminUserActivation');
-        $oEvent->set('request', App()->request);
-        App()->getPluginManager()->dispatchEvent($oEvent);
-        $isUserLimitReached = $oEvent->get('disable', null);
 
         $aData['topbar']['title'] = gT('User management');
         $aData['topbar']['backLink'] = App()->createUrl('admin/index');
-        $aData['topbar']['middleButtons'] = $this->renderPartial('partial/topbarBtns/leftSideButtons', ['showUpgradeModal' => $isUserLimitReached], true);
+        $aData['topbar']['middleButtons'] = $this->renderPartial('partial/topbarBtns/leftSideButtons', [], true);
 
         //this is really important, so we have the aData also before rendering the content
         $this->aData = $aData;
@@ -433,10 +429,7 @@ class UserManagementController extends LSBaseController
     public function actionActivationConfirm()
     {
         if (!Permission::model()->hasGlobalPermission('users', 'update')) {
-            return $this->renderPartial(
-                'partial/error',
-                ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
-            );
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
         $userId = Yii::app()->request->getParam('userid');
         $action = Yii::app()->request->getParam('action');
@@ -468,10 +461,7 @@ class UserManagementController extends LSBaseController
     public function actionUserActivateDeactivate()
     {
         if (!Permission::model()->hasGlobalPermission('users', 'delete')) {
-            return $this->renderPartial(
-                'partial/error',
-                ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
-            );
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
         $userId = sanitize_int(Yii::app()->request->getParam('userid'));
         $action = Yii::app()->request->getParam('action');
@@ -520,27 +510,12 @@ class UserManagementController extends LSBaseController
     public function actionBatchStatus()
     {
         if (!Permission::model()->hasGlobalPermission('users', 'update')) {
-            return $this->renderPartial(
-                'partial/error',
-                ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
-            );
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
 
         $userIds = json_decode(Yii::app()->request->getPost('sItems', "[]"));
         $status = Yii::app()->request->getPost('status_selector', '');
-
-        $oEvent = new PluginEvent('beforeAdminUserActivation');
-        $oEvent->set('request', App()->request);
-        App()->getPluginManager()->dispatchEvent($oEvent);
-        if (!empty($oEvent->get('limit'))) {
-            $limit = $oEvent->get('limit');
-        }
-
-        if (isset($limit)) {
-            $results = $this->limitedUserActivation($userIds, $status, $limit);
-        } else {
-            $results = $this->unlimitedUserActivation($userIds, $status);
-        }
+        $results = $this->unlimitedUserActivation($userIds, $status);
 
         $error = null;
         foreach ($results as $result) {

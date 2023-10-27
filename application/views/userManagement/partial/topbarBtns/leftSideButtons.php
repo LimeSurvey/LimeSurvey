@@ -6,11 +6,6 @@ if (Permission::model()->hasGlobalPermission('users', 'create')) {
         'data-bs-toggle' => 'modal',
         'data-href' => $this->createUrl("userManagement/addEditUser")
     ];
-
-    if ($showUpgradeModal) {
-        $userHtmlOptions['data-stackmodal'] = "#modalPlanUpgrade";
-    }
-
     $this->widget(
         'ext.ButtonWidget.ButtonWidget',
         [
@@ -27,9 +22,6 @@ if (Permission::model()->hasGlobalPermission('users', 'create')) {
         'data-bs-toggle' => 'modal',
         'data-href' => $this->createUrl("userManagement/addDummyUser")
     ];
-    if ($showUpgradeModal) {
-        $dummyUserHtmlOptions['data-stackmodal'] = "#modalPlanUpgrade";
-    }
     $this->widget(
         'ext.ButtonWidget.ButtonWidget',
         [
