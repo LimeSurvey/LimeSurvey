@@ -1014,21 +1014,23 @@ class UserManagementController extends LSBaseController
             $aResults[$user]['title'] = $oUser->users_name;
             //User should not reset and resend  email to himself throw massive action
             if ($oUser->uid == Yii::app()->user->id) {
+                $aResults[$user]['result'] = false;
                 $aResults[$user]['error'] = gT("Error! Please change your password from your profile settings.");
-            } else {
-                //not modify original superuser
-                if ($oUser->uid == 1) {
-                    $aResults[$user]['error'] = gT("Error! You do not have the permission to edit this user.");
-                } else {
-                    $passwordManagement = new \LimeSurvey\Models\Services\PasswordManagement($oUser);
-                    $successData = $passwordManagement->sendPasswordLinkViaEmail(\LimeSurvey\Models\Services\PasswordManagement::EMAIL_TYPE_RESET_PW);
-                    $success = $successData['success'];
-                    if (!$success) {
-                        $aResults[$user]['error'] = sprintf(gT("Error: New password could not be sent to %s"), $oUser->email);
-                    }
-                    $aResults[$user]['result'] = $success;
-                }
+                continue;
             }
+            $userManager = new UserManager(Yii::app()->user, $oUser);
+            if (!$userManager->canEdit()) {
+                $success = false;
+                $aResults[$user]['error'] = gT("Error! You do not have the permission to edit this user.");
+                continue;
+            }
+            $passwordManagement = new \LimeSurvey\Models\Services\PasswordManagement($oUser);
+            $successData = $passwordManagement->sendPasswordLinkViaEmail(\LimeSurvey\Models\Services\PasswordManagement::EMAIL_TYPE_RESET_PW);
+            $success = $successData['success'];
+            if (!$success) {
+                $aResults[$user]['error'] = sprintf(gT("Error: New password could not be sent to %s"), $oUser->email);
+            }
+            $aResults[$user]['result'] = $success;
         }
 
         $tableLabels = array(gT('User ID'), gT('Username'), gT('Status'));
@@ -1062,11 +1064,24 @@ class UserManagementController extends LSBaseController
         $aPermissions = Yii::app()->request->getPost('Permission', []);
         $results = [];
         foreach ($userIds as $iUserId) {
-            $aPermissionsResults = $this->applyPermissionFromArray($iUserId, $aPermissions);
             $oUser = User::model()->findByPk($iUserId);
+            $results[$iUserId] = [
+                'title' => $oUser->users_name
+            ];
+            if ($oUser->uid == Yii::app()->user->id) {
+                $aResults[$user]['result'] = false;
+                $aResults[$user]['error'] = gT("You can not update your own permission.");
+                continue;
+            }
+            $userManager = new UserManager(Yii::app()->user, User::model()->findByPk($iUserId));
+            if (!$userManager->canAssignPermissions()) {
+                $results[$iUserId]['result'] = false;
+                $results[$iUserId]['error'] = gT("You do not have permission to this user.");
+                continue;
+            }
+            $aPermissionsResults = $this->applyPermissionFromArray($iUserId, $aPermissions);
             $oUser->modified = date('Y-m-d H:i:s');
             $results[$iUserId]['result'] = $oUser->save();
-            $results[$iUserId]['title'] = $oUser->users_name;
             foreach ($aPermissionsResults as $aPermissionsResult) {
                 if (!$aPermissionsResult['success']) {
                     $results[$iUserId]['result'] = false;
@@ -1153,8 +1168,7 @@ class UserManagementController extends LSBaseController
      */
     public function actionBatchApplyRoles()
     {
-        /* Need super admin roles */
-        if (!Permission::model()->hasGlobalPermission('superadmin')) {
+        if (!Permission::model()->hasGlobalPermission('superadmin', 'create')) {
             return $this->renderPartial(
                 'partial/error',
                 ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
@@ -1168,11 +1182,15 @@ class UserManagementController extends LSBaseController
             $aResults[$sItem]['title'] = '';
             $model = $this->loadModel($sItem);
             $aResults[$sItem]['title'] = $model->users_name;
-
-            if (Permission::isForcedSuperAdmin($sItem)) {
-                /* Show an error for forced super admin, this don't disable for DB superadmin */
+            if ($model->uid == Yii::app()->user->id) {
+                $aResults[$user]['result'] = false;
+                $aResults[$user]['error'] = gT("You can not update your own roles.");
+                continue;
+            }
+            $userManager = new UserManager(Yii::app()->user, $model);
+            if (!$userManager->canAssignRole()) {
                 $aResults[$sItem]['result'] = false;
-                $aResults[$sItem]['error'] = gT('The superadmin role cannot be changed.');
+                $aResults[$sItem]['error'] = gT('You can not set role to this user.');
             } else {
                 foreach ($aUserRoleIds as $iUserRoleId) {
                     $aResults[$sItem]['result'] = Permissiontemplates::model()->applyToUser($sItem, $iUserRoleId);
