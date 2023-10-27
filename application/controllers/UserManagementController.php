@@ -1121,35 +1121,38 @@ class UserManagementController extends LSBaseController
             );
         }
         $aItems = json_decode(Yii::app()->request->getPost('sItems', []));
-        $iUserGroupId = Yii::app()->request->getPost('addtousergroup');
+        $iUserGroupId = intval(App()->request->getPost('addtousergroup'));
+        $oUserGroup = UserGroup::model()->findByPk($iUserGroupId);
 
-        if ($iUserGroupId) {
-            $oUserGroup = UserGroup::model()->findByPk($iUserGroupId);
-            $aResults = [];
+        if ($iUserGroupId && $oUserGroup) {
+            return $this->renderPartial(
+                'partial/error',
+                ['errors' => [gT("Group not found")], 'noButton' => true]
+            );
+        }
+        /* see UserGroupController->checkBeforeAddDeleteUser */
+        if (!Permission::model()->hasGlobalPermission('superadmin', 'read') && $oUserGroup->owner_id != App()->getCurrentUserId()) {
+            return $this->renderPartial(
+                'partial/error',
+                ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
+            );
+        }
 
-            foreach ($aItems as $sItem) {
-                $aResults[$sItem]['title'] = '';
-                $model = $this->loadModel($sItem);
-                $aResults[$sItem]['title'] = $model->users_name;
-                if (!$oUserGroup->hasUser($sItem)) {
-                    $aResults[$sItem]['result'] = $oUserGroup->addUser($sItem);
-                } else {
-                    $aResults[$sItem]['result'] = false;
-                    $aResults[$sItem]['error'] = gT('User is already a member of the group.');
-                }
-            }
-        } else {
-            foreach ($aItems as $sItem) {
-                $aResults[$sItem]['title'] = '';
-                $model = $this->loadModel($sItem);
-                $aResults[$sItem]['title'] = $model->users_name;
+        /* @var array construct ressult for each user */
+        $aResults = [];
+        foreach ($aItems as $sItem) {
+            $aResults[$sItem]['title'] = '';
+            $model = $this->loadModel($sItem);
+            $aResults[$sItem]['title'] = $model->users_name;
+            if (!$oUserGroup->hasUser($sItem)) {
+                $aResults[$sItem]['result'] = $oUserGroup->addUser($sItem);
+            } else {
                 $aResults[$sItem]['result'] = false;
-                $aResults[$sItem]['error'] = gT('No user group selected.');
+                $aResults[$sItem]['error'] = gT('User is already a member of the group.');
             }
         }
 
         $tableLabels = array(gT('User ID'), gT('Username'), gT('Status'));
-
         Yii::app()->getController()->renderPartial(
             'ext.admin.survey.ListSurveysWidget.views.massive_actions._action_results',
             array(
