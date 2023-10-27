@@ -55,7 +55,7 @@ if (empty($errorinupload)) {
             $warningSummary .= "<li style='width: 400px'>" . sprintf(gT("%s records with invalid email address removed"), count($invalidemaillist));
             $warningSummary .= "<div class='badtokenlist' id='invalidemaillist'><ul>";
             foreach ($invalidemaillist as $data) {
-                $warningSummary .= "<li>" . $data . "</li>";
+                $warningSummary .= "<li>" . CHtml::encode($data) . "</li>";
             }
             $warningSummary .= "</ul></div></li>";
         }
@@ -63,7 +63,7 @@ if (empty($errorinupload)) {
             $warningSummary .= "<li style='width: 400px'>" . sprintf(gT("%s records have incomplete or wrong attribute values"), count($invalidattribute));
             $warningSummary .= "<div class='badtokenlist' id='invalidattributelist' ><ul>";
             foreach ($invalidattribute as $data) {
-                $warningSummary .= "<li>" . $data . "</li>";
+                $warningSummary .= "<li>" . CHtml::encode($data) . "</li>";
             }
             $warningSummary .= "</ul></div></li>";
         }
