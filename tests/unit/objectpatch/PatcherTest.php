@@ -37,7 +37,8 @@ class PatcherTest extends TestBaseClass
 
         $patcher = new Patcher();
         $patcher->addOpHandler($opHandler);
-        $operationsApplied = $patcher->applyPatch($patch);
+        $returnedData = $patcher->applyPatch($patch);
+        $operationsApplied = $returnedData['operationsApplied'];
 
         $this->assertEquals(1, $operationsApplied);
     }
@@ -59,7 +60,8 @@ class PatcherTest extends TestBaseClass
         ];
 
         $patcher = new Patcher();
-        $operationsApplied = $patcher->applyPatch($patch);
+        $returnedData = $patcher->applyPatch($patch);
+        $operationsApplied = $returnedData['operationsApplied'];
 
         $this->assertEquals(0, $operationsApplied);
     }

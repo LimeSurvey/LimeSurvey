@@ -15,8 +15,9 @@ class Patcher
      *
      * @throws ObjectPatchException
      */
-    public function applyPatch($patch, $context = []): int
+    public function applyPatch($patch, $context = []): array
     {
+        $returnedData = [];
         $operationsApplied = 0;
         if (is_array($patch) && !empty($patch)) {
             foreach ($patch as $patchOpData) {
@@ -27,11 +28,11 @@ class Patcher
                     $patchOpData['props'] ?? null,
                     $context ?? null
                 );
-                $this->handleOp($op);
+                $returnedData[] = $this->handleOp($op);
                 $operationsApplied++;
             }
         }
-        return $operationsApplied;
+        return $this->reorganizeReturnedData($returnedData, $operationsApplied);
     }
 
     /**
@@ -47,16 +48,19 @@ class Patcher
      * Apply operation
      *
      * @param OpInterface $op
+     * @return array
      * @throws ObjectPatchException
      */
-    private function handleOp(OpInterface $op): void
+    private function handleOp(OpInterface $op): array
     {
         $handled = false;
+        $returnedData = [];
         foreach ($this->opHandlers as $opHandler) {
             if (!$opHandler->canHandle($op)) {
                 continue;
             }
-            $opHandler->handle($op);
+            $return = $opHandler->handle($op);
+            $returnedData = is_array($return) ? $return : [];
             $handled = true;
             break;
         }
@@ -71,5 +75,27 @@ class Patcher
                 )
             );
         }
+        return $returnedData;
+    }
+
+    /**
+     * Moves mappings of tempIds and their real ids of same object types
+     * together for a more structured return to the client.
+     * @param array $returnedData
+     * @param int $operationsApplied
+     * @return array
+     */
+    private function reorganizeReturnedData(
+        array $returnedData,
+        int $operationsApplied
+    ): array {
+        $organizedData = [];
+        foreach ($returnedData as $dataSet) {
+            foreach ($dataSet as $mapName => $mapping) {
+                $organizedData[$mapName][] = $mapping;
+            }
+        }
+        $organizedData['operationsApplied'] = $operationsApplied;
+        return $organizedData;
     }
 }

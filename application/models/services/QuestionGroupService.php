@@ -483,6 +483,7 @@ class QuestionGroupService
     public function newQuestionGroup(int $surveyId, array $aQuestionGroupData = null)
     {
         $survey = $this->getSurvey($surveyId);
+        $this->refreshModels();
         $aQuestionGroupData = array_merge([
             'sid' => $survey->sid,
         ], $aQuestionGroupData);
@@ -529,11 +530,23 @@ class QuestionGroupService
     private function getSurvey(int $surveyId)
     {
         $survey = $this->modelSurvey->findByPk($surveyId);
+        $survey->refresh();
         if (!$survey) {
             throw new NotFoundException(
                 'Survey does not exist',
             );
         }
         return $survey;
+    }
+
+    /**
+     * Resets questionGroup model for cases
+     * when multiple groups are created simultaneously
+     * @return void
+     */
+    private function refreshModels()
+    {
+        $this->modelQuestionGroup->unsetAttributes();
+        $this->modelQuestionGroup->setIsNewRecord(true);
     }
 }
