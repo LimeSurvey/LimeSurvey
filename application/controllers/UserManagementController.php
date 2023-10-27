@@ -1073,7 +1073,7 @@ class UserManagementController extends LSBaseController
                 $aResults[$user]['error'] = gT("You can not update your own permission.");
                 continue;
             }
-            $userManager = new UserManager(Yii::app()->user, User::model()->findByPk($iUserId));
+            $userManager = new UserManager(Yii::app()->user, $oUser);
             if (!$userManager->canAssignPermissions()) {
                 $results[$iUserId]['result'] = false;
                 $results[$iUserId]['error'] = gT("You do not have permission to this user.");
