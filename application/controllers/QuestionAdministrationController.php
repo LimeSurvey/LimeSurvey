@@ -1117,6 +1117,12 @@ class QuestionAdministrationController extends LSBaseController
         $iSurveyID = (int) App()->request->getPost('sid', 0);
         $gid = (int) App()->request->getPost('gid', 0);
 
+        if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'import')) {
+            App()->session['flashmessage'] = gT("We are sorry but you don't have permissions to do this.");
+            /* Same redirect than importView */
+            $this->redirect(['questionAdministration/listquestions/surveyid/' . $iSurveyID]);
+        }
+
         $jumptoquestion = (bool)App()->request->getPost('jumptoquestion', 1);
 
         $oSurvey = Survey::model()->findByPk($iSurveyID);

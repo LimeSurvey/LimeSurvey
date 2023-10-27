@@ -2251,14 +2251,9 @@ class statistics_helper
                     $query .= ($sDatabaseType == "mysql") ?  Yii::app()->db->quoteColumnName($al[2])." <> '')" : " (".Yii::app()->db->quoteColumnName($al[2])." NOT LIKE ''))";
                 // all other question types
                 } else {
-                    $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ".Yii::app()->db->quoteColumnName($al[2])." =";
-
-                    //ranking question?
-                    if (substr((string) $rt, 0, 1) == "R") {
-                        $query .= " '$al[0]'";
-                    } else {
-                        $query .= " 'Y'";
-                    }
+                    $value = (substr((string) $rt, 0, 1) == "R") ? $al[0] : 'Y';
+                    $encryptedValue = getEncryptedCondition($responseModel, $al[2], $value);
+                    $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ".Yii::app()->db->quoteColumnName($al[2])." = '$encryptedValue'";
                 }
             }    //end if -> alist set
 
