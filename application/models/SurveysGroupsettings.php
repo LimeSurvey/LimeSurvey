@@ -357,8 +357,10 @@ class SurveysGroupsettings extends LSActiveRecord
         }
 
         // check if the template actually exists and modify it if invalid
-        if (!$instance->shouldInherit('template')
-            && !Template::checkIfTemplateExists($instance->oOptions->template)) {
+        if (
+            !$instance->shouldInherit('template')
+            && !Template::checkIfTemplateExists($instance->oOptions->template)
+        ) {
             if ($iSurveyGroupId === 0) {
                 $instance->oOptions->template = App()->getConfig('defaulttheme');
             } else {
