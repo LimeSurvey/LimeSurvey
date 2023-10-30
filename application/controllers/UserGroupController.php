@@ -100,10 +100,6 @@ class UserGroupController extends LSBaseController
      */
     public function actionViewGroup($ugid, bool $header = false)
     {
-        if (!Permission::model()->hasGlobalPermission('usergroups', 'read')) {
-            throw new CHttpException(403);
-        }
-
         $ugid = (int)$ugid;
         if (empty($ugid)) {
             throw new CHttpException(400, gT('GroupId missing'));
@@ -120,12 +116,12 @@ class UserGroupController extends LSBaseController
         // - Member of the group
         if (
             !(
-                $userGroup->owner_id == Yii::app()->user->id ||
-                $userGroup->hasUser(Yii::app()->user->id) ||
-                Permission::model()->hasGlobalPermission('superadmin', 'read')
+                Permission::model()->hasGlobalPermission('superadmin', 'read') ||
+                $userGroup->owner_id == App()->getCurrentUserId() ||
+                $userGroup->hasUser(App()->getCurrentUserId())
             )
         ) {
-            throw new CHttpException(403);
+            throw new CHttpException(403, gT("No access : you do not have permission to this users group."));
         }
 
         $aData = [];
@@ -478,34 +474,36 @@ class UserGroupController extends LSBaseController
     {
         $ugid = sanitize_int($ugid);
         $action = Yii::app()->request->getPost("action");
+        $currentUserId = App()->getCurrentUserId();
+        $userGroup = UserGroup::model()->findByPk($ugid);
+        if (empty($userGroup)) {
+            throw new CHttpException(404, gT("User group not found."));
+        }
+        if (
+            !Permission::model()->hasGlobalPermission('superadmin', 'read') // User is superadmin
+            && $userGroup->owner_id != $currentUserId // User is owner
+            && !$userGroup->hasUser($currentUserId) // User are in this group
+        ) {
+            throw new CHttpException(403, gT("No access : you do not have permission to send emails to all users."));
+        }
+        $redirectUrl = App()->createUrl("userGroup/viewGroup", ['ugid' => $ugid]);
         $aData = [];
-
         if ($action == "mailsendusergroup") {
-            // user must be in user group or superadmin
-            if ($ugid === null) {
-                $ugid = (int) Yii::app()->request->getPost('ugid');
-            }
-            $result = UserInGroup::model()->findAllByPk(array('ugid' => (int)$ugid, 'uid' => Yii::app()->session['loginID']));
-            if (count($result) > 0 || Permission::model()->hasGlobalPermission('superadmin', 'read')) {
-                try {
-                    $sendCopy = Yii::app()->getRequest()->getPost('copymail') == 1 ? 1 : 0;
-                    $emailSendingResults = UserGroup::model()->sendUserEmails(
-                        $ugid,
-                        Yii::app()->getRequest()->getPost('subject'),
-                        Yii::app()->getRequest()->getPost('body'),
-                        $sendCopy
-                    );
+            try {
+                $sendCopy = App()->getRequest()->getPost('copymail', 0);
+                $emailSendingResults = UserGroup::model()->sendUserEmails(
+                    $ugid,
+                    App()->getRequest()->getPost('subject'),
+                    App()->getRequest()->getPost('body'),
+                    $sendCopy
+                );
 
-                    Yii::app()->user->setFlash('success', $emailSendingResults);
-                    $this->redirect(array('userGroup/viewGroup/ugid/' . $ugid));
-                } catch (Exception $e) {
-                    // TODO: Show error message?
-                    Yii::app()->user->setFlash('error', gT("Error: no email has been send."));
-                    $this->redirect(array('userGroup/viewGroup/ugid/' . $ugid));
-                }
-            } else {
-                Yii::app()->user->setFlash('error', gT("You do not have permission to send emails to all users. "));
-                $this->redirect(array('userGroup/viewGroup/ugid/' . $ugid));
+                Yii::app()->user->setFlash('success', $emailSendingResults);
+                $this->redirect($redirectUrl);
+            } catch (Exception $e) {
+                // TODO: Show error message?
+                Yii::app()->user->setFlash('error', gT("Error: no email has been send."));
+                $this->redirect($redirectUrl);
             }
         } else {
             $aData['ugid'] = $ugid;
