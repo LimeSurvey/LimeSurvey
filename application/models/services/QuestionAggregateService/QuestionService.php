@@ -117,7 +117,7 @@ class QuestionService
             );
         }
 
-        $this->saveDefaults($data);
+        $this->saveDefaults($input);
 
         return $question;
     }
