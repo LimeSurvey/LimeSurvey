@@ -62,7 +62,6 @@ class Authdb extends AuthPluginBase
             $new_email = flattenText($preCollectedUserArray['email']);
             $new_full_name = flattenText($preCollectedUserArray['full_name']);
             $presetPassword = flattenText($preCollectedUserArray['password']);
-            $status = $preCollectedUserArray['status'];
             if (!empty($preCollectedUserArray['expires'])) {
                 $expires = $preCollectedUserArray['expires'];
             }
@@ -76,7 +75,7 @@ class Authdb extends AuthPluginBase
         }
 
         $new_pass = $presetPassword ?? createPassword();
-        $iNewUID = User::insertUser($new_user, $new_pass, $new_full_name, Yii::app()->session['loginID'], $new_email, $expires, $status);
+        $iNewUID = User::insertUser($new_user, $new_pass, $new_full_name, Yii::app()->session['loginID'], $new_email, $expires);
         if (!$iNewUID) {
             $oEvent->set('errorCode', self::ERROR_ALREADY_EXISTING_USER);
             $oEvent->set('errorMessageTitle', '');
