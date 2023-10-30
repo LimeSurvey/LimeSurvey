@@ -27,12 +27,7 @@ class Update_614 extends DatabaseUpdateBase
                                 $oldOptions->fixnumauto = 'enable';
                             }
                             $newOptionsJson = json_encode($oldOptions);
-                            $this->db->createCommand()->update(
-                                '{{template_configuration}}',
-                                ['options' => $newOptionsJson],
-                                'id = :id',
-                                [':id' => $templateConfiguration['id']]
-                            );
+                            $this->templateConfigurationOptionsUpdate($templateConfiguration['id'], $newOptionsJson);
                         }
                     } elseif ($templateConfiguration['template_name'] == 'fruity') {
                         $optionsJson = $templateConfiguration['options'];
@@ -43,12 +38,7 @@ class Update_614 extends DatabaseUpdateBase
                                 $oldOptions->fixnumauto = 'enable';
                             }
                             $newOptionsJson = json_encode($oldOptions);
-                            $this->db->createCommand()->update(
-                                '{{template_configuration}}',
-                                ['options' => $newOptionsJson],
-                                'id = :id',
-                                [':id' => $templateConfiguration['id']]
-                            );
+                            $this->templateConfigurationOptionsUpdate($templateConfiguration['id'], $newOptionsJson);
                         }
                     } elseif ($templateConfiguration['template_name'] == 'bootswatch') {
                         $optionsJson = $templateConfiguration['options'];
@@ -61,12 +51,7 @@ class Update_614 extends DatabaseUpdateBase
                                 $oldOptions->fixnumauto = 'enable';
                             }
                             $newOptionsJson = json_encode($oldOptions);
-                            $this->db->createCommand()->update(
-                                '{{template_configuration}}',
-                                ['options' => $newOptionsJson],
-                                'id = :id',
-                                [':id' => $templateConfiguration['id']]
-                            );
+                            $this->templateConfigurationOptionsUpdate($templateConfiguration['id'], $newOptionsJson);
                         }
                     }
                 }
@@ -82,5 +67,15 @@ class Update_614 extends DatabaseUpdateBase
             ->where(['in', 'template_name', ['vanilla', 'fruity', 'bootswatch']])
             ->andWhere(['NOT IN', 'options', 'inherit'])
             ->queryAll();
+    }
+
+    public function templateConfigurationOptionsUpdate($id, $options)
+    {
+        $this->db->createCommand()->update(
+            '{{template_configuration}}',
+            ['options' => $options],
+            'id = :id',
+            [':id' => $id]
+        );
     }
 }
