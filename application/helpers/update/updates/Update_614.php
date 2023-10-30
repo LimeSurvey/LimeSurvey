@@ -27,27 +27,24 @@ class Update_614 extends DatabaseUpdateBase
                                 $oldOptions->fixnumauto = 'enable';
                             }
                             $newOptionsJson = json_encode($oldOptions);
-                            $this->db->createCommand()->update(
-                                '{{template_configuration}}',
-                                ['options' => $newOptionsJson],
-                                'id = :id',
-                                [':id' => $templateConfiguration['id']]
+                            $this->templateConfigurationOptionsUpdate(
+                                $templateConfiguration['id'],
+                                $newOptionsJson
                             );
                         }
                     } elseif ($templateConfiguration['template_name'] == 'fruity') {
                         $optionsJson = $templateConfiguration['options'];
-                        // fixnumauto is not guaranteed to exist in older version of fruity, so rather decode as array, not as object
+                        // fixnumauto is not guaranteed to exist in older version of fruity,
+                        // so rather decode as array, not as object
                         $oldOptions = json_decode($optionsJson);
                         if (is_object($oldOptions)) {
                             if (empty($oldOptions->fixnumauto)) {
                                 $oldOptions->fixnumauto = 'enable';
                             }
                             $newOptionsJson = json_encode($oldOptions);
-                            $this->db->createCommand()->update(
-                                '{{template_configuration}}',
-                                ['options' => $newOptionsJson],
-                                'id = :id',
-                                [':id' => $templateConfiguration['id']]
+                            $this->templateConfigurationOptionsUpdate(
+                                $templateConfiguration['id'],
+                                $newOptionsJson
                             );
                         }
                     } elseif ($templateConfiguration['template_name'] == 'bootswatch') {
@@ -61,11 +58,9 @@ class Update_614 extends DatabaseUpdateBase
                                 $oldOptions->fixnumauto = 'enable';
                             }
                             $newOptionsJson = json_encode($oldOptions);
-                            $this->db->createCommand()->update(
-                                '{{template_configuration}}',
-                                ['options' => $newOptionsJson],
-                                'id = :id',
-                                [':id' => $templateConfiguration['id']]
+                            $this->templateConfigurationOptionsUpdate(
+                                $templateConfiguration['id'],
+                                $newOptionsJson
                             );
                         }
                     }
@@ -79,8 +74,22 @@ class Update_614 extends DatabaseUpdateBase
         return $this->db->createCommand()
             ->select('id, template_name, options')
             ->from('{{template_configuration}}')
-            ->where(['in', 'template_name', ['vanilla', 'fruity', 'bootswatch']])
+            ->where([
+                'in',
+                'template_name',
+                ['vanilla', 'fruity', 'bootswatch']
+            ])
             ->andWhere(['NOT IN', 'options', 'inherit'])
             ->queryAll();
+    }
+
+    public function templateConfigurationOptionsUpdate($id, $options)
+    {
+        $this->db->createCommand()->update(
+            '{{template_configuration}}',
+            ['options' => $options],
+            'id = :id',
+            [':id' => $id]
+        );
     }
 }
