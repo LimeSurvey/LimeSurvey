@@ -34,6 +34,25 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.6.42 (build 231024) to 5.6.43 (build 231030) October 30, 2023
+-Fixed issue #19183: No editing possible after setting the survey background (#3559) (Matthew)
+-Fixed issue #19173: Encrypted file upload question - delete file results in crash (K Foster)
+-Fixed issue #19169: [security] Privilege escalation to edit survey (#3578) (Denis Chenu)
+-Fixed issue #19140: Problem with viewing LimeSurvey notifications (#3537) (Matthew)
+-Fixed issue #19107: [security] Superadmin can update any admin's information (#3570) (Denis Chenu)
+-Fixed issue #19101: Array by Column Has Incorrect Table Row/Column Ids (#3566) (Matthew)
+-Fixed issue #19093: [security] Improper Authorization in Import Question function  (#3530) (Gabriel Jenik)
+-Fixed issue #19085: Theme Options with an on/off switch are not disabled when page loads (#3561) (Matthew)
+-Fixed issue #19057: Incorrect handling of wrong input in create dummy participant form (#3568) (Matthew)
+-Fixed issue #18436: RPC API - Inviting members with invalid language (#2810) (Denis Chenu)
+#Updated translation: Turkish by kayazeren
+#Updated translation: Slovak by jelen1
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
 Changes from 5.6.41 (build 231017) to 5.6.42 (build 231024) October 23, 2023
 -Fixed issue: Failed emails resend vars column needs to be mediumtext for mysql (#3544) (Tim Willig)
 -Fixed issue: Adding cldr "fr_lu" for lb language (twilligls)
