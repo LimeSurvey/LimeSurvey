@@ -23,8 +23,6 @@ class CsrfHttpRequestTest extends TestBaseClass
         $routes = array(
             'rest/v1/actionOnItemById/15',
             'rest/v1/action',
-            //'index.php/rest?action=actionOnItemById&id=15',
-            //'index.php/rest/actionOnItemById/15'
         );
 
         foreach ($routes as $route) {
@@ -49,8 +47,6 @@ class CsrfHttpRequestTest extends TestBaseClass
         $routes = array(
             'remotecontrol/actionOnItemById/15',
             'remotecontrol/action',
-            //'index.php/remotecontrol?action=actionOnItemById&id=15',
-            //'index.php/remotecontrol/actionOnItemById/15'
         );
 
         foreach ($routes as $route) {
@@ -75,7 +71,6 @@ class CsrfHttpRequestTest extends TestBaseClass
         $routes = array(
             'plugins/unsecure/action',
             'plugins/unsecure/actionOnItemById/15',
-            //'index.php/plugins/unsecure?action=actionOnItemById&id=15',
         );
 
         foreach ($routes as $route) {
