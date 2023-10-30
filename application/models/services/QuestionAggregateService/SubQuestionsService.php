@@ -163,7 +163,10 @@ class SubQuestionsService
         $subquestion->question_order = $questionOrder;
         $questionOrder++;
         if ($scaleId === 0) {
-            $subquestion->relevance = $data['relevance'];
+            $subquestion->relevance = array_key_exists(
+                'relevance',
+                $data
+            ) ? $data['relevance'] : null;
         }
         $subquestion->scale_id = $scaleId;
         $subquestion->setScenario('saveall');

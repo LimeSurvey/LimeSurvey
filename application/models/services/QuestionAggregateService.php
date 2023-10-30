@@ -172,7 +172,7 @@ class QuestionAggregateService
      * @return void
      * @throws PermissionDeniedException
      */
-    public function checkUpdatePermission($surveyId)
+    public function checkUpdatePermission($surveyId): void
     {
         if (
             !$this->modelPermission->hasSurveyPermission(
