@@ -439,15 +439,6 @@ class UserManagementController extends LSBaseController
         $aData['userId'] = $userId;
         $aData['action'] = $action;
 
-        if ($action == 'activate') {
-            $oEvent = new PluginEvent('beforeAdminUserActivation');
-            $oEvent->set('request', App()->request);
-            App()->getPluginManager()->dispatchEvent($oEvent);
-            $isUserLimitReached = $oEvent->get('disable', false);
-
-            $aData['showUpgradeModal'] = (bool)$isUserLimitReached;
-        }
-
         return $this->renderPartial('partial/confirmuseractivation', $aData);
     }
 
@@ -467,25 +458,6 @@ class UserManagementController extends LSBaseController
         $action = Yii::app()->request->getParam('action');
         $oUser = User::model()->findByPk($userId);
         if ($oUser) {
-            if ($action == 'activate') {
-                $oEvent = new PluginEvent('beforeAdminUserActivation');
-                $oEvent->set('request', App()->request);
-                App()->getPluginManager()->dispatchEvent($oEvent);
-                $result = $oEvent->get('disable', null);
-                if (!empty($result) && $oEvent->get('disable') == true) {
-                    return $this->renderPartial(
-                        '/admin/super/_renderJson',
-                        [
-                            'data' => [
-                                'success' => false,
-                                'message' => gT('Please upgrade your plan to activate more users.'),
-                                'errors' => gT('Please upgrade your plan to activate more users.')
-                            ]
-                        ]
-                    );
-                }
-            }
-
             if ($oUser->setActivationStatus($action)) {
                 return App()->getController()->renderPartial('/admin/super/_renderJson', [
                     'data' => [
@@ -1672,12 +1644,6 @@ class UserManagementController extends LSBaseController
                 ]
             ]);
         }
-
-        $oEvent = new PluginEvent('beforeAdminUserActivation');
-        $oEvent->set('request', App()->request);
-        App()->getPluginManager()->dispatchEvent($oEvent);
-        $isUserLimitReached = $oEvent->get('disable', null);
-        $aUser['status'] = !$isUserLimitReached;
 
         $event = new PluginEvent('createNewUser');
         $event->set('errorCode', AuthPluginBase::ERROR_NOT_ADDED);

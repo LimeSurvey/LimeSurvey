@@ -466,6 +466,7 @@ class User extends LSActiveRecord
         $permission_users_read = Permission::model()->hasGlobalPermission('users', 'read');
         $permission_users_update = Permission::model()->hasGlobalPermission('users', 'update');
         $permission_users_delete = Permission::model()->hasGlobalPermission('users', 'delete');
+        $userManager = new UserManager(App()->user, $this);
         // User is owned or created by you
         $ownedOrCreated = $this->parent_id == App()->session['loginID'];
 
@@ -562,12 +563,7 @@ class User extends LSActiveRecord
             'linkAttributes'   => [
                 'data-href' => $setRoleUrl,
             ],
-            'enabledCondition' =>
-                ($permission_superadmin_read
-                    && !(Permission::isForcedSuperAdmin($this->uid)
-                        || $this->uid == App()->user->getId()
-                    )
-                )
+            'enabledCondition' => $userManager->canAssignRole() && $this->uid != App()->user->getId()
         ];
         $dropdownItems[] = [
             'title'            => gT('Edit user'),
