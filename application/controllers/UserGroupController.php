@@ -117,8 +117,7 @@ class UserGroupController extends LSBaseController
         if (
             !(
                 Permission::model()->hasGlobalPermission('superadmin', 'read') ||
-                $userGroup->owner_id == App()->getCurrentUserId() ||
-                $userGroup->hasUser(App()->getCurrentUserId())
+                $userGroup->owner_id == App()->getCurrentUserId()
             )
         ) {
             throw new CHttpException(403, gT("No access : you do not have permission to this users group."));
@@ -482,7 +481,6 @@ class UserGroupController extends LSBaseController
         if (
             !Permission::model()->hasGlobalPermission('superadmin', 'read') // User is superadmin
             && $userGroup->owner_id != $currentUserId // User is owner
-            && !$userGroup->hasUser($currentUserId) // User are in this group
         ) {
             throw new CHttpException(403, gT("No access : you do not have permission to send emails to all users."));
         }
