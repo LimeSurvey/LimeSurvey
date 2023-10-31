@@ -101,10 +101,6 @@ class UserGroupController extends LSBaseController
      */
     public function actionViewGroup($ugid, bool $header = false)
     {
-        if (!Permission::model()->hasGlobalPermission('usergroups', 'read')) {
-            throw new CHttpException(403);
-        }
-
         $ugid = (int)$ugid;
         if (empty($ugid)) {
             throw new CHttpException(400, gT('GroupId missing'));
@@ -114,19 +110,15 @@ class UserGroupController extends LSBaseController
         if (empty($userGroup)) {
             throw new CHttpException(404, gT("User group not found."));
         }
-
-        // Only allow access if user is:
-        // - Superadmin
-        // - Owner of the group
-        // - Member of the group
+        /* Check Permssion to view */
         if (
             !(
-                $userGroup->owner_id == Yii::app()->user->id ||
-                $userGroup->hasUser(Yii::app()->user->id) ||
-                Permission::model()->hasGlobalPermission('superadmin', 'read')
+                Permission::model()->hasGlobalPermission('superadmin', 'read') // superadmin
+                ||  $userGroup->owner_id == Yii::app()->user->id // owner
+                || ($userGroup->hasUser(Yii::app()->user->id) && Permission::model()->hasGlobalPermission('usergroups', 'read')) // inside group and have global UserGroup view
             )
         ) {
-            throw new CHttpException(403);
+            throw new CHttpException(403, gT("No access : you do not have permission to this users group."));
         }
 
         $aData = [];
@@ -158,8 +150,6 @@ class UserGroupController extends LSBaseController
             $aNewUserListData = CHtml::listData($aUsers, 'uid', function ($user) {
                 return \CHtml::encode($user->users_name) . " (" . \CHtml::encode($user->full_name) . ')';
             });
-            // Remove group owner because an owner is automatically member of a group
-            // TODO: Is this still right on 6.0?
             unset($aNewUserListData[$userGroup->owner_id]);
             $aData["addableUsers"] = array('-1' => gT("Please choose...")) + $aNewUserListData;
             $aData["useraddurl"] = "";
@@ -168,12 +158,15 @@ class UserGroupController extends LSBaseController
         $aData['topbar']['title'] = gT('User group') . ': ' . $userGroup->name;
         $aData['topbar']['backLink'] = App()->createUrl('userGroup/index');
 
+
         $aData['topbar']['middleButtons'] = $this->renderPartial(
             'partial/topbarBtns_manageGroup/leftSideButtons',
             [
                 'userGroupId' => $userGroup->ugid,
-                'hasPermission' => (Yii::app()->session['loginID'] == $userGroup->owner_id ||
-                    Permission::model()->hasGlobalPermission('superadmin', 'read'))
+                'hasPermission' => (
+                    Permission::model()->hasGlobalPermission('superadmin', 'read')
+                    || App()->getCurrentUserId() == $userGroup->owner_id
+                )
             ],
             true
         );
@@ -467,37 +460,36 @@ class UserGroupController extends LSBaseController
     {
         $ugid = sanitize_int($ugid);
         $action = Yii::app()->request->getPost("action");
+        $currentUserId = App()->getCurrentUserId();
+        $userGroup = UserGroup::model()->findByPk($ugid);
+        if (empty($userGroup)) {
+            throw new CHttpException(404, gT("User group not found."));
+        }
+        if (
+            !Permission::model()->hasGlobalPermission('superadmin', 'read') // User is superadmin
+            && $userGroup->owner_id != $currentUserId // User is owner
+        ) {
+            throw new CHttpException(403, gT("No access : you do not have permission to send emails to all users."));
+        }
+        $redirectUrl = App()->createUrl("userGroup/viewGroup", ['ugid' => $ugid]);
         $aData = [];
-
+        $aData['ugid'] = $ugid;
         if ($action == "mailsendusergroup") {
-            // user must be in user group or superadmin
-            if ($ugid === null) {
-                $ugid = (int) Yii::app()->request->getPost('ugid');
+            try {
+                $sendCopy = Yii::app()->getRequest()->getPost('copymail') == 1 ? 1 : 0;
+                $emailSendingResults = UserGroup::model()->sendUserEmails(
+                    $ugid,
+                    Yii::app()->getRequest()->getPost('subject'),
+                    Yii::app()->getRequest()->getPost('body'),
+                    $sendCopy
+                );
+                App()->user->setFlash('success', $emailSendingResults);
+            } catch (Exception $e) {
+                // TODO: Show error message?
+                App()->user->setFlash('error', gT("Error: no email has been send."));
             }
-            $result = UserInGroup::model()->findAllByPk(array('ugid' => (int)$ugid, 'uid' => Yii::app()->session['loginID']));
-            if (count($result) > 0 || Permission::model()->hasGlobalPermission('superadmin', 'read')) {
-                try {
-                    $sendCopy = Yii::app()->getRequest()->getPost('copymail') == 1 ? 1 : 0;
-                    $emailSendingResults = UserGroup::model()->sendUserEmails(
-                        $ugid,
-                        Yii::app()->getRequest()->getPost('subject'),
-                        Yii::app()->getRequest()->getPost('body'),
-                        $sendCopy
-                    );
-
-                    Yii::app()->user->setFlash('success', $emailSendingResults);
-                    $this->redirect(array('userGroup/viewGroup/ugid/' . $ugid));
-                } catch (Exception $e) {
-                    // TODO: Show error message?
-                    Yii::app()->user->setFlash('error', gT("Error: no email has been send."));
-                    $this->redirect(array('userGroup/viewGroup/ugid/' . $ugid));
-                }
-            } else {
-                Yii::app()->user->setFlash('error', gT("You do not have permission to send emails to all users. "));
-                $this->redirect(array('userGroup/viewGroup/ugid/' . $ugid));
-            }
-        } else {
-            $aData['ugid'] = $ugid;
+            $this->redirect($redirectUrl);
+            App()->end(); // redirect end : add it here for clarity
         }
 
         $aData['topbar']['title'] = gT('Mail to all Members');
@@ -509,9 +501,6 @@ class UserGroupController extends LSBaseController
         );
 
         $this->aData = $aData;
-
-        $this->render('mailUserGroup_view', [
-            'ugid' => $aData['ugid']
-        ]);
+        $this->render('mailUserGroup_view', $aData);
     }
 }
