@@ -1020,7 +1020,7 @@ class UserManagementController extends LSBaseController
             }
             $userManager = new UserManager(Yii::app()->user, $oUser);
             if (!$userManager->canEdit()) {
-                $success = false;
+                $aResults[$user]['result'] = false;
                 $aResults[$user]['error'] = gT("Error! You do not have the permission to edit this user.");
                 continue;
             }
@@ -1125,17 +1125,11 @@ class UserManagementController extends LSBaseController
         $oUserGroup = UserGroup::model()->findByPk($iUserGroupId);
 
         if (!$iUserGroupId || !$oUserGroup) {
-            return $this->renderPartial(
-                'partial/error',
-                ['errors' => [gT("Group not found")], 'noButton' => true]
-            );
+            throw new CHttpException(404, gT("Group not found"));
         }
         /* see UserGroupController->checkBeforeAddDeleteUser */
         if (!Permission::model()->hasGlobalPermission('superadmin', 'read') && $oUserGroup->owner_id != App()->getCurrentUserId()) {
-            return $this->renderPartial(
-                'partial/error',
-                ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
-            );
+            throw new CHttpException(404, gT("You do not have permission to access this page."));
         }
 
         /* @var array construct ressult for each user */
