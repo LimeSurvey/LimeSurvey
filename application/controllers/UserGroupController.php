@@ -150,6 +150,8 @@ class UserGroupController extends LSBaseController
             $aNewUserListData = CHtml::listData($aUsers, 'uid', function ($user) {
                 return \CHtml::encode($user->users_name) . " (" . \CHtml::encode($user->full_name) . ')';
             });
+            // Remove group owner because an owner is automatically member of a group
+            // TODO: Is this still right on 6.0?
             unset($aNewUserListData[$userGroup->owner_id]);
             $aData["addableUsers"] = array('-1' => gT("Please choose...")) + $aNewUserListData;
             $aData["useraddurl"] = "";
@@ -466,8 +468,8 @@ class UserGroupController extends LSBaseController
             throw new CHttpException(404, gT("User group not found."));
         }
         if (
-            !Permission::model()->hasGlobalPermission('superadmin', 'read') // User is superadmin
-            && $userGroup->owner_id != $currentUserId // User is owner
+            !Permission::model()->hasGlobalPermission('superadmin', 'read') // User is not a superadmin
+            && $userGroup->owner_id != $currentUserId // User is not owner
         ) {
             throw new CHttpException(403, gT("No access : you do not have permission to send emails to all users."));
         }
