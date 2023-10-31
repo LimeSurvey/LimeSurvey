@@ -1129,7 +1129,7 @@ class UserManagementController extends LSBaseController
         }
         /* see UserGroupController->checkBeforeAddDeleteUser */
         if (!Permission::model()->hasGlobalPermission('superadmin', 'read') && $oUserGroup->owner_id != App()->getCurrentUserId()) {
-            throw new CHttpException(404, gT("You do not have permission to access this page."));
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
 
         /* @var array construct ressult for each user */
@@ -1166,10 +1166,7 @@ class UserManagementController extends LSBaseController
     public function actionBatchApplyRoles()
     {
         if (!Permission::model()->hasGlobalPermission('superadmin', 'create')) {
-            return $this->renderPartial(
-                'partial/error',
-                ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
-            );
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
         $aItems = json_decode(Yii::app()->request->getPost('sItems', []));
         $aUserRoleIds = Yii::app()->request->getPost('roleselector');
