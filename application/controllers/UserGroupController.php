@@ -110,15 +110,12 @@ class UserGroupController extends LSBaseController
             throw new CHttpException(404, gT("User group not found."));
         }
 
-        // Only allow access if user is:
-        // - Superadmin
-        // - Owner of the group
-        // - Member of the group
+        /* Permission check */
         if (
             !(
                 Permission::model()->hasGlobalPermission('superadmin', 'read') // Can always see all
                 || $userGroup->owner_id == App()->getCurrentUserId() // Are the owner
-                || $userGroup->hasUser(App()->getCurrentUserId()) // Inside group, show on userGroup/index
+                || ($userGroup->hasUser(App()->getCurrentUserId()) && Permission::model()->hasGlobalPermission('usergroups', 'read')) // Inside group, and allowed to see all usergroups
             )
         ) {
             throw new CHttpException(403, gT("No access : you do not have permission to this users group."));
