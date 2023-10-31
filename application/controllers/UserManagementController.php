@@ -1024,7 +1024,7 @@ class UserManagementController extends LSBaseController
             }
             $userManager = new UserManager(Yii::app()->user, $oUser);
             if (!$userManager->canEdit()) {
-                $success = false;
+                $aResults[$user]['result'] = false;
                 $aResults[$user]['error'] = gT("Error! You do not have the permission to edit this user.");
                 continue;
             }
@@ -1120,47 +1120,29 @@ class UserManagementController extends LSBaseController
     public function actionBatchAddGroup()
     {
         if (!Permission::model()->hasGlobalPermission('users', 'update')) {
-            return $this->renderPartial(
-                'partial/error',
-                ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
-            );
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
         $aItems = json_decode(Yii::app()->request->getPost('sItems', '')) ?? [];
-        $iUserGroupId = Yii::app()->request->getPost('addtousergroup');
+        $iUserGroupId = App()->request->getPost('addtousergroup');
+        $oUserGroup = UserGroup::model()->findByPk($iUserGroupId);
+        if (!$oUserGroup) {
+            throw new CHttpException(404, gT("Group not found"));
+        }
+        /* check if have permission */
+        if (!Permission::model()->hasGlobalPermission('superadmin', 'read') && $oUserGroup->requestEditGroup($oUserGroup->ugid, App()->getCurrentUserId())) {
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
+        }
 
-        if ($iUserGroupId) {
-            $oUserGroup = UserGroup::model()->findByPk($iUserGroupId);
-            /* check if have permission */
-            if (
-                Permission::model()->hasGlobalPermission('usergroups', 'update') /* Global update permission @see UserGroupController->actionEdit */
-                || $oUserGroup->requestEditGroup($oUserGroup->ugid, Yii::app()->session['loginID'])  /* This user group permission */
-            ) {
-                $aResults = [];
-                foreach ($aItems as $sItem) {
-                    $aResults[$sItem]['title'] = '';
-                    $model = $this->loadModel($sItem);
-                    $aResults[$sItem]['title'] = $model->users_name;
-                    if (!$oUserGroup->hasUser($sItem)) {
-                        $aResults[$sItem]['result'] = $oUserGroup->addUser($sItem);
-                    } else {
-                        $aResults[$sItem]['result'] = false;
-                        $aResults[$sItem]['error'] = gT('User is already a member of the group.');
-                    }
-                }
+        $aResults = [];
+        foreach ($aItems as $sItem) {
+            $aResults[$sItem]['title'] = '';
+            $model = $this->loadModel($sItem);
+            $aResults[$sItem]['title'] = $model->users_name;
+            if (!$oUserGroup->hasUser($sItem)) {
+                $aResults[$sItem]['result'] = $oUserGroup->addUser($sItem);
             } else {
-                $aResults[0] = [
-                    'title' => gT("All"),
-                    'result' => false,
-                    'error' => gT('You don\'t have permission on this group.')
-                ];
-            }
-        } else {
-            foreach ($aItems as $sItem) {
-                $aResults[$sItem]['title'] = '';
-                $model = $this->loadModel($sItem);
-                $aResults[$sItem]['title'] = $model->users_name;
                 $aResults[$sItem]['result'] = false;
-                $aResults[$sItem]['error'] = gT('No user group selected.');
+                $aResults[$sItem]['error'] = gT('User is already a member of the group.');
             }
         }
 
@@ -1186,10 +1168,7 @@ class UserManagementController extends LSBaseController
     {
         /* Need super admin roles */
         if (!Permission::model()->hasGlobalPermission('superadmin', 'create')) {
-            return $this->renderPartial(
-                'partial/error',
-                ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
-            );
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
         $aItems = json_decode(Yii::app()->request->getPost('sItems', '')) ?? [];
         $aUserRoleIds = Yii::app()->request->getPost('roleselector');
