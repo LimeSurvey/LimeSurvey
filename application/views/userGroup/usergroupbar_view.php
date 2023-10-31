@@ -23,7 +23,7 @@
             <?php endif; ?>
 
             <!-- Mail to all Members -->
-            <?php if (isset($usergroupbar['edit'])) &&  (App()->getCurrentUserId() == $userGroup->owner_id || Permission::model()->hasGlobalPermission('superadmin', 'read'))) :?>
+            <?php if (isset($usergroupbar['edit']) &&  (App()->getCurrentUserId() == $userGroup->owner_id || Permission::model()->hasGlobalPermission('superadmin', 'read'))) :?>
                 <a class="btn btn-default" href="<?php echo $this->createUrl("userGroup/mailToAllUsersInGroup/ugid/" . $userGroup->ugid); ?>" role="button">
                     <span class="icon-invite text-success"></span>
                     <?php eT("Mail to all Members"); ?>
