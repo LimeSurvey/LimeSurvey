@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => 'limesurvey/limesurvey',
-        'pretty_version' => 'dev-master',
-        'version' => 'dev-master',
-        'reference' => '1d6a6afc1f4e961a5ae6f084ef035a76f7a1a712',
+        'pretty_version' => 'dev-develop',
+        'version' => 'dev-develop',
+        'reference' => 'c61ce7cfad48895f3eefa596b608767ee3ca744b',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -92,9 +92,9 @@
             'dev_requirement' => false,
         ),
         'limesurvey/limesurvey' => array(
-            'pretty_version' => 'dev-master',
-            'version' => 'dev-master',
-            'reference' => '1d6a6afc1f4e961a5ae6f084ef035a76f7a1a712',
+            'pretty_version' => 'dev-develop',
+            'version' => 'dev-develop',
+            'reference' => 'c61ce7cfad48895f3eefa596b608767ee3ca744b',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

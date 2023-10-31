@@ -813,18 +813,19 @@ class SurveyAdministrationController extends LSBaseController
 
         foreach ($aSIDs as $iSurveyID) {
             $oSurvey = Survey::model()->findByPk((int)$iSurveyID);
-            $oSurvey->gsid = $iSurveyGroupId;
             $aResults[$iSurveyID]['title'] = $oSurvey->correct_relation_defaultlanguage->surveyls_title;
+            /* Permission must be checked with current SurveyGroup, SurveyGroup give Surveys Permission, see mantis issue #19169 */
             if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'update')) {
                 $aResults[$iSurveyID]['result'] = false;
                 $aResults[$iSurveyID]['error'] = gT("User does not have valid permissions");
+                continue;
+            }
+            $oSurvey->gsid = $iSurveyGroupId;
+            if ($oSurvey->save()) {
+                $aResults[$iSurveyID]['result'] = true;
             } else {
-                if ($oSurvey->save()) {
-                    $aResults[$iSurveyID]['result'] = true;
-                } else {
-                    $aResults[$iSurveyID]['result'] = false;
-                    $aResults[$iSurveyID]['error'] = gT("Survey update failed");
-                }
+                $aResults[$iSurveyID]['result'] = false;
+                $aResults[$iSurveyID]['error'] = gT("Survey update failed");
             }
         }
 
@@ -1690,6 +1691,8 @@ class SurveyAdministrationController extends LSBaseController
                 $archivedTokenSettings->properties = json_encode(Response::getEncryptedAttributes($iSurveyID));
                 $archivedTokenSettings->save();
 
+                // Load the active record again, as there have been sporadic errors with the dataset not being updated
+                $survey = Survey::model()->findByAttributes(array('sid' => $iSurveyID));
                 $survey->active = 'N';
                 $survey->save();
 
@@ -2144,6 +2147,7 @@ class SurveyAdministrationController extends LSBaseController
     /**
      * Load ordering of question group screen.
      * questiongroup::organize()
+     * @TODO Reordering should be handled by existing function in new QuestionGroupService class
      *
      * @param int $iSurveyID Given Survey ID
      *

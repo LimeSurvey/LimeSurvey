@@ -1519,29 +1519,19 @@ class UserManagementController extends LSBaseController
     /**
      * Update admin-user
      *
-     * REFACTORED (in UserManagementController)
-     *
      * @param array $aUser array with user details
      * @return object user - updated user object
      * @throws CException
      */
     public function updateAdminUser(array $aUser): User
     {
-        $oUser = User::model()->findByPk($aUser['uid']);
-        //If the user id of the post is spoofed somehow it would be possible to edit superadmin users
-        //Therefore we need to make sure no non-superadmin can modify superadmin accounts
-        //Since this should NEVER be the case without hacking the software, this will silently just do nothing.
-        if (
-            !Permission::model()->hasGlobalPermission('superadmin', 'read', Yii::app()->user->id)
-            && Permission::model()->hasGlobalPermission('superadmin', 'read', $oUser->uid)
-        ) {
-            throw new CException("This action is not allowed, and should never happen", 500);
-        }
-
+        $oUser = $this->loadModel($aUser['uid']);
         // Abort if logged in user has no access to this user.
         // Using same logic as User::getButtons().
-        $userManager = new UserManager(Yii::app()->user, $oUser);
-        if (!$userManager->canEdit()) {
+        if (
+            !$oUser->canEdit()
+            || $aUser['uid'] == App()->user->id // To update self : must use personal settings
+        ) {
             throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
 

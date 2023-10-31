@@ -49,7 +49,6 @@ function populateDatabase($oDB)
             'scale_id' => 'integer NOT NULL DEFAULT 0',
         ), $options);
 
-        $oDB->createCommand()->createIndex('{{answers_idx}}', '{{answers}}', ['qid', 'code', 'scale_id'], true);
         $oDB->createCommand()->createIndex('{{answers_idx2}}', '{{answers}}', 'sortorder', false);
 
         $oDB->createCommand()->createTable('{{answer_l10ns}}', array(
@@ -1179,7 +1178,7 @@ function populateDatabase($oDB)
                 'created' => "datetime NOT NULL",  //this one has always to be set to delete after x days ...
                 'status' => "string(20) NULL DEFAULT 'SEND FAILED'",
                 'updated' => "datetime NULL",
-                'resend_vars' => "text NOT NULL"
+                'resend_vars' => "mediumtext NOT NULL"
             ]
         );
 
