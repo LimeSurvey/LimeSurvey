@@ -781,7 +781,7 @@ class Question extends LSActiveRecord
 
         // Sort alphabetically if applicable
         if ($this->shouldOrderAnswersAlphabetically()) {
-            if (is_null($language)) {
+            if (empty($language) || !in_array($language, $this->survey->allLanguages)) {
                 $language = $this->survey->language;
             }
             foreach ($answerOptions as $scaleId => $scaleArray) {
