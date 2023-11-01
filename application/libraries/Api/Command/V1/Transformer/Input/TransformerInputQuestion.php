@@ -31,7 +31,8 @@ class TransformerInputQuestion extends Transformer
             'moduleName' => 'modulename',
             'gid' => ['type' => 'int'],
             'relevance' => true,
-            'sameScript' => ['key' => 'same_script', 'formatter' => $formatterYn]
+            'sameScript' => ['key' => 'same_script', 'formatter' => $formatterYn],
+            'tempId' => true
         ]);
     }
 }

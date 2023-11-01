@@ -188,7 +188,7 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
      * }
      *
      * @param OpInterface $op
-     * @return void
+     * @return array
      * @throws OpHandlerException
      * @throws \DI\DependencyException
      * @throws \DI\NotFoundException
@@ -196,17 +196,26 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
      * @throws \LimeSurvey\Models\Services\Exception\PermissionDeniedException
      * @throws \LimeSurvey\Models\Services\Exception\PersistErrorException
      */
-    public function handle(OpInterface $op): void
+    public function handle(OpInterface $op): array
     {
+        $transformedProps = $this->prepareData($op);
+        $tempId = $this->extractTempId($transformedProps['question']);
         $diContainer = \LimeSurvey\DI::getContainer();
         $questionService = $diContainer->get(
             QuestionAggregateService::class
         );
 
-        $questionService->save(
+        $question = $questionService->save(
             $this->getSurveyIdFromContext($op),
-            $this->prepareData($op)
+            $transformedProps
         );
+
+        return [
+            'questionsMap' => [
+                'tempId' => $tempId,
+                'qid'    => $question->qid
+            ]
+        ];
     }
 
     /**
