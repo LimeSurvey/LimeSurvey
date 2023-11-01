@@ -54,4 +54,15 @@ class OpHandlerQuestionDelete implements OpHandlerInterface
             $op->getEntityId()
         );
     }
+
+    /**
+     * Checks if patch is valid for this operation.
+     * @param OpInterface $op
+     * @return bool
+     */
+    public function isValidPatch(OpInterface $op): bool
+    {
+        //this is not really important here, but other OpHandlers might need it
+        return ((int)$op->getEntityId()) > 0;
+    }
 }
