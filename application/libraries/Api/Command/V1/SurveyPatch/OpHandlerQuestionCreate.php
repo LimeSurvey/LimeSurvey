@@ -9,7 +9,6 @@ use LimeSurvey\Api\Command\V1\Transformer\{
     Input\TransformerInputQuestionAggregate,
     Input\TransformerInputQuestionAttribute,
     Input\TransformerInputQuestionL10ns,
-    Input\TransformerInputSubQuestion
 };
 use LimeSurvey\ObjectPatch\{
     Op\OpInterface,
@@ -32,7 +31,6 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
     protected TransformerInputQuestionAttribute $transformerAttribute;
     protected TransformerInputAnswer $transformerAnswer;
     protected TransformerInputAnswerL10ns $transformerAnswerL10n;
-    protected TransformerInputSubQuestion $transformerSubQuestion;
     protected TransformerInputQuestionAggregate $transformerInputQuestionAggregate;
 
     public function __construct(
@@ -42,7 +40,6 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
         TransformerInputQuestionAttribute $transformerAttribute,
         TransformerInputAnswer $transformerAnswer,
         TransformerInputAnswerL10ns $transformerAnswerL10n,
-        TransformerInputSubQuestion $transformerSubQuestion,
         TransformerInputQuestionAggregate $transformerInputQuestionAggregate
     ) {
         $this->entity = 'question';
@@ -52,7 +49,6 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
         $this->transformerAttribute = $transformerAttribute;
         $this->transformerAnswer = $transformerAnswer;
         $this->transformerAnswerL10n = $transformerAnswerL10n;
-        $this->transformerSubQuestion = $transformerSubQuestion;
         $this->transformerInputQuestionAggregate = $transformerInputQuestionAggregate;
     }
 
@@ -275,7 +271,12 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
                     $data,
                 );
             case 'subquestions':
-                return $this->prepareSubQuestions($op, $data);
+                return $this->prepareSubQuestions(
+                    $op,
+                    $this->transformer,
+                    $this->transformerL10n,
+                    $data
+                );
         }
         return $data;
     }
@@ -422,46 +423,13 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
     }
 
     /**
-     * Converts the subquestions from the raw data to the expected format.
+     * Checks if patch is valid for this operation.
      * @param OpInterface $op
-     * @param array|null $data
-     * @return array
-     * @throws OpHandlerException
+     * @return bool
      */
-    private function prepareSubQuestions(OpInterface $op, ?array $data): array
+    public function isValidPatch(OpInterface $op): bool
     {
-        $preparedSubQuestions = [];
-        if (is_array($data)) {
-            foreach ($data as $index => $subQuestion) {
-                $tfSubQuestion = $this->transformerSubQuestion->transform(
-                    $subQuestion
-                );
-                $this->checkRequiredData(
-                    $op,
-                    $tfSubQuestion,
-                    'subquestions'
-                );
-                if (
-                    is_array($subQuestion) && array_key_exists(
-                        'l10ns',
-                        $subQuestion
-                    ) && is_array($subQuestion['l10ns'])
-                ) {
-                    foreach ($subQuestion['l10ns'] as $lang => $subL10n) {
-                        $tfSubL10n = $this->transformerL10n->transform(
-                            $subL10n
-                        );
-                        $tfSubQuestion['subquestionl10n'][$lang] =
-                            (
-                                is_array($tfSubL10n)
-                                && isset($tfSubL10n['question'])
-                            ) ?
-                                $tfSubL10n['question'] : null;
-                    }
-                }
-                $preparedSubQuestions[$index][0] = $tfSubQuestion;
-            }
-        }
-        return $preparedSubQuestions;
+        // TODO: Implement isValidPatch() method.
+        return true;
     }
 }

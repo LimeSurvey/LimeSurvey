@@ -9,7 +9,6 @@ use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestion;
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestionAggregate;
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestionAttribute;
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestionL10ns;
-use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputSubQuestion;
 use LimeSurvey\ObjectPatch\Op\OpInterface;
 use LimeSurvey\ObjectPatch\Op\OpStandard;
 use LimeSurvey\ObjectPatch\OpHandler\OpHandlerException;
@@ -242,7 +241,6 @@ class OpHandlerQuestionCreateTest extends TestBaseClass
             new TransformerInputQuestionAttribute(),
             new TransformerInputAnswer(),
             new TransformerInputAnswerL10ns(),
-            new TransformerInputSubQuestion(),
             new TransformerInputQuestionAggregate()
         );
     }
