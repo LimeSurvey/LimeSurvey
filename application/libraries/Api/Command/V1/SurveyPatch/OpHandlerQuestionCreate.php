@@ -199,16 +199,32 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
     public function handle(OpInterface $op): array
     {
         $transformedProps = $this->prepareData($op);
-        $tempId = $this->extractTempId($transformedProps['question']);
-        $diContainer = \LimeSurvey\DI::getContainer();
-        $questionService = $diContainer->get(
-            QuestionAggregateService::class
-        );
+        if (
+            is_array($transformedProps) &&
+            array_key_exists(
+                'question',
+                $transformedProps
+            )
+        ) {
+            $tempId = $this->extractTempId($transformedProps['question']);
+            $diContainer = \LimeSurvey\DI::getContainer();
+            $questionService = $diContainer->get(
+                QuestionAggregateService::class
+            );
 
-        $question = $questionService->save(
-            $this->getSurveyIdFromContext($op),
-            $transformedProps
-        );
+            $question = $questionService->save(
+                $this->getSurveyIdFromContext($op),
+                $transformedProps
+            );
+        } else {
+            throw new OpHandlerException(
+                sprintf(
+                    'no question entity provided within props for %s with id "%s"',
+                    $this->entity,
+                    print_r($op->getEntityId(), true)
+                )
+            );
+        }
 
         return [
             'questionsMap' => [

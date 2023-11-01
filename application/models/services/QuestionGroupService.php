@@ -530,12 +530,12 @@ class QuestionGroupService
     private function getSurvey(int $surveyId)
     {
         $survey = $this->modelSurvey->findByPk($surveyId);
-        $survey->refresh();
         if (!$survey) {
             throw new NotFoundException(
                 'Survey does not exist',
             );
         }
+        $survey->refresh();
         return $survey;
     }
 
