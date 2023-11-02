@@ -99,24 +99,50 @@ class Patcher
         int $operationsApplied
     ): array {
         $organizedData = [];
-        $specialFormat = ['subquestionsMap', 'answersMap'];
-        foreach ($returnedData as $dataSet) {
-            foreach ($dataSet as $mapName => $mapping) {
-                if (in_array($mapName, $specialFormat)) {
-                    if (array_key_exists($mapName, $organizedData)) {
-                        $organizedData[$mapName] = array_merge(
-                            $organizedData[$mapName],
+        $knownMaps = [
+            'questionGroupsMap',
+            'questionsMap',
+            'subquestionsMap',
+            'answersMap'
+        ];
+        foreach ($returnedData as $data) {
+            foreach ($knownMaps as $knownMap) {
+                $mapping = $this->searchKeyInArray($data, $knownMap);
+                if ($mapping !== null) {
+                    if (array_key_exists($knownMap, $organizedData)) {
+                        $organizedData[$knownMap] = array_merge(
+                            $organizedData[$knownMap],
                             $mapping
                         );
                     } else {
-                        $organizedData[$mapName] = $mapping;
+                        $organizedData[$knownMap] = $mapping;
                     }
-                } else {
-                    $organizedData[$mapName][] = $mapping;
                 }
             }
         }
         $organizedData['operationsApplied'] = $operationsApplied;
         return $organizedData;
+    }
+
+    /**
+     * Recursive array search by key for multidimensional arrays.
+     * Returns the value, if key was found.
+     * @param $array
+     * @param $key
+     * @return mixed|null
+     */
+    private function searchKeyInArray($array, $key)
+    {
+        foreach ($array as $k => $v) {
+            if ($k === $key) {
+                return $v;
+            } elseif (is_array($v)) {
+                $result = $this->searchKeyInArray($v, $key);
+                if ($result !== null) {
+                    return $result;
+                }
+            }
+        }
+        return null; // Key not found
     }
 }

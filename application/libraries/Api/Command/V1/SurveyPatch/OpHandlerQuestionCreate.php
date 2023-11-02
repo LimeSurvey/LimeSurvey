@@ -81,21 +81,22 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
      *                     "mandatory": false,
      *                     "relevance": "1",
      *                     "encrypted": false,
-     *                     "save_as_default": false
+     *                     "save_as_default": false,
+     *                     "tempId": "XXX321"
      *                 },
      *                 "questionL10n": {
      *                     "en": {
      *                             "question": "Array Question",
      *                             "help": "Help text"
      *                     },
-     *                     "de-informal": {
+     *                     "de": {
      *                             "question": "Array ger",
      *                             "help": "help ger"
      *                     }
      *                 },
      *                 "attributes": {
      *                     "dualscale_headerA": {
-     *                             "de-informal": {
+     *                             "de": {
      *                                 "value": "A ger"
      *                             },
      *                             "en": {
@@ -103,7 +104,7 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
      *                             }
      *                     },
      *                     "dualscale_headerB": {
-     *                             "de-informal": {
+     *                             "de": {
      *                                 "value": "B ger"
      *                             },
      *                             "en": {
@@ -122,6 +123,7 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
      *                         "sortOrder": 0,
      *                         "assessmentValue": 0,
      *                         "scaleId": 0,
+     *                         "tempId": "111",
      *                         "l10ns": {
      *                             "de": {
      *                                 "answer": "antwort1",
@@ -138,6 +140,7 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
      *                         "sortOrder": 1,
      *                         "assessmentValue": 0,
      *                         "scaleId": 0,
+     *                         "tempId": "112",
      *                         "l10ns": {
      *                             "de": {
      *                                 "answer": "antwort1.2",
@@ -155,8 +158,9 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
      *                         "title": "SQ001",
      *                         "sortOrder": 0,
      *                         "relevance": "1",
+     *                         "tempId": "113",
      *                         "l10ns": {
-     *                             "de-informal": {
+     *                             "de": {
      *                                 "question": "subger1",
      *                                 "language": "de"
      *                             },
@@ -170,8 +174,9 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
      *                         "title": "SQ002",
      *                         "sortOrder": 1,
      *                         "relevance": "1",
+     *                         "tempId": "114",
      *                         "l10ns": {
-     *                             "de-informal": {
+     *                             "de": {
      *                                 "question": "subger2",
      *                                 "language": "de"
      *                             },
@@ -230,7 +235,12 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
             'questionsMap' => [
                 'tempId' => $tempId,
                 'qid'    => $question->qid
-            ]
+            ],
+            $this->getSubQuestionNewIdMapping(
+                $question,
+                $transformedProps['subquestions']
+            ),
+            'answersMap' => [],
         ];
     }
 

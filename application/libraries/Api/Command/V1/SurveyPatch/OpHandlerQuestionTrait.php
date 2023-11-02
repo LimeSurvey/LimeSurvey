@@ -9,6 +9,7 @@ use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestionAttribut
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestionL10ns;
 use LimeSurvey\ObjectPatch\Op\OpInterface;
 use LimeSurvey\ObjectPatch\OpHandler\OpHandlerException;
+use Question;
 
 trait OpHandlerQuestionTrait
 {
@@ -287,5 +288,39 @@ trait OpHandlerQuestionTrait
             'scale_id',
             $questionData
         ) ? (int)$questionData['scale_id'] : 0;
+    }
+
+    /**
+     * Maps the tempIds of new subquestions to the real ids.
+     * @param Question $question
+     * @param array $data
+     * @return array
+     */
+    private function getSubQuestionNewIdMapping(Question $question, array $data): array
+    {
+        $tempIds = [];
+        $mapping = [];
+        foreach ($data as $subQueDataArray) {
+            foreach ($subQueDataArray as $subQueData) {
+                if (
+                    isset($subQueData['tempId'])
+                    && isset($subQueData['title'])
+                ) {
+                    $tempIds[$subQueData['title']] = $subQueData['tempId'];
+                }
+            }
+        }
+        if (count($tempIds) > 0) {
+            $question->refresh();
+            foreach ($question->subquestions as $subquestion) {
+                if (array_key_exists($subquestion->title, $tempIds)) {
+                    $mapping['subquestionsMap'][] = [
+                        'tempId' => $tempIds[$subquestion->title],
+                        'qid'    => $subquestion->qid
+                    ];
+                }
+            }
+        }
+        return $mapping;
     }
 }

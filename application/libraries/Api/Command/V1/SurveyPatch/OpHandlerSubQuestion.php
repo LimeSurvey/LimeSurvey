@@ -182,7 +182,7 @@ class OpHandlerSubQuestion implements OpHandlerInterface
             $question,
             $preparedData
         );
-        return $this->getNewIdMapping($question, $preparedData);
+        return $this->getSubQuestionNewIdMapping($question, $preparedData);
     }
 
     /**
@@ -194,39 +194,5 @@ class OpHandlerSubQuestion implements OpHandlerInterface
     {
         // TODO: Implement isValidPatch() method.
         return true;
-    }
-
-    /**
-     * Maps the tempIds of new subquestions to the real ids.
-     * @param Question $question
-     * @param array $data
-     * @return array
-     */
-    private function getNewIdMapping(Question $question, array $data): array
-    {
-        $tempIds = [];
-        $mapping = [];
-        foreach ($data as $subQueDataArray) {
-            foreach ($subQueDataArray as $subQueData) {
-                if (
-                    isset($subQueData['tempId'])
-                    && isset($subQueData['title'])
-                ) {
-                    $tempIds[$subQueData['title']] = $subQueData['tempId'];
-                }
-            }
-        }
-        if (count($tempIds) > 0) {
-            $question->refresh();
-            foreach ($question->subquestions as $subquestion) {
-                if (array_key_exists($subquestion->title, $tempIds)) {
-                    $mapping['subquestionsMap'][] = [
-                        'tempId' => $tempIds[$subquestion->title],
-                        'qid'    => $subquestion->qid
-                    ];
-                }
-            }
-        }
-        return $mapping;
     }
 }

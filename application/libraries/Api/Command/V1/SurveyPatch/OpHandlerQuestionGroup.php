@@ -210,6 +210,7 @@ class OpHandlerQuestionGroup implements OpHandlerInterface
      *             "op": "create",
      *             "props":{
      *                 "questionGroup": {
+     *                     "tempId": 777,
      *                     "randomizationGroup": "",
      *                     "gRelevance": ""
      *                 },
