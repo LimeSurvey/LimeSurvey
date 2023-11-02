@@ -240,7 +240,11 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
                 $question,
                 $transformedProps['subquestions']
             ),
-            'answersMap' => [],
+            $this->getSubQuestionNewIdMapping(
+                $question,
+                $transformedProps['answeroptions'],
+                true
+            )
         ];
     }
 
