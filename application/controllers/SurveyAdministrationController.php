@@ -1693,6 +1693,7 @@ class SurveyAdministrationController extends LSBaseController
 
                 // Load the active record again, as there have been sporadic errors with the dataset not being updated
                 $survey = Survey::model()->findByAttributes(array('sid' => $iSurveyID));
+                $survey->scenario = 'activationStateChange';
                 $survey->active = 'N';
                 $survey->save();
 
