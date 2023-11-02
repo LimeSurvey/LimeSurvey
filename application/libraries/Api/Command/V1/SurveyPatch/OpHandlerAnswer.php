@@ -54,7 +54,13 @@ class OpHandlerAnswer implements OpHandlerInterface
      * "id" is the qid, so we are only allowing answers for a single question in
      * the patch.
      * Attention: Currently all answers not provided in the patch
-     *            will be deleted by the service.
+     *            will be deleted by the service. Doesn't matter if
+     *            create or update was chosen
+     * You could also mix updated and newly created answers in one patch.
+     * The difference is that new created answers need "tempId"
+     * and updated answers need the "aid" provided.
+     * The OpHandler doesn't care if you choose create or update as "op"!!!
+     *
      * Example for "update":
      * {
      *     "patch": [{
@@ -101,8 +107,53 @@ class OpHandlerAnswer implements OpHandlerInterface
      *     ]
      * }
      *
+     * Example for "create":
+     * {
+     *     "patch": [{
+     *             "entity": "answer",
+     *             "op": "create",
+     *             "id": "809",
+     *             "props": {
+     *                 "0": {
+     *                     "tempId": "222",
+     *                     "code": "AO11",
+     *                     "sortOrder": 4,
+     *                     "assessmentValue": 0,
+     *                     "scaleId": 1,
+     *                     "l10ns": {
+     *                         "de": {
+     *                             "answer": "ANTW11 scale 1",
+     *                             "language": "de"
+     *                         },
+     *                         "en": {
+     *                             "answer": "ANS11 scale 1",
+     *                             "language": "en"
+     *                         }
+     *                     }
+     *                 },
+     *                 "1": {
+     *                     "tempId": "223",
+     *                     "code": "AO12",
+     *                     "sortOrder": 5,
+     *                     "assessmentValue": 0,
+     *                     "scaleId": 1,
+     *                     "l10ns": {
+     *                         "de": {
+     *                             "answer": "ANTW12 scale 1",
+     *                             "language": "de"
+     *                         },
+     *                         "en": {
+     *                             "answer": "ANS12 scale 1",
+     *                             "language": "en"
+     *                         }
+     *                     }
+     *                 }
+     *             }
+     *         }
+     *     ]
+     * }
      * @param OpInterface $op
-     * @return void
+     * @return array
      * @throws OpHandlerException
      * @throws \DI\DependencyException
      * @throws \DI\NotFoundException
@@ -110,21 +161,28 @@ class OpHandlerAnswer implements OpHandlerInterface
      * @throws \LimeSurvey\Models\Services\Exception\PermissionDeniedException
      * @throws \LimeSurvey\Models\Services\Exception\PersistErrorException
      */
-    public function handle(OpInterface $op): void
+    public function handle(OpInterface $op): array
     {
         $question = $this->questionService->getQuestionBySidAndQid(
             $this->getSurveyIdFromContext($op),
             $op->getEntityId()
         );
+        $preparedData = $this->prepareAnswers(
+            $op,
+            $op->getProps(),
+            $this->transformerAnswer,
+            $this->transformerAnswerL10n,
+            ['answer', 'answerL10n']
+        );
         $this->answersService->save(
             $question,
-            $this->prepareAnswers(
-                $op,
-                $op->getProps(),
-                $this->transformerAnswer,
-                $this->transformerAnswerL10n,
-                ['answer', 'answerL10n']
-            )
+            $preparedData
+        );
+
+        return $this->getSubQuestionNewIdMapping(
+            $question,
+            $preparedData,
+            true
         );
     }
 

@@ -295,32 +295,39 @@ trait OpHandlerQuestionTrait
     }
 
     /**
-     * Maps the tempIds of new subquestions to the real ids.
+     * Maps the tempIds of new subquestions or answers to the real ids.
      * @param Question $question
      * @param array $data
+     * @param bool $answers
      * @return array
      */
-    private function getSubQuestionNewIdMapping(Question $question, array $data): array
-    {
+    private function getSubQuestionNewIdMapping(
+        Question $question,
+        array $data,
+        bool $answers = false
+    ): array {
         $tempIds = [];
         $mapping = [];
+        $title = $answers ? 'code' : 'title';
+        $object = $answers ? 'answers' : 'subquestions';
+        $idField = $answers ? 'aid' : 'qid';
         foreach ($data as $subQueDataArray) {
             foreach ($subQueDataArray as $subQueData) {
                 if (
                     isset($subQueData['tempId'])
-                    && isset($subQueData['title'])
+                    && isset($subQueData[$title])
                 ) {
-                    $tempIds[$subQueData['title']] = $subQueData['tempId'];
+                    $tempIds[$subQueData[$title]] = $subQueData['tempId'];
                 }
             }
         }
         if (count($tempIds) > 0) {
             $question->refresh();
-            foreach ($question->subquestions as $subquestion) {
-                if (array_key_exists($subquestion->title, $tempIds)) {
-                    $mapping['subquestionsMap'][] = [
-                        'tempId' => $tempIds[$subquestion->title],
-                        'qid'    => $subquestion->qid
+            foreach ($question->$object as $subquestion) {
+                if (array_key_exists($subquestion->$title, $tempIds)) {
+                    $mapping[$object . 'Map'][] = [
+                        'tempId' => $tempIds[$subquestion->$title],
+                        $idField => $subquestion->$idField
                     ];
                 }
             }
