@@ -55,41 +55,43 @@ class OpHandlerAnswer implements OpHandlerInterface
      * the patch.
      * Attention: Currently all answers not provided in the patch
      *            will be deleted by the service.
-     * All existing answers are needed independently from "update" or "create".
+     * Example for "update":
      * {
      *     "patch": [{
      *             "entity": "answer",
-     *             "op": "create", // "update"
-     *             "id": "726", // qid(!)
+     *             "op": "update",
+     *             "id": "809",
      *             "props": {
      *                 "0": {
-     *                     "code": "XX01",
-     *                     "sortOrder": 0,
+     *                     "aid": 465,
+     *                     "code": "AO01",
+     *                     "sortOrder": 2,
      *                     "assessmentValue": 0,
-     *                     "scaleId": 0,
+     *                     "scaleId": 1,
      *                     "l10ns": {
      *                         "de": {
-     *                             "answer": "antwort1",
+     *                             "answer": "ANTW1 scale 1",
      *                             "language": "de"
      *                         },
      *                         "en": {
-     *                             "answer": "answer1",
+     *                             "answer": "ANS1 scale 1",
      *                             "language": "en"
      *                         }
      *                     }
      *                 },
      *                 "1": {
-     *                     "code": "YY02",
-     *                     "sortOrder": 1,
+     *                     "aid": 467,
+     *                     "code": "AO02",
+     *                     "sortOrder": 3,
      *                     "assessmentValue": 0,
-     *                     "scaleId": 0,
+     *                     "scaleId": 1,
      *                     "l10ns": {
      *                         "de": {
-     *                             "answer": "antwort1.2",
+     *                             "answer": "ANTW2 scale 1",
      *                             "language": "de"
      *                         },
      *                         "en": {
-     *                             "answer": "answer1.2",
+     *                             "answer": "ANS2 scale 1",
      *                             "language": "en"
      *                         }
      *                     }
