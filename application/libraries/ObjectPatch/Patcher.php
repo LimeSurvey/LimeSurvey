@@ -99,9 +99,21 @@ class Patcher
         int $operationsApplied
     ): array {
         $organizedData = [];
+        $specialFormat = ['subquestionsMap', 'answersMap'];
         foreach ($returnedData as $dataSet) {
             foreach ($dataSet as $mapName => $mapping) {
-                $organizedData[$mapName][] = $mapping;
+                if (in_array($mapName, $specialFormat)) {
+                    if (array_key_exists($mapName, $organizedData)) {
+                        $organizedData[$mapName] = array_merge(
+                            $organizedData[$mapName],
+                            $mapping
+                        );
+                    } else {
+                        $organizedData[$mapName] = $mapping;
+                    }
+                } else {
+                    $organizedData[$mapName][] = $mapping;
+                }
             }
         }
         $organizedData['operationsApplied'] = $operationsApplied;
