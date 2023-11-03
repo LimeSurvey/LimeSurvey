@@ -66,14 +66,14 @@ export default {
 
             <div class="col-12" :class="menuItem.menu_class" 
             v-bind:title="reConvertHTML(menuItem.menu_description)"  
-            data-toggle="tooltip" >
-                <div class="ls-space padding all-0" v-bind:class="$store.state.lastMenuItemOpen == menuItem.id ? 'col-sm-10' : 'col-sm-12' ">
+            data-bs-toggle="tooltip" >
+                <div class="ls-space padding all-0" v-bind:class="$store.state.lastMenuItemOpen == menuItem.id ? 'col-md-10' : 'col-12' ">
                     <menuicon :icon-type="menuItem.menu_icon_type" :icon="menuItem.menu_icon"></menuicon>
                     <span v-html="menuItem.menu_title"></span>
-                    <i class="fa fa-external-link" v-if="menuItem.link_external == true">&nbsp;</i>
+                    <i class=" ri-external-link-fill" v-if="menuItem.link_external == true">&nbsp;</i>
                 </div>
-                <div class="col-sm-2 text-center ls-space padding all-0 background white" v-show="$store.state.lastMenuItemOpen == menuItem.id">
-                    <i class="fa fa-chevron-right">&nbsp;</i>
+                <div class="col-md-2 text-center ls-space padding all-0 background white" v-show="$store.state.lastMenuItemOpen == menuItem.id">
+                    <i class="ri-arrow-right-s-line">&nbsp;</i>
                 </div>
                 
             </div>

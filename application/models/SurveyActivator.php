@@ -33,6 +33,10 @@ class SurveyActivator
     }
 
     /**
+     * Sets a survey into "activate" state.
+     * Creates necessary tables "responseTable", "timingTable".
+     * Fires events "beforeSurveyActivate" and "afterSurveyActivation"
+     *
      * @return array
      * @throws CException
      */
@@ -74,12 +78,10 @@ class SurveyActivator
             return ['error' => $this->error];
         }
 
-        Yii::app()->db->createCommand()->update(
-            Survey::model()->tableName(),
-            ['active' => 'Y'],
-            'sid=:sid',
-            [':sid' => $this->survey->primaryKey]
-        );
+        $survey = Survey::model()->findByAttributes(array('sid' => $this->survey->primaryKey));
+        $survey->scenario = 'activationStateChange';
+        $survey->active = 'Y';
+        $survey->save();
 
         $aResult = array(
             'status' => 'OK',
@@ -97,6 +99,39 @@ class SurveyActivator
         App()->getPluginManager()->dispatchEvent($event);
 
         return $aResult;
+    }
+
+    /**
+     * See bug #09828: Ranking question : update allowed can broke Survey DB
+     * If max_subquestions is not set or is invalid : set it to actual answers numbers
+     *
+     * @return void
+     */
+    public function fixQuestionAttributeForRanking($sFieldMap)
+    {
+        foreach ($sFieldMap as $aRow) {
+            switch ($aRow['type']) {
+                case Question::QT_R_RANKING:
+                    $nrOfAnswers = Answer::model()->countByAttributes(
+                        array('qid' => $aRow['qid'])
+                    );
+                    $oQuestionAttribute = QuestionAttribute::model()->find(
+                        "qid = :qid AND attribute = 'max_subquestions'",
+                        array(':qid' => $aRow['qid'])
+                    );
+                    if (empty($oQuestionAttribute)) {
+                        $oQuestionAttribute = new QuestionAttribute();
+                        $oQuestionAttribute->qid = $aRow['qid'];
+                        $oQuestionAttribute->attribute = 'max_subquestions';
+                        $oQuestionAttribute->value = $nrOfAnswers;
+                        $oQuestionAttribute->save();
+                    } elseif (intval($oQuestionAttribute->value) < 1) {
+                        // Fix it if invalid : disallow 0, but need a sub question minimum for EM
+                        $oQuestionAttribute->value = $nrOfAnswers;
+                        $oQuestionAttribute->save();
+                    }
+            }
+        }
     }
 
     /**
@@ -140,7 +175,7 @@ class SurveyActivator
                 case Question::QT_M_MULTIPLE_CHOICE:
                 case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS:
                 case Question::QT_O_LIST_WITH_COMMENT:
-                    if ($aRow['aid'] != 'other' && strpos($aRow['aid'], 'comment') === false && strpos($aRow['aid'], 'othercomment') === false) {
+                    if ($aRow['aid'] != 'other' && strpos((string) $aRow['aid'], 'comment') === false && strpos((string) $aRow['aid'], 'othercomment') === false) {
                         $aTableDefinition[$aRow['fieldname']] = (array_key_exists('encrypted', $aRow) && $aRow['encrypted'] == 'Y') ? "text" : (isset($aRow['answertabledefinition']) && !empty($aRow['answertabledefinition']) ? $aRow['answertabledefinition'] : "string(5)") ;
                     } else {
                         $aTableDefinition[$aRow['fieldname']] = "text";
@@ -167,7 +202,7 @@ class SurveyActivator
                     break;
                 case Question::QT_VERTICAL_FILE_UPLOAD:
                     $this->createSurveyDir = true;
-                    if (strpos($aRow['fieldname'], "_")) {
+                    if (strpos((string) $aRow['fieldname'], "_")) {
                         $aTableDefinition[$aRow['fieldname']] = (array_key_exists('encrypted', $aRow) && $aRow['encrypted'] == 'Y') ? "text" : (isset($aRow['answertabledefinition']) && !empty($aRow['answertabledefinition']) ? $aRow['answertabledefinition'] : "integer");
                     } else {
                         $aTableDefinition[$aRow['fieldname']] = "text";
@@ -190,29 +225,6 @@ class SurveyActivator
                     $aTableDefinition[$aRow['fieldname']] = isset($aRow['answertabledefinition']) && !empty($aRow['answertabledefinition']) ? $aRow['answertabledefinition'] : "text";
                     break;
                 case Question::QT_R_RANKING:
-                    /**
-                     * See bug #09828: Ranking question : update allowed can broke Survey DB
-                     * If max_subquestions is not set or is invalid : set it to actual answers numbers
-                     */
-
-                    $nrOfAnswers = Answer::model()->countByAttributes(
-                        array('qid' => $aRow['qid'])
-                    );
-                    $oQuestionAttribute = QuestionAttribute::model()->find(
-                        "qid = :qid AND attribute = 'max_subquestions'",
-                        array(':qid' => $aRow['qid'])
-                    );
-                    if (empty($oQuestionAttribute)) {
-                        $oQuestionAttribute = new QuestionAttribute();
-                        $oQuestionAttribute->qid = $aRow['qid'];
-                        $oQuestionAttribute->attribute = 'max_subquestions';
-                        $oQuestionAttribute->value = $nrOfAnswers;
-                        $oQuestionAttribute->save();
-                    } elseif (intval($oQuestionAttribute->value) < 1) {
-                        // Fix it if invalid : disallow 0, but need a sub question minimum for EM
-                        $oQuestionAttribute->value = $nrOfAnswers;
-                        $oQuestionAttribute->save();
-                    }
                     $aTableDefinition[$aRow['fieldname']] = (array_key_exists('encrypted', $aRow) && $aRow['encrypted'] == 'Y') ? "text" : (isset($aRow['answertabledefinition']) && !empty($aRow['answertabledefinition']) ? $aRow['answertabledefinition'] : "string(5)");
                     break;                                                                                                                                                                                                                                                                 default:
                     $aTableDefinition[$aRow['fieldname']] = (array_key_exists('encrypted', $aRow) && $aRow['encrypted'] == 'Y') ? "text" : (isset($aRow['answertabledefinition']) && !empty($aRow['answertabledefinition']) ? $aRow['answertabledefinition'] : "string(5)");
@@ -293,6 +305,7 @@ class SurveyActivator
         $this->survey->fixInvalidQuestions();
         //Get list of questions for the base language
         $sFieldMap = createFieldMap($this->survey, 'full', true, false, $this->survey->language);
+        $this->fixQuestionAttributeForRanking($sFieldMap);
         $this->prepareTableDefinition($collation, $sFieldMap);
         $this->prepareSimulateQuery();
     }
@@ -445,5 +458,15 @@ class SurveyActivator
         /* seems OK, sysadmin allowed to broke system */
         $db->createCommand(new CDbExpression(sprintf('SET default_storage_engine=%s;', $dbEngine)))
             ->execute();
+    }
+
+    /**
+     * Checks if the survey is in close access mode.
+     *
+     * @return bool
+     */
+    public function isCloseAccessMode()
+    {
+        return $this->survey->isAllowRegister || tableExists('tokens_' . $this->survey->sid);
     }
 }

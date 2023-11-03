@@ -3,7 +3,7 @@
  * Like in front page, or quick actions
  */
 export default function panelClickable () {
-    $(".panel-clickable").on('click',function(e){
+    $(".card-clickable").on('click',function(e){
         const self = $(this);
         if(self.data('url')!=''){
         	if(self.data('target') === '_blank') {

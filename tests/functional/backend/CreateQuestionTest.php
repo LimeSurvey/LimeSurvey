@@ -64,6 +64,22 @@ class CreateQuestionTest extends TestBaseClassWeb
             $web->get($url);
             sleep(1);
 
+            // Ignore welcome modal.
+            try {
+                $button = self::$webDriver->wait(1)->until(
+                    WebDriverExpectedCondition::elementToBeClickable(
+                        WebDriverBy::cssSelector('#welcomeModal button.btn-outline-secondary')
+                    )
+                );
+                $button->click();
+            } catch (NoSuchElementException $ex) {
+                // Do nothing.
+            } catch (TimeOutException $ex) {
+                // Do nothing.
+            }
+
+            $web->dismissModal();
+
             // Go to structure sidebar
             $selectStructureSidebar = $web->findById('adminsidepanel__sidebar--selectorStructureButton');
             $selectStructureSidebar->click();
@@ -74,9 +90,29 @@ class CreateQuestionTest extends TestBaseClassWeb
             $sidemenuCreateQuestionButton->click();
             sleep(1);
 
+            $questionBadCode = rand(1, 10000) . 'question';
             $questionCode = 'question' . rand(1, 10000);
             $input = $web->findById('questionCode');
+            $input->clear()->sendKeys($questionBadCode);
+            /* blur out action : ajax call */
+            $web->findById('relevance')->click();
+            sleep(1);
+            $checkValidateText = $web->findById('question-title-warning')->getText();
+            $this->assertEquals(
+                "Question codes must start with a letter and may only contain alphanumeric characters.",
+                 $checkValidateText,
+                 "Title validation didn't update in question-title-warning, get “".$checkValidateText."”"
+            );
             $input->clear()->sendKeys($questionCode);
+            $input->click();
+            $web->findById('relevance')->click();
+            sleep(1);
+            $checkValidateText = trim($web->findById('question-title-warning')->getText());
+            $this->assertEquals(
+                "",
+                 $checkValidateText,
+                 "Title validation in question-title-warning are not empty on success, get “".$checkValidateText."”"
+            );
 
             $questionTypeSelector = $web->findById('trigger_questionTypeSelector_button');
             $questionTypeSelector->click();

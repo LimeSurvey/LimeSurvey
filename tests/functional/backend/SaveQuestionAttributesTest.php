@@ -29,7 +29,7 @@ class SaveQuestionAttributesTest extends TestBaseClassWeb
                 "users_name" => "surveyadmin",
                 "full_name" => "surveyadmin",
                 "email" => "surveyadmin@example.com",
-                "lang" => "auto",
+                "lang" => "en",
                 "password" => "surveyadmin"
             ],
             [
@@ -87,15 +87,18 @@ class SaveQuestionAttributesTest extends TestBaseClassWeb
             $web->get($url);
 
             sleep(2);
-            
+
             $web->dismissModal();
             $web->dismissModal();
-            
+
             sleep(5);
             $oElementQuestionEditorButton = $this->waitForElementShim($web, '#questionEditorButton');
             $web->wait(10)->until(WebDriverExpectedCondition::elementToBeClickable(WebDriverBy::cssSelector('#questionEditorButton')));
             $oElementQuestionEditorButton->click();
             sleep(1);
+
+            $displayGeneralSettingsTitle = $web->findElement(WebDriverBy::id('button-collapse-General'));
+            $displayGeneralSettingsTitle->click();
 
             $oElementAdvancedOptionsPanel = $this->waitForElementShim($web, '#advanced-options-container');
             $web->wait(10)->until(WebDriverExpectedCondition::visibilityOf($oElementAdvancedOptionsPanel));
@@ -105,21 +108,24 @@ class SaveQuestionAttributesTest extends TestBaseClassWeb
 
             sleep(1);
 
-            $attribute1 = $web->findElement(WebDriverBy::id('advancedSettings[display][cssclass]'));
+            $attribute1 = $web->findElement(WebDriverBy::id('advancedSettings_display_cssclass'));
             $attribute1->sendKeys('test-class<script>console.log("Test");</script>');
+
+            $web->executeScript('window.scrollTo(0,document.body.scrollHeight);');
+            sleep(1);
 
             $testCategoryTitle = $web->findElement(WebDriverBy::id('button-collapse-Test'));
             $testCategoryTitle->click();
 
             sleep(1);
 
-            $attribute2 = $web->findElement(WebDriverBy::id('advancedSettings[test][nonFilteredAttribute]'));
+            $attribute2 = $web->findElement(WebDriverBy::id('advancedSettings_test_nonFilteredAttribute'));
             $attribute2->sendKeys('<script>console.log(1);</script>');
 
             $savebutton = $web->findElement(WebDriverBy::id('save-and-close-button-create-question'));
             $savebutton->click();
 
-            $alert = $this->waitForElementShim($web, '#notif-container .alert');
+            $alert = $this->waitForElementShim($web, '#notif-container .alert', 20);
             $web->wait(10)->until(WebDriverExpectedCondition::visibilityOf($alert));
 
             self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '_' . __FUNCTION__ . '_afterSave');
@@ -172,15 +178,15 @@ class SaveQuestionAttributesTest extends TestBaseClassWeb
             $url = $urlMan->createUrl('admin/pluginmanager/sa/index');
             $web->get($url);
 
-            $button = $this->waitForElementShim($web, '[data-target="#installPluginZipModal"]');
-            $web->wait(10)->until(WebDriverExpectedCondition::elementToBeClickable(WebDriverBy::cssSelector('[data-target="#installPluginZipModal"]')));
+            $button = $this->waitForElementShim($web, '[data-bs-target="#installPluginZipModal"]');
+            $web->wait(10)->until(WebDriverExpectedCondition::elementToBeClickable(WebDriverBy::cssSelector('[data-bs-target="#installPluginZipModal"]')));
             $button->click();
 
             // Upload the file
             $web->wait(10)->until(WebDriverExpectedCondition::elementToBeClickable(WebDriverBy::cssSelector('#installPluginZipModal #the_file')));
             $fileInput = $web->findByCss('#installPluginZipModal #the_file');
             $fileInput->setFileDetector(new LocalFileDetector());
-            $file = BASEPATH . '../tests/data/file_upload/NewQuestionAttributesPlugin.zip';
+            $file = ROOT . '/tests/data/file_upload/NewQuestionAttributesPlugin.zip';
             $this->assertTrue(file_exists($file));
             $fileInput->sendKeys($file)->submit();
 

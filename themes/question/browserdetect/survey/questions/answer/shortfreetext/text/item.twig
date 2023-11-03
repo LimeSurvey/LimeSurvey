@@ -70,6 +70,6 @@ question_template_attribute.add_platform_info           : {{question_template_at
 {{ registerScript( "BrowserDetectQuestion" ~ name, "
     var browserCheckObject = new BrowserCheck();
         $('#answer" ~ name ~ "')
-            .val(browserCheckObject." ~ (question_template_attribute.add_platform_info ? "getBrowserInfoLong()" : "getBrowserInfoShort()") ~ ");
+            .val(browserCheckObject." ~ (question_template_attribute.add_platform_info == 'yes' ? "getBrowserInfoLong()" : "getBrowserInfoShort()") ~ ");
     ", "POS_POSTSCRIPT")
 }}

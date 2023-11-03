@@ -36,7 +36,7 @@
     * ADD TRAILING SLASH!
     ***********************************************************/
 
-    $tcpdf['base_directory'] = APPPATH.'third_party'.DIRECTORY_SEPARATOR.'tcpdf'.DIRECTORY_SEPARATOR;
+    $tcpdf['base_directory'] = APPPATH.'vendor'.DIRECTORY_SEPARATOR.'tcpdf'.DIRECTORY_SEPARATOR;
 
 
     /************************************************************

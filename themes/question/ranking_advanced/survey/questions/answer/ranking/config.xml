@@ -92,13 +92,12 @@
             <inputtype>singleselect</inputtype>
             <options>
                 <list>List</list>
-                <bubbles>Bubbles</bubbles>
                 <blocks>Blocks</blocks>
                 <buttons>Buttons</buttons>
             </options>
             <default>list</default>
             <help>Change visualization of the ranking question</help>
-            <caption>Viuzialisation: </caption>
+            <caption>Visualisation: </caption>
         </attribute>
     </attributes>
 

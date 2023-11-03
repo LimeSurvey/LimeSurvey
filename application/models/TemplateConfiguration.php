@@ -17,7 +17,7 @@
  *
  * NOTE: if you only need to access to the table, you don't need to call prepareTemplateRendering
  *
- * The followings are the available columns in table '{{template_configuration}}':
+ * The following are the available columns in table '{{template_configuration}}':
  * @property integer $id Primary key
  * @property string $template_name
  * @property integer $sid Survey ID
@@ -32,7 +32,6 @@
  * @property string $cssframework_js
  * @property string $packages_to_load
  * @property string $packages_ltr
- * @property string $packages_rtl
  * @property string $packages_rtl
  * @property Template $template
  *
@@ -120,6 +119,9 @@ class TemplateConfiguration extends TemplateConfig
         return array(
             array('template_name', 'required'),
             array('id, sid, gsid', 'numerical', 'integerOnly' => true),
+            array('template_name', 'filter', 'filter' => function ($value) {
+                return sanitize_filename($value, false, false, false);
+            }),
             array('template_name', 'length', 'max' => 150),
             array('cssframework_name', 'length', 'max' => 45),
             array('files_css, files_js, files_print_css, options, cssframework_css, cssframework_js, packages_to_load',
@@ -191,7 +193,7 @@ class TemplateConfiguration extends TemplateConfig
         // If the survey configuration table of the wanted template doesn't exist (eg: manually deleted),
         // then we provide the default one.
         if (!is_a($oInstance, 'TemplateConfiguration')) {
-            $oInstance = self::getInstanceFromTemplateName(getGlobalSetting('defaulttheme'));
+            $oInstance = self::getInstanceFromTemplateName(App()->getConfig('defaulttheme'));
         }
 
         if ($abstractInstance === true) {
@@ -327,7 +329,7 @@ class TemplateConfiguration extends TemplateConfig
                 $aTemplateConfigurations[$key]['sid'] = $iSurveyId;
                 $aTemplateConfigurations[$key]['template_name'] = $oAttributes['template_name'];
                 $aTemplateConfigurations[$key]['config']['options'] = isJson($oAttributes['options'])
-                    ? (array)json_decode($oAttributes['options'])
+                    ? (array)json_decode((string) $oAttributes['options'])
                     : $oAttributes['options'];
             }
         }
@@ -414,7 +416,7 @@ class TemplateConfiguration extends TemplateConfig
             $oTemplateConfigurationModel = TemplateConfiguration::getInstanceFromSurveyGroup(
                 $iSurveyGroupId,
                 $sTemplateName,
-                $abstractInstance
+                true
             );
         }
 
@@ -422,7 +424,7 @@ class TemplateConfiguration extends TemplateConfig
             $oTemplateConfigurationModel = TemplateConfiguration::getInstanceFromSurveyId(
                 $iSurveyId,
                 $sTemplateName,
-                $abstractInstance
+                true
             );
         }
 
@@ -472,12 +474,13 @@ class TemplateConfiguration extends TemplateConfig
     }
 
     /**
-     * @todo document me
+     * Retrieves a list of models based on the current search/filter conditions.
      *
+     * @param integer $gsid Survey group, else get global
      * @return CActiveDataProvider
      * @throws Exception
      */
-    public function searchGrid()
+    public function searchGrid(?int $gsid = null)
     {
         // @todo Please modify the following code to remove attributes that should not be searched.
 
@@ -492,16 +495,21 @@ class TemplateConfiguration extends TemplateConfig
         $criteria->addCondition('t.sid IS NULL');
         $criteria->addCondition('template.name IS NOT NULL');
 
-        // check if survey group id is present
-        $gsid = App()->request->getQuery('id', null);
         if ($gsid !== null) {
-            $criteria->addCondition('t.gsid = ' . $gsid);
+            /* Group configuration */
+            $criteria->compare('t.gsid', $gsid);
         } else {
+            /* Global configuration */
             $criteria->addCondition('t.gsid IS NULL');
         }
 
         $criteria->compare('id', $this->id);
-        $criteria->compare('template_name', $this->template_name, true);
+        if (!empty($this->template_name)) {
+            $templateNameEscaped = strtr($this->template_name, ['%' => '\%', '_' => '\_', '\\' => '\\\\']);
+            $criteria->addCondition('template.name LIKE :templatename1 OR template.title LIKE :templatename2');
+            $criteria->params[':templatename1'] = '%' . $templateNameEscaped . '%';
+            $criteria->params[':templatename2'] = '%' . $templateNameEscaped . '%';
+        }
         $criteria->compare('files_css', $this->files_css, true);
         $criteria->compare('files_js', $this->files_js, true);
         $criteria->compare('files_print_css', $this->files_print_css, true);
@@ -540,6 +548,7 @@ class TemplateConfiguration extends TemplateConfig
           // Note: if no twig statement in the description, twig will just render it as usual
         try {
             $sDescription = App()->twigRenderer->convertTwigToHtml($this->template->description);
+            $sDescription = viewHelper::purified($sDescription);
         } catch (\Exception $e) {
           // It should never happen, but let's avoid to anoy final user in production mode :)
             if (YII_DEBUG) {
@@ -617,7 +626,7 @@ class TemplateConfiguration extends TemplateConfig
     }
 
     /**
-     * @todo document me
+     * Check if the template exists and is valid
      *
      * @return bool
      */
@@ -627,7 +636,7 @@ class TemplateConfiguration extends TemplateConfig
             $this->bTemplateCheckResult = true;
             if (
                 !is_object($this->template) ||
-                (is_object($this->template) && !Template::checkTemplateXML($this->template->folder))
+                (is_object($this->template) && !Template::checkTemplateXML($this->template->name, $this->template->folder))
             ) {
                 $this->bTemplateCheckResult = false;
             }
@@ -665,7 +674,7 @@ class TemplateConfiguration extends TemplateConfig
     public function addFileReplacement($sFile, $sType)
     {
         $sField = 'files_' . $sType;
-        $oFiles = (array) json_decode($this->$sField);
+        $oFiles = (array) json_decode((string) $this->$sField);
 
         $oFiles['replace'][] = $sFile;
 
@@ -718,9 +727,11 @@ class TemplateConfiguration extends TemplateConfig
                 return '';
             }
         }
+        /* Use sanitized filename for previous bad upload */
+        $templateName = sanitize_filename($this->template_name, false, false, false);
         $sEditorUrl = App()->getController()->createUrl(
             'admin/themes/sa/view',
-            array("templatename" => $this->template_name)
+            array("templatename" => $templateName)
         );
         $sExtendUrl = App()->getController()->createUrl('admin/themes/sa/templatecopy');
         $sOptionUrl = (App()->getController()->action->id == "surveysgroups") ?
@@ -736,105 +747,90 @@ class TemplateConfiguration extends TemplateConfig
         $sUninstallUrl = Yii::app()->getController()->createUrl('themeOptions/uninstall/');
         $sResetUrl     = Yii::app()->getController()->createUrl('themeOptions/reset/', array("gsid" => (int) $gsid));
 
-        $sEditorLink = "<a
-            id='template_editor_link_" . $this->template_name . "'
-            href='" . $sEditorUrl . "'
-            class='btn btn-default btn-block'>
-                <span class='icon-templates'></span>
-                " . gT('Theme editor') . "
-            </a>";
+        $dropdownItems = [];
+        $dropdownItems[] = [
+            'title'            => gT('Theme editor'),
+            'url'              => $sEditorUrl,
+            'linkId'           => 'template_editor_link_' . $this->id,
+            'linkClass'        => '',
+            'iconClass'        => 'ri-brush-fill',
+            'enabledCondition' => App()->getController()->action->id !== "surveysgroups",
 
-        $OptionLink = '';
-        if ($this->getHasOptionPage()) {
-            $OptionLink .= "<a
-                id='template_options_link_" . $this->template_name . "'
-                href='" . $sOptionUrl . "'
-                class='btn btn-default btn-block'>
-                    <span class='fa fa-tachometer'></span>
-                    " . gT('Theme options') . "
-                </a>";
-        }
+        ];
 
-        $sExtendLink = '<a
-            id="extendthis_' . $this->template_name . '"
-            href="' . $sExtendUrl . '"
-            data-post=\''
-            . json_encode([
-                "copydir" => $this->template_name,
-                "action" => "templatecopy",
-                "newname" => [
-                    "value" => "extends_" . $this->template_name,
-                    "type" => "text",
-                    "class" => "form-control col-sm-12"
-                ]
-            ])
-            . '\'
-            data-text="' . gT('Please type in the new theme name above.') . '"
-            data-button-no="' . gt('Cancel') . '" 
-            data-button-yes="' . gt('Extend') . '"
-            title="' . sprintf(gT('Type in the new name to extend %s'), $this->template_name) . '"
-            class="btn btn-primary btn-block selector--ConfirmModal">
-                <i class="fa fa-copy"></i>
-                ' . gT('Extend') . '
-            </a>';
+        $dropdownItems[] = [
+            'title'            => gT('Theme options'),
+            'url'              => $sOptionUrl,
+            'linkId'           => 'template_options_link_' . $this->id ,
+            'linkClass'        => '',
+            'iconClass'        => 'ri-dashboard-3-fill',
+            'enabledCondition' => $this->getHasOptionPage(),
+        ];
 
-        $sUninstallLink = '<a
-            id="remove_fromdb_link_' . $this->template_name . '"
-            href="' . $sUninstallUrl . '"
-            data-post=\'{ "templatename": "' . $this->template_name . '" }\'
-            data-text="' . gT('This will reset all the specific configurations of this theme.') . '<br>' . gT('Do you want to continue?') . '"
-            data-button-no="' . gt('Cancel') . '" 
-            data-button-yes="' . gt('Uninstall') . '"
-            data-button-type="btn-danger" 
-            title="' . gT('Uninstall this theme') . '"
-            class="btn btn-danger btn-block selector--ConfirmModal">
-                <span class="fa fa-trash"></span>
-                ' . gT('Uninstall') . '
-            </a>';
 
-        $sResetLink = '<a
-                id="remove_fromdb_link_' . $this->template_name . '"
-                href="' . $sResetUrl . '"
-                data-post=\'{ "templatename": "' . $this->template_name . '" }\'
-                data-text="' . gT('This will reload the configuration file of this theme.') . '<br>' . gT('Do you want to continue?') . '"
-                data-button-no="' . gt('Cancel') . '"  
-                data-button-yes="' . gt('Reset') . '"
-                data-button-type="btn-warning" 
-                title="' . gT('Reset this theme') . '"
-                class="btn btn-warning btn-block selector--ConfirmModal">
-                    <span class="fa fa-refresh"></span>
-                    ' . gT('Reset') . '
-            </a>';
+        $dropdownItems[] = [
+            'title'            => gT('Extend'),
+            'url'              => $sExtendUrl,
+            'linkId'           => 'extendthis_' . $this->id,
+            'linkClass'        => 'selector--ConfirmModal ',
+            'iconClass'        => 'ri-file-copy-line text-success',
+            'enabledCondition' => App()->getController()->action->id !== "surveysgroups",
+            'linkAttributes'   => [
+                'title'            => sprintf(gT('Type in the new name to extend %s'), $templateName),
+                'data-button-no'   => gt('Cancel'),
+                'data-button-yes'  => gt('Extend'),
+                'data-text'        => gT('Please type in the new theme name above.'),
+                'data-post'        => json_encode([
+                    "copydir" => $templateName,
+                    "action"  => "templatecopy",
+                    "newname" => [ "value" => "extends_" . $templateName,
+                                    "type" => "text",
+                                    "class" => "form-control col-md-12" ]
+                    ]),
+            ]
+        ];
 
-        if (App()->getController()->action->id == "surveysgroups") {
-            $sButtons = $OptionLink;
-        } else {
-            $sButtons = $sEditorLink . $OptionLink . $sExtendLink;
 
-            if ($this->template_name != getGlobalSetting('defaulttheme')) {
-                $sButtons .= $sUninstallLink;
-            } else {
-                $sButtons .= '
-                    <a
-                        class="btn btn-danger btn-block disabled"
-                        data-toggle="tooltip"
-                        data-placement="top"
-                        title="' . gT('You cannot uninstall the default template.') . '"
-                    >
-                        <span class="fa fa-trash"></span>
-                        ' . gT('Uninstall') . '
-                    </a>
-                ';
-            }
-        }
+        $dropdownItems[] = [
+            'title'            => gT('Uninstall'),
+            'url'              => $sUninstallUrl,
+            'linkId'           => 'remove_fromdb_link_' . $this->id,
+            'linkClass'        => 'selector--ConfirmModal ',
+            'iconClass'        => 'ri-delete-bin-fill text-danger',
+            'enabledCondition' => App()->getController()->action->id !== "surveysgroups" &&
+                                    $templateName != App()->getConfig('defaulttheme'),
+            'linkAttributes'   => [
+                'title'            => gT('Uninstall this theme'),
+                'data-button-no'   => gt('Cancel'),
+                'data-button-yes'  => gt('Uninstall'),
+                'data-text'        => gT('This will reset all the specific configurations of this theme.')
+                                         . '<br>' . gT('Do you want to continue?'),
+                'data-post'        => json_encode([ "templatename" => $templateName ]),
+                'data-button-type' => "btn-danger"
+            ]
+        ];
 
-        $sButtons .= $sResetLink;
-
-        return $sButtons;
+        $dropdownItems[] = [
+            'title'            => gT('Reset'),
+            'url'              => $sResetUrl,
+            'linkId'           => 'remove_fromdb_link_' . $this->id,
+            'linkClass'        => 'selector--ConfirmModal ',
+            'iconClass'        => 'ri-refresh-line text-warning',
+            'enabledCondition' => App()->getController()->action->id !== "surveysgroups",
+            'linkAttributes'   => [
+                'title'            => gT('Reset this theme'),
+                'data-button-no'   => gt('Cancel'),
+                'data-button-yes'  => gt('Reset'),
+                'data-text'        => gT('This will reload the configuration file of this theme.') . '<br>' . gT('Do you want to continue?'),
+                'data-post'        => json_encode([ "templatename" => $templateName ]),
+                'data-button-type' => "btn-warning"
+            ]
+        ];
+        return App()->getController()->widget('ext.admin.grid.GridActionsWidget.GridActionsWidget', ['dropdownItems' => $dropdownItems], true);
     }
 
     /**
-     * @todo document me
+     * Returns true if this theme or any mothertemplate has a TemplateConfiguration set
      *
      * @return bool
      * @throws Exception
@@ -946,8 +942,8 @@ class TemplateConfiguration extends TemplateConfig
      */
     private function getRelativePath($from, $to)
     {
-        $dir = explode(DIRECTORY_SEPARATOR, is_file($from) ? dirname($from) : rtrim($from, DIRECTORY_SEPARATOR));
-        $file = explode(DIRECTORY_SEPARATOR, $to);
+        $dir = explode(DIRECTORY_SEPARATOR, is_file($from) ? dirname((string) $from) : rtrim((string) $from, DIRECTORY_SEPARATOR));
+        $file = explode(DIRECTORY_SEPARATOR, (string) $to);
 
         while ($dir && $file && ($dir[0] == $file[0])) {
             array_shift($dir);
@@ -1010,7 +1006,10 @@ class TemplateConfiguration extends TemplateConfig
             }
             // Get full list of files
             $fileList = Template::getOtherFiles($basePath);
-
+            // Order File List alphabetically
+            usort($fileList, function ($a, $b) {
+                return strcasecmp((string) $a['name'], (string) $b['name']);
+            });
             // Keep only image files
             foreach ($fileList as $file) {
                 $imageInfo = $this->getImageInfo($basePath . $file['name'], $pathPrefix);
@@ -1047,7 +1046,6 @@ class TemplateConfiguration extends TemplateConfig
 
         $oTemplate->setToInherit();
         $oTemplate->setOptions();
-        $oTemplate->setOptionInheritance();
 
         $oOptions = (array) $oSimpleInheritanceTemplate->oOptions;
 
@@ -1106,7 +1104,7 @@ class TemplateConfiguration extends TemplateConfig
                     if ($action == $sAction) {
                         // Specific inheritance of one of the value of the json array
                         if ($aFileList[0] == 'inherit') {
-                            $aParentjFiles = (array) json_decode($oTemplate->getParentConfiguration->$sField);
+                            $aParentjFiles = (array) json_decode((string) $oTemplate->getParentConfiguration->$sField);
                             $aFileList = $aParentjFiles[$action];
                         }
 
@@ -1143,7 +1141,7 @@ class TemplateConfiguration extends TemplateConfig
         $files = $oTemplate->$sField;
         $oFiles = [];
         if (!empty($files)) {
-            $oFiles = json_decode($files, true);
+            $oFiles = json_decode((string) $files, true);
             if ($oFiles === null) {
                 App()->setFlashMessage(
                     sprintf(
@@ -1223,7 +1221,7 @@ class TemplateConfiguration extends TemplateConfig
             ),
             'error'
         );
-        App()->getController()->redirect(array("admin/themeoptions"));
+        App()->getController()->redirect(array("themeOptions/index", "#" => "surveythemes"));
         App()->end();
     }
 
@@ -1234,14 +1232,11 @@ class TemplateConfiguration extends TemplateConfig
      */
     protected function setThisTemplate()
     {
-        $this->apiVersion       = (!empty($this->template->api_version)) ?
-            $this->template->api_version : null; // Mandtory setting in config XML
-        $this->viewPath         = $this->path . $this->getTemplateConfigurationForAttribute($this, 'view_folder')
-                ->template->view_folder . DIRECTORY_SEPARATOR;
-        $this->filesPath        = $this->path . $this->getTemplateConfigurationForAttribute($this, 'files_folder')
-                ->template->files_folder . DIRECTORY_SEPARATOR;
-        $this->generalFilesPath = App()->getConfig("userthemerootdir")
-            . DIRECTORY_SEPARATOR . 'generalfiles' . DIRECTORY_SEPARATOR;
+        // Mandatory setting in config XML
+        $this->apiVersion = (!empty($this->template->api_version)) ? $this->template->api_version : null;
+        $this->viewPath = $this->path . $this->getTemplateConfigurationForAttribute($this, 'view_folder')->template->view_folder . DIRECTORY_SEPARATOR;
+        $this->filesPath = $this->path . $this->getTemplateConfigurationForAttribute($this, 'files_folder')->template->files_folder . DIRECTORY_SEPARATOR;
+        $this->generalFilesPath = App()->getConfig("userthemerootdir") . DIRECTORY_SEPARATOR . 'generalfiles' . DIRECTORY_SEPARATOR;
         // Options are optional
         $this->setOptions();
 
@@ -1254,7 +1249,7 @@ class TemplateConfiguration extends TemplateConfig
                 $this->packages = array_merge($templateToLoadPackages->add, $this->packages);
             }
             if (!empty($templateToLoadPackages->remove)) {
-                $this->packages =  array_diff($this->packages, $templateToLoadPackages->remove);
+                $this->packages = array_diff($this->packages, $templateToLoadPackages->remove);
             }
         }
 
@@ -1282,7 +1277,8 @@ class TemplateConfiguration extends TemplateConfig
     }
 
     /**
-     * @todo document me
+     * Decodes json string from the database field "options" and stores it inside $this->oOptions
+     * Also triggers inheritence checks
      * @return void
      */
     protected function setOptions()
@@ -1298,7 +1294,8 @@ class TemplateConfiguration extends TemplateConfig
     }
 
     /**
-     * @todo document me
+     * Loop through all theme options defined, trigger check for inheritance and write the new value back to the options object
+     * @return void
      */
     protected function setOptionInheritance()
     {
@@ -1306,14 +1303,13 @@ class TemplateConfiguration extends TemplateConfig
 
         if (!empty($oOptions)) {
             foreach ($oOptions as $sKey => $sOption) {
-                $oOptions->$sKey = $this->getOptionKey($sKey);
+                $this->oOptions->$sKey = $this->getOptionKey($sKey);
             }
         }
     }
 
     /**
-     * @todo document me
-     *
+     * Search through the inheritence chain and find the inherited value for theme option
      * @param string $key
      * @return mixed
      */
@@ -1337,7 +1333,7 @@ class TemplateConfiguration extends TemplateConfig
     }
 
     /**
-     * @todo document me
+     * loads the main theme template from the parent theme that it is extending, as a package. Ready to be registered
      *
      * @param string[] $packages
      * @return string[]
@@ -1366,7 +1362,7 @@ class TemplateConfiguration extends TemplateConfig
         $this->aFrameworkAssetsToReplace[$sType] = array();
 
         $sFieldName  = 'cssframework_' . $sType;
-        $aFieldValue = (array) json_decode($this->$sFieldName);
+        $aFieldValue = (array) json_decode((string) $this->$sFieldName);
 
         if (!empty($aFieldValue) && !empty($aFieldValue['replace'])) {
             $this->aFrameworkAssetsToReplace[$sType] = (array) $aFieldValue['replace'];
@@ -1593,12 +1589,18 @@ class TemplateConfiguration extends TemplateConfig
      */
     public function sanitizeImagePathsOnJson($attribute, $params)
     {
+        $excludedOptions = [
+            'cssframework'
+        ];
         // Validates all options of the theme. Not only classic ones which are expected to hold a path,
         // as other options may hold a path as well (eg. custom theme options)
-        $decodedOptions = json_decode($this->$attribute, true);
+        $decodedOptions = json_decode((string) $this->$attribute, true);
         if (is_array($decodedOptions)) {
             Yii::import('application.helpers.SurveyThemeHelper');
-            foreach ($decodedOptions as &$value) {
+            foreach ($decodedOptions as $option => &$value) {
+                if (in_array($option, $excludedOptions)) {
+                    continue;
+                }
                 $value = SurveyThemeHelper::sanitizePathInOption($value, $this->template_name, $this->sid);
             }
             $this->$attribute = json_encode($decodedOptions);
@@ -1644,7 +1646,7 @@ class TemplateConfiguration extends TemplateConfig
                     $previewUrl = Template::getTemplateURL($this->template->name) . $sTemplateFileFolder;
                     $this->sPreviewImgTag = '<img src="' .
                         $previewUrl .
-                        '/preview.png" alt="template preview" height="200" class="img-thumbnail" />';
+                        '/preview.png" alt="template preview" height="200" class="img-thumbnail p-0 rounded-0" />';
                 }
             } else {
                 $this->sPreviewImgTag = '<em>' . gT('No preview available') . '</em>';
@@ -1711,7 +1713,7 @@ class TemplateConfiguration extends TemplateConfig
      * And it will publish the CSS and the JS defined in config.xml. So CSS can use relative path for pictures.
      * The publication of the package itself is in LSETwigViewRenderer::renderTemplateFromString()
      *
-     * @param TemplateConfiguration $oTemplate TemplateManifest
+     * @param TemplateConfiguration|TemplateManifest $oTemplate TemplateManifest
      */
     protected function createTemplatePackage($oTemplate)
     {
@@ -1747,8 +1749,8 @@ class TemplateConfiguration extends TemplateConfig
               $aJsFiles  = $this->changeMotherConfiguration('js', $aJsFiles);
         }
 
-        // Then we add the direction files if they exist
-        // TODO: attribute system rather than specific fields for RTL
+        //For fruity_twentythree surveytheme we completely replace the variation theme css file:
+        $aCssFiles = $this->replaceVariationFilesWithRtl($aCssFiles);
 
         $this->sPackageName = 'survey-template-' . $this->sTemplateName;
         $sTemplateurl       = $oTemplate->getTemplateURL();
@@ -1765,5 +1767,25 @@ class TemplateConfiguration extends TemplateConfig
             'js'          => $aJsFiles,
             'depends'     => $aDepends,
         ));
+    }
+
+    /**
+     * When rtl language is chosen:
+     * if a css file in folder variations is in array cssFiles, then it will be replaced with the
+     * *-rtl version
+     * @param array $cssFiles
+     * @return array
+     */
+    private function replaceVariationFilesWithRtl(array $cssFiles)
+    {
+        if (getLanguageRTL(App()->getLanguage()) == 'rtl') {
+            foreach ($cssFiles as $index => $cssFile) {
+                if (strpos($cssFile, 'css/variations/theme_') !== false) {
+                    $cssFileSplitArray = explode('.', $cssFile);
+                    $cssFiles[$index] =  $cssFileSplitArray[0] . '-rtl.css';
+                }
+            }
+        }
+        return $cssFiles;
     }
 }

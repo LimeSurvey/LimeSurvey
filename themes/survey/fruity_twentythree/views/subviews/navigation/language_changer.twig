@@ -1,0 +1,70 @@
+{#
+    This file is part of LimeSurvey
+    Copyright (C) 2018 The LimeSurvey Project Team
+
+    This file renders language changer inside the main container when multiple survey languages are available.
+
+    It uses the Yii helper CHtml::dropDownList().
+    @see: http://www.yiiframework.com/wiki/48/by-example-chtml/#hh5
+
+#}
+
+{% if aSurveyInfo.alanguageChanger.show == true %}
+    
+    {# set a shortcut for aSurveyInfo.alanguageChanger.datas #}
+    {% set aLCD  = aSurveyInfo.alanguageChanger.datas %}
+
+    {#
+        array of attributes of the Drop Down list.
+        To add a new attribute, just add an entry:
+        'attribute' : 'value',
+    #}
+    {% set htmlOptions = {
+            'class'          : 'form-control',
+            'data-targeturl' : aLCD.targetUrl,
+        }
+    %}
+    <!-- Language Changer -->
+    <div class=" {{ aSurveyInfo.class.formgroup }} form-change-lang row row-cols-lg-auto g-1" {{ aSurveyInfo.attr.formgroup }} >
+        <div class="col-auto">
+            <label class="{{ aSurveyInfo.class.controllabel }} col-form-label fw-bold control-label" {{ aSurveyInfo.attr.controllabel }} for="lang">
+            <span {{ aSurveyInfo.attr.languagechanger }}>
+                <span class="language-icon ri-earth-line"></span>
+                {{ gT("Change language") }}
+            </span>
+            </label>
+        </div>
+
+        <div class="col-auto">
+            <div id="lang-select">
+                <select class="col-form-label" name="lang" id="language-changer-select">
+                    {% for key,value in  aLCD.aListLang %}
+                        {% if key == aLCD.sSelected %}
+                        <option value="{{ key }}" selected="selected">{{ value }} </option>
+                         {% else %}
+                             <option value="{{ key }}">{{ value }}</option>
+                             {% endif %}
+                    {% endfor %}
+                </select>
+            </div>
+        <!-- for no js functionality (need form) -->
+        {% set buttonhtmlOptions = {
+                'type'          : 'submit',
+                'value'         : 'changelang',
+                'name'          : 'move',
+                'class'         : 'btn btn-primary ls-language-changer-item ',
+            }
+        %}
+        {{
+            C.Html.htmlButton(
+                gT("Change the language"),
+                buttonhtmlOptions
+            )
+        }}
+        </div>
+    </div>
+
+    {# Activate the language changer  #}
+    {{ registerScript("activateLanguageChanger", "activateLanguageChanger(); ", "POS_END") }}
+    
+{% endif %}

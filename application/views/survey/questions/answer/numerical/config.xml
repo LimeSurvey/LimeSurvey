@@ -151,7 +151,7 @@
             <i18n>1</i18n>
             <default></default>
             <help>In the printable version the condition is being replaced with this explanation text.</help>
-            <caption>Relevance help for printable survey</caption>
+            <caption>Condition help for printable survey</caption>
             <readonly></readonly>
             <readonly_when_active></readonly_when_active>
         </attribute>
@@ -281,8 +281,8 @@
             <inputtype>textarea</inputtype>
             <expression>2</expression>
             <xssfilter>0</xssfilter>
-            <help>Enter a boolean equation to validate each sub-question.</help>
-            <caption>Sub-question validation equation</caption>
+            <help>Enter a boolean equation to validate each subquestion.</help>
+            <caption>Subquestion validation equation</caption>
             <i18n></i18n>
             <readonly></readonly>
             <readonly_when_active></readonly_when_active>
@@ -294,8 +294,8 @@
             <inputtype>textarea</inputtype>
             <expression>1</expression>
             <i18n>1</i18n>
-            <help>This is a tip shown to the participant describing the sub-question validation equation.</help>
-            <caption>Sub-question validation tip</caption>
+            <help>This is a tip shown to the participant describing the subquestion validation equation.</help>
+            <caption>Subquestion validation tip</caption>
             <readonly></readonly>
             <readonly_when_active></readonly_when_active>
         </attribute>

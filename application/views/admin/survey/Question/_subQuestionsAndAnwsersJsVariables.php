@@ -12,14 +12,23 @@ $scriptVariables = [
     'ok'               => gT('OK'),
     'sLabelSetName'    => gT('Label set name','js'),
     'strNoLabelSet'    => gT('There are no label sets which match the survey default language','js'),
-    'labelSetSuccess'  => gT('The records have been saved successfully!'),
-    'labelSetFail'     => gT('Sorry, the request failed!'),
+    'labelSetSuccess'  => gT('The records have been saved successfully!', 'js'),
+    'labelSetFail'     => gT('Sorry, the request failed!', 'js'),
+    'labelSetEmpty'    => gT('There are no labels in this set', 'js'),
+    'labelSetNotFound' => gT('Label set not found', 'js'),
     'lanameurl'        => Yii::app()->createUrl('/admin/labels/sa/getAllSets'),
+    'lanrestrictedurl' => Yii::app()->createUrl('/admin/labels/sa/getRestrictedSets'),
     'lasaveurl'        => Yii::app()->createUrl('/admin/labels/sa/ajaxSave'),
     'laupdateurl'      => Yii::app()->createUrl('/admin/labels/sa/ajaxUpdate'),
     'lsdetailurl'      => Yii::app()->createUrl('/questionAdministration/getLabelsetDetails'),
     'lspickurl'        => Yii::app()->createUrl('/questionAdministration/getLabelsetPicker'),
     'sCheckLabelURL'   => Yii::app()->createUrl('/questionAdministration/checkLabel'),
+    'lsextraoptionsurl'     => Yii::app()->createUrl(
+        'questionAdministration/ajaxLoadExtraOptions',
+        [
+            'questionId' => $qid
+        ]
+    ),
     'subquestions'     => [
         'newansweroption_text'     => gT('New subquestion','js'),
         'quickaddtitle'            => gT('Quick-add subquestion','js'),
@@ -35,12 +44,13 @@ $scriptVariables = [
         'duplicateanswercode'     => gT('Error: You are trying to use duplicate answer codes.','js'),
         'sAssessmentValue'        => gT('Assessment value','js'),
         'scalecount'              => $scalecount,
+        'truncationWarning'       => gT('Warning: Some answer codes will be truncated.', 'js'),
     ],
     'csrf' => [
         'tokenName'               => Yii::app()->request->csrfTokenName,
         'token'                   => Yii::app()->request->csrfToken,
     ],
-    'checkQuestionCodeIsUniqueURL' =>  Yii::app()->createUrl('questionAdministration/checkQuestionCodeUniqueness'),
+    'checkQuestionValidateTitleURL' =>  Yii::app()->createUrl('questionAdministration/checkQuestionValidateTitle'),
     'checkSubquestionCodeIsUniqueURL' =>  Yii::app()->createUrl('questionAdministration/checkSubquestionCodeUniqueness'),
     'checkAnswerCodeIsUniqueURL' =>  Yii::app()->createUrl(''),
 ];

@@ -25,7 +25,7 @@ var uploadHandler = function (qid, options) {
             previewContainer.append('<div class="upload-placeholder"></div>');
         }
 
-        previewContainer.append('<span class="file-name">' + escapeHtml(decodeURIComponent(item.name)) + '</span>');
+        previewContainer.append('<span class="file-name">' + escapeHtml(item.name) + '</span>');
 
         if ($('#' + fieldname + '_show_title').val() == 1 || $('#' + fieldname + '_show_comment').val() == 1) {
 
@@ -33,8 +33,8 @@ var uploadHandler = function (qid, options) {
             var previewCommentContainer = $('');
 
             if ($('#' + fieldname + '_show_title').val() == 1) {
-                var previewTitleContainer = $('<div class="form-group"></div>');
-                $('<label class="control-label col-xs-4"></label>')
+                var previewTitleContainer = $('<div class="mb-3"></div>');
+                $('<label class="control-label col-5"></label>')
                     .attr('for', fieldname + '_title_' + i)
                     .text(options.uploadLang.titleFld)
                     .appendTo(previewTitleContainer);
@@ -46,8 +46,8 @@ var uploadHandler = function (qid, options) {
             }
 
             if ($('#' + fieldname + '_show_comment').val() == 1) {
-                var previewCommentContainer = $('<div class="form-group"></div>');
-                $('<label class="control-label col-xs-4"></label>')
+                var previewCommentContainer = $('<div class="mb-3"></div>');
+                $('<label class="control-label col-5"></label>')
                     .attr('for', fieldname + '_comment_' + i)
                     .text(options.uploadLang.commentFld)
                     .appendTo(previewCommentContainer);
@@ -60,9 +60,9 @@ var uploadHandler = function (qid, options) {
 
         }
 
-        var previewDeleteBlock = $('<div class="form-group"></div>').append(
+        var previewDeleteBlock = $('<div class="mb-3"></div>').append(
             $('<a class="btn btn-danger"></a>')
-                .html('<span class="fa fa-trash"></span>&nbsp;' + options.uploadLang.deleteFile )
+                .html('<span class="fa fa-trash ri-delete-bin-fill"></span>&nbsp;' + options.uploadLang.deleteFile )
                 .on('click', function () {
                     deletefile(fieldname, i);
                 })
@@ -136,7 +136,7 @@ var uploadHandler = function (qid, options) {
                 /* If maximum number of allowed filetypes have already been uploaded,
                  * do not upload the file and display an error message ! */
                 if (filecount >= maxfiles) {
-                    $('#notice').html('<p class="alert alert-danger"><span class="fa fa-exclamation-circle"></span>&nbsp;' + uploadLang.errorNoMoreFiles + '</p>');
+                    $('#notice').html('<p class="alert alert-danger"><span class="fa fa-exclamation-circle ri-error-warning-fill"></span>&nbsp;' + uploadLang.errorNoMoreFiles + '</p>');
                     fixParentHeigth();
                     return false;
                 }
@@ -150,7 +150,7 @@ var uploadHandler = function (qid, options) {
                 }
 
                 if (allowSubmit == false) {
-                    $('#notice').html('<p class="alert alert-danger"><span class="fa fa-exclamation-circle"></span>&nbsp;' + uploadLang.errorOnlyAllowed.replace('%s', $('#' + fieldname + '_allowed_filetypes').val()) + '</p>');
+                    $('#notice').html('<p class="alert alert-danger"><span class="fa fa-exclamation-circle ri-error-warning-fill"></span>&nbsp;' + uploadLang.errorOnlyAllowed.replace('%s', $('#' + fieldname + '_allowed_filetypes').val()) + '</p>');
                     fixParentHeigth();
                     return false;
                 }
@@ -162,7 +162,7 @@ var uploadHandler = function (qid, options) {
                 // you can disable upload button
                 this.disable();
 
-                button.append('<i id="loading-icon-fielupload" class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>');
+                button.append('<i id="loading-icon-fielupload" class="fa fa-spinner fa-pulse fa-3x fa-fw ri-loader-fill remix-pulse ri-3x" ></i>');
 
             },
             onComplete: function (file, response) {
@@ -186,7 +186,7 @@ var uploadHandler = function (qid, options) {
                 $('#' + fieldname + '_licount').val(count);
 
                 if (metadata.success) {
-                    $('#notice').html('<p class="alert alert-success"><span class="fa fa-success"></span>&nbsp;' + metadata.msg + '</p>');
+                    $('#notice').html('<p class="alert alert-success"><span class="fa fa-check ri-check-fill"></span>&nbsp;' + metadata.msg + '</p>');
                     if ($('#field' + fieldname + '_listfiles').length == 0) {
                         $("<ul id='field" + fieldname + "_listfiles' class='files-list' />").insertAfter("#uploadstatus_" + options.qid);
                     }
@@ -206,10 +206,10 @@ var uploadHandler = function (qid, options) {
                         $('#uploadstatus').html(options.uploadLang.errorMaxReached);
                     fixParentHeigth();
                     if (filecount >= maxfiles)
-                        $('#notice').html('<p class="alert alert-success"><span class="fa fa-check"></span>&nbsp;' + options.uploadLang.errorTooMuch + '</p>');
+                        $('#notice').html('<p class="alert alert-success"><span class="fa fa-check ri-check-fill"></span>&nbsp;' + options.uploadLang.errorTooMuch + '</p>');
                     fixParentHeigth();
                 } else {
-                    $('#notice').html('<p class="alert alert-danger"><span class="fa fa-exclamation-circle"></span>&nbsp;' + metadata.msg + '</p>');
+                    $('#notice').html('<p class="alert alert-danger"><span class="fa fa-exclamation-circle ri-error-warning-fill"></span>&nbsp;' + metadata.msg + '</p>');
                     fixParentHeigth();
                 }
 
@@ -293,7 +293,7 @@ var uploadHandler = function (qid, options) {
                 }
             })
             .done(function (msg) {
-                $('#notice').html('<p class="alert alert-success"><span class="fa fa-check"></span>&nbsp;' + msg + '</p>');
+                $('#notice').html('<p class="alert alert-success"><span class="fa fa-check ri-check-fill"></span>&nbsp;' + msg + '</p>');
                 setTimeout(function () {
                     $(".success").remove();
                 }, 5000);

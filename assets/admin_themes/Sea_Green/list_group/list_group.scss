@@ -1,0 +1,37 @@
+.list-group {
+    border-radius : 0;
+}
+
+.list-group-item {
+    background-color : $white;
+    border           : none;
+    .selector__toggle_full_text {
+        padding : 4px 0;
+    }
+}
+
+.list-group-item-success {
+    color            : $primary;
+    background-color : $primary-bg-success;
+}
+
+.list-group-item-info {
+    color            : $primary-bg_info_hover;
+    background-color : $primary-bg_info;
+}
+
+.list-group-item-warning {
+    color            : $warning;
+    background-color : $warning-bg;
+}
+
+.list-group-item-danger {
+    color            : $red-10;
+    background-color : $danger-bg;
+}
+
+.list-group-item.disabled {
+    color            : $g-400;
+    pointer-events   : auto;
+    cursor           : not-allowed;
+}

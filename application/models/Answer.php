@@ -22,8 +22,8 @@
  * @property integer $assessment_value
  * @property integer $scale_id
  *
- * @property Question $questions
- * @property Question $groups
+ * @property Question $question
+ * @property Question $group
  * @property AnswerL10n[] $answerl10ns
  */
 class Answer extends LSActiveRecord
@@ -95,6 +95,13 @@ class Answer extends LSActiveRecord
             array('sortorder', 'numerical', 'integerOnly' => true, 'allowEmpty' => true),
             array('assessment_value', 'numerical', 'integerOnly' => true, 'allowEmpty' => true),
             array('scale_id', 'numerical', 'integerOnly' => true, 'allowEmpty' => true),
+        );
+    }
+
+    public function defaultScope()
+    {
+        return array(
+            'order' => 'sortorder, code'
         );
     }
 

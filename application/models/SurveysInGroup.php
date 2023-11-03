@@ -40,7 +40,7 @@ class SurveysInGroup extends SurveysGroups implements PermissionInterface
                 'export' => true,
                 'title' => gT("Surveys in this group"),
                 'description' => gT("Permission to access surveys in this group. To see a survey in the list the read/view permission must be given."),
-                'img' => ' fa fa-edit',
+                'img' => ' ri-file-edit-line',
             ),
         );
         return $aPermission;
@@ -75,10 +75,10 @@ class SurveysInGroup extends SurveysGroups implements PermissionInterface
     {
         /* If have global for surveys : return true */
         $sGlobalCRUD = $sCRUD;
-        if (($sCRUD == 'create' || $sCRUD == 'import')) { // Create and import (token, reponse , question content …) need only allow update surveys
+        if (($sCRUD == 'create' || $sCRUD == 'import')) { // Create and import (token, response , question content …) need only allow update surveys
             $sGlobalCRUD = 'update';
         }
-        if (($sCRUD == 'delete' && $sPermission != 'survey')) { // Delete (token, reponse , question content …) need only allow update surveys
+        if (($sCRUD == 'delete' && $sPermission != 'survey')) { // Delete (token, response , question content …) need only allow update surveys
             $sGlobalCRUD = 'update';
         }
         /* Have surveys permission */

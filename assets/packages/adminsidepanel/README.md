@@ -15,7 +15,7 @@ yarn run serve
 yarn run build
 ```
 
-### Compiles for developement
+### Compiles for development
 ```
 yarn run build --mod development
 ```

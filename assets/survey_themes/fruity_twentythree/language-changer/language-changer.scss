@@ -1,0 +1,30 @@
+.form-change-lang {
+    padding-bottom: 10px;
+    .control-label {
+        @include h2;
+    }
+    .language-icon {
+        float: left; //preparation for rtl
+        margin-right: 4px;
+        font-weight: $font-weight-normal;
+    }
+    #language-changer-select {
+        @include h2;
+        cursor: pointer;
+        border: none;
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        position: relative;
+        z-index: 10;
+
+        &:focus-visible {
+            outline: none;
+        }
+    }
+    .ls-language-changer-item {
+        display: none;
+    }
+}
+
+.top-content .form-change-lang {float : right}

@@ -18,6 +18,7 @@
  */
 
 require_once(dirname(dirname(__FILE__)) . '/helpers/globals.php');
+require_once __DIR__ . '/Traits/LSApplicationTrait.php';
 
 /**
 * Implements global config
@@ -36,6 +37,8 @@ require_once(dirname(dirname(__FILE__)) . '/helpers/globals.php');
 */
 class LSYii_Application extends CWebApplication
 {
+    use LSApplicationTrait;
+
     protected $config = array();
 
     /**
@@ -55,6 +58,9 @@ class LSYii_Application extends CWebApplication
      * @var integer|null
      */
     protected $dbVersion;
+
+    /* @var integer| null the current userId for all action */
+    private $currentUserId;
 
     /**
      *
@@ -81,7 +87,6 @@ class LSYii_Application extends CWebApplication
             $aApplicationConfig['runtimePath'] = $baseConfig['tempdir'] . DIRECTORY_SEPARATOR . 'runtime';
         } /* No need to test runtimePath validity : Yii return an exception without issue */
 
-
         /* If LimeSurvey is configured to load custom Twig exstensions, add them to Twig Component */
         if (array_key_exists('use_custom_twig_extensions', $baseConfig) && $baseConfig ['use_custom_twig_extensions']) {
             $aApplicationConfig = $this->getTwigCustomExtensionsConfig($baseConfig['usertwigextensionrootdir'], $aApplicationConfig);
@@ -92,7 +97,8 @@ class LSYii_Application extends CWebApplication
 
         /* Because we have app now : we have to call again the config (usage of Yii::app() for publicurl) */
         $this->setConfigs();
-
+        /* Since session can be set by DB : need to be set again … */
+        $this->setSessionByDB($aApplicationConfig);
 
         /* Update asset manager path and url only if not directly set in aApplicationConfig (from config.php),
          *  must do after reloading to have valid publicurl (the tempurl) */
@@ -102,6 +108,9 @@ class LSYii_Application extends CWebApplication
         if (!isset($aApplicationConfig['components']['assetManager']['basePath'])) {
             App()->getAssetManager()->setBasePath($this->config['tempdir'] . '/assets');
         }
+
+        // Load common helper
+        $this->loadHelper("common");
     }
 
     /* @inheritdoc */
@@ -136,7 +145,7 @@ class LSYii_Application extends CWebApplication
 
         // TODO: check the whole configuration process. It must be easier and clearer. Too many repitions
 
-        /* Default config */ 
+        /* Default config */
         $coreConfig = require(__DIR__ . '/../config/config-defaults.php');
         $emailConfig = require(__DIR__ . '/../config/email.php');
         $versionConfig = require(__DIR__ . '/../config/version.php');
@@ -282,9 +291,19 @@ class LSYii_Application extends CWebApplication
      */
     public function getConfig($name, $default = false)
     {
-        return isset($this->config[$name]) ? $this->config[$name] : $default;
+        return $this->config[$name] ?? $default;
     }
 
+    /**
+     * Returns the array of available configurations
+     *
+     * @access public
+     * @return array
+     */
+    public function getAvailableConfigs()
+    {
+        return $this->config;
+    }
 
     /**
      * For future use, cache the language app wise as well.
@@ -298,11 +317,11 @@ class LSYii_Application extends CWebApplication
         // This method is also called from AdminController and LSUser
         // But if a param is defined, it should always have the priority
         // eg: index.php/admin/authentication/sa/login/&lang=de
-        if ($this->request->getParam('lang') !== null && in_array('authentication', explode('/', Yii::app()->request->url))) {
+        if ($this->request->getParam('lang') !== null && in_array('authentication', explode('/', (string) Yii::app()->request->url))) {
             $sLanguage = $this->request->getParam('lang');
         }
 
-        $sLanguage = preg_replace('/[^a-z0-9-]/i', '', $sLanguage);
+        $sLanguage = preg_replace('/[^a-z0-9-]/i', '', (string) $sLanguage);
         App()->session['_lang'] = $sLanguage; // See: http://www.yiiframework.com/wiki/26/setting-and-maintaining-the-language-in-application-i18n/
         parent::setLanguage($sLanguage);
     }
@@ -398,15 +417,9 @@ class LSYii_Application extends CWebApplication
             /* Activate since DBVersion for 2.50 and up (i know it include previous line, but stay clear) */
             return;
         }
-        if (
-            Yii::app()->request->isAjaxRequest &&
-            $event->exception instanceof CHttpException
-        ) {
-            header('Content-Type: application/json');
-            http_response_code($event->exception->statusCode);
-            die(json_encode(['message' => $event->exception->getMessage()]));
-        }
-        $statusCode = isset($event->exception->statusCode) ? $event->exception->statusCode : null; // Needed ?
+        // Handle specific exception cases, like "user friendly" exceptions and exceptions on ajax requests
+        $this->handleSpecificExceptions($event->exception);
+        $statusCode = $event->exception->statusCode ?? null; // Needed ?
         if (Yii::app()->getConfig('debug') > 1) {
             /* Can restrict to admin ? */
             /* debug ro 2 : always send Yii debug even 404 */
@@ -439,7 +452,6 @@ class LSYii_Application extends CWebApplication
         }
         $realFilePath = realpath($filePath);
         $baseDir = realpath($baseDir);
-        
         if (!is_file($realFilePath)) {
             /* Not existing file */
             Yii::log("Try to read invalid file " . $filePath, 'warning', 'application.security.files.is_file');
@@ -472,7 +484,7 @@ class LSYii_Application extends CWebApplication
         $files = array();
 
         foreach ($iterator as $info) {
-            $ext = pathinfo($info->getPathname(), PATHINFO_EXTENSION);
+            $ext = pathinfo((string) $info->getPathname(), PATHINFO_EXTENSION);
             if ($ext == 'xml') {
                 $CustomTwigExtensionsManifestFiles[] = $info->getPathname();
             }
@@ -513,5 +525,196 @@ class LSYii_Application extends CWebApplication
         }
 
         return $aApplicationConfig;
+    }
+
+    /**
+     * @inheritdoc
+     * Special handling for SEO friendly URLs
+     */
+    public function createController($route, $owner=null)
+    {
+        $controller = parent::createController($route, $owner);
+
+        // If no controller is found by standard ways, check if the route matches
+        // an existing survey's alias.
+        if (is_null($controller)) {
+            $controller = $this->createControllerFromShortUrl($route);
+        }
+
+        return $controller;
+    }
+
+    /**
+     * Create controller from short url if the route matches a survey alias.
+     * @param string $route the route of the request.
+     * @return array<mixed>|null
+     */
+    private function createControllerFromShortUrl($route)
+    {
+        $route = ltrim($route, "/");
+        $alias = explode("/", $route)[0];
+        if (empty($alias)) {
+            return null;
+        }
+
+        // When updating from versions that didn't support short urls, this code runs before the update process,
+        // so we cannot asume the field exists. We try to retrieve the Survey Language Settings and, if it fails,
+        // just don't do anything.
+        try {
+            $criteria = new CDbCriteria();
+            $criteria->addCondition('surveyls_alias = :alias');
+            $criteria->params[':alias'] = $alias;
+            $criteria->index = 'surveyls_language';
+
+            $languageSettings = SurveyLanguageSetting::model()->find($criteria);
+        } catch (CDbException $ex) {
+            // It's probably just because the field doesn't exist, so don't do anything.
+        }
+
+        if (empty($languageSettings)) {
+            return null;
+        }
+
+        // If no language is specified in the request, add a GET param based on the survey's language for this alias
+        $language = $this->request->getParam('lang');
+        if (empty($language)) {
+            $_GET['lang'] = $languageSettings->surveyls_language;
+        }
+        return parent::createController("survey/index/sid/" . $languageSettings->surveyls_survey_id);
+    }
+
+    /**
+     * Handles specific exception cases, like "user friendly" exceptions and exceptions on ajax requests.
+     *
+     * @param CException $exception
+     * @return void
+     */
+    private function handleSpecificExceptions($exception)
+    {
+        if (
+            Yii::app()->request->isAjaxRequest &&
+            $exception instanceof CHttpException
+        ) {
+            $this->outputJsonError($exception);
+        } elseif ($exception instanceof LSUserException) {
+            $this->handleFriendlyException($exception);
+        }
+    }
+
+    /**
+     * Handles "friendly" exceptions by setting a flash message and redirecting.
+     * If the exception doesn't specify a redirect URL, the referrer is used.
+     *
+     * @param array $error
+     * @param LSUserException $exception
+     * @return void
+     */
+    private function handleFriendlyException($exception)
+    {
+        $message = "<p>" . $exception->getMessage() . "</p>" . $exception->getDetailedErrorSummary();
+        Yii::app()->setFlashMessage($message, 'error');
+        if ($exception->getRedirectUrl() != null) {
+            $redirectTo = $exception->getRedirectUrl();
+        } else {
+            $redirectTo = Yii::app()->request->urlReferrer;
+        }
+        Yii::app()->request->redirect($redirectTo);
+    }
+
+    /**
+     * Outputs an exception as JSON.
+     *
+     * @param CHttpException $exception
+     * @return void
+     */
+    private function outputJsonError($exception)
+    {
+        $outputData = [
+            'success' => false,
+            'message' => $exception->getMessage(),
+        ];
+        if ($exception instanceof LSUserException) {
+            if ($exception->getRedirectUrl() != null) {
+                $outputData['redirectTo'] = $exception->getRedirectUrl();
+            }
+            if ($exception->getNoReload() != null) {
+                $outputData['noReload'] = $exception->getNoReload();
+            }
+            // Add the detailed errors to the message, so simple handlers can just show it.
+            $outputData['message'] = "<p>" . $exception->getMessage() . "</p>". $exception->getDetailedErrorSummary();
+            // But save the "simpler" message on 'error', and the list of errors on "detailedErrors"
+            // so that more complex handlers can decide what to show.
+            $outputData['error'] = $exception->getMessage();
+            $outputData['detailedErrors'] = $exception->getDetailedErrors();
+        }
+        header('Content-Type: application/json');
+        http_response_code($exception->statusCode);
+        die(json_encode($outputData));
+    }
+
+    /**
+     * Set the session after start,
+     * Limited to DbHttpSession
+     * @param array Application config
+     * @return void
+     */
+    private function setSessionByDB($aApplicationConfig)
+    {
+        if (empty($aApplicationConfig['components']['session']['class'])) {
+            /* No specific session */
+            return;
+        }
+        if ($aApplicationConfig['components']['session']['class'] != "application.core.web.DbHttpSession") {
+            /* Not included DbHttpSession */
+            return;
+        }
+        if (!empty($aApplicationConfig['components']['session']['cookieParams']['lifetime'])) {
+            /* lifetime already updated */
+            return;
+        }
+        $lifetime = intval(App()->getConfig('iSessionExpirationTime', ini_get('session.cookie_lifetime')));
+        App()->getSession()->setCookieParams([
+            'lifetime' => $lifetime
+        ]);
+    }
+
+    /**
+     * Creates an absolute URL based on the given controller and action information.
+     * @param string $route the URL route. This should be in the format of 'ControllerID/ActionID'.
+     * @param array $params additional GET parameters (name=>value). Both the name and value will be URL-encoded.
+     * @param string $schema schema to use (e.g. http, https). If empty, the schema used for the current request will be used.
+     * @param string $ampersand the token separating name-value pairs in the URL.
+     * @return string the constructed URL
+     */
+    public function createPublicUrl($route, $params = array(), $schema = '', $ampersand = '&')
+    {
+        $sPublicUrl = $this->getPublicBaseUrl(true);
+        $sActualBaseUrl = Yii::app()->getBaseUrl(true);
+        if ($sPublicUrl !== $sActualBaseUrl) {
+            $url = parent::createAbsoluteUrl($route, $params, $schema, $ampersand);
+            if (substr((string)$url, 0, strlen((string)$sActualBaseUrl)) == $sActualBaseUrl) {
+                $url = substr((string)$url, strlen((string)$sActualBaseUrl));
+            }
+            return trim((string)$sPublicUrl, "/") . $url;
+        } else {
+            return parent::createAbsoluteUrl($route, $params, $schema, $ampersand);
+        }
+    }
+
+    /**
+     * Returns the relative URL for the application while
+     * considering if a "publicurl" config parameter is set to a valid url
+     * @param boolean $absolute whether to return an absolute URL. Defaults to false, meaning returning a relative one.
+     * @return string the relative or the configured public URL for the application
+     */
+    public function getPublicBaseUrl($absolute = false)
+    {
+        $sPublicUrl = Yii::app()->getConfig("publicurl");
+        $aPublicUrl = parse_url($sPublicUrl);
+        $baseUrl = parent::getBaseUrl($absolute);
+        if (isset($aPublicUrl['scheme']) && isset($aPublicUrl['host'])) {
+            $baseUrl = $sPublicUrl;
+        }
+        return $baseUrl;
     }
 }

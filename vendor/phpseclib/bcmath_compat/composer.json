@@ -1,0 +1,49 @@
+{
+    "name":         "phpseclib/bcmath_compat",
+    "description":  "PHP 5.x-8.x polyfill for bcmath extension",
+    "keywords": [
+            "bcmath",
+            "math",
+            "biginteger",
+            "bigdecimal",
+            "polyfill"
+        ],
+    "license":      "MIT",
+    "type":         "library",
+    "authors": [
+            {
+                "name":     "Jim Wigginton",
+                "email":    "terrafrost@php.net",
+                "homepage": "http://phpseclib.sourceforge.net"
+            }
+        ],
+    "support": {
+        "issues":   "https://github.com/phpseclib/bcmath_compat/issues",
+        "email":    "terrafrost@php.net",
+        "source":   "https://github.com/phpseclib/bcmath_compat"
+    },
+    "require": {
+        "phpseclib/phpseclib": "^3.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^4.8.35|^5.7|^6.0|^9.4",
+        "squizlabs/php_codesniffer": "^3.0"
+    },
+    "suggest": {
+        "ext-gmp": "Will enable faster math operations"
+    },
+    "autoload": {
+        "files": ["lib/bcmath.php"],
+        "psr-4": {
+            "bcmath_compat\\": "src"
+        }
+    },
+    "scripts": {
+        "test": "phpunit",
+        "check-style": "phpcs src tests",
+        "fix-style": "phpcbf src tests"
+    },
+    "provide": {
+      "ext-bcmath": "8.1.0"
+    }
+}

@@ -1,0 +1,79 @@
+<div class="{{ aSurveyInfo.class.maincoldivdiva }} form-heading" {{ aSurveyInfo.attr.maincoldivdiva }}>
+    {% block formheading %}
+        {{ gT("Before you start, please prove you are human.") }}
+    {% endblock %}
+</div>
+<div class="{{ aSurveyInfo.class.maincoldivdivb }} " {{ aSurveyInfo.attr.maincoldivdivb }}>
+
+    {% block description %}
+        
+    {% endblock %}
+
+    {% if  not empty(aSurveyInfo.aForm.aEnterErrors) %}
+        <ul class='{{ aSurveyInfo.class.maincoldivdivbul }} alert alert-danger list-unstyled mt-3' {{ aSurveyInfo.attr.maincoldivdivbul }}>
+            {% for  key, error in aSurveyInfo.aForm.aEnterErrors %}
+                <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <div class="form-{{ aSurveyInfo.aForm.sType }} {{ aSurveyInfo.class.maincoldivdivbdiv }}" {{ aSurveyInfo.attr.maincoldivdivbdiv }} >
+        {#
+            array of attributes of the form tag.
+            To add a new attribute, just add an entry:
+            'attribute' : 'value',
+        #}
+        {%
+            set htmlOptions = {
+                'id'          : 'form-' ~ aSurveyInfo.aForm.sType ,
+                'name'        : 'limesurvey',
+                'class'       : 'ls-form form form-horizontal',
+            }
+        %}
+
+        {#  TOKEN FORM #}
+        <!-- Start of the main Form-->
+        {{
+            C.Html.form(
+                ( aSurveyInfo.surveyUrl ),
+                    'post',
+                    (htmlOptions)
+                )
+        }}
+
+        {% block formcontent  %}
+
+            <div class='{{ aSurveyInfo.class.maincolformdivb }}' {{ aSurveyInfo.attr.maincolformdivb }}>
+                <!-- Doesn't seems aria capable -->
+                <label class='{{ aSurveyInfo.class.maincolformdivblabel }} control-label' {{ aSurveyInfo.attr.maincolformdivblabel }} >
+                    {{ gT("Please solve the following equation:") }}<small class="{{ aSurveyInfo.class.maincolformdivblabelsmall }} superset asterisk ri-asterisk"  {{ aSurveyInfo.attr.maincolformdivblabelsmall }} ></small>
+                    <span  class="{{ aSurveyInfo.class.maincolformdivblabelspan }} visually-hidden asterisk" {{ aSurveyInfo.attr.maincolformdivblabelspan }}>
+                        ( {{ gT("Mandatory") }} )
+                    </span>
+                </label>
+                <div class="row">
+                    <div class='{{ aSurveyInfo.class.maincolformdivbdivdivdiv }} captcha-container col-xl-3 col-lg-12 align-items-center' {{ aSurveyInfo.attr.maincolformdivbdivdivdiv }} >
+                        {# see: LS_Twig_Extension::renderCaptcha() in application/core/LS_Twig_Extension.php #}
+                        {{ renderCaptcha().renderOut() }}
+                        <a href="#" class="btn btn-outline-secondary" id="reloadCaptcha"
+                           title="{{ gT("Reload captcha") }}" data-toggle="captcha"><i
+                                    class="ri-refresh-line"></i></a>
+                    </div>
+                    <div class="{{ aSurveyInfo.class.maincolformdivbdiv }} col-xl-9 col-lg-12 captcha-input align-self-center" {{ aSurveyInfo.attr.maincolformdivbdiv }}>
+                        <input class='form-control ls-important-field {{ aSurveyInfo.class.maincolformdivbdivdivinput }}' {{ aSurveyInfo.attr.maincolformdivbdivdivinput }} placeholder="{{ gT("Enter result here - numbers only") }}">
+                    </div>
+                </div>
+            </div>
+
+            <div class='{{ aSurveyInfo.class.maincolformdivc }} ' {{ aSurveyInfo.attr.maincolformdivc }}>
+                <div class='{{ aSurveyInfo.class.maincolformdivcdiv }}' {{ aSurveyInfo.attr.maincolformdivcdiv }}>
+                    <button type="submit"
+                            class='{{ aSurveyInfo.class.maincolformdivcdivbutton }} btn btn-primary' {{ aSurveyInfo.attr.maincolformdivcdivbutton }}>
+                        {{ gT("Continue") }}
+                    </button>
+                </div>
+            </div>
+        {% endblock %}
+        </form>
+    </div>
+</div>

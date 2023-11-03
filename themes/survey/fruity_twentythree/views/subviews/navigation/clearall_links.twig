@@ -1,0 +1,35 @@
+{#
+LimeSurvey
+Copyright (C) 2007-2017 The LimeSurvey Project Team / Louis Gac
+All rights reserved.
+License: GNU/GPL License v2 or later, see LICENSE.php
+LimeSurvey is free software. This version may have been modified pursuant
+to the GNU General Public License, and as distributed it includes or
+is derivative of works licensed under the GNU General Public License or
+other free or open source software licenses.
+See COPYRIGHT.php for copyright notices and details.
+
+(¯`·._.·(¯`·._.· Clear all links: Shows the exit button ·._.·´¯)·._.·´¯)
+
+This file render the exit button for top menu bar
+#}
+
+{# It must not be shown once survey is completed #}
+{# aSurveyInfo.options.bShowClearAll is a user option to decide if the "exit and clear" button should be shown #}
+{# aSurveyInfo.bShowClearAll is define in core, so if option is on, it's not shown in welcome and submit page. #}
+
+
+ {% if aSurveyInfo.bShowClearAll == true or aSurveyInfo.bShowClearAll == null %}
+     {% if aSurveyInfo.options.showclearall == 'on' %}
+         <!-- Exit and clear survey -->
+         <li class="nav-item ls-no-js-hidden">
+             <a href="#" class='nav-link ls-link-action ls-link-clearall'
+                data-bs-toggle="modal"
+                data-bs-target="#clear-all-modal"
+                data-limesurvey-submit='{ "clearall":"clearall" }'
+                data-confirmedby='{ "confirm-clearall":"confirm" }'>
+                 {{ gT("Exit and clear survey" ) }}
+             </a>
+         </li>
+     {% endif %}
+ {% endif %}

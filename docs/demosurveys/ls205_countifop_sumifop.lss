@@ -300,7 +300,7 @@
     <gid><![CDATA[28]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[1]]></title>
-    <question><![CDATA[1st sub-question]]></question>
+    <question><![CDATA[1st subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -318,7 +318,7 @@
     <gid><![CDATA[28]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[2]]></title>
-    <question><![CDATA[2nd sub-question]]></question>
+    <question><![CDATA[2nd subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -336,7 +336,7 @@
     <gid><![CDATA[28]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[3]]></title>
-    <question><![CDATA[3rd sub-question]]></question>
+    <question><![CDATA[3rd subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -354,7 +354,7 @@
     <gid><![CDATA[28]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[4]]></title>
-    <question><![CDATA[4th sub-question]]></question>
+    <question><![CDATA[4th subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -372,7 +372,7 @@
     <gid><![CDATA[28]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[5]]></title>
-    <question><![CDATA[5th sub-question]]></question>
+    <question><![CDATA[5th subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
