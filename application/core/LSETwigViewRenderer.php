@@ -245,6 +245,7 @@ window.addEventListener('message', function(event) {
             if ($bReturn) {
                 return $sHtml;
             } else {
+                /** @psalm-suppress UndefinedVariable TODO: $oTemplate is never defined */
                 $this->renderHtmlPage($sHtml, $oTemplate);
             }
         } else {

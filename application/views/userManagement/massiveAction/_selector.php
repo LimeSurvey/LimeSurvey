@@ -71,7 +71,7 @@ if(Permission::model()->hasGlobalPermission('users', 'update')) {
         'action'        => 'batchaddtogroup',
         'url'           => App()->createUrl('userManagement/batchAddGroup'),
         'iconClasses'   => 'ri-group-fill',
-        'text'          => gT('Add to usergroup'),
+        'text'          => gT('Add to user group'),
         'grid-reload'   => 'yes',
         //modal
         'actionType'    => 'modal',
@@ -79,7 +79,7 @@ if(Permission::model()->hasGlobalPermission('users', 'update')) {
         'keepopen'      => 'yes',
         'showSelected'  => 'yes',
         'selectedUrl'   => App()->createUrl('userManagement/renderSelectedItems/'),
-        'sModalTitle'   => gT('Add to usergroup'),
+        'sModalTitle'   => gT('Add to user group'),
         'htmlModalBody' => App()->getController()->renderPartial('/userManagement/massiveAction/_addtousergroup', [], true)
     );
 }

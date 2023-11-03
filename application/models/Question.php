@@ -27,6 +27,7 @@ use LimeSurvey\Helpers\questionHelper;
  * @property string $other Other option enabled for question (Y/N)
  * @property string $mandatory Whether question is mandatory (Y/S/N)
  * @property string $encrypted Whether question is encrypted (Y/N)
+ * @property string $question_theme_name
  * @property integer $question_order Question order in greoup
  * @property integer $parent_qid Questions parent question ID eg for subquestions
  * @property integer $scale_id  The scale ID
@@ -36,8 +37,8 @@ use LimeSurvey\Helpers\questionHelper;
  * @property integer $same_script Whether the same script should be used for all languages
  *
  * @property Survey $survey
- * @property QuestionGroup $groups  //@TODO should be singular
- * @property Question $parents      //@TODO should be singular
+ * @property QuestionGroup $group
+ * @property Question $parent
  * @property Question[] $subquestions
  * @property QuestionAttribute[] $questionAttributes NB! returns all QuestionArrtibute Models fot this QID regardless of the specified language
  * @property QuestionL10n[] $questionl10ns Question Languagesettings indexd by language code
@@ -126,7 +127,13 @@ class Question extends LSActiveRecord
             'parent' => array(self::HAS_ONE, 'Question', array("qid" => "parent_qid")),
             'questionattributes' => array(self::HAS_MANY, 'QuestionAttribute', 'qid'),
             'questionl10ns' => array(self::HAS_MANY, 'QuestionL10n', 'qid', 'together' => true),
-            'subquestions' => array(self::HAS_MANY, 'Question', array('parent_qid' => 'qid'), 'order' => App()->getDb()->quoteColumnName('subquestions.question_order') . ' ASC'),
+            'subquestions' => array(
+                self::HAS_MANY,
+                'Question',
+                array('parent_qid' => 'qid'),
+                'order' => 'subquestions.question_order ASC',
+                'together' => false
+            ),
             'conditions' => array(self::HAS_MANY, 'Condition', 'qid'),
             'answers' => array(self::HAS_MANY, 'Answer', 'qid'),
             // This relation will fail for non saved questions, which is often the case
@@ -143,8 +150,8 @@ class Question extends LSActiveRecord
     {
         /* Basic rules */
         $aRules = array(
-            array('title', 'required', 'on' => 'update, insert', 'message' => gT('The question code is mandatory.', 'unescaped')),
-            array('title', 'length', 'min' => 1, 'max' => 20, 'on' => 'update, insert'),
+            array('title', 'required', 'on' => 'update, insert, saveall', 'message' => gT('The question code is mandatory.', 'unescaped')),
+            array('title', 'length', 'min' => 1, 'max' => 20, 'on' => 'update, insert, saveall'),
             array('qid,sid,gid,parent_qid', 'numerical', 'integerOnly' => true),
             array('qid', 'unique','message' => sprintf(gT("Question id (qid) : '%s' is already in use."), $this->qid)),// Still needed ?
             array('other', 'in', 'range' => array('Y', 'N'), 'allowEmpty' => true),
@@ -168,7 +175,7 @@ class Question extends LSActiveRecord
             return 'N';
         });
         /* Don't save empty or 'core' question theme name */
-        $aRules[] = ['question_theme_name', 'questionThemeNameValidator'];
+        $aRules[] = ['question_theme_name', 'filter', 'filter' =>  [$this, 'questionThemeNameValidator'] ];
         /* Specific rules to avoid collapse with column name in database */
         if ($this->parent_qid) {
             /* Subquestion specific rules */
@@ -182,7 +189,8 @@ class Question extends LSActiveRecord
                         ':scale_id' => $this->scale_id
                         )
                     ),
-                    'message' => gT('Subquestion codes must be unique.')
+                    'message' => gT('Subquestion codes must be unique.'),
+                    'except' => 'saveall'
             );
             /* Disallow other title if question allow other */
             $oParentQuestion = Question::model()->findByPk(array("qid" => $this->parent_qid));
@@ -206,6 +214,9 @@ class Question extends LSActiveRecord
                 // Disallow other if sub question have 'other' for title
                 $aRules[] = array('other', 'compare', 'compareValue' => 'Y', 'operator' => '!=', 'message' => sprintf(gT("'%s' can not be used if the 'Other' option for this question is activated."), 'other'));
             }
+        }
+        if ($this->survey->isActive) {
+            $aRules = array_merge($aRules, $this->rulesForActiveSurvey());
         }
         /* When question exist and are already set with title, allow keep bad title */
         if (!$this->isNewRecord) {
@@ -256,7 +267,7 @@ class Question extends LSActiveRecord
                 'except' => 'archiveimport'
             );
             $aRules[] = array(
-                'title', 'match', 'pattern' => '/^[[:alnum:]]*$/',
+                'title', 'match', 'pattern' => '/^[a-zA-z0-9]*$/',
                 'message' => gT('Subquestion codes may only contain alphanumeric characters.'),
                 'except' => 'archiveimport'
             );
@@ -264,7 +275,17 @@ class Question extends LSActiveRecord
         return $aRules;
     }
 
-
+    /**
+     * return rules specific for activated survey
+     * @return array
+     */
+    private function rulesForActiveSurvey()
+    {
+        $aRules = array();
+        /* can not update group */
+        $aRules[] = array('gid', 'LSYii_DisableUpdateValidator');
+        return $aRules;
+    }
 
     /**
      * Rewrites sort order for questions in a group
@@ -465,12 +486,15 @@ class Question extends LSActiveRecord
     /**
      * Delete all subquestions that belong to this question.
      *
+     * @param ?array $exceptIds Don't delete subquestions with these ids.
      * @return void
      * @todo Duplication from delete()
      */
-    public function deleteAllSubquestions()
+    public function deleteAllSubquestions($exceptIds = [])
     {
-        $ids = $this->allSubQuestionIds;
+        $ids = !empty($exceptIds)
+            ? array_diff($this->allSubQuestionIds, $exceptIds)
+            : $this->allSubQuestionIds;
         $qidsCriteria = (new CDbCriteria())->addInCondition('qid', $ids);
         $res = Question::model()->deleteAll((new CDbCriteria())->addInCondition('qid', $ids));
         QuestionAttribute::model()->deleteAll($qidsCriteria);
@@ -725,7 +749,7 @@ class Question extends LSActiveRecord
             'linkAttributes'   => [
                 'data-bs-toggle' => 'tooltip',
                 'onclick' => '$.fn.bsconfirm("'
-                    . CHtml::encode(gT("Deleting  will also delete any answer options and subquestions it includes. Are you sure you want to continue?"))
+                    . CHtml::encode(gT("Deleting will also delete any answer options and subquestions it includes. Are you sure you want to continue?"))
                     . '", {"confirm_ok": "'
                     . gT("Delete")
                     . '", "confirm_cancel": "'
@@ -1184,14 +1208,13 @@ class Question extends LSActiveRecord
     protected function beforeSave()
     {
         if (parent::beforeSave()) {
+            /* No update when surey activated */
             $surveyIsActive = Survey::model()->findByPk($this->sid)->active !== 'N';
-
             if ($surveyIsActive) {
                 //don't override questiontype when survey is active, set it back to what it was...
                 $oActualValue = Question::model()->findByPk(array("qid" => $this->qid));
                 $this->type = $oActualValue->type;
             }
-
             if ($surveyIsActive && $this->getIsNewRecord()) {
                 return false;
             }
@@ -1200,7 +1223,6 @@ class Question extends LSActiveRecord
             return false;
         }
     }
-
 
     /**
      * Fix sub question of a parent question
@@ -1712,16 +1734,30 @@ class Question extends LSActiveRecord
      */
     public function questionThemeNameValidator()
     {
-        // As long as there is a question theme name, and it's not 'core', it's ok.
-        if (!empty($this->question_theme_name) && $this->question_theme_name != 'core') {
-            return;
+        /* need a type */
+        if (empty($this->type)) {
+            return null;
         }
-
-        // If question_theme_name is empty or 'core', we fetch the value from the question_theme related to the question_type
+        /* not needed in child question */
+        if (!empty($this->parent_qid)) {
+            return null;
+        }
+        if (!empty($this->question_theme_name) && $this->question_theme_name != 'core') {
+            $criteria = new CDbCriteria();
+            $criteria->addCondition('question_type = :question_type AND name = :name');
+            $criteria->params = [':question_type' => $this->type, ':name' => $this->question_theme_name];
+            $questionTheme = QuestionTheme::model()->query($criteria, false);
+            if ($questionTheme) {
+                return $this->question_theme_name;
+            }
+        }
+        /* Get default theme name from type */
         $baseQuestionThemeName = QuestionTheme::model()->getBaseThemeNameForQuestionType($this->type);
         if (!empty($baseQuestionThemeName)) {
-            $this->question_theme_name = $baseQuestionThemeName;
+            return $baseQuestionThemeName;
         }
+        /* Not a valid type ? */
+        return null;
     }
 
     /**

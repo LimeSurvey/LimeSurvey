@@ -1,3 +1,21 @@
+# 3.7.1 (2023-08-28)
+
+ * Fix some phpdocs
+
+# 3.7.0 (2023-07-26)
+
+ * Add support for the ...spread operator on arrays and hashes
+
+# 3.6.1 (2023-06-08)
+
+ * Suppress some native return type deprecation messages
+
+# 3.6.0 (2023-05-03)
+
+ * Allow psr/container 2.0
+ * Add the new PHP 8.0 IntlDateFormatter::RELATIVE_* constants for date formatting
+ * Make the Lexer initialize itself lazily
+
 # 3.5.1 (2023-02-08)
 
  * Arrow functions passed to the "reduce" filter now accept the current key as a third argument

@@ -1569,7 +1569,7 @@ class LimeExpressionManager
                                 // date_min: Determine whether we have an expression, a full date (YYYY-MM-DD) or only a year(YYYY)
                                 if (trim((string) $qattr['date_min']) != '') {
                                     $mindate = $qattr['date_min'];
-                                    if ((strlen((string) $mindate) == 4) && ($mindate >= 1900) && ($mindate <= 2099)) {
+                                    if ((strlen((string)$mindate) == 4)) {
                                         // backward compatibility: if only a year is given, add month and day
                                         $date_min = '\'' . $mindate . '-01-01' . ' 00:00\'';
                                     } elseif (preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])/", (string) $mindate)) {
@@ -1627,7 +1627,7 @@ class LimeExpressionManager
                                 // date_max: Determine whether we have an expression, a full date (YYYY-MM-DD) or only a year(YYYY)
                                 if (trim((string) $qattr['date_max']) != '') {
                                     $maxdate = $qattr['date_max'];
-                                    if ((strlen((string) $maxdate) == 4) && ($maxdate >= 1900) && ($maxdate <= 2099)) {
+                                    if ((strlen((string)$maxdate) == 4)) {
                                         // backward compatibility: if only a year is given, add month and day
                                         $date_max = '\'' . $maxdate . '-12-31 23:59' . '\'';
                                     } elseif (preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])/", (string) $maxdate)) {
@@ -2376,7 +2376,7 @@ class LimeExpressionManager
                 $sgqa = $qinfo['sgqa'];
                 switch ($type) {
                     case Question::QT_VERTICAL_FILE_UPLOAD: //List - dropdown
-                        $eqn = "(" . $sgqa . "_filecount >= (" . $min_num_of_files . "))";
+                        $eqn = "(" . $sgqa . "_filecount.NAOK >= (" . $min_num_of_files . "))";
                         break;
                     default:
                         break;
@@ -2404,7 +2404,7 @@ class LimeExpressionManager
                 $sgqa = $qinfo['sgqa'];
                 switch ($type) {
                     case Question::QT_VERTICAL_FILE_UPLOAD: //List - dropdown
-                        $eqn = "(" . $sgqa . "_filecount <= (" . $max_num_of_files . "))";
+                        $eqn = "(is_empty(" . $sgqa . "_filecount.NAOK) || " . $sgqa . "_filecount.NAOK <= (" . $max_num_of_files . "))";
                         break;
                     default:
                         break;
@@ -2901,7 +2901,7 @@ class LimeExpressionManager
                     $qtips['default'] = $this->gT('Choose one of the following answers');
                     break;
                 case Question::QT_M_MULTIPLE_CHOICE:
-                    $qtips['default'] = $this->gT('Check any that apply');
+                    $qtips['default'] = $this->gT('Select all that apply');
                     break;
                 case Question::QT_N_NUMERICAL:
                     $qtips['default'] = $this->gT("Only numbers may be entered in this field.");
@@ -5055,15 +5055,21 @@ class LimeExpressionManager
             SurveyDynamic::sid($this->sid);
             $oSurvey = new SurveyDynamic();
 
-            $iNewID = $oSurvey->insertRecords($sdata);
-            if ($iNewID) {    // Checked
+            try {
+                $iNewID = $oSurvey->insertRecords($sdata);
+                if (!$iNewID) {
+                    throw new Exception("Error, no entry id was returned.", 1);
+                }
                 $srid = $iNewID;
                 $_SESSION[$this->sessid]['srid'] = $iNewID;
-            } else {
+            } catch (Exception $e) {
                 $srid = null;
                 $message .= $this->gT("Unable to insert record into survey table"); // TODO - add SQL error?
-                submitfailed($this->gT("Unable to insert record into survey table"));
+                $query = $e->getMessage();
+                $trace = $e->getTraceAsString();
+                submitfailed($this->gT("Unable to insert record into survey table"), $query . "\n\n" . $trace);
             }
+
             //Insert Row for Timings, if needed
             if ($this->surveyOptions['savetimings']) {
                 SurveyTimingDynamic::sid($this->sid);
@@ -5151,7 +5157,7 @@ class LimeExpressionManager
                     LimeExpressionManager::addFrontendFlashMessage('error', $message, $this->sid);
                     return;
                 }
-                if ($oResponse->submitdate == null || Survey::model()->findByPk($this->sid)->alloweditaftercompletion == 'Y') {
+                if ($oResponse->submitdate == null || Survey::model()->findByPk($this->sid)->isAllowEditAfterCompletion) {
                     try {
                         $oResponse->setAllAttributes($aResponseAttributes, false);
                     } catch (Exception $ex) {
@@ -5200,7 +5206,7 @@ class LimeExpressionManager
                 if ($aQuotas && !empty($aQuotas)) {
                     checkCompletedQuota($this->sid);  // will create a page and quit: why not use it directly ?
                 } else {
-                    if ($finished && ($oResponse->submitdate == null || Survey::model()->findByPk($this->sid)->alloweditaftercompletion == 'Y')) {
+                    if ($finished && ($oResponse->submitdate == null || Survey::model()->findByPk($this->sid)->isAllowEditAfterCompletion)) {
                         /* Less update : just do what you need to to */
                         if ($this->surveyOptions['datestamp']) {
                             $submitdate = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $this->surveyOptions['timeadjust']);
@@ -6917,7 +6923,7 @@ class LimeExpressionManager
             try{ 
                 triggerEmClassChange(); 
             } catch(e) {
-                console.ls.warn('triggerEmClassChange could not be run. Is survey.js correctly loaded?');
+                console.ls.warn('triggerEmClassChange could not be run. Is survey.js/old_template_core_pre.js correctly loaded?');
             }\n",
             LSYii_ClientScript::POS_END
         );
@@ -8506,6 +8512,8 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                                             }
                                             $aFiles[$i]->filename = $sDestinationFileName;
                                         }
+                                        /* Sanitize size */
+                                        $aFiles[$i]->size = floatval($aFiles[$i]->size);
                                     }
                                     $value = ls_json_encode($aFiles);  // so that EM doesn't try to parse it.
                                 }

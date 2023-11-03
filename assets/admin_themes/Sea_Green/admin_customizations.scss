@@ -1,8 +1,20 @@
 // Body
 body {
   background-color: $g-100;
-}
 
+  margin: 0;
+  padding: 0;
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+.full-page-wrapper {
+  // flex: 1;
+  padding-bottom: 70px;
+}
+.selector_openSharePanel {
+  display: inline-block;
+}
 .summary-table {
   font-size: $font-size-sm;
   padding-left: 0.5rem;
@@ -14,17 +26,47 @@ body {
 // Headings
 .pagetitle {
   padding-bottom: 4px;
-  border-bottom : solid 2px $g-400;
-  position      : relative;
-  margin-bottom : 1em;
+  border-bottom: solid 2px $g-400;
+  position: relative;
+  margin-bottom: 1em;
 
   &.h3 {
-    @include h3
+    @include h3;
   }
 }
 .side-body {
-  h3 {
+  h3,
+  h2 {
     border-bottom: solid 2px $g-400;
+  }
+}
+.survey-response-page {
+  .accordion-item {
+    border: none;
+  }
+  .summary-title {
+    @include h2;
+  }
+  .ls-response-summary.table {
+    background: none;
+    border-collapse: collapse;
+
+    table,
+    th,
+    td {
+      border: none;
+    }
+  }
+  .accordion-button,
+  .accordion-body {
+    background: $g-100;
+  }
+  .accordion-button {
+    padding-left: 0;
+    padding-bottom: 5px;
+  }
+  .summary-detail {
+    @include h2;
   }
 }
 
@@ -141,7 +183,12 @@ blockquote {
   padding-right: $container-padding;
 }
 
-//.main-content-container {
-//  padding-left: 8px;
-//}
+.full-page-wrapper {
+  position: relative;
+  padding-bottom: 65px;
+}
 // Main Design END
+
+#surveySettingsForThisGroup {
+  column-gap: 20px;
+}

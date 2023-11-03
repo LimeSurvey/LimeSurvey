@@ -34,7 +34,7 @@ $(document).on('ready  pjax:scriptcomplete', function(){
     } else if (activeTab) {
         $('a[href="' + activeTab + '"]').tab('show');
     }
-    $('body').on('click', 'a[data-toggle=\'tab\']', function (e) {
+    $('body').on('click', 'a[data-bs-toggle=\'tab\']', function (e) {
         e.preventDefault();
         var tab_name = this.getAttribute('href');
         if (history.pushState) {
@@ -50,7 +50,7 @@ $(document).on('ready  pjax:scriptcomplete', function(){
     });
     $(window).on('popstate', function () {
         var anchor = location.hash ||
-            $('a[data-toggle=\'tab\']').first().attr('href');
+            $('a[data-bs-toggle=\'tab\']').first().attr('href');
         $('a[href=\'' + anchor + '\']').tab('show');
     });
 
@@ -110,20 +110,17 @@ function UpdateRestrictedLanguages(){
 
 function Emailchange(ui,evt)
 {
-    smtp_enabled=($('#emailmethod input:radio:checked').val()=='smtp');
-    if (smtp_enabled==true) {
-        smtp_enabled='';
-        $('#emailsmtpssl label').removeClass('disabled');
-        $('#emailsmtpdebug label').removeClass('disabled');
-    }
-    else {
-        $('#emailsmtpdebug label').addClass('disabled');
-        $('#emailsmtpssl label').addClass('disabled');
-        smtp_enabled='disabled';
-    }
-    $("#emailsmtphost").prop('disabled',smtp_enabled);
-    $("#emailsmtpuser").prop('disabled',smtp_enabled);
-    $("#emailsmtppassword").prop('disabled',smtp_enabled);
+    const selectedMethod = $('#emailmethod input:radio:checked').val();
+
+    const smtp_enabled = selectedMethod === 'smtp';
+    $('#emailsmtpssl label').toggleClass('disabled', !smtp_enabled);
+    $('#emailsmtpdebug label').toggleClass('disabled', !smtp_enabled);
+    $("#emailsmtphost").prop('disabled', !smtp_enabled);
+    $("#emailsmtpuser").prop('disabled', !smtp_enabled);
+    $("#emailsmtppassword").prop('disabled', !smtp_enabled);
+
+    const plugin_enabled = selectedMethod === 'plugin';
+    $("#emailplugin").prop('disabled', !plugin_enabled);
 }
 
 function BounceChange(ui,evt)

@@ -13,7 +13,7 @@ export default {
 <template>
     <div class="btn-group d-xs-none d-md-block">
         <!-- Main dropdown -->
-        <button type="button" class="btn btn-outline-secondary dropdown-toggle limebutton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <button type="button" class="btn btn-outline-secondary dropdown-toggle limebutton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <span class="icon-display_export"></span>
             Display / Export
             <span class="caret"></span>
@@ -62,7 +62,7 @@ export default {
             <!-- Printable version -->
             <li>
                 <a target="_blank" href="/index.php/admin/printablesurvey/sa/index/surveyid/229189">
-                    <span class="fa fa-print"></span>
+                    <span class="ri-printer-line"></span>
                     Printable survey </a>
             </li>
         </ul>

@@ -55,7 +55,7 @@
                 </div>
             </div>
 
-            <div class="mb-3" id="insertmethod-container">
+            <div class="mb-3 d-none" id="insertmethod-container">
                 <label for="insertmethod" class=" form-label">
                     <?php eT("When an imported record matches an existing record ID:"); ?>
                 </label>
@@ -65,7 +65,7 @@
                             'renumber' => gT("Renumber the new record."),
                             'replace' => gT("Replace the existing record."),
                             'replaceanswers' => gT("Replace answers in file in the existing record."),
-                            ),array('disabled'=>'disabled','class'=>'form-control'));
+                            ),array('class'=>'form-control'));
                      ?>
                 </div>
             </div>
@@ -159,17 +159,17 @@
 
 </div></div></div>
 <?php
-App()->getClientScript()->registerScript('VVImportBSSwitcher', "
-LS.renderBootstrapSwitch();
-
-$('#noid').on('switchChange.bootstrapSwitch', function(event, state) {
-    if (!state){
-        $('#insertmethod').removeAttr('disabled');
-        $('#insertmethod-container').show('slow');
-    }else{
-        $('#insertmethod').attr('disabled','disabled');
-        $('#insertmethod-container').hide('slow');
-    }
+$excludeRecordActive = <<<JAVASCRIPT
+$('#noid_1').on('change', function (evt) {
+    $('#insertmethod-container').addClass('d-none');
+    $('#insertmethod').attr('disabled','disabled');
 });
-", LSYii_ClientScript::POS_POSTSCRIPT);
+
+$('#noid_2').on('change', function (evt) {
+    $('#insertmethod-container').removeClass('d-none');
+    $('#insertmethod').removeAttr('disabled');
+});
+JAVASCRIPT;
+
+App()->getClientScript()->registerScript('VVImportBS5Switcher', $excludeRecordActive, LSYii_ClientScript::POS_POSTSCRIPT);
 ?>

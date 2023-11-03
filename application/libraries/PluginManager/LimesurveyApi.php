@@ -234,6 +234,27 @@ class LimesurveyApi
     }
 
     /**
+     * Get the current survey in current oage
+     * @param boolean $onlyactivated return it only if activated
+     * @return false|integer
+     */
+    public function getCurrentSurveyid($onlyactivated = false)
+    {
+        $surveyId = \LimeExpressionManager::getLEMsurveyId();
+        if (empty($surveyId)) {
+            return false;
+        }
+        $survey = \Survey::model()->findByPk($surveyId);
+        if (!$survey) {
+            return false;
+        }
+        if ($onlyactivated && !$survey->getIsActive()) {
+            return false;
+        }
+        return $surveyId;
+    }
+
+    /**
      * Get the current Response
      * @param integer $surveyId
      * @return \Response|null
@@ -241,7 +262,7 @@ class LimesurveyApi
     public function getCurrentResponses($surveyId = null)
     {
         if (empty($surveyId)) {
-            $surveyId = \LimeExpressionManager::getLEMsurveyId();
+            $surveyId = $this->getCurrentSurveyid();
         }
         if (empty($surveyId)) {
             return;
@@ -289,7 +310,7 @@ class LimesurveyApi
      */
     public function getGroupList($surveyId)
     {
-        $result = \QuestionGroup::model()->findListByAttributes(array('sid' => $surveyId), 'group_name');
+        $result = \QuestionGroup::model()->findAllByAttributes(array('sid' => $surveyId), 'group_name');
         return $result;
     }
 
@@ -398,14 +419,18 @@ class LimesurveyApi
     /**
      * @param int $surveyId
      * @param string $language
-     * $param array $conditions
+     * @param array $conditions
      * @return \Question[]
      */
     public function getQuestions($surveyId, $language = 'en', $conditions = array())
     {
-        $conditions['sid'] = $surveyId;
-        $conditions['language'] = $language;
-        return \Question::model()->with('subquestions')->findAllByAttributes($conditions);
+        $criteria = new \CDbCriteria();
+        $criteria->addCondition('t.sid = :sid');
+        $criteria->addCondition('questionl10ns.language = :language');
+        $criteria->params[':sid'] = $surveyId;
+        $criteria->params[':language'] = $language;
+
+        return \Question::model()->with('subquestions', 'questionl10ns')->findAllByAttributes($conditions, $criteria);
     }
 
     /**

@@ -8,33 +8,33 @@
     <ul class="list-group list-group-flush">
         <!-- Start date/time -->
         <li class="list-group-item p-0 border-0">
-            <div class="ls-flex-row col-12 gap-2">
+            <div class="ls-flex-row col-12">
                <div class="col-4 card-label">
                     {{gT("Start date/time:")}}
                 </div>
-                <div class="col-8">
+                <div class="col-8 ls-card-grid__description">
                     {{startdate}}
                 </div>
             </div>
         </li>
         <!-- Expiration date/time -->
         <li class="list-group-item p-0 border-0">
-            <div class="ls-flex-row col-12 gap-2">
+            <div class="ls-flex-row col-12">
                <div class="col-4 card-label">
                     {{gT("Expiration date/time:")}}
                 </div>
-                <div class="col-8">
+                <div class="col-8 ls-card-grid__description">
                     {{expdate}}
                 </div>
             </div>
         </li>
         <!-- Publicly available -->
         <li class="list-group-item p-0 border-0">
-            <div class="ls-flex-row col-12 gap-2">
+            <div class="ls-flex-row col-12">
                <div class="col-4 card-label">
                     {{gT("Listed publicly:")}}
                 </div>
-                <div class="col-8">
+                <div class="col-8 ls-card-grid__description">
                     {{oSurvey.isListPublic ? gT('Yes') : gT('No')}}
                 </div>
             </div>

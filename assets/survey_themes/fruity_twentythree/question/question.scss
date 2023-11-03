@@ -1,0 +1,44 @@
+.question-container {
+    margin-bottom : 3em;
+    .ls-label-question {
+        font-size   : 24px;
+        font-weight : $font-weight-600;
+        line-height : 32px;
+    }
+    .ls-question-message {
+        color: $g-900;
+        font-style: italic;    
+        font-size: $font-size-sm;
+    }
+    .question-number:empty,
+    .question-code:empty {
+        display : none
+    }
+    .question-title-container {
+        margin-bottom : 10px;
+    }
+    .question-help-container {
+        margin-bottom : 5px;
+        position      : relative;
+    }
+    .question-valid-container {
+        margin-top: 10px;
+        margin-bottom : 20px;
+    }
+    .asterisk {
+        vertical-align : -0.125em;
+    }
+    .help-block {
+        font-weight: 600;
+        color: $g-700;
+    }
+    .timer_header {
+        margin-top: 1rem;
+    }
+}
+
+@media only screen and (max-device-width : 767px) {
+    .ls-questionhelp {
+        font-size : 14px;
+    }
+}

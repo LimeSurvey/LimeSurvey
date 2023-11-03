@@ -327,7 +327,7 @@ class QuestionGroupsAdministrationController extends LSBaseController
             . " (" . gT("ID") . ":" . $surveyid . ")";
 
         $aData['backUrl'] = $this->createUrl(
-            'questionGroupsAdministration/listquestiongroups',
+            'questionAdministration/listQuestions',
             [
                 'surveyid' => $surveyid
             ]
@@ -606,6 +606,7 @@ class QuestionGroupsAdministrationController extends LSBaseController
                         'questionGroupsAdministration/listquestiongroups/',
                         ['surveyid' => $iSurveyId]
                     )
+
                 ]
             );
             return;
@@ -635,7 +636,7 @@ class QuestionGroupsAdministrationController extends LSBaseController
                 )
             );
         } else {
-            $this->redirect(array('questionGroupsAdministration/listquestiongroups/surveyid/' . $iSurveyId));
+            $this->redirect($this->createUrl('questionAdministration/listQuestions', ['surveyid' => $iSurveyId , 'activeTab' => 'groups']));
         }
     }
 
@@ -906,55 +907,55 @@ class QuestionGroupsAdministrationController extends LSBaseController
             );
         }
 
-        if (!$oSurvey->isActive) {
-            $grouparray = App()->request->getPost('grouparray', []);
-            if (!empty($grouparray)) {
-                foreach ($grouparray as $aQuestiongroup) {
-                    //first set up the ordering for questiongroups
-                    $oQuestiongroups = QuestionGroup::model()->findAll(
-                        "gid=:gid AND sid=:sid",
-                        [':gid' => $aQuestiongroup['gid'], ':sid' => $surveyid]
-                    );
-                    array_map(
-                        function ($oQuestiongroup) use ($aQuestiongroup, $success) {
-                            $oQuestiongroup->group_order = $aQuestiongroup['group_order'];
-                            // TODO: unused variable $success
-                            $success = $success && $oQuestiongroup->save();
-                        },
-                        $oQuestiongroups
-                    );
+        $grouparray = App()->request->getPost('grouparray', []);
+        if (!empty($grouparray)) {
+            foreach ($grouparray as $aQuestiongroup) {
+                //first set up the ordering for questiongroups
+                $oQuestiongroups = QuestionGroup::model()->findAll(
+                    "gid=:gid AND sid=:sid",
+                    [':gid' => $aQuestiongroup['gid'], ':sid' => $surveyid]
+                );
+                array_map(
+                    function ($oQuestiongroup) use ($aQuestiongroup, $success) {
+                        $oQuestiongroup->group_order = $aQuestiongroup['group_order'];
+                        // TODO: unused variable $success
+                        $success = $success && $oQuestiongroup->save();
+                    },
+                    $oQuestiongroups
+                );
 
-                    $aQuestiongroup['questions'] = $aQuestiongroup['questions'] ?? [];
+                $aQuestiongroup['questions'] = $aQuestiongroup['questions'] ?? [];
 
-                    foreach ($aQuestiongroup['questions'] as $aQuestion) {
-                        $aQuestions = Question::model()->findAll(
-                            "qid=:qid AND sid=:sid",
-                            [':qid' => $aQuestion['qid'], ':sid' => $surveyid]
-                        );
-                        array_walk(
-                            $aQuestions,
-                            function ($oQuestion) use ($aQuestion, $success) {
-                                $oQuestion->question_order = $aQuestion['question_order'];
-                                $oQuestion->gid = $aQuestion['gid'];
-                                if (safecount($oQuestion->subquestions) > 0) {
-                                    $aSubquestions = $oQuestion->subquestions;
-                                    array_walk(
-                                        $aSubquestions,
-                                        function ($oSubQuestion) use ($aQuestion, $success) {
-                                            $oSubQuestion->gid = $aQuestion['gid'];
-                                            $success = $success && $oSubQuestion->save(true);
-                                        }
-                                    );
-                                }
-                                $success = $success && $oQuestion->save(true);
+                foreach ($aQuestiongroup['questions'] as $aQuestion) {
+                    $aQuestions = Question::model()->findAll(
+                        "qid=:qid AND sid=:sid",
+                        [':qid' => $aQuestion['qid'], ':sid' => $surveyid]
+                    );
+                    array_walk(
+                        $aQuestions,
+                        function ($oQuestion) use ($aQuestion, $success) {
+                            $oQuestion->question_order = $aQuestion['question_order'];
+                            $oQuestion->gid = $aQuestion['gid'];
+                            if (safecount($oQuestion->subquestions) > 0) {
+                                $aSubquestions = $oQuestion->subquestions;
+                                array_walk(
+                                    $aSubquestions,
+                                    function ($oSubQuestion) use ($aQuestion, $success) {
+                                        $oSubQuestion->gid = $aQuestion['gid'];
+                                        $success = $success && $oSubQuestion->save(true);
+                                    }
+                                );
                             }
-                        );
-                    }
+                            $success = $success && $oQuestion->save(true);
+                        }
+                    );
                 }
             }
+        }
 
-            QuestionGroup::model()->cleanOrder($surveyid);
+        QuestionGroup::model()->cleanOrder($surveyid);
 
+        if ($success) {
             return $this->renderPartial(
                 '/admin/super/_renderJson',
                 array(
@@ -966,19 +967,20 @@ class QuestionGroupsAdministrationController extends LSBaseController
                 false,
                 false
             );
+        } else {
+            return $this->renderPartial(
+                '/admin/super/_renderJson',
+                array(
+                    'data' => [
+                        'success' => false,
+                        'message' => gT("You can't reorder in an active survey"),
+                        'DEBUG' => ['POST' => $_POST, 'grouparray' => $grouparray]
+                    ],
+                ),
+                false,
+                false
+            );
         }
-        return $this->renderPartial(
-            '/admin/super/_renderJson',
-            array(
-                'data' => [
-                    'success' => false,
-                    'message' => gT("You can't reorder in an active survey"),
-                    'DEBUG' => ['POST' => $_POST, 'grouparray' => $grouparray]
-                ],
-            ),
-            false,
-            false
-        );
     }
 
     /** ++++++++++++  the following functions should be moved to model or a service class ++++++++++++++++++++++++++ */

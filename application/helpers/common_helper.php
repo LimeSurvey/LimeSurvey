@@ -97,23 +97,28 @@ function quoteText($sText, $sEscapeMode = 'html')
 /**
 * getSurveyList() Queries the database (survey table) for a list of existing surveys
 *
-* @param boolean $bReturnArray If set to true an array instead of an HTML option list is given back
+* @param boolean $bReturnArray If set to true an array instead of an HTML option list is given back (unused by core (2023-04-12))
 * @return string|array This string is returned containing <option></option> formatted list of existing surveys
 *
 */
 function getSurveyList($bReturnArray = false)
 {
     static $cached = null;
-    $bCheckIntegrity = false;
     $timeadjust = getGlobalSetting('timeadjust');
     App()->setLanguage((Yii::app()->session['adminlang'] ?? 'en'));
     $surveynames = array();
 
     if (is_null($cached)) {
+        $criteria = new CDBCriteria();
+        $criteria->select = ['sid','language', 'active', 'expires','startdate'];
+        $criteria->with = ['languagesettings' => [
+                'select'=>'surveyls_title',
+                'where'=>'t.language = languagesettings.language'
+            ]
+        ];
         $surveyidresult = Survey::model()
             ->permission(Yii::app()->user->getId())
-            ->with('languagesettings')
-            ->findAll();
+            ->findAll($criteria);
         foreach ($surveyidresult as $result) {
             if (isset($result->languagesettings[$result->language])) {
                 $surveynames[] = array_merge(
@@ -124,7 +129,7 @@ function getSurveyList($bReturnArray = false)
         }
 
         usort($surveynames, function ($a, $b) {
-                return strcmp((string) $a['surveyls_title'], (string) $b['surveyls_title']);
+            return strcmp((string) $a['surveyls_title'], (string) $b['surveyls_title']);
         });
         $cached = $surveynames;
     } else {
@@ -138,27 +143,23 @@ function getSurveyList($bReturnArray = false)
     $inactivesurveys = '';
     $expiredsurveys = '';
     foreach ($surveynames as $sv) {
-        $surveylstitle = flattenText($sv['surveyls_title']);
-        if (strlen($surveylstitle) > 70) {
-            $surveylstitle = htmlspecialchars(mb_strcut(html_entity_decode($surveylstitle, ENT_QUOTES, 'UTF-8'), 0, 70, 'UTF-8')) . "...";
-        }
-
+        $surveylstitle = CHtml::encode($sv['surveyls_title']) . " [" . $sv['sid'] . "]";
         if ($sv['active'] != 'Y') {
             $inactivesurveys .= "<option ";
             if (Yii::app()->user->getId() == $sv['owner_id']) {
-                $inactivesurveys .= " class='mysurvey emphasis'";
+                $inactivesurveys .= " class='mysurvey emphasis inactivesurvey'";
             }
             $inactivesurveys .= " value='{$sv['sid']}'>{$surveylstitle}</option>\n";
         } elseif ($sv['expires'] != '' && $sv['expires'] < dateShift((string) date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust)) {
             $expiredsurveys .= "<option ";
             if (Yii::app()->user->getId() == $sv['owner_id']) {
-                $expiredsurveys .= " class='mysurvey emphasis'";
+                $expiredsurveys .= " class='mysurvey emphasis expiredsurvey'";
             }
             $expiredsurveys .= " value='{$sv['sid']}'>{$surveylstitle}</option>\n";
         } else {
             $activesurveys .= "<option ";
             if (Yii::app()->user->getId() == $sv['owner_id']) {
-                $activesurveys .= " class='mysurvey emphasis'";
+                $activesurveys .= " class='mysurvey emphasis activesurvey'";
             }
             $activesurveys .= " value='{$sv['sid']}'>{$surveylstitle}</option>\n";
         }
@@ -673,43 +674,30 @@ function getUserList($outputformat = 'fullinfoarray')
         $usercontrolSameGroupPolicy == true
     ) {
         if (isset($myuid)) {
-            $sDatabaseType = Yii::app()->db->getDriverName();
-            if ($sDatabaseType == 'mssql' || $sDatabaseType == "sqlsrv" || $sDatabaseType == "dblib") {
-                $sSelectFields = 'users_name,uid,email,full_name,parent_id,CAST(password as varchar) as password';
-            } else {
-                $sSelectFields = 'users_name,uid,email,full_name,parent_id,password';
-            }
-
-            // List users from same group as me + all my childs
-            // a subselect is used here because MSSQL does not like to group by text
-            // also Postgres does like this one better
-            $uquery = " SELECT {$sSelectFields} from {{users}} where uid in (
-                SELECT uid from {{user_in_groups}} where ugid in (
-                    SELECT ugid from {{user_in_groups}} where uid={$myuid}
-                    )
-                )
-            UNION
-            SELECT {$sSelectFields} from {{users}} v where v.parent_id={$myuid}
-            UNION
-            SELECT {$sSelectFields} from {{users}} v where uid={$myuid}";
+            $userGroupList = getUserGroupList();
+            $criteria = new CDBCriteria();
+            $criteria->order = 'full_name, users_name, t.uid';
+            $criteria->with = 'groups';
+            /* users in usergroup */
+            $criteria->addInCondition('groups.ugid', $userGroupList);
+            /* childs of this user */
+            $criteria->compare('parent_id', $myuid, false, 'OR');
+            /* himself */
+            $criteria->compare('t.uid', $myuid, false, 'OR');
+            $oUsers = User::model()->findAll($criteria);
         } else {
             return array(); // Or die maybe
         }
     } else {
-        $uquery = "SELECT * FROM {{users}} ORDER BY uid";
-    }
-
-    $uresult = Yii::app()->db->createCommand($uquery)->query()->readAll(); //Checked
-
-    if (count($uresult) == 0 && !empty($myuid)) {
-//user is not in a group and usercontrolSameGroupPolicy is activated - at least show their own userinfo
-        $uquery = "SELECT u.* FROM {{users}} AS u WHERE u.uid=" . $myuid;
-        $uresult = Yii::app()->db->createCommand($uquery)->query()->readAll(); //Checked
+        $oUsers = User::model()->findAll([
+            'order' => 'full_name, users_name, t.uid'
+        ]);
     }
 
     $userlist = array();
     $userlist[0] = "Reserved for logged in user";
-    foreach ($uresult as $srow) {
+    foreach ($oUsers as $oUser) {
+        $srow = $oUser->getAttributes();
         if ($outputformat != 'onlyuidarray') {
             if ($srow['uid'] != Yii::app()->session['loginID']) {
                 $userlist[] = array(
@@ -826,7 +814,7 @@ function getSurveyInfo($surveyid, $languagecode = '', $force = false)
             } else {
                 $thissurvey['owner_username'] = '';
             }
-            
+
 
             $staticSurveyInfo[$surveyid][$languagecode] = $thissurvey;
         }
@@ -1116,8 +1104,13 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage)
                             if (!isset($file['comment'])) {
                                 $file['comment'] = '';
                             }
+                            $size = "";
+                            if($file['size'] && strval(floatval($file['size'])) == strval($file['size'])) {
+                                // avoid to throw PHP error if size is invalid
+                                $size = sprintf('%s KB', round($file['size']));
+                            }
                             $sValue .= rawurldecode((string) $file['name']) .
-                            ' (' . round($file['size']) . 'KB) ' .
+                            ' (' . $size .' ) ' .
                             strip_tags((string) $file['title']);
                             if (trim(strip_tags((string) $file['comment'])) != "") {
                                 $sValue .= ' - ' . strip_tags((string) $file['comment']);
@@ -1214,7 +1207,7 @@ function createCompleteSGQA($iSurveyID, $aFilters, $sLanguage)
 
                 //go through all the (multiple) answers
                 foreach ($result as $row) {
-                    $myfield2 = $myfield . reset($row);
+                    $myfield2 = $myfield . $row['title'];
                     $allfields[] = $myfield2;
                 }
                 break;
@@ -1413,8 +1406,8 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
 
     $defaultsQuery = "SELECT a.qid, a.sqid, a.scale_id, a.specialtype, al10.defaultvalue"
     . " FROM {{defaultvalues}} as a "
-    . " LEFT JOIN  {{defaultvalue_l10ns}} as al10 ON a.dvid = al10.dvid "
-    . " LEFT JOIN {{questions}} as b ON a.qid = b.qid "
+    . " JOIN {{defaultvalue_l10ns}} as al10 ON a.dvid = al10.dvid " // We NEED a default value set
+    . " JOIN {{questions}} as b ON a.qid = b.qid " // We NEED only question in this survey
     . " AND al10.language = '{$sLanguage}'"
     . " AND b.same_default=0"
     . " AND b.sid = " . $surveyid;
@@ -1434,8 +1427,8 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
     $baseLanguage = $survey->language;
     $defaultsQuery = "SELECT a.qid, a.sqid, a.scale_id, a.specialtype, al10.defaultvalue"
     . " FROM {{defaultvalues}} as a "
-    . " LEFT JOIN  {{defaultvalue_l10ns}} as al10 ON a.dvid = al10.dvid "
-    . " LEFT JOIN {{questions}} as b ON a.qid = b.qid "
+    . " JOIN {{defaultvalue_l10ns}} as al10 ON a.dvid = al10.dvid " // We NEED a default value set
+    . " JOIN {{questions}} as b ON a.qid = b.qid " // We NEED only question in this survey
     . " AND al10.language = '{$baseLanguage}'"
     . " AND b.same_default=1"
     . " AND b.sid = " . $surveyid;
@@ -2209,7 +2202,7 @@ function SendEmailMessage($body, $subject, $to, string $from, $sitename, $ishtml
 * @param boolean $bKeepSpan set to true for keep span, used for expression manager. Default: false
 * @param boolean $bDecodeHTMLEntities If set to true then all HTML entities will be decoded to the specified charset. Default: false
 * @param string $sCharset Charset to decode to if $decodeHTMLEntities is set to true. Default: UTF-8
-* @param string $bStripNewLines strip new lines if true, if false replace all new line by \r\n. Default: true
+* @param boolean $bStripNewLines strip new lines if true, if false replace all new line by \r\n. Default: true
 *
 * @return string  Cleaned text
 */
@@ -2619,12 +2612,13 @@ function hasTemplateManageRights($userid, $sThemeFolder)
 * Translate links which are in any answer/question/survey/email template/label set to their new counterpart
 *
 * @param string $sType 'survey' or 'label'
-* @param mixed $iOldSurveyID
-* @param mixed $iNewSurveyID
-* @param string $sString
+* @param mixed $iOldSurveyID Source SurveyId to be replaced
+* @param mixed $iNewSurveyID New SurveyId to be used
+* @param string $sString Link (url or local path) to be translated
+* @param bool $isLocalPath Indicates if the link ($sString) is a local path or a url.
 * @return string
 */
-function translateLinks($sType, $iOldSurveyID, $iNewSurveyID, string $sString)
+function translateLinks($sType, $iOldSurveyID, $iNewSurveyID, $sString, $isLocalPath = false)
 {
     if ($sString == '') {
         return $sString;
@@ -2632,16 +2626,46 @@ function translateLinks($sType, $iOldSurveyID, $iNewSurveyID, string $sString)
     $iOldSurveyID = (int) $iOldSurveyID;
     $iNewSurveyID = (int) $iNewSurveyID; // To avoid injection of a /e regex modifier without having to check all execution paths
     if ($sType == 'survey') {
-        $sPattern = '(http(s)?:\/\/)?(([a-z0-9\/\.])*(?=(\/upload))\/upload\/surveys\/' . $iOldSurveyID . '\/)';
-        $sReplace = Yii::app()->getConfig("publicurl") . "upload/surveys/{$iNewSurveyID}/";
+        $sPattern = '(http(s)?:\/\/)?(([a-z0-9\/\.\-\_])*(?=(\/upload))\/upload\/surveys\/' . $iOldSurveyID . '\/)';
+        if ($isLocalPath) {
+            $sReplace = Yii::app()->getConfig("uploaddir") . "/surveys/{$iNewSurveyID}/";
+        } else {
+            $sReplace = Yii::app()->getConfig("publicurl") . "upload/surveys/{$iNewSurveyID}/";
+        }
         return preg_replace('/' . $sPattern . '/u', $sReplace, $sString);
     } elseif ($sType == 'label') {
-        $sPattern = '(http(s)?:\/\/)?(([a-z0-9\/\.])*(?=(\/upload))\/upload\/labels\/' . $iOldSurveyID . '\/)';
+        $sPattern = '(http(s)?:\/\/)?(([a-z0-9\/\.\-\_])*(?=(\/upload))\/upload\/labels\/' . $iOldSurveyID . '\/)';
         $sReplace = Yii::app()->getConfig("publicurl") . "upload/labels/{$iNewSurveyID}/";
         return preg_replace("/" . $sPattern . "/u", $sReplace, $sString);
     } else // unknown type
     {
         return $sString;
+    }
+}
+
+/**
+ * Returns true if there are old links in answer/question/survey/email template/label set texts.
+ *
+ * @param string $type 'survey' or 'label'
+ * @param mixed $oldSurveyId
+ * @param mixed $string
+ * @return boolean True if the provided string includes links to the old survey. If the type is not 'survey' or 'label', it returns false.
+ */
+function checkOldLinks($type, $oldSurveyId, $string)
+{
+    if (empty($string)) {
+        return false;
+    }
+    $oldSurveyId = (int) $oldSurveyId;
+    if ($type == 'survey') {
+        $pattern = '(http(s)?:\/\/)?(([a-z0-9\/\.])*(?=(\/upload))\/upload\/surveys\/' . $oldSurveyId . '\/)';
+        return preg_match('/' . $pattern . '/u', $string, $m);
+    } elseif ($type == 'label') {
+        $pattern = '(http(s)?:\/\/)?(([a-z0-9\/\.])*(?=(\/upload))\/upload\/labels\/' . $oldSurveyId . '\/)';
+        return preg_match('/' . $pattern . '/u', $string, $m);
+    } else // unknown type
+    {
+        return false;
     }
 }
 
@@ -3197,6 +3221,7 @@ function getFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonorC
 
     //Get response data
     $idrow = SurveyDynamic::model($iSurveyID)->findByAttributes(array('id' => $iResponseID));
+    $idrow->decryptBeforeOutput();
 
     // Create array of non-null values - those are the relevant ones
     $aRelevantFields = array();
@@ -3616,11 +3641,11 @@ function replaceExpressionCodes($iSurveyID, $aCodeMap)
 * @param string $availlangs - space separated list of additional languages in survey
 * @return void
 */
-function cleanLanguagesFromSurvey($iSurveyID, $availlangs)
+function cleanLanguagesFromSurvey($iSurveyID, $availlangs, $baselang = null)
 {
     Yii::app()->loadHelper('database');
     $iSurveyID = (int) $iSurveyID;
-    $baselang = Survey::model()->findByPk($iSurveyID)->language;
+    $baselang = $baselang ?? Survey::model()->findByPk($iSurveyID)->language;
     $aLanguages = [];
     if (!empty($availlangs) && $availlangs != " ") {
         $availlangs = sanitize_languagecodeS($availlangs);
@@ -3639,8 +3664,8 @@ function cleanLanguagesFromSurvey($iSurveyID, $availlangs)
     }
 
     // Remove From Answer Table
-    $sQuery = "SELECT ls.id from {{answer_l10ns}} ls 
-            JOIN {{answers}} a on ls.aid=a.aid 
+    $sQuery = "SELECT ls.id from {{answer_l10ns}} ls
+            JOIN {{answers}} a on ls.aid=a.aid
             JOIN {{questions}} q on a.qid=q.qid
             WHERE sid={$iSurveyID} AND {$sqllang}";
     $result = Yii::app()->db->createCommand($sQuery)->queryAll();
@@ -3648,7 +3673,7 @@ function cleanLanguagesFromSurvey($iSurveyID, $availlangs)
         Yii::app()->db->createCommand('delete from {{answer_l10ns}} where id =' . $row['id'])->execute();
     }
     // Remove From Questions Table
-    $sQuery = "SELECT ls.id from {{question_l10ns}} ls 
+    $sQuery = "SELECT ls.id from {{question_l10ns}} ls
             JOIN {{questions}} q on ls.qid=q.qid
             WHERE sid={$iSurveyID} AND {$sqllang}";
     $result = Yii::app()->db->createCommand($sQuery)->queryAll();
@@ -3658,7 +3683,7 @@ function cleanLanguagesFromSurvey($iSurveyID, $availlangs)
 
     // Remove From Questions Table
     $quotedGroups = Yii::app()->db->quoteTableName('{{groups}}');
-    $sQuery = "SELECT ls.id from {{group_l10ns}} ls 
+    $sQuery = "SELECT ls.id from {{group_l10ns}} ls
             JOIN $quotedGroups g on ls.gid=g.gid
             WHERE sid={$iSurveyID} AND {$sqllang}";
     $result = Yii::app()->db->createCommand($sQuery)->queryAll();
@@ -3669,7 +3694,7 @@ function cleanLanguagesFromSurvey($iSurveyID, $availlangs)
 
 /**
 * fixLanguageConsistency() fixes missing groups, questions, answers, quotas & assessments for languages on a survey
-* @param string $sid - the currently selected survey
+* @param int $sid - the currently selected survey
 * @param string $availlangs - space separated list of additional languages in survey - if empty all additional languages of a survey are checked against the base language
 * @param string $baselang - language to use as base (useful when changing the base language) - if empty, it will be picked from the survey
 * @return bool - always returns true
@@ -3733,9 +3758,9 @@ function fixLanguageConsistency($sid, $availlangs = '', $baselang = '')
         }
     }
 
-    $query = "SELECT * FROM {{answers}} a 
-    JOIN {{answer_l10ns}} ls ON ls.aid=a.aid 
-    JOIN  {{questions}} q on a.qid=q.qid 
+    $query = "SELECT * FROM {{answers}} a
+    JOIN {{answer_l10ns}} ls ON ls.aid=a.aid
+    JOIN  {{questions}} q on a.qid=q.qid
     WHERE language='{$baselang}' and q.sid={$sid}";
     $result = Yii::app()->db->createCommand($query)->query();
     foreach ($result->readAll() as $answer) {
@@ -3783,7 +3808,6 @@ function fixLanguageConsistency($sid, $availlangs = '', $baselang = '')
     switchMSSQLIdentityInsert('assessments', false);
 
 
-    switchMSSQLIdentityInsert('quota_languagesettings', true);
     $query = "SELECT * FROM {{quota_languagesettings}} join {{quota}} q on quotals_quota_id=q.id WHERE q.sid='{$sid}' AND quotals_language='{$baselang}'";
     $result = Yii::app()->db->createCommand($query)->query();
     foreach ($result->readAll() as $qls) {
@@ -3804,7 +3828,6 @@ function fixLanguageConsistency($sid, $availlangs = '', $baselang = '')
         }
         reset($langs);
     }
-    switchMSSQLIdentityInsert('quota_languagesettings', false);
 
     return true;
 }
@@ -4174,7 +4197,8 @@ function getUserGroupList()
     $sQuery = "SELECT distinct a.ugid, a.name, a.owner_id FROM {{user_groups}} AS a LEFT JOIN {{user_in_groups}} AS b ON a.ugid = b.ugid WHERE 1=1 ";
     if (shouldFilterUserGroupList()) {
         $userid = intval(App()->session['loginID']);
-        $sQuery .= "AND (b.uid = {$userid})";
+        $sQuery .= " AND (b.uid = {$userid})";
+        $sQuery .= " OR (a.owner_id = {$userid})";
     }
     $sQuery .= " ORDER BY name";
 
@@ -4579,6 +4603,22 @@ function getIPAddress()
         $sIPAddress = $_SERVER['REMOTE_ADDR'];
     }
 
+    return $sIPAddress;
+}
+
+
+/**
+ * This function returns the real IP address and should mainly be used for security sensitive purposes
+ * If you want to use the IP address for language detection or similar, use getIPAddress() instead
+ *
+ * @return  string  Client IP Address
+ */
+function getRealIPAddress()
+{
+    $sIPAddress = '127.0.0.1';
+    if (!empty($_SERVER['REMOTE_ADDR']) && filter_var($_SERVER['REMOTE_ADDR'], FILTER_VALIDATE_IP) !== false) {
+        $sIPAddress = $_SERVER['REMOTE_ADDR'];
+    }
     return $sIPAddress;
 }
 
@@ -5038,4 +5078,27 @@ function standardDeviation(array $numbers): float
     }
 
     return sqrt($variance / $numberOfElements);
+}
+
+/**
+ * Checks if the specified path is absolute.
+ * It handles both Unix and Windows paths.
+ * @param string $path the path to be checked
+ * @return bool whether the path is absolute
+ */
+function isAbsolutePath($path)
+{
+    if (strlen($path) == 0) {
+        // Empty path is relative by definition
+        return false;
+    } elseif ($path[0] == '/') {
+        // Absolute path on Unix-based systems
+        return true;
+    } elseif (preg_match('/^[a-zA-Z]:\\\\/', $path)) {
+        // Absolute path on Windows systems, e.g. C:\path\to\file
+        return true;
+    } else {
+        // Relative path
+        return false;
+    }
 }

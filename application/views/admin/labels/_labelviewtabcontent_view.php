@@ -34,7 +34,6 @@ $codeids = '';
                             $codeids = $codeids . ' ' . $row['sortorder'];
                         }
                         ?>
-
                         <?= Yii::app()->twigRenderer->renderViewFromFile(
                             '/application/views/admin/labels/labelRow.twig',
                             [
@@ -44,7 +43,7 @@ $codeids = '';
                                 'code' => $row['code'],
                                 'assessmentValue' => $row['assessment_value'],
                                 'title' => array_key_exists($lslanguage, $row->labell10ns) ? $row->labell10ns[$lslanguage]->title : '',
-                                'hasLabelSetUpdatePermission' => Permission::model()->hasGlobalPermission('labelsets', 'update'),
+                                'hasLabelSetUpdatePermission' => $updatePermission,
                             ],
                             true
                         ); ?>
@@ -56,7 +55,7 @@ $codeids = '';
             <!-- Action Buttons Quick Add and Save Changes -->
             <div class="action-buttons text-end">
                 <?php $i++;
-                if (Permission::model()->hasGlobalPermission('labelsets', 'update')): ?>
+                if ($updatePermission) : ?>
                     <button type="button" id='btnquickadd_<?php echo $i ?>' class="btnquickadd btn btn-outline-secondary " data-bs-toggle="modal"
                             data-bs-target="#quickadd">
                         <?php eT('Quick add labels') ?>

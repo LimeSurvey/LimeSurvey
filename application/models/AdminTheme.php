@@ -13,12 +13,12 @@
 */
 
 /**
-* Admin Theme Model
-*
-*
-* @package       LimeSurvey
-* @subpackage    Backend
-*/
+ * Admin Theme Model
+ *
+ *
+ * @package       LimeSurvey
+ * @subpackage    Backend
+ */
 class AdminTheme extends CFormModel
 {
     /** @var string $name Admin Theme's name */
@@ -143,7 +143,7 @@ class AdminTheme extends CFormModel
 
         if (!Yii::app()->request->getQuery('isAjax', false)) {
             Yii::app()->getClientScript()->registerMetaTag('width=device-width, initial-scale=1.0', 'viewport'); // See: https://github.com/LimeSurvey/LimeSurvey/blob/master/application/extensions/bootstrap/components/TbApi.php#l108-l115
-//            App()->bootstrap->registerTooltipAndPopover(); // See : https://github.com/LimeSurvey/LimeSurvey/blob/master/application/extensions/bootstrap/components/TbApi.php#l153-l160
+            //            App()->bootstrap->registerTooltipAndPopover(); // See : https://github.com/LimeSurvey/LimeSurvey/blob/master/application/extensions/bootstrap/components/TbApi.php#l153-l160
             App()->getClientScript()->registerScript('coreuser', '
            window.LS = window.LS || {}; window.LS.globalUserId = "' . Yii::app()->user->id . '";', CClientScript::POS_HEAD);
             App()->getClientScript()->registerPackage('jquery-migrate'); // jquery + migrate
@@ -151,10 +151,11 @@ class AdminTheme extends CFormModel
             App()->getClientScript()->registerPackage('js-cookie'); // js-cookie
             App()->getClientScript()->registerPackage('fontawesome'); // fontawesome
             App()->getClientScript()->registerPackage('font-ibm-sans'); // font-ibm-sans
+            App()->getClientScript()->registerPackage('font-ibm-serif'); // font-ibm-serif
             App()->getClientScript()->registerPackage('remix'); // remix
-//            App()->getClientScript()->registerPackage('bootstrap-switch');
+            //            App()->getClientScript()->registerPackage('bootstrap-switch');
             App()->getClientScript()->registerPackage('tempus-dominus');
-//            App()->getClientScript()->registerPackage('bootstrap-datetimepicker');
+            //            App()->getClientScript()->registerPackage('bootstrap-datetimepicker');
             App()->getClientScript()->registerPackage('font-roboto');
             App()->getClientScript()->registerPackage('font-icomoon');
             App()->getClientScript()->registerPackage('adminbasics'); // Combined scripts and style
@@ -330,7 +331,8 @@ class AdminTheme extends CFormModel
                     } else {
                         $previewUrl = Yii::app()->getConfig('uploadurl') . DIRECTORY_SEPARATOR . 'admintheme' . DIRECTORY_SEPARATOR . $file;
                     }
-                    $oTemplateConfig->path    = $file;
+                    $oTemplateConfig->path    = $sDir . DIRECTORY_SEPARATOR . $file . DIRECTORY_SEPARATOR;
+                    $oTemplateConfig->name    = $file;
                     $oTemplateConfig->preview = '<img src="' . $previewUrl . '/preview.png" alt="admin theme preview" height="200" class="img-thumbnail" />';
                     $aListOfFiles[$file] = $oTemplateConfig;
                 }
@@ -351,11 +353,27 @@ class AdminTheme extends CFormModel
     {
         // Define images url
         if (!YII_DEBUG || self::$use_asset_manager || Yii::app()->getConfig('use_asset_manager')) {
-            define('LOGO_URL', App()->getAssetManager()->publish($this->path . '/images/logo.svg'));
-            define('LOGO_ICON_URL', App()->getAssetManager()->publish($this->path . '/images/logo_icon.png'));
+            if (file_exists($this->path . '/images/logo.svg')) {
+                define('LOGO_URL', App()->getAssetManager()->publish($this->path . '/images/logo.svg'));
+            } else {
+                define('LOGO_URL', App()->getAssetManager()->publish(App()->getConfig("styledir") . '/Sea_Green/images/logo.svg'));
+            }
+            if (file_exists($this->path . '/images/logo_icon.png')) {
+                define('LOGO_ICON_URL', App()->getAssetManager()->publish($this->path . '/images/logo_icon.png'));
+            } else {
+                define('LOGO_ICON_URL', App()->getAssetManager()->publish(App()->getConfig("styledir") . '/Sea_Green/images/logo_icon.png'));
+            }
         } else {
-            define('LOGO_URL', $this->sTemplateUrl . '/images/logo.svg');
-            define('LOGO_ICON_URL', $this->sTemplateUrl . '/images/logo_icon.png');
+            if (file_exists($this->path . '/images/logo.svg')) {
+                define('LOGO_URL', $this->sTemplateUrl . '/images/logo.svg');
+            } else {
+                define('LOGO_URL', App()->getConfig('styleurl') . '/Sea_Green/images/logo.svg');
+            }
+            if (file_exists($this->path . '/images/logo_icon.png')) {
+                define('LOGO_ICON_URL', $this->sTemplateUrl . '/images/logo_icon.png');
+            } else {
+                define('LOGO_ICON_URL', App()->getConfig('styleurl') . '/Sea_Green/images/logo_icon.png');
+            }
         }
 
         // Define presentation text on welcome page
@@ -374,19 +392,6 @@ class AdminTheme extends CFormModel
      */
     private function isStandardAdminTheme($sAdminThemeName)
     {
-        return in_array(
-            $sAdminThemeName,
-            array(
-                'Apple_Blossom',
-                'Bay_of_Many',
-                'Black_Pearl',
-                'Dark_Sky',
-                'Free_Magenta',
-                'Noto_All_Languages',
-                'Purple_Tentacle',
-                'Sea_Green',
-                'Sunset_Orange',
-            )
-        );
+        return $sAdminThemeName === 'Sea_Green';
     }
 }

@@ -84,6 +84,7 @@ class QuotasController extends LSBaseController
             true
         );
 
+        Yii::app()->loadHelper('admin.htmleditor');
         $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title .
             " (" . gT("ID") . ":" . $surveyid . ")";
         $aData['subaction'] = gT("Survey quotas");
@@ -137,6 +138,9 @@ class QuotasController extends LSBaseController
             Yii::app()->user->setFlash('error', gT("Access denied."));
             $this->redirect(Yii::app()->request->urlReferrer);
         }
+
+        Yii::app()->loadHelper('admin.htmleditor');
+
         $oSurvey = Survey::model()->findByPk($surveyid);
         $aData['surveyid'] = $oSurvey->sid;
         $aData['thissurvey'] = getSurveyInfo($surveyid);
@@ -206,7 +210,7 @@ class QuotasController extends LSBaseController
 
         if (isset($_POST['Quota'])) {
             $quotaService = new \LimeSurvey\Models\Services\Quotas($oSurvey);
-            if ($quotaService->editQuota($oQuota, $_POST['Quota'])) {
+            if ($quotaService->editQuota($oQuota, $_POST['Quota']) && !$oQuota->getErrors()) {
                 Yii::app()->user->setFlash('success', gT("Quota saved"));
                 $this->redirect($this->createUrl("quotas/index/surveyid/$surveyid"));
             } else {
@@ -240,6 +244,7 @@ class QuotasController extends LSBaseController
             true
         );
 
+        Yii::app()->loadHelper('admin.htmleditor');
         $this->aData = $aData;
         $this->render('editquota_view', [
             'oQuota' => $oQuota,
@@ -424,13 +429,13 @@ class QuotasController extends LSBaseController
             $aQuotaIds = json_decode($sItems);
             if (isset($_POST['QuotaLanguageSetting'])) {
                 $errors = $quotaService->multipleItemsAction($aQuotaIds, $action, $_POST['QuotaLanguageSetting']);
-                if (empty($errors)) {
-                    eT("OK!");
-                } else {
-                    eT("Error!");
-                }
             } else {
-                $quotaService->multipleItemsAction($aQuotaIds, $action);
+                $errors = $quotaService->multipleItemsAction($aQuotaIds, $action);
+            }
+            if (empty($errors)) {
+                eT("OK!");
+            } else {
+                eT("Error!");
             }
         } else {
             Yii::app()->user->setFlash('error', gT("Access denied."));

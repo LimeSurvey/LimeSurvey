@@ -562,6 +562,7 @@ class userstatistics_helper
      * @param mixed $surveyid The survey id
      * @param string $outputType
      * @param boolean $browse
+     * @psalm-suppress UndefinedVariable
      *
      * @output array $output An array containing "alist"=>A list of answers to the question in the form of an array ($alist array
      *                       contains an array for every field to be displayed - with the Actual Question Code/Title, The text (flattened)
@@ -1203,22 +1204,33 @@ class userstatistics_helper
 
                     case Question::QT_COLON_ARRAY_NUMBERS: // Array (Multiple Flexi) (Numbers)
                         $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($qiqid);
-                        if (trim((string) $aQuestionAttributes['multiflexible_max']) != '') {
+                        $minvalue = 1;
+                        $maxvalue = 10;
+                        if (trim((string) $aQuestionAttributes['multiflexible_max']) != '' && trim((string) $aQuestionAttributes['multiflexible_min']) == '') {
                             $maxvalue = $aQuestionAttributes['multiflexible_max'];
-                        } else {
-                            $maxvalue = 10;
-                        }
-
-                        if (trim((string) $aQuestionAttributes['multiflexible_min']) != '') {
-                            $minvalue = $aQuestionAttributes['multiflexible_min'];
-                        } else {
                             $minvalue = 1;
                         }
+                        if (trim((string) $aQuestionAttributes['multiflexible_min']) != '' && trim((string) $aQuestionAttributes['multiflexible_max']) == '') {
+                            $minvalue = $aQuestionAttributes['multiflexible_min'];
+                            $maxvalue = $aQuestionAttributes['multiflexible_min'] + 10;
+                        }
+                        if (trim((string) $aQuestionAttributes['multiflexible_min']) != '' && trim((string) $aQuestionAttributes['multiflexible_max']) != '') {
+                            if ($aQuestionAttributes['multiflexible_min'] < $aQuestionAttributes['multiflexible_max']) {
+                                $minvalue = $aQuestionAttributes['multiflexible_min'];
+                                $maxvalue = $aQuestionAttributes['multiflexible_max'];
+                            }
+                        }
 
-                        if (trim((string) $aQuestionAttributes['multiflexible_step']) != '') {
-                            $stepvalue = $aQuestionAttributes['multiflexible_step'];
+                        $stepvalue = (trim((string) $aQuestionAttributes['multiflexible_step']) != '' && $aQuestionAttributes['multiflexible_step'] > 0) ? $aQuestionAttributes['multiflexible_step'] : 1;
+
+                        if ($aQuestionAttributes['reverse'] == 1) {
+                            $tmp = $minvalue;
+                            $minvalue = $maxvalue;
+                            $maxvalue = $tmp;
+                            $reverse = true;
+                            $stepvalue = -$stepvalue;
                         } else {
-                            $stepvalue = 1;
+                            $reverse = false;
                         }
 
                         if ($aQuestionAttributes['multiflexible_checkbox'] != 0) {
@@ -1372,6 +1384,7 @@ class userstatistics_helper
      * @param integer $usegraph
      * @param boolean $browse
      * @return array
+     * @psalm-suppress UndefinedVariable
      */
     protected function displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $usegraph, $browse, $sLanguage)
     {
@@ -2369,10 +2382,6 @@ class userstatistics_helper
                 $cachefilename = createChart($qqid, $qsid, $bShowPieChart, $lbl, $gdata, $grawdata, $MyCache, $sLanguage, $outputs['qtype']);
                 if ($cachefilename) {
                     // Add the image only if constructed
-                    //introduce new counter
-                    if (!isset($ci)) {
-                        $ci = 0;
-                    }
 
                     switch ($outputType) {
                         case 'xls':
@@ -2722,8 +2731,6 @@ class userstatistics_helper
         //browse these results
         if (isset($selects) && $selects) {
             $sql = implode(" AND ", $selects);
-        } elseif (!empty($newsql)) {
-            $sql = $newsql;
         }
 
         if (!isset($sql) || !$sql) {

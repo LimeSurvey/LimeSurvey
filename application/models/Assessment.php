@@ -111,6 +111,7 @@ class Assessment extends LSActiveRecord
             'linkId'            => 'loadEditUrl_forModalView',
             'linkAttributes'   => [
                 'data-editurl' => App()->createUrl("assessment/edit/", ["surveyid" => $this->sid]),
+                'data-assessment-id' => $this->id
             ]
         ];
         $dropdownItems[] = [
@@ -119,6 +120,9 @@ class Assessment extends LSActiveRecord
             'iconClass'        => 'ri-delete-bin-fill text-danger',
             'enabledCondition' => $permission_assessment_delete,
             'linkClass'         => 'action_assessments_deleteModal',
+            'linkAttributes'   => [
+                'data-assessment-id' => $this->id
+            ]
         ];
 
         return App()->getController()->widget(
@@ -230,6 +234,7 @@ class Assessment extends LSActiveRecord
      * @param integer $iSurveyID
      * @param string $language
      * @param array $data
+     * @return bool True if the assessment could be updated. False if the assessment is not found of the update failed.
      */
     public static function updateAssessment($id, $iSurveyID, $language, array $data)
     {
@@ -238,8 +243,9 @@ class Assessment extends LSActiveRecord
             foreach ($data as $k => $v) {
                             $assessment->$k = $v;
             }
-            $assessment->save();
+            return $assessment->save();
         }
+        return false;
     }
 
     /**

@@ -50,11 +50,12 @@ class SurveyIndexNavigationTest extends TestBaseClassWeb
             $this->assertEquals("My first question group", $groupTitle);
 
             // Move from first group to second group
-            //Click on index menu
-            $web->findElement(WebDriverBy::cssSelector('#navbar a[data-bs-toggle="dropdown"]'))->click();
+            // Click on index menu
+            $web->findElement(WebDriverBy::cssSelector('#navbar-toggler'))->click();
+            $web->findElement(WebDriverBy::cssSelector('[data-navtargetid="index-dropdown"]'))->click();
 
-            //Click on menu option
-            $web->findElement(WebDriverBy::cssSelector('a[href$="move=2"]'))->click();
+            // Click on menu option
+            $web->findElement(WebDriverBy::cssSelector('#main-dropdown a[href$="move=2"]'))->click();
 
             // Wait max 10 second to find the second group title
             $groupTitleDiv = self::$webDriver->wait(10)->until(
@@ -67,10 +68,11 @@ class SurveyIndexNavigationTest extends TestBaseClassWeb
 
             // Move from second group back to first group
             //Click on index menu
-            $web->findElement(WebDriverBy::cssSelector('#navbar a[data-bs-toggle="dropdown"]'))->click();
+            $web->findElement(WebDriverBy::cssSelector('#navbar-toggler'))->click();
+            $web->findElement(WebDriverBy::cssSelector('[data-navtargetid="index-dropdown"]'))->click();
 
             //Click on menu option
-            $web->findElement(WebDriverBy::cssSelector('a[href$="move=1"]'))->click();
+            $web->findElement(WebDriverBy::cssSelector('#main-dropdown a[href$="move=1"]'))->click();
 
             // Wait max 10 second to find the second group title
             $groupTitleDiv = self::$webDriver->wait(10)->until(

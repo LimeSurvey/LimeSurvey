@@ -17,11 +17,18 @@ $scriptVariables = [
     'labelSetEmpty'    => gT('There are no labels in this set', 'js'),
     'labelSetNotFound' => gT('Label set not found', 'js'),
     'lanameurl'        => Yii::app()->createUrl('/admin/labels/sa/getAllSets'),
+    'lanrestrictedurl' => Yii::app()->createUrl('/admin/labels/sa/getRestrictedSets'),
     'lasaveurl'        => Yii::app()->createUrl('/admin/labels/sa/ajaxSave'),
     'laupdateurl'      => Yii::app()->createUrl('/admin/labels/sa/ajaxUpdate'),
     'lsdetailurl'      => Yii::app()->createUrl('/questionAdministration/getLabelsetDetails'),
     'lspickurl'        => Yii::app()->createUrl('/questionAdministration/getLabelsetPicker'),
     'sCheckLabelURL'   => Yii::app()->createUrl('/questionAdministration/checkLabel'),
+    'lsextraoptionsurl'     => Yii::app()->createUrl(
+        'questionAdministration/ajaxLoadExtraOptions',
+        [
+            'questionId' => $qid
+        ]
+    ),
     'subquestions'     => [
         'newansweroption_text'     => gT('New subquestion','js'),
         'quickaddtitle'            => gT('Quick-add subquestion','js'),

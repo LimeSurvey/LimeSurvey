@@ -301,6 +301,8 @@ function file_validation_message($ia)
 // TMSW Validation -> EM
 function mandatory_popup($ia, $notanswered = null)
 {
+    global $mandatorypopup, $popup;
+
     //This sets the mandatory popup message to show if required
     //Called from question.php, group.php or survey.php
     if ($notanswered === null) {
@@ -308,7 +310,6 @@ function mandatory_popup($ia, $notanswered = null)
     }
     if (isset($notanswered) && is_array($notanswered)) {
         //ADD WARNINGS TO QUESTIONS IF THEY WERE MANDATORY BUT NOT ANSWERED
-        global $mandatorypopup, $popup;
         //POPUP WARNING
         // If there is no "hard" mandatory violation (both current and previous violations belong to Soft Mandatory questions),
         // we show the soft mandatory message.
@@ -332,6 +333,7 @@ function mandatory_popup($ia, $notanswered = null)
 // TMSW Validation -> EM
 function validation_popup($ia, $notvalidated = null)
 {
+    global $validationpopup, $vpopup;
     //This sets the validation popup message to show if required
     //Called from question.php, group.php or survey.php
     if ($notvalidated === null) {
@@ -339,7 +341,6 @@ function validation_popup($ia, $notvalidated = null)
     }
     if (isset($notvalidated) && is_array($notvalidated)) {
         //ADD WARNINGS TO QUESTIONS IF THEY ARE NOT VALID
-        global $validationpopup, $vpopup;
         //POPUP WARNING
         if (!isset($validationpopup)) {
             $vpopup = gT("One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid.");
@@ -357,11 +358,11 @@ function validation_popup($ia, $notvalidated = null)
 */
 function file_validation_popup($ia, $filenotvalidated = null)
 {
+    global $filevalidationpopup, $fpopup;
     if ($filenotvalidated === null) {
         unset($filenotvalidated);
     }
     if (isset($filenotvalidated) && is_array($filenotvalidated)) {
-        global $filevalidationpopup, $fpopup;
 
         if (!isset($filevalidationpopup)) {
             $fpopup = gT("One or more file have either exceeded the filesize/are not in the right format or the minimum number of required files have not been uploaded. You cannot proceed until these have been completed");
@@ -380,6 +381,7 @@ function file_validation_popup($ia, $filenotvalidated = null)
 function return_timer_script($aQuestionAttributes, $ia, $disable = null)
 {
     global $thissurvey;
+    global $gid;
 
     Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts") . 'coookies.js', CClientScript::POS_BEGIN);
     Yii::app()->getClientScript()->registerPackage('timer-addition');
@@ -443,7 +445,6 @@ function return_timer_script($aQuestionAttributes, $ia, $disable = null)
     if ($thissurvey['timercount'] < 2) {
         $iAction = '';
         if (isset($thissurvey['format']) && $thissurvey['format'] == "G") {
-            global $gid;
             $qcount = 0;
             foreach ($_SESSION['survey_' . Yii::app()->getConfig('surveyID')]['fieldarray'] as $ib) {
                 if ($ib[5] == $gid) {
@@ -1943,341 +1944,6 @@ function do_multipleshorttext($ia)
     } else {
         $inputnames   = [];
         $answer       = doRender('/survey/questions/answer/multipleshorttext/empty', [], true);
-    }
-
-    return array($answer, $inputnames);
-}
-
-/**
- * @deprecated 4.?.?
- * @see RenderMultipleNumerical
- * @see DataSetMultipleNumerical
- */
-function do_multiplenumeric($ia)
-{
-    global $thissurvey;
-    $extraclass             = "";
-    $aQuestionAttributes    = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
-    $sSeparator             = getRadixPointData($thissurvey['surveyls_numberformat']);
-    $sSeparator             = $sSeparator['separator'];
-    $extraclass            .= " numberonly"; //Must turn on the "numbers only javascript"
-    $coreClass              = "ls-answers subquestion-list questions-list ";
-    if (intval(trim((string) $aQuestionAttributes['maximum_chars'])) > 0) {
-        $maxlength = intval(trim((string) $aQuestionAttributes['maximum_chars'])); /* must be limited to 32 : -(10 number)dot(20 numbers) ! DECIMAL sql */
-        $extraclass .= " ls-input-maxchars";
-    } else {
-        $maxlength = 20;
-    }
-    if (ctype_digit(trim((string) $aQuestionAttributes['input_size']))) {
-        $inputsize = trim((string) $aQuestionAttributes['input_size']);
-        $extraclass .= " ls-input-sized";
-    } else {
-        $inputsize = null;
-    }
-
-    if ($aQuestionAttributes['prefix'][$_SESSION['survey_' . Yii::app()->getConfig('surveyID')]['s_lang']] != '') {
-        $prefix      = $aQuestionAttributes['prefix'][$_SESSION['survey_' . Yii::app()->getConfig('surveyID')]['s_lang']];
-        $extraclass .= " withprefix";
-    } else {
-        $prefix = ''; /* slider js need it */
-    }
-
-    if ($aQuestionAttributes['suffix'][$_SESSION['survey_' . Yii::app()->getConfig('surveyID')]['s_lang']] != '') {
-        $suffix      = $aQuestionAttributes['suffix'][$_SESSION['survey_' . Yii::app()->getConfig('surveyID')]['s_lang']];
-        $extraclass .= " withsuffix";
-    } else {
-        $suffix = ''; /* slider js need it */
-    }
-
-    $kpclass = testKeypad($thissurvey['nokeyboard']); // Virtual keyboard (probably obsolete today)
-
-    /* Find the col-sm width : if none is set : default, if one is set, set another one to be 12, if two is set : no change*/
-    list($sLabelWidth, $sInputContainerWidth, $defaultWidth) = getLabelInputWidth($aQuestionAttributes['label_input_columns'], $aQuestionAttributes['text_input_width']);
-
-    $prefixclass = "numeric";
-    $sliders = 0;
-    $slider_position = '';
-    $slider_default_set = false;
-
-    if ($aQuestionAttributes['slider_layout'] == 1) {
-        $coreClass           .= " slider-list";
-        $slider_layout        = true;
-        $extraclass          .= " withslider";
-        $slider_step          = trim(LimeExpressionManager::ProcessString("{{$aQuestionAttributes['slider_accuracy']}}", $ia[0], [], 1, 1, false, false, true));
-        $slider_step          = (is_numeric($slider_step)) ? $slider_step : 1;
-        $slider_min           = trim(LimeExpressionManager::ProcessString("{{$aQuestionAttributes['slider_min']}}", $ia[0], [], 1, 1, false, false, true));
-        $slider_mintext       = $slider_min = (is_numeric($slider_min)) ? $slider_min : 0;
-        $slider_max           = trim(LimeExpressionManager::ProcessString("{{$aQuestionAttributes['slider_max']}}", $ia[0], [], 1, 1, false, false, true));
-        $slider_maxtext       = $slider_max = (is_numeric($slider_max)) ? $slider_max : 100;
-        $slider_default       = trim(LimeExpressionManager::ProcessString("{{$aQuestionAttributes['slider_default']}}", $ia[0], [], 1, 1, false, false, true));
-        $slider_default       = (is_numeric($slider_default)) ? $slider_default : "";
-        $slider_default_set   = (bool) ($aQuestionAttributes['slider_default_set'] && $slider_default !== '');
-        $slider_orientation   = (trim((string) $aQuestionAttributes['slider_orientation']) == 0) ? 'horizontal' : 'vertical';
-        $slider_custom_handle = (trim((string) $aQuestionAttributes['slider_custom_handle']));
-
-        switch (trim((string) $aQuestionAttributes['slider_handle'])) {
-            case 0:
-                $slider_handle = 'round';
-                break;
-
-            case 1:
-                $slider_handle = 'square';
-                break;
-
-            case 2:
-                $slider_handle = 'triangle';
-                break;
-
-            case 3:
-                $slider_handle = 'custom';
-                break;
-        }
-
-        /* Put the slider init to initial state (when no click is set or when 'reset') */
-        if ($slider_default !== '') {
-            /* can be 0 */
-            $slider_position = $slider_default;
-        } elseif ($aQuestionAttributes['slider_middlestart'] == 1) {
-            $slider_position = intval(($slider_max + $slider_min) / 2);
-        }
-        $slider_separator = (trim((string) $aQuestionAttributes['slider_separator']) != '') ? $aQuestionAttributes['slider_separator'] : "";
-        $slider_reset = ($aQuestionAttributes['slider_reset']) ? 1 : 0;
-
-        /* Slider reversed value */
-        if ($aQuestionAttributes['slider_reversed'] == 1) {
-            $slider_reversed = 'true';
-        } else {
-            $slider_reversed = 'false';
-        }
-    } else {
-        $coreClass .= " text-list number-list";
-        $slider_layout  = false;
-        $slider_step    = '';
-        $slider_min     = '';
-        $slider_mintext = '';
-        $slider_max     = '';
-        $slider_maxtext = '';
-        $slider_default = null;
-        $slider_orientation = '';
-        $slider_handle = '';
-        $slider_custom_handle = '';
-        $slider_separator = '';
-        $slider_reset = 0;
-        $slider_reversed = 'false';
-    }
-
-
-    if ($aQuestionAttributes['random_order'] == 1) {
-        $sOrder = dbRandom();
-    } else {
-        $sOrder = 'question_order';
-    }
-    $aSubquestions = Question::model()->findAll(array('order' => $sOrder, 'condition' => 'parent_qid=:parent_qid', 'params' => array(':parent_qid' => $ia[0])));
-    $sSurveyLanguage = $_SESSION['survey_' . Yii::app()->getConfig('surveyID')]['s_lang'];
-    $anscount      = count($aSubquestions) * 2;
-    $fn            = 1;
-    $sRows         = "";
-
-    $inputnames = [];
-
-    if ($anscount == 0) {
-        $answer = doRender('/survey/questions/answer/multiplenumeric/empty', [], true);
-    } else {
-        foreach ($aSubquestions as $aSubquestion) {
-            $labelText = $sQuestionText = $aSubquestion->questionl10ns[$sSurveyLanguage]->question;
-            $myfname   = $ia[1] . $aSubquestion['title'];
-
-            if ($sQuestionText == "") {
-                $sQuestionText = "&nbsp;";
-            }
-
-            if ($slider_layout) {
-                $sliderWidth = 12;
-                if ($slider_separator != '') {
-                    $aAnswer     = explode($slider_separator, (string) $sQuestionText);
-                    $theanswer   = $aAnswer[0] ?? "";
-                    $labelText   = $theanswer;
-                    $sliderleft  = $aAnswer[1] ?? null;
-                    $sliderright = $aAnswer[2] ?? null;
-                    /* sliderleft and sliderright is in input, but is part of answers then take label width */
-                    if (!empty($sliderleft)) {
-                        $sliderWidth = 10;
-                    }
-                    if (!empty($sliderright)) {
-                        $sliderWidth = $sliderWidth == 10 ? 8 : 10 ;
-                    }
-                    $sliders   = true; // What is the usage ?
-                } else {
-                    $theanswer = $sQuestionText;
-                    $sliders   = false;
-                }
-            } else {
-                $theanswer = $sQuestionText;
-                $sliders   = false;
-            }
-
-            $aAnswer     = $aAnswer ?? '';
-            $sliderleft  = $sliderleft ?? null;
-            $sliderright = $sliderright ?? null;
-
-            // color code missing mandatory questions red
-            $alert = '';
-
-            if (($_SESSION['survey_' . Yii::app()->getConfig('surveyID')]['step'] != $_SESSION['survey_' . Yii::app()->getConfig('surveyID')]['maxstep']) || ($_SESSION['survey_' . Yii::app()->getConfig('surveyID')]['step'] == $_SESSION['survey_' . Yii::app()->getConfig('surveyID')]['prevstep'])) {
-                if (($ia[6] == 'Y' || $ia[6] == 'S') && $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname] === '') {
-                    $alert = true;
-                }
-            }
-
-            $sDisplayStyle = return_display_style($ia, $aQuestionAttributes, $thissurvey, $myfname);
-
-            // The value of the slider depends on many possible different parameters, by order of priority :
-            // 1. The value stored in the session
-            // 2. Else the default Answer   (set by EM and stored in session, so same case than 1)
-            // 3. Else the slider_default value : if slider_default_set set the value here
-            // 4. Else the middle start or slider_default or nothing : leave the value to "" for the input, show slider pos at this position
-            if (isset($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname])) {
-                $sValue                = $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname];
-            } elseif ($slider_layout && $slider_default !== "" && $slider_default_set) {
-                $sValue                = $slider_default;
-            } else {
-                $sValue                = null;
-            }
-
-            // Fix the display value : Value is stored as decimal in SQL. Issue when reloading survey
-            if ($sValue[0] == ".") {
-                // issue #15684 mssql SAVE 0.01 AS .0100000000, set it at 0.0100000000
-                $sValue = "0" . $sValue;
-            }
-            if (strpos((string) $sValue, ".")) {
-                $sValue = rtrim(rtrim((string) $sValue, "0"), ".");
-            }
-            // End of DECIMAL fix : get the nulber value
-            $sUnformatedValue = $sValue ? $sValue : '';
-
-            if (strpos((string) $sValue, ".")) {
-                $sValue = str_replace('.', $sSeparator, (string) $sValue);
-            }
-
-            if (trim((string) $aQuestionAttributes['num_value_int_only']) == 1) {
-                $extraclass .= " integeronly";
-                $answertypeclass = " integeronly";
-                $integeronly = 1;
-            } else {
-                $answertypeclass = "";
-                $integeronly = 0;
-            }
-
-            if (!$slider_layout) {
-                $sRows .= doRender('/survey/questions/answer/multiplenumeric/rows/input/answer_row', array(
-                    'qid'                    => $ia[0],
-                    'extraclass'             => $extraclass,
-                    'answertypeclass'        => $answertypeclass,
-                    'sDisplayStyle'          => $sDisplayStyle,
-                    'kpclass'                => $kpclass,
-                    'alert'                  => $alert,
-                    'theanswer'              => $theanswer,
-                    'labelname'              => 'answer' . $myfname,
-                    'prefixclass'            => $prefixclass,
-                    'prefix'                 => $prefix,
-                    'suffix'                 => $suffix,
-                    'sInputContainerWidth'   => $sInputContainerWidth,
-                    'sLabelWidth'            => $sLabelWidth,
-                    'inputsize'              => $inputsize,
-                    'myfname'                => $myfname,
-                    'dispVal'                => $sValue,
-                    'maxlength'              => $maxlength,
-                    'labelText'              => $labelText,
-                    'integeronly' => $integeronly,
-                    ), true);
-            } else {
-                $sRows .= doRender('/survey/questions/answer/multiplenumeric/rows/sliders/answer_row', array(
-                    'qid'                    => $ia[0],
-                    'basename'               => $ia[1],
-                    'extraclass'             => $extraclass,
-                    'sDisplayStyle'          => $sDisplayStyle,
-                    'kpclass'                => $kpclass,
-                    'alert'                  => $alert,
-                    'theanswer'              => $theanswer,
-                    'labelname'              => 'answer' . $myfname,
-                    'prefixclass'            => $prefixclass,
-                    'sliders'                => $sliders,
-                    'sliderleft'             => $sliderleft,
-                    'sliderright'            => $sliderright,
-                    'prefix'                 => $prefix,
-                    'suffix'                 => $suffix,
-                    'sInputContainerWidth'   => $sInputContainerWidth,
-                    'sLabelWidth'            => $sLabelWidth,
-                    'sliderWidth'            => $sliderWidth,
-                    'inputsize'              => $inputsize,
-                    'myfname'                => $myfname,
-                    'dispVal'                => $sValue,
-                    'maxlength'              => $maxlength,
-                    'labelText'              => $labelText,
-                    'slider_orientation'     => $slider_orientation,
-                    'slider_value'           => $slider_position !== '' ?  $slider_position : $sUnformatedValue,
-                    'slider_step'            => $slider_step,
-                    'slider_min'             => $slider_min,
-                    'slider_mintext'         => $slider_mintext,
-                    'slider_max'             => $slider_max,
-                    'slider_maxtext'         => $slider_maxtext,
-                    'slider_position'        => $slider_position,
-                    'slider_reset_set'       => $slider_default_set,
-                    'slider_handle'          => $slider_handle ?? '',
-                    'slider_reset'           => $slider_reset,
-                    'slider_reversed'        => $slider_reversed,
-                    'slider_custom_handle'   => $slider_custom_handle,
-                    'slider_showminmax'      => $aQuestionAttributes['slider_showminmax'],
-                    'sSeparator'             => $sSeparator,
-                    'sUnformatedValue'       => $sUnformatedValue,
-                    'integeronly' => $integeronly,
-                    ), true);
-            }
-            $fn++;
-            $inputnames[] = $myfname;
-        }
-        $displaytotal     = false;
-        $equals_num_value = false;
-
-        if (
-            trim((string) $aQuestionAttributes['equals_num_value']) != ''
-            || trim((string) $aQuestionAttributes['min_num_value']) != ''
-            || trim((string) $aQuestionAttributes['max_num_value']) != ''
-        ) {
-            $qinfo = LimeExpressionManager::GetQuestionStatus($ia[0]);
-
-            if (trim((string) $aQuestionAttributes['equals_num_value']) != '') {
-                $equals_num_value = true;
-            }
-            $displaytotal = true;
-        }
-
-        // TODO: Slider and multiple-numeric input should really be two different question types
-        $templateFile = $sliders ? 'answer' : 'answer_input';
-        $answer = doRender('/survey/questions/answer/multiplenumeric/' . $templateFile, array(
-            'sRows'            => $sRows,
-            'coreClass'        => $coreClass,
-            'prefixclass'      => $prefixclass,
-            'equals_num_value' => $equals_num_value,
-            'id'               => $ia[0],
-            'basename'         => $ia[1],
-            'suffix'           => $suffix,
-            'sumRemainingEqn'  => (isset($qinfo)) ? $qinfo['sumRemainingEqn'] : '',
-            'displaytotal'     => $displaytotal,
-            'sumEqn'           => (isset($qinfo)) ? $qinfo['sumEqn'] : '',
-            'prefix'           => $prefix, // Need to know this to place sum/remaining correctly
-            'sInputContainerWidth'   => $sInputContainerWidth,
-            'sLabelWidth'            => $sLabelWidth,
-            ), true);
-    }
-
-    if ($aQuestionAttributes['slider_layout'] == 1) {
-        /* Add some data for javascript */
-        $sliderTranslation = array(
-            'help' => gT('Please click and drag the slider handles to enter your answer.')
-        );
-        App()->getClientScript()->registerScript("sliderTranslation", "var sliderTranslation=" . json_encode($sliderTranslation) . ";\n", CClientScript::POS_BEGIN);
-        App()->getClientScript()->registerPackage("question-numeric-slider");
     }
 
     return array($answer, $inputnames);
@@ -4296,40 +3962,33 @@ function do_array_multiflexi($ia)
     $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
 
     // Define min and max value
+    $minvalue = 1;
+    $maxvalue = 10;
     if (trim((string) $aQuestionAttributes['multiflexible_max']) != '' && trim((string) $aQuestionAttributes['multiflexible_min']) == '') {
-        $maxvalue    = $aQuestionAttributes['multiflexible_max'];
-        $minvalue    = 1;
-        $extraclass .= " maxvalue maxvalue-" . trim((string) $aQuestionAttributes['multiflexible_max']); // @todo : move to data
+        $maxvalue = $aQuestionAttributes['multiflexible_max'];
+        $minvalue = 1;
     }
-
     if (trim((string) $aQuestionAttributes['multiflexible_min']) != '' && trim((string) $aQuestionAttributes['multiflexible_max']) == '') {
-        $minvalue    = $aQuestionAttributes['multiflexible_min'];
-        $maxvalue    = $aQuestionAttributes['multiflexible_min'] + 10;
-        $extraclass .= " minvalue minvalue-" . trim((string) $aQuestionAttributes['multiflexible_max']); // @todo : move to data
+        $minvalue = $aQuestionAttributes['multiflexible_min'];
+        $maxvalue = $aQuestionAttributes['multiflexible_min'] + 10;
     }
-
-    if (trim((string) $aQuestionAttributes['multiflexible_min']) == '' && trim((string) $aQuestionAttributes['multiflexible_max']) == '') {
-        $maxvalue   = 10;
-        $minvalue   = (isset($minvalue['value']) && $minvalue['value'] == 0) ? 0 : 1;
-    }
-
     if (trim((string) $aQuestionAttributes['multiflexible_min']) != '' && trim((string) $aQuestionAttributes['multiflexible_max']) != '') {
         if ($aQuestionAttributes['multiflexible_min'] < $aQuestionAttributes['multiflexible_max']) {
-            $minvalue   = $aQuestionAttributes['multiflexible_min'];
-            $maxvalue   = $aQuestionAttributes['multiflexible_max'];
+            $minvalue = $aQuestionAttributes['multiflexible_min'];
+            $maxvalue = $aQuestionAttributes['multiflexible_max'];
         }
     }
 
     $stepvalue = (trim((string) $aQuestionAttributes['multiflexible_step']) != '' && $aQuestionAttributes['multiflexible_step'] > 0) ? $aQuestionAttributes['multiflexible_step'] : 1;
 
     if ($aQuestionAttributes['reverse'] == 1) {
-        $tmp        = $minvalue;
-        $minvalue   = $maxvalue;
-        $maxvalue   = $tmp;
-        $reverse    = true;
-        $stepvalue  = -$stepvalue;
+        $tmp = $minvalue;
+        $minvalue = $maxvalue;
+        $maxvalue = $tmp;
+        $reverse = true;
+        $stepvalue = -$stepvalue;
     } else {
-        $reverse    = false;
+        $reverse = false;
     }
 
     $checkboxlayout = false;
@@ -4540,7 +4199,6 @@ function do_array_multiflexi($ia)
                         'stepvalue'                 => $stepvalue,
                         'extraclass'                => $extraclass,
                         'myfname2'                  => $myfname2,
-                        'error'                     => $error,
                         'inputboxlayout'            => $inputboxlayout,
                         'checkconditionFunction'    => $checkconditionFunction,
                         'minvalue'                  => $minvalue,
@@ -4736,7 +4394,12 @@ function do_arraycolumns($ia)
             $aData['checkconditionFunction'] = $checkconditionFunction;
 
             // TODO: What is this? What is happening here?
-            foreach ($labels as $ansrow) {
+            foreach ($labels as $labelIdx => $ansrow) {
+
+                // create the html ids for the table rows, which are
+                // the answer options for this question type
+                $aData['labels'][$labelIdx]['myfname'] = $ia[1] . $ansrow['code'];
+
                 // AnswerCode
                 foreach ($anscode as $j => $ld) {
                     $myfname = $ia[1] . $ld;

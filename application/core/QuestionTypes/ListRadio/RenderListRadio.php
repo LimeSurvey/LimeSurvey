@@ -115,7 +115,6 @@ class RenderListRadio extends QuestionBaseRenderer
             // Insert row
             $sRows .= $sRow;
         }
-
         return $sRows;
     }
 

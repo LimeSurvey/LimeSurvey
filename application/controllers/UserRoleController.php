@@ -50,16 +50,14 @@ class UserRoleController extends LSBaseController
         }
 
         $aData['topbar']['title'] = gT('User roles');
+        $aData['topbar']['backLink'] = App()->createUrl('admin/index');
+
         $aData['topbar']['middleButtons'] = $this->renderPartial(
             'partials/topbarBtns/leftSideButtons',
             [],
             true
         );
-        $aData['topbar']['rightButtons'] = $this->renderPartial(
-            'partials/topbarBtns/rightSideButtons',
-            [],
-            true
-        );
+
 
         //this is really important, so we have the aData also before rendering the content
         $this->aData = $aData;
@@ -242,6 +240,10 @@ class UserRoleController extends LSBaseController
      */
     public function actionRunExport($ptid)
     {
+        if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
+            Yii::app()->session['flashmessage'] = gT('You have no access to the role management!');
+            $this->redirect(['/admin']);
+        }
         $oModel = $this->loadModel($ptid);
         $oXML = $oModel->compileExportXML();
         $filename = preg_replace("/[^a-zA-Z0-9-_]*/", '', (string) $oModel->name);
@@ -304,6 +306,9 @@ class UserRoleController extends LSBaseController
      */
     public function actionImportXML()
     {
+        if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
+        }
         $sRandomFileName = randomChars(20);
         $sFilePath = Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $sRandomFileName;
         $aPathinfo = pathinfo((string) $_FILES['the_file']['name']);

@@ -70,7 +70,7 @@
                 <plus-circle>Plus in circle</plus-circle>
                 <chevron-down>Chevron down</chevron-down>
                 <user-plus>Add user</user-plus>
-                <arrow-down>Arrwo down</arrow-down>
+                <arrow-down>Arrow down</arrow-down>
             </options>
             <default>plus</default>
             <help>The icon used on the "add row"-button </help>

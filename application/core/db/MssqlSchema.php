@@ -84,14 +84,4 @@ class MssqlSchema extends CMssqlSchema
             implode(', ', $columns)
         );
     }
-
-    /**
-    * @inheritdoc
-    * replace by own to fix new MSSQL issue
-    * @see https://github.com/yiisoft/yii2/blob/364e907875fd57ee218085cca796ac5d1c3c8d51/framework/db/mssql/QueryBuilder.php#L73
-    */
-    protected function createCommandBuilder()
-    {
-        return new MssqlCommandBuilder($this);
-    }
 }

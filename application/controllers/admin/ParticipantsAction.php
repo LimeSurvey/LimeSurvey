@@ -14,6 +14,7 @@
 */
 
 use ls\ajax\AjaxHelper;
+use LimeSurvey\Exceptions\CPDBException;
 
 /**
  * @param array $a
@@ -1310,6 +1311,13 @@ class ParticipantsAction extends SurveyCommonAction
      */
     public function storeBlacklistValues()
     {
+        $this->requirePostRequest();
+
+        if (!Permission::model()->hasGlobalPermission('settings', 'update')) {
+            Yii::app()->setFlashMessage(gT('Access denied!'), 'error');
+            Yii::app()->getController()->redirect(array('admin/participants/sa/blacklistControl'));
+        }
+
         $values = array('blacklistallsurveys', 'blacklistnewsurveys', 'blockaddingtosurveys', 'hideblacklisted', 'deleteblacklisted', 'allowunblacklist');
         foreach ($values as $value) {
             if (SettingGlobal::model()->findByPk($value)) {
@@ -1360,6 +1368,8 @@ class ParticipantsAction extends SurveyCommonAction
      */
     public function attributeControl()
     {
+        $this->checkPermission('read');
+
         $title = gT("Attribute management");
         $model = new ParticipantAttributeName();
         if (Yii::app()->request->getParam('ParticipantAttributeName')) {
@@ -2373,7 +2383,7 @@ class ParticipantsAction extends SurveyCommonAction
      * @param int $shareUid
      * @return void
      */
-    public function deleteSingleParticipantShare($participantId, $shareUid)
+    public function deleteSingleParticipantShare($participantId = null, $shareUid = null)
     {
         $this->requirePostRequest();
 
@@ -2770,6 +2780,8 @@ class ParticipantsAction extends SurveyCommonAction
     private function getTopBarComponents($title, $ownsAddParticipantsButton, $ownsAddAttributeButton)
     {
         $topBarConf['title'] = $title;
+        $topBarConf['backLink'] = App()->createUrl('admin/index');
+
         $topBarConf['middleButtons'] = Yii::app()->getController()->renderPartial(
             '/admin/participants/partial/topbarBtns/leftSideButtons',
             [

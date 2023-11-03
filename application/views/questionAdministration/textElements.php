@@ -140,7 +140,8 @@
                         ]
                     ); ?>
                     <p class="alert well">
-                        <?= gT("This optional script field will be wrapped, so that the script is correctly executed after the question is on the screen. If you do not have the correct permissions, this will be ignored"); ?>
+                        <?= gT("This optional script field will be wrapped, so that the script is correctly executed after the question is displayed."); ?>
+                        <?= !App()->user->isScriptUpdateAllowed() ? gT("You do not have sufficient permissions to update the script.") : ""; ?>
                     </p>
                 </div>
             </div>

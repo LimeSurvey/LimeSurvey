@@ -25,8 +25,8 @@ foreach ($aTemplateConfiguration['imageFileList'] as $image) {
 
     $backgroundImageFile .= '</optgroup>';
     if (isset($oParentOptions['backgroundimagefile']) && $oParentOptions['backgroundimagefile'] == $image['filepath']) {
-        $backgroundfileInheritPreview  = $backgroundimagefileInheritPreview . $image['preview'];
-        $backgroundfileInheritFilename = $backgroundimagefileInheritFilename . $image['filename'];
+        $backgroundfileInheritPreview  = $backgroundfileInheritPreview . $image['preview'];
+        $backgroundfileInheritFilename = $backgroundfileInheritFilename . $image['filename'];
     }
     $backgroundImageFile .= '<option data-lightbox-src="' . $image['preview'] . '" value="' . $image['filepath'] . '">' . $image['filename'] . '</option>';
 }
@@ -135,7 +135,7 @@ foreach ($aOptionAttributes['categories'] as $key => $category) { ?>
                             $sParentLabelOption = $options[$sParentOption];
                             $options['inherit'] = gT($sParentLabelOption) . " ᴵ";
                         } else {
-                            $sParentOption = $sParentOption !== '' ? gT($sParentOption) : $sParentOption;
+                            $sParentOption = ! empty($options[$sParentOption]) ? gT($options[$sParentOption]) : '';
                             $options['inherit'] = $sParentOption . " ᴵ";
                         }
                     }

@@ -120,12 +120,8 @@ class SurveyDynamic extends LSActiveRecord
             $record->$k = $v;
         }
 
-        try {
-            $record->encryptSave();
-            return $record->id;
-        } catch (Exception $e) {
-            return false;
-        }
+        $res = $record->encryptSave();
+        return $res ? $record->id : $res;
     }
 
     /**
@@ -296,6 +292,18 @@ class SurveyDynamic extends LSActiveRecord
             ),
         ];
         $dropdownItems[] = [
+            'title'            => gT('View response details as queXML PDF'),
+            'iconClass'        => 'ri-file-pdf-line',
+            'url'              => App()->createUrl(
+                "responses/viewquexmlpdf",
+                [
+                    "surveyId" => self::$sid,
+                    "id" => $this->id,
+                    "browseLang" => $sBrowseLanguage
+                ]
+            ),
+        ];
+        $dropdownItems[] = [
             'title'            => gT('Edit this response'),
             'iconClass'        => 'ri-pencil-fill text-success',
             'url'              => App()->createUrl(
@@ -397,9 +405,15 @@ class SurveyDynamic extends LSActiveRecord
             for ($iFileIndex = 0; $iFileIndex < $aQuestionAttributes['max_num_of_files']; $iFileIndex++) {
                 $sSurveyEntry .= '<tr>';
                 if (isset($aFilesInfo[$iFileIndex])) {
-                    $sSurveyEntry .= '<td>' . CHtml::link(CHtml::encode(rawurldecode((string) $aFilesInfo[$iFileIndex]['name'])), App()->createUrl("responses/downloadfile", ["surveyId" => self::$sid, "responseId" => $this->id, "qid" => $oFieldMap->qid, "index" => $iFileIndex])) . '</td>';
-                    $sSurveyEntry .= '<td>' . sprintf('%s Mb', round($aFilesInfo[$iFileIndex]['size'] / 1000, 2)) . '</td>';
-
+                    $url = App()->createUrl("responses/downloadfile", ["surveyId" => self::$sid, "responseId" => $this->id, "qid" => $oFieldMap->qid, "index" => $iFileIndex]);
+                    $filename = CHtml::encode(rawurldecode($aFilesInfo[$iFileIndex]['name']));
+                    $size = "";
+                    if ($aFilesInfo[$iFileIndex]['size'] && strval(floatval($aFilesInfo[$iFileIndex]['size'])) == strval($aFilesInfo[$iFileIndex]['size'])) {
+                        // avoid to throw PHP error if size is invalid
+                        $size = sprintf('%s Mb', round($aFilesInfo[$iFileIndex]['size'] / 1000, 2));
+                    }
+                    $sSurveyEntry .= '<td>' . CHtml::link($filename, $url) . '</td>';
+                    $sSurveyEntry .= '<td>' . $size . '</td>';
                     if ($aQuestionAttributes['show_title']) {
                         if (!isset($aFilesInfo[$iFileIndex]['title'])) {
                             $aFilesInfo[$iFileIndex]['title'] = '';
@@ -648,7 +662,7 @@ class SurveyDynamic extends LSActiveRecord
     {
 
         $pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
-        $criteria = new CDbCriteria();
+        $criteria = new LSDbCriteria();
         $sort     = new CSort();
         $sort->defaultOrder = 'id ASC';
 
@@ -784,7 +798,7 @@ class SurveyDynamic extends LSActiveRecord
 
         if (
             !(LimeExpressionManager::QuestionIsRelevant($oQuestion->qid) && $bHonorConditions == true)
-            || $attributes['hidden'] === 1
+            || (is_array($attributes) && $attributes['hidden'] === 1)
         ) {
             return false;
         }
@@ -918,7 +932,7 @@ class SurveyDynamic extends LSActiveRecord
             $aQuestionAttributes['fileinfo'] = json_decode((string) $aQuestionAttributes['answervalue'], true);
         }
 
-        if ($oQuestion->parent_qid != 0 && $oQuestion->parent['type'] === "1") {
+        if ($oQuestion->parent_qid != 0 && isset($oQuestion->parent['type']) && $oQuestion->parent['type'] === "1") {
             $aAnswers = (
                 $oQuestion->parent != null
                 ? $oQuestion->parent->answers
@@ -972,7 +986,7 @@ class SurveyDynamic extends LSActiveRecord
         }
 
         /* Second (X) scale for array text and array number */
-        if ($oQuestion->parent_qid != 0 && in_array($oQuestion->parent['type'], [";", ":"])) {
+        if ($oQuestion->parent_qid != 0 && isset($oQuestion->parent['type']) && in_array($oQuestion->parent['type'], [";", ":"])) {
             $oScaleXSubquestions = Question::model()->with('questionl10ns')->findAll(array(
                 'condition' => "parent_qid = :parent_qid and scale_id = :scale_id",
                 'order' => "question_order ASC",
@@ -986,7 +1000,7 @@ class SurveyDynamic extends LSActiveRecord
             }
         }
 
-        if ($oQuestion->type == 'N' || ($oQuestion->parent_qid != 0 && $oQuestion->parent['type'] === "K")) {
+        if ($oQuestion->type == 'N' || ($oQuestion->parent_qid != 0 && isset($oQuestion->parent['type']) && $oQuestion->parent['type'] === "K")) {
             if (strpos((string) $aQuestionAttributes['answervalue'], ".") !== false) { // Remove last 0 and last . ALWAYS (see \SurveyObj\getShortAnswer)
                 $aQuestionAttributes['answervalue'] = rtrim(rtrim((string) $aQuestionAttributes['answervalue'], "0"), ".");
             }
@@ -1001,12 +1015,31 @@ class SurveyDynamic extends LSActiveRecord
         return $aQuestionAttributes;
     }
 
+    /**
+     * Decrypts all encrypted response values for output (e.g. printanswers, detailed admin info)
+     *
+     * @return void
+     */
+    public function decryptBeforeOutput()
+    {
+        //get response values which are encrypted
+        $encryptedAttr = Response::getEncryptedAttributes($this->getSurveyId());
+        $attributes = $this->attributes;
+        $sodium = Yii::app()->sodium;
+        foreach ($encryptedAttr as $key) {
+            $this->setAttribute($key, $sodium->decrypt($attributes[$key]));
+        }
+    }
+
     public function getPrintAnswersArray($sSRID, $sLanguage, $bHonorConditions = false)
     {
 
         $oSurvey = self::$survey;
         $aGroupArray = array();
+
         $oResponses = SurveyDynamic::model($oSurvey->sid)->findByAttributes(array('id' => $sSRID));
+        $oResponses->decryptBeforeOutput();
+
         $oGroupList = $oSurvey->groups;
 
         foreach ($oGroupList as $oGroup) {
