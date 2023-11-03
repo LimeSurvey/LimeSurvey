@@ -68,7 +68,9 @@ var ThemeOptions = function () {
             }
 
             optionObject[$(item).attr('name')] = $(item).val();
+        });
 
+        globalForm.find('.selector_image_selector').each(function (i, item) {
             // disable the preview image button if the image
             // selected could not be mapped to one of the images
             // that actually exists within the theme
