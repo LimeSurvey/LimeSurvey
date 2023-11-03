@@ -4166,7 +4166,7 @@ class LimeExpressionManager
 
     /**
      * Translate all Expressions, Macros, registered variables, etc. in $string for current step
-     * @param string $string - the string to be replaced
+     * @param string|null $string - the string to be replaced
      * @param array $replacementFields - optional replacement values
      * @param integer $numRecursionLevels - the number of times to recursively subtitute values in this string
      * @param boolean $static - return static string (without any javascript)
@@ -4174,6 +4174,9 @@ class LimeExpressionManager
      */
     public static function ProcessStepString($string, $replacementFields = [], $numRecursionLevels = 3, $static = false)
     {
+        if (empty($string)) {
+            return strval($string);
+        }
         if ((strpos($string, "{") === false)) {
             return $string;
         }
