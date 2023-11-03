@@ -1940,11 +1940,11 @@ class DataEntry extends SurveyCommonAction
                             safeDie("Unable to insert record into saved_control table.<br /><br />");
                         }
                     }
-                $aData['thisid'] = $last_db_id;
+                    $aData['thisid'] = $last_db_id;
                 } else {
                     $errormsg .= Chtml::errorSummary($new_response);
                 }
-           }
+            }
 
             $aData['errormsg'] = $errormsg;
             $aData['dataentrymsgs'] = $aDataentrymsgs;
