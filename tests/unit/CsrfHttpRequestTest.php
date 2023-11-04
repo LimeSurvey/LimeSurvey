@@ -43,6 +43,7 @@ class CsrfHttpRequestTest extends TestBaseClass
         $routes = array(
             'admin/remotecontrol/actionOnItemById/15',
             'admin/remotecontrol/action',
+            '/admin/remotecontrol',
         );
 
         foreach ($routes as $route) {
