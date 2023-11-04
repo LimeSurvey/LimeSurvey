@@ -41,8 +41,8 @@ class CsrfHttpRequestTest extends TestBaseClass
     public function testRemoteControlRoutesSkipCsrfValidation()
     {
         $routes = array(
-            'remotecontrol/actionOnItemById/15',
-            'remotecontrol/action',
+            'admin/remotecontrol/actionOnItemById/15',
+            'admin/remotecontrol/action',
         );
 
         foreach ($routes as $route) {
