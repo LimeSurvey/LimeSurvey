@@ -1076,7 +1076,7 @@ class UserManagementController extends LSBaseController
             $userManager = new UserManager(Yii::app()->user, $oUser);
             if (!$userManager->canAssignPermissions()) {
                 $results[$iUserId]['result'] = false;
-                $results[$iUserId]['error'] = gT("You do not have permission to this user.");
+                $results[$iUserId]['error'] = gT("You are not allowed to assign permissions to this user.");
                 continue;
             }
             $aPermissionsResults = $this->applyPermissionFromArray($iUserId, $aPermissions);
