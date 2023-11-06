@@ -72,7 +72,7 @@ class OpHandlerAnswerDelete implements OpHandlerInterface
      */
     public function isValidPatch(OpInterface $op): bool
     {
-        // TODO: Implement isValidPatch() method.
-        return true;
+        //this is not tested in canHandle
+        return ((int)$op->getEntityId()) > 0;
     }
 }
