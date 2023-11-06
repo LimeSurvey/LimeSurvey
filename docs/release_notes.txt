@@ -34,6 +34,9 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.3.3 (build 231106) to 6.3.4 (build 231108) November 6, 2023
+Fixed issue: Reverted noCSRFValidation enhancements, added on #19139
+
 Changes from 6.3.2 (build 231031) to 6.3.3 (build 231106) November 6, 2023
 -Fixed issue: Cannot deactivate survey properly if user has global survey permissions, but is not allowed to access the assigned SurveyGroup (Carsten Schmitz)
 -Fixed issue #19203: Alphabetical order didn't respect survey language (#3590) (Denis Chenu)
