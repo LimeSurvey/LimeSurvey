@@ -28,6 +28,8 @@ class TransformerInputQuestion extends Transformer
             'scaleId' => ['key' => 'scale_id', 'type' => 'int'],
             'sameDefault' => ['key' => 'same_default', 'formatter' => $formatterYn],
             'questionThemeName' => 'question_theme_name',
+            'saveAsDefault' => 'save_as_default',
+            'clearDefault' => 'clear_default',
             'moduleName' => 'modulename',
             'gid' => ['type' => 'int'],
             'relevance' => true,

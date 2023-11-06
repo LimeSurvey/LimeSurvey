@@ -76,12 +76,12 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
      *                     "qid": "0",
      *                     "title": "G01Q06",
      *                     "type": "1",
-     *                     "question_theme_name": "arrays\/dualscale",
+     *                     "questionThemeName": "arrays\/dualscale",
      *                     "gid": "1",
      *                     "mandatory": false,
      *                     "relevance": "1",
      *                     "encrypted": false,
-     *                     "save_as_default": false,
+     *                     "saveAsDefault": false,
      *                     "tempId": "XXX321"
      *                 },
      *                 "questionL10n": {
