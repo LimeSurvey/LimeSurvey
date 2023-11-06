@@ -34,6 +34,55 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.3.2 (build 231031) to 6.3.3 (build 231106) November 6, 2023
+-Fixed issue: Cannot deactivate survey properly if user has global survey permissions, but is not allowed to access the assigned SurveyGroup (Carsten Schmitz)
+-Fixed issue #19203: Alphabetical order didn't respect survey language (#3590) (Denis Chenu)
+-Fixed issue #19139: [security] CSRF in Reset Survey menus (#3588) (Gabriel Jenik)
+-Fixed issue #19133: [security] User can send email to group members, while not having permissions (#3587) (Denis Chenu)
+-Fixed issue #19117: [security] Account past their expiration date can be still active (#3525) (Denis Chenu)
+#Updated translation: Slovak by jelen1
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Korean by modernity4r
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
+Changes from 6.3.1 (build 231023) to 6.3.2 (build 231031) October 30, 2023
+-Fixed issue updates/Update_614.php should not hide privacyinfo option exists (Kevin Foster)
+-Fixed issue updates/Update_614.php should not assume template config options is an object (Kevin Foster)
+-Fixed issue statistics fails to count multi choice when encrypted (Kevin Foster)
+-Fixed issue #19188: CSS problems in survey permissions after reload (#3569) (Matthew)
+-Fixed issue #19183: No editing possible after setting the survey background (#3560) (Matthew)
+-Fixed issue #19181: Array[Number] statistics infinite loop when step is set to 0 (#3563) (Matthew)
+-Fixed issue #19177: Not able to change admin theme (#3548) (Matthew)
+-Fixed issue #19169: [security] Privilege escalation to edit survey (#3547) (Denis Chenu)
+-Fixed issue #19163: [security] Reflected XSS in HtmlEditorPop - Bypassing XSS sanitization function (#3565) (Gabriel Jenik)
+-Fixed issue #19161: Invalid adminemail/bounce_email address in lss results in white screen on import (#3556) (Gabriel Jenik)
+-Fixed issue #19140: Problem with viewing LimeSurvey notifications (#3523) (Matthew)
+-Fixed issue #19132: Icon selection in the "Dashboard editor/create box" does not work (#3515) (Matthew)
+-Fixed issue #19107: [security] Superadmin can update any admin's information (#3495) (Denis Chenu)
+-Fixed issue #19101: Array by Column Has Incorrect Table Row/Column Ids (#3500) (Matthew)
+-Fixed issue #19093: [security] Improper Authorization in Import Question function (#3513) (Gabriel Jenik)
+-Fixed issue #19085: Theme Options with an on/off switch are not disabled when page loads (#3558) (Matthew)
+-Fixed issue #19057: incorrect handling of wrong input in create dummy participant form (#3567) (Matthew)
+-Fixed issue #18436: RPC API - Inviting members with invalid language sends them an email but they're not marked as invited (#3571) (Denis Chenu)
+#Updated translation: Turkish by kayazeren
+#Updated translation: Slovak by jelen1
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 6.3.0 (build 231016) to 6.3.1 (build 231023) October 23, 2023
 -Fixed issue: Failed emails resend vars column needs to be mediumtext for mysql (#3545) (Tim Willig)
 -Fixed issue: Adding cldr "fr_lu" for lb language (twilligls)
