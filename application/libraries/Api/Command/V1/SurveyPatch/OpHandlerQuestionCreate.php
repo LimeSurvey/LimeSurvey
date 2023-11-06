@@ -205,23 +205,12 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
     {
         $transformedProps = $this->prepareData($op);
         if (
-            is_array($transformedProps) &&
+            !is_array($transformedProps) ||
             array_key_exists(
                 'question',
                 $transformedProps
             )
         ) {
-            $tempId = $this->extractTempId($transformedProps['question']);
-            $diContainer = \LimeSurvey\DI::getContainer();
-            $questionService = $diContainer->get(
-                QuestionAggregateService::class
-            );
-
-            $question = $questionService->save(
-                $this->getSurveyIdFromContext($op),
-                $transformedProps
-            );
-        } else {
             throw new OpHandlerException(
                 sprintf(
                     'no question entity provided within props for %s with id "%s"',
@@ -230,6 +219,16 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
                 )
             );
         }
+        $tempId = $this->extractTempId($transformedProps['question']);
+        $diContainer = \LimeSurvey\DI::getContainer();
+        $questionService = $diContainer->get(
+            QuestionAggregateService::class
+        );
+
+        $question = $questionService->save(
+            $this->getSurveyIdFromContext($op),
+            $transformedProps
+        );
 
         return [
             'questionsMap' => [
