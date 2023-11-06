@@ -236,7 +236,7 @@ class SurveyInheritanceMechanismTest extends TestBaseClass
         $survey->template = 'inherit';
         $survey->usecookie = 'I';
         $survey->allowsave = 'I';
-        $survey->bShowRealOptionValues = false;
+        $survey->bShowRealOptionValues = true;
 
         $survey->setOptions((int)self::$surveysGroup->gsid);
 
@@ -281,7 +281,7 @@ class SurveyInheritanceMechanismTest extends TestBaseClass
         $survey->template = 'inherit';
         $survey->usecookie = 'I';
         $survey->allowsave = 'I';
-        $survey->bShowRealOptionValues = false;
+        $survey->bShowRealOptionValues = true;
 
         $survey->setOptions((int)self::$surveysGroup->gsid);
 
