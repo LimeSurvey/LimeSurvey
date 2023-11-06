@@ -34,6 +34,25 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.3.2 (build 231031) to 6.3.3 (build 231106) November 6, 2023
+-Fixed issue: Cannot deactivate survey properly if user has global survey permissions, but is not allowed to access the assigned SurveyGroup (Carsten Schmitz)
+-Fixed issue #19203: Alphabetical order didn't respect survey language (#3590) (Denis Chenu)
+-Fixed issue #19139: [security] CSRF in Reset Survey menus (#3588) (Gabriel Jenik)
+-Fixed issue #19133: [security] User can send email to group members, while not having permissions (#3587) (Denis Chenu)
+-Fixed issue #19117: [security] Account past their expiration date can be still active (#3525) (Denis Chenu)
+#Updated translation: Slovak by jelen1
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Korean by modernity4r
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
 Changes from 6.3.1 (build 231023) to 6.3.2 (build 231031) October 30, 2023
 -Fixed issue updates/Update_614.php should not hide privacyinfo option exists (Kevin Foster)
 -Fixed issue updates/Update_614.php should not assume template config options is an object (Kevin Foster)
