@@ -156,7 +156,7 @@ $internalConfig = array(
             'noCsrfValidationParams' => array(),
             'noCsrfValidationRoutes' => array(
                 'rest',
-                'remotecontrol',
+                'admin/remotecontrol',
                 'plugins/unsecure',
             ),
             'csrfCookie' => array(
