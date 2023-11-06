@@ -34,6 +34,23 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.6.43 (build 231030) to 5.6.44 (build 231107) November 6, 2023
+-Fixed issue: Cannot deactivate survey properly if user has global survey permissions, but is not allowed to access the assigned SurveyGroup (Carsten Schmitz)
+-Fixed issue #19203: Alphabetical order didn't respect survey language (#3581) (Denis Chenu)
+-Fixed issue #19163: [security] Reflected XSS in HtmlEditorPop - Bypassing XSS sanitization function (#3583) (Gabriel Jenik)
+-Fixed issue #19133: [security] User can send email to group members, while not having permissions (#3586) (Denis Chenu)
+#Updated translation: Slovak by jelen1
+#Updated translation: Portuguese (Portugal) by Nathalie-adv, samarta
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Korean by c_schmitz
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
 Changes from 5.6.42 (build 231024) to 5.6.43 (build 231030) October 30, 2023
 -Fixed issue #19183: No editing possible after setting the survey background (#3559) (Matthew)
 -Fixed issue #19173: Encrypted file upload question - delete file results in crash (K Foster)
