@@ -92,7 +92,8 @@ class OpHandlerQuestionGroupL10n implements OpHandlerInterface
      */
     public function isValidPatch(OpInterface $op): bool
     {
-        // TODO: Implement isValidPatch() method.
+        //the function getTransformedLanguageProps checks if the patch is valid
+        //it is already used in the handle() method ...
         return true;
     }
 }

@@ -113,7 +113,7 @@ class OpHandlerQuestionAttributeUpdate implements OpHandlerInterface
      */
     public function isValidPatch(OpInterface $op): bool
     {
-        // TODO: Implement isValidPatch() method.
+        // prepareAdvancedSettings is taking care of validation
         return true;
     }
 }

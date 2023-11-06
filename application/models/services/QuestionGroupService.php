@@ -96,6 +96,7 @@ class QuestionGroupService
 
     /**
      * Checks permissions for updating, and returns a specific question group.
+     * Throws an exception if no group can be found.
      * @param int $surveyId
      * @param int $questionGroupId
      * @return QuestionGroup
