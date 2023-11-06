@@ -102,12 +102,12 @@ class SurveysGroupsettings extends LSActiveRecord
             array('expires, startdate, datecreated, attributedescriptions, emailresponseto, emailnotificationto', 'safe'),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('gsid, owner_id, admin, expires, startdate, adminemail, anonymized, format, 
-			savetimings, template, datestamp, usecookie, allowregister, allowsave, autonumber_start, 
-			autoredirect, allowprev, printanswers, ipaddr, refurl, datecreated, showsurveypolicynotice, 
-			publicstatistics, publicgraphs, listpublic, htmlemail, sendconfirmation, tokenanswerspersistence, 
-			assessments, usecaptcha, bounce_email, attributedescriptions, emailresponseto, emailnotificationto, 
-			tokenlength, showxquestions, showgroupinfo, shownoanswer, showqnumcode, showwelcome, showprogress, 
+            array('gsid, owner_id, admin, expires, startdate, adminemail, anonymized, format,
+			savetimings, template, datestamp, usecookie, allowregister, allowsave, autonumber_start,
+			autoredirect, allowprev, printanswers, ipaddr, refurl, datecreated, showsurveypolicynotice,
+			publicstatistics, publicgraphs, listpublic, htmlemail, sendconfirmation, tokenanswerspersistence,
+			assessments, usecaptcha, bounce_email, attributedescriptions, emailresponseto, emailnotificationto,
+			tokenlength, showxquestions, showgroupinfo, shownoanswer, showqnumcode, showwelcome, showprogress,
 			questionindex, navigationdelay, nokeyboard, alloweditaftercompletion', 'safe', 'on' => 'search'),
         );
     }
@@ -329,7 +329,7 @@ class SurveysGroupsettings extends LSActiveRecord
                 $instance->showInherited = 1;
             }
 
-            // set instance options from survey model, used for frontend redering
+            // set instance options from survey model, used for frontend rendering
             if (($oSurvey !== null && $bRealValues)) {
                 foreach ($instance->optionAttributes as $key => $attribute) {
                     $instance->oOptions->{$attribute} = $oSurvey->$attribute;
@@ -354,6 +354,26 @@ class SurveysGroupsettings extends LSActiveRecord
                     $instance->oOptionLabels->{$attribute} = self::translateOptionLabels($instance, $attribute, $model->$attribute);
                 }
             }
+        }
+
+        // check if the template actually exists and modify it if invalid
+        if (
+            !$instance->shouldInherit('template')
+            && !Template::checkIfTemplateExists($instance->oOptions->template)
+        ) {
+            if ($iSurveyGroupId === 0) {
+                $instance->oOptions->template = App()->getConfig('defaulttheme');
+            } else {
+                $instance->oOptions->template = 'inherit';
+            }
+        }
+
+        // check the global configuration for template inheritance if surveygroup is 0 (global survey) and template set to inherit
+        if (
+            $iSurveyGroupId === 0
+            && $instance->shouldInherit('template')
+        ) {
+            $instance->oOptions->template = App()->getConfig('defaulttheme');
         }
 
         // fetch parent instance only if parent_id exists

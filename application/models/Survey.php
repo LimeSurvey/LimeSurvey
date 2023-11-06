@@ -149,15 +149,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
 {
     use PermissionTrait;
 
-    /**
-     * This is a static cache, it lasts only during the active request. If you ever need
-     * to clear it, like on activation of a survey when in the same request a row is read,
-     * saved and read again you can use resetCache() method.
-     *
-     * @var array $findByPkCache
-     */
-    protected $findByPkCache = array();
-
+    protected static array $findByPkCache = [];
 
     // survey options
     public $oOptions;
@@ -338,10 +330,9 @@ class Survey extends LSActiveRecord implements PermissionInterface
         }
 
         // Remove from cache
-        if (array_key_exists($this->sid, $this->findByPkCache)) {
-            unset($this->findByPkCache[$this->sid]);
+        if (array_key_exists($this->sid, self::$findByPkCache)) {
+            unset(self::$findByPkCache[$this->sid]);
         }
-
         return true;
     }
 
@@ -990,12 +981,12 @@ class Survey extends LSActiveRecord implements PermissionInterface
     {
         /** @var self $model */
         if (empty($condition) && empty($params)) {
-            if (array_key_exists($pk, $this->findByPkCache)) {
-                return $this->findByPkCache[$pk];
+            if (array_key_exists($pk, self::$findByPkCache)) {
+                return self::$findByPkCache[$pk];
             } else {
                 $model = parent::findByPk($pk, $condition, $params);
                 if (!is_null($model)) {
-                    $this->findByPkCache[$pk] = $model;
+                    self::$findByPkCache[$pk] = $model;
                 }
                 return $model;
             }
@@ -1007,9 +998,9 @@ class Survey extends LSActiveRecord implements PermissionInterface
     /**
      * findByPk uses a cache to store a result. Use this method to force clearing that cache.
      */
-    public function resetCache()
+    public function resetCache(): void
     {
-        $this->findByPkCache = array();
+        self::$findByPkCache = [];
     }
 
     /**
