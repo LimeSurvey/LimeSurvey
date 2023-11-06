@@ -52,7 +52,16 @@ class SurveyAdministrationController extends LSBaseController
             ['deny'], //always deny all actions not mentioned above
         ];
     }
-
+    /**
+     * Set filters for all actions
+     * @return string[]
+     */
+    public function filters()
+    {
+        return [
+            'postOnly + copy'
+        ];
+    }
     /**
      * SurveyAdministrationController constructor.
      * @param $id
@@ -2271,7 +2280,7 @@ class SurveyAdministrationController extends LSBaseController
 
         //maybe thing about permission check for copy surveys
         //at the moment dropDown selection shows only surveys for the user he owns himself ...
-        $action = Yii::app()->request->getParam('action');
+        $action = Yii::app()->request->getPost('action');
         $iSurveyID = sanitize_int(Yii::app()->request->getParam('sid'));
         $aData = [];
 
@@ -2308,7 +2317,7 @@ class SurveyAdministrationController extends LSBaseController
                     $aData['bFailed'] = true;
                 }
             } elseif ($action == 'copysurvey') {
-                $iSurveyID = sanitize_int(Yii::app()->request->getParam('copysurveylist'));
+                $iSurveyID = sanitize_int(App()->request->getPost('copysurveylist'));
                 $aExcludes = array();
                 if (Yii::app()->request->getPost('copysurveyexcludequotas') == "1") {
                     $aExcludes['quotas'] = true;
