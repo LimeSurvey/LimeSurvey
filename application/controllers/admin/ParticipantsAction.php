@@ -1061,7 +1061,7 @@ class ParticipantsAction extends SurveyCommonAction
                 }
                 if ($thisduplicate == 1) {
                     $dupfound = true;
-                    $duplicatelist[] = $writearray['firstname'] . " " . $writearray['lastname'] . " (" . $writearray['email'] . ")";
+                    $duplicatelist[] = CHtml::encode($writearray['firstname'] . " " . $writearray['lastname'] . " (" . $writearray['email'] . ")");
                 }
 
                 //Checking the email address is in a valid format
@@ -1073,7 +1073,7 @@ class ParticipantsAction extends SurveyCommonAction
                     $sEmailaddress = $aEmailAddresses[0];
                     if (!validateEmailAddress($sEmailaddress)) {
                         $invalidemail = true;
-                        $invalidemaillist[] = $line[0] . " " . $line[1] . " (" . $line[2] . ")";
+                        $invalidemaillist[] = CHtml::encode($line[0] . " " . $line[1] . " (" . $line[2] . ")");
                     }
                 }
                 if (!$dupfound && !$invalidemail) {
