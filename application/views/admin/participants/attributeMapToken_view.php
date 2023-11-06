@@ -10,22 +10,22 @@
 
 </script>
 
-<div class='header ui-widget-header'>
+<div class='header'>
     <h3 class='pagetitle'><?php eT("Map your survey participant attributes to an existing participant attribute or create a new one"); ?></h3>
 </div>
 
 <div class="draggable-container">
     <div class='row'>
-        <div class='col-sm-4'>
-            <div id="tokenattribute" class="panel panel-primary attribute-column">
-                <div class="panel-heading"><?php eT("Unmapped survey participant attributes") ?></div>
+        <div class='col-md-4'>
+            <div id="tokenattribute" class="card attribute-column">
+                <div class="card-header "><?php eT("Unmapped survey participant attributes") ?></div>
                 <div id="tokenatt" class="tokenatt droppable">
                     <?php
                         if (!empty($tokenattribute))
                         {
                             foreach ($tokenattribute as $key => $value)
                             {
-                                echo "<div id='t_" . $value . "' data-name='" . $key . "' class='panel panel-default token-attribute attribute-item draggable'><div title='".gT("Drag this attribute to another column to map it to the central participants database")."' data-name=\"$key\" class=\"panel-body\">" . $key . "</div></div>";
+                                echo "<div id='t_" . $value . "' data-name='" . $key . "' class='card token-attribute attribute-item draggable'><div title='".gT("Drag this attribute to another column to map it to the central participants database")."' data-name=\"$key\" class=\"card-body\">" . $key . "</div></div>";
                             }
                         }
                     ?>
@@ -34,24 +34,24 @@
             </div>
         </div>
 
-        <div class='col-sm-4'>
-            <div id="newcreated" class="panel panel-primary attribute-column">
-                <div class="panel-heading"><?php eT("Participant attributes to create") ?></div>
-                <div class="panel-body newcreate droppable" style ="height: 40px">
+        <div class='col-md-4'>
+            <div id="newcreated" class="card attribute-column">
+                <div class="card-header "><?php eT("Participant attributes to create") ?></div>
+                <div class="card-body newcreate droppable" style ="height: 40px">
                 </div>
             </div>
         </div>
 
-        <div class='col-sm-4'>
-            <div id="centralattribute" class="panel panel-primary attribute-column">
-                <div class="panel-heading"><?php eT("Existing participant attributes")?></div>
+        <div class='col-md-4'>
+            <div id="centralattribute" class="card attribute-column">
+                <div class="card-header "><?php eT("Existing participant attributes")?></div>
                 <div class="centralatt">
                     <?php
                     if (!empty($attribute))
                     {
                         foreach ($attribute as $key => $value)
                         {
-                            echo "<div class='panel panel-default mappable-attribute-wrapper droppable'><div class=\"panel-body mappable-attribute attribute-item\" id='c_" . $key . "' data-name='c_" . $key . "'>" . $value . "</div></div>";
+                            echo "<div class='card mappable-attribute-wrapper droppable'><div class=\"card-body mappable-attribute attribute-item\" id='c_" . $key . "' data-name='c_" . $key . "'>" . $value . "</div></div>";
                         }
                     }
                     ?>
@@ -94,10 +94,10 @@
             </div>
         </div>
     </div>
-    <div class='form-group col-sm-12 text-center'>
-        <input class='btn btn-default' type="button" name="goback" onclick="history.back();" id="back" value="<?php eT('Back')?>" />
-        <input class='btn btn-default' type='button' name='reset' onClick='window.location.reload();' id='reset' value="<?php eT('Reset') ?>" />
-        <input class='btn btn-default' type="button" name="attmap" id="attmap" value="<?php eT('Continue')?>" />
+    <div class='mb-3 col-12 text-center'>
+        <input class='btn btn-outline-secondary' type="button" name="goback" onclick="history.back();" id="back" value="<?php eT('Back')?>" />
+        <input class='btn btn-outline-secondary' type='button' name='reset' onClick='window.location.reload();' id='reset' value="<?php eT('Reset') ?>" />
+        <input class='btn btn-outline-secondary' type="button" name="attmap" id="attmap" value="<?php eT('Continue')?>" />
    </div>
 
     <?php
@@ -115,13 +115,13 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><?php eT("Map survey participant attributes"); ?></h4>
+                <h5 class="modal-title"><?php eT("Map survey participant attributes"); ?></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal"><?php eT("Close");?></button>
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal"><?php eT("Close");?></button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->

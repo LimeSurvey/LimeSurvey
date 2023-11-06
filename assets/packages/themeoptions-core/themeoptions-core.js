@@ -47,9 +47,13 @@ var ThemeOptions = function () {
 
         if (generalInherit()) {
             $('#general_inherit_on').prop('checked', true).trigger('change').closest('label').addClass('active');
-            $('.action_hide_on_inherit').addClass('hidden');
+            // $('.action_hide_on_inherit').addClass('d-none');
+            $('.tab_action_hide_on_inherit').addClass('ls-tab-disabled');
+
         } else {
             $('#general_inherit_off').prop('checked', true).trigger('change').closest('label').addClass('active');
+            $('.action_hide_on_inherit_wrapper').addClass('d-none');
+            $('.tab_action_hide_on_inherit').removeClass('ls-tab-disabled');
         }
     };
 
@@ -149,7 +153,7 @@ var ThemeOptions = function () {
     //Set value and propagate to bootstrapSwitch
     var setAndPropageteToSwitch = function (item) {
         $(item).prop('checked', true).trigger('change');
-        $(item).closest('label').addClass('active');
+        //$(item).closest('label').addClass('active');
     }
 
 
@@ -182,7 +186,11 @@ var ThemeOptions = function () {
 
     var prepareFontField = function () {
         var currentPackageObject = 'inherit';
-        optionObject.font = optionObject.font || (inheritPossible ? 'inherit' : 'roboto');
+        if ($('body').hasClass('fruity_twentythree')) {
+            optionObject.font = optionObject.font || (inheritPossible ? 'inherit' : 'ibm-sans');
+        } else {
+            optionObject.font = optionObject.font || (inheritPossible ? 'inherit' : 'roboto');
+        }
 
         if (optionObject.font !== 'inherit') {
             $('#simple_edit_options_font').val(optionObject.font);
@@ -192,9 +200,7 @@ var ThemeOptions = function () {
 
     var prepareFruityThemeField = function () {
         var currentThemeObject = 'inherit';
-
-        if ($('#TemplateConfiguration_files_css').val() !== 'inherit') {
-
+        if ($('#TemplateConfiguration_files_css').val() !== 'inherit' && $('body').hasClass('fruity')) {
             currentThemeObject = {
                 "add": ['css/animate.css', 'css/ajaxify.css', 'css/variations/sea_green.css', 'css/theme.css', 'custom.css']
             };
@@ -289,10 +295,15 @@ var ThemeOptions = function () {
         //hotswapping the general inherit
         $('#general_inherit_on').on('change', function (evt) {
             $('#TemplateConfiguration_options').val('inherit');
-            $('.action_hide_on_inherit').addClass('hidden');
+            $('.action_hide_on_inherit_wrapper').removeClass('d-none');
+            $('.tab_action_hide_on_inherit').addClass('ls-tab-disabled');
+
+
         });
         $('#general_inherit_off').on('change', function (evt) {
-            $('.action_hide_on_inherit').removeClass('hidden');
+            $('.action_hide_on_inherit_wrapper').addClass('d-none');
+            $('.tab_action_hide_on_inherit').removeClass('ls-tab-disabled');
+
             updateFieldSettings();
         });
     };
@@ -403,14 +414,15 @@ var ThemeOptions = function () {
         if (action == 'replace') {
             currentValue[action].push(["css/bootstrap.css", file]);
         } else {
-            currentValue[action].push(file);
+            currentValue[action].unshift(file);
         }
         $(fieldSelector).val(JSON.stringify(currentValue));
     }
 
     var hotswapTheme = function () {
         $('#simple_edit_options_cssframework').on('change', function (evt) {
-            var selectedTheme = $('#simple_edit_options_cssframework').val();
+            var newThemeDataValue = $('option:selected', this).attr('data-value') || false;
+            var selectedTheme = newThemeDataValue || $('#simple_edit_options_cssframework').val();
             var selectedThemeMode = $('#simple_edit_options_cssframework').find("option[value='"+selectedTheme+"']").attr('data-mode') || 'add';
 
             var filesField = selectedThemeMode == 'add' ? '#TemplateConfiguration_files_css' : '#TemplateConfiguration_cssframework_css';
@@ -486,9 +498,6 @@ var prepare = function () {
 
     var deferred = $.Deferred();
 
-    //activate the bootstrap switch for checkboxes
-    $('.action_activate_bootstrapswitch').bootstrapSwitch();
-
     var themeOptionStarter = new ThemeOptions();
     themeOptionStarter();
 
@@ -507,8 +516,8 @@ $(function () {
 
     $('.selector__open_lightbox').on('click', function (e) {
         e.preventDefault();
-        var imgSrc = $($(this).data('target')).find('option:selected').data('lightbox-src');
-        var imgTitle = $($(this).data('target')).val();
+        var imgSrc = $($(this).data('bs-target')).find('option:selected').data('lightbox-src');
+        var imgTitle = $($(this).data('bs-target')).val();
         imgTitle = imgTitle.split('/').pop();
         $('#lightbox-modal').find('.selector__title').text(imgTitle);
         $('#lightbox-modal').find('.selector__image').attr({

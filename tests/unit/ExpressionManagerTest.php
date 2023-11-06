@@ -54,7 +54,8 @@ class ExpressionManagerTest extends TestBaseClass
             'abs(-8.0)' => 8,
             'abs("-7.3")' => 7.3,
             'abs("3")' => 3,
-            'abs("-90")' => 90
+            'abs("-90")' => 90,
+            'abs("string")' => false
         );
 
         foreach ($functions as $function => $expected) {

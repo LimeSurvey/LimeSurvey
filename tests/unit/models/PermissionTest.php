@@ -6,42 +6,14 @@ use Permission;
 use SurveysGroups;
 use PHPUnit\Framework\TestCase;
 
-class PermissionTest extends TestBaseClass
+class PermissionTest extends BaseModelTestCase
 {
     protected $modelClassName = Permission::class;
-    private static $user;
 
     public static function setupBeforeClass(): void
     {
         \Yii::import('application.helpers.common_helper', true);
         \Yii::import('application.helpers.globalsettings_helper', true);
-
-        // Create user
-        $userName = \Yii::app()->securityManager->generateRandomString(8);
-        $password = createPassword();
-
-        $userData = array(
-            'users_name' => $userName,
-            'full_name' => $userName,
-            'email' => $userName . '@example.com',
-            'lang' => 'auto',
-            'password' => $password
-        );
-
-        $permissions = array(
-            'surveys' => array(
-                'read' => false
-            )
-        );
-
-        $user = self::createUserWithPermissions($userData, $permissions);
-
-        self::$user = $user;
-    }
-
-    public static function tearDownAfterClass(): void
-    {
-        self::$user->delete();
     }
 
     /**
@@ -80,7 +52,7 @@ class PermissionTest extends TestBaseClass
     public function testOwnershipSuccess()
     {
         // NB: Not 1 (superadmin).
-        $userId = self::$user->uid;
+        $userId = 2;
         $surveysGroupGid = 999;
 
         $surveysGroup = $this
@@ -111,7 +83,10 @@ class PermissionTest extends TestBaseClass
     public function testOwnershipFailure()
     {
         // NB: Not 1 (superadmin).
-        $userId = self::$user->uid;
+        //Create user.
+        $newPassword = createPassword();
+        $userName = \Yii::app()->securityManager->generateRandomString(8);
+        $userId = \User::insertUser($userName, $newPassword, 'John Doe', 1, $userName . '@example.org');
         $surveysGroupGid = 999;
 
         $surveysGroup = $this
@@ -134,5 +109,9 @@ class PermissionTest extends TestBaseClass
         $perm->method('getEntity')->willReturn($surveysGroup);
 
         $this->assertFalse($perm->hasPermission($surveysGroupGid, 'SurveysGroups', 'permission', 'create'));
+
+        //Delete user.
+        $user = \User::model()->findByPk($userId);
+        $user->delete();
     }
 }

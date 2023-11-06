@@ -69,7 +69,7 @@ class UserManager
 
     /**
      * Returns true if the managing user can edit the attribute of the target user
-     * Return true if target is same than manager (user can always update himself)
+     * Return true if target is same then managing (user can always update himself)
      * @return bool
      */
     public function canEdit()

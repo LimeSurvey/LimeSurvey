@@ -281,6 +281,7 @@ class QuestionTemplate extends CFormModel
                 $this->bHasCustomAttributes    = !empty($this->oConfig->attributes);
 
                 // Set the custom attributes
+                // In QuestionTheme set at a complete array using json_decode(json_encode((array)$xml_config->attributes), true);
                 if ($this->bHasCustomAttributes) {
                     $this->aCustomAttributes = array();
                     foreach ($this->oConfig->attributes->attribute as $oCustomAttribute) {

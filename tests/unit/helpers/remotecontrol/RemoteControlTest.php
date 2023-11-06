@@ -166,6 +166,8 @@ class RemoteControlTest extends TestBaseClass
         $this->assertEquals('One answer', $result[0][$sgqa], '"One answer" response');
 
         // Check result via API.
+        \Survey::model()->refreshMetaData();
+        \SurveyDynamic::model( self::$surveyId )->getMaxId( null, true );
         $result = $handler->export_responses($sessionKey, self::$surveyId, 'json');
         $this->assertNotNull($result);
         $responses = json_decode(file_get_contents($result->fileName));
@@ -562,7 +564,6 @@ class RemoteControlTest extends TestBaseClass
         $query = sprintf('DELETE FROM {{failed_login_attempts}}');
         $dbo->createCommand($query)->execute();
 
-
         $filename = self::$surveysFolder . '/limesurvey_survey_remote_api_get_fieldmap.lss';
         self::importSurvey($filename);
 
@@ -589,4 +590,5 @@ class RemoteControlTest extends TestBaseClass
         $result = $handler->get_fieldmap($sessionKey, self::$surveyId, 'es');
         $this->assertEquals('Pregunta de ejemplo', $result[$sgq]['question']);
     }
+
 }

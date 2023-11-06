@@ -75,8 +75,8 @@ class EmailTemplates extends SurveyCommonAction
                             $attachment['error'] = gT("File not found.");
                         }
                         // For security reasons we don't include the full upload path in the frontend
-                        if (substr($attachment['url'], 0, strlen($uploadDir)) == $uploadDir) {
-                            $attachment['url'] = str_replace('\\', '/', substr($attachment['url'], strlen($uploadDir)));
+                        if (substr((string) $attachment['url'], 0, strlen($uploadDir)) == $uploadDir) {
+                            $attachment['url'] = str_replace('\\', '/', substr((string) $attachment['url'], strlen($uploadDir)));
                         }
                     }
                 }
@@ -93,10 +93,13 @@ class EmailTemplates extends SurveyCommonAction
         $aData['ishtml'] = $ishtml;
         $aData['grplangs'] = $grplangs;
 
-        $aData['topBar']['name'] = 'baseTopbar_view';
-
-        // Save Button
-        $aData['topBar']['showSaveButton'] = Permission::model()->hasSurveyPermission($iSurveyId, 'surveylocale', 'update');
+        $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
+            '/surveyAdministration/partial/topbar/surveyTopbarRight_view',
+            [
+                'showSaveButton' => true
+            ],
+            true
+        );
 
         App()->getClientScript()->registerPackage('expressionscript');
 
@@ -111,16 +114,16 @@ class EmailTemplates extends SurveyCommonAction
     {
         $sBaseUrl = Yii::app()->getBaseUrl();
         $uploadUrl = Yii::app()->getConfig('uploadurl');
-        if (substr($uploadUrl, 0, strlen($sBaseUrl)) == $sBaseUrl) {
-            $uploadUrl = substr($uploadUrl, strlen($sBaseUrl));
+        if (substr((string) $uploadUrl, 0, strlen((string) $sBaseUrl)) == $sBaseUrl) {
+            $uploadUrl = substr((string) $uploadUrl, strlen((string) $sBaseUrl));
         }
         $sBaseAbsoluteUrl = Yii::app()->getBaseUrl(true);
         $sPublicUrl = Yii::app()->getConfig("publicurl");
-        $aPublicUrl = parse_url($sPublicUrl);
+        $aPublicUrl = parse_url((string) $sPublicUrl);
         if (isset($aPublicUrl['scheme']) && isset($aPublicUrl['host'])) {
             $sBaseAbsoluteUrl = $sPublicUrl;
         }
-        $uploadUrl = trim($sBaseAbsoluteUrl, "/") . $uploadUrl;
+        $uploadUrl = trim((string) $sBaseAbsoluteUrl, "/") . $uploadUrl;
         // We need the real path since we check that the resolved file name starts with this path.
         $uploadDir = realpath(Yii::app()->getConfig('uploaddir'));
         $sSaveMethod = Yii::app()->request->getPost('save', '');
@@ -133,7 +136,7 @@ class EmailTemplates extends SurveyCommonAction
                     foreach ($_POST['attachments'][$langname] as $template => &$attachments) {
                         foreach ($attachments as $index => &$attachment) {
                             // We again take the real path.
-                            $localName = realpath(urldecode($uploadDir . str_replace($uploadUrl, '', $attachment['url'])));
+                            $localName = realpath(urldecode($uploadDir . str_replace($uploadUrl, '', (string) $attachment['url'])));
                             if ($localName !== false) {
                                 if (strpos($localName, $uploadDir) === 0) {
                                     $attachment['url'] = $localName;
@@ -305,7 +308,7 @@ class EmailTemplates extends SurveyCommonAction
 
         $out = $aDefaultTexts[$type];
         if ($oSurvey->htmlemail == 'Y') {
-            $out = nl2br($out);
+            $out = nl2br((string) $out);
         }
         echo $out;
         App()->end();

@@ -202,6 +202,7 @@ class CPDImportParticpantsTest extends BaseTest
         //Setting email attribute to be encrypted.
         $result = \ParticipantAttributeName::model()->storeAttribute(array(
             'attribute_type' => 'TB',
+            'attribute_name' => 'email',
             'defaultname' => 'email',
             'visible' => 'TRUE',
             'encrypted'      => 'Y',
@@ -212,6 +213,7 @@ class CPDImportParticpantsTest extends BaseTest
         //Setting lastname attribute to be encrypted.
         $result = \ParticipantAttributeName::model()->storeAttribute(array(
             'attribute_type' => 'TB',
+            'attribute_name' => 'lastname',
             'defaultname' => 'lastname',
             'visible' => 'TRUE',
             'encrypted'      => 'Y',

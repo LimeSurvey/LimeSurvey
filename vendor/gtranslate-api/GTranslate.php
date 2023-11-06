@@ -143,19 +143,19 @@ class GTranslate
 		return false;
 	}
 
-	/**
-	* Parse available language from language file
-	* @access private
-	*/	
-	private function parseLanguageFile()
-	{
-		$this->available_languages = parse_ini_string(
-			file_get_contents(
-				__DIR__ . '/' . $this->available_languages_file
-			)
-		);
-	}	
-	
+    /**
+     * Parse available language from language file
+     * @access private
+     */
+    private function parseLanguageFile()
+    {
+        $this->available_languages = parse_ini_string(
+            file_get_contents(
+                __DIR__ . '/' . $this->available_languages_file
+            )
+        );
+    }
+
         /**
         * URL Formater to use on request
         * @access private

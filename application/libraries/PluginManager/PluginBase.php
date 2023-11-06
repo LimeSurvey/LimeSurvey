@@ -3,7 +3,6 @@
 namespace LimeSurvey\PluginManager;
 
 use LSActiveRecord;
-use Yii;
 
 /**
  * Base class for plugins.
@@ -151,7 +150,7 @@ abstract class PluginBase implements iPlugin
         if (!empty($data) && in_array($key, $this->encryptedSettings)) {
             try {
                 $json = LSActiveRecord::decryptSingle($data);
-                $data = !empty($json) ? json_decode($json, true) : $json;
+                $data = !empty($json) ? json_decode((string) $json, true) : $json;
             } catch (\Throwable $e) {
                 // If decryption fails, just leave the value untouched (it was probably saved as plain text)
             }
@@ -234,9 +233,9 @@ abstract class PluginBase implements iPlugin
     public function publish($fileName)
     {
         // Check if filename is relative.
-        if (strpos('//', $fileName) === false) {
+        if (strpos('//', (string) $fileName) === false) {
             // This is a limesurvey relative path.
-            if (strpos('/', $fileName) === 0) {
+            if (strpos('/', (string) $fileName) === 0) {
                 $url = \Yii::getPathOfAlias('webroot') . $fileName;
             } else {
                 // This is a plugin relative path.
@@ -368,31 +367,7 @@ abstract class PluginBase implements iPlugin
     }
 
     /**
-     * Look for views in plugin views/ folder and renders a page
-     *
-     * @param string $viewfile Filename of view in views folder of the plugin
-     * @param array $data data to be extracted into PHP variables and made available to the view script
-     * @param boolean $return whether the rendering result should be returned instead of being displayed to end users.
-     * @return string the rendering result. Null if the rendering result is not required.
-     */
-    public function render($viewfile, $data, $return = false)
-    {
-        $alias = 'plugin_views_folder' . $this->id;
-        Yii::setPathOfAlias($alias, $this->getDir());
-        $fullAlias = $alias . '.views.' . $viewfile;
-
-        if (isset($data['plugin'])) {
-            throw new InvalidArgumentException("Key 'plugin' in data variable is for plugin base only. Please use another key name.");
-        }
-        // Provide this so we can use $plugin->gT() in plugin views
-        $data['plugin'] = $this;
-        $controller = App()->controller;
-        $controller->layout = 'main';
-        return $controller->render($fullAlias, $data, $return);
-    }
-
-    /**
-     * Look for views in plugin views/ folder and renders a partial
+     * Look for views in plugin views/ folder and render it
      *
      * @param string $viewfile Filename of view in views/ folder
      * @param array $data
@@ -407,7 +382,7 @@ abstract class PluginBase implements iPlugin
         $fullAlias = $alias . '.views.' . $viewfile;
 
         if (isset($data['plugin'])) {
-            throw new InvalidArgumentException("Key 'plugin' in data variable is for plugin base only. Please use another key name.");
+            throw new \InvalidArgumentException("Key 'plugin' in data variable is for plugin base only. Please use another key name.");
         }
 
         // Provide this so we can use $plugin->gT() in plugin views
@@ -540,7 +515,7 @@ abstract class PluginBase implements iPlugin
                         'user_id' => \Yii::app()->user->id,
                         'title'   => gT('Plugin error'),
                         'message' =>
-                            '<span class="fa fa-exclamation-circle text-warning"></span>&nbsp;' .
+                            '<span class="ri-error-warning-fill"></span>&nbsp;' .
                             gT('Could not activate plugin ' . $this->getName()) . '. ' .
                             gT('Reason:') . ' ' . $result->get('message'),
                         'importance' => \Notification::HIGH_IMPORTANCE
@@ -562,7 +537,7 @@ abstract class PluginBase implements iPlugin
             'user_id' => \Yii::app()->user->id,
             'title'   => gT('Plugin error'),
             'message' =>
-                '<span class="fa fa-exclamation-circle text-warning"></span>&nbsp;' .
+                '<span class="ri-error-warning-fill"></span>&nbsp;' .
                 gT('Could not read config file for plugin ' . $this->getName()) . '. ' .
                 gT('Config file is malformed or null.'),
             'importance' => \Notification::HIGH_IMPORTANCE
@@ -644,7 +619,7 @@ abstract class PluginBase implements iPlugin
             $cssToRegister = \Yii::app()->getAssetManager()->publish(
                 \Yii::getPathOfAlias('userdir') . '/plugins/' . $parentPlugin . '/' . $relativePathToCss
             );
-        } elseif (file_exists(YiiBase::getPathOfAlias('webroot') . '/plugins/' . $parentPlugin . '/' . $relativePathToCss)) {
+        } elseif (file_exists(\Yii::getPathOfAlias('webroot') . '/plugins/' . $parentPlugin . '/' . $relativePathToCss)) {
             $cssToRegister = \Yii::app()->getAssetManager()->publish(
                 \Yii::getPathOfAlias('webroot') . '/plugins/' . $parentPlugin . '/' . $relativePathToCss
             );
@@ -654,5 +629,15 @@ abstract class PluginBase implements iPlugin
             );
         }
         \Yii::app()->getClientScript()->registerCssFile($cssToRegister);
+    }
+
+    /**
+     * Returns a health status text to show in plugin overview.
+     * For example, the plugin might be active but not properly configured.
+     * @return string|null
+     */
+    public function getHealthStatusText()
+    {
+        return null;
     }
 }

@@ -72,6 +72,7 @@
                     "lockOrganizerTitle" => gT("Lock question organizer"),
                     "unlockOrganizerTitle" => gT("Unlock question organizer"),
                     "collapseAll" => gT("Collapse all question groups"),
+                    "deactivateSurvey" => gT("Deactivate your survey to enable this setting"),
                 ]
             )
         .'};', 
@@ -79,7 +80,7 @@
     );
 ?>
 
-<div class="simpleWrapper ls-flex" id="vue-sidebar-container"
+<div class="simpleWrapper ls-flex" id="vue-sidebar-container" 
     v-bind:style="{'max-height': $store.state.inSurveyViewHeight, width : $store.getters.sideBarSize}"
     v-bind:data-collapsed="$store.state.isCollapsed">
     <?php if($landOnSideMenuTab !== ''): ?>

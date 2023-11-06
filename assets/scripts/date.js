@@ -1,22 +1,10 @@
 /**
- * Function to launch timepicker in question id
+ * Function to check conditions in date question
  */
 function doPopupDate(qId) {
 
-    /* need to update picker min/max value according to live value */
-    $("#question"+qId).find('.date-timepicker-group').on('dp.show', function(){
-        var minDate=$("#datemin"+$(this).data("basename")).text().trim();
-        var maxDate=$("#datemax"+$(this).data("basename")).text().trim();
-        var format=$(this).data("DateTimePicker").format();
-        /* unsure of this part : don't need format ? */
-        minDate = moment(minDate.substr(0,10), "YYYY-MM-DD");
-        maxDate = moment(maxDate.substr(0,10) + " " + "23:59:59.999", "YYYY-MM-DD hh:mm:ss.SSS");
-        $(this).data("DateTimePicker").minDate(minDate);
-        $(this).data("DateTimePicker").maxDate(maxDate);
-    });
     /* need to launch EM each time is updated */
-    $("#question"+qId).find('.date-timepicker-group').on('dp.change', function(){
-        // $(this).find(":text").triggerHandler("change");/* Why this don't work ? */
+    $("#question"+qId).find('.date-timepicker-group').on('change.td', function(){
         checkconditions($(this).find(":text").val(), $(this).find(":text").attr('name'), 'text', 'keyup')
     });
 }

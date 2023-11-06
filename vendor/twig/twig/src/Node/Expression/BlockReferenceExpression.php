@@ -22,17 +22,8 @@ use Twig\Node\Node;
  */
 class BlockReferenceExpression extends AbstractExpression
 {
-    /**
-     * @param Node|null $template
-     */
-    public function __construct(\Twig_NodeInterface $name, $template, $lineno, $tag = null)
+    public function __construct(Node $name, ?Node $template, int $lineno, string $tag = null)
     {
-        if (\is_bool($template)) {
-            @trigger_error(sprintf('The %s method "$asString" argument is deprecated since version 1.28 and will be removed in 2.0.', __METHOD__), \E_USER_DEPRECATED);
-
-            $template = null;
-        }
-
         $nodes = ['name' => $name];
         if (null !== $template) {
             $nodes['template'] = $template;
@@ -41,7 +32,7 @@ class BlockReferenceExpression extends AbstractExpression
         parent::__construct($nodes, ['is_defined_test' => false, 'output' => false], $lineno, $tag);
     }
 
-    public function compile(Compiler $compiler)
+    public function compile(Compiler $compiler): void
     {
         if ($this->getAttribute('is_defined_test')) {
             $this->compileTemplateCall($compiler, 'hasBlock');
@@ -58,7 +49,7 @@ class BlockReferenceExpression extends AbstractExpression
         }
     }
 
-    private function compileTemplateCall(Compiler $compiler, $method)
+    private function compileTemplateCall(Compiler $compiler, string $method): Compiler
     {
         if (!$this->hasNode('template')) {
             $compiler->write('$this');
@@ -75,12 +66,11 @@ class BlockReferenceExpression extends AbstractExpression
         }
 
         $compiler->raw(sprintf('->%s', $method));
-        $this->compileBlockArguments($compiler);
 
-        return $compiler;
+        return $this->compileBlockArguments($compiler);
     }
 
-    private function compileBlockArguments(Compiler $compiler)
+    private function compileBlockArguments(Compiler $compiler): Compiler
     {
         $compiler
             ->raw('(')
@@ -94,5 +84,3 @@ class BlockReferenceExpression extends AbstractExpression
         return $compiler->raw(')');
     }
 }
-
-class_alias('Twig\Node\Expression\BlockReferenceExpression', 'Twig_Node_Expression_BlockReference');

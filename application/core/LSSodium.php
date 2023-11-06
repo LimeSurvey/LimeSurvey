@@ -61,7 +61,7 @@ class LSSodium
      */
     protected function getEncryptionNonce()
     {
-        return sodium_hex2bin(Yii::app()->getConfig('encryptionnonce'));
+        return sodium_hex2bin((string) Yii::app()->getConfig('encryptionnonce'));
     }
 
     /**
@@ -70,7 +70,7 @@ class LSSodium
      */
     protected function getEncryptionSecretBoxKey()
     {
-        return sodium_hex2bin(Yii::app()->getConfig('encryptionsecretboxkey'));
+        return sodium_hex2bin((string) Yii::app()->getConfig('encryptionsecretboxkey'));
     }
 
     /**

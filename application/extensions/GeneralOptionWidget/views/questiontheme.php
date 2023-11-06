@@ -3,7 +3,7 @@
 
 <?php //make your user could not select this anymore (selection ONLY through the modal typeselector) ?>
 <select 
-    class="form-control"
+    class="form-select"
     name="advancedSettings[question_template][<?= $this->generalOption->name; ?>]"
     id="<?= CHtml::getIdByName($this->generalOption->name); ?>"
     <?= ($this->generalOption->formElement->help) ? 'aria-describedby="help-' . CHtml::getIdByName($this->generalOption->name) . '"' : "" ?>

@@ -26,17 +26,10 @@ use Twig\Source;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class ModuleNode extends Node
+final class ModuleNode extends Node
 {
-    public function __construct(\Twig_NodeInterface $body, ?AbstractExpression $parent, \Twig_NodeInterface $blocks, \Twig_NodeInterface $macros, \Twig_NodeInterface $traits, $embeddedTemplates, $name, $source = '')
+    public function __construct(Node $body, ?AbstractExpression $parent, Node $blocks, Node $macros, Node $traits, $embeddedTemplates, Source $source)
     {
-        if (!$name instanceof Source) {
-            @trigger_error(sprintf('Passing a string as the $name argument of %s() is deprecated since version 1.27. Pass a \Twig\Source instance instead.', __METHOD__), \E_USER_DEPRECATED);
-            $source = new Source($source, $name);
-        } else {
-            $source = $name;
-        }
-
         $nodes = [
             'body' => $body,
             'blocks' => $blocks,
@@ -54,16 +47,11 @@ class ModuleNode extends Node
 
         // embedded templates are set as attributes so that they are only visited once by the visitors
         parent::__construct($nodes, [
-            // source to be remove in 2.0
-            'source' => $source->getCode(),
-            // filename to be remove in 2.0 (use getTemplateName() instead)
-            'filename' => $source->getName(),
             'index' => null,
             'embedded_templates' => $embeddedTemplates,
         ], 1);
 
         // populate the template name of all node children
-        $this->setTemplateName($source->getName());
         $this->setSourceContext($source);
     }
 
@@ -72,7 +60,7 @@ class ModuleNode extends Node
         $this->setAttribute('index', $index);
     }
 
-    public function compile(Compiler $compiler)
+    public function compile(Compiler $compiler): void
     {
         $this->compileTemplate($compiler);
 
@@ -89,16 +77,7 @@ class ModuleNode extends Node
 
         $this->compileClassHeader($compiler);
 
-        if (
-            \count($this->getNode('blocks'))
-            || \count($this->getNode('traits'))
-            || !$this->hasNode('parent')
-            || $this->getNode('parent') instanceof ConstantExpression
-            || \count($this->getNode('constructor_start'))
-            || \count($this->getNode('constructor_end'))
-        ) {
-            $this->compileConstructor($compiler);
-        }
+        $this->compileConstructor($compiler);
 
         $this->compileGetParent($compiler);
 
@@ -113,8 +92,6 @@ class ModuleNode extends Node
         $this->compileIsTraitable($compiler);
 
         $this->compileDebugInfo($compiler);
-
-        $this->compileGetSource($compiler);
 
         $this->compileGetSourceContext($compiler);
 
@@ -166,6 +143,7 @@ class ModuleNode extends Node
                 ->write("use Twig\Environment;\n")
                 ->write("use Twig\Error\LoaderError;\n")
                 ->write("use Twig\Error\RuntimeError;\n")
+                ->write("use Twig\Extension\SandboxExtension;\n")
                 ->write("use Twig\Markup;\n")
                 ->write("use Twig\Sandbox\SecurityError;\n")
                 ->write("use Twig\Sandbox\SecurityNotAllowedTagError;\n")
@@ -179,9 +157,11 @@ class ModuleNode extends Node
             // if the template name contains */, add a blank to avoid a PHP parse error
             ->write('/* '.str_replace('*/', '* /', $this->getSourceContext()->getName())." */\n")
             ->write('class '.$compiler->getEnvironment()->getTemplateClass($this->getSourceContext()->getName(), $this->getAttribute('index')))
-            ->raw(sprintf(" extends %s\n", $compiler->getEnvironment()->getBaseTemplateClass()))
+            ->raw(" extends Template\n")
             ->write("{\n")
             ->indent()
+            ->write("private \$source;\n")
+            ->write("private \$macros = [];\n\n")
         ;
     }
 
@@ -192,6 +172,7 @@ class ModuleNode extends Node
             ->indent()
             ->subcompile($this->getNode('constructor_start'))
             ->write("parent::__construct(\$env);\n\n")
+            ->write("\$this->source = \$this->getSourceContext();\n\n")
         ;
 
         // parent
@@ -203,18 +184,24 @@ class ModuleNode extends Node
         if ($countTraits) {
             // traits
             foreach ($this->getNode('traits') as $i => $trait) {
-                $this->compileLoadTemplate($compiler, $trait->getNode('template'), sprintf('$_trait_%s', $i));
-
                 $node = $trait->getNode('template');
+
                 $compiler
                     ->addDebugInfo($node)
+                    ->write(sprintf('$_trait_%s = $this->loadTemplate(', $i))
+                    ->subcompile($node)
+                    ->raw(', ')
+                    ->repr($node->getTemplateName())
+                    ->raw(', ')
+                    ->repr($node->getTemplateLine())
+                    ->raw(");\n")
                     ->write(sprintf("if (!\$_trait_%s->isTraitable()) {\n", $i))
                     ->indent()
                     ->write("throw new RuntimeError('Template \"'.")
                     ->subcompile($trait->getNode('template'))
                     ->raw(".'\" cannot be used as a trait.', ")
                     ->repr($node->getTemplateLine())
-                    ->raw(", \$this->getSourceContext());\n")
+                    ->raw(", \$this->source);\n")
                     ->outdent()
                     ->write("}\n")
                     ->write(sprintf("\$_trait_%s_blocks = \$_trait_%s->getBlocks();\n\n", $i, $i))
@@ -226,13 +213,13 @@ class ModuleNode extends Node
                         ->string($key)
                         ->raw("])) {\n")
                         ->indent()
-                        ->write("throw new RuntimeError(sprintf('Block ")
+                        ->write("throw new RuntimeError('Block ")
                         ->string($key)
                         ->raw(' is not defined in trait ')
                         ->subcompile($trait->getNode('template'))
-                        ->raw(".'), ")
+                        ->raw(".', ")
                         ->repr($node->getTemplateLine())
-                        ->raw(", \$this->getSourceContext());\n")
+                        ->raw(", \$this->source);\n")
                         ->outdent()
                         ->write("}\n\n")
 
@@ -318,6 +305,7 @@ class ModuleNode extends Node
         $compiler
             ->write("protected function doDisplay(array \$context, array \$blocks = [])\n", "{\n")
             ->indent()
+            ->write("\$macros = \$this->macros;\n")
             ->subcompile($this->getNode('display_start'))
             ->subcompile($this->getNode('body'))
         ;
@@ -440,20 +428,6 @@ class ModuleNode extends Node
         ;
     }
 
-    protected function compileGetSource(Compiler $compiler)
-    {
-        $compiler
-            ->write("/** @deprecated since 1.27 (to be removed in 2.0). Use getSourceContext() instead */\n")
-            ->write("public function getSource()\n", "{\n")
-            ->indent()
-            ->write("@trigger_error('The '.__METHOD__.' method is deprecated since version 1.27 and will be removed in 2.0. Use getSourceContext() instead.', E_USER_DEPRECATED);\n\n")
-            ->write('return $this->getSourceContext()->getCode();')
-            ->raw("\n")
-            ->outdent()
-            ->write("}\n\n")
-        ;
-    }
-
     protected function compileGetSourceContext(Compiler $compiler)
     {
         $compiler
@@ -488,5 +462,3 @@ class ModuleNode extends Node
         }
     }
 }
-
-class_alias('Twig\Node\ModuleNode', 'Twig_Node_Module');

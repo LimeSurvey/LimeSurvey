@@ -97,7 +97,7 @@
             </options>
             <default>list</default>
             <help>Change visualization of the ranking question</help>
-            <caption>Visualization: </caption>
+            <caption>Visualisation: </caption>
         </attribute>
     </attributes>
 

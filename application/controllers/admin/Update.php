@@ -71,6 +71,7 @@ if (class_exists('SurveyCommonAction')) {
     }
 } else {
     // try to include the old one
+    /** @psalm-suppress UndefinedClass */ 
     class DynamicSurveyCommonAction extends Survey_Common_Action
     {
     }
@@ -113,9 +114,12 @@ class Update extends DynamicSurveyCommonAction
         $serverAnswer = $updateModel->getUpdateInfo($buttons);
         $aData['serverAnswer'] = $serverAnswer;
 
-        // Green Bar (SurveyManagerBar Heading)
-        $aData['pageTitle'] = gT('ComfortUpdate');
-        $aData['fullpagebar']['update'] = true;
+        $aData['topbar']['title'] = gt('ComfortUpdate');
+        $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
+            '/admin/update/partials/topbarBtns/rightSideButtons',
+            [],
+            true
+        );
 
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'comfortupdate/comfortupdate.js');
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'comfortupdate/buildComfortButtons.js');
@@ -131,12 +135,24 @@ class Update extends DynamicSurveyCommonAction
             $updateModel = new UpdateForm();
             $serverAnswer = $updateModel->getUpdateInfo($buttons);
             $aData['serverAnswer'] = $serverAnswer;
-            $aData['fullpagebar']['closebutton']['url'] = 'admin/update';
             $updateKey = $aData['updateKey'] = getGlobalSetting('update_key');
 
-            //$this->controller->renderPartial('//admin/update/updater/welcome/_subscribe', array('serverAnswer' => $serverAnswer),  false, false);
             if (!$updateKey) {
-                $aData['fullpagebar']['saveandclosebutton']['form'] = true;
+                $pageTitle = gt('Subscribe to ComfortUpdate');
+            } else {
+                $pageTitle = gt('ComfortUpdate');
+            }
+
+            $aData['topbar']['title'] = $pageTitle;
+            $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
+                '/admin/update/partials/topbarBtns_subscribe/rightSideButtons',
+                [
+                    'saveAndClose' => !$updateKey
+                ],
+                true
+            );
+
+            if (!$updateKey) {
                 $this->renderWrappedTemplate('update/manage/', 'subscribe', $aData);
             } else {
                 $aData['updateKeyInfos'] = $updateModel->checkUpdateKeyonServer($updateKey);
@@ -148,13 +164,12 @@ class Update extends DynamicSurveyCommonAction
     public function manageSubmitkey()
     {
         $updateModel = new UpdateForm();
-        $aData['fullpagebar']['closebutton']['url'] = 'admin/update';
         $aData['updateKey'] = $updateKey = SettingGlobal::model()->findByPk('update_key');
 
         if (Permission::model()->hasGlobalPermission('superadmin')) {
             if (App()->request->getPost('keyid')) {
                 // We trim it, just in case user added a space...
-                $submittedUpdateKey = trim(App()->request->getPost('keyid'));
+                $submittedUpdateKey = trim(App()->request->getPost('keyid', ''));
 
                 $updateModel = new UpdateForm();
                 $check = $updateModel->checkUpdateKeyonServer($submittedUpdateKey);
@@ -285,26 +300,11 @@ class Update extends DynamicSurveyCommonAction
             // We use request rather than post, because this step can be called by url by displayComfortStep.js
             if (isset($_REQUEST['destinationBuild'])) {
                 $destinationBuild = $_REQUEST['destinationBuild'];
-                $access_token = $_REQUEST['access_token'];
+                $access_token     = $_REQUEST['access_token'];
 
                 // We get the change log from the ComfortUpdate server
                 $updateModel = new UpdateForm();
                 $changelog = $updateModel->getChangeLog($destinationBuild);
-
-                // calculate latest major version number
-                $destinationChangelog = end($changelog->changelogentries);
-                reset($changelog->changelogentries);
-                $destinationVersion = $destinationChangelog->versionnumber;
-                $destinationMajorVersion = substr($destinationVersion, 0, 1);
-
-                // get the current version number
-                $currentVersionnumber = App()->getConfig("versionnumber");
-                $currentMajorVersion = substr($currentVersionnumber, 0, 1);
-
-                // check if we are doing a major version upgrade
-                if ($destinationMajorVersion > $currentMajorVersion) {
-                    $aData['destinationMajorVersion'] = $destinationMajorVersion;
-                }
 
                 if ($changelog->result) {
                     $aData['errors'] = false;
@@ -312,7 +312,6 @@ class Update extends DynamicSurveyCommonAction
                     $aData['html_from_server'] = $changelog->html;
                     $aData['destinationBuild'] = $destinationBuild;
                     $aData['access_token'] = $access_token;
-                    $aData['currentVersionNumber'] = App()->getConfig("versionnumber");
                 } else {
                     return $this->renderError($changelog);
                 }
@@ -382,7 +381,7 @@ class Update extends DynamicSurveyCommonAction
                         $aData['access_token'] = $access_token;
                         return $this->controller->renderPartial('update/updater/steps/_backup', $aData, false, false);
                     } else {
-                        $error = $backup->error;
+                        $error = $backupInfos->error;
                     }
                 } else {
                     $error = "no_updates_infos";
@@ -519,7 +518,7 @@ class Update extends DynamicSurveyCommonAction
         if (Permission::model()->hasGlobalPermission('superadmin')) {
             if (App()->request->getPost('keyid')) {
                 // We trim it, just in case user added a space...
-                $submittedUpdateKey = trim(App()->request->getPost('keyid'));
+                $submittedUpdateKey = trim(App()->request->getPost('keyid', ''));
 
                 $updateModel = new UpdateForm();
                 $check = $updateModel->checkUpdateKeyonServer($submittedUpdateKey);

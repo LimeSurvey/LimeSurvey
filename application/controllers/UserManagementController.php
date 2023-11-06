@@ -50,13 +50,13 @@ class UserManagementController extends LSBaseController
             Yii::app()->user->setState('pageSize', Yii::app()->request->getParam('pageSize'));
         }
         App()->getClientScript()->registerPackage('usermanagement');
-        App()->getClientScript()->registerPackage('bootstrap-select2');
+        App()->getClientScript()->registerPackage('select2-bootstrap');
 
         $aData = [];
         $model = new User('search');
         $model->setAttributes(Yii::app()->getRequest()->getParam('User'), false);
         $aData['model'] = $model;
-        $aData['columnDefinition'] = $model->getManagementColums();
+       // $aData['columnDefinition'] = $model->getManagementColums();
         $aData['pageSize'] = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
         $aData['formUrl'] = $this->createUrl('userManagement/index');
 
@@ -67,15 +67,17 @@ class UserManagementController extends LSBaseController
             false
         );
 
-        // Green Bar (SurveyManagerBar) Page Title
-        $aData['pageTitle'] = gT('User management');
+
+        $aData['topbar']['title'] = gT('User management');
+        $aData['topbar']['backLink'] = App()->createUrl('admin/index');
+        $aData['topbar']['middleButtons'] = $this->renderPartial('partial/topbarBtns/leftSideButtons', [], true);
 
         //this is really important, so we have the aData also before rendering the content
         $this->aData = $aData;
 
         return $this->render('index', [
             'model' => $aData['model'],
-            'columnDefinition' => $aData['columnDefinition'],
+            //'columnDefinition' => $aData['columnDefinition'],
             'pageSize' => $aData['pageSize'],
             'formUrl' => $aData['formUrl'],
             'massiveAction' => $aData['massiveAction'],
@@ -108,6 +110,7 @@ class UserManagementController extends LSBaseController
                 $this->redirect(App()->request->urlReferrer);
             }
         }
+
         $randomPassword = \LimeSurvey\Models\Services\PasswordManagement::getRandomPassword();
         $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
         return $this->renderPartial('partial/addedituser', ['oUser' => $oUser, 'randomPassword' => $randomPassword, 'dateformatdetails' => $dateformatdetails]);
@@ -434,7 +437,6 @@ class UserManagementController extends LSBaseController
         $userId = Yii::app()->request->getParam('userid');
         $userId = sanitize_int($userId);
         $aData['userId'] = $userId;
-
         return $this->renderPartial('partial/confirmuserdelete', $aData);
     }
 
@@ -511,6 +513,7 @@ class UserManagementController extends LSBaseController
             }
             $aBasePermissions = $aFilteredPermissions;
         }
+
         return $this->renderPartial(
             'partial/editpermissions',
             [
@@ -553,7 +556,7 @@ class UserManagementController extends LSBaseController
         return Yii::app()->getController()->renderPartial('/admin/super/_renderJson', [
             "data" => [
                 'success' => true,
-                'html'    => $this->renderPartial('partial/permissionsuccess', ['results' => $results], true),
+                'message' => gT("Saved permissions successfully.")
             ]
         ]);
     }
@@ -613,12 +616,12 @@ class UserManagementController extends LSBaseController
         $userId = Yii::app()->request->getPost('userid');
         $aTemplatePermissions = Yii::app()->request->getPost('TemplatePermissions', []);
 
-        $results = Permission::editThemePermissionsUser($userId, $aTemplatePermissions);
+        Permission::editThemePermissionsUser($userId, $aTemplatePermissions);
 
         return Yii::app()->getController()->renderPartial('/admin/super/_renderJson', [
             "data" => [
                 'success' => true,
-                'html'    => $this->renderPartial('partial/permissionsuccess', ['results' => $results], true),
+                'message' => gT("Saved template permissions successfully.")
             ]
         ]);
     }
@@ -680,7 +683,7 @@ class UserManagementController extends LSBaseController
             return Yii::app()->getController()->renderPartial('/admin/super/_renderJson', [
                 "data" => [
                     'success' => false,
-                    'errors' => [gT("You do not have permission to access this page.")],
+                    'errors' => gT("You do not have permission to access this page."),
                 ]
             ]);
         }
@@ -700,7 +703,7 @@ class UserManagementController extends LSBaseController
         return $this->renderPartial('partial/json', [
             "data" => [
                 'success' => true,
-                'html'    => $this->renderPartial('partial/permissionsuccess', ['results' => $results], true),
+                'message' => 'Saved user roles successfuly',
             ]
         ]);
     }
@@ -723,6 +726,7 @@ class UserManagementController extends LSBaseController
         if (!in_array($importFormat, ['csv', 'json'])) {
             throw new LSUserException(400, gT("Invalid format"));
         }
+
         switch ($importFormat) {
             case "json":
                 $importNote = sprintf(gT("Please make sure that your JSON arrays contain the fields '%s', '%s', '%s', '%s', and '%s'"), '<b>users_name</b>', '<b>full_name</b>', '<b>email</b>', '<b>lang</b>', '<b>password</b>');
@@ -786,7 +790,7 @@ class UserManagementController extends LSBaseController
                     $oUser->parent_id = App()->user->id;
                     $oUser->modified = date('Y-m-d H:i:s');
                     if ($aNewUser['password'] != ' ') {
-                        $oUser->password = password_hash($aNewUser['password'], PASSWORD_DEFAULT);
+                        $oUser->password = password_hash((string) $aNewUser['password'], PASSWORD_DEFAULT);
                     }
 
                     $save = $oUser->save();
@@ -802,7 +806,7 @@ class UserManagementController extends LSBaseController
                 $password = \LimeSurvey\Models\Services\PasswordManagement::getRandomPassword();
                 $passwordText = $password;
                 if ($aNewUser['password'] != ' ') {
-                    $password = password_hash($aNewUser['password'], PASSWORD_DEFAULT);
+                    $password = password_hash((string) $aNewUser['password'], PASSWORD_DEFAULT);
                 }
 
                 $save = $this->createNewUser([
@@ -928,7 +932,7 @@ class UserManagementController extends LSBaseController
             );
         }
 
-        $aUsers = json_decode(App()->request->getPost('sItems'));
+        $aUsers = json_decode(App()->request->getPost('sItems', ''));
         $aResults = [];
 
         foreach ($aUsers as $user) {
@@ -962,7 +966,7 @@ class UserManagementController extends LSBaseController
      */
     public function actionRenderSelectedItems()
     {
-        $aUsers = json_decode(App()->request->getPost('$oCheckedItems'));
+        $aUsers = json_decode(App()->request->getPost('$oCheckedItems', ''));
         $aResults = [];
         $gridid = App()->request->getParam('$grididvalue');
 
@@ -1105,23 +1109,34 @@ class UserManagementController extends LSBaseController
                 ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
             );
         }
-        $aItems = json_decode(Yii::app()->request->getPost('sItems', []));
+        $aItems = json_decode(Yii::app()->request->getPost('sItems', '')) ?? [];
         $iUserGroupId = Yii::app()->request->getPost('addtousergroup');
 
         if ($iUserGroupId) {
             $oUserGroup = UserGroup::model()->findByPk($iUserGroupId);
-            $aResults = [];
-
-            foreach ($aItems as $sItem) {
-                $aResults[$sItem]['title'] = '';
-                $model = $this->loadModel($sItem);
-                $aResults[$sItem]['title'] = $model->users_name;
-                if (!$oUserGroup->hasUser($sItem)) {
-                    $aResults[$sItem]['result'] = $oUserGroup->addUser($sItem);
-                } else {
-                    $aResults[$sItem]['result'] = false;
-                    $aResults[$sItem]['error'] = gT('User is already a member of the group.');
+            /* check if have permission */
+            if (
+                Permission::model()->hasGlobalPermission('usergroups', 'update') /* Global update permission @see UserGroupController->actionEdit */
+                || $oUserGroup->requestEditGroup($oUserGroup->ugid, Yii::app()->session['loginID'])  /* This user group permission */
+            ) {
+                $aResults = [];
+                foreach ($aItems as $sItem) {
+                    $aResults[$sItem]['title'] = '';
+                    $model = $this->loadModel($sItem);
+                    $aResults[$sItem]['title'] = $model->users_name;
+                    if (!$oUserGroup->hasUser($sItem)) {
+                        $aResults[$sItem]['result'] = $oUserGroup->addUser($sItem);
+                    } else {
+                        $aResults[$sItem]['result'] = false;
+                        $aResults[$sItem]['error'] = gT('User is already a member of the group.');
+                    }
                 }
+            } else {
+                $aResults[0] = [
+                    'title' => gT("All"),
+                    'result' => false,
+                    'error' => gT('You don\'t have permission on this group.')
+                ];
             }
         } else {
             foreach ($aItems as $sItem) {
@@ -1160,7 +1175,7 @@ class UserManagementController extends LSBaseController
                 ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
             );
         }
-        $aItems = json_decode(Yii::app()->request->getPost('sItems', []));
+        $aItems = json_decode(Yii::app()->request->getPost('sItems', '')) ?? [];
         $aUserRoleIds = Yii::app()->request->getPost('roleselector');
         $aResults = [];
 
@@ -1168,7 +1183,6 @@ class UserManagementController extends LSBaseController
             $aResults[$sItem]['title'] = '';
             $model = $this->loadModel($sItem);
             $aResults[$sItem]['title'] = $model->users_name;
-
             if (Permission::isForcedSuperAdmin($sItem)) {
                 /* Show an error for forced super admin, this don't disable for DB superadmin */
                 $aResults[$sItem]['result'] = false;
@@ -1179,7 +1193,6 @@ class UserManagementController extends LSBaseController
                 }
             }
         }
-
         $tableLabels = array(gT('User ID'), gT('Username'), gT('Status'));
 
         Yii::app()->getController()->renderPartial(
@@ -1273,6 +1286,7 @@ class UserManagementController extends LSBaseController
             }
         }
 
+
         // Check if user owns a survey
         $aOwnedSurveys = Survey::model()->findAllByAttributes(['owner_id' => $userId]);
         if (count($aOwnedSurveys)) {
@@ -1327,7 +1341,7 @@ class UserManagementController extends LSBaseController
         $oUser->setAttributes($aUser);
 
         if (isset($aUser['password']) && $aUser['password']) {
-            $oUser->password = password_hash($aUser['password'], PASSWORD_DEFAULT);
+            $oUser->password = password_hash((string) $aUser['password'], PASSWORD_DEFAULT);
         }
         $oUser->modified = date('Y-m-d H:i:s');
         $oUser->save();
