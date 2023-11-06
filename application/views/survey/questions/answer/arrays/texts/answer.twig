@@ -25,62 +25,61 @@
 <!-- Multi Text -->
 
 <!-- answer -->
-<div role="group" aria-labelledby="ls-question-text-{{ basename }}">
-    <table {{ q_table_id_HTML }} class="{{ coreClass }} {{ extraclass }} table table-bordered table-hover {{ totals_class }}" role="group" aria-labelledby="ls-question-text-{{ basename }}">
-        <colgroup class="col-responses">
+<table {{ q_table_id_HTML }} class="{{ coreClass }} {{ extraclass }} table table-bordered table-hover {{ totals_class }}" role="group" aria-labelledby="ls-question-text-{{ basename }}">
+    <colgroup class="col-responses">
 
-            <!-- Column for answer label -->
-            <col class="answertext" style='width: {{ answerwidth }}%;'/>
+        <!-- Column for answer label -->
+        <col class="answertext" style='width: {{ answerwidth }}%;'/>
 
-            <!-- columns for answers -->
+        <!-- columns for answers -->
+        {% for i, ld in labelans %}
+            <col class="{# {# TODO: array2 alternation #} {# classes #}" style='width: {{ cellwidth }}%;' />
+        {% endfor %}
+
+        <!-- columns for right -->
+        {% if right_exists %}
+            <col class="answertextright {# TODO: array2 alternation #}" style='width: {{ cellwidth }}%;' />
+        {% endif %}
+
+        <!-- columns for Grand Total -->
+        {% if showGrandTotal %}
+            <col class="grandtotal {# TODO: array2 alternation #}" style='width: {{ cellwidth }}%;' />
+        {% endif %}
+    </colgroup>
+
+    <thead aria-hidden="true">
+        <tr class="ls-heading">
+            <td>
+                &nbsp;
+            </td>
             {% for i, ld in labelans %}
-                <col class="{# {# TODO: array2 alternation #} {# classes #}" style='width: {{ cellwidth }}%;' />
+                <th>
+                    {{ processString(ld) }}
+                </th>
             {% endfor %}
 
-            <!-- columns for right -->
             {% if right_exists %}
-                <col class="answertextright {# TODO: array2 alternation #}" style='width: {{ cellwidth }}%;' />
+                <td>&nbsp;</td>
             {% endif %}
 
-            <!-- columns for Grand Total -->
-            {% if showGrandTotal %}
-                <col class="grandtotal {# TODO: array2 alternation #}" style='width: {{ cellwidth }}%;' />
-            {% endif %}
-        </colgroup>
+            {{ col_head }}
+        </tr>
+    </thead>
 
-        <thead>
-            <tr class="ls-heading ls-header">
-                <td>
-                    &nbsp;
-                </td>
-                {% for code, text in labelans %}
-                    <th id="answertext{{ basename }}_{{ code }}" class="answertext control-label" role="columnheader">
-                        {{ processString(text) }}
-                    </th>
-                {% endfor %}
+    <tbody>
 
-                {% if right_exists %}
-                    <td>&nbsp;</td>
-                {% endif %}
+            {# Defined in answer_row view #}
+            {{ sRows }}
 
-                {{ col_head }}
+        {% if showtotals %}
+            <tr class="total">
+                {{ row_head }}
+                {{ total }}
             </tr>
-        </thead>
+        {% endif %}
+    </tbody>
+</table>
 
-        <tbody>
-
-                {# Defined in answer_row view #}
-                {{ sRows }}
-
-            {% if showtotals %}
-                <tr class="total">
-                    {{ row_head }}
-                    {{ total }}
-                </tr>
-            {% endif %}
-        </tbody>
-    </table>
-</div>
 <!-- end of answer -->
 
 {% if (showGrandTotal == true) or (showtotals == true) %}

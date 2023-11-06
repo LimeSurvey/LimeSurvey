@@ -7,22 +7,22 @@ var onDocumentReadyAttributeMapToken = function(){
     if($("#createautomap").is(':checked')) {var attcreateautomap=true;} else {var attcreateautomap=false;}
     
     var headingHeight = 0;
-    $('.attribute-column .card-header').each(function(i) {
+    $('.attribute-column .panel-heading').each(function(i) {
         if($(this).height() > headingHeight) {
             headingHeight = $(this).height();
         }
     });
-    $('.attribute-column .card-header').css({'min-height': headingHeight});
+    $('.attribute-column .panel-heading').height(headingHeight);
     
     function adjustHeights() {
         $('.attribute-column, .droppable').css({ 'height': 'auto' });
         $('.attribute-column').height($('.draggable-container').height());
         
-        var ncHeadingHeight = $('#newcreated .card-header').outerHeight();
+        var ncHeadingHeight = $('#newcreated .panel-heading').outerHeight();
         $('.newcreate').css({
             'height':$('#newcreated').height()-ncHeadingHeight-5
         });
-        var taHeadingHeight = $('#tokenattribute .card-header').outerHeight();
+        var taHeadingHeight = $('#tokenattribute .panel-heading').outerHeight();
         $('#tokenatt').css({
             'height':$('#tokenattribute').height()-taHeadingHeight-5
         });
@@ -71,7 +71,7 @@ var onDocumentReadyAttributeMapToken = function(){
             // Remove the text input if dropped out of the new attributes column
             if(!$(this).hasClass('newcreate') && $('input[type="text"]', newDraggable).length > 0) { 
                 $('input[type="text"]', newDraggable).remove();
-                $(newDraggable).html('<div class="card-body">' + $(newDraggable).attr('data-name') + "</div>");
+                $(newDraggable).html('<div class="panel-body">' + $(newDraggable).attr('data-name') + "</div>");
             }        
 
             // Dropped in new attributes
@@ -158,8 +158,8 @@ var onDocumentReadyAttributeMapToken = function(){
             $('#attribute-map-token-modal').on('hide.bs.modal' , function (e) {
                 $(location).attr('href',redUrl);
             });
-            const modal = new bootstrap.Modal(document.getElementById('attribute-map-token-modal'), {});
-            modal.show();
+            $('#attribute-map-token-modal').modal();
+
         });
     });
 

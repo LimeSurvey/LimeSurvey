@@ -1,10 +1,10 @@
 <!-- The button -->
-<div id="trigger_<?=$this->widgetsJsName?>_button" class="gap-2">
+<div id="trigger_<?=$this->widgetsJsName?>_button">
     <button
         type="button"
         class="btn btn-block <?= implode(" ", $this->buttonClasses) ?>"
-        data-bs-target="#selector__<?=$this->widgetsJsName?>-modal"
-        data-bs-toggle="modal"
+        data-target="#selector__<?=$this->widgetsJsName?>-modal"
+        data-toggle="modal"
         aria-haspopup="true"
         aria-expanded="false"
         <?php
@@ -14,8 +14,7 @@
         ?>
         >
         <?php if ($this->iconPosition === 'front') : ?>
-            <i class="ri-folder-line"></i>&nbsp;&nbsp;
-
+            <i class="fa fa-folder-open"></i>&nbsp;&nbsp;
         <?php endif; ?>
         <span class="buttontext" id="selector__<?=$this->widgetsJsName?>--buttonText">
             <?= $this->currentSelected ?>
@@ -27,7 +26,7 @@
         </span>
         <?php if ($this->iconPosition === 'back') : ?>
             &nbsp;&nbsp;&nbsp;
-            <i class="ri-folder-line"></i>           
+            <i class="fa fa-folder-open"></i>           
         <?php endif; ?>
     </button>
 </div>

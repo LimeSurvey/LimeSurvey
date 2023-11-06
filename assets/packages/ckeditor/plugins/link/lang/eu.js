@@ -13,7 +13,6 @@ CKEDITOR.plugins.setLang( 'link', 'eu', {
 		title: 'Ainguraren propietateak',
 		name: 'Ainguraren izena',
 		errorName: 'Idatzi ainguraren izena',
-		errorWhitespace: 'Anchor name cannot contain space characters', // MISSING
 		remove: 'Kendu aingura'
 	},
 	anchorId: 'Elementuaren Id-aren arabera',

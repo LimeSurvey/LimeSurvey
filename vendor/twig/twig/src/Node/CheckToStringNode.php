@@ -31,15 +31,12 @@ class CheckToStringNode extends AbstractExpression
         parent::__construct(['expr' => $expr], [], $expr->getTemplateLine(), $expr->getNodeTag());
     }
 
-    public function compile(Compiler $compiler): void
+    public function compile(Compiler $compiler)
     {
-        $expr = $this->getNode('expr');
         $compiler
             ->raw('$this->sandbox->ensureToStringAllowed(')
-            ->subcompile($expr)
-            ->raw(', ')
-            ->repr($expr->getTemplateLine())
-            ->raw(', $this->source)')
+            ->subcompile($this->getNode('expr'))
+            ->raw(')')
         ;
     }
 }

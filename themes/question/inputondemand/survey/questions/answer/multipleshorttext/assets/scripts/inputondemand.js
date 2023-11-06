@@ -12,13 +12,13 @@ var InputOnDemanControlGenerator = function(containerId, options){
         $list.find('.selector--inputondemand-list-input').each(function(itrt, listItem){
             var isComplete = $(listItem).val() != '';
             if (isFirst || (isComplete && lastComplete == null)) {
-                $(listItem).closest('.selector--inputondemand-list-item').removeClass('d-none');
+                $(listItem).closest('.selector--inputondemand-list-item').removeClass('hidden');
             } else {
-                $(listItem).closest('.selector--inputondemand-list-item').addClass('d-none');
+                $(listItem).closest('.selector--inputondemand-list-item').addClass('hidden');
                 if (lastComplete == null) {
                     lastComplete = last;
                     if (options.autoadd == 'yes') {
-                        $(listItem).closest('.selector--inputondemand-list-item').removeClass('d-none');
+                        $(listItem).closest('.selector--inputondemand-list-item').removeClass('hidden');
                     }
                 }
             }
@@ -30,18 +30,18 @@ var InputOnDemanControlGenerator = function(containerId, options){
     var addLine = function() {
         var last = null;
         $list.find('.selector--inputondemand-list-input').each(function(itrt, listItem){
-            if(!$(listItem).closest('.selector--inputondemand-list-item').hasClass('d-none')) {
+            if(!$(listItem).closest('.selector--inputondemand-list-item').hasClass('hidden')) {
                 last = listItem;
                 return;
             }
             if(last !== null) {
-                $(listItem).closest('.selector--inputondemand-list-item').removeClass('d-none');
+                $(listItem).closest('.selector--inputondemand-list-item').removeClass('hidden');
                 last = null;
                 return false;
             }
         });
-        if(!$list.find('.selector--inputondemand-list-item').last().hasClass('d-none')) {
-            $button.addClass('d-none');
+        if(!$list.find('.selector--inputondemand-list-item').last().hasClass('hidden')) {
+            $button.addClass('hidden');
         }
     }
 
@@ -57,7 +57,7 @@ var InputOnDemanControlGenerator = function(containerId, options){
         });
 
         if(options.autoadd == 'yes') {
-            $button.addClass('d-none');
+            $button.addClass('hidden');
             $list.find('.selector--inputondemand-list-input').on('keyup', controlListItemVisibility);
         }
     };

@@ -10,7 +10,7 @@ if ($this->survey_active) {
 }
 
 ?>
-<select id="<?=$this->widgetsJsName?>" name="<?=$this->widgetsJsName?>" class="form-select" <?= $disable?> >
+<select id="<?=$this->widgetsJsName?>" name="<?=$this->widgetsJsName?>" class="form-control" <?= $disable?> >
     <?php 
     foreach ($this->itemArray as $sItemKey => $aItemContent) { 
         $selected = $this->value == $sItemKey ? 'selected' : '';

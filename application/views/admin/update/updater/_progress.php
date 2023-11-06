@@ -5,7 +5,7 @@
  */
 ?>
 <div id="progressContainer">
-    <h3 class="maintitle"><?php eT("Progress"); ?></h3>
+    <h2 class="maintitle"><?php eT("Progress"); ?></h2>
     <ol>
         <li id ="step0Updt" class="on">
             <span id="welcome"><?php eT("Welcome"); ?></span>

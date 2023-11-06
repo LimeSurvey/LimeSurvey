@@ -69,7 +69,6 @@
 
 			if ( editor.ui.addButton ) {
 				editor.ui.addButton( 'Source', {
-					isToggle: true,
 					label: editor.lang.sourcearea.toolbar,
 					command: 'source',
 					toolbar: 'mode,10'

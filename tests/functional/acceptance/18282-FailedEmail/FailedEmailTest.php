@@ -40,9 +40,6 @@ class FailedEmailTest extends TestBaseClassWeb
      */
     public function testGridButtons(): void
     {
-        // TODO: Disable in epic until fixed
-        $this->markTestSkipped();
-
         $urlManager = App()->urlManager;
         $web = self::$webDriver;
 
@@ -121,9 +118,6 @@ class FailedEmailTest extends TestBaseClassWeb
      */
     public function testMassiveActions(): void
     {
-        // TODO: Disable in epic until fixed
-        $this->markTestSkipped();
-
         $urlManager = App()->urlManager;
         $web = self::$webDriver;
 
@@ -200,4 +194,5 @@ class FailedEmailTest extends TestBaseClassWeb
         $massiveActionDeleteSuccess = $web->findElement(WebDriverBy::cssSelector('#massive-actions-modal-failedemail-grid-delete-0 #failedemail-action-modal--deleteresult'));
         $this->assertTrue($massiveActionDeleteSuccess->isDisplayed());
     }
+
 }

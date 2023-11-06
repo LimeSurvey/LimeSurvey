@@ -8,5 +8,5 @@ CKEDITOR.plugins.setLang( 'iframe', 'el', {
 	scrolling: 'Ενεργοποίηση μπαρών κύλισης',
 	title: 'Ιδιότητες IFrame',
 	toolbar: 'IFrame',
-	tabindex: 'Απομάκρυνση από ευρετήριο στηλοθέτη.'
+	tabindex: 'Remove from tabindex' // MISSING
 } );

@@ -79,7 +79,7 @@ class PreviewModalWidget extends CWidget
      * If the button should have any extra classes or modifications.
      * @var string[]
      */
-    public $buttonClasses = ['btn-outline-secondary'];
+    public $buttonClasses = ['btn-default'];
 
     /**
      * The position the icon has in the modal button

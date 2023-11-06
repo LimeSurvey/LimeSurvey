@@ -27,8 +27,6 @@ CKEDITOR.plugins.setLang( 'table', 'sv', {
 		borderColor: 'Ramfärg',
 		data: 'Data',
 		header: 'Rubrik',
-		columnHeader: 'Column Header', // MISSING
-		rowHeader: 'Row Header', // MISSING
 		yes: 'Ja',
 		no: 'Nej',
 		invalidWidth: 'Cellens bredd måste vara ett nummer.',

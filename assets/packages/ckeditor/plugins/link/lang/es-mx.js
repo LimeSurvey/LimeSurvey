@@ -13,7 +13,6 @@ CKEDITOR.plugins.setLang( 'link', 'es-mx', {
 		title: 'Propiedades del ancla',
 		name: 'Nombre del ancla',
 		errorName: 'Escriba el nombre del ancla',
-		errorWhitespace: 'Anchor name cannot contain space characters', // MISSING
 		remove: 'Remover ancla'
 	},
 	anchorId: 'Por Id del elemento',

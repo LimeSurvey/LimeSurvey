@@ -27,7 +27,7 @@
                         <?php echo 'Exported' ; ?>
                     </td>
                 <?php else: ?>
-                    <td class="text-danger">
+                    <td class="text-warning">
                         <?php echo $result['error'] ; ?>
                     </td>
                 <?php endif;?>
@@ -37,8 +37,8 @@
 </table>
 
 <?php if(!$bArchiveIsEmpty):?>
-    <button role="button" type="button" class='btn btn-primary' href="<?php echo App()->createUrl('/admin/export/sa/downloadZip/sZip/'.$sZip);?>">
-        <span class="ri-download-fill"></span>
+    <a class='btn btn-primary' href="<?php echo App()->createUrl('/admin/export/sa/downloadZip/sZip/'.$sZip);?>">
+        <span class="fa fa-download"></span>
         <?php eT('Download archive');?>
-    </button>
+    </a>
 <?php endif; ?>

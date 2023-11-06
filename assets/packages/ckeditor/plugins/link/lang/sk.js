@@ -13,7 +13,6 @@ CKEDITOR.plugins.setLang( 'link', 'sk', {
 		title: 'Vlastnosti kotvy',
 		name: 'Názov kotvy',
 		errorName: 'Zadajte prosím názov kotvy',
-		errorWhitespace: 'Anchor name cannot contain space characters', // MISSING
 		remove: 'Odstrániť kotvu'
 	},
 	anchorId: 'Podľa Id objektu',

@@ -80,10 +80,10 @@ class PHP32 extends PHP
             }
             $step = count($vals) & 3;
             if ($step) {
-                $digit = (int) floor($digit / pow(2, 2 * $step));
+                $digit = floor($digit / pow(2, 2 * $step));
             }
             if ($step != 3) {
-                $digit = (int) fmod($digit, static::BASE_FULL);
+                $digit &= static::MAX_DIGIT;
                 $i++;
             }
             $vals[] = $digit;

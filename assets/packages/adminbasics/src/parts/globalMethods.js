@@ -5,7 +5,6 @@
 import LOG from '../components/lslog';
 
 const globalWindowMethods = {
-    // TODO: It seems below two functions are not used and can be deleted. Please confirm.
     renderBootstrapSwitch : () => {
         try{
             if(!$('[data-is-bootstrap-switch]').parent().hasClass('bootstrap-switch-container')) {
@@ -20,7 +19,6 @@ const globalWindowMethods = {
             $('[data-is-bootstrap-switch]').bootstrapSwitch('destroy');
         } catch(e) { LOG.error(e); }
     },
-    // ==================================================================================
     validatefilename: (form, strmessage) => {
         if (form.the_file.value == "") {
             $('#pleaseselectfile-popup').modal();
@@ -30,24 +28,22 @@ const globalWindowMethods = {
         return true ;
     },
     doToolTip: () => {
-        // Destroy all tooltips
         try {
-            $('.tooltip').tooltip('dispose');
+            $(".btntooltip").tooltip("destroy");
+        } catch (e) {}
+        try {
+            $('[data-tooltip="true"]').tooltip("destroy");
+        } catch (e) {}
+        try {
+            $('[data-tooltip="true"]').tooltip("destroy");
         } catch (e) {}
 
-        // Reinit all tooltips
-        let tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-        tooltipTriggerList.map(function (tooltipTriggerEl) {
-            return new bootstrap.Tooltip(tooltipTriggerEl);
-        });
+        $(".btntooltip").tooltip();
+        $('[data-tooltip="true"]').tooltip();
+        $('[data-toggle="tooltip"]').tooltip();
     },
     doSelect2: () => {
         $("select.activate-search").select2();
-
-
-	$(document).on('select2:open', function(e) {
-	  document.querySelector(`[aria-controls="select2-${e.target.id}-results"]`).focus();
-	});
     },
     // finds any duplicate array elements using the fewest possible comparison
     arrHasDupes:  ( arrayToCheck ) => {  
@@ -143,8 +139,8 @@ const globalWindowMethods = {
 };
 const globalStartUpMethods = {
     bootstrapping : ()=>{
-        // $('button,input[type=submit],input[type=button],input[type=reset],.button').button();
-        // $('button,input[type=submit],input[type=button],input[type=reset],.button').addClass("limebutton");
+        $('button,input[type=submit],input[type=button],input[type=reset],.button').button();
+        $('button,input[type=submit],input[type=button],input[type=reset],.button').addClass("limebutton");
 
         $(".progressbar").each(function(){
             var pValue = parseInt($(this).attr('name'));
@@ -154,7 +150,7 @@ const globalStartUpMethods = {
             $("div",this).html(pValue + "%");
         });
         /* set default for select2 */
-        $.fn.select2.defaults.set("theme", "bootstrap-5");
+        $.fn.select2.defaults.set("theme", "bootstrap");
         globalWindowMethods.tableCellAdapters();
     }
 };

@@ -11,27 +11,23 @@
 
 namespace Twig;
 
-use Twig\Node\Expression\FunctionExpression;
 use Twig\Node\Node;
 
 /**
  * Represents a template function.
  *
- * @author Fabien Potencier <fabien@symfony.com>
+ * @final
  *
- * @see https://twig.symfony.com/doc/templates.html#functions
+ * @author Fabien Potencier <fabien@symfony.com>
  */
-final class TwigFunction
+class TwigFunction
 {
-    private $name;
-    private $callable;
-    private $options;
-    private $arguments = [];
+    protected $name;
+    protected $callable;
+    protected $options;
+    protected $arguments = [];
 
-    /**
-     * @param callable|array{class-string, string}|null $callable A callable implementing the function. If null, you need to overwrite the "node_class" option to customize compilation.
-     */
-    public function __construct(string $name, $callable = null, array $options = [])
+    public function __construct($name, $callable, array $options = [])
     {
         $this->name = $name;
         $this->callable = $callable;
@@ -41,82 +37,82 @@ final class TwigFunction
             'is_variadic' => false,
             'is_safe' => null,
             'is_safe_callback' => null,
-            'node_class' => FunctionExpression::class,
+            'node_class' => '\Twig\Node\Expression\FunctionExpression',
             'deprecated' => false,
             'alternative' => null,
         ], $options);
     }
 
-    public function getName(): string
+    public function getName()
     {
         return $this->name;
     }
 
-    /**
-     * Returns the callable to execute for this function.
-     *
-     * @return callable|array{class-string, string}|null
-     */
     public function getCallable()
     {
         return $this->callable;
     }
 
-    public function getNodeClass(): string
+    public function getNodeClass()
     {
         return $this->options['node_class'];
     }
 
-    public function setArguments(array $arguments): void
+    public function setArguments($arguments)
     {
         $this->arguments = $arguments;
     }
 
-    public function getArguments(): array
+    public function getArguments()
     {
         return $this->arguments;
     }
 
-    public function needsEnvironment(): bool
+    public function needsEnvironment()
     {
         return $this->options['needs_environment'];
     }
 
-    public function needsContext(): bool
+    public function needsContext()
     {
         return $this->options['needs_context'];
     }
 
-    public function getSafe(Node $functionArgs): ?array
+    public function getSafe(Node $functionArgs)
     {
         if (null !== $this->options['is_safe']) {
             return $this->options['is_safe'];
         }
 
         if (null !== $this->options['is_safe_callback']) {
-            return $this->options['is_safe_callback']($functionArgs);
+            return \call_user_func($this->options['is_safe_callback'], $functionArgs);
         }
 
         return [];
     }
 
-    public function isVariadic(): bool
+    public function isVariadic()
     {
-        return (bool) $this->options['is_variadic'];
+        return $this->options['is_variadic'];
     }
 
-    public function isDeprecated(): bool
+    public function isDeprecated()
     {
         return (bool) $this->options['deprecated'];
     }
 
-    public function getDeprecatedVersion(): string
+    public function getDeprecatedVersion()
     {
-        return \is_bool($this->options['deprecated']) ? '' : $this->options['deprecated'];
+        return $this->options['deprecated'];
     }
 
-    public function getAlternative(): ?string
+    public function getAlternative()
     {
         return $this->options['alternative'];
     }
 }
+
+class_alias('Twig\TwigFunction', 'Twig_SimpleFunction');
+
+// Ensure that the aliased name is loaded to keep BC for classes implementing the typehint with the old aliased name.
+class_exists('Twig\Node\Node');

@@ -41,7 +41,7 @@ class RenderBoilerplate extends QuestionBaseRenderer
             'ia' => $this->aFieldArray,
             'name' => $this->sSGQA,
             'basename' => $this->sSGQA, /* is this needed ? */
-            'coreClass' => 'ls-answers d-none ' . $sCoreClasses,
+            'coreClass' => 'ls-answers hidden ' . $sCoreClasses,
             ), true);
 
         $inputnames[] = $this->sSGQA;

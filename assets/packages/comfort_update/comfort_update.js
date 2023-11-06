@@ -1,16 +1,16 @@
 'use strict';
 document.addEventListener('DOMContentLoaded', function () {
-    document.getElementById('update-alert').addEventListener('closed.bs.alert', function () {
-        let url = this.dataset.urlNotificationState;
-        let xhr = new XMLHttpRequest();
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4 && (xhr.status >= 200 && xhr.status < 300)) {
+    $('#update-alert').on('closed.bs.alert', function () {
+        $.ajax({
+            url: $(this).attr('data-url-notification-state'),
+            type: 'GET',
+            success: function () {
                 // success, do nothing
-            } else {
+            },
+            error: function () {
                 // error, do nothing
-            }
-        };
-        xhr.open('GET', url, true);
-        xhr.send();
+            },
+        });
     });
+
 });

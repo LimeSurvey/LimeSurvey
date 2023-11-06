@@ -14,7 +14,7 @@ $aActionsArray = array(
             'type'          => 'action',
             'action'        => 'delete',
             'url'           =>  App()->createUrl('userManagement/deleteMultiple'),
-            'iconClasses'   => 'ri-delete-bin-fill text-danger',
+            'iconClasses'   => 'fa fa-trash text-danger',
             'text'          =>  gT('Delete'),
             'grid-reload'   => 'yes',
             'actionType'    => 'modal',
@@ -30,7 +30,7 @@ $aActionsArray = array(
             'type'          => 'action',
             'action'        => 'resendlogindata',
             'url'           =>  App()->createUrl('userManagement/batchSendAndResetLoginData'),
-            'iconClasses'   => 'text-success ri-refresh-line',
+            'iconClasses'   => 'text-success fa fa-refresh',
             'text'          =>  gT('Resend login data'),
             'grid-reload'   => 'yes',
             'actionType'    => 'modal',
@@ -46,7 +46,7 @@ $aActionsArray = array(
             'type'              => 'action',
             'action'            => 'batchPermissions',
             'url'               => App()->createUrl('userManagement/batchPermissions'),
-            'iconClasses'       => 'ri-lock-unlock-fill',
+            'iconClasses'       => 'fa fa-unlock',
             'text'              => gT('Edit permissions'),
             'grid-reload'       => 'yes',
             //modal
@@ -70,8 +70,8 @@ if(Permission::model()->hasGlobalPermission('users', 'update')) {
         'type'          => 'action',
         'action'        => 'batchaddtogroup',
         'url'           => App()->createUrl('userManagement/batchAddGroup'),
-        'iconClasses'   => 'ri-group-fill',
-        'text'          => gT('Add to user group'),
+        'iconClasses'   => 'fa fa-users',
+        'text'          => gT('Add to usergroup'),
         'grid-reload'   => 'yes',
         //modal
         'actionType'    => 'modal',
@@ -79,7 +79,7 @@ if(Permission::model()->hasGlobalPermission('users', 'update')) {
         'keepopen'      => 'yes',
         'showSelected'  => 'yes',
         'selectedUrl'   => App()->createUrl('userManagement/renderSelectedItems/'),
-        'sModalTitle'   => gT('Add to user group'),
+        'sModalTitle'   => gT('Add to usergroup'),
         'htmlModalBody' => App()->getController()->renderPartial('/userManagement/massiveAction/_addtousergroup', [], true)
     );
 }
@@ -90,7 +90,7 @@ if(Permission::model()->hasGlobalPermission('superadmin','read')) {
         'type'              => 'action',
         'action'            => 'batchaddrole',
         'url'               => App()->createUrl('userManagement/batchApplyRoles'),
-        'iconClasses'       => 'ri-profile-line',
+        'iconClasses'       => 'fa fa-address-card-o',
         'text'              => gT('Add role'),
         'grid-reload'       => 'yes',
         //modal

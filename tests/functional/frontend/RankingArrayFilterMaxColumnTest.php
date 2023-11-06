@@ -70,9 +70,6 @@ class RankingArrayFilterMaxColumnTest extends TestBaseClassWeb
             $label = $web->findByCss('#' . $answerId . ' label');
             $label->click();
 
-            $web->executeScript('window.scrollTo(0,document.body.scrollHeight);');
-            sleep(1);
-
             // Go to next page.
             $web->next();
             sleep(1);

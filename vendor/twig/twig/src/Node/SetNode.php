@@ -21,7 +21,7 @@ use Twig\Node\Expression\ConstantExpression;
  */
 class SetNode extends Node implements NodeCaptureInterface
 {
-    public function __construct(bool $capture, Node $names, Node $values, int $lineno, string $tag = null)
+    public function __construct($capture, \Twig_NodeInterface $names, \Twig_NodeInterface $values, $lineno, $tag = null)
     {
         parent::__construct(['names' => $names, 'values' => $values], ['capture' => $capture, 'safe' => false], $lineno, $tag);
 
@@ -41,7 +41,7 @@ class SetNode extends Node implements NodeCaptureInterface
         }
     }
 
-    public function compile(Compiler $compiler): void
+    public function compile(Compiler $compiler)
     {
         $compiler->addDebugInfo($this);
 
@@ -103,3 +103,5 @@ class SetNode extends Node implements NodeCaptureInterface
         $compiler->raw(";\n");
     }
 }
+
+class_alias('Twig\Node\SetNode', 'Twig_Node_Set');

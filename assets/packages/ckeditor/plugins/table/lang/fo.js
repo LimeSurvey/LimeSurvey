@@ -27,8 +27,6 @@ CKEDITOR.plugins.setLang( 'table', 'fo', {
 		borderColor: 'Bordalitur',
 		data: 'Data',
 		header: 'Header',
-		columnHeader: 'Column Header', // MISSING
-		rowHeader: 'Row Header', // MISSING
 		yes: 'Ja',
 		no: 'Nei',
 		invalidWidth: 'Meskubreidd má vera eitt tal.',

@@ -11,6 +11,5 @@ CKEDITOR.plugins.setLang( 'clipboard', 'sv', {
 	pasteNotification: 'Tryck på %1 för att klistra in. Din webbläsare stödjer inte inklistring via verktygsfältet eller snabbmenyn.',
 	pasteArea: 'Inklistringsområde',
 	pasteMsg: 'Klistra in ditt innehåll i området nedan och tryck på OK.',
-	fileFormatNotSupportedNotification: 'The ${formats} file format(s) are not supported.', // MISSING
-	fileWithoutFormatNotSupportedNotification: 'The file format is not supported.' // MISSING
+	fileFormatNotSupportedNotification: 'This file format is not supported. You can try with one of the supported formats: ${formats}.' // MISSING
 } );

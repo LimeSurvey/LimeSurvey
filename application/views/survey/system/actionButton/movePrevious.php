@@ -12,7 +12,7 @@
         'type'=>'submit',
         'value'=>$value,
         'name'=>'move',
-        'class'=>"$class btn btn-lg btn-outline-secondary",
+        'class'=>"$class btn btn-lg btn-default",
         'accesskey'=>'p'
     ));
 ?>

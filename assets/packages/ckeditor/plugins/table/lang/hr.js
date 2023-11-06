@@ -27,8 +27,6 @@ CKEDITOR.plugins.setLang( 'table', 'hr', {
 		borderColor: 'Boja ruba',
 		data: 'Podatak',
 		header: 'Zaglavlje',
-		columnHeader: 'Column Header', // MISSING
-		rowHeader: 'Row Header', // MISSING
 		yes: 'Da',
 		no: 'Ne',
 		invalidWidth: 'Širina ćelije mora biti broj.',

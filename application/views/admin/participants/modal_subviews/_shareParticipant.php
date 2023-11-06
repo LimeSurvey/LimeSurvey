@@ -8,7 +8,7 @@ Yii::app()->getController()->renderPartial(
 <div class="modal-body ">
 <?php
     $form = $this->beginWidget(
-        'yiistrap_fork.widgets.TbActiveForm',
+        'bootstrap.widgets.TbActiveForm',
         array(
             'id' => 'shareParticipantActiveForm',
             'action' => array('admin/participants/sa/shareParticipants'),
@@ -24,14 +24,14 @@ Yii::app()->getController()->renderPartial(
         <input type="hidden" name="participant_id" value="<?php echo $model->participant_id; ?>" />
     <?php endif; ?>
     <div class="row">
-        <div class="col-lg-6">
-            <div class='mb-3'>
-                <label class='form-label'>
+        <div class="col-md-6">
+            <div class='form-group'>
+                <label class='control-label'>
                     <?php eT("User with whom the participants are to be shared:"); ?>
                 </label>
 
-                <div class='col-12'>
-                    <select class='form-select' id='shareuser' name='shareuser'>
+                <div class='col-sm-12'>
+                    <select class='form-control' id='shareuser' name='shareuser'>
                         <option value=''><?php eT('Share with all users'); ?></option>
                         <?php foreach ($users as $user): ?>
                             <option value='<?php echo $user->uid; ?>'>
@@ -40,24 +40,17 @@ Yii::app()->getController()->renderPartial(
                         <?php endforeach; ?>
                     </select>
                 </div>
-                <div class='col-md-4'></div>
+                <div class='col-sm-4'></div>
             </div>
         </div>
 
-        <div class="col-lg-6">
-            <div class='mb-3'>
-                <label class='form-label text-start'>
+        <div class="col-md-6">
+            <div class='form-group'>
+                <label class='control-label text-left'>
                     <?php eT("Other users may edit this participant"); ?>
                 </label>
-                <div class='col-12'>
-                    <?php App()->getController()->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
-                        'name'          => "can_edit",
-                        'checkedOption' => "0",
-                        'selectOptions' => [
-                            '1' => gT('Yes'),
-                            '0' => gT('No'),
-                        ]
-                    ]); ?>
+                <div class='col-sm-12'>
+                    <input name='can_edit' type='checkbox' data-size='small' data-on-color='primary' data-off-color='warning' data-off-text='<?php eT('No'); ?>' data-on-text='<?php eT('Yes'); ?>' class='ls-bootstrap-switch ls-space margin left-15' />
                 </div>
             </div>
         </div>
@@ -65,9 +58,7 @@ Yii::app()->getController()->renderPartial(
 
 </div>
 <div class="modal-footer">
-    <button type="button" class="btn btn-cancel" data-bs-dismiss="modal"><?php eT('Cancel') ?></button>
-    <button role="button" type="button" class="btn btn-primary action_save_modal_shareparticipant">
-        <?php eT("Share")?>
-    </button>
+    <button type="button" class="btn btn-cancel" data-dismiss="modal"><?php eT('Cancel') ?></button>
+    <button type="button" class="btn btn-primary action_save_modal_shareparticipant"><?php eT("Share")?></button>
 </div>
 <?php $this->endWidget(); ?>

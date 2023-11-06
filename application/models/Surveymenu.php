@@ -177,11 +177,7 @@ class Surveymenu extends LSActiveRecord
                 if ($oDataAttribute->isActive !== null && $oSurvey != null) {
                     if ($oDataAttribute->isActive == true && $oSurvey->active == 'N') {
                         $aEntry['disabled'] = true;
-                        if ($aEntry['name'] === 'responses') {
-                            $aEntry['disabled_tooltip'] = gT("This survey is not active and has no responses.");
-                        } elseif ($aEntry['name'] === 'statistics') {
-                            $aEntry['disabled_tooltip'] = gT("This survey has not been activated. There are no results to browse.");
-                        }
+                        $aEntry['disabled_tooltip'] = sprintf(gT("The '%s' section is not available yet. Please activate your survey to enable this section."), gT($aEntry['menu_title']));
                     } elseif ($oDataAttribute->isActive == false && $oSurvey->active == 'Y') {
                         $aEntry['disabled'] = true;
                         $aEntry['disabled_tooltip'] = sprintf(gT("The '%s' section is not available while the survey is active."), gT($aEntry['menu_title']));
@@ -357,21 +353,33 @@ class Surveymenu extends LSActiveRecord
      **/
     public function getButtons()
     {
-        $permission_settings_update = Permission::model()->hasGlobalPermission('settings', 'update');
-        $dropdownItems = [];
-        $dropdownItems[] = [
-            'title'            => gT('Edit this survey menu'),
-            'linkClass'        => 'action_surveymenu_editModal',
-            'iconClass'        => 'ri-pencil-fill',
-            'enabledCondition' => $permission_settings_update
-        ];
-        $dropdownItems[] = [
-            'title'            => gT('Delete this survey menu'),
-            'linkClass'        => 'action_surveymenu_deleteModal',
-            'iconClass'        => 'ri-delete-bin-fill text-danger',
-            'enabledCondition' => $permission_settings_update
-        ];
-        return App()->getController()->widget('ext.admin.grid.GridActionsWidget.GridActionsWidget', ['dropdownItems' => $dropdownItems], true);
+        $buttons = "<div class='icon-btn-row'>";
+        $raw_button_template = ""
+            . "<button class='btn btn-default btn-sm %s %s' role='button' data-toggle='tooltip' title='%s' onclick='return false;'>" //extra class //title
+            . "<i class='fa fa-%s' ></i>"
+            . "</button>";
+
+        if (Permission::model()->hasGlobalPermission('settings', 'update')) {
+            $editData = array(
+                'action_surveymenu_editModal',
+                'green-border',
+                gT("Edit this survey menu"),
+                'pencil'
+            );
+            $deleteData = array(
+                'action_surveymenu_deleteModal',
+                'red-border',
+                gT("Delete this survey menu"),
+                'trash text-danger'
+            );
+
+            $buttons .= vsprintf($raw_button_template, $editData);
+            $buttons .= vsprintf($raw_button_template, $deleteData);
+        }
+
+        $buttons .= '</div>';
+
+        return $buttons;
     }
 
     /**
@@ -380,56 +388,50 @@ class Surveymenu extends LSActiveRecord
      */
     public function getColumns()
     {
-        $cols = [
-            [
-                'value'             => '\'<input type="checkbox" name="id[]" class="action_selectthismenu" value="\'.$data->id.\'" />\'',
-                'type'              => 'raw',
-                'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
-                'filterHtmlOptions' => ['class' => 'ls-sticky-column'],
-                'htmlOptions'       => ['class' => 'ls-sticky-column']
-            ],
-            [
+        $cols = array(
+            array(
+            'value' => '\'<input type="checkbox" name="id[]" class="action_selectthismenu" value="\'.$data->id.\'" />\'',
+            'type' => 'raw'
+            ),
+            array(
+                "name" => 'buttons',
+                "type" => 'raw',
+                "header" => gT("Action"),
+                "filter" => false
+            ),
+            array(
                 'name' => 'name',
-            ],
-            [
+            ),
+            array(
                 'name' => 'title',
-            ],
-            [
+            ),
+            array(
                 'name' => 'description',
-            ],
-            [
+            ),
+            array(
                 'name' => 'ordering',
-            ],
-            [
+            ),
+            array(
                 'name' => 'level',
-            ],
-            [
+            ),
+            array(
                 'name' => 'position',
-            ],
-            [
-                'name'  => 'parent_id',
-                'value' => '$data->parent_id ? $data->parent[\'title\']." (".$data->parent_id.")" : "<i class=\'ri-subtract-fill\'></i>"',
-                'type'  => 'raw'
-            ],
-            [
-                'name'  => 'survey_id',
-                'value' => '$data->survey_id ? $data->survey->defaultlanguage->surveyls_title : "<i class=\'ri-subtract-fill\'></i>"',
-                'type'  => 'raw'
-            ],
-            [
-                'name'  => 'user_id',
-                'value' => '$data->user_id ? $data->user->full_name : "<i class=\'ri-subtract-fill\'></i>"',
-                'type'  => 'raw'
-            ],
-            [
-                "name"              => 'buttons',
-                "type"              => 'raw',
-                "header"            => gT("Action"),
-                "filter"            => false,
-                'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
-                'filterHtmlOptions' => ['class' => 'ls-sticky-column'],
-                'htmlOptions'       => ['class' => 'ls-sticky-column']
-            ],
+            ),
+            array(
+                'name' => 'parent_id',
+                'value' => '$data->parent_id ? $data->parent[\'title\']." (".$data->parent_id.")" : "<i class=\'fa fa-minus\'></i>"',
+                'type' => 'raw'
+            ),
+            array(
+                'name' => 'survey_id',
+                'value' => '$data->survey_id ? $data->survey->defaultlanguage->surveyls_title : "<i class=\'fa fa-minus\'></i>"',
+                'type' => 'raw'
+            ),
+            array(
+                'name' => 'user_id',
+                'value' => '$data->user_id ? $data->user->full_name : "<i class=\'fa fa-minus\'></i>"',
+                'type' => 'raw'
+            ),
             // array(
             //  'name' => 'changed_at',
             // ),
@@ -442,7 +444,7 @@ class Surveymenu extends LSActiveRecord
             // array(
             //  'name' => 'created_by',
             // ),
-        ];
+        );
 
         return $cols;
     }
@@ -526,12 +528,12 @@ class Surveymenu extends LSActiveRecord
             ),
             array(
                 'name' => 'parent_id',
-                'value' => '$data->parent_id ? $data->parent->title : "<i class=\'ri-subtract-fill\'></i>"',
+                'value' => '$data->parent_id ? $data->parent->title : "<i class=\'fa fa-minus\'></i>"',
                 'type' => 'raw'
             ),
             array(
                 'name' => 'survey_id',
-                'value' => '$data->survey_id ? $data->survey->defaultlanguage->surveyls_title : "<i class=\'ri-subtract-fill\'></i>"',
+                'value' => '$data->survey_id ? $data->survey->defaultlanguage->surveyls_title : "<i class=\'fa fa-minus\'></i>"',
                 'type' => 'raw'
             )
         );

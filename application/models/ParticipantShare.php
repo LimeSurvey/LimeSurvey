@@ -136,21 +136,13 @@ class ParticipantShare extends LSActiveRecord
     {
         $loggedInUser = yii::app()->user->getId();
         if ($this->participant->owner_uid == $loggedInUser) {
-            $inputHtml = App()->getController()->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
-                'name'          => 'canedithtml_' . $this->participant_id . "_" . $this->share_uid,
-                'checkedOption' => $this->can_edit ? "1" : "0",
-                'selectOptions' => [
-                    '1' => gT('Yes'),
-                    '0' => gT('No'),
-                ],
-                'htmlOptions'   => [
-                    'class' => 'action_changeEditableStatus'
-                ]
-            ], true);
-            return $inputHtml;
+            $inputHtml = "<input type='checkbox' data-size='small' data-off-color='warning' data-on-color='primary' data-off-text='" . gT('No') . "' data-on-text='" . gT('Yes') . "' class='action_changeEditableStatus' "
+            . ($this->can_edit ? "checked" : "")
+            . "/>";
+            return  $inputHtml;
+        } else {
+            return ($this->can_edit ? gT("Yes") : gT('No'));
         }
-
-        return ($this->can_edit ? gT("Yes") : gT('No'));
     }
 
     /**
@@ -159,34 +151,32 @@ class ParticipantShare extends LSActiveRecord
      */
     public function getButtons()
     {
-        $permission_superadmin_read = Permission::model()->hasGlobalPermission('superadmin', 'read');
-        $userId = App()->user->id;
+        $userId = yii::app()->user->id;
         $isOwner = $this->participant->owner_uid == $userId;
-            $url = App()->createUrl(
+        $isSuperAdmin = Permission::model()->hasGlobalPermission('superadmin', 'read');
+        $buttons = "<div class='icon-btn-row'>";
+        if ($isOwner || $isSuperAdmin) {
+            $url = Yii::app()->createUrl(
                 'admin/participants/sa/deleteSingleParticipantShare',
                 [
                     'participantId' => urlencode($this->participant_id),
                     'shareUid'      => $this->share_uid
                 ]
             );
+            $buttons .= "<span data-toggle='tooltip' title='" . gT("Delete sharing") . "'><a href='#'
+            class='btn btn-sm btn-default action_delete_shareParticipant'
+            data-toggle='modal' 
+            data-target='#confirmation-modal'
+            data-title='" . gt('Unshare this participant') . "'
+            data-btntext='" . gt('Unshare') . "'
+            data-message='" . gT('Do you really want to unshare this participant?') . "' 
+            data-onclick='(function() { LS.CPDB.deleteSingleParticipantShare(\"" . $url . "\"); })'>"
+                . "<i class='fa fa-trash text-danger'></i>"
+                . "</a></span>";
+        }
+        $buttons .= "</div>";
 
-        $dropdownItems = [];
-        $dropdownItems[] = [
-            'title' => gT('Delete sharing'),
-            'linkClass' => 'action_delete_shareParticipant',
-            'iconClass' => 'ri-delete-bin-fill text-danger',
-            'linkAttributes' => [
-                'data-bs-toggle' => 'modal',
-                'data-bs-target' => '#confirmation-modal',
-                'data-title'     => gT('Unshare this participant'),
-                'data-btntext'   => gT('Unshare'),
-                'data-message'   => gT('Do you really want to unshare this participant?'),
-                'data-onclick'   => "(function() { LS.CPDB.deleteSingleParticipantShare(\"$url\")})",
-            ],
-            'enabledCondition' => $isOwner || $permission_superadmin_read
-        ];
-
-        return App()->getController()->widget('ext.admin.grid.GridActionsWidget.GridActionsWidget', ['dropdownItems' => $dropdownItems], true);
+        return $buttons;
     }
 
     /**
@@ -218,67 +208,60 @@ class ParticipantShare extends LSActiveRecord
     public function getColumns()
     {
         $participantFilter = yii::app()->request->getPost('Participant');
-        $cols = [
-            [
-                "name"              => 'checkbox',
-                "type"              => 'raw',
-                "header"            => "<input type='checkbox' id='action_toggleAllParticipantShare' />",
-                "filter"            => false,
-                'filterHtmlOptions' => ['class' => 'ls-sticky-column'],
-                'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
-                'htmlOptions'       => ['class' => 'ls-sticky-column'],
-            ],
-            [
-                "name"   => 'participant.lastname',
+        $cols = array(
+            array(
+                "name" => 'checkbox',
+                "type" => 'raw',
+                "header" => "<input type='checkbox' id='action_toggleAllParticipantShare' />",
+                "filter" => false
+            ),
+            array(
+                "name" => 'buttons',
+                "type" => 'raw',
+                "header" => gT("Action"),
+                "filter" => false
+            ),
+            array(
+                "name" => 'participant.lastname',
                 "header" => gT("Last name"),
                 "filter" => TbHtml::textField("Participant[lastname]", $participantFilter['lastname'] ?? '')
-            ],
-            [
-                "name"   => 'participant.firstname',
+            ),
+            array(
+                "name" => 'participant.firstname',
                 "header" => gT("First name"),
                 "filter" => TbHtml::textField("Participant[firstname]", $participantFilter['firstname'] ?? '')
-            ],
-            [
-                "name"   => 'participant.email',
+            ),
+            array(
+                "name" => 'participant.email',
                 "header" => gT("Email address"),
                 "filter" => TbHtml::textField("Participant[email]", $participantFilter['email'] ?? '')
-            ],
-            [
-                "name"   => 'share_uid',
-                "value"  => '$data->sharedBy',
-                "type"   => 'raw',
+            ),
+            array(
+                "name" => 'share_uid',
+                "value" => '$data->sharedBy',
+                "type" => 'raw',
                 "header" => gT("Shared with"),
                 "filter" => $this->getSharedByList($this->share_uid)
-            ],
-            [
-                'name'   => 'ownerName',
-                'value'  => '$data->getOwnerName()',
+            ),
+            array(
+                'name' => 'ownerName',
+                'value' => '$data->getOwnerName()',
                 'header' => 'Owner'
-            ],
-            [
-                "name"   => 'date_added',
+            ),
+            array(
+                "name" => 'date_added',
                 "header" => gT("Date added")
-            ],
-            [
-                "name"   => 'can_edit',
-                "value"  => '$data->getCanEditHtml()',
+            ),
+            array(
+                "name" => 'can_edit',
+                "value" => '$data->getCanEditHtml()',
                 "header" => gT("Can edit?"),
-                "filter" => [1 => gT('Yes'), 0 => gT('No')],
-                "type"   => "raw"
-            ],
-            [
-                "name"              => 'buttons',
-                "type"              => 'raw',
-                "header"            => gT("Action"),
-                "filter"            => false,
-                'filterHtmlOptions' => ['class' => 'ls-sticky-column'],
-                'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
-                'htmlOptions'       => ['class' => 'ls-sticky-column'],
-            ],
-        ];
+                "filter" => array(1 => gT('Yes'), 0 => gT('No')),
+                "type" => "raw"
+            ),
+        );
         return $cols;
     }
-
     /**
      * Retrieves a list of models based on the current search/filter conditions.
      * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
@@ -383,8 +366,8 @@ class ParticipantShare extends LSActiveRecord
      */
     public function updateShare($data)
     {
-        if (strpos((string) $data['participant_id'], '--') !== false) {
-            list($participantId, $shareuid) = explode("--", (string) $data['participant_id']);
+        if (strpos($data['participant_id'], '--') !== false) {
+            list($participantId, $shareuid) = explode("--", $data['participant_id']);
             $data = array("participant_id" => $participantId, "share_uid" => $shareuid, "can_edit" => $data['can_edit']);
         }
         $criteria = new CDbCriteria();

@@ -81,7 +81,6 @@ $config['allowexportalldb']          = 0; // Default 0 will only export prefixed
 
 $config['deletenonvalues']           = 1; // By default, LimeSurvey does not save responses to conditional questions that haven't been answered/shown. To have LimeSurvey save these responses change this value to 0.
 $config['stringcomparizonoperators'] = 0; // By default, LimeSurvey assumes the numrical order for comparizon operators in conditions. If you need string comparizon operators, set this parameter to 1
-$config['shownoanswer']              = 2; // Show 'no answer' for non mandatory questions ( 0 = no , 1 = yes , 2 = overridden by survey settings )
 $config['blacklistallsurveys']       = 'N'; // Blacklist all current surveys for participant once the global field is set
 $config['blacklistnewsurveys']       = 'N'; // Blacklist participant for any new added survey once the global field is set
 $config['blockaddingtosurveys']      = 'Y'; // Don't allow blacklisted participants to be added to new survey
@@ -90,7 +89,7 @@ $config['deleteblacklisted']         = 'N'; // Delete globally blacklisted parti
 $config['allowunblacklist']          = 'N'; // Allow participant to unblacklist himself/herself
 $config['userideditable']            = 'N'; // Allow editing of user IDs
 
-$config['defaulttheme']              = 'fruity_twentythree'; // This setting specifys the default theme used for the 'public list' of surveys
+$config['defaulttheme']              = 'fruity'; // This setting specifys the default theme used for the 'public list' of surveys
 $config['createsample']              = true;
 $config['customassetversionnumber']  = 1;        // Used to generate the path of tmp assets (see: LSYii_AssetManager::generatePath()  )
 
@@ -111,7 +110,7 @@ $config['allowedfileuploads'] = [
 ];
 // NB: Allowing XML enables XSS, since XML can be an HTML page.
 $config['allowedresourcesuploads'] = '7z,aiff,asf,avi,bmp,csv,doc,docx,fla,flv,gif,gz,gzip,ico,jpeg,jpg,mid,mov,mp3,mp4,mpc,mpeg,mpg,ods,odt,pdf,png,ppt,pxd,qt,ram,rar,rm,rmi,rmvb,rtf,sdc,sitd,swf,sxc,sxw,tar,tgz,tif,tiff,txt,vsd,wav,wma,wmv,xls,xlsx,zip,css,js'; // File types allowed to be uploaded in the resources sections, and with the HTML Editor
-$config['allowedpluginuploads'] = 'gif,ico,jpg,png,css,js,map,json,eot,otf,ttf,woff,txt,md,xml,woff2,twig,php,html,po,mo,xsd';
+$config['allowedpluginuploads'] = 'gif,ico,jpg,png,css,js,map,json,eot,otf,ttf,woff,txt,md,xml,woff2,twig,php,html,po,mo';
 
 $config['memory_limit'] = '256'; // This sets how much memory LimeSurvey can access in megabytes. 256 MB is the minimum recommended - if you are using PDF functions up to 512 MB may be needed
 
@@ -730,6 +729,8 @@ $config['imagedir']                 = $config['rootdir'] . DIRECTORY_SEPARATOR .
 $config['uploaddir']                = $config['rootdir'] . DIRECTORY_SEPARATOR . "upload";
 $config['standardthemerootdir']     = $config['rootdir'] . DIRECTORY_SEPARATOR . "themes" . DIRECTORY_SEPARATOR . "survey"; // The directory path of the standard themes
 $config['publicstylepath']          = $config['rootdir'] . DIRECTORY_SEPARATOR . $config['publicstyle'];
+$config['views']                    = $config['rootdir'] . DIRECTORY_SEPARATOR . 'application' . DIRECTORY_SEPARATOR . "views";
+$config['adminviews']               = $config['views']    . DIRECTORY_SEPARATOR . "admin";
 $config['corequestiontypedir']      = "application" . DIRECTORY_SEPARATOR . "views";
 $config['corequestionthemedir']     = "themes" . DIRECTORY_SEPARATOR . "question";
 $config['corequestionthemerootdir'] = $config['rootdir'] . DIRECTORY_SEPARATOR . $config['corequestionthemedir']; // The directory containing the core's question themes.

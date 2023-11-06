@@ -8,7 +8,7 @@
  * @package YiiWheels.widgets.redactor
  * @uses YiiStrap.helpers.TbArray
  */
-Yii::import('yiistrap_fork.helpers.TbArray');
+Yii::import('bootstrap.helpers.TbArray');
 
 class WhRedactor extends CInputWidget
 {

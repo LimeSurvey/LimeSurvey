@@ -5,23 +5,20 @@
 
     //All paths relative from /application/views
 
-$layoutHelper = new LayoutHelper();
-
 //headers will be generated with the template file /admin/super/header.php
 $this->showHeaders($aData, false);
 //The adminmenu bar will be generated from /admin/super/adminmenu.php
 $this->showadminmenu($aData);
 
 // Generated through /admin/usergroup/usergroupbar_view
-//$this->userGroupBar($aData);
+$this->userGroupBar($aData);
 
 echo "<!-- BEGIN LAYOUT_INSURVEY -->";
 // Needed to evaluate EM expressions in question summary
 // See bug #11845
 LimeExpressionManager::StartProcessingPage(false, true);
 $aData['debug'] = $aData;
-
-echo $layoutHelper->renderTopbarTemplate($aData);
+$this->titlebar($aData);
 
 //The load indicator for pjax
 echo ' <div id="pjax-file-load-container" class="ls-flex-row col-12"><div style="height:2px;width:0px;"></div></div>';
@@ -31,7 +28,7 @@ echo ' <div id="pjax-file-load-container" class="ls-flex-row col-12"><div style=
 //The container to hold the vuejs application
 echo ' <!-- Survey page, started in SurveyCommonAction::renderWrappedTemplate() -->
     <div id="vue-apps-main-container" '
-. 'class="ls-flex-row align-items-flex-begin align-content-flex-end col-12 pb-6" '
+. 'class="ls-flex-row align-items-flex-begin align-content-flex-end col-12" '
 . '>';
     //Rendered through /admin/super/sidemenu
     $this->surveysidemenu($aData);
@@ -40,6 +37,7 @@ echo ' <!-- Survey page, started in SurveyCommonAction::renderWrappedTemplate() 
     . '>';
 
         echo '<div id="pjax-content" class="col-12">';
+            echo LayoutHelper::renderTopbar($aData);
 
             //Rendered through /admin/responses/browsemenubar_view
             //$this->_browsemenubar($aData);

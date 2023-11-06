@@ -50,7 +50,7 @@ class RemoteControlExportStatisticsArrayQuestionsTest extends BaseTest
         $this->assertSame($questionData[3][2], '30.00%', 'The Percentage is incorrect for this option.');
 
         // A row is left empty.
-        $this->assertEmpty($questionData[4], 'This row should be empty.');
+        $this->assertEmpty($q1Data[4], 'This row should be empty.');
 
         // Total row.
         $this->assertSame($questionData[5][0], 'Total(gross)', 'The Answer text is incorrect for this option.');
@@ -81,7 +81,7 @@ class RemoteControlExportStatisticsArrayQuestionsTest extends BaseTest
         $this->assertSame($questionData[9][2], '30.00%', 'The Percentage is incorrect for this option.');
 
         // A row is left empty.
-        $this->assertEmpty($questionData[10], 'This row should be empty.');
+        $this->assertEmpty($q1Data[10], 'This row should be empty.');
 
         // Total row.
         $this->assertSame($questionData[11][0], 'Total(gross)', 'The Answer text is incorrect for this option.');

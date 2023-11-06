@@ -33,7 +33,7 @@ var prepare = function(){
 
     if(generalInherit()){
         $('#general_inherit_on').prop('checked',true).trigger('change').closest('label').addClass('active');
-        $('.action_hide_on_inherit').addClass('d-none');
+        $('.action_hide_on_inherit').addClass('hidden');
     } else {
         $('#general_inherit_off').prop('checked',true).trigger('change').closest('label').addClass('active');
     }
@@ -121,10 +121,10 @@ var prepare = function(){
         //hotswapping the general inherit
         $('#general_inherit_on').on('change', function(evt){
             $('#TemplateConfiguration_options').val('inherit');
-            $('.action_hide_on_inherit').addClass('d-none');
+            $('.action_hide_on_inherit').addClass('hidden');
         });
         $('#general_inherit_off').on('change', function(evt){
-            $('.action_hide_on_inherit').removeClass('d-none');
+            $('.action_hide_on_inherit').removeClass('hidden');
             updateFieldSettings();
         });
 
@@ -186,8 +186,8 @@ $(document).off('pjax:scriptcomplete.templateOptions').on('ready pjax:scriptcomp
 
     $('.selector__open_lightbox').on('click', function(e){
         e.preventDefault();
-        var imgSrc = $($(this).data('bs-target')).find('option:selected').data('lightbox-src');
-        var imgTitle = $($(this).data('bs-target')).val();
+        var imgSrc = $($(this).data('target')).find('option:selected').data('lightbox-src');
+        var imgTitle = $($(this).data('target')).val();
         imgTitle = imgTitle.split('/').pop();
         $('#lightbox-modal').find('.selector__title').text(imgTitle);
         $('#lightbox-modal').find('.selector__image').attr({'src' : imgSrc, 'alt': imgTitle});

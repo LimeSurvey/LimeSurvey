@@ -1,45 +1,41 @@
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
-    <div class="pagetitle h1 pt-3 pb-2">
+    <h3>
         <?php eT("Conditions designer"); ?>
 
         <?php if ($scenariocount > 0): ?>
-            <?php
-            $this->widget('ext.ButtonWidget.ButtonWidget', [
-                'name' => 'delete-all-conditions',
-                'id' => 'delete-all-conditions',
-                'text' => gT('Delete all conditions'),
-                'icon' => 'ri-delete-bin-fill',
-                'htmlOptions' => [
-                    'class' => 'btn btn-danger float-end condition-header-button',
-                    'data-bs-toggle' => 'modal',
-                    'data-bs-target' => '#confirmation-modal',
-                    'data-message' => gT('Are you sure you want to delete all conditions for this question?', 'js'),
-                    'data-onclick' => '(function() { document.getElementById("deleteallconditions").submit(); })',
-                    'onclick' => 'return false;',
-                ],
-            ]); ?>
+            <button
+                id='delete-all-conditions'
+                data-toggle='modal'
+                data-target='#confirmation-modal'
+                data-message='<?php eT('Are you sure you want to delete all conditions for this question?', 'js'); ?>'
+                data-onclick='(function() { document.getElementById("deleteallconditions").submit(); })'
+                class='btn btn-warning pull-right condition-header-button'
+                onclick='return false;'
+            >
+                <span class="fa fa-trash"></span>
+                &nbsp;
+                <?php eT('Delete all conditions'); ?>
+            </button>
         <?php endif; ?>
 
         <?php if ($scenariocount > 1): ?>
-            <?php
-            $this->widget('ext.ButtonWidget.ButtonWidget', [
-                'name' => 'renumber-scenario',
-                'id' => 'renumber-scenario',
-                'text' => gT('Renumber scenarios'),
-                'icon' => 'ri-list-ordered',
-                'htmlOptions' => [
-                    'class' => 'btn btn-outline-secondary float-end condition-header-button',
-                    'data-bs-toggle' => 'modal',
-                    'data-bs-target' => '#confirmation-modal',
-                    'data-message' => gT('Are you sure you want to renumber the scenarios with incrementing numbers beginning from 1?', 'js'),
-                    'data-onclick' => '(function() { document.getElementById("toplevelsubaction").value="renumberscenarios"; document.getElementById("deleteallconditions").submit();})',
-                    'onclick' => 'return false;',
-                ],
-            ]); ?>
+            <button
+                id='renumber-scenario'
+                class="btn btn-default pull-right condition-header-button"
+                data-toggle='modal'
+                data-target='#confirmation-modal'
+                data-message='<?php eT('Are you sure you want to renumber the scenarios with incrementing numbers beginning from 1?', 'js'); ?>'
+                data-onclick='(function() { document.getElementById("toplevelsubaction").value="renumberscenarios"; document.getElementById("deleteallconditions").submit();})'
+                onclick='return false;'
+            >
+                <span class="icon-renumber"></span>
+                &nbsp;
+                <?php eT("Renumber scenarios");?>
+            </button>
         <?php endif; ?>
-    </div>
+    </h3>
      <div class="row">
-        <div class="col-12 content-right">
+        <div class="col-lg-12 content-right">
 
 
 <?php echo $conditionsoutput_action_error;?>
@@ -48,27 +44,21 @@
 
 <!-- Modal for quick add -->
 <div id="quick-add-condition-modal" class="modal fade" role="dialog">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog">
         <!-- Modal content-->
         <div class="modal-content">  <?php // JS add not.type as panel-type, e.g. panel-default, panel-danger ?>
-            <div class="modal-header">
-                <h5 class="modal-title"><?php eT('Quick-add conditions'); ?></h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            <div class="modal-header panel-heading">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"><?php eT('Quick-add conditions'); ?></h4>
             </div>
             <div class="modal-body">
                 <!-- Condition form is in file quickAddConditionForm.php -->
                 <?php echo $quickAddConditionForm; ?>
             </div>
             <div class="modal-footer">
-                <button type="button" id='quick-add-condition-close-button' class="btn btn-cancel" data-bs-dismiss="modal">
-                    <?php eT("Cancel"); ?>
-                </button>
-                <button role="button" type='submit' id='quick-add-condition-save-button' class='btn btn-primary'>
-                    <?php eT('Save'); ?>
-                </button>
-                <span id='quick-add-url' class="d-none">
-                	<?php echo $quickAddConditionURL; ?>
-                </span>
+                <button type="button" id='quick-add-condition-close-button' class="btn btn-cancel" data-dismiss="modal">&nbsp;<?php eT("Cancel"); ?></button>
+                <button type='submit' id='quick-add-condition-save-button' class='btn btn-primary'><?php eT('Save'); ?></button>
+                <span id='quick-add-url' class='hidden'><?php echo $quickAddConditionURL; ?></span>
             </div>
         </div>
     </div>

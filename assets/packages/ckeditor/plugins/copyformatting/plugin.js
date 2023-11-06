@@ -85,7 +85,6 @@
 			editor.addCommand( 'applyFormatting', plugin.commands.applyFormatting );
 
 			editor.ui.addButton( 'CopyFormatting', {
-				isToggle: true,
 				label: editor.lang.copyformatting.label,
 				command: 'copyFormatting',
 				toolbar: 'cleanup,0'

@@ -17,9 +17,7 @@
 
     <p class="note"><?php echo sprintf(gT('Fields with %s are required.'), '<span class="required">*</span>'); ?></p>
 
-    <?php
-    $this->widget('ext.AlertWidget.AlertWidget', ['errorSummaryModel' => $model]);
-    ?>
+	<?php echo $form->errorSummary($model); ?>
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'tid'); ?>

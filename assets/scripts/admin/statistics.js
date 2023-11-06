@@ -394,29 +394,21 @@ LS.Statistics2 = function () {
     $('#usegraph').click(function () {
         if ($('#grapherror').length > 0) {
             $('#grapherror').show();
-            $('#usegraph_2').prop('checked', true);
+            $('#usegraph').prop('checked', false);
         }
     });
 
     /***
      * Select all questions
      */
-    let viewsummaryallbuttons = document.querySelectorAll('input[name="viewsummaryall"]');
-    for (let viewsummaryallbutton of viewsummaryallbuttons) {
-        viewsummaryallbutton.addEventListener("change", () => {
-            if (viewsummaryallbutton.value === '1') {
-                let filterchoices = document.querySelectorAll('#filterchoices input[type=checkbox]');
-                filterchoices.forEach((filterchoice) => {
-                    filterchoice.checked = true;
-                });
-            } else {
-                let filterchoices = document.querySelectorAll('#filterchoices input[type=checkbox]');
-                filterchoices.forEach((filterchoice) => {
-                    filterchoice.checked = false;
-                });
-            }
-        });
-    }
+    $("[name='viewsummaryall']").on('change', function (event) {
+        if (this.value == '1') {
+            $('#filterchoices input[type=checkbox]').prop('checked', true);
+        } else {
+            $('#filterchoices input[type=checkbox]').prop('checked', false);
+
+        }
+    });
 
     /* Show and hide the three major sections of the statistics page */
     /* The response filters */
@@ -667,7 +659,7 @@ function selectCheckboxes(Div, CheckBoxName, Button) {
 }
 
 function nographs() {
-    document.getElementById('usegraph_2').checked = false;
+    document.getElementById('usegraph').checked = false;
 }
 
 function gMapInit(id, data) {
@@ -859,7 +851,7 @@ $(document).on('ready  pjax:scriptcomplete', function () {
     $('body').addClass('onStatistics');
     var exportImagesButton = $('#statisticsExportImages');
     exportImagesButton.on('click', exportImages);
-    exportImagesButton.wrap('<div class="col-12 text-center"></div>')
+    exportImagesButton.wrap('<div class="col-md-12 text-center"></div>')
     $('#statisticsview').children('div.row').last().append(exportImagesButton);
     $('body').on('click', '.action_js_export_to_pdf', function () {
 

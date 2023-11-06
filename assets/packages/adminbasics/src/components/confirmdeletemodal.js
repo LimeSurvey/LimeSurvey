@@ -16,23 +16,22 @@ const ConfirmDeleteModal = function (options) {
         keepopen = options.keepopen || $item.data('keepopen') || '',
         gridReload = options.gridReload || $item.data('grid-reload') || '',
         gridid = options.gridid || $item.data('grid-id') || '',
-        buttonNo = options.buttonNo || $item.data('button-no') || '<i class="ri-close-fill"></i>',
-        buttonYes = options.buttonYes || $item.data('button-yes') || '<i class="ri-check-fill"></i>',
+        buttonNo = options.buttonNo || $item.data('button-no') || '<i class="fa fa-times"></i>',
+        buttonYes = options.buttonYes || $item.data('button-yes') || '<i class="fa fa-check"></i>',
         buttonType = $item.data('button-type') || 'btn-primary',
-        closeButtonType = $item.data('close-button-type') || 'btn-outline-secondary',
         parentElement = options.parentElement || $item.data('parent-element') || 'body';
 
-    const closeIconHTML = '<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>',
-        closeButtonHTML = '<button type="button" class="btn ' + closeButtonType + '" data-bs-dismiss="modal">' + buttonNo + '</button>',
+    const closeIconHTML = '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>',
+        closeButtonHTML = '<button type="button" class="btn btn-cancel" data-dismiss="modal">' + buttonNo + '</button>',
         confirmButtonHTML = '<button type="button" class="btn ' + buttonType + ' selector--button-confirm">' + buttonYes + '</button>';
 
 
     //Define all the blocks and combine them by jquery methods
-    const outerBlock = $('<div id="confirm-delete-modal" class="modal fade" tabindex="-1" role="dialog"></div>'),
+    const outerBlock = $('<div class="modal fade" tabindex="-1" role="dialog"></div>'),
         innerBlock = $('<div class="modal-dialog" role="document"></div>'),
         contentBlock = $('<div class="modal-content"></div>'),
         headerBlock = $('<div class="modal-header"></div>'),
-        headlineBlock = $('<h5 class="modal-title"></h5>'),
+        headlineBlock = $('<h4 class="modal-title"></h4>'),
         bodyBlock = $('<div class="modal-body"></div>'),
         footerBlock = $('<div class="modal-footer"></div>'),
         closeIcon = $(closeIconHTML),
@@ -49,8 +48,8 @@ const ConfirmDeleteModal = function (options) {
             if (confirmTitle !== '') {
                 const thisHeader = headerBlock.clone();
                 headlineBlock.text(confirmTitle);
-                thisHeader.append(headlineBlock);
                 thisHeader.append(closeIcon.clone());
+                thisHeader.append(headlineBlock);
                 thisContent.prepend(thisHeader);
             }
 
@@ -84,7 +83,7 @@ const ConfirmDeleteModal = function (options) {
             modalObject.find('.modal-body').append('<p>' + confirmText + '</p>');
 
             if (showTextArea !== '') {
-                modalObject.find('form').append('<textarea id="modalTextArea" name="modalTextArea" class="form-control mb-3"></textarea>');
+                modalObject.find('form').append('<textarea id="modalTextArea" name="modalTextArea" ></textarea>');
             }
 
         },
@@ -143,7 +142,7 @@ const ConfirmDeleteModal = function (options) {
 
                     if (!useAjax) {
                         modalObject.find('form').trigger('submit');
-                        modalObject.modal('hide');
+                        modalObject.modal('close');
                     } else {
                         // Ajax request
                         runAjaxRequest();

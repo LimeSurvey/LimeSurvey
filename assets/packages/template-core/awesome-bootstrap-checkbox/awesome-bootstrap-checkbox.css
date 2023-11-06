@@ -30,7 +30,7 @@
   transition: border 0.15s ease-in-out, color 0.15s ease-in-out;
 }
 .form-horizontal .checkbox-item label::before{
-  top: 3px;
+  top:7px;
 }
 .checkbox-item label::after {
   display: inline-block;
@@ -48,7 +48,7 @@
   text-align: center;
 }
 .form-horizontal .checkbox-item label::after{
-  top: 4px;
+  top:8px;
 }
 .checkbox-item input[type="checkbox"] {
   opacity: 0;
@@ -68,7 +68,6 @@
 .checkbox-item input[type="radio"]:checked + label::after {
   font-family: "FontAwesome";
   content: "\f00c";
-  padding: 0 0 13px 0;
 }
 .checkbox-item input[type="checkbox"]:indeterminate + label::after,
 .checkbox-item input[type="radio"]:indeterminate + label::after {
@@ -202,7 +201,7 @@
   background-color: #fff;
 }
 
-.radio-item, .radio-text-item {
+.radio-item {
   padding-left: 20px;
 }
 .radio-item label {

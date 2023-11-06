@@ -1,19 +1,19 @@
 <!-- Hints  -->
-<div class="card card-primary border-left-danger h-100">
-    <div class="card-header">
-        <h5 class="card-title">{{gT("Hints and warnings")}}</h5>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <strong>{{gT("Hints and warnings:")}}</strong>
     </div>
-    <ul class="list-group list-group-flush">
+    <ul class="list-group">
         {% for warning in warnings %}
-        <li class="list-group-item p-0 border-0">
+        <li class="list-group-item">
             <div class="ls-flex-row col-12 text-warning">
                 {{warning}}
             </div>
         </li>
         {% endfor %}
         {% for hint in hints %}
-        <li class="list-group-item p-0 border-0">
-            <div class="ls-flex-row col-12">
+        <li class="list-group-item">
+            <div class="ls-flex-row col-12 text-info">
                 {{hint}}
             </div>
         </li>

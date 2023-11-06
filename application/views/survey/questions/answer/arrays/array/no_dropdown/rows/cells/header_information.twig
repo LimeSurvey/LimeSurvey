@@ -5,6 +5,5 @@
  * @var $content
  */
 #}
-<td class="{{ class }}">
-    {{ processString(content) }}
-</td>
+
+{{ doRender('/survey/questions/answer/global/table/cell/head_information', ({'class':class,'content':content})) }}

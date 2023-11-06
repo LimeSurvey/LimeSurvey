@@ -1,9 +1,4 @@
 export default  function(userid) {
-    // we want 25% default when screenwidth > 1400px, else: 33%
-    let sidebarWidth = $('#vue-apps-main-container').width() * 0.33;
-    if ($('#vue-apps-main-container').width() > 1400) {
-        sidebarWidth = $('#vue-apps-main-container').width() * 0.25;
-    }
     return {
         surveyid: 0,
         language: '',
@@ -13,7 +8,7 @@ export default  function(userid) {
         sideBarHeight: 400,
         currentUser: userid,
         currentTab: 'settings',
-        sidebarwidth: sidebarWidth,
+        sidebarwidth: 380,
         maximalSidebar: false,
         isCollapsed: false,
         pjax: null,

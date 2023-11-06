@@ -64,7 +64,7 @@ class Permission extends LSActiveRecord
         return array(
             array('entity, entity_id, uid, permission', 'required'),
             array('entity', 'length', 'max' => 50),
-            array('entity',  'LSYii_FilterValidator', 'filter' => 'strtolower', 'skipOnEmpty' => true),
+            array('entity',  'filter', 'filter' => 'strtolower'),
             array('permission', 'length', 'max' => 100),
             array('create_p, read_p, update_p, delete_p, import_p, export_p', 'default', 'value' => 0),
             array('create_p, read_p, update_p, delete_p, import_p, export_p', 'numerical', 'integerOnly' => true),
@@ -157,7 +157,7 @@ class Permission extends LSActiveRecord
             'export' => false,
             'title' => gT("Superadministrator"),
             'description' => gT("Unlimited administration permissions"),
-            'img' => 'ri-star-fill',
+            'img' => 'icon-superadmin',
         );
         $aPermissions['auth_db'] = array(
             'create' => false,
@@ -264,6 +264,7 @@ class Permission extends LSActiveRecord
      * @param mixed $aPermissions
      * @param boolean $bBypassCheck : by pass control of current permission for current user only for global permission
      * @throw Exception
+     *
      * @return null|boolean
      */
     public static function setPermissions($iUserID, $iEntityID, $sEntityName, $aPermissions, $bBypassCheck = false)
@@ -647,51 +648,6 @@ class Permission extends LSActiveRecord
         return $this->hasPermission(0, 'global', $sPermission, $sCRUD, $iUserID);
     }
 
-    public function getButtons(): string
-    {
-        $setPermissionsUrl = App()->getController()->createUrl(
-            'surveyPermissions/settingsPermissions',
-            ['id' => $this->uid, 'action' => 'user','surveyid' => $this->entity_id,]
-        );
-
-        $dropdownItems = [];
-
-        $dropdownItems[] = [
-            'title'            => gT('Edit permissions'),
-            'iconClass'        => "ri-pencil-fill",
-            'linkClass'        => "UserManagement--action--openmodal UserManagement--action--permissions",
-            'linkAttributes'   => [
-                'data-href'      => $setPermissionsUrl,
-                'data-modalsize' => 'modal-lg',
-            ],
-            'enabledCondition' => Permission::model()->hasSurveyPermission($this->entity_id, 'surveysecurity', 'update')
-        ];
-
-        $dropdownItems[] = [
-            'title'            => gT('Delete'),
-            'url'              => App()->createUrl("surveyPermissions/deleteUserPermissions/"),
-            'iconClass'        => 'ri-delete-bin-fill text-danger',
-            'enabledCondition' => Permission::model()->hasSurveyPermission($this->entity_id, 'surveysecurity', 'delete'),
-            'linkAttributes'   => [
-                'data-bs-toggle'  => 'modal',
-                'data-bs-target'  => '#confirmation-modal',
-                'data-btnclass'   => 'btn-danger',
-                'type'            => 'submit',
-                'data-btntext'    => gt("Delete"),
-                'data-title'      => gt('Delete user survey permissions'),
-                'data-message'    => gT("Are you sure you want to delete this entry?"),
-                'data-post-url'   => App()->createUrl("surveyPermissions/deleteUserPermissions/"),
-                'data-post-datas' => json_encode(['surveyid' => $this->entity_id, 'userid' => $this->uid]),
-            ],
-        ];
-
-        return App()->getController()->widget(
-            'ext.admin.grid.GridActionsWidget.GridActionsWidget',
-            ['dropdownItems' => $dropdownItems],
-            true
-        );
-    }
-
     /**
      * Checks if a user has a certain permission in the given survey
      *
@@ -753,13 +709,11 @@ class Permission extends LSActiveRecord
      */
     private static function comparePermissionTitle($aApermission, $aBpermission)
     {
-        return strcmp((string) $aApermission['title'], (string) $aBpermission['title']);
+        return strcmp($aApermission['title'], $aBpermission['title']);
     }
 
     /**
-     * Get the default/fixed $iUserID for Permission only
-     * Use App()->getCurrentUserId() for all other purpose
-     * @todo move to private function
+     * get the default/fixed $iUserID
      * @param integer|null $iUserID optional user id
      * @return int user id
      * @throws Exception
@@ -767,14 +721,15 @@ class Permission extends LSActiveRecord
     public function getUserId($iUserID = null)
     {
         if (empty($iUserID)) {
-            if (Yii::app() instanceof CConsoleApplication) {
-                /* Alt : return 1st forcedAdmin ? */
+            if (App() instanceof CConsoleApplication) {
+                /* Alt : return 1st forcedSuperAdmin ? */
                 throw new Exception('Permission must not be tested with console application.');
             }
             return App()->getCurrentUserId();
         }
         return $iUserID;
     }
+
     /**
      * get the connected user role
      * @param integer $iUserID user id
@@ -822,7 +777,7 @@ class Permission extends LSActiveRecord
                 'import' => false,
                 'title' => gT("Surveys"),
                 'description' => gT("Permission to create surveys (for which all permissions are automatically given) and view, update and delete surveys from other users"),
-                'img' => ' ri-list-unordered',
+                'img' => ' icon-list',
             ),
             'surveysgroups' => array(
                 'create' => true,
@@ -832,31 +787,31 @@ class Permission extends LSActiveRecord
                 'export' => false,
                 'title' => gT("Survey groups"),
                 'description' => gT("Permission to create survey groups (for which all permissions are automatically given) and view, update and delete survey groups from other users."),
-                'img' => ' ri-indent-increase',
+                'img' => ' fa fa-indent',
             ),
             'users' => array(
                 'import' => false,
                 'export' => false,
                 'title' => gT("Users"),
                 'description' => gT("Permission to create, view, update and delete users"),
-                'img' => ' ri-shield-check-fill',
+                'img' => ' fa fa-shield',
             ),
             'usergroups' => array(
                 'import' => false,
                 'export' => false,
                 'title' => gT("User groups"),
                 'description' => gT("Permission to create, view, update and delete user groups"),
-                'img' => ' ri-group-fill',
+                'img' => ' fa fa-users',
             ),
             'templates' => array(
                 'title' => gT("Themes"),
                 'description' => gT("Permission to create, view, update, delete, export and import themes"),
-                'img' => ' ri-brush-fill',
+                'img' => ' fa fa-paint-brush',
             ),
             'labelsets' => array(
                 'title' => gT("Label sets"),
                 'description' => gT("Permission to create, view, update, delete, export and import label sets/labels"),
-                'img' => ' ri-grid-line',
+                'img' => ' icon-defaultanswers',
             ),
             'settings' => array(
                 'create' => false,
@@ -864,12 +819,12 @@ class Permission extends LSActiveRecord
                 'export' => false,
                 'title' => gT("Settings & Plugins"),
                 'description' => gT("Permission to view and update global settings & plugins and to delete and import plugins"),
-                'img' => 'ri-earth-fill',
+                'img' => 'fa fa-globe',
             ),
             'participantpanel' => array(
                 'title' => gT("Central participant database"),
                 'description' => gT("Permission to create participants in the central participants database (for which all permissions are automatically given) and view, update and delete participants from other users"),
-                'img' => 'ri-user-fill',
+                'img' => 'fa fa-user-circle-o',
             ),
         );
         return $key == null ? $aPermissions : ($aPermissions[$key] ?? $key);

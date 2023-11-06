@@ -13,7 +13,7 @@ trait LSApplicationTrait
     /**
      * get the current id of connected user,
      * check if user exist before return for security
-     * @return int|null user id, 0 mean invalid user
+     * @return int|null user id
      */
     public function getCurrentUserId()
     {

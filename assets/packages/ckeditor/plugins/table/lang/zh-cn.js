@@ -27,8 +27,6 @@ CKEDITOR.plugins.setLang( 'table', 'zh-cn', {
 		borderColor: '边框颜色',
 		data: '数据',
 		header: '表头',
-		columnHeader: 'Column Header', // MISSING
-		rowHeader: 'Row Header', // MISSING
 		yes: '是',
 		no: '否',
 		invalidWidth: '单元格宽度必须为数字格式',

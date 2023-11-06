@@ -13,7 +13,7 @@ class MenuButton extends Menu implements MenuButtonInterface
     /**
      * @var string
      */
-    protected $buttonClass = "btn btn-primary";
+    protected $buttonClass = "btn btn-success";
 
     /**
      * @var bool

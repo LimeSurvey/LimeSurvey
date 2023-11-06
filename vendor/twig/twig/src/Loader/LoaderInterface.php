@@ -12,7 +12,6 @@
 namespace Twig\Loader;
 
 use Twig\Error\LoaderError;
-use Twig\Source;
 
 /**
  * Interface all loaders must implement.
@@ -22,28 +21,41 @@ use Twig\Source;
 interface LoaderInterface
 {
     /**
-     * Returns the source context for a given template logical name.
+     * Gets the source code of a template, given its name.
+     *
+     * @param string $name The name of the template to load
+     *
+     * @return string The template source code
      *
      * @throws LoaderError When $name is not found
+     *
+     * @deprecated since 1.27 (to be removed in 2.0), implement Twig\Loader\SourceContextLoaderInterface
      */
-    public function getSourceContext(string $name): Source;
+    public function getSource($name);
 
     /**
      * Gets the cache key to use for the cache for a given template name.
      *
-     * @throws LoaderError When $name is not found
-     */
-    public function getCacheKey(string $name): string;
-
-    /**
-     * @param int $time Timestamp of the last modification time of the cached template
+     * @param string $name The name of the template to load
+     *
+     * @return string The cache key
      *
      * @throws LoaderError When $name is not found
      */
-    public function isFresh(string $name, int $time): bool;
+    public function getCacheKey($name);
 
     /**
-     * @return bool
+     * Returns true if the template is still fresh.
+     *
+     * @param string $name The template name
+     * @param int    $time Timestamp of the last modification time of the
+     *                     cached template
+     *
+     * @return bool true if the template is fresh, false otherwise
+     *
+     * @throws LoaderError When $name is not found
      */
-    public function exists(string $name);
+    public function isFresh($name, $time);
 }
+
+class_alias('Twig\Loader\LoaderInterface', 'Twig_LoaderInterface');

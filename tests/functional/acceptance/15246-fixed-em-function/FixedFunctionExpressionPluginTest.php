@@ -3,7 +3,6 @@
 namespace ls\tests;
 
 use Facebook\WebDriver\WebDriverBy;
-use Facebook\WebDriver\WebDriverExpectedCondition;
 
 /**
  * @since 2019-08-05
@@ -41,9 +40,9 @@ class FixedFunctionExpressionPluginTest extends TestBaseClassWeb
             ]
         );
         try {
-            self::$webDriver->get($url);
+            self::$webDriver->get($url);            
             sleep(1); // Page did not load properly
-
+            
             /* 1st page */
             $submit = self::$webDriver->findElement(WebDriverBy::id('ls-button-submit'));
             $submit->click();
@@ -56,11 +55,10 @@ class FixedFunctionExpressionPluginTest extends TestBaseClassWeb
             $textToCompare = self::$webDriver->findElement(WebDriverBy::id('statCountIfQ00'))->getText();
             $this->assertEquals($textToCompare, "0", 'statCountIfQ00(self.sgqa,"NOT") usage broken : «' . $textToCompare ."» vs «0»");
             /** Relevance (and update) check **/
-            self::$webDriver->wait(5)->until(
-                WebDriverExpectedCondition::invisibilityOfElementLocated(WebDriverBy::id('question' . $questions['Q01']->qid)),
+            $this->assertFalse(
+                self::$webDriver->findElement(WebDriverBy::id('question'.$questions['Q01']->qid))->isDisplayed(),
                 "Q01 is not hidden by relevance"
             );
-            sleep(1);
             $sgqa = self::$surveyId."X".$questions['Q00']->gid."X".$questions['Q00']->qid;
             $Input = self::$webDriver->findElement(WebDriverBy::id('answer' . $sgqa ));
             $Input->sendKeys('10');

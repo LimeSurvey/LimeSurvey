@@ -6,6 +6,21 @@
 class NotificationController extends SurveyCommonAction
 {
     /**
+     * List all notifications for a user
+     */
+    public function index()
+    {
+        if (App()->user->isGuest) {
+            throw new CHttpException(401);
+        }
+
+        $data = array();
+        $data['model'] = Notification::model();
+
+        $this->renderWrappedTemplate(null, array('notification/index'), $data);
+    }
+
+    /**
      * Get notification as JSON
      *
      * @param int $notId Notification id
@@ -102,7 +117,7 @@ class NotificationController extends SurveyCommonAction
             throw new CHttpException(404, sprintf(gT("Notification %s not found"), $notId));
         }
         if ((int) $oNotification->entity_id !== (int) App()->user->id) {
-            throw new CHttpException(403, gT("You do not have permission to access this page/function."));
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
 
         return $oNotification;
@@ -139,7 +154,7 @@ class NotificationController extends SurveyCommonAction
         $data['nrOfNewNotifications'] = Notification::countNewNotifications($surveyId);
         $data['nrOfNotifications'] = Notification::countNotifications($surveyId);
         $data['nrOfImportantNotifications'] = Notification::countImportantNotifications($surveyId);
-        $data['bellColor'] = $data['nrOfNewNotifications'] == 0 ? '' : '';
+        $data['bellColor'] = $data['nrOfNewNotifications'] == 0 ? 'text-success' : 'text-warning';
 
         // If we have any important notification we might as well load everything
         if ($data['nrOfImportantNotifications'] > 0) {

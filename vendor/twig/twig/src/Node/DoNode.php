@@ -21,12 +21,12 @@ use Twig\Node\Expression\AbstractExpression;
  */
 class DoNode extends Node
 {
-    public function __construct(AbstractExpression $expr, int $lineno, string $tag = null)
+    public function __construct(AbstractExpression $expr, $lineno, $tag = null)
     {
         parent::__construct(['expr' => $expr], [], $lineno, $tag);
     }
 
-    public function compile(Compiler $compiler): void
+    public function compile(Compiler $compiler)
     {
         $compiler
             ->addDebugInfo($this)
@@ -36,3 +36,5 @@ class DoNode extends Node
         ;
     }
 }
+
+class_alias('Twig\Node\DoNode', 'Twig_Node_Do');

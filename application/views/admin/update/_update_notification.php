@@ -13,34 +13,22 @@
 ?>
 
 <?php if(Yii::app()->session['notificationstate']==1):?>
-    <div class="col-12" id="update-container">
+    <div class="col-sm-12" id="update-container">
         <?php if($security_update_available):?>
-            <?php
-            $this->widget('ext.AlertWidget.AlertWidget', [
-                'text' => '<strong>' . gT("Security update!") . '</strong> ' . gT("A security update is available.") . ' <a href="' . $urlUpdate . '"> ' . gT('Click here to use ComfortUpdate.') . '</a>',
-                'type' => 'warning',
-                'showCloseButton' => true,
-                'htmlOptions' => ['id' => 'update-alert', 'data-url-notification-state' => $urlUpdateNotificationState]
-            ]);
-            ?>
+            <div class="alert alert-warning alert-dismissible alert-security-update" role="alert" id="update-alert" data-url-notification-state="<?php echo $urlUpdateNotificationState; ?>">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span>&times;</span></button>
+                <strong><?php eT('Security update!');?></strong> <?php eT('A security update is available.');?> <a href="<?php echo $urlUpdate; ?>"><?php eT('Click here to use ComfortUpdate.');?></a>
+            </div>
         <?php elseif(Yii::app()->session['unstable_update']):?>
-            <?php
-            $this->widget('ext.AlertWidget.AlertWidget', [
-                'text' => '<strong>' . gT("New UNSTABLE update available:") . '</strong> <a href="' . $urlUpdate . '"> ' . gT('Click here to use ComfortUpdate or to download it.') . ' <strong>' . gT("You don't need an update key.") . '</strong></a>',
-                'type' => 'info',
-                'showCloseButton' => true,
-                'htmlOptions' => ['id' => 'update-alert', 'data-url-notification-state' => $urlUpdateNotificationState]
-            ]);
-            ?>
+        <div id="update-alert" data-url-notification-state="<?php echo $urlUpdateNotificationState; ?>" class="alert alert-info alert-dismissible unstable-update" role="alert" >
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close" ><span>&times;</span></button>
+                <strong><?php eT('New UNSTABLE update available:');?></strong> <a href="<?php echo $urlUpdate; ?>"><?php eT('Click here to use ComfortUpdate or to download it.');?><strong><?php eT("You don't need an update key.");?></strong></a>
+        </div>
         <?php else:?>
-            <?php
-            $this->widget('ext.AlertWidget.AlertWidget', [
-                'text' => '<strong>' . gT("New update available:") . '</strong> <a href="' . $urlUpdate . '"> ' . gT('Click here to use ComfortUpdate or to download it.') . '</a>',
-                'type' => 'info',
-                'showCloseButton' => true,
-                'htmlOptions' => ['id' => 'update-alert', 'data-url-notification-state' => $urlUpdateNotificationState]
-            ]);
-            ?>
+            <div class="alert alert-info alert-dismissible" role="alert" id="update-alert" data-url-notification-state="<?php echo $urlUpdateNotificationState; ?>">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span>&times;</span></button>
+                <strong><?php eT("New update available:");?> </strong> <a href="<?php echo $urlUpdate; ?>"><?php eT('Click here to use ComfortUpdate or to download it.');?></a>
+            </div>
         <?php endif;?>
     </div>
 <?php endif;?>

@@ -25,7 +25,7 @@
                         <?php echo 'deleted' ; ?>
                     </td>
                 <?php else: ?>
-                    <td class="text-danger">
+                    <td class="text-warning">
                         <?php echo 'could not delete the survey' ; ?>
                     </td>
                 <?php endif;?>

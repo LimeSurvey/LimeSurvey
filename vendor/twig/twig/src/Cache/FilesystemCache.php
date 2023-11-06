@@ -23,27 +23,31 @@ class FilesystemCache implements CacheInterface
     private $directory;
     private $options;
 
-    public function __construct(string $directory, int $options = 0)
+    /**
+     * @param string $directory The root cache directory
+     * @param int    $options   A set of options
+     */
+    public function __construct($directory, $options = 0)
     {
         $this->directory = rtrim($directory, '\/').'/';
         $this->options = $options;
     }
 
-    public function generateKey(string $name, string $className): string
+    public function generateKey($name, $className)
     {
-        $hash = hash(\PHP_VERSION_ID < 80100 ? 'sha256' : 'xxh128', $className);
+        $hash = hash('sha256', $className);
 
         return $this->directory.$hash[0].$hash[1].'/'.$hash.'.php';
     }
 
-    public function load(string $key): void
+    public function load($key)
     {
-        if (is_file($key)) {
+        if (file_exists($key)) {
             @include_once $key;
         }
     }
 
-    public function write(string $key, string $content): void
+    public function write($key, $content)
     {
         $dir = \dirname($key);
         if (!is_dir($dir)) {
@@ -76,12 +80,14 @@ class FilesystemCache implements CacheInterface
         throw new \RuntimeException(sprintf('Failed to write cache file "%s".', $key));
     }
 
-    public function getTimestamp(string $key): int
+    public function getTimestamp($key)
     {
-        if (!is_file($key)) {
+        if (!file_exists($key)) {
             return 0;
         }
 
         return (int) @filemtime($key);
     }
 }
+
+class_alias('Twig\Cache\FilesystemCache', 'Twig_Cache_Filesystem');

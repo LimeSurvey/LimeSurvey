@@ -2,11 +2,12 @@
 ?>
 
 <div class="modal-footer modal-footer-buttons">
-    <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">
+    <button type="button" class="btn btn-cancel" data-dismiss="modal">
         <?php
         eT("Cancel"); ?>
     </button>
-    <a role="button" class="btn btn-primary btn-ok">
-        <?php eT("Apply"); ?>
+    <a class="btn btn-primary btn-ok">
+        <?php
+        eT("Apply"); ?>
     </a>
 </div>

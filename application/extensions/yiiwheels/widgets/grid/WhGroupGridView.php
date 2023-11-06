@@ -16,7 +16,7 @@
  * @see            http://groupgridview.demopage.ru
  */
 
-Yii::import('yiistrap_fork.widgets.TbGridView');
+Yii::import('bootstrap.widgets.TbGridView');
 
 class WhGroupGridView extends TbGridView
 {

@@ -17,7 +17,7 @@
     <?php eT('Yes'); ?>
 </button>
 <a
-    class='btn btn-cancel'
+    class='btn btn-default'
     href="<?php echo $this->createUrl("surveyAdministration/view/surveyid/$iSurveyID"); ?>"
 >
     <?php eT('Cancel'); ?>

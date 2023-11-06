@@ -370,7 +370,7 @@
     $(function () {
         $(document.body).on(
             'click.modal-gallery.data-api',
-            '[data-bs-toggle="modal-gallery"]',
+            '[data-toggle="modal-gallery"]',
             function (e) {
                 var $this = $(this),
                     options = $this.data(),

@@ -382,7 +382,8 @@ class UserManagerServiceTest extends \ls\tests\TestBaseClass
         $managingUserPermissions = array(
             'superadmin' => array(
                 'read'   => true,
-                'import'   => true,
+                'create' => false,
+                'import' => true,
             )
         );
 

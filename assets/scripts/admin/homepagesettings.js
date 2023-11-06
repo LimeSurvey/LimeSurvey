@@ -10,7 +10,7 @@ $(document).on('ready  pjax:scriptcomplete', function(){
     /**
      * Toggle show logo value
      */
-    $('#show_logo input').on('change', function(event, state) {
+    $('#show_logo').on('switchChange.bootstrapSwitch', function(event, state) {
         $url = $('#show_logo-url').attr('data-url');
         $.ajax({
             url : $url,
@@ -29,7 +29,7 @@ $(document).on('ready  pjax:scriptcomplete', function(){
     /**
      * Toggle show last_survey_and_question value
      */
-    $('#show_last_survey_and_question input').on('change', function(event, state) {
+    $('#show_last_survey_and_question').on('switchChange.bootstrapSwitch', function(event, state) {
         $url = $('#show_last_survey_and_question-url').attr('data-url');
         $.ajax({
             url : $url,
@@ -48,7 +48,7 @@ $(document).on('ready  pjax:scriptcomplete', function(){
     /**
      * Toggle show survey list value
      */
-    $('#show_survey_list input').on('change', function(event, state) {
+    $('#show_survey_list').on('switchChange.bootstrapSwitch', function(event, state) {
         $url = $('#show_survey_list-url').attr('data-url');
         console.ls.log($url);
         $.ajax({
@@ -68,7 +68,7 @@ $(document).on('ready  pjax:scriptcomplete', function(){
     /**
      * Toggle show survey list search value
      */
-    $('#show_survey_list_search input').on('change', function(event, state) {
+    $('#show_survey_list_search').on('switchChange.bootstrapSwitch', function(event, state) {
         $url = $('#show_survey_list_search-url').attr('data-url');
         console.ls.log($url);
         $.ajax({
@@ -88,7 +88,7 @@ $(document).on('ready  pjax:scriptcomplete', function(){
     /**
      * Toggle wrap boxes in container value
      */
-    $('#boxes_in_container input').on('change', function(event, state) {
+    $('#boxes_in_container').on('switchChange.bootstrapSwitch', function(event, state) {
         $url = $('#boxes_in_container-url').attr('data-url');
         console.ls.log($url);
         $.ajax({
@@ -113,7 +113,6 @@ $(document).on('ready  pjax:scriptcomplete', function(){
         $iBoxesByRow = $('#iBoxesByRow').val();
         $iBoxesOffset = $('#iBoxesOffset').val();
         $successMessage = $('#boxesupdatemessage').data('ajaxsuccessmessage');
-        $errorMessage = $('#boxeserrormessage').data('ajaxerrormessage');
         $.ajax({
             url : $url+'/boxesbyrow/'+$iBoxesByRow+'/boxesoffset/'+$iBoxesOffset,
             method: "POST",
@@ -121,10 +120,10 @@ $(document).on('ready  pjax:scriptcomplete', function(){
             dataType : 'html',
             // html contains the buttons
             success : function(html, statut){
-                window.LS.ajaxAlerts($successMessage, 'success', {showCloseButton: true});
+                $('#notif-container').append('<div class="alert alert-success alert-dismissible" role="alert"><button type="button" class="close limebutton" data-dismiss="alert" aria-label="Close"><span>×</span></button>'+$successMessage+'</div>');
             },
             error :  function(html, statut){
-                window.LS.ajaxAlerts($errorMessage, 'danger', {showCloseButton: true});
+                alert('error');
             }
         });
     });
@@ -133,12 +132,18 @@ $(document).on('ready  pjax:scriptcomplete', function(){
     if($('.option-icon').length>1){
         $('.option-icon').on('click', function (ev, that) {
             ev.preventDefault()
-            var icon = $(ev.currentTarget).attr('data-icon');
-            var iconId = $(ev.currentTarget).attr('data-iconId');
+            var fullIconName = $(ev.currentTarget).attr('data-icon');
 
             // Set icon preview and hidden input
-            $('input[name="Box[ico]"]').val(icon);
-            $('#chosen-icon').attr('class', icon + ' text-success');
+            $('input[name="Box[ico]"]').val(fullIconName);
+            $('#chosen-icon').attr('class', fullIconName + ' text-success');
         });
+
+        // Show current icon
+        var currentIcon = $('input[name="Box[ico]"]').val();
+        if (currentIcon !== '')
+        {
+            $('#chosen-icon').attr('class', currentIcon + ' text-success');
+        }
     }
 });

@@ -1,7 +1,7 @@
 <?php
 echo App()->twigRenderer->renderQuestion('/survey/questions/answer/longfreetext/answer', array(
         'bIsThemeEditor'         => true,
-        'extraclass'             => 'col-12',
+        'extraclass'             => 'col-sm-12',
         'coreClass'              =>"ls-answers answer-item text-item",
         'withColumn'             =>true,
         'kpclass'                => '',

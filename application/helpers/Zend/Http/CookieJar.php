@@ -260,7 +260,7 @@ class Zend_Http_CookieJar implements Countable, IteratorAggregate
 
         // Get correct cookie path
         $path = $uri->getPath();
-        $path = substr((string) $path, 0, strrpos((string) $path, '/'));
+        $path = substr($path, 0, strrpos($path, '/'));
         if (! $path) {
             $path = '/';
         }
@@ -274,7 +274,7 @@ class Zend_Http_CookieJar implements Countable, IteratorAggregate
                     break;
 
                 case self::COOKIE_STRING_CONCAT_STRICT:
-                    return rtrim(trim((string) $cookie->__toString()), ';');
+                    return rtrim(trim($cookie->__toString()), ';');
                     break;
 
                 case self::COOKIE_STRING_ARRAY:

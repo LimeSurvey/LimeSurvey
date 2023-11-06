@@ -134,7 +134,7 @@ class Condition extends LSActiveRecord
     {
         $record = new self();
         foreach ($data as $k => $v) {
-            $v = str_replace(array("'", '"'), '', (string) $v);
+            $v = str_replace(array("'", '"'), '', $v);
             $record->$k = $v;
         }
 

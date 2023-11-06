@@ -11,7 +11,6 @@
 
 namespace Twig;
 
-use Twig\Node\Node;
 use Twig\NodeVisitor\NodeVisitorInterface;
 
 /**
@@ -19,12 +18,14 @@ use Twig\NodeVisitor\NodeVisitorInterface;
  *
  * It visits all nodes and their children and calls the given visitor for each.
  *
+ * @final
+ *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-final class NodeTraverser
+class NodeTraverser
 {
-    private $env;
-    private $visitors = [];
+    protected $env;
+    protected $visitors = [];
 
     /**
      * @param NodeVisitorInterface[] $visitors
@@ -37,15 +38,17 @@ final class NodeTraverser
         }
     }
 
-    public function addVisitor(NodeVisitorInterface $visitor): void
+    public function addVisitor(NodeVisitorInterface $visitor)
     {
         $this->visitors[$visitor->getPriority()][] = $visitor;
     }
 
     /**
      * Traverses a node and calls the registered visitors.
+     *
+     * @return \Twig_NodeInterface
      */
-    public function traverse(Node $node): Node
+    public function traverse(\Twig_NodeInterface $node)
     {
         ksort($this->visitors);
         foreach ($this->visitors as $visitors) {
@@ -57,12 +60,20 @@ final class NodeTraverser
         return $node;
     }
 
-    private function traverseForVisitor(NodeVisitorInterface $visitor, Node $node): ?Node
+    protected function traverseForVisitor(NodeVisitorInterface $visitor, \Twig_NodeInterface $node = null)
     {
+        if (null === $node) {
+            return;
+        }
+
         $node = $visitor->enterNode($node, $this->env);
 
         foreach ($node as $k => $n) {
-            if (null !== $m = $this->traverseForVisitor($visitor, $n)) {
+            if (null === $n) {
+                continue;
+            }
+
+            if (false !== ($m = $this->traverseForVisitor($visitor, $n)) && null !== $m) {
                 if ($m !== $n) {
                     $node->setNode($k, $m);
                 }
@@ -74,3 +85,5 @@ final class NodeTraverser
         return $visitor->leaveNode($node, $this->env);
     }
 }
+
+class_alias('Twig\NodeTraverser', 'Twig_NodeTraverser');

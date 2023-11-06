@@ -6,15 +6,14 @@
  * @param $surveyid
  */
 
-// @TODO unused file?
 ?>
 
-<div class=" col-lg-4 text-end">
+<div class=" col-md-4 text-right">
     <?php if (isset($surveybar['savebutton']['form'])):?>
 
         <!-- Save -->
-        <button class="btn btn-primary" href="#" type="button" id="save-button">
-            <span class="ri-check-fill"></span>
+        <a class="btn btn-success" href="#" role="button" id="save-button" >
+            <span class="fa fa-floppy-o"></span>
             <?php if (isset($surveybar['savebutton']['text']))
             {
                 echo $surveybar['savebutton']['text'];
@@ -22,7 +21,7 @@
             else {
                 eT("Save");
             }?>
-        </button>
+        </a>
         <?php if (isset($surveybar['importquestiongroup'])):?>
             <?php
                 //Save and new button
@@ -32,15 +31,15 @@
                 $saveAndAddQuestionLink = $this->createUrl("questionAdministration/view/", $paramArray);
             ?>
 
-            <button class="btn btn-primary" id='save-and-new-question-button' href="<?php echo $saveAndAddQuestionLink ?>" type="button">
-                <span class="ri-check-fill"></span>
+            <a class="btn btn-success" id='save-and-new-question-button' href="<?php echo $saveAndAddQuestionLink ?>" role="button">
+                <span class="fa fa-floppy-o"></span>
                 <?php eT("Save & add new question"); ?>
-            </button>
+            </a>
 
-            <button class="btn btn-primary" id='save-and-new-button' href="<?php echo $saveAndNewLink ?>" type="button">
-                <span class="ri-check-fill"></span>
+            <a class="btn btn-success" id='save-and-new-button' href="<?php echo $saveAndNewLink ?>" role="button">
+                <span class="fa fa-floppy-o"></span>
                 <?php eT("Save & add new group"); ?>
-            </button>
+            </a>
         <?php endif; ?>
         <?php if (isset($surveybar['importquestion'])):?>
             <?php
@@ -55,10 +54,10 @@
                 $saveAndNewLink = $this->createUrl("questionAdministration/view/", $paramArray);
             ?>
 
-            <button class="btn btn-primary" id='save-and-new-button' href="<?php echo $saveAndNewLink ?>" type="button">
-                <span class="ri-check-fill"></span>
+            <a class="btn btn-success" id='save-and-new-button' href="<?php echo $saveAndNewLink ?>" role="button">
+                <span class="fa fa-floppy-o"></span>
                 <?php eT("Save and new"); ?>
-            </button>
+            </a>
         <?php endif; ?>
     <?php endif; ?>
 </div>

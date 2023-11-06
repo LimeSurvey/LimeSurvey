@@ -2,14 +2,14 @@
  * Collection of ajax helper
  */
 import * as globals from './globalMethods';
-import ajaxAlerts from './ajaxAlerts';
+import notifyFader from './notifyFader';
 
 const onSuccess = (response) => {
     
     // Check type of response and take action accordingly
     if (response == '') {
         console.error('No response from server');
-        ajaxAlerts('No response from server', 'danger', {showCloseButton: true});
+        notifyFader.create('No response from server', 'alert-danger');
         return false;
     }
 
@@ -23,13 +23,13 @@ const onSuccess = (response) => {
 
     // No permission
     if (!response.hasPermission) {
-        ajaxAlerts(response.noPermissionText, 'danger', {showCloseButton: true});
+        notifyFader(response.noPermissionText, 'well-lg bg-danger text-center');
         return false;
     }
 
     // Error popup
     if (response.error) {
-        ajaxAlerts(response.error.message, 'danger', {showCloseButton: true});
+        notifyFader(response.error.message, 'well-lg bg-danger text-center');
         return false;
     }
 
@@ -42,7 +42,7 @@ const onSuccess = (response) => {
 
     // Success popup
     if (response.success) {
-        ajaxAlerts(response.success, 'success', {showCloseButton: true});
+        notifyFader(response.success, 'well-lg bg-primary text-center');
     }
 
     // Modal popup

@@ -16,19 +16,19 @@ namespace Twig\Sandbox;
  *
  * @author Kit Burton-Senior <mail@kitbs.com>
  */
-final class SecurityNotAllowedMethodError extends SecurityError
+class SecurityNotAllowedMethodError extends SecurityError
 {
     private $className;
     private $methodName;
 
-    public function __construct(string $message, string $className, string $methodName)
+    public function __construct($message, $className, $methodName, $lineno = -1, $filename = null, \Exception $previous = null)
     {
-        parent::__construct($message);
+        parent::__construct($message, $lineno, $filename, $previous);
         $this->className = $className;
         $this->methodName = $methodName;
     }
 
-    public function getClassName(): string
+    public function getClassName()
     {
         return $this->className;
     }
@@ -38,3 +38,5 @@ final class SecurityNotAllowedMethodError extends SecurityError
         return $this->methodName;
     }
 }
+
+class_alias('Twig\Sandbox\SecurityNotAllowedMethodError', 'Twig_Sandbox_SecurityNotAllowedMethodError');

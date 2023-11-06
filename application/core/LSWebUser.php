@@ -14,8 +14,20 @@ class LSWebUser extends CWebUser
     }
 
     /**
+     * @inheritdoc
+     */
+    public function checkAccess($operation, $params = array(), $allowCaching = true)
+    {
+        if ($operation == 'administrator') {
+            return Permission::model()->hasGlobalPermission('superadmin', 'read');
+        } else {
+            return parent::checkAccess($operation, $params, $allowCaching);
+        }
+    }
+
+    /**
      * @inheritDoc
-     * Replace auto getter to check if current user is valid or not
+     * Replace auto getter to check if currentb uiser is valid or not
      */
     public function getId()
     {
@@ -23,8 +35,8 @@ class LSWebUser extends CWebUser
             return parent::getId();
         }
         $id = App()->getCurrentUserId();
-        if ($id === 0) {
-            /* User is still connected but invalid : logout */
+        if (empty($id)) {
+            /* If still connected but invalid : logout */
             $this->logout();
         }
         return $id;
@@ -42,7 +54,7 @@ class LSWebUser extends CWebUser
 
     /**
      * @inheritDoc
-     * Add the specific plugin event and regenerate CSRF
+     * Add the specific plugin event and regerenaret CRSF
      */
     public function logout($destroySession = true)
     {
@@ -54,18 +66,6 @@ class LSWebUser extends CWebUser
         /* Adding afterLogout event */
         $event = new PluginEvent('afterLogout');
         App()->getPluginManager()->dispatchEvent($event);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function checkAccess($operation, $params = array(), $allowCaching = true)
-    {
-        if ($operation == 'administrator') {
-            return Permission::model()->hasGlobalPermission('superadmin', 'read');
-        } else {
-            return parent::checkAccess($operation, $params, $allowCaching);
-        }
     }
 
     /**

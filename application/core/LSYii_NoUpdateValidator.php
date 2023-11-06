@@ -18,11 +18,12 @@
 
 class LSYii_NoUpdateValidator extends CValidator
 {
+    /* Act as filter or really validate */
+    public $filter = true;
 
     /**
      * @inheritdoc
-     * Filter attribute transparently to disallow update
-     * Used for script with XSS activate currently
+     * Act like a filter : automatically set to previous value
      * @link : https://bugs.limesurvey.org/view.php?id=15690
      */
     public function validateAttribute($object, $attribute)
@@ -32,10 +33,17 @@ class LSYii_NoUpdateValidator extends CValidator
             return;
         }
         if (empty($object->getPrimaryKey())) {
-            throw new \InvalidArgumentException('Unable to use LSYii_NoUpdateValidator without PrimaryKey');
+            throw new \Exception('Unable to use LSYii_NoUpdateValidator without PrimaryKey');
         }
         $classOfObject = get_class($object);
         $originalObject = $classOfObject::model()->findByPk($object->getPrimaryKey());
-        $object->$attribute = $originalObject->$attribute;
+        if ($this->filter) {
+            $object->$attribute = $originalObject->$attribute;
+            return;
+        }
+        if ($object->$attribute != $originalObject->$attribute) {
+            $label = $object->getAttributeLabel($attribute);
+            $this->addError($object, $attribute, sprintf(gT("%s can not be updated."), $label));
+        }
     }
 }

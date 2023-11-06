@@ -34,11 +34,11 @@ class RenderRanking extends QuestionBaseRenderer
             ? ((int) $this->getQuestionAttribute('max_subquestions'))
             : $this->getAnswerCount();
 
-        $this->mMaxAnswers = trim((string) $this->getQuestionAttribute('max_answers')) != ''
+        $this->mMaxAnswers = trim($this->getQuestionAttribute('max_answers')) != ''
             ? (
                 ($this->iMaxSubquestions < $this->getAnswerCount())
-                ? "min(" . trim((string) $this->getQuestionAttribute('max_answers')) . "," . $this->iMaxSubquestions . ")"
-                : trim((string) $this->getQuestionAttribute('max_answers'))
+                ? "min(" . trim($this->getQuestionAttribute('max_answers')) . "," . $this->iMaxSubquestions . ")"
+                : trim($this->getQuestionAttribute('max_answers'))
               )
             : $this->iMaxSubquestions;
         
@@ -54,7 +54,7 @@ class RenderRanking extends QuestionBaseRenderer
     {
         // Get the max number of line needed
         $iMaxLine = (
-            (ctype_digit((string) $this->mMaxAnswers) && intval($this->mMaxAnswers) < $this->iMaxSubquestions)
+            (ctype_digit($this->mMaxAnswers) && intval($this->mMaxAnswers) < $this->iMaxSubquestions)
                 ? $this->mMaxAnswers
                 : $this->iMaxSubquestions
         );
@@ -123,20 +123,19 @@ class RenderRanking extends QuestionBaseRenderer
         }
         
         $rankingTranslation = 'LSvar.lang.rankhelp="' . gT("Double-click or drag-and-drop items in the left list to move them to the right - your highest ranking item should be on the top right, moving through to your lowest ranking item.", 'js') . '";';
-        $rankingTranslation .= 'LSvar.lang.rankadvancedhelp="' . gT("Drag or double-click images into order.", 'js') . '";';
         $this->addScript("rankingTranslation", $rankingTranslation, CClientScript::POS_BEGIN);
         //$this->applyScripts();
         
-        if (trim((string) $this->getQuestionAttribute('choice_title', App()->language)) != '') {
-            $choice_title = htmlspecialchars(trim((string) $this->getQuestionAttribute('choice_title', App()->language)), ENT_QUOTES);
+        if (trim($this->getQuestionAttribute('choice_title', App()->language)) != '') {
+            $choice_title = htmlspecialchars(trim($this->getQuestionAttribute('choice_title', App()->language)), ENT_QUOTES);
         } else {
-            $choice_title = gT("Available items", 'html');
+            $choice_title = gT("Your Choices", 'html');
         }
 
-        if (trim((string) $this->getQuestionAttribute('rank_title', App()->language)) != '') {
-            $rank_title = htmlspecialchars(trim((string) $this->getQuestionAttribute('rank_title', App()->language)), ENT_QUOTES);
+        if (trim($this->getQuestionAttribute('rank_title', App()->language)) != '') {
+            $rank_title = htmlspecialchars(trim($this->getQuestionAttribute('rank_title', App()->language)), ENT_QUOTES);
         } else {
-            $rank_title = gT("Your ranking", 'html');
+            $rank_title = gT("Your Ranking", 'html');
         }
 
         $answer .=  Yii::app()->twigRenderer->renderQuestion($this->getMainView() . '/answer', array(

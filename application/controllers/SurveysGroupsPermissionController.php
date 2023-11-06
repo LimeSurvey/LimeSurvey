@@ -155,17 +155,15 @@ class SurveysGroupsPermissionController extends LSBaseController
             'model' => $model,
         );
 
-        $aData['topbar']['title'] = gT('Permission for group: ') . CHtml::encode($model->title);
-        $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
-            '/layouts/partial_topbar/right_close_saveclose_save',
-            [
-                'isReturnBtn' => true,
-                'returnUrl' => Yii::app()->createUrl("surveyAdministration/listsurveys#surveygroups"),
-                'isCloseBtn' => false,
-                'isSaveBtn' => false,
-                'isSaveAndCloseBtn' => false,
-            ],
-            true
+        // Green Bar Page Title
+        $aData['pageTitle'] = gT('Permission for group: ') . $model->title;
+
+        // White Top Bar
+        $aData['fullpagebar'] = array(
+            'returnbutton' => array(
+                'text' => gT('Back'),
+                'url'  => 'surveyAdministration/listsurveys#surveygroups',
+            ),
         );
         $this->aData = $aData;
 
@@ -197,17 +195,15 @@ class SurveysGroupsPermissionController extends LSBaseController
         );
         $aData['subview'] = 'addUserResult';
 
-        $aData['topbar']['title'] = gT('Permission for group: ') . CHtml::encode($model->title);
-        $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
-            '/layouts/partial_topbar/right_close_saveclose_save',
-            [
-                'backUrl' => App()->createUrl("SurveysGroupsPermission/index", ["id" => $id]),
-                'isCloseBtn' => true,
-                'isSaveBtn' => false,
-                'isSaveAndCloseBtn' => false,
+        // Green Bar Page Title
+        $aData['pageTitle'] = gT('Permission for group: ') . $model->title;
+
+        $aData['fullpagebar'] = [
+            'closebutton' => [
+                'url' => App()->createUrl("SurveysGroupsPermission/index", ["id" => $id]),
+                'url_keep' => true,
             ],
-            true
-        );
+        ];
         $aData['aPermissionData'] = array(
             'result' => array(),
             'uid' => $uid,
@@ -222,7 +218,7 @@ class SurveysGroupsPermissionController extends LSBaseController
         if (!$oPermission->hasErrors()) {
             $result['success'] = gT("User added.");
         } else {
-            $result['error'] = $oPermission;
+            $result['error'] = CHtml::errorSummary($oPermission);
         }
 
         $aData['aPermissionData']['result'] = $result;
@@ -257,17 +253,15 @@ class SurveysGroupsPermissionController extends LSBaseController
         );
         $aData['subview'] = 'addUserGroupResult';
 
-        $aData['topbar']['title'] = gT('Permission for group: ') . CHtml::encode($model->title);
-        $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
-            '/layouts/partial_topbar/right_close_saveclose_save',
-            [
-                'backUrl' => App()->createUrl("SurveysGroupsPermission/index", ["id" => $id]),
-                'isCloseBtn' => true,
-                'isSaveBtn' => false,
-                'isSaveAndCloseBtn' => false,
+        // Green Bar Page Title
+        $aData['pageTitle'] = gT('Permission for group: ') . $model->title;
+
+        $aData['fullpagebar'] = [
+            'closebutton' => [
+                'url' => App()->createUrl("SurveysGroupsPermission/index", ["id" => $id]),
+                'url_keep' => true,
             ],
-            true
-        );
+        ];
         $aData['aPermissionData'] = array(
             'result' => array(),
             'ugid' => $ugid,
@@ -396,9 +390,9 @@ class SurveysGroupsPermissionController extends LSBaseController
             }
         }
         if ($success) {
-            App()->setFlashMessage(gT("Survey group permissions were successfully updated."));
+            App()->setFlashMessage("Surveys groups permissions were successfully updated.");
         } else {
-            App()->setFlashMessage(gT("An error happened while updating survey group permissions."), 'danger');
+            App()->setFlashMessage("An error happened when updating surveys groups permissions.", 'danger');
         }
         if ($type == 'group') {
             App()->request->redirect(App()->getController()->createUrl('surveysGroupsPermission/index', array('id' => $id)));
@@ -446,17 +440,15 @@ class SurveysGroupsPermissionController extends LSBaseController
         );
         $aData['subview'] = 'deleteUserResult';
 
-        $aData['topbar']['title'] = gT('Permission for group: ') . CHtml::encode($model->title);
-        $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
-            '/layouts/partial_topbar/right_close_saveclose_save',
-            [
-                'backUrl' => App()->createUrl("SurveysGroupsPermission/index", ["id" => $id]),
-                'isCloseBtn' => true,
-                'isSaveBtn' => false,
-                'isSaveAndCloseBtn' => false,
+        // Green Bar Page Title
+        $aData['pageTitle'] = gT('Permission for group: ') . $model->title;
+
+        $aData['fullpagebar'] = [
+            'closebutton' => [
+                'url' => App()->createUrl("SurveysGroupsPermission/index", ["id" => $id]),
+                'url_keep' => true,
             ],
-            true
-        );
+        ];
         $aData['aPermissionData'] = array(
             'model' => $model,
             'oUser' => $oUser,
@@ -504,25 +496,34 @@ class SurveysGroupsPermissionController extends LSBaseController
             $aSurveysGroupsPermissions,
             $aSurveysInGroupPermissions
         );
+        $buttons = array(
+            'closebutton' => array(
+                'url' => App()->createUrl("SurveysGroupsPermission/index", ["id" => $id]),
+                'url_keep' => true,
+            )
+        );
+        if ($model->hasPermission('permission', 'update')) {
+            $buttons = array(
+                'savebutton' => array(
+                    'form' => 'permissionsSave'
+                ),
+                'saveandclosebutton' => array(
+                    'form' => 'permissionsSave'
+                ),
+                'closebutton' => array(
+                    'url' => App()->createUrl("SurveysGroupsPermission/index", ["id" => $id]),
+                    'url_keep' => true,
+                )
+            );
+        }
         $aData = array(
             'model' => $model,
             'subview' => 'setPermissionForm',
+            'fullpagebar' => $buttons
         );
 
-        $hasUpdatePermission = $model->hasPermission('permission', 'update');
-        $aData['topbar']['title'] = gT('Permission for group: ') . CHtml::encode($model->title);
-        $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
-            '/layouts/partial_topbar/right_close_saveclose_save',
-            [
-                'backUrl' => App()->createUrl("SurveysGroupsPermission/index", ["id" => $id]),
-                'isCloseBtn' => true,
-                'isSaveBtn' => $hasUpdatePermission,
-                'formIdSave' => 'permissionsSave',
-                'isSaveAndCloseBtn' => $hasUpdatePermission,
-                'formIdSaveClose' => 'permissionsSave',
-            ],
-            true
-        );
+        // Green Bar Page Title
+        $aData['pageTitle'] = gT('Permission for group: ') . $model->title;
 
         $aData['aPermissionData'] = array(
             'aPermissions' => $aPermissions,

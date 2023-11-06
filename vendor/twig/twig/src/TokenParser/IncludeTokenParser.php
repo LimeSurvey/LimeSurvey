@@ -13,7 +13,6 @@
 namespace Twig\TokenParser;
 
 use Twig\Node\IncludeNode;
-use Twig\Node\Node;
 use Twig\Token;
 
 /**
@@ -22,12 +21,10 @@ use Twig\Token;
  *   {% include 'header.html' %}
  *     Body
  *   {% include 'footer.html' %}
- *
- * @internal
  */
 class IncludeTokenParser extends AbstractTokenParser
 {
-    public function parse(Token $token): Node
+    public function parse(Token $token)
     {
         $expr = $this->parser->getExpressionParser()->parseExpression();
 
@@ -41,29 +38,31 @@ class IncludeTokenParser extends AbstractTokenParser
         $stream = $this->parser->getStream();
 
         $ignoreMissing = false;
-        if ($stream->nextIf(/* Token::NAME_TYPE */ 5, 'ignore')) {
-            $stream->expect(/* Token::NAME_TYPE */ 5, 'missing');
+        if ($stream->nextIf(Token::NAME_TYPE, 'ignore')) {
+            $stream->expect(Token::NAME_TYPE, 'missing');
 
             $ignoreMissing = true;
         }
 
         $variables = null;
-        if ($stream->nextIf(/* Token::NAME_TYPE */ 5, 'with')) {
+        if ($stream->nextIf(Token::NAME_TYPE, 'with')) {
             $variables = $this->parser->getExpressionParser()->parseExpression();
         }
 
         $only = false;
-        if ($stream->nextIf(/* Token::NAME_TYPE */ 5, 'only')) {
+        if ($stream->nextIf(Token::NAME_TYPE, 'only')) {
             $only = true;
         }
 
-        $stream->expect(/* Token::BLOCK_END_TYPE */ 3);
+        $stream->expect(Token::BLOCK_END_TYPE);
 
         return [$variables, $only, $ignoreMissing];
     }
 
-    public function getTag(): string
+    public function getTag()
     {
         return 'include';
     }
 }
+
+class_alias('Twig\TokenParser\IncludeTokenParser', 'Twig_TokenParser_Include');

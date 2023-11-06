@@ -14,45 +14,37 @@
 <div class='side-body <?php echo getSideBodyClass(true); ?>'>
     <h3><?php eT('Groups in this survey'); ?></h3>
     <div class="row">
-        <div class="">
-            <div class="">
+        <div class="col-lg-12 ls-flex ls-flex-row">
+            <div class="ls-flex-item text-left">
                 <?php App()->getController()->renderPartial(
                     '/admin/survey/surveybar_addgroupquestion', //todo this view must be moved to correct position
                     [
-                        'surveybar' => $surveybar,
-                        'oSurvey' => $oSurvey,
+                        'surveybar'      => $surveybar,
+                        'oSurvey'        => $oSurvey,
                         'surveyHasGroup' => isset($oSurvey->groups) ? $oSurvey->groups : false
                     ]
                 ); ?>
             </div>
-
+            <div class="ls-flex-item text-right">
                 <!-- Search Box -->
-            <?php $form = $this->beginWidget('TbActiveForm', array(
-                'action' => Yii::app()->createUrl('questionGroupsAdministration/listquestiongroups/surveyid/' . $surveyid),
-                'method' => 'get',
-                'htmlOptions' => array(
-                    'class' => '',
-                ),
-            )); ?>
-                <div class="row row-cols-lg-auto g-1 align-items-center mb-3 float-end">
-                    <div class="col-12">
-                        <?php echo CHtml::label(gT('Search by group name:'), 'group_name', array('class' => 'text-nowrap col-sm-7 col-form-label col-form-label-sm')); ?>
-                    </div>
-                    <div class="col-12">
+                <?php $form = $this->beginWidget('TbActiveForm', array(
+                    'action' => Yii::app()->createUrl('questionGroupsAdministration/listquestiongroups/surveyid/' . $surveyid),
+                    'method' => 'get',
+                    'htmlOptions' => array(
+                        'class' => 'form-inline',
+                    ),
+                )); ?>
+                    <div class="form-group">
+                        <?php echo CHtml::label(gT('Search by group name:'), 'group_name', array('class' => ' control-label text-right')); ?>
                         <?php echo $form->textField($model, 'group_name', array('class' => 'form-control')); ?>
                     </div>
-
-
-                    <div class="col-12">
-                        <?php echo CHtml::submitButton(gT('Search', 'unescaped'), array('class' => 'btn btn-primary')); ?>
-                        <a href="<?php echo Yii::app()->createUrl('questionGroupsAdministration/listquestiongroups/surveyid/' . $surveyid);?>"
-                           class="btn btn-warning">
-                            <span class="ri-refresh-line"></span>
-                            <?php eT('Reset');?>
-                        </a>
-                    </div>
-                </div>
-            <?php $this->endWidget(); ?>
+                    <?php echo CHtml::submitButton(gT('Search', 'unescaped'), array('class' => 'btn btn-success')); ?>
+                    <a href="<?php echo Yii::app()->createUrl('questionGroupsAdministration/listquestiongroups/surveyid/' . $surveyid);?>"
+                       class="btn btn-warning">
+                        <?php eT('Reset');?>
+                    </a>
+                <?php $this->endWidget(); ?>
+            </div>
         </div>
     </div>
     <hr/>
@@ -60,11 +52,13 @@
     <div class="row ls-space margin">
         <?php
         $this->widget(
-            'ext.admin.grid.CLSGridView', //done
+            'ext.LimeGridView.LimeGridView',
             [
                 'id'              => 'question-group-grid',
                 'dataProvider'    => $model->search(),
                 'emptyText'       => gT('No question groups found.'),
+                'htmlOptions'     => ['class' => 'table-responsive grid-view-ls'],
+                'template'        => "{items}\n<div id='questiongroupListPager'><div class=\"col-sm-4\" id=\"massive-action-container\"></div><div class=\"col-sm-4 pager-container ls-ba \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
                 'summaryText'     => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
                     gT('%s rows per page'),
                     CHtml::dropDownList(
@@ -72,7 +66,7 @@
                         $pageSize,
                         Yii::app()->params['pageSizeOptions'],
                         [
-                            'class' => 'changePageSize form-select',
+                            'class' => 'changePageSize form-control',
                             'style' => 'display: inline; width: auto'
                         ]
                     )
@@ -80,6 +74,15 @@
 
                 // Columns to dispplay
                 'columns'         => [
+
+                    // Action buttons (defined in model)
+                    [
+                        'header'      => gT('Action'),
+                        'name'        => 'actions',
+                        'type'        => 'raw',
+                        'value'       => '$data->buttons',
+                        'htmlOptions' => ['class' => ''],
+                    ],
                     // Group Id
                     [
                         'header' => gT('Group ID'),
@@ -110,15 +113,7 @@
                         'value'       => 'viewHelper::flatEllipsizeText($data->primaryDescription, true, 0)',
                         'htmlOptions' => ['class' => ''],
                     ],
-                    // Action buttons (defined in model)
-                    [
-                        'header'      => gT('Action'),
-                        'name'        => 'actions',
-                        'type'        => 'raw',
-                        'value'       => '$data->buttons',
-                        'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
-                        'htmlOptions'       => ['class' => 'text-center button-column ls-sticky-column'],
-                    ],
+
 
                 ],
                 'ajaxUpdate'      => 'question-group-grid',

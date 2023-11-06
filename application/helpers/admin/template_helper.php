@@ -41,7 +41,7 @@ function getListOfFiles($wh)
         }
         closedir($handle);
     }
-    $arr = explode("\n", (string) $files);
+    $arr = explode("\n", $files);
     sort($arr);
     return $arr;
 }
@@ -132,7 +132,7 @@ function templateExtractFilter($p_event, &$p_header)
 {
     $aAllowExtensions = explode(',', Yii::app()->getConfig('allowedthemeuploads') . ',' . Yii::app()->getConfig('allowedthemeimageformats'));
     $aAllowExtensions[] = 'twig';
-    $info = pathinfo((string) $p_header['filename']);
+    $info = pathinfo($p_header['filename']);
 
     if ($p_header['folder'] || !isset($info['extension']) || in_array(strtolower($info['extension']), $aAllowExtensions)) {
         return 1;

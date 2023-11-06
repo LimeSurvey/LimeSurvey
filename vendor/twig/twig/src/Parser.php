@@ -24,25 +24,30 @@ use Twig\Node\NodeCaptureInterface;
 use Twig\Node\NodeOutputInterface;
 use Twig\Node\PrintNode;
 use Twig\Node\TextNode;
+use Twig\NodeVisitor\NodeVisitorInterface;
 use Twig\TokenParser\TokenParserInterface;
 
 /**
+ * Default parser implementation.
+ *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class Parser
+class Parser implements \Twig_ParserInterface
 {
-    private $stack = [];
-    private $stream;
-    private $parent;
-    private $visitors;
-    private $expressionParser;
-    private $blocks;
-    private $blockStack;
-    private $macros;
-    private $env;
-    private $importedSymbols;
-    private $traits;
-    private $embeddedTemplates = [];
+    protected $stack = [];
+    protected $stream;
+    protected $parent;
+    protected $handlers;
+    protected $visitors;
+    protected $expressionParser;
+    protected $blocks;
+    protected $blockStack;
+    protected $macros;
+    protected $env;
+    protected $reservedMacroNames;
+    protected $importedSymbols;
+    protected $traits;
+    protected $embeddedTemplates = [];
     private $varNameSalt = 0;
 
     public function __construct(Environment $env)
@@ -50,16 +55,49 @@ class Parser
         $this->env = $env;
     }
 
-    public function getVarName(): string
+    /**
+     * @deprecated since 1.27 (to be removed in 2.0)
+     */
+    public function getEnvironment()
     {
-        return sprintf('__internal_parse_%d', $this->varNameSalt++);
+        @trigger_error('The '.__METHOD__.' method is deprecated since version 1.27 and will be removed in 2.0.', \E_USER_DEPRECATED);
+
+        return $this->env;
     }
 
-    public function parse(TokenStream $stream, $test = null, bool $dropNeedle = false): ModuleNode
+    public function getVarName()
     {
-        $vars = get_object_vars($this);
-        unset($vars['stack'], $vars['env'], $vars['handlers'], $vars['visitors'], $vars['expressionParser'], $vars['reservedMacroNames'], $vars['varNameSalt']);
+        return sprintf('__internal_%s', hash('sha256', __METHOD__.$this->stream->getSourceContext()->getCode().$this->varNameSalt++));
+    }
+
+    /**
+     * @deprecated since 1.27 (to be removed in 2.0). Use $parser->getStream()->getSourceContext()->getPath() instead.
+     */
+    public function getFilename()
+    {
+        @trigger_error(sprintf('The "%s" method is deprecated since version 1.27 and will be removed in 2.0. Use $parser->getStream()->getSourceContext()->getPath() instead.', __METHOD__), \E_USER_DEPRECATED);
+
+        return $this->stream->getSourceContext()->getName();
+    }
+
+    public function parse(TokenStream $stream, $test = null, $dropNeedle = false)
+    {
+        // push all variables into the stack to keep the current state of the parser
+        // using get_object_vars() instead of foreach would lead to https://bugs.php.net/71336
+        // This hack can be removed when min version if PHP 7.0
+        $vars = [];
+        foreach ($this as $k => $v) {
+            $vars[$k] = $v;
+        }
+
+        unset($vars['stack'], $vars['env'], $vars['handlers'], $vars['visitors'], $vars['expressionParser'], $vars['reservedMacroNames']);
         $this->stack[] = $vars;
+
+        // tag handlers
+        if (null === $this->handlers) {
+            $this->handlers = $this->env->getTokenParsers();
+            $this->handlers->setParser($this);
+        }
 
         // node visitors
         if (null === $this->visitors) {
@@ -78,6 +116,7 @@ class Parser
         $this->blockStack = [];
         $this->importedSymbols = [[]];
         $this->embeddedTemplates = [];
+        $this->varNameSalt = 0;
 
         try {
             $body = $this->subparse($test, $dropNeedle);
@@ -111,33 +150,33 @@ class Parser
         return $node;
     }
 
-    public function subparse($test, bool $dropNeedle = false): Node
+    public function subparse($test, $dropNeedle = false)
     {
         $lineno = $this->getCurrentToken()->getLine();
         $rv = [];
         while (!$this->stream->isEOF()) {
             switch ($this->getCurrentToken()->getType()) {
-                case /* Token::TEXT_TYPE */ 0:
+                case Token::TEXT_TYPE:
                     $token = $this->stream->next();
                     $rv[] = new TextNode($token->getValue(), $token->getLine());
                     break;
 
-                case /* Token::VAR_START_TYPE */ 2:
+                case Token::VAR_START_TYPE:
                     $token = $this->stream->next();
                     $expr = $this->expressionParser->parseExpression();
-                    $this->stream->expect(/* Token::VAR_END_TYPE */ 4);
+                    $this->stream->expect(Token::VAR_END_TYPE);
                     $rv[] = new PrintNode($expr, $token->getLine());
                     break;
 
-                case /* Token::BLOCK_START_TYPE */ 1:
+                case Token::BLOCK_START_TYPE:
                     $this->stream->next();
                     $token = $this->getCurrentToken();
 
-                    if (/* Token::NAME_TYPE */ 5 !== $token->getType()) {
+                    if (Token::NAME_TYPE !== $token->getType()) {
                         throw new SyntaxError('A block must start with a tag name.', $token->getLine(), $this->stream->getSourceContext());
                     }
 
-                    if (null !== $test && $test($token)) {
+                    if (null !== $test && \call_user_func($test, $token)) {
                         if ($dropNeedle) {
                             $this->stream->next();
                         }
@@ -149,7 +188,8 @@ class Parser
                         return new Node($rv, [], $lineno);
                     }
 
-                    if (!$subparser = $this->env->getTokenParser($token->getValue())) {
+                    $subparser = $this->handlers->getTokenParser($token->getValue());
+                    if (null === $subparser) {
                         if (null !== $test) {
                             $e = new SyntaxError(sprintf('Unexpected "%s" tag', $token->getValue()), $token->getLine(), $this->stream->getSourceContext());
 
@@ -158,7 +198,7 @@ class Parser
                             }
                         } else {
                             $e = new SyntaxError(sprintf('Unknown "%s" tag.', $token->getValue()), $token->getLine(), $this->stream->getSourceContext());
-                            $e->addSuggestions($token->getValue(), array_keys($this->env->getTokenParsers()));
+                            $e->addSuggestions($token->getValue(), array_keys($this->env->getTags()));
                         }
 
                         throw $e;
@@ -166,7 +206,6 @@ class Parser
 
                     $this->stream->next();
 
-                    $subparser->setParser($this);
                     $node = $subparser->parse($token);
                     if (null !== $node) {
                         $rv[] = $node;
@@ -185,57 +224,98 @@ class Parser
         return new Node($rv, [], $lineno);
     }
 
-    public function getBlockStack(): array
+    /**
+     * @deprecated since 1.27 (to be removed in 2.0)
+     */
+    public function addHandler($name, $class)
+    {
+        @trigger_error('The '.__METHOD__.' method is deprecated since version 1.27 and will be removed in 2.0.', \E_USER_DEPRECATED);
+
+        $this->handlers[$name] = $class;
+    }
+
+    /**
+     * @deprecated since 1.27 (to be removed in 2.0)
+     */
+    public function addNodeVisitor(NodeVisitorInterface $visitor)
+    {
+        @trigger_error('The '.__METHOD__.' method is deprecated since version 1.27 and will be removed in 2.0.', \E_USER_DEPRECATED);
+
+        $this->visitors[] = $visitor;
+    }
+
+    public function getBlockStack()
     {
         return $this->blockStack;
     }
 
     public function peekBlockStack()
     {
-        return $this->blockStack[\count($this->blockStack) - 1] ?? null;
+        return isset($this->blockStack[\count($this->blockStack) - 1]) ? $this->blockStack[\count($this->blockStack) - 1] : null;
     }
 
-    public function popBlockStack(): void
+    public function popBlockStack()
     {
         array_pop($this->blockStack);
     }
 
-    public function pushBlockStack($name): void
+    public function pushBlockStack($name)
     {
         $this->blockStack[] = $name;
     }
 
-    public function hasBlock(string $name): bool
+    public function hasBlock($name)
     {
         return isset($this->blocks[$name]);
     }
 
-    public function getBlock(string $name): Node
+    public function getBlock($name)
     {
         return $this->blocks[$name];
     }
 
-    public function setBlock(string $name, BlockNode $value): void
+    public function setBlock($name, BlockNode $value)
     {
         $this->blocks[$name] = new BodyNode([$value], [], $value->getTemplateLine());
     }
 
-    public function hasMacro(string $name): bool
+    public function hasMacro($name)
     {
         return isset($this->macros[$name]);
     }
 
-    public function setMacro(string $name, MacroNode $node): void
+    public function setMacro($name, MacroNode $node)
     {
+        if ($this->isReservedMacroName($name)) {
+            throw new SyntaxError(sprintf('"%s" cannot be used as a macro name as it is a reserved keyword.', $name), $node->getTemplateLine(), $this->stream->getSourceContext());
+        }
+
         $this->macros[$name] = $node;
     }
 
-    public function addTrait($trait): void
+    public function isReservedMacroName($name)
+    {
+        if (null === $this->reservedMacroNames) {
+            $this->reservedMacroNames = [];
+            $r = new \ReflectionClass($this->env->getBaseTemplateClass());
+            foreach ($r->getMethods() as $method) {
+                $methodName = strtr($method->getName(), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz');
+
+                if ('get' === substr($methodName, 0, 3) && isset($methodName[3])) {
+                    $this->reservedMacroNames[] = substr($methodName, 3);
+                }
+            }
+        }
+
+        return \in_array(strtr($name, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), $this->reservedMacroNames);
+    }
+
+    public function addTrait($trait)
     {
         $this->traits[] = $trait;
     }
 
-    public function hasTraits(): bool
+    public function hasTraits()
     {
         return \count($this->traits) > 0;
     }
@@ -247,58 +327,78 @@ class Parser
         $this->embeddedTemplates[] = $template;
     }
 
-    public function addImportedSymbol(string $type, string $alias, string $name = null, AbstractExpression $node = null): void
+    public function addImportedSymbol($type, $alias, $name = null, AbstractExpression $node = null)
     {
         $this->importedSymbols[0][$type][$alias] = ['name' => $name, 'node' => $node];
     }
 
-    public function getImportedSymbol(string $type, string $alias)
+    public function getImportedSymbol($type, $alias)
     {
-        // if the symbol does not exist in the current scope (0), try in the main/global scope (last index)
-        return $this->importedSymbols[0][$type][$alias] ?? ($this->importedSymbols[\count($this->importedSymbols) - 1][$type][$alias] ?? null);
+        if (null !== $this->peekBlockStack()) {
+            foreach ($this->importedSymbols as $functions) {
+                if (isset($functions[$type][$alias])) {
+                    if (\count($this->blockStack) > 1) {
+                        return null;
+                    }
+
+                    return $functions[$type][$alias];
+                }
+            }
+        } else {
+            return isset($this->importedSymbols[0][$type][$alias]) ? $this->importedSymbols[0][$type][$alias] : null;
+        }
     }
 
-    public function isMainScope(): bool
+    public function isMainScope()
     {
         return 1 === \count($this->importedSymbols);
     }
 
-    public function pushLocalScope(): void
+    public function pushLocalScope()
     {
         array_unshift($this->importedSymbols, []);
     }
 
-    public function popLocalScope(): void
+    public function popLocalScope()
     {
         array_shift($this->importedSymbols);
     }
 
-    public function getExpressionParser(): ExpressionParser
+    /**
+     * @return ExpressionParser
+     */
+    public function getExpressionParser()
     {
         return $this->expressionParser;
     }
 
-    public function getParent(): ?Node
+    public function getParent()
     {
         return $this->parent;
     }
 
-    public function setParent(?Node $parent): void
+    public function setParent($parent)
     {
         $this->parent = $parent;
     }
 
-    public function getStream(): TokenStream
+    /**
+     * @return TokenStream
+     */
+    public function getStream()
     {
         return $this->stream;
     }
 
-    public function getCurrentToken(): Token
+    /**
+     * @return Token
+     */
+    public function getCurrentToken()
     {
         return $this->stream->getCurrent();
     }
 
-    private function filterBodyNodes(Node $node, bool $nested = false): ?Node
+    protected function filterBodyNodes(\Twig_NodeInterface $node)
     {
         // check that the body does not contain non-empty output nodes
         if (
@@ -310,35 +410,24 @@ class Parser
                 $t = substr($node->getAttribute('data'), 3);
                 if ('' === $t || ctype_space($t)) {
                     // bypass empty nodes starting with a BOM
-                    return null;
+                    return;
                 }
             }
 
             throw new SyntaxError('A template that extends another one cannot include content outside Twig blocks. Did you forget to put the content inside a {% block %} tag?', $node->getTemplateLine(), $this->stream->getSourceContext());
         }
 
-        // bypass nodes that "capture" the output
+        // bypass nodes that will "capture" the output
         if ($node instanceof NodeCaptureInterface) {
-            // a "block" tag in such a node will serve as a block definition AND be displayed in place as well
             return $node;
         }
 
-        // "block" tags that are not captured (see above) are only used for defining
-        // the content of the block. In such a case, nesting it does not work as
-        // expected as the definition is not part of the default template code flow.
-        if ($nested && $node instanceof BlockReferenceNode) {
-            throw new SyntaxError('A block definition cannot be nested under non-capturing nodes.', $node->getTemplateLine(), $this->stream->getSourceContext());
-        }
-
         if ($node instanceof NodeOutputInterface) {
-            return null;
+            return;
         }
 
-        // here, $nested means "being at the root level of a child template"
-        // we need to discard the wrapping "Node" for the "body" node
-        $nested = $nested || Node::class !== \get_class($node);
         foreach ($node as $k => $n) {
-            if (null !== $n && null === $this->filterBodyNodes($n, $nested)) {
+            if (null !== $n && null === $this->filterBodyNodes($n)) {
                 $node->removeNode($k);
             }
         }
@@ -346,3 +435,5 @@ class Parser
         return $node;
     }
 }
+
+class_alias('Twig\Parser', 'Twig_Parser');

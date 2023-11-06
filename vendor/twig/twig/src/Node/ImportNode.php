@@ -22,27 +22,19 @@ use Twig\Node\Expression\NameExpression;
  */
 class ImportNode extends Node
 {
-    public function __construct(AbstractExpression $expr, AbstractExpression $var, int $lineno, string $tag = null, bool $global = true)
+    public function __construct(AbstractExpression $expr, AbstractExpression $var, $lineno, $tag = null)
     {
-        parent::__construct(['expr' => $expr, 'var' => $var], ['global' => $global], $lineno, $tag);
+        parent::__construct(['expr' => $expr, 'var' => $var], [], $lineno, $tag);
     }
 
-    public function compile(Compiler $compiler): void
+    public function compile(Compiler $compiler)
     {
         $compiler
             ->addDebugInfo($this)
-            ->write('$macros[')
-            ->repr($this->getNode('var')->getAttribute('name'))
-            ->raw('] = ')
+            ->write('')
+            ->subcompile($this->getNode('var'))
+            ->raw(' = ')
         ;
-
-        if ($this->getAttribute('global')) {
-            $compiler
-                ->raw('$this->macros[')
-                ->repr($this->getNode('var')->getAttribute('name'))
-                ->raw('] = ')
-            ;
-        }
 
         if ($this->getNode('expr') instanceof NameExpression && '_self' === $this->getNode('expr')->getAttribute('name')) {
             $compiler->raw('$this');
@@ -61,3 +53,5 @@ class ImportNode extends Node
         $compiler->raw(";\n");
     }
 }
+
+class_alias('Twig\Node\ImportNode', 'Twig_Node_Import');

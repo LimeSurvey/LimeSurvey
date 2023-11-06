@@ -129,12 +129,8 @@ class Saved extends SurveyCommonAction
 
         $aData['title_bar']['title'] = gT('Browse responses') . ': ' . $oSurvey->currentLanguageSettings->surveyls_title;
 
-        $topbarData = TopbarConfiguration::getResponsesTopbarData($aData['surveyid']);
-        $aData['topbar']['middleButtons'] = Yii::app()->getController()->renderPartial(
-            '/responses/partial/topbarBtns/leftSideButtons',
-            $topbarData,
-            true
-        );
+        $aData['topBar']['name'] = 'baseTopbar_view';
+        $aData['topBar']['leftSideView'] = 'responsesTopbarLeft_view';
 
         parent::renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
     }

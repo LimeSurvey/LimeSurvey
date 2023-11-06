@@ -1109,7 +1109,7 @@ function adodb_date2($fmt, $d = false, $is_gmt = false)
         if (
             !preg_match(
                 "|^([0-9]{4})[-/\.]?([0-9]{1,2})[-/\.]?([0-9]{1,2})[ -]?(([0-9]{1,2}):?([0-9]{1,2}):?([0-9\.]{1,4}))?|",
-                ((string) $d),
+                ($d),
                 $rr
             )
         ) {
@@ -1159,7 +1159,6 @@ function adodb_date($fmt, $d = false, $is_gmt = false)
         $daylight = function_exists('adodb_daylight_sv');
     }
     if ($daylight) {
-        /** @psalm-suppress UndefinedFunction */
         adodb_daylight_sv($arr, $is_gmt);
     }
 
@@ -1170,7 +1169,7 @@ function adodb_date($fmt, $d = false, $is_gmt = false)
     $min = $arr['minutes'];
     $secs = $arr['seconds'];
 
-    $max = strlen((string) $fmt);
+    $max = strlen($fmt);
     $dates = '';
 
     $isphp5 = PHP_VERSION >= 5;
@@ -1227,7 +1226,7 @@ function adodb_date($fmt, $d = false, $is_gmt = false)
                 $dates .= $year;
                 break;
             case 'y':
-                $dates .= substr((string) $year, strlen((string) $year) - 2, 2);
+                $dates .= substr($year, strlen($year) - 2, 2);
                 break;
             // MONTH
             case 'm':
@@ -1551,7 +1550,7 @@ function adodb_strftime($fmt, $ts = false, $is_gmt = false)
     }
     $inpct = false;
     $fmtdate = '';
-    for ($i = 0, $max = strlen((string) $fmt); $i < $max; $i++) {
+    for ($i = 0, $max = strlen($fmt); $i < $max; $i++) {
         $ch = $fmt[$i];
         if ($ch == '%') {
             if ($inpct) {

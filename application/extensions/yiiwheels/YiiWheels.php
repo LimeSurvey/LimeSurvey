@@ -41,14 +41,14 @@ class YiiWheels extends CApplicationComponent
      */
     public function init()
     {
-        $this->_api = Yii::app()->getComponent('bootstrap5');
+        $this->_api = Yii::app()->getComponent('bootstrap');
 
         if (null === $this->_api) {
             throw new CException(Yii::t('zii', '"YiiWheels" must work in conjunction with "YiiStrap".'));
         }
 
         /* ensure all widgets - plugins are accessible to the library */
-        Yii::import('yiistrap_fork.widgets.*');
+        Yii::import('bootstrap.widgets.*');
         /* ensure common behavior is also accessible to the library */
         Yii::import('yiiwheels.behaviors.WhPlugin');
 

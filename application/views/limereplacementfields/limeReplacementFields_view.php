@@ -7,12 +7,12 @@
         return true ;
     }
 </script>
-<div class="mb-3">
+<div class="form-group">
     <?php
     if (count($replFields) > 0 || isset($cquestions)) {
         $InsertansUnsupportedtypes = Yii::app()->getConfig('InsertansUnsupportedtypes');
         ?>
-        <select name='cquestions' id='cquestions' size='14' style='width:390px' ondblclick="$('.cke_dialog_ui_button_ok').children().click();" class='form-select'>
+        <select name='cquestions' id='cquestions' size='14' style='width:390px' ondblclick="$('.cke_dialog_ui_button_ok').children().click();" class='form-control'>
             <?php
             $noselection = false;
     } else {
@@ -63,12 +63,12 @@
     <?php
     if (isset($surveyformat)) {
         ?>
-        <div class="card">
+        <div class="panel panel-default">
             <?php
             switch ($surveyformat) {
                 case 'A':
                     ?>
-                    <div class="card-body">
+                    <div class="panel-body">
 
                         <br />
                         <font color='orange'><?php eT("Some questions have been disabled");?></font>

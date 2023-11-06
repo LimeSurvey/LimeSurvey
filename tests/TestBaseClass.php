@@ -37,15 +37,6 @@ class TestBaseClass extends TestCase
     {
         parent::setUpBeforeClass();
 
-        // Enable Debug and Error Reporting if logging is enabled
-        $isDebug = getenv('RUNNER_DEBUG', false);
-        // fwrite(STDERR, 'Error Reporting and Debug: ' . ($isDebug ? 'Yes' : 'No'));
-        if ($isDebug) {
-            error_reporting(E_ALL);
-            ini_set('display_errors', '1');
-            ini_set('display_startup_errors', '1');
-        }
-
         // Clear database cache.
         \Yii::app()->db->schema->refresh();
 
@@ -82,10 +73,6 @@ class TestBaseClass extends TestCase
             throw new Exception(sprintf('Survey file %s not found', $surveyFile));
         }
 
-        // Reset the cache to prevent import from failing if there is a cached survey and it's active.
-        // When importing, activating, deleting and importing again (usual with automated tests),
-        // as using the same SID, it was picking up the cached (old) version of the survey
-        \Survey::model()->resetCache();
         $translateLinksFields = false;
         $newSurveyName = null;
         $result = \importSurveyFile(
@@ -140,8 +127,6 @@ class TestBaseClass extends TestCase
         \Yii::app()->session['loginID'] = 1;
 
         if (self::$testSurvey) {
-            // Clear database cache.
-            \Yii::app()->db->schema->refresh();
             if (!self::$testSurvey->delete()) {
                 self::assertTrue(
                     false,
@@ -172,8 +157,6 @@ class TestBaseClass extends TestCase
             $plugin->active = 1;
             $plugin->save();
         }
-
-        return $plugin;
     }
 
     /**

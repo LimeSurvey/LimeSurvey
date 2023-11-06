@@ -30,7 +30,7 @@ if (!isset($tableLabels)) {
                         <?php echo $successLabel ?>
                     </td>
                 <?php else: ?>
-                    <td class="text-danger">
+                    <td class="text-warning">
                         <?php ;
                             if(isset($result['error'])){
                                 echo $result['error'] ;

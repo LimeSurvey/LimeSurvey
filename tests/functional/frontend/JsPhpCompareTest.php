@@ -70,10 +70,6 @@ class JsPhpCompareTest extends TestBaseClassWeb
             $this->assertEquals('Q00+"" lt Q01+"" :', $checkJsText,"Current text of TestJS2 is \"".$checkJsText."\"");
             // Fill some value to relevant question
             self::$webDriver->findElement(WebDriverBy::id('answer'.$sgqaHiddenByRelevance))->sendKeys("answered");
-
-            self::$webDriver->executeScript('window.scrollTo(0,document.body.scrollHeight);');
-            sleep(1);
-
             // Click next (to do the test on PHP)
             $submit = self::$webDriver->findElement(WebDriverBy::id('ls-button-submit'));
             $submit->click();
@@ -92,7 +88,8 @@ class JsPhpCompareTest extends TestBaseClassWeb
             file_put_contents($filename, $screenshot);
             $this->assertFalse(
                 true,
-                self::$testHelper->javaTrace($ex)
+                'Url: ' . $url . PHP_EOL .
+                'Screenshot in ' .$filename . PHP_EOL . $ex->getMessage()
             );
         }
     }

@@ -28,16 +28,16 @@ use Twig\Token;
  *    </ul>
  *   {% endif %}
  *
- * @internal
+ * @final
  */
-final class IfTokenParser extends AbstractTokenParser
+class IfTokenParser extends AbstractTokenParser
 {
-    public function parse(Token $token): Node
+    public function parse(Token $token)
     {
         $lineno = $token->getLine();
         $expr = $this->parser->getExpressionParser()->parseExpression();
         $stream = $this->parser->getStream();
-        $stream->expect(/* Token::BLOCK_END_TYPE */ 3);
+        $stream->expect(Token::BLOCK_END_TYPE);
         $body = $this->parser->subparse([$this, 'decideIfFork']);
         $tests = [$expr, $body];
         $else = null;
@@ -46,13 +46,13 @@ final class IfTokenParser extends AbstractTokenParser
         while (!$end) {
             switch ($stream->next()->getValue()) {
                 case 'else':
-                    $stream->expect(/* Token::BLOCK_END_TYPE */ 3);
+                    $stream->expect(Token::BLOCK_END_TYPE);
                     $else = $this->parser->subparse([$this, 'decideIfEnd']);
                     break;
 
                 case 'elseif':
                     $expr = $this->parser->getExpressionParser()->parseExpression();
-                    $stream->expect(/* Token::BLOCK_END_TYPE */ 3);
+                    $stream->expect(Token::BLOCK_END_TYPE);
                     $body = $this->parser->subparse([$this, 'decideIfFork']);
                     $tests[] = $expr;
                     $tests[] = $body;
@@ -67,23 +67,25 @@ final class IfTokenParser extends AbstractTokenParser
             }
         }
 
-        $stream->expect(/* Token::BLOCK_END_TYPE */ 3);
+        $stream->expect(Token::BLOCK_END_TYPE);
 
         return new IfNode(new Node($tests), $else, $lineno, $this->getTag());
     }
 
-    public function decideIfFork(Token $token): bool
+    public function decideIfFork(Token $token)
     {
         return $token->test(['elseif', 'else', 'endif']);
     }
 
-    public function decideIfEnd(Token $token): bool
+    public function decideIfEnd(Token $token)
     {
         return $token->test(['endif']);
     }
 
-    public function getTag(): string
+    public function getTag()
     {
         return 'if';
     }
 }
+
+class_alias('Twig\TokenParser\IfTokenParser', 'Twig_TokenParser_If');

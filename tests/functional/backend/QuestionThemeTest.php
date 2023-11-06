@@ -2,7 +2,6 @@
 
 namespace ls\tests\controllers;
 
-use Facebook\WebDriver\WebDriverExpectedCondition;
 use ls\tests\TestBaseClassWeb;
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\Remote\LocalFileDetector;
@@ -110,7 +109,7 @@ class QuestionThemeTest extends TestBaseClassWeb
         $button = $web->findById('trigger_questionTypeSelector_button');
         $button->click();
 
-        $group = $web->findElement(WebDriverBy::xpath("//*[contains(text(),'Mask questions')]"));
+        $group = $web->findByLinkText('Mask questions');
         $group->click();
 
         $question = $web->findByPartialLinkText('Range Slider');
@@ -118,9 +117,6 @@ class QuestionThemeTest extends TestBaseClassWeb
 
         $button = $web->findById('selector__select-this-questionTypeSelector');
         $button->click();
-        sleep(1);
-
-        self::$webDriver->executeScript('window.scrollTo(0,document.body.scrollHeight);');
         sleep(1);
 
         $button = $web->findById('button-collapse-Custom_options');
@@ -161,14 +157,8 @@ class QuestionThemeTest extends TestBaseClassWeb
         $input = $web->findByName($name);
         $input->clear()->sendKeys('10');
 
-        self::$webDriver->executeScript('window.scrollTo(0,0);');
-
         // Save question
-        $button = self::$webDriver->wait(10)->until(
-            WebDriverExpectedCondition::elementToBeClickable(
-                WebDriverBy::cssSelector('#save-button-create-question')
-            )
-        );
+        $button = $web->findById('save-button-create-question');
         $button->click();
         sleep(1);
 
@@ -195,7 +185,6 @@ class QuestionThemeTest extends TestBaseClassWeb
      */
     public function testExecuteQuestionThemeSurvey()
     {
-        $this->markTestSkipped('external theme needs to be updated');
         // Import lsa
         $surveyFile = self::$surveysFolder . '/survey_archive_222923_executeQuestionThemeSurvey.lsa';
         self::importSurvey($surveyFile);

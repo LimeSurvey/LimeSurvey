@@ -25,33 +25,31 @@ class EMWarningHTMLBaker
      */
     public function getWarningHTML(array $warnings)
     {
-        $message = "<strong>"
+        // TODO: Factor out in warning classes OOP
+        $html = "<div class='alert alert-warning'>";
+        $html .= "<strong class=''>"
             . ngT(
                 "This question has at least {n} warning.|This question has at least {n} warnings.",
                 count($warnings),
                 'html'
             )
             . "</strong>";
-        $message .= "<ul class='list-unstyled small'>";
-        $warningsDone = [];
+        $html .= "<ul class='list-unstyled small text-warning'>";
+        $warningsDone = array();
         foreach ($warnings as $aWarning) {
-            if (!in_array($aWarning, $warningsDone)) {
-                $message .= "<li>";
+            if (!in_array($aWarning->getMessage(), $warningsDone)) {
+                $html .= "<li>";
                 if ($aWarning->hasHelpLink()) {
-                    $message .= $aWarning->bakeHelpLink();
+                    $html .= $aWarning->bakeHelpLink();
                 } else {
-                    $message .= $aWarning->getMessage();
+                    $html .= $aWarning->getMessage();
                 }
-                $message .= "</li>";
+                $html .= "</li>";
             }
             $warningsDone[] = $aWarning->getMessage();
         }
-        $message .= "</ul>";
-
-        return App()->getController()->widget('ext.AlertWidget.AlertWidget', [
-            'text' => $message,
-            'type' => 'warning',
-        ], true);
-        // TODO: Factor out in warning classes OOP
+        $html .= "</ul>";
+        $html .= "</div>";
+        return $html;
     }
 }

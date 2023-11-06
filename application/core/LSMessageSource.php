@@ -76,7 +76,7 @@ class LSMessageSource extends CMessageSource
         /* Messages by getext */
         if (is_file($messageFile)) {
             if ($this->useMoFile) {
-                $file = new LSGettextMoFile($this->useBigEndian);
+                $file = new CGettextMoFile($this->useBigEndian);
             } else {
                 $file = new CGettextPoFile();
             }

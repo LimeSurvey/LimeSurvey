@@ -20,24 +20,21 @@
 <?php if(isset($updateInfos->alert)): // First we check if the server provided a specific alert message ?>
     <?php if($updateInfos->alert != ""):?>
         <!-- Alert from server -->
-        <?php
-        $this->widget('ext.AlertWidget.AlertWidget', [
-            'text' => $updateInfos->alert,
-            'type' => 'warning',
-        ]);
-        ?>
+        <div class="alert alert-warning" role="alert">
+            <?php echo $updateInfos->alert; ?>
+        </div>
     <?php endif; ?>
 <?php endif; ?>
 
 
 <div>
-    <strong id="ls-updates"><?php echo gT('The following LimeSurvey updates are available:');?></strong>
+    <strong><?php echo gT('The following LimeSurvey updates are available:');?></strong>
 </div>
 <br/>
 <br/>
 
 
-<table aria-describedby="ls-updates" class="items table w-75 m-auto">
+<table class="items table">
     <!-- header -->
     <thead>
         <tr>
@@ -76,7 +73,7 @@
 
             <!-- stable / unstable -->
             <?php if (!in_array($aUpdateVersion['branch'], ['master','5.x','3.x-LTS'])):?>
-                <td class="text-danger">
+                <td class="text-warning">
                     <?php  eT('unstable'); ?>
                 </td>
             <?php else: ?>
@@ -87,7 +84,7 @@
 
             <!-- security / regular -->
             <?php if($aUpdateVersion['security_update']):?>
-            <td class="text-danger">
+            <td class="text-warning">
                     <?php eT("Security update");?>
             </td>
             <?php else: ?>
@@ -97,32 +94,23 @@
             <?php endif; ?>
 
             <!-- button -->
-            <td class="text-end">
+            <td class="text-right">
                 <!-- The form launching an update process. First step is the welcome message. The form is not submitted, but catch by the javascript inserted in the end of this file -->
                 <?php echo CHtml::beginForm(App()->createUrl('admin/update/sa/getwelcome'), 'post', array('class'=>'launchUpdateForm')); ?>
                     <?php echo CHtml::hiddenField('destinationBuild' , $aUpdateVersion['build']); ?>
 
                     <!-- the button launching the update -->
-                    <button type="submit" class="btn btn-sm btn-outline-secondary ajax_button launch_update">
-                        <span class="ri-shield-check-fill text-success"></span>
+                    <button type="submit" class="btn btn-default ajax_button launch_update">
+                        <span style="height : 1em; margin-right : 0.5em;" class="icon-shield text-success"></span>
                         <?php eT("Use ComfortUpdate");?>
                     </button>
-                <?php
-                $this->widget(
-                    'ext.ButtonWidget.ButtonWidget',
-                    [
-                        'name' => 'download-version',
-                        'id' => 'download-version',
-                        'text' => gT('Download'),
-                        'icon' => 'ri-download-fill',
-                        'link' => 'https://community.limesurvey.org/downloads/',
-                        'htmlOptions' => [
-                            'class' => 'ajax_button btn btn-sm btn-outline-secondary',
-                            'target' => '_blank',
-                        ],
-                    ]
-                );
-                ?>
+
+                     <?php if ($aUpdateVersion['branch']!='master'): ?>
+                         <input type='button' class="ajax_button btn btn-default" onclick="window.open('https://community.limesurvey.org/downloads/', '_blank')" value='<?php eT("Download"); ?>' />
+                     <?php else: ?>
+                         <input type='button' class="ajax_button btn btn-default" onclick="window.open('https://community.limesurvey.org/downloads/', '_blank')" value='<?php eT("Download"); ?>' />
+                     <?php endif; ?>
+
                  <?php echo CHtml::endForm(); ?>
             </td>
         </tr>

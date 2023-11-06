@@ -165,7 +165,7 @@ abstract class Writer implements IWriter
             $textHead = $fieldName;
         }
         if ($oOptions->headerSpacesToUnderscores) {
-            $textHead = str_replace(' ', '_', (string) $textHead);
+            $textHead = str_replace(' ', '_', $textHead);
         }
         return $textHead;
     }
@@ -341,10 +341,10 @@ abstract class Writer implements IWriter
         return $sFile;
     }
 
-    protected function stripTagsFull(string $string)
+    protected function stripTagsFull($string)
     {
         $string = str_replace('-oth-', '', $string);
-        return (string) flattenText($string, false, true, 'UTF-8', false);
+        return flattenText($string, false, true, 'UTF-8', false);
     }
 
 

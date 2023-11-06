@@ -16,18 +16,20 @@ namespace Twig\Sandbox;
  *
  * @author Martin Hasoň <martin.hason@gmail.com>
  */
-final class SecurityNotAllowedFunctionError extends SecurityError
+class SecurityNotAllowedFunctionError extends SecurityError
 {
     private $functionName;
 
-    public function __construct(string $message, string $functionName)
+    public function __construct($message, $functionName, $lineno = -1, $filename = null, \Exception $previous = null)
     {
-        parent::__construct($message);
+        parent::__construct($message, $lineno, $filename, $previous);
         $this->functionName = $functionName;
     }
 
-    public function getFunctionName(): string
+    public function getFunctionName()
     {
         return $this->functionName;
     }
 }
+
+class_alias('Twig\Sandbox\SecurityNotAllowedFunctionError', 'Twig_Sandbox_SecurityNotAllowedFunctionError');

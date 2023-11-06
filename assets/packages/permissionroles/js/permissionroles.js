@@ -62,7 +62,7 @@ var RoleControl = function () {
     };
     var startSubmit = function () {
         $('#submitForm').append(
-            '<i class="ri-loader-2-fill remix-pulse RoleControl-spinner"></i>'
+            '<i class="fa fa-spinner fa-pulse RoleControl-spinner"></i>'
         ).prop('disabled', true);
     };
     var stopSubmit = function () {
@@ -89,7 +89,7 @@ var RoleControl = function () {
 
                         if (!result.hasOwnProperty('html')){
                             triggerModalClose();
-                            window.LS.ajaxAlerts(result.message, 'success', {showCloseButton: true});
+                            window.LS.notifyFader(result.message, 'well-lg text-center ' + (result.success ? 'bg-primary' : 'bg-danger'));
                             return;
                         }
                         $('#exitForm').on('click.ROLECONTROLMODAL', function (e) {
@@ -99,10 +99,12 @@ var RoleControl = function () {
                         });
                         return;
                     }
-                    window.LS.ajaxAlerts(result.errors, 'danger', {inline: '#RoleControl--errors'});
+                    $('#RoleControl--errors').html(
+                        "<div class='alert alert-danger'>" + result.errors + "</div>"
+                    ).removeClass('hidden');
                 },
                 error: function () {
-                    window.LS.ajaxAlerts('An error occured while trying to save, please reload the page Code:1571314170100', 'danger', {showCloseButton: true});
+                    alert('An error occured while trying to save, please reload the page Code:1571314170100');
                 }
             });
         });

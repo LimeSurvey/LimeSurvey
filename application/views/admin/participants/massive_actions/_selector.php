@@ -14,7 +14,7 @@ $this->widget('ext.admin.grid.MassiveActionsWidget.MassiveActionsWidget', array(
                 'type' => 'action',
                 'action' => 'delete',
                 'url' => App()->createUrl('/admin/participants/sa/deleteParticipant/'),
-                'iconClasses' => 'ri-delete-bin-fill text-danger',
+                'iconClasses' => 'fa fa-trash text-danger',
                 'text' => gT('Delete'),
                 'grid-reload' => 'yes',
                 'on-success' => "(function(result) { LS.AjaxHelper.onSuccess(result); })",
@@ -27,15 +27,15 @@ $this->widget('ext.admin.grid.MassiveActionsWidget.MassiveActionsWidget', array(
                 'htmlModalBody' =>
                     '<p>' . gT('Please choose one option.') . '</p>' .
                     // The class 'post-value' will make widget post input/select to controller url
-                    '<select name="selectedoption" class="form-select post-value">
+                    '<select name="selectedoption" class="form-control post-value">
                     <option value="po" selected>' . gT("Delete only from the central panel") . '</option>
                     <option value="ptt">' . gT("Delete from the central panel and associated surveys") . '</option>
                     <option value="ptta">' . gT("Delete from central panel, associated surveys and all associated responses") . '</option>
                 </select>',
                 'htmlFooterButtons' => array(
                     // The class 'btn-ok' binds to URL above
-                    '<a class="btn btn-ok btn-danger"><span class="ri-delete-bin-fill"></span>&nbsp;' . gT('Delete') . '</a>',
-                    '<a class="btn btn-cancel" data-bs-dismiss="modal">' . gT('Cancel') . '</a>'
+                    '<a class="btn btn-ok btn-danger"><span class="fa fa-trash"></span>&nbsp;' . gT('Delete') . '</a>',
+                    '<a class="btn btn-default" data-dismiss="modal">' . gT('Cancel') . '</a>'
                 ),
                 'aCustomDatas' => array(),
             ],
@@ -46,7 +46,7 @@ $this->widget('ext.admin.grid.MassiveActionsWidget.MassiveActionsWidget', array(
                 'type' => 'action',
                 'action' => 'batchEdit',
                 'url' => App()->createUrl('/admin/participants/sa/batchEdit/'),
-                'iconClasses' => 'ri-pencil-fill',
+                'iconClasses' => 'fa fa-pencil',
                 'text' => gT('Batch edit'),
                 'grid-reload' => 'yes',
                 //modal
@@ -61,7 +61,7 @@ $this->widget('ext.admin.grid.MassiveActionsWidget.MassiveActionsWidget', array(
                 'type' => 'action',
                 'action' => 'export',
                 'url' => '',  // Not relevant
-                'iconClasses' => 'ri-upload-2-fill',
+                'iconClasses' => 'icon-exportcsv',
                 'text' => gT('Export'),
                 'grid-reload' => 'no',
 
@@ -72,7 +72,7 @@ $this->widget('ext.admin.grid.MassiveActionsWidget.MassiveActionsWidget', array(
                 'type' => 'action',
                 'action' => 'share',
                 'url' => '',  // Not relevant
-                'iconClasses' => 'ri-share-forward-fill',
+                'iconClasses' => 'fa fa-share',
                 'text' => gT('Share'),
                 'grid-reload' => 'no',
 
@@ -83,7 +83,7 @@ $this->widget('ext.admin.grid.MassiveActionsWidget.MassiveActionsWidget', array(
                 'type' => 'action',
                 'action' => 'add-to-survey',
                 'url' => '',  // Not relevant
-                'iconClasses' => 'ri-user-add-fill',
+                'iconClasses' => 'fa fa-user-plus',
                 'text' => gT('Add participants to survey'),
                 'grid-reload' => 'no',
 

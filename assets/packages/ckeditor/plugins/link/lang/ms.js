@@ -13,7 +13,6 @@ CKEDITOR.plugins.setLang( 'link', 'ms', {
 		title: 'Ciri-ciri Pautan',
 		name: 'Nama Pautan',
 		errorName: 'Sila taip nama pautan',
-		errorWhitespace: 'Anchor name cannot contain space characters', // MISSING
 		remove: 'Remove Anchor'
 	},
 	anchorId: 'dengan menggunakan ID elemen',

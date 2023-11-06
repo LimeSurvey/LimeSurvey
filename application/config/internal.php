@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) {
+<?php
+
+if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 
@@ -40,22 +42,15 @@ $internalConfig = array(
 
         // Third party path
         'vendor' => realpath(__DIR__ . '/../../vendor'),
-        'node_modules' => realpath(__DIR__ . '/../../node_modules'),
-        'node_modules_datatables' => realpath(__DIR__ . '/../../node_modules/datatables.net'),
-        'node_modules_datatables_bs5' => realpath(__DIR__ . '/../../node_modules/datatables.net-bs5'),
-        'node_modules_decimal' => realpath(__DIR__ . '/../../node_modules/decimal.js'),
-        'node_modules_jquery_actual' => realpath(__DIR__ . '/../../node_modules/jquery.actual'),
         'core' => realpath(__DIR__ . '/../../assets/packages'),
         'fonts' => realpath(__DIR__ . '/../../assets/fonts'),
 
-        // bootstrap 5 configuration
-        'bootstrap' => realpath(__DIR__ . '/../../assets/bootstrap_5'),
         // yiistrap configuration
-        'yiistrap_fork' => realpath(__DIR__ . '/../extensions/bootstrap5'),
+        'bootstrap' => realpath(__DIR__ . '/../extensions/bootstrap'),
         'vendor.twbs.bootstrap.dist' => realpath(__DIR__ . '/../extensions/bootstrap'),
         // yiiwheels configuration
         'yiiwheels' => realpath(__DIR__ . '/../extensions/yiiwheels'),
-//        'vendor.twbs.bootstrap.dist',
+        'vendor.twbs.bootstrap.dist',
 
         //Basic questiontype objects
         'questiontypes' => realpath(__DIR__ . '/../core/QuestionTypes')
@@ -99,10 +94,9 @@ $internalConfig = array(
         'application.helpers.*',
         'application.controllers.*',
         'application.modules.*',
-        'yiistrap_fork.widgets.*',
-        'yiistrap_fork.helpers.*',
-        'yiistrap_fork.behaviors.*',
-        'yiistrap_fork.components.*',
+        'bootstrap.helpers.*',
+        'bootstrap.widgets.*',
+        'bootstrap.behaviors.*',
         'yiiwheels.widgets.select2.WhSelect2',
         'vendor.Twig.*',
         'vendor.sodium.*',
@@ -112,9 +106,9 @@ $internalConfig = array(
     ),
     'preload' => array('log', 'ETwigViewRenderer'),
     'components' => array(
-        // yiistrap_fork configuration
-        'bootstrap5' => array(
-            'class' => 'yiistrap_fork.components.TbApi',
+        // yiistrap configuration
+        'bootstrap' => array(
+            'class' => 'bootstrap.components.TbApi',
         ),
         // yiiwheels configuration
         'yiiwheels' => array(
@@ -155,7 +149,6 @@ $internalConfig = array(
             'enableCookieValidation' => false, // Enable to activate cookie protection
             'noCsrfValidationParams' => array(),
             'noCsrfValidationRoutes' => array(
-                'rest',
                 'remotecontrol',
                 'plugins/unsecure',
             ),
@@ -228,7 +221,7 @@ $internalConfig = array(
             'class' => 'application.core.LimeMailer',
         ),
         'ETwigViewRenderer' => array(
-            'class' => 'vendor.vintagesucks.twig-renderer.ETwigViewRenderer',
+            'class' => 'vendor.yiiext.twig-renderer.ETwigViewRenderer',
             'twigPathAlias' => 'vendor.twig.twig.lib.Twig'
         ),
         'twigRenderer' => array(
@@ -242,9 +235,9 @@ $internalConfig = array(
             ),
             'extensions' => array(
                 'LS_Twig_Extension',
-                '\Twig\Extension\SandboxExtension',
-                '\Twig\Extension\StringLoaderExtension',
-                '\Twig\Extension\DebugExtension',
+                'Twig_Extension_Sandbox',
+                'Twig_Extension_StringLoader',
+                'Twig_Extension_Debug',
                 // 'Twig_Extension_Escaper' // In the future, this extenstion could be use to build a powerfull XSS filter
             ),
             'globals' => array(
@@ -308,8 +301,10 @@ $internalConfig = array(
                 'createUrl'               => 'LS_Twig_Extension::createUrl',
                 'json_decode'             => 'LS_Twig_Extension::json_decode',
                 'json_encode'             => 'CJSON::encode',
+                'getLanguageNameFromCode' => 'getLanguageNameFromCode',
                 'checkconditionFunction'  => 'checkconditionFunction',
                 'doRender'                => 'doRender',
+                'flattenText'             => 'flattenText',
                 'getEditor'               => 'getEditor',
                 'darkencss'               => 'LS_Twig_Extension::darkencss',
                 'lightencss'              => 'LS_Twig_Extension::lightencss',
@@ -321,7 +316,6 @@ $internalConfig = array(
                 'jencode' => 'CJSON::encode',
                 't'     => 'gT',
                 'gT'    => 'gT',
-                'isAbsoluteUrl' => 'check_absolute_url',
             ),
 
             'sandboxConfig' => array(
@@ -351,7 +345,6 @@ $internalConfig = array(
                     'upper',
                     'strip_tags',
                     'number_format',
-                    'isAbsoluteUrl'
                 ),
                 'methods' => array(
                     'ETwigViewRendererStaticClassProxy' =>  array("encode", "textfield", "form", "link", "emailField", "beginForm", "endForm", "dropDownList", "htmlButton", "passwordfield", "hiddenfield", "textArea", "checkBox", "tag"),
@@ -429,8 +422,10 @@ $internalConfig = array(
                     /* Not in twigRenderer[functions] */
                     'include',
                     'dump',
+                    'getLanguageNameFromCode',
                     'checkconditionFunction',
                     'doRender',
+                    'flattenText',
                     'range',
                     'getEditor',
                     'darkencss',

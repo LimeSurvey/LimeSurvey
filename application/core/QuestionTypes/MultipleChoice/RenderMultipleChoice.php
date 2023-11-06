@@ -131,9 +131,9 @@ class RenderMultipleChoice extends QuestionBaseRenderer
         if (!empty($mSessionValue)) {
             $dispVal = $mSessionValue;
             if ($this->getQuestionAttribute('other_numbers_only') == 1) {
-                $dispVal = str_replace('.', $sSeparator, (string) $dispVal);
+                $dispVal = str_replace('.', $sSeparator, $dispVal);
             }
-            $sValue .= htmlspecialchars((string) $dispVal, ENT_QUOTES);
+            $sValue .= htmlspecialchars($dispVal, ENT_QUOTES);
         }
 
         // TODO : check if $sValueHidden === $sValue
@@ -141,9 +141,9 @@ class RenderMultipleChoice extends QuestionBaseRenderer
         if (!empty($mSessionValue)) {
             $dispVal = $mSessionValue;
             if ($this->getQuestionAttribute('other_numbers_only') == 1) {
-                $dispVal = str_replace('.', $sSeparator, (string) $dispVal);
+                $dispVal = str_replace('.', $sSeparator, $dispVal);
             }
-            $sValueHidden = htmlspecialchars((string) $dispVal, ENT_QUOTES);
+            $sValueHidden = htmlspecialchars($dispVal, ENT_QUOTES);
         }
 
         ////

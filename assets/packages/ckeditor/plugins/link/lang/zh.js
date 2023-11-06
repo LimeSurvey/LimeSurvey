@@ -13,7 +13,6 @@ CKEDITOR.plugins.setLang( 'link', 'zh', {
 		title: '錨點內容',
 		name: '錨點名稱',
 		errorName: '請輸入錨點名稱',
-		errorWhitespace: '錨定名稱不能包含空格字元',
 		remove: '移除錨點'
 	},
 	anchorId: '依元件編號',
@@ -36,9 +35,9 @@ CKEDITOR.plugins.setLang( 'link', 'zh', {
 	noAnchors: '(本文件中無可用之錨點)',
 	noEmail: '請輸入電子郵件',
 	noUrl: '請輸入連結 URL',
-	noTel: '請輸入電話號碼',
+	noTel: 'Please type the phone number', // MISSING
 	other: '<其他>',
-	phoneNumber: '電話號碼',
+	phoneNumber: 'Phone number', // MISSING
 	popupDependent: '獨立 (Netscape)',
 	popupFeatures: '快顯視窗功能',
 	popupFullScreen: '全螢幕 (IE)',
@@ -63,7 +62,7 @@ CKEDITOR.plugins.setLang( 'link', 'zh', {
 	toAnchor: '文字中的錨點連結',
 	toEmail: '電子郵件',
 	toUrl: '網址',
-	toPhone: '電話',
+	toPhone: 'Phone', // MISSING
 	toolbar: '連結',
 	type: '連結類型',
 	unlink: '取消連結',

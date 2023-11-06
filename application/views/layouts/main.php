@@ -16,13 +16,18 @@ $layoutHelper->showHeaders($aData);
 //################################################## ADMIN MENU #####################################################
 $layoutHelper->showadminmenu($aData);
 
-echo "<!-- BEGIN LAYOUT MAIN (refactored controllers-->";
+echo "<!-- BEGIN LAYOUT_MAIN -->";
 
-echo $layoutHelper->renderTopbarTemplate($aData);
+// Green Bar with Page Header
+$layoutHelper->surveyManagerBar($aData);
 
-echo "<div class='container-fluid'>";
+// White Bar with Action Buttons like (Back)
+$layoutHelper->fullpagebar($aData);
+
+// Generated through /admin/usergroup/usergroupbar_view
+$layoutHelper->renderMenuBar($aData);
+
 $layoutHelper->updatenotification();
-echo "</div>";
 
 $layoutHelper->notifications();
 
@@ -30,7 +35,7 @@ $layoutHelper->notifications();
 echo ' <div id="pjax-file-load-container" class="ls-flex-row col-12"><div style="height:2px;width:0px;"></div></div>';
 
 echo '<!-- Full page, started in SurveyCommonAction::renderWrappedTemplate() -->
-      <div class="full-page-wrapper container-fluid" id="in_survey_common_action">';
+      <div class="container-fluid full-page-wrapper" id="in_survey_common_action">';
 
 echo $content;
 

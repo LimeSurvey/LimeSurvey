@@ -8,5 +8,5 @@ CKEDITOR.plugins.setLang( 'iframe', 'sk', {
 	scrolling: 'Povoliť skrolovanie',
 	title: 'Vlastnosti IFrame',
 	toolbar: 'IFrame',
-	tabindex: 'Odstrániť z tabindexu'
+	tabindex: 'Remove from tabindex' // MISSING
 } );

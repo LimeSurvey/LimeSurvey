@@ -366,7 +366,7 @@ class Zend_Http_Client
         }
 
         foreach ($config as $k => $v) {
-            $this->config[strtolower((string) $k)] = $v;
+            $this->config[strtolower($k)] = $v;
         }
 
         // Pass configuration options to the adapter if it exists
@@ -720,13 +720,13 @@ class Zend_Http_Client
                 $cookie = $name;
             }
 
-            if (preg_match("/[=,; \t\r\n\013\014]/", (string) $cookie)) {
+            if (preg_match("/[=,; \t\r\n\013\014]/", $cookie)) {
                 /** @see Zend_Http_Client_Exception */
                 require_once 'Zend/Http/Client/Exception.php';
                 throw new Zend_Http_Client_Exception("Cookie name cannot contain these characters: =,; \t\r\n\013\014 ({$cookie})");
             }
 
-            $value = addslashes((string) $value);
+            $value = addslashes($value);
 
             if (! isset($this->headers['cookie'])) {
                 $this->headers['cookie'] = array('Cookie', '');
@@ -1052,15 +1052,15 @@ class Zend_Http_Client
                 }
                 $query .= http_build_query($this->paramsGet, null, '&');
                 if ($this->config['rfc3986_strict']) {
-                    $query = str_replace('+', '%20', (string) $query);
+                    $query = str_replace('+', '%20', $query);
                 }
 
                 // @see ZF-11671 to unmask for some services to foo=val1&foo=val2
                 if ($this->getUnmaskStatus()) {
                     if ($this->_queryBracketsEscaped) {
-                        $query = preg_replace('/%5B(?:[0-9]|[1-9][0-9]+)%5D=/', '=', (string) $query);
+                        $query = preg_replace('/%5B(?:[0-9]|[1-9][0-9]+)%5D=/', '=', $query);
                     } else {
-                        $query = preg_replace('/\\[(?:[0-9]|[1-9][0-9]+)\\]=/', '=', (string) $query);
+                        $query = preg_replace('/\\[(?:[0-9]|[1-9][0-9]+)\\]=/', '=', $query);
                     }
                 }
 
@@ -1140,7 +1140,7 @@ class Zend_Http_Client
             if ($response->isRedirect() && ($location = $response->getHeader('location'))) {
                 // Avoid problems with buggy servers that add whitespace at the
                 // end of some headers (See ZF-11283)
-                $location = trim((string) $location);
+                $location = trim($location);
 
                 // Check whether we send the exact same request again, or drop the parameters
                 // and send a GET request
@@ -1174,7 +1174,7 @@ class Zend_Http_Client
                     } else {
                         // Get the current path directory, removing any trailing slashes
                         $path = $this->uri->getPath();
-                        $path = rtrim(substr((string) $path, 0, strrpos((string) $path, '/')), "/");
+                        $path = rtrim(substr($path, 0, strrpos($path, '/')), "/");
                         $this->uri->setPath($path . '/' . $location);
                     }
                 }
@@ -1375,7 +1375,7 @@ class Zend_Http_Client
 
         // Set the Content-Length if we have a body or if request is POST/PUT
         if ($body || $this->method == self::POST || $this->method == self::PUT) {
-            $this->setHeaders(self::CONTENT_LENGTH, strlen((string) $body));
+            $this->setHeaders(self::CONTENT_LENGTH, strlen($body));
         }
 
         if (isset($mbIntEnc)) {
@@ -1425,13 +1425,13 @@ class Zend_Http_Client
                 $name .= ($urlencode ? '%5B%5D' : '[]');
                 foreach ($value as $subval) {
                     if ($urlencode) {
-                        $subval = urlencode((string) $subval);
+                        $subval = urlencode($subval);
                     }
                     $parameters[] = array($name, $subval);
                 }
             } else {
                 if ($urlencode) {
-                    $value = urlencode((string) $value);
+                    $value = urlencode($value);
                 }
                 $parameters[] = array($name, $value);
             }

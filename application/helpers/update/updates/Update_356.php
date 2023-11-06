@@ -27,7 +27,7 @@ class Update_356 extends DatabaseUpdateBase
                     '{{boxes}}',
                     [
                         'title' => 'LimeStore',
-                        'ico' => 'ri-shopping-cart-fill',
+                        'ico' => 'fa fa-cart-plus',
                         'desc' => 'LimeSurvey extension marketplace',
                         'url' => 'https://account.limesurvey.org/limestore'
                     ],

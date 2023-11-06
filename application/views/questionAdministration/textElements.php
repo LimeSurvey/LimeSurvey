@@ -1,37 +1,37 @@
 <!-- Text element tabs -->
-<ul class="nav nav-tabs me-auto" role="tablist">
-    <li class="nav-item" role="presentation">
-        <a class="nav-link active" href="#question-tab" aria-controls="question-tab" role="tab" data-bs-toggle="tab">
+<ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active">
+        <a href="#question-tab" aria-controls="question-tab" role="tab" data-toggle="tab">
             <?= gT('Question'); ?>
         </a>
     </li>
-    <li class="nav-item" role="presentation">
-        <a class="nav-link" href="#question-help-tab" aria-controls="question-help-tab" role="tab" data-bs-toggle="tab">
+    <li role="presentation">
+        <a href="#question-help-tab" aria-controls="question-help-tab" role="tab" data-toggle="tab">
             <?= gT('Help'); ?>
         </a>
     </li>
     <?php if ($showScriptField): ?>
-        <li class="nav-item" role="presentation">
-            <a class="nav-link" href="#script-field-tab" aria-controls="script-field-tab" role="tab" data-bs-toggle="tab">
+        <li role="presentation">
+            <a href="#script-field-tab" aria-controls="script-field-tab" role="tab" data-toggle="tab">
                 <?= gT('Script'); ?>
             </a>
         </li>
     <?php endif; ?>
-    <li class="nav-item ms-auto">
-        <!-- Language selector -->
-        <?php
-        $this->renderPartial(
-            "languageselector",
-            ['oSurvey' => $oSurvey]
-        ); ?>
+    <!-- Language label -->
+    <li class="pull-right">
+        <?php foreach($oSurvey->allLanguages as $lang): ?>
+            <h5 class="lang-hide lang-<?= $lang; ?>" style="<?= $lang != $oSurvey->language ? 'display: none;' : '' ?>">
+                <span class="label label-default"><?= strtoupper($lang) ?></span>
+            </h5>
+        <?php endforeach; ?>
     </li>
 </ul>
-<div class="tab-content bg-white ps-2 pe-2">
+<div class="tab-content">
     <!-- Question text tab content -->
-    <div role="tabpanel" class="tab-pane show active" id="question-tab">
+    <div role="tabpanel" class="tab-pane active" id="question-tab">
         <?php foreach($oSurvey->allLanguages as $lang): ?>
         <div class="lang-hide lang-<?= $lang; ?>" style="<?= $lang != $oSurvey->language ? 'display: none;' : '' ?>">
-            <div class="mb-3">
+            <div class="form-group">
                 <div class="input-group w-100">
                     <?= CHtml::textArea(
                         "questionI10N[$lang][question]",
@@ -64,7 +64,7 @@
     <div role="tabpanel" class="tab-pane" id="question-help-tab">
         <?php foreach($oSurvey->allLanguages as $lang): ?>
         <div class="lang-hide lang-<?= $lang; ?>" style="<?= $lang != $oSurvey->language ? 'display: none;' : '' ?>">
-            <div class="mb-3">
+            <div class="form-group">
                 <div class="input-group w-100">
                     <?= CHtml::textArea(
                         "questionI10N[$lang][help]",
@@ -97,10 +97,10 @@
         <div role="tabpanel" class="tab-pane" id="script-field-tab">
             <?php foreach($oSurvey->allLanguages as $lang): ?>
             <div class="lang-hide lang-<?= $lang; ?>" style="<?= $lang != $oSurvey->language ? 'display: none;' : '' ?>">
-                <div class="mb-3">
+                <div class="form-group">
                     <?php if ($lang == $oSurvey->language): ?>
                         <div class="row">
-                        <div class="col-12 text-end">
+                            <div class="col-sm-12 text-right">
                                 <input
                                     type="checkbox"
                                     name="question[same_script]"
@@ -116,13 +116,7 @@
                             </div>
                         </div>
                     <?php else: ?>
-                        <?php
-                        $this->widget('ext.AlertWidget.AlertWidget', [
-                            'text' => gT('The script for this language will not be used because "Use for all languages" is set on the base language\'s script.'),
-                            'type' => 'warning',
-                            'htmlOptions' => ['class' => 'same-script-alert d-none']
-                        ]);
-                        ?>
+                        <div class="alert alert-warning same-script-alert hidden"><?= gT('The script for this language will not be used because "Use for all languages" is set on the base language\'s script.') ?></div>
                     <?php endif; ?>
 
                     <?= CHtml::textArea(
@@ -140,8 +134,7 @@
                         ]
                     ); ?>
                     <p class="alert well">
-                        <?= gT("This optional script field will be wrapped, so that the script is correctly executed after the question is displayed."); ?>
-                        <?= !App()->user->isScriptUpdateAllowed() ? gT("You do not have sufficient permissions to update the script.") : ""; ?>
+                        <?= gT("This optional script field will be wrapped, so that the script is correctly executed after the question is on the screen. If you do not have the correct permissions, this will be ignored"); ?>
                     </p>
                 </div>
             </div>

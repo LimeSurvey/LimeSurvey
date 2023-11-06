@@ -31,7 +31,7 @@ function updateset($lid)
     $postlabel_name = Yii::app()->getRequest()->getPost('label_name');
 
     $labelset = LabelSet::model()->findByAttributes(array('lid' => $lid));
-    $oldlangidsarray = explode(' ', (string) $labelset->languages);
+    $oldlangidsarray = explode(' ', $labelset->languages);
 
     $addlangidsarray = array_diff($newlanidarray, $oldlangidsarray);
     $dellangidsarray = array_diff($oldlangidsarray, $newlanidarray);
@@ -95,8 +95,8 @@ function insertlabelset()
 {
     $postlabel_name = flattenText(Yii::app()->getRequest()->getPost('label_name'), false, true, 'UTF-8', true);
     $labelSet = new LabelSet();
+
     $labelSet->label_name = $postlabel_name;
-    $labelSet->owner_id = App()->user->getId();
     $labelSet->languages = sanitize_languagecodeS(implode(' ', Yii::app()->getRequest()->getPost('languageids', array('en'))));
     if (!$labelSet->save()) {
         Yii::app()->session['flashmessage'] = gT("Inserting the label set failed.");
@@ -124,7 +124,7 @@ function modlabelsetanswers($lid)
         $_POST['method'] = gT("Save");
     }
 
-    $sPostData = Yii::app()->getRequest()->getPost('dataToSend', '');
+    $sPostData = Yii::app()->getRequest()->getPost('dataToSend');
     $sPostData = str_replace("\t", '', $sPostData);
     $data = json_decode($sPostData, true);
 
@@ -144,7 +144,8 @@ function modlabelsetanswers($lid)
             $assessmentvalue = (int) ($oLabelData['assessmentvalue']);
             $sortorder = $index;
 
-            $oLabel = new Label();
+            $oLabel = Label::model()->findByPk($lid);
+            $oLabel = $oLabel == null ? (new Label()) : $oLabel;
             $oLabel->lid = $lid;
             $oLabel->code = $actualcode;
             $oLabel->sortorder = $sortorder;
@@ -176,7 +177,6 @@ function modlabelsetanswers($lid)
             }
         }
         if (count($aErrors)) {
-            // TODO: Show an actual error message
             Yii::app()->session['flashmessage'] = gT("Not all labels were updated successfully.");
         } else {
             Yii::app()->session['flashmessage'] = gT("Labels successfully updated");
@@ -203,7 +203,7 @@ function fixorder($lid)
     $qulabelset = "SELECT * FROM {{labelsets}} WHERE lid=$lid";
     $rslabelset = Yii::app()->db->createCommand($qulabelset)->query();
     $rwlabelset = $rslabelset->read();
-    $lslanguages = explode(" ", trim((string) $rwlabelset['languages']));
+    $lslanguages = explode(" ", trim($rwlabelset['languages']));
     foreach ($lslanguages as $lslanguage) {
         $query = "SELECT lid, code, title, sortorder FROM {{labels}} WHERE lid=:lid and language=:lang ORDER BY sortorder, code";
         $result = Yii::app()->createCommand($query)->query(array(':lid' => $lid, ':lang' => $lslanguage)); // or safeDie("Can't read labels table: $query // (lid=$lid, language=$lslanguage) "

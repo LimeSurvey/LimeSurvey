@@ -24,8 +24,8 @@ class LsDefaultDataSets
                 gT('Survey overview', 'unescaped'),
                 gT('Overview', 'unescaped'),
                 gT('Open the general survey overview', 'unescaped'),
-                'ri-bar-chart-horizontal-line',
-                'remix',
+                'list',
+                'fontawesome',
                 '',
                 'surveyAdministration/view',
                 '',
@@ -52,8 +52,8 @@ class LsDefaultDataSets
                 gT('General survey settings', 'unescaped'),
                 gT('General settings', 'unescaped'),
                 gT('Open general survey settings', 'unescaped'),
-                'ri-tools-line',
-                'remix',
+                'gears',
+                'fontawesome',
                 '',
                 '',
                 'updatesurveylocalesettings_generalsettings',
@@ -80,8 +80,8 @@ class LsDefaultDataSets
                 gT('Survey text elements', 'unescaped'),
                 gT('Text elements', 'unescaped'),
                 gT('Survey text elements', 'unescaped'),
-                "ri-text-spacing",
-                'remix',
+                'file-text-o',
+                'fontawesome',
                 '',
                 '',
                 'updatesurveylocalesettings',
@@ -108,8 +108,8 @@ class LsDefaultDataSets
                 gT('Privacy policy settings', 'unescaped'),
                 gT('Privacy policy', 'unescaped'),
                 gT('Edit privacy policy settings', 'unescaped'),
-                "ri-shield-line",
-                'remix',
+                'shield',
+                'fontawesome',
                 '',
                 '',
                 'updatesurveylocalesettings',
@@ -136,8 +136,8 @@ class LsDefaultDataSets
                 gT('Theme options', 'unescaped'),
                 gT('Theme options', 'unescaped'),
                 gT('Edit theme options for this survey', 'unescaped'),
-                "ri-contrast-drop-fill",
-                'remix',
+                'paint-brush',
+                'fontawesome',
                 '',
                 'themeOptions/updateSurvey',
                 '',
@@ -164,8 +164,8 @@ class LsDefaultDataSets
                 gT('Presentation & navigation settings', 'unescaped'),
                 gT('Presentation', 'unescaped'),
                 gT('Edit presentation and navigation settings', 'unescaped'),
-                "ri-slideshow-line",
-                'remix',
+                'eye-slash',
+                'fontawesome',
                 '',
                 '',
                 'updatesurveylocalesettings',
@@ -192,8 +192,8 @@ class LsDefaultDataSets
                 gT('Survey participant settings', 'unescaped'),
                 gT('Participant settings', 'unescaped'),
                 gT('Set additional options for survey participants', 'unescaped'),
-                "ri-body-scan-fill",
-                'remix',
+                'users',
+                'fontawesome',
                 '',
                 '',
                 'updatesurveylocalesettings',
@@ -220,8 +220,8 @@ class LsDefaultDataSets
                 gT('Notification and data management settings', 'unescaped'),
                 gT('Notifications & data', 'unescaped'),
                 gT('Edit settings for notification and data management', 'unescaped'),
-                "ri-notification-line",
-                'remix',
+                'feed',
+                'fontawesome',
                 '',
                 '',
                 'updatesurveylocalesettings',
@@ -248,8 +248,8 @@ class LsDefaultDataSets
                 gT('Publication & access control settings', 'unescaped'),
                 gT('Publication & access', 'unescaped'),
                 gT('Edit settings for publication and access control', 'unescaped'),
-                "ri-key-line",
-                'remix',
+                'key',
+                'fontawesome',
                 '',
                 '',
                 'updatesurveylocalesettings',
@@ -276,8 +276,8 @@ class LsDefaultDataSets
                 gT('Edit survey permissions', 'unescaped'),
                 gT('Survey permissions', 'unescaped'),
                 gT('Edit permissions for this survey', 'unescaped'),
-                "ri-lock-password-line",
-                'remix',
+                'lock',
+                'fontawesome',
                 '',
                 'surveyPermissions/index',
                 '',
@@ -301,11 +301,11 @@ class LsDefaultDataSets
                 null,
                 1,
                 'listQuestions',
-                gT('Overview questions & groups', 'unescaped'),
-                gT('Overview questions & groups', 'unescaped'),
-                gT('Overview of questions and groups where you can add, edit and reorder them', 'unescaped'),
-                '',
-                'remix',
+                gT('Question list', 'unescaped'),
+                gT('Question list', 'unescaped'),
+                gT('List questions', 'unescaped'),
+                'list',
+                'fontawesome',
                 '',
                 'questionAdministration/listQuestions',
                 '',
@@ -324,7 +324,62 @@ class LsDefaultDataSets
                 0,
                 1
             ],
-         
+            [
+                2,
+                null,
+                2,
+                'listQuestionGroups',
+                gT('Group list', 'unescaped'),
+                gT('Group list', 'unescaped'),
+                gT('List question groups', 'unescaped'),
+                'th-list',
+                'fontawesome',
+                '',
+                'questionGroupsAdministration/listquestiongroups',
+                '',
+                '',
+                '',
+                '',
+                'surveycontent',
+                'read',
+                '{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}',
+                '',
+                'en-GB',
+                1,
+                date('Y-m-d H:i:s'),
+                0,
+                date('Y-m-d H:i:s'),
+                0,
+                1
+            ],
+            [
+                2,
+                null,
+                3,
+                'reorder',
+                gT('Reorder questions & groups', 'unescaped'),
+                gT('Reorder questions & groups', 'unescaped'),
+                gT('Reorder questions & groups', 'unescaped'),
+                'reorder',
+                'fontawesome',
+                '',
+                'surveyAdministration/organize/',
+                '',
+                '',
+                '',
+                '',
+                'surveycontent',
+                'update',
+                '{"render": {"link": {"data": {"surveyid": ["survey", "sid"]}}}}',
+                '',
+                'en-GB',
+                1,
+                date('Y-m-d H:i:s'),
+                0,
+                date('Y-m-d H:i:s'),
+                0,
+                1
+            ],
             [
                 2,
                 null,
@@ -333,8 +388,8 @@ class LsDefaultDataSets
                 gT('Survey participants', 'unescaped'),
                 gT('Survey participants', 'unescaped'),
                 gT('Go to survey participant and token settings', 'unescaped'),
-                '',
-                'remix',
+                'user',
+                'fontawesome',
                 '',
                 'admin/tokens/sa/index/',
                 '',
@@ -361,8 +416,8 @@ class LsDefaultDataSets
                 gT('Email templates', 'unescaped'),
                 gT('Email templates', 'unescaped'),
                 gT('Edit the templates for invitation, reminder and registration emails', 'unescaped'),
-                '',
-                'remix',
+                'envelope-square',
+                'fontawesome',
                 '',
                 'admin/emailtemplates/sa/index/',
                 '',
@@ -389,8 +444,8 @@ class LsDefaultDataSets
                 gT('Failed email notifications', 'unescaped'),
                 gT('Failed email notifications', 'unescaped'),
                 gT('View and resend failed email notifications', 'unescaped'),
-                '',
-                'remix',
+                'envelope-square',
+                'fontawesome',
                 '',
                 'failedEmail/index/',
                 '',
@@ -417,10 +472,10 @@ class LsDefaultDataSets
                 gT('Edit quotas', 'unescaped'),
                 gT('Quotas', 'unescaped'),
                 gT('Edit quotas for this survey.', 'unescaped'),
+                'tasks',
+                'fontawesome',
                 '',
-                'remix',
-                '',
-                'quotas/index/',
+                'admin/quotas/sa/index/',
                 '',
                 '',
                 '',
@@ -445,8 +500,8 @@ class LsDefaultDataSets
                 gT('Edit assessments', 'unescaped')
                 ,gT('Assessments', 'unescaped'),
                 gT('Edit and look at the assessements for this survey.', 'unescaped'),
-                '',
-                'remix',
+                'comment-o',
+                'fontawesome',
                 '',
                 'assessment/index',
                 '',
@@ -473,8 +528,8 @@ class LsDefaultDataSets
                 gT('Edit survey panel integration', 'unescaped'),
                 gT('Panel integration', 'unescaped'),
                 gT('Define panel integrations for your survey', 'unescaped'),
-                '',
-                'remix',
+                'link',
+                'fontawesome',
                 '',
                 '',
                 'updatesurveylocalesettings',
@@ -501,8 +556,8 @@ class LsDefaultDataSets
                 gT('Responses', 'unescaped'),
                 gT('Responses', 'unescaped'),
                 gT('Responses', 'unescaped'),
-                '',
-                'remix',
+                'icon-browse',
+                'iconclass',
                 '',
                 'responses/browse/',
                 '',
@@ -529,8 +584,8 @@ class LsDefaultDataSets
                 gT('Statistics', 'unescaped'),
                 gT('Statistics', 'unescaped'),
                 gT('Statistics', 'unescaped'),
-                '',
-                'remix',
+                'bar-chart',
+                'fontawesome',
                 '',
                 'admin/statistics/sa/index/',
                 '',
@@ -557,8 +612,8 @@ class LsDefaultDataSets
                 gT('Add/edit resources (files/images) for this survey', 'unescaped'),
                 gT('Resources', 'unescaped'),
                 gT('Add/edit resources (files/images) for this survey', 'unescaped'),
-                '',
-                'remix',
+                'file',
+                'fontawesome',
                 '',
                 '',
                 'updatesurveylocalesettings',
@@ -585,8 +640,8 @@ class LsDefaultDataSets
                 gT('Simple plugin settings', 'unescaped'),
                 gT('Simple plugins', 'unescaped'),
                 gT('Edit simple plugin settings', 'unescaped'),
-                "",
-                'remix',
+                'plug',
+                'fontawesome',
                 '',
                 '',
                 'updatesurveylocalesettings',
@@ -613,8 +668,8 @@ class LsDefaultDataSets
                 gT('Activate survey', 'unescaped'),
                 gT('Activate survey', 'unescaped'),
                 gT('Activate survey', 'unescaped'),
-                "ri-play-fill",
-                'remix',
+                'play',
+                'fontawesome',
                 '',
                 'surveyAdministration/activate',
                 '',
@@ -641,8 +696,8 @@ class LsDefaultDataSets
                 gT('Stop survey', 'unescaped'),
                 gT('Stop survey', 'unescaped'),
                 gT('Stop this survey', 'unescaped'),
-                "ri-stop-fill",
-                'remix',
+                'stop',
+                'fontawesome',
                 '',
                 'surveyAdministration/deactivate',
                 '',
@@ -669,8 +724,8 @@ class LsDefaultDataSets
                 gT('Go to survey', 'unescaped'),
                 gT('Go to survey', 'unescaped'),
                 gT('Go to survey', 'unescaped'),
-                "ri-settings-5-fill",
-                'remix',
+                'cog',
+                'fontawesome',
                 '',
                 'survey/index/',
                 '',
@@ -697,8 +752,8 @@ class LsDefaultDataSets
                 gT('Survey logic file', 'unescaped'),
                 gT('Survey logic file', 'unescaped'),
                 gT('Survey logic file', 'unescaped'),
-                'ri-git-branch-fill',
-                'remix',
+                'sitemap',
+                'fontawesome',
                 '',
                 'admin/expressions/sa/survey_logic_file/',
                 '',
@@ -725,8 +780,8 @@ class LsDefaultDataSets
                 gT('Central participant database', 'unescaped'),
                 gT('Central participant database', 'unescaped'),
                 gT('Central participant database', 'unescaped'),
-                'ri-group-fill',
-                'remix',
+                'users',
+                'fontawesome',
                 '',
                 'admin/participants/sa/displayParticipants',
                 '',
@@ -850,61 +905,12 @@ class LsDefaultDataSets
         $sOldLanguage = App()->language;
         App()->setLanguage('en');
         $returnArray = [];
-
-        $returnArray[] = ['position'   => '1',
-                          'url'        => 'surveyAdministration/newSurvey',
-                          'title'      => gT('Create survey'),
-                          'ico'        => 'ri-add-line',
-                          'desc'       => gT('Create a new survey from scratch. Or simply copy or import an existing survey.'),
-                          'page'       => 'welcome',
-                          'usergroup'  => '-2',
-                          'buttontext' => gt('Create survey')
-        ];
-        $returnArray[] = ['position'   => '2',
-                          'url'        => 'surveyAdministration/listsurveys',
-                          'title'      => gT('List surveys'),
-                          'ico'        => 'ri-list-unordered',
-                          'desc'       => gT('List available surveys'),
-                          'page'       => 'welcome',
-                          'usergroup'  => '-1',
-                          'buttontext' => null
-        ];
-        $returnArray[] = ['position'   => '3',
-                          'url'        => 'admin/globalsettings',
-                          'title'      => gT('Global settings'),
-                          'ico'        => 'ri-settings-5-line',
-                          'desc'       => gT('Edit global settings'),
-                          'page'       => 'welcome',
-                          'usergroup'  => '-2',
-                          'buttontext' => gt('View global settings')
-        ];
-        $returnArray[] = ['position'   => '4',
-                          'url'        => 'userManagement/index',
-                          'title'      => gT('Manage survey administrators'),
-                          'ico'        => 'ri-user-line',
-                          'desc'       => gT('The user management allows you to add additional users to your survey administration.'),
-                          'page'       => 'welcome',
-                          'usergroup'  => '-2',
-                          'buttontext' => gt('Manage administrators')
-        ];
-        $returnArray[] = ['position'   => '5',
-                          'url'        => 'admin/labels/sa/view',
-                          'title'      => gT('Label sets'),
-                          'ico'        => 'ri-price-tag-3-line',
-                          'desc'       => gT('Label sets can be used as answer options or subquestions to speed up creation of similar questions.'),
-                          'page'       => 'welcome',
-                          'usergroup'  => '-2',
-                          'buttontext' => gt('Edit label sets')
-        ];
-        $returnArray[] = ['position'   => '6',
-                          'url'        => 'themeOptions',
-                          'title'      => gT('Themes'),
-                          'ico'        => 'ri-brush-line',
-                          'desc'       => gT('The themes functionality allows you to edit survey-, admin- or question themes.'),
-                          'page'       => 'welcome',
-                          'usergroup'  => '-2',
-                          'buttontext' => gt('Edit themes')
-        ];
+        $returnArray[] = ['position' => 1, 'url' => 'surveyAdministration/newSurvey', 'title' => gT('Create survey'), 'ico' => 'icon-add', 'desc' => gT('Create a new survey'), 'page' => 'welcome', 'usergroup' => '-2'];
+        $returnArray[] = ['position' => 2, 'url' => 'surveyAdministration/listsurveys', 'title' => gT('List surveys'), 'ico' => 'icon-list', 'desc' => gT('List available surveys'), 'page' => 'welcome', 'usergroup' => '-1'];
+        $returnArray[] = ['position' => 3, 'url' => 'admin/globalsettings', 'title' => gT('Global settings'), 'ico' => 'icon-settings', 'desc' => gT('Edit global settings'), 'page' => 'welcome', 'usergroup' => '-2'];
+        $returnArray[] = ['position' => 4, 'url' => 'admin/update', 'title' => gT('ComfortUpdate'), 'ico' => 'icon-shield', 'desc' => gT('Stay safe and up to date'), 'page' => 'welcome', 'usergroup' => '-2'];
+        $returnArray[] = ['position' => 5, 'url' => 'https://account.limesurvey.org/limestore', 'title' => 'LimeStore', 'ico' => 'fa fa-cart-plus', 'desc' => gT('LimeSurvey extension marketplace'), 'page' => 'welcome', 'usergroup' => '-2'];
+        $returnArray[] = ['position' => 6, 'url' => 'themeOptions', 'title' => gT('Themes'), 'ico' => 'icon-templates', 'desc' => gT('Themes'), 'page' => 'welcome', 'usergroup' => '-2'];
 
         App()->setLanguage($sOldLanguage);
         return $returnArray;
@@ -927,7 +933,7 @@ class LsDefaultDataSets
             'files_css'         => '{"add":["css/base.css","css/theme.css","css/noTablesOnMobile.css","css/custom.css"]}',
             'files_js'          =>  '{"add":["scripts/theme.js","scripts/ajaxify.js","scripts/custom.js"]}',
             'files_print_css'   => '{"add":["css/print_theme.css"]}',
-            'options'           => '{"ajaxmode":"off", "animatebody":"off", "fixnumauto":"enable","brandlogo":"on","container":"on", "hideprivacyinfo": "off", "brandlogofile":"themes/survey/vanilla/files/logo.png","font":"noto", "showpopups":"1", "showclearall":"off", "questionhelptextposition":"top"}',
+            'options'           => '{"ajaxmode":"off","brandlogo":"on","container":"on", "hideprivacyinfo": "off", "brandlogofile":"themes/survey/vanilla/files/logo.png","font":"noto", "showpopups":"1", "showclearall":"off", "questionhelptextposition":"top"}',
             'cssframework_name' => 'bootstrap',
             'cssframework_css'  => '{}',
             'cssframework_js'   => '',
@@ -943,7 +949,7 @@ class LsDefaultDataSets
             'files_css'         => '{"add":["css/ajaxify.css","css/animate.css","css/variations/sea_green.css","css/theme.css","css/custom.css"]}',
             'files_js'          => '{"add":["scripts/theme.js","scripts/ajaxify.js","scripts/custom.js"]}',
             'files_print_css'   => '{"add":["css/print_theme.css"]}',
-            'options'           => '{"ajaxmode":"off","fixnumauto":"enable","brandlogo":"on","brandlogofile":"themes/survey/fruity/files/logo.png","container":"on","backgroundimage":"off","backgroundimagefile":null,"animatebody":"off","bodyanimation":"fadeInRight","bodyanimationduration":"500","animatequestion":"off","questionanimation":"flipInX","questionanimationduration":"500","animatealert":"off","alertanimation":"shake","alertanimationduration":"500","font":"noto","bodybackgroundcolor":"#ffffff","fontcolor":"#444444","questionbackgroundcolor":"#ffffff","questionborder":"on","questioncontainershadow":"on","checkicon":"f00c","animatecheckbox":"on","checkboxanimation":"rubberBand","checkboxanimationduration":"500","animateradio":"on","radioanimation":"zoomIn","radioanimationduration":"500","zebrastriping":"off","stickymatrixheaders":"off","greyoutselected":"off","hideprivacyinfo":"off","crosshover":"off","showpopups":"1", "showclearall":"off", "questionhelptextposition":"top","notables":"1"}',
+            'options'           => '{"ajaxmode":"off","brandlogo":"on","brandlogofile":"themes/survey/fruity/files/logo.png","container":"on","backgroundimage":"off","backgroundimagefile":null,"animatebody":"off","bodyanimation":"fadeInRight","bodyanimationduration":"500","animatequestion":"off","questionanimation":"flipInX","questionanimationduration":"500","animatealert":"off","alertanimation":"shake","alertanimationduration":"500","font":"noto","bodybackgroundcolor":"#ffffff","fontcolor":"#444444","questionbackgroundcolor":"#ffffff","questionborder":"on","questioncontainershadow":"on","checkicon":"f00c","animatecheckbox":"on","checkboxanimation":"rubberBand","checkboxanimationduration":"500","animateradio":"on","radioanimation":"zoomIn","radioanimationduration":"500","zebrastriping":"off","stickymatrixheaders":"off","greyoutselected":"off","hideprivacyinfo":"off","crosshover":"off","showpopups":"1", "showclearall":"off", "questionhelptextposition":"top","notables":"1"}',
             'cssframework_name' => 'bootstrap',
             'cssframework_css'  => '{}',
             'cssframework_js'   => '',
@@ -959,30 +965,11 @@ class LsDefaultDataSets
             'files_css'         => '{"add":["css/ajaxify.css","css/theme.css","css/custom.css"]}',
             'files_js'          =>  '{"add":["scripts/theme.js","scripts/ajaxify.js","scripts/custom.js"]}',
             'files_print_css'   => '{"add":["css/print_theme.css"]}',
-            'options'           => '{"ajaxmode":"off","fixnumauto":"enable","brandlogo":"on","container":"on","brandlogofile":"themes/survey/bootswatch/files/logo.png", "showpopups":"1", "showclearall":"off", "hideprivacyinfo": "off", "questionhelptextposition":"top"}',
+            'options'           => '{"ajaxmode":"off","brandlogo":"on","container":"on","brandlogofile":"themes/survey/bootswatch/files/logo.png", "showpopups":"1", "showclearall":"off", "questionhelptextposition":"top"}',
             'cssframework_name' => 'bootstrap',
             'cssframework_css'  => '{"replace":[["css/bootstrap.css","css/variations/flatly.min.css"]]}',
             'cssframework_js'   => '',
             'packages_to_load'  => '{"add":["pjax","font-noto","moment"]}',
-            'packages_ltr'      => null,
-            'packages_rtl'      => null
-        ];
-        //the data here has been taken according to the xml-file themes/survey/fruity_twentythree/config.xml
-        $returnArray[] = [
-            'template_name'     =>  'fruity_twentythree',
-            'sid'               =>  null,
-            'gsid'              =>  null,
-            'uid'               =>  null,
-            'files_css'         => '{"add":["css/variations/theme_apple.css","css/base.css","css/custom.css"], "remove":["survey.css", "template-core.css", "awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css", "awesome-bootstrap-checkbox/awesome-bootstrap-checkbox-rtl.css"]}',
-            'files_js'          =>  '{"add":["scripts/theme.js","scripts/custom.js"], "remove":["survey.js", "template-core.js"]}',
-            'files_print_css'   => '{"add":["css/print_theme.css"]}',
-            'options'           => '{"hideprivacyinfo":"off","showpopups":"1","showclearall":"off","questionhelptextposition":"top","fixnumauto":"enable","backgroundimage":"off","backgroundimagefile":".\/files\/pattern.png",
-                                     "brandlogo":"off","brandlogofile":"image::theme::files\/logo.png","font":"ibm-sans",
-                                     "cssframework":"Apple"}',
-            'cssframework_name' => '',
-            'cssframework_css'  => '',
-            'cssframework_js'   => '',
-            'packages_to_load'  => '{"add":["pjax","moment","font-ibm-sans","font-ibm-serif"]}',
             'packages_ltr'      => null,
             'packages_rtl'      => null
         ];
@@ -1020,7 +1007,7 @@ class LsDefaultDataSets
         $returnArray[] = [
             'name'          => 'vanilla',
             'folder'        => 'vanilla',
-            'title'         => 'Bootstrap Vanilla',
+            'title'         => 'Vanilla Theme',
             'creation_date' => date('Y-m-d H:i:s'),
             'author'        => 'LimeSurvey GmbH',
             'author_email'  => 'info@limesurvey.org',
@@ -1031,7 +1018,7 @@ class LsDefaultDataSets
             'api_version'   => '3.0',
             'view_folder'   => 'views',
             'files_folder'  => 'files',
-            'description'   => gT("A clean and simple base that can be used by developers to create their own Bootstrap based theme."),
+            'description'   => '<strong>LimeSurvey Bootstrap Vanilla Survey Theme</strong><br>A clean and simple base that can be used by developers to create their own Bootstrap based theme.',
             'last_update'   => null,
             'owner_id'      => 1,
             'extends'       => '',
@@ -1039,7 +1026,7 @@ class LsDefaultDataSets
         $returnArray[] = [
             'name'          => 'fruity',
             'folder'        => 'fruity',
-            'title'         => 'Fruity',
+            'title'         => 'Fruity Theme',
             'creation_date' => date('Y-m-d H:i:s'),
             'author'        => 'LimeSurvey GmbH',
             'author_email'  => 'info@limesurvey.org',
@@ -1050,7 +1037,7 @@ class LsDefaultDataSets
             'api_version'   => '3.0',
             'view_folder'   => 'views',
             'files_folder'  => 'files',
-            'description'   => gT("A fruity theme for a flexible use. This theme offers monochromes variations and many options for easy customizations."),
+            'description'   => '<strong>LimeSurvey Fruity Theme</strong><br>A fruity theme for a flexible use. This theme offers monochromes variations and many options for easy customizations.',
             'last_update'   => null,
             'owner_id'      => 1,
             'extends'       => 'vanilla',
@@ -1058,7 +1045,7 @@ class LsDefaultDataSets
         $returnArray[] = [
             'name'          => 'bootswatch',
             'folder'        => 'bootswatch',
-            'title'         => 'Bootswatch',
+            'title'         => 'Bootswatch Theme',
             'creation_date' => date('Y-m-d H:i:s'),
             'author'        => 'LimeSurvey GmbH',
             'author_email'  => 'info@limesurvey.org',
@@ -1069,29 +1056,10 @@ class LsDefaultDataSets
             'api_version'   => '3.0',
             'view_folder'   => 'views',
             'files_folder'  => 'files',
-            'description'   => gT("Based on BootsWatch Themes:") . "<br><a href='https://bootswatch.com/3/'>" . gT("Visit Bootswatch page") . "</a>",
+            'description'   => '<strong>LimeSurvey Bootwatch Theme</strong><br>Based on BootsWatch Themes: <a href="https://bootswatch.com/3/"">Visit BootsWatch page</a> ',
             'last_update'   => null,
             'owner_id'      => 1,
             'extends'       => 'vanilla',
-        ];
-        $returnArray[] = [
-            'name'          => 'fruity_twentythree',
-            'folder'        => 'fruity_twentythree',
-            'title'         => 'Fruity TwentyThree',
-            'creation_date' => date('Y-m-d H:i:s'),
-            'author'        => 'LimeSurvey GmbH',
-            'author_email'  => 'info@limesurvey.org',
-            'author_url'    => 'https://www.limesurvey.org/',
-            'copyright'     => 'Copyright (C) 2005 - 2023 LimeSurvey Gmbh, Inc. All rights reserved.',
-            'license'       => 'License: GNU/GPL License v2 or later, see LICENSE.php\\r\\n\\r\\nLimeSurvey is free software. This version may have been modified pursuant to the GNU General Public License, and as distributed it includes or is derivative of works licensed under the GNU General Public License or other free or open source software licenses. See COPYRIGHT.php for copyright notices and details.',
-            'version'       => '1.0.0',
-            'api_version'   => '3.0',
-            'view_folder'   => 'views',
-            'files_folder'  => 'files',
-            'description'   => gT("Our default theme for a fruity and flexible use. This theme offers single color variations"),
-            'last_update'   => null,
-            'owner_id'      => 1,
-            'extends'       => '',
         ];
 
         return $returnArray;
@@ -1112,14 +1080,14 @@ class LsDefaultDataSets
                 'template' => ""
                 . "<div class='popover tour lstutorial__template--mainContainer'>"
                 . "<div class='arrow'></div>"
-                . "<button class='float-end ls-space margin top-5 right-5 btn btn-warning btn-sm' type='button' data-role='end' data-bs-toggle='tooltip' title='" . gT('End tour', 'js') . "'><i class='ri-close-fill'></i></button>"
+                . "<button class='pull-right ls-space margin top-5 right-5 btn btn-warning btn-sm' data-role='end' data-toggle='tooltip' title='" . gT('End tour', 'js') . "'><i class='fa fa-close'></i></button>"
                 . "<h3 class='popover-title lstutorial__template--title'></h3>"
                     . "<div class='popover-content lstutorial__template--content'></div>"
                     . "<div class='popover-navigation lstutorial__template--navigation'>"
                         . "<div class='row'>"
-                            . "<div class='btn-group col-12' role='group' aria-label='...'>"
-                                . "<button role='button' type='button' class='btn btn-outline-secondary col-lg-6' data-role='prev'>" . gT('Previous', 'js') . "</button>"
-                                . "<button role='button' type='button' class='btn btn-primary col-lg-6' data-role='next'>" . gT('Next', 'js') . "</button>"
+                            . "<div class='btn-group col-xs-12' role='group' aria-label='...'>"
+                                . "<button class='btn btn-default col-md-6' data-role='prev'>" . gT('Previous', 'js') . "</button>"
+                                . "<button class='btn btn-primary col-md-6' data-role='next'>" . gT('Next', 'js') . "</button>"
                             . "</div>"
                         . "</div>"
                     . "</div>"
@@ -1546,7 +1514,7 @@ class LsDefaultDataSets
                 'teid' => 26,
                 'ordering' => 26,
                 'title' => gT('Add subquestion row'),
-                'content' => sprintf(gT('Click on the plus sign %s to add another subquestion to your question.'), '<i class="ri-add-circle-fill text-success"></i>')
+                'content' => sprintf(gT('Click on the plus sign %s to add another subquestion to your question.'), '<i class="icon-add text-success"></i>')
                 . "<p class='bg-warning alert'>" . gT('Please add at least two subquestions') . "</p>",
                 'settings' => json_encode(array(
                     'element' => '#rowcontainer>tr:first-of-type .btnaddanswer',
@@ -1604,7 +1572,7 @@ class LsDefaultDataSets
                 'ordering' => 29,
                 'title' => gT('Edit answer options'),
                 'content' => gT("As you can see, editing answer options is quite similar to editing subquestions.") . '<br/>'
-                . gT('Remember the plus button') . '<i class="ri-add-circle-fill text-success"></i>?' . '<br/>'
+                . gT('Remember the plus button') . '<i class="icon-add text-success"></i>?' . '<br/>'
                 . '<p class="alert bg-warning">' . gT("Please add at least two answer options to proceed.") . '</p>',
                 'settings' => json_encode(array(
                     'element' => '#rowcontainer',
@@ -1831,7 +1799,145 @@ class LsDefaultDataSets
         ];
     }
 
-    public static function getBaseLabelSets($language = 'en')
+    public static function fileTypeIcons()
+    {
+        /**
+         * Copied from https://github.com/DirectoryLister/DirectoryLister
+         * Copyright 2017 Chris Kankiewicz
+         */
+        return array(
+
+            // Archives
+            '7z'    => 'fa-file-archive-o',
+            'bz'    => 'fa-file-archive-o',
+            'gz'    => 'fa-file-archive-o',
+            'rar'   => 'fa-file-archive-o',
+            'tar'   => 'fa-file-archive-o',
+            'zip'   => 'fa-file-archive-o',
+
+            // Audio
+            'aac'   => 'fa-music',
+            'flac'  => 'fa-music',
+            'mid'   => 'fa-music',
+            'midi'  => 'fa-music',
+            'mp3'   => 'fa-music',
+            'ogg'   => 'fa-music',
+            'wma'   => 'fa-music',
+            'wav'   => 'fa-music',
+
+            // Code
+            'c'     => 'fa-code',
+            'class' => 'fa-code',
+            'cpp'   => 'fa-code',
+            'css'   => 'fa-code',
+            'erb'   => 'fa-code',
+            'htm'   => 'fa-code',
+            'html'  => 'fa-code',
+            'java'  => 'fa-code',
+            'js'    => 'fa-code',
+            'php'   => 'fa-code',
+            'pl'    => 'fa-code',
+            'py'    => 'fa-code',
+            'rb'    => 'fa-code',
+            'xhtml' => 'fa-code',
+            'xml'   => 'fa-code',
+
+            // Databases
+            'accdb' => 'fa-hdd-o',
+            'db'    => 'fa-hdd-o',
+            'dbf'   => 'fa-hdd-o',
+            'mdb'   => 'fa-hdd-o',
+            'pdb'   => 'fa-hdd-o',
+            'sql'   => 'fa-hdd-o',
+
+            // Documents
+            'csv'   => 'fa-file-text',
+            'doc'   => 'fa-file-text',
+            'docx'  => 'fa-file-text',
+            'odt'   => 'fa-file-text',
+            'pdf'   => 'fa-file-text',
+            'xls'   => 'fa-file-text',
+            'xlsx'  => 'fa-file-text',
+
+            // Executables
+            'app'   => 'fa-list-alt',
+            'bat'   => 'fa-list-alt',
+            'com'   => 'fa-list-alt',
+            'exe'   => 'fa-list-alt',
+            'jar'   => 'fa-list-alt',
+            'msi'   => 'fa-list-alt',
+            'vb'    => 'fa-list-alt',
+
+            // Fonts
+            'eot'   => 'fa-font',
+            'otf'   => 'fa-font',
+            'ttf'   => 'fa-font',
+            'woff'  => 'fa-font',
+
+            // Game Files
+            'gam'   => 'fa-gamepad',
+            'nes'   => 'fa-gamepad',
+            'rom'   => 'fa-gamepad',
+            'sav'   => 'fa-floppy-o',
+
+            // Images
+            'bmp'   => 'fa-picture-o',
+            'gif'   => 'fa-picture-o',
+            'jpg'   => 'fa-picture-o',
+            'jpeg'  => 'fa-picture-o',
+            'png'   => 'fa-picture-o',
+            'psd'   => 'fa-picture-o',
+            'tga'   => 'fa-picture-o',
+            'tif'   => 'fa-picture-o',
+
+            // Package Files
+            'box'   => 'fa-archive',
+            'deb'   => 'fa-archive',
+            'rpm'   => 'fa-archive',
+
+            // Scripts
+            'bat'   => 'fa-terminal',
+            'cmd'   => 'fa-terminal',
+            'sh'    => 'fa-terminal',
+
+            // Text
+            'cfg'   => 'fa-file-text',
+            'ini'   => 'fa-file-text',
+            'log'   => 'fa-file-text',
+            'md'    => 'fa-file-text',
+            'rtf'   => 'fa-file-text',
+            'txt'   => 'fa-file-text',
+
+            // Vector Images
+            'ai'    => 'fa-picture-o',
+            'drw'   => 'fa-picture-o',
+            'eps'   => 'fa-picture-o',
+            'ps'    => 'fa-picture-o',
+            'svg'   => 'fa-picture-o',
+
+            // Video
+            'avi'   => 'fa-youtube-play',
+            'flv'   => 'fa-youtube-play',
+            'mkv'   => 'fa-youtube-play',
+            'mov'   => 'fa-youtube-play',
+            'mp4'   => 'fa-youtube-play',
+            'mpg'   => 'fa-youtube-play',
+            'ogv'   => 'fa-youtube-play',
+            'webm'  => 'fa-youtube-play',
+            'wmv'   => 'fa-youtube-play',
+            'swf'   => 'fa-youtube-play',
+
+            // Other
+            'bak'   => 'fa-floppy',
+            'msg'   => 'fa-envelope',
+
+            // Blank
+            'blank' => 'fa-file'
+
+        );
+    }
+
+    static function getBaseLabelSets($language = 'en')
     {
         $sOldLanguage = App()->language;
         Yii::app()->setLanguage($language);
@@ -2655,7 +2761,7 @@ class LsDefaultDataSets
             array(
                 "name" => "image_select-listradio",
                 "visible" => "Y",
-                "xml_path" => "themes/question/image_select-listradio/survey/questions/answer/listradio",
+                "xml_path" => "themes/question/image_select/survey/questions/answer/listradio",
                 "image_path" => "/assets/images/screenshots/L.png",
                 "title" => "Image select list (Radio)",
                 "creation_date" => "1970-01-01 01:00:00",
@@ -2679,7 +2785,7 @@ class LsDefaultDataSets
             array(
                 "name" => "image_select-multiplechoice",
                 "visible" => "Y",
-                "xml_path" => "themes/question/image_select-multiplechoice/survey/questions/answer/multiplechoice",
+                "xml_path" => "themes/question/image_select/survey/questions/answer/multiplechoice",
                 "image_path" => "/assets/images/screenshots/M.png",
                 "title" => "Image select multiple choice",
                 "creation_date" => "1970-01-01 01:00:00",
@@ -2752,7 +2858,7 @@ class LsDefaultDataSets
 
         return $aBaseQuestionThemes;
     }
-
+    
     /**
      * All translations that are used in files that can or should not be searched by the translation script.
      * This function has no functionality except for being searchable by the translation script.
@@ -2810,7 +2916,8 @@ class LsDefaultDataSets
             gT("Select font:"),
             gT("Select variation:"),
             gT("Fruity fonts"),
-            gT("Fruity variations")
+            gT("Fruity variations"),
+            gt("Select all that apply") // This string will replace 'Check any that apply' later 
         ];
     }
 

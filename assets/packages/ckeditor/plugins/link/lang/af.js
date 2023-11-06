@@ -13,7 +13,6 @@ CKEDITOR.plugins.setLang( 'link', 'af', {
 		title: 'Anker-eienskappe',
 		name: 'Ankernaam',
 		errorName: 'Voltooi die ankernaam asseblief',
-		errorWhitespace: 'Anchor name cannot contain space characters', // MISSING
 		remove: 'Remove Anchor'
 	},
 	anchorId: 'Op element Id',

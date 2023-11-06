@@ -3,7 +3,7 @@ var TFALOG = new ConsoleShim('TFA', !window.debugState.backend);
 
 // Spinner to indicate loading on ajax requests
 var loaderSpinner = '<div class="ls-flex ls-flex-column align-items-center align-content-center" style="height: 200px;">';
-loaderSpinner  +='<i class="ri-settings-5-fill remix-spin" style="font-size: 128px;color:rgba(50, 134, 55, 0.5);"></i>';
+loaderSpinner  +='<i class="fa fa-gear fa-spin" style="font-size: 128px;color:rgba(50, 134, 55, 0.5);"></i>';
 loaderSpinner  +='</div>';
 var loaderHtml = '<div class="modal-body">';
 loaderHtml += loaderSpinner;
@@ -19,19 +19,20 @@ var confirmButtonAction = function(additionalCB) {
     return function(e){
         e.preventDefault();
         var $self = $(this);
-        $.fn.bsconfirm($self.data('confirmtext'), $self.data('buttons'), function(){
+        $.bsconfirm($self.data('confirmtext'), $self.data('buttons'), function(){
             $.ajax({
                 url: $self.data('href'),
                 data: $.merge({uid: $self.data('uid')}, LS.data.csrfTokenData),
                 method: 'post',
                 success: function(resolve){
-                    LS.ajaxAlerts(resolve.message, 'success', {showCloseButton: true});
+                    var classes = resolve.success ? 'well-lg bg-primary text-center' : 'well-lg bg-danger text-center';
+                    LS.notifyFader(resolve.message, classes);
                     $('#identity__bsconfirmModal').modal('hide');
                     additionalCB();
                 },
                 error: function(error) {
                     console.error(error);
-                    LS.ajaxAlerts($self.data('errortext'), 'danger', {showCloseButton: true});
+                    LS.notifyFader($self.data('errortext'), 'well-lg bg-primary text-center');
                     $('#identity__bsconfirmModal').modal('hide');
                     additionalCB();
                 }
@@ -79,7 +80,7 @@ var TFAUserSettingsClass = function(){
 
     var startSubmit = function(){
         $(formId).before(
-            '<div class="col-12 text-center"><i class="ri-loader-2-fill remix-pulse remix-4x TFA--usereditspinner"></i></div>'
+            '<div class="col-sm-12 text-center"><i class="fa fa-spinner fa-pulse fa-4x TFA--usereditspinner"></i></div>'
         ).find('button').prop('disabled',true);
     };
     var stopSubmit = function(){
@@ -107,13 +108,11 @@ var TFAUserSettingsClass = function(){
                 success: function(data){
                     stopSubmit();
                     if(data.success) {
-                        $('#TFA--actionmodal').modal('hide');
                         $(formId).parent().html(data.message);
                         modalCloseTimeout = setTimeout(triggerModalClose, 2000);
                         if(data.data.reload != undefined) {
                             setTimeout(function(){window.location.reload();}, 1500);
                         }
-                        LS.ajaxAlerts(data.message, 'success', {showCloseButton: true});
                         return;
                     }
                     $(formId).find('.errorContainer').html(data.message);
@@ -122,10 +121,7 @@ var TFAUserSettingsClass = function(){
         };
 
         $(formId).on('submit',function(e) {onSubmit(e,this);});
-        $('#TFA--submitform').on('click',function(e) {
-            e.preventDefault();
-            onSubmit(e,this);
-        });
+        //$('#TFA--submitform').on('click',function(e) {onSubmit(e,this);});
 
         $('#TFA--cancelform').on('click',function(e) {
             e.preventDefault();

@@ -12,7 +12,6 @@
 namespace Twig\NodeVisitor;
 
 use Twig\Environment;
-use Twig\Extension\EscaperExtension;
 use Twig\Node\AutoEscapeNode;
 use Twig\Node\BlockNode;
 use Twig\Node\BlockReferenceNode;
@@ -28,28 +27,28 @@ use Twig\Node\PrintNode;
 use Twig\NodeTraverser;
 
 /**
- * @author Fabien Potencier <fabien@symfony.com>
+ * @final
  *
- * @internal
+ * @author Fabien Potencier <fabien@symfony.com>
  */
-final class EscaperNodeVisitor implements NodeVisitorInterface
+class EscaperNodeVisitor extends AbstractNodeVisitor
 {
-    private $statusStack = [];
-    private $blocks = [];
-    private $safeAnalysis;
-    private $traverser;
-    private $defaultStrategy = false;
-    private $safeVars = [];
+    protected $statusStack = [];
+    protected $blocks = [];
+    protected $safeAnalysis;
+    protected $traverser;
+    protected $defaultStrategy = false;
+    protected $safeVars = [];
 
     public function __construct()
     {
         $this->safeAnalysis = new SafeAnalysisNodeVisitor();
     }
 
-    public function enterNode(Node $node, Environment $env): Node
+    protected function doEnterNode(Node $node, Environment $env)
     {
         if ($node instanceof ModuleNode) {
-            if ($env->hasExtension(EscaperExtension::class) && $defaultStrategy = $env->getExtension(EscaperExtension::class)->getDefaultStrategy($node->getTemplateName())) {
+            if ($env->hasExtension('\Twig\Extension\EscaperExtension') && $defaultStrategy = $env->getExtension('\Twig\Extension\EscaperExtension')->getDefaultStrategy($node->getTemplateName())) {
                 $this->defaultStrategy = $defaultStrategy;
             }
             $this->safeVars = [];
@@ -65,7 +64,7 @@ final class EscaperNodeVisitor implements NodeVisitorInterface
         return $node;
     }
 
-    public function leaveNode(Node $node, Environment $env): ?Node
+    protected function doLeaveNode(Node $node, Environment $env)
     {
         if ($node instanceof ModuleNode) {
             $this->defaultStrategy = false;
@@ -91,7 +90,7 @@ final class EscaperNodeVisitor implements NodeVisitorInterface
         return $node;
     }
 
-    private function shouldUnwrapConditional(ConditionalExpression $expression, Environment $env, string $type): bool
+    private function shouldUnwrapConditional(ConditionalExpression $expression, Environment $env, $type)
     {
         $expr2Safe = $this->isSafeFor($type, $expression->getNode('expr2'), $env);
         $expr3Safe = $this->isSafeFor($type, $expression->getNode('expr3'), $env);
@@ -99,7 +98,7 @@ final class EscaperNodeVisitor implements NodeVisitorInterface
         return $expr2Safe !== $expr3Safe;
     }
 
-    private function unwrapConditional(ConditionalExpression $expression, Environment $env, string $type): ConditionalExpression
+    private function unwrapConditional(ConditionalExpression $expression, Environment $env, $type)
     {
         // convert "echo a ? b : c" to "a ? echo b : echo c" recursively
         $expr2 = $expression->getNode('expr2');
@@ -118,7 +117,7 @@ final class EscaperNodeVisitor implements NodeVisitorInterface
         return new ConditionalExpression($expression->getNode('expr1'), $expr2, $expr3, $expression->getTemplateLine());
     }
 
-    private function escapeInlinePrintNode(InlinePrint $node, Environment $env, string $type): Node
+    private function escapeInlinePrintNode(InlinePrint $node, Environment $env, $type)
     {
         $expression = $node->getNode('node');
 
@@ -129,7 +128,7 @@ final class EscaperNodeVisitor implements NodeVisitorInterface
         return new InlinePrint($this->getEscaperFilter($type, $expression), $node->getTemplateLine());
     }
 
-    private function escapePrintNode(PrintNode $node, Environment $env, string $type): Node
+    protected function escapePrintNode(PrintNode $node, Environment $env, $type)
     {
         if (false === $type) {
             return $node;
@@ -146,7 +145,7 @@ final class EscaperNodeVisitor implements NodeVisitorInterface
         return new $class($this->getEscaperFilter($type, $expression), $node->getTemplateLine());
     }
 
-    private function preEscapeFilterNode(FilterExpression $filter, Environment $env): FilterExpression
+    protected function preEscapeFilterNode(FilterExpression $filter, Environment $env)
     {
         $name = $filter->getNode('filter')->getAttribute('value');
 
@@ -165,7 +164,7 @@ final class EscaperNodeVisitor implements NodeVisitorInterface
         return $filter;
     }
 
-    private function isSafeFor(string $type, Node $expression, Environment $env): bool
+    protected function isSafeFor($type, \Twig_NodeInterface $expression, $env)
     {
         $safe = $this->safeAnalysis->getSafe($expression);
 
@@ -183,7 +182,7 @@ final class EscaperNodeVisitor implements NodeVisitorInterface
         return \in_array($type, $safe) || \in_array('all', $safe);
     }
 
-    private function needEscaping(Environment $env)
+    protected function needEscaping(Environment $env)
     {
         if (\count($this->statusStack)) {
             return $this->statusStack[\count($this->statusStack) - 1];
@@ -192,17 +191,19 @@ final class EscaperNodeVisitor implements NodeVisitorInterface
         return $this->defaultStrategy ? $this->defaultStrategy : false;
     }
 
-    private function getEscaperFilter(string $type, Node $node): FilterExpression
+    protected function getEscaperFilter($type, \Twig_NodeInterface $node)
     {
         $line = $node->getTemplateLine();
         $name = new ConstantExpression('escape', $line);
-        $args = new Node([new ConstantExpression($type, $line), new ConstantExpression(null, $line), new ConstantExpression(true, $line)]);
+        $args = new Node([new ConstantExpression((string) $type, $line), new ConstantExpression(null, $line), new ConstantExpression(true, $line)]);
 
         return new FilterExpression($node, $name, $args, $line);
     }
 
-    public function getPriority(): int
+    public function getPriority()
     {
         return 0;
     }
 }
+
+class_alias('Twig\NodeVisitor\EscaperNodeVisitor', 'Twig_NodeVisitor_Escaper');

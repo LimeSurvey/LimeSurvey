@@ -1,8 +1,6 @@
 <?php
 /** @var array $extraMenus */
 
-/** @var bool $middleSection */
-
 /** @var bool $prependedMenu */
 
 use LimeSurvey\Menu\Menu;
@@ -10,14 +8,12 @@ use LimeSurvey\Menu\MenuButton;
 
 foreach ($extraMenus as $menu): ?>
     <?php
-    $sectionFilter = (($middleSection && $menu->isInMiddleSection()) || (!$middleSection && !$menu->isInMiddleSection()));
-    $prependedFilter = (($prependedMenu && $menu->isPrepended()) || (!$prependedMenu && !$menu->isPrepended()));
     /** @var Menu $menu */
-    if ($sectionFilter && $prependedFilter) : ?>
-        <li class="dropdown nav-item">
+    if (($prependedMenu && $menu->isPrepended()) || (!$prependedMenu && !$menu->isPrepended())) : ?>
+        <li class="dropdown ls-extraMenuEntry">
             <?php
             if ($menu->isDropDown()): ?>
-                <a class="dropdown-toggle nav-link" data-bs-toggle="dropdown" href="#">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                     <?= $menu->getLabel(); ?>
                     <span class="caret"></span>
                 </a>
@@ -26,14 +22,14 @@ foreach ($extraMenus as $menu): ?>
                     foreach ($menu->getMenuItems() as $menuItem): ?>
                         <?php
                         if ($menuItem->isDivider()): ?>
-                            <li class="dropdown-divider"></li>
+                            <li class="divider"></li>
                         <?php
                         elseif ($menuItem->isSmallText()): ?>
                             <li class="dropdown-header"><?= $menuItem->getLabel(); ?></li>
                         <?php
                         else: ?>
                             <li>
-                                <a href="<?= $menuItem->getHref(); ?>" class="dropdown-item">
+                                <a href="<?= $menuItem->getHref(); ?>">
                                     <!-- Spit out icon if present -->
                                     <?php
                                     if ($menuItem->getIconClass() != ''): ?>
@@ -55,19 +51,20 @@ foreach ($extraMenus as $menu): ?>
                 /** @var MenuButton $menuButton */
                 $target = $menuButton->getOpenInNewTab() ? '_blank' : '_self';
                 ?>
-                <a id="<?= $menuButton->getButtonId() ?>"
-                   href="<?= $menuButton->getHref(); ?>"
-                   class="<?= $menuButton->getButtonClass() ?>"
-                   title="<?= $menuButton->getTooltip() ?>"
-                   data-bs-toggle="tooltip"
-                   data-bs-placement="bottom"
-                   onclick="<?= $menuButton->getOnClick() ?>"
-                   target="<?= $target ?>">
-                    <?= $menuButton->getLabel(); ?>
-                </a>
+                <div class="navbar-btn">
+                    <a id="<?= $menuButton->getButtonId() ?>"
+                       href="<?= $menuButton->getHref(); ?>"
+                       class="<?= $menuButton->getButtonClass() ?>"
+                       title="<?= $menuButton->getTooltip() ?>"
+                       data-toggle="tooltip"
+                       data-placement="bottom"
+                       onclick="<?= $menuButton->getOnClick() ?>"
+                       target="<?= $target ?>">
+                        <?= $menuButton->getLabel(); ?></a>
+                </div>
             <?php
             else: ?>
-                <a href="<?= $menu->getHref(); ?>" class="nav-link">
+                <a href="<?= $menu->getHref(); ?>">
                     <?php if ($menu->getIconClass()): ?>
                         <i class="<?= $menu->getIconClass(); ?>"></i>
                     <?php endif; ?>

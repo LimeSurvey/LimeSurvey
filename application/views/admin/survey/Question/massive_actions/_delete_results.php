@@ -25,7 +25,7 @@
                         <?php echo $result['result']['message']; ?>
                     </td>
                 <?php else: ?>
-                    <td class="text-danger">
+                    <td class="text-warning">
                         <?php echo $result['result']['message']; ?>
                     </td>
                 <?php endif;?>

@@ -13,7 +13,6 @@ CKEDITOR.plugins.setLang( 'link', 'lt', {
 		title: 'Žymės savybės',
 		name: 'Žymės vardas',
 		errorName: 'Prašome įvesti žymės vardą',
-		errorWhitespace: 'Anchor name cannot contain space characters', // MISSING
 		remove: 'Pašalinti žymę'
 	},
 	anchorId: 'Pagal žymės Id',

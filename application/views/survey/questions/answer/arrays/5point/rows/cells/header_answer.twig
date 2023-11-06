@@ -3,10 +3,6 @@
  * Array header : answer or sub question
  * @var $class
  * @var $content
- * @var $basename
- * @var $code
  */
 #}
-<th class="{{ class }}" id="answer{{ basename }}-{{ code }}" role="columnheader">
-    {{ content }}
-</th>
+{{ doRender('/survey/questions/answer/global/table/cell/head_header', ({'class':class,'content':content})) }}

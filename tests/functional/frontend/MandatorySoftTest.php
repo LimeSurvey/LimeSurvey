@@ -2,16 +2,13 @@
 
 namespace ls\tests;
 
-use Facebook\WebDriver\Remote\RemoteWebElement;
 use Facebook\WebDriver\WebDriverBy;
-use Facebook\WebDriver\WebDriverExpectedCondition;
 
 /**
  * @since 2023-04-02
  */
 class MandatorySoftTest extends TestBaseClassWeb
 {
-
     /*
      * Check basic mandatory soft functionnality with multiple page
      * Warning : some part came for Vanilla theme with a lot of JS
@@ -33,11 +30,6 @@ class MandatorySoftTest extends TestBaseClassWeb
                 !empty(self::$webDriver->findElement(WebDriverBy::id('question' . $questions['Q00']->qid))),
                 'Soft mandatory Q00 question are not in 1st page'
             );
-            $mandatorysoftButton = self::$webDriver->wait(10)->until(
-                WebDriverExpectedCondition::elementToBeClickable(
-                    WebDriverBy::id('mandatory-soft-alert-box-modal')
-                )
-            );
             /* Check if question Q00 mandatoiry are shown */
             $MandatoryTip = trim(self::$webDriver->findElement(WebDriverBy::cssSelector('#question' . $questions['Q00']->qid . ' .ls-question-mandatory'))->getText());
             $this->assertEquals("Please note that you have not answered this question. You may continue without answering.", $MandatoryTip);
@@ -46,6 +38,7 @@ class MandatorySoftTest extends TestBaseClassWeb
                 !empty(self::$webDriver->findElement(WebDriverBy::id('mandatory-soft-alert-box-modal'))),
                 'Unable to find the action button after try to submit'
             );
+            $mandatorysoftButton = self::$webDriver->findElement(WebDriverBy::id('mandatory-soft-alert-box-modal'));
             $mandatorysoftButton->click();
             /* Check if question Q01 is here */
             $this->assertTrue(
@@ -88,7 +81,6 @@ class MandatorySoftTest extends TestBaseClassWeb
         $ManOnSgqa = self::$surveyId . 'X' . $questions['ManOn']->gid . 'X' . $questions['ManOn']->qid;
         try {
             self::$webDriver->get($url);
-            self::$webDriver->scrollToBottom();
             self::$webDriver->next();
             /* Check if question ManOn is here */
             $this->assertTrue(
@@ -106,16 +98,9 @@ class MandatorySoftTest extends TestBaseClassWeb
             );
             /* Enter value in ManOn and check if move next show end (using id added manually in survey */
             self::$webDriver->answerTextQuestion($ManOnSgqa, 'Some value');
-            self::$webDriver->scrollToBottom();
             self::$webDriver->next();
-            /** @var $surveyCompletedElement RemoteWebElement */
-            $surveyCompletedElement = self::$webDriver->wait(5)->until(
-                WebDriverExpectedCondition::presenceOfElementLocated(
-                    WebDriverBy::id('text-completed-survey')
-                )
-            );
             $this->assertTrue(
-                !empty($surveyCompletedElement),
+                !empty(self::$webDriver->findElement(WebDriverBy::id('text-completed-survey'))),
                 'Completed are not shown after fill mandatory question'
             );
         } catch (\Exception $ex) {

@@ -51,6 +51,7 @@ class PasswordRequirement extends \LimeSurvey\PluginManager\PluginBase
             'controlOptions' => array(
                 'class' => "col-md-offset-4 col-md-6"
             ),
+            'type' => 'info',
         ),
         'surveySaveActive' => array(
             'type' => 'boolean',
@@ -98,7 +99,7 @@ class PasswordRequirement extends \LimeSurvey\PluginManager\PluginBase
             $this->get('needsNumber', null, null, true),
             $this->get('needsUppercase', null, null, true),
             $this->get('needsNonAlphanumeric', null, null, false),
-            $this->get('minimumSize', null, null, 8)
+            $this->get('minimumSize', null, null, 12)
         );
         if ($errors) {
             $oEvent->set('passwordOk', false);

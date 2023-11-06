@@ -55,13 +55,9 @@ class SelfExpressionTest extends TestBaseClassWeb
             // Get first page.
             $web->get($url);
 
-            $web->executeScript('window.scrollTo(0,document.body.scrollHeight);');
-            sleep(1);
-
             // Click next.
             $web->next();
 
-            $web->executeScript('window.scrollTo(0,document.body.scrollHeight);');
             sleep(1);
 
             /** @var RemoteWebElement */

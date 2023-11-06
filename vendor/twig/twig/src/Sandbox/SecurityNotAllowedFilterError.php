@@ -16,18 +16,20 @@ namespace Twig\Sandbox;
  *
  * @author Martin Hasoň <martin.hason@gmail.com>
  */
-final class SecurityNotAllowedFilterError extends SecurityError
+class SecurityNotAllowedFilterError extends SecurityError
 {
     private $filterName;
 
-    public function __construct(string $message, string $functionName)
+    public function __construct($message, $functionName, $lineno = -1, $filename = null, \Exception $previous = null)
     {
-        parent::__construct($message);
+        parent::__construct($message, $lineno, $filename, $previous);
         $this->filterName = $functionName;
     }
 
-    public function getFilterName(): string
+    public function getFilterName()
     {
         return $this->filterName;
     }
 }
+
+class_alias('Twig\Sandbox\SecurityNotAllowedFilterError', 'Twig_Sandbox_SecurityNotAllowedFilterError');

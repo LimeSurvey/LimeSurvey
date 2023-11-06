@@ -67,16 +67,15 @@ const NotifcationSystem  = function (){
 
             $('#admin-notification-modal .modal-title').html(not.title);
             $('#admin-notification-modal .modal-body-text').html(not.message);
-            $('#admin-notification-modal .modal-content').addClass('card-' + not.display_class);
+            $('#admin-notification-modal .modal-content').addClass('panel-' + not.display_class);
             $('#admin-notification-modal .notification-date').html(not.created.substr(0, 16));
-            const modal = new bootstrap.Modal(document.getElementById('admin-notification-modal'));
-            modal.show();
+            $('#admin-notification-modal').modal();
             
             // TODO: Will this work in message includes a link that is clicked?
             $('#admin-notification-modal').off('hidden.bs.modal');
             $('#admin-notification-modal').on('hidden.bs.modal', (e) => {
                 __notificationIsRead(that);
-                $('#admin-notification-modal .modal-content').removeClass('card-' + not.display_class);
+                $('#admin-notification-modal .modal-content').removeClass('panel-' + not.display_class);
             });
         });
     },
@@ -96,14 +95,6 @@ const NotifcationSystem  = function (){
             const url = $(that).data('url');
             const importance = $(that).data('importance');
             const status = $(that).data('status');
-
-            // Important 2 = nag only once (used e.g. for redirect).
-            if (importance == 2 && status == 'new') {
-                __showNotificationModal(that, url);
-                __notificationIsRead(that);
-                LOG.log('stoploop');
-                return false;  // Stop loop
-            }
 
             // Important notifications are shown as pop-up on load
             if (importance == 3 && status == 'new') {
@@ -131,10 +122,10 @@ const NotifcationSystem  = function (){
     
     updateNotificationWidget = (url, openAfter) => {
         // Make sure menu is open after load
-        __updateNotificationWidget(url).then(() => {
-            let dropdownToggleEl = document.querySelector('#notification-li .dropdown-toggle');
-            let dropdownList = new bootstrap.Dropdown(dropdownToggleEl);
-            dropdownList.show();
+        __updateNotificationWidget(url).then(() =>{
+            if (openAfter !== false) {
+                $('#notification-li').addClass('open');
+            }
         });
         // Only update once
         $('#notification-li').off('click.showNotification');

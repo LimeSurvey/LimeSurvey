@@ -1,5 +1,3 @@
-
-
 # exclude build/devel/test files from export to zip/tarball
 .bowerrc                export-ignore
 buildVueComponents.js   export-ignore
@@ -39,4 +37,3 @@ vendor/khaled.alshamaa/ar-php/examples export-ignore
 *.gif binary
 *.ico binary
 *.mo binary
-node_modules/* binary

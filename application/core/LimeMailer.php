@@ -1,12 +1,9 @@
 <?php
-
-use PHPMailer\PHPMailer\PHPMailer;
-
 /**
  * WIP
  * A SubClass of phpMailer adapted for LimeSurvey
  */
-class LimeMailer extends PHPMailer
+class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
 {
     /**
      * Singleton
@@ -23,20 +20,6 @@ class LimeMailer extends PHPMailer
     const ResetBase = 1;
     /* Complete reset : all except survey part , remind : you always can get a new one */
     const ResetComplete = 2;
-
-    /**
-     * Email methods
-     */
-    /* PHP mail() */
-    const MethodMail = 'mail';
-    /* Sendmail */
-    const MethodSendmail = 'sendmail';
-    /* Qmail */
-    const MethodQmail = 'qmail';
-    /* SMTP */
-    const MethodSmtp = 'smtp';
-    /* Plugin */
-    const MethodPlugin = 'plugin';
 
     /* @var null|integer $surveyId Current survey id */
     public $surveyId;
@@ -171,17 +154,17 @@ class LimeMailer extends PHPMailer
         $this->SMTPAutoTLS = false;
 
         switch ($emailmethod) {
-            case self::MethodQmail:
+            case "qmail":
                 $this->IsQmail();
                 break;
-            case self::MethodSmtp:
+            case "smtp":
                 $this->IsSMTP();
                 if ($emailsmtpdebug > 0) {
                     $this->SMTPDebug = $emailsmtpdebug;
                 }
-                if (strpos((string) $emailsmtphost, ':') > 0) {
-                    $this->Host = substr((string) $emailsmtphost, 0, strpos((string) $emailsmtphost, ':'));
-                    $this->Port = (int) substr((string) $emailsmtphost, strpos((string) $emailsmtphost, ':') + 1);
+                if (strpos($emailsmtphost, ':') > 0) {
+                    $this->Host = substr($emailsmtphost, 0, strpos($emailsmtphost, ':'));
+                    $this->Port = (int) substr($emailsmtphost, strpos($emailsmtphost, ':') + 1);
                 } else {
                     $this->Host = $emailsmtphost;
                 }
@@ -192,18 +175,12 @@ class LimeMailer extends PHPMailer
                 }
                 $this->Username = $emailsmtpuser;
                 $this->Password = $emailsmtppassword;
-                if (trim((string) $emailsmtpuser) != "") {
+                if (trim($emailsmtpuser) != "") {
                     $this->SMTPAuth = true;
                 }
                 break;
-            case self::MethodSendmail:
+            case "sendmail":
                 $this->IsSendmail();
-                break;
-            case self::MethodPlugin:
-                $emailPlugin = Yii::app()->getConfig('emailplugin');
-                $event = new PluginEvent('MailerConstruct', $this);
-                $event->set('mailer', $this);
-                Yii::app()->getPluginManager()->dispatchEvent($event, $emailPlugin);
                 break;
             default:
                 $this->IsMail();
@@ -325,7 +302,7 @@ class LimeMailer extends PHPMailer
             $this->mailLanguage = $oToken->language;
         }
         $this->eventName = 'beforeTokenEmail';
-        $aEmailaddresses = preg_split("/(,|;)/", (string) $this->oToken->email);
+        $aEmailaddresses = preg_split("/(,|;)/", $this->oToken->email);
         foreach ($aEmailaddresses as $sEmailaddress) {
             $this->addAddress($sEmailaddress, $oToken->firstname . " " . $oToken->lastname);
         }
@@ -452,7 +429,7 @@ class LimeMailer extends PHPMailer
      */
     public function addDebug($str, $level = 0)
     {
-        $this->debug[] = rtrim((string) $str) . "\n";
+        $this->debug[] = rtrim($str) . "\n";
     }
 
     /**
@@ -624,20 +601,6 @@ class LimeMailer extends PHPMailer
             $this->setError(gT('Email was not sent because demo-mode is activated.'));
             return false;
         }
-
-        // If the email method is set to "Plugin", we need to dispatch an event to that specific plugin
-        // so it can perform it's logic without depending on the more generic "beforeEmail" event.
-        if (Yii::app()->getConfig('emailmethod') == self::MethodPlugin) {
-            $emailPlugin = Yii::app()->getConfig('emailplugin');
-            $event = new PluginEvent('beforeEmailDispatch', $this);
-            $event->set('mailer', $this);
-            Yii::app()->getPluginManager()->dispatchEvent($event, $emailPlugin);
-            if (!$event->get('send', true)) {
-                $this->ErrorInfo = $event->get('error');
-                return $event->get('error') == null;
-            }
-        }
-
         return parent::Send();
     }
 
@@ -715,7 +678,7 @@ class LimeMailer extends PHPMailer
 
             //Validate From, Sender, and ConfirmReadingTo addresses
             foreach (['From', 'Sender', 'ConfirmReadingTo'] as $address_kind) {
-                $this->{$address_kind} = trim((string) $this->{$address_kind});
+                $this->{$address_kind} = trim($this->{$address_kind});
                 if (empty($this->{$address_kind})) {
                     continue;
                 }
@@ -836,12 +799,12 @@ class LimeMailer extends PHPMailer
         }
         $token = $this->oToken->token;
         if (!empty($this->oToken->language)) {
-            $language = trim((string) $this->oToken->language);
+            $language = trim($this->oToken->language);
         }
         LimeExpressionManager::singleton()->loadTokenInformation($this->surveyId, $this->oToken->token);
         if ($this->replaceTokenAttributes) {
             foreach ($this->oToken->attributes as $attribute => $value) {
-                $aTokenReplacements[strtoupper((string) $attribute)] = $value;
+                $aTokenReplacements[strtoupper($attribute)] = $value;
             }
         }
         /* Set the minimal url and add it to Placeholders */
@@ -1022,7 +985,6 @@ class LimeMailer extends PHPMailer
         }
         return $aOutList;
     }
-
 
     /**
      * @inheritdoc

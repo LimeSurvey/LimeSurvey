@@ -27,7 +27,7 @@
                 'type' => 'submit',
                 'name' => 'save',
                 'value' => 'save',
-                'class' => 'd-none'
+                'class' => 'hidden'
             )
         );
     ?>

@@ -19,7 +19,7 @@
 sort($existingfiles);
 foreach ($existingfiles as $existingfile)
 {
-echo htmlspecialchars((string) $existingfile['file'])."\n";
+echo htmlspecialchars($existingfile['file'])."\n";
 }
 ?>
 </textarea>

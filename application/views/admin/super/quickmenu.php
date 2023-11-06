@@ -2,22 +2,22 @@
     <!-- TODO: Placement right won't work with right-to-left -->
     <a
         href="<?php echo $this->createUrl("surveyAdministration/view/surveyid/$surveyid"); ?>"
-        data-bs-toggle="tooltip"
+        data-toggle="tooltip"
         data-title="<?php eT("Survey"); ?>"
-        data-bs-placement="right"
+        data-placement="right"
     >
         <div class='quick-icon-wrapper'>
-            <span class="ri-home-4-fill navbar-brand"></span>
+            <span class="fa fa-home navbar-brand"></span>
         </div>
     </a>
 
     <?php foreach ($quickMenuItems as $quickMenuItem): ?>
         <div
             class='quick-menu-item'
-            data-bs-toggle="tooltip"
+            data-toggle="tooltip"
             data-title="<?php echo $quickMenuItem['tooltip']; ?>"
             data-button-name="<?php echo $quickMenuItem['name']; ?>"
-            data-bs-placement="right"
+            data-placement="right"
             draggable="true"
             ondragstart="dragstart_handler(event);"
             ondragover="dragover_handler(event);"

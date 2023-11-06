@@ -27,8 +27,6 @@ CKEDITOR.plugins.setLang( 'table', 'sq', {
 		borderColor: 'Ngjyra e Kornizave',
 		data: 'Të dhënat',
 		header: 'Koka',
-		columnHeader: 'Column Header', // MISSING
-		rowHeader: 'Row Header', // MISSING
 		yes: 'Po',
 		no: 'Jo',
 		invalidWidth: 'Gjerësia e qelisë duhet të jetë numër.',

@@ -17,8 +17,8 @@ App()->getClientScript()->registerScript('ExportresultsVariables', $scriptBegin,
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
     <?php echo CHtml::form(array('admin/export/sa/exportresults/surveyid/' . $surveyid), 'post', array('id' => 'resultexport', 'class' => '')); ?>
     <div class="row">
-        <div class="col-12">
-            <div class="col-lg-6 text-start">
+        <div class="col-md-12">
+            <div class="col-md-6 text-left">
                 <h4>
                     <?php eT("Export results"); ?>
                     <?php
@@ -36,22 +36,22 @@ App()->getClientScript()->registerScript('ExportresultsVariables', $scriptBegin,
     </div>
 
     <div class="row">
-        <div class="col-md-12 content-right">
+        <div class="col-sm-12 content-right">
             <div class="row">
-                <div class="col-md-12 col-lg-6">
+                <div class="col-sm-12 col-md-6">
                     <?php $this->renderPartial('/admin/export/exportresult_panels/_format', ['exports' => $exports, 'defaultexport' => $defaultexport, 'aCsvFieldSeparator' => $aCsvFieldSeparator]); ?>
                     <?php $this->renderPartial('/admin/export/exportresult_panels/_general', ['selecthide'  => $selecthide, 'selectshow'  => $selectshow, 'selectinc'  => $selectinc, 'aLanguages'  => $aLanguages]); ?>
 
                     <?php if (empty(App()->getRequest()->getParam('responseIds'))) : ?>
                         <?php $this->renderPartial('/admin/export/exportresult_panels/_range', ['SingleResponse' => $SingleResponse, 'min_datasets' => $min_datasets, 'max_datasets' => $max_datasets]); ?>
-                    <?php else : ?>
+                    <?php else : // call by massive action (for example) ?>
                         <?php $this->renderPartial('/admin/export/exportresult_panels/_single-value', ['SingleResponse' => $SingleResponse, 'surveyid' => $surveyid]); ?>
                     <?php endif; ?>
 
                     <?php $this->renderPartial('/admin/export/exportresult_panels/_responses', ['surveyid' => $surveyid]); ?>
 
                 </div>
-                <div class="col-md-12 col-lg-6">
+                <div class="col-sm-12 col-md-6">
                     <?php $this->renderPartial('/admin/export/exportresult_panels/_headings', ['headexports'  => $headexports]); ?>
                     <?php $this->renderPartial('/admin/export/exportresult_panels/_columns-control', ['surveyid' => $surveyid, 'SingleResponse' => $SingleResponse, 'aFields' => $aFields, 'aFieldsOptions' => $aFieldsOptions]); ?>
 
@@ -63,6 +63,11 @@ App()->getClientScript()->registerScript('ExportresultsVariables', $scriptBegin,
             </div>
         </div>
     </div>
-    <input type='submit' class="btn btn-outline-secondary d-none" value='<?php eT("Export data"); ?>' id='exportresultsubmitbutton' />
+    <input type='submit' class="btn btn-default hidden" value='<?php eT("Export data");?>' id='exportresultsubmitbutton' />
     </form>
 </div>
+<?php
+App()->getClientScript()->registerScript('ExportResultsBSSwitcher', "
+LS.renderBootstrapSwitch();
+", LSYii_ClientScript::POS_POSTSCRIPT);
+?>

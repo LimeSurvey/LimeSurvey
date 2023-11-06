@@ -130,7 +130,7 @@ abstract class AsymmetricKey
      *
      * @param string $key
      * @param string $password optional
-     * @return \phpseclib3\Crypt\Common\PublicKey|\phpseclib3\Crypt\Common\PrivateKey
+     * @return AsymmetricKey
      */
     public static function load($key, $password = false)
     {

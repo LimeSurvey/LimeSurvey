@@ -12,7 +12,7 @@
  * @uses YiiStrap.helpers.TbArray
  * @uses YiiStrap.helpers.TbHtml
  */
-Yii::import('yiistrap_fork.helpers.TbArray');
+Yii::import('bootstrap.helpers.TbArray');
 
 class WhGallery extends CWidget
 {

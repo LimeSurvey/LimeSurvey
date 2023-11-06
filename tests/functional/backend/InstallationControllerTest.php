@@ -4,7 +4,6 @@ namespace ls\tests;
 
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\Exception\NoSuchElementException;
-use Facebook\WebDriver\WebDriverExpectedCondition;
 
 /**
  * @since 2017-11-24
@@ -65,11 +64,6 @@ class InstallationControllerTest extends TestBaseClassWeb
             $dbpwd = 'root'; // See https://github.com/actions/virtual-environments/blob/main/images/linux/Ubuntu1804-README.md#mysql
             echo 'Default to database password "root". Use DBPASSWORD=... from command-line to override this.' . PHP_EOL;
         }
-        $dbLocation = getenv('DBLOCATION');
-        if (!$dbLocation) {
-            $dbLocation = 'localhost';
-            echo 'Default to database location "localhost". Use DBLOCATION=... from command-line to override this.' . PHP_EOL;
-        }
 
         if (file_exists($configFile)) {
             // Delete possible previous database.
@@ -106,84 +100,57 @@ class InstallationControllerTest extends TestBaseClassWeb
 
             // Click "Start installation".
             $start = self::$webDriver->findElement(WebDriverBy::id('ls-start-installation'));
-            self::$webDriver->click($start);
+            $start->click();
 
             // Accept license.
             $accept = self::$webDriver->findElement(WebDriverBy::id('ls-accept-license'));
-            self::$webDriver->click($accept);
+            $accept->click();
 
             // Click next at pre-check.
-            $next = self::$webDriver->wait(120)->until(
-                WebDriverExpectedCondition::visibilityOfElementLocated(
-                    WebDriverBy::id('ls-next')
-                )
-            );
-            self::$webDriver->click($next);
+            $next = self::$webDriver->findElement(WebDriverBy::id('ls-next'));
+            $next->click();
 
             // Fill in database form.
             $dbuserDbType = self::$webDriver->findElement(WebDriverBy::cssSelector('select[name="InstallerConfigForm[dbtype]"] option[value="'.$installerForm->dbtype.'"]'));
             $dbuserInput = self::$webDriver->findElement(WebDriverBy::cssSelector('input[name="InstallerConfigForm[dbuser]"]'));
             $dbpwdInput  = self::$webDriver->findElement(WebDriverBy::cssSelector('input[name="InstallerConfigForm[dbpwd]"]'));
             $dbnameInput = self::$webDriver->findElement(WebDriverBy::cssSelector('input[name="InstallerConfigForm[dbname]"]'));
-            $dbLocationInput = self::$webDriver->findElement(WebDriverBy::cssSelector('input[name="InstallerConfigForm[dblocation]"]'));
             $dbEngine = self::$webDriver->findElement(WebDriverBy::cssSelector('select[name="InstallerConfigForm[dbengine]"] option[value="'.$installerForm->dbengine.'"]'));
 
-            self::$webDriver->click($dbuserDbType);
-            self::$webDriver->click($dbEngine);
+            $dbuserDbType->click();
+            $dbEngine->click();
             $dbuserInput->clear()->sendKeys($dbuser);
             $dbpwdInput->clear()->sendKeys($dbpwd);
-            $dbLocationInput->clear()->sendKeys($dbLocation);
             $dbnameInput->sendKeys($databaseName);
 
+
             // Click next.
-            $next = self::$webDriver->wait(10)->until(
-                WebDriverExpectedCondition::visibilityOfElementLocated(
-                    WebDriverBy::id('ls-next')
-                )
-            );
-            self::$webDriver->click($next);
+            $next = self::$webDriver->findElement(WebDriverBy::id('ls-next'));
+            $next->click();
 
             // Click "Create database".
-            $button = self::$webDriver->wait(10)->until(
-                WebDriverExpectedCondition::visibilityOfElementLocated(
-                    WebDriverBy::cssSelector('input[type="submit"]')
-                )
-            );
-            self::$webDriver->click($button);
-
+            $button = self::$webDriver->findElement(WebDriverBy::cssSelector('input[type="submit"]'));
+            $button->click();
 
             // Click "Populate".
-            $button = self::$webDriver->wait(10)->until(
-                WebDriverExpectedCondition::visibilityOfElementLocated(
-                    WebDriverBy::cssSelector('input[type="submit"]')
-                )
-            );
-            self::$webDriver->click($button);
+            $button = self::$webDriver->findElement(WebDriverBy::cssSelector('input[type="submit"]'));
+            $button->click();
 
             // Fill in admin username/password.
-            $adminLoginName = self::$webDriver->wait(10)->until(
-                WebDriverExpectedCondition::visibilityOfElementLocated(
-                    WebDriverBy::cssSelector('input[name="InstallerConfigForm[adminLoginName]"]')
-                )
-            );
+            $adminLoginName = self::$webDriver->findElement(WebDriverBy::cssSelector('input[name="InstallerConfigForm[adminLoginName]"]'));
             $adminLoginPwd  = self::$webDriver->findElement(WebDriverBy::cssSelector('input[name="InstallerConfigForm[adminLoginPwd]"]'));
             $confirmPwd     = self::$webDriver->findElement(WebDriverBy::cssSelector('input[name="InstallerConfigForm[confirmPwd]"]'));
             $adminLoginName->clear()->sendKeys($username);
             $adminLoginPwd->clear()->sendKeys($password);
             $confirmPwd->clear()->sendKeys($password);
 
-
             // Confirm optional settings (admin password etc).
-            $button = self::$webDriver->wait(10)->until(
-                WebDriverExpectedCondition::visibilityOfElementLocated(
-                    WebDriverBy::cssSelector('input[type="submit"]')
-                )
-            );
-            self::$webDriver->click($button);
+            $button = self::$webDriver->findElement(WebDriverBy::cssSelector('input[type="submit"]'));
+            $button->click();
 
             // Go to administration.
             $button = self::$webDriver->findElement(WebDriverBy::id('ls-administration'));
-            self::$webDriver->click($button);
+            $button->click();
 
             // Set debug=2
             /* TODO: Can't write to config.php after installation.

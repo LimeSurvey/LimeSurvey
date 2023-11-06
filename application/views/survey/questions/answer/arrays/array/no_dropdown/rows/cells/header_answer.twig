@@ -3,12 +3,6 @@
  * Array header : answer or sub question
  * @var $class
  * @var $content
- * @var $basename
- * @var $code
- * @var $isrepeat
- * @var $oAnswer
  */
 #}
-<th class="{{ class }}" {% if not isrepeat %} id="answer{{ basename }}-{{ code }}" role="columnheader" {% endif %}>
-    {{ processString(content) }}
-</th>
+{{ doRender('/survey/questions/answer/global/table/cell/head_header', ({'class':class,'content':content})) }}

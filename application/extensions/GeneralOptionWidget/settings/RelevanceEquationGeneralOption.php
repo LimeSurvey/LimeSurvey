@@ -12,10 +12,10 @@ class RelevanceEquationGeneralOption extends GeneralOption
     {
         if (count($question->conditions) > 0) {
             $inputType = 'text';
-            $help = gT("Note: If you customize & save this condition you will not be able to use the condition editor for this, anymore.", 'unescaped');
+            $help = gT("Note: If you customize & save this condition you will not be able to use the condition editor for this, anymore.");
         } else {
             $inputType = 'textarea';
-            $help = gT("A condition can be used to add branching logic using ExpressionScript. Either edit it directly here or use the Condition designer.", 'unescaped');
+            $help = gT("A condition can be used to add branching logic using ExpressionScript. Either edit it directly here or use the Condition designer.");
         }
 
         $this->name = 'relevance';

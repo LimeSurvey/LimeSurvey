@@ -13,7 +13,6 @@ CKEDITOR.plugins.setLang( 'link', 'sr', {
 		title: 'Карактеристике сидра',
 		name: 'Назив сидра',
 		errorName: 'Унесите назив сидра',
-		errorWhitespace: 'Anchor name cannot contain space characters', // MISSING
 		remove: 'Уклони сидро'
 	},
 	anchorId: 'Пo Ид-у елемента',

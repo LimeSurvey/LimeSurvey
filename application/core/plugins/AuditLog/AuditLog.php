@@ -383,7 +383,7 @@ class AuditLog extends \LimeSurvey\PluginManager\PluginBase
         }
 
         $sTokenIds = $this->getEvent()->get('sTokenIds');
-        $aTokenIds = explode(',', (string) $sTokenIds);
+        $aTokenIds = explode(',', $sTokenIds);
         $oCurrentUser = $this->api->getCurrentUser();
 
         foreach ($aTokenIds as $tokenId) {

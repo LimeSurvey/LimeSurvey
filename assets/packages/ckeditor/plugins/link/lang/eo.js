@@ -13,7 +13,6 @@ CKEDITOR.plugins.setLang( 'link', 'eo', {
 		title: 'Ankraj Atributoj',
 		name: 'Ankra Nomo',
 		errorName: 'Bv entajpi la ankran nomon',
-		errorWhitespace: 'Anchor name cannot contain space characters', // MISSING
 		remove: 'Forigi Ankron'
 	},
 	anchorId: 'Per Elementidentigilo',

@@ -28,11 +28,11 @@ use Twig\Token;
  *
  * @see https://twig.symfony.com/doc/templates.html#horizontal-reuse for details.
  *
- * @internal
+ * @final
  */
-final class UseTokenParser extends AbstractTokenParser
+class UseTokenParser extends AbstractTokenParser
 {
-    public function parse(Token $token): Node
+    public function parse(Token $token)
     {
         $template = $this->parser->getExpressionParser()->parseExpression();
         $stream = $this->parser->getStream();
@@ -44,30 +44,32 @@ final class UseTokenParser extends AbstractTokenParser
         $targets = [];
         if ($stream->nextIf('with')) {
             do {
-                $name = $stream->expect(/* Token::NAME_TYPE */ 5)->getValue();
+                $name = $stream->expect(Token::NAME_TYPE)->getValue();
 
                 $alias = $name;
                 if ($stream->nextIf('as')) {
-                    $alias = $stream->expect(/* Token::NAME_TYPE */ 5)->getValue();
+                    $alias = $stream->expect(Token::NAME_TYPE)->getValue();
                 }
 
                 $targets[$name] = new ConstantExpression($alias, -1);
 
-                if (!$stream->nextIf(/* Token::PUNCTUATION_TYPE */ 9, ',')) {
+                if (!$stream->nextIf(Token::PUNCTUATION_TYPE, ',')) {
                     break;
                 }
             } while (true);
         }
 
-        $stream->expect(/* Token::BLOCK_END_TYPE */ 3);
+        $stream->expect(Token::BLOCK_END_TYPE);
 
         $this->parser->addTrait(new Node(['template' => $template, 'targets' => new Node($targets)]));
 
         return new Node();
     }
 
-    public function getTag(): string
+    public function getTag()
     {
         return 'use';
     }
 }
+
+class_alias('Twig\TokenParser\UseTokenParser', 'Twig_TokenParser_Use');

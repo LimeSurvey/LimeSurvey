@@ -15,12 +15,12 @@ use Twig\Compiler;
 
 class TempNameExpression extends AbstractExpression
 {
-    public function __construct(string $name, int $lineno)
+    public function __construct($name, $lineno)
     {
         parent::__construct([], ['name' => $name], $lineno);
     }
 
-    public function compile(Compiler $compiler): void
+    public function compile(Compiler $compiler)
     {
         $compiler
             ->raw('$_')
@@ -29,3 +29,5 @@ class TempNameExpression extends AbstractExpression
         ;
     }
 }
+
+class_alias('Twig\Node\Expression\TempNameExpression', 'Twig_Node_Expression_TempName');

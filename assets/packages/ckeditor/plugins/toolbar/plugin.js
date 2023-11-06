@@ -11,6 +11,7 @@
 ( function() {
 	var toolbox = function() {
 			this.toolbars = [];
+			this.focusCommandExecuted = false;
 		};
 
 	toolbox.prototype.focus = function() {
@@ -31,6 +32,8 @@
 
 			exec: function( editor ) {
 				if ( editor.toolbox ) {
+					editor.toolbox.focusCommandExecuted = true;
+
 					// Make the first button focus accessible for IE. (https://dev.ckeditor.com/ticket/3417)
 					// Adobe AIR instead need while of delay.
 					if ( CKEDITOR.env.ie || CKEDITOR.env.air ) {
@@ -153,9 +156,6 @@
 						case 13: // ENTER
 						case 32: // SPACE
 							item.execute();
-							return false;
-						case CKEDITOR.ALT + 122: // ALT + F11 (#438).
-							editor.execCommand( 'elementsPathFocus' );
 							return false;
 					}
 					return true;
@@ -282,6 +282,13 @@
 
 								itemObj.toolbar = toolbarObj;
 								itemObj.onkey = itemKeystroke;
+
+								// Fix for https://dev.ckeditor.com/ticket/3052:
+								// Prevent JAWS from focusing the toolbar after document load.
+								itemObj.onfocus = function() {
+									if ( !editor.toolbox.focusCommandExecuted )
+										editor.focus();
+								};
 							}
 
 							if ( pendingSeparator ) {
@@ -415,16 +422,9 @@
 	} );
 
 	function getToolbarConfig( editor ) {
-		var removeButtons = getRemoveButtons( editor.config.removeButtons );
+		var removeButtons = editor.config.removeButtons;
 
-		// (#5122)
-		function getRemoveButtons( config ) {
-			if ( config && typeof config === 'string' ) {
-				return config.split( ',' );
-			}
-
-			return config;
-		}
+		removeButtons = removeButtons && removeButtons.split( ',' );
 
 		function buildToolbarConfig() {
 
@@ -778,15 +778,7 @@ CKEDITOR.config.toolbarLocation = 'top';
  * List of toolbar button names that must not be rendered. This will also work
  * for non-button toolbar items, like the Font drop-down list.
  *
- * ```javascript
- * config.removeButtons = 'Underline,JustifyCenter';
- * ```
- *
- * Since version 4.20.0 you can also pass an array of button names:
- *
- * ```javascript
- * config.removeButtons = [ 'Underline', 'JustifyCenter' ];
- * ```
+ *		config.removeButtons = 'Underline,JustifyCenter';
  *
  * This configuration option should not be overused. The recommended way is to use the
  * {@link CKEDITOR.config#removePlugins} setting to remove features from the editor
@@ -795,7 +787,7 @@ CKEDITOR.config.toolbarLocation = 'top';
  * In some cases though, a single plugin may define a set of toolbar buttons and
  * `removeButtons` may be useful when just a few of them are to be removed.
  *
- * @cfg {String/String[]} [removeButtons]
+ * @cfg {String} [removeButtons]
  * @member CKEDITOR.config
  */
 

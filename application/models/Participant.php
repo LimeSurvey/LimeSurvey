@@ -115,66 +115,120 @@ class Participant extends LSActiveRecord
      */
     public function getButtons()
     {
-        $permission_superadmin_read = Permission::model()->hasGlobalPermission('superadmin', 'read');
-        $permission_participantpanel_delete = Permission::model()->hasGlobalPermission('participantpanel', 'delete');
-        $userId = App()->user->id;
+        $buttons = "<div class='icon-btn-row'>";
+        $raw_button_template = ""
+            . "<button class='btn btn-default btn-sm %s %s' role='button' data-toggle='tooltip' title='%s' onclick='return false;'>" //extra class //title
+            . "<i class='fa fa-%s' ></i>" //icon class
+            . "</button>";
+
+        if ($this->userHasPermissionToEdit()) {
+            // Edit button
+            $editData = array(
+                'green-border action_participant_editModal',
+                '',
+                gT("Edit this participant"),
+                'pencil'
+            );
+            $buttons .= vsprintf($raw_button_template, $editData);
+
+            // Add participant to survey
+            $addParticipantData = array(
+                'action_participant_addToSurvey',
+                '',
+                gT("Add participant to survey"),
+                'user-plus'
+            );
+
+            $buttons .= vsprintf($raw_button_template, $addParticipantData);
+
+            // Survey information
+            $listActiveSurveysData = array(
+                'action_participant_infoModal',
+                '',
+                gT("List active surveys"),
+                'search'
+            );
+            $buttons .= vsprintf($raw_button_template, $listActiveSurveysData);
+
+            // Share this participant
+            $shareParticipantData = array(
+                'action_participant_shareParticipant',
+                '',
+                gT("Share this participant"),
+                'share'
+            );
+            $buttons .= vsprintf($raw_button_template, $shareParticipantData);
+
+            // Only owner or superadmin can delete
+            $userId = Yii::app()->user->id;
+            $isSuperAdmin = Permission::model()->hasGlobalPermission('superadmin', 'read');
+            $deletePermission = Permission::model()->hasGlobalPermission('participantpanel', 'delete');
+            if ($this->owner_uid == $userId || $isSuperAdmin || $deletePermission) {
+                // Delete button
+                $deleteData = array(
+                    'red-border action_participant_deleteModal',
+                    '',
+                    gT("Delete this participant"),
+                    'trash text-danger'
+                );
+            } else {
+                // Invisible button
+                $deleteData = array(
+                    'red-border action_participant_deleteModal invisible',
+                    '',
+                    gT("Delete this participant"),
+                    'trash text-danger'
+                );
+            }
+            $buttons .= vsprintf($raw_button_template, $deleteData);
+        } else {
+            // Three empty buttons for correct alignment
+            // TODO: For some reason, the delete button is smaller than the others
+            $editData = array(
+                'action_participant_editModal invisible',
+                '',
+                gT("Edit this participant"),
+                'edit'
+            );
+            $buttons .= vsprintf($raw_button_template, $editData);
+            $deletePermission = Permission::model()->hasGlobalPermission('participantpanel', 'delete');
+            if ($deletePermission) {
+                $deleteData = array(
+                    'action_participant_deleteModal',
+                    'text-danger',
+                    gT("Delete this participant"),
+                    'trash text-danger'
+                );
+            } else {
+                $deleteData = array(
+                    'action_participant_deleteModal invisible',
+                    'text-danger',
+                    gT("Delete this participant"),
+                    'trash text-danger'
+                );
+            }
+
+            // Share this participant
+            $infoData = array(
+                'action_participant_shareParticipant',
+                '',
+                gT("Share this participant"),
+                'share'
+            );
+            $buttons .= vsprintf($raw_button_template, $infoData);
 
 
-        $dropdownItems = [];
-        $dropdownItems[] = [
-            'title'            => gT('Edit this participant'),
-            'linkClass'        => 'action_participant_editModal',
-            'iconClass'        => 'ri-pencil-fill',
-            'enabledCondition' => $this->userHasPermissionToEdit(),
-            'linkAttributes'   => [
-                'data-participant-id' => $this->participant_id
-            ],
-        ];
-        $dropdownItems[] = [
-            'title'            => gT('Add participant to survey'),
-            'linkClass'        => 'action_participant_addToSurvey',
-            'iconClass'        => 'ri-user-add-fill',
-            'enabledCondition' => $this->userHasPermissionToEdit(),
-            'linkAttributes'   => [
-                'data-participant-id' => $this->participant_id
-            ],
-        ];
-        $dropdownItems[] = [
-            'title'            => gT('List active surveys'),
-            'linkClass'        => 'action_participant_infoModal',
-            'iconClass'        => 'ri-search-line',
-            'enabledCondition' => $this->userHasPermissionToEdit(),
-            'linkAttributes'   => [
-                'data-participant-id' => $this->participant_id
-            ],
-        ];
-        $dropdownItems[] = [
-            'title'            => gT('Share this participant'),
-            'linkClass'        => 'action_participant_shareParticipant',
-            'iconClass'        => 'ri-share-forward-fill',
-            'enabledCondition' => $this->userHasPermissionToEdit(),
-            'linkAttributes'   => [
-                'data-participant-id' => $this->participant_id
-            ],
-        ];
-        $dropdownItems[] = [
-            'title'            => gT('Delete this participant'),
-            'linkClass'        => 'action_participant_deleteModal',
-            'iconClass'        => 'ri-delete-bin-fill text-danger',
-            'enabledCondition' =>
-                ($this->userHasPermissionToEdit()
-                    && ($this->owner_uid == $userId
-                        || $permission_superadmin_read
-                        || $permission_participantpanel_delete
-                    )
-                )
-                || $permission_participantpanel_delete,
-            'linkAttributes'   => [
-                'data-participant-id' => $this->participant_id
-            ],
-        ];
+            $infoData = array(
+                'action_participant_shareParticipant invisible',
+                '',
+                gT("Share this participant"),
+                'share'
+            );
+            $buttons .= vsprintf($raw_button_template, $infoData);
+        }
 
-        return App()->getController()->widget('ext.admin.grid.GridActionsWidget.GridActionsWidget', ['dropdownItems' => $dropdownItems], true);
+        $buttons .= "</div>";
+        return $buttons;
     }
 
     /**
@@ -263,7 +317,7 @@ class Participant extends LSActiveRecord
     public function getParticipantAttribute($attributeTextId, $attribute_id = false)
     {
         if ($attribute_id == false) {
-            [, $attribute_id] = explode('_', $attributeTextId);
+            list(, $attribute_id) = explode('_', $attributeTextId);
         }
 
         $participantAttributes = ParticipantAttribute::model()->getAttributeInfo($this->participant_id);
@@ -290,25 +344,17 @@ class Participant extends LSActiveRecord
     public function getBlacklistSwitchbutton()
     {
         if ($this->userHasPermissionToEdit()) {
-            $inputHtml = App()->getController()->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
-                'name'          => 'blacklisted_' . $this->participant_id,
-                'checkedOption' => $this->blacklisted === "Y" ? "1" : "0",
-                'selectOptions' => [
-                    '1' => gT('Yes'),
-                    '0' => gT('No'),
-                ],
-                'htmlOptions'   => [
-                    'class' => 'action_changeBlacklistStatus'
-                ]
-            ], true);
-            return $inputHtml;
+            $inputHtml = "<input type='checkbox' data-size='small' data-on-color='warning' data-off-color='primary' data-off-text='" . gT('No') . "' data-on-text='" . gT('Yes') . "' class='action_changeBlacklistStatus' "
+                . ($this->blacklisted == "Y" ? "checked" : "")
+                . "/>";
+            return  $inputHtml;
+        } else {
+            if ($this->blacklisted == 'Y') {
+                return gT('Yes');
+            } else {
+                return gT('No');
+            }
         }
-
-        if ($this->blacklisted === 'Y') {
-            return gT('Yes');
-        }
-
-        return gT('No');
     }
 
     /**
@@ -318,13 +364,16 @@ class Participant extends LSActiveRecord
     {
         $cols = [
             [
-                "name"              => 'checkbox',
-                "type"              => 'raw',
-                "header"            => "<input type='checkbox' id='action_toggleAllParticipant' />",
-                "filter"            => false,
-                'filterHtmlOptions' => ['class' => 'ls-sticky-column'],
-                'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
-                'htmlOptions'       => ['class' => 'ls-sticky-column'],
+                "name"   => 'checkbox',
+                "type"   => 'raw',
+                "header" => "<input type='checkbox' id='action_toggleAllParticipant' />",
+                "filter" => false
+            ],
+            [
+                "name"   => 'buttons',
+                "type"   => 'raw',
+                "header" => gT("Action"),
+                "filter" => false
             ],
             [
                 "name" => 'lastname'
@@ -362,7 +411,7 @@ class Participant extends LSActiveRecord
                 'name'  => 'created',
                 'value' => '$data->createdFormatted',
                 'type'  => 'raw',
-            ],
+            ]
         ];
 
         $extraAttributeParams = Yii::app()->request->getParam('extraAttribute');
@@ -399,15 +448,6 @@ class Participant extends LSActiveRecord
             }
             $cols[] = $col_array;
         }
-        $cols[] = [
-            "name"              => 'buttons',
-            "type"              => 'raw',
-            "header"            => gT("Action"),
-            "filter"            => false,
-            'filterHtmlOptions' => ['class' => 'ls-sticky-column'],
-            'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
-            'htmlOptions'       => ['class' => 'ls-sticky-column'],
-        ];
         return $cols;
     }
 
@@ -453,7 +493,6 @@ class Participant extends LSActiveRecord
                 'desc' => 't.created desc'
             )
         );
-        $this->decryptEncryptAttributes('encrypt');
 
         $criteria = new CDbCriteria();
         $criteria->join = 'LEFT JOIN {{users}} as owner on uid=owner_uid LEFT JOIN {{participant_shares}} AS shares ON t.participant_id = shares.participant_id AND (shares.share_uid = ' . Yii::app()->user->id . ' OR shares.share_uid = -1)';
@@ -537,8 +576,6 @@ class Participant extends LSActiveRecord
         }
 
         $pageSize = Yii::app()->user->getState('pageSizeParticipantView', Yii::app()->params['defaultPageSize']);
-        $this->decryptEncryptAttributes();
-
         return new LSCActiveDataProvider($this, array(
             'criteria' => $criteria,
             'sort' => $sort,
@@ -799,7 +836,7 @@ class Participant extends LSActiveRecord
 
         $aAllAttributes = ParticipantAttributeName::model()->getAllAttributes();
         foreach ($aAllAttributes as $aAttribute) {
-            if (!is_null($search) && strpos((string) $search->condition, 'attribute' . $aAttribute['attribute_id']) !== false) {
+            if (!is_null($search) && strpos($search->condition, 'attribute' . $aAttribute['attribute_id']) !== false) {
                 $attid[$aAttribute['attribute_id']] = $aAttribute;
             }
         }
@@ -1193,7 +1230,7 @@ class Participant extends LSActiveRecord
                     $condition[$i + 3] = intval($condition[$i + 3]);
                 }
                 //Force the type of numeric values to be numeric
-                $booloperator = strtoupper((string) $condition[$i]);
+                $booloperator = strtoupper($condition[$i]);
                 $condition1name = ":condition_" . ($i + 1);
                 $condition2name = ":condition_" . ($i + 3);
                 switch ($condition[$i + 2]) {
@@ -1334,7 +1371,7 @@ class Participant extends LSActiveRecord
                     break;
             }
             if (isset($condition[(($i - 1) * 4) + 3])) {
-                $booloperator = strtoupper((string) $condition[(($i - 1) * 4) + 3]);
+                $booloperator = strtoupper($condition[(($i - 1) * 4) + 3]);
             } else {
                 $booloperator = 'AND';
             }
@@ -1502,8 +1539,8 @@ class Participant extends LSActiveRecord
             ->getTable("{{tokens_$surveyId}}");
 
         foreach ($tokenTableSchema->columns as $columnName => $columnObject) {
-            if (strpos((string) $columnName, 'attribute_') !== false) {
-                $id = substr((string) $columnName, 10);
+            if (strpos($columnName, 'attribute_') !== false) {
+                $id = substr($columnName, 10);
                 if (in_array($id, $newAttributes)) {
                     $name = ParticipantAttributeName::model()->getAttributeName($id, $_SESSION['adminlang']);
                     if (empty($name)) {
@@ -1585,7 +1622,7 @@ class Participant extends LSActiveRecord
             ->from('{{surveys}}')
             ->bindParam(":sid", $surveyId, PDO::PARAM_INT);
         $aTokenAttributes = $previousatt->queryRow();
-        $aTokenAttributes = decodeTokenAttributes($aTokenAttributes['attributedescriptions'] ?? '');
+        $aTokenAttributes = decodeTokenAttributes($aTokenAttributes['attributedescriptions']);
 
         foreach ($fieldcontents as $key => $iIDAttributeCPDB) {
             $aTokenAttributes[$key] = $iIDAttributeCPDB;
@@ -1726,8 +1763,8 @@ class Participant extends LSActiveRecord
                     try {
                         // $value can be 'attribute_<number>' here
                         // TODO: Weird...
-                        if (strpos((string) $value, 'attribute_') !== false) {
-                            $value = substr((string) $value, 10);
+                        if (strpos($value, 'attribute_') !== false) {
+                            $value = substr($value, 10);
                         }
 
                         Participant::model()->updateTokenAttributeValue($surveyId, $oParticipant->participant_id, $value, $key);
@@ -1907,12 +1944,12 @@ class Participant extends LSActiveRecord
     {
         $survey = Survey::model()->findByPk($surveyid);
         $tokenid_string = Yii::app()->session['participantid']; //List of token_id's to add to participants table
-        $tokenids = json_decode((string) $tokenid_string, true);
+        $tokenids = json_decode($tokenid_string, true);
         $duplicate = 0;
         $sucessfull = 0;
         $attid = []; //Will store the CPDB attribute_id of new or existing attributes keyed by CPDB at
 
-        $aTokenAttributes = decodeTokenAttributes($survey->attributedescriptions ?? '');
+        $aTokenAttributes = decodeTokenAttributes($survey->attributedescriptions);
         $aAutoMapped = $survey->getCPDBMappings();
 
         /* Create CPDB attributes */
@@ -1936,7 +1973,7 @@ class Participant extends LSActiveRecord
                 $attid[$key] = $oParticipantAttributeNames->getPrimaryKey();
                 $insertnameslang = [
                     'attribute_id'   => $attid[$key],
-                    'attribute_name' => urldecode((string) $value),
+                    'attribute_name' => urldecode($value),
                     'lang'           => Yii::app()->session['adminlang']
                 ];
                 $oParticipantAttributeNamesLang = new ParticipantAttributeNameLang();
@@ -2175,7 +2212,7 @@ class Participant extends LSActiveRecord
                 return $lngArr['description'];
             }, $allLanguages);
         }
-        $usedLanguages = explode(' ', (string) $restrictToLanguages);
+        $usedLanguages = explode(' ', $restrictToLanguages);
         $returner = [];
         array_walk($usedLanguages, function ($lngKey) use (&$returner, $allLanguages) {
             $returner[$lngKey] = $allLanguages[$lngKey]['description'];

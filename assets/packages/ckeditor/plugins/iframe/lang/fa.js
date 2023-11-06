@@ -8,5 +8,5 @@ CKEDITOR.plugins.setLang( 'iframe', 'fa', {
 	scrolling: 'نمایش خطکشها',
 	title: 'ویژگیهای IFrame',
 	toolbar: 'IFrame',
-	tabindex: 'حذف از tabindex'
+	tabindex: 'Remove from tabindex' // MISSING
 } );

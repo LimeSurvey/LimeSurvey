@@ -13,7 +13,6 @@ CKEDITOR.plugins.setLang( 'link', 'pl', {
 		title: 'Właściwości kotwicy',
 		name: 'Nazwa kotwicy',
 		errorName: 'Podaj nazwę kotwicy.',
-		errorWhitespace: 'Anchor name cannot contain space characters', // MISSING
 		remove: 'Usuń kotwicę'
 	},
 	anchorId: 'Wg identyfikatora',

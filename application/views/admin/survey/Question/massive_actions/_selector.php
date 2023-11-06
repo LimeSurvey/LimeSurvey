@@ -36,7 +36,7 @@
             'type' => 'action',
             'action' => 'delete',
             'url' => App()->createUrl('questionAdministration/deleteMultiple/'),
-            'iconClasses' => 'ri-delete-bin-fill text-danger',
+            'iconClasses' => 'fa fa-trash text-danger',
             'text' => gT('Delete'),
             'grid-reload' => 'yes',
 
@@ -57,7 +57,7 @@
             'type' => 'action',
             'action' => 'set-group-position',
             'url' => App()->createUrl('questionAdministration/setMultipleQuestionGroup/'),
-            'iconClasses' => 'ri-folder-line',
+            'iconClasses' => 'fa fa-folder-open',
             'text' => gT('Set question group and position'),
             'grid-reload' => 'yes',
 
@@ -78,7 +78,7 @@
         'type' => 'action',
         'action' => 'set-mandatory',
         'url' => App()->createUrl('questionAdministration/changeMultipleQuestionMandatoryState/'),
-        'iconClasses' => 'ri-star-fill text-danger',
+        'iconClasses' => 'fa fa-asterisk text-danger',
         'text' => gT('Set "Mandatory" state'),
         'grid-reload' => 'yes',
 
@@ -96,7 +96,7 @@
         'type' => 'action',
         'action' => 'set-css',
         'url' => App()->createUrl('questionAdministration/changeMultipleQuestionAttributes/'),
-        'iconClasses' => 'ri-css3-fill',
+        'iconClasses' => 'fa fa-css3',
         'text' => gT('Set CSS class'),
         'grid-reload' => 'yes',
 
@@ -114,7 +114,7 @@
         'type' => 'action',
         'action' => 'set-statistics',
         'url' => App()->createUrl('questionAdministration/changeMultipleQuestionAttributes/'),
-        'iconClasses' => 'ri-bar-chart-fill',
+        'iconClasses' => 'fa fa-bar-chart',
         'text' => gT('Set statistics options'),
         'grid-reload' => 'yes',
 
@@ -148,7 +148,7 @@
             'type' => 'action',
             'action' => 'set-other',
             'url' => App()->createUrl('questionAdministration/changeMultipleQuestionOtherState'),
-            'iconClasses' => 'ri-record-circle-line',
+            'iconClasses' => 'fa fa-dot-circle-o',
             'text' => gT('Set "Other" state'),
             'grid-reload' => 'yes',
 
@@ -169,7 +169,7 @@
         'type' => 'action',
         'action' => 'set-subquestions-answers-sort',
         'url' => App()->createUrl('questionAdministration/changeMultipleQuestionAttributes/'),
-        'iconClasses' => 'ri-shuffle-line',
+        'iconClasses' => 'fa fa-sort',
         'text' => gT('Present subquestions/answer options in random order'),
         'grid-reload' => 'yes',
 

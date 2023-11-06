@@ -13,7 +13,6 @@ CKEDITOR.plugins.setLang( 'link', 'he', {
 		title: 'מאפייני נקודת עיגון',
 		name: 'שם לנקודת עיגון',
 		errorName: 'יש להקליד שם לנקודת עיגון',
-		errorWhitespace: 'Anchor name cannot contain space characters', // MISSING
 		remove: 'מחיקת נקודת עיגון'
 	},
 	anchorId: 'עפ"י זיהוי (ID) האלמנט',

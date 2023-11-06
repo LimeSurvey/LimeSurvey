@@ -14,14 +14,14 @@ var LS = LS || {  onDocumentReady: {} };
 				value = value + 1;
 				$tab = $(this).children('ul').children(':nth-child('+value+')');
 				$tab.removeClass("disabled");
-				$tab.children('a').attr('data-bs-toggle', 'tab');
+				$tab.children('a').attr('data-toggle', 'tab');
 			}
 			if(fonc=='disable')
 			{
 				value = value + 1;
 				$tab = $(this).children('ul').children(':nth-child('+value+')');
 				$tab.addClass("disabled");
-				$tab.children('a').removeAttr('data-bs-toggle');
+				$tab.children('a').removeAttr('data-toggle');
 			}
 			
 			if(fonc=='option')
@@ -139,6 +139,11 @@ $(document).on('ready  pjax:scriptcomplete', function(){
 	if ($('#cquestions').val() != '') {
 		populateCanswersSelect(null);
 	}
+	
+    $('.nav-tabs').click(function(e) {
+        e.preventDefault();
+        $(this).tab('show');
+    })
 
     // Tab management for add/edit condition
     var editTargetTab = $('input[name="editTargetTab"]').val();
@@ -177,7 +182,7 @@ $(document).on('ready  pjax:scriptcomplete', function(){
     });
 
     // Disable clicks on disabled tabs (regexp)
-    $(".nav-tabs a[data-bs-toggle=tab]").on("click", function(e) {
+    $(".nav-tabs a[data-toggle=tab]").on("click", function(e) {
         if ($(this).parent().hasClass("disabled")) {
             e.preventDefault();
             return false;
@@ -373,7 +378,7 @@ function quickAddSelectTabFromOper() {
  */
 function scenarioaddbtnOnClickAction() {
     $('#defaultscenarioshow').hide('slow');
-    $('.add-scenario-column').removeClass('col-md-4').addClass('col-md-2');
+    $('.add-scenario-column').removeClass('col-sm-4').addClass('col-sm-2');
     $('#scenario').show('slow');
 }
 

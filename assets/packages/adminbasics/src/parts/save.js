@@ -25,10 +25,7 @@ const SaveController = () => {
             var formId = '#' + $(that).attr('data-form-to-save');
             form = $(document).find(formId).first();
         } else {
-            form = $('#in_survey_common').find('form:not(#translatemenu)').first(); // #translatemenu is a first form on survey quick translate page, so we want to skip it
-            if (form.length < 1) {
-                form = $('#trigger-save-button').find('form:not(#translatemenu)').first();
-            }
+            form = $('#pjax-content').find('form:not(#translatemenu)').first(); // #translatemenu is a first form on survey quick translate page, so we want to skip it
         }
 
         if (form.length < 1)
@@ -39,7 +36,7 @@ const SaveController = () => {
     isSubmitting = () => formSubmitting,
     displayLoadingState = (el) => {
         if($(el).data('form-id') == 'addnewsurvey') {
-            const loadingSpinner = '<i class="ri-settings-5-fill remix-spin lsLoadingStateIndicator"></i>';
+            const loadingSpinner = '<i class="fa fa-cog fa-spin lsLoadingStateIndicator"></i>';
             $(el).prop('disabled', true).append(loadingSpinner);
         }
     },

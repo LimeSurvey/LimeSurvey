@@ -12,7 +12,6 @@
 namespace Twig\NodeVisitor;
 
 use Twig\Environment;
-use Twig\Node\Node;
 
 /**
  * Interface for node visitor classes.
@@ -24,16 +23,16 @@ interface NodeVisitorInterface
     /**
      * Called before child nodes are visited.
      *
-     * @return Node The modified node
+     * @return \Twig_NodeInterface The modified node
      */
-    public function enterNode(Node $node, Environment $env): Node;
+    public function enterNode(\Twig_NodeInterface $node, Environment $env);
 
     /**
      * Called after child nodes are visited.
      *
-     * @return Node|null The modified node or null if the node must be removed
+     * @return \Twig_NodeInterface|false|null The modified node or null if the node must be removed
      */
-    public function leaveNode(Node $node, Environment $env): ?Node;
+    public function leaveNode(\Twig_NodeInterface $node, Environment $env);
 
     /**
      * Returns the priority for this visitor.
@@ -44,3 +43,8 @@ interface NodeVisitorInterface
      */
     public function getPriority();
 }
+
+class_alias('Twig\NodeVisitor\NodeVisitorInterface', 'Twig_NodeVisitorInterface');
+
+// Ensure that the aliased name is loaded to keep BC for classes implementing the typehint with the old aliased name.
+class_exists('Twig\Environment');

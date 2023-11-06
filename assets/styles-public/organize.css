@@ -43,7 +43,7 @@ display:none;
     min-height: 50px;
 }
 
-.organizer .card-header {
+.organizer .panel-heading {
     cursor: move;
 }
 

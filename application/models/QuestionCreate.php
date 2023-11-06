@@ -33,7 +33,7 @@ class QuestionCreate extends Question
         }
         $oCurrentGroup = QuestionGroup::model()->findByPk($gid);
         $temporaryTitle =
-            'G' . str_pad((string) $oCurrentGroup->group_order, 2, '0', STR_PAD_LEFT)
+            'G' . str_pad($oCurrentGroup->group_order, 2, '0', STR_PAD_LEFT)
             . 'Q' . str_pad((safecount($oSurvey->baseQuestions) + 1), 2, '0', STR_PAD_LEFT);
         $aQuestionData = [
                 'sid' => $iSurveyId,
@@ -74,7 +74,6 @@ class QuestionCreate extends Question
 
     /**
      * @inheritdoc
-     * @todo check why return both empty array and null?
      */
     public function getOrderedAnswers($scale_id = null, $language = null)
     {

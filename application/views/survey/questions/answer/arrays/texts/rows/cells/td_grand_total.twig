@@ -13,14 +13,7 @@
 
 {% else %}
     <td class="total grand information-item">
-        <label for="totals{{ basename }}total_total" class="ls-label-xs-visibility" aria-hidden="true">{{ gT("Grand total") }}</label>
-        <input
-            type="text"
-            id="totals{{ basename }}total_total"
-            aria-labelledby="totals{{ basename }}_total"
-            {% if inputsize %}size="{{ inputsize }}" {% endif %}
-            value="" disabled="disabled" class="disabled form-control" data-number='1'
-        />
+        <input type="text" {% if inputsize %}size="{{ inputsize }}" {% endif %} value="" disabled="disabled" class="disabled form-control" data-number='1' />
     </td>
 {% endif %}
 <!-- end of td_grand_total -->

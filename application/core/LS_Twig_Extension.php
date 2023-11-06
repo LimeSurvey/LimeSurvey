@@ -40,9 +40,8 @@
  * To get the pure HTML, just do: {{ foo($bar) | raw }}
  */
 
-use Twig\Extension\AbstractExtension;
 
-class LS_Twig_Extension extends AbstractExtension
+class LS_Twig_Extension extends Twig_Extension
 {
     /**
      * Publish a css file from public style directory, using or not the asset manager (depending on configuration)
@@ -135,7 +134,7 @@ class LS_Twig_Extension extends AbstractExtension
      */
     public static function json_decode($json, $assoc = true)
     {
-        return (array) json_decode((string)$json, $assoc);
+        return (array) json_decode($json, $assoc);
     }
 
     /**
@@ -198,7 +197,7 @@ class LS_Twig_Extension extends AbstractExtension
 
         $lemQuestionInfo = LimeExpressionManager::GetQuestionStatus($iQid);
         $sType           = $lemQuestionInfo['info']['type'];
-        $aSGQA           = explode('X', (string) $lemQuestionInfo['sgqa']);
+        $aSGQA           = explode('X', $lemQuestionInfo['sgqa']);
         $iSurveyId       = $aSGQA[0];
 
         $aQuestionClass  = Question::getQuestionClass($sType);
@@ -220,7 +219,7 @@ class LS_Twig_Extension extends AbstractExtension
         //add additional classes
         if (isset($aQuestionAttributes['cssclass']) && $aQuestionAttributes['cssclass'] != "") {
             /* Got to use static expression */
-            $emCssClass = trim((string) LimeExpressionManager::ProcessString($aQuestionAttributes['cssclass'], null, array(), 1, 1, false, false, true)); /* static var is the lmast one ...*/
+            $emCssClass = trim(LimeExpressionManager::ProcessString($aQuestionAttributes['cssclass'], null, array(), 1, 1, false, false, true)); /* static var is the lmast one ...*/
             if ($emCssClass != "") {
                 $aQuestionClass .= " " . CHtml::encode($emCssClass);
             }
@@ -289,7 +288,7 @@ class LS_Twig_Extension extends AbstractExtension
     public static function imageSrc($sImagePath, $default = false)
     {
         // If $sImagePath is a 'virtual' path, we must get the real path.
-        if (preg_match('/(image::\w+::)/', (string) $sImagePath, $m)) {
+        if (preg_match('/(image::\w+::)/', $sImagePath, $m)) {
             $oTemplate =  Template::getLastInstance();
             Yii::import('application.helpers.SurveyThemeHelper');
             $sFullPath = SurveyThemeHelper::getRealThemeFilePath($sImagePath, $oTemplate->template_name, $oTemplate->sid);
@@ -330,8 +329,8 @@ class LS_Twig_Extension extends AbstractExtension
     public static function templateResourceUrl($resourcePath, $default = false)
     {
         /* get extension of file in allowedthemeuploads */
-        $aAllowExtensions = explode(',', (string) Yii::app()->getConfig('allowedthemeuploads'));
-        $info = pathinfo((string) $resourcePath);
+        $aAllowExtensions = explode(',', Yii::app()->getConfig('allowedthemeuploads'));
+        $info = pathinfo($resourcePath);
         if (!isset($info['extension']) || !in_array(strtolower($info['extension']), $aAllowExtensions)) {
             if ($default) {
                 return self::templateResourceUrl($default);
@@ -583,19 +582,19 @@ class LS_Twig_Extension extends AbstractExtension
     public static function flatEllipsizeText($sString, $bFlat = true, $iAbbreviated = 0, $sEllipsis = '...', $fPosition = 1)
     {
         if (!$bFlat && !$iAbbreviated) {
-            return (string) $sString;
+            return $sString;
         }
         $sString = self::flatString($sString);
         if ($iAbbreviated > 0) {
             $sString = ellipsize($sString, $iAbbreviated, $fPosition, $sEllipsis);
         }
-        return (string) $sString;
+        return $sString;
     }
 
     public static function darkencss($cssColor, $grade = 10, $alpha = 1)
     {
 
-        $aColors = str_split(substr((string) $cssColor, 1), 2);
+        $aColors = str_split(substr($cssColor, 1), 2);
         $return = [];
         foreach ($aColors as $color) {
             $decColor = hexdec($color);
@@ -617,13 +616,11 @@ class LS_Twig_Extension extends AbstractExtension
      * @param mixed $needle The searched value.
      * @param array $haystack The array.
      * @param bool $strict If the third parameter strict is set to TRUE then the in_array() function will also check the types of the needle in the haystack.
-     * @todo in_array_r is not defined - delete this method?
      */
     function in_multiarray($needle, $haystack, $strict = false)
     {
 
         foreach ($haystack as $item) {
-            /** @psalm-suppress UndefinedFunction */
             if (($strict ? $item === $needle : $item == $needle) || (is_array($item) && in_array_r($needle, $item, $strict))) {
                 return true;
             }
@@ -635,7 +632,7 @@ class LS_Twig_Extension extends AbstractExtension
 
     public static function lightencss($cssColor, $grade = 10, $alpha = 1)
     {
-        $aColors = str_split(substr((string) $cssColor, 1), 2);
+        $aColors = str_split(substr($cssColor, 1), 2);
         $return = [];
         foreach ($aColors as $color) {
             $decColor = hexdec($color);

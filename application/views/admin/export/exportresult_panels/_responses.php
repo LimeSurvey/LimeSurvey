@@ -1,43 +1,52 @@
-<div class="card mb-4" id="panel-5">
-    <div class="card-header ">
-        <div class="">
+<div class="panel panel-primary" id="panel-5">
+    <div class="panel-heading">
+        <div class="panel-title h4">
             <?php eT("Responses");?>
         </div>
     </div>
-    <div class="card-body">
-        <div class='mb-3'>
-            <label class="col-md-12 form-label" for=''>
+    <div class="panel-body">
+        <div class='form-group row'>
+            <label class="col-sm-12 control-label" for=''>
                 <?php eT("Export responses as:"); ?>
             </label>
             <!-- Answer codes / Full answers -->
-            <div class="btn-group">
-                <input class="btn-check" name="answers" value="short" type="radio" id="answers-short" autocomplete="off" />
-                <label class="btn btn-outline-secondary" for="answers-short">
+            <div class="btn-group col-sm-6" data-toggle="buttons">
+                <label class="btn btn-default">
+                    <input name="answers" value="short" type="radio" id="answers-short" />
                     <?php eT("Answer codes");?>
                 </label>
 
-                <input class="btn-check" name="answers" value="long" type="radio" id="answers-long" autocomplete="off" checked />
-                <label class="btn btn-outline-secondary" for="answers-long">
+                <label class="btn btn-default active">
+                    <input name="answers" value="long" type="radio" checked='checked' id="answers-long" autofocus="true" />
                     <?php eT("Full answers");?>
                 </label>
             </div>
         </div>
 
         <!-- Responses  -->
-        <div class="mb-3">
-            <?= CHTML::checkBox('converty', false, ['value' => 'Y', 'id' => 'converty']) ?>
-            <?= ' ' . CHTML::label(gT("Convert Y to:"), 'converty', ['class' => 'form-label']) ?>
-            <?= CHTML::textField('convertyto', '1', ['id' => 'convertyto', 'size' => '3', 'maxlength' => '1', 'class' => 'form-control']) ?>
+        <div class="form-group row">
+            <div class='col-sm-12'>
+                <?php 
+                echo CHTML::checkBox('converty',false,array('value'=>'Y','id'=>'converty'));
+                echo ' '.CHTML::label(gT("Convert Y to:"),'converty');
+                echo CHTML::textField('convertyto','1',array('id'=>'convertyto','size'=>'3','maxlength'=>'1', 'class' => 'form-control')); 
+                ?>
+            </div>
+            <div class='col-sm-12'>
+                <?php 
+                echo CHTML::checkBox('convertn',false,array('value'=>'Y','id'=>'convertn'));
+                echo ' '.CHTML::label(gT("Convert N to:"),'convertn');
+                echo CHTML::textField('convertnto','2',array('id'=>'convertnto','size'=>'3','maxlength'=>'1', 'class' => 'form-control')); 
+                ?>
+            </div>
         </div>
-        <div class="mb-3">
-            <?= CHTML::checkBox('convertn', false, ['value' => 'Y', 'id' => 'convertn']) ?>
-            <?= ' ' . CHTML::label(gT("Convert N to:"), 'convertn', ['class' => 'form-label']) ?>
-            <?= CHTML::textField('convertnto', '2', ['id' => 'convertnto', 'size' => '3', 'maxlength' => '1', 'class' => 'form-control']) ?>
-
-        </div>
-        <div class="mb-3">
-            <?= CHTML::checkBox('maskequations', true, ['value' => 'Y', 'id' => 'maskequations']) ?>
-            <?= ' ' . CHTML::label(gT("Quote equations for CSV export"), 'maskequations', ['class' => 'form-label']) ?>
+        <div class="form-group row">
+            <div class='col-sm-12'>
+                <?php 
+                echo CHTML::checkBox('maskequations',true,array('value'=>'Y','id'=>'maskequations'));
+                echo ' '.CHTML::label(gT("Quote equations for CSV export"),'maskequations');
+                ?>
+            </div>
         </div>
     </div>
 </div>

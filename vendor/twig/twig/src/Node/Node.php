@@ -20,7 +20,7 @@ use Twig\Source;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class Node implements \Countable, \IteratorAggregate
+class Node implements \Twig_NodeInterface
 {
     protected $nodes;
     protected $attributes;
@@ -36,11 +36,11 @@ class Node implements \Countable, \IteratorAggregate
      * @param int    $lineno     The line number
      * @param string $tag        The tag name associated with the Node
      */
-    public function __construct(array $nodes = [], array $attributes = [], int $lineno = 0, string $tag = null)
+    public function __construct(array $nodes = [], array $attributes = [], $lineno = 0, $tag = null)
     {
         foreach ($nodes as $name => $node) {
-            if (!$node instanceof self) {
-                throw new \InvalidArgumentException(sprintf('Using "%s" for the value of node "%s" of "%s" is not supported. You must pass a \Twig\Node\Node instance.', \is_object($node) ? \get_class($node) : (null === $node ? 'null' : \gettype($node)), $name, static::class));
+            if (!$node instanceof \Twig_NodeInterface) {
+                @trigger_error(sprintf('Using "%s" for the value of node "%s" of "%s" is deprecated since version 1.25 and will be removed in 2.0.', \is_object($node) ? \get_class($node) : (null === $node ? 'null' : \gettype($node)), $name, static::class), \E_USER_DEPRECATED);
             }
         }
         $this->nodes = $nodes;
@@ -78,8 +78,40 @@ class Node implements \Countable, \IteratorAggregate
     }
 
     /**
-     * @return void
+     * @deprecated since 1.16.1 (to be removed in 2.0)
      */
+    public function toXml($asDom = false)
+    {
+        @trigger_error(sprintf('%s is deprecated since version 1.16.1 and will be removed in 2.0.', __METHOD__), \E_USER_DEPRECATED);
+
+        $dom = new \DOMDocument('1.0', 'UTF-8');
+        $dom->formatOutput = true;
+        $dom->appendChild($xml = $dom->createElement('twig'));
+
+        $xml->appendChild($node = $dom->createElement('node'));
+        $node->setAttribute('class', static::class);
+
+        foreach ($this->attributes as $name => $value) {
+            $node->appendChild($attribute = $dom->createElement('attribute'));
+            $attribute->setAttribute('name', $name);
+            $attribute->appendChild($dom->createTextNode($value));
+        }
+
+        foreach ($this->nodes as $name => $n) {
+            if (null === $n) {
+                continue;
+            }
+
+            $child = $n->toXml(true)->getElementsByTagName('node')->item(0);
+            $child = $dom->importNode($child, true);
+            $child->setAttribute('name', $name);
+
+            $node->appendChild($child);
+        }
+
+        return $asDom ? $dom : $dom->saveXML();
+    }
+
     public function compile(Compiler $compiler)
     {
         foreach ($this->nodes as $node) {
@@ -87,22 +119,38 @@ class Node implements \Countable, \IteratorAggregate
         }
     }
 
-    public function getTemplateLine(): int
+    public function getTemplateLine()
     {
         return $this->lineno;
     }
 
-    public function getNodeTag(): ?string
+    /**
+     * @deprecated since 1.27 (to be removed in 2.0)
+     */
+    public function getLine()
+    {
+        @trigger_error('The '.__METHOD__.' method is deprecated since version 1.27 and will be removed in 2.0. Use getTemplateLine() instead.', \E_USER_DEPRECATED);
+
+        return $this->lineno;
+    }
+
+    public function getNodeTag()
     {
         return $this->tag;
     }
 
-    public function hasAttribute(string $name): bool
+    /**
+     * @return bool
+     */
+    public function hasAttribute($name)
     {
         return \array_key_exists($name, $this->attributes);
     }
 
-    public function getAttribute(string $name)
+    /**
+     * @return mixed
+     */
+    public function getAttribute($name)
     {
         if (!\array_key_exists($name, $this->attributes)) {
             throw new \LogicException(sprintf('Attribute "%s" does not exist for Node "%s".', $name, static::class));
@@ -111,36 +159,50 @@ class Node implements \Countable, \IteratorAggregate
         return $this->attributes[$name];
     }
 
-    public function setAttribute(string $name, $value): void
+    /**
+     * @param string $name
+     * @param mixed  $value
+     */
+    public function setAttribute($name, $value)
     {
         $this->attributes[$name] = $value;
     }
 
-    public function removeAttribute(string $name): void
+    public function removeAttribute($name)
     {
         unset($this->attributes[$name]);
     }
 
-    public function hasNode(string $name): bool
+    /**
+     * @return bool
+     */
+    public function hasNode($name)
     {
-        return isset($this->nodes[$name]);
+        return \array_key_exists($name, $this->nodes);
     }
 
-    public function getNode(string $name): self
+    /**
+     * @return Node
+     */
+    public function getNode($name)
     {
-        if (!isset($this->nodes[$name])) {
+        if (!\array_key_exists($name, $this->nodes)) {
             throw new \LogicException(sprintf('Node "%s" does not exist for Node "%s".', $name, static::class));
         }
 
         return $this->nodes[$name];
     }
 
-    public function setNode(string $name, self $node): void
+    public function setNode($name, $node = null)
     {
+        if (!$node instanceof \Twig_NodeInterface) {
+            @trigger_error(sprintf('Using "%s" for the value of node "%s" of "%s" is deprecated since version 1.25 and will be removed in 2.0.', \is_object($node) ? \get_class($node) : (null === $node ? 'null' : \gettype($node)), $name, static::class), \E_USER_DEPRECATED);
+        }
+
         $this->nodes[$name] = $node;
     }
 
-    public function removeNode(string $name): void
+    public function removeNode($name)
     {
         unset($this->nodes[$name]);
     }
@@ -148,32 +210,71 @@ class Node implements \Countable, \IteratorAggregate
     /**
      * @return int
      */
-    #[\ReturnTypeWillChange]
     public function count()
     {
         return \count($this->nodes);
     }
 
-    public function getIterator(): \Traversable
+    /**
+     * @return \Traversable
+     */
+    public function getIterator()
     {
         return new \ArrayIterator($this->nodes);
     }
 
-    public function getTemplateName(): ?string
+    public function setTemplateName($name)
     {
-        return $this->sourceContext ? $this->sourceContext->getName() : null;
-    }
-
-    public function setSourceContext(Source $source): void
-    {
-        $this->sourceContext = $source;
+        $this->name = $name;
         foreach ($this->nodes as $node) {
-            $node->setSourceContext($source);
+            if (null !== $node) {
+                $node->setTemplateName($name);
+            }
         }
     }
 
-    public function getSourceContext(): ?Source
+    public function getTemplateName()
+    {
+        return $this->name;
+    }
+
+    public function setSourceContext(Source $source)
+    {
+        $this->sourceContext = $source;
+        foreach ($this->nodes as $node) {
+            if ($node instanceof self) {
+                $node->setSourceContext($source);
+            }
+        }
+    }
+
+    public function getSourceContext()
     {
         return $this->sourceContext;
     }
+
+    /**
+     * @deprecated since 1.27 (to be removed in 2.0)
+     */
+    public function setFilename($name)
+    {
+        @trigger_error('The '.__METHOD__.' method is deprecated since version 1.27 and will be removed in 2.0. Use setTemplateName() instead.', \E_USER_DEPRECATED);
+
+        $this->setTemplateName($name);
+    }
+
+    /**
+     * @deprecated since 1.27 (to be removed in 2.0)
+     */
+    public function getFilename()
+    {
+        @trigger_error('The '.__METHOD__.' method is deprecated since version 1.27 and will be removed in 2.0. Use getTemplateName() instead.', \E_USER_DEPRECATED);
+
+        return $this->name;
+    }
 }
+
+class_alias('Twig\Node\Node', 'Twig_Node');
+
+// Ensure that the aliased name is loaded to keep BC for classes implementing the typehint with the old aliased name.
+class_exists('Twig\Compiler');

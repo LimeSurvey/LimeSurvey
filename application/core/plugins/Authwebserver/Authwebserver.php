@@ -66,12 +66,12 @@ class Authwebserver extends LimeSurvey\PluginManager\AuthPluginBase
             $sUser = $_SERVER[$serverKey];
             // Only strip domain part when desired
             if ($this->get('strip_domain', null, null, false)) {
-                if (strpos((string) $sUser, "\\") !== false) {
+                if (strpos($sUser, "\\") !== false) {
                     // Get username for DOMAIN\USER
-                    $sUser = substr((string) $sUser, strrpos((string) $sUser, "\\") + 1);
-                } elseif (strpos((string) $sUser, "@") !== false) {
+                    $sUser = substr($sUser, strrpos($sUser, "\\") + 1);
+                } elseif (strpos($sUser, "@") !== false) {
                     // Get username for USER@DOMAIN
-                    $sUser = substr((string) $sUser, 0, strrpos((string) $sUser, "@"));
+                    $sUser = substr($sUser, 0, strrpos($sUser, "@"));
                 }
             }
             $aUserMappings = $this->api->getConfigKey('auth_webserver_user_map', array());
@@ -159,13 +159,7 @@ class Authwebserver extends LimeSurvey\PluginManager\AuthPluginBase
 
         if (!empty($settings['serverkey']) && !empty($settings['serverkey']['current'])) {
             if (!isset($_SERVER[$settings['serverkey']['current']])) {
-                $settings['serverkey']['help'] = App()->getController()->widget('ext.AlertWidget.AlertWidget', [
-                    'tag' => 'p',
-                    'text' => gT(
-                        "The server key is not currently set. If you set this plugin as default you will not be able to log in again."
-                    ),
-                    'type' => 'info',
-                ], true);
+                $settings['serverkey']['help'] = "<p class='alert alert-danger'>" . gT("The server key is not currently set. If you set this plugin as default you will not be able to log in again.") . "<p>";
             }
         }
 
