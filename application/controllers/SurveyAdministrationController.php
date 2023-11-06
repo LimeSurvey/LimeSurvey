@@ -52,6 +52,7 @@ class SurveyAdministrationController extends LSBaseController
             ['deny'], //always deny all actions not mentioned above
         ];
     }
+
     /**
      * Set filters for all actions
      * @return string[]
