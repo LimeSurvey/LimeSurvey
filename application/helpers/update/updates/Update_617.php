@@ -11,7 +11,7 @@ class Update_617 extends DatabaseUpdateBase
      * @inheritDoc
      * @throws CException
      */
-    public function up()
+    public function up(): void
     {
         $this->deleteDuplicateTemplateConfigurationEntries();
     }
@@ -19,9 +19,8 @@ class Update_617 extends DatabaseUpdateBase
     /**
      * @throws CDbException
      * @throws CException
-     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
-    private function deleteDuplicateTemplateConfigurationEntries()
+    private function deleteDuplicateTemplateConfigurationEntries(): void
     {
         $aKeepIds = $this->db->createCommand()
             ->select("MAX(id) AS maxRecordId")
