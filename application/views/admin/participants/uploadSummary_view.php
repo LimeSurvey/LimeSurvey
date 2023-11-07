@@ -42,7 +42,7 @@
                     $uploadSummary .= "<div class='badtokenlist' id='duplicateslist'><ul>";
                     foreach ($duplicatelist as $data)
                     {
-                        $uploadSummary .= "<li>" . CHtml::encode($data) . "</li>";
+                        $uploadSummary .= "<li>" . $data . "</li>";
                     }
                     $uploadSummary .= "</ul></div></li>";
                 }
