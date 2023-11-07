@@ -326,8 +326,11 @@ trait OpHandlerQuestionTrait
             foreach ($question->$object as $subquestion) {
                 if (array_key_exists($subquestion->$title, $tempIds)) {
                     $mapping[$object . 'Map'][] = [
-                        'tempId' => $tempIds[$subquestion->$title],
-                        $idField => $subquestion->$idField
+                        new TempIdMapItem(
+                            $tempIds[$subquestion->$title],
+                            $subquestion->$idField,
+                            $idField
+                        )
                     ];
                 }
             }

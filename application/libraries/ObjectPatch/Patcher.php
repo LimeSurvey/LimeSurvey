@@ -32,7 +32,7 @@ class Patcher
                 $operationsApplied++;
             }
         }
-        return $this->reorganizeReturnedData($returnedData, $operationsApplied);
+        return ['operationsApplied' => $operationsApplied, $returnedData];
     }
 
     /**
@@ -51,7 +51,7 @@ class Patcher
      * @return array
      * @throws ObjectPatchException
      */
-    private function handleOp(OpInterface $op): array
+    public function handleOp(OpInterface $op): array
     {
         $handled = false;
         $returnedData = [];
@@ -85,64 +85,5 @@ class Patcher
             );
         }
         return $returnedData;
-    }
-
-    /**
-     * Moves mappings of tempIds and their real ids of same object types
-     * together for a more structured return to the client.
-     * @param array $returnedData
-     * @param int $operationsApplied
-     * @return array
-     */
-    private function reorganizeReturnedData(
-        array $returnedData,
-        int $operationsApplied
-    ): array {
-        $organizedData = [];
-        $knownMaps = [
-            'questionGroupsMap',
-            'questionsMap',
-            'subquestionsMap',
-            'answersMap'
-        ];
-        foreach ($returnedData as $data) {
-            foreach ($knownMaps as $knownMap) {
-                $mapping = $this->searchKeyInArray($data, $knownMap);
-                if ($mapping !== null) {
-                    if (array_key_exists($knownMap, $organizedData)) {
-                        $organizedData[$knownMap] = array_merge(
-                            $organizedData[$knownMap],
-                            $mapping
-                        );
-                    } else {
-                        $organizedData[$knownMap] = $mapping;
-                    }
-                }
-            }
-        }
-        $organizedData['operationsApplied'] = $operationsApplied;
-        return $organizedData;
-    }
-
-    /**
-     * Recursive array search by key for multidimensional arrays.
-     * Returns the value, if key was found.
-     * @param $array
-     * @param $key
-     * @return mixed|null
-     */
-    private function searchKeyInArray($array, $key)
-    {
-        foreach ($array as $k => $v) {
-            if ($k === $key) {
-                return $v;
-            } elseif (is_array($v)) {
-                $result = $this->searchKeyInArray($v, $key);
-                if ($result !== null) {
-                    return $result;
-                }
-            }
-        }
-        return null; // Key not found
     }
 }

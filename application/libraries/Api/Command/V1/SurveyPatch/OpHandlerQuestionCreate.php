@@ -206,7 +206,7 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
         $transformedProps = $this->prepareData($op);
         if (
             !is_array($transformedProps) ||
-            array_key_exists(
+            !array_key_exists(
                 'question',
                 $transformedProps
             )
@@ -230,10 +230,15 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
             $transformedProps
         );
 
-        return [
-            'questionsMap' => [
-                'tempId' => $tempId,
-                'qid'    => $question->qid
+        return array_merge(
+            [
+                'questionsMap' => [
+                    new TempIdMapItem(
+                        $tempId,
+                        $question->qid,
+                        'qid'
+                    )
+                ]
             ],
             $this->getSubQuestionNewIdMapping(
                 $question,
@@ -244,7 +249,7 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
                 $transformedProps['answeroptions'],
                 true
             )
-        ];
+        );
     }
 
     /**
