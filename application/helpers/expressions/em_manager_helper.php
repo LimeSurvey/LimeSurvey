@@ -1569,7 +1569,7 @@ class LimeExpressionManager
                                 // date_min: Determine whether we have an expression, a full date (YYYY-MM-DD) or only a year(YYYY)
                                 if (trim((string) $qattr['date_min']) != '') {
                                     $mindate = $qattr['date_min'];
-                                    if ((strlen((string) $mindate) == 4) && ($mindate >= 1900) && ($mindate <= 2099)) {
+                                    if ((strlen((string)$mindate) == 4)) {
                                         // backward compatibility: if only a year is given, add month and day
                                         $date_min = '\'' . $mindate . '-01-01' . ' 00:00\'';
                                     } elseif (preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])/", (string) $mindate)) {
@@ -1627,7 +1627,7 @@ class LimeExpressionManager
                                 // date_max: Determine whether we have an expression, a full date (YYYY-MM-DD) or only a year(YYYY)
                                 if (trim((string) $qattr['date_max']) != '') {
                                     $maxdate = $qattr['date_max'];
-                                    if ((strlen((string) $maxdate) == 4) && ($maxdate >= 1900) && ($maxdate <= 2099)) {
+                                    if ((strlen((string)$maxdate) == 4)) {
                                         // backward compatibility: if only a year is given, add month and day
                                         $date_max = '\'' . $maxdate . '-12-31 23:59' . '\'';
                                     } elseif (preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])/", (string) $maxdate)) {
@@ -5055,15 +5055,21 @@ class LimeExpressionManager
             SurveyDynamic::sid($this->sid);
             $oSurvey = new SurveyDynamic();
 
-            $iNewID = $oSurvey->insertRecords($sdata);
-            if ($iNewID) {    // Checked
+            try {
+                $iNewID = $oSurvey->insertRecords($sdata);
+                if (!$iNewID) {
+                    throw new Exception("Error, no entry id was returned.", 1);
+                }
                 $srid = $iNewID;
                 $_SESSION[$this->sessid]['srid'] = $iNewID;
-            } else {
+            } catch (Exception $e) {
                 $srid = null;
                 $message .= $this->gT("Unable to insert record into survey table"); // TODO - add SQL error?
-                submitfailed($this->gT("Unable to insert record into survey table"));
+                $query = $e->getMessage();
+                $trace = $e->getTraceAsString();
+                submitfailed($this->gT("Unable to insert record into survey table"), $query . "\n\n" . $trace);
             }
+
             //Insert Row for Timings, if needed
             if ($this->surveyOptions['savetimings']) {
                 SurveyTimingDynamic::sid($this->sid);
@@ -8506,6 +8512,8 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                                             }
                                             $aFiles[$i]->filename = $sDestinationFileName;
                                         }
+                                        /* Sanitize size */
+                                        $aFiles[$i]->size = floatval($aFiles[$i]->size);
                                     }
                                     $value = ls_json_encode($aFiles);  // so that EM doesn't try to parse it.
                                 }

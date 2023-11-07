@@ -270,7 +270,7 @@ class QuestionGroup extends LSActiveRecord
         $oSurvey = Survey::model()->findByPk($this->sid);
         $surveyIsNotActive = $oSurvey->active !== 'Y';
 
-        $permission_grouds_edit = Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'update');
+        $permission_groups_edit = Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'update');
         $permission_add_question_to_group = Permission::model()->hasSurveyPermission(
             $this->sid,
             'surveycontent',
@@ -284,9 +284,9 @@ class QuestionGroup extends LSActiveRecord
             'title'            => gT('Edit group'),
             'iconClass'        => 'ri-pencil-fill',
             'url'              => Yii::app()->createUrl(
-                "questionGroupsAdministration/view/surveyid/$this->sid/gid/$this->gid"
+                "questionGroupsAdministration/edit/surveyid/$this->sid/gid/$this->gid"
             ),
-            'enabledCondition' => $permission_grouds_edit,
+            'enabledCondition' => $permission_groups_edit,
             'linkAttributes'   => [
                 'data-bs-toggle' => "tooltip",
             ]

@@ -10479,6 +10479,10 @@ textarea.form-control-lg {
   margin: 0 auto;
 }
 
+#welcome-container {
+  max-width: 750px;
+}
+
 .question-item .other-label {
   margin: 0px;
   padding: 0px;
@@ -12866,6 +12870,7 @@ body {
   font-weight: 400;
   font-size: 1.14rem;
   line-height: 24px;
+  font-family: "IBMPlexSans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
 h1,
@@ -14312,9 +14317,12 @@ body.error-page {
   margin: 0;
   padding: 0;
   background: #ffffff;
-  display: flex;
   height: 100vh;
   font-family: Arial, Helvetica, sans-serif;
+}
+body.error-page .container {
+  display: flex;
+  height: 90%;
 }
 body.error-page .error-title {
   font-weight: 600;
@@ -15327,7 +15335,7 @@ html, body {
   margin-bottom: 0;
 }
 .privacy .checkbox-item label::before {
-  border: 3px solid #14AE5C;
+  border: 3px solid #8146F6;
 }
 
 .datasecurity-checkbox-container {
@@ -15346,6 +15354,26 @@ html, body {
 #datasecurity_notice_label,
 .datasecurity-checkbox-label {
   color: #6E748C;
+}
+
+.well {
+  background: none !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+.well .thankyou {
+  font-size: 2.85rem;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 52px;
+}
+.well .created-with {
+  font-size: 16px;
+}
+.well .img-fluid {
+  margin-bottom: 8px;
+  width: 150px;
 }
 
 .form-change-lang {

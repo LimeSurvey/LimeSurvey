@@ -120,12 +120,8 @@ class SurveyDynamic extends LSActiveRecord
             $record->$k = $v;
         }
 
-        try {
-            $record->encryptSave();
-            return $record->id;
-        } catch (Exception $e) {
-            return false;
-        }
+        $res = $record->encryptSave();
+        return $res ? $record->id : $res;
     }
 
     /**
@@ -409,9 +405,15 @@ class SurveyDynamic extends LSActiveRecord
             for ($iFileIndex = 0; $iFileIndex < $aQuestionAttributes['max_num_of_files']; $iFileIndex++) {
                 $sSurveyEntry .= '<tr>';
                 if (isset($aFilesInfo[$iFileIndex])) {
-                    $sSurveyEntry .= '<td>' . CHtml::link(CHtml::encode(rawurldecode((string) $aFilesInfo[$iFileIndex]['name'])), App()->createUrl("responses/downloadfile", ["surveyId" => self::$sid, "responseId" => $this->id, "qid" => $oFieldMap->qid, "index" => $iFileIndex])) . '</td>';
-                    $sSurveyEntry .= '<td>' . sprintf('%s Mb', round($aFilesInfo[$iFileIndex]['size'] / 1000, 2)) . '</td>';
-
+                    $url = App()->createUrl("responses/downloadfile", ["surveyId" => self::$sid, "responseId" => $this->id, "qid" => $oFieldMap->qid, "index" => $iFileIndex]);
+                    $filename = CHtml::encode(rawurldecode($aFilesInfo[$iFileIndex]['name']));
+                    $size = "";
+                    if ($aFilesInfo[$iFileIndex]['size'] && strval(floatval($aFilesInfo[$iFileIndex]['size'])) == strval($aFilesInfo[$iFileIndex]['size'])) {
+                        // avoid to throw PHP error if size is invalid
+                        $size = sprintf('%s Mb', round($aFilesInfo[$iFileIndex]['size'] / 1000, 2));
+                    }
+                    $sSurveyEntry .= '<td>' . CHtml::link($filename, $url) . '</td>';
+                    $sSurveyEntry .= '<td>' . $size . '</td>';
                     if ($aQuestionAttributes['show_title']) {
                         if (!isset($aFilesInfo[$iFileIndex]['title'])) {
                             $aFilesInfo[$iFileIndex]['title'] = '';
@@ -660,7 +662,7 @@ class SurveyDynamic extends LSActiveRecord
     {
 
         $pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
-        $criteria = new CDbCriteria();
+        $criteria = new LSDbCriteria();
         $sort     = new CSort();
         $sort->defaultOrder = 'id ASC';
 

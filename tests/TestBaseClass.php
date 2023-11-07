@@ -43,7 +43,7 @@ class TestBaseClass extends TestCase
         if ($isDebug) {
             error_reporting(E_ALL);
             ini_set('display_errors', '1');
-            ini_set('display_startup_errors', '1');    
+            ini_set('display_startup_errors', '1');
         }
 
         // Clear database cache.
@@ -140,6 +140,8 @@ class TestBaseClass extends TestCase
         \Yii::app()->session['loginID'] = 1;
 
         if (self::$testSurvey) {
+            // Clear database cache.
+            \Yii::app()->db->schema->refresh();
             if (!self::$testSurvey->delete()) {
                 self::assertTrue(
                     false,
@@ -198,7 +200,7 @@ class TestBaseClass extends TestCase
     public static function dispatchPluginEvent($pluginName, $eventName, $eventValues)
     {
         $oEvent = (new \PluginEvent($eventName));
-        foreach($eventValues as $key => $value) {
+        foreach ($eventValues as $key => $value) {
             $oEvent->set($key, $value);
         }
         \Yii::app()->getPluginManager()->dispatchEvent($oEvent, $pluginName);
@@ -215,10 +217,10 @@ class TestBaseClass extends TestCase
         $oUser = new \User();
         $oUser->setAttributes($userData);
 
-        if(!$oUser->save()) {
-            throw new Exception( 
+        if (!$oUser->save()) {
+            throw new Exception(
                 "Could not save user: "
-                .print_r($oUser->getErrors(),true)
+                . print_r($oUser->getErrors(), true)
             );
         };
 
@@ -271,5 +273,30 @@ class TestBaseClass extends TestCase
             ];
         }
         return $results;
+    }
+
+    /**
+     * @param string $pluginName
+     * @return iPlugin
+     */
+    protected static function loadTestPlugin($pluginName)
+    {
+        require_once self::$dataFolder . "/plugins/{$pluginName}.php";
+        $plugin = \Plugin::model()->findByAttributes(['name' => $pluginName]);
+        if (!$plugin) {
+            $plugin = new \Plugin();
+            $plugin->name = $pluginName;
+            $plugin->active = 1;
+            $plugin->save();
+        } else {
+            $plugin->active = 1;
+            $plugin->save();
+        }
+
+        $plugin = App()->getPluginManager()->loadPlugin($pluginName, $plugin->id);
+        if (is_null($plugin)) {
+            throw new Exception(sprintf('Failed to load test plugin %s', $pluginName));
+        }
+        return $plugin;
     }
 }

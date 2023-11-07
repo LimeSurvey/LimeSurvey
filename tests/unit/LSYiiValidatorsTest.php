@@ -330,4 +330,14 @@ class LSYiiValidatorsTest extends TestBaseClass
 
         $survey->delete(true);
     }
+
+    /**
+     * Testing broken HTML.
+     */
+    public function testBrokenHtml()
+    {
+        $validator = new \LSYii_Validators();
+
+        $this->assertSame('<strong>strong </strong>', $validator->xssFilter('<strong>strong <style>'), 'Unexpected filtered broken HTML tags.');
+    }
 }

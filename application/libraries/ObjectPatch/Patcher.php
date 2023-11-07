@@ -15,7 +15,7 @@ class Patcher
      *
      * @throws ObjectPatchException
      */
-    public function applyPatch($patch): int
+    public function applyPatch($patch, $context = []): int
     {
         $operationsApplied = 0;
         if (is_array($patch) && !empty($patch)) {
@@ -24,7 +24,8 @@ class Patcher
                     $patchOpData['entity'] ?? null,
                     $patchOpData['op'] ?? null,
                     $patchOpData['id'] ?? null,
-                    $patchOpData['props'] ?? null
+                    $patchOpData['props'] ?? null,
+                    $context ?? null
                 );
                 $this->handleOp($op);
                 $operationsApplied++;
@@ -55,7 +56,16 @@ class Patcher
             if (!$opHandler->canHandle($op)) {
                 continue;
             }
-            $opHandler->handle($op);
+            if ($opHandler->isValidPatch($op)) {
+                $opHandler->handle($op);
+            } else {
+                throw new ObjectPatchException(
+                    sprintf(
+                        'Invalid patch for handler (entityType: %s)',
+                        $op->getEntityType()
+                    )
+                );
+            }
             $handled = true;
             break;
         }

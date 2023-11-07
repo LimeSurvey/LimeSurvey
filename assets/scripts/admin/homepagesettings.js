@@ -116,7 +116,8 @@ $(document).on('ready  pjax:scriptcomplete', function(){
         $errorMessage = $('#boxeserrormessage').data('ajaxerrormessage');
         $.ajax({
             url : $url+'/boxesbyrow/'+$iBoxesByRow+'/boxesoffset/'+$iBoxesOffset,
-            type : 'GET',
+            method: "POST",
+            data: "",
             dataType : 'html',
             // html contains the buttons
             success : function(html, statut){
@@ -136,7 +137,7 @@ $(document).on('ready  pjax:scriptcomplete', function(){
             var iconId = $(ev.currentTarget).attr('data-iconId');
 
             // Set icon preview and hidden input
-            $('input[name="Box[ico]"]').val(iconId);
+            $('input[name="Box[ico]"]').val(icon);
             $('#chosen-icon').attr('class', icon + ' text-success');
         });
     }

@@ -2,27 +2,13 @@
 
 namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
-use Survey;
-use SurveyLanguageSetting;
 use Answer;
-use QuestionGroup;
-use QuestionGroupL10n;
-use Question;
-use QuestionL10n;
-use QuestionAttribute;
-use LimeSurvey\Api\Command\V1\Transformer\Input\{
-    TransformerInputSurvey,
-    TransformerInputAnswer,
-    TransformerInputQuestionGroup,
-    TransformerInputQuestionGroupL10ns,
-    TransformerInputQuestion,
-    TransformerInputQuestionL10ns,
-    TransformerInputQuestionAttribute,
-    TransformerInputSurveyLanguageSettings
-};
 use LimeSurvey\ObjectPatch\{
-    Patcher,
-    OpHandler\OpHandlerActiveRecordUpdate
+    OpHandler\OpHandlerActiveRecordUpdate,
+    Patcher
+};
+use LimeSurvey\Api\Command\V1\Transformer\Input\{
+    TransformerInputAnswer
 };
 use DI\FactoryInterface;
 use Psr\Container\ContainerInterface;
@@ -37,126 +23,47 @@ class PatcherSurvey extends Patcher
      */
     public function __construct(FactoryInterface $diFactory, ContainerInterface $diContainer)
     {
-        $this->addOpHandlerSurvey($diFactory, $diContainer);
-        $this->addOpHandlerLanguageSetting($diFactory, $diContainer);
-        $this->addOpHandlerQuestionGroup($diFactory, $diContainer);
-        $this->addOpHandlerQuestionGroupL10n($diFactory, $diContainer);
-        $this->addOpHandlerQuestion($diFactory, $diContainer);
-        $this->addOpHandlerQuestionL10n($diFactory, $diContainer);
-        $this->addOpHandlerQuestionAttribute($diFactory, $diContainer);
-        $this->addOpHandlerQuestionAnswer($diFactory, $diContainer);
-    }
-
-    private function addOpHandlerSurvey(FactoryInterface $diFactory, ContainerInterface $diContainer): void
-    {
-        $this->addOpHandler($diFactory->make(
-            OpHandlerActiveRecordUpdate::class,
-            [
-                'entity' => 'survey',
-                'model' => Survey::model(),
-                'transformer' => $diContainer->get(
-                    TransformerInputSurvey::class
-                )
-            ]
+        $this->addOpHandler($diContainer->get(
+            OpHandlerSurveyUpdate::class
         ));
-    }
-
-    private function addOpHandlerLanguageSetting(FactoryInterface $diFactory, ContainerInterface $diContainer): void
-    {
-        $this->addOpHandler($diFactory->make(
-            OpHandlerActiveRecordUpdate::class,
-            [
-                'entity' => 'languageSetting',
-                'model' => SurveyLanguageSetting::model(),
-                'transformer' => $diContainer->get(
-                    TransformerInputSurveyLanguageSettings::class
-                )
-            ]
+        $this->addOpHandler($diContainer->get(
+            OpHandlerLanguageSettingsUpdate::class
         ));
-    }
-
-    private function addOpHandlerQuestionGroup(FactoryInterface $diFactory, ContainerInterface $diContainer): void
-    {
-        $this->addOpHandler($diFactory->make(
-            OpHandlerActiveRecordUpdate::class,
-            [
-                'entity' => 'questionGroup',
-                'model' => QuestionGroup::model(),
-                'transformer' => $diContainer->get(
-                    TransformerInputQuestionGroup::class
-                )
-            ]
+        $this->addOpHandler($diContainer->get(
+            OpHandlerQuestionGroup::class
         ));
-    }
-
-
-    private function addOpHandlerQuestionGroupL10n(FactoryInterface $diFactory, ContainerInterface $diContainer): void
-    {
-        $this->addOpHandler($diFactory->make(
-            OpHandlerActiveRecordUpdate::class,
-            [
-                'entity' => 'questionGroupL10n',
-                'model' => QuestionGroupL10n::model(),
-                'transformer' => $diContainer->get(
-                    TransformerInputQuestionGroupL10ns::class
-                )
-            ]
+        $this->addOpHandler($diContainer->get(
+            OpHandlerQuestionGroupL10n::class
         ));
-    }
-
-    private function addOpHandlerQuestion(FactoryInterface $diFactory, ContainerInterface $diContainer): void
-    {
-        $this->addOpHandler($diFactory->make(
-            OpHandlerActiveRecordUpdate::class,
-            [
-                'entity' => 'question',
-                'model' => Question::model(),
-                'transformer' => $diContainer->get(
-                    TransformerInputQuestion::class
-                )
-            ]
+        $this->addOpHandler($diContainer->get(
+            OpHandlerQuestionDelete::class
         ));
-    }
-
-    private function addOpHandlerQuestionL10n(FactoryInterface $diFactory, ContainerInterface $diContainer): void
-    {
-        $this->addOpHandler($diFactory->make(
-            OpHandlerActiveRecordUpdate::class,
-            [
-                'entity' => 'questionL10n',
-                'model' => QuestionL10n::model(),
-                'transformer' => $diContainer->get(
-                    TransformerInputQuestionL10ns::class
-                )
-            ]
+        $this->addOpHandler($diContainer->get(
+            OpHandlerQuestionCreate::class
         ));
-    }
-
-    private function addOpHandlerQuestionAttribute(FactoryInterface $diFactory, ContainerInterface $diContainer): void
-    {
-        $this->addOpHandler($diFactory->make(
-            OpHandlerActiveRecordUpdate::class,
-            [
-                'entity' => 'questionAttribute',
-                'model' => QuestionAttribute::model(),
-                'transformer' => $diContainer->get(
-                    TransformerInputQuestionAttribute::class
-                )
-            ]
+        $this->addOpHandler($diContainer->get(
+            OpHandlerQuestionUpdate::class
         ));
-    }
-
-    private function addOpHandlerQuestionAnswer(FactoryInterface $diFactory, ContainerInterface $diContainer): void
-    {
-        $this->addOpHandler($diFactory->make(
-            OpHandlerActiveRecordUpdate::class,
-            [
-                'entity' => 'questionAnswer',
-                'model' => Answer::model(),
-                'transformer' => $diContainer->get(
-                    TransformerInputAnswer::class
-                )
-            ]
+        $this->addOpHandler($diContainer->get(
+            OpHandlerQuestionL10nUpdate::class
+        ));
+        $this->addOpHandler($diContainer->get(
+            OpHandlerAnswer::class
+        ));
+        $this->addOpHandler($diContainer->get(
+            OpHandlerQuestionAttributeUpdate::class
+        ));
+        $this->addOpHandler($diContainer->get(
+            OpHandlerQuestionGroupReorder::class
+        ));
+        $this->addOpHandler($diContainer->get(
+            OpHandlerSubquestionDelete::class
+        ));
+        $this->addOpHandler($diContainer->get(
+            OpHandlerAnswerDelete::class
+        ));
+        $this->addOpHandler($diContainer->get(
+            OpHandlerSubQuestion::class
         ));
     }
 }

@@ -1311,6 +1311,13 @@ class ParticipantsAction extends SurveyCommonAction
      */
     public function storeBlacklistValues()
     {
+        $this->requirePostRequest();
+
+        if (!Permission::model()->hasGlobalPermission('settings', 'update')) {
+            Yii::app()->setFlashMessage(gT('Access denied!'), 'error');
+            Yii::app()->getController()->redirect(array('admin/participants/sa/blacklistControl'));
+        }
+
         $values = array('blacklistallsurveys', 'blacklistnewsurveys', 'blockaddingtosurveys', 'hideblacklisted', 'deleteblacklisted', 'allowunblacklist');
         foreach ($values as $value) {
             if (SettingGlobal::model()->findByPk($value)) {
@@ -1361,6 +1368,8 @@ class ParticipantsAction extends SurveyCommonAction
      */
     public function attributeControl()
     {
+        $this->checkPermission('read');
+
         $title = gT("Attribute management");
         $model = new ParticipantAttributeName();
         if (Yii::app()->request->getParam('ParticipantAttributeName')) {

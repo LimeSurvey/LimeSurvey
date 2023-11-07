@@ -1027,7 +1027,11 @@ class Tokens extends SurveyCommonAction
             }
             $aData['thissurvey'] = getSurveyInfo($iSurveyId);
             $aData['surveyid'] = $iSurveyId;
-            if ($cntAttributeErrors > 0) { // attribute validation errors
+            if ($newDummyToken === 0) {
+                $aData['success'] = false;
+                Yii::app()->session['flashmessage'] = gT("No dummy participants were added.");
+                $this->getController()->redirect(array("/admin/tokens/sa/browse/surveyid/{$iSurveyId}"));
+            } elseif ($cntAttributeErrors > 0) { // attribute validation errors
                 $aData['dateformatdetails'] = getDateFormatData(Yii::app()->session['dateformat'], App()->language);
                 $aData['aAttributeFields'] = getParticipantAttributes($iSurveyId);
 
@@ -1081,7 +1085,8 @@ class Tokens extends SurveyCommonAction
                 [
                     'showSaveAndCloseButton' => true,
                     'showWhiteCloseButton' => true,
-                    'showSaveButton' => true,
+                    // Save button doesn’t apply to this screen
+                    'showSaveButton' => false,
                     'closeUrl' => Yii::app()->createUrl(
                         "admin/tokens",
                         [

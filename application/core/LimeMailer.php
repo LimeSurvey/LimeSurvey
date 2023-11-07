@@ -1,9 +1,12 @@
 <?php
+
+use PHPMailer\PHPMailer\PHPMailer;
+
 /**
  * WIP
  * A SubClass of phpMailer adapted for LimeSurvey
  */
-class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
+class LimeMailer extends PHPMailer
 {
     /**
      * Singleton
@@ -20,6 +23,20 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
     const ResetBase = 1;
     /* Complete reset : all except survey part , remind : you always can get a new one */
     const ResetComplete = 2;
+
+    /**
+     * Email methods
+     */
+    /* PHP mail() */
+    const MethodMail = 'mail';
+    /* Sendmail */
+    const MethodSendmail = 'sendmail';
+    /* Qmail */
+    const MethodQmail = 'qmail';
+    /* SMTP */
+    const MethodSmtp = 'smtp';
+    /* Plugin */
+    const MethodPlugin = 'plugin';
 
     /* @var null|integer $surveyId Current survey id */
     public $surveyId;
@@ -154,10 +171,10 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
         $this->SMTPAutoTLS = false;
 
         switch ($emailmethod) {
-            case "qmail":
+            case self::MethodQmail:
                 $this->IsQmail();
                 break;
-            case "smtp":
+            case self::MethodSmtp:
                 $this->IsSMTP();
                 if ($emailsmtpdebug > 0) {
                     $this->SMTPDebug = $emailsmtpdebug;
@@ -179,8 +196,14 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
                     $this->SMTPAuth = true;
                 }
                 break;
-            case "sendmail":
+            case self::MethodSendmail:
                 $this->IsSendmail();
+                break;
+            case self::MethodPlugin:
+                $emailPlugin = Yii::app()->getConfig('emailplugin');
+                $event = new PluginEvent('MailerConstruct', $this);
+                $event->set('mailer', $this);
+                Yii::app()->getPluginManager()->dispatchEvent($event, $emailPlugin);
                 break;
             default:
                 $this->IsMail();
@@ -586,10 +609,7 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
                 $this->Body = "<html>" . $this->Body . "</html>";
             }
             $this->msgHTML($this->Body, App()->getConfig("publicdir")); // This allow embedded image if we remove the servername from image
-            if (empty($this->AltBody)) {
-                $html = new \Html2Text\Html2Text($this->Body);
-                $this->AltBody = $html->getText();
-            }
+            // TODO: Original AltBody is overwritten by msgHTML. Do we need to set it again if there was one?
         }
         return $this->Send();
     }
@@ -604,6 +624,20 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
             $this->setError(gT('Email was not sent because demo-mode is activated.'));
             return false;
         }
+
+        // If the email method is set to "Plugin", we need to dispatch an event to that specific plugin
+        // so it can perform it's logic without depending on the more generic "beforeEmail" event.
+        if (Yii::app()->getConfig('emailmethod') == self::MethodPlugin) {
+            $emailPlugin = Yii::app()->getConfig('emailplugin');
+            $event = new PluginEvent('beforeEmailDispatch', $this);
+            $event->set('mailer', $this);
+            Yii::app()->getPluginManager()->dispatchEvent($event, $emailPlugin);
+            if (!$event->get('send', true)) {
+                $this->ErrorInfo = $event->get('error');
+                return $event->get('error') == null;
+            }
+        }
+
         return parent::Send();
     }
 
@@ -987,5 +1021,19 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
             }
         }
         return $aOutList;
+    }
+
+
+    /**
+     * @inheritdoc
+     * Override to use a better html to text converter (ex. doesn't removes links)
+     */
+    public function html2text($html, $advanced = false)
+    {
+        if (is_callable($advanced)) {
+            return call_user_func($advanced, $html);
+        }
+
+        return (new \Html2Text\Html2Text($html))->getText();
     }
 }

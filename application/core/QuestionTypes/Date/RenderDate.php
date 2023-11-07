@@ -83,7 +83,7 @@ class RenderDate extends QuestionBaseRenderer
             $date_min      = trim((string) $this->getQuestionAttribute('date_min'));
             $date_time_em  = strtotime((string) LimeExpressionManager::ProcessString("{" . $date_min . "}", $this->oQuestion->qid));
         
-            if (ctype_digit($date_min) && (strlen($date_min) == 4) && ($date_min >= 1900) && ($date_min <= 2099)) {
+            if (ctype_digit($date_min) && (strlen($date_min) == 4)) {
                 $this->minDate = $date_min . '-01-01'; // backward compatibility: if only a year is given, add month and day
             } elseif (preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])/", $date_min)) {
                 // it's a YYYY-MM-DD date (use http://www.yiiframework.com/doc/api/1.1/CDateValidator ?)
@@ -105,7 +105,7 @@ class RenderDate extends QuestionBaseRenderer
             $date_max     = trim((string) $this->getQuestionAttribute('date_max'));
             $date_time_em = strtotime((string) LimeExpressionManager::ProcessString("{" . $date_max . "}", $this->oQuestion->qid));
         
-            if (ctype_digit($date_max) && (strlen($date_max) == 4) && ($date_max >= 1900) && ($date_max <= 2099)) {
+            if (ctype_digit($date_max) && (strlen($date_max) == 4)) {
                 $this->maxDate = $date_max . '-12-31'; // backward compatibility: if only a year is given, add month and day
             } elseif (preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])/", $date_max)) {
         // it's a YYYY-MM-DD date (use http://www.yiiframework.com/doc/api/1.1/CDateValidator ?)
@@ -152,13 +152,13 @@ class RenderDate extends QuestionBaseRenderer
         * expressions are not supported because contents of dropbox cannot be easily updated dynamically
         */
         $yearmin = (int) substr((string) $this->minDate, 0, 4);
-        if (!isset($yearmin) || $yearmin < 1900 || $yearmin > 2187) {
+        if (empty($yearmin)) {
             $yearmin = 1900;
         }
 
         $yearmax = (int) substr((string) $this->maxDate, 0, 4);
-        if (!isset($yearmax) || $yearmax < 1900 || $yearmax > 2187) {
-            $yearmax = 2187;
+        if (empty($yearmax)) {
+            $yearmax = 2037;
         }
 
         if ($yearmin > $yearmax) {
