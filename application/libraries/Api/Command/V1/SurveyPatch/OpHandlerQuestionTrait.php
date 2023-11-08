@@ -64,6 +64,11 @@ trait OpHandlerQuestionTrait
                 $preparedAnswers[$index][$scaleId] = $transformedAnswer;
             }
         }
+        // if this is called from OpHandlerAnswer
+        // we don't want preparedAnswers to be empty
+        if (is_array($additionalRequiredEntities) && empty($preparedAnswers)) {
+            $this->throwNoValuesException($op, 'answer');
+        }
         return $preparedAnswers;
     }
 
@@ -124,13 +129,7 @@ trait OpHandlerQuestionTrait
             )
             && empty($data)
         ) {
-            throw new OpHandlerException(
-                sprintf(
-                    'No values to update for %s in entity %s',
-                    $name,
-                    $op->getEntityType()
-                )
-            );
+            $this->throwNoValuesException($op, $name);
         }
     }
 
@@ -287,5 +286,16 @@ trait OpHandlerQuestionTrait
             'scale_id',
             $questionData
         ) ? (int)$questionData['scale_id'] : 0;
+    }
+
+    private function throwNoValuesException(OpInterface $op, string $name)
+    {
+        throw new OpHandlerException(
+            sprintf(
+                'No values to update for %s in entity %s',
+                $name,
+                $op->getEntityType()
+            )
+        );
     }
 }
