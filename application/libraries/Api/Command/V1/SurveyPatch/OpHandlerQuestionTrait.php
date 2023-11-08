@@ -288,6 +288,12 @@ trait OpHandlerQuestionTrait
         ) ? (int)$questionData['scale_id'] : 0;
     }
 
+    /**
+     * @param OpInterface $op
+     * @param string $name
+     * @return void
+     * @throws OpHandlerException
+     */
     private function throwNoValuesException(OpInterface $op, string $name)
     {
         throw new OpHandlerException(
