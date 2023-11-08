@@ -47,7 +47,7 @@ if (empty($errorinupload)) {
             }
             $warningSummary .= "<div class='badtokenlist' id='duplicateslist'><ul>";
             foreach ($duplicatelist as $data) {
-                $warningSummary .= "<li>" . CHtml::encode($data) . "</li>";
+                $warningSummary .= "<li>" . $data . "</li>";
             }
             $warningSummary .= "</ul></div></li>";
         }

@@ -3962,40 +3962,33 @@ function do_array_multiflexi($ia)
     $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
 
     // Define min and max value
+    $minvalue = 1;
+    $maxvalue = 10;
     if (trim((string) $aQuestionAttributes['multiflexible_max']) != '' && trim((string) $aQuestionAttributes['multiflexible_min']) == '') {
-        $maxvalue    = $aQuestionAttributes['multiflexible_max'];
-        $minvalue    = 1;
-        $extraclass .= " maxvalue maxvalue-" . trim((string) $aQuestionAttributes['multiflexible_max']); // @todo : move to data
+        $maxvalue = $aQuestionAttributes['multiflexible_max'];
+        $minvalue = 1;
     }
-
     if (trim((string) $aQuestionAttributes['multiflexible_min']) != '' && trim((string) $aQuestionAttributes['multiflexible_max']) == '') {
-        $minvalue    = $aQuestionAttributes['multiflexible_min'];
-        $maxvalue    = $aQuestionAttributes['multiflexible_min'] + 10;
-        $extraclass .= " minvalue minvalue-" . trim((string) $aQuestionAttributes['multiflexible_max']); // @todo : move to data
+        $minvalue = $aQuestionAttributes['multiflexible_min'];
+        $maxvalue = $aQuestionAttributes['multiflexible_min'] + 10;
     }
-
-    if (trim((string) $aQuestionAttributes['multiflexible_min']) == '' && trim((string) $aQuestionAttributes['multiflexible_max']) == '') {
-        $maxvalue   = 10;
-        $minvalue   = (isset($minvalue['value']) && $minvalue['value'] == 0) ? 0 : 1;
-    }
-
     if (trim((string) $aQuestionAttributes['multiflexible_min']) != '' && trim((string) $aQuestionAttributes['multiflexible_max']) != '') {
         if ($aQuestionAttributes['multiflexible_min'] < $aQuestionAttributes['multiflexible_max']) {
-            $minvalue   = $aQuestionAttributes['multiflexible_min'];
-            $maxvalue   = $aQuestionAttributes['multiflexible_max'];
+            $minvalue = $aQuestionAttributes['multiflexible_min'];
+            $maxvalue = $aQuestionAttributes['multiflexible_max'];
         }
     }
 
     $stepvalue = (trim((string) $aQuestionAttributes['multiflexible_step']) != '' && $aQuestionAttributes['multiflexible_step'] > 0) ? $aQuestionAttributes['multiflexible_step'] : 1;
 
     if ($aQuestionAttributes['reverse'] == 1) {
-        $tmp        = $minvalue;
-        $minvalue   = $maxvalue;
-        $maxvalue   = $tmp;
-        $reverse    = true;
-        $stepvalue  = -$stepvalue;
+        $tmp = $minvalue;
+        $minvalue = $maxvalue;
+        $maxvalue = $tmp;
+        $reverse = true;
+        $stepvalue = -$stepvalue;
     } else {
-        $reverse    = false;
+        $reverse = false;
     }
 
     $checkboxlayout = false;
@@ -4401,7 +4394,12 @@ function do_arraycolumns($ia)
             $aData['checkconditionFunction'] = $checkconditionFunction;
 
             // TODO: What is this? What is happening here?
-            foreach ($labels as $ansrow) {
+            foreach ($labels as $labelIdx => $ansrow) {
+
+                // create the html ids for the table rows, which are
+                // the answer options for this question type
+                $aData['labels'][$labelIdx]['myfname'] = $ia[1] . $ansrow['code'];
+
                 // AnswerCode
                 foreach ($anscode as $j => $ld) {
                     $myfname = $ia[1] . $ld;

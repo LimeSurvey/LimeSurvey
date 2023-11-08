@@ -175,7 +175,7 @@ class Question extends LSActiveRecord
             return 'N';
         });
         /* Don't save empty or 'core' question theme name */
-        $aRules[] = ['question_theme_name', 'questionThemeNameValidator'];
+        $aRules[] = ['question_theme_name', 'filter', 'filter' =>  [$this, 'questionThemeNameValidator'] ];
         /* Specific rules to avoid collapse with column name in database */
         if ($this->parent_qid) {
             /* Subquestion specific rules */
@@ -704,7 +704,7 @@ class Question extends LSActiveRecord
         $url         = App()->createUrl("questionAdministration/view/surveyid/$this->sid/gid/$this->gid/qid/$this->qid");
         $previewUrl  = Yii::app()->createUrl("survey/index/action/previewquestion/sid/");
         $previewUrl .= '/' . $this->sid . '/gid/' . $this->gid . '/qid/' . $this->qid;
-        $editurl     = Yii::app()->createUrl("questionAdministration/edit/qid/$this->qid/tabOverviewEditor/editor");
+        $editurl     = Yii::app()->createUrl("questionAdministration/edit/questionId/$this->qid/tabOverviewEditor/editor");
 
         $permission_edit_question = Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'update');
         $permission_summary_question = Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'read');
@@ -767,7 +767,13 @@ class Question extends LSActiveRecord
         );
     }
 
-    public function getOrderedAnswers($scale_id = null)
+    /**
+     * get the ordered answers
+     * @param null|integer scale
+     * @param null|string $language
+     * @return array
+     */
+    public function getOrderedAnswers($scale_id = null, $language = null)
     {
         //reset answers set prior to this call
         $aAnswerOptions = [
@@ -786,7 +792,7 @@ class Question extends LSActiveRecord
             return $aAnswerOptions[$scale_id];
         }
 
-        $aAnswerOptions = $this->sortAnswerOptions($aAnswerOptions);
+        $aAnswerOptions = $this->sortAnswerOptions($aAnswerOptions, $language);
         return $aAnswerOptions;
     }
 
@@ -794,9 +800,10 @@ class Question extends LSActiveRecord
      * Returns the specified answer options sorted according to the question attributes.
      * Refactored from getOrderedAnswers();
      * @param array<int,Answer[]> The answer options to sort
+     * @param null|string $language
      * @return array<int,Answer[]>
      */
-    private function sortAnswerOptions($answerOptions)
+    private function sortAnswerOptions($answerOptions, $language = null)
     {
         // Sort randomly if applicable
         if ($this->shouldOrderAnswersRandomly()) {
@@ -815,12 +822,15 @@ class Question extends LSActiveRecord
 
         // Sort alphabetically if applicable
         if ($this->shouldOrderAnswersAlphabetically()) {
+            if (empty($language) || !in_array($language, $this->survey->allLanguages)) {
+                $language = $this->survey->language;
+            }
             foreach ($answerOptions as $scaleId => $scaleArray) {
                 $sorted = array();
 
-                // We create an aray sorted that will use the answer in the current language as key, and that will store its old index as value
+                // We create an array sorted that will use the answer in the current language as key, and that will store its old index as value
                 foreach ($scaleArray as $key => $answer) {
-                    $sorted[$answer->answerl10ns[$this->survey->language]->answer] = $key;
+                    $sorted[$answer->answerl10ns[$language]->answer] = $key;
                 }
                 ksort($sorted);
 
@@ -1208,14 +1218,13 @@ class Question extends LSActiveRecord
     protected function beforeSave()
     {
         if (parent::beforeSave()) {
+            /* No update when surey activated */
             $surveyIsActive = Survey::model()->findByPk($this->sid)->active !== 'N';
-
             if ($surveyIsActive) {
                 //don't override questiontype when survey is active, set it back to what it was...
                 $oActualValue = Question::model()->findByPk(array("qid" => $this->qid));
                 $this->type = $oActualValue->type;
             }
-
             if ($surveyIsActive && $this->getIsNewRecord()) {
                 return false;
             }
@@ -1224,7 +1233,6 @@ class Question extends LSActiveRecord
             return false;
         }
     }
-
 
     /**
      * Fix sub question of a parent question
@@ -1736,16 +1744,30 @@ class Question extends LSActiveRecord
      */
     public function questionThemeNameValidator()
     {
-        // As long as there is a question theme name, and it's not 'core', it's ok.
-        if (!empty($this->question_theme_name) && $this->question_theme_name != 'core') {
-            return;
+        /* need a type */
+        if (empty($this->type)) {
+            return null;
         }
-
-        // If question_theme_name is empty or 'core', we fetch the value from the question_theme related to the question_type
+        /* not needed in child question */
+        if (!empty($this->parent_qid)) {
+            return null;
+        }
+        if (!empty($this->question_theme_name) && $this->question_theme_name != 'core') {
+            $criteria = new CDbCriteria();
+            $criteria->addCondition('question_type = :question_type AND name = :name');
+            $criteria->params = [':question_type' => $this->type, ':name' => $this->question_theme_name];
+            $questionTheme = QuestionTheme::model()->query($criteria, false);
+            if ($questionTheme) {
+                return $this->question_theme_name;
+            }
+        }
+        /* Get default theme name from type */
         $baseQuestionThemeName = QuestionTheme::model()->getBaseThemeNameForQuestionType($this->type);
         if (!empty($baseQuestionThemeName)) {
-            $this->question_theme_name = $baseQuestionThemeName;
+            return $baseQuestionThemeName;
         }
+        /* Not a valid type ? */
+        return null;
     }
 
     /**

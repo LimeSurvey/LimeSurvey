@@ -630,4 +630,14 @@ abstract class PluginBase implements iPlugin
         }
         \Yii::app()->getClientScript()->registerCssFile($cssToRegister);
     }
+
+    /**
+     * Returns a health status text to show in plugin overview.
+     * For example, the plugin might be active but not properly configured.
+     * @return string|null
+     */
+    public function getHealthStatusText()
+    {
+        return null;
+    }
 }

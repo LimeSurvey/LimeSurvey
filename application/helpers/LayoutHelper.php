@@ -237,6 +237,7 @@ class LayoutHelper
 
     /**
      * Display the update notification
+     * @throws CException
      */
     public function updatenotification()
     {
@@ -264,7 +265,8 @@ class LayoutHelper
             $updateNotification = $updateModel->updateNotification;
 
             if ($updateNotification->result) {
-                return Yii::app()->getController()->renderPartial(
+                App()->getClientScript()->registerScriptFile(App()->getConfig('packages') . DIRECTORY_SEPARATOR . 'comfort_update' . DIRECTORY_SEPARATOR . 'comfort_update.js');
+                return App()->getController()->renderPartial(
                     "/admin/update/_update_notification",
                     array('security_update_available' => $updateNotification->security_update)
                 );

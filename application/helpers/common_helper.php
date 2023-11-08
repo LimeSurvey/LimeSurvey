@@ -1104,8 +1104,13 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage)
                             if (!isset($file['comment'])) {
                                 $file['comment'] = '';
                             }
+                            $size = "";
+                            if($file['size'] && strval(floatval($file['size'])) == strval($file['size'])) {
+                                // avoid to throw PHP error if size is invalid
+                                $size = sprintf('%s KB', round($file['size']));
+                            }
                             $sValue .= rawurldecode((string) $file['name']) .
-                            ' (' . round($file['size']) . 'KB) ' .
+                            ' (' . $size .' ) ' .
                             strip_tags((string) $file['title']);
                             if (trim(strip_tags((string) $file['comment'])) != "") {
                                 $sValue .= ' - ' . strip_tags((string) $file['comment']);
@@ -5043,6 +5048,9 @@ function resourceExtractFilter($p_event, &$p_header)
 function recursive_preg_replace($pattern, $replacement, $subject, $limit = -1, &$count = 0, $recursion_limit = 50)
 {
     if ($recursion_limit < 0) {
+        return $subject;
+    }
+    if (empty($subject)) {
         return $subject;
     }
     $result = preg_replace($pattern, $replacement, $subject, $limit, $count);
