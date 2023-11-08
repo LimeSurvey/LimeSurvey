@@ -7,7 +7,7 @@ class TempIdMapItem
     /**
      * @var ?string|int the temporary id received from the client
      */
-    public $tempId;
+    public string|int|null $tempId;
     /**
      * @var int|null the actual id
      */
@@ -17,8 +17,11 @@ class TempIdMapItem
      */
     public string $field = 'id';
 
-    public function __construct($tempId, $id, $field = 'id')
-    {
+    public function __construct(
+        string|int|null $tempId,
+        ?int $id,
+        string $field = 'id'
+    ) {
         $this->tempId = $tempId;
         $this->id = $id;
         $this->field = $field;

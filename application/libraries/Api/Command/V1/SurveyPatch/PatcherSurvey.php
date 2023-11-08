@@ -127,17 +127,17 @@ class PatcherSurvey extends Patcher
                 }
             }
         }
-        return (array)$this->tempIdMapping->getMappingResponseObject();
+        return $this->tempIdMapping->getMappingResponseObject();
     }
 
     /**
      * Recursive function to extract TempIdMapItems from the $mappingItem
-     * @param $mappingItem
-     * @param $groupName
+     * @param TempIdMapItem|array $mappingItem
+     * @param string $groupName
      * @return void
      * @throws \LimeSurvey\ObjectPatch\OpHandler\OpHandlerException
      */
-    private function addTempIdMapItem($mappingItem, $groupName)
+    private function addTempIdMapItem($mappingItem, string $groupName)
     {
         if ($mappingItem instanceof TempIdMapItem) {
             $this->tempIdMapping->addTempIdMapItem(
