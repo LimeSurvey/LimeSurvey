@@ -6,8 +6,8 @@ use Answer;
 use LimeSurvey\ObjectPatch\{ObjectPatchException,
     Op\OpStandard,
     OpHandler\OpHandlerActiveRecordUpdate,
-    Patcher
-};
+    OpHandler\OpHandlerException,
+    Patcher};
 use LimeSurvey\Api\Command\V1\Transformer\Input\{
     TransformerInputAnswer
 };
@@ -107,18 +107,22 @@ class PatcherSurvey extends Patcher
     /**
      * Apply patch
      *
+     * @param ?mixed $patch
+     * @param ?array $context
+     * @return array
      * @throws ObjectPatchException
+     * @throws OpHandlerException
      */
     public function applyPatch($patch, $context = []): array
     {
         if (is_array($patch) && !empty($patch)) {
             foreach ($patch as $patchOpData) {
                 $op = OpStandard::factory(
-                    $patchOpData['entity'] ?? null,
-                    $patchOpData['op'] ?? null,
-                    $patchOpData['id'] ?? null,
-                    $patchOpData['props'] ?? null,
-                    $context ?? null
+                    $patchOpData['entity'] ?? '',
+                    $patchOpData['op'] ?? '',
+                    $patchOpData['id'] ?? '',
+                    $patchOpData['props'] ?? [],
+                    $context ?? []
                 );
                 $this->tempIdMapping->incrementOperationsApplied();
                 $handleResponse = $this->handleOp($op);
@@ -144,7 +148,7 @@ class PatcherSurvey extends Patcher
                 $mappingItem,
                 $groupName
             );
-        } elseif (is_array($mappingItem)) {
+        } else {
             foreach ($mappingItem as $item) {
                 $this->addTempIdMapItem($item, $groupName);
             }

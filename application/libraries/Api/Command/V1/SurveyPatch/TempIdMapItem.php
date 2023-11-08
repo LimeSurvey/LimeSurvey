@@ -5,7 +5,7 @@ namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 class TempIdMapItem
 {
     /**
-     * @var ?string|int the temporary id received from the client
+     * @var string|int|null the temporary id received from the client
      */
     public $tempId;
     /**
