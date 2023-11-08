@@ -24,6 +24,7 @@ class PatcherSurvey extends Patcher
      * @param FactoryInterface $diFactory
      * @param ContainerInterface $diContainer
      * @param TempIdMapping $tempIdMapping
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     public function __construct(
         FactoryInterface $diFactory,
