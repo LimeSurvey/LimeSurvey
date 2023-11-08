@@ -1055,8 +1055,9 @@ class TemplateConfig extends CActiveRecord
     }
 
     /**
-     * Converts the theme options to a json, in the form of a key-value map.
-     * Inner nodes are ignored, and values are trimmed because they may be in a new line in the XML.
+     * Extracts option values from theme options node (XML) into a json key-value map.
+     * Inner nodes (which maybe inside each option element) are ignored.
+     * Option values are trimmed as they may contain undesired new lines in the XML document.
      * @param array|object $options the filed to convert
      * @return string  json
      */
@@ -1068,6 +1069,8 @@ class TemplateConfig extends CActiveRecord
             // <sample_option>
             //      default value
             // </sample_option>
+            // Also, by casting, inner nodes are eliminated 
+            // and only the text value inside the node is obtained
             $optionsArray[$option] = trim((string) $optionValue);
         }
         if (empty($optionsArray)) {
