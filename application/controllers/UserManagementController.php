@@ -1073,8 +1073,8 @@ class UserManagementController extends LSBaseController
                 'title' => $oUser->users_name
             ];
             if ($oUser->uid == Yii::app()->user->id) {
-                $aResults[$user]['result'] = false;
-                $aResults[$user]['error'] = gT("You can not update your own permission.");
+                $aResults[$iUserId]['result'] = false;
+                $aResults[$iUserId]['error'] = gT("You can not update your own permission.");
                 continue;
             }
             $userManager = new UserManager(Yii::app()->user, $oUser);
@@ -1179,8 +1179,8 @@ class UserManagementController extends LSBaseController
             $model = $this->loadModel($sItem);
             $aResults[$sItem]['title'] = $model->users_name;
             if ($model->uid == Yii::app()->user->id) {
-                $aResults[$user]['result'] = false;
-                $aResults[$user]['error'] = gT("You can not update your own roles.");
+                $aResults[$sItem]['result'] = false;
+                $aResults[$sItem]['error'] = gT("You can not update your own roles.");
                 continue;
             }
             $userManager = new UserManager(Yii::app()->user, $model);
