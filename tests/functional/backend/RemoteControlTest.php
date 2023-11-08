@@ -24,10 +24,11 @@ class RemoteControlTest extends TestBaseClassWeb
         self::$tmpRPCType = Yii::app()->getConfig('RPCInterface');
 
         if (self::$tmpRPCType === 'off') {
-            Yii::app()->setConfig('RPCInterface', 'json');
+            \SettingGlobal::setSetting('RPCInterface', 'json');
+            $RPCType = 'json';
+        } else {
+            $RPCType = self::$tmpRPCType;
         }
-
-        $RPCType = Yii::app()->getConfig('RPCInterface');
 
         if ($RPCType == 'xml') {
             $cur_path = get_include_path();
@@ -38,8 +39,6 @@ class RemoteControlTest extends TestBaseClassWeb
         } elseif ($RPCType == 'json') {
             Yii::app()->loadLibrary('jsonRPCClient');
             self::$client = new \jsonRPCClient($serverUrl, true);
-        } else {
-            die('RPC interface not activated in global settings');
         }
     }
 
@@ -50,7 +49,7 @@ class RemoteControlTest extends TestBaseClassWeb
         $urlMan = Yii::app()->urlManager;
         $urlMan->setBaseUrl(self::$tmpBaseUrl);
 
-        Yii::app()->setConfig('RPCInterface', self::$tmpRPCType);
+        \SettingGlobal::setSetting('RPCInterface', self::$tmpRPCType);
     }
 
     public function testGetSessionKey()
