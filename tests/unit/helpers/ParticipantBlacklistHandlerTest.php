@@ -4,6 +4,7 @@ namespace ls\tests;
 
 use Participant;
 use LimeSurvey\Models\Services\ParticipantBlacklistHandler;
+use Survey;
 
 /**
  * Tests for the ParticipantBlacklistHandler service class.
@@ -39,7 +40,7 @@ class ParticipantBlacklistHandlerTest extends TestBaseClass
         // Cleanup
         self::$testSurvey->delete();
         self::$testSurvey = null;
-        \Survey::model()->resetCache();
+        Survey::model()->resetCache();
     }
 
     /**
@@ -74,6 +75,6 @@ class ParticipantBlacklistHandlerTest extends TestBaseClass
         // Cleanup
         self::$testSurvey->delete();
         self::$testSurvey = null;
-        \Survey::model()->resetCache();
+        Survey::model()->resetCache();
     }
 }

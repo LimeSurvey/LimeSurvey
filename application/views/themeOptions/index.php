@@ -255,7 +255,7 @@ echo viewHelper::getViewTestTag('templateOptions');
                                         <?php if ($oTheme->name === App()->getConfig('admintheme')) : ?>
                                             <h3><strong class="text-info"><?php eT("Selected") ?></strong></h3>
                                         <?php else : ?>
-                                            <a href="<?= $this->createUrl("themeOptions/setAdminTheme/", ['sAdminThemeName' => $oTheme->path]) ?>"
+                                            <a href="<?= $this->createUrl("themeOptions/setAdminTheme/", ['sAdminThemeName' => $oTheme->name]) ?>"
                                                class="btn btn-outline-secondary btn-sm">
                                                 <?= gT("Select") ?>
                                             </a>
