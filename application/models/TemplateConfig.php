@@ -1069,7 +1069,7 @@ class TemplateConfig extends CActiveRecord
             // <sample_option>
             //      default value
             // </sample_option>
-            // Also, by casting, inner nodes are eliminated 
+            // Also, by casting, inner nodes are eliminated
             // and only the text value inside the node is obtained
             $optionsArray[$option] = trim((string) $optionValue);
         }
