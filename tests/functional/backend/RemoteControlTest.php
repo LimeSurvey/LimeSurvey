@@ -38,7 +38,7 @@ class RemoteControlTest extends TestBaseClassWeb
             self::$client = new \Zend_XmlRpc_Client($serverUrl);
         } elseif ($RPCType == 'json') {
             Yii::app()->loadLibrary('jsonRPCClient');
-            self::$client = new \jsonRPCClient($serverUrl, true);
+            self::$client = new \jsonRPCClient($serverUrl);
         }
     }
 
@@ -54,8 +54,9 @@ class RemoteControlTest extends TestBaseClassWeb
 
     public function testGetSessionKey()
     {
-        $sSessionKey = self::$client->call('get_session_key', array('admin', 'password'));
+        $sessionKey = self::$client->call('get_session_key', ['admin', 'password']);
+        $this->assertIsNotArray($sessionKey);
 
-        $this->assertTrue(true);
+        self::$client->call('release_session_key', [$sessionKey]);
     }
 }
