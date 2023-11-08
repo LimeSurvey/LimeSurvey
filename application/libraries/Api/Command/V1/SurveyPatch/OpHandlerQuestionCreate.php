@@ -269,6 +269,8 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
                 return $this->prepareAnswers(
                     $op,
                     $data,
+                    $this->transformerAnswer,
+                    $this->transformerAnswerL10n
                 );
             case 'subquestions':
                 return $this->prepareSubQuestions(
