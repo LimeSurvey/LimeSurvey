@@ -8,6 +8,8 @@ use LimeSurvey\ObjectPatch\OpHandler\OpHandlerException;
 
 trait OpHandlerSurveyTrait
 {
+    use OpHandlerExceptionTrait;
+
     /**
      * Extracts and returns surveyId from context
      * @param OpInterface $op

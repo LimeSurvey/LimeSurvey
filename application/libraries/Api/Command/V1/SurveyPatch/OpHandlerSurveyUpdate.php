@@ -66,7 +66,7 @@ class OpHandlerSurveyUpdate implements OpHandlerInterface
         if ($props === null || $transformedProps === null) {
             $this->throwNoValuesException($op);
         }
-
+        /** @var array $transformedProps */
         $surveyUpdater->update(
             $op->getEntityId(),
             $transformedProps

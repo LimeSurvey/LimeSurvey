@@ -31,6 +31,12 @@ trait OpHandlerExceptionTrait
         throw new OpHandlerException($msg);
     }
 
+    /**
+     * @param OpInterface $op
+     * @param string $param
+     * @return void
+     * @throws OpHandlerException
+     */
     private function throwRequiredParamException(
         OpInterface $op,
         string $param
