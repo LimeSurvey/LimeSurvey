@@ -179,7 +179,7 @@ class OpHandlerQuestionGroupReorder implements OpHandlerInterface
      */
     public function isValidPatch(OpInterface $op): bool
     {
-        // TODO: Implement isValidPatch() method.
+        // checkGroupReorderData is doing validation at a later stage
         return true;
     }
 }
