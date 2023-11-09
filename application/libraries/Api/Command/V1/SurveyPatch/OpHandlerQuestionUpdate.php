@@ -82,6 +82,7 @@ class OpHandlerQuestionUpdate implements OpHandlerInterface
         if ($props === null || $transformedProps === null) {
             $this->throwNoValuesException($op);
         }
+        /** @var array $transformedProps */
         if (
             !array_key_exists(
                 'qid',
