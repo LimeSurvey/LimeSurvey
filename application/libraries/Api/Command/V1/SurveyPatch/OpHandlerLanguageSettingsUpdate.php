@@ -8,7 +8,10 @@ use SurveyLanguageSetting;
 use LimeSurvey\Api\Command\V1\Transformer\{
     Input\TransformerInputSurveyLanguageSettings,
 };
-use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\OpHandlerSurveyTrait;
+use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\{
+    OpHandlerSurveyTrait,
+    OpHandlerExceptionTrait
+};
 use LimeSurvey\Api\Transformer\TransformerInterface;
 use LimeSurvey\Models\Services\{
     Exception\PermissionDeniedException,
@@ -25,6 +28,7 @@ use LimeSurvey\ObjectPatch\{
 class OpHandlerLanguageSettingsUpdate implements OpHandlerInterface
 {
     use OpHandlerSurveyTrait;
+    use OpHandlerExceptionTrait;
 
     protected string $entity;
     protected SurveyLanguageSetting $model;
