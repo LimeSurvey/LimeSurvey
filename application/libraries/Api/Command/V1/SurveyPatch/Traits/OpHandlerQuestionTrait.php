@@ -1,6 +1,6 @@
 <?php
 
-namespace LimeSurvey\Api\Command\V1\SurveyPatch;
+namespace LimeSurvey\Api\Command\V1\SurveyPatch\Traits;
 
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputAnswer;
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputAnswerL10ns;
@@ -12,6 +12,8 @@ use LimeSurvey\ObjectPatch\OpHandler\OpHandlerException;
 
 trait OpHandlerQuestionTrait
 {
+    use OpHandlerExceptionTrait;
+
     /**
      * Converts the answers from the raw data to the expected format.
      * @param OpInterface $op
@@ -286,22 +288,5 @@ trait OpHandlerQuestionTrait
             'scale_id',
             $questionData
         ) ? (int)$questionData['scale_id'] : 0;
-    }
-
-    /**
-     * @param OpInterface $op
-     * @param string $name
-     * @return void
-     * @throws OpHandlerException
-     */
-    private function throwNoValuesException(OpInterface $op, string $name)
-    {
-        throw new OpHandlerException(
-            sprintf(
-                'No values to update for %s in entity %s',
-                $name,
-                $op->getEntityType()
-            )
-        );
     }
 }

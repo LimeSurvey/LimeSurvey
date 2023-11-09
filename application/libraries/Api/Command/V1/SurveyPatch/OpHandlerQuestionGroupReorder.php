@@ -2,15 +2,19 @@
 
 namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
+use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\OpHandlerExceptionTrait;
+use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\OpHandlerSurveyTrait;
 use QuestionGroup;
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestion;
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestionGroup;
 use LimeSurvey\Api\Transformer\TransformerInterface;
 use LimeSurvey\Models\Services\QuestionGroupService;
-use LimeSurvey\ObjectPatch\Op\OpInterface;
-use LimeSurvey\ObjectPatch\OpHandler\OpHandlerException;
-use LimeSurvey\ObjectPatch\OpHandler\OpHandlerInterface;
-use LimeSurvey\ObjectPatch\OpType\OpTypeUpdate;
+use LimeSurvey\ObjectPatch\{
+    Op\OpInterface,
+    OpHandler\OpHandlerException,
+    OpHandler\OpHandlerInterface,
+    OpType\OpTypeUpdate
+};
 
 /**
  * OpHandlerQuestionGroupReorder is responsible for reordering question groups
@@ -19,6 +23,7 @@ use LimeSurvey\ObjectPatch\OpType\OpTypeUpdate;
 class OpHandlerQuestionGroupReorder implements OpHandlerInterface
 {
     use OpHandlerSurveyTrait;
+    use OpHandlerExceptionTrait;
 
     protected string $entity;
     protected QuestionGroup $model;
@@ -159,22 +164,11 @@ class OpHandlerQuestionGroupReorder implements OpHandlerInterface
         $requiredForQuestion = ['qid', 'gid', 'question_order'];
         $required = $type === 'group' ? $requiredForGroup : $requiredForQuestion;
         if (!is_array($data)) {
-            throw new OpHandlerException(
-                sprintf(
-                    'No values to update for entity "%s"',
-                    $op->getEntityType()
-                )
-            );
+            $this->throwNoValuesException($op);
         }
         foreach ($required as $param) {
             if (!array_key_exists($param, $data)) {
-                throw new OpHandlerException(
-                    sprintf(
-                        'Required parameter "%s" is missing. Entity "%s"',
-                        $param,
-                        $op->getEntityType()
-                    )
-                );
+                $this->throwRequiredParamException($op, $param);
             }
         }
     }

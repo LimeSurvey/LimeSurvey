@@ -10,6 +10,10 @@ use LimeSurvey\Api\Command\V1\Transformer\{
     Input\TransformerInputQuestionAttribute,
     Input\TransformerInputQuestionL10ns,
 };
+use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\{
+    OpHandlerSurveyTrait,
+    OpHandlerQuestionTrait
+};
 use LimeSurvey\ObjectPatch\{
     Op\OpInterface,
     OpType\OpTypeCreate,
@@ -296,13 +300,7 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
     ): void {
         foreach ($this->getRequiredEntitiesArray() as $requiredEntity) {
             if (!array_key_exists($requiredEntity, $rawProps)) {
-                throw new OpHandlerException(
-                    sprintf(
-                        'Missing entity %s in props of %s',
-                        $requiredEntity,
-                        $op->getEntityType()
-                    )
-                );
+                $this->throwRequiredParamException($op, $requiredEntity);
             }
         }
     }

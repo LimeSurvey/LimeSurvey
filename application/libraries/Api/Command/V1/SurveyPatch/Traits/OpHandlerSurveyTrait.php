@@ -1,6 +1,6 @@
 <?php
 
-namespace LimeSurvey\Api\Command\V1\SurveyPatch;
+namespace LimeSurvey\Api\Command\V1\SurveyPatch\Traits;
 
 use LimeSurvey\Api\Transformer\TransformerInterface;
 use LimeSurvey\ObjectPatch\Op\OpInterface;
@@ -56,13 +56,7 @@ trait OpHandlerSurveyTrait
             }
             $transformedProps = $transformer->transform($properties);
             if ($transformedProps == null) {
-                throw new OpHandlerException(
-                    sprintf(
-                        'no transformable props provided for %s with id "%s"',
-                        $entity,
-                        print_r($op->getEntityId(), true)
-                    )
-                );
+                $this->throwNoValuesException($op, $entity);
             }
             $dataSet[$language] = $transformedProps;
         }

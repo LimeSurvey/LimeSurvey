@@ -2,6 +2,7 @@
 
 namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
+use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\OpHandlerExceptionTrait;
 use Survey;
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputSurvey;
 use LimeSurvey\Models\Services\{
@@ -17,6 +18,8 @@ use LimeSurvey\ObjectPatch\{
 
 class OpHandlerSurveyUpdate implements OpHandlerInterface
 {
+    use OpHandlerExceptionTrait;
+
     protected string $entity;
     protected Survey $model;
     protected TransformerInputSurvey $transformer;
@@ -61,12 +64,7 @@ class OpHandlerSurveyUpdate implements OpHandlerInterface
         $transformedProps = $this->transformer->transform($props);
 
         if ($props === null || $transformedProps === null) {
-            throw new OpHandlerException(
-                sprintf(
-                    'No values to update for entity %s',
-                    $op->getEntityType()
-                )
-            );
+            $this->throwNoValuesException($op);
         }
 
         $surveyUpdater->update(

@@ -2,6 +2,10 @@
 
 namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
+use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\{
+    OpHandlerQuestionTrait,
+    OpHandlerSurveyTrait
+};
 use LimeSurvey\Api\Command\V1\Transformer\Input\{
     TransformerInputQuestion,
     TransformerInputQuestionL10ns
@@ -166,7 +170,7 @@ class OpHandlerSubQuestion implements OpHandlerInterface
         //be careful here! if for any reason the incoming data is not prepared
         //as it should, all existing subquestions will be deleted!
         if (count($preparedData) === 0) {
-            throw new OpHandlerException('No data to create or update a subquestion');
+            $this->throwNoValuesException($op);
         }
         $questionId = $op->getEntityId();
         $this->subQuestionsService->save(
