@@ -80,6 +80,7 @@ class GeneralSettingsExceptionsTest extends TestBaseClass
 
         $generalSettings = (new GeneralSettingsFactory)->make($mockSet);
 
-        $generalSettings->update(1, ['owner_id' => 99999]);
+        // Set at least one value so $survey->save() will be called
+        $generalSettings->update(1, ['admin' => 'admin']);
     }
 }

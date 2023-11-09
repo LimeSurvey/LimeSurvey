@@ -8,6 +8,7 @@ use LSYii_Application;
 use CHttpSession;
 use LimeSurvey\PluginManager\PluginManager;
 use LimeSurvey\Models\Services\SurveyUpdater\LanguageConsistency;
+use User;
 
 class GeneralSettingsMockSet
 {
@@ -18,4 +19,6 @@ class GeneralSettingsMockSet
     public CHttpSession $session;
     public PluginManager $pluginManager;
     public LanguageConsistency $languageConsistency;
+    public User $user;
+    public User $modelUser;
 }
