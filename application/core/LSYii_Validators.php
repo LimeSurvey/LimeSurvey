@@ -124,6 +124,10 @@ class LSYii_Validators extends CValidator
      */
     public function xssFilter($value)
     {
+        /* No need to filter empty $value */
+        if (empty($value)) {
+            return $value;
+        }
         $filter = LSYii_HtmlPurifier::getXssPurifier();
 
         /** Start to get complete filtered value with  url decode {QCODE} (bug #09300). This allow only question number in url, seems OK with XSS protection **/
@@ -170,6 +174,10 @@ class LSYii_Validators extends CValidator
      */
     public function languageFilter($value)
     {
+        /* No need to filter empty $value */
+        if (empty($value)) {
+            return $value;
+        }
         // Maybe use the array of language ?
         return preg_replace('/[^a-z0-9-]/i', '', (string) $value);
     }
@@ -182,6 +190,10 @@ class LSYii_Validators extends CValidator
      */
     public function multiLanguageFilter($value)
     {
+        /* No need to filter empty $value */
+        if (empty($value)) {
+            return $value;
+        }
         $aValue = explode(" ", trim((string) $value));
         $aValue = array_map("sanitize_languagecode", $aValue);
         return implode(" ", $aValue);
@@ -194,6 +206,10 @@ class LSYii_Validators extends CValidator
      */
     public static function isXssUrl($url)
     {
+        /* No need to filter empty $value */
+        if (empty($url)) {
+            return $url;
+        }
         $decodedUrl = self::treatSpecialChars($url);
         $clean = self::removeInvisibleChars($decodedUrl);
 
