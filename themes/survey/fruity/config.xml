@@ -681,8 +681,7 @@
             </optgroup>
             </dropdownoptions>
         </font>
-        <cssframework type="dropdown" category="Simple options" width="12" title="Variations" parent="cssframework">
-            Sea Green
+        <cssframework type="dropdown" category="Simple options" width="12" title="Variations" parent="cssframework">Sea Green
             <dropdownoptions>
                 <optgroup>
                     <option value="css/variations/sea_green.css">Sea Green</option>
