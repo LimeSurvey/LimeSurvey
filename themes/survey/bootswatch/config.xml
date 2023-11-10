@@ -75,24 +75,27 @@
         <brandlogofile type="dropdown" category="Images" width="6" title="Logo file" parent="brandlogo">./files/logo.png</brandlogofile>
         <hideprivacyinfo type="buttons" category="Simple options" width="4" title="Hide privacy info" options="on|off" optionlabels="Yes|No">off</hideprivacyinfo>
         <cssframework type="dropdown" category="Simple options" title="Variations" parent="cssframework">
+            Basic Bootstrap
             <dropdownoptions>
-                <option data-mode="replace" value="css/variations/basic.min.css">Basic Bootstrap</option>
-                <option data-mode="replace" value="css/variations/cerulean.min.css">Cerulean</option>
-                <option data-mode="replace" value="css/variations/cosmos.min.css">Cosmos</option>
-                <option data-mode="replace" value="css/variations/cyborg.min.css">Cyborg</option>
-                <option data-mode="replace" value="css/variations/darkly.min.css">Darkly</option>
-                <option data-mode="replace" value="css/variations/flatly.min.css">Flatly</option>
-                <option data-mode="replace" value="css/variations/journal.min.css">Journal</option>
-                <option data-mode="replace" value="css/variations/lumen.min.css">Lumen</option>
-                <option data-mode="replace" value="css/variations/paper.min.css">Paper</option>
-                <option data-mode="replace" value="css/variations/readable.min.css">Readable</option>
-                <option data-mode="replace" value="css/variations/sandstone.min.css">Sandstone</option>
-                <option data-mode="replace" value="css/variations/simplex.min.css">Simplex</option>
-                <option data-mode="replace" value="css/variations/slate.min.css">Slate</option>
-                <option data-mode="replace" value="css/variations/spacelab.min.css">Spacelab</option>
-                <option data-mode="replace" value="css/variations/superhero.min.css">Superhero</option>
-                <option data-mode="replace" value="css/variations/united.min.css">United</option>
-                <option data-mode="replace" value="css/variations/yeti.min.css">Yeti</option>
+                <optgroup>
+                    <option data-mode="replace" value="css/variations/basic.min.css">Basic Bootstrap</option>
+                    <option data-mode="replace" value="css/variations/cerulean.min.css">Cerulean</option>
+                    <option data-mode="replace" value="css/variations/cosmos.min.css">Cosmos</option>
+                    <option data-mode="replace" value="css/variations/cyborg.min.css">Cyborg</option>
+                    <option data-mode="replace" value="css/variations/darkly.min.css">Darkly</option>
+                    <option data-mode="replace" value="css/variations/flatly.min.css">Flatly</option>
+                    <option data-mode="replace" value="css/variations/journal.min.css">Journal</option>
+                    <option data-mode="replace" value="css/variations/lumen.min.css">Lumen</option>
+                    <option data-mode="replace" value="css/variations/paper.min.css">Paper</option>
+                    <option data-mode="replace" value="css/variations/readable.min.css">Readable</option>
+                    <option data-mode="replace" value="css/variations/sandstone.min.css">Sandstone</option>
+                    <option data-mode="replace" value="css/variations/simplex.min.css">Simplex</option>
+                    <option data-mode="replace" value="css/variations/slate.min.css">Slate</option>
+                    <option data-mode="replace" value="css/variations/spacelab.min.css">Spacelab</option>
+                    <option data-mode="replace" value="css/variations/superhero.min.css">Superhero</option>
+                    <option data-mode="replace" value="css/variations/united.min.css">United</option>
+                    <option data-mode="replace" value="css/variations/yeti.min.css">Yeti</option>
+                </optgroup>
             </dropdownoptions>
         </cssframework>
     </options>
