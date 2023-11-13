@@ -2,16 +2,11 @@
 
 namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
-use Answer;
 use LimeSurvey\ObjectPatch\{ObjectPatchException,
     Op\OpStandard,
-    OpHandler\OpHandlerActiveRecordUpdate,
     OpHandler\OpHandlerException,
-    Patcher};
-use LimeSurvey\Api\Command\V1\Transformer\Input\{
-    TransformerInputAnswer
+    Patcher
 };
-use DI\FactoryInterface;
 use Psr\Container\ContainerInterface;
 
 class PatcherSurvey extends Patcher
@@ -21,13 +16,11 @@ class PatcherSurvey extends Patcher
     /**
      * Constructor
      *
-     * @param FactoryInterface $diFactory
      * @param ContainerInterface $diContainer
      * @param TempIdMapping $tempIdMapping
      * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     public function __construct(
-        FactoryInterface $diFactory,
         ContainerInterface $diContainer,
         TempIdMapping $tempIdMapping
     ) {
