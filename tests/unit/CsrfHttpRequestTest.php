@@ -16,7 +16,7 @@ class CsrfHttpRequestTest extends TestBaseClass
      */
     public function testRestRoutesSkipCsrfValidation()
     {
-        //This test is skipped since rest routes are not expected to skip CSRF validation in thi version.
+        // This test is skipped since there are no rest routes on v5, hence not expected to skip CSRF validation.
         $this->markTestSkipped();
         $routes = array(
             'rest/v1/actionOnItemById/15',
@@ -90,7 +90,7 @@ class CsrfHttpRequestTest extends TestBaseClass
      */
     public function testRestLikeRoutesDoNotSkipCsrfValidation()
     {
-        //This test is skipped since rest routes are not expected to skip CSRF validation in thi version.
+        // This test is skipped since there are no rest routes on v5, hence not expected to skip CSRF validation.
         $this->markTestSkipped();
         $route = 'admin/menus/sa/restore';
 
