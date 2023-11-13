@@ -34,6 +34,22 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.6.44 (build 231107) to 5.6.45 (build 231114) November 13, 2023
+-Fixed issue: Update can fail if there are label codes longer than 5 characters (Carsten Schmitz)
+-Fixed issue #19214: JSON RPC response content type should be application/json (#3611) (Matthew)
+-Fixed issue #19211: [security] CSRF In Copy Survey (#3601) (Denis Chenu)
+-Fixed issue #19162: [security] File Upload causes XSS in Central participant management/Import file CSV (#3585) (Gabriel Jenik)
+-Fixed issue #19118: [security] Improper permission management on bulk actions (#3579) (Denis Chenu)
+-Fixed issue #19114: [security] Admin with Settings & Plugins permission only can store XSS in Survey menus (#3553) (Gabriel Jenik)
+-Fixed issue #19086: Survey Theme Options - image preview does not work (#3562) (Matthew)
+-Fixed issue #18350: activate_survey does not correctly set inherited properties for Notification and data management (#3595) (#3609) (Matthew)
+#Updated translation: Turkish by kayazeren
+#Updated translation: Japanese by nomoto
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: French (France) by DenisChenu, mapage
+
+
 Changes from 5.6.43 (build 231030) to 5.6.44 (build 231107) November 6, 2023
 -Fixed issue: Cannot deactivate survey properly if user has global survey permissions, but is not allowed to access the assigned SurveyGroup (Carsten Schmitz)
 -Fixed issue #19203: Alphabetical order didn't respect survey language (#3581) (Denis Chenu)
