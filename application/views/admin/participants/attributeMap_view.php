@@ -75,8 +75,8 @@
                         <?php foreach ($selectedtokenattribute as $id => $name): ?>
                                 <?php if (isset($automaticallyMappedAttributes[$id])): ?>
                                     <?php $autoAttr = $automaticallyMappedAttributes[$id]; // Short-hand... ?>
-                                    <div class='tokenatt-container col-12'>
-                                        <div class='col-sm-6'>
+                                    <div class='tokenatt-container row col-12'>
+                                        <div class='col-6'>
                                             <div class='card ui-state-disabled token-attribute' id='t_<?php echo $id; ?>'>
                                                 <div class='card-body'>
                                                     <?php echo CHtml::encode($name); ?>
@@ -84,7 +84,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class='col-md-6'>
+                                        <div class='col-6'>
                                             <div class='card ui-state-disabled cpdb-attribute' id='c_<?php echo $autoAttr['cpdbAttribute']['attribute_id']; ?>'>
                                                 <div class='card-body'>
                                                     <?php echo $autoAttr['cpdbAttribute']['attribute_name']; ?>
@@ -93,8 +93,8 @@
                                         </div>
                                     </div>
                                 <?php else: ?>
-                                    <div class='tokenatt-container col-12'>
-                                        <div class='col-md-6'>
+                                    <div class='tokenatt-container row col-12'>
+                                        <div class='col-6'>
                                             <div class='card ui-state-disabled token-attribute' id='t_<?php echo $id; ?>'>
                                                 <div class='card-body'>
                                                     <?php echo CHtml::encode($name); ?>
@@ -154,8 +154,8 @@
                 <div class='card-header '><?php eT("Standard participant fields") ?></div>
                 <div class='card-body'>
                     <div class="standardfields">
-                        <div class='tokenatt-container col-12'>
-                            <div class='col-md-6'>
+                        <div class='tokenatt-container row col-12'>
+                            <div class='col-6'>
                                 <div class='card ui-state-disabled token-attribute' id='t_token'>
                                     <div class='card-body'>
                                         <?php eT("Participant") ?>
