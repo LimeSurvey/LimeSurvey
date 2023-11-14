@@ -778,23 +778,37 @@ class Question extends LSActiveRecord
             }
             return $answerOptions;
         }
-
         // Sort alphabetically if applicable
         if ($this->shouldOrderAnswersAlphabetically()) {
             if (empty($language) || !in_array($language, $this->survey->allLanguages)) {
                 $language = $this->survey->language;
             }
+            $locale = $language;
+            $aLanguageData = getLanguageData();
+            if (isset($aLanguageData[$language]['cldr'])) {
+                $locale = $aLanguageData[$language]['cldr'];
+            }
+            // need php_intl
+            if (function_exists('collator_create')) {
+                $collator = collator_create($locale);
+            } else {
+                Yii::log("For better alphabeticall ordering : you need php-intl.", 'warning');
+            }
+
             foreach ($answerOptions as $scaleId => $scaleArray) {
                 $sorted = array();
-
                 // We create an array sorted that will use the answer in the current language as key, and that will store its old index as value
                 foreach ($scaleArray as $key => $answer) {
-                    $sorted[$answer->answerl10ns[$language]->answer] = $key;
+                    $sorted[$key] = $answer->answerl10ns[$language]->answer;
                 }
-                ksort($sorted);
+                if (function_exists('collator_create')) {
+                    collator_asort($collator, $sorted, Collator::SORT_STRING);
+                } else {
+                    asort($sorted, SORT_STRING);
+                }
                 // Now, we create a new array that store the old values of $answerOptions in the order of $sorted
                 $sortedScaleAnswers = array();
-                foreach ($sorted as $answer => $key) {
+                foreach ($sorted as $key => $answer) {
                     $sortedScaleAnswers[] = $scaleArray[$key];
                 }
                 $answerOptions[$scaleId] = $sortedScaleAnswers;
