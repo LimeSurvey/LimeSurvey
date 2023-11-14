@@ -137,7 +137,7 @@
             </label>
             <div class="">
                 <input class="form-control" type="number" min="1"  step="1"  pattern="^\d*$" name="maxLoginAttempt" placeholder="<?= gT("Disabled") ?>"
-                       value="<?= Yii::app()->getConfig('maxLoginAttempt') ?>"/>
+                       value="<?= App()->getConfig('maxLoginAttempt') !== "" ?? intval(App()->getConfig('maxLoginAttempt')) ?>"/>
             <p class="help-block"><?= gT("Set an empty value disable brute force protection. Number of attemps are never checked.") ?></p>
             </div>
         </div>
@@ -147,7 +147,7 @@
             </label>
             <div class="">
                 <input class="form-control" type="number" min="0"  name="timeOutTime" placeholder="<?= gT("Disabled") ?>"
-                       value="<?= Yii::app()->getConfig('timeOutTime') ?>"/>
+                       value="<?= App()->getConfig('timeOutTime') !== "" ?? floatval(App()->getConfig('timeOutTime')) ?>"/>
             </div>
             <p class="help-block"><?= gT("Set an empty value or 0 disable brute force protection. Number of attemps are deleted each time.") ?></p>
         </div>
@@ -173,7 +173,7 @@
             </label>
             <div class="">
                 <input class="form-control" type="number" min="1"  pattern="^\d*$" name="maxLoginAttemptParticipants" placeholder="<?= gT("Disabled") ?>"
-                       value="<?= Yii::app()->getConfig('maxLoginAttemptParticipants') ?>"/>
+                       value="<?= App()->getConfig('maxLoginAttemptParticipants') !== "" ?? intval(App()->getConfig('maxLoginAttemptParticipants')) ?>"/>
                 <p class="help-block"><?= gT("Set an empty value disable brute force protection. Number of attemps are never checked.") ?></p>
             </div>
         </div>
@@ -183,7 +183,7 @@
             </label>
             <div class="">
                 <input class="form-control" type="number" min="0" name="timeOutParticipants" placeholder="<?= gT("Disabled") ?>"
-                       value="<?= Yii::app()->getConfig('timeOutParticipants') ?>"/>
+                       value="<?= App()->getConfig('timeOutParticipants') !== "" ?? floatval(App()->getConfig('timeOutParticipants')) ?>"/>
                 <p class="help-block"><?= gT("Set an empty value or 0 disable brute force protection. Number of attemps are deleted each time.") ?></p>
             </div>
         </div>
