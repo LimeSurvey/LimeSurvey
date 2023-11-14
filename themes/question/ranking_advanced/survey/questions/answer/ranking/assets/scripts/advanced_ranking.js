@@ -33,7 +33,12 @@ var AdvancedRankingQuestion = function (options) {
         var sortableObjectChoice = {
             group: "sortable-" + questionId,
             ghostClass: "ls-rank-placeholder",
-            onEnd: function(){updateRankingNumber();}
+            onEnd: function(){updateRankingNumber();},
+            onMove: function (ev) {
+                if (max_answers > 0 && $('#sortable-rank-' + questionId + ' li').length >= max_answers) {
+                    return false;
+                }
+            }
         },
         sortableObjectRank = {
             group: "sortable-" + questionId,
