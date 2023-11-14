@@ -21,6 +21,8 @@ class CsrfHttpRequestTest extends TestBaseClass
         $routes = array(
             'rest/v1/actionOnItemById/15',
             'rest/v1/action',
+            '/rest/v1/actionOnItemById/25',
+            '/rest/v1/action',
         );
 
         foreach ($routes as $route) {
@@ -43,8 +45,10 @@ class CsrfHttpRequestTest extends TestBaseClass
     public function testRemoteControlRoutesSkipCsrfValidation()
     {
         $routes = array(
-            'remotecontrol/actionOnItemById/15',
-            'remotecontrol/action',
+            'admin/remotecontrol/actionOnItemById/15',
+            'admin/remotecontrol/action',
+            '/admin/remotecontrol/actionOnItemById/25',
+            '/admin/remotecontrol',
         );
 
         foreach ($routes as $route) {
@@ -69,6 +73,8 @@ class CsrfHttpRequestTest extends TestBaseClass
         $routes = array(
             'plugins/unsecure/action',
             'plugins/unsecure/actionOnItemById/15',
+            '/plugins/unsecure/action',
+            '/plugins/unsecure/actionOnItemById/25',
         );
 
         foreach ($routes as $route) {
@@ -92,18 +98,23 @@ class CsrfHttpRequestTest extends TestBaseClass
     {
         // This test is skipped since there are no rest routes on v5, hence not expected to skip CSRF validation.
         $this->markTestSkipped();
-        $route = 'admin/menus/sa/restore';
-
-        $routeValidation = \LSHttpRequest::routeMatchesNoCsrfValidationRule(
-            $route,
-            self::$noCsrfValidationRoutes[0]
+        $routes = array(
+            'admin/menus/sa/restore',
+            '/admin/menus/sa/restore'
         );
 
-        $this->assertSame(
-            0,
-            $routeValidation,
-            'CSRF validation should not be skipped since the route ' . $route . ' is not a rest route.'
-        );
+        foreach ($routes as $route) {
+            $routeValidation = \LSHttpRequest::routeMatchesNoCsrfValidationRule(
+                $route,
+                self::$noCsrfValidationRoutes[0]
+            );
+
+            $this->assertSame(
+                0,
+                $routeValidation,
+                'CSRF validation should not be skipped since the route ' . $route . ' is not a rest route.'
+            );
+        }
     }
 
     /**
@@ -111,18 +122,23 @@ class CsrfHttpRequestTest extends TestBaseClass
      */
     public function testRemoteLikeRoutesDoNotSkipCsrfValidation()
     {
-        $route = 'remote/action';
-
-        $routeValidation = \LSHttpRequest::routeMatchesNoCsrfValidationRule(
-            $route,
-            self::$noCsrfValidationRoutes[0]
+        $routes = array(
+            'remote/action',
+            '/remote/action'
         );
 
-        $this->assertSame(
-            0,
-            $routeValidation,
-            'CSRF validation should not be skipped since the route ' . $route . ' is not a rest route.'
-        );
+        foreach ($routes as $route) {
+            $routeValidation = \LSHttpRequest::routeMatchesNoCsrfValidationRule(
+                $route,
+                self::$noCsrfValidationRoutes[0]
+            );
+
+            $this->assertSame(
+                0,
+                $routeValidation,
+                'CSRF validation should not be skipped since the route ' . $route . ' is not a rest route.'
+            );
+        }
     }
 
     /**
@@ -130,17 +146,22 @@ class CsrfHttpRequestTest extends TestBaseClass
      */
     public function testPluginUnsecureLikeRoutesDoNotSkipCsrfValidation()
     {
-        $route = 'plugins/settings';
-
-        $routeValidation = \LSHttpRequest::routeMatchesNoCsrfValidationRule(
-            $route,
-            self::$noCsrfValidationRoutes[1]
+        $routes = array(
+            'plugins/settings',
+            '/plugins/settings'
         );
 
-        $this->assertSame(
-            0,
-            $routeValidation,
-            'CSRF validation should not be skipped since the route ' . $route . ' is not a remote control route.'
-        );
+        foreach ($routes as $route) {
+            $routeValidation = \LSHttpRequest::routeMatchesNoCsrfValidationRule(
+                $route,
+                self::$noCsrfValidationRoutes[1]
+            );
+
+            $this->assertSame(
+                0,
+                $routeValidation,
+                'CSRF validation should not be skipped since the route ' . $route . ' is not a remote control route.'
+            );
+        }
     }
 }
