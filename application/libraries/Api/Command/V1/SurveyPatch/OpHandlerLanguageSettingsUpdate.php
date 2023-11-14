@@ -50,7 +50,7 @@ class OpHandlerLanguageSettingsUpdate implements OpHandlerInterface
      *          "entity": "languageSetting",
      *          "op": "update",
      *          "id": {
-     *              "sid": 123456,
+     *              "sid": 123456,  //todo do we still need the sid here?
      *              "language": "de"
      *          },
      *          "props": {
@@ -66,7 +66,7 @@ class OpHandlerLanguageSettingsUpdate implements OpHandlerInterface
      *          "entity": "languageSetting",
      *          "op": "update",
      *          "id": {
-     *              "sid": 123456
+     *              "sid": 123456  //todo do we still need the sid here?
      *          },
      *          "props": {
      *              "de": {
@@ -150,7 +150,7 @@ class OpHandlerLanguageSettingsUpdate implements OpHandlerInterface
      */
     public function isValidPatch(OpInterface $op): bool
     {
-        // TODO: Implement isValidPatch() method.
+        // getTransformedProps will throw an exception if the patch is not valid
         return true;
     }
 }
