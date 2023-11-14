@@ -127,8 +127,8 @@
             </label>
             <textarea class="form-control" id='loginIpWhitelist'
                       name='loginIpWhitelist'><?php echo htmlspecialchars(Yii::app()->getConfig('loginIpWhitelist')); ?></textarea>
-            <span
-                class='hint'><?php eT("List of IP addresses to exclude from the maximum login attempts check. Separate each IP address with a comma or a new line."); ?></span>
+            <p
+                class='help-block'><?php eT("List of IP addresses to exclude from the maximum login attempts check. Separate each IP address with a comma or a new line."); ?></p>
         </div>
 
         <div class="form-group">
@@ -136,8 +136,9 @@
                 <?php eT("Maximum number of attempts:"); ?>
             </label>
             <div class="">
-                <input class="form-control" type="number" min="0" name="maxLoginAttempt"
+                <input class="form-control" type="number" min="1"  step="1"  pattern="^\d*$" name="maxLoginAttempt" placeholder="<?= gT("Disabled") ?>"
                        value="<?= Yii::app()->getConfig('maxLoginAttempt') ?>"/>
+            <p class="help-block"><?= gT("Set an empty value disable brute force protection. Number of attemps are never checked.") ?></p>
             </div>
         </div>
         <div class="form-group">
@@ -145,9 +146,10 @@
                 <?php eT("Lockout time in seconds (after maximum number of attempts):"); ?>
             </label>
             <div class="">
-                <input class="form-control" type="number" min="0"  name="timeOutTime"
+                <input class="form-control" type="number" min="0"  name="timeOutTime" placeholder="<?= gT("Disabled") ?>"
                        value="<?= Yii::app()->getConfig('timeOutTime') ?>"/>
             </div>
+            <p class="help-block"><?= gT("Set an empty value or 0 disable brute force protection. Number of attemps are deleted each time.") ?></p>
         </div>
 
     </div>
@@ -161,8 +163,8 @@
             </label>
             <textarea class="form-control" id='tokenIpWhitelist'
                       name='tokenIpWhitelist'><?php echo htmlspecialchars(Yii::app()->getConfig('tokenIpWhitelist')); ?></textarea>
-            <span
-                class='hint'><?php eT("List of IP addresses to exclude from the maximum token validation attempts check. Separate each IP address with a comma or a new line."); ?></span>
+            <p
+                class='help-block'><?php eT("List of IP addresses to exclude from the maximum token validation attempts check. Separate each IP address with a comma or a new line."); ?></p>
         </div>
 
         <div class="form-group">
@@ -170,8 +172,9 @@
                 <?php eT("Maximum number of attempts:"); ?>
             </label>
             <div class="">
-                <input class="form-control" type="number" min="0"  name="maxLoginAttemptParticipants"
+                <input class="form-control" type="number" min="1"  pattern="^\d*$" name="maxLoginAttemptParticipants" placeholder="<?= gT("Disabled") ?>"
                        value="<?= Yii::app()->getConfig('maxLoginAttemptParticipants') ?>"/>
+                <p class="help-block"><?= gT("Set an empty value disable brute force protection. Number of attemps are never checked.") ?></p>
             </div>
         </div>
         <div class="form-group">
@@ -179,8 +182,9 @@
                 <?php eT("Lockout time in seconds (after maximum number of attempts):"); ?>
             </label>
             <div class="">
-                <input class="form-control" type="number" min="0" name="timeOutParticipants"
+                <input class="form-control" type="number" min="0" name="timeOutParticipants" placeholder="<?= gT("Disabled") ?>"
                        value="<?= Yii::app()->getConfig('timeOutParticipants') ?>"/>
+                <p class="help-block"><?= gT("Set an empty value or 0 disable brute force protection. Number of attemps are deleted each time.") ?></p>
             </div>
         </div>
 
