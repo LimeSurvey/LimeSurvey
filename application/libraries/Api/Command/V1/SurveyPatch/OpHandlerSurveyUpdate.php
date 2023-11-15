@@ -45,6 +45,21 @@ class OpHandlerSurveyUpdate implements OpHandlerInterface
     /**
      * Saves the changes to the database.
      *
+     * This is the expected structure:
+     *  { "patch": [
+     *           {
+     *               "entity": "survey",
+     *               "op": "update",
+     *               "id": "12345",
+     *               "props": {
+     *                 "anonymized": false,
+     *                 "language": "de-informal",
+     *                 ...
+     *               }
+     *          }
+     *   ]
+     * }
+     *
      * @param OpInterface $op
      * @throws OpHandlerException
      * @throws PersistErrorException
@@ -82,7 +97,8 @@ class OpHandlerSurveyUpdate implements OpHandlerInterface
      */
     public function isValidPatch(OpInterface $op): bool
     {
-        // TODO: Implement isValidPatch() method.
+        // the transformer checks already if the patch is valid (at least the
+        // props)
         return true;
     }
 }
