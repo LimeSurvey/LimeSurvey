@@ -14788,6 +14788,10 @@ html[dir=rtl] th {
   margin-bottom: 20px;
 }
 
+#csvattribute {
+  z-index: 1;
+}
+
 #tokenattribute {
   margin-left: 1.5%;
 }

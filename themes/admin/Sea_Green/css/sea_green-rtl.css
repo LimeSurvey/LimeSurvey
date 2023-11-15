@@ -14765,6 +14765,10 @@ html[dir=ltr] th {
   margin-bottom: 20px;
 }
 
+#csvattribute {
+  z-index: 1;
+}
+
 #tokenattribute {
   margin-right: 1.5%;
 }
