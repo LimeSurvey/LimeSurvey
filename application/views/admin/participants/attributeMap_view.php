@@ -2,7 +2,7 @@
     var redUrl = "<?php echo $this->createUrl("/admin/participants/sa/displayParticipants"); ?>";
     var surveyId = "<?php echo $survey_id ?>";
     var redirect = "<?php echo $redirect ?>";
-    if(redirect)
+    if(redirect == "1")
     {
         redUrl = "<?php echo $this->createUrl("/admin/tokens/sa/browse/surveyid/{$survey_id}"); ?>";
     }
@@ -19,7 +19,7 @@
 
 </script>
 
-<div class='header ui-widget-header'>
+<div class='header pt-2'>
     <div class='pagetitle h3'>
         <?php eT("Map your central participant attributes to existing survey participant attributes or create new ones"); ?>
     </div>
