@@ -70,19 +70,19 @@ class OpHandlerQuestionGroup implements OpHandlerInterface
      * @param OpInterface $op
      * @throws OpHandlerException
      */
-    public function handle(OpInterface $op): void
+    public function handle(OpInterface $op): array
     {
         switch (true) {
             case $this->isUpdateOperation:
                 $this->update($op);
                 break;
             case $this->isCreateOperation:
-                $this->create($op);
-                break;
+                return $this->create($op);
             case $this->isDeleteOperation:
                 $this->delete($op);
                 break;
         }
+        return [];
     }
 
     /**
@@ -210,6 +210,7 @@ class OpHandlerQuestionGroup implements OpHandlerInterface
      *             "op": "create",
      *             "props":{
      *                 "questionGroup": {
+     *                     "tempId": 777,
      *                     "randomizationGroup": "",
      *                     "gRelevance": ""
      *                 },
@@ -235,19 +236,27 @@ class OpHandlerQuestionGroup implements OpHandlerInterface
      *
      * @param OpInterface $op
      * @param QuestionGroupService $groupService
-     * @return void
+     * @return array
      * @throws OpHandlerException
      * @throws \LimeSurvey\Models\Services\Exception\NotFoundException
      * @throws \LimeSurvey\Models\Services\Exception\PersistErrorException
      */
-    private function create(OpInterface $op)
+    private function create(OpInterface $op): array
     {
         $surveyId = $this->getSurveyIdFromContext($op);
         $transformedProps = $this->getTransformedProps($op);
-        $this->questionGroupService->createGroup(
+        $tempId = $this->extractTempId($transformedProps['questionGroup']);
+        $questionGroup = $this->questionGroupService->createGroup(
             $surveyId,
             $transformedProps
         );
+        $questionGroup->refresh();
+        return [
+            'questionGroupsMap' => [
+                'tempId' => $tempId,
+                'gid'    => $questionGroup->gid
+            ]
+        ];
     }
 
     /**

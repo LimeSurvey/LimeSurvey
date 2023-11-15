@@ -2,6 +2,7 @@
 
 namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
+use Question;
 use LimeSurvey\Api\Command\V1\Transformer\Input\{
     TransformerInputQuestion,
     TransformerInputQuestionL10ns
@@ -116,6 +117,7 @@ class OpHandlerSubQuestion implements OpHandlerInterface
      *             "id": 722,
      *             "props": {
      *                 "0": {
+     *                     "tempId": "456789",
      *                     "title": "SQ011",
      *                     "l10ns": {
      *                         "de": {
@@ -130,6 +132,7 @@ class OpHandlerSubQuestion implements OpHandlerInterface
      *                 },
      *                 "1": {
      *                     "title": "SQ012",
+     *                     "tempId": "345678",
      *                     "l10ns": {
      *                         "de": {
      *                             "question": "germanized2",
@@ -152,7 +155,7 @@ class OpHandlerSubQuestion implements OpHandlerInterface
      * @throws PermissionDeniedException
      * @throws PersistErrorException
      */
-    public function handle(OpInterface $op): void
+    public function handle(OpInterface $op): array
     {
         $surveyId = $this->getSurveyIdFromContext($op);
         $this->questionAggregateService->checkUpdatePermission($surveyId);
@@ -166,16 +169,20 @@ class OpHandlerSubQuestion implements OpHandlerInterface
         //be careful here! if for any reason the incoming data is not prepared
         //as it should, all existing subquestions will be deleted!
         if (count($preparedData) === 0) {
-            throw new OpHandlerException('No data to create or update a subquestion');
+            throw new OpHandlerException(
+                'No data to create or update a subquestion'
+            );
         }
         $questionId = $op->getEntityId();
+        $question = $this->questionService->getQuestionBySidAndQid(
+            $surveyId,
+            $questionId
+        );
         $this->subQuestionsService->save(
-            $this->questionService->getQuestionBySidAndQid(
-                $surveyId,
-                $questionId
-            ),
+            $question,
             $preparedData
         );
+        return $this->getSubQuestionNewIdMapping($question, $preparedData);
     }
 
     /**
