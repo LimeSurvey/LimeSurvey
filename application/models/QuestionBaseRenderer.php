@@ -261,7 +261,7 @@ abstract class QuestionBaseRenderer extends StaticModel
 
     protected function setAnsweroptions($scale_id = null)
     {
-        $this->aAnswerOptions = $this->oQuestion->getOrderedAnswers($scale_id);
+        $this->aAnswerOptions = $this->oQuestion->getOrderedAnswers($scale_id, $this->sLanguage);
     }
 
     protected function getAnswerCount($iScaleId = 0)
@@ -372,6 +372,10 @@ abstract class QuestionBaseRenderer extends StaticModel
     {
         $labelAttributeWidth = trim((string) $this->getQuestionAttribute('label_input_columns'));
         $inputAttributeWidth = trim((string) $this->getQuestionAttribute('text_input_columns'));
+
+        if ($inputAttributeWidth === "") {
+            $inputAttributeWidth = trim((string) $this->getQuestionAttribute('text_input_width'));
+        }
 
         $attributeInputContainerWidth = intval($inputAttributeWidth);
         if ($attributeInputContainerWidth < 1 || $attributeInputContainerWidth > 12) {

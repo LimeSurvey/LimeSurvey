@@ -338,9 +338,41 @@ function SPSSGetValues($field, $qidattributes, $language)
                 'size' => numericSize($field['sql_name']),
             );
         } else {
-            $minvalue = trim((string) $qidattributes['multiflexible_min']) ? $qidattributes['multiflexible_min'] : 1;
-            $maxvalue = trim((string) $qidattributes['multiflexible_max']) ? $qidattributes['multiflexible_max'] : 10;
-            $stepvalue = trim((string) $qidattributes['multiflexible_step']) ? $qidattributes['multiflexible_step'] : 1;
+            $minvalue = 1;
+            $maxvalue = 10;
+            if (trim((string) $qidattributes['multiflexible_max']) != '' && trim((string) $qidattributes['multiflexible_min']) == '') {
+                $maxvalue = $qidattributes['multiflexible_max'];
+                $minvalue = 1;
+            }
+            if (trim((string) $qidattributes['multiflexible_min']) != '' && trim((string) $qidattributes['multiflexible_max']) == '') {
+                $minvalue = $qidattributes['multiflexible_min'];
+                $maxvalue = $qidattributes['multiflexible_min'] + 10;
+            }
+            if (trim((string) $qidattributes['multiflexible_min']) != '' && trim((string) $qidattributes['multiflexible_max']) != '') {
+                if ($qidattributes['multiflexible_min'] < $qidattributes['multiflexible_max']) {
+                    $minvalue = $qidattributes['multiflexible_min'];
+                    $maxvalue = $qidattributes['multiflexible_max'];
+                }
+            }
+
+            $stepvalue = (trim((string) $qidattributes['multiflexible_step']) != '' && $qidattributes['multiflexible_step'] > 0) ? $qidattributes['multiflexible_step'] : 1;
+
+            if ($qidattributes['reverse'] == 1) {
+                $tmp = $minvalue;
+                $minvalue = $maxvalue;
+                $maxvalue = $tmp;
+                $reverse = true;
+                $stepvalue = -$stepvalue;
+            } else {
+                $reverse = false;
+            }
+
+            if ($qidattributes['multiflexible_checkbox']!=0)
+            {
+                $minvalue=0;
+                $maxvalue=1;
+                $stepvalue=1;
+            }
             for ($i = $minvalue; $i <= $maxvalue; $i += $stepvalue) {
                 $answers[] = array('code' => $i, 'value' => $i);
             }
@@ -760,7 +792,15 @@ function buildXMLFromQuery($xmlwriter, $Query, $tagname = '', $excludes = array(
                 $result[] = $row->decrypt()->attributes;
             }
         } else {
-            $QueryResult = Yii::app()->db->createCommand($Query)->limit($iChunkSize, $iStart)->query();
+            /** @var CDbConnection $db */
+            $db = Yii::app()->db;
+            if(is_string($Query)) {
+                $commandBuilder = $db->getCommandBuilder();
+                $limitedQuery = $commandBuilder->applyLimit($Query, $iChunkSize, $iStart);
+                $QueryResult = $db->createCommand($limitedQuery)->query();
+            } else {
+                $QueryResult = $db->createCommand($Query)->limit($iChunkSize, $iStart)->query();
+            }
             $result = $QueryResult->readAll();
         }
 
@@ -951,10 +991,22 @@ function surveyGetXMLStructure($iSurveyID, $xmlwriter, $exclude = array())
     buildXMLFromQuery($xmlwriter, $squery, '', $excludeFromSurvey);
 
     // Survey language settings
-    $slsquery = "SELECT *
-    FROM {{surveys_languagesettings}}
-    WHERE surveyls_survey_id=$iSurveyID";
-    buildXMLFromQuery($xmlwriter, $slsquery);
+    // Email template attachments must be preprocessed to avoid exposing the full paths.
+    // Transforming them from absolute paths to relative paths
+    $surveyLanguageSettings = SurveyLanguageSetting::model()->findAllByAttributes(['surveyls_survey_id' => $iSurveyID]);
+    $surveyLanguageSettingsData = [];
+    foreach ($surveyLanguageSettings as $surveyLanguageSetting) {
+        $item = $surveyLanguageSetting->getAttributes();
+        // getAttachmentsData() returns the attachments with "safe" paths
+        $attachments = $surveyLanguageSetting->getAttachmentsData();
+        if (!empty($attachments)) {
+            // Attachments were previously exported as a serialized array, but that may lead to
+            // security issues on import, so we're now exporting them as JSON.
+            $item['attachments'] = json_encode($attachments);
+        }
+        $surveyLanguageSettingsData[] = $item;
+    }
+    buildXMLFromArray($xmlwriter, $surveyLanguageSettingsData, 'surveys_languagesettings');
 
     // Survey url parameters
     $slsquery = "SELECT *
@@ -3164,4 +3216,66 @@ function MaskFormula($sValue)
         $sValue = '';
     }
     return $sValue;
+}
+
+/**
+ * buildXMLFromArray() dumps an array to XML using XMLWriter, in the same format as buildXMLFromQuery()
+ *
+ * @param mixed $xmlwriter  The existing XMLWriter object
+ * @param array<array<string,mixed>> $data  The data to dump. Each element of the array must be a key-value pair.
+ * @param string $tagname  The name of the XML tag to generate
+ * @param string[] $excludes array of columnames not to include in export
+ */
+function buildXMLFromArray($xmlwriter, $data, $tagname, $excludes = [])
+{
+    if (empty($data)) {
+        return;
+    }
+
+    // Open the "main" node for this data dump
+    $xmlwriter->startElement($tagname);
+
+    // List the fields, based on the keys from the first element
+    $xmlwriter->startElement('fields');
+    $firstElement = reset($data);
+    foreach (array_keys($firstElement) as $fieldname) {
+        if (!in_array($fieldname, $excludes)) {
+            $xmlwriter->writeElement('fieldname', $fieldname);
+        }
+    }
+    $xmlwriter->endElement(); // close fields
+
+    // Dump the rows
+    $xmlwriter->startElement('rows');
+    foreach ($data as $row) {
+        $xmlwriter->startElement('row');
+        foreach ($row as $key => $value) {
+            if (in_array($key, $excludes)) {
+                continue;
+            }
+            if (is_null($value)) {
+                // If the $value is null don't output an element at all
+                continue;
+            }
+            // mask invalid element names with an underscore
+            if (is_numeric($key[0])) {
+                $key = '_' . $key;
+            }
+            $key = str_replace('#', '-', $key);
+            if (!$xmlwriter->startElement($key)) {
+                safeDie('Invalid element key: ' . $key);
+            }
+            if ($value !== '') {
+                // Remove invalid XML characters
+                $value = preg_replace('/[^\x0\x9\xA\xD\x20-\x{D7FF}\x{E000}-\x{FFFD}\x{10000}-\x{10FFFF}]/u', '', $value);
+                $value = str_replace(']]>', ']] >', $value);
+                $xmlwriter->writeCData($value);
+            }
+            $xmlwriter->endElement();
+        }
+        $xmlwriter->endElement(); // close row
+    }
+
+    $xmlwriter->endElement(); // close rows
+    $xmlwriter->endElement(); // close main node
 }

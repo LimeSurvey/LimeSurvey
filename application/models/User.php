@@ -127,6 +127,19 @@ class User extends LSActiveRecord
         );
     }
 
+    /** @inheritdoc */
+    public function scopes()
+    {
+        return array(
+            'active' => array(
+                'condition' => "expires > :now OR expires IS NULL",
+                'params' => array(
+                    'now' => dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig("timeadjust")),
+                )
+            )
+        );
+    }
+
     public function attributeLabels()
     {
         return [
@@ -147,6 +160,36 @@ class User extends LSActiveRecord
             'last_login' => gT('Last recorded login'),
             'expires' => gT("Expiry date/time:"),
         ];
+    }
+
+    /**
+     * @inheritDoc
+     * Delete user in related model after deletion
+     * return void
+     **/
+    protected function afterDelete()
+    {
+        parent::afterDelete();
+        /* Delete all permission */
+        Permission::model()->deleteAll(
+            "uid = :uid",
+            [":uid" => $this->uid]
+        );
+        /* Delete potential roles */
+        UserInPermissionrole::model()->deleteAll(
+            "uid = :uid",
+            [":uid" => $this->uid]
+        );
+        /* User settings */
+        SettingsUser::model()->deleteAll(
+            "uid = :uid",
+            [":uid" => $this->uid]
+        );
+        /* User in group */
+        UserInGroup::model()->deleteAll(
+            "uid = :uid",
+            [":uid" => $this->uid]
+        );
     }
 
     /**
@@ -184,8 +227,8 @@ class User extends LSActiveRecord
      * @param string $new_user
      * @param string $new_pass
      * @param string $new_full_name
-     * @param string $new_email
      * @param int $parent_user
+     * @param string $new_email
      * @param string|null $expires
      * @return integer|boolean User ID if success
      */
@@ -457,8 +500,11 @@ class User extends LSActiveRecord
     public function getManagementButtons()
     {
         $permission_superadmin_read = Permission::model()->hasGlobalPermission('superadmin', 'read');
+        $permission_users_read = Permission::model()->hasGlobalPermission('users', 'read');
         $permission_users_update = Permission::model()->hasGlobalPermission('users', 'update');
         $permission_users_delete = Permission::model()->hasGlobalPermission('users', 'delete');
+        $userManager = new UserManager(App()->user, $this);
+
         // User is owned or created by you
         $ownedOrCreated = $this->parent_id == App()->session['loginID'];
 
@@ -480,7 +526,7 @@ class User extends LSActiveRecord
                 'data-href' => $detailUrl,
             ],
             'enabledCondition' =>
-                $permission_superadmin_read
+                $permission_superadmin_read || $permission_users_read
                 || ($permission_superadmin_read
                     && (Permission::isForcedSuperAdmin($this->uid)
                         || $this->uid == App()->user->getId()
@@ -525,12 +571,7 @@ class User extends LSActiveRecord
             'linkAttributes'   => [
                 'data-href' => $setRoleUrl,
             ],
-            'enabledCondition' =>
-                ($permission_superadmin_read
-                    && !(Permission::isForcedSuperAdmin($this->uid)
-                        || $this->uid == App()->user->getId()
-                    )
-                )
+            'enabledCondition' => $userManager->canAssignRole() && $this->uid != App()->user->getId()
         ];
         $dropdownItems[] = [
             'title'            => gT('Edit user'),
@@ -539,13 +580,8 @@ class User extends LSActiveRecord
             'linkAttributes'   => [
                 'data-href' => $editUrl,
             ],
-            'enabledCondition' =>
-                ($permission_superadmin_read
-                    && $this->uid != 1
-                )
-                || (!$permission_superadmin_read
-                    && $this->canEdit(App()->session['loginID'])
-                )
+            'enabledCondition' => $this->canEdit()
+                                && $this->uid != App()->user->getId() // To update self : must use personal settings
         ];
         $dropdownItems[] = [
             'title'            => gT('Template permissions'),
@@ -969,16 +1005,39 @@ class User extends LSActiveRecord
     }
 
     /**
-     * Returns true if logged in user with id $loginId can edit this user
+     * Return true if user with id $managerId can edit this user
+     * @param int|null $managerId default to current user
      *
-     * @param int $loginId
      * @return bool
      */
-    public function canEdit($loginId)
+    public function canEdit($managerId = null)
     {
-        return
-            Permission::model()->hasGlobalPermission('superadmin', 'read')
-            || $this->uid == $loginId
-            || (Permission::model()->hasGlobalPermission('users', 'update') && $this->parent_id == $loginId);
+        if (is_null($managerId)) {
+            $managerId = Permission::model()->getUserId();
+        }
+        /* user can update himself */
+        if ($managerId == $this->uid) {
+            return true;
+        }
+        /* forcedsuperamdin (user #1) can always update all */
+        if (Permission::isForcedSuperAdmin($managerId)) {
+            return true;
+        }
+        /* forcedsuperamdin can not be update (except by another forcedsuperamdin done before) */
+        if (Permission::isForcedSuperAdmin($this->uid)) {
+            return false;
+        }
+        /* If target user is superamdin : managingUser must be allowed to create superadmin and be parent */
+        if (Permission::model()->hasGlobalPermission('superadmin', 'read', $this->uid)) {
+            return Permission::model()->hasGlobalPermission('superadmin', 'create', $managerId)
+                && $this->parent_id == $managerId;
+        }
+        /* superamin can update all other user */
+        if (Permission::model()->hasGlobalPermission('superadmin', 'read', $managerId)) {
+            return true;
+        }
+        /* Finally : simple user can update only childs users */
+        return Permission::model()->hasGlobalPermission('users', 'update', $managerId)
+                && $this->parent_id == $managerId;
     }
 }

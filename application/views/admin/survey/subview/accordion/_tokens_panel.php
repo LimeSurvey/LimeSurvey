@@ -45,6 +45,62 @@ App()->getClientScript()->registerScript("tokens-panel-variables",
     
 ",
     LSYii_ClientScript::POS_BEGIN);
+
+App()->getClientScript()->registerScript("edit-after-completion-message", "
+    (function(){
+        let showInherited = " . $bShowInherited . ";
+        let inheritedAnonymizedOption = '" . $oSurvey->oOptions->anonymized . "';
+        let inheritedPersistenceOption = '" . $oSurvey->oOptions->tokenanswerspersistence . "';
+        let inheritedAllowAfterCompletionOption = '" . $oSurvey->oOptions->alloweditaftercompletion . "';
+
+        $(document).ready(function(){
+            
+            changeAllowEditLabel();
+            
+            $('input[name=\"anonymized\"]').change(changeAllowEditLabel);
+
+            $('input[name=\"tokenanswerspersistence\"]').change(changeAllowEditLabel);
+
+            $('input[name=\"alloweditaftercompletion\"]').change(changeAllowEditLabel);
+            
+        });
+
+        function changeAllowEditLabel()
+        {
+            let anonymizedOption = $('input[name=\"anonymized\"]:checked').val();
+            let persistenceOption = $('input[name=\"tokenanswerspersistence\"]:checked').val();
+            let allowAfterCompletion = $('input[name=\"alloweditaftercompletion\"]:checked').val();
+
+            // Handle inheritance.
+            if ( showInherited === 1 && anonymizedOption === 'I' ) {
+                anonymizedOption = inheritedAnonymizedOption;
+            }
+            if ( showInherited === 1 && persistenceOption === 'I' ) {
+                persistenceOption = inheritedPersistenceOption;
+            }
+            if ( showInherited === 1 && allowAfterCompletion === 'I' ) {
+                allowAfterCompletion = inheritedAllowAfterCompletionOption;
+            }
+            
+            let multipleResponsesSameToken = anonymizedOption === 'N' && persistenceOption === 'N' && allowAfterCompletion === 'Y';
+
+            // Update alloweditaftercompletion
+            if ( anonymizedOption === 'Y' ) {
+                $('#alloweditaftercompletion-update').toggleClass('hidden', true);
+                $('#alloweditaftercompletion-multiple').toggleClass('hidden', false);
+            } else if( persistenceOption === 'N' ) {
+                $('#alloweditaftercompletion-update').toggleClass('hidden', true);
+                $('#alloweditaftercompletion-multiple').toggleClass('hidden', false);
+            } else if( persistenceOption === 'Y' ) {
+                $('#alloweditaftercompletion-update').toggleClass('hidden', false);
+                $('#alloweditaftercompletion-multiple').toggleClass('hidden', true);
+            }
+            
+            $('#multiResponseHint').toggleClass('hidden', ! multipleResponsesSameToken );
+        }
+    })();
+    
+", LSYii_ClientScript::POS_BEGIN);
 ?>
 
 <!-- tokens panel -->
@@ -95,7 +151,8 @@ App()->getClientScript()->registerScript("tokens-panel-variables",
             <!-- Allow multiple responses or update responses with one token -->
             <div class="mb-3">
                 <label class=" form-label" for='alloweditaftercompletion' title='<?php  eT("If participant-based response persistence is enabled a participant can update his response after completion, otherwise a participant can add new responses without restriction."); ?>'>
-                    <?php  eT("Allow multiple responses or update responses with one access code:"); ?>
+                    <div id="alloweditaftercompletion-update" class="hidden"><?php eT('Allow to update the responses using the access code'); ?></div>
+                    <div id="alloweditaftercompletion-multiple" class="hidden"><?php eT('Allow multiple responses with the same access code'); ?></div>
                 </label>
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
@@ -106,6 +163,7 @@ App()->getClientScript()->registerScript("tokens-panel-variables",
                             : $optionsOnOff
                     ]); ?>
                 </div>
+                <div id="multiResponseHint" class="form-text hint hidden"><?php eT("Participants will be able to enter as many responses as they want, despite what Uses Left token attribute is set to."); ?></div>
             </div>
 
             <!--  Set token length to -->

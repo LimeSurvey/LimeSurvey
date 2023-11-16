@@ -11092,6 +11092,10 @@ body {
   padding-bottom: 70px;
 }
 
+.selector_openSharePanel {
+  display: inline-block;
+}
+
 .summary-table {
   font-size: 0.9975rem;
   padding-right: 0.5rem;
@@ -11640,11 +11644,6 @@ html {
 
 .alert-security-update {
   margin: 0;
-}
-
-#update-container {
-  margin-top: 10px;
-  z-index: 999;
 }
 
 #update-container .alert {
@@ -17003,6 +17002,8 @@ tr.info, tr.danger {
   border-bottom: none;
 }
 .modal-header .btn-close {
+  align-self: flex-start;
+  margin: 0 auto -0.75rem -0.75rem;
   color: #1E1E1E;
   width: 0.75em;
   height: 0.75em;
@@ -18198,6 +18199,14 @@ input[type=number] {
 #sidebar {
   width: 100%;
 }
+#sidebar .questiongroup-list-group > li {
+  background: linear-gradient(-90deg, #14AE5C 0%, #14AE5C 5px, #EEEFF7 5px, #EEEFF7 100%);
+  padding: 0;
+}
+#sidebar .questiongroup-list-group > li > div:hover {
+  box-shadow: inset 0 0 0 1px rgba(123, 97, 255, 0.4);
+  background: linear-gradient(to left, rgba(123, 97, 255, 0.4) 0px, rgba(123, 97, 255, 0.4) 4px, #fff 4px, #fff 100%) !important;
+}
 #sidebar .button-sub-bar {
   min-height: 32px;
 }
@@ -18207,6 +18216,19 @@ input[type=number] {
 #sidebar .dragPointer.disabled {
   color: #999999;
   cursor: not-allowed;
+}
+#sidebar .question-question-list .selected {
+  padding-right: 20px;
+  background: linear-gradient(to left, #DDDEE8 0px, #DDDEE8 8px, #fff 8px, #fff 100%);
+  transition-property: all;
+  transition-duration: 0.25s;
+  transition-timing-function: cubic-bezier(1, 0.5, 0.5, 1);
+}
+#sidebar .question-question-list .selected.activated {
+  background: linear-gradient(to left, #14AE5C 0px, #14AE5C 8px, #fff 8px, #fff 100%);
+}
+#sidebar .question-question-list .selected.disabled {
+  background: linear-gradient(to left, #D3D5DA 0px, #D3D5DA 8px, #fff 8px, #fff 100%) !important;
 }
 #sidebar .question-question-list .question-question-list-item {
   margin: 2px 12px 2px 2px;
@@ -18222,6 +18244,10 @@ input[type=number] {
 }
 #sidebar .question-question-list .question-question-list-item.selected .question-question-list-item-drag {
   margin: 10px 5px 10px 10px;
+}
+#sidebar .question-question-list .question-question-list-item.selected:hover {
+  box-shadow: inset 0 0 0 1px rgba(123, 97, 255, 0.4);
+  background: linear-gradient(to left, rgba(123, 97, 255, 0.4) 0px, rgba(123, 97, 255, 0.4) 8px, #fff 8px, #fff 100%);
 }
 #sidebar .question-question-list .question-question-list-item .question-question-list-item-link {
   padding: 10px 10px 10px 25px;
@@ -18281,19 +18307,6 @@ input[type=number] {
   animation-name: animate-gradient;
   animation-duration: 450ms;
   background: radial-gradient(circle at center, #5cc262 0px, #5cc262 8px, #fff 9px, #fff 100%);
-}
-#sidebar .selected {
-  padding-right: 20px;
-  background: linear-gradient(to left, #DDDEE8 0px, #DDDEE8 8px, #fff 8px, #fff 100%);
-  transition-property: all;
-  transition-duration: 0.25s;
-  transition-timing-function: cubic-bezier(1, 0.5, 0.5, 1);
-}
-#sidebar .selected.activated {
-  background: linear-gradient(to left, #14AE5C 0px, #14AE5C 8px, #fff 8px, #fff 100%);
-}
-#sidebar .selected.disabled {
-  background: linear-gradient(to left, #D3D5DA 0px, #D3D5DA 8px, #fff 8px, #fff 100%) !important;
 }
 #sidebar a:not(.btn, .nav-tabs .nav-link) {
   color: #1E1E1E;
@@ -18367,6 +18380,7 @@ input[type=number] {
 }
 #sidebar .ls-questiongroup-tools i, #sidebar .ls-question-tools i {
   font-size: 24px;
+  color: #6E748C;
 }
 
 .badge {
@@ -18855,6 +18869,10 @@ table [class^=ri-], table [class*=" ri-"] {
 
 .no-simple-graph {
   height: 300px;
+}
+
+#update-container {
+  margin-top: 10px;
 }
 
 .accordion {

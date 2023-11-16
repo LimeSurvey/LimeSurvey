@@ -4,9 +4,9 @@ namespace LimeSurvey;
 
 use CActiveRecord;
 use LSYii_Application;
-use PluginManager;
+use LimeSurvey\PluginManager\PluginManager;
 use CHttpSession;
-
+use CDbConnection;
 
 /**
  * Dependency Injection
@@ -63,6 +63,10 @@ class DI
 
         $container->set(CHttpSession::class, function () {
             return App()->session;
+        });
+
+        $container->set(CDbConnection::class, function () {
+            return App()->db;
         });
 
         return $container;

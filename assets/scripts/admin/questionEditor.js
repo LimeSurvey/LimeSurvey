@@ -178,6 +178,29 @@ $(document).on('ready pjax:scriptcomplete', function () {
     });
   }
 
+  function bindSubQuestionEvents() {
+    $('.btnaddsubquestion').off('click.subquestions').on('click.subquestions', addSubquestionInput);
+    $('.btndelsubquestion').off('click.subquestions').on('click.subquestions', deleteSubquestionInput);
+  }
+
+  function bindAnswerEvents() {
+    $('.btnaddanswer').off('click.subquestions').on('click.subquestions', addAnswerOptionInput);
+    $('.btndelanswer').off('click.subquestions').on('click.subquestions', deleteAnswerOptionInput);
+  }
+
+  function toggleLanguageElements() {
+    // get selected lang from dropdown
+    let lang = $('.active .lang-switch-button').data('lang');
+    //fallback: display main language
+    if (lang === undefined) {
+      const languages = languageJson.langs.split(';');
+      lang = languages[0];
+    }
+    const langClass = `.lang-${lang}`;
+    $('.lang-hide').hide();
+    $(langClass).show();
+  }
+
   /**
    * @param {number} position
    * @param {string} source Either 'subquestions' or 'answeroptions'
@@ -527,8 +550,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
     const target = e.target;
     const data = $('#add-subquestion-input-javascript-datas').data();
     const rebindClickHandler = () => {
-      $('.btnaddsubquestion').off('click.subquestions').on('click.subquestions', addSubquestionInput);
-      $('.btndelsubquestion').off('click.subquestions').on('click.subquestions', deleteSubquestionInput);
+      bindSubQuestionEvents()
     };
     addNewInputAux(target, data, rebindClickHandler);
   }
@@ -544,8 +566,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
     const target = e.target;
     const data = $('#add-answer-option-input-javascript-datas').data();
     const rebindClickHandler = () => {
-      $('.btnaddanswer').off('click.subquestions').on('click.subquestions', addAnswerOptionInput);
-      $('.btndelanswer').off('click.subquestions').on('click.subquestions', deleteAnswerOptionInput);
+      bindAnswerEvents();
     };
     addNewInputAux(target, data, rebindClickHandler);
   }
@@ -687,7 +708,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
             $bodyItem.append(`<h2>${labelSet.label_name}</h2>`);  // jshint ignore: line
             $itemList.appendTo($bodyItem);
           });
-          
+
           if (isEmpty) {
             showLabelSetAlert(languageJson.labelSetEmpty);
           } else {
@@ -726,7 +747,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
 
   /**
    * Hides the alert in the label set's modal
-   * 
+   *
    * @return {void}
    */
   function hideLabelSetAlert() /*: void */ {
@@ -1165,15 +1186,9 @@ $(document).on('ready pjax:scriptcomplete', function () {
         bindClickIfNotExpanded();
 
         // Unbind and bind events.
-        $(`.btnaddanswer`).off('click.subquestions');
-        $(`.btndelanswer`).off('click.subquestions');
-        $(`.btnaddsubquestion`).off('click.subquestions');
-        $(`.btndelsubquestion`).off('click.subquestions');
         $(`.answer`).off('focus');
-        $(`.btnaddanswer`).on('click.subquestions', addAnswerOptionInput);
-        $(`.btndelanswer`).on('click.subquestions', deleteAnswerOptionInput);
-        $(`.btnaddsubquestion`).on('click.subquestions', addSubquestionInput);
-        $(`.btndelsubquestion`).on('click.subquestions', deleteSubquestionInput);
+        bindSubQuestionEvents();
+        bindAnswerEvents();
       },
     );
   }
@@ -1240,9 +1255,9 @@ $(document).on('ready pjax:scriptcomplete', function () {
                 <select class="form-select" name="laname">
                   <option value=""></option>
                 </select>
-              </div>' 
+              </div>'
             `;
-            // 
+            //
             child = template.content.firstElementChild;
             if (child) {
               targetParent.after(child);
@@ -1539,7 +1554,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
     });
     return duplicateCodes.length == 0;
   }
-  
+
   /**
    * Return a function that can be used to check code uniqueness.
    * Used by subquestions and answer options.
@@ -1690,11 +1705,8 @@ $(document).on('ready pjax:scriptcomplete', function () {
         const languages = languageJson.langs.split(';');
         $('.lang-switch-button[data-lang="' + languages[0] + '"]').trigger('click');
 
-        // TODO: Duplication.
-        $('.btnaddsubquestion').on('click.subquestions', addSubquestionInput);
-        $('.btndelsubquestion').on('click.subquestions', deleteSubquestionInput);
-        $('.btnaddanswer').on('click.subquestions', addAnswerOptionInput);
-        $('.btndelanswer').on('click.subquestions', deleteAnswerOptionInput);
+        bindSubQuestionEvents();
+        bindAnswerEvents();
       } catch (ex) {
         $('#ls-loading').hide();
         // TODO: How to show internal errors?
@@ -1866,6 +1878,29 @@ $(document).on('ready pjax:scriptcomplete', function () {
         });
       };
 
+      const reloadExtraOptions = () => {
+        // Show loading gif.
+        $('#ls-loading').show();
+        // Post complete form to controller.
+        $.get({
+            url: languageJson.lsextraoptionsurl,
+            success: (response /*: string */, textStatus /*: string */) => {
+              $('#extra-options-container').replaceWith( response );
+              bindSubQuestionEvents();
+              bindAnswerEvents();
+              makeAnswersTableSortable();
+              toggleLanguageElements();
+              // Hide loading gif.
+              $('#ls-loading').hide();
+            },
+            error: (data) => {
+              $('#ls-loading').hide();
+              alert('Internal error from saveFormWithAjax: no data.responseJSON found');
+              throw 'abort';
+            }
+        });
+      };
+
       // Helper function after unique check.
       const saveFormWithAjax /*: (void) => (void) */ = () => {
         const data = {};
@@ -1903,6 +1938,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
 
             // Update the side-bar.
             LS.EventBus.$emit('updateSideBar', {'updateQuestions': true});
+            reloadExtraOptions();
 
             if (textStatus === 'success') {
               // Show confirm message.
@@ -2016,10 +2052,8 @@ $(document).on('ready pjax:scriptcomplete', function () {
 
     makeAnswersTableSortable();
 
-    $('.btnaddsubquestion').on('click.subquestions', addSubquestionInput);
-    $('.btndelsubquestion').on('click.subquestions', deleteSubquestionInput);
-    $('.btnaddanswer').on('click.subquestions', addAnswerOptionInput);
-    $('.btndelanswer').on('click.subquestions', deleteAnswerOptionInput);
+    bindSubQuestionEvents();
+    bindAnswerEvents();
 
     $('#labelsetbrowserModal').on('hidden.bs.modal.', labelSetDestruct);
 
@@ -2125,7 +2159,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
       $('#' + id).width(width).height(height);
       $('#' + id).closest('.jquery-ace-wrapper').width(width).height(height);
     });
-    
+
     $('#relevance').on('keyup', showConditionsWarning);
 
     $(document).on('focusout', '#subquestions table.subquestions-table:first-of-type td.code-title input.code', syncAnswerSubquestionCode);

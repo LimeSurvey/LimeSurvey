@@ -27,13 +27,10 @@
     <?php endif; ?>
 
     <?php if ($browse) : ?>
-        <?php echo CHtml::form(["responses/browse/", 'surveyId' => $surveyid], 'post') . "\n"; ?>
-        <p>
-            <?php Yii::app()->user->setState('sql_' . $surveyid, $sql); ?>
-            <input type='submit' class='btn btn-outline-secondary d-print-none' value='<?php eT("Browse"); ?>'/>
-            <input type='hidden' name='subaction' value='all'/>
-        </p>
-        <?php echo CHtml::endForm() ?>
+        <a href='<?php echo App()->createUrl('responses/browse/', ['surveyId' => $surveyid]) ?>'
+           class='btn btn-outline-secondary d-print-none statistics-browse'>
+            <?php eT("Browse"); ?>
+        </a>
     <?php endif; ?>
 
 </div>

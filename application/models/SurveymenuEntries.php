@@ -385,7 +385,7 @@ class SurveymenuEntries extends LSActiveRecord
             [
                 'name'   => 'data',
                 'value'  => '$data->data ? "<i class=\'ri-information-fill bigIcons\' title=\'".$data->data."\'></i>"
-                : ( $data->getdatamethod ? gT("GET data method:")."<br/>".$data->getdatamethod : "")',
+                : ( $data->getdatamethod ? gT("GET data method:")."<br/>".CHtml::encode($data->getdatamethod) : "")',
                 'type'   => 'raw',
                 'filter' => false,
             ],

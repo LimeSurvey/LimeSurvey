@@ -523,6 +523,15 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['ko']['radixpoint'] = 0;
     $supportedLanguages['ko']['momentjs'] = 'ko';
 
+    // Khmer
+    $supportedLanguages['km']['description'] = gT('Khmer');
+    $supportedLanguages['km']['nativedescription'] = 'Khmer';
+    $supportedLanguages['km']['rtl'] = false;
+    $supportedLanguages['km']['dateformat'] = 5;
+    $supportedLanguages['km']['radixpoint'] = 1;
+    $supportedLanguages['km']['cldr'] = 'km';
+    $supportedLanguages['km']['momentjs'] = null;
+
     // Kirundi
     $supportedLanguages['run']['description'] = gT('Kirundi');
     $supportedLanguages['run']['nativedescription'] = 'Ikirundi';
@@ -579,6 +588,7 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['lb']['rtl'] = false;
     $supportedLanguages['lb']['dateformat'] = 1;
     $supportedLanguages['lb']['radixpoint'] = 1;
+    $supportedLanguages['lb']['cldr'] = 'fr_lu';
     $supportedLanguages['lb']['momentjs'] = 'lb';
 
     // Macedonian
@@ -838,6 +848,7 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['es-informal']['rtl'] = false;
     $supportedLanguages['es-informal']['dateformat'] = 5;
     $supportedLanguages['es-informal']['radixpoint'] = 1;
+    $supportedLanguages['es-informal']['cldr'] = 'es';
     $supportedLanguages['es-informal']['momentjs'] = 'es';
 
 

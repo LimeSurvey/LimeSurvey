@@ -112,7 +112,7 @@ echo viewHelper::getViewTestTag('templateOptions');
                                                 <?php if (Permission::model()->hasGlobalPermission('templates', 'delete')) : ?>
                                                     <a id="template_editor_link_<?= $oTemplate->sTemplateName ?>"
                                                        href="<?php echo Yii::app()->getController()->createUrl('admin/themes/sa/deleteAvailableTheme/') ?>"
-                                                       data-post='{ "templatename": "<?= $oTemplate->sTemplateName ?>" }'
+                                                       data-post='{ "templatename": "<?= CHtml::encode($oTemplate->sTemplateName) ?>" }'
                                                        data-text="<?php eT('Are you sure you want to delete this theme?'); ?>"
                                                        data-button-no="<?= gT('Cancel'); ?>"
                                                        data-button-yes="<?= gT('Delete'); ?>"
@@ -171,7 +171,7 @@ echo viewHelper::getViewTestTag('templateOptions');
                                             <?php if (Permission::model()->hasGlobalPermission('templates', 'delete')) : ?>
                                                 <a id="button-delete"
                                                    href="<?php echo Yii::app()->getController()->createUrl('admin/themes/sa/deleteBrokenTheme/'); ?>"
-                                                   data-post='{ "templatename": "<?php echo $sName; ?>" }'
+                                                   data-post='{ "templatename": "<?php echo CHtml::encode($sName); ?>" }'
                                                    data-text="<?php eT('Are you sure you want to delete this theme?'); ?>"
                                                    data-button-no="<?= gT('Cancel'); ?>"
                                                    data-button-yes="<?= gT('Delete'); ?>"
@@ -255,7 +255,7 @@ echo viewHelper::getViewTestTag('templateOptions');
                                         <?php if ($oTheme->name === App()->getConfig('admintheme')) : ?>
                                             <h3><strong class="text-info"><?php eT("Selected") ?></strong></h3>
                                         <?php else : ?>
-                                            <a href="<?= $this->createUrl("themeOptions/setAdminTheme/", ['sAdminThemeName' => $oTheme->path]) ?>"
+                                            <a href="<?= $this->createUrl("themeOptions/setAdminTheme/", ['sAdminThemeName' => $oTheme->name]) ?>"
                                                class="btn btn-outline-secondary btn-sm">
                                                 <?= gT("Select") ?>
                                             </a>
@@ -298,9 +298,10 @@ echo viewHelper::getViewTestTag('templateOptions');
             <div class="col-12 list-surveys">
                 <?php echo '<h3>' . gT('Question themes:') . '</h3>'; ?>
                 <!-- Installed Question Themes -->
-            <?php $this->renderPartial('./installedthemelist', array('oQuestionTheme' => $oQuestionTheme, 'pageSize' => $pageSize)); ?>
-            <!-- Available Quesiton Themes and broken question themes-->
-            <?php $this->renderPartial('./availablethemelist', array('oQuestionTheme' => $oQuestionTheme, 'pageSize' => $pageSize)); ?>
+                <?php $this->renderPartial('./installedthemelist', array('oQuestionTheme' => $oQuestionTheme, 'pageSize' => $pageSize)); ?>
+                <!-- Available Quesiton Themes and broken question themes-->
+                <?php $this->renderPartial('./availablethemelist', array('oQuestionTheme' => $oQuestionTheme, 'pageSize' => $pageSize)); ?>
+            </div>
         </div>
     </div>
 </div>
@@ -330,6 +331,7 @@ echo viewHelper::getViewTestTag('templateOptions');
 <script>
     $('#themelist a').click(function (e) {
         var target = $(e.target).attr("href");
+        $("#uploadandinstall").css('visibility', 'visible');
         if (target === "#questionthemes") {
             $("#uploadandinstall").attr('data-bs-target', '#importQuestionModal');
         }
@@ -338,6 +340,7 @@ echo viewHelper::getViewTestTag('templateOptions');
         }
         if(target === "#adminthemes") { //no upload$install for adminthemes
             $("#uploadandinstall").attr('data-bs-target', '');
+            $("#uploadandinstall").css('visibility', 'hidden');
         }
     });
 </script>

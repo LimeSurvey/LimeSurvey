@@ -11,10 +11,12 @@ class TransformerInputAnswer extends Transformer
         $this->setDataMap([
             'aid' => ['type' => 'int'],
             'qid' => ['type' => 'int'],
+            'oldCode' => 'oldcode',
             'code' => true,
             'sortOrder' => ['key' => 'sortorder', 'type' => 'int'],
             'assessmentValue' => ['key' => 'assessment_value', 'type' => 'int'],
-            'scaleId' => ['key' => 'scale_id', 'type' => 'int']
+            'scaleId' => ['key' => 'scale_id', 'type' => 'int'],
+            'tempId' => true
         ]);
     }
 }
