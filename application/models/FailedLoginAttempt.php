@@ -91,11 +91,11 @@ class FailedLoginAttempt extends LSActiveRecord
 
         switch ($attemptType) {
             case FailedLoginAttempt::TYPE_LOGIN:
-                $timeOut = floatval(App()->getConfig('timeOutTime'));
+                $timeOut = intval(App()->getConfig('timeOutTime'));
                 $maxLoginAttempt = intval(App()->getConfig('maxLoginAttempt'));
                 break;
             case FailedLoginAttempt::TYPE_TOKEN:
-                $timeOut = floatval(App()->getConfig('timeOutParticipants'));
+                $timeOut = intval(App()->getConfig('timeOutParticipants'));
                 $maxLoginAttempt = intval(App()->getConfig('maxLoginAttemptParticipants'));
                 break;
             default:
