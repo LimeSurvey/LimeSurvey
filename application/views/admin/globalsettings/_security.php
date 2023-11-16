@@ -166,8 +166,8 @@
                         <?php eT("Lockout time in seconds (after maximum number of attempts):"); ?>
                     </label>
                     <div class="">
-                        <input class="form-control" type="number" min="0" name="timeOutTime" placeholder="<?= gT("Disabled") ?>"
-                            value="<?= App()->getConfig('timeOutTime') !== "" ?? floatval(App()->getConfig('timeOutTime')) ?>"
+                        <input class="form-control" type="number" min="0" pattern="^\d*$" name="timeOutTime" placeholder="<?= gT("Disabled") ?>"
+                            value="<?= App()->getConfig('timeOutTime') !== "" ?? intval(App()->getConfig('timeOutTime')) ?>"
                         />
                         <div class="form-text"><?= gT("Set an empty value or 0 disable brute force protection. Number of attemps are deleted each time.") ?></div>
                     </div>
@@ -194,7 +194,7 @@
                     <?php eT("Maximum number of attempts:"); ?>
                 </label>
                 <div class="">
-                    <input class="form-control" min="1" type="number" pattern="^\d*$" name="maxLoginAttemptParticipants" placeholder="<?= gT("Disabled") ?>"
+                    <input class="form-control" type="number" min="1" pattern="^\d*$" name="maxLoginAttemptParticipants" placeholder="<?= gT("Disabled") ?>"
                         value="<?= App()->getConfig('maxLoginAttemptParticipants') !== "" ??  intval(App()->getConfig('maxLoginAttemptParticipants')) ?>"
                     />
                     <div class="form-text"><?= gT("Set an empty value disable brute force protection. Number of attemps are never checked.") ?></div>
@@ -205,8 +205,8 @@
                     <?php eT("Lockout time in seconds (after maximum number of attempts):"); ?>
                 </label>
                 <div class="">
-                    <input class="form-control" type="number" min="0" name="timeOutParticipants" placeholder="<?= gT("Disabled") ?>"
-                        value="<?= App()->getConfig('timeOutParticipants') !== "" ?? floatval(App()->getConfig('timeOutParticipants')) ?>"
+                    <input class="form-control" type="number" min="0" pattern="^\d*$" name="timeOutParticipants" placeholder="<?= gT("Disabled") ?>"
+                        value="<?= App()->getConfig('timeOutParticipants') !== "" ?? intval(App()->getConfig('timeOutParticipants')) ?>"
                     />
                     <div class="form-text"><?= gT("Set an empty value or 0 disable brute force protection. Number of attemps are deleted each time.") ?></div>
                 </div>
