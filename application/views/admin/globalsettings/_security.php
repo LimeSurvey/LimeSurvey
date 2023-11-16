@@ -158,7 +158,7 @@
                         <input class="form-control" type="number" min="1" step="1" pattern="^\d*$" name="maxLoginAttempt" placeholder="<?= gT("Disabled") ?>"
                             value="<?= App()->getConfig('maxLoginAttempt') !== "" ?? intval(App()->getConfig('maxLoginAttempt')) ?>"
                         />
-                        <div class="form-text"><?= gT("Set an empty value disable brute force protection. Number of attemps are never checked.") ?></div>
+                        <div class="form-text"><?= gT("Set an empty value disable brute force protection. Number of attempts are never checked.") ?></div>
                     </div>
                 </div>
                 <div class="mb-3">
