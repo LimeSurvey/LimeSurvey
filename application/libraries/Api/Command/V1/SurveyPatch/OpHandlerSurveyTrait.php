@@ -68,4 +68,19 @@ trait OpHandlerSurveyTrait
         }
         return $dataSet;
     }
+
+    /**
+     * returns and removes tempId from dataset
+     * @param array $dataSet
+     * @return int|mixed
+     */
+    public function extractTempId(array &$dataSet)
+    {
+        if (isset($dataSet['tempId'])) {
+            $tempId = $dataSet['tempId'];
+            unset($dataSet['tempId']);
+            return $tempId;
+        }
+        return 0;
+    }
 }

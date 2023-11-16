@@ -9,6 +9,7 @@ use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestionAttribut
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestionL10ns;
 use LimeSurvey\ObjectPatch\Op\OpInterface;
 use LimeSurvey\ObjectPatch\OpHandler\OpHandlerException;
+use Question;
 
 trait OpHandlerQuestionTrait
 {
@@ -32,12 +33,12 @@ trait OpHandlerQuestionTrait
         $preparedAnswers = [];
         if (is_array($data)) {
             foreach ($data as $index => $answer) {
-                $transformedAnswer = $transformerAnswer->transform(
+                $tfAnswer = $transformerAnswer->transform(
                     $answer
                 );
                 $this->checkRequiredData(
                     $op,
-                    $transformedAnswer,
+                    $tfAnswer,
                     'answers',
                     $additionalRequiredEntities
                 );
@@ -47,7 +48,7 @@ trait OpHandlerQuestionTrait
                         $answer
                     ) && is_array($answer['l10ns'])
                 ) {
-                    $transformedAnswer['answeroptionl10n'] = $this->prepareAnswerL10n(
+                    $tfAnswer['answeroptionl10n'] = $this->prepareAnswerL10n(
                         $op,
                         $answer['l10ns'],
                         $transformerAnswerL10n,
@@ -59,9 +60,13 @@ trait OpHandlerQuestionTrait
                  */
                 $scaleId = array_key_exists(
                     'scale_id',
-                    $transformedAnswer
-                ) ? $transformedAnswer['scale_id'] : 0;
-                $preparedAnswers[$index][$scaleId] = $transformedAnswer;
+                    $tfAnswer
+                ) ? $tfAnswer['scale_id'] : 0;
+                $index = array_key_exists(
+                    'aid',
+                    $tfAnswer
+                ) ? $tfAnswer['aid'] : $index;
+                $preparedAnswers[$index][$scaleId] = $tfAnswer;
             }
         }
         return $preparedAnswers;
@@ -287,5 +292,49 @@ trait OpHandlerQuestionTrait
             'scale_id',
             $questionData
         ) ? (int)$questionData['scale_id'] : 0;
+    }
+
+    /**
+     * Maps the tempIds of new subquestions or answers to the real ids.
+     * @param Question $question
+     * @param array $data
+     * @param bool $answers
+     * @return array
+     */
+    private function getSubQuestionNewIdMapping(
+        Question $question,
+        array $data,
+        bool $answers = false
+    ): array {
+        $tempIds = [];
+        $mapping = [];
+        $title = $answers ? 'code' : 'title';
+        $object = $answers ? 'answers' : 'subquestions';
+        $idField = $answers ? 'aid' : 'qid';
+        foreach ($data as $subQueDataArray) {
+            foreach ($subQueDataArray as $subQueData) {
+                if (
+                    isset($subQueData['tempId'])
+                    && isset($subQueData[$title])
+                ) {
+                    $tempIds[$subQueData[$title]] = $subQueData['tempId'];
+                }
+            }
+        }
+        if (count($tempIds) > 0) {
+            $question->refresh();
+            foreach ($question->$object as $subquestion) {
+                if (array_key_exists($subquestion->$title, $tempIds)) {
+                    $mapping[$object . 'Map'][] = [
+                        new TempIdMapItem(
+                            $tempIds[$subquestion->$title],
+                            $subquestion->$idField,
+                            $idField
+                        )
+                    ];
+                }
+            }
+        }
+        return $mapping;
     }
 }

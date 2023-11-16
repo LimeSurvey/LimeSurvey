@@ -76,26 +76,27 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
      *                     "qid": "0",
      *                     "title": "G01Q06",
      *                     "type": "1",
-     *                     "question_theme_name": "arrays\/dualscale",
+     *                     "questionThemeName": "arrays\/dualscale",
      *                     "gid": "1",
      *                     "mandatory": false,
      *                     "relevance": "1",
      *                     "encrypted": false,
-     *                     "save_as_default": false
+     *                     "saveAsDefault": false,
+     *                     "tempId": "XXX321"
      *                 },
      *                 "questionL10n": {
      *                     "en": {
      *                             "question": "Array Question",
      *                             "help": "Help text"
      *                     },
-     *                     "de-informal": {
+     *                     "de": {
      *                             "question": "Array ger",
      *                             "help": "help ger"
      *                     }
      *                 },
      *                 "attributes": {
      *                     "dualscale_headerA": {
-     *                             "de-informal": {
+     *                             "de": {
      *                                 "value": "A ger"
      *                             },
      *                             "en": {
@@ -103,7 +104,7 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
      *                             }
      *                     },
      *                     "dualscale_headerB": {
-     *                             "de-informal": {
+     *                             "de": {
      *                                 "value": "B ger"
      *                             },
      *                             "en": {
@@ -122,6 +123,7 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
      *                         "sortOrder": 0,
      *                         "assessmentValue": 0,
      *                         "scaleId": 0,
+     *                         "tempId": "111",
      *                         "l10ns": {
      *                             "de": {
      *                                 "answer": "antwort1",
@@ -138,6 +140,7 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
      *                         "sortOrder": 1,
      *                         "assessmentValue": 0,
      *                         "scaleId": 0,
+     *                         "tempId": "112",
      *                         "l10ns": {
      *                             "de": {
      *                                 "answer": "antwort1.2",
@@ -155,8 +158,9 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
      *                         "title": "SQ001",
      *                         "sortOrder": 0,
      *                         "relevance": "1",
+     *                         "tempId": "113",
      *                         "l10ns": {
-     *                             "de-informal": {
+     *                             "de": {
      *                                 "question": "subger1",
      *                                 "language": "de"
      *                             },
@@ -170,8 +174,9 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
      *                         "title": "SQ002",
      *                         "sortOrder": 1,
      *                         "relevance": "1",
+     *                         "tempId": "114",
      *                         "l10ns": {
-     *                             "de-informal": {
+     *                             "de": {
      *                                 "question": "subger2",
      *                                 "language": "de"
      *                             },
@@ -188,7 +193,7 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
      * }
      *
      * @param OpInterface $op
-     * @return void
+     * @return array
      * @throws OpHandlerException
      * @throws \DI\DependencyException
      * @throws \DI\NotFoundException
@@ -196,16 +201,54 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
      * @throws \LimeSurvey\Models\Services\Exception\PermissionDeniedException
      * @throws \LimeSurvey\Models\Services\Exception\PersistErrorException
      */
-    public function handle(OpInterface $op): void
+    public function handle(OpInterface $op): array
     {
+        $transformedProps = $this->prepareData($op);
+        if (
+            !is_array($transformedProps) ||
+            !array_key_exists(
+                'question',
+                $transformedProps
+            )
+        ) {
+            throw new OpHandlerException(
+                sprintf(
+                    'no question entity provided within props for %s with id "%s"',
+                    $this->entity,
+                    print_r($op->getEntityId(), true)
+                )
+            );
+        }
+        $tempId = $this->extractTempId($transformedProps['question']);
         $diContainer = \LimeSurvey\DI::getContainer();
         $questionService = $diContainer->get(
             QuestionAggregateService::class
         );
 
-        $questionService->save(
+        $question = $questionService->save(
             $this->getSurveyIdFromContext($op),
-            $this->prepareData($op)
+            $transformedProps
+        );
+
+        return array_merge(
+            [
+                'questionsMap' => [
+                    new TempIdMapItem(
+                        $tempId,
+                        $question->qid,
+                        'qid'
+                    )
+                ]
+            ],
+            $this->getSubQuestionNewIdMapping(
+                $question,
+                $transformedProps['subquestions']
+            ),
+            $this->getSubQuestionNewIdMapping(
+                $question,
+                $transformedProps['answeroptions'],
+                true
+            )
         );
     }
 
