@@ -55,7 +55,7 @@ class RemoteControlTest extends TestBaseClassWeb
     public function testGetSessionKey()
     {
         $sessionKey = self::$client->call('get_session_key', ['admin', 'password']);
-        $this->assertIsNotArray($sessionKey);
+        $this->assertIsString($sessionKey);
 
         self::$client->call('release_session_key', [$sessionKey]);
     }
