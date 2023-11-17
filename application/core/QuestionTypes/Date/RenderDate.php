@@ -252,7 +252,7 @@ class RenderDate extends QuestionBaseRenderer
                         'minDate' => $this->minDate,
                         'maxDate' => $this->maxDate,
                         'stepping' => $this->getQuestionAttribute('dropdown_dates_minute_step'),
-                        'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']),
+                        'locale' => convertLStoDateTimePickerLocale(App()->getLanguage()),
                     )
                 ),
                 true
