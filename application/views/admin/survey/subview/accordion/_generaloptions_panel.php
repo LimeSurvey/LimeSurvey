@@ -317,10 +317,7 @@ Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", 
         </div>
         <?php
             $themeConf = TemplateConfiguration::getInstanceFromTemplateName(($oSurvey->template === 'inherit') ? $oSurveyOptions->template : $oSurvey->template);
-            $inheritThemeName = $oSurveyOptions->template;
-            if ($oSurveyOptions->template == 'inherit') {
-                $inheritThemeName = Yii::app()->getConfig('defaulttheme');
-            }
+            $inheritedThemeName = $oSurvey->oOptions->template;
         ?>
         <!-- Theme -->
         <div class="mb-3" >
@@ -330,7 +327,7 @@ Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", 
                         data-inherit-template-name='<?= $themeConf->template_name ?>'>
                     <?php if ($bShowInherited || $bGlobalSettings) : ?>
                         <option value="inherit" <?= ($oSurvey->template == 'inherit') ? 'selected="selected"' : ''; ?>>
-                            <?= gT('Inherit') . ' [' . CHtml::encode($inheritThemeName) . ']' ?>
+                            <?= gT('Inherit') . ' [' . CHtml::encode($inheritedThemeName) . ']' ?>
                         </option>
                     <?php endif; ?>
                     <?php
