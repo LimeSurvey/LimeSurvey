@@ -109,7 +109,7 @@ class OpHandlerSubQuestion implements OpHandlerInterface
      *     ]
      * }
      *
-     * Expects a patch structure like this for update:
+     * Expects a patch structure like this for create:
      * {
      *     "patch": [{
      *             "entity": "subquestion",
@@ -193,6 +193,10 @@ class OpHandlerSubQuestion implements OpHandlerInterface
     public function isValidPatch(OpInterface $op): bool
     {
         // TODO: Implement isValidPatch() method.
+        //when is the patch (the operation a valid operation)?
+        //--> update:  props should include qid (which means update)
+        //--> create:  props should include tempId (which means create)
+        $props = $op->getProps();
         return true;
     }
 }
