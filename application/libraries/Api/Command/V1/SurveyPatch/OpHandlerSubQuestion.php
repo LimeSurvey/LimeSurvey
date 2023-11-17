@@ -6,7 +6,6 @@ use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\{
     OpHandlerQuestionTrait,
     OpHandlerSurveyTrait
 };
-use Question;
 use LimeSurvey\Api\Command\V1\Transformer\Input\{
     TransformerInputQuestion,
     TransformerInputQuestionL10ns
