@@ -65,7 +65,7 @@ class SurveyPatch implements CommandInterface
             PatcherSurvey::class
         );
         try {
-            $patcher->applyPatch($patch, ['id' => $id]);
+            $returnedData = $patcher->applyPatch($patch, ['id' => $id]);
         } catch (ObjectPatchException $e) {
             return $this->responseFactory->makeErrorBadRequest(
                 $e->getMessage()
@@ -73,6 +73,6 @@ class SurveyPatch implements CommandInterface
         }
 
         return $this->responseFactory
-            ->makeSuccess(true);
+            ->makeSuccess($returnedData);
     }
 }
