@@ -445,17 +445,5 @@ return [
             'jquery',
             'jquery-actual',
         ]
-    ],
-    // Survey Theme Global code
-    'survey-theme-global' => [
-        'devBaseUrl' => 'assets/packages/survey-theme-global/',
-        'basePath'   => 'core.survey-theme-global',
-        'position'   => CClientScript::POS_BEGIN,
-        'js'         => [
-            'survey-theme-global.js',
-        ],
-        'depends'    => [
-            'jquery',
-        ]
-    ],
+    ]
 ];
