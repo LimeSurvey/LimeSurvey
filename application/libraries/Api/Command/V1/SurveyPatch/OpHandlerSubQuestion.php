@@ -6,6 +6,7 @@ use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\{
     OpHandlerQuestionTrait,
     OpHandlerSurveyTrait
 };
+use Question;
 use LimeSurvey\Api\Command\V1\Transformer\Input\{
     TransformerInputQuestion,
     TransformerInputQuestionL10ns
@@ -120,6 +121,7 @@ class OpHandlerSubQuestion implements OpHandlerInterface
      *             "id": 722,
      *             "props": {
      *                 "0": {
+     *                     "tempId": "456789",
      *                     "title": "SQ011",
      *                     "l10ns": {
      *                         "de": {
@@ -134,6 +136,7 @@ class OpHandlerSubQuestion implements OpHandlerInterface
      *                 },
      *                 "1": {
      *                     "title": "SQ012",
+     *                     "tempId": "345678",
      *                     "l10ns": {
      *                         "de": {
      *                             "question": "germanized2",
@@ -156,7 +159,7 @@ class OpHandlerSubQuestion implements OpHandlerInterface
      * @throws PermissionDeniedException
      * @throws PersistErrorException
      */
-    public function handle(OpInterface $op): void
+    public function handle(OpInterface $op): array
     {
         $surveyId = $this->getSurveyIdFromContext($op);
         $this->questionAggregateService->checkUpdatePermission($surveyId);
@@ -173,13 +176,15 @@ class OpHandlerSubQuestion implements OpHandlerInterface
             $this->throwNoValuesException($op);
         }
         $questionId = $op->getEntityId();
+        $question = $this->questionService->getQuestionBySidAndQid(
+            $surveyId,
+            $questionId
+        );
         $this->subQuestionsService->save(
-            $this->questionService->getQuestionBySidAndQid(
-                $surveyId,
-                $questionId
-            ),
+            $question,
             $preparedData
         );
+        return $this->getSubQuestionNewIdMapping($question, $preparedData);
     }
 
     /**

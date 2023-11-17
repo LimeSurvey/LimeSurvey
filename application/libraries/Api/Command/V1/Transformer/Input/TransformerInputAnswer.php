@@ -15,7 +15,8 @@ class TransformerInputAnswer extends Transformer
             'code' => true,
             'sortOrder' => ['key' => 'sortorder', 'type' => 'int'],
             'assessmentValue' => ['key' => 'assessment_value', 'type' => 'int'],
-            'scaleId' => ['key' => 'scale_id', 'type' => 'int']
+            'scaleId' => ['key' => 'scale_id', 'type' => 'int'],
+            'tempId' => true
         ]);
     }
 }

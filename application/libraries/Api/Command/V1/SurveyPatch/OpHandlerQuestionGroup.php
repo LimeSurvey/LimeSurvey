@@ -3,6 +3,7 @@
 namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
 use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\OpHandlerSurveyTrait;
+use LimeSurvey\Models\Services\Exception\PermissionDeniedException;
 use QuestionGroup;
 use LimeSurvey\Models\Services\QuestionGroupService;
 use LimeSurvey\Api\Command\V1\Transformer\Input\{
@@ -71,19 +72,19 @@ class OpHandlerQuestionGroup implements OpHandlerInterface
      * @param OpInterface $op
      * @throws OpHandlerException
      */
-    public function handle(OpInterface $op): void
+    public function handle(OpInterface $op): array
     {
         switch (true) {
             case $this->isUpdateOperation:
                 $this->update($op);
                 break;
             case $this->isCreateOperation:
-                $this->create($op);
-                break;
+                return $this->create($op);
             case $this->isDeleteOperation:
                 $this->delete($op);
                 break;
         }
+        return [];
     }
 
     /**
@@ -179,7 +180,7 @@ class OpHandlerQuestionGroup implements OpHandlerInterface
         $transformedProps = $this->getTransformedProps($op);
         $questionGroup = $this->questionGroupService->getQuestionGroupForUpdate(
             $surveyId,
-            $this->getQuestionGroupId($op)
+            $op->getEntityId()
         );
         if (isset($transformedProps['questionGroup'])) {
             $this->questionGroupService->updateQuestionGroup(
@@ -206,6 +207,7 @@ class OpHandlerQuestionGroup implements OpHandlerInterface
      *             "op": "create",
      *             "props":{
      *                 "questionGroup": {
+     *                     "tempId": 777,
      *                     "randomizationGroup": "",
      *                     "gRelevance": ""
      *                 },
@@ -231,19 +233,27 @@ class OpHandlerQuestionGroup implements OpHandlerInterface
      *
      * @param OpInterface $op
      * @param QuestionGroupService $groupService
-     * @return void
+     * @return array
      * @throws OpHandlerException
      * @throws \LimeSurvey\Models\Services\Exception\NotFoundException
      * @throws \LimeSurvey\Models\Services\Exception\PersistErrorException
      */
-    private function create(OpInterface $op)
+    private function create(OpInterface $op): array
     {
         $surveyId = $this->getSurveyIdFromContext($op);
         $transformedProps = $this->getTransformedProps($op);
-        $this->questionGroupService->createGroup(
+        $tempId = $this->extractTempId($transformedProps['questionGroup']);
+        $questionGroup = $this->questionGroupService->createGroup(
             $surveyId,
             $transformedProps
         );
+        $questionGroup->refresh();
+        return [
+            'questionGroupsMap' => [
+                'tempId' => $tempId,
+                'gid'    => $questionGroup->gid
+            ]
+        ];
     }
 
     /**
@@ -259,32 +269,17 @@ class OpHandlerQuestionGroup implements OpHandlerInterface
      * }
      *
      * @param OpInterface $op
-     * @param QuestionGroupService $groupService
      * @return void
+     * @throws OpHandlerException
+     * @throws PermissionDeniedException
      */
     private function delete(OpInterface $op)
     {
         $surveyId = $this->getSurveyIdFromContext($op);
         $this->questionGroupService->deleteGroup(
-            $this->getQuestionGroupId($op),
+            $op->getEntityId(),
             $surveyId
         );
-    }
-
-    /**
-     * Extracts and returns gid (question group id) from passed id parameter
-     *
-     * @param OpInterface $op
-     * @return int
-     * @throws OpHandlerException
-     **/
-    private function getQuestionGroupId(OpInterface $op)
-    {
-        $id = $op->getEntityId();
-        if (!isset($id)) {
-            throw new OpHandlerException('No group id provided');
-        }
-        return $id;
     }
 
     /**
@@ -294,7 +289,10 @@ class OpHandlerQuestionGroup implements OpHandlerInterface
      */
     public function isValidPatch(OpInterface $op): bool
     {
-        // TODO: Implement isValidPatch() method.
+        if ($this->isUpdateOperation || $this->isDeleteOperation) {
+            return ((int)$op->getEntityId()) > 0;
+        }
+
         return true;
     }
 }

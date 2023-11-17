@@ -80,7 +80,6 @@ class OpHandlerSurveyUpdate implements OpHandlerInterface
      */
     public function isValidPatch(OpInterface $op): bool
     {
-        // TODO: Implement isValidPatch() method.
-        return true;
+        return ((int)$op->getEntityId()) > 0;
     }
 }
