@@ -5,16 +5,22 @@ namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 use DI\DependencyException;
 use DI\NotFoundException;
 use SurveyLanguageSetting;
-use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputSurveyLanguageSettings;
-use LimeSurvey\Api\Command\V1\SurveyPatch\OpHandlerSurveyTrait;
+use LimeSurvey\Api\Command\V1\Transformer\{
+    Input\TransformerInputSurveyLanguageSettings,
+};
+use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\OpHandlerSurveyTrait;
 use LimeSurvey\Api\Transformer\TransformerInterface;
-use LimeSurvey\Models\Services\Exception\PermissionDeniedException;
-use LimeSurvey\Models\Services\Exception\PersistErrorException;
-use LimeSurvey\Models\Services\SurveyUpdater\LanguageSettings;
-use LimeSurvey\ObjectPatch\Op\OpInterface;
-use LimeSurvey\ObjectPatch\OpHandler\OpHandlerException;
-use LimeSurvey\ObjectPatch\OpHandler\OpHandlerInterface;
-use LimeSurvey\ObjectPatch\OpType\OpTypeUpdate;
+use LimeSurvey\Models\Services\{
+    Exception\PermissionDeniedException,
+    Exception\PersistErrorException,
+    SurveyUpdater\LanguageSettings
+};
+use LimeSurvey\ObjectPatch\{
+    Op\OpInterface,
+    OpHandler\OpHandlerException,
+    OpHandler\OpHandlerInterface,
+    OpType\OpTypeUpdate
+};
 
 class OpHandlerLanguageSettingsUpdate implements OpHandlerInterface
 {
@@ -135,10 +141,7 @@ class OpHandlerLanguageSettingsUpdate implements OpHandlerInterface
     {
         $transformedProps = $this->transformer->transform($props);
         if ($props === null || $transformedProps === null) {
-            throw new OpHandlerException(sprintf(
-                'No values to update for entity %s',
-                $op->getEntityType()
-            ));
+            $this->throwNoValuesException($op);
         }
         return $transformedProps;
     }
