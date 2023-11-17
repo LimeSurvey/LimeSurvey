@@ -14,6 +14,7 @@ use LimeSurvey\Models\Services\Exception\{
     NotFoundException,
     PermissionDeniedException
 };
+use User;
 
 /**
  * Service GeneralSettings
@@ -31,6 +32,7 @@ class GeneralSettings
     private CHttpSession $session;
     private PluginManager $pluginManager;
     private LanguageConsistency $languageConsistency;
+    private User $modelUser;
 
     const FIELD_TYPE_YN = 'yesorno';
     const FIELD_TYPE_DATETIME = 'dateime';
@@ -45,7 +47,8 @@ class GeneralSettings
         LSYii_Application $yiiApp,
         CHttpSession $session,
         PluginManager $pluginManager,
-        LanguageConsistency $languageConsistency
+        LanguageConsistency $languageConsistency,
+        User $modelUser
     ) {
         $this->modelPermission = $modelPermission;
         $this->modelSurvey = $modelSurvey;
@@ -53,6 +56,7 @@ class GeneralSettings
         $this->session = $session;
         $this->pluginManager = $pluginManager;
         $this->languageConsistency = $languageConsistency;
+        $this->modelUser = $modelUser;
     }
 
     /**
@@ -88,6 +92,19 @@ class GeneralSettings
         );
         if (!$survey) {
             throw new NotFoundException();
+        }
+
+        // Before setting the owner, check if the user exists and can be seen
+        // by the current user (in case the request was forged)
+        // NOTE: Internally, the getUserList function will use objects (like the Yii App and Permission model) that
+        //       currently may differ from the ones injected in this service.
+        if (!empty($input['owner_id'])) {
+            $owner = $this->modelUser->findByPk($input['owner_id']);
+            if (!isset($owner) || !in_array($input['owner_id'], getUserList('onlyuidarray'))) {
+                throw new PermissionDeniedException(
+                    'Permission denied'
+                );
+            }
         }
 
         return $this->updateGeneralSettings(
