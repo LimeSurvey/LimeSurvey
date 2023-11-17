@@ -227,7 +227,10 @@ function survey_theme_ls6_rtl() {
 function survey_theme_ls6_js() {
     // browserify package handler
     return browserify({
-        entries: ['assets/survey_themes/fruity_twentythree/theme_js_modules.js']
+        entries: [
+            'assets/survey_themes/fruity_twentythree/theme_js_modules.js',
+            'assets/packages/survey-theme-global/survey-theme-global.js'
+        ]
     })
         // transform babelify ES6 to ES5 [@babel/preset-env]
         .transform(babelify, {

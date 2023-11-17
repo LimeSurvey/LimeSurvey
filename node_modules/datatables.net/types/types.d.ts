@@ -521,12 +521,16 @@ export interface ConfigColumns {
     width?: string;
 }
 
-export interface ConfigColumnDefs extends ConfigColumns {
+export type ConfigColumnDefs = ConfigColumnDefsMultiple | ConfigColumnDefsSingle;
+
+export interface ConfigColumnDefsMultiple extends ConfigColumns {
     /**
      * Target column(s). Either this or `target` must be specified.
      */
-    targets?: string | number | Array<(number | string)>;
+    targets: string | number | Array<(number | string)>;
+}
 
+export interface ConfigColumnDefsSingle extends ConfigColumns {
     /**
      * Single column target. Either this or `targets` must be specified. Since: 1.12
      */
@@ -2324,6 +2328,7 @@ export interface ApiStaticExt {
     legacy: object;
     oApi: object;
     order: object;
+    oSort: object;
     pager: object;
     renderer: object;
     search: any[];
