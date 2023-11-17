@@ -59,4 +59,13 @@ class RemoteControlTest extends TestBaseClassWeb
 
         self::$client->call('release_session_key', [$sessionKey]);
     }
+
+    public function testCredentialsError()
+    {
+        $sessionKey = self::$client->call('get_session_key', ['user', 'pass']);
+        $this->assertIsArray($sessionKey);
+        $this->assertSame("Invalid user name or password", $sessionKey['status']);
+
+        self::$client->call('release_session_key', [$sessionKey]);
+    }
 }
