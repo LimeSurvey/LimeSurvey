@@ -64,6 +64,7 @@
          <!--    <add>bootstrap_5/js/bootstrap_5.js</add>  -->
             <remove>survey.js</remove>
             <remove>template-core.js</remove>
+            <remove>survey-theme-global.js</remove>
         </js>
         <print_css>
             <add>css/print_theme.css</add>
