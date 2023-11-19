@@ -192,11 +192,10 @@ class OpHandlerSubQuestion implements OpHandlerInterface
      */
     public function isValidPatch(OpInterface $op): bool
     {
-        // TODO: Implement isValidPatch() method.
         //when is the patch (the operation a valid operation)?
         //--> update:  props should include qid (which means update)
         //--> create:  props should include tempId (which means create)
         $props = $op->getProps();
-        return true;
+        return array_key_exists('qid', $props) || array_key_exists('tempId', $props);
     }
 }
