@@ -101,6 +101,7 @@ class QuestionGroupEditorTest extends TestBaseClassWeb
             $this->sendTextToEditor("description_de", "German description");
 
             // Click save.
+            sleep(2);
             $save = self::$webDriver->findElement(WebDriverBy::id('save-button'));
             $save->click();
 
