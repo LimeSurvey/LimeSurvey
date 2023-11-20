@@ -34,6 +34,16 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.3.5 (build 231113) to 6.3.6 (build 231120) November 20, 2023
+-Fixed issue #CT-480: CPDB attribute issues (#3620) (Tim Willig)
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Japanese by d_inoue
+#Updated translation: French (France) by mapage
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 6.3.4 (build 231108) to 6.3.5 (build 231113) November 13, 2023
 -Fixed issue: Update can fail if there are label codes longer than 5 characters (Carsten Schmitz)
 -Fixed issue #CR-1352: Saving subquestions and answers caused display errors (#3514) (Tim Willig)
