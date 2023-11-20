@@ -130,11 +130,16 @@ abstract class AsymmetricKey
      *
      * @param string $key
      * @param string $password optional
-     * @return AsymmetricKey
+     * @return \phpseclib3\Crypt\Common\PublicKey|\phpseclib3\Crypt\Common\PrivateKey
      */
     public static function load($key, $password = false)
     {
         self::initialize_static_variables();
+
+        $class = new \ReflectionClass(static::class);
+        if ($class->isFinal()) {
+            throw new \RuntimeException('load() should not be called from final classes (' . static::class . ')');
+        }
 
         $components = false;
         foreach (self::$plugins[static::ALGORITHM]['Keys'] as $format) {

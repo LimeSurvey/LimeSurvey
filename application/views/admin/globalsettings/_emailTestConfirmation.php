@@ -1,18 +1,19 @@
 <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal">&times;</button>
-    <div class="h3 modal-title"><?php eT("Test email settings"); ?></div>
+    <h5 class="modal-title"><?php eT("Test email settings"); ?></h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
 </div>
 <div class="modal-body">
     <p><?php printf(gT("Test email will be sent to: %s"), "<strong>" . $testEmail . "</strong>"); ?></p>
-    <div id="settingschangedwarning" class="jumbotron message-box message-box-error" style="display: none;">
-        <p class="text-warning"><?= gT("There seems to be some changes in the settings which were not saved yet. These changes will be disregarded by the test procedure."); ?></p>
+    <div id="settingschangedwarning" class="alert alert-filled-danger" role="alert" style="display: none;">
+        <?= gT("There seems to be some changes in the settings which were not saved yet. These changes will be disregarded by the test procedure."); ?>
     </div>
 </div>
 <div class="modal-footer">
-    <a class="btn btn-primary btn-ok" href="<?php echo \Yii::app()->createUrl('admin/globalsettings', array("sa" => "sendTestEmail"));?>"><span class='fa fa-check'></span>&nbsp;<?php eT("Send email"); ?></a>
-    <button type="button" class="btn btn-danger" data-dismiss="modal">
-        <?php eT("Close"); ?>
-    </button>
+    <a role="button" class="btn btn-primary btn-ok" href="<?php echo \Yii::app()->createUrl('admin/globalsettings', array("sa" => "sendTestEmail")); ?>">
+        <span class='ri-check-fill'></span>
+        &nbsp;<?php eT("Send email"); ?>
+    </a>
+    <button role="button" class="btn btn-outline-dark btn-ok"><?php eT("Close"); ?></button>
 </div>
 
 <script>

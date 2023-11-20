@@ -132,8 +132,8 @@ class Authdb extends AuthPluginBase
         }
 
         $this->getEvent()->getContent($this)
-                ->addContent(CHtml::tag('span', array(), "<label for='user'>" . gT("Username") . "</label>" . CHtml::textField('user', $sUserName, array('size' => 240, 'maxlength' => 240, 'class' => "form-control"))))
-                ->addContent(CHtml::tag('span', array(), "<label for='password'>" . gT("Password") . "</label>" . CHtml::passwordField('password', $sPassword, array('size' => 240, 'maxlength' => 240, 'class' => "form-control"))));
+                ->addContent(CHtml::tag('span', array(), "<label for='user'>" . gT("Username") . "</label>" . CHtml::textField('user', $sUserName, array('size' => 240, 'maxlength' => 240, 'class' => "form-control ls-important-field"))))
+                ->addContent(CHtml::tag('span', array(), "<label for='password'>" . gT("Password") . "</label>" . CHtml::passwordField('password', $sPassword, array('size' => 240, 'maxlength' => 240, 'class' => "form-control ls-important-field"))));
     }
 
     public function newUserSession()

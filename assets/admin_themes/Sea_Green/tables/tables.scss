@@ -1,0 +1,156 @@
+table {
+    border-collapse: separate;
+    border-spacing: 0;
+    .ls-sticky-column {
+        &:first-child {
+            position         : sticky;
+            background-color : $white;
+            left             : 0;
+            box-shadow       : inset -15px 0px 15px -15px rgba(0, 0, 0, 0.05);
+        }
+        &:last-child {
+            position         : sticky;
+            background-color : $white;
+            right            : -1px; // Chrome(<109) bug forces us to use -1px because it would show a 1px gap
+            box-shadow       : inset 15px 0 15px -15px rgba(0, 0, 0, 0.05);
+        }
+    }
+    [class^="ri-"], [class*=" ri-"]  {
+        vertical-align: 0;
+    }
+}
+
+.table {
+    > {
+        thead > tr,
+        tbody > tr,
+        tfoot > tr, {
+            &.active > {
+                td, th {
+                    background-color : $g-200;
+                }
+            }
+            &.success > {
+                td, th {
+                    background-color : $success;
+                }
+            }
+            &.info > {
+                td, th {
+                    background-color : $grape;
+                }
+            }
+            &.warning > {
+                td, th {
+                    background-color : $warning;
+                }
+            }
+            &.danger > {
+                td, th {
+                    background-color : $error;
+                }
+            }
+            > {
+                td, th {
+                    &.active {
+                        background-color : $g-200;
+                    }
+                    &.success {
+                        background-color : $success;
+                    }
+                    &.info {
+                        background-color : $grape;
+                    }
+                    &.warning {
+                        background-color : $warning;
+                    }
+                    &.danger {
+                        background-color : $error;
+                    }
+                }
+            }
+        }
+    }
+    tbody + tbody {
+        border-top : 2px solid $g-600;
+    }
+    tfoot > tr > td {
+        border-top : 1px solid $g-600;
+    }
+    thead > tr > th {
+        border-bottom : 2px solid $g-600;
+    }
+}
+
+.table {
+    background-color : $white;
+}
+
+.table-striped > tbody > tr:nth-child(odd) > td,
+.table-striped > tbody > tr:nth-child(odd) > th {
+    background-color : $g-200;
+}
+
+.table-hover > tbody > tr {
+    &:hover > {
+        td {
+            background-color : $g-200;
+        }
+        td:not(.ls-sticky-column) {
+            box-shadow : none;
+        }
+    }
+    &.active:hover > {
+        td, th {
+            background-color : $g-200;
+        }
+    }
+    &.success:hover > {
+        td, th {
+            background-color : mix($g-200, $success, percentage($table-hover-bg-factor));
+        }
+    }
+    &.info:hover > {
+        td, th {
+            background-color : mix($g-200, $grape, percentage($table-hover-bg-factor));
+        }
+    }
+    &.warning:hover > {
+        td, th {
+            background-color : mix($g-200, $warning, percentage($table-hover-bg-factor));
+        }
+    }
+    &.danger:hover > {
+        td, th {
+            background-color : mix($g-200, $danger, percentage($table-hover-bg-factor));
+        }
+    }
+    > {
+        td, th {
+            &.active:hover {
+                background-color : $g-200;
+            }
+            &.success:hover {
+                background-color : mix($g-200, $success, percentage($table-hover-bg-factor));
+            }
+            &.info:hover {
+                background-color : mix($g-200, $grape, percentage($table-hover-bg-factor));
+            }
+            &.warning:hover {
+                background-color : mix($g-200, $warning, percentage($table-hover-bg-factor));
+            }
+            &.danger:hover {
+                background-color : mix($g-200, $danger, percentage($table-hover-bg-factor));
+            }
+        }
+    }
+}
+
+/** For all grid view table */
+.scrolling-wrapper {
+    overflow-x: scroll;
+    overflow-y: hidden;
+
+    // if go to last page of table, the action dropdown is hidden.
+    min-height: 300px;
+}

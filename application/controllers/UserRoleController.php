@@ -49,8 +49,15 @@ class UserRoleController extends LSBaseController
             $model->setAttributes($aPermissiontemplatesParam, false);
         }
 
-        // Green Bar (SurveyManagerBar) Page Title
-        $aData['pageTitle'] = gT('User roles');
+        $aData['topbar']['title'] = gT('User roles');
+        $aData['topbar']['backLink'] = App()->createUrl('admin/index');
+
+        $aData['topbar']['middleButtons'] = $this->renderPartial(
+            'partials/topbarBtns/leftSideButtons',
+            [],
+            true
+        );
+
 
         //this is really important, so we have the aData also before rendering the content
         $this->aData = $aData;
@@ -233,9 +240,13 @@ class UserRoleController extends LSBaseController
      */
     public function actionRunExport($ptid)
     {
+        if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
+            Yii::app()->session['flashmessage'] = gT('You have no access to the role management!');
+            $this->redirect(['/admin']);
+        }
         $oModel = $this->loadModel($ptid);
         $oXML = $oModel->compileExportXML();
-        $filename = preg_replace("/[^a-zA-Z0-9-_]*/", '', $oModel->name);
+        $filename = preg_replace("/[^a-zA-Z0-9-_]*/", '', (string) $oModel->name);
 
         header('Content-type: application/xml');
         header('Content-Disposition: attachment; filename="' . $filename . '.xml"');
@@ -295,9 +306,12 @@ class UserRoleController extends LSBaseController
      */
     public function actionImportXML()
     {
+        if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
+        }
         $sRandomFileName = randomChars(20);
         $sFilePath = Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $sRandomFileName;
-        $aPathinfo = pathinfo($_FILES['the_file']['name']);
+        $aPathinfo = pathinfo((string) $_FILES['the_file']['name']);
         $sExtension = $aPathinfo['extension'];
         $bMoveFileResult = false;
 
@@ -360,19 +374,23 @@ class UserRoleController extends LSBaseController
             $this->redirect(array('/admin'));
         }
         $sPtids = Yii::app()->request->getPost('sItems', []);
-        $aPtids = json_decode($sPtids, true);
-        $success = [];
+        $aPtids = json_decode((string) $sPtids, true);
+        $aResults = [];
         foreach ($aPtids as $ptid) {
-            $success[$ptid] = $this->loadModel($ptid)->delete();
+            $model = $this->loadModel($ptid);
+            $aResults[$ptid]['title'] = $model->name;
+            $aResults[$ptid]['result'] = $model->delete();
         }
 
-        $this->renderPartial(
-            '/userManagement/partial/success',
-            [
-                'sMessage' => gT('Roles successfully deleted'),
-                'sDebug' => json_encode($success, JSON_PRETTY_PRINT),
-                'noButton' => true
-            ]
+        $tableLabels = array(gT('Role ID'), gT('Name'), gT('Status'));
+
+        Yii::app()->getController()->renderPartial(
+            'ext.admin.survey.ListSurveysWidget.views.massive_actions._action_results',
+            array(
+                'aResults'     => $aResults,
+                'successLabel' => gT('Deleted'),
+                'tableLabels' =>  $tableLabels
+            )
         );
     }
 
@@ -389,7 +407,7 @@ class UserRoleController extends LSBaseController
             $this->redirect(array('/admin'));
         }
         $sPtids = Yii::app()->request->getParam('sItems', '');
-        $aPtids = explode(',', $sPtids);
+        $aPtids = explode(',', (string) $sPtids);
         $sRandomFolderName = randomChars(20);
         $sRandomFileName = "RoleExport-" . randomChars(5) . '-' . time();
 
@@ -406,7 +424,7 @@ class UserRoleController extends LSBaseController
         foreach ($aPtids as $iPtid) {
             $oModel = $this->loadModel($iPtid);
             $oXML = $oModel->compileExportXML();
-            $filename = preg_replace("/[^a-zA-Z0-9-_]*/", '', $oModel->name) . '.xml';
+            $filename = preg_replace("/[^a-zA-Z0-9-_]*/", '', (string) $oModel->name) . '.xml';
 
             file_put_contents($sFilePath . DIRECTORY_SEPARATOR . $filename, $oXML->asXML());
             $filesInArchive[] = $sFilePath . DIRECTORY_SEPARATOR . $filename;

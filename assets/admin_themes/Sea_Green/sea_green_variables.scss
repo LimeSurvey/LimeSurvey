@@ -1,0 +1,183 @@
+$aubergine    : #25003E; // background
+$zucchini     : #003E24; // background
+$focus        : #3BFFB7; // background
+$grape        : #8146F6; // background secondary
+$grape-light  : #D3C5FA; // background secondary
+$litschi      : #FF9AA2; // background secondary
+$blueberry    : #A3C8FF; // background passive
+$orange       : #FFBA68; // tertiary
+$banana       : #FFE872; // tertiary
+$apple        : #B2FF8E; // tertiary
+$success      : #4DD753; // success
+$warning      : #FFE046; // warning
+$error        : #FF515F; // danger/error
+$lime-green   : #7FF409; // links on dark
+$action       : #4200FF; // links on light
+$active-green : #14AE5C; // buttons & links
+$elevation-shadow: rgba(66, 0, 255, 0.2); // LSD/Elevation/Shadow
+$elevation-shadow-soft: rgba(0, 0, 0, 0.2); // LSD/Elevation/ShadowSoft
+
+$white        : #fff;
+$black        : #000;
+$black60      : #666666; // rgba(0, 0, 0, 0.6);
+$black75      : rgba(0, 0, 0, 0.75);
+$grape75 : rgba(123, 97, 255, 0.4);
+$heading-title-color: #152536;
+$heading-sub-title-color: #182535;
+
+$g-900        : #1E1E1E;
+$g-800        : #333641;
+$g-700        : #6E748C;
+$g-600        : #9094A7;
+$g-400        : #D3D5DA;
+$g-300        : #DDDEE8;
+$g-200        : #EEEFF7;
+$g-100        : #F9F9FB;
+
+$theme-colors: (
+    "primary":    $active-green,
+    "secondary":  $g-600,
+    "success":    $success,
+    "danger":     $error,
+    "warning":    $warning,
+    "info":       $grape,
+    "light":      $g-200,
+    "dark":       $g-900,
+    "black60":    $black60,
+    "cancel":     $g-600, // replace with secondary
+);
+
+$border-radius: 4px;
+
+// Typography START
+$ibm-font-family:
+        "IBMPlexSans",
+         // Cross-platform generic font family (default user interface font)
+        system-ui,
+         // Safari for macOS and iOS (San Francisco)
+        -apple-system,
+         // Windows
+        "Segoe UI",
+         // Android
+        Roboto,
+         // Basic web fallback
+        "Helvetica Neue", Arial,
+         // Linux
+        "Noto Sans",
+        "Liberation Sans",
+         // Sans serif fallback
+        sans-serif,
+         // Emoji fonts
+        "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !default;
+
+$font-size-base: 1.14rem; // 16px, Browser default usually is 14px
+$font-size-xs: $font-size-base * 0.75; // 12px
+$font-size-sm: $font-size-base * 0.875; // 14px
+$font-size-md: $font-size-base * 1.125; // 18px
+$font-size-lg: $font-size-base * 1.25; // 20px
+
+$font-weight-300: 300;
+$font-weight-normal: 400;
+$font-weight-500: 500;
+$font-weight-600: 600;
+
+$line-height-20: 20px;
+$line-height-24: 24px;
+$line-height-26: 26px;
+// Typography End
+
+// Buttons START
+$line-height-16: 16px;
+$line-height-20: 20px;
+$line-height-28: 28px;
+$line-height-38: 38px;
+
+$btn-font-weight: 500;
+
+$btn-height-sm: 24px;
+$btn-height: 36px;
+$btn-height-lg: 44px;
+$btn-height-xl: 52px;
+
+$btn-font-size: $font-size-sm;
+$btn-font-size-sm: $font-size-xs;
+// Buttons END
+
+// Shadows START
+$boxshadow             : 8px 8px $g-200;
+$overview-boxShadow    : 0px 2px 6px rgb(0 0 0 / 20%);
+$boxshadow-hover       : 8px 8px $grape-light;
+$boxshadow-small       : 4px 4px $g-200;
+$boxshadow-small-hover : 4px 4px $grape-light;
+$btn-hover-boxshadow   : 0px 0px 0px 3px rgba(123, 97, 255, 0.4);
+$btn-focus-boxshadow   : 4px 4px 0px rgba(123, 97, 255, 0.4);
+// Shadows END
+
+$dropdown-font-size: $font-size-sm;
+
+$tooltip-bg:                        $g-900;
+// $tooltip-border-radius:             $border-radius;
+$tooltip-opacity:                   1;
+$tooltip-padding-y:                 $spacer * .5;
+$tooltip-padding-x:                 $spacer * 1.25;
+
+$tooltip-arrow-color:               $tooltip-bg;
+// $tooltip-arrow-color:               null; // Deprecated in Bootstrap 5.2.0 for CSS variables
+
+// links
+$link-color-action:                       $action !default;
+$link-color:                              $active-green !default;
+$link-decoration:                         none !default;
+$link-shade-percentage:                   20% !default;
+$link-hover-color-action:                 shift-color($link-color-action, $link-shade-percentage) !default;
+$link-hover-color:                        shift-color($link-color, $link-shade-percentage) !default;
+
+// breadcrumb variables
+$breadcrumb-font-size:              $font-size-sm;
+$breadcrumb-spacing:                6px;
+$breadcrumb-divider-color:          $g-600;
+$breadcrumb-active-color:           $g-900;
+$breadcrumb-link-color:             $link-color;
+
+// forms
+// input variables
+$input-padding-y:                   10px;
+$input-padding-x:                   12px;
+$input-color:                       $g-900;
+$input-border-radius:               4px;
+$input-font-weight:                 400;
+$input-border-width:                1px;
+$input-border-color:                $g-900;
+$input-border-color-disabled:       $g-600;
+$input-focus-color:                 $g-900;
+$input-focus-border-color:           $g-900;
+
+// tabs
+$nav-tabs-link-active-color:        $g-900;
+// modal
+$modal-inner-padding: 1.5rem; // 24px
+$modal-lg: 900px;
+
+// badge
+$badge-padding-y:                   2px;
+$badge-padding-x:                   5px;
+
+//card
+$card-header-line-height: 26px;
+
+// navbar
+$navbar-bg-color: $g-800;
+$navbar-color: $white;
+$navbar-badges-bg-color: $white;
+$navbar-badges-color: $navbar-bg-color;
+$navbar-link-hover-color: shift-color($navbar-color, $link-shade-percentage) !default;
+
+// table
+$table-hover-bg     : $g-200;
+$table-border-color : $g-400;
+
+// Main spacing
+$container-padding: 20px;
+
+// pagination
+@import "tables/pagination_varriables.scss";

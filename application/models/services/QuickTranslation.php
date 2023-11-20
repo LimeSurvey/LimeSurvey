@@ -383,6 +383,7 @@ class QuickTranslation
     public function getAnswerTranslations($baselang)
     {
         return Answer::model()
+            ->resetScope()
             ->with('answerl10ns', [
                 'condition' => 'language =:baselang ',
                 'params' => [':baselang' => $baselang]])
@@ -391,7 +392,7 @@ class QuickTranslation
             ->findAllByAttributes(
                 [],
                 [
-                    'order' => 'group_order, question.question_order, t.scale_id, t.sortorder',
+                    'order' => 'group_order, question.question_order, t.scale_id, t.sortorder, t.code',
                     'condition' => 'question.sid=:sid',
                     'params' => array(':sid' => $this->survey->sid)
                 ]
@@ -421,7 +422,7 @@ class QuickTranslation
         };
         switch ($fieldName) {
             case 'title':
-                return $updateLanguageSetting(array('surveyls_title' => substr($new, 0, 200)));
+                return $updateLanguageSetting(array('surveyls_title' => substr((string) $new, 0, 200)));
             case 'description':
                 return $updateLanguageSetting(array('surveyls_description' => $new));
             case 'welcome':
@@ -453,7 +454,7 @@ class QuickTranslation
             case 'emaildetailedadminnotificationbody':
                 return $updateLanguageSetting(array('email_admin_responses' => $new));
             case 'group':
-                return QuestionGroupL10n::model()->updateAll(array('group_name' => mb_substr($new, 0, 100)), 'gid = :gid and language = :language', array(':gid' => $qidOrgid, ':language' => $tolang));
+                return QuestionGroupL10n::model()->updateAll(array('group_name' => mb_substr((string) $new, 0, 100)), 'gid = :gid and language = :language', array(':gid' => $qidOrgid, ':language' => $tolang));
             case 'group_desc':
                 return QuestionGroupL10n::model()->updateAll(array('description' => $new), 'gid = :gid and language = :language', array(':gid' => $qidOrgid, ':language' => $tolang));
             case 'question':

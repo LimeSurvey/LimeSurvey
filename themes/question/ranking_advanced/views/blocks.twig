@@ -1,35 +1,42 @@
 {% extends "./views/basic.twig" %}
 {% block choice %}
-    <div class="col-xs-12">
-        <strong class="sortable-subtitle sortable-rank-subtitle">{{rank_title}}</strong>
+    <div class="col-12 ranking-advanced-available-items">
+        <strong class="sortable-subtitle sortable-rank-subtitle">{{choice_title}}</strong>
         <!-- @todo : move htmlblock at the good place -->      
         <div id="sortable-choice-{{qId}}" class="sortable-choice sortable-list ls-flex wrap ls-flex-row display_block_group ">
-            {% for index, ansrow in  answers %}
+            {% set index = 0 %}
+            {% for ansrow in  answers %}
+                {% set index = index + 1 %}
                 <div id="javatbd{{rankingName}}{{ansrow.code}}" class="ls-choice answer-item sortable-item sortable-enable sortable-button ls-flex sortable-block grabable" data-value="{{ansrow.code}}">
                     <div class="sortable-block-content">
                     {% if show_handle is same as('yes') %} 
                         <i class="fa fa-bars bigIcons grabable selector__dragHandle "></i>
+                        <span class="grabable selector__dragHandle d-none">
+                            <svg class="" width="9" height="14" viewBox="0 0 9 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M0.4646 0.125H3.24762V2.625H0.4646V0.125ZM6.03064 0.125H8.81366V2.625H6.03064V0.125ZM0.4646 5.75H3.24762V8.25H0.4646V5.75ZM6.03064 5.75H8.81366V8.25H6.03064V5.75ZM0.4646 11.375H3.24762V13.875H0.4646V11.375ZM6.03064 11.375H8.81366V13.875H6.03064V11.375Z" fill="currentColor"/>
+                            </svg>
+                        </span>
                         <span class="icon-divider"></span>
                     {% else %}
                     {% endif %}
                     {% if show_number is same as('yes') %} 
-                        <b class="selector__index_row">#{{(index+1)}}</b>
+                        <b class="selector__index_row">#{{index}}</b>
                         &nbsp;
                     {% endif %}
                     {{ansrow.answer}}
                     </div>
                 </div>
             {% endfor %}
-            <div class="hidden ls-remove"></div>
+            <div class="d-none ls-remove"></div>
         </div>
     </div>
 {% endblock %}
 
 {% block rank %}
-    <div class="col-xs-12">
-        <strong class="sortable-subtitle sortable-rank-subtitle">{{choice_title}}</strong>
-        <div id="sortable-rank-{{qId}}" class="sortable-rank sortable-list list-group display_block_group">
-            <div class="hidden ls-remove"></div>
+    <div class="col-12 ranking-advanced-sorted-items">
+        <strong class="sortable-subtitle sortable-rank-subtitle">{{rank_title}}</strong>
+        <div id="sortable-rank-{{qId}}" class="sortable-rank sortable-list display_block_group">
+            <div class="d-none ls-remove"></div>
         </div>
     </div>
 {% endblock %}

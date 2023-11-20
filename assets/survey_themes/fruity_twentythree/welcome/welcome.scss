@@ -1,0 +1,44 @@
+.survey-name,
+.survey-description,
+.survey-welcome {
+    margin-bottom : 10px;
+}
+
+.question-count-text {
+    font-size   : $font-size-md;
+    line-height : $line-height-24;
+    font-weight : $font-weight-600
+}
+
+.privacy {
+    margin-top  : 40px;
+    font-weight : $font-weight-normal;
+    font-size   : $font-size-xs;
+    line-height : $line-height-16;
+    .ls-privacy-head,
+    #datasecurity_notice_label {
+        font-weight : $font-weight-500;
+    }
+    .ls-privacy-block{
+
+    }
+    .ls-privacy-block:not(:first-child) {
+        margin-top : 1rem;
+    }
+    p {
+        margin-bottom : 0;
+    }
+    .checkbox-item label::before {
+        border : 3px solid $base-color;
+    }
+}
+
+.datasecurity-checkbox-container {
+    margin-top   : 14px;
+    padding-left : 16px;
+}
+
+.datasecurity-checkbox-label,
+.datasecurity-checkbox-label a.show-policy {
+    @include h2;
+}

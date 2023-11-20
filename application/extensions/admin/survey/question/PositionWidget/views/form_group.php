@@ -8,10 +8,10 @@
 ?>
 
 <!-- PositionWidget : form_group -->
-<div id='PositionWidget' class='form-group'>
-    <label class="col-sm-4 control-label" for='pos'><?php eT("Position:"); ?></label>
-    <div class="col-sm-8">
-        <select class='form-control <?php echo $this->classes;?>' name='questionposition' id='questionposition'>
+<div id='PositionWidget' class='mb-3'>
+    <label class="form-label" for='pos'><?php eT("Position:"); ?></label>
+    <div>
+        <select class='form-select <?php echo $this->classes;?>' name='questionposition' id='questionposition'>
             <option value=''><?php eT("At end"); ?></option>
             <option value='0'><?php eT("At beginning"); ?></option>
             <?php foreach ($aQuestions as $oq): ?>

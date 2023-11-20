@@ -121,7 +121,7 @@ export default class TimerConstructor {
             this.timerLogger.log('Warning called!');
             const timeObject = this._parseTimeToObject(this.option.warning, true);
             this.$warningTimeDisplayElement.html(timeObject.hours + ':' + timeObject.minutes + ':' + timeObject.seconds);
-            this.$warningDisplayElement.removeClass('hidden').css({
+            this.$warningDisplayElement.removeClass('hidden d-none').css({
                 opacity: 0
             }).animate({
                 'opacity': 1
@@ -131,7 +131,7 @@ export default class TimerConstructor {
                 this.$warningDisplayElement.animate({
                     opacity: 0
                 }, 200, () => {
-                    this.$warningDisplayElement.addClass('hidden');
+                    this.$warningDisplayElement.addClass('hidden d-none');
                 })
             }, 1000 * this.option.warninghide);
         }
@@ -145,7 +145,7 @@ export default class TimerConstructor {
             this.timerLogger.log('Warning2 called!');
             const timeObject = this._parseTimeToObject(this.option.warning, true);
             this.$warning2TimeDisplayElement.html(timeObject.hours + ':' + timeObject.minutes + ':' + timeObject.seconds);
-            this.$warning2DisplayElement.removeClass('hidden').css({
+            this.$warning2DisplayElement.removeClass('hidden d-none').css({
                 opacity: 0
             }).animate({
                 'opacity': 1
@@ -155,7 +155,7 @@ export default class TimerConstructor {
                 this.$warning2DisplayElement.animate({
                     opacity: 0
                 }, 200, () => {
-                    this.$warning2DisplayElement.addClass('hidden');
+                    this.$warning2DisplayElement.addClass('hidden d-none');
                 })
             }, 1000 * this.option.warning2hide);
         }
@@ -237,7 +237,7 @@ export default class TimerConstructor {
      * Show the notice that the time is up and the input is expired
      */
     _showExpiredNotice() {
-        this.$timerExpiredElement.removeClass('hidden');
+        this.$timerExpiredElement.removeClass('hidden d-none');
     }
 
     /**

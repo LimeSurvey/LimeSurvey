@@ -13,12 +13,12 @@
     {% endif %}
     <groupsection class="groupSection"> 
         <div class="row">
-            <div class="col-xs-12">
+            <div class="col-12">
                 <h3>{{group.group_name}} ({{group.gid}})</h3>
             </div>
         </div>
         <div class="row">
-            <div class="container-fluid col-xs-11 col-md-10 col-xs-offset-1 col-md-offset-2">
+            <div class="container-fluid col-11 col-md-10 offset-1 offset-lg-2">
                 {% for questionId,question in group.answerArray %}
                 {% set questionTemplate = './subviews/printanswers/question_types/template_' ~ question.questionclass ~ '.twig' %}
                 {{ include(questionTemplate) }}

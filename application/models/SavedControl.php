@@ -112,58 +112,43 @@ class SavedControl extends LSActiveRecord
         return $this->db->insert('saved_control', $data);
     }
 
-    public function getGridButtons()
+    public function getButtons()
     {
-        $gridButtons = array();
-        $gridButtons['editresponse'] = array(
-            'label' => '<span class="sr-only">' . gT("Edit") . '</span><span class="fa fa-pencil" aria-hidden="true"></span>',
-            'imageUrl' => false,
-            'url' => 'App()->createUrl("admin/dataentry/sa/editdata/subaction/edit",array("surveyid"=>$data->sid,"id"=>$data->srid));',
-            'options' => array(
-                'class' => "btn btn-default btn-sm btn-edit",
-                'data-toggle' => "tooltip",
-                'title' => gT("Edit response"),
-            ),
-            'visible' => 'boolval(' . Permission::model()->hasSurveyPermission($this->sid, 'responses', 'update') . ')',
-        );
-        $gridButtons['resend_accesscode'] = array(
-            'label' => '<span class="sr-only">' . gT("Edit") . '</span><span class="fa fa-refresh" aria-hidden="true"></span>',
-            'imageUrl' => false,
-            'url' => 'App()->createUrl("admin/saved/sa/resend_accesscode",array("surveyid"=>$data->sid,"id"=>$data->srid));',
-            'options' => array(
-                'class' => "btn btn-default btn-sm btn-edit",
-                'data-toggle' => "tooltip",
-                'title' => gT("Resend access code"),
-            ),
-            // 'visible'=> 'boolval('.Permission::model()->hasSurveyPermission($surveyid, 'responses', 'update').')',
-            'visible' => false,
-        );
-        $gridButtons['delete'] = array(
-            'label' => '<span class="sr-only">' . gT("Delete") . '</span><span class="fa fa-trash text-danger" aria-hidden="true"></span>',
-            'imageUrl' => false,
-            'icon' => false,
-            'url' => 'App()->createUrl("admin/saved/sa/actionDelete",array("surveyid"=>$data->sid,"scid"=>$data->scid,"srid"=>$data->srid));',
-            'options' => array(
-                'class' => "btn btn-default btn-sm btn-delete",
-                'data-toggle' => "tooltip",
-                'title' => gT("Delete this entry and related response"),
-            ),
-            'visible' => 'boolval(' . Permission::model()->hasSurveyPermission($this->sid, 'responses', 'delete') . ')',
-            'click' => 'function(event){ window.LS.gridButton.confirmGridAction(event,$(this)); }',
-        );
-        return $gridButtons;
+        $permission_respones_update = Permission::model()->hasSurveyPermission($this->sid, 'responses', 'update');
+
+        $dropdownItems = [];
+        $dropdownItems[] = [
+            'title'            => gT('Edit response'),
+            'url'              => App()->createUrl("admin/dataentry/sa/editdata/subaction/edit", ["surveyid" => $this->sid, "id" => $this->srid]),
+            'iconClass'        => 'ri-pencil-fill',
+            'enabledCondition' => $permission_respones_update
+        ];
+        // TODO: this is a unfinished functionality resendAccesscode
+//        $dropdownItems[] = [
+//            'title'            => gT('Resend access code'),
+//            'url'              => App()->createUrl("admin/saved/sa/resend_accesscode",array("surveyid"=>$this->sid,"id"=>$this->srid)),
+//            'iconClass'        => 'ri-refresh-line',
+//            'enabledCondition' => Permission::model()->hasSurveyPermission($this->sid, 'responses', 'update')
+//        ];
+        $dropdownItems[] = [
+            'title'            => gT('Delete this entry and related response'),
+            'url'              => App()->createUrl("admin/saved/sa/actionDelete", ["surveyid" => $this->sid, "scid" => $this->scid, "srid" => $this->srid]),
+            'iconClass'        => 'ri-delete-bin-fill text-danger',
+            'enabledCondition' => $permission_respones_update,
+            'linkAttributes'   => [
+                'onclick' => "window.LS.gridButton.confirmGridAction(event,$(this));",
+                'data-confirm-text' => gT('Delete this entry and related response'),
+                'data-gridid' => 'saved-grid',
+            ]
+        ];
+
+        return App()->getController()->widget('ext.admin.grid.GridActionsWidget.GridActionsWidget', ['dropdownItems' => $dropdownItems], true);
     }
 
     public function getColumns()
     {
         return array(
-            array(
-                'header' => gT('Action'),
-                'class' => 'bootstrap.widgets.TbButtonColumn',
-                'template' => '{editresponse}{delete}',
-                'htmlOptions' => array('class' => 'icon-btn-row'),
-                'buttons' => $this->gridButtons,
-            ),
+
             array(
                 'header' => gT("ID"),
                 'name' => 'scid',
@@ -184,6 +169,15 @@ class SavedControl extends LSActiveRecord
             array(
                 'header' => gT("Email address"),
                 'name' => 'email',
+            ),
+            array(
+                'name' => 'buttons',
+                'type' => 'raw',
+                'header' => gT('Action'),
+                'filter' => false,
+                'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
+                'filterHtmlOptions' => ['class' => 'ls-sticky-column'],
+                'htmlOptions'       => ['class' => 'ls-sticky-column']
             ),
         );
     }

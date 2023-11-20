@@ -194,7 +194,7 @@ function fixnum_checkconditions(value, name, type, evt_type, intonly)
             }
 
             if(value != newval){
-                window.correctNumberField = setTimeout(function(){$('#answer'+name).val(newval).trigger("keyup");}, 400);
+                window.correctNumberField = setTimeout(function(){$('#answer'+name).val(newval).trigger("keyup");}, 1500);
             }
         }
     }
@@ -225,15 +225,15 @@ $(document).on("keyup change",".answer-item textarea:not([onkeyup]),.answer-item
     }
 });
 /* select/dropdown item */
-$(document).on("change",".select-item select:not([onchange]),.dropdown-item select:not([onchange])",function(event){
+$(document).on("change",".select-item select:not([onchange]),.ls-dropdown-item select:not([onchange]), select.list-question-select:not([onchange])",function(event){
     checkconditions($(this).val(), $(this).attr('name'), 'select-one', 'change')
 });
 /* radio/button item */
-$(document).on("change",".radio-item :radio:not([onclick]), .button-item :radio:not([onclick])",function(event){
+$(document).on("change",".radio-item :radio:not([onclick]), .button-item :radio:not([onclick]), .ls-button-radio",function(event){
     checkconditions($(this).val(), $(this).attr('name'), 'radio', 'click')
 });
 /* checkbox item */
-$(document).on("change",".checkbox-item :checkbox:not([onclick]),.button-item :checkbox:not([onclick])",function(event){
+$(document).on("change",".checkbox-item :checkbox:not([onclick]),.button-item :checkbox:not([onclick]), .ls-button-checkbox",function(event){
     checkconditions($(this).val(), $(this).attr('name'), 'checkbox', 'click')
 });
 /* upload item */
@@ -247,6 +247,14 @@ $(document).on("updated",".hidden-item :hidden",function(event){
         return;
     }
     checkconditions($(this).val(), $(this).attr('name'), 'equation', 'updated')
+});
+/* new multiple choice bootstrap buttons */
+$(document).on("change","input:checkbox.button-item.btn-check",function(event){
+    checkconditions($(this).val(), $(this).attr('name'), 'checkbox', 'click')
+});
+/* new singlechoice radio bootstrap buttons */
+$(document).on("change","input:radio.button-item.btn-check",function(event){
+    checkconditions($(this).val(), $(this).attr('name'), 'radio', 'click')
 });
 /**
  * For number

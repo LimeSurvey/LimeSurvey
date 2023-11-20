@@ -51,24 +51,24 @@ class RenderHugeFreeText extends QuestionBaseRenderer
         }
 
         // Only maxlength attribute, use textarea[maxlength] jquery selector for textarea
-        if (intval(trim($this->getQuestionAttribute('maximum_chars'))) > 0) {
-            $maxlength = intval(trim($this->getQuestionAttribute('maximum_chars')));
+        if (intval(trim((string) $this->getQuestionAttribute('maximum_chars'))) > 0) {
+            $maxlength = intval(trim((string) $this->getQuestionAttribute('maximum_chars')));
             $extraclass .= " ls-input-maxchars";
         }
     
         // text_input_width can not be empty, except with old survey (wher can be empty or up to 12 see bug #11743
-        if (trim($this->getQuestionAttribute('text_input_width')) != '') {
+        if (trim((string) $this->getQuestionAttribute('text_input_width')) != '') {
             $col         = ($this->getQuestionAttribute('text_input_width') <= 12) ? $this->getQuestionAttribute('text_input_width') : 12;
-            $extraclass .= " col-sm-" . trim($col);
+            $extraclass .= " col-md-" . trim((string) $col);
             $withColumn = true;
         }
         
-        if (ctype_digit(trim($this->getQuestionAttribute('input_size')))) {
-            $inputsize = trim($this->getQuestionAttribute('input_size'));
+        if (ctype_digit(trim((string) $this->getQuestionAttribute('input_size')))) {
+            $inputsize = trim((string) $this->getQuestionAttribute('input_size'));
             $extraclass .= " ls-input-sized";
         }
 
-        if (trim($this->getQuestionAttribute('placeholder', $this->sLanguage)) != '') {
+        if (trim((string) $this->getQuestionAttribute('placeholder', $this->sLanguage)) != '') {
             $placeholder = $this->getQuestionAttribute('placeholder', $this->sLanguage);
         }
 
@@ -81,7 +81,7 @@ class RenderHugeFreeText extends QuestionBaseRenderer
             'basename'               => $this->sSGQA,
             'drows'                  => $drows,
             'checkconditionFunction' => 'checkconditions(this.value, this.name, this.type)',
-            'dispVal'                => htmlspecialchars($this->mSessionValue),
+            'dispVal'                => htmlspecialchars((string) $this->mSessionValue),
             'inputsize'              => $inputsize,
             'maxlength'              => $maxlength,
             'placeholder'            => $placeholder,

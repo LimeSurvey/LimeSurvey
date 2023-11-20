@@ -10,7 +10,7 @@
 ?>
 <?php $urlNew = Yii::app()->createUrl("admin/update", array("update" => 'checkFiles', 'destinationBuild' => $destinationBuild, 'access_token' => $access_token)); ?>
 
-<h2 class="maintitle"><?php eT('Checking existing LimeSurvey files...'); ?></h2>
+<h3 class="maintitle"><?php eT('Checking existing LimeSurvey files...'); ?></h3>
 
 <?php if ($html_from_server != "") :?>
     <div>
@@ -28,34 +28,35 @@
 
     <?php if (count($readonlyfiles) > 0) :?>
             <br />
-            <p>
-                <?php
-                    $url = Yii::app()->createUrl('/admin/update');
-                    echo CHtml::beginForm($url, 'post');
-                    echo CHtml::hiddenField('destinationBuild', $destinationBuild);
-                    echo CHtml::hiddenField('access_token', $access_token);
-                    echo CHtml::hiddenField('update', 'checkFiles');
-                    echo '<a class="btn btn-default" href="' . Yii::app()->createUrl("admin/update") . '" role="button" aria-disabled="false">
-                            ' . gT("Cancel") . '
-                        </a>';
-                    echo CHtml::submitButton(gT('Check again', 'unescaped'), array("class" => "btn btn-default"));
-                    echo CHtml::endForm();
-                ?>
-            </p>
+        <div class="col-12 mt-2">
+            <?php
+            $url = Yii::app()->createUrl('/admin/update');
+            echo CHtml::beginForm($url, 'post');
+            echo CHtml::hiddenField('destinationBuild', $destinationBuild);
+            echo CHtml::hiddenField('access_token', $access_token);
+            echo CHtml::hiddenField('update', 'checkFiles');
+            echo '<a class="btn btn-cancel me-1" href="' . Yii::app()->createUrl("admin/update") .
+                '" role="button" aria-disabled="false">' .
+                gT("Cancel") .
+                '</a>&nbsp;';
+            echo CHtml::submitButton(gT('Check again', 'unescaped'), array("class" => "btn btn-outline-secondary"));
+            echo CHtml::endForm();
+            ?>
+        </div>>
     <?php else : ?>
-        <p>
+        <div class="col-12 mt-2">
             <?php
                 $url = Yii::app()->createUrl('/admin/update/sa/backup');
-                echo CHtml::beginForm($url, 'post', array("id" => "launchBackupForm"));
-                echo CHtml::hiddenField('destinationBuild', $destinationBuild);
-                echo CHtml::hiddenField('access_token', $access_token);
-                echo '<a class="btn btn-default" href="' . Yii::app()->createUrl("admin/update") . '" role="button" aria-disabled="false">
-                        ' . gT("Cancel") . '
+                echo CHtml::beginForm($url, 'post', array("id"=>"launchBackupForm"));
+                echo CHtml::hiddenField('destinationBuild' , $destinationBuild);
+                echo CHtml::hiddenField('access_token' , $access_token);
+                echo '<a class="btn btn-cancel me-1" href="'.Yii::app()->createUrl("admin/update").'" role="button" aria-disabled="false">
+                        '.gT("Cancel").'
                     </a>';
-                echo CHtml::submitButton(sprintf(gT('Continue')), array("class" => "btn btn-default"));
+                echo CHtml::submitButton(sprintf(gT('Continue')), array("class" => "btn btn-primary"));
                 echo CHtml::endForm();
             ?>
-        </p>
+        </div>
     <?php endif;?>
 </div>
 

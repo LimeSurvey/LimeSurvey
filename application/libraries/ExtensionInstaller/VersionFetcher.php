@@ -102,7 +102,7 @@ abstract class VersionFetcher
     }
 
     /**
-     * @return string?
+     * @return ?string
      */
     public function getManualUpdateUrl()
     {

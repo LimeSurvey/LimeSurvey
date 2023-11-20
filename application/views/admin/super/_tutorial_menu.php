@@ -7,10 +7,10 @@
 <?php
 if (!empty($aTutorials) && Permission::model()->hasGlobalPermission('surveys', 'create')) { ?>
 <li class="dropdown dropdown-submenu">
-    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-        <span class="fa fa-rocket" ></span>
+    <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown">
+        <span class="ri-rocket-fill" ></span>
         <?php eT('Tutorials');?>
-        <i class="fa fa-chevron-right pull-right"></i>
+        <i class="ri-arrow-up-s-line float-end"></i>
     </a>
     <ul class="dropdown-menu larger-dropdown" id="tutorials-dropdown">
         <?php foreach ($aTutorials as $oTutorial) { ?>
@@ -21,19 +21,19 @@ if (!empty($aTutorials) && Permission::model()->hasGlobalPermission('surveys', '
             </li>
         <?php } ?>
         <?php if (!empty($aTutorials) && Permission::model()->hasGlobalPermission('superadmin', 'read')) { ?>
-            <li class="divider"></li>
+            <li class="dropdown-divider"></li>
             <li>
                 <a href="<?=App()->createUrl('admin/tutorials/sa/view')?>">
-                    <span class="fa fa-rocket" ></span>
+                    <span class="ri-rocket-fill" ></span>
                     <?php eT('View all tutorials');?>
-                    <i class="fa fa-search pull-right"></i>
+                    <i class="ri-search-line float-end"></i>
                 </a>
             </li>
             <li>
                 <a href="<?=App()->createUrl('admin/tutorials/sa/create')?>">
-                    <span class="fa fa-rocket" ></span>
+                    <span class="ri-rocket-fill" ></span>
                     <?php eT('Create tutorial');?>
-                    <i class="fa fa-plus pull-right"></i>
+                    <i class="ri-add-line float-end"></i>
                 </a>
             </li>
         <?php } ?>
