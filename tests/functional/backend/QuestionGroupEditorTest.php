@@ -106,6 +106,7 @@ class QuestionGroupEditorTest extends TestBaseClassWeb
             $save->click();
 
             // Check the value in the DB
+            sleep(4);
             $oGroupsCriteria = new \CDbCriteria();
             $oGroupsCriteria->condition = "sid = :sid";
             $oGroupsCriteria->params = array(':sid' => self::$testSurvey->sid);
