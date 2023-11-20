@@ -1,7 +1,8 @@
 <?php
 
-namespace LimeSurvey\Api\Command\V1\SurveyPatch;
+namespace LimeSurvey\Api\Command\V1\SurveyPatch\Traits;
 
+use LimeSurvey\Api\Command\V1\SurveyPatch\TempIdMapItem;
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputAnswer;
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputAnswerL10ns;
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestion;
@@ -13,6 +14,8 @@ use Question;
 
 trait OpHandlerQuestionTrait
 {
+    use OpHandlerExceptionTrait;
+
     /**
      * Converts the answers from the raw data to the expected format.
      * @param OpInterface $op
@@ -68,6 +71,11 @@ trait OpHandlerQuestionTrait
                 ) ? $tfAnswer['aid'] : $index;
                 $preparedAnswers[$index][$scaleId] = $tfAnswer;
             }
+        }
+        // if this is called from OpHandlerAnswer
+        // we don't want preparedAnswers to be empty
+        if (is_array($additionalRequiredEntities) && empty($preparedAnswers)) {
+            $this->throwNoValuesException($op, 'answer');
         }
         return $preparedAnswers;
     }
@@ -129,13 +137,7 @@ trait OpHandlerQuestionTrait
             )
             && empty($data)
         ) {
-            throw new OpHandlerException(
-                sprintf(
-                    'No values to update for %s in entity %s',
-                    $name,
-                    $op->getEntityType()
-                )
-            );
+            $this->throwNoValuesException($op, $name);
         }
     }
 

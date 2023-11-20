@@ -2,6 +2,9 @@
 
 namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
+use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\{
+    OpHandlerQuestionTrait, OpHandlerSurveyTrait
+};
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestion;
 use LimeSurvey\Models\Services\QuestionAggregateService;
 use LimeSurvey\ObjectPatch\{Op\OpInterface,
@@ -13,6 +16,7 @@ use LimeSurvey\ObjectPatch\{Op\OpInterface,
 class OpHandlerQuestionUpdate implements OpHandlerInterface
 {
     use OpHandlerSurveyTrait;
+    use OpHandlerQuestionTrait;
 
     protected QuestionAggregateService $questionAggregateService;
     protected TransformerInputQuestion $transformer;
@@ -68,6 +72,7 @@ class OpHandlerQuestionUpdate implements OpHandlerInterface
      * is expected by the service.
      * @param OpInterface $op
      * @return array
+     * @throws OpHandlerException
      */
     public function getPreparedData(OpInterface $op): array
     {
@@ -75,13 +80,9 @@ class OpHandlerQuestionUpdate implements OpHandlerInterface
         $transformedProps = $this->transformer->transform($props);
 
         if ($props === null || $transformedProps === null) {
-            throw new OpHandlerException(
-                sprintf(
-                    'No values to update for entity %s',
-                    $op->getEntityType()
-                )
-            );
+            $this->throwNoValuesException($op);
         }
+        /** @var array $transformedProps */
         if (
             !array_key_exists(
                 'qid',

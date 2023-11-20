@@ -19,6 +19,8 @@ class CsrfHttpRequestTest extends TestBaseClass
         $routes = array(
             'rest/v1/actionOnItemById/15',
             'rest/v1/action',
+            '/rest/v1/actionOnItemById/25',
+            '/rest/v1/action',
         );
 
         foreach ($routes as $route) {
@@ -41,8 +43,10 @@ class CsrfHttpRequestTest extends TestBaseClass
     public function testRemoteControlRoutesSkipCsrfValidation()
     {
         $routes = array(
-            'remotecontrol/actionOnItemById/15',
-            'remotecontrol/action',
+            'admin/remotecontrol/actionOnItemById/15',
+            'admin/remotecontrol/action',
+            '/admin/remotecontrol/actionOnItemById/25',
+            '/admin/remotecontrol',
         );
 
         foreach ($routes as $route) {
@@ -67,6 +71,8 @@ class CsrfHttpRequestTest extends TestBaseClass
         $routes = array(
             'plugins/unsecure/action',
             'plugins/unsecure/actionOnItemById/15',
+            '/plugins/unsecure/action',
+            '/plugins/unsecure/actionOnItemById/25',
         );
 
         foreach ($routes as $route) {
@@ -90,8 +96,11 @@ class CsrfHttpRequestTest extends TestBaseClass
     {
         $routes = array(
             'admin/menus/sa/restore',
-            'remote/action',
-            'plugins/settings'
+            'admin/remote/action',
+            'plugins/settings',
+            '/admin/menus/sa/restore',
+            '/admin/remote/action',
+            '/plugins/settings',
         );
 
         // Asserting that a restlike route doesn't skip validation.
