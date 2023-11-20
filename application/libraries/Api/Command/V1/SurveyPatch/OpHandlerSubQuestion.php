@@ -196,6 +196,7 @@ class OpHandlerSubQuestion implements OpHandlerInterface
         //--> update:  props should include qid (which means update)
         //--> create:  props should include tempId (which means create)
         $props = $op->getProps();
-        return array_key_exists('qid', $props) || array_key_exists('tempId', $props);
+        return array_key_exists('qid', $props) ||
+            array_key_exists('tempId', $props);
     }
 }
