@@ -2,6 +2,7 @@
 
 namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
+use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\OpHandlerSurveyTrait;
 use LimeSurvey\Models\Services\Exception\PermissionDeniedException;
 use QuestionGroup;
 use LimeSurvey\Models\Services\QuestionGroupService;
@@ -131,12 +132,7 @@ class OpHandlerQuestionGroup implements OpHandlerInterface
         }
 
         if (empty($props) || empty($transformedProps)) {
-            throw new OpHandlerException(
-                sprintf(
-                    'No values to update for entity %s',
-                    $op->getEntityType()
-                )
-            );
+            $this->throwNoValuesException($op);
         }
         return $transformedProps;
     }

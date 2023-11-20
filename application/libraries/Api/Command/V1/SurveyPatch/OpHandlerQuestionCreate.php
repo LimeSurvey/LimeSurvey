@@ -10,6 +10,10 @@ use LimeSurvey\Api\Command\V1\Transformer\{
     Input\TransformerInputQuestionAttribute,
     Input\TransformerInputQuestionL10ns,
 };
+use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\{
+    OpHandlerSurveyTrait,
+    OpHandlerQuestionTrait
+};
 use LimeSurvey\ObjectPatch\{
     Op\OpInterface,
     OpType\OpTypeCreate,
@@ -312,6 +316,8 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
                 return $this->prepareAnswers(
                     $op,
                     $data,
+                    $this->transformerAnswer,
+                    $this->transformerAnswerL10n
                 );
             case 'subquestions':
                 return $this->prepareSubQuestions(
@@ -337,13 +343,7 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
     ): void {
         foreach ($this->getRequiredEntitiesArray() as $requiredEntity) {
             if (!array_key_exists($requiredEntity, $rawProps)) {
-                throw new OpHandlerException(
-                    sprintf(
-                        'Missing entity %s in props of %s',
-                        $requiredEntity,
-                        $op->getEntityType()
-                    )
-                );
+                $this->throwRequiredParamException($op, $requiredEntity);
             }
         }
     }
@@ -415,55 +415,6 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
         return $preparedSettings;
     }
 
-    /**
-     * Converts the answers from the raw data to the expected format.
-     * @param OpInterface $op
-     * @param array|null $data
-     * @return array
-     * @throws OpHandlerException
-     */
-    private function prepareAnswers(OpInterface $op, ?array $data): array
-    {
-        $preparedAnswers = [];
-        if (is_array($data)) {
-            foreach ($data as $index => $answer) {
-                $transformedAnswer = $this->transformerAnswer->transform(
-                    $answer
-                );
-                $this->checkRequiredData(
-                    $op,
-                    $transformedAnswer,
-                    'answers'
-                );
-                if (
-                    is_array($answer) && array_key_exists(
-                        'l10ns',
-                        $answer
-                    ) && is_array($answer['l10ns'])
-                ) {
-                    foreach ($answer['l10ns'] as $lang => $answerL10n) {
-                        $tfAnswerL10n = $this->transformerAnswerL10n->transform(
-                            $answerL10n
-                        );
-                        $transformedAnswer['answeroptionl10n'][$lang] =
-                            (
-                                is_array($tfAnswerL10n)
-                                && isset($tfAnswerL10n['answer'])
-                            ) ?
-                                $tfAnswerL10n['answer'] : null;
-                    }
-                }
-                /**
-                 * $index can sometimes determine where the answer is positioned
-                 * (e.g.:array dualscale)
-                 * index is used twice because of the structure the service
-                 * expects the data to be in
-                 */
-                $preparedAnswers[$index][$index] = $transformedAnswer;
-            }
-        }
-        return $preparedAnswers;
-    }
 
     /**
      * Checks if patch is valid for this operation.

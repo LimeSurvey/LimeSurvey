@@ -127,15 +127,16 @@ LS.CPDB = (function() {
                             dlForm.css('display', 'none').appendTo('body').submit();
                             $(self).modal("hide");
                         });
-                        $('#attributes')
-                            .multiselect({ 
-                                includeSelectAllOption:true, 
-                                selectAllValue: '0',
-                                selectAllText: sSelectAllText,
-                                nonSelectedText: sNonSelectedText,
-                                nSelectedText: sNSelectedText,
-                                maxHeight: 140 
-                            });
+
+                        $('#select-all').click(function () {
+                            if ($('#select-all').is(':checked')) {
+                                $('#attributes > option').prop('selected', 'selected');
+                                $('#attributes').trigger('change');
+                            } else {
+                                $('#attributes > option').removeAttr('selected');
+                                $('#attributes').trigger('change');
+                            }
+                        });
                     });
                     /* $.download(exporttocsvall,'searchcondition=dummy',$('#exportcsvallprocessing').dialog("close"));*/
                 }

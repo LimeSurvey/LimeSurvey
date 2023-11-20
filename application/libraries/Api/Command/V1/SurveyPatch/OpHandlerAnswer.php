@@ -6,6 +6,10 @@ use LimeSurvey\Api\Command\V1\Transformer\{
     Input\TransformerInputAnswer,
     Input\TransformerInputAnswerL10ns,
 };
+use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\{
+    OpHandlerQuestionTrait,
+    OpHandlerSurveyTrait,
+};
 use LimeSurvey\Models\Services\QuestionAggregateService\QuestionService;
 use LimeSurvey\ObjectPatch\{Op\OpInterface,
     OpType\OpTypeCreate,
@@ -193,7 +197,6 @@ class OpHandlerAnswer implements OpHandlerInterface
      */
     public function isValidPatch(OpInterface $op): bool
     {
-        // TODO: Implement isValidPatch() method.
-        return true;
+        return ((int)$op->getEntityId()) > 0;
     }
 }
