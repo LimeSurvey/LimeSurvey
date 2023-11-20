@@ -1154,23 +1154,23 @@ class Survey extends LSActiveRecord implements PermissionInterface
         // If the survey is not active, no date test is needed
         if ($this->active === 'N') {
             $running = '<a href="' . App()->createUrl('/surveyAdministration/view/surveyid/' . $this->sid) . '" class="survey-state" data-bs-toggle="tooltip" title="' . gT('Inactive') . '"><i class="ri-stop-fill text-secondary me-1"></i>' . gT('Inactive') . '</a>';
-        } elseif ($this->expires != '' || $this->startdate != '') {
+        } elseif (!empty($this->expires) || !empty($this->startdate)) {
             // If it's active, then we check if not expired
             // Time adjust
             $sNow    = date("Y-m-d H:i:s", strtotime((string) Yii::app()->getConfig('timeadjust'), strtotime(date("Y-m-d H:i:s"))));
-            $sStop   = ($this->expires != '') ? date("Y-m-d H:i:s", strtotime((string) Yii::app()->getConfig('timeadjust'), strtotime($this->expires))) : null;
-            $sStart  = ($this->startdate != '') ? date("Y-m-d H:i:s", strtotime((string) Yii::app()->getConfig('timeadjust'), strtotime($this->startdate))) : null;
+            $sStop   = !empty($this->expires) ? date("Y-m-d H:i:s", strtotime((string) Yii::app()->getConfig('timeadjust'), strtotime($this->expires))) : null;
+            $sStart  = !empty($this->startdate) ? date("Y-m-d H:i:s", strtotime((string) Yii::app()->getConfig('timeadjust'), strtotime($this->startdate))) : null;
 
             // Time comparaison
             $oNow   = new DateTime($sNow);
-            $oStop  = new DateTime($sStop);
-            $oStart = new DateTime($sStart);
+            $oStop  = !empty($this->expires) ? new DateTime($sStop) : null;
+            $oStart = !empty($this->startdate) ? new DateTime($sStart) : null;
 
             $bExpired = (!is_null($sStop) && $oStop < $oNow);
             $bWillRun = (!is_null($sStart) && $oStart > $oNow);
 
-            $sStop = $sStop != null ? convertToGlobalSettingFormat($sStop) : null;
-            $sStart = convertToGlobalSettingFormat($sStart);
+            $sStop = !is_null($sStop) ? convertToGlobalSettingFormat($sStop) : null;
+            $sStart = !is_null($sStart) ? convertToGlobalSettingFormat($sStart) : null;
 
             // Icon generaton (for CGridView)
             $sIconRunNoEx = '<a href="' . App()->createUrl('/surveyAdministration/view/surveyid/' . $this->sid) . '" class="survey-state" data-bs-toggle="tooltip" title="' . gT('End: Never') . '"><i class="ri-play-fill text-primary me-1"></i>' . gT('End: Never') . '</a>';
