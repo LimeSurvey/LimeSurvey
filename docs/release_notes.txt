@@ -34,6 +34,16 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.6.45 (build 231114) to 5.6.46 (build 231121) November 20, 2023
+-Fixed issue #19224: Advanced ranking does not respect max answer when drag-n-drop (#3616) (Gabriel Jenik)
+-Fixed issue #19139: [security] CSRF in Reset Survey menus (#3598) (Gabriel Jenik)
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Japanese by d_inoue
+#Updated translation: French (France) by mapage
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 5.6.44 (build 231107) to 5.6.45 (build 231114) November 13, 2023
 -Fixed issue: Update can fail if there are label codes longer than 5 characters (Carsten Schmitz)
 -Fixed issue #19214: JSON RPC response content type should be application/json (#3611) (Matthew)
