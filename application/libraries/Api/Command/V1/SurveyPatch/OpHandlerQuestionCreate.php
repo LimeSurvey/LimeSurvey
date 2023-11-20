@@ -10,6 +10,10 @@ use LimeSurvey\Api\Command\V1\Transformer\{
     Input\TransformerInputQuestionAttribute,
     Input\TransformerInputQuestionL10ns,
 };
+use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\{
+    OpHandlerSurveyTrait,
+    OpHandlerQuestionTrait
+};
 use LimeSurvey\ObjectPatch\{
     Op\OpInterface,
     OpType\OpTypeCreate,
@@ -76,26 +80,27 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
      *                     "qid": "0",
      *                     "title": "G01Q06",
      *                     "type": "1",
-     *                     "question_theme_name": "arrays\/dualscale",
+     *                     "questionThemeName": "arrays\/dualscale",
      *                     "gid": "1",
      *                     "mandatory": false,
      *                     "relevance": "1",
      *                     "encrypted": false,
-     *                     "save_as_default": false
+     *                     "saveAsDefault": false,
+     *                     "tempId": "XXX321"
      *                 },
      *                 "questionL10n": {
      *                     "en": {
      *                             "question": "Array Question",
      *                             "help": "Help text"
      *                     },
-     *                     "de-informal": {
+     *                     "de": {
      *                             "question": "Array ger",
      *                             "help": "help ger"
      *                     }
      *                 },
      *                 "attributes": {
      *                     "dualscale_headerA": {
-     *                             "de-informal": {
+     *                             "de": {
      *                                 "value": "A ger"
      *                             },
      *                             "en": {
@@ -103,7 +108,7 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
      *                             }
      *                     },
      *                     "dualscale_headerB": {
-     *                             "de-informal": {
+     *                             "de": {
      *                                 "value": "B ger"
      *                             },
      *                             "en": {
@@ -122,6 +127,7 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
      *                         "sortOrder": 0,
      *                         "assessmentValue": 0,
      *                         "scaleId": 0,
+     *                         "tempId": "111",
      *                         "l10ns": {
      *                             "de": {
      *                                 "answer": "antwort1",
@@ -138,6 +144,7 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
      *                         "sortOrder": 1,
      *                         "assessmentValue": 0,
      *                         "scaleId": 0,
+     *                         "tempId": "112",
      *                         "l10ns": {
      *                             "de": {
      *                                 "answer": "antwort1.2",
@@ -155,8 +162,9 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
      *                         "title": "SQ001",
      *                         "sortOrder": 0,
      *                         "relevance": "1",
+     *                         "tempId": "113",
      *                         "l10ns": {
-     *                             "de-informal": {
+     *                             "de": {
      *                                 "question": "subger1",
      *                                 "language": "de"
      *                             },
@@ -170,8 +178,9 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
      *                         "title": "SQ002",
      *                         "sortOrder": 1,
      *                         "relevance": "1",
+     *                         "tempId": "114",
      *                         "l10ns": {
-     *                             "de-informal": {
+     *                             "de": {
      *                                 "question": "subger2",
      *                                 "language": "de"
      *                             },
@@ -188,7 +197,7 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
      * }
      *
      * @param OpInterface $op
-     * @return void
+     * @return array
      * @throws OpHandlerException
      * @throws \DI\DependencyException
      * @throws \DI\NotFoundException
@@ -196,16 +205,54 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
      * @throws \LimeSurvey\Models\Services\Exception\PermissionDeniedException
      * @throws \LimeSurvey\Models\Services\Exception\PersistErrorException
      */
-    public function handle(OpInterface $op): void
+    public function handle(OpInterface $op): array
     {
+        $transformedProps = $this->prepareData($op);
+        if (
+            !is_array($transformedProps) ||
+            !array_key_exists(
+                'question',
+                $transformedProps
+            )
+        ) {
+            throw new OpHandlerException(
+                sprintf(
+                    'no question entity provided within props for %s with id "%s"',
+                    $this->entity,
+                    print_r($op->getEntityId(), true)
+                )
+            );
+        }
+        $tempId = $this->extractTempId($transformedProps['question']);
         $diContainer = \LimeSurvey\DI::getContainer();
         $questionService = $diContainer->get(
             QuestionAggregateService::class
         );
 
-        $questionService->save(
+        $question = $questionService->save(
             $this->getSurveyIdFromContext($op),
-            $this->prepareData($op)
+            $transformedProps
+        );
+
+        return array_merge(
+            [
+                'questionsMap' => [
+                    new TempIdMapItem(
+                        $tempId,
+                        $question->qid,
+                        'qid'
+                    )
+                ]
+            ],
+            $this->getSubQuestionNewIdMapping(
+                $question,
+                $transformedProps['subquestions']
+            ),
+            $this->getSubQuestionNewIdMapping(
+                $question,
+                $transformedProps['answeroptions'],
+                true
+            )
         );
     }
 
@@ -269,6 +316,8 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
                 return $this->prepareAnswers(
                     $op,
                     $data,
+                    $this->transformerAnswer,
+                    $this->transformerAnswerL10n
                 );
             case 'subquestions':
                 return $this->prepareSubQuestions(
@@ -294,13 +343,7 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
     ): void {
         foreach ($this->getRequiredEntitiesArray() as $requiredEntity) {
             if (!array_key_exists($requiredEntity, $rawProps)) {
-                throw new OpHandlerException(
-                    sprintf(
-                        'Missing entity %s in props of %s',
-                        $requiredEntity,
-                        $op->getEntityType()
-                    )
-                );
+                $this->throwRequiredParamException($op, $requiredEntity);
             }
         }
     }
@@ -372,55 +415,6 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
         return $preparedSettings;
     }
 
-    /**
-     * Converts the answers from the raw data to the expected format.
-     * @param OpInterface $op
-     * @param array|null $data
-     * @return array
-     * @throws OpHandlerException
-     */
-    private function prepareAnswers(OpInterface $op, ?array $data): array
-    {
-        $preparedAnswers = [];
-        if (is_array($data)) {
-            foreach ($data as $index => $answer) {
-                $transformedAnswer = $this->transformerAnswer->transform(
-                    $answer
-                );
-                $this->checkRequiredData(
-                    $op,
-                    $transformedAnswer,
-                    'answers'
-                );
-                if (
-                    is_array($answer) && array_key_exists(
-                        'l10ns',
-                        $answer
-                    ) && is_array($answer['l10ns'])
-                ) {
-                    foreach ($answer['l10ns'] as $lang => $answerL10n) {
-                        $tfAnswerL10n = $this->transformerAnswerL10n->transform(
-                            $answerL10n
-                        );
-                        $transformedAnswer['answeroptionl10n'][$lang] =
-                            (
-                                is_array($tfAnswerL10n)
-                                && isset($tfAnswerL10n['answer'])
-                            ) ?
-                                $tfAnswerL10n['answer'] : null;
-                    }
-                }
-                /**
-                 * $index can sometimes determine where the answer is positioned
-                 * (e.g.:array dualscale)
-                 * index is used twice because of the structure the service
-                 * expects the data to be in
-                 */
-                $preparedAnswers[$index][$index] = $transformedAnswer;
-            }
-        }
-        return $preparedAnswers;
-    }
 
     /**
      * Checks if patch is valid for this operation.

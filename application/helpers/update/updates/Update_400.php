@@ -244,7 +244,7 @@ class Update_400 extends DatabaseUpdateBase
         $this->db->createCommand(
             "INSERT INTO {{labels}}
             (lid, code, sortorder, assessment_value)
-            SELECT lid, code, min(sortorder), min(assessment_value)
+            SELECT lid, SUBSTRING(code,1,5), min(sortorder), min(assessment_value)
             FROM {{labels_update400}}
             GROUP BY lid, code"
         )->execute();

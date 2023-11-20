@@ -264,6 +264,7 @@ class LSHttpRequest extends CHttpRequest
         // For example the routes "rest" (in the case of "index.php/rest?...") or "rest/..." (in the case of
         // "index.php/rest/...") should be matched by the rule "rest", but the route "admin/menus/sa/restore"
         // should not.
+        $route = ltrim($route, '/');
         return preg_match('#^' . $rule . '$|^' . $rule . '/#', (string) $route);
     }
 

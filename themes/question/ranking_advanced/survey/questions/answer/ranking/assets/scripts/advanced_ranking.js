@@ -35,6 +35,11 @@ var AdvancedRankingQuestion = function (options) {
             ghostClass: "ls-rank-placeholder",
             onEnd: function(){
                 updateRankingNumber();
+            },
+            onMove: function (ev) {
+                if (max_answers > 0 && $('#sortable-rank-' + questionId + ' li').length >= max_answers) {
+                    return false;
+                }
             }
         },
         sortableObjectRank = {

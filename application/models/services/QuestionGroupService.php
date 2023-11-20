@@ -484,6 +484,7 @@ class QuestionGroupService
     public function newQuestionGroup(int $surveyId, array $aQuestionGroupData = null)
     {
         $survey = $this->getSurvey($surveyId);
+        $this->refreshModels();
         $aQuestionGroupData = array_merge([
             'sid' => $survey->sid,
         ], $aQuestionGroupData);
@@ -536,5 +537,16 @@ class QuestionGroupService
             );
         }
         return $survey;
+    }
+
+    /**
+     * Resets questionGroup model for cases
+     * when multiple groups are created simultaneously
+     * @return void
+     */
+    private function refreshModels()
+    {
+        $this->modelQuestionGroup->unsetAttributes();
+        $this->modelQuestionGroup->setIsNewRecord(true);
     }
 }

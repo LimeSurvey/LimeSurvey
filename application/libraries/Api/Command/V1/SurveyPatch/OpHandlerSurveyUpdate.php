@@ -17,6 +17,8 @@ use LimeSurvey\ObjectPatch\{
 
 class OpHandlerSurveyUpdate implements OpHandlerInterface
 {
+    use OpHandlerExceptionTrait;
+
     protected string $entity;
     protected Survey $model;
     protected TransformerInputSurvey $transformer;
@@ -45,21 +47,6 @@ class OpHandlerSurveyUpdate implements OpHandlerInterface
     /**
      * Saves the changes to the database.
      *
-     * This is the expected structure:
-     *  { "patch": [
-     *           {
-     *               "entity": "survey",
-     *               "op": "update",
-     *               "id": "12345",
-     *               "props": {
-     *                 "anonymized": false,
-     *                 "language": "de-informal",
-     *                 ...
-     *               }
-     *          }
-     *   ]
-     * }
-     *
      * @param OpInterface $op
      * @throws OpHandlerException
      * @throws PersistErrorException
@@ -76,14 +63,9 @@ class OpHandlerSurveyUpdate implements OpHandlerInterface
         $transformedProps = $this->transformer->transform($props);
 
         if ($props === null || $transformedProps === null) {
-            throw new OpHandlerException(
-                sprintf(
-                    'No values to update for entity %s',
-                    $op->getEntityType()
-                )
-            );
+            $this->throwNoValuesException($op);
         }
-
+        /** @var array $transformedProps */
         $surveyUpdater->update(
             $op->getEntityId(),
             $transformedProps
@@ -97,8 +79,6 @@ class OpHandlerSurveyUpdate implements OpHandlerInterface
      */
     public function isValidPatch(OpInterface $op): bool
     {
-        // the transformer checks already if the patch is valid (at least the
-        // props)
-        return true;
+        return ((int)$op->getEntityId()) > 0;
     }
 }

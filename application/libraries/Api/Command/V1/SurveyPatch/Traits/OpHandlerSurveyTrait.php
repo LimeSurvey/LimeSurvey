@@ -1,6 +1,6 @@
 <?php
 
-namespace LimeSurvey\Api\Command\V1\SurveyPatch;
+namespace LimeSurvey\Api\Command\V1\SurveyPatch\Traits;
 
 use LimeSurvey\Api\Transformer\TransformerInterface;
 use LimeSurvey\ObjectPatch\Op\OpInterface;
@@ -8,6 +8,8 @@ use LimeSurvey\ObjectPatch\OpHandler\OpHandlerException;
 
 trait OpHandlerSurveyTrait
 {
+    use OpHandlerExceptionTrait;
+
     /**
      * Extracts and returns surveyId from context
      * @param OpInterface $op
@@ -56,16 +58,25 @@ trait OpHandlerSurveyTrait
             }
             $transformedProps = $transformer->transform($properties);
             if ($transformedProps == null) {
-                throw new OpHandlerException(
-                    sprintf(
-                        'no transformable props provided for %s with id "%s"',
-                        $entity,
-                        print_r($op->getEntityId(), true)
-                    )
-                );
+                $this->throwNoValuesException($op, $entity);
             }
             $dataSet[$language] = $transformedProps;
         }
         return $dataSet;
+    }
+
+    /**
+     * returns and removes tempId from dataset
+     * @param array $dataSet
+     * @return int|mixed
+     */
+    public function extractTempId(array &$dataSet)
+    {
+        if (isset($dataSet['tempId'])) {
+            $tempId = $dataSet['tempId'];
+            unset($dataSet['tempId']);
+            return $tempId;
+        }
+        return 0;
     }
 }
