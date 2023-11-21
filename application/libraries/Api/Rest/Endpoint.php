@@ -39,8 +39,7 @@ class Endpoint
         $commandParams,
         CommandAuthFactory $commandAuthFactory,
         FactoryInterface $diFactory
-    )
-    {
+    ) {
         $this->config = $config;
         $this->commandParams = $commandParams;
         $this->commandAuthFactory = $commandAuthFactory;

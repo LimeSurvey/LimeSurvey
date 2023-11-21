@@ -95,4 +95,3 @@ class CommandAuthSession implements CommandAuthInterface
         return $token;
     }
 }
-
