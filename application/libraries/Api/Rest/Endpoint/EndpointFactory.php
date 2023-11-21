@@ -34,7 +34,10 @@ class EndpointFactory
         $endpointConfig = $this->getEndpointConfig($request);
         return $this->diFactory->make(Endpoint::class, [
             'config' => $endpointConfig,
-            'commandParams' => $this->getCommandParams($endpointConfig, $request)
+            'commandParams' => $this->getCommandParams(
+                $endpointConfig,
+                $request
+            )
         ]);
     }
 
@@ -138,13 +141,6 @@ class EndpointFactory
     {
         $params = [];
 
-        if (
-            !empty($endpoint['auth'])
-            && $endpoint['auth'] == 'session'
-        ) {
-            $params['sessionKey'] = $this->getAuthToken();
-        }
-
         // REST route defines optional param '_id'
         if ($id = $request->getParam('_id')) {
             $params['_id'] = $id;
@@ -152,15 +148,20 @@ class EndpointFactory
 
         $content = $request->getRestParams();
         $query = $this->getParams($endpoint, $request);
+        $headers = getAllHeaders();
         $source = [
             '_content' => $content,
             '_query' => $query
         ];
 
+        // The order of this array is important
+        // - headers parsed by the server should always override
+        // - query params and post data
         return array_merge(
             $query,
             $params,
             $content,
+            $headers,
             $source
         );
     }
@@ -195,46 +196,5 @@ class EndpointFactory
             }
         }
         return $result;
-    }
-
-    /**
-     * Get auth token.
-     *
-     * Attempts to read from 'authToken' GET parameter and falls back to authorisation bearer token.
-     *
-     * @return string|null
-     */
-    public function getAuthToken()
-    {
-        $token = Yii::app()->request->getParam('authToken');
-        if (!$token) {
-            $token = $this->getAuthBearerToken();
-        }
-        return $token;
-    }
-
-    /**
-     * Get auth bearer token.
-     *
-     * Attempts to read bearer token from authorisation header.
-     *
-     * @return string|null
-     */
-    protected function getAuthBearerToken()
-    {
-        $headers = getAllHeaders();
-
-        $token = null;
-        if (
-            isset($headers['Authorization'])
-            && strpos(
-                $headers['Authorization'],
-                'Bearer '
-            ) === 0
-        ) {
-            $token = substr($headers['Authorization'], 7);
-        }
-
-        return $token;
     }
 }

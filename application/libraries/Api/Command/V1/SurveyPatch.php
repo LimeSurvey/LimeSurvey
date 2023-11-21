@@ -2,10 +2,10 @@
 
 namespace LimeSurvey\Api\Command\V1;
 
-use LimeSurvey\Api\Auth\AuthSession;
 use LimeSurvey\Api\Command\V1\SurveyPatch\PatcherSurvey;
 use LimeSurvey\Api\Command\{
     CommandInterface,
+    Auth\CommandAuthInterface,
     Request\Request,
     Response\Response,
     Response\ResponseFactory
@@ -18,23 +18,23 @@ class SurveyPatch implements CommandInterface
 {
     use AuthPermissionTrait;
 
-    protected AuthSession $authSession;
+    protected CommandAuthInterface $commandAuth;
     protected FactoryInterface $diFactory;
     protected ResponseFactory $responseFactory;
 
     /**
      * Constructor
      *
-     * @param AuthSession $authSession
+     * @param AuthSession $commandAuth
      * @param FactoryInterface $diFactory
      * @param ResponseFactory $responseFactory
      */
     public function __construct(
-        AuthSession $authSession,
+        CommandAuthInterface $commandAuth,
         FactoryInterface $diFactory,
         ResponseFactory $responseFactory
     ) {
-        $this->authSession = $authSession;
+        $this->commandAuth = $commandAuth;
         $this->diFactory = $diFactory;
         $this->responseFactory = $responseFactory;
     }
@@ -49,13 +49,13 @@ class SurveyPatch implements CommandInterface
      */
     public function run(Request $request)
     {
-        $sessionKey = (string) $request->getData('sessionKey');
         $id = (string) $request->getData('_id');
         $patch = $request->getData('patch');
 
         if (
-            !$this->authSession
-                ->checkKey($sessionKey)
+            !$this->commandAuth
+            || !$this->commandAuth
+                ->isAuthenticated($request)
         ) {
             return $this->responseFactory
                 ->makeErrorUnauthorised();

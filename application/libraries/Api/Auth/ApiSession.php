@@ -7,7 +7,7 @@ use CDbCriteria;
 use Session;
 use Yii;
 
-class AuthSession
+class ApiSession
 {
     const ERROR_INVALID_SESSION_KEY = 'INVALID_SESSION_KEY';
 
@@ -19,7 +19,7 @@ class AuthSession
      * @param string $sPlugin plugin to be used
      * @return bool|string
      */
-    public function doLogin($sUsername, $sPassword, $sPlugin = 'Authdb')
+    public function login($sUsername, $sPassword, $sPlugin = 'Authdb')
     {
         /* @var $identity LSUserIdentity */
         $identity = new \LSUserIdentity($sUsername, $sPassword);
@@ -47,7 +47,7 @@ class AuthSession
      * @param string $username The username
      * @return Session
      */
-    public function createSession($username)
+    private function createSession($username)
     {
         $this->jumpStartSession($username);
         $sessionKey = (string) Yii::app()->securityManager
@@ -66,7 +66,7 @@ class AuthSession
      * @param string $username The username
      * @return bool
      */
-    public function jumpStartSession($username)
+    private function jumpStartSession($username)
     {
         $oUser = \User::model()->findByAttributes(array('users_name' => $username));
 
@@ -127,7 +127,7 @@ class AuthSession
      * @param ?string $sessionKey
      * @return void
      */
-    public function doLogout($sessionKey)
+    public function logout($sessionKey)
     {
         Session::model()
             ->deleteAllByAttributes(array(

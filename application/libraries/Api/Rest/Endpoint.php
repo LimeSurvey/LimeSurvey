@@ -5,10 +5,12 @@ namespace LimeSurvey\Api\Rest;
 use LimeSurvey\Api\Rest\Renderer\RendererBasic;
 use LimeSurvey\Api\Command\{
     CommandInterface,
+    Auth\CommandAuthFactory,
+    Auth\CommandAuthInterface,
     Request\Request
 };
 use LimeSurvey\Api\Rest\Renderer\RendererInterface;
-use Psr\Container\ContainerInterface;
+use DI\FactoryInterface;
 
 /**
  * RestEndpoint
@@ -20,7 +22,9 @@ class Endpoint
     protected $config = [];
     /** @var array */
     protected $commandParams = [];
-    protected ContainerInterface $diContainer;
+    protected CommandAuthFactory $commandAuthFactory;
+    protected FactoryInterface $diFactory;
+
 
     /**
      * Constructor
@@ -30,11 +34,31 @@ class Endpoint
      * @param ContainerInterface $diContainer
      * @return string|null
      */
-    public function __construct($config, $commandParams, ContainerInterface $diContainer)
+    public function __construct(
+        $config,
+        $commandParams,
+        CommandAuthFactory $commandAuthFactory,
+        FactoryInterface $diFactory
+    )
     {
         $this->config = $config;
         $this->commandParams = $commandParams;
-        $this->diContainer = $diContainer;
+        $this->commandAuthFactory = $commandAuthFactory;
+        $this->diFactory = $diFactory;
+    }
+
+    /**
+     * Get auth service
+     *
+     * @return ?CommandAuthInterface
+     */
+    protected function getCommandAuth()
+    {
+        return !empty($this->config['auth'])
+        ? $this->commandAuthFactory->getCommandAuth(
+            $this->config['auth']
+        )
+        : null;
     }
 
     /**
@@ -44,7 +68,12 @@ class Endpoint
      */
     protected function getCommand()
     {
-        return $this->diContainer->get($this->config['commandClass']);
+        return $this->diFactory->make(
+            $this->config['commandClass'],
+            [
+                'commandAuth' => $this->getCommandAuth()
+            ]
+        );
     }
 
     /**
@@ -65,7 +94,7 @@ class Endpoint
             // non version specific command use RendererBasic
             $class = RendererBasic::class;
         }
-        return $this->diContainer->get($class);
+        return $this->diFactory->make($class);
     }
 
     /**

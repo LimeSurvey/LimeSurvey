@@ -2,32 +2,32 @@
 
 namespace LimeSurvey\Api\Command\V1;
 
-use LimeSurvey\Api\Auth\AuthSession;
 use LimeSurvey\Api\Command\V1\Exception\ExceptionInvalidUser;
 use LimeSurvey\Api\Command\{
     CommandInterface,
+    Auth\CommandAuthInterface,
     Request\Request,
     Response\Response,
     ResponseData\ResponseDataError,
     Response\ResponseFactory
 };
 
-class SessionKeyCreate implements CommandInterface
+class AuthTokenCreate implements CommandInterface
 {
-    protected AuthSession $authSession;
+    protected CommandAuthInterface $commandAuth;
     protected ResponseFactory $responseFactory;
 
     /**
      * Constructor
      *
-     * @param AuthSession $authSession
+     * @param CommandAuthInterface $commandAuth
      * @param ResponseFactory $responseFactory
      */
     public function __construct(
-        AuthSession $authSession,
+        CommandAuthInterface $commandAuth,
         ResponseFactory $responseFactory
     ) {
-        $this->authSession = $authSession;
+        $this->commandAuth = $commandAuth;
         $this->responseFactory = $responseFactory;
     }
 
@@ -39,20 +39,9 @@ class SessionKeyCreate implements CommandInterface
      */
     public function run(Request $request)
     {
-        $username = (string) $request->getData('username');
-        $password = (string) $request->getData('password');
-        $plugin = (string) $request->getData(
-            'plugin',
-            'Authdb'
-        );
-
         try {
             return $this->responseFactory->makeSuccess(
-                $this->authSession->doLogin(
-                    $username,
-                    $password,
-                    $plugin
-                )
+                $this->commandAuth->login($request)
             );
         } catch (ExceptionInvalidUser $e) {
             return $this->responseFactory->makeErrorUnauthorised(

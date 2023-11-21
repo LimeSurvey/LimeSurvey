@@ -13,9 +13,9 @@ $errorSchema = (new SchemaFactoryError)->make();
 
 $rest = [];
 
-$rest['v1/session'] = [
+$rest['v1/auth'] = [
     'POST' => [
-        'description' => 'Generate new authentication token',
+        'description' => 'Authenticate',
         'commandClass' => AuthTokenCreate::class,
         'auth' => 'session',
         'params' => [
@@ -26,8 +26,7 @@ $rest['v1/session'] = [
         'responses' => [
             'success' => [
                 'code' => 200,
-                'description' => 'Success - returns string access token for use in header '
-                    . '"Authorization: Bearer $token"',
+                'description' => 'Success',
                 'schema' => (new SchemaFactoryAuthToken)->make()
             ],
             'unauthorized' => [
@@ -38,7 +37,7 @@ $rest['v1/session'] = [
         ]
     ],
     'DELETE' => [
-        'description' => 'Destroy currently used authentication token',
+        'description' => 'Clear authentication',
         'commandClass' => AuthTokenRelease::class,
         'auth' => 'session',
         'params' => [],

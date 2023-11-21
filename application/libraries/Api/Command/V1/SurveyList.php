@@ -6,11 +6,11 @@ use Survey;
 use LimeSurvey\Api\Command\V1\Transformer\Output\TransformerOutputSurvey;
 use LimeSurvey\Api\Command\{
     CommandInterface,
+    Auth\CommandAuthInterface,
     Request\Request,
     Response\Response,
     Response\ResponseFactory
 };
-use LimeSurvey\Api\Auth\AuthSession;
 use LimeSurvey\Api\Command\Mixin\Auth\AuthPermissionTrait;
 
 class SurveyList implements CommandInterface
@@ -18,7 +18,7 @@ class SurveyList implements CommandInterface
     use AuthPermissionTrait;
 
     protected Survey $survey;
-    protected AuthSession $authSession;
+    protected CommandAuthInterface $commandAuth;
     protected TransformerOutputSurvey $transformerOutputSurvey;
     protected ResponseFactory $responseFactory;
 
@@ -31,13 +31,13 @@ class SurveyList implements CommandInterface
      * @param ResponseFactory $responseFactory
      */
     public function __construct(
+        CommandAuthInterface $commandAuth,
         Survey $survey,
-        AuthSession $authSession,
         TransformerOutputSurvey $transformerOutputSurvey,
         ResponseFactory $responseFactory
     ) {
+        $this->commandAuth = $commandAuth;
         $this->survey = $survey;
-        $this->authSession = $authSession;
         $this->transformerOutputSurvey = $transformerOutputSurvey;
         $this->responseFactory = $responseFactory;
     }
@@ -50,11 +50,10 @@ class SurveyList implements CommandInterface
      */
     public function run(Request $request)
     {
-        $sessionKey = (string) $request->getData('sessionKey');
-
         if (
-            !$this->authSession
-                ->checkKey($sessionKey)
+            !$this->commandAuth
+            || !$this->commandAuth
+                ->isAuthenticated($request)
         ) {
             return $this->responseFactory
                 ->makeErrorUnauthorised();

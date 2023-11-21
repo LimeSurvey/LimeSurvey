@@ -6,12 +6,12 @@ use Survey;
 use LimeSurvey\Api\Command\V1\Transformer\Output\TransformerOutputSurveyDetail;
 use LimeSurvey\Api\Command\{
     CommandInterface,
+    Auth\CommandAuthInterface,
     Request\Request,
     Response\Response,
     ResponseData\ResponseDataError,
     Response\ResponseFactory
 };
-use LimeSurvey\Api\Auth\AuthSession;
 use LimeSurvey\Api\Command\Mixin\Auth\AuthPermissionTrait;
 
 class SurveyDetail implements CommandInterface
@@ -19,7 +19,7 @@ class SurveyDetail implements CommandInterface
     use AuthPermissionTrait;
 
     protected Survey $survey;
-    protected AuthSession $authSession;
+    protected CommandAuthInterface $commandAuth;
     protected TransformerOutputSurveyDetail $transformerOutputSurveyDetail;
     protected ResponseFactory $responseFactory;
 
@@ -27,18 +27,18 @@ class SurveyDetail implements CommandInterface
      * Constructor
      *
      * @param Survey $survey
-     * @param AuthSession $authSession
+     * @param CommandAuthInterface $commandAuth
      * @param TransformerOutputSurvey $transformerOutputSurvey
      * @param ResponseFactory $responseFactory
      */
     public function __construct(
         Survey $survey,
-        AuthSession $authSession,
+        CommandAuthInterface $commandAuth,
         TransformerOutputSurveyDetail $transformerOutputSurveyDetail,
         ResponseFactory $responseFactory
     ) {
         $this->survey = $survey;
-        $this->authSession = $authSession;
+        $this->commandAuth = $commandAuth;
         $this->transformerOutputSurveyDetail = $transformerOutputSurveyDetail;
         $this->responseFactory = $responseFactory;
     }
@@ -51,12 +51,12 @@ class SurveyDetail implements CommandInterface
      */
     public function run(Request $request)
     {
-        $sessionKey = (string) $request->getData('sessionKey');
         $surveyId = (string) $request->getData('_id');
 
         if (
-            !$this->authSession
-                    ->checkKey($sessionKey)
+            !$this->commandAuth
+            || !$this->commandAuth
+                ->isAuthenticated($request)
         ) {
             return $this->responseFactory
                 ->makeErrorUnauthorised();
