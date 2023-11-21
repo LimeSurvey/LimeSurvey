@@ -137,6 +137,9 @@ class InstallerConfigForm extends CFormModel
     public $isSodiumPresent = false;
 
     /** @var bool */
+    public $isCollatePresent = false;
+
+    /** @var bool */
     public $isConfigPresent = false;
 
 
@@ -215,6 +218,7 @@ class InstallerConfigForm extends CFormModel
         $this->isPhpImapPresent = function_exists('imap_open');
         $this->isPhpZipPresent = class_exists('ZipArchive');
         $this->isSodiumPresent = function_exists('sodium_crypto_sign_open');
+        $this->isCollatePresent = class_exists('Collate');
 
         if (function_exists('gd_info')) {
             $gdInfo = gd_info();

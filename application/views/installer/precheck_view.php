@@ -126,6 +126,11 @@ $iconFail = "<span class='fa fa-exclamation-triangle text-danger'></span>";
                </td>
         </tr>
         <tr>
+               <td><?php eT("PHP Collate library (language sort order)"); ?></td>
+               <td><span class='fa fa-check text-success'></span></td>
+               <td><?= $model->isCollatePresent ? $iconOk : $iconFail ?></td>
+        </tr>
+        <tr>
                <td><?php eT("PHP LDAP library"); ?></td>
                <td><span class='fa fa-check text-success'></span></td>
                <td><?= $model->isPhpLdapPresent ? $iconOk : $iconFail ?></td>
