@@ -423,7 +423,9 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
      */
     public function isValidPatch(OpInterface $op): bool
     {
-        // TODO: Implement isValidPatch() method.
+        // check for existing tempId props in question,
+        // subquestion and/or answer when operation validation 2.0 is developed
+
         return true;
     }
 }
