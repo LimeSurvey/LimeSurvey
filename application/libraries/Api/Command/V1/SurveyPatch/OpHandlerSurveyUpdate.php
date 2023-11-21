@@ -2,6 +2,7 @@
 
 namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
+use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\OpHandlerExceptionTrait;
 use Survey;
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputSurvey;
 use LimeSurvey\Models\Services\{
