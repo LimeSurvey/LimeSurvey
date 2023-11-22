@@ -68,7 +68,9 @@ function checkconditions(value, name, type, evt_type)
     }*/
     try{
         ExprMgr_process_relevance_and_tailoring(evt_type,name,type);
-    } catch(e) { console.ls.error(e); }
+    } catch(e) {
+        console.ls.error(e);
+    }
 }
 
 /**
@@ -234,8 +236,16 @@ $(document).on("change",".radio-item :radio:not([onclick]), .button-item :radio:
 $(document).on("change",".checkbox-item :checkbox:not([onclick]),.button-item :checkbox:not([onclick])",function(event){
     checkconditions($(this).val(), $(this).attr('name'), 'checkbox', 'click')
 });
-/* hidden item */
-$(document).on("updated",".answer-item :hidden, .upload-item :hidden",function(event){
+/* upload item */
+$(document).on("updated",".upload-item :hidden",function(event){
+    checkconditions($(this).val(), $(this).attr('name'), 'upload', 'updated')
+});
+/* equation item */
+$(document).on("updated",".hidden-item :hidden",function(event){
+    /* equation item must have a name */
+    if(!$(this).attr('name')) {
+        return;
+    }
     checkconditions($(this).val(), $(this).attr('name'), 'equation', 'updated')
 });
 /**
