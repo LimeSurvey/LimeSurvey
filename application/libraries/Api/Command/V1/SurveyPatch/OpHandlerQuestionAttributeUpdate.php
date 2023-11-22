@@ -98,12 +98,7 @@ class OpHandlerQuestionAttributeUpdate implements OpHandlerInterface
     {
         $surveyId = $this->getSurveyIdFromContext($op);
         $this->questionAggregateService->checkUpdatePermission($surveyId);
-        $preparedData = $this->prepareAdvancedSettings(
-            $op,
-            $this->transformer,
-            $op->getProps(),
-            ['attributes']
-        );
+        $preparedData = $this->transformer->transformAll($op->getProps());
         $questionId = $op->getEntityId();
         $this->attributesService->saveAdvanced(
             $this->questionService->getQuestionBySidAndQid(

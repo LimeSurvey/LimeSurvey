@@ -308,10 +308,7 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
             case 'questionL10n':
                 return $this->prepareQuestionL10n($op, $data);
             case 'attributes':
-                return $this->prepareAdvancedSettings(
-                    $op,
-                    $data
-                );
+                return $this->transformerAttribute->transformAll($data);
             case 'answers':
                 return $this->prepareAnswers(
                     $op,
@@ -372,49 +369,6 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
 
         return $preparedL10n;
     }
-
-    /**
-     * Converts the advanced settings from the raw data to the expected format.
-     * @param OpInterface $op
-     * @param array|null $data
-     * @return array
-     * @throws OpHandlerException
-     */
-    private function prepareAdvancedSettings(
-        OpInterface $op,
-        ?array $data
-    ): array {
-        $preparedSettings = [];
-        if (is_array($data)) {
-            foreach ($data as $attrName => $languages) {
-                foreach ($languages as $lang => $advancedSetting) {
-                    $transformedSetting = $this->transformerAttribute->transform(
-                        $advancedSetting
-                    );
-                    $this->checkRequiredData(
-                        $op,
-                        $transformedSetting,
-                        'attributes'
-                    );
-                    if (
-                        is_array($transformedSetting) && array_key_exists(
-                            'value',
-                            $transformedSetting
-                        )
-                    ) {
-                        $value = $transformedSetting['value'];
-                        if ($lang !== '') {
-                            $preparedSettings[0][$attrName][$lang] = $value;
-                        } else {
-                            $preparedSettings[0][$attrName] = $value;
-                        }
-                    }
-                }
-            }
-        }
-        return $preparedSettings;
-    }
-
 
     /**
      * Checks if patch is valid for this operation.

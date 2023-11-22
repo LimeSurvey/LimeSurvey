@@ -162,53 +162,6 @@ trait OpHandlerQuestionTrait
     }
 
     /**
-     * Converts the advanced settings from the raw data to the expected format.
-     * @param OpInterface $op
-     * @param TransformerInputQuestionAttribute $transformerAttribute
-     * @param array|null $data
-     * @param array|null $additionalRequiredEntities
-     * @return array
-     * @throws OpHandlerException
-     */
-    public function prepareAdvancedSettings(
-        OpInterface $op,
-        TransformerInputQuestionAttribute $transformerAttribute,
-        ?array $data,
-        ?array $additionalRequiredEntities = null
-    ): array {
-        $preparedSettings = [];
-        if (is_array($data)) {
-            foreach ($data as $attrName => $languages) {
-                foreach ($languages as $lang => $advancedSetting) {
-                    $transformedSetting = $transformerAttribute->transform(
-                        $advancedSetting
-                    );
-                    $this->checkRequiredData(
-                        $op,
-                        $transformedSetting,
-                        'attributes',
-                        $additionalRequiredEntities
-                    );
-                    if (
-                        is_array($transformedSetting) && array_key_exists(
-                            'value',
-                            $transformedSetting
-                        )
-                    ) {
-                        $value = $transformedSetting['value'];
-                        if ($lang !== '') {
-                            $preparedSettings[0][$attrName][$lang] = $value;
-                        } else {
-                            $preparedSettings[0][$attrName] = $value;
-                        }
-                    }
-                }
-            }
-        }
-        return $preparedSettings;
-    }
-
-    /**
      * Converts the subquestions from the raw data to the expected format.
      * @param OpInterface $op
      * @param TransformerInputQuestion $transformerQuestion
