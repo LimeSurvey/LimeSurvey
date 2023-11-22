@@ -25,8 +25,7 @@ class CommandAuthSession implements CommandAuthInterface
     {
         return $this->apiSession->login(
             $request->getData('username') ?: '',
-            $request->getData('password') ?: '',
-            'Authdb'
+            $request->getData('password') ?: ''
         );
     }
 

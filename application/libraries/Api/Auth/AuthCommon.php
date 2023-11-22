@@ -2,6 +2,9 @@
 
 namespace LimeSurvey\Api\Auth;
 
+use LSUserIdentity;
+use PluginEvent;
+
 class AuthCommon
 {
     /**
@@ -14,9 +17,9 @@ class AuthCommon
      */
     public function getIdentity($sUsername, $sPassword, $sPlugin = 'Authdb')
     {
-        $identity = new \LSUserIdentity($sUsername, $sPassword);
+        $identity = new LSUserIdentity($sUsername, $sPassword);
         $identity->setPlugin($sPlugin);
-        $event = new \PluginEvent('remoteControlLogin');
+        $event = new PluginEvent('remoteControlLogin');
         $event->set('identity', $identity);
         $event->set('plugin', $sPlugin);
         $event->set('username', $sUsername);
@@ -35,7 +38,6 @@ class AuthCommon
      */
     public function verifyUsernameAndPassword($sUsername, $sPassword, $sPlugin = 'Authdb')
     {
-        /* @var $identity LSUserIdentity */
         $identity = $this->getIdentity(
             $sUsername,
             $sPassword,

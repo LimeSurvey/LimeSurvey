@@ -29,8 +29,7 @@ class ApiSession
     public function __construct(
         AuthCommon $authCommon,
         AuthSession $authSession
-    )
-    {
+    ) {
         $this->authCommon = $authCommon;
         $this->authSession = $authSession;
     }

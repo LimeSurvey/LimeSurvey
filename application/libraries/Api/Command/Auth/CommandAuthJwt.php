@@ -4,9 +4,7 @@ namespace LimeSurvey\Api\Command\Auth;
 
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
-
 use User;
-
 use LimeSurvey\Auth\{
     AuthCommon,
     AuthSession
@@ -30,8 +28,7 @@ class CommandAuthJwt implements CommandAuthInterface
     public function __construct(
         AuthCommon $authCommon,
         AuthSession $authSession
-    )
-    {
+    ) {
         $this->authCommon = $authCommon;
         $this->authSession = $authSession;
     }
@@ -53,21 +50,26 @@ class CommandAuthJwt implements CommandAuthInterface
         }
         if ($jwt && !empty($jwt->re)) {
             $user = User::model()->find($jwt->uid);
-            return $this->getResponseSuccess($user);
+            if ($user) {
+                return $this->getResponseSuccess($user);
+            }
         }
 
         $identity = $this->authCommon->getIdentity(
-            $request->getData('username'),
-            $request->getData('password')
+            $request->getData('username') ?: '',
+            $request->getData('password') ?: ''
         );
+
+
         if (!$identity->authenticate()) {
             if ($identity->errorMessage) {
                 throw new ExceptionInvalidUser($identity->errorMessage);
             }
-            throw new ExceptionInvalidUser('Invalid user name or password');
         } else {
             return $this->getResponseSuccess($identity->getUser());
         }
+
+        throw new ExceptionInvalidUser('Invalid user name or password');
     }
 
     /**
@@ -143,12 +145,11 @@ class CommandAuthJwt implements CommandAuthInterface
      *
      * @param User $user
      * @param int $expires UnixTime expiration - short lived
-     * @return array
+     * @return string
      */
     private function createAccessToken(User $user, $expires)
     {
         $payload = [
-            'iss' => $_SERVER['SERVER_NAME'],
             'iat' => time(),
             'exp' => $expires, // + 30 minutes
             'uid' => $user->uid,
@@ -161,12 +162,11 @@ class CommandAuthJwt implements CommandAuthInterface
      *
      * @param User $user
      * @param int $expires UnixTime expiration - long lived
-     * @return array
+     * @return string
      */
     private function createRefreshToken(User $user, $expires)
     {
         $payload = [
-            'iss' => $_SERVER['SERVER_NAME'],
             'iat' => time(),
             'exp' => $expires, // + 3 months
             'uid' => $user->uid,
@@ -184,7 +184,7 @@ class CommandAuthJwt implements CommandAuthInterface
     {
         JWT::$leeway = 60; // $leeway in seconds
         return JWT::decode(
-            $this->getAuthToken($request),
+            $this->getAuthToken($request) ?: '',
             new Key($this->getPrivateKey(), 'HS256')
         );
     }
@@ -195,7 +195,7 @@ class CommandAuthJwt implements CommandAuthInterface
      * This must be unique for each installation.
      *
      * @param Request $request
-     * @return string|null
+     * @return string
      */
     private function getPrivateKey()
     {
@@ -209,7 +209,7 @@ class CommandAuthJwt implements CommandAuthInterface
      * - and falls back to authorisation bearer token.
      *
      * @param Request $request
-     * @return string|null
+     * @return ?string
      */
     private function getAuthToken(Request $request)
     {
@@ -226,7 +226,7 @@ class CommandAuthJwt implements CommandAuthInterface
      * Attempts to read bearer token from authorisation header.
      *
      * @param Request $request
-     * @return string|null
+     * @return ?string
      */
     private function getAuthBearerToken(Request $request)
     {
@@ -245,4 +245,3 @@ class CommandAuthJwt implements CommandAuthInterface
         return $token;
     }
 }
-
