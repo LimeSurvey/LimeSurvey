@@ -58,28 +58,36 @@ class Quotas extends SurveyCommonAction
     }
 
     /**
-     * Check permission cfor a survey about quota
+     * Check permission for a survey about quota, redirect if no permission
      * @param integer $iSurveyId
      * @param string $sPermission
-     * @param integer|null $iQuotaid
-     * throw Exception
      * @return void
      */
-    private function checkPermissions($iSurveyId, $sPermission, $iQuotaid = null)
+    private function checkPermissions($iSurveyId, $sPermission)
     {
         if (!empty($sPermission) && !(Permission::model()->hasSurveyPermission($iSurveyId, 'quotas', $sPermission))) {
             Yii::app()->session['flashmessage'] = gT('Access denied!');
             $this->redirectToIndex($iSurveyId);
         }
-        if ($iQuotaid) {
-            $model = Quota::model()->find(
-                "id = :quotaid AND sid = :surveyid",
-                [':quotaid' => $iQuotaid, ':surveyid' => $iSurveyId]
-            );
-            if (empty($model)) {
-                throw new CHttpException(403, gT("Bad quota id with this survey id."));
-            }
+    }
+
+    /**
+     * Check validity of a quotaid against a survey id
+     * @param integer $iSurveyId
+     * @param integer $quotaid
+     * throw Exception
+     * @return void
+     */
+    private function checkValidQuotaId($surveyId, $quotaId)
+    {
+        $model = Quota::model()->find(
+            "id = :quotaid AND sid = :surveyid",
+            [':quotaid' => $quotaId, ':surveyid' => $surveyId]
+        );
+        if (empty($model)) {
+            throw new CHttpException(403, gT("Bad quota id with this survey id."));
         }
+
     }
 
     private function redirectToIndex($iSurveyId)
@@ -302,7 +310,8 @@ class Quotas extends SurveyCommonAction
         $iSurveyId = sanitize_int($iSurveyId);
         $qid = Yii::app()->request->getPost('quota_qid');
         $quota_id = Yii::app()->request->getPost('quota_id');
-        $this->checkPermissions($iSurveyId, 'update', $quota_id);
+        $this->checkPermissions($iSurveyId, 'update');
+        $this->checkValidQuotaId($surveyId, $quota_id);
 
         $oQuotaMembers = new QuotaMember('create'); // Trigger the 'create' rules
         $oQuotaMembers->sid = $iSurveyId;
@@ -344,7 +353,8 @@ class Quotas extends SurveyCommonAction
         if (empty($QuotaMember)) {
             throw new CHttpException(404, gT("Quota memeber not found."));
         }
-        $this->checkPermissions($iSurveyId, 'update', $QuotaMember->quota_id);
+        $this->checkPermissions($iSurveyId, 'update');
+        $this->checkValidQuotaId($iSurveyId, $QuotaMember->quota_id);
         $QuotaMember->delete();
         self::redirectToIndex($iSurveyId);
     }
@@ -359,7 +369,8 @@ class Quotas extends SurveyCommonAction
 
         $iSurveyId = sanitize_int($iSurveyId);
         $quotaId = Yii::app()->request->getQuery('quota_id');
-        $this->checkPermissions($iSurveyId, 'delete', $quotaId);
+        $this->checkPermissions($iSurveyId, 'delete');
+        $this->checkValidQuotaId($iSurveyId, $quotaId);
 
         Quota::model()->deleteByPk($quotaId);
         QuotaLanguageSetting::model()->deleteAllByAttributes(array('quotals_quota_id' => $quotaId));
@@ -381,7 +392,8 @@ class Quotas extends SurveyCommonAction
         $oSurvey = Survey::model()->findByPk($iSurveyId);
         $quotaId = Yii::app()->request->getQuery('quota_id');
 
-        $this->checkPermissions($iSurveyId, 'update', $quotaId);
+        $this->checkPermissions($iSurveyId, 'update');
+        $this->checkValidQuotaId($iSurveyId, $quotaId);
         $aData = $this->getData($iSurveyId);
         $aViewUrls = array();
 
@@ -449,7 +461,8 @@ class Quotas extends SurveyCommonAction
         $iSurveyId = sanitize_int($iSurveyId);
         $oSurvey = Survey::model()->findByPk($iSurveyId);
         $quota_id = Yii::app()->request->getPost('quota_id');
-        $this->checkPermissions($iSurveyId, 'update', $quota_id);
+        $this->checkPermissions($iSurveyId, 'update');
+        $this->checkValidQuotaId($iSurveyId, $quota_id);
         $aData = $this->getData($iSurveyId);
         $aViewUrls = array();
         $quota = Quota::model()->findByPk($quota_id);
