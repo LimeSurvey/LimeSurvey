@@ -422,7 +422,7 @@ class QuotasController extends LSBaseController
     }
 
     /**
-     * Get a quote aftre check exist and permission on a specific quota using permission on survey
+     * Get a quota after check exist and permission using permission on survey
      * @param integer $quotaId
      * @param string $sPermission to check (on survey quotas)
      * throw Exception
