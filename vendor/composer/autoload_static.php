@@ -80,6 +80,10 @@ class ComposerStaticInitddb1a145e450f862353420acc5153e40
             'GuzzleHttp\\' => 11,
             'GoldSpecDigital\\ObjectOrientedOAS\\' => 34,
         ),
+        'F' => 
+        array (
+            'Firebase\\JWT\\' => 13,
+        ),
         'D' => 
         array (
             'DI\\' => 3,
@@ -121,8 +125,8 @@ class ComposerStaticInitddb1a145e450f862353420acc5153e40
         ),
         'Psr\\Http\\Message\\' => 
         array (
-            0 => __DIR__ . '/..' . '/psr/http-message/src',
-            1 => __DIR__ . '/..' . '/psr/http-factory/src',
+            0 => __DIR__ . '/..' . '/psr/http-factory/src',
+            1 => __DIR__ . '/..' . '/psr/http-message/src',
         ),
         'Psr\\Http\\Client\\' => 
         array (
@@ -219,6 +223,10 @@ class ComposerStaticInitddb1a145e450f862353420acc5153e40
         'GoldSpecDigital\\ObjectOrientedOAS\\' => 
         array (
             0 => __DIR__ . '/..' . '/goldspecdigital/oooas/src',
+        ),
+        'Firebase\\JWT\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/firebase/php-jwt/src',
         ),
         'DI\\' => 
         array (

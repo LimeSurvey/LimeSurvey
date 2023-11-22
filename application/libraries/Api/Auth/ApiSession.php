@@ -2,6 +2,10 @@
 
 namespace LimeSurvey\Api\Auth;
 
+use LimeSurvey\Auth\{
+    AuthCommon,
+    AuthSession
+};
 use LimeSurvey\Api\Command\V1\Exception\ExceptionInvalidUser;
 use CDbCriteria;
 use Session;
@@ -11,28 +15,41 @@ class ApiSession
 {
     const ERROR_INVALID_SESSION_KEY = 'INVALID_SESSION_KEY';
 
+    protected AuthCommon $authCommon;
+    protected AuthSession $authSession;
+
+    /**
+     * Constructor
+     *
+     * @param array $config
+     * @param array $commandParams
+     * @param ContainerInterface $diContainer
+     * @return string|null
+     */
+    public function __construct(
+        AuthCommon $authCommon,
+        AuthSession $authSession
+    )
+    {
+        $this->authCommon = $authCommon;
+        $this->authSession = $authSession;
+    }
+
     /**
      * Login with username and password
      *
      * @param string $sUsername username
      * @param string $sPassword password
-     * @param string $sPlugin plugin to be used
      * @return bool|string
      */
-    public function login($sUsername, $sPassword, $sPlugin = 'Authdb')
+    public function login($sUsername, $sPassword)
     {
-        /* @var $identity LSUserIdentity */
-        $identity = new \LSUserIdentity($sUsername, $sPassword);
-        $identity->setPlugin($sPlugin);
-        $event = new \PluginEvent('remoteControlLogin');
-        $event->set('identity', $identity);
-        $event->set('plugin', $sPlugin);
-        $event->set('username', $sUsername);
-        $event->set('password', $sPassword);
-        App()->getPluginManager()->dispatchEvent($event, array($sPlugin));
+        $identity = $this->authCommon->getIdentity(
+            $sUsername,
+            $sPassword
+        );
         if (!$identity->authenticate()) {
             if ($identity->errorMessage) {
-                // don't return an empty string
                 throw new ExceptionInvalidUser($identity->errorMessage);
             }
             throw new ExceptionInvalidUser('Invalid user name or password');
@@ -49,7 +66,7 @@ class ApiSession
      */
     public function createSession($username)
     {
-        $this->jumpStartSession($username);
+        $this->authSession->initSessionByUsername($username);
         $sessionKey = (string) Yii::app()->securityManager
             ->generateRandomString(32);
         $session = new Session();
@@ -60,42 +77,6 @@ class ApiSession
         return $session;
     }
 
-    /**
-     * Fills the session with necessary user info on the fly
-     *
-     * @param string $username The username
-     * @return bool
-     */
-    private function jumpStartSession($username)
-    {
-        $oUser = \User::model()->findByAttributes(array('users_name' => $username));
-
-        if (!$oUser) {
-            return false;
-        }
-
-        $aUserData = $oUser->attributes;
-
-        /** @var \LSYii_Application */
-        $app = \Yii::app();
-
-        $session = array(
-            'loginID' => intval($aUserData['uid']),
-            'user' => $aUserData['users_name'],
-            'full_name' => $aUserData['full_name'],
-            'htmleditormode' => $aUserData['htmleditormode'],
-            'templateeditormode' => $aUserData['templateeditormode'],
-            'questionselectormode' => $aUserData['questionselectormode'],
-            'dateformat' => $aUserData['dateformat'],
-            'adminlang' => 'en'
-        );
-        foreach ($session as $k => $v) {
-            $app->session[$k] = $v;
-        }
-        $app->user->setId($aUserData['uid']);
-
-        return true;
-    }
 
     /**
      * Check Key
@@ -116,7 +97,7 @@ class ApiSession
         if (is_null($oResult)) {
             return false;
         } else {
-            $this->jumpStartSession($oResult->data);
+            $this->authSession->initSessionByUsername($oResult->data);
             return true;
         }
     }

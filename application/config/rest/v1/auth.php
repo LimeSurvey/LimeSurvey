@@ -17,7 +17,7 @@ $rest['v1/auth'] = [
     'POST' => [
         'description' => 'Authenticate',
         'commandClass' => AuthTokenCreate::class,
-        'auth' => 'session',
+        'auth' => 'jwt',
         'params' => [
             'username' => ['src' => 'form'],
             'password' => ['src' => 'form']
@@ -39,7 +39,7 @@ $rest['v1/auth'] = [
     'DELETE' => [
         'description' => 'Clear authentication',
         'commandClass' => AuthTokenRelease::class,
-        'auth' => 'session',
+        'auth' => 'jwt',
         'params' => [],
         'bodyParams' => [],
         'responses' => [
