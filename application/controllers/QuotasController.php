@@ -35,7 +35,9 @@ class QuotasController extends LSBaseController
     public function actionIndex($surveyid)
     {
         $surveyid = sanitize_int($surveyid);
-        $this->checkPermissions($surveyid);
+        if (!Permission::model()->hasSurveyPermission($surveyid, 'quotas')) {
+            throw new CHttpException(403, gT("You do not have permission on this survey."));
+        }
         $oSurvey = Survey::model()->findByPk($surveyid);
         $aData['surveyid'] = $oSurvey->sid;
         // Set number of page
@@ -102,7 +104,9 @@ class QuotasController extends LSBaseController
     public function actionQuickCSVReport($surveyid)
     {
         $surveyid = sanitize_int($surveyid);
-        $this->checkPermissions($surveyid);
+        if (!Permission::model()->hasSurveyPermission($surveyId, 'quotas')) {
+            throw new CHttpException(403, gT("You do not have permission on this survey."));
+        }
         $oSurvey = Survey::model()->findByPk($surveyid);
 
         /* Export a quickly done csv file */
@@ -128,8 +132,9 @@ class QuotasController extends LSBaseController
     public function actionAddNewQuota($surveyid)
     {
         $surveyid = sanitize_int($surveyid);
-        $this->checkPermissions($surveyid, 'create');
-
+        if (!Permission::model()->hasSurveyPermission($surveyid, 'quotas', 'create')) {
+            throw new CHttpException(403, gT("You do not have permission on this survey."));
+        }
         Yii::app()->loadHelper('admin.htmleditor');
 
         $oSurvey = Survey::model()->findByPk($surveyid);
@@ -182,15 +187,15 @@ class QuotasController extends LSBaseController
     }
 
     /**
-     * @param $surveyid
      * @return void
      */
-    public function actionEditQuota($surveyid)
+    public function actionEditQuota()
     {
-        $surveyid = sanitize_int($surveyid);
-        $oSurvey = Survey::model()->findByPk($surveyid);
+
         $quotaId = sanitize_int(Yii::app()->request->getQuery('quota_id'));
-        $this->checkPermissions($surveyid, 'update', $quotaId);
+        $oQuota = $this->getQuotaWithPermission($quotaId, 'update');
+        $surveyid = $oQuota->sid;
+        $oSurvey = Survey::model()->findByPk($surveyid);
 
         /* @var Quota $oQuota */
         $oQuota = Quota::model()->findByPk($quotaId);
@@ -244,9 +249,9 @@ class QuotasController extends LSBaseController
      */
     public function actionDeleteQuota()
     {
-        $surveyid = sanitize_int(Yii::app()->request->getPost('surveyid'));
         $quotaId = Yii::app()->request->getPost('quota_id');
-        $this->checkPermissions($surveyid, 'delete', $quotaId);
+        $oQuota = $this->getQuotaWithPermission($quotaId, 'delete');
+        $surveyid = $oQuota->sid;
 
         Quota::model()->deleteByPk($quotaId);
         QuotaLanguageSetting::model()->deleteAllByAttributes(array('quotals_quota_id' => $quotaId));
@@ -254,22 +259,21 @@ class QuotasController extends LSBaseController
 
         Yii::app()->user->setFlash('success', sprintf(gT("Quota with ID %s was deleted"), $quotaId));
 
-        $this->redirect($this->createUrl("quotas/index/surveyid/$surveyid"));
+        $this->redirect($this->createUrl(["quotas/index/",[ 'surveyid' => $surveyid]]));
     }
 
 
     /**
-     * @param int $surveyid
-     * @param string $sSubAction
      * @return void
      */
-    public function actionNewAnswer(int $surveyid)
+    public function actionNewAnswer()
     {
-        $surveyid = sanitize_int($surveyid);
+
+        $quotaId = Yii::app()->request->getParam('quota_id');
+        $quota = $this->getQuotaWithPermission($quotaId, 'delete');
+        $surveyid = $quota->sid;
         $oSurvey = Survey::model()->findByPk($surveyid);
         $aData['surveyid'] = $surveyid;
-        $quotaId = Yii::app()->request->getParam('quota_id');
-        $this->checkPermissions($surveyid, 'update', $quotaId);
         $sSubAction = Yii::app()->request->getParam('sSubaction', 'newanswer');
 
         $renderView = array();
@@ -333,13 +337,13 @@ class QuotasController extends LSBaseController
     /**
      * @return void
      */
-    public function actionInsertQuotaAnswer($surveyid)
+    public function actionInsertQuotaAnswer()
     {
-        $surveyid = sanitize_int($surveyid);
         $quota_qid = Yii::app()->request->getPost('quota_qid');
         $quota_id = Yii::app()->request->getPost('quota_id');
         $quota_anscode = Yii::app()->request->getPost('quota_anscode');
-        $this->checkPermissions($surveyid, 'update', $quota_id);
+        $oQuota = $this->getQuotaWithPermission($quota_id, 'update');
+        $surveyid = $oQuota->sid;
 
         $oQuotaMembers = new QuotaMember('create'); // Trigger the 'create' rules
         $oQuotaMembers->sid = $surveyid;
@@ -375,19 +379,17 @@ class QuotasController extends LSBaseController
     /**
      * @return void
      */
-    public function actionDeleteAnswer($surveyid)
+    public function actionDeleteAnswer()
     {
-        $surveyid = sanitize_int($surveyid);
         $id = App()->request->getPost('quota_member_id');
-        $QuotaMember = QuotaMember::model()->findByPk($id);
-        if (empty($QuotaMember)) {
-            throw new CHttpException(404, gT("Quota memeber not found."));
+        $quotaMember = QuotaMember::model()->findByPk($id);
+        if (empty($quotaMember)) {
+            throw new CHttpException(404, gT("Quota member not found."));
         }
-        $this->checkPermissions($surveyid, 'delete', $QuotaMember->quota_id);
-
-        $QuotaMember->delete();
-
-        $this->redirect($this->createUrl('/quotas/index', ['surveyid' => $surveyid]));
+        $oQuota = $this->getQuotaWithPermission($quotaMember->quota_id, 'delete');
+        $surveyid = $oQuota->sid;
+        $quotaMember->delete();
+        $this->redirect($this->createUrl('/quotas/index', ['surveyid' => $oQuota->sid]));
     }
 
     /**
@@ -420,27 +422,22 @@ class QuotasController extends LSBaseController
     }
 
     /**
-     * Check permission on a specific quota
+     * Check permission on a specific quota using permission on survey
      * Check survey id and quota id at same time
-     * @param integer $iSurveyId
+     * @param integer $iQuotaid
      * @param string $sPermission
-     * @param integer|null $iQuotaid
      * throw Exception
      * @return void
      */
-    private function checkPermissions($surveyId, $sPermission = 'read', $quotaId = null)
+    private function getQuotaWithPermission($quotaId, $sPermission = 'read')
     {
-        if (!Permission::model()->hasSurveyPermission($surveyId, 'quotas', $sPermission)) {
-            throw new CHttpException(403, gT("You do not have permission on this survey."));
+        $oQuota = Quota::model()->findByPk($quotaId);
+        if (empty($oQuota)) {
+            throw new CHttpException(404, gT("Quota not found."));
         }
-        if ($quotaId) {
-            $Quota = Quota::model()->findByPk($quotaId);
-            if (empty($Quota)) {
-                throw new CHttpException(404, gT("Quota not found."));
-            }
-            if ($Quota->sid != $surveyId) {
-                throw new CHttpException(400, gT("Quota is invalid."));
-            }
+        if (!Permission::model()->hasSurveyPermission($oQuota->sid, 'quotas', $sPermission)) {
+            throw new CHttpException(403, gT("You do not have permission on this quota."));
         }
+        return $oQuota;
     }
 }
