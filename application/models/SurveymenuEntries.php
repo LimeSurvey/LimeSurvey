@@ -232,7 +232,7 @@ class SurveymenuEntries extends LSActiveRecord
         if ($data->menu_icon_type == 'fontawesome') {
             return "<i class='fa fa-" . $data->menu_icon . "'></i>";
         } elseif ($data->menu_icon_type == 'image') {
-            return '<img width="60px" src="' . $data->menu_icon . '" />';
+            return '<img width="60px" src="' . CHtml::encode($data->menu_icon) . '" />';
         } else {
             return $data->menu_icon_type . '|' . $data->menu_icon;
         }
