@@ -103,7 +103,7 @@ class OpHandlerQuestionUpdate implements OpHandlerInterface
      */
     public function isValidPatch(OpInterface $op): bool
     {
-        // TODO: Implement isValidPatch() method.
+        // patch is already checked by getPreparedData()
         return true;
     }
 }

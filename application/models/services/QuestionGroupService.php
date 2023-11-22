@@ -536,7 +536,6 @@ class QuestionGroupService
                 'Survey does not exist',
             );
         }
-        $survey->refresh();
         return $survey;
     }
 

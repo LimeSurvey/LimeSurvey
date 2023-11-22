@@ -85,7 +85,7 @@ class OpHandlerQuestionL10nUpdate implements OpHandlerInterface
      */
     public function isValidPatch(OpInterface $op): bool
     {
-        // TODO: Implement isValidPatch() method.
+        //getTransformedLanguageProps already checks if the patch is valid
         return true;
     }
 }
