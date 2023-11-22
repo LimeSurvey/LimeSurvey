@@ -13,7 +13,7 @@
  *
  */
 
-use LimeSurvey\Api\Auth\AuthSession;
+use LimeSurvey\Api\Auth\ApiSession;
 
 class EditorLinkController extends LSYii_Controller
 {
@@ -66,7 +66,7 @@ class EditorLinkController extends LSYii_Controller
     {
         $cookieName = 'LS_AUTH_INIT';
 
-        $authSession = new AuthSession();
+        $authSession = new ApiSession();
         $session = $authSession->createSession(
             Yii::app()->session['user']
         );

@@ -47,7 +47,7 @@ class ApiSession
      * @param string $username The username
      * @return Session
      */
-    private function createSession($username)
+    public function createSession($username)
     {
         $this->jumpStartSession($username);
         $sessionKey = (string) Yii::app()->securityManager
