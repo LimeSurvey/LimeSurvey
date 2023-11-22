@@ -18,28 +18,28 @@ class SurveyList implements CommandInterface
     use AuthPermissionTrait;
 
     protected Survey $survey;
-    protected CommandAuthInterface $commandAuth;
     protected TransformerOutputSurvey $transformerOutputSurvey;
     protected ResponseFactory $responseFactory;
+    protected ?CommandAuthInterface $commandAuth;
 
     /**
      * Constructor
      *
      * @param Survey $survey
-     * @param AuthSession $authSession
      * @param TransformerOutputSurvey $transformerOutputSurvey
      * @param ResponseFactory $responseFactory
+     * @param ?CommandAuthInterface $commandAuth
      */
     public function __construct(
-        CommandAuthInterface $commandAuth,
         Survey $survey,
         TransformerOutputSurvey $transformerOutputSurvey,
-        ResponseFactory $responseFactory
+        ResponseFactory $responseFactory,
+        ?CommandAuthInterface $commandAuth
     ) {
-        $this->commandAuth = $commandAuth;
         $this->survey = $survey;
         $this->transformerOutputSurvey = $transformerOutputSurvey;
         $this->responseFactory = $responseFactory;
+        $this->commandAuth = $commandAuth;
     }
 
     /**

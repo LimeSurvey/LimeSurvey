@@ -19,28 +19,28 @@ class SurveyDetail implements CommandInterface
     use AuthPermissionTrait;
 
     protected Survey $survey;
-    protected CommandAuthInterface $commandAuth;
     protected TransformerOutputSurveyDetail $transformerOutputSurveyDetail;
     protected ResponseFactory $responseFactory;
+    protected ?CommandAuthInterface $commandAuth;
 
     /**
      * Constructor
      *
      * @param Survey $survey
-     * @param CommandAuthInterface $commandAuth
      * @param TransformerOutputSurvey $transformerOutputSurvey
      * @param ResponseFactory $responseFactory
+     * @param ?CommandAuthInterface $commandAuth
      */
     public function __construct(
         Survey $survey,
-        CommandAuthInterface $commandAuth,
         TransformerOutputSurveyDetail $transformerOutputSurveyDetail,
-        ResponseFactory $responseFactory
+        ResponseFactory $responseFactory,
+        ?CommandAuthInterface $commandAuth
     ) {
         $this->survey = $survey;
-        $this->commandAuth = $commandAuth;
         $this->transformerOutputSurveyDetail = $transformerOutputSurveyDetail;
         $this->responseFactory = $responseFactory;
+        $this->commandAuth = $commandAuth;
     }
 
     /**

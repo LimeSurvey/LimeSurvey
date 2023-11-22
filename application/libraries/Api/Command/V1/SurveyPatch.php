@@ -18,25 +18,25 @@ class SurveyPatch implements CommandInterface
 {
     use AuthPermissionTrait;
 
-    protected CommandAuthInterface $commandAuth;
     protected FactoryInterface $diFactory;
     protected ResponseFactory $responseFactory;
+    protected ?CommandAuthInterface $commandAuth;
 
     /**
      * Constructor
      *
-     * @param AuthSession $commandAuth
      * @param FactoryInterface $diFactory
      * @param ResponseFactory $responseFactory
+     * @param ?CommandAuthInterface $commandAuth
      */
     public function __construct(
-        CommandAuthInterface $commandAuth,
         FactoryInterface $diFactory,
-        ResponseFactory $responseFactory
+        ResponseFactory $responseFactory,
+        ?CommandAuthInterface $commandAuth
     ) {
-        $this->commandAuth = $commandAuth;
         $this->diFactory = $diFactory;
         $this->responseFactory = $responseFactory;
+        $this->commandAuth = $commandAuth;
     }
 
     /**

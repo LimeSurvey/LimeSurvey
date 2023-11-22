@@ -24,8 +24,8 @@ class CommandAuthSession implements CommandAuthInterface
     public function login($request)
     {
         return $this->apiSession->login(
-            $request->getData('username'),
-            $request->getData('password'),
+            $request->getData('username') ?: '',
+            $request->getData('password') ?: '',
             'Authdb'
         );
     }
@@ -48,7 +48,7 @@ class CommandAuthSession implements CommandAuthInterface
     public function isAuthenticated($request)
     {
         return $this->apiSession->checkKey(
-            $this->getAuthToken($request)
+            $this->getAuthToken($request) ?: ''
         );
     }
 
@@ -59,7 +59,7 @@ class CommandAuthSession implements CommandAuthInterface
      * Attempts to read from 'authToken' GET parameter and falls back to authorisation bearer token.
      *
      * @param Request $request
-     * @return string|null
+     * @return ?string
      */
     private function getAuthToken(Request $request)
     {
@@ -76,7 +76,7 @@ class CommandAuthSession implements CommandAuthInterface
      * Attempts to read bearer token from authorisation header.
      *
      * @param Request $request
-     * @return string|null
+     * @return ?string
      */
     private function getAuthBearerToken(Request $request)
     {
