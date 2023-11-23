@@ -87,7 +87,6 @@ class Quotas extends SurveyCommonAction
         if (empty($model)) {
             throw new CHttpException(403, gT("Bad quota id with this survey id."));
         }
-
     }
 
     private function redirectToIndex($iSurveyId)
