@@ -20,7 +20,7 @@ class TransformerInputQuestionAttribute extends Transformer
 
     /**
      * Converts the raw array to the expected format.
-     * @param $collection
+     * @param mixed $collection
      * @return array
      * @throws OpHandlerException
      */

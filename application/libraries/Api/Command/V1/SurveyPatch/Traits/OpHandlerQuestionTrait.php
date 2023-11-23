@@ -141,6 +141,22 @@ trait OpHandlerQuestionTrait
         }
     }
 
+    private function checkRequiredDataCollection(
+        OpInterface $op,
+        ?array $collection,
+        string $name,
+        ?array $additionalEntities = null
+    ): void {
+        foreach ($collection as $data) {
+            $this->checkRequiredData(
+                $op,
+                $data,
+                $name,
+                $additionalEntities
+            );
+        }
+    }
+
     /**
      * For creating a question without breaking the app, we need at least
      * "question"", "questionL10n" entities.

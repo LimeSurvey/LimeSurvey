@@ -306,7 +306,18 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
                 $this->checkRequiredData($op, $entityData, 'question');
                 return $entityData;
             case 'questionL10n':
-                return $this->prepareQuestionL10n($op, $data);
+                $collection = $this->transformerL10n->transformAllLanguageProps(
+                    $op,
+                    $data,
+                    $this->transformerL10n,
+                    'questionL10n'
+                );
+                $this->checkRequiredDataCollection(
+                    $op,
+                    $collection,
+                    'questionL10n'
+                );
+                return $collection;
             case 'attributes':
                 return $this->transformerAttribute->transformAll($data);
             case 'answers':
@@ -343,31 +354,6 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
                 $this->throwRequiredParamException($op, $requiredEntity);
             }
         }
-    }
-
-    /**
-     * @param OpInterface $op
-     * @param array|null $data
-     * @return array
-     * @throws OpHandlerException
-     */
-    private function prepareQuestionL10n(OpInterface $op, ?array $data): array
-    {
-        $preparedL10n = [];
-        if (is_array($data)) {
-            foreach ($data as $index => $props) {
-                $preparedL10n[$index] = $this->transformerL10n->transform(
-                    $props
-                );
-                $this->checkRequiredData(
-                    $op,
-                    $preparedL10n[$index],
-                    'questionL10n'
-                );
-            }
-        }
-
-        return $preparedL10n;
     }
 
     /**

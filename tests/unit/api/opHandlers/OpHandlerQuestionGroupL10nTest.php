@@ -30,10 +30,11 @@ class OpHandlerQuestionGroupL10nTest extends TestBaseClass
         $this->initializePatcher(
             $this->getWrongProps()
         );
-        $opHandler = $this->getOpHandler();
-        $opHandler->getTransformedLanguageProps(
+        $transformer = new TransformerInputQuestionGroupL10ns();
+        $transformer->transformAllLanguageProps(
             $this->op,
-            new TransformerInputQuestionGroupL10ns(),
+            $this->op->getProps(),
+            $transformer,
             'questionGroupL10n'
         );
     }
@@ -49,10 +50,11 @@ class OpHandlerQuestionGroupL10nTest extends TestBaseClass
         $this->initializePatcher(
             $this->getMissingLanguageProps()
         );
-        $opHandler = $this->getOpHandler();
-        $opHandler->getTransformedLanguageProps(
+        $transformer = new TransformerInputQuestionGroupL10ns();
+        $transformer->transformAllLanguageProps(
             $this->op,
-            new TransformerInputQuestionGroupL10ns(),
+            $this->op->getProps(),
+            $transformer,
             'questionGroupL10n'
         );
     }
@@ -93,10 +95,11 @@ class OpHandlerQuestionGroupL10nTest extends TestBaseClass
             $this->getDefaultProps()
         );
 
-        $opHandler = $this->getOpHandler();
-        $transformedDataArray = $opHandler->getTransformedLanguageProps(
+        $transformer = new TransformerInputQuestionGroupL10ns();
+        $transformedDataArray = $transformer->transformAllLanguageProps(
             $this->op,
-            new TransformerInputQuestionGroupL10ns(),
+            $this->op->getProps(),
+            $transformer,
             'questionGroupL10n'
         );
         self::assertArrayHasKey('en', $transformedDataArray);

@@ -50,11 +50,11 @@ class OpHandlerQuestionGroupL10n implements OpHandlerInterface
      *      "op": "update",
      *      "id": 1,
      *      "props": {
-     *          en": {
+     *          "en": {
      *              "groupName": "Name of group",
      *              "description": "English description"
      *          },
-     *          de": {
+     *          "de": {
      *              "groupName": "Gruppenname",
      *              "description": "Deutsche Beschreibung"
      *          }
@@ -78,8 +78,9 @@ class OpHandlerQuestionGroupL10n implements OpHandlerInterface
 
         $questionGroupService->updateQuestionGroupLanguages(
             $questionGroup,
-            $this->getTransformedLanguageProps(
+            $this->transformer->transformAllLanguageProps(
                 $op,
+                $op->getProps(),
                 $this->transformer,
                 $this->entity
             )

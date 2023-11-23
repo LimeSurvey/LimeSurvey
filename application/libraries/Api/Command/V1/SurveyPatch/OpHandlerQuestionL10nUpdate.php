@@ -70,8 +70,9 @@ class OpHandlerQuestionL10nUpdate implements OpHandlerInterface
     {
         $this->l10nService->save(
             (int)$op->getEntityId(),
-            $this->getTransformedLanguageProps(
+            $this->transformer->transformAllLanguageProps(
                 $op,
+                $op->getProps(),
                 $this->transformer,
                 'questionL10n'
             )
@@ -85,7 +86,7 @@ class OpHandlerQuestionL10nUpdate implements OpHandlerInterface
      */
     public function isValidPatch(OpInterface $op): bool
     {
-        //getTransformedLanguageProps already checks if the patch is valid
+        //transformAllLanguageProps  already checks if the patch is valid
         return true;
     }
 }
