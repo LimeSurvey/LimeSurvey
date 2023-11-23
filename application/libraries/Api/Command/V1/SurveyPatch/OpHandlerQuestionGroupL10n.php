@@ -2,6 +2,7 @@
 
 namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
+use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\OpHandlerExceptionTrait;
 use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\OpHandlerSurveyTrait;
 use QuestionGroupL10n;
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestionGroupL10ns;
@@ -16,6 +17,7 @@ use LimeSurvey\ObjectPatch\{
 class OpHandlerQuestionGroupL10n implements OpHandlerInterface
 {
     use OpHandlerSurveyTrait;
+    use OpHandlerExceptionTrait;
 
     protected string $entity;
     protected QuestionGroupL10n $model;

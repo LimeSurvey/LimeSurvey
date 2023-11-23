@@ -147,13 +147,15 @@ trait OpHandlerQuestionTrait
         string $name,
         ?array $additionalEntities = null
     ): void {
-        foreach ($collection as $data) {
-            $this->checkRequiredData(
-                $op,
-                $data,
-                $name,
-                $additionalEntities
-            );
+        if (is_array($collection)) {
+            foreach ($collection as $data) {
+                $this->checkRequiredData(
+                    $op,
+                    $data,
+                    $name,
+                    $additionalEntities
+                );
+            }
         }
     }
 
@@ -241,10 +243,10 @@ trait OpHandlerQuestionTrait
     }
 
     /**
- * @param int $index
- * @param array $questionData
- * @return int
- */
+     * @param int $index
+     * @param array $questionData
+     * @return int
+     */
     private function getQidFromData(int $index, array $questionData)
     {
         return array_key_exists(

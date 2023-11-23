@@ -4,6 +4,7 @@ namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
 use DI\DependencyException;
 use DI\NotFoundException;
+use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\OpHandlerExceptionTrait;
 use SurveyLanguageSetting;
 use LimeSurvey\Api\Command\V1\Transformer\{
     Input\TransformerInputSurveyLanguageSettings,
@@ -25,6 +26,7 @@ use LimeSurvey\ObjectPatch\{
 class OpHandlerLanguageSettingsUpdate implements OpHandlerInterface
 {
     use OpHandlerSurveyTrait;
+    use OpHandlerExceptionTrait;
 
     protected string $entity;
     protected SurveyLanguageSetting $model;

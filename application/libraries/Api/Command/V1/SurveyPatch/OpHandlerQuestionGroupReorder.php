@@ -2,6 +2,7 @@
 
 namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
+use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\OpHandlerExceptionTrait;
 use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\OpHandlerSurveyTrait;
 use QuestionGroup;
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestion;
@@ -22,6 +23,7 @@ use LimeSurvey\ObjectPatch\{
 class OpHandlerQuestionGroupReorder implements OpHandlerInterface
 {
     use OpHandlerSurveyTrait;
+    use OpHandlerExceptionTrait;
 
     protected string $entity;
     protected QuestionGroup $model;
