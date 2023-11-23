@@ -789,7 +789,7 @@ class Question extends LSActiveRecord
                 foreach ($scaleArray as $key => $answer) {
                     $sorted[$key] = $answer->answerl10ns[$language]->answer;
                 }
-                LimeSurvey\Helpers\SortHelper::getInstance($language)->asort($sorted,  LimeSurvey\Helpers\SortHelper::SORT_STRING);
+                LimeSurvey\Helpers\SortHelper::getInstance($language)->asort($sorted, LimeSurvey\Helpers\SortHelper::SORT_STRING);
                 // Now, we create a new array that store the old values of $answerOptions in the order of $sorted
                 $sortedScaleAnswers = array();
                 foreach ($sorted as $key => $answer) {
