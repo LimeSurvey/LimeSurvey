@@ -9,7 +9,7 @@ use Facebook\WebDriver\WebDriverBy;
  * @since 6.3.7 : alphabetical order delete answers
  * @group questions
  */
-class AnswersAlphabeticalOrder extends TestBaseClassWeb
+class AnswersAlphabeticalOrderTest extends TestBaseClassWeb
 {
     /**
      * @inheritdoc
