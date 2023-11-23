@@ -778,7 +778,6 @@ class Question extends LSActiveRecord
             }
             return $answerOptions;
         }
-
         // Sort alphabetically if applicable
         if ($this->shouldOrderAnswersAlphabetically()) {
             if (empty($language) || !in_array($language, $this->survey->allLanguages)) {
@@ -786,15 +785,14 @@ class Question extends LSActiveRecord
             }
             foreach ($answerOptions as $scaleId => $scaleArray) {
                 $sorted = array();
-
-                // We create an array sorted that will use the answer in the current language as key, and that will store its old index as value
+                // We create an array sorted that will use the answer in the current language as value, and keep key
                 foreach ($scaleArray as $key => $answer) {
-                    $sorted[$answer->answerl10ns[$language]->answer] = $key;
+                    $sorted[$key] = $answer->answerl10ns[$language]->answer;
                 }
-                ksort($sorted);
+                LimeSurvey\Helpers\SortHelper::getInstance($language)->asort($sorted, LimeSurvey\Helpers\SortHelper::SORT_STRING);
                 // Now, we create a new array that store the old values of $answerOptions in the order of $sorted
                 $sortedScaleAnswers = array();
-                foreach ($sorted as $answer => $key) {
+                foreach ($sorted as $key => $answer) {
                     $sortedScaleAnswers[] = $scaleArray[$key];
                 }
                 $answerOptions[$scaleId] = $sortedScaleAnswers;
