@@ -1943,6 +1943,7 @@ function checkCompletedQuota($surveyid, $return = false)
 
 
     // Datas for twig view
+    $thissurvey['sid'] = $surveyid;
     $thissurvey['aQuotas']                       = array();
     $thissurvey['aQuotas']['sMessage']           = $sMessage;
     $thissurvey['aQuotas']['bShowNavigator']     = !$closeSurvey;
