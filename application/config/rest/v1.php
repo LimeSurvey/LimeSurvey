@@ -20,7 +20,5 @@ $rest = [
 return array_merge(
     $rest,
     include_once __DIR__ . '/v1/survey.php',
-    // we are not using JWT auth for now
-    // include_once __DIR__ . '/v1/auth.php',
     include_once __DIR__ . '/v1/session.php'
 );
