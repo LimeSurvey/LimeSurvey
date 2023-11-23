@@ -43,4 +43,21 @@ class TemplateConfigTest extends TestBaseClass
 
         $this->assertSame('{"hideprivacyinfo":"off","cssframework":""}', $jsonOptions, 'Unexpected result. The options were not encoded correctly.');
     }
+
+    public function testXmlNodeWithMultipleLines()
+    {
+        $xmlStr =   '<options>
+                        <inlinestyle>#ls-button-submit{background:red}
+#ls-button-submit:hover{background:green}</inlinestyle>
+                    </options>';
+
+        $xmlData = new \SimpleXMLElement($xmlStr);
+        $jsonOptions = TemplateConfig::convertOptionsToJson($xmlData);
+
+        $this->assertSame(
+            '{"inlinestyle":"#ls-button-submit{background:red}\n#ls-button-submit:hover{background:green}"}',
+            $jsonOptions,
+            'Unexpected result. The options were not encoded correctly.'
+        );
+    }
 }
