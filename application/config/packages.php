@@ -448,9 +448,12 @@ return [
     ],
     // Survey Theme Global code
     'survey-theme-global' => [
-        'devBaseUrl' => 'assets/packages/survey-theme-global/',
+        'devBaseUrl' => 'assets/packages/survey-theme-global/build/',
         'basePath'   => 'core.survey-theme-global',
         'position'   => CClientScript::POS_BEGIN,
+        'css'        => [
+            'survey-theme-global.css',
+        ],
         'js'         => [
             'survey-theme-global.js',
         ],

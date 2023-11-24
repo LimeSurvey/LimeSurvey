@@ -40,16 +40,46 @@ window.bootstrap = Bootstrap;
 },{"../../../node_modules/bootstrap/dist/js/bootstrap.esm.js":11}],2:[function(require,module,exports){
 "use strict";
 
-/**
- * Always set an empty LSvar
-*/
-var LSvar = LSvar || {};
+(function () {
+  function r(e, n, t) {
+    function o(i, f) {
+      if (!n[i]) {
+        if (!e[i]) {
+          var c = "function" == typeof require && require;
+          if (!f && c) return c(i, !0);
+          if (u) return u(i, !0);
+          var a = new Error("Cannot find module '" + i + "'");
+          throw a.code = "MODULE_NOT_FOUND", a;
+        }
+        var p = n[i] = {
+          exports: {}
+        };
+        e[i][0].call(p.exports, function (r) {
+          var n = e[i][1][r];
+          return o(n || r);
+        }, p, p.exports, r, e, n, t);
+      }
+      return n[i].exports;
+    }
+    for (var u = "function" == typeof require && require, i = 0; i < t.length; i++) o(t[i]);
+    return o;
+  }
+  return r;
+})()({
+  1: [function (require, module, exports) {
+    "use strict";
 
-/**
- * Global code for both legacy and new survey themes
- */
+    /**
+     * Always set an empty LSvar
+    */
+    var LSvar = LSvar || {};
 
-console.log("Survey theme global JS loaded");
+    /**
+     * Global code for both legacy and new survey themes
+     */
+    console.log("Survey theme global JS loaded");
+  }, {}]
+}, {}, [1]);
 
 },{}],3:[function(require,module,exports){
 "use strict";
@@ -1069,13 +1099,14 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
 var Disclaimer = _interopRequireWildcard(require("./theme_js_disclaimer.js"));
 var Bootstrap = _interopRequireWildcard(require("../../../assets/bootstrap_5/js/bootstrap_5.js"));
 var _old_core_theme = _interopRequireDefault(require("./core/old_core_theme.js"));
+var GlobalThemeScripts = _interopRequireWildcard(require("../../../assets/packages/survey-theme-global/build/survey-theme-global.js"));
 var _array = _interopRequireDefault(require("./questiontypes/array/array.js"));
 var _navbar = _interopRequireDefault(require("./navbar/navbar.js"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 function _getRequireWildcardCache(e) { if ("function" != typeof WeakMap) return null; var r = new WeakMap(), t = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(e) { return e ? t : r; })(e); }
 function _interopRequireWildcard(e, r) { if (!r && e && e.__esModule) return e; if (null === e || "object" != _typeof(e) && "function" != typeof e) return { "default": e }; var t = _getRequireWildcardCache(r); if (t && t.has(e)) return t.get(e); var n = { __proto__: null }, a = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var u in e) if ("default" !== u && Object.prototype.hasOwnProperty.call(e, u)) { var i = a ? Object.getOwnPropertyDescriptor(e, u) : null; i && (i.get || i.set) ? Object.defineProperty(n, u, i) : n[u] = e[u]; } return n["default"] = e, t && t.set(e, n), n; }
 
-},{"../../../assets/bootstrap_5/js/bootstrap_5.js":1,"./core/old_core_theme.js":3,"./navbar/navbar.js":6,"./questiontypes/array/array.js":7,"./theme_js_disclaimer.js":8}],10:[function(require,module,exports){
+},{"../../../assets/bootstrap_5/js/bootstrap_5.js":1,"../../../assets/packages/survey-theme-global/build/survey-theme-global.js":2,"./core/old_core_theme.js":3,"./navbar/navbar.js":6,"./questiontypes/array/array.js":7,"./theme_js_disclaimer.js":8}],10:[function(require,module,exports){
 (function (process){(function (){
 /**
  * @popperjs/core v2.11.6 - MIT License
@@ -7736,4 +7767,4 @@ process.umask = function () {
   return 0;
 };
 
-},{}]},{},[9,2]);
+},{}]},{},[9]);

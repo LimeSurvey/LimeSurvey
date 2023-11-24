@@ -227,10 +227,7 @@ function survey_theme_ls6_rtl() {
 function survey_theme_ls6_js() {
     // browserify package handler
     return browserify({
-        entries: [
-            'assets/survey_themes/fruity_twentythree/theme_js_modules.js',
-            'assets/packages/survey-theme-global/survey-theme-global.js'
-        ]
+        entries: ['assets/survey_themes/fruity_twentythree/theme_js_modules.js']
     })
         // transform babelify ES6 to ES5 [@babel/preset-env]
         .transform(babelify, {
@@ -262,4 +259,65 @@ exports.watch_survey_theme_ls6 = function () {
     watch('assets/survey_themes/fruity_twentythree/**/*.scss', survey_theme_ls6);
     watch('assets/survey_themes/fruity_twentythree/**/*.scss', survey_theme_ls6_rtl);
     watch('assets/survey_themes/fruity_twentythree/**/*.js', survey_theme_ls6_js);
+};
+
+function survey_theme_global() {
+    let plugins = [
+        autoprefixer(),
+        cssnano()
+    ];
+    return src(['assets/packages/survey-theme-global/src/main.scss'])
+        .pipe(sass())
+        .pipe(gulppostcss(plugins))
+        .pipe(rename('survey-theme-global.css'))
+        .pipe(dest('assets/packages/survey-theme-global/build/'));
+}
+
+function survey_theme_global_rtl() {
+    let plugins = [
+        autoprefixer(),
+        cssnano()
+    ];
+    return src(['assets/packages/survey-theme-global/src/main.scss'])
+        .pipe(sass())
+        .pipe(rtlcss())
+        .pipe(gulppostcss(plugins))
+        .pipe(rename('survey-theme-global-rlt.css'))
+        .pipe(dest('assets/packages/survey-theme-global/build/'));
+}
+
+function survey_theme_global_js() {
+    // browserify package handler
+    return browserify({
+        entries: ['assets/packages/survey-theme-global/src/survey-theme-global.js']
+    })
+        // transform babelify ES6 to ES5 [@babel/preset-env]
+        .transform(babelify, {
+            presets: ['@babel/preset-env'],
+            retainLines: false,
+            compact: false,
+            global: true
+        })
+        // bundle the transformed code
+        .bundle()
+        // sourcemap
+        .pipe(source('assets/packages/survey-theme-global/src/survey-theme-global.js'))
+        // rename
+        .pipe(rename('survey-theme-global.js'))
+        // buffer
+        .pipe(buffer())
+        // distination
+        .pipe(dest('assets/packages/survey-theme-global/build/'));
+}
+
+exports.build_survey_theme_global = parallel(
+    survey_theme_global,
+    survey_theme_global_rtl,
+    survey_theme_global_js
+);
+
+exports.watch_survey_theme_global = function () {
+    watch('assets/packages/survey-theme-global/src/*.scss', survey_theme_global);
+    watch('assets/packages/survey-theme-global/src/*.scss', survey_theme_global_rtl);
+    watch('assets/packages/survey-theme-global/src/*.js', survey_theme_global_js);
 };
