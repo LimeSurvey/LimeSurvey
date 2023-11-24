@@ -1096,7 +1096,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
         if ($this->active == 'N') {
             return 'inactive';
         }
-        if (!empty($this->expire) || !empty($this->startdate != '')) {
+        if (!empty($this->expires) || !empty($this->startdate)) {
             // Create DateTime for now, stop and start for date comparison
             $oNow = self::shiftedDateTime("now");
             $oStop = self::shiftedDateTime($this->expires);
@@ -2385,7 +2385,6 @@ class Survey extends LSActiveRecord implements PermissionInterface
      */
     private static function shiftedDateTime($datetime)
     {
-
         if (is_string($datetime) && strtotime($datetime)) {
             $datetime = dateShift($datetime, "Y-m-d H:i:s", strval(Yii::app()->getConfig('timeadjust')));
             return new DateTime($datetime);
