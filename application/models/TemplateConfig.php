@@ -995,7 +995,7 @@ class TemplateConfig extends CActiveRecord
             $oNewTemplateConfiguration->cssframework_name = $aDatas['cssframework_name'];
             $oNewTemplateConfiguration->cssframework_css  = self::formatToJsonArray($aDatas['cssframework_css']);
             $oNewTemplateConfiguration->cssframework_js   = self::formatToJsonArray($aDatas['cssframework_js']);
-            $oNewTemplateConfiguration->options           = self::formatToJsonArray($aDatas['aOptions'], true);
+            $oNewTemplateConfiguration->options           = self::convertOptionsToJson($aDatas['aOptions']);
             $oNewTemplateConfiguration->packages_to_load  = self::formatToJsonArray($aDatas['packages_to_load']);
 
 
@@ -1052,6 +1052,31 @@ class TemplateConfig extends CActiveRecord
             $jFiled = str_replace('{}', '""', $jFiled);
         }
         return $jFiled;
+    }
+
+    /**
+     * Extracts option values from theme options node (XML) into a json key-value map.
+     * Inner nodes (which maybe inside each option element) are ignored.
+     * Option values are trimmed as they may contain undesired new lines in the XML document.
+     * @param array|object $options the filed to convert
+     * @return string  json
+     */
+    public static function convertOptionsToJson($options)
+    {
+        $optionsArray = [];
+        foreach ($options as $option => $optionValue) {
+            // Trim values, as they may be in a new line in the XML. For example:
+            // <sample_option>
+            //      default value
+            // </sample_option>
+            // Also, by casting, inner nodes are eliminated
+            // and only the text value inside the node is obtained
+            $optionsArray[$option] = trim((string) $optionValue);
+        }
+        if (empty($optionsArray)) {
+            return '""';
+        }
+        return json_encode($optionsArray);
     }
 
     /**

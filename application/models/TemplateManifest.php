@@ -769,7 +769,7 @@ class TemplateManifest extends TemplateConfiguration
             $oTemplateConfiguration->sid = $iSurveyId;
 
             if (isAssociativeArray((array)$xml->config->options)) {
-                $oTemplateConfiguration->options  = TemplateConfig::formatToJsonArray($xml->config->options);
+                $oTemplateConfiguration->options  = TemplateConfig::convertOptionsToJson($xml->config->options[0]);
             }
 
             if ($oTemplateConfiguration->save()) {
