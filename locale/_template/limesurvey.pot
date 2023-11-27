@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2023-11-20 09:10:36+00:00\n"
+"POT-Creation-Date: 2023-11-27 08:40:35+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -898,7 +898,7 @@ msgstr ""
 #: application/controllers/LimereplacementfieldsController.php:428
 #: application/controllers/QuestionAdministrationController.php:1609
 #: application/controllers/SurveyAdministrationController.php:3352
-#: application/models/Question.php:1057
+#: application/models/Question.php:1055
 #: application/views/admin/survey/Question/massive_actions/_delete_results.php:10
 msgid "Question ID"
 msgstr ""
@@ -1786,7 +1786,7 @@ msgstr ""
 #: application/controllers/ResponsesController.php:886
 #: application/extensions/admin/survey/ListSurveysWidget/views/listSurveys.php:76
 #: application/helpers/admin/export/HtmlWriter.php:72
-#: application/models/Assessment.php:149 application/models/Question.php:1087
+#: application/models/Assessment.php:149 application/models/Question.php:1085
 #: application/models/QuestionType.php:123
 #: application/models/SurveysGroups.php:460
 #: application/views/assessment/assessments_edit.php:29
@@ -1799,7 +1799,7 @@ msgstr ""
 
 #: application/controllers/ResponsesController.php:894
 #: application/helpers/admin/statistics_helper.php:4236
-#: application/models/Question.php:1073
+#: application/models/Question.php:1071
 #: application/models/TemplateManifest.php:167
 #: application/views/admin/conditions/includes/form_editconditions_header.php:66
 #: application/views/admin/conditions/includes/quickAddConditionForm.php:21
@@ -1824,7 +1824,7 @@ msgstr ""
 #: application/models/ParticipantAttributeName.php:286
 #: application/models/ParticipantShare.php:272
 #: application/models/Permissiontemplates.php:271
-#: application/models/Question.php:1108 application/models/SavedControl.php:176
+#: application/models/Question.php:1106 application/models/SavedControl.php:176
 #: application/models/Surveymenu.php:427
 #: application/models/SurveymenuEntries.php:194
 #: application/models/SurveymenuEntries.php:207
@@ -4626,7 +4626,7 @@ msgstr ""
 #: application/helpers/userstatistics_helper.php:1358
 #: application/helpers/userstatistics_helper.php:1479
 #: application/helpers/userstatistics_helper.php:1597
-#: application/models/Question.php:1101
+#: application/models/Question.php:1099
 #: application/models/SurveyDynamic.php:851
 #: application/models/SurveyDynamic.php:921
 #: application/views/admin/dataentry/content_view.php:162
@@ -7711,7 +7711,7 @@ msgstr ""
 #: application/views/installer/dbconfig_view.php:111
 #: application/views/installer/license_view.php:16
 #: application/views/installer/populatedb_view.php:20
-#: application/views/installer/precheck_view.php:154
+#: application/views/installer/precheck_view.php:159
 #: application/views/survey/system/actionButton/movePrevious.php:11
 #: tmp/runtime/twig_cache/21/21ce11808c49854b8509e5682e93e722f367ed2383dd65e87ff0325d62c57b26.php:79
 #: tmp/runtime/twig_cache/82/82e9929bc1567082f27e6189847044d8e10f55a87be4387768ad24e3231929bc.php:137
@@ -7723,7 +7723,7 @@ msgstr ""
 #: application/core/LsDefaultDataSets.php:1122
 #: application/views/installer/dbconfig_view.php:116
 #: application/views/installer/optconfig_view.php:88
-#: application/views/installer/precheck_view.php:162
+#: application/views/installer/precheck_view.php:167
 #: application/views/quotas/newanswer_view.php:34
 #: application/views/quotas/newanswertwo_view.php:51
 #: application/views/survey/system/actionButton/moveNext.php:11
@@ -9458,7 +9458,7 @@ msgid "If you want to change the question group this question is in."
 msgstr ""
 
 #: application/extensions/GeneralOptionWidget/settings/MandatoryGeneralOption.php:15
-#: application/models/Question.php:1093
+#: application/models/Question.php:1091
 #: application/views/survey/system/required.php:6
 #: tmp/runtime/twig_cache/2a/2a62c495e81de6b4062aab28e7fadbbc18ba966a244ac215ec82d76045ca679a.php:50
 #: tmp/runtime/twig_cache/5d/5d0b0a96aeb16200fcb712956883df80f6b64698201bd972a0130f67ac3708da.php:214
@@ -9486,7 +9486,7 @@ msgid "Makes this question mandatory in your survey. Option \"Soft\" gives a pos
 msgstr ""
 
 #: application/extensions/GeneralOptionWidget/settings/MandatoryGeneralOption.php:26
-#: application/models/Question.php:956
+#: application/models/Question.php:954
 #: application/views/admin/survey/Question/massive_actions/_set_questions_mandatory.php:20
 #: application/views/questionAdministration/summary.php:169
 msgid "Soft"
@@ -12197,6 +12197,10 @@ msgstr ""
 
 #: application/helpers/questionHelper.php:128
 #: application/models/SurveysGroupsettings.php:429
+#: application/views/admin/globalsettings/_security.php:158
+#: application/views/admin/globalsettings/_security.php:169
+#: application/views/admin/globalsettings/_security.php:197
+#: application/views/admin/globalsettings/_security.php:208
 #: application/views/admin/survey/subview/accordion/_presentation_panel.php:32
 #: tmp/runtime/twig_cache/b6/b676b9560470f9ecaba3b81366598796159e56ebe0ed5e035eee33d72a610786.php:359
 #: tmp/runtime/twig_cache/b6/b676b9560470f9ecaba3b81366598796159e56ebe0ed5e035eee33d72a610786.php:412
@@ -14251,7 +14255,7 @@ msgid "Plugin error"
 msgstr ""
 
 #: application/libraries/PluginManager/PluginBase.php:520
-#: application/models/InstallerConfigForm.php:463
+#: application/models/InstallerConfigForm.php:467
 #: application/views/admin/checkintegrity/check_view.php:23
 #: application/views/admin/checkintegrity/check_view.php:72
 #: application/views/admin/checkintegrity/check_view.php:87
@@ -14503,87 +14507,87 @@ msgstr ""
 msgid "View response details"
 msgstr ""
 
-#: application/models/InstallerConfigForm.php:167
+#: application/models/InstallerConfigForm.php:170
 msgid "Either admin login name, password or email is empty"
 msgstr ""
 
-#: application/models/InstallerConfigForm.php:171
+#: application/models/InstallerConfigForm.php:174
 msgid "Passwords do not match!"
 msgstr ""
 
-#: application/models/InstallerConfigForm.php:179
+#: application/models/InstallerConfigForm.php:182
 msgid "Database type"
 msgstr ""
 
-#: application/models/InstallerConfigForm.php:180
+#: application/models/InstallerConfigForm.php:183
 msgid "Database location"
 msgstr ""
 
-#: application/models/InstallerConfigForm.php:181
+#: application/models/InstallerConfigForm.php:184
 msgid "Database name"
 msgstr ""
 
-#: application/models/InstallerConfigForm.php:182
+#: application/models/InstallerConfigForm.php:185
 msgid "Database user"
 msgstr ""
 
-#: application/models/InstallerConfigForm.php:183
+#: application/models/InstallerConfigForm.php:186
 msgid "Database password"
 msgstr ""
 
-#: application/models/InstallerConfigForm.php:184
+#: application/models/InstallerConfigForm.php:187
 msgid "Table prefix"
 msgstr ""
 
-#: application/models/InstallerConfigForm.php:185
+#: application/models/InstallerConfigForm.php:188
 msgid "MySQL database engine type"
 msgstr ""
 
-#: application/models/InstallerConfigForm.php:192
+#: application/models/InstallerConfigForm.php:195
 msgid "The type of your database management system"
 msgstr ""
 
-#: application/models/InstallerConfigForm.php:193
+#: application/models/InstallerConfigForm.php:196
 msgid "Set this to the IP/net location of your database server. In most cases \"localhost\" will work. You can force Unix socket with socket path."
 msgstr ""
 
-#: application/models/InstallerConfigForm.php:193
+#: application/models/InstallerConfigForm.php:196
 msgid "If your database is using a custom port, attach it using a colon. Example: db.host.com:5431"
 msgstr ""
 
-#: application/models/InstallerConfigForm.php:194
+#: application/models/InstallerConfigForm.php:197
 msgid "If the database does not yet exist it will be created (make sure your database user has the necessary permissions). In contrast, if there are existing LimeSurvey tables in that database they will be upgraded automatically after installation."
 msgstr ""
 
-#: application/models/InstallerConfigForm.php:195
+#: application/models/InstallerConfigForm.php:198
 msgid "Your database server user name. In most cases \"root\" will work."
 msgstr ""
 
-#: application/models/InstallerConfigForm.php:196
+#: application/models/InstallerConfigForm.php:199
 msgid "Your database server password."
 msgstr ""
 
-#: application/models/InstallerConfigForm.php:197
+#: application/models/InstallerConfigForm.php:200
 msgid "If your database is shared, recommended prefix is \"lime_\" else you can leave this setting blank."
 msgstr ""
 
-#: application/models/InstallerConfigForm.php:284
+#: application/models/InstallerConfigForm.php:288
 msgid "The database engine type must be set for MySQL"
 msgstr ""
 
-#: application/models/InstallerConfigForm.php:290
+#: application/models/InstallerConfigForm.php:294
 msgid "Could not determine the database engine version. Please check your credentials."
 msgstr ""
 
-#: application/models/InstallerConfigForm.php:302
+#: application/models/InstallerConfigForm.php:306
 msgid "You need to enable large_file_prefix setting in your database configuration in order to use InnoDB engine for LimeSurvey!"
 msgstr ""
 
-#: application/models/InstallerConfigForm.php:305
+#: application/models/InstallerConfigForm.php:309
 msgid "Your database configuration needs to have innodb_file_format and innodb_file_format_max set to use the Barracuda format in order to use InnoDB engine for LimeSurvey!"
 msgstr ""
 
-#: application/models/InstallerConfigForm.php:462
+#: application/models/InstallerConfigForm.php:466
 msgid "Try again! Connection with database failed."
 msgstr ""
 
@@ -15000,15 +15004,15 @@ msgstr ""
 msgid "Deleting will also delete any answer options and subquestions it includes. Are you sure you want to continue?"
 msgstr ""
 
-#: application/models/Question.php:961 application/models/Question.php:975
+#: application/models/Question.php:959 application/models/Question.php:973
 msgid "Not relevant for this question type"
 msgstr ""
 
-#: application/models/Question.php:1062
+#: application/models/Question.php:1060
 msgid "Group / Question order"
 msgstr ""
 
-#: application/models/Question.php:1067 application/models/QuestionType.php:121
+#: application/models/Question.php:1065 application/models/QuestionType.php:121
 #: application/models/SurveysGroups.php:97
 #: application/models/SurveysGroups.php:133
 #: application/views/admin/labels/_labelviewtabcontent_view.php:18
@@ -15016,7 +15020,7 @@ msgstr ""
 msgid "Code"
 msgstr ""
 
-#: application/models/Question.php:1079
+#: application/models/Question.php:1077
 #: application/views/questionAdministration/typeSelector.php:55
 msgid "Question type"
 msgstr ""
@@ -16894,7 +16898,7 @@ msgstr ""
 #: application/views/admin/checkintegrity/fix_view.php:51
 #: application/views/admin/update/updater/steps/_check_local_errors.php:176
 #: application/views/admin/update/updater/steps/_fileSystem.php:42
-#: application/views/installer/precheck_view.php:157
+#: application/views/installer/precheck_view.php:162
 msgid "Check again"
 msgstr ""
 
@@ -18106,7 +18110,7 @@ msgstr ""
 #: application/views/admin/globalsettings/_interfaces.php:61
 #: application/views/admin/globalsettings/_language.php:74
 #: application/views/admin/globalsettings/_presentation.php:146
-#: application/views/admin/globalsettings/_security.php:218
+#: application/views/admin/globalsettings/_security.php:230
 msgid "Note: Demo mode is activated. Marked (*) settings can't be changed."
 msgstr ""
 
@@ -18518,7 +18522,7 @@ msgid "Brute-force protection for administration"
 msgstr ""
 
 #: application/views/admin/globalsettings/_security.php:147
-#: application/views/admin/globalsettings/_security.php:178
+#: application/views/admin/globalsettings/_security.php:184
 msgid "IP whitelist:"
 msgstr ""
 
@@ -18527,28 +18531,38 @@ msgid "List of IP addresses to exclude from the maximum login attempts check. Se
 msgstr ""
 
 #: application/views/admin/globalsettings/_security.php:155
-#: application/views/admin/globalsettings/_security.php:188
+#: application/views/admin/globalsettings/_security.php:194
 msgid "Maximum number of attempts:"
 msgstr ""
 
-#: application/views/admin/globalsettings/_security.php:163
-#: application/views/admin/globalsettings/_security.php:196
+#: application/views/admin/globalsettings/_security.php:161
+#: application/views/admin/globalsettings/_security.php:200
+msgid "Set an empty value to disable brute force protection. Number of attempts are never checked."
+msgstr ""
+
+#: application/views/admin/globalsettings/_security.php:166
+#: application/views/admin/globalsettings/_security.php:205
 msgid "Lockout time in seconds (after maximum number of attempts):"
 msgstr ""
 
-#: application/views/admin/globalsettings/_security.php:174
+#: application/views/admin/globalsettings/_security.php:172
+#: application/views/admin/globalsettings/_security.php:211
+msgid "Set an empty value or 0 to disable brute force protection. Number of attempts are deleted each time."
+msgstr ""
+
+#: application/views/admin/globalsettings/_security.php:180
 msgid "Brute-force protection for survey participation"
 msgstr ""
 
-#: application/views/admin/globalsettings/_security.php:182
+#: application/views/admin/globalsettings/_security.php:188
 msgid "List of IP addresses to exclude from the maximum token validation attempts check. Separate each IP address with a comma or a new line."
 msgstr ""
 
-#: application/views/admin/globalsettings/_security.php:205
+#: application/views/admin/globalsettings/_security.php:217
 msgid "Reset failed login attempts of participants to make survey accessible again:"
 msgstr ""
 
-#: application/views/admin/globalsettings/_security.php:209
+#: application/views/admin/globalsettings/_security.php:221
 msgid "Reset participant attempts"
 msgstr ""
 
@@ -23300,18 +23314,22 @@ msgid "The GD extension found doesn't support JPEG"
 msgstr ""
 
 #: application/views/installer/precheck_view.php:129
-msgid "PHP LDAP library"
+msgid "PHP Collate library (language sort order)"
 msgstr ""
 
 #: application/views/installer/precheck_view.php:134
-msgid "PHP zip library"
+msgid "PHP LDAP library"
 msgstr ""
 
 #: application/views/installer/precheck_view.php:139
+msgid "PHP zip library"
+msgstr ""
+
+#: application/views/installer/precheck_view.php:144
 msgid "PHP imap library"
 msgstr ""
 
-#: application/views/installer/precheck_view.php:145
+#: application/views/installer/precheck_view.php:150
 msgid "PHP Sodium library [data encryption]"
 msgstr ""
 
