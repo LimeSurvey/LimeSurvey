@@ -212,6 +212,11 @@ class TestBaseClass extends TestCase
 
     protected static function createUserWithPermissions(array $userData, array $permissions = [])
     {
+        if (!empty($userData['users_name'])) {
+            \User::model()->deleteAllByAttributes([
+                'users_name' => $userData['users_name']
+            ]);
+        }
         if ($userData['password'] != ' ') {
             $userData['password'] = password_hash($userData['password'], PASSWORD_DEFAULT);
         }

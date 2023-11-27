@@ -2,7 +2,7 @@
 
 namespace LimeSurvey\Models\Services;
 
-use LimeSurvey\Models\Services\SurveyUpdater\{
+use LimeSurvey\Models\Services\SurveyAggregateService\{
     LanguageSettings,
     GeneralSettings,
     UrlParams,
@@ -16,13 +16,13 @@ use LimeSurvey\Models\Services\Exception\{
 };
 
 /**
- * Survey Updater Service
+ * Survey Aggregate Service
  *
- * Service class for update survey settings.
+ * Service class for updating survey settings.
  *
  * Dependencies are injected to enable mocking.
  */
-class SurveyUpdater
+class SurveyAggregateService
 {
     private LanguageSettings $languageSettings;
     private GeneralSettings $generalSettings;

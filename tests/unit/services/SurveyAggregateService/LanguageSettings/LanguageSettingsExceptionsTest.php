@@ -1,6 +1,6 @@
 <?php
 
-namespace ls\tests\SurveyUpdater;
+namespace ls\tests\SurveyAggregateService;
 
 use ls\tests\TestBaseClass;
 
@@ -8,7 +8,7 @@ use Survey;
 use Permission;
 use SurveyLanguageSetting;
 use Mockery;
-use LimeSurvey\Models\Services\SurveyUpdater\LanguageSettings;
+use LimeSurvey\Models\Services\SurveyAggregateService\LanguageSettings;
 use LimeSurvey\Models\Services\Exception\{
     PersistErrorException,
     NotFoundException,

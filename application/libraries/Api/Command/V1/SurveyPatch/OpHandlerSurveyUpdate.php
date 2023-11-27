@@ -6,7 +6,7 @@ use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\OpHandlerExceptionTrait;
 use Survey;
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputSurvey;
 use LimeSurvey\Models\Services\{
-    SurveyUpdater,
+    SurveyAggregateService,
     Exception\PersistErrorException
 };
 use LimeSurvey\ObjectPatch\{
@@ -56,7 +56,7 @@ class OpHandlerSurveyUpdate implements OpHandlerInterface
     {
         $diContainer = \LimeSurvey\DI::getContainer();
         $surveyUpdater = $diContainer->get(
-            SurveyUpdater::class
+            SurveyAggregateService::class
         );
 
         //here we should get the props from the op

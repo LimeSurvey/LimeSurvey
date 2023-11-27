@@ -1,6 +1,6 @@
 <?php
 
-namespace LimeSurvey\Models\Services\SurveyUpdater;
+namespace LimeSurvey\Models\Services\SurveyAggregateService;
 
 /**
  * Survey Updater Service template configuration
