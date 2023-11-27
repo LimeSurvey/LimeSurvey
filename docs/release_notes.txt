@@ -34,6 +34,13 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.6.46 (build 231121) to 5.6.47 (build 231128) November 27, 2023
+-Fixed issue #19228: Setting Bruteforce timeout values to empty string causes the administrator to be locked out (#3617) (Denis Chenu)
+-Fixed issue #19206: Alphabetical order can be bad with utf8 character (#3619) (Denis Chenu)
+-Fixed issue #19168: [security] XSS in Survey menus (Menu icon type and Menu icon) (#3636) (Gabriel Jenik)
+-Fixed issue #18671: Potential JavaScript loop with equation set question (#3632) (Denis Chenu)
+
+
 Changes from 5.6.45 (build 231114) to 5.6.46 (build 231121) November 20, 2023
 -Fixed issue #19224: Advanced ranking does not respect max answer when drag-n-drop (#3616) (Gabriel Jenik)
 -Fixed issue #19139: [security] CSRF in Reset Survey menus (#3598) (Gabriel Jenik)
