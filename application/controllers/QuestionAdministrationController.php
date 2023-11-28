@@ -1829,6 +1829,7 @@ class QuestionAdministrationController extends LSBaseController
         $aData['jsVariablesHtml'] = $this->renderPartial(
             '/admin/survey/Question/_subQuestionsAndAnwsersJsVariables',
             [
+                'qid'               => $oQuestion->qid,
                 'anslangs'          => $oQuestion->survey->allLanguages,
                 // TODO
                 'assessmentvisible' => false,
