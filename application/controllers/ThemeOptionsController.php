@@ -472,6 +472,8 @@ class ThemeOptionsController extends LSBaseController
         }
 
         $aData['oSurveyTheme'] = $oSurveyTheme;
+        $aData['aTemplatesWithoutDB'] = $oSurveyTheme->getTemplatesWithNoDb();
+
         $aData['canImport']  = $canImport;
         $aData['importErrorMessage']  = $importErrorMessage;
         $aData['pageSize'] = App()->user->getState('pageSizeTemplateView', App()->params['defaultPageSize']); // Page size

@@ -86,6 +86,7 @@ class TemplateConfig extends CActiveRecord
 
     public $allDbTemplateFolders = null;
 
+    /** @var array $aTemplatesWithoutDB static variable for themes that are not installed, including broken themes [$aTemplatesWithoutDB, ...,] [$aBrokenThemes, ...]]*/
     public static $aTemplatesWithoutDB = null;
 
     public $options_page = 'core';
@@ -1108,14 +1109,24 @@ class TemplateConfig extends CActiveRecord
     public function getTemplatesWithNoDb(): array
     {
         if (empty(self::$aTemplatesWithoutDB)) {
+            $aTemplatesWithoutDB['valid'] = [];
+            $aTemplatesWithoutDB['invalid'] = [];
             $aTemplatesDirectories = Template::getAllTemplatesDirectories();
             $aTemplatesInDb        = $this->getAllDbTemplateFolders();
-            $aTemplatesWithoutDB   = array();
 
             foreach ($aTemplatesDirectories as $sName => $sPath) {
                 if (!in_array($sName, $aTemplatesInDb)) {
-                    // Get the manifest
-                    $aTemplatesWithoutDB[$sName] = Template::getTemplateConfiguration($sName, null, null, true);
+                    // Get the theme manifest by forcing xml load
+                    try {
+                        $aTemplatesWithoutDB['valid'][$sName] = Template::getTemplateConfiguration($sName, null, null, true);
+                        if (empty($aTemplatesWithoutDB['valid'][$sName]->config)) {
+                            unset($aTemplatesWithoutDB['valid'][$sName]);
+                            $aTemplatesWithoutDB['invalid'][$sName]['error'] = gT('Invalid theme configuration file');
+                        }
+                    } catch (Exception $e) {
+                        unset($aTemplatesWithoutDB['valid'][$sName]);
+                        $aTemplatesWithoutDB['invalid'][$sName]['error'] = $e->getMessage();
+                    }
                 }
             }
             self::$aTemplatesWithoutDB = $aTemplatesWithoutDB;
