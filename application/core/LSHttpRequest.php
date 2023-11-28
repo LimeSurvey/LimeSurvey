@@ -163,7 +163,7 @@ class LSHttpRequest extends CHttpRequest
             // $validationParams['request'] = 'acs';
 
             foreach ($validationRoutes as $cr) {
-                if (preg_match('#' . $cr . '#', $route)) {
+                if (self::routeMatchesNoCsrfValidationRule($route, $cr)) {
                     Yii::app()->detachEventHandler(
                         'onBeginRequest',
                         array($this, 'validateCsrfToken')
@@ -249,5 +249,21 @@ class LSHttpRequest extends CHttpRequest
     public function setQueryParams($values)
     {
         $this->queryParams = $values;
+    }
+
+    /**
+     * Returns true if the route matches the given validation rule.
+     * @param string $route the route to be checked
+     * @param string $rule the validation rule
+     * @return bool true if the route matches the given validation rule
+     */
+    public static function routeMatchesNoCsrfValidationRule($route, $rule)
+    {
+        // The rule should either match the whole route, or the start of the route followed by a slash.
+        // For example the routes "rest" (in the case of "index.php/rest?...") or "rest/..." (in the case of
+        // "index.php/rest/...") should be matched by the rule "rest", but the route "admin/menus/sa/restore"
+        // should not.
+        $route = ltrim($route, '/');
+        return preg_match('#^' . $rule . '$|^' . $rule . '/#', (string) $route);
     }
 }

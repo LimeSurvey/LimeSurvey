@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit bootstrap="vendor/autoload.php" verbose="true" colors="true"
          convertNoticesToExceptions="true"
+         convertDeprecationsToExceptions="true"
 >
 	<testsuites>
 		<testsuite>

@@ -109,14 +109,18 @@ abstract class Response extends Dynamic
             ->findAllByAttributes($aConditions);
         $files = array();
         foreach ($aQuestions as $question) {
+            $encrypted = $question->encrypted === 'Y';
             $field = $question->sid . 'X' . $question->gid . 'X' . $question->qid;
             $fieldDataJson = $this->getAttribute($field);
-            if ($question->encrypted === 'Y') {
+            if ($encrypted) {
                 $fieldDataJson = self::decryptSingle($fieldDataJson);
             }
             $fieldData = json_decode(stripslashes($fieldDataJson), true);
             if (is_array($fieldData)) {
-                $files[$field] = $fieldData;
+                $files[$field] = array(
+                    'files' => $fieldData,
+                    'encrypted' => $encrypted,
+                );
             }
         }
         return $files;
@@ -179,9 +183,15 @@ abstract class Response extends Dynamic
         $success = 0;
         $uploaddir = Yii::app()->getConfig('uploaddir') . "/surveys/{$this->dynamicId}/files/";
         $filesData = $this->getFilesAndSqga();
-        foreach ($filesData as $sgqa => $fileInfos) {
-            foreach ($fileInfos as $i => $fileInfo) {
-                $basename = basename($fileInfo['filename']);
+
+        foreach ($filesData as $sgqa => $aQuestion) {
+            [
+                'files' => $files,
+                'encrypted' => $encrypted,
+            ] = $aQuestion;
+
+            foreach ($files as $i => $fileInfo) {
+                $basename = basename((string) $fileInfo['filename']);
                 $fullFilename = $uploaddir . $basename;
 
                 if (file_exists($fullFilename)) {
@@ -189,9 +199,15 @@ abstract class Response extends Dynamic
                     if (!$result) {
                         $errors[] = $fileInfo['filename'];
                     } else {
-                        //$filesData[$sgqa][$i]['filename'] = 'deleted';
-                        $fileInfos[$i]['name'] = $fileInfo['name'] . sprintf(' (%s)', gT('deleted'));
-                        $this->$sgqa = json_encode($fileInfos);
+                        $files[$i]['name'] = $fileInfo['name'] . sprintf(' (%s)', gT('deleted'));
+
+                        $sEncoded = json_encode($files);
+
+                        if ($encrypted) {
+                            $sEncoded = self::encryptSingle($sEncoded);
+                        }
+
+                        $this->$sgqa = $sEncoded;
                         $result = $this->save();
                         if ($result) {
                             $success++;

@@ -74,12 +74,10 @@ class SurveyActivator
             return ['error' => $this->error];
         }
 
-        Yii::app()->db->createCommand()->update(
-            Survey::model()->tableName(),
-            ['active' => 'Y'],
-            'sid=:sid',
-            [':sid' => $this->survey->primaryKey]
-        );
+        $survey = Survey::model()->findByAttributes(array('sid' => $this->survey->primaryKey));
+        $survey->scenario = 'activationStateChange';
+        $survey->active = 'Y';
+        $survey->save();
 
         $aResult = array(
             'status' => 'OK',

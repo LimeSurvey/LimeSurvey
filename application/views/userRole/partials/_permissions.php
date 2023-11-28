@@ -16,7 +16,7 @@ Yii::app()->getController()->renderPartial(
     ["id" => "RoleControl--modalform"]
 ) ?>
 
-<div class="modal-body selector--edit-permissions-container">
+<div class="modal-body selector--edit-permissions-container table-responsive">
     <div class="container-center">
         <input type='hidden' name='ptid' value='<?php
         echo(isset($oModel) ? $oModel->ptid : ''); ?>'/>

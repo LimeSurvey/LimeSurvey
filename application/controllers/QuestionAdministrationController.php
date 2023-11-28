@@ -468,8 +468,6 @@ class QuestionAdministrationController extends LSBaseController
             }
 
             if ($question->survey->active == 'N') {
-                // Clean subquestions before save.
-                $question->deleteAllSubquestions();
                 // If question type has subquestions, save them.
                 if ($question->questionType->subquestions > 0) {
                     $this->storeSubquestions(
@@ -1074,6 +1072,10 @@ class QuestionAdministrationController extends LSBaseController
     {
         $iSurveyID = (int) App()->request->getPost('sid', 0);
         $gid = (int) App()->request->getPost('gid', 0);
+
+        if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'import')) {
+            throw new CHttpException(403, gT("We are sorry but you don't have permissions to do this."));
+        }
 
         $jumptoquestion = (bool)App()->request->getPost('jumptoquestion', 1);
 
@@ -2766,32 +2768,49 @@ class QuestionAdministrationController extends LSBaseController
     private function storeSubquestions($question, $subquestionsArray)
     {
         $questionOrder = 0;
-        foreach ($subquestionsArray as $subquestionId => $subquestionArray) {
+        $subquestionIds = [];
+        foreach ($subquestionsArray as $subquestionArray) {
             foreach ($subquestionArray as $scaleId => $data) {
-                $subquestion = new Question();
-                $subquestion->sid        = $question->sid;
-                $subquestion->gid        = $question->gid;
-                $subquestion->parent_qid = $question->qid;
-                $subquestion->question_order = $questionOrder;
-                $questionOrder++;
                 if (!isset($data['code'])) {
                     throw new CHttpException(
                         500,
                         'Internal error: Missing mandatory field code for question: ' . json_encode($data)
                     );
                 }
-                $subquestion->title      = $data['code'];
-                if ($scaleId === 0) {
-                    $subquestion->relevance  = $data['relevance'];
+                $subquestion = null;
+                if (isset($data['oldcode'])) {
+                    $subquestion = Question::model()->findByAttributes([
+                        'sid' => $question->sid,
+                        'parent_qid' => $question->qid,
+                        'scale_id' => $scaleId,
+                        'title' => $data['oldcode']
+                    ]);
                 }
-                $subquestion->scale_id   = $scaleId;
+                if (!$subquestion) {
+                    $subquestion = new Question();
+                }
+                $subquestion->sid = $question->sid;
+                $subquestion->gid = $question->gid;
+                $subquestion->parent_qid = $question->qid;
+                $subquestion->scale_id = $scaleId;
+                $subquestion->question_order = $questionOrder;
+                $questionOrder++;
+                $subquestion->title = $data['code'];
+                if ($scaleId === 0) {
+                    $subquestion->relevance = $data['relevance'];
+                }
                 if (!$subquestion->save()) {
                     throw (new LSUserException(500, gT("Could not save subquestion")))
                         ->setDetailedErrorsFromModel($subquestion);
                 }
                 $subquestion->refresh();
+                $subquestionIds[] = $subquestion->qid;
                 foreach ($data['subquestionl10n'] as $lang => $questionText) {
-                    $l10n = new QuestionL10n();
+                    $l10n = QuestionL10n::model()->findByAttributes([
+                        'qid' => $subquestion->qid,
+                        'language' => $lang
+                    ]);
+                    $l10n = $l10n ?? new QuestionL10n();
                     $l10n->qid = $subquestion->qid;
                     $l10n->language = $lang;
                     $l10n->question = $questionText;
@@ -2802,6 +2821,7 @@ class QuestionAdministrationController extends LSBaseController
                 }
             }
         }
+        $question->deleteAllSubquestions($subquestionIds);
     }
 
     /**
@@ -2816,6 +2836,7 @@ class QuestionAdministrationController extends LSBaseController
     private function updateSubquestions($question, $subquestionsArray)
     {
         $questionOrder = 0;
+        $subquestionIds = [];
         foreach ($subquestionsArray as $subquestionId => $subquestionArray) {
             foreach ($subquestionArray as $scaleId => $data) {
                 $subquestion = Question::model()->findByAttributes(
@@ -2849,6 +2870,7 @@ class QuestionAdministrationController extends LSBaseController
                         ->setDetailedErrorsFromModel($subquestion);
                 }
                 $subquestion->refresh();
+                $subquestionIds[] = $subquestion->qid;
                 foreach ($data['subquestionl10n'] as $lang => $questionText) {
                     $l10n = QuestionL10n::model()->findByAttributes(
                         [
@@ -2869,6 +2891,7 @@ class QuestionAdministrationController extends LSBaseController
                 }
             }
         }
+        $question->deleteAllSubquestions($subquestionIds);
     }
 
     /**

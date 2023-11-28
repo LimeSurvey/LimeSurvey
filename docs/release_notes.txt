@@ -34,6 +34,147 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.6.46 (build 231121) to 5.6.47 (build 231128) November 27, 2023
+-Fixed issue #19228: Setting Bruteforce timeout values to empty string causes the administrator to be locked out (#3617) (Denis Chenu)
+-Fixed issue #19206: Alphabetical order can be bad with utf8 character (#3619) (Denis Chenu)
+-Fixed issue #19168: [security] XSS in Survey menus (Menu icon type and Menu icon) (#3636) (Gabriel Jenik)
+-Fixed issue #18671: Potential JavaScript loop with equation set question (#3632) (Denis Chenu)
+
+
+Changes from 5.6.45 (build 231114) to 5.6.46 (build 231121) November 20, 2023
+-Fixed issue #19224: Advanced ranking does not respect max answer when drag-n-drop (#3616) (Gabriel Jenik)
+-Fixed issue #19139: [security] CSRF in Reset Survey menus (#3598) (Gabriel Jenik)
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Japanese by d_inoue
+#Updated translation: French (France) by mapage
+#Updated translation: Catalan by qualitatuvic
+
+
+Changes from 5.6.44 (build 231107) to 5.6.45 (build 231114) November 13, 2023
+-Fixed issue: Update can fail if there are label codes longer than 5 characters (Carsten Schmitz)
+-Fixed issue #19214: JSON RPC response content type should be application/json (#3611) (Matthew)
+-Fixed issue #19211: [security] CSRF In Copy Survey (#3601) (Denis Chenu)
+-Fixed issue #19162: [security] File Upload causes XSS in Central participant management/Import file CSV (#3585) (Gabriel Jenik)
+-Fixed issue #19118: [security] Improper permission management on bulk actions (#3579) (Denis Chenu)
+-Fixed issue #19114: [security] Admin with Settings & Plugins permission only can store XSS in Survey menus (#3553) (Gabriel Jenik)
+-Fixed issue #19086: Survey Theme Options - image preview does not work (#3562) (Matthew)
+-Fixed issue #18350: activate_survey does not correctly set inherited properties for Notification and data management (#3595) (#3609) (Matthew)
+#Updated translation: Turkish by kayazeren
+#Updated translation: Japanese by nomoto
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: French (France) by DenisChenu, mapage
+
+
+Changes from 5.6.43 (build 231030) to 5.6.44 (build 231107) November 6, 2023
+-Fixed issue: Cannot deactivate survey properly if user has global survey permissions, but is not allowed to access the assigned SurveyGroup (Carsten Schmitz)
+-Fixed issue #19203: Alphabetical order didn't respect survey language (#3581) (Denis Chenu)
+-Fixed issue #19163: [security] Reflected XSS in HtmlEditorPop - Bypassing XSS sanitization function (#3583) (Gabriel Jenik)
+-Fixed issue #19133: [security] User can send email to group members, while not having permissions (#3586) (Denis Chenu)
+#Updated translation: Slovak by jelen1
+#Updated translation: Portuguese (Portugal) by Nathalie-adv, samarta
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Korean by c_schmitz
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
+Changes from 5.6.42 (build 231024) to 5.6.43 (build 231030) October 30, 2023
+-Fixed issue #19183: No editing possible after setting the survey background (#3559) (Matthew)
+-Fixed issue #19173: Encrypted file upload question - delete file results in crash (K Foster)
+-Fixed issue #19169: [security] Privilege escalation to edit survey (#3578) (Denis Chenu)
+-Fixed issue #19140: Problem with viewing LimeSurvey notifications (#3537) (Matthew)
+-Fixed issue #19107: [security] Superadmin can update any admin's information (#3570) (Denis Chenu)
+-Fixed issue #19101: Array by Column Has Incorrect Table Row/Column Ids (#3566) (Matthew)
+-Fixed issue #19093: [security] Improper Authorization in Import Question function  (#3530) (Gabriel Jenik)
+-Fixed issue #19085: Theme Options with an on/off switch are not disabled when page loads (#3561) (Matthew)
+-Fixed issue #19057: Incorrect handling of wrong input in create dummy participant form (#3568) (Matthew)
+-Fixed issue #18436: RPC API - Inviting members with invalid language (#2810) (Denis Chenu)
+#Updated translation: Turkish by kayazeren
+#Updated translation: Slovak by jelen1
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
+Changes from 5.6.41 (build 231017) to 5.6.42 (build 231024) October 23, 2023
+-Fixed issue: Failed emails resend vars column needs to be mediumtext for mysql (#3544) (Tim Willig)
+-Fixed issue: Adding cldr "fr_lu" for lb language (twilligls)
+-Fixed issue: Survey sometimes not completely deactivated, throwing error for missing response table (Carsten Schmitz)
+-Fixed issue #CT-256: Problems with ini parsing for GTranslate.php (twilligls)
+-Fixed issue #19170: Inserting a subquestion/answer option creates multiple rows (#3536) (Matthew)
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Catalan by qualitatuvic
+
+
+Changes from 5.6.40 (build 231005) to 5.6.41 (build 231017) October 16, 2023
+-Fixed issue #CR-1320: Comfort update message overlapping with dropdown actions and can not be muted for a session (Patrick Teichmann)
+-Fixed issue #19160: Subquestion save, scale id code (#3532) (K Foster)
+-Fixed issue #19146: [security] Store XSS when editing label set (#3508) (Denis Chenu)
+-Fixed issue #19142: [security] CSRF in Save Box Settings (#3517) (Gabriel Jenik)
+-Fixed issue #19126: [security] Incorrect Authorization check in add User role (#3507) (Denis Chenu)
+-Fixed issue #19117: [security] Account past their expiration date can be still active (#3524) (Denis Chenu)
+-Fixed issue #19106: [security] Deleted account still has permissions (#3487) (Denis Chenu)
+-Fixed issue #19094: [security] Input Validation Vulnerability Leading to 500 on responses page (#3519) (Denis Chenu)
+-Fixed issue #18968: User with "View/read Users" permission needs to have "User details" action available for all users, not just itself (#3528) (Gabriel Jenik)
+-Fixed issue #18957: Ranking Advanced - Visualization Types are not working (#3480) (Gabriel Jenik)
+-Fixed issue #18776: Question ordering not correct (#3534) (Matthew)
+#Updated translation: Spanish (Informal) by daniel.gonzalez, ireneoh
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Hungarian by kkd
+#Updated translation: German by c_schmitz, maren.fritz
+#Updated translation: German (Informal) by c_schmitz, maren.fritz
+
+
+Changes from 5.6.39 (build 230926) to 5.6.40 (build 231005) October 4, 2023
+-Fixed issue #18817: Editing a question deletes default answers (#3457) (Gabriel Jenik)
+-Fixed issue #18648: Unable to upload a file with theme animations enabled (#3356) (Gabriel Jenik)
+-Fixed issue #18439: Link set when create user are unusuable in text view (#3335) (Gabriel Jenik)
+-Fixed issue #18294: User was not added to group created automatically (#2581) (Denis Chenu)
+
+
+Changes from 5.6.38 (build 230919) to 5.6.39 (build 230926) September 25, 2023
+-Fixed issue #19099: [security] XSS vulnerability caused by themeOptions/importManifest (#3472) (Denis Chenu)
+-Fixed issue #19096: Array by column answer options are not processed by EM before display (#3464) (#3476) (Matthew)
+-Fixed issue #19063: Import of broken lsa file yields success message (but inactive "Go to survey" button) (#3463) (Gabriel Jenik)
+-Fixed issue #19019: [security] Stored XSS in description of theme (#3444) (Gabriel Jenik)
+-Fixed issue #18986: [security] superadmin without create superadmin can create superadmin (#3448) (Denis Chenu)
+-Fixed issue #18984: [security] CSRF in Question Themes function (#3473) (Gabriel Jenik)
+-Fixed issue #18957: Ranking Advanced: Visualization Types are not working (#3460) (Gabriel Jenik)
+-Fixed issue #18938: question_template_attribute show only default value (#3468) (Denis Chenu)
+-Fixed issue #18601: No editor available when defining quota messages. (#3453) (Gabriel Jenik)
+
+
+Changes from 5.6.37 (build 230905) to 5.6.38 (build 230919) September 18, 2023
+-Fixed issue #19037: [security] Reflected XSS in LimeSurvey via userid parameter (#3412) (Gabriel Jenik)
+-Fixed issue #18995: [security] Confidentiality issue about username (#3368) (Gabriel Jenik)
+-Fixed issue #18981: Using ngT to translate plurals loads wrong locale folder (#3326) (Gabriel Jenik)
+-Fixed issue #18978: User is able to change survey group's code that is by default unchangeable (#3401) (Gabriel Jenik)
+-Fixed issue #18942: Roles - Permissions Modal is too narrow (#3320) (Gabriel Jenik)
+-Fixed issue #18593: Float attributes are not supported anymore (#3202) (Gabriel Jenik)
+-Fixed issue #18494: TypeError during demo survey "ls205_em_tailoring" (#3441) (Gabriel Jenik)
+#Updated translation: Turkish by bulent, kayazeren
+#Updated translation: Swedish by maxzomborszki
+#Updated translation: Spanish (Spain) by ireneoh
+#Updated translation: Slovak by jelen1
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Japanese by nomoto
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
 Changes from 5.6.36 (build 230830) to 5.6.37 (build 230905) September 4, 2023
 -Fixed issue #19036: Stored XSS via user's username (#3394) (Gabriel Jenik)
 -Fixed issue #18905: Create automatic test for XSS Purifier: Broken HTML (#3410) (Gabriel Jenik)

@@ -14,8 +14,6 @@ namespace ls\tests\controllers;
  * See COPYRIGHT.php for copyright notices and details.
  */
 
-
-
 use ls\tests\TestBaseClass;
 use Yii;
 
@@ -23,9 +21,10 @@ class UserManagementTest extends TestBaseClass
 {
     public static $newUserId = null;
     private $dataSet;
-    
-    public function __construct() {
-        include(ROOT.DIRECTORY_SEPARATOR.'tests'.DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.'datasets'.DIRECTORY_SEPARATOR.'userdata.php');
+
+    public function __construct()
+    {
+        include(ROOT . DIRECTORY_SEPARATOR . 'tests' . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'datasets' . DIRECTORY_SEPARATOR . 'userdata.php');
         parent::__construct();
         $this->dataSet = $aDataSet;
     }
@@ -34,7 +33,7 @@ class UserManagementTest extends TestBaseClass
      */
     public function getConnection()
     {
-        $config = include(APPPATH . DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'config.php');
+        $config = include(APPPATH . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'config.php');
         $dsn = 'mysql:dbname=limesurvey;host=localhost';
         $user = $config['components']['db']['username'];
         $password = $config['components']['db']['password'];
@@ -45,18 +44,18 @@ class UserManagementTest extends TestBaseClass
     public static function setupBeforeClass(): void
     {
         parent::setupBeforeClass();
-        include(ROOT.DIRECTORY_SEPARATOR.'tests'.DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.'datasets'.DIRECTORY_SEPARATOR.'userdata.php');
+        include(ROOT . DIRECTORY_SEPARATOR . 'tests' . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'datasets' . DIRECTORY_SEPARATOR . 'userdata.php');
         //\Yii::import('application.controllers.admin.UserManagement', true);
         \Yii::import('application.controllers.UserManagementController', true);
         \Yii::import('application.models.User', true);
         \Yii::app()->session['loginID'] = 1;
-        
+
         $oUser = new \User();
         $oUser->setAttributes($aDataSet['new_user_data']);
-        if(!$oUser->save()) {
-            throw new \Exception( 
+        if (!$oUser->save()) {
+            throw new \Exception(
                 "Could not save user: "
-                .print_r($oUser->getErrors(),true)
+                . print_r($oUser->getErrors(), true)
             );
         };
 
@@ -70,7 +69,8 @@ class UserManagementTest extends TestBaseClass
         $oUser->save();
     }
 
-    public function testUpdateAdminUserPassword() {
+    public function testUpdateAdminUserPassword()
+    {
         $oUserManagementController = new \UserManagementController('userManagement');
         $aChangeDataSet = $this->dataSet['user_change_password'];
         $aChangeDataSet['uid'] = self::$newUserId;
@@ -78,17 +78,18 @@ class UserManagementTest extends TestBaseClass
 
         $oUser = \User::model()->findByPk(self::$newUserId);
         $success = $oUser->checkPassword($this->dataSet['user_change_password']['password']);
-        if($success) {
+        if ($success) {
             $this->assertTrue($success);
         } else {
-            throw new \Exception( 
-                "Test ".__METHOD__ ." failed: \n"
-                ."The password has not been changed correctly"
+            throw new \Exception(
+                "Test " . __METHOD__ . " failed: \n"
+                . "The password has not been changed correctly"
             );
         }
     }
 
-    public function testUpdateAdminUserFullName() {
+    public function testUpdateAdminUserFullName()
+    {
         $oUserManagementController = new \UserManagementController('userManagement');
         $aChangeDataSet = $this->dataSet['user_change_full_name'];
         $aChangeDataSet['uid'] = self::$newUserId;
@@ -97,39 +98,39 @@ class UserManagementTest extends TestBaseClass
 
         $oUser = \User::model()->findByPk(self::$newUserId);
         $success = $oUser->full_name == $this->dataSet['user_change_full_name']['full_name'];
-        if($success) {
+        if ($success) {
             $this->assertTrue($success);
         } else {
-            throw new \Exception( 
-                "Test ".__METHOD__ ." failed: \n"
-                ."The full name has not been changed correctly"
+            throw new \Exception(
+                "Test " . __METHOD__ . " failed: \n"
+                . "The full name has not been changed correctly"
             );
         }
-
     }
 
-    public function testUpdateAdminUserTamperproofed() {
+    public function testUpdateAdminUserTamperproofed()
+    {
         $oUserManagementController = new \UserManagementController('userManagement');
         $aChangeDataSet = $this->dataSet['change_admin_user'];
         $aChangeDataSet['uid'] = 1;
         \Yii::app()->session['loginID'] = self::$newUserId;
         try {
             $oUserManagementController->updateAdminUser($aChangeDataSet);
-        } catch(\CException $exception) {
-            if($exception->getCode() == 500) {
-                
+        } catch (\CException $exception) {
+            if ($exception->statusCode == 403) {
                 \Yii::app()->session['loginID'] = 1;
                 $this->assertTrue(true);
                 return;
             }
+            /* throw the exception : user was not updated, but bad exception happen */
+            throw $exception;
         }
 
         \Yii::app()->session['loginID'] = 1;
-        throw new \Exception( 
-            "Test ".__METHOD__ ." failed: \n"
-            ."The admin user has been changed"
+        throw new \Exception(
+            "Test " . __METHOD__ . " failed: \n"
+            . "The admin user has been changed"
         );
-
     }
 
     public static function tearDownAfterClass(): void
@@ -137,6 +138,4 @@ class UserManagementTest extends TestBaseClass
         $oUser = \User::model()->findByPk(self::$newUserId);
         $oUser->delete();
     }
-
-
 }

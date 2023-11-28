@@ -23,7 +23,7 @@
             <?php endif; ?>
 
             <!-- Mail to all Members -->
-            <?php if (isset($usergroupbar['edit'])) : ?>
+            <?php if (isset($usergroupbar['edit']) &&  (App()->getCurrentUserId() == $userGroup->owner_id || Permission::model()->hasGlobalPermission('superadmin', 'read'))) :?>
                 <a class="btn btn-default" href="<?php echo $this->createUrl("userGroup/mailToAllUsersInGroup/ugid/" . $userGroup->ugid); ?>" role="button">
                     <span class="icon-invite text-success"></span>
                     <?php eT("Mail to all Members"); ?>
@@ -31,7 +31,7 @@
             <?php endif;?>
 
             <!-- Edit current user group -->
-            <?php if (isset($usergroupbar['edit']) &&  (Yii::app()->session['loginID'] == $userGroup->owner_id || Permission::model()->hasGlobalPermission('superadmin', 'read'))) :?>
+            <?php if (isset($usergroupbar['edit']) &&  (App()->getCurrentUserId() == $userGroup->owner_id || Permission::model()->hasGlobalPermission('superadmin', 'read'))) :?>
                 <a class="btn btn-default" href="<?php echo $this->createUrl("userGroup/edit/ugid/" . $userGroup->ugid); ?>" role="button">
                     <span class="fa fa-pencil text-success"></span>
                     <?php eT("Edit current user group"); ?>
@@ -39,7 +39,7 @@
             <?php endif;?>
 
             <!-- Delete current user group -->
-            <?php if (isset($usergroupbar['edit']) &&  (Yii::app()->session['loginID'] == $userGroup->owner_id || Permission::model()->hasGlobalPermission('superadmin', 'read'))) :?>
+            <?php if (isset($usergroupbar['edit']) &&  (App()->getCurrentUserId() == $userGroup->owner_id || Permission::model()->hasGlobalPermission('superadmin', 'read'))) :?>
                 <a class="btn btn-default" href='#' onclick='if (confirm("<?php eT("Are you sure you want to delete this entry?", "js"); ?>")) { <?php echo convertGETtoPOST($this->createUrl('userGroup/deleteGroup?ugid=' . $userGroup->ugid)); ?>}'>
                     <span class="fa fa-trash text-success"></span>
                     <?php eT("Delete current user group"); ?>

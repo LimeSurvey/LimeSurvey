@@ -120,6 +120,9 @@ class TemplateConfiguration extends TemplateConfig
         return array(
             array('template_name', 'required'),
             array('id, sid, gsid', 'numerical', 'integerOnly' => true),
+            array('template_name', 'filter', 'filter' => function ($value) {
+                return sanitize_filename($value, false, false, false);
+            }),
             array('template_name', 'length', 'max' => 150),
             array('cssframework_name', 'length', 'max' => 45),
             array('files_css, files_js, files_print_css, options, cssframework_css, cssframework_js, packages_to_load',
@@ -541,6 +544,7 @@ class TemplateConfiguration extends TemplateConfig
           // Note: if no twig statement in the description, twig will just render it as usual
         try {
             $sDescription = App()->twigRenderer->convertTwigToHtml($this->template->description);
+            $sDescription = viewHelper::purified($sDescription);
         } catch (\Exception $e) {
           // It should never happen, but let's avoid to anoy final user in production mode :)
             if (YII_DEBUG) {
@@ -702,6 +706,8 @@ class TemplateConfiguration extends TemplateConfig
      */
     public function getButtons()
     {
+        /* Use sanitized filename for previous bad upload */
+        $template_name = sanitize_filename($this->template_name, false, false, false);
         /* What ? We can get but $this->getAttribute ??? */
         $gsid = App()->request->getQuery('id', null); // $this->gsid;
         // don't show any buttons if user doesn't have update permission
@@ -721,7 +727,7 @@ class TemplateConfiguration extends TemplateConfig
         }
         $sEditorUrl = App()->getController()->createUrl(
             'admin/themes/sa/view',
-            array("templatename" => $this->template_name)
+            array("templatename" => $template_name)
         );
         $sExtendUrl = App()->getController()->createUrl('admin/themes/sa/templatecopy');
         $sOptionUrl = (App()->getController()->action->id == "surveysgroups") ?
@@ -738,7 +744,7 @@ class TemplateConfiguration extends TemplateConfig
         $sResetUrl     = Yii::app()->getController()->createUrl('themeOptions/reset/', array("gsid" => (int) $gsid));
 
         $sEditorLink = "<a
-            id='template_editor_link_" . $this->template_name . "'
+            id='template_editor_link_" . $this->id . "'
             href='" . $sEditorUrl . "'
             class='btn btn-default btn-block'>
                 <span class='icon-templates'></span>
@@ -748,7 +754,7 @@ class TemplateConfiguration extends TemplateConfig
         $OptionLink = '';
         if ($this->getHasOptionPage()) {
             $OptionLink .= "<a
-                id='template_options_link_" . $this->template_name . "'
+                id='template_options_link_" . $this->id . "'
                 href='" . $sOptionUrl . "'
                 class='btn btn-default btn-block'>
                     <span class='fa fa-tachometer'></span>
@@ -757,14 +763,14 @@ class TemplateConfiguration extends TemplateConfig
         }
 
         $sExtendLink = '<a
-            id="extendthis_' . $this->template_name . '"
+            id="extendthis_' . $this->id . '"
             href="' . $sExtendUrl . '"
             data-post=\''
             . json_encode([
-                "copydir" => $this->template_name,
+                "copydir" => $template_name,
                 "action" => "templatecopy",
                 "newname" => [
-                    "value" => "extends_" . $this->template_name,
+                    "value" => "extends_" . $template_name,
                     "type" => "text",
                     "class" => "form-control col-sm-12"
                 ]
@@ -773,16 +779,16 @@ class TemplateConfiguration extends TemplateConfig
             data-text="' . gT('Please type in the new theme name above.') . '"
             data-button-no="' . gt('Cancel') . '"
             data-button-yes="' . gt('Extend') . '"
-            title="' . sprintf(gT('Type in the new name to extend %s'), $this->template_name) . '"
+            title="' . sprintf(gT('Type in the new name to extend %s'), $template_name) . '"
             class="btn btn-primary btn-block selector--ConfirmModal">
                 <i class="fa fa-copy"></i>
                 ' . gT('Extend') . '
             </a>';
 
         $sUninstallLink = '<a
-            id="remove_fromdb_link_' . $this->template_name . '"
+            id="remove_fromdb_link_' . $this->id . '"
             href="' . $sUninstallUrl . '"
-            data-post=\'{ "templatename": "' . $this->template_name . '" }\'
+            data-post=\'{ "templatename": "' . $template_name . '" }\'
             data-text="' . gT('This will reset all the specific configurations of this theme.') . '<br>' . gT('Do you want to continue?') . '"
             data-button-no="' . gt('Cancel') . '"
             data-button-yes="' . gt('Uninstall') . '"
@@ -794,9 +800,9 @@ class TemplateConfiguration extends TemplateConfig
             </a>';
 
         $sResetLink = '<a
-                id="remove_fromdb_link_' . $this->template_name . '"
+                id="remove_fromdb_link_' . $this->id . '"
                 href="' . $sResetUrl . '"
-                data-post=\'{ "templatename": "' . $this->template_name . '" }\'
+                data-post=\'{ "templatename": "' . $template_name . '" }\'
                 data-text="' . gT('This will reload the configuration file of this theme.') . '<br>' . gT('Do you want to continue?') . '"
                 data-button-no="' . gt('Cancel') . '"
                 data-button-yes="' . gt('Reset') . '"
@@ -830,7 +836,6 @@ class TemplateConfiguration extends TemplateConfig
         }
 
         $sButtons .= $sResetLink;
-
         return $sButtons;
     }
 

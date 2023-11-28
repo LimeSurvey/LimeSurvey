@@ -192,7 +192,7 @@ class ExpressionManager
         // If the value is -1, the function must have a least one argument but can have an unlimited number of them
         // -2 means that at least one argument is required.  -3 means at least two arguments are required, etc.
         $this->RDP_ValidFunctions = array(
-            'abs' => array('abs', 'Decimal.asNum.abs', gT('Absolute value'), 'number abs(number)', 'http://php.net/abs', 1),
+            'abs' => array('exprmgr_abs', 'Decimal.asNum.abs', gT('Absolute value'), 'number abs(number)', 'http://php.net/abs', 1),
             'acos' => array('acos', 'Decimal.asNum.acos', gT('Arc cosine'), 'number acos(number)', 'http://php.net/acos', 1),
             'addslashes' => array('addslashes', gT('addslashes'), 'Quote string with slashes', 'string addslashes(string)', 'http://php.net/addslashes', 1),
             'asin' => array('asin', 'Decimal.asNum.asin', gT('Arc sine'), 'number asin(number)', 'http://php.net/asin', 1),
@@ -2192,6 +2192,9 @@ class ExpressionManager
                                     case 'sin':
                                     case 'sqrt':
                                     case 'tan':
+                                    case 'ceil':
+                                    case 'floor':
+                                    case 'round':
                                         if (is_numeric($params[0])) {
                                             $result = $funcName(floatval($params[0]));
                                         } else {
@@ -2208,6 +2211,7 @@ class ExpressionManager
                             if (!$this->RDP_onlyparse) {
                                 switch ($funcName) {
                                     case 'atan2':
+                                    case 'pow':
                                         if (is_numeric($params[0]) && is_numeric($params[1])) {
                                             $result = $funcName(floatval($params[0]), floatval($params[1]));
                                         } else {
@@ -2940,6 +2944,17 @@ function exprmgr_date($format, $timestamp = null)
         return false;
     }
     return date($format, $timestamp);
+}
+
+function exprmgr_abs($num)
+{
+    if (!is_numeric($num)) {
+        return false;
+    }
+
+    // Trying to cast either to int or float, depending on the value.
+    $num = $num + 0;
+    return abs($num);
 }
 
 /**

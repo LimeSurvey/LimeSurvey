@@ -149,7 +149,7 @@ $internalConfig = array(
             'enableCookieValidation' => false, // Enable to activate cookie protection
             'noCsrfValidationParams' => array(),
             'noCsrfValidationRoutes' => array(
-                'remotecontrol',
+                'admin/remotecontrol',
                 'plugins/unsecure',
             ),
             'csrfCookie' => array(

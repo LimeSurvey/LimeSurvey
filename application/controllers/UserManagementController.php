@@ -432,7 +432,7 @@ class UserManagementController extends LSBaseController
             );
         }
         $userId = Yii::app()->request->getParam('userid');
-
+        $userId = sanitize_int($userId);
         $aData['userId'] = $userId;
 
         return $this->renderPartial('partial/confirmuserdelete', $aData);
@@ -484,6 +484,10 @@ class UserManagementController extends LSBaseController
 
         // Check permissions
         $aBasePermissions = Permission::model()->getGlobalBasePermissions();
+        // superadmin permission always need create
+        if (!Permission::model()->hasGlobalPermission('superadmin', 'create')) {
+            unset($aBasePermissions['superadmin']);
+        }
         if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
             // if not superadmin filter the available permissions as no admin may give more permissions than he owns
             Yii::app()->session['flashmessage'] = gT("Note: You can only give limited permissions to other users because your own permissions are limited, too.");
@@ -507,7 +511,6 @@ class UserManagementController extends LSBaseController
             }
             $aBasePermissions = $aFilteredPermissions;
         }
-
         return $this->renderPartial(
             'partial/editpermissions',
             [
@@ -632,7 +635,7 @@ class UserManagementController extends LSBaseController
         $oUser = User::model()->findByPk($userId);
 
         $userManager = new UserManager(Yii::app()->user, $oUser);
-        if (!$userManager->canAssignRole()) {
+        if (!$userManager->canAssignRole() || $oUser->uid == App()->user->getId()) {
             return $this->renderPartial(
                 'partial/error',
                 ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
@@ -673,7 +676,7 @@ class UserManagementController extends LSBaseController
         $oUser = User::model()->findByPk($iUserId);
 
         $userManager = new UserManager(Yii::app()->user, $oUser);
-        if (!$userManager->canAssignRole()) {
+        if (!$userManager->canAssignRole() || $oUser->uid == App()->user->getId()) {
             return Yii::app()->getController()->renderPartial('/admin/super/_renderJson', [
                 "data" => [
                     'success' => false,
@@ -1011,21 +1014,23 @@ class UserManagementController extends LSBaseController
             $aResults[$user]['title'] = $oUser->users_name;
             //User should not reset and resend  email to himself throw massive action
             if ($oUser->uid == Yii::app()->user->id) {
+                $aResults[$user]['result'] = false;
                 $aResults[$user]['error'] = gT("Error! Please change your password from your profile settings.");
-            } else {
-                //not modify original superuser
-                if ($oUser->uid == 1) {
-                    $aResults[$user]['error'] = gT("Error! You do not have the permission to edit this user.");
-                } else {
-                    $passwordManagement = new \LimeSurvey\Models\Services\PasswordManagement($oUser);
-                    $successData = $passwordManagement->sendPasswordLinkViaEmail(\LimeSurvey\Models\Services\PasswordManagement::EMAIL_TYPE_RESET_PW);
-                    $success = $successData['success'];
-                    if (!$success) {
-                        $aResults[$user]['error'] = sprintf(gT("Error: New password could not be sent to %s"), $oUser->email);
-                    }
-                    $aResults[$user]['result'] = $success;
-                }
+                continue;
             }
+            $userManager = new UserManager(Yii::app()->user, $oUser);
+            if (!$userManager->canEdit()) {
+                $aResults[$user]['result'] = false;
+                $aResults[$user]['error'] = gT("Error! You do not have the permission to edit this user.");
+                continue;
+            }
+            $passwordManagement = new \LimeSurvey\Models\Services\PasswordManagement($oUser);
+            $successData = $passwordManagement->sendPasswordLinkViaEmail(\LimeSurvey\Models\Services\PasswordManagement::EMAIL_TYPE_RESET_PW);
+            $success = $successData['success'];
+            if (!$success) {
+                $aResults[$user]['error'] = sprintf(gT("Error: New password could not be sent to %s"), $oUser->email);
+            }
+            $aResults[$user]['result'] = $success;
         }
 
         $tableLabels = array(gT('User ID'), gT('Username'), gT('Status'));
@@ -1059,11 +1064,24 @@ class UserManagementController extends LSBaseController
         $aPermissions = Yii::app()->request->getPost('Permission', []);
         $results = [];
         foreach ($userIds as $iUserId) {
-            $aPermissionsResults = $this->applyPermissionFromArray($iUserId, $aPermissions);
             $oUser = User::model()->findByPk($iUserId);
+            $results[$iUserId] = [
+                'title' => $oUser->users_name
+            ];
+            if ($oUser->uid == Yii::app()->user->id) {
+                $aResults[$user]['result'] = false;
+                $aResults[$user]['error'] = gT("You can not update your own permission.");
+                continue;
+            }
+            $userManager = new UserManager(Yii::app()->user, $oUser);
+            if (!$userManager->canAssignPermissions()) {
+                $results[$iUserId]['result'] = false;
+                $results[$iUserId]['error'] = gT("You are not allowed to assign permissions to this user.");
+                continue;
+            }
+            $aPermissionsResults = $this->applyPermissionFromArray($iUserId, $aPermissions);
             $oUser->modified = date('Y-m-d H:i:s');
             $results[$iUserId]['result'] = $oUser->save();
-            $results[$iUserId]['title'] = $oUser->users_name;
             foreach ($aPermissionsResults as $aPermissionsResult) {
                 if (!$aPermissionsResult['success']) {
                     $results[$iUserId]['result'] = false;
@@ -1103,35 +1121,32 @@ class UserManagementController extends LSBaseController
             );
         }
         $aItems = json_decode(Yii::app()->request->getPost('sItems', []));
-        $iUserGroupId = Yii::app()->request->getPost('addtousergroup');
+        $iUserGroupId = intval(App()->request->getPost('addtousergroup'));
+        $oUserGroup = UserGroup::model()->findByPk($iUserGroupId);
 
-        if ($iUserGroupId) {
-            $oUserGroup = UserGroup::model()->findByPk($iUserGroupId);
-            $aResults = [];
+        if (!$iUserGroupId || !$oUserGroup) {
+            throw new CHttpException(404, gT("Group not found"));
+        }
+        /* see UserGroupController->checkBeforeAddDeleteUser */
+        if (!Permission::model()->hasGlobalPermission('superadmin', 'read') && $oUserGroup->owner_id != App()->getCurrentUserId()) {
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
+        }
 
-            foreach ($aItems as $sItem) {
-                $aResults[$sItem]['title'] = '';
-                $model = $this->loadModel($sItem);
-                $aResults[$sItem]['title'] = $model->users_name;
-                if (!$oUserGroup->hasUser($sItem)) {
-                    $aResults[$sItem]['result'] = $oUserGroup->addUser($sItem);
-                } else {
-                    $aResults[$sItem]['result'] = false;
-                    $aResults[$sItem]['error'] = gT('User is already a member of the group.');
-                }
-            }
-        } else {
-            foreach ($aItems as $sItem) {
-                $aResults[$sItem]['title'] = '';
-                $model = $this->loadModel($sItem);
-                $aResults[$sItem]['title'] = $model->users_name;
+        /* @var array construct ressult for each user */
+        $aResults = [];
+        foreach ($aItems as $sItem) {
+            $aResults[$sItem]['title'] = '';
+            $model = $this->loadModel($sItem);
+            $aResults[$sItem]['title'] = $model->users_name;
+            if (!$oUserGroup->hasUser($sItem)) {
+                $aResults[$sItem]['result'] = $oUserGroup->addUser($sItem);
+            } else {
                 $aResults[$sItem]['result'] = false;
-                $aResults[$sItem]['error'] = gT('No user group selected.');
+                $aResults[$sItem]['error'] = gT('User is already a member of the group.');
             }
         }
 
         $tableLabels = array(gT('User ID'), gT('Username'), gT('Status'));
-
         Yii::app()->getController()->renderPartial(
             'ext.admin.survey.ListSurveysWidget.views.massive_actions._action_results',
             array(
@@ -1150,12 +1165,8 @@ class UserManagementController extends LSBaseController
      */
     public function actionBatchApplyRoles()
     {
-        /* Need super admin roles */
-        if (!Permission::model()->hasGlobalPermission('superadmin')) {
-            return $this->renderPartial(
-                'partial/error',
-                ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
-            );
+        if (!Permission::model()->hasGlobalPermission('superadmin', 'create')) {
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
         $aItems = json_decode(Yii::app()->request->getPost('sItems', []));
         $aUserRoleIds = Yii::app()->request->getPost('roleselector');
@@ -1165,11 +1176,15 @@ class UserManagementController extends LSBaseController
             $aResults[$sItem]['title'] = '';
             $model = $this->loadModel($sItem);
             $aResults[$sItem]['title'] = $model->users_name;
-
-            if (Permission::isForcedSuperAdmin($sItem)) {
-                /* Show an error for forced super admin, this don't disable for DB superadmin */
+            if ($model->uid == Yii::app()->user->id) {
+                $aResults[$user]['result'] = false;
+                $aResults[$user]['error'] = gT("You can not update your own roles.");
+                continue;
+            }
+            $userManager = new UserManager(Yii::app()->user, $model);
+            if (!$userManager->canAssignRole()) {
                 $aResults[$sItem]['result'] = false;
-                $aResults[$sItem]['error'] = gT('The superadmin role cannot be changed.');
+                $aResults[$sItem]['error'] = gT('You can not set role to this user.');
             } else {
                 foreach ($aUserRoleIds as $iUserRoleId) {
                     $aResults[$sItem]['result'] = Permissiontemplates::model()->applyToUser($sItem, $iUserRoleId);
@@ -1304,29 +1319,19 @@ class UserManagementController extends LSBaseController
     /**
      * Update admin-user
      *
-     * REFACTORED (in UserManagementController)
-     *
      * @param array $aUser array with user details
      * @return object user - updated user object
      * @throws CException
      */
     public function updateAdminUser(array $aUser): User
     {
-        $oUser = User::model()->findByPk($aUser['uid']);
-        //If the user id of the post is spoofed somehow it would be possible to edit superadmin users
-        //Therefore we need to make sure no non-superadmin can modify superadmin accounts
-        //Since this should NEVER be the case without hacking the software, this will silently just do nothing.
-        if (
-            !Permission::model()->hasGlobalPermission('superadmin', 'read', Yii::app()->user->id)
-            && Permission::model()->hasGlobalPermission('superadmin', 'read', $oUser->uid)
-        ) {
-            throw new CException("This action is not allowed, and should never happen", 500);
-        }
-
+        $oUser = $this->loadModel($aUser['uid']);
         // Abort if logged in user has no access to this user.
         // Using same logic as User::getButtons().
-        $userManager = new UserManager(Yii::app()->user, $oUser);
-        if (!$userManager->canEdit()) {
+        if (
+            !$oUser->canEdit()
+            || $aUser['uid'] == App()->user->id // To update self : must use personal settings
+        ) {
             throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
 
@@ -1547,16 +1552,20 @@ class UserManagementController extends LSBaseController
         $aAllowedPermissions = array_map(
             function ($aGlobalPermission) {
                 return array(
-                    'create' => $aGlobalPermission['read'],
+                    'create' => $aGlobalPermission['create'],
                     'read' => $aGlobalPermission['read'],
-                    'update' => $aGlobalPermission['read'],
-                    'delete' => $aGlobalPermission['read'],
-                    'import' => $aGlobalPermission['read'],
-                    'export' => $aGlobalPermission['read'],
+                    'update' => $aGlobalPermission['update'],
+                    'delete' => $aGlobalPermission['delete'],
+                    'import' => $aGlobalPermission['import'],
+                    'export' => $aGlobalPermission['export'],
                 );
             },
             $aGlobalPermissions
         );
+        // superadmin permission always need create
+        if (!Permission::model()->hasGlobalPermission('superadmin', 'create')) {
+            unset($aAllowedPermissions['superadmin']);
+        }
         $aCruds = array('create', 'read', 'update', 'delete', 'import', 'export');
         if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
             // if not superadmin filter the available permissions as no admin may give more permissions than he owns

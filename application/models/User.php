@@ -149,6 +149,35 @@ class User extends LSActiveRecord
     }
 
     /**
+     * @inheritDoc
+     * Delete user in related model after deletion
+     * return void
+     **/
+    protected function afterDelete()
+    {
+        parent::afterDelete();
+        /* Delete all permission */
+        Permission::model()->deleteAll(
+            "uid = :uid",
+            [":uid" => $this->uid]
+        );
+        /* Delete potential roles */
+        UserInPermissionrole::model()->deleteAll(
+            "uid = :uid",
+            [":uid" => $this->uid]
+        );
+        /* User settings */
+        SettingsUser::model()->deleteAll(
+            "uid = :uid",
+            [":uid" => $this->uid]
+        );
+        /* User in group */
+        UserInGroup::model()->deleteAll(
+            "uid = :uid",
+            [":uid" => $this->uid]
+        );
+    }
+    /**
      * @return string
      */
     public function getSurveysCreated()
@@ -562,6 +591,7 @@ class User extends LSActiveRecord
         $changeOwnershipUrl = Yii::app()->getController()->createUrl('userManagement/takeOwnership');
         $setTemplatePermissionsUrl = Yii::app()->getController()->createUrl('userManagement/userTemplatePermissions', ['userid' => $this->uid]);
         $deleteUrl = Yii::app()->getController()->createUrl('userManagement/deleteConfirm', ['userid' => $this->uid, 'user' => $this->full_name]);
+        $userManager = new UserManager(App()->user, $this);
 
         $iconBtnRow = "<div class='icon-btn-row'>";
         $iconBtnRowEnd = "</div>";
@@ -629,7 +659,7 @@ class User extends LSActiveRecord
         // Superadmins can do everything, no need to do further filtering
         if (Permission::model()->hasGlobalPermission('superadmin', 'read')) {
             //Prevent users from modifying the original superadmin. Original superadmin can change the password on their account setting!
-            if ($this->uid == 1) {
+            if (Permission::isForcedSuperAdmin($this->uid)) {
                 $editUserButton = "";
             }
 
@@ -641,7 +671,7 @@ class User extends LSActiveRecord
                 $iconBtnRow,
                 $editUserButton,
                 $editPermissionButton,
-                $addRoleButton,
+                $userManager->canAssignRole() ? $addRoleButton : '',
                 "\n",
                 $userDetail,
                 $editTemplatePermissionButton,
@@ -659,11 +689,14 @@ class User extends LSActiveRecord
                 Permission::model()->hasGlobalPermission('users', 'update')     //Global permission to view users given
                 && $this->parent_id == Yii::app()->session['loginID']           //AND User is owned or created by you
             )
+            || (
+                Permission::model()->hasGlobalPermission('users', 'read')     //Global permission to view users
+            )
         ) {
             $buttonArray[] = $userDetail;
         }
         // Check if user is editable
-        if ($this->canEdit(Yii::app()->session['loginID'])) {
+        if ($this->canEdit() && $this->uid != App()->user->getId()) {
             $buttonArray[] = $editUserButton;
         }
 
@@ -970,16 +1003,39 @@ class User extends LSActiveRecord
     }
 
     /**
-     * Returns true if logged in user with id $loginId can edit this user
+     * Return true if user with id $managerId can edit this user
+     * @param int|null $managerId default to current user
      *
-     * @param int $loginId
      * @return bool
      */
-    public function canEdit($loginId)
+    public function canEdit($managerId = null)
     {
-        return
-            Permission::model()->hasGlobalPermission('superadmin', 'read')
-            || $this->uid == $loginId
-            || (Permission::model()->hasGlobalPermission('users', 'update') && $this->parent_id == $loginId);
+        if (is_null($managerId)) {
+            $managerId = Permission::model()->getUserId();
+        }
+        /* user can update himself */
+        if ($managerId == $this->uid) {
+            return true;
+        }
+        /* forcedsuperamdin (user #1) can always update all */
+        if (Permission::isForcedSuperAdmin($managerId)) {
+            return true;
+        }
+        /* forcedsuperamdin can not be update (except by another forcedsuperamdin done before) */
+        if (Permission::isForcedSuperAdmin($this->uid)) {
+            return false;
+        }
+        /* If target user is superamdin : managingUser must be allowed to create superadmin and be parent */
+        if (Permission::model()->hasGlobalPermission('superadmin', 'read', $this->uid)) {
+            return Permission::model()->hasGlobalPermission('superadmin', 'create', $managerId)
+                && $this->parent_id == $managerId;
+        }
+        /* superamin can update all other user */
+        if (Permission::model()->hasGlobalPermission('superadmin', 'read', $managerId)) {
+            return true;
+        }
+        /* Finally : simple user can update only childs users */
+        return Permission::model()->hasGlobalPermission('users', 'update', $managerId)
+                && $this->parent_id == $managerId;
     }
 }

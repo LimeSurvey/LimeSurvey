@@ -316,13 +316,13 @@
                     $aTemplateList = Template::getTemplateListWithPreviews();
                     foreach ($aTemplateList as $templateName => $preview) {
                         if (Permission::model()->hasGlobalPermission('templates','read') || Permission::model()->hasTemplatePermission($templateName) || $oSurvey->template==htmlspecialchars($templateName) ) { ?>
-                            <option value='<?php echo $templateName; ?>'
+                            <option value='<?php echo CHtml::encode($templateName); ?>'
                                 <?php if ($oSurvey->template && htmlspecialchars($templateName) == $oSurvey->template && $oSurvey->template != 'inherit') { ?>
                                     selected='selected'
                                 <?php   } elseif (!$oSurvey->template && $templateName == getGlobalSetting('defaulttheme') && $oSurvey->template != 'inherit') { ?>
                                 selected='selected'
                                 <?php } ?>
-                                ><?php echo $templateName; ?></option>
+                                ><?php echo CHtml::encode($templateName); ?></option>
                             <?php } ?>
 
                     <?php } ?>

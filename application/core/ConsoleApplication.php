@@ -6,7 +6,7 @@
 */
 
 require_once(dirname(dirname(__FILE__)) . '/helpers/globals.php');
-require_once __DIR__ . '/../models/Traits/LSApplicationTrait.php';
+require_once __DIR__ . '/Traits/LSApplicationTrait.php';
 
 use LimeSurvey\PluginManager\LimesurveyApi;
 

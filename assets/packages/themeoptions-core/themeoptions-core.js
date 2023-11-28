@@ -70,6 +70,20 @@ var ThemeOptions = function () {
             optionObject[$(item).attr('name')] = $(item).val();
         });
 
+        globalForm.find('.selector_image_selector').each(function (i, item) {
+            // disable the preview image button if the image
+            // selected could not be mapped to one of the images
+            // that actually exists within the theme
+            const src = $(item).find('option:selected').data('lightbox-src');
+            const missing = src === '';
+            const itemId = $(item).attr('id');
+            const button = $(`button[data-target="#${itemId}"]`);
+            button.prop('disabled', missing);
+
+            // add some feedback to the user, mark field invalid
+            $(item).parent().parent().toggleClass('has-error', missing);
+        });
+
         globalForm.find('.selector_option_radio_field ').each(function (i, item) {
             //disabled items should be inherit or false
             if ($(item).prop('disabled')) {
@@ -214,29 +228,58 @@ var ThemeOptions = function () {
 
     };
 
+    // updates the disabled status of a child field
+    // based on the parent element
+    // NOTE:
+    // for font and variations dropdowns, the childfield
+    // class is added and the data-parent attr exists,
+    // but no parent element exists in the markup
+    // so if we actually have a parent element, enable/disable
+    // based on that, otherwise we enable by default
+    const updateChild = function(parentEl, childEl) {
+
+        let enabled = true;
+
+        if(parentEl.length) {
+            const parentOn = $(parentEl).val() === 'on';
+            const parentChecked = $(parentEl).prop('checked') === true;
+            enabled = parentOn && parentChecked;
+        }
+
+        $(childEl).prop('disabled', !enabled);
+    }
+
+    // grab the parent for a given child field
+    const getParent = function(childEl) {
+        const parentName = $(childEl).data('parent');
+        const parentEl = $(`input[name=${parentName}]`);
+        return parentEl;
+    }
+
+    // go through each child field, grab parent, and update disabled status
+    const updateAllChildren = function() {
+        $('.selector_radio_childfield').each(function (i, childEl) {
+            const parentEl = getParent(childEl);
+            updateChild(parentEl, childEl);
+        });
+    }
+
     ///////////////
     // HotSwap methods
     // -- These methods connect an input directly to the value in the optionsObject
 
     // Disable dependent inputs when their parents are set to off, or inherit
-    var hotSwapParentRadioButtons = function () {
-        // hotswapping the select fields to the radiobuttons
-        // If an option is set to off, the attached selectors are disabled
-        $('.selector_radio_childfield').each(function (i, selectorItem) {
-            $('input[name=' + $(selectorItem).data('parent') + ']').on('change', function () {
-                if ($(this).val() == 'on' && $(this).prop('checked') == true) {
-                    $(selectorItem).prop('disabled', false);
-                } else {
-                    $(selectorItem).prop('disabled', true);
-                }
+    const hotSwapParentRadioButtons = function () {
 
-                // disabled this part to always be able to click on "Preview image" button
-                /* 
-                if ($(selectorItem).hasClass('selector_image_selector')) {
-                    $('button[data-target="#' + $(selectorItem).attr('id') + '"]').prop('disabled', $(selectorItem).val() == 'inherit');
-                }
-                */
+        // for each child field, add a listener for the
+        // parent's change and update the child's disabled
+        // status accordingly
+        // i = element index in list of matches, unused
+        $('.selector_radio_childfield').each(function (i, childEl) {
+            const parentEl = getParent(childEl);
 
+            parentEl.on('change', function () {
+                updateChild(parentEl, childEl);
             });
         });
     };
@@ -444,6 +487,9 @@ var ThemeOptions = function () {
         showInheritedValue();
 
         bind();
+
+        // set initial disabled status of child fields
+        updateAllChildren();
     };
 
     return run;

@@ -18,7 +18,7 @@
  */
 
 require_once(dirname(dirname(__FILE__)) . '/helpers/globals.php');
-require_once __DIR__ . '/../models/Traits/LSApplicationTrait.php';
+require_once __DIR__ . '/Traits/LSApplicationTrait.php';
 
 /**
 * Implements global config
@@ -538,11 +538,16 @@ class LSYii_Application extends CWebApplication
      */
     private function createControllerFromShortUrl($route)
     {
+        $route = ltrim($route, "/");
+        $alias = explode("/", $route)[0];
+        if (empty($alias)) {
+            return null;
+        }
+
         // When updating from versions that didn't support short urls, this code runs before the update process,
         // so we cannot asume the field exists. We try to retrieve the Survey Language Settings and, if it fails,
         // just don't do anything.
         try {
-            $alias = explode("/", $route)[0];
             $criteria = new CDbCriteria();
             $criteria->addCondition('surveyls_alias = :alias');
             $criteria->params[':alias'] = $alias;

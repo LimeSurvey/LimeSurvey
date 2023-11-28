@@ -149,7 +149,11 @@ class GTranslate
 	*/	
 	private function parseLanguageFile()
 	{
-		$this->available_languages = parse_ini_file($this->available_languages_file);
+		$this->available_languages = parse_ini_string(
+			file_get_contents(
+				__DIR__ . '/' . $this->available_languages_file
+			)
+		);
 	}	
 	
         /**

@@ -103,12 +103,15 @@
                     <?php eT("Blacklist settings"); ?>
                 </a>
 
+            <?php endif; ?>
+
+            <?php if (Permission::model()->hasGlobalPermission('participantpanel', 'read')) : ?>
                 <!-- Attribute management -->
                 <a class="btn btn-default" href="<?php echo $this->createUrl("admin/participants/sa/attributeControl"); ?>" role="button">
                     <span class="fa fa-tag text-success"></span>
                     <?php eT("Attributes"); ?>
                 </a>
-
+                
             <?php endif; ?>
 
             <!-- Share panel -->

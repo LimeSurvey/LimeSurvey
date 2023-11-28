@@ -53,6 +53,17 @@ class SurveyAdministrationController extends LSBaseController
     }
 
     /**
+     * Set filters for all actions
+     * @return string[]
+     */
+    public function filters()
+    {
+        return [
+            'postOnly + copy'
+        ];
+    }
+
+    /**
      * SurveyAdministrationController constructor.
      * @param $id
      * @param null $module
@@ -808,21 +819,21 @@ class SurveyAdministrationController extends LSBaseController
         $aResults = array();
 
         $iSurveyGroupId = sanitize_int(App()->request->getPost('surveygroupid'));
-
         foreach ($aSIDs as $iSurveyID) {
             $oSurvey = Survey::model()->findByPk((int)$iSurveyID);
-            $oSurvey->gsid = $iSurveyGroupId;
             $aResults[$iSurveyID]['title'] = $oSurvey->correct_relation_defaultlanguage->surveyls_title;
+            /* Permission must be checked with current SurveyGroup, SurveyGroup give Surveys Permission, see mantis issue #19169 */
             if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'update')) {
                 $aResults[$iSurveyID]['result'] = false;
                 $aResults[$iSurveyID]['error'] = gT("User does not have valid permissions");
+                continue;
+            }
+            $oSurvey->gsid = $iSurveyGroupId;
+            if ($oSurvey->save()) {
+                $aResults[$iSurveyID]['result'] = true;
             } else {
-                if ($oSurvey->save()) {
-                    $aResults[$iSurveyID]['result'] = true;
-                } else {
-                    $aResults[$iSurveyID]['result'] = false;
-                    $aResults[$iSurveyID]['error'] = gT("Survey update failed");
-                }
+                $aResults[$iSurveyID]['result'] = false;
+                $aResults[$iSurveyID]['error'] = gT("Survey update failed");
             }
         }
 
@@ -1614,6 +1625,9 @@ class SurveyAdministrationController extends LSBaseController
                 $archivedTokenSettings->properties = json_encode(Response::getEncryptedAttributes($iSurveyID));
                 $archivedTokenSettings->save();
 
+                // Load the active record again, as there have been sporadic errors with the dataset not being updated
+                $survey = Survey::model()->findByAttributes(array('sid' => $iSurveyID));
+                $survey->scenario = 'activationStateChange';
                 $survey->active = 'N';
                 $survey->save();
 
@@ -2071,7 +2085,7 @@ class SurveyAdministrationController extends LSBaseController
 
         //maybe thing about permission check for copy surveys
         //at the moment dropDown selection shows only surveys for the user he owns himself ...
-        $action = Yii::app()->request->getParam('action');
+        $action = App()->request->getPost('action');
         $iSurveyID = sanitize_int(Yii::app()->request->getParam('sid'));
         $aData = [];
 
@@ -2108,7 +2122,7 @@ class SurveyAdministrationController extends LSBaseController
                     $aData['bFailed'] = true;
                 }
             } elseif ($action == 'copysurvey') {
-                $iSurveyID = sanitize_int(Yii::app()->request->getParam('copysurveylist'));
+                $iSurveyID = sanitize_int(App()->request->getPost('copysurveylist'));
                 $aExcludes = array();
                 if (Yii::app()->request->getPost('copysurveyexcludequotas') == "1") {
                     $aExcludes['quotas'] = true;
@@ -2550,7 +2564,7 @@ class SurveyAdministrationController extends LSBaseController
                 $qid = (int) substr($ID, 1);
                 $gid = (int) substr($parent, 1);
                 if (!isset($aQuestionOrder[$gid])) {
-                    $aQuestionOrder[$gid] = 0;
+                    $aQuestionOrder[$gid] = 1;
                 }
 
                 $oQuestion = Question::model()->findByPk($qid);

@@ -3,6 +3,7 @@
 /* @var CActiveForm $form */
 /* @var QuotaLanguageSetting[] $aQuotaLanguageSettings */
 ?>
+<?php PrepareEditorScript(true, $this); ?>
 <div class="container-center" style="box-shadow: -2px 0px 0px grey ;">
     <div class="row">
         <div class="col-xs-12">
