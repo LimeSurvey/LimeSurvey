@@ -2,6 +2,11 @@
 
 namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
+use LimeSurvey\Api\Command\V1\SurveyPatch\Response\{ErronousOperationItem,
+    ErronousOperations,
+    TempIdMapItem,
+    TempIdMapping
+};
 use LimeSurvey\ObjectPatch\{ObjectPatchException,
     Op\OpStandard,
     OpHandler\OpHandlerException,
@@ -12,19 +17,23 @@ use Psr\Container\ContainerInterface;
 class PatcherSurvey extends Patcher
 {
     protected TempIdMapping $tempIdMapping;
+    protected ErronousOperations $erronousOperations;
 
     /**
      * Constructor
      *
      * @param ContainerInterface $diContainer
      * @param TempIdMapping $tempIdMapping
+     * @param ErronousOperations $erronousOperations
      * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     public function __construct(
         ContainerInterface $diContainer,
-        TempIdMapping $tempIdMapping
+        TempIdMapping $tempIdMapping,
+        ErronousOperations $erronousOperations
     ) {
         $this->tempIdMapping = $tempIdMapping;
+        $this->erronousOperations = $erronousOperations;
         $this->addOpHandler(
             $diContainer->get(
                 OpHandlerSurveyUpdate::class
@@ -117,14 +126,25 @@ class PatcherSurvey extends Patcher
                     $patchOpData['props'] ?? [],
                     $context ?? []
                 );
-                $this->tempIdMapping->incrementOperationsApplied();
-                $handleResponse = $this->handleOp($op);
-                foreach ($handleResponse as $groupName => $mappingItem) {
-                    $this->addTempIdMapItem($mappingItem, $groupName);
+                try {
+                    $handleResponse = $this->handleOp($op);
+                    $this->tempIdMapping->incrementOperationsApplied();
+                    foreach ($handleResponse as $groupName => $mappingItem) {
+                        $this->addTempIdMapItem($mappingItem, $groupName);
+                    }
+                } catch (\Exception $e) {
+                    // add error message and full operation info to ErrorItemList
+                    $erronousItem = new ErronousOperationItem(
+                        $e->getMessage(),
+                        $patchOpData
+                    );
+                    $this->erronousOperations->addErronousOperationItem(
+                        $erronousItem
+                    );
                 }
             }
         }
-        return $this->tempIdMapping->getMappingResponseObject();
+        return $this->buildResponseObject();
     }
 
     /**
@@ -146,5 +166,13 @@ class PatcherSurvey extends Patcher
                 $this->addTempIdMapItem($item, $groupName);
             }
         }
+    }
+
+    private function buildResponseObject(): array
+    {
+        return array_merge(
+            $this->tempIdMapping->getMappingResponseObject(),
+            ['erronousOperations' => $this->erronousOperations->getErronousOperationsObject()]
+        );
     }
 }

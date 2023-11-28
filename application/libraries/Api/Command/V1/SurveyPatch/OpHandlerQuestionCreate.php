@@ -10,6 +10,7 @@ use LimeSurvey\Api\Command\V1\Transformer\{
     Input\TransformerInputQuestionAttribute,
     Input\TransformerInputQuestionL10ns,
 };
+use LimeSurvey\Api\Command\V1\SurveyPatch\Response\TempIdMapItem;
 use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\{
     OpHandlerSurveyTrait,
     OpHandlerQuestionTrait
