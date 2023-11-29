@@ -57,6 +57,8 @@
             <remove>template-core.css</remove>
             <remove>awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css</remove>
             <remove>awesome-bootstrap-checkbox/awesome-bootstrap-checkbox-rtl.css</remove>
+            <remove>build/survey-theme-global.css</remove>
+            <remove>build/survey-theme-global-rtl.css</remove>
         </css>
         <js>
             <add>scripts/theme.js</add>
@@ -64,7 +66,7 @@
          <!--    <add>bootstrap_5/js/bootstrap_5.js</add>  -->
             <remove>survey.js</remove>
             <remove>template-core.js</remove>
-            <remove>survey-theme-global.js</remove>
+            <remove>build/survey-theme-global.js</remove>
         </js>
         <print_css>
             <add>css/print_theme.css</add>
