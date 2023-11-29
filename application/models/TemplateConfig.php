@@ -1102,7 +1102,7 @@ class TemplateConfig extends CActiveRecord
      * Returns an array with uninstalled and/or incompatible survey themes
      * @return TemplateConfiguration[]
      */
-    public function getTemplatesWithNoDb(): array
+    public static function getTemplatesWithNoDb(): array
     {
         static $aTemplatesWithoutDB = [];
         if (empty($aTemplatesWithoutDB)) {

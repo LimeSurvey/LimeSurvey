@@ -472,7 +472,7 @@ class ThemeOptionsController extends LSBaseController
         }
 
         $aData['oSurveyTheme'] = $oSurveyTheme;
-        $aData['aTemplatesWithoutDB'] = $oSurveyTheme->getTemplatesWithNoDb();
+        $aData['aTemplatesWithoutDB'] = TemplateConfig::getTemplatesWithNoDb();
 
         $aData['canImport']  = $canImport;
         $aData['importErrorMessage']  = $importErrorMessage;
