@@ -1,6 +1,6 @@
 <?php
 
-namespace ls\tests\unit\services\SurveyUpdater\GeneralSettings;
+namespace ls\tests\unit\services\SurveyAggregateService\GeneralSettings;
 
 use Mockery;
 use Permission;

@@ -1,6 +1,6 @@
 <?php
 
-namespace ls\tests\unit\services\SurveyUpdater\GeneralSettings;
+namespace ls\tests\unit\services\SurveyAggregateService\GeneralSettings;
 
 use Survey;
 use Permission;
@@ -8,7 +8,7 @@ use LSYii_Application;
 use CHttpSession;
 use Mockery;
 use LimeSurvey\PluginManager\PluginManager;
-use LimeSurvey\Models\Services\SurveyUpdater\LanguageConsistency;
+use LimeSurvey\Models\Services\SurveyAggregateService\LanguageConsistency;
 use User;
 
 /**
