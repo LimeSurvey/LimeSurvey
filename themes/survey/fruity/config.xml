@@ -681,16 +681,18 @@
             </optgroup>
             </dropdownoptions>
         </font>
-        <cssframework type="dropdown" category="Simple options" width="12" title="Variations" parent="cssframework">
+        <cssframework type="dropdown" category="Simple options" width="12" title="Variations" parent="cssframework">Sea Green
             <dropdownoptions>
-                <option value="css/variations/sea_green.css">Sea Green</option>
-                <option value="css/variations/apple_blossom.css">Apple Blossom</option>
-                <option value="css/variations/bay_of_many.css">Bay of Many</option>
-                <option value="css/variations/black_pearl.css">Black Pearl</option>
-                <option value="css/variations/free_magenta.css">Free Magenta</option>
-                <option value="css/variations/purple_tentacle.css">Purple Tentacle</option>
-                <option value="css/variations/sunset_orange.css">Sunset Orange</option>
-                <option value="css/variations/skyline_blue.css">Skyline Blue</option>
+                <optgroup>
+                    <option value="css/variations/sea_green.css">Sea Green</option>
+                    <option value="css/variations/apple_blossom.css">Apple Blossom</option>
+                    <option value="css/variations/bay_of_many.css">Bay of Many</option>
+                    <option value="css/variations/black_pearl.css">Black Pearl</option>
+                    <option value="css/variations/free_magenta.css">Free Magenta</option>
+                    <option value="css/variations/purple_tentacle.css">Purple Tentacle</option>
+                    <option value="css/variations/sunset_orange.css">Sunset Orange</option>
+                    <option value="css/variations/skyline_blue.css">Skyline Blue</option>
+                </optgroup>
             </dropdownoptions>
         </cssframework>
     </options>

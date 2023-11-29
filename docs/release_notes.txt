@@ -34,6 +34,20 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.3.6 (build 231120) to 6.3.7 (build 231127) November 27, 2023
+-Fixed issue #19232: Missing cssframework default values for survey theme (#3614) (Olle Härstedt)
+-Fixed issue #19228: Setting Bruteforce timeout values to empty string causes the administrator to be locked out (#3618) (Denis Chenu)
+-Fixed issue #19206: Alphabetical order can be bad with utf8 character  (#3637) (Denis Chenu)
+-Fixed issue #19168: [security] XSS in Survey menus (Menu icon type and Menu icon) (#3635) (Gabriel Jenik)
+-Fixed issue #19139: [security] CSRF in Reset Survey menus (Tests) (#3612) (Gabriel Jenik)
+-Fixed issue #18671: Potential loop with equation set question (#2984) (Denis Chenu)
+#Updated translation: Portuguese (Portugal) by twilllig
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Greek by baltzis, lenasterg
+#Updated translation: German by c_schmitz
+#Updated translation: French (France) by DenisChenu
+
+
 Changes from 6.3.5 (build 231113) to 6.3.6 (build 231120) November 20, 2023
 -Fixed issue #CT-480: CPDB attribute issues (#3620) (Tim Willig)
 #Updated translation: Polish by elissa

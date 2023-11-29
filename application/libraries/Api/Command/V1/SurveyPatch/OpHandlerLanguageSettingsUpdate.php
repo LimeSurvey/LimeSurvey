@@ -14,7 +14,7 @@ use LimeSurvey\Api\Transformer\TransformerInterface;
 use LimeSurvey\Models\Services\{
     Exception\PermissionDeniedException,
     Exception\PersistErrorException,
-    SurveyUpdater\LanguageSettings
+    SurveyAggregateService\LanguageSettings
 };
 use LimeSurvey\ObjectPatch\{
     Op\OpInterface,
