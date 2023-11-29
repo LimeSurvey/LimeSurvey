@@ -84,11 +84,6 @@ class TemplateConfig extends CActiveRecord
     /** @var array $aCssFrameworkReplacement Css Framework Replacement */
     protected $aCssFrameworkReplacement;
 
-    public $allDbTemplateFolders = null;
-
-    /** @var array $aTemplatesWithoutDB static variable for themes that are not installed, including broken themes [$aTemplatesWithoutDB, ...,] [$aBrokenThemes, ...]]*/
-    public static $aTemplatesWithoutDB = null;
-
     public $options_page = 'core';
 
     /**
@@ -1084,9 +1079,10 @@ class TemplateConfig extends CActiveRecord
      * Returns an array of all unique template folders that are registered in the database
      * @return array|null
      */
-    public function getAllDbTemplateFolders()
+    public static function getAllDbTemplateFolders()
     {
-        if (empty($this->allDbTemplateFolders)) {
+        static $aAllDbTemplateFolders = [];
+        if (empty($aAllDbTemplateFolders)) {
             $oCriteria = new CDbCriteria();
             $oCriteria->select = 'folder';
             $oAllDbTemplateFolders = Template::model()->findAll($oCriteria);
@@ -1096,10 +1092,10 @@ class TemplateConfig extends CActiveRecord
                 $aAllDbTemplateFolders[] = $oAllDbTemplateFolder->folder;
             }
 
-            $this->allDbTemplateFolders = array_unique($aAllDbTemplateFolders);
+            $aAllDbTemplateFolders = array_unique($aAllDbTemplateFolders);
         }
 
-        return $this->allDbTemplateFolders;
+        return $aAllDbTemplateFolders;
     }
 
     /**
@@ -1108,11 +1104,12 @@ class TemplateConfig extends CActiveRecord
      */
     public function getTemplatesWithNoDb(): array
     {
-        if (empty(self::$aTemplatesWithoutDB)) {
+        static $aTemplatesWithoutDB = [];
+        if (empty($aTemplatesWithoutDB)) {
             $aTemplatesWithoutDB['valid'] = [];
             $aTemplatesWithoutDB['invalid'] = [];
             $aTemplatesDirectories = Template::getAllTemplatesDirectories();
-            $aTemplatesInDb        = $this->getAllDbTemplateFolders();
+            $aTemplatesInDb = self::getAllDbTemplateFolders();
 
             foreach ($aTemplatesDirectories as $sName => $sPath) {
                 if (!in_array($sName, $aTemplatesInDb)) {
@@ -1129,10 +1126,8 @@ class TemplateConfig extends CActiveRecord
                     }
                 }
             }
-            self::$aTemplatesWithoutDB = $aTemplatesWithoutDB;
         }
-
-        return self::$aTemplatesWithoutDB;
+        return $aTemplatesWithoutDB;
     }
 
     /**
