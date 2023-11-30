@@ -77,18 +77,19 @@ class SurveyObj
      * but could also be a comment entered by a participant.
      *
      * @param string $fieldName
-     * @param string $answerCode
+     * @param string|null $answerCode
      * @param Translator $translator
      * @param string $sLanguageCode
-     * @return string (or false)
+     * @return string
      */
     public function getFullAnswer($fieldName, $answerCode, Translator $translator, $sLanguageCode)
     {
-        $fullAnswer = null;
+        $fullAnswer = '';
         $fieldType = $this->fieldMap[$fieldName]['type'];
         $question = $this->fieldMap[$fieldName];
         $questionId = $question['qid'];
-        $answer = null;
+        $answer = '';
+        $answerCode = strval($answerCode);
         if ($questionId) {
             $answers = $this->getAnswers($questionId);
             if (isset($answers[$answerCode])) {
@@ -101,7 +102,7 @@ class SurveyObj
             case Question::QT_K_MULTIPLE_NUMERICAL:
             case Question::QT_N_NUMERICAL:
                 $fullAnswer = $answerCode;
-                if (!is_null($fullAnswer) && trim($fullAnswer) !== '') {
+                if (trim($fullAnswer) !== '') {
                     // SQL DECIMAL
                     if ($fullAnswer[0] === ".") {
                         $fullAnswer = "0" . $fullAnswer;
@@ -129,7 +130,7 @@ class SurveyObj
                 if (array_key_exists($answerCode, $answers)) {
                     $fullAnswer = $answers[$answerCode];
                 } else {
-                    $fullAnswer = null;
+                    $fullAnswer = '';
                 }
                 break;
 
