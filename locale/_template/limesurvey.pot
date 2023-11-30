@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2023-11-27 08:40:42+00:00\n"
+"POT-Creation-Date: 2023-11-30 11:19:25+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -273,10 +273,10 @@ msgstr ""
 #: application/controllers/admin/Export.php:1249
 #: application/controllers/admin/Expressions.php:132
 #: application/controllers/admin/PluginHelper.php:31
-#: application/controllers/admin/Quotas.php:150
-#: application/controllers/admin/Quotas.php:390
-#: application/controllers/admin/Quotas.php:449
-#: application/controllers/admin/Quotas.php:473
+#: application/controllers/admin/Quotas.php:183
+#: application/controllers/admin/Quotas.php:439
+#: application/controllers/admin/Quotas.php:501
+#: application/controllers/admin/Quotas.php:525
 #: application/controllers/admin/Tokens.php:53
 #: application/controllers/admin/Tokens.php:360
 #: application/controllers/admin/Tokens.php:521
@@ -455,8 +455,8 @@ msgstr ""
 #: application/controllers/admin/Labels.php:342
 #: application/controllers/admin/ParticipantsAction.php:1318
 #: application/controllers/admin/PrintableSurvey.php:37
-#: application/controllers/admin/Quotas.php:66
-#: application/controllers/admin/Quotas.php:76
+#: application/controllers/admin/Quotas.php:69
+#: application/controllers/admin/Quotas.php:97
 msgid "Access denied!"
 msgstr ""
 
@@ -1581,7 +1581,7 @@ msgstr ""
 #: application/controllers/ResponsesController.php:167
 #: application/controllers/ResponsesController.php:169
 #: application/controllers/admin/DataEntry.php:524
-#: application/controllers/admin/Quotas.php:260
+#: application/controllers/admin/Quotas.php:293
 #: application/controllers/admin/Tokens.php:1616
 #: application/helpers/common_helper.php:2923
 #: application/models/TemplateManifest.php:166 application/models/Token.php:102
@@ -2250,7 +2250,7 @@ msgstr ""
 #: application/controllers/admin/Themes.php:390
 #: application/core/SurveyCommonAction.php:1131
 #: application/helpers/SurveyRuntimeHelper.php:1452
-#: application/helpers/frontend_helper.php:2234
+#: application/helpers/frontend_helper.php:2235
 #: application/models/services/CopySurveyResources.php:68
 #: application/models/services/FilterImportedResources.php:69
 #: application/views/admin/participants/participantsPanel_view.php:19
@@ -2386,7 +2386,7 @@ msgstr ""
 #: application/controllers/admin/PrintableSurvey.php:829
 #: application/controllers/admin/PrintableSurvey.php:914
 #: application/controllers/admin/PrintableSurvey.php:928
-#: application/controllers/admin/Quotas.php:605
+#: application/controllers/admin/Quotas.php:659
 #: application/controllers/admin/Tokens.php:2313
 #: application/core/plugins/ExportSPSSsav/SPSSWriter.php:204
 #: application/core/plugins/ExportSPSSsav/SPSSWriter.php:213
@@ -2542,7 +2542,7 @@ msgstr ""
 #: application/controllers/admin/PrintableSurvey.php:828
 #: application/controllers/admin/PrintableSurvey.php:912
 #: application/controllers/admin/PrintableSurvey.php:926
-#: application/controllers/admin/Quotas.php:604
+#: application/controllers/admin/Quotas.php:658
 #: application/controllers/admin/Tokens.php:2311
 #: application/core/plugins/ExportSPSSsav/SPSSWriter.php:173
 #: application/core/plugins/ExportSPSSsav/SPSSWriter.php:182
@@ -4441,7 +4441,7 @@ msgstr ""
 #: application/controllers/admin/DataEntry.php:740
 #: application/controllers/admin/PrintableSurvey.php:284
 #: application/controllers/admin/PrintableSurvey.php:577
-#: application/controllers/admin/Quotas.php:565
+#: application/controllers/admin/Quotas.php:619
 #: application/core/plugins/ExportSPSSsav/SPSSWriter.php:191
 #: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:219
 #: application/helpers/admin/statistics_helper.php:1331
@@ -4461,7 +4461,7 @@ msgstr ""
 #: application/controllers/admin/DataEntry.php:741
 #: application/controllers/admin/PrintableSurvey.php:281
 #: application/controllers/admin/PrintableSurvey.php:578
-#: application/controllers/admin/Quotas.php:564
+#: application/controllers/admin/Quotas.php:618
 #: application/core/plugins/ExportSPSSsav/SPSSWriter.php:195
 #: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:223
 #: application/helpers/admin/statistics_helper.php:1332
@@ -6200,17 +6200,27 @@ msgstr ""
 msgid "Please choose no more than %s items."
 msgstr ""
 
+#: application/controllers/admin/Quotas.php:88
+msgid "Bad quota id with this survey id."
+msgstr ""
+
+#: application/controllers/admin/Quotas.php:116
 #: application/controllers/admin/Quotas.php:123
+#: application/controllers/admin/Quotas.php:129
+msgid "You do not have permission on this survey"
+msgstr ""
+
+#: application/controllers/admin/Quotas.php:156
 msgid "OK!"
 msgstr ""
 
-#: application/controllers/admin/Quotas.php:151
+#: application/controllers/admin/Quotas.php:184
 #: application/extensions/TopbarWidget/views/includes/tokensTopbarLeft_view.php:175
 #: application/views/admin/quotas/viewquotas_view.php:24
 msgid "Survey quotas"
 msgstr ""
 
-#: application/controllers/admin/Quotas.php:156
+#: application/controllers/admin/Quotas.php:189
 #: application/core/LsDefaultDataSets.php:473
 #: application/models/Survey.php:2209
 #: application/views/admin/survey/copySurvey_view.php:55
@@ -6218,33 +6228,37 @@ msgstr ""
 msgid "Quotas"
 msgstr ""
 
-#: application/controllers/admin/Quotas.php:260 application/models/Quota.php:95
+#: application/controllers/admin/Quotas.php:293 application/models/Quota.php:95
 msgid "Quota name"
 msgstr ""
 
-#: application/controllers/admin/Quotas.php:260 application/models/Quota.php:97
+#: application/controllers/admin/Quotas.php:293 application/models/Quota.php:97
 #: application/views/admin/quotas/viewquotas_view.php:88
 msgid "Limit"
 msgstr ""
 
-#: application/controllers/admin/Quotas.php:260
+#: application/controllers/admin/Quotas.php:293
 #: tmp/runtime/twig_cache/05/05d5d321636ad82c716f4284390e2cf1d3d9ea9e2f37f090606d7cc74a200451.php:41
 msgid "Remaining"
 msgstr ""
 
-#: application/controllers/admin/Quotas.php:335
+#: application/controllers/admin/Quotas.php:353
+msgid "Quota memeber not found."
+msgstr ""
+
+#: application/controllers/admin/Quotas.php:378
 msgid "Quota with ID %s was deleted"
 msgstr ""
 
-#: application/controllers/admin/Quotas.php:373
+#: application/controllers/admin/Quotas.php:422
 msgid "Quota saved"
 msgstr ""
 
-#: application/controllers/admin/Quotas.php:500
+#: application/controllers/admin/Quotas.php:554
 msgid "New quota saved"
 msgstr ""
 
-#: application/controllers/admin/Quotas.php:521
+#: application/controllers/admin/Quotas.php:575
 #: tmp/runtime/twig_cache/b4/b42c22109eb5a9cc63d243255a1c202cc51376e7a00f287b4438addecfe26510.php:33
 msgid "Sorry your responses have exceeded a quota on this survey."
 msgstr ""
@@ -12291,15 +12305,15 @@ msgstr ""
 msgid "There are empty question groups in this survey - please create at least one question within a question group."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:2233
+#: application/helpers/frontend_helper.php:2234
 msgid "By continuing this survey you approve the data protection policy of the service provider."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:2235
+#: application/helpers/frontend_helper.php:2236
 msgid "View policy"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:2236
+#: application/helpers/frontend_helper.php:2237
 msgid "Please be patient until you are forwarded to the final URL."
 msgstr ""
 
