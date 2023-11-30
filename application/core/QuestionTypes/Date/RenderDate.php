@@ -351,8 +351,7 @@ class RenderDate extends QuestionBaseRenderer
             LSYii_ClientScript::POS_POSTSCRIPT,
             true
         );
-        
-        /* language of header , to be translated #19294 */
+
         // ==> answer
         $answer = Yii::app()->twigRenderer->renderQuestion(
             $this->getMainView() . '/dropdown/answer',
@@ -365,7 +364,7 @@ class RenderDate extends QuestionBaseRenderer
             'checkconditionFunction' => $this->checkconditionFunction . '(this.value, this.name, this.type)',
             'dateformatdetails'      => $this->aDateformatDetails['jsdate'],
             'dateformat'             => $this->aDateformatDetails['jsdate'],
-            /* language part, to be translated */
+            /* language part, to be translated (see issue #19294) */
             'lang'                   => [
                                         'Day' => gT("Day"),
                                         'Month' => gT("Month"),
