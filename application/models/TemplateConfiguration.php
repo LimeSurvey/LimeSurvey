@@ -328,7 +328,7 @@ class TemplateConfiguration extends TemplateConfig
                 $aTemplateConfigurations[$key]['sid'] = $iSurveyId;
                 $aTemplateConfigurations[$key]['template_name'] = $oAttributes['template_name'];
                 $aTemplateConfigurations[$key]['config']['options'] = isJson($oAttributes['options'])
-                    ? (array)json_decode((string) $oAttributes['options'])
+                    ? json_decode((string) $oAttributes['options'], true)
                     : $oAttributes['options'];
             }
         }
@@ -642,7 +642,7 @@ class TemplateConfiguration extends TemplateConfig
     public function addFileReplacement($sFile, $sType)
     {
         $sField = 'files_' . $sType;
-        $oFiles = (array) json_decode((string) $this->$sField);
+        $oFiles = json_decode((string) $this->$sField, true);
 
         $oFiles['replace'][] = $sFile;
 
@@ -1072,7 +1072,7 @@ class TemplateConfiguration extends TemplateConfig
                     if ($action == $sAction) {
                         // Specific inheritance of one of the value of the json array
                         if ($aFileList[0] == 'inherit') {
-                            $aParentjFiles = (array) json_decode((string) $oTemplate->getParentConfiguration->$sField);
+                            $aParentjFiles = json_decode((string) $oTemplate->getParentConfiguration->$sField, true);
                             $aFileList = $aParentjFiles[$action];
                         }
 
@@ -1283,7 +1283,7 @@ class TemplateConfiguration extends TemplateConfig
      */
     protected function getOptionKey($key)
     {
-        $aOptions = (array) json_decode($this->options);
+        $aOptions = json_decode($this->options, true);
         if (isset($aOptions[$key])) {
             $value = $aOptions[$key];
             if ($value === 'inherit') {
@@ -1330,7 +1330,7 @@ class TemplateConfiguration extends TemplateConfig
         $this->aFrameworkAssetsToReplace[$sType] = array();
 
         $sFieldName  = 'cssframework_' . $sType;
-        $aFieldValue = (array) json_decode((string) $this->$sFieldName);
+        $aFieldValue = json_decode((string) $this->$sFieldName, true);
 
         if (!empty($aFieldValue) && !empty($aFieldValue['replace'])) {
             $this->aFrameworkAssetsToReplace[$sType] = (array) $aFieldValue['replace'];

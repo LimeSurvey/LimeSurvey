@@ -59,6 +59,7 @@ foreach ($aTemplateConfiguration['imageFileList'] as $image) {
 
     if (isset($oParentOptions['backgroundimagefile']) && ($oParentOptions['backgroundimagefile'] == $image['filepath'] || $oParentOptions['backgroundimagefile'] == $image['filepathOptions'])) {
         $backgroundfileInheritPreview = $image['preview'];
+        $backgroundfileInheritFilename = $image['filename'];
     }
 
     $backgroundImageFile .= '<option data-lightbox-src="' . $image['preview'] . '" value="' . $image['filepath'] . '">' . $image['filename'] . '</option>';
