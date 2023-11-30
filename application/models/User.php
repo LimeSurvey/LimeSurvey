@@ -155,6 +155,36 @@ class User extends LSActiveRecord
     }
 
     /**
+     * @inheritDoc
+     * Delete user in related model after deletion
+     * return void
+     **/
+    protected function afterDelete()
+    {
+        parent::afterDelete();
+        /* Delete all permission */
+        Permission::model()->deleteAll(
+            "uid = :uid",
+            [":uid" => $this->uid]
+        );
+        /* Delete potential roles */
+        UserInPermissionrole::model()->deleteAll(
+            "uid = :uid",
+            [":uid" => $this->uid]
+        );
+        /* User settings */
+        SettingsUser::model()->deleteAll(
+            "uid = :uid",
+            [":uid" => $this->uid]
+        );
+        /* User in group */
+        UserInGroup::model()->deleteAll(
+            "uid = :uid",
+            [":uid" => $this->uid]
+        );
+    }
+
+    /**
      * @return string
      */
     public function getSurveysCreated()
@@ -509,7 +539,7 @@ class User extends LSActiveRecord
                 )
             );
 
-        if ($this->status || in_array($this->uid, App()->getConfig('forcedsuperadmin'))) {
+        if ($this->status) {
             $activateUrl = App()->getController()->createUrl('userManagement/activationConfirm', ['userid' => $this->uid, 'action' => 'deactivate']);
             $dropdownItems[] = [
                 'title'            => gT('Deactivate'),
