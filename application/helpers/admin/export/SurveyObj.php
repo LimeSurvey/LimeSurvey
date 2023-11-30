@@ -101,7 +101,7 @@ class SurveyObj
             case Question::QT_K_MULTIPLE_NUMERICAL:
             case Question::QT_N_NUMERICAL:
                 $fullAnswer = $answerCode;
-                if (trim($fullAnswer) !== '') {
+                if (!is_null($fullAnswer) && trim($fullAnswer) !== '') {
                     // SQL DECIMAL
                     if ($fullAnswer[0] === ".") {
                         $fullAnswer = "0" . $fullAnswer;
@@ -252,11 +252,14 @@ class SurveyObj
      * Returns the short answer for the question.
      *
      * @param string $sFieldName
-     * @param string $sValue
+     * @param string|null $sValue
      * @return string
      */
     public function getShortAnswer($sFieldName, $sValue)
     {
+        if (is_null($sValue)) {
+            return "";
+        }
         $aQuestion = $this->fieldMap[$sFieldName];
         $sFieldType = $aQuestion['type'];
 
