@@ -12956,7 +12956,7 @@ iframe#dialog {
 /** Arrow between mapped attributes in CPDB */
 .tokenatt-arrow {
   position: absolute;
-  left: -0.5em;
+  left: -1.5em;
 }
 
 /** Arrow between mapped attributes in CPDB when doing CSV import */
@@ -14769,6 +14769,10 @@ html[dir=ltr] th {
   margin-right: 0.75%;
   margin-left: 0.75%;
   margin-bottom: 20px;
+}
+
+#csvattribute {
+  z-index: 1;
 }
 
 #tokenattribute {

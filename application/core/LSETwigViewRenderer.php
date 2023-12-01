@@ -716,7 +716,7 @@ window.addEventListener('message', function(event) {
             // Add the global theme options
             $oTemplateConfigurationCurrent = Template::getInstance($oTemplate->sTemplateName);
             $aData["aSurveyInfo"]["options"] = isJson($oTemplateConfigurationCurrent['options'])
-                ? (array) json_decode((string) $oTemplateConfigurationCurrent['options'])
+                ? json_decode((string) $oTemplateConfigurationCurrent['options'], true)
                 : $oTemplateConfigurationCurrent['options'];
         }
 

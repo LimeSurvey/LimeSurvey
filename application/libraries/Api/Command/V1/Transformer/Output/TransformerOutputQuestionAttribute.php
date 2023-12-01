@@ -23,15 +23,15 @@ class TransformerOutputQuestionAttribute extends TransformerOutputActiveRecord
         foreach ($attributes as $attrSet) {
             if (!array_key_exists($attrSet->attribute, $tfAttributes)) {
                 $tfAttributes[$attrSet->attribute] = [
-                    'qid' => $attrSet->qid,
+                    'qid' => (int) $attrSet->qid,
                     $attrSet->language => [
-                        'qaid'  => $attrSet->qaid,
+                        'qaid'  => (int) $attrSet->qaid,
                         'value' => $attrSet->value
                     ]
                 ];
             } else {
                 $tfAttributes[$attrSet->attribute][$attrSet->language] = [
-                    'qaid'  => $attrSet->qaid,
+                    'qaid'  => (int) $attrSet->qaid,
                     'value' => $attrSet->value
                 ];
             }

@@ -2,7 +2,7 @@
 
 namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
-use LimeSurvey\Api\Command\V1\SurveyPatch\OpHandlerSurveyTrait;
+use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\OpHandlerSurveyTrait;
 use LimeSurvey\Models\Services\{
     Exception\PermissionDeniedException,
     QuestionAggregateService
@@ -63,5 +63,16 @@ class OpHandlerAnswerDelete implements OpHandlerInterface
             $this->getSurveyIdFromContext($op),
             $op->getEntityId()
         );
+    }
+
+    /**
+     * Checks if patch is valid for this operation.
+     * @param OpInterface $op
+     * @return bool
+     */
+    public function isValidPatch(OpInterface $op): bool
+    {
+        //this is not tested in canHandle
+        return ((int)$op->getEntityId()) > 0;
     }
 }

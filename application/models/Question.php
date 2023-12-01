@@ -767,7 +767,13 @@ class Question extends LSActiveRecord
         );
     }
 
-    public function getOrderedAnswers($scale_id = null)
+    /**
+     * get the ordered answers
+     * @param null|integer scale
+     * @param null|string $language
+     * @return array
+     */
+    public function getOrderedAnswers($scale_id = null, $language = null)
     {
         //reset answers set prior to this call
         $aAnswerOptions = [
@@ -786,7 +792,7 @@ class Question extends LSActiveRecord
             return $aAnswerOptions[$scale_id];
         }
 
-        $aAnswerOptions = $this->sortAnswerOptions($aAnswerOptions);
+        $aAnswerOptions = $this->sortAnswerOptions($aAnswerOptions, $language);
         return $aAnswerOptions;
     }
 
@@ -794,9 +800,10 @@ class Question extends LSActiveRecord
      * Returns the specified answer options sorted according to the question attributes.
      * Refactored from getOrderedAnswers();
      * @param array<int,Answer[]> The answer options to sort
+     * @param null|string $language
      * @return array<int,Answer[]>
      */
-    private function sortAnswerOptions($answerOptions)
+    private function sortAnswerOptions($answerOptions, $language = null)
     {
         // Sort randomly if applicable
         if ($this->shouldOrderAnswersRandomly()) {
@@ -815,18 +822,19 @@ class Question extends LSActiveRecord
 
         // Sort alphabetically if applicable
         if ($this->shouldOrderAnswersAlphabetically()) {
+            if (empty($language) || !in_array($language, $this->survey->allLanguages)) {
+                $language = $this->survey->language;
+            }
             foreach ($answerOptions as $scaleId => $scaleArray) {
                 $sorted = array();
-
-                // We create an aray sorted that will use the answer in the current language as key, and that will store its old index as value
+                // We create an array sorted that will use the answer in the current language as value, and keep key
                 foreach ($scaleArray as $key => $answer) {
-                    $sorted[$answer->answerl10ns[$this->survey->language]->answer] = $key;
+                    $sorted[$key] = $answer->answerl10ns[$language]->answer;
                 }
-                ksort($sorted);
-
+                LimeSurvey\Helpers\SortHelper::getInstance($language)->asort($sorted, LimeSurvey\Helpers\SortHelper::SORT_STRING);
                 // Now, we create a new array that store the old values of $answerOptions in the order of $sorted
                 $sortedScaleAnswers = array();
-                foreach ($sorted as $answer => $key) {
+                foreach ($sorted as $key => $answer) {
                     $sortedScaleAnswers[] = $scaleArray[$key];
                 }
                 $answerOptions[$scaleId] = $sortedScaleAnswers;

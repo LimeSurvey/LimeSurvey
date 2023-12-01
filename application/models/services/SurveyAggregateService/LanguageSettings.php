@@ -1,6 +1,6 @@
 <?php
 
-namespace LimeSurvey\Models\Services\SurveyUpdater;
+namespace LimeSurvey\Models\Services\SurveyAggregateService;
 
 use Survey;
 use Permission;

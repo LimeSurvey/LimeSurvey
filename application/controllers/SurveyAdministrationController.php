@@ -54,6 +54,16 @@ class SurveyAdministrationController extends LSBaseController
     }
 
     /**
+     * Set filters for all actions
+     * @return string[]
+     */
+    public function filters()
+    {
+        return [
+            'postOnly + copy'
+        ];
+    }
+    /**
      * SurveyAdministrationController constructor.
      * @param $id
      * @param null $module
@@ -1693,6 +1703,7 @@ class SurveyAdministrationController extends LSBaseController
 
                 // Load the active record again, as there have been sporadic errors with the dataset not being updated
                 $survey = Survey::model()->findByAttributes(array('sid' => $iSurveyID));
+                $survey->scenario = 'activationStateChange';
                 $survey->active = 'N';
                 $survey->save();
 
@@ -2271,7 +2282,7 @@ class SurveyAdministrationController extends LSBaseController
 
         //maybe thing about permission check for copy surveys
         //at the moment dropDown selection shows only surveys for the user he owns himself ...
-        $action = Yii::app()->request->getParam('action');
+        $action = Yii::app()->request->getPost('action');
         $iSurveyID = sanitize_int(Yii::app()->request->getParam('sid'));
         $aData = [];
 
@@ -2308,7 +2319,7 @@ class SurveyAdministrationController extends LSBaseController
                     $aData['bFailed'] = true;
                 }
             } elseif ($action == 'copysurvey') {
-                $iSurveyID = sanitize_int(Yii::app()->request->getParam('copysurveylist'));
+                $iSurveyID = sanitize_int(App()->request->getPost('copysurveylist'));
                 $aExcludes = array();
                 if (Yii::app()->request->getPost('copysurveyexcludequotas') == "1") {
                     $aExcludes['quotas'] = true;

@@ -2,6 +2,7 @@
 
 namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
+use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\OpHandlerSurveyTrait;
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestionL10ns;
 use LimeSurvey\Models\Services\{Exception\NotFoundException,
     QuestionAggregateService,
@@ -75,5 +76,16 @@ class OpHandlerQuestionL10nUpdate implements OpHandlerInterface
                 'questionL10n'
             )
         );
+    }
+
+    /**
+     * Checks if patch is valid for this operation.
+     * @param OpInterface $op
+     * @return bool
+     */
+    public function isValidPatch(OpInterface $op): bool
+    {
+        //getTransformedLanguageProps already checks if the patch is valid
+        return true;
     }
 }

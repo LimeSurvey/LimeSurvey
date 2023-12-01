@@ -2,10 +2,11 @@
 
 namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
+use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\OpHandlerExceptionTrait;
 use Survey;
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputSurvey;
 use LimeSurvey\Models\Services\{
-    SurveyUpdater,
+    SurveyAggregateService,
     Exception\PersistErrorException
 };
 use LimeSurvey\ObjectPatch\{
@@ -17,6 +18,8 @@ use LimeSurvey\ObjectPatch\{
 
 class OpHandlerSurveyUpdate implements OpHandlerInterface
 {
+    use OpHandlerExceptionTrait;
+
     protected string $entity;
     protected Survey $model;
     protected TransformerInputSurvey $transformer;
@@ -53,7 +56,7 @@ class OpHandlerSurveyUpdate implements OpHandlerInterface
     {
         $diContainer = \LimeSurvey\DI::getContainer();
         $surveyUpdater = $diContainer->get(
-            SurveyUpdater::class
+            SurveyAggregateService::class
         );
 
         //here we should get the props from the op
@@ -61,17 +64,22 @@ class OpHandlerSurveyUpdate implements OpHandlerInterface
         $transformedProps = $this->transformer->transform($props);
 
         if ($props === null || $transformedProps === null) {
-            throw new OpHandlerException(
-                sprintf(
-                    'No values to update for entity %s',
-                    $op->getEntityType()
-                )
-            );
+            $this->throwNoValuesException($op);
         }
-
+        /** @var array $transformedProps */
         $surveyUpdater->update(
             $op->getEntityId(),
             $transformedProps
         );
+    }
+
+    /**
+     * Checks if patch is valid for this operation.
+     * @param OpInterface $op
+     * @return bool
+     */
+    public function isValidPatch(OpInterface $op): bool
+    {
+        return ((int)$op->getEntityId()) > 0;
     }
 }

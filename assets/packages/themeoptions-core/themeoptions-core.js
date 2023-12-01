@@ -74,6 +74,21 @@ var ThemeOptions = function () {
             optionObject[$(item).attr('name')] = $(item).val();
         });
 
+        globalForm.find('.selector_image_selector').each(function (i, item) {
+
+            // disable the preview image button if the image
+            // selected could not be mapped to one of the images
+            // that actually exists within the theme
+            const src = $(item).find('option:selected').data('lightbox-src');
+            const missing = src === '';
+            const itemId = $(item).attr('id');
+            const button = $(`button[data-bs-target="#${itemId}"]`);
+            button.prop('disabled', missing);
+
+            // add some feedback to the user, mark field invalid
+            $(item).toggleClass('is-invalid', missing);
+        });
+
         globalForm.find('.selector_option_radio_field ').each(function (i, item) {
             //disabled items should be inherit or false
             if ($(item).prop('disabled')) {
@@ -86,6 +101,15 @@ var ThemeOptions = function () {
                 }
             }
 
+        });
+
+        globalForm.find('.selector_text_option_value_field').each(function (i, item) {
+            //disabled items should be inherit or false
+            if ($(item).prop('disabled')) {
+                $(item).val((inheritPossible ? 'inherit' : false));
+            }
+
+            optionObject[$(item).attr('name')] = $(item).val();
         });
 
         var newOptionObject = $.extend(true, {}, optionObject);
@@ -138,7 +162,7 @@ var ThemeOptions = function () {
 
     //Parses the option value for an item
     var parseOptionValue = function (item, fallbackValue) {
-        fallbackValue = fallbackValue || false;
+        if (fallbackValue == undefined) fallbackValue = false;
         // If general inherit, then the value of the dropdown is inherit, else it's the value defined in advanced options
         var itemValue = generalInherit() ? 'inherit' : optionObject[$(item).attr('name')];
 
@@ -163,6 +187,7 @@ var ThemeOptions = function () {
 
     // Update values in the form to the template options
     // selector_option_value_field are the select dropdown (like variations and fonts)
+    // TODO: This seems to be designed for select fields only, but it is also used for other input types. Should be reviewed.
     var prepareSelectField = function () {
         globalForm.find('.selector_option_value_field').each(function (i, item) {
             var itemValue = parseOptionValue(item);
@@ -218,6 +243,14 @@ var ThemeOptions = function () {
             }
         }
 
+    };
+
+    // Update values of 'text' options in the form
+    var prepareTextField = function () {
+        globalForm.find('.selector_text_option_value_field').each(function (i, item) {
+            var itemValue = parseOptionValue(item, "");
+            $(item).val(itemValue);
+        });
     };
 
     // updates the disabled status of a child field
@@ -279,7 +312,7 @@ var ThemeOptions = function () {
     // hotswapping the fields
     var hotSwapFields = function () {
 
-        globalForm.find('.selector_option_value_field').on('change', function (evt) {
+        globalForm.find('.selector_option_value_field, .selector_text_option_value_field').on('change', function (evt) {
             updateFieldSettings();
             parseNumeric(this);
         });
@@ -479,6 +512,7 @@ var ThemeOptions = function () {
         startupGeneralInherit();
 
         prepareSelectField();
+        prepareTextField();
         parseParentSwitchFields();
         prepareFontField();
         prepareFruityThemeField();

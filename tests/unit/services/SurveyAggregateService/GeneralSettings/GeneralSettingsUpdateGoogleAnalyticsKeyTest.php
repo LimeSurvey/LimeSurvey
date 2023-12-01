@@ -1,9 +1,9 @@
 <?php
 
-namespace ls\tests\unit\services\SurveyUpdater\GeneralSettings;
+namespace ls\tests\unit\services\SurveyAggregateService\GeneralSettings;
 
 use ls\tests\TestBaseClass;
-use LimeSurvey\Models\Services\SurveyUpdater\GeneralSettings;
+use LimeSurvey\Models\Services\SurveyAggregateService\GeneralSettings;
 
 class GeneralSettingsUpdateGoogleAnalyticsKeyTest extends TestBaseClass
 {

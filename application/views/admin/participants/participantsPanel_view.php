@@ -20,9 +20,6 @@ App()->getClientScript()->registerScriptFile(
     var error = "<?php eT("Error", 'js') ?>";
     var exportBtn = "<?php eT("Export", 'js') ?>";
     var cancelBtn = "<?php eT("Cancel", 'js') ?>";
-    var sSelectAllText = "<?php eT("Select all", 'js') ?>";
-    var sNonSelectedText = "<?php eT("None selected", 'js') ?>";
-    var sNSelectedText = "<?php eT("selected", 'js') ?>";
     var exportToCSVURL = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/exporttocsv"); ?>";
     var openModalParticipantPanel = "<?php echo ls\ajax\AjaxHelper::createUrl("/admin/participants/sa/openModalParticipantPanel"); ?>";
     var editValueParticipantPanel = "<?php echo Yii::app()->getController()->createUrl("/admin/participants/sa/editValueParticipantPanel"); ?>";

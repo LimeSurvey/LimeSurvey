@@ -2,6 +2,7 @@
 
 namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
+use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\OpHandlerSurveyTrait;
 use QuestionGroupL10n;
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestionGroupL10ns;
 use LimeSurvey\Models\Services\QuestionGroupService;
@@ -83,5 +84,17 @@ class OpHandlerQuestionGroupL10n implements OpHandlerInterface
                 $this->entity
             )
         );
+    }
+
+    /**
+     * Checks if patch is valid for this operation.
+     * @param OpInterface $op
+     * @return bool
+     */
+    public function isValidPatch(OpInterface $op): bool
+    {
+        //the function getTransformedLanguageProps checks if the patch is valid
+        //it is already used in the handle() method ...
+        return true;
     }
 }

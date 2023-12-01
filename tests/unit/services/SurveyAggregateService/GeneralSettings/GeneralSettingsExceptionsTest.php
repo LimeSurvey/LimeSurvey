@@ -1,6 +1,6 @@
 <?php
 
-namespace ls\tests\unit\services\SurveyUpdater\GeneralSettings;
+namespace ls\tests\unit\services\SurveyAggregateService\GeneralSettings;
 
 use ls\tests\TestBaseClass;
 
@@ -83,6 +83,7 @@ class GeneralSettingsExceptionsTest extends TestBaseClass
 
         $generalSettings = (new GeneralSettingsFactory)->make($mockSet);
 
-        $generalSettings->update(1, ['owner_id' => 99999]);
+        // Set at least one value so $survey->save() will be called
+        $generalSettings->update(1, ['admin' => 'admin']);
     }
 }

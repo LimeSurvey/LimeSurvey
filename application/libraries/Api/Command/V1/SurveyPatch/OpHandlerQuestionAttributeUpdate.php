@@ -3,14 +3,22 @@
 namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestionAttribute;
-use LimeSurvey\Models\Services\QuestionAggregateService;
-use LimeSurvey\Models\Services\QuestionAggregateService\AttributesService;
-use LimeSurvey\Models\Services\QuestionAggregateService\QuestionService;
-use LimeSurvey\Models\Services\Exception\PersistErrorException;
-use LimeSurvey\ObjectPatch\Op\OpInterface;
-use LimeSurvey\ObjectPatch\OpHandler\OpHandlerException;
-use LimeSurvey\ObjectPatch\OpHandler\OpHandlerInterface;
-use LimeSurvey\ObjectPatch\OpType\OpTypeUpdate;
+use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\{
+    OpHandlerQuestionTrait,
+    OpHandlerSurveyTrait
+};
+use LimeSurvey\Models\Services\{
+    QuestionAggregateService,
+    QuestionAggregateService\AttributesService,
+    QuestionAggregateService\QuestionService,
+    Exception\PersistErrorException
+};
+use LimeSurvey\ObjectPatch\{
+    Op\OpInterface,
+    OpHandler\OpHandlerException,
+    OpHandler\OpHandlerInterface,
+    OpType\OpTypeUpdate
+};
 
 class OpHandlerQuestionAttributeUpdate implements OpHandlerInterface
 {
@@ -104,5 +112,16 @@ class OpHandlerQuestionAttributeUpdate implements OpHandlerInterface
             ),
             $preparedData
         );
+    }
+
+    /**
+     * Checks if patch is valid for this operation.
+     * @param OpInterface $op
+     * @return bool
+     */
+    public function isValidPatch(OpInterface $op): bool
+    {
+        // prepareAdvancedSettings is taking care of validation
+        return true;
     }
 }

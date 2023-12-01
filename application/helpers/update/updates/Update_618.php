@@ -2,16 +2,15 @@
 
 namespace LimeSurvey\Helpers\Update;
 
-use CException;
+use LimeSurvey\Helpers\Update\DatabaseUpdateBase;
 
 class Update_618 extends DatabaseUpdateBase
 {
     /**
      * @inheritDoc
-     * @throws CException
      */
     public function up()
     {
-        $this->db->createCommand()->addColumn('{{users}}', 'status', 'BOOLEAN DEFAULT TRUE');
+        $this->db->createCommand()->dropIndex('{{answers_idx}}', '{{answers}}');
     }
 }

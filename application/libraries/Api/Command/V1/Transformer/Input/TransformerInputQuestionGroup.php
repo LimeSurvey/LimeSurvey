@@ -14,7 +14,8 @@ class TransformerInputQuestionGroup extends Transformer
             'groupOrder' => ['key' => 'group_order', 'type' => 'int'],
             'sortOrder' => ['key' => 'group_order', 'type' => 'int'],
             'randomizationGroup' => 'randomization_group',
-            'gRelevance' => 'grelevance'
+            'gRelevance' => 'grelevance',
+            'tempId' => true
         ]);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
+use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\OpHandlerSurveyTrait;
 use LimeSurvey\Models\Services\QuestionAggregateService;
 use LimeSurvey\ObjectPatch\{
     Op\OpInterface,
@@ -53,5 +54,16 @@ class OpHandlerQuestionDelete implements OpHandlerInterface
             $this->getSurveyIdFromContext($op),
             $op->getEntityId()
         );
+    }
+
+    /**
+     * Checks if patch is valid for this operation.
+     * @param OpInterface $op
+     * @return bool
+     */
+    public function isValidPatch(OpInterface $op): bool
+    {
+        //this is not really important here, but other OpHandlers might need it
+        return ((int)$op->getEntityId()) > 0;
     }
 }

@@ -2,6 +2,7 @@
 
 namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
+use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\OpHandlerSurveyTrait;
 use LimeSurvey\Models\Services\QuestionAggregateService\SubQuestionsService;
 use LimeSurvey\ObjectPatch\{
     Op\OpInterface,
@@ -55,5 +56,15 @@ class OpHandlerSubquestionDelete implements OpHandlerInterface
             $this->getSurveyIdFromContext($op),
             $op->getEntityId()
         );
+    }
+
+    /**
+     * Checks if patch is valid for this operation.
+     * @param OpInterface $op
+     * @return bool
+     */
+    public function isValidPatch(OpInterface $op): bool
+    {
+        return ((int)$op->getEntityId()) > 0;
     }
 }

@@ -2,15 +2,35 @@
 
 namespace LimeSurvey\Helpers\Update;
 
-use LimeSurvey\Helpers\Update\DatabaseUpdateBase;
+use CDbException;
+use CException;
 
 class Update_617 extends DatabaseUpdateBase
 {
     /**
      * @inheritDoc
+     * @throws CException
      */
-    public function up()
+    public function up(): void
     {
-        $this->db->createCommand()->dropIndex('{{answers_idx}}', '{{answers}}');
+        $this->deleteDuplicateTemplateConfigurationEntries();
+    }
+
+    /**
+     * @throws CDbException
+     * @throws CException
+     */
+    private function deleteDuplicateTemplateConfigurationEntries(): void
+    {
+        $aKeepIds = $this->db->createCommand()
+            ->select("MAX(id) AS maxRecordId")
+            ->from("{{template_configuration}}")
+            ->group(['template_name', 'sid', 'gsid', 'uid'])
+            ->queryAll();
+        $aKeepIds = array_column($aKeepIds, 'maxRecordId');
+        $criteria = $this->db->getCommandBuilder()->createCriteria();
+        $criteria->select = 'id, template_name, sid, gsid, uid';
+        $criteria->addNotInCondition('id', $aKeepIds);
+        $this->db->getCommandBuilder()->createDeleteCommand('{{template_configuration}}', $criteria)->execute();
     }
 }
