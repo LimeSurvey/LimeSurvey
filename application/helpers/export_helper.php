@@ -2729,8 +2729,6 @@ function tsvSurveyExport($surveyid)
             }
         }
     }
-    unset($defaultvalues_data);
-    unset($defaultvalues_l10ns_data);
     $defaultvalues = array();
     foreach ($defaultvalues_datas as $key => $defaultvalue) {
         if ($defaultvalue['sqid'] > 0) {
@@ -2739,6 +2737,8 @@ function tsvSurveyExport($surveyid)
             $defaultvalues[$defaultvalue['language']][$defaultvalue['qid']] = $defaultvalue['defaultvalue'];
         }
     }
+    unset($defaultvalues_data);
+    unset($defaultvalues_l10ns_data);
 
     $groups = array();
     $index_languages = 0;
