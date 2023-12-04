@@ -457,7 +457,10 @@ class UserManagementController extends LSBaseController
         $userId = sanitize_int(Yii::app()->request->getParam('userid'));
         $action = Yii::app()->request->getParam('action');
         $oUser = User::model()->findByPk($userId);
-        if ($oUser) {
+
+        if ($oUser == null) {
+            throw new CHttpException(404, gT("Invalid user id"));
+        } else {
             if ($oUser->setActivationStatus($action)) {
                 return App()->getController()->renderPartial('/admin/super/_renderJson', [
                     'data' => [
@@ -486,8 +489,8 @@ class UserManagementController extends LSBaseController
         }
 
         $userIds = json_decode(Yii::app()->request->getPost('sItems', "[]"));
-        $status = Yii::app()->request->getPost('status_selector', '');
-        $results = $this->unlimitedUserActivation($userIds, $status);
+        $operation = Yii::app()->request->getPost('status_selector', '');
+        $results = $this->userActivation($userIds, $operation);
 
         $error = null;
         foreach ($results as $result) {
@@ -511,89 +514,32 @@ class UserManagementController extends LSBaseController
         Yii::app()->getController()->renderPartial('ext.admin.survey.ListSurveysWidget.views.massive_actions._action_results', $data);
     }
 
-    /**
-     * Get the users limit & active users count
-     *
-     * @return string | JSON
-     * @throws CException
-     */
-    public function actionUserLimit()
-    {
-        if (!Permission::model()->hasGlobalPermission('users', 'update')) {
-            return $this->renderPartial(
-                'partial/error',
-                ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
-            );
-        }
-
-        $oEvent = new PluginEvent('beforeAdminUserActivation');
-        $oEvent->set('request', App()->request);
-        App()->getPluginManager()->dispatchEvent($oEvent);
-        $limit = $oEvent->get('limit', INF);
-        $count = $oEvent->get('count', 0);
-
-        $data = [
-            'active_user' => $count,
-            'user_limit' => $limit
-        ];
-        return App()->getController()->renderPartial('/admin/super/_renderJson', [
-            "data" => $data
-        ]);
-    }
-
 
     /**
      * Activate / deactivate user
      *
+     * @param array $userIds
+     * @param string $operation activate or deactivate
      * @return array
      */
-    public function unlimitedUserActivation($userIds, $operation)
+    public function userActivation($userIds, $operation)
     {
         $results = [];
         foreach ($userIds as $iUserId) {
             $oUser = User::model()->findByPk($iUserId);
-            $results[$iUserId]['title'] = $oUser->users_name;
-            if (!$this->isAllowedToEdit($oUser)) {
-                $results[$iUserId]['error'] = gT('Unauthorized');
-                $results[$iUserId]['result'] = false;
-                continue;
-            }
-            $results[$iUserId]['result'] = $oUser->setActivationStatus($operation);
-            if (!$results[$iUserId]['result']) {
-                $results[$iUserId]['error'] = gT('Error');
-            }
-        }
-        return $results;
-    }
-
-    /**
-     * Handle user activation with regard to users limit
-     *
-     * @return array
-     */
-    public function limitedUserActivation($userIds, $operation, $limit)
-    {
-        $results = [];
-        foreach ($userIds as $iUserId) {
-            $oUser = User::model()->findByPk($iUserId);
-            $results[$iUserId]['title'] = $oUser->users_name;
-            if (!$this->isAllowedToEdit($oUser)) {
-                if ($oUser->status) {
-                    $limit = $limit - 1;
-                }
-                $results[$iUserId]['error'] = gT('Unauthorized');
-                $results[$iUserId]['result'] = false;
-                continue;
-            }
-            if ($operation == 'deactivate') {
-                $results[$iUserId]['result'] = $oUser->setActivationStatus($operation);
-            } elseif ($operation == 'activate' && $limit > 0) {
-                $results[$iUserId]['result'] = $oUser->setActivationStatus($operation);
-                $limit = $limit - 1;
+            if ($oUser == null) {
+                throw new CHttpException(404, gT("Invalid user id"));
             } else {
-                $oUser->setActivationStatus('deactivate');
-                $results[$iUserId]['error'] = gT('Reached the limit');
-                $results[$iUserId]['result'] = false;
+                $results[$iUserId]['title'] = $oUser->users_name;
+                if (!$this->isAllowedToEdit($oUser)) {
+                    $results[$iUserId]['error'] = gT('Unauthorized');
+                    $results[$iUserId]['result'] = false;
+                    continue;
+                }
+                $results[$iUserId]['result'] = $oUser->setActivationStatus($operation);
+                if (!$results[$iUserId]['result']) {
+                    $results[$iUserId]['error'] = gT('Error');
+                }
             }
         }
         return $results;
