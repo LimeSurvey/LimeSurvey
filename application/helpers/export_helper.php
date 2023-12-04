@@ -3194,7 +3194,7 @@ function surveyGetThemeConfiguration($iSurveyId = null, $oXml = null, $bInherit 
                 if (is_array($attribute)) {
                     $attribute = (array)$attribute;
                 } elseif (isJson($attribute)) {
-                    $attribute = (array)json_decode((string) $attribute);
+                    $attribute = json_decode((string) $attribute, true);
                 }
                 $aThemeData[$sElementName]['theme'][$iThemeKey][$key] = $attribute;
             }
