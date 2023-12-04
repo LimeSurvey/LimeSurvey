@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2023-11-30 11:19:11+00:00\n"
+"POT-Creation-Date: 2023-12-04 11:49:57+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -143,8 +143,8 @@ msgstr ""
 #: application/controllers/ThemeOptionsController.php:373
 #: application/controllers/ThemeOptionsController.php:404
 #: application/controllers/ThemeOptionsController.php:420
-#: application/controllers/ThemeOptionsController.php:622
-#: application/controllers/ThemeOptionsController.php:626
+#: application/controllers/ThemeOptionsController.php:624
+#: application/controllers/ThemeOptionsController.php:628
 #: application/controllers/UserManagementController.php:46
 #: application/controllers/UserManagementController.php:101
 #: application/controllers/UserManagementController.php:131
@@ -1144,8 +1144,8 @@ msgstr ""
 #: application/controllers/SurveyAdministrationController.php:2357
 #: application/controllers/ThemeOptionsController.php:221
 #: application/controllers/ThemeOptionsController.php:290
-#: application/controllers/ThemeOptionsController.php:577
-#: application/controllers/ThemeOptionsController.php:603
+#: application/controllers/ThemeOptionsController.php:579
+#: application/controllers/ThemeOptionsController.php:605
 #: application/controllers/UserManagementController.php:299
 #: application/controllers/UserManagementController.php:320
 #: application/controllers/UserManagementController.php:349
@@ -1166,7 +1166,7 @@ msgstr ""
 #: application/controllers/admin/Themes.php:696
 #: application/controllers/admin/Themes.php:750
 #: application/controllers/admin/Themes.php:802
-#: application/controllers/admin/Themes.php:950
+#: application/controllers/admin/Themes.php:954
 #: application/controllers/admin/Tokens.php:172
 #: application/controllers/admin/Tokens.php:587
 #: application/controllers/survey/SurveyIndex.php:101
@@ -1269,7 +1269,7 @@ msgstr ""
 #: application/controllers/UserManagementController.php:981
 #: application/controllers/UserManagementController.php:990
 #: application/extensions/admin/grid/MassiveActionsWidget/views/_selected_items.php:31
-#: application/views/themeOptions/index.php:256
+#: application/views/themeOptions/index.php:252
 msgid "Selected"
 msgstr ""
 
@@ -2163,7 +2163,7 @@ msgstr ""
 #: application/controllers/SurveyAdministrationController.php:1517
 #: application/controllers/admin/Labels.php:63
 #: application/controllers/admin/PluginManagerController.php:681
-#: application/controllers/admin/Themes.php:1407
+#: application/controllers/admin/Themes.php:1411
 msgid "Incorrect permissions in your %s folder."
 msgstr ""
 
@@ -2249,9 +2249,9 @@ msgstr ""
 #: application/views/surveyAdministration/partial/topbar_tokens/leftSideButtons.php:49
 #: application/views/surveyPermissions/partial/editpermission.php:21
 #: application/views/themeOptions/index.php:108
-#: application/views/themeOptions/index.php:167
-#: application/views/themeOptions/index.php:202
-#: application/views/themeOptions/index.php:217
+#: application/views/themeOptions/index.php:163
+#: application/views/themeOptions/index.php:198
+#: application/views/themeOptions/index.php:213
 #: application/views/userManagement/massiveAction/_updatepermissions.php:35
 #: application/views/userManagement/partial/editpermissions.php:24
 #: application/views/userManagement/partial/topbarBtns/leftSideButtons.php:61
@@ -2329,9 +2329,9 @@ msgstr ""
 #: application/views/themeOptions/index.php:118
 #: application/views/themeOptions/index.php:119
 #: application/views/themeOptions/index.php:122
+#: application/views/themeOptions/index.php:173
+#: application/views/themeOptions/index.php:174
 #: application/views/themeOptions/index.php:177
-#: application/views/themeOptions/index.php:178
-#: application/views/themeOptions/index.php:181
 #: application/views/userGroup/partial/topbarBtns_manageGroup/leftSideButtons.php:55
 #: application/views/userManagement/massiveAction/_selector.php:18
 #: application/views/userManagement/massiveAction/_updatepermissions.php:33
@@ -2968,7 +2968,7 @@ msgstr ""
 #: application/views/questionGroupsAdministration/listquestiongroups.php:107
 #: application/views/themeOptions/availablethemelist.php:18
 #: application/views/themeOptions/index.php:55
-#: application/views/themeOptions/index.php:240
+#: application/views/themeOptions/index.php:236
 #: application/views/themeOptions/installedthemelist.php:52
 #: application/views/themeOptions/surveythemelist.php:59
 msgid "Description"
@@ -3184,7 +3184,7 @@ msgstr ""
 #: application/views/surveyPermissions/partial/editpermission.php:65
 #: application/views/themeOptions/import_modal.php:47
 #: application/views/themeOptions/index.php:117
-#: application/views/themeOptions/index.php:176
+#: application/views/themeOptions/index.php:172
 #: application/views/userManagement/partial/adddummyuser.php:32
 #: application/views/userManagement/partial/addedituser.php:141
 #: application/views/userManagement/partial/addrole.php:49
@@ -3463,7 +3463,7 @@ msgstr ""
 msgid "You do not have the required ZIP library installed in PHP."
 msgstr ""
 
-#: application/controllers/ThemeOptionsController.php:479
+#: application/controllers/ThemeOptionsController.php:481
 #: application/core/LsDefaultDataSets.php:901
 #: application/models/Permission.php:852
 #: application/views/admin/super/_configuration_menu.php:147
@@ -3471,33 +3471,33 @@ msgstr ""
 msgid "Themes"
 msgstr ""
 
-#: application/controllers/ThemeOptionsController.php:567
+#: application/controllers/ThemeOptionsController.php:569
 msgid "The Question theme \"%s\" has been successfully installed"
 msgstr ""
 
-#: application/controllers/ThemeOptionsController.php:569
+#: application/controllers/ThemeOptionsController.php:571
 msgid "The Question theme \"%s\" could not be installed"
 msgstr ""
 
-#: application/controllers/ThemeOptionsController.php:596
+#: application/controllers/ThemeOptionsController.php:598
 msgid "You can't uninstall template '%s' because some templates inherit from it."
 msgstr ""
 
-#: application/controllers/ThemeOptionsController.php:637
+#: application/controllers/ThemeOptionsController.php:639
 msgid "Invalid theme configuration for this group."
 msgstr ""
 
-#: application/controllers/ThemeOptionsController.php:641
-#: application/controllers/ThemeOptionsController.php:647
+#: application/controllers/ThemeOptionsController.php:643
+#: application/controllers/ThemeOptionsController.php:649
 msgid "The theme '%s' has been reset."
 msgstr ""
 
-#: application/controllers/ThemeOptionsController.php:748
-#: application/controllers/ThemeOptionsController.php:749
+#: application/controllers/ThemeOptionsController.php:750
+#: application/controllers/ThemeOptionsController.php:751
 msgid "Survey theme options"
 msgstr ""
 
-#: application/controllers/ThemeOptionsController.php:781
+#: application/controllers/ThemeOptionsController.php:783
 msgid " global level"
 msgstr ""
 
@@ -3965,8 +3965,8 @@ msgstr ""
 #: application/models/UserGroup.php:293 application/models/UserGroup.php:401
 #: application/models/UserInPermissionrole.php:57
 #: application/views/admin/labels/labelsets_view.php:42
-#: application/views/themeOptions/index.php:146
-#: application/views/themeOptions/index.php:201
+#: application/views/themeOptions/index.php:143
+#: application/views/themeOptions/index.php:197
 #: application/views/themeOptions/installedthemelist.php:44
 #: application/views/themeOptions/surveythemelist.php:51
 #: tmp/runtime/twig_cache/ce/ceec9ede67bccec478d67c3eed3ccf17784d22c8ab864e351f5b576dd5675a62.php:200
@@ -5647,8 +5647,8 @@ msgstr ""
 #: application/extensions/admin/grid/MassiveActionsWidget/views/modals/yes-no.php:62
 #: application/helpers/replacements_helper.php:326
 #: application/helpers/replacements_helper.php:442
-#: application/models/TemplateConfig.php:607
-#: application/models/TemplateConfig.php:608
+#: application/models/TemplateConfig.php:603
+#: application/models/TemplateConfig.php:604
 #: application/views/admin/emailtemplates/email_language_template_tab.php:151
 #: application/views/admin/emailtemplates/emailtemplates_view.php:104
 #: application/views/admin/globalsettings/_emailTestConfirmation.php:16
@@ -5693,7 +5693,7 @@ msgstr ""
 #: application/views/surveyAdministration/partial/topbar_statistics/rightSideButtons.php:68
 #: application/views/surveyAdministration/tabImport_view.php:59
 #: application/views/themeOptions/index.php:98
-#: application/views/themeOptions/index.php:282
+#: application/views/themeOptions/index.php:278
 #: application/views/userManagement/partial/createdrandoms.php:49
 #: application/views/userManagement/partial/error.php:38
 #: application/views/userManagement/partial/permissionsuccess.php:51
@@ -5802,7 +5802,7 @@ msgid "Plugin upload is disabled"
 msgstr ""
 
 #: application/controllers/admin/PrintableSurvey.php:77
-#: application/controllers/admin/Themes.php:1228
+#: application/controllers/admin/Themes.php:1232
 msgid "Please submit by %s"
 msgstr ""
 
@@ -5815,12 +5815,12 @@ msgid "table"
 msgstr ""
 
 #: application/controllers/admin/PrintableSurvey.php:126
-#: application/controllers/admin/Themes.php:1226
+#: application/controllers/admin/Themes.php:1230
 msgid "Submit your survey."
 msgstr ""
 
 #: application/controllers/admin/PrintableSurvey.php:129
-#: application/controllers/admin/Themes.php:1229
+#: application/controllers/admin/Themes.php:1233
 msgid "Thank you for completing this survey."
 msgstr ""
 
@@ -5916,7 +5916,7 @@ msgid "Question code:"
 msgstr ""
 
 #: application/controllers/admin/PrintableSurvey.php:534
-#: application/controllers/admin/Themes.php:1203
+#: application/controllers/admin/Themes.php:1207
 msgid "*"
 msgstr ""
 
@@ -5925,7 +5925,7 @@ msgstr ""
 #: application/controllers/admin/PrintableSurvey.php:592
 #: application/controllers/admin/PrintableSurvey.php:651
 #: application/controllers/admin/PrintableSurvey.php:827
-#: application/controllers/admin/Themes.php:1207
+#: application/controllers/admin/Themes.php:1211
 msgid "Please choose *only one* of the following:"
 msgstr ""
 
@@ -6257,7 +6257,7 @@ msgid "Template '%s' was successfully deleted."
 msgstr ""
 
 #: application/controllers/admin/Themes.php:793
-#: application/controllers/admin/Themes.php:855
+#: application/controllers/admin/Themes.php:859
 msgid "There was a problem deleting the template '%s'. Please check your directory/file permissions."
 msgstr ""
 
@@ -6269,83 +6269,83 @@ msgstr ""
 msgid "Theme '%s' does not exist."
 msgstr ""
 
-#: application/controllers/admin/Themes.php:820
-#: application/controllers/admin/Themes.php:853
+#: application/controllers/admin/Themes.php:824
+#: application/controllers/admin/Themes.php:857
 msgid "Theme '%s' was successfully deleted."
 msgstr ""
 
-#: application/controllers/admin/Themes.php:823
+#: application/controllers/admin/Themes.php:827
 msgid "Not a broken theme!"
 msgstr ""
 
-#: application/controllers/admin/Themes.php:910
+#: application/controllers/admin/Themes.php:914
 msgid "Invalid theme name"
 msgstr ""
 
-#: application/controllers/admin/Themes.php:923
+#: application/controllers/admin/Themes.php:927
 msgid "Could not open file "
 msgstr ""
 
-#: application/controllers/admin/Themes.php:928
+#: application/controllers/admin/Themes.php:932
 msgid "Could not write file "
 msgstr ""
 
-#: application/controllers/admin/Themes.php:931
+#: application/controllers/admin/Themes.php:935
 msgid "Changes saved successfully."
 msgstr ""
 
-#: application/controllers/admin/Themes.php:1120
+#: application/controllers/admin/Themes.php:1124
 msgid "Invalid screen name"
 msgstr ""
 
-#: application/controllers/admin/Themes.php:1167
+#: application/controllers/admin/Themes.php:1171
 #: tmp/runtime/twig_cache/9f/9f681843132c245c275de25f4ef223dc2a618ccb3edec0e8b4a7f8d06da39f04.php:40
 msgid "How many roads must a man walk down?"
 msgstr ""
 
-#: application/controllers/admin/Themes.php:1169
+#: application/controllers/admin/Themes.php:1173
 #: application/models/TemplateManifest.php:394
 #: application/models/TemplateManifest.php:404
 msgid "This is some helpful text."
 msgstr ""
 
-#: application/controllers/admin/Themes.php:1178
+#: application/controllers/admin/Themes.php:1182
 msgid "Hint when response is valid"
 msgstr ""
 
-#: application/controllers/admin/Themes.php:1214
+#: application/controllers/admin/Themes.php:1218
 msgid "This is a sample question text. The user was asked to pick an entry."
 msgstr ""
 
-#: application/controllers/admin/Themes.php:1215
+#: application/controllers/admin/Themes.php:1219
 msgid "This is some help text for this question."
 msgstr ""
 
-#: application/controllers/admin/Themes.php:1230
+#: application/controllers/admin/Themes.php:1234
 msgid "This is the survey end message."
 msgstr ""
 
-#: application/controllers/admin/Themes.php:1252
+#: application/controllers/admin/Themes.php:1256
 msgid "Question group name"
 msgstr ""
 
-#: application/controllers/admin/Themes.php:1253
+#: application/controllers/admin/Themes.php:1257
 msgid "Question group description"
 msgstr ""
 
-#: application/controllers/admin/Themes.php:1341
+#: application/controllers/admin/Themes.php:1345
 msgid "LimeSurvey theme editor"
 msgstr ""
 
-#: application/controllers/admin/Themes.php:1345
+#: application/controllers/admin/Themes.php:1349
 msgid "Welcome to the theme editor of LimeSurvey. To get an overview of new functionality and possibilities, please visit the %s LimeSurvey manual %s. For further questions and information, feel free to post your questions on the %s LimeSurvey forums %s."
 msgstr ""
 
-#: application/controllers/admin/Themes.php:1374
+#: application/controllers/admin/Themes.php:1378
 msgid "Demo mode: Uploading templates is disabled."
 msgstr ""
 
-#: application/controllers/admin/Themes.php:1412
+#: application/controllers/admin/Themes.php:1416
 msgid "Template '%s' does already exist."
 msgstr ""
 
@@ -14497,7 +14497,7 @@ msgstr ""
 #: application/models/FailedEmail.php:82 application/models/FailedEmail.php:233
 #: application/views/failedEmail/partials/modal/email_error.php:6
 #: application/views/themeOptions/availablethemelist.php:50
-#: application/views/themeOptions/index.php:147
+#: application/views/themeOptions/index.php:144
 msgid "Error message"
 msgstr ""
 
@@ -15584,7 +15584,7 @@ msgstr ""
 
 #: application/models/Surveymenu.php:341
 #: application/models/SurveymenuEntries.php:184
-#: application/models/TemplateManifest.php:1475
+#: application/models/TemplateManifest.php:1483
 #: application/views/admin/super/permissions/addUserForm.php:4
 #: application/views/surveyPermissions/index.php:26
 msgid "User"
@@ -15849,9 +15849,13 @@ msgstr ""
 msgid "Default survey theme %s is not installed. Now %s is the new default survey theme"
 msgstr ""
 
-#: application/models/TemplateConfig.php:925
+#: application/models/TemplateConfig.php:921
 #: application/models/TemplateConfiguration.php:1187
 msgid "Theme '%s' has been uninstalled because it's not compatible with this LimeSurvey version."
+msgstr ""
+
+#: application/models/TemplateConfig.php:1121
+msgid "Invalid theme configuration file"
 msgstr ""
 
 #: application/models/TemplateConfiguration.php:161
@@ -16043,17 +16047,17 @@ msgstr ""
 msgid "You can't import the theme '%s' because '%s'  is not installed."
 msgstr ""
 
-#: application/models/TemplateManifest.php:1413
+#: application/models/TemplateManifest.php:1421
 #: application/views/themeOptions/update.php:48
 msgid "Simple options"
 msgstr ""
 
-#: application/models/TemplateManifest.php:1462
-#: application/models/TemplateManifest.php:1475
+#: application/models/TemplateManifest.php:1470
+#: application/models/TemplateManifest.php:1483
 msgid "Local Server"
 msgstr ""
 
-#: application/models/TemplateManifest.php:1462
+#: application/models/TemplateManifest.php:1470
 msgid "Core"
 msgstr ""
 
@@ -20488,7 +20492,7 @@ msgstr ""
 #: application/views/admin/survey/subview/_template_carousel.php:41
 #: application/views/installer/dbconfig_view.php:69
 #: application/views/responses/modal_subviews/filterColumns.php:54
-#: application/views/themeOptions/index.php:260
+#: application/views/themeOptions/index.php:256
 msgid "Select"
 msgstr ""
 
@@ -21389,7 +21393,7 @@ msgstr ""
 
 #: application/views/admin/themes/partial/topbarBtns/leftSideButtons.php:83
 #: application/views/themeOptions/index.php:116
-#: application/views/themeOptions/index.php:175
+#: application/views/themeOptions/index.php:171
 msgid "Are you sure you want to delete this theme?"
 msgstr ""
 
@@ -24733,20 +24737,20 @@ msgstr ""
 
 #: application/views/themeOptions/availablethemelist.php:16
 #: application/views/themeOptions/index.php:53
-#: application/views/themeOptions/index.php:238
+#: application/views/themeOptions/index.php:234
 #: application/views/themeOptions/surveythemelist.php:42
 msgid "Preview"
 msgstr ""
 
 #: application/views/themeOptions/availablethemelist.php:17
 #: application/views/themeOptions/index.php:54
-#: application/views/themeOptions/index.php:239
+#: application/views/themeOptions/index.php:235
 msgid "Folder"
 msgstr ""
 
 #: application/views/themeOptions/availablethemelist.php:19
 #: application/views/themeOptions/index.php:56
-#: application/views/themeOptions/index.php:241
+#: application/views/themeOptions/index.php:237
 #: application/views/themeOptions/installedthemelist.php:60
 #: application/views/themeOptions/surveythemelist.php:67
 msgid "Type"
@@ -24780,19 +24784,19 @@ msgstr ""
 msgid "Select theme ZIP file:"
 msgstr ""
 
-#: application/views/themeOptions/index.php:22
+#: application/views/themeOptions/index.php:23
 msgid "Survey themes"
 msgstr ""
 
-#: application/views/themeOptions/index.php:27
+#: application/views/themeOptions/index.php:28
 msgid "Admin themes"
 msgstr ""
 
-#: application/views/themeOptions/index.php:32
+#: application/views/themeOptions/index.php:33
 msgid "Question themes"
 msgstr ""
 
-#: application/views/themeOptions/index.php:39
+#: application/views/themeOptions/index.php:40
 msgid "Installed survey themes:"
 msgstr ""
 
@@ -24801,22 +24805,22 @@ msgid "Available survey themes:"
 msgstr ""
 
 #: application/views/themeOptions/index.php:79
-#: application/views/themeOptions/index.php:265
+#: application/views/themeOptions/index.php:261
 msgid "Show errors"
 msgstr ""
 
 #: application/views/themeOptions/index.php:86
-#: application/views/themeOptions/index.php:272
+#: application/views/themeOptions/index.php:268
 msgid "Errors"
 msgstr ""
 
 #: application/views/themeOptions/index.php:90
-#: application/views/themeOptions/index.php:276
+#: application/views/themeOptions/index.php:272
 msgid "The theme is not compatible with your version of LimeSurvey."
 msgstr ""
 
 #: application/views/themeOptions/index.php:92
-#: application/views/themeOptions/index.php:278
+#: application/views/themeOptions/index.php:274
 msgid "For more information consult our manual."
 msgstr ""
 
@@ -24824,23 +24828,23 @@ msgstr ""
 msgid "Custom theme options set for this theme have been reset to the default."
 msgstr ""
 
-#: application/views/themeOptions/index.php:139
+#: application/views/themeOptions/index.php:138
 msgid "Broken survey themes"
 msgstr ""
 
-#: application/views/themeOptions/index.php:196
+#: application/views/themeOptions/index.php:192
 msgid "Deprecated survey themes:"
 msgstr ""
 
-#: application/views/themeOptions/index.php:233
+#: application/views/themeOptions/index.php:229
 msgid "Available admin themes:"
 msgstr ""
 
-#: application/views/themeOptions/index.php:252
+#: application/views/themeOptions/index.php:248
 msgid "Core admin theme"
 msgstr ""
 
-#: application/views/themeOptions/index.php:299
+#: application/views/themeOptions/index.php:295
 msgid "Question themes:"
 msgstr ""
 
