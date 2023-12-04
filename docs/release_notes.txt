@@ -34,6 +34,17 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.6.47 (build 231128) to 5.6.48 (build 231205) December 4, 2023
+-Fixed issue #19276: When a user exits on quota, the theme is not applied correctly if "inherits everything" is set to off (#3638) (Gabriel Jenik)
+-Fixed issue #19252: [security] Bad permission check when edit quota (#3634) (Denis Chenu)
+-Fixed issue #18961: {SURVEYURL} didn't work with plugin using cli event (#3454) (Gabriel Jenik)
+#Updated translation: Slovak by jelen1
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 5.6.46 (build 231121) to 5.6.47 (build 231128) November 27, 2023
 -Fixed issue #19228: Setting Bruteforce timeout values to empty string causes the administrator to be locked out (#3617) (Denis Chenu)
 -Fixed issue #19206: Alphabetical order can be bad with utf8 character (#3619) (Denis Chenu)
