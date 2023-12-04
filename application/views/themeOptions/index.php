@@ -8,6 +8,7 @@
  * @var TemplateConfig $oSurveyTheme
  * @var int $pageSize
  * @var array $aAdminThemes
+ * @var array $aTemplatesWithoutDB
  */
 
 // TODO: rename to template_list.php and move to template controller
@@ -43,8 +44,7 @@ echo viewHelper::getViewTestTag('templateOptions');
                     ]
                 ); ?>
                 <!-- Available Themes -->
-                <?php $templatewithNoDb = $oSurveyTheme->getTemplatesWithNoDb()?>
-                <?php if (count($templatewithNoDb) > 0) : ?>
+                <?php if (!empty($aTemplatesWithoutDB['valid'])) : ?>
                     <h3><?php eT('Available survey themes:'); ?></h3>
                     <div id="templates_no_db" >
                         <table class="items table table-hover">
@@ -62,7 +62,7 @@ echo viewHelper::getViewTestTag('templateOptions');
                             <tbody>
                             <?php /** @var TemplateManifest $oTemplate */ ?>
                             <?php $surveyThemeIterator = 0 ?>
-                            <?php foreach ($templatewithNoDb as $key => $oTemplate) : ?>
+                            <?php foreach ($aTemplatesWithoutDB['valid'] as $key => $oTemplate) : ?>
                                 <tr class="odd">
                                     <td class="col-lg-1"><?php echo $oTemplate->getPreview(); ?></td>
                                     <td class="col-lg-2"><?php echo $oTemplate->sTemplateName; ?></td>
@@ -134,11 +134,8 @@ echo viewHelper::getViewTestTag('templateOptions');
                 <?php endif; ?>
                 <!-- End Available Themes -->
                 <!-- Broken Themes  -->
-                <?php $aBrokenThemes = Template::getBrokenThemes();
-                if (count($aBrokenThemes) > 0) : ?>
+                <?php if (!empty($aTemplatesWithoutDB['invalid'])) : ?>
                     <h3><?php eT('Broken survey themes'); ?></h3>
-
-
                     <div id="thembes_broken" >
                         <table class="items table table-hover">
                             <thead>
@@ -150,12 +147,11 @@ echo viewHelper::getViewTestTag('templateOptions');
                             </thead>
 
                             <tbody>
-                            <?php foreach ($aBrokenThemes as $sName => $oBrokenTheme) : ?>
-                                <?php // echo $oTemplate; ?>
+                            <?php foreach ($aTemplatesWithoutDB['invalid'] as $sName => $oBrokenTheme) : ?>
                                 <tr class="odd">
-                                    <td class="col-lg-1 text-danger"><?php echo $sName; ?></td>
+                                    <td class="col-lg-1 text-danger"><?= $sName ?></td>
                                     <td class="col-lg-8 ">
-                                        <blockquote><?php echo $oBrokenTheme->getMessage(); ?></blockquote>
+                                        <blockquote><?= $oBrokenTheme['error'] ?? '' ?></blockquote>
                                     </td>
                                     <td class="col-lg-2">
                                         <div class="d-grid gap-2">
