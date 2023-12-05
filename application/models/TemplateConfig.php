@@ -84,10 +84,6 @@ class TemplateConfig extends CActiveRecord
     /** @var array $aCssFrameworkReplacement Css Framework Replacement */
     protected $aCssFrameworkReplacement;
 
-    public $allDbTemplateFolders = null;
-
-    public static $aTemplatesWithoutDB = null;
-
     public $options_page = 'core';
 
     /**
@@ -1083,9 +1079,10 @@ class TemplateConfig extends CActiveRecord
      * Returns an array of all unique template folders that are registered in the database
      * @return array|null
      */
-    public function getAllDbTemplateFolders()
+    public static function getAllDbTemplateFolders()
     {
-        if (empty($this->allDbTemplateFolders)) {
+        static $aAllDbTemplateFolders = [];
+        if (empty($aAllDbTemplateFolders)) {
             $oCriteria = new CDbCriteria();
             $oCriteria->select = 'folder';
             $oAllDbTemplateFolders = Template::model()->findAll($oCriteria);
@@ -1095,33 +1092,42 @@ class TemplateConfig extends CActiveRecord
                 $aAllDbTemplateFolders[] = $oAllDbTemplateFolder->folder;
             }
 
-            $this->allDbTemplateFolders = array_unique($aAllDbTemplateFolders);
+            $aAllDbTemplateFolders = array_unique($aAllDbTemplateFolders);
         }
 
-        return $this->allDbTemplateFolders;
+        return $aAllDbTemplateFolders;
     }
 
     /**
      * Returns an array with uninstalled and/or incompatible survey themes
      * @return TemplateConfiguration[]
      */
-    public function getTemplatesWithNoDb(): array
+    public static function getTemplatesWithNoDb(): array
     {
-        if (empty(self::$aTemplatesWithoutDB)) {
+        static $aTemplatesWithoutDB = [];
+        if (empty($aTemplatesWithoutDB)) {
+            $aTemplatesWithoutDB['valid'] = [];
+            $aTemplatesWithoutDB['invalid'] = [];
             $aTemplatesDirectories = Template::getAllTemplatesDirectories();
-            $aTemplatesInDb        = $this->getAllDbTemplateFolders();
-            $aTemplatesWithoutDB   = array();
+            $aTemplatesInDb = self::getAllDbTemplateFolders();
 
             foreach ($aTemplatesDirectories as $sName => $sPath) {
                 if (!in_array($sName, $aTemplatesInDb)) {
-                    // Get the manifest
-                    $aTemplatesWithoutDB[$sName] = Template::getTemplateConfiguration($sName, null, null, true);
+                    // Get the theme manifest by forcing xml load
+                    try {
+                        $aTemplatesWithoutDB['valid'][$sName] = Template::getTemplateConfiguration($sName, null, null, true);
+                        if (empty($aTemplatesWithoutDB['valid'][$sName]->config)) {
+                            unset($aTemplatesWithoutDB['valid'][$sName]);
+                            $aTemplatesWithoutDB['invalid'][$sName]['error'] = gT('Invalid theme configuration file');
+                        }
+                    } catch (Exception $e) {
+                        unset($aTemplatesWithoutDB['valid'][$sName]);
+                        $aTemplatesWithoutDB['invalid'][$sName]['error'] = $e->getMessage();
+                    }
                 }
             }
-            self::$aTemplatesWithoutDB = $aTemplatesWithoutDB;
         }
-
-        return self::$aTemplatesWithoutDB;
+        return $aTemplatesWithoutDB;
     }
 
     /**

@@ -817,7 +817,11 @@ JAVASCRIPT
 
         if (Permission::model()->hasGlobalPermission('templates', 'delete')) {
             // First we check that the theme is really broken
-            $aBrokenThemes = Template::getBrokenThemes();
+            $aBrokenThemes = [];
+            $aTemplatesWithNoDB = TemplateConfig::getTemplatesWithNoDb();
+            if (!empty($aTemplatesWithNoDB['invalid'])) {
+                $aBrokenThemes = $aTemplatesWithNoDB['invalid'];
+            }
             $templatename  = sanitize_dirname($templatename);
             if (array_key_exists($templatename, $aBrokenThemes)) {
                 if (rmdirr(Yii::app()->getConfig('userthemerootdir') . "/" . $templatename)) {
