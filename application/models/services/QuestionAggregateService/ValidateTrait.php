@@ -28,7 +28,9 @@ trait ValidateTrait
                     $codes[$scaleId] = [];
                 }
                 if (
-                    in_array(
+                    isset($data['code'])
+                    && isset($codes[$scaleId])
+                    && in_array(
                         $data['code'],
                         $codes[$scaleId]
                     )
@@ -37,7 +39,9 @@ trait ValidateTrait
                         'Subquestion/Answer codes must be unique'
                     );
                 }
-                $codes[$scaleId][] = $data['code'];
+                if (isset($data['code'])) {
+                    $codes[$scaleId][] = $data['code'];
+                }
             }
         }
     }

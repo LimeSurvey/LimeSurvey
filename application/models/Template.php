@@ -785,31 +785,6 @@ class Template extends LSActiveRecord
     }
 
     /**
-     * Retrieves a list of broken themes
-     */
-    public static function getBrokenThemes($sFolder = null)
-    {
-        $aBrokenTemplateList = array();
-        $sFolder    =  (empty($sFolder)) ? App()->getConfig("userthemerootdir") : $sFolder;
-
-        if ($sFolder && $handle = opendir($sFolder)) {
-            while (false !== ($sFileName = readdir($handle))) {
-                if (!is_file("$sFolder/$sFileName") && $sFileName != "." && $sFileName != ".." && $sFileName != ".svn" && $sFileName != 'generalfiles') {
-                    try {
-                        $oTheme = Template::getTemplateConfiguration($sFileName, null, null, true); // Get the manifest;
-                    } catch (Exception $e) {
-                        $aBrokenTemplateList[$sFileName] = $e;
-                    }
-                }
-            }
-            closedir($handle);
-        }
-        ksort($aBrokenTemplateList);
-        return  $aBrokenTemplateList;
-    }
-
-
-    /**
      * Returns the static model of the specified AR class.
      * Please note that you should have this exact method in all your CActiveRecord descendants!
      * @param string $className active record class name.
