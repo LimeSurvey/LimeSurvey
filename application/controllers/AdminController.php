@@ -501,10 +501,7 @@ class AdminController extends LSYii_Controller
         $oEvent = new PluginEvent('beforeFooterRender');
         App()->getPluginManager()->dispatchEvent($oEvent);
         $data = $oEvent->get('data');
-
-        foreach ($data as $key => $item) {
-            $aData[$key] = $item;
-        }
+        $aData = array_merge($aData, $data);
 
         $aData['imageurl'] = Yii::app()->getConfig("imageurl");
         $aData['url'] = $url;

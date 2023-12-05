@@ -43,7 +43,7 @@ use LimeSurvey\Models\Services\UserManager;
  * @property string $last_login
  * @property Permissiontemplates[] $roles
  * @property UserGroup[] $groups
- * @property bool $status User's account status (true: activated | false: deactivated)
+ * @property bool $user_status User's account status (true: activated | false: deactivated)
  */
 class User extends LSActiveRecord
 {
@@ -60,8 +60,6 @@ class User extends LSActiveRecord
      * @var string $lang Default value for user language
      */
     public $lang = 'auto';
-
-    public $status;
 
     public $searched_value;
 
@@ -163,7 +161,7 @@ class User extends LSActiveRecord
             'modified' => gT('Modified at'),
             'last_login' => gT('Last recorded login'),
             'expires' => gT("Expiry date/time:"),
-            'status' => gT("Status"),
+            'user_status' => gT("Status"),
         ];
     }
 
@@ -235,6 +233,7 @@ class User extends LSActiveRecord
      * @param int $parent_user
      * @param string $new_email
      * @param string|null $expires
+     * @param boolean $status
      * @return integer|boolean User ID if success
      */
     public static function insertUser($new_user, $new_pass, $new_full_name, $parent_user, $new_email, $expires = null, $status = true)
@@ -249,7 +248,7 @@ class User extends LSActiveRecord
         $oUser->created = date('Y-m-d H:i:s');
         $oUser->modified = date('Y-m-d H:i:s');
         $oUser->expires = $expires;
-        $oUser->status = $status;
+        $oUser->user_status = $status;
         if ($oUser->save()) {
             return $oUser->uid;
         } else {
@@ -552,7 +551,7 @@ class User extends LSActiveRecord
                 )
             );
 
-        if ($this->status) {
+        if ($this->user_status) {
             $activateUrl = App()->getController()->createUrl('userManagement/activationConfirm', ['userid' => $this->uid, 'action' => 'deactivate']);
             $dropdownItems[] = [
                 'title'            => gT('Deactivate'),
@@ -767,7 +766,7 @@ class User extends LSActiveRecord
                 "header" => gT("Created by"),
             ],
             [
-                "name"   => "status",
+                "name"   => "user_status",
                 "header" => gT("Status"),
                 'headerHtmlOptions' => ['class' => 'hidden'],
                 'htmlOptions'       => ['class' => 'hidden activation']
@@ -1091,9 +1090,9 @@ class User extends LSActiveRecord
     public function setActivationStatus($status = 'activate')
     {
         if ($status == 'activate') {
-            $this->status = 1;
+            $this->user_status = 1;
         } else {
-            $this->status = 0;
+            $this->user_status = 0;
         }
 
         return $this->save();
