@@ -104,7 +104,7 @@ class QuotasController extends LSBaseController
     public function actionQuickCSVReport($surveyid)
     {
         $surveyid = sanitize_int($surveyid);
-        if (!Permission::model()->hasSurveyPermission($surveyId, 'quotas')) {
+        if (!Permission::model()->hasSurveyPermission($surveyid, 'quotas')) {
             throw new CHttpException(403, gT("You do not have permission on this survey."));
         }
         $oSurvey = Survey::model()->findByPk($surveyid);
