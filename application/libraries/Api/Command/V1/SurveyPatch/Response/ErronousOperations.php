@@ -9,8 +9,8 @@ class ErronousOperations
     private array $operationItems = [];
 
     /**
-     * Adds tempIdMapItems to the mapItems array organized by itemGroupNames.
-     * Throws an exception if the passed itemGroupName is not known.
+     * Adds an erronousOperationItem containing the error message from the
+     * exception and the operation data.
      * @param ErronousOperationItem $operationItem
      * @return void
      */
