@@ -341,8 +341,8 @@ abstract class SmtpOAuthPluginBase extends EmailPluginBase
         if (!empty($emailAddress)) {
             $settings['currentEmail'] = [
                 'type' => 'string',
-                'label' => gT('Saved Token Owner'),
-                'help' => gT('This is the email address used to create the current authentication token. Please note all emails will be sent from this address.'),
+                'label' => gT('Token owner email address'),
+                'help' => gT('This is the email address used to create the current authentication token. Please note that all emails will be sent from this address.'),
                 'htmlOptions' => [
                     'readonly' => true,
                 ],
