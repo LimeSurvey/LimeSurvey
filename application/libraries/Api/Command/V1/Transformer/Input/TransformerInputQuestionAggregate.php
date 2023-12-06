@@ -6,50 +6,37 @@ use LimeSurvey\Api\Transformer\Transformer;
 
 class TransformerInputQuestionAggregate extends Transformer
 {
-    protected TransformerInputQuestion $transformer;
-    protected TransformerInputQuestionL10ns $transformerL10n;
-    protected TransformerInputQuestionAttribute $transformerAttribute;
-    protected TransformerInputAnswer $transformerAnswer;
-    protected TransformerInputAnswerL10ns $transformerAnswerL10n;
-
     public function __construct(
         TransformerInputQuestion $transformer,
         TransformerInputQuestionL10ns $transformerL10n,
         TransformerInputQuestionAttribute $transformerAttribute,
-        TransformerInputAnswer $transformerAnswer,
-        TransformerInputAnswerL10ns $transformerAnswerL10n
+        TransformerInputAnswer $transformerAnswer
     )
     {
-        $this->transformer = $transformer;
-        $this->transformerL10n = $transformerL10n;
-        $this->transformerAttribute = $transformerAttribute;
-        $this->transformerAnswer = $transformerAnswer;
-        $this->transformerAnswerL10n = $transformerAnswerL10n;
-
         $this->setDataMap([
             'question' => [
                 'required' => true,
-                'transformer' => $this->transformer
+                'transformer' => $transformer
             ],
             'questionL10n' => [
                 'key' => 'questionI10N',
                 'collection' => true,
                 'required' => true,
-                'transformer' => $this->transformerL10n
+                'transformer' => $transformerL10n
             ],
             'attributes' => [
                 'key' => 'advancedSettings',
                 'collection' => true,
-                'transformer' => $this->transformerAttribute
+                'transformer' => $transformerAttribute
             ],
             'answers' => [
                 'key' => 'answeroptions',
                 'collection' => true,
-                'transformer' => $this->transformerAnswer
+                'transformer' => $transformerAnswer
             ],
             'subquestions' => [
                 'collection' => true,
-                'transformer' => $this->transformer
+                'transformer' => $transformer
             ],
         ]);
     }

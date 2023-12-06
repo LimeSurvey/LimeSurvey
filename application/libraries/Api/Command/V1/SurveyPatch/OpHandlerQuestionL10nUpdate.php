@@ -85,7 +85,6 @@ class OpHandlerQuestionL10nUpdate implements OpHandlerInterface
         );
     }
 
-
     /**
      * Checks if patch is valid for this operation.
      * @param OpInterface $op

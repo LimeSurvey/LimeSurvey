@@ -96,14 +96,14 @@ class OpHandlerQuestionUpdate implements OpHandlerInterface
         if (
             !array_key_exists(
                 'qid',
-                $transformedProps
+                $transformedProps['question']
             )
-            || $transformedProps['qid'] === null
+            || $transformedProps['question']['qid'] === null
         ) {
-            $transformedProps['qid'] = $op->getEntityId();
+            $transformedProps['question']['qid'] = $op->getEntityId();
         }
 
-        return ['question' => $transformedProps];
+        return $transformedProps;
     }
 
     /**

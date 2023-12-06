@@ -101,8 +101,11 @@ class OpHandlerQuestionUpdateTest extends TestBaseClass
     private function getCorrectPropsArray()
     {
         return [
-            'title' => 'test title',
-            'mandatory' => true,
+            'question' => [
+                'title' => 'test title',
+                'mandatory' => true,
+            ],
+            'questionL10n' => []
         ];
     }
 

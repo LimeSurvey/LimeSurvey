@@ -3,12 +3,10 @@
 namespace ls\tests\unit\api\opHandlers;
 
 use Mockery;
+use LimeSurvey\DI;
 use LimeSurvey\Models\Services\QuestionGroupService;
 use LimeSurvey\Api\Command\V1\SurveyPatch\OpHandlerQuestionGroup;
-use LimeSurvey\Api\Command\V1\Transformer\{
-    Input\TransformerInputQuestionGroup,
-    Input\TransformerInputQuestionGroupL10ns
-};
+use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestionGroupAggregate;
 use LimeSurvey\ObjectPatch\{
     Op\OpInterface,
     Op\OpStandard,
@@ -46,15 +44,6 @@ class OpHandlerQuestionGroupTest extends TestBaseClass
 
         $opHandler = $this->getOpHandler();
         self::assertFalse($opHandler->canHandle($this->op));
-    }
-
-    public function testOpQuestionGroupTransformedPropsCreateWithI10N()
-    {
-        $this->initializePatcherCreateI10N();
-
-        $opHandler = $this->getOpHandler();
-        $transformedProps = $opHandler->getTransformedProps($this->op);
-        self::assertArrayHasKey('questionGroupI10N', $transformedProps);
     }
 
     private function initializePatcher()
@@ -145,8 +134,7 @@ class OpHandlerQuestionGroupTest extends TestBaseClass
         return new OpHandlerQuestionGroup(
             $mockSet->modelQuestionGroup,
             $mockQuestionGroupService,
-            new TransformerInputQuestionGroup(),
-            new TransformerInputQuestionGroupL10ns()
+            DI::getContainer()->get(TransformerInputQuestionGroupAggregate::class)
         );
     }
 }

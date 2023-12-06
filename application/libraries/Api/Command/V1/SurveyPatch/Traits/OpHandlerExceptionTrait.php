@@ -50,7 +50,13 @@ trait OpHandlerExceptionTrait
         );
     }
 
-    private function throwTransformerValidationErrors($errors, $op)
+    /**
+     * @param bool|array $errors
+     * @param OpInterface $op
+     * @return void
+     * @throws OpHandlerException
+     */
+    private function throwTransformerValidationErrors($errors, OpInterface $op)
     {
         if (is_array($errors)) {
             throw new OpHandlerException(

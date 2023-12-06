@@ -215,7 +215,10 @@ class Transformer implements TransformerInterface
         $errors = [];
         if (
             $config['required']
-            && !array_key_exists($key, $data)
+            && (
+                !is_array($data)
+                || !array_key_exists($key, $data)
+            )
         ) {
             $errors[] = $key . ' is required';
         }

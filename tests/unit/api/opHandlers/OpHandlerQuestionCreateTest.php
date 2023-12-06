@@ -4,12 +4,7 @@ namespace ls\tests\unit\api\opHandlers;
 
 use LimeSurvey\DI;
 use LimeSurvey\Api\Command\V1\SurveyPatch\OpHandlerQuestionCreate;
-use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputAnswer;
-use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputAnswerL10ns;
-use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestion;
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestionAggregate;
-use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestionAttribute;
-use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestionL10ns;
 use LimeSurvey\ObjectPatch\Op\OpInterface;
 use LimeSurvey\ObjectPatch\Op\OpStandard;
 use LimeSurvey\ObjectPatch\OpHandler\OpHandlerException;
