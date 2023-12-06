@@ -3,9 +3,11 @@
 namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
 use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\{
-    OpHandlerQuestionTrait, OpHandlerSurveyTrait
+    OpHandlerQuestionTrait,
+    OpHandlerSurveyTrait,
+    OpHandlerExceptionTrait
 };
-use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestion;
+use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestionAggregate;
 use LimeSurvey\Models\Services\QuestionAggregateService;
 use LimeSurvey\ObjectPatch\{Op\OpInterface,
     OpHandler\OpHandlerException,
@@ -17,13 +19,14 @@ class OpHandlerQuestionUpdate implements OpHandlerInterface
 {
     use OpHandlerSurveyTrait;
     use OpHandlerQuestionTrait;
+    use OpHandlerExceptionTrait;
 
     protected QuestionAggregateService $questionAggregateService;
-    protected TransformerInputQuestion $transformer;
+    protected TransformerInputQuestionAggregate $transformer;
 
     public function __construct(
         QuestionAggregateService $questionAggregateService,
-        TransformerInputQuestion $transformer
+        TransformerInputQuestionAggregate $transformer
     ) {
         $this->questionAggregateService = $questionAggregateService;
         $this->transformer = $transformer;
@@ -61,6 +64,13 @@ class OpHandlerQuestionUpdate implements OpHandlerInterface
      */
     public function handle(OpInterface $op): void
     {
+        $this->throwTransformerValidationErrors(
+            $this->transformer->validate(
+            $op->getProps(),
+            ),
+            $op
+        );
+
         $this->questionAggregateService->save(
             $this->getSurveyIdFromContext($op),
             $this->getPreparedData($op)

@@ -7,7 +7,8 @@ use LimeSurvey\Api\Command\V1\Transformer\{
 };
 use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\{
     OpHandlerSurveyTrait,
-    OpHandlerQuestionTrait
+    OpHandlerQuestionTrait,
+    OpHandlerExceptionTrait
 };
 use LimeSurvey\ObjectPatch\{
     Op\OpInterface,
@@ -22,6 +23,7 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
 {
     use OpHandlerSurveyTrait;
     use OpHandlerQuestionTrait;
+    use OpHandlerExceptionTrait;
 
     protected string $entity;
     protected Question $model;
@@ -187,19 +189,12 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
      */
     public function handle(OpInterface $op): array
     {
-        $errors = $this->transformerInputQuestionAggregate->validate(
-            $op->getProps()
+        $this->throwTransformerValidationErrors(
+            $this->transformerInputQuestionAggregate->validate(
+            $op->getProps(),
+            ),
+            $op
         );
-        if (is_array($errors)) {
-            throw new OpHandlerException(
-                sprintf(
-                    '%s with id "%s" failed with error "%s"',
-                    $this->entity,
-                    print_r($op->getEntityId(), true),
-                    $errors[0]
-                )
-            );
-        }
         $transformedProps = $this->transformerInputQuestionAggregate->transform(
             $op->getProps()
         );
