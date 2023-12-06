@@ -76,6 +76,8 @@ class TransformerOutputSurvey extends TransformerOutputActiveRecord
             "googleanalyticsstyle" => ['key' =>  'googleAnalyticsStyle', 'type' => 'int'],
             "googleanalyticsapikey" => 'googleAnalyticsApiKey',
             "showsurveypolicynotice" => ['key' =>  'showSurveyPolicyNotice', 'type' => 'int'],
+            'template' => ['key' => 'template'],
+            'format' => ['key' => 'format'],
         ]);
     }
 

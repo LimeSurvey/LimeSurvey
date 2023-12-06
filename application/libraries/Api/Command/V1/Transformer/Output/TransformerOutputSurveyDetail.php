@@ -73,6 +73,8 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
             'gid',
             $survey['questionGroups']
         );
+        // without this, "inherit" can be set for selected template data
+        $survey['template'] = $data->oOptions->template;
 
 
         foreach ($data->groups as $questionGroupModel) {
