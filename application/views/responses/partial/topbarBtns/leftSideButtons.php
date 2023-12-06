@@ -63,7 +63,7 @@ if ($hasResponsesCreatePermission) {
  }
 
 if ($hasStatisticsReadPermission) {
-    if (!$oSurvey->getIsSaveTimings()) {
+    if ($oSurvey->getIsSaveTimings()) {
         $this->widget(
             'ext.ButtonWidget.ButtonWidget',
             [
