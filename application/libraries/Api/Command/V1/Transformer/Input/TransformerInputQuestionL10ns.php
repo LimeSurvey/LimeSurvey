@@ -6,14 +6,12 @@ use LimeSurvey\Api\Transformer\Transformer;
 
 class TransformerInputQuestionL10ns extends Transformer
 {
-    use TransformerInputLanguageTrait;
-
     public function __construct()
     {
         $this->setDataMap([
             'id' => ['type' => 'int'],
             'qid' => ['type' => 'int'],
-            'question' => true,
+            'question' => ['required' => true],
             'help' => true,
             'script' => true,
             'language' => true

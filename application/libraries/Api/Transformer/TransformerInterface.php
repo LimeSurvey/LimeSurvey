@@ -11,6 +11,12 @@ interface TransformerInterface
     public function transform($data);
 
     /**
+     * @param ?mixed $data
+     * @return boolean|array
+     */
+    public function validate($data);
+
+    /**
      * @param mixed $collection
      * @return mixed
      */

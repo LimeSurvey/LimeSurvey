@@ -68,11 +68,16 @@ class OpHandlerQuestionGroupL10n implements OpHandlerInterface
      */
     public function handle(OpInterface $op): void
     {
+        $data = $this->transformAllLanguageProps(
+            $op,
+            $op->getProps(),
+            $this->entity
+        );
+
         $diContainer = \LimeSurvey\DI::getContainer();
         $questionGroupService = $diContainer->get(
             QuestionGroupService::class
         );
-
         $questionGroup = $questionGroupService->getQuestionGroupForUpdate(
             $this->getSurveyIdFromContext($op),
             $op->getEntityId()
@@ -80,13 +85,61 @@ class OpHandlerQuestionGroupL10n implements OpHandlerInterface
 
         $questionGroupService->updateQuestionGroupLanguages(
             $questionGroup,
-            $this->transformer->transformAllLanguageProps(
-                $op,
-                $op->getProps(),
-                $this->transformer,
-                $this->entity
-            )
+            $data
         );
+    }
+
+    /**
+     * Transforms language related props to array
+     * This function is shared by QuestionL10n and QuestionGroupL10n operations,
+     * so the actual transformer needs to
+     * @param OpInterface $op
+     * @param array $props
+     * @param string $entity
+     * @return array
+     * @throws OpHandlerException
+     */
+    private function transformAllLanguageProps(
+        OpInterface $op,
+        array $props,
+        string $entity
+    ): array {
+        $dataSet = [];
+        foreach ($props as $language => $properties) {
+            if (is_numeric($language)) {
+                throw new OpHandlerException(
+                    sprintf(
+                        'no indexes for language provided within props for %s with id "%s"',
+                        $entity,
+                        print_r($op->getEntityId(), true)
+                    )
+                );
+            }
+            if (empty($properties)) {
+                throw new OpHandlerException(
+                    sprintf(
+                        'no props provided for %s with id "%s"',
+                        $entity,
+                        print_r($op->getEntityId(), true)
+                    )
+                );
+            }
+            $errors = $this->transformer->validate($properties);
+            if (is_array($errors)) {
+                throw new OpHandlerException(
+                    sprintf(
+                        'failed to transform  %s with id "%s": %s',
+                        $entity,
+                        print_r($op->getEntityId(), true),
+                        $errors[0]
+                    )
+                );
+            }
+
+            $transformedProps = $this->transformer->transform($properties);
+            $dataSet[$language] = $transformedProps;
+        }
+        return $dataSet;
     }
 
     /**

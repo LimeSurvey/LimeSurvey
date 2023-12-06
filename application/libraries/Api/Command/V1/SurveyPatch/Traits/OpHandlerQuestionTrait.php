@@ -6,7 +6,6 @@ use LimeSurvey\Api\Command\V1\SurveyPatch\TempIdMapItem;
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputAnswer;
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputAnswerL10ns;
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestion;
-use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestionAttribute;
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestionL10ns;
 use LimeSurvey\ObjectPatch\Op\OpInterface;
 use LimeSurvey\ObjectPatch\OpHandler\OpHandlerException;
@@ -115,32 +114,6 @@ trait OpHandlerQuestionTrait
         return $prepared;
     }
 
-    /**
-     * Checks required entities' data to be not empty.
-     * @param OpInterface $op
-     * @param array|null $data
-     * @param string $name
-     * @param array|null $additionalEntities
-     * @return void
-     * @throws OpHandlerException
-     */
-    private function checkRequiredData(
-        OpInterface $op,
-        ?array $data,
-        string $name,
-        ?array $additionalEntities = null
-    ): void {
-        if (
-            in_array(
-                $name,
-                $this->getRequiredEntitiesArray($additionalEntities)
-            )
-            && empty($data)
-        ) {
-            $this->throwNoValuesException($op, $name);
-        }
-    }
-
     private function checkRequiredDataCollection(
         OpInterface $op,
         ?array $collection,
@@ -157,26 +130,6 @@ trait OpHandlerQuestionTrait
                 );
             }
         }
-    }
-
-    /**
-     * For creating a question without breaking the app, we need at least
-     * "question"", "questionL10n" entities.
-     * For a more basic use, it is possible to add other required entities
-     * via additionalEntities.
-     * @param array|null $additionalEntities
-     * @return array
-     */
-    private function getRequiredEntitiesArray(
-        ?array $additionalEntities = null
-    ): array {
-        if (!is_array($additionalEntities)) {
-            $additionalEntities = [];
-        }
-        return array_merge($additionalEntities, [
-            'question',
-            'questionL10n'
-        ]);
     }
 
     /**

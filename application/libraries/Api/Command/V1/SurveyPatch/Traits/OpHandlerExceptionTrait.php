@@ -49,4 +49,22 @@ trait OpHandlerExceptionTrait
             )
         );
     }
+
+    private function throwTransformerValidationErrors($errors, $op)
+    {
+        if (is_array($errors)) {
+            throw new OpHandlerException(
+                sprintf(
+                    'Entity "%s" with id "%s" errors: "%s"',
+                    $op->getEntityType(),
+                    (
+                        !is_array($op->getEntityId())
+                        ? $op->getEntityId()
+                        : print_r($op->getEntityId(), true)
+                    ),
+                    $errors[0]
+                )
+            );
+        }
+    }
 }

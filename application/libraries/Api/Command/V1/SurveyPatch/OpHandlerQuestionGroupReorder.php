@@ -124,6 +124,11 @@ class OpHandlerQuestionGroupReorder implements OpHandlerInterface
             if (is_numeric($gid) && $gid > 0) {
                 $groupData['gid'] = $gid;
             }
+            $this->throwTransformerValidationErrors(
+                $this->transformerGroup->validate($groupData),
+                $op
+            );
+
             $tfGroupData = $this->transformerGroup->transform($groupData);
             $this->checkGroupReorderData($op, $tfGroupData, 'group');
             $groupReorderData[$i] = $tfGroupData;
@@ -131,6 +136,12 @@ class OpHandlerQuestionGroupReorder implements OpHandlerInterface
                 foreach ($groupData['questions'] as $qid => $questionData) {
                     $questionData['gid'] = $gid;
                     $questionData['qid'] = $qid;
+
+                    $this->throwTransformerValidationErrors(
+                        $this->transformerQuestion->validate($questionData),
+                        $op
+                    );
+
                     $tfQuestionData = $this->transformerQuestion->transform(
                         $questionData
                     );

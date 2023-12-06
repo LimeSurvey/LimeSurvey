@@ -2,6 +2,8 @@
 
 namespace LimeSurvey\Api\Transformer;
 
+use LimeSurvey\Api\Transformer\Formatter\FormatterInterface;
+
 class Transformer implements TransformerInterface
 {
     /** @var array */
@@ -19,38 +21,55 @@ class Transformer implements TransformerInterface
      *
      * @param ?mixed $data
      * @return ?mixed
+     * @throws TransformerException
      */
     public function transform($data)
     {
         $dataMap = $this->getDataMap();
-
         $output = null;
-
-        if (is_array($data)) {
-            foreach ($dataMap as $key => $config) {
-                if (!array_key_exists($key, $data) || $config === false) {
-                    continue;
-                }
-
-                $config = $this->normaliseConfig($config, $key);
-                $value = $this->cast($data[$key], $config);
-                $value = $this->format($value, $config);
-
-                // Null value reverts to default value
-                // - the default value itself defaults to null
-                if (is_null($value) && isset($config['default'])) {
-                    $value = $config['default'];
-                }
-
-                $this->validate($key, $value, $config);
-
-                if (!isset($output)) {
-                    $output = [];
-                }
-                $output[$config['key']] = $value;
+        foreach ($dataMap as $key => $config) {
+            if (!$config) {
+                continue;
             }
-        }
+            $config = $this->normaliseConfig($config, $key);
+            $value = isset($data[$key])
+                ? $this->cast($data[$key], $config)
+                : null;
+            // Null value reverts to default value
+            // - the default value itself defaults to null
+            if (is_null($value) && isset($config['default'])) {
+                $value = $config['default'];
+            }
+            // Null value and null default
+            // - skip if not required
+            if (is_null($value) && !$config['required']) {
+                continue;
+            }
 
+            $value = $this->format($value, $config);
+            $errors = $this->validateKey(
+                $key,
+                $value,
+                $config,
+                $data
+            );
+            if (is_array($errors)) {
+                throw new TransformerException($errors[0]);
+            }
+
+            if (
+                $config['transformer'] instanceof TransformerInterface
+                && is_array($value)
+            ) {
+                $transformMethod = $config['collection'] ? 'transformAll' : 'transform';
+                $value = $config['transformer']->{$transformMethod}($value);
+            }
+
+            if (!isset($output)) {
+                $output = [];
+            }
+            $output[$config['key']] = $value;
+        }
         return $output;
     }
 
@@ -63,13 +82,6 @@ class Transformer implements TransformerInterface
      */
     private function normaliseConfig($config, $inputKey)
     {
-        $key = null;
-        $type = null;
-        $formatter = null;
-        $default = null;
-        $null = true;
-        $empty = true;
-
         if ($config === true) {
             // map to same key name
             $key = $inputKey;
@@ -79,19 +91,25 @@ class Transformer implements TransformerInterface
         } elseif (is_array($config)) {
             $key = isset($config['key']) ? $config['key'] : $inputKey;
             $type = isset($config['type']) ? $config['type'] : null;
+            $collection = isset($config['collection']) ? $config['collection'] : false;
+            $transformer = isset($config['transformer']) ? $config['transformer'] : null;
             $formatter = isset($config['formatter']) ? $config['formatter'] : null;
             $default = isset($config['default']) ? (bool) $config['default'] : null;
+            $required = isset($config['required']) ? (bool) $config['required'] : false;
             $null = isset($config['null']) ? (bool) $config['null'] : true;
             $empty = isset($config['empty']) ? (bool) $config['empty'] : true;
         }
 
         return [
-            'key' => $key,
-            'type' => $type,
-            'formatter' => $formatter,
-            'default' => $default,
-            'null' => $null,
-            'empty' => $empty
+            'key' => $key ?? null,
+            'type' => $type ?? null,
+            'collection' => $collection ?? false,
+            'transformer' => $transformer ?? null,
+            'formatter' => $formatter ?? null,
+            'default' => $default ?? null,
+            'required' => $required ?? false,
+            'null' => $null ?? true,
+            'empty' => $empty ?? true
         ];
     }
 
@@ -125,30 +143,92 @@ class Transformer implements TransformerInterface
      */
     private function format($value, $config)
     {
-        if (isset($config['formatter'])) {
+        if (
+            isset($config['formatter'])
+            && $config['formatter'] instanceof FormatterInterface
+        ) {
             $value = $config['formatter']->format($value);
         }
         return $value;
     }
 
     /**
-     *  Validate Value
+     * @param ?mixed $data
+     * @return boolean|array
+     */
+    public function validate($data)
+    {
+        $dataMap = $this->getDataMap();
+
+        $errors = [];
+
+        foreach ($dataMap as $key => $config) {
+            if (!$config) {
+                continue;
+            }
+            $config = $this->normaliseConfig($config, $key);
+            $value = isset($data[$key])
+                ? $this->cast($data[$key], $config)
+                : null;
+            $value = $this->format($value, $config);
+
+            // Null value reverts to default value
+            // - the default value itself defaults to null
+            if (is_null($value) && isset($config['default'])) {
+                $value = $config['default'];
+            }
+
+            $fieldErrors = $this->validateKey(
+                $key,
+                $value,
+                $config,
+                $data
+            );
+            if (is_array($fieldErrors)) {
+                $errors = array_merge($errors, $fieldErrors);
+            }
+            if ($config['transformer'] instanceof TransformerInterface && is_array($value)) {
+                $validateMethod = $config['collection'] ? 'validateAll' : 'validate';
+                $subFieldErrors = $config['transformer']->{$validateMethod}($value);
+                if (is_array($subFieldErrors)) {
+                    $errors = array_merge($errors, $subFieldErrors);
+                }
+            }
+        }
+
+        return empty($errors) ?: $errors;
+    }
+
+    /**
+     * Validate Value
+     *
+     * Returns boolean true or array of errors.
      *
      * @param string $key
      * @param mixed $value
      * @param array $config
-     * @throws \Exception
-     * @return void
+     * @param array $data
+     * @return boolean|array
      */
-    private function validate($key, $value, $config)
+    private function validateKey($key, $value, $config, $data)
     {
+        $errors = [];
+        if (
+            $config['required']
+            && !array_key_exists($key, $data)
+        ) {
+            $errors[] = $key . ' is required';
+        }
+
         if ($value === null && $config['null'] === false) {
-            throw new \Exception($key . ' cannot be null');
+            $errors[] = $key . ' cannot be null';
         }
 
         if (empty($value) && $config['empty'] === false) {
-            throw new \Exception($key . ' cannot be empty');
+            $errors[] = $key . ' cannot be empty';
         }
+
+        return empty($errors) ?: $errors;
     }
 
     /**
@@ -162,6 +242,21 @@ class Transformer implements TransformerInterface
         return is_array($collection) ? array_map(function ($allData) {
             return $this->transform($allData);
         }, $collection) : [];
+    }
+
+
+    /**
+     * Validate array of data
+     *
+     * @param mixed $collection
+     * @return mixed
+     */
+    public function validateAll($collection)
+    {
+        $result = is_array($collection) ? array_map(function ($allData) {
+            return $this->validate($allData) ?? [];
+        }, $collection) : [];
+        return !empty($result) ?? $result;
     }
 
     /**

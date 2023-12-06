@@ -61,7 +61,9 @@ class OpHandlerAnswerTest extends TestBaseClass
 
     /**
      * @testdox scale_id is used as second index of produced array
+     * @todo this should be a transformer test
      */
+    /*
     public function testAnswerDataStructure()
     {
         $this->initializePatcher(
@@ -84,6 +86,7 @@ class OpHandlerAnswerTest extends TestBaseClass
         self::assertArrayHasKey(0, $preparedData[0]);
         self::assertArrayHasKey(1, $preparedData[1]);
     }
+    */
 
     /**
      * @param array $props

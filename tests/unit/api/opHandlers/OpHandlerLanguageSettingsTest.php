@@ -12,7 +12,7 @@ use ls\tests\TestBaseClass;
 /**
  * @testdox OpHandlerLanguageSettingsUpdate
  */
-class OpHandlerLanguageSettingsUpdateTest extends TestBaseClass
+class OpHandlerLanguageSettingsTest extends TestBaseClass
 {
     protected OpInterface $op;
 
@@ -112,6 +112,7 @@ class OpHandlerLanguageSettingsUpdateTest extends TestBaseClass
     {
         return [
             'title' => 'Example title',
+            'language' => 'en',
         ];
     }
 

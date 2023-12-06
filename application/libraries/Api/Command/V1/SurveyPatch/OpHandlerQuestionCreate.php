@@ -3,12 +3,7 @@
 namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
 use LimeSurvey\Api\Command\V1\Transformer\{
-    Input\TransformerInputAnswer,
-    Input\TransformerInputAnswerL10ns,
-    Input\TransformerInputQuestion,
-    Input\TransformerInputQuestionAggregate,
-    Input\TransformerInputQuestionAttribute,
-    Input\TransformerInputQuestionL10ns,
+    Input\TransformerInputQuestionAggregate
 };
 use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\{
     OpHandlerSurveyTrait,
@@ -30,29 +25,14 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
 
     protected string $entity;
     protected Question $model;
-    protected TransformerInputQuestion $transformer;
-    protected TransformerInputQuestionL10ns $transformerL10n;
-    protected TransformerInputQuestionAttribute $transformerAttribute;
-    protected TransformerInputAnswer $transformerAnswer;
-    protected TransformerInputAnswerL10ns $transformerAnswerL10n;
     protected TransformerInputQuestionAggregate $transformerInputQuestionAggregate;
 
     public function __construct(
         Question $model,
-        TransformerInputQuestion $transformer,
-        TransformerInputQuestionL10ns $transformerL10n,
-        TransformerInputQuestionAttribute $transformerAttribute,
-        TransformerInputAnswer $transformerAnswer,
-        TransformerInputAnswerL10ns $transformerAnswerL10n,
         TransformerInputQuestionAggregate $transformerInputQuestionAggregate
     ) {
         $this->entity = 'question';
         $this->model = $model;
-        $this->transformer = $transformer;
-        $this->transformerL10n = $transformerL10n;
-        $this->transformerAttribute = $transformerAttribute;
-        $this->transformerAnswer = $transformerAnswer;
-        $this->transformerAnswerL10n = $transformerAnswerL10n;
         $this->transformerInputQuestionAggregate = $transformerInputQuestionAggregate;
     }
 
@@ -207,22 +187,22 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
      */
     public function handle(OpInterface $op): array
     {
-        $transformedProps = $this->prepareData($op);
-        if (
-            !is_array($transformedProps) ||
-            !array_key_exists(
-                'question',
-                $transformedProps
-            )
-        ) {
+        $errors = $this->transformerInputQuestionAggregate->validate(
+            $op->getProps()
+        );
+        if (is_array($errors)) {
             throw new OpHandlerException(
                 sprintf(
-                    'no question entity provided within props for %s with id "%s"',
+                    '%s with id "%s" failed with error "%s"',
                     $this->entity,
-                    print_r($op->getEntityId(), true)
+                    print_r($op->getEntityId(), true),
+                    $errors[0]
                 )
             );
         }
+        $transformedProps = $this->transformerInputQuestionAggregate->transform(
+            $op->getProps()
+        );
         $tempId = $this->extractTempId($transformedProps['question']);
         $diContainer = \LimeSurvey\DI::getContainer();
         $questionService = $diContainer->get(
@@ -254,106 +234,6 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
                 true
             )
         );
-    }
-
-    /**
-     * Aggregates the transformed data of all the different entities into
-     * a single array as the service expects it.
-     * @param OpInterface $op
-     * @return ?mixed
-     * @throws OpHandlerException
-     */
-    public function prepareData(OpInterface $op)
-    {
-        $allData = $op->getProps();
-        $this->checkRawPropsForRequiredEntities($op, $allData);
-        $preparedData = [];
-        $entities = [
-            'question',
-            'questionL10n',
-            'attributes',
-            'answers',
-            'subquestions'
-        ];
-
-        foreach ($entities as $name) {
-            $entityData = [];
-            if (array_key_exists($name, $allData)) {
-                $entityData = $this->prepare($op, $name, $allData[$name]);
-            }
-            $preparedData[$name] = $entityData;
-        }
-
-        return $this->transformerInputQuestionAggregate->transform(
-            $preparedData
-        );
-    }
-
-    /**
-     * Prepares the data structure for the different entities by calling
-     * the different prepare functions.
-     * @param OpInterface $op
-     * @param string $name
-     * @param array $data
-     * @return array|mixed|null
-     * @throws OpHandlerException
-     */
-    public function prepare(OpInterface $op, string $name, array $data)
-    {
-        switch ($name) {
-            case 'question':
-                $entityData = $this->transformer->transform($data);
-                $this->checkRequiredData($op, $entityData, 'question');
-                return $entityData;
-            case 'questionL10n':
-                $collection = $this->transformerL10n->transformAllLanguageProps(
-                    $op,
-                    $data,
-                    $this->transformerL10n,
-                    'questionL10n'
-                );
-                $this->checkRequiredDataCollection(
-                    $op,
-                    $collection,
-                    'questionL10n'
-                );
-                return $collection;
-            case 'attributes':
-                return $this->transformerAttribute->transformAll($data);
-            case 'answers':
-                return $this->prepareAnswers(
-                    $op,
-                    $data,
-                    $this->transformerAnswer,
-                    $this->transformerAnswerL10n
-                );
-            case 'subquestions':
-                return $this->prepareSubQuestions(
-                    $op,
-                    $this->transformer,
-                    $this->transformerL10n,
-                    $data
-                );
-        }
-        return $data;
-    }
-
-    /**
-     * Checks the raw props for all required entities.
-     * @param OpInterface $op
-     * @param array $rawProps
-     * @return void
-     * @throws OpHandlerException
-     */
-    private function checkRawPropsForRequiredEntities(
-        OpInterface $op,
-        array $rawProps
-    ): void {
-        foreach ($this->getRequiredEntitiesArray() as $requiredEntity) {
-            if (!array_key_exists($requiredEntity, $rawProps)) {
-                $this->throwRequiredParamException($op, $requiredEntity);
-            }
-        }
     }
 
     /**

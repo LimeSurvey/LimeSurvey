@@ -126,7 +126,10 @@ class OpHandlerLanguageSettingsUpdate implements OpHandlerInterface
         } else {
             // variant 2
             foreach ($op->getProps() as $language => $props) {
-                $data[$language] = $this->getTransformedProps($op, $props);
+                $data[$language] = $this->getTransformedProps(
+                    $op,
+                    $props
+                );
             }
         }
 
@@ -141,11 +144,11 @@ class OpHandlerLanguageSettingsUpdate implements OpHandlerInterface
      */
     private function getTransformedProps(OpInterface $op, ?array $props)
     {
-        $transformedProps = $this->transformer->transform($props);
-        if ($props === null || $transformedProps === null) {
-            $this->throwNoValuesException($op);
+        $errors = $this->transformer->validate($props);
+        if (is_array($errors)) {
+            throw new OpHandlerException($errors[0]);
         }
-        return $transformedProps;
+        return $this->transformer->transform($props);
     }
 
     /**

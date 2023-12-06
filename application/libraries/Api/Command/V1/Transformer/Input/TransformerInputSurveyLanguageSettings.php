@@ -10,8 +10,8 @@ class TransformerInputSurveyLanguageSettings extends Transformer
     {
         $this->setDataMap([
             'sid' => ['key' => 'surveyls_survey_id', 'type' => 'int'],
-            'language'  => 'surveyls_language',
-            'title' => 'surveyls_title',
+            'language'  => ['key' => 'surveyls_language', 'type' => 'string'],
+            'title' => ['key' => 'surveyls_title', 'type' =>'string', 'required' => true],
             'description' => 'surveyls_description',
             'welcomeText' => 'surveyls_welcometext',
             'endText' => 'surveyls_endtext',

@@ -30,12 +30,8 @@ class OpHandlerQuestionGroupL10nTest extends TestBaseClass
         $this->initializePatcher(
             $this->getWrongProps()
         );
-        $transformer = new TransformerInputQuestionGroupL10ns();
-        $transformer->transformAllLanguageProps(
-            $this->op,
-            $this->op->getProps(),
-            $transformer,
-            'questionGroupL10n'
+        $this->getOpHandler()->handle(
+            $this->op
         );
     }
 
@@ -50,12 +46,8 @@ class OpHandlerQuestionGroupL10nTest extends TestBaseClass
         $this->initializePatcher(
             $this->getMissingLanguageProps()
         );
-        $transformer = new TransformerInputQuestionGroupL10ns();
-        $transformer->transformAllLanguageProps(
-            $this->op,
-            $this->op->getProps(),
-            $transformer,
-            'questionGroupL10n'
+        $this->getOpHandler()->handle(
+            $this->op
         );
     }
 
@@ -84,25 +76,6 @@ class OpHandlerQuestionGroupL10nTest extends TestBaseClass
 
         $opHandler = $this->getOpHandler();
         self::assertFalse($opHandler->canHandle($this->op));
-    }
-
-    /**
-     * @testdox getTransformedLanguageProps returns the expected array
-     */
-    public function testOpQuestionGroupL10nDataStructure()
-    {
-        $this->initializePatcher(
-            $this->getDefaultProps()
-        );
-
-        $transformer = new TransformerInputQuestionGroupL10ns();
-        $transformedDataArray = $transformer->transformAllLanguageProps(
-            $this->op,
-            $this->op->getProps(),
-            $transformer,
-            'questionGroupL10n'
-        );
-        self::assertArrayHasKey('en', $transformedDataArray);
     }
 
     private function initializePatcher(
