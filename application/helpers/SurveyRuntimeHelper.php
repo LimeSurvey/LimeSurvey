@@ -1392,7 +1392,7 @@ class SurveyRuntimeHelper
     {
         $sProcessedString = $sString;
 
-        if ((strpos($sProcessedString, "{") !== false)) {
+        if ((strpos((string) $sProcessedString, "{") !== false)) {
             // process string anyway so that it can be pretty-printed
             $aStandardsReplacementFields = getStandardsReplacementFields($this->aSurveyInfo);
             $sProcessedString = LimeExpressionManager::ProcessStepString($sString, $aStandardsReplacementFields, $iRecursionLevel, $static);
