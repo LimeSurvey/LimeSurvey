@@ -1096,19 +1096,13 @@ class Survey extends LSActiveRecord implements PermissionInterface
         if ($this->active == 'N') {
             return 'inactive';
         }
-        if ($this->expires != '' || $this->startdate != '') {
-            // Time adjust
-            $sNow    = date("Y-m-d H:i:s", strtotime((string) Yii::app()->getConfig('timeadjust'), strtotime(date("Y-m-d H:i:s"))));
-            $sStop   = ($this->expires != '') ? date("Y-m-d H:i:s", strtotime((string) Yii::app()->getConfig('timeadjust'), strtotime($this->expires))) : null;
-            $sStart  = ($this->startdate != '') ? date("Y-m-d H:i:s", strtotime((string) Yii::app()->getConfig('timeadjust'), strtotime($this->startdate))) : null;
-
-            // Time comparison
-            $oNow   = new DateTime($sNow);
-            $oStop  = empty($sStop) ? null : new DateTime($sStop);
-            $oStart = empty($sStart) ? null : new DateTime($sStart);
-
-            $bExpired = (!is_null($sStop) && $oStop < $oNow);
-            $bWillRun = (!is_null($sStart) && $oStart > $oNow);
+        if (!empty($this->expires) || !empty($this->startdate)) {
+            // Create DateTime for now, stop and start for date comparison
+            $oNow = self::shiftedDateTime("now");
+            $oStop = self::shiftedDateTime($this->expires);
+            $oStart = self::shiftedDateTime($this->startdate);
+            $bExpired = (!is_null($oStop) && $oStop < $oNow);
+            $bWillRun = (!is_null($oStart) && $oStart > $oNow);
 
             if ($bExpired) {
                 return 'expired';
@@ -1117,7 +1111,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
                 // And what happen if $sStop < $sStart : must return something other ?
                 return 'willRun';
             }
-            if (!is_null($sStop)) {
+            if (!is_null($oStop)) {
                 return 'willExpire';
             }
         }
@@ -1132,12 +1126,9 @@ class Survey extends LSActiveRecord implements PermissionInterface
     public function getIsDateExpired()
     {
         if (!empty($this->expires)) {
-            $sNow = date("Y-m-d H:i:s", strtotime((string) Yii::app()->getConfig('timeadjust'), strtotime(date("Y-m-d H:i:s"))));
-            $sStop = ($this->expires != '') ? date("Y-m-d H:i:s", strtotime((string) Yii::app()->getConfig('timeadjust'), strtotime($this->expires))) : $sNow;
-
-            $oNow = new DateTime($sNow);
-            $oStop = new DateTime($sStop);
-            return $oStop < $oNow;
+            $oNow = self::shiftedDateTime("now");
+            $oStop = self::shiftedDateTime($this->expires);
+            return !empty($oStop) && $oStop < $oNow;
         }
         return false;
     }
@@ -1154,23 +1145,17 @@ class Survey extends LSActiveRecord implements PermissionInterface
         // If the survey is not active, no date test is needed
         if ($this->active === 'N') {
             $running = '<a href="' . App()->createUrl('/surveyAdministration/view/surveyid/' . $this->sid) . '" class="survey-state" data-bs-toggle="tooltip" title="' . gT('Inactive') . '"><i class="ri-stop-fill text-secondary me-1"></i>' . gT('Inactive') . '</a>';
-        } elseif ($this->expires != '' || $this->startdate != '') {
-            // If it's active, then we check if not expired
-            // Time adjust
-            $sNow    = date("Y-m-d H:i:s", strtotime((string) Yii::app()->getConfig('timeadjust'), strtotime(date("Y-m-d H:i:s"))));
-            $sStop   = ($this->expires != '') ? date("Y-m-d H:i:s", strtotime((string) Yii::app()->getConfig('timeadjust'), strtotime($this->expires))) : null;
-            $sStart  = ($this->startdate != '') ? date("Y-m-d H:i:s", strtotime((string) Yii::app()->getConfig('timeadjust'), strtotime($this->startdate))) : null;
+        } elseif (!empty($this->expires) || !empty($this->startdate)) {
+            // Create DateTime for now, stop and start for date comparison
+            $oNow = self::shiftedDateTime("now");
+            $oStop = self::shiftedDateTime($this->expires);
+            $oStart = self::shiftedDateTime($this->startdate);
 
-            // Time comparaison
-            $oNow   = new DateTime($sNow);
-            $oStop  = new DateTime($sStop);
-            $oStart = new DateTime($sStart);
+            $bExpired = (!is_null($oStop) && $oStop < $oNow);
+            $bWillRun = (!is_null($oStart) && $oStart > $oNow);
 
-            $bExpired = (!is_null($sStop) && $oStop < $oNow);
-            $bWillRun = (!is_null($sStart) && $oStart > $oNow);
-
-            $sStop = $sStop != null ? convertToGlobalSettingFormat($sStop) : null;
-            $sStart = convertToGlobalSettingFormat($sStart);
+            $sStop = !is_null($oStop) ? convertToGlobalSettingFormat($oStop->format('Y-m-d H:i:s')) : "";
+            $sStart = !is_null($oStart) ? convertToGlobalSettingFormat($oStart->format('Y-m-d H:i:s')) : "";
 
             // Icon generaton (for CGridView)
             $sIconRunNoEx = '<a href="' . App()->createUrl('/surveyAdministration/view/surveyid/' . $this->sid) . '" class="survey-state" data-bs-toggle="tooltip" title="' . gT('End: Never') . '"><i class="ri-play-fill text-primary me-1"></i>' . gT('End: Never') . '</a>';
@@ -1183,7 +1168,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
                 // Expire prior to will start
                 $running = ($bExpired) ? $sIconExpired : $sIconFuture;
             } else {
-                if (is_null($sStop)) {
+                if ($sStop === "") {
                     $running = $sIconRunNoEx;
                 } else {
                     $running = $sIconRunning;
@@ -2391,5 +2376,19 @@ class Survey extends LSActiveRecord implements PermissionInterface
         if ($this->expires < $this->startdate) {
             $this->addError('expires', gT("Expiration date can't be lower than the start date", 'unescaped'));
         }
+    }
+
+    /**
+     * Get a dateime DB and return DateTime or null adjusted
+     * @var string|null $datetime in PHP datetime formats
+     * @return \DateTime|null
+     */
+    private static function shiftedDateTime($datetime)
+    {
+        if (is_string($datetime) && strtotime($datetime)) {
+            $datetime = dateShift($datetime, "Y-m-d H:i:s", strval(Yii::app()->getConfig('timeadjust')));
+            return new DateTime($datetime);
+        }
+        return null;
     }
 }

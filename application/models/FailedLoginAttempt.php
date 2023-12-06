@@ -91,17 +91,20 @@ class FailedLoginAttempt extends LSActiveRecord
 
         switch ($attemptType) {
             case FailedLoginAttempt::TYPE_LOGIN:
-                $timeOut = Yii::app()->getConfig('timeOutTime');
-                $maxLoginAttempt = Yii::app()->getConfig('maxLoginAttempt');
+                $timeOut = intval(App()->getConfig('timeOutTime'));
+                $maxLoginAttempt = intval(App()->getConfig('maxLoginAttempt'));
                 break;
             case FailedLoginAttempt::TYPE_TOKEN:
-                $timeOut = Yii::app()->getConfig('timeOutParticipants');
-                $maxLoginAttempt = Yii::app()->getConfig('maxLoginAttemptParticipants');
+                $timeOut = intval(App()->getConfig('timeOutParticipants'));
+                $maxLoginAttempt = intval(App()->getConfig('maxLoginAttemptParticipants'));
                 break;
             default:
                 throw new InvalidArgumentException(sprintf("Invalid attempt type: %s", $attemptType));
         }
-
+        // Return false if disable my maxLoginAttempt
+        if ($maxLoginAttempt <= 0) {
+            return false;
+        }
         if (Yii::app()->getConfig('DBVersion') <= 480) {
             $criteria = new CDbCriteria();
             $criteria->condition = 'number_attempts >= :attempts AND ip = :ip';
@@ -124,6 +127,7 @@ class FailedLoginAttempt extends LSActiveRecord
         if ($row != null) {
             $lastattempt = strtotime((string) $row->last_attempt);
             if (time() > $lastattempt + $timeOut) {
+                // always true if $timeOut <= 0
                 $this->deleteAttempts($attemptType);
             } else {
                 $isLockedOut = true;

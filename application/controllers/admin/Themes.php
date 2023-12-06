@@ -174,7 +174,7 @@ class Themes extends SurveyCommonAction
             App()->getController()->forward("/surveyAdministration/uploadimagefile/");
             App()->end();
         }
-        $sTemplateName = trim(App()->request->getPost('templatename'));
+        $sTemplateName = trim(App()->request->getPost('templatename', ''));
         if (Permission::model()->hasGlobalPermission('templates', 'import') || Permission::model()->hasTemplatePermission($sTemplateName)) {
             App()->loadHelper('admin/template');
             // NB: lid = label id
@@ -616,7 +616,7 @@ JAVASCRIPT
     public function templatefiledelete()
     {
         if (Permission::model()->hasGlobalPermission('templates', 'update')) {
-            $sTemplateName   = Template::templateNameFilter(trim(App()->request->getPost('templatename')));
+            $sTemplateName   = Template::templateNameFilter(trim(App()->request->getPost('templatename', '')));
             $oEditedTemplate = Template::getInstance($sTemplateName);
             $templatedir     = $oEditedTemplate->viewPath;
             $sPostedFiletype = CHtml::decode(App()->request->getPost('filetype'));
@@ -813,7 +813,11 @@ JAVASCRIPT
 
         if (Permission::model()->hasGlobalPermission('templates', 'delete')) {
             // First we check that the theme is really broken
-            $aBrokenThemes = Template::getBrokenThemes();
+            $aBrokenThemes = [];
+            $aTemplatesWithNoDB = TemplateConfig::getTemplatesWithNoDb();
+            if (!empty($aTemplatesWithNoDB['invalid'])) {
+                $aBrokenThemes = $aTemplatesWithNoDB['invalid'];
+            }
             $templatename  = sanitize_dirname($templatename);
             if (array_key_exists($templatename, $aBrokenThemes)) {
                 if (rmdirr(Yii::app()->getConfig('userthemerootdir') . "/" . $templatename)) {
@@ -887,7 +891,7 @@ JAVASCRIPT
             $action               = returnGlobal('action');
             $editfile             = returnGlobal('editfile');
             $relativePathEditfile = returnGlobal('relativePathEditfile');
-            $sTemplateName        = Template::templateNameFilter(trim(App()->request->getPost('templatename')));
+            $sTemplateName        = Template::templateNameFilter(trim(App()->request->getPost('templatename', '')));
             $screenname           = returnGlobal('screenname');
             $oEditedTemplate      = Template::model()->getTemplateConfiguration($sTemplateName, null, null, true)->prepareTemplateRendering($sTemplateName);
 

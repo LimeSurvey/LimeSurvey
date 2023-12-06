@@ -34,6 +34,40 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.3.7 (build 231127) to 6.3.8 (build 231204) December 4, 2023
++New feature #18880: New imagefile option type for theme options (#3621) (Gabriel Jenik)
+-Fixed issue 19255: PHP8.1 + debug : survey with only start date broke survey listing (#3629) (Denis Chenu)
+-Fixed issue #CR-1386: prevent errors when try to load uninstalled themes through the config.xml (#3646) (Patrick Teichmann)
+-Fixed issue #19276: When a user exit on quota, the theme is not applied correctly if "inherits everything" is set to off (#3639) (Gabriel Jenik)
+-Fixed issue #19271: When copy a question - question settings are lost by default (#3641) (Denis Chenu)
+-Fixed issue #19252: [security] Bad permission check when edit quota (#3633) (Denis Chenu)
+-Fixed issue #19243: date question type use always english for month and day for participant (#3625) (Denis Chenu)
+-Fixed issue #19231: (array) json_decode() is not equivalent to json_decode(, true) (#3615) (Olle Härstedt)
+-Fixed issue #19049: Cannot export LSS from survey where theme is set to one extended from 'bootswatch' (#3521) (Gabriel Jenik)
+#Updated translation: Slovak by jelen1
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Korean by modernity4r
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Catalan by qualitatuvic
+
+
+Changes from 6.3.6 (build 231120) to 6.3.7 (build 231127) November 27, 2023
+-Fixed issue #19232: Missing cssframework default values for survey theme (#3614) (Olle Härstedt)
+-Fixed issue #19228: Setting Bruteforce timeout values to empty string causes the administrator to be locked out (#3618) (Denis Chenu)
+-Fixed issue #19206: Alphabetical order can be bad with utf8 character  (#3637) (Denis Chenu)
+-Fixed issue #19168: [security] XSS in Survey menus (Menu icon type and Menu icon) (#3635) (Gabriel Jenik)
+-Fixed issue #19139: [security] CSRF in Reset Survey menus (Tests) (#3612) (Gabriel Jenik)
+-Fixed issue #18671: Potential loop with equation set question (#2984) (Denis Chenu)
+#Updated translation: Portuguese (Portugal) by twilllig
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Greek by baltzis, lenasterg
+#Updated translation: German by c_schmitz
+#Updated translation: French (France) by DenisChenu
+
+
 Changes from 6.3.5 (build 231113) to 6.3.6 (build 231120) November 20, 2023
 -Fixed issue #CT-480: CPDB attribute issues (#3620) (Tim Willig)
 #Updated translation: Polish by elissa

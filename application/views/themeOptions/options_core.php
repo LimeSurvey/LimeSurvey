@@ -6,6 +6,42 @@ $dropdown_options['font'] = ($bInherit ? '<option value="inherit">' . gT("Inheri
     "inherited value:"
 ) . ' ' . (isset($oParentOptions['font']) ? $oParentOptions['font'] : '') . ']</option>' : '');
 
+/** @var string The html for image file dropdown options */
+$imageOptions = '';
+$optgroup = '';
+foreach ($aTemplateConfiguration['imageFileList'] as $image) {
+    // If group is different than the previous one, close the previous optgroup and open a new one
+    if ($image['group'] != $optgroup) {
+        if ($optgroup != '') {
+            $imageOptions .= '</optgroup>';
+        }
+        $imageOptions .= '<optgroup label="' . $image['group'] . '">';
+        $optgroup = $image['group'];
+    }
+    $imageOptions .= '<option data-lightbox-src="' . $image['preview'] . '" value="' . $image['filepath'] . '">' . $image['filename'] . '</option>';
+}
+
+// Add extra info needed for theme options of type "imagefile" (preview path and filename)
+foreach ($aOptionAttributes['optionAttributes'] as $attributeName => &$attribute) {
+    if ($attribute['type'] == 'imagefile') {
+        if (!isset($oParentOptions[$attributeName])) {
+            continue;
+        }
+        if (isset($aTemplateConfiguration['imageFileList'][$oParentOptions[$attributeName]])) {
+            $image = $aTemplateConfiguration['imageFileList'][$oParentOptions[$attributeName]];
+            $attribute['preview'] = $image['preview'];
+            $attribute['filename'] = $image['filename'];
+        } else {
+            $attribute['preview'] = '';
+            $attribute['filename'] = '';
+        }
+    }
+}
+unset($attribute);
+
+/**
+ * @todo: Convert backgroundimagefile and brandlogofile to 'imagefile' type
+ */
 // background file
 $backgroundImageFile           = '';
 $backgroundfileInheritPreview  = '';
@@ -23,6 +59,7 @@ foreach ($aTemplateConfiguration['imageFileList'] as $image) {
 
     if (isset($oParentOptions['backgroundimagefile']) && ($oParentOptions['backgroundimagefile'] == $image['filepath'] || $oParentOptions['backgroundimagefile'] == $image['filepathOptions'])) {
         $backgroundfileInheritPreview = $image['preview'];
+        $backgroundfileInheritFilename = $image['filename'];
     }
 
     $backgroundImageFile .= '<option data-lightbox-src="' . $image['preview'] . '" value="' . $image['filepath'] . '">' . $image['filename'] . '</option>';
@@ -196,6 +233,30 @@ foreach ($aOptionAttributes['categories'] as $key => $category) { ?>
                     echo $aOptionAttributes['optionAttributes'][$attributeKey]['dropdownoptions'];
                     echo '</select>
                                     </div>';
+                } elseif ($attribute['type'] == 'imagefile') {
+                    if (!is_string($sParentOption)) {
+                        // TODO: $aParentOptions is not loaded properly, it seems.
+                        $sParentOption = 'N/A';
+                    }
+                    echo '<div class="col-12">';
+                    // Fields linked to a parent option (Yes/No switch) need a class and data-parent attribute
+                    if (!empty($attribute['parent'])) {
+                        echo '<select class="form-select selector_option_value_field selector_radio_childfield selector_image_selector" data-parent="' . $attribute['parent'] . '" data-inheritvalue=\'' . $sParentOption . '\' id="simple_edit_options_' . $attributeKey . '" name="' . $attributeKey . '"  >';
+                    } else {
+                        echo '<select class="form-select selector_option_value_field selector_image_selector" data-inheritvalue=\'' . $sParentOption . '\' id="simple_edit_options_' . $attributeKey . '" name="' . $attributeKey . '"  >';
+                    }
+                    if ($bInherit) {
+                        if (isset($attribute['preview'])) {
+                            $inheritedValue = $attribute['preview'];
+                        } else {
+                            $inheritedValue = isset($sParentOption) ? $sParentOption : '';
+                        }
+                        echo '<option value="inherit">' . gT("Inherit") . ' [' . gT("inherited value:") . ' ' . $inheritedValue . ']</option>';
+                    }
+                    // Dropdown options for image files
+                    echo $imageOptions;
+                    echo '</select>';
+                    echo '</div>';
                 } elseif ($attribute['type'] == 'icon') {
                     echo ' <div class="col-12 input-group">
                                 <select class="selector_option_value_field form-select simple_edit_options_checkicon" data-parent="' . $attribute['parent'] . '" id="simple_edit_options_' . $attributeKey . '" name="' . $attributeKey . '" >';
@@ -220,7 +281,7 @@ foreach ($aOptionAttributes['categories'] as $key => $category) { ?>
 
                 echo '</div>';
 
-                if ($category == 'Images' && $attribute['type'] == 'dropdown') {
+                if ($attribute['type'] == 'imagefile' || ($category == 'Images' && $attribute['type'] == 'dropdown')) {
                     echo '<div class="col-2">
                                 <label class="form-label">&nbsp;</label>
                                 <div class="col-12">
