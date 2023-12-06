@@ -2,13 +2,11 @@
 
 namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
-use LimeSurvey\Api\Command\V1\Transformer\{
-    Input\TransformerInputAnswer,
-    Input\TransformerInputAnswerL10ns,
-};
+use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputAnswer;
 use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\{
     OpHandlerQuestionTrait,
     OpHandlerSurveyTrait,
+    OpHandlerExceptionTrait
 };
 use LimeSurvey\Models\Services\QuestionAggregateService\QuestionService;
 use LimeSurvey\ObjectPatch\{Op\OpInterface,
@@ -23,22 +21,20 @@ class OpHandlerAnswer implements OpHandlerInterface
 {
     use OpHandlerSurveyTrait;
     use OpHandlerQuestionTrait;
+    use OpHandlerExceptionTrait;
 
     protected string $entity;
-    protected TransformerInputAnswer $transformerAnswer;
-    protected TransformerInputAnswerL10ns $transformerAnswerL10n;
+    protected TransformerInputAnswer $transformer;
     protected AnswersService $answersService;
     protected QuestionService $questionService;
 
     public function __construct(
-        TransformerInputAnswer $transformerAnswer,
-        TransformerInputAnswerL10ns $transformerAnswerL10n,
+        TransformerInputAnswer $transformer,
         AnswersService $answersService,
         QuestionService $questionService
     ) {
         $this->entity = 'answer';
-        $this->transformerAnswer = $transformerAnswer;
-        $this->transformerAnswerL10n = $transformerAnswerL10n;
+        $this->transformer = $transformer;
         $this->answersService = $answersService;
         $this->questionService = $questionService;
     }
@@ -159,33 +155,35 @@ class OpHandlerAnswer implements OpHandlerInterface
      * @param OpInterface $op
      * @return array
      * @throws OpHandlerException
-     * @throws \DI\DependencyException
-     * @throws \DI\NotFoundException
      * @throws \LimeSurvey\Models\Services\Exception\NotFoundException
      * @throws \LimeSurvey\Models\Services\Exception\PermissionDeniedException
      * @throws \LimeSurvey\Models\Services\Exception\PersistErrorException
      */
     public function handle(OpInterface $op): array
     {
+        $this->throwTransformerValidationErrors(
+            $this->transformer->validateAll(
+                $op->getProps(),
+            ),
+            $op
+        );
+
         $question = $this->questionService->getQuestionBySidAndQid(
             $this->getSurveyIdFromContext($op),
             $op->getEntityId()
         );
-        $preparedData = $this->prepareAnswers(
-            $op,
-            $op->getProps(),
-            $this->transformerAnswer,
-            $this->transformerAnswerL10n,
-            ['answer', 'answerL10n']
+
+        $data = $this->transformer->transformAll(
+            $op->getProps()
         );
         $this->answersService->save(
             $question,
-            $preparedData
+            $data
         );
 
         return $this->getSubQuestionNewIdMapping(
             $question,
-            $preparedData,
+            $data,
             true
         );
     }
