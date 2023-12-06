@@ -36,7 +36,7 @@ class QuotasController extends LSBaseController
     {
         $surveyid = sanitize_int($surveyid);
         if (!Permission::model()->hasSurveyPermission($surveyid, 'quotas')) {
-            throw new CHttpException(403, gT("You do not have permission on this survey."));
+            throw new CHttpException(403, gT("You do not have permission for this survey."));
         }
         $oSurvey = Survey::model()->findByPk($surveyid);
         $aData['surveyid'] = $oSurvey->sid;
@@ -105,7 +105,7 @@ class QuotasController extends LSBaseController
     {
         $surveyid = sanitize_int($surveyid);
         if (!Permission::model()->hasSurveyPermission($surveyid, 'quotas')) {
-            throw new CHttpException(403, gT("You do not have permission on this survey."));
+            throw new CHttpException(403, gT("You do not have permission for this survey."));
         }
         $oSurvey = Survey::model()->findByPk($surveyid);
 
@@ -133,7 +133,7 @@ class QuotasController extends LSBaseController
     {
         $surveyid = sanitize_int($surveyid);
         if (!Permission::model()->hasSurveyPermission($surveyid, 'quotas', 'create')) {
-            throw new CHttpException(403, gT("You do not have permission on this survey."));
+            throw new CHttpException(403, gT("You do not have permission for this survey."));
         }
         Yii::app()->loadHelper('admin.htmleditor');
 
@@ -435,7 +435,7 @@ class QuotasController extends LSBaseController
             throw new CHttpException(404, gT("Quota not found."));
         }
         if (!Permission::model()->hasSurveyPermission($oQuota->sid, 'quotas', $sPermission)) {
-            throw new CHttpException(403, gT("You do not have permission on this quota."));
+            throw new CHttpException(403, gT("You do not have permission for this quota."));
         }
         return $oQuota;
     }

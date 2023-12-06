@@ -118,7 +118,7 @@ class UserGroupController extends LSBaseController
                 || ($userGroup->hasUser(Yii::app()->user->id) && Permission::model()->hasGlobalPermission('usergroups', 'read')) // inside group and have global UserGroup view
             )
         ) {
-            throw new CHttpException(403, gT("No access : you do not have permission to this users group."));
+            throw new CHttpException(403, gT("No access: You do not have permission to this user group."));
         }
 
         $aData = [];
@@ -471,7 +471,7 @@ class UserGroupController extends LSBaseController
             !Permission::model()->hasGlobalPermission('superadmin', 'read') // User is not a superadmin
             && $userGroup->owner_id != $currentUserId // User is not owner
         ) {
-            throw new CHttpException(403, gT("No access : you do not have permission to send emails to all users."));
+            throw new CHttpException(403, gT("No access: You do not have permission to send emails to all users."));
         }
         $redirectUrl = App()->createUrl("userGroup/viewGroup", ['ugid' => $ugid]);
         $aData = [];

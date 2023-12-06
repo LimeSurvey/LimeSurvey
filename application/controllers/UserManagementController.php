@@ -1180,13 +1180,13 @@ class UserManagementController extends LSBaseController
             $aResults[$sItem]['title'] = $model->users_name;
             if ($model->uid == Yii::app()->user->id) {
                 $aResults[$sItem]['result'] = false;
-                $aResults[$sItem]['error'] = gT("You can not update your own roles.");
+                $aResults[$sItem]['error'] = gT("You are not allowed to update your own roles.");
                 continue;
             }
             $userManager = new UserManager(Yii::app()->user, $model);
             if (!$userManager->canAssignRole()) {
                 $aResults[$sItem]['result'] = false;
-                $aResults[$sItem]['error'] = gT('You can not set role to this user.');
+                $aResults[$sItem]['error'] = gT('You are not allowed to assign a role to this user.');
             } else {
                 foreach ($aUserRoleIds as $iUserRoleId) {
                     $aResults[$sItem]['result'] = Permissiontemplates::model()->applyToUser($sItem, $iUserRoleId);

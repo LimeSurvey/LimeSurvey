@@ -66,7 +66,7 @@ class AzureOAuthSMTP extends SmtpOAuthPluginBase
         if (!(PHP_VERSION_ID >= 70300)) {
             $event = $this->getEvent();
             $event->set('success', false);
-            $event->set('message', gT("This plugin requires PHP 7.3 or above."));
+            $event->set('message', gT("This plugin requires PHP version 7.3 or higher."));
         }
     }
 
