@@ -118,8 +118,18 @@ var UserManagement = function () {
                     $('#UserManagement--errors').html(LS.LsGlobalNotifier.createAlert(result.errors, 'danger', {showCloseButton: true})
                     ).removeClass('d-none');
                 },
-                error: function () {
-                    alert('An error occured while trying to save, please reload the page Code:1571926261195');
+                error: function (request, status, error) {
+                    if (request && request.responseJSON && request.responseJSON.message) {
+                        $('#UserManagement--errors').html(
+                            LS.LsGlobalNotifier.createAlert(
+                                request.responseJSON.message,
+                                'danger',
+                                {showCloseButton: true}
+                            )
+                        ).removeClass('d-none');
+                    } else {
+                        alert('An error occured while trying to save, please reload the page Code:1571926261195');
+                    }
                 }
             });
         });
