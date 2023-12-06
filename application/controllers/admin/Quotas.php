@@ -310,7 +310,7 @@ class Quotas extends SurveyCommonAction
         $qid = Yii::app()->request->getPost('quota_qid');
         $quota_id = Yii::app()->request->getPost('quota_id');
         $this->checkPermissions($iSurveyId, 'update');
-        $this->checkValidQuotaId($surveyId, $quota_id);
+        $this->checkValidQuotaId($iSurveyId, $quota_id);
 
         $oQuotaMembers = new QuotaMember('create'); // Trigger the 'create' rules
         $oQuotaMembers->sid = $iSurveyId;
