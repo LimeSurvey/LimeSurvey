@@ -1729,6 +1729,15 @@ class SurveyRuntimeHelper
         extract($args);
 
         $this->aSurveyInfo                 = getSurveyInfo($this->iSurveyid, App()->getLanguage());
+        if (isset($args['popuppreview']) && $args['popuppreview']) {
+            $this->aSurveyInfo['showxquestions'] = 'N';
+            $this->aSurveyInfo['shownoanswer'] = 'N';
+            $this->aSurveyInfo['showwelcome'] = 'N';
+            $this->aSurveyInfo['showprogress'] = 'N';
+            $this->aSurveyInfo['format'] = 'A';
+            $this->aSurveyInfo['listpublic'] = 'N';
+            $this->aSurveyInfo['popupPreview'] = true;
+        }
         $this->aSurveyInfo['surveyUrl']    = App()->createUrl("/survey/index", array("sid" => $this->iSurveyid));
 
         // TODO: check this:
