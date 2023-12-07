@@ -4,7 +4,6 @@ namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestionAttribute;
 use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\{
-    OpHandlerQuestionTrait,
     OpHandlerSurveyTrait
 };
 use LimeSurvey\Models\Services\{
@@ -23,7 +22,6 @@ use LimeSurvey\ObjectPatch\{
 class OpHandlerQuestionAttributeUpdate implements OpHandlerInterface
 {
     use OpHandlerSurveyTrait;
-    use OpHandlerQuestionTrait;
 
     protected string $entity;
     protected AttributesService $attributesService;

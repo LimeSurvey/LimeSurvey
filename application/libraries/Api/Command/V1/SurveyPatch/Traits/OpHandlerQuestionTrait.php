@@ -13,24 +13,6 @@ trait OpHandlerQuestionTrait
 {
     use OpHandlerExceptionTrait;
 
-    private function checkRequiredDataCollection(
-        OpInterface $op,
-        ?array $collection,
-        string $name,
-        ?array $additionalEntities = null
-    ): void {
-        if (is_array($collection)) {
-            foreach ($collection as $data) {
-                $this->checkRequiredData(
-                    $op,
-                    $data,
-                    $name,
-                    $additionalEntities
-                );
-            }
-        }
-    }
-
     /**
      * Converts the subquestions from the raw data to the expected format.
      * @param OpInterface $op
