@@ -73,6 +73,8 @@ class TransformerInputSurvey extends Transformer
             'googleAnalyticsStyle' => ['key' => 'googleanalyticsstyle', 'type' => 'int'],
             'googleAnalyticsApiKey' => 'googleanalyticsapikey',
             'showSurveyPolicyNotice' => ['key' => 'showsurveypolicynotice', 'type' => 'int'],
+            'template' => true,
+            'format' => true
         ]);
     }
 }
