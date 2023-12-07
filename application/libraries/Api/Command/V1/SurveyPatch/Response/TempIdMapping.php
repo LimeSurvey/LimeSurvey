@@ -1,6 +1,6 @@
 <?php
 
-namespace LimeSurvey\Api\Command\V1\SurveyPatch;
+namespace LimeSurvey\Api\Command\V1\SurveyPatch\Response;
 
 use LimeSurvey\ObjectPatch\OpHandler\OpHandlerException;
 

@@ -5,6 +5,7 @@ namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 use LimeSurvey\Api\Command\V1\Transformer\{
     Input\TransformerInputQuestionAggregate
 };
+use LimeSurvey\Api\Command\V1\SurveyPatch\Response\TempIdMapItem;
 use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\{
     OpHandlerSurveyTrait,
     OpHandlerQuestionTrait,

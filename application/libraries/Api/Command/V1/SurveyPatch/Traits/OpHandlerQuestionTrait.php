@@ -2,7 +2,7 @@
 
 namespace LimeSurvey\Api\Command\V1\SurveyPatch\Traits;
 
-use LimeSurvey\Api\Command\V1\SurveyPatch\TempIdMapItem;
+use LimeSurvey\Api\Command\V1\SurveyPatch\Response\TempIdMapItem;
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestion;
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestionL10ns;
 use LimeSurvey\ObjectPatch\Op\OpInterface;
