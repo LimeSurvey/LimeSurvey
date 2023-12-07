@@ -187,16 +187,6 @@ class Transformer implements TransformerInterface
             if (is_array($fieldErrors)) {
                 $errors = array_merge($errors, $fieldErrors);
             }
-            if (
-                $config['transformer'] instanceof TransformerInterface
-                && isset($value)
-            ) {
-                $validateMethod = $config['collection'] ? 'validateAll' : 'validate';
-                $subFieldErrors = $config['transformer']->{$validateMethod}($value);
-                if (is_array($subFieldErrors)) {
-                    $errors = array_merge($errors, $subFieldErrors);
-                }
-            }
         }
 
         return empty($errors) ?: $errors;
@@ -232,6 +222,17 @@ class Transformer implements TransformerInterface
 
         if (empty($value) && $config['empty'] === false) {
             $errors[] = $key . ' cannot be empty';
+        }
+
+        if (
+            $config['transformer'] instanceof TransformerInterface
+            && isset($value)
+        ) {
+            $validateMethod = $config['collection'] ? 'validateAll' : 'validate';
+            $subFieldErrors = $config['transformer']->{$validateMethod}($value);
+            if (is_array($subFieldErrors)) {
+                $errors = array_merge($errors, $subFieldErrors);
+            }
         }
 
         return empty($errors) ?: $errors;
