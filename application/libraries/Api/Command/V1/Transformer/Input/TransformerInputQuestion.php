@@ -2,9 +2,11 @@
 
 namespace LimeSurvey\Api\Command\V1\Transformer\Input;
 
-use LimeSurvey\Api\Transformer\{Formatter\FormatterMandatory,
+use LimeSurvey\Api\Transformer\{
     Transformer,
-    Formatter\FormatterYnToBool};
+    Formatter\FormatterMandatory,
+    Formatter\FormatterYnToBool
+};
 
 class TransformerInputQuestion extends Transformer
 {
@@ -18,7 +20,7 @@ class TransformerInputQuestion extends Transformer
             'parentQid' => ['key' => 'parent_qid', 'type' => 'int'],
             'sid' => ['type' => 'int'],
             'type' => true,
-            'title' => true,
+            'title' => ['type' =>'string'], // "title" is the question code
             'preg' => true,
             'other' => ['formatter' => $formatterYn],
             'mandatory' => ['formatter' => $formatterMandatory],

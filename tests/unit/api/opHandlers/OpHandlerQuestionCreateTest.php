@@ -5,9 +5,11 @@ namespace ls\tests\unit\api\opHandlers;
 use LimeSurvey\DI;
 use LimeSurvey\Api\Command\V1\SurveyPatch\OpHandlerQuestionCreate;
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestionAggregate;
-use LimeSurvey\ObjectPatch\Op\OpInterface;
-use LimeSurvey\ObjectPatch\Op\OpStandard;
-use LimeSurvey\ObjectPatch\OpHandler\OpHandlerException;
+use LimeSurvey\ObjectPatch\{
+    Op\OpInterface,
+    Op\OpStandard,
+    OpHandler\OpHandlerException
+};
 use ls\tests\TestBaseClass;
 use ls\tests\unit\services\QuestionGroup\QuestionGroupMockSetFactory;
 
@@ -59,79 +61,6 @@ class OpHandlerQuestionCreateTest extends TestBaseClass
 
         $opHandler = $this->getOpHandler();
         self::assertFalse($opHandler->canHandle($this->op));
-    }
-
-    /**
-     * @testdox converts "advanced settings" to correct structure
-     * @todo This should be a transformer test
-     */
-    /*
-    public function testQuestionCreateAttributesStructure()
-    {
-        $preparedData = $this->getPreparedData();
-        $this->assertArrayHasKey('advancedSettings', $preparedData);
-        $this->assertIsArray($preparedData['advancedSettings']);
-        $this->assertArrayHasKey(
-            'dualscale_headerA',
-            $preparedData['advancedSettings'][0]
-        );
-        $this->assertIsArray(
-            $preparedData['advancedSettings'][0]['dualscale_headerA']
-        );
-        $this->assertArrayHasKey(
-            'de',
-            $preparedData['advancedSettings'][0]['dualscale_headerA']
-        );
-        $this->assertArrayHasKey(
-            'public_statistics',
-            $preparedData['advancedSettings'][0]
-        );
-        $this->assertIsNotArray(
-            $preparedData['advancedSettings'][0]['public_statistics']
-        );
-    }
-    */
-
-    /**
-     * @testdox converts "answers" to correct structure
-     * @todo This should be a transformer test
-     */
-    /*
-    public function testQuestionCreateAnswersStructure()
-    {
-        $preparedData = $this->getPreparedData();
-        $this->assertArrayHasKey('answeroptions', $preparedData);
-        $this->assertIsArray($preparedData['answeroptions']);
-        $this->assertIsArray($preparedData['answeroptions'][0]);
-        $this->assertArrayHasKey('code', $preparedData['answeroptions'][0][0]);
-        // @TODO index
-    }
-    */
-
-    /**
-     * @testdox converts "subquestions" to correct structure
-     * @todo This should be a transformer test
-     */
-    /*
-    public function testQuestionCreateSuQuestionsStructure()
-    {
-        $preparedData = $this->getPreparedData();
-        $this->assertArrayHasKey('subquestions', $preparedData);
-        $this->assertIsArray($preparedData['subquestions']);
-        $this->assertIsArray($preparedData['subquestions'][0]);
-        $this->assertArrayHasKey('code', $preparedData['subquestions'][0][0]);
-    }
-    */
-
-    private function getPreparedData()
-    {
-        $this->initializePatcher(
-            $this->getCorrectProps(),
-            'update'
-        );
-
-        $opHandler = $this->getOpHandler();
-        return $opHandler->prepareData($this->op);
     }
 
     /**

@@ -8,7 +8,6 @@ use LimeSurvey\Api\Command\V1\Transformer\{
 use LimeSurvey\Api\Command\V1\SurveyPatch\Response\TempIdMapItem;
 use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\{
     OpHandlerSurveyTrait,
-    OpHandlerQuestionTrait,
     OpHandlerExceptionTrait
 };
 use LimeSurvey\ObjectPatch\{
@@ -23,20 +22,19 @@ use Question;
 class OpHandlerQuestionCreate implements OpHandlerInterface
 {
     use OpHandlerSurveyTrait;
-    use OpHandlerQuestionTrait;
     use OpHandlerExceptionTrait;
 
     protected string $entity;
     protected Question $model;
-    protected TransformerInputQuestionAggregate $transformerInputQuestionAggregate;
+    protected TransformerInputQuestionAggregate $transformer;
 
     public function __construct(
         Question $model,
-        TransformerInputQuestionAggregate $transformerInputQuestionAggregate
+        TransformerInputQuestionAggregate $transformer
     ) {
         $this->entity = 'question';
         $this->model = $model;
-        $this->transformerInputQuestionAggregate = $transformerInputQuestionAggregate;
+        $this->transformer = $transformer;
     }
 
     public function canHandle(OpInterface $op): bool
@@ -182,8 +180,6 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
      * @param OpInterface $op
      * @return array
      * @throws OpHandlerException
-     * @throws \DI\DependencyException
-     * @throws \DI\NotFoundException
      * @throws \LimeSurvey\Models\Services\Exception\NotFoundException
      * @throws \LimeSurvey\Models\Services\Exception\PermissionDeniedException
      * @throws \LimeSurvey\Models\Services\Exception\PersistErrorException
@@ -191,12 +187,12 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
     public function handle(OpInterface $op): array
     {
         $this->throwTransformerValidationErrors(
-            $this->transformerInputQuestionAggregate->validate(
+            $this->transformer->validate(
             $op->getProps(),
             ),
             $op
         );
-        $transformedProps = $this->transformerInputQuestionAggregate->transform(
+        $transformedProps = $this->transformer->transform(
             $op->getProps()
         );
         $tempId = $this->extractTempId($transformedProps['question']);

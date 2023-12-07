@@ -2,7 +2,8 @@
 
 namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
-use LimeSurvey\Api\Command\V1\SurveyPatch\Response\{ErronousOperationItem,
+use LimeSurvey\Api\Command\V1\SurveyPatch\Response\{
+    ErronousOperationItem,
     ErronousOperations,
     TempIdMapItem,
     TempIdMapping

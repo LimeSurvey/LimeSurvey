@@ -3,7 +3,6 @@
 namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
 use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\{
-    OpHandlerQuestionTrait,
     OpHandlerSurveyTrait,
     OpHandlerExceptionTrait
 };
@@ -18,7 +17,6 @@ use LimeSurvey\ObjectPatch\{Op\OpInterface,
 class OpHandlerQuestionUpdate implements OpHandlerInterface
 {
     use OpHandlerSurveyTrait;
-    use OpHandlerQuestionTrait;
     use OpHandlerExceptionTrait;
 
     protected QuestionAggregateService $questionAggregateService;
@@ -66,7 +64,7 @@ class OpHandlerQuestionUpdate implements OpHandlerInterface
     {
         $this->throwTransformerValidationErrors(
             $this->transformer->validate(
-            $op->getProps(),
+                $op->getProps(),
             ),
             $op
         );
@@ -89,10 +87,7 @@ class OpHandlerQuestionUpdate implements OpHandlerInterface
         $props = $op->getProps();
         $transformedProps = $this->transformer->transform($props);
 
-        if ($props === null || $transformedProps === null) {
-            $this->throwNoValuesException($op);
-        }
-        /** @var array $transformedProps */
+        // Set qid from op entity id
         if (
             !array_key_exists(
                 'qid',

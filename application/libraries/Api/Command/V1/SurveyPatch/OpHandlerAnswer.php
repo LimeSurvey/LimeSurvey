@@ -4,23 +4,24 @@ namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputAnswer;
 use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\{
-    OpHandlerQuestionTrait,
     OpHandlerSurveyTrait,
     OpHandlerExceptionTrait
 };
-use LimeSurvey\Models\Services\QuestionAggregateService\QuestionService;
-use LimeSurvey\ObjectPatch\{Op\OpInterface,
+use LimeSurvey\ObjectPatch\{
+    Op\OpInterface,
     OpType\OpTypeCreate,
     OpHandler\OpHandlerException,
     OpHandler\OpHandlerInterface,
     OpType\OpTypeUpdate
 };
-use LimeSurvey\Models\Services\QuestionAggregateService\AnswersService;
+use LimeSurvey\Models\Services\QuestionAggregateService\{
+    QuestionService,
+    AnswersService
+};
 
 class OpHandlerAnswer implements OpHandlerInterface
 {
     use OpHandlerSurveyTrait;
-    use OpHandlerQuestionTrait;
     use OpHandlerExceptionTrait;
 
     protected string $entity;
