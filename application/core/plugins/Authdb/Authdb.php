@@ -178,7 +178,7 @@ class Authdb extends AuthPluginBase
             $this->setAuthFailure(self::ERROR_USERNAME_INVALID);
             return;
         }
-        if ($user->isExpired() || (isset($user->user_status) && !$user->user_status)) {
+        if ($user->isExpired()) {
             // TODO: Should we show the actual error? Taking a conservative approach of not revealing the actual cause for now.
             $this->setAuthFailure(self::ERROR_USERNAME_INVALID);
             return;
