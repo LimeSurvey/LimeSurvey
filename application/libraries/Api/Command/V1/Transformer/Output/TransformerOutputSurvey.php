@@ -80,8 +80,8 @@ class TransformerOutputSurvey extends TransformerOutputActiveRecord
             "showsurveypolicynotice" => ['key' =>  'showSurveyPolicyNotice', 'type' => 'int'],
             'template' => true,
             'format' => true,
-            'inheritedTemplate' =>true,
-            'inheritedFormat' =>true,
+            'inheritedTemplate' => true,
+            'inheritedFormat' => true,
         ]);
     }
 
