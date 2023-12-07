@@ -59,7 +59,7 @@ class Transformer implements TransformerInterface
 
             if (
                 $config['transformer'] instanceof TransformerInterface
-                && is_array($value)
+                && isset($value)
             ) {
                 $transformMethod = $config['collection'] ? 'transformAll' : 'transform';
                 $value = $config['transformer']->{$transformMethod}($value);
@@ -154,7 +154,7 @@ class Transformer implements TransformerInterface
 
     /**
      * @param ?mixed $data
-     * @return boolean|array
+     * @return boolean|array Returns true on success or array of errors.
      */
     public function validate($data)
     {
@@ -187,7 +187,10 @@ class Transformer implements TransformerInterface
             if (is_array($fieldErrors)) {
                 $errors = array_merge($errors, $fieldErrors);
             }
-            if ($config['transformer'] instanceof TransformerInterface && is_array($value)) {
+            if (
+                $config['transformer'] instanceof TransformerInterface
+                && isset($value)
+            ) {
                 $validateMethod = $config['collection'] ? 'validateAll' : 'validate';
                 $subFieldErrors = $config['transformer']->{$validateMethod}($value);
                 if (is_array($subFieldErrors)) {
@@ -235,10 +238,10 @@ class Transformer implements TransformerInterface
     }
 
     /**
-     * Transform array of data
+     * Transform collection
      *
-     * @param mixed $collection
-     * @return mixed
+     * @param array $collection
+     * @return array
      */
     public function transformAll($collection)
     {
@@ -247,19 +250,21 @@ class Transformer implements TransformerInterface
         }, $collection) : [];
     }
 
-
     /**
-     * Validate array of data
+     * Validate collection
      *
-     * @param mixed $collection
-     * @return mixed
+     * @param array $collection
+     * @return bool|array Returns true on success or array of errors.
      */
     public function validateAll($collection)
     {
-        $result = is_array($collection) ? array_map(function ($allData) {
-            return $this->validate($allData) ?? [];
-        }, $collection) : [];
-        return !empty($result) ?? $result;
+        $result = array_reduce($collection, function ($carry, $data) {
+            $oneResult = $this->validate($data);
+            return is_array($oneResult)
+                ? array_merge($carry, $oneResult)
+                : $carry;
+        }, []);
+        return empty($result) ?: $result;
     }
 
     /**
