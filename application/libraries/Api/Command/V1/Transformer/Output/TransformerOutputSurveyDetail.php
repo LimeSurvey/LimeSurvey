@@ -58,7 +58,8 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
         }
 
         $survey = $this->transformerSurvey->transform($data);
-
+        $survey['templateInherited'] = $data->oOptions->template;
+        $survey['formatInherited'] = $data->oOptions->format;
         $survey['languages'] = $data->allLanguages;
 
         // transformAll() can apply required entity sort so we must retain the sort order going forward
@@ -73,9 +74,6 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
             'gid',
             $survey['questionGroups']
         );
-        // get inherited template value
-        $survey['inheritedTemplate'] = $data->oOptions->template;
-        $survey['inheritedFormat'] = $data->oOptions->format;
 
 
         foreach ($data->groups as $questionGroupModel) {
