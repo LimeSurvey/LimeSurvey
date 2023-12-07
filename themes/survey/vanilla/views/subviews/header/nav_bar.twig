@@ -16,6 +16,7 @@ See: https://getbootstrap.com/components/#navbar
 
 For the survey navigator ("Next", "Back", etc.), see: navigation/navigator.twig
 #}
+{% if not aSurveyInfo.popupPreview %}
 {% set navClass = "navbar-light bg-light" %}
 {% if( aSurveyInfo.template == "bootswatch") %}
     {% set navClass = "navbar-default bg-primary" %}
@@ -57,3 +58,4 @@ For the survey navigator ("Next", "Back", etc.), see: navigation/navigator.twig
         {% endif %}
     </div>
 </div>
+{% endif %}

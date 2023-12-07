@@ -16,6 +16,7 @@ See: https://getbootstrap.com/components/#navbar
 
 For the survey navigator ("Next", "Back", etc.), see: navigation/navigator.twig
 #}
+{% if not aSurveyInfo.popupPreview %}
 <!-- Bootstrap Navigation Bar -->
 <div id="survey-nav" class="navbar fixed-top">
     <div class="container-fluid col-xl-8">
@@ -53,3 +54,4 @@ For the survey navigator ("Next", "Back", etc.), see: navigation/navigator.twig
         <ul id="back-content" class="d-none"></ul>
     </div>
 </div>
+{% endif %}
