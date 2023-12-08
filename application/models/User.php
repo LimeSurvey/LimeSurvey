@@ -130,6 +130,12 @@ class User extends LSActiveRecord
     /** @inheritdoc */
     public function scopes()
     {
+        if (App()->getConfig("DBVersion") < 495) {
+            /* No expires column before 495 */
+            return array(
+                'active' => []
+            );
+        }
         return array(
             'active' => array(
                 'condition' => "expires > :now OR expires IS NULL",
