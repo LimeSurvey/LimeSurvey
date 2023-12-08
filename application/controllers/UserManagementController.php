@@ -455,6 +455,10 @@ class UserManagementController extends LSBaseController
             throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
         $userId = sanitize_int(Yii::app()->request->getParam('userid'));
+        // One can never deactivate the superadmin. Button should already be disabled in JS.
+        if ($userId === 1) {
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
+        }
         $action = Yii::app()->request->getParam('action');
         $oUser = User::model()->findByPk($userId);
 
