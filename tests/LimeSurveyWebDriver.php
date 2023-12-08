@@ -150,6 +150,11 @@ class LimeSurveyWebDriver extends RemoteWebDriver
         return $this->findElement(WebDriverBy::cssSelector($css));
     }
 
+    public function findManyByCss($css)
+    {
+        return $this->findElements(WebDriverBy::cssSelector($css));
+    }
+
     /**
      * @param string $text
      * @return \Facebook\WebDriver\Remote\RemoteWebElement
