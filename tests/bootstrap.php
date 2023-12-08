@@ -12,6 +12,8 @@ if (!file_exists(__DIR__ . '/../enabletests')) {
     exit(9);
 }
 
+ob_start();
+
 /*
  *---------------------------------------------------------------
  * SYSTEM FOLDER NAME
