@@ -118,8 +118,18 @@ var UserManagement = function () {
                     $('#UserManagement--errors').html(LS.LsGlobalNotifier.createAlert(result.errors, 'danger', {showCloseButton: true})
                     ).removeClass('d-none');
                 },
-                error: function () {
-                    alert('An error occured while trying to save, please reload the page Code:1571926261195');
+                error: function (request, status, error) {
+                    if (request && request.responseJSON && request.responseJSON.message) {
+                        $('#UserManagement--errors').html(
+                            LS.LsGlobalNotifier.createAlert(
+                                request.responseJSON.message,
+                                'danger',
+                                {showCloseButton: true}
+                            )
+                        ).removeClass('d-none');
+                    } else {
+                        alert('An error occured while trying to save, please reload the page Code:1571926261195');
+                    }
                 }
             });
         });
@@ -328,9 +338,21 @@ var UserManagement = function () {
         $('.UserManagement--action--openmodal').on('click', function () {
             var href = $(this).data('href');
             var modalSize = $(this).data('modalsize');
-            openModal(href, modalSize);
+
+            if ($(this).attr("data-stackmodal") !== undefined) {
+                var stackablemodal = $(this).data('stackmodal');
+                var modal = $(stackablemodal);
+                var modalBs = new bootstrap.Modal(modal);
+                modalBs.show();
+
+                modal.off('hidden.bs.modal').on('hidden.bs.modal', function () {
+                    openModal(href, modalSize);
+                });
+                $('.modal-backdrop').remove();
+            } else {
+                openModal(href, modalSize);
+            }
         });
- 
     };
 
     var bindModals = function () {
