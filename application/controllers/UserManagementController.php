@@ -421,6 +421,150 @@ class UserManagementController extends LSBaseController
     }
 
     /**
+     * Show user activation confirmation
+     *
+     * @return void|string
+     * @throws CException
+     */
+    public function actionActivationConfirm()
+    {
+        if (!Permission::model()->hasGlobalPermission('users', 'update')) {
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
+        }
+        $userId = Yii::app()->request->getParam('userid');
+        $action = Yii::app()->request->getParam('action');
+
+        $userId = sanitize_int($userId);
+
+        $aData['userId'] = $userId;
+        $aData['action'] = $action;
+
+        return $this->renderPartial('partial/confirmuseractivation', $aData);
+    }
+
+
+    /**
+     * Stores the status settings
+     *
+     * @return void|string
+     * @throws CException
+     */
+    public function actionUserActivateDeactivate()
+    {
+        if (!Permission::model()->hasGlobalPermission('users', 'delete')) {
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
+        }
+        $userId = sanitize_int(Yii::app()->request->getParam('userid'));
+        $action = Yii::app()->request->getParam('action');
+        $oUser = User::model()->findByPk($userId);
+
+        if ($oUser == null) {
+            throw new CHttpException(404, gT("Invalid user id"));
+        } else {
+            if ($oUser->setActivationStatus($action)) {
+                return App()->getController()->renderPartial('/admin/super/_renderJson', [
+                    'data' => [
+                        'success' => true,
+                        'message' => gT('Status successfully updated')
+                    ]
+                ]);
+            };
+        }
+        return App()->getController()->renderPartial('/admin/super/_renderJson', [
+            'data' => [
+                'success' => false
+            ]
+        ]);
+    }
+
+    /**
+     * Stores the status settings run via MassEdit
+     *
+     * @throws CException
+     */
+    public function actionBatchStatus()
+    {
+        if (!Permission::model()->hasGlobalPermission('users', 'update')) {
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
+        }
+
+        $userIds = json_decode(Yii::app()->request->getPost('sItems', "[]"));
+        $operation = Yii::app()->request->getPost('status_selector', '');
+        $results = $this->userActivation($userIds, $operation);
+
+        $error = null;
+        foreach ($results as $result) {
+            if (isset($result['error']) && $result['error'] == 'Reached the limit') {
+                $error = true;
+            }
+        }
+
+        $tableLabels = array(gT('User ID'), gT('Username'), gT('Status'));
+
+        $data = array(
+            'aResults'     => $results,
+            'successLabel' => gT('Saved successfully'),
+            'tableLabels' =>  $tableLabels,
+        );
+
+        if ($error) {
+            $data['additionalMessage'] = $this->renderPartial('/userManagement/partial/planupgradebutton');
+        }
+
+        Yii::app()->getController()->renderPartial('ext.admin.survey.ListSurveysWidget.views.massive_actions._action_results', $data);
+    }
+
+
+    /**
+     * Activate / deactivate user
+     *
+     * @param array $userIds
+     * @param string $operation activate or deactivate
+     * @return array
+     */
+    public function userActivation($userIds, $operation)
+    {
+        $results = [];
+        foreach ($userIds as $iUserId) {
+            $oUser = User::model()->findByPk($iUserId);
+            if ($oUser == null) {
+                throw new CHttpException(404, gT("Invalid user id"));
+            } else {
+                $results[$iUserId]['title'] = $oUser->users_name;
+                if (!$this->isAllowedToEdit($oUser)) {
+                    $results[$iUserId]['error'] = gT('Unauthorized');
+                    $results[$iUserId]['result'] = false;
+                    continue;
+                }
+                $results[$iUserId]['result'] = $oUser->setActivationStatus($operation);
+                if (!$results[$iUserId]['result']) {
+                    $results[$iUserId]['error'] = gT('Error');
+                }
+            }
+        }
+        return $results;
+    }
+
+    /**
+     * Check if the current user allowed to update $user
+     *
+     * @return boolean
+     */
+    private function isAllowedToEdit($user)
+    {
+        $permission_superadmin_read = Permission::model()->hasGlobalPermission('superadmin', 'read');
+        $permission_users_update = Permission::model()->hasGlobalPermission('users', 'update');
+        $ownedOrCreated = $user->parent_id == App()->session['loginID']; // User is owned or created by you
+
+        return ( $permission_superadmin_read && !(Permission::isForcedSuperAdmin($user->uid) || $user->uid == App()->user->getId()))
+            || (!$permission_superadmin_read && ($user->uid != App()->session['loginID'] //Can't change your own permissions
+                    && ( $permission_users_update && $ownedOrCreated)
+                    && !Permission::isForcedSuperAdmin($user->uid)
+                )
+            );
+    }
+
+    /**
      * Show user delete confirmation
      *
      * @return void|string

@@ -269,19 +269,21 @@ class LSHttpRequest extends CHttpRequest
     }
 
     /**
-	 * Is REST request
-     *
-     * @todo This method should parse the request URI and determine
-     * if the path matches a REST request. This is not simple because of
-     * the urlFormat differences (get/path) and there not being an each way
-     * to parse the controller and action names.
+	 * Is this a REST API request
 	 *
 	 * @return boolean
 	 */
     public function isRestRequest()
     {
-        $headers = getallheaders();
-        return isset($headers['Accept'])
-            && strpos($headers['Accept'], 'application/json') !== false;
+        $restRoutePattern = '#^(/)?(index.php/)?rest(/.*)?#';
+        $restPath = preg_match(
+            $restRoutePattern,
+            $this->getRequestUri(),
+        ) === 1;
+        $restRoute = preg_match(
+            $restRoutePattern,
+            $this->getParam('r')
+        ) === 1;
+        return $restPath || $restRoute;
     }
 }
