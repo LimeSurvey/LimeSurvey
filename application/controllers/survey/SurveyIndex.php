@@ -624,7 +624,6 @@ class SurveyIndex extends CAction
             buildsurveysession($surveyid, true);
             randomizationGroupsAndQuestions($surveyid, true);
             initFieldArray($surveyid, $_SESSION['survey_' . $surveyid]['fieldmap']);
-
         }
 
         $popuppreview = (Yii::app()->request->getParam("popuppreview", false) == "true");
