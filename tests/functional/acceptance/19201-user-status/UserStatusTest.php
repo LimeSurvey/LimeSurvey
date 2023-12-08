@@ -47,11 +47,26 @@ class UserStatusTest extends TestBaseClassWeb
             // Go to User Management page
             $url = $urlMan->createUrl('userManagement/index');
             $web->get($url);
-            $dropdownButton = $web->findByCss('.btn.btn-sm.btn-outline-secondary.ls-dropdown-toggle');
-            $dropdownButton->click();
 
-            // TODO: How to find the right dropdown menu for this dropdown button?
-            $deactivateButton = $web->findByCss('.ri-user-unfollow-fill.text-danger');
+            // Click on action dropdown
+            $dropdownButton = $web->findByCss('.dropdown.ls-action_dropdown');
+            $dropdownButton->click();
+            // @var string Something like dropdown_3
+            $id = $dropdownButton->getAttribute('id');
+            $parts = explode('_', $id);
+            $this->assertCount(2, $parts);
+
+            // Get belonging <ul>
+            $dropdownMenuItems = $web->findManyByCss('#dropdownmenu_' . (int) $parts[1] . ' li');
+            $deactiveElement = $dropdownMenuItems[1];
+            $deactiveElementAnchor = $deactiveElement
+                ->findElement(
+                    WebDriverBy::cssSelector('a')
+                );
+
+            $this->assertEquals('Deactivate', $deactiveElement->getText(), 'Text is Deactivate');
+            $this->assertTrue($deactiveElement->isDisplayed(), 'Element is displayed');
+            $this->assertEquals('#', $deactiveElementAnchor->getAttribute('href'), 'Anchor href is #');
         } catch (Throwable $e) {
             self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '_' . __FUNCTION__);
             echo $e->getMessage();
