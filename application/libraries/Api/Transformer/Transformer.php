@@ -20,18 +20,24 @@ class Transformer implements TransformerInterface
      * and callable formatter.
      *
      * @param ?mixed $data
+     *  @param ?mixed $options
      * @return ?mixed
      * @throws TransformerException
      */
-    public function transform($data)
+    public function transform($data, $options = [])
     {
+        $options = $options ?? [];
         $dataMap = $this->getDataMap();
         $output = null;
         foreach ($dataMap as $key => $config) {
             if (!$config) {
                 continue;
             }
-            $config = $this->normaliseConfig($config, $key);
+            $config = $this->normaliseConfig(
+                $config,
+                $key,
+                $options
+            );
             $value = isset($data[$key])
                 ? $this->cast($data[$key], $config)
                 : null;
@@ -80,8 +86,9 @@ class Transformer implements TransformerInterface
      * @param string|int $inputKey
      * @return array
      */
-    private function normaliseConfig($config, $inputKey)
+    private function normaliseConfig($config, $inputKey, $options = [])
     {
+        $options = $options ?? [];
         if ($config === true) {
             // map to same key name
             $key = $inputKey;
@@ -95,9 +102,24 @@ class Transformer implements TransformerInterface
             $transformer = isset($config['transformer']) ? $config['transformer'] : null;
             $formatter = isset($config['formatter']) ? $config['formatter'] : null;
             $default = isset($config['default']) ? (bool) $config['default'] : null;
-            $required = isset($config['required']) ? (bool) $config['required'] : false;
+            $required = isset($config['required']) ? $config['required'] : false;
             $null = isset($config['null']) ? (bool) $config['null'] : true;
             $empty = isset($config['empty']) ? (bool) $config['empty'] : true;
+
+            // required can be operation specific by specifying
+            // - a string or an array of operation names
+            if (
+                isset($options['operation'])
+                && (
+                    is_string($required)
+                    && ($required == $options['operation'])
+                ) || (
+                    is_array($required)
+                    && in_array($options['operation'], $required)
+                )
+            ) {
+                $required = true;
+            }
         }
 
         return [
