@@ -104,6 +104,8 @@ class OpHandlerQuestionUpdateTest extends TestBaseClass
             'question' => [
                 'title' => 'test title',
                 'mandatory' => true,
+                'type' => 'S',
+                'tempId' => 1
             ],
             'questionL10n' => []
         ];

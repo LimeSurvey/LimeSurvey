@@ -16,9 +16,9 @@ class TransformerOutputQuestionAttribute extends TransformerOutputActiveRecord
         ]);
     }
 
-    public function transformAll($collection)
+    public function transformAll($collection, $options = [])
     {
-        $attributes = (object)$collection;
+        $attributes = (object) $collection;
         $tfAttributes = [];
         foreach ($attributes as $attrSet) {
             if (!array_key_exists($attrSet->attribute, $tfAttributes)) {

@@ -16,9 +16,9 @@ class TransformerInputAnswerL10ns extends Transformer
         ]);
     }
 
-    public function transformAll($collection)
+    public function transformAll($collection, $options = [])
     {
-        $collection = parent::transformAll($collection);
+        $collection = parent::transformAll($collection, $options);
         $output = [];
         foreach ($collection as $l10n) {
             $lang = $l10n['language'];

@@ -14,7 +14,7 @@ class TransformerInputSubQuestion extends Transformer
     {
         $dataMap = $transformerInputQuestion->getDataMap();
         unset($dataMap['title']);
-        $dataMap['code'] = ['required' => true, 'type' => 'string'];
+        $dataMap['code'] = ['required' => 'create'];
 
         $this->setDataMap($dataMap);
     }

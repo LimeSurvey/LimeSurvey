@@ -143,10 +143,16 @@ class OpHandlerQuestionGroup implements OpHandlerInterface
     {
         $surveyId = $this->getSurveyIdFromContext($op);
         $this->throwTransformerValidationErrors(
-            $this->transformer->validate($op->getProps()),
+            $this->transformer->validate(
+                $op->getProps(),
+                ['operation' => $op->getType()->getId()]
+            ),
             $op
         );
-        $transformedProps = $this->transformer->transform($op->getProps());
+        $transformedProps = $this->transformer->transform(
+            $op->getProps(),
+            ['operation' => $op->getType()->getId()]
+        );
         $questionGroup = $this->questionGroupService->getQuestionGroupForUpdate(
             $surveyId,
             $op->getEntityId()
@@ -211,10 +217,16 @@ class OpHandlerQuestionGroup implements OpHandlerInterface
     {
         $surveyId = $this->getSurveyIdFromContext($op);
         $this->throwTransformerValidationErrors(
-            $this->transformer->validate($op),
+            $this->transformer->validate(
+                $op,
+                ['operation' => $op->getType()->getId()]
+            ),
             $op
         );
-        $transformedProps = $this->transformer->transform($op);
+        $transformedProps = $this->transformer->transform(
+            $op,
+            ['operation' => $op->getType()->getId()]
+        );
         $tempId = $this->extractTempId($transformedProps['questionGroup']);
         $questionGroup = $this->questionGroupService->createGroup(
             $surveyId,

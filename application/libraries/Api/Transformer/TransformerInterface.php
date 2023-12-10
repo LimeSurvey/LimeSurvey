@@ -6,19 +6,29 @@ interface TransformerInterface
 {
     /**
      * @param ?mixed $data
+     * @param ?array $options
      * @return ?mixed
      */
-    public function transform($data);
+    public function transform($data, $options = []);
+
+    /**
+     * @param ?array $collection
+     * @param ?array $options
+     * @return ?mixed
+     */
+    public function transformAll($collection, $options = []);
 
     /**
      * @param ?mixed $data
+     * @param ?array $options
      * @return boolean|array
      */
-    public function validate($data);
+    public function validate($data, $options = []);
 
     /**
      * @param mixed $collection
+     * @param ?array $options
      * @return mixed
      */
-    public function transformAll($collection);
+    public function validateAll($collection, $options = []);
 }

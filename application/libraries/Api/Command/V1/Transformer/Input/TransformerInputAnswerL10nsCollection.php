@@ -6,9 +6,9 @@ use LimeSurvey\Api\Transformer\Transformer;
 
 class TransformerInputAnswerL10nsCollection extends Transformer
 {
-    public function transformAll($collection)
+    public function transformAll($collection, $options = [])
     {
-        $data = parent::transformAll($collection);
+        $data = parent::transformAll($collection, $options);
         $answers = [];
         if (is_array($data)) {
             foreach ($data as $index => $answer) {

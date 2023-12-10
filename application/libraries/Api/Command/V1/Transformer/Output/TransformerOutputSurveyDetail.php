@@ -50,12 +50,18 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
      * Transform
      *
      * Returns an array of entity references indexed by the specified key.
+     *
+     * @param ?mixed $data
+     * @param ?array $options
+     * @return array
      */
-    public function transform($data)
+    public function transform($data, $options = [])
     {
         if (!$data instanceof Survey) {
             return null;
         }
+
+        $options = $options ?? [];
 
         $survey = $this->transformerSurvey->transform($data);
         $survey['templateInherited'] = $data->oOptions->template;
@@ -65,7 +71,8 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
         // transformAll() can apply required entity sort so we must retain the sort order going forward
         // - We use a lookup array later to access entities without needing to know their position in the collection
         $survey['questionGroups'] = $this->transformerQuestionGroup->transformAll(
-            $data->groups
+            $data->groups,
+            $options
         );
 
         // An array of groups indexed by gid for easy look up
@@ -85,13 +92,15 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
             $group = &$groupLookup[$questionGroupModel->gid];
 
             $group['l10ns'] = $this->transformerQuestionGroupL10ns->transformAll(
-                $questionGroupModel->questiongroupl10ns
+                $questionGroupModel->questiongroupl10ns,
+                $options
             );
 
             // transformAll() can apply required entity sort so we must retain the sort order going forward
             // - We use a lookup array later to access entities without needing to know their position in the collection
             $group['questions'] = $this->transformerQuestion->transformAll(
-                $questionGroupModel->questions
+                $questionGroupModel->questions,
+                $options
             );
             $questionLookup = $this->createCollectionLookup(
                 'qid',
@@ -100,7 +109,8 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
 
             $this->transformQuestions(
                 $questionLookup,
-                $questionGroupModel->questions
+                $questionGroupModel->questions,
+                $options
             );
         }
 
@@ -114,9 +124,10 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
      *
      * @param array $questionLookup
      * @param array $questions
+     * @param ?array $options
      * @return void
      */
-    private function transformQuestions($questionLookup, $questions)
+    private function transformQuestions($questionLookup, $questions, $options =[])
     {
         foreach ($questions as $questionModel) {
             // questions from the model relation may be different than from the transformed data
@@ -127,18 +138,21 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
             $question = &$questionLookup[$questionModel->qid];
 
             $question['l10ns'] = $this->transformerQuestionL10ns->transformAll(
-                $questionModel->questionl10ns
+                $questionModel->questionl10ns,
+                $options
             );
 
             $question['attributes'] = $this->transformerQuestionAttribute->transformAll(
                 $this->questionService->getQuestionAttributes(
                     $questionModel->qid
-                )
+                ),
+                $options
             );
 
             if ($questionModel->subquestions) {
                 $question['subquestions'] = $this->transformerQuestion->transformAll(
-                    $questionModel->subquestions
+                    $questionModel->subquestions,
+                    $options
                 );
 
                 $subQuestionLookup = $this->createCollectionLookup(
@@ -147,12 +161,14 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
                 );
                 $this->transformQuestions(
                     $subQuestionLookup,
-                    $questionModel->subquestions
+                    $questionModel->subquestions,
+                    $options
                 );
             }
 
             $question['answers'] = $this->transformerAnswer->transformAll(
-                $questionModel->answers
+                $questionModel->answers,
+                $options
             );
 
             $answerLookup = $this->createCollectionLookup(
@@ -162,7 +178,8 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
 
             $this->transformAnswersL10n(
                 $answerLookup,
-                $questionModel->answers
+                $questionModel->answers,
+                $options
             );
         }
     }
@@ -171,15 +188,17 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
      * Adds the language specific data of answer_l10ns to the answers array
      * @param array $answerLookup
      * @param array $answers
+     * @param ?array $options
      * @return void
      */
-    private function transformAnswersL10n($answerLookup, $answers)
+    private function transformAnswersL10n($answerLookup, $answers, $options = [])
     {
         foreach ($answers as $answerModel) {
             $answer = &$answerLookup[$answerModel->aid];
 
             $answer['l10ns'] = $this->transformerAnswerL10ns->transformAll(
-                $answerModel->answerl10ns
+                $answerModel->answerl10ns,
+                $options
             );
         }
     }

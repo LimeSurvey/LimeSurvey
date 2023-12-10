@@ -110,15 +110,19 @@ class Transformer implements TransformerInterface
             // - a string or an array of operation names
             if (
                 isset($options['operation'])
-                && (
-                    is_string($required)
-                    && ($required == $options['operation'])
-                ) || (
-                    is_array($required)
-                    && in_array($options['operation'], $required)
-                )
+                && (is_string($required) || is_array($required))
             ) {
-                $required = true;
+                $required = (
+                    (
+                        is_string($required)
+                        && $required == $options['operation']
+                    )
+                    ||
+                    (
+                        is_array($required)
+                        && in_array($options['operation'], $required)
+                    )
+                );
             }
         }
 
@@ -176,6 +180,7 @@ class Transformer implements TransformerInterface
 
     /**
      * @param ?mixed $data
+     * @param ?array $options
      * @return boolean|array Returns true on success or array of errors.
      */
     public function validate($data, $options = [])
@@ -269,10 +274,11 @@ class Transformer implements TransformerInterface
      * @param array $collection
      * @return array
      */
-    public function transformAll($collection)
+    public function transformAll($collection, $options = [])
     {
-        return is_array($collection) ? array_map(function ($allData) {
-            return $this->transform($allData);
+        $options = $options ?? [];
+        return is_array($collection) ? array_map(function ($allData) use ($options) {
+            return $this->transform($allData, $options);
         }, $collection) : [];
     }
 
@@ -282,10 +288,11 @@ class Transformer implements TransformerInterface
      * @param array $collection
      * @return bool|array Returns true on success or array of errors.
      */
-    public function validateAll($collection)
+    public function validateAll($collection, $options = [])
     {
-        $result = array_reduce($collection, function ($carry, $data) {
-            $oneResult = $this->validate($data);
+        $options = $options ?? [];
+        $result = array_reduce($collection, function ($carry, $data) use ($options) {
+            $oneResult = $this->validate($data, $options);
             return is_array($oneResult)
                 ? array_merge($carry, $oneResult)
                 : $carry;

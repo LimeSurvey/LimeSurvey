@@ -9,14 +9,17 @@ abstract class TransformerOutputActiveRecord extends Transformer
 {
     /**
      * @param ?mixed $data
+     * @param ?array $options
      * @return ?mixed
      */
-    public function transform($data)
+    public function transform($data, $options = [])
     {
+        $options = $options ?? [];
         return parent::transform(
             $data instanceof CActiveRecord
             ? $data->attributes
-            : $data
+            : $data,
+            $options
         );
     }
 }

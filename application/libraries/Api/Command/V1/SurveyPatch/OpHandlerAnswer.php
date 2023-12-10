@@ -5,6 +5,7 @@ namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputAnswer;
 use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\{
     OpHandlerSurveyTrait,
+    OpHandlerQuestionTrait,
     OpHandlerExceptionTrait
 };
 use LimeSurvey\ObjectPatch\{
@@ -22,6 +23,7 @@ use LimeSurvey\Models\Services\QuestionAggregateService\{
 class OpHandlerAnswer implements OpHandlerInterface
 {
     use OpHandlerSurveyTrait;
+    use OpHandlerQuestionTrait;
     use OpHandlerExceptionTrait;
 
     protected string $entity;
@@ -165,6 +167,7 @@ class OpHandlerAnswer implements OpHandlerInterface
         $this->throwTransformerValidationErrors(
             $this->transformer->validateAll(
                 $op->getProps(),
+                ['operation' => $op->getType()->getId()]
             ),
             $op
         );
@@ -175,7 +178,8 @@ class OpHandlerAnswer implements OpHandlerInterface
         );
 
         $data = $this->transformer->transformAll(
-            $op->getProps()
+            $op->getProps(),
+            ['operation' => $op->getType()->getId()]
         );
         $this->answersService->save(
             $question,

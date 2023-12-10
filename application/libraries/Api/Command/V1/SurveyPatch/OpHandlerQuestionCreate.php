@@ -190,12 +190,14 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
     {
         $this->throwTransformerValidationErrors(
             $this->transformer->validate(
-            $op->getProps(),
+                $op->getProps(),
+                ['operation' => $op->getType()->getId()]
             ),
             $op
         );
         $transformedProps = $this->transformer->transform(
-            $op->getProps()
+            $op->getProps(),
+            ['operation' => $op->getType()->getId()]
         );
         $tempId = $this->extractTempId($transformedProps['question']);
         $diContainer = \LimeSurvey\DI::getContainer();

@@ -24,14 +24,15 @@ class TransformerInputQuestionAttribute extends Transformer
      * @return array
      * @throws OpHandlerException
      */
-    public function transformAll($collection)
+    public function transformAll($collection, $options = [])
     {
         $preparedSettings = [];
         if (is_array($collection)) {
             foreach ($collection as $attrName => $languages) {
                 foreach ($languages as $lang => $advancedSetting) {
                     $transformedSetting = $this->transform(
-                        $advancedSetting
+                        $advancedSetting,
+                        $options
                     );
                     if (
                         is_array($transformedSetting) && array_key_exists(

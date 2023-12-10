@@ -13,11 +13,11 @@ class TransformerInputAnswer extends Transformer
             'aid' => ['type' => 'int'],
             'qid' => ['type' => 'int'],
             'oldCode' => 'oldcode',
-            'code' => ['required' => true, 'type' =>'string'],
+            'code' => ['required' => 'create'],
             'sortOrder' => ['key' => 'sortorder', 'type' => 'int'],
             'assessmentValue' => ['key' => 'assessment_value', 'type' => 'int'],
             'scaleId' => ['key' => 'scale_id', 'type' => 'int'],
-            'tempId' => true,
+            'tempId' => ['required' => 'create'],
             'l10ns' => [
                 'key' => 'answeroptionl10n',
                 'collection' => true,
@@ -26,9 +26,9 @@ class TransformerInputAnswer extends Transformer
         ]);
     }
 
-    public function transformAll($collection)
+    public function transformAll($collection, $options = [])
     {
-        $collection = parent::transformAll($collection);
+        $collection = parent::transformAll($collection, $options);
         $output = [];
         if (is_array($collection)) {
             foreach ($collection as $index => $answer) {

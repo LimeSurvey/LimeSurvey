@@ -19,8 +19,8 @@ class TransformerInputQuestion extends Transformer
             'qid' => ['type' => 'int'],
             'parentQid' => ['key' => 'parent_qid', 'type' => 'int'],
             'sid' => ['type' => 'int'],
-            'type' => true,
-            'title' => true,
+            'type' => ['required' => 'create'],
+            'title' => ['required' => 'create'],
             'preg' => true,
             'other' => ['formatter' => $formatterYn],
             'mandatory' => ['formatter' => $formatterMandatory],
@@ -36,7 +36,7 @@ class TransformerInputQuestion extends Transformer
             'gid' => ['type' => 'int'],
             'relevance' => true,
             'sameScript' => ['key' => 'same_script', 'formatter' => $formatterYn],
-            'tempId' => true
+            'tempId' => ['required' => 'create']
         ]);
     }
 }

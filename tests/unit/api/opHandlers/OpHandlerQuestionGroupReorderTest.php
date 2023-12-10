@@ -129,10 +129,12 @@ class OpHandlerQuestionGroupReorderTest extends TestBaseClass
             'sortOrder' => '10',
             'questions'  => [
                 '2' => [
-                    'sortOrder' => '10'
+                    'sortOrder' => '10',
+                    'tempId' => '1'
                 ],
                 '3' => [
-                    'sortOrder' => '20'
+                    'sortOrder' => '20',
+                    'tempId' => '2'
                 ]
             ]
         ];

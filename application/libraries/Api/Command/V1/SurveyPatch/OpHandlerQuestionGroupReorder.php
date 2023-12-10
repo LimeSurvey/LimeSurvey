@@ -7,7 +7,6 @@ use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\OpHandlerSurveyTrait;
 use QuestionGroup;
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestion;
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestionGroup;
-use LimeSurvey\Api\Transformer\TransformerInterface;
 use LimeSurvey\Models\Services\QuestionGroupService;
 use LimeSurvey\ObjectPatch\{
     Op\OpInterface,
@@ -27,8 +26,8 @@ class OpHandlerQuestionGroupReorder implements OpHandlerInterface
 
     protected string $entity;
     protected QuestionGroup $model;
-    protected TransformerInterface $transformerGroup;
-    protected TransformerInterface $transformerQuestion;
+    protected TransformerInputQuestionGroup $transformerGroup;
+    protected TransformerInputQuestion $transformerQuestion;
 
     public function __construct(
         QuestionGroup $model,
@@ -125,11 +124,17 @@ class OpHandlerQuestionGroupReorder implements OpHandlerInterface
                 $groupData['gid'] = $gid;
             }
             $this->throwTransformerValidationErrors(
-                $this->transformerGroup->validate($groupData),
+                $this->transformerGroup->validate(
+                    $groupData,
+                    ['operation' => $op->getType()->getId()]
+                ),
                 $op
             );
 
-            $tfGroupData = $this->transformerGroup->transform($groupData);
+            $tfGroupData = $this->transformerGroup->transform(
+                $groupData,
+                ['operation' => $op->getType()->getId()]
+            );
             $this->checkGroupReorderData($op, $tfGroupData, 'group');
             $groupReorderData[$i] = $tfGroupData;
             if (array_key_exists('questions', $groupData)) {
@@ -138,12 +143,17 @@ class OpHandlerQuestionGroupReorder implements OpHandlerInterface
                     $questionData['qid'] = $qid;
 
                     $this->throwTransformerValidationErrors(
-                        $this->transformerQuestion->validate($questionData),
+                        $this->transformerQuestion->validate(
+                            $questionData,
+                            ['operation' => $op->getType()->getId()]
+
+                        ),
                         $op
                     );
 
                     $tfQuestionData = $this->transformerQuestion->transform(
-                        $questionData
+                        $questionData,
+                        ['operation' => $op->getType()->getId()]
                     );
                     $this->checkGroupReorderData(
                         $op,
