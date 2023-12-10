@@ -10,7 +10,8 @@ class TransformerInputQuestionAggregate extends Transformer
         TransformerInputQuestion $transformer,
         TransformerInputQuestionL10ns $transformerL10n,
         TransformerInputQuestionAttribute $transformerAttribute,
-        TransformerInputAnswer $transformerAnswer
+        TransformerInputAnswer $transformerAnswer,
+        TransformerInputSubQuestion $transformerInputSubQuestion
     )
     {
         $this->setDataMap([
@@ -36,7 +37,7 @@ class TransformerInputQuestionAggregate extends Transformer
             ],
             'subquestions' => [
                 'collection' => true,
-                'transformer' => $transformer
+                'transformer' => $transformerInputSubQuestion
             ],
         ]);
     }

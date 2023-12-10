@@ -8,7 +8,8 @@ use LimeSurvey\Api\Command\V1\Transformer\{
 use LimeSurvey\Api\Command\V1\SurveyPatch\Response\TempIdMapItem;
 use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\{
     OpHandlerSurveyTrait,
-    OpHandlerExceptionTrait
+    OpHandlerExceptionTrait,
+    OpHandlerQuestionTrait
 };
 use LimeSurvey\ObjectPatch\{
     Op\OpInterface,
@@ -23,6 +24,7 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
 {
     use OpHandlerSurveyTrait;
     use OpHandlerExceptionTrait;
+    use OpHandlerQuestionTrait;
 
     protected string $entity;
     protected Question $model;

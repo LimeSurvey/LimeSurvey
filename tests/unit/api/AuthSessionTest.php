@@ -31,8 +31,8 @@ class AuthSessionTest extends TestBaseClass
             $password = 'password';
         }
 
-        $AuthSession = new AuthSession();
-        $result = $AuthSession->doLogin(
+        $authSession = new AuthSession();
+        $result = $authSession->doLogin(
             $username,
             $password
         );
@@ -46,8 +46,8 @@ class AuthSessionTest extends TestBaseClass
      */
     public function testCheckKeySessionNotFound()
     {
-        $AuthSession = new AuthSession();
-        $result = $AuthSession->checkKey('invalid-key');
+        $authSession = new AuthSession();
+        $result = $authSession->checkKey('invalid-key');
         $this->assertFalse($result);
     }
 
@@ -61,8 +61,8 @@ class AuthSessionTest extends TestBaseClass
             $username = 'admin';
         }
 
-        $AuthSession = new AuthSession();
-        $result = $AuthSession->jumpStartSession($username);
+        $authSession = new AuthSession();
+        $result = $authSession->jumpStartSession($username);
         $this->assertTrue($result);
     }
 }

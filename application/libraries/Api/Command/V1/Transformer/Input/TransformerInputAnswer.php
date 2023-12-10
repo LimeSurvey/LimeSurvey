@@ -13,7 +13,7 @@ class TransformerInputAnswer extends Transformer
             'aid' => ['type' => 'int'],
             'qid' => ['type' => 'int'],
             'oldCode' => 'oldcode',
-            'code' => true,
+            'code' => ['required' => true, 'type' =>'string'],
             'sortOrder' => ['key' => 'sortorder', 'type' => 'int'],
             'assessmentValue' => ['key' => 'assessment_value', 'type' => 'int'],
             'scaleId' => ['key' => 'scale_id', 'type' => 'int'],

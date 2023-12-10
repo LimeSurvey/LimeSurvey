@@ -7,7 +7,7 @@ use LimeSurvey\Api\Transformer\Transformer;
 class TransformerInputSubQuestionAggregate extends Transformer
 {
     public function __construct(
-        TransformerInputQuestion $transformer,
+        TransformerInputSubQuestion $transformer,
         TransformerInputQuestionL10ns $transformerL10n
     )
     {

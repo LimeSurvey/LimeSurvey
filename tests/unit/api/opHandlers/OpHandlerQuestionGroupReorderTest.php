@@ -64,7 +64,7 @@ class OpHandlerQuestionGroupReorderTest extends TestBaseClass
     }
 
     /**
-     * @testdox getGroupReorderData() is expected to return a certain data structure
+     * @testdox getGroupReorderData() returns expected structure
      */
     public function testOpQuestionGroupReorderDataStructure()
     {
