@@ -178,17 +178,20 @@ class Transformer implements TransformerInterface
      * @param ?mixed $data
      * @return boolean|array Returns true on success or array of errors.
      */
-    public function validate($data)
+    public function validate($data, $options = [])
     {
+        $options = $options ?? [];
         $dataMap = $this->getDataMap();
-
         $errors = [];
-
         foreach ($dataMap as $key => $config) {
             if (!$config) {
                 continue;
             }
-            $config = $this->normaliseConfig($config, $key);
+            $config = $this->normaliseConfig(
+                $config,
+                $key,
+                $options
+            );
             $value = isset($data[$key])
                 ? $this->cast($data[$key], $config)
                 : null;

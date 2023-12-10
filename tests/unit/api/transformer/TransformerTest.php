@@ -297,4 +297,37 @@ class TransformerOutputTest extends TestBaseClass
             'age' => 40
         ], ['operation' => 'create']);
     }
+
+    /**
+     * @testdox validate() returns array of error messages on failure
+     */
+    public function testValidateReturnsArrayOfErrorMessagesOnFailure()
+    {
+        $transformer = new Transformer;
+        $transformer->setDataMap([
+            'first_name' => ['required' => true],
+            'age' => true
+        ]);
+        $errors = $transformer->validate([
+            'age' => 40
+        ]);
+        $this->assertNotEmpty($errors);
+    }
+
+    /**
+     * @testdox validateAll() returns array of error messages on failure
+     */
+    public function testValidateAllReturnsArrayOfErrorMessagesOnFailure()
+    {
+        $transformer = new Transformer;
+        $transformer->setDataMap([
+            'first_name' => ['required' => true],
+            'age' => true
+        ]);
+        $errors = $transformer->validateAll([
+            ['age' => 40],
+            ['age' => 51],
+        ]);
+        $this->assertNotEmpty($errors);
+    }
 }
