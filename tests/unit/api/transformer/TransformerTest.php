@@ -326,7 +326,7 @@ class TransformerOutputTest extends TestBaseClass
         ]);
         $errors = $transformer->validateAll([
             ['age' => 40],
-            ['age' => 51],
+            ['age' => 51]
         ]);
         $this->assertNotEmpty($errors);
     }
