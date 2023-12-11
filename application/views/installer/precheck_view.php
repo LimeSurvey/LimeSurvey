@@ -126,7 +126,7 @@ $iconFail = "<span class='ri-error-warning-fill text-danger'></span>";
                </td>
         </tr>
         <tr>
-               <td><?php eT("PHP Collate library (language sort order)"); ?></td>
+               <td><?php eT("PHP Intl library"); ?></td>
                <td><span class='ri-check-fill text-success' alt="Check"></span></td>
                <td><?= $model->isCollatorPresent ? $iconOk : $iconFail ?></td>
         </tr>
