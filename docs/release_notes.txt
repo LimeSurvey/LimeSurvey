@@ -34,6 +34,16 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.6.48 (build 231205) to 5.6.49 (build 231212) December 11, 2023
+-Fixed issue #CT-540: Quota error when trying to set an answer option for selected quota (Patrick Teichmann)
+-Fixed issue #19302:  Wrong redirect when directLogin is true (#3660) (Marko Bischof)
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Hebrew by michaelkonja59
+#Updated translation: Greek by lenasterg
+#Updated translation: German by c_schmitz
+
+
 Changes from 5.6.47 (build 231128) to 5.6.48 (build 231205) December 4, 2023
 -Fixed issue #19276: When a user exits on quota, the theme is not applied correctly if "inherits everything" is set to off (#3638) (Gabriel Jenik)
 -Fixed issue #19252: [security] Bad permission check when edit quota (#3634) (Denis Chenu)
