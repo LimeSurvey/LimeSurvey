@@ -77,18 +77,19 @@ class SurveyObj
      * but could also be a comment entered by a participant.
      *
      * @param string $fieldName
-     * @param string $answerCode
+     * @param string|null $answerCode
      * @param Translator $translator
      * @param string $sLanguageCode
-     * @return string (or false)
+     * @return string
      */
     public function getFullAnswer($fieldName, $answerCode, Translator $translator, $sLanguageCode)
     {
-        $fullAnswer = null;
+        $fullAnswer = '';
         $fieldType = $this->fieldMap[$fieldName]['type'];
         $question = $this->fieldMap[$fieldName];
         $questionId = $question['qid'];
-        $answer = null;
+        $answer = '';
+        $answerCode = strval($answerCode);
         if ($questionId) {
             $answers = $this->getAnswers($questionId);
             if (isset($answers[$answerCode])) {
@@ -129,7 +130,7 @@ class SurveyObj
                 if (array_key_exists($answerCode, $answers)) {
                     $fullAnswer = $answers[$answerCode];
                 } else {
-                    $fullAnswer = null;
+                    $fullAnswer = '';
                 }
                 break;
 
@@ -252,11 +253,14 @@ class SurveyObj
      * Returns the short answer for the question.
      *
      * @param string $sFieldName
-     * @param string $sValue
+     * @param string|null $sValue
      * @return string
      */
     public function getShortAnswer($sFieldName, $sValue)
     {
+        if (is_null($sValue)) {
+            return "";
+        }
         $aQuestion = $this->fieldMap[$sFieldName];
         $sFieldType = $aQuestion['type'];
 
