@@ -1382,7 +1382,7 @@ class SurveyRuntimeHelper
 
     /**
      * Check in a string if it uses expressions to replace them
-     * @param string $sString the string to evaluate
+     * @param string|null $sString the string to evaluate
      * @param integer $numRecursionLevels - the number of times to recursively subtitute values in this string
      * @param boolean $static - return static string
      * @return string
