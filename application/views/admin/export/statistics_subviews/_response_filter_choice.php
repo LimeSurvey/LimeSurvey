@@ -1,5 +1,4 @@
-<div id="filterchoices"
-    <?php if ($filterchoice_state != '' || !empty($summary)) {echo " style='display:none' ";}?>>
+<div id="filterchoices">
         <?php foreach ($aGroups as $groupKey => $aGroup) : ?>
             <div class="accordion mb-3" id="accordion_<?php echo $aGroup['gid']; ?>">
                 <div class="accordion-item">
