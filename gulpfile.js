@@ -267,7 +267,6 @@ function survey_theme_ls6() {
         const mainStream = src(['assets/survey_themes/fruity_twentythree/theme_template.scss'])
             .pipe(replace('$base-color: #ffffff;', '$base-color: ' + variationColor + ';'))
             .pipe(sass())
-            .pipe(rtlcss())
             .pipe(gulppostcss(plugins))
             .pipe(rename('theme.css'));
 
