@@ -2,6 +2,7 @@
 
 namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
+use \LimeSurvey\DI;
 use LimeSurvey\Api\Command\V1\Transformer\{
     Input\TransformerInputQuestionAggregate
 };
@@ -188,20 +189,20 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
      */
     public function handle(OpInterface $op): array
     {
+        $transformOptions = ['operation' => $op->getType()->getId()];
         $this->throwTransformerValidationErrors(
             $this->transformer->validate(
                 $op->getProps(),
-                ['operation' => $op->getType()->getId()]
+                $transformOptions
             ),
             $op
         );
         $transformedProps = $this->transformer->transform(
             $op->getProps(),
-            ['operation' => $op->getType()->getId()]
+            $transformOptions
         );
         $tempId = $this->extractTempId($transformedProps['question']);
-        $diContainer = \LimeSurvey\DI::getContainer();
-        $questionService = $diContainer->get(
+        $questionService = DI::getContainer()->get(
             QuestionAggregateService::class
         );
 

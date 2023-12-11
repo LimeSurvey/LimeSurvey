@@ -170,7 +170,9 @@ class OpHandlerQuestionCreateTest extends TestBaseClass
 
         return new OpHandlerQuestionCreate(
             $mockSet->modelQuestion,
-            DI::getContainer()->get(TransformerInputQuestionAggregate::class)
+            DI::getContainer()->get(
+                TransformerInputQuestionAggregate::class
+            )
         );
     }
 }

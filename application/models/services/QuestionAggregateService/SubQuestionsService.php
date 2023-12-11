@@ -193,15 +193,12 @@ class SubQuestionsService
      */
     private function updateSubquestionL10nService(Question $subquestion, $data)
     {
-        foreach ($data as $language => $questionText) {
+        foreach ($data as $langData) {
+            $langData['qid'] = $subquestion->qid;
             $this->l10nService->save(
                 $subquestion->qid,
                 array(
-                    [
-                        'qid' => $subquestion->qid,
-                        'language' => $language,
-                        'question' => $questionText
-                    ]
+                    $langData
                 )
             );
         }
