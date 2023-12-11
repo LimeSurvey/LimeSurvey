@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2023-12-11 11:38:05+00:00\n"
+"POT-Creation-Date: 2023-12-11 11:48:10+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -8829,6 +8829,10 @@ msgstr ""
 #: application/core/plugins/AzureOAuthSMTP/AzureOAuthSMTP.php:206
 #: application/core/plugins/GoogleOAuthSMTP/GoogleOAuthSMTP.php:181
 msgid "The %s plugin is not configured correctly. Please check the plugin settings."
+msgstr ""
+
+#: application/core/plugins/AzureOAuthSMTP/AzureOAuthSMTP.php:293
+msgid "Azure doesn't accept redirect URIs with query parameters when using personal accounts. This plugin will not work properly with the current URL manager configuration."
 msgstr ""
 
 #: application/core/plugins/ComfortUpdateChecker/ComfortUpdateChecker.php:64
