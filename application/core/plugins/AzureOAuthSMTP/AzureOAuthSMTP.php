@@ -265,7 +265,7 @@ class AzureOAuthSMTP extends SmtpOAuthPluginBase
      */
     protected function getDisplayName()
     {
-        return gT('Azure');
+        return 'Azure;
     }
 
     /**

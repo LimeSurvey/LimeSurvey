@@ -219,7 +219,7 @@ class GoogleOAuthSMTP extends SmtpOAuthPluginBase
      */
     protected function getDisplayName()
     {
-        return gT('Google');
+        return 'Google';
     }
 
     public function beforePrepareRedirectToAuthPage()
