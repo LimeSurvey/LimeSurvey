@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2023-11-30 11:19:25+00:00\n"
+"POT-Creation-Date: 2023-12-11 11:28:01+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -3473,7 +3473,7 @@ msgid "User group not found."
 msgstr ""
 
 #: application/controllers/UserGroupController.php:121
-msgid "No access : you do not have permission to this users group."
+msgid "No access: You do not have permission to this user group."
 msgstr ""
 
 #: application/controllers/UserGroupController.php:182
@@ -3575,7 +3575,7 @@ msgid "Failed to remove user."
 msgstr ""
 
 #: application/controllers/UserGroupController.php:483
-msgid "No access : you do not have permission to send emails to all users."
+msgid "No access: You do not have permission to send emails to all users."
 msgstr ""
 
 #: application/controllers/UserGroupController.php:501
@@ -3759,11 +3759,11 @@ msgid "Usergroup updated"
 msgstr ""
 
 #: application/controllers/UserManagementController.php:1181
-msgid "You can not update your own roles."
+msgid "You are not allowed to update your own roles."
 msgstr ""
 
 #: application/controllers/UserManagementController.php:1187
-msgid "You can not set role to this user."
+msgid "You are not allowed to assign a role to this user."
 msgstr ""
 
 #: application/controllers/UserManagementController.php:1201
@@ -15687,7 +15687,7 @@ msgid "Permission to view statistics"
 msgstr ""
 
 #: application/models/Survey.php:2235
-msgid "Permission on survey (delete). Read permission is used to give access to this group."
+msgid "Permission for survey access. Read permission is a requirement to give any further permission to a survey."
 msgstr ""
 
 #: application/models/Survey.php:2244
@@ -16869,10 +16869,10 @@ msgid "Users listed here can see groups in lists, and view group descriptions & 
 msgstr ""
 
 #: application/views/SurveysGroupsPermission/subviews/viewCurrents.php:3
-msgid "This survey group is shown for users with any permission on the survey group, user with any permission on one survey inside this group, or if this group was configured to be available."
+msgid "This survey group is shown for users with any permission to the survey group, user with any permission to one survey inside this group, or if this group was configured to be available."
 msgstr ""
 
-#: application/views/SurveysGroupsPermission/subviews/viewCurrents.php:14
+#: application/views/SurveysGroupsPermission/subviews/viewCurrents.php:15
 msgid "Add permissions:"
 msgstr ""
 
