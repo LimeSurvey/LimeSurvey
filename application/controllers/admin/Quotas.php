@@ -85,7 +85,7 @@ class Quotas extends SurveyCommonAction
             [':quotaid' => $quotaId, ':surveyid' => $surveyId]
         );
         if (empty($model)) {
-            throw new CHttpException(403, gT("Bad quota id with this survey id."));
+            throw new CHttpException(403, gT("Bad quota ID related to this survey ID"));
         }
     }
 
@@ -113,20 +113,20 @@ class Quotas extends SurveyCommonAction
                 $oQuota = Quota::model()->findByPk($iQuotaId);
                 if (in_array($action, array('activate', 'deactivate'))) {
                     if (!Permission::model()->hasSurveyPermission($oQuota->sid, 'quotas', 'update')) {
-                        $errors[] = gT("You do not have permission on this survey");
+                        $errors[] = gT("You do not have permission for this survey.");
                         continue;
                     }
                     $oQuota->active = ($action == 'activate' ? 1 : 0);
                     $oQuota->save();
                 } elseif ($action == 'delete') {
                     if (!Permission::model()->hasSurveyPermission($oQuota->sid, 'quotas', 'delete')) {
-                        $errors[] = gT("You do not have permission on this survey");
+                        $errors[] = gT("You do not have permission for this survey.");
                         continue;
                     }
                     $oQuota->delete();
                 } elseif ($action == 'changeLanguageSettings' && !empty($_POST['QuotaLanguageSetting'])) {
                     if (!Permission::model()->hasSurveyPermission($oQuota->sid, 'quotas', 'update')) {
-                        $errors[] = gT("You do not have permission on this survey");
+                        $errors[] = gT("You do not have permission for this survey.");
                         continue;
                     }
                     $oQuotaLanguageSettings = $oQuota->languagesettings;
@@ -350,7 +350,7 @@ class Quotas extends SurveyCommonAction
         /* find related quota by quotamember->id */
         $QuotaMember = QuotaMember::model()->findByPk($id);
         if (empty($QuotaMember)) {
-            throw new CHttpException(404, gT("Quota memeber not found."));
+            throw new CHttpException(404, gT("Quota member not found."));
         }
         $this->checkPermissions($iSurveyId, 'update');
         $this->checkValidQuotaId($iSurveyId, $QuotaMember->quota_id);

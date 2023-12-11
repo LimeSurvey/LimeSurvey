@@ -290,9 +290,9 @@ class UserGroupController extends LSBaseController
                     //everything ok, go back to index
                     App()->setFlashMessage(gT("User group successfully added!"), 'success');
                     if ($model->addUser(Yii::app()->user->id)) {
-                        App()->setFlashMessage(gT("Your account was added to the group"));
+                        App()->setFlashMessage(gT("Your account was added to the group."));
                     } else {
-                        App()->setFlashMessage(gT("An error happen when try to add your account to user group."), 'warning');
+                        App()->setFlashMessage(gT("An error happened when trying to add your account to user group."), 'warning');
                     }
                     $this->redirect(array('userGroup/index'));
                 } else {

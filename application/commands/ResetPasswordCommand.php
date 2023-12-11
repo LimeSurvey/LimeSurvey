@@ -29,7 +29,7 @@ class ResetPasswordCommand extends CConsoleCommand
                     echo "Password for user {$sArgument[0]} was set.\n";
                     return 0;
                 } else {
-                    echo "An error happen when set password for user {$sArgument[0]}.\n";
+                    echo "An error happened when setting a password for user {$sArgument[0]}.\n";
                     return 1;
                 }
             } else {

@@ -126,7 +126,7 @@ $iconFail = "<span class='fa fa-exclamation-triangle text-danger'></span>";
                </td>
         </tr>
         <tr>
-               <td><?php eT("PHP Collator library (language sort order)"); ?></td>
+               <td><?php eT("PHP Intl library"); ?></td>
                <td><span class='fa fa-check text-success'></span></td>
                <td><?= $model->isCollatorPresent ? $iconOk : $iconFail ?></td>²
         </tr>
