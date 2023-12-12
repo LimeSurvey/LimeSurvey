@@ -466,7 +466,7 @@ class UserManagementController extends LSBaseController
             throw new CHttpException(404, gT("Invalid user id"));
         } else {
             if ($oUser->setActivationStatus($action)) {
-                return App()->getController()->renderPartial('/admin/super/_renderJson', [
+                return $this->renderPartial('/admin/super/_renderJson', [
                     'data' => [
                         'success' => true,
                         'message' => gT('Status successfully updated')
@@ -474,7 +474,7 @@ class UserManagementController extends LSBaseController
                 ]);
             };
         }
-        return App()->getController()->renderPartial('/admin/super/_renderJson', [
+        return $this->renderPartial('/admin/super/_renderJson', [
             'data' => [
                 'success' => false
             ]
