@@ -10,7 +10,10 @@ use Facebook\WebDriver\WebDriverExpectedCondition;
 class UserStatusTest extends TestBaseClassWeb
 {
     // TODO: 
-    // Check that you cannot deactive yourself
+    // Check that you cannot deactive yourself (even when not superadmin)
+    //   Create new user with permission to edit users
+    //   Login as new user
+    //   Go to user management
     // Deactivate massive action
     // Activate massive action
     // Deactivate user you do not own?
@@ -103,6 +106,8 @@ class UserStatusTest extends TestBaseClassWeb
         // Find row for new user
         $uidTds = $web->findManyByCss('.uid');
         $this->assertCount(2, $uidTds, 'Found exactly two uids');
+
+        // Get parent, which is the table row
         $row = $uidTds[1]->findElement(WebDriverBy::xpath('..'));
 
         // Find action button
@@ -125,13 +130,12 @@ class UserStatusTest extends TestBaseClassWeb
         // Click on "Deactivate"
         $deactiveElementAnchor->click();
 
-        //$web->scrollToTop();
-        //sleep(1);
-        //$web->wait(5)->until(
-            //WebDriverExpectedCondition::elementToBeClickable(
-                //WebDriverBy::cssSelector('.modal-footer .btn.btn-primary')
-            //)
-        //);
+        // Wait for modal
+        $web->wait(5)->until(
+            WebDriverExpectedCondition::elementToBeClickable(
+                WebDriverBy::id('UserManagement-action-modal')
+            )
+        );
 
         // Click on "Save"
         $modal = $web->findById('UserManagement-action-modal');
