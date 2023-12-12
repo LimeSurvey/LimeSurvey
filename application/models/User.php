@@ -748,7 +748,8 @@ class User extends LSActiveRecord
             ],
             [
                 "name"   => 'uid',
-                "header" => gT("User ID")
+                "header" => gT("User ID"),
+                'htmlOptions' => ['class' => 'uid']
             ],
             [
                 "name"   => 'users_name',
