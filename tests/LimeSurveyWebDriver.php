@@ -121,11 +121,24 @@ class LimeSurveyWebDriver extends RemoteWebDriver
 
     /**
      * @return void
+     * @todo Should be clickById
      */
     public function clickButton($id)
     {
         $button = $this->findElement(WebDriverBy::id($id));
         $button->click();
+    }
+
+    /**
+     * Click on element found by $css
+     *
+     * @param string $css
+     * @return void
+     */
+    public function clickByCss($css)
+    {
+        $elem = $this->findByCss($css);
+        $elem->click();
     }
 
     /**
