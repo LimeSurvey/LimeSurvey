@@ -81,35 +81,65 @@ class UserStatusTest extends TestBaseClassWeb
         // Delete all users but superadmin
         User::model()->deleteAll('uid NOT IN (1)');
         // Insert new user
-        User::insertUser(
+        $uid = User::insertUser(
             $new_user = 'newuser',
             $new_pass = 'asd',
             $new_full_name = 'New user',
             $parent_user = 1,
             $new_email = 'new@user.com'
         );
+        $user = User::model()->findByPk($uid);
+        $this->assertEquals(1, (int) $user->user_status, 'User status is 1');
 
         // Go to user management
         $urlMan = \Yii::app()->urlManager;
         $urlMan->setBaseUrl('http://' . self::$domain . '/index.php');
         $web = self::$webDriver;
 
-        try {
-            // Go to User Management page
-            $url = $urlMan->createUrl('userManagement/index');
-            $web->get($url);
+        // Go to User Management page
+        $url = $urlMan->createUrl('userManagement/index');
+        $web->get($url);
 
-            // Find row for new user
-            // Find action button
-            // Find ul
-            // Click on "Deactivate"
-            // Click on "Save"
-            // Check database
-        } catch (Throwable $e) {
-            self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '_' . __FUNCTION__);
-            echo $e->getMessage();
-            debug_print_backtrace();
-            $this->assertFalse(true);
-        }
+        // Find row for new user
+        $uidTds = $web->findManyByCss('.uid');
+        $this->assertCount(2, $uidTds, 'Found exactly two uids');
+        $row = $uidTds[1]->findElement(WebDriverBy::xpath('..'));
+
+        // Find action button
+        $dropdownButton = $row->findElement(WebDriverBy::cssSelector('.dropdown.ls-action_dropdown'));
+        $dropdownButton->click();
+
+        // Find ul
+        $id = $dropdownButton->getAttribute('id');
+        $parts = explode('_', $id);
+        $this->assertCount(2, $parts);
+
+        // Get belonging <ul>
+        $dropdownMenuItems = $web->findManyByCss('#dropdownmenu_' . (int) $parts[1] . ' li');
+        $deactiveElement = $dropdownMenuItems[1];
+        $deactiveElementAnchor = $deactiveElement
+            ->findElement(
+                WebDriverBy::cssSelector('a')
+            );
+
+        // Click on "Deactivate"
+        $deactiveElementAnchor->click();
+
+        //$web->scrollToTop();
+        //sleep(1);
+        //$web->wait(5)->until(
+            //WebDriverExpectedCondition::elementToBeClickable(
+                //WebDriverBy::cssSelector('.modal-footer .btn.btn-primary')
+            //)
+        //);
+
+        // Click on "Save"
+        $modal = $web->findById('UserManagement-action-modal');
+        $saveButton = $modal->findElement(WebDriverBy::cssSelector('.modal-footer .btn.btn-primary'));
+        $saveButton->click();
+
+        // Check database
+        $user = User::model()->findByPk($uid);
+        $this->assertEquals(0, (int) $user->user_status, 'User status is 0');
     }
 }
