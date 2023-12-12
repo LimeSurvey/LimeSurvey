@@ -62,6 +62,7 @@ $aActionsArray = array(
         ),
         array(
             'type'              => 'action',
+            'id'                => 'edit-status',
             'action'            => 'batchStatus',
             'url'               => App()->createUrl('userManagement/batchStatus'),
             'iconClasses'       => 'ri-user-follow-fill',
