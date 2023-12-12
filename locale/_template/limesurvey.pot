@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2023-12-04 11:49:57+00:00\n"
+"POT-Creation-Date: 2023-12-11 11:48:10+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1450,7 +1450,7 @@ msgstr ""
 #: application/controllers/QuotasController.php:39
 #: application/controllers/QuotasController.php:108
 #: application/controllers/QuotasController.php:136
-msgid "You do not have permission on this survey."
+msgid "You do not have permission for this survey."
 msgstr ""
 
 #: application/controllers/QuotasController.php:89
@@ -1535,7 +1535,7 @@ msgid "Quota not found."
 msgstr ""
 
 #: application/controllers/QuotasController.php:438
-msgid "You do not have permission on this quota."
+msgid "You do not have permission for this quota."
 msgstr ""
 
 #: application/controllers/RegisterController.php:166
@@ -1660,8 +1660,8 @@ msgstr ""
 #: application/controllers/ResponsesController.php:158
 #: application/core/plugins/TwoFactorAdminLogin/models/TFAUser.php:118
 #: application/core/plugins/TwoFactorAdminLogin/models/TFAUserKey.php:115
-#: application/models/User.php:152 application/models/User.php:719
-#: application/models/User.php:809
+#: application/models/User.php:158 application/models/User.php:725
+#: application/models/User.php:815
 #: application/views/admin/token/massive_actions/_selector.php:78
 #: application/views/admin/user/modifyuser.php:37
 #: application/views/responses/partial/responseListTable.php:183
@@ -1839,8 +1839,8 @@ msgstr ""
 #: application/models/SurveymenuEntries.php:194
 #: application/models/SurveymenuEntries.php:207
 #: application/models/SurveysGroups.php:181
-#: application/models/TokenDynamic.php:763 application/models/User.php:775
-#: application/models/User.php:797
+#: application/models/TokenDynamic.php:763 application/models/User.php:781
+#: application/models/User.php:803
 #: application/views/SurveysGroupsPermission/subviews/currentUsersList.php:7
 #: application/views/admin/emailtemplates/email_language_template_tab.php:102
 #: application/views/admin/labels/_labelviewtabcontent_view.php:21
@@ -1851,7 +1851,7 @@ msgstr ""
 #: application/views/questionAdministration/partial/groupView.php:143
 #: application/views/questionGroupsAdministration/listquestiongroups.php:115
 #: application/views/quotas/index.php:96
-#: application/views/responses/partial/responseListTable.php:249
+#: application/views/responses/partial/responseListTable.php:250
 #: application/views/surveyPermissions/_overview_table.php:12
 #: application/views/surveyPermissions/index.php:111
 msgid "Action"
@@ -2244,7 +2244,7 @@ msgstr ""
 #: application/views/questionAdministration/partial/topbarBtns/questionToolsDropdownItems.php:26
 #: application/views/questionGroupsAdministration/partial/topbarBtns/groupToolsDropdownItems.php:16
 #: application/views/responses/massive_actions/_selector.php:79
-#: application/views/responses/partial/topbarBtns/leftSideButtons.php:29
+#: application/views/responses/partial/topbarBtns/leftSideButtons.php:36
 #: application/views/surveyAdministration/partial/topbar/surveyTopbarRight_view.php:116
 #: application/views/surveyAdministration/partial/topbar_tokens/leftSideButtons.php:49
 #: application/views/surveyPermissions/partial/editpermission.php:21
@@ -2294,8 +2294,8 @@ msgstr ""
 #: application/models/TemplateManifest.php:687
 #: application/models/TemplateManifest.php:689
 #: application/models/TemplateManifest.php:692
-#: application/models/TokenDynamic.php:876 application/models/User.php:983
-#: application/models/User.php:989 application/models/UserGroup.php:374
+#: application/models/TokenDynamic.php:876 application/models/User.php:989
+#: application/models/User.php:995 application/models/UserGroup.php:374
 #: application/views/SurveysGroupsPermission/subviews/currentUsersList.php:39
 #: application/views/SurveysGroupsPermission/subviews/currentUsersList.php:40
 #: application/views/admin/conditions/includes/conditions_edit.php:8
@@ -2937,7 +2937,7 @@ msgid "Inherit"
 msgstr ""
 
 #: application/controllers/SurveyAdministrationController.php:3164
-#: application/models/User.php:157
+#: application/models/User.php:163
 msgid "Date format"
 msgstr ""
 
@@ -3084,7 +3084,7 @@ msgstr ""
 #: application/views/questionGroupsAdministration/partial/topbarBtns/addGroupTopbarRight_view.php:11
 #: application/views/questionGroupsAdministration/partial/topbarBtns/editGroupTopbarRight_view.php:62
 #: application/views/quickTranslation/translateformheader_view.php:56
-#: application/views/responses/partial/responseListTable.php:330
+#: application/views/responses/partial/responseListTable.php:331
 #: application/views/surveyAdministration/addPanelIntegrationParameter_view.php:65
 #: application/views/surveyAdministration/partial/topbar/surveyTopbarRight_view.php:78
 #: application/views/surveyAdministration/partial/topbarBtns_create_survey/rightSideButtons.php:24
@@ -3603,7 +3603,7 @@ msgid "User group not found."
 msgstr ""
 
 #: application/controllers/UserGroupController.php:121
-msgid "No access : you do not have permission to this users group."
+msgid "No access: You do not have permission to this user group."
 msgstr ""
 
 #: application/controllers/UserGroupController.php:156
@@ -3698,7 +3698,7 @@ msgid "Failed to remove user."
 msgstr ""
 
 #: application/controllers/UserGroupController.php:474
-msgid "No access : you do not have permission to send emails to all users."
+msgid "No access: You do not have permission to send emails to all users."
 msgstr ""
 
 #: application/controllers/UserGroupController.php:491
@@ -3789,8 +3789,8 @@ msgstr ""
 #: application/controllers/UserManagementController.php:1197
 #: application/core/plugins/TwoFactorAdminLogin/models/TFAUser.php:17
 #: application/core/plugins/TwoFactorAdminLogin/models/TFAUserKey.php:48
-#: application/models/User.php:146 application/models/User.php:711
-#: application/models/User.php:801
+#: application/models/User.php:152 application/models/User.php:717
+#: application/models/User.php:807
 msgid "User ID"
 msgstr ""
 
@@ -3805,8 +3805,8 @@ msgstr ""
 #: application/core/plugins/Authdb/Authdb.php:135
 #: application/core/plugins/TwoFactorAdminLogin/models/TFAUser.php:110
 #: application/core/plugins/TwoFactorAdminLogin/models/TFAUserKey.php:105
-#: application/models/User.php:147 application/models/User.php:715
-#: application/models/User.php:805
+#: application/models/User.php:153 application/models/User.php:721
+#: application/models/User.php:811
 #: application/views/SurveysGroupsPermission/subviews/currentUsersList.php:8
 #: application/views/admin/authentication/forgotpassword.php:35
 #: application/views/admin/user/modifyuser.php:26
@@ -3862,11 +3862,11 @@ msgid "Usergroup updated"
 msgstr ""
 
 #: application/controllers/UserManagementController.php:1183
-msgid "You can not update your own roles."
+msgid "You are not allowed to update your own roles."
 msgstr ""
 
 #: application/controllers/UserManagementController.php:1189
-msgid "You can not set role to this user."
+msgid "You are not allowed to assign a role to this user."
 msgstr ""
 
 #: application/controllers/UserManagementController.php:1203
@@ -4674,7 +4674,7 @@ msgstr ""
 #: application/controllers/admin/DataEntry.php:2483
 #: application/views/admin/dataentry/caption_view.php:5
 #: application/views/admin/dataentry/dataentry_header_view.php:3
-#: application/views/responses/partial/topbarBtns/leftSideButtons.php:8
+#: application/views/responses/partial/topbarBtns/leftSideButtons.php:16
 msgid "Data entry"
 msgstr ""
 
@@ -5683,7 +5683,7 @@ msgstr ""
 #: application/views/questionGroupsAdministration/partial/topbarBtns/editGroupTopbarRight_view.php:28
 #: application/views/quotas/index.php:130
 #: application/views/quotas/index.php:131
-#: application/views/responses/partial/responseListTable.php:328
+#: application/views/responses/partial/responseListTable.php:329
 #: application/views/responses/partial/topbarBtns/responseViewTopbarRight_view.php:118
 #: application/views/surveyAdministration/afterDeactivateSurvey_view.php:35
 #: application/views/surveyAdministration/partial/_modalActivateSuccess.php:40
@@ -8701,7 +8701,7 @@ msgstr ""
 
 #: application/core/plugins/AuthLDAP/AuthLDAP.php:379
 #: application/core/plugins/Authdb/Authdb.php:136
-#: application/libraries/Save.php:217 application/models/User.php:148
+#: application/libraries/Save.php:217 application/models/User.php:154
 #: application/views/admin/authentication/newPassword.php:35
 #: application/views/admin/user/modifyuser.php:55
 #: application/views/userManagement/partial/createdrandoms.php:30
@@ -8782,7 +8782,7 @@ msgid "The server key is not currently set. If you set this plugin as default yo
 msgstr ""
 
 #: application/core/plugins/AzureOAuthSMTP/AzureOAuthSMTP.php:69
-msgid "This plugin requires PHP 7.3 or above."
+msgid "This plugin requires PHP version 7.3 or higher."
 msgstr ""
 
 #: application/core/plugins/AzureOAuthSMTP/AzureOAuthSMTP.php:81
@@ -8827,12 +8827,8 @@ msgid "Instructions:"
 msgstr ""
 
 #: application/core/plugins/AzureOAuthSMTP/AzureOAuthSMTP.php:206
-#: application/core/plugins/GoogleOAuthSMTP/GoogleOAuthSMTP.php:182
+#: application/core/plugins/GoogleOAuthSMTP/GoogleOAuthSMTP.php:181
 msgid "The %s plugin is not configured correctly. Please check the plugin settings."
-msgstr ""
-
-#: application/core/plugins/AzureOAuthSMTP/AzureOAuthSMTP.php:268
-msgid "Azure"
 msgstr ""
 
 #: application/core/plugins/AzureOAuthSMTP/AzureOAuthSMTP.php:293
@@ -8926,35 +8922,27 @@ msgid "Redirect URI:"
 msgstr ""
 
 #: application/core/plugins/GoogleOAuthSMTP/GoogleOAuthSMTP.php:79
-msgid "You can find more details %s."
+msgid "You can find more details %shere%s."
 msgstr ""
 
 #: application/core/plugins/GoogleOAuthSMTP/GoogleOAuthSMTP.php:80
-msgid "here"
-msgstr ""
-
-#: application/core/plugins/GoogleOAuthSMTP/GoogleOAuthSMTP.php:81
 msgid "Activate the plugin."
 msgstr ""
 
-#: application/core/plugins/GoogleOAuthSMTP/GoogleOAuthSMTP.php:82
+#: application/core/plugins/GoogleOAuthSMTP/GoogleOAuthSMTP.php:81
 msgid "Set the 'Client ID' and 'Client Secret' below and save the settings."
 msgstr ""
 
-#: application/core/plugins/GoogleOAuthSMTP/GoogleOAuthSMTP.php:83
+#: application/core/plugins/GoogleOAuthSMTP/GoogleOAuthSMTP.php:82
 msgid "Click the 'Get Token' button to open Google's consent screen in a new window."
 msgstr ""
 
-#: application/core/plugins/GoogleOAuthSMTP/GoogleOAuthSMTP.php:84
+#: application/core/plugins/GoogleOAuthSMTP/GoogleOAuthSMTP.php:83
 msgid "Follow the steps in the consent screen and check the requested permissions."
 msgstr ""
 
-#: application/core/plugins/GoogleOAuthSMTP/GoogleOAuthSMTP.php:85
+#: application/core/plugins/GoogleOAuthSMTP/GoogleOAuthSMTP.php:84
 msgid "Switch the 'Enabled' setting to 'On' and save."
-msgstr ""
-
-#: application/core/plugins/GoogleOAuthSMTP/GoogleOAuthSMTP.php:223
-msgid "Google"
 msgstr ""
 
 #: application/core/plugins/PasswordRequirement/PasswordRequirement.php:157
@@ -9081,8 +9069,8 @@ msgstr ""
 
 #: application/core/plugins/TwoFactorAdminLogin/models/TFAUser.php:114
 #: application/core/plugins/TwoFactorAdminLogin/models/TFAUserKey.php:110
-#: application/models/User.php:149 application/models/User.php:723
-#: application/models/User.php:813
+#: application/models/User.php:155 application/models/User.php:729
+#: application/models/User.php:819
 #: application/views/SurveysGroupsPermission/subviews/currentUsersList.php:9
 #: application/views/admin/user/modifyuser.php:45
 #: application/views/surveyPermissions/_overview_table.php:15
@@ -9141,7 +9129,7 @@ msgstr ""
 #: application/views/quotas/index.php:44
 #: application/views/responses/browsetimerow_view.php:25
 #: application/views/responses/partial/notSubmittedResponseListTable.php:14
-#: application/views/responses/partial/responseListTable.php:272
+#: application/views/responses/partial/responseListTable.php:273
 #: application/views/surveyAdministration/listSurveys_view.php:39
 #: application/views/themeOptions/installedthemelist.php:27
 #: application/views/themeOptions/surveythemelist.php:27
@@ -9179,7 +9167,7 @@ msgstr ""
 #: application/views/quotas/index.php:45
 #: application/views/responses/browsetimerow_view.php:26
 #: application/views/responses/partial/notSubmittedResponseListTable.php:15
-#: application/views/responses/partial/responseListTable.php:273
+#: application/views/responses/partial/responseListTable.php:274
 #: application/views/surveyAdministration/listSurveys_view.php:41
 #: application/views/themeOptions/installedthemelist.php:28
 #: application/views/themeOptions/surveythemelist.php:27
@@ -9613,7 +9601,7 @@ msgstr ""
 #: application/views/admin/user/setuserpermissions.php:30
 #: application/views/questionAdministration/partial/topbarBtns/importQuestionTopbarRight_view.php:8
 #: application/views/questionGroupsAdministration/partial/topbarBtns/importGroupTopbarRight_view.php:8
-#: application/views/responses/partial/topbarBtns/leftSideButtons.php:50
+#: application/views/responses/partial/topbarBtns/leftSideButtons.php:55
 #: application/views/surveyAdministration/partial/topbar/surveyTopbarRight_view.php:136
 #: application/views/surveyAdministration/tab_survey_view.php:32
 #: application/views/surveyAdministration/tab_survey_view.php:66
@@ -9713,7 +9701,7 @@ msgid "This will update the survey group for all selected surveys."
 msgstr ""
 
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_expiry_dialog.php:15
-#: application/models/User.php:161
+#: application/models/User.php:167
 #: application/views/admin/survey/subview/accordion/_publication_panel.php:49
 msgid "Expiry date/time:"
 msgstr ""
@@ -14322,11 +14310,11 @@ msgid "Get new token"
 msgstr ""
 
 #: application/libraries/PluginManager/SmtpOAuthPluginBase.php:344
-msgid "Saved Token Owner"
+msgid "Token owner email address"
 msgstr ""
 
 #: application/libraries/PluginManager/SmtpOAuthPluginBase.php:345
-msgid "This is the email address used to create the current authentication token. Please note all emails will be sent from this address."
+msgid "This is the email address used to create the current authentication token. Please note that all emails will be sent from this address."
 msgstr ""
 
 #: application/libraries/Save.php:142
@@ -14387,7 +14375,7 @@ msgstr ""
 #: application/models/Participant.php:198
 #: application/models/QuestionGroupL10n.php:81
 #: application/models/SurveymenuEntries.php:197
-#: application/models/TokenDynamic.php:673 application/models/User.php:151
+#: application/models/TokenDynamic.php:673 application/models/User.php:157
 #: application/views/admin/authentication/ajaxLogin.php:80
 #: application/views/admin/authentication/login.php:95
 #: application/views/admin/globalsettings/globalSettings_view.php:21
@@ -14681,8 +14669,8 @@ msgstr ""
 
 #: application/models/Participant.php:202 application/models/Surveymenu.php:350
 #: application/models/SurveymenuEntries.php:205
-#: application/models/SurveysGroups.php:104 application/models/User.php:727
-#: application/models/User.php:830
+#: application/models/SurveysGroups.php:104 application/models/User.php:733
+#: application/models/User.php:836
 msgid "Created on"
 msgstr ""
 
@@ -14789,7 +14777,7 @@ msgstr ""
 msgid "Use internal database authentication"
 msgstr ""
 
-#: application/models/Permission.php:660 application/models/User.php:544
+#: application/models/Permission.php:660 application/models/User.php:550
 #: application/views/SurveysGroupsPermission/subviews/currentUsersList.php:22
 #: application/views/SurveysGroupsPermission/subviews/currentUsersList.php:23
 #: application/views/surveyPermissions/_overview_table.php:37
@@ -15422,7 +15410,7 @@ msgid "Permission to view statistics"
 msgstr ""
 
 #: application/models/Survey.php:2195
-msgid "Permission on survey (delete). Read permission is used to give access to this group."
+msgid "Permission for survey access. Read permission is a requirement to give any further permission to a survey."
 msgstr ""
 
 #: application/models/Survey.php:2204
@@ -15616,8 +15604,8 @@ msgstr ""
 
 #: application/models/Surveymenu.php:351
 #: application/models/SurveymenuEntries.php:206
-#: application/models/SurveysGroups.php:106 application/models/User.php:732
-#: application/models/User.php:825
+#: application/models/SurveysGroups.php:106 application/models/User.php:738
+#: application/models/User.php:831
 msgid "Created by"
 msgstr ""
 
@@ -16165,162 +16153,162 @@ msgstr ""
 msgid "Settings"
 msgstr ""
 
-#: application/models/User.php:150
+#: application/models/User.php:156
 msgid "Parent user"
 msgstr ""
 
-#: application/models/User.php:153
+#: application/models/User.php:159
 msgid "Editor mode"
 msgstr ""
 
-#: application/models/User.php:154
+#: application/models/User.php:160
 msgid "Template editor mode"
 msgstr ""
 
-#: application/models/User.php:155
+#: application/models/User.php:161
 msgid "Question selector mode"
 msgstr ""
 
-#: application/models/User.php:156
+#: application/models/User.php:162
 msgid "One-time password"
 msgstr ""
 
-#: application/models/User.php:158
+#: application/models/User.php:164
 msgid "Created at"
 msgstr ""
 
-#: application/models/User.php:159
+#: application/models/User.php:165
 msgid "Modified at"
 msgstr ""
 
-#: application/models/User.php:160
+#: application/models/User.php:166
 msgid "Last recorded login"
 msgstr ""
 
-#: application/models/User.php:334
+#: application/models/User.php:340
 msgid "Password must be at least %d character long|Password must be at least %d characters long"
 msgstr ""
 
-#: application/models/User.php:339
+#: application/models/User.php:345
 msgid "Password must be at most %d character long|Password must be at most %d characters long"
 msgstr ""
 
-#: application/models/User.php:344
+#: application/models/User.php:350
 msgid "Password must include at least %d lowercase letter|Password must include at least %d lowercase letters"
 msgstr ""
 
-#: application/models/User.php:349
+#: application/models/User.php:355
 msgid "Password must include at least %d uppercase letter|Password must include at least %d uppercase letters"
 msgstr ""
 
-#: application/models/User.php:354
+#: application/models/User.php:360
 msgid "Password must include at least %d number|Password must include at least %d numbers"
 msgstr ""
 
-#: application/models/User.php:359
+#: application/models/User.php:365
 msgid "Password must include at least %d special character|Password must include at least %d special characters"
 msgstr ""
 
-#: application/models/User.php:390
+#: application/models/User.php:396
 msgid "Your new password was not saved because the old password was wrong."
 msgstr ""
 
-#: application/models/User.php:393
+#: application/models/User.php:399
 msgid "Your new password was not saved because it matches the old password."
 msgstr ""
 
-#: application/models/User.php:396
+#: application/models/User.php:402
 msgid "Your new password was not saved because the passwords did not match."
 msgstr ""
 
-#: application/models/User.php:399
+#: application/models/User.php:405
 msgid "The new password can not be empty."
 msgstr ""
 
-#: application/models/User.php:412
+#: application/models/User.php:418
 msgid "A password must meet the following requirements: "
 msgstr ""
 
-#: application/models/User.php:414
+#: application/models/User.php:420
 msgid "At least %d character long.|At least %d characters long."
 msgstr ""
 
-#: application/models/User.php:417
+#: application/models/User.php:423
 msgid "At most %d character long.|At most %d characters long."
 msgstr ""
 
-#: application/models/User.php:421
+#: application/models/User.php:427
 msgid "Exactly %d character long.|Exactly %d characters long."
 msgstr ""
 
-#: application/models/User.php:423
+#: application/models/User.php:429
 msgid "Between %d and %d characters long."
 msgstr ""
 
-#: application/models/User.php:427
+#: application/models/User.php:433
 msgid "At least %d lower case letter.|At least %d lower case letters."
 msgstr ""
 
-#: application/models/User.php:430
+#: application/models/User.php:436
 msgid "At least %d upper case letter.|At least %d upper case letters."
 msgstr ""
 
-#: application/models/User.php:433
+#: application/models/User.php:439
 msgid "At least %d number.|At least %d numbers."
 msgstr ""
 
-#: application/models/User.php:436
+#: application/models/User.php:442
 msgid "At least %d special character.|At least %d special characters."
 msgstr ""
 
-#: application/models/User.php:522
+#: application/models/User.php:528
 #: application/views/userManagement/partial/showuser.php:4
 msgid "User details"
 msgstr ""
 
-#: application/models/User.php:568
+#: application/models/User.php:574
 msgid "User role"
 msgstr ""
 
-#: application/models/User.php:577
+#: application/models/User.php:583
 #: application/views/userManagement/partial/addedituser.php:4
 msgid "Edit user"
 msgstr ""
 
-#: application/models/User.php:587
+#: application/models/User.php:593
 msgid "Template permissions"
 msgstr ""
 
-#: application/models/User.php:601
+#: application/models/User.php:607
 msgid "Take ownership"
 msgstr ""
 
-#: application/models/User.php:612
+#: application/models/User.php:618
 msgid "Do you want to take ownership of this user?"
 msgstr ""
 
-#: application/models/User.php:628 application/views/admin/user/deluser.php:30
+#: application/models/User.php:634 application/views/admin/user/deluser.php:30
 #: application/views/userManagement/partial/transfersurveys.php:36
 msgid "Delete User"
 msgstr ""
 
-#: application/models/User.php:746 application/models/User.php:819
+#: application/models/User.php:752 application/models/User.php:825
 msgid "No of surveys"
 msgstr ""
 
-#: application/models/User.php:759
+#: application/models/User.php:765
 msgid "Usergroups"
 msgstr ""
 
-#: application/models/User.php:769
+#: application/models/User.php:775
 msgid "Applied role"
 msgstr ""
 
-#: application/models/User.php:940
+#: application/models/User.php:946
 msgid "%s (%s)"
 msgstr ""
 
-#: application/models/User.php:993
+#: application/models/User.php:999
 msgid "Are you sure you want to delete user '%s' from user group '%s'?"
 msgstr ""
 
@@ -16538,7 +16526,7 @@ msgid "Sorry your responses have exceeded a quota on this survey."
 msgstr ""
 
 #: application/models/services/Quotas.php:324
-msgid "Invalid quota id"
+msgid "Invalid quota ID"
 msgstr ""
 
 #: application/models/services/Quotas.php:354
@@ -16627,7 +16615,7 @@ msgid "Users listed here can see groups in lists, and view group descriptions & 
 msgstr ""
 
 #: application/views/SurveysGroupsPermission/subviews/viewCurrents.php:3
-msgid "This survey group is shown for users with any permission on the survey group, user with any permission on one survey inside this group, or if this group was configured to be available."
+msgid "This survey group is shown for users with any permission to the survey group, user with any permission to one survey inside this group, or if this group was configured to be available."
 msgstr ""
 
 #: application/views/SurveysGroupsPermission/subviews/viewCurrents.php:17
@@ -17344,8 +17332,8 @@ msgid "View this record"
 msgstr ""
 
 #: application/views/admin/dataentry/iteratesurvey.php:2
-#: application/views/responses/partial/topbarBtns/leftSideButtons.php:68
-#: application/views/responses/partial/topbarBtns/leftSideButtons.php:87
+#: application/views/responses/partial/topbarBtns/leftSideButtons.php:113
+#: application/views/responses/partial/topbarBtns/leftSideButtons.php:132
 msgid "Iterate survey"
 msgstr ""
 
@@ -17975,7 +17963,7 @@ msgstr ""
 #: application/views/admin/token/browse.php:93
 #: application/views/admin/token/surveyParticipantView.php:169
 #: application/views/admin/update/updater/_right_container.php:10
-#: application/views/responses/partial/responseListTable.php:314
+#: application/views/responses/partial/responseListTable.php:315
 msgid "Please wait, loading data..."
 msgstr ""
 
@@ -21624,7 +21612,7 @@ msgstr ""
 #: application/views/admin/token/browse.php:87
 #: application/views/admin/token/surveyParticipantView.php:163
 #: application/views/admin/token/tokenform.php:14
-#: application/views/responses/partial/responseListTable.php:308
+#: application/views/responses/partial/responseListTable.php:309
 msgid "Edit survey participant"
 msgstr ""
 
@@ -23337,7 +23325,7 @@ msgid "The GD extension found doesn't support JPEG"
 msgstr ""
 
 #: application/views/installer/precheck_view.php:129
-msgid "PHP Collate library (language sort order)"
+msgid "PHP Intl library"
 msgstr ""
 
 #: application/views/installer/precheck_view.php:134
@@ -24047,7 +24035,16 @@ msgstr ""
 msgid "Total responses"
 msgstr ""
 
-#: application/views/responses/partial/topbarBtns/leftSideButtons.php:80
+#: application/views/responses/partial/topbarBtns/leftSideButtons.php:72
+#: application/views/responses/partial/topbarBtns/leftSideButtons.php:91
+msgid "Timing statistics"
+msgstr ""
+
+#: application/views/responses/partial/topbarBtns/leftSideButtons.php:83
+msgid "Timing statistics are disabled for this survey."
+msgstr ""
+
+#: application/views/responses/partial/topbarBtns/leftSideButtons.php:125
 msgid "This survey is anonymized and/or token persistence is disabled."
 msgstr ""
 
