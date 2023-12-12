@@ -1660,10 +1660,10 @@ class Survey extends LSActiveRecord implements PermissionInterface
                 if ($this->active == "R") {
                     $criteria->compare("t.active", 'Y');
                     $startedCriteria = new CDbCriteria();
-                    $startedCriteria->addCondition("'{$sNow}' > t.startdate", 'OR');
+                    $startedCriteria->addCondition("'{$sNow}' > t.startdate");
                     $startedCriteria->addCondition('t.startdate IS NULL', "OR");
                     $notExpiredCriteria = new CDbCriteria();
-                    $notExpiredCriteria->addCondition("'{$sNow}' < t.expires", 'OR');
+                    $notExpiredCriteria->addCondition("'{$sNow}' < t.expires");
                     $notExpiredCriteria->addCondition('t.expires IS NULL', "OR");
                     $criteria->mergeWith($startedCriteria);
                     $criteria->mergeWith($notExpiredCriteria);
