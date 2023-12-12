@@ -25,6 +25,50 @@ class LSWebUser extends CWebUser
         }
     }
 
+
+    /**
+     * @inheritDoc
+     * Replace auto getter to check if currentb uiser is valid or not
+     */
+    public function getId()
+    {
+        if (empty(parent::getId())) {
+            return parent::getId();
+        }
+        $id = App()->getCurrentUserId();
+        if (empty($id)) {
+            /* If still connected but invalid : logout */
+            $this->logout();
+        }
+        return $id;
+    }
+
+    /**
+     * @inheritDoc
+     * Set id in session too
+     */
+    public function setId($id)
+    {
+        parent::setId($id);
+        \Yii::app()->session['loginID'] = $id;
+    }
+
+    /**
+     * @inheritDoc
+     * Add the specific plugin event and regenerate CRSF
+     */
+    public function logout($destroySession = true)
+    {
+        /* Adding beforeLogout event */
+        $beforeLogout = new PluginEvent('beforeLogout');
+        App()->getPluginManager()->dispatchEvent($beforeLogout);
+        regenerateCSRFToken();
+        parent::logout($destroySession);
+        /* Adding afterLogout event */
+        $event = new PluginEvent('afterLogout');
+        App()->getPluginManager()->dispatchEvent($event);
+    }
+
     /**
      * @inheritdoc
      * replace by a fixed string
