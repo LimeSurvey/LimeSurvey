@@ -6,9 +6,10 @@ use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\{
     OpHandlerSurveyTrait,
     OpHandlerExceptionTrait
 };
-use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestionAggregate;
+use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestion;
 use LimeSurvey\Models\Services\QuestionAggregateService;
-use LimeSurvey\ObjectPatch\{Op\OpInterface,
+use LimeSurvey\ObjectPatch\{
+    Op\OpInterface,
     OpHandler\OpHandlerException,
     OpHandler\OpHandlerInterface,
     OpType\OpTypeUpdate
@@ -20,11 +21,11 @@ class OpHandlerQuestionUpdate implements OpHandlerInterface
     use OpHandlerExceptionTrait;
 
     protected QuestionAggregateService $questionAggregateService;
-    protected TransformerInputQuestionAggregate $transformer;
+    protected TransformerInputQuestion $transformer;
 
     public function __construct(
         QuestionAggregateService $questionAggregateService,
-        TransformerInputQuestionAggregate $transformer
+        TransformerInputQuestion $transformer
     ) {
         $this->questionAggregateService = $questionAggregateService;
         $this->transformer = $transformer;
@@ -62,40 +63,43 @@ class OpHandlerQuestionUpdate implements OpHandlerInterface
      */
     public function handle(OpInterface $op): void
     {
+        $transformOptions = ['operation' => $op->getType()->getId()];
         $this->throwTransformerValidationErrors(
             $this->transformer->validate(
                 $op->getProps(),
+                $transformOptions
             ),
             $op
         );
-
+        $transformedProps = $this->transformer->transform(
+            $op->getProps(),
+            $transformOptions
+        );
         $this->questionAggregateService->save(
             $this->getSurveyIdFromContext($op),
-            $this->getPreparedData($op)
+            $this->getPreparedData($transformedProps, $op)
         );
     }
 
     /**
      * Organizes the patch data into the structure which
      * is expected by the service.
+     * @param array $transformedProps
      * @param OpInterface $op
      * @return array
      * @throws OpHandlerException
      */
-    public function getPreparedData(OpInterface $op): array
+    public function getPreparedData($transformedProps, OpInterface $op): array
     {
-        $props = $op->getProps();
-        $transformedProps = $this->transformer->transform($props);
-
         // Set qid from op entity id
         if (
             !array_key_exists(
                 'qid',
-                $transformedProps['question']
+                $transformedProps
             )
-            || $transformedProps['question']['qid'] === null
+            || $transformedProps['qid'] === null
         ) {
-            $transformedProps['question']['qid'] = $op->getEntityId();
+            $transformedProps['qid'] = $op->getEntityId();
         }
 
         return $transformedProps;
