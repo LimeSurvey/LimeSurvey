@@ -14,6 +14,8 @@ class UserStatusTest extends TestBaseClassWeb
     //   Create new user with permission to edit users
     //   Login as new user
     //   Go to user management
+    //   Click on my own action button
+    //   "Deactivate" should be disabled
     // Deactivate massive action
     // Activate massive action
     // Deactivate user you do not own?
@@ -131,11 +133,7 @@ class UserStatusTest extends TestBaseClassWeb
         $deactiveElementAnchor->click();
 
         // Wait for modal
-        $web->wait(5)->until(
-            WebDriverExpectedCondition::elementToBeClickable(
-                WebDriverBy::id('UserManagement-action-modal')
-            )
-        );
+        $web->waitById('UserManagement-action-modal');
 
         // Click on "Save"
         $modal = $web->findById('UserManagement-action-modal');

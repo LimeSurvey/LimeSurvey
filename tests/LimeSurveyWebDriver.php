@@ -97,6 +97,21 @@ class LimeSurveyWebDriver extends RemoteWebDriver
     }
 
     /**
+     * Wait until element with $id gets clickable. Max 5 sec.
+     *
+     * @param string $id
+     * @return void
+     */
+    public function waitById($id)
+    {
+        $this->wait(5)->until(
+            WebDriverExpectedCondition::elementToBeClickable(
+                WebDriverBy::id($id)
+            )
+        );
+    }
+
+    /**
      * Alias for next().
      */
     public function submit()
@@ -201,6 +216,11 @@ class LimeSurveyWebDriver extends RemoteWebDriver
     {
         $this->executeScript('window.scrollTo(0,document.body.scrollHeight);');
         sleep(1);
+    }
+
+    public function scrollToTop()
+    {
+        $this->executeScript('window.scrollTo(0, 0);');
     }
 
     /**
