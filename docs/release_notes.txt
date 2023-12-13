@@ -34,6 +34,13 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.28.76 (build 231018) to 3.28.77 (build 231213) December 13, 2023
+# Added alert message to header to inform that LS3 is out of support.
+#Updated translation: Turkish by kayazeren
+#Updated translation: Myanmar by Mazi
+#Updated translation: Kinyarwanda by Mazi
+
+
 Changes from 3.28.75 (build 231006) to 3.28.76 (build 231018) October 16, 2023
 -Fixed issue #19094: [security] Input Validation Vulnerability Leading to 500 on responses page (#3466) (Denis Chenu)
 
