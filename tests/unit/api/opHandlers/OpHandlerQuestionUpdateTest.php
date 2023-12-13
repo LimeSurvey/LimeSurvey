@@ -4,7 +4,7 @@ namespace ls\tests\unit\api\opHandlers;
 
 use LimeSurvey\DI;
 use LimeSurvey\Api\Command\V1\SurveyPatch\OpHandlerQuestionUpdate;
-use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestionAggregate;
+use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestion;
 use LimeSurvey\Models\Services\QuestionAggregateService;
 use LimeSurvey\ObjectPatch\ObjectPatchException;
 use LimeSurvey\ObjectPatch\Op\OpInterface;
@@ -44,9 +44,8 @@ class OpHandlerQuestionUpdateTest extends TestBaseClass
         );
         $opHandler = $this->getOpHandler();
         $preparedData = $opHandler->getPreparedData($this->op);
-        $this->assertArrayHasKey('question', $preparedData);
-        $this->assertArrayHasKey('qid', $preparedData['question']);
-        $this->assertEquals(77, $preparedData['question']['qid']);
+        $this->assertArrayHasKey('qid', $preparedData);
+        $this->assertEquals(77, $preparedData['qid']);
     }
 
     /**
@@ -101,13 +100,10 @@ class OpHandlerQuestionUpdateTest extends TestBaseClass
     private function getCorrectPropsArray()
     {
         return [
-            'question' => [
-                'title' => 'test title',
-                'mandatory' => true,
-                'type' => 'S',
-                'tempId' => 1
-            ],
-            'questionL10n' => []
+            'title' => 'test title',
+            'mandatory' => true,
+            'type' => 'S',
+            'tempId' => 1
         ];
     }
 
@@ -127,12 +123,13 @@ class OpHandlerQuestionUpdateTest extends TestBaseClass
      */
     private function getOpHandler()
     {
+        /** @var \LimeSurvey\Models\Services\QuestionAggregateService */
         $mockQuestionAggregateService = \Mockery::mock(
             QuestionAggregateService::class
         )->makePartial();
         return new OpHandlerQuestionUpdate(
             $mockQuestionAggregateService,
-            DI::getContainer()->get(TransformerInputQuestionAggregate::class)
+            DI::getContainer()->get(TransformerInputQuestion::class)
         );
     }
 }

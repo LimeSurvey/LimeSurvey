@@ -9,6 +9,9 @@ class Transformer implements TransformerInterface
     /** @var array */
     protected $dataMap = [];
 
+    /** @var array */
+    protected $defaultConfig = [];
+
     /**
      * Transform data
      *
@@ -38,9 +41,7 @@ class Transformer implements TransformerInterface
                 $key,
                 $options
             );
-            $value = isset($data[$key])
-                ? $this->cast($data[$key], $config)
-                : null;
+            $value = $data[$key] ?? null;
             // Null value reverts to default value
             // - the default value itself defaults to null
             if (is_null($value) && isset($config['default'])) {
@@ -51,13 +52,14 @@ class Transformer implements TransformerInterface
             if (is_null($value) && !$config['required']) {
                 continue;
             }
-
+            $value = $this->cast($value, $config);
             $value = $this->format($value, $config);
             $errors = $this->validateKey(
                 $key,
                 $value,
                 $config,
-                $data
+                $data,
+                $options
             );
             if (is_array($errors)) {
                 throw new TransformerException($errors[0]);
@@ -89,54 +91,53 @@ class Transformer implements TransformerInterface
     private function normaliseConfig($config, $inputKey, $options = [])
     {
         $options = $options ?? [];
-        if ($config === true) {
-            // map to same key name
-            $key = $inputKey;
-        } elseif (is_string($config) || is_int($config)) {
+        $configTemp = ['key' => $inputKey];
+        if (is_string($config) || is_int($config)) {
             // map to new key name
-            $key = $config;
-        } elseif (is_array($config)) {
-            $key = isset($config['key']) ? $config['key'] : $inputKey;
-            $type = isset($config['type']) ? $config['type'] : null;
-            $collection = isset($config['collection']) ? $config['collection'] : false;
-            $transformer = isset($config['transformer']) ? $config['transformer'] : null;
-            $formatter = isset($config['formatter']) ? $config['formatter'] : null;
-            $default = isset($config['default']) ? (bool) $config['default'] : null;
-            $required = isset($config['required']) ? $config['required'] : false;
-            $null = isset($config['null']) ? (bool) $config['null'] : true;
-            $empty = isset($config['empty']) ? (bool) $config['empty'] : true;
+            $configTemp['key'] = $config;
+        }
+        $config = array_merge(
+            $this->getDefaultConfig(),
+            $configTemp,
+            is_array($config) ? $config : []
+        );
 
-            // required can be operation specific by specifying
-            // - a string or an array of operation names
-            if (
-                isset($options['operation'])
-                && (is_string($required) || is_array($required))
-            ) {
-                $required = (
-                    (
-                        is_string($required)
-                        && $required == $options['operation']
+        $config['key'] = isset($config['key']) ? $config['key'] : $inputKey;
+        $config['type'] = isset($config['type']) ? $config['type'] : null;
+        $config['collection'] = isset($config['collection']) ? $config['collection'] : false;
+        $config['transformer']= isset($config['transformer']) ? $config['transformer'] : null;
+        $config['formatter']= isset($config['formatter']) ? $config['formatter'] : null;
+        $config['default'] = isset($config['default']) ? $config['default'] : null;
+        $config['required'] = isset($config['required']) ? $config['required'] : false;
+        $config['null'] = isset($config['null']) ? (bool) $config['null'] : true;
+        $config['empty'] = isset($config['empty']) ? (bool) $config['empty'] : true;
+
+        // required can be operation specific by specifying
+        // - a string or an array of operation names
+        if (
+            isset($options['operation'])
+            && (
+                is_string( $config['required'])
+                || is_array( $config['required'])
+            )
+        ) {
+            $config['required'] = (
+                (
+                    is_string( $config['required'])
+                    && $config['required'] == $options['operation']
+                )
+                ||
+                (
+                    is_array($config['required'])
+                    && in_array(
+                        $options['operation'],
+                        $config['required']
                     )
-                    ||
-                    (
-                        is_array($required)
-                        && in_array($options['operation'], $required)
-                    )
-                );
-            }
+                )
+            );
         }
 
-        return [
-            'key' => $key ?? null,
-            'type' => $type ?? null,
-            'collection' => $collection ?? false,
-            'transformer' => $transformer ?? null,
-            'formatter' => $formatter ?? null,
-            'default' => $default ?? null,
-            'required' => $required ?? false,
-            'null' => $null ?? true,
-            'empty' => $empty ?? true
-        ];
+        return $config;
     }
 
     /**
@@ -156,7 +157,6 @@ class Transformer implements TransformerInterface
                 settype($value, $type);
             }
         }
-
         return $value;
     }
 
@@ -197,16 +197,14 @@ class Transformer implements TransformerInterface
                 $key,
                 $options
             );
-            $value = isset($data[$key])
-                ? $this->cast($data[$key], $config)
-                : null;
-            $value = $this->format($value, $config);
-
+            $value = $data[$key] ?? null;
             // Null value reverts to default value
             // - the default value itself defaults to null
             if (is_null($value) && isset($config['default'])) {
                 $value = $config['default'];
             }
+            $value = $this->cast($value, $config);
+            $value = $this->format($value, $config);
 
             $fieldErrors = $this->validateKey(
                 $key,
@@ -218,7 +216,6 @@ class Transformer implements TransformerInterface
                 $errors = array_merge($errors, $fieldErrors);
             }
         }
-
         return empty($errors) ?: $errors;
     }
 
@@ -233,14 +230,19 @@ class Transformer implements TransformerInterface
      * @param array $data
      * @return boolean|array
      */
-    private function validateKey($key, $value, $config, $data)
+    private function validateKey($key, $value, $config, $data, $options = [])
     {
+        $options = $options ?? [];
         $errors = [];
         if (
             $config['required']
             && (
-                !is_array($data)
-                || !array_key_exists($key, $data)
+                (is_array($data) && !array_key_exists($key, $data))
+                || (
+                    is_string($config['required'])
+                    && isset($options['operation'])
+                    && $config['required'] == $options['operation']
+                )
             )
         ) {
             $errors[] = $key . ' is required';
@@ -325,5 +327,34 @@ class Transformer implements TransformerInterface
     public function setDataMap(array $dataMap)
     {
         $this->dataMap = $dataMap;
+    }
+
+    /**
+     * Set default config
+     *
+     * @param array $defaultConfig
+     * @return void
+     */
+    public function setDefaultConfig(array $defaultConfig)
+    {
+        $this->defaultConfig = $defaultConfig;
+    }
+
+    /**
+     * Get default config
+     *
+     * @return array
+     */
+    public function getDefaultConfig()
+    {
+        return array_merge(
+            [
+                'default' => null,
+                'required' => false,
+                'null' => true,
+                'empty' => true
+            ],
+            $this->defaultConfig
+        );
     }
 }

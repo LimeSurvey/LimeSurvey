@@ -45,7 +45,6 @@ class OpHandlerLanguageSettingsUpdate implements OpHandlerInterface
     {
         $isUpdateOperation = $op->getType()->getId() === OpTypeUpdate::ID;
         $isLanguageSettingEntity = $op->getEntityType() === 'languageSetting';
-
         return $isUpdateOperation && $isLanguageSettingEntity;
     }
 
@@ -57,10 +56,7 @@ class OpHandlerLanguageSettingsUpdate implements OpHandlerInterface
      *      {
      *          "entity": "languageSetting",
      *          "op": "update",
-     *          "id": {
-     *              "sid": 123456,  //todo do we still need the sid here?
-     *              "language": "de"
-     *          },
+     *          "id": "de",
      *          "props": {
      *              "title": "Beispielfragebogen"
      *          }
@@ -73,9 +69,7 @@ class OpHandlerLanguageSettingsUpdate implements OpHandlerInterface
      *      {
      *          "entity": "languageSetting",
      *          "op": "update",
-     *          "id": {
-     *              "sid": 123456  //todo do we still need the sid here?
-     *          },
+     *          "id": null,
      *          "props": {
      *              "de": {
      *                  "title": "Beispielfragebogen"
@@ -100,7 +94,6 @@ class OpHandlerLanguageSettingsUpdate implements OpHandlerInterface
         $languageSettings = $diContainer->get(
             LanguageSettings::class
         );
-
         $languageSettings->update(
             $this->getSurveyIdFromContext($op),
             $this->getLanguageSettingsData($op)
@@ -115,40 +108,31 @@ class OpHandlerLanguageSettingsUpdate implements OpHandlerInterface
      */
     public function getLanguageSettingsData(OpInterface $op)
     {
-        $data = [];
+        $transformOps = ['operation' => $op->getType()->getId()];
+        $props = [];
         $entityId = $op->getEntityId();
-        if (is_array($entityId) && array_key_exists('language', $entityId)) {
+        if (is_string($entityId)) {
             // indicator for variant 1
-            $data[$entityId['language']] = $this->getTransformedProps(
-                $op,
-                $op->getProps()
-            );
+            $props[$entityId] = $op->getProps();
         } else {
             // variant 2
-            foreach ($op->getProps() as $language => $props) {
-                $data[$language] = $this->getTransformedProps(
-                    $op,
-                    $props
-                );
-            }
+            $props = $op->getProps();
         }
-
-        return $data;
-    }
-
-    /**
-     * @param OpInterface $op
-     * @param array|null $props
-     * @return mixed
-     * @throws OpHandlerException
-     */
-    private function getTransformedProps(OpInterface $op, ?array $props)
-    {
-        $errors = $this->transformer->validate($props);
-        if (is_array($errors)) {
-            throw new OpHandlerException($errors[0]);
+        foreach (array_keys($props) as $language) {
+            $props[$language]['sid'] = $this->getSurveyIdFromContext($op);
+            $props[$language]['language'] = $language;
         }
-        return $this->transformer->transform($props);
+        $this->throwTransformerValidationErrors(
+            $this->transformer->validateAll(
+                $props,
+                $transformOps
+            ),
+            $op
+        );
+        return $this->transformer->transformAll(
+            $props,
+            $transformOps
+        );
     }
 
     /**

@@ -71,33 +71,36 @@ class OpHandlerQuestionUpdate implements OpHandlerInterface
             ),
             $op
         );
-        $transformedProps = $this->transformer->transform(
-            $op->getProps(),
-            $transformOptions
-        );
         $this->questionAggregateService->save(
             $this->getSurveyIdFromContext($op),
-            $this->getPreparedData($transformedProps, $op)
+            ['question' => $this->getPreparedData($op)]
         );
     }
 
     /**
      * Organizes the patch data into the structure which
      * is expected by the service.
-     * @param array $transformedProps
      * @param OpInterface $op
-     * @return array
+     * @return ?array
      * @throws OpHandlerException
      */
-    public function getPreparedData($transformedProps, OpInterface $op): array
+    public function getPreparedData(OpInterface $op)
     {
+        $transformOptions = ['operation' => $op->getType()->getId()];
+        $transformedProps = $this->transformer->transform(
+            $op->getProps(),
+            $transformOptions
+        );
         // Set qid from op entity id
         if (
-            !array_key_exists(
-                'qid',
-                $transformedProps
+            is_array($transformedProps)
+            && (
+                !array_key_exists(
+                    'qid',
+                    $transformedProps
+                )
+                || $transformedProps['qid'] === null
             )
-            || $transformedProps['qid'] === null
         ) {
             $transformedProps['qid'] = $op->getEntityId();
         }

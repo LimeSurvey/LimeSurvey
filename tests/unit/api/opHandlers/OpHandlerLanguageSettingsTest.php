@@ -26,7 +26,8 @@ class OpHandlerLanguageSettingsTest extends TestBaseClass
         );
         $this->initializePatcher(
             $this->getWrongPropsSingleArray(),
-            $this->getEntityIdSingle()
+            'en',
+            'create'
         );
         $opHandler = $this->getOpHandler();
         $opHandler->handle($this->op);
@@ -42,7 +43,8 @@ class OpHandlerLanguageSettingsTest extends TestBaseClass
         );
         $this->initializePatcher(
             $this->getWrongPropsMultipleArray(),
-            $this->getEntityIdMultiple(),
+            null,
+            'create'
         );
         $opHandler = $this->getOpHandler();
         $opHandler->handle($this->op);
@@ -55,7 +57,7 @@ class OpHandlerLanguageSettingsTest extends TestBaseClass
     {
         $this->initializePatcher(
             $this->getPropsSingleArray(),
-            $this->getEntityIdSingle(),
+            'en'
         );
         $opHandler = $this->getOpHandler();
         $outputData = $opHandler->getLanguageSettingsData($this->op);
@@ -70,7 +72,7 @@ class OpHandlerLanguageSettingsTest extends TestBaseClass
     {
         $this->initializePatcher(
             $this->getPropsMultipleArray(),
-            $this->getEntityIdMultiple(),
+            null
         );
         $opHandler = $this->getOpHandler();
         $outputData = $opHandler->getLanguageSettingsData($this->op);
@@ -80,32 +82,17 @@ class OpHandlerLanguageSettingsTest extends TestBaseClass
         $this->assertArrayHasKey('surveyls_title', $outputData['de']);
     }
 
-    private function initializePatcher(array $propsArray, array $entityId)
+    private function initializePatcher(array $propsArray, $entityId, $type = 'update')
     {
         $this->op = OpStandard::factory(
             'languageSetting',
-            'update',
+            $type,
             $entityId,
             $propsArray,
             [
                 'id' => 123456,
             ]
         );
-    }
-
-    private function getEntityIdSingle()
-    {
-        return [
-            'sid' => '123456',
-            'language' => 'en',
-        ];
-    }
-
-    private function getEntityIdMultiple()
-    {
-        return [
-            'sid' => '123456'
-        ];
     }
 
     private function getPropsSingleArray()
@@ -152,10 +139,10 @@ class OpHandlerLanguageSettingsTest extends TestBaseClass
      */
     private function getOpHandler()
     {
+        /** @var \SurveyLanguageSetting */
         $modelSurveyLanguageSetting = \Mockery::mock(
             \SurveyLanguageSetting::class
         )->makePartial();
-
         return new OpHandlerLanguageSettingsUpdate(
             $modelSurveyLanguageSetting,
             new TransformerInputSurveyLanguageSettings()
