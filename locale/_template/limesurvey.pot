@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2023-10-16 06:38:36+00:00\n"
+"POT-Creation-Date: 2023-12-13 12:12:13+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -6455,7 +6455,7 @@ msgid "Create survey"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:146
-#: application/views/admin/super/adminmenu.php:82
+#: application/views/admin/super/adminmenu.php:84
 #: application/views/admin/super/welcome.php:14
 #: application/views/admin/super/welcome.php:77
 #: application/views/admin/survey/listSurveys_view.php:25
@@ -6463,8 +6463,8 @@ msgid "Create a new survey"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:147
-#: application/views/admin/super/adminmenu.php:44
-#: application/views/admin/super/adminmenu.php:105
+#: application/views/admin/super/adminmenu.php:46
+#: application/views/admin/super/adminmenu.php:107
 #: application/views/admin/super/welcome.php:15
 #: application/views/admin/super/welcome.php:164
 #: application/views/admin/super/welcome.php:169
@@ -12399,8 +12399,8 @@ msgstr ""
 #: application/models/Participant.php:386
 #: application/views/admin/global_settings/_overview.php:23
 #: application/views/admin/super/_configuration_menu.php:49
-#: application/views/admin/super/adminmenu.php:36
-#: application/views/admin/super/adminmenu.php:117
+#: application/views/admin/super/adminmenu.php:38
+#: application/views/admin/super/adminmenu.php:119
 msgid "Active surveys"
 msgstr ""
 
@@ -12531,7 +12531,7 @@ msgstr ""
 #: application/models/Permission.php:200
 #: application/views/admin/global_settings/_overview.php:20
 #: application/views/admin/super/_configuration_menu.php:47
-#: application/views/admin/super/adminmenu.php:69
+#: application/views/admin/super/adminmenu.php:71
 #: application/views/admin/survey/copySurvey_view.php:28
 #: application/views/admin/survey/importSurvey_view.php:83
 msgid "Surveys"
@@ -17221,20 +17221,20 @@ msgstr ""
 msgid "An unknown error occurred"
 msgstr ""
 
-#: application/views/admin/super/adminmenu.php:51
-#: application/views/admin/super/adminmenu.php:169
+#: application/views/admin/super/adminmenu.php:53
+#: application/views/admin/super/adminmenu.php:171
 msgid "Logout"
 msgstr ""
 
-#: application/views/admin/super/adminmenu.php:89
+#: application/views/admin/super/adminmenu.php:91
 msgid "Import a survey"
 msgstr ""
 
-#: application/views/admin/super/adminmenu.php:96
+#: application/views/admin/super/adminmenu.php:98
 msgid "Copy a survey"
 msgstr ""
 
-#: application/views/admin/super/adminmenu.php:161
+#: application/views/admin/super/adminmenu.php:163
 msgid "My account"
 msgstr ""
 
