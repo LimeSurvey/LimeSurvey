@@ -38,19 +38,26 @@ class UserStatusControllerTest extends TestBaseClass
             $new_email = 'new@user.com'
         );
 
+        // Not good, should inject the request object instead.
         $_GET['userid'] = $uid;
 
         $controller = $this
+            // Get mock of controller
             ->getMockBuilder(UserManagementController::class)
+            // Only mock the renderPartial method
             ->onlyMethods(['renderPartial'])
+            // Disable __construct
             ->disableOriginalConstructor()
             ->getMock();
 
         $controller
             ->method('renderPartial')
+            // renderPartial just returns the $data argument
             ->willReturnCallback(fn ($a, $b) => $b);
 
+        // Run the controller action.
         $data = $controller->actionUserActivateDeactivate();
+        // Run assert on the result.
         $this->assertTrue($data['data']['success']);
 
         $user = User::model()->findByPk($uid);
