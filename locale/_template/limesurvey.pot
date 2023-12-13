@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2023-12-11 11:48:10+00:00\n"
+"POT-Creation-Date: 2023-12-13 12:11:51+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -348,7 +348,7 @@ msgstr ""
 
 #: application/controllers/AssessmentController.php:306
 #: application/extensions/GeneralOptionWidget/settings/GroupSelectorGeneralOption.php:16
-#: application/views/admin/export/statistics_subviews/_response_filter_choice.php:15
+#: application/views/admin/export/statistics_subviews/_response_filter_choice.php:14
 msgid "Question group"
 msgstr ""
 
@@ -381,7 +381,7 @@ msgstr ""
 
 #: application/controllers/AssessmentController.php:329
 #: application/core/LsDefaultDataSets.php:446
-#: application/models/Survey.php:2162
+#: application/models/Survey.php:2165
 #: application/models/TemplateManifest.php:174
 #: application/views/admin/survey/copySurvey_view.php:54
 #: application/views/assessment/assessments_view.php:14
@@ -6052,7 +6052,7 @@ msgstr ""
 #: application/helpers/questionHelper.php:430
 #: application/helpers/questionHelper.php:829
 #: application/helpers/userstatistics_helper.php:2582
-#: application/models/Survey.php:1492 application/models/Survey.php:2184
+#: application/models/Survey.php:1492 application/models/Survey.php:2187
 #: application/views/admin/export/statistics_user_view.php:18
 #: application/views/admin/export/statistics_view.php:23
 msgid "Statistics"
@@ -6117,7 +6117,7 @@ msgstr ""
 #: application/controllers/admin/SurveysGroupsController.php:341
 #: application/controllers/admin/globalsettings.php:557
 #: application/core/LsDefaultDataSets.php:840
-#: application/models/Survey.php:2234 application/models/SurveysGroups.php:322
+#: application/models/Survey.php:2237 application/models/SurveysGroups.php:322
 #: application/models/SurveysGroups.php:471
 msgid "Survey settings"
 msgstr ""
@@ -7224,7 +7224,7 @@ msgid "Open general survey settings"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:80
-#: application/core/LsDefaultDataSets.php:82 application/models/Survey.php:2218
+#: application/core/LsDefaultDataSets.php:82 application/models/Survey.php:2221
 #: tmp/runtime/twig_cache/b1/b17fec5c7048d42fb3bfa6635230301bfa552349c6dbc3e7f82fd7bf50697cf1.php:49
 msgid "Survey text elements"
 msgstr ""
@@ -7347,7 +7347,7 @@ msgid "Edit quotas"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:418
-#: application/models/Survey.php:2169
+#: application/models/Survey.php:2172
 #: application/views/admin/survey/copySurvey_view.php:55
 #: application/views/surveyAdministration/importSurvey_view.php:119
 msgid "Quotas"
@@ -7381,7 +7381,7 @@ msgstr ""
 #: application/core/LsDefaultDataSets.php:501
 #: application/core/LsDefaultDataSets.php:502
 #: application/core/LsDefaultDataSets.php:503
-#: application/models/Survey.php:2174
+#: application/models/Survey.php:2177
 #: application/views/admin/export/exportresult_panels/_responses.php:4
 #: application/views/admin/survey/surveybar_statistics.php:18
 #: application/views/admin/survey/surveybar_statistics.php:23
@@ -8573,6 +8573,31 @@ msgstr ""
 
 #: application/core/QuestionTypes/Date/RenderDate.php:68
 msgid "December"
+msgstr ""
+
+#: application/core/QuestionTypes/Date/RenderDate.php:135
+#: application/core/QuestionTypes/Date/RenderDate.php:369
+msgid "Day"
+msgstr ""
+
+#: application/core/QuestionTypes/Date/RenderDate.php:152
+#: application/core/QuestionTypes/Date/RenderDate.php:370
+msgid "Month"
+msgstr ""
+
+#: application/core/QuestionTypes/Date/RenderDate.php:203
+#: application/core/QuestionTypes/Date/RenderDate.php:371
+msgid "Year"
+msgstr ""
+
+#: application/core/QuestionTypes/Date/RenderDate.php:219
+#: application/core/QuestionTypes/Date/RenderDate.php:372
+msgid "Hour"
+msgstr ""
+
+#: application/core/QuestionTypes/Date/RenderDate.php:236
+#: application/core/QuestionTypes/Date/RenderDate.php:373
+msgid "Minute"
 msgstr ""
 
 #: application/core/QuestionTypes/ListWithComment/RenderListComment.php:78
@@ -10012,7 +10037,7 @@ msgstr ""
 #: application/helpers/userstatistics_helper.php:2593
 #: application/helpers/userstatistics_helper.php:2696
 #: application/helpers/userstatistics_helper.php:2795
-#: application/models/Survey.php:2194 application/models/Surveymenu.php:340
+#: application/models/Survey.php:2197 application/models/Surveymenu.php:340
 #: application/views/admin/participants/modal_subviews/_addToSurvey.php:22
 #: application/views/admin/super/quickmenu.php:6
 msgid "Survey"
@@ -15389,79 +15414,79 @@ msgstr ""
 msgid "General settings & texts"
 msgstr ""
 
-#: application/models/Survey.php:2051
+#: application/models/Survey.php:2054
 msgid "Show policy"
 msgstr ""
 
-#: application/models/Survey.php:2163
+#: application/models/Survey.php:2166
 msgid "Permission to create, view, update, delete assessments rules for a survey"
 msgstr ""
 
-#: application/models/Survey.php:2170
+#: application/models/Survey.php:2173
 msgid "Permission to create, view, update, delete quota rules for a survey"
 msgstr ""
 
-#: application/models/Survey.php:2175
+#: application/models/Survey.php:2178
 msgid "Permission to create(data entry), view, update, delete, import, export responses"
 msgstr ""
 
-#: application/models/Survey.php:2185
+#: application/models/Survey.php:2188
 msgid "Permission to view statistics"
 msgstr ""
 
-#: application/models/Survey.php:2195
+#: application/models/Survey.php:2198
 msgid "Permission for survey access. Read permission is a requirement to give any further permission to a survey."
 msgstr ""
 
-#: application/models/Survey.php:2204
+#: application/models/Survey.php:2207
 msgid "Survey activation"
 msgstr ""
 
-#: application/models/Survey.php:2205
+#: application/models/Survey.php:2208
 msgid "Permission to activate, deactivate a survey"
 msgstr ""
 
-#: application/models/Survey.php:2209
+#: application/models/Survey.php:2212
 msgid "Survey content"
 msgstr ""
 
-#: application/models/Survey.php:2210
+#: application/models/Survey.php:2213
 msgid "Permission to create, view, update, delete, import, export the questions, groups, answers & conditions of a survey"
 msgstr ""
 
-#: application/models/Survey.php:2219
+#: application/models/Survey.php:2222
 msgid "Permission to view, update the survey text elements, e.g. survey title, survey description, welcome and end message"
 msgstr ""
 
-#: application/models/Survey.php:2225
+#: application/models/Survey.php:2228
 msgid "Survey security"
 msgstr ""
 
-#: application/models/Survey.php:2226
+#: application/models/Survey.php:2229
 msgid "Permission to modify survey security settings"
 msgstr ""
 
-#: application/models/Survey.php:2235
+#: application/models/Survey.php:2238
 msgid "Permission to view, update the survey settings including survey participants table creation"
 msgstr ""
 
-#: application/models/Survey.php:2239
+#: application/models/Survey.php:2242
 msgid "Participants"
 msgstr ""
 
-#: application/models/Survey.php:2239
+#: application/models/Survey.php:2242
 msgid "Permission to create, update, delete, import, export participants"
 msgstr ""
 
-#: application/models/Survey.php:2247
+#: application/models/Survey.php:2250
 msgid "Quick translation"
 msgstr ""
 
-#: application/models/Survey.php:2248
+#: application/models/Survey.php:2251
 msgid "Permission to view & update the translations using the quick-translation feature"
 msgstr ""
 
-#: application/models/Survey.php:2377
+#: application/models/Survey.php:2380
 #: application/views/admin/survey/subview/accordion/_publication_panel.php:20
 msgid "Expiration date can't be lower than the start date"
 msgstr ""
@@ -17968,12 +17993,12 @@ msgid "Please wait, loading data..."
 msgstr ""
 
 #: application/views/admin/export/statistics_user_view.php:63
-#: application/views/admin/export/statistics_view.php:97
+#: application/views/admin/export/statistics_view.php:99
 msgid "Export images"
 msgstr ""
 
 #: application/views/admin/export/statistics_user_view.php:65
-#: application/views/admin/export/statistics_view.php:99
+#: application/views/admin/export/statistics_view.php:101
 msgid "Make sure all images on this screen are loaded before clicking on the button."
 msgstr ""
 
