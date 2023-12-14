@@ -46,7 +46,7 @@ class OpHandlerQuestionAttributeUpdateTest extends TestBaseClass
      * @param array $props
      * @param string $type
      * @return OpStandard
-     * @throws \LimeSurvey\ObjectPatch\ObjectPatchException
+     * @throws \LimeSurvey\ObjectPatch\OpHandlerException
      */
     private function getOp(array $props, string $type = 'update')
     {
@@ -88,13 +88,13 @@ class OpHandlerQuestionAttributeUpdateTest extends TestBaseClass
      */
     private function getOpHandler()
     {
-         /** @var AttributesService */
+        /** @var AttributesService */
         $mockAttributesService = \Mockery::mock(AttributesService::class)
             ->makePartial();
-         /** @var QuestionService */
+        /** @var QuestionService */
         $mockQuestionService = \Mockery::mock(QuestionService::class)
             ->makePartial();
-         /** @var QuestionAggregateService */
+        /** @var QuestionAggregateService */
         $mockQuestionAggregateService = \Mockery::mock(QuestionAggregateService::class)
             ->makePartial();
         return new OpHandlerQuestionAttributeUpdate(

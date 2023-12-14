@@ -81,13 +81,19 @@ class OpHandlerLanguageSettingsTest extends TestBaseClass
         $this->assertArrayHasKey('surveyls_title', $outputData['de']);
     }
 
-    private function getOp(array $propsArray, $entityId, $type = 'update')
+    /**
+     * @param array $props
+     * @param string $type
+     * @return OpStandard
+     * @throws \LimeSurvey\ObjectPatch\OpHandlerException
+     */
+    private function getOp(array $props, $entityId, $type = 'update')
     {
         return OpStandard::factory(
             'languageSetting',
             $type,
             $entityId,
-            $propsArray,
+            $props,
             [
                 'id' => 123456,
             ]

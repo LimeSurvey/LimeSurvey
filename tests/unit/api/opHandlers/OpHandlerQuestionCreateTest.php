@@ -61,7 +61,7 @@ class OpHandlerQuestionCreateTest extends TestBaseClass
      * @param array $props
      * @param string $type
      * @return OpStandard
-     * @throws \LimeSurvey\ObjectPatch\ObjectPatchException
+     * @throws \LimeSurvey\ObjectPatch\OpHandlerException
      */
     private function getOp(array $props, string $type = 'create')
     {

@@ -70,21 +70,28 @@ class OpHandlerQuestionGroupL10nTest extends TestBaseClass
         self::assertFalse($this->getOpHandler()->canHandle($op));
     }
 
-    private function getOp(
-        array $propsArray,
-        string $type = 'update'
-    ) {
+    /**
+     * @param array $props
+     * @param string $type
+     * @return OpStandard
+     * @throws \LimeSurvey\ObjectPatch\OpHandlerException
+     */
+    private function getOp(array $props, string $type = 'update')
+    {
         return OpStandard::factory(
             'questionGroupL10n',
             $type,
             123,
-            $propsArray,
+            $props,
             [
                 'id' => 123456
             ]
         );
     }
 
+    /**
+     * @return array
+     */
     private function getDefaultProps()
     {
         return [
@@ -99,6 +106,9 @@ class OpHandlerQuestionGroupL10nTest extends TestBaseClass
         ];
     }
 
+    /**
+     * @return array
+     */
     private function getMissingLanguageProps()
     {
         return [
@@ -113,6 +123,9 @@ class OpHandlerQuestionGroupL10nTest extends TestBaseClass
         ];
     }
 
+    /**
+     * @return array
+     */
     private function getWrongProps()
     {
         return [

@@ -93,7 +93,7 @@ class OpHandlerQuestionGroupReorderTest extends TestBaseClass
     /**
      * @param array $groupParams
      * @return OpStandard
-     * @throws \LimeSurvey\ObjectPatch\ObjectPatchException
+     * @throws \LimeSurvey\ObjectPatch\OpHandlerException
      */
     private function getOp(array $groupParams)
     {

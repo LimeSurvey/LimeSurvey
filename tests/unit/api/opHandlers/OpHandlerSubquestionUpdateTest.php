@@ -5,10 +5,7 @@ namespace ls\tests\unit\api\opHandlers;
 use LimeSurvey\Api\Command\V1\SurveyPatch\OpHandlerSubQuestion;
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputSubQuestion;
 use LimeSurvey\Models\Services\QuestionAggregateService;
-use LimeSurvey\ObjectPatch\{
-    Op\OpInterface,
-    Op\OpStandard,
-};
+use LimeSurvey\ObjectPatch\Op\OpStandard;
 use ls\tests\TestBaseClass;
 
 /**
@@ -16,8 +13,6 @@ use ls\tests\TestBaseClass;
  */
 class OpHandlerSubquestionUpdateTest extends TestBaseClass
 {
-    protected OpInterface $op;
-
     /**
      * @testdox can handle a subquestion update
      */
@@ -53,21 +48,27 @@ class OpHandlerSubquestionUpdateTest extends TestBaseClass
         self::assertFalse($this->getOpHandler()->canHandle($op));
     }
 
-    private function getOp(
-        array $propsArray,
-        string $type = 'update'
-    ) {
+    /**
+     * @param array $props
+     * @param string $type
+     * @return OpStandard
+     * @throws \LimeSurvey\ObjectPatch\OpHandlerException
+     */
+    private function getOp($props = [], $type = 'update') {
         return OpStandard::factory(
             'subquestion',
             $type,
             123,
-            $propsArray,
+            $props,
             [
                 'id' => 123456
             ]
         );
     }
 
+    /**
+     * @return array
+     */
     private function getDefaultProps()
     {
         return [

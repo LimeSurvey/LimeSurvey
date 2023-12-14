@@ -11,8 +11,14 @@ use LimeSurvey\ObjectPatch\{
 use ls\tests\TestBaseClass;
 use ls\tests\unit\services\SurveyAggregateService\GeneralSettings\GeneralSettingsMockSetFactory;
 
+/**
+ * @testdox OpHandlerSurveyUpdateTest
+ */
 class OpHandlerSurveyUpdateTest extends TestBaseClass
 {
+    /**
+     * @testdox throws exception if no values are provided
+     */
     public function testSurveyUpdateThrowsNoValuesException()
     {
         $this->expectException(
@@ -22,18 +28,30 @@ class OpHandlerSurveyUpdateTest extends TestBaseClass
         $this->getOpHandler()->handle($op);
     }
 
+    /**
+     * @testdox can handle update operation
+     */
     public function testSurveyUpdateCanHandle()
     {
         $op = $this->getOp($this->getPropsValid());
         self::assertTrue($this->getOpHandler()->canHandle($op));
     }
 
+    /**
+     * @testdox can not handle create operation
+     */
     public function testSurveyUpdateCanNotHandleCreate()
     {
         $op = $this->getOp($this->getPropsValid(), 'create');
         self::assertFalse($this->getOpHandler()->canHandle($op));
     }
 
+    /**
+     * @param array $props
+     * @param string $type
+     * @return OpStandard
+     * @throws \LimeSurvey\ObjectPatch\OpHandlerException
+     */
     private function getOp($props = [], $type = 'update')
     {
         return OpStandard::factory(
@@ -47,6 +65,9 @@ class OpHandlerSurveyUpdateTest extends TestBaseClass
         );
     }
 
+    /**
+     * @return array
+     */
     private function getPropsValid()
     {
         return [
@@ -55,6 +76,9 @@ class OpHandlerSurveyUpdateTest extends TestBaseClass
         ];
     }
 
+    /**
+     * @return array
+     */
     private function getPropsNoValues()
     {
         return [

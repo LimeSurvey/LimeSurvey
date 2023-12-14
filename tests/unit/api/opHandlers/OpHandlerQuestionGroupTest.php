@@ -14,76 +14,86 @@ use LimeSurvey\ObjectPatch\{
 use ls\tests\TestBaseClass;
 use ls\tests\unit\services\QuestionGroup\QuestionGroupMockSetFactory;
 
+/**
+ * @testdox OpHandlerQuestionGroupTest
+ */
 class OpHandlerQuestionGroupTest extends TestBaseClass
 {
+    /**
+     * @testdox throws exception if no props provided
+     */
     public function testOpQuestionGroupThrowsNoValuesException()
     {
         $this->expectException(
             OpHandlerException::class
         );
-        $op = $this->getOpWrongPropsPatcher();
+        $op = $this->getOp($this->getPropsInvalid());
         $opHandler = $this->getOpHandler();
         $opHandler->setOperationTypes($op);
         $opHandler->handle($op);
     }
 
+    /**
+     * @testdox can handle
+     */
     public function testOpQuestionGroupCanHandle()
     {
-        $op = $this->getOpPatcher();
+        $op = $this->getOp($this->getPropsValid());
         self::assertTrue($this->getOpHandler()->canHandle($op));
     }
 
+    /**
+     * @testdox can not handle
+     */
     public function testOpQuestionGroupCanNotHandle()
     {
-        $op = $this->getOpWrongEntityPatcher();
+        $op = $this->getOp(
+            $this->getPropsValid(),
+            'update',
+            'not-questionGroup'
+        );
         self::assertFalse($this->getOpHandler()->canHandle($op));
     }
 
-    private function getOpPatcher()
+    /**
+     * @param array $props
+     * @param string $type
+     * @param string $entity
+     * @return OpStandard
+     * @throws \LimeSurvey\ObjectPatch\OpHandlerException
+     */
+    private function getOp($props = [], $type = 'update', $entity = 'questionGroup')
     {
         return OpStandard::factory(
-            'questionGroup',
-            'update',
+            $entity,
+            $type,
             12345,
-            [
-                'groupOrder' => '1000'
-            ],
+            $props,
             [
                 'id' => 123456
             ]
         );
     }
 
-    private function getOpWrongEntityPatcher()
+    /**
+     * @return array
+     */
+    private function getPropsValid()
     {
-        return OpStandard::factory(
-            'survey',
-            'update',
-            null,
-            [
-                'unknownA' => '2020-01-01 00:00',
-                'unknownB' => true,
-            ],
-            [
-                'id' => 123456
-            ]
-        );
+        return [
+            'groupOrder' => '1000'
+        ];
     }
 
-    private function getOpWrongPropsPatcher()
+    /**
+     * @return array
+     */
+    private function getPropsInvalid()
     {
-        return OpStandard::factory(
-            'questionGroup',
-            'update',
-            12345,
-            [
-                'unknownA' => '2020-01-01 00:00',
-                'unknownB' => true,
-            ],
-            [
-                'id' => 123456
-            ]
-        );
+        return [
+            'unknownA' => '2020-01-01 00:00',
+            'unknownB' => true,
+        ];
     }
 
     /**

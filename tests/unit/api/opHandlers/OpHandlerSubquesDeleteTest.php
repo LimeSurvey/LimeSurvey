@@ -12,7 +12,6 @@ use ls\tests\TestBaseClass;
  */
 class OpHandlerSubquesDeleteTest extends TestBaseClass
 {
-
     /**
      * @testdox Can handle a subquestion delete
      */
@@ -33,13 +32,19 @@ class OpHandlerSubquesDeleteTest extends TestBaseClass
         $this->assertFalse($opHandler->canHandle($op));
     }
 
+    /**
+     * @param string $entity
+     * @param string $type
+     * @return OpStandard
+     * @throws \LimeSurvey\ObjectPatch\OpHandlerException
+     */
     private function getOp(
-        string $entityType = 'subquestion',
-        string $operation = 'delete'
+        string $entity = 'subquestion',
+        string $type = 'delete'
     ) {
         return OpStandard::factory(
-            $entityType,
-            $operation,
+            $entity,
+            $type,
             "77",
             [],
             ['id' => 666]
