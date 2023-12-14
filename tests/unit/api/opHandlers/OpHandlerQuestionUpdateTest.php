@@ -6,10 +6,12 @@ use LimeSurvey\DI;
 use LimeSurvey\Api\Command\V1\SurveyPatch\OpHandlerQuestionUpdate;
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestion;
 use LimeSurvey\Models\Services\QuestionAggregateService;
-use LimeSurvey\ObjectPatch\ObjectPatchException;
-use LimeSurvey\ObjectPatch\Op\OpInterface;
-use LimeSurvey\ObjectPatch\Op\OpStandard;
-use LimeSurvey\ObjectPatch\OpHandler\OpHandlerException;
+use LimeSurvey\ObjectPatch\{
+    ObjectPatchException,
+    Op\OpInterface,
+    Op\OpStandard,
+    OpHandler\OpHandlerException
+};
 use ls\tests\TestBaseClass;
 
 /**
@@ -28,7 +30,8 @@ class OpHandlerQuestionUpdateTest extends TestBaseClass
             OpHandlerException::class
         );
         $this->initializePatcher(
-            $this->getWrongPropsArray()
+            $this->getWrongPropsArray(),
+            'create'
         );
         $opHandler = $this->getOpHandler();
         $opHandler->handle($this->op);

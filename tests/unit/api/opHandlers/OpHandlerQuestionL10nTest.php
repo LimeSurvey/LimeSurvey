@@ -4,7 +4,7 @@ namespace ls\tests\unit\api\opHandlers;
 
 use LimeSurvey\Api\Command\V1\SurveyPatch\OpHandlerQuestionL10nUpdate;
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestionL10ns;
-use LimeSurvey\Models\Services\QuestionAggregateService;
+use LimeSurvey\Models\Services\QuestionAggregateService\L10nService;
 use LimeSurvey\ObjectPatch\ObjectPatchException;
 use LimeSurvey\ObjectPatch\Op\OpInterface;
 use LimeSurvey\ObjectPatch\Op\OpStandard;
@@ -27,7 +27,8 @@ class OpHandlerQuestionL10nUpdateTest extends TestBaseClass
             OpHandlerException::class
         );
         $this->initializePatcher(
-            $this->getWrongPropsArray()
+            $this->getWrongPropsArray(),
+            'create'
         );
         $opHandler = $this->getOpHandler();
         $opHandler->handle($this->op);
@@ -71,7 +72,7 @@ class OpHandlerQuestionL10nUpdateTest extends TestBaseClass
         $this->op = OpStandard::factory(
             'questionL10n',
             $type,
-            "77",
+            '77',
             $props,
             [
                 'id' => 666
@@ -112,8 +113,9 @@ class OpHandlerQuestionL10nUpdateTest extends TestBaseClass
      */
     private function getOpHandler()
     {
+        /** @var \LimeSurvey\Models\Services\QuestionAggregateService\L10nService */
         $mockQuestionL10nService = \Mockery::mock(
-            QuestionAggregateService\L10nService::class
+            L10nService::class
         )->makePartial();
         return new OpHandlerQuestionL10nUpdate(
             $mockQuestionL10nService,

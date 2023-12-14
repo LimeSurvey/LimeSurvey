@@ -87,25 +87,25 @@ class OpHandlerQuestionUpdate implements OpHandlerInterface
     public function getPreparedData(OpInterface $op)
     {
         $transformOptions = ['operation' => $op->getType()->getId()];
-        $transformedProps = $this->transformer->transform(
+        $props = $this->transformer->transform(
             $op->getProps(),
             $transformOptions
         );
         // Set qid from op entity id
         if (
-            is_array($transformedProps)
+            is_array($props)
             && (
                 !array_key_exists(
                     'qid',
-                    $transformedProps
+                    $props
                 )
-                || $transformedProps['qid'] === null
+                || $props['qid'] === null
             )
         ) {
-            $transformedProps['qid'] = $op->getEntityId();
+            $props['qid'] = $op->getEntityId();
         }
 
-        return $transformedProps;
+        return $props;
     }
 
     /**

@@ -4,7 +4,7 @@ namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
 use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\{
     OpHandlerSurveyTrait,
-    OpHandlerL10nTrait
+    OpHandlerExceptionTrait
 };
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestionL10ns;
 use LimeSurvey\Models\Services\{
@@ -22,7 +22,7 @@ use LimeSurvey\ObjectPatch\{
 class OpHandlerQuestionL10nUpdate implements OpHandlerInterface
 {
     use OpHandlerSurveyTrait;
-    use OpHandlerL10nTrait;
+    use OpHandlerExceptionTrait;
 
     protected L10nService $l10nService;
     protected TransformerInputQuestionL10ns $transformer;
@@ -76,12 +76,7 @@ class OpHandlerQuestionL10nUpdate implements OpHandlerInterface
     {
         $this->l10nService->save(
             (int) $op->getEntityId(),
-            $this->transformAllLanguageProps(
-                $op,
-                $op->getProps(),
-                'questionL10n',
-                $this->transformer
-            )
+            $this->transformAll($op)
         );
     }
 
@@ -94,5 +89,30 @@ class OpHandlerQuestionL10nUpdate implements OpHandlerInterface
     {
         //transformAllLanguageProps  already checks if the patch is valid
         return true;
+    }
+
+
+    /**
+     * Transforms language related props to array
+     * This function is shared by QuestionL10n and QuestionGroupL10n operations,
+     * so the actual transformer needs to
+     * @param OpInterface $op
+     * @param array $props
+     * @return array
+     * @throws OpHandlerException
+     */
+    private function transformAll(OpInterface $op): array {
+        $transformOptions = ['operation' => $op->getType()->getId()];
+        $this->throwTransformerValidationErrors(
+            $this->transformer->validate(
+                $op->getProps(),
+                $transformOptions
+            ),
+            $op
+        );
+        return $this->transformer->transformAll(
+            $op->getProps(),
+            $transformOptions
+        );
     }
 }
