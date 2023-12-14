@@ -6,7 +6,6 @@ use LimeSurvey\DI;
 use LimeSurvey\Api\Command\V1\SurveyPatch\OpHandlerQuestionCreate;
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestionAggregate;
 use LimeSurvey\ObjectPatch\{
-    Op\OpInterface,
     Op\OpStandard,
     OpHandler\OpHandlerException
 };
@@ -18,8 +17,6 @@ use ls\tests\unit\services\QuestionGroup\QuestionGroupMockSetFactory;
  */
 class OpHandlerQuestionCreateTest extends TestBaseClass
 {
-    protected OpInterface $op;
-
     /**
      * @testdox throws OpHandlerException if required entity is missing
      */
@@ -28,12 +25,11 @@ class OpHandlerQuestionCreateTest extends TestBaseClass
         $this->expectException(
             OpHandlerException::class
         );
-        $this->initializePatcher(
+        $op = $this->getOp(
             $this->getIncompleteProps()
         );
         $opHandler = $this->getOpHandler();
-
-        $opHandler->handle($this->op);
+        $opHandler->handle($op);
     }
 
     /**
@@ -41,12 +37,11 @@ class OpHandlerQuestionCreateTest extends TestBaseClass
      */
     public function testQuestionCreateCanHandle()
     {
-        $this->initializePatcher(
+        $op = $this->getOp(
             $this->getCorrectProps()
         );
-
         $opHandler = $this->getOpHandler();
-        self::assertTrue($opHandler->canHandle($this->op));
+        self::assertTrue($opHandler->canHandle($op));
     }
 
     /**
@@ -54,24 +49,23 @@ class OpHandlerQuestionCreateTest extends TestBaseClass
      */
     public function testQuestionCreateCanNotHandle()
     {
-        $this->initializePatcher(
+        $op = $this->getOp(
             $this->getCorrectProps(),
             'update'
         );
-
         $opHandler = $this->getOpHandler();
-        self::assertFalse($opHandler->canHandle($this->op));
+        self::assertFalse($opHandler->canHandle($op));
     }
 
     /**
      * @param array $props
      * @param string $type
-     * @return void
+     * @return OpStandard
      * @throws \LimeSurvey\ObjectPatch\ObjectPatchException
      */
-    private function initializePatcher(array $props, string $type = 'create')
+    private function getOp(array $props, string $type = 'create')
     {
-        $this->op = OpStandard::factory(
+        return OpStandard::factory(
             'question',
             $type,
             0,
@@ -167,7 +161,6 @@ class OpHandlerQuestionCreateTest extends TestBaseClass
     private function getOpHandler()
     {
         $mockSet = (new QuestionGroupMockSetFactory())->make();
-
         return new OpHandlerQuestionCreate(
             $mockSet->modelQuestion,
             DI::getContainer()->get(

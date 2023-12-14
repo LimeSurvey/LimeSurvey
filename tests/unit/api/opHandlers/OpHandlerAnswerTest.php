@@ -9,10 +9,7 @@ use LimeSurvey\Models\Services\{
     QuestionAggregateService\AnswersService,
     QuestionAggregateService\QuestionService
 };
-use LimeSurvey\ObjectPatch\{
-    Op\OpInterface,
-    Op\OpStandard
-};
+use LimeSurvey\ObjectPatch\Op\OpStandard;
 use ls\tests\TestBaseClass;
 
 /**
@@ -20,19 +17,16 @@ use ls\tests\TestBaseClass;
  */
 class OpHandlerAnswerTest extends TestBaseClass
 {
-    protected OpInterface $op;
-
     /**
      * @testdox can handle create
      */
     public function testAnswerCanHandle()
     {
-        $this->initializePatcher(
+        $op = $this->getOp(
             $this->getCorrectProps()
         );
-
         $opHandler = $this->getOpHandler();
-        self::assertTrue($opHandler->canHandle($this->op));
+        self::assertTrue($opHandler->canHandle($op));
     }
 
     /**
@@ -40,13 +34,12 @@ class OpHandlerAnswerTest extends TestBaseClass
      */
     public function testAnswerCanHandleUpdate()
     {
-        $this->initializePatcher(
+        $op = $this->getOp(
             $this->getCorrectProps(),
             'update'
         );
-
         $opHandler = $this->getOpHandler();
-        self::assertTrue($opHandler->canHandle($this->op));
+        self::assertTrue($opHandler->canHandle($op));
     }
 
     /**
@@ -54,13 +47,12 @@ class OpHandlerAnswerTest extends TestBaseClass
      */
     public function testAnswerCanNotHandle()
     {
-        $this->initializePatcher(
+        $op = $this->getOp(
             $this->getCorrectProps(),
             'delete'
         );
-
         $opHandler = $this->getOpHandler();
-        self::assertFalse($opHandler->canHandle($this->op));
+        self::assertFalse($opHandler->canHandle($op));
     }
 
     /**
@@ -70,7 +62,7 @@ class OpHandlerAnswerTest extends TestBaseClass
     /*
     public function testAnswerDataStructure()
     {
-        $this->initializePatcher(
+        $op = $this->getOp(
             $this->getCorrectProps()
         );
 
@@ -95,12 +87,11 @@ class OpHandlerAnswerTest extends TestBaseClass
     /**
      * @param array $props
      * @param string $type
-     * @return void
-     * @throws \LimeSurvey\ObjectPatch\ObjectPatchException
+     * @return OpStandard
      */
-    private function initializePatcher(array $props, string $type = 'create')
+    private function getOp(array $props, string $type = 'create')
     {
-        $this->op = OpStandard::factory(
+        return OpStandard::factory(
             'answer',
             $type,
             0,
@@ -149,9 +140,11 @@ class OpHandlerAnswerTest extends TestBaseClass
      */
     private function getOpHandler(): OpHandlerAnswer
     {
+        /** @var AnswersService */
         $mockAnswersService = \Mockery::mock(
             AnswersService::class
         )->makePartial();
+        /** @var QuestionService */
         $mockQuestionService = \Mockery::mock(
             QuestionService::class
         )->makePartial();

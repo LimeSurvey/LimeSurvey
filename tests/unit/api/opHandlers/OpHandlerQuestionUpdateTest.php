@@ -8,7 +8,6 @@ use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestion;
 use LimeSurvey\Models\Services\QuestionAggregateService;
 use LimeSurvey\ObjectPatch\{
     ObjectPatchException,
-    Op\OpInterface,
     Op\OpStandard,
     OpHandler\OpHandlerException
 };
@@ -19,22 +18,20 @@ use ls\tests\TestBaseClass;
  */
 class OpHandlerQuestionUpdateTest extends TestBaseClass
 {
-    protected OpInterface $op;
-
     /**
-     * @testdox throws exception when no valid values are provided
+     * @testdox throws exception on missing required parameters (tempId)
      */
     public function testOpQuestionUpdateThrowsNoValuesException()
     {
         $this->expectException(
             OpHandlerException::class
         );
-        $this->initializePatcher(
+        $op = $this->getOp(
             $this->getWrongPropsArray(),
             'create'
         );
         $opHandler = $this->getOpHandler();
-        $opHandler->handle($this->op);
+        $opHandler->handle($op);
     }
 
     /**
@@ -42,11 +39,11 @@ class OpHandlerQuestionUpdateTest extends TestBaseClass
      */
     public function testOpQuestionUpdateDataStructure()
     {
-        $this->initializePatcher(
+        $op = $this->getOp(
             $this->getCorrectPropsArray()
         );
         $opHandler = $this->getOpHandler();
-        $preparedData = $opHandler->getPreparedData($this->op);
+        $preparedData = $opHandler->getPreparedData($op);
         $this->assertArrayHasKey('qid', $preparedData);
         $this->assertEquals(77, $preparedData['qid']);
     }
@@ -56,12 +53,11 @@ class OpHandlerQuestionUpdateTest extends TestBaseClass
      */
     public function testOpQuestionUpdateCanHandle()
     {
-        $this->initializePatcher(
+        $op = $this->getOp(
             $this->getCorrectPropsArray()
         );
-
         $opHandler = $this->getOpHandler();
-        self::assertTrue($opHandler->canHandle($this->op));
+        self::assertTrue($opHandler->canHandle($op));
     }
 
     /**
@@ -69,24 +65,23 @@ class OpHandlerQuestionUpdateTest extends TestBaseClass
      */
     public function testOpQuestionUpdateCanNotHandle()
     {
-        $this->initializePatcher(
+        $op = $this->getOp(
             $this->getCorrectPropsArray(),
             'create'
         );
-
         $opHandler = $this->getOpHandler();
-        self::assertFalse($opHandler->canHandle($this->op));
+        self::assertFalse($opHandler->canHandle($op));
     }
 
     /**
      * @param array $props
      * @param string $type
-     * @return void
+     * @return OpStandard
      * @throws ObjectPatchException
      */
-    private function initializePatcher(array $props, string $type = 'update')
+    private function getOp(array $props, string $type = 'update')
     {
-        $this->op = OpStandard::factory(
+        return OpStandard::factory(
             'question',
             $type,
             "77",

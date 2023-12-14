@@ -8,7 +8,6 @@ use LimeSurvey\Models\Services\QuestionGroupService;
 use LimeSurvey\Api\Command\V1\SurveyPatch\OpHandlerQuestionGroup;
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestionGroupAggregate;
 use LimeSurvey\ObjectPatch\{
-    Op\OpInterface,
     Op\OpStandard,
     OpHandler\OpHandlerException
 };
@@ -17,38 +16,32 @@ use ls\tests\unit\services\QuestionGroup\QuestionGroupMockSetFactory;
 
 class OpHandlerQuestionGroupTest extends TestBaseClass
 {
-    protected OpInterface $op;
-
     public function testOpQuestionGroupThrowsNoValuesException()
     {
         $this->expectException(
             OpHandlerException::class
         );
-        $this->initializeWrongPropsPatcher();
+        $op = $this->getOpWrongPropsPatcher();
         $opHandler = $this->getOpHandler();
-        $opHandler->setOperationTypes($this->op);
-        $opHandler->handle($this->op);
+        $opHandler->setOperationTypes($op);
+        $opHandler->handle($op);
     }
 
     public function testOpQuestionGroupCanHandle()
     {
-        $this->initializePatcher();
-
-        $opHandler = $this->getOpHandler();
-        self::assertTrue($opHandler->canHandle($this->op));
+        $op = $this->getOpPatcher();
+        self::assertTrue($this->getOpHandler()->canHandle($op));
     }
 
     public function testOpQuestionGroupCanNotHandle()
     {
-        $this->initializeWrongEntityPatcher();
-
-        $opHandler = $this->getOpHandler();
-        self::assertFalse($opHandler->canHandle($this->op));
+        $op = $this->getOpWrongEntityPatcher();
+        self::assertFalse($this->getOpHandler()->canHandle($op));
     }
 
-    private function initializePatcher()
+    private function getOpPatcher()
     {
-        $this->op = OpStandard::factory(
+        return OpStandard::factory(
             'questionGroup',
             'update',
             12345,
@@ -61,38 +54,9 @@ class OpHandlerQuestionGroupTest extends TestBaseClass
         );
     }
 
-    private function initializePatcherCreateI10N()
+    private function getOpWrongEntityPatcher()
     {
-        $this->op = OpStandard::factory(
-            'questionGroup',
-            'create',
-            1,
-            [
-                'questionGroup'     => [
-                    'sid'                => 12345,
-                    'randomizationGroup' => "",
-                    'gRelevance'         => ""
-                ],
-                'questionGroupL10n' => [
-                    'en' => [
-                        'group_name'  => '3rd Group',
-                        'description' => 'English'
-                    ],
-                    'de' => [
-                        'group_name'  => 'Dritte Gruppe',
-                        'description' => 'Deutsch'
-                    ]
-                ]
-            ],
-            [
-                'id' => 123456
-            ]
-        );
-    }
-
-    private function initializeWrongEntityPatcher()
-    {
-        $this->op = OpStandard::factory(
+        return OpStandard::factory(
             'survey',
             'update',
             null,
@@ -106,9 +70,9 @@ class OpHandlerQuestionGroupTest extends TestBaseClass
         );
     }
 
-    private function initializeWrongPropsPatcher()
+    private function getOpWrongPropsPatcher()
     {
-        $this->op = OpStandard::factory(
+        return OpStandard::factory(
             'questionGroup',
             'update',
             12345,
@@ -128,9 +92,9 @@ class OpHandlerQuestionGroupTest extends TestBaseClass
     private function getOpHandler()
     {
         $mockSet = (new QuestionGroupMockSetFactory())->make();
+        /** @var QuestionGroupService */
         $mockQuestionGroupService = Mockery::mock(QuestionGroupService::class)
             ->makePartial();
-
         return new OpHandlerQuestionGroup(
             $mockSet->modelQuestionGroup,
             $mockQuestionGroupService,

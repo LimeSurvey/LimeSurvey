@@ -27,12 +27,10 @@ class OpHandlerQuestionGroupL10nTest extends TestBaseClass
         $this->expectException(
             OpHandlerException::class
         );
-        $this->initializePatcher(
+        $op = $this->getOp(
             $this->getWrongProps()
         );
-        $this->getOpHandler()->handle(
-            $this->op
-        );
+        $this->getOpHandler()->handle($op);
     }
 
     /**
@@ -43,12 +41,10 @@ class OpHandlerQuestionGroupL10nTest extends TestBaseClass
         $this->expectException(
             OpHandlerException::class
         );
-        $this->initializePatcher(
+        $op = $this->getOp(
             $this->getMissingLanguageProps()
         );
-        $this->getOpHandler()->handle(
-            $this->op
-        );
+        $this->getOpHandler()->handle($op);
     }
 
     /**
@@ -56,12 +52,10 @@ class OpHandlerQuestionGroupL10nTest extends TestBaseClass
      */
     public function testOpQuestionGroupL10nCanHandle()
     {
-        $this->initializePatcher(
+        $op = $this->getOp(
             $this->getDefaultProps()
         );
-
-        $opHandler = $this->getOpHandler();
-        self::assertTrue($opHandler->canHandle($this->op));
+        self::assertTrue($this->getOpHandler()->canHandle($op));
     }
 
     /**
@@ -69,20 +63,18 @@ class OpHandlerQuestionGroupL10nTest extends TestBaseClass
      */
     public function testOpQuestionGroupL10nCanNotHandle()
     {
-        $this->initializePatcher(
+        $op = $this->getOp(
             $this->getDefaultProps(),
             'create'
         );
-
-        $opHandler = $this->getOpHandler();
-        self::assertFalse($opHandler->canHandle($this->op));
+        self::assertFalse($this->getOpHandler()->canHandle($op));
     }
 
-    private function initializePatcher(
+    private function getOp(
         array $propsArray,
         string $type = 'update'
     ) {
-        $this->op = OpStandard::factory(
+        return OpStandard::factory(
             'questionGroupL10n',
             $type,
             123,
@@ -137,7 +129,6 @@ class OpHandlerQuestionGroupL10nTest extends TestBaseClass
     private function getOpHandler()
     {
         $mockSet = (new QuestionGroupMockSetFactory())->make();
-
         return new OpHandlerQuestionGroupL10n(
             $mockSet->modelQuestionGroupL10n,
             new TransformerInputQuestionGroupL10ns()

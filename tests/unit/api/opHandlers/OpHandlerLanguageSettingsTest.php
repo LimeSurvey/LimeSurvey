@@ -4,9 +4,10 @@ namespace ls\tests\unit\api\opHandlers;
 
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputSurveyLanguageSettings;
 use LimeSurvey\Api\Command\V1\SurveyPatch\OpHandlerLanguageSettingsUpdate;
-use LimeSurvey\ObjectPatch\Op\OpInterface;
-use LimeSurvey\ObjectPatch\Op\OpStandard;
-use LimeSurvey\ObjectPatch\OpHandler\OpHandlerException;
+use LimeSurvey\ObjectPatch\{
+    Op\OpStandard,
+    OpHandler\OpHandlerException
+};
 use ls\tests\TestBaseClass;
 
 /**
@@ -14,8 +15,6 @@ use ls\tests\TestBaseClass;
  */
 class OpHandlerLanguageSettingsTest extends TestBaseClass
 {
-    protected OpInterface $op;
-
     /**
      * @testdox throws exception if no values are provided for single language
      */
@@ -24,13 +23,13 @@ class OpHandlerLanguageSettingsTest extends TestBaseClass
         $this->expectException(
             OpHandlerException::class
         );
-        $this->initializePatcher(
+        $op = $this->getOp(
             $this->getWrongPropsSingleArray(),
             'en',
             'create'
         );
         $opHandler = $this->getOpHandler();
-        $opHandler->handle($this->op);
+        $opHandler->handle($op);
     }
 
     /**
@@ -41,13 +40,13 @@ class OpHandlerLanguageSettingsTest extends TestBaseClass
         $this->expectException(
             OpHandlerException::class
         );
-        $this->initializePatcher(
+        $op = $this->getOp(
             $this->getWrongPropsMultipleArray(),
             null,
             'create'
         );
         $opHandler = $this->getOpHandler();
-        $opHandler->handle($this->op);
+        $opHandler->handle($op);
     }
 
     /**
@@ -55,12 +54,12 @@ class OpHandlerLanguageSettingsTest extends TestBaseClass
      */
     public function testLanguageSettingsUpdateDataStructureSingle()
     {
-        $this->initializePatcher(
+        $op = $this->getOp(
             $this->getPropsSingleArray(),
             'en'
         );
         $opHandler = $this->getOpHandler();
-        $outputData = $opHandler->getLanguageSettingsData($this->op);
+        $outputData = $opHandler->getLanguageSettingsData($op);
         $this->assertArrayHasKey('en', $outputData);
         $this->assertArrayHasKey('surveyls_title', $outputData['en']);
     }
@@ -70,21 +69,21 @@ class OpHandlerLanguageSettingsTest extends TestBaseClass
      */
     public function testLanguageSettingsUpdateDataStructureMultiple()
     {
-        $this->initializePatcher(
+        $op = $this->getOp(
             $this->getPropsMultipleArray(),
             null
         );
         $opHandler = $this->getOpHandler();
-        $outputData = $opHandler->getLanguageSettingsData($this->op);
+        $outputData = $opHandler->getLanguageSettingsData($op);
         $this->assertArrayHasKey('en', $outputData);
         $this->assertArrayHasKey('surveyls_title', $outputData['en']);
         $this->assertArrayHasKey('de', $outputData);
         $this->assertArrayHasKey('surveyls_title', $outputData['de']);
     }
 
-    private function initializePatcher(array $propsArray, $entityId, $type = 'update')
+    private function getOp(array $propsArray, $entityId, $type = 'update')
     {
-        $this->op = OpStandard::factory(
+        return OpStandard::factory(
             'languageSetting',
             $type,
             $entityId,

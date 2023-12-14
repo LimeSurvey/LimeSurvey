@@ -18,9 +18,9 @@ class OpHandlerSubquesDeleteTest extends TestBaseClass
      */
     public function testCanHandleAnswer()
     {
-        $this->initializePatcher('subquestion');
+        $op = $this->getOp('subquestion');
         $opHandler = $this->getOpHandler();
-        $this->assertTrue($opHandler->canHandle($this->op));
+        $this->assertTrue($opHandler->canHandle($op));
     }
 
     /**
@@ -28,16 +28,16 @@ class OpHandlerSubquesDeleteTest extends TestBaseClass
      */
     public function testCanNotHandleAnswer()
     {
-        $this->initializePatcher('question');
+        $op = $this->getOp('question');
         $opHandler = $this->getOpHandler();
-        $this->assertFalse($opHandler->canHandle($this->op));
+        $this->assertFalse($opHandler->canHandle($op));
     }
 
-    private function initializePatcher(
+    private function getOp(
         string $entityType = 'subquestion',
         string $operation = 'delete'
     ) {
-        $this->op = OpStandard::factory(
+        return OpStandard::factory(
             $entityType,
             $operation,
             "77",
@@ -51,6 +51,7 @@ class OpHandlerSubquesDeleteTest extends TestBaseClass
      */
     private function getOpHandler()
     {
+        /** @var \LimeSurvey\Models\Services\QuestionAggregateService\SubQuestionsService */
         $mockQuestionAggregateService = \Mockery::mock(
             SubQuestionsService::class
         )->makePartial();
