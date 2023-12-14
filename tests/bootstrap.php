@@ -12,6 +12,7 @@ if (!file_exists(__DIR__ . '/../enabletests')) {
     exit(9);
 }
 
+// When running locally, you can get a "session already started" error from Yii. This line prevents this.
 ob_start();
 
 /*
