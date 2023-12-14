@@ -17,7 +17,6 @@ class UserStatusTest extends TestBaseClassWeb
     //   Go to user management
     //   Click on my own action button
     //   "Deactivate" should be disabled
-    // Deactivate massive action
     // Activate massive action
     // Deactivate user you do not own?
     // Try to login as not-active
