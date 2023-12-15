@@ -12029,6 +12029,10 @@ For iPads specifically : add this : (min-device-width: 768px) and (max-device-wi
   table.ls-answers td.visible-xs, table.ls-answers th.visible-xs {
     display: block !important;
   }
+  /* Don't display repeating header on mobile devices'*/
+  table.ls-answers tr.ls-heading-repeat {
+    display: none;
+  }
 }
 /* Fix for IE11 - no array question radio buttons on small screens */
 @media all and (max-width: 760px) and (-ms-high-contrast: none), (-ms-high-contrast: active) {
@@ -13398,6 +13402,11 @@ For iPads specifically : add this : (min-device-width: 768px) and (max-device-wi
     margin-right: -18px !important;
   }
 }
+@media only screen and (max-width: 760px), (min-device-width: 768px) and (max-device-width: 1024px) {
+  .radio-item label.ls-label-xs-visibility > * {
+    right: auto;
+  }
+}
 .radio-item label::before {
   border: 2px solid #6E748C;
   background-color: #fff;
@@ -14180,6 +14189,11 @@ table.ls-answers input[type=radio] {
   right: -10000px;
 }
 
+@media only screen and (max-width: 760px), (min-device-width: 768px) and (max-device-width: 1024px) {
+  .checkbox-item label.ls-label-xs-visibility > * {
+    right: auto;
+  }
+}
 /* Align privacy policy checkbox to top */
 #datasecurity_accepted {
   vertical-align: top;
