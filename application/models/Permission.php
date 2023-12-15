@@ -792,7 +792,7 @@ class Permission extends LSActiveRecord
         return UserInPermissionrole::model()->getRoleForUser($iUserID);
     }
 
-        /**
+    /**
      * get permission by user roles
      * @param integer[] $rolesIds array of roles id
      * @param string $permission;
