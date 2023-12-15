@@ -92,6 +92,7 @@ class SurveyIndex extends CAction
 
         // collect all data in this method to pass on later
         $redata = compact(array_keys(get_defined_vars()));
+        $redata['popuppreview'] = Yii::app()->request->getParam('popuppreview', false);
 
 
         $previewmode = false;
@@ -625,6 +626,7 @@ class SurveyIndex extends CAction
             initFieldArray($surveyid, $_SESSION['survey_' . $surveyid]['fieldmap']);
         }
 
+        $popuppreview = (Yii::app()->request->getParam("popuppreview", false) == "true");
         // Reset the question timers in preview
         if (!$isSurveyActive || $previewmode) {
             resetQuestionTimers($surveyid);
