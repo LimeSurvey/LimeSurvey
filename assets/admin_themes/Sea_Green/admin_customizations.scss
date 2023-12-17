@@ -192,3 +192,9 @@ blockquote {
 #surveySettingsForThisGroup {
   column-gap: 20px;
 }
+
+#usermanagement--identity-gridPanel tr.disabled {
+  color            : $g-400;
+  pointer-events   : auto;
+  cursor           : not-allowed;
+}

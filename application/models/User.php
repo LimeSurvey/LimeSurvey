@@ -43,6 +43,7 @@ use LimeSurvey\Models\Services\UserManager;
  * @property string $last_login
  * @property Permissiontemplates[] $roles
  * @property UserGroup[] $groups
+ * @property bool $user_status User's account status (true: activated | false: deactivated)
  */
 class User extends LSActiveRecord
 {
@@ -59,6 +60,7 @@ class User extends LSActiveRecord
      * @var string $lang Default value for user language
      */
     public $lang = 'auto';
+
     public $searched_value;
 
     /**
@@ -130,6 +132,12 @@ class User extends LSActiveRecord
     /** @inheritdoc */
     public function scopes()
     {
+        if (App()->getConfig("DBVersion") < 495) {
+            /* No expires column before 495 */
+            return array(
+                'active' => []
+            );
+        }
         return array(
             'active' => array(
                 'condition' => "expires > :now OR expires IS NULL",
@@ -159,6 +167,7 @@ class User extends LSActiveRecord
             'modified' => gT('Modified at'),
             'last_login' => gT('Last recorded login'),
             'expires' => gT("Expiry date/time:"),
+            'user_status' => gT("Status"),
         ];
     }
 
@@ -230,9 +239,10 @@ class User extends LSActiveRecord
      * @param int $parent_user
      * @param string $new_email
      * @param string|null $expires
+     * @param boolean $status
      * @return integer|boolean User ID if success
      */
-    public static function insertUser($new_user, $new_pass, $new_full_name, $parent_user, $new_email, $expires = null)
+    public static function insertUser($new_user, $new_pass, $new_full_name, $parent_user, $new_email, $expires = null, $status = true)
     {
         $oUser = new self();
         $oUser->users_name = $new_user;
@@ -244,6 +254,7 @@ class User extends LSActiveRecord
         $oUser->created = date('Y-m-d H:i:s');
         $oUser->modified = date('Y-m-d H:i:s');
         $oUser->expires = $expires;
+        $oUser->user_status = $status;
         if ($oUser->save()) {
             return $oUser->uid;
         } else {
@@ -504,7 +515,6 @@ class User extends LSActiveRecord
         $permission_users_update = Permission::model()->hasGlobalPermission('users', 'update');
         $permission_users_delete = Permission::model()->hasGlobalPermission('users', 'delete');
         $userManager = new UserManager(App()->user, $this);
-
         // User is owned or created by you
         $ownedOrCreated = $this->parent_id == App()->session['loginID'];
 
@@ -515,7 +525,6 @@ class User extends LSActiveRecord
         $setTemplatePermissionsUrl = App()->getController()->createUrl('userManagement/userTemplatePermissions', ['userid' => $this->uid]);
         $changeOwnershipUrl = App()->getController()->createUrl('userManagement/takeOwnership');
         $deleteUrl = App()->getController()->createUrl('userManagement/deleteConfirm', ['userid' => $this->uid, 'user' => $this->full_name]);
-
 
         $dropdownItems = [];
         $dropdownItems[] = [
@@ -540,6 +549,37 @@ class User extends LSActiveRecord
                     )
                 )
         ];
+
+        $permission = ( $permission_superadmin_read && !(Permission::isForcedSuperAdmin($this->uid) || $this->uid == App()->user->getId()))
+            || (!$permission_superadmin_read && ($this->uid != App()->session['loginID'] //Can't change your own permissions
+                    && ( $permission_users_update && $ownedOrCreated)
+                    && !Permission::isForcedSuperAdmin($this->uid)
+                )
+            );
+
+        if ($this->user_status) {
+            $activateUrl = App()->getController()->createUrl('userManagement/activationConfirm', ['userid' => $this->uid, 'action' => 'deactivate']);
+            $dropdownItems[] = [
+                'title'            => gT('Deactivate'),
+                'iconClass'        => "ri-user-unfollow-fill text-danger",
+                'linkClass'        => $permission ? "UserManagement--action--openmodal UserManagement--action--status" : '',
+                'linkAttributes'   => [
+                    'data-href' => $permission ? $activateUrl : '#',
+                ],
+                'enabledCondition' => $permission
+            ];
+        } else {
+            $activateUrl = App()->getController()->createUrl('userManagement/activationConfirm', ['userid' => $this->uid, 'action' => 'activate']);
+            $dropdownItems[] = [
+                'title'            => gT('Activate'),
+                'iconClass'        => "ri-user-follow-fill",
+                'linkClass'        => $permission ? "UserManagement--action--openmodal UserManagement--action--status" : '',
+                'linkAttributes'   => [
+                    'data-href' => $permission ? $activateUrl : '#',
+                ],
+                'enabledCondition' => $permission
+            ];
+        }
         $dropdownItems[] = [
             'title'            => gT('Edit permissions'),
             'iconClass'        => "ri-lock-fill",
@@ -708,7 +748,8 @@ class User extends LSActiveRecord
             ],
             [
                 "name"   => 'uid',
-                "header" => gT("User ID")
+                "header" => gT("User ID"),
+                'htmlOptions' => ['class' => 'uid']
             ],
             [
                 "name"   => 'users_name',
@@ -730,6 +771,12 @@ class User extends LSActiveRecord
             [
                 "name"   => "parentUserName",
                 "header" => gT("Created by"),
+            ],
+            [
+                "name"   => "user_status",
+                "header" => gT("Status"),
+                'headerHtmlOptions' => ['class' => 'hidden'],
+                'htmlOptions'       => ['class' => 'hidden activation']
             ],
         ];
 
@@ -866,7 +913,7 @@ class User extends LSActiveRecord
 
         $getUser = Yii::app()->request->getParam('User');
         if (!empty($getUser['parentUserName'])) {
-             $getParentName = $getUser['parentUserName'];
+            $getParentName = $getUser['parentUserName'];
             $criteria->join = "LEFT JOIN {{users}} u ON t.parent_id = u.uid";
             $criteria->compare('u.users_name', $getParentName, true, 'OR');
         }
@@ -1039,5 +1086,22 @@ class User extends LSActiveRecord
         /* Finally : simple user can update only childs users */
         return Permission::model()->hasGlobalPermission('users', 'update', $managerId)
                 && $this->parent_id == $managerId;
+    }
+
+    /**
+     * Set user activation status
+     *
+     * @param string $status
+     * @return bool
+     */
+    public function setActivationStatus($status = 'activate')
+    {
+        if ($status == 'activate') {
+            $this->user_status = 1;
+        } else {
+            $this->user_status = 0;
+        }
+
+        return $this->save();
     }
 }
