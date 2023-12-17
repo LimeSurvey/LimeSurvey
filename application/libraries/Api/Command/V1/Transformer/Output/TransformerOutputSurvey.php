@@ -79,7 +79,12 @@ class TransformerOutputSurvey extends TransformerOutputActiveRecord
             "googleanalyticsapikey" => 'googleAnalyticsApiKey',
             "showsurveypolicynotice" => ['key' =>  'showSurveyPolicyNotice', 'type' => 'int'],
             'template' => true,
-            'format' => true
+            'format' => true,
+            // below fields are only used for cloud version 
+            "showquestioncode" => ['key' =>  'showQuestionCode', 'formatter' => $formatterYn],
+            'cookieconsent' => ['key' => 'cookieConsent', 'formatter' => $formatterYn],
+            'footerbranding' => ['key' => 'footerBranding', 'formatter' => $formatterYn],
+
         ]);
     }
 

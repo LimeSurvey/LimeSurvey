@@ -169,6 +169,13 @@ class GeneralSettings
                     )
                 );
             }
+        } else {
+            throw new PersistErrorException(
+                sprintf(
+                    'Failed saving general settings for survey field %s',
+                    array_key_first($input)
+                )
+            );
         }
 
         return $meta;
@@ -268,7 +275,11 @@ class GeneralSettings
             'bounce_email' => [],
             'gsid' => ['default' => 1],
             'format' => [],
-            'template' => []
+            'template' => [],
+            // below fields are only used for cloud version 
+            'showquestioncode' => [],
+            'cookieconsent' => [],
+            'footerbranding' => [],
         ];
     }
 
