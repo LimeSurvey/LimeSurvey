@@ -75,11 +75,10 @@ class TransformerInputSurvey extends Transformer
             'showSurveyPolicyNotice' => ['key' => 'showsurveypolicynotice', 'type' => 'int'],
             'template' => true,
             'format' => true,
-            // below fields are only used for cloud version 
+            // below fields are newly added 
             'showQuestionCode' => ['key' => 'showquestioncode', 'formatter' => $formatterYn],
             'cookieConsent' => ['key' => 'cookieconsent', 'formatter' => $formatterYn],
             'footerBranding' => ['key' => 'footerbranding', 'formatter' => $formatterYn],
-
         ]);
     }
 }

@@ -276,7 +276,7 @@ class GeneralSettings
             'gsid' => ['default' => 1],
             'format' => [],
             'template' => [],
-            // below fields are only used for cloud version 
+            // below fields are newly added 
             'showquestioncode' => [],
             'cookieconsent' => [],
             'footerbranding' => [],

@@ -80,7 +80,7 @@ class TransformerOutputSurvey extends TransformerOutputActiveRecord
             "showsurveypolicynotice" => ['key' =>  'showSurveyPolicyNotice', 'type' => 'int'],
             'template' => true,
             'format' => true,
-            // below fields are only used for cloud version 
+            // below fields are newly added 
             "showquestioncode" => ['key' =>  'showQuestionCode', 'formatter' => $formatterYn],
             'cookieconsent' => ['key' => 'cookieConsent', 'formatter' => $formatterYn],
             'footerbranding' => ['key' => 'footerBranding', 'formatter' => $formatterYn],
