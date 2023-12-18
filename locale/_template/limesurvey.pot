@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2023-12-13 12:12:03+00:00\n"
+"POT-Creation-Date: 2023-12-18 08:03:09+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -395,7 +395,7 @@ msgstr ""
 
 #: application/controllers/FailedEmailController.php:20
 #: application/controllers/FailedEmailController.php:21
-#: application/controllers/admin/Authentication.php:436
+#: application/controllers/admin/Authentication.php:427
 #: application/core/LsDefaultDataSets.php:444
 #: application/core/LsDefaultDataSets.php:445
 #: application/views/failedEmail/failedEmail_index.php:10
@@ -1563,8 +1563,8 @@ msgstr ""
 #: application/controllers/ResponsesController.php:158
 #: application/core/plugins/TwoFactorAdminLogin/models/TFAUser.php:125
 #: application/core/plugins/TwoFactorAdminLogin/models/TFAUserKey.php:115
-#: application/models/User.php:138 application/models/User.php:811
-#: application/models/User.php:871
+#: application/models/User.php:157 application/models/User.php:830
+#: application/models/User.php:890
 #: application/views/admin/token/massive_actions/_selector.php:70
 #: application/views/admin/user/modifyuser.php:35
 #: application/views/responses/listResponses_view.php:187
@@ -2755,7 +2755,7 @@ msgid "Inherit"
 msgstr ""
 
 #: application/controllers/SurveyAdministrationController.php:3024
-#: application/models/User.php:143
+#: application/models/User.php:162
 msgid "Date format"
 msgstr ""
 
@@ -2813,8 +2813,8 @@ msgstr ""
 #: application/models/SurveymenuEntries.php:194
 #: application/models/SurveymenuEntries.php:207
 #: application/models/SurveysGroups.php:124
-#: application/models/TokenDynamic.php:626 application/models/User.php:794
-#: application/models/User.php:859
+#: application/models/TokenDynamic.php:626 application/models/User.php:813
+#: application/models/User.php:878
 #: application/views/SurveysGroupsPermission/subviews/currentUsersList.php:7
 #: application/views/admin/emailtemplates/email_language_template_tab.php:96
 #: application/views/admin/labels/_labelviewtabcontent_view.php:21
@@ -3687,8 +3687,8 @@ msgstr ""
 #: application/controllers/UserManagementController.php:1195
 #: application/core/plugins/TwoFactorAdminLogin/models/TFAUser.php:17
 #: application/core/plugins/TwoFactorAdminLogin/models/TFAUserKey.php:48
-#: application/models/User.php:132 application/models/User.php:803
-#: application/models/User.php:863
+#: application/models/User.php:151 application/models/User.php:822
+#: application/models/User.php:882
 msgid "User ID"
 msgstr ""
 
@@ -3703,8 +3703,8 @@ msgstr ""
 #: application/core/plugins/Authdb/Authdb.php:135
 #: application/core/plugins/TwoFactorAdminLogin/models/TFAUser.php:117
 #: application/core/plugins/TwoFactorAdminLogin/models/TFAUserKey.php:105
-#: application/models/User.php:133 application/models/User.php:807
-#: application/models/User.php:867
+#: application/models/User.php:152 application/models/User.php:826
+#: application/models/User.php:886
 #: application/views/SurveysGroupsPermission/subviews/currentUsersList.php:8
 #: application/views/admin/authentication/forgotpassword.php:34
 #: application/views/admin/user/modifyuser.php:24
@@ -3873,25 +3873,25 @@ msgstr ""
 msgid "Password cannot be blank and must fulfill minimum requirements: %s"
 msgstr ""
 
-#: application/controllers/admin/Authentication.php:278
+#: application/controllers/admin/Authentication.php:274
 msgid "Logout successful."
 msgstr ""
 
-#: application/controllers/admin/Authentication.php:312
+#: application/controllers/admin/Authentication.php:303
 #: application/models/services/PasswordManagement.php:179
 #: application/models/services/PasswordManagement.php:184
 msgid "If the username and email address is valid a password reminder email has been sent to you. This email can only be requested once in %d minutes."
 msgstr ""
 
-#: application/controllers/admin/Authentication.php:357
+#: application/controllers/admin/Authentication.php:348
 msgid "Please log in first."
 msgstr ""
 
-#: application/controllers/admin/Authentication.php:362
+#: application/controllers/admin/Authentication.php:353
 msgid "Welcome %s!"
 msgstr ""
 
-#: application/controllers/admin/Authentication.php:366
+#: application/controllers/admin/Authentication.php:357
 msgid "Reloading screen. Please wait."
 msgstr ""
 
@@ -8869,7 +8869,7 @@ msgstr ""
 
 #: application/core/plugins/AuthLDAP/AuthLDAP.php:379
 #: application/core/plugins/Authdb/Authdb.php:136
-#: application/libraries/Save.php:221 application/models/User.php:134
+#: application/libraries/Save.php:221 application/models/User.php:153
 #: application/views/admin/authentication/newPassword.php:41
 #: application/views/admin/user/modifyuser.php:53
 #: application/views/userManagement/partial/createdrandoms.php:32
@@ -9149,8 +9149,8 @@ msgstr ""
 
 #: application/core/plugins/TwoFactorAdminLogin/models/TFAUser.php:121
 #: application/core/plugins/TwoFactorAdminLogin/models/TFAUserKey.php:110
-#: application/models/User.php:135 application/models/User.php:815
-#: application/models/User.php:875
+#: application/models/User.php:154 application/models/User.php:834
+#: application/models/User.php:894
 #: application/views/SurveysGroupsPermission/subviews/currentUsersList.php:9
 #: application/views/admin/user/modifyuser.php:43
 #: application/views/surveyPermissions/_overview_table.php:15
@@ -10147,7 +10147,7 @@ msgid "This will update the survey group for all selected surveys."
 msgstr ""
 
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_expiry_dialog.php:13
-#: application/models/User.php:147
+#: application/models/User.php:166
 #: application/views/admin/survey/subview/accordion/_publication_panel.php:64
 msgid "Expiry date/time:"
 msgstr ""
@@ -14705,7 +14705,7 @@ msgstr ""
 #: application/models/Participant.php:252
 #: application/models/QuestionGroupL10n.php:81
 #: application/models/SurveymenuEntries.php:197
-#: application/models/TokenDynamic.php:685 application/models/User.php:137
+#: application/models/TokenDynamic.php:685 application/models/User.php:156
 #: application/views/admin/authentication/ajaxLogin.php:80
 #: application/views/admin/authentication/login.php:105
 #: application/views/admin/globalsettings/globalSettings_view.php:31
@@ -14995,8 +14995,8 @@ msgstr ""
 
 #: application/models/Participant.php:256 application/models/Surveymenu.php:346
 #: application/models/SurveymenuEntries.php:205
-#: application/models/SurveysGroups.php:103 application/models/User.php:819
-#: application/models/User.php:892
+#: application/models/SurveysGroups.php:103 application/models/User.php:838
+#: application/models/User.php:911
 msgid "Created on"
 msgstr ""
 
@@ -15872,8 +15872,8 @@ msgstr ""
 
 #: application/models/Surveymenu.php:347
 #: application/models/SurveymenuEntries.php:206
-#: application/models/SurveysGroups.php:105 application/models/User.php:824
-#: application/models/User.php:887
+#: application/models/SurveysGroups.php:105 application/models/User.php:843
+#: application/models/User.php:906
 #: application/views/userManagement/partial/showuser.php:15
 msgid "Created by"
 msgstr ""
@@ -16397,144 +16397,144 @@ msgstr ""
 msgid "Settings"
 msgstr ""
 
-#: application/models/User.php:136
+#: application/models/User.php:155
 msgid "Parent user"
 msgstr ""
 
-#: application/models/User.php:139
+#: application/models/User.php:158
 msgid "Editor mode"
 msgstr ""
 
-#: application/models/User.php:140
+#: application/models/User.php:159
 msgid "Template editor mode"
 msgstr ""
 
-#: application/models/User.php:141
+#: application/models/User.php:160
 msgid "Question selector mode"
 msgstr ""
 
-#: application/models/User.php:142
+#: application/models/User.php:161
 msgid "One-time password"
 msgstr ""
 
-#: application/models/User.php:144
+#: application/models/User.php:163
 msgid "Created at"
 msgstr ""
 
-#: application/models/User.php:145
+#: application/models/User.php:164
 msgid "Modified at"
 msgstr ""
 
-#: application/models/User.php:146
+#: application/models/User.php:165
 msgid "Last recorded login"
 msgstr ""
 
-#: application/models/User.php:319
+#: application/models/User.php:338
 msgid "Password must be at least %d character long|Password must be at least %d characters long"
 msgstr ""
 
-#: application/models/User.php:324
+#: application/models/User.php:343
 msgid "Password must be at most %d character long|Password must be at most %d characters long"
 msgstr ""
 
-#: application/models/User.php:329
+#: application/models/User.php:348
 msgid "Password must include at least %d lowercase letter|Password must include at least %d lowercase letters"
 msgstr ""
 
-#: application/models/User.php:334
+#: application/models/User.php:353
 msgid "Password must include at least %d uppercase letter|Password must include at least %d uppercase letters"
 msgstr ""
 
-#: application/models/User.php:339
+#: application/models/User.php:358
 msgid "Password must include at least %d number|Password must include at least %d numbers"
 msgstr ""
 
-#: application/models/User.php:344
+#: application/models/User.php:363
 msgid "Password must include at least %d special character|Password must include at least %d special characters"
 msgstr ""
 
-#: application/models/User.php:375
+#: application/models/User.php:394
 msgid "Your new password was not saved because the old password was wrong."
 msgstr ""
 
-#: application/models/User.php:378
+#: application/models/User.php:397
 msgid "Your new password was not saved because it matches the old password."
 msgstr ""
 
-#: application/models/User.php:381
+#: application/models/User.php:400
 msgid "Your new password was not saved because the passwords did not match."
 msgstr ""
 
-#: application/models/User.php:384
+#: application/models/User.php:403
 msgid "The new password can not be empty."
 msgstr ""
 
-#: application/models/User.php:397
+#: application/models/User.php:416
 msgid "A password must meet the following requirements: "
 msgstr ""
 
-#: application/models/User.php:399
+#: application/models/User.php:418
 msgid "At least %d character long.|At least %d characters long."
 msgstr ""
 
-#: application/models/User.php:402
+#: application/models/User.php:421
 msgid "At most %d character long.|At most %d characters long."
 msgstr ""
 
-#: application/models/User.php:406
+#: application/models/User.php:425
 msgid "Exactly %d character long.|Exactly %d characters long."
 msgstr ""
 
-#: application/models/User.php:408
+#: application/models/User.php:427
 msgid "Between %d and %d characters long."
 msgstr ""
 
-#: application/models/User.php:412
+#: application/models/User.php:431
 msgid "At least %d lower case letter.|At least %d lower case letters."
 msgstr ""
 
-#: application/models/User.php:415
+#: application/models/User.php:434
 msgid "At least %d upper case letter.|At least %d upper case letters."
 msgstr ""
 
-#: application/models/User.php:418
+#: application/models/User.php:437
 msgid "At least %d number.|At least %d numbers."
 msgstr ""
 
-#: application/models/User.php:421
+#: application/models/User.php:440
 msgid "At least %d special character.|At least %d special characters."
 msgstr ""
 
-#: application/models/User.php:504 application/models/User.php:516
+#: application/models/User.php:523 application/models/User.php:535
 msgid "Edit this user"
 msgstr ""
 
-#: application/models/User.php:526
+#: application/models/User.php:545
 msgid "Set global permissions for this user"
 msgstr ""
 
-#: application/models/User.php:534
+#: application/models/User.php:553
 msgid "Set template permissions for this user"
 msgstr ""
 
-#: application/models/User.php:548
+#: application/models/User.php:567
 msgid "Delete this user"
 msgstr ""
 
-#: application/models/User.php:558
+#: application/models/User.php:577
 #: application/views/userManagement/partial/confirmuserdelete.php:9
 msgid "Do you want to delete this user?"
 msgstr ""
 
-#: application/models/User.php:569 application/models/User.php:647
+#: application/models/User.php:588 application/models/User.php:666
 msgid "Take ownership"
 msgstr ""
 
-#: application/models/User.php:602
+#: application/models/User.php:621
 msgid "User details"
 msgstr ""
 
-#: application/models/User.php:612
+#: application/models/User.php:631
 #: application/views/SurveysGroupsPermission/subviews/currentUsersList.php:22
 #: application/views/SurveysGroupsPermission/subviews/currentUsersList.php:23
 #: application/views/surveyPermissions/_overview_table.php:35
@@ -16547,41 +16547,41 @@ msgstr ""
 msgid "Edit permissions"
 msgstr ""
 
-#: application/models/User.php:620
+#: application/models/User.php:639
 msgid "User role"
 msgstr ""
 
-#: application/models/User.php:626
+#: application/models/User.php:645
 #: application/views/userManagement/partial/addedituser.php:4
 msgid "Edit user"
 msgstr ""
 
-#: application/models/User.php:632
+#: application/models/User.php:651
 msgid "Template permissions"
 msgstr ""
 
-#: application/models/User.php:646
+#: application/models/User.php:665
 msgid "Do you want to take ownerschip of this user?"
 msgstr ""
 
-#: application/models/User.php:656 application/views/admin/user/deluser.php:30
+#: application/models/User.php:675 application/views/admin/user/deluser.php:30
 #: application/views/userManagement/partial/transfersurveys.php:36
 msgid "Delete User"
 msgstr ""
 
-#: application/models/User.php:831 application/models/User.php:881
+#: application/models/User.php:850 application/models/User.php:900
 msgid "No of surveys"
 msgstr ""
 
-#: application/models/User.php:836
+#: application/models/User.php:855
 msgid "Usergroups"
 msgstr ""
 
-#: application/models/User.php:841
+#: application/models/User.php:860
 msgid "Applied role"
 msgstr ""
 
-#: application/models/User.php:1002
+#: application/models/User.php:1021
 msgid "%s (%s)"
 msgstr ""
 
