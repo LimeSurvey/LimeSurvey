@@ -31,13 +31,13 @@ class UserInPermissionRoleTest extends BaseModelTestCase
         $permissiontemplates->save();
         $newRoleId = $permissiontemplates->ptid;
         // set the user to this role
-        $userInPermissionrole = new UserInPermissionrole();
+        $userInPermissionrole = new \UserInPermissionrole();
         $userInPermissionrole->ptid = $newRoleId;
         $userInPermissionrole->uid = $userId;
         $userInPermissionrole->save();
 
         // Set the superadmin view roles
-        $permission = new Permission();
+        $permission = new \Permission();
         $permission->entity = 'role';
         $permission->entity_id = $newRoleId;
         $permission->uid = 0;
@@ -47,7 +47,7 @@ class UserInPermissionRoleTest extends BaseModelTestCase
         // User have all permission except create superadmin
         $this->assertTrue(\Permission::model()->hasGlobalPermission('auth_db', 'read', $userId));
         $this->assertTrue(\Permission::model()->hasGlobalPermission('superadmin', 'read', $userId));
-        $this->assertFalse(\Permission::model()->hasGlobalPermission('superadmin', 'read', $userId));
+        $this->assertFalse(\Permission::model()->hasGlobalPermission('superadmin', 'c', $userId));
         // Add superadmin create
         $permission->create_p = 1;
         $permission->save();
