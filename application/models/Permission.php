@@ -615,11 +615,6 @@ class Permission extends LSActiveRecord
         }
 
         /* Check in permission DB and static it */
-        // TODO: that should be the only way to get the permission,
-        // and it should be accessible from any object with relations :
-        // $obj->permissions->read or $obj->permissions->write, etc.
-        // relation :
-        // 'permissions' => array(self::HAS_ONE, 'Permission', array(), 'condition'=> 'entity_id='.{ENTITYID}.' && uid='.Yii::app()->user->id.' && entity="{ENTITY}" && permission="{PERMISSIONS}"', 'together' => true ),
         if (!isset($aPermissionStatic[$iEntityID][$sEntityName][$iUserID][$sPermission][$sCRUD])) {
             $query = $this->findByAttributes(array("entity_id" => $iEntityID, "uid" => $iUserID, "entity" => $sEntityName, "permission" => $sPermission));
             $bPermission = is_null($query) ? array() : $query->attributes;
