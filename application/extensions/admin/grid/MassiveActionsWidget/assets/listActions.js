@@ -369,30 +369,35 @@ $(document).off('pjax:scriptcomplete.listActions').on('pjax:scriptcomplete.listA
 
 
 function switchStatusOfListActions(e) {
-    var checkboxes = $('input[type="checkbox"]');
-    var actionButton = $('.massiveAction');
+    var checkboxSelector = '.grid-view-ls input[type="checkbox"]';
     // Attach an onchange event handler to all checkboxes
-    checkboxes.on('change', function () {
+    $(document).on('change', checkboxSelector, function () {
+        // This assumes there is only one massive and one grid in the page.
+        // @todo: 
+        // - Stamp the related grid-id in the massive action button (see massive action widget).
+        // - From checkbox traverse to grid. Fetch grid id.
+        // - Use grid-id to get a more robust link in between grid and massive actions.
+        var actionButton = $('.massiveAction');
         if (isAnyCheckboxChecked()) {
             actionButton.removeClass('disabled');
         } else {
             actionButton.addClass('disabled');
         }
     });
-
-    // Function to check if at least one checkbox is checked
-    function isAnyCheckboxChecked() {
-        var isChecked = false;
-        checkboxes.each(function () {
-            if ($(this).is(':checked')) {
-                isChecked = true;
-                return false; // Break out of the loop
-            }
-        });
-        return isChecked;
-    }
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-    switchStatusOfListActions();
+// Function to check if at least one checkbox is checked
+function isAnyCheckboxChecked() {
+    // This assumes there is only one checkbox per row
+    // - Make isAnyCheckboxChecked() to only check the first one
+    // or
+    // - Stamp on the MassiveActions widget the checkbox class for the row selector and the header
+    // - Use that class to only query selector checkboxes
+    return $('.grid-view-ls table tbody input[type="checkbox"]:checked').length > 0;
+}
+
+['DOMContentLoaded','ready', 'pjax:scriptcomplete'].forEach(function (e) {
+    document.addEventListener(e, () => {
+        switchStatusOfListActions();
+    });
 });

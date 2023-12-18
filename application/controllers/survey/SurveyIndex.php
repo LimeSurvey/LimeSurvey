@@ -92,6 +92,7 @@ class SurveyIndex extends CAction
 
         // collect all data in this method to pass on later
         $redata = compact(array_keys(get_defined_vars()));
+        $redata['popuppreview'] = Yii::app()->request->getParam('popuppreview', false);
 
 
         $previewmode = false;
@@ -333,7 +334,12 @@ class SurveyIndex extends CAction
         }
 
         //SET THE TEMPLATE DIRECTORY
-        $oTemplate  = Template::model()->getInstance('', $surveyid);
+        if ($thissurvey['template'] == 'inherit') {
+            /* Load default theme (Global settings -> Default theme) */
+            $oTemplate  = Template::model()->getInstance();
+        } else {
+            $oTemplate  = Template::model()->getInstance('', $surveyid);
+        }
         $timeadjust = Yii::app()->getConfig("timeadjust");
 
         //MAKE SURE SURVEY HASN'T EXPIRED
@@ -620,6 +626,7 @@ class SurveyIndex extends CAction
             initFieldArray($surveyid, $_SESSION['survey_' . $surveyid]['fieldmap']);
         }
 
+        $popuppreview = (Yii::app()->request->getParam("popuppreview", false) == "true");
         // Reset the question timers in preview
         if (!$isSurveyActive || $previewmode) {
             resetQuestionTimers($surveyid);

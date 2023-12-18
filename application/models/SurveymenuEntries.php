@@ -233,7 +233,7 @@ class SurveymenuEntries extends LSActiveRecord
         if ($data->menu_icon_type == 'fontawesome') {
             return "<i class='fa fa-" . $data->menu_icon . "'></i>";
         } elseif ($data->menu_icon_type == 'image') {
-            return '<img width="60px" src="' . $data->menu_icon . '" />';
+            return '<img width="60px" src="' . CHtml::encode($data->menu_icon) . '" />';
         } else {
             return $data->menu_icon_type . '|' . $data->menu_icon;
         }
@@ -385,7 +385,7 @@ class SurveymenuEntries extends LSActiveRecord
             [
                 'name'   => 'data',
                 'value'  => '$data->data ? "<i class=\'ri-information-fill bigIcons\' title=\'".$data->data."\'></i>"
-                : ( $data->getdatamethod ? gT("GET data method:")."<br/>".$data->getdatamethod : "")',
+                : ( $data->getdatamethod ? gT("GET data method:")."<br/>".CHtml::encode($data->getdatamethod) : "")',
                 'type'   => 'raw',
                 'filter' => false,
             ],

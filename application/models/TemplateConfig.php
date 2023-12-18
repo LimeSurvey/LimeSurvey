@@ -84,10 +84,6 @@ class TemplateConfig extends CActiveRecord
     /** @var array $aCssFrameworkReplacement Css Framework Replacement */
     protected $aCssFrameworkReplacement;
 
-    public $allDbTemplateFolders = null;
-
-    public static $aTemplatesWithoutDB = null;
-
     public $options_page = 'core';
 
     /**
@@ -184,8 +180,7 @@ class TemplateConfig extends CActiveRecord
                 TemplateConfiguration::uninstall($this->sTemplateName);
                 App()->setFlashMessage(
                     sprintf(
-                        gT("Theme '%s' has been uninstalled because it's not compatible with this LimeSurvey
-                        version. Can't find file: $sFile "),
+                        gT("Theme '%s' has been uninstalled because it's not compatible with this LimeSurvey version. Can't find file: $sFile "),
                         $this->sTemplateName
                     ),
                     'error'
@@ -996,7 +991,7 @@ class TemplateConfig extends CActiveRecord
             $oNewTemplateConfiguration->cssframework_name = $aDatas['cssframework_name'];
             $oNewTemplateConfiguration->cssframework_css  = self::formatToJsonArray($aDatas['cssframework_css']);
             $oNewTemplateConfiguration->cssframework_js   = self::formatToJsonArray($aDatas['cssframework_js']);
-            $oNewTemplateConfiguration->options           = self::formatToJsonArray($aDatas['aOptions'], true);
+            $oNewTemplateConfiguration->options           = self::convertOptionsToJson($aDatas['aOptions']);
             $oNewTemplateConfiguration->packages_to_load  = self::formatToJsonArray($aDatas['packages_to_load']);
 
 
@@ -1056,12 +1051,38 @@ class TemplateConfig extends CActiveRecord
     }
 
     /**
+     * Extracts option values from theme options node (XML) into a json key-value map.
+     * Inner nodes (which maybe inside each option element) are ignored.
+     * Option values are trimmed as they may contain undesired new lines in the XML document.
+     * @param array|object $options the filed to convert
+     * @return string  json
+     */
+    public static function convertOptionsToJson($options)
+    {
+        $optionsArray = [];
+        foreach ($options as $option => $optionValue) {
+            // Trim values, as they may be in a new line in the XML. For example:
+            // <sample_option>
+            //      default value
+            // </sample_option>
+            // Also, by casting, inner nodes are eliminated
+            // and only the text value inside the node is obtained
+            $optionsArray[$option] = trim((string) $optionValue);
+        }
+        if (empty($optionsArray)) {
+            return '""';
+        }
+        return json_encode($optionsArray);
+    }
+
+    /**
      * Returns an array of all unique template folders that are registered in the database
      * @return array|null
      */
-    public function getAllDbTemplateFolders()
+    public static function getAllDbTemplateFolders()
     {
-        if (empty($this->allDbTemplateFolders)) {
+        static $aAllDbTemplateFolders = [];
+        if (empty($aAllDbTemplateFolders)) {
             $oCriteria = new CDbCriteria();
             $oCriteria->select = 'folder';
             $oAllDbTemplateFolders = Template::model()->findAll($oCriteria);
@@ -1071,33 +1092,42 @@ class TemplateConfig extends CActiveRecord
                 $aAllDbTemplateFolders[] = $oAllDbTemplateFolder->folder;
             }
 
-            $this->allDbTemplateFolders = array_unique($aAllDbTemplateFolders);
+            $aAllDbTemplateFolders = array_unique($aAllDbTemplateFolders);
         }
 
-        return $this->allDbTemplateFolders;
+        return $aAllDbTemplateFolders;
     }
 
     /**
      * Returns an array with uninstalled and/or incompatible survey themes
      * @return TemplateConfiguration[]
      */
-    public function getTemplatesWithNoDb(): array
+    public static function getTemplatesWithNoDb(): array
     {
-        if (empty(self::$aTemplatesWithoutDB)) {
+        static $aTemplatesWithoutDB = [];
+        if (empty($aTemplatesWithoutDB)) {
+            $aTemplatesWithoutDB['valid'] = [];
+            $aTemplatesWithoutDB['invalid'] = [];
             $aTemplatesDirectories = Template::getAllTemplatesDirectories();
-            $aTemplatesInDb        = $this->getAllDbTemplateFolders();
-            $aTemplatesWithoutDB   = array();
+            $aTemplatesInDb = self::getAllDbTemplateFolders();
 
             foreach ($aTemplatesDirectories as $sName => $sPath) {
                 if (!in_array($sName, $aTemplatesInDb)) {
-                    // Get the manifest
-                    $aTemplatesWithoutDB[$sName] = Template::getTemplateConfiguration($sName, null, null, true);
+                    // Get the theme manifest by forcing xml load
+                    try {
+                        $aTemplatesWithoutDB['valid'][$sName] = Template::getTemplateConfiguration($sName, null, null, true);
+                        if (empty($aTemplatesWithoutDB['valid'][$sName]->config)) {
+                            unset($aTemplatesWithoutDB['valid'][$sName]);
+                            $aTemplatesWithoutDB['invalid'][$sName]['error'] = gT('Invalid theme configuration file');
+                        }
+                    } catch (Exception $e) {
+                        unset($aTemplatesWithoutDB['valid'][$sName]);
+                        $aTemplatesWithoutDB['invalid'][$sName]['error'] = $e->getMessage();
+                    }
                 }
             }
-            self::$aTemplatesWithoutDB = $aTemplatesWithoutDB;
         }
-
-        return self::$aTemplatesWithoutDB;
+        return $aTemplatesWithoutDB;
     }
 
     /**

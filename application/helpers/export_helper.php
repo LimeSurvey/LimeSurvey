@@ -338,9 +338,41 @@ function SPSSGetValues($field, $qidattributes, $language)
                 'size' => numericSize($field['sql_name']),
             );
         } else {
-            $minvalue = trim((string) $qidattributes['multiflexible_min']) ? $qidattributes['multiflexible_min'] : 1;
-            $maxvalue = trim((string) $qidattributes['multiflexible_max']) ? $qidattributes['multiflexible_max'] : 10;
-            $stepvalue = trim((string) $qidattributes['multiflexible_step']) ? $qidattributes['multiflexible_step'] : 1;
+            $minvalue = 1;
+            $maxvalue = 10;
+            if (trim((string) $qidattributes['multiflexible_max']) != '' && trim((string) $qidattributes['multiflexible_min']) == '') {
+                $maxvalue = $qidattributes['multiflexible_max'];
+                $minvalue = 1;
+            }
+            if (trim((string) $qidattributes['multiflexible_min']) != '' && trim((string) $qidattributes['multiflexible_max']) == '') {
+                $minvalue = $qidattributes['multiflexible_min'];
+                $maxvalue = $qidattributes['multiflexible_min'] + 10;
+            }
+            if (trim((string) $qidattributes['multiflexible_min']) != '' && trim((string) $qidattributes['multiflexible_max']) != '') {
+                if ($qidattributes['multiflexible_min'] < $qidattributes['multiflexible_max']) {
+                    $minvalue = $qidattributes['multiflexible_min'];
+                    $maxvalue = $qidattributes['multiflexible_max'];
+                }
+            }
+
+            $stepvalue = (trim((string) $qidattributes['multiflexible_step']) != '' && $qidattributes['multiflexible_step'] > 0) ? $qidattributes['multiflexible_step'] : 1;
+
+            if ($qidattributes['reverse'] == 1) {
+                $tmp = $minvalue;
+                $minvalue = $maxvalue;
+                $maxvalue = $tmp;
+                $reverse = true;
+                $stepvalue = -$stepvalue;
+            } else {
+                $reverse = false;
+            }
+
+            if ($qidattributes['multiflexible_checkbox']!=0)
+            {
+                $minvalue=0;
+                $maxvalue=1;
+                $stepvalue=1;
+            }
             for ($i = $minvalue; $i <= $maxvalue; $i += $stepvalue) {
                 $answers[] = array('code' => $i, 'value' => $i);
             }
@@ -3162,7 +3194,7 @@ function surveyGetThemeConfiguration($iSurveyId = null, $oXml = null, $bInherit 
                 if (is_array($attribute)) {
                     $attribute = (array)$attribute;
                 } elseif (isJson($attribute)) {
-                    $attribute = (array)json_decode((string) $attribute);
+                    $attribute = json_decode((string) $attribute, true);
                 }
                 $aThemeData[$sElementName]['theme'][$iThemeKey][$key] = $attribute;
             }

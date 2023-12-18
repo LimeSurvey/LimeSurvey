@@ -133,8 +133,7 @@
                 </optgroup>
             </dropdownoptions>
         </font>
-        <cssframework type="dropdown" category="Simple options" width="12" title="Variations" parent="cssframework">
-            Apple
+        <cssframework type="dropdown" category="Simple options" width="12" title="Variations" parent="cssframework">Apple
             <dropdownoptions>
                 <optgroup>
                     <option data-value="css/variations/theme_apple.css" value="apple">Apple</option>
@@ -190,10 +189,8 @@
                     <file type="view" role="subview">./subviews/survey/group_subviews/group_name.twig</file>
                     <file type="view" role="subview">./subviews/survey/question.twig</file>
                     <file type="view" role="subview">./subviews/survey/question_container.twig</file>
-                    <file type="view" role="subview">./subviews/survey/question_subviews/question_text_container.twig
-                    </file>
-                    <file type="view" role="subview">./subviews/survey/question_subviews/question_text_content.twig
-                    </file>
+                    <file type="view" role="subview">./subviews/survey/question_subviews/question_text_container.twig</file>
+                    <file type="view" role="subview">./subviews/survey/question_subviews/question_text_content.twig</file>
                     <file type="view" role="subview">./subviews/survey/question_subviews/answers.twig</file>
                     <file type="view" role="subview">./subviews/survey/question_subviews/survey_question_help.twig</file>
                     <file type="view" role="subview">./subviews/survey/question_subviews/valid_message_and_help.twig</file>

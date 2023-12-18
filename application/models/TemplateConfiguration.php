@@ -67,7 +67,7 @@ class TemplateConfiguration extends TemplateConfig
     /** @var array $aInstancesFromTemplateName cache for method getInstanceFromTemplateName*/
     public static $aInstancesFromTemplateName;
 
-    /** @var array $aInstancesFromTemplateName cache for method prepareTemplateRendering*/
+    /** @var array $aPreparedToRender cache for method prepareTemplateRendering*/
     public static $aPreparedToRender;
 
     /** @var boolean $bTemplateCheckResult is the template valid?*/
@@ -119,6 +119,9 @@ class TemplateConfiguration extends TemplateConfig
         return array(
             array('template_name', 'required'),
             array('id, sid, gsid', 'numerical', 'integerOnly' => true),
+            array('template_name', 'filter', 'filter' => function ($value) {
+                return sanitize_filename($value, false, false, false);
+            }),
             array('template_name', 'length', 'max' => 150),
             array('cssframework_name', 'length', 'max' => 45),
             array('files_css, files_js, files_print_css, options, cssframework_css, cssframework_js, packages_to_load',
@@ -272,9 +275,8 @@ class TemplateConfiguration extends TemplateConfig
 
         $oTemplateConfigurationModel = TemplateConfiguration::model()->find($criteria);
 
-        // No specific template configuration for this surveygroup => create one
-        // TODO: Move to SurveyGroup creation, right now the 'lazy loading' approach is ok.
-        if (!is_a($oTemplateConfigurationModel, 'TemplateConfiguration') && $sTemplateName != null) {
+        // If the TemplateConfiguration could not be found go up the inheritance hierarchy
+        if (empty($oTemplateConfigurationModel)) {
             $oTemplateConfigurationModel = TemplateConfiguration::getInstanceFromTemplateName(
                 $sTemplateName,
                 $abstractInstance
@@ -326,7 +328,7 @@ class TemplateConfiguration extends TemplateConfig
                 $aTemplateConfigurations[$key]['sid'] = $iSurveyId;
                 $aTemplateConfigurations[$key]['template_name'] = $oAttributes['template_name'];
                 $aTemplateConfigurations[$key]['config']['options'] = isJson($oAttributes['options'])
-                    ? (array)json_decode((string) $oAttributes['options'])
+                    ? json_decode((string) $oAttributes['options'], true)
                     : $oAttributes['options'];
             }
         }
@@ -337,54 +339,23 @@ class TemplateConfiguration extends TemplateConfig
     /**
      * For a given survey, it checks if its theme have a all the needed configuration entries (survey + survey group).
      * Else, it will create it.
-     * @TODO: recursivity for survey group
      * @param int $iSurveyId
      * @return TemplateConfiguration the template configuration for the survey group
      */
     public static function checkAndcreateSurveyConfig($iSurveyId)
     {
-        //if a template name is given also check against that
         $oSurvey = Survey::model()->findByPk($iSurveyId);
-        $sTemplateName  = $oSurvey->oOptions->template;
         $iSurveyGroupId = $oSurvey->gsid;
+        // set real value from inheritance
+        $sTemplateName = $oSurvey->oOptions->template;
 
-        $criteria = new CDbCriteria();
-        $criteria->addCondition('sid=:sid');
-        $criteria->addCondition('template_name=:template_name');
-        $criteria->params = array('sid' => $iSurveyId, 'template_name' => $sTemplateName);
+        // load or create a new entry if none is found based on $iSurveyId
+        self::getInstanceFromSurveyId($iSurveyId, $sTemplateName);
 
-        $oTemplateConfigurationModel = TemplateConfiguration::model()->find($criteria);
+        // load or create a new entry if none is found based on $iSurveyGroupId
+        $oGroupTemplateConfigurationModel = self::getInstanceFromSurveyGroup($iSurveyGroupId, $sTemplateName);
 
-        // TODO: Move to SurveyGroup creation, right now the 'lazy loading' approach is ok.
-        if (!is_a($oTemplateConfigurationModel, 'TemplateConfiguration') && $sTemplateName != null) {
-            $oTemplateConfigurationModel = TemplateConfiguration::getInstanceFromTemplateName($sTemplateName);
-            $oTemplateConfigurationModel->bUseMagicInherit = false;
-            $oTemplateConfigurationModel->id = null;
-            $oTemplateConfigurationModel->isNewRecord = true;
-            $oTemplateConfigurationModel->gsid = null;
-            $oTemplateConfigurationModel->sid = $iSurveyId;
-            $oTemplateConfigurationModel->setToInherit();
-            $oTemplateConfigurationModel->save();
-        }
-
-        $criteria = new CDbCriteria();
-        $criteria->addCondition('gsid=:gsid');
-        $criteria->addCondition('template_name=:template_name');
-        $criteria->params = array('gsid' => $iSurveyGroupId, 'template_name' => $sTemplateName);
-        $oTemplateConfigurationModel = TemplateConfiguration::model()->find($criteria);
-
-        if (!is_a($oTemplateConfigurationModel, 'TemplateConfiguration') && $sTemplateName != null) {
-            $oTemplateConfigurationModel = TemplateConfiguration::getInstanceFromTemplateName($sTemplateName);
-            $oTemplateConfigurationModel->bUseMagicInherit = false;
-            $oTemplateConfigurationModel->id = null;
-            $oTemplateConfigurationModel->isNewRecord = true;
-            $oTemplateConfigurationModel->sid = null;
-            $oTemplateConfigurationModel->gsid = $iSurveyGroupId;
-            $oTemplateConfigurationModel->setToInherit();
-            $oTemplateConfigurationModel->save();
-        }
-
-        return $oTemplateConfigurationModel;
+        return $oGroupTemplateConfigurationModel;
     }
 
     /**
@@ -545,6 +516,7 @@ class TemplateConfiguration extends TemplateConfig
           // Note: if no twig statement in the description, twig will just render it as usual
         try {
             $sDescription = App()->twigRenderer->convertTwigToHtml($this->template->description);
+            $sDescription = viewHelper::purified($sDescription);
         } catch (\Exception $e) {
           // It should never happen, but let's avoid to anoy final user in production mode :)
             if (YII_DEBUG) {
@@ -641,7 +613,7 @@ class TemplateConfiguration extends TemplateConfig
     }
 
     /**
-     * @todo document me
+     * Sets bUseMagicInherit sTemplate isStandard and path of the theme
      *
      * @param string $sTemplateName
      * @param string $iSurveyId
@@ -670,7 +642,7 @@ class TemplateConfiguration extends TemplateConfig
     public function addFileReplacement($sFile, $sType)
     {
         $sField = 'files_' . $sType;
-        $oFiles = (array) json_decode((string) $this->$sField);
+        $oFiles = json_decode((string) $this->$sField, true);
 
         $oFiles['replace'][] = $sFile;
 
@@ -723,7 +695,8 @@ class TemplateConfiguration extends TemplateConfig
                 return '';
             }
         }
-        $templateName = CHtml::encode($this->template_name);
+        /* Use sanitized filename for previous bad upload */
+        $templateName = sanitize_filename($this->template_name, false, false, false);
         $sEditorUrl = App()->getController()->createUrl(
             'admin/themes/sa/view',
             array("templatename" => $templateName)
@@ -746,7 +719,7 @@ class TemplateConfiguration extends TemplateConfig
         $dropdownItems[] = [
             'title'            => gT('Theme editor'),
             'url'              => $sEditorUrl,
-            'linkId'           => 'template_editor_link_' . $templateName,
+            'linkId'           => 'template_editor_link_' . $this->id,
             'linkClass'        => '',
             'iconClass'        => 'ri-brush-fill',
             'enabledCondition' => App()->getController()->action->id !== "surveysgroups",
@@ -756,7 +729,7 @@ class TemplateConfiguration extends TemplateConfig
         $dropdownItems[] = [
             'title'            => gT('Theme options'),
             'url'              => $sOptionUrl,
-            'linkId'           => 'template_options_link_' . $templateName ,
+            'linkId'           => 'template_options_link_' . $this->id ,
             'linkClass'        => '',
             'iconClass'        => 'ri-dashboard-3-fill',
             'enabledCondition' => $this->getHasOptionPage(),
@@ -766,7 +739,7 @@ class TemplateConfiguration extends TemplateConfig
         $dropdownItems[] = [
             'title'            => gT('Extend'),
             'url'              => $sExtendUrl,
-            'linkId'           => 'extendthis_' . $templateName,
+            'linkId'           => 'extendthis_' . $this->id,
             'linkClass'        => 'selector--ConfirmModal ',
             'iconClass'        => 'ri-file-copy-line text-success',
             'enabledCondition' => App()->getController()->action->id !== "surveysgroups",
@@ -789,7 +762,7 @@ class TemplateConfiguration extends TemplateConfig
         $dropdownItems[] = [
             'title'            => gT('Uninstall'),
             'url'              => $sUninstallUrl,
-            'linkId'           => 'remove_fromdb_link_' . $templateName,
+            'linkId'           => 'remove_fromdb_link_' . $this->id,
             'linkClass'        => 'selector--ConfirmModal ',
             'iconClass'        => 'ri-delete-bin-fill text-danger',
             'enabledCondition' => App()->getController()->action->id !== "surveysgroups" &&
@@ -808,7 +781,7 @@ class TemplateConfiguration extends TemplateConfig
         $dropdownItems[] = [
             'title'            => gT('Reset'),
             'url'              => $sResetUrl,
-            'linkId'           => 'remove_fromdb_link_' . $templateName,
+            'linkId'           => 'remove_fromdb_link_' . $this->id,
             'linkClass'        => 'selector--ConfirmModal ',
             'iconClass'        => 'ri-refresh-line text-warning',
             'enabledCondition' => App()->getController()->action->id !== "surveysgroups",
@@ -1009,7 +982,7 @@ class TemplateConfiguration extends TemplateConfig
             foreach ($fileList as $file) {
                 $imageInfo = $this->getImageInfo($basePath . $file['name'], $pathPrefix);
                 if ($imageInfo) {
-                    $aData['imageFileList'][] = array_merge(
+                    $aData['imageFileList'][$imageInfo['filepath']] = array_merge(
                         [
                             'group' => $category->title,
                         ],
@@ -1099,7 +1072,7 @@ class TemplateConfiguration extends TemplateConfig
                     if ($action == $sAction) {
                         // Specific inheritance of one of the value of the json array
                         if ($aFileList[0] == 'inherit') {
-                            $aParentjFiles = (array) json_decode((string) $oTemplate->getParentConfiguration->$sField);
+                            $aParentjFiles = json_decode((string) $oTemplate->getParentConfiguration->$sField, true);
                             $aFileList = $aParentjFiles[$action];
                         }
 
@@ -1310,7 +1283,7 @@ class TemplateConfiguration extends TemplateConfig
      */
     protected function getOptionKey($key)
     {
-        $aOptions = (array) json_decode($this->options);
+        $aOptions = json_decode($this->options, true);
         if (isset($aOptions[$key])) {
             $value = $aOptions[$key];
             if ($value === 'inherit') {
@@ -1357,7 +1330,7 @@ class TemplateConfiguration extends TemplateConfig
         $this->aFrameworkAssetsToReplace[$sType] = array();
 
         $sFieldName  = 'cssframework_' . $sType;
-        $aFieldValue = (array) json_decode((string) $this->$sFieldName);
+        $aFieldValue = json_decode((string) $this->$sFieldName, true);
 
         if (!empty($aFieldValue) && !empty($aFieldValue['replace'])) {
             $this->aFrameworkAssetsToReplace[$sType] = (array) $aFieldValue['replace'];

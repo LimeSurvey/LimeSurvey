@@ -11304,6 +11304,12 @@ blockquote.float-end {
   column-gap: 20px;
 }
 
+#usermanagement--identity-gridPanel tr.disabled {
+  color: #D3D5DA;
+  pointer-events: auto;
+  cursor: not-allowed;
+}
+
 /**
  * Lime Admin Common CSS File
  *
@@ -11667,11 +11673,6 @@ html {
 
 .alert-security-update {
   margin: 0;
-}
-
-#update-container {
-  margin-top: 10px;
-  z-index: 999;
 }
 
 #update-container .alert {
@@ -12978,7 +12979,7 @@ iframe#dialog {
 /** Arrow between mapped attributes in CPDB */
 .tokenatt-arrow {
   position: absolute;
-  right: -0.5em;
+  right: -1.5em;
 }
 
 /** Arrow between mapped attributes in CPDB when doing CSV import */
@@ -14791,6 +14792,10 @@ html[dir=rtl] th {
   margin-left: 0.75%;
   margin-right: 0.75%;
   margin-bottom: 20px;
+}
+
+#csvattribute {
+  z-index: 1;
 }
 
 #tokenattribute {
@@ -18897,6 +18902,10 @@ table [class^=ri-], table [class*=" ri-"] {
 
 .no-simple-graph {
   height: 300px;
+}
+
+#update-container {
+  margin-top: 10px;
 }
 
 .accordion {

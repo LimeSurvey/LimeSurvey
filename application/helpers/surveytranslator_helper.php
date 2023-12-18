@@ -588,6 +588,7 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['lb']['rtl'] = false;
     $supportedLanguages['lb']['dateformat'] = 1;
     $supportedLanguages['lb']['radixpoint'] = 1;
+    $supportedLanguages['lb']['cldr'] = 'fr_lu';
     $supportedLanguages['lb']['momentjs'] = 'lb';
 
     // Macedonian
@@ -847,6 +848,7 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['es-informal']['rtl'] = false;
     $supportedLanguages['es-informal']['dateformat'] = 5;
     $supportedLanguages['es-informal']['radixpoint'] = 1;
+    $supportedLanguages['es-informal']['cldr'] = 'es';
     $supportedLanguages['es-informal']['momentjs'] = 'es';
 
 

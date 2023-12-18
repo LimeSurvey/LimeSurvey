@@ -71,7 +71,9 @@ class TemplateManifest extends TemplateConfiguration
 
         foreach ($filesFromXML as $file) {
             if ($file->attributes()->type == $sType) {
-                $aScreenFiles[] = (string) $file;
+                // prevent accidental linebreaks and empty spaces in xml file string from breaking file path when loading it
+                $file = trim(str_replace(["\r", "\n"], '', $file));
+                $aScreenFiles[] = $file;
             }
         }
 
@@ -679,7 +681,7 @@ class TemplateManifest extends TemplateConfiguration
             $sDeleteLink = '<a
               id="template_delete_link_' . $this->sTemplateName . '"
               href="' . $sDeleteUrl . '"
-              data-post=\'{ "templatename": "' . $this->sTemplateName . '" }\'
+              data-post=\'{ "templatename": "' . CHtml::encode($this->sTemplateName) . '" }\'
               data-text="' . gT('Are you sure you want to delete this theme? ') . '"
               data-button-no="' . gt('Cancel') . '"  
               data-button-yes="' . gt('Delete') . '"
@@ -767,7 +769,7 @@ class TemplateManifest extends TemplateConfiguration
             $oTemplateConfiguration->sid = $iSurveyId;
 
             if (isAssociativeArray((array)$xml->config->options)) {
-                $oTemplateConfiguration->options  = TemplateConfig::formatToJsonArray($xml->config->options);
+                $oTemplateConfiguration->options  = TemplateConfig::convertOptionsToJson($xml->config->options[0]);
             }
 
             if ($oTemplateConfiguration->save()) {
@@ -1013,33 +1015,41 @@ class TemplateManifest extends TemplateConfiguration
 
     /**
      * Read the config.xml file of the template and push its contents to $this->config
+     * @throws Exception
      */
-    private function readManifest()
+    private function readManifest(): void
     {
         $this->xmlFile = $this->path . 'config.xml';
 
         if (file_exists(realpath($this->xmlFile))) {
             if (\PHP_VERSION_ID < 80000) {
-                $bOldEntityLoaderState = libxml_disable_entity_loader(true); // @see: http://phpsecurity.readthedocs.io/en/latest/Injection-Attacks.html#xml-external-entity-injection
+                $bOldEntityLoaderState = libxml_disable_entity_loader(
+                    true
+                ); // @see: http://phpsecurity.readthedocs.io/en/latest/Injection-Attacks.html#xml-external-entity-injection
             }
-            $sXMLConfigFile        = file_get_contents(realpath($this->xmlFile)); // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
+            $sXMLConfigFile = file_get_contents(
+                realpath($this->xmlFile)
+            ); // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
             $oDOMConfig = new DOMDocument();
-            $oDOMConfig->loadXML($sXMLConfigFile);
-            $oXPath = new DOMXpath($oDOMConfig);
-            foreach ($oXPath->query('//comment()') as $oComment) {
-                $oComment->parentNode->removeChild($oComment);
-            }
-            $oXMLConfig = simplexml_import_dom($oDOMConfig);
-            $filenames = $oXMLConfig->config->xpath("//file");
-            if ($filenames) {
-                foreach ($filenames as $oFileName) {
-                    $oFileName[0] = get_absolute_path($oFileName[0]);
+            // the loadXML is error suppressed, so we can check the return value
+            $bLoadXMLSuccess = @$oDOMConfig->loadXML($sXMLConfigFile);
+            if ($bLoadXMLSuccess) {
+                $oXPath = new DOMXpath($oDOMConfig);
+                foreach ($oXPath->query('//comment()') as $oComment) {
+                    $oComment->parentNode->removeChild($oComment);
                 }
-            }
+                $oXMLConfig = simplexml_import_dom($oDOMConfig);
+                $filenames = $oXMLConfig->config->xpath("//file");
+                if ($filenames) {
+                    foreach ($filenames as $oFileName) {
+                        $oFileName[0] = get_absolute_path($oFileName[0]);
+                    }
+                }
 
-            $this->config = $oXMLConfig; // Using PHP >= 5.4 then no need to decode encode + need attributes : then other function if needed :https://secure.php.net/manual/en/book.simplexml.php#108688 for example
-            if (\PHP_VERSION_ID < 80000) {
-                libxml_disable_entity_loader($bOldEntityLoaderState); // Put back entity loader to its original state, to avoid contagion to other applications on the server
+                $this->config = $oXMLConfig; // Using PHP >= 5.4 then no need to decode encode + need attributes : then other function if needed :https://secure.php.net/manual/en/book.simplexml.php#108688 for example
+                if (\PHP_VERSION_ID < 80000) {
+                    libxml_disable_entity_loader($bOldEntityLoaderState); // Put back entity loader to its original state, to avoid contagion to other applications on the server
+                }
             }
         } else {
             throw new Exception(" Error: Can't find a manifest for $this->sTemplateName in ' $this->path ' ");
@@ -1491,12 +1501,12 @@ class TemplateManifest extends TemplateConfiguration
     {
         $sDescription = $this->config->metadata->description;
 
-          // If wrong Twig in manifest, we don't want to block the whole list rendering
-          // Note: if no twig statement in the description, twig will just render it as usual
+        // If wrong Twig in manifest, we don't want to block the whole list rendering
+        // Note: if no twig statement in the description, twig will just render it as usual
         try {
             $sDescription = App()->twigRenderer->convertTwigToHtml($this->config->metadata->description);
         } catch (\Exception $e) {
-          // It should never happen, but let's avoid to anoy final user in production mode :)
+            // It should never happen, but let's avoid to anoy final user in production mode :)
             if (YII_DEBUG) {
                 App()->setFlashMessage(
                     "Twig error in template " .

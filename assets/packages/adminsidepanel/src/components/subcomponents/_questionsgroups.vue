@@ -2,6 +2,16 @@
 import _ from "lodash";
 import ajaxMethods from "../../mixins/runAjax.js";
 
+const parseIntOr999999 = (val) => {
+    const intVal = parseInt(val);
+
+    if(isNaN(intVal)) {
+        return 999999;
+    }
+
+    return intVal;
+}
+
 export default {
 
     mixins: [ajaxMethods],
@@ -34,9 +44,7 @@ export default {
         orderedQuestionGroups() {
             return LS.ld.orderBy(
                 this.$store.state.questiongroups,
-                a => {
-                    return parseInt(a.group_order || 999999);
-                },
+                a => parseIntOr999999(a.group_order),
                 ["asc"]
             );
         },
@@ -132,9 +140,7 @@ export default {
         orderQuestions(questionList) {
             return LS.ld.orderBy(
                 questionList,
-                a => {
-                    return parseInt(a.question_order || 999999);
-                },
+                a => parseIntOr999999(a.question_order),
                 ["asc"]
             );
         },
@@ -488,10 +494,10 @@ export default {
                                     </div>
                                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                                         <li  v-if="key !== 'delete' && !(key === 'language' && Array.isArray(value))"  v-for="(value, key) in question.questionDropdown" :key="key">
-                                            <a   class="dropdown-item" :id="value.id" :href="value.url">
-                                               <span :class="value.icon"></span>
-                                                 {{value.label}}
-                                            </a>
+                                          <a   class="dropdown-item" :id="value.id" :href="key == 'editDefault' && value.active == 0 ? '#' : value.url" :class=" key == 'editDefault' &&  value.active == 0 ? 'disabled' : '' ">
+                                            <span :class="value.icon"></span>
+                                            {{value.label}}
+                                          </a>
 
                                         </li>
 
@@ -583,5 +589,7 @@ export default {
     /* z-index: 2; */
     min-height: 100vh;
 }
-
+.question-question-list-item .dropdown-menu li a.disabled {
+  opacity: 0.5;
+}
 </style>

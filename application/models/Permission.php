@@ -764,7 +764,9 @@ class Permission extends LSActiveRecord
     }
 
     /**
-     * get the default/fixed $iUserID
+     * Get the default/fixed $iUserID for Permission only
+     * Use App()->getCurrentUserId() for all other purpose
+     * @todo move to private function
      * @param integer|null $iUserID optional user id
      * @return int user id
      * @throws Exception
@@ -776,8 +778,7 @@ class Permission extends LSActiveRecord
                 /* Alt : return 1st forcedAdmin ? */
                 throw new Exception('Permission must not be tested with console application.');
             }
-            /* See TestBaseClass tearDownAfterClass */
-            $iUserID = Yii::app()->session['loginID'];
+            return App()->getCurrentUserId();
         }
         return $iUserID;
     }

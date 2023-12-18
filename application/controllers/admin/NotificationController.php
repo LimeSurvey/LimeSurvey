@@ -101,7 +101,7 @@ class NotificationController extends SurveyCommonAction
         if (!$oNotification) {
             throw new CHttpException(404, sprintf(gT("Notification %s not found"), $notId));
         }
-        if ($oNotification->entity_id !== (string) App()->user->id) {
+        if ((int) $oNotification->entity_id !== (int) App()->user->id) {
             throw new CHttpException(403, gT("You do not have permission to access this page/function."));
         }
 
