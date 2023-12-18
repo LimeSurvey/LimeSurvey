@@ -53,7 +53,6 @@ class UserInPermissionRoleTest extends BaseModelTestCase
         $permission->save();
         // User have create superadmin
         $this->assertTrue(\Permission::model()->hasGlobalPermission('superadmin', 'create', $userId));
-        App()->end();
         // Delete roles
         \Permissiontemplates::model()->deleteByPk($newRoleId);
         \Permission::model()->deleteAll(
