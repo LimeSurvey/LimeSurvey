@@ -169,15 +169,7 @@ class GeneralSettings
                     )
                 );
             }
-        } else {
-            throw new PersistErrorException(
-                sprintf(
-                    'Failed saving general settings for survey field %s',
-                    array_key_first($input)
-                )
-            );
         }
-
         return $meta;
     }
 
@@ -276,7 +268,7 @@ class GeneralSettings
             'gsid' => ['default' => 1],
             'format' => [],
             'template' => [],
-            // below fields are newly added 
+            // below fields are newly added
             'showquestioncode' => [],
             'cookieconsent' => [],
             'footerbranding' => [],
