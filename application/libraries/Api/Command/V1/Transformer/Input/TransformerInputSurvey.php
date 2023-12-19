@@ -79,6 +79,10 @@ class TransformerInputSurvey extends Transformer
             'showQuestionCode' => ['key' => 'showquestioncode', 'formatter' => $formatterYn],
             'cookieConsent' => ['key' => 'cookieconsent', 'formatter' => $formatterYn],
             'footerBranding' => ['key' => 'footerbranding', 'formatter' => $formatterYn],
+
+            // below fields are only for cloud version
+            "showDataPolicyButton" => ['key' =>  'showdatapolicybutton', 'formatter' => $formatterYn],
+            "showLegalNoticeButton" => ['key' =>  'showlegalnoticebutton', 'formatter' => $formatterYn],
         ]);
     }
 }

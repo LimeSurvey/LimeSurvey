@@ -85,6 +85,10 @@ class TransformerOutputSurvey extends TransformerOutputActiveRecord
             'cookieconsent' => ['key' => 'cookieConsent', 'formatter' => $formatterYn],
             'footerbranding' => ['key' => 'footerBranding', 'formatter' => $formatterYn],
 
+            // below fields are only for cloud version
+            "showdatapolicybutton" => ['key' =>  'showDataPolicyButton', 'formatter' => $formatterYn],
+            "showlegalnoticebutton" => ['key' =>  'showLegalNoticeButton', 'formatter' => $formatterYn],
+
         ]);
     }
 

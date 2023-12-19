@@ -280,6 +280,9 @@ class GeneralSettings
             'showquestioncode' => [],
             'cookieconsent' => [],
             'footerbranding' => [],
+            // below fields are only for cloud version
+            "showdatapolicybutton" =>  [],
+            "showlegalnoticebutton" =>  [],
         ];
     }
 
