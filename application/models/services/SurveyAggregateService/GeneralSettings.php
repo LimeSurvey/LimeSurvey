@@ -169,15 +169,7 @@ class GeneralSettings
                     )
                 );
             }
-        } else {
-            throw new PersistErrorException(
-                sprintf(
-                    'Failed saving general settings for survey field %s',
-                    array_key_first($input)
-                )
-            );
         }
-
         return $meta;
     }
 
