@@ -680,7 +680,9 @@ function populateDatabase($oDB)
             'showquestioncode' => "string(1) NOT NULL default 'N'",
             'cookieconsent' => "string(1) NOT NULL default 'N'",
             'footerbranding' => "string(1) NOT NULL default 'N'",
-
+            // below fields are only for cloud version
+            'showdatapolicybutton' => "string(1) NOT NULL default 'N'",
+            'showlegalnoticebutton' => "string(1) NOT NULL default 'N'",
         ), $options);
 
         $oDB->createCommand()->addPrimaryKey('{{surveys_pk}}', '{{surveys}}', 'sid');
