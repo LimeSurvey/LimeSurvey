@@ -103,15 +103,21 @@ class OpHandlerQuestionL10nUpdate implements OpHandlerInterface
      */
     private function transformAll(OpInterface $op): array {
         $transformOptions = ['operation' => $op->getType()->getId()];
+        $props = $op->getProps();
+        foreach (array_keys($props) as $language) {
+            if (is_array($props[$language])) {
+                $props[$language]['language'] = $language;
+            }
+        }
         $this->throwTransformerValidationErrors(
-            $this->transformer->validate(
-                $op->getProps(),
+            $this->transformer->validateAll(
+                $props,
                 $transformOptions
             ),
             $op
         );
         return $this->transformer->transformAll(
-            $op->getProps(),
+            $props,
             $transformOptions
         );
     }

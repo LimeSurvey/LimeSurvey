@@ -21,19 +21,21 @@ class TransformerInputQuestionL10ns extends Transformer
         ]);
     }
 
-    public function transform($data, $options = [])
+    public function validate($data, $options = [])
     {
         if (empty($data)) {
-            throw new TransformerException('Data can not be empty');
+            return ['Data can not be empty'];
+        } elseif (is_scalar($data)) {
+            return ['Can not be scalar'];
         }
-        return parent::transform($data, $options);
+        return parent::validate($data, $options);
     }
 
-    public function transformAll($collection, $options = [])
+    public function validateAll($collection, $options = [])
     {
         if (empty($collection)) {
-            throw new TransformerException('Collection can not be empty');
+            return ['Collection can not be empty'];
         }
-        return parent::transformAll($collection, $options);
+        return parent::validateAll($collection, $options);
     }
 }
