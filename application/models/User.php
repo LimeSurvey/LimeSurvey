@@ -43,7 +43,7 @@ use LimeSurvey\Models\Services\UserManager;
  * @property string $last_login
  * @property Permissiontemplates[] $roles
  * @property UserGroup[] $groups
- * @property int $user_status User's account status (true: activated | false: deactivated)
+ * @property int $user_status User's account status (1: activated | 0: deactivated)
  */
 class User extends LSActiveRecord
 {
