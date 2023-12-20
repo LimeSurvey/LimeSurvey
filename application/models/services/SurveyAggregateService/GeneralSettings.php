@@ -268,7 +268,6 @@ class GeneralSettings
             'gsid' => ['default' => 1],
             'format' => [],
             'template' => [],
-            // below fields are newly added
             'showquestioncode' => [],
             'cookieconsent' => [],
             'footerbranding' => [],
