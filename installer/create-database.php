@@ -676,7 +676,6 @@ function populateDatabase($oDB)
             'googleanalyticsstyle' => "string(1) NULL",
             'googleanalyticsapikey' => "string(25) NULL",
             'tokenencryptionoptions' => "text NULL",
-            // these are newly added columns
             'showquestioncode' => "string(1) NOT NULL default 'N'",
             'cookieconsent' => "string(1) NOT NULL default 'N'",
             'footerbranding' => "string(1) NOT NULL default 'N'",
