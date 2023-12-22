@@ -104,6 +104,7 @@ class AuditLog extends \LimeSurvey\PluginManager\PluginBase
         $this->subscribe('beforeDataEntryImport');
         $this->subscribe('beforeTokenSave');
         $this->subscribe('beforeTokenDelete');
+        $this->subscribe('beforeTokenDeleteMany');
         $this->subscribe('beforeParticipantSave');
         $this->subscribe('beforeParticipantDelete');
         $this->subscribe('beforeLogout');
@@ -371,8 +372,8 @@ class AuditLog extends \LimeSurvey\PluginManager\PluginBase
     }
 
     /**
-    * Function catches if a participant of a particular survey was modified or created
-    * All data is saved - only the password hash is anonymized for security reasons
+    * Function catches if a participant of a particular survey was deleted
+    * All data is saved
     */
     public function beforeTokenDelete()
     {
@@ -382,8 +383,19 @@ class AuditLog extends \LimeSurvey\PluginManager\PluginBase
             return;
         }
 
-        $sTokenIds = $this->getEvent()->get('sTokenIds');
-        $aTokenIds = explode(',', (string) $sTokenIds);
+        // Old code dispatched the beforeTokenDelete event with a sTokenIds parameter (before
+        // dynamic model events were introduced). It supported multiple token deletion.
+        $sTokenIds = $event->get('sTokenIds');
+        if (!empty($sTokenIds)) {
+            $aTokenIds = explode(',', (string) $sTokenIds);
+        } else {
+            // If sTokenIds is empty, assume we're dealing with a dynamic model event.
+            // In this case, the dynamicId parameter contains the token ID.
+            $aTokenIds = [$event->get('dynamicId')];
+        }
+        if (empty($aTokenIds)) {
+            return;
+        }
         $oCurrentUser = $this->api->getCurrentUser();
 
         foreach ($aTokenIds as $tokenId) {
@@ -395,11 +407,46 @@ class AuditLog extends \LimeSurvey\PluginManager\PluginBase
                 $oAutoLog->uid = $oCurrentUser->uid;
                 $oAutoLog->entity = 'token';
                 $oAutoLog->action = 'delete';
-                $oAutoLog->entityid = $aValues['participant_id'];
+                $oAutoLog->entityid = $aValues['participant_id'];   // TODO: Should this be the token ID?
                 $oAutoLog->oldvalues = json_encode($aValues);
                 $oAutoLog->fields = implode(',', array_keys($aValues));
                 $oAutoLog->save();
             }
+        }
+    }
+
+    /**
+    * Function catches if multiple participants of a particular survey were deleted
+    * All data is saved
+    */
+    public function beforeTokenDeleteMany()
+    {
+        $event = $this->getEvent();
+        $surveyId = $event->get('iSurveyID');
+        if (!$this->checkSetting('AuditLog_Log_TokenDelete') || !$this->get('auditing', 'Survey', $surveyId, true)) {
+            return;
+        }
+
+        $filterCriteria = $event->get('filterCriteria');
+        // We need to "fix" the criteria, as SELECT queries are built with the table alias
+        // while DELETE queries are not.
+        $tableName = Token::model($surveyId)->getTableSchema()->name;
+        $filterCriteria->alias = $tableName;
+
+        $tokens = Token::model($surveyId)->findAll($filterCriteria);
+
+        $oCurrentUser = $this->api->getCurrentUser();
+
+        foreach ($tokens as $token) {
+            $aValues = $token->getAttributes();
+            $oAutoLog = $this->api->newModel($this, 'log');
+            $oAutoLog->uid = $oCurrentUser->uid;
+            $oAutoLog->entity = 'token';
+            $oAutoLog->action = 'delete';
+            $oAutoLog->entityid = $aValues['participant_id'];   // TODO: Should this be the token ID?
+            $oAutoLog->oldvalues = json_encode($aValues);
+            $oAutoLog->fields = implode(',', array_keys($aValues));
+            $oAutoLog->save();
         }
     }
 
