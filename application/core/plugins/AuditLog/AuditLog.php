@@ -383,8 +383,10 @@ class AuditLog extends \LimeSurvey\PluginManager\PluginBase
             return;
         }
 
-        // Old code dispatched the beforeTokenDelete event with a sTokenIds parameter (before
-        // dynamic model events were introduced). It supported multiple token deletion.
+        // beforeTokenDelete mutated through time.
+        // At the very begining, the event was dispatched with an sTokenIds parameter.
+        // Then, dynamic model events were introduced, and this event mutated its interface.
+        // The code below accepts both kinds of interface.
         $sTokenIds = $event->get('sTokenIds');
         if (!empty($sTokenIds)) {
             $aTokenIds = explode(',', (string) $sTokenIds);
@@ -428,8 +430,11 @@ class AuditLog extends \LimeSurvey\PluginManager\PluginBase
         }
 
         $filterCriteria = $event->get('filterCriteria');
-        // We need to "fix" the criteria, as SELECT queries are built with the table alias
-        // while DELETE queries are not.
+        // We need to "fix" (update) the criteria given by parameter.
+        // - SELECT queries are built with the table alias.
+        // - DELETE queries are not.
+        // We are given a DELETE query criteria and need to use it on a SELECT query.
+        // Add the alias.
         $tableName = Token::model($surveyId)->getTableSchema()->name;
         $filterCriteria->alias = $tableName;
 
