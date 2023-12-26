@@ -2,12 +2,14 @@
 
 namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
-use LimeSurvey\Api\Command\V1\SurveyPatch\Response\{ErronousOperationItem,
+use LimeSurvey\Api\Command\V1\SurveyPatch\Response\{
+    ErronousOperationItem,
     ErronousOperations,
     TempIdMapItem,
     TempIdMapping
 };
-use LimeSurvey\ObjectPatch\{ObjectPatchException,
+use LimeSurvey\ObjectPatch\{
+    ObjectPatchException,
     Op\OpStandard,
     OpHandler\OpHandlerException,
     Patcher
@@ -162,8 +164,10 @@ class PatcherSurvey extends Patcher
                 $groupName
             );
         } else {
-            foreach ($mappingItem as $item) {
-                $this->addTempIdMapItem($item, $groupName);
+            if (is_array($mappingItem) || is_object($mappingItem)) {
+                foreach ($mappingItem as $item) {
+                    $this->addTempIdMapItem($item, $groupName);
+                }
             }
         }
     }

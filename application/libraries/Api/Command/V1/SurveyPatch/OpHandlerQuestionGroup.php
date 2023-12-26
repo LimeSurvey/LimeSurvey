@@ -2,6 +2,7 @@
 
 namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
+use LimeSurvey\Api\Command\V1\SurveyPatch\Response\TempIdMapItem;
 use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\OpHandlerSurveyTrait;
 use LimeSurvey\Models\Services\Exception\PermissionDeniedException;
 use QuestionGroup;
@@ -57,12 +58,11 @@ class OpHandlerQuestionGroup implements OpHandlerInterface
         $this->setOperationTypes($op);
         $isQuestionGroupEntity = $op->getEntityType() === $this->entity;
 
-        return
-            (
-                $this->isUpdateOperation
-                || $this->isCreateOperation
-                || $this->isDeleteOperation
-            )
+        return (
+            $this->isUpdateOperation
+            || $this->isCreateOperation
+            || $this->isDeleteOperation
+        )
             && $isQuestionGroupEntity;
     }
 
@@ -121,9 +121,7 @@ class OpHandlerQuestionGroup implements OpHandlerInterface
             );
         }
         if (isset($props['questionGroupL10n'])) {
-            foreach (
-                $props['questionGroupL10n'] as $lang => $questionGroupL10n
-            ) {
+            foreach ($props['questionGroupL10n'] as $lang => $questionGroupL10n) {
                 $transformedProps['questionGroupI10N'][$lang]
                     = $this->transformerL10n->transform(
                         $questionGroupL10n
@@ -249,10 +247,11 @@ class OpHandlerQuestionGroup implements OpHandlerInterface
         );
         $questionGroup->refresh();
         return [
-            'questionGroupsMap' => [
-                'tempId' => $tempId,
-                'gid'    => $questionGroup->gid
-            ]
+            'questionGroupsMap' => new TempIdMapItem(
+                $tempId,
+                $questionGroup->gid,
+                'gid'
+            )
         ];
     }
 
