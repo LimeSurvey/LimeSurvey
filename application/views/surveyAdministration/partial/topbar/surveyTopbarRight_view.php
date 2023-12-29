@@ -146,7 +146,7 @@ if (!empty($showImportButton)) {
 ?>
 
 <?php
-    if ($editorEnabled && $editorUrl) {
+    if (!empty($editorEnabled) && !empty($editorUrl)) {
         $this->widget(
             'ext.ButtonWidget.ButtonWidget',
             [
