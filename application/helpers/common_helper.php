@@ -5123,5 +5123,11 @@ function csvEscape($string)
         $string = "'" . $string;
     }
 
+    // Normalize line endings
+    $string = preg_replace('~\R~u', "\n", $string);
+
+    // Escape double quotes and wrap the string in double quotes
+    $string = '"' . str_replace('"', '""', $string) . '"';
+
     return $string;
 }
