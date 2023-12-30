@@ -141,15 +141,21 @@ class SubQuestionsService
         if (!isset($data['code'])) {
             throw new BadRequestException('Internal error: Missing mandatory field "code" for question');
         }
-        // If the subquestion with given code does not exist
-        // - but subquestion with old code exists, update it.
-        $subquestion = $this->modelQuestion->findByAttributes([
-            'qid' => $subquestionId,
-            'scale_id' => $scaleId,
-            'sid' => $question->sid,
-            'parent_qid' => $question->qid
-        ]);
-        if (!$subquestion) {
+        $subquestionExists = false;
+        // New subquestions have a temporary non-numeric id assigned by the frontend (example: new12345).
+        // So, if the subquestion id is not numeric, we don't check if it exists.
+        if (is_numeric($subquestionId)) {
+            // If the subquestion with given code does not exist
+            // - but subquestion with old code exists, update it.
+            $subquestion = $this->modelQuestion->findByAttributes([
+                'qid' => $subquestionId,
+                'scale_id' => $scaleId,
+                'sid' => $question->sid,
+                'parent_qid' => $question->qid
+            ]);
+            $subquestionExists = isset($subquestion);
+        }
+        if (!$subquestionExists) {
             if ($surveyActive) {
                 throw new NotFoundException('Subquestion with id "' . $subquestionId . '" not found');
             } else {
