@@ -23,11 +23,11 @@ class Update_617 extends DatabaseUpdateBase
     private function deleteDuplicateTemplateConfigurationEntries(): void
     {
         $aKeepIds = $this->db->createCommand()
-            ->select("MAX(id) AS maxRecordId")
+            ->select("MAX(id) AS maxrecordid")
             ->from("{{template_configuration}}")
             ->group(['template_name', 'sid', 'gsid', 'uid'])
             ->queryAll();
-        $aKeepIds = array_column($aKeepIds, 'maxRecordId');
+        $aKeepIds = array_column($aKeepIds, 'maxrecordid');
         $criteria = $this->db->getCommandBuilder()->createCriteria();
         $criteria->select = 'id, template_name, sid, gsid, uid';
         $criteria->addNotInCondition('id', $aKeepIds);

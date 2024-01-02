@@ -1615,15 +1615,18 @@ class Survey extends LSActiveRecord implements PermissionInterface
                     $criteria->addCondition("t.startdate >'$sNow'");
                 }
 
+                // Filter for surveys that are running now
+                // Must be active, started and not expired
                 if ($this->active == "R") {
                     $criteria->compare("t.active", 'Y');
-                    $subCriteria1 = new CDbCriteria();
-                    $subCriteria2 = new CDbCriteria();
-                    $subCriteria1->addCondition("'{$sNow}' > t.startdate", 'AND');
-                    $subCriteria1->addCondition("t.startdate IS NULL", 'OR');
-                    $subCriteria2->addCondition("t.expires IS NULL", 'AND');
-                    $subCriteria2->addCondition("'{$sNow}' < t.expires", 'OR');
-                    $criteria->mergeWith($subCriteria1);
+                    $startedCriteria = new CDbCriteria();
+                    $startedCriteria->addCondition("'{$sNow}' > t.startdate");
+                    $startedCriteria->addCondition('t.startdate IS NULL', "OR");
+                    $notExpiredCriteria = new CDbCriteria();
+                    $notExpiredCriteria->addCondition("'{$sNow}' < t.expires");
+                    $notExpiredCriteria->addCondition('t.expires IS NULL', "OR");
+                    $criteria->mergeWith($startedCriteria);
+                    $criteria->mergeWith($notExpiredCriteria);
                 }
             }
         }
@@ -2192,7 +2195,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
                 'import' => false,
                 'export' => false,
                 'title' => gT("Survey"),
-                'description' => gT("Permission on survey (delete). Read permission is used to give access to this group."),
+                'description' => gT("Permission for survey access. Read permission is a requirement to give any further permission to a survey."),
                 'img' => ' ri-list-check',
             ),
             'surveyactivation' => array(

@@ -1382,7 +1382,7 @@ class SurveyRuntimeHelper
 
     /**
      * Check in a string if it uses expressions to replace them
-     * @param string $sString the string to evaluate
+     * @param string|null $sString the string to evaluate
      * @param integer $numRecursionLevels - the number of times to recursively subtitute values in this string
      * @param boolean $static - return static string
      * @return string
@@ -1392,7 +1392,7 @@ class SurveyRuntimeHelper
     {
         $sProcessedString = $sString;
 
-        if ((strpos($sProcessedString, "{") !== false)) {
+        if ((strpos((string) $sProcessedString, "{") !== false)) {
             // process string anyway so that it can be pretty-printed
             $aStandardsReplacementFields = getStandardsReplacementFields($this->aSurveyInfo);
             $sProcessedString = LimeExpressionManager::ProcessStepString($sString, $aStandardsReplacementFields, $iRecursionLevel, $static);
@@ -1729,6 +1729,15 @@ class SurveyRuntimeHelper
         extract($args);
 
         $this->aSurveyInfo                 = getSurveyInfo($this->iSurveyid, App()->getLanguage());
+        if (isset($args['popuppreview']) && $args['popuppreview']) {
+            $this->aSurveyInfo['showxquestions'] = 'N';
+            $this->aSurveyInfo['shownoanswer'] = 'N';
+            $this->aSurveyInfo['showwelcome'] = 'N';
+            $this->aSurveyInfo['showprogress'] = 'N';
+            $this->aSurveyInfo['format'] = 'A';
+            $this->aSurveyInfo['listpublic'] = 'N';
+            $this->aSurveyInfo['popupPreview'] = true;
+        }
         $this->aSurveyInfo['surveyUrl']    = App()->createUrl("/survey/index", array("sid" => $this->iSurveyid));
 
         // TODO: check this:

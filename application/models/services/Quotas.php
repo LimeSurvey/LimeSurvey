@@ -321,7 +321,7 @@ class Quotas
             /** @var \Quota $oQuota */
             $oQuota = \Quota::model()->findByPk($iQuotaId);
             if (empty($oQuota) || $oQuota->sid != $this->survey->sid) {
-                $errors [] = gT("Invalid quota id");
+                $errors [] = gT("Invalid quota ID");
             }
             switch ($action) {
                 case 'activate':

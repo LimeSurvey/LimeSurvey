@@ -23,8 +23,8 @@ class TransformerInputSurvey extends Transformer
             'gsid' => ['type' => 'int'],
             'active' => ['formatter' => $formatterYn],
             'language' => true,
-            'expires' => ['formatter' => $formatterDateTime],
-            'startDate' => ['key' => 'startdate', 'formatter' => $formatterDateTime],
+            'expires' => ['key' => 'expires'],
+            'startDate' => ['key' => 'startdate'],
             'anonymized' => ['formatter' => $formatterYn],
             'saveTimings' => ['key' => 'savetimings', 'formatter' => $formatterYn],
             'additionalLanguages' => 'additional_languages',
@@ -74,7 +74,13 @@ class TransformerInputSurvey extends Transformer
             'googleAnalyticsApiKey' => 'googleanalyticsapikey',
             'showSurveyPolicyNotice' => ['key' => 'showsurveypolicynotice', 'type' => 'int'],
             'template' => true,
-            'format' => true
+            'format' => true,
+            'showQuestionCode' => ['key' => 'showquestioncode', 'formatter' => $formatterYn],
+            'cookieConsent' => ['key' => 'cookieconsent', 'formatter' => $formatterYn],
+            'footerBranding' => ['key' => 'footerbranding', 'formatter' => $formatterYn],
+            // below fields are only for cloud version
+            "showDataPolicyButton" => ['key' =>  'showdatapolicybutton', 'formatter' => $formatterYn],
+            "showLegalNoticeButton" => ['key' =>  'showlegalnoticebutton', 'formatter' => $formatterYn],
         ]);
     }
 }

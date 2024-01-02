@@ -676,6 +676,12 @@ function populateDatabase($oDB)
             'googleanalyticsstyle' => "string(1) NULL",
             'googleanalyticsapikey' => "string(25) NULL",
             'tokenencryptionoptions' => "text NULL",
+            'showquestioncode' => "string(1) NOT NULL default 'N'",
+            'cookieconsent' => "string(1) NOT NULL default 'N'",
+            'footerbranding' => "string(1) NOT NULL default 'N'",
+            // below fields are only for cloud version
+            'showdatapolicybutton' => "string(1) NOT NULL default 'N'",
+            'showlegalnoticebutton' => "string(1) NOT NULL default 'N'",
         ), $options);
 
         $oDB->createCommand()->addPrimaryKey('{{surveys_pk}}', '{{surveys}}', 'sid');

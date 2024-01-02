@@ -28,8 +28,8 @@ class TransformerOutputSurvey extends TransformerOutputActiveRecord
             'gsid' => ['type' => 'int'],
             'active' => ['formatter' => $formatterYn],
             'language'  => true,
-            'expires' => ['formatter' => $formatterDateTime],
-            'startdate' => ['key' => 'startDate', 'formatter' => $formatterDateTime],
+            'expires' => ['key' => 'expires'],
+            'startdate' => ['key' => 'startDate'],
             'anonymized' => ['formatter' => $formatterYn],
             'savetimings' => ['key' => 'saveTimings', 'formatter' => $formatterYn],
             'additional_languages' => 'additionalLanguages',
@@ -79,7 +79,14 @@ class TransformerOutputSurvey extends TransformerOutputActiveRecord
             "googleanalyticsapikey" => 'googleAnalyticsApiKey',
             "showsurveypolicynotice" => ['key' =>  'showSurveyPolicyNotice', 'type' => 'int'],
             'template' => true,
-            'format' => true
+            'format' => true,
+            "showquestioncode" => ['key' =>  'showQuestionCode', 'formatter' => $formatterYn],
+            'cookieconsent' => ['key' => 'cookieConsent', 'formatter' => $formatterYn],
+            'footerbranding' => ['key' => 'footerBranding', 'formatter' => $formatterYn],
+            // below fields are only for cloud version
+            "showdatapolicybutton" => ['key' =>  'showDataPolicyButton', 'formatter' => $formatterYn],
+            "showlegalnoticebutton" => ['key' =>  'showLegalNoticeButton', 'formatter' => $formatterYn],
+
         ]);
     }
 

@@ -43,7 +43,7 @@ use LimeSurvey\Models\Services\UserManager;
  * @property string $last_login
  * @property Permissiontemplates[] $roles
  * @property UserGroup[] $groups
- * @property bool $user_status User's account status (true: activated | false: deactivated)
+ * @property int $user_status User's account status (1: activated | 0: deactivated)
  */
 class User extends LSActiveRecord
 {
@@ -132,6 +132,12 @@ class User extends LSActiveRecord
     /** @inheritdoc */
     public function scopes()
     {
+        if (App()->getConfig("DBVersion") < 495) {
+            /* No expires column before 495 */
+            return array(
+                'active' => []
+            );
+        }
         return array(
             'active' => array(
                 'condition' => "expires > :now OR expires IS NULL",
@@ -742,7 +748,8 @@ class User extends LSActiveRecord
             ],
             [
                 "name"   => 'uid',
-                "header" => gT("User ID")
+                "header" => gT("User ID"),
+                'htmlOptions' => ['class' => 'uid']
             ],
             [
                 "name"   => 'users_name',

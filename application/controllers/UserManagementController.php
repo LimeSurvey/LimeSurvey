@@ -455,6 +455,10 @@ class UserManagementController extends LSBaseController
             throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
         $userId = sanitize_int(Yii::app()->request->getParam('userid'));
+        // One can never deactivate the superadmin. Button should already be disabled in JS.
+        if ($userId === 1) {
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
+        }
         $action = Yii::app()->request->getParam('action');
         $oUser = User::model()->findByPk($userId);
 
@@ -462,7 +466,7 @@ class UserManagementController extends LSBaseController
             throw new CHttpException(404, gT("Invalid user id"));
         } else {
             if ($oUser->setActivationStatus($action)) {
-                return App()->getController()->renderPartial('/admin/super/_renderJson', [
+                return $this->renderPartial('/admin/super/_renderJson', [
                     'data' => [
                         'success' => true,
                         'message' => gT('Status successfully updated')
@@ -470,7 +474,7 @@ class UserManagementController extends LSBaseController
                 ]);
             };
         }
-        return App()->getController()->renderPartial('/admin/super/_renderJson', [
+        return $this->renderPartial('/admin/super/_renderJson', [
             'data' => [
                 'success' => false
             ]
@@ -1324,13 +1328,13 @@ class UserManagementController extends LSBaseController
             $aResults[$sItem]['title'] = $model->users_name;
             if ($model->uid == Yii::app()->user->id) {
                 $aResults[$sItem]['result'] = false;
-                $aResults[$sItem]['error'] = gT("You can not update your own roles.");
+                $aResults[$sItem]['error'] = gT("You are not allowed to update your own roles.");
                 continue;
             }
             $userManager = new UserManager(Yii::app()->user, $model);
             if (!$userManager->canAssignRole()) {
                 $aResults[$sItem]['result'] = false;
-                $aResults[$sItem]['error'] = gT('You can not set role to this user.');
+                $aResults[$sItem]['error'] = gT('You are not allowed to assign a role to this user.');
             } else {
                 foreach ($aUserRoleIds as $iUserRoleId) {
                     $aResults[$sItem]['result'] = Permissiontemplates::model()->applyToUser($sItem, $iUserRoleId);

@@ -34,6 +34,30 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.3.9 (build 231211) to 6.4.0 (build 231218) December 18, 2023
++New feature #19308: Preview survey in modal (MW-728) (#3659) (lajosarpad)
++New feature #19201: Add column "active" to users, to be able to activate or deactivate users (#3550) (Mohab E)
+
+Changes from 6.3.8 (build 231204) to 6.3.9 (build 231211) December 11, 2023
+-Fixed issue: Unable to update from pre 495 version (#3607) (Denis Chenu)
+-Fixed issue #CT-531: not able to download quickCSVReport (Patrick Teichmann)
+-Fixed issue #CT-531: Timing statistics button is missing from the responses view (Patrick Teichmann)
+-Fixed issue #CT-531: Popover error on empty string in responsesListTable (twilligls)
+-Fixed issue #19262: Invalid fruity_twentythree template directory on PostgreSQL (#3642) (Olle Härstedt)
+-Fixed issue #18961: {SURVEYURL} didn't work with plugin using cli event (Gabriel Jenik)
+#Updated translation: Slovak by jelen1
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Korean by modernity4r
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Hungarian by kkd, tkazinczy
+#Updated translation: Hebrew by neaman
+#Updated translation: German by c_schmitz
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
 Changes from 6.3.7 (build 231127) to 6.3.8 (build 231204) December 4, 2023
 +New feature #18880: New imagefile option type for theme options (#3621) (Gabriel Jenik)
 -Fixed issue 19255: PHP8.1 + debug : survey with only start date broke survey listing (#3629) (Denis Chenu)
