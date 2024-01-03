@@ -4,6 +4,9 @@ namespace LimeSurvey\Api\Transformer;
 
 use LimeSurvey\Api\Transformer\Formatter\FormatterInterface;
 
+/**
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
+ */
 class Transformer implements TransformerInterface
 {
     /** @var array */
@@ -23,12 +26,13 @@ class Transformer implements TransformerInterface
      * and callable formatter.
      *
      * @param ?mixed $data
-     *  @param ?mixed $options
+     * @param ?mixed $options
      * @return ?mixed
      * @throws TransformerException
      */
     public function transform($data, $options = [])
     {
+        $data = $data ?? [];
         $options = $options ?? [];
         $dataMap = $this->getDataMap();
         $output = null;
@@ -86,6 +90,7 @@ class Transformer implements TransformerInterface
      *
      * @param bool|int|string|array $config
      * @param string|int $inputKey
+     * @param ?array $options
      * @return array
      */
     private function normaliseConfig($config, $inputKey, $options = [])
@@ -179,7 +184,7 @@ class Transformer implements TransformerInterface
     }
 
     /**
-     * @param ?mixed $data
+     * @param mixed $data
      * @param ?array $options
      * @return boolean|array Returns true on success or array of errors.
      */
@@ -228,6 +233,7 @@ class Transformer implements TransformerInterface
      * @param mixed $value
      * @param array $config
      * @param array $data
+     * @param ?array $options
      * @return boolean|array
      */
     private function validateKey($key, $value, $config, $data, $options = [])
@@ -237,7 +243,7 @@ class Transformer implements TransformerInterface
         if (
             $config['required']
             && (
-                (is_array($data) && !array_key_exists($key, $data))
+                !array_key_exists($key, $data)
                 || (
                     is_string($config['required'])
                     && isset($options['operation'])
@@ -274,20 +280,25 @@ class Transformer implements TransformerInterface
      * Transform collection
      *
      * @param array $collection
+     * @param ?array $options
      * @return array
      */
     public function transformAll($collection, $options = [])
     {
         $options = $options ?? [];
-        return is_array($collection) ? array_map(function ($allData) use ($options) {
-            return $this->transform($allData, $options);
-        }, $collection) : [];
+        return array_map(
+            function ($allData) use ($options) {
+                return $this->transform($allData, $options);
+            },
+            $collection
+        );
     }
 
     /**
      * Validate collection
      *
      * @param array $collection
+     * @param ?array $options
      * @return bool|array Returns true on success or array of errors.
      */
     public function validateAll($collection, $options = [])
@@ -305,7 +316,6 @@ class Transformer implements TransformerInterface
     /**
      * Get data map
      *
-     * @param array $dataMap
      * @return array
      */
     public function getDataMap()

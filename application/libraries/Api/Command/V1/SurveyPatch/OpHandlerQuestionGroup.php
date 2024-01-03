@@ -226,8 +226,9 @@ class OpHandlerQuestionGroup implements OpHandlerInterface
         $transformedProps = $this->transformer->transform(
             $op,
             ['operation' => $op->getType()->getId()]
-        );
-        $tempId = $this->extractTempId($transformedProps['questionGroup']);
+        ) ?? [];
+        $questionGroupData = $transformedProps['questionGroup']?? [];
+        $tempId = $this->extractTempId($questionGroupData);
         $questionGroup = $this->questionGroupService->createGroup(
             $surveyId,
             $transformedProps

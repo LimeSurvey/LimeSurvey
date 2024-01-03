@@ -16,6 +16,13 @@ class TransformerOutputQuestionAttribute extends TransformerOutputActiveRecord
         ]);
     }
 
+    /**
+     * Transform collection
+     *
+     * @param array $collection
+     * @param ?array $options
+     * @return array
+     */
     public function transformAll($collection, $options = [])
     {
         $attributes = (object) $collection;

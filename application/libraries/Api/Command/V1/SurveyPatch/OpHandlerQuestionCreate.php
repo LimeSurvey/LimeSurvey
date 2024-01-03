@@ -197,18 +197,22 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
             ),
             $op
         );
-        $transformedProps = $this->transformer->transform(
+        $data = $this->transformer->transform(
             $op->getProps(),
             $transformOptions
-        );
-        $tempId = $this->extractTempId($transformedProps['question']);
+        ) ?? [];
+        $questionData = $data['question'] ?? [];
+        $subQuestionsData = $data['subquestions'] ?? [];
+        $answerOptionsData = $data['answeroptions'] ?? [];
+
+        $tempId = $this->extractTempId($questionData);
         $questionService = DI::getContainer()->get(
             QuestionAggregateService::class
         );
 
         $question = $questionService->save(
             $this->getSurveyIdFromContext($op),
-            $transformedProps
+            $data
         );
 
         return array_merge(
@@ -223,11 +227,11 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
             ],
             $this->getSubQuestionNewIdMapping(
                 $question,
-                $transformedProps['subquestions']
+                $subQuestionsData
             ),
             $this->getSubQuestionNewIdMapping(
                 $question,
-                $transformedProps['answeroptions'],
+                $answerOptionsData,
                 true
             )
         );

@@ -52,8 +52,10 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
      * Returns an array of entity references indexed by the specified key.
      *
      * @param ?mixed $data
-     * @param ?array $options
-     * @return array
+     * @param ?mixed $options
+     * @return ?mixed
+     * @throws \LimeSurvey\Api\Transformer\TransformerException
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     public function transform($data, $options = [])
     {

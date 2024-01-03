@@ -25,24 +25,21 @@ class TransformerInputAnswer extends Transformer
             ]
         ]);
     }
-
     public function transformAll($collection, $options = [])
     {
         $collection = parent::transformAll($collection, $options);
         $output = [];
-        if (is_array($collection)) {
-            foreach ($collection as $index => $answer) {
-                // second array index needs to be the scaleId
-                $scaleId = array_key_exists(
-                    'scale_id',
-                    $answer
-                ) ? $answer['scale_id'] : 0;
-                $index = array_key_exists(
-                    'aid',
-                    $answer
-                ) ? $answer['aid'] : $index;
-                $output[$index][$scaleId] = $answer;
-            }
+        foreach ($collection as $index => $answer) {
+            // second array index needs to be the scaleId
+            $scaleId = array_key_exists(
+                'scale_id',
+                $answer
+            ) ? $answer['scale_id'] : 0;
+            $index = array_key_exists(
+                'aid',
+                $answer
+            ) ? $answer['aid'] : $index;
+            $output[$index][$scaleId] = $answer;
         }
         return $output;
     }

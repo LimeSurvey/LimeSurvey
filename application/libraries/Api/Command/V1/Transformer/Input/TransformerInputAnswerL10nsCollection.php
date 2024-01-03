@@ -10,19 +10,17 @@ class TransformerInputAnswerL10nsCollection extends Transformer
     {
         $data = parent::transformAll($collection, $options);
         $answers = [];
-        if (is_array($data)) {
-            foreach ($data as $index => $answer) {
-                // second array index needs to be the scaleId
-                $scaleId = array_key_exists(
-                    'scale_id',
-                    $answer
-                ) ? $answer['scale_id'] : 0;
-                $index = array_key_exists(
-                    'aid',
-                    $answer
-                ) ? $answer['aid'] : $index;
-                $answers[$index][$scaleId] = $answer;
-            }
+        foreach ($data as $index => $answer) {
+            // second array index needs to be the scaleId
+            $scaleId = array_key_exists(
+                'scale_id',
+                $answer
+            ) ? $answer['scale_id'] : 0;
+            $index = array_key_exists(
+                'aid',
+                $answer
+            ) ? $answer['aid'] : $index;
+            $answers[$index][$scaleId] = $answer;
         }
         return $answers;
     }

@@ -12,9 +12,9 @@ interface TransformerInterface
     public function transform($data, $options = []);
 
     /**
-     * @param ?array $collection
+     * @param array $collection
      * @param ?array $options
-     * @return ?mixed
+     * @return array
      */
     public function transformAll($collection, $options = []);
 
@@ -26,9 +26,9 @@ interface TransformerInterface
     public function validate($data, $options = []);
 
     /**
-     * @param mixed $collection
+     * @param array $collection
      * @param ?array $options
-     * @return mixed
+     * @return boolean|array
      */
     public function validateAll($collection, $options = []);
 }

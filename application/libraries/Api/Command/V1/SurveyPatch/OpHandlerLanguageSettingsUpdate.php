@@ -96,14 +96,14 @@ class OpHandlerLanguageSettingsUpdate implements OpHandlerInterface
         );
         $languageSettings->update(
             $this->getSurveyIdFromContext($op),
-            $this->getLanguageSettingsData($op)
+            $this->getLanguageSettingsData($op) ?? []
         );
     }
 
     /**
      * Analyzes the patch, builds and returns the correct data structure
      * @param OpInterface $op
-     * @return array
+     * @return ?mixed
      * @throws OpHandlerException
      */
     public function getLanguageSettingsData(OpInterface $op)

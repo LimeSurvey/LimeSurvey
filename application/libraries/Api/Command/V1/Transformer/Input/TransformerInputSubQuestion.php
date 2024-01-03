@@ -3,6 +3,7 @@
 namespace LimeSurvey\Api\Command\V1\Transformer\Input;
 
 use LimeSurvey\Api\Transformer\Transformer;
+use LimeSurvey\ObjectPatch\OpHandler\OpHandlerException;
 
 class TransformerInputSubQuestion extends Transformer
 {
@@ -30,21 +31,17 @@ class TransformerInputSubQuestion extends Transformer
      * @param OpInterface $op
      * @param TransformerInputQuestion $transformerQuestion
      * @param TransformerInputQuestionL10ns $transformerL10n
-     * @param array|null $data
-     * @param array|null $additionalRequiredEntities
+     * @param array $data
      * @return array
-     * @throws OpHandlerException
+     * @throws \LimeSurvey\ObjectPatch\OpHandler\OpHandlerException
      */
-    private function prepareSubQuestions(
-        array $data
-    ): array {
+    private function prepareSubQuestions($data)
+    {
         $preparedSubQuestions = [];
-        if (is_array($data)) {
-            foreach ($data as $index => $subQuestion) {
-                $qid = $this->getQidFromData($index, $subQuestion);
-                $scaleId = $this->getScaleIdFromData($subQuestion);
-                $preparedSubQuestions[$qid][$scaleId] = $subQuestion;
-            }
+        foreach ($data as $index => $subQuestion) {
+            $qid = $this->getQidFromData($index, $subQuestion);
+            $scaleId = $this->getScaleIdFromData($subQuestion);
+            $preparedSubQuestions[$qid][$scaleId] = $subQuestion;
         }
         return $preparedSubQuestions;
     }

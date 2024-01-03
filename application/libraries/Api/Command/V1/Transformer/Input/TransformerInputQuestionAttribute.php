@@ -20,37 +20,32 @@ class TransformerInputQuestionAttribute extends Transformer
 
     /**
      * Converts the raw array to the expected format.
-     * @param mixed $collection
-     * @return array
-     * @throws OpHandlerException
      */
     public function transformAll($collection, $options = [])
     {
         $preparedSettings = [];
-        if (is_array($collection)) {
-            foreach ($collection as $attrName => $languages) {
-                foreach ($languages as $lang => $advancedSetting) {
-                    $transformedSetting = $this->transform(
-                        $advancedSetting,
-                        $options
-                    );
-                    if (
-                        is_array($transformedSetting) && array_key_exists(
-                            'value',
-                            $transformedSetting
-                        )
-                    ) {
-                        $value = $transformedSetting['value'];
-                        if ($lang !== '') {
-                            $preparedSettings[0][$attrName][$lang] = $value;
-                        } else {
-                            $preparedSettings[0][$attrName] = $value;
-                        }
+        foreach ($collection as $attrName => $languages) {
+            foreach ($languages as $lang => $advancedSetting) {
+                $transformedSetting = $this->transform(
+                    $advancedSetting,
+                    $options
+                );
+                if (
+                    is_array($transformedSetting) && array_key_exists(
+                        'value',
+                        $transformedSetting
+                    )
+                ) {
+                    $value = $transformedSetting['value'];
+                    if ($lang !== '') {
+                        $preparedSettings[0][$attrName][$lang] = $value;
                     } else {
-                        throw new OpHandlerException(
-                            'Required parameter "value" is missing in entity "questionAttribute"'
-                        );
+                        $preparedSettings[0][$attrName] = $value;
                     }
+                } else {
+                    throw new OpHandlerException(
+                        'Required parameter "value" is missing in entity "questionAttribute"'
+                    );
                 }
             }
         }
