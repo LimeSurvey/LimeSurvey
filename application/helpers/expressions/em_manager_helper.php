@@ -5070,7 +5070,9 @@ class LimeExpressionManager
                 $message .= $this->gT("Unable to insert record into survey table"); // TODO - add SQL error?
                 $query = $e->getMessage();
                 $trace = $e->getTraceAsString();
-                submitfailed($this->gT("Unable to insert record into survey table"), $query . "\n\n" . $trace);
+                $message = submitfailed($this->gT("Unable to insert record into survey table"), $query . "\n\n" . $trace);
+                LimeExpressionManager::addFrontendFlashMessage('error', $message, $this->sid);
+                return;
             }
 
             //Insert Row for Timings, if needed
