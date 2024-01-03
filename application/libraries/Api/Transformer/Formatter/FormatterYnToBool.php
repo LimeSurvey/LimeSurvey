@@ -2,10 +2,9 @@
 
 namespace LimeSurvey\Api\Transformer\Formatter;
 
-class FormatterYnToBool
-    implements
-        FormatterInterface,
-        FormatterRevertibleInterface
+class FormatterYnToBool implements
+    FormatterInterface,
+    FormatterRevertibleInterface
 {
     /** @var bool */
     private $revert = false;

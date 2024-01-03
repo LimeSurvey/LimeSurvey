@@ -161,7 +161,7 @@ class OpHandlerSubQuestion implements OpHandlerInterface
         $data = $this->transformer->transformAll($op->getProps());
         //be careful here! if for any reason the incoming data is not prepared
         //as it should, all existing subquestions will be deleted!
-        if (count($data ) === 0) {
+        if (count($data) === 0) {
             $this->throwNoValuesException($op);
         }
         $questionId = $op->getEntityId();

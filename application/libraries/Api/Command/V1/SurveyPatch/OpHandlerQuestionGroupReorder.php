@@ -146,7 +146,6 @@ class OpHandlerQuestionGroupReorder implements OpHandlerInterface
                         $this->transformerQuestion->validate(
                             $questionData,
                             ['operation' => $op->getType()->getId()]
-
                         ),
                         $op
                     );

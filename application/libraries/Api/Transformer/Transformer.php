@@ -110,8 +110,8 @@ class Transformer implements TransformerInterface
         $config['key'] = isset($config['key']) ? $config['key'] : $inputKey;
         $config['type'] = isset($config['type']) ? $config['type'] : null;
         $config['collection'] = isset($config['collection']) ? $config['collection'] : false;
-        $config['transformer']= isset($config['transformer']) ? $config['transformer'] : null;
-        $config['formatter']= isset($config['formatter']) ? $config['formatter'] : null;
+        $config['transformer'] = isset($config['transformer']) ? $config['transformer'] : null;
+        $config['formatter'] = isset($config['formatter']) ? $config['formatter'] : null;
         $config['default'] = isset($config['default']) ? $config['default'] : null;
         $config['required'] = isset($config['required']) ? $config['required'] : false;
         $config['null'] = isset($config['null']) ? (bool) $config['null'] : true;
@@ -122,13 +122,13 @@ class Transformer implements TransformerInterface
         if (
             isset($options['operation'])
             && (
-                is_string( $config['required'])
-                || is_array( $config['required'])
+                is_string($config['required'])
+                || is_array($config['required'])
             )
         ) {
             $config['required'] = (
                 (
-                    is_string( $config['required'])
+                    is_string($config['required'])
                     && $config['required'] == $options['operation']
                 )
                 ||

@@ -91,7 +91,6 @@ class OpHandlerQuestionL10nUpdate implements OpHandlerInterface
         return true;
     }
 
-
     /**
      * Transforms language related props to array
      * This function is shared by QuestionL10n and QuestionGroupL10n operations,
@@ -101,7 +100,8 @@ class OpHandlerQuestionL10nUpdate implements OpHandlerInterface
      * @return array
      * @throws OpHandlerException
      */
-    private function transformAll(OpInterface $op): array {
+    private function transformAll(OpInterface $op): array
+    {
         $transformOptions = ['operation' => $op->getType()->getId()];
         $props = $op->getProps();
         foreach (array_keys($props) as $language) {

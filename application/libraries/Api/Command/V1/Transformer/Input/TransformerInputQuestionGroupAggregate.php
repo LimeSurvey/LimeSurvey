@@ -13,8 +13,7 @@ class TransformerInputQuestionGroupAggregate extends Transformer
     public function __construct(
         TransformerInputQuestionGroup $transformerQuestionGroup,
         TransformerInputQuestionGroupL10ns $transformerQuestionGroupL10ns
-    )
-    {
+    ) {
         $this->setDataMap([
             'questionGroup' => [
                 'collection' => true,

@@ -8,7 +8,7 @@ class TransformerInputAnswer extends Transformer
 {
     public function __construct(
         TransformerInputAnswerL10ns $transformerInputAnswerL10ns
-    ){
+    ) {
         $this->setDataMap([
             'aid' => ['type' => 'int'],
             'qid' => ['type' => 'int'],

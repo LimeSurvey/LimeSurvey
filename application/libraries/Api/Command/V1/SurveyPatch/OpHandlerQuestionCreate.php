@@ -2,7 +2,7 @@
 
 namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
-use \LimeSurvey\DI;
+use LimeSurvey\DI;
 use LimeSurvey\Api\Command\V1\Transformer\{
     Input\TransformerInputQuestionAggregate
 };

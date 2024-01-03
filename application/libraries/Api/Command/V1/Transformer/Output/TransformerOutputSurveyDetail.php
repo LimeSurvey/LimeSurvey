@@ -129,7 +129,7 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
      * @param ?array $options
      * @return void
      */
-    private function transformQuestions($questionLookup, $questions, $options =[])
+    private function transformQuestions($questionLookup, $questions, $options = [])
     {
         foreach ($questions as $questionModel) {
             // questions from the model relation may be different than from the transformed data

@@ -12,8 +12,7 @@ class TransformerInputQuestionAggregate extends Transformer
         TransformerInputQuestionAttribute $transformerAttribute,
         TransformerInputAnswer $transformerAnswer,
         TransformerInputSubQuestion $transformerInputSubQuestion
-    )
-    {
+    ) {
         $this->setDataMap([
             'question' => [
                 'required' => true,
