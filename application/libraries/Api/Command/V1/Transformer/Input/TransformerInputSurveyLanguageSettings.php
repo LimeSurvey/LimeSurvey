@@ -17,6 +17,7 @@ class TransformerInputSurveyLanguageSettings extends Transformer
             'endText' => 'surveyls_endtext',
             'policyNotice' => 'surveyls_policy_notice',
             'legalNotice' => 'surveyls_legal_notice',
+            'surveyAlias' => 'surveyls_alias',
             'policyError' => 'surveyls_policy_error',
             'policyNoticeLabel' => 'surveyls_policy_notice_label',
             'url' => 'surveyls_url',
