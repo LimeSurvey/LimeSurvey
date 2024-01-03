@@ -665,8 +665,8 @@ class Survey extends LSActiveRecord implements PermissionInterface
     public function getTokenAttributes()
     {
         $attdescriptiondata = decodeTokenAttributes($this->attributedescriptions ?? '');
-        if(!is_array(reset($attdescriptiondata))) {
-            $attdescriptiondata=null;
+        if (!is_array(reset($attdescriptiondata))) {
+            $attdescriptiondata = null;
         }
         // Catches malformed data
         if ($attdescriptiondata && strpos((string) key(reset($attdescriptiondata)), 'attribute_') === false) {
