@@ -5067,7 +5067,6 @@ class LimeExpressionManager
                 $_SESSION[$this->sessid]['srid'] = $iNewID;
             } catch (Exception $e) {
                 $srid = null;
-                $message .= $this->gT("Unable to insert record into survey table"); // TODO - add SQL error?
                 $query = $e->getMessage();
                 $trace = $e->getTraceAsString();
                 $message = submitfailed($this->gT("Unable to insert record into survey table"), $query . "\n\n" . $trace);
