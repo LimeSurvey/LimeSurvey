@@ -5071,7 +5071,7 @@ class LimeExpressionManager
                 $trace = $e->getTraceAsString();
                 $message = submitfailed($this->gT("Unable to insert record into survey table"), $query . "\n\n" . $trace);
                 LimeExpressionManager::addFrontendFlashMessage('error', $message, $this->sid);
-                return;
+                return $message;
             }
 
             //Insert Row for Timings, if needed
@@ -5159,7 +5159,7 @@ class LimeExpressionManager
                     // This can happen if admin deletes incomple response while survey is running.
                     $message = submitfailed($this->gT('The data could not be saved because the response does not exist in the database.'));
                     LimeExpressionManager::addFrontendFlashMessage('error', $message, $this->sid);
-                    return;
+                    return $message;
                 }
                 if ($oResponse->submitdate == null || Survey::model()->findByPk($this->sid)->isAllowEditAfterCompletion) {
                     try {
