@@ -70,6 +70,9 @@
 !/plugins/index.html
 !/plugins/Demo/
 
+# ignore editor contents - reserved for future use
+/editor/*
+
 #ignore old styles
 /styles/
 
@@ -195,30 +198,6 @@ vendor/webmozart/
 vendor/misantron/
 upload/templates/
 assets/packages/ckeditor/samples
-vendor/composer/pcre/
-vendor/fzaninotto/
-vendor/hamcrest/
-vendor/mockery/
-vendor/phpmailer/phpmailer/.editorconfig
-vendor/phpmailer/phpmailer/language/phpmailer.lang-as.php
-vendor/phpmailer/phpmailer/language/phpmailer.lang-bn.php
-vendor/phpseclib/phpseclib/phpseclib/Crypt/EC/Formats/Signature/IEEE.php
-vendor/phpstan/
-vendor/psr/log/
-vendor/symfony/config/
-vendor/symfony/console/
-vendor/symfony/dependency-injection/
-vendor/symfony/filesystem/
-vendor/symfony/polyfill-intl-grapheme/
-vendor/symfony/polyfill-intl-normalizer/
-vendor/symfony/polyfill-php73/
-vendor/symfony/polyfill-php80/
-vendor/symfony/polyfill-php81/
-vendor/symfony/process/
-vendor/symfony/service-contracts/
-vendor/symfony/string/
-vendor/symfony/yaml/
-vendor/tebazil/
 
 ## ignore Vagrantfile and Adminer
 adminer.php
