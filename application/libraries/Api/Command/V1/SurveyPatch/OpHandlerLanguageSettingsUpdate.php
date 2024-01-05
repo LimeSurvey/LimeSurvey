@@ -111,7 +111,7 @@ class OpHandlerLanguageSettingsUpdate implements OpHandlerInterface
         $transformOps = ['operation' => $op->getType()->getId()];
         $props = [];
         $entityId = $op->getEntityId();
-        if (is_string($entityId)) {
+        if (!empty($entityId)) {
             // indicator for variant 1
             $props[$entityId] = $op->getProps();
         } else {
