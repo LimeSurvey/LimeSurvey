@@ -103,7 +103,6 @@ class TransformerOutputSurvey extends TransformerOutputActiveRecord
         $survey['languageSettings'] = $this->transformerOutputSurveyLanguageSettings->transformAll(
             $data->languagesettings
         );
-        $survey['surveyGroup'] = $data->surveygroup;
         return $survey;
     }
 }

@@ -64,6 +64,7 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
         $survey['templateInherited'] = $data->oOptions->template;
         $survey['formatInherited'] = $data->oOptions->format;
         $survey['languages'] = $data->allLanguages;
+        $survey['surveyGroup'] = $data->surveygroup;
         $survey['owner'] = $this->transformerSurveyOwner->transform($data->owner);
         $survey['ownerInherited'] = $this->transformerSurveyOwner->transform($data->oOptions->owner);
 
