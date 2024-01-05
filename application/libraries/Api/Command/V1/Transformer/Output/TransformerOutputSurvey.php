@@ -20,7 +20,7 @@ class TransformerOutputSurvey extends TransformerOutputActiveRecord
     public function __construct(
         FormatterYnToBool $formatterYn,
         FormatterDateTimeToJson $formatterDateTime,
-        TransformerOutputSurveyLanguageSettings $transformerOutputSurveyLanguageSettings,
+        TransformerOutputSurveyLanguageSettings $transformerOutputSurveyLanguageSettings
     ) {
         $this->transformerOutputSurveyLanguageSettings = $transformerOutputSurveyLanguageSettings;
 
