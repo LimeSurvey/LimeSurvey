@@ -67,6 +67,7 @@ class SurveyDetail implements CommandInterface
                 'languagesettings',
                 'defaultlanguage',
                 'owner',
+                'surveygroup',
                 'groups',
                 'groups.questiongroupl10ns',
                 'groups.questions',

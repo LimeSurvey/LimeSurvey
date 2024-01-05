@@ -89,7 +89,6 @@ class TransformerOutputSurvey extends TransformerOutputActiveRecord
             // below fields are only for cloud version
             "showdatapolicybutton" => ['key' =>  'showDataPolicyButton', 'formatter' => $formatterYn],
             "showlegalnoticebutton" => ['key' =>  'showLegalNoticeButton', 'formatter' => $formatterYn],
-
         ]);
     }
 
@@ -106,6 +105,7 @@ class TransformerOutputSurvey extends TransformerOutputActiveRecord
         $survey['languageSettings'] = $this->transformerOutputSurveyLanguageSettings->transformAll(
             $data->languagesettings
         );
+        $survey['surveyGroup'] = $data->surveygroup;
         return $survey;
     }
 }
