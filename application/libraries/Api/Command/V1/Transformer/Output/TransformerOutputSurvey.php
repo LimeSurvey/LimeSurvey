@@ -12,8 +12,6 @@ use LimeSurvey\Api\Transformer\{
 class TransformerOutputSurvey extends TransformerOutputActiveRecord
 {
     private TransformerOutputSurveyLanguageSettings $transformerOutputSurveyLanguageSettings;
-    private TransformerOutputSurveyOwner $transformerOutputSurveyOwner;
-
     /**
      *  @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
