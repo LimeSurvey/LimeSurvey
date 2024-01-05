@@ -66,6 +66,7 @@ class SurveyDetail implements CommandInterface
             ->with(
                 'languagesettings',
                 'defaultlanguage',
+                'owner',
                 'groups',
                 'groups.questiongroupl10ns',
                 'groups.questions',

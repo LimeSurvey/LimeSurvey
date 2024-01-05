@@ -12,6 +12,7 @@ use LimeSurvey\Api\Transformer\{
 class TransformerOutputSurvey extends TransformerOutputActiveRecord
 {
     private TransformerOutputSurveyLanguageSettings $transformerOutputSurveyLanguageSettings;
+    private TransformerOutputSurveyOwner $transformerOutputSurveyOwner;
 
     /**
      *  @SuppressWarnings(PHPMD.ExcessiveMethodLength)
@@ -19,7 +20,7 @@ class TransformerOutputSurvey extends TransformerOutputActiveRecord
     public function __construct(
         FormatterYnToBool $formatterYn,
         FormatterDateTimeToJson $formatterDateTime,
-        TransformerOutputSurveyLanguageSettings $transformerOutputSurveyLanguageSettings
+        TransformerOutputSurveyLanguageSettings $transformerOutputSurveyLanguageSettings,
     ) {
         $this->transformerOutputSurveyLanguageSettings = $transformerOutputSurveyLanguageSettings;
 
