@@ -123,7 +123,7 @@ class PatcherSurvey extends Patcher
                 $op = OpStandard::factory(
                     $patchOpData['entity'] ?? '',
                     $patchOpData['op'] ?? '',
-                    $patchOpData['id'] ?? '',
+                    $patchOpData['id'] ?? null,
                     $patchOpData['props'] ?? [],
                     $context ?? []
                 );
