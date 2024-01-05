@@ -65,6 +65,7 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
         $survey['formatInherited'] = $data->oOptions->format;
         $survey['languages'] = $data->allLanguages;
         $survey['owner'] = $this->transformerSurveyOwner->transform($data->owner);
+        $survey['ownerInherited'] = $this->transformerSurveyOwner->transform($data->oOptions->owner);
 
         // transformAll() can apply required entity sort so we must retain the sort order going forward
         // - We use a lookup array later to access entities without needing to know their position in the collection
