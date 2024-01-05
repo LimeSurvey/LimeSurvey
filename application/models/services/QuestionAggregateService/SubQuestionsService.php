@@ -176,7 +176,7 @@ class SubQuestionsService
         $subquestion->refresh();
         $this->updateSubquestionL10nService(
             $subquestion,
-            $data['subquestionl10n']
+            $data['subquestionl10n'] ?? []
         );
 
         return $subquestion;
@@ -186,22 +186,23 @@ class SubQuestionsService
      * Save subquestion L10nService
      *
      * @param Question $question
-     * @param string $language
+     * @param array $data
      * @return void
      * @throws PersistErrorException
      * @throws BadRequestException
      */
     private function updateSubquestionL10nService(Question $subquestion, $data)
     {
-        foreach ($data as $langData) {
-            $langData['qid'] = $subquestion->qid;
-            $this->l10nService->save(
-                $subquestion->qid,
-                array(
-                    $langData
-                )
-            );
+        $l10nData = [];
+        foreach ($data as $language => $languageData) {
+            $l10nData[$language] = $languageData + [
+                'language' => $language
+            ];
         }
+        $this->l10nService->save(
+            $subquestion->qid,
+            $l10nData
+        );
     }
 
     /**

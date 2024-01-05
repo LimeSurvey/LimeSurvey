@@ -17,7 +17,8 @@ use LimeSurvey\Models\Services\{
     QuestionAggregateService\QuestionService,
     QuestionAggregateService\SubQuestionsService
 };
-use LimeSurvey\ObjectPatch\{Op\OpInterface,
+use LimeSurvey\ObjectPatch\{
+    Op\OpInterface,
     OpHandler\OpHandlerException,
     OpHandler\OpHandlerInterface,
     OpType\OpTypeCreate,
@@ -158,7 +159,19 @@ class OpHandlerSubQuestion implements OpHandlerInterface
     {
         $surveyId = $this->getSurveyIdFromContext($op);
         $this->questionAggregateService->checkUpdatePermission($surveyId);
-        $data = $this->transformer->transformAll($op->getProps());
+        $transformOptions = ['operation' => $op->getType()->getId()];
+        //var_dump($op->getProps()); exit;
+        $this->throwTransformerValidationErrors(
+            $this->transformer->validateAll(
+                $op->getProps(),
+                $transformOptions
+            ),
+            $op
+        );
+        $data = $this->transformer->transformAll(
+            $op->getProps(),
+            $transformOptions
+        );
         //be careful here! if for any reason the incoming data is not prepared
         //as it should, all existing subquestions will be deleted!
         if (count($data) === 0) {
@@ -187,7 +200,8 @@ class OpHandlerSubQuestion implements OpHandlerInterface
         //--> update:  props should include qid (which means update)
         //--> create:  props should include tempId (which means create)
         $props = $op->getProps();
-        return array_key_exists('qid', $props) ||
+        return is_array($props) ||
+            array_key_exists('qid', $props) ||
             array_key_exists('tempId', $props);
     }
 }

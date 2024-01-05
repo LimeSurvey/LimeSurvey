@@ -3,17 +3,24 @@
 namespace LimeSurvey\Api\Command\V1\Transformer\Input;
 
 use LimeSurvey\Api\Transformer\Transformer;
-use LimeSurvey\ObjectPatch\OpHandler\OpHandlerException;
 
 class TransformerInputSubQuestion extends Transformer
 {
-    public function __construct(TransformerInputQuestion $transformerInputQuestion)
+    public function __construct(
+        TransformerInputQuestion $transformerInputQuestion,
+        TransformerInputSubQuestionL10ns $transformerInputSubquestionL10n
+    )
     {
         $dataMap = $transformerInputQuestion->getDataMap();
         unset($dataMap['title']);
         $dataMap['type']['required'] = false;
-        $dataMap['code'] = ['required' => 'create'];
-        $dataMap['l10ns'] = 'subquestionl10n';
+        $dataMap['title'] = ['key' => 'code', 'required' => 'create'];
+        $dataMap['l10ns'] = [
+            'key' => 'subquestionl10n',
+            'collection' => true,
+            'required' => true,
+            'transformer' => $transformerInputSubquestionL10n
+        ];
 
         $this->setDataMap($dataMap);
     }

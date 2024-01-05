@@ -305,6 +305,7 @@ class Transformer implements TransformerInterface
     {
         $options = $options ?? [];
         $result = array_reduce($collection, function ($carry, $data) use ($options) {
+            $carry = is_array($carry) ? $carry : [];
             $oneResult = $this->validate($data, $options);
             return is_array($oneResult)
                 ? array_merge($carry, $oneResult)
