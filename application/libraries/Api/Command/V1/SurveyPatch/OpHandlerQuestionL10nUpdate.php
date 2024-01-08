@@ -3,9 +3,9 @@
 namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
 use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\{
+    OpHandlerL10nTrait,
     OpHandlerSurveyTrait,
-    OpHandlerExceptionTrait
-};
+    OpHandlerExceptionTrait};
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestionL10ns;
 use LimeSurvey\Models\Services\{
     QuestionAggregateService\L10nService,
@@ -23,6 +23,7 @@ class OpHandlerQuestionL10nUpdate implements OpHandlerInterface
 {
     use OpHandlerSurveyTrait;
     use OpHandlerExceptionTrait;
+    use OpHandlerL10nTrait;
 
     protected L10nService $l10nService;
     protected TransformerInputQuestionL10ns $transformer;
@@ -74,9 +75,15 @@ class OpHandlerQuestionL10nUpdate implements OpHandlerInterface
      */
     public function handle(OpInterface $op): void
     {
+        $data = $this->transformAllLanguageProps(
+            $op,
+            $op->getProps(),
+            $op->getEntityType(),
+            $this->transformer
+        );
         $this->l10nService->save(
             (int) $op->getEntityId(),
-            $this->transformAll($op)
+            $data
         );
     }
 
@@ -89,36 +96,5 @@ class OpHandlerQuestionL10nUpdate implements OpHandlerInterface
     {
         //transformAllLanguageProps  already checks if the patch is valid
         return true;
-    }
-
-    /**
-     * Transforms language related props to array
-     * This function is shared by QuestionL10n and QuestionGroupL10n operations,
-     * so the actual transformer needs to
-     * @param OpInterface $op
-     * @param array $props
-     * @return array
-     * @throws OpHandlerException
-     */
-    private function transformAll(OpInterface $op): array
-    {
-        $transformOptions = ['operation' => $op->getType()->getId()];
-        $props = $op->getProps();
-        foreach (array_keys($props) as $language) {
-            if (is_array($props[$language])) {
-                $props[$language]['language'] = $language;
-            }
-        }
-        $this->throwTransformerValidationErrors(
-            $this->transformer->validateAll(
-                $props,
-                $transformOptions
-            ),
-            $op
-        );
-        return $this->transformer->transformAll(
-            $props,
-            $transformOptions
-        );
     }
 }

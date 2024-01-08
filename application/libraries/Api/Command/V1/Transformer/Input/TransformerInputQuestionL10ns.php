@@ -3,8 +3,7 @@
 namespace LimeSurvey\Api\Command\V1\Transformer\Input;
 
 use LimeSurvey\Api\Transformer\{
-    Transformer,
-    TransformerException
+    Transformer
 };
 
 class TransformerInputQuestionL10ns extends Transformer
@@ -13,11 +12,11 @@ class TransformerInputQuestionL10ns extends Transformer
     {
         $this->setDataMap([
             'id' => ['type' => 'int'],
-            'qid' => ['type' => 'int', 'required' => 'create'],
+            'qid' => ['type' => 'int'],
             'question' => ['required' => 'create'],
             'help' => true,
             'script' => true,
-            'language' => ['required' => true]
+            'language' => true
         ]);
     }
 
