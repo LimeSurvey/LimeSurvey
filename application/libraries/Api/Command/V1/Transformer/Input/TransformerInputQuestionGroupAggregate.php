@@ -16,7 +16,6 @@ class TransformerInputQuestionGroupAggregate extends Transformer
     ) {
         $this->setDataMap([
             'questionGroup' => [
-                'collection' => true,
                 'transformer' => $transformerQuestionGroup,
                 'required' => true
             ],

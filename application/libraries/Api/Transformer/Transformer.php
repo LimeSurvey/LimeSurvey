@@ -74,7 +74,10 @@ class Transformer implements TransformerInterface
                 && isset($value)
             ) {
                 $transformMethod = $config['collection'] ? 'transformAll' : 'transform';
-                $value = $config['transformer']->{$transformMethod}($value);
+                $value = $config['transformer']->{$transformMethod}(
+                    $value,
+                    $options
+                );
             }
 
             if (!isset($output)) {
@@ -215,7 +218,8 @@ class Transformer implements TransformerInterface
                 $key,
                 $value,
                 $config,
-                $data
+                $data,
+                $options
             );
             if (is_array($fieldErrors)) {
                 $errors = array_merge($errors, $fieldErrors);
@@ -267,7 +271,10 @@ class Transformer implements TransformerInterface
             && isset($value)
         ) {
             $validateMethod = $config['collection'] ? 'validateAll' : 'validate';
-            $subFieldErrors = $config['transformer']->{$validateMethod}($value);
+            $subFieldErrors = $config['transformer']->{$validateMethod}(
+                $value,
+                $options
+            );
             if (is_array($subFieldErrors)) {
                 $errors = array_merge($errors, $subFieldErrors);
             }
