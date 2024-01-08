@@ -61,7 +61,7 @@ if ((Yii::app()->request->getParam('popuppreview', false) !== false) && ($sid = 
         <!-- Modal Content -->
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title"><?php eT("Survey Preview"); ?></h1>
+                <h1 class="modal-title"><?php eT("Survey preview"); ?></h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">

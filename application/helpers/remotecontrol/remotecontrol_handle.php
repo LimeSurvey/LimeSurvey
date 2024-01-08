@@ -2884,7 +2884,7 @@ class remotecontrol_handle
                     $uid = (int) $uid;
                     $user = User::model()->findByPk($uid);
                     if (!$user) {
-                        return array('status' => 'Invalid user id');
+                        return array('status' => 'Invalid user ID');
                     }
                     $users = array($user);
                 } elseif ($username) {
