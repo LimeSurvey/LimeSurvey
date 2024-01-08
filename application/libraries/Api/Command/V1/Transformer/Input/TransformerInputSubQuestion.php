@@ -9,8 +9,7 @@ class TransformerInputSubQuestion extends Transformer
     public function __construct(
         TransformerInputQuestion $transformerInputQuestion,
         TransformerInputSubQuestionL10ns $transformerInputSubquestionL10n
-    )
-    {
+    ) {
         $dataMap = $transformerInputQuestion->getDataMap();
         unset($dataMap['title']);
         $dataMap['type']['required'] = false;
