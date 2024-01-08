@@ -3,6 +3,7 @@
 namespace LimeSurvey\Api\Command\V1\Transformer\Output;
 
 use Survey;
+use LimeSurvey\Models\Services\QuestionAggregateService\QuestionService;
 use LimeSurvey\Api\Transformer\Output\TransformerOutputActiveRecord;
 
 /**
@@ -17,6 +18,8 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
     private TransformerOutputQuestionL10ns $transformerQuestionL10ns;
     private TransformerOutputQuestionAttribute $transformerQuestionAttribute;
     private TransformerOutputAnswer $transformerAnswer;
+    private QuestionService $questionService;
+    private TransformerOutputAnswerL10ns $transformerAnswerL10ns;
 
     /**
      * Construct
@@ -28,7 +31,9 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
         TransformerOutputQuestion $transformerOutputQuestion,
         TransformerOutputQuestionL10ns $transformerOutputQuestionL10ns,
         TransformerOutputQuestionAttribute $transformerOutputQuestionAttribute,
-        TransformerOutputAnswer $transformerOutputAnswer
+        TransformerOutputAnswer $transformerOutputAnswer,
+        TransformerOutputAnswerL10ns $transformerOutputAnswerL10ns,
+        QuestionService $questionService
     ) {
         $this->transformerSurvey = $transformerOutputSurvey;
         $this->transformerQuestionGroup = $transformerOutputQuestionGroup;
@@ -37,6 +42,8 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
         $this->transformerQuestionL10ns = $transformerOutputQuestionL10ns;
         $this->transformerQuestionAttribute = $transformerOutputQuestionAttribute;
         $this->transformerAnswer = $transformerOutputAnswer;
+        $this->transformerAnswerL10ns = $transformerOutputAnswerL10ns;
+        $this->questionService = $questionService;
     }
 
     /**
@@ -50,8 +57,9 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
             return null;
         }
 
-        $survey =  $this->transformerSurvey->transform($data);
-
+        $survey = $this->transformerSurvey->transform($data);
+        $survey['templateInherited'] = $data->oOptions->template;
+        $survey['formatInherited'] = $data->oOptions->format;
         $survey['languages'] = $data->allLanguages;
 
         // transformAll() can apply required entity sort so we must retain the sort order going forward
@@ -67,10 +75,13 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
             $survey['questionGroups']
         );
 
+
         foreach ($data->groups as $questionGroupModel) {
-            // order of groups from the model relation may be different than from the transformed data
+            // Order of groups from the model relation may be different than from the transformed data
             // - so we use the lookup to get a reference to the required entity without needing to
             // - know its position in the output array
+            // If we don't assign by reference here the, additions to $group will create a new array
+            // - rather than modifying the original array
             $group = &$groupLookup[$questionGroupModel->gid];
 
             $group['l10ns'] = $this->transformerQuestionGroupL10ns->transformAll(
@@ -86,6 +97,7 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
                 'qid',
                 $group['questions']
             );
+
             $this->transformQuestions(
                 $questionLookup,
                 $questionGroupModel->questions
@@ -110,6 +122,8 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
             // questions from the model relation may be different than from the transformed data
             // - so we use the lookup to get a reference to the required entity without needing to
             // - know its position in the output array
+            // If we don't assign by reference here the, additions to $question will create a new array
+            // - rather than modifying the original array
             $question = &$questionLookup[$questionModel->qid];
 
             $question['l10ns'] = $this->transformerQuestionL10ns->transformAll(
@@ -117,7 +131,9 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
             );
 
             $question['attributes'] = $this->transformerQuestionAttribute->transformAll(
-                $questionModel->questionattributes
+                $this->questionService->getQuestionAttributes(
+                    $questionModel->qid
+                )
             );
 
             if ($questionModel->subquestions) {
@@ -138,6 +154,33 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
             $question['answers'] = $this->transformerAnswer->transformAll(
                 $questionModel->answers
             );
+
+            $answerLookup = $this->createCollectionLookup(
+                'aid',
+                $question['answers']
+            );
+
+            $this->transformAnswersL10n(
+                $answerLookup,
+                $questionModel->answers
+            );
+        }
+    }
+
+    /**
+     * Adds the language specific data of answer_l10ns to the answers array
+     * @param array $answerLookup
+     * @param array $answers
+     * @return void
+     */
+    private function transformAnswersL10n($answerLookup, $answers)
+    {
+        foreach ($answers as $answerModel) {
+            $answer = &$answerLookup[$answerModel->aid];
+
+            $answer['l10ns'] = $this->transformerAnswerL10ns->transformAll(
+                $answerModel->answerl10ns
+            );
         }
     }
 
@@ -147,7 +190,7 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
      * Returns an array of entity references indexed by the specified key.
      *
      * @param string $key
-     * @param array &$entityArray
+     * @param array $entityArray
      * @return array Entity reference
      */
     private function createCollectionLookup($key, &$entityArray)

@@ -11281,6 +11281,12 @@ blockquote.float-end {
   column-gap: 20px;
 }
 
+#usermanagement--identity-gridPanel tr.disabled {
+  color: #D3D5DA;
+  pointer-events: auto;
+  cursor: not-allowed;
+}
+
 /**
  * Lime Admin Common CSS File
  *

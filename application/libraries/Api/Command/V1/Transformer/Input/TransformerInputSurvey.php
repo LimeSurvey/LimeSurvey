@@ -11,7 +11,7 @@ use LimeSurvey\Api\Transformer\{
 class TransformerInputSurvey extends Transformer
 {
     /**
-     *  @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     public function __construct()
     {
@@ -22,17 +22,17 @@ class TransformerInputSurvey extends Transformer
             'sid' => ['type' => 'int'],
             'gsid' => ['type' => 'int'],
             'active' => ['formatter' => $formatterYn],
-            'language'  => true,
+            'language' => true,
             'expires' => ['formatter' => $formatterDateTime],
             'startDate' => ['key' => 'startdate', 'formatter' => $formatterDateTime],
             'anonymized' => ['formatter' => $formatterYn],
             'saveTimings' => ['key' => 'savetimings', 'formatter' => $formatterYn],
-            'additional_languages' => 'additionalLanguages',
-            'datestamp' => ['formatter' => $formatterYn],
-            'usecookie' => ['key' => 'useCookie', 'formatter' => $formatterYn],
+            'additionalLanguages' => 'additional_languages',
+            'dateStamp' => ['key' => 'datestamp', 'formatter' => $formatterYn],
+            'useCookie' => ['key' => 'usecookie', 'formatter' => $formatterYn],
             'allowRegister' => ['key' => 'allowregister', 'formatter' => $formatterYn],
             'allowSave' => ['key' => 'allowsave', 'formatter' => $formatterYn],
-            'autonumberStart' => ['key' => 'autonumber_start', 'type' => 'int'],
+            'autoNumberStart' => ['key' => 'autonumber_start', 'type' => 'int'],
             'autoRedirect' => ['key' => 'autoredirect', 'formatter' => $formatterYn],
             'allowPrev' => ['key' => 'allowprev', 'formatter' => $formatterYn],
             'printAnswers' => ['key' => 'printanswers', 'formatter' => $formatterYn],
@@ -52,27 +52,29 @@ class TransformerInputSurvey extends Transformer
             'attributeDescriptions' => 'attributedescriptions',
             'emailResponseTo' => 'emailresponseto',
             'emailNotificationTo' => 'emailnotificationto',
-            'tokenLength' => ['key' =>  'tokenlength', 'type' => 'int'],
-            'showXQuestions' => ['key' =>  'showxquestions', 'formatter' => $formatterYn],
+            'tokenLength' => ['key' => 'tokenlength', 'type' => 'int'],
+            'showXQuestions' => ['key' => 'showxquestions', 'formatter' => $formatterYn],
             'showGroupInfo' => 'showgroupinfo',
-            'showNoAnswer' => ['key' =>  'shownoanswer', 'formatter' => $formatterYn],
+            'showNoAnswer' => ['key' => 'shownoanswer', 'formatter' => $formatterYn],
             'showQNumCode' => 'showqnumcode',
-            'bounceTime' => ['key' =>  'bouncetime', 'type' => 'int'],
-            'bounceProcessing' => ['key' =>  'bounceprocessing', 'formatter' => $formatterYn],
+            'bounceTime' => ['key' => 'bouncetime', 'type' => 'int'],
+            'bounceProcessing' => ['key' => 'bounceprocessing', 'formatter' => $formatterYn],
             'bounceAccountType' => 'bounceaccounttype',
             'bounceAccountHost' => 'bounceaccounthost',
             'bounceAccountPass' => 'bounceaccountpass',
             'bounceAccountEncryption' => 'bounceaccountencryption',
             'bounceAccountUser' => 'bounceaccountuser',
-            'showWelcome' => ['key' =>  'showwelcome', 'formatter' => $formatterYn],
-            'showProgress' => ['key' =>  'showprogress', 'formatter' => $formatterYn],
-            'questionIndex' => ['key' =>  'questionindex', 'type' => 'int'],
-            'navigationDelay' => ['key' =>  'navigationdelay', 'type' => 'int'],
-            'noKeyboard' => ['key' =>  'nokeyboard', 'formatter' => $formatterYn],
-            'allowedItAfterCompletion' => ['key' =>  'alloweditaftercompletion', 'formatter' => $formatterYn],
-            'googleAnalyticsStyle' => ['key' =>  'googleanalyticsstyle', 'type' => 'int'],
+            'showWelcome' => ['key' => 'showwelcome', 'formatter' => $formatterYn],
+            'showProgress' => ['key' => 'showprogress', 'formatter' => $formatterYn],
+            'questionIndex' => ['key' => 'questionindex', 'type' => 'int'],
+            'navigationDelay' => ['key' => 'navigationdelay', 'type' => 'int'],
+            'noKeyboard' => ['key' => 'nokeyboard', 'formatter' => $formatterYn],
+            'allowedItAfterCompletion' => ['key' => 'alloweditaftercompletion', 'formatter' => $formatterYn],
+            'googleAnalyticsStyle' => ['key' => 'googleanalyticsstyle', 'type' => 'int'],
             'googleAnalyticsApiKey' => 'googleanalyticsapikey',
-            'showSurveyPolicyNotice' => ['key' =>  'showsurveypolicynotice', 'type' => 'int'],
+            'showSurveyPolicyNotice' => ['key' => 'showsurveypolicynotice', 'type' => 'int'],
+            'template' => true,
+            'format' => true
         ]);
     }
 }

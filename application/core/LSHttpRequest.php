@@ -267,4 +267,23 @@ class LSHttpRequest extends CHttpRequest
         $route = ltrim($route, '/');
         return preg_match('#^' . $rule . '$|^' . $rule . '/#', (string) $route);
     }
+
+    /**
+	 * Is this a REST API request
+	 *
+	 * @return boolean
+	 */
+    public function isRestRequest()
+    {
+        $restRoutePattern = '#^(/)?(index.php/)?rest(/.*)?#';
+        $restPath = preg_match(
+            $restRoutePattern,
+            $this->getRequestUri(),
+        ) === 1;
+        $restRoute = preg_match(
+            $restRoutePattern,
+            $this->getParam('r')
+        ) === 1;
+        return $restPath || $restRoute;
+    }
 }

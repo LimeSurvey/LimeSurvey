@@ -286,11 +286,15 @@ class remotecontrol_handle
      * @param string $sSessionKey Auth credentials
      * @param int $iSurveyID_org Id of the source survey
      * @param string $sNewname name of the new survey
+     * @param integer $DestSurveyID  (optional) This is the new ID of the survey - if already used a random one will be taken instead
      * @return array On success: new $iSurveyID in array['newsid']. On failure array with error information
      * */
-    public function copy_survey($sSessionKey, $iSurveyID_org, $sNewname)
+    public function copy_survey($sSessionKey, $iSurveyID_org, $sNewname, $DestSurveyID = null)
     {
         $iSurveyID = (int) $iSurveyID_org;
+        if (!is_null($DestSurveyID)) {
+            $DestSurveyID = (int) $DestSurveyID;
+        }
         if (!$this->_checkSessionKey($sSessionKey)) {
             return array('status' => self::INVALID_SESSION_KEY);
         }
@@ -313,7 +317,7 @@ class remotecontrol_handle
             $copysurveydata = surveyGetXMLData($iSurveyID, $aExcludes);
             if ($copysurveydata) {
                 Yii::app()->loadHelper('admin/import');
-                $aImportResults = XMLImportSurvey('', $copysurveydata, $sNewSurveyName, null, $btranslinksfields);
+                $aImportResults = XMLImportSurvey('', $copysurveydata, $sNewSurveyName, $DestSurveyID, $btranslinksfields);
                 if (isset($aExcludes['conditions'])) {
                     Question::model()->updateAll(array('relevance' => '1'), 'sid=' . $aImportResults['newsid']);
                     QuestionGroup::model()->updateAll(array('grelevance' => '1'), 'sid=' . $aImportResults['newsid']);
@@ -1847,7 +1851,7 @@ class remotecontrol_handle
         if ($this->_checkSessionKey($sSessionKey)) {
             Yii::app()->loadHelper("surveytranslator");
             $iQuestionID = (int) $iQuestionID;
-            $oQuestion = Question::model()->findByAttributes(array('qid' => $iQuestionID));
+            $oQuestion = Question::model()->with('questionl10ns')->findByAttributes(array('qid' => $iQuestionID));
             if (is_null($oQuestion)) {
                             return array('status' => 'Error: Invalid group ID');
             }
@@ -1868,6 +1872,61 @@ class remotecontrol_handle
                                     return array('status' => 'Error: Invalid questionid');
                 }
 
+                // Backwards compatibility for L10n data
+                if (!empty($aQuestionData['language'])) {
+                    $language = $aQuestionData['language'];
+                    $aQuestionData['questionl10ns'][$language] = array(
+                        'language' => $language,
+                        'question' => $aQuestionData['question'] ?? '',
+                        'help' => $aQuestionData['help'] ?? '',
+                    );
+                }
+
+                // Process L10n data
+                if (!empty($aQuestionData['questionl10ns']) && is_array($aQuestionData['questionl10ns'])) {
+                    $aL10nDestinationFields = array_flip(QuestionL10n::model()->tableSchema->columnNames);
+                    foreach ($aQuestionData['questionl10ns'] as $language => $aLanguageData) {
+                        // Get existing L10n data or create new
+                        if (isset($oQuestion->questionl10ns[$language])) {
+                            $oQuestionL10n = $oQuestion->questionl10ns[$language];
+                        } else {
+                            $oQuestionL10n = new QuestionL10n();
+                            $oQuestionL10n->qid = $iQuestionID;
+                            $oQuestionL10n->setAttribute('language', $language);
+                            $oQuestionL10n->setAttribute('question', '');
+                            $oQuestionL10n->setAttribute('help', '');
+                            if (!$oQuestionL10n->save()) {
+                                $aResult['questionl10ns'][$language] = false;
+                                continue;
+                            }
+                        }
+
+                        // Remove invalid fields
+                        $aQuestionL10nData = array_intersect_key($aLanguageData, $aL10nDestinationFields);
+                        if (empty($aQuestionL10nData)) {
+                            $aResult['questionl10ns'][$language] = 'Empty question L10n data';
+                            continue;
+                        }
+
+                        $aQuestionL10nAttributes = $oQuestionL10n->getAttributes();
+                        foreach ($aQuestionL10nData as $sFieldName => $sValue) {
+                            $oQuestionL10n->setAttribute($sFieldName, $sValue);
+                            try {
+                                // save the change to database - one by one to allow for validation to work
+                                $bSaveResult = $oQuestionL10n->save();
+                                $aResult['questionl10ns'][$language][$sFieldName] = $bSaveResult;
+                                //unset failed values
+                                if (!$bSaveResult) {
+                                    $oQuestionL10n->$sFieldName = $aQuestionL10nAttributes[$sFieldName];
+                                }
+                            } catch (Exception $e) {
+                                //unset values that cause exception
+                                $oQuestionL10n->$sFieldName = $aQuestionL10nAttributes[$sFieldName];
+                            }
+                        }
+                    }
+                }
+
                 // Remove fields that may not be modified
                 unset($aQuestionData['qid']);
                 unset($aQuestionData['gid']);
@@ -1881,7 +1940,11 @@ class remotecontrol_handle
                 $aQuestionAttributes = $oQuestion->getAttributes();
 
                 if (empty($aQuestionData)) {
-                                    return array('status' => 'No valid Data');
+                    if (empty($aResult)) {
+                        return array('status' => 'No valid Data');
+                    } else {
+                        return $aResult;
+                    }
                 }
 
                 foreach ($aQuestionData as $sFieldName => $sValue) {
@@ -2821,7 +2884,7 @@ class remotecontrol_handle
                     $uid = (int) $uid;
                     $user = User::model()->findByPk($uid);
                     if (!$user) {
-                        return array('status' => 'Invalid user id');
+                        return array('status' => 'Invalid user ID');
                     }
                     $users = array($user);
                 } elseif ($username) {
@@ -3548,7 +3611,7 @@ class remotecontrol_handle
      * @param string $sSessionKey Auth credentials
      * @param int $iSurveyID ID of the Survey
      * @param string $sDocumentType pdf, csv, xls, doc, json
-     * @param string $sToken The token for which responses needed
+     * @param array|string $aTokens The tokens (or single token) for which responses needed
      * @param string $sLanguageCode The language to be used
      * @param string $sCompletionStatus Optional 'complete','incomplete' or 'all' - defaults to 'all'
      * @param string $sHeadingType 'code','full' or 'abbreviated' Optional defaults to 'code'
@@ -3557,11 +3620,10 @@ class remotecontrol_handle
      * @return array|string On success: Requested file as base 64-encoded string. On failure array with error information
      *
      */
-    public function export_responses_by_token($sSessionKey, $iSurveyID, $sDocumentType, $sToken, $sLanguageCode = null, $sCompletionStatus = 'all', $sHeadingType = 'code', $sResponseType = 'short', $aFields = null)
+    public function export_responses_by_token($sSessionKey, $iSurveyID, $sDocumentType, $aTokens, $sLanguageCode = null, $sCompletionStatus = 'all', $sHeadingType = 'code', $sResponseType = 'short', $aFields = null)
     {
         $iSurveyID = (int) $iSurveyID;
         $survey = Survey::model()->findByPk($iSurveyID);
-
         if (!$this->_checkSessionKey($sSessionKey)) {
             return array('status' => self::INVALID_SESSION_KEY);
         }
@@ -3575,9 +3637,21 @@ class remotecontrol_handle
         if (!empty($sLanguageCode) && !in_array($sLanguageCode, $survey->getAllLanguages())) {
             return array('status' => 'Language code not found for this survey.');
         }
-
-        if (!SurveyDynamic::model($iSurveyID)->findByAttributes(array('token' => $sToken))) {
-            return array('status' => 'No Response found for Token');
+        if (is_array($aTokens)) {
+            if (count($aTokens) == 0) {
+                return array('status' => 'No Data, empty tokens array parameter');
+            } else {
+                $aTokensQuoted = Array();
+                foreach ($aTokens as $token) {
+                    array_push($aTokensQuoted, App()->db->quoteValue("$token"));
+                }
+                $tokenFilter = " IN (" . implode(",", $aTokensQuoted) . ")";
+            }
+        } else {
+            if (!SurveyDynamic::model($iSurveyID)->findByAttributes(array('token' => $aTokens))) {
+                return array('status' => 'No Response found for Token');
+            }
+            $tokenFilter = "=" . App()->db->quoteValue("$aTokens");
         }
         if (!Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'export')) {
             return array('status' => 'No permission');
@@ -3588,22 +3662,17 @@ class remotecontrol_handle
         if (is_null($aFields)) {
             $aFields = array_keys(createFieldMap($survey, 'full', true, false, $sLanguageCode));
         }
-
         $oFormattingOptions = new FormattingOptions();
         $oFormattingOptions->responseMinRecord = 1;
         $oFormattingOptions->responseMaxRecord = $maxId;
-
         $oFormattingOptions->selectedColumns = $aFields;
         $oFormattingOptions->responseCompletionState = $sCompletionStatus;
         $oFormattingOptions->headingFormat = $sHeadingType;
         $oFormattingOptions->answerFormat = $sResponseType;
         $oFormattingOptions->output = 'file';
-
         $oExport = new ExportSurveyResultsService();
-
         $sTableName = Yii::app()->db->tablePrefix . 'survey_' . $iSurveyID;
-
-        $sTempFile = $oExport->exportResponses($iSurveyID, $sLanguageCode, $sDocumentType, $oFormattingOptions, "{$sTableName}.token=" . App()->db->quoteValue("$sToken"));
+        $sTempFile = $oExport->exportResponses($iSurveyID, $sLanguageCode, $sDocumentType, $oFormattingOptions, "{$sTableName}.token" . $tokenFilter);
         return new BigFile($sTempFile, true, 'base64');
     }
 

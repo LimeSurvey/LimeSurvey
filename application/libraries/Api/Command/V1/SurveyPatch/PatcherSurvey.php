@@ -2,161 +2,177 @@
 
 namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
-use Survey;
-use SurveyLanguageSetting;
-use Answer;
-use QuestionGroup;
-use QuestionGroupL10n;
-use Question;
-use QuestionL10n;
-use QuestionAttribute;
-use LimeSurvey\Api\Command\V1\Transformer\Input\{
-    TransformerInputSurvey,
-    TransformerInputAnswer,
-    TransformerInputQuestionGroup,
-    TransformerInputQuestionGroupL10ns,
-    TransformerInputQuestion,
-    TransformerInputQuestionL10ns,
-    TransformerInputQuestionAttribute,
-    TransformerInputSurveyLanguageSettings
+use LimeSurvey\Api\Command\V1\SurveyPatch\Response\{ErronousOperationItem,
+    ErronousOperations,
+    TempIdMapItem,
+    TempIdMapping
 };
-use LimeSurvey\ObjectPatch\{
-    Patcher,
-    OpHandler\OpHandlerActiveRecordUpdate
+use LimeSurvey\ObjectPatch\{ObjectPatchException,
+    Op\OpStandard,
+    OpHandler\OpHandlerException,
+    Patcher
 };
-use DI\FactoryInterface;
 use Psr\Container\ContainerInterface;
 
 class PatcherSurvey extends Patcher
 {
+    protected TempIdMapping $tempIdMapping;
+    protected ErronousOperations $erronousOperations;
+
     /**
      * Constructor
      *
-     * @param FactoryInterface $diFactory
      * @param ContainerInterface $diContainer
+     * @param TempIdMapping $tempIdMapping
+     * @param ErronousOperations $erronousOperations
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
-    public function __construct(FactoryInterface $diFactory, ContainerInterface $diContainer)
-    {
-        $this->addOpHandlerSurvey($diFactory, $diContainer);
-        $this->addOpHandlerLanguageSetting($diFactory, $diContainer);
-        $this->addOpHandlerQuestionGroup($diFactory, $diContainer);
-        $this->addOpHandlerQuestionGroupL10n($diFactory, $diContainer);
-        $this->addOpHandlerQuestion($diFactory, $diContainer);
-        $this->addOpHandlerQuestionL10n($diFactory, $diContainer);
-        $this->addOpHandlerQuestionAttribute($diFactory, $diContainer);
-        $this->addOpHandlerQuestionAnswer($diFactory, $diContainer);
+    public function __construct(
+        ContainerInterface $diContainer,
+        TempIdMapping $tempIdMapping,
+        ErronousOperations $erronousOperations
+    ) {
+        $this->tempIdMapping = $tempIdMapping;
+        $this->erronousOperations = $erronousOperations;
+        $this->addOpHandler(
+            $diContainer->get(
+                OpHandlerSurveyUpdate::class
+            )
+        );
+        $this->addOpHandler(
+            $diContainer->get(
+                OpHandlerLanguageSettingsUpdate::class
+            )
+        );
+        $this->addOpHandler(
+            $diContainer->get(
+                OpHandlerQuestionGroup::class
+            )
+        );
+        $this->addOpHandler(
+            $diContainer->get(
+                OpHandlerQuestionGroupL10n::class
+            )
+        );
+        $this->addOpHandler(
+            $diContainer->get(
+                OpHandlerQuestionDelete::class
+            )
+        );
+        $this->addOpHandler(
+            $diContainer->get(
+                OpHandlerQuestionCreate::class
+            )
+        );
+        $this->addOpHandler(
+            $diContainer->get(
+                OpHandlerQuestionUpdate::class
+            )
+        );
+        $this->addOpHandler(
+            $diContainer->get(
+                OpHandlerQuestionL10nUpdate::class
+            )
+        );
+        $this->addOpHandler(
+            $diContainer->get(
+                OpHandlerAnswer::class
+            )
+        );
+        $this->addOpHandler(
+            $diContainer->get(
+                OpHandlerQuestionAttributeUpdate::class
+            )
+        );
+        $this->addOpHandler(
+            $diContainer->get(
+                OpHandlerQuestionGroupReorder::class
+            )
+        );
+        $this->addOpHandler(
+            $diContainer->get(
+                OpHandlerSubquestionDelete::class
+            )
+        );
+        $this->addOpHandler(
+            $diContainer->get(
+                OpHandlerAnswerDelete::class
+            )
+        );
+        $this->addOpHandler(
+            $diContainer->get(
+                OpHandlerSubQuestion::class
+            )
+        );
     }
 
-    private function addOpHandlerSurvey(FactoryInterface $diFactory, ContainerInterface $diContainer): void
+    /**
+     * Apply patch
+     *
+     * @param ?mixed $patch
+     * @param ?array $context
+     * @return array
+     * @throws ObjectPatchException
+     * @throws OpHandlerException
+     */
+    public function applyPatch($patch, $context = []): array
     {
-        $this->addOpHandler($diFactory->make(
-            OpHandlerActiveRecordUpdate::class,
-            [
-                'entity' => 'survey',
-                'model' => Survey::model(),
-                'transformer' => $diContainer->get(
-                    TransformerInputSurvey::class
-                )
-            ]
-        ));
+        if (is_array($patch) && !empty($patch)) {
+            foreach ($patch as $patchOpData) {
+                $op = OpStandard::factory(
+                    $patchOpData['entity'] ?? '',
+                    $patchOpData['op'] ?? '',
+                    $patchOpData['id'] ?? '',
+                    $patchOpData['props'] ?? [],
+                    $context ?? []
+                );
+                try {
+                    $handleResponse = $this->handleOp($op);
+                    $this->tempIdMapping->incrementOperationsApplied();
+                    foreach ($handleResponse as $groupName => $mappingItem) {
+                        $this->addTempIdMapItem($mappingItem, $groupName);
+                    }
+                } catch (\Exception $e) {
+                    // add error message and full operation info to ErrorItemList
+                    $erronousItem = new ErronousOperationItem(
+                        $e->getMessage(),
+                        $patchOpData
+                    );
+                    $this->erronousOperations->addErronousOperationItem(
+                        $erronousItem
+                    );
+                }
+            }
+        }
+        return $this->buildResponseObject();
     }
 
-    private function addOpHandlerLanguageSetting(FactoryInterface $diFactory, ContainerInterface $diContainer): void
+    /**
+     * Recursive function to extract TempIdMapItems from the $mappingItem
+     * @param TempIdMapItem|array $mappingItem
+     * @param string $groupName
+     * @return void
+     * @throws \LimeSurvey\ObjectPatch\OpHandler\OpHandlerException
+     */
+    private function addTempIdMapItem($mappingItem, string $groupName)
     {
-        $this->addOpHandler($diFactory->make(
-            OpHandlerActiveRecordUpdate::class,
-            [
-                'entity' => 'languageSetting',
-                'model' => SurveyLanguageSetting::model(),
-                'transformer' => $diContainer->get(
-                    TransformerInputSurveyLanguageSettings::class
-                )
-            ]
-        ));
+        if ($mappingItem instanceof TempIdMapItem) {
+            $this->tempIdMapping->addTempIdMapItem(
+                $mappingItem,
+                $groupName
+            );
+        } else {
+            foreach ($mappingItem as $item) {
+                $this->addTempIdMapItem($item, $groupName);
+            }
+        }
     }
 
-    private function addOpHandlerQuestionGroup(FactoryInterface $diFactory, ContainerInterface $diContainer): void
+    private function buildResponseObject(): array
     {
-        $this->addOpHandler($diFactory->make(
-            OpHandlerActiveRecordUpdate::class,
-            [
-                'entity' => 'questionGroup',
-                'model' => QuestionGroup::model(),
-                'transformer' => $diContainer->get(
-                    TransformerInputQuestionGroup::class
-                )
-            ]
-        ));
-    }
-
-
-    private function addOpHandlerQuestionGroupL10n(FactoryInterface $diFactory, ContainerInterface $diContainer): void
-    {
-        $this->addOpHandler($diFactory->make(
-            OpHandlerActiveRecordUpdate::class,
-            [
-                'entity' => 'questionGroupL10n',
-                'model' => QuestionGroupL10n::model(),
-                'transformer' => $diContainer->get(
-                    TransformerInputQuestionGroupL10ns::class
-                )
-            ]
-        ));
-    }
-
-    private function addOpHandlerQuestion(FactoryInterface $diFactory, ContainerInterface $diContainer): void
-    {
-        $this->addOpHandler($diFactory->make(
-            OpHandlerActiveRecordUpdate::class,
-            [
-                'entity' => 'question',
-                'model' => Question::model(),
-                'transformer' => $diContainer->get(
-                    TransformerInputQuestion::class
-                )
-            ]
-        ));
-    }
-
-    private function addOpHandlerQuestionL10n(FactoryInterface $diFactory, ContainerInterface $diContainer): void
-    {
-        $this->addOpHandler($diFactory->make(
-            OpHandlerActiveRecordUpdate::class,
-            [
-                'entity' => 'questionL10n',
-                'model' => QuestionL10n::model(),
-                'transformer' => $diContainer->get(
-                    TransformerInputQuestionL10ns::class
-                )
-            ]
-        ));
-    }
-
-    private function addOpHandlerQuestionAttribute(FactoryInterface $diFactory, ContainerInterface $diContainer): void
-    {
-        $this->addOpHandler($diFactory->make(
-            OpHandlerActiveRecordUpdate::class,
-            [
-                'entity' => 'questionAttribute',
-                'model' => QuestionAttribute::model(),
-                'transformer' => $diContainer->get(
-                    TransformerInputQuestionAttribute::class
-                )
-            ]
-        ));
-    }
-
-    private function addOpHandlerQuestionAnswer(FactoryInterface $diFactory, ContainerInterface $diContainer): void
-    {
-        $this->addOpHandler($diFactory->make(
-            OpHandlerActiveRecordUpdate::class,
-            [
-                'entity' => 'questionAnswer',
-                'model' => Answer::model(),
-                'transformer' => $diContainer->get(
-                    TransformerInputAnswer::class
-                )
-            ]
-        ));
+        return array_merge(
+            $this->tempIdMapping->getMappingResponseObject(),
+            ['erronousOperations' => $this->erronousOperations->getErronousOperationsObject()]
+        );
     }
 }

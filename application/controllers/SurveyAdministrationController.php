@@ -2158,6 +2158,7 @@ class SurveyAdministrationController extends LSBaseController
     /**
      * Load ordering of question group screen.
      * questiongroup::organize()
+     * @TODO Reordering should be handled by existing function in new QuestionGroupService class
      *
      * @param int $iSurveyID Given Survey ID
      *

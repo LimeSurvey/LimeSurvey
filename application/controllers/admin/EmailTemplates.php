@@ -66,7 +66,10 @@ class EmailTemplates extends SurveyCommonAction
         foreach ($grplangs as $key => $grouplang) {
             $aData['bplangs'][$key] = $grouplang;
             $aData['attrib'][$key] = SurveyLanguageSetting::model()->find('surveyls_survey_id = :ssid AND surveyls_language = :ls', array(':ssid' => $iSurveyId, ':ls' => $grouplang));
-            $attachments = unserialize($aData['attrib'][$key]['attachments']);
+            $attachments = $aData['attrib'][$key]['attachments'];
+            if (is_string($attachments)) {
+                $attachments = unserialize($attachments);
+            }
             if (is_array($attachments)) {
                 foreach ($attachments as &$template) {
                     foreach ($template as &$attachment) {
@@ -92,12 +95,12 @@ class EmailTemplates extends SurveyCommonAction
         $aData['subaction'] = gT("Edit email templates");
         $aData['ishtml'] = $ishtml;
         $aData['grplangs'] = $grplangs;
-
+        $aData['showSaveButton'] = true;
+        $topbarData = TopbarConfiguration::getSurveyTopbarData($iSurveyId);
+        $topbarData = array_merge($topbarData, $aData);
         $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
             '/surveyAdministration/partial/topbar/surveyTopbarRight_view',
-            [
-                'showSaveButton' => true
-            ],
+            $topbarData,
             true
         );
 

@@ -259,7 +259,7 @@ class QuotasController extends LSBaseController
 
         Yii::app()->user->setFlash('success', sprintf(gT("Quota with ID %s was deleted"), $quotaId));
 
-        $this->redirect($this->createUrl(["quotas/index/",[ 'surveyid' => $surveyid]]));
+        $this->redirect($this->createUrl("quotas/index/surveyid/$surveyid"));
     }
 
 
@@ -361,7 +361,7 @@ class QuotasController extends LSBaseController
                     ]
                 ));
             } else {
-                $this->redirect($this->createUrl('/quotas/index', ['surveyid' => $surveyid]));
+                $this->redirect($this->createUrl("quotas/index/surveyid/$surveyid"));
             }
         } else {
             // Save was not successful, redirect back
@@ -389,7 +389,7 @@ class QuotasController extends LSBaseController
         $oQuota = $this->getQuotaWithPermission($quotaMember->quota_id, 'delete');
         $surveyid = $oQuota->sid;
         $quotaMember->delete();
-        $this->redirect($this->createUrl('/quotas/index', ['surveyid' => $oQuota->sid]));
+        $this->redirect($this->createUrl("quotas/index/surveyid/$surveyid"));
     }
 
     /**

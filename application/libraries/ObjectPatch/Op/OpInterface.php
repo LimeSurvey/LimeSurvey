@@ -10,4 +10,5 @@ interface OpInterface
     public function getEntityId();
     public function getType(): OpTypeInterface;
     public function getProps();
+    public function getContext();
 }
