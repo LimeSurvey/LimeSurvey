@@ -34,6 +34,25 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.6.49 (build 231212) to 5.6.50 (build 240109) January 8, 2024
+-Fixed issue #19245: Search surveys status options do not work (#3661) (Gabriel Jenik)
+-Fixed issue #19117: [security] Account past their expiration date can be still active (#3665) (Denis Chenu)
+#Updated translation: Slovak by jelen1
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Italian by lfanfoni, ritapas
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: French (France) by AlainR, DenisChenu
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Chinese (Simplified) by hdaphq
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 5.6.48 (build 231205) to 5.6.49 (build 231212) December 11, 2023
 -Fixed issue #CT-540: Quota error when trying to set an answer option for selected quota (Patrick Teichmann)
 -Fixed issue #19302:  Wrong redirect when directLogin is true (#3660) (Marko Bischof)
