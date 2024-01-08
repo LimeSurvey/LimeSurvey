@@ -409,7 +409,7 @@ class AuditLog extends \LimeSurvey\PluginManager\PluginBase
                 $oAutoLog->uid = $oCurrentUser->uid;
                 $oAutoLog->entity = 'token';
                 $oAutoLog->action = 'delete';
-                $oAutoLog->entityid = $aValues['participant_id'];   // TODO: Should this be the token ID?
+                $oAutoLog->entityid = $aValues['tid'];
                 $oAutoLog->oldvalues = json_encode($aValues);
                 $oAutoLog->fields = implode(',', array_keys($aValues));
                 $oAutoLog->save();
@@ -448,7 +448,7 @@ class AuditLog extends \LimeSurvey\PluginManager\PluginBase
             $oAutoLog->uid = $oCurrentUser->uid;
             $oAutoLog->entity = 'token';
             $oAutoLog->action = 'delete';
-            $oAutoLog->entityid = $aValues['participant_id'];   // TODO: Should this be the token ID?
+            $oAutoLog->entityid = $aValues['tid'];
             $oAutoLog->oldvalues = json_encode($aValues);
             $oAutoLog->fields = implode(',', array_keys($aValues));
             $oAutoLog->save();
