@@ -17,7 +17,7 @@ class TransformerInputQuestion extends Transformer
         $formatterMandatory = new FormatterMandatory();
 
         $this->setDataMap([
-            'qid' => ['type' => 'int', 'required' => 'update'],
+            'qid' => ['type' => 'int'],
             'parentQid' => ['key' => 'parent_qid', 'type' => 'int'],
             'sid' => ['type' => 'int', 'required' => 'create'],
             'type' => ['required' => 'create'],
