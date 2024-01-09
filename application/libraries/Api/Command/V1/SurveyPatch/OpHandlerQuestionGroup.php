@@ -218,13 +218,13 @@ class OpHandlerQuestionGroup implements OpHandlerInterface
         $surveyId = $this->getSurveyIdFromContext($op);
         $this->throwTransformerValidationErrors(
             $this->transformer->validate(
-                $op,
+                $op->getProps(),
                 ['operation' => $op->getType()->getId()]
             ),
             $op
         );
         $transformedProps = $this->transformer->transform(
-            $op,
+            $op->getProps(),
             ['operation' => $op->getType()->getId()]
         ) ?? [];
         $questionGroupData = $transformedProps['questionGroup'] ?? [];
