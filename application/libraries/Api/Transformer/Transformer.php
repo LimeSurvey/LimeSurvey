@@ -45,6 +45,7 @@ class Transformer implements TransformerInterface
                 $key,
                 $options
             );
+            $valueIsSet = array_key_exists($key, $data);
             $value = $data[$key] ?? null;
             // Null value reverts to default value
             // - the default value itself defaults to null
@@ -53,7 +54,8 @@ class Transformer implements TransformerInterface
             }
             // Null value and null default
             // - skip if not required
-            if (is_null($value) && !$config['required']) {
+            // @todo create test for this
+            if (is_null($value) && !$config['required'] && !$valueIsSet) {
                 continue;
             }
             $value = $this->cast($value, $config);
@@ -158,7 +160,7 @@ class Transformer implements TransformerInterface
     private function cast($value, $config)
     {
         $type = $config['type'];
-        if (!empty($type)) {
+        if (!is_null($value) && !empty($type)) {
             if (is_callable($type)) {
                 $value = $type($value);
             } elseif (is_string($type)) {
