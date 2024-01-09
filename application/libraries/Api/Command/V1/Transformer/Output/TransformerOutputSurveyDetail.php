@@ -53,6 +53,7 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
      */
     public function transform($data)
     {
+
         if (!$data instanceof Survey) {
             return null;
         }
@@ -61,6 +62,10 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
         $survey['templateInherited'] = $data->oOptions->template;
         $survey['formatInherited'] = $data->oOptions->format;
         $survey['languages'] = $data->allLanguages;
+        $survey['previewLink'] = App()->createUrl(
+            "survey/index",
+            array('sid' => $data->sid, 'newtest' => "Y", 'lang' => $data->language)
+        );
 
         // transformAll() can apply required entity sort so we must retain the sort order going forward
         // - We use a lookup array later to access entities without needing to know their position in the collection
