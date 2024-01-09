@@ -46,6 +46,17 @@ class TransformerInputQuestion extends Transformer
         if (empty($data)) {
             throw new TransformerException('Data can not be empty');
         }
-        return parent::transform($data, $options);
+        $transformed = parent::transform($data, $options);
+
+        // if mandatory was passed as null (soft mandatory) in the patch,
+        // we have to re-add it as it was removed by parent::transform()
+        if (
+            array_key_exists('mandatory', $data) &&
+            $data['mandatory'] === null
+        ) {
+            $formatterMandatory = new FormatterMandatory();
+            $transformed['mandatory'] = $formatterMandatory->revert(null);
+        }
+        return $transformed;
     }
 }
