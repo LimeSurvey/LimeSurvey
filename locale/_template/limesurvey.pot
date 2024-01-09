@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2024-01-08 11:34:06+00:00\n"
+"POT-Creation-Date: 2024-01-09 14:39:21+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -24428,15 +24428,7 @@ msgid "Survey preview"
 msgstr ""
 
 #: application/views/surveyAdministration/sidebody.php:70
-msgid "You can always make changes to the %s and customise questions of this %s"
-msgstr ""
-
-#: application/views/surveyAdministration/sidebody.php:70
-msgid "theme"
-msgstr ""
-
-#: application/views/surveyAdministration/sidebody.php:70
-msgid "template"
+msgid "You can always make changes to the %stheme%s and customise questions of this %stemplate%s"
 msgstr ""
 
 #: application/views/surveyAdministration/stopSurvey_view.php:13
