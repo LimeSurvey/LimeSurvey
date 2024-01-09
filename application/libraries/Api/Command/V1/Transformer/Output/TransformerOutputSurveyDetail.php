@@ -53,7 +53,6 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
      */
     public function transform($data)
     {
-
         if (!$data instanceof Survey) {
             return null;
         }
