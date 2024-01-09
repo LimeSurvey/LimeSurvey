@@ -164,10 +164,8 @@ class PatcherSurvey extends Patcher
                 $groupName
             );
         } else {
-            if (is_array($mappingItem) || is_object($mappingItem)) {
-                foreach ($mappingItem as $item) {
-                    $this->addTempIdMapItem($item, $groupName);
-                }
+            foreach ($mappingItem as $item) {
+                $this->addTempIdMapItem($item, $groupName);
             }
         }
     }
