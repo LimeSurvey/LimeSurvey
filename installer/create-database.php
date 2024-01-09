@@ -886,8 +886,6 @@ function populateDatabase($oDB)
             'email_admin_responses' => "mediumtext NULL",
             'surveyls_numberformat' => "integer NOT NULL DEFAULT 0",
             'attachments' => "text NULL",
-            'surveyls_legal_notice' => "text NULL",
-
         ), $options);
 
         $oDB->createCommand()->addPrimaryKey('{{surveys_languagesettings_pk}}', '{{surveys_languagesettings}}', ['surveyls_survey_id', 'surveyls_language']);
