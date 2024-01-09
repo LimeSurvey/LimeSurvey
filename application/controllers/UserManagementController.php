@@ -463,7 +463,7 @@ class UserManagementController extends LSBaseController
         $oUser = User::model()->findByPk($userId);
 
         if ($oUser == null) {
-            throw new CHttpException(404, gT("Invalid user id"));
+            throw new CHttpException(404, gT("Invalid user ID"));
         } else {
             if ($oUser->setActivationStatus($action)) {
                 return $this->renderPartial('/admin/super/_renderJson', [
@@ -532,7 +532,7 @@ class UserManagementController extends LSBaseController
         foreach ($userIds as $iUserId) {
             $oUser = User::model()->findByPk($iUserId);
             if ($oUser == null) {
-                throw new CHttpException(404, gT("Invalid user id"));
+                throw new CHttpException(404, gT("Invalid user ID"));
             } else {
                 $results[$iUserId]['title'] = $oUser->users_name;
                 if (!$this->isAllowedToEdit($oUser)) {

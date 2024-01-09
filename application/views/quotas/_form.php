@@ -36,7 +36,7 @@ $this->widget('ext.AlertWidget.AlertWidget', ['errorSummaryModel' => $oQuota]);
                         Quota::ACTION_TERMINATE         => gT("Terminate survey"),
                         Quota::ACTION_CONFIRM_TERMINATE => gT("Allow user to modify their last answers before terminating the survey."),
                     ],
-                    ['class' => 'form-control']); ?>
+                    ['class' => 'form-select']); ?>
                 <?php echo $form->error($oQuota, 'action'); ?>
             </div>
         </div>
