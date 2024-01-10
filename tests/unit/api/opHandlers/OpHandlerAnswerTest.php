@@ -56,35 +56,6 @@ class OpHandlerAnswerTest extends TestBaseClass
     }
 
     /**
-     * @testdox scale_id is used as second index of produced array
-     * @todo this should be a transformer test
-     */
-    /*
-    public function testAnswerDataStructure()
-    {
-        $op = $this->getOp(
-            $this->getCorrectProps()
-        );
-
-        $opHandler = $this->getOpHandler();
-        $data = $this->op->getProps();
-        $preparedData = $opHandler->prepareAnswers(
-            $this->op,
-            $data,
-            new TransformerInputAnswer(),
-            new TransformerInputAnswerL10ns(),
-            ['answer', 'answerL10n']
-        );
-
-        self::assertIsArray($preparedData);
-        self::assertArrayHasKey(0, $preparedData);
-        self::assertArrayHasKey(1, $preparedData);
-        self::assertArrayHasKey(0, $preparedData[0]);
-        self::assertArrayHasKey(1, $preparedData[1]);
-    }
-    */
-
-    /**
      * @param array $props
      * @param string $type
      * @return OpStandard
