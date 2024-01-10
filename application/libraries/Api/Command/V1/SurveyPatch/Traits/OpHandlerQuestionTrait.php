@@ -34,9 +34,9 @@ trait OpHandlerQuestionTrait
             foreach ($subQueDataArray as $subQueData) {
                 if (
                     isset($subQueData['tempId'])
-                    && isset($subQueData[$title])
+                    && isset($subQueData['code'])
                 ) {
-                    $tempIds[$subQueData[$title]] = $subQueData['tempId'];
+                    $tempIds[$subQueData['code']] = $subQueData['tempId'];
                 }
             }
         }
