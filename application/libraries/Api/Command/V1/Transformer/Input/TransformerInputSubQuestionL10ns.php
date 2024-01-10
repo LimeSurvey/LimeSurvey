@@ -12,4 +12,16 @@ class TransformerInputSubQuestionL10ns extends Transformer
             'question' => ['required' => true],
         ]);
     }
+
+    public function transform($data, $options = [])
+    {
+        $transformed = parent::transform(
+            $data,
+            $options
+        );
+        return array_key_exists(
+            'question',
+            $transformed
+        ) ? $transformed['question'] : '';
+    }
 }

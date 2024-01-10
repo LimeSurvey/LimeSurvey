@@ -160,7 +160,6 @@ class OpHandlerSubQuestion implements OpHandlerInterface
         $surveyId = $this->getSurveyIdFromContext($op);
         $this->questionAggregateService->checkUpdatePermission($surveyId);
         $transformOptions = ['operation' => $op->getType()->getId()];
-        //var_dump($op->getProps()); exit;
         $this->throwTransformerValidationErrors(
             $this->transformer->validateAll(
                 $op->getProps(),
