@@ -19,7 +19,7 @@ class TransformerInputQuestion extends Transformer
         $this->setDataMap([
             'qid' => ['type' => 'int'],
             'parentQid' => ['key' => 'parent_qid', 'type' => 'int'],
-            'sid' => ['type' => 'int', 'required' => 'create'],
+            'sid' => ['type' => 'int'],
             'type' => ['required' => 'create'],
             'title' => ['required' => 'create'],
             'preg' => true,
