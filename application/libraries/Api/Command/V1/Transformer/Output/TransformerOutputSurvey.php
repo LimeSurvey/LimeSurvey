@@ -12,7 +12,6 @@ use LimeSurvey\Api\Transformer\{
 class TransformerOutputSurvey extends TransformerOutputActiveRecord
 {
     private TransformerOutputSurveyLanguageSettings $transformerOutputSurveyLanguageSettings;
-
     /**
      *  @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
@@ -27,6 +26,8 @@ class TransformerOutputSurvey extends TransformerOutputActiveRecord
             'sid' => ['type' => 'int'],
             'gsid' => ['type' => 'int'],
             'active' => ['formatter' => $formatterYn],
+            'admin' => true,
+            'adminemail' => 'adminEmail',
             'language'  => true,
             'expires' => ['key' => 'expires'],
             'startdate' => ['key' => 'startDate'],
