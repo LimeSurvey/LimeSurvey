@@ -64,6 +64,7 @@ class TransformerInputAnswerTest extends TestBaseClass
             0,
             [
                 '0' => [
+                    'tempId'  => '222',
                     'code'    => 'AO01',
                     'scaleId' => '0',
                     'l10ns'   => [
@@ -76,6 +77,7 @@ class TransformerInputAnswerTest extends TestBaseClass
                     ]
                 ],
                 '1' => [
+                    'tempId'  => '333',
                     'code'    => 'AO01',
                     'scaleId' => '1',
                     'l10ns'   => [
