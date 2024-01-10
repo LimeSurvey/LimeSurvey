@@ -247,11 +247,13 @@ class OpHandlerQuestionGroup implements OpHandlerInterface
         );
         $questionGroup->refresh();
         return [
-            'questionGroupsMap' => new TempIdMapItem(
-                $tempId,
-                $questionGroup->gid,
-                'gid'
-            )
+            'questionGroupsMap' => [
+                new TempIdMapItem(
+                    $tempId,
+                    $questionGroup->gid,
+                    'gid'
+                )
+            ]
         ];
     }
 

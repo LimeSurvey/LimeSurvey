@@ -2,12 +2,22 @@
 
 namespace LimeSurvey\Helpers\Update;
 
+use LimeSurvey\Helpers\Update\DatabaseUpdateBase;
+
 class Update_620 extends DatabaseUpdateBase
 {
+    /**
+     * @inheritDoc
+     */
     public function up()
     {
-            addColumn('{{surveys}}', 'showquestioncode', "string(1) NOT NULL default 'N'");
-            addColumn('{{surveys}}', 'cookieconsent', "string(1) NOT NULL default 'N'");
-            addColumn('{{surveys}}', 'footerbranding', "string(1) NOT NULL default 'N'");
+        $this->db->createCommand()
+            ->update(
+                '{{boxes}}',
+                [
+                    'desc' => 'Label sets can be used as answer options or subquestions to speed up creation of similar questions.',
+                ],
+                "title = 'LimeStore' AND page = 'welcome'"
+            );
     }
 }
