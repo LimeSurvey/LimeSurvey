@@ -53,8 +53,7 @@ class Transformer implements TransformerInterface
                 $value = $config['default'];
             }
             // Null value and null default
-            // - skip if not required
-            // @todo create test for this
+            // - skip if not required and if it wasn't set to null explicitly
             if (is_null($value) && !$config['required'] && !$valueIsSet) {
                 continue;
             }

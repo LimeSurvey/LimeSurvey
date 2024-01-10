@@ -19,7 +19,7 @@ use LimeSurvey\Api\Transformer\TransformerException;
 class TransformerInputAnswerTest extends TestBaseClass
 {
     /**
-     * @testdox scale_id is used as second index of produced array
+     * @testdox test data structure
      */
     public function testAnswerDataStructure()
     {

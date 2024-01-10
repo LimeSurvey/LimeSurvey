@@ -54,6 +54,25 @@ class TransformerOutputTest extends TestBaseClass
     }
 
     /**
+     * @testdox transform() keeps null values when they're set explicitly
+     */
+    public function testSetNullValuesAreKept()
+    {
+        $transformer = new Transformer;
+        $transformer->setDataMap([
+            'first_name' => true,
+            'age' => true
+        ]);
+        $transformedData = $transformer->transform([
+            'first_name' => null
+        ]);
+
+        $this->assertEquals([
+            'first_name' => null
+        ], $transformedData);
+    }
+
+    /**
      * @testdox transform() Maps to specified output fields.
      */
     public function testMapsToSpecifiedOutputFields()
