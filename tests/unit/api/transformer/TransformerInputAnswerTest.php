@@ -69,10 +69,12 @@ class TransformerInputAnswerTest extends TestBaseClass
                     'scaleId' => '0',
                     'l10ns'   => [
                         'en' => [
-                            'answer' => 'answer'
+                            'answer' => 'answer',
+                            'language' => 'en'
                         ],
                         'de' => [
-                            'answer' => 'answerger'
+                            'answer' => 'answerger',
+                            'language' => 'de'
                         ]
                     ]
                 ],
@@ -82,10 +84,12 @@ class TransformerInputAnswerTest extends TestBaseClass
                     'scaleId' => '1',
                     'l10ns'   => [
                         'en' => [
-                            'answer' => 'answer'
+                            'answer' => 'answer',
+                            'language' => 'en'
                         ],
                         'de' => [
-                            'answer' => 'answerger'
+                            'answer' => 'answerger',
+                            'language' => 'de'
                         ]
                     ]
                 ]
