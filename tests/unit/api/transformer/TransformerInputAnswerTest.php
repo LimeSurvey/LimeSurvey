@@ -36,19 +36,19 @@ class TransformerInputAnswerTest extends TestBaseClass
         self::assertArrayHasKey(1, $preparedData);
         self::assertArrayHasKey(0, $preparedData[0]);
         self::assertArrayHasKey(1, $preparedData[1]);
-        self::assertArrayHasKey('code', $preparedData[0]);
-        self::assertEquals('AO01', $preparedData[0]['code']);
-        self::assertArrayHasKey('answeroptionl10n', $preparedData[0]);
-        self::assertIsArray($preparedData[0]['answeroptionl10n']);
-        self::assertArrayHasKey('en', $preparedData[0]['answeroptionl10n']);
-        self::assertArrayHasKey('de', $preparedData[0]['answeroptionl10n']);
+        self::assertArrayHasKey('code', $preparedData[0][0]);
+        self::assertEquals('AO01', $preparedData[0][0]['code']);
+        self::assertArrayHasKey('answeroptionl10n', $preparedData[0][0]);
+        self::assertIsArray($preparedData[0][0]['answeroptionl10n']);
+        self::assertArrayHasKey('en', $preparedData[0][0]['answeroptionl10n']);
+        self::assertArrayHasKey('de', $preparedData[0][0]['answeroptionl10n']);
         self::assertEquals(
             'answer',
-            $preparedData[0]['answeroptionl10n']['en']
+            $preparedData[0][0]['answeroptionl10n']['en']
         );
         self::assertEquals(
             'answerger',
-            $preparedData[0]['answeroptionl10n']['de']
+            $preparedData[0][0]['answeroptionl10n']['de']
         );
     }
 
