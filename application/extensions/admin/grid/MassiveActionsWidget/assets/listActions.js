@@ -241,10 +241,18 @@ var onClickListAction =  function () {
                     return;
                 }
             },
-            error :  function(html, statut){
+            error: function(data, textStatus, jqXHR) {
                 $ajaxLoader.hide();
-                $modal.find('.modal-body-text').empty().html(html.responseText);
-                console.log(html);
+                if (data
+                    && data.responseJSON
+                    && data.responseJSON.success === false
+                    && data.responseJSON.message)
+                {
+                    $modal.modal('hide');
+                    LS.LsGlobalNotifier.createAlert(data.responseJSON.message,  "danger", {showCloseButton: true});
+                } else {
+                    $modal.find('.modal-body-text').empty().html(data.responseText);
+                }
             }
         });
     });

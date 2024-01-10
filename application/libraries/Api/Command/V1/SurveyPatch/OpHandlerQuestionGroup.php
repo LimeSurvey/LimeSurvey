@@ -2,6 +2,7 @@
 
 namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
+use LimeSurvey\Api\Command\V1\SurveyPatch\Response\TempIdMapItem;
 use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\OpHandlerSurveyTrait;
 use LimeSurvey\Models\Services\Exception\PermissionDeniedException;
 use QuestionGroup;
@@ -249,9 +250,13 @@ class OpHandlerQuestionGroup implements OpHandlerInterface
         );
         $questionGroup->refresh();
         return [
+
             'questionGroupsMap' => [
-                'tempId' => $tempId,
-                'gid'    => $questionGroup->gid
+                new TempIdMapItem(
+                    $tempId,
+                    $questionGroup->gid,
+                    'gid'
+                )
             ]
         ];
     }

@@ -676,12 +676,6 @@ function populateDatabase($oDB)
             'googleanalyticsstyle' => "string(1) NULL",
             'googleanalyticsapikey' => "string(25) NULL",
             'tokenencryptionoptions' => "text NULL",
-            'showquestioncode' => "string(1) NOT NULL default 'N'",
-            'cookieconsent' => "string(1) NOT NULL default 'N'",
-            'footerbranding' => "string(1) NOT NULL default 'N'",
-            // below fields are only for cloud version
-            'showdatapolicybutton' => "string(1) NOT NULL default 'N'",
-            'showlegalnoticebutton' => "string(1) NOT NULL default 'N'",
         ), $options);
 
         $oDB->createCommand()->addPrimaryKey('{{surveys_pk}}', '{{surveys}}', 'sid');
@@ -886,8 +880,6 @@ function populateDatabase($oDB)
             'email_admin_responses' => "mediumtext NULL",
             'surveyls_numberformat' => "integer NOT NULL DEFAULT 0",
             'attachments' => "text NULL",
-            'surveyls_legal_notice' => "text NULL",
-
         ), $options);
 
         $oDB->createCommand()->addPrimaryKey('{{surveys_languagesettings_pk}}', '{{surveys_languagesettings}}', ['surveyls_survey_id', 'surveyls_language']);
