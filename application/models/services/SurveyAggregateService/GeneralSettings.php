@@ -170,6 +170,7 @@ class GeneralSettings
                 );
             }
         }
+
         return $meta;
     }
 
@@ -267,13 +268,7 @@ class GeneralSettings
             'bounce_email' => [],
             'gsid' => ['default' => 1],
             'format' => [],
-            'template' => [],
-            'showquestioncode' => [],
-            'cookieconsent' => [],
-            'footerbranding' => [],
-            // below fields are only for cloud version
-            "showdatapolicybutton" =>  [],
-            "showlegalnoticebutton" =>  [],
+            'template' => []
         ];
     }
 
