@@ -15,13 +15,17 @@ class TransformerInputSubQuestionL10ns extends Transformer
 
     public function transform($data, $options = [])
     {
+        $question = '';
         $transformed = parent::transform(
             $data,
             $options
         );
-        return array_key_exists(
-            'question',
-            $transformed
-        ) ? $transformed['question'] : '';
+        if (is_array($transformed)) {
+            $question = array_key_exists(
+                'question',
+                $transformed
+            ) ? $transformed['question'] : '';
+        }
+        return $question;
     }
 }
