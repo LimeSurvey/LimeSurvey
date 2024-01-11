@@ -710,10 +710,10 @@ class CheckIntegrity extends SurveyCommonAction
         // Fix subquestions
         fixSubquestions();
 
-        /*** Check for active survey tables with missing survey entry and rename them ***/
+        /*** Check for active survey tables with missing survey entry or where survey entry is inactivate and rename them ***/
         $sDBPrefix = Yii::app()->db->tablePrefix;
         $aResult = Yii::app()->db->createCommand(dbSelectTablesLike('{{survey}}\_%'))->queryColumn();
-        $sSurveyIDs = Yii::app()->db->createCommand('select sid from {{surveys}}')->queryColumn();
+        $sSurveyIDs = Yii::app()->db->createCommand("select sid from {{surveys}} where active='Y'")->queryColumn();
         foreach ($aResult as $aRow) {
             $sTableName = (string) substr((string) $aRow, strlen((string) $sDBPrefix));
             if ($sTableName == 'survey_links' || $sTableName == 'survey_url_parameters') {
@@ -723,18 +723,37 @@ class CheckIntegrity extends SurveyCommonAction
             if (isset($aTableName[1]) && ctype_digit($aTableName[1])) {
                 $iSurveyID = $aTableName[1];
                 if (!in_array($iSurveyID, $sSurveyIDs)) {
-                    $sDate = (string) date('YmdHis') . rand(1, 1000);
+                    $datestamp = time();
+                    $date = date('YmdHis', $datestamp); //'His' adds 24hours+minutes to name to allow multiple deactiviations in a day
+                    $DBDate = date('Y-m-d H:i:s', $datestamp);
+                    $userID = Yii::app()->user->getId();
                     // Check if it's really a survey_XXX table mantis #14938
                     if (empty($aTableName[2])) {
                         $sOldTable = "survey_{$iSurveyID}";
-                        $sNewTable = "old_survey_{$iSurveyID}_{$sDate}";
+                        $sNewTable = "old_survey_{$iSurveyID}_{$date}";
                         Yii::app()->db->createCommand()->renameTable("{{{$sOldTable}}}", "{{{$sNewTable}}}");
+                        $archivedTokenSettings = new ArchivedTableSettings();
+                        $archivedTokenSettings->survey_id = $iSurveyID;
+                        $archivedTokenSettings->user_id = $userID;
+                        $archivedTokenSettings->tbl_name = $sNewTable;
+                        $archivedTokenSettings->tbl_type = 'response';
+                        $archivedTokenSettings->created = $DBDate;
+                        $archivedTokenSettings->properties = json_encode(Response::getEncryptedAttributes($iSurveyID));
+                        $archivedTokenSettings->save();
                         $bDirectlyFixed = true;
                     }
                     if (!empty($aTableName[2]) && $aTableName[2] == "timings" && empty($aTableName[3])) {
                         $sOldTable = "survey_{$iSurveyID}_timings";
-                        $sNewTable = "old_survey_{$iSurveyID}_timings_{$sDate}";
+                        $sNewTable = "old_survey_{$iSurveyID}_timings_{$date}";
                         Yii::app()->db->createCommand()->renameTable("{{{$sOldTable}}}", "{{{$sNewTable}}}");
+                        $archivedTokenSettings = new ArchivedTableSettings();
+                        $archivedTokenSettings->survey_id = $iSurveyID;
+                        $archivedTokenSettings->user_id = $userID;
+                        $archivedTokenSettings->tbl_name = $sNewTable;
+                        $archivedTokenSettings->tbl_type = 'timings';
+                        $archivedTokenSettings->created = $DBDate;
+                        $archivedTokenSettings->properties = '';
+                        $archivedTokenSettings->save();
                         $bDirectlyFixed = true;
                     }
                 }
