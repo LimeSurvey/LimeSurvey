@@ -379,9 +379,16 @@ var ThemeOptions = function () {
     }
 
     var removeVariationsFromField = function (fieldSelector) {
-        if ($(fieldSelector).val() === 'inherit') return;
+        var plainValue = $(fieldSelector).val();
+        if (plainValue === 'inherit') {
+            var inheritSource = $(fieldSelector).data('inherit-source');
+            if (!inheritSource) {
+                return;
+            }
+            plainValue = JSON.parse($('#' + inheritSource).val());
+        }
         try {
-            var currentValue = JSON.parse($(fieldSelector).val());
+            var currentValue = JSON.parse(plainValue);
         } catch (error) {
             var currentValue = {};
         }
@@ -430,9 +437,10 @@ var ThemeOptions = function () {
             var filesField = selectedThemeMode == 'add' ? '#TemplateConfiguration_files_css' : '#TemplateConfiguration_cssframework_css';
             removeVariationsFromField('#TemplateConfiguration_files_css');
             removeVariationsFromField('#TemplateConfiguration_cssframework_css');
-            if (selectedTheme != 'inherit') {
-                addVariationToField(selectedTheme, filesField, selectedThemeMode);
+            if (selectedTheme == 'inherit') {
+                selectedTheme = $('#simple_edit_options_cssframework').data('inheritvalue');
             }
+            addVariationToField(selectedTheme, filesField, selectedThemeMode);
         });
     }
 
