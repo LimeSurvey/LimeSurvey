@@ -9,7 +9,8 @@ use LimeSurvey\Api\Transformer\{
 
 class TransformerOutputSurveysGroup extends TransformerOutputActiveRecord
 {
-    public function __construct() {
+    public function __construct()
+    {
         $this->setDataMap([
             'gsid' => ['type' => 'int'],
             'name' => true,

@@ -36,7 +36,7 @@ class SurveysGroupList implements CommandInterface
         TransformerOutputSurveysGroup $transformerOutputSurveysGroup,
         ResponseFactory $responseFactory
     ) {
-        $this->surveysGroups = $surveysGroup;
+        $this->surveysGroup = $surveysGroup;
         $this->authSession = $authSession;
         $this->transformerOutputSurveysGroup = $transformerOutputSurveysGroup;
         $this->responseFactory = $responseFactory;
@@ -60,13 +60,9 @@ class SurveysGroupList implements CommandInterface
                 ->makeErrorUnauthorised();
         }
 
-        // $dataProvider = $this->surveysGroup
-        //     ->search();
+        $dataProvider = $this->surveysGroup->search();
 
-        $dataProvider = SurveysGroups::model()->search();
-
-        $data = 
-            $this->transformerOutputSurveysGroup
+        $data = $this->transformerOutputSurveysGroup
                 ->transformAll($dataProvider->getData());
 
         return $this->responseFactory
