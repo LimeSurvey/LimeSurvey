@@ -91,6 +91,9 @@ class SurveyDetail implements CommandInterface
             );
         }
 
+        $groups = \SurveysGroups::getSurveyGroupsList();
+        var_dump($groups);
+
         //set real survey options with inheritance to get value of "inherit" attribute from db
         // for example get inherit template value  $surveyModel->options->template
         $surveyModel->setOptionsFromDatabase();
