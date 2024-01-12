@@ -53,6 +53,7 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
      * Transform
      *
      * Returns an array of entity references indexed by the specified key.
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     public function transform($data)
     {
@@ -64,6 +65,10 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
         $survey['templateInherited'] = $data->oOptions->template;
         $survey['formatInherited'] = $data->oOptions->format;
         $survey['languages'] = $data->allLanguages;
+        $survey['previewLink'] = App()->createUrl(
+            "survey/index",
+            array('sid' => $data->sid, 'newtest' => "Y", 'lang' => $data->language)
+        );
         $survey['surveyGroup'] = $data->surveygroup;
         $survey['owner'] = $this->transformerSurveyOwner->transform($data->owner);
         $survey['ownerInherited'] = $this->transformerSurveyOwner->transform($data->oOptions->owner);
