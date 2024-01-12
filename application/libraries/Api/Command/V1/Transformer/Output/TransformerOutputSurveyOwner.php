@@ -2,7 +2,6 @@
 
 namespace LimeSurvey\Api\Command\V1\Transformer\Output;
 
-use User;
 use LimeSurvey\Api\Transformer\Output\TransformerOutputActiveRecord;
 
 class TransformerOutputSurveyOwner extends TransformerOutputActiveRecord
