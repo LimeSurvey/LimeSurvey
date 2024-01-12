@@ -18,6 +18,7 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
     private TransformerOutputQuestionL10ns $transformerQuestionL10ns;
     private TransformerOutputQuestionAttribute $transformerQuestionAttribute;
     private TransformerOutputAnswer $transformerAnswer;
+    private TransformerOutputSurveyOwner $transformerSurveyOwner;
     private QuestionService $questionService;
     private TransformerOutputAnswerL10ns $transformerAnswerL10ns;
 
@@ -33,6 +34,7 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
         TransformerOutputQuestionAttribute $transformerOutputQuestionAttribute,
         TransformerOutputAnswer $transformerOutputAnswer,
         TransformerOutputAnswerL10ns $transformerOutputAnswerL10ns,
+        TransformerOutputSurveyOwner $transformerOutputSurveyOwner,
         QuestionService $questionService
     ) {
         $this->transformerSurvey = $transformerOutputSurvey;
@@ -43,6 +45,7 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
         $this->transformerQuestionAttribute = $transformerOutputQuestionAttribute;
         $this->transformerAnswer = $transformerOutputAnswer;
         $this->transformerAnswerL10ns = $transformerOutputAnswerL10ns;
+        $this->transformerSurveyOwner = $transformerOutputSurveyOwner;
         $this->questionService = $questionService;
     }
 
@@ -61,6 +64,9 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
         $survey['templateInherited'] = $data->oOptions->template;
         $survey['formatInherited'] = $data->oOptions->format;
         $survey['languages'] = $data->allLanguages;
+        $survey['surveyGroup'] = $data->surveygroup;
+        $survey['owner'] = $this->transformerSurveyOwner->transform($data->owner);
+        $survey['ownerInherited'] = $this->transformerSurveyOwner->transform($data->oOptions->owner);
 
         // transformAll() can apply required entity sort so we must retain the sort order going forward
         // - We use a lookup array later to access entities without needing to know their position in the collection

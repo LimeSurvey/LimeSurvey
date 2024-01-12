@@ -58,12 +58,11 @@ class OpHandlerQuestionGroup implements OpHandlerInterface
         $this->setOperationTypes($op);
         $isQuestionGroupEntity = $op->getEntityType() === $this->entity;
 
-        return
-            (
-                $this->isUpdateOperation
-                || $this->isCreateOperation
-                || $this->isDeleteOperation
-            )
+        return (
+            $this->isUpdateOperation
+            || $this->isCreateOperation
+            || $this->isDeleteOperation
+        )
             && $isQuestionGroupEntity;
     }
 
@@ -122,9 +121,7 @@ class OpHandlerQuestionGroup implements OpHandlerInterface
             );
         }
         if (isset($props['questionGroupL10n'])) {
-            foreach (
-                $props['questionGroupL10n'] as $lang => $questionGroupL10n
-            ) {
+            foreach ($props['questionGroupL10n'] as $lang => $questionGroupL10n) {
                 $transformedProps['questionGroupI10N'][$lang]
                     = $this->transformerL10n->transform(
                         $questionGroupL10n
@@ -250,7 +247,6 @@ class OpHandlerQuestionGroup implements OpHandlerInterface
         );
         $questionGroup->refresh();
         return [
-
             'questionGroupsMap' => [
                 new TempIdMapItem(
                     $tempId,

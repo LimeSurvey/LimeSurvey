@@ -23,6 +23,8 @@ class TransformerInputSurvey extends Transformer
             'gsid' => ['type' => 'int'],
             'active' => ['formatter' => $formatterYn],
             'language' => true,
+            'admin' => true,
+            'adminEmail' => ['key' => 'adminemail'],
             'expires' => ['key' => 'expires'],
             'startDate' => ['key' => 'startdate'],
             'anonymized' => ['formatter' => $formatterYn],
