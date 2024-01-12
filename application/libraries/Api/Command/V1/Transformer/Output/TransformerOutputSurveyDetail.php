@@ -53,6 +53,7 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
      * Transform
      *
      * Returns an array of entity references indexed by the specified key.
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     public function transform($data)
     {
