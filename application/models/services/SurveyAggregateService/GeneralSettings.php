@@ -98,7 +98,7 @@ class GeneralSettings
         // by the current user (in case the request was forged)
         // NOTE: Internally, the getUserList function will use objects (like the Yii App and Permission model) that
         //       currently may differ from the ones injected in this service.
-        if (!empty($input['owner_id'])) {
+        if (!empty($input['owner_id']) && $input['owner_id'] != '-1') {
             $owner = $this->modelUser->findByPk($input['owner_id']);
             if (!isset($owner) || !in_array($input['owner_id'], getUserList('onlyuidarray'))) {
                 throw new PermissionDeniedException(
@@ -170,6 +170,7 @@ class GeneralSettings
                 );
             }
         }
+
         return $meta;
     }
 
@@ -267,13 +268,7 @@ class GeneralSettings
             'bounce_email' => [],
             'gsid' => ['default' => 1],
             'format' => [],
-            'template' => [],
-            'showquestioncode' => [],
-            'cookieconsent' => [],
-            'footerbranding' => [],
-            // below fields are only for cloud version
-            "showdatapolicybutton" =>  [],
-            "showlegalnoticebutton" =>  [],
+            'template' => []
         ];
     }
 
