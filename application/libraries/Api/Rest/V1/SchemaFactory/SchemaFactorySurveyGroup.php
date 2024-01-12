@@ -5,15 +5,15 @@ namespace LimeSurvey\Api\Rest\V1\SchemaFactory;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\Schema;
 use GoldSpecDigital\ObjectOrientedOAS\Contracts\SchemaContract;
 
-class SchemaFactorySurveysGroup
+class SchemaFactorySurveyGroup
 {
     /**
      * @param \GoldSpecDigital\ObjectOrientedOAS\Contracts\SchemaContract $properties
      */
     public function make(SchemaContract ...$properties): Schema
     {
-        return Schema::create()->title('Surveys Group')
-            ->description('Surveys Group')
+        return Schema::create()->title('Survey Group')
+            ->description('Survey Group')
             ->type(Schema::TYPE_OBJECT)
             ->properties(
                 Schema::integer('gsid')->default(null),

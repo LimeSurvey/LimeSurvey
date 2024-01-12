@@ -7,7 +7,7 @@ use LimeSurvey\Api\Transformer\{
     Output\TransformerOutputActiveRecord,
 };
 
-class TransformerOutputSurveysGroup extends TransformerOutputActiveRecord
+class TransformerOutputSurveyGroup extends TransformerOutputActiveRecord
 {
     public function __construct()
     {
@@ -23,11 +23,11 @@ class TransformerOutputSurveysGroup extends TransformerOutputActiveRecord
 
     public function transform($data)
     {
-        $surveys_group = null;
+        $survey_group = null;
         if (!$data instanceof SurveysGroups) {
             return null;
         }
-        $surveys_group = parent::transform($data);
-        return $surveys_group;
+        $survey_group = parent::transform($data);
+        return $survey_group;
     }
 }

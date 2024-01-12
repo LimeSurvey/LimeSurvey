@@ -5,18 +5,18 @@ namespace LimeSurvey\Api\Rest\V1\SchemaFactory;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\Schema;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\AllOf;
 
-class SchemaFactorySurveysGroupList
+class SchemaFactorySurveyGroupList
 {
     public function make(): Schema
     {
         return Schema::create()
-            ->title('Surveys Group List')
-            ->description('Surveys Group List')
+            ->title('Survey Group List')
+            ->description('Survey Group List')
             ->type(Schema::TYPE_OBJECT)
             ->properties(
-                Schema::array('surveysGroups')->items(
+                Schema::array('surveyGroups')->items(
                     AllOf::create()->schemas(
-                        (new SchemaFactorySurveysGroup())->make()
+                        (new SchemaFactorySurveyGroup())->make()
                     )
                 )
             );

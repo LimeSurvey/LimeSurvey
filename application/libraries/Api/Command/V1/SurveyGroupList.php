@@ -3,7 +3,7 @@
 namespace LimeSurvey\Api\Command\V1;
 
 use SurveysGroups;
-use LimeSurvey\Api\Command\V1\Transformer\Output\TransformerOutputSurveysGroup;
+use LimeSurvey\Api\Command\V1\Transformer\Output\TransformerOutputSurveyGroup;
 use LimeSurvey\Api\Command\{
     CommandInterface,
     Request\Request,
@@ -13,32 +13,32 @@ use LimeSurvey\Api\Command\{
 use LimeSurvey\Api\Auth\AuthSession;
 use LimeSurvey\Api\Command\Mixin\Auth\AuthPermissionTrait;
 
-class SurveysGroupList implements CommandInterface
+class SurveyGroupList implements CommandInterface
 {
     use AuthPermissionTrait;
 
-    protected SurveysGroups $surveysGroup;
+    protected SurveysGroups $surveyGroup;
     protected AuthSession $authSession;
-    protected TransformerOutputSurveysGroup $transformerOutputSurveysGroup;
+    protected TransformerOutputSurveyGroup $transformerOutputSurveyGroup;
     protected ResponseFactory $responseFactory;
 
     /**
      * Constructor
      *
-     * @param SurveysGroups $surveysGroup
+     * @param SurveysGroups $surveyGroup
      * @param AuthSession $authSession
-     * @param TransformerOutputSurveysGroup $transformerOutputSurveysGroup
+     * @param TransformerOutputSurveyGroup $transformerOutputSurveyGroup
      * @param ResponseFactory $responseFactory
      */
     public function __construct(
-        SurveysGroups $surveysGroup,
+        SurveysGroups $surveyGroup,
         AuthSession $authSession,
-        TransformerOutputSurveysGroup $transformerOutputSurveysGroup,
+        TransformerOutputSurveyGroup $transformerOutputSurveyGroup,
         ResponseFactory $responseFactory
     ) {
-        $this->surveysGroup = $surveysGroup;
+        $this->surveyGroup = $surveyGroup;
         $this->authSession = $authSession;
-        $this->transformerOutputSurveysGroup = $transformerOutputSurveysGroup;
+        $this->transformerOutputSurveyGroup = $transformerOutputSurveyGroup;
         $this->responseFactory = $responseFactory;
     }
 
@@ -60,12 +60,12 @@ class SurveysGroupList implements CommandInterface
                 ->makeErrorUnauthorised();
         }
 
-        $dataProvider = $this->surveysGroup->search();
+        $dataProvider = $this->surveyGroup->search();
 
-        $data = $this->transformerOutputSurveysGroup
+        $data = $this->transformerOutputSurveyGroup
                 ->transformAll($dataProvider->getData());
 
         return $this->responseFactory
-            ->makeSuccess(['surveysGroups' => $data]);
+            ->makeSuccess(['surveyGroups' => $data]);
     }
 }
