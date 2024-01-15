@@ -157,7 +157,7 @@ class TransformerInputQuestionAggregateTest extends TestBaseClass
         $op = $this->getOp();
         $transformer = DI::getContainer()->get(TransformerInputQuestionAggregate::class);
 
-        return $transformer->transformAll(
+        return $transformer->transform(
             (array)$op->getProps(),
             ['operation' => 'create']
         );
