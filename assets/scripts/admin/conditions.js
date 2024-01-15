@@ -147,13 +147,13 @@ $(document).on('ready  pjax:scriptcomplete', function(){
     $('a[href="' + editSourceTab + '"]').tab('show');
 
     // When user clicks tab, update hidden input
-    $('#editconditions .src-tab').on('click', function(e) {
-        var href = $(e.currentTarget).find('a').attr('href');
+    $('#editconditions .src-tab a.nav-link').on('shown.bs.tab', function(e) {
+        var href = $(this).attr('href');
         $('input[name="editSourceTab"]').val(href);
     });
 
     // When user clicks tab, update hidden input
-    $('#editconditions a.nav-link').on('shown.bs.tab', function(e) {
+    $('#editconditions .target-tab a.nav-link').on('shown.bs.tab', function(e) {
         var href = $(this).attr('href');
         $('input[name="editTargetTab"]').val(href);
     });
@@ -165,14 +165,14 @@ $(document).on('ready  pjax:scriptcomplete', function(){
     $('a[href="' + editSourceTab + '"]').tab('show');
 
     // When user clicks tab, update hidden input
-    $('#quick-add-conditions-form .src-tab').on('click', function(e) {
-        var href = $(e.currentTarget).find('a').attr('href');
+    $('#quick-add-conditions-form .src-tab a.nav-link').on('shown.bs.tab', function(e) {
+        var href = $(this).attr('href');
         $('input[name="quick-add-editSourceTab"]').val(href);
     });
 
     // When user clicks tab, update hidden input
-    $('#quick-add-conditions-form .target-tab').on('click', function(e) {
-        var href = $(e.currentTarget).find('a').attr('href');
+    $('#quick-add-conditions-form .target-tab a.nav-link').on('shown.bs.tab', function(e) {
+        var href = $(this).attr('href');
         $('input[name="quick-add-editTargetTab"]').val(href);
     });
 
