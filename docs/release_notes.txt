@@ -34,6 +34,12 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.6.50 (build 240109) to 5.6.51 (build 240116) January 15, 2024
+#Updated translation: Turkish by kayazeren
+#Updated translation: Korean by c_schmitz, modernity4r, zist21
+#Updated translation: German (Informal) by c_schmitz
+
+
 Changes from 5.6.49 (build 231212) to 5.6.50 (build 240109) January 8, 2024
 -Fixed issue #19245: Search surveys status options do not work (#3661) (Gabriel Jenik)
 -Fixed issue #19117: [security] Account past their expiration date can be still active (#3665) (Denis Chenu)
