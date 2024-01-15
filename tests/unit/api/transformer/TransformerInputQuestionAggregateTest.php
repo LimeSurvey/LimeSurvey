@@ -88,6 +88,7 @@ class TransformerInputQuestionAggregateTest extends TestBaseClass
             0,
             [
                 'question'     => [
+                    'tempId'              => 'XXX123',
                     'title'               => 'G01Q01',
                     'type'                => '1',
                     'question_theme_name' => 'arrays\/dualscale',
@@ -121,6 +122,7 @@ class TransformerInputQuestionAggregateTest extends TestBaseClass
                 ],
                 'answers'      => [
                     '0' => [
+                        'tempId' => 'XXX124',
                         'code'  => 'AO01',
                         'l10ns' => [
                             'en' => [
@@ -134,6 +136,7 @@ class TransformerInputQuestionAggregateTest extends TestBaseClass
                 ],
                 'subquestions' => [
                     '0' => [
+                        'tempId' => 'XXX125',
                         'title' => 'SQ001',
                         'l10ns' => [
                             'en' => [
