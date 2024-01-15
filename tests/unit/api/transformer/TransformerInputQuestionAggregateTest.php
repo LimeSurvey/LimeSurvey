@@ -126,10 +126,12 @@ class TransformerInputQuestionAggregateTest extends TestBaseClass
                         'code'  => 'AO01',
                         'l10ns' => [
                             'en' => [
-                                'answer' => 'answer'
+                                'answer' => 'answer',
+                                'language' => 'en'
                             ],
                             'de' => [
-                                'answer' => 'answerger'
+                                'answer' => 'answerger',
+                                'language' => 'de'
                             ]
                         ]
                     ]
@@ -140,10 +142,12 @@ class TransformerInputQuestionAggregateTest extends TestBaseClass
                         'title' => 'SQ001',
                         'l10ns' => [
                             'en' => [
-                                'question' => 'sub 1'
+                                'question' => 'sub 1',
+                                'language' => 'en'
                             ],
                             'de' => [
-                                'question' => 'subger 1'
+                                'question' => 'subger 1',
+                                'language' => 'de'
                             ]
                         ]
                     ]
