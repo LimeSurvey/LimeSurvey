@@ -112,6 +112,9 @@ class RendererBasic implements RendererInterface
             case 'error_not_found':
                 $httpCode = 404;
                 break;
+            case 'error_not_allowed':
+                $httpCode = 403;
+                break;
         }
         return $httpCode;
     }

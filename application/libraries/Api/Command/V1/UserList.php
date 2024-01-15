@@ -3,6 +3,7 @@
 namespace LimeSurvey\Api\Command\V1;
 
 use User;
+use Permission;
 use LimeSurvey\Api\Command\V1\Transformer\Output\TransformerOutputSurveyOwner;
 use LimeSurvey\Api\Command\{
     CommandInterface,
@@ -50,7 +51,6 @@ class UserList implements CommandInterface
      */
     public function run(Request $request)
     {
-
         $sessionKey = (string) $request->getData('sessionKey');
 
         if (
@@ -59,6 +59,11 @@ class UserList implements CommandInterface
         ) {
             return $this->responseFactory
                 ->makeErrorUnauthorised();
+        }
+
+        if (!Permission::model()->hasGlobalPermission('users', 'read')) {
+            return $this->responseFactory
+                ->makeErrorNotAllowed();
         }
 
         $dataProvider = $this->user
