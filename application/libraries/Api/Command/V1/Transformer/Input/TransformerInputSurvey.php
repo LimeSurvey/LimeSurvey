@@ -21,6 +21,7 @@ class TransformerInputSurvey extends Transformer
         $this->setDataMap([
             'sid' => ['type' => 'int'],
             'gsid' => ['type' => 'int'],
+            'ownerId' => ['key' => 'owner_id', 'type' => 'int'],
             'active' => ['formatter' => $formatterYn],
             'language' => true,
             'admin' => true,

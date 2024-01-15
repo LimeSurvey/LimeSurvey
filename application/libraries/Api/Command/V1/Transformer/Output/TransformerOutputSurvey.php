@@ -25,6 +25,7 @@ class TransformerOutputSurvey extends TransformerOutputActiveRecord
         $this->setDataMap([
             'sid' => ['type' => 'int'],
             'gsid' => ['type' => 'int'],
+            'owner_id' => ['key' => 'ownerId', 'type' => 'int'],
             'active' => ['formatter' => $formatterYn],
             'admin' => true,
             'adminemail' => 'adminEmail',
