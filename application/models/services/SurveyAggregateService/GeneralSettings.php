@@ -418,14 +418,10 @@ class GeneralSettings
 
     private function getAdditionalLanguagesArray($input, Survey $survey)
     {
-        $additionalLanguages  = isset($input['additional_languages'])
+        $languages  = isset($input['additional_languages'])
             && is_array($input['additional_languages'])
             ? $input['additional_languages']
             : [];
-        $languages = array_unique(array_merge(
-            $additionalLanguages,
-            $survey->getAllLanguages()
-        ));
 
         // If the 'language' is in the array remove it
         $language = $input['language'] ?? $survey->language;
