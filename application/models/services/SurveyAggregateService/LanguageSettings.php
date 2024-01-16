@@ -34,7 +34,6 @@ class LanguageSettings
         'surveyls_endtext',
         'surveyls_policy_notice',
         'surveyls_policy_error',
-        'surveyls_legal_notice',
         'surveyls_policy_notice_label',
         'surveyls_dateformat',
         'surveyls_numberformat'

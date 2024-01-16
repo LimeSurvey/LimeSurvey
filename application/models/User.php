@@ -132,19 +132,39 @@ class User extends LSActiveRecord
     /** @inheritdoc */
     public function scopes()
     {
+        $activeScope = array(
+            'condition' => 'user_status = :active',
+            'params' => array(
+                'active' => 1,
+            )
+        );
+
+        $notExpiredScope = array(
+            'condition' => "expires > :now OR expires IS NULL",
+            'params' => array(
+                'now' => dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig("timeadjust")),
+            )
+        );
+
         if (App()->getConfig("DBVersion") < 495) {
             /* No expires column before 495 */
             return array(
-                'active' => []
+                'active' => [],
+                'notexpired' => [],
             );
         }
+
+        if (App()->getConfig("DBVersion") < 619) {
+            /* No user_status column before 619 */
+            return array(
+                'active' => [],
+                'notexpired' => $notExpiredScope
+            );
+        }
+
         return array(
-            'active' => array(
-                'condition' => "expires > :now OR expires IS NULL",
-                'params' => array(
-                    'now' => dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig("timeadjust")),
-                )
-            )
+            'active' => $activeScope,
+            'notexpired' => $notExpiredScope
         );
     }
 

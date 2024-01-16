@@ -12,7 +12,6 @@ use LimeSurvey\Api\Transformer\{
 class TransformerOutputSurvey extends TransformerOutputActiveRecord
 {
     private TransformerOutputSurveyLanguageSettings $transformerOutputSurveyLanguageSettings;
-
     /**
      *  @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
@@ -27,6 +26,8 @@ class TransformerOutputSurvey extends TransformerOutputActiveRecord
             'sid' => ['type' => 'int'],
             'gsid' => ['type' => 'int'],
             'active' => ['formatter' => $formatterYn],
+            'admin' => true,
+            'adminemail' => 'adminEmail',
             'language'  => true,
             'expires' => ['key' => 'expires'],
             'startdate' => ['key' => 'startDate'],
@@ -79,14 +80,7 @@ class TransformerOutputSurvey extends TransformerOutputActiveRecord
             "googleanalyticsapikey" => 'googleAnalyticsApiKey',
             "showsurveypolicynotice" => ['key' =>  'showSurveyPolicyNotice', 'type' => 'int'],
             'template' => true,
-            'format' => true,
-            "showquestioncode" => ['key' =>  'showQuestionCode', 'formatter' => $formatterYn],
-            'cookieconsent' => ['key' => 'cookieConsent', 'formatter' => $formatterYn],
-            'footerbranding' => ['key' => 'footerBranding', 'formatter' => $formatterYn],
-            // below fields are only for cloud version
-            "showdatapolicybutton" => ['key' =>  'showDataPolicyButton', 'formatter' => $formatterYn],
-            "showlegalnoticebutton" => ['key' =>  'showLegalNoticeButton', 'formatter' => $formatterYn],
-
+            'format' => true
         ]);
     }
 
