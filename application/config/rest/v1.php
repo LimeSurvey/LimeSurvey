@@ -16,6 +16,10 @@ $rest = [
             'survey-group' => [
                 'name' => 'Survey Group',
                 'description' => 'Survey Group',
+            ],
+            'user' => [
+                'name' => 'User',
+                'description' => 'User',
             ]
         ]
     ]
@@ -25,5 +29,6 @@ return array_merge(
     $rest,
     include_once __DIR__ . '/v1/survey.php',
     include_once __DIR__ . '/v1/session.php',
-    include_once __DIR__ . '/v1/survey-group.php'
+    include_once __DIR__ . '/v1/survey-group.php',
+    include_once __DIR__ . '/v1/user.php'
 );
