@@ -19,6 +19,7 @@ class UserList implements CommandInterface
     use AuthPermissionTrait;
 
     protected User $user;
+    protected Permission $permission;
     protected AuthSession $authSession;
     protected TransformerOutputSurveyOwner $transformerOutputSurveyOwner;
     protected ResponseFactory $responseFactory;
@@ -27,17 +28,20 @@ class UserList implements CommandInterface
      * Constructor
      *
      * @param User $user
+     * @param Permission $permission
      * @param AuthSession $authSession
      * @param TransformerOutputSurveyOwner $transformerOutputSurveyOwner
      * @param ResponseFactory $responseFactory
      */
     public function __construct(
         User $user,
+        Permission $permission,
         AuthSession $authSession,
         TransformerOutputSurveyOwner $transformerOutputSurveyOwner,
         ResponseFactory $responseFactory
     ) {
         $this->user = $user;
+        $this->permission = $permission;
         $this->authSession = $authSession;
         $this->transformerOutputSurveyOwner = $transformerOutputSurveyOwner;
         $this->responseFactory = $responseFactory;
@@ -61,9 +65,9 @@ class UserList implements CommandInterface
                 ->makeErrorUnauthorised();
         }
 
-        if (!Permission::model()->hasGlobalPermission('users', 'read')) {
+        if (!$this->permission->hasGlobalPermission('users', 'read')) {
             return $this->responseFactory
-                ->makeErrorNotAllowed();
+                ->makeErrorForbidden();
         }
 
         $dataProvider = $this->user
