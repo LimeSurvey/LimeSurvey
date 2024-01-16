@@ -338,7 +338,7 @@ function mssql_drop_primary_index($tablename)
  * @param string $tablename The table the column should be deleted
  * @param string $columnname The column that should be deleted
  */
-function mssql_drop_coulmn_with_constraints($tablename, $columnname)
+function mssql_drop_column_with_constraints($tablename, $columnname)
 {
     Yii::app()->loadHelper("database");
 
