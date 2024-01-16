@@ -1098,7 +1098,7 @@ function populateDatabase($oDB)
             'validation_key_expiration' => 'datetime',
             'last_forgot_email_password' => 'datetime',
             'expires' => 'datetime',
-            'user_status' => 'BOOLEAN DEFAULT TRUE'
+            'user_status' => 'integer NOT NULL DEFAULT 1'
         ), $options);
 
         $oDB->createCommand()->createIndex('{{idx1_users}}', '{{users}}', 'users_name', true);
