@@ -33,6 +33,11 @@ $rest['v1/user'] = [
                 'code' => 401,
                 'description' => 'Unauthorized',
                 'schema' => $errorSchema
+            ],
+            'forbidden' => [
+                'code' => 403,
+                'description' => 'Forbidden',
+                'schema' => $errorSchema
             ]
         ]
     ]
