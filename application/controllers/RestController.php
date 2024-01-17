@@ -1,5 +1,4 @@
 <?php
-
 /*
  * LimeSurvey
  * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -13,7 +12,6 @@
  *
  */
 
-
 use LimeSurvey\Api\Rest\Endpoint\EndpointFactory;
 use LimeSurvey\DI;
 
@@ -23,10 +21,9 @@ class RestController extends LSYii_Controller
     /**
      * Run REST controller action.
      *
-     * @param string $actionID
      * @return void
      */
-    public function run($actionID = null)
+    public function actionIndex()
     {
         $endpointFactory = DI::getContainer()
             ->get(EndpointFactory::class);
