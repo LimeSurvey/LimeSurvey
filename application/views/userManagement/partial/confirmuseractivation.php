@@ -1,12 +1,25 @@
 <?php
-Yii::app()->getController()->renderPartial(
-    '/layouts/partial_modals/modal_header',
-    ['modalTitle' => sprintf(gT('%s user'), ucfirst($action))]
-);
+
+if ($action == 'activate') {
+    Yii::app()->getController()->renderPartial(
+        '/layouts/partial_modals/modal_header',
+        ['modalTitle' => gT('Activate user')]
+    );
+} else {
+    Yii::app()->getController()->renderPartial(
+        '/layouts/partial_modals/modal_header',
+        ['modalTitle' => gT('Deactivate user')]
+    );
+}
+
 ?>
 
 <div class="modal-body">
-    <p class='modal-body-text'><?= sprintf(gT('Do you want to %s this user?'), $action); ?></p>
+    <?php if ($action == 'activate') : ?>
+        <p class='modal-body-text'><?= gT('Do you want to activate this user?'); ?></p>
+    <?php else : ?>
+        <p class='modal-body-text'><?= gT('Do you want to deactivate this user?'); ?></p>
+    <?php endif; ?>
 </div>
 <div class="modal-footer">
     <?=TbHtml::formTb(null, App()->createUrl('userManagement/userActivateDeactivate'), 'post', ["id"=>"UserManagement--modalform"])?>

@@ -905,4 +905,22 @@ class ParticipantAttributeName extends LSActiveRecord
     {
         Yii::app()->db->createCommand()->insert('{{participant_attribute}}', $data);
     }
+
+    /**
+     * Returns true if the attribute is encrypted
+     * @return bool
+     */
+    public function isEncrypted()
+    {
+        return $this->encrypted == 'Y';
+    }
+
+    /**
+     * Returns true if the attribute is a core attribute
+     * @return bool
+     */
+    public function isCoreAttribute()
+    {
+        return $this->core_attribute == 'Y';
+    }
 }

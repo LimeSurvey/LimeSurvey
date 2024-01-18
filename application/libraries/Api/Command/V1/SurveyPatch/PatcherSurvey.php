@@ -8,7 +8,8 @@ use LimeSurvey\Api\Command\V1\SurveyPatch\Response\{
     TempIdMapItem,
     TempIdMapping
 };
-use LimeSurvey\ObjectPatch\{ObjectPatchException,
+use LimeSurvey\ObjectPatch\{
+    ObjectPatchException,
     Op\OpStandard,
     OpHandler\OpHandlerException,
     Patcher

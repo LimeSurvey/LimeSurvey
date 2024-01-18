@@ -98,7 +98,7 @@ class GeneralSettings
         // by the current user (in case the request was forged)
         // NOTE: Internally, the getUserList function will use objects (like the Yii App and Permission model) that
         //       currently may differ from the ones injected in this service.
-        if (!empty($input['owner_id'])) {
+        if (!empty($input['owner_id']) && $input['owner_id'] != '-1') {
             $owner = $this->modelUser->findByPk($input['owner_id']);
             if (!isset($owner) || !in_array($input['owner_id'], getUserList('onlyuidarray'))) {
                 throw new PermissionDeniedException(
@@ -418,14 +418,10 @@ class GeneralSettings
 
     private function getAdditionalLanguagesArray($input, Survey $survey)
     {
-        $additionalLanguages  = isset($input['additional_languages'])
+        $languages  = isset($input['additional_languages'])
             && is_array($input['additional_languages'])
             ? $input['additional_languages']
             : [];
-        $languages = array_unique(array_merge(
-            $additionalLanguages,
-            $survey->getAllLanguages()
-        ));
 
         // If the 'language' is in the array remove it
         $language = $input['language'] ?? $survey->language;

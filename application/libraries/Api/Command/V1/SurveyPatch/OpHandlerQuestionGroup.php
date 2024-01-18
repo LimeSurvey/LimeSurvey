@@ -56,12 +56,11 @@ class OpHandlerQuestionGroup implements OpHandlerInterface
         $this->setOperationTypes($op);
         $isQuestionGroupEntity = $op->getEntityType() === $this->entity;
 
-        return
-            (
-                $this->isUpdateOperation
-                || $this->isCreateOperation
-                || $this->isDeleteOperation
-            )
+        return (
+            $this->isUpdateOperation
+            || $this->isCreateOperation
+            || $this->isDeleteOperation
+        )
             && $isQuestionGroupEntity;
     }
 
@@ -104,8 +103,9 @@ class OpHandlerQuestionGroup implements OpHandlerInterface
     }
 
     /**
-     * For update of a question group the patch should look like this:
+     * Update question group
      *
+     * For update of a question group the patch should look like this:
      * {
      *    "patch": [
      *         {
@@ -236,7 +236,6 @@ class OpHandlerQuestionGroup implements OpHandlerInterface
         );
         $questionGroup->refresh();
         return [
-
             'questionGroupsMap' => [
                 new TempIdMapItem(
                     $tempId,
