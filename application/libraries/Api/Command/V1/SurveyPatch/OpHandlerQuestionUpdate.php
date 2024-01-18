@@ -3,11 +3,13 @@
 namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
 use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\{
-    OpHandlerQuestionTrait, OpHandlerSurveyTrait
+    OpHandlerSurveyTrait,
+    OpHandlerExceptionTrait
 };
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestion;
 use LimeSurvey\Models\Services\QuestionAggregateService;
-use LimeSurvey\ObjectPatch\{Op\OpInterface,
+use LimeSurvey\ObjectPatch\{
+    Op\OpInterface,
     OpHandler\OpHandlerException,
     OpHandler\OpHandlerInterface,
     OpType\OpTypeUpdate
@@ -16,7 +18,7 @@ use LimeSurvey\ObjectPatch\{Op\OpInterface,
 class OpHandlerQuestionUpdate implements OpHandlerInterface
 {
     use OpHandlerSurveyTrait;
-    use OpHandlerQuestionTrait;
+    use OpHandlerExceptionTrait;
 
     protected QuestionAggregateService $questionAggregateService;
     protected TransformerInputQuestion $transformer;
@@ -61,9 +63,17 @@ class OpHandlerQuestionUpdate implements OpHandlerInterface
      */
     public function handle(OpInterface $op): void
     {
+        $transformOptions = ['operation' => $op->getType()->getId()];
+        $this->throwTransformerValidationErrors(
+            $this->transformer->validate(
+                $op->getProps(),
+                $transformOptions
+            ),
+            $op
+        );
         $this->questionAggregateService->save(
             $this->getSurveyIdFromContext($op),
-            $this->getPreparedData($op)
+            ['question' => $this->getPreparedData($op)]
         );
     }
 
@@ -71,29 +81,31 @@ class OpHandlerQuestionUpdate implements OpHandlerInterface
      * Organizes the patch data into the structure which
      * is expected by the service.
      * @param OpInterface $op
-     * @return array
+     * @return ?array
      * @throws OpHandlerException
      */
-    public function getPreparedData(OpInterface $op): array
+    public function getPreparedData(OpInterface $op)
     {
-        $props = $op->getProps();
-        $transformedProps = $this->transformer->transform($props);
-
-        if ($props === null || $transformedProps === null) {
-            $this->throwNoValuesException($op);
-        }
-        /** @var array $transformedProps */
+        $transformOptions = ['operation' => $op->getType()->getId()];
+        $props = $this->transformer->transform(
+            $op->getProps(),
+            $transformOptions
+        );
+        // Set qid from op entity id
         if (
-            !array_key_exists(
-                'qid',
-                $transformedProps
+            is_array($props)
+            && (
+                !array_key_exists(
+                    'qid',
+                    $props
+                )
+                || $props['qid'] === null
             )
-            || $transformedProps['qid'] === null
         ) {
-            $transformedProps['qid'] = $op->getEntityId();
+            $props['qid'] = $op->getEntityId();
         }
 
-        return ['question' => $transformedProps];
+        return $props;
     }
 
     /**

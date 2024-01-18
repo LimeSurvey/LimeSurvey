@@ -4,11 +4,12 @@ namespace ls\tests\unit\api\opHandlers;
 
 use LimeSurvey\Api\Command\V1\SurveyPatch\OpHandlerQuestionL10nUpdate;
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestionL10ns;
-use LimeSurvey\Models\Services\QuestionAggregateService;
-use LimeSurvey\ObjectPatch\ObjectPatchException;
-use LimeSurvey\ObjectPatch\Op\OpInterface;
-use LimeSurvey\ObjectPatch\Op\OpStandard;
-use LimeSurvey\ObjectPatch\OpHandler\OpHandlerException;
+use LimeSurvey\Models\Services\QuestionAggregateService\L10nService;
+use LimeSurvey\ObjectPatch\{
+    ObjectPatchException,
+    Op\OpStandard,
+    OpHandler\OpHandlerException
+};
 use ls\tests\TestBaseClass;
 
 /**
@@ -16,8 +17,6 @@ use ls\tests\TestBaseClass;
  */
 class OpHandlerQuestionL10nUpdateTest extends TestBaseClass
 {
-    protected OpInterface $op;
-
     /**
      * @testdox throws exception when no valid values are provided
      */
@@ -26,15 +25,12 @@ class OpHandlerQuestionL10nUpdateTest extends TestBaseClass
         $this->expectException(
             OpHandlerException::class
         );
-        $this->initializePatcher(
-            $this->getWrongPropsArray()
+        $op = $this->getOp(
+            $this->getWrongPropsArray(),
+            'create'
         );
         $opHandler = $this->getOpHandler();
-        $opHandler->getTransformedLanguageProps(
-            $this->op,
-            new TransformerInputQuestionL10ns(),
-            'questionL10n'
-        );
+        $opHandler->handle($op);
     }
 
     /**
@@ -42,12 +38,11 @@ class OpHandlerQuestionL10nUpdateTest extends TestBaseClass
      */
     public function testOpQuestionL10nUpdateCanHandle()
     {
-        $this->initializePatcher(
+        $op = $this->getOp(
             $this->getCorrectPropsArray()
         );
-
         $opHandler = $this->getOpHandler();
-        self::assertTrue($opHandler->canHandle($this->op));
+        self::assertTrue($opHandler->canHandle($op));
     }
 
     /**
@@ -55,27 +50,26 @@ class OpHandlerQuestionL10nUpdateTest extends TestBaseClass
      */
     public function testOpQuestionL10nUpdateCanNotHandle()
     {
-        $this->initializePatcher(
+        $op = $this->getOp(
             $this->getCorrectPropsArray(),
             'create'
         );
-
         $opHandler = $this->getOpHandler();
-        self::assertFalse($opHandler->canHandle($this->op));
+        self::assertFalse($opHandler->canHandle($op));
     }
 
     /**
      * @param array $props
      * @param string $type
-     * @return void
+     * @return OpStandard
      * @throws ObjectPatchException
      */
-    private function initializePatcher(array $props, string $type = 'update')
+    private function getOp(array $props, string $type = 'update')
     {
-        $this->op = OpStandard::factory(
+        return OpStandard::factory(
             'questionL10n',
             $type,
-            "77",
+            '77',
             $props,
             [
                 'id' => 666
@@ -116,8 +110,9 @@ class OpHandlerQuestionL10nUpdateTest extends TestBaseClass
      */
     private function getOpHandler()
     {
+        /** @var \LimeSurvey\Models\Services\QuestionAggregateService\L10nService */
         $mockQuestionL10nService = \Mockery::mock(
-            QuestionAggregateService\L10nService::class
+            L10nService::class
         )->makePartial();
         return new OpHandlerQuestionL10nUpdate(
             $mockQuestionL10nService,

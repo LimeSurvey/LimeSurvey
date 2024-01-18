@@ -2,13 +2,15 @@
 
 namespace ls\tests\unit\api\opHandlers;
 
+use LimeSurvey\DI;
 use LimeSurvey\Api\Command\V1\SurveyPatch\OpHandlerQuestionUpdate;
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestion;
 use LimeSurvey\Models\Services\QuestionAggregateService;
-use LimeSurvey\ObjectPatch\ObjectPatchException;
-use LimeSurvey\ObjectPatch\Op\OpInterface;
-use LimeSurvey\ObjectPatch\Op\OpStandard;
-use LimeSurvey\ObjectPatch\OpHandler\OpHandlerException;
+use LimeSurvey\ObjectPatch\{
+    ObjectPatchException,
+    Op\OpStandard,
+    OpHandler\OpHandlerException
+};
 use ls\tests\TestBaseClass;
 
 /**
@@ -16,21 +18,20 @@ use ls\tests\TestBaseClass;
  */
 class OpHandlerQuestionUpdateTest extends TestBaseClass
 {
-    protected OpInterface $op;
-
     /**
-     * @testdox throws exception when no valid values are provided
+     * @testdox throws exception on missing required parameters (tempId)
      */
     public function testOpQuestionUpdateThrowsNoValuesException()
     {
         $this->expectException(
             OpHandlerException::class
         );
-        $this->initializePatcher(
-            $this->getWrongPropsArray()
+        $op = $this->getOp(
+            $this->getWrongPropsArray(),
+            'create'
         );
         $opHandler = $this->getOpHandler();
-        $opHandler->getPreparedData($this->op);
+        $opHandler->handle($op);
     }
 
     /**
@@ -38,14 +39,13 @@ class OpHandlerQuestionUpdateTest extends TestBaseClass
      */
     public function testOpQuestionUpdateDataStructure()
     {
-        $this->initializePatcher(
+        $op = $this->getOp(
             $this->getCorrectPropsArray()
         );
         $opHandler = $this->getOpHandler();
-        $preparedData = $opHandler->getPreparedData($this->op);
-        $this->assertArrayHasKey('question', $preparedData);
-        $this->assertArrayHasKey('qid', $preparedData['question']);
-        $this->assertEquals(77, $preparedData['question']['qid']);
+        $preparedData = $opHandler->getPreparedData($op);
+        $this->assertArrayHasKey('qid', $preparedData);
+        $this->assertEquals(77, $preparedData['qid']);
     }
 
     /**
@@ -53,12 +53,11 @@ class OpHandlerQuestionUpdateTest extends TestBaseClass
      */
     public function testOpQuestionUpdateCanHandle()
     {
-        $this->initializePatcher(
+        $op = $this->getOp(
             $this->getCorrectPropsArray()
         );
-
         $opHandler = $this->getOpHandler();
-        self::assertTrue($opHandler->canHandle($this->op));
+        self::assertTrue($opHandler->canHandle($op));
     }
 
     /**
@@ -66,24 +65,23 @@ class OpHandlerQuestionUpdateTest extends TestBaseClass
      */
     public function testOpQuestionUpdateCanNotHandle()
     {
-        $this->initializePatcher(
+        $op = $this->getOp(
             $this->getCorrectPropsArray(),
             'create'
         );
-
         $opHandler = $this->getOpHandler();
-        self::assertFalse($opHandler->canHandle($this->op));
+        self::assertFalse($opHandler->canHandle($op));
     }
 
     /**
      * @param array $props
      * @param string $type
-     * @return void
+     * @return OpStandard
      * @throws ObjectPatchException
      */
-    private function initializePatcher(array $props, string $type = 'update')
+    private function getOp(array $props, string $type = 'update')
     {
-        $this->op = OpStandard::factory(
+        return OpStandard::factory(
             'question',
             $type,
             "77",
@@ -102,6 +100,8 @@ class OpHandlerQuestionUpdateTest extends TestBaseClass
         return [
             'title' => 'test title',
             'mandatory' => true,
+            'type' => 'S',
+            'tempId' => 1
         ];
     }
 
@@ -121,12 +121,13 @@ class OpHandlerQuestionUpdateTest extends TestBaseClass
      */
     private function getOpHandler()
     {
+        /** @var \LimeSurvey\Models\Services\QuestionAggregateService */
         $mockQuestionAggregateService = \Mockery::mock(
             QuestionAggregateService::class
         )->makePartial();
         return new OpHandlerQuestionUpdate(
             $mockQuestionAggregateService,
-            new TransformerInputQuestion()
+            DI::getContainer()->get(TransformerInputQuestion::class)
         );
     }
 }

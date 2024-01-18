@@ -3,13 +3,15 @@
 namespace ls\tests\unit\api\opHandlers;
 
 use LimeSurvey\Api\Command\V1\SurveyPatch\OpHandlerQuestionGroupReorder;
-use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestion;
-use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestionGroup;
-use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestionGroupL10ns;
-use LimeSurvey\ObjectPatch\Op\OpInterface;
-use LimeSurvey\ObjectPatch\Op\OpStandard;
+use LimeSurvey\Api\Command\V1\Transformer\{
+    Input\TransformerInputQuestion,
+    Input\TransformerInputQuestionGroup
+};
+use LimeSurvey\ObjectPatch\{
+    OpHandler\OpHandlerException,
+    Op\OpStandard
+};
 use ls\tests\TestBaseClass;
-use LimeSurvey\ObjectPatch\OpHandler\OpHandlerException;
 use ls\tests\unit\services\QuestionGroup\QuestionGroupMockSetFactory;
 
 /**
@@ -17,8 +19,6 @@ use ls\tests\unit\services\QuestionGroup\QuestionGroupMockSetFactory;
  */
 class OpHandlerQuestionGroupReorderTest extends TestBaseClass
 {
-    protected OpInterface $op;
-
     /**
      * @testdox throws exception when no valid values are provided
      */
@@ -27,11 +27,11 @@ class OpHandlerQuestionGroupReorderTest extends TestBaseClass
         $this->expectException(
             OpHandlerException::class
         );
-        $this->initializePatcher(
+        $op = $this->getOp(
             $this->getFullWrongParamsArray()
         );
         $opHandler = $this->getOpHandler();
-        $opHandler->getGroupReorderData($this->op);
+        $opHandler->getGroupReorderData($op);
     }
 
     /**
@@ -42,11 +42,11 @@ class OpHandlerQuestionGroupReorderTest extends TestBaseClass
         $this->expectException(
             OpHandlerException::class
         );
-        $this->initializePatcher(
+        $op = $this->getOp(
             $this->getMissingRequiredGroupParamsArray()
         );
         $opHandler = $this->getOpHandler();
-        $opHandler->getGroupReorderData($this->op);
+        $opHandler->getGroupReorderData($op);
     }
 
     /**
@@ -57,23 +57,23 @@ class OpHandlerQuestionGroupReorderTest extends TestBaseClass
         $this->expectException(
             OpHandlerException::class
         );
-        $this->initializePatcher(
+        $op = $this->getOp(
             $this->getMissingRequiredQuestionParamsArray()
         );
         $opHandler = $this->getOpHandler();
-        $opHandler->getGroupReorderData($this->op);
+        $opHandler->getGroupReorderData($op);
     }
 
     /**
-     * @testdox getGroupReorderData() is expected to return a certain data structure
+     * @testdox getGroupReorderData() returns expected structure
      */
     public function testOpQuestionGroupReorderDataStructure()
     {
-        $this->initializePatcher(
+        $op = $this->getOp(
             $this->getStandardGroupParamsArray()
         );
         $opHandler = $this->getOpHandler();
-        $transformedData = $opHandler->getGroupReorderData($this->op);
+        $transformedData = $opHandler->getGroupReorderData($op);
         $this->assertArrayHasKey('gid', $transformedData['1']);
         $this->assertArrayHasKey('group_order', $transformedData['1']);
         $this->assertArrayHasKey(
@@ -92,12 +92,12 @@ class OpHandlerQuestionGroupReorderTest extends TestBaseClass
 
     /**
      * @param array $groupParams
-     * @return void
-     * @throws \LimeSurvey\ObjectPatch\ObjectPatchException
+     * @return OpStandard
+     * @throws \LimeSurvey\ObjectPatch\OpHandlerException
      */
-    private function initializePatcher(array $groupParams)
+    private function getOp(array $groupParams)
     {
-        $this->op = OpStandard::factory(
+        return OpStandard::factory(
             'questionGroupReorder',
             'update',
             "123456",
@@ -130,10 +130,12 @@ class OpHandlerQuestionGroupReorderTest extends TestBaseClass
             'sortOrder' => '10',
             'questions'  => [
                 '2' => [
-                    'sortOrder' => '10'
+                    'sortOrder' => '10',
+                    'tempId' => '1'
                 ],
                 '3' => [
-                    'sortOrder' => '20'
+                    'sortOrder' => '20',
+                    'tempId' => '2'
                 ]
             ]
         ];
@@ -202,7 +204,6 @@ class OpHandlerQuestionGroupReorderTest extends TestBaseClass
     private function getOpHandler()
     {
         $mockSet = (new QuestionGroupMockSetFactory())->make();
-
         return new OpHandlerQuestionGroupReorder(
             $mockSet->modelQuestionGroup,
             new TransformerInputQuestionGroup(),

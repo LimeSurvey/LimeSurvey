@@ -2,20 +2,24 @@
 
 namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
-use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\OpHandlerSurveyTrait;
+use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\{
+    OpHandlerSurveyTrait,
+    OpHandlerL10nTrait
+};
 use QuestionGroupL10n;
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestionGroupL10ns;
 use LimeSurvey\Models\Services\QuestionGroupService;
 use LimeSurvey\ObjectPatch\{
     Op\OpInterface,
+    OpType\OpTypeUpdate,
     OpHandler\OpHandlerException,
-    OpHandler\OpHandlerInterface,
-    OpType\OpTypeUpdate
+    OpHandler\OpHandlerInterface
 };
 
 class OpHandlerQuestionGroupL10n implements OpHandlerInterface
 {
     use OpHandlerSurveyTrait;
+    use OpHandlerL10nTrait;
 
     protected string $entity;
     protected QuestionGroupL10n $model;
@@ -50,11 +54,11 @@ class OpHandlerQuestionGroupL10n implements OpHandlerInterface
      *      "op": "update",
      *      "id": 1,
      *      "props": {
-     *          en": {
+     *          "en": {
      *              "groupName": "Name of group",
      *              "description": "English description"
      *          },
-     *          de": {
+     *          "de": {
      *              "groupName": "Gruppenname",
      *              "description": "Deutsche Beschreibung"
      *          }
@@ -66,11 +70,17 @@ class OpHandlerQuestionGroupL10n implements OpHandlerInterface
      */
     public function handle(OpInterface $op): void
     {
+        $data = $this->transformAllLanguageProps(
+            $op,
+            $op->getProps(),
+            $this->entity,
+            $this->transformer
+        );
+
         $diContainer = \LimeSurvey\DI::getContainer();
         $questionGroupService = $diContainer->get(
             QuestionGroupService::class
         );
-
         $questionGroup = $questionGroupService->getQuestionGroupForUpdate(
             $this->getSurveyIdFromContext($op),
             $op->getEntityId()
@@ -78,11 +88,7 @@ class OpHandlerQuestionGroupL10n implements OpHandlerInterface
 
         $questionGroupService->updateQuestionGroupLanguages(
             $questionGroup,
-            $this->getTransformedLanguageProps(
-                $op,
-                $this->transformer,
-                $this->entity
-            )
+            $data
         );
     }
 
@@ -93,7 +99,7 @@ class OpHandlerQuestionGroupL10n implements OpHandlerInterface
      */
     public function isValidPatch(OpInterface $op): bool
     {
-        //the function getTransformedLanguageProps checks if the patch is valid
+        //the function transformAllLanguageProps checks if the patch is valid
         //it is already used in the handle() method ...
         return true;
     }

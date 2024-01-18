@@ -4,45 +4,38 @@ namespace ls\tests\unit\api\opHandlers;
 
 use LimeSurvey\Api\Command\V1\SurveyPatch\OpHandlerAnswerDelete;
 use LimeSurvey\Models\Services\QuestionAggregateService;
-use LimeSurvey\ObjectPatch\{
-    ObjectPatchException,
-    Op\OpInterface,
-    Op\OpStandard
-};
+use LimeSurvey\ObjectPatch\Op\OpStandard;
 use ls\tests\TestBaseClass;
 
 class OpHandlerAnswerDeleteTest extends TestBaseClass
 {
-    protected OpInterface $op;
-
     public function testCanHandleAnswer()
     {
-        $this->initializePatcher('answer');
+        $op = $this->getOp('answer');
         $opHandler = $this->getOpHandler();
-        $this->assertTrue($opHandler->canHandle($this->op));
+        $this->assertTrue($opHandler->canHandle($op));
     }
 
     public function testCanNotHandleAnswer()
     {
-        $this->initializePatcher('question');
+        $op = $this->getOp('question');
         $opHandler = $this->getOpHandler();
-        $this->assertFalse($opHandler->canHandle($this->op));
+        $this->assertFalse($opHandler->canHandle($op));
     }
 
     /**
      * @param string $entityType
      * @param string $operation
-     * @return void
-     * @throws ObjectPatchException
+     * @return OpStandard
      */
-    private function initializePatcher(
+    private function getOp(
         string $entityType = 'answer',
         string $operation = 'delete'
-    ){
-        $this->op = OpStandard::factory(
+    ) {
+        return OpStandard::factory(
             $entityType,
             $operation,
-            "77",
+            '77',
             [],
             ['id' => 666]
         );
@@ -53,9 +46,12 @@ class OpHandlerAnswerDeleteTest extends TestBaseClass
      */
     private function getOpHandler()
     {
+        /** @var \LimeSurvey\Models\Services\QuestionAggregateService */
         $mockQuestionAggregateService = \Mockery::mock(
             QuestionAggregateService::class
         )->makePartial();
-        return new OpHandlerAnswerDelete($mockQuestionAggregateService);
+        return new OpHandlerAnswerDelete(
+            $mockQuestionAggregateService
+        );
     }
 }

@@ -7,8 +7,7 @@ use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\{
     OpHandlerSurveyTrait
 };
 use LimeSurvey\Api\Command\V1\Transformer\Input\{
-    TransformerInputQuestion,
-    TransformerInputQuestionL10ns
+    TransformerInputSubQuestion
 };
 use LimeSurvey\Models\Services\{
     Exception\NotFoundException,
@@ -18,7 +17,8 @@ use LimeSurvey\Models\Services\{
     QuestionAggregateService\QuestionService,
     QuestionAggregateService\SubQuestionsService
 };
-use LimeSurvey\ObjectPatch\{Op\OpInterface,
+use LimeSurvey\ObjectPatch\{
+    Op\OpInterface,
     OpHandler\OpHandlerException,
     OpHandler\OpHandlerInterface,
     OpType\OpTypeCreate,
@@ -37,21 +37,18 @@ class OpHandlerSubQuestion implements OpHandlerInterface
     protected QuestionAggregateService $questionAggregateService;
     protected SubQuestionsService $subQuestionsService;
     protected QuestionService $questionService;
-    protected TransformerInputQuestion $transformer;
-    protected TransformerInputQuestionL10ns $transformerL10ns;
+    protected TransformerInputSubQuestion $transformer;
 
     public function __construct(
         QuestionAggregateService $questionAggregateService,
         SubQuestionsService $subQuestionsService,
         QuestionService $questionService,
-        TransformerInputQuestionL10ns $transformerL10n,
-        TransformerInputQuestion $transformer
+        TransformerInputSubQuestion $transformer
     ) {
         $this->questionAggregateService = $questionAggregateService;
         $this->subQuestionsService = $subQuestionsService;
         $this->questionService = $questionService;
         $this->transformer = $transformer;
-        $this->transformerL10ns = $transformerL10n;
     }
 
     /**
@@ -162,16 +159,21 @@ class OpHandlerSubQuestion implements OpHandlerInterface
     {
         $surveyId = $this->getSurveyIdFromContext($op);
         $this->questionAggregateService->checkUpdatePermission($surveyId);
-        $preparedData = $this->prepareSubQuestions(
-            $op,
-            $this->transformer,
-            $this->transformerL10ns,
+        $transformOptions = ['operation' => $op->getType()->getId()];
+        $this->throwTransformerValidationErrors(
+            $this->transformer->validateAll(
+                $op->getProps(),
+                $transformOptions
+            ),
+            $op
+        );
+        $data = $this->transformer->transformAll(
             $op->getProps(),
-            ['subquestions']
+            $transformOptions
         );
         //be careful here! if for any reason the incoming data is not prepared
         //as it should, all existing subquestions will be deleted!
-        if (count($preparedData) === 0) {
+        if (count($data) === 0) {
             $this->throwNoValuesException($op);
         }
         $questionId = $op->getEntityId();
@@ -181,9 +183,9 @@ class OpHandlerSubQuestion implements OpHandlerInterface
         );
         $this->subQuestionsService->save(
             $question,
-            $preparedData
+            $data
         );
-        return $this->getSubQuestionNewIdMapping($question, $preparedData);
+        return $this->getSubQuestionNewIdMapping($question, $data);
     }
 
     /**
@@ -197,7 +199,8 @@ class OpHandlerSubQuestion implements OpHandlerInterface
         //--> update:  props should include qid (which means update)
         //--> create:  props should include tempId (which means create)
         $props = $op->getProps();
-        return array_key_exists('qid', $props) ||
+        return is_array($props) ||
+            array_key_exists('qid', $props) ||
             array_key_exists('tempId', $props);
     }
 }

@@ -2,12 +2,13 @@
 
 namespace ls\tests\unit\api\opHandlers;
 
+use LimeSurvey\DI;
 use LimeSurvey\Api\Command\V1\SurveyPatch\OpHandlerAnswer;
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputAnswer;
-use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputAnswerL10ns;
-use LimeSurvey\Models\Services\QuestionAggregateService\AnswersService;
-use LimeSurvey\Models\Services\QuestionAggregateService\QuestionService;
-use LimeSurvey\ObjectPatch\Op\OpInterface;
+use LimeSurvey\Models\Services\{
+    QuestionAggregateService\AnswersService,
+    QuestionAggregateService\QuestionService
+};
 use LimeSurvey\ObjectPatch\Op\OpStandard;
 use ls\tests\TestBaseClass;
 
@@ -16,19 +17,16 @@ use ls\tests\TestBaseClass;
  */
 class OpHandlerAnswerTest extends TestBaseClass
 {
-    protected OpInterface $op;
-
     /**
      * @testdox can handle create
      */
     public function testAnswerCanHandle()
     {
-        $this->initializePatcher(
+        $op = $this->getOp(
             $this->getCorrectProps()
         );
-
         $opHandler = $this->getOpHandler();
-        self::assertTrue($opHandler->canHandle($this->op));
+        self::assertTrue($opHandler->canHandle($op));
     }
 
     /**
@@ -36,13 +34,12 @@ class OpHandlerAnswerTest extends TestBaseClass
      */
     public function testAnswerCanHandleUpdate()
     {
-        $this->initializePatcher(
+        $op = $this->getOp(
             $this->getCorrectProps(),
             'update'
         );
-
         $opHandler = $this->getOpHandler();
-        self::assertTrue($opHandler->canHandle($this->op));
+        self::assertTrue($opHandler->canHandle($op));
     }
 
     /**
@@ -50,50 +47,22 @@ class OpHandlerAnswerTest extends TestBaseClass
      */
     public function testAnswerCanNotHandle()
     {
-        $this->initializePatcher(
+        $op = $this->getOp(
             $this->getCorrectProps(),
             'delete'
         );
-
         $opHandler = $this->getOpHandler();
-        self::assertFalse($opHandler->canHandle($this->op));
-    }
-
-    /**
-     * @testdox scale_id is used as second index of produced array
-     */
-    public function testAnswerDataStructure()
-    {
-        $this->initializePatcher(
-            $this->getCorrectProps()
-        );
-
-        $opHandler = $this->getOpHandler();
-        $data = $this->op->getProps();
-        $preparedData = $opHandler->prepareAnswers(
-            $this->op,
-            $data,
-            new TransformerInputAnswer(),
-            new TransformerInputAnswerL10ns(),
-            ['answer', 'answerL10n']
-        );
-
-        self::assertIsArray($preparedData);
-        self::assertArrayHasKey(0, $preparedData);
-        self::assertArrayHasKey(1, $preparedData);
-        self::assertArrayHasKey(0, $preparedData[0]);
-        self::assertArrayHasKey(1, $preparedData[1]);
+        self::assertFalse($opHandler->canHandle($op));
     }
 
     /**
      * @param array $props
      * @param string $type
-     * @return void
-     * @throws \LimeSurvey\ObjectPatch\ObjectPatchException
+     * @return OpStandard
      */
-    private function initializePatcher(array $props, string $type = 'create')
+    private function getOp(array $props, string $type = 'create')
     {
-        $this->op = OpStandard::factory(
+        return OpStandard::factory(
             'answer',
             $type,
             0,
@@ -142,15 +111,16 @@ class OpHandlerAnswerTest extends TestBaseClass
      */
     private function getOpHandler(): OpHandlerAnswer
     {
+        /** @var AnswersService */
         $mockAnswersService = \Mockery::mock(
             AnswersService::class
         )->makePartial();
+        /** @var QuestionService */
         $mockQuestionService = \Mockery::mock(
             QuestionService::class
         )->makePartial();
         return new OpHandlerAnswer(
-            new TransformerInputAnswer(),
-            new TransformerInputAnswerL10ns(),
+            DI::getContainer()->get(TransformerInputAnswer::class),
             $mockAnswersService,
             $mockQuestionService
         );

@@ -2,11 +2,11 @@
 
 namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
+use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\OpHandlerExceptionTrait;
 use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\OpHandlerSurveyTrait;
 use QuestionGroup;
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestion;
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestionGroup;
-use LimeSurvey\Api\Transformer\TransformerInterface;
 use LimeSurvey\Models\Services\QuestionGroupService;
 use LimeSurvey\ObjectPatch\{
     Op\OpInterface,
@@ -22,11 +22,12 @@ use LimeSurvey\ObjectPatch\{
 class OpHandlerQuestionGroupReorder implements OpHandlerInterface
 {
     use OpHandlerSurveyTrait;
+    use OpHandlerExceptionTrait;
 
     protected string $entity;
     protected QuestionGroup $model;
-    protected TransformerInterface $transformerGroup;
-    protected TransformerInterface $transformerQuestion;
+    protected TransformerInputQuestionGroup $transformerGroup;
+    protected TransformerInputQuestion $transformerQuestion;
 
     public function __construct(
         QuestionGroup $model,
@@ -122,15 +123,36 @@ class OpHandlerQuestionGroupReorder implements OpHandlerInterface
             if (is_numeric($gid) && $gid > 0) {
                 $groupData['gid'] = $gid;
             }
-            $tfGroupData = $this->transformerGroup->transform($groupData);
+            $this->throwTransformerValidationErrors(
+                $this->transformerGroup->validate(
+                    $groupData,
+                    ['operation' => $op->getType()->getId()]
+                ),
+                $op
+            );
+
+            $tfGroupData = $this->transformerGroup->transform(
+                $groupData,
+                ['operation' => $op->getType()->getId()]
+            );
             $this->checkGroupReorderData($op, $tfGroupData, 'group');
             $groupReorderData[$i] = $tfGroupData;
             if (array_key_exists('questions', $groupData)) {
                 foreach ($groupData['questions'] as $qid => $questionData) {
                     $questionData['gid'] = $gid;
                     $questionData['qid'] = $qid;
+
+                    $this->throwTransformerValidationErrors(
+                        $this->transformerQuestion->validate(
+                            $questionData,
+                            ['operation' => $op->getType()->getId()]
+                        ),
+                        $op
+                    );
+
                     $tfQuestionData = $this->transformerQuestion->transform(
-                        $questionData
+                        $questionData,
+                        ['operation' => $op->getType()->getId()]
                     );
                     $this->checkGroupReorderData(
                         $op,
