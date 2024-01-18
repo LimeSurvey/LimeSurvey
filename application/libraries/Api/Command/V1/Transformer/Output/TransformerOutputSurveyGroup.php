@@ -21,13 +21,11 @@ class TransformerOutputSurveyGroup extends TransformerOutputActiveRecord
         ]);
     }
 
-    public function transform($data)
+    public function transform($data, $options = [])
     {
-        $survey_group = null;
         if (!$data instanceof SurveysGroups) {
             return null;
         }
-        $survey_group = parent::transform($data);
-        return $survey_group;
+        return parent::transform($data);
     }
 }
