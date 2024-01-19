@@ -177,7 +177,12 @@ class SurveyURLParameter extends LSActiveRecord
             'title'            => gT('Edit parameter'),
             'iconClass'        => 'ri-pencil-fill',
             'linkClass'        => 'surveysettings_edit_intparameter',
-            'enabledCondition' => $permissionPanelEdit
+            'enabledCondition' => $permissionPanelEdit,
+            'linkAttributes'   => [
+                'data-id'        => $this->id,
+                'data-parameter' => $this->parameter,
+                'data-qid'       => $this->targetqid,
+            ],
         ];
         $dropdownItems[] = [
             'title'            => gT('Delete parameter'),
