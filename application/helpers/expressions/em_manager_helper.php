@@ -9680,7 +9680,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
     }
 
     /**
-     * Add a flash message to state-key 'frontend{survey id}'
+     * Add a flash message to state-key 'frontend{survey ID}'
      * The flash messages are templatereplaced in startpage.tstpl, {FLASHMESSAGE}
      * @param string $type Yii type of flash: `error`, `notice`, 'success'
      * @param string $message

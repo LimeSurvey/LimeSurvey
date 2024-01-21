@@ -728,7 +728,7 @@ function submitfailed($errormsg = '', $query = null)
         if (Yii::app()->getConfig('debug') > 0 && !empty($errormsg)) {
             $completed .= 'Error message: ' . htmlspecialchars($errormsg) . '<br />';
         }
-        $email = gT("An error occurred saving a response to survey id", "unescaped") . " " . $thissurvey['name'] . " - $surveyid\n\n";
+        $email = gT("An error occurred saving a response to survey ID", "unescaped") . " " . $thissurvey['name'] . " - $surveyid\n\n";
         $email .= gT("DATA TO BE ENTERED", "unescaped") . ":\n";
         foreach ($_SESSION['survey_' . $surveyid]['insertarray'] as $value) {
             if (isset($_SESSION['survey_' . $surveyid][$value])) {

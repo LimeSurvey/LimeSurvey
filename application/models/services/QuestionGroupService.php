@@ -56,7 +56,7 @@ class QuestionGroupService
     /**
      * Updates a question group and all the languages.
      *
-     * @param int $surveyId the survey id
+     * @param int $surveyId the survey ID
      * @param int $questionGroupId the question group id
      * @param array $input has the data for a question group, including an array for languages
      *      ['questionGroup']
@@ -130,7 +130,7 @@ class QuestionGroupService
     /**
      * Creates a question group and all the languages.
      *
-     * @param int $surveyId the survey id
+     * @param int $surveyId the survey ID
      * @param array $input has the data for a question group,
      *  including an array for languages
      *      ['questionGroup']
@@ -178,7 +178,7 @@ class QuestionGroupService
      * Deletes a question group and all its dependencies.
      *
      * @param int $questionGroupId the question group id
-     * @param int $surveyId the survey id
+     * @param int $surveyId the survey ID
      * @return int|null number of deleted rows
      * @throws PermissionDeniedException
      */

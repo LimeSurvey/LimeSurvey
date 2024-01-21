@@ -187,7 +187,7 @@ class RegisterController extends LSYii_Controller
     /**
      * Creates the array for the registration success page
      *
-     * @param Integer $iSurveyId The survey id
+     * @param Integer $iSurveyId The survey ID
      * @param Integer $iTokenId The token id
      *
      * @return array The rendereable array

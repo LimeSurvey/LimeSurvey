@@ -2098,7 +2098,7 @@ class ParticipantsAction extends SurveyCommonAction
      * Receives an ajax call containing the participant id in the fourth segment of the url
      * Supplies list of survey links - surveys of which this participant is on the tokens table
      * URL: [localurl]/limesurvey/admin/participants/getSurveyInfoJson/pid/[participant_id]
-     * Echoes json data containing linked survey information (Survey name, survey id, token_id and date_added)
+     * Echoes json data containing linked survey information (Survey name, survey ID, token_id and date_added)
      * @return void
      * @todo Where is this called from?
      */

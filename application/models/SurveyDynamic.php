@@ -225,7 +225,7 @@ class SurveyDynamic extends LSActiveRecord
     /**
      * Return true if actual survey is completed
      *
-     * @param integer $srid : actual save survey id
+     * @param integer $srid : actual save survey ID
      *
      * @return boolean
      */
@@ -439,7 +439,7 @@ class SurveyDynamic extends LSActiveRecord
     /**
      * Return true if actual response exist in database
      *
-     * @param integer $srid : actual save survey id
+     * @param integer $srid : actual save survey ID
      *
      * @return boolean
      */
@@ -463,7 +463,7 @@ class SurveyDynamic extends LSActiveRecord
     /**
      * Return next id if next response exist in database
      *
-     * @param integer $srId : actual save survey id
+     * @param integer $srId : actual save survey ID
      * @param boolean $useFilterState
      *
      * @return integer
@@ -496,7 +496,7 @@ class SurveyDynamic extends LSActiveRecord
     /**
      * Return previous id if previous response exist in database
      *
-     * @param integer $srId : actual save survey id
+     * @param integer $srId : actual save survey ID
      * @param boolean $useFilterState
      *
      * @return integer

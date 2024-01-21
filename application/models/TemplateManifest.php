@@ -1093,7 +1093,7 @@ class TemplateManifest extends TemplateConfiguration
 
     /**
      * Set the template name.
-     * If no templateName provided, then a survey id should be given (it will then load the template related to the survey)
+     * If no templateName provided, then a survey ID should be given (it will then load the template related to the survey)
      *
      * @var     $sTemplateName  string the name of the template
      * @var     $iSurveyId      int    the id of the survey
@@ -1101,9 +1101,9 @@ class TemplateManifest extends TemplateConfiguration
     private function setTemplateName($sTemplateName = '', $iSurveyId = '')
     {
         // If it is called from the template editor, a template name will be provided.
-        // If it is called for survey taking, a survey id will be provided
+        // If it is called for survey taking, a survey ID will be provided
         if ($sTemplateName == '' && $iSurveyId == '') {
-            /* Some controller didn't test completely survey id (PrintAnswersController for example), then set to default here */
+            /* Some controller didn't test completely survey ID (PrintAnswersController for example), then set to default here */
             $sTemplateName = App()->getConfig('defaulttheme');
         }
 

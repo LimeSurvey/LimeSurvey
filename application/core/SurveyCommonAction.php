@@ -177,7 +177,7 @@ class SurveyCommonAction extends CAction
             if ((string) (int) $params['iSurveyId'] !== (string) $params['iSurveyId']) {
                 // pgsql need filtering before find
                 // 403 mean The request was valid, but the server is refusing action.
-                throw new CHttpException(403, gT("Invalid survey id"));
+                throw new CHttpException(403, gT("Invalid survey ID"));
             }
             $oSurvey = Survey::model()->findByPk($params['iSurveyId']);
             if (!$oSurvey) {
@@ -1002,7 +1002,7 @@ class SurveyCommonAction extends CAction
 
             $aData['pageSize'] = App()->user->getState('pageSize', App()->params['defaultPageSize']);
 
-            // We filter the current survey id
+            // We filter the current survey ID
             $model->sid = $iSurveyID;
 
             $aData['model'] = $model;

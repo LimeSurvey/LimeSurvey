@@ -1025,8 +1025,8 @@ class CheckIntegrity extends SurveyCommonAction
         /**********************************************************************/
         /*     Check old survey tables                                        */
         /**********************************************************************/
-        //1: Get list of 'old_survey' tables and extract the survey id
-        //2: Check if that survey id still exists
+        //1: Get list of 'old_survey' tables and extract the survey ID
+        //2: Check if that survey ID still exists
         //3: If it doesn't offer it for deletion
         $sQuery = dbSelectTablesLike('{{old_survey}}%');
         $aTables = Yii::app()->db->createCommand($sQuery)->queryColumn();
@@ -1093,8 +1093,8 @@ class CheckIntegrity extends SurveyCommonAction
         /**********************************************************************/
         /*     CHECK OLD TOKEN  TABLES                                        */
         /**********************************************************************/
-        //1: Get list of 'old_token' tables and extract the survey id
-        //2: Check if that survey id still exists
+        //1: Get list of 'old_token' tables and extract the survey ID
+        //2: Check if that survey ID still exists
         //3: If it doesn't offer it for deletion
         $sQuery = dbSelectTablesLike('{{old_token}}%');
         $aTables = Yii::app()->db->createCommand($sQuery)->queryColumn();
@@ -1185,7 +1185,7 @@ class CheckIntegrity extends SurveyCommonAction
         /**********************************************************************/
         /*     CHECK CPDB SURVEY_LINKS TABLE FOR REDUNDENT Survey participants tableS       */
         /**********************************************************************/
-        //1: Get distinct list of survey_link survey ids, check if tokens
+        //1: Get distinct list of survey_link survey IDs, check if tokens
         //   table still exists for each one, and remove if not
 
 
