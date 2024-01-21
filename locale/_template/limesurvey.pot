@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2024-01-21 09:43:32+00:00\n"
+"POT-Creation-Date: 2024-01-21 09:49:40+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -11876,7 +11876,7 @@ msgid "Your responses have not been lost and have been emailed to the survey adm
 msgstr ""
 
 #: application/helpers/frontend_helper.php:731
-msgid "An error occurred saving a response to survey ID"
+msgid "An error occurred saving a response to survey %s"
 msgstr ""
 
 #: application/helpers/frontend_helper.php:732
