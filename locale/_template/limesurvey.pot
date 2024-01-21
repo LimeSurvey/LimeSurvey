@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2024-01-15 09:36:11+00:00\n"
+"POT-Creation-Date: 2024-01-21 09:43:32+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -417,6 +417,9 @@ msgstr ""
 #: application/controllers/FailedEmailController.php:38
 #: application/controllers/FailedEmailController.php:86
 #: application/controllers/FailedEmailController.php:166
+#: application/controllers/QuestionAdministrationController.php:715
+#: application/controllers/QuestionAdministrationController.php:787
+#: application/controllers/QuestionAdministrationController.php:2605
 #: application/controllers/ResponsesController.php:122
 #: application/controllers/ResponsesController.php:395
 #: application/controllers/ResponsesController.php:551
@@ -431,6 +434,7 @@ msgstr ""
 #: application/controllers/admin/DataEntry.php:1513
 #: application/controllers/admin/Statistics.php:113
 #: application/controllers/admin/Statistics.php:666
+#: application/core/SurveyCommonAction.php:180
 #: application/core/SurveyCommonAction.php:690
 #: application/core/SurveyCommonAction.php:901
 #: application/helpers/LayoutHelper.php:395
@@ -1131,13 +1135,6 @@ msgstr ""
 #: application/controllers/QuestionAdministrationController.php:520
 #: application/controllers/QuestionAdministrationController.php:525
 msgid "Question saved"
-msgstr ""
-
-#: application/controllers/QuestionAdministrationController.php:715
-#: application/controllers/QuestionAdministrationController.php:787
-#: application/controllers/QuestionAdministrationController.php:2605
-#: application/core/SurveyCommonAction.php:180
-msgid "Invalid survey id"
 msgstr ""
 
 #: application/controllers/QuestionAdministrationController.php:1084
@@ -2219,7 +2216,7 @@ msgstr ""
 #: application/models/Quota.php:236 application/models/Quota.php:246
 #: application/models/SurveyDynamic.php:338
 #: application/models/SurveyDynamic.php:354
-#: application/models/SurveyURLParameter.php:189
+#: application/models/SurveyURLParameter.php:194
 #: application/models/TemplateManifest.php:687
 #: application/models/TemplateManifest.php:689
 #: application/models/TemplateManifest.php:692
@@ -2948,7 +2945,7 @@ msgid "(No target question)"
 msgstr ""
 
 #: application/controllers/SurveyAdministrationController.php:3358
-#: application/models/SurveyURLParameter.php:192
+#: application/models/SurveyURLParameter.php:197
 msgid "Are you sure you want to delete this URL parameter?"
 msgstr ""
 
@@ -3032,7 +3029,7 @@ msgstr ""
 #: application/views/userGroup/partial/topbarBtns/rightSideButtons.php:11
 #: application/views/userManagement/partial/addedituser.php:5
 #: application/views/userManagement/partial/addrole.php:52
-#: application/views/userManagement/partial/confirmuseractivation.php:16
+#: application/views/userManagement/partial/confirmuseractivation.php:29
 #: application/views/userManagement/partial/editpermissions.php:85
 #: application/views/userManagement/partial/edittemplatepermissions.php:53
 #: application/views/userRole/partials/_form.php:12
@@ -3050,7 +3047,7 @@ msgstr ""
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_export_archive_results.php:44
 #: application/helpers/SurveyRuntimeHelper.php:1451
 #: application/models/Box.php:161 application/models/Question.php:756
-#: application/models/SurveyURLParameter.php:188
+#: application/models/SurveyURLParameter.php:193
 #: application/models/TemplateConfiguration.php:748
 #: application/models/TemplateConfiguration.php:772
 #: application/models/TemplateConfiguration.php:790
@@ -3125,7 +3122,7 @@ msgstr ""
 #: application/views/userManagement/partial/adddummyuser.php:32
 #: application/views/userManagement/partial/addedituser.php:141
 #: application/views/userManagement/partial/addrole.php:49
-#: application/views/userManagement/partial/confirmuseractivation.php:15
+#: application/views/userManagement/partial/confirmuseractivation.php:28
 #: application/views/userManagement/partial/confirmuserdelete.php:14
 #: application/views/userManagement/partial/editpermissions.php:82
 #: application/views/userManagement/partial/edittemplatepermissions.php:51
@@ -4104,74 +4101,74 @@ msgstr ""
 msgid "Deleting conditions: %u conditions deleted"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:774
+#: application/controllers/admin/CheckIntegrity.php:793
 msgid "No matching CQID"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:784
+#: application/controllers/admin/CheckIntegrity.php:803
 msgid "No matching QID"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:799
+#: application/controllers/admin/CheckIntegrity.php:818
 msgid "No matching CFIELDNAME group!"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:806
+#: application/controllers/admin/CheckIntegrity.php:825
 msgid "No CFIELDNAME field set!"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:865
+#: application/controllers/admin/CheckIntegrity.php:884
 msgid "No matching survey"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:875
-#: application/controllers/admin/CheckIntegrity.php:953
+#: application/controllers/admin/CheckIntegrity.php:894
+#: application/controllers/admin/CheckIntegrity.php:972
 msgid "No matching group"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:888
-#: application/controllers/admin/CheckIntegrity.php:965
+#: application/controllers/admin/CheckIntegrity.php:907
+#: application/controllers/admin/CheckIntegrity.php:984
 msgid "No parent question"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:899
+#: application/controllers/admin/CheckIntegrity.php:918
 msgid "No parent answer"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:941
+#: application/controllers/admin/CheckIntegrity.php:960
 msgid "The related survey is missing."
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:978
+#: application/controllers/admin/CheckIntegrity.php:997
 msgid "There is no matching survey."
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:991
+#: application/controllers/admin/CheckIntegrity.php:1010
 #: application/models/SurveysGroups.php:386
 msgid "No parent group"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:1003
+#: application/controllers/admin/CheckIntegrity.php:1022
 msgid "There is no matching user %s in group %s."
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:1042
+#: application/controllers/admin/CheckIntegrity.php:1061
 msgid "responses"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:1047
+#: application/controllers/admin/CheckIntegrity.php:1066
 msgid "timings"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:1068
+#: application/controllers/admin/CheckIntegrity.php:1087
 msgid "Survey ID %d saved at %s containing %d record(s) (%s)"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:1119
+#: application/controllers/admin/CheckIntegrity.php:1138
 msgid "Survey ID %d saved at %s containing %d record(s)"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:1184
+#: application/controllers/admin/CheckIntegrity.php:1203
 msgid "Some automatic fixes were already applied."
 msgstr ""
 
@@ -6764,8 +6761,8 @@ msgstr ""
 #: tmp/runtime/twig_cache/07/0752f5ea26ad87eef0c9f75b93742ae27921db4c7e90cfc777d1304a1f270637.php:299
 #: tmp/runtime/twig_cache/74/74b59c5556efee36e3b3b4b83eca5492321732f2598c171af377b64cc3bbc3dc.php:248
 #: tmp/runtime/twig_cache/b2/b2d8f756f29664f3d68f2787f904efe46c254beddabaa353b88500349884b417.php:246
-#: tmp/runtime/twig_cache/be/bee3767ff98307f7a59a26b19a1463eb270e17efdfc7a66034979d23ded59c73.php:268
-#: tmp/runtime/twig_cache/f9/f90cced3d797a7d002c73b99b74a7b4cd7c8cf447d9056efc57266d0c15430f0.php:281
+#: tmp/runtime/twig_cache/be/bee3767ff98307f7a59a26b19a1463eb270e17efdfc7a66034979d23ded59c73.php:296
+#: tmp/runtime/twig_cache/f9/f90cced3d797a7d002c73b99b74a7b4cd7c8cf447d9056efc57266d0c15430f0.php:302
 msgid "Continue"
 msgstr ""
 
@@ -9453,12 +9450,12 @@ msgstr ""
 #: tmp/runtime/twig_cache/bc/bcf11b97b4b01154404a481155fe1b787e88d5a7a272c43103480db5a0b18cc0.php:178
 #: tmp/runtime/twig_cache/bc/bcf11b97b4b01154404a481155fe1b787e88d5a7a272c43103480db5a0b18cc0.php:227
 #: tmp/runtime/twig_cache/be/bee3767ff98307f7a59a26b19a1463eb270e17efdfc7a66034979d23ded59c73.php:127
-#: tmp/runtime/twig_cache/be/bee3767ff98307f7a59a26b19a1463eb270e17efdfc7a66034979d23ded59c73.php:203
+#: tmp/runtime/twig_cache/be/bee3767ff98307f7a59a26b19a1463eb270e17efdfc7a66034979d23ded59c73.php:231
 #: tmp/runtime/twig_cache/ce/ceec9ede67bccec478d67c3eed3ccf17784d22c8ab864e351f5b576dd5675a62.php:212
 #: tmp/runtime/twig_cache/ce/ceec9ede67bccec478d67c3eed3ccf17784d22c8ab864e351f5b576dd5675a62.php:266
 #: tmp/runtime/twig_cache/ce/ceec9ede67bccec478d67c3eed3ccf17784d22c8ab864e351f5b576dd5675a62.php:318
 #: tmp/runtime/twig_cache/f9/f90cced3d797a7d002c73b99b74a7b4cd7c8cf447d9056efc57266d0c15430f0.php:132
-#: tmp/runtime/twig_cache/f9/f90cced3d797a7d002c73b99b74a7b4cd7c8cf447d9056efc57266d0c15430f0.php:214
+#: tmp/runtime/twig_cache/f9/f90cced3d797a7d002c73b99b74a7b4cd7c8cf447d9056efc57266d0c15430f0.php:235
 msgid "Mandatory"
 msgstr ""
 
@@ -10232,12 +10229,12 @@ msgid "This is not a valid response data XML file."
 msgstr ""
 
 #: application/helpers/admin/import_helper.php:2644
-#: application/views/surveyAdministration/surveyActivation/_activation_error.php:14
+#: application/views/surveyAdministration/surveyActivation/_activation_error.php:20
 msgid "The survey response table could not be created."
 msgstr ""
 
 #: application/helpers/admin/import_helper.php:2644
-#: application/views/surveyAdministration/surveyActivation/_activation_error.php:15
+#: application/views/surveyAdministration/surveyActivation/_activation_error.php:21
 msgid "Usually this is caused by having too many (sub-)questions in your survey. Please try removing questions from your survey."
 msgstr ""
 
@@ -11879,7 +11876,7 @@ msgid "Your responses have not been lost and have been emailed to the survey adm
 msgstr ""
 
 #: application/helpers/frontend_helper.php:731
-msgid "An error occurred saving a response to survey id"
+msgid "An error occurred saving a response to survey ID"
 msgstr ""
 
 #: application/helpers/frontend_helper.php:732
@@ -15514,7 +15511,7 @@ msgstr ""
 msgid "Edit parameter"
 msgstr ""
 
-#: application/models/SurveyURLParameter.php:183
+#: application/models/SurveyURLParameter.php:188
 msgid "Delete parameter"
 msgstr ""
 
@@ -24587,16 +24584,16 @@ msgstr ""
 msgid "Closed-access mode"
 msgstr ""
 
-#: application/views/surveyAdministration/surveyActivation/_activation_error.php:10
+#: application/views/surveyAdministration/surveyActivation/_activation_error.php:12
 msgid "Survey activation error"
 msgstr ""
 
-#: application/views/surveyAdministration/surveyActivation/_activation_error.php:22
-msgid "Timings table could not be created."
+#: application/views/surveyAdministration/surveyActivation/_activation_error.php:14
+msgid "Database error"
 msgstr ""
 
-#: application/views/surveyAdministration/surveyActivation/_activation_error.php:29
-msgid "Database error"
+#: application/views/surveyAdministration/surveyActivation/_activation_error.php:28
+msgid "Timings table could not be created."
 msgstr ""
 
 #: application/views/surveyAdministration/surveyActivation/_activation_feedback.php:23
@@ -24652,7 +24649,7 @@ msgid "New survey title:"
 msgstr ""
 
 #: application/views/surveyAdministration/tabCopy_view.php:28
-msgid "New survey id:"
+msgid "New survey ID:"
 msgstr ""
 
 #: application/views/surveyAdministration/tabCopy_view.php:31
@@ -25065,12 +25062,20 @@ msgstr ""
 msgid "Select role(s):"
 msgstr ""
 
-#: application/views/userManagement/partial/confirmuseractivation.php:4
-msgid "%s user"
+#: application/views/userManagement/partial/confirmuseractivation.php:6
+msgid "Activate user"
 msgstr ""
 
-#: application/views/userManagement/partial/confirmuseractivation.php:9
-msgid "Do you want to %s this user?"
+#: application/views/userManagement/partial/confirmuseractivation.php:11
+msgid "Deactivate user"
+msgstr ""
+
+#: application/views/userManagement/partial/confirmuseractivation.php:19
+msgid "Do you want to activate this user?"
+msgstr ""
+
+#: application/views/userManagement/partial/confirmuseractivation.php:21
+msgid "Do you want to deactivate this user?"
 msgstr ""
 
 #: application/views/userManagement/partial/confirmuserdelete.php:9
@@ -25311,18 +25316,18 @@ msgstr ""
 #: tmp/runtime/twig_cache/07/0752f5ea26ad87eef0c9f75b93742ae27921db4c7e90cfc777d1304a1f270637.php:227
 #: tmp/runtime/twig_cache/74/74b59c5556efee36e3b3b4b83eca5492321732f2598c171af377b64cc3bbc3dc.php:172
 #: tmp/runtime/twig_cache/b2/b2d8f756f29664f3d68f2787f904efe46c254beddabaa353b88500349884b417.php:173
-#: tmp/runtime/twig_cache/be/bee3767ff98307f7a59a26b19a1463eb270e17efdfc7a66034979d23ded59c73.php:189
+#: tmp/runtime/twig_cache/be/bee3767ff98307f7a59a26b19a1463eb270e17efdfc7a66034979d23ded59c73.php:217
 #: tmp/runtime/twig_cache/d2/d2e98b7c4a5a661f2341b6e8247498eaff20659e710f6c7b9a1c5a24fff556bf.php:228
-#: tmp/runtime/twig_cache/f9/f90cced3d797a7d002c73b99b74a7b4cd7c8cf447d9056efc57266d0c15430f0.php:196
+#: tmp/runtime/twig_cache/f9/f90cced3d797a7d002c73b99b74a7b4cd7c8cf447d9056efc57266d0c15430f0.php:217
 msgid "Please solve the following equation:"
 msgstr ""
 
 #: tmp/runtime/twig_cache/07/0752f5ea26ad87eef0c9f75b93742ae27921db4c7e90cfc777d1304a1f270637.php:254
 #: tmp/runtime/twig_cache/74/74b59c5556efee36e3b3b4b83eca5492321732f2598c171af377b64cc3bbc3dc.php:205
 #: tmp/runtime/twig_cache/b2/b2d8f756f29664f3d68f2787f904efe46c254beddabaa353b88500349884b417.php:207
-#: tmp/runtime/twig_cache/be/bee3767ff98307f7a59a26b19a1463eb270e17efdfc7a66034979d23ded59c73.php:216
+#: tmp/runtime/twig_cache/be/bee3767ff98307f7a59a26b19a1463eb270e17efdfc7a66034979d23ded59c73.php:244
 #: tmp/runtime/twig_cache/d2/d2e98b7c4a5a661f2341b6e8247498eaff20659e710f6c7b9a1c5a24fff556bf.php:248
-#: tmp/runtime/twig_cache/f9/f90cced3d797a7d002c73b99b74a7b4cd7c8cf447d9056efc57266d0c15430f0.php:229
+#: tmp/runtime/twig_cache/f9/f90cced3d797a7d002c73b99b74a7b4cd7c8cf447d9056efc57266d0c15430f0.php:250
 msgid "Reload captcha"
 msgstr ""
 
@@ -25371,6 +25376,11 @@ msgstr ""
 #: tmp/runtime/twig_cache/1d/1d6b99b8455cc94be5d8f998e81442b7bcdc91e95bc6d379fc57ab432a89ce26.php:136
 #: tmp/runtime/twig_cache/e5/e508dc7d85e11be9f6b8156b528e090584eeeff90b1a189aabd03f4d77e5fa2e.php:136
 msgid "Answer question"
+msgstr ""
+
+#: tmp/runtime/twig_cache/2d/2d809c6226eca25c7b3c96506e6f1b3ad5434a42007ae11105727c115cd8219c.php:152
+#: tmp/runtime/twig_cache/94/947102d39bbb24b95f778b6c8dc0c1d367abbc442bf3a0123e51734fff08b4b3.php:147
+msgid "For further information please contact %s:"
 msgstr ""
 
 #: tmp/runtime/twig_cache/30/3074f37a8b9ff02600aa6ec4e247215d8230a1d654745654c30697c766b4bcc0.php:42
@@ -25435,11 +25445,6 @@ msgstr ""
 #: tmp/runtime/twig_cache/47/47b0669f38c8ec619395d82fc48a09db1ee3be006c89bee65215acdcb2cb5753.php:119
 #: tmp/runtime/twig_cache/e6/e60a98d51bf91f1b4b5926b71762dfdc75a4ef74406af9ddbc4d85eeb3a6043e.php:118
 msgid "There is 1 question in this survey."
-msgstr ""
-
-#: tmp/runtime/twig_cache/47/47bb94c49cf06e3751f458d706033a797f0740b7f7c85fededdfeaafd0384dca.php:152
-#: tmp/runtime/twig_cache/6e/6e2788592b02f2643f60d7bc74812a08272026b6d8528876c8c089afea4a53d8.php:147
-msgid "For further information please contact %s:"
 msgstr ""
 
 #: tmp/runtime/twig_cache/58/58b70c859a23c2efcbae1b818410b3530f9a44cbd809589ea7a83e6ab4d5031b.php:50
@@ -25559,7 +25564,7 @@ msgstr ""
 
 #: tmp/runtime/twig_cache/74/74b59c5556efee36e3b3b4b83eca5492321732f2598c171af377b64cc3bbc3dc.php:221
 #: tmp/runtime/twig_cache/bc/bcf11b97b4b01154404a481155fe1b787e88d5a7a272c43103480db5a0b18cc0.php:299
-#: tmp/runtime/twig_cache/be/bee3767ff98307f7a59a26b19a1463eb270e17efdfc7a66034979d23ded59c73.php:232
+#: tmp/runtime/twig_cache/be/bee3767ff98307f7a59a26b19a1463eb270e17efdfc7a66034979d23ded59c73.php:260
 #: tmp/runtime/twig_cache/ce/ceec9ede67bccec478d67c3eed3ccf17784d22c8ab864e351f5b576dd5675a62.php:436
 #: tmp/runtime/twig_cache/d2/d2e98b7c4a5a661f2341b6e8247498eaff20659e710f6c7b9a1c5a24fff556bf.php:258
 msgid "Enter result here - numbers only"
@@ -25757,7 +25762,7 @@ msgstr ""
 msgid "Please confirm the access code by answering the security question below and click continue."
 msgstr ""
 
-#: tmp/runtime/twig_cache/be/bee3767ff98307f7a59a26b19a1463eb270e17efdfc7a66034979d23ded59c73.php:147
+#: tmp/runtime/twig_cache/be/bee3767ff98307f7a59a26b19a1463eb270e17efdfc7a66034979d23ded59c73.php:154
 msgid "Enter access code"
 msgstr ""
 
