@@ -31,7 +31,7 @@ class RestController extends LSYii_Controller
     {
         Yii::app()->loadConfig('rest');
         $action = new CInlineAction($this, 'index');
-        if(Yii::app()->beforeControllerAction($this, $action)) {
+        if (Yii::app()->beforeControllerAction($this, $action)) {
             $endpointFactory = DI::getContainer()
                 ->get(EndpointFactory::class);
 
