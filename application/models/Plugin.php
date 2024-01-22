@@ -71,7 +71,7 @@ class Plugin extends LSActiveRecord
      */
     public function setLoadError(array $error)
     {
-        if(App()->getConfig('debug') >= 2) {
+        if (App()->getConfig('debug') >= 2) {
             return 0;
         }
         // NB: Don't use ActiveRecord here, since it will trigger events and
@@ -360,13 +360,13 @@ class Plugin extends LSActiveRecord
         // NB: Name is same as plugin folder and plugin main class.
         return $folder . DIRECTORY_SEPARATOR . $this->name;
     }
-    
+
     /**
      * get laod error
      */
     public function getLoadError()
     {
-        if(App()->getConfig('debug') >= 2) {
+        if (App()->getConfig('debug') >= 2) {
             return 0;
         }
         return $this->load_error;
