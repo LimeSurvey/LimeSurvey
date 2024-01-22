@@ -34,6 +34,25 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.4.2 (build 240115) to 6.4.3 (build 240122) January 22, 2024
++New feature #19299: Unmask token field (#3673) (Denis Chenu)
+-Fixed issue: LimeSurvey getting slower as more answer options are across all surveys (Carsten Schmitz)
+-Fixed issue #CT-605: column selector in responses tab wasn't working anymore (twilligls)
+-Fixed issue #CT-604: edit action in "Panel integration" wasn't working (twilligls)
+-Fixed issue #CT-598: removing additional languages didn't work anymore (twilligls)
+-Fixed issue #CR-1392: SQL not compatible with MSSQL and Postgres (#3700) (Mohab E)
+-Fixed issue #CR-1390: Translation string contains hardcoded action in placeholder (#3699) (Mohab E)
+-Fixed issue #19344: Survey activation error when create a new survey using MSSQL (#3696) (Carsten Schmitz)
+-Fixed issue #19274: Attribute encryption can not be turned OFF, it can only be turned on (#3670) (Gabriel Jenik)
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Korean by modernity4r, zist21
+#Updated translation: Japanese by nomoto
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by urbana
+#Updated translation: German (Informal) by c_schmitz, metaworx
+
+
 Changes from 6.4.1 (build 240108) to 6.4.2 (build 240115) January 15, 2024
 -Fixed issue: Don't use disk_free_space if function doesn't exist (ComfortUpdate) (Olle Haerstedt)
 -Fixed issue #2565: Label set panel description typo (Kevin Foster)
