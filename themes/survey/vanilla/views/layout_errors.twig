@@ -70,7 +70,7 @@
                         {{gT("For further information please contact %s:")|format (aSurveyInfo.admin)}}
                         {% if aSurveyInfo.adminemail %}
                             <br>
-                            <a href='mailto:{{ aSurveyInfo.adminemail }}'>{{ aSurveyInfo.adminemail }}</a>
+                            <a href='mailto:{{ aSurveyInfo.adminemail|url_encode }}'>{{ aSurveyInfo.adminemail }}</a>
                         {% endif %}
                     {% endif %}
                 </p>
