@@ -25,6 +25,7 @@ class RestController extends LSYii_Controller
      * Run REST controller actions with beforeControllerAction
      * and afterControllerAction events.
      *
+	 * @param string $actionID action ID
      * @return void
      */
     public function run($actionID)
