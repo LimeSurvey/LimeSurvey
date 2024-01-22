@@ -300,7 +300,7 @@ class PluginManager extends \CApplicationComponent
                         $plugin = Plugin::model()->find('name = :name', [':name' => $pluginName]);
                         if (
                             empty($plugin)
-                            || ($includeInstalledPlugins && $plugin->load_error == 0)
+                            || ($includeInstalledPlugins && $plugin->getLoadError() == 0)
                         ) {
                             if (file_exists($file) && $this->isWhitelisted($pluginName)) {
                                 try {
@@ -322,6 +322,9 @@ class PluginManager extends \CApplicationComponent
                                     ];
                                     $saveResult = Plugin::setPluginLoadError($plugin, $pluginName, $error);
                                     if (!$saveResult) {
+                                        if(App()->getConfig('debug') >= 2) {
+                                            throw $ex;
+                                        }
                                         // This only happens if database save fails.
                                         $this->shutdownObject->disable();
                                         throw new \Exception(
@@ -330,7 +333,7 @@ class PluginManager extends \CApplicationComponent
                                     }
                                 }
                             }
-                        } elseif ($plugin->load_error == 1) {
+                        } elseif ($plugin->getLoadError() == 1) {
                             // List faulty plugins in scan files view.
                             $result[$pluginName] = [
                                 'pluginName' => $pluginName,
@@ -466,6 +469,9 @@ class PluginManager extends \CApplicationComponent
             $plugin = Plugin::model()->find('name = :name', [':name' => $pluginName]);
             $saveResult = Plugin::setPluginLoadError($plugin, $pluginName, $error);
             if (!$saveResult) {
+                if(App()->getConfig('debug') >= 2) {
+                    throw $ex;
+                }
                 // This only happens if database save fails.
                 $this->shutdownObject->disable();
                 throw new \Exception(
@@ -500,7 +506,7 @@ class PluginManager extends \CApplicationComponent
             foreach ($records as $record) {
                 if (
                     !isset($record->load_error)
-                    || $record->load_error == 0
+                    || $record->getLoadError() == 0
                     // NB: Authdb is hardcoded since updating sometimes causes error.
                     // @see https://bugs.limesurvey.org/view.php?id=15908
                     || $record->name == 'Authdb'
@@ -522,7 +528,7 @@ class PluginManager extends \CApplicationComponent
     {
         $records = Plugin::model()->findAll();
         foreach ($records as $record) {
-            if ($record->load_error == 0) {
+            if ($record->getLoadError() == 0) {
                 $this->loadPlugin($record->name, $record->id, $record->active);
             }
         }

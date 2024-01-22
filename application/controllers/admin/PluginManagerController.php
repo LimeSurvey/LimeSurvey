@@ -44,7 +44,7 @@ class PluginManagerController extends SurveyCommonAction
             $data[] = [
                 'id'          => $oPlugin->id,
                 'name'        => $oPlugin->name,
-                'load_error'  => $oPlugin->load_error,
+                'load_error'  => $oPlugin->getLoadError(),
                 'description' => '',
                 'active'      => $oPlugin->active,
                 'settings'    => []
