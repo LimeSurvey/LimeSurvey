@@ -20,19 +20,26 @@ use LimeSurvey\DI;
 class RestController extends LSYii_Controller
 {
     /**
-     * Run REST controller action.
+     * Runs the named action.
      *
-     * @param string $actionID action ID
+     * Run REST controller actions with beforeControllerAction
+     * and afterControllerAction events.
+     *
      * @return void
      */
     public function run($actionID)
     {
-        $endpointFactory = DI::getContainer()
-            ->get(EndpointFactory::class);
-
         Yii::app()->loadConfig('rest');
-        ($endpointFactory)->create(
-            Yii::app()->request
-        )->run();
+        $action = new CInlineAction($this, 'index');
+        if(Yii::app()->beforeControllerAction($this, $action)) {
+            $endpointFactory = DI::getContainer()
+                ->get(EndpointFactory::class);
+
+            ($endpointFactory)->create(
+                Yii::app()->request
+            )->run();
+
+            Yii::app()->afterControllerAction($this, $action);
+        }
     }
 }
