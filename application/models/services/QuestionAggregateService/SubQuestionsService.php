@@ -162,6 +162,9 @@ class SubQuestionsService
                 $subquestion = DI::getContainer()->make(Question::class);
             }
         }
+        if (empty($subquestion)) {
+             throw new NotFoundException('Subquestion with id "' . $subquestionId . '" failed to process');
+        }
         $subquestion->title = $data['code'];
         $subquestion->sid = $question->sid;
         $subquestion->gid = $question->gid;
