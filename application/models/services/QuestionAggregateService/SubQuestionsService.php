@@ -145,8 +145,7 @@ class SubQuestionsService
         // New subquestions have a temporary non-numeric id assigned by the frontend (example: new12345).
         // So, if the subquestion id has letter, is not numeric as the id given by DB, we don't check if it exists.
         if (is_numeric($subquestionId)) {
-            // If the subquestion with given code does not exist
-            // - but subquestion with old code exists, update it.
+            // If there is no subquestion with given code, but subquestion with old code do exists, update it.
             $subquestion = $this->modelQuestion->findByAttributes([
                 'qid' => $subquestionId,
                 'scale_id' => $scaleId,
