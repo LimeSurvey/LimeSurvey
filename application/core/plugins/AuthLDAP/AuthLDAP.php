@@ -578,11 +578,11 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
                     $errorCode = self::ERROR_USERNAME_INVALID;
                 }
                 $message = gT('Credentials are valid but we failed to create a user.');
-                if ($newUserSessionEvent->set('errorMessageTitle')) {
-                    $message .= $newUserSessionEvent->set('errorMessageTitle');
+                if ($newUserSessionEvent->get('errorMessageTitle')) {
+                    $message .= $newUserSessionEvent->get('errorMessageTitle');
                 }
-                if ($newUserSessionEvent->set('errorMessageBody')) {
-                    $message .= $newUserSessionEvent->set('errorMessageBody');
+                if ($newUserSessionEvent->get('errorMessageBody')) {
+                    $message .= $newUserSessionEvent->get('errorMessageBody');
                 }
                 $this->setAuthFailure($errorCode, $message);
                 return;
