@@ -37,7 +37,7 @@ class OptoutController extends LSYii_Controller
         Yii::app()->loadHelper('database');
         Yii::app()->loadHelper('sanitize');
 
-        //IF there is no survey id, redirect back to the default public page
+        //IF there is no survey ID, redirect back to the default public page
         if (!$iSurveyID) {
             $this->redirect(array('/'));
         }
@@ -62,7 +62,7 @@ class OptoutController extends LSYii_Controller
         if (!isset($oToken)) {
             $sMessage = gT('You are not a participant of this survey.');
         } else {
-            if (substr($oToken->emailstatus, 0, strlen('OptOut')) == 'OptOut') {
+            if (substr((string) $oToken->emailstatus, 0, strlen('OptOut')) == 'OptOut') {
                 $sMessage = gT('You have already been removed from this survey.');
             } else {
                 $sMessage = gT('Please confirm that you want to opt out of this survey by clicking the button below.') . '<br>' . gT("After confirmation you won't receive any invitations or reminders for this survey anymore.");
@@ -85,7 +85,7 @@ class OptoutController extends LSYii_Controller
         Yii::app()->loadHelper('database');
         Yii::app()->loadHelper('sanitize');
 
-        //IF there is no survey id, redirect back to the default public page
+        //IF there is no survey ID, redirect back to the default public page
         if (!$surveyId) {
             $this->redirect(array('/'));
         }
@@ -112,7 +112,7 @@ class OptoutController extends LSYii_Controller
         if (!isset($token)) {
             $message = gT('You are not a participant of this survey.');
         } else {
-            $optedOutFromSurvey = substr($token->emailstatus, 0, strlen('OptOut')) == 'OptOut';
+            $optedOutFromSurvey = substr((string) $token->emailstatus, 0, strlen('OptOut')) == 'OptOut';
 
             $blacklistHandler = new LimeSurvey\Models\Services\ParticipantBlacklistHandler();
             $participant = $blacklistHandler->getCentralParticipantFromToken($token);
@@ -149,7 +149,7 @@ class OptoutController extends LSYii_Controller
         Yii::app()->loadHelper('database');
         Yii::app()->loadHelper('sanitize');
 
-        // If there is no survey id, redirect back to the default public page
+        // If there is no survey ID, redirect back to the default public page
         if (!$surveyId) {
             $this->redirect(['/']);
         }
@@ -176,7 +176,7 @@ class OptoutController extends LSYii_Controller
         if (!isset($token)) {
             $message = gT('You are not a participant in this survey.');
         } else {
-            if (substr($token->emailstatus, 0, strlen('OptOut')) !== 'OptOut') {
+            if (substr((string) $token->emailstatus, 0, strlen('OptOut')) !== 'OptOut') {
                 $token->emailstatus = 'OptOut';
                 $token->save();
                 $message = gT('You have been successfully removed from this survey.');

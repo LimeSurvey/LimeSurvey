@@ -7,7 +7,7 @@
         data-bs-placement="right"
     >
         <div class='quick-icon-wrapper'>
-            <span class="fa fa-home navbar-brand"></span>
+            <span class="ri-home-4-fill navbar-brand"></span>
         </div>
     </a>
 
@@ -39,7 +39,7 @@
                 </div>
             </a>
         </div>
-    <?php endforeach; ?>
+<?php endforeach; ?>
 </div>
 <script>
     // TODO: Needs to be moved to QuickMenu core plugin

@@ -15,8 +15,8 @@
             <div>
                 <?php if ($oSurvey->active != 'Y'): ?>
                     <div class="jumbotron message-box message-box-error">
-                        <h2 class='text-warning'><?php eT('Warning!'); ?></h2>
-                        <p class="lead text-warning">
+                        <h2 class='text-danger'><?php eT('Warning!'); ?></h2>
+                        <p class="lead text-danger">
                             <?php eT("This survey is not yet activated and so your participants won't be able to fill out the survey."); ?>
                         </p>
                     </div>
@@ -106,7 +106,7 @@
                                 $subject = Replacefields($oSurvey->languagesettings[$language]->surveyls_email_invite_subj, $fieldsarray, false);
                                 $textarea = Replacefields($oSurvey->languagesettings[$language]->surveyls_email_invite, $fieldsarray, false);
                                 if ($ishtml !== true) {
-                                    $textarea = str_replace(array('<x>', '</x>'), array(''), $textarea);
+                                    $textarea = str_replace(array('<x>', '</x>'), array(''), (string) $textarea);
                                 }
                             ?>
                             <div id="<?php echo $language; ?>" class="tab-pane fade <?php if ($c){$c=false;echo 'show active';}?>">
@@ -129,7 +129,7 @@
 
                                     <label class='form-label ' for='message_<?php echo $language; ?>'><?php eT("Message:"); ?></label>
                                     <div class=''>
-                                        <div class="htmleditor">
+                                        <div class="input-group htmleditor">
                                             <?php echo CHtml::textArea("message_{$language}",$textarea,array('cols'=>80,'rows'=>20, 'class' => 'form-control')); ?>
                                             <?php echo getEditor("email-invitation", "message_$language", "[" . gT("Invitation email:", "js") . "](" . $language . ")", $surveyid, '', '', "tokens"); ?>
                                         </div>
@@ -142,7 +142,18 @@
                         <div class='mb-3'>
                             <div class=''></div>
                             <div class=''>
-                                <?php echo CHtml::submitButton(gT("Send Invitations",'unescaped'), array('class'=>'btn btn-outline-secondary')); ?>
+                                <?php $this->widget(
+                                    'ext.ButtonWidget.ButtonWidget',
+                                    [
+                                        'name' => 'send-invitations-button',
+                                        'text' => gT('Send invitations', 'unescaped'),
+                                        'icon' => 'ri-mail-send-fill',
+                                        'htmlOptions' => [
+                                            'class' => 'btn btn-primary',
+                                            'type' => 'submit',
+                                        ],
+                                    ]
+                                ); ?>
                             </div>
 
                             <?php
@@ -163,7 +174,6 @@
 <?php
 
 App()->getClientScript()->registerScript("Tokens:BindInviteView", "
-        LS.renderBootstrapSwitch();
         $('#send-invitation-button').on('click', function(){
             $('#sendinvitation').submit();
         })

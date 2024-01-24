@@ -5,7 +5,7 @@
         <span id="tokenSendNotice"><?php printf(ngT("There are more emails pending than can be sent in one batch. Continue sending emails by clicking below, or wait %s{n}%s second.|There are more emails pending than can be sent in one batch. Continue sending emails by clicking below, or wait %s{n}%s seconds.", Yii::app()->getConfig('sendingrate')), '<span id="tokenSendCounter">', '</span>'); ?></span>
         <br />
         <br />
-        <?php echo str_replace("{EMAILCOUNT}", (string) $lefttosend, gT("There are {EMAILCOUNT} emails still to be sent.")); ?>
+        <?php echo str_replace("{EMAILCOUNT}", (string) $lefttosend, (string) gT("There are {EMAILCOUNT} emails still to be sent.")); ?>
         <br />
         <br />
         <input 
@@ -22,7 +22,7 @@
         </button>
         <input type='hidden' name='ok' value="absolutely" />
         <input type='hidden' name='action' value="tokens" />
-        <input type='hidden' name='bypassbademails' value="<?php echo Yii::app()->request->getPost('bypassbademails'); ?>" />
+        <input type='hidden' name='bypassbademails' value="<?php echo (int) Yii::app()->request->getPost('bypassbademails'); ?>" />
         <?php
         //Include values for constraints minreminderdelay and maxremindercount if they exist
         if (!$bEmail)
@@ -32,21 +32,21 @@
                 <input 
                     type='hidden' 
                     name='minreminderdelay' 
-                    value="<?php echo Yii::app()->request->getPost('minreminderdelay'); ?>" />
+                    value="<?php echo (int) Yii::app()->request->getPost('minreminderdelay'); ?>" />
                 <?php }
             if (intval(Yii::app()->request->getPost('maxremindercount')) != 0)
             { ?>
                 <input 
                     type='hidden' 
                     name='maxremindercount' 
-                    value="<?php echo Yii::app()->request->getPost('maxremindercount'); ?>" />
+                    value="<?php echo (int) Yii::app()->request->getPost('maxremindercount'); ?>" />
                 <?php }
             if (Yii::app()->request->getPost('bypassdatecontrol')=='1')
             { ?>
                 <input 
                     type='hidden' 
                     name='bypassdatecontrol' 
-                    value="<?php echo Yii::app()->request->getPost('bypassdatecontrol'); ?>" />
+                    value="<?php echo (int) Yii::app()->request->getPost('bypassdatecontrol'); ?>" />
                 <?php }
         }
         ?>
@@ -75,7 +75,7 @@
             aria-valuemin="0" 
             aria-valuemax="100" 
             style="width:100%">
-            <span class="sr-only"><?php neT("{n} second to go|{n} seconds to go", Yii::app()->getConfig('sendingrate')); ?></span>
+            <span class="visually-hidden"><?php neT("{n} second to go|{n} seconds to go", Yii::app()->getConfig('sendingrate')); ?></span>
         </div>
     </div>
 </div>
@@ -88,7 +88,7 @@ App()->getClientScript()->registerScript('TokenInviteLooper', "
 
     var submitInviteForm = function() {
         $('body').append('<div class=\"overlay\"></div>');
-        $('#sendTokenInvitationsNow').after('<p class=\"text-center\"><i class=\"fa fa-cog fa-spin\"></i></p>');
+        $('#sendTokenInvitationsNow').after('<p class=\"text-center\"><i class=\"ri-settings-5-fill remix-spin\"></i></p>');
         $('#cancelAutomaticSubmission').remove();
         $('#sendTokenInvitationsNow').remove();
         $('#tokenSubmitInviteForm').trigger('submit');

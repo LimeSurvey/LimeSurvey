@@ -19,9 +19,10 @@
 * @param integer $iSurveyID
 * @param CActiveRecord[]  $aResultTokens
 * @param string $sType type of notification invite|register|remind|confirm
+* @param bool $continueOnError Don't stop on first invalid participant
 * @return array of results
 */
-function emailTokens($iSurveyID, $aResultTokens, $sType)
+function emailTokens($iSurveyID, $aResultTokens, $sType, $continueOnError = false)
 {
     if (!in_array($sType, ['invite','remind','register','confirm'])) {
         throw new Exception('Invalid email type');
@@ -36,46 +37,64 @@ function emailTokens($iSurveyID, $aResultTokens, $sType)
         $mail->setToken($aTokenRow['token']);
         $mail->setTypeWithRaw($sType, $aTokenRow['language']);
 
-        if (isset($aTokenRow['validfrom']) && trim($aTokenRow['validfrom']) != '' && convertDateTimeFormat($aTokenRow['validfrom'], 'Y-m-d H:i:s', 'U') * 1 > date('U') * 1) {
+        if (isset($aTokenRow['validfrom']) && trim((string) $aTokenRow['validfrom']) != '' && convertDateTimeFormat($aTokenRow['validfrom'], 'Y-m-d H:i:s', 'U') * 1 > date('U') * 1) {
             $aResult[$aTokenRow['tid']] = array(
                 'name' => $aTokenRow["firstname"] . " " . $aTokenRow["lastname"],
                 'email' => $aTokenRow["email"],
                 'status' => 'fail',
+                'warning' => null,
                 'error' => 'Token not valid yet'
             );
-            break 1;
+            if ($continueOnError) {
+                continue;
+            } else {
+                break 1;
+            }
         }
-        if (isset($aTokenRow['validuntil']) && trim($aTokenRow['validuntil']) != '' && convertDateTimeFormat($aTokenRow['validuntil'], 'Y-m-d H:i:s', 'U') * 1 < date('U') * 1) {
+        if (isset($aTokenRow['validuntil']) && trim((string) $aTokenRow['validuntil']) != '' && convertDateTimeFormat($aTokenRow['validuntil'], 'Y-m-d H:i:s', 'U') * 1 < date('U') * 1) {
             $aResult[$aTokenRow['tid']] = array(
                 'name' => $aTokenRow["firstname"] . " " . $aTokenRow["lastname"],
                 'email' => $aTokenRow["email"],
                 'status' => 'fail',
+                'warning' => null,
                 'error' => 'Token not valid anymore'
             );
-            break 1;
+            if ($continueOnError) {
+                continue;
+            } else {
+                break 1;
+            }
         }
         if ($mail->sendMessage()) {
+            $warnings = null;
             $oToken = Token::model($iSurveyID)->findByPk($aTokenRow['tid']);
             if ($sType == 'invite' || $sType == 'register') {
                 $oToken->sent = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust"));
-                $oToken->save();
+                if (!$oToken->save(true, ['sent'])) {
+                    $warnings = $oToken->getErrors();
+                }
             }
             if ($sType == 'remind') {
                 $oToken->remindersent = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust"));
                 $oToken->remindercount++;
-                $oToken->save();
+                if (!$oToken->save(true, ['remindersent', 'remindercount'])) {
+                    $warnings = $oToken->getErrors();
+                }
             }
             $aResult[$aTokenRow['tid']] = array(
                 'name' => $aTokenRow["firstname"] . " " . $aTokenRow["lastname"],
                 'email' => $aTokenRow["email"],
-                'status' => 'OK'
+                'status' => 'OK',
+                'warning' => $warnings,
+                'error' => null
             );
         } else {
             $aResult[$aTokenRow['tid']] = array(
                 'name' => $aTokenRow["firstname"] . " " . $aTokenRow["lastname"],
                 'email' => $aTokenRow["email"],
                 'status' => 'fail',
-                'error' => $mail->getError(),
+                'warning' => null,
+                'error' => $mail->getError()
             );
         }
     }

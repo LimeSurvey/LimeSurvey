@@ -69,14 +69,14 @@ var LS = LS || {};  // namespace
 </div>
 
 <div class="modal modal-large fade" tabindex="-1" role="dialog" id="kc-modal-open">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title"><?= gT("Choose file to add") ?></h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body" style="padding: 0;">
-                <iframe frameBorder="0" style="min-height: 600px; height:100%; width: 100%;" src="about:blank"></iframe>
+                <iframe id="browseiframe" frameBorder="0" style="min-height: 600px; height:100%; width: 100%;" src="about:blank"></iframe>
             </div>
             <div class='modal-footer'>
                 <button type="button" class='btn btn-cancel' data-bs-dismiss='modal'><?php eT("Cancel"); ?></button>
@@ -94,16 +94,16 @@ var LS = LS || {};  // namespace
             </div>
             <div class='modal-body'>
                 <div class='input-group'>
-                    <div class="input-group-addon">{</div>
+                    <div class="input-group-text">{</div>
                     <textarea class='form-control' id='attachment-relevance-condition'></textarea>
-                    <div class="input-group-addon">}</div>
+                    <div class="input-group-text">}</div>
                 </div>
             </div>
             <div class='modal-footer'>
                 <button type="button" class='btn btn-outline-secondary' data-bs-dismiss='modal'>
                     <?php eT("Close"); ?>
                 </button>
-                <button type="button" class='btn btn-success'>
+                <button type="button" class='btn btn-primary'>
                     <?php eT("Add"); ?>
                 </button>
             </div>

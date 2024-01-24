@@ -9,10 +9,12 @@ class Update_600 extends DatabaseUpdateBase
      */
     public function up()
     {
-        $this->db->createCommand()->addColumn(
-            '{{questions}}',
-            'same_script',
-            "integer NOT NULL default '0'"
+        $this->db->createCommand()->update(
+            '{{surveymenu_entries}}',
+            array(
+                'menu_link' => 'quotas/index',
+            ),
+            "name='quotas'"
         );
     }
 }

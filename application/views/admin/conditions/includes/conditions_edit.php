@@ -11,7 +11,7 @@
             document.getElementById('conditionaction<?php echo $rows['cid']; ?>').submit();
         });"
     >
-    <span class="fa fa-trash text-danger"></span>
+    <span class="ri-delete-bin-fill text-danger"></span>
 </a>
 
 <a
@@ -20,7 +20,7 @@
     data-title="<?php eT("Edit condition"); ?>"
     onclick='document.getElementById("subaction<?php echo $rows['cid']; ?>").value="editthiscondition"; document.getElementById("conditionaction<?php echo $rows['cid']; ?>").submit();'
 >
-    <span class="fa fa-pencil"></span>
+    <span class="ri-pencil-fill"></span>
 </a>
 
 <input type='hidden' name='subaction' id='subaction<?php echo $rows['cid']; ?>' value='delete' />

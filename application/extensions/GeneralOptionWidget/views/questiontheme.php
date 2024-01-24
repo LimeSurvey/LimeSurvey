@@ -11,9 +11,9 @@
 >
     <?php foreach ($this->generalOption->formElement->options as $option) : ?>
         <?php if ($this->generalOption->formElement->value == $option['value']) : ?>
-            <option value="<?= Chtml::encode($option['value']); ?>" selected="selected"><?= $option['text']; ?></option>
+            <option value="<?= CHtml::encode($option['value']); ?>" selected="selected"><?= $option['text']; ?></option>
         <?php else : ?>
-            <option value="<?= Chtml::encode($option['value']); ?>"><?= $option['text']; ?></option>
+            <option value="<?= CHtml::encode($option['value']); ?>"><?= $option['text']; ?></option>
         <?php endif; ?>
     <?php endforeach; ?>
 </select>

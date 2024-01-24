@@ -3,7 +3,13 @@ var LS = LS || {
     onDocumentReady: {}
 };
 
- Tokens = {
+/**
+ *
+ * @type {{}}
+ */
+var filterData = {};
+
+Tokens = {
      /**
       * jQuery Plugin to manage the date in token modal edit.
       * Some fields, like "Completed", can have string value (eg: 'N') or a date value.
@@ -22,9 +28,7 @@ var LS = LS || {
          });
 
          // Generate the date time picker
-         // $elDate.datetimepicker({
-         //     locale: el.dataset.locale
-         // });
+         initDatePicker($elDate);
 
          console.ls.log('$elSwitch', $elSwitch);
          // When user switch
@@ -32,8 +36,9 @@ var LS = LS || {
              console.ls.log('$elSwitch', event, state);
              if ($elSwitch.querySelector('input').checked) {
                  // Show date
+
                  $elDateContainer.classList.remove('d-none');
-                 $elHiddenInput.value = moment().format($elDate.dataset.dateFormat);
+                 $elHiddenInput.value = $elDate.value = moment().format($elDate.dataset.format);
              } else {
                  // Hide date, set hidden input to "N"
                  $elDateContainer.classList.add('d-none');
@@ -43,7 +48,7 @@ var LS = LS || {
 
          // When user change date
          $elDate.addEventListener('change', function (e) {
-             $elHiddenInput.value = e.date.format($elDate.dataset.dateFormat);
+             $elHiddenInput.value = $elDate.value;
          });
      },
      YesNo: function (el) {
@@ -59,7 +64,6 @@ var LS = LS || {
          });
      }
  };
-
 
 /**
  * Provide to this function a element containing form-groups,
@@ -86,7 +90,6 @@ $.fn.stickLabelOnLeft  = function(options)
     $distanceFromBorder = ( $maxWidth - $elWidestLeftLabel.width());
     if ( $distanceFromBorder < 0)
     {
-        console.log(that);
         that.css({
             position: "relative",
             left: $distanceFromBorder,
@@ -110,7 +113,6 @@ function submitEditToken(){
     var $datas      = $form.serialize();
     var $actionUrl  = $form.attr('action');
     var $modal      = $('#editTokenModal');
-    const modal = new bootstrap.Modal(document.getElementById('editTokenModal'));
     var $gridId     = '';
 
     if (!$form[0].reportValidity()) {
@@ -132,7 +134,11 @@ function submitEditToken(){
 
         success : function(result, stat) {
             if (result.success) {
-                modal.hide();
+                $modal.hide();
+                $('body').removeClass('modal-open');
+                $('body').removeAttr('style');
+                $('.modal-backdrop').remove();
+                window.LS.ajaxAlerts(result.success, 'success');
             } else {
                 var errorMsg = result.error.message ? result.error.message : result.error;
                 if (!errorMsg) errorMsg = "Unexpected error";
@@ -144,14 +150,18 @@ function submitEditToken(){
             try {
                 $.fn.yiiGridView.update($gridId, {
                     complete: function(s){
-                        modal.hide();
+                        $modal.hide();
+                        $('body').removeClass('modal-open');
+                        $('.modal-backdrop').remove();
                     } // Update the surveys list
                 });
             }
             catch (e){
                 if (e) {
                     console.ls.error(e);
-                    modal.hide();
+                    $modal.hide();
+                    $('body').removeClass('modal-open');
+                    $('.modal-backdrop').remove();
                 }
             }
         },
@@ -170,7 +180,7 @@ function showError(msg) {
  * Validates that mandatory additional attributes are filled
  */
 function validateAdditionalAttributes() {
-    const validationErrorMsg = $('#edittoken').attr('data-validation-error');
+    const validationErrorMsg = $('#edittoken').attr('data-additional-attributes-validation-error');
 
     let valid = true;
     $('.mandatory-attribute').each(function () {
@@ -208,7 +218,7 @@ function validateNotEmptyTokenForm() {
 /**
  * Scroll the pager and the footer when scrolling horizontally
  */
-$(document).on('ready  pjax:scriptcomplete', function(){
+$(document).on('ready pjax:scriptcomplete', function(){
 
     if($('#sent-yes-no-date-container').length > 0)
     {
@@ -221,15 +231,31 @@ $(document).on('ready  pjax:scriptcomplete', function(){
         document.querySelectorAll('.yes-no-container').forEach((el) => {
             Tokens.YesNo(el);
         });
+        initValidFromValidUntilPickers();
+    }
 
-        $('#validfrom').datetimepicker({locale: $('#validfrom').data('locale')});
-        $('#validuntil').datetimepicker({locale: $('#validuntil').data('locale')});
+    var modal = $('#massive-actions-modal-edit-0');
+    if (modal.length) {
+        modal.on('shown.bs.modal', function () {
+            $('.yes-no-date-container').each(function(i,el){
+                Tokens.YesNoDate(el);
+            });
 
-        $('.date .input-group-addon').on('click', function(){
-            $prev = $(this).siblings();
-            $prev.data("DateTimePicker").show();
+            $('.yes-no-container').each(function(i,el){
+                Tokens.YesNo(el);
+            });
         });
     }
+
+    $(document).on('actions-updated', function() {
+        $('.yes-no-date-container').each(function(i,el){
+            Tokens.YesNoDate(el);
+        });
+
+        $('.yes-no-container').each(function(i,el){
+            Tokens.YesNo(el);
+        });
+    });
 
     var initialScrollValue = $('.scrolling-wrapper').scrollLeft();
     var useRtl = $('input[name="rtl"]').val() === '1';
@@ -278,29 +304,67 @@ $(document).on('ready  pjax:scriptcomplete', function(){
         })
     });
 
-    $(document).off('click.edittoken', '.edit-token').on('click.edittoken', '.edit-token', startEditToken);
+    $(document).off('click.edittoken', '.edit-token').on('click.edittoken', '.edit-token', function (event) {
+        startEditToken(event, $(this));
+    });
 
-    $(document).off('submit.edittoken', '#edittoken').on('submit.edittoken', '#edittoken', function(event, params){
+    $(document).off('submit.edittoken', '#edittoken').on('submit.edittoken', '#edittoken', function (event, params) {
         var eventParams = params || {};
+        // When saving from the Edit Participant modal, handle the event in submitEditToken().
         if($('#editTokenModal').length > 0 ){
             event.preventDefault();
             submitEditToken();
             return;
         }
+        // Validate additional (custom) participant attributes
         if (!validateAdditionalAttributes()) {
             event.preventDefault();
             return false;
         }
+        // Validate expiration date isn't lower than the "Valid from" date
+        if (
+            !LS.validateEndDateHigherThanStart(
+                $('#validfrom').data('DateTimePicker'),
+                $('#validuntil').data('DateTimePicker'),
+                () => {
+                    showError($('#edittoken').attr('data-expiration-validation-error'));
+                    $('#validuntil').trigger('invalid');
+                }
+            )
+        ) {
+            event.preventDefault();
+            return false;
+        }
+
         if (!eventParams.confirm_empty_save && !validateNotEmptyTokenForm()) {
             return false;
         }
+    });
+
+    // Disable Save and Close button on click
+    $("#save-and-close-button").on('click', function() {
+        $(this).addClass('disabled');
+    });
+
+    /**
+     * Handle form inputs 'invalid' event.
+     */
+    $('#edittoken').find('button, input, select, textarea').on('invalid', function () {
+        // Enable the Save and Close button
+        $("#save-and-close-button").removeClass("disabled");
     });
 
     /**
      * Save token
      */
     $("#save-edittoken").off('click.token-save').on('click.token-save', function() {
-        if (validateAdditionalAttributes()) {
+        const valid = validateAdditionalAttributes()
+            && LS.validateEndDateHigherThanStart(
+                $('#validfrom').data('DateTimePicker'),
+                $('#validuntil').data('DateTimePicker'),
+                () => {showError($('#edittoken').attr('data-expiration-validation-error'))}
+            );
+        if (valid) {
             submitEditToken();
         }
     });
@@ -379,8 +443,8 @@ $(document).on('ready  pjax:scriptcomplete', function(){
         <option value='greaterthan'>"+searchtypes[4]+"</option>\n\
         <option value='lessthan'>"+searchtypes[5]+"</option>\n\
         </select></td>\n\<td><input class='form-control' type='text' id='conditiontext_"+conditionid+"' /></td>\n\
-        <td><span data-bs-toggle='tooltip' title='" + sDelete + "' class='ui-pg-button fa fa-trash text-danger' onClick= $(this).parent().parent().remove();$('#joincondition_"+conditionid+"').remove() id='ui-icon removebutton'"+conditionid+"></span>\n\
-        <span data-bs-toggle='tooltip' title='" + sAdd + "' class='ui-pg-button addcondition-button ui-icon text-success icon-add' style='margin-bottom:4px'></span></td></tr><tr></tr>";
+        <td><span data-bs-toggle='tooltip' title='" + sDelete + "' class='ui-pg-button ri-delete-bin-fill text-danger' onClick= $(this).parent().parent().remove();$('#joincondition_"+conditionid+"').remove() id='ui-icon removebutton'"+conditionid+"></span>\n\
+        <span data-bs-toggle='tooltip' title='" + sAdd + "' class='ui-pg-button addcondition-button ui-icon text-success ri-add-circle-fill' style='margin-bottom:4px'></span></td></tr><tr></tr>";
         $('#searchtable tr:last').after(html);
         window.LS.doToolTip();
     });
@@ -396,11 +460,11 @@ $(document).on('ready  pjax:scriptcomplete', function(){
 /**
  * Token edit
  */
-var startEditToken = function(){
-    var $that       = $(this),
-        $sid        = $that.data('sid'),
-        $tid        = $that.data('tid'),
-        $actionUrl  = $that.data('url') || $that.attr("href"),
+var startEditToken = function(event, that){
+        event.preventDefault()
+        $sid        = $(that).data('sid'),
+        $tid        = $(that).data('tid'),
+        $actionUrl  = $(that).data('url') || $(that).attr("href"),
         $modal      = $('#editTokenModal'),
         $modalBody  = $modal.find('.modal-body'),
         $ajaxLoader = $('#ajaxContainerLoading2'),
@@ -438,12 +502,11 @@ var startEditToken = function(){
                 Tokens.YesNo(el);
             });
 
-            $('#validfrom').datetimepicker({locale: $('#validfrom').data('locale')});
-            $('#validuntil').datetimepicker({locale: $('#validuntil').data('locale')});
+            initValidFromValidUntilPickers();
 
-            $('.date .input-group-addon').on('click', function(){
+            $('.date .input-group-text').on('click', function(){
                 $prev = $(this).siblings();
-                $prev.data("DateTimePicker").show();
+                // $prev.data("DateTimePicker").show();
             });
 
             var elGeneral  = $('#general');
@@ -505,9 +568,11 @@ function centerInfoDialog() {
     infoDialog.css({ 'left': Math.round((dialogparent.width() - infoDialog.width()) / 2)+'px' });
 }
 
-function onUpdateTokenGrid(){
+function onUpdateTokenGrid() {
     reinstallParticipantsFilterDatePicker();
-    $('.edit-token').off('click.edittoken').on('click.edittoken', startEditToken);
+    $('.edit-token').off('click.edittoken').on('click.edittoken', function (event) {
+        startEditToken(event, $(this));
+    });
 }
 
 /**
@@ -515,26 +580,50 @@ function onUpdateTokenGrid(){
  * @return
  */
 function reinstallParticipantsFilterDatePicker() {
-
     // Since grid view is updated with Ajax, we need to fetch date format each update
-    var dateFormatDetails = JSON.parse($('input[name="dateFormatDetails"]').val());
-
-    $('#TokenDynamic_validfrom').datetimepicker({
-        format: dateFormatDetails.jsdate + ' HH:mm'
-    });
-    $('#TokenDynamic_validuntil').datetimepicker({
-        format: dateFormatDetails.jsdate + ' HH:mm'
-    });
-
-    $('#TokenDynamic_validfrom').on('focusout', function() {
-        var data = $('#token-grid .filters input, #token-grid .filters select').serialize();
-        $.fn.yiiGridView.update('token-grid', {data: data});
-    });
-
-    $('#TokenDynamic_validuntil').on('focusout', function() {
-        var data = $('#token-grid .filters input, #token-grid .filters select').serialize();
-        $.fn.yiiGridView.update('token-grid', {data: data});
-    });
+    var dateFormatDetails = document.getElementById('dateFormatDetails');
+    var locale = document.getElementById('locale');
+    var validfromElement = document.getElementsByName('TokenDynamic[validfrom]')[0];
+    var validuntilElement = document.getElementsByName('TokenDynamic[validuntil]')[0];
+    if ((dateFormatDetails && dateFormatDetails.value) && (locale && locale.value)) {
+        dateFormatDetails = JSON.parse(dateFormatDetails.value);
+        var dateFormat = dateFormatDetails.jsdate + ' HH:mm';
+        if (validfromElement) {
+            initDatePicker(validfromElement, locale.value, dateFormat);
+            validfromElement.addEventListener("hide.td", function () {
+                reloadTokenGrid();
+            });
+        }
+        if (validuntilElement) {
+            initDatePicker(validuntilElement, locale.value, dateFormat);
+            validuntilElement.addEventListener("hide.td", function () {
+                reloadTokenGrid();
+            });
+        }
+    }
     $(document).trigger('actions-updated');
+}
 
+/**
+ * reload gridview only when data of filter input has changed
+ */
+function reloadTokenGrid() {
+    var newData = $('#token-grid .filters input, #token-grid .filters select').serialize();
+    if (filterData !== newData) {
+        filterData = newData;
+        $.fn.yiiGridView.update('token-grid', {data: filterData});
+    }
+}
+
+function initValidFromValidUntilPickers() {
+    var validfromElement = document.getElementById('validfrom');
+    var validuntilElement = document.getElementById('validuntil');
+    var dateFormat = validfromElement.dataset.dateformat;
+    var locale = validfromElement.dataset.locale;
+    if (validfromElement) {
+        initDatePicker(validfromElement, 'validfrom', locale, dateFormat);
+    }
+    if (validuntilElement) {
+        initDatePicker(validuntilElement, 'validuntil', locale, dateFormat);
+    }
 }

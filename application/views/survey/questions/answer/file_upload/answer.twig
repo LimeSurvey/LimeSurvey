@@ -17,25 +17,29 @@
            class='btn btn-primary upload'
            href='{{ uploadurl }}'
            data-bs-toggle="modal"
-           data-bs-target="file-upload-modal-{{ fileid }}"
+           data-bs-target="#file-upload-modal-{{ fileid }}"
            data-showtitle="{{ showTitle }}"
            data-showcomment="{{ showComment }}"
            data-fieldname="{{ basename }}"
         >
-            <span class='fa fa-upload'></span>
+            <span class='fa fa-upload ri-upload-fill'></span>
             &nbsp;
             {{ uploadButtonLabel }}
         </a>
     </div>
-    <input type='hidden' id='java{{ fileid }}' name='{{ fileid }}' value='{{ value }}' />
+    <input type='hidden' id='java{{ fileid }}' name='{{ fileid }}' value='{{ value|escape("html_attr") }}' />
     <input type='hidden' id='java{{ fileid }}_filecount' name='{{ fileid }}_filecount' value="{{ filecountvalue }}" />
     <div id='{{ fileid }}_uploadedfiles' class="d-none">
         <table width="100%" class="question uploadedfiles">
             <thead>
                 <tr>
                     <th width="20%">&nbsp;</th>
-                    <th>{{ "Title" | gT }}</th>
-                    <th>{{ "Comment" | gT }}</th>
+                    {% if showTitle %}
+                        <th>{{ "Title" | gT }}</th>
+                    {% endif %}
+                    {% if showComment %}
+                        <th>{{ "Comment" | gT }}</th>
+                    {% endif %}
                     <th>{{ "File name" | gT }}</th>
                     <th class="edit"></th>
                 </tr>
@@ -60,7 +64,7 @@
                 <div id="uploader{{fileid}}" name="uploader{{fileid}}" class="uploader-frame" data-src="{{uploadurl}}" title="{{gT("Upload")}}"></div>
             </div>
             <div class="modal-footer file-upload-modal-footer">
-                <button type="button" class="btn btn-success" data-bs-dismiss="modal">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
                     {{ gT("Save changes") }}
                 </button>
             </div>
@@ -127,12 +131,16 @@
 <script type="text/x-template" id="filerowtemplate_{{fileid}}">
     <tr>
         <td class="upload {imageOrPlaceholder}">{imageOrPlaceholderHtml}</td>
-        <td class="upload title">{title}</td>
-        <td class="upload comment">{comment}</td>
+        {% if showTitle %}
+            <td class="upload title">{title}</td>
+        {% endif %}
+        {% if showComment %}
+            <td class="upload comment">{comment}</td>
+        {% endif %}
         <td class="upload edit">{name}</td>
         <td>
             <a role="button" class="btn btn-primary trigger_edit_upload_{{fileid}}" data-file="{filepointer}">
-                <i class="fa fa-pencil"></i> 
+                <i class="fa fa-pencil ri-pencil-fill"></i>
                 &nbsp; 
                 {{ "Edit" | gT }}
             </a>

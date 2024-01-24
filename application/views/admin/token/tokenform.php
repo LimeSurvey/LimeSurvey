@@ -3,6 +3,7 @@
  * Add token entry
  */
 
+$locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
 ?>
 <div class='<?php if (!isset($ajax) || $ajax = false): ?>col-12 side-body <?php echo getSideBodyClass(false); ?> <?php endif; ?>'>
     <?php if (!isset($ajax) || $ajax = false) { ?>
@@ -24,10 +25,12 @@
     }
     ?>
     <div id="edittoken-error-container" class="row" style="display: none;">
-        <div class="alert alert-danger alert-dismissible" role="alert">
-            <button type="button" class="btn-close" aria-label="Close" onclick="$('#edittoken-error-container').hide();"></button>
-            <span class="alert-content"></span>
-        </div>
+        <?php
+        $this->widget('ext.AlertWidget.AlertWidget', [
+            'text' => '<span class="alert-content"></span>',
+            'type' => 'danger',
+        ]);
+        ?>
     </div>
     <div class="row">
         <div class="col-12 content-right">
@@ -36,7 +39,8 @@
                 array(
                     'id' => 'edittoken',
                     'class' => '',
-                    'data-validation-error' => gT("Some mandatory additional attributes were left blank. Please review them.")
+                    'data-additional-attributes-validation-error' => gT("Some mandatory additional attributes were left blank. Please review them."),
+                    'data-expiration-validation-error' => gT('Participant expiration date can\'t be lower than the "Valid from" date'),
                 )
             ); ?>
             <!-- Tabs -->
@@ -61,9 +65,9 @@
             <!-- Tabs content-->
             <div class="tab-content">
                 <div id="general" class="tab-pane fade show active">
-                    <div class="ls-flex-column ls-space padding left-5 right-35 col-lg-6">
+                <div class="row">
                         <!-- General -->
-                        <div class="ex-form-group mb-3">
+                        <div class="ex-form-group mb-3 col-6">
                             <!-- ID  -->
                             <label class="form-label">ID:</label>
                             <div class="">
@@ -78,7 +82,7 @@
                                 </p>
                             </div>
                         </div>
-                        <div class="ex-form-group mb-3">
+                        <div class="ex-form-group mb-3 col-6">
                             <!--
                             TODO:
                             To take in account the anonomyzed survey case (completed field contain no date, but a {Y,N}), the code become more complexe
@@ -93,7 +97,7 @@
                                 </label>
                                 <div class="selector__yesNoContainer <?php echo $sCointainerClass; ?>"
                                      id="completed-yes-no-date-container"
-                                     data-locale="<?php echo convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']); ?>">
+                                     data-locale="<?php echo $locale ?>">
                                     <div class="row">
                                         <?php if ($oSurvey->anonymized != 'Y'): ?>
                                             <?php $bCompletedValue = "0";
@@ -105,7 +109,7 @@
                                             <div>
                                                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                                                     'name'          => "completed-switch",
-                                                    'htmlOptions'   => ['class' => "YesNoDateSwitch action_toggle_bootstrap_switch"],
+                                                    'htmlOptions'   => ['class' => "YesNoDateSwitch action_toggle_bootstrap_switch mb-1"],
                                                     'checkedOption' => $bCompletedValue,
                                                     'selectOptions' => [
                                                         '1' => gT('Yes'),
@@ -120,7 +124,7 @@
                                                 $completed = (isset($completed) && $completed != 'N') ? 'Y' : 'N'; ?>
                                                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                                                     'name'          => "completed-switch",
-                                                    'htmlOptions'   => ['class' => "YesNoSwitch action_toggle_bootstrap_switch"],
+                                                    'htmlOptions'   => ['class' => "YesNoSwitch action_toggle_bootstrap_switch mb-1"],
                                                     'checkedOption' => $bCompletedValue,
                                                     'selectOptions' => [
                                                         '1' => gT('Yes'),
@@ -134,9 +138,13 @@
                                             <div class="">
                                                 <div id="sent-date-container" class="date-container <?= !$bCompletedValue ? "d-none" : "" ?>">
                                                     <div id="completed-date_datetimepicker" class="input-group date">
-                                                        <input class="YesNoDatePicker form-control" id="completed-date" type="text" value="<?php echo isset($completed) ? $completed : '' ?>"
-                                                               name="completed-date" data-date-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm">
-                                                        <span class="input-group-addon"><span class="fa fa-calendar"></span></span>
+                                                        <input class="YesNoDatePicker form-control"
+                                                               id="completed-date" type="text"
+                                                               value="<?php echo isset($completed) ? $completed : '' ?>"
+                                                               name="completed-date"
+                                                               data-locale="<?php echo $locale ?>"
+                                                               data-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm">
+                                                        <span class="input-group-text datepicker-icon"><span class="ri-calendar-2-fill"></span></span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -148,7 +156,7 @@
                         </div>
 
                         <!-- First name, Last name -->
-                        <div class="ex-form-group mb-3">
+                        <div class="ex-form-group mb-3 col-6">
                             <label class="form-label" for='firstname'>
                                 <?php eT("First name:"); ?>
                             </label>
@@ -162,7 +170,7 @@
                                 ); ?>
                             </div>
                         </div>
-                        <div class="ex-form-group mb-3">
+                        <div class="ex-form-group mb-3 col-6">
                             <label class="form-label" for='lastname'>
                                 <?php eT("Last name:"); ?>
                             </label>
@@ -178,7 +186,7 @@
                         </div>
 
                         <!-- Token, language -->
-                        <div class="ex-form-group mb-3">
+                        <div class="ex-form-group mb-3 col-6">
                             <label class="form-label" for='token'>
                                 <?php eT("Access code:"); ?>
                             </label>
@@ -191,13 +199,20 @@
                                         'maxlength' => $iTokenLength
                                     ]
                                 ); ?>
-                                <?php if ($token_subaction == "addnew"): ?>
-                                    <span id="helpBlock" class="help-block"><?php eT("You can leave this blank, and automatically generate access codes using 'Generate access codes'"
-                                        ); ?></span>
+                                <?php if ($token_subaction == "addnew") : ?>
+                                    <?php
+                                    $this->widget('ext.AlertWidget.AlertWidget', [
+                                        'text'        => gT(
+                                            "You can leave this blank, and automatically generate access codes using 'Generate access codes'"
+                                        ),
+                                        'type'        => 'info',
+                                        'htmlOptions' => ['class' => 'mt-1'],
+                                    ]);
+                                    ?>
                                 <?php endif; ?>
                             </div>
                         </div>
-                        <div class="ex-form-group mb-3">
+                        <div class="ex-form-group mb-3 col-6">
                             <label class="form-label" for='language'>
                                 <?php eT("Language:"); ?>
                             </label>
@@ -210,10 +225,10 @@
                             </div>
                         </div>
                     </div>
-                    <div class="ls-flex-column ls-space padding left-5 right-35 col-lg-6">
+                    <div class="row">
 
                         <!-- Email, Email Status  -->
-                        <div class="ex-form-group mb-3">
+                        <div class="ex-form-group mb-3 col-6">
                             <label class="form-label" for='email'>
                                 <?php eT("Email:"); ?>
                             </label>
@@ -231,7 +246,7 @@
                         </div>
 
                         <!-- Email Status -->
-                        <div class="ex-form-group mb-3">
+                        <div class="ex-form-group mb-3 col-6">
                             <label class="form-label" for='emailstatus'>
                                 <?php eT("Email status:"); ?>
                             </label>
@@ -249,13 +264,13 @@
                         </div>
 
                         <!-- Invitation sent, Reminder sent -->
-                        <div class="ex-form-group mb-3">
+                        <div class="ex-form-group mb-3 col-6">
                             <!-- Invitation sent -->
                             <label class="form-label" for='sent'>
                                 <?php eT("Invitation sent?"); ?>
                             </label>
                             <div class="selector__yesNoContainer <?php echo $sCointainerClass; ?>" id="sent-yes-no-date-container"
-                                 data-locale="<?php echo convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']); ?>">
+                                 data-locale="<?php echo $locale ?>">
                                 <div class="row">
                                     <div class="">
                                         <?php if ($oSurvey->anonymized != 'Y'): ?>
@@ -279,7 +294,7 @@
                                             } ?>
                                             <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                                                 'name'          => "sent-switch",
-                                                'htmlOptions'   => ['class' => "YesNoDateSwitch action_toggle_bootstrap_switch"],
+                                                'htmlOptions'   => ['class' => "YesNoDateSwitch action_toggle_bootstrap_switch mb-1"],
                                                 'checkedOption' => $bSwitchValue,
                                                 'selectOptions' => [
                                                     '1' => gT('Yes'),
@@ -295,7 +310,7 @@
                                             ?>
                                             <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                                                 'name'          => "sent-switch",
-                                                'htmlOptions'   => ['class' => "YesNoSwitch action_toggle_bootstrap_switch"],
+                                                'htmlOptions'   => ['class' => "YesNoSwitch action_toggle_bootstrap_switch mb-1"],
                                                 'checkedOption' => $bSwitchValue,
                                                 'selectOptions' => [
                                                     '1' => gT('Yes'),
@@ -309,9 +324,14 @@
                                         <div id="sent-date-container" data-parent="#sent-switch" class="selector__date-container_hidden date-container <?= !$bSwitchValue ? "d-none" : "" ?>">
                                             <!-- Sent Date -->
                                             <div id="sent-date_datetimepicker" class="input-group date">
-                                                <input class="YesNoDatePicker form-control" id="sent-date" type="text" value="<?php echo isset($sent) ? $sent : '' ?>" name="sent-date"
-                                                       data-date-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm">
-                                                <span class="input-group-addon"><span class="fa fa-calendar"></span></span>
+                                                <input class="YesNoDatePicker form-control"
+                                                       id="sent-date"
+                                                       type="text"
+                                                       value="<?php echo isset($sent) && $sent != 'N' ? $sent : '' ?>"
+                                                       name="sent-date"
+                                                       data-locale="<?php echo $locale ?>"
+                                                       data-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm">
+                                                <span class="input-group-text datepicker-icon"><span class="ri-calendar-2-fill"></span></span>
                                             </div>
                                         </div>
                                     </div>
@@ -319,20 +339,21 @@
                                 <input class='form-control d-none YesNoDateHidden' type='text' size='20' id='sent' name='sent' value="<?php if (isset($sent)) {echo $sent; } else {echo "N"; }?>" />
                             </div>
                         </div>
-                        <div class="ex-form-group mb-3">
+
+                        <div class="ex-form-group mb-3 col-6">
                             <!-- Reminder sent -->
                             <label class="form-label" for='remindersent'>
                                 <?php eT("Reminder sent?"); ?>
                             </label>
                             <div class="selector__yesNoContainer <?php echo $sCointainerClass; ?>" id="remind-yes-no-date-container"
-                                 data-locale="<?php echo convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']); ?>">
+                                 data-locale="<?php echo $locale ?>">
 
                                 <div class="row">
                                     <div>
                                         <?php if ($oSurvey->anonymized !== 'Y'): ?>
                                             <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                                                 'name'          => "remind-switch",
-                                                'htmlOptions'   => ['class' => "YesNoDateSwitch action_toggle_bootstrap_switch"],
+                                                'htmlOptions'   => ['class' => "YesNoDateSwitch action_toggle_bootstrap_switch mb-1"],
                                                 'checkedOption' => $bRemindSwitchValue,
                                                 'selectOptions' => [
                                                     '1' => gT('Yes'),
@@ -342,7 +363,7 @@
                                         <?php else: ?>
                                             <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                                                 'name'          => "remind-switch",
-                                                'htmlOptions'   => ['class' => "YesNoSwitch action_toggle_bootstrap_switch"],
+                                                'htmlOptions'   => ['class' => "YesNoSwitch action_toggle_bootstrap_switch mb-1"],
                                                 'checkedOption' => $bRemindSwitchValue,
                                                 'selectOptions' => [
                                                     '1' => gT('Yes'),
@@ -355,30 +376,35 @@
                                     <div class="">
                                         <div id="remind-date-container" data-parent="#remind-switch" class="selector__date-container_hidden date-container <?= !$bRemindSwitchValue ? "d-none" : "" ?>">
                                             <div id="remind-date_datetimepicker" class="input-group date">
-                                                <input class="YesNoDatePicker form-control" id="remind-date" type="text"
-                                                       value="<?php echo isset($remindersent) && $remindersent != 'N' ? $remindersent : '' ?>" name="remind-date"
-                                                       data-date-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm">
-                                                <span class="input-group-addon"><span class="fa fa-calendar"></span></span>
+                                                <input class="YesNoDatePicker form-control"
+                                                       id="remind-date"
+                                                       type="text"
+                                                       value="<?php echo isset($remindersent) && $remindersent != 'N' ? $remindersent : '' ?>"
+                                                       name="remind-date"
+                                                       data-locale="<?php echo $locale ?>"
+                                                       data-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm">
+                                                <span class="input-group-text datepicker-icon"><span class="ri-calendar-2-fill"></span></span>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <input class='form-control d-none YesNoDateHidden' type='text' size='20' id='remindersent' name='remindersent' value="<?php if (isset($remindersent) && $remindersent!='N') {echo $remindersent; } else {echo "N"; }?>" />
                             </div>
+                        </div>
 
-                            <!-- Reminder count, Uses left -->
-                            <div class="ex-form-group mb-3">
-                                <!-- Reminder count -->
-                                <?php if ($token_subaction == "edit"): ?>
-                                    <label class="form-label" for='remindercount'>
-                                        <?php eT("Reminder count:"); ?>
-                                    </label>
-                                    <input class='form-control' type='number' size='6' id='remindercount' name='remindercount' value="<?php echo $remindercount; ?>"/>
-                                <?php endif; ?>
-                            </div>
+                            <!-- Reminder count -->
+                            <?php if ($token_subaction == "edit"): ?>
+                                <!-- Reminder count, Uses left -->
+                                <div class="ex-form-group mb-3 col-6">
+                                        <label class="form-label" for='remindercount'>
+                                            <?php eT("Reminder count:"); ?>
+                                        </label>
+                                        <input class='form-control' type='number' size='6' id='remindercount' name='remindercount' value="<?php echo $remindercount; ?>"/>
+                                </div>
+                            <?php endif; ?>
 
                             <!-- Uses left -->
-                            <div class="ex-form-group mb-3">
+                            <div class="ex-form-group mb-3 col-6">
                                 <label class="form-label" for='usesleft'>
                                     <?php eT("Uses left:"); ?>
                                 </label>
@@ -389,45 +415,47 @@
                                 } ?>"/>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="ls-flex-column ls-space padding left-5 right-35 col-12">
-                        <!-- Valid from to  -->
-                        <div class="ex-form-group mb-3">
-                            <?php
-                            if (isset($validfrom) && $validfrom != 'N') {
-                                $validfrom = convertToGlobalSettingFormat($validfrom, true);
-                            }
+                    <div class="row">
+                        <div class="col-6">
+                            <!-- Valid from to  -->
+                            <div class="ex-form-group mb-3">
+                                <?php
+                                if (isset($validfrom) && $validfrom != 'N') {
+                                    $validfrom = convertToGlobalSettingFormat($validfrom, true);
+                                }
 
-                            if (isset($validuntil) && $validuntil != 'N') {
-                                $validuntil = convertToGlobalSettingFormat($validuntil, true);
-                            }
-                            ?>
+                                if (isset($validuntil) && $validuntil != 'N') {
+                                    $validuntil = convertToGlobalSettingFormat($validuntil, true);
+                                }
+                                ?>
 
-                            <!-- From -->
-                            <label class="form-label" for='validfrom'>
-                                <?php eT("Valid from"); ?>:</label>
-                            <div class=" has-feedback">
-                                <div id="validfrom_datetimepicker" class="input-group date">
+                                <!-- From -->
+                                <label class="form-label" for='validfrom'>
+                                    <?php eT("Valid from"); ?>:</label>
+                                <div class=" has-feedback">
+                                    <div id="validfrom_datetimepicker" class="input-group date">
                                     <input class="YesNoDatePicker form-control" id="validfrom" type="text" value="<?php echo isset($validfrom) ? $validfrom : '' ?>" name="validfrom"
-                                           data-date-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm"
+                                           data-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm"
                                            data-locale="<?php echo convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']); ?>">
-                                    <span class="input-group-addon"><span class="fa fa-calendar"></span></span>
+                                    <span class="input-group-text datepicker-icon"><span class="ri-calendar-2-fill"></span></span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-
-                        <div class="ex-form-group mb-3">
-                            <!-- To -->
-                            <label class="form-label" for='validuntil'>
-                                <?php eT('Until:'); ?>
-                            </label>
-                            <div class="has-feedback">
-                                <div id="validuntil_datetimepicker" class="input-group date">
+                        <div class="col-6">
+                            <div class="ex-form-group mb-3">
+                                <!-- To -->
+                                <label class="form-label" for='validuntil'>
+                                    <?php eT('Until:'); ?>
+                                </label>
+                                <div class="has-feedback">
+                                    <div id="validuntil_datetimepicker" class="input-group date">
                                     <input class="YesNoDatePicker form-control" id="validuntil" type="text" value="<?php echo isset($validuntil) ? $validuntil : '' ?>" name="validuntil"
-                                           data-date-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm"
+                                           data-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm"
                                            data-locale="<?php echo convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']); ?>">
-                                    <span class="input-group-addon"><span class="fa fa-calendar"></span></span>
+                                    <span class="input-group-text datepicker-icon"><span class="ri-calendar-2-fill"></span></span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -438,7 +466,7 @@
                 <div id="custom" class="tab-pane fade">
                     <!-- Attributes -->
                     <?php foreach ($attrfieldnames as $attr_name => $attr_description): ?>
-                        <div class="ex-form-group mb-3">
+                        <div class="ex-form-group mb-3 col-6">
                             <label class="form-label" for='<?php echo $attr_name; ?>'>
                                 <?php echo $attr_description['description'] . ($attr_description['mandatory'] == 'Y' ? '*' : '') ?>:
                             </label>
@@ -450,7 +478,7 @@
                                     id='<?php echo $attr_name; ?>'
                                     name='<?php echo $attr_name; ?>'
                                     value='<?php if (isset($$attr_name)) {
-                                        echo htmlspecialchars($$attr_name, ENT_QUOTES, 'utf-8');
+                                        echo htmlspecialchars((string) $$attr_name, ENT_QUOTES, 'utf-8');
                                     } ?>'
                                 />
                             </div>
@@ -478,30 +506,8 @@
             </p>
             <?php echo CHtml::endForm() ?>
         </div>
-
-
-        <div style="display: none;">
-            <?php
-            Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker',
-                array(
-                    'name' => "no",
-                    'id' => "no",
-                    'value' => '',
-
-                )
-            );
-            ?>
-        </div>
     </div>
 </div>
-<?php
-App()->getClientScript()->registerScript('TokenformViewBSSwitcher',
-    "
-LS.renderBootstrapSwitch();
-",
-    LSYii_ClientScript::POS_POSTSCRIPT
-);
-?>
 
 <?php if ($token_subaction == "addnew"): ?>
     <!-- Empty Token Confirmation Modal -->

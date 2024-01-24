@@ -12,7 +12,7 @@ var onDocumentReadyAttributeMapToken = function(){
             headingHeight = $(this).height();
         }
     });
-    $('.attribute-column .card-header').height(headingHeight);
+    $('.attribute-column .card-header').css({'min-height': headingHeight});
     
     function adjustHeights() {
         $('.attribute-column, .droppable').css({ 'height': 'auto' });
@@ -158,8 +158,8 @@ var onDocumentReadyAttributeMapToken = function(){
             $('#attribute-map-token-modal').on('hide.bs.modal' , function (e) {
                 $(location).attr('href',redUrl);
             });
-            $('#attribute-map-token-modal').modal();
-
+            const modal = new bootstrap.Modal(document.getElementById('attribute-map-token-modal'), {});
+            modal.show();
         });
     });
 

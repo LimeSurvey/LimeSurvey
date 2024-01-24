@@ -31,43 +31,41 @@ $respstatsread  = Permission::model()->hasSurveyPermission($iSurveyID, 'response
 
 ?>
 <!-- START surveySummary -->
-<div class="row">
+<!-- <div class="row">
     <div class="col-12">
         <div class="h3 pagetitle">
             <?php eT('Survey summary'); ?> :
             <?php echo flattenText($oSurvey->currentLanguageSettings->surveyls_title) . " (" . gT("ID") . " " . $oSurvey->sid . ")"; ?>
         </div>
     </div>
-</div>
-<?php /*
-/// Survey quick actions have been removed -> deprecated
-<div class="row">
-    <div class="col-12">
-        <?php echo $this->renderPartial('/admin/survey/subview/_survey_quickaction', $subviewData); ?>    
+</div> -->
+<div class="ls-card-grid">
+<?php
+    //survey has been activated in open-access mode
+   if (isset($surveyActivationFeedback)) {
+       $this->renderPartial('/surveyAdministration/surveyActivation/_feedbackOpenAccess', ['surveyId' => $iSurveyID]);
+   }
+?>
+<div class="row survey-summary mt-4">
+        <?php
+        $possiblePanelFolder = realpath(Yii::app()->getConfig('rootdir') . '/application/views/admin/survey/subview/surveydashboard/');
+        $possiblePanels = scandir($possiblePanelFolder);
+        foreach ($possiblePanels as $i => $panel) {
+        // If it's no twig file => ignore
+        if (!preg_match('/^.*\.twig$/', (string)$panel)) {
+            continue;
+        }
+        //every two entries close it up
+        if ($i % 2 === 0) { ?>
     </div>
-</div>
-*/ ?>
-<div class="row ls-space top-10">
-    <?php
-    $possiblePanelFolder = realpath(Yii::app()->getConfig('rootdir') . '/application/views/admin/survey/subview/surveydashboard/');
-    $possiblePanels      = scandir($possiblePanelFolder);
-    foreach ($possiblePanels
-
-    as $i => $panel) {
-    // If it's no twig file => ignore
-    if (!preg_match('/^.*\.twig$/', $panel)) {
-        continue;
-    }
-    //every two entries close it up
-    if ($i % 2 === 0) { ?>
-</div>
-<div class="row ls-space top-10">
-    <?php } ?>
-    <div class="col-12 col-xl-6">
-        <?php $surveyTextContent = $oSurvey->currentLanguageSettings->attributes; ?>
-        <?= App()->twigRenderer->renderViewFromFile('/application/views/admin/survey/subview/surveydashboard/' . $panel, get_defined_vars(), true) ?>
+<div class="row survey-summary mt-4">
+        <?php } ?>
+        <div class="col-12 col-xl-6 mb-4">
+            <?php $surveyTextContent = $oSurvey->currentLanguageSettings->attributes; ?>
+            <?= App()->twigRenderer->renderViewFromFile('/application/views/admin/survey/subview/surveydashboard/' . $panel, get_defined_vars(), true) ?>
+        </div>
+        <?php }
+        ?>
     </div>
-    <?php }
-    ?>
 </div>
 <!-- END surveySummary -->

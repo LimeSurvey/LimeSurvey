@@ -11,7 +11,7 @@ $scriptVarsNeccessary = "
         var sParameter = '';
         var sTargetQuestion = '';
         var sNoParametersDefined = '';
-        var sAdminEmailAddressNeeded = '" . gT("If you are using token functions or notifications emails you need to set an administrator email address.", 'js') . "'
+        var sAdminEmailAddressNeeded = '" . gT("If you are using surveys with a closed participant group or notifications emails you need to set an administrator email address.", 'js') . "'
         var sURLParameters = '';
         var sAddParam = '';
     ";
@@ -32,8 +32,9 @@ $formatSelectOptions = array(
     'G' => gT('Group by Group', 'unescaped'),
     'A' => gT('All in one', 'unescaped')
 );
+$bGlobalSettings = !empty($this->currentModuleAction) && $this->currentModuleAction == 'globalsettings';
 if ($bShowInherited) {
-    $formatSelectOptions['I'] = gT('Inherit', 'unescaped') . ' [' . $oSurveyOptions->format . ']';
+    $formatSelectOptions['I'] = $oSurveyOptions->format . " ᴵ";
 }
 ?>
 <?php if ($action == 'editsurveysettings'): ?>
@@ -85,7 +86,7 @@ Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", 
                     <div class="">
                         <?php
                         $aAllLanguages = getLanguageDataRestricted(false, 'short');
-                        
+
                         Yii::app()->getController()->widget('ext.admin.survey.LanguagesWidget.LanguagesWidget',
                             array(
                                 'asDropDownList' => true,
@@ -152,12 +153,12 @@ Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", 
             <div class="row">
                 <div class="col-12 col-lg-8 content-right">
                     <label class=" form-label" for='admin'><?php eT("Administrator:"); ?></label>
-                    <input class="form-control inherit-edit <?php echo($bShowInherited && $admin === 'inherit' ? 'd-none' : 'show'); ?>" type='text' size='50' id='admin' name='admin'
-                           value="<?php echo htmlspecialchars($admin); ?>" data-inherit-value="inherit" data-saved-value="<?php echo $admin; ?>"/>
-                    <input class="form-control inherit-readonly <?php echo($bShowInherited && $admin === 'inherit' ? 'show' : 'd-none'); ?>" type='text' size='50'
-                           value="<?php echo htmlspecialchars($oSurveyOptions->admin); ?>" readonly/>
+                    <input class="form-control inherit-edit <?php echo($bShowInherited && $admin === 'inherit' ? 'd-none' : 'd-block'); ?>" type='text' size='50' id='admin' name='admin'
+                           value="<?php echo htmlspecialchars((string) $admin); ?>" data-inherit-value="inherit" data-saved-value="<?php echo htmlspecialchars((string) $admin); ?>"/>
+                    <input class="form-control inherit-readonly <?php echo($bShowInherited && $admin === 'inherit' ? 'd-block' : 'd-none'); ?>" type='text' size='50'
+                           value="<?php echo htmlspecialchars((string) $oSurveyOptions->admin); ?>" readonly/>
                 </div>
-                <div class="col-12 col-lg-4 content-right <?php echo($bShowInherited ? 'show' : 'd-none'); ?>">
+                <div class="col-12 col-lg-4 content-right <?php echo($bShowInherited ? 'd-block' : 'd-none'); ?>">
                     <label class=" form-label content-center col-12" for='admin'><?php eT("Inherit:"); ?></label>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'adminbutton',
@@ -178,12 +179,12 @@ Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", 
             <div class="row">
                 <div class="col-12 col-lg-8 content-right">
                     <label class=" form-label" for='adminemail'><?php eT("Administrator email address:"); ?></label>
-                    <input class="form-control inherit-edit <?php echo($bShowInherited && $adminemail === 'inherit' ? 'd-none' : 'show'); ?>" type='<?php echo ($bShowInherited) ? 'text' : 'email'; ?>'
-                           size='50' id='adminemail' name='adminemail' value="<?php echo htmlspecialchars($adminemail); ?>" data-inherit-value="inherit" data-saved-value="<?php echo $adminemail; ?>"/>
-                    <input class="form-control inherit-readonly <?php echo($bShowInherited && $adminemail === 'inherit' ? 'show' : 'd-none'); ?>" type='text' size='50'
-                           value="<?php echo htmlspecialchars($oSurveyOptions->adminemail); ?>" readonly/>
+                    <input class="form-control inherit-edit <?php echo($bShowInherited && $adminemail === 'inherit' ? 'd-none' : 'd-block'); ?>" type='<?php echo ($bShowInherited) ? 'text' : 'email'; ?>'
+                           size='50' id='adminemail' name='adminemail' value="<?php echo htmlspecialchars((string) $adminemail); ?>" data-inherit-value="inherit" data-saved-value="<?php echo htmlspecialchars((string) $adminemail); ?>"/>
+                    <input class="form-control inherit-readonly <?php echo($bShowInherited && $adminemail === 'inherit' ? 'd-block' : 'd-none'); ?>" type='text' size='50'
+                           value="<?php echo htmlspecialchars((string) $oSurveyOptions->adminemail); ?>" readonly/>
                 </div>
-                <div class="col-12 col-lg-4 content-right <?php echo($bShowInherited ? 'show' : 'd-none'); ?>">
+                <div class="col-12 col-lg-4 content-right <?php echo($bShowInherited ? 'd-block' : 'd-none'); ?>">
                     <label class=" form-label content-center col-12" for='adminemail'><?php eT("Inherit:"); ?></label>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'adminemailbutton',
@@ -204,13 +205,13 @@ Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", 
             <div class="row">
                 <div class="col-12 col-lg-8 content-right">
                     <label class=" form-label" for='bounce_email'><?php eT("Bounce email address:"); ?></label>
-                    <input class="form-control inherit-edit <?php echo($bShowInherited && $bounce_email === 'inherit' ? 'd-none' : 'show'); ?>"
-                           type='<?php echo ($bShowInherited) ? 'text' : 'email'; ?>' size='50' id='bounce_email' name='bounce_email' value="<?php echo htmlspecialchars($bounce_email); ?>"
-                           data-inherit-value="inherit" data-saved-value="<?php echo $bounce_email; ?>"/>
-                    <input class="form-control inherit-readonly <?php echo($bShowInherited && $bounce_email === 'inherit' ? 'show' : 'd-none'); ?>" type='text' size='50'
-                           value="<?php echo htmlspecialchars($oSurveyOptions->bounce_email); ?>" readonly/>
+                    <input class="form-control inherit-edit <?php echo($bShowInherited && $bounce_email === 'inherit' ? 'd-none' : 'd-block'); ?>"
+                           type='<?php echo ($bShowInherited) ? 'text' : 'email'; ?>' size='50' id='bounce_email' name='bounce_email' value="<?php echo htmlspecialchars((string) $bounce_email); ?>"
+                           data-inherit-value="inherit" data-saved-value="<?php echo htmlspecialchars((string) $bounce_email); ?>"/>
+                    <input class="form-control inherit-readonly <?php echo($bShowInherited && $bounce_email === 'inherit' ? 'd-block' : 'd-none'); ?>" type='text' size='50'
+                           value="<?php echo htmlspecialchars((string) $oSurveyOptions->bounce_email); ?>" readonly/>
                 </div>
-                <div class="col-12 col-lg-4 content-right <?php echo($bShowInherited ? 'show' : 'd-none'); ?>">
+                <div class="col-12 col-lg-4 content-right <?php echo($bShowInherited ? 'd-block' : 'd-none'); ?>">
                     <label class=" form-label content-center col-12" for='bounce_email'><?php eT("Inherit:"); ?></label>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'bounce_emailbutton',
@@ -224,26 +225,7 @@ Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", 
             </div>
         </div>
 
-        <?php if ($bShowAllOptions === true) { ?>
-            <!-- Fax to -->
-            <div class="mb-3">
-                <label class=" form-label" for='faxto'><?php eT("Fax to:"); ?></label>
-                <div class="">
-                    <?php echo CHtml::textField('faxto',
-                        $oSurvey->faxto,
-                        array(
-                            'class' => 'form-control',
-                            'id' => 'faxto',
-                            'size' => '20',
-                            'maxlength' => '20',
-                        )
-                    ); ?>
-                </div>
-            </div>
-        <?php } ?>
-
-
-        <?php else: ?>
+            <?php else: ?>
             <!-- End URL -->
             <div class="mb-3">
                 <label class=" form-label" for='url'><?php eT("End URL:"); ?></label>
@@ -333,36 +315,40 @@ Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", 
                 ]); ?>
             </div>
         </div>
-        <!-- Template -->
-
-        <div class="mb-3">
+        <?php
+            $themeConf = TemplateConfiguration::getInstanceFromTemplateName(($oSurvey->template === 'inherit') ? $oSurveyOptions->template : $oSurvey->template);
+            $inheritedThemeName = $oSurvey->oOptions->template;
+        ?>
+        <!-- Theme -->
+        <div class="mb-3" >
             <label class=" form-label" for='template'><?php eT("Theme:"); ?></label>
             <div class="">
-                <select id='template' class="form-select" name='template' data-updateurl='<?php echo App()->createUrl('themeOptions/getPreviewTag') ?>'
-                        data-inherit-template-name='<?php echo $oSurveyOptions->template ?>'>
-                    <?php if ($bShowInherited) { ?>
-                        <option value="inherit" <?php echo ($oSurvey->template == 'inherit') ? 'selected="selected"' : ''; ?>><?php echo eT('Inherit'
-                                ) . ' [' . $oSurveyOptions->template . ']'; ?></option>
-                    <?php } ?>
+                <select id='template' style="width:100%;" class="form-select activate-search" name='template' data-updateurl='<?php echo App()->createUrl('themeOptions/getPreviewTag') ?>'
+                        data-inherit-template-name='<?= $themeConf->template_name ?>'>
+                    <?php if ($bShowInherited || $bGlobalSettings) : ?>
+                        <option value="inherit" <?= ($oSurvey->template == 'inherit') ? 'selected="selected"' : ''; ?>>
+                            <?= gT('Inherit') . ' [' . CHtml::encode($inheritedThemeName) . ']' ?>
+                        </option>
+                    <?php endif; ?>
                     <?php
                     $aTemplateList = Template::getTemplateListWithPreviews();
                     foreach ($aTemplateList as $templateName => $preview) {
                         if (Permission::model()->hasGlobalPermission('templates', 'read') || Permission::model()->hasTemplatePermission($templateName
-                            ) || $oSurvey->template == htmlspecialchars($templateName)) { ?>
-                            <option value='<?php echo $templateName; ?>'
-                                <?php if ($oSurvey->template && htmlspecialchars($templateName) == $oSurvey->template && $oSurvey->template != 'inherit') { ?>
+                            ) || $oSurvey->template == htmlspecialchars((string) $templateName)) { ?>
+                            <option value='<?php echo CHtml::encode($templateName); ?>'
+                                <?php if ($oSurvey->template && htmlspecialchars((string) $templateName) === $themeConf->template_name && $oSurvey->template !== 'inherit') { ?>
                                     selected='selected'
-                                <?php } elseif (!$oSurvey->template && $templateName == getGlobalSetting('defaulttheme') && $oSurvey->template != 'inherit') { ?>
+                                <?php } elseif (!$oSurvey->template && $templateName === App()->getConfig('defaulttheme') && $oSurvey->template !== 'inherit') { ?>
                                     selected='selected'
                                 <?php } ?>
-                            ><?php echo $templateName; ?></option>
+                            ><?php echo CHtml::encode($templateName); ?></option>
                         <?php } ?>
 
                     <?php } ?>
                 </select>
             </div>
-            <div class="col-md-6 offset-lg-3 template-img" style="margin-top: 13px;" id="preview-image-container">
-                <?php echo TemplateConfiguration::getInstanceFromTemplateName(($oSurvey->template == 'inherit') ? $oSurveyOptions->template : $oSurvey->template)->getPreview() ?>
+            <div class="col-md-6 mt-4 w-100" id="preview-image-container">
+                <?php echo $themeConf->getPreview() ?>
             </div>
         </div>
         <?php
@@ -373,3 +359,4 @@ Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", 
 
     </div>
 </div>
+<?php $this->renderPartial('/surveyAdministration/_inherit_sub_footer'); ?>

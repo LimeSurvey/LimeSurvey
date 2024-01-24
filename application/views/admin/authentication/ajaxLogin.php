@@ -3,8 +3,8 @@
     <div id="panel-1">
 
         <!-- Header -->
-        <div class="col-12">
-          <img alt="logo" id="profile-img" class="profile-img-card img-responsive center-block" src="<?php echo LOGO_URL;?>" />
+        <div class="d-flex justify-content-center">
+          <img alt="logo" id="profile-img" class="profile-img-card img-fluid" src="<?php echo LOGO_URL;?>" />
         </div>
 
         <!-- Action Name -->
@@ -75,7 +75,7 @@
                         );
                         foreach (getLanguageDataRestricted(true) as $sLangKey => $aLanguage)
                         {
-                            $languageData[$sLangKey] =  html_entity_decode($aLanguage['nativedescription'], ENT_NOQUOTES, 'UTF-8') . " - " . $aLanguage['description'];
+                            $languageData[$sLangKey] =  html_entity_decode((string) $aLanguage['nativedescription'], ENT_NOQUOTES, 'UTF-8') . " - " . $aLanguage['description'];
                         }
                         echo CHtml::label(gT('Language'), 'loginlang');
 

@@ -72,7 +72,7 @@ class SurveyCommonAction extends CAction
         // Merges it with actions from admin modules
         $aActions = array_merge(Yii::app()->getController()->getActionClasses(), Yii::app()->getController()->getAdminModulesActionClasses());
 
-        if (empty($aActions[$this->getId()]) || strtolower($oMethod->getDeclaringClass()->name) != strtolower($aActions[$this->getId()]) || !$oMethod->isPublic()) {
+        if (empty($aActions[$this->getId()]) || strtolower($oMethod->getDeclaringClass()->name) != strtolower((string) $aActions[$this->getId()]) || !$oMethod->isPublic()) {
             // Either action doesn't exist in our whitelist, or the method class doesn't equal the action class or the method isn't public
             // So let us get the last possible default method, ie. index
             $oMethod = new ReflectionMethod($this, $sDefault);
@@ -177,7 +177,7 @@ class SurveyCommonAction extends CAction
             if ((string) (int) $params['iSurveyId'] !== (string) $params['iSurveyId']) {
                 // pgsql need filtering before find
                 // 403 mean The request was valid, but the server is refusing action.
-                throw new CHttpException(403, gT("Invalid survey id"));
+                throw new CHttpException(403, gT("Invalid survey ID"));
             }
             $oSurvey = Survey::model()->findByPk($params['iSurveyId']);
             if (!$oSurvey) {
@@ -305,6 +305,43 @@ class SurveyCommonAction extends CAction
     }
 
     /**
+     * Load menu bar of user group controller.
+     *
+     * REFACTORED (it's in UserGroupController and uses function from Layouthelper->renderMenuBar())
+     *
+     * @param array $aData
+     * @return void
+     */
+    /*
+    public function userGroupBar(array $aData)
+    {
+        $ugid = $aData['ugid'] ?? 0;
+        if (!empty($aData['display']['menu_bars']['user_group'])) {
+            $data = $aData;
+            Yii::app()->loadHelper('database');
+
+            if (!empty($ugid)) {
+                $userGroup = UserGroup::model()->findByPk($ugid);
+                $uid = Yii::app()->session['loginID'];
+                if (($userGroup && ($userGroup->hasUser($uid)) || $userGroup->owner_id == $uid) || Permission::model()->hasGlobalPermission('superadmin')) {
+                    $data['userGroup'] = $userGroup;
+                } else {
+                    $data['userGroup'] = null;
+                }
+            }
+
+            $data['imageurl'] = Yii::app()->getConfig("adminimageurl");
+
+            if (isset($aData['usergroupbar']['closebutton']['url'])) {
+                $sAlternativeUrl = $aData['usergroupbar']['closebutton']['url'];
+                $aData['usergroupbar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl($sAlternativeUrl));
+            }
+
+            $this->getController()->renderPartial('/admin/usergroup/usergroupbar_view', $data);
+        }
+    } */
+
+    /**
      * Renders template(s) wrapped in header and footer
      *
      * Addition of parameters should be avoided if they can be added to $aData
@@ -367,6 +404,7 @@ class SurveyCommonAction extends CAction
      *
      *
      * REFACTORED (in LayoutHelper.php)
+     * @throws CException
      */
     protected function updatenotification()
     {
@@ -382,6 +420,8 @@ class SurveyCommonAction extends CAction
             $updateNotification = $updateModel->updateNotification;
 
             if ($updateNotification->result) {
+                $scriptToRegister = App()->getConfig('packages') . DIRECTORY_SEPARATOR . 'comfort_update' . DIRECTORY_SEPARATOR. 'comfort_update.js';
+                App()->getClientScript()->registerScriptFile($scriptToRegister);
                 return $this->getController()->renderPartial("/admin/update/_update_notification", array('security_update_available' => $updateNotification->security_update));
             }
         }
@@ -462,7 +502,7 @@ class SurveyCommonAction extends CAction
                     'user_id' => App()->user->id,
                     'importance' => Notification::HIGH_IMPORTANCE,
                     'title' => gT('Password warning'),
-                    'message' => '<span class="fa fa-exclamation-circle text-warning"></span>&nbsp;' .
+                    'message' => '<span class="ri-error-warning-fill"></span>&nbsp;' .
                         gT("Warning: You are still using the default password ('password'). Please change your password and re-login again.")
                 ));
                 $not->save();
@@ -472,8 +512,8 @@ class SurveyCommonAction extends CAction
                     'user_id' => App()->user->id,
                     'importance' => Notification::HIGH_IMPORTANCE,
                     'title' => gT('SSL not enforced'),
-                    'message' => '<span class="fa fa-exclamation-circle text-warning"></span>&nbsp;' .
-                        gT("Warning: Please enforce SSL encrpytion in Global settings/Security after SSL is properly configured for your webserver.")
+                    'message' => '<span class="ri-error-warning-fill"></span>&nbsp;' .
+                        gT("Warning: Please enforce SSL encryption in Global settings/Security after SSL is properly configured for your webserver.")
                 ));
                 $not->save();
             }
@@ -496,15 +536,11 @@ class SurveyCommonAction extends CAction
 
             $aData['sitename'] = Yii::app()->getConfig("sitename");
 
-            $updateModel = new UpdateForm();
-            $updateNotification = $updateModel->updateNotification;
-            $aData['showupdate'] = Yii::app()->getConfig('updatable') && $updateNotification->result && !$updateNotification->unstable_update;
-
             // Fetch extra menus from plugins, e.g. last visited surveys
             $aData['extraMenus'] = $this->fetchExtraMenus($aData);
 
             // Get notification menu
-            $surveyId = isset($aData['surveyid']) ? $aData['surveyid'] : null;
+            $surveyId = $aData['surveyid'] ?? null;
             Yii::import('application.controllers.admin.NotificationController');
             $aData['adminNotifications'] = NotificationController::getMenuWidget($surveyId, true /* show spinner */);
 
@@ -522,7 +558,7 @@ class SurveyCommonAction extends CAction
     protected function titlebar($aData)
     {
         if (isset($aData['title_bar'])) {
-            $this->getController()->renderPartial("/admin/super/title_bar", $aData);
+            $this->getController()->renderPartial("/layouts/title_bar", $aData);
         }
     }
 
@@ -555,9 +591,10 @@ class SurveyCommonAction extends CAction
      * @param $aData
      * @throws CException
      */
+    /*
     public function generaltopbar($aData)
     {
-        $aData['topBar'] = isset($aData['topBar']) ? $aData['topBar'] : [];
+        $aData['topBar'] = $aData['topBar'] ?? [];
         $aData['topBar'] = array_merge(
             [
                 'type' => 'survey',
@@ -570,7 +607,7 @@ class SurveyCommonAction extends CAction
         );
 
         $this->getController()->renderPartial("/admin/survey/topbar/topbar_view", $aData);
-    }
+    }*/
 
     /**
      * Shows admin menu for question
@@ -597,7 +634,7 @@ class SurveyCommonAction extends CAction
                 //Count answer-options for this question
                 $aData['qct'] = Answer::model()->countByAttributes(array('qid' => $qid));
 
-                //Count sub-questions for this question
+                //Count subquestions for this question
                 $aData['sqct'] = Question::model()->countByAttributes(array('parent_qid' => $qid));
 
                 $qrrow = Question::model()->findByAttributes(array('qid' => $qid, 'gid' => $gid, 'sid' => $iSurveyID));
@@ -657,40 +694,6 @@ class SurveyCommonAction extends CAction
     }
 
     /**
-     * Renders the fullpager bar
-     * That's the white bar with action buttons example: 'Back' Button
-     * @param array $aData
-     * @throws CException
-     */
-    public function fullpagebar(array $aData)
-    {
-        if ((isset($aData['fullpagebar']))) {
-            if (isset($aData['fullpagebar']['closebutton']['url']) && !isset($aData['fullpagebar']['closebutton']['url_keep'])) {
-                $sAlternativeUrl = '/admin/index';
-                $aData['fullpagebar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl($sAlternativeUrl));
-            }
-            App()->getClientScript()->registerScriptFile(
-                App()->getConfig('adminscripts') . 'topbar.js',
-                CClientScript::POS_END
-            );
-            $this->getController()->renderPartial("/admin/super/fullpagebar_view", $aData);
-        }
-    }
-
-    /**
-     * Renders the green bar with page title
-     * Also called SurveyManagerBar
-     * @todo Needs to be removed later. Duplication in LayoutHelper.
-     * @param array $aData
-     */
-    public function surveyManagerBar(array $aData)
-    {
-        if (isset($aData['pageTitle'])) {
-            Yii::app()->getController()->renderPartial("/layouts/surveymanagerbar", $aData);
-        }
-    }
-
-    /**
      * Shows admin menu for surveys
      *
      * @param array $aData
@@ -702,7 +705,7 @@ class SurveyCommonAction extends CAction
             $iSurveyID = $aData['surveyid'];
             /** @var Survey $oSurvey */
             $oSurvey = $aData['oSurvey'];
-            $gid = isset($aData['gid']) ? $aData['gid'] : null;
+            $gid = $aData['gid'] ?? null;
             $aData['baselang'] = $oSurvey->language;
             App()->getClientScript()->registerPackage('js-cookie');
 
@@ -963,7 +966,7 @@ class SurveyCommonAction extends CAction
     protected function listquestiongroups(array $aData)
     {
         if (isset($aData['display']['menu_bars']['listquestiongroups'])) {
-            $this->getController()->renderPartial("/questionGroupsAdministration/listquestiongroups", $aData);
+            $this->getController()->renderPartial("/questionAdministration/listQuestions", $aData);
         }
     }
 
@@ -999,48 +1002,12 @@ class SurveyCommonAction extends CAction
 
             $aData['pageSize'] = App()->user->getState('pageSize', App()->params['defaultPageSize']);
 
-            // We filter the current survey id
+            // We filter the current survey ID
             $model->sid = $iSurveyID;
 
             $aData['model'] = $model;
 
             $this->getController()->renderPartial("/admin/survey/Question/listquestions", $aData);
-        }
-    }
-
-    /**
-     * Load menu bar of user group controller.
-     *
-     * REFACTORED (it's in UserGroupController and uses function from Layouthelper->renderMenuBar())
-     *
-     * @param array $aData
-     * @return void
-     */
-    public function userGroupBar(array $aData)
-    {
-        $ugid = (isset($aData['ugid'])) ? $aData['ugid'] : 0;
-        if (!empty($aData['display']['menu_bars']['user_group'])) {
-            $data = $aData;
-            Yii::app()->loadHelper('database');
-
-            if (!empty($ugid)) {
-                $userGroup = UserGroup::model()->findByPk($ugid);
-                $uid = Yii::app()->session['loginID'];
-                if (($userGroup && $userGroup->hasUser($uid)) || Permission::model()->hasGlobalPermission('superadmin')) {
-                    $data['userGroup'] = $userGroup;
-                } else {
-                    $data['userGroup'] = null;
-                }
-            }
-
-            $data['imageurl'] = Yii::app()->getConfig("adminimageurl");
-
-            if (isset($aData['usergroupbar']['closebutton']['url'])) {
-                $sAlternativeUrl = $aData['usergroupbar']['closebutton']['url'];
-                $aData['usergroupbar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl($sAlternativeUrl));
-            }
-
-            $this->getController()->renderPartial('/admin/usergroup/usergroupbar_view', $data);
         }
     }
 

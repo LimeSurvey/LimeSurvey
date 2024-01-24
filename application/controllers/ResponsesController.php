@@ -49,7 +49,6 @@ class ResponsesController extends LSBaseController
 
         $surveyId = (int)App()->request->getParam('surveyId');
         $oSurvey = Survey::model()->findByPk($surveyId);
-        $this->aData['display']['menu_bars'] = false;
         $this->aData['subaction'] = gT("Responses and statistics");
         $this->aData['display']['menu_bars']['browse'] = gT('Browse responses'); // browse is independent of the above
         $this->aData['title_bar']['title'] = gT('Browse responses') . ': ' . $oSurvey->currentLanguageSettings->surveyls_title;
@@ -91,6 +90,7 @@ class ResponsesController extends LSBaseController
             $sBrowseLanguage = $aData['language'];
             Yii::import("application.libraries.admin.quexmlpdf", true);
             $quexmlpdf = new quexmlpdf();
+            $quexmlpdf->applyGlobalSettings();
             // Setting the selected language for printout
             App()->setLanguage($sBrowseLanguage);
             $quexmlpdf->setLanguage($sBrowseLanguage);
@@ -126,281 +126,261 @@ class ResponsesController extends LSBaseController
         }
         $survey = Survey::model()->findByPk($surveyId);
 
-        if (Permission::model()->hasSurveyPermission($surveyId, 'responses', 'read')) {
-            $aData = $this->getData($surveyId, $id, $browseLang);
-            $sBrowseLanguage = $aData['language'];
+        if (!Permission::model()->hasSurveyPermission($surveyId, 'responses', 'read')) {
+            App()->user->setFlash('error', gT("You do not have permission to access this page."));
+            $this->redirect(['surveyAdministration/view', 'surveyid' => $surveyId]);
+            App()->end(); // More clear, uneeded.
+        }
+        /* TODO : Check if response still exist, after checking survey */
+        $aData = $this->getData($surveyId, $id, $browseLang);
+        $sBrowseLanguage = $aData['language'];
 
-            extract($aData, EXTR_OVERWRITE);
+        extract($aData, EXTR_OVERWRITE);
 
 
-            $fieldmap = createFieldMap($survey, 'full', false, false, $aData['language']);
-            $bHaveToken = $survey->anonymized == "N" && tableExists('tokens_' . $surveyId); // Boolean : show (or not) the token
-            if (!Permission::model()->hasSurveyPermission($surveyId, 'tokens', 'read')) {
-                // If not allowed to read: remove it
-                unset($fieldmap['token']);
-                $bHaveToken = false;
+        $fieldmap = createFieldMap($survey, 'full', false, false, $aData['language']);
+        // just used to check if the token exists for the given response id before we create the real query
+        $response = SurveyDynamic::model($surveyId)->find('id=:id', [':id' => $id]);
+        // Boolean : show (or not) the token
+        $bHaveToken = $survey->anonymized == "N"
+            && tableExists('tokens_' . $surveyId)
+            && isset($response->tokens);
+        if (!Permission::model()->hasSurveyPermission($surveyId, 'tokens', 'read')) {
+            // If not allowed to read: remove it
+            unset($fieldmap['token']);
+            $bHaveToken = false;
+        }
+        //add token to top of list if survey is not private
+        if ($bHaveToken) {
+            $fnames[] = ["token", gT("Access code"), 'code' => 'token'];
+            $fnames[] = ["firstname", gT("First name"), 'code' => 'firstname']; // or token:firstname ?
+            $fnames[] = ["lastname", gT("Last name"), 'code' => 'lastname'];
+            $fnames[] = ["email", gT("Email"), 'code' => 'email'];
+
+            $customTokenAttributes = $survey->tokenAttributes;
+            foreach ($customTokenAttributes as $attributeName => $tokenAttribute) {
+                $tokenAttributeDescription = ($tokenAttribute['description'] != '') ? $tokenAttribute['description'] : $attributeName;
+                $fnames[] = [$attributeName, $tokenAttributeDescription, 'code' => $attributeName];
             }
-            //add token to top of list if survey is not private
-            if ($bHaveToken) {
-                $fnames[] = ["token", gT("Access code"), 'code' => 'token'];
-                $fnames[] = ["firstname", gT("First name"), 'code' => 'firstname']; // or token:firstname ?
-                $fnames[] = ["lastname", gT("Last name"), 'code' => 'lastname'];
-                $fnames[] = ["email", gT("Email"), 'code' => 'email'];
+        }
+        if ($survey->isDateStamp) {
+            $fnames[] = ["submitdate", gT("Submission date"), gT("Completed"), "0", 'D', 'code' => 'submitdate'];
+        }
+        $fnames[] = ["completed", gT("Completed"), "0"];
 
-                $customTokenAttributes = $survey->tokenAttributes;
-                foreach ($customTokenAttributes as $attributeName => $tokenAttribute) {
-                    $tokenAttributeDescription = ($tokenAttribute['description'] != '') ? $tokenAttribute['description'] : $attributeName;
-                    $fnames[] = [$attributeName, $tokenAttributeDescription, 'code' => $attributeName];
-                }
+        foreach ($fieldmap as $field) {
+            if ($field['fieldname'] == 'lastpage' || $field['fieldname'] == 'submitdate') {
+                continue;
             }
-            if ($survey->isDateStamp) {
-                $fnames[] = ["submitdate", gT("Submission date"), gT("Completed"), "0", 'D', 'code' => 'submitdate'];
+            if ($field['type'] == 'interview_time') {
+                continue;
             }
-            $fnames[] = ["completed", gT("Completed"), "0"];
+            if ($field['type'] == 'page_time') {
+                continue;
+            }
+            if ($field['type'] == 'answer_time') {
+                continue;
+            }
 
-            foreach ($fieldmap as $field) {
-                if ($field['fieldname'] == 'lastpage' || $field['fieldname'] == 'submitdate') {
-                    continue;
-                }
-                if ($field['type'] == 'interview_time') {
-                    continue;
-                }
-                if ($field['type'] == 'page_time') {
-                    continue;
-                }
-                if ($field['type'] == 'answer_time') {
-                    continue;
-                }
+            //$question = $field['question'];
+            $question = viewHelper::getFieldText($field);
 
-                //$question = $field['question'];
-                $question = viewHelper::getFieldText($field);
+            if ($field['type'] != Question::QT_VERTICAL_FILE_UPLOAD) {
+                $fnames[] = [
+                    $field['fieldname'],
+                    viewHelper::getFieldText($field),
+                    'code' => viewHelper::getFieldCode($field, ['LEMcompat' => true])
+                ];
+            } elseif ($field['aid'] !== 'filecount') {
+                $qidattributes = QuestionAttribute::model()->getQuestionAttributes($field['qid']);
 
-                if ($field['type'] != Question::QT_VERTICAL_FILE_UPLOAD) {
-                    $fnames[] = [
-                        $field['fieldname'],
-                        viewHelper::getFieldText($field),
-                        'code' => viewHelper::getFieldCode($field, ['LEMcompat' => true])
-                    ];
-                } elseif ($field['aid'] !== 'filecount') {
-                    $qidattributes = QuestionAttribute::model()->getQuestionAttributes($field['qid']);
-
-                    for ($i = 0; $i < $qidattributes['max_num_of_files']; $i++) {
-                        $filenum = sprintf(gT("File %s"), $i + 1);
-                        if ($qidattributes['show_title'] == 1) {
-                            $fnames[] = [
-                                $field['fieldname'],
-                                "{$filenum} - {$question} (" . gT('Title') . ")",
-                                'code'     => viewHelper::getFieldCode($field) . '(title)',
-                                "type"     => Question::QT_VERTICAL_FILE_UPLOAD,
-                                "metadata" => "title",
-                                "index"    => $i
-                            ];
-                        }
-
-                        if ($qidattributes['show_comment'] == 1) {
-                            $fnames[] = [
-                                $field['fieldname'],
-                                "{$filenum} - {$question} (" . gT('Comment') . ")",
-                                'code'     => viewHelper::getFieldCode($field) . '(comment)',
-                                "type"     => Question::QT_VERTICAL_FILE_UPLOAD,
-                                "metadata" => "comment",
-                                "index"    => $i
-                            ];
-                        }
-
+                for ($i = 0; $i < $qidattributes['max_num_of_files']; $i++) {
+                    $filenum = sprintf(gT("File %s"), $i + 1);
+                    if ($qidattributes['show_title'] == 1) {
                         $fnames[] = [
                             $field['fieldname'],
-                            "{$filenum} - {$question} (" . gT('File name') . ")",
-                            'code'     => viewHelper::getFieldCode($field) . '(name)',
-                            "type"     => "|",
-                            "metadata" => "name",
-                            "index"    => $i,
-                            'qid'      => $field['qid']
-                        ];
-                        $fnames[] = [
-                            $field['fieldname'],
-                            "{$filenum} - {$question} (" . gT('File size') . ")",
-                            'code'     => viewHelper::getFieldCode($field) . '(size)',
-                            "type"     => "|",
-                            "metadata" => "size",
+                            "{$filenum} - {$question} (" . gT('Title') . ")",
+                            'code'     => viewHelper::getFieldCode($field) . '(title)',
+                            "type"     => Question::QT_VERTICAL_FILE_UPLOAD,
+                            "metadata" => "title",
                             "index"    => $i
                         ];
                     }
-                } else {
-                    $fnames[] = [$field['fieldname'], gT("File count")];
-                }
-            }
 
-            $nfncount = count($fnames) - 1;
-            if ($id < 1) {
-                $id = 1;
-            }
-
-            $exist = SurveyDynamic::model($surveyId)->exist($id);
-            $next = SurveyDynamic::model($surveyId)->next($id, true);
-            $previous = SurveyDynamic::model($surveyId)->previous($id, true);
-            $aData['exist'] = $exist;
-            $aData['next'] = $next;
-            $aData['previous'] = $previous;
-            $aData['id'] = $id;
-
-            if ($exist) {
-                $oPurifier = new CHtmlPurifier();
-                //SHOW INDIVIDUAL RECORD
-                $oCriteria = new CDbCriteria();
-                if ($bHaveToken) {
-                    $oCriteria = SurveyDynamic::model($surveyId)->addTokenCriteria($oCriteria);
-                }
-
-                $oCriteria->addCondition("id = {$id}");
-                $iIdresult = SurveyDynamic::model($surveyId)->find($oCriteria);
-                if ($bHaveToken) {
-                    $aResult = array_merge(
-                        $iIdresult->tokens->decrypt()->attributes,
-                        $iIdresult->decrypt()->attributes
-                    );
-                } else {
-                    $aResult = $iIdresult->decrypt()->attributes;
-                }
-                $id = $aResult['id'];
-                $rlanguage = $aResult['startlanguage'];
-                $aData['bHasFile'] = false;
-                if (isset($rlanguage)) {
-                    $aData['rlanguage'] = $rlanguage;
-                }
-                $highlight = false;
-                $aData['answers'] = [];
-                for ($i = 0; $i < $nfncount + 1; $i++) {
-                    if ($fnames[$i][0] != 'completed' && is_null($aResult[$fnames[$i][0]])) {
-                        continue; // irrelevant, so don't show
-                    }
-                    $inserthighlight = '';
-                    if ($highlight) {
-                        $inserthighlight = "class='highlight'";
+                    if ($qidattributes['show_comment'] == 1) {
+                        $fnames[] = [
+                            $field['fieldname'],
+                            "{$filenum} - {$question} (" . gT('Comment') . ")",
+                            'code'     => viewHelper::getFieldCode($field) . '(comment)',
+                            "type"     => Question::QT_VERTICAL_FILE_UPLOAD,
+                            "metadata" => "comment",
+                            "index"    => $i
+                        ];
                     }
 
-                    if ($fnames[$i][0] == 'completed') {
-                        if ($aResult['submitdate'] == null || $aResult['submitdate'] == "N") {
-                            $answervalue = "N";
-                        } else {
-                            $answervalue = "Y";
-                        }
-                    } elseif (isset($fnames[$i]['type']) && $fnames[$i]['type'] == Question::QT_VERTICAL_FILE_UPLOAD) {
-                        // File upload question type.
-                        $index = $fnames[$i]['index'];
-                        $metadata = $fnames[$i]['metadata'];
-                        $phparray = json_decode_ls($aResult[$fnames[$i][0]]);
-
-                        if (isset($phparray[$index])) {
-                            switch ($metadata) {
-                                case "size":
-                                    $answervalue = sprintf(gT("%s KB"), intval($phparray[$index][$metadata]));
-                                    break;
-                                case "name":
-                                    $answervalue = CHtml::link(
-                                        htmlspecialchars(
-                                            $oPurifier->purify(rawurldecode($phparray[$index][$metadata]))
-                                        ),
-                                        $this->createUrl(
-                                            "responses/downloadfile",
-                                            [
-                                                "surveyId"    => $surveyId,
-                                                "responseId" => $id,
-                                                "qid"        => $fnames[$i]['qid'],
-                                                "index"      => $index
-                                            ]
-                                        )
-                                    );
-                                    break;
-                                default:
-                                    $answervalue = htmlspecialchars(
-                                        strip_tags(
-                                            stripJavaScript($phparray[$index][$metadata])
-                                        )
-                                    );
-                            }
-                            $aData['bHasFile'] = true;
-                        } else {
-                            $answervalue = "";
-                        }
-                    } else {
-                        $answervalue = htmlspecialchars(
-                            strip_tags(
-                                stripJavaScript(
-                                    getExtendedAnswer(
-                                        $surveyId,
-                                        $fnames[$i][0],
-                                        $aResult[$fnames[$i][0]],
-                                        $sBrowseLanguage
-                                    )
-                                )
-                            ),
-                            ENT_QUOTES
-                        );
-                    }
-                    $aData['inserthighlight'] = $inserthighlight;
-                    $aData['fnames'] = $fnames;
-                    $aData['answers'][] = [
-                        'answervalue' => $answervalue,
-                        'i' => $i
+                    $fnames[] = [
+                        $field['fieldname'],
+                        "{$filenum} - {$question} (" . gT('File name') . ")",
+                        'code'     => viewHelper::getFieldCode($field) . '(name)',
+                        "type"     => "|",
+                        "metadata" => "name",
+                        "index"    => $i,
+                        'qid'      => $field['qid']
+                    ];
+                    $fnames[] = [
+                        $field['fieldname'],
+                        "{$filenum} - {$question} (" . gT('File size') . ")",
+                        'code'     => viewHelper::getFieldCode($field) . '(size)',
+                        "type"     => "|",
+                        "metadata" => "size",
+                        "index"    => $i
                     ];
                 }
             } else {
-                App()->session['flashmessage'] = gT("This response ID is invalid.");
+                $fnames[] = [$field['fieldname'], gT("File count")];
+            }
+        }
+
+        $nfncount = count($fnames) - 1;
+        if ($id < 1) {
+            $id = 1;
+        }
+
+        $exist = SurveyDynamic::model($surveyId)->exist($id);
+        $next = SurveyDynamic::model($surveyId)->next($id, true);
+        $previous = SurveyDynamic::model($surveyId)->previous($id, true);
+        $aData['exist'] = $exist;
+        $aData['next'] = $next;
+        $aData['previous'] = $previous;
+        $aData['id'] = $id;
+
+        if ($exist) {
+            $oPurifier = new CHtmlPurifier();
+            //SHOW INDIVIDUAL RECORD
+            $oCriteria = new CDbCriteria();
+            if ($bHaveToken) {
+                $oCriteria = SurveyDynamic::model($surveyId)->addTokenCriteria($oCriteria);
             }
 
-            $aData['sidemenu']['state'] = false;
-            // This resets the url on the close button to go to the upper view
-            $aData['closeUrl'] = $this->createUrl("responses/browse/", ['surveyId' => $surveyId]);
-            $aData['topBar']['name'] = 'baseTopbar_view';
-            $aData['topBar']['rightSideView'] = 'responseViewTopbarRight_view';
+            $oCriteria->addCondition("id = {$id}");
+            $iIdresult = SurveyDynamic::model($surveyId)->find($oCriteria);
+            if ($bHaveToken) {
+                $aResult = array_merge(
+                    $iIdresult->tokens->decrypt()->attributes,
+                    $iIdresult->decrypt()->attributes
+                );
+            } else {
+                $aResult = $iIdresult->decrypt()->attributes;
+            }
+            $id = $aResult['id'];
+            $rlanguage = $aResult['startlanguage'];
+            $aData['bHasFile'] = false;
+            if (isset($rlanguage)) {
+                $aData['rlanguage'] = $rlanguage;
+            }
+            $highlight = false;
+            $aData['answers'] = [];
+            for ($i = 0; $i < $nfncount + 1; $i++) {
+                if ($fnames[$i][0] != 'completed' && is_null($aResult[$fnames[$i][0]])) {
+                    continue; // irrelevant, so don't show
+                }
+                $inserthighlight = '';
+                if ($highlight) {
+                    $inserthighlight = "class='highlight'";
+                }
 
-            $this->aData = $aData;
-            $this->render('browseidrow_view', [
-                'id'              => $aData['id'],
-                'surveyid'        => $aData['surveyId'],
-                'answers'         => $aData['answers'],
-                'inserthighlight' => $aData['inserthighlight'],
-                'fnames'          => $aData['fnames'],
-            ]);
+                if ($fnames[$i][0] == 'completed') {
+                    if ($aResult['submitdate'] == null || $aResult['submitdate'] == "N") {
+                        $answervalue = "N";
+                    } else {
+                        $answervalue = "Y";
+                    }
+                } elseif (isset($fnames[$i]['type']) && $fnames[$i]['type'] == Question::QT_VERTICAL_FILE_UPLOAD) {
+                    // File upload question type.
+                    $index = $fnames[$i]['index'];
+                    $metadata = $fnames[$i]['metadata'];
+                    $phparray = json_decode_ls($aResult[$fnames[$i][0]]);
+
+                    if (isset($phparray[$index])) {
+                        switch ($metadata) {
+                            case "size":
+                                $answervalue = sprintf(gT("%s KB"), intval($phparray[$index][$metadata]));
+                                break;
+                            case "name":
+                                $answervalue = CHtml::link(
+                                    htmlspecialchars(
+                                        (string) $oPurifier->purify(rawurldecode((string) $phparray[$index][$metadata]))
+                                    ),
+                                    $this->createUrl(
+                                        "responses/downloadfile",
+                                        [
+                                            "surveyId"    => $surveyId,
+                                            "responseId" => $id,
+                                            "qid"        => $fnames[$i]['qid'],
+                                            "index"      => $index
+                                        ]
+                                    )
+                                );
+                                break;
+                            default:
+                                $answervalue = htmlspecialchars(
+                                    strip_tags(
+                                        stripJavaScript($phparray[$index][$metadata])
+                                    )
+                                );
+                        }
+                        $aData['bHasFile'] = true;
+                    } else {
+                        $answervalue = "";
+                    }
+                } else {
+                    $answervalue = htmlspecialchars(
+                        viewHelper::flatten(
+                            stripJavaScript(
+                                getExtendedAnswer(
+                                    $surveyId,
+                                    $fnames[$i][0],
+                                    $aResult[$fnames[$i][0]],
+                                    $sBrowseLanguage
+                                )
+                            )
+                        ),
+                        ENT_QUOTES
+                    );
+                }
+                $aData['inserthighlight'] = $inserthighlight;
+                $aData['fnames'] = $fnames;
+                $aData['answers'][] = [
+                    'answervalue' => $answervalue,
+                    'i' => $i
+                ];
+            }
         } else {
-            App()->user->setFlash('error', gT("You do not have permission to access this page."));
-            $this->redirect(['surveyAdministration/view', 'surveyid' => $surveyId]);
-        }
-    }
-
-    /**
-     * Shows the responses summary
-     *
-     * @param int $surveyId
-     */
-    public function actionIndex(int $surveyId): void
-    {
-        // logging for webserver when parameter is somehting like $surveyid=125<script ...
-        if (!is_numeric(Yii::app()->request->getParam('surveyId'))) {
-            throw new CHttpException(403, gT("Invalid survey ID"));
-        }
-        $survey = Survey::model()->findByPk($surveyId);
-        $aData = $this->getData($surveyId);
-
-        $aData['num_total_answers'] = SurveyDynamic::model($surveyId)->count();
-        $aData['num_completed_answers'] = SurveyDynamic::model($surveyId)->count('submitdate IS NOT NULL');
-        if ($survey->hasTokensTable && Permission::model()->hasSurveyPermission($surveyId, 'tokens', 'read')) {
-            $aData['with_token'] = App()->db->schema->getTable($survey->tokensTableName);
-            $aData['tokeninfo'] = Token::model($surveyId)->summary();
+            App()->session['flashmessage'] = gT("This response ID is invalid.");
         }
 
-        $aData['topBar']['name'] = 'baseTopbar_view';
-        $aData['topBar']['leftSideView'] = 'responsesTopbarLeft_view';
+        $aData['sidemenu']['state'] = false;
+        // This resets the url on the close button to go to the upper view
+        $aData['closeUrl'] = $this->createUrl("responses/browse/", ['surveyId' => $surveyId]);
+
+        $topbarData = TopbarConfiguration::getResponsesTopbarData($survey->sid);
+        $topbarData = array_merge($topbarData, $aData);
+        $aData['topbar']['middleButtons'] = $this->renderPartial(
+            'partial/topbarBtns/responseViewTopbarRight_view',
+            $topbarData,
+            true
+        );
 
         $this->aData = $aData;
-        $this->render('browseindex_view', [
-          'num_completed_answers' => $aData['num_completed_answers'],
-          'num_total_answers'     => $aData['num_total_answers'],
-          'tokeninfo'             => $aData['tokeninfo'],
-          'with_token'            => $aData['with_token']
+        $this->render('browseidrow_view', [
+            'id'              => $aData['id'],
+            'surveyid'        => $aData['surveyId'],
+            'answers'         => $aData['answers'],
+            'inserthighlight' => $aData['inserthighlight'],
+            'fnames'          => $aData['fnames'],
         ]);
     }
+
 
     /**
      * Show responses for survey
@@ -424,12 +404,12 @@ class ResponsesController extends LSBaseController
         if (Permission::model()->hasSurveyPermission($surveyId, 'responses', 'read')) {
             App()->getClientScript()->registerScriptFile(
                 App()->getConfig('adminscripts') .
-                'listresponse.js',
+                    'listresponse.js',
                 LSYii_ClientScript::POS_BEGIN
             );
             App()->getClientScript()->registerScriptFile(
                 App()->getConfig('adminscripts') .
-                'tokens.js',
+                    'tokens.js',
                 LSYii_ClientScript::POS_BEGIN
             );
 
@@ -499,12 +479,48 @@ class ResponsesController extends LSBaseController
             // Page size
             $aData['pageSize'] = App()->user->getState('pageSize', App()->params['defaultPageSize']);
 
-            $aData['topBar']['name'] = 'baseTopbar_view';
-            $aData['topBar']['leftSideView'] = 'responsesTopbarLeft_view';
+            $topbarData = TopbarConfiguration::getResponsesTopbarData($survey->sid);
+            $aData['topbar']['middleButtons'] = $this->renderPartial(
+                'partial/topbarBtns/leftSideButtons',
+                $topbarData,
+                true
+            );
+            $aData['topbar']['rightButtons'] = $this->renderPartial(
+                'partial/topbarBtns/rightSideButtons',
+                $topbarData,
+                true
+            );
+            // below codes are copied from above actionIndex method for summary page data
+            $aData['num_total_answers'] = SurveyDynamic::model($surveyId)->count();
+            $aData['num_completed_answers'] = SurveyDynamic::model($surveyId)->count('submitdate IS NOT NULL');
+            // =============================================================================
+
+            // these codes are copied from 'applicatioin\controllers\admin' for "saved but not submitted" table data
+            // *** how it worked? admin/saved.php -> renderWrappedTemplate -> surveyCommonAction.php -> layout_insurvey
+            $oSavedControlModel = SavedControl::model();
+            $oSavedControlModel->sid = $survey->sid;
+
+            // Filter state
+            $aFilters = App()->request->getParam('SavedControl');
+            if (!empty($aFilters)) {
+                $oSavedControlModel->setAttributes($aFilters, false);
+            }
+            $aData['savedModel'] = $oSavedControlModel;
+            if (App()->request->getPost('savedResponsesPageSize')) {
+                App()->user->setState('savedResponsesPageSize', App()->request->getPost('savedResponsesPageSize'));
+            }
+            $aData['savedResponsesPageSize'] = App()->user->getState('savedResponsesPageSize', App()->params['defaultPageSize']);
+            $aViewUrls[] = 'savedlist_view';
+            // ===================================================
 
             $this->aData = $aData;
-            $this->render('listResponses_view', [
-                'surveyid' => $aData['surveyId'],
+
+            $this->render('browseindex_view', [
+                // summary table data
+                'num_completed_answers' => $aData['num_completed_answers'],
+                'num_total_answers'     => $aData['num_total_answers'],
+                // response table data
+                'surveyid' => $aData['surveyid'],
                 'dateformatdetails' => $aData['dateformatdetails'],
                 'model' => $aData['model'],
                 'bHaveToken' => $aData['bHaveToken'],
@@ -512,6 +528,9 @@ class ResponsesController extends LSBaseController
                 'pageSize' => $aData['pageSize'],
                 'fieldmap' => $aData['fieldmap'],
                 'filteredColumns' => $aData['filteredColumns'],
+                // saved but not submitted data
+                'savedModel' => $aData['savedModel'],
+                'savedResponsesPageSize' => $aData['savedResponsesPageSize'],
 
             ]);
         } else {
@@ -573,9 +592,9 @@ class ResponsesController extends LSBaseController
         }
         Yii::import('application.helpers.admin.ajax_helper', true);
 
-        $ResponseId = (App()->request->getPost('sItems') != '') ? json_decode(App()->request->getPost('sItems')) : json_decode(App()->request->getParam('sResponseId'), true);
+        $ResponseId = (App()->request->getPost('sItems') != '') ? json_decode(App()->request->getPost('sItems', '')) : json_decode(App()->request->getParam('sResponseId', ''), true);
         if (App()->request->getPost('modalTextArea') != '') {
-            $ResponseId = explode(',', App()->request->getPost('modalTextArea'));
+            $ResponseId = explode(',', App()->request->getPost('modalTextArea', ''));
             foreach ($ResponseId as $key => $sResponseId) {
                 $ResponseId[$key] = str_replace(' ', '', $sResponseId);
             }
@@ -611,7 +630,7 @@ class ResponsesController extends LSBaseController
     /**
      * Deletes a single response and redirects to the gridview.
      *
-     * @param int $surveyId -- the survey id
+     * @param int $surveyId -- the survey ID
      * @param int $responseId -- the response id to be deleted
      * @throws CDbException
      * @throws CHttpException
@@ -643,7 +662,7 @@ class ResponsesController extends LSBaseController
      * Download individual file by response and filename
      *
      * @access public
-     * @param int $surveyId : survey id
+     * @param int $surveyId : survey ID
      * @param int $responseId
      * @param int $qid
      * @param int $index
@@ -682,8 +701,8 @@ class ResponsesController extends LSBaseController
                 $sRealUserPath = get_absolute_path($sFileRealName);
                 if ($sRealUserPath === false) {
                     throw new CHttpException(404, "File not found.");
-                } elseif (strpos($sRealUserPath, $sDir) !== 0) {
-                        throw new CHttpException(403, "File cannot be accessed.");
+                } elseif (strpos((string) $sRealUserPath, $sDir) !== 0) {
+                    throw new CHttpException(403, "File cannot be accessed.");
                 } else {
                     $mimeType = CFileHelper::getMimeType($sFileRealName, null, false);
                     if (is_null($mimeType)) {
@@ -692,7 +711,7 @@ class ResponsesController extends LSBaseController
                     @ob_clean();
                     header('Content-Description: File Transfer');
                     header('Content-Type: ' . $mimeType);
-                    header('Content-Disposition: attachment; filename="' . sanitize_filename(rawurldecode($aFile['name'])) . '"');
+                    header('Content-Disposition: attachment; filename="' . sanitize_filename(rawurldecode((string) $aFile['name'])) . '"');
                     header('Content-Transfer-Encoding: binary');
                     header('Expires: 0');
                     header("Cache-Control: must-revalidate, no-store, no-cache");
@@ -712,7 +731,7 @@ class ResponsesController extends LSBaseController
      * Construct a zip files from a list of response
      *
      * @access public
-     * @param int $surveyId : survey id
+     * @param int $surveyId : survey ID
      * @param string $responseIds : list of responses as string
      * @return void application/zip
      * @throws CException
@@ -779,7 +798,7 @@ class ResponsesController extends LSBaseController
             throw new CHttpException(405, gT("Invalid action"));
         }
 
-        $stringItems = json_decode($request->getPost('sItems'));
+        $stringItems = json_decode($request->getPost('sItems', ''));
         // Cast all ids to int.
         $items = array_map(
             function ($id) {
@@ -879,6 +898,15 @@ class ResponsesController extends LSBaseController
                 ];
             }
         }
+        $aData['columns'][] = [
+            'name'              => 'actions',
+            'type'              => 'raw',
+            'header'            => gT("Action"),
+            'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
+            'filterHtmlOptions' => ['class' => 'ls-sticky-column'],
+            'htmlOptions'       => ['class' => 'ls-sticky-column']
+        ];
+
         // Set number of page
         if (App()->request->getParam('pageSize')) {
             App()->user->setState('pageSize', (int)App()->request->getParam('pageSize'));
@@ -892,8 +920,15 @@ class ResponsesController extends LSBaseController
         $aData['num_total_answers'] = SurveyDynamic::model($surveyId)->count();
         $aData['num_completed_answers'] = SurveyDynamic::model($surveyId)->count('submitdate IS NOT NULL');
 
-        $aData['topBar']['name'] = 'baseTopbar_view';
-        $aData['topBar']['leftSideView'] = 'responsesTopbarLeft_view';
+        //$aData['topBar']['name'] = 'baseTopbar_view';
+        //$aData['topBar']['leftSideView'] = 'responsesTopbarLeft_view';
+
+        $topbarData = TopbarConfiguration::getResponsesTopbarData($surveyId);
+        $aData['topbar']['middleButtons'] = $this->renderPartial(
+            'partial/topbarBtns/leftSideButtons',
+            $topbarData,
+            true
+        );
 
         $this->aData = $aData;
         $this->render('browsetimerow_view', [
@@ -904,21 +939,6 @@ class ResponsesController extends LSBaseController
             'columns'    => $aData['columns'],
             'statistics' => $aData['statistics'],
         ]);
-    }
-
-    /**
-     * Responsible for setting the session variables for attribute map page redirect
-     * @param bool $unset
-     * @param int|null $surveyId
-     */
-    public function actionSetSession(bool $unset = false, int $surveyId = null): void
-    {
-        unset(App()->session['responsesid']);
-        if (!$unset) {
-            App()->session['responsesid'] = App()->request->getPost('itemsid');
-        } else {
-            $this->redirect(["admin/export", "sa" => "exportresults", "surveyid" => $surveyId]);
-        }
     }
 
     /**
@@ -964,10 +984,10 @@ class ResponsesController extends LSBaseController
                 * unique. This way we can have 234_1_image1.gif, 234_2_image1.gif as it could be
                 * files from a different source with the same name.
                 */
-                if (file_exists($tmpdir . basename($fileInfo['filename']))) {
+                if (file_exists($tmpdir . basename((string) $fileInfo['filename']))) {
                     $filelist[] = [
-                        $tmpdir . basename($fileInfo['filename']),
-                        sprintf("%05s_%02s-%s_%02s-%s", $response->id, $filecount, $fileInfo['question']['title'], $fileInfo['index'], sanitize_filename(rawurldecode($fileInfo['name'])))
+                        $tmpdir . basename((string) $fileInfo['filename']),
+                        sprintf("%05s_%02s-%s_%02s-%s", $response->id, $filecount, $fileInfo['question']['title'], $fileInfo['index'], sanitize_filename(rawurldecode((string) $fileInfo['name'])))
                     ];
                 }
             }
@@ -1010,29 +1030,33 @@ class ResponsesController extends LSBaseController
     private function getData(int $surveyId = null, int $responseId = null, string $language = null): array
     {
         if (!isset($surveyId)) {
-            App()->session['flashmessage'] = gT("Invalid survey ID");
+            App()->setFlashMessage(gT("Invalid survey ID"), 'warning');
             $this->redirect(["admin/index"]);
         }
 
         $thissurvey = getSurveyInfo($surveyId);
 
-        // Reinit LEMlang and LEMsid: ensure LEMlang are set to default lang, surveyid are set to this survey id
+        // Reinit LEMlang and LEMsid: ensure LEMlang are set to default lang, surveyid are set to this survey ID
         // Ensure Last GetLastPrettyPrintExpression get info from this sid and default lang
         LimeExpressionManager::SetEMLanguage($thissurvey['oSurvey']->language);
         LimeExpressionManager::SetSurveyId($surveyId);
         LimeExpressionManager::StartProcessingPage(false, true);
 
         if (!$thissurvey) {
-            App()->session['flashmessage'] = gT("Invalid survey ID");
+            App()->setFlashMessage(gT("Invalid survey ID"), 'warning');
             $this->redirect(["admin/index"]);
         } elseif ($thissurvey['active'] !== 'Y') {
-            App()->session['flashmessage'] = gT("This survey has not been activated. There are no results to browse.");
+            App()->setFlashMessage(gT("This survey has not been activated. There are no results to browse."), 'warning');
             $this->redirect(["surveyAdministration/view/surveyid/{$surveyId}"]);
         }
         $aData = [];
         // Set the variables in an array
         $aData['surveyId'] = $aData['surveyid'] = $aData['iSurveyId'] = $surveyId;
         if (!empty($responseId)) {
+            /* Check if exists  */
+            if (empty(SurveyDynamic::model($surveyId)->findByPk($responseId))) {
+                throw new CHttpException(404, gT("Invalid response id."));
+            }
             $aData['iId'] = $responseId;
         }
         $aData['imageurl'] = App()->getConfig('imageurl');

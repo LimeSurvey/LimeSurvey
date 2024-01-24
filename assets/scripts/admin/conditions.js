@@ -14,14 +14,14 @@ var LS = LS || {  onDocumentReady: {} };
 				value = value + 1;
 				$tab = $(this).children('ul').children(':nth-child('+value+')');
 				$tab.removeClass("disabled");
-				$tab.children('a').attr('data-toggle', 'tab');
+				$tab.children('a').attr('data-bs-toggle', 'tab');
 			}
 			if(fonc=='disable')
 			{
 				value = value + 1;
 				$tab = $(this).children('ul').children(':nth-child('+value+')');
 				$tab.addClass("disabled");
-				$tab.children('a').removeAttr('data-toggle');
+				$tab.children('a').removeAttr('data-bs-toggle');
 			}
 			
 			if(fonc=='option')
@@ -178,7 +178,7 @@ $(document).on('ready  pjax:scriptcomplete', function(){
 
     // Disable clicks on disabled tabs (regexp)
     $(".nav-tabs a[data-bs-toggle=tab]").on("click", function(e) {
-        if ($(this).parent().hasClass("disabled")) {
+        if ($(this).hasClass("disabled")) {
             e.preventDefault();
             return false;
         }
@@ -314,25 +314,25 @@ populateCanswersSelectObject = function() {
 function selectTabFromOper() {
 	var val = $('#method').val();
 	if(val == 'RX') {
-        $('a[href="#CANSWERSTAB"]').parent().addClass('disabled');
-        $('a[href="#CONST"]').parent().addClass('disabled');
-        $('a[href="#PREVQUESTIONS"]').parent().addClass('disabled');
-        $('a[href="#TOKENATTRS"]').parent().addClass('disabled');
-        $('a[href="#REGEXP"]').parent().removeClass('disabled');
-        $('a[href="#REGEXP"]').trigger('click');
+        $('a[href="#CANSWERSTAB"]').addClass('disabled');
+        $('a[href="#CONST"]').addClass('disabled');
+        $('a[href="#PREVQUESTIONS"]').addClass('disabled');
+        $('a[href="#TOKENATTRS"]').addClass('disabled');
+        $('a[href="#REGEXP"]').removeClass('disabled');
+        $('a[href="#REGEXP"]').tab("show");
 	}
 	else {
 		//if (!isAnonymousSurvey) $('#conditiontarget').bootTabs('enable', 3);
 
-        $('a[href="#CANSWERSTAB"]').parent().removeClass('disabled');
-        $('a[href="#CONST"]').parent().removeClass('disabled');
-        $('a[href="#PREVQUESTIONS"]').parent().removeClass('disabled');
-        $('a[href="#TOKENATTRS"]').parent().removeClass('disabled');
-        $('a[href="#REGEXP"]').parent().addClass('disabled');
+        $('a[href="#CANSWERSTAB"]').removeClass('disabled');
+        $('a[href="#CONST"]').removeClass('disabled');
+        $('a[href="#PREVQUESTIONS"]').removeClass('disabled');
+        $('a[href="#TOKENATTRS"]').removeClass('disabled');
+        $('a[href="#REGEXP"]').addClass('disabled');
 
         // If regexp tab is selected, trigger click on first tab instead
-        if ($('a[href="#REGEXP"]').parent().hasClass('active')) {
-            $('a[href="#CANSWERSTAB"]').trigger('click');
+        if ($('a[href="#REGEXP"]').hasClass('active')) {
+            $('a[href="#CANSWERSTAB"]').tab("show");
         }
 	}
 }
@@ -343,25 +343,25 @@ function selectTabFromOper() {
 function quickAddSelectTabFromOper() {
 	var val = $('#quick-add-method').val();
 	if(val == 'RX') {
-        $('a[href="#QUICKADD-CANSWERSTAB"]').parent().addClass('disabled');
-        $('a[href="#QUICKADD-CONST"]').parent().addClass('disabled');
-        $('a[href="#QUICKADD-PREVQUESTIONS"]').parent().addClass('disabled');
-        $('a[href="#QUICKADD-TOKENATTRS"]').parent().addClass('disabled');
-        $('a[href="#QUICKADD-REGEXP"]').parent().removeClass('disabled');
-        $('a[href="#QUICKADD-REGEXP"]').trigger('click');
+        $('a[href="#QUICKADD-CANSWERSTAB"]').addClass('disabled');
+        $('a[href="#QUICKADD-CONST"]').addClass('disabled');
+        $('a[href="#QUICKADD-PREVQUESTIONS"]').addClass('disabled');
+        $('a[href="#QUICKADD-TOKENATTRS"]').addClass('disabled');
+        $('a[href="#QUICKADD-REGEXP"]').removeClass('disabled');
+        $('a[href="#QUICKADD-REGEXP"]').tab("show");
 	}
 	else {
 		//if (!isAnonymousSurvey) $('#conditiontarget').bootTabs('enable', 3);
 
-        $('a[href="#QUICKADD-CANSWERSTAB"]').parent().removeClass('disabled');
-        $('a[href="#QUICKADD-CONST"]').parent().removeClass('disabled');
-        $('a[href="#QUICKADD-PREVQUESTIONS"]').parent().removeClass('disabled');
-        $('a[href="#QUICKADD-TOKENATTRS"]').parent().removeClass('disabled');
-        $('a[href="#QUICKADD-REGEXP"]').parent().addClass('disabled');
+        $('a[href="#QUICKADD-CANSWERSTAB"]').removeClass('disabled');
+        $('a[href="#QUICKADD-CONST"]').removeClass('disabled');
+        $('a[href="#QUICKADD-PREVQUESTIONS"]').removeClass('disabled');
+        $('a[href="#QUICKADD-TOKENATTRS"]').removeClass('disabled');
+        $('a[href="#QUICKADD-REGEXP"]').addClass('disabled');
 
         // If regexp tab is selected, trigger click on first tab instead
-        if ($('a[href="#QUICKADD-REGEXP"]').parent().hasClass('active')) {
-            $('a[href="#QUICKADD-CANSWERSTAB"]').trigger('click');
+        if ($('a[href="#QUICKADD-REGEXP"]').hasClass('active')) {
+            $('a[href="#QUICKADD-CANSWERSTAB"]').tab("show");
         }
 	}
 }

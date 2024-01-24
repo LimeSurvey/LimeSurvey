@@ -16,14 +16,14 @@
 #}
 
 {% if registerSuccess %}
-    <p {{ aSurveyInfo.attr.registermessageb }} >{{ gT("Thank you for registering. You will receive an email shortly.") }}</p>
+    <h4 {{ aSurveyInfo.attr.registermessageb }} >{{ gT("Thank you for registering. You will receive an email shortly.") }}</h4>
 {% else %}
     {% if sStartDate %}
-    <p {{ aSurveyInfo.attr.registermessagea }} > {{ gT("You may register for this survey but you have to wait for the {{sStartDate}} before starting the survey.") }}</p>
+    <h4 {{ aSurveyInfo.attr.registermessagea }} > {{ gT("You may register for this survey but you have to wait for the {{sStartDate}} before starting the survey.") }}</h4>
     {% else %}
-    <p  {{ aSurveyInfo.attr.registermessageb }} >{{ gT("You may register for this survey if you wish to take part.") }}</p>
+    <h4  {{ aSurveyInfo.attr.registermessageb }} >{{ gT("You may register for this survey if you wish to take part.") }}</h4>
     {% endif %}
-    <p  {{ aSurveyInfo.attr.registermessagec }} >{{ gT("Enter your details below, and an email containing the link to participate in this survey will be sent immediately.") }}</p>
+    <h4  {{ aSurveyInfo.attr.registermessagec }} >{{ gT("Enter your details below, and an email containing the link to participate in this survey will be sent immediately.") }}</h4>
 {% endif %}
 
 {% if  not empty(aSurveyInfo.aErrors) %}

@@ -13,13 +13,13 @@
         <div class="mb-3">
             <label class=" form-label" for='siteadminemail'><?php eT("Default site admin email:"); ?></label>
             <div class="">
-                <input class="form-control" type='email' size='50' id='siteadminemail' name='siteadminemail' value="<?php echo htmlspecialchars(getGlobalSetting('siteadminemail')); ?>"/>
+                <input class="form-control" type='email' size='50' id='siteadminemail' name='siteadminemail' value="<?php echo htmlspecialchars((string) getGlobalSetting('siteadminemail')); ?>"/>
             </div>
         </div>
         <div class="mb-3">
             <label class="  form-label" for='siteadminname'><?php eT("Administrator name:"); ?></label>
             <div class="">
-                <input class="form-control" type='text' size='50' id='siteadminname' name='siteadminname' value="<?php echo htmlspecialchars(getGlobalSetting('siteadminname')); ?>"/>
+                <input class="form-control" type='text' size='50' id='siteadminname' name='siteadminname' value="<?php echo htmlspecialchars((string) getGlobalSetting('siteadminname')); ?>"/>
             </div>
         </div>
         <div class="mb-3">
@@ -27,12 +27,13 @@
             <div>
                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                     'name'          => 'emailmethod',
-                    'checkedOption' => getGlobalSetting('emailmethod'),
+                    'checkedOption' => Yii::app()->getConfig('emailmethod'),
                     'selectOptions' => [
-                        "mail"     => "PHP",
-                        "smtp"     => "SMTP",
-                        "sendmail" => "Sendmail",
-                        "qmail"    => "qmail"
+                        LimeMailer::MethodMail => "PHP",
+                        LimeMailer::MethodSmtp => "SMTP",
+                        LimeMailer::MethodSendmail => "Sendmail",
+                        LimeMailer::MethodQmail => "qmail",
+                        LimeMailer::MethodPlugin => "Plugin",
                     ]
                 ]); ?>
             </div>
@@ -40,14 +41,14 @@
         <div class="mb-3">
             <label class="  form-label" for="emailsmtphost"><?php eT("SMTP host:"); ?></label>
             <div class="">
-                <input class="form-control" type='text' size='50' id='emailsmtphost' name='emailsmtphost' value="<?php echo htmlspecialchars(getGlobalSetting('emailsmtphost')); ?>"/>
+                <input class="form-control" type='text' size='50' id='emailsmtphost' name='emailsmtphost' value="<?php echo htmlspecialchars((string) getGlobalSetting('emailsmtphost')); ?>"/>
                 <span class="hint"><?php printf(gT("Enter your hostname and port, e.g.: %s"), "smtp.example.org:25"); ?></span>
             </div>
         </div>
         <div class="mb-3">
             <label class="  form-label" for='emailsmtpuser'><?php eT("SMTP username:"); ?></label>
             <div class="">
-                <input class="form-control" type='text' size='50' id='emailsmtpuser' name='emailsmtpuser' value="<?php echo htmlspecialchars(getGlobalSetting('emailsmtpuser')); ?>"/>
+                <input class="form-control" type='text' size='50' id='emailsmtpuser' name='emailsmtpuser' value="<?php echo htmlspecialchars((string) getGlobalSetting('emailsmtpuser')); ?>"/>
             </div>
         </div>
         <div class="mb-3">
@@ -86,16 +87,37 @@
                 ]); ?>
             </div>
         </div>
+        <!-- OAuth Plugins -->
+        <div class="mb-3">
+            <label class="col-12 form-label" for="emailplugin">
+                <?php eT("Email plugin:"); ?>
+            </label>
+            <div class="col-12">
+                <select class="form-select" name="emailplugin" id="emailplugin" <?= (Yii::app()->getConfig('emailmethod') == LimeMailer::MethodPlugin) ? '' : 'disabled' ?>>
+                    <option value=''><?php eT("None"); ?></option>
+                    <?php if (!empty($emailPlugins)): ?>
+                        <?php foreach ($emailPlugins as $emailPluginDetails): ?>
+                            <option value='<?= $emailPluginDetails->class ?>' <?= ($emailPluginDetails->class == Yii::app()->getConfig('emailplugin')) ? "selected='selected'" : "" ?>>
+                                <?= $emailPluginDetails->name ?>
+                            </option>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+                </select>
+            </div>
+            <?php
+                // TODO: Show message or link to plugin settings if plugin is selected. May need a way to get plugin settings URL from plugin.
+            ?>
+        </div>
         <div class="mb-3">
             <label class="  form-label" for='maxemails'><?php eT("Email batch size:"); ?></label>
             <div class="">
-                <input class="form-control" type='text' size='5' id='maxemails' name='maxemails' value="<?php echo htmlspecialchars(getGlobalSetting('maxemails')); ?>"/>
+                <input class="form-control" type='text' size='5' id='maxemails' name='maxemails' value="<?php echo htmlspecialchars((string) getGlobalSetting('maxemails')); ?>"/>
             </div>
         </div>
         <div class="mb-3">
             <label class="form-label" for="sendingrate"><?php eT("Email sending rate:"); ?></label>
             <div>
-                <?php echo Chtml::numberField("sendingrate", App()->getConfig('sendingrate'), array('class' => 'form-control', 'size' => 5, 'min' => 1)); ?>
+                <?php echo CHtml::numberField("sendingrate", App()->getConfig('sendingrate'), array('class' => 'form-control', 'size' => 5, 'min' => 1)); ?>
                 <span class="hint"><?php eT("Number of seconds to wait until the next email batch is sent."); ?></span>
             </div>
         </div>
@@ -106,7 +128,7 @@
             </label>
             <div class="">
                 <!-- TODO: is this needed? It looks like commented out? -->
-                <!--a href="<?php echo \Yii::app()->createUrl('admin/globalsettings', array("sa" => "sendTestEmail")); ?>" class="btn btn-success btn-large"><?php eT("Send email"); ?></a-->
+                <!--a href="<?php echo \Yii::app()->createUrl('admin/globalsettings', array("sa" => "sendTestEmail")); ?>" class="btn btn-primary btn-large"><?php eT("Send email"); ?></a-->
                 <button
                     id="sendtestemailbutton"
                     class='btn btn-large btn-primary'

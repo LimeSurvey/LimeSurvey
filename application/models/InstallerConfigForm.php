@@ -40,7 +40,7 @@ class InstallerConfigForm extends CFormModel
     public const DB_TYPE_ODBC = 'odbc';
 
     public const MINIMUM_MEMORY_LIMIT = 128;
-    public const MINIMUM_PHP_VERSION = '7.2.5';
+    public const MINIMUM_PHP_VERSION = '7.4.0';
 
     // Database
     /** @var string $dbtype */
@@ -137,6 +137,9 @@ class InstallerConfigForm extends CFormModel
     public $isSodiumPresent = false;
 
     /** @var bool */
+    public $isCollatorPresent = false;
+
+    /** @var bool */
     public $isConfigPresent = false;
 
 
@@ -190,7 +193,7 @@ class InstallerConfigForm extends CFormModel
     {
         return [
             'dbtype' => gT("The type of your database management system"),
-            'dblocation' => gT('Set this to the IP/net location of your database server. In most cases "localhost" will work. You can force Unix socket with complete socket path.') . ' ' . gT('If your database is using a custom port attach it using a colon. Example: db.host.com:5431'),
+            'dblocation' => gT('Set this to the IP/net location of your database server. In most cases "localhost" will work. You can force Unix socket with socket path.') . ' ' . gT('If your database is using a custom port, attach it using a colon. Example: db.host.com:5431'),
             'dbname' => gT("If the database does not yet exist it will be created (make sure your database user has the necessary permissions). In contrast, if there are existing LimeSurvey tables in that database they will be upgraded automatically after installation."),
             'dbuser' => gT('Your database server user name. In most cases "root" will work.'),
             'dbpwd' => gT("Your database server password."),
@@ -215,6 +218,7 @@ class InstallerConfigForm extends CFormModel
         $this->isPhpImapPresent = function_exists('imap_open');
         $this->isPhpZipPresent = class_exists('ZipArchive');
         $this->isSodiumPresent = function_exists('sodium_crypto_sign_open');
+        $this->isCollatorPresent = class_exists('Collator');
 
         if (function_exists('gd_info')) {
             $gdInfo = gd_info();
@@ -399,7 +403,7 @@ class InstallerConfigForm extends CFormModel
         try {
             $query = "SELECT " . $item . ";";
             $result = $this->db->createCommand($query)->queryRow();
-            return isset($result[$item]) ? $result[$item] : null;
+            return $result[$item] ?? null;
         } catch (\Exception $e) {
             // ignore
         }
@@ -702,7 +706,7 @@ class InstallerConfigForm extends CFormModel
     public function getDataBaseName()
     {
         if ($this->db) {
-            preg_match("/dbname=([^;]*)/", $this->db->connectionString, $matches);
+            preg_match("/dbname=([^;]*)/", (string) $this->db->connectionString, $matches);
             $databaseName = $matches[1];
             return $databaseName;
         }

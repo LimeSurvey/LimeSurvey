@@ -5,15 +5,21 @@
     <div class="col-lg-9">
     <h2><?php echo $title; ?></h2>
     <legend><?php echo $descp; ?></legend>
-    <?php if (isset($confirmation)) echo "<div class='alert alert-success'>".$confirmation."</div>"; ?>
-    <div style="color:red; font-size:12px;">
-        <?php echo CHtml::errorSummary($model, null, null, array('class' => 'alert alert-danger')); ?>
-    </div>
-    <?php  ?>
+    <?php if (isset($confirmation)) : ?>
+        <?php
+        $this->widget('ext.AlertWidget.AlertWidget', [
+            'text' => $confirmation,
+            'type' => 'success',
+        ]);
+        ?>
+    <?php endif; ?>
+        <?php
+        $this->widget('ext.AlertWidget.AlertWidget', ['errorSummaryModel' => $model]);
+        ?>
     <?php echo CHtml::beginForm($this->createUrl('installer/optional'), 'post', array('class' => '')); ?>
     <div class='mb-3'>
         <div class='col-12'>
-            <i class='fa fa-info-circle'></i><?php eT("You can leave these settings blank and change them later"); ?>
+            <i class='ri-information-fill'></i><?php eT("You can leave these settings blank and change them later"); ?>
         </div>
     </div>
 

@@ -1,4 +1,8 @@
 <?php
+
+/**
+ * @var $model Surveymenu
+ */
 $pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
 ?>
 

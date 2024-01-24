@@ -4,8 +4,8 @@
 	<div class="span7">
 		<!-- TODO: What should we do with that one? -->
 		<!-- The fileinput-button span is used to style the file input field as button -->
-		<span class="btn btn-success fileinput-button">
-			<i class="icon-plus icon-white"></i>
+		<span class="btn btn-primary fileinput-button">
+			<i class="ri-add-fill icon-white"></i>
 			<span>Add files...</span>
 			<?php
 			if ($this->hasModel()) :
@@ -17,19 +17,19 @@
 		<button 
 			type="submit" 
 			class="btn btn-primary start">
-			<i class="icon-upload icon-white"></i>
+			<i class="ri-upload-fill icon-white"></i>
 			<span>Start upload</span>
 		</button>
 		<button 
 			type="reset" 
 			class="btn btn-warning cancel">
-			<i class="icon-ban-circle icon-white"></i>
+			<i class="ri-forbid-2-line icon-white"></i>
 			<span>Cancel upload</span>
 		</button>
 		<button 
 			type="button" 
 			class="btn btn-danger delete">
-			<i class="icon-trash icon-white"></i>
+			<i class="ri-delete-bin-fill icon-white"></i>
 			<span>Delete</span>
 		</button>
 		<input type="checkbox" class="toggle">

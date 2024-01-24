@@ -15,7 +15,7 @@ Yii::app()->getController()->renderPartial(
 <div class="modal-body edit-participant-modal-body ">
 <?php
     $form = $this->beginWidget(
-        'yiistrap.widgets.TbActiveForm',
+        'yiistrap_fork.widgets.TbActiveForm',
         array(
             'id' => 'editPartcipantActiveForm',
             'action' => array('admin/participants/sa/editParticipant'),
@@ -49,7 +49,7 @@ Yii::app()->getController()->renderPartial(
         </div>
         <div class='mb-3'>
             <label class='form-label '>
-                <?php eT('E-mail:'); ?>
+                <?php eT('Email:'); ?>
             </label>
             <div class='0'>
                 <?=$form->textField($model, 'email')?>
@@ -58,7 +58,15 @@ Yii::app()->getController()->renderPartial(
         <div class='mb-3'>
             <label class='form-label '><?php eT("Language:"); ?></label>
             <div class=''>
-                <?=$form->dropDownList($model, 'language', $model->languageOptions, ['empty' => gT('Select language...')])?>
+                <?= $form->dropDownList(
+                        $model,
+                        'language',
+                        $model->languageOptions,
+                        [
+                            'empty' => gT('Select language...'),
+                            'class' => 'form-select'
+                        ]
+                    ); ?>
             </div>
         </div>
         <div class='mb-3'>
@@ -81,15 +89,12 @@ Yii::app()->getController()->renderPartial(
         <?php  ?>
             <div class='mb-3'>
                 <label class='form-label '><?php eT("Owner:"); ?></label>
-                <div class=''>
                 <?php
                     // When we add a new user, owner is default to current user
                     $selected = ($editType == 'add') ? Yii::app()->user->id : $model->owner_uid;
                     $listUsers = CHtml::listData($users,'uid','full_name');
                     echo CHtml::dropDownList('Participant[owner_uid]',$selected,$listUsers,array('id'=>'owner_uid','class'=>'form-select'));
                 ?>
-                </div>
-                <div class=''></div>
             </div>
         <?php endif; ?>
 
@@ -135,9 +140,7 @@ Yii::app()->getController()->renderPartial(
         <?php echo $buttonTitle; ?>
     </button>
 </div>
-<script>
-$('#editPartcipantActiveForm .bootstrap-switch').bootstrapSwitch();
-</script>
+
 <?php
 $this->endWidget();
 ?>

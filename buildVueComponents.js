@@ -233,13 +233,13 @@ if(!single) {
             console.log(`|| === Total milliseconds ${difference}`);
         }
         console.log(`|| === All build in ${minutes}:${seconds}.${milliseconds}`);
-    });   
+    });
 
 } else {
     const getSPosition = args.indexOf('-s');
     const componentsToBuild = args[getSPosition+1].split(',');
     let componentToBuildArray = [];
-    
+
     if(componentsToBuild[0] == 'ckeditorrebuild') {
         componentToBuildArray = ckEditorUsersArray;
     } else {
@@ -258,7 +258,7 @@ if(!single) {
 || ===  Starting to ${(prepareOnly ? 'prepare' : 'compile')} the component(s) ${JSON.stringify(componentsToBuild)}${(verbose ? ' and using verbose mode.' : '.')}
 || ===  Starting time: ${processDate(new Date)}`);
 
-    const finalPromise = componentToBuildArray.reduce( 
+    const finalPromise = componentToBuildArray.reduce(
         async (promise, item) => {
             try{
                 await promise;
@@ -289,7 +289,7 @@ if(!single) {
         console.log(`
 || ===  All build in ${minutes}:${seconds}.${milliseconds}
 || ===  Finished at: ${processDate(new Date)}`);
-    }); 
+    });
 }
 
 };

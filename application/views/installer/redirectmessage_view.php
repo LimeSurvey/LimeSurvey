@@ -5,7 +5,12 @@
     <div class="col-lg-9">
         <h2><?php echo $title; ?></h2>
         <legend><?php eT("Database exists"); ?></legend>
-        <div class='alert alert-success'><?php echo $noticeMessage; ?></div>
+        <?php
+        $this->widget('ext.AlertWidget.AlertWidget', [
+            'text' => $noticeMessage,
+            'type' => 'success',
+        ]);
+        ?>
         <p><?php echo $text; ?></p>
     </div>
 </div>

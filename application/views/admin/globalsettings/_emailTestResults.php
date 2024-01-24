@@ -9,7 +9,7 @@
                 <div> <?php echo $maildebug ?></div>
             <?php } ?>       
             <p>
-                <a class="btn btn-lg btn-success" href='<?php echo $this->createUrl('admin/globalsettings');?>'><?php eT("Back to settings"); ?></a>
+                <a class="btn btn-lg btn-primary" href='<?php echo $this->createUrl('admin/globalsettings');?>'><?php eT("Back to settings"); ?></a>
             </p>
         </div>
     </div>

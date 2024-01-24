@@ -66,7 +66,8 @@ class UserGroup extends LSActiveRecord
                 'min' => 1,
                 'max' => 20,
                 'tooShort' => gT("Name can not be empty."),
-                'tooLong' => gT('Failed to add group! Group name length more than 20 characters.')),
+                'tooLong' => gT('Failed to add group! Group name length more than 20 characters.')
+            ),
         );
     }
 
@@ -138,18 +139,18 @@ class UserGroup extends LSActiveRecord
         $iLoginID = intval(Yii::app()->session['loginID']);
         $iquery = "INSERT INTO {{user_groups}} (name, description, owner_id) VALUES(:group_name, :group_desc, :loginID)";
         $command = Yii::app()->db->createCommand($iquery)->bindParam(":group_name", $group_name, PDO::PARAM_STR)
-                                                            ->bindParam(":group_desc", $group_description, PDO::PARAM_STR)
-                                                            ->bindParam(":loginID", $iLoginID, PDO::PARAM_INT);
+            ->bindParam(":group_desc", $group_description, PDO::PARAM_STR)
+            ->bindParam(":loginID", $iLoginID, PDO::PARAM_INT);
         $result = $command->query();
         if ($result) {
-//Checked
+            //Checked
             $id = (int) getLastInsertID($this->tableName());
             if ($id > 0) {
-                    $user_in_groups_query = 'INSERT INTO {{user_in_groups}} (ugid, uid) VALUES (:ugid, :uid)';
-                    Yii::app()->db->createCommand($user_in_groups_query)
-                        ->bindParam(":ugid", $id, PDO::PARAM_INT)
-                        ->bindParam(":uid", $iLoginID, PDO::PARAM_INT)
-                        ->query();
+                $user_in_groups_query = 'INSERT INTO {{user_in_groups}} (ugid, uid) VALUES (:ugid, :uid)';
+                Yii::app()->db->createCommand($user_in_groups_query)
+                    ->bindParam(":ugid", $id, PDO::PARAM_INT)
+                    ->bindParam(":uid", $iLoginID, PDO::PARAM_INT)
+                    ->query();
             }
             return $id;
         } else {
@@ -158,7 +159,10 @@ class UserGroup extends LSActiveRecord
     }
 
     /**
-     * TODO should be in controller
+     * TODO should be in controller?
+     * When user is allowed to edit the group,
+     * it will be updated in the database.
+     * Returns true, when it was possible to save.
      * @param string $name
      * @param string $description
      * @param integer $ugId
@@ -166,18 +170,26 @@ class UserGroup extends LSActiveRecord
      */
     public function updateGroup($name, $description, $ugId)
     {
-        $group = UserGroup::model()->findByPk($ugId);
-        $group->name = $name;
-        $group->description = $description;
-        $group->save();
-        if ($group->getErrors()) {
-                    return false;
-        } else {
-                    return true;
+        $group = $this->requestEditGroup($ugId, App()->user->id);
+        if ($group !== null) {
+            $group->name = $name;
+            $group->description = $description;
+            $group->save();
+            if ($group->getErrors()) {
+                return false;
+            } else {
+                return true;
+            }
         }
+        return false;
     }
 
     /**
+     * Works as permission check on db level for editing user groups.
+     * The user group needs to exist, and if the user is not a superadmin,
+     * user also has to be the owner of that group.
+     * If successful, the user group is returned.
+     *
      * @param integer $ugId
      * @param integer $ownerId
      * @return static
@@ -195,20 +207,21 @@ class UserGroup extends LSActiveRecord
 
         $aParams[':ugid'] = $ugId;
         $criteria->params = $aParams;
-        $result = UserGroup::model()->find($criteria);
-        return $result;
+
+        return UserGroup::model()->find($criteria);
     }
 
     /**
      * @param integer $ugId
      * @param integer $userId
      * @return array
+     * @deprecated Not needed anymore
      */
     public function requestViewGroup($ugId, $userId)
     {
         $sQuery = "SELECT a.ugid, a.name, a.owner_id, a.description, b.uid FROM {{user_groups}} AS a LEFT JOIN {{user_in_groups}} AS b ON a.ugid = b.ugid WHERE a.ugid = :ugid";
         if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
-            $sQuery .= "  AND uid = :userid ";
+            $sQuery .= "  AND (owner_id = :userid OR uid = :userid) ";
         }
         $sQuery .= " ORDER BY name";
         $command = Yii::app()->db->createCommand($sQuery)->bindParam(":ugid", $ugId, PDO::PARAM_INT);
@@ -293,7 +306,7 @@ class UserGroup extends LSActiveRecord
             array(
                 'header' => gT('Owner'),
                 'name' => 'owner',
-                'value' => '$data->owner->users_name',
+                'value' => '$data->owner ? $data->owner->users_name : gT("(Deleted user)")',
                 'htmlOptions' => array('class' => 'col-lg-1'),
             ),
 
@@ -324,28 +337,50 @@ class UserGroup extends LSActiveRecord
      */
     public function getButtons()
     {
-        $button = "<div class='icon-btn-row'>";
-        // Edit user group
-        if (Permission::model()->hasGlobalPermission('usergroups', 'update')) {
-            $url = Yii::app()->createUrl("userGroup/edit/ugid/$this->ugid");
-            $button .= ' <a class="btn btn-outline-secondary btn-sm green-border" data-bs-toggle="tooltip" data-bs-placement="top" title="' . gT('Edit user group') . '" href="' . $url . '" role="button"><span class="fa fa-pencil" ></span></a>';
-        }
+        $permissionUsergroupsEdit = Permission::model()->hasGlobalPermission('usergroups', 'update');
+        $permissionUsergroupsDelete = Permission::model()->hasGlobalPermission('usergroups', 'delete');
 
-        // View users
-        $url = Yii::app()->createUrl("userGroup/viewGroup/ugid/$this->ugid");
-        $button .= '<a class="btn btn-outline-secondary btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="' . gT('View users') . '" href="' . $url . '" role="button"><span class="fa fa-list-alt" ></span></a>';
+        $dropdownItems = [];
+        $dropdownItems[] = [
+            'title'            => gT('Edit user group'),
+            'iconClass'        => 'ri-pencil-fill',
+            'url'              => Yii::app()->createUrl("userGroup/edit/ugid/$this->ugid"),
+            'enabledCondition' => $permissionUsergroupsEdit
+        ];
 
-        // Mail to user group
-        // Which permission should be checked for this button to be available?
-        $url = Yii::app()->createUrl("userGroup/mailToAllUsersInGroup/ugid/$this->ugid");
-        $button .= ' <a class="btn btn-outline-secondary btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="' . gT('Email user group') . '" href="' . $url . '" role="button"><span class="icon-invite" ></span></a>';
+        $dropdownItems[] = [
+            'title'            => gT('View users'),
+            'iconClass'        => 'ri-list-unordered',
+            'url'              => Yii::app()->createUrl("userGroup/viewGroup/ugid/$this->ugid"),
+        ];
+        $dropdownItems[] = [
+            'title'            => gT('Email user group'),
+            'iconClass'        => 'ri-mail-send-fill',
+            'url'              => Yii::app()->createUrl("userGroup/mailToAllUsersInGroup/ugid/$this->ugid"),
+            'enabledCondition' => $permissionUsergroupsEdit
+        ];
+        $deletePostData = json_encode(['ugid' => $this->ugid]);
+        $dropdownItems[] = [
+            'title'            => gT('Delete user group'),
+            'iconClass'        => 'ri-delete-bin-fill text-danger',
+            'enabledCondition' => $permissionUsergroupsDelete,
+            'linkAttributes'   => [
+                'data-bs-toggle' => "modal",
+                'data-post-url'  => App()->createUrl("userGroup/deleteGroup"),
+                'data-post-datas' => $deletePostData,
+                'data-message'   => sprintf(gt("Are you sure you want to delete user group '%s'?"), CHtml::encode($this->name)),
+                'data-bs-target' => "#confirmation-modal",
+                'data-btnclass'  => 'btn-danger',
+                'data-btntext'   => gt('Delete'),
+                'data-title'     => gt('Delete user group')
+            ]
+        ];
 
-        // Delete user group
-        if (Permission::model()->hasGlobalPermission('usergroups', 'delete')) {
-            $button .= '<button class="btn btn-outline-secondary btn-sm red-border action__delete-group" data-bs-toggle="tooltip" data-bs-placement="top" title="' . gT('Delete user group') . '" href="#delete-modal" data-toggle="modal" data-ugid="' . $this->ugid . '" role="button"><span class="fa fa-trash text-danger"></span></button>';
-        }
-        $button .= "</div>";
-        return $button;
+        return App()->getController()->widget(
+            'ext.admin.grid.GridActionsWidget.GridActionsWidget',
+            ['dropdownItems' => $dropdownItems],
+            true
+        );
     }
 
     /**
@@ -356,19 +391,11 @@ class UserGroup extends LSActiveRecord
     {
         return [
             array(
-                'header'      => gT('Actions'),
-                'name'        => 'buttons',
-                'type'        => 'raw',
-                'value'       => '$data->buttons',
-                'htmlOptions' => array('class' => 'text-start'),
-            ),
-            array(
                 'header'      => gT('User group ID'),
                 'name'        => 'usergroup_id',
                 'value'       => '$data->ugid',
                 'htmlOptions' => array('class' => ''),
             ),
-
 
             array(
                 'header'      => gT('Name'),
@@ -387,7 +414,7 @@ class UserGroup extends LSActiveRecord
             array(
                 'header'      => gT('Owner'),
                 'name'        => 'owner',
-                'value'       => '$data->owner->users_name',
+                'value'       => '$data->owner ? $data->owner->users_name : gT("(Deleted user)")',
                 'htmlOptions' => array('class' => ''),
             ),
 
@@ -397,14 +424,22 @@ class UserGroup extends LSActiveRecord
                 'value'       => '$data->countUsers',
                 'htmlOptions' => array('class' => ''),
             ),
+            array(
+                'header'      => gT('Actions'),
+                'name'        => 'buttons',
+                'type'        => 'raw',
+                'value'       => '$data->buttons',
+                'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
+                'htmlOptions'       => ['class' => 'text-center button-column ls-sticky-column'],
+            ),
         ];
     }
 
 
     /**
-     * This function search usergroups for a user
-     * If $isMine = true then usergroups are those that have been created by the current user
-     * else this function provides usergroups which contain the current user
+     * This function searches user groups for a user
+     * If $isMine = true then user groups are those that have been created by the current user
+     * else this function provides s which contain the current user
      *
      * The object \CActiveDataProvider returned is used to generate the view in application/views/admin/usergroup/usergroups_view.php
      *
@@ -418,24 +453,24 @@ class UserGroup extends LSActiveRecord
         $sort = new CSort();
         $sort->attributes = array(
             'usergroup_id' => array(
-            'asc' => 'ugid',
-            'desc' => 'ugid desc',
+                'asc' => 'ugid',
+                'desc' => 'ugid desc',
             ),
             'name' => array(
-            'asc' => 'name',
-            'desc' => 'name desc',
+                'asc' => 'name',
+                'desc' => 'name desc',
             ),
             'description' => array(
-            'asc' => 'description',
-            'desc' => 'description desc',
+                'asc' => 'description',
+                'desc' => 'description desc',
             ),
             'owner' => array(
-            'asc' => 'users.users_name',
-            'desc' => 'users.users_name desc',
+                'asc' => 'users.users_name',
+                'desc' => 'users.users_name desc',
             ),
             'members' => array(
-            'asc' => 'member_count',
-            'desc' => 'member_count desc',
+                'asc' => 'member_count',
+                'desc' => 'member_count desc',
             ),
         );
 
@@ -538,7 +573,7 @@ class UserGroup extends LSActiveRecord
             $usersInGroup[] = $oAuxUserInGroup;
         }
         $mailer->Subject = $subject;
-        $body = str_replace("\n.", "\n..", $body);
+        $body = str_replace("\n.", "\n..", (string) $body);
         $body = wordwrap($body, 70);
         $mailer->Body = $body;
         $cnt = 0;
@@ -567,7 +602,7 @@ class UserGroup extends LSActiveRecord
             if ($emaiLResult['success']) {
                 $msgToUser .= gT('Sending successful') . "<br>";
             } else {
-                $msgToUser .= gT('Error: ') . $emaiLResult['msg'] . "<br>";
+                throw new Exception("Failed to send mail");
             }
         }
 

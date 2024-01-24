@@ -3,7 +3,7 @@
 	// TODO : move to the controler
 	$urlContinue = Yii::app()->createUrl("admin/update", array("update"=>'welcome', 'destinationBuild'=>$_POST["destinationBuild"]));
 ?>
-<h2 class="maintitle"><?php eT("Key update");?></h2>
+<h3 class="maintitle"><?php eT("Key update");?></h3>
 <?php 
 	if( isset($serverAnswer->html) )
 		echo $serverAnswer->html;

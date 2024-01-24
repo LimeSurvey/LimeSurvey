@@ -373,6 +373,7 @@ export default {
         if (this.$store.getters.isCollapsed) {
             this.sideBarWidth = "98";
         } else {
+          console.log('Created: ' + self.$store.state.sidebarwidth);
             this.sideBarWidth = self.$store.state.sidebarwidth;
         }
         LS.ld.each(window.SideMenuData.basemenus, this.setBaseMenuPosition)
@@ -472,14 +473,14 @@ export default {
                 :style="{width: getSideBarWidth, height: getloaderHeight}" 
             >
                 <div class="ls-flex ls-flex-column fill align-content-center align-items-center">
-                    <i class="fa fa-circle-o-notch fa-2x fa-spin"></i>
+                    <i class="ri-loader-2-fill remix-2x remix-spin"></i>
                 </div>
             </div>
             <div 
                 class="col-12 mainContentContainer"
                 key="mainContentContainer"
             >
-                <div class="mainMenu container-fluid col-12">
+                <div class="mainMenu col-12 position-relative" >
                     <sidebar-state-toggle @collapse="toggleCollapse"/>
                     <transition name="slide-fade">
                         <sidemenu 
@@ -499,38 +500,36 @@ export default {
                             @questiongrouporder="changedQuestionGroupOrder"
                         />
                     </transition>
-                    <transition name="slide-fade">
-                        <quickmenu 
-                            v-show="$store.getters.isCollapsed" 
-                            :loading="loading" 
-                            :style="{'min-height': calculateSideBarMenuHeight}" 
-                            @changeLoadingState="applyLoadingState" 
-                        />
-                    </transition>
-                </div>
-            </div>
-        </template>
-        <div 
+                    <div 
             v-if="(useMobileView && !smallScreenHidden) || !useMobileView"
             class="resize-handle ls-flex-column" 
             key="resizeHandle"
-            :style="{'height': calculateSideBarMenuHeight, 'max-height': getWindowHeight}" 
+            :style="{'height': calculateSideBarMenuHeight}"
         >
             <button 
                 v-show="!$store.getters.isCollapsed" 
-                class="btn btn-outline-secondary" 
+                class="btn " 
                 @mousedown="mousedown" @click.prevent="()=>{return false;}"
             >
-                <i class="fa fa-ellipsis-v" />
+              <svg width="9" height="14" viewBox="0 0 9 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M0.4646 0.125H3.24762V2.625H0.4646V0.125ZM6.03064 0.125H8.81366V2.625H6.03064V0.125ZM0.4646 5.75H3.24762V8.25H0.4646V5.75ZM6.03064 5.75H8.81366V8.25H6.03064V5.75ZM0.4646 11.375H3.24762V13.875H0.4646V11.375ZM6.03064 11.375H8.81366V13.875H6.03064V11.375Z" fill="currentColor"/>
+              </svg>
             </button>
         </div>
+                </div>
+            </div>
+        </template>
+      
         <div class="scoped-placeholder-greyed-area" 
             v-if="(useMobileView && smallScreenHidden)" 
             @click="toggleSmallScreenHide" 
             v-html="' '"
         />
+        <!-- this is used for fixing resize handler bug -->
+        <div v-if="isMouseDown" style="position:fixed; inset: 0;" />
     </div>
     
+
 </template>
 <style lang="scss" scoped>
     .sidebar_loader {

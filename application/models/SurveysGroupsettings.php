@@ -102,12 +102,12 @@ class SurveysGroupsettings extends LSActiveRecord
             array('expires, startdate, datecreated, attributedescriptions, emailresponseto, emailnotificationto', 'safe'),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('gsid, owner_id, admin, expires, startdate, adminemail, anonymized, format, 
-			savetimings, template, datestamp, usecookie, allowregister, allowsave, autonumber_start, 
-			autoredirect, allowprev, printanswers, ipaddr, refurl, datecreated, showsurveypolicynotice, 
-			publicstatistics, publicgraphs, listpublic, htmlemail, sendconfirmation, tokenanswerspersistence, 
-			assessments, usecaptcha, bounce_email, attributedescriptions, emailresponseto, emailnotificationto, 
-			tokenlength, showxquestions, showgroupinfo, shownoanswer, showqnumcode, showwelcome, showprogress, 
+            array('gsid, owner_id, admin, expires, startdate, adminemail, anonymized, format,
+			savetimings, template, datestamp, usecookie, allowregister, allowsave, autonumber_start,
+			autoredirect, allowprev, printanswers, ipaddr, refurl, datecreated, showsurveypolicynotice,
+			publicstatistics, publicgraphs, listpublic, htmlemail, sendconfirmation, tokenanswerspersistence,
+			assessments, usecaptcha, bounce_email, attributedescriptions, emailresponseto, emailnotificationto,
+			tokenlength, showxquestions, showgroupinfo, shownoanswer, showqnumcode, showwelcome, showprogress,
 			questionindex, navigationdelay, nokeyboard, alloweditaftercompletion', 'safe', 'on' => 'search'),
         );
     }
@@ -329,7 +329,7 @@ class SurveysGroupsettings extends LSActiveRecord
                 $instance->showInherited = 1;
             }
 
-            // set instance options from survey model, used for frontend redering
+            // set instance options from survey model, used for frontend rendering
             if (($oSurvey !== null && $bRealValues)) {
                 foreach ($instance->optionAttributes as $key => $attribute) {
                     $instance->oOptions->{$attribute} = $oSurvey->$attribute;
@@ -356,6 +356,26 @@ class SurveysGroupsettings extends LSActiveRecord
             }
         }
 
+        // check if the template actually exists and modify it if invalid
+        if (
+            !$instance->shouldInherit('template')
+            && !Template::checkIfTemplateExists($instance->oOptions->template)
+        ) {
+            if ($iSurveyGroupId === 0) {
+                $instance->oOptions->template = App()->getConfig('defaulttheme');
+            } else {
+                $instance->oOptions->template = 'inherit';
+            }
+        }
+
+        // check the global configuration for template inheritance if surveygroup is 0 (global survey) and template set to inherit
+        if (
+            $iSurveyGroupId === 0
+            && $instance->shouldInherit('template')
+        ) {
+            $instance->oOptions->template = App()->getConfig('defaulttheme');
+        }
+
         // fetch parent instance only if parent_id exists
         if ($iSurveyGroupId > 0 && !empty($model->SurveysGroups) && $model->SurveysGroups->parent_id !== null) {
             self::getInstance($model->SurveysGroups->parent_id, null, $instance, $iStep + 1);
@@ -374,6 +394,9 @@ class SurveysGroupsettings extends LSActiveRecord
      */
     protected static function translateOptionLabels($instance, $attribute, $value)
     {
+        if (is_null($value)) {
+            return '';
+        }
         // replace option labels on forms
         if ($attribute == 'usecaptcha') {
             $usecap = $value;
@@ -401,16 +424,17 @@ class SurveysGroupsettings extends LSActiveRecord
                 $instance->oOptions->ownerLabel = $oUser->users_name . ($oUser->full_name ? " - " . $oUser->full_name : "");
             }
         } elseif ($attribute == 'format' && $value != -1) {
-            return str_replace(array('S', 'G', 'A'), array(gT("Question by question"), gT("Group by group"), gT("All in one")), $value);
+            return str_replace(array('S', 'G', 'A'), array(gT("Question by question"), gT("Group by group"), gT("All in one")), (string) $value);
         } elseif ($attribute == 'questionindex' && $value != -1) {
-            return str_replace(array('0', '1', '2'), array(gT("Disabled"), gT("Incremental"), gT("Full")), $value);
+            return str_replace(array('0', '1', '2'), array(gT("Disabled"), gT("Incremental"), gT("Full")), (string) $value);
         } elseif ($attribute == 'showgroupinfo') {
-            return str_replace(array('B', 'D', 'N', 'X'), array(gT("Show both"), gT("Show group description only"), gT("Show group name only"), gT("Hide both")), $value);
+            return str_replace(array('B', 'D', 'N', 'X'), array(gT("Show both"), gT("Show group description only"), gT("Show group name only"), gT("Hide both")), (string) $value);
         } elseif ($attribute == 'showqnumcode') {
-            return str_replace(array('B', 'C', 'N', 'X'), array(gT("Show both"), gT("Show question code only"), gT("Show question number only"), gT("Hide both")), $value);
-        } else {
-            return str_replace(array('Y', 'N'), array(gT("On"), gT("Off")), $value);
+            return str_replace(array('B', 'C', 'N', 'X'), array(gT("Show both"), gT("Show question code only"), gT("Show question number only"), gT("Hide both")), (string) $value);
+        } elseif ($value == 'N' || $value == 'Y') {
+            return str_replace(array('Y', 'N'), array(gT("On"), gT("Off")), (string) $value);
         }
+        return (string) $value;
     }
 
     /**
@@ -456,8 +480,8 @@ class SurveysGroupsettings extends LSActiveRecord
         $this->owner_id = 1;
         $this->usecaptcha = 'N';
         $this->format = 'G';
-        $this->admin = substr(App()->getConfig('siteadminname'), 0, 50);
-        $this->adminemail = substr(App()->getConfig('siteadminemail'), 0, 254);
+        $this->admin = substr((string) App()->getConfig('siteadminname'), 0, 50);
+        $this->adminemail = substr((string) App()->getConfig('siteadminemail'), 0, 254);
         $this->template = Template::templateNameFilter(App()->getConfig('defaulttheme'));
     }
 

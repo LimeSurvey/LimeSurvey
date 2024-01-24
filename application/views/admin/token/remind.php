@@ -13,8 +13,8 @@
             <?php if ($thissurvey['active'] != 'Y'): ?>
                 <?php if ($thissurvey[$baselang]['active'] != 'Y'): ?>
                     <div class="jumbotron message-box message-box-error">
-                        <h2 class='text-warning'><?php eT('Warning!'); ?></h2>
-                        <p class="lead text-warning">
+                        <h2 class='text-danger'><?php eT('Warning!'); ?></h2>
+                        <p class="lead text-danger">
                             <?php eT("This survey is not yet activated and so your participants won't be able to fill out the survey."); ?>
                         </p>
                     </div>
@@ -74,9 +74,16 @@
                         <label class='form-label '
                                for='partialonly'><?php eT("Send email only to participants with partial responses:"); ?></label>
                         <div>
+                            <?php
+                                $disabledTip = gT('Not supported for anonymous surveys.');
+                            ?>
                             <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
-                                'name'          => 'partialonly',
+                                'name' => 'partialonly',
                                 'checkedOption' => '0',
+                                'htmlOptions' => [
+                                    'title' => $oSurvey->anonymized == 'Y' ? $disabledTip : '',
+                                    'disabled' => $oSurvey->anonymized == 'Y' ? '1' : '0',
+                                ],
                                 'selectOptions' => [
                                     '1' => gT('On'),
                                     '0' => gT('Off'),
@@ -134,7 +141,7 @@
                         $subject = Replacefields($thissurvey[$language]['email_remind_subj'], $fieldsarray, false);
                         $textarea = Replacefields($thissurvey[$language]['email_remind'], $fieldsarray, false);
                         if ($ishtml !== true) {
-                            $textarea = str_replace(array('<x>', '</x>'), array(''), $textarea); // ?????
+                            $textarea = str_replace(array('<x>', '</x>'), array(''), (string) $textarea); // ?????
                         }
                         ?>
 
@@ -162,7 +169,7 @@
                             <div class='mb-3'>
                                 <label class='form-label '
                                        for='message_<?php echo $language; ?>'><?php eT("Message:"); ?></label>
-                                <div class="htmleditor ">
+                                <div class="input-group htmleditor ">
                                     <?php echo CHtml::textArea("message_{$language}", $textarea, array('cols' => 80, 'rows' => 20, 'class' => 'form-control')); ?>
                                     <?php echo getEditor("email-reminder", "message_$language", "[" . gT("Reminder Email:", "js") . "](" . $language . ")", $surveyid, '', '', "tokens"); ?>
                                 </div>
@@ -192,7 +199,6 @@
 
         <?php
         App()->getClientScript()->registerScript("Tokens:BindReminderView", "
-        LS.renderBootstrapSwitch();
         $('#send-reminders-button').on('click', function(){
             $('#sendreminder').submit();
         })

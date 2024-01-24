@@ -27,7 +27,7 @@ var onClickListAction =  function () {
     var $gridid        = $('#'+$(this).closest('div.listActions').data('grid-id'));
     var $grididvalue   = $gridid.attr('id');
     var $oCheckedItems = $gridid.yiiGridView('getChecked', $(this).closest('div.listActions').data('pk')); // List of the clicked checkbox
-    var $oCheckedItems = JSON.stringify($oCheckedItems);
+    $oCheckedItems = JSON.stringify($oCheckedItems);
     var actionType     = $that.data('actionType');   
     var selectedList   = $(".selected-items-list");
 
@@ -52,11 +52,11 @@ var onClickListAction =  function () {
         $oCheckedItems = $gridid.yiiGridView('getChecked', $('.listActions').data('pk')); // So we can join
         var newForm = jQuery('<form>', {
             'action': $actionUrl,
-            'target': '_blank',
+            'target': $that.data('target') ?? '_blank',
             'method': 'POST'
         }).append(jQuery('<input>', {
             'name': $that.data('input-name'),
-            'value': $oCheckedItems.join("|"),
+            'value': $oCheckedItems.join($that.data('input-separator') ?? '|'),
             'type': 'hidden'
         })).append(jQuery('<input>', {
             'name': LS.data.csrfTokenName,
@@ -164,6 +164,12 @@ var onClickListAction =  function () {
     /* Define what should be done when user confirm the mass action */
     /* remove all existing action before adding the new one */
     $modalButton.off('click').on('click', function(){
+        var $form = $modal.find('form');
+        if ($form.data('trigger-validation')) {
+            if (!$form[0].reportValidity()) {
+                return;
+            }
+        }
 
         // Custom datas comming from the modal (like sid)
         var $postDatas  = {sItems:$oCheckedItems};
@@ -235,10 +241,18 @@ var onClickListAction =  function () {
                     return;
                 }
             },
-            error :  function(html, statut){
+            error: function(data, textStatus, jqXHR) {
                 $ajaxLoader.hide();
-                $modal.find('.modal-body-text').empty().html(html.responseText);
-                console.log(html);
+                if (data
+                    && data.responseJSON
+                    && data.responseJSON.success === false
+                    && data.responseJSON.message)
+                {
+                    $modal.modal('hide');
+                    LS.LsGlobalNotifier.createAlert(data.responseJSON.message,  "danger", {showCloseButton: true});
+                } else {
+                    $modal.find('.modal-body-text').empty().html(data.responseText);
+                }
             }
         });
     });
@@ -271,12 +285,11 @@ var onClickListAction =  function () {
  * So, when refreshing the grid, the bootstrap-switch must be re-applyed to the elements
  *
  */
-
+// TODO: It seems below two functions are not used and can be deleted. Please confirm.
  function prepareBsSwitchBoolean($gridid){
      // Bootstrap switch with class "bootstrap-switch-boolean" will use the default boolean values.
      // e.g: question mandatory, question other, etc
      $('.bootstrap-switch-boolean').each(function(){
-         $(this).bootstrapSwitch();
          $(this).attr('value', false);                                           // we specify its value in a "visible" way (see point 1)
 
          // Switch change
@@ -290,7 +303,6 @@ function prepareBsSwitchInteger($gridid){
     // Bootstrap switch with class "bootstrap-switch-integer" will use integer values
     // e.g: question statistics_showgraph, question public_statistics, etc
     $('.bootstrap-switch-integer').each(function(){
-        $(this).bootstrapSwitch();
         $(this).attr('value', 0);                                               // we specify its value in a "visible" way (see point 1)
 
         // Switch change
@@ -300,6 +312,8 @@ function prepareBsSwitchInteger($gridid){
         });
     });
 }
+// =================================================================================
+
 
 function prepareBsDateTimePicker($gridid){
     var dateTimeSettings = getDefaultDateTimePickerSettings();
@@ -337,9 +351,13 @@ function getDefaultDateTimePickerSettings() {
     return mydata;
 }
 
-function bindListItemclick(){
-    $( '.listActions a').off('click.listactions').on('click.listactions', onClickListAction);
-    $( '.listActions .disabled a').off('click.listactions').on('click.listactions', function(e){ e.preventDefault(); });
+function bindListItemclick() {
+    let listActions = $('.listActions a');
+    let listActionsDisabled = $('.listActions .disabled a');
+    listActions.off('click.listactions').on('click.listactions', onClickListAction);
+    listActionsDisabled.off('click.listactions').on('click.listactions', function (e) {
+        e.preventDefault();
+    });
 }
 
 
@@ -355,4 +373,39 @@ $(document).off('pjax:scriptcomplete.listActions').on('pjax:scriptcomplete.listA
         bindListItemclick();
     });
     bindListItemclick();
+});
+
+
+function switchStatusOfListActions(e) {
+    var checkboxSelector = '.grid-view-ls input[type="checkbox"]';
+    // Attach an onchange event handler to all checkboxes
+    $(document).on('change', checkboxSelector, function () {
+        // This assumes there is only one massive and one grid in the page.
+        // @todo: 
+        // - Stamp the related grid-id in the massive action button (see massive action widget).
+        // - From checkbox traverse to grid. Fetch grid id.
+        // - Use grid-id to get a more robust link in between grid and massive actions.
+        var actionButton = $('.massiveAction');
+        if (isAnyCheckboxChecked()) {
+            actionButton.removeClass('disabled');
+        } else {
+            actionButton.addClass('disabled');
+        }
+    });
+}
+
+// Function to check if at least one checkbox is checked
+function isAnyCheckboxChecked() {
+    // This assumes there is only one checkbox per row
+    // - Make isAnyCheckboxChecked() to only check the first one
+    // or
+    // - Stamp on the MassiveActions widget the checkbox class for the row selector and the header
+    // - Use that class to only query selector checkboxes
+    return $('.grid-view-ls table tbody input[type="checkbox"]:checked').length > 0;
+}
+
+['DOMContentLoaded','ready', 'pjax:scriptcomplete'].forEach(function (e) {
+    document.addEventListener(e, () => {
+        switchStatusOfListActions();
+    });
 });

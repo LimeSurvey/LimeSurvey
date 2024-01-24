@@ -12,6 +12,9 @@ if (!file_exists(__DIR__ . '/../enabletests')) {
     exit(9);
 }
 
+// When running locally, you can get a "session already started" error from Yii. This line prevents this.
+ob_start();
+
 /*
  *---------------------------------------------------------------
  * SYSTEM FOLDER NAME
@@ -22,7 +25,7 @@ if (!file_exists(__DIR__ . '/../enabletests')) {
  * as this file.
  *
  */
-$system_path = "framework";
+$system_path = "vendor/yiisoft/yii/framework";
 
 /*
  *---------------------------------------------------------------
@@ -168,7 +171,7 @@ if (isset($aSettings['config']['debug'])) {
         error_reporting(0);
     }
 } else {
-    error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED);// Not needed if user don't remove his 'debug'=>0, for application/config/config.php (Installation is OK with E_ALL)
+    error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED);// Not needed if user doesn't remove their 'debug'=>0, for application/config/config.php (Installation is OK with E_ALL)
 }
 
 if (version_compare(PHP_VERSION, '5.3.3', '<')) {
@@ -177,7 +180,7 @@ if (version_compare(PHP_VERSION, '5.3.3', '<')) {
 }
 
 
-require_once __DIR__ . '/../third_party/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
 /*
  * --------------------------------------------------------------------
@@ -206,18 +209,24 @@ if (!file_exists(APPPATH . 'config/config' . EXT)) {
 //$config['components']['db']['connectionString'] = 'mysql:host=localhost;port=3306;dbname=ls4;';
 
 // Check that tmp and upload are set to 777 permission (OK on test system).
-if (substr(sprintf('%o', fileperms(BASEPATH . '../tmp/')), -4) != '0777') {
+if (substr(sprintf('%o', fileperms(BASEPATH . '../../../../tmp/')), -4) != '0777') {
     die('tmp folder not set to 777');
 }
-if (substr(sprintf('%o', fileperms(BASEPATH . '../tmp/runtime/')), -4) != '0777') {
+if (substr(sprintf('%o', fileperms(BASEPATH . '../../../../tmp/runtime/')), -4) != '0777') {
     die('tmp/runtime folder not set to 777');
 }
-if (substr(sprintf('%o', fileperms(BASEPATH . '../upload/')), -4) != '0777') {
+if (substr(sprintf('%o', fileperms(BASEPATH . '../../../../upload/')), -4) != '0777') {
     die('upload folder not set to 777');
 }
-if (substr(sprintf('%o', fileperms(BASEPATH . '../tests/tmp/')), -4) != '0777') {
+if (substr(sprintf('%o', fileperms(BASEPATH . '../../../../tests/tmp/')), -4) != '0777') {
     die('tests/tmp folder not set to 777');
 }
+
+// Unit tests suddenly started failing with exception "CHttpRequest is unable to determine the request URI."
+// - Initialising $_SERVER makes the exception go away (kfoster - 2023-05-22)
+$_SERVER['SCRIPT_FILENAME'] = 'index-test.php';
+$_SERVER['SCRIPT_NAME'] =  '/index-test.php';
+$_SERVER['REQUEST_URI'] = 'index-test.php';
 
 Yii::$enableIncludePath = false;
 Yii::createApplication('LSYii_Application', $config);
@@ -231,6 +240,7 @@ require_once __DIR__ . '/TestBaseClassWeb.php';
 require_once __DIR__ . '/TestBaseClassView.php';
 require_once __DIR__ . '/DummyController.php';
 require_once __DIR__ . '/unit/helpers/remotecontrol/BaseTest.php';
+require_once __DIR__ . '/unit/models/BaseModelTestCase.php';
 
 define('PHP_ENV', 'test');
 // TODO: Move this logic to installater test.
@@ -238,7 +248,24 @@ $configFile = __DIR__ . '/application/config/config.php';
 $configBackupFile = __DIR__ . '/application/config/test-backup.config.php';
 
 // Enable if phpunit fails.
-// error_reporting(E_ALL);
+$forceDebug = false;
+if ($forceDebug) {
+    // Set env variable as to have test cases to enable error reporting.
+    // Seems setting it globally here is not enough
+    putenv('RUNNER_DEBUG=1');
+    fwrite(STDERR, 'Set $forceDebug=false in tests/bootstrap.php to reduce the logging.' . "\n"); 
+}
+$isDebug = getenv('RUNNER_DEBUG', false);
+fwrite(STDERR, 'Error Reporting and Debug: ' . ($isDebug ? 'Yes' : 'No') . "\n");
+if ($isDebug) {    
+    define('YII_DEBUG', true);
+    error_reporting(E_ALL);
+    ini_set('display_errors', '1');
+    ini_set('display_startup_errors', '1');        
+} else {
+   fwrite(STDERR, 'Set $forceDebug=true in tests/bootstrap.php to enable more logging.' . "\n"); 
+}
+fwrite(STDERR, "\n");
 
 if (file_exists($configFile)) {
     copy($configFile, $configBackupFile);

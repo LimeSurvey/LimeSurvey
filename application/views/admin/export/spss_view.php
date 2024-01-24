@@ -26,13 +26,13 @@ echo viewHelper::getViewTestTag('exportSpss');
         </div>
     </div>
     <div class="mb-3 row">
-        <label for='spssver'  class='col-md-2  form-form-label'><?php eT("Version:");?></label>
+        <label for='spssver'  class='col-sm-2  form-label'><?php eT("SPSS version:");?></label>
         <div class="col-md-10">
             <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', array(
                 'name' => 'spssver',
                 'checkedOption'=> $spssver ,
-                'selectOptions'=>array(
-                    "1"=>gT("Prior to 16",'unescaped'),
+                'selectOptions'=> array(
+                    "1"=>gT("Prior to 16 / PSPP",'unescaped'),
                     "2"=>gT("16 or up",'unescaped'),
                     "3"=>gT("16 or up with Python Plugin / Essentials",'unescaped')
                 )
@@ -96,17 +96,23 @@ echo viewHelper::getViewTestTag('exportSpss');
         </div>
     </div>
     </form>
+    <?php
+    $message = '<div>' .
+        '<p class="mb-3">' . gT("Instructions for the impatient") . ':</p>' .
+        '<ol>' .
+        '<li>' . gT("Download the data and the syntax file.") . '</li>' .
+    '<li>' . gT("Open the syntax file in SPSS in Unicode mode.") . '</li>' .
+    '<em>' . gT("The next step (editing the 'FILE=' line) is only necessary when you have selected a SPSS version without Python. If you selected the version for SPSS with the Python plugin / Essentials, just save the syntax and the data file in the same folder. If you use Python 3 you need to edit the syntax file: replace the line 'begin program.' with 'begin program PYTHON3.'. The full path will be automatically detected when you run the syntax.") . '</em>' .
+    '<li>' . sprintf(gT("Edit the line starting with %s and complete the filename with a full path to the downloaded data file."), "'FILE='") . '</li>' .
+    '<li>' . gT("Choose 'Run/All' from the menu to run the import.") . '</li>' .
+    '</ol>' .
+        gT("Your data should be imported now.") .
+        '</div>';
 
-    <p>
-    <div class="alert alert-info" role="alert"><?php eT("Instructions for the impatient");?> :
-        <br/><br/>
-        <ol>
-            <li><?php eT("Download the data and the syntax file.");?></li>
-            <li><?php eT("Open the syntax file in SPSS in Unicode mode.");?></li>
-            <em><?php eT("The next step (editing the 'FILE=' line) is only necessary when you have selected a SPSS version without Python. If you selected the version for SPSS with the Python plugin / Essentials, just save the syntax and the data file in the same folder. The full path will be automatically detected when you run the syntax."); ?></em>
-            <li><?php echo sprintf(gT("Edit the line starting with %s and complete the filename with a full path to the downloaded data file."),"'FILE='");?></li>
-            <li><?php eT("Choose 'Run/All' from the menu to run the import.");?></li>
-        </ol>
-    <?php eT("Your data should be imported now.");?></div>
+    $this->widget('ext.AlertWidget.AlertWidget', [
+        'text' => $message,
+        'type' => 'info',
+        'showCloseButton' => false,
+    ]);
+    ?>
 </div>
-<p>

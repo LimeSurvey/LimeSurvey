@@ -39,7 +39,7 @@ abstract class LSYii_Controller extends CController
         // Deprecated function
         $this->loadHelper('globalsettings');
         // tracevar function
-        $this->loadHelper('common');
+        //$this->loadHelper('common');
         $this->loadHelper('expressions.em_manager');
         $this->loadHelper('replacements');
         $this->customInit();
@@ -92,7 +92,7 @@ abstract class LSYii_Controller extends CController
 
         $dieoutput = '';
         if (version_compare(PHP_VERSION, '5.3.3', '<')) {
-                    $dieoutput .= 'This script can only be run on PHP version 5.3.3 or later! Your version: ' . PHP_VERSION . '<br />';
+            $dieoutput .= 'This script can only be run on PHP version 5.3.3 or later! Your version: ' . PHP_VERSION . '<br />';
         }
 
         if (!function_exists('mb_convert_encoding')) {
@@ -103,17 +103,15 @@ abstract class LSYii_Controller extends CController
             throw new CException($dieoutput);
         }
 
-        if (ini_get("max_execution_time") < Yii::app()->getConfig('max_execution_time')) {
-            try {
-                set_time_limit(Yii::app()->getConfig('max_execution_time')); // Maximum execution time - works only if safe_mode is off
-            } catch (Exception $e) {
-            };
+        if (ini_get("max_execution_time") < intval(App()->getConfig('max_execution_time'))) {
+            if(!@set_time_limit(intval(App()->getConfig('max_execution_time')))) {
+                Yii::log("Unable to set time limit to " . App()->getConfig('max_execution_time'), \CLogger::LEVEL_WARNING, 'application.controller');
+            }
         }
         if (ini_get('memory_limit') != -1 && convertPHPSizeToBytes(ini_get("memory_limit")) < convertPHPSizeToBytes(Yii::app()->getConfig('memory_limit') . 'M')) {
-            try {
-                ini_set("memory_limit", Yii::app()->getConfig('memory_limit') . 'M'); // Set Memory Limit for big surveys
-            } catch (Exception $e) {
-            };
+            if (@ini_set("memory_limit", Yii::app()->getConfig('memory_limit') . 'M') === false) {
+                Yii::log("Unable to set memory_limit to " . App()->getConfig('memory_limit') . 'M', \CLogger::LEVEL_WARNING, 'application.controller');
+            }
         }
 
         // The following function (when called) includes FireBug Lite if true
@@ -131,11 +129,11 @@ abstract class LSYii_Controller extends CController
         enforceSSLMode(); // This really should be at the top but for it to utilise getGlobalSetting() it has to be here
 
         if (Yii::app()->getConfig('debug') == 1) {
-//For debug purposes - switch on in config.php
+            //For debug purposes - switch on in config.php
             @ini_set("display_errors", '1');
             error_reporting(E_ALL);
         } elseif (Yii::app()->getConfig('debug') == 2) {
-//For debug purposes - switch on in config.php
+            //For debug purposes - switch on in config.php
             @ini_set("display_errors", '1');
             error_reporting(E_ALL | E_STRICT);
         } else {
@@ -145,10 +143,10 @@ abstract class LSYii_Controller extends CController
 
         //SET LOCAL TIME
         $timeadjust = Yii::app()->getConfig("timeadjust");
-        if (substr($timeadjust, 0, 1) != '-' && substr($timeadjust, 0, 1) != '+') {
+        if (substr((string) $timeadjust, 0, 1) != '-' && substr((string) $timeadjust, 0, 1) != '+') {
             $timeadjust = '+' . $timeadjust;
         }
-        if (strpos($timeadjust, 'hours') === false && strpos($timeadjust, 'minutes') === false && strpos($timeadjust, 'days') === false) {
+        if (strpos((string) $timeadjust, 'hours') === false && strpos((string) $timeadjust, 'minutes') === false && strpos((string) $timeadjust, 'days') === false) {
             Yii::app()->setConfig("timeadjust", $timeadjust . ' hours');
         }
         /* Set the default language, other controller can update if wanted */
@@ -156,7 +154,9 @@ abstract class LSYii_Controller extends CController
     }
 
     /**
-     * Creates an absolute URL based on the given controller and action information.
+     * Returns an absolute URL based on the given controller and action information.
+     * The functionalty was moved to
+     * \LSYii_Application::createPublicUrl, to be safe the function remains here.
      * @param string $route the URL route. This should be in the format of 'ControllerID/ActionID'.
      * @param array $params additional GET parameters (name=>value). Both the name and value will be URL-encoded.
      * @param string $schema schema to use (e.g. http, https). If empty, the schema used for the current request will be used.
@@ -165,20 +165,7 @@ abstract class LSYii_Controller extends CController
      */
     public function createAbsoluteUrl($route, $params = array(), $schema = '', $ampersand = '&')
     {
-        $sPublicUrl = Yii::app()->getConfig("publicurl");
-        // Control if public url are really public : need scheme and host
-        // If yes: use it
-        $aPublicUrl = parse_url($sPublicUrl);
-        if (isset($aPublicUrl['scheme']) && isset($aPublicUrl['host'])) {
-            $url = parent::createAbsoluteUrl($route, $params, $schema, $ampersand);
-            $sActualBaseUrl = Yii::app()->getBaseUrl(true);
-            if (substr($url, 0, strlen($sActualBaseUrl)) == $sActualBaseUrl) {
-                $url = substr($url, strlen($sActualBaseUrl));
-            }
-            return trim($sPublicUrl, "/") . $url;
-        } else {
-                    return parent::createAbsoluteUrl($route, $params, $schema, $ampersand);
-        }
+        return App()->createPublicUrl($route, $params, $schema, $ampersand);
     }
 
     /**

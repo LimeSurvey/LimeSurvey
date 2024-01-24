@@ -11,7 +11,7 @@
 <div class="mb-3">
     <label class=" form-label" for='siteadminbounce'><?php eT("Default site bounce email:"); ?></label>
     <div class="">
-        <input class="form-control" type='text' size='50' id='siteadminbounce' name='siteadminbounce' value="<?php echo htmlspecialchars(getGlobalSetting('siteadminbounce')); ?>" />
+        <input class="form-control" type='text' size='50' id='siteadminbounce' name='siteadminbounce' value="<?php echo htmlspecialchars((string) getGlobalSetting('siteadminbounce')); ?>" />
     </div>
 </div>
 
@@ -34,7 +34,7 @@
 <div class="mb-3">
     <label class=" form-label"  for='bounceaccounthost'><?php eT("Server name & port:"); ?></label>
     <div class="">
-        <input class="form-control" type='text' size='50' id='bounceaccounthost' name='bounceaccounthost' value="<?php echo htmlspecialchars(getGlobalSetting('bounceaccounthost'))?>" />
+        <input class="form-control" type='text' size='50' id='bounceaccounthost' name='bounceaccounthost' value="<?php echo htmlspecialchars((string) getGlobalSetting('bounceaccounthost'))?>" />
         <span class='hint'><?php eT("Enter your hostname and port, e.g.: imap.gmail.com:993"); ?></span>
     </div>
 
@@ -44,7 +44,7 @@
     <label class=" form-label"  for='bounceaccountuser'><?php eT("User name:"); ?></label>
     <div class="">
         <input class="form-control" type='text' size='50' id='bounceaccountuser' name='bounceaccountuser'
-            value="<?php echo htmlspecialchars(getGlobalSetting('bounceaccountuser'))?>" />
+            value="<?php echo htmlspecialchars((string) getGlobalSetting('bounceaccountuser'))?>" />
     </div>
 </div>
 
@@ -60,7 +60,7 @@
     <div>
         <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
             'name'          => 'bounceencryption',
-            'checkedOption' => strtolower(getGlobalSetting('bounceencryption')),
+            'checkedOption' => strtolower((string) getGlobalSetting('bounceencryption')),
             'selectOptions' => [
                 "off" => gT("Off (unsafe)", 'unescaped'),
                 "ssl" => "SSL/TLS",

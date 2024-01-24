@@ -15,29 +15,30 @@
 <!-- Array  increasesamedecrease -->
 
 <!-- answer -->
-<table class="{{ coreClass }} table table-bordered table-hover" role="group" aria-labelledby="ls-question-text-{{ basename }}">
-    <colgroup class="col-responses">
-        <col class="col-answers"  style='width: {{ answerwidth }}%;'  />
-            {# columns/col.php #}
-            {{ sColumns }}
-    </colgroup>
-    <thead aria-hidden="true">
-        <tr class="ls-heading">
-                {# rows/cell/thead.php #}
-                {{ sHeaders }}
-        </tr>
-    </thead>
-    <tbody>
-        {% if anscount==0 %}
-            <tr>
-                <th class="answertext">
-                    {{ gT('Error: This question has no answers.') }}
-                </th>
+<div role="group" aria-labelledby="ls-question-text-{{ basename }}">
+    <table class="{{ coreClass }} table table-bordered table-hover">
+        <colgroup class="col-responses">
+            <col class="col-answers"  style='width: {{ answerwidth }}%;'  />
+                {# columns/col.php #}
+                {{ sColumns }}
+        </colgroup>
+        <thead>
+            <tr class="ls-heading ls-header">
+                    {# rows/cell/thead.php #}
+                    {{ sHeaders }}
             </tr>
-        {% endif %}
-
-            {# rows/answer_row.php #}
-            {{ sRows }}
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            {% if anscount==0 %}
+                <tr>
+                    <th class="answertext">
+                        {{ gT('Error: This question has no answers.') }}
+                    </th>
+                </tr>
+            {% endif %}
+                {# rows/answer_row.php #}
+                {{ sRows }}
+        </tbody>
+    </table>
+</div>
 <!-- end of answer -->

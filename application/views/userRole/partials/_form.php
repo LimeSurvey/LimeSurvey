@@ -8,7 +8,7 @@ if ($model->isNewRecord) {
     $modalTitle =  gT('Create permission role');
     $buttonTitle = gT('Create');
 } else {
-    $modalTitle = sprintf(gT("Edit permission role '%s'"), $model->name);
+    $modalTitle = sprintf(gT("Edit permission role '%s'"), CHtml::encode($model->name));
     $buttonTitle = gT('Save');
 }
 Yii::app()->getController()->renderPartial(
@@ -54,7 +54,7 @@ Yii::app()->getController()->renderPartial(
     <button class="btn btn-cancel" id="exitForm" data-bs-dismiss="modal">
         <?=gT('Cancel')?>
     </button>
-    <button type="submit" class="btn btn-success" id="submitForm">
+    <button type="submit" class="btn btn-primary" id="submitForm">
         <?php echo $buttonTitle; ?>
     </button>
 </div>

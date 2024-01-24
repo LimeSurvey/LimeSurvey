@@ -39,7 +39,7 @@ class OptinController extends LSYii_Controller
         $languageCode = Yii::app()->request->getQuery('langcode');
         $accessToken = Token::sanitizeToken(Yii::app()->request->getQuery('token'));
 
-        //IF there is no survey id, redirect back to the default public page
+        //IF there is no survey ID, redirect back to the default public page
         if (!$surveyId) {
             $this->redirect(['/']);
         }
@@ -91,7 +91,7 @@ class OptinController extends LSYii_Controller
         $languageCode = Yii::app()->request->getQuery('langcode');
         $accessToken = Token::sanitizeToken(Yii::app()->request->getQuery('token'));
 
-        //IF there is no survey id, redirect back to the default public page
+        //IF there is no survey ID, redirect back to the default public page
         if (!$surveyId) {
             $this->redirect(['/']);
         }
@@ -120,7 +120,7 @@ class OptinController extends LSYii_Controller
         if (!isset($token)) {
             $message = gT('You are not a participant of this survey.');
         } else {
-            $optedOutFromSurvey = substr($token->emailstatus, 0, strlen('OptOut')) == 'OptOut';
+            $optedOutFromSurvey = substr((string) $token->emailstatus, 0, strlen('OptOut')) == 'OptOut';
 
             $blacklistHandler = new LimeSurvey\Models\Services\ParticipantBlacklistHandler();
             $participant = $blacklistHandler->getCentralParticipantFromToken($token);

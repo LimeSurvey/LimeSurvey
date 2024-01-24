@@ -62,7 +62,7 @@ function fixNumbering($iQuestionID, $iSurveyID)
         foreach ($aSwitcher as $aSwitch) {
             $sQuery = "UPDATE {{conditions}}
             SET cqid=$iNewQID,
-            cfieldname='" . str_replace("X" . $iQuestionID, "X" . $iNewQID, $aSwitch['cfieldname']) . "'
+            cfieldname='" . str_replace("X" . $iQuestionID, "X" . $iNewQID, (string) $aSwitch['cfieldname']) . "'
             WHERE cqid=$iQuestionID";
             Yii::app()->db->createCommand($sQuery)->query();
         }
@@ -274,7 +274,8 @@ function checkQuestions($postsid, $iSurveyID)
     $fieldmap = createFieldMap($survey, 'full', true, false, $survey->language, $aDuplicateQIDs);
     if (count($aDuplicateQIDs)) {
         foreach ($aDuplicateQIDs as $iQID => $aDuplicate) {
-            $sFixLink = "[<a class='selector__fixConsistencyProblem' href='" . Yii::app()->getController()->createUrl("/surveyAdministration/activate/iSurveyID/{$iSurveyID}/fixnumbering/{$iQID}") . "'>Click here to fix</a>]";
+            $sFixLink = "[<a class='selector__fixConsistencyProblem'
+            href='" . Yii::app()->getController()->createUrl("/surveyAdministration/fixNumbering/iSurveyID/{$iSurveyID}/questionId/{$iQID}") . "'>Click here to fix</a>]";
             $failedcheck[] = array($iQID, $aDuplicate['question'], ": Bad duplicate fieldname {$sFixLink}", $aDuplicate['gid']);
         }
     }
@@ -304,8 +305,8 @@ function mssql_drop_constraint($fieldname, $tablename)
     WHERE (c_obj.xtype = 'D') AND (col.name = '{$fieldname}') AND (t_obj.name='{{{$tablename}}}')";
     $result = Yii::app()->db->createCommand($dfquery)->query();
     $result = $result->read();
-    $defaultname = $result['CONSTRAINT_NAME'];
-    if ($defaultname != false) {
+    if (!empty($result['CONSTRAINT_NAME'])) {
+        $defaultname = $result['CONSTRAINT_NAME'];
         modifyDatabase("", "ALTER TABLE {{{$tablename}}} DROP CONSTRAINT {$defaultname[0]}");
         echo $modifyoutput;
         flush();
@@ -337,7 +338,7 @@ function mssql_drop_primary_index($tablename)
  * @param string $tablename The table the column should be deleted
  * @param string $columnname The column that should be deleted
  */
-function mssql_drop_coulmn_with_constraints($tablename, $columnname)
+function mssql_drop_column_with_constraints($tablename, $columnname)
 {
     Yii::app()->loadHelper("database");
 

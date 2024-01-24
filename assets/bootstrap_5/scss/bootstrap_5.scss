@@ -1,52 +1,52 @@
 // Custom Bootstrap 5 implementation
 
 // 1. Include functions first (so you can manipulate colors, SVGs, calc, etc)
-@import "third_party/twbs/bootstrap/scss/functions";
+@import "node_modules/bootstrap/scss/functions";
 
 // 2. Include any default variable overrides here
 @import "assets/bootstrap_5/scss/variables.scss";
 
 // 3. Include remainder of required Bootstrap stylesheets
-@import "third_party/twbs/bootstrap/scss/variables";
-@import "third_party/twbs/bootstrap/scss/mixins";
-@import "third_party/twbs/bootstrap/scss/root";
+@import "node_modules/bootstrap/scss/variables";
+@import "node_modules/bootstrap/scss/mixins";
+@import "node_modules/bootstrap/scss/root";
 
 // 4. Include any optional Bootstrap CSS as needed
-@import "third_party/twbs/bootstrap/scss/utilities";
-@import "third_party/twbs/bootstrap/scss/reboot";
-@import "third_party/twbs/bootstrap/scss/type";
-@import "third_party/twbs/bootstrap/scss/images";
-@import "third_party/twbs/bootstrap/scss/containers";
-@import "third_party/twbs/bootstrap/scss/grid";
-@import "third_party/twbs/bootstrap/scss/tables";
-@import "third_party/twbs/bootstrap/scss/forms";
-@import "third_party/twbs/bootstrap/scss/buttons";
-@import "third_party/twbs/bootstrap/scss/transitions";
-@import "third_party/twbs/bootstrap/scss/dropdown";
-@import "third_party/twbs/bootstrap/scss/button-group";
-@import "third_party/twbs/bootstrap/scss/nav";
-@import "third_party/twbs/bootstrap/scss/navbar";
-@import "third_party/twbs/bootstrap/scss/card";
-@import "third_party/twbs/bootstrap/scss/accordion";
-@import "third_party/twbs/bootstrap/scss/breadcrumb";
-@import "third_party/twbs/bootstrap/scss/pagination";
-@import "third_party/twbs/bootstrap/scss/badge";
-@import "third_party/twbs/bootstrap/scss/alert";
-@import "third_party/twbs/bootstrap/scss/progress";
-@import "third_party/twbs/bootstrap/scss/list-group";
-@import "third_party/twbs/bootstrap/scss/close";
-@import "third_party/twbs/bootstrap/scss/toasts";
-@import "third_party/twbs/bootstrap/scss/modal";
-@import "third_party/twbs/bootstrap/scss/tooltip";
-@import "third_party/twbs/bootstrap/scss/popover";
-@import "third_party/twbs/bootstrap/scss/carousel";
-@import "third_party/twbs/bootstrap/scss/spinners";
-@import "third_party/twbs/bootstrap/scss/offcanvas";
-@import "third_party/twbs/bootstrap/scss/placeholders";
-@import "third_party/twbs/bootstrap/scss/helpers";
+@import "node_modules/bootstrap/scss/utilities";
+@import "node_modules/bootstrap/scss/reboot";
+@import "node_modules/bootstrap/scss/type";
+@import "node_modules/bootstrap/scss/images";
+@import "node_modules/bootstrap/scss/containers";
+@import "node_modules/bootstrap/scss/grid";
+@import "node_modules/bootstrap/scss/tables";
+@import "node_modules/bootstrap/scss/forms";
+@import "node_modules/bootstrap/scss/buttons";
+@import "node_modules/bootstrap/scss/transitions";
+@import "node_modules/bootstrap/scss/dropdown";
+@import "node_modules/bootstrap/scss/button-group";
+@import "node_modules/bootstrap/scss/nav";
+@import "node_modules/bootstrap/scss/navbar";
+@import "node_modules/bootstrap/scss/card";
+@import "node_modules/bootstrap/scss/accordion";
+@import "node_modules/bootstrap/scss/breadcrumb";
+@import "node_modules/bootstrap/scss/pagination";
+@import "node_modules/bootstrap/scss/badge";
+@import "node_modules/bootstrap/scss/alert";
+@import "node_modules/bootstrap/scss/progress";
+@import "node_modules/bootstrap/scss/list-group";
+@import "node_modules/bootstrap/scss/close";
+@import "node_modules/bootstrap/scss/toasts";
+@import "node_modules/bootstrap/scss/modal";
+@import "node_modules/bootstrap/scss/tooltip";
+@import "node_modules/bootstrap/scss/popover";
+@import "node_modules/bootstrap/scss/carousel";
+@import "node_modules/bootstrap/scss/spinners";
+@import "node_modules/bootstrap/scss/offcanvas";
+@import "node_modules/bootstrap/scss/placeholders";
+@import "node_modules/bootstrap/scss/helpers";
 
 // 5. Optionally include utilities API last to generate classes based on the Sass map in `_utilities.scss`
-@import "third_party/twbs/bootstrap/scss/utilities/api";
+@import "node_modules/bootstrap/scss/utilities/api";
 
 // 6. Add additional custom code here
 @import "customizations";

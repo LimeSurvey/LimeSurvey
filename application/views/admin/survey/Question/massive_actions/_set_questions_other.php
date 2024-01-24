@@ -7,7 +7,7 @@
 /** @var Question $model */
 
 ?>
-<form class="custom-modal-datas form-horizontal">
+<form class="custom-modal-datas form-horizontal" data-trigger-validation="true">
     <div  class="mb-3" id="OtherSelection">
         <label class="col-md-4 form-label"><?php eT("Option 'Other':"); ?></label>
         <div class="col-md-8">

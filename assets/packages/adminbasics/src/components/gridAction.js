@@ -12,7 +12,7 @@ const gridButton = {
         var text = $(that).data('confirm-text') || $(that).attr('title') || $(that).data('original-title');
         var utf8 = $(that).data('confirm-utf8') || LS.lang.confirm;
         var gridid = $(that).data('gridid') || $(that).closest(".grid-view").attr("id");
-        $.bsconfirm(text,utf8,function onClickOK() {
+        $.fn.bsconfirm(text,utf8,function onClickOK() {
             $('#'+gridid).yiiGridView('update', {
                 type : 'POST',
                 url : actionUrl,

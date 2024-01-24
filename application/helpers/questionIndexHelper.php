@@ -33,7 +33,7 @@ class questionIndexHelper
     private static $instance = null;
 
     /**
-     * Actual survey id
+     * Actual survey ID
      * @var int surveyid
      */
     private $iSurveyId;
@@ -133,7 +133,7 @@ class questionIndexHelper
         foreach ($sessionLem['grouplist'] as $step => $groupInfo) {
             /* EM step start at 1, we start at 0*/
             $groupInfo['step'] = $step + 1;
-            $stepInfo = isset($stepInfos[$step]) ? $stepInfos[$step] : array('show' => true, 'anyUnanswered' => null, 'anyErrors' => null);
+            $stepInfo = $stepInfos[$step] ?? array('show' => true, 'anyUnanswered' => null, 'anyErrors' => null);
             if (
                 ($type > 1 || $groupInfo['step'] <= $sessionLem['maxstep'])
                 && LimeExpressionManager::GroupIsRelevant($groupInfo['gid']) // $stepInfo['show'] is incomplete (for irrelevant group after the 'not submitted due to error group') GroupIsRelevant control it really
@@ -185,7 +185,7 @@ class questionIndexHelper
 // Sub question have same questionSeq, and no questionSeq : must be hidden (lastpage, id, seed ...)
                 /* This question can be in index */
                 $questionStep = $questionFieldmap['questionSeq'] + 1;
-                $stepInfo = isset($stepInfos[$questionFieldmap['questionSeq']]) ? $stepInfos[$questionFieldmap['questionSeq']] : array('show' => true, 'anyUnanswered' => null, 'anyErrors' => null);
+                $stepInfo = $stepInfos[$questionFieldmap['questionSeq']] ?? array('show' => true, 'anyUnanswered' => null, 'anyErrors' => null);
                 if (
                     ($questionStep <= $sessionLem['maxstep']) // || $type>1 : index can be shown : but next step is disable somewhere
                     && $stepInfo['show']// attribute hidden + relevance : @todo review EM function ?

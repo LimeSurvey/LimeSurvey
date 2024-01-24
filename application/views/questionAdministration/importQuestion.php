@@ -10,7 +10,7 @@
 
 ?>
 <div id='edit-question-body' class='side-body <?php echo getSideBodyClass(false); ?>'>
-    <h3><?php eT("Import a question"); ?></h3>
+    <div class="pagetitle h1"><?php eT("Import a question"); ?></div>
     <div class="row">
         <div class="col-6">
             <?php echo CHtml::form(

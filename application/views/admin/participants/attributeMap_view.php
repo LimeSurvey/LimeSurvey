@@ -2,7 +2,7 @@
     var redUrl = "<?php echo $this->createUrl("/admin/participants/sa/displayParticipants"); ?>";
     var surveyId = "<?php echo $survey_id ?>";
     var redirect = "<?php echo $redirect ?>";
-    if(redirect)
+    if(redirect == "1")
     {
         redUrl = "<?php echo $this->createUrl("/admin/tokens/sa/browse/surveyid/{$survey_id}"); ?>";
     }
@@ -19,7 +19,7 @@
 
 </script>
 
-<div class='header ui-widget-header'>
+<div class='header pt-2'>
     <div class='pagetitle h3'>
         <?php eT("Map your central participant attributes to existing survey participant attributes or create new ones"); ?>
     </div>
@@ -38,9 +38,9 @@
 ?>
 
 <div class='row'>
-    <div class='col-md-4'>
-        <div id="centralattribute" class="card <?php echo $columnstyle ?>">
-            <div class="card-header bg-primary"><?php eT("Unmapped participant attributes"); ?></div>
+    <div class='col-4'>
+        <div id="centralattribute" class="card card-primary <?php echo $columnstyle ?> h-100">
+            <div class="card-header "><?php eT("Unmapped participant attributes"); ?></div>
             <div class='card-body'>
                 <div id="cpdbatt">
                     <?php
@@ -55,19 +55,19 @@
             </div>
         </div>
     </div>
-    <div class='col-md-4'>
-        <div id="newcreated" class="card <?php echo $columnstyle ?>">
-            <div class="card-header bg-primary"><?php eT("Survey participant attributes to create"); ?></div>
+    <div class='col-4'>
+        <div id="newcreated" class="card card-primary <?php echo $columnstyle ?>">
+            <div class="card-header "><?php eT("Survey participant attributes to create"); ?></div>
             <div class='card-body' style="height:100%;">
                 <div class="newcreate" id="sortable" style ="height:100%;">
                 </div>
             </div>
         </div>
     </div>
-    <div class='col-md-4'>
+    <div class='col-4'>
         <div id='tokenattribute'>
-            <div class='card'>
-                <div class="card-header bg-primary">
+            <div class='card card-primary mb-3'>
+                <div class="card-header ">
                     <?php eT("Existing survey participant attributes"); ?>
                 </div>
                 <div class='card-body'>
@@ -75,16 +75,16 @@
                         <?php foreach ($selectedtokenattribute as $id => $name): ?>
                                 <?php if (isset($automaticallyMappedAttributes[$id])): ?>
                                     <?php $autoAttr = $automaticallyMappedAttributes[$id]; // Short-hand... ?>
-                                    <div class='tokenatt-container col-12'>
-                                        <div class='col-sm-6'>
+                                    <div class='tokenatt-container row col-12'>
+                                        <div class='col-6'>
                                             <div class='card ui-state-disabled token-attribute' id='t_<?php echo $id; ?>'>
                                                 <div class='card-body'>
                                                     <?php echo CHtml::encode($name); ?>
-                                                    <span class='fa fa-arrows-h tokenatt-arrow'></span>
+                                                    <span class='ri-arrow-left-right-fill tokenatt-arrow'></span>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class='col-md-6'>
+                                        <div class='col-6'>
                                             <div class='card ui-state-disabled cpdb-attribute' id='c_<?php echo $autoAttr['cpdbAttribute']['attribute_id']; ?>'>
                                                 <div class='card-body'>
                                                     <?php echo $autoAttr['cpdbAttribute']['attribute_name']; ?>
@@ -93,8 +93,8 @@
                                         </div>
                                     </div>
                                 <?php else: ?>
-                                    <div class='tokenatt-container col-12'>
-                                        <div class='col-md-6'>
+                                    <div class='tokenatt-container row col-12'>
+                                        <div class='col-6'>
                                             <div class='card ui-state-disabled token-attribute' id='t_<?php echo $id; ?>'>
                                                 <div class='card-body'>
                                                     <?php echo CHtml::encode($name); ?>
@@ -107,24 +107,24 @@
                     </div>
 
                     <?php if(!empty($selectedtokenattribute)): ?>
-                        <div class='explanation row'>
-                            <div class='mb-3'>
-                                <label class='form-label col-md-10 text-end' for='overwriteman'><?php eT("Overwrite existing participant attribute values if a participant already exists?") ?></label>
-                                <div class='col-md-2'>
-                                    <input type='checkbox' id='overwriteman' name='overwriteman' />
-                                </div>
+                        <div class='explanation row m-3'>
+                            <div class='form-check'>
+                                <input class="form-check-input" type='checkbox' id='overwriteman' name='overwriteman' />
+                                <label class='form-check-label' for='overwriteman'>
+                                    <?php eT("Overwrite existing participant attribute values if a participant already exists?") ?>
+                                </label>
                             </div>
-                            <div class='mb-3'>
-                                <label class='form-label col-md-10 text-end' for='createautomap'><?php eT("Make these mappings automatic in future") ?></label>
-                                <div class='col-md-2'>
-                                    <input type='checkbox' id='createautomap' name='createautomap' />
-                                </div>
+                            <div class='form-check'>
+                                <input class="form-check-input" type='checkbox' id='createautomap' name='createautomap' />
+                                <label class='form-check-label' for='createautomap'>
+                                    <?php eT("Make these mappings automatic in future") ?>
+                                </label>
                             </div>
                         </div>
                     <?php endif; ?>
 
                     <?php if(!empty($alreadymappedattributename)): ?>
-                        <div class='card-header bg-primary'>
+                        <div class='card-header '>
                             <?php eT("Pre-mapped attributes") ?>
                         </div>
                         <div class='card-body'>
@@ -138,8 +138,11 @@
                                 }
                                 ?>
                             </div>
-                            <div class='explanation'>
-                                <input type='checkbox' id='overwrite' name='overwrite' /> <label for='overwrite'><?php eT("Overwrite existing auto mapped attribute values if a participant already exists?") ?></label>
+                            <div class='explanation form-check'>
+                                <input class="form-check-input" type='checkbox' id='overwrite' name='overwrite' />
+                                <label class="form-check-label" for='overwrite'>
+                                    <?php eT("Overwrite existing auto mapped attribute values if a participant already exists?") ?>
+                                </label>
                             </div>
                         </div>
                     <?php endif; ?>
@@ -147,31 +150,29 @@
                 </div>
             </div>
 
-            <div class='card'>
-                <div class='card-header bg-primary'><?php eT("Standard participant fields") ?></div>
+            <div class='card card-primary'>
+                <div class='card-header '><?php eT("Standard participant fields") ?></div>
                 <div class='card-body'>
                     <div class="standardfields">
-                        <div class='tokenatt-container col-12'>
-                            <div class='col-md-6'>
+                        <div class='tokenatt-container row col-12'>
+                            <div class='col-6'>
                                 <div class='card ui-state-disabled token-attribute' id='t_token'>
                                     <div class='card-body'>
                                         <?php eT("Participant") ?>
-                                        <span class='fa fa-arrows-h tokenatt-arrow'></span>
+                                        <span class='ri-arrow-left-right-fill tokenatt-arrow'></span>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class='explanation'>
-                        <div class='mb-3'>
-                            <label class='form-label col-md-10 text-end' for='overwritest'>
+                    <div class='explanation row m-3'>
+                        <div class='form-check'>
+                            <input class="form-check-input" type='checkbox' id='overwritest' name='overwritest' />
+                            <label class='form-check-label form-label col-md-10' for='overwritest'>
                                 <?php eT("Overwrite existing standard field values if a participant already exists?") ?>
                             </label>
-                            <div class='col-md-2'>
-                                <input type='checkbox' id='overwritest' name='overwritest' />
-                            </div>
                         </div>
-                        <span class='help-block col-md-10 text-end'><?php eT("Note: Standard participant fields cannot be automatically mapped") ?></span>
+                        <div class='form-text'><?php eT("Note: Standard participant fields cannot be automatically mapped") ?></div>
                     </div>
                 </div>
             </div>
@@ -180,8 +181,8 @@
     </div>
 </div>
 
-<div class='mb-3 col-12 text-center'>
-    <input class='btn btn-outline-secondary' type="button" name="goback" onclick="history.back();" id="back" value="<?php eT('Back')?>" />
+<div class='m-3 col-12 text-center'>
+    <input class='btn btn-cancel' type="button" name="goback" onclick="history.back();" id="back" value="<?php eT('Cancel')?>" />
     <input class='btn btn-outline-secondary' type='button' name='reset' onClick='window.location.reload();' id='reset' value="<?php eT('Reset') ?>" />
     <input class='btn btn-outline-secondary' type="button" name="attmap" id="attmap" value="<?php eT('Continue')?>" />
 </div>

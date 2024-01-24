@@ -24,7 +24,7 @@ PrepareEditorScript(false, $this);
 ?>
 <!-- security notice -->
 <div class="mb-3">
-    <label class="form-label" for='showsurveypolicynotice'><?php eT("Show survey policy text with mandatory checkbox:"); ?></label>
+            <label class="form-label" for='showsurveypolicynotice'><?php  eT("Show privacy policy text with mandatory checkbox:") ; ?></label>
     <div class="">
                 <div class="btn-group" data-bs-toggle="buttons">
                     <input class="btn-check" type="radio" id="showsurveypolicynotice_0" name="showsurveypolicynotice" value="0" <?=$oSurvey->showsurveypolicynotice==0 ? 'checked' : ''?> autocomplete="off">

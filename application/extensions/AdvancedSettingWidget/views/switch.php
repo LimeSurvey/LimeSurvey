@@ -7,13 +7,13 @@
             <input
                 class="btn-check"
                 type="radio"
-                id="advancedSettings[<?= strtolower($this->setting['category']); ?>][<?= $this->setting['name']; ?>]_1"
+                id="advancedSettings[<?= strtolower((string) $this->setting['category']); ?>][<?= $this->setting['name']; ?>]_1"
                 name="<?= $inputBaseName ?>"
                 value="1"
                 checked
                 />
             <label
-                for="advancedSettings[<?= strtolower($this->setting['category']); ?>][<?= $this->setting['name']; ?>]_1"
+                for="advancedSettings[<?= strtolower((string) $this->setting['category']); ?>][<?= $this->setting['name']; ?>]_1"
                 class="btn btn-outline-secondary"
             >
                 <?= gT('On'); ?>
@@ -22,11 +22,11 @@
                 class="btn-check"
                 type="radio"
                 name="<?= $inputBaseName ?>"
-                id="advancedSettings[<?= strtolower($this->setting['category']); ?>][<?= $this->setting['name']; ?>]_0"
+                id="advancedSettings[<?= strtolower((string) $this->setting['category']); ?>][<?= $this->setting['name']; ?>]_0"
                 value="0"
                 />
             <label
-                for="advancedSettings[<?= strtolower($this->setting['category']); ?>][<?= $this->setting['name']; ?>]_0"
+                for="advancedSettings[<?= strtolower((string) $this->setting['category']); ?>][<?= $this->setting['name']; ?>]_0"
                 class="btn btn-outline-secondary">
                 <?= gT('Off'); ?>
             </label>
@@ -35,24 +35,24 @@
                 class="btn-check"
                 type="radio"
                 name="<?= $inputBaseName ?>"
-                id="advancedSettings[<?= strtolower($this->setting['category']); ?>][<?= $this->setting['name']; ?>]_1"
+                id="advancedSettings[<?= strtolower((string) $this->setting['category']); ?>][<?= $this->setting['name']; ?>]_1"
                 value="1"
                 />
             <label
-                for="advancedSettings[<?= strtolower($this->setting['category']); ?>][<?= $this->setting['name']; ?>]_1"
+                for="advancedSettings[<?= strtolower((string) $this->setting['category']); ?>][<?= $this->setting['name']; ?>]_1"
                 class="btn btn-outline-secondary">
                 <?= gT('On'); ?>
             </label>
             <input
                 class="btn-check"
                 type="radio"
-                id="advancedSettings[<?= strtolower($this->setting['category']); ?>][<?= $this->setting['name']; ?>]_0"
+                id="advancedSettings[<?= strtolower((string) $this->setting['category']); ?>][<?= $this->setting['name']; ?>]_0"
                 name="<?= $inputBaseName ?>"
                 value="0"
                 checked
                 />
             <label
-                for="advancedSettings[<?= strtolower($this->setting['category']); ?>][<?= $this->setting['name']; ?>]_0"
+                for="advancedSettings[<?= strtolower((string) $this->setting['category']); ?>][<?= $this->setting['name']; ?>]_0"
                 class="btn btn-outline-secondary">
                 <?= gT('Off'); ?>
             </label>

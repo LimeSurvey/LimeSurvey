@@ -3,7 +3,7 @@
 * Assessments edit
 */
 ?>
-<div id="assesements-edit-add" class="modal fade" role="dialog">
+<div id="assesements-edit-add" class="modal fade" role="dialog" data-bs-focus="false">
     <div class="modal-dialog">
         <div class="modal-content">
             <?php echo CHtml::form(["/assessment/insertUpdate/surveyid/$surveyid"], 'post', ['class' => 'form', 'id' => 'assessmentsform', 'name' => 'assessmentsform', 'role' => 'form']); ?>
@@ -141,7 +141,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-cancel" data-bs-dismiss="modal"><?php eT("Cancel"); ?></button>
-                <button type="button" class="btn btn-success" id="selector__assessments-save-modal">
+                <button type="button" class="btn btn-primary" id="selector__assessments-save-modal">
                     <?php eT('Add'); ?>
                 </button>
             </div>

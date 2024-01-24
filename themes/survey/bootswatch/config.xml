@@ -11,7 +11,7 @@
     <!-- Those metadata are displayed in the theme configuration page.  -->
     <metadata>
         <name>bootswatch</name>
-        <title>Bootswatch Theme</title>
+        <title>Bootswatch</title>
         <type>theme</type>
         <creationDate>08/01/2016</creationDate>
         <author>LimeSurvey GmbH</author>
@@ -21,10 +21,14 @@
         <license>GNU General Public License version 2 or later</license>
         <version>3.0</version>
         <apiVersion>3</apiVersion>
-        <description><![CDATA[<strong>{{gT("LimeSurvey Bootwatch Theme")}}</strong><br>{{gT("Based on BootsWatch Themes:")}} <a href='https://bootswatch.com/3/'>{{gT("Visit BootsWatch page")}}</a> ]]></description>
+        <description><![CDATA[{{gT("Based on BootsWatch Themes:")}} <br><a href='https://bootswatch.com/3/'>{{gT("Visit Bootswatch page")}}</a> ]]></description>
         <lastUpdate>2019-10-24 12:00:00</lastUpdate>
         <extends>vanilla</extends>
     </metadata>
+
+    <compatibility>
+        <version>6.0</version>
+    </compatibility>
 
     <!--
         Here the list of the css/js files to add to the template package.
@@ -65,30 +69,32 @@
         <showpopups type="buttons" category="Simple options" width="4" title="Show popups" options="1|0|-1" optionlabels="Popup|On page|No">1</showpopups>
         <showclearall type="buttons" category="Simple options" width="4" title="Show Clear All button" options="on|off" optionlabels="Yes|No">off</showclearall>
         <questionhelptextposition type="buttons" category="Simple options" width="4" title="Question help text position" options="top|bottom" optionlabels="Top|Bottom">top</questionhelptextposition>
-        <fixnumauto type="buttons" category="Simple options" width="4" title="Fix automatically numeric value" options="enable|partial|disable" optionlabels="Yes|For expression|No">off</fixnumauto>
+        <fixnumauto type="buttons" category="Simple options" width="4" title="Fix automatically numeric value" options="enable|partial|disable" optionlabels="Yes|For expression|No">enable</fixnumauto>
         <!-- images -->
         <brandlogo type="buttons" category="Images" width="4" title="Logo" options="on|off" optionlabels="Yes|No">on</brandlogo>
         <brandlogofile type="dropdown" category="Images" width="6" title="Logo file" parent="brandlogo">./files/logo.png</brandlogofile>
         <hideprivacyinfo type="buttons" category="Simple options" width="4" title="Hide privacy info" options="on|off" optionlabels="Yes|No">off</hideprivacyinfo>
-        <cssframework type="dropdown" category="Simple options" title="Variations" parent="cssframework">
+        <cssframework type="dropdown" category="Simple options" title="Variations" parent="cssframework">Basic Bootstrap
             <dropdownoptions>
-                <option data-mode="replace" value="css/variations/basic.min.css">Basic Bootstrap</option>
-                <option data-mode="replace" value="css/variations/cerulean.min.css">Cerulean</option>
-                <option data-mode="replace" value="css/variations/cosmos.min.css">Cosmos</option>
-                <option data-mode="replace" value="css/variations/cyborg.min.css">Cyborg</option>
-                <option data-mode="replace" value="css/variations/darkly.min.css">Darkly</option>
-                <option data-mode="replace" value="css/variations/flatly.min.css">Flatly</option>
-                <option data-mode="replace" value="css/variations/journal.min.css">Journal</option>
-                <option data-mode="replace" value="css/variations/lumen.min.css">Lumen</option>
-                <option data-mode="replace" value="css/variations/paper.min.css">Paper</option>
-                <option data-mode="replace" value="css/variations/readable.min.css">Readable</option>
-                <option data-mode="replace" value="css/variations/sandstone.min.css">Sandstone</option>
-                <option data-mode="replace" value="css/variations/simplex.min.css">Simplex</option>
-                <option data-mode="replace" value="css/variations/slate.min.css">Slate</option>
-                <option data-mode="replace" value="css/variations/spacelab.min.css">Spacelab</option>
-                <option data-mode="replace" value="css/variations/superhero.min.css">Superhero</option>
-                <option data-mode="replace" value="css/variations/united.min.css">United</option>
-                <option data-mode="replace" value="css/variations/yeti.min.css">Yeti</option>
+                <optgroup>
+                    <option data-mode="replace" value="css/variations/basic.min.css">Basic Bootstrap</option>
+                    <option data-mode="replace" value="css/variations/cerulean.min.css">Cerulean</option>
+                    <option data-mode="replace" value="css/variations/cosmos.min.css">Cosmos</option>
+                    <option data-mode="replace" value="css/variations/cyborg.min.css">Cyborg</option>
+                    <option data-mode="replace" value="css/variations/darkly.min.css">Darkly</option>
+                    <option data-mode="replace" value="css/variations/flatly.min.css">Flatly</option>
+                    <option data-mode="replace" value="css/variations/journal.min.css">Journal</option>
+                    <option data-mode="replace" value="css/variations/lumen.min.css">Lumen</option>
+                    <option data-mode="replace" value="css/variations/paper.min.css">Paper</option>
+                    <option data-mode="replace" value="css/variations/readable.min.css">Readable</option>
+                    <option data-mode="replace" value="css/variations/sandstone.min.css">Sandstone</option>
+                    <option data-mode="replace" value="css/variations/simplex.min.css">Simplex</option>
+                    <option data-mode="replace" value="css/variations/slate.min.css">Slate</option>
+                    <option data-mode="replace" value="css/variations/spacelab.min.css">Spacelab</option>
+                    <option data-mode="replace" value="css/variations/superhero.min.css">Superhero</option>
+                    <option data-mode="replace" value="css/variations/united.min.css">United</option>
+                    <option data-mode="replace" value="css/variations/yeti.min.css">Yeti</option>
+                </optgroup>
             </dropdownoptions>
         </cssframework>
     </options>
@@ -107,7 +113,7 @@
         <!-- Asset manager will copy the whole template directory to tmp. So it's possible to refer any file in the files directory in CSS via relative path (e.g: '../files/foo.jpg')   -->
         <filesdirectory>files</filesdirectory>
 
-        <!-- Here, you can publish packages set as third party extensions in application/config/third_party or  application/config/package -->
+        <!-- Here, you can publish packages set as third party extensions in application/config/vendor or  application/config/package -->
         <!-- If bootstrap is registered as a css framework, it will be loaded first -->
         <!-- Example: <packages>moment</packages> -->
         <packages>

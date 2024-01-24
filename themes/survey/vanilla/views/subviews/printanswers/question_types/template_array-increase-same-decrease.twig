@@ -4,11 +4,11 @@
     {% for subquestionId, subquestion in question.subquestions %}
         <div class="row">
             <div class="col-lg-4 text-end">
-            {% if subquestion.answervalue is sameas("I") %}
+            {% if subquestion.answervalue is same as("I") %}
                 {{ gT("Increase") }} <i class="fa fa-plus"></i>
-            {% elseif subquestion.answervalue is sameas("S") %}
+            {% elseif subquestion.answervalue is same as("S") %}
                 {{ gT("Same") }} <i class="fa fa-circle"></i>
-            {% elseif subquestion.answervalue is sameas("D") %}
+            {% elseif subquestion.answervalue is same as("D") %}
                 {{ gT("Decrease") }} <i class="fa fa-minus"></i>
             {% else %}
 

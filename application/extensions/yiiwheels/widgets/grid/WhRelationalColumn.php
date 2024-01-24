@@ -11,7 +11,7 @@
  * @package YiiWheels.widgets.grid
  * @uses Yiistrap.widgets.TbDataColumn
  */
-Yii::import('yiistrap.widgets.TbDataColumn');
+Yii::import('yiistrap_fork.widgets.TbDataColumn');
 
 class WhRelationalColumn extends TbDataColumn
 {

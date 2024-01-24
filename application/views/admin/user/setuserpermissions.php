@@ -65,7 +65,7 @@ echo viewHelper::getViewTestTag('setUserPermissions');
                                             <?php if(Permission::model()->hasGlobalPermission( $sPermissionKey, $sCRUDKey, $oUser->uid)):?>
                                                 checked="checked"
                                             <?php endif; ?>
-                                            <?php if(substr($sPermissionKey,0,5) === 'auth_' && $sCRUDKey === 'read'): ?>
+                                            <?php if(substr((string) $sPermissionKey,0,5) === 'auth_' && $sCRUDKey === 'read'): ?>
                                                 style="visibility:hidden"
                                             <?php endif; ?>/>
                                         <?php endif; ?>

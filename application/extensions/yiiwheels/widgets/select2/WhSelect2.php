@@ -8,7 +8,7 @@
  * @package YiiWheels.widgets.select2
  * @uses YiiStrap.helpers.TbArray
  */
-Yii::import('yiistrap.helpers.TbArray');
+Yii::import('yiistrap_fork.helpers.TbArray');
 
 class WhSelect2 extends CInputWidget
 {
@@ -91,7 +91,7 @@ class WhSelect2 extends CInputWidget
         /* @var $cs CClientScript */
         $cs = Yii::app()->getClientScript();
 
-        $cs->registerPackage('select2');
+        $cs->registerPackage('select2-bootstrap');
 
 
         if ($this->language) {

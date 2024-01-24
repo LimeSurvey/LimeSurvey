@@ -12,7 +12,7 @@
     }
     $counter2 = 0;
 ?>
- 
+
 
 
 
@@ -88,13 +88,13 @@
                         <div class='mb-3 row'>
                         <label for='".$myfield2."' class='col-md-4 form-label'>".gT("Number greater than:")."</label>
                         <div class='col-md-6'>"
-                        .CHtml::numberField($myfield2,isset($_POST[$myfield2])?$_POST[$myfield2]:'',array( 'class'=>'form-control', 'step'=>'any'))
+                        .CHtml::numberField($myfield2,$_POST[$myfield2] ?? '',array( 'class'=>'form-control', 'step'=>'any'))
                         ."</div>
                         </div>
                         <div class='mb-3 row'>
                         <label for='N".$myfield3."' class='col-md-4 form-label'>".gT("Number less than:")."</label>
                         <div class='col-md-6'>"
-                        .CHtml::numberField($myfield3,isset($_POST[$myfield3])?$_POST[$myfield3]:'',array( 'class'=>'form-control', 'step'=>'any'))
+                        .CHtml::numberField($myfield3,$_POST[$myfield3] ?? '',array( 'class'=>'form-control', 'step'=>'any'))
                         ."</div>
                         </div>";                
                     }
@@ -129,7 +129,7 @@
                     echo $oStatisticsHelper::_showSpeaker($flt[3]." - ".flattenText($row['question'],true))
                     ."<br /><p style='padding: 1em;'>\n"
                     ."\t<span class='smalltext'>".gT("Responses containing").":</span><br />\n";
-                    echo CHtml::textField($myfield2,isset($_POST[$myfield2])?$_POST[$myfield2]:'',array('class'=>'form-control'));
+                    echo CHtml::textField($myfield2,$_POST[$myfield2] ?? '',array('class'=>'form-control'));
                     echo "</p>";
                     echo '</div></div>';
                 }
@@ -152,7 +152,7 @@
                 ."<br />\n"
                 ."\t<span class='smalltext'>".gT("Responses containing").":</span>
                 </div>\n"
-                .CHtml::textArea($myfield2,isset($_POST[$myfield2])?$_POST[$myfield2]:'',array('rows'=>'3','cols'=>'40'));
+                .CHtml::textArea($myfield2,$_POST[$myfield2] ?? '',array('rows'=>'3','cols'=>'40'));
                 break;
 
 
@@ -170,7 +170,7 @@
                 ."<br />\n"
                 ."\t<span class='smalltext'>".gT("Responses containing").":</span>
                 </div>\n"
-                .CHtml::textField($myfield2,isset($_POST[$myfield2])?$_POST[$myfield2]:'',array('class'=>'form-control'));
+                .CHtml::textField($myfield2,$_POST[$myfield2] ?? '',array('class'=>'form-control'));
                 break;
 
 
@@ -200,13 +200,13 @@
                 <div class='mb-3 row'>
                 <label for='".$myfield2."' class='col-md-4 form-label'>".gT("Number greater than:")."</label>
                 <div class='col-md-6'>"
-                .CHtml::numberField($myfield2,isset($_POST[$myfield2])?$_POST[$myfield2]:'',array( 'class'=>'form-control', 'step'=>'any'))
+                .CHtml::numberField($myfield2,$_POST[$myfield2] ?? '',array( 'class'=>'form-control', 'step'=>'any'))
                 ."</div>
                 </div>
                 <div class='mb-3 row'>
                 <label for='N".$myfield3."' class='col-md-4 form-label'>".gT("Number less than:")."</label>
                 <div class='col-md-6'>"
-                .CHtml::numberField($myfield3,isset($_POST[$myfield3])?$_POST[$myfield3]:'',array( 'class'=>'form-control', 'step'=>'any'))
+                .CHtml::numberField($myfield3,$_POST[$myfield3] ?? '',array( 'class'=>'form-control', 'step'=>'any'))
                 ."</div>
                 </div>";                
                 break;
@@ -221,13 +221,13 @@
                 <div class='mb-3 row'>
                 <label for='".$myfield2."' class='col-md-4 form-label'>".gT("Number of files greater than:")."</label>
                 <div class='col-md-6'>"
-                .CHtml::numberField($myfield2,isset($_POST[$myfield2])?$_POST[$myfield2]:'',array( 'class'=>'form-control', 'step'=>'any'))
+                .CHtml::numberField($myfield2,$_POST[$myfield2] ?? '',array( 'class'=>'form-control', 'step'=>'any'))
                 ."</div>
                 </div>
                 <div class='mb-3 row'>
                 <label for='N".$myfield3."' class='col-md-4 form-label'>".gT("Number of files less than:")."</label>
                 <div class='col-md-6'>"
-                .CHtml::numberField($myfield3,isset($_POST[$myfield3])?$_POST[$myfield3]:'',array( 'class'=>'form-control', 'step'=>'any'))
+                .CHtml::numberField($myfield3,$_POST[$myfield3] ?? '',array( 'class'=>'form-control', 'step'=>'any'))
                 ."</div>
                 </div>";                
                 break;
@@ -266,28 +266,14 @@
                 <div class='mb-3 row' style='margin-top:1em;'>
                 <label for='".$myfield3."' class='col-md-4 col-form-label smalltext'>".gT("Date equals:")."</label>
                 <div class='col-md-8'>";
-                Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
+                Yii::app()->getController()->widget('ext.DateTimePickerWidget.DateTimePicker', array(
                     'name' => $myfield3,
                     'id' => $myfield3,
-                    'value' => isset($_POST[$myfield3]) ? $_POST[$myfield3] : '',
+                    'value' => $_POST[$myfield3] ?? '',
                     'pluginOptions' => array(
-                        'format' => $dateformatdetails['jsdate'] . " HH:mm",
-                        'allowInputToggle' =>true,
+                        'format' => $dateformatdetails['jsdate'],
+                        'allowInputToggle' => true,
                         'showClear' => true,
-                        'tooltips' => array(
-                            'clear'=> gT('Clear selection'),
-                            'prevMonth'=> gT('Previous month'),
-                            'nextMonth'=> gT('Next month'),
-                            'selectYear'=> gT('Select year'),
-                            'prevYear'=> gT('Previous year'),
-                            'nextYear'=> gT('Next year'),
-                            'selectDecade'=> gT('Select decade'),
-                            'prevDecade'=> gT('Previous decade'),
-                            'nextDecade'=> gT('Next decade'),
-                            'prevCentury'=> gT('Previous century'),
-                            'nextCentury'=> gT('Next century'),
-                        'selectTime'=> gT('Select time')
-                        ),
                         'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
                     )
                 ));                
@@ -297,28 +283,14 @@
               <div class='mb-3 row'>
               <label for='".$myfield4."' class='col-md-4 col-form-label smalltext'>".gT("Date is >= :")."</label>
               <div class='col-md-8'>";
-              Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
+              Yii::app()->getController()->widget('ext.DateTimePickerWidget.DateTimePicker', array(
                   'name' => $myfield4,
                   'id' => $myfield4,
-                  'value' => isset($_POST[$myfield4]) ? $_POST[$myfield4] : '',
+                  'value' => $_POST[$myfield4] ?? '',
                   'pluginOptions' => array(
                       'format' => $dateformatdetails['jsdate'] . " HH:mm",
-                      'allowInputToggle' =>true,
+                      'allowInputToggle' => true,
                       'showClear' => true,
-                      'tooltips' => array(
-                          'clear'=> gT('Clear selection'),
-                          'prevMonth'=> gT('Previous month'),
-                          'nextMonth'=> gT('Next month'),
-                          'selectYear'=> gT('Select year'),
-                          'prevYear'=> gT('Previous year'),
-                          'nextYear'=> gT('Next year'),
-                          'selectDecade'=> gT('Select decade'),
-                          'prevDecade'=> gT('Previous decade'),
-                          'nextDecade'=> gT('Next decade'),
-                          'prevCentury'=> gT('Previous century'),
-                          'nextCentury'=> gT('Next century'),
-                      'selectTime'=> gT('Select time')
-                      ),
                       'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
                   )
               ));                
@@ -328,28 +300,14 @@
             <div class='mb-3 row'>
             <label for='".$myfield5."' class='col-md-4 col-form-label smalltext'>".gT("And/or Date is <= :")."</label>
             <div class='col-md-8'>";
-            Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
+            Yii::app()->getController()->widget('ext.DateTimePickerWidget.DateTimePicker', array(
                 'name' => $myfield5,
                 'id' => $myfield5,
-                'value' => isset($_POST[$myfield5]) ? $_POST[$myfield5] : '',
+                'value' => $_POST[$myfield5] ?? '',
                 'pluginOptions' => array(
                     'format' => $dateformatdetails['jsdate'] . " HH:mm",
-                    'allowInputToggle' =>true,
+                    'allowInputToggle' => true,
                     'showClear' => true,
-                    'tooltips' => array(
-                        'clear'=> gT('Clear selection'),
-                        'prevMonth'=> gT('Previous month'),
-                        'nextMonth'=> gT('Next month'),
-                        'selectYear'=> gT('Select year'),
-                        'prevYear'=> gT('Previous year'),
-                        'nextYear'=> gT('Next year'),
-                        'selectDecade'=> gT('Select decade'),
-                        'prevDecade'=> gT('Previous decade'),
-                        'nextDecade'=> gT('Next decade'),
-                        'prevCentury'=> gT('Previous century'),
-                        'nextCentury'=> gT('Next century'),
-                    'selectTime'=> gT('Select time')
-                    ),
                     'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
                 )
             ));                
@@ -449,7 +407,7 @@
                     $myfield2 = $myfield.$row[4];
                     echo "<!-- $myfield2 - ";
 
-                    if (isset($_POST[$myfield2])) {echo htmlspecialchars($_POST[$myfield2]);}
+                    if (isset($_POST[$myfield2])) {echo htmlspecialchars((string) $_POST[$myfield2]);}
 
                     echo " -->\n";
                     echo '<div class="statistics-responses-label-group ls-space padding bottom-5 top-15 ls-flex-item">';
@@ -459,7 +417,7 @@
                     if (isset($summary) && array_search($myfield2, $summary)!== FALSE) {echo " checked='checked'";}
 
                     echo " />&nbsp;"
-                    .$oStatisticsHelper::_showSpeaker($niceqtext." ".str_replace("'", "`", $row[15])." - # ".$flt[3])
+                    .$oStatisticsHelper::_showSpeaker($niceqtext." ".str_replace("'", "`", (string) $row[15])." - # ".$flt[3])
                     ."</div>\n"
                     ."\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple='multiple' class='form-select'>\n";
 
@@ -490,7 +448,7 @@
                     $myfield2 = $myfield . $row['title'];
                     echo "<!-- $myfield2 - ";
 
-                    if (isset($_POST[$myfield2])) {echo htmlspecialchars($_POST[$myfield2]);}
+                    if (isset($_POST[$myfield2])) {echo htmlspecialchars((string) $_POST[$myfield2]);}
 
                     echo " -->\n";
                     echo '<div class="statistics-responses-label-group ls-space padding bottom-5 top-15 ls-flex-item">';
@@ -500,7 +458,7 @@
                     if (isset($summary) && array_search($myfield2, $summary)!== FALSE) {echo " checked='checked'";}
 
                     echo " />&nbsp;"
-                    .$oStatisticsHelper::_showSpeaker($niceqtext." ".str_replace("'", "`", $row['question'])." - # ".$flt[3])
+                    .$oStatisticsHelper::_showSpeaker($niceqtext." ".str_replace("'", "`", (string) $row['question'])." - # ".$flt[3])
                     ."</div>\n"
                     ."\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row['title']}[]' multiple='multiple' class='form-select'>\n";
 
@@ -528,7 +486,7 @@
                     $myfield2 = $myfield . "$row[4]";
                     echo "<!-- $myfield2 - ";
 
-                    if (isset($_POST[$myfield2])) {echo htmlspecialchars($_POST[$myfield2]);}
+                    if (isset($_POST[$myfield2])) {echo htmlspecialchars((string) $_POST[$myfield2]);}
 
                     echo " -->\n";
                     echo '<div class="statistics-responses-label-group ls-space padding bottom-5 top-15 ls-flex-item">';
@@ -539,7 +497,7 @@
                     {echo " checked='checked'";}
 
                     echo " />&nbsp;"
-                    .$oStatisticsHelper::_showSpeaker($niceqtext." ".str_replace("'", "`", $row[15])." - # ".$flt[3])
+                    .$oStatisticsHelper::_showSpeaker($niceqtext." ".str_replace("'", "`", (string) $row[15])." - # ".$flt[3])
                     ."\n"
                     ."</div>\n"
                     ."\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple='multiple' class='form-select'>\n"
@@ -577,7 +535,7 @@
                     $myfield2 = $myfield . "$row[4]";
                     echo "<!-- $myfield2 - ";
 
-                    if (isset($_POST[$myfield2])) {echo htmlspecialchars($_POST[$myfield2]);}
+                    if (isset($_POST[$myfield2])) {echo htmlspecialchars((string) $_POST[$myfield2]);}
 
                     echo " -->\n";
                     echo '<div class="statistics-responses-label-group ls-space padding bottom-5 top-15 ls-flex-item">';
@@ -586,7 +544,7 @@
                     if (isset($summary) && array_search($myfield2, $summary)!== FALSE) {echo " checked='checked'";}
 
                     echo " />&nbsp;"
-                    .$oStatisticsHelper::_showSpeaker($niceqtext." ".str_replace("'", "`", $row[15])." - # ".$flt[3])
+                    .$oStatisticsHelper::_showSpeaker($niceqtext." ".str_replace("'", "`", (string) $row[15])." - # ".$flt[3])
                     ."\n"
                     ."</div>\n"
                     ."\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple='multiple'  class='form-select'>\n"
@@ -620,7 +578,7 @@
                     {
                         $myfield2 = "T".$myfield . $row['title'] . "_" . $frow['title'];
                         echo "<!-- $myfield2 - ";
-                        if (isset($_POST[$myfield2])) {echo htmlspecialchars($_POST[$myfield2]);}
+                        if (isset($_POST[$myfield2])) {echo htmlspecialchars((string) $_POST[$myfield2]);}
                         echo " -->\n";
                         echo "<input type='checkbox'  name='summary[]' value='$myfield2'";
                         if (isset($summary) && array_search($myfield2, $summary)!== FALSE) {echo " checked='checked'";}
@@ -628,7 +586,7 @@
                         .$oStatisticsHelper::_showSpeaker($niceqtext." ".str_replace("'", "`", $row['question']." [".$frow['question']."]")." - ".$row['title']."/".$frow['title'])
                         ."<br />\n";
                         echo "\t<span class='smalltext'>".gT("Responses containing").":</span><br />\n"
-                        .CHtml::textField($myfield2,isset($_POST[$myfield2])?$_POST[$myfield2]:'',array('class'=>'form-control') );
+                        .CHtml::textField($myfield2,$_POST[$myfield2] ?? '',array('class'=>'form-control') );
                         echo "<hr/>";
                         $counter2++;
                     }
@@ -640,30 +598,35 @@
                 //Get qidattributes for this question
                 echo '<h4 class="question-selector-title">'.$oStatisticsHelper::_showSpeaker($niceqtext).'</h4><br/>';
                 $qidattributes=QuestionAttribute::model()->getQuestionAttributes($flt[0]);
-                if (trim($qidattributes['multiflexible_max'])!='' && trim($qidattributes['multiflexible_min']) ==''){
-                    $maxvalue=$qidattributes['multiflexible_max'];
-                    $minvalue=1;
+                $minvalue = 1;
+                $maxvalue = 10;
+                if (trim((string) $qidattributes['multiflexible_max']) != '' && trim((string) $qidattributes['multiflexible_min']) == '') {
+                    $maxvalue = $qidattributes['multiflexible_max'];
+                    $minvalue = 1;
                 }
-                if (trim($qidattributes['multiflexible_min'])!='' && trim($qidattributes['multiflexible_max']) ==''){
-                    $minvalue=$qidattributes['multiflexible_min'];
-                    $maxvalue=$qidattributes['multiflexible_min'] + 10;
+                if (trim((string) $qidattributes['multiflexible_min']) != '' && trim((string) $qidattributes['multiflexible_max']) == '') {
+                    $minvalue = $qidattributes['multiflexible_min'];
+                    $maxvalue = $qidattributes['multiflexible_min'] + 10;
                 }
-                if (trim($qidattributes['multiflexible_min'])=='' && trim($qidattributes['multiflexible_max']) ==''){
-                    $minvalue=1;
-                    $maxvalue=10;
-                }
-                if (trim($qidattributes['multiflexible_min']) !='' && trim($qidattributes['multiflexible_max']) !=''){
-                    if($qidattributes['multiflexible_min'] < $qidattributes['multiflexible_max']){
-                        $minvalue=$qidattributes['multiflexible_min'];
-                        $maxvalue=$qidattributes['multiflexible_max'];
+                if (trim((string) $qidattributes['multiflexible_min']) != '' && trim((string) $qidattributes['multiflexible_max']) != '') {
+                    if ($qidattributes['multiflexible_min'] < $qidattributes['multiflexible_max']) {
+                        $minvalue = $qidattributes['multiflexible_min'];
+                        $maxvalue = $qidattributes['multiflexible_max'];
                     }
                 }
 
-                if (trim($qidattributes['multiflexible_step'])!='') {
-                    $stepvalue=$qidattributes['multiflexible_step'];
+                $stepvalue = (trim((string) $qidattributes['multiflexible_step']) != '' && $qidattributes['multiflexible_step'] > 0) ? $qidattributes['multiflexible_step'] : 1;
+
+                if ($qidattributes['reverse'] == 1) {
+                    $tmp = $minvalue;
+                    $minvalue = $maxvalue;
+                    $maxvalue = $tmp;
+                    $reverse = true;
+                    $stepvalue = -$stepvalue;
                 } else {
-                    $stepvalue=1;
+                    $reverse = false;
                 }
+
                 if ($qidattributes['multiflexible_checkbox']!=0)
                 {
                     $minvalue=0;
@@ -677,7 +640,7 @@
                     foreach ($fresult as $frow) {
                         $myfield2 = $myfield . $row['title'] . "_" . $frow['title'];
                         echo "<!-- MyField2:  $myfield2 - ";
-                        if (isset($_POST[$myfield2])) {echo htmlspecialchars($_POST[$myfield2]);}
+                        if (isset($_POST[$myfield2])) {echo htmlspecialchars((string) $_POST[$myfield2]);}
                         echo " -->\n";
                         echo '<div class="statistics-responses-label-group ls-space padding bottom-5 top-15 ls-flex-item">';
                         if ($counter2 == 4) {echo "\t</tr>\n\t<tr>\n"; $counter2=0;}
@@ -726,7 +689,7 @@
                     if (isset($summary) && array_search($myfield2, $summary)!== FALSE) {echo " checked='checked'";}
 
                     echo " />&nbsp;"
-                    .$oStatisticsHelper::_showSpeaker($niceqtext." ".str_replace("'", "`", $row['question'])." - # ".$flt[3])
+                    .$oStatisticsHelper::_showSpeaker($niceqtext." ".str_replace("'", "`", (string) $row['question'])." - # ".$flt[3])
                     ."</div>\n";
 
                     /*
@@ -793,7 +756,7 @@
                     $myfield3 = $myfield . $i;
                     echo "<!-- $myfield2 --> ";
                     echo '<div class="statistics-responses-label-group ls-space padding bottom-5 top-15 ls-flex-item">';
-                    if (isset($_POST[$myfield2])) {echo htmlspecialchars($_POST[$myfield2]);}
+                    if (isset($_POST[$myfield2])) {echo htmlspecialchars((string) $_POST[$myfield2]);}
 
                     echo "<input type='checkbox'  name='summary[]' value='$myfield2'";
 
@@ -801,7 +764,7 @@
                     if (isset($summary) && array_search($myfield2, $summary) !== FALSE) {echo " checked='checked'";}
 
                     echo " />&nbsp;"
-                    .$oStatisticsHelper::_showSpeaker($niceqtext." ".str_replace("'", "`", $row->answerl10ns[$language]->answer)." - # ".$flt[3])
+                    .$oStatisticsHelper::_showSpeaker($niceqtext." ".str_replace("'", "`", (string) $row->answerl10ns[$language]->answer)." - # ".$flt[3])
                     ."</div>\n"
                     ."\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$i}[]' multiple='multiple' class='form-select'>\n";
 
@@ -878,7 +841,7 @@
                     }
 
                     echo " />&nbsp;"
-                    .$oStatisticsHelper::_showSpeaker($niceqtext." [".str_replace("'", "`", $row[15])."] - ".gT("Label").": ".$labeltitle)
+                    .$oStatisticsHelper::_showSpeaker($niceqtext." [".str_replace("'", "`", (string) $row[15])."] - ".gT("Label").": ".$labeltitle)
                     ."</div>\n";
 
                     /* get labels
@@ -948,7 +911,7 @@
                     }
 
                     echo " />&nbsp;"
-                    .$oStatisticsHelper::_showSpeaker($niceqtext." [".str_replace("'", "`", $row[15])."] - ".gT("Label").": ".$labeltitle2)
+                    .$oStatisticsHelper::_showSpeaker($niceqtext." [".str_replace("'", "`", (string) $row[15])."] - ".gT("Label").": ".$labeltitle2)
                     ."</div>\n";
                     $fresult = Answer::model()->getQuestionsForStatistics('*', "qid='$flt[0]' AND language = '$language' AND scale_id = 1", 'sortorder, code');
 

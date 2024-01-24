@@ -1,7 +1,9 @@
 <?php
 /**
-* @var User $oUser
-*/
+ * TODO: unused old user editing page not inside modal, see application/views/userManagement/partial/addedituser.php
+ *
+ * @var User $oUser
+ */
 // DO NOT REMOVE This is for automated testing to validate we see that page
 echo viewHelper::getViewTestTag('modifyUser');
 ?>
@@ -11,7 +13,7 @@ echo viewHelper::getViewTestTag('modifyUser');
 </div>
 
 
-<div class="container container-center">
+<div class="container">
     <div class="row" style="margin-bottom: 100px">
       <div class="col-12 content-right">
         <?php $form=$this->beginWidget('TbActiveForm', array(

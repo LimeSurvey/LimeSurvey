@@ -3,7 +3,7 @@
         {{ gT("Before you start, please prove you are human.") }}
     {% endblock %}
 </div>
-<div class="{{ aSurveyInfo.class.maincoldivdivb }} well container-fluid" {{ aSurveyInfo.attr.maincoldivdivb }}>
+<div class="{{ aSurveyInfo.class.maincoldivdivb }} card card-body bg-light container-fluid mb-3" {{ aSurveyInfo.attr.maincoldivdivb }}>
 
     {% block description %}
         
@@ -48,8 +48,8 @@
                 <!-- Doesn't seems aria capable -->
                 <label class='{{ aSurveyInfo.class.maincolformdivblabel }} control-label col-md-4' {{ aSurveyInfo.attr.maincolformdivblabel }} >
                     {{ gT("Please solve the following equation:") }}
-                    <small class="{{ aSurveyInfo.class.maincolformdivblabelsmall }} text-danger asterisk fa fa-asterisk pull-left small"  {{ aSurveyInfo.attr.maincolformdivblabelsmall }} ></small>
-                    <span  class="{{ aSurveyInfo.class.maincolformdivblabelspan }} sr-only text-danger asterisk" {{ aSurveyInfo.attr.maincolformdivblabelspan }}>
+                    <small class="{{ aSurveyInfo.class.maincolformdivblabelsmall }} text-danger asterisk fa fa-asterisk float-start small"  {{ aSurveyInfo.attr.maincolformdivblabelsmall }} ></small>
+                    <span  class="{{ aSurveyInfo.class.maincolformdivblabelspan }} visually-hidden text-danger asterisk" {{ aSurveyInfo.attr.maincolformdivblabelspan }}>
                         ( {{ gT("Mandatory") }} )
                     <span>
                 </label>
@@ -57,7 +57,7 @@
                     <div class='{{ aSurveyInfo.class.maincolformdivbdivdivdiv }}' {{ aSurveyInfo.attr.maincolformdivbdivdivdiv }} >
                         {# see: LS_Twig_Extension::renderCaptcha() in application/core/LS_Twig_Extension.php #}
                         {{ renderCaptcha().renderOut() }}
-                        <a href="#" class="btn btn-sm btn-outline-secondary" id="reloadCaptcha" title="{{ gT("Reload captcha") }}" data-toggle="captcha"><i class="fa fa-refresh"></i></a>
+                        <a href="#" class="btn btn-sm btn-outline-secondary" id="reloadCaptcha" title="{{ gT("Reload captcha") }}" data-bs-toggle="captcha"><i class="fa fa-refresh"></i></a>
                     </div>
                 </div>
                 <div class='{{ aSurveyInfo.class.maincolformdivbdiv }} col-md-6' {{ aSurveyInfo.attr.maincolformdivbdiv }}>

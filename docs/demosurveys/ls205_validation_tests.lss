@@ -64,7 +64,7 @@
    <row>
     <qid><![CDATA[132]]></qid>
     <code><![CDATA[sq1]]></code>
-    <answer><![CDATA[First sub-question]]></answer>
+    <answer><![CDATA[First subquestion]]></answer>
     <sortorder><![CDATA[1]]></sortorder>
     <assessment_value><![CDATA[1]]></assessment_value>
     <language><![CDATA[en]]></language>
@@ -73,7 +73,7 @@
    <row>
     <qid><![CDATA[132]]></qid>
     <code><![CDATA[sq2]]></code>
-    <answer><![CDATA[Second sub-question]]></answer>
+    <answer><![CDATA[Second subquestion]]></answer>
     <sortorder><![CDATA[2]]></sortorder>
     <assessment_value><![CDATA[1]]></assessment_value>
     <language><![CDATA[en]]></language>
@@ -82,7 +82,7 @@
    <row>
     <qid><![CDATA[132]]></qid>
     <code><![CDATA[sq3]]></code>
-    <answer><![CDATA[Third sub-question]]></answer>
+    <answer><![CDATA[Third subquestion]]></answer>
     <sortorder><![CDATA[3]]></sortorder>
     <assessment_value><![CDATA[1]]></assessment_value>
     <language><![CDATA[en]]></language>
@@ -91,7 +91,7 @@
    <row>
     <qid><![CDATA[132]]></qid>
     <code><![CDATA[sq4]]></code>
-    <answer><![CDATA[Fourth sub-question]]></answer>
+    <answer><![CDATA[Fourth subquestion]]></answer>
     <sortorder><![CDATA[4]]></sortorder>
     <assessment_value><![CDATA[1]]></assessment_value>
     <language><![CDATA[en]]></language>
@@ -100,7 +100,7 @@
    <row>
     <qid><![CDATA[132]]></qid>
     <code><![CDATA[sq5]]></code>
-    <answer><![CDATA[Fifth sub-question]]></answer>
+    <answer><![CDATA[Fifth subquestion]]></answer>
     <sortorder><![CDATA[5]]></sortorder>
     <assessment_value><![CDATA[1]]></assessment_value>
     <language><![CDATA[en]]></language>
@@ -127,7 +127,7 @@
    <row>
     <qid><![CDATA[102]]></qid>
     <code><![CDATA[sq1]]></code>
-    <answer><![CDATA[First sub-question]]></answer>
+    <answer><![CDATA[First subquestion]]></answer>
     <sortorder><![CDATA[1]]></sortorder>
     <assessment_value><![CDATA[1]]></assessment_value>
     <language><![CDATA[en]]></language>
@@ -136,7 +136,7 @@
    <row>
     <qid><![CDATA[102]]></qid>
     <code><![CDATA[sq2]]></code>
-    <answer><![CDATA[Second sub-question]]></answer>
+    <answer><![CDATA[Second subquestion]]></answer>
     <sortorder><![CDATA[2]]></sortorder>
     <assessment_value><![CDATA[1]]></assessment_value>
     <language><![CDATA[en]]></language>
@@ -145,7 +145,7 @@
    <row>
     <qid><![CDATA[102]]></qid>
     <code><![CDATA[sq3]]></code>
-    <answer><![CDATA[Third sub-question]]></answer>
+    <answer><![CDATA[Third subquestion]]></answer>
     <sortorder><![CDATA[3]]></sortorder>
     <assessment_value><![CDATA[1]]></assessment_value>
     <language><![CDATA[en]]></language>
@@ -154,7 +154,7 @@
    <row>
     <qid><![CDATA[102]]></qid>
     <code><![CDATA[sq4]]></code>
-    <answer><![CDATA[Fourth sub-question]]></answer>
+    <answer><![CDATA[Fourth subquestion]]></answer>
     <sortorder><![CDATA[4]]></sortorder>
     <assessment_value><![CDATA[1]]></assessment_value>
     <language><![CDATA[en]]></language>
@@ -163,7 +163,7 @@
    <row>
     <qid><![CDATA[102]]></qid>
     <code><![CDATA[sq5]]></code>
-    <answer><![CDATA[Fifth sub-question]]></answer>
+    <answer><![CDATA[Fifth subquestion]]></answer>
     <sortorder><![CDATA[5]]></sortorder>
     <assessment_value><![CDATA[1]]></assessment_value>
     <language><![CDATA[en]]></language>
@@ -960,7 +960,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[9]]></gid>
     <type><![CDATA[P]]></type>
     <title><![CDATA[sq1]]></title>
-    <question><![CDATA[First sub-question]]></question>
+    <question><![CDATA[First subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -978,7 +978,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[9]]></gid>
     <type><![CDATA[;]]></type>
     <title><![CDATA[sq1]]></title>
-    <question><![CDATA[First sub-question]]></question>
+    <question><![CDATA[First subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -1014,7 +1014,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[9]]></gid>
     <type><![CDATA[;]]></type>
     <title><![CDATA[sq2]]></title>
-    <question><![CDATA[Second sub-question]]></question>
+    <question><![CDATA[Second subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -1050,7 +1050,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[9]]></gid>
     <type><![CDATA[;]]></type>
     <title><![CDATA[sq3]]></title>
-    <question><![CDATA[Third sub-question]]></question>
+    <question><![CDATA[Third subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -1104,7 +1104,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[9]]></gid>
     <type><![CDATA[;]]></type>
     <title><![CDATA[sq4]]></title>
-    <question><![CDATA[Fourth sub-question]]></question>
+    <question><![CDATA[Fourth subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -1122,7 +1122,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[9]]></gid>
     <type><![CDATA[;]]></type>
     <title><![CDATA[sq5]]></title>
-    <question><![CDATA[Fifth sub-question]]></question>
+    <question><![CDATA[Fifth subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -1140,7 +1140,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[9]]></gid>
     <type><![CDATA[K]]></type>
     <title><![CDATA[sq1]]></title>
-    <question><![CDATA[First sub-question]]></question>
+    <question><![CDATA[First subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -1158,7 +1158,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[9]]></gid>
     <type><![CDATA[:]]></type>
     <title><![CDATA[sq1]]></title>
-    <question><![CDATA[First sub-question]]></question>
+    <question><![CDATA[First subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -1176,7 +1176,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[9]]></gid>
     <type><![CDATA[K]]></type>
     <title><![CDATA[sq1]]></title>
-    <question><![CDATA[First sub-question]]></question>
+    <question><![CDATA[First subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -1194,7 +1194,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[9]]></gid>
     <type><![CDATA[K]]></type>
     <title><![CDATA[sq1]]></title>
-    <question><![CDATA[First sub-question]]></question>
+    <question><![CDATA[First subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -1212,7 +1212,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[9]]></gid>
     <type><![CDATA[K]]></type>
     <title><![CDATA[sq1]]></title>
-    <question><![CDATA[First sub-question]]></question>
+    <question><![CDATA[First subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -1248,7 +1248,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[9]]></gid>
     <type><![CDATA[K]]></type>
     <title><![CDATA[sq2]]></title>
-    <question><![CDATA[Second sub-question]]></question>
+    <question><![CDATA[Second subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -1266,7 +1266,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[9]]></gid>
     <type><![CDATA[P]]></type>
     <title><![CDATA[sq2]]></title>
-    <question><![CDATA[Second sub-question]]></question>
+    <question><![CDATA[Second subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -1284,7 +1284,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[9]]></gid>
     <type><![CDATA[K]]></type>
     <title><![CDATA[sq2]]></title>
-    <question><![CDATA[Second sub-question]]></question>
+    <question><![CDATA[Second subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -1302,7 +1302,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[9]]></gid>
     <type><![CDATA[K]]></type>
     <title><![CDATA[sq2]]></title>
-    <question><![CDATA[Second sub-question]]></question>
+    <question><![CDATA[Second subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -1320,7 +1320,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[9]]></gid>
     <type><![CDATA[K]]></type>
     <title><![CDATA[sq2]]></title>
-    <question><![CDATA[Second sub-question]]></question>
+    <question><![CDATA[Second subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -1338,7 +1338,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[9]]></gid>
     <type><![CDATA[:]]></type>
     <title><![CDATA[sq2]]></title>
-    <question><![CDATA[Second sub-question]]></question>
+    <question><![CDATA[Second subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -1374,7 +1374,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[9]]></gid>
     <type><![CDATA[M]]></type>
     <title><![CDATA[sq1]]></title>
-    <question><![CDATA[First sub-question]]></question>
+    <question><![CDATA[First subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -1392,7 +1392,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[9]]></gid>
     <type><![CDATA[K]]></type>
     <title><![CDATA[sq3]]></title>
-    <question><![CDATA[Third sub-question]]></question>
+    <question><![CDATA[Third subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -1410,7 +1410,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[9]]></gid>
     <type><![CDATA[:]]></type>
     <title><![CDATA[sq3]]></title>
-    <question><![CDATA[Third sub-question]]></question>
+    <question><![CDATA[Third subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -1428,7 +1428,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[9]]></gid>
     <type><![CDATA[K]]></type>
     <title><![CDATA[sq3]]></title>
-    <question><![CDATA[Third sub-question]]></question>
+    <question><![CDATA[Third subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -1446,7 +1446,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[9]]></gid>
     <type><![CDATA[K]]></type>
     <title><![CDATA[sq3]]></title>
-    <question><![CDATA[Third sub-question]]></question>
+    <question><![CDATA[Third subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -1464,7 +1464,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[9]]></gid>
     <type><![CDATA[K]]></type>
     <title><![CDATA[sq3]]></title>
-    <question><![CDATA[Third sub-question]]></question>
+    <question><![CDATA[Third subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -1482,7 +1482,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[9]]></gid>
     <type><![CDATA[P]]></type>
     <title><![CDATA[sq3]]></title>
-    <question><![CDATA[Third sub-question]]></question>
+    <question><![CDATA[Third subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -1500,7 +1500,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[9]]></gid>
     <type><![CDATA[:]]></type>
     <title><![CDATA[sq4]]></title>
-    <question><![CDATA[Fourth sub-question]]></question>
+    <question><![CDATA[Fourth subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -1518,7 +1518,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[9]]></gid>
     <type><![CDATA[K]]></type>
     <title><![CDATA[sq4]]></title>
-    <question><![CDATA[Fourth sub-question]]></question>
+    <question><![CDATA[Fourth subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -1536,7 +1536,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[9]]></gid>
     <type><![CDATA[K]]></type>
     <title><![CDATA[sq4]]></title>
-    <question><![CDATA[Fourth sub-question]]></question>
+    <question><![CDATA[Fourth subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -1554,7 +1554,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[9]]></gid>
     <type><![CDATA[K]]></type>
     <title><![CDATA[sq4]]></title>
-    <question><![CDATA[Fourth sub-question]]></question>
+    <question><![CDATA[Fourth subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -1572,7 +1572,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[9]]></gid>
     <type><![CDATA[K]]></type>
     <title><![CDATA[sq4]]></title>
-    <question><![CDATA[Fourth sub-question]]></question>
+    <question><![CDATA[Fourth subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -1590,7 +1590,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[9]]></gid>
     <type><![CDATA[P]]></type>
     <title><![CDATA[sq4]]></title>
-    <question><![CDATA[Fourth sub-question]]></question>
+    <question><![CDATA[Fourth subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -1608,7 +1608,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[9]]></gid>
     <type><![CDATA[K]]></type>
     <title><![CDATA[sq5]]></title>
-    <question><![CDATA[Fifth sub-question]]></question>
+    <question><![CDATA[Fifth subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -1626,7 +1626,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[9]]></gid>
     <type><![CDATA[:]]></type>
     <title><![CDATA[sq5]]></title>
-    <question><![CDATA[Fifth sub-question]]></question>
+    <question><![CDATA[Fifth subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -1644,7 +1644,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[9]]></gid>
     <type><![CDATA[K]]></type>
     <title><![CDATA[sq5]]></title>
-    <question><![CDATA[Fifth sub-question]]></question>
+    <question><![CDATA[Fifth subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -1662,7 +1662,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[9]]></gid>
     <type><![CDATA[K]]></type>
     <title><![CDATA[sq5]]></title>
-    <question><![CDATA[Fifth sub-question]]></question>
+    <question><![CDATA[Fifth subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -1680,7 +1680,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[9]]></gid>
     <type><![CDATA[K]]></type>
     <title><![CDATA[sq5]]></title>
-    <question><![CDATA[Fifth sub-question]]></question>
+    <question><![CDATA[Fifth subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -1698,7 +1698,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[9]]></gid>
     <type><![CDATA[P]]></type>
     <title><![CDATA[sq5]]></title>
-    <question><![CDATA[Fifth sub-question]]></question>
+    <question><![CDATA[Fifth subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -1716,7 +1716,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[9]]></gid>
     <type><![CDATA[M]]></type>
     <title><![CDATA[sq2]]></title>
-    <question><![CDATA[Second sub-question]]></question>
+    <question><![CDATA[Second subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -1734,7 +1734,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[9]]></gid>
     <type><![CDATA[M]]></type>
     <title><![CDATA[sq3]]></title>
-    <question><![CDATA[Third sub-question]]></question>
+    <question><![CDATA[Third subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -1752,7 +1752,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[9]]></gid>
     <type><![CDATA[M]]></type>
     <title><![CDATA[sq4]]></title>
-    <question><![CDATA[Fourth sub-question]]></question>
+    <question><![CDATA[Fourth subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -1770,7 +1770,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[9]]></gid>
     <type><![CDATA[M]]></type>
     <title><![CDATA[sq5]]></title>
-    <question><![CDATA[Fifth sub-question]]></question>
+    <question><![CDATA[Fifth subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -1788,7 +1788,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[7]]></gid>
     <type><![CDATA[M]]></type>
     <title><![CDATA[sq1]]></title>
-    <question><![CDATA[First sub-question]]></question>
+    <question><![CDATA[First subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -1806,7 +1806,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[7]]></gid>
     <type><![CDATA[M]]></type>
     <title><![CDATA[sq2]]></title>
-    <question><![CDATA[Second sub-question]]></question>
+    <question><![CDATA[Second subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -1824,7 +1824,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[7]]></gid>
     <type><![CDATA[M]]></type>
     <title><![CDATA[sq3]]></title>
-    <question><![CDATA[Third sub-question]]></question>
+    <question><![CDATA[Third subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -1842,7 +1842,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[7]]></gid>
     <type><![CDATA[M]]></type>
     <title><![CDATA[sq4]]></title>
-    <question><![CDATA[Fourth sub-question]]></question>
+    <question><![CDATA[Fourth subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -1860,7 +1860,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[7]]></gid>
     <type><![CDATA[M]]></type>
     <title><![CDATA[sq5]]></title>
-    <question><![CDATA[Fifth sub-question]]></question>
+    <question><![CDATA[Fifth subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -1878,7 +1878,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[9]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[sq1]]></title>
-    <question><![CDATA[First sub-question]]></question>
+    <question><![CDATA[First subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -1896,7 +1896,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[9]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[sq2]]></title>
-    <question><![CDATA[Second sub-question]]></question>
+    <question><![CDATA[Second subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -1914,7 +1914,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[9]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[sq3]]></title>
-    <question><![CDATA[Third sub-question]]></question>
+    <question><![CDATA[Third subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -1932,7 +1932,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[9]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[sq4]]></title>
-    <question><![CDATA[Fourth sub-question]]></question>
+    <question><![CDATA[Fourth subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -1950,7 +1950,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[9]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[sq5]]></title>
-    <question><![CDATA[Fifth sub-question]]></question>
+    <question><![CDATA[Fifth subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -1968,7 +1968,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[10]]></gid>
     <type><![CDATA[:]]></type>
     <title><![CDATA[sq1]]></title>
-    <question><![CDATA[First sub-question]]></question>
+    <question><![CDATA[First subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -1986,7 +1986,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[10]]></gid>
     <type><![CDATA[;]]></type>
     <title><![CDATA[sq1]]></title>
-    <question><![CDATA[First sub-question]]></question>
+    <question><![CDATA[First subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -2040,7 +2040,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[10]]></gid>
     <type><![CDATA[P]]></type>
     <title><![CDATA[sq1]]></title>
-    <question><![CDATA[First sub-question]]></question>
+    <question><![CDATA[First subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -2058,7 +2058,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[10]]></gid>
     <type><![CDATA[:]]></type>
     <title><![CDATA[sq2]]></title>
-    <question><![CDATA[Second sub-question]]></question>
+    <question><![CDATA[Second subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -2076,7 +2076,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[10]]></gid>
     <type><![CDATA[;]]></type>
     <title><![CDATA[sq2]]></title>
-    <question><![CDATA[Second sub-question]]></question>
+    <question><![CDATA[Second subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -2130,7 +2130,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[10]]></gid>
     <type><![CDATA[:]]></type>
     <title><![CDATA[sq3]]></title>
-    <question><![CDATA[Third sub-question]]></question>
+    <question><![CDATA[Third subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -2148,7 +2148,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[10]]></gid>
     <type><![CDATA[;]]></type>
     <title><![CDATA[sq3]]></title>
-    <question><![CDATA[Third sub-question]]></question>
+    <question><![CDATA[Third subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -2202,7 +2202,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[10]]></gid>
     <type><![CDATA[P]]></type>
     <title><![CDATA[sq2]]></title>
-    <question><![CDATA[Second sub-question]]></question>
+    <question><![CDATA[Second subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -2220,7 +2220,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[10]]></gid>
     <type><![CDATA[:]]></type>
     <title><![CDATA[sq4]]></title>
-    <question><![CDATA[Fourth sub-question]]></question>
+    <question><![CDATA[Fourth subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -2238,7 +2238,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[10]]></gid>
     <type><![CDATA[;]]></type>
     <title><![CDATA[sq4]]></title>
-    <question><![CDATA[Fourth sub-question]]></question>
+    <question><![CDATA[Fourth subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -2256,7 +2256,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[10]]></gid>
     <type><![CDATA[M]]></type>
     <title><![CDATA[sq1]]></title>
-    <question><![CDATA[First sub-question]]></question>
+    <question><![CDATA[First subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -2274,7 +2274,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[10]]></gid>
     <type><![CDATA[:]]></type>
     <title><![CDATA[sq5]]></title>
-    <question><![CDATA[Fifth sub-question]]></question>
+    <question><![CDATA[Fifth subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -2292,7 +2292,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[10]]></gid>
     <type><![CDATA[;]]></type>
     <title><![CDATA[sq5]]></title>
-    <question><![CDATA[Fifth sub-question]]></question>
+    <question><![CDATA[Fifth subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -2310,7 +2310,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[10]]></gid>
     <type><![CDATA[P]]></type>
     <title><![CDATA[sq3]]></title>
-    <question><![CDATA[Third sub-question]]></question>
+    <question><![CDATA[Third subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -2328,7 +2328,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[10]]></gid>
     <type><![CDATA[P]]></type>
     <title><![CDATA[sq4]]></title>
-    <question><![CDATA[Fourth sub-question]]></question>
+    <question><![CDATA[Fourth subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -2346,7 +2346,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[10]]></gid>
     <type><![CDATA[P]]></type>
     <title><![CDATA[sq5]]></title>
-    <question><![CDATA[Fifth sub-question]]></question>
+    <question><![CDATA[Fifth subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -2364,7 +2364,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[10]]></gid>
     <type><![CDATA[M]]></type>
     <title><![CDATA[sq2]]></title>
-    <question><![CDATA[Second sub-question]]></question>
+    <question><![CDATA[Second subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -2382,7 +2382,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[10]]></gid>
     <type><![CDATA[M]]></type>
     <title><![CDATA[sq3]]></title>
-    <question><![CDATA[Third sub-question]]></question>
+    <question><![CDATA[Third subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -2400,7 +2400,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[10]]></gid>
     <type><![CDATA[M]]></type>
     <title><![CDATA[sq4]]></title>
-    <question><![CDATA[Fourth sub-question]]></question>
+    <question><![CDATA[Fourth subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -2418,7 +2418,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[10]]></gid>
     <type><![CDATA[M]]></type>
     <title><![CDATA[sq5]]></title>
-    <question><![CDATA[Fifth sub-question]]></question>
+    <question><![CDATA[Fifth subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -2436,7 +2436,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[10]]></gid>
     <type><![CDATA[F]]></type>
     <title><![CDATA[sq1]]></title>
-    <question><![CDATA[First sub-question]]></question>
+    <question><![CDATA[First subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -2454,7 +2454,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[10]]></gid>
     <type><![CDATA[E]]></type>
     <title><![CDATA[sq1]]></title>
-    <question><![CDATA[First sub-question]]></question>
+    <question><![CDATA[First subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -2472,7 +2472,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[10]]></gid>
     <type><![CDATA[F]]></type>
     <title><![CDATA[sq2]]></title>
-    <question><![CDATA[Second sub-question]]></question>
+    <question><![CDATA[Second subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -2490,7 +2490,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[10]]></gid>
     <type><![CDATA[C]]></type>
     <title><![CDATA[sq1]]></title>
-    <question><![CDATA[First sub-question]]></question>
+    <question><![CDATA[First subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -2508,7 +2508,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[10]]></gid>
     <type><![CDATA[F]]></type>
     <title><![CDATA[sq3]]></title>
-    <question><![CDATA[Third sub-question]]></question>
+    <question><![CDATA[Third subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -2526,7 +2526,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[10]]></gid>
     <type><![CDATA[E]]></type>
     <title><![CDATA[sq2]]></title>
-    <question><![CDATA[Second sub-question]]></question>
+    <question><![CDATA[Second subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -2544,7 +2544,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[10]]></gid>
     <type><![CDATA[F]]></type>
     <title><![CDATA[sq4]]></title>
-    <question><![CDATA[Fourth sub-question]]></question>
+    <question><![CDATA[Fourth subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -2562,7 +2562,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[10]]></gid>
     <type><![CDATA[F]]></type>
     <title><![CDATA[sq5]]></title>
-    <question><![CDATA[Fifth sub-question]]></question>
+    <question><![CDATA[Fifth subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -2580,7 +2580,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[10]]></gid>
     <type><![CDATA[E]]></type>
     <title><![CDATA[sq3]]></title>
-    <question><![CDATA[Third sub-question]]></question>
+    <question><![CDATA[Third subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -2598,7 +2598,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[10]]></gid>
     <type><![CDATA[C]]></type>
     <title><![CDATA[sq2]]></title>
-    <question><![CDATA[Second sub-question]]></question>
+    <question><![CDATA[Second subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -2616,7 +2616,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[10]]></gid>
     <type><![CDATA[E]]></type>
     <title><![CDATA[sq4]]></title>
-    <question><![CDATA[Fourth sub-question]]></question>
+    <question><![CDATA[Fourth subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -2634,7 +2634,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[10]]></gid>
     <type><![CDATA[E]]></type>
     <title><![CDATA[sq5]]></title>
-    <question><![CDATA[Fifth sub-question]]></question>
+    <question><![CDATA[Fifth subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -2652,7 +2652,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[10]]></gid>
     <type><![CDATA[C]]></type>
     <title><![CDATA[sq3]]></title>
-    <question><![CDATA[Third sub-question]]></question>
+    <question><![CDATA[Third subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -2670,7 +2670,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[10]]></gid>
     <type><![CDATA[C]]></type>
     <title><![CDATA[sq4]]></title>
-    <question><![CDATA[Fourth sub-question]]></question>
+    <question><![CDATA[Fourth subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -2688,7 +2688,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[10]]></gid>
     <type><![CDATA[C]]></type>
     <title><![CDATA[sq5]]></title>
-    <question><![CDATA[Fifth sub-question]]></question>
+    <question><![CDATA[Fifth subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -2706,7 +2706,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[10]]></gid>
     <type><![CDATA[B]]></type>
     <title><![CDATA[sq1]]></title>
-    <question><![CDATA[First sub-question]]></question>
+    <question><![CDATA[First subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -2724,7 +2724,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[10]]></gid>
     <type><![CDATA[1]]></type>
     <title><![CDATA[sq1]]></title>
-    <question><![CDATA[First sub-question]]></question>
+    <question><![CDATA[First subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -2742,7 +2742,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[10]]></gid>
     <type><![CDATA[B]]></type>
     <title><![CDATA[sq2]]></title>
-    <question><![CDATA[Second sub-question]]></question>
+    <question><![CDATA[Second subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -2760,7 +2760,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[10]]></gid>
     <type><![CDATA[B]]></type>
     <title><![CDATA[sq3]]></title>
-    <question><![CDATA[Third sub-question]]></question>
+    <question><![CDATA[Third subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -2778,7 +2778,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[10]]></gid>
     <type><![CDATA[1]]></type>
     <title><![CDATA[sq2]]></title>
-    <question><![CDATA[Second sub-question]]></question>
+    <question><![CDATA[Second subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -2796,7 +2796,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[10]]></gid>
     <type><![CDATA[B]]></type>
     <title><![CDATA[sq4]]></title>
-    <question><![CDATA[Fourth sub-question]]></question>
+    <question><![CDATA[Fourth subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -2814,7 +2814,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[10]]></gid>
     <type><![CDATA[A]]></type>
     <title><![CDATA[sq1]]></title>
-    <question><![CDATA[First sub-question]]></question>
+    <question><![CDATA[First subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -2832,7 +2832,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[10]]></gid>
     <type><![CDATA[B]]></type>
     <title><![CDATA[sq5]]></title>
-    <question><![CDATA[Fifth sub-question]]></question>
+    <question><![CDATA[Fifth subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -2850,7 +2850,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[10]]></gid>
     <type><![CDATA[1]]></type>
     <title><![CDATA[sq3]]></title>
-    <question><![CDATA[Third sub-question]]></question>
+    <question><![CDATA[Third subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -2868,7 +2868,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[10]]></gid>
     <type><![CDATA[1]]></type>
     <title><![CDATA[sq4]]></title>
-    <question><![CDATA[Fourth sub-question]]></question>
+    <question><![CDATA[Fourth subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -2886,7 +2886,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[10]]></gid>
     <type><![CDATA[A]]></type>
     <title><![CDATA[sq2]]></title>
-    <question><![CDATA[Second sub-question]]></question>
+    <question><![CDATA[Second subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -2904,7 +2904,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[10]]></gid>
     <type><![CDATA[1]]></type>
     <title><![CDATA[sq5]]></title>
-    <question><![CDATA[Fifth sub-question]]></question>
+    <question><![CDATA[Fifth subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -2922,7 +2922,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[10]]></gid>
     <type><![CDATA[A]]></type>
     <title><![CDATA[sq3]]></title>
-    <question><![CDATA[Third sub-question]]></question>
+    <question><![CDATA[Third subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -2940,7 +2940,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[10]]></gid>
     <type><![CDATA[A]]></type>
     <title><![CDATA[sq4]]></title>
-    <question><![CDATA[Fourth sub-question]]></question>
+    <question><![CDATA[Fourth subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -2958,7 +2958,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[10]]></gid>
     <type><![CDATA[A]]></type>
     <title><![CDATA[sq5]]></title>
-    <question><![CDATA[Fifth sub-question]]></question>
+    <question><![CDATA[Fifth subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -2976,7 +2976,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[10]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[sq1]]></title>
-    <question><![CDATA[First sub-question]]></question>
+    <question><![CDATA[First subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -2994,7 +2994,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[10]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[sq2]]></title>
-    <question><![CDATA[Second sub-question]]></question>
+    <question><![CDATA[Second subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -3012,7 +3012,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[10]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[sq3]]></title>
-    <question><![CDATA[Third sub-question]]></question>
+    <question><![CDATA[Third subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -3030,7 +3030,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[10]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[sq4]]></title>
-    <question><![CDATA[Fourth sub-question]]></question>
+    <question><![CDATA[Fourth subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -3048,7 +3048,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[10]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[sq5]]></title>
-    <question><![CDATA[Fifth sub-question]]></question>
+    <question><![CDATA[Fifth subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -3066,7 +3066,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[10]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[sq1]]></title>
-    <question><![CDATA[First sub-question]]></question>
+    <question><![CDATA[First subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -3084,7 +3084,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[10]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[sq2]]></title>
-    <question><![CDATA[Second sub-question]]></question>
+    <question><![CDATA[Second subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -3102,7 +3102,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[10]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[sq3]]></title>
-    <question><![CDATA[Third sub-question]]></question>
+    <question><![CDATA[Third subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -3120,7 +3120,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[10]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[sq4]]></title>
-    <question><![CDATA[Fourth sub-question]]></question>
+    <question><![CDATA[Fourth subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -3138,7 +3138,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <gid><![CDATA[10]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[sq5]]></title>
-    <question><![CDATA[Fifth sub-question]]></question>
+    <question><![CDATA[Fifth subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -6359,7 +6359,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <surveyls_language><![CDATA[en]]></surveyls_language>
     <surveyls_title><![CDATA[LS2 Validation Samples]]></surveyls_title>
     <surveyls_description><![CDATA[This demonstrates how Expression Manager can support dynamic validation.&nbsp; It also shows how you can mix and match array_filter, min/max values, and regular-ex<x>pression-based validation.<br/>
-It also shows how color coding is used to show whether each question and sub-question is  valid.]]></surveyls_description>
+It also shows how color coding is used to show whether each question and subquestion is  valid.]]></surveyls_description>
     <surveyls_welcometext/>
     <surveyls_endtext/>
     <surveyls_url/>

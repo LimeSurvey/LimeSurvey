@@ -5,7 +5,7 @@
  */
 ?>
 <!DOCTYPE html>
-<html lang="<?php echo str_replace('-informal','', htmlspecialchars($adminlang)); ?>"<?php echo $languageRTL;?> >
+<html lang="<?php echo str_replace('-informal','', htmlspecialchars((string) $adminlang)); ?>"<?php echo $languageRTL;?> >
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -61,15 +61,15 @@
     </div>
 <!-- Loading wrapper -->
 <div id='ls-loading'>
-    <span id='ls-loading-spinner' class='fa fa-spinner fa-spin fa-4x'></span>
-    <span class='sr-only'><?php eT('Loading...'); ?></span>
+    <span id='ls-loading-spinner' class='ri-loader-2-fill remix-spin remix-4x'></span>
+    <span class='visually-hidden'><?php eT('Loading...'); ?></span>
 </div>
 
 <?php $this->widget('ext.FlashMessage.FlashMessage'); ?>
 
 <?php App()->getClientScript()->registerScript("HeaderVariables",
 'var frameSrc = "/login";
-'.(isset($formatdata) ? 
+'.(isset($formatdata) ?
     ' var userdateformat="'.$formatdata['jsdate'].'";'
    .'var userlanguage="'.$adminlang.'";'
    : '' ), LSYii_ClientScript::POS_HEAD); ?>

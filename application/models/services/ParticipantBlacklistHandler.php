@@ -90,7 +90,7 @@ class ParticipantBlacklistHandler
         if (empty($participant->participant_id)) {
             throw new InvalidArgumentException(gT("Participant ID cannot be empty"));
         }
-        $surveys = \Survey::model()->findAllByAttributes(['usetokens' => 'Y']);
+        $surveys = \Survey::model()->findAll();
         /** @var int[] the list of survey IDs from which the participant was removed */
         $removedSurveyIds = [];
         foreach ($surveys as $survey) {
@@ -114,7 +114,7 @@ class ParticipantBlacklistHandler
         if (empty($participant->participant_id)) {
             throw new InvalidArgumentException(gT("Participant ID cannot be empty"));
         }
-        $surveys = \Survey::model()->findAllByAttributes(['usetokens' => 'Y']);
+        $surveys = \Survey::model()->findAll();
         /** @var int[] the list of survey IDs from which the participant was opted out */
         $optedoutSurveyIds = [];
         foreach ($surveys as $survey) {

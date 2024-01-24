@@ -6,14 +6,15 @@
  * @param $surveyid
  */
 
+// @TODO unused file?
 ?>
 
 <div class=" col-lg-4 text-end">
     <?php if (isset($surveybar['savebutton']['form'])):?>
 
         <!-- Save -->
-        <button class="btn btn-success" href="#" type="button" id="save-button">
-            <span class="fa fa-floppy-o"></span>
+        <button class="btn btn-primary" href="#" type="button" id="save-button">
+            <span class="ri-check-fill"></span>
             <?php if (isset($surveybar['savebutton']['text']))
             {
                 echo $surveybar['savebutton']['text'];
@@ -31,13 +32,13 @@
                 $saveAndAddQuestionLink = $this->createUrl("questionAdministration/view/", $paramArray);
             ?>
 
-            <button class="btn btn-success" id='save-and-new-question-button' href="<?php echo $saveAndAddQuestionLink ?>" type="button">
-                <span class="fa fa-floppy-o"></span>
+            <button class="btn btn-primary" id='save-and-new-question-button' href="<?php echo $saveAndAddQuestionLink ?>" type="button">
+                <span class="ri-check-fill"></span>
                 <?php eT("Save & add new question"); ?>
             </button>
 
-            <button class="btn btn-success" id='save-and-new-button' href="<?php echo $saveAndNewLink ?>" type="button">
-                <span class="fa fa-floppy-o"></span>
+            <button class="btn btn-primary" id='save-and-new-button' href="<?php echo $saveAndNewLink ?>" type="button">
+                <span class="ri-check-fill"></span>
                 <?php eT("Save & add new group"); ?>
             </button>
         <?php endif; ?>
@@ -54,8 +55,8 @@
                 $saveAndNewLink = $this->createUrl("questionAdministration/view/", $paramArray);
             ?>
 
-            <button class="btn btn-success" id='save-and-new-button' href="<?php echo $saveAndNewLink ?>" type="button">
-                <span class="fa fa-floppy-o"></span>
+            <button class="btn btn-primary" id='save-and-new-button' href="<?php echo $saveAndNewLink ?>" type="button">
+                <span class="ri-check-fill"></span>
                 <?php eT("Save and new"); ?>
             </button>
         <?php endif; ?>

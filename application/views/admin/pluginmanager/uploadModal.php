@@ -19,32 +19,32 @@
                 ]
             ); ?>
             <div class="modal-body">
-                <div class='alert alert-warning'>
-                    <i class='fa fa-warning'></i>
-                    <?php eT('Warning: Only install plugins from sources you trust!'); ?>
-                </div>
+                <?php
+                $this->widget('ext.AlertWidget.AlertWidget', [
+                    'text' => gT('Warning: Only install plugins from sources you trust!'),
+                    'type' => 'warning',
+                ]);
+                ?>
                 <input type='hidden' name='lid' value='$lid' />
                 <input type='hidden' name='action' value='templateupload' />
                 <div  class="mb-3">
                     <label for='the_file'><?php eT("Select plugin ZIP file:") ?></label>
-                    <input id='the_file' name='the_file' type="file" accept='.zip' />
+                    <input id='the_file' class="form-control" name='the_file' type="file" accept='.zip' />
                     <br/>
                     <?php printf(gT('(Maximum file size: %01.2f MB)'), getMaximumFileUploadSize()/1024/1024); ?>
                 </div>
             </div>
             <div class="modal-footer">
-                <?php if (!class_exists('ZipArchive')): ?>
-                    <?php eT("The ZIP library is not activated in your PHP configuration thus importing ZIP files is currently disabled.", "js") ?>
-                <?php else: ?>
-                    <button type="button" class='btn btn-success' onclick='if (window.LS.validatefilename(this.form,"<?php eT('Please select a file to import!', 'js') ?>")) { this.form.submit();}'>
-                        <i class='fa fa-upload'></i>
-                        &nbsp;
-                        <?php eT("Upload") ?>
-                    </button>
-                <?php endif; ?>
                 <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
                     <?php eT("Close");?>
                 </button>
+                <?php if (!class_exists('ZipArchive')): ?>
+                    <?php eT("The ZIP library is not activated in your PHP configuration thus importing ZIP files is currently disabled.", "js") ?>
+                <?php else: ?>
+                    <button type="button" class='btn btn-primary' onclick='if (window.LS.validatefilename(this.form,"<?php eT('Please select a file to import!', 'js') ?>")) { this.form.submit();}'>
+                        <?php eT("Install") ?>
+                    </button>
+                <?php endif; ?>
             </div>
             </form>
         </div><!-- /.modal-content -->

@@ -1,28 +1,24 @@
+// These are global definitions
 html {
     font-size: $font-size-root;
-}
-
-:root {
-    --bs-info-rgb: 57, 153, 63;
 }
 
 a {
     text-decoration: none;
 }
 
-/*
- * btn-xs was removed from Bootstrap 4.
- * @see https://stackoverflow.com/questions/33911049/btn-xs-no-longer-a-valid-option-in-bootstrap-4
- */
-.btn-group-xs > .btn, .btn-xs {
-    padding: 1px 5px;
-    font-size: 12px;
-    line-height: 1.5;
-    border-radius: 3px;
-}
-
-.page-item {
-    border-radius: 25px;
-    margin-right: 2px;
-    margin-left: 2px;
+.stop-survey-body {
+    .card.card-primary {
+        font-size: 16px;
+    }
+    .card-header {
+        font-size: 22px;
+    }
+    .help-block {
+        margin-top: 28px;
+        margin-bottom: 37px;
+    }
+    .table-rename {
+        color: $g-600;
+    }
 }

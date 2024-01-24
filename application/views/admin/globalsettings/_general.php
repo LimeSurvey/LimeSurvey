@@ -4,6 +4,9 @@
  *
  */
 
+use LimeSurvey\Libraries\FormExtension\FormExtensionWidget;
+use LimeSurvey\Libraries\FormExtension\Inputs\GlobalSettingsRenderer;
+
 ?>
 <?php
 $thisdefaulttheme                = getGlobalSetting('defaulttheme');
@@ -26,7 +29,7 @@ $dateformatdata                  = getDateFormatData(Yii::app()->session['datefo
                 echo((Yii::app()->getConfig("demoMode") == true) ? '*' : ''); ?>
             </label>
             <div class="col-12">
-                <input class="form-control" type='text' size='50' id='sitename' name='sitename' value="<?php echo htmlspecialchars(getGlobalSetting('sitename')); ?>"/>
+                <input class="form-control" type='text' size='50' id='sitename' name='sitename' value="<?php echo htmlspecialchars((string) getGlobalSetting('sitename')); ?>"/>
             </div>
         </div>
 
@@ -39,8 +42,8 @@ $dateformatdata                  = getDateFormatData(Yii::app()->session['datefo
             <div class="col-12">
                 <select class="form-select" name="defaulttheme" id="defaulttheme">
                     <?php foreach ($templatenames as $templatename) : ?>
-                        <option value='<?php echo $templatename; ?>' <?php echo ($thisdefaulttheme == $templatename) ? "selected='selected'" : "" ?> >
-                            <?php echo $templatename; ?>
+                        <option value='<?php echo CHtml::encode($templatename); ?>' <?php echo ($thisdefaulttheme == $templatename) ? "selected='selected'" : "" ?> >
+                            <?php echo CHtml::encode($templatename); ?>
                         </option>
                     <?php endforeach; ?>
                 </select>
@@ -72,8 +75,8 @@ $dateformatdata                  = getDateFormatData(Yii::app()->session['datefo
             <div class="col-12">
                 <select class="form-select" name="admintheme" id="admintheme">
                     <?php foreach ($aListOfThemeObjects as $templatename => $templateconfig): ?>
-                        <option value='<?php echo $templatename; ?>' <?php echo ($thisadmintheme == $templatename) ? "selected='selected'" : "" ?> >
-                            <?php echo $templateconfig->metadata->name; ?>
+                        <option value='<?php echo CHtml::encode($templatename); ?>' <?php echo ($thisadmintheme == $templatename) ? "selected='selected'" : "" ?> >
+                            <?php echo CHtml::encode($templateconfig->metadata->name); ?>
                         </option>
                     <?php endforeach; ?>
                 </select>
@@ -95,7 +98,7 @@ $dateformatdata                  = getDateFormatData(Yii::app()->session['datefo
             <div class="col-md-4">
                     <span>
                         <input class="form-control" type='text' id='timeadjust' name='timeadjust'
-                               value="<?php echo htmlspecialchars(str_replace(array('+', ' hours', ' minutes'), array('', '', ''), getGlobalSetting('timeadjust')) / 60); ?>"/>
+                               value="<?php echo htmlspecialchars((string) (str_replace(array('+', ' hours', ' minutes'), array('', '', ''), (string) getGlobalSetting('timeadjust')) / 60)); ?>"/>
                     </span>
             </div>
             <div class="col-md-8">
@@ -113,7 +116,7 @@ $dateformatdata                  = getDateFormatData(Yii::app()->session['datefo
                 </label>
                 <div class="col-12">
                     <input class="form-control" type='text' size='10' id='iSessionExpirationTime' name='iSessionExpirationTime'
-                           value="<?php echo htmlspecialchars(getGlobalSetting('iSessionExpirationTime')); ?>"/>
+                           value="<?php echo htmlspecialchars((string) getGlobalSetting('iSessionExpirationTime')); ?>"/>
                 </div>
             </div>
         <?php endif; ?>
@@ -123,7 +126,7 @@ $dateformatdata                  = getDateFormatData(Yii::app()->session['datefo
                 <?php eT("IP Info DB API Key:"); ?>
             </label>
             <div class="col-12">
-                <input class="form-control" type='text' size='35' id='ipInfoDbAPIKey' name='ipInfoDbAPIKey' value="<?php echo htmlspecialchars(getGlobalSetting('ipInfoDbAPIKey')); ?>"/>
+                <input class="form-control" type='text' size='35' id='ipInfoDbAPIKey' name='ipInfoDbAPIKey' value="<?php echo htmlspecialchars((string) getGlobalSetting('ipInfoDbAPIKey')); ?>"/>
             </div>
         </div>
 
@@ -132,7 +135,7 @@ $dateformatdata                  = getDateFormatData(Yii::app()->session['datefo
                 <?php eT("Google Maps API key:"); ?>
             </label>
             <div class="col-12">
-                <input class="form-control" type='text' size='35' id='googleMapsAPIKey' name='googleMapsAPIKey' value="<?php echo htmlspecialchars(getGlobalSetting('googleMapsAPIKey')); ?>"/>
+                <input class="form-control" type='text' size='35' id='googleMapsAPIKey' name='googleMapsAPIKey' value="<?php echo htmlspecialchars((string) getGlobalSetting('googleMapsAPIKey')); ?>"/>
             </div>
         </div>
 
@@ -142,7 +145,7 @@ $dateformatdata                  = getDateFormatData(Yii::app()->session['datefo
             </label>
             <div class="col-12">
                 <input class="form-control" type='text' size='35' id='googleanalyticsapikey' name='googleanalyticsapikey'
-                       value="<?php echo htmlspecialchars(getGlobalSetting('googleanalyticsapikey')); ?>"/>
+                       value="<?php echo htmlspecialchars((string) getGlobalSetting('googleanalyticsapikey')); ?>"/>
             </div>
         </div>
 
@@ -152,7 +155,7 @@ $dateformatdata                  = getDateFormatData(Yii::app()->session['datefo
             </label>
             <div class="col-12">
                 <input class="form-control" type='text' size='35' id='googletranslateapikey' name='googletranslateapikey'
-                       value="<?php echo htmlspecialchars(getGlobalSetting('googletranslateapikey')); ?>"/>
+                       value="<?php echo htmlspecialchars((string) getGlobalSetting('googletranslateapikey')); ?>"/>
             </div>
         </div>
 
@@ -182,7 +185,7 @@ $dateformatdata                  = getDateFormatData(Yii::app()->session['datefo
 
         <!-- Maintenance mode -->
         <div class="mb-3">
-            <label class="col-12 form-label" for="maintenancemode" title="<?php echo gT('Maintenance modes: 
+            <label class="col-12 form-label" for="maintenancemode" title="<?php echo gT('Maintenance modes:
 Off
 Soft lock - participants are able to finish started surveys, no new participants are allowed
 Full lock - none of participants are allowed to take survey, even if they already started to take it'
@@ -208,8 +211,8 @@ Full lock - none of participants are allowed to take survey, even if they alread
                 <?php eT("Clear assets cache:"); ?> <small>(<?php echo getGlobalSetting('customassetversionnumber'); ?>)</small>
             </label>
             <div class="col-12">
-                <a href="<?php echo App()->createUrl('admin/globalsettings', array("sa" => "refreshAssets")); ?>" 
-                   class="btn btn-success btn-large">
+                <a href="<?php echo App()->createUrl('admin/globalsettings', array("sa" => "refreshAssets")); ?>"
+                   class="btn btn-outline-dark btn-large">
                    	<?php eT("Clear now"); ?>
                 </a>
             </div>
@@ -350,6 +353,14 @@ Full lock - none of participants are allowed to take survey, even if they alread
             </div>
         <?php endif; ?>
     </div>
+
+    <div class="ls-flex-column ls-space padding left-5 right-5 col-md-7">
+        <?= FormExtensionWidget::render(
+            App()->formExtensionService->getAll('globalsettings.general'),
+            new GlobalSettingsRenderer()
+        ); ?>
+    </div>
+
 </div>
 </div>
 

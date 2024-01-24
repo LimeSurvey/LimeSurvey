@@ -67,6 +67,11 @@ class LSUserIdentity extends CUserIdentity
             if (is_null($this->plugin)) {
                 $result->setError(self::ERROR_UNKNOWN_HANDLER);
             } else {
+                // Never allow login for non-active users.
+                $user = User::model()->findByAttributes(array('users_name' => $this->username));
+                if ($user && (int) $user->user_status === 0) {
+                    throw new CHttpException(403, gT("You do not have permission to access this page."));
+                }
                 // Delegate actual authentication to plugin
                 $authEvent = new PluginEvent('newUserSession', $this); // TODO: rename the plugin function authenticate()
                 $authEvent->set('identity', $this);
@@ -137,7 +142,7 @@ class LSUserIdentity extends CUserIdentity
                 'user_id' => App()->user->id,
                 'importance' => Notification::HIGH_IMPORTANCE,
                 'title' => 'Password warning',
-                'message' => '<span class="fa fa-exclamation-circle text-warning"></span>&nbsp;' .
+                'message' => '<span class="ri-error-warning-fill"></span>&nbsp;' .
                     gT("Warning: You are still using the default password ('password'). Please change your password and re-login again.")
             ));
             $not->save();

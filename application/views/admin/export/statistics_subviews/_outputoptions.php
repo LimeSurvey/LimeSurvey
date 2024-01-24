@@ -69,12 +69,14 @@
     </div>
     <div class="col-lg-6 col-md-12">
         <div class='mb-3'>
+        <?php
+            $sStatsColumn = Yii::app()->request->getPost('stats_columns', '2'); ?>
             <label for='stats_columns' class="form-label"><?php
                 eT("Number of columns:") ?></label>
             <div>
                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                     'name'          => 'stats_columns',
-                    'checkedOption' => '2',
+                    'checkedOption' =>  $sStatsColumn,
                     'selectOptions' => [
                         '1' => gT('One'),
                         '2' => gT('Two'),
@@ -84,12 +86,14 @@
             </div>
         </div>
         <div class='mb-3'>
+            <?php
+                $sGraphLabels = Yii::app()->request->getPost('graph_labels', 'qcode'); ?>
             <label for='graph_labels' class="form-label"><?php
                 eT("Graph labels:") ?></label>
             <div>
                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                     'name'          => 'graph_labels',
-                    'checkedOption' => 'qcode',
+                    'checkedOption' => $sGraphLabels,
                     'selectOptions' => [
                         'qcode' => gT('Question code'),
                         'qtext' => gT('Question text'),
@@ -99,14 +103,15 @@
             </div>
         </div>
         <div class="mb-3">
-            <div class="alert alert-info alert-dismissible" role="alert">
-                <button type="button" class="btn-close limebutton" data-bs-dismiss="alert" aria-label="Close"></button>
-                <?php
-                eT("Each question has its own graph type defined in its advanced settings."); ?>
-                <br/>
-                <?php
-                eT("Using the chart type selector you can force the graph type for all selected questions."); ?>
-            </div>
+            <?php
+            $message = gT("Each question has its own graph type defined in its advanced settings.") .
+                '<br>' .
+                gT("Using the chart type selector you can force the graph type for all selected questions.");
+            $this->widget('ext.AlertWidget.AlertWidget', [
+            'text' => $message,
+            'type' => 'info',
+            ]);
+            ?>
         </div>
     </div>
 </div>

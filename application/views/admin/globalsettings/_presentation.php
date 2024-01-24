@@ -21,7 +21,7 @@
                 <label class=" form-label" for='pdffontsize'><?php eT("Font size of PDFs:"); ?></label>
                 <div class="">
                     <input class="form-control" type='text' id='pdffontsize' name='pdffontsize'
-                           value="<?php echo htmlspecialchars(getGlobalSetting('pdffontsize')); ?>"/>
+                           value="<?php echo htmlspecialchars((string) getGlobalSetting('pdffontsize')); ?>"/>
                 </div>
             </div>
 
@@ -30,7 +30,7 @@
                 <label class=" form-label" for='pdflogowidth'><?php eT("Width of PDF header logo:"); ?></label>
                 <div class="">
                     <input class="form-control" type='text' size='5' id='pdflogowidth' name='pdflogowidth'
-                           value="<?php echo htmlspecialchars(getGlobalSetting('pdflogowidth')); ?>"/>
+                           value="<?php echo htmlspecialchars((string) getGlobalSetting('pdflogowidth')); ?>"/>
 
                 </div>
             </div>
@@ -39,7 +39,7 @@
                 <label class=" form-label" for='pdfheadertitle'><?php eT("PDF header title (if empty, site name will be used):"); ?></label>
                 <div class="">
                     <input class="form-control" type='text' id='pdfheadertitle' size='50' maxlength='256' name='pdfheadertitle'
-                           value="<?php echo htmlspecialchars(getGlobalSetting('pdfheadertitle')); ?>"/>
+                           value="<?php echo htmlspecialchars((string) getGlobalSetting('pdfheadertitle')); ?>"/>
 
                 </div>
             </div>
@@ -48,7 +48,7 @@
                 <label class=" form-label" for='pdfheaderstring'><?php eT("PDF header string (if empty, survey name will be used):"); ?></label>
                 <div class="">
                     <input class="form-control" type='text' id='pdfheaderstring' size='50' maxlength='256' name='pdfheaderstring'
-                           value="<?php echo htmlspecialchars(getGlobalSetting('pdfheaderstring')); ?>"/>
+                           value="<?php echo htmlspecialchars((string) getGlobalSetting('pdfheaderstring')); ?>"/>
 
                 </div>
             </div>

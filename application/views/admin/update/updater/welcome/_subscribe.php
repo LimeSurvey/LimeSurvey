@@ -4,7 +4,7 @@
 * The javascript inject it inside the div#updaterContainer, in the _updater view. (like any steps)
 */
 ?>
-<h2 class="maintitle"><?php eT("Subscribe to ComfortUpdate!");?></h2>
+<h3 class="maintitle"><?php eT("Subscribe to ComfortUpdate!");?></h3>
 
 <?php
 if( isset($serverAnswer->html) )

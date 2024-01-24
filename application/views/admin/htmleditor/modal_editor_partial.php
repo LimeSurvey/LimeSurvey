@@ -12,7 +12,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-cancel" data-bs-dismiss="modal"><?php eT("Cancel"); ?></button>
-                <button type="button" class="btn btn-success" id="htmleditor-modal-save">
+                <button type="button" class="btn btn-primary" id="htmleditor-modal-save">
                     <?php eT("Confirm"); ?>
                 </button>
             </div>

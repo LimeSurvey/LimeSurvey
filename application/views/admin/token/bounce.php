@@ -3,12 +3,12 @@
     <div class="row">
         <div class="col-12">
             <div id='bouncesettingsdiv'>
-                <?php echo CHtml::form(array("admin/tokens/sa/bouncesettings/surveyid/$surveyid"), 'post',array('class'=>'form-core settingswidget ','id'=>'bouncesettings','name'=>'frmeditquestion')); ?>
+                <?php echo CHtml::form(array("admin/tokens/sa/bouncesettings/surveyid/$surveyid"), 'post', array('class' => 'form-core settingswidget ','id' => 'bouncesettings','name' => 'frmeditquestion')); ?>
 
                         <div class="settings-list">
 
                             <!-- Survey bounce email -->
-                            <div class="mb-3 setting control-group setting-email">
+                            <div class="mb-3 setting control-group setting-email col-3">
                                 <label class="default form-label" for="bounce_email">
                                     <?php eT('Survey bounce email address:'); ?>
                                 </label>
@@ -25,11 +25,12 @@
                                 <div class="default controls">
                                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', array(
                                         'name' => 'bounceprocessing',
+                                        'value'=> $settings['bounceprocessing'] ,
                                         'checkedOption'=> $settings['bounceprocessing'] ,
-                                        'selectOptions'=>array(
-                                            "N"=>gT("None",'unescaped'),
-                                            "L"=>gT("Use settings below",'unescaped'),
-                                            "G"=>gT("Use global settings",'unescaped')
+                                        'selectOptions' => array(
+                                            "N" => gT("None", 'unescaped'),
+                                            "L" => gT("Use settings below", 'unescaped'),
+                                            "G" => gT("Use global settings", 'unescaped')
                                         )
                                     ));?>
                                 </div>
@@ -46,21 +47,21 @@
                                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', array(
                                         'name' => 'bounceaccounttype',
                                         'checkedOption'=> $settings['bounceaccounttype'] ,
-                                        'selectOptions'=>array(
-                                            "IMAP"=>gT("IMAP",'unescaped'),
-                                            "POP"=>gT("POP",'unescaped')
+                                        'selectOptions' => array(
+                                            "IMAP" => gT("IMAP", 'unescaped'),
+                                            "POP" => gT("POP", 'unescaped')
                                         )
                                     ));?>
                                 </div>
                             </div>
 
                             <!-- Server name port -->
-                            <div class=" mb-3 setting control-group setting-string">
+                            <div class=" mb-3 setting control-group setting-string col-3">
                                 <label class="default form-label" for="bounceaccounthost">
                                     <?php eT('Server name & port:'); ?>
                                 </label>
                                 <div class="default controls">
-                                    <input size="50" type="text" value="<?php echo $settings['bounceaccounthost']; ?>" name="bounceaccounthost" id="bounceaccounthost" />
+                                    <input class="form-control" size="50" type="text" value="<?php echo $settings['bounceaccounthost']; ?>" name="bounceaccounthost" id="bounceaccounthost" />
                                 </div>
                             </div>
 
@@ -68,23 +69,23 @@
 
 
                             <!-- User name -->
-                            <div class=" mb-3 setting control-group setting-string">
+                            <div class=" mb-3 setting control-group setting-string col-3">
                                 <label class="default form-label" for="bounceaccountuser">
                                     <?php eT('User name:'); ?>
                                 </label>
                                 <div class="default controls">
-                                    <input size="50" type="text" value="<?php echo $settings['bounceaccountuser'];?>" name="bounceaccountuser" id="bounceaccountuser" />
+                                    <input class="form-control" size="50" type="text" value="<?php echo $settings['bounceaccountuser'];?>" name="bounceaccountuser" id="bounceaccountuser" />
                                 </div>
                             </div>
 
                             <!-- Password -->
-                            <div class=" mb-3 setting control-group setting-password">
+                            <div class=" mb-3 setting control-group setting-password col-3">
                                 <label class="default form-label" for="bounceaccountpass">
                                     <?php eT('Password:'); ?>
                                 </label>
 
                                 <div class="default controls">
-                                    <input autocomplete="off" size="50" type="password" value="somepassword" name="bounceaccountpass" id="bounceaccountpass" />
+                                    <input class="form-control" autocomplete="off" size="50" type="password" value="somepassword" name="bounceaccountpass" id="bounceaccountpass" />
                                 </div>
                             </div>
 
@@ -96,11 +97,11 @@
                                 <div class="default controls">
                                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', array(
                                         'name' => 'bounceaccountencryption',
-                                        'checkedOption'=> strtolower($settings['bounceaccountencryption']),
-                                        'selectOptions'=>array(
-                                            "off"=>gT("Off (unsafe)",'unescaped'),
-                                            "ssl"=>gT("SSL/TLS",'unescaped'),
-                                            "tls"=>gT("StartTLS",'unescaped')
+                                        'checkedOption'=> strtolower((string) $settings['bounceaccountencryption']),
+                                        'selectOptions' => array(
+                                            "off" => gT("Off (unsafe)", 'unescaped'),
+                                            "ssl" => gT("SSL/TLS", 'unescaped'),
+                                            "tls" => gT("StartTLS", 'unescaped')
                                         )
                                     ));?>
                                 </div>
@@ -111,9 +112,6 @@
                     <!-- buttons -->
                     <div class="buttons control-group d-none">
                         <button name="save" value="save" class="btn" type="submit">Save bounce settings</button>
-                        <a class="btn btn-link button" href="/LimeSurveyNext/index.php/admin/tokens?sa=index&amp;surveyid=274928">
-                            Cancel
-                        </a>
                     </div>
                 </form>
             </div> <!-- bouncesettingsdiv -->
@@ -121,4 +119,4 @@
     </div> <!-- Row -->
 </div> <!-- Side body -->
 
-<?php App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'tokenbounce.js'); ?>
+<?php App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'tokenbounce.js'); ?>

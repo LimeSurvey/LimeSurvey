@@ -84,10 +84,6 @@ class TemplateConfig extends CActiveRecord
     /** @var array $aCssFrameworkReplacement Css Framework Replacement */
     protected $aCssFrameworkReplacement;
 
-    public $allDbTemplateFolders = null;
-
-    public static $aTemplatesWithoutDB = null;
-
     public $options_page = 'core';
 
     /**
@@ -116,7 +112,7 @@ class TemplateConfig extends CActiveRecord
     /**
      * Remove the css/js files defined in theme config, from any package (even the core ones)
      * The file should have the exact same name as in the package
-     * (see: application/config/packages.php and application/config/third_party.php)
+     * (see: application/config/packages.php and application/config/vendor.php)
      * eg: to remove awesome-bootstrap-checkbox.css, in the theme config
      * file add <remove>awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css</remove>
      */
@@ -184,8 +180,7 @@ class TemplateConfig extends CActiveRecord
                 TemplateConfiguration::uninstall($this->sTemplateName);
                 App()->setFlashMessage(
                     sprintf(
-                        gT("Theme '%s' has been uninstalled because it's not compatible with this LimeSurvey 
-                        version. Can't find file: $sFile "),
+                        gT("Theme '%s' has been uninstalled because it's not compatible with this LimeSurvey version. Can't find file: $sFile "),
                         $this->sTemplateName
                     ),
                     'error'
@@ -234,6 +229,7 @@ class TemplateConfig extends CActiveRecord
     /**
      * Get the depends package
      * @uses self::@package
+     * TODO: unused variable
      * @param TemplateConfiguration $oTemplate
      * @return string[]
      */
@@ -244,17 +240,17 @@ class TemplateConfig extends CActiveRecord
         /* Core package */
         $packages[] = 'limesurvey-public';
         $packages[] = 'template-core';
-        $packages[] = ($dir == "ltr") ? 'template-core-ltr' : 'template-core-rtl'; // Awesome Bootstrap Checkboxes
+        $packages[] = ($dir === "ltr") ? 'template-core-ltr' : 'template-core-rtl'; // Awesome Bootstrap Checkboxes
 
         /* bootstrap */
         if (!empty($this->cssFramework)) {
             // Basic bootstrap package
-            if ((string) $this->cssFramework->name == "bootstrap") {
+            if ((string) $this->cssFramework->name === "bootstrap") {
                 $packages[] = 'bootstrap';
             }
 
             // Rtl version of bootstrap
-            if ($dir == "rtl") {
+            if ($dir === "rtl" && (string)$this->cssFramework->name === "bootstrap") {
                 $packages[] = 'bootstrap-rtl';
             }
 
@@ -299,9 +295,9 @@ class TemplateConfig extends CActiveRecord
 
 
     /**
-     * @todo document me
-     * @todo missing return value (php warning)
-     * @return boolean|null
+     * Check if this template is a standard template and save it in current model $this->isStandard
+     * @return void
+     * @throws CException
      */
     protected function setIsStandard()
     {
@@ -349,7 +345,7 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['class']['body']  = $this->getTemplateAndMotherNames();
 
         if (!empty($this->aCssFrameworkReplacement)) {
-            $aVariationFile = explode('/', $this->aCssFrameworkReplacement[0]);
+            $aVariationFile = explode('/', (string) $this->aCssFrameworkReplacement[0]);
             $aVariationFile = explode('.', end($aVariationFile));
             $sVariationName = $aVariationFile[0];
             $aClassAndAttributes['class']['body']  .= ' ' . $sVariationName;
@@ -443,7 +439,7 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['class']['captcharowlabel']       = ' save-survey-label label-cell ';
         $aClassAndAttributes['class']['captcharowcol']         = ' save-survey-input input-cell ';
         $aClassAndAttributes['class']['captcharowcoldiv']      = ' input-group ';
-        $aClassAndAttributes['class']['captcharowcoldivdiv']   = ' input-group-addon captcha-image ';
+        $aClassAndAttributes['class']['captcharowcoldivdiv']   = ' input-group-text captcha-image ';
         $aClassAndAttributes['class']['captcharowcoldivinput'] = '  ';
         $aClassAndAttributes['class']['loadrow']               = ' save-survey-row save-survey-submit ';
         $aClassAndAttributes['class']['loadrowcol']            = ' save-survey-input input-cell ';
@@ -500,7 +496,7 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['class']['saveformsurveydivflabel']       = ' save-survey-label label-cell ';
         $aClassAndAttributes['class']['saveformsurveydivfdiv']         = ' save-survey-input input-cell ';
         $aClassAndAttributes['class']['saveformsurveydivfdivdiv']      = '  ';
-        $aClassAndAttributes['class']['saveformsurveydivfdivdivdiv']   = ' input-group-addon captcha-image ';
+        $aClassAndAttributes['class']['saveformsurveydivfdivdivdiv']   = ' input-group-text captcha-image ';
         $aClassAndAttributes['class']['saveformsurveydivfdivdivinput'] = ' ';
         $aClassAndAttributes['class']['saveformsurveydivg']            = '  save-survey-row save-survey-submit ';
         $aClassAndAttributes['class']['saveformsurveydivgdiv']         = ' save-survey-input input-cell ';
@@ -533,13 +529,13 @@ class TemplateConfig extends CActiveRecord
 
         $aClassAndAttributes['class']['completedwrapper']     = ' completed-wrapper ';
         $aClassAndAttributes['class']['completedtext']        = ' completed-text ';
-        $aClassAndAttributes['class']['quotamessage']         = ' quotamessage limesurveycore ';
+        $aClassAndAttributes['class']['quotamessage']         = ' quotamessage limesurveycore text-center ';
         $aClassAndAttributes['class']['navigator']            = ' navigator ';
         $aClassAndAttributes['class']['navigatorcoll']        = '  ';
         $aClassAndAttributes['class']['navigatorcollbutton']  = ' ls-move-btn ls-move-previous-btn action--ls-button-previous';
         $aClassAndAttributes['class']['navigatorcolr']        = '  ';
         $aClassAndAttributes['class']['navigatorcolrbutton']  = ' ls-move-btn ls-move-submit-btn action--ls-button-submit';
-        $aClassAndAttributes['class']['completedquotaurl']    = ' url-wrapper url-wrapper-survey-quotaurl ';
+        $aClassAndAttributes['class']['completedquotaurl']    = ' url-wrapper url-wrapper-survey-quotaurl text-center ';
         $aClassAndAttributes['class']['completedquotaurla']   = ' ls-endurl ls-quotaurl ';
 
         $aClassAndAttributes['attr']['navigatorcollbutton'] = '  type="submit" name="move" ';
@@ -547,10 +543,10 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['attr']['completedwrapper'] = $aClassAndAttributes['attr']['completedtext'] = $aClassAndAttributes['attr']['quotamessage'] = $aClassAndAttributes['attr']['navigator'] = $aClassAndAttributes['attr']['navigatorcoll'] = $aClassAndAttributes['attr']['navigatorcolr'] = $aClassAndAttributes['attr']['completedquotaurl'] = '';
 
         // Register
-        $aClassAndAttributes['class']['register']                 = '  ';
-        $aClassAndAttributes['class']['registerrow']              = '  ';
-        $aClassAndAttributes['class']['registerrowjumbotron']     = ' jumbotron ';
-        $aClassAndAttributes['class']['registerrowjumbotrondiv']  = ' ';
+        $aClassAndAttributes['class']['register']                 = ' register-container';
+        $aClassAndAttributes['class']['registerrow']              = ' register-row';
+        $aClassAndAttributes['class']['registerrowjumbotron']     = ' register-jumbotron card bg-light p-6 mb-3';
+        $aClassAndAttributes['class']['registerrowjumbotrondiv']  = 'card-body';
 
         $aClassAndAttributes['class']['registerform']             = ' register-form  ';
         $aClassAndAttributes['class']['registerul']               = '  ';
@@ -569,7 +565,7 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['class']['registerformcaptchadivb']  = '  ';
         $aClassAndAttributes['class']['registerformcaptchadivc']  = '  captcha-widget ';
         $aClassAndAttributes['class']['registerformcaptchainput'] = '  ';
-        $aClassAndAttributes['class']['registersuccessblock'] = ' col-md-12 ';
+        $aClassAndAttributes['class']['registersuccessblock'] = ' col-md-12 p-0 ';
         $aClassAndAttributes['attr']['registersuccessblock'] = ' ';
         $aClassAndAttributes['class']['registersuccesslistlabel'] = ' col-md-4 text-end  ';
         $aClassAndAttributes['attr']['registersuccesslistlabel'] = ' ';
@@ -613,14 +609,17 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['class']['required']     = '  ';
         $aClassAndAttributes['class']['requiredspan'] = '  ';
         $aClassAndAttributes['attr']['required']      = ' aria-hidden="true" ';
-        $aClassAndAttributes['class']['required']     = '';
+        $aClassAndAttributes['attr']['requiredspan']     = '';
 
         // Progress bar
         $aClassAndAttributes['class']['topcontainer'] = ' top-container ';
         $aClassAndAttributes['class']['topcontent']   = ' top-content ';
         $aClassAndAttributes['class']['progress']     = ' progress ';
         $aClassAndAttributes['class']['progressbar']  = ' progress-bar ';
-        $aClassAndAttributes['attr']['progressbar']   = $aClassAndAttributes['attr']['topcontainer'] = $aClassAndAttributes['class']['topcontent'] = $aClassAndAttributes['attr']['progressbar'] = $aClassAndAttributes['attr']['progress'] = ' ';
+        $aClassAndAttributes['attr']['topcontainer'] = '';
+        $aClassAndAttributes['attr']['topcontent'] = '';
+        $aClassAndAttributes['attr']['progress'] = '';
+        $aClassAndAttributes['attr']['progressbar']   = '';
 
         // No JS alert
         $aClassAndAttributes['class']['nojs'] = ' ls-js-hidden warningjs ';
@@ -635,7 +634,7 @@ class TemplateConfig extends CActiveRecord
 //        $aClassAndAttributes['class']['navbarcollapse'] = ' collapse navbar-collapse ';
 //        $aClassAndAttributes['class']['navbarlink']     = ' nav navbar-nav  navbar-action-link ';
 
-//        $aClassAndAttributes['attr']['navbartoggle']    = ' data-toggle="collapse" data-bs-target="#navbar" aria-expanded="false" aria-controls="navbar" ';
+//        $aClassAndAttributes['attr']['navbartoggle']    = ' data-bs-toggle="collapse" data-bs-target="#navbar" aria-expanded="false" aria-controls="navbar" ';
 //        $aClassAndAttributes['attr']['navbar'] = $aClassAndAttributes['attr']['navbarbrand'] = '';
 
         // Language changer
@@ -711,7 +710,7 @@ class TemplateConfig extends CActiveRecord
         // Privacy
         $aClassAndAttributes['class']['privacycontainer'] = ' privacy ';
         $aClassAndAttributes['class']['privacycol']       = ' ';
-        $aClassAndAttributes['class']['privacyhead']      = ' ';
+        $aClassAndAttributes['class']['privacyhead']      = 'ls-privacy-head';
         $aClassAndAttributes['class']['privacybody']      = ' ls-privacy-body ';
 
         $aClassAndAttributes['class']['privacydatasecmodalbody'] = '';
@@ -744,7 +743,7 @@ class TemplateConfig extends CActiveRecord
 //        $aClassAndAttributes['class']['lctdropdownli']  = 'index-item ';
 //        $aClassAndAttributes['class']['lctdropdownlia'] = 'ls-language-link ';
 
-//        $aClassAndAttributes['attr']['lctla']       = ' data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" ';
+//        $aClassAndAttributes['attr']['lctla']       = ' data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" ';
 //        $aClassAndAttributes['attr']['lctdropdown'] = ' style="overflow: scroll" ';
 
 //        $aClassAndAttributes['attr']['lctli'] = $aClassAndAttributes['attr']['lctspan'] = $aClassAndAttributes['attr']['lctdropdownli'] = $aClassAndAttributes['attr']['lctdropdownlia'] = ' ';
@@ -784,8 +783,8 @@ class TemplateConfig extends CActiveRecord
 //        $aClassAndAttributes['class']['indexmenusddspan'] = '  ';
 //        $aClassAndAttributes['class']['indexmenusddul']   = '  dropdown-sub-menu ';
 
-//        $aClassAndAttributes['attr']['indexmenuglia']          = ' data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"';
-//        $aClassAndAttributes['attr']['indexmenuslia']          = ' data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"';
+//        $aClassAndAttributes['attr']['indexmenuglia']          = ' data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"';
+//        $aClassAndAttributes['attr']['indexmenuslia']          = ' data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"';
 
 //        $aClassAndAttributes['attr']['indexmenussul'] = '';
 //        $aClassAndAttributes['attr']['indexmenusgli'] = '';
@@ -795,6 +794,10 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['class']['previewsubmittext']  = ' completed-text  ';
         $aClassAndAttributes['class']['submitwrapper']      = ' completed-wrapper  ';
         $aClassAndAttributes['class']['submitwrappertext']  = ' completed-text  ';
+        // class name for last message elements
+        $aClassAndAttributes['class']['submitwrappertextHeading']  = ' completed-heading ';
+        $aClassAndAttributes['class']['submitwrappertextContent']  = ' completed-Content ';
+        // ===
         $aClassAndAttributes['class']['submitwrapperdiva']  = ' url-wrapper url-wrapper-survey-print ';
         $aClassAndAttributes['class']['submitwrapperdivaa'] = ' ls-print ';
         $aClassAndAttributes['class']['submitwrapperdivb']  = ' url-wrapper url-wrapper-survey-print ';
@@ -859,24 +862,93 @@ class TemplateConfig extends CActiveRecord
     }
 
     /**
-     * @todo document me
+     * Uninstalls the selected surveytheme and deletes database entry and configuration
      * @param string $templatename Name of Template
      * @return bool|int
+     * @throws CDbException
      */
     public static function uninstall($templatename)
     {
         if (Permission::model()->hasGlobalPermission('templates', 'delete')) {
-            $oTemplate = Template::model()->findByAttributes(array('name' => $templatename));
+            $oTemplate = Template::model()->findByAttributes(['name' => $templatename]);
             if ($oTemplate) {
                 if ($oTemplate->delete()) {
                     return TemplateConfiguration::model()->deleteAll(
                         'template_name=:templateName',
-                        array(':templateName' => $templatename)
+                        [':templateName' => $templatename]
                     );
                 }
             }
         }
         return false;
+    }
+
+    /**
+     * Uninstalls all surveythemes that are being extended from the supplied surveytheme name
+     * @param $templateName
+     * @return void
+     * @throws CDbException
+     */
+    public static function uninstallThemesRecursive($templateName): void
+    {
+        $extendedTemplates = Template::model()->findAll('extends=:templateName', [':templateName' => $templateName]);
+        if (!empty($extendedTemplates)) {
+            foreach ($extendedTemplates as $extendedTemplate) {
+                self::uninstallThemesRecursive($extendedTemplate->name);
+            }
+        }
+        self::uninstall($templateName);
+    }
+
+    /**
+     * Checks if a theme is valid
+     * Can be extended with more checks in the future if needed
+     * @param $themeName
+     * @param $themePath
+     * @param bool $redirect
+     * @return bool
+     * @throws CDbException
+     */
+    public static function validateTheme($themeName, $themePath, bool $redirect = true): bool
+    {
+        // check compatability with current limesurvey version
+        $isCompatible = TemplateConfig::isCompatible($themePath);
+        if (!$isCompatible) {
+            self::uninstallThemesRecursive($themeName);
+            if ($redirect) {
+                App()->setFlashMessage(
+                    sprintf(
+                        gT("Theme '%s' has been uninstalled because it's not compatible with this LimeSurvey version."),
+                        $themeName
+                    ),
+                    'error'
+                );
+                App()->getController()->redirect(["themeOptions/index", "#" => "surveythemes"]);
+                App()->end();
+            }
+        }
+        // add more tests here
+
+        // all checks succeeded, continue loading the theme
+        return true;
+    }
+
+    /**
+     * Checks if theme is compatible with the current limesurvey version
+     * @param $themePath
+     * @param bool $redirect
+     * @return bool
+     */
+    public static function isCompatible($themePath): bool
+    {
+        $extensionConfig = ExtensionConfig::loadFromFile($themePath);
+        if ($extensionConfig === null) {
+            return false;
+        }
+        if (!$extensionConfig->isCompatible()) {
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -895,7 +967,7 @@ class TemplateConfig extends CActiveRecord
         $oNewTemplate                   = new Template();
         $oNewTemplate->name             = $sTemplateName;
         $oNewTemplate->folder           = $sTemplateName;
-        $oNewTemplate->title            = $sTemplateName; // For now, when created via template editor => name == folder == title. If you change it, please, also update TemplateManifest::getTemplateURL
+        $oNewTemplate->title            = $aDatas['title']; // For now, when created via template editor => name == folder == title. If you change it, please, also update TemplateManifest::getTemplateURL
         $oNewTemplate->creation_date    = date("Y-m-d H:i:s");
         $oNewTemplate->author           = App()->user->name;
         $oNewTemplate->author_email     = ''; // privacy
@@ -910,7 +982,6 @@ class TemplateConfig extends CActiveRecord
         if ($oNewTemplate->save()) {
             $oNewTemplateConfiguration                  = new TemplateConfiguration();
             $oNewTemplateConfiguration->template_name   = $sTemplateName;
-            $oNewTemplateConfiguration->template_name   = $sTemplateName;
 
             // Those ones are only filled when importing manifest from upload directory
 
@@ -920,7 +991,7 @@ class TemplateConfig extends CActiveRecord
             $oNewTemplateConfiguration->cssframework_name = $aDatas['cssframework_name'];
             $oNewTemplateConfiguration->cssframework_css  = self::formatToJsonArray($aDatas['cssframework_css']);
             $oNewTemplateConfiguration->cssframework_js   = self::formatToJsonArray($aDatas['cssframework_js']);
-            $oNewTemplateConfiguration->options           = self::formatToJsonArray($aDatas['aOptions'], true);
+            $oNewTemplateConfiguration->options           = self::convertOptionsToJson($aDatas['aOptions']);
             $oNewTemplateConfiguration->packages_to_load  = self::formatToJsonArray($aDatas['packages_to_load']);
 
 
@@ -952,6 +1023,12 @@ class TemplateConfig extends CActiveRecord
      */
     public static function formatToJsonArray($oFiled, $bConvertEmptyToString = false)
     {
+        if ($bConvertEmptyToString) {
+            foreach ($oFiled as $option => $optionValue) {
+                // clean every value from newlines, tabs and blank spaces for options
+                $oFiled->$option = trim(preg_replace('/[ \t]+/', ' ', preg_replace('/\s*$^\s*/m', "", $optionValue)));
+            }
+        }
         // encode then decode will convert the SimpleXML to a normal object
         $jFiled = json_encode($oFiled);
         $oFiled = json_decode($jFiled);
@@ -974,12 +1051,38 @@ class TemplateConfig extends CActiveRecord
     }
 
     /**
-     * @todo document me
+     * Extracts option values from theme options node (XML) into a json key-value map.
+     * Inner nodes (which maybe inside each option element) are ignored.
+     * Option values are trimmed as they may contain undesired new lines in the XML document.
+     * @param array|object $options the filed to convert
+     * @return string  json
+     */
+    public static function convertOptionsToJson($options)
+    {
+        $optionsArray = [];
+        foreach ($options as $option => $optionValue) {
+            // Trim values, as they may be in a new line in the XML. For example:
+            // <sample_option>
+            //      default value
+            // </sample_option>
+            // Also, by casting, inner nodes are eliminated
+            // and only the text value inside the node is obtained
+            $optionsArray[$option] = trim((string) $optionValue);
+        }
+        if (empty($optionsArray)) {
+            return '""';
+        }
+        return json_encode($optionsArray);
+    }
+
+    /**
+     * Returns an array of all unique template folders that are registered in the database
      * @return array|null
      */
-    public function getAllDbTemplateFolders()
+    public static function getAllDbTemplateFolders()
     {
-        if (empty($this->allDbTemplateFolders)) {
+        static $aAllDbTemplateFolders = [];
+        if (empty($aAllDbTemplateFolders)) {
             $oCriteria = new CDbCriteria();
             $oCriteria->select = 'folder';
             $oAllDbTemplateFolders = Template::model()->findAll($oCriteria);
@@ -989,32 +1092,42 @@ class TemplateConfig extends CActiveRecord
                 $aAllDbTemplateFolders[] = $oAllDbTemplateFolder->folder;
             }
 
-            $this->allDbTemplateFolders = array_unique($aAllDbTemplateFolders);
+            $aAllDbTemplateFolders = array_unique($aAllDbTemplateFolders);
         }
 
-        return $this->allDbTemplateFolders;
+        return $aAllDbTemplateFolders;
     }
 
     /**
-     * @todo document me
-     * @return array|null
+     * Returns an array with uninstalled and/or incompatible survey themes
+     * @return TemplateConfiguration[]
      */
-    public function getTemplatesWithNoDb()
+    public static function getTemplatesWithNoDb(): array
     {
-        if (empty(self::$aTemplatesWithoutDB)) {
+        static $aTemplatesWithoutDB = [];
+        if (empty($aTemplatesWithoutDB)) {
+            $aTemplatesWithoutDB['valid'] = [];
+            $aTemplatesWithoutDB['invalid'] = [];
             $aTemplatesDirectories = Template::getAllTemplatesDirectories();
-            $aTemplatesInDb        = $this->getAllDbTemplateFolders();
-            $aTemplatesWithoutDB   = array();
+            $aTemplatesInDb = self::getAllDbTemplateFolders();
 
             foreach ($aTemplatesDirectories as $sName => $sPath) {
                 if (!in_array($sName, $aTemplatesInDb)) {
-                    $aTemplatesWithoutDB[$sName] = Template::getTemplateConfiguration($sName, null, null, true); // Get the manifest
+                    // Get the theme manifest by forcing xml load
+                    try {
+                        $aTemplatesWithoutDB['valid'][$sName] = Template::getTemplateConfiguration($sName, null, null, true);
+                        if (empty($aTemplatesWithoutDB['valid'][$sName]->config)) {
+                            unset($aTemplatesWithoutDB['valid'][$sName]);
+                            $aTemplatesWithoutDB['invalid'][$sName]['error'] = gT('Invalid theme configuration file');
+                        }
+                    } catch (Exception $e) {
+                        unset($aTemplatesWithoutDB['valid'][$sName]);
+                        $aTemplatesWithoutDB['invalid'][$sName]['error'] = $e->getMessage();
+                    }
                 }
             }
-            self::$aTemplatesWithoutDB = $aTemplatesWithoutDB;
         }
-
-        return self::$aTemplatesWithoutDB;
+        return $aTemplatesWithoutDB;
     }
 
     /**
@@ -1025,7 +1138,6 @@ class TemplateConfig extends CActiveRecord
      */
     protected function getFilesToLoad($oTemplate, $sType)
     {
-        $aFiles        = array();
         $aFiles        = $this->getFilesTo($oTemplate, $sType, 'add');
         $aReplaceFiles = $this->getFilesTo($oTemplate, $sType, 'replace');
         $aFiles        = array_merge($aFiles, $aReplaceFiles);

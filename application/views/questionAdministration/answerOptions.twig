@@ -6,7 +6,7 @@
 
 <!-- Loop all language, and then hide all but the current selected one with JS. -->
 {% for lang in allLanguages %}
-    <div class="lang-hide lang-{{ lang }}">
+    <div class="lang-hide lang-{{ lang }} {{ first ? 'base-lang' : 'extra-lang' }}">
         {% for scale_id in range(0, scalecount - 1) %}
 
             {% set position = 1 %}
@@ -43,7 +43,7 @@
 
                             <th class='col-lg-8'>
                                 {{ gT("Answer options") }}
-                                <i class="fa fa-globe" data-bs-toggle="tooltip" title="{{ "This setting is localized" | gT }}"></i>
+                                <i class="ri-earth-fill" data-bs-toggle="tooltip" title="{{ "This setting is localized" | gT }}"></i>
                             </th>
 
                             <th class='col-lg-1'>
@@ -106,7 +106,7 @@
                     </button>
                 {% endif %}
 
-                <button {{ disabled }}  id='btnquickadd_{{ lang }}_{{ scale_id }}' data-scale-id="{{ scale_id }}" class='btn btn-outline-secondary btnquickadd pull-right' type='button'  data-bs-toggle="modal" data-bs-target="#quickaddModal" data-scale-id="{{ scale_id }}">
+                <button {{ disabled }}  id='btnquickadd_{{ lang }}_{{ scale_id }}' data-scale-id="{{ scale_id }}" class='btn btn-outline-secondary btnquickadd float-end' type='button'  data-bs-toggle="modal" data-bs-target="#quickaddModal" data-scale-id="{{ scale_id }}">
                     {{ gT('Quick add') }}
                 </button>
             </div>

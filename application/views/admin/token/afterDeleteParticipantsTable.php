@@ -6,7 +6,7 @@
 <div class="side-body <?php echo getSideBodyClass(false); ?>">
     <div class="row welcom survey-action">
         <div class="col-12 content-right">
-            <div class="jumbotron message-box">
+            <div class="card card-primary">
                 <h3 class="lead"><?php eT('Survey participants table deleted'); ?></h3>
                 <br /> <br />
                 <p>
@@ -18,13 +18,10 @@
                     <br /> <br />
                     <?php eT("You can switch back to closed-access mode at any time. Navigate to Settings --> Survey participants and click on the 'Switch to closed-access mode' button."); ?>
                     <br /><br />
-                    <input
+                    <a
                         class="btn btn-outline-secondary"
-                        type="submit"
-                        value="<?php eT('Main Admin Screen'); ?>"
-                        onclick="window.open(
-                            '<?php echo $this->createUrl("surveyAdministration/view/surveyid/{$iSurveyId}"); ?>',
-                            '_top');" />
+                        href="<?php echo $this->createUrl("surveyAdministration/view/surveyid/{$iSurveyId}"); ?>"
+                    ><?php eT('Main Admin Screen'); ?></a>
             </div>
         </div>
     </div>

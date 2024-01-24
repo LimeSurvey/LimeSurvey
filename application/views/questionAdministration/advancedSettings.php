@@ -1,8 +1,9 @@
+<div id="advanced-options-container">
 <?php foreach ($advancedSettings as $category => $settings) : ?>
-    <div class="accordion-item panel-advancedquestionsettings col-12" id="<?= CHtml::getIdByName($category); ?>">
+    <div class="accordion-item panel-advancedquestionsettings border-top-0 rounded-0" id="<?= CHtml::getIdByName($category); ?>">
         <h2 class="accordion-header" id="<?= CHtml::getIdByName($category); ?>-heading">
             <button
-                class="selector--questionEdit-collapse accordion-button collapsed"
+                class="selector--questionEdit-collapse accordion-button collapsed rounded-0"
                 id="button-collapse-<?= CHtml::getIdByName($category); ?>"
                 role="button"
                 type="button"
@@ -34,3 +35,4 @@
         </div>
     </div>
 <?php endforeach; ?>
+</div>

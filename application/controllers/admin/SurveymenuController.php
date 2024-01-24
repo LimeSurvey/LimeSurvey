@@ -6,7 +6,22 @@
 class SurveymenuController extends SurveyCommonAction
 {
     /**
+     * SurveymenuController Constructor
+     * @param $controller
+     * @param $id
+     **/
+    public function __construct($controller, $id)
+    {
+        parent::__construct($controller, $id);
+
+        if (!Permission::model()->hasGlobalPermission('settings', 'read')) {
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
+        }
+    }
+
+    /**
      * @return string[] action filters
+     * @todo: Review if this code is actually running.
      */
     public function filters()
     {
@@ -53,11 +68,11 @@ class SurveymenuController extends SurveyCommonAction
             Yii::app()->user->setFlash('error', gT("Access denied"));
             $this->getController()->redirect(Yii::app()->createUrl('/admin'));
         }
-
+        $id = (int) $id;
         if ($id != 0) {
-                    $model = $this->loadModel($id);
+            $model = Surveymenu::model()->findByPk($id);
         } else {
-                    $model = new Surveymenu();
+            $model = new Surveymenu();
         }
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
@@ -124,7 +139,7 @@ class SurveymenuController extends SurveyCommonAction
             $this->getController()->redirect(Yii::app()->createUrl('/admin'));
         }
 
-        $aSurveyMenuIds = json_decode(Yii::app()->request->getPost('sItems'));
+        $aSurveyMenuIds = json_decode(Yii::app()->request->getPost('sItems', '')) ?? [];
         $aResults = array();
         $oBaseModel = Surveymenu::model();
         if (Permission::model()->hasGlobalPermission('settings', 'update')) {
@@ -183,14 +198,18 @@ class SurveymenuController extends SurveyCommonAction
         }
 
         if (Yii::app()->request->isPostRequest) {
-            $aSurveyMenuIds = json_decode(Yii::app()->request->getPost('sItems'));
+            $aSurveyMenuIds = json_decode(Yii::app()->request->getPost('sItems', '')) ?? [];
             $success = [];
             foreach ($aSurveyMenuIds as $menuid) {
-                $model = $this->loadModel($menuid);
-                $success[$menuid] = $model->delete();
+                $model = Surveymenu::model()->findByPk((int)$menuid);
+                $success[$menuid] = false;
+                if ($model !== null) {
+                    $model->delete();
+                    $success[$menuid] = true;
+                }
             }
 
-            $debug = isset($userConfig['config']['debug']) ? $userConfig['config']['debug'] : 0;
+            $debug = App()->getConfig('debug');
             $returnData = array(
                 'data' => [
                     'success' => $success,
@@ -226,13 +245,16 @@ class SurveymenuController extends SurveyCommonAction
             Yii::app()->user->setFlash('error', gT("Access denied"));
             $this->getController()->redirect(Yii::app()->createUrl('/admin'));
         }
+        $debug = App()->getConfig('debug');
 
         if (Yii::app()->request->isPostRequest) {
             $menuid = Yii::app()->request->getPost('menuid', 0);
+            $model = Surveymenu::model()->findByPk((int)$menuid);
             $success = false;
-            $model = $this->loadModel($menuid);
-            $success = $model->delete();
-            $debug = isset($userConfig['config']['debug']) ? $userConfig['config']['debug'] : 0;
+            if ($model !== null) {
+                $model->delete();
+                $success = true;
+            }
             $returnData = array(
                 'data' => [
                     'success' => $success,
@@ -263,52 +285,27 @@ class SurveymenuController extends SurveyCommonAction
      */
     public function restore()
     {
+        $this->requirePostRequest();
+
         if (!(Permission::model()->hasGlobalPermission('settings', 'delete') && Permission::model()->hasGlobalPermission('settings', 'update'))) {
             Yii::app()->user->setFlash('error', gT("Access denied"));
             $this->getController()->redirect(Yii::app()->createUrl('/admin'));
         }
 
-        if (Yii::app()->request->isPostRequest) {
-            //Check for permission!
-            if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
-                $debug = isset($userConfig['config']['debug']) ? $userConfig['config']['debug'] : 0;
-                $returnData = array(
-                    'data' => [
-                        'success' => $success,
-                        'redirect' => false,
-                        'settings' => array(
-                            'extrasettings' => false,
-                            'parseHTML' => false,
-                        ),
-                        'message' => gT("You don't have the right to restore the settings to default")
-                    ]
-                );
+        $model = Surveymenu::model();
 
-                if ($debug > 0) {
-                    $returnData['data']['debug'] = [$model, $_POST];
-                    $returnData['data']['debugErrors'] = $model->getErrors();
-                }
-
-                return Yii::app()->getController()->renderPartial(
-                    '/admin/super/_renderJson',
-                    $returnData,
-                    false,
-                    false
-                );
-            }
-            //get model to do the work
-            $model = Surveymenu::model();
-            $success = $model->restoreDefaults();
-            $debug = isset($userConfig['config']['debug']) ? $userConfig['config']['debug'] : 0;
+        //Check for permission!
+        if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
+            $debug = App()->getConfig('debug');
             $returnData = array(
                 'data' => [
-                    'success' => $success,
+                    'success' => 0,
                     'redirect' => false,
                     'settings' => array(
                         'extrasettings' => false,
                         'parseHTML' => false,
                     ),
-                    'message' =>  ($success ? gT("Default survey menus restored.") : gT("Something went wrong!"))
+                    'message' => gT("You don't have the right to restore the settings to default")
                 ]
             );
 
@@ -324,6 +321,32 @@ class SurveymenuController extends SurveyCommonAction
                 false
             );
         }
+        //get model to do the work
+        $success = $model->restoreDefaults();
+        $debug = App()->getConfig('debug');
+        $returnData = array(
+            'data' => [
+                'success' => $success,
+                'redirect' => false,
+                'settings' => array(
+                    'extrasettings' => false,
+                    'parseHTML' => false,
+                ),
+                'message' =>  ($success ? gT("Default survey menus restored.") : gT("Something went wrong!"))
+            ]
+        );
+
+        if ($debug > 0) {
+            $returnData['data']['debug'] = [$model, $_POST];
+            $returnData['data']['debugErrors'] = $model->getErrors();
+        }
+
+        return Yii::app()->getController()->renderPartial(
+            '/admin/super/_renderJson',
+            $returnData,
+            false,
+            false
+        );
     }
 
     /**
@@ -332,6 +355,7 @@ class SurveymenuController extends SurveyCommonAction
      * @param integer $id the ID of the model to be loaded
      * @return Surveymenu the loaded model
      * @throws CHttpException
+     * @deprecated do not use this function anymore
      */
     public function loadModel($id)
     {
@@ -359,6 +383,7 @@ class SurveymenuController extends SurveyCommonAction
      **/
     public function index()
     {
+        // Permission check is done in the constructor.
         $this->getController()->redirect(array('admin/menus/sa/view'));
     }
 
@@ -368,6 +393,8 @@ class SurveymenuController extends SurveyCommonAction
      */
     public function view()
     {
+        // Permission check is done in the constructor.
+
         $aData = array();
         $aData['model'] = Surveymenu::model();
 
@@ -381,24 +408,22 @@ class SurveymenuController extends SurveyCommonAction
         }
         $aData['pageSize'] = Yii::app()->user->getState('pageSize', (int) Yii::app()->params['defaultPageSize']);
 
-        // Page Title Green Bar
-        $aData['pageTitle'] = gT('Survey menus');
 
-        // White Bar
-        $aData['fullpagebar'] = [
-            'menus' => [
-                'buttons' => [
-                    'addMenu' => true,
-                    'addMenuEntry' => true,
-                    'reset' => Permission::model()->hasGlobalPermission('superadmin', 'read'),
-                    'reorder' => true,
-                ],
+        $aData['topbar']['title'] = gT('Survey menus');
+        $aData['topbar']['backLink'] = App()->createUrl('admin/index');
+
+        $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
+            '/admin/surveymenu/partial/topbarBtns/rightSideButtons',
+            [
+                'resetPermission' => Permission::model()->hasGlobalPermission('superadmin', 'read')
             ],
-            'returnbutton' => [
-                'text' => gT('Back'),
-                'url' => 'admin/index',
-            ],
-        ];
+            true
+        );
+        $aData['topbar']['middleButtons'] = Yii::app()->getController()->renderPartial(
+            '/admin/surveymenu/partial/topbarBtns/leftSideButtons',
+            [],
+            true
+        );
 
         App()->getClientScript()->registerPackage('surveymenufunctions');
         $this->renderWrappedTemplate(null, array('surveymenu/index'), $aData);

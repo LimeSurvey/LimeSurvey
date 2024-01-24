@@ -6,6 +6,7 @@
  *
  * @var $name
  * @var $anscount
+ * @var $othertext
  */
  #}
 <!-- Multiple Choice -->
@@ -23,7 +24,7 @@
 
             {% set rowTemplate = aRow.other ? './survey/questions/answer/multiplechoice/rows/answer_row_other.twig' : './survey/questions/answer/multiplechoice/rows/answer_row.twig' %}
             <!-- Row {{loop.index}} -->
-            {% include rowTemplate with aRow only %}
+            {% include rowTemplate with aRow %}
 
         {% endfor %}
     </ul>

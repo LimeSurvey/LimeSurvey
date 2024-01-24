@@ -234,10 +234,13 @@ class QuestionGroupEditorTest extends TestBaseClassWeb
                 $this->assertNotEmpty($iframe);
                 // Switch to question's CKEditor iframe
                 self::$webDriver->switchTo()->frame($iframe);
-                // Edit the question text
-                $question = self::$webDriver->findElement(WebDriverBy::tagName('body'));
-                sleep(2);
-                $question->clear()->sendKeys($text);
+
+                // Edit the text
+                $body = self::$webDriver->findElement(WebDriverBy::tagName('body'));
+                $body->click();
+                $body->clear();
+                $body->click();
+                $body->sendKeys($text);
                 // Switch back to main content
                 self::$webDriver->switchTo()->defaultContent();
                 break;

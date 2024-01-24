@@ -2,6 +2,7 @@
 
 namespace ls\tests;
 
+use Survey;
 use Yii;
 use Exception;
 use Facebook\WebDriver\Exception\WebDriverException;
@@ -140,7 +141,8 @@ class TestHelper extends TestCase
         $survey->refurl = '';
         $survey->savetimings = '';
         $survey->save();
-        \Survey::model()->resetCache();  // Make sure the saved values will be picked up
+        // Make sure the saved values will be picked up
+        Survey::model()->resetCache();
 
         $surveyActivator = new SurveyActivator($survey);
         $result = $surveyActivator->activate();
@@ -376,7 +378,7 @@ class TestHelper extends TestCase
      * @param $exception
      * @param $seen      - array passed to recursive calls to accumulate trace lines already seen
      *                     leave as NULL when calling this function
-     * @return array of strings, one entry per trace line
+     * @return string
      */
     public function javaTrace($ex, $seen = null)
     {
@@ -437,8 +439,10 @@ class TestHelper extends TestCase
                 $address = getenv('WEBDRIVERHOST') ?: 'localhost';
                 $host = 'http://' . $address . ':' . TestBaseClassWeb::$webPort . '/wd/hub'; // this is the default
                 $capabilities = DesiredCapabilities::firefox();
+                $capabilities->setCapability('acceptInsecureCerts', true);
                 $profile = new FirefoxProfile();
                 $profile->setPreference(FirefoxPreferences::READER_PARSE_ON_LOAD_ENABLED, false);
+
                 // Open target="_blank" in new tab.
                 $profile->setPreference('browser.link.open_newwindow', 3);
 
@@ -447,7 +451,7 @@ class TestHelper extends TestCase
 
                 // Further settings to automatically download exported theme files.
                 // Test testExportAndImport() in ThemeControllerTest depends on these lines.
-                $profile->setPreference('browser.download.dir', BASEPATH . '../tmp/');
+                $profile->setPreference('browser.download.dir', ROOT . '/tmp/');
                 $profile->setPreference('browser.download.panel.shown', false);
                 $profile->setPreference('browser.helperApps.neverAsk.saveToDisk', 'application/force-download');
 
@@ -460,8 +464,12 @@ class TestHelper extends TestCase
                 $profile->setPreference('browser.tabs.remote.autostart', false);
                 $profile->setPreference('browser.tabs.remote.autostart.2', false);
 
+                $capabilities->setCapability('acceptSslCerts', true);
+                $capabilities->setCapability('acceptInsecureCerts', true);
+
                 $capabilities->setCapability(FirefoxDriver::PROFILE, $profile);
                 $webDriver = LimeSurveyWebDriver::create($host, $capabilities, 5000);
+
                 $success = true;
             } catch (WebDriverException $ex) {
                 $tries++;

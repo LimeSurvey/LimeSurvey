@@ -5,18 +5,11 @@
 
 // DO NOT REMOVE This is for automated testing to validate we see that page
 echo viewHelper::getViewTestTag('globalsettings');
-
-App()->getClientScript()->registerPackage('jquery-selectboxes');
-App()->getClientScript()->registerScript('GlobalSettingsBSSwitcher', "LS.renderBootstrapSwitch();", LSYii_ClientScript::POS_POSTSCRIPT);
-
 ?>
-<?php if (YII_DEBUG): ?>
-    <p class="alert alert-info "> this view is rendered from globall setting module. This message is shown only when debug mode is on </p>
-<?php endif; ?>
 <script type="text/javascript">
     var msgCantRemoveDefaultLanguage = '<?php eT("You can't remove the default language.", 'js'); ?>';
 </script>
-<div class="container-fluid welcome full-page-wrapper ls-space margin left-15 right-15">
+<div class="welcome full-page-wrapper ls-space margin left-15 right-15">
     <ul class="nav nav-tabs" id="settingTabs">
         <li role="presentation" class="nav-item"><a class="nav-link active" role="tab" data-bs-toggle="tab" href='#overview'><?php eT("Overview"); ?></a></li>
         <li role="presentation" class="nav-item"><a class="nav-link" role="tab" data-bs-toggle="tab" href='#general'><?php eT("General"); ?></a></li>

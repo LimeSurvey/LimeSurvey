@@ -64,7 +64,7 @@
                 );
 
                 $aHtmlOptions = array(
-                    'empty'    => gT('<No default value>'),
+                    'empty'    => gT('(No default value)'),
                     'class'    => $sElement_id . ' form-control',
                     'onchange' => '// show EM Value Field
                                    if ($(this).val() == "EM"){

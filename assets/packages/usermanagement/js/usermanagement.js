@@ -67,7 +67,7 @@ var UserManagement = function () {
 
     var startSubmit = function () {
         $('#submitForm').append(
-            '<i class="fa fa-spinner fa-pulse UserManagement-spinner"></i>'
+            '<i class="ri-loader-2-fill remix-pulse UserManagement-spinner"></i>'
         ).prop('disabled', true);
     };
     var stopSubmit = function () {
@@ -99,7 +99,7 @@ var UserManagement = function () {
                         wireExportDummyUser();
                         if (!result.hasOwnProperty('html')) {
                             triggerModalClose();
-                            window.LS.ajaxAlerts(result.message, 'success');
+                            window.LS.ajaxAlerts(result.message, 'success', {showCloseButton: true});
                             if (result.hasOwnProperty('href')) {
                                 setTimeout(function() {
                                     const modalSize = result.hasOwnProperty('modalsize') ? result.modalsize : '';
@@ -115,12 +115,21 @@ var UserManagement = function () {
                         });
                         return;
                     }
-                    $('#UserManagement--errors').html(
-                        "<div class='alert alert-danger'>" + result.errors + "</div>"
+                    $('#UserManagement--errors').html(LS.LsGlobalNotifier.createAlert(result.errors, 'danger', {showCloseButton: true})
                     ).removeClass('d-none');
                 },
-                error: function () {
-                    alert('An error occured while trying to save, please reload the page Code:1571926261195');
+                error: function (request, status, error) {
+                    if (request && request.responseJSON && request.responseJSON.message) {
+                        $('#UserManagement--errors').html(
+                            LS.LsGlobalNotifier.createAlert(
+                                request.responseJSON.message,
+                                'danger',
+                                {showCloseButton: true}
+                            )
+                        ).removeClass('d-none');
+                    } else {
+                        alert('An error occured while trying to save, please reload the page Code:1571926261195');
+                    }
                 }
             });
         });
@@ -183,7 +192,7 @@ var UserManagement = function () {
 
         $('.specific-permission-selector').on('click', function () {
             var thisRow = $(this).closest('tr');
-            if (thisRow.find('.specific-settings-block input:checked').size() == thisRow.find('.extended input').size()) {
+            if (thisRow.find('.specific-settings-block input:checked').size() == thisRow.find('.specific-settings-block input').size()) {
                 thisRow.find('.general-row-selector').prop('checked', true);
                 thisRow.find('.general-row-selector').removeClass('incomplete-selection');
             } else if (thisRow.find('.specific-settings-block input:checked').size() == 0) {
@@ -266,9 +275,40 @@ var UserManagement = function () {
     var wireRoleSet = function () {
         $('#UserManagement--modalform').find('select').each(
             function(i,item) {
-                $(item).select2();
+                jQuery(item).select2({'theme':'bootstrap\x2D5'});
             }
         );
+    }
+
+    var wireDatePicker = function () {
+        const expires = document.getElementById('expires');
+        let cleared = false;
+        initDatePicker(expires);
+
+        const expiresDatePicker = pickers['picker_expires'];
+
+        // Avoid using the current date.
+        expiresDatePicker.optionsStore.options.useCurrent = false;
+
+        // Set the default date to one year in the future.
+        const date = new Date();
+        date.setFullYear(date.getFullYear() + 1);
+        expiresDatePicker.optionsStore.options.defaultDate = tempusDominus.DateTime.convert(date);
+
+        // Change the behavior of the clear button a little.
+        $(expires).on('change.td', function (event) {
+            if (event.isClear === true) {
+                $('.tempus-dominus-widget').removeClass('show');
+                cleared = true;
+            }
+        });
+
+        $(expires).on('show.td', function () {
+            if (cleared === true) {
+                expiresDatePicker.dates.setValue(tempusDominus.DateTime.convert(date));
+                cleared = false;
+            }
+        });
     }
 
     var applyModalHtml = function (html) {
@@ -278,6 +318,7 @@ var UserManagement = function () {
         wireTemplatePermissions();
         wireRoleSet();
         wireForm();
+        wireDatePicker();
     }
 
 
@@ -297,9 +338,21 @@ var UserManagement = function () {
         $('.UserManagement--action--openmodal').on('click', function () {
             var href = $(this).data('href');
             var modalSize = $(this).data('modalsize');
-            openModal(href, modalSize);
+
+            if ($(this).attr("data-stackmodal") !== undefined) {
+                var stackablemodal = $(this).data('stackmodal');
+                var modal = $(stackablemodal);
+                var modalBs = new bootstrap.Modal(modal);
+                modalBs.show();
+
+                modal.off('hidden.bs.modal').on('hidden.bs.modal', function () {
+                    openModal(href, modalSize);
+                });
+                $('.modal-backdrop').remove();
+            } else {
+                openModal(href, modalSize);
+            }
         });
-        bindListItemclick();
     };
 
     var bindModals = function () {
