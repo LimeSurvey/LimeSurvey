@@ -8,10 +8,7 @@ body {
   min-height: 100vh;
   flex-direction: column;
 }
-.full-page-wrapper {
-  // flex: 1;
-  padding-bottom: 70px;
-}
+
 .selector_openSharePanel {
   display: inline-block;
 }
@@ -194,7 +191,7 @@ blockquote {
 }
 
 #usermanagement--identity-gridPanel tr.disabled {
-  color            : $g-400;
-  pointer-events   : auto;
-  cursor           : not-allowed;
+  color: $g-400;
+  pointer-events: auto;
+  cursor: not-allowed;
 }

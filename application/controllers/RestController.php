@@ -13,7 +13,6 @@
  *
  */
 
-
 use LimeSurvey\Api\Rest\Endpoint\EndpointFactory;
 use LimeSurvey\DI;
 
@@ -23,10 +22,10 @@ class RestController extends LSYii_Controller
     /**
      * Run REST controller action.
      *
-     * @param string $actionID
+     * @param string $actionID action ID
      * @return void
      */
-    public function run($actionID = null)
+    public function run($actionID)
     {
         $endpointFactory = DI::getContainer()
             ->get(EndpointFactory::class);

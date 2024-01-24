@@ -4,6 +4,7 @@ namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
 use DI\DependencyException;
 use DI\NotFoundException;
+use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\OpHandlerExceptionTrait;
 use SurveyLanguageSetting;
 use LimeSurvey\Api\Command\V1\Transformer\{
     Input\TransformerInputSurveyLanguageSettings,
@@ -25,6 +26,7 @@ use LimeSurvey\ObjectPatch\{
 class OpHandlerLanguageSettingsUpdate implements OpHandlerInterface
 {
     use OpHandlerSurveyTrait;
+    use OpHandlerExceptionTrait;
 
     protected string $entity;
     protected SurveyLanguageSetting $model;
@@ -43,7 +45,6 @@ class OpHandlerLanguageSettingsUpdate implements OpHandlerInterface
     {
         $isUpdateOperation = $op->getType()->getId() === OpTypeUpdate::ID;
         $isLanguageSettingEntity = $op->getEntityType() === 'languageSetting';
-
         return $isUpdateOperation && $isLanguageSettingEntity;
     }
 
@@ -55,10 +56,7 @@ class OpHandlerLanguageSettingsUpdate implements OpHandlerInterface
      *      {
      *          "entity": "languageSetting",
      *          "op": "update",
-     *          "id": {
-     *              "sid": 123456,  //todo do we still need the sid here?
-     *              "language": "de"
-     *          },
+     *          "id": "de",
      *          "props": {
      *              "title": "Beispielfragebogen"
      *          }
@@ -71,9 +69,7 @@ class OpHandlerLanguageSettingsUpdate implements OpHandlerInterface
      *      {
      *          "entity": "languageSetting",
      *          "op": "update",
-     *          "id": {
-     *              "sid": 123456  //todo do we still need the sid here?
-     *          },
+     *          "id": null,
      *          "props": {
      *              "de": {
      *                  "title": "Beispielfragebogen"
@@ -98,52 +94,45 @@ class OpHandlerLanguageSettingsUpdate implements OpHandlerInterface
         $languageSettings = $diContainer->get(
             LanguageSettings::class
         );
-
         $languageSettings->update(
             $this->getSurveyIdFromContext($op),
-            $this->getLanguageSettingsData($op)
+            $this->getLanguageSettingsData($op) ?? []
         );
     }
 
     /**
      * Analyzes the patch, builds and returns the correct data structure
      * @param OpInterface $op
-     * @return array
+     * @return ?mixed
      * @throws OpHandlerException
      */
     public function getLanguageSettingsData(OpInterface $op)
     {
-        $data = [];
+        $transformOps = ['operation' => $op->getType()->getId()];
+        $props = [];
         $entityId = $op->getEntityId();
-        if (is_array($entityId) && array_key_exists('language', $entityId)) {
+        if (!empty($entityId)) {
             // indicator for variant 1
-            $data[$entityId['language']] = $this->getTransformedProps(
-                $op,
-                $op->getProps()
-            );
+            $props[$entityId] = $op->getProps();
         } else {
             // variant 2
-            foreach ($op->getProps() as $language => $props) {
-                $data[$language] = $this->getTransformedProps($op, $props);
-            }
+            $props = $op->getProps();
         }
-
-        return $data;
-    }
-
-    /**
-     * @param OpInterface $op
-     * @param array|null $props
-     * @return mixed
-     * @throws OpHandlerException
-     */
-    private function getTransformedProps(OpInterface $op, ?array $props)
-    {
-        $transformedProps = $this->transformer->transform($props);
-        if ($props === null || $transformedProps === null) {
-            $this->throwNoValuesException($op);
+        foreach (array_keys($props) as $language) {
+            $props[$language]['sid'] = $this->getSurveyIdFromContext($op);
+            $props[$language]['language'] = $language;
         }
-        return $transformedProps;
+        $this->throwTransformerValidationErrors(
+            $this->transformer->validateAll(
+                $props,
+                $transformOps
+            ),
+            $op
+        );
+        return $this->transformer->transformAll(
+            $props,
+            $transformOps
+        );
     }
 
     /**

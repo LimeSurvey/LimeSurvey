@@ -4,7 +4,6 @@ namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestionAttribute;
 use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\{
-    OpHandlerQuestionTrait,
     OpHandlerSurveyTrait
 };
 use LimeSurvey\Models\Services\{
@@ -23,7 +22,6 @@ use LimeSurvey\ObjectPatch\{
 class OpHandlerQuestionAttributeUpdate implements OpHandlerInterface
 {
     use OpHandlerSurveyTrait;
-    use OpHandlerQuestionTrait;
 
     protected string $entity;
     protected AttributesService $attributesService;
@@ -98,12 +96,7 @@ class OpHandlerQuestionAttributeUpdate implements OpHandlerInterface
     {
         $surveyId = $this->getSurveyIdFromContext($op);
         $this->questionAggregateService->checkUpdatePermission($surveyId);
-        $preparedData = $this->prepareAdvancedSettings(
-            $op,
-            $this->transformer,
-            $op->getProps(),
-            ['attributes']
-        );
+        $preparedData = $this->transformer->transformAll($op->getProps());
         $questionId = $op->getEntityId();
         $this->attributesService->saveAdvanced(
             $this->questionService->getQuestionBySidAndQid(
@@ -121,7 +114,7 @@ class OpHandlerQuestionAttributeUpdate implements OpHandlerInterface
      */
     public function isValidPatch(OpInterface $op): bool
     {
-        // prepareAdvancedSettings is taking care of validation
+        // transformAll is taking care of validation
         return true;
     }
 }

@@ -2,9 +2,12 @@
 
 namespace LimeSurvey\Api\Command\V1\Transformer\Input;
 
-use LimeSurvey\Api\Transformer\{Formatter\FormatterMandatory,
+use LimeSurvey\Api\Transformer\{
     Transformer,
-    Formatter\FormatterYnToBool};
+    TransformerException,
+    Formatter\FormatterMandatory,
+    Formatter\FormatterYnToBool
+};
 
 class TransformerInputQuestion extends Transformer
 {
@@ -17,8 +20,8 @@ class TransformerInputQuestion extends Transformer
             'qid' => ['type' => 'int'],
             'parentQid' => ['key' => 'parent_qid', 'type' => 'int'],
             'sid' => ['type' => 'int'],
-            'type' => true,
-            'title' => true,
+            'type' => ['required' => 'create'],
+            'title' => ['required' => 'create'],
             'preg' => true,
             'other' => ['formatter' => $formatterYn],
             'mandatory' => ['formatter' => $formatterMandatory],
@@ -34,7 +37,15 @@ class TransformerInputQuestion extends Transformer
             'gid' => ['type' => 'int'],
             'relevance' => true,
             'sameScript' => ['key' => 'same_script', 'formatter' => $formatterYn],
-            'tempId' => true
+            'tempId' => ['required' => 'create']
         ]);
+    }
+
+    public function transform($data, $options = [])
+    {
+        if (empty($data)) {
+            throw new TransformerException('Data can not be empty');
+        }
+        return parent::transform($data, $options);
     }
 }

@@ -134,17 +134,17 @@ class SaveService
                 $data['question']
             );
 
-        if (isset($input['answeroptions'])) {
+        if (isset($data['answeroptions'])) {
             $this->answersService->save(
                 $question,
-                $input['answeroptions']
+                $data['answeroptions']
             );
         }
 
-        if (isset($input['subquestions'])) {
+        if (isset($data['subquestions'])) {
             $this->subQuestionsService->save(
                 $question,
-                $input['subquestions']
+                $data['subquestions']
             );
         }
 

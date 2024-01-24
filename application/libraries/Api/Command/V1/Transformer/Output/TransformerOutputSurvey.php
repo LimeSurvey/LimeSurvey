@@ -12,7 +12,6 @@ use LimeSurvey\Api\Transformer\{
 class TransformerOutputSurvey extends TransformerOutputActiveRecord
 {
     private TransformerOutputSurveyLanguageSettings $transformerOutputSurveyLanguageSettings;
-
     /**
      *  @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
@@ -26,10 +25,13 @@ class TransformerOutputSurvey extends TransformerOutputActiveRecord
         $this->setDataMap([
             'sid' => ['type' => 'int'],
             'gsid' => ['type' => 'int'],
+            'owner_id' => ['key' => 'ownerId', 'type' => 'int'],
             'active' => ['formatter' => $formatterYn],
+            'admin' => true,
+            'adminemail' => 'adminEmail',
             'language'  => true,
-            'expires' => ['formatter' => $formatterDateTime],
-            'startdate' => ['key' => 'startDate', 'formatter' => $formatterDateTime],
+            'expires' => ['key' => 'expires'],
+            'startdate' => ['key' => 'startDate'],
             'anonymized' => ['formatter' => $formatterYn],
             'savetimings' => ['key' => 'saveTimings', 'formatter' => $formatterYn],
             'additional_languages' => 'additionalLanguages',
@@ -83,18 +85,21 @@ class TransformerOutputSurvey extends TransformerOutputActiveRecord
         ]);
     }
 
-    public function transform($data)
+    public function transform($data, $options = [])
     {
+        $options = $options ?? [];
         $survey = null;
         if (!$data instanceof Survey) {
             return null;
         }
         $survey = parent::transform($data);
         $survey['defaultLanguage'] = $this->transformerOutputSurveyLanguageSettings->transform(
-            $data->defaultlanguage
+            $data->defaultlanguage,
+            $options
         );
         $survey['languageSettings'] = $this->transformerOutputSurveyLanguageSettings->transformAll(
-            $data->languagesettings
+            $data->languagesettings,
+            $options
         );
         return $survey;
     }

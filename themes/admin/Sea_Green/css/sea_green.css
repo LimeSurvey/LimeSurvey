@@ -11111,10 +11111,6 @@ body {
   flex-direction: column;
 }
 
-.full-page-wrapper {
-  padding-bottom: 70px;
-}
-
 .selector_openSharePanel {
   display: inline-block;
 }

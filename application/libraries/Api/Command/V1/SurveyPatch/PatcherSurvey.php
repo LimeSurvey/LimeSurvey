@@ -2,12 +2,14 @@
 
 namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
-use LimeSurvey\Api\Command\V1\SurveyPatch\Response\{ErronousOperationItem,
+use LimeSurvey\Api\Command\V1\SurveyPatch\Response\{
+    ErronousOperationItem,
     ErronousOperations,
     TempIdMapItem,
     TempIdMapping
 };
-use LimeSurvey\ObjectPatch\{ObjectPatchException,
+use LimeSurvey\ObjectPatch\{
+    ObjectPatchException,
     Op\OpStandard,
     OpHandler\OpHandlerException,
     Patcher
@@ -122,7 +124,7 @@ class PatcherSurvey extends Patcher
                 $op = OpStandard::factory(
                     $patchOpData['entity'] ?? '',
                     $patchOpData['op'] ?? '',
-                    $patchOpData['id'] ?? '',
+                    $patchOpData['id'] ?? null,
                     $patchOpData['props'] ?? [],
                     $context ?? []
                 );
@@ -135,7 +137,7 @@ class PatcherSurvey extends Patcher
                 } catch (\Exception $e) {
                     // add error message and full operation info to ErrorItemList
                     $erronousItem = new ErronousOperationItem(
-                        $e->getMessage(),
+                        $e->getMessage() . "\n" . $e->getTraceAsString(),
                         $patchOpData
                     );
                     $this->erronousOperations->addErronousOperationItem(
@@ -172,7 +174,10 @@ class PatcherSurvey extends Patcher
     {
         return array_merge(
             $this->tempIdMapping->getMappingResponseObject(),
-            ['erronousOperations' => $this->erronousOperations->getErronousOperationsObject()]
+            [
+                'erronousOperations'
+                    => $this->erronousOperations->getErronousOperationsObject()
+            ]
         );
     }
 }
