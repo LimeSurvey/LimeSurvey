@@ -205,6 +205,14 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['zh-Hans']['radixpoint'] = 0;
     $supportedLanguages['zh-Hans']['momentjs'] = 'zh-cn';
 
+    // Creole (Haiti)
+    $supportedLanguages['ht']['description'] = gT('Creole');
+    $supportedLanguages['ht']['nativedescription'] = 'Kreyòl';
+    $supportedLanguages['ht']['rtl'] = false;
+    $supportedLanguages['ht']['dateformat'] = 6;
+    $supportedLanguages['ht']['radixpoint'] = 1;
+    $supportedLanguages['ht']['cldr'] = 'fr_ht';
+
     // Chinese (Traditional - Hong Kong)
     $supportedLanguages['zh-Hant-HK']['description'] = gT('Chinese (Traditional - Hong Kong)');
     $supportedLanguages['zh-Hant-HK']['nativedescription'] = '&#32321;&#39636;&#20013;&#25991;&#35486;&#31995;';
