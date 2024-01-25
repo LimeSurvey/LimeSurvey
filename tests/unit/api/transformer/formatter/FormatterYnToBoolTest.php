@@ -4,7 +4,6 @@ namespace ls\tests\unit\api;
 
 use ls\tests\TestBaseClass;
 use LimeSurvey\Api\Transformer\Formatter\FormatterYnToBool;
-use LimeSurvey\Api\Transformer\Formatter\FormatterIntToBool;
 
 /**
  * @testdox API Formatter Y/N to Boolean
