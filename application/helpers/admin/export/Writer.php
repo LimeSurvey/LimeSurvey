@@ -13,6 +13,7 @@ abstract class Writer implements IWriter
     /** @var Translator $translator */
     protected $translator;
     public $filename;
+    public $languageCode;
     public $webfilename;
 
     protected function translate($key, $sLanguageCode)
