@@ -20,7 +20,7 @@ class FormatterMandatory extends FormatterYnToBool
      * @param ?mixed $value
      * @return ?mixed
      */
-    public function revert($value)
+    private function revert($value)
     {
         $string = parent::revert($value);
 
