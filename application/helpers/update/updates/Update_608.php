@@ -36,7 +36,7 @@ class Update_608 extends DatabaseUpdateBase
                         );
                     }
                 }
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 rollBackToTransactionBookmark('beforeThemeDelete');
             }
         }

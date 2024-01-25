@@ -23,13 +23,13 @@ class Update_406 extends DatabaseUpdateBase
         try {
             setTransactionBookmark();
             $this->db->createCommand()->dropIndex('{{idx1_participants}}', '{{participants}}');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             rollBackToTransactionBookmark();
         }
         try {
             setTransactionBookmark();
             $this->db->createCommand()->dropIndex('{{idx2_participants}}', '{{participants}}');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             rollBackToTransactionBookmark();
         }
         \alterColumn('{{participants}}', 'firstname', "text");
