@@ -16,8 +16,8 @@ class Update_622 extends DatabaseUpdateBase
         try {
             setTransactionBookmark();
             $this->db->createCommand()->createIndex('{{answers_idx}}', '{{answers}}', ['qid', 'code', 'scale_id'], false);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             rollBackToTransactionBookmark();
-        }        
+        }
     }
 }
