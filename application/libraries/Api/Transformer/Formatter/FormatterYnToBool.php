@@ -46,7 +46,7 @@ class FormatterYnToBool implements FormatterInterface
      * @param ?string $value
      * @return ?boolean
      */
-    private function apply($value)
+    protected function apply($value)
     {
         $lowercase = is_string($value)
             ? strtolower($value)
@@ -71,7 +71,7 @@ class FormatterYnToBool implements FormatterInterface
      * @param ?mixed $value
      * @return ?mixed
      */
-    private function revert($value)
+    protected function revert($value)
     {
         if (!is_bool($value)) {
             return null;

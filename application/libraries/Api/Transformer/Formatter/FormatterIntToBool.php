@@ -44,7 +44,7 @@ class FormatterIntToBool implements FormatterInterface
      * @param ?string $value
      * @return ?boolean
      */
-    private function apply($value)
+    protected function apply($value)
     {
         if ($value === null || $value === '') {
             return null;
@@ -63,7 +63,7 @@ class FormatterIntToBool implements FormatterInterface
      * @param ?mixed $value
      * @return ?mixed
      */
-    private function revert($value)
+    protected function revert($value)
     {
         $result = $this->apply($value);
         return is_bool($result) ? (int) $result : null;

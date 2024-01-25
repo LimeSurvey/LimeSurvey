@@ -40,7 +40,7 @@ class FormatterDateTimeToJson implements FormatterInterface
      * @param ?mixed $value
      * @return ?string
      */
-    private function apply($value)
+    protected function apply($value)
     {
         return $this->dateFormat(
             $value,
@@ -57,7 +57,7 @@ class FormatterDateTimeToJson implements FormatterInterface
      * @param ?mixed $value
      * @return ?string
      */
-    private function revert($value)
+    protected function revert($value)
     {
         return $this->dateFormat(
             $value,
@@ -76,7 +76,7 @@ class FormatterDateTimeToJson implements FormatterInterface
      * @param string $outputFormat
      * @return ?string
      */
-    private function dateFormat(
+    protected function dateFormat(
         $value,
         $inputTimeZone,
         $outputTimezone,
