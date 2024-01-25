@@ -52,15 +52,6 @@
     )
 }}
 
-<!-- Ajax value -->
-<!-- Needs to be set by javascript! Because if JavaScript is disabled, ajaxmode will completely fail! -->
-{{
-    registerScript("AJAXACTIVATE", "
-    $('#limesurvey').append('<input type=\"hidden\" name=\"ajax\" value=\"off\" id=\"ajax\" />');
-    ", "POS_POSTSCRIPT")
-}}
-
-
 <!-- Field Names -->
 <input type='hidden' name='fieldnames' value='{{ aSurveyInfo.hiddenfieldnames }}' id='fieldnames' />
 
