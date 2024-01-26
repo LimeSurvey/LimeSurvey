@@ -148,7 +148,7 @@ class SurveyObj
                 break;
 
             case Question::QT_O_LIST_WITH_COMMENT:   //DROPDOWN LIST WITH COMMENT
-                if (isset($answer)) {
+                if (!empty($answer)) {
                     //This is one of the dropdown list options.
                     $fullAnswer = $answer;
                 } else {
