@@ -162,7 +162,6 @@ class SubQuestionsService
             }
         }
         if (empty($subquestion)) {
-            // This should only happen if it's a new subquestion and the DI container fails to create an instance.
             throw new NotFoundException('Subquestion with id "' . $subquestionId . '" failed to process');
         }
         $subquestion->title = $data['code'];
