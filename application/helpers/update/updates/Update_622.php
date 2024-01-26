@@ -13,6 +13,11 @@ class Update_622 extends DatabaseUpdateBase
      */
     public function up(): void
     {
-        $this->db->createCommand()->createIndex('{{answers_idx}}', '{{answers}}', ['qid', 'code', 'scale_id'], false);
+        try {
+            setTransactionBookmark();
+            $this->db->createCommand()->createIndex('{{answers_idx}}', '{{answers}}', ['qid', 'code', 'scale_id'], false);
+        } catch (\Exception $e) {
+            rollBackToTransactionBookmark();
+        }
     }
 }

@@ -2057,6 +2057,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
             '/subviews/privacy/privacy_datasecurity_notice_label.twig',
             [
                 'dataSecurityNoticeLabel' => $dataSecurityNoticeLabel,
+                'sid' => $surveyId,
             ]
         );
     }

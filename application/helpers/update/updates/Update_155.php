@@ -13,7 +13,7 @@ class Update_155 extends DatabaseUpdateBase
         try {
             setTransactionBookmark();
             $this->db->createCommand()->renameColumn('{{surveys}}', 'showXquestions', 'showxquestions');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             rollBackToTransactionBookmark();
         }
     }
