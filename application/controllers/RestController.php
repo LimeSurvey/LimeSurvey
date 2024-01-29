@@ -27,6 +27,7 @@ class RestController extends LSYii_Controller
      *
      * @param string $actionID action ID
      * @return void
+     * @throws \Exception
      */
     public function run($actionID)
     {
