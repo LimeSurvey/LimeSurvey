@@ -34,6 +34,24 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.4.3 (build 240122) to 6.4.4 (build 240130) January 30, 2024
+-Fixed issue: Index cannot be set if already exists (Carsten Schmitz)
+-Fixed issue: Certain DB updates not skipped properly but end up in exception (Carsten Schmitz)
+-Fixed issue #CT-614: exporting responses in "Full answers" mode does not export the comment field of the "List with comment" question type (Patrick Teichmann)
+-Fixed issue #19331: Try to add a subquestion to a matrix type question throws an SQL error (#3686) (Gabriel Jenik)
+-Fixed issue #19251: Can't add Regex condition in survey (#3710) (Gabriel Jenik)
+-Fixed issue #18895: No way to add textarea with core config.xml (#3703) (Denis Chenu)
+#Updated translation: Slovak by dusanm, jelen1
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Czech by jelen1, slansky
+#Updated translation: Czech (Informal) by jelen1, slansky
+
+
 Changes from 6.4.2 (build 240115) to 6.4.3 (build 240122) January 22, 2024
 +New feature #19299: Unmask token field (#3673) (Denis Chenu)
 -Fixed issue: LimeSurvey getting slower as more answer options are across all surveys (Carsten Schmitz)
