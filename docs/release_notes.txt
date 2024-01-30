@@ -34,6 +34,10 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.6.52 (build 240123) to 5.6.53 (build 240131) January 30, 2024
+-Fixed issue #19372 : CDbException with Microsoft SQL Server and Group filter (#3706) (Denis Chenu)
+
+
 Changes from 5.6.51 (build 240116) to 5.6.52 (build 240123) January 22, 2024
 -Fixed issue #19352: Ranking advanced question type shows weird numbers in front of every item (#3702) (tiborpacalat)
 -Fixed issue #19274: Attribute encryption can not be turned OFF, it can only be turned on (#3671) (Gabriel Jenik)
