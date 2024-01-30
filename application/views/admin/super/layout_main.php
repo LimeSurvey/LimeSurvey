@@ -10,20 +10,20 @@
 $this->_showHeaders($aData);
 
 //The adminmenu bar will be generated from /admin/super/adminmenu.php
-$this->_showadminmenu($aData);
+$this->showadminmenu($aData);
 // Generated through /admin/usergroup/usergroupbar_view
-$this->_userGroupBar($aData);
+//$this->_userGroupBar($aData);
 
 echo "<!-- BEGIN LAYOUT_MAIN -->";
 
 // Generated through /admin/super/surveymanagerbar.php
-$this->_surveyManagerBar($aData);
+//$this->_surveyManagerBar($aData);
 
 // Generated through /admin/super/fullpagebar_view
-$this->_fullpagebar($aData);
+//$this->_fullpagebar($aData);
 
-$this->_updatenotification();
-$this->_notifications();
+$this->updatenotification();
+$this->notifications();
     
 //The load indicator for pjax
 echo ' <div id="pjax-file-load-container" class="ls-flex-row col-12"><div style="height:2px;width:0px;"></div></div>';

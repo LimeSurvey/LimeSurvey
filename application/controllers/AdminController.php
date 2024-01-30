@@ -481,6 +481,11 @@ class AdminController extends LSYii_Controller
         }
     }
 
+    public function getAdminHeader($meta = false, $return = false)
+    {
+        return $this->_getAdminHeader($meta, $return);
+    }
+
     /**
      * Prints Admin Footer
      *
