@@ -1189,6 +1189,13 @@ class QuestionAdministrationController extends LSBaseController
             return;
         }
 
+        // If there are warnings, we don't jump to the question.
+        // We need to show the warnings to the user, and they may be too important
+        // and/or too many to be shown in a flash message.
+        if (!empty($aImportResults['importwarnings'])) {
+            $jumptoquestion = false;
+        }
+
         unlink($sFullFilepath);
 
         $aData['aImportResults'] = $aImportResults;
