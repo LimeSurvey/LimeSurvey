@@ -61,13 +61,13 @@ if ((Yii::app()->request->getParam('popuppreview', false) !== false) && ($sid = 
         <!-- Modal Content -->
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title"><?php eT("Survey Preview"); ?></h1>
+                <h1 class="modal-title"><?php eT("Survey preview"); ?></h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
                 <div class="controls alert alert-filled-info">
                     <span class="ri-notification-2-line me-2"></span>
-                    <?php echo sprintf(gT("You can always make changes to the %s and customise questions of this %s"), "<a target='_blank' href='/themeOptions/updateSurvey?surveyid={$sid}&gsid=1'>" . sprintf(gT("theme")) . "</a>", "<a target='_blank' href='/questionAdministration/listQuestions?surveyid={$sid}'>" . sprintf(gT("template")) . "</a>"); ?>
+                    <?php echo sprintf(gT("You can always make changes to the %stheme%s and customise questions of this %stemplate%s"), "<a target='_blank' href='/themeOptions/updateSurvey?surveyid={$sid}&gsid=1'>", "</a>", "<a target='_blank' href='/questionAdministration/listQuestions?surveyid={$sid}'>", "</a>"); ?>
                 </div>
                 <div class="preview">
                     <iframe id="actual-preview" src="/<?php echo $sid; ?>?newtest=Y&lang=en&popuppreview=true"></iframe>

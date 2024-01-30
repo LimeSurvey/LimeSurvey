@@ -10,7 +10,7 @@ use LimeSurvey\DI;
 use ls\tests\TestBaseClass;
 
 use LimeSurvey\Models\Services\QuestionAggregateService\{
-    SubquestionsService,
+    SubQuestionsService,
     L10nService
 };
 
@@ -23,7 +23,7 @@ use LimeSurvey\Models\Services\Exception\{
 /**
  * @group services
  */
-class SubquestionsServiceTest extends TestBaseClass
+class SubQuestionsServiceTest extends TestBaseClass
 {
     /**
      * @testdox save() throws PersistErrorException on create failure
@@ -81,7 +81,7 @@ class SubquestionsServiceTest extends TestBaseClass
             false
         );
 
-        $subquestionsService = new SubquestionsService(
+        $subquestionsService = new SubQuestionsService(
             $l10nService,
             $modelQuestion
         );
@@ -116,13 +116,13 @@ class SubquestionsServiceTest extends TestBaseClass
         )->makePartial();
 
         // The code under test updates a Question.
-        // Configure mock model question to return false
+        // Configure mock model question to return null
         // to simulate subquestion not found
         $modelQuestion = Mockery::mock(Question::class)
             ->makePartial();
         $modelQuestion
             ->shouldReceive('findByAttributes')
-            ->andReturn(false);
+            ->andReturn(null);
 
         // Create a mock of the question we are editing
         $question = Mockery::mock(Question::class)
@@ -146,7 +146,7 @@ class SubquestionsServiceTest extends TestBaseClass
             false
         );
 
-        $subquestionsService = new SubquestionsService(
+        $subquestionsService = new SubQuestionsService(
             $l10nService,
             $modelQuestion
         );
@@ -180,13 +180,13 @@ class SubquestionsServiceTest extends TestBaseClass
             L10nService::class
         )->makePartial();
 
-        // findByAttributes should return false
+        // findByAttributes should return null
         // - to simulate subquestion not found
         $modelQuestion = Mockery::mock(Question::class)
             ->makePartial();
         $modelQuestion
             ->shouldReceive('findByAttributes')
-            ->andReturn(false);
+            ->andReturn(null);
 
         // Create a mock of the question we are editing
         $question = Mockery::mock(Question::class)
@@ -210,7 +210,7 @@ class SubquestionsServiceTest extends TestBaseClass
             false
         );
 
-        $subquestionsService = new SubquestionsService(
+        $subquestionsService = new SubQuestionsService(
             $l10nService,
             $modelQuestion
         );
@@ -270,7 +270,7 @@ class SubquestionsServiceTest extends TestBaseClass
             false
         );
 
-        $subquestionsService = new SubquestionsService(
+        $subquestionsService = new SubQuestionsService(
             $l10nService,
             $modelQuestion
         );
@@ -334,7 +334,7 @@ class SubquestionsServiceTest extends TestBaseClass
             false
         );
 
-        $subquestionsService = new SubquestionsService(
+        $subquestionsService = new SubQuestionsService(
             $l10nService,
             $modelQuestion
         );

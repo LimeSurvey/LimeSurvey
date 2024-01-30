@@ -124,7 +124,7 @@ var UserManagement = function () {
                             LS.LsGlobalNotifier.createAlert(
                                 request.responseJSON.message,
                                 'danger',
-                                {showCloseButton: true}
+                                {showCloseButton: true, timeout: 10000}
                             )
                         ).removeClass('d-none');
                     } else {

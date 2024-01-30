@@ -457,7 +457,7 @@ function SPSSGetValues($field, $qidattributes, $language)
         $answers['size'] = $size;
         return $answers;
     } else {
-        /* Not managed (currently): url, IP, ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¦ */
+        /* Not managed (currently): url, IP, etc */
         return;
     }
 }
@@ -1472,7 +1472,7 @@ function quexml_create_subQuestions(&$question, $qid, $varname, $iResponseID, $f
  * @param mixed $element DOM element to add attribute to
  * @param int $iResponseID The response id
  * @param int $qid The qid of the question
- * @param int $iSurveyID The survey id
+ * @param int $iSurveyID The survey ID
  * @param array $fieldmap A mapping of fields to qid
  * @param string $acode The answer code to search for
  */
@@ -1506,7 +1506,7 @@ function quexml_set_default_value_rank(&$element, $iResponseID, $qid, $iSurveyID
  * @param mixed $element DOM element to add attribute to
  * @param int $iResponseID The response id
  * @param int $qid The qid of the question
- * @param int $iSurveyID The survey id
+ * @param int $iSurveyID The survey ID
  * @param array $fieldmap A mapping of fields to qid
  * @param bool|string $fieldadd Anything additional to search for in the field name
  * @param bool|string $usesqid Search using sqid instead of qid
@@ -1548,7 +1548,7 @@ function quexml_set_default_value(&$element, $iResponseID, $qid, $iSurveyID, $fi
  *
  * @param mixed $element DOM element with the date to change
  * @param int $qid The qid of the question
- * @param int $iSurveyID The survey id
+ * @param int $iSurveyID The survey ID
  * @return void
  */
 function quexml_reformat_date(DOMElement $element, $qid, $iSurveyID)
@@ -1658,7 +1658,7 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false)
 
     $dom = new DOMDocument('1.0', 'UTF-8');
 
-    //Title and survey id
+    //Title and survey ID
     $questionnaire = $dom->createElement("questionnaire");
     $questionnaire->setAttribute("id", $Row['sid']);
     $title = $dom->createElement("title", QueXMLCleanup($Row['surveyls_title']));

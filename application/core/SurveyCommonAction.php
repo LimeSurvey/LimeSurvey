@@ -177,7 +177,7 @@ class SurveyCommonAction extends CAction
             if ((string) (int) $params['iSurveyId'] !== (string) $params['iSurveyId']) {
                 // pgsql need filtering before find
                 // 403 mean The request was valid, but the server is refusing action.
-                throw new CHttpException(403, gT("Invalid survey id"));
+                throw new CHttpException(403, gT("Invalid survey ID"));
             }
             $oSurvey = Survey::model()->findByPk($params['iSurveyId']);
             if (!$oSurvey) {
@@ -496,17 +496,6 @@ class SurveyCommonAction extends CAction
     {
         // We don't wont the admin menu to be shown in login page
         if (!Yii::app()->user->isGuest) {
-            // Default password notification
-            if (Yii::app()->session['pw_notify'] && Yii::app()->getConfig("debug") < 2) {
-                $not = new UniqueNotification(array(
-                    'user_id' => App()->user->id,
-                    'importance' => Notification::HIGH_IMPORTANCE,
-                    'title' => gT('Password warning'),
-                    'message' => '<span class="ri-error-warning-fill"></span>&nbsp;' .
-                        gT("Warning: You are still using the default password ('password'). Please change your password and re-login again.")
-                ));
-                $not->save();
-            }
             if (!(App()->getConfig('ssl_disable_alert')) && strtolower(App()->getConfig('force_ssl') != 'on') && \Permission::model()->hasGlobalPermission("superadmin")) {
                 $not = new UniqueNotification(array(
                     'user_id' => App()->user->id,
@@ -1002,7 +991,7 @@ class SurveyCommonAction extends CAction
 
             $aData['pageSize'] = App()->user->getState('pageSize', App()->params['defaultPageSize']);
 
-            // We filter the current survey id
+            // We filter the current survey ID
             $model->sid = $iSurveyID;
 
             $aData['model'] = $model;

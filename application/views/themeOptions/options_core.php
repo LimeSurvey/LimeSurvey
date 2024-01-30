@@ -274,7 +274,16 @@ foreach ($aOptionAttributes['categories'] as $key => $category) { ?>
                                     </div>';
                 } elseif ($attribute['type'] == 'text') {
                     echo '<div class="col-12">
-                            <input type="text" class="form-control selector-text-input selector_text_option_value_field" data-parent="' . $attribute['parent'] . '" id="simple_edit_options_' . $attributeKey . '" name="' . $attributeKey . '" title="' . gT("inherited value:") . ' ' . $sParentOption . '" />
+                            <input type="text" class="form-control selector-text-input selector_text_option_value_field" data-parent="' . $attribute['parent'] . '" id="simple_edit_options_' . $attributeKey . '" name="' . $attributeKey . '" title="' . gT("inherited value:") . ' ' . CHtml::encode($sParentOption). '" />
+                        </div>';
+                } elseif ($attribute['type'] == 'textarea') {
+                    echo '<div class="col-12">
+                            <textarea
+                                class="form-control selector-text-input selector_text_option_value_field" data-parent="' . $attribute['parent'] . '"
+                                id="simple_edit_options_' . $attributeKey . '" name="' . $attributeKey . '"
+                                rows="' . intval($attribute['rows']) . '"
+                                title="' . gT("inherited value:") . CHtml::encode($sParentOption) . '"
+                                ></textarea>
                         </div>';
                 } elseif ($attribute['type'] == 'duration') {
                     echo '<div class="col-12">

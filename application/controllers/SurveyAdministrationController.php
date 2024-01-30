@@ -137,7 +137,7 @@ class SurveyAdministrationController extends LSBaseController
 
         $aData = array('aAdditionalLanguages' => $survey->additionalLanguages);
 
-        // Reinit LEMlang and LEMsid: ensure LEMlang are set to default lang, surveyid are set to this survey id
+        // Reinit LEMlang and LEMsid: ensure LEMlang are set to default lang, surveyid are set to this survey ID
         // Ensure Last GetLastPrettyPrintExpression get info from this sid and default lang
         LimeExpressionManager::SetEMLanguage($baselang);
         LimeExpressionManager::SetSurveyId($iSurveyID);
@@ -2581,7 +2581,7 @@ class SurveyAdministrationController extends LSBaseController
 
     /**
      * Try to get the get-parameter from request.
-     * At the moment there are three namings for a survey id:
+     * At the moment there are three namings for a survey ID:
      * 'sid'
      * 'surveyid'
      * 'iSurveyID'

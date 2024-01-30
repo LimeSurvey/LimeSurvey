@@ -129,6 +129,7 @@ class SubQuestionsService
      * @return Question
      * @throws PersistErrorException
      * @throws BadRequestException
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     private function storeSubquestion(
         Question $question,
@@ -141,20 +142,29 @@ class SubQuestionsService
         if (!isset($data['code'])) {
             throw new BadRequestException('Internal error: Missing mandatory field "code" for question');
         }
-        // If the subquestion with given code does not exist
-        // - but subquestion with old code exists, update it.
-        $subquestion = $this->modelQuestion->findByAttributes([
-            'qid' => $subquestionId,
-            'scale_id' => $scaleId,
-            'sid' => $question->sid,
-            'parent_qid' => $question->qid
-        ]);
-        if (!$subquestion) {
+        $subquestionExists = false;
+        // New subquestions have a temporary non-numeric id assigned by the frontend (example: new12345).
+        // So, if the subquestion id has letter, is not numeric as the id given by DB, we don't check if it exists.
+        if (is_numeric($subquestionId)) {
+            // If there is no subquestion with given code, but subquestion with old code do exists, update it.
+            $subquestion = $this->modelQuestion->findByAttributes([
+                'qid' => $subquestionId,
+                'scale_id' => $scaleId,
+                'sid' => $question->sid,
+                'parent_qid' => $question->qid
+            ]);
+            $subquestionExists = isset($subquestion);
+        }
+        if (!$subquestionExists) {
             if ($surveyActive) {
                 throw new NotFoundException('Subquestion with id "' . $subquestionId . '" not found');
             } else {
                 $subquestion = DI::getContainer()->make(Question::class);
             }
+        }
+        if (empty($subquestion)) {
+            // This should only happen if it's a new subquestion and the DI container fails to create an instance.
+            throw new NotFoundException('Subquestion with id "' . $subquestionId . '" failed to process');
         }
         $subquestion->title = $data['code'];
         $subquestion->sid = $question->sid;

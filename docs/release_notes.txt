@@ -34,6 +34,80 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.4.3 (build 240122) to 6.4.4 (build 240130) January 30, 2024
+-Fixed issue: Index cannot be set if already exists (Carsten Schmitz)
+-Fixed issue: Certain DB updates not skipped properly but end up in exception (Carsten Schmitz)
+-Fixed issue #CT-614: exporting responses in "Full answers" mode does not export the comment field of the "List with comment" question type (Patrick Teichmann)
+-Fixed issue #19331: Try to add a subquestion to a matrix type question throws an SQL error (#3686) (Gabriel Jenik)
+-Fixed issue #19251: Can't add Regex condition in survey (#3710) (Gabriel Jenik)
+-Fixed issue #18895: No way to add textarea with core config.xml (#3703) (Denis Chenu)
+#Updated translation: Slovak by dusanm, jelen1
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Czech by jelen1, slansky
+#Updated translation: Czech (Informal) by jelen1, slansky
+
+
+Changes from 6.4.2 (build 240115) to 6.4.3 (build 240122) January 22, 2024
++New feature #19299: Unmask token field (#3673) (Denis Chenu)
+-Fixed issue: LimeSurvey getting slower as more answer options are across all surveys (Carsten Schmitz)
+-Fixed issue #CT-605: column selector in responses tab wasn't working anymore (twilligls)
+-Fixed issue #CT-604: edit action in "Panel integration" wasn't working (twilligls)
+-Fixed issue #CT-598: removing additional languages didn't work anymore (twilligls)
+-Fixed issue #CR-1392: SQL not compatible with MSSQL and Postgres (#3700) (Mohab E)
+-Fixed issue #CR-1390: Translation string contains hardcoded action in placeholder (#3699) (Mohab E)
+-Fixed issue #19344: Survey activation error when create a new survey using MSSQL (#3696) (Carsten Schmitz)
+-Fixed issue #19274: Attribute encryption can not be turned OFF, it can only be turned on (#3670) (Gabriel Jenik)
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Korean by modernity4r, zist21
+#Updated translation: Japanese by nomoto
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by urbana
+#Updated translation: German (Informal) by c_schmitz, metaworx
+
+
+Changes from 6.4.1 (build 240108) to 6.4.2 (build 240115) January 15, 2024
+-Fixed issue: Don't use disk_free_space if function doesn't exist (ComfortUpdate) (Olle Haerstedt)
+-Fixed issue #2565: Label set panel description typo (Kevin Foster)
+-Fixed issue #19325: When deleting a token the participant_id is being logged while it should be the token_id (#3684) (Gabriel Jenik)
+-Fixed issue #19248: When deleting a token through the model, the AuditLog beforeDeleteToken event fails (#3676) (Gabriel Jenik)
+#Updated translation: Turkish by bulent, kayazeren
+#Updated translation: Slovak by jelen1
+#Updated translation: Portuguese (Portugal) by hurricane, samarta
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Korean by modernity4r
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: German by c_schmitz, eddylackmann
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
+Changes from 6.4.0 (build 231218) to 6.4.1 (build 240108) January 8, 2024
+-Fixed issue: Delete quota redirects to public survey list (Olle Haerstedt)
+-Fixed issue #19335: Message from submitfailed is never shown to user in one case (#3688) (Olle Härstedt)
+#Updated translation: Slovak by jelen1
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Korean by modernity4r
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han, thompol
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 6.3.9 (build 231211) to 6.4.0 (build 231218) December 18, 2023
 +New feature #19308: Preview survey in modal (MW-728) (#3659) (lajosarpad)
 +New feature #19201: Add column "active" to users, to be able to activate or deactivate users (#3550) (Mohab E)

@@ -92,7 +92,7 @@ class SurveyRuntimeHelper
     private $aSurveyInfo = null;
 
     /**
-     * The survey id
+     * The survey ID
      * @var int|null
      */
     private $iSurveyid              = null;
@@ -793,7 +793,7 @@ class SurveyRuntimeHelper
     }
 
     /**
-     * If a step is requested, but the survey id in the session is different from the requested one
+     * If a step is requested, but the survey ID in the session is different from the requested one
      * It reload the needed infos for the requested survey and jump to the requested step.
      */
     private function initDirtyStep()
@@ -1434,7 +1434,7 @@ class SurveyRuntimeHelper
      * setJavascriptVar
      *
      * @return void
-     * @param mixed $iSurveyId : the survey id for the script
+     * @param mixed $iSurveyId : the survey ID for the script
      */
     public function setJavascriptVar($iSurveyId = '')
     {

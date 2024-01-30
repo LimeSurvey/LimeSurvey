@@ -630,7 +630,7 @@ class ResponsesController extends LSBaseController
     /**
      * Deletes a single response and redirects to the gridview.
      *
-     * @param int $surveyId -- the survey id
+     * @param int $surveyId -- the survey ID
      * @param int $responseId -- the response id to be deleted
      * @throws CDbException
      * @throws CHttpException
@@ -662,7 +662,7 @@ class ResponsesController extends LSBaseController
      * Download individual file by response and filename
      *
      * @access public
-     * @param int $surveyId : survey id
+     * @param int $surveyId : survey ID
      * @param int $responseId
      * @param int $qid
      * @param int $index
@@ -731,7 +731,7 @@ class ResponsesController extends LSBaseController
      * Construct a zip files from a list of response
      *
      * @access public
-     * @param int $surveyId : survey id
+     * @param int $surveyId : survey ID
      * @param string $responseIds : list of responses as string
      * @return void application/zip
      * @throws CException
@@ -1036,7 +1036,7 @@ class ResponsesController extends LSBaseController
 
         $thissurvey = getSurveyInfo($surveyId);
 
-        // Reinit LEMlang and LEMsid: ensure LEMlang are set to default lang, surveyid are set to this survey id
+        // Reinit LEMlang and LEMsid: ensure LEMlang are set to default lang, surveyid are set to this survey ID
         // Ensure Last GetLastPrettyPrintExpression get info from this sid and default lang
         LimeExpressionManager::SetEMLanguage($thissurvey['oSurvey']->language);
         LimeExpressionManager::SetSurveyId($surveyId);

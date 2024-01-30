@@ -80,7 +80,7 @@ class QuestionGroupsAdministrationController extends LSBaseController
     /**
      * Renders the html for the question group view.
      *
-     * @param int $surveyid    survey id is important here for new questiongroups without groupid
+     * @param int $surveyid    survey ID is important here for new questiongroups without groupid
      * @param int $gid
      * @param string $landOnSideMenuTab
      * @param string $mode  either 'overview' or 'auto'. The 'overview' mode ignores the 'noViewMode' user setting
@@ -150,7 +150,7 @@ class QuestionGroupsAdministrationController extends LSBaseController
     /**
      * Renders the html for the question group edit.
      *
-     * @param int $surveyid    survey id is important here if group does not exist
+     * @param int $surveyid    survey ID is important here if group does not exist
      * @param int $gid
      * @param string $landOnSideMenuTab
      *
@@ -720,7 +720,7 @@ class QuestionGroupsAdministrationController extends LSBaseController
     }
 
     /**
-     * Sets survey id and object into passed array
+     * Sets survey ID and object into passed array
      * @param array $aData
      * @return array
      */

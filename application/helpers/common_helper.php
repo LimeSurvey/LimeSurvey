@@ -2672,8 +2672,8 @@ function checkOldLinks($type, $oldSurveyId, $string)
 /**
  * This function creates the old fieldnames for survey import
  *
- * @param mixed $iOldSID The old survey id
- * @param integer $iNewSID The new survey id
+ * @param mixed $iOldSID The old survey ID
+ * @param integer $iNewSID The new survey ID
  * @param array $aGIDReplacements An array with group ids (oldgid=>newgid)
  * @param array $aQIDReplacements An array with question ids (oldqid=>newqid)
  * @return array|bool

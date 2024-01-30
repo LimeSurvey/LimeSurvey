@@ -5067,10 +5067,11 @@ class LimeExpressionManager
                 $_SESSION[$this->sessid]['srid'] = $iNewID;
             } catch (Exception $e) {
                 $srid = null;
-                $message .= $this->gT("Unable to insert record into survey table"); // TODO - add SQL error?
                 $query = $e->getMessage();
                 $trace = $e->getTraceAsString();
-                submitfailed($this->gT("Unable to insert record into survey table"), $query . "\n\n" . $trace);
+                $message = submitfailed($this->gT("Unable to insert record into survey table"), $query . "\n\n" . $trace);
+                LimeExpressionManager::addFrontendFlashMessage('error', $message, $this->sid);
+                return $message;
             }
 
             //Insert Row for Timings, if needed
@@ -5158,7 +5159,7 @@ class LimeExpressionManager
                     // This can happen if admin deletes incomple response while survey is running.
                     $message = submitfailed($this->gT('The data could not be saved because the response does not exist in the database.'));
                     LimeExpressionManager::addFrontendFlashMessage('error', $message, $this->sid);
-                    return;
+                    return $message;
                 }
                 if ($oResponse->submitdate == null || Survey::model()->findByPk($this->sid)->isAllowEditAfterCompletion) {
                     try {
@@ -9679,7 +9680,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
     }
 
     /**
-     * Add a flash message to state-key 'frontend{survey id}'
+     * Add a flash message to state-key 'frontend{survey ID}'
      * The flash messages are templatereplaced in startpage.tstpl, {FLASHMESSAGE}
      * @param string $type Yii type of flash: `error`, `notice`, 'success'
      * @param string $message

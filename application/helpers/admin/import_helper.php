@@ -18,7 +18,7 @@ use LimeSurvey\Helpers\questionHelper;
  * This function imports a LimeSurvey .lsg question group XML file
  *
  * @param string  $sFullFilePath The full filepath of the uploaded file
- * @param integer $iNewSID       The new survey id - the page will always be added after the last page in the survey
+ * @param integer $iNewSID       The new survey ID - the page will always be added after the last page in the survey
  * @param boolean $bTranslateLinksFields
  *
  * @return mixed
@@ -593,7 +593,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields)
  * This function imports a LimeSurvey .lsq question XML file
  *
  * @param string $sFullFilePath The full filepath of the uploaded file
- * @param integer $iNewSID The new survey id
+ * @param integer $iNewSID The new survey ID
  * @param $iNewGID
  * @param bool[] $options
  * @return array
@@ -2220,7 +2220,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                 $insertdata['gid'] = $aGIDReplacements[(int) $insertdata['gid']]; // remap the qid
             }
 
-            $insertdata['sid'] = $iNewSID; // remap the survey id
+            $insertdata['sid'] = $iNewSID; // remap the survey ID
             // now translate any links
             $result = Assessment::model()->insertRecords($insertdata);
             if (!$result) {
@@ -2244,7 +2244,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             if (!isset($insertdata['id']) || (int)$insertdata['id'] < 1) {
                 continue;
             }
-            $insertdata['sid'] = $iNewSID; // remap the survey id
+            $insertdata['sid'] = $iNewSID; // remap the survey ID
             $oldid = $insertdata['id'];
             unset($insertdata['id']);
             // now translate any links
@@ -2268,7 +2268,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             if (!isset($insertdata['quota_id']) || (int)$insertdata['quota_id'] < 1) {
                 continue;
             }
-            $insertdata['sid'] = $iNewSID; // remap the survey id
+            $insertdata['sid'] = $iNewSID; // remap the survey ID
             $insertdata['qid'] = $aQIDReplacements[(int) $insertdata['qid']]; // remap the qid
             if (isset($insertdata['quota_id'])) {
                 $insertdata['quota_id'] = $aQuotaReplacements[(int) $insertdata['quota_id']]; // remap the qid
@@ -2323,7 +2323,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             foreach ($row as $key => $value) {
                 $insertdata[(string) $key] = (string) $value;
             }
-            $insertdata['sid'] = $iNewSID; // remap the survey id
+            $insertdata['sid'] = $iNewSID; // remap the survey ID
             if (isset($insertdata['targetsqid']) && $insertdata['targetsqid'] != '') {
                 $insertdata['targetsqid'] = $aQIDReplacements[(int) $insertdata['targetsqid']]; // remap the qid
             }

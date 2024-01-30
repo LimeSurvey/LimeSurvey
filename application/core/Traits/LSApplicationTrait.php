@@ -30,7 +30,7 @@ trait LSApplicationTrait
         }
         /* use App()->session and not App()->user fot easiest unit test */
         $this->currentUserId = App()->session['loginID'];
-        if ($this->currentUserId && !User::model()->active()->findByPk($this->currentUserId)) {
+        if ($this->currentUserId && !User::model()->notexpired()->active()->findByPk($this->currentUserId)) {
             $this->currentUserId = 0;
         }
         return $this->currentUserId;
