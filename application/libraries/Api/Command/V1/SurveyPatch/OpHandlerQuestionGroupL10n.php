@@ -2,9 +2,11 @@
 
 namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
-use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\{
-    OpHandlerSurveyTrait,
-    OpHandlerL10nTrait
+use DI\DependencyException;
+use DI\NotFoundException;
+use LimeSurvey\Models\Services\Exception\PermissionDeniedException;
+use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\{OpHandlerSurveyTrait,
+    OpHandlerValidationTrait
 };
 use QuestionGroupL10n;
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestionGroupL10ns;
@@ -19,7 +21,7 @@ use LimeSurvey\ObjectPatch\{
 class OpHandlerQuestionGroupL10n implements OpHandlerInterface
 {
     use OpHandlerSurveyTrait;
-    use OpHandlerL10nTrait;
+    use OpHandlerValidationTrait;
 
     protected string $entity;
     protected QuestionGroupL10n $model;
@@ -67,16 +69,13 @@ class OpHandlerQuestionGroupL10n implements OpHandlerInterface
      *
      * @param OpInterface $op
      * @throws OpHandlerException
+     * @throws DependencyException
+     * @throws NotFoundException
+     * @throws \LimeSurvey\Models\Services\Exception\NotFoundException
+     * @throws PermissionDeniedException
      */
     public function handle(OpInterface $op): void
     {
-        $data = $this->transformAllLanguageProps(
-            $op,
-            $op->getProps(),
-            $this->entity,
-            $this->transformer
-        );
-
         $diContainer = \LimeSurvey\DI::getContainer();
         $questionGroupService = $diContainer->get(
             QuestionGroupService::class
@@ -88,19 +87,33 @@ class OpHandlerQuestionGroupL10n implements OpHandlerInterface
 
         $questionGroupService->updateQuestionGroupLanguages(
             $questionGroup,
-            $data
+            $this->transformer->transformAll(
+                $op->getProps(),
+                ['operation' => $op->getType()->getId()]
+            )
         );
     }
 
     /**
      * Checks if patch is valid for this operation.
      * @param OpInterface $op
-     * @return bool
+     * @return array
      */
-    public function isValidPatch(OpInterface $op): bool
+    public function validateOperation(OpInterface $op): array
     {
-        //the function transformAllLanguageProps checks if the patch is valid
-        //it is already used in the handle() method ...
-        return true;
+        $validationData = $this->transformer->validateAll(
+            $op->getProps(),
+            ['operation' => $op->getType()->getId()]
+        );
+        $validationData = $this->validateEntityId(
+            $op,
+            !is_array($validationData) ? [] : $validationData
+        );
+        $validationData = $this->validateCollectionIndex($op, $validationData);
+
+        return $this->getValidationReturn(
+            $validationData,
+            $op
+        );
     }
 }

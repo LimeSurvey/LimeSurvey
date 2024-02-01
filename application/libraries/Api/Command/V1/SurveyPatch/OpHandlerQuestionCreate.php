@@ -215,7 +215,7 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
             $data
         );
 
-        return array_merge(
+        $mapping =  array_merge(
             [
                 'questionsMap' => [
                     new TempIdMapItem(
@@ -235,18 +235,19 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
                 true
             )
         );
+        return ['tempIdMapping' => $mapping];
     }
 
     /**
      * Checks if patch is valid for this operation.
      * @param OpInterface $op
-     * @return bool
+     * @return array
      */
-    public function isValidPatch(OpInterface $op): bool
+    public function validateOperation(OpInterface $op): array
     {
         // check for existing tempId props in question,
         // subquestion and/or answer when operation validation 2.0 is developed
 
-        return true;
+        return [];
     }
 }

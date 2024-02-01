@@ -10,11 +10,11 @@ class TransformerInputQuestionAttribute extends Transformer
     public function __construct()
     {
         $this->setDataMap([
-            'qaid' => ['type' => 'int'],
-            'qid' => ['type' => 'int'],
+            'qaid'      => ['type' => 'int'],
+            'qid'       => ['type' => 'int'],
             'attribute' => true,
-            'value' => true,
-            'language' => true
+            'value'     => ['required' => true],
+            'language'  => true
         ]);
     }
 
@@ -50,5 +50,26 @@ class TransformerInputQuestionAttribute extends Transformer
             }
         }
         return $preparedSettings;
+    }
+
+    /**
+     * Custom validateAll, because the structure of this collection differs from
+     * the normal one.
+     */
+    public function validateAll($collection, $options = [])
+    {
+        $results = [];
+        foreach ($collection as $languages) {
+            foreach ($languages as $advancedSetting) {
+                $result = $this->validate(
+                    $advancedSetting,
+                    $options
+                );
+                if (is_array($result)) {
+                    $results[] = $result;
+                }
+            }
+        }
+        return $results;
     }
 }

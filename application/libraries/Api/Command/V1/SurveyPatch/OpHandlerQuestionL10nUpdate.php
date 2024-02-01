@@ -3,9 +3,10 @@
 namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
 use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\{
-    OpHandlerL10nTrait,
     OpHandlerSurveyTrait,
-    OpHandlerExceptionTrait};
+    OpHandlerExceptionTrait,
+    OpHandlerValidationTrait
+};
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestionL10ns;
 use LimeSurvey\Models\Services\{
     QuestionAggregateService\L10nService,
@@ -15,7 +16,6 @@ use LimeSurvey\Models\Services\{
 use LimeSurvey\ObjectPatch\{
     Op\OpInterface,
     OpType\OpTypeUpdate,
-    OpHandler\OpHandlerException,
     OpHandler\OpHandlerInterface
 };
 
@@ -23,7 +23,7 @@ class OpHandlerQuestionL10nUpdate implements OpHandlerInterface
 {
     use OpHandlerSurveyTrait;
     use OpHandlerExceptionTrait;
-    use OpHandlerL10nTrait;
+    use OpHandlerValidationTrait;
 
     protected L10nService $l10nService;
     protected TransformerInputQuestionL10ns $transformer;
@@ -69,32 +69,40 @@ class OpHandlerQuestionL10nUpdate implements OpHandlerInterface
      * }
      *
      * @param OpInterface $op
-     * @throws OpHandlerException
      * @throws PersistErrorException
      * @throws NotFoundException
      */
     public function handle(OpInterface $op): void
     {
-        $data = $this->transformAllLanguageProps(
-            $op,
-            $op->getProps(),
-            $op->getEntityType(),
-            $this->transformer
-        );
         $this->l10nService->save(
-            (int) $op->getEntityId(),
-            $data
+            (int)$op->getEntityId(),
+            $this->transformer->transformAll(
+                $op->getProps(),
+                ['operation' => $op->getType()->getId()]
+            )
         );
     }
 
     /**
      * Checks if patch is valid for this operation.
      * @param OpInterface $op
-     * @return bool
+     * @return array
      */
-    public function isValidPatch(OpInterface $op): bool
+    public function validateOperation(OpInterface $op): array
     {
-        //transformAllLanguageProps  already checks if the patch is valid
-        return true;
+        $validationData = $this->transformer->validateAll(
+            $op->getProps(),
+            ['operation' => $op->getType()->getId()]
+        );
+        $validationData = $this->validateEntityId(
+            $op,
+            !is_array($validationData) ? [] : $validationData
+        );
+        $validationData = $this->validateCollectionIndex($op, $validationData);
+
+        return $this->getValidationReturn(
+            $validationData,
+            $op
+        );
     }
 }

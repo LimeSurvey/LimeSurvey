@@ -25,4 +25,47 @@ class TransformerInputSurveyLanguageSettings extends Transformer
             'numberFormat' => ['key' => 'surveyls_numberformat', 'type' => 'int'],
         ]);
     }
+
+    public function transformAll($collection, $options = [])
+    {
+        $collection = $this->reorganizeCollection($collection, $options);
+        return parent::transformAll(
+            $collection,
+            $options
+        );
+    }
+
+    public function validateAll($collection, $options = [])
+    {
+        $collection = $this->reorganizeCollection($collection, $options);
+        return parent::validateAll(
+            $collection,
+            $options
+        );
+    }
+
+    /**
+     * @param $collection
+     * @param $options
+     * @return array
+     */
+    private function reorganizeCollection($collection, $options): array
+    {
+        $props = [];
+        $entityId = $options['entityId'];
+        if (!empty($entityId)) {
+            // indicator for variant 1
+            $props[$entityId] = $collection;
+        } else {
+            // variant 2
+            $props = $collection;
+        }
+        if (is_array($props[array_key_first($props)])) {
+            foreach (array_keys($props) as $language) {
+                $props[$language]['sid'] = $options['sid'];
+                $props[$language]['language'] = $language;
+            }
+        }
+        return $props;
+    }
 }

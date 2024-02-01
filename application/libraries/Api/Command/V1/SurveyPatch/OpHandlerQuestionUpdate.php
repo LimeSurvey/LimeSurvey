@@ -2,10 +2,9 @@
 
 namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
-use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\{
-    OpHandlerSurveyTrait,
-    OpHandlerExceptionTrait
-};
+use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\{OpHandlerSurveyTrait,
+    OpHandlerExceptionTrait,
+    OpHandlerValidationTrait};
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestion;
 use LimeSurvey\Models\Services\QuestionAggregateService;
 use LimeSurvey\ObjectPatch\{
@@ -19,6 +18,7 @@ class OpHandlerQuestionUpdate implements OpHandlerInterface
 {
     use OpHandlerSurveyTrait;
     use OpHandlerExceptionTrait;
+    use OpHandlerValidationTrait;
 
     protected QuestionAggregateService $questionAggregateService;
     protected TransformerInputQuestion $transformer;
@@ -63,14 +63,6 @@ class OpHandlerQuestionUpdate implements OpHandlerInterface
      */
     public function handle(OpInterface $op): void
     {
-        $transformOptions = ['operation' => $op->getType()->getId()];
-        $this->throwTransformerValidationErrors(
-            $this->transformer->validate(
-                $op->getProps(),
-                $transformOptions
-            ),
-            $op
-        );
         $this->questionAggregateService->save(
             $this->getSurveyIdFromContext($op),
             ['question' => $this->getPreparedData($op)]
@@ -86,10 +78,9 @@ class OpHandlerQuestionUpdate implements OpHandlerInterface
      */
     public function getPreparedData(OpInterface $op)
     {
-        $transformOptions = ['operation' => $op->getType()->getId()];
         $props = $this->transformer->transform(
             $op->getProps(),
-            $transformOptions
+            ['operation' => $op->getType()->getId()]
         );
         // Set qid from op entity id
         if (
@@ -111,11 +102,22 @@ class OpHandlerQuestionUpdate implements OpHandlerInterface
     /**
      * Checks if patch is valid for this operation.
      * @param OpInterface $op
-     * @return bool
+     * @return array
      */
-    public function isValidPatch(OpInterface $op): bool
+    public function validateOperation(OpInterface $op): array
     {
-        // patch is already checked by getPreparedData()
-        return true;
+        $validationData = $this->transformer->validate(
+            $op->getProps(),
+            ['operation' => $op->getType()->getId()]
+        );
+        $validationData = $this->validateEntityId(
+            $op,
+            !is_array($validationData) ? [] : $validationData
+        );
+
+        return $this->getValidationReturn(
+            $validationData,
+            $op
+        );
     }
 }

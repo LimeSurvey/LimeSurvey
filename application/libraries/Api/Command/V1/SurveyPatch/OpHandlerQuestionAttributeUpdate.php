@@ -3,9 +3,8 @@
 namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestionAttribute;
-use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\{
-    OpHandlerSurveyTrait
-};
+use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\{OpHandlerSurveyTrait,
+    OpHandlerValidationTrait};
 use LimeSurvey\Models\Services\{
     QuestionAggregateService,
     QuestionAggregateService\AttributesService,
@@ -22,6 +21,7 @@ use LimeSurvey\ObjectPatch\{
 class OpHandlerQuestionAttributeUpdate implements OpHandlerInterface
 {
     use OpHandlerSurveyTrait;
+    use OpHandlerValidationTrait;
 
     protected string $entity;
     protected AttributesService $attributesService;
@@ -51,7 +51,7 @@ class OpHandlerQuestionAttributeUpdate implements OpHandlerInterface
     }
 
     /**
-     * Updates multiple attributes for a single question. Format exactly the
+     * Updates multiple attributes for a single question. Format is exactly the
      * same as in Question create, so they share the prepare function.
      *
      * patch structure:
@@ -110,11 +110,22 @@ class OpHandlerQuestionAttributeUpdate implements OpHandlerInterface
     /**
      * Checks if patch is valid for this operation.
      * @param OpInterface $op
-     * @return bool
+     * @return array
      */
-    public function isValidPatch(OpInterface $op): bool
+    public function validateOperation(OpInterface $op): array
     {
-        // transformAll is taking care of validation
-        return true;
+        $validationData = $this->validateCollection($op, []);
+        // We only validate further, if props came as
+        // or were enhanced into collection
+        if (empty($validationData)) {
+            $validationData = $this->transformer->validateAll(
+                $op->getProps(),
+                ['operation' => $op->getType()->getId()]
+            );
+        }
+        return $this->getValidationReturn(
+            !is_array($validationData) ? [] : $validationData,
+            $op
+        );
     }
 }

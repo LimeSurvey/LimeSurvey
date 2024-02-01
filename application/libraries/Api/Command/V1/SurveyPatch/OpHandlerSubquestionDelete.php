@@ -3,6 +3,7 @@
 namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
 use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\OpHandlerSurveyTrait;
+use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\OpHandlerValidationTrait;
 use LimeSurvey\Models\Services\QuestionAggregateService\SubQuestionsService;
 use LimeSurvey\ObjectPatch\{
     Op\OpInterface,
@@ -13,6 +14,7 @@ use LimeSurvey\ObjectPatch\{
 class OpHandlerSubquestionDelete implements OpHandlerInterface
 {
     use OpHandlerSurveyTrait;
+    use OpHandlerValidationTrait;
 
     protected SubQuestionsService $subQuestionsService;
 
@@ -61,10 +63,14 @@ class OpHandlerSubquestionDelete implements OpHandlerInterface
     /**
      * Checks if patch is valid for this operation.
      * @param OpInterface $op
-     * @return bool
+     * @return array
      */
-    public function isValidPatch(OpInterface $op): bool
+    public function validateOperation(OpInterface $op): array
     {
-        return ((int)$op->getEntityId()) > 0;
+        $validationData = $this->validateEntityId($op, []);
+        return $this->getValidationReturn(
+            $validationData,
+            $op
+        );
     }
 }
