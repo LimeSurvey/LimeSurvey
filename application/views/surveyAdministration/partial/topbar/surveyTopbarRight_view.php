@@ -152,7 +152,7 @@ if (!empty($showImportButton)) {
             [
                 'name' => 'editor-link-button',
                 'id' => 'editor-link-button',
-                'text' => gT('Open in new Editor'),
+                'text' => gT('Open in new editor'),
                 'icon' => 'ri-article-line',
                 'link' => $editorUrl,
                 'htmlOptions' => [
