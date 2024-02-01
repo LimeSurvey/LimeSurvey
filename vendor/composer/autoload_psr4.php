@@ -10,6 +10,7 @@ return array(
     'ls\\tests\\' => array($baseDir . '/tests'),
     'bcmath_compat\\' => array($vendorDir . '/phpseclib/bcmath_compat/src'),
     'Twig\\' => array($vendorDir . '/twig/twig/src'),
+    'Symfony\\Polyfill\\Php80\\' => array($vendorDir . '/symfony/polyfill-php80'),
     'Symfony\\Polyfill\\Mbstring\\' => array($vendorDir . '/symfony/polyfill-mbstring'),
     'Symfony\\Polyfill\\Ctype\\' => array($vendorDir . '/symfony/polyfill-ctype'),
     'SPSS\\' => array($vendorDir . '/tiamo/spss/src'),

@@ -146,20 +146,23 @@ if (!empty($showImportButton)) {
 ?>
 
 <?php
-if (isset($editorEnabled) && $editorEnabled && $editorUrl) {
-    $this->widget(
-        'ext.ButtonWidget.ButtonWidget',
-        [
-            'name' => 'editor-link-button',
-            'id' => 'editor-link-button',
-            'text' => gT('Open in new editor'),
-            'icon' => 'ri-article-line',
-            'link' => $editorUrl,
-            'htmlOptions' => [
-                'class' => 'btn btn-secondary',
-                'role' => 'button',
-            ],
-        ]
-    );
-}
+    if (!empty($editorEnabled) && !empty($editorUrl)) {
+        $this->widget(
+            'ext.ButtonWidget.ButtonWidget',
+            [
+                'name' => 'editor-link-button',
+                'id' => 'editor-link-button',
+                'text' => gT('Open in new editor'),
+                'icon' => 'ri-article-line',
+                'link' => $editorUrl,
+                'htmlOptions' => [
+                    'class' => 'btn btn-secondary',
+                    'role' => 'button',
+                ],
+            ]
+        );
+    }
 ?>
+
+
+

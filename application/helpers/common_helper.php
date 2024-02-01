@@ -2943,7 +2943,7 @@ function getTokenFieldsAndNames($surveyid, $bOnlyAttributes = false)
     );
 
     $aExtraTokenFields = getAttributeFieldNames($surveyid);
-    $aSavedExtraTokenFields = Survey::model()->findByPk($surveyid)->tokenAttributes;
+    $aSavedExtraTokenFields = Survey::model()->findByPk($surveyid)->tokenAttributes ?? [];
 
     // Drop all fields that are in the saved field description but not in the table definition
     $aSavedExtraTokenFields = array_intersect_key($aSavedExtraTokenFields, array_flip($aExtraTokenFields));
@@ -5104,4 +5104,30 @@ function isAbsolutePath($path)
         // Relative path
         return false;
     }
+}
+
+/**
+ * Escapes a string for use in a CSV file
+ * @param string|null $string
+ * @return string
+ */
+function csvEscape($string)
+{
+    if (empty($string)) {
+        return $string;
+    }
+
+    // Escape formulas to avoid CSV injection.
+    // If the string starts with =, +, -, @, tab or carriage return, prepend a single quote.
+    if (in_array(substr($string, 0, 1), ['=', '-', '+', '@', "\t", "\r"], true)) {
+        $string = "'" . $string;
+    }
+
+    // Normalize line endings
+    $string = preg_replace('~\R~u', "\n", $string);
+
+    // Escape double quotes and wrap the string in double quotes
+    $string = '"' . str_replace('"', '""', $string) . '"';
+
+    return $string;
 }
