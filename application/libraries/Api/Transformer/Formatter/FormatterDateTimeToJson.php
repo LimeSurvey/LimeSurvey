@@ -2,9 +2,7 @@
 
 namespace LimeSurvey\Api\Transformer\Formatter;
 
-class FormatterDateTimeToJson implements
-    FormatterInterface,
-    FormatterRevertibleInterface
+class FormatterDateTimeToJson implements FormatterInterface
 {
     /** @var bool */
     private $revert = false;
@@ -42,7 +40,7 @@ class FormatterDateTimeToJson implements
      * @param ?mixed $value
      * @return ?string
      */
-    private function apply($value)
+    protected function apply($value)
     {
         return $this->dateFormat(
             $value,
@@ -59,7 +57,7 @@ class FormatterDateTimeToJson implements
      * @param ?mixed $value
      * @return ?string
      */
-    public function revert($value)
+    protected function revert($value)
     {
         return $this->dateFormat(
             $value,
@@ -78,7 +76,7 @@ class FormatterDateTimeToJson implements
      * @param string $outputFormat
      * @return ?string
      */
-    private function dateFormat(
+    protected function dateFormat(
         $value,
         $inputTimeZone,
         $outputTimezone,
