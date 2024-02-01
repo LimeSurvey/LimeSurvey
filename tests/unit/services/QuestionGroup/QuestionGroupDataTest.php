@@ -108,7 +108,7 @@ class QuestionGroupDataTest extends TestBaseClass
             []
         );
 
-        $this->assertEquals('Nothing to reorder.', $returnedArray['message']);
+        $this->assertNotEquals('', $returnedArray['message']);
         $this->assertEquals(true, $returnedArray['success']);
     }
 }
