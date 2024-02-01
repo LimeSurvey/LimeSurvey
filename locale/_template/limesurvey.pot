@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2024-02-01 11:54:37+00:00\n"
+"POT-Creation-Date: 2024-02-01 12:04:15+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -8689,7 +8689,7 @@ msgid "Valid username but not authorized by group restriction"
 msgstr ""
 
 #: application/core/plugins/AuthLDAP/AuthLDAP.php:580
-msgid "Credentials are valid but we failed to create a user."
+msgid "Credentials are valid, but we failed to create a user."
 msgstr ""
 
 #: application/core/plugins/Authdb/Authdb.php:107
@@ -24346,7 +24346,7 @@ msgid "Save and activate"
 msgstr ""
 
 #: application/views/surveyAdministration/partial/topbar/surveyTopbarRight_view.php:155
-msgid "Open in new Editor"
+msgid "Open in new editor"
 msgstr ""
 
 #: application/views/surveyAdministration/partial/topbar_quotas/rightSideButtons.php:9
