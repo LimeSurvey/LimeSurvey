@@ -240,6 +240,7 @@ class TemplateConfig extends CActiveRecord
         /* Core package */
         $packages[] = 'limesurvey-public';
         $packages[] = 'template-core';
+        $packages[] = ($dir === "ltr") ? 'survey-theme-global-ltr' : 'survey-theme-global-rtl';
         $packages[] = ($dir === "ltr") ? 'template-core-ltr' : 'template-core-rtl'; // Awesome Bootstrap Checkboxes
 
         /* bootstrap */

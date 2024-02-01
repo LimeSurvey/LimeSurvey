@@ -4,5 +4,6 @@
 import * as Disclaimer from './theme_js_disclaimer.js';
 import * as Bootstrap from '../../../assets/bootstrap_5/js/bootstrap_5.js';
 import ThemeScripts from './core/old_core_theme.js';
+import * as GlobalThemeScripts from '../../../assets/packages/survey-theme-global/build/survey-theme-global.js' ;
 import ArrayScripts from './questiontypes/array/array.js';
 import NavbarScripts from './navbar/navbar.js';

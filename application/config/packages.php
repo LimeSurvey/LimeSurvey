@@ -445,5 +445,35 @@ return [
             'jquery',
             'jquery-actual',
         ]
-    ]
+    ],
+    // Survey Theme Global code
+    'survey-theme-global-ltr' => [
+        'devBaseUrl' => 'assets/packages/survey-theme-global/',
+        'basePath'   => 'core.survey-theme-global',
+        'position'   => CClientScript::POS_BEGIN,
+        'css'        => [
+            'build/survey-theme-global.css',
+        ],
+        'js'         => [
+            'build/survey-theme-global.js',
+        ],
+        'depends'    => [
+            'jquery',
+        ]
+    ],
+    // Survey Theme Global code - RTL version
+    'survey-theme-global-rtl' => [
+        'devBaseUrl' => 'assets/packages/survey-theme-global/',
+        'basePath'   => 'core.survey-theme-global',
+        'position'   => CClientScript::POS_BEGIN,
+        'css'        => [
+            'build/survey-theme-global-rtl.css',
+        ],
+        'js'         => [
+            'build/survey-theme-global.js',
+        ],
+        'depends'    => [
+            'jquery',
+        ]
+    ],
 ];

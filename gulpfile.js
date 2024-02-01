@@ -27,6 +27,7 @@ const source = require('vinyl-source-stream');
 const buffer = require('vinyl-buffer');
 const browserify = require('browserify');
 const header = require('gulp-header');
+const order = require('gulp-order');
 const fs = require('fs');
 
 function js_minify() {
@@ -173,6 +174,79 @@ exports.watch_survey_theme_fruity = function () {
     watch('assets/survey_themes/fruity/src/**/*.scss', survey_theme_fruity);
 };
 
+function survey_theme_global() {
+    let plugins = [
+        autoprefixer(),
+        cssnano()
+    ];
+    return src(['assets/packages/survey-theme-global/src/main.scss'])
+        .pipe(sass())
+        .pipe(gulppostcss(plugins))
+        .pipe(rename('survey-theme-global.css'))
+        .pipe(dest('assets/packages/survey-theme-global/build/'));
+}
+
+function survey_theme_global_rtl() {
+    let plugins = [
+        autoprefixer(),
+        cssnano()
+    ];
+
+    // Process main.scss
+    const mainStream = src(['assets/packages/survey-theme-global/src/main.scss'])
+        .pipe(sass())
+        .pipe(rtlcss())
+        .pipe(gulppostcss(plugins));
+
+    // Process rtl-specific.scss
+    const rtlStream = src(['assets/packages/survey-theme-global/src/rtl-specific.scss'])
+        .pipe(sass())
+        .pipe(gulppostcss(plugins));
+
+    // Merge the streams
+    return merge(mainStream, rtlStream)
+        .pipe(concat('survey-theme-global-rtl.css'))
+        .pipe(dest('assets/packages/survey-theme-global/build/'));
+}
+
+function survey_theme_global_js() {
+    // browserify package handler
+    return browserify({
+        entries: ['assets/packages/survey-theme-global/src/survey-theme-global.js']
+    })
+        // transform babelify ES6 to ES5 [@babel/preset-env]
+        .transform(babelify, {
+            presets: ['@babel/preset-env'],
+            retainLines: false,
+            compact: false,
+            global: true
+        })
+        // bundle the transformed code
+        .bundle()
+        // sourcemap
+        .pipe(source('assets/packages/survey-theme-global/src/survey-theme-global.js'))
+        // rename
+        .pipe(rename('survey-theme-global.js'))
+        // buffer
+        .pipe(buffer())
+        // distination
+        .pipe(dest('assets/packages/survey-theme-global/build/'));
+}
+
+const build_survey_theme_global = parallel(
+    survey_theme_global,
+    survey_theme_global_rtl,
+    survey_theme_global_js
+);
+
+exports.build_survey_theme_global = build_survey_theme_global;
+
+exports.watch_survey_theme_global = function () {
+    watch('assets/packages/survey-theme-global/src/*.scss', survey_theme_global);
+    watch('assets/packages/survey-theme-global/src/*.scss', survey_theme_global_rtl);
+    watch('assets/packages/survey-theme-global/src/*.js', survey_theme_global_js);
+};
+
 function survey_theme_ls6() {
     let variations = [
         ["apple", "#14AE5C"],
@@ -188,11 +262,22 @@ function survey_theme_ls6() {
     let variationsFiles = variations.map(variation => {
         let variationName = variation[0];
         let variationColor = variation[1];
-        return src(['assets/survey_themes/fruity_twentythree/theme_template.scss'])
+
+        // Process theme_template.scss
+        const mainStream = src(['assets/survey_themes/fruity_twentythree/theme_template.scss'])
             .pipe(replace('$base-color: #ffffff;', '$base-color: ' + variationColor + ';'))
             .pipe(sass())
             .pipe(gulppostcss(plugins))
-            .pipe(rename('theme_' + variationName + '.css'))
+            .pipe(rename('theme.css'));
+
+        // Include survey-theme-global.css
+        const globalStream = src(['assets/packages/survey-theme-global/build/survey-theme-global.css'])
+            .pipe(rename('theme-global.css'));
+
+        // Merge the streams
+        return merge(mainStream, globalStream)
+            .pipe(order(['theme.css', 'theme-global.css']))
+            .pipe(concat('theme_' + variationName + '.css'))
             .pipe(dest('themes/survey/fruity_twentythree/css/variations'));
     });
     return merge(variationsFiles);
@@ -213,12 +298,23 @@ function survey_theme_ls6_rtl() {
     let variationsFiles = variations.map(variation => {
         let variationName = variation[0];
         let variationColor = variation[1];
-        return src(['assets/survey_themes/fruity_twentythree/theme_template.scss'])
+
+        // Process theme_template.scss
+        const mainStream = src(['assets/survey_themes/fruity_twentythree/theme_template.scss'])
             .pipe(replace('$base-color: #ffffff;', '$base-color: ' + variationColor + ';'))
             .pipe(sass())
             .pipe(rtlcss())
             .pipe(gulppostcss(plugins))
-            .pipe(rename('theme_' + variationName + '-rtl.css'))
+            .pipe(rename('theme.css'));
+
+        // Include survey-theme-global-rtl.css
+        const globalStream = src(['assets/packages/survey-theme-global/build/survey-theme-global-rtl.css'])
+            .pipe(rename('theme-global.css'));
+
+        // Merge the streams
+        return merge(mainStream, globalStream)
+            .pipe(order(['theme.css', 'theme-global.css']))
+            .pipe(concat('theme_' + variationName + '-rtl.css'))
             .pipe(dest('themes/survey/fruity_twentythree/css/variations'));
     });
     return merge(variationsFiles);
@@ -249,10 +345,13 @@ function survey_theme_ls6_js() {
         .pipe(dest('themes/survey/fruity_twentythree/scripts/'));
 }
 
-exports.build_survey_theme_ls6 = parallel(
-    survey_theme_ls6,
-    survey_theme_ls6_rtl,
-    survey_theme_ls6_js
+exports.build_survey_theme_ls6 = series(
+    build_survey_theme_global,
+    parallel(
+        survey_theme_ls6,
+        survey_theme_ls6_rtl,
+        survey_theme_ls6_js
+    )
 );
 
 exports.watch_survey_theme_ls6 = function () {
