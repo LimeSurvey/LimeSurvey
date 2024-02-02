@@ -107,17 +107,11 @@ class TransformerInputQuestionAggregateTest extends TestBaseClass
                 ],
                 'attributes'   => [
                     "public_statistics" => [
-                        '' => [
-                            'value' => '1'
-                        ]
+                        '' => '1'
                     ],
                     'dualscale_headerA' => [
-                        'en' => [
-                            'value' => 'Header Text'
-                        ],
-                        'de' => [
-                            'value' => 'Kopf Text'
-                        ]
+                        'en' => 'Header Text',
+                        'de' => 'Kopf Text'
                     ]
                 ],
                 'answers'      => [
