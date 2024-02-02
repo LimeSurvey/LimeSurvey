@@ -11,6 +11,6 @@ class Update_619 extends DatabaseUpdateBase
      */
     public function up()
     {
-        $this->db->createCommand()->addColumn('{{users}}', 'user_status', 'BOOLEAN DEFAULT TRUE');
+        $this->db->createCommand()->addColumn('{{users}}', 'user_status', 'integer DEFAULT 1');
     }
 }

@@ -132,10 +132,11 @@ class User extends LSActiveRecord
     /** @inheritdoc */
     public function scopes()
     {
+        $userStatusType = \Yii::app()->db->schema->getTable('{{users}}')->columns['user_status']->dbType;
         $activeScope = array(
             'condition' => 'user_status = :active',
             'params' => array(
-                'active' => 1,
+                'active' => $userStatusType == 'boolean' ? 'TRUE' :  '1',
             )
         );
 
