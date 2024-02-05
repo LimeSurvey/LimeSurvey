@@ -1509,12 +1509,12 @@ class Survey extends LSActiveRecord implements PermissionInterface
 
     /**
      * Search
-     * 
+     *
      * $options = [
      *  'pageSize' => 10,
      *  'currentPage' => 1
      * ];
-     * 
+     *
      * @param array $options
      * @return CActiveDataProvider
      */
@@ -1655,7 +1655,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
             'criteria' => $criteria,
             'pagination' => array(
                 'pageSize' => $pageSize,
-                'currentPage' => $currentPage 
+                'currentPage' => $currentPage
             ),
         ));
 
