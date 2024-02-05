@@ -49,6 +49,7 @@ class TransformerInputQuestion extends Transformer
 
     public function transform($data, $options = [])
     {
+        $options = is_array($options) ? $options : [];
         if (empty($data)) {
             throw new TransformerException('Data can not be empty');
         }

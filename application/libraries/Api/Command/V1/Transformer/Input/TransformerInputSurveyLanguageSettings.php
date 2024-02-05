@@ -46,6 +46,7 @@ class TransformerInputSurveyLanguageSettings extends Transformer
 
     public function transformAll($collection, $options = [])
     {
+        $options = is_array($options) ? $options : [];
         $collection = $this->reorganizeCollection($collection, $options);
         return parent::transformAll(
             $collection,
@@ -55,6 +56,7 @@ class TransformerInputSurveyLanguageSettings extends Transformer
 
     public function validateAll($collection, $options = [])
     {
+        $options = is_array($options) ? $options : [];
         $collection = $this->reorganizeCollection($collection, $options);
         return parent::validateAll(
             $collection,
