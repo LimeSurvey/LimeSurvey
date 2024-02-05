@@ -62,7 +62,11 @@ class SurveyList implements CommandInterface
 
         $dataProvider = $this->survey
             ->with('defaultlanguage')
-            ->search();
+            ->search([
+                'pageSize' => $request->getData('pageSize'),
+                // Yii pagination is zero based - so we must add 1
+                'currentPage' => $request->getData('page') + 1, 
+            ]);
 
         $data = $this->transformerOutputSurvey
             ->transformAll($dataProvider->getData());

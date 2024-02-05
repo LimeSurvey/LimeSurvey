@@ -1508,15 +1508,26 @@ class Survey extends LSActiveRecord implements PermissionInterface
     }
 
     /**
+     * Search
+     * 
+     * $options = [
+     *  'pageSize' => 10,
+     *  'currentPage' => 1
+     * ];
+     * 
+     * @param array $options
      * @return CActiveDataProvider
      */
-    public function search()
+    public function search($options = [])
     {
+        $options = $options ?? [];
         // Flush cache to get proper counts for partial/complete/total responses
         if (method_exists(Yii::app()->cache, 'flush')) {
             Yii::app()->cache->flush();
         }
-        $pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
+        $pageSizeUser = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
+        $pageSize = $options['pageSize'] ?? $pageSizeUser;
+        $currentPage = $options['currentPage'] ?? null;
 
         $sort = new CSort();
         $sort->attributes = array(
@@ -1644,6 +1655,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
             'criteria' => $criteria,
             'pagination' => array(
                 'pageSize' => $pageSize,
+                'currentPage' => $currentPage 
             ),
         ));
 
