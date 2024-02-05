@@ -102,10 +102,8 @@ class AttributesService
 
         foreach ($dataSet as $attributeKey => $attributeValue) {
             if (
-                $attributeKey === 'qid' ||
-                $attributeKey === 'debug' ||
-                $attributeKey === 'tempId' ||
-                !isset($attributeValue)
+                !isset($attributeValue) ||
+                in_array($attributeKey, ['qid', 'debug', 'tempId'])
             ) {
                 continue;
             }
