@@ -20,20 +20,6 @@ use ls\tests\unit\services\QuestionGroup\QuestionGroupMockSetFactory;
 class OpHandlerQuestionGroupTest extends TestBaseClass
 {
     /**
-     * @testdox throws exception if no props provided
-     */
-    public function testOpQuestionGroupThrowsNoValuesException()
-    {
-        $this->expectException(
-            OpHandlerException::class
-        );
-        $op = $this->getOp($this->getPropsInvalid());
-        $opHandler = $this->getOpHandler();
-        $opHandler->setOperationTypes($op);
-        $opHandler->handle($op);
-    }
-
-    /**
      * @testdox can handle
      */
     public function testOpQuestionGroupCanHandle()

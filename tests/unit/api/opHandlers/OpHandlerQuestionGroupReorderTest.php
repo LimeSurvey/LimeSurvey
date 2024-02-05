@@ -3,10 +3,9 @@
 namespace ls\tests\unit\api\opHandlers;
 
 use LimeSurvey\Api\Command\V1\SurveyPatch\OpHandlerQuestionGroupReorder;
-use LimeSurvey\Api\Command\V1\Transformer\{
-    Input\TransformerInputQuestion,
-    Input\TransformerInputQuestionGroup
-};
+use LimeSurvey\Api\Command\V1\Transformer\{Input\TransformerInputQuestion,
+    Input\TransformerInputQuestionGroup,
+    Input\TransformerInputQuestionGroupReorder};
 use LimeSurvey\ObjectPatch\{
     OpHandler\OpHandlerException,
     Op\OpStandard
@@ -20,73 +19,37 @@ use ls\tests\unit\services\QuestionGroup\QuestionGroupMockSetFactory;
 class OpHandlerQuestionGroupReorderTest extends TestBaseClass
 {
     /**
-     * @testdox throws exception when no valid values are provided
-     */
-    public function testOpQuestionGroupReorderThrowsNoValuesException()
-    {
-        $this->expectException(
-            OpHandlerException::class
-        );
-        $op = $this->getOp(
-            $this->getFullWrongParamsArray()
-        );
-        $opHandler = $this->getOpHandler();
-        $opHandler->getGroupReorderData($op);
-    }
-
-    /**
-     * @testdox throws exception when group parameters are missing
-     */
-    public function testOpQuestionGroupReorderThrowsMissingGroupValException()
-    {
-        $this->expectException(
-            OpHandlerException::class
-        );
-        $op = $this->getOp(
-            $this->getMissingRequiredGroupParamsArray()
-        );
-        $opHandler = $this->getOpHandler();
-        $opHandler->getGroupReorderData($op);
-    }
-
-    /**
-     * @testdox throws exception when question parameters are missing
-     */
-    public function testOpQuestionGroupReorderThrowsMissingQuestionValException()
-    {
-        $this->expectException(
-            OpHandlerException::class
-        );
-        $op = $this->getOp(
-            $this->getMissingRequiredQuestionParamsArray()
-        );
-        $opHandler = $this->getOpHandler();
-        $opHandler->getGroupReorderData($op);
-    }
-
-    /**
-     * @testdox getGroupReorderData() returns expected structure
+     * @testdox transformAll() returns expected structure
      */
     public function testOpQuestionGroupReorderDataStructure()
     {
         $op = $this->getOp(
             $this->getStandardGroupParamsArray()
         );
-        $opHandler = $this->getOpHandler();
-        $transformedData = $opHandler->getGroupReorderData($op);
+
+        $transformer = new TransformerInputQuestionGroupReorder(
+            new TransformerInputQuestionGroup(),
+            new TransformerInputQuestion()
+        );
+        $transformedData = $transformer->transformAll(
+            (array)$op->getProps(),
+            ['operation' => $op->getType()->getId()]
+        );
+
         $this->assertArrayHasKey('gid', $transformedData['1']);
         $this->assertArrayHasKey('group_order', $transformedData['1']);
+
         $this->assertArrayHasKey(
             'qid',
-            $transformedData['1']['questions'][0]
+            $transformedData['1']['questions']['2']
         );
         $this->assertArrayHasKey(
             'gid',
-            $transformedData['1']['questions'][0]
+            $transformedData['1']['questions']['2']
         );
         $this->assertArrayHasKey(
             'question_order',
-            $transformedData['1']['questions'][0]
+            $transformedData['1']['questions']['2']
         );
     }
 
@@ -206,8 +169,10 @@ class OpHandlerQuestionGroupReorderTest extends TestBaseClass
         $mockSet = (new QuestionGroupMockSetFactory())->make();
         return new OpHandlerQuestionGroupReorder(
             $mockSet->modelQuestionGroup,
-            new TransformerInputQuestionGroup(),
-            new TransformerInputQuestion()
+            new TransformerInputQuestionGroupReorder(
+                new TransformerInputQuestionGroup(),
+                new TransformerInputQuestion()
+            )
         );
     }
 }

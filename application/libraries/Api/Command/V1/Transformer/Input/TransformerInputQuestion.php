@@ -46,6 +46,21 @@ class TransformerInputQuestion extends Transformer
         if (empty($data)) {
             throw new TransformerException('Data can not be empty');
         }
-        return parent::transform($data, $options);
+        $props = parent::transform($data, $options);
+        // Set qid from op entity id
+        if (
+            is_array($props)
+            && (
+                !array_key_exists(
+                    'qid',
+                    $props
+                )
+                || $props['qid'] === null
+            )
+        ) {
+            $props['qid'] = $options['id'];
+        }
+
+        return $props;
     }
 }

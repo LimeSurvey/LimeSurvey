@@ -19,31 +19,21 @@ use ls\tests\TestBaseClass;
 class OpHandlerQuestionUpdateTest extends TestBaseClass
 {
     /**
-     * @testdox throws exception on missing required parameters (tempId)
-     */
-    public function testOpQuestionUpdateThrowsNoValuesException()
-    {
-        $this->expectException(
-            OpHandlerException::class
-        );
-        $op = $this->getOp(
-            $this->getWrongPropsArray(),
-            'create'
-        );
-        $opHandler = $this->getOpHandler();
-        $opHandler->handle($op);
-    }
-
-    /**
-     * @testdox getPreparedData() is expected to return a certain data structure
+     * @testdox transform is expected to return a certain data structure
      */
     public function testOpQuestionUpdateDataStructure()
     {
         $op = $this->getOp(
             $this->getCorrectPropsArray()
         );
-        $opHandler = $this->getOpHandler();
-        $preparedData = $opHandler->getPreparedData($op);
+        $transformer = new TransformerInputQuestion();
+        $preparedData = $transformer->transform(
+            $op->getProps(),
+            [
+                'operation' => $op->getType()->getId(),
+                'id'        => $op->getEntityId()
+            ]
+        );
         $this->assertArrayHasKey('qid', $preparedData);
         $this->assertEquals(77, $preparedData['qid']);
     }

@@ -65,38 +65,16 @@ class OpHandlerQuestionUpdate implements OpHandlerInterface
     {
         $this->questionAggregateService->save(
             $this->getSurveyIdFromContext($op),
-            ['question' => $this->getPreparedData($op)]
-        );
-    }
-
-    /**
-     * Organizes the patch data into the structure which
-     * is expected by the service.
-     * @param OpInterface $op
-     * @return ?array
-     * @throws OpHandlerException
-     */
-    public function getPreparedData(OpInterface $op)
-    {
-        $props = $this->transformer->transform(
-            $op->getProps(),
-            ['operation' => $op->getType()->getId()]
-        );
-        // Set qid from op entity id
-        if (
-            is_array($props)
-            && (
-                !array_key_exists(
-                    'qid',
-                    $props
+            [
+                'question' => $this->transformer->transform(
+                    $op->getProps(),
+                    [
+                        'operation' => $op->getType()->getId(),
+                        'id'        => $op->getEntityId()
+                    ]
                 )
-                || $props['qid'] === null
-            )
-        ) {
-            $props['qid'] = $op->getEntityId();
-        }
-
-        return $props;
+            ]
+        );
     }
 
     /**

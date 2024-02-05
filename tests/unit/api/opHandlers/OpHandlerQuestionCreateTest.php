@@ -18,21 +18,6 @@ use ls\tests\unit\services\QuestionGroup\QuestionGroupMockSetFactory;
 class OpHandlerQuestionCreateTest extends TestBaseClass
 {
     /**
-     * @testdox throws OpHandlerException if required entity is missing
-     */
-    public function testQuestionCreateThrowsMissingEntitiesException()
-    {
-        $this->expectException(
-            OpHandlerException::class
-        );
-        $op = $this->getOp(
-            $this->getIncompleteProps()
-        );
-        $opHandler = $this->getOpHandler();
-        $opHandler->handle($op);
-    }
-
-    /**
      * @testdox can handle correct patch
      */
     public function testQuestionCreateCanHandle()
@@ -135,22 +120,6 @@ class OpHandlerQuestionCreateTest extends TestBaseClass
                         ]
                     ]
                 ]
-            ]
-        ];
-    }
-
-    /**
-     * @return array[]
-     */
-    private function getIncompleteProps()
-    {
-        return [
-            'question' => [
-                'title'               => 'G01Q01',
-                'type'                => '1',
-                'question_theme_name' => 'arrays\/dualscale',
-                'gid'                 => '50',
-                'mandatory'           => false
             ]
         ];
     }

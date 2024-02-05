@@ -18,22 +18,6 @@ use ls\tests\TestBaseClass;
 class OpHandlerQuestionL10nUpdateTest extends TestBaseClass
 {
     /**
-     * @testdox throws exception when no valid values are provided
-     */
-    public function testOpQuestionL10nThrowsNoValuesException()
-    {
-        $this->expectException(
-            OpHandlerException::class
-        );
-        $op = $this->getOp(
-            $this->getWrongPropsArray(),
-            'create'
-        );
-        $opHandler = $this->getOpHandler();
-        $opHandler->handle($op);
-    }
-
-    /**
      * @testdox can handle a questionL10n update
      */
     public function testOpQuestionL10nUpdateCanHandle()

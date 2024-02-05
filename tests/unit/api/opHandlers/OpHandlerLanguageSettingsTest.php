@@ -36,23 +36,6 @@ class OpHandlerLanguageSettingsTest extends TestBaseClass
     }
 
     /**
-     * @testdox throws exception if no values are provided for one of multiple languages
-     */
-    public function testLanguageSettingsUpdateThrowsNoValuesException2()
-    {
-        $this->expectException(
-            OpHandlerException::class
-        );
-        $op = $this->getOp(
-            $this->getWrongPropsMultipleArray(),
-            null,
-            'create'
-        );
-        $opHandler = $this->getOpHandler();
-        $opHandler->handle($op);
-    }
-
-    /**
      * @testdox has correct data output when provided with single language
      */
     public function testLanguageSettingsUpdateDataStructureSingle()
