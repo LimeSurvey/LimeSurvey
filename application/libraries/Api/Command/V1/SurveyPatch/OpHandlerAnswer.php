@@ -7,7 +7,8 @@ use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputAnswer;
 use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\{OpHandlerSurveyTrait,
     OpHandlerQuestionTrait,
     OpHandlerExceptionTrait,
-    OpHandlerValidationTrait};
+    OpHandlerValidationTrait
+};
 use LimeSurvey\ObjectPatch\{
     Op\OpInterface,
     OpType\OpTypeCreate,
@@ -60,10 +61,6 @@ class OpHandlerAnswer implements OpHandlerInterface
      * Attention: Currently all answers not provided in the patch
      *            will be deleted by the service. Doesn't matter if
      *            create or update was chosen
-     * You could also mix updated and newly created answers in one patch.
-     * The difference is that new created answers need "tempId"
-     * and updated answers need the "aid" provided.
-     * The OpHandler doesn't care if you choose create or update as "op"!!!
      *
      * Example for "update":
      * {
@@ -195,14 +192,17 @@ class OpHandlerAnswer implements OpHandlerInterface
      */
     public function validateOperation(OpInterface $op): array
     {
-        $validationData = $this->transformer->validateAll(
-            $op->getProps(),
-            ['operation' => $op->getType()->getId()]
-        );
-        $validationData = $this->validateEntityId(
-            $op,
-            !is_array($validationData) ? [] : $validationData
-        );
+        $validationData = $this->validateCollectionIndex($op, [], false);
+        if (empty($validationData)) {
+            $validationData = $this->transformer->validateAll(
+                $op->getProps(),
+                ['operation' => $op->getType()->getId()]
+            );
+            $validationData = $this->validateEntityId(
+                $op,
+                !is_array($validationData) ? [] : $validationData
+            );
+        }
 
         return $this->getValidationReturn(
             $validationData,

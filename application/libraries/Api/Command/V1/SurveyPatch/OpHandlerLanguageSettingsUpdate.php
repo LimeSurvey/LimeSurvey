@@ -102,8 +102,8 @@ class OpHandlerLanguageSettingsUpdate implements OpHandlerInterface
                 $op->getProps(),
                 [
                     'operation' => $op->getType()->getId(),
-                    'entityId' => $op->getEntityId(),
-                    'sid' => $this->getSurveyIdFromContext($op)
+                    'entityId'  => $op->getEntityId(),
+                    'sid'       => $this->getSurveyIdFromContext($op)
                 ]
             )
         );
@@ -116,14 +116,33 @@ class OpHandlerLanguageSettingsUpdate implements OpHandlerInterface
      */
     public function validateOperation(OpInterface $op): array
     {
-        $validationData = $this->transformer->validateAll(
-            $op->getProps(),
-            [
-                'operation' => $op->getType()->getId(),
-                'entityId' => $op->getEntityId(),
-                'sid' => $this->getSurveyIdFromContext($op)
-            ]
-        );
+        $validationData = [];
+        $checkDataEntityId = $this->validateEntityId($op, []);
+        $checkDataCollection = $this->validateCollection($op, []);
+        if (empty($checkDataEntityId) && empty($checkDataCollection)) {
+            // operation data has an entity id and props came as collection
+            $validationData = $this->addErrorToValidationData(
+                'props can not come as collection if id is set',
+                $validationData
+            );
+        } elseif (!empty($checkDataEntityId) && !empty($checkDataCollection)) {
+            // operation data has no entity id and props came not as collection
+            $validationData = $checkDataCollection;
+        } elseif (!empty($checkDataEntityId)) {
+            // operation data has no entity id so collection indexes are validated
+            $validationData = $this->validateCollectionIndex($op, $validationData);
+        }
+
+        if (empty($validationData)) {
+            $validationData = $this->transformer->validateAll(
+                $op->getProps(),
+                [
+                    'operation' => $op->getType()->getId(),
+                    'entityId'  => $op->getEntityId(),
+                    'sid'       => $this->getSurveyIdFromContext($op)
+                ]
+            );
+        }
 
         return $this->getValidationReturn(
             !is_array($validationData) ? [] : $validationData,

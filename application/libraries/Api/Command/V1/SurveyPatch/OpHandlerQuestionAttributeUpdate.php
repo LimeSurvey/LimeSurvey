@@ -59,28 +59,18 @@ class OpHandlerQuestionAttributeUpdate implements OpHandlerInterface
      *     "patch": [{
      *             "entity": "questionAttribute",
      *             "op": "update",
-     *             "id": 744, // qid !
+     *             "id": 809,
      *             "props": {
      *                 "dualscale_headerA": {
-     *                     "de-informal": {
-     *                         "value": "A ger"
-     *                     },
-     *                     "en": {
-     *                         "value": "A"
-     *                     }
+     *                     "de": "A ger",
+     *                     "en": "A"
      *                 },
      *                 "dualscale_headerB": {
-     *                     "de-informal": {
-     *                         "value": "B ger"
-     *                     },
-     *                     "en": {
-     *                         "value": "B"
-     *                     }
+     *                     "de": "B ger",
+     *                     "en": "B"
      *                 },
      *                 "public_statistics": {
-     *                     "": {
-     *                         "value": "1"
-     *                     }
+     *                     "": "1"
      *                 }
      *             }
      *         }
@@ -114,9 +104,7 @@ class OpHandlerQuestionAttributeUpdate implements OpHandlerInterface
      */
     public function validateOperation(OpInterface $op): array
     {
-        $validationData = $this->validateCollection($op, []);
-        // We only validate further, if props came as
-        // or were enhanced into collection
+        $validationData = $this->validateCollectionIndex($op, []);
         if (empty($validationData)) {
             $validationData = $this->transformer->validateAll(
                 $op->getProps(),

@@ -5,6 +5,7 @@ namespace ls\tests\unit\api\opHandlers;
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestionAggregate;
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputSurveyLanguageSettings;
 use LimeSurvey\Api\Command\V1\SurveyPatch\OpHandlerLanguageSettingsUpdate;
+use LimeSurvey\Api\Transformer\TransformerException;
 use LimeSurvey\DI;
 use LimeSurvey\ObjectPatch\{
     Op\OpStandard,
@@ -23,7 +24,7 @@ class OpHandlerLanguageSettingsTest extends TestBaseClass
     public function testLanguageSettingsUpdateThrowsNoValuesException()
     {
         $this->expectException(
-            OpHandlerException::class
+            TransformerException::class
         );
         $op = $this->getOp(
             $this->getWrongPropsSingleArray(),

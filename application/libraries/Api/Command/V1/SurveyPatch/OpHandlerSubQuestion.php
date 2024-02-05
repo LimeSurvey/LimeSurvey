@@ -195,14 +195,12 @@ class OpHandlerSubQuestion implements OpHandlerInterface
      */
     public function validateOperation(OpInterface $op): array
     {
-        $validationData = $this->transformer->validateAll(
-            $op->getProps(),
-            ['operation' => $op->getType()->getId()]
-        );
-        if ($op->getType()->getId() === OpTypeUpdate::ID) {
-            $validationData = $this->validateEntityId(
-                $op,
-                !is_array($validationData) ? [] : $validationData
+        $validationData = $this->validateCollectionIndex($op, [], false);
+        $validationData = $this->validateEntityId($op, $validationData);
+        if (empty($validationData)) {
+            $validationData = $this->transformer->validateAll(
+                $op->getProps(),
+                ['operation' => $op->getType()->getId()]
             );
         }
 

@@ -90,18 +90,17 @@ class OpHandlerQuestionL10nUpdate implements OpHandlerInterface
      */
     public function validateOperation(OpInterface $op): array
     {
-        $validationData = $this->transformer->validateAll(
-            $op->getProps(),
-            ['operation' => $op->getType()->getId()]
-        );
-        $validationData = $this->validateEntityId(
-            $op,
-            !is_array($validationData) ? [] : $validationData
-        );
-        $validationData = $this->validateCollectionIndex($op, $validationData);
+        $validationData = $this->validateCollectionIndex($op, []);
+        $validationData = $this->validateEntityId($op, $validationData);
+        if (empty($validationData)) {
+            $validationData = $this->transformer->validateAll(
+                $op->getProps(),
+                ['operation' => $op->getType()->getId()]
+            );
+        }
 
         return $this->getValidationReturn(
-            $validationData,
+            !is_array($validationData) ? [] : $validationData,
             $op
         );
     }

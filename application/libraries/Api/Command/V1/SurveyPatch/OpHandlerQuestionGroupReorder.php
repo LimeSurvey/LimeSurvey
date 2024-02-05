@@ -112,45 +112,19 @@ class OpHandlerQuestionGroupReorder implements OpHandlerInterface
     }
 
     /**
-     * @param OpInterface $op
-     * @param array|null $data
-     * @param string $type
-     * @return void
-     * @throws OpHandlerException
-     */
-    private function checkGroupReorderData(
-        OpInterface $op,
-        ?array $data,
-        string $type
-    ) {
-        // @TODO should be kept and altered and used for an after transform validation
-        $requiredForGroup = ['gid', 'group_order'];
-        $requiredForQuestion = ['qid', 'gid', 'question_order'];
-        $required = $type === 'group' ? $requiredForGroup : $requiredForQuestion;
-        if (!is_array($data)) {
-            $this->throwNoValuesException($op);
-        }
-        foreach ($required as $param) {
-            /** @var array $data */
-            if (!array_key_exists($param, $data)) {
-                $this->throwRequiredParamException($op, $param);
-            }
-        }
-    }
-
-    /**
      * Checks if patch is valid for this operation.
      * @param OpInterface $op
      * @return array
      */
     public function validateOperation(OpInterface $op): array
     {
-        $validationData = $this->transformer->validateAll(
-            $op->getProps(),
-            ['operation' => $op->getType()->getId()]
-        );
-        // @TODO check indexes to be numerical
-
+        $validationData = $this->validateCollectionIndex($op, [], false);
+        if (empty($validationData)) {
+            $validationData = $this->transformer->validateAll(
+                $op->getProps(),
+                ['operation' => $op->getType()->getId()]
+            );
+        }
         return $this->getValidationReturn(
             !is_array($validationData) ? [] : $validationData,
             $op

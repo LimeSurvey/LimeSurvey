@@ -7,6 +7,11 @@ use LimeSurvey\ObjectPatch\Op\OpInterface;
 
 trait OpHandlerValidationTrait
 {
+    /**
+     * @param array $validationData
+     * @param OpInterface $op
+     * @return array|ValidationErrorItem[][]
+     */
     public function getValidationReturn(
         array $validationData,
         OpInterface $op
@@ -35,7 +40,9 @@ trait OpHandlerValidationTrait
         OpInterface $op,
         array $validationData
     ): array {
-        $error = ((int)$op->getEntityId()) > 0 ? true : 'No entity id provided';
+        $id = $op->getEntityId();
+        $hasId = ((int)$id) > 0 || (is_string($id) && $id !== '');
+        $error = $hasId ? true : 'No entity id provided';
         if (is_string($error)) {
             $validationData = $this->addErrorToValidationData(
                 $error,
@@ -73,21 +80,23 @@ trait OpHandlerValidationTrait
 
     /**
      * validates for collection first and then
-     * checks it for nonnumeric indexes
+     * checks the indexes to be numeric or alphabetic
+     * dependent on the alphabetic flag
      * @param OpInterface $op
      * @param array $validationData
+     * @param bool $alphabetic
      * @return array
      */
     public function validateCollectionIndex(
         OpInterface $op,
         array $validationData,
-        string $type = 'alphabetical'
+        bool $alphabetic = true
     ): array {
         $validCollectionData = $this->validateCollection($op, $validationData);
         if (empty(array_diff($validCollectionData, $validationData))) {
             $keys = array_keys($op->getProps());
             foreach ($keys as $key) {
-                $valid = $type === 'alphabetical' ? !is_numeric($key) : is_numeric($key);
+                $valid = $alphabetic ? !is_numeric($key) : is_numeric($key);
                 if (!$valid) {
                     $validationData = $this->addErrorToValidationData(
                         'Index of collection is numeric',
@@ -108,7 +117,7 @@ trait OpHandlerValidationTrait
      * @param array $validationData
      * @return array
      */
-    private function addErrorToValidationData(
+    public function addErrorToValidationData(
         string $error,
         array $validationData
     ): array {
