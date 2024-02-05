@@ -65,7 +65,7 @@ class SurveyList implements CommandInterface
             ->search([
                 'pageSize' => $request->getData('pageSize'),
                 // Yii pagination is zero based - so we must add 1
-                'currentPage' => $request->getData('page') + 1, 
+                'currentPage' => $request->getData('page') + 1,
             ]);
 
         $data = $this->transformerOutputSurvey
