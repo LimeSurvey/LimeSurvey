@@ -86,15 +86,10 @@ class TransformerInputSurveyLanguageSettings extends Transformer
             $props = $collection;
         }
 
-        if (is_array($props) && is_array($props[array_key_first($props)])) {
-            $surveyId = array_key_exists(
-                'sid',
-                $options
-            ) ? $options['sid'] : null;
-            foreach (array_keys($props) as $language) {
-                $props[$language]['sid'] = $surveyId;
-                $props[$language]['language'] = $language;
-            }
+        $surveyId = array_key_exists('sid', $options) ? $options['sid'] : null;
+        foreach (array_keys($props) as $language) {
+            $props[$language]['sid'] = $surveyId;
+            $props[$language]['language'] = $language;
         }
         return $props;
     }
