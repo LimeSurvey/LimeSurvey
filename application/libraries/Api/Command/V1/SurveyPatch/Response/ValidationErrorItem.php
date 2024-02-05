@@ -2,12 +2,13 @@
 
 namespace LimeSurvey\Api\Command\V1\SurveyPatch\Response;
 
+use LimeSurvey\ObjectPatch\Op\OpInterface;
 use LimeSurvey\ObjectPatch\Op\OpStandard;
 
 class ValidationErrorItem
 {
     /**
-     * @var array|null the error message(s) from the validation error
+     * @var array the error message(s) from the validation error
      */
     public array $errorMessages = [];
     /**
@@ -16,12 +17,12 @@ class ValidationErrorItem
     public array $patchOpData = [];
 
     /**
-     * @param array|null $errorMessages
-     * @param OpStandard $patchOpData
+     * @param array $errorMessages
+     * @param OpInterface $patchOpData
      */
     public function __construct(
-        ?array $errorMessages,
-        OpStandard $patchOpData
+        array $errorMessages,
+        OpInterface $patchOpData
     ) {
         $this->errorMessages = $errorMessages;
         $this->patchOpData['entity'] = $patchOpData->getEntityType();

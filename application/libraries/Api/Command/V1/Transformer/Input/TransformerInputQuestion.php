@@ -17,27 +17,33 @@ class TransformerInputQuestion extends Transformer
         $formatterMandatory = new FormatterMandatory();
 
         $this->setDataMap([
-            'qid' => ['type' => 'int'],
-            'parentQid' => ['key' => 'parent_qid', 'type' => 'int'],
-            'sid' => ['type' => 'int'],
-            'type' => ['required' => 'create'],
-            'title' => ['required' => 'create'],
-            'preg' => true,
-            'other' => ['formatter' => $formatterYn],
-            'mandatory' => ['formatter' => $formatterMandatory],
-            'encrypted' => ['formatter' => $formatterYn],
-            'questionOrder' => ['key' => 'question_order', 'type' => 'int'],
-            'sortOrder' => ['key' => 'question_order', 'type' => 'int'],
-            'scaleId' => ['key' => 'scale_id', 'type' => 'int'],
-            'sameDefault' => ['key' => 'same_default', 'formatter' => $formatterYn],
+            'qid'               => ['type' => 'int'],
+            'parentQid'         => ['key' => 'parent_qid', 'type' => 'int'],
+            'sid'               => ['type' => 'int'],
+            'type'              => ['required' => 'create'],
+            'title'             => ['required' => 'create'],
+            'preg'              => true,
+            'other'             => ['formatter' => $formatterYn],
+            'mandatory'         => ['formatter' => $formatterMandatory],
+            'encrypted'         => ['formatter' => $formatterYn],
+            'questionOrder'     => ['key' => 'question_order', 'type' => 'int'],
+            'sortOrder'         => ['key' => 'question_order', 'type' => 'int'],
+            'scaleId'           => ['key' => 'scale_id', 'type' => 'int'],
+            'sameDefault'       => [
+                'key'       => 'same_default',
+                'formatter' => $formatterYn
+            ],
             'questionThemeName' => 'question_theme_name',
-            'saveAsDefault' => 'save_as_default',
-            'clearDefault' => 'clear_default',
-            'moduleName' => 'modulename',
-            'gid' => ['type' => 'int'],
-            'relevance' => true,
-            'sameScript' => ['key' => 'same_script', 'formatter' => $formatterYn],
-            'tempId' => ['required' => 'create']
+            'saveAsDefault'     => 'save_as_default',
+            'clearDefault'      => 'clear_default',
+            'moduleName'        => 'modulename',
+            'gid'               => ['type' => 'int'],
+            'relevance'         => true,
+            'sameScript'        => [
+                'key'       => 'same_script',
+                'formatter' => $formatterYn
+            ],
+            'tempId'            => ['required' => 'create']
         ]);
     }
 
@@ -58,7 +64,10 @@ class TransformerInputQuestion extends Transformer
                 || $props['qid'] === null
             )
         ) {
-            $props['qid'] = $options['id'];
+            $props['qid'] = array_key_exists(
+                'id',
+                $options
+            ) ? $options['id'] : null;
         }
 
         return $props;

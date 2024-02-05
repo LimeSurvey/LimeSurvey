@@ -2,7 +2,6 @@
 
 namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
-use LimeSurvey\Api\Command\V1\SurveyPatch\Response\ValidationErrorItem;
 use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\OpHandlerExceptionTrait;
 use LimeSurvey\Api\Command\V1\SurveyPatch\Response\TempIdMapItem;
 use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\OpHandlerSurveyTrait;
@@ -284,7 +283,7 @@ class OpHandlerQuestionGroup implements OpHandlerInterface
             );
         }
         return $this->getValidationReturn(
-            $validationData,
+            !is_array($validationData) ? [] : $validationData,
             $op
         );
     }

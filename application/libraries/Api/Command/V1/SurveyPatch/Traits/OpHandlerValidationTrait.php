@@ -66,14 +66,16 @@ trait OpHandlerValidationTrait
         array $validationData
     ): array {
         $props = $op->getProps();
-        $error = is_array(
-            $props[array_key_first($props)]
-        ) ? true : "Props didn't come as collection";
-        if (is_string($error)) {
-            $validationData = $this->addErrorToValidationData(
-                $error,
-                $validationData
-            );
+        if (is_array($props) && !empty($props)) {
+            $error = is_array(
+                $props[array_key_first($props)]
+            ) ? true : "Props didn't come as collection";
+            if (is_string($error)) {
+                $validationData = $this->addErrorToValidationData(
+                    $error,
+                    $validationData
+                );
+            }
         }
         return $validationData;
     }
