@@ -18,6 +18,7 @@ class SurveyList implements CommandInterface
 {
     use AuthPermissionTrait;
 
+    protected Survey $survey;
     protected AuthSession $authSession;
     protected TransformerOutputSurvey $transformerOutputSurvey;
     protected ResponseFactory $responseFactory;
@@ -63,7 +64,7 @@ class SurveyList implements CommandInterface
                 ->makeErrorUnauthorised();
         }
 
-        $this->survey->active = null;
+        unset($this->survey->active);
         $dataProvider = $this->survey
             ->with('defaultlanguage')
             ->search([
