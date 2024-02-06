@@ -47,6 +47,20 @@ class OpHandlerSurveyUpdateTest extends TestBaseClass
     }
 
     /**
+     * @testdox validation doesn't hit when everything is fine
+     */
+    public function testOpValidationSuccess()
+    {
+        $op = $this->getOp(
+            $this->getPropsValid()
+        );
+        $opHandler = $this->getOpHandler();
+        $validation = $opHandler->validateOperation($op);
+        $this->assertIsArray($validation);
+        $this->assertEmpty($validation);
+    }
+
+    /**
      * @param array $props
      * @param string $type
      * @return OpStandard
@@ -73,6 +87,18 @@ class OpHandlerSurveyUpdateTest extends TestBaseClass
         return [
             'expires' => '2020-01-01 00:00',
             'ipanonymize' => true,
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    private function getPropsInvalid()
+    {
+        return [
+            'expires' => '2020-01-01 00:00',
+            'ipanonymize' => true,
+            'ownerId'  => 'OWNER',
         ];
     }
 

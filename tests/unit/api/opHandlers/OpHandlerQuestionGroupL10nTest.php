@@ -43,6 +43,34 @@ class OpHandlerQuestionGroupL10nTest extends TestBaseClass
     }
 
     /**
+     * @testdox validation hits if language indexes are missing
+     */
+    public function testOpQuestionGroupL10nValidationFailure()
+    {
+        $op = $this->getOp(
+            $this->getMissingLanguageProps()
+        );
+        $opHandler = $this->getOpHandler();
+        $validation = $opHandler->validateOperation($op);
+        $this->assertIsArray($validation);
+        $this->assertNotEmpty($validation);
+    }
+
+    /**
+     * @testdox validation doesn't hit when everything is fine
+     */
+    public function testOpQuestionGroupL10nValidationSuccess()
+    {
+        $op = $this->getOp(
+            $this->getDefaultProps()
+        );
+        $opHandler = $this->getOpHandler();
+        $validation = $opHandler->validateOperation($op);
+        $this->assertIsArray($validation);
+        $this->assertEmpty($validation);
+    }
+
+    /**
      * @param array $props
      * @param string $type
      * @return OpStandard

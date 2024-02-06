@@ -21,7 +21,6 @@ class TransformerInputSubQuestion extends Transformer
             'required' => true,
             'transformer' => $transformerInputSubquestionL10n
         ];
-
         $this->setDataMap($dataMap);
     }
 

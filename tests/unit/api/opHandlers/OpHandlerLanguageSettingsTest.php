@@ -19,20 +19,35 @@ use ls\tests\TestBaseClass;
 class OpHandlerLanguageSettingsTest extends TestBaseClass
 {
     /**
-     * @testdox throws exception if no values are provided for single language
+     * @testdox validation hits if required values are not provided for single language
      */
     public function testLanguageSettingsUpdateThrowsNoValuesException()
     {
-        $this->expectException(
-            TransformerException::class
-        );
         $op = $this->getOp(
             $this->getWrongPropsSingleArray(),
             'en',
             'create'
         );
         $opHandler = $this->getOpHandler();
-        $opHandler->handle($op);
+        $validation = $opHandler->validateOperation($op);
+        $this->assertIsArray($validation);
+        $this->assertNotEmpty($validation);
+    }
+
+    /**
+     * @testdox validation hits if required values are not provided for multiple languages
+     */
+    public function testLanguageSettingsUpdateMultipleValidation()
+    {
+        $op = $this->getOp(
+            $this->getWrongPropsMultipleArray(),
+            null,
+            'create'
+        );
+        $opHandler = $this->getOpHandler();
+        $validation = $opHandler->validateOperation($op);
+        $this->assertIsArray($validation);
+        $this->assertNotEmpty($validation);
     }
 
     /**

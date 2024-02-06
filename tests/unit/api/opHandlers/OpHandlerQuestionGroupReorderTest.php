@@ -7,7 +7,6 @@ use LimeSurvey\Api\Command\V1\Transformer\{Input\TransformerInputQuestion,
     Input\TransformerInputQuestionGroup,
     Input\TransformerInputQuestionGroupReorder};
 use LimeSurvey\ObjectPatch\{
-    OpHandler\OpHandlerException,
     Op\OpStandard
 };
 use ls\tests\TestBaseClass;
@@ -19,38 +18,41 @@ use ls\tests\unit\services\QuestionGroup\QuestionGroupMockSetFactory;
 class OpHandlerQuestionGroupReorderTest extends TestBaseClass
 {
     /**
-     * @testdox transformAll() returns expected structure
+     * @testdox validation doesn't hit when everything's fine
      */
-    public function testOpQuestionGroupReorderDataStructure()
-    {
+    public function testValidationSuccess() {
         $op = $this->getOp(
             $this->getStandardGroupParamsArray()
         );
+        $opHandler = $this->getOpHandler();
+        $validation = $opHandler->validateOperation($op);
+        $this->assertIsArray($validation);
+        $this->assertEmpty($validation);
+    }
 
-        $transformer = new TransformerInputQuestionGroupReorder(
-            new TransformerInputQuestionGroup(),
-            new TransformerInputQuestion()
+    /**
+     * @testdox validation hits
+     */
+    public function testValidationFailure() {
+        $op1 = $this->getOp(
+            $this->getFullWrongParamsArray()
         );
-        $transformedData = $transformer->transformAll(
-            (array)$op->getProps(),
-            ['operation' => $op->getType()->getId()]
+        $op2 = $this->getOp(
+            $this->getMissingRequiredGroupParamsArray()
         );
-
-        $this->assertArrayHasKey('gid', $transformedData['1']);
-        $this->assertArrayHasKey('group_order', $transformedData['1']);
-
-        $this->assertArrayHasKey(
-            'qid',
-            $transformedData['1']['questions']['2']
+        $op3 = $this->getOp(
+            $this->getMissingRequiredQuestionParamsArray()
         );
-        $this->assertArrayHasKey(
-            'gid',
-            $transformedData['1']['questions']['2']
-        );
-        $this->assertArrayHasKey(
-            'question_order',
-            $transformedData['1']['questions']['2']
-        );
+        $opHandler = $this->getOpHandler();
+        $validation = $opHandler->validateOperation($op1);
+        $this->assertIsArray($validation);
+        $this->assertNotEmpty($validation);
+        $validation = $opHandler->validateOperation($op2);
+        $this->assertIsArray($validation);
+        $this->assertNotEmpty($validation);
+        $validation = $opHandler->validateOperation($op3);
+        $this->assertIsArray($validation);
+        $this->assertNotEmpty($validation);
     }
 
     /**

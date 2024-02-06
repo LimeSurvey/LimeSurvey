@@ -96,12 +96,17 @@ trait OpHandlerValidationTrait
     ): array {
         $validCollectionData = $this->validateCollection($op, $validationData);
         if (empty(array_diff($validCollectionData, $validationData))) {
+            if ($alphabetic) {
+                $error = 'Index of collection is numeric';
+            } else {
+                $error = 'Index of collection is not numeric';
+            }
             $keys = array_keys($op->getProps());
             foreach ($keys as $key) {
                 $valid = $alphabetic ? !is_numeric($key) : is_numeric($key);
                 if (!$valid) {
                     $validationData = $this->addErrorToValidationData(
-                        'Index of collection is numeric',
+                        $error,
                         $validationData
                     );
                 }

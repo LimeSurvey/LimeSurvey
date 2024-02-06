@@ -269,6 +269,7 @@ class OpHandlerQuestionGroup implements OpHandlerInterface
      */
     public function validateOperation(OpInterface $op): array
     {
+        $this->setOperationTypes($op);
         $validationData = [];
         if ($this->isUpdateOperation || $this->isCreateOperation) {
             $validationData = $this->transformer->validate(
@@ -282,6 +283,7 @@ class OpHandlerQuestionGroup implements OpHandlerInterface
                 !is_array($validationData) ? [] : $validationData
             );
         }
+
         return $this->getValidationReturn(
             !is_array($validationData) ? [] : $validationData,
             $op
