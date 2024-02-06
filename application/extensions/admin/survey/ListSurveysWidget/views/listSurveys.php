@@ -68,7 +68,7 @@
                 [
                     'header'            => gT('Title'),
                     'name'              => 'title',
-                    'value'             => '$data->defaultlanguage->surveyls_title',
+                    'value'             => '$data->defaultlanguage->surveyls_title ?? null',
                     'htmlOptions'       => ['class' => 'has-link'],
                     'headerHtmlOptions' => ['class' => 'text-nowrap'],
                 ],
