@@ -12,6 +12,7 @@ use LimeSurvey\Api\Command\{
 };
 use LimeSurvey\Api\Auth\AuthSession;
 use LimeSurvey\Api\Command\Mixin\Auth\AuthPermissionTrait;
+use DI\FactoryInterface;
 
 class SurveyList implements CommandInterface
 {
@@ -25,18 +26,21 @@ class SurveyList implements CommandInterface
     /**
      * Constructor
      *
-     * @param Survey $survey
      * @param AuthSession $authSession
      * @param TransformerOutputSurvey $transformerOutputSurvey
+     * @param FactoryInterface $diFactory
      * @param ResponseFactory $responseFactory
      */
     public function __construct(
-        Survey $survey,
         AuthSession $authSession,
         TransformerOutputSurvey $transformerOutputSurvey,
+        FactoryInterface $diFactory,
         ResponseFactory $responseFactory
     ) {
-        $this->survey = $survey;
+        $this->survey = $diFactory->make(
+            Survey::class,
+            ['scenario' => 'search']
+        );
         $this->authSession = $authSession;
         $this->transformerOutputSurvey = $transformerOutputSurvey;
         $this->responseFactory = $responseFactory;
@@ -60,12 +64,13 @@ class SurveyList implements CommandInterface
                 ->makeErrorUnauthorised();
         }
 
+        unset($this->survey->active);
         $dataProvider = $this->survey
             ->with('defaultlanguage')
             ->search([
                 'pageSize' => $request->getData('pageSize'),
-                // Yii pagination is zero based - so we must add 1
-                'currentPage' => $request->getData('page') + 1,
+                // Yii pagination is zero based - so we must deduct 1
+                'currentPage' => $request->getData('page') - 1,
             ]);
 
         $data = $this->transformerOutputSurvey
