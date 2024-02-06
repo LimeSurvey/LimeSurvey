@@ -12,12 +12,12 @@ use LimeSurvey\Api\Command\{
 };
 use LimeSurvey\Api\Auth\AuthSession;
 use LimeSurvey\Api\Command\Mixin\Auth\AuthPermissionTrait;
+use DI\FactoryInterface;
 
 class SurveyList implements CommandInterface
 {
     use AuthPermissionTrait;
 
-    protected Survey $survey;
     protected AuthSession $authSession;
     protected TransformerOutputSurvey $transformerOutputSurvey;
     protected ResponseFactory $responseFactory;
@@ -25,18 +25,21 @@ class SurveyList implements CommandInterface
     /**
      * Constructor
      *
-     * @param Survey $survey
      * @param AuthSession $authSession
      * @param TransformerOutputSurvey $transformerOutputSurvey
+     * @param FactoryInterface $diFactory
      * @param ResponseFactory $responseFactory
      */
     public function __construct(
-        Survey $survey,
         AuthSession $authSession,
         TransformerOutputSurvey $transformerOutputSurvey,
+        FactoryInterface $diFactory,
         ResponseFactory $responseFactory
     ) {
-        $this->survey = $survey;
+        $this->survey = $diFactory->make(
+            Survey::class,
+            ['scenario' => 'search']
+        );
         $this->authSession = $authSession;
         $this->transformerOutputSurvey = $transformerOutputSurvey;
         $this->responseFactory = $responseFactory;
@@ -60,6 +63,7 @@ class SurveyList implements CommandInterface
                 ->makeErrorUnauthorised();
         }
 
+        $this->survey->active = null;
         $dataProvider = $this->survey
             ->with('defaultlanguage')
             ->search([
