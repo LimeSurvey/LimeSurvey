@@ -64,6 +64,7 @@ class Plugin extends LSActiveRecord
         return '{{plugins}}';
     }
 
+
     /**
      * Set this plugin as load error in database, and saves the error message.
      * @param array $error Array with 'message' and 'file' keys (as get from error_get_last).
@@ -71,9 +72,6 @@ class Plugin extends LSActiveRecord
      */
     public function setLoadError(array $error)
     {
-        if (App()->getConfig('debug') >= 2) {
-            return 0;
-        }
         // NB: Don't use ActiveRecord here, since it will trigger events and
         // load the plugin system all over again.
         // TODO: Works on all SQL systems?
@@ -308,6 +306,20 @@ class Plugin extends LSActiveRecord
             </form>
         ";
         return $output;
+    }
+
+    /**
+     * @param Plugin|null $plugin
+     * @param string $pluginName
+     * @param array $error Array with 'message' and 'file' keys (as get from error_get_last).
+     * @return int Rows affected, always 0 for debug >=2
+     */
+    public function handleluginLoadError($plugin, $pluginName, array $error)
+    {
+        if (App()->getConfig('debug') >= 2) {
+            return 0;
+        }
+        return $this->setPluginLoadError($plugin, $pluginName, $error);
     }
 
     /**

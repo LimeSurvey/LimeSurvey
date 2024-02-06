@@ -320,12 +320,13 @@ class PluginManager extends \CApplicationComponent
                                         'message' => $ex->getMessage(),
                                         'file'  => $ex->getFile()
                                     ];
-                                    $saveResult = Plugin::setPluginLoadError($plugin, $pluginName, $error);
+                                    $saveResult = Plugin::handlePluginLoadError($plugin, $pluginName, $error);
                                     if (!$saveResult) {
-                                        if(App()->getConfig('debug') >= 2) {
+                                        // If handlePluginLoadError return 0 because debug is set
+                                        if (App()->getConfig('debug') >= 2) {
                                             throw $ex;
                                         }
-                                        // This only happens if database save fails.
+                                        // If handlePluginLoadError fail without debug : have a DB related issue
                                         $this->shutdownObject->disable();
                                         throw new \Exception(
                                             'Internal error: Could not save load error for plugin ' . $pluginName
@@ -467,12 +468,13 @@ class PluginManager extends \CApplicationComponent
                 'file'  => $ex->getFile()
             ];
             $plugin = Plugin::model()->find('name = :name', [':name' => $pluginName]);
-            $saveResult = Plugin::setPluginLoadError($plugin, $pluginName, $error);
+            $saveResult = Plugin::handlePluginLoadError($plugin, $pluginName, $error);
             if (!$saveResult) {
-                if(App()->getConfig('debug') >= 2) {
+                // If handlePluginLoadError return 0 because debug is set
+                if (App()->getConfig('debug') >= 2) {
                     throw $ex;
                 }
-                // This only happens if database save fails.
+                // If handlePluginLoadError fail without debug : have a DB related issue
                 $this->shutdownObject->disable();
                 throw new \Exception(
                     'Internal error: Could not save load error for plugin ' . $pluginName
