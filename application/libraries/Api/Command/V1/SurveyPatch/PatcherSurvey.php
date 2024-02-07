@@ -2,8 +2,8 @@
 
 namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
-use LimeSurvey\Api\Command\V1\SurveyPatch\Response\{ErronousOperationItem,
-    ErronousOperations,
+use LimeSurvey\Api\Command\V1\SurveyPatch\Response\{ExceptionErrorItem,
+    ExceptionErrors,
     SurveyResponse,
     TempIdMapItem,
     TempIdMapping,
@@ -128,7 +128,7 @@ class PatcherSurvey extends Patcher
                     $response = $this->handleOp($op);
                     $this->surveyResponse->handleResponse($response);
                 } catch (\Exception $e) {
-                    $this->surveyResponse->handleException($e, $patchOpData);
+                    $this->surveyResponse->handleException($e, $op);
                 }
             }
         }

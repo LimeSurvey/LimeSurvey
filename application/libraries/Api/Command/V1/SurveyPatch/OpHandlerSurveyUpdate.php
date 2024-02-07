@@ -112,6 +112,7 @@ class OpHandlerSurveyUpdate implements OpHandlerInterface
         );
 
         return $this->getValidationReturn(
+            gT('Could not save survey'),
             !is_array($validationData) ? [] : $validationData,
             $op
         );

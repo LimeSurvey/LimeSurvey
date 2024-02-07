@@ -69,6 +69,7 @@ class OpHandlerSubquestionDelete implements OpHandlerInterface
     {
         $validationData = $this->validateEntityId($op, []);
         return $this->getValidationReturn(
+            gT('Could not delete subquestion'),
             $validationData,
             $op
         );

@@ -2,6 +2,7 @@
 
 namespace LimeSurvey\Api\Command\V1\SurveyPatch\Response;
 
+use LimeSurvey\ObjectPatch\Op\OpInterface;
 use LimeSurvey\ObjectPatch\OpHandler\OpHandlerException;
 
 /**
@@ -14,21 +15,21 @@ class SurveyResponse
     private bool $isValidOperation = true;
     protected TempIdMapping $tempIdMapping;
     protected ValidationErrors $validationErrors;
-    protected ErronousOperations $erronousOperations;
+    protected ExceptionErrors $exceptionErrors;
 
     /**
      * @param TempIdMapping $tempIdMapping
      * @param ValidationErrors $validationErrors
-     * @param ErronousOperations $erronousOperations
+     * @param ExceptionErrors $exceptionErrors
      */
     public function __construct(
         TempIdMapping $tempIdMapping,
         ValidationErrors $validationErrors,
-        ErronousOperations $erronousOperations
+        ExceptionErrors $exceptionErrors
     ) {
         $this->tempIdMapping = $tempIdMapping;
         $this->validationErrors = $validationErrors;
-        $this->erronousOperations = $erronousOperations;
+        $this->exceptionErrors = $exceptionErrors;
     }
 
     /**
@@ -46,18 +47,18 @@ class SurveyResponse
 
     /**
      * @param \Exception $e
-     * @param array $patchOpData
+     * @param OpInterface $patchOpData
      * @return void
      */
-    public function handleException(\Exception $e, array $patchOpData): void
+    public function handleException(\Exception $e, OpInterface $patchOpData): void
     {
         // add error message and full operation info to ErrorItemList
-        $erronousItem = new ErronousOperationItem(
+        $exceptionErrorItem = new ExceptionErrorItem(
             $e->getMessage(),
             $patchOpData
         );
-        $this->erronousOperations->addErronousOperationItem(
-            $erronousItem
+        $this->exceptionErrors->addExceptionErrorItem(
+            $exceptionErrorItem
         );
     }
 
@@ -111,7 +112,7 @@ class SurveyResponse
             ],
             $this->tempIdMapping->getMappingResponseObject(),
             $this->validationErrors->getValidationErrorsObject(),
-            $this->erronousOperations->getErronousOperationsObject()
+            $this->exceptionErrors->getExceptionErrorsObject()
         );
     }
 }

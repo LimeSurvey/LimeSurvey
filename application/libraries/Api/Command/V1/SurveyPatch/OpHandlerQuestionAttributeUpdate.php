@@ -117,6 +117,7 @@ class OpHandlerQuestionAttributeUpdate implements OpHandlerInterface
             );
         }
         return $this->getValidationReturn(
+            gT('Could not save question attributes'),
             !is_array($validationData) ? [] : $validationData,
             $op
         );

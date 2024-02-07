@@ -149,6 +149,7 @@ class OpHandlerLanguageSettingsUpdate implements OpHandlerInterface
         }
 
         return $this->getValidationReturn(
+            gT('Could not save language settings'),
             !is_array($validationData) ? [] : $validationData,
             $op
         );

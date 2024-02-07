@@ -4,17 +4,12 @@ namespace LimeSurvey\Api\Command\V1\SurveyPatch\Response;
 
 use LimeSurvey\ObjectPatch\Op\OpInterface;
 
-class ValidationErrorItem
+class ExceptionErrorItem
 {
     /**
-     * @var array the error message(s) from the validation error
+     * @var string|null the error message from the exception
      */
-    public array $systemErrors = [];
-
-    /**
-     * @var string the error message for the user
-     */
-    public string $error = '';
+    public ?string $error;
 
     /**
      * @var string the name of the entity of that operation
@@ -32,17 +27,14 @@ class ValidationErrorItem
     public string $op;
 
     /**
-     * @param string $error
-     * @param array $errorMessages
+     * @param string|null $errorMessage
      * @param OpInterface $patchOpData
      */
     public function __construct(
-        string $error,
-        array $errorMessages,
+        ?string $errorMessage,
         OpInterface $patchOpData
     ) {
-        $this->error = $error;
-        $this->systemErrors = $errorMessages;
+        $this->error = $errorMessage;
         $this->entity = $patchOpData->getEntityType();
         $this->op = $patchOpData->getType()->getId();
         $this->id = $patchOpData->getEntityId();

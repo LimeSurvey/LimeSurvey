@@ -247,6 +247,7 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
             );
         }
         return $this->getValidationReturn(
+            gT('Could not create question'),
             !is_array($validationData) ? [] : $validationData,
             $op
         );

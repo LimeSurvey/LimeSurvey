@@ -13,6 +13,7 @@ trait OpHandlerValidationTrait
      * @return array|ValidationErrorItem[][]
      */
     public function getValidationReturn(
+        string $error,
         array $validationData,
         OpInterface $op
     ): array {
@@ -21,6 +22,7 @@ trait OpHandlerValidationTrait
             $validationErrors = [
                 'validationErrors' => [
                     new ValidationErrorItem(
+                        $error,
                         $validationData,
                         $op
                     )

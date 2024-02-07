@@ -130,6 +130,7 @@ class OpHandlerQuestionGroupReorder implements OpHandlerInterface
             );
         }
         return $this->getValidationReturn(
+            gT('Could not reorder'),
             !is_array($validationData) ? [] : $validationData,
             $op
         );

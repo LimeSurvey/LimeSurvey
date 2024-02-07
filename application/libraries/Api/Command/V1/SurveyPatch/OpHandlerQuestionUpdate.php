@@ -107,6 +107,7 @@ class OpHandlerQuestionUpdate implements OpHandlerInterface
         );
 
         return $this->getValidationReturn(
+            gT('Could not save question'),
             $validationData,
             $op
         );

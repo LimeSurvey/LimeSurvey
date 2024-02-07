@@ -289,8 +289,13 @@ class OpHandlerQuestionGroup implements OpHandlerInterface
                 !is_array($validationData) ? [] : $validationData
             );
         }
+        $error = gT('Could not save question group');
+        if($this->isDeleteOperation) {
+            $error = gT('Could not delete question group');
+        }
 
         return $this->getValidationReturn(
+            $error,
             !is_array($validationData) ? [] : $validationData,
             $op
         );

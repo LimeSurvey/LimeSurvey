@@ -206,6 +206,7 @@ class OpHandlerSubQuestion implements OpHandlerInterface
         }
 
         return $this->getValidationReturn(
+            gT('Could not save subquestions'),
             !is_array($validationData) ? [] : $validationData,
             $op
         );

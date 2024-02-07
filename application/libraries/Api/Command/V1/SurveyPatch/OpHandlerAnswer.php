@@ -207,6 +207,7 @@ class OpHandlerAnswer implements OpHandlerInterface
         }
 
         return $this->getValidationReturn(
+            gT('Could not save answer option'),
             $validationData,
             $op
         );
