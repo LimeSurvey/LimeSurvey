@@ -33,6 +33,15 @@ jobs:
         ports:
           - 5432:5432
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+      mysql:
+        image: mysql:latest
+        env:
+          MYSQL_DATABASE: limesurvey
+          MYSQL_USER: root
+          MYSQL_PASSWORD: root
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=5
 
     name: PHP ${{ matrix.php-version }} - DB ${{ matrix.database }} # Check each version of php specified in matrix
     steps:
@@ -44,11 +53,13 @@ jobs:
         with:
           php-version: ${{ matrix.php-version }}
 
-      # Start MySQL service - https://github.com/actions/virtual-environments/blob/main/images/linux/Ubuntu1804-README.md#mysql
-      - name: Start MySQL service
+      - name: Wait for MySQL to be ready
         if: ${{ contains(matrix.database, 'mysql') }}
         run: |
-          sudo systemctl start mysql.service
+          until nc -z localhost 3306; do
+            echo "Waiting for MySQL to be ready..."
+            sleep 1
+          done
 
       - name: Wait for PostgreSQL to be ready
         if: ${{ contains(matrix.database, 'postgres') }}
@@ -98,21 +109,6 @@ jobs:
           chmod -R 777 ./tests/tmp
           chmod -R 777 ./application/config
           chmod +x ./tests/bin/lint-*
-
-      - name: Check MySQL service
-        if: ${{ contains(matrix.database, 'mysql') }}
-        run: |
-          # InnoDB needs large_file_prefix & Barracuda file format
-          # https://discuss.gogs.io/t/solved-mysql-error-1064-while-running-first-install/1604
-          # InnoDB variables ARE already set to desired values in Github runner (ubuntu-18.04)
-
-          sudo systemctl start mysql
-          sudo service mysql status
-          mysql -uroot -proot -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'root';" || true
-          mysql -uroot -proot -e "Show  variables like '%large%';"
-          mysql -uroot -proot -e "Show  variables like '%innodb_file%';"
-          mysql -uroot -proot -e "Show  variables like '%innodb_default%';"
-          mysql -uroot -proot -e "CREATE DATABASE limesurvey;"
 
       - name: Load custom console and start the Application
         run: |
