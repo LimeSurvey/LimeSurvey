@@ -68,7 +68,7 @@ jobs:
           php -r 'var_dump(PHP_INT_SIZE);'
           # Install LimeSurvey.
           php -m  # Spit out all loaded PHP modules
-          if [ ${{ matrix.database }} -eq 'mysql' ] then mysql --version; fi
+          if [ ${{ matrix.database }} -eq 'mysql' ]; then mysql --version; fi
           touch enabletests
           # NB: PHPUnit 6.5.* is installed with composer.
           composer install -vvv
@@ -116,8 +116,8 @@ jobs:
 
       - name: Load custom console and start the Application
         run: |
-          if [ ${{ matrix.database }} -eq 'mysql' ] then cp application/config/config-sample-mysql.php application/config/config.php; fi
-          if [ ${{ matrix.database }} -eq 'postgres' ] then cp application/config/config-sample-pgsql.php application/config/config.php; fi
+          if [ ${{ matrix.database }} -eq 'mysql' ]; then cp application/config/config-sample-mysql.php application/config/config.php; fi
+          if [ ${{ matrix.database }} -eq 'postgres' ]; then cp application/config/config-sample-pgsql.php application/config/config.php; fi
           php application/commands/console.php install admin password TravisLS no@email.com verbose
 
           # Enable debug=2 in config file. OBS: This assumes debug is on line 61.
