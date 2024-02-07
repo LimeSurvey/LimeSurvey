@@ -170,6 +170,9 @@ class OpHandlerAnswer implements OpHandlerInterface
             $op->getProps(),
             ['operation' => $op->getType()->getId()]
         );
+        if (empty($data)) {
+            $this->throwNoValuesException($op);
+        }
         $this->answersService->save(
             $question,
             $data

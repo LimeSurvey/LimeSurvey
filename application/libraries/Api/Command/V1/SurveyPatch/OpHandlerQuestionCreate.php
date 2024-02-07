@@ -192,6 +192,9 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
             $op->getProps(),
             $transformOptions
         ) ?? [];
+        if (empty($data)) {
+            $this->throwNoValuesException($op);
+        }
         $questionData = $data['question'] ?? [];
         $subQuestionsData = $data['subquestions'] ?? [];
         $answerOptionsData = $data['answeroptions'] ?? [];

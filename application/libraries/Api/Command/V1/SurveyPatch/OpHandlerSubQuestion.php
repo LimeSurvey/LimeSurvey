@@ -150,8 +150,9 @@ class OpHandlerSubQuestion implements OpHandlerInterface
      * }
      *
      * @param OpInterface $op
-     * @throws OpHandlerException
+     * @return array
      * @throws NotFoundException
+     * @throws OpHandlerException
      * @throws PermissionDeniedException
      * @throws PersistErrorException
      */

@@ -5,9 +5,9 @@ namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 use DI\DependencyException;
 use DI\NotFoundException;
 use LimeSurvey\Models\Services\Exception\PermissionDeniedException;
-use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\{OpHandlerSurveyTrait,
-    OpHandlerValidationTrait
-};
+use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\{OpHandlerExceptionTrait,
+    OpHandlerSurveyTrait,
+    OpHandlerValidationTrait};
 use QuestionGroupL10n;
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestionGroupL10ns;
 use LimeSurvey\Models\Services\QuestionGroupService;
@@ -22,6 +22,7 @@ class OpHandlerQuestionGroupL10n implements OpHandlerInterface
 {
     use OpHandlerSurveyTrait;
     use OpHandlerValidationTrait;
+    use OpHandlerExceptionTrait;
 
     protected string $entity;
     protected QuestionGroupL10n $model;
@@ -84,13 +85,16 @@ class OpHandlerQuestionGroupL10n implements OpHandlerInterface
             $this->getSurveyIdFromContext($op),
             $op->getEntityId()
         );
-
+        $transformedProps = $this->transformer->transformAll(
+            $op->getProps(),
+            ['operation' => $op->getType()->getId()]
+        );
+        if (empty($transformedProps)) {
+            $this->throwNoValuesException($op);
+        }
         $questionGroupService->updateQuestionGroupLanguages(
             $questionGroup,
-            $this->transformer->transformAll(
-                $op->getProps(),
-                ['operation' => $op->getType()->getId()]
-            )
+            $transformedProps
         );
     }
 

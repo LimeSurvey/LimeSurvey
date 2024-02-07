@@ -3,7 +3,8 @@
 namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestionAttribute;
-use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\{OpHandlerSurveyTrait,
+use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\{OpHandlerExceptionTrait,
+    OpHandlerSurveyTrait,
     OpHandlerValidationTrait};
 use LimeSurvey\Models\Services\{
     QuestionAggregateService,
@@ -22,6 +23,7 @@ class OpHandlerQuestionAttributeUpdate implements OpHandlerInterface
 {
     use OpHandlerSurveyTrait;
     use OpHandlerValidationTrait;
+    use OpHandlerExceptionTrait;
 
     protected string $entity;
     protected AttributesService $attributesService;
@@ -87,6 +89,9 @@ class OpHandlerQuestionAttributeUpdate implements OpHandlerInterface
         $surveyId = $this->getSurveyIdFromContext($op);
         $this->questionAggregateService->checkUpdatePermission($surveyId);
         $preparedData = $this->transformer->transformAll($op->getProps());
+        if (empty($preparedData)) {
+            $this->throwNoValuesException($op);
+        }
         $questionId = $op->getEntityId();
         $this->attributesService->saveAdvanced(
             $this->questionService->getQuestionBySidAndQid(

@@ -13,11 +13,10 @@ use LimeSurvey\Models\Services\{
     Exception\NotFoundException,
     Exception\PersistErrorException
 };
-use LimeSurvey\ObjectPatch\{
-    Op\OpInterface,
+use LimeSurvey\ObjectPatch\{Op\OpInterface,
+    OpHandler\OpHandlerException,
     OpType\OpTypeUpdate,
-    OpHandler\OpHandlerInterface
-};
+    OpHandler\OpHandlerInterface};
 
 class OpHandlerQuestionL10nUpdate implements OpHandlerInterface
 {
@@ -71,15 +70,20 @@ class OpHandlerQuestionL10nUpdate implements OpHandlerInterface
      * @param OpInterface $op
      * @throws PersistErrorException
      * @throws NotFoundException
+     * @throws OpHandlerException
      */
     public function handle(OpInterface $op): void
     {
+        $transformedProps = $this->transformer->transformAll(
+            $op->getProps(),
+            ['operation' => $op->getType()->getId()]
+        );
+        if (empty($transformedProps)) {
+            $this->throwNoValuesException($op);
+        }
         $this->l10nService->save(
             (int)$op->getEntityId(),
-            $this->transformer->transformAll(
-                $op->getProps(),
-                ['operation' => $op->getType()->getId()]
-            )
+            $transformedProps
         );
     }
 

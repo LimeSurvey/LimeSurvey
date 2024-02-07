@@ -102,12 +102,16 @@ class OpHandlerQuestionGroupReorder implements OpHandlerInterface
         $questionGroupService = $diContainer->get(
             QuestionGroupService::class
         );
+        $transformedProps = $this->transformer->transformAll(
+            $op->getProps(),
+            ['operation' => $op->getType()->getId()]
+        );
+        if (empty($transformedProps)) {
+            $this->throwNoValuesException($op);
+        }
         $questionGroupService->reorderQuestionGroups(
             $this->getSurveyIdFromContext($op),
-            $this->transformer->transformAll(
-                $op->getProps(),
-                ['operation' => $op->getType()->getId()]
-            )
+            $transformedProps
         );
     }
 

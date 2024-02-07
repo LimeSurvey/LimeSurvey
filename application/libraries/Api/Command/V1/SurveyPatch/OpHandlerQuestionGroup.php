@@ -149,6 +149,9 @@ class OpHandlerQuestionGroup implements OpHandlerInterface
             $op->getProps(),
             ['operation' => $op->getType()->getId()]
         );
+        if (empty($transformedProps)) {
+            $this->throwNoValuesException($op);
+        }
         $questionGroup = $this->questionGroupService->getQuestionGroupForUpdate(
             $surveyId,
             $op->getEntityId()
@@ -216,6 +219,9 @@ class OpHandlerQuestionGroup implements OpHandlerInterface
             $op->getProps(),
             ['operation' => $op->getType()->getId()]
         ) ?? [];
+        if (empty($transformedProps)) {
+            $this->throwNoValuesException($op);
+        }
         $questionGroupData = $transformedProps['questionGroup'] ?? [];
         $tempId = $this->extractTempId($questionGroupData);
         $questionGroup = $this->questionGroupService->createGroup(

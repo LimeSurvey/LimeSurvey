@@ -53,7 +53,7 @@ class SurveyResponse
     {
         // add error message and full operation info to ErrorItemList
         $erronousItem = new ErronousOperationItem(
-            $e->getMessage() . "\n" . $e->getTraceAsString(),
+            $e->getMessage(),
             $patchOpData
         );
         $this->erronousOperations->addErronousOperationItem(

@@ -2,9 +2,14 @@
 
 namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
+use LimeSurvey\Api\Transformer\TransformerException;
+use LimeSurvey\Models\Services\Exception\NotFoundException;
+use LimeSurvey\Models\Services\Exception\PermissionDeniedException;
+use LimeSurvey\Models\Services\Exception\PersistErrorException;
 use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\{OpHandlerSurveyTrait,
     OpHandlerExceptionTrait,
-    OpHandlerValidationTrait};
+    OpHandlerValidationTrait
+};
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestion;
 use LimeSurvey\Models\Services\QuestionAggregateService;
 use LimeSurvey\ObjectPatch\{
@@ -60,19 +65,27 @@ class OpHandlerQuestionUpdate implements OpHandlerInterface
      *
      * @param OpInterface $op
      * @throws OpHandlerException
+     * @throws TransformerException
+     * @throws NotFoundException
+     * @throws PermissionDeniedException
+     * @throws PersistErrorException
      */
     public function handle(OpInterface $op): void
     {
+        $transformedProps = $this->transformer->transform(
+            $op->getProps(),
+            [
+                'operation' => $op->getType()->getId(),
+                'id'        => $op->getEntityId()
+            ]
+        );
+        if (empty($transformedProps)) {
+            $this->throwNoValuesException($op);
+        }
         $this->questionAggregateService->save(
             $this->getSurveyIdFromContext($op),
             [
-                'question' => $this->transformer->transform(
-                    $op->getProps(),
-                    [
-                        'operation' => $op->getType()->getId(),
-                        'id'        => $op->getEntityId()
-                    ]
-                )
+                'question' => $transformedProps
             ]
         );
     }
