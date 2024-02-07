@@ -290,7 +290,7 @@ class OpHandlerQuestionGroup implements OpHandlerInterface
             );
         }
         $error = gT('Could not save question group');
-        if($this->isDeleteOperation) {
+        if ($this->isDeleteOperation) {
             $error = gT('Could not delete question group');
         }
 
