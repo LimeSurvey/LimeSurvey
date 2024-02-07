@@ -27,10 +27,10 @@ return array(
     'name' => 'LimeSurvey',
     'components' => array(
         'db' => array(
-            'connectionString' => 'pgsql:host=localhost;port=5432;user=postgres;password=somepassword;dbname=limesurvey;',
+            'connectionString' => 'pgsql:host=localhost;port=5432;user=root;password=root;dbname=limesurvey;',
             'emulatePrepare' => true,
-            'username' => 'postgres',
-            'password' => 'somepassword',
+            'username' => 'root',
+            'password' => 'root',
             'charset' => 'utf8',
             'tablePrefix' => 'lime_',
         ),

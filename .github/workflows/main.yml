@@ -17,12 +17,24 @@ jobs:
     strategy:
       matrix:
         # Specify what versions of php you want to test
-        php-versions: ['7.4', '8.2']
+        php-version: ['7.4', '8.2']
+        database: ['mysql','postgres']
     # Env vars for this job
     env:
       DBENGINE: INNODB
+    
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_DB: limesurvey
+          POSTGRES_USER: root
+          POSTGRES_PASSWORD: root
+        ports:
+          - 5432:5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
 
-    name: PHP ${{ matrix.php-versions }} # Check each version of php specified in matrix
+    name: PHP ${{ matrix.php-version }} - DB ${{ matrix.database }} # Check each version of php specified in matrix
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
@@ -30,12 +42,21 @@ jobs:
       - name: Install specified PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: ${{ matrix.php-versions }}
+          php-version: ${{ matrix.php-version }}
 
-      # Start the MySQL service - https://github.com/actions/virtual-environments/blob/main/images/linux/Ubuntu1804-README.md#mysql
-      - name: Start the MySQL service
+      # Start MySQL service - https://github.com/actions/virtual-environments/blob/main/images/linux/Ubuntu1804-README.md#mysql
+      - name: Start MySQL service
+        if: ${{ contains(matrix.database, 'mysql') }}
         run: |
           sudo systemctl start mysql.service
+
+      - name: Wait for PostgreSQL to be ready
+        if: ${{ contains(matrix.database, 'postgres') }}
+        run: |
+          until nc -z localhost 5432; do
+            echo "Waiting for Postgres to be ready..."
+            sleep 1
+          done
 
       - name: Initilize and check all dependencies
         run: |
@@ -47,7 +68,7 @@ jobs:
           php -r 'var_dump(PHP_INT_SIZE);'
           # Install LimeSurvey.
           php -m  # Spit out all loaded PHP modules
-          mysql --version
+          if [ ${{ matrix.database }} -eq 'mysql' ] then mysql --version; fi
           touch enabletests
           # NB: PHPUnit 6.5.* is installed with composer.
           composer install -vvv
@@ -79,6 +100,7 @@ jobs:
           chmod +x ./tests/bin/lint-*
 
       - name: Check MySQL service
+        if: ${{ contains(matrix.database, 'mysql') }}
         run: |
           # InnoDB needs large_file_prefix & Barracuda file format
           # https://discuss.gogs.io/t/solved-mysql-error-1064-while-running-first-install/1604
@@ -94,7 +116,8 @@ jobs:
 
       - name: Load custom console and start the Application
         run: |
-          cp application/config/config-sample-mysql.php application/config/config.php
+          if [ ${{ matrix.database }} -eq 'mysql' ] then cp application/config/config-sample-mysql.php application/config/config.php; fi
+          if [ ${{ matrix.database }} -eq 'postgres' ] then cp application/config/config-sample-pgsql.php application/config/config.php; fi
           php application/commands/console.php install admin password TravisLS no@email.com verbose
 
           # Enable debug=2 in config file. OBS: This assumes debug is on line 61.
@@ -156,7 +179,7 @@ jobs:
     strategy:
       matrix:
         # Specify what versions of php you want to test
-        php-versions: ['7.4', '8.2']
+        php-version: ['7.4', '8.2']
     env:
       DBENGINE: INNODB
     steps:
@@ -165,7 +188,7 @@ jobs:
       - name: Install specified PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: ${{ matrix.php-versions }}
+          php-version: ${{ matrix.php-version }}
 
       - name: Setup
         run: |
@@ -208,7 +231,7 @@ jobs:
       - name: Upload cov.xml
         uses: actions/upload-artifact@v3
         with:
-          name: cov-file-${{ matrix.php-versions }}
+          name: cov-file-${{ matrix.php-version }}
           path: cov.xml
 
   test-coverage:
@@ -217,26 +240,26 @@ jobs:
     strategy:
       matrix:
         # Specify what versions of php you want to test
-        php-versions: ['7.4', '8.2']
+        php-version: ['7.4', '8.2']
     steps:
       - uses: actions/checkout@v2
 
       - name: Install specified PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: ${{ matrix.php-versions }}
+          php-version: ${{ matrix.php-version }}
 
       - name: Check if cov.xml artefact exists
         uses: xSAVIKx/artifact-exists-action@v0
         id: check_coverage_artifact
         with:
-          name: cov-file-${{ matrix.php-versions }}
+          name: cov-file-${{ matrix.php-version }}
 
       - name: Download cov.xml
         if: steps.check_coverage_artifact.outputs.exists == 'true'
         uses: actions/download-artifact@v3
         with:
-          name: cov-file-${{ matrix.php-versions }}
+          name: cov-file-${{ matrix.php-version }}
 
       - name: Check test coverage if cov.xml exists (won't work on PHP 8 with current phpunit version)
         run: php tests/bin/check_coverage.php cov.xml 37
@@ -248,14 +271,14 @@ jobs:
     strategy:
       matrix:
         # Specify what versions of php you want to test
-        php-versions: ['7.4', '8.2']
+        php-version: ['7.4', '8.2']
     steps:
       - uses: actions/checkout@v2
 
       - name: Install specified PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: ${{ matrix.php-versions }}
+          php-version: ${{ matrix.php-version }}
 
       - name: Setup
         run: |
