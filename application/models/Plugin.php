@@ -382,6 +382,6 @@ class Plugin extends LSActiveRecord
         if (App()->getConfig('debug') >= 2) {
             return false;
         }
-        return boolval($this->load_error);
+        return isset($this->load_error) && boolval($this->load_error);
     }
 }

@@ -300,7 +300,7 @@ class PluginManager extends \CApplicationComponent
                         $plugin = Plugin::model()->find('name = :name', [':name' => $pluginName]);
                         if (
                             empty($plugin)
-                            || ($includeInstalledPlugins && $plugin->getLoadError() == 0)
+                            || ($includeInstalledPlugins && !$plugin->getLoadError())
                         ) {
                             if (file_exists($file) && $this->isWhitelisted($pluginName)) {
                                 try {
@@ -334,7 +334,7 @@ class PluginManager extends \CApplicationComponent
                                     }
                                 }
                             }
-                        } elseif ($plugin->getLoadError() == 1) {
+                        } elseif ($plugin->getLoadError()) {
                             // List faulty plugins in scan files view.
                             $result[$pluginName] = [
                                 'pluginName' => $pluginName,
@@ -507,8 +507,7 @@ class PluginManager extends \CApplicationComponent
 
             foreach ($records as $record) {
                 if (
-                    !isset($record->load_error)
-                    || $record->getLoadError() == 0
+                    !$record->getLoadError()
                     // NB: Authdb is hardcoded since updating sometimes causes error.
                     // @see https://bugs.limesurvey.org/view.php?id=15908
                     || $record->name == 'Authdb'
@@ -530,7 +529,7 @@ class PluginManager extends \CApplicationComponent
     {
         $records = Plugin::model()->findAll();
         foreach ($records as $record) {
-            if ($record->getLoadError() == 0) {
+            if (!$record->getLoadError()) {
                 $this->loadPlugin($record->name, $record->id, $record->active);
             }
         }
