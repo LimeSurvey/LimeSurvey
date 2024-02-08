@@ -34,6 +34,31 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.6.53 (build 240131) to 5.6.54 (build 240206) February 5, 2024
+-Fixed issue #19368: [security] Simple admin can add XSS on adminemail (#3705) (Denis Chenu)
+-Fixed issue #19325: When deleting a token the participant_id is being logged while it should be the token_id (#3685) (Gabriel Jenik)
+-Fixed issue #19290: Wrong Row Total in Array (Texts) (#3664) (Gabriel Jenik)
+-Fixed issue #19248: When deleting a token through the model, the Audi…   …tLog beforeDeleteToken event fails (#3681) (Gabriel Jenik)
+#Updated translation: Spanish (Argentina) (Informal) by kwelladm
+#Updated translation: Slovenian by c_schmitz
+#Updated translation: Serbian (Latin script) by matthewpulis, wakizashi
+#Updated translation: Romanian by mihaela.grigore
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Portuguese (Brazil) by phph
+#Updated translation: Persian by c_schmitz
+#Updated translation: Norwegian (Bokmål) by kjnerhus
+#Updated translation: Lithuanian by Morta
+#Updated translation: Latvian by anorkusa, daugavietis
+#Updated translation: Hungarian by kkd, tkazinczy
+#Updated translation: Hindi by KapilSabarwal
+#Updated translation: Georgian by giorgi
+#Updated translation: Chinese (Taiwan) (Traditional) by Yu-Jyun Guo
+
+
+Changes from 5.6.52 (build 240123) to 5.6.53 (build 240131) January 30, 2024
+-Fixed issue #19372 : CDbException with Microsoft SQL Server and Group filter (#3706) (Denis Chenu)
+
+
 Changes from 5.6.51 (build 240116) to 5.6.52 (build 240123) January 22, 2024
 -Fixed issue #19352: Ranking advanced question type shows weird numbers in front of every item (#3702) (tiborpacalat)
 -Fixed issue #19274: Attribute encryption can not be turned OFF, it can only be turned on (#3671) (Gabriel Jenik)
