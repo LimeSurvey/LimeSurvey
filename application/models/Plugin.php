@@ -151,7 +151,7 @@ class Plugin extends LSActiveRecord
                 'id' => $this->id
             ]
         );
-        if ($this->getLoadError()) {
+        if (!$this->getLoadError()) {
             return sprintf(
                 '<a href="%s">%s</a>',
                 $url,
@@ -374,13 +374,14 @@ class Plugin extends LSActiveRecord
     }
 
     /**
-     * get laod error
+     * Get load error as boolean
+     * @return boolean
      */
     public function getLoadError()
     {
         if (App()->getConfig('debug') >= 2) {
-            return 0;
+            return false;
         }
-        return $this->load_error;
+        return boolval($this->load_error);
     }
 }
