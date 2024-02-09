@@ -3,6 +3,7 @@
 namespace LimeSurvey\Api\Transformer;
 
 use LimeSurvey\Api\Transformer\Formatter\FormatterInterface;
+use LimeSurvey\Api\Transformer\Registry\ValidationRegistry;
 
 /**
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
@@ -14,6 +15,9 @@ class Transformer implements TransformerInterface
 
     /** @var array */
     protected $defaultConfig = [];
+
+    /** @var ?ValidationRegistry  */
+    public $registry;
 
     /**
      * Transform data
@@ -247,14 +251,7 @@ class Transformer implements TransformerInterface
         $errors = [];
         if (
             $config['required']
-            && (
-                !array_key_exists($key, $data)
-                || (
-                    is_string($config['required'])
-                    && isset($options['operation'])
-                    && $config['required'] == $options['operation']
-                )
-            )
+            && !array_key_exists($key, $data)
         ) {
             $errors[$key][] = $key . ' is required';
         }
@@ -375,5 +372,10 @@ class Transformer implements TransformerInterface
             ],
             $this->defaultConfig
         );
+    }
+
+    public function setRegistry(ValidationRegistry $registry)
+    {
+        $this->registry = $registry;
     }
 }

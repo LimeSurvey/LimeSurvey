@@ -3,6 +3,9 @@
 namespace LimeSurvey;
 
 use CActiveRecord;
+use LimeSurvey\Api\Transformer\Registry\ValidationRegistry;
+use LimeSurvey\Api\Transformer\Transformer;
+use LimeSurvey\Api\Transformer\TransformerInterface;
 use LSYii_Application;
 use LimeSurvey\PluginManager\PluginManager;
 use CHttpSession;
@@ -68,6 +71,15 @@ class DI
         $container->set(CDbConnection::class, function () {
             return App()->db;
         });
+        $container->set(
+            Transformer::class,
+            function (Transformer $transformer) {
+                $transformer->setRegistry(
+                    static::getContainer()->get(ValidationRegistry::class)
+                );
+                return $transformer;
+            }
+        );
 
         return $container;
     }
