@@ -314,12 +314,12 @@ class Plugin extends LSActiveRecord
      * @param array $error Array with 'message' and 'file' keys (as get from error_get_last).
      * @return int Rows affected, always 0 for debug >=2
      */
-    public function handleluginLoadError($plugin, $pluginName, array $error)
+    public static function handlePluginLoadError($plugin, $pluginName, array $error)
     {
         if (App()->getConfig('debug') >= 2) {
             return 0;
         }
-        return $this->setPluginLoadError($plugin, $pluginName, $error);
+        return self::setPluginLoadError($plugin, $pluginName, $error);
     }
 
     /**
