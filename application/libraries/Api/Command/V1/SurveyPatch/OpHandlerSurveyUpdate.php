@@ -53,7 +53,10 @@ class OpHandlerSurveyUpdate implements OpHandlerInterface
 
     /**
      * Saves the changes to the database.
-     * Expects this structure, note that the entity id is not required
+     * NOTE: when we update the language,
+     *       additionalLanguages need also to be added in the props,
+     *       or they will be deleted.
+     * Expects this structure, note that the entity id is not required.
      * as the survey id will be in the context:
      * {
      *       "patch": [{
@@ -62,6 +65,7 @@ class OpHandlerSurveyUpdate implements OpHandlerInterface
      *       "props": {
      *         "anonymized": false,
      *         "language": "en",
+     *         "additionalLanguages":["de"],
      *         "expires": "2001-03-20 13:28:00",
      *         "template": "fruity_twentythree",
      *         "format": "G"
