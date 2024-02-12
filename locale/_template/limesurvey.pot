@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2024-02-05 10:27:11+00:00\n"
+"POT-Creation-Date: 2024-02-12 15:05:17+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -3711,7 +3711,7 @@ msgstr ""
 #: application/controllers/UserManagementController.php:1249
 #: application/controllers/UserManagementController.php:1297
 #: application/controllers/UserManagementController.php:1345
-#: application/core/LsDefaultDataSets.php:2830
+#: application/core/LsDefaultDataSets.php:2831
 #: application/core/plugins/AuthLDAP/AuthLDAP.php:386
 #: application/core/plugins/Authdb/Authdb.php:142
 #: application/core/plugins/TwoFactorAdminLogin/models/TFAUser.php:110
@@ -8404,31 +8404,35 @@ msgstr ""
 msgid "Fruity variations"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2827
-msgid "Hello"
+#: application/core/LsDefaultDataSets.php:2814
+msgid "I confirm"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:2828
-msgid "This is an automated email notification that a user has been created for you on the website %s."
+msgid "Hello"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:2829
+msgid "This is an automated email notification that a user has been created for you on the website %s."
+msgstr ""
+
+#: application/core/LsDefaultDataSets.php:2830
 msgid "You can use now the following credentials to log in:"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2833
+#: application/core/LsDefaultDataSets.php:2834
 msgid "Click here to set your password"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2834
+#: application/core/LsDefaultDataSets.php:2835
 msgid "If you have any questions regarding this email, please do not hesitate to contact the site administrator at"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2835
+#: application/core/LsDefaultDataSets.php:2836
 msgid "Thank you"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2838
+#: application/core/LsDefaultDataSets.php:2839
 msgid "User registration at '%s'"
 msgstr ""
 
