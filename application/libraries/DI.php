@@ -41,34 +41,52 @@ class DI
      */
     public static function makeContainer()
     {
-        $container = new \DI\Container;
+        $builder = new \DI\ContainerBuilder();
+        $builder->addDefinitions([
+            LSYii_Application::class => function () {
+                //exit('C');
+                return App();
+            },
+            PluginManager::class => function () {
+                return App()->getPluginManager();
+            },
+            CHttpSession::class => function () {
+                return App()->session;
+            },
+            CDbConnection::class => function () {
+                return App()->db;
+            }
+        ]);
+        $builder->addDefinitions(
+            static::getActiveRecordDefinitions()
+        );
 
-        // Type hinting on a Yii model / active-record class should return its
-        // - static instance e.g Survey::model(). It is not possible to type hint
-        // - on this, so instead we configure the container to return the correct
-        // - object based on the call time class name, whenever we type hint on
-        // - CActiveRecord or anything that extends CActiveRecord
-        $container->set(CActiveRecord::class, function (CActiveRecord $entry) {
-            $class = $entry->getName();
+        return $builder->build();
+    }
+
+    private static function getActiveRecordDefinitions()
+    {
+        $decorator = function (CActiveRecord $entry) {
+            $class = get_class($entry);
             return $class::model();
-        });
-
-        $container->set(LSYii_Application::class, function () {
-            return App();
-        });
-
-        $container->set(PluginManager::class, function () {
-            return App()->getPluginManager();
-        });
-
-        $container->set(CHttpSession::class, function () {
-            return App()->session;
-        });
-
-        $container->set(CDbConnection::class, function () {
-            return App()->db;
-        });
-
-        return $container;
+        };
+        $modelClasses = [
+            \Answer::class,
+            \AnswerL10n::class,
+            \Survey::class,
+            \SurveyLanguageSetting::class,
+            \Question::class,
+            \QuestionAttribute::class,
+            \QuestionCreate::class,
+            \QuestionGroup::class,
+            \QuestionL10n::class,
+            \User::class,
+            \UserGroup::class,
+        ];
+        $defintions = [];
+        foreach ($modelClasses as $modelClass) {
+            $defintions[$modelClass] = \DI\decorate($decorator);
+        }
+        return $defintions;
     }
 }
