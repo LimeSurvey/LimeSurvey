@@ -1,4 +1,5 @@
 <?php
+
 namespace LimeSurvey\Api\Transformer\Registry;
 
 use LimeSurvey\Api\Transformer\Validators\Required;
