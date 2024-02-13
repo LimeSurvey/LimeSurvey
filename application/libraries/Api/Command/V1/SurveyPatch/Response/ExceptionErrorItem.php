@@ -27,6 +27,11 @@ class ExceptionErrorItem
     public string $op;
 
     /**
+     * @var array the context of the whole patch
+     */
+    public array $context;
+
+    /**
      * @param string|null $errorMessage
      * @param OpInterface $patchOpData
      */
@@ -38,5 +43,6 @@ class ExceptionErrorItem
         $this->entity = $patchOpData->getEntityType();
         $this->op = $patchOpData->getType()->getId();
         $this->id = $patchOpData->getEntityId();
+        $this->context = $patchOpData->getContext();
     }
 }

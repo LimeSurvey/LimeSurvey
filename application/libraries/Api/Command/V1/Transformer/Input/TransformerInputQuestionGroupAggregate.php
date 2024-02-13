@@ -2,6 +2,7 @@
 
 namespace LimeSurvey\Api\Command\V1\Transformer\Input;
 
+use LimeSurvey\Api\Transformer\Registry\ValidationRegistry;
 use LimeSurvey\Api\Transformer\Transformer;
 use LimeSurvey\Api\Command\V1\Transformer\Input\{
     TransformerInputQuestionGroup,
@@ -12,8 +13,10 @@ class TransformerInputQuestionGroupAggregate extends Transformer
 {
     public function __construct(
         TransformerInputQuestionGroup $transformerQuestionGroup,
-        TransformerInputQuestionGroupL10ns $transformerQuestionGroupL10ns
+        TransformerInputQuestionGroupL10ns $transformerQuestionGroupL10ns,
+        ValidationRegistry $validationRegistry
     ) {
+        $this->setRegistry($validationRegistry);
         $this->setDataMap([
             'questionGroup' => [
                 'transformer' => $transformerQuestionGroup,

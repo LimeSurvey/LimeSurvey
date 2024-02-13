@@ -2,14 +2,17 @@
 
 namespace LimeSurvey\Api\Command\V1\Transformer\Input;
 
+use LimeSurvey\Api\Transformer\Registry\ValidationRegistry;
 use LimeSurvey\Api\Transformer\Transformer;
 
 class TransformerInputQuestionGroupReorder extends Transformer
 {
     public function __construct(
         TransformerInputQuestionGroup $transformerGroup,
-        TransformerInputQuestion $transformerQuestion
+        TransformerInputQuestion $transformerQuestion,
+        ValidationRegistry $validationRegistry
     ) {
+        $this->setRegistry($validationRegistry);
         $dataMap = $transformerGroup->getDataMap();
         $dataMap['sortOrder'] = [
             'key'      => 'group_order',

@@ -2,7 +2,10 @@
 
 namespace LimeSurvey\Api\Transformer\Registry;
 
-use LimeSurvey\Api\Transformer\Validators\Required;
+use LimeSurvey\Api\Transformer\Validators\EmptyValidator;
+use LimeSurvey\Api\Transformer\Validators\LengthValidator;
+use LimeSurvey\Api\Transformer\Validators\NullValidator;
+use LimeSurvey\Api\Transformer\Validators\RequiredValidator;
 
 class ValidationRegistry
 {
@@ -14,11 +17,20 @@ class ValidationRegistry
         $this->initDefault();
     }
 
-    public function set($key, $value)
+    /**
+     * @param string $key
+     * @param mixed $value
+     * @return void
+     */
+    public function set($key, $value): void
     {
         $this->data[$key] = $value;
     }
 
+    /**
+     * @param string $key
+     * @return mixed|null
+     */
     public function get($key)
     {
         if (isset($this->data[$key])) {
@@ -32,6 +44,9 @@ class ValidationRegistry
      */
     public function initDefault()
     {
-        $this->set('required', new Required());
+        $this->set('required', new RequiredValidator());
+        $this->set('null', new NullValidator());
+        $this->set('empty', new EmptyValidator());
+        $this->set('length', new LengthValidator());
     }
 }

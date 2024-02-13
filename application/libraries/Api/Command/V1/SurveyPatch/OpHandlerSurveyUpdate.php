@@ -87,7 +87,10 @@ class OpHandlerSurveyUpdate implements OpHandlerInterface
         );
 
         $props = $op->getProps();
-        $transformedProps = $this->transformer->transform($props);
+        $transformedProps = $this->transformer->transform(
+            $props,
+            ['operation' => $op->getType()->getId()]
+        );
 
         if ($props === null || $transformedProps === null) {
             $this->throwNoValuesException($op);

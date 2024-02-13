@@ -2,12 +2,14 @@
 
 namespace LimeSurvey\Api\Command\V1\Transformer\Input;
 
+use LimeSurvey\Api\Transformer\Registry\ValidationRegistry;
 use LimeSurvey\Api\Transformer\Transformer;
 
 class TransformerInputSubQuestionL10ns extends Transformer
 {
-    public function __construct()
+    public function __construct(ValidationRegistry $validationRegistry)
     {
+        $this->setRegistry($validationRegistry);
         $this->setDataMap([
             'question' => ['required' => true],
         ]);

@@ -124,6 +124,7 @@ class Transformer implements TransformerInterface
         $config['required'] = isset($config['required']) ? $config['required'] : false;
         $config['null'] = isset($config['null']) ? (bool) $config['null'] : true;
         $config['empty'] = isset($config['empty']) ? (bool) $config['empty'] : true;
+        $config['length'] = isset($config['length']) ? $config['length'] : false;
 
         // required can be operation specific by specifying
         // - a string or an array of operation names
@@ -249,19 +250,14 @@ class Transformer implements TransformerInterface
     {
         $options = $options ?? [];
         $errors = [];
-        if (
-            $config['required']
-            && !array_key_exists($key, $data)
-        ) {
-            $errors[$key][] = $key . ' is required';
-        }
-
-        if ($value === null && $config['null'] === false) {
-            $errors[$key][] = $key . ' cannot be null';
-        }
-
-        if (empty($value) && $config['empty'] === false) {
-            $errors[$key][] = $key . ' cannot be empty';
+        foreach ($config as $validationKey => $validationConfig) {
+            $validator = $this->registry->get($validationKey);
+            if ($validator) {
+                $result = $validator->validate($key, $value, $config, $data, $options);
+                if (is_array($result)) {
+                    $errors[$key][] = $result;
+                }
+            }
         }
 
         if (
@@ -374,6 +370,10 @@ class Transformer implements TransformerInterface
         );
     }
 
+    /**
+     * @param ValidationRegistry $registry
+     * @return void
+     */
     public function setRegistry(ValidationRegistry $registry)
     {
         $this->registry = $registry;
