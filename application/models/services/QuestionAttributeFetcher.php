@@ -84,7 +84,7 @@ class QuestionAttributeFetcher
         }
 
         static $survey = null;
-        if ($survey === null){
+        if ($survey === null) {
             $survey = $this->question->survey;
         }
         if (isset($survey->sid) && $survey->sid !== $this->question->sid) {
