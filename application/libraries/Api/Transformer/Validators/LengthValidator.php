@@ -9,13 +9,13 @@ class LengthValidator implements ValidatorInterface
      * @param mixed $value
      * @param array $config
      * @param array $data
-     * @param array$options
+     * @param array $options
      * @return array|bool
      */
     public function validate($key, $value, $config, $data, $options = [])
     {
         $messages = [];
-        $length = $this->getLengthOfValue($value);
+        $length = $this->getLengthOfValue($value, $config);
         $min = $this->getMin($config);
         $max = $this->getMax($config, $length);
         if ($length < $min || $length > $max) {
@@ -27,11 +27,12 @@ class LengthValidator implements ValidatorInterface
 
     /**
      * @param mixed $value
+     * @param array $config
      * @return int
      */
-    private function getLengthOfValue($value)
+    private function getLengthOfValue($value, $config)
     {
-        return is_string($value) ? strlen($value) : 0;
+        return is_string($value) ? strlen($value) : $this->getMin($config);
     }
 
     /**

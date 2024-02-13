@@ -11,7 +11,6 @@ use LimeSurvey\Models\Services\QuestionAggregateService;
 use LimeSurvey\ObjectPatch\{
     ObjectPatchException,
     Op\OpStandard,
-    OpHandler\OpHandlerException
 };
 use ls\tests\TestBaseClass;
 

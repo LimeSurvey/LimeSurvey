@@ -2,6 +2,7 @@
 
 namespace ls\tests\unit\api;
 
+use LimeSurvey\Api\Transformer\Registry\ValidationRegistry;
 use ls\tests\TestBaseClass;
 use LimeSurvey\Api\Transformer\Transformer;
 use LimeSurvey\Api\Transformer\TransformerException;
@@ -268,7 +269,9 @@ class TransformerOutputTest extends TestBaseClass
             TransformerException::class
         );
 
-        $transformer = new Transformer;
+        $transformer = new Transformer();
+        $validationRegistry = new ValidationRegistry();
+        $transformer->setRegistry($validationRegistry);
         $transformer->setDataMap([
             'first_name' => ['required' => true],
             'age' => true
@@ -287,7 +290,9 @@ class TransformerOutputTest extends TestBaseClass
             TransformerException::class
         );
 
-        $transformer = new Transformer;
+        $transformer = new Transformer();
+        $validationRegistry = new ValidationRegistry();
+        $transformer->setRegistry($validationRegistry);
         $transformer->setDataMap([
             'first_name' => ['required' => 'create'],
             'age' => true
@@ -307,7 +312,9 @@ class TransformerOutputTest extends TestBaseClass
             TransformerException::class
         );
 
-        $transformer = new Transformer;
+        $transformer = new Transformer();
+        $validationRegistry = new ValidationRegistry();
+        $transformer->setRegistry($validationRegistry);
         $transformer->setDataMap([
             'first_name' => ['required' => ['create', 'update']],
             'age' => true
@@ -322,7 +329,9 @@ class TransformerOutputTest extends TestBaseClass
      */
     public function testValidateReturnsArrayOfErrorMessagesOnFailure()
     {
-        $transformer = new Transformer;
+        $transformer = new Transformer();
+        $validationRegistry = new ValidationRegistry();
+        $transformer->setRegistry($validationRegistry);
         $transformer->setDataMap([
             'first_name' => ['required' => true],
             'age' => true

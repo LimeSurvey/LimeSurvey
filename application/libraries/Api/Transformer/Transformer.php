@@ -16,7 +16,7 @@ class Transformer implements TransformerInterface
     /** @var array */
     protected $defaultConfig = [];
 
-    /** @var ?ValidationRegistry  */
+    /** @var ?ValidationRegistry */
     public $registry;
 
     /**
@@ -70,8 +70,9 @@ class Transformer implements TransformerInterface
                 $data,
                 $options
             );
+
             if (is_array($errors)) {
-                throw new TransformerException($errors[0]);
+                throw new TransformerException(print_r($errors, true));
             }
 
             if (
@@ -122,8 +123,8 @@ class Transformer implements TransformerInterface
         $config['formatter'] = isset($config['formatter']) ? $config['formatter'] : null;
         $config['default'] = isset($config['default']) ? $config['default'] : null;
         $config['required'] = isset($config['required']) ? $config['required'] : false;
-        $config['null'] = isset($config['null']) ? (bool) $config['null'] : true;
-        $config['empty'] = isset($config['empty']) ? (bool) $config['empty'] : true;
+        $config['null'] = isset($config['null']) ? (bool)$config['null'] : true;
+        $config['empty'] = isset($config['empty']) ? (bool)$config['empty'] : true;
         $config['length'] = isset($config['length']) ? $config['length'] : false;
 
         // required can be operation specific by specifying
@@ -251,11 +252,19 @@ class Transformer implements TransformerInterface
         $options = $options ?? [];
         $errors = [];
         foreach ($config as $validationKey => $validationConfig) {
-            $validator = $this->registry->get($validationKey);
-            if ($validator) {
-                $result = $validator->validate($key, $value, $config, $data, $options);
-                if (is_array($result)) {
-                    $errors[$key][] = $result;
+            if ($this->registry) {
+                $validator = $this->registry->get($validationKey);
+                if ($validator) {
+                    $result = $validator->validate(
+                        $key,
+                        $value,
+                        $config,
+                        $data,
+                        $options
+                    );
+                    if (is_array($result)) {
+                        $errors[$key][] = $result;
+                    }
                 }
             }
         }
@@ -305,13 +314,17 @@ class Transformer implements TransformerInterface
     public function validateAll($collection, $options = [])
     {
         $options = $options ?? [];
-        $result = array_reduce($collection, function ($carry, $data) use ($options) {
-            $carry = is_array($carry) ? $carry : [];
-            $oneResult = $this->validate($data, $options);
-            return is_array($oneResult)
-                ? array_merge($carry, $oneResult)
-                : $carry;
-        }, []);
+        $result = array_reduce(
+            $collection,
+            function ($carry, $data) use ($options) {
+                $carry = is_array($carry) ? $carry : [];
+                $oneResult = $this->validate($data, $options);
+                return is_array($oneResult)
+                    ? array_merge($carry, $oneResult)
+                    : $carry;
+            },
+            []
+        );
         return empty($result) ?: $result;
     }
 

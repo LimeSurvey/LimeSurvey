@@ -4,8 +4,8 @@ namespace ls\tests\unit\api\opHandlers;
 
 use LimeSurvey\Api\Command\V1\SurveyPatch\OpHandlerQuestionGroupReorder;
 use LimeSurvey\Api\Command\V1\Transformer\{Input\TransformerInputQuestion,
-    Input\TransformerInputQuestionGroup,
     Input\TransformerInputQuestionGroupReorder};
+use LimeSurvey\DI;
 use LimeSurvey\ObjectPatch\{
     Op\OpStandard
 };
@@ -171,10 +171,7 @@ class OpHandlerQuestionGroupReorderTest extends TestBaseClass
         $mockSet = (new QuestionGroupMockSetFactory())->make();
         return new OpHandlerQuestionGroupReorder(
             $mockSet->modelQuestionGroup,
-            new TransformerInputQuestionGroupReorder(
-                new TransformerInputQuestionGroup(),
-                new TransformerInputQuestion()
-            )
+            DI::getContainer()->get(TransformerInputQuestionGroupReorder::class)
         );
     }
 }

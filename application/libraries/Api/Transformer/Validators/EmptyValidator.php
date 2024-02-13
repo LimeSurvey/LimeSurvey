@@ -9,7 +9,7 @@ class EmptyValidator implements ValidatorInterface
      * @param mixed $value
      * @param array $config
      * @param array $data
-     * @param array$options
+     * @param array $options
      * @return array|bool
      */
     public function validate($key, $value, $config, $data, $options = [])

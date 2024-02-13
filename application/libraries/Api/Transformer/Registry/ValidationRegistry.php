@@ -40,7 +40,7 @@ class ValidationRegistry
     }
 
     /**
-     * @return array
+     * @return void
      */
     public function initDefault()
     {

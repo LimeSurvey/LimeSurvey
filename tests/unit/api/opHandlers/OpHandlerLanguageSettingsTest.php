@@ -2,14 +2,11 @@
 
 namespace ls\tests\unit\api\opHandlers;
 
-use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestionAggregate;
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputSurveyLanguageSettings;
 use LimeSurvey\Api\Command\V1\SurveyPatch\OpHandlerLanguageSettingsUpdate;
-use LimeSurvey\Api\Transformer\TransformerException;
 use LimeSurvey\DI;
 use LimeSurvey\ObjectPatch\{
     Op\OpStandard,
-    OpHandler\OpHandlerException
 };
 use ls\tests\TestBaseClass;
 
@@ -143,13 +140,14 @@ class OpHandlerLanguageSettingsTest extends TestBaseClass
      */
     private function getOpHandler()
     {
+        $transformer = DI::getContainer()->get(TransformerInputSurveyLanguageSettings::class);
         /** @var \SurveyLanguageSetting */
         $modelSurveyLanguageSetting = \Mockery::mock(
             \SurveyLanguageSetting::class
         )->makePartial();
         return new OpHandlerLanguageSettingsUpdate(
             $modelSurveyLanguageSetting,
-            new TransformerInputSurveyLanguageSettings()
+            $transformer
         );
     }
 
