@@ -432,7 +432,7 @@ class RegisterController extends LSYii_Controller
         $this->aReplacementData['sMessage'] = $this->sMessage;
 
         $oTemplate = Template::model()->getInstance('', $iSurveyId);
-        $aSurveyInfo  =  getsurveyinfo($iSurveyId);
+        $aSurveyInfo  =  getsurveyinfo($iSurveyId, $sLanguage);
 
         if ($iTokenId !== null) {
             $aData['aSurveyInfo'] = self::getRegisterSuccess($iSurveyId, $iTokenId);
