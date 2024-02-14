@@ -775,7 +775,6 @@ class UserManagementController extends LSBaseController
         }
         $created = [];
         $updated = [];
-        $errors = [];
         foreach ($aNewUsers as $aNewUser) {
             $oUser = User::model()->findByAttributes(['users_name' => $aNewUser['users_name']]);
 
