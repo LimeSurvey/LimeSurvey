@@ -312,8 +312,12 @@ class Template extends LSActiveRecord
      */
     public static function checkIfTemplateExists($sTemplateName)
     {
-        $aTemplates = self::getTemplateList();
-        if (array_key_exists($sTemplateName, $aTemplates)) {
+        /* string[] all existing templates name */
+        static $aTemplatesName= null;
+        if (is_null($aTemplatesName)) {
+            $aTemplatesName = array_keys(self::getTemplateList());
+        }
+        if (in_array($sTemplateName, $aTemplatesName)) {
             return true;
         }
         return false;
@@ -478,8 +482,6 @@ class Template extends LSActiveRecord
      */
     public static function getTemplateList()
     {
-
-
         $aTemplateList = array();
 
         $oTemplateList = TemplateConfiguration::model()->search();
