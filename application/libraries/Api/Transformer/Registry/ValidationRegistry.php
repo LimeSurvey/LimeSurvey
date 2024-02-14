@@ -52,9 +52,10 @@ class ValidationRegistry
 
     /**
      * @param array $config
+     * @param array $options
      * @return array
      */
-    public function normalizeConfig(array $config, $options = []): array
+    public function normaliseConfig(array $config, $options = []): array
     {
         foreach ($this->data as $name => $validator) {
             $config[$name] = $validator->normaliseConfigValue(

@@ -116,7 +116,7 @@ class Transformer implements TransformerInterface
         );
 
         if ($this->registry) {
-            $config = $this->registry->normalizeConfig($config, $options);
+            $config = $this->registry->normaliseConfig($config, $options);
         }
         $config['key'] = isset($config['key']) ? $config['key'] : $inputKey;
         $config['type'] = isset($config['type']) ? $config['type'] : null;
