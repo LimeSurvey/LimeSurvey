@@ -2,7 +2,6 @@
 
 namespace LimeSurvey;
 
-use Psr\Container\ContainerInterface;
 use DI\ContainerBuilder;
 use CActiveRecord;
 use LSYii_Application;
@@ -81,7 +80,7 @@ class DI
         $defintions = [];
         foreach ($modelClasses as $modelClass) {
             $defintions[$modelClass] = \DI\factory(
-                function (ContainerInterface $c) use ($modelClass) {
+                function () use ($modelClass) {
                     return $modelClass::model();
                 }
             );
