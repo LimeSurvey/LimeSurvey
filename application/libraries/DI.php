@@ -2,15 +2,13 @@
 
 namespace LimeSurvey;
 
+use Psr\Container\ContainerInterface;
+use DI\ContainerBuilder;
 use CActiveRecord;
 use LSYii_Application;
 use LimeSurvey\PluginManager\PluginManager;
 use CHttpSession;
 use CDbConnection;
-use DI\{
-    ContainerBuilder,
-    ContainerInterface
-};
 
 /**
  * Dependency Injection
