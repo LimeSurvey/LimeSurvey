@@ -8233,11 +8233,18 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
      * @param int|null $surveyid
      * @param int|null $qid
      * @param string|null $lang
+     *
      * @return array
+     * @throws CException
+     * @throws EmCacheException
      */
     private function getQuestionAttributesForEM($surveyid = 0, $qid = 0, $lang = '')
     {
-        $cacheKey = 'getQuestionAttributesForEM_' . $surveyid . '_' . $qid . '_' . $lang;
+        $gid = 0;
+        if (!empty($this->currentGroupSeq) && $this->currentGroupSeq > 0) {
+            $gid = $this->currentGroupSeq;
+        }
+        $cacheKey = 'getQuestionAttributesForEM_' . $surveyid . '_' . $gid . '_' . $qid . '_' . $lang;
         $value = EmCacheHelper::get($cacheKey);
         if ($value !== false) {
             return $value;
@@ -8277,14 +8284,24 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     'params'    => [':qid' => $qid]
                 ]
             );
+        } elseif ($gid !== 0 && $surveyid) {
+            $oQids = Question::model()->findAll(
+                [
+                    'select' => 'qid',
+                    'group' => 'qid',
+                    'distinct' => true,
+                    'condition' => "sid=:sid and parent_qid=0 and gid=:gid",
+                    'params' => [':sid' => $surveyid, ':gid' => $gid]
+                ]
+            );
         } elseif ($surveyid) {
             $oQids = Question::model()->findAll(
                 [
-                    'select'    => 'qid',
-                    'group'     => 'qid',
-                    'distinct'  => true,
+                    'select' => 'qid',
+                    'group' => 'qid',
+                    'distinct' => true,
                     'condition' => "sid=:sid and parent_qid=0",
-                    'params'    => [':sid' => $surveyid]
+                    'params' => [':sid' => $surveyid]
                 ]
             );
         } else {
