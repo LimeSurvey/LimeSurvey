@@ -300,13 +300,16 @@ class SurveysGroupsettings extends LSActiveRecord
      */
     public static function getInstance($iSurveyGroupId = 0, $oSurvey = null, $instance = null, $iStep = 1, $bRealValues = false)
     {
-
-        if ($iSurveyGroupId > 0) {
-            $model = SurveysGroupsettings::model()->with('SurveysGroups')->findByPk($iSurveyGroupId);
-        } else {
-            //this is the default group setting with gsid=0 !!!
-            $model = SurveysGroupsettings::model()->findByPk($iSurveyGroupId);
+        static $SurveysGroupsettings;
+        if (!isset($SurveysGroupsettings[$iSurveyGroupId])) {
+            if ($iSurveyGroupId > 0) {
+                $SurveysGroupsettings[$iSurveyGroupId] = SurveysGroupsettings::model()->with('SurveysGroups')->findByPk($iSurveyGroupId);
+            } else {
+                //this is the default group setting with gsid=0 !!!
+                $SurveysGroupsettings[$iSurveyGroupId] = SurveysGroupsettings::model()->findByPk($iSurveyGroupId);
+            }
         }
+        $model = $SurveysGroupsettings[$iSurveyGroupId];
 
         // set initial values to instance on first run
         if ($instance === null) {
