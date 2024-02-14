@@ -57,19 +57,12 @@ class DI
                 return App()->db;
             }
         ]);
-        $builder->addDefinitions(
-            static::getActiveRecordDefinitions()
-        );
 
         return $builder->build();
     }
 
     private static function getActiveRecordDefinitions()
     {
-        $decorator = function (CActiveRecord $entry) {
-            $class = get_class($entry);
-            return $class::model();
-        };
         $modelClasses = [
             \Answer::class,
             \AnswerL10n::class,
@@ -85,7 +78,11 @@ class DI
         ];
         $defintions = [];
         foreach ($modelClasses as $modelClass) {
-            $defintions[$modelClass] = \DI\decorate($decorator);
+            $defintions[$modelClass] = \DI\factory(
+                function (ContainerInterface $c) use ($modelClass) {
+                    return $modelClass::model();
+                }
+            );
         }
         return $defintions;
     }
