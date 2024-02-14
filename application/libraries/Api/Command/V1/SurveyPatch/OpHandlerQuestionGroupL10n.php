@@ -2,10 +2,12 @@
 
 namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
-use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\{
+use DI\DependencyException;
+use DI\NotFoundException;
+use LimeSurvey\Models\Services\Exception\PermissionDeniedException;
+use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\{OpHandlerExceptionTrait,
     OpHandlerSurveyTrait,
-    OpHandlerL10nTrait
-};
+    OpHandlerValidationTrait};
 use QuestionGroupL10n;
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestionGroupL10ns;
 use LimeSurvey\Models\Services\QuestionGroupService;
@@ -19,7 +21,8 @@ use LimeSurvey\ObjectPatch\{
 class OpHandlerQuestionGroupL10n implements OpHandlerInterface
 {
     use OpHandlerSurveyTrait;
-    use OpHandlerL10nTrait;
+    use OpHandlerValidationTrait;
+    use OpHandlerExceptionTrait;
 
     protected string $entity;
     protected QuestionGroupL10n $model;
@@ -67,16 +70,13 @@ class OpHandlerQuestionGroupL10n implements OpHandlerInterface
      *
      * @param OpInterface $op
      * @throws OpHandlerException
+     * @throws DependencyException
+     * @throws NotFoundException
+     * @throws \LimeSurvey\Models\Services\Exception\NotFoundException
+     * @throws PermissionDeniedException
      */
     public function handle(OpInterface $op): void
     {
-        $data = $this->transformAllLanguageProps(
-            $op,
-            $op->getProps(),
-            $this->entity,
-            $this->transformer
-        );
-
         $diContainer = \LimeSurvey\DI::getContainer();
         $questionGroupService = $diContainer->get(
             QuestionGroupService::class
@@ -85,22 +85,39 @@ class OpHandlerQuestionGroupL10n implements OpHandlerInterface
             $this->getSurveyIdFromContext($op),
             $op->getEntityId()
         );
-
+        $transformedProps = $this->transformer->transformAll(
+            $op->getProps(),
+            ['operation' => $op->getType()->getId()]
+        );
+        if (empty($transformedProps)) {
+            $this->throwNoValuesException($op);
+        }
         $questionGroupService->updateQuestionGroupLanguages(
             $questionGroup,
-            $data
+            $transformedProps
         );
     }
 
     /**
      * Checks if patch is valid for this operation.
      * @param OpInterface $op
-     * @return bool
+     * @return array
      */
-    public function isValidPatch(OpInterface $op): bool
+    public function validateOperation(OpInterface $op): array
     {
-        //the function transformAllLanguageProps checks if the patch is valid
-        //it is already used in the handle() method ...
-        return true;
+        $validationData = $this->validateCollectionIndex($op, []);
+        $validationData = $this->validateEntityId($op, $validationData);
+        if (empty($validationData)) {
+            $validationData = $this->transformer->validateAll(
+                $op->getProps(),
+                ['operation' => $op->getType()->getId()]
+            );
+        }
+
+        return $this->getValidationReturn(
+            gT('Could not save question group'),
+            !is_array($validationData) ? [] : $validationData,
+            $op
+        );
     }
 }

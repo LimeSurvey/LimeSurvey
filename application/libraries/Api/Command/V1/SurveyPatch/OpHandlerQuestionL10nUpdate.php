@@ -3,27 +3,26 @@
 namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
 use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\{
-    OpHandlerL10nTrait,
     OpHandlerSurveyTrait,
-    OpHandlerExceptionTrait};
+    OpHandlerExceptionTrait,
+    OpHandlerValidationTrait
+};
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestionL10ns;
 use LimeSurvey\Models\Services\{
     QuestionAggregateService\L10nService,
     Exception\NotFoundException,
     Exception\PersistErrorException
 };
-use LimeSurvey\ObjectPatch\{
-    Op\OpInterface,
-    OpType\OpTypeUpdate,
+use LimeSurvey\ObjectPatch\{Op\OpInterface,
     OpHandler\OpHandlerException,
-    OpHandler\OpHandlerInterface
-};
+    OpType\OpTypeUpdate,
+    OpHandler\OpHandlerInterface};
 
 class OpHandlerQuestionL10nUpdate implements OpHandlerInterface
 {
     use OpHandlerSurveyTrait;
     use OpHandlerExceptionTrait;
-    use OpHandlerL10nTrait;
+    use OpHandlerValidationTrait;
 
     protected L10nService $l10nService;
     protected TransformerInputQuestionL10ns $transformer;
@@ -69,32 +68,45 @@ class OpHandlerQuestionL10nUpdate implements OpHandlerInterface
      * }
      *
      * @param OpInterface $op
-     * @throws OpHandlerException
      * @throws PersistErrorException
      * @throws NotFoundException
+     * @throws OpHandlerException
      */
     public function handle(OpInterface $op): void
     {
-        $data = $this->transformAllLanguageProps(
-            $op,
+        $transformedProps = $this->transformer->transformAll(
             $op->getProps(),
-            $op->getEntityType(),
-            $this->transformer
+            ['operation' => $op->getType()->getId()]
         );
+        if (empty($transformedProps)) {
+            $this->throwNoValuesException($op);
+        }
         $this->l10nService->save(
-            (int) $op->getEntityId(),
-            $data
+            (int)$op->getEntityId(),
+            $transformedProps
         );
     }
 
     /**
      * Checks if patch is valid for this operation.
      * @param OpInterface $op
-     * @return bool
+     * @return array
      */
-    public function isValidPatch(OpInterface $op): bool
+    public function validateOperation(OpInterface $op): array
     {
-        //transformAllLanguageProps  already checks if the patch is valid
-        return true;
+        $validationData = $this->validateCollectionIndex($op, []);
+        $validationData = $this->validateEntityId($op, $validationData);
+        if (empty($validationData)) {
+            $validationData = $this->transformer->validateAll(
+                $op->getProps(),
+                ['operation' => $op->getType()->getId()]
+            );
+        }
+
+        return $this->getValidationReturn(
+            gT('Could not save question'),
+            !is_array($validationData) ? [] : $validationData,
+            $op
+        );
     }
 }

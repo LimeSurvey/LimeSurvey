@@ -5,6 +5,7 @@ namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 use DI\DependencyException;
 use DI\NotFoundException;
 use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\OpHandlerExceptionTrait;
+use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\OpHandlerValidationTrait;
 use SurveyLanguageSetting;
 use LimeSurvey\Api\Command\V1\Transformer\{
     Input\TransformerInputSurveyLanguageSettings,
@@ -27,6 +28,7 @@ class OpHandlerLanguageSettingsUpdate implements OpHandlerInterface
 {
     use OpHandlerSurveyTrait;
     use OpHandlerExceptionTrait;
+    use OpHandlerValidationTrait;
 
     protected string $entity;
     protected SurveyLanguageSetting $model;
@@ -94,55 +96,62 @@ class OpHandlerLanguageSettingsUpdate implements OpHandlerInterface
         $languageSettings = $diContainer->get(
             LanguageSettings::class
         );
+        $data = $this->transformer->transformAll(
+            $op->getProps(),
+            [
+                'operation' => $op->getType()->getId(),
+                'entityId'  => $op->getEntityId(),
+                'sid'       => $this->getSurveyIdFromContext($op)
+            ]
+        );
+        if (empty($data)) {
+            $this->throwNoValuesException($op);
+        }
         $languageSettings->update(
             $this->getSurveyIdFromContext($op),
-            $this->getLanguageSettingsData($op) ?? []
-        );
-    }
-
-    /**
-     * Analyzes the patch, builds and returns the correct data structure
-     * @param OpInterface $op
-     * @return ?mixed
-     * @throws OpHandlerException
-     */
-    public function getLanguageSettingsData(OpInterface $op)
-    {
-        $transformOps = ['operation' => $op->getType()->getId()];
-        $props = [];
-        $entityId = $op->getEntityId();
-        if (!empty($entityId)) {
-            // indicator for variant 1
-            $props[$entityId] = $op->getProps();
-        } else {
-            // variant 2
-            $props = $op->getProps();
-        }
-        foreach (array_keys($props) as $language) {
-            $props[$language]['sid'] = $this->getSurveyIdFromContext($op);
-            $props[$language]['language'] = $language;
-        }
-        $this->throwTransformerValidationErrors(
-            $this->transformer->validateAll(
-                $props,
-                $transformOps
-            ),
-            $op
-        );
-        return $this->transformer->transformAll(
-            $props,
-            $transformOps
+            $data
         );
     }
 
     /**
      * Checks if patch is valid for this operation.
      * @param OpInterface $op
-     * @return bool
+     * @return array
      */
-    public function isValidPatch(OpInterface $op): bool
+    public function validateOperation(OpInterface $op): array
     {
-        // getTransformedProps will throw an exception if the patch is not valid
-        return true;
+        $validationData = [];
+        $checkDataEntityId = $this->validateEntityId($op, []);
+        $checkDataCollection = $this->validateCollection($op, []);
+        if (empty($checkDataEntityId) && empty($checkDataCollection)) {
+            // operation data has an entity id and props came as collection
+            $validationData = $this->addErrorToValidationData(
+                'props can not come as collection if id is set',
+                $validationData
+            );
+        } elseif (!empty($checkDataEntityId) && !empty($checkDataCollection)) {
+            // operation data has no entity id and props came not as collection
+            $validationData = $checkDataCollection;
+        } elseif (!empty($checkDataEntityId)) {
+            // operation data has no entity id so collection indexes are validated
+            $validationData = $this->validateCollectionIndex($op, $validationData);
+        }
+
+        if (empty($validationData)) {
+            $validationData = $this->transformer->validateAll(
+                $op->getProps(),
+                [
+                    'operation' => $op->getType()->getId(),
+                    'entityId'  => $op->getEntityId(),
+                    'sid'       => $this->getSurveyIdFromContext($op)
+                ]
+            );
+        }
+
+        return $this->getValidationReturn(
+            gT('Could not save language settings'),
+            !is_array($validationData) ? [] : $validationData,
+            $op
+        );
     }
 }

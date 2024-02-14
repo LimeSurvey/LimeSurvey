@@ -66,8 +66,8 @@ class Transformer implements TransformerInterface
                 $data,
                 $options
             );
-            if (is_array($errors)) {
-                throw new TransformerException($errors[0]);
+            if (is_array($errors) && !empty($errors)) {
+                throw new TransformerException(current(current($errors)));
             }
 
             if (
@@ -256,15 +256,15 @@ class Transformer implements TransformerInterface
                 )
             )
         ) {
-            $errors[] = $key . ' is required';
+            $errors[$key][] = $key . ' is required';
         }
 
         if ($value === null && $config['null'] === false) {
-            $errors[] = $key . ' cannot be null';
+            $errors[$key][] = $key . ' cannot be null';
         }
 
         if (empty($value) && $config['empty'] === false) {
-            $errors[] = $key . ' cannot be empty';
+            $errors[$key][] = $key . ' cannot be empty';
         }
 
         if (

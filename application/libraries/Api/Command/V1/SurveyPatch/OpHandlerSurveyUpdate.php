@@ -2,13 +2,17 @@
 
 namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
+use DI\DependencyException;
+use DI\NotFoundException;
 use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\OpHandlerExceptionTrait;
+use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\OpHandlerSurveyTrait;
+use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\OpHandlerValidationTrait;
+use LimeSurvey\Api\Transformer\TransformerException;
 use Survey;
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputSurvey;
-use LimeSurvey\Models\Services\{
+use LimeSurvey\Models\Services\{Exception\PermissionDeniedException,
     SurveyAggregateService,
-    Exception\PersistErrorException
-};
+    Exception\PersistErrorException};
 use LimeSurvey\ObjectPatch\{
     Op\OpInterface,
     OpHandler\OpHandlerException,
@@ -19,6 +23,8 @@ use LimeSurvey\ObjectPatch\{
 class OpHandlerSurveyUpdate implements OpHandlerInterface
 {
     use OpHandlerExceptionTrait;
+    use OpHandlerSurveyTrait;
+    use OpHandlerValidationTrait;
 
     protected string $entity;
     protected Survey $model;
@@ -47,10 +53,35 @@ class OpHandlerSurveyUpdate implements OpHandlerInterface
 
     /**
      * Saves the changes to the database.
+     * NOTE: when we update the language,
+     *       additionalLanguages need also to be added in the props,
+     *       or they will be deleted.
+     * Expects this structure, note that the entity id is not required.
+     * as the survey id will be in the context:
+     * {
+     *       "patch": [{
+     *       "entity": "survey",
+     *       "op": "update",
+     *       "props": {
+     *         "anonymized": false,
+     *         "language": "en",
+     *         "additionalLanguages":["de"],
+     *         "expires": "2001-03-20 13:28:00",
+     *         "template": "fruity_twentythree",
+     *         "format": "G"
+     *       }
+     *     }
+     *   ]
+     * }
      *
      * @param OpInterface $op
      * @throws OpHandlerException
      * @throws PersistErrorException
+     * @throws DependencyException
+     * @throws NotFoundException
+     * @throws TransformerException
+     * @throws \LimeSurvey\Models\Services\Exception\NotFoundException
+     * @throws PermissionDeniedException
      */
     public function handle(OpInterface $op): void
     {
@@ -59,7 +90,6 @@ class OpHandlerSurveyUpdate implements OpHandlerInterface
             SurveyAggregateService::class
         );
 
-        //here we should get the props from the op
         $props = $op->getProps();
         $transformedProps = $this->transformer->transform($props);
 
@@ -68,7 +98,7 @@ class OpHandlerSurveyUpdate implements OpHandlerInterface
         }
         /** @var array $transformedProps */
         $surveyUpdater->update(
-            $op->getEntityId(),
+            $this->getSurveyIdFromContext($op),
             $transformedProps
         );
     }
@@ -76,10 +106,19 @@ class OpHandlerSurveyUpdate implements OpHandlerInterface
     /**
      * Checks if patch is valid for this operation.
      * @param OpInterface $op
-     * @return bool
+     * @return array
      */
-    public function isValidPatch(OpInterface $op): bool
+    public function validateOperation(OpInterface $op): array
     {
-        return ((int)$op->getEntityId()) > 0;
+        $validationData = $this->transformer->validate(
+            $op->getProps(),
+            ['operation' => $op->getType()->getId()]
+        );
+
+        return $this->getValidationReturn(
+            gT('Could not save survey'),
+            !is_array($validationData) ? [] : $validationData,
+            $op
+        );
     }
 }

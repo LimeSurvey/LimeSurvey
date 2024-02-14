@@ -18,22 +18,6 @@ use ls\tests\TestBaseClass;
 class OpHandlerQuestionL10nUpdateTest extends TestBaseClass
 {
     /**
-     * @testdox throws exception when no valid values are provided
-     */
-    public function testOpQuestionL10nThrowsNoValuesException()
-    {
-        $this->expectException(
-            OpHandlerException::class
-        );
-        $op = $this->getOp(
-            $this->getWrongPropsArray(),
-            'create'
-        );
-        $opHandler = $this->getOpHandler();
-        $opHandler->handle($op);
-    }
-
-    /**
      * @testdox can handle a questionL10n update
      */
     public function testOpQuestionL10nUpdateCanHandle()
@@ -56,6 +40,34 @@ class OpHandlerQuestionL10nUpdateTest extends TestBaseClass
         );
         $opHandler = $this->getOpHandler();
         self::assertFalse($opHandler->canHandle($op));
+    }
+
+    /**
+     * @testdox validation hits
+     */
+    public function testOpQuestionGroupValidationFailure()
+    {
+        $op = $this->getOp(
+            $this->getWrongPropsArray()
+        );
+        $opHandler = $this->getOpHandler();
+        $validation = $opHandler->validateOperation($op);
+        $this->assertIsArray($validation);
+        $this->assertNotEmpty($validation);
+    }
+
+    /**
+     * @testdox validation doesn't hit when everything is fine
+     */
+    public function testOpQuestionGroupValidationSuccess()
+    {
+        $op = $this->getOp(
+            $this->getCorrectPropsArray()
+        );
+        $opHandler = $this->getOpHandler();
+        $validation = $opHandler->validateOperation($op);
+        $this->assertIsArray($validation);
+        $this->assertEmpty($validation);
     }
 
     /**
