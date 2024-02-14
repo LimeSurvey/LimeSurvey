@@ -66,8 +66,8 @@ class Transformer implements TransformerInterface
                 $data,
                 $options
             );
-            if (is_array($errors)) {
-                throw new TransformerException($errors[0]);
+            if (is_array($errors) && !empty($errors)) {
+                throw new TransformerException(current(current($errors)));
             }
 
             if (
