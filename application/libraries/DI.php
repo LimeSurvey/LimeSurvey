@@ -7,6 +7,10 @@ use LSYii_Application;
 use LimeSurvey\PluginManager\PluginManager;
 use CHttpSession;
 use CDbConnection;
+use DI\{
+    ContainerBuilder,
+    ContainerInterface
+};
 
 /**
  * Dependency Injection
@@ -41,7 +45,7 @@ class DI
      */
     public static function makeContainer()
     {
-        $builder = new \DI\ContainerBuilder();
+        $builder = new ContainerBuilder();
         $builder->addDefinitions([
             LSYii_Application::class => function () {
                 //exit('C');
