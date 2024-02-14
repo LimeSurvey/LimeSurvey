@@ -4,6 +4,8 @@ namespace LimeSurvey\Api\Transformer\Validators;
 
 class EmptyValidator implements ValidatorInterface
 {
+    private string $name = 'empty';
+
     /**
      * @param string $key
      * @param mixed $value
@@ -15,10 +17,22 @@ class EmptyValidator implements ValidatorInterface
     public function validate($key, $value, $config, $data, $options = [])
     {
         $messages = [];
-        if (empty($value) && $config['empty'] === false) {
+        if (empty($value) && $config[$this->name] === false) {
             $messages[] = $key . ' cannot be empty';
         }
 
         return empty($messages) ? true : $messages;
+    }
+
+    public function normaliseConfigValue(
+        $config,
+        $options = []
+    ) {
+        return isset($config[$this->name]) ? (bool)$config[$this->name] : $this->getDefaultConfig();
+    }
+
+    public function getDefaultConfig()
+    {
+        return true;
     }
 }

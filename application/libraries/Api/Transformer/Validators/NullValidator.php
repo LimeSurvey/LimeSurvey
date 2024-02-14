@@ -4,6 +4,8 @@ namespace LimeSurvey\Api\Transformer\Validators;
 
 class NullValidator implements ValidatorInterface
 {
+    private string $name = 'null';
+
     /**
      * @param string $key
      * @param mixed $value
@@ -15,10 +17,22 @@ class NullValidator implements ValidatorInterface
     public function validate($key, $value, $config, $data, $options = [])
     {
         $messages = [];
-        if ($value === null && $config['null'] === false) {
+        if ($value === null && $config[$this->name] === false) {
             $messages[] = $key . ' cannot be null';
         }
 
         return empty($messages) ? true : $messages;
+    }
+
+    public function normaliseConfigValue(
+        $config,
+        $options = []
+    ) {
+        return isset($config[$this->name]) ? (bool)$config[$this->name] : $this->getDefaultConfig();
+    }
+
+    public function getDefaultConfig()
+    {
+        return true;
     }
 }

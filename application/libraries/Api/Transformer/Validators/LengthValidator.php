@@ -4,6 +4,8 @@ namespace LimeSurvey\Api\Transformer\Validators;
 
 class LengthValidator implements ValidatorInterface
 {
+    private string $name = 'length';
+
     /**
      * @param string $key
      * @param mixed $value
@@ -41,10 +43,10 @@ class LengthValidator implements ValidatorInterface
      */
     private function getMin($config)
     {
-        return is_array($config['length']) && array_key_exists(
+        return is_array($config[$this->name]) && array_key_exists(
             'min',
-            $config['length']
-        ) ? (int) $config['length']['min'] : 0;
+            $config[$this->name]
+        ) ? (int)$config[$this->name]['min'] : 0;
     }
 
     /**
@@ -54,9 +56,21 @@ class LengthValidator implements ValidatorInterface
      */
     private function getMax($config, $length)
     {
-        return is_array($config['length']) && array_key_exists(
+        return is_array($config[$this->name]) && array_key_exists(
             'max',
-            $config['length']
-        ) ? (int) $config['length']['max'] : $length;
+            $config[$this->name]
+        ) ? (int)$config[$this->name]['max'] : $length;
+    }
+
+    public function normaliseConfigValue(
+        $config,
+        $options = []
+    ) {
+        return $config[$this->name] ?? $this->getDefaultConfig();
+    }
+
+    public function getDefaultConfig()
+    {
+        return false;
     }
 }

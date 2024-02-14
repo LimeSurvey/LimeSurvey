@@ -42,11 +42,27 @@ class ValidationRegistry
     /**
      * @return void
      */
-    public function initDefault()
+    private function initDefault()
     {
         $this->set('required', new RequiredValidator());
         $this->set('null', new NullValidator());
         $this->set('empty', new EmptyValidator());
         $this->set('length', new LengthValidator());
+    }
+
+    /**
+     * @param array $config
+     * @return array
+     */
+    public function normalizeConfig(array $config, $options = []): array
+    {
+        foreach ($this->data as $name => $validator) {
+            $config[$name] = $validator->normaliseConfigValue(
+                $config,
+                $options
+            );
+        }
+
+        return $config;
     }
 }

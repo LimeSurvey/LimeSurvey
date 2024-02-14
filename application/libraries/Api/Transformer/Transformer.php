@@ -104,7 +104,6 @@ class Transformer implements TransformerInterface
      */
     private function normaliseConfig($config, $inputKey, $options = [])
     {
-        $options = $options ?? [];
         $configTemp = ['key' => $inputKey];
         if (is_string($config) || is_int($config)) {
             // map to new key name
@@ -116,41 +115,15 @@ class Transformer implements TransformerInterface
             is_array($config) ? $config : []
         );
 
+        if ($this->registry) {
+            $config = $this->registry->normalizeConfig($config, $options);
+        }
         $config['key'] = isset($config['key']) ? $config['key'] : $inputKey;
         $config['type'] = isset($config['type']) ? $config['type'] : null;
         $config['collection'] = isset($config['collection']) ? $config['collection'] : false;
         $config['transformer'] = isset($config['transformer']) ? $config['transformer'] : null;
         $config['formatter'] = isset($config['formatter']) ? $config['formatter'] : null;
         $config['default'] = isset($config['default']) ? $config['default'] : null;
-        $config['required'] = isset($config['required']) ? $config['required'] : false;
-        $config['null'] = isset($config['null']) ? (bool)$config['null'] : true;
-        $config['empty'] = isset($config['empty']) ? (bool)$config['empty'] : true;
-        $config['length'] = isset($config['length']) ? $config['length'] : false;
-
-        // required can be operation specific by specifying
-        // - a string or an array of operation names
-        if (
-            isset($options['operation'])
-            && (
-                is_string($config['required'])
-                || is_array($config['required'])
-            )
-        ) {
-            $config['required'] = (
-                (
-                    is_string($config['required'])
-                    && $config['required'] == $options['operation']
-                )
-                ||
-                (
-                    is_array($config['required'])
-                    && in_array(
-                        $options['operation'],
-                        $config['required']
-                    )
-                )
-            );
-        }
 
         return $config;
     }
@@ -370,7 +343,7 @@ class Transformer implements TransformerInterface
      *
      * @return array
      */
-    public function getDefaultConfig()
+    private function getDefaultConfig()
     {
         return array_merge(
             [
