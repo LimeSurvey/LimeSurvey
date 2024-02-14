@@ -176,11 +176,9 @@ class TemplateConfig extends CActiveRecord
                     $templateConfig->sTemplateName = null;
                     return $templateConfig;
                 }
-                /* @todo : same for css and js (in registered package ? ) */
-                TemplateConfiguration::uninstall($this->sTemplateName);
                 App()->setFlashMessage(
                     sprintf(
-                        gT("Theme '%s' has been uninstalled because it's not compatible with this LimeSurvey version. Can't find file: $sFile "),
+                        gT("Theme '%s' was not found, can't find file: $sFile "),
                         $this->sTemplateName
                     ),
                     'error'
@@ -913,7 +911,7 @@ class TemplateConfig extends CActiveRecord
     {
         // check compatability with current limesurvey version
         $isCompatible = TemplateConfig::isCompatible($themePath);
-        if (!$isCompatible) {
+        if ($isCompatible === false) {
             self::uninstallThemesRecursive($themeName);
             if ($redirect) {
                 App()->setFlashMessage(
@@ -926,6 +924,14 @@ class TemplateConfig extends CActiveRecord
                 App()->getController()->redirect(["themeOptions/index", "#" => "surveythemes"]);
                 App()->end();
             }
+        } elseif ((!$isCompatible) && $redirect) {
+            App()->setFlashMessage(
+                sprintf(
+                    gT("Theme '%s' was not found."),
+                    $themeName
+                ),
+                'error'
+            );
         }
         // add more tests here
 
@@ -937,13 +943,13 @@ class TemplateConfig extends CActiveRecord
      * Checks if theme is compatible with the current limesurvey version
      * @param $themePath
      * @param bool $redirect
-     * @return bool
+     * @return bool|null
      */
-    public static function isCompatible($themePath): bool
+    public static function isCompatible($themePath)
     {
         $extensionConfig = ExtensionConfig::loadFromFile($themePath);
         if ($extensionConfig === null) {
-            return false;
+            return null;
         }
         if (!$extensionConfig->isCompatible()) {
             return false;
