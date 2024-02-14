@@ -48,6 +48,7 @@ class ComposerStaticInitddb1a145e450f862353420acc5153e40
             'Psr\\Http\\Message\\' => 17,
             'Psr\\Http\\Client\\' => 16,
             'Psr\\Container\\' => 14,
+            'Psr\\Cache\\' => 10,
             'PhpDocReader\\' => 13,
             'ParagonIE\\ConstantTime\\' => 23,
             'PHPMailer\\PHPMailer\\' => 20,
@@ -84,6 +85,9 @@ class ComposerStaticInitddb1a145e450f862353420acc5153e40
         ),
         'D' => 
         array (
+            'Doctrine\\Deprecations\\' => 22,
+            'Doctrine\\Common\\Lexer\\' => 22,
+            'Doctrine\\Common\\Annotations\\' => 28,
             'DI\\' => 3,
         ),
         'A' => 
@@ -137,6 +141,10 @@ class ComposerStaticInitddb1a145e450f862353420acc5153e40
         'Psr\\Container\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/container/src',
+        ),
+        'Psr\\Cache\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/cache/src',
         ),
         'PhpDocReader\\' => 
         array (
@@ -225,6 +233,18 @@ class ComposerStaticInitddb1a145e450f862353420acc5153e40
         'GoldSpecDigital\\ObjectOrientedOAS\\' => 
         array (
             0 => __DIR__ . '/..' . '/goldspecdigital/oooas/src',
+        ),
+        'Doctrine\\Deprecations\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/doctrine/deprecations/lib/Doctrine/Deprecations',
+        ),
+        'Doctrine\\Common\\Lexer\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/doctrine/lexer/src',
+        ),
+        'Doctrine\\Common\\Annotations\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/doctrine/annotations/lib/Doctrine/Common/Annotations',
         ),
         'DI\\' => 
         array (

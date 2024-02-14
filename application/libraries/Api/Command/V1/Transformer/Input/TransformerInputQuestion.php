@@ -2,7 +2,7 @@
 
 namespace LimeSurvey\Api\Command\V1\Transformer\Input;
 
-use LimeSurvey\Api\Transformer\{Registry\ValidationRegistry,
+use LimeSurvey\Api\Transformer\{
     Transformer,
     TransformerException,
     Formatter\FormatterMandatory,
@@ -10,9 +10,8 @@ use LimeSurvey\Api\Transformer\{Registry\ValidationRegistry,
 
 class TransformerInputQuestion extends Transformer
 {
-    public function __construct(ValidationRegistry $validationRegistry)
+    public function __construct()
     {
-        $this->setRegistry($validationRegistry);
         $formatterYn = new FormatterYnToBool(true);
         $formatterMandatory = new FormatterMandatory();
 

@@ -2,14 +2,12 @@
 
 namespace LimeSurvey\Api\Command\V1\Transformer\Input;
 
-use LimeSurvey\Api\Transformer\Registry\ValidationRegistry;
 use LimeSurvey\Api\Transformer\Transformer;
 
 class TransformerInputQuestionGroup extends Transformer
 {
-    public function __construct(ValidationRegistry $validationRegistry)
+    public function __construct()
     {
-        $this->setRegistry($validationRegistry);
         $this->setDataMap([
             'gid' => ['type' => 'int'],
             'sid' => ['type' => 'int'],

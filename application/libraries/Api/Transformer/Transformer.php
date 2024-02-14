@@ -357,8 +357,11 @@ class Transformer implements TransformerInterface
     }
 
     /**
+     * Called automatically by DI container via @Inject annotation
+     * Whenever we are on PHP 8.1 we can switch this to PHP attributes
      * @param ValidationRegistry $registry
      * @return void
+     * @Inject
      */
     public function setRegistry(ValidationRegistry $registry)
     {

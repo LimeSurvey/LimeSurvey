@@ -2,7 +2,7 @@
 
 namespace LimeSurvey\Api\Command\V1\Transformer\Input;
 
-use LimeSurvey\Api\Transformer\{Registry\ValidationRegistry,
+use LimeSurvey\Api\Transformer\{
     Transformer,
     Formatter\FormatterYnToBool,
     Formatter\FormatterDateTimeToJson};
@@ -12,10 +12,8 @@ class TransformerInputSurvey extends Transformer
     /**
      * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
-    public function __construct(
-        ValidationRegistry $validationRegistry
-    ) {
-        $this->setRegistry($validationRegistry);
+    public function __construct()
+    {
         $formatterYn = new FormatterYnToBool(true);
         $formatterDateTime = new FormatterDateTimeToJson(true);
 
