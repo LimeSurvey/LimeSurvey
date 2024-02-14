@@ -924,7 +924,7 @@ class TemplateConfig extends CActiveRecord
                 App()->getController()->redirect(["themeOptions/index", "#" => "surveythemes"]);
                 App()->end();
             }
-        } else if ((!$isCompatible) && $redirect) {
+        } elseif ((!$isCompatible) && $redirect) {
             App()->setFlashMessage(
                 sprintf(
                     gT("Theme '%s' was not found."),
