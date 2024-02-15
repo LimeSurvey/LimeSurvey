@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2024-02-15 13:53:55+00:00\n"
+"POT-Creation-Date: 2024-02-15 14:02:21+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -9429,7 +9429,7 @@ msgid "Store the answers to this question encrypted"
 msgstr ""
 
 #: application/extensions/GeneralOptionWidget/settings/GroupSelectorGeneralOption.php:22
-msgid "Reassign this question to a another group by selecting a new one"
+msgid "Reassign this question to another group by selecting a new one"
 msgstr ""
 
 #: application/extensions/GeneralOptionWidget/settings/MandatoryGeneralOption.php:15
