@@ -312,12 +312,9 @@ class Template extends LSActiveRecord
      */
     public static function checkIfTemplateExists($sTemplateName)
     {
-        /* string[] all existing templates name */
-        static $aTemplatesName= null;
-        if (is_null($aTemplatesName)) {
-            $aTemplatesName = array_keys(self::getTemplateList());
-        }
-        if (in_array($sTemplateName, $aTemplatesName)) {
+        $atemplateList = self::getTemplateList();
+        // isset is faster, and we need a value
+        if (isset($atemplateList[$sTemplateName])) {
             return true;
         }
         return false;
@@ -474,21 +471,32 @@ class Template extends LSActiveRecord
     }
 
     /**
-     * Returns an array of all available template names - does a basic check if the template might be valid
-     *
-     * TODO: replace the calls to that function by a data provider based on search
-     *
-     * @return array
+     * Returns an array of all available template names - check if template exist
+     * key is template name, value is template folder
+     * @return string|]
      */
     public static function getTemplateList()
     {
+        static $aTemplateList =  null;
+        if (!is_null($aTemplateList)) {
+            return $aTemplateList;
+        }
         $aTemplateList = array();
-
-        $oTemplateList = TemplateConfiguration::model()->search();
-        $oTemplateList->setPagination(false);
-
-        foreach ($oTemplateList->getData() as $oTemplate) {
-            $aTemplateList[$oTemplate->template_name] =  (self::isStandardTemplate($oTemplate->template_name)) ?  Yii::app()->getConfig("standardthemerootdir") . DIRECTORY_SEPARATOR . $oTemplate->template->folder : Yii::app()->getConfig("userthemerootdir") . DIRECTORY_SEPARATOR . $oTemplate->template->folder;
+        $aTemplateList = [];
+        /* Get the template name by TemplateConfiguration and fiolder by template , no need other data */
+        $criteria = new CDBCriteria();
+        $criteria->select = 'template_name';
+        $criteria->with = ['template' => ['select' => 'folder']];
+        $criteria->order = 'template_name';
+        $oTemplateList = TemplateConfiguration::model()->with('template')->findAll($criteria);
+        $aTemplateInStandard = SurveyThemeHelper::getTemplateInStandard();
+        $aTemplateInUpload = SurveyThemeHelper::getTemplateInUpload();
+        foreach ($oTemplateList as $oTemplate) {
+            if (isset($aTemplateInStandard[$oTemplate->template->folder])) {
+                $aTemplateList[$oTemplate->template_name] = $aTemplateInStandard[$oTemplate->template->folder];
+            } elseif (isset($aTemplateInUpload[$oTemplate->template->folder])) {
+                $aTemplateList[$oTemplate->template_name] = $aTemplateInUpload[$oTemplate->template->folder];
+            }
         }
         return $aTemplateList;
     }
