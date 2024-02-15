@@ -55,6 +55,7 @@
                     class='code code-title'
                     value="{{ answerOption.code }}"
                     maxlength='5'
+                    pattern="[a-zA-Z0-9]+"  // Only letters and numbers
                     required='required'
                     onfocusout="LS.questionEditor.showAnswerOptionCodeUniqueError(this);"
                 />
