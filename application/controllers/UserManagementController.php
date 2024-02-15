@@ -782,12 +782,12 @@ class UserManagementController extends LSBaseController
             if ($oUser  !== null) {
                 if ($overwriteUsers) {
                     /* Check permission to edit this user */
-                    if (!$oUser->canEdit() || $aUser['uid'] == App()->user->id) {
+                    if (!$oUser->canEdit()) {
                         Yii::app()->setFlashMessage(sprintf(gT("You don't have permission to edit user %s."), $aNewUser['users_name']), 'warning');
                         continue;
                     }
                     /* Check permission to edit self */
-                    if ($aUser['uid'] == App()->user->id) {
+                    if ($aNewUser['uid'] == App()->user->id) {
                         Yii::app()->setFlashMessage(gT("You can not use import to edit your account."), 'warning');
                         continue;
                     }
