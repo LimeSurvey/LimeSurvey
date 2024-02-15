@@ -74,6 +74,8 @@ class SurveysGroupsettings extends LSActiveRecord
     public $active;
     public $additional_languages;
 
+    /* self[] used in self::getInstance() */
+    private static $aSurveysGroupSettings;
 
     /**
      * @return string the associated database table name
@@ -103,15 +105,23 @@ class SurveysGroupsettings extends LSActiveRecord
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
             array('gsid, owner_id, admin, expires, startdate, adminemail, anonymized, format,
-			savetimings, template, datestamp, usecookie, allowregister, allowsave, autonumber_start,
-			autoredirect, allowprev, printanswers, ipaddr, refurl, datecreated, showsurveypolicynotice,
-			publicstatistics, publicgraphs, listpublic, htmlemail, sendconfirmation, tokenanswerspersistence,
-			assessments, usecaptcha, bounce_email, attributedescriptions, emailresponseto, emailnotificationto,
-			tokenlength, showxquestions, showgroupinfo, shownoanswer, showqnumcode, showwelcome, showprogress,
-			questionindex, navigationdelay, nokeyboard, alloweditaftercompletion', 'safe', 'on' => 'search'),
+            savetimings, template, datestamp, usecookie, allowregister, allowsave, autonumber_start,
+            autoredirect, allowprev, printanswers, ipaddr, refurl, datecreated, showsurveypolicynotice,
+            publicstatistics, publicgraphs, listpublic, htmlemail, sendconfirmation, tokenanswerspersistence,
+            assessments, usecaptcha, bounce_email, attributedescriptions, emailresponseto, emailnotificationto,
+            tokenlength, showxquestions, showgroupinfo, shownoanswer, showqnumcode, showwelcome, showprogress,
+            questionindex, navigationdelay, nokeyboard, alloweditaftercompletion', 'safe', 'on' => 'search'),
         );
     }
 
+    /** @inheritdoc
+     * unset static aSurveysGroupSettings
+     **/
+    public function save($runValidation = true, $attributes = null)
+    {
+        unset(self::$aSurveysGroupSettings[$this->gsid]);
+        parent::save($runValidation, $attributes);
+    }
     /**
      * @return array relational rules.
      */
@@ -292,24 +302,23 @@ class SurveysGroupsettings extends LSActiveRecord
      * It steps up (see param $iStep) until it has found the real settings ...
      *
      * @param int $iSurveyGroupId
-     * @param null $oSurvey
-     * @param null $instance
+     * @param Survey|null $oSurvey
+     * @param self|null $instance
      * @param int $iStep      this is inheritance step (recursive step) (parent, parentParent, parentParentParent ?)
      * @param bool $bRealValues
      * @return SurveysGroupsettings instance
      */
     public static function getInstance($iSurveyGroupId = 0, $oSurvey = null, $instance = null, $iStep = 1, $bRealValues = false)
     {
-        static $SurveysGroupsettings;
-        if (!isset($SurveysGroupsettings[$iSurveyGroupId])) {
+        if (!isset(self::$aSurveysGroupSettings[$iSurveyGroupId])) {
             if ($iSurveyGroupId > 0) {
-                $SurveysGroupsettings[$iSurveyGroupId] = SurveysGroupsettings::model()->with('SurveysGroups')->findByPk($iSurveyGroupId);
+                self::$aSurveysGroupSettings[$iSurveyGroupId] = SurveysGroupsettings::model()->with('SurveysGroups')->findByPk($iSurveyGroupId);
             } else {
                 //this is the default group setting with gsid=0 !!!
-                $SurveysGroupsettings[$iSurveyGroupId] = SurveysGroupsettings::model()->findByPk($iSurveyGroupId);
+                self::$aSurveysGroupSettings[$iSurveyGroupId] = SurveysGroupsettings::model()->findByPk($iSurveyGroupId);
             }
         }
-        $model = $SurveysGroupsettings[$iSurveyGroupId];
+        $model = self::$aSurveysGroupSettings[$iSurveyGroupId];
 
         // set initial values to instance on first run
         if ($instance === null) {
