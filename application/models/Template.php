@@ -312,12 +312,8 @@ class Template extends LSActiveRecord
      */
     public static function checkIfTemplateExists($sTemplateName)
     {
-        $atemplateList = self::getTemplateList();
-        // isset is faster, and we need a value
-        if (isset($atemplateList[$sTemplateName])) {
-            return true;
-        }
-        return false;
+        // isset is faster, and we need a value, no need var here
+        return isset(self::getTemplateList()[$sTemplateName]);
     }
 
     /**
