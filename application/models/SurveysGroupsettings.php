@@ -418,7 +418,12 @@ class SurveysGroupsettings extends LSActiveRecord
         } elseif ($attribute == 'owner_id' && $value != -1) {
             $instance->oOptions->owner = "";
             $instance->oOptions->ownerLabel = "";
-            $oUser = User::model()->findByPk($instance->oOptions->{$attribute});
+            /* \User|false[] see mantis #19426 */
+            static $oStaticUsers = array();
+            if (!array_key_exists($instance->oOptions->{$attribute}, $oStaticUsers)) {
+                $oStaticUsers[$instance->oOptions->{$attribute}] = User::model()->findByPk($instance->oOptions->{$attribute});
+            }
+            $oUser = $oStaticUsers[$instance->oOptions->{$attribute}];
             if (!empty($oUser)) {
                 $instance->oOptions->owner = $oUser->attributes;
                 $instance->oOptions->ownerLabel = $oUser->users_name . ($oUser->full_name ? " - " . $oUser->full_name : "");
