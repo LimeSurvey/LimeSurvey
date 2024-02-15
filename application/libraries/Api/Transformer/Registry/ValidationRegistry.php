@@ -5,6 +5,8 @@ namespace LimeSurvey\Api\Transformer\Registry;
 use LimeSurvey\Api\Transformer\Validators\EmptyValidator;
 use LimeSurvey\Api\Transformer\Validators\LengthValidator;
 use LimeSurvey\Api\Transformer\Validators\NullValidator;
+use LimeSurvey\Api\Transformer\Validators\NumericalValidator;
+use LimeSurvey\Api\Transformer\Validators\RangeValidator;
 use LimeSurvey\Api\Transformer\Validators\RequiredValidator;
 
 class ValidationRegistry
@@ -48,11 +50,13 @@ class ValidationRegistry
         $this->set('null', new NullValidator());
         $this->set('empty', new EmptyValidator());
         $this->set('length', new LengthValidator());
+        $this->set('range', new RangeValidator());
+        $this->set('numerical', new NumericalValidator());
     }
 
     /**
      * @param array $config
-     * @param array $options
+     * @param ?array $options
      * @return array
      */
     public function normaliseConfig(array $config, $options = []): array

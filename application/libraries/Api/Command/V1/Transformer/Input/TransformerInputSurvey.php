@@ -21,7 +21,7 @@ class TransformerInputSurvey extends Transformer
             'sid' => ['type' => 'int'],
             'gsid' => ['type' => 'int'],
             'ownerId' => ['key' => 'owner_id', 'type' => 'int'],
-            'active' => ['formatter' => $formatterYn],
+            'active' => ['formatter' => $formatterYn, 'range' => [true, false]],
             'language' => true,
             'admin' => ['length' => ['min' => 1, 'max' => 50]],
             'adminEmail' => ['key' => 'adminemail'],
@@ -34,7 +34,7 @@ class TransformerInputSurvey extends Transformer
             'useCookie' => ['key' => 'usecookie', 'formatter' => $formatterYn],
             'allowRegister' => ['key' => 'allowregister', 'formatter' => $formatterYn],
             'allowSave' => ['key' => 'allowsave', 'formatter' => $formatterYn],
-            'autoNumberStart' => ['key' => 'autonumber_start', 'type' => 'int'],
+            'autoNumberStart' => ['key' => 'autonumber_start', 'type' => 'int', 'numerical' => true],
             'autoRedirect' => ['key' => 'autoredirect', 'formatter' => $formatterYn],
             'allowPrev' => ['key' => 'allowprev', 'formatter' => $formatterYn],
             'printAnswers' => ['key' => 'printanswers', 'formatter' => $formatterYn],
@@ -48,19 +48,26 @@ class TransformerInputSurvey extends Transformer
             'sendConfirmation' => ['key' => 'sendconfirmation', 'formatter' => $formatterYn],
             'tokenAnswersPersistence' => ['key' => 'tokenanswerspersistence', 'formatter' => $formatterYn],
             'assessments' => ['formatter' => $formatterYn],
-            'useCaptcha' => ['key' => 'usecaptcha', 'formatter' => $formatterYn],
+            'useCaptcha' => [
+                'key' => 'usecaptcha',
+                'range' => [
+                    'A', 'B', 'C', 'D', 'X', 'R', 'S', 'N', 'E', 'F', 'G', 'H',
+                    'I', 'J', 'K', 'L', 'M', 'O', 'P', 'T', 'U',
+                    '1', '2', '3', '4', '5', '6'
+                ]
+            ],
             'useTokens' => ['key' => 'usetokens', 'formatter' => $formatterYn],
             'bounceEmail' => 'bounce_email',
             'attributeDescriptions' => 'attributedescriptions',
             'emailResponseTo' => 'emailresponseto',
             'emailNotificationTo' => 'emailnotificationto',
-            'tokenLength' => ['key' => 'tokenlength', 'type' => 'int'],
+            'tokenLength' => ['key' => 'tokenlength', 'type' => 'int', 'numerical' => ['min' => -1]],
             'showXQuestions' => ['key' => 'showxquestions', 'formatter' => $formatterYn],
-            'showGroupInfo' => 'showgroupinfo',
+            'showGroupInfo' => ['key' => 'showgroupinfo', 'range' => ['B', 'N', 'D', 'X', 'I']],
             'showNoAnswer' => ['key' => 'shownoanswer', 'formatter' => $formatterYn],
-            'showQNumCode' => 'showqnumcode',
-            'bounceTime' => ['key' => 'bouncetime', 'type' => 'int'],
-            'bounceProcessing' => ['key' => 'bounceprocessing', 'formatter' => $formatterYn],
+            'showQNumCode' => ['key' => 'showqnumcode', 'range' => ['B', 'N', 'C', 'X', 'I']],
+            'bounceTime' => ['key' => 'bouncetime', 'type' => 'int', 'numerical' => true],
+            'bounceProcessing' => ['key' => 'bounceprocessing', 'range' => ['L', 'N', 'G']],
             'bounceAccountType' => 'bounceaccounttype',
             'bounceAccountHost' => 'bounceaccounthost',
             'bounceAccountPass' => 'bounceaccountpass',
@@ -68,15 +75,17 @@ class TransformerInputSurvey extends Transformer
             'bounceAccountUser' => 'bounceaccountuser',
             'showWelcome' => ['key' => 'showwelcome', 'formatter' => $formatterYn],
             'showProgress' => ['key' => 'showprogress', 'formatter' => $formatterYn],
-            'questionIndex' => ['key' => 'questionindex', 'type' => 'int'],
-            'navigationDelay' => ['key' => 'navigationdelay', 'type' => 'int'],
+            'questionIndex' => ['key' => 'questionindex', 'type' => 'int', 'numerical' => ['min' => -1, 'max' => 2]],
+            'navigationDelay' => ['key' => 'navigationdelay', 'type' => 'int', 'numerical' => true],
             'noKeyboard' => ['key' => 'nokeyboard', 'formatter' => $formatterYn],
-            'allowedItAfterCompletion' => ['key' => 'alloweditaftercompletion', 'formatter' => $formatterYn],
-            'googleAnalyticsStyle' => ['key' => 'googleanalyticsstyle', 'type' => 'int'],
+            'allowedItAfterCompletion' => ['key' => 'alloweditaftercompletion', 'range' => $formatterYn],
+            'googleAnalyticsStyle' => ['key' => 'googleanalyticsstyle', 'type' => 'int', 'numerical' => ['min' => 0, 'max' => 3]],
             'googleAnalyticsApiKey' => 'googleanalyticsapikey',
-            'showSurveyPolicyNotice' => ['key' => 'showsurveypolicynotice', 'type' => 'int'],
+            'showSurveyPolicyNotice' => [
+                'key' => 'showsurveypolicynotice', 'type' => 'int', 'range' => [0, 1, 2]
+            ],
             'template' => true,
-            'format' => true
+            'format' => ['range' => ['G', 'S', 'A', 'I']]
         ]);
     }
 }

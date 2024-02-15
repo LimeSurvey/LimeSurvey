@@ -17,11 +17,13 @@ class LengthValidator implements ValidatorInterface
     public function validate($key, $value, $config, $data, $options = [])
     {
         $messages = [];
-        $length = $this->getLengthOfValue($value, $config);
-        $min = $this->getMin($config);
-        $max = $this->getMax($config, $length);
-        if ($length < $min || $length > $max) {
-            $messages[] = $key . ' length must be between ' . $min . ' and ' . $max . '.';
+        if(is_array($config[$this->name])) {
+            $length = $this->getLengthOfValue($value, $config);
+            $min = $this->getMin($config);
+            $max = $this->getMax($config, $length);
+            if ($length < $min || $length > $max) {
+                $messages[] = $key . ' length must be between ' . $min . ' and ' . $max . '.';
+            }
         }
 
         return empty($messages) ? true : $messages;

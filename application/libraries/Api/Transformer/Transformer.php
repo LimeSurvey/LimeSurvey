@@ -191,8 +191,6 @@ class Transformer implements TransformerInterface
             if (is_null($value) && isset($config['default'])) {
                 $value = $config['default'];
             }
-            $value = $this->cast($value, $config);
-            $value = $this->format($value, $config);
 
             $fieldErrors = $this->validateKey(
                 $key,
