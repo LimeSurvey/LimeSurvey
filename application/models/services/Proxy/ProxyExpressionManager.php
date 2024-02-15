@@ -64,13 +64,14 @@ class ProxyExpressionManager
                 $aGroup['gid'],
                 $survey->anonymized != 'Y',
                 $surveyId,
-                false,
+                true,
                 true
             );
         }
         LimeExpressionManager::AggregateGroupStart(
             $survey->anonymized != 'Y',
-            $surveyId
+            $surveyId,
+            true
         );
         foreach ($aGrouplist as $aGroup) {
             LimeExpressionManager::FinishProcessingGroup();
