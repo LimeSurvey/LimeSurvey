@@ -417,13 +417,13 @@ class TemplateConfiguration extends TemplateConfig
 
         $criteria = new CDbCriteria();
 
-        $criteria->join = 'INNER JOIN {{templates}} AS template ON ' .
+        $criteria->join = 'INNER JOIN {{templates}} AS tmpl ON ' .
             App()->db->quoteColumnName("t.template_name") .
-            ' = template.name';
+            ' = tmpl.name';
         //Don't show surveyspecifi settings on the overview
         $criteria->addCondition('t.sid IS NULL');
         $criteria->addCondition('t.gsid IS NULL');
-        $criteria->addCondition('template.name IS NOT NULL');
+        $criteria->addCondition('tmpl.name IS NOT NULL');
 
         $criteria->compare('id', $this->id);
         $criteria->compare('template_name', $this->template_name, true);
