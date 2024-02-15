@@ -41,12 +41,7 @@ class ThemeQuestionAttributeProvider extends QuestionAttributeProvider
         /** @var array<string,array> An array of question attributes */
         $attributes = array();
 
-        static $questionThemeCache = [];
-        if (!array_key_exists($questionType, $questionThemeCache)) {
-            /** @var QuestionTheme|null $questionThemeCache */
-            $questionThemeCache[$questionType] = QuestionTheme::model()->findByAttributes([], 'name = :name AND extends = :extends', ['name' => $questionThemeName, 'extends' => $questionType]);
-        }
-        $questionTheme = $questionThemeCache[$questionType];
+        $questionTheme = \QuestionTheme::model()->findByAttributes([], 'name = :name AND extends = :extends', ['name' => $questionThemeName, 'extends' => $questionType]);
         if ($questionTheme !== null) {
             $xmlFilePath = $questionTheme->getXmlPath() . '/config.xml';
             $extensionConfig = \ExtensionConfig::loadFromFile($xmlFilePath);
