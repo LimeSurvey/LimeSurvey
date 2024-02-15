@@ -837,9 +837,11 @@ class QuestionTheme extends LSActiveRecord
     {
         static $questionThemeCache = [];
         if (!array_key_exists($type, $questionThemeCache)) {
-            $questionThemeCache[$type] = self::model()->findByAttributes([],
+            $questionThemeCache[$type] = self::model()->findByAttributes(
+                [],
                 'question_type = :question_type AND extends = :extends',
-                ['question_type' => $type, 'extends' => '']);
+                ['question_type' => $type, 'extends' => '']
+            );
         }
         $questionTheme = $questionThemeCache[$type];
 
