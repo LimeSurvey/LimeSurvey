@@ -13,6 +13,7 @@ class NumericalValidator implements ValidatorInterface
      * @param array $data
      * @param array $options
      * @return array|bool
+     * @psalm-suppress PossiblyFalseOperand
      */
     public function validate($key, $value, $config, $data, $options = [])
     {
