@@ -381,6 +381,9 @@ function submittokens($quotaexit = false)
 
     // check how many uses the token has left
     $token = Token::model($surveyid)->findByAttributes(array('token' => $clienttoken));
+    if (!$token) {
+        throw new CHttpException(403, gT("Invalid access code"));
+    }
     $token->scenario = 'FinalSubmit'; // Do not XSS filter token data
 
     if ($quotaexit == true) {
