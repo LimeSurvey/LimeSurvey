@@ -64,6 +64,7 @@ class ProxyExpressionManager
                 $aGroup['gid'],
                 $survey->anonymized != 'Y',
                 $surveyId,
+                false,
                 true
             );
         }
