@@ -75,7 +75,7 @@ class SurveysGroupsettings extends LSActiveRecord
     public $additional_languages;
 
     /* self[] used in self::getInstance() */
-    private static $aSurveysGroupSettings;
+    private static $aSurveysGroupSettings = [];
 
     /**
      * @return string the associated database table name
@@ -302,15 +302,15 @@ class SurveysGroupsettings extends LSActiveRecord
      * It steps up (see param $iStep) until it has found the real settings ...
      *
      * @param int $iSurveyGroupId
-     * @param Survey|null $oSurvey
-     * @param self|null $instance
+     * @param  \Survey|null $oSurvey
+     * @param \self|null $instance
      * @param int $iStep      this is inheritance step (recursive step) (parent, parentParent, parentParentParent ?)
      * @param bool $bRealValues
      * @return SurveysGroupsettings instance
      */
     public static function getInstance($iSurveyGroupId = 0, $oSurvey = null, $instance = null, $iStep = 1, $bRealValues = false)
     {
-        if (!isset(self::$aSurveysGroupSettings[$iSurveyGroupId])) {
+        if (!array_key_exists($iSurveyGroupId, self::$aSurveysGroupSettings)) {
             if ($iSurveyGroupId > 0) {
                 self::$aSurveysGroupSettings[$iSurveyGroupId] = SurveysGroupsettings::model()->with('SurveysGroups')->findByPk($iSurveyGroupId);
             } else {
