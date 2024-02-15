@@ -4599,7 +4599,8 @@ class LimeExpressionManager
                 $LEM->surveyMode = 'group';
                 break;
         }
-        $LEM->setVariableAndTokenMappingsForExpressionManager($surveyid, $forceRefresh, $LEM->surveyOptions['anonymized']);
+        //$LEM->setVariableAndTokenMappingsForExpressionManager($surveyid, $forceRefresh, $LEM->surveyOptions['anonymized']);
+        self::AggregateGroupStart($LEM->surveyOptions['anonymized'], $surveyid, $forceRefresh);
         $LEM->currentGroupSeq = -1;
         $LEM->currentQuestionSeq = -1;    // for question-by-question mode
         $LEM->indexGseq = [];
@@ -6758,9 +6759,10 @@ class LimeExpressionManager
      * @param boolean|null $anonymized - whether anonymized
      * @param int|null $surveyid - the surveyId
      * @param boolean|null $forceRefresh - whether to force refresh of setting variable and token mappings (should be done rarely)
+     * @param boolean|null $postponeAggregation - whether to postpone aggregation
      * @return void
      */
-    public static function StartProcessingGroup($gseq = null, $anonymized = false, $surveyid = null, $forceRefresh = false)
+    public static function StartProcessingGroup($gseq = null, $anonymized = false, $surveyid = null, $forceRefresh = false, $postponeAggregation = false)
     {
         $LEM =& LimeExpressionManager::singleton();
         $LEM->em->StartProcessingGroup(
@@ -6772,20 +6774,39 @@ class LimeExpressionManager
         if (!is_null($gseq)) {
             $LEM->currentGroupSeq = $gseq;
             if (!is_null($surveyid)) {
-                $LEM->setVariableAndTokenMappingsForExpressionManager($surveyid, $forceRefresh, $anonymized);
+                if (!$postponeAggregation) {
+                    $LEM->setVariableAndTokenMappingsForExpressionManager($surveyid, $forceRefresh, $anonymized);
+                }
                 if ($gseq > $LEM->maxGroupSeq) {
                     $LEM->maxGroupSeq = $gseq;
                 }
 
                 if (!$LEM->allOnOnePage || ($LEM->allOnOnePage && !$LEM->processedRelevance)) {
-                    $LEM->ProcessAllNeededRelevance();  // TODO - what if this is called using Survey or Data Entry format?
-                    $LEM->_CreateSubQLevelRelevanceAndValidationEqns();
+                    if (!$postponeAggregation) {
+                        $LEM->ProcessAllNeededRelevance();  // TODO - what if this is called using Survey or Data Entry format?
+                        $LEM->_CreateSubQLevelRelevanceAndValidationEqns();
+                    }
                     $LEM->processedRelevance = true;
                 }
             }
         }
     }
 
+    /**
+     * Does the group start's common logic in an aggregated manner
+     * @param boolean|null $anonymized - whether anonymized
+     * @param int|null $surveyid - the surveyId
+     * @param boolean|null $forceRefresh - whether to force refresh of setting variable and token mappings (should be done rarely)
+     * @return void
+     */
+    public static function AggregateGroupStart($anonymized = false, $surveyid = null, $forceRefresh = false)
+    {
+        $LEM =& LimeExpressionManager::singleton();
+        $LEM->setVariableAndTokenMappingsForExpressionManager($surveyid, $forceRefresh, $anonymized);
+        $LEM->ProcessAllNeededRelevance();  // TODO - what if this is called using Survey or Data Entry format?
+        $LEM->_CreateSubQLevelRelevanceAndValidationEqns();
+    }
+    
     /**
      * Should be called after each group finishes
      * @param boolean|null $skipReprocessing
