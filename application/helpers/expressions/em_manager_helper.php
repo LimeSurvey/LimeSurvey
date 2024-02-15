@@ -4599,7 +4599,6 @@ class LimeExpressionManager
                 $LEM->surveyMode = 'group';
                 break;
         }
-        //$LEM->setVariableAndTokenMappingsForExpressionManager($surveyid, $forceRefresh, $LEM->surveyOptions['anonymized']);
         self::AggregateGroupStart($LEM->surveyOptions['anonymized'], $surveyid, $forceRefresh);
         $LEM->currentGroupSeq = -1;
         $LEM->currentQuestionSeq = -1;    // for question-by-question mode
