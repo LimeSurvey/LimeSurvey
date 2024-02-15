@@ -105,12 +105,12 @@ class SurveysGroupsettings extends LSActiveRecord
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
             array('gsid, owner_id, admin, expires, startdate, adminemail, anonymized, format,
-            savetimings, template, datestamp, usecookie, allowregister, allowsave, autonumber_start,
-            autoredirect, allowprev, printanswers, ipaddr, refurl, datecreated, showsurveypolicynotice,
-            publicstatistics, publicgraphs, listpublic, htmlemail, sendconfirmation, tokenanswerspersistence,
-            assessments, usecaptcha, bounce_email, attributedescriptions, emailresponseto, emailnotificationto,
-            tokenlength, showxquestions, showgroupinfo, shownoanswer, showqnumcode, showwelcome, showprogress,
-            questionindex, navigationdelay, nokeyboard, alloweditaftercompletion', 'safe', 'on' => 'search'),
+			savetimings, template, datestamp, usecookie, allowregister, allowsave, autonumber_start,
+			autoredirect, allowprev, printanswers, ipaddr, refurl, datecreated, showsurveypolicynotice,
+			publicstatistics, publicgraphs, listpublic, htmlemail, sendconfirmation, tokenanswerspersistence,
+			assessments, usecaptcha, bounce_email, attributedescriptions, emailresponseto, emailnotificationto,
+			tokenlength, showxquestions, showgroupinfo, shownoanswer, showqnumcode, showwelcome, showprogress,
+			questionindex, navigationdelay, nokeyboard, alloweditaftercompletion', 'safe', 'on' => 'search'),
         );
     }
 
