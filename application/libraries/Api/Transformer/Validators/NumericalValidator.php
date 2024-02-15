@@ -33,10 +33,10 @@ class NumericalValidator implements ValidatorInterface
                 } elseif (!$maxValid) {
                     $messages[] = $key . ' must be lower than ' . $max . '.';
                 }
-        } else {
-            $messages[] = $key . ' must be numeric.';
+            } else {
+                $messages[] = $key . ' must be numeric.';
+            }
         }
-    }
 
         return empty($messages) ? true : $messages;
     }

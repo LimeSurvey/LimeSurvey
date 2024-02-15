@@ -80,7 +80,7 @@ class TransformerInputSurvey extends Transformer
             'noKeyboard' => ['key' => 'nokeyboard', 'formatter' => $formatterYn],
             'allowedItAfterCompletion' => ['key' => 'alloweditaftercompletion', 'range' => $formatterYn],
             'googleAnalyticsStyle' => ['key' => 'googleanalyticsstyle', 'type' => 'int', 'numerical' => ['min' => 0, 'max' => 3]],
-            'googleAnalyticsApiKey' => 'googleanalyticsapikey',
+            'googleAnalyticsApiKey' => ['key' => 'googleanalyticsapikey', 'pattern' => '/^[a-zA-Z\-\d]*$/'],
             'showSurveyPolicyNotice' => [
                 'key' => 'showsurveypolicynotice', 'type' => 'int', 'range' => [0, 1, 2]
             ],

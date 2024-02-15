@@ -17,7 +17,7 @@ class LengthValidator implements ValidatorInterface
     public function validate($key, $value, $config, $data, $options = [])
     {
         $messages = [];
-        if(is_array($config[$this->name])) {
+        if (is_array($config[$this->name])) {
             $length = $this->getLengthOfValue($value, $config);
             $min = $this->getMin($config);
             $max = $this->getMax($config, $length);

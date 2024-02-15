@@ -7,6 +7,7 @@ use LimeSurvey\Api\Transformer\Validators\LengthValidator;
 use LimeSurvey\Api\Transformer\Validators\NullValidator;
 use LimeSurvey\Api\Transformer\Validators\NumericalValidator;
 use LimeSurvey\Api\Transformer\Validators\RangeValidator;
+use LimeSurvey\Api\Transformer\Validators\RegexValidator;
 use LimeSurvey\Api\Transformer\Validators\RequiredValidator;
 
 class ValidationRegistry
@@ -52,6 +53,7 @@ class ValidationRegistry
         $this->set('length', new LengthValidator());
         $this->set('range', new RangeValidator());
         $this->set('numerical', new NumericalValidator());
+        $this->set('pattern', new RegexValidator());
     }
 
     /**
