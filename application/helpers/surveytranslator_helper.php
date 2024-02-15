@@ -403,6 +403,13 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['kal']['radixpoint'] = 1;
     $supportedLanguages['kal']['momentjs'] = null;
 
+    // Hausa
+    $supportedLanguages['ha']['description'] = gT('Hausa');
+    $supportedLanguages['ha']['nativedescription'] = 'Hausa';
+    $supportedLanguages['ha']['rtl'] = false;
+    $supportedLanguages['ha']['dateformat'] = 1;
+    $supportedLanguages['ha']['radixpoint'] = 1;
+    
     // Hebrew
     $supportedLanguages['he']['description'] = gT('Hebrew');
     $supportedLanguages['he']['nativedescription'] = ' &#1506;&#1489;&#1512;&#1497;&#1514;';

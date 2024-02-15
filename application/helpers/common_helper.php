@@ -112,8 +112,8 @@ function getSurveyList($bReturnArray = false)
         $criteria = new CDBCriteria();
         $criteria->select = ['sid','language', 'active', 'expires','startdate'];
         $criteria->with = ['languagesettings' => [
-                'select'=>'surveyls_title',
-                'where'=>'t.language = languagesettings.language'
+                'select' => 'surveyls_title',
+                'where' => 't.language = languagesettings.language'
             ]
         ];
         $surveyidresult = Survey::model()
@@ -1105,12 +1105,12 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage)
                                 $file['comment'] = '';
                             }
                             $size = "";
-                            if($file['size'] && strval(floatval($file['size'])) == strval($file['size'])) {
+                            if ($file['size'] && strval(floatval($file['size'])) == strval($file['size'])) {
                                 // avoid to throw PHP error if size is invalid
                                 $size = sprintf('%s KB', round($file['size']));
                             }
                             $sValue .= rawurldecode((string) $file['name']) .
-                            ' (' . $size .' ) ' .
+                            ' (' . $size . ' ) ' .
                             strip_tags((string) $file['title']);
                             if (trim(strip_tags((string) $file['comment'])) != "") {
                                 $sValue .= ' - ' . strip_tags((string) $file['comment']);
@@ -1412,7 +1412,6 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
     . " AND b.same_default=0"
     . " AND b.sid = " . $surveyid;
     $defaultResults = Yii::app()->db->createCommand($defaultsQuery)->queryAll();
-
     $defaultValues = array(); // indexed by question then subquestion
     foreach ($defaultResults as $dv) {
         if ($dv['specialtype'] != '') {
@@ -2348,7 +2347,7 @@ function languageDropdown($surveyid, $selected)
     array_unshift($slangs, $baselang);
     $html = "<select class='listboxquestions form-select' name='langselect' onchange=\"window.open(this.options[this.selectedIndex].value, '_top')\">\n";
     foreach ($slangs as $lang) {
-        $link = Yii::app()->createUrl("admin/dataentry/sa/view/surveyid/". $surveyid . "/lang/" . $lang);
+        $link = Yii::app()->createUrl("admin/dataentry/sa/view/surveyid/" . $surveyid . "/lang/" . $lang);
         if ($lang == $selected) {
             $html .= "\t<option value='{$link}' selected='selected'>" . getLanguageNameFromCode($lang, false) . "</option>\n";
         }
@@ -3702,11 +3701,18 @@ function cleanLanguagesFromSurvey($iSurveyID, $availlangs, $baselang = null)
 function fixLanguageConsistency($sid, $availlangs = '', $baselang = '')
 {
     $sid = (int) $sid;
+    if (empty($baselang)) {
+        $baselang = Survey::model()->findByPk($sid)->language;
+    }
     if (trim($availlangs) != '') {
         $availlangs = sanitize_languagecodeS($availlangs);
         $langs = explode(" ", (string) $availlangs);
         if ($langs[count($langs) - 1] == "") {
             array_pop($langs);
+        }
+        // If base language is in the list, remove it
+        if (($key = array_search($baselang, $langs)) !== false) {
+            unset($langs[$key]);
         }
     } else {
         $langs = Survey::model()->findByPk($sid)->additionalLanguages;
@@ -3714,17 +3720,14 @@ function fixLanguageConsistency($sid, $availlangs = '', $baselang = '')
     if (count($langs) == 0) {
         return true; // Survey only has one language
     }
-    if (empty($baselang)) {
-        $baselang = Survey::model()->findByPk($sid)->language;
-    }
     $quotedGroups = Yii::app()->db->quoteTableName('{{groups}}');
     $query = "SELECT * FROM $quotedGroups g JOIN {{group_l10ns}} ls ON ls.gid=g.gid WHERE sid='{$sid}' AND language='{$baselang}'  ";
     $result = Yii::app()->db->createCommand($query)->query();
-    foreach ($result->readAll() as $group) {
-        foreach ($langs as $lang) {
-            $query = "SELECT count(gid) FROM {{group_l10ns}} WHERE gid='{$group['gid']}' AND language='{$lang}'";
-            $gresult = Yii::app()->db->createCommand($query)->queryScalar();
-            if ($gresult < 1) {
+    foreach ($langs as $lang) {
+        $query = "SELECT gid FROM {{group_l10ns}} WHERE language='{$lang}'";
+        $gresult = Yii::app()->db->createCommand($query)->queryColumn();
+        foreach ($result->readAll() as $group) {
+            if (!in_array($group['gid'], $gresult)) {
                 $data = array(
                 'gid' => $group['gid'],
                 'group_name' => $group['group_name'],
@@ -3737,6 +3740,7 @@ function fixLanguageConsistency($sid, $availlangs = '', $baselang = '')
         reset($langs);
     }
 
+    // @todo Too many queries if survey has more than one language
     $query = "SELECT * FROM {{questions}} q JOIN {{question_l10ns}} ls ON ls.qid=q.qid WHERE sid='{$sid}'";
     $result = Yii::app()->db->createCommand($query)->query()->readAll();
     if (count($result) > 0) {

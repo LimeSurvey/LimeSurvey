@@ -339,7 +339,9 @@ CKEDITOR.editorConfig = function (a) {
         a.removePlugins = 'sourcearea';
         a.iframe_attributes = {
             sandbox: 'allow-scripts allow-same-origin'
-        }
+        },
+
+        a.versionCheck = false
 }
 
 CKEDITOR.on("instanceReady", function (event) {
