@@ -3724,7 +3724,7 @@ function fixLanguageConsistency($sid, $availlangs = '', $baselang = '')
     $query = "SELECT * FROM $quotedGroups g JOIN {{group_l10ns}} ls ON ls.gid=g.gid WHERE sid='{$sid}' AND language='{$baselang}'  ";
     $result = Yii::app()->db->createCommand($query)->query();
     foreach ($langs as $lang) {
-        $query = "SELECT gid FROM group_l10ns WHERE language='{$lang}'";
+        $query = "SELECT gid FROM {{group_l10ns}} WHERE language='{$lang}'";
         $gresult = Yii::app()->db->createCommand($query)->queryColumn();
         foreach ($result->readAll() as $group) {
             if (!in_array($group['gid'], $gresult)) {
