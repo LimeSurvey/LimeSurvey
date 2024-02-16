@@ -619,87 +619,89 @@ class CheckIntegrity extends SurveyCommonAction
             }
         }
 
-        /** Check for active surveys if questions are in the correct group **/
-        // Commented out the following code parts, because it is unlikely that the columns are not in the correct group
-        // Will leave the code in for now just in case
+        /** 
+         * Check for active surveys if questions are in the correct group
+         * This will only run if an additional URL parameter checkResponseTableFields=y is set
+         * This is to prevent this costly check from running on every page load
+         */
+        if (Yii::app()->request->getParam('checkResponseTableFields') == 'y') {
+            foreach ($oSurveys as $oSurvey) {
+                // This actually clears the schema cache, not just refreshes it
+                $oDB->schema->refresh();
+                // We get the active surveys
+                if ($oSurvey->isActive && $oSurvey->hasResponsesTable) {
+                    $model    = SurveyDynamic::model($oSurvey->sid);
+                    $aColumns = $model->getMetaData()->columns;
+                    $aQids    = array();
 
-        /* foreach ($oSurveys as $oSurvey) {
-            // This actually clears the schema cache, not just refreshes it
-            $oDB->schema->refresh();
-            // We get the active surveys
-            if ($oSurvey->isActive && $oSurvey->hasResponsesTable) {
-                $model    = SurveyDynamic::model($oSurvey->sid);
-                $aColumns = $model->getMetaData()->columns;
-                $aQids    = array();
+                    // We get the columns of the responses table
+                    foreach ($aColumns as $oColumn) {
+                        // Question columns start with the SID
+                        if (strpos((string) $oColumn->name, (string)$oSurvey->sid) !== false) {
+                            // Fileds are separated by X
+                            $aFields = explode('X', (string) $oColumn->name);
 
-                // We get the columns of the responses table
-                foreach ($aColumns as $oColumn) {
-                    // Question columns start with the SID
-                    if (strpos((string) $oColumn->name, (string)$oSurvey->sid) !== false) {
-                        // Fileds are separated by X
-                        $aFields = explode('X', (string) $oColumn->name);
+                            if (isset($aFields[1])) {
+                                $sGid = $aFields[1];
 
-                        if (isset($aFields[1])) {
-                            $sGid = $aFields[1];
+                                // QID field can be more than just QID, like: 886other or 886A1
+                                // So we clean it by finding the first alphabetical character
+                                $sDirtyQid = $aFields[2];
+                                preg_match('~[a-zA-Z_#]~i', $sDirtyQid, $match, PREG_OFFSET_CAPTURE);
 
-                            // QID field can be more than just QID, like: 886other or 886A1
-                            // So we clean it by finding the first alphabetical character
-                            $sDirtyQid = $aFields[2];
-                            preg_match('~[a-zA-Z_#]~i', $sDirtyQid, $match, PREG_OFFSET_CAPTURE);
-
-                            if (isset($match[0][1])) {
-                                $sQID = substr($sDirtyQid, 0, $match[0][1]);
-                            } else {
-                                // It was just the QID.... (maybe)
-                                $sQID = $sDirtyQid;
-                            }
-
-                            // Here, we get the question as defined in backend
-                            try {
-                                $oQuestion = Question::model()->findByAttributes(['qid' => $sQID , 'sid' => $oSurvey->sid]);
-                            } catch (Exception $e) {
-                                // QID potentially invalid , see #17458, reset $oQuestion
-                                $oQuestion = null;
-                            }
-                            if (is_a($oQuestion, 'Question')) {
-                                // We check if its GID is the same as the one defined in the column name
-                                if ($oQuestion->gid != $sGid) {
-                                    // If not, we change the column name
-                                    $sNvColName = $oSurvey->sid . 'X' . $oQuestion->group->gid . 'X' . $sDirtyQid;
-
-                                    if (array_key_exists($sNvColName, $aColumns)) {
-                                        // This case will not happen often, only when QID + Subquestion ID == QID of a question in the target group
-                                        // So we'll change the group of the question question group table (so in admin interface, not in frontend)
-                                        $oQuestion->gid = $sGid;
-                                        $oQuestion->save();
-                                    } else {
-                                        $oTransaction = $oDB->beginTransaction();
-                                        $oDB->createCommand()->renameColumn($model->tableName(), $oColumn->name, $sNvColName);
-                                        $oTransaction->commit();
-                                    }
+                                if (isset($match[0][1])) {
+                                    $sQID = substr($sDirtyQid, 0, $match[0][1]);
+                                } else {
+                                    // It was just the QID.... (maybe)
+                                    $sQID = $sDirtyQid;
                                 }
-                            } else {
-                                // QID not found: The function to split the fieldname into the SGQA data is not 100% reliable
-                                // So for certain question types (for example Text Array) the field name cannot be properly derived
-                                // In this case just ignore the field - see also https://bugs.limesurvey.org/view.php?id=15642
-                                // There is still a extremely  low chance that an unwanted rename happens if a collision like this happens in the same survey
+
+                                // Here, we get the question as defined in backend
+                                try {
+                                    $oQuestion = Question::model()->findByAttributes(['qid' => $sQID , 'sid' => $oSurvey->sid]);
+                                } catch (Exception $e) {
+                                    // QID potentially invalid , see #17458, reset $oQuestion
+                                    $oQuestion = null;
+                                }
+                                if (is_a($oQuestion, 'Question')) {
+                                    // We check if its GID is the same as the one defined in the column name
+                                    if ($oQuestion->gid != $sGid) {
+                                        // If not, we change the column name
+                                        $sNvColName = $oSurvey->sid . 'X' . $oQuestion->group->gid . 'X' . $sDirtyQid;
+
+                                        if (array_key_exists($sNvColName, $aColumns)) {
+                                            // This case will not happen often, only when QID + Subquestion ID == QID of a question in the target group
+                                            // So we'll change the group of the question question group table (so in admin interface, not in frontend)
+                                            $oQuestion->gid = $sGid;
+                                            $oQuestion->save();
+                                        } else {
+                                            $oTransaction = $oDB->beginTransaction();
+                                            $oDB->createCommand()->renameColumn($model->tableName(), $oColumn->name, $sNvColName);
+                                            $oTransaction->commit();
+                                        }
+                                    }
+                                } else {
+                                    // QID not found: The function to split the fieldname into the SGQA data is not 100% reliable
+                                    // So for certain question types (for example Text Array) the field name cannot be properly derived
+                                    // In this case just ignore the field - see also https://bugs.limesurvey.org/view.php?id=15642
+                                    // There is still a extremely  low chance that an unwanted rename happens if a collision like this happens in the same survey
+                                }
                             }
                         }
                     }
                 }
             }
-        }
 
-        $oDB->schema->refresh();
-        $oDB->schemaCachingDuration = 3600;
-        $oDB->schema->getTables();
-        $oDB->active = false;
-        $oDB->active = true;
-        User::model()->refreshMetaData();
-        Yii::app()->db->schema->getTable('{{surveys}}', true);
-        Yii::app()->db->schema->getTable('{{templates}}', true);
-        Survey::model()->refreshMetaData();
-        */
+            $oDB->schema->refresh();
+            $oDB->schemaCachingDuration = 3600;
+            $oDB->schema->getTables();
+            $oDB->active = false;
+            $oDB->active = true;
+            User::model()->refreshMetaData();
+            Yii::app()->db->schema->getTable('{{surveys}}', true);
+            Yii::app()->db->schema->getTable('{{templates}}', true);
+            Survey::model()->refreshMetaData();
+        }
         /* Check method before using #14596 */
         if (method_exists(Yii::app()->cache, 'flush')) {
             Yii::app()->cache->flush();
