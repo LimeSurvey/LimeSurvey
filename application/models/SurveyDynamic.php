@@ -29,7 +29,7 @@ class SurveyDynamic extends LSActiveRecord
     /** @var int $sid */
     protected static $sid = 0;
 
-    /** @var array $survey */
+    /** @var Survey $survey */
     protected static $survey;
 
     /** @var  boolean $bHaveToken */
