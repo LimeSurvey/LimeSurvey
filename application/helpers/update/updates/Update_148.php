@@ -93,7 +93,7 @@ class Update_148 extends DatabaseUpdateBase
 
     private function fixSubquestions148()
     {
-        $surveyidresult = Yii::app()->db->createCommand()
+        $surveyidresult = $this->db->createCommand()
         ->select('sq.qid, q.gid , q.type ')
         ->from('{{questions}} sq')
         ->join('{{questions}} q', 'sq.parent_qid=q.qid')
@@ -107,7 +107,7 @@ class Update_148 extends DatabaseUpdateBase
                 $hasSubquestions = $aQuestionTypes[$sv['type']]['subquestions'];
                 if ($hasSubquestions) {
                     // If the question type allows subquestions, set the type in each subquestion
-                    Yii::app()->db->createCommand("update {{questions}} set type='{$sv['type']}', gid={$sv['gid']} where qid={$sv['qid']}")->execute();
+                    $this->db->createCommand("update {{questions}} set type='{$sv['type']}', gid={$sv['gid']} where qid={$sv['qid']}")->execute();
                 } else {
                     // If the question type doesn't allow subquestions, delete each subquestion
                     // Model is used because more tables are involved.
@@ -117,7 +117,7 @@ class Update_148 extends DatabaseUpdateBase
                     }
                 }
             }
-            $surveyidresult = Yii::app()->db->createCommand()
+            $surveyidresult = $this->db->createCommand()
             ->select('sq.qid, q.gid , q.type ')
             ->from('{{questions}} sq')
             ->join('{{questions}} q', 'sq.parent_qid=q.qid')
