@@ -5,6 +5,8 @@
  * TODO : make a recursive function, taking any number of box in the database, calculating how much rows are needed.
  */
 
+/** @var String $bannerHtml */
+
 // DO NOT REMOVE This is for automated testing to validate we see that page
 echo viewHelper::getViewTestTag('index');
 ?>
@@ -37,9 +39,8 @@ gT('Themes');
     <?php endif; ?>
 
     <?php
-        $event = new PluginEvent('afterWelcomeLogo');
-        App()->getPluginManager()->dispatchEvent($event);
-        echo $event->get('html');
+        //show extra banner after logo
+        echo $bannerHtml;
     ?>
 
     <!-- Message when first start -->
