@@ -619,7 +619,7 @@ class CheckIntegrity extends SurveyCommonAction
             }
         }
 
-        /** 
+        /**
          * Check for active surveys if questions are in the correct group
          * This will only run if an additional URL parameter checkResponseTableFields=y is set
          * This is to prevent this costly check from running on every page load
