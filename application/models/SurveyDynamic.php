@@ -43,10 +43,13 @@ class SurveyDynamic extends LSActiveRecord
     public static function model($sid = null)
     {
         $refresh = false;
-        $survey = Survey::model()->findByPk($sid);
+        $survey = Yii::app()->db->createCommand()
+            ->select('{{surveys.sid}}')
+            ->from('{{surveys}}')
+            ->where('{{surveys.sid}} = :sid', array(':sid' => $sid))
+            ->queryRow();
         if ($survey) {
-            self::sid($survey->sid);
-            self::$survey = $survey;
+            self::sid($survey['sid']);
             $refresh = true;
         }
 
@@ -1078,5 +1081,18 @@ class SurveyDynamic extends LSActiveRecord
     public function getSurveyId()
     {
         return self::$sid;
+    }
+
+    /**
+     * Get current survey for other model/function
+     * Using a getter to avoid query during model creation
+     * @return Survey
+     */
+    public function getSurvey()
+    {
+        if (self::$sid && self::$survey === null) {
+            self::$survey = Survey::model()->findByPk(self::$sid);
+        }
+        return self::$survey;
     }
 }

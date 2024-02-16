@@ -4429,21 +4429,10 @@ function fixSubquestions()
     ->limit(10000)
     ->query();
     $aRecords = $surveyidresult->readAll();
-
-    $dbVersionNumber = SettingGlobal::getDBVersionNumber();
-
-    if ($dbVersionNumber < 148) {
-        $aQuestionTypes = QuestionType::modelsAttributes();
-    } else {
-        $aQuestionTypes = QuestionTheme::findQuestionMetaDataForAllTypes(); //be careful!!! only use this if QuestionTheme already exists (see updateDB ...)
-    }
+    $aQuestionTypes = QuestionTheme::findQuestionMetaDataForAllTypes(); //be careful!!! only use this if QuestionTheme already exists (see updateDB ...)
     while (count($aRecords) > 0) {
         foreach ($aRecords as $sv) {
-            if ($dbVersionNumber < 148) {
-                $hasSubquestions = $aQuestionTypes[$sv['type']]['subquestions'];
-            } else {
-                $hasSubquestions = (int)$aQuestionTypes[$sv['type']]['settings']->subquestions;
-            }
+            $hasSubquestions = (int)$aQuestionTypes[$sv['type']]['settings']->subquestions;
             if ($hasSubquestions) {
                 // If the question type allows subquestions, set the type in each subquestion
                 Yii::app()->db->createCommand("update {{questions}} set type='{$sv['type']}', gid={$sv['gid']} where qid={$sv['qid']}")->execute();
