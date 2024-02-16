@@ -151,10 +151,8 @@
 class SurveyLight extends Survey
 {
     /**
-     * afterFindSurvey to fix and/or add some survey attribute
-     * - event afterFindSurvey (for all attributes)
-     * - Fix template name to be sure template exist
-     * - setOptions for inherited value
+     * This event is left empty on purpose because we don't  in this SurveyLight
+     * model we don't want the inherited costly afterFindSurvey event
      */
     public function afterFindSurvey()
     {
