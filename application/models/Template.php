@@ -477,7 +477,6 @@ class Template extends LSActiveRecord
         if (!is_null($aTemplateList)) {
             return $aTemplateList;
         }
-        $aTemplateList = array();
         $aTemplateList = [];
         /* Get the template name by TemplateConfiguration and fiolder by template , no need other data */
         $criteria = new CDBCriteria();
