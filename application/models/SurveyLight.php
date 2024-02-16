@@ -15,7 +15,10 @@
 
 
 /**
- * Class SurveyNoEvent
+ * Class SurveyLight
+ * 
+ * This is a light version of the normal Survey model, without the afterFindSurvey event.
+ * It was created because for mass queries, the afterFindSurvey event is most times not needed and it slows down the process.
  *
  * @property integer $sid Survey ID
  * @property integer $owner_id
@@ -145,7 +148,7 @@
  * @property boolean $isDateExpired Whether survey is expired depending on the current time and survey configuration status
  * @method mixed active()
  */
-class SurveyNoEvent extends Survey
+class SurveyLight extends Survey
 {
     /**
      * afterFindSurvey to fix and/or add some survey attribute

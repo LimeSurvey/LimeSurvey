@@ -606,7 +606,7 @@ class CheckIntegrity extends SurveyCommonAction
         }
 
         // Deactivate surveys that have a missing response table
-        $survey = new SurveyNoEvent();
+        $survey = new SurveyLight();
         $oSurveys = $survey->findAll(array('order' => 'sid'));
         $oDB = Yii::app()->getDb();
         $oDB->schemaCachingDuration = 0; // Deactivate schema caching
@@ -925,7 +925,7 @@ class CheckIntegrity extends SurveyCommonAction
         /*   Check survey languagesettings and restore them if they don't exist    */
         /***************************************************************************/
 
-        $surveyModel = new SurveyNoEvent();
+        $surveyModel = new SurveyLight();
         $surveys = $surveyModel->findAll();
         foreach ($surveys as $survey) {
             $aLanguages = $survey->additionalLanguages;
