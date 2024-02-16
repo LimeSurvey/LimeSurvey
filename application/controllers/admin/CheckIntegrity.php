@@ -622,7 +622,7 @@ class CheckIntegrity extends SurveyCommonAction
         /** Check for active surveys if questions are in the correct group **/
         // Commented out the following code parts, because it is unlikely that the columns are not in the correct group
         // Will leave the code in for now just in case
-        
+
         /* foreach ($oSurveys as $oSurvey) {
             // This actually clears the schema cache, not just refreshes it
             $oDB->schema->refresh();
