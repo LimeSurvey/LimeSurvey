@@ -1826,6 +1826,16 @@ $(document).on('ready pjax:scriptcomplete', function () {
         return false;
       }
       const saveWithAjax = target.dataset.saveWithAjax === 'true';
+      const form = document.getElementById('edit-question-form');
+      if (!(form instanceof HTMLFormElement)) {
+        throw 'form is not HTMLFormElement';
+      }
+      /* Check if input are HTML5 valid */
+      if (!form.checkValidity() ) {
+          // the form is invalid : show invalid part
+          form.reportValidity();
+          return false;
+      }
 
       const firstSubquestionRow = document.querySelector('.subquestions-table tr');
       if (firstSubquestionRow) {
@@ -1844,10 +1854,6 @@ $(document).on('ready pjax:scriptcomplete', function () {
       }
 
       const updateQuestionSummary = () => {
-        const form = document.getElementById('edit-question-form');
-        if (!(form instanceof HTMLFormElement)) {
-          throw 'form is not HTMLFormElement';
-        }
         $.ajax({
           url: form.dataset.summaryUrl,
           method: 'GET',
