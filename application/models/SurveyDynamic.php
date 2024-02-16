@@ -47,9 +47,10 @@ class SurveyDynamic extends LSActiveRecord
             ->select('{{surveys.sid}}')
             ->from('{{surveys}}')
             ->where('{{surveys.sid}} = :sid', array(':sid' => $sid))
-            ->queryRow();        
+            ->queryRow();
         if ($survey) {
             self::sid($survey['sid']);
+            self::$survey = $survey;
             $refresh = true;
         }
 

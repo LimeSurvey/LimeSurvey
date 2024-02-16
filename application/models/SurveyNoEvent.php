@@ -147,8 +147,6 @@
  */
 class SurveyNoEvent extends Survey
 {
-
-
     /**
      * afterFindSurvey to fix and/or add some survey attribute
      * - event afterFindSurvey (for all attributes)
@@ -157,6 +155,5 @@ class SurveyNoEvent extends Survey
      */
     public function afterFindSurvey()
     {
-    
     }
 }
