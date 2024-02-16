@@ -30,8 +30,8 @@ class RegexValidator implements ValidatorInterface
     /**
      * Executes the actual validation, factored out,
      * so it can be used by other validators
-     * @param $pattern
-     * @param $value
+     * @param string $pattern
+     * @param mixed $value
      * @return bool|string
      */
     public function validateByPattern($pattern, $value)
