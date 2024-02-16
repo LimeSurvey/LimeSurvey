@@ -29,7 +29,7 @@ class SurveyDynamic extends LSActiveRecord
     /** @var int $sid */
     protected static $sid = 0;
 
-    /** @var Survey $survey */
+    /** @var array $survey */
     protected static $survey;
 
     /** @var  boolean $bHaveToken */
@@ -43,10 +43,13 @@ class SurveyDynamic extends LSActiveRecord
     public static function model($sid = null)
     {
         $refresh = false;
-        $survey = Survey::model()->findByPk($sid);
+        $survey = Yii::app()->db->createCommand()
+            ->select('{{surveys.sid}}')
+            ->from('{{surveys}}')
+            ->where('{{surveys.sid}} = :sid', array(':sid' => $sid))
+            ->queryRow();        
         if ($survey) {
-            self::sid($survey->sid);
-            self::$survey = $survey;
+            self::sid($survey['sid']);
             $refresh = true;
         }
 

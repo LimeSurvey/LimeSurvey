@@ -606,7 +606,8 @@ class CheckIntegrity extends SurveyCommonAction
         }
 
         // Deactivate surveys that have a missing response table
-        $oSurveys = Survey::model()->findAll(array('order' => 'sid'));
+        $survey = new SurveyNoEvent();
+        $oSurveys = $survey->findAll(array('order' => 'sid'));
         $oDB = Yii::app()->getDb();
         $oDB->schemaCachingDuration = 0; // Deactivate schema caching
         Yii::app()->setConfig('Updating', true);
@@ -619,7 +620,10 @@ class CheckIntegrity extends SurveyCommonAction
         }
 
         /** Check for active surveys if questions are in the correct group **/
-        foreach ($oSurveys as $oSurvey) {
+        // Commented out the following code parts, because it is unlikely that the columns are not in the correct group
+        // Will leave the code in for now just in case
+        
+        /* foreach ($oSurveys as $oSurvey) {
             // This actually clears the schema cache, not just refreshes it
             $oDB->schema->refresh();
             // We get the active surveys
@@ -695,6 +699,7 @@ class CheckIntegrity extends SurveyCommonAction
         Yii::app()->db->schema->getTable('{{surveys}}', true);
         Yii::app()->db->schema->getTable('{{templates}}', true);
         Survey::model()->refreshMetaData();
+        */
         /* Check method before using #14596 */
         if (method_exists(Yii::app()->cache, 'flush')) {
             Yii::app()->cache->flush();
@@ -877,10 +882,9 @@ class CheckIntegrity extends SurveyCommonAction
         $oCriteria = new CDbCriteria();
         $oCriteria->compare('scope', 'T');
         $assessments = Assessment::model()->findAll($oCriteria);
-
+        $sSurveyIDs = Yii::app()->db->createCommand("select sid from {{surveys}}")->queryColumn();
         foreach ($assessments as $assessment) {
-            $iAssessmentCount = count(Survey::model()->findAllByPk($assessment['sid']));
-            if (!$iAssessmentCount) {
+            if (!in_array($assessment['sid'], $sSurveyIDs)) {
                 $aDelete['assessments'][] = array('id' => $assessment['id'], 'assessment' => $assessment['name'], 'reason' => gT('No matching survey'));
             }
         }
@@ -888,9 +892,9 @@ class CheckIntegrity extends SurveyCommonAction
         $oCriteria = new CDbCriteria();
         $oCriteria->compare('scope', 'G');
         $assessments = Assessment::model()->findAll($oCriteria);
+        $groupIds = Yii::app()->db->createCommand("select gid from {{groups}}")->queryColumn();
         foreach ($assessments as $assessment) {
-            $iAssessmentCount = count(QuestionGroup::model()->findAllByPk(array('gid' => $assessment['gid'], 'language' => $assessment['language'])));
-            if (!$iAssessmentCount) {
+            if (!in_array($assessment['gid'], $groupIds)) {
                 $aDelete['assessments'][] = array('id' => $assessment['id'], 'assessment' => $assessment['name'], 'reason' => gT('No matching group'));
             }
         }
@@ -921,30 +925,27 @@ class CheckIntegrity extends SurveyCommonAction
         /*   Check survey languagesettings and restore them if they don't exist    */
         /***************************************************************************/
 
-        $surveys = Survey::model()->findAll();
+        $surveyModel = new SurveyNoEvent();
+        $surveys = $surveyModel->findAll();
         foreach ($surveys as $survey) {
             $aLanguages = $survey->additionalLanguages;
             $aLanguages[] = $survey->language;
+            $languages = Yii::app()->db->createCommand("select surveyls_language from {{surveys_languagesettings}} where surveyls_survey_id=" . $survey->sid)->queryColumn();
             foreach ($aLanguages as $langname) {
-                if ($langname) {
-                    $oLanguageSettings = SurveyLanguageSetting::model()->find('surveyls_survey_id=:surveyid AND surveyls_language=:langname', array(':surveyid' => $survey->sid, ':langname' => $langname));
-                    // A simple find starts to eat up memory, so we need to free it
-                    gc_collect_cycles();
-                    if (!$oLanguageSettings) {
-                        $oLanguageSettings = new SurveyLanguageSetting();
-                        $languagedetails = getLanguageDetails($langname);
-                        $insertdata = array(
-                            'surveyls_survey_id' => $survey->sid,
-                            'surveyls_language' => $langname,
-                            'surveyls_title' => '',
-                            'surveyls_dateformat' => $languagedetails['dateformat']
-                        );
-                        foreach ($insertdata as $k => $v) {
-                            $oLanguageSettings->$k = $v;
-                        }
-                        $oLanguageSettings->save();
-                        $bDirectlyFixed = true;
+                if (!in_array($langname, $languages)) {
+                    $oLanguageSettings = new SurveyLanguageSetting();
+                    $languagedetails = getLanguageDetails($langname);
+                    $insertdata = array(
+                        'surveyls_survey_id' => $survey->sid,
+                        'surveyls_language' => $langname,
+                        'surveyls_title' => '',
+                        'surveyls_dateformat' => $languagedetails['dateformat']
+                    );
+                    foreach ($insertdata as $k => $v) {
+                        $oLanguageSettings->$k = $v;
                     }
+                    $oLanguageSettings->save();
+                    $bDirectlyFixed = true;
                 }
             }
         }
@@ -1039,12 +1040,8 @@ class CheckIntegrity extends SurveyCommonAction
             $aFullOldSIDs[$iSurveyID][] = $sTable;
         }
         $aOldSIDs = array_unique($aOldSIDs);
-        $surveys = Survey::model()->findAll();
 
-        $aSIDs = array();
-        foreach ($surveys as $survey) {
-            $aSIDs[] = $survey['sid'];
-        }
+        $aSIDs = Yii::app()->db->createCommand("select sid from {{surveys}}")->queryColumn();
         foreach ($aOldSIDs as $iOldSID) {
             if (!in_array($iOldSID, $aSIDs)) {
                 foreach ($aFullOldSIDs[$iOldSID] as $sTableName) {
@@ -1108,12 +1105,7 @@ class CheckIntegrity extends SurveyCommonAction
             $aFullOldTokenSIDs[$iSurveyID][] = $sTable;
         }
         $aOldTokenSIDs = array_unique($aTokenSIDs);
-        $surveys = Survey::model()->findAll();
-
-        $aSIDs = array();
-        foreach ($surveys as $survey) {
-            $aSIDs[] = $survey['sid'];
-        }
+        $aSIDs = Yii::app()->db->createCommand("select sid from {{surveys}}")->queryColumn();
         foreach ($aOldTokenSIDs as $iOldTokenSID) {
             if (!in_array($iOldTokenSID, $aOldTokenSIDs)) {
                 foreach ($aFullOldTokenSIDs[$iOldTokenSID] as $sTableName) {

@@ -88,6 +88,43 @@ class Update_148 extends DatabaseUpdateBase
         // Add language field to question_attributes table
         addColumn('{{question_attributes}}', 'language', "string(20)");
         upgradeQuestionAttributes148();
-        fixSubquestions();
+        $his->fixSubquestions148();
+    }
+
+    private function fixSubquestions148()
+    {
+        $surveyidresult = Yii::app()->db->createCommand()
+        ->select('sq.qid, q.gid , q.type ')
+        ->from('{{questions}} sq')
+        ->join('{{questions}} q', 'sq.parent_qid=q.qid')
+        ->where('sq.parent_qid>0 AND (sq.gid!=q.gid or sq.type!=q.type)')
+        ->limit(10000)
+        ->query();
+        $aRecords = $surveyidresult->readAll();
+        $aQuestionTypes = QuestionType::modelsAttributes();
+        while (count($aRecords) > 0) {
+            foreach ($aRecords as $sv) {
+                $hasSubquestions = $aQuestionTypes[$sv['type']]['subquestions'];
+                if ($hasSubquestions) {
+                    // If the question type allows subquestions, set the type in each subquestion
+                    Yii::app()->db->createCommand("update {{questions}} set type='{$sv['type']}', gid={$sv['gid']} where qid={$sv['qid']}")->execute();
+                } else {
+                    // If the question type doesn't allow subquestions, delete each subquestion
+                    // Model is used because more tables are involved.
+                    $oSubquestion = Question::model()->find("qid=:qid", array("qid" => $sv['qid']));
+                    if (!empty($oSubquestion)) {
+                        $oSubquestion->delete();
+                    }
+                }
+            }
+            $surveyidresult = Yii::app()->db->createCommand()
+            ->select('sq.qid, q.gid , q.type ')
+            ->from('{{questions}} sq')
+            ->join('{{questions}} q', 'sq.parent_qid=q.qid')
+            ->where('sq.parent_qid>0 AND (sq.gid!=q.gid or sq.type!=q.type)')
+            ->limit(10000)
+            ->query();
+            $aRecords = $surveyidresult->readAll();
+        }
     }
 }
