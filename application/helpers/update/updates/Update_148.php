@@ -88,7 +88,7 @@ class Update_148 extends DatabaseUpdateBase
         // Add language field to question_attributes table
         addColumn('{{question_attributes}}', 'language', "string(20)");
         upgradeQuestionAttributes148();
-        $his->fixSubquestions148();
+        $this->fixSubquestions148();
     }
 
     private function fixSubquestions148()
