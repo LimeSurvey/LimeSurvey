@@ -50,7 +50,6 @@ class SurveyDynamic extends LSActiveRecord
             ->queryRow();
         if ($survey) {
             self::sid($survey['sid']);
-            self::$survey = $survey;
             $refresh = true;
         }
 
@@ -1083,4 +1082,20 @@ class SurveyDynamic extends LSActiveRecord
     {
         return self::$sid;
     }
+
+    /**
+     * Get current survey for other model/function
+     * Using a getter to avoid query during model creation
+     * @return Survey
+     */
+    public function getSurvey()
+    {
+        if (self::$sid && self::$survey === null) {
+            self::$survey = Survey::model()->findByPk(self::$sid);
+        }
+        return self::$survey;
+    }
+
+
+
 }
