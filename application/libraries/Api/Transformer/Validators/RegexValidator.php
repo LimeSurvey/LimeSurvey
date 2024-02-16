@@ -18,13 +18,30 @@ class RegexValidator implements ValidatorInterface
     {
         $messages = [];
         if ($config[$this->name] !== false && !empty($value)) {
-            $match = preg_match($config[$this->name], $value);
-            if ($match !== 1) {
-                $messages[] = $value . " doesn't match expected pattern.";
+            $result = $this->validateByPattern($config[$this->name], $value);
+            if (is_string($result)) {
+                $messages[] = $result;
             }
         }
 
         return empty($messages) ? true : $messages;
+    }
+
+    /**
+     * Executes the actual validation, factored out,
+     * so it can be used by other validators
+     * @param $pattern
+     * @param $value
+     * @return bool|string
+     */
+    public function validateByPattern($pattern, $value)
+    {
+        $matched = true;
+        $match = preg_match($pattern, $value);
+        if ($match !== 1) {
+            $matched = $value . " doesn't match expected pattern.";
+        }
+        return $matched;
     }
 
     public function normaliseConfigValue(

@@ -2,6 +2,7 @@
 
 namespace LimeSurvey\Api\Transformer\Registry;
 
+use LimeSurvey\Api\Transformer\Validators\DateValidator;
 use LimeSurvey\Api\Transformer\Validators\EmptyValidator;
 use LimeSurvey\Api\Transformer\Validators\LengthValidator;
 use LimeSurvey\Api\Transformer\Validators\NullValidator;
@@ -54,6 +55,7 @@ class ValidationRegistry
         $this->set('range', new RangeValidator());
         $this->set('numerical', new NumericalValidator());
         $this->set('pattern', new RegexValidator());
+        $this->set('date', new DateValidator());
     }
 
     /**
