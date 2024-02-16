@@ -101,7 +101,7 @@ class Update_148 extends DatabaseUpdateBase
         ->limit(10000)
         ->query();
         $aRecords = $surveyidresult->readAll();
-        $aQuestionTypes = QuestionType::modelsAttributes();
+        $aQuestionTypes = \QuestionType::modelsAttributes();
         while (count($aRecords) > 0) {
             foreach ($aRecords as $sv) {
                 $hasSubquestions = $aQuestionTypes[$sv['type']]['subquestions'];
@@ -111,7 +111,7 @@ class Update_148 extends DatabaseUpdateBase
                 } else {
                     // If the question type doesn't allow subquestions, delete each subquestion
                     // Model is used because more tables are involved.
-                    $oSubquestion = Question::model()->find("qid=:qid", array("qid" => $sv['qid']));
+                    $oSubquestion = \Question::model()->find("qid=:qid", array("qid" => $sv['qid']));
                     if (!empty($oSubquestion)) {
                         $oSubquestion->delete();
                     }
