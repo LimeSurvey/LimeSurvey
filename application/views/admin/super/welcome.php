@@ -36,6 +36,12 @@ gT('Themes');
         </div>
     <?php endif; ?>
 
+    <?php
+        $event = new PluginEvent('afterWelcomeLogo');
+        App()->getPluginManager()->dispatchEvent($event);
+        echo $event->get('html');
+    ?>
+
     <!-- Message when first start -->
     <?php if ($countSurveyList == 0  && Permission::model()->hasGlobalPermission('surveys', 'create')) : ?>
         <script type="text/javascript">
