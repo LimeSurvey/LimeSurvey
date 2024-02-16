@@ -1095,7 +1095,4 @@ class SurveyDynamic extends LSActiveRecord
         }
         return self::$survey;
     }
-
-
-
 }

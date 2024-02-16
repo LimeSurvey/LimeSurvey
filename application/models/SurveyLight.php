@@ -16,7 +16,7 @@
 
 /**
  * Class SurveyLight
- * 
+ *
  * This is a light version of the normal Survey model, without the afterFindSurvey event.
  * It was created because for mass queries, the afterFindSurvey event is most times not needed and it slows down the process.
  *
