@@ -894,7 +894,9 @@ class CheckIntegrity extends SurveyCommonAction
         $oCriteria = new CDbCriteria();
         $oCriteria->compare('scope', 'G');
         $assessments = Assessment::model()->findAll($oCriteria);
-        $groupIds = Yii::app()->db->createCommand("select gid from {{groups}}")->queryColumn();
+        $quotedGroups = Yii::app()->db->quoteTableName('{{groups}}');
+
+        $groupIds = Yii::app()->db->createCommand("select gid from $quotedGroups")->queryColumn();
         foreach ($assessments as $assessment) {
             if (!in_array($assessment['gid'], $groupIds)) {
                 $aDelete['assessments'][] = array('id' => $assessment['id'], 'assessment' => $assessment['name'], 'reason' => gT('No matching group'));
@@ -1234,7 +1236,7 @@ class CheckIntegrity extends SurveyCommonAction
      */
     protected function checkQuestionOrderDuplicates()
     {
-        $quotedGroups = Yii::app()->db->quoteTableName('{{groups}}');
+         $quotedGroups = Yii::app()->db->quoteTableName('{{groups}}');
         $sQuery = "
             SELECT
                 q.sid,
