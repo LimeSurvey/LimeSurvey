@@ -9,7 +9,7 @@ namespace LimeSurvey\Api\Transformer\Formatter;
  */
 class FormatterMandatory extends FormatterYnToBool
 {
-    private string $name ='mandatory';
+    private string $name = 'mandatory';
     /**
      * @param bool $revert
      */

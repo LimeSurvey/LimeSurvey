@@ -105,7 +105,7 @@ class FormatterDateTimeToJson implements FormatterInterface
     public function normaliseConfigValue($config, $options = [])
     {
         if (isset($config['formatter'][$this->name])) {
-            if(is_array($config['formatter'][$this->name])) {
+            if (is_array($config['formatter'][$this->name])) {
                 if (array_key_exists('revert', $config['formatter'][$this->name])) {
                     $this->revert = $config['formatter'][$this->name]['revert'];
                 }
