@@ -34,6 +34,11 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.6.54 (build 240206) to 5.6.55 (build 240220) February 19, 2024
+-Fixed issue #19399: Survey does not show translated text on the register page(#3733) (Denis Chenu)
+#Updated translation: Korean by modernity4r
+
+
 Changes from 5.6.53 (build 240131) to 5.6.54 (build 240206) February 5, 2024
 -Fixed issue #19368: [security] Simple admin can add XSS on adminemail (#3705) (Denis Chenu)
 -Fixed issue #19325: When deleting a token the participant_id is being logged while it should be the token_id (#3685) (Gabriel Jenik)
