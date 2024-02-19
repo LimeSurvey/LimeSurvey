@@ -9,4 +9,11 @@ interface FormatterInterface
      * @return ?mixed
      */
     public function format($value);
+
+    /**
+     * @param array $config
+     * @param array $options
+     * @return mixed
+     */
+    public function normaliseConfigValue($config, $options = []);
 }

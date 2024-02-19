@@ -3,7 +3,7 @@
 namespace LimeSurvey\Api\Transformer;
 
 use LimeSurvey\Api\Transformer\Formatter\FormatterInterface;
-use LimeSurvey\Api\Transformer\Registry\ValidationRegistry;
+use LimeSurvey\Api\Transformer\Registry\Registry;
 
 /**
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
@@ -16,7 +16,7 @@ class Transformer implements TransformerInterface
     /** @var array */
     protected $defaultConfig = [];
 
-    /** @var ?ValidationRegistry */
+    /** @var ?Registry */
     public $registry;
 
     /**
@@ -62,7 +62,6 @@ class Transformer implements TransformerInterface
                 continue;
             }
             $value = $this->cast($value, $config);
-            $value = $this->format($value, $config);
             $errors = $this->validateKey(
                 $key,
                 $value,
@@ -70,6 +69,7 @@ class Transformer implements TransformerInterface
                 $data,
                 $options
             );
+            $value = $this->format($value, $config);
 
             if (is_array($errors)) {
                 throw new TransformerException(print_r($errors, true));
@@ -122,7 +122,7 @@ class Transformer implements TransformerInterface
         $config['type'] = isset($config['type']) ? $config['type'] : null;
         $config['collection'] = isset($config['collection']) ? $config['collection'] : false;
         $config['transformer'] = isset($config['transformer']) ? $config['transformer'] : null;
-        $config['formatter'] = isset($config['formatter']) ? $config['formatter'] : null;
+//        $config['formatter'] = isset($config['formatter']) ? $config['formatter'] : null;
         $config['default'] = isset($config['default']) ? $config['default'] : null;
 
         return $config;
@@ -157,12 +157,10 @@ class Transformer implements TransformerInterface
      */
     private function format($value, $config)
     {
-        if (
-            isset($config['formatter'])
-            && $config['formatter'] instanceof FormatterInterface
-        ) {
-            $value = $config['formatter']->format($value);
+        if ($this->registry) {
+            $value = $this->registry->format($value, $config);
         }
+
         return $value;
     }
 
@@ -224,7 +222,7 @@ class Transformer implements TransformerInterface
         $errors = [];
         foreach ($config as $validationKey => $validationConfig) {
             if ($this->registry) {
-                $validator = $this->registry->get($validationKey);
+                $validator = $this->registry->getValidator($validationKey);
                 if ($validator) {
                     $result = $validator->validate(
                         $key,
@@ -357,11 +355,11 @@ class Transformer implements TransformerInterface
     /**
      * Called automatically by DI container via @Inject annotation
      * Whenever we are on PHP 8.1 we can switch this to PHP attributes
-     * @param ValidationRegistry $registry
+     * @param Registry $registry
      * @return void
      * @Inject
      */
-    public function setRegistry(ValidationRegistry $registry)
+    public function setRegistry(Registry $registry)
     {
         $this->registry = $registry;
     }

@@ -4,17 +4,12 @@ namespace LimeSurvey\Api\Command\V1\Transformer\Input;
 
 use LimeSurvey\Api\Transformer\{
     Transformer,
-    TransformerException,
-    Formatter\FormatterMandatory,
-    Formatter\FormatterYnToBool};
+    TransformerException};
 
 class TransformerInputQuestion extends Transformer
 {
     public function __construct()
     {
-        $formatterYn = new FormatterYnToBool(true);
-        $formatterMandatory = new FormatterMandatory();
-
         $this->setDataMap([
             'qid'               => ['type' => 'int'],
             'parentQid'         => ['key' => 'parent_qid', 'type' => 'int'],
@@ -22,15 +17,15 @@ class TransformerInputQuestion extends Transformer
             'type'              => ['required' => 'create'],
             'title'             => ['required' => 'create'],
             'preg'              => true,
-            'other'             => ['formatter' => $formatterYn],
-            'mandatory'         => ['formatter' => $formatterMandatory],
-            'encrypted'         => ['formatter' => $formatterYn],
+            'other'             => ['formatter' => ['ynToBool' => ['revert' => true]]],
+            'mandatory'         => ['formatter' => ['mandatory' => true]],
+            'encrypted'         => ['formatter' => ['ynToBool' => ['revert' => true]]],
             'questionOrder'     => ['key' => 'question_order', 'type' => 'int'],
             'sortOrder'         => ['key' => 'question_order', 'type' => 'int'],
             'scaleId'           => ['key' => 'scale_id', 'type' => 'int'],
             'sameDefault'       => [
                 'key'       => 'same_default',
-                'formatter' => $formatterYn
+                'formatter' => ['ynToBool' => ['revert' => true]]
             ],
             'questionThemeName' => 'question_theme_name',
             'saveAsDefault'     => 'save_as_default',
@@ -40,7 +35,7 @@ class TransformerInputQuestion extends Transformer
             'relevance'         => true,
             'sameScript'        => [
                 'key'       => 'same_script',
-                'formatter' => $formatterYn
+                'formatter' => ['ynToBool' => ['revert' => true]]
             ],
             'tempId'            => ['required' => 'create']
         ]);

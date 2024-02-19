@@ -9,6 +9,7 @@ namespace LimeSurvey\Api\Transformer\Formatter;
  */
 class FormatterMandatory extends FormatterYnToBool
 {
+    private string $name ='mandatory';
     /**
      * @param bool $revert
      */
@@ -27,5 +28,13 @@ class FormatterMandatory extends FormatterYnToBool
     {
         $string = parent::revert($value);
         return $string === null ? 'S' : $string;
+    }
+
+    public function normaliseConfigValue($config, $options = [])
+    {
+        if (isset($config['formatter'][$this->name])) {
+            return $this;
+        }
+        return $config['formatter'] ?? null;
     }
 }

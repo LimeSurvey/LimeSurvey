@@ -4,6 +4,7 @@ namespace LimeSurvey\Api\Transformer\Formatter;
 
 class FormatterDateTimeToJson implements FormatterInterface
 {
+    private string $name = 'dateTimeToJson';
     /** @var bool */
     private $revert = false;
     /** @var string */
@@ -99,5 +100,21 @@ class FormatterDateTimeToJson implements FormatterInterface
         return $dateTime->format(
             $outputFormat
         );
+    }
+
+    public function normaliseConfigValue($config, $options = [])
+    {
+        if (isset($config['formatter'][$this->name])) {
+            if(is_array($config['formatter'][$this->name])) {
+                if (array_key_exists('revert', $config['formatter'][$this->name])) {
+                    $this->revert = $config['formatter'][$this->name]['revert'];
+                }
+                if (array_key_exists('inputTimezone', $config['formatter'][$this->name])) {
+                    $this->inputTimezone = $config['formatter'][$this->name]['inputTimezone'];
+                }
+            }
+            return $this;
+        }
+        return $config['formatter'] ?? null;
     }
 }

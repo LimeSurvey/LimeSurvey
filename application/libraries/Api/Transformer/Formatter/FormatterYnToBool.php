@@ -4,6 +4,7 @@ namespace LimeSurvey\Api\Transformer\Formatter;
 
 class FormatterYnToBool implements FormatterInterface
 {
+    private string $name = 'ynToBool';
     /** @var bool */
     private $revert = false;
     /** @var bool */
@@ -82,5 +83,21 @@ class FormatterYnToBool implements FormatterInterface
         return $this->lowercaseCase
             ? $string
             : strtoupper($string);
+    }
+
+    public function normaliseConfigValue($config, $options = [])
+    {
+        if (isset($config['formatter'][$this->name])) {
+            if (is_array($config['formatter'][$this->name])) {
+                if (array_key_exists('revert', $config['formatter'][$this->name])) {
+                    $this->revert = $config['formatter'][$this->name]['revert'];
+                }
+                if (array_key_exists('lowercaseCase', $config['formatter'][$this->name])) {
+                    $this->lowercaseCase = $config['formatter'][$this->name]['lowercaseCase'];
+                }
+            }
+            return $this;
+        }
+        return $config['formatter'] ?? null;
     }
 }
