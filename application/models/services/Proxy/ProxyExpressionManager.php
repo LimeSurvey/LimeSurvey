@@ -60,8 +60,9 @@ class ProxyExpressionManager
         $aGrouplist = $this->modelQuestionGroup
             ->findAllByAttributes(['sid' => $surveyId]);
         foreach ($aGrouplist as $aGroup) {
+            $gid = $aGroup['gid'];
             LimeExpressionManager::StartProcessingGroup(
-                $aGroup['gid'],
+                LimeExpressionManager::GetGroupSeq($gid),
                 $survey->anonymized != 'Y',
                 $surveyId
             );
