@@ -3276,7 +3276,7 @@ class LimeExpressionManager
         if (isset($_SESSION['LEMforceRefresh'])) {
             unset($_SESSION['LEMforceRefresh']);
             $forceRefresh = true;
-        } elseif ($forceRefresh === false && !empty($this->knownVars) && ((!$this->sPreviewMode) || ($this->sPreviewMode === 'database'))) {
+        } elseif ($forceRefresh === false && !empty($this->knownVars) && ((!$this->sPreviewMode) || ($this->sPreviewMode === 'database') || ($this->sPreviewMode === 'logic'))) {
             return false;   // means that those variables have been cached and no changes needed
         }
         $now = microtime(true);
