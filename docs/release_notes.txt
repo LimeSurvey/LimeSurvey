@@ -34,6 +34,30 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.4.6 (build 240212) to 6.4.7 (build 240219) February 19, 2024
+-Fixed issue: Untranslated string in optin/optout screen (Carsten Schmitz)
+-Fixed issue: Survey language consistency is checked even though only one language exists (Carsten Schmitz)
+-Fixed issue: Slow performance when saving a survey with more than one language (#3739) (Carsten Schmitz)
+-Fixed issue: Partial missing frontend validation on answer option codes (Carsten Schmitz)
+-Fixed issue: Integrity check very slow when having a lot of surveys (#3744) (Carsten Schmitz)
+-Fixed issue: Error message "Call to undefined method stdClass::decrypt()" when deleting a participant while using that to fill out the survey (Carsten Schmitz)
+-Fixed issue: Avoiding session reset upon database preview (#3745) (lajosarpad)
+-Fixed issue #LB-126: Prevent template removal when the files are temporarily unavailable (#3726) (lajosarpad)
+-Fixed issue #19399: Survey does not show translated text when on register page(#3732) (Denis Chenu)
+-Fixed issue #19392: Partial missing frontend validation on subquestion codes (#3729) (Denis Chenu)
+-Fixed issue #19383: When export multiple choice filtered : loose N/A value (#3718) (Denis Chenu)
+-Fixed issue #19359: JS error in console about CKeditor (#3730) (Gabriel Jenik)
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Mongolian by amidral
+#Updated translation: Korean by modernity4r
+#Updated translation: Japanese by d_inoue
+#Updated translation: Italian by sielte
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 6.4.5 (build 240205) to 6.4.6 (build 240212) February 12, 2024
 -Fixed issue #CR-1397: error in vue js code, resulting in sidebar events not being executed (#3728) (Patrick Teichmann)
 -Fixed issue #19396: Upgrade failure encountered at migration 620 (#3724) (Mohab Elsheikh)
