@@ -206,8 +206,8 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['zh-Hans']['momentjs'] = 'zh-cn';
 
     // Creole (Haiti)
-    $supportedLanguages['hat']['description'] = gT('Creole');
-    $supportedLanguages['hat']['nativedescription'] = 'Kreyòl';
+    $supportedLanguages['hat']['description'] = gT('Creole (Haitian)');
+    $supportedLanguages['hat']['nativedescription'] = 'Kreyòl ayisyen';
     $supportedLanguages['hat']['rtl'] = false;
     $supportedLanguages['hat']['dateformat'] = 6;
     $supportedLanguages['hat']['radixpoint'] = 1;
