@@ -27,6 +27,7 @@ class Registry
     public function __construct()
     {
         $this->validators = [];
+        $this->formatters = [];
         $this->initDefault();
     }
 
@@ -121,6 +122,11 @@ class Registry
         return $config;
     }
 
+    /**
+     * @param mixed $value
+     * @param array $config
+     * @return mixed
+     */
     public function format($value, $config)
     {
         if (
