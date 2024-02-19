@@ -893,7 +893,7 @@ class SurveyDynamic extends LSActiveRecord
         }
 
         if ($aQuestionAttributes['questionclass'] === 'date') {
-            $aQuestionAttributes['dateformat'] = getDateFormatDataForQID($aQuestionAttributes, array_merge($this->$survey->attributes, $oQuestion->survey->languagesettings[$sLanguage]->attributes));
+            $aQuestionAttributes['dateformat'] = getDateFormatDataForQID($aQuestionAttributes, array_merge($this->survey->attributes, $oQuestion->survey->languagesettings[$sLanguage]->attributes));
         }
 
         $aQuestionAttributes['answervalue'] = $oResponses[$fieldname] ?? null;
