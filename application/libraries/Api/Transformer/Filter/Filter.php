@@ -28,10 +28,9 @@ class Filter
         if (is_array($config)) {
             $this->filter = array_key_first($config);
             $this->filterParams = $config[$this->filter];
-        }else{
+        } else {
             $this->filter = $config;
         }
-
     }
 
     /**
