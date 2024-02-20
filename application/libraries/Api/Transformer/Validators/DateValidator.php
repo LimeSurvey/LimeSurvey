@@ -2,6 +2,12 @@
 
 namespace LimeSurvey\Api\Transformer\Validators;
 
+/**
+ * Example config:
+ * 'expires' => ['date']
+ * or
+ * 'expires' => ['date' => true]
+ */
 class DateValidator implements ValidatorInterface
 {
     private string $name = 'date';
@@ -44,6 +50,11 @@ class DateValidator implements ValidatorInterface
         $config,
         $options = []
     ) {
+        // date is also allowed as array value
+        $key = array_search($this->name, $config, true);
+        if (is_int($key)) {
+            $config[$this->name] = true;
+        }
         return $config[$this->name] ?? $this->getDefaultConfig();
     }
 

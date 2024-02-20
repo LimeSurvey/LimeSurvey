@@ -2,6 +2,12 @@
 
 namespace LimeSurvey\Api\Transformer\Validators;
 
+/**
+ * Example config:
+ * 'expires' => ['required'] or 'expires' => ['required' => true]
+ * or required only on certain operation types
+ * 'expires' => ['required' => ['create', 'update']]
+ */
 class RequiredValidator implements ValidatorInterface
 {
     private string $name = 'required';
@@ -21,7 +27,7 @@ class RequiredValidator implements ValidatorInterface
             $config[$this->name]
             && !array_key_exists($key, $data)
         ) {
-            $messages[] = $key . ' is required'; // TODO: translate?
+            $messages[] = $key . ' is required';
         }
 
         return empty($messages) ? true : $messages;
@@ -31,6 +37,10 @@ class RequiredValidator implements ValidatorInterface
         $config,
         $options = []
     ) {
+        $key = array_search($this->name, $config, true);
+        if (is_int($key)) {
+            $config[$this->name] = true;
+        }
         if (isset($config[$this->name])) {
             // required can be operation specific by specifying
             // - a string or an array of operation names

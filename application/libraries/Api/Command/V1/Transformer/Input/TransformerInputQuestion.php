@@ -11,33 +11,33 @@ class TransformerInputQuestion extends Transformer
     public function __construct()
     {
         $this->setDataMap([
-            'qid'               => ['type' => 'int'],
-            'parentQid'         => ['key' => 'parent_qid', 'type' => 'int'],
-            'sid'               => ['type' => 'int'],
-            'type'              => ['required' => 'create'],
-            'title'             => ['required' => 'create'],
-            'preg'              => true,
-            'other'             => ['formatter' => ['ynToBool' => ['revert' => true]]],
-            'mandatory'         => ['formatter' => ['mandatory' => true]],
-            'encrypted'         => ['formatter' => ['ynToBool' => ['revert' => true]]],
-            'questionOrder'     => ['key' => 'question_order', 'type' => 'int'],
-            'sortOrder'         => ['key' => 'question_order', 'type' => 'int'],
-            'scaleId'           => ['key' => 'scale_id', 'type' => 'int'],
-            'sameDefault'       => [
-                'key'       => 'same_default',
+            'qid' => ['type' => 'int'],
+            'parentQid' => ['key' => 'parent_qid', 'type' => 'int'],
+            'sid' => ['type' => 'int'],
+            'type' => ['required' => 'create'],
+            'title' => ['required' => 'create'],
+            'preg' => true,
+            'other' => ['formatter' => ['ynToBool' => ['revert' => true]]],
+            'mandatory' => ['formatter' => ['mandatory' => true]],
+            'encrypted' => ['formatter' => ['ynToBool' => ['revert' => true]]],
+            'questionOrder' => ['key' => 'question_order', 'type' => 'int'],
+            'sortOrder' => ['key' => 'question_order', 'type' => 'int'],
+            'scaleId' => ['key' => 'scale_id', 'type' => 'int'],
+            'sameDefault' => [
+                'key' => 'same_default',
                 'formatter' => ['ynToBool' => ['revert' => true]]
             ],
             'questionThemeName' => 'question_theme_name',
-            'saveAsDefault'     => 'save_as_default',
-            'clearDefault'      => 'clear_default',
-            'moduleName'        => 'modulename',
-            'gid'               => ['type' => 'int'],
-            'relevance'         => true,
-            'sameScript'        => [
-                'key'       => 'same_script',
+            'saveAsDefault' => 'save_as_default',
+            'clearDefault' => 'clear_default',
+            'moduleName' => 'modulename',
+            'gid' => ['type' => 'int'],
+            'relevance' => true,
+            'sameScript' => [
+                'key' => 'same_script',
                 'formatter' => ['ynToBool' => ['revert' => true]]
             ],
-            'tempId'            => ['required' => 'create']
+            'tempId' => ['required' => 'create']
         ]);
     }
 

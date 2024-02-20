@@ -2,6 +2,10 @@
 
 namespace LimeSurvey\Api\Transformer\Validators;
 
+/**
+ * Example config:
+ * 'expires' => ['null' => false]
+ */
 class NullValidator implements ValidatorInterface
 {
     private string $name = 'null';

@@ -15,32 +15,97 @@ class TransformerInputSurvey extends Transformer
             'sid' => ['type' => 'int'],
             'gsid' => ['type' => 'int'],
             'ownerId' => ['key' => 'owner_id', 'type' => 'int'],
-            'active' => ['formatter' => ['ynToBool' => ['revert' => true]], 'range' => [true, false]],
+            'active' => [
+                'formatter' => ['ynToBool' => ['revert' => true]],
+                'range' => [true, false]
+            ],
             'language' => true,
             'admin' => ['length' => ['min' => 1, 'max' => 50]],
             'adminEmail' => ['key' => 'adminemail'],
-            'expires' => ['key' => 'expires', 'date' => true, 'formatter' => ['dateTimeToJson' => ['revert' => true]]],
-            'startDate' => ['key' => 'startdate', 'date' => true, 'formatter' => ['dateTimeToJson' => ['revert' => true]]],
+            'expires' => [
+                'key' => 'expires',
+                'date',
+                'formatter' => ['dateTimeToJson' => ['revert' => true]]
+            ],
+            'startDate' => [
+                'key' => 'startdate',
+                'date',
+                'formatter' => ['dateTimeToJson' => ['revert' => true]]
+            ],
             'anonymized' => ['formatter' => ['ynToBool' => ['revert' => true]]],
-            'saveTimings' => ['key' => 'savetimings', 'formatter' => ['ynToBool' => ['revert' => true]]],
+            'saveTimings' => [
+                'key' => 'savetimings',
+                'formatter' => ['ynToBool' => ['revert' => true]]
+            ],
             'additionalLanguages' => 'additional_languages',
-            'dateStamp' => ['key' => 'datestamp', 'formatter' => ['ynToBool' => ['revert' => true]]],
-            'useCookie' => ['key' => 'usecookie', 'formatter' => ['ynToBool' => ['revert' => true]]],
-            'allowRegister' => ['key' => 'allowregister', 'formatter' => ['ynToBool' => ['revert' => true]]],
-            'allowSave' => ['key' => 'allowsave', 'formatter' => ['ynToBool' => ['revert' => true]]],
-            'autoNumberStart' => ['key' => 'autonumber_start', 'type' => 'int', 'numerical' => true],
-            'autoRedirect' => ['key' => 'autoredirect', 'formatter' => ['ynToBool' => ['revert' => true]]],
-            'allowPrev' => ['key' => 'allowprev', 'formatter' => ['ynToBool' => ['revert' => true]]],
-            'printAnswers' => ['key' => 'printanswers', 'formatter' => ['ynToBool' => ['revert' => true]]],
-            'ipAddr' => ['key' => 'ipaddr', 'formatter' => ['ynToBool' => ['revert' => true]]],
-            'ipAnonymize' => ['key' => 'ipanonymize', 'formatter' => ['ynToBool' => ['revert' => true]]],
-            'refUrl' => ['key' => 'refurl', 'formatter' => ['ynToBool' => ['revert' => true]]],
-            'dateCreated' => ['key' => 'datecreated', 'date' => true, 'formatter' => ['dateTimeToJson' => ['revert' => true]]],
-            'publicStatistics' => ['key' => 'publicstatistics', 'formatter' => ['ynToBool' => ['revert' => true]]],
-            'publicGraphs' => ['key' => 'publicgraphs', 'formatter' => ['ynToBool' => ['revert' => true]]],
-            'listPublic' => ['key' => 'listpublic', 'formatter' => ['ynToBool' => ['revert' => true]]],
-            'sendConfirmation' => ['key' => 'sendconfirmation', 'formatter' => ['ynToBool' => ['revert' => true]]],
-            'tokenAnswersPersistence' => ['key' => 'tokenanswerspersistence', 'formatter' => ['ynToBool' => ['revert' => true]]],
+            'dateStamp' => [
+                'key' => 'datestamp',
+                'formatter' => ['ynToBool' => ['revert' => true]]
+            ],
+            'useCookie' => [
+                'key' => 'usecookie',
+                'formatter' => ['ynToBool' => ['revert' => true]]
+            ],
+            'allowRegister' => [
+                'key' => 'allowregister',
+                'formatter' => ['ynToBool' => ['revert' => true]]
+            ],
+            'allowSave' => [
+                'key' => 'allowsave',
+                'formatter' => ['ynToBool' => ['revert' => true]]
+            ],
+            'autoNumberStart' => [
+                'key' => 'autonumber_start', 'type' => 'int', 'numerical'
+            ],
+            'autoRedirect' => [
+                'key' => 'autoredirect',
+                'formatter' => ['ynToBool' => ['revert' => true]]
+            ],
+            'allowPrev' => [
+                'key' => 'allowprev',
+                'formatter' => ['ynToBool' => ['revert' => true]]
+            ],
+            'printAnswers' => [
+                'key' => 'printanswers',
+                'formatter' => ['ynToBool' => ['revert' => true]]
+            ],
+            'ipAddr' => [
+                'key' => 'ipaddr',
+                'formatter' => ['ynToBool' => ['revert' => true]]
+            ],
+            'ipAnonymize' => [
+                'key' => 'ipanonymize',
+                'formatter' => ['ynToBool' => ['revert' => true]]
+            ],
+            'refUrl' => [
+                'key' => 'refurl',
+                'formatter' => ['ynToBool' => ['revert' => true]]
+            ],
+            'dateCreated' => [
+                'key' => 'datecreated',
+                'date',
+                'formatter' => ['dateTimeToJson' => ['revert' => true]]
+            ],
+            'publicStatistics' => [
+                'key' => 'publicstatistics',
+                'formatter' => ['ynToBool' => ['revert' => true]]
+            ],
+            'publicGraphs' => [
+                'key' => 'publicgraphs',
+                'formatter' => ['ynToBool' => ['revert' => true]]
+            ],
+            'listPublic' => [
+                'key' => 'listpublic',
+                'formatter' => ['ynToBool' => ['revert' => true]]
+            ],
+            'sendConfirmation' => [
+                'key' => 'sendconfirmation',
+                'formatter' => ['ynToBool' => ['revert' => true]]
+            ],
+            'tokenAnswersPersistence' => [
+                'key' => 'tokenanswerspersistence',
+                'formatter' => ['ynToBool' => ['revert' => true]]
+            ],
             'assessments' => ['formatter' => ['ynToBool' => ['revert' => true]]],
             'useCaptcha' => [
                 'key' => 'usecaptcha',
@@ -50,31 +115,73 @@ class TransformerInputSurvey extends Transformer
                     '1', '2', '3', '4', '5', '6'
                 ]
             ],
-            'useTokens' => ['key' => 'usetokens', 'formatter' => ['ynToBool' => ['revert' => true]]],
+            'useTokens' => [
+                'key' => 'usetokens', 'formatter' => ['ynToBool' => ['revert' => true]]
+            ],
             'bounceEmail' => 'bounce_email',
             'attributeDescriptions' => 'attributedescriptions',
             'emailResponseTo' => 'emailresponseto',
             'emailNotificationTo' => 'emailnotificationto',
-            'tokenLength' => ['key' => 'tokenlength', 'type' => 'int', 'numerical' => ['min' => -1]],
-            'showXQuestions' => ['key' => 'showxquestions', 'formatter' => ['ynToBool' => ['revert' => true]]],
-            'showGroupInfo' => ['key' => 'showgroupinfo', 'range' => ['B', 'N', 'D', 'X', 'I']],
-            'showNoAnswer' => ['key' => 'shownoanswer', 'formatter' => ['ynToBool' => ['revert' => true]]],
-            'showQNumCode' => ['key' => 'showqnumcode', 'range' => ['B', 'N', 'C', 'X', 'I']],
-            'bounceTime' => ['key' => 'bouncetime', 'type' => 'int', 'numerical' => true],
-            'bounceProcessing' => ['key' => 'bounceprocessing', 'range' => ['L', 'N', 'G']],
+            'tokenLength' => [
+                'key' => 'tokenlength', 'type' => 'int', 'numerical' => ['min' => -1]
+            ],
+            'showXQuestions' => [
+                'key' => 'showxquestions',
+                'formatter' => ['ynToBool' => ['revert' => true]]
+            ],
+            'showGroupInfo' => [
+                'key' => 'showgroupinfo', 'range' => ['B', 'N', 'D', 'X', 'I']
+            ],
+            'showNoAnswer' => [
+                'key' => 'shownoanswer',
+                'formatter' => ['ynToBool' => ['revert' => true]]
+            ],
+            'showQNumCode' => [
+                'key' => 'showqnumcode', 'range' => ['B', 'N', 'C', 'X', 'I']
+            ],
+            'bounceTime' => [
+                'key' => 'bouncetime', 'type' => 'int', 'numerical'
+            ],
+            'bounceProcessing' => [
+                'key' => 'bounceprocessing', 'range' => ['L', 'N', 'G']
+            ],
             'bounceAccountType' => 'bounceaccounttype',
             'bounceAccountHost' => 'bounceaccounthost',
             'bounceAccountPass' => 'bounceaccountpass',
             'bounceAccountEncryption' => 'bounceaccountencryption',
             'bounceAccountUser' => 'bounceaccountuser',
-            'showWelcome' => ['key' => 'showwelcome', 'formatter' => ['ynToBool' => ['revert' => true]]],
-            'showProgress' => ['key' => 'showprogress', 'formatter' => ['ynToBool' => ['revert' => true]]],
-            'questionIndex' => ['key' => 'questionindex', 'type' => 'int', 'numerical' => ['min' => -1, 'max' => 2]],
-            'navigationDelay' => ['key' => 'navigationdelay', 'type' => 'int', 'numerical' => true],
-            'noKeyboard' => ['key' => 'nokeyboard', 'formatter' => ['ynToBool' => ['revert' => true]]],
-            'allowedItAfterCompletion' => ['key' => 'alloweditaftercompletion', 'formatter' => ['dateTimeToJson' => ['revert' => true]]],
-            'googleAnalyticsStyle' => ['key' => 'googleanalyticsstyle', 'type' => 'int', 'numerical' => ['min' => 0, 'max' => 3]],
-            'googleAnalyticsApiKey' => ['key' => 'googleanalyticsapikey', 'pattern' => '/^[a-zA-Z\-\d]*$/'],
+            'showWelcome' => [
+                'key' => 'showwelcome',
+                'formatter' => ['ynToBool' => ['revert' => true]]
+            ],
+            'showProgress' => [
+                'key' => 'showprogress',
+                'formatter' => ['ynToBool' => ['revert' => true]]
+            ],
+            'questionIndex' => [
+                'key' => 'questionindex',
+                'type' => 'int',
+                'numerical' => ['min' => -1, 'max' => 2]
+            ],
+            'navigationDelay' => [
+                'key' => 'navigationdelay', 'type' => 'int', 'numerical'
+            ],
+            'noKeyboard' => [
+                'key' => 'nokeyboard',
+                'formatter' => ['ynToBool' => ['revert' => true]]
+            ],
+            'allowedItAfterCompletion' => [
+                'key' => 'alloweditaftercompletion',
+                'formatter' => ['dateTimeToJson' => ['revert' => true]]
+            ],
+            'googleAnalyticsStyle' => [
+                'key' => 'googleanalyticsstyle',
+                'type' => 'int',
+                'numerical' => ['min' => 0, 'max' => 3]
+            ],
+            'googleAnalyticsApiKey' => [
+                'key' => 'googleanalyticsapikey', 'pattern' => '/^[a-zA-Z\-\d]*$/'
+            ],
             'showSurveyPolicyNotice' => [
                 'key' => 'showsurveypolicynotice', 'type' => 'int', 'range' => [0, 1, 2]
             ],

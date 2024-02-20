@@ -2,6 +2,16 @@
 
 namespace LimeSurvey\Api\Transformer\Validators;
 
+/**
+ * Example config (optional min and max):
+ * 'tokenLength' => ['numerical' => true] or 'tokenLength' => ['numerical']
+ * or
+ * 'tokenLength' => ['numerical' => ['min' => -1]]
+ * or
+ * 'tokenLength' => ['numerical' => ['max' => 50]]
+ * or
+ * 'tokenLength' => ['numerical' => ['min' => -1, 'max' => 50]]
+ */
 class NumericalValidator implements ValidatorInterface
 {
     private string $name = 'numerical';
@@ -70,6 +80,11 @@ class NumericalValidator implements ValidatorInterface
         $config,
         $options = []
     ) {
+        // numeric is also allowed as array value
+        $key = array_search($this->name, $config, true);
+        if (is_int($key)) {
+            $config[$this->name] = true;
+        }
         return $config[$this->name] ?? $this->getDefaultConfig();
     }
 
