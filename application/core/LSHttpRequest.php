@@ -280,10 +280,6 @@ class LSHttpRequest extends CHttpRequest
             $restRoutePattern,
             $this->getRequestUri(),
         ) === 1;
-        $restRoute = preg_match(
-            $restRoutePattern,
-            $this->getParam('r')
-        ) === 1;
         return $restPath || $restRoute;
     }
 }

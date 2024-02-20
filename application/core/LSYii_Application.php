@@ -94,6 +94,17 @@ class LSYii_Application extends CWebApplication
             $aApplicationConfig = $this->getTwigCustomExtensionsConfig($baseConfig['usertwigextensionrootdir'], $aApplicationConfig);
         }
 
+        // REST API always expects URLS in path mode regardless of site setting
+        // - it is not possible to call App request object here
+        if (
+            preg_match(
+                '#^(/)?(index.php/)?rest(/.*)?#',
+                $_SERVER['REQUEST_URI'],
+            ) === 1
+        ) {
+            $aApplicationConfig['components']['urlManager']['urlFormat'] = 'path';
+        }
+
         /* Construct CWebApplication */
         parent::__construct($aApplicationConfig);
 
