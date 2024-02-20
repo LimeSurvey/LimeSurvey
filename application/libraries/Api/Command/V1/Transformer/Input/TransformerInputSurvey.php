@@ -19,9 +19,9 @@ class TransformerInputSurvey extends Transformer
                 'formatter' => ['ynToBool' => ['revert' => true]],
                 'range' => [true, false]
             ],
-            'language' => true,
+            'language' => ['filter' => 'trim'],
             'admin' => ['length' => ['min' => 1, 'max' => 50]],
-            'adminEmail' => ['key' => 'adminemail'],
+            'adminEmail' => ['key' => 'adminemail', 'filter' => 'trim'],
             'expires' => [
                 'key' => 'expires',
                 'date',
@@ -40,6 +40,7 @@ class TransformerInputSurvey extends Transformer
             'additionalLanguages' => 'additional_languages',
             'dateStamp' => [
                 'key' => 'datestamp',
+                'filter' => 'trim',
                 'formatter' => ['ynToBool' => ['revert' => true]]
             ],
             'useCookie' => [
@@ -118,7 +119,7 @@ class TransformerInputSurvey extends Transformer
             'useTokens' => [
                 'key' => 'usetokens', 'formatter' => ['ynToBool' => ['revert' => true]]
             ],
-            'bounceEmail' => 'bounce_email',
+            'bounceEmail' => ['key' => 'bounce_email', 'filter' => 'trim'],
             'attributeDescriptions' => 'attributedescriptions',
             'emailResponseTo' => 'emailresponseto',
             'emailNotificationTo' => 'emailnotificationto',

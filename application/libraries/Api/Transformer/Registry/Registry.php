@@ -2,6 +2,7 @@
 
 namespace LimeSurvey\Api\Transformer\Registry;
 
+use LimeSurvey\Api\Transformer\Filter\Filter;
 use LimeSurvey\Api\Transformer\Formatter\FormatterDateTimeToJson;
 use LimeSurvey\Api\Transformer\Formatter\FormatterInterface;
 use LimeSurvey\Api\Transformer\Formatter\FormatterIntToBool;
@@ -136,6 +137,20 @@ class Registry
             $value = $config['formatter']->format($value);
         }
 
+        return $value;
+    }
+
+    /**
+     * @param mixed $value
+     * @param array $config
+     * @return mixed
+     */
+    public function filter($value, $config)
+    {
+        if (isset($config['filter']) && !is_null($value)) {
+            $filter = new Filter($config['filter']);
+            return $filter->filter($value);
+        }
         return $value;
     }
 }

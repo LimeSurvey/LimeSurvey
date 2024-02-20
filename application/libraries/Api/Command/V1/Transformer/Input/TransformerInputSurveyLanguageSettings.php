@@ -9,36 +9,36 @@ class TransformerInputSurveyLanguageSettings extends Transformer
     public function __construct()
     {
         $this->setDataMap([
-            'sid'               => [
-                'key'      => 'surveyls_survey_id',
-                'type'     => 'int',
-                'required' => true
+            'sid' => [
+                'key' => 'surveyls_survey_id',
+                'type' => 'int',
+                'required'
             ],
-            'language'          => [
-                'key'      => 'surveyls_language',
-                'type'     => 'string',
-                'required' => true
+            'language' => [
+                'key' => 'surveyls_language',
+                'type' => 'string',
+                'required'
             ],
-            'title'             => [
-                'key'      => 'surveyls_title',
-                'type'     => 'string',
+            'title' => [
+                'key' => 'surveyls_title',
+                'type' => 'string',
                 'required' => 'create'
             ],
-            'description'       => 'surveyls_description',
-            'welcomeText'       => 'surveyls_welcometext',
-            'endText'           => 'surveyls_endtext',
-            'policyNotice'      => 'surveyls_policy_notice',
-            'surveyAlias'       => 'surveyls_alias',
-            'policyError'       => 'surveyls_policy_error',
+            'description' => 'surveyls_description',
+            'welcomeText' => 'surveyls_welcometext',
+            'endText' => 'surveyls_endtext',
+            'policyNotice' => 'surveyls_policy_notice',
+            'surveyAlias' => 'surveyls_alias',
+            'policyError' => 'surveyls_policy_error',
             'policyNoticeLabel' => 'surveyls_policy_notice_label',
-            'url'               => 'surveyls_url',
-            'urlDescription'    => 'surveyls_urldescription',
-            'dateFormat'        => [
-                'key'  => 'surveyls_dateformat',
+            'url' => ['key' => 'surveyls_url', 'filter' => 'trim'],
+            'urlDescription' => 'surveyls_urldescription',
+            'dateFormat' => [
+                'key' => 'surveyls_dateformat',
                 'type' => 'int'
             ],
-            'numberFormat'      => [
-                'key'  => 'surveyls_numberformat',
+            'numberFormat' => [
+                'key' => 'surveyls_numberformat',
                 'type' => 'int'
             ],
         ]);

@@ -122,7 +122,6 @@ class Transformer implements TransformerInterface
         $config['type'] = isset($config['type']) ? $config['type'] : null;
         $config['collection'] = isset($config['collection']) ? $config['collection'] : false;
         $config['transformer'] = isset($config['transformer']) ? $config['transformer'] : null;
-//        $config['formatter'] = isset($config['formatter']) ? $config['formatter'] : null;
         $config['default'] = isset($config['default']) ? $config['default'] : null;
 
         return $config;
@@ -159,6 +158,22 @@ class Transformer implements TransformerInterface
     {
         if ($this->registry) {
             $value = $this->registry->format($value, $config);
+        }
+
+        return $value;
+    }
+
+    /**
+     * Filter Value
+     *
+     * @param mixed $value
+     * @param array $config
+     * @return mixed
+     */
+    private function filter($value, $config)
+    {
+        if ($this->registry) {
+            $value = $this->registry->filter($value, $config);
         }
 
         return $value;
@@ -220,6 +235,7 @@ class Transformer implements TransformerInterface
     {
         $options = $options ?? [];
         $errors = [];
+        $value = $this->filter($value, $config);
         foreach ($config as $validationKey => $validationConfig) {
             if ($this->registry) {
                 $validator = $this->registry->getValidator($validationKey);

@@ -18,7 +18,7 @@ class TransformerInputSubQuestion extends Transformer
         $dataMap['l10ns'] = [
             'key' => 'subquestionl10n',
             'collection' => true,
-            'required' => true,
+            'required',
             'transformer' => $transformerInputSubquestionL10n
         ];
         $this->setDataMap($dataMap);

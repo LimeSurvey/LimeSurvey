@@ -32,7 +32,7 @@ class TransformerInputQuestion extends Transformer
             'clearDefault' => 'clear_default',
             'moduleName' => 'modulename',
             'gid' => ['type' => 'int'],
-            'relevance' => true,
+            'relevance' => ['filter' => 'trim'],
             'sameScript' => [
                 'key' => 'same_script',
                 'formatter' => ['ynToBool' => ['revert' => true]]

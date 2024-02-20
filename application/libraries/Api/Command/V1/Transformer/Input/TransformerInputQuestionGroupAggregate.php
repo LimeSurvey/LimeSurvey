@@ -13,13 +13,13 @@ class TransformerInputQuestionGroupAggregate extends Transformer
         $this->setDataMap([
             'questionGroup' => [
                 'transformer' => $transformerQuestionGroup,
-                'required' => true
+                'required'
             ],
             'questionGroupL10n' => [
                 'key' => 'questionGroupI10N',
                 'collection' => true,
                 'transformer' => $transformerQuestionGroupL10ns,
-                'required' => true
+                'required'
             ]
         ]);
     }

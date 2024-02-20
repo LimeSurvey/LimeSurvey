@@ -13,7 +13,7 @@ class TransformerInputQuestionGroup extends Transformer
             'sid' => ['type' => 'int'],
             'sortOrder' => ['key' => 'group_order', 'type' => 'int'],
             'randomizationGroup' => 'randomization_group',
-            'gRelevance' => 'grelevance',
+            'gRelevance' => ['key' => 'grelevance', 'filter' => 'trim'],
             'tempId' => ['required' => 'create']
         ]);
     }
