@@ -775,12 +775,21 @@ class UserManagementController extends LSBaseController
         }
         $created = [];
         $updated = [];
-
         foreach ($aNewUsers as $aNewUser) {
             $oUser = User::model()->findByAttributes(['users_name' => $aNewUser['users_name']]);
 
             if ($oUser  !== null) {
                 if ($overwriteUsers) {
+                    /* Check permission to edit this user */
+                    if (!$oUser->canEdit()) {
+                        Yii::app()->setFlashMessage(sprintf(gT("You don't have permission to edit user %s."), $aNewUser['users_name']), 'warning');
+                        continue;
+                    }
+                    /* Check permission to edit self */
+                    if ($aNewUser['uid'] == App()->user->id) {
+                        Yii::app()->setFlashMessage(gT("You can not use import to edit your account."), 'warning');
+                        continue;
+                    }
                     $oUser->full_name = $aNewUser['full_name'];
                     $oUser->email = $aNewUser['email'];
                     $oUser->parent_id = App()->user->id;
@@ -823,8 +832,9 @@ class UserManagementController extends LSBaseController
                 }
             }
         }
-
-        Yii::app()->setFlashMessage(gT("Users imported successfully."), 'success');
+        if (count($created) || count($updated)) {
+            Yii::app()->setFlashMessage(gT("Users imported successfully."), 'success');
+        }
         $this->redirect(['userManagement/index']);
     }
 
