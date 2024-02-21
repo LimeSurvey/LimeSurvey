@@ -939,7 +939,7 @@ class UserManagementController extends LSBaseController
                         continue;
                     }
                     /* Check permission to edit self */
-                    if ($aNewUser['uid'] == App()->user->id) {
+                    if ($oUser->uid == App()->user->id) {
                         Yii::app()->setFlashMessage(gT("You can not use import to edit your account."), 'warning');
                         continue;
                     }
