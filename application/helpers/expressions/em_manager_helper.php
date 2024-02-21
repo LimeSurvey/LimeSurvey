@@ -3276,7 +3276,7 @@ class LimeExpressionManager
         if (isset($_SESSION['LEMforceRefresh'])) {
             unset($_SESSION['LEMforceRefresh']);
             $forceRefresh = true;
-        } elseif ($forceRefresh === false && !empty($this->knownVars) && !$this->sPreviewMode) {
+        } elseif ($forceRefresh === false && !empty($this->knownVars) && ((!$this->sPreviewMode) || ($this->sPreviewMode === 'database') || ($this->sPreviewMode === 'logic'))) {
             return false;   // means that those variables have been cached and no changes needed
         }
         $now = microtime(true);
@@ -5126,7 +5126,7 @@ class LimeExpressionManager
                 $val = (is_null($value) ? null : $value['value']);
                 $type = (is_null($value) ? null : $value['type']);
                 // Clean up the values to cope with database storage requirements : some value are fitered in ProcessCurrentResponses
-                // @todo fix whole type according to DB : use Yii for this ?
+                // @todo These validations need to be moved to the question models
                 switch ($type) {
                     case Question::QT_D_DATE: //DATE
                         if (trim((string) $val) == '' || $val == "INVALID") {// otherwise will already be in yyyy-mm-dd format after ProcessCurrentResponses() (not for default value, GET value, Expression set value etc ... cf todo
@@ -5140,6 +5140,11 @@ class LimeExpressionManager
                         } elseif (!preg_match("/^[-]?(\d{1,20}\.\d{0,10}|\d{1,20})$/", $val)) { // DECIMAL(30,10)
                             // Here : we must ADD a message for the user and set the question "not valid" : show the same page + show with input-error class
                             $val = null;
+                        }
+                        break;
+                    case Question::QT_L_LIST: //NUMERICAL QUESTION TYPE
+                        if ($val !== null) {
+                            $val = substr($val, 0, 5); 
                         }
                         break;
                     default:

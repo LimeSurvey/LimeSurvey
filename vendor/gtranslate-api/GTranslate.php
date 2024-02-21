@@ -289,6 +289,8 @@ class GTranslate
 	private function requestCurl($url)
 	{
 		$ch = curl_init();
+		// CGoogle translate API requires IPv4
+		curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);		
 		curl_setopt($ch, CURLOPT_URL, $this->url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($ch, CURLOPT_REFERER, $this->http_referer);
