@@ -14,28 +14,54 @@ class TransformerInputQuestion extends Transformer
             'qid' => ['type' => 'int'],
             'parentQid' => ['key' => 'parent_qid', 'type' => 'int'],
             'sid' => ['type' => 'int'],
-            'type' => ['required' => 'create'],
-            'title' => ['required' => 'create'],
+            'type' => [
+                'required' => 'create',
+                'length' => ['min' => 1, 'max' => 1]
+            ],
+            'title' => [
+                'required' => 'create',
+                'length' => ['min' => 1, 'max' => 20]
+            ],
             'preg' => true,
-            'other' => ['formatter' => ['ynToBool' => ['revert' => true]]],
+            'other' => [
+                'formatter' => ['ynToBool' => ['revert' => true]],
+                'range' => [true, false]
+            ],
             'mandatory' => ['formatter' => ['mandatory' => true]],
-            'encrypted' => ['formatter' => ['ynToBool' => ['revert' => true]]],
-            'questionOrder' => ['key' => 'question_order', 'type' => 'int'],
-            'sortOrder' => ['key' => 'question_order', 'type' => 'int'],
-            'scaleId' => ['key' => 'scale_id', 'type' => 'int'],
+            'encrypted' => [
+                'formatter' => ['ynToBool' => ['revert' => true]],
+                'range' => [true, false]
+            ],
+            'questionOrder' => [
+                'key' => 'question_order',
+                'type' => 'int',
+                'numerical'
+            ],
+            'sortOrder' => [
+                'key' => 'question_order',
+                'type' => 'int',
+                'numerical'
+            ],
+            'scaleId' => ['key' => 'scale_id', 'type' => 'int', 'numerical'],
             'sameDefault' => [
                 'key' => 'same_default',
-                'formatter' => ['ynToBool' => ['revert' => true]]
+                'formatter' => ['intToBool' => ['revert' => true]]
             ],
             'questionThemeName' => 'question_theme_name',
-            'saveAsDefault' => 'save_as_default',
-            'clearDefault' => 'clear_default',
-            'moduleName' => 'modulename',
+            'saveAsDefault' => [
+                'key' => 'save_as_default',
+                'formatter' => ['ynToBool' => ['revert' => true]]
+            ],
+            'clearDefault' => [
+                'key' => 'clear_default',
+                'formatter' => ['ynToBool' => ['revert' => true]]
+            ],
+            'moduleName' => ['key' => 'modulename', 'length' => ['max' => 255]],
             'gid' => ['type' => 'int'],
             'relevance' => ['filter' => 'trim'],
             'sameScript' => [
                 'key' => 'same_script',
-                'formatter' => ['ynToBool' => ['revert' => true]]
+                'formatter' => ['intToBool' => ['revert' => true]]
             ],
             'tempId' => ['required' => 'create']
         ]);

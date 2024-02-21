@@ -22,12 +22,18 @@ class TransformerOutputQuestion extends TransformerOutputActiveRecord
             'encrypted' => ['formatter' => ['ynToBool' => true]],
             'question_order' => ['key' => 'questionOrder', 'type' => 'int'],
             'scale_id' => ['key' => 'scaleId', 'type' => 'int'],
-            'same_default' => ['key' => 'sameDefault', 'formatter' => ['ynToBool' => true]],
+            'same_default' => [
+                'key' => 'sameDefault',
+                'formatter' => ['intToBool' => true]
+            ],
             'question_theme_name' => 'questionThemeName',
             'modulename' => 'moduleName',
             'gid' => ['type' => 'int'],
             'relevance' => true,
-            'same_script' => ['key' => 'sameScript', 'formatter' => ['ynToBool' => true]]
+            'same_script' => [
+                'key' => 'sameScript',
+                'formatter' => ['intToBool' => true]
+            ]
         ]);
     }
 
