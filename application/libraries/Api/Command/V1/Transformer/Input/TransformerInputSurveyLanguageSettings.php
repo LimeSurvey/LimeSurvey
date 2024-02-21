@@ -22,23 +22,39 @@ class TransformerInputSurveyLanguageSettings extends Transformer
             'title' => [
                 'key' => 'surveyls_title',
                 'type' => 'string',
+                'length' => ['min' => 0, 'max' => 200],
                 'required' => 'create'
             ],
             'description' => 'surveyls_description',
             'welcomeText' => 'surveyls_welcometext',
             'endText' => 'surveyls_endtext',
-            'policyNotice' => 'surveyls_policy_notice',
-            'surveyAlias' => 'surveyls_alias',
+            'policyNotice' => [
+                'key' => 'surveyls_policy_notice',
+                'length' => ['min' => 0, 'max' => 200]
+            ],
+            'surveyAlias' => [
+                'key' => 'surveyls_alias',
+                'length' => ['min' => 0, 'max' => 100],
+                'pattern' => '/^[^\d\W][\w\-]*$/u'
+            ],
             'policyError' => 'surveyls_policy_error',
-            'policyNoticeLabel' => 'surveyls_policy_notice_label',
+            'policyNoticeLabel' => [
+                'key' => 'surveyls_policy_notice_label',
+                'length' => ['min' => 0, 'max' => 192]
+            ],
             'url' => ['key' => 'surveyls_url', 'filter' => 'trim'],
-            'urlDescription' => 'surveyls_urldescription',
+            'urlDescription' => [
+                'key' => 'surveyls_urldescription',
+                'length' => ['min' => 0, 'max' => 255]
+            ],
             'dateFormat' => [
                 'key' => 'surveyls_dateformat',
+                'numerical' => ['min' => 1, 'max' => 12],
                 'type' => 'int'
             ],
             'numberFormat' => [
                 'key' => 'surveyls_numberformat',
+                'numerical' => ['min' => 0, 'max' => 1],
                 'type' => 'int'
             ],
         ]);

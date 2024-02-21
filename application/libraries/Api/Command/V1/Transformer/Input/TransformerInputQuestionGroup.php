@@ -11,7 +11,7 @@ class TransformerInputQuestionGroup extends Transformer
         $this->setDataMap([
             'gid' => ['type' => 'int'],
             'sid' => ['type' => 'int'],
-            'sortOrder' => ['key' => 'group_order', 'type' => 'int'],
+            'sortOrder' => ['key' => 'group_order', 'type' => 'int', 'numerical'],
             'randomizationGroup' => 'randomization_group',
             'gRelevance' => ['key' => 'grelevance', 'filter' => 'trim'],
             'tempId' => ['required' => 'create']
