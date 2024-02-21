@@ -23,6 +23,9 @@ class Filter
      */
     private $filterParams = [];
 
+    /**
+     * @param array|string $config
+     */
     public function __construct($config)
     {
         if (is_array($config)) {
