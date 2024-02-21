@@ -111,7 +111,7 @@
                         <?= Yii::app()->session['user']; ?>
                         <span class="caret"></span></a>
                     <ul class="dropdown-menu dropdown-menu-end" role="menu">
-                        <li>
+                        <li id="admin-menu-item-account">
                             <a class="dropdown-item" href="<?php echo $this->createUrl("/admin/user/sa/personalsettings"); ?>">
                                 <?php eT("Account"); ?>
                             </a>
