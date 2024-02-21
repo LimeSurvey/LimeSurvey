@@ -60,7 +60,11 @@ class AppErrorHandler
         }
         if (defined('PHP_ENV') && PHP_ENV == 'test') {
             // If run from phpunit, die with exception message.
-            die($event->exception->getMessage());
+            die(
+                isset($event->exception)
+                ? $event->exception->getMessage()
+                : $event->message
+            );
         }
         if (!$dbVersion) {
             /* Not installed or DB broken or to old */

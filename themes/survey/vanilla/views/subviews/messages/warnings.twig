@@ -26,7 +26,7 @@
 #}
 
 {# Preview mode warning #}
-{% if aSurveyInfo.active != 'Y' %}
+{% if (aSurveyInfo.active != 'Y') and (not aSurveyInfo.popupPreview) %}
     <!-- Preview mode warning -->
     <div class="{{ aSurveyInfo.class.activealert }} alert alert-warning alert-dismissible fade in show alert-dismissible" {{ aSurveyInfo.attr.activealert }} >
         <button  {{ aSurveyInfo.attr.activealertbutton }} class="{{ aSurveyInfo.class.activealertbutton }} btn-close" ></button>

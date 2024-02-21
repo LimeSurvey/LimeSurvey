@@ -226,7 +226,7 @@ class Database extends SurveyCommonAction
     /**
      * Action to run when update survey settings + survey language
      *
-     * Refactored to use Services\SurveyUpdater 2023-05-30 (kfoster).
+     * Refactored to use Services\SurveyAggregateService 2023-05-30 (kfoster).
      *
      * @param integer $iSurveyID
      * @param ?array $input For dependency injection during testing
@@ -236,7 +236,7 @@ class Database extends SurveyCommonAction
     {
         $diContainer = \LimeSurvey\DI::getContainer();
         $surveyUpdater = $diContainer->get(
-            LimeSurvey\Models\Services\SurveyUpdater::class
+            LimeSurvey\Models\Services\SurveyAggregateService::class
         );
 
         $surveyModel = $diContainer->get(Survey::class);
@@ -295,6 +295,8 @@ class Database extends SurveyCommonAction
             Yii::app()
                 ->setFlashMessage(gT('Survey settings were successfully saved.'));
         } catch (PersistErrorException $e) {
+            // @todo: Should we be catching only this kind of exceptions or all Throwable?
+            // BUt that could show sensitive information
             Yii::app()->setFlashMessage(
                 $e->getMessage(),
                 'error'
@@ -353,7 +355,7 @@ class Database extends SurveyCommonAction
     {
         $diContainer = \LimeSurvey\DI::getContainer();
         $surveyUpdater = $diContainer->get(
-            LimeSurvey\Models\Services\SurveyUpdater::class
+            LimeSurvey\Models\Services\SurveyAggregateService::class
         );
 
         $request = Yii::app()->request;

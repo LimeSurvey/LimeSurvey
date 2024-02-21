@@ -43,6 +43,7 @@ use LimeSurvey\Models\Services\UserManager;
  * @property string $last_login
  * @property Permissiontemplates[] $roles
  * @property UserGroup[] $groups
+ * @property int $user_status User's account status (1: activated | 0: deactivated)
  */
 class User extends LSActiveRecord
 {
@@ -59,6 +60,7 @@ class User extends LSActiveRecord
      * @var string $lang Default value for user language
      */
     public $lang = 'auto';
+
     public $searched_value;
 
     /**
@@ -127,6 +129,45 @@ class User extends LSActiveRecord
         );
     }
 
+    /** @inheritdoc */
+    public function scopes()
+    {
+        $activeScope = array(
+            'condition' => 'user_status = :active',
+            'params' => array(
+                'active' => 1,
+            )
+        );
+
+        $notExpiredScope = array(
+            'condition' => "expires > :now OR expires IS NULL",
+            'params' => array(
+                'now' => dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig("timeadjust")),
+            )
+        );
+
+        if (App()->getConfig("DBVersion") < 495) {
+            /* No expires column before 495 */
+            return array(
+                'active' => [],
+                'notexpired' => [],
+            );
+        }
+
+        if (App()->getConfig("DBVersion") < 619) {
+            /* No user_status column before 619 */
+            return array(
+                'active' => [],
+                'notexpired' => $notExpiredScope
+            );
+        }
+
+        return array(
+            'active' => $activeScope,
+            'notexpired' => $notExpiredScope
+        );
+    }
+
     public function attributeLabels()
     {
         return [
@@ -146,6 +187,7 @@ class User extends LSActiveRecord
             'modified' => gT('Modified at'),
             'last_login' => gT('Last recorded login'),
             'expires' => gT("Expiry date/time:"),
+            'user_status' => gT("Status"),
         ];
     }
 
@@ -217,9 +259,10 @@ class User extends LSActiveRecord
      * @param int $parent_user
      * @param string $new_email
      * @param string|null $expires
+     * @param boolean $status
      * @return integer|boolean User ID if success
      */
-    public static function insertUser($new_user, $new_pass, $new_full_name, $parent_user, $new_email, $expires = null)
+    public static function insertUser($new_user, $new_pass, $new_full_name, $parent_user, $new_email, $expires = null, $status = true)
     {
         $oUser = new self();
         $oUser->users_name = $new_user;
@@ -231,6 +274,7 @@ class User extends LSActiveRecord
         $oUser->created = date('Y-m-d H:i:s');
         $oUser->modified = date('Y-m-d H:i:s');
         $oUser->expires = $expires;
+        $oUser->user_status = $status;
         if ($oUser->save()) {
             return $oUser->uid;
         } else {
@@ -491,7 +535,6 @@ class User extends LSActiveRecord
         $permission_users_update = Permission::model()->hasGlobalPermission('users', 'update');
         $permission_users_delete = Permission::model()->hasGlobalPermission('users', 'delete');
         $userManager = new UserManager(App()->user, $this);
-
         // User is owned or created by you
         $ownedOrCreated = $this->parent_id == App()->session['loginID'];
 
@@ -502,7 +545,6 @@ class User extends LSActiveRecord
         $setTemplatePermissionsUrl = App()->getController()->createUrl('userManagement/userTemplatePermissions', ['userid' => $this->uid]);
         $changeOwnershipUrl = App()->getController()->createUrl('userManagement/takeOwnership');
         $deleteUrl = App()->getController()->createUrl('userManagement/deleteConfirm', ['userid' => $this->uid, 'user' => $this->full_name]);
-
 
         $dropdownItems = [];
         $dropdownItems[] = [
@@ -527,6 +569,37 @@ class User extends LSActiveRecord
                     )
                 )
         ];
+
+        $permission = ( $permission_superadmin_read && !(Permission::isForcedSuperAdmin($this->uid) || $this->uid == App()->user->getId()))
+            || (!$permission_superadmin_read && ($this->uid != App()->session['loginID'] //Can't change your own permissions
+                    && ( $permission_users_update && $ownedOrCreated)
+                    && !Permission::isForcedSuperAdmin($this->uid)
+                )
+            );
+
+        if ($this->user_status) {
+            $activateUrl = App()->getController()->createUrl('userManagement/activationConfirm', ['userid' => $this->uid, 'action' => 'deactivate']);
+            $dropdownItems[] = [
+                'title'            => gT('Deactivate'),
+                'iconClass'        => "ri-user-unfollow-fill text-danger",
+                'linkClass'        => $permission ? "UserManagement--action--openmodal UserManagement--action--status" : '',
+                'linkAttributes'   => [
+                    'data-href' => $permission ? $activateUrl : '#',
+                ],
+                'enabledCondition' => $permission
+            ];
+        } else {
+            $activateUrl = App()->getController()->createUrl('userManagement/activationConfirm', ['userid' => $this->uid, 'action' => 'activate']);
+            $dropdownItems[] = [
+                'title'            => gT('Activate'),
+                'iconClass'        => "ri-user-follow-fill",
+                'linkClass'        => $permission ? "UserManagement--action--openmodal UserManagement--action--status" : '',
+                'linkAttributes'   => [
+                    'data-href' => $permission ? $activateUrl : '#',
+                ],
+                'enabledCondition' => $permission
+            ];
+        }
         $dropdownItems[] = [
             'title'            => gT('Edit permissions'),
             'iconClass'        => "ri-lock-fill",
@@ -567,13 +640,8 @@ class User extends LSActiveRecord
             'linkAttributes'   => [
                 'data-href' => $editUrl,
             ],
-            'enabledCondition' =>
-                ($permission_superadmin_read
-                    && $this->uid != 1
-                )
-                || (!$permission_superadmin_read
-                    && $this->canEdit(App()->session['loginID'])
-                )
+            'enabledCondition' => $this->canEdit()
+                                && $this->uid != App()->user->getId() // To update self : must use personal settings
         ];
         $dropdownItems[] = [
             'title'            => gT('Template permissions'),
@@ -700,7 +768,8 @@ class User extends LSActiveRecord
             ],
             [
                 "name"   => 'uid',
-                "header" => gT("User ID")
+                "header" => gT("User ID"),
+                'htmlOptions' => ['class' => 'uid']
             ],
             [
                 "name"   => 'users_name',
@@ -722,6 +791,12 @@ class User extends LSActiveRecord
             [
                 "name"   => "parentUserName",
                 "header" => gT("Created by"),
+            ],
+            [
+                "name"   => "user_status",
+                "header" => gT("Status"),
+                'headerHtmlOptions' => ['class' => 'hidden'],
+                'htmlOptions'       => ['class' => 'hidden activation']
             ],
         ];
 
@@ -858,7 +933,7 @@ class User extends LSActiveRecord
 
         $getUser = Yii::app()->request->getParam('User');
         if (!empty($getUser['parentUserName'])) {
-             $getParentName = $getUser['parentUserName'];
+            $getParentName = $getUser['parentUserName'];
             $criteria->join = "LEFT JOIN {{users}} u ON t.parent_id = u.uid";
             $criteria->compare('u.users_name', $getParentName, true, 'OR');
         }
@@ -997,16 +1072,56 @@ class User extends LSActiveRecord
     }
 
     /**
-     * Returns true if logged in user with id $loginId can edit this user
+     * Return true if user with id $managerId can edit this user
+     * @param int|null $managerId default to current user
      *
-     * @param int $loginId
      * @return bool
      */
-    public function canEdit($loginId)
+    public function canEdit($managerId = null)
     {
-        return
-            Permission::model()->hasGlobalPermission('superadmin', 'read')
-            || $this->uid == $loginId
-            || (Permission::model()->hasGlobalPermission('users', 'update') && $this->parent_id == $loginId);
+        if (is_null($managerId)) {
+            $managerId = Permission::model()->getUserId();
+        }
+        /* user can update himself */
+        if ($managerId == $this->uid) {
+            return true;
+        }
+        /* forcedsuperamdin (user #1) can always update all */
+        if (Permission::isForcedSuperAdmin($managerId)) {
+            return true;
+        }
+        /* forcedsuperamdin can not be update (except by another forcedsuperamdin done before) */
+        if (Permission::isForcedSuperAdmin($this->uid)) {
+            return false;
+        }
+        /* If target user is superamdin : managingUser must be allowed to create superadmin and be parent */
+        if (Permission::model()->hasGlobalPermission('superadmin', 'read', $this->uid)) {
+            return Permission::model()->hasGlobalPermission('superadmin', 'create', $managerId)
+                && $this->parent_id == $managerId;
+        }
+        /* superamin can update all other user */
+        if (Permission::model()->hasGlobalPermission('superadmin', 'read', $managerId)) {
+            return true;
+        }
+        /* Finally : simple user can update only childs users */
+        return Permission::model()->hasGlobalPermission('users', 'update', $managerId)
+                && $this->parent_id == $managerId;
+    }
+
+    /**
+     * Set user activation status
+     *
+     * @param string $status
+     * @return bool
+     */
+    public function setActivationStatus($status = 'activate')
+    {
+        if ($status == 'activate') {
+            $this->user_status = 1;
+        } else {
+            $this->user_status = 0;
+        }
+
+        return $this->save();
     }
 }

@@ -2,7 +2,7 @@
 
 namespace LimeSurvey\Api\Transformer\Formatter;
 
-class FormatterYnToBool implements FormatterRevertibleInterface
+class FormatterYnToBool implements FormatterInterface
 {
     /** @var bool */
     private $revert = false;
@@ -46,7 +46,7 @@ class FormatterYnToBool implements FormatterRevertibleInterface
      * @param ?string $value
      * @return ?boolean
      */
-    private function apply($value)
+    protected function apply($value)
     {
         $lowercase = is_string($value)
             ? strtolower($value)
@@ -71,7 +71,7 @@ class FormatterYnToBool implements FormatterRevertibleInterface
      * @param ?mixed $value
      * @return ?mixed
      */
-    public function revert($value)
+    protected function revert($value)
     {
         if (!is_bool($value)) {
             return null;

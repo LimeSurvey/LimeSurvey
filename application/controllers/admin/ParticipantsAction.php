@@ -1059,7 +1059,7 @@ class ParticipantsAction extends SurveyCommonAction
                 }
                 if ($thisduplicate == 1) {
                     $dupfound = true;
-                    $duplicatelist[] = $writearray['firstname'] . " " . $writearray['lastname'] . " (" . $writearray['email'] . ")";
+                    $duplicatelist[] = CHtml::encode($writearray['firstname'] . " " . $writearray['lastname'] . " (" . $writearray['email'] . ")");
                 }
 
                 //Checking the email address is in a valid format
@@ -1071,7 +1071,7 @@ class ParticipantsAction extends SurveyCommonAction
                     $sEmailaddress = $aEmailAddresses[0];
                     if (!validateEmailAddress($sEmailaddress)) {
                         $invalidemail = true;
-                        $invalidemaillist[] = $line[0] . " " . $line[1] . " (" . $line[2] . ")";
+                        $invalidemaillist[] = CHtml::encode($line[0] . " " . $line[1] . " (" . $line[2] . ")");
                     }
                 }
                 if (!$dupfound && !$invalidemail) {
@@ -1311,6 +1311,13 @@ class ParticipantsAction extends SurveyCommonAction
      */
     public function storeBlacklistValues()
     {
+        $this->requirePostRequest();
+
+        if (!Permission::model()->hasGlobalPermission('settings', 'update')) {
+            Yii::app()->setFlashMessage(gT('Access denied!'), 'error');
+            Yii::app()->getController()->redirect(array('admin/participants/sa/blacklistControl'));
+        }
+
         $values = array('blacklistallsurveys', 'blacklistnewsurveys', 'blockaddingtosurveys', 'hideblacklisted', 'deleteblacklisted', 'allowunblacklist');
         foreach ($values as $value) {
             if (SettingGlobal::model()->findByPk($value)) {
@@ -1434,23 +1441,23 @@ class ParticipantsAction extends SurveyCommonAction
         $encrypted = Yii::app()->request->getPost('encrypted');
         $encrypted_value = $encrypted ? 'Y' : 'N';
         $attributeName = ParticipantAttributeName::model()->findByPk($attributeId);
-        $sEncryptedBeforeChange = $attributeName->encrypted;
+        $encryptedBeforeChange = $attributeName->isEncrypted();
         $attributeName->encrypted = $encrypted_value;
-        $sEncryptedAfterChange = $attributeName->encrypted;
+        $encryptedAfterChange = $attributeName->isEncrypted();
         $sDefaultname = $attributeName->defaultname;
 
         // encryption/decryption MUST be done in a one synchronous step, either all succeeded or none
         $oDB = Yii::app()->db;
         $oTransaction = $oDB->beginTransaction();
         try {
-            if ($attributeName->core_attribute == 'Y') {
+            if ($attributeName->isCoreAttribute()) {
                 // core participant attributes
                 $oParticipants = Participant::model()->findAll();
                 foreach ($oParticipants as $participant) {
                     $aUpdateData = array();
-                    if ($sEncryptedBeforeChange == 'Y' && $sEncryptedAfterChange == 'N') {
+                    if ($encryptedBeforeChange && !$encryptedAfterChange) {
                         $aUpdateData[$sDefaultname] = LSActiveRecord::decryptSingle($participant->$sDefaultname);
-                    } elseif ($sEncryptedBeforeChange == 'N' && $sEncryptedAfterChange == 'Y') {
+                    } elseif (!$encryptedBeforeChange && $encryptedAfterChange) {
                         $aUpdateData[$sDefaultname] = LSActiveRecord::encryptSingle($participant->$sDefaultname);
                     }
                     if (!empty($aUpdateData)) {
@@ -1465,9 +1472,9 @@ class ParticipantsAction extends SurveyCommonAction
                 );
                 foreach ($oAttributes as $attribute) {
                     $aUpdateData = array();
-                    if ($sEncryptedBeforeChange == 'Y' && $sEncryptedAfterChange == 'N') {
+                    if ($encryptedBeforeChange && !$encryptedAfterChange) {
                         $aUpdateData['value'] = LSActiveRecord::decryptSingle($attribute->value);
-                    } elseif ($sEncryptedBeforeChange == 'N' && $sEncryptedAfterChange == 'Y') {
+                    } elseif (!$encryptedBeforeChange && $encryptedAfterChange) {
                         $aUpdateData['value'] = LSActiveRecord::encryptSingle($attribute->value);
                     }
                     if (!empty($aUpdateData) && $aUpdateData['value'] !== null) {

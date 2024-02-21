@@ -681,7 +681,9 @@ class PluginManager extends \CApplicationComponent
             'PasswordRequirement',
             'statFunctions',
             'TwoFactorAdminLogin',
-            'UpdateCheck'
+            'UpdateCheck',
+            'AzureOAuthSMTP',
+            'GoogleOAuthSMTP',
         ];
     }
 

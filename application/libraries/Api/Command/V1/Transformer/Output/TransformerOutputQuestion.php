@@ -34,9 +34,9 @@ class TransformerOutputQuestion extends TransformerOutputActiveRecord
         ]);
     }
 
-    public function transformAll($collection)
+    public function transformAll($collection, $options = [])
     {
-        $collection = parent::transformAll($collection);
+        $collection = parent::transformAll($collection, $options);
 
         usort(
             $collection,

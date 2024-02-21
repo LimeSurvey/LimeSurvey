@@ -3,14 +3,15 @@
 namespace LimeSurvey\Api\Command\V1\Transformer\Output;
 
 use Survey;
-use LimeSurvey\Api\Transformer\Output\TransformerOutputActiveRecord;
-use LimeSurvey\Api\Transformer\Formatter\FormatterYnToBool;
-use LimeSurvey\Api\Transformer\Formatter\FormatterDateTimeToJson;
+use LimeSurvey\Api\Transformer\{
+    Output\TransformerOutputActiveRecord,
+    Formatter\FormatterYnToBool,
+    Formatter\FormatterDateTimeToJson
+};
 
 class TransformerOutputSurvey extends TransformerOutputActiveRecord
 {
     private TransformerOutputSurveyLanguageSettings $transformerOutputSurveyLanguageSettings;
-
     /**
      *  @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
@@ -24,10 +25,13 @@ class TransformerOutputSurvey extends TransformerOutputActiveRecord
         $this->setDataMap([
             'sid' => ['type' => 'int'],
             'gsid' => ['type' => 'int'],
+            'owner_id' => ['key' => 'ownerId', 'type' => 'int'],
             'active' => ['formatter' => $formatterYn],
+            'admin' => true,
+            'adminemail' => 'adminEmail',
             'language'  => true,
-            'expires' => ['formatter' => $formatterDateTime],
-            'startdate' => ['key' => 'startDate', 'formatter' => $formatterDateTime],
+            'expires' => ['key' => 'expires'],
+            'startdate' => ['key' => 'startDate'],
             'anonymized' => ['formatter' => $formatterYn],
             'savetimings' => ['key' => 'saveTimings', 'formatter' => $formatterYn],
             'additional_languages' => 'additionalLanguages',
@@ -76,18 +80,22 @@ class TransformerOutputSurvey extends TransformerOutputActiveRecord
             "googleanalyticsstyle" => ['key' =>  'googleAnalyticsStyle', 'type' => 'int'],
             "googleanalyticsapikey" => 'googleAnalyticsApiKey',
             "showsurveypolicynotice" => ['key' =>  'showSurveyPolicyNotice', 'type' => 'int'],
+            'template' => true,
+            'format' => true
         ]);
     }
 
-    public function transform($data)
+    public function transform($data, $options = [])
     {
+        $options = $options ?? [];
         $survey = null;
         if (!$data instanceof Survey) {
             return null;
         }
         $survey = parent::transform($data);
         $survey['languageSettings'] = $this->transformerOutputSurveyLanguageSettings->transformAll(
-            $data->languagesettings
+            $data->languagesettings,
+            $options
         );
         return $survey;
     }

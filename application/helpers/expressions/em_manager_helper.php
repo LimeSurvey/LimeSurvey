@@ -4125,7 +4125,7 @@ class LimeExpressionManager
 
     /**
      * Translate all Expressions, Macros, registered variables, etc. in $string
-     * @param string $string - the string to be replaced
+     * @param string|null $string - the string to be replaced
      * @param integer $questionNum - the $qid of question being replaced - needed for properly alignment of question-level relevance and tailoring
      * @param array|null $replacementFields - optional replacement values
      * @param integer $numRecursionLevels - the number of times to recursively subtitute values in this string
@@ -4140,9 +4140,9 @@ class LimeExpressionManager
         $now = microtime(true);
         $LEM =& LimeExpressionManager::singleton();
 
-        if ($noReplacements) {
-            $LEM->em->SetPrettyPrintSource($string);
-            return $string;
+        if ($noReplacements || empty($string)) {
+            $LEM->em->SetPrettyPrintSource(strval($string));
+            return strval($string);
         }
         if (!empty($replacementFields) && is_array($replacementFields)) {
             self::updateReplacementFields($replacementFields);
@@ -4166,7 +4166,7 @@ class LimeExpressionManager
 
     /**
      * Translate all Expressions, Macros, registered variables, etc. in $string for current step
-     * @param string $string - the string to be replaced
+     * @param string|null $string - the string to be replaced
      * @param array $replacementFields - optional replacement values
      * @param integer $numRecursionLevels - the number of times to recursively subtitute values in this string
      * @param boolean $static - return static string (without any javascript)
@@ -4174,6 +4174,9 @@ class LimeExpressionManager
      */
     public static function ProcessStepString($string, $replacementFields = [], $numRecursionLevels = 3, $static = false)
     {
+        if (empty($string)) {
+            return strval($string);
+        }
         if ((strpos($string, "{") === false)) {
             return $string;
         }
@@ -5064,10 +5067,11 @@ class LimeExpressionManager
                 $_SESSION[$this->sessid]['srid'] = $iNewID;
             } catch (Exception $e) {
                 $srid = null;
-                $message .= $this->gT("Unable to insert record into survey table"); // TODO - add SQL error?
                 $query = $e->getMessage();
                 $trace = $e->getTraceAsString();
-                submitfailed($this->gT("Unable to insert record into survey table"), $query . "\n\n" . $trace);
+                $message = submitfailed($this->gT("Unable to insert record into survey table"), $query . "\n\n" . $trace);
+                LimeExpressionManager::addFrontendFlashMessage('error', $message, $this->sid);
+                return $message;
             }
 
             //Insert Row for Timings, if needed
@@ -5155,7 +5159,7 @@ class LimeExpressionManager
                     // This can happen if admin deletes incomple response while survey is running.
                     $message = submitfailed($this->gT('The data could not be saved because the response does not exist in the database.'));
                     LimeExpressionManager::addFrontendFlashMessage('error', $message, $this->sid);
-                    return;
+                    return $message;
                 }
                 if ($oResponse->submitdate == null || Survey::model()->findByPk($this->sid)->isAllowEditAfterCompletion) {
                     try {

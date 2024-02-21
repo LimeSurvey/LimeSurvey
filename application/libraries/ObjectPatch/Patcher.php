@@ -15,8 +15,9 @@ class Patcher
      *
      * @throws ObjectPatchException
      */
-    public function applyPatch($patch, $context = []): int
+    public function applyPatch($patch, $context = []): array
     {
+        $returnedData = [];
         $operationsApplied = 0;
         if (is_array($patch) && !empty($patch)) {
             foreach ($patch as $patchOpData) {
@@ -27,11 +28,11 @@ class Patcher
                     $patchOpData['props'] ?? null,
                     $context ?? null
                 );
-                $this->handleOp($op);
+                $returnedData[] = $this->handleOp($op);
                 $operationsApplied++;
             }
         }
-        return $operationsApplied;
+        return ['operationsApplied' => $operationsApplied, $returnedData];
     }
 
     /**
@@ -47,16 +48,24 @@ class Patcher
      * Apply operation
      *
      * @param OpInterface $op
+     * @return array
      * @throws ObjectPatchException
      */
-    private function handleOp(OpInterface $op): void
+    public function handleOp(OpInterface $op): array
     {
         $handled = false;
+        $returnedData = [];
         foreach ($this->opHandlers as $opHandler) {
             if (!$opHandler->canHandle($op)) {
                 continue;
             }
-            $opHandler->handle($op);
+            $validateOperation = $opHandler->validateOperation($op);
+            if (empty($validateOperation)) {
+                $return = $opHandler->handle($op);
+                $returnedData = is_array($return) ? $return : [];
+            } else {
+                $returnedData = $validateOperation;
+            }
             $handled = true;
             break;
         }
@@ -71,5 +80,6 @@ class Patcher
                 )
             );
         }
+        return $returnedData;
     }
 }

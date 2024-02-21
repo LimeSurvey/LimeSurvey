@@ -10,7 +10,8 @@ use LimeSurvey\Api\Command\Response\{
     Status\StatusError,
     Status\StatusErrorNotFound,
     Status\StatusErrorBadRequest,
-    Status\StatusErrorUnauthorised
+    Status\StatusErrorUnauthorised,
+    Status\StatusErrorForbidden,
 };
 
 class ResponseFactory
@@ -78,6 +79,17 @@ class ResponseFactory
         return $this->make(
             $data,
             new StatusErrorUnauthorised()
+        );
+    }
+
+    /**
+     * @param mixed $data
+     */
+    public function makeErrorForbidden($data = null): Response
+    {
+        return $this->make(
+            $data,
+            new StatusErrorForbidden()
         );
     }
 

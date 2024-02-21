@@ -293,7 +293,14 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
         } else {
             $parentID = 1;
         }
-        $iNewUID = User::insertUser($new_user, $new_pass, $new_full_name, $parentID, $new_email);
+        $status = true;
+        $preCollectedUserArray = $oEvent->get('preCollectedUserArray', []);
+        if (!empty($preCollectedUserArray)) {
+            if (!empty($preCollectedUserArray['status'])) {
+                $status = $preCollectedUserArray['status'];
+            }
+        }
+        $iNewUID = User::insertUser($new_user, $new_pass, $new_full_name, $parentID, $new_email, null, $status);
         if (!$iNewUID) {
             $oEvent->set('errorCode', self::ERROR_ALREADY_EXISTING_USER);
             $oEvent->set('errorMessageTitle', '');

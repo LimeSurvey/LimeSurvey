@@ -261,7 +261,7 @@ abstract class QuestionBaseRenderer extends StaticModel
 
     protected function setAnsweroptions($scale_id = null)
     {
-        $this->aAnswerOptions = $this->oQuestion->getOrderedAnswers($scale_id);
+        $this->aAnswerOptions = $this->oQuestion->getOrderedAnswers($scale_id, $this->sLanguage);
     }
 
     protected function getAnswerCount($iScaleId = 0)

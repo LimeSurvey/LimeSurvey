@@ -2,6 +2,8 @@
 
 namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
+use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\OpHandlerSurveyTrait;
+use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\OpHandlerValidationTrait;
 use LimeSurvey\Models\Services\QuestionAggregateService;
 use LimeSurvey\ObjectPatch\{
     Op\OpInterface,
@@ -13,6 +15,7 @@ use LimeSurvey\ObjectPatch\{
 class OpHandlerQuestionDelete implements OpHandlerInterface
 {
     use OpHandlerSurveyTrait;
+    use OpHandlerValidationTrait;
 
     protected QuestionAggregateService $questionAggregateService;
 
@@ -52,6 +55,21 @@ class OpHandlerQuestionDelete implements OpHandlerInterface
         $this->questionAggregateService->delete(
             $this->getSurveyIdFromContext($op),
             $op->getEntityId()
+        );
+    }
+
+    /**
+     * Checks if patch is valid for this operation.
+     * @param OpInterface $op
+     * @return array
+     */
+    public function validateOperation(OpInterface $op): array
+    {
+        $validationData = $this->validateEntityId($op, []);
+        return $this->getValidationReturn(
+            gT('Could not delete question'),
+            $validationData,
+            $op
         );
     }
 }

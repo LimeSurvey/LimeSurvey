@@ -286,11 +286,15 @@ class remotecontrol_handle
      * @param string $sSessionKey Auth credentials
      * @param int $iSurveyID_org Id of the source survey
      * @param string $sNewname name of the new survey
+     * @param integer $DestSurveyID  (optional) This is the new ID of the survey - if already used a random one will be taken instead
      * @return array On success: new $iSurveyID in array['newsid']. On failure array with error information
      * */
-    public function copy_survey($sSessionKey, $iSurveyID_org, $sNewname)
+    public function copy_survey($sSessionKey, $iSurveyID_org, $sNewname, $DestSurveyID = null)
     {
         $iSurveyID = (int) $iSurveyID_org;
+        if (!is_null($DestSurveyID)) {
+            $DestSurveyID = (int) $DestSurveyID;
+        }
         if (!$this->_checkSessionKey($sSessionKey)) {
             return array('status' => self::INVALID_SESSION_KEY);
         }
@@ -313,7 +317,7 @@ class remotecontrol_handle
             $copysurveydata = surveyGetXMLData($iSurveyID, $aExcludes);
             if ($copysurveydata) {
                 Yii::app()->loadHelper('admin/import');
-                $aImportResults = XMLImportSurvey('', $copysurveydata, $sNewSurveyName, null, $btranslinksfields);
+                $aImportResults = XMLImportSurvey('', $copysurveydata, $sNewSurveyName, $DestSurveyID, $btranslinksfields);
                 if (isset($aExcludes['conditions'])) {
                     Question::model()->updateAll(array('relevance' => '1'), 'sid=' . $aImportResults['newsid']);
                     QuestionGroup::model()->updateAll(array('grelevance' => '1'), 'sid=' . $aImportResults['newsid']);
@@ -474,45 +478,60 @@ class remotecontrol_handle
      * @access public
      * @param string $sSessionKey Auth credentials
      * @param int $iSurveyID ID of the Survey to be activated
+     * @param array $activationSettings (optional) survey activation settings to change prior to activation, format is array of settingName => settingValue pairs (default: [])
      * @return array in case of success result of the activation
      */
-    public function activate_survey($sSessionKey, $iSurveyID)
+    public function activate_survey($sSessionKey, $iSurveyID, $userActivationSettings = [])
     {
-        if ($this->_checkSessionKey($sSessionKey)) {
-            $iSurveyID = (int) $iSurveyID;
-            $oSurvey = Survey::model()->findByPk($iSurveyID);
-            if (is_null($oSurvey)) {
-                return array('status' => 'Error: Invalid survey ID');
-            }
-            if ($oSurvey->isActive) {
-                return array('status' => 'Error: Survey already active');
-            }
-            // Check consistency for groups and questions
-            Yii::app()->loadHelper('admin/activate');
-            $checkHasGroup = checkHasGroup($iSurveyID);
-            $checkGroup = checkGroup($iSurveyID);
-
-            if ($checkHasGroup !== false || $checkGroup !== false) {
-                return array('status' => 'Error: Survey does not pass consistency check');
-            }
-
-            $surveyActivator = new SurveyActivator($oSurvey);
-
-
-            if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveyactivation', 'update')) {
-                $aActivateResults = $surveyActivator->activate();
-
-                if (isset($aActivateResults['error'])) {
-                    return array('status' => 'Error: ' . $aActivateResults['error']);
-                } else {
-                    return $aActivateResults;
-                }
-            } else {
-                            return array('status' => 'No permission');
-            }
-        } else {
-                    return array('status' => self::INVALID_SESSION_KEY);
+        // check provided session key and setup user session
+        if (!$this->_checkSessionKey($sSessionKey)) {
+            return array('status' => self::INVALID_SESSION_KEY);
         }
+        $iSurveyID = (int) $iSurveyID;
+        // check valid survey id and current user has permission
+        if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveyactivation', 'update')) {
+            return array('status' => 'No permission');
+        }
+        $oSurvey = Survey::model()->findByPk($iSurveyID);
+
+        // check if survey is already activated
+        if ($oSurvey->isActive) {
+            return array('status' => 'Error: Survey already active');
+        }
+        // Check consistency for groups and questions
+        Yii::app()->loadHelper('admin/activate');
+        $checkHasGroup = checkHasGroup($iSurveyID);
+        $checkGroup = checkGroup($iSurveyID);
+        if ($checkHasGroup !== false || $checkGroup !== false) {
+            return array('status' => 'Error: Survey does not pass consistency check');
+        }
+        $surveyActivator = new SurveyActivator($oSurvey);
+        // list of activation related survey settings and allowed values
+        $activationSettingNames = [
+            'anonymized',
+            'datestamp',
+            'ipaddr',
+            'ipanonymize',
+            'refurl',
+            'savetimings',
+        ];
+        // update survey activation settings
+        foreach ($activationSettingNames as $activationSettingName) {
+            // use inherited value
+            $oSurvey->{$activationSettingName} = $oSurvey->oOptions->{$activationSettingName};
+            // override inherited value with user input
+            if (isset($userActivationSettings[$activationSettingName]) && in_array($userActivationSettings[$activationSettingName], ['Y', 'N'])) {
+                $oSurvey->{$activationSettingName} = $userActivationSettings[$activationSettingName];
+            }
+        }
+        // persist changes
+        $oSurvey->save();
+        // attempt to activate the survey
+        $aActivateResults = $surveyActivator->activate();
+        if (isset($aActivateResults['error'])) {
+            return array('status' => 'Error: ' . $aActivateResults['error']);
+        }
+        return $aActivateResults;
     }
 
     /**
@@ -2865,7 +2884,7 @@ class remotecontrol_handle
                     $uid = (int) $uid;
                     $user = User::model()->findByPk($uid);
                     if (!$user) {
-                        return array('status' => 'Invalid user id');
+                        return array('status' => 'Invalid user ID');
                     }
                     $users = array($user);
                 } elseif ($username) {
@@ -2964,17 +2983,17 @@ class remotecontrol_handle
     {
         Yii::app()->loadHelper('admin/token');
         if (!$this->_checkSessionKey($sSessionKey)) {
-                    return array('status' => self::INVALID_SESSION_KEY);
+            return array('status' => self::INVALID_SESSION_KEY);
         }
         $iSurveyID = (int) $iSurveyID;
         $oSurvey = Survey::model()->findByPk($iSurveyID);
         if (!isset($oSurvey)) {
-                    return array('status' => 'Error: Invalid survey ID');
+            return array('status' => 'Error: Invalid survey ID');
         }
 
         if (Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'update')) {
             if (!tableExists("{{tokens_$iSurveyID}}")) {
-                            return array('status' => 'Error: No survey participants table');
+                return array('status' => 'Error: No survey participants table');
             }
 
             $command = new CDbCriteria();
@@ -3004,12 +3023,13 @@ class remotecontrol_handle
             $aResultTokens = Token::model($iSurveyID)->findAll($command);
 
             if (empty($aResultTokens)) {
-                            return array('status' => 'Error: No candidate tokens');
+                return array('status' => 'Error: No candidate tokens');
             }
 
             foreach ($aResultTokens as $key => $oToken) {
                 $oToken->decrypt();
                 //pattern taken from php_filter_validate_email PHP_5_4/ext/filter/logical_filters.c
+                /* @todo : use LimeMailer::validateAddresses */
                 $pattern = '/^(?!(?:(?:\\x22?\\x5C[\\x00-\\x7E]\\x22?)|(?:\\x22?[^\\x5C\\x22]\\x22?)){255,})(?!(?:(?:\\x22?\\x5C[\\x00-\\x7E]\\x22?)|(?:\\x22?[^\\x5C\\x22]\\x22?)){65,}@)(?:(?:[\\x21\\x23-\\x27\\x2A\\x2B\\x2D\\x2F-\\x39\\x3D\\x3F\\x5E-\\x7E]+)|(?:\\x22(?:[\\x01-\\x08\\x0B\\x0C\\x0E-\\x1F\\x21\\x23-\\x5B\\x5D-\\x7F]|(?:\\x5C[\\x00-\\x7F]))*\\x22))(?:\\.(?:(?:[\\x21\\x23-\\x27\\x2A\\x2B\\x2D\\x2F-\\x39\\x3D\\x3F\\x5E-\\x7E]+)|(?:\\x22(?:[\\x01-\\x08\\x0B\\x0C\\x0E-\\x1F\\x21\\x23-\\x5B\\x5D-\\x7F]|(?:\\x5C[\\x00-\\x7F]))*\\x22)))*@(?:(?:(?!.*[^.]{64,})(?:(?:(?:xn--)?[a-z0-9]+(?:-+[a-z0-9]+)*\\.){1,126}){1,}(?:(?:[a-z][a-z0-9]*)|(?:(?:xn--)[a-z0-9]+))(?:-+[a-z0-9]+)*)|(?:\\[(?:(?:IPv6:(?:(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){7})|(?:(?!(?:.*[a-f0-9][:\\]]){7,})(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){0,5})?::(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){0,5})?)))|(?:(?:IPv6:(?:(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){5}:)|(?:(?!(?:.*[a-f0-9]:){5,})(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){0,3})?::(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){0,3}:)?)))?(?:(?:25[0-5])|(?:2[0-4][0-9])|(?:1[0-9]{2})|(?:[1-9]?[0-9]))(?:\\.(?:(?:25[0-5])|(?:2[0-4][0-9])|(?:1[0-9]{2})|(?:[1-9]?[0-9]))){3}))\\]))$/iD';
 
                 //pattern to split in case of multiple emails for a participant

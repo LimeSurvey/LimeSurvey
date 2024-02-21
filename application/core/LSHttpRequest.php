@@ -164,7 +164,7 @@ class LSHttpRequest extends CHttpRequest
             // $validationParams['request'] = 'acs';
 
             foreach ($validationRoutes as $cr) {
-                if (preg_match('#' . $cr . '#', (string) $route)) {
+                if (self::routeMatchesNoCsrfValidationRule($route, $cr)) {
                     Yii::app()->detachEventHandler(
                         'onBeginRequest',
                         array($this, 'validateCsrfToken')
@@ -253,19 +253,37 @@ class LSHttpRequest extends CHttpRequest
     }
 
     /**
-	 * Is REST request
-     *
-     * @todo This method should parse the request URI and determine
-     * if the path matches a REST request. This is not simple because of
-     * the urlFormat differences (get/path) and there not being an each way
-     * to parse the controller and action names.
+     * Returns true if the route matches the given validation rule.
+     * @param string $route the route to be checked
+     * @param string $rule the validation rule
+     * @return bool true if the route matches the given validation rule
+     */
+    public static function routeMatchesNoCsrfValidationRule($route, $rule)
+    {
+        // The rule should either match the whole route, or the start of the route followed by a slash.
+        // For example the routes "rest" (in the case of "index.php/rest?...") or "rest/..." (in the case of
+        // "index.php/rest/...") should be matched by the rule "rest", but the route "admin/menus/sa/restore"
+        // should not.
+        $route = ltrim($route, '/');
+        return preg_match('#^' . $rule . '$|^' . $rule . '/#', (string) $route);
+    }
+
+    /**
+	 * Is this a REST API request
 	 *
 	 * @return boolean
 	 */
     public function isRestRequest()
     {
-        $headers = getallheaders();
-        return isset($headers['Accept'])
-            && strpos($headers['Accept'], 'application/json') !== false;
+        $restRoutePattern = '#^(/)?(index.php/)?rest(/.*)?#';
+        $restPath = preg_match(
+            $restRoutePattern,
+            $this->getRequestUri(),
+        ) === 1;
+        $restRoute = preg_match(
+            $restRoutePattern,
+            $this->getParam('r')
+        ) === 1;
+        return $restPath || $restRoute;
     }
 }

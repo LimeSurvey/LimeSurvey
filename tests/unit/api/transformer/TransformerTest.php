@@ -4,6 +4,7 @@ namespace ls\tests\unit\api;
 
 use ls\tests\TestBaseClass;
 use LimeSurvey\Api\Transformer\Transformer;
+use LimeSurvey\Api\Transformer\TransformerException;
 
 /**
  * @testdox API Transformer
@@ -50,6 +51,25 @@ class TransformerOutputTest extends TestBaseClass
         ]);
 
         $this->assertEquals(['last_name' => 'Foster'], $transformedData);
+    }
+
+    /**
+     * @testdox transform() keeps null values when they're set explicitly
+     */
+    public function testSetNullValuesAreKept()
+    {
+        $transformer = new Transformer;
+        $transformer->setDataMap([
+            'first_name' => true,
+            'age' => true
+        ]);
+        $transformedData = $transformer->transform([
+            'first_name' => null
+        ]);
+
+        $this->assertEquals([
+            'first_name' => null
+        ], $transformedData);
     }
 
     /**
@@ -188,5 +208,145 @@ class TransformerOutputTest extends TestBaseClass
             'age' => 40,
             'name' => ''
         ], $transformedDataA);
+    }
+
+
+    /**
+     * @testdox transform() Casts all elements of a collection.
+     */
+    public function testTransformsAllElementsOfACollection()
+    {
+        $transformerUser = new Transformer;
+        $transformerUser->setDataMap([
+            'first_name' => true,
+            'age' => ['type' => 'int'],
+        ]);
+
+        $transformer = new Transformer;
+        $transformer->setDataMap([
+            'users' => [
+                'collection' => true,
+                'transformer' => $transformerUser
+            ]
+        ]);
+
+        $transformedData = $transformer->transform([
+            'users' => [
+                [
+                    'first_name' => 'Kevin',
+                    'last_name' => 'Foster',
+                    'age' => '40'
+                ],
+                [
+                    'first_name' => 'Bill',
+                    'last_name' => 'Smith',
+                    'age' => '51'
+                ]
+            ]
+        ]);
+
+        $this->assertEquals([
+            'users' => [
+                [
+                    'first_name' => 'Kevin',
+                    'age' => 40
+                ],
+                [
+                    'first_name' => 'Bill',
+                    'age' => 51
+                ]
+            ]
+        ], $transformedData);
+    }
+
+    /**
+     * @testdox transform() throws TransformerException on missing required field
+     */
+    public function testThrowsTransformerExceptionOnMissingRequiredField()
+    {
+        $this->expectException(
+            TransformerException::class
+        );
+
+        $transformer = new Transformer;
+        $transformer->setDataMap([
+            'first_name' => ['required' => true],
+            'age' => true
+        ]);
+        $transformer->transform([
+            'age' => 40
+        ]);
+    }
+
+    /**
+     * @testdox transform() throws TransformerException on missing required by matching operation
+     */
+    public function testThrowsTransformerExceptionOnMissingRequiredFieldByMatchingOperation()
+    {
+        $this->expectException(
+            TransformerException::class
+        );
+
+        $transformer = new Transformer;
+        $transformer->setDataMap([
+            'first_name' => ['required' => 'create'],
+            'age' => true
+        ]);
+        $transformer->transform([
+            'age' => 40
+        ], ['operation' => 'create']);
+    }
+
+
+    /**
+     * @testdox transform() throws TransformerException on missing required by matching operation array
+     */
+    public function testThrowsTransformerExceptionOnMissingRequiredFieldByMatchingOperationArray()
+    {
+        $this->expectException(
+            TransformerException::class
+        );
+
+        $transformer = new Transformer;
+        $transformer->setDataMap([
+            'first_name' => ['required' => ['create', 'update']],
+            'age' => true
+        ]);
+        $transformer->transform([
+            'age' => 40
+        ], ['operation' => 'create']);
+    }
+
+    /**
+     * @testdox validate() returns array of error messages on failure
+     */
+    public function testValidateReturnsArrayOfErrorMessagesOnFailure()
+    {
+        $transformer = new Transformer;
+        $transformer->setDataMap([
+            'first_name' => ['required' => true],
+            'age' => true
+        ]);
+        $errors = $transformer->validate([
+            'age' => 40
+        ]);
+        $this->assertNotEmpty($errors);
+    }
+
+    /**
+     * @testdox validateAll() returns array of error messages on failure
+     */
+    public function testValidateAllReturnsArrayOfErrorMessagesOnFailure()
+    {
+        $transformer = new Transformer;
+        $transformer->setDataMap([
+            'first_name' => ['required' => true],
+            'age' => true
+        ]);
+        $errors = $transformer->validateAll([
+            ['age' => 40],
+            ['age' => 51]
+        ]);
+        $this->assertNotEmpty($errors);
     }
 }

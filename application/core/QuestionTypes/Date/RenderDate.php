@@ -128,7 +128,13 @@ class RenderDate extends QuestionBaseRenderer
     {
         return Yii::app()->twigRenderer->renderQuestion(
             $this->getMainView() . '/dropdown/rows/day',
-            array('dayId' => $this->sSGQA, 'currentday' => $iCurrent),
+            array(
+                'dayId' => $this->sSGQA,
+                'currentday' => $iCurrent,
+                'lang' => [
+                   'Day' => gT("Day")
+                ]
+            ),
             true
         );
     }
@@ -138,7 +144,14 @@ class RenderDate extends QuestionBaseRenderer
         
         return Yii::app()->twigRenderer->renderQuestion(
             $this->getMainView() . '/dropdown/rows/month',
-            array('monthId' => $this->sSGQA, 'currentmonth' => $iCurrent, 'montharray' => $this->getTranslatorData()['montharray']),
+            array(
+                'monthId' => $this->sSGQA,
+                'currentmonth' => $iCurrent,
+                'montharray' => $this->getTranslatorData()['montharray'],
+                'lang' => [
+                   'Month' => gT("Month")
+                ]
+            ),
             true
         );
     }
@@ -185,7 +198,10 @@ class RenderDate extends QuestionBaseRenderer
                 'yearmax' => $yearmax,
                 'reverse' => $reverse,
                 'yearmin' => $yearmin,
-                'step' => $step
+                'step' => $step,
+                'lang' => [
+                   'Year' => gT("Year")
+                ]
             ),
             true
         );
@@ -195,7 +211,14 @@ class RenderDate extends QuestionBaseRenderer
     {
         return Yii::app()->twigRenderer->renderQuestion(
             $this->getMainView() . '/dropdown/rows/hour',
-            array('hourId' => $this->sSGQA, 'currenthour' => $iCurrent, 'datepart' => $datepart),
+            array(
+                'hourId' => $this->sSGQA,
+                'currenthour' => $iCurrent,
+                'datepart' => $datepart,
+                'lang' => [
+                   'Hour' => gT("Hour")
+                ]
+            ),
             true
         );
     }
@@ -208,7 +231,10 @@ class RenderDate extends QuestionBaseRenderer
                 'minuteId' => $this->sSGQA,
                 'currentminute' => $iCurrent,
                 'dropdown_dates_minute_step' => $this->getQuestionAttribute('dropdown_dates_minute_step'),
-                'datepart' => $datepart
+                'datepart' => $datepart,
+                'lang' => [
+                   'Minute' => gT("Minute")
+                ]
             ),
             true
         );
@@ -252,7 +278,7 @@ class RenderDate extends QuestionBaseRenderer
                         'minDate' => $this->minDate,
                         'maxDate' => $this->maxDate,
                         'stepping' => $this->getQuestionAttribute('dropdown_dates_minute_step'),
-                        'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']),
+                        'locale' => convertLStoDateTimePickerLocale(App()->getLanguage()),
                     )
                 ),
                 true
@@ -325,8 +351,7 @@ class RenderDate extends QuestionBaseRenderer
             LSYii_ClientScript::POS_POSTSCRIPT,
             true
         );
-        
-        
+
         // ==> answer
         $answer = Yii::app()->twigRenderer->renderQuestion(
             $this->getMainView() . '/dropdown/answer',
@@ -339,6 +364,14 @@ class RenderDate extends QuestionBaseRenderer
             'checkconditionFunction' => $this->checkconditionFunction . '(this.value, this.name, this.type)',
             'dateformatdetails'      => $this->aDateformatDetails['jsdate'],
             'dateformat'             => $this->aDateformatDetails['jsdate'],
+            /* language part, to be translated (see issue #19294) */
+            'lang'                   => [
+                                        'Day' => gT("Day"),
+                                        'Month' => gT("Month"),
+                                        'Year' => gT("Year"),
+                                        'Hour' => gT("Hour"),
+                                        'Minute' => gT("Minute"),
+                                    ]
             ),
             true
         );

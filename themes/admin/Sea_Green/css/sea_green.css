@@ -11111,10 +11111,6 @@ body {
   flex-direction: column;
 }
 
-.full-page-wrapper {
-  padding-bottom: 70px;
-}
-
 .selector_openSharePanel {
   display: inline-block;
 }
@@ -11302,6 +11298,12 @@ blockquote.float-end {
 
 #surveySettingsForThisGroup {
   column-gap: 20px;
+}
+
+#usermanagement--identity-gridPanel tr.disabled {
+  color: #D3D5DA;
+  pointer-events: auto;
+  cursor: not-allowed;
 }
 
 /**
@@ -12973,7 +12975,7 @@ iframe#dialog {
 /** Arrow between mapped attributes in CPDB */
 .tokenatt-arrow {
   position: absolute;
-  right: -0.5em;
+  right: -1.5em;
 }
 
 /** Arrow between mapped attributes in CPDB when doing CSV import */
@@ -14786,6 +14788,10 @@ html[dir=rtl] th {
   margin-left: 0.75%;
   margin-right: 0.75%;
   margin-bottom: 20px;
+}
+
+#csvattribute {
+  z-index: 1;
 }
 
 #tokenattribute {

@@ -96,6 +96,7 @@ class QuestionGroupService
 
     /**
      * Checks permissions for updating, and returns a specific question group.
+     * Throws an exception if no group can be found.
      * @param int $surveyId
      * @param int $questionGroupId
      * @return QuestionGroup
@@ -336,11 +337,19 @@ class QuestionGroupService
             $l10N = $this->modelQuestionGroupL10n->findByAttributes(
                 ['gid' => $oQuestionGroup->gid, 'language' => $sLanguage]
             );
-            $l10N->setAttributes([
-                'group_name'  => $aL10NBlock['group_name'],
-                'description' => $aL10NBlock['description'],
-            ], false);
-            $storeValid = $storeValid && $l10N->save();
+            if ($l10N) {
+                if (isset($aL10NBlock['group_name'])) {
+                    $l10N->setAttributes([
+                        'group_name'  => $aL10NBlock['group_name']
+                    ], false);
+                }
+                if (isset($aL10NBlock['description'])) {
+                    $l10N->setAttributes([
+                        'description' => $aL10NBlock['description']
+                    ], false);
+                }
+                $storeValid = $storeValid && $l10N->save();
+            }
         }
 
         return $storeValid;
@@ -477,6 +486,7 @@ class QuestionGroupService
     public function newQuestionGroup(int $surveyId, array $aQuestionGroupData = null)
     {
         $survey = $this->getSurvey($surveyId);
+        $this->refreshModels();
         $aQuestionGroupData = array_merge([
             'sid' => $survey->sid,
         ], $aQuestionGroupData);
@@ -529,5 +539,16 @@ class QuestionGroupService
             );
         }
         return $survey;
+    }
+
+    /**
+     * Resets questionGroup model for cases
+     * when multiple groups are created simultaneously
+     * @return void
+     */
+    private function refreshModels()
+    {
+        $this->modelQuestionGroup->unsetAttributes();
+        $this->modelQuestionGroup->setIsNewRecord(true);
     }
 }

@@ -90,7 +90,8 @@ class Answer extends LSActiveRecord
             array(
                 'code',
                 'checkUniqueness',
-                'message' => gT('Answer codes must be unique by question.')
+                'message' => gT('Answer codes must be unique by question.'),
+                'except' => 'saveall'
             ),
             array('sortorder', 'numerical', 'integerOnly' => true, 'allowEmpty' => true),
             array('assessment_value', 'numerical', 'integerOnly' => true, 'allowEmpty' => true),

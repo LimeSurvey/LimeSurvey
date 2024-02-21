@@ -2,9 +2,18 @@
 
 namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
+use LimeSurvey\Api\Transformer\TransformerException;
+use LimeSurvey\Models\Services\Exception\NotFoundException;
+use LimeSurvey\Models\Services\Exception\PermissionDeniedException;
+use LimeSurvey\Models\Services\Exception\PersistErrorException;
+use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\{OpHandlerSurveyTrait,
+    OpHandlerExceptionTrait,
+    OpHandlerValidationTrait
+};
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestion;
 use LimeSurvey\Models\Services\QuestionAggregateService;
-use LimeSurvey\ObjectPatch\{Op\OpInterface,
+use LimeSurvey\ObjectPatch\{
+    Op\OpInterface,
     OpHandler\OpHandlerException,
     OpHandler\OpHandlerInterface,
     OpType\OpTypeUpdate
@@ -13,6 +22,8 @@ use LimeSurvey\ObjectPatch\{Op\OpInterface,
 class OpHandlerQuestionUpdate implements OpHandlerInterface
 {
     use OpHandlerSurveyTrait;
+    use OpHandlerExceptionTrait;
+    use OpHandlerValidationTrait;
 
     protected QuestionAggregateService $questionAggregateService;
     protected TransformerInputQuestion $transformer;
@@ -54,44 +65,51 @@ class OpHandlerQuestionUpdate implements OpHandlerInterface
      *
      * @param OpInterface $op
      * @throws OpHandlerException
+     * @throws TransformerException
+     * @throws NotFoundException
+     * @throws PermissionDeniedException
+     * @throws PersistErrorException
      */
     public function handle(OpInterface $op): void
     {
+        $transformedProps = $this->transformer->transform(
+            $op->getProps(),
+            [
+                'operation' => $op->getType()->getId(),
+                'id'        => $op->getEntityId()
+            ]
+        );
+        if (empty($transformedProps)) {
+            $this->throwNoValuesException($op);
+        }
         $this->questionAggregateService->save(
             $this->getSurveyIdFromContext($op),
-            $this->getPreparedData($op)
+            [
+                'question' => $transformedProps
+            ]
         );
     }
 
     /**
-     * Organizes the patch data into the structure which
-     * is expected by the service.
+     * Checks if patch is valid for this operation.
      * @param OpInterface $op
      * @return array
      */
-    public function getPreparedData(OpInterface $op): array
+    public function validateOperation(OpInterface $op): array
     {
-        $props = $op->getProps();
-        $transformedProps = $this->transformer->transform($props);
+        $validationData = $this->transformer->validate(
+            $op->getProps(),
+            ['operation' => $op->getType()->getId()]
+        );
+        $validationData = $this->validateEntityId(
+            $op,
+            !is_array($validationData) ? [] : $validationData
+        );
 
-        if ($props === null || $transformedProps === null) {
-            throw new OpHandlerException(
-                sprintf(
-                    'No values to update for entity %s',
-                    $op->getEntityType()
-                )
-            );
-        }
-        if (
-            !array_key_exists(
-                'qid',
-                $transformedProps
-            )
-            || $transformedProps['qid'] === null
-        ) {
-            $transformedProps['qid'] = $op->getEntityId();
-        }
-
-        return ['question' => $transformedProps];
+        return $this->getValidationReturn(
+            gT('Could not save question'),
+            $validationData,
+            $op
+        );
     }
 }

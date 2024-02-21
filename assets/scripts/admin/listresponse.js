@@ -63,12 +63,6 @@ function onDocumentReadyListresponse() {
 
 }
 
-$(window).bind("load", function () {
-    onDocumentReadyListresponse();
-    reinstallResponsesFilterDatePicker();
-    initColumnFilter();
-});
-
 $(document).off('pjax:scriptcomplete.listresponse').on('pjax:scriptcomplete.listresponse', onDocumentReadyListresponse);
 $(document).off('bindscroll.listresponse').on('bindscroll.listresponse', reinstallResponsesFilterDatePicker);
 
@@ -109,6 +103,12 @@ function initColumnFilter() {
 
 function afterAjaxResponsesReload() {
     reinstallResponsesFilterDatePicker();
-    bindListItemclick();
     initColumnFilter();
 }
+
+$(window).bind("load", function () {
+    onDocumentReadyListresponse();
+    reinstallResponsesFilterDatePicker();
+    initColumnFilter();
+});
+

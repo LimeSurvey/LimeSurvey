@@ -20,6 +20,8 @@ use LimeSurvey\Models\Services\Exception\{
  */
 class SubQuestionsService
 {
+    use ValidateTrait;
+
     private L10nService $l10nService;
     private Question $modelQuestion;
 
@@ -90,7 +92,7 @@ class SubQuestionsService
      */
     private function storeSubquestions(Question $question, $subquestionsArray, $surveyActive = false)
     {
-        $this->validateSubquestionCodes($subquestionsArray);
+        $this->validateCodes($subquestionsArray);
         $questionOrder = 0;
         $subquestions = [];
         foreach ($subquestionsArray as $subquestionId => $subquestionArray) {
@@ -161,7 +163,10 @@ class SubQuestionsService
         $subquestion->question_order = $questionOrder;
         $questionOrder++;
         if ($scaleId === 0) {
-            $subquestion->relevance = $data['relevance'];
+            $subquestion->relevance = array_key_exists(
+                'relevance',
+                $data
+            ) ? $data['relevance'] : null;
         }
         $subquestion->scale_id = $scaleId;
         $subquestion->setScenario('saveall');
@@ -171,48 +176,17 @@ class SubQuestionsService
         $subquestion->refresh();
         $this->updateSubquestionL10nService(
             $subquestion,
-            $data['subquestionl10n']
+            $data['subquestionl10n'] ?? []
         );
 
         return $subquestion;
     }
 
     /**
-     * Validate subquestion codes.
-     *
-     * @param array $subquestionsArray Data from request.
-     * @return void
-     * @throws PersistErrorException
-     */
-    private function validateSubquestionCodes($subquestionsArray)
-    {
-        // ensure uniqueness of codes
-        $codes = [];
-        foreach ($subquestionsArray as $subquestionArray) {
-            foreach ($subquestionArray as $scaleId => $data) {
-                if (!isset($codes[$scaleId])) {
-                    $codes[$scaleId] = [];
-                }
-                if (
-                    in_array(
-                        $data['code'],
-                        $codes[$scaleId]
-                    )
-                ) {
-                    throw new PersistErrorException(
-                        'Subquestion codes must be unique'
-                    );
-                }
-                $codes[$scaleId][] = $data['code'];
-            }
-        }
-    }
-
-    /**
      * Save subquestion L10nService
      *
      * @param Question $question
-     * @param string $language
+     * @param array $data
      * @return void
      * @throws PersistErrorException
      * @throws BadRequestException
