@@ -348,7 +348,11 @@ class Survey extends LSActiveRecord implements PermissionInterface
         } elseif (isset($this->languagesettings[$this->language])) {
             return $this->languagesettings[$this->language];
         } else {
-            throw new Exception('Survey language not found - looked for ' . App()->language . ' and ' . $this->language);
+            $errorString = 'Survey language not found - looked for ' . App()->language;
+            if ($this->language != App()->language) {
+                $errorString .= ' and ' . $this->language;
+            }
+            throw new Exception($errorString);
         }
     }
 
