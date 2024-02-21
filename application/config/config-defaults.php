@@ -831,5 +831,8 @@ $config['passwordValidationRules'] = array(
 // Enable or disable single page application editor
 $config['editorEnabled'] = false;
 
+// Google Gemini API key:  https://makersuite.google.com/app/apikey
+$config['googleGeminiAPIKey'] = '';
+
 return $config;
 //settings deleted
