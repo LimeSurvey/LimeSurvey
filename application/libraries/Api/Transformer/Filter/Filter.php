@@ -16,7 +16,7 @@ class Filter
     /**
      * the filter method
      */
-    private string $filter;
+    private ?string $filter = null;
 
     /**
      * @var array optional parameters to be passed to the filter method
