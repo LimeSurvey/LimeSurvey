@@ -3723,10 +3723,11 @@ function fixLanguageConsistency($sid, $availlangs = '', $baselang = '')
     $quotedGroups = Yii::app()->db->quoteTableName('{{groups}}');
     $query = "SELECT g.gid, ls.group_name, ls.description FROM $quotedGroups g JOIN {{group_l10ns}} ls ON ls.gid=g.gid WHERE sid={$sid} AND language='{$baselang}'  ";
     $result = Yii::app()->db->createCommand($query)->query();
+    $origGroups = $result->readAll();
     foreach ($languagesToCheck as $lang) {
         $query = "SELECT g.gid FROM $quotedGroups g JOIN {{group_l10ns}} ls ON ls.gid=g.gid WHERE sid={$sid} AND language='{$lang}'  ";
         $gresult = Yii::app()->db->createCommand($query)->queryColumn();
-        foreach ($result->readAll() as $group) {
+        foreach ($origGroups as $group) {
             if (!in_array($group['gid'], $gresult)) {
                 $data = array(
                 'gid' => $group['gid'],
@@ -3741,11 +3742,12 @@ function fixLanguageConsistency($sid, $availlangs = '', $baselang = '')
 
     $query = "SELECT q.qid, ls.question, ls.help FROM {{questions}} q JOIN {{question_l10ns}} ls ON ls.qid=q.qid WHERE sid={$sid} AND language='{$baselang}'";
     $result = Yii::app()->db->createCommand($query)->query();
-    if (count($result) > 0) {
+    $origQuestions = $result->readAll();
+    if (count($origQuestions) > 0) {
         foreach ($languagesToCheck as $lang) {
             $query = "SELECT q.qid FROM {{questions}} q JOIN {{question_l10ns}} ls ON ls.qid=q.qid WHERE sid={$sid} AND language='{$lang}'";
             $gresult = Yii::app()->db->createCommand($query)->queryColumn();
-            foreach ($result->readAll() as $question) {
+            foreach ($origQuestions as $question) {
                 if (!in_array($question['qid'], $gresult)) {
                     $data = array(
                     'qid' => $question['qid'],
@@ -3764,13 +3766,14 @@ function fixLanguageConsistency($sid, $availlangs = '', $baselang = '')
     JOIN  {{questions}} q on a.qid=q.qid
     WHERE language='{$baselang}' and q.sid={$sid}";
     $baseAnswerResult = Yii::app()->db->createCommand($query)->query();
+    $origAnswers = $baseAnswerResult->readAll();
     foreach ($languagesToCheck as $lang) {
         $query = "SELECT a.aid FROM {{answers}} a
         JOIN {{answer_l10ns}} ls ON ls.aid=a.aid
         JOIN  {{questions}} q on a.qid=q.qid
         WHERE language='{$lang}' and q.sid={$sid}";
         $gresult = Yii::app()->db->createCommand($query)->queryColumn();
-        foreach ($baseAnswerResult->readAll() as $answer) {
+        foreach ($origAnswers as $answer) {
             if (!in_array($answer['aid'], $gresult)) {
                 $data = array(
                 'aid' => $answer['aid'],
@@ -3785,10 +3788,11 @@ function fixLanguageConsistency($sid, $availlangs = '', $baselang = '')
     switchMSSQLIdentityInsert('assessments', true);
     $query = "SELECT id, sid, scope, gid, name, minimum, maximum, message FROM {{assessments}} WHERE sid='{$sid}' AND language='{$baselang}'";
     $result = Yii::app()->db->createCommand($query)->query();
+    $origAssessments = $result->readAll();
     foreach ($languagesToCheck as $lang) {
         $query = "SELECT id FROM {{assessments}} WHERE sid='{$sid}' AND language='{$lang}'";
         $gresult = Yii::app()->db->createCommand($query)->queryColumn();
-        foreach ($result->readAll() as $assessment) {
+        foreach ($origAssessments as $assessment) {
             if (!in_array($assessment['id'], $gresult)) {
                 $data = array(
                 'id' => $assessment['id'],
@@ -3812,10 +3816,11 @@ function fixLanguageConsistency($sid, $availlangs = '', $baselang = '')
               FROM {{quota_languagesettings}} join {{quota}} q on quotals_quota_id=q.id 
               WHERE q.sid='{$sid}' AND quotals_language='{$baselang}'";
     $result = Yii::app()->db->createCommand($query)->query();
+    $origQuotas = $result->readAll();
     foreach ($languagesToCheck as $lang) {
         $query = "SELECT quotals_quota_id FROM {{quota_languagesettings}} join {{quota}} q on quotals_quota_id=q.id WHERE q.sid='{$sid}' AND quotals_language='{$lang}'";
         $qresult = Yii::app()->db->createCommand($query)->queryColumn();
-        foreach ($result->readAll() as $qls) {
+        foreach ($origQuotas as $qls) {
             if (!in_array($qls['quotals_quota_id'], $qresult)) {
                 $data = array(
                 'quotals_quota_id' => $qls['quotals_quota_id'],
