@@ -28,7 +28,7 @@ class Filter
      */
     public function __construct($config)
     {
-        if (is_array($config)) {
+        if (is_array($config) && !empty($config)) {
             $this->filter = array_key_first($config);
             $this->filterParams = $config[$this->filter];
         } else {
