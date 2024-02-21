@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2024-02-21 20:23:51+00:00\n"
+"POT-Creation-Date: 2024-02-21 20:31:25+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -3785,7 +3785,7 @@ msgid "You don't have permission to edit user %s."
 msgstr ""
 
 #: application/controllers/UserManagementController.php:943
-msgid "You can not use import to edit your account."
+msgid "You can't use the import function to update your own account."
 msgstr ""
 
 #: application/controllers/UserManagementController.php:989
