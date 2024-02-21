@@ -10,6 +10,7 @@
 /** @var array $htmlOptions */
 /** @var String $icon */
 /** @var String $type */
+/** @var boolean $isFilled */
 
 echo CHtml::openTag($tag, $htmlOptions);
 if ($showIcon && $header == '') {
@@ -34,7 +35,7 @@ if ($inErrorMode) {
 if ($showCloseButton) {
     //change closing 'x' when type has a dark background color
     $addColorWhite = '';
-    if (in_array($type, [ 'info', 'dark'])) {
+    if (in_array($type, [ 'info', 'dark']) && $isFilled) {
         //closing x must be white
         $addColorWhite = 'btn-close-white';
     }

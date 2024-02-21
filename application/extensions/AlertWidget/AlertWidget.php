@@ -80,6 +80,7 @@ class AlertWidget extends CWidget
                 'htmlOptions' => $this->htmlOptions,
                 'icon' => $this->icon,
                 'type' => $this->type,
+                'isFilled' => $this->isFilled
             ]);
         }
     }

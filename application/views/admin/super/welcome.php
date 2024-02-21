@@ -36,69 +36,6 @@ gT('Themes');
         </div>
     <?php endif; ?>
 
-    <?php
-    //todo: this is just a test, take it out before merge to master!!!!  ******
-
-    $this->widget('ext.AlertWidget.AlertWidget', [
-    'text' => gt('Info alert: ') . '<a class="alert-link" href="#"> someLink</a>',
-    'type' => 'info',
-    'showCloseButton' => true,
-        'htmlOptions' => ['class' => 'container']
-    ]);
-
-    $this->widget('ext.AlertWidget.AlertWidget', [
-        'text' => gt('Success alert: ') . '<a class="alert-link" href="#"> someLink</a>',
-        'type' => 'success',
-        'showCloseButton' => true,
-        'htmlOptions' => ['class' => 'container']
-    ]);
-
-    $this->widget('ext.AlertWidget.AlertWidget', [
-        'text' => gt('Primary alert: ') . '<a class="alert-link" href="#"> someLink</a>',
-        'type' => 'primary',
-        'showCloseButton' => true,
-        'htmlOptions' => ['class' => 'container']
-    ]);
-
-    $this->widget('ext.AlertWidget.AlertWidget', [
-        'text' => gt('Secondary alert: ') . '<a class="alert-link" href="#"> someLink</a>',
-        'type' => 'secondary',
-        'showCloseButton' => true,
-        'htmlOptions' => ['class' => 'container']
-    ]);
-
-    $this->widget('ext.AlertWidget.AlertWidget', [
-        'text' => gt('Warning alert: ') . '<a class="alert-link" href="#"> someLink</a>',
-        'type' => 'warning',
-        'showCloseButton' => true,
-        'htmlOptions' => ['class' => 'container']
-    ]);
-
-    $this->widget('ext.AlertWidget.AlertWidget', [
-        'text' => gt('Danger alert: '). '<a class="alert-link" href="#"> someLink</a>',
-        'type' => 'danger',
-       'showCloseButton' => true,
-        'htmlOptions' => ['class' => 'container']
-        ]);
-
-    $this->widget('ext.AlertWidget.AlertWidget', [
-        'text' => gt('Light alert: '). '<a class="alert-link" href="#"> someLink</a>',
-        'type' => 'light',
-        'showCloseButton' => true,
-        'htmlOptions' => ['class' => 'container']
-    ]);
-
-    $this->widget('ext.AlertWidget.AlertWidget', [
-        'text' => gt('Dark alert: '). '<a class="alert-link" href="#"> someLink</a>',
-        'type' => 'dark',
-        'showCloseButton' => true,
-        'htmlOptions' => ['class' => 'container']
-    ]);
-
-    //todo: TEST ENDE *********************************************************
-
-    ?>
-
     <!-- Message when first start -->
     <?php if ($countSurveyList == 0  && Permission::model()->hasGlobalPermission('surveys', 'create')) : ?>
         <script type="text/javascript">
