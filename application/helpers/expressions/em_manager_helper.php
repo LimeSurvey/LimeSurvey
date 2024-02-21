@@ -8272,39 +8272,24 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
 #            {
 #                return $aStaticQuestionAttributesForEM[$surveyid][0][$lang][$qid];
 #            }
+
         if ($qid) {
-            $oQids = Question::model()->findAll(
-                [
-                    'select'    => 'qid',
-                    'group'     => 'qid',
-                    'distinct'  => true,
-                    'condition' => "qid=:qid and parent_qid=0",
-                    'params'    => [':qid' => $qid]
-                ]
-            );
+            $oQids = Yii::app()->db->createCommand(
+                "SELECT qid FROM {{questions}} where qid = " . intval($qid) . " and parent_qid = 0"
+            )->query()->readAll();
         } elseif ($surveyid) {
-            $oQids = Question::model()->findAll(
-                [
-                    'select'    => 'qid',
-                    'group'     => 'qid',
-                    'distinct'  => true,
-                    'condition' => "sid=:sid and parent_qid=0",
-                    'params'    => [':sid' => $surveyid]
-                ]
-            );
+            $oQids = Yii::app()->db->createCommand(
+                "SELECT qid FROM {{questions}} where sid = " . intval($surveyid) . " and parent_qid = 0"
+            )->query()->readAll();
         } else {
-            $oQids = Question::model()->findAll(
-                [
-                    'select'    => 'qid',
-                    'group'     => 'qid',
-                    'distinct'  => true,
-                    'condition' => "parent_qid=0",
-                ]
-            );
+            $oQids = Yii::app()->db->createCommand(
+                "SELECT qid FROM {{questions}} where parent_qid = 0"
+            )->query()->readAll();
         }
         $aQuestionAttributesForEM = [];
         foreach ($oQids as $oQid) {
-            $aAttributesValues = QuestionAttribute::model()->getQuestionAttributes($oQid->qid, $lang);
+            $qid = $oQid["qid"];
+            $aAttributesValues = QuestionAttribute::model()->getQuestionAttributes($qid, $lang);
             // Change array lang to value
             foreach ($aAttributesValues as &$aAttributeValue) {
                 if (is_array($aAttributeValue)) {
@@ -8316,7 +8301,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     }
                 }
             }
-            $aQuestionAttributesForEM[$oQid->qid] = $aAttributesValues;
+            $aQuestionAttributesForEM[$qid] = $aAttributesValues;
         }
         EmCacheHelper::set($cacheKey, $aQuestionAttributesForEM);
         return $aQuestionAttributesForEM;
