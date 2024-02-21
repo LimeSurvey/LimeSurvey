@@ -34,6 +34,24 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.4.7 (build 240219) to 6.4.8 (build 240221) February 21, 2024
+-Fixed issue: Using URL prefill you could post longer strings than allowed to a List type question resulting in a DB error (Carsten Schmitz)
+-Fixed issue: Tab-separated survey structure could not be exported if there is only one default value in the survey (Carsten Schmitz)
+-Fixed issue: Quick translation not working if server is using IPv6 (Carsten Schmitz)
+-Fixed issue: Multilingual surveys not properly saved (Carsten Schmitz)
+-Fixed issue: Improved performance of survey logic file (#3747) (lajosarpad)
+-Fixed issue #19087: [security] Account takeover through Import User function (#3735) (Denis Chenu)
+#Updated translation: Slovak by jelen1, PR_SOZA
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Portuguese (Brazil) by c_schmitz, foguinho.peruca
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Japanese by nomoto
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
 Changes from 6.4.6 (build 240212) to 6.4.7 (build 240219) February 19, 2024
 -Fixed issue: Untranslated string in optin/optout screen (Carsten Schmitz)
 -Fixed issue: Survey language consistency is checked even though only one language exists (Carsten Schmitz)
