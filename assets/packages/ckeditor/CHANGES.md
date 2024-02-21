@@ -1,5 +1,28 @@
-CKEditor 4 Changelog
-====================
+⚠️️️ **CKEditor 4 (the open source edition) is no longer maintained.** ⚠️
+
+If you would like to keep access to future CKEditor 4 security patches, check the [Extended Support Model](https://ckeditor.com/ckeditor-4-support/), which guarantees **security updates and critical bug fixes until December 2026**. Alternatively, [upgrade to CKEditor 5](https://ckeditor.com/docs/ckeditor5/latest/updating/ckeditor4/migration-from-ckeditor-4.html).
+
+## CKEditor 4.22.0 / 4.22.1
+
+⚠️ This is the last open source release of CKEditor 4. As announced in 2018, CKEditor 4 has reached its End of Life in June 2023.
+
+
+New Features:
+
+* [#5316](https://github.com/ckeditor/ckeditor4/issues/5316): Added vertical margins support for list elements in the [Paste from Word](https://ckeditor.com/cke4/addon/pastefromword) plugin.
+* [#5410](https://github.com/ckeditor/ckeditor4/issues/5410): Added the ability to indicate the language of styles in the [Styles Combo](https://ckeditor.com/cke4/addon/stylescombo) plugin via the [`config.styleSet`](https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_config.html#cfg-stylesSet) configuration option.
+* [#5510](https://github.com/ckeditor/ckeditor4/issues/5510): Added notification system to the editor informing users that the editor version is up-to-date and secure. See [`config.versionCheck`](https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_config.html#cfg-versionCheck) configuration option to learn more.
+
+Fixed Issues:
+
+* [#5437](https://github.com/ckeditor/ckeditor4/issues/5437): Fixed: Incorrect indication of selected items in combo boxes. The selected item was unmarked upon each opening of the combo box.
+* [#5495](https://github.com/ckeditor/ckeditor4/issues/5495): Fixed: Insufficient color ratio for links inside [Notifications](https://ckeditor.com/cke4/addon/notification).
+
+Other Changes:
+
+* [#5412](https://github.com/ckeditor/ckeditor4/issues/5412): Prevent using `document.domain` in Firefox in the [Preview](https://ckeditor.com/cke4/addon/preview) plugin.
+
+Note: CKEditor 4.22.1 has been released immediately after 4.22.0 to fix the README issues on [npm](https://www.npmjs.com/) and contains no changes vs 4.22.0.
 
 ## CKEditor 4.21.0
 

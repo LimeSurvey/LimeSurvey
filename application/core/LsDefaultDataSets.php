@@ -2810,7 +2810,8 @@ class LsDefaultDataSets
             gT("Select font:"),
             gT("Select variation:"),
             gT("Fruity fonts"),
-            gT("Fruity variations")
+            gT("Fruity variations"),
+            gT("I confirm") // Used in optin/optout and not picked up due to bug #19411
         ];
     }
 

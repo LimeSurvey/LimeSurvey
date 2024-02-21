@@ -206,8 +206,8 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['zh-Hans']['momentjs'] = 'zh-cn';
 
     // Creole (Haiti)
-    $supportedLanguages['hat']['description'] = gT('Creole');
-    $supportedLanguages['hat']['nativedescription'] = 'Kreyòl';
+    $supportedLanguages['hat']['description'] = gT('Creole (Haitian)');
+    $supportedLanguages['hat']['nativedescription'] = 'Kreyòl ayisyen';
     $supportedLanguages['hat']['rtl'] = false;
     $supportedLanguages['hat']['dateformat'] = 6;
     $supportedLanguages['hat']['radixpoint'] = 1;
@@ -403,6 +403,13 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['kal']['radixpoint'] = 1;
     $supportedLanguages['kal']['momentjs'] = null;
 
+    // Hausa
+    $supportedLanguages['ha']['description'] = gT('Hausa');
+    $supportedLanguages['ha']['nativedescription'] = 'Hausa';
+    $supportedLanguages['ha']['rtl'] = false;
+    $supportedLanguages['ha']['dateformat'] = 1;
+    $supportedLanguages['ha']['radixpoint'] = 1;
+    
     // Hebrew
     $supportedLanguages['he']['description'] = gT('Hebrew');
     $supportedLanguages['he']['nativedescription'] = ' &#1506;&#1489;&#1512;&#1497;&#1514;';
