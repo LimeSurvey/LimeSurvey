@@ -835,8 +835,16 @@ class QuestionTheme extends LSActiveRecord
      */
     public static function getQuestionXMLPathForBaseType($type)
     {
-        /** @var QuestionTheme|null */
-        $questionTheme = QuestionTheme::model()->findByAttributes([], 'question_type = :question_type AND extends = :extends', ['question_type' => $type, 'extends' => '']);
+        static $questionThemeCache = [];
+        if (!array_key_exists($type, $questionThemeCache)) {
+            $questionThemeCache[$type] = self::model()->findByAttributes(
+                [],
+                'question_type = :question_type AND extends = :extends',
+                ['question_type' => $type, 'extends' => '']
+            );
+        }
+        $questionTheme = $questionThemeCache[$type];
+
         if (empty($questionTheme)) {
             throw new \CException("The Database definition for Questiontype: " . $type . " is missing");
         }
@@ -1017,6 +1025,7 @@ class QuestionTheme extends LSActiveRecord
         if (\PHP_VERSION_ID < 80000) {
             libxml_disable_entity_loader(false);
         }
+
         $questionTheme = QuestionTheme::model()->findByAttributes([], 'name = :name AND extends = :extends', ['name' => $sQuestionThemeName, 'extends' => $type]);
         if ($questionTheme !== null) {
             $xml_config = simplexml_load_file($questionTheme->getXmlPath() . '/config.xml');

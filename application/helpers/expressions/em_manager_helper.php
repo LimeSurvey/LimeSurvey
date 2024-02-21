@@ -1085,6 +1085,7 @@ class LimeExpressionManager
      */
     public static function UnitTestConvertConditionsToRelevance($surveyId = null, $qid = null)
     {
+        LimeExpressionManager::SetDirtyFlag();
         $LEM =& LimeExpressionManager::singleton();
         return $LEM->ConvertConditionsToRelevance($surveyId, $qid);
     }
@@ -3271,7 +3272,7 @@ class LimeExpressionManager
      * @return boolean|null - true if $fieldmap had been re-created, so ExpressionManager variables need to be re-set
      * @todo Keep method as-is but factor out content to new class; add unit tests for class
      */
-    public function setVariableAndTokenMappingsForExpressionManager($surveyid, $forceRefresh = false, $anonymized = false)
+    public function setVariableAndTokenMappingsForExpressionManager($surveyid, $forceRefresh = false, $anonymized = false, $gid = 0)
     {
         if (isset($_SESSION['LEMforceRefresh'])) {
             unset($_SESSION['LEMforceRefresh']);
@@ -3365,7 +3366,7 @@ class LimeExpressionManager
             $this->groupId2groupSeq[$aGroupInfo['gid']] = $aGroupInfo['group_order'];
         }
 
-        $qattr = $this->getQuestionAttributesForEM($surveyid, 0, $_SESSION['LEMlang']);
+        $qattr = $this->getQuestionAttributesForEM($surveyid, 0, $_SESSION['LEMlang'], $gid);
 
         $this->qattr = $qattr;
 
@@ -6777,7 +6778,7 @@ class LimeExpressionManager
         if (!is_null($gseq)) {
             $LEM->currentGroupSeq = $gseq;
             if (!is_null($surveyid)) {
-                $LEM->setVariableAndTokenMappingsForExpressionManager($surveyid, $forceRefresh, $anonymized);
+                $LEM->setVariableAndTokenMappingsForExpressionManager($surveyid, $forceRefresh, $anonymized, $LEM->gseq2info[$gseq]['gid']);
                 if ($gseq > $LEM->maxGroupSeq) {
                     $LEM->maxGroupSeq = $gseq;
                 }
@@ -8238,16 +8239,14 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
      * @param int|null $surveyid
      * @param int|null $qid
      * @param string|null $lang
+     * @param int $gid
+     *
      * @return array
+     * @throws CException
+     * @throws EmCacheException
      */
-    private function getQuestionAttributesForEM($surveyid = 0, $qid = 0, $lang = '')
+    private function getQuestionAttributesForEM($surveyid = 0, $qid = 0, $lang = '', $gid = 0)
     {
-        $cacheKey = 'getQuestionAttributesForEM_' . $surveyid . '_' . $qid . '_' . $lang;
-        $value = EmCacheHelper::get($cacheKey);
-        if ($value !== false) {
-            return $value;
-        }
-
         // Fix old param (NULL)
         if (is_null($surveyid)) {
             $surveyid = 0;
@@ -8258,6 +8257,15 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
         if (is_null($lang)) {
             $lang = '';
         }
+        if (is_null($gid) && $gid < 0) {
+            $gid = 0;
+        }
+        $cacheKey = 'getQuestionAttributesForEM_' . $surveyid . '_' . $gid . '_' . $qid . '_' . $lang;
+        $value = EmCacheHelper::get($cacheKey);
+        if ($value !== false) {
+            return $value;
+        }
+
         // Fill $lang if possible
         if (!$lang && isset($_SESSION['LEMlang'])) {
             $lang = $_SESSION['LEMlang'];
@@ -8282,14 +8290,24 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     'params'    => [':qid' => $qid]
                 ]
             );
+        } elseif ($gid !== 0 && $surveyid) {
+            $oQids = Question::model()->findAll(
+                [
+                    'select' => 'qid',
+                    'group' => 'qid',
+                    'distinct' => true,
+                    'condition' => "sid=:sid and parent_qid=0 and gid=:gid",
+                    'params' => [':sid' => $surveyid, ':gid' => $gid]
+                ]
+            );
         } elseif ($surveyid) {
             $oQids = Question::model()->findAll(
                 [
-                    'select'    => 'qid',
-                    'group'     => 'qid',
-                    'distinct'  => true,
+                    'select' => 'qid',
+                    'group' => 'qid',
+                    'distinct' => true,
                     'condition' => "sid=:sid and parent_qid=0",
-                    'params'    => [':sid' => $surveyid]
+                    'params' => [':sid' => $surveyid]
                 ]
             );
         } else {

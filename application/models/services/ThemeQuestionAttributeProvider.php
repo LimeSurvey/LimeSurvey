@@ -2,6 +2,8 @@
 
 namespace LimeSurvey\Models\Services;
 
+use QuestionTheme;
+
 /**
  * Provides question attribute definitions from question themes
  */
