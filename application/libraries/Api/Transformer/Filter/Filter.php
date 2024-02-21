@@ -31,7 +31,7 @@ class Filter
         if (is_array($config) && !empty($config)) {
             $this->filter = array_key_first($config);
             $this->filterParams = $config[$this->filter];
-        } else {
+        } elseif (is_string($config) && !empty($config)) {
             $this->filter = $config;
         }
     }
