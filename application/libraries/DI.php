@@ -45,7 +45,6 @@ class DI
         $builder = new ContainerBuilder();
         $builder->addDefinitions([
             LSYii_Application::class => function () {
-                //exit('C');
                 return App();
             },
             PluginManager::class => function () {
@@ -60,31 +59,5 @@ class DI
         ]);
 
         return $builder->build();
-    }
-
-    private static function getActiveRecordDefinitions()
-    {
-        $modelClasses = [
-            \Answer::class,
-            \AnswerL10n::class,
-            \Survey::class,
-            \SurveyLanguageSetting::class,
-            \Question::class,
-            \QuestionAttribute::class,
-            \QuestionCreate::class,
-            \QuestionGroup::class,
-            \QuestionL10n::class,
-            \User::class,
-            \UserGroup::class,
-        ];
-        $defintions = [];
-        foreach ($modelClasses as $modelClass) {
-            $defintions[$modelClass] = \DI\factory(
-                function () use ($modelClass) {
-                    return $modelClass::model();
-                }
-            );
-        }
-        return $defintions;
     }
 }
