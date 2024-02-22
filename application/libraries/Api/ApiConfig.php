@@ -18,7 +18,7 @@ class ApiConfig
     /**
      * Get entire config array
      */
-    public function getConfig()
+    public function &getConfig()
     {
         return $this->config;
     }
@@ -26,9 +26,9 @@ class ApiConfig
     /**
      * Set entire config array
      */
-    public function setConfig($config)
+    public function setConfig(&$config)
     {
-        $this->config = $config;
+        $this->config = &$config;
     }
 
     /**
