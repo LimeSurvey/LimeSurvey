@@ -5,7 +5,7 @@
  * TODO : make a recursive function, taking any number of box in the database, calculating how much rows are needed.
  */
 
-/** @var String $bannerHtml */
+/** @var String $belowLogoHtml */
 
 // DO NOT REMOVE This is for automated testing to validate we see that page
 echo viewHelper::getViewTestTag('index');
@@ -40,7 +40,7 @@ gT('Themes');
 
     <?php
         //show extra banner after logo
-        echo $bannerHtml;
+        echo $belowLogoHtml;
     ?>
 
     <!-- Message when first start -->
