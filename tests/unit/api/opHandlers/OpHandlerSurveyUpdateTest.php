@@ -106,6 +106,18 @@ class OpHandlerSurveyUpdateTest extends TestBaseClass
     /**
      * @return array
      */
+    private function getPropsInvalid()
+    {
+        return [
+            'expires' => '2020-01-01 00:00',
+            'ipanonymize' => true,
+            'ownerId'  => 'OWNER',
+        ];
+    }
+
+    /**
+     * @return array
+     */
     private function getPropsNoValues()
     {
         return [
