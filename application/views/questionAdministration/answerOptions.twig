@@ -38,7 +38,11 @@
 
                             {% if assessmentvisible %}
                                 <th class='col-lg-1'>
-                                    {{ gT("Assessment value") }}
+                                    {{ gT("Assessment value") }} <i
+                class="ri-information-fill"
+                data-bs-toggle="tooltip"
+                title="{{ gT("A positive or negative integer number as assement value if this option is selected") }}"
+            > </i>     
                                 </th>
                             {% else %}
                                 <th style='display:none;'>

@@ -17970,7 +17970,7 @@
 	    return window.event ? window.event.keyCode : e ? e.which : null;
 	  },
 	  goodchars: (e, goods) => {
-	    const key = getkey(e);
+	    const key = globalWindowMethods.getkey(e);
 	    if (key == null) return true;
 
 	    // get character
