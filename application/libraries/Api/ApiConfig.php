@@ -3,13 +3,19 @@
 namespace LimeSurvey\Api;
 
 /**
- * RestConfig
+ * ApiConfig
  *
  */
 class ApiConfig
 {
+    /** @var array */
     private $config = [];
 
+    /**
+     * ApiConfig
+     *
+     * @param array $config
+     */
     public function __construct(&$config = [])
     {
         $this->config = &$config;
@@ -17,6 +23,8 @@ class ApiConfig
 
     /**
      * Get entire config array
+     *
+     * @return array
      */
     public function &getConfig()
     {
@@ -25,6 +33,9 @@ class ApiConfig
 
     /**
      * Set entire config array
+     *
+     * @param array $config
+     * @return void
      */
     public function setConfig(&$config)
     {
@@ -33,6 +44,10 @@ class ApiConfig
 
     /**
      * Set config by path
+     *
+     * @param string $path
+     * @param mixed $value
+     * @return void
      */
     public function setPath($path, $value)
     {
@@ -47,6 +62,10 @@ class ApiConfig
 
     /**
      * Get config by path
+     *
+     * @param string $path
+     * @param boolean $createParents
+     * @return array|null
      */
     public function &getPath($path, $createParents = false)
     {
@@ -60,6 +79,11 @@ class ApiConfig
 
     /**
      * Path Reducer
+     *
+     * @param array $pathElements
+     * @param array $initData
+     * @param boolean $createParents
+     * @return array|null
      */
     private function &pathReducer($pathElements, &$initData, $createParents = false)
     {
@@ -68,18 +92,16 @@ class ApiConfig
             return $initData;
         }
         $carry = &$initData;
-        if (is_array($pathElements) && !empty($pathElements)) {
-            foreach ($pathElements as $pathElement) {
-                if (!isset($carry[$pathElement])) {
-                    if ($createParents) {
-                        $carry[$pathElement] = [];
-                    } else {
-                        $carry = $nullRef;
-                        break;
-                    }
+        foreach ($pathElements as $pathElement) {
+            if (!isset($carry[$pathElement])) {
+                if ($createParents) {
+                    $carry[$pathElement] = [];
+                } else {
+                    $carry = $nullRef;
+                    break;
                 }
-                $carry = &$carry[$pathElement];
             }
+            $carry = &$carry[$pathElement];
         }
         return $carry;
     }
