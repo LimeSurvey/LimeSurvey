@@ -8275,9 +8275,6 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
         if ($qid) {
             $oQids = Question::model()->findAll(
                 [
-                    'select'    => 'qid',
-                    'group'     => 'qid',
-                    'distinct'  => true,
                     'condition' => "qid=:qid and parent_qid=0",
                     'params'    => [':qid' => $qid]
                 ]
@@ -8285,9 +8282,6 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
         } elseif ($surveyid) {
             $oQids = Question::model()->findAll(
                 [
-                    'select'    => 'qid',
-                    'group'     => 'qid',
-                    'distinct'  => true,
                     'condition' => "sid=:sid and parent_qid=0",
                     'params'    => [':sid' => $surveyid]
                 ]
@@ -8295,9 +8289,6 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
         } else {
             $oQids = Question::model()->findAll(
                 [
-                    'select'    => 'qid',
-                    'group'     => 'qid',
-                    'distinct'  => true,
                     'condition' => "parent_qid=0",
                 ]
             );
