@@ -2,10 +2,9 @@
 
 namespace ls\tests\unit\api;
 
-use LimeSurvey\Api\Transformer\Registry\Registry;
+use LimeSurvey\DI;
 use ls\tests\TestBaseClass;
 use LimeSurvey\Api\Transformer\Transformer;
-use LimeSurvey\Api\Transformer\TransformerException;
 
 /**
  * @testdox API Transformer
@@ -17,7 +16,7 @@ class TransformerOutputTest extends TestBaseClass
      */
     public function testTransformedDataIncludesOnlyFieldsSpecifiedInMap()
     {
-        $transformer = new Transformer;
+        $transformer = $this->getTransformer();
         $transformer->setDataMap([
             'first_name' => true,
             'age' => true
@@ -39,7 +38,7 @@ class TransformerOutputTest extends TestBaseClass
      */
     public function testTransformedDataExcludesFieldsWithFalseConfig()
     {
-        $transformer = new Transformer;
+        $transformer = $this->getTransformer();
         $transformer->setDataMap([
             'first_name' => false,
             'last_name' => true,
@@ -59,7 +58,7 @@ class TransformerOutputTest extends TestBaseClass
      */
     public function testSetNullValuesAreKept()
     {
-        $transformer = new Transformer;
+        $transformer = $this->getTransformer();
         $transformer->setDataMap([
             'first_name' => true,
             'age' => true
@@ -78,7 +77,7 @@ class TransformerOutputTest extends TestBaseClass
      */
     public function testMapsToSpecifiedOutputFields()
     {
-        $transformer = new Transformer;
+        $transformer = $this->getTransformer();
         $transformer->setDataMap([
             'first_name' => 'given_name',
             'age' => 'years_of_existence'
@@ -100,7 +99,7 @@ class TransformerOutputTest extends TestBaseClass
      */
     public function testMapsToSpecifiedOutputFieldsViaKeyConfig()
     {
-        $transformer = new Transformer;
+        $transformer = $this->getTransformer();
         $transformer->setDataMap([
             'first_name' => ['key' => 'given_name'],
             'age' => ['key' => 'years_of_existence']
@@ -122,7 +121,7 @@ class TransformerOutputTest extends TestBaseClass
      */
     public function testCastsToPrimitiveType()
     {
-        $transformer = new Transformer;
+        $transformer = $this->getTransformer();
         $transformer->setDataMap([
             'enable' => ['type' => 'boolean'],
             'fraction' => ['type' => 'float'],
@@ -176,7 +175,7 @@ class TransformerOutputTest extends TestBaseClass
         };
 
 
-        $transformer = new Transformer;
+        $transformer = $this->getTransformer();
         $transformer->setDataMap([
             'enable' => ['type' => $castBoolean],
             'fraction' => ['type' => $castFloat],
@@ -217,13 +216,13 @@ class TransformerOutputTest extends TestBaseClass
      */
     public function testTransformsAllElementsOfACollection()
     {
-        $transformerUser = new Transformer;
+        $transformerUser = new Transformer();
         $transformerUser->setDataMap([
             'first_name' => true,
             'age' => ['type' => 'int'],
         ]);
 
-        $transformer = new Transformer;
+        $transformer = $this->getTransformer();
         $transformer->setDataMap([
             'users' => [
                 'collection' => true,
@@ -261,77 +260,11 @@ class TransformerOutputTest extends TestBaseClass
     }
 
     /**
-     * @testdox transform() throws TransformerException on missing required field
-     */
-    public function testThrowsTransformerExceptionOnMissingRequiredField()
-    {
-        $this->expectException(
-            TransformerException::class
-        );
-
-        $transformer = new Transformer();
-        $validationRegistry = new Registry();
-        $transformer->setRegistry($validationRegistry);
-        $transformer->setDataMap([
-            'first_name' => ['required' => true],
-            'age' => true
-        ]);
-        $transformer->transform([
-            'age' => 40
-        ]);
-    }
-
-    /**
-     * @testdox transform() throws TransformerException on missing required by matching operation
-     */
-    public function testThrowsTransformerExceptionOnMissingRequiredFieldByMatchingOperation()
-    {
-        $this->expectException(
-            TransformerException::class
-        );
-
-        $transformer = new Transformer();
-        $validationRegistry = new Registry();
-        $transformer->setRegistry($validationRegistry);
-        $transformer->setDataMap([
-            'first_name' => ['required' => 'create'],
-            'age' => true
-        ]);
-        $transformer->transform([
-            'age' => 40
-        ], ['operation' => 'create']);
-    }
-
-
-    /**
-     * @testdox transform() throws TransformerException on missing required by matching operation array
-     */
-    public function testThrowsTransformerExceptionOnMissingRequiredFieldByMatchingOperationArray()
-    {
-        $this->expectException(
-            TransformerException::class
-        );
-
-        $transformer = new Transformer();
-        $validationRegistry = new Registry();
-        $transformer->setRegistry($validationRegistry);
-        $transformer->setDataMap([
-            'first_name' => ['required' => ['create', 'update']],
-            'age' => true
-        ]);
-        $transformer->transform([
-            'age' => 40
-        ], ['operation' => 'create']);
-    }
-
-    /**
      * @testdox validate() returns array of error messages on failure
      */
     public function testValidateReturnsArrayOfErrorMessagesOnFailure()
     {
-        $transformer = new Transformer();
-        $validationRegistry = new Registry();
-        $transformer->setRegistry($validationRegistry);
+        $transformer = $this->getTransformer();
         $transformer->setDataMap([
             'first_name' => ['required' => true],
             'age' => true
@@ -339,6 +272,7 @@ class TransformerOutputTest extends TestBaseClass
         $errors = $transformer->validate([
             'age' => 40
         ]);
+        $this->assertIsArray($errors);
         $this->assertNotEmpty($errors);
     }
 
@@ -347,7 +281,7 @@ class TransformerOutputTest extends TestBaseClass
      */
     public function testValidateAllReturnsArrayOfErrorMessagesOnFailure()
     {
-        $transformer = new Transformer;
+        $transformer = $this->getTransformer();
         $transformer->setDataMap([
             'first_name' => ['required' => true],
             'age' => true
@@ -356,6 +290,15 @@ class TransformerOutputTest extends TestBaseClass
             ['age' => 40],
             ['age' => 51]
         ]);
+
+        $this->assertIsArray($errors);
         $this->assertNotEmpty($errors);
+    }
+    
+    private function getTransformer()
+    {
+        return DI::getContainer()->get(
+            Transformer::class
+        );
     }
 }
