@@ -4,8 +4,11 @@ namespace ls\tests\unit\api\opHandlers;
 
 use LimeSurvey\Api\Command\V1\SurveyPatch\OpHandlerSubquestionDelete;
 use LimeSurvey\Models\Services\QuestionAggregateService\SubQuestionsService;
+use LimeSurvey\ObjectPatch\ObjectPatchException;
 use LimeSurvey\ObjectPatch\Op\OpStandard;
+use LimeSurvey\ObjectPatch\OpHandler\OpHandlerException;
 use ls\tests\TestBaseClass;
+use Mockery;
 
 /**
  * @testdox OpHandlerSubquestionDelete
@@ -33,19 +36,47 @@ class OpHandlerSubquesDeleteTest extends TestBaseClass
     }
 
     /**
+     * @testdox validation hits when entityId is missing
+     */
+    public function testOpValidationFailure()
+    {
+        $op = $this->getOp(
+            'failure'
+        );
+        $opHandler = $this->getOpHandler();
+        $validation = $opHandler->validateOperation($op);
+        $this->assertIsArray($validation);
+        $this->assertNotEmpty($validation);
+    }
+
+    /**
+     * @testdox validation doesn't hit when everything is fine
+     */
+    public function testOpValidationSuccess()
+    {
+        $op = $this->getOp(
+        );
+        $opHandler = $this->getOpHandler();
+        $validation = $opHandler->validateOperation($op);
+        $this->assertIsArray($validation);
+        $this->assertEmpty($validation);
+    }
+
+    /**
      * @param string $entity
      * @param string $type
      * @return OpStandard
-     * @throws \LimeSurvey\ObjectPatch\OpHandlerException
+     * @throws OpHandlerException|ObjectPatchException
      */
     private function getOp(
         string $entity = 'subquestion',
         string $type = 'delete'
     ) {
+        $entityId = $entity !== 'subquestion' ? null : 77;
         return OpStandard::factory(
             $entity,
             $type,
-            "77",
+            $entityId,
             [],
             ['id' => 666]
         );
@@ -56,8 +87,8 @@ class OpHandlerSubquesDeleteTest extends TestBaseClass
      */
     private function getOpHandler()
     {
-        /** @var \LimeSurvey\Models\Services\QuestionAggregateService\SubQuestionsService */
-        $mockQuestionAggregateService = \Mockery::mock(
+        /** @var SubQuestionsService */
+        $mockQuestionAggregateService = Mockery::mock(
             SubQuestionsService::class
         )->makePartial();
         return new OpHandlerSubquestionDelete($mockQuestionAggregateService);

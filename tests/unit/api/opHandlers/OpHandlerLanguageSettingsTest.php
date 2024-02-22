@@ -2,8 +2,11 @@
 
 namespace ls\tests\unit\api\opHandlers;
 
+use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestionAggregate;
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputSurveyLanguageSettings;
 use LimeSurvey\Api\Command\V1\SurveyPatch\OpHandlerLanguageSettingsUpdate;
+use LimeSurvey\Api\Transformer\TransformerException;
+use LimeSurvey\DI;
 use LimeSurvey\ObjectPatch\{
     Op\OpStandard,
     OpHandler\OpHandlerException
@@ -16,37 +19,35 @@ use ls\tests\TestBaseClass;
 class OpHandlerLanguageSettingsTest extends TestBaseClass
 {
     /**
-     * @testdox throws exception if no values are provided for single language
+     * @testdox validation hits if required values are not provided for single language
      */
     public function testLanguageSettingsUpdateThrowsNoValuesException()
     {
-        $this->expectException(
-            OpHandlerException::class
-        );
         $op = $this->getOp(
             $this->getWrongPropsSingleArray(),
             'en',
             'create'
         );
         $opHandler = $this->getOpHandler();
-        $opHandler->handle($op);
+        $validation = $opHandler->validateOperation($op);
+        $this->assertIsArray($validation);
+        $this->assertNotEmpty($validation);
     }
 
     /**
-     * @testdox throws exception if no values are provided for one of multiple languages
+     * @testdox validation hits if required values are not provided for multiple languages
      */
-    public function testLanguageSettingsUpdateThrowsNoValuesException2()
+    public function testLanguageSettingsUpdateMultipleValidation()
     {
-        $this->expectException(
-            OpHandlerException::class
-        );
         $op = $this->getOp(
             $this->getWrongPropsMultipleArray(),
             null,
             'create'
         );
         $opHandler = $this->getOpHandler();
-        $opHandler->handle($op);
+        $validation = $opHandler->validateOperation($op);
+        $this->assertIsArray($validation);
+        $this->assertNotEmpty($validation);
     }
 
     /**
@@ -58,8 +59,7 @@ class OpHandlerLanguageSettingsTest extends TestBaseClass
             $this->getPropsSingleArray(),
             'en'
         );
-        $opHandler = $this->getOpHandler();
-        $outputData = $opHandler->getLanguageSettingsData($op);
+        $outputData = $this->transformAll($op);
         $this->assertArrayHasKey('en', $outputData);
         $this->assertArrayHasKey('surveyls_title', $outputData['en']);
     }
@@ -73,8 +73,7 @@ class OpHandlerLanguageSettingsTest extends TestBaseClass
             $this->getPropsMultipleArray(),
             null
         );
-        $opHandler = $this->getOpHandler();
-        $outputData = $opHandler->getLanguageSettingsData($op);
+        $outputData = $this->transformAll($op);
         $this->assertArrayHasKey('en', $outputData);
         $this->assertArrayHasKey('surveyls_title', $outputData['en']);
         $this->assertArrayHasKey('de', $outputData);
@@ -151,6 +150,27 @@ class OpHandlerLanguageSettingsTest extends TestBaseClass
         return new OpHandlerLanguageSettingsUpdate(
             $modelSurveyLanguageSetting,
             new TransformerInputSurveyLanguageSettings()
+        );
+    }
+
+    /**
+     * Analyzes the operation data, builds and returns the correct data structure
+     * @param $op
+     * @return array
+     * @throws \DI\DependencyException
+     * @throws \DI\NotFoundException
+     */
+    private function transformAll($op)
+    {
+        $transformer = DI::getContainer()->get(TransformerInputSurveyLanguageSettings::class);
+
+        return $transformer->transformAll(
+            (array)$op->getProps(),
+            [
+                'operation' => $op->getType()->getId(),
+                'entityId' => $op->getEntityId(),
+                'sid' => 123456
+            ]
         );
     }
 }

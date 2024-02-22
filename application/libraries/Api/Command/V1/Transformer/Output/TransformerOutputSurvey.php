@@ -93,10 +93,6 @@ class TransformerOutputSurvey extends TransformerOutputActiveRecord
             return null;
         }
         $survey = parent::transform($data);
-        $survey['defaultLanguage'] = $this->transformerOutputSurveyLanguageSettings->transform(
-            $data->defaultlanguage,
-            $options
-        );
         $survey['languageSettings'] = $this->transformerOutputSurveyLanguageSettings->transformAll(
             $data->languagesettings,
             $options

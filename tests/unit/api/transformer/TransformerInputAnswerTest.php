@@ -2,16 +2,10 @@
 
 namespace ls\tests\unit\api;
 
-use LimeSurvey\Api\Command\V1\SurveyPatch\OpHandlerAnswer;
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputAnswer;
-use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputAnswerL10ns;
 use LimeSurvey\DI;
-use LimeSurvey\Models\Services\QuestionAggregateService\AnswersService;
-use LimeSurvey\Models\Services\QuestionAggregateService\QuestionService;
 use LimeSurvey\ObjectPatch\Op\OpStandard;
 use ls\tests\TestBaseClass;
-use LimeSurvey\Api\Transformer\Transformer;
-use LimeSurvey\Api\Transformer\TransformerException;
 
 /**
  * @testdox TransformerInputAnswer
