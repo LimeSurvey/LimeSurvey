@@ -2010,7 +2010,7 @@ class DataEntry extends SurveyCommonAction
     private function returnAccessCodeIsNotValidOrAlreadyInUseErrorMessage(): string
     {
         $errormsg = CHtml::tag('div', array('class' => 'warningheader'), gT("Error"));
-        $errormsg .= CHtml::tag('p', array(), gT("The access code have provided is not valid or has already been used."));
+        $errormsg .= CHtml::tag('p', array(), gT("The provided access code is not valid or has already been used."));
         return $errormsg;
     }
 
