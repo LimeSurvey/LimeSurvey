@@ -81,7 +81,7 @@ function loadanswers()
     $submitdate = $oResponses->submitdate;
     $aRow = $oResponses->attributes;
     foreach ($aRow as $column => $value) {
-        if ($column === "token") {
+        tracevar($column);
             $clienttoken = $value;
             $token = $value;
         } elseif ($column === 'lastpage' && !isset($_SESSION['survey_' . $surveyid]['step'])) {
@@ -97,22 +97,27 @@ function loadanswers()
         if ($column === "startdate") {
             $_SESSION['survey_' . $surveyid]['startdate'] = $value;
         } else {
-            //Only make session variables for those in insertarray[]
+            //Only make session variables for those in insertarray[] or in fieldmap
             if (in_array($column, $_SESSION['survey_' . $surveyid]['insertarray']) && isset($_SESSION['survey_' . $surveyid]['fieldmap'][$column])) {
+                /* Fix for numeric value */
                 if (
                     ($_SESSION['survey_' . $surveyid]['fieldmap'][$column]['type'] == Question::QT_N_NUMERICAL ||
                         $_SESSION['survey_' . $surveyid]['fieldmap'][$column]['type'] == Question::QT_K_MULTIPLE_NUMERICAL ||
-                        $_SESSION['survey_' . $surveyid]['fieldmap'][$column]['type'] == Question::QT_D_DATE) && $value == null
+                        $_SESSION['survey_' . $surveyid]['fieldmap'][$column]['type'] == Question::QT_D_DATE)
                 ) {
-                    // For type N,K,D NULL in DB is to be considered as NoAnswer in any case.
-                    // We need to set the _SESSION[field] value to '' in order to evaluate conditions.
-                    // This is especially important for the deletenonvalue feature,
-                    // otherwise we would erase any answer with condition such as EQUALS-NO-ANSWER on such
-                    // question types (NKD)
-                    $_SESSION['survey_' . $surveyid][$column] = '';
-                } else {
-                    $_SESSION['survey_' . $surveyid][$column] = $value;
+                    /* Value need to be a string if it's null to evaluate conditions. This is especially important for the deletenonvalue feature, otherwise we would erase any answer with condition such as EQUALS-NO-ANSWER */
+                    $value = trim($value);
+                    /* If value is set : it came from DB as decimal, must fix for some validation (mantis #19435) */
+                    if (trim($value) != '') {
+                        if($value[0] === ".") {
+                            $value = "0".$value;
+                        }
+                        if (strpos($value, ".") !== false) {
+                            $value = rtrim(rtrim($value, "0"), ".");
+                        }
+                    }
                 }
+                $_SESSION['survey_' . $surveyid][$column] = $value;
                 if (isset($token) && !empty($token)) {
                     $_SESSION['survey_' . $surveyid][$column] = $value;
                 }
