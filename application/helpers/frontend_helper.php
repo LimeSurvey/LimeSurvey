@@ -81,7 +81,7 @@ function loadanswers()
     $submitdate = $oResponses->submitdate;
     $aRow = $oResponses->attributes;
     foreach ($aRow as $column => $value) {
-        tracevar($column);
+        if ($column === "token") {
             $clienttoken = $value;
             $token = $value;
         } elseif ($column === 'lastpage' && !isset($_SESSION['survey_' . $surveyid]['step'])) {
