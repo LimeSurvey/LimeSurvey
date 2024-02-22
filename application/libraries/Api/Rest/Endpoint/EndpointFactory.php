@@ -8,19 +8,23 @@ use DI\FactoryInterface;
 use LimeSurvey\Api\{
     Command\Options,
     Rest\Endpoint,
+    Rest\RestConfig,
     ApiException
 };
 
 class EndpointFactory
 {
     protected FactoryInterface $diFactory;
+    protected RestConfig $restConfig;
 
     /**
      * @param FactoryInterface $diFactory
+     * @param RestConfig $restConfig
      */
-    public function __construct(FactoryInterface $diFactory)
+    public function __construct(FactoryInterface $diFactory, RestConfig $restConfig)
     {
         $this->diFactory = $diFactory;
+        $this->restConfig = $restConfig;
     }
 
     /**
@@ -81,7 +85,7 @@ class EndpointFactory
     protected function parseEndpointConfig(CHttpRequest $request)
     {
         // rest config contains specification of all endpoints
-        $restConfig = Yii::app()->getConfig('rest');
+        $restConfig = $this->restConfig->getConfig();
         $apiVersion = $request->getParam('_api_version');
         $entity = $request->getParam('_entity');
         $id = $request->getParam('_id', null);
