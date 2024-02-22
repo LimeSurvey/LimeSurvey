@@ -560,7 +560,7 @@ class PluginManagerController extends SurveyCommonAction
 
             if (!$installer->isWhitelisted()) {
                 $installer->abort();
-                $this->errorAndRedirect(gT('The plugin is not in the plugin whitelist.'));
+                $this->errorAndRedirect(gT('The plugin is not in the plugin allowlist.'));
             }
 
             if (!$config->isCompatible()) {

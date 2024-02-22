@@ -321,7 +321,7 @@ class GlobalSettings extends SurveyCommonAction
         $validatedLoginIpWhitelistInput = $this->validateIpAddresses(Yii::app()->getRequest()->getPost('loginIpWhitelist'));
         SettingGlobal::setSetting('loginIpWhitelist', $validatedLoginIpWhitelistInput['valid']);
         if (!empty($validatedLoginIpWhitelistInput['invalid'])) {
-            $warning .= sprintf(gT("Warning! Invalid IP addresses have been excluded from '%s' setting."), gT("IP whitelist for login")) . '<br/>';
+            $warning .= sprintf(gT("Warning! Invalid IP addresses have been excluded from '%s' setting."), gT("IP allowlist for login")) . '<br/>';
         }
         $validatedTokenIpWhitelistInput = $this->validateIpAddresses(Yii::app()->getRequest()->getPost('tokenIpWhitelist'));
         SettingGlobal::setSetting('tokenIpWhitelist', $validatedTokenIpWhitelistInput['valid']);

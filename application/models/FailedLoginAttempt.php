@@ -84,7 +84,7 @@ class FailedLoginAttempt extends LSActiveRecord
         $isLockedOut = false;
         $ip = substr(getRealIPAddress(), 0, 40);
 
-        // Return false if IP is whitelisted
+        // Return false if IP is allowlist
         if ($this->isWhitelisted($ip, $attemptType)) {
             return false;
         }

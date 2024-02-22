@@ -149,7 +149,7 @@ class TokenDynamic extends LSActiveRecord
             }
             Yii::app()->db->schema->getTable($sTableName, true); // Refresh schema cache just in case the table existed in the past
         } else {
-            // On some installs we have created not null for participant_id and blacklisted fix this
+            // On some installs we have created not null for participant_id and blocklisted fix this
             $columns = array('blacklisted', 'participant_id');
 
             foreach ($columns as $columnname) {

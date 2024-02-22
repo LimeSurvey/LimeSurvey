@@ -2295,7 +2295,7 @@ class Participant extends LSActiveRecord
     }
 
     /**
-     * Returns the list of blacklisted participant IDs
+     * Returns the list of blocklisted participant IDs
      * @return string[]
      */
     public function getBlacklistedParticipantIds()
