@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2024-02-23 07:36:03+00:00\n"
+"POT-Creation-Date: 2024-02-23 08:56:55+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -976,7 +976,7 @@ msgid "After confirmation you may start receiving invitations and reminders for 
 msgstr ""
 
 #: application/controllers/OptinController.php:130
-msgid "Removing yourself from the blacklist is currently disabled."
+msgid "Removing yourself from the blocklist is currently disabled."
 msgstr ""
 
 #: application/controllers/OptinController.php:132
@@ -5514,7 +5514,7 @@ msgid "%s participants have been copied to the survey survey participants table"
 msgstr ""
 
 #: application/controllers/admin/ParticipantsAction.php:2562
-msgid "%s entries were skipped because they are blacklisted"
+msgid "%s entries were skipped because they are blocklisted"
 msgstr ""
 
 #: application/controllers/admin/ParticipantsAction.php:2567
@@ -5745,7 +5745,7 @@ msgstr ""
 
 #: application/controllers/admin/PluginManagerController.php:563
 #: application/libraries/PluginManager/PluginManager.php:141
-msgid "The plugin is not in the plugin whitelist."
+msgid "The plugin is not in the plugin allowlist."
 msgstr ""
 
 #: application/controllers/admin/PluginManagerController.php:617
@@ -6927,11 +6927,11 @@ msgid "Warning! Invalid IP addresses have been excluded from '%s' setting."
 msgstr ""
 
 #: application/controllers/admin/globalsettings.php:324
-msgid "IP whitelist for login"
+msgid "IP allowlist for login"
 msgstr ""
 
 #: application/controllers/admin/globalsettings.php:329
-msgid "IP whitelist for token access"
+msgid "IP allowlist for token access"
 msgstr ""
 
 #: application/controllers/admin/globalsettings.php:377
@@ -7515,7 +7515,7 @@ msgstr ""
 
 #: application/core/LsDefaultDataSets.php:807
 msgid ""
-"If you are blacklisted but want to participate in this survey and want to receive invitations please click the following link:\n"
+"If you are blocklisted but want to participate in this survey and want to receive invitations please click the following link:\n"
 "{OPTINURL}"
 msgstr ""
 
@@ -16437,7 +16437,7 @@ msgid "You were also removed from %d surveys on this site."
 msgstr ""
 
 #: application/models/services/ParticipantBlacklistHandler.php:53
-msgid "You are not globally blacklisted on this site."
+msgid "You are not globally blocklisted on this site."
 msgstr ""
 
 #: application/models/services/ParticipantBlacklistHandler.php:60
@@ -18601,7 +18601,7 @@ msgstr ""
 
 #: application/views/admin/globalsettings/_security.php:147
 #: application/views/admin/globalsettings/_security.php:184
-msgid "IP whitelist:"
+msgid "IP allowlist:"
 msgstr ""
 
 #: application/views/admin/globalsettings/_security.php:150
@@ -19168,15 +19168,15 @@ msgid "Blacklist participant for any new added survey once the global field is s
 msgstr ""
 
 #: application/views/admin/participants/blacklist_view.php:64
-msgid "Prevent blacklisted participants from being added to a survey:"
+msgid "Prevent blocklisted participants from being added to a survey:"
 msgstr ""
 
 #: application/views/admin/participants/blacklist_view.php:81
-msgid "Hide blacklisted participants:"
+msgid "Hide blocklisted participants:"
 msgstr ""
 
 #: application/views/admin/participants/blacklist_view.php:98
-msgid "Delete globally blacklisted participant from the database:"
+msgid "Delete globally blocklisted participant from the database:"
 msgstr ""
 
 #: application/views/admin/participants/blacklist_view.php:115
@@ -19461,7 +19461,7 @@ msgid "Select all"
 msgstr ""
 
 #: application/views/admin/participants/modal_subviews/_exportCSV.php:34
-msgid "If you want to export blacklisted participants, set \"Hide blacklisted participants\" to \"No\" in CPDB settings."
+msgid "If you want to export blocklisted participants, set \"Hide blocklisted participants\" to \"No\" in CPDB settings."
 msgstr ""
 
 #: application/views/admin/participants/modal_subviews/_exportCSV.php:71
@@ -19513,11 +19513,11 @@ msgid "Add new attribute"
 msgstr ""
 
 #: application/views/admin/participants/participantsPanel_view.php:28
-msgid "Remove from blacklist?"
+msgid "Remove from blocklist?"
 msgstr ""
 
 #: application/views/admin/participants/participantsPanel_view.php:29
-msgid "Add to blacklist?"
+msgid "Add to blocklist?"
 msgstr ""
 
 #: application/views/admin/participants/participantsPanel_view.php:39
