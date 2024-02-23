@@ -8273,29 +8273,29 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
 #                return $aStaticQuestionAttributesForEM[$surveyid][0][$lang][$qid];
 #            }
         if ($qid) {
-            $oQids = Question::model()->findAll(
+            $oQuestions = Question::model()->findAll(
                 [
                     'condition' => "qid=:qid and parent_qid=0",
                     'params'    => [':qid' => $qid]
                 ]
             );
         } elseif ($surveyid) {
-            $oQids = Question::model()->findAll(
+            $oQuestions = Question::model()->findAll(
                 [
                     'condition' => "sid=:sid and parent_qid=0",
                     'params'    => [':sid' => $surveyid]
                 ]
             );
         } else {
-            $oQids = Question::model()->findAll(
+            $oQuestions = Question::model()->findAll(
                 [
                     'condition' => "parent_qid=0",
                 ]
             );
         }
         $aQuestionAttributesForEM = [];
-        foreach ($oQids as $oQid) {
-            $aAttributesValues = QuestionAttribute::model()->getQuestionAttributes($oQid, $lang);
+        foreach ($oQuestions as $oQuestion) {
+            $aAttributesValues = QuestionAttribute::model()->getQuestionAttributes($oQuestion, $lang);
             // Change array lang to value
             foreach ($aAttributesValues as &$aAttributeValue) {
                 if (is_array($aAttributeValue)) {
@@ -8307,7 +8307,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     }
                 }
             }
-            $aQuestionAttributesForEM[$oQid->qid] = $aAttributesValues;
+            $aQuestionAttributesForEM[$oQuestion->qid] = $aAttributesValues;
         }
         EmCacheHelper::set($cacheKey, $aQuestionAttributesForEM);
         return $aQuestionAttributesForEM;
