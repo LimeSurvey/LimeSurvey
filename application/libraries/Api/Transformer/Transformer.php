@@ -71,7 +71,6 @@ class Transformer implements TransformerInterface
                 $options
             );
             $value = $this->format($value, $config);
-
             if (is_array($errors)) {
                 throw new TransformerException(print_r($errors, true));
             }
