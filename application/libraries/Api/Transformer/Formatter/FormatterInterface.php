@@ -19,7 +19,7 @@ interface FormatterInterface
      * Returns true if this formatter is configured, false otherwise.
      * @param array $config
      * @param array $options
-     * @return mixed
+     * @return void
      */
     public function setClassBasedOnConfig($config, $options = []);
 
