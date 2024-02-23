@@ -52,7 +52,6 @@ var LS = LS || {};
 // TODO: Use component for quick-add
 // TODO: Use component for label sets
 $(document).on('ready pjax:scriptcomplete', function () {
-
   // TODO: Routing?
   if (window.location.href.indexOf('questionAdministration') === -1) {
     return;
@@ -1779,9 +1778,11 @@ $(document).on('ready pjax:scriptcomplete', function () {
      *
      * @param {string} code
      * @param {number} qid Question id (0 when creating new question)
+     * @param {boolean} submit try to submit for if valid
      * @return {void}
      */
-    checkQuestionValidateTitle: function(code, qid) {
+    checkQuestionValidateTitle: function(code, qid, submit = false) {
+      $('#questionCode')[0].setCustomValidity("");
       $('#question-title-warning').text("");
       $('#question-title-warning').addClass('d-none');
       $.ajax({
@@ -1797,7 +1798,11 @@ $(document).on('ready pjax:scriptcomplete', function () {
           if (message !== null) {
               $('#question-title-warning').removeClass('d-none');
               $('#question-title-warning').text(message);
+              $('#questionCode')[0].setCustomValidity(message); // must set customvalidity to avoid submit by another enter
           } else {
+              if (submit) {
+                $("#edit-question-form :submit").click(); // Simulate a click on first submit button
+              }
               // Continue
           }
         },
@@ -1980,7 +1985,11 @@ $(document).on('ready pjax:scriptcomplete', function () {
           if (message !== null) {
               $('#question-title-warning').removeClass('d-none');
               $('#question-title-warning').text(message);
+              $('#questionCode')[0].setCustomValidity(message); // must set customvalidity to avoid submit by another enter
           } else {
+            $('#question-title-warning').addClass('d-none');
+            $('#question-title-warning').text("");
+            $('#questionCode')[0].setCustomValidity("");
             // TODO: Check other things too.
             const button = document.getElementById('submit-create-question');
             if (button instanceof HTMLElement) {
@@ -1997,7 +2006,6 @@ $(document).on('ready pjax:scriptcomplete', function () {
                 button.click();
               }
             }
-            $('#question-title-warning').removeClass('d-none');
           }
         },
         error: (response) => {
@@ -2028,7 +2036,17 @@ $(document).on('ready pjax:scriptcomplete', function () {
     }
     LS.questionEditor.checkQuestionValidateTitle($(this).val(), qid);
   });
-
+  /* Check question code validatiry when press ENTER mantis #19440 */
+  $("#questionCode").on('keyup keypress', function(e) {
+    if (e.which == 13) {
+      e.preventDefault();
+      let qid = 0;
+      if ($(this).data('qid')) {
+        qid = $(this).data('qid');
+      }
+      LS.questionEditor.checkQuestionValidateTitle($(this).val(), qid, true);
+    }
+  });
   function showConditionsWarning(e) {
     if (!$(this).data('hasConditions')) {
       return;
