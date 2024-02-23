@@ -63,6 +63,9 @@ class FormatterMandatory extends FormatterYnToBool
         return $this->active;
     }
 
+    /**
+     * @return void
+     */
     private function resetClassVariables()
     {
         $this->active = false;

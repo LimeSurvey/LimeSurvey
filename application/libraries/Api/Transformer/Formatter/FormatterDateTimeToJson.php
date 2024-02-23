@@ -142,6 +142,9 @@ class FormatterDateTimeToJson implements FormatterInterface
         return $this->active;
     }
 
+    /**
+     * @return void
+     */
     private function resetClassVariables()
     {
         $this->active = false;

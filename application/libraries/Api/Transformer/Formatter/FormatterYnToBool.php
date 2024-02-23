@@ -22,6 +22,10 @@ class FormatterYnToBool implements FormatterInterface
         $this->lowercaseCase = $lowercase;
     }
 
+    /**
+     * @param string $name
+     * @return void
+     */
     public function setName(string $name)
     {
         $this->name = $name;
@@ -130,6 +134,9 @@ class FormatterYnToBool implements FormatterInterface
         return $this->active;
     }
 
+    /**
+     * @return void
+     */
     private function resetClassVariables()
     {
         $this->name = 'ynToBool';
