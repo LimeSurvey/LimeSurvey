@@ -27,6 +27,7 @@ class NumericalValidator implements ValidatorInterface
      */
     public function validate($key, $value, $config, $data, $options = [])
     {
+        $config[$this->name] = $this->normaliseConfigValue($config, $options);
         $messages = [];
         $validate = ($config[$this->name] == true
                 || is_array($config[$this->name]))

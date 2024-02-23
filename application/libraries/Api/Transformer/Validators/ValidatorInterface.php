@@ -5,6 +5,7 @@ namespace LimeSurvey\Api\Transformer\Validators;
 interface ValidatorInterface
 {
     /**
+     * Validates the key and it's value based on the config.
      * @param string $key
      * @param mixed $value
      * @param array $config
@@ -15,12 +16,14 @@ interface ValidatorInterface
     public function validate($key, $value, $config, $data, $options = []);
 
     /**
+     * Returns the default config for this validator
      * @return mixed
      */
     public function getDefaultConfig();
 
 
     /**
+     * Normalises the config value for this validator
      * @param array $config
      * @param array $options
      * @return mixed

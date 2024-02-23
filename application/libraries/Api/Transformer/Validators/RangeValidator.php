@@ -20,6 +20,7 @@ class RangeValidator implements ValidatorInterface
      */
     public function validate($key, $value, $config, $data, $options = [])
     {
+        $config[$this->name] = $this->normaliseConfigValue($config, $options);
         $messages = [];
         if ($config[$this->name] !== false && !empty($value)) {
             $range = $this->getRange($config);

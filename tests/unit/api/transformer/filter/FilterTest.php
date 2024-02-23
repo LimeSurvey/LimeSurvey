@@ -4,7 +4,6 @@ namespace ls\tests\unit\api;
 
 use LimeSurvey\Api\Transformer\Filter\Filter;
 use ls\tests\TestBaseClass;
-use LimeSurvey\Api\Transformer\Formatter\FormatterDateTimeToJson;
 
 /**
  * @testdox API Filter

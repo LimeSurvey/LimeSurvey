@@ -15,8 +15,9 @@ class FormatterDateTimeToJsonTest extends TestBaseClass
      */
     public function testApply()
     {
-        $transformer = new FormatterDateTimeToJson();
-        $tr = $transformer->format('2024-02-01 18:17:16');
+        $formatter = new FormatterDateTimeToJson();
+        $config = $this->getConfig();
+        $tr = $formatter->format('2024-02-01 18:17:16', $config);
         $this->assertEquals('2024-02-01T18:17:16.000Z', $tr);
     }
 
@@ -25,9 +26,17 @@ class FormatterDateTimeToJsonTest extends TestBaseClass
      */
     public function testRevert()
     {
-        $transformer = new FormatterDateTimeToJson(true);
-        $tr = $transformer->format('2024-02-01T18:17:16.000Z');
+        $formatter = new FormatterDateTimeToJson(true);
+        $config = $this->getConfig(true);
+        $tr = $formatter->format('2024-02-01T18:17:16.000Z', $config);
         $this->assertEquals('2024-02-01T18:17:16+00:00', $tr);
     }
 
+    private function getConfig($revert = false)
+    {
+        $options = $revert ? ['revert' => true] : true;
+        return [
+            'formatter' => ['dateTimeToJson' => $options]
+        ];
+    }
 }

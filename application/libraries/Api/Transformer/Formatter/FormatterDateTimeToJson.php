@@ -6,6 +6,8 @@ class FormatterDateTimeToJson implements FormatterInterface
 {
     private string $name = 'dateTimeToJson';
     /** @var bool */
+    private $active = false;
+    /** @var bool */
     private $revert = false;
     /** @var string */
     private $inputTimezone = 'UTC';
@@ -25,13 +27,20 @@ class FormatterDateTimeToJson implements FormatterInterface
      *
      * @see https://www.w3.org/TR/NOTE-datetime
      * @param ?mixed $value
+     * @param array $config
+     * @param array $options
      * @return ?mixed
      */
-    public function format($value)
+    public function format($value, $config, $options = [])
     {
-        return $this->revert
-            ? $this->revert($value)
-            : $this->apply($value);
+        $this->setClassBasedOnConfig($config);
+        if ($this->active) {
+            return $this->revert
+                ? $this->revert($value)
+                : $this->apply($value);
+        } else {
+            return $value;
+        }
     }
 
     /**
@@ -102,19 +111,41 @@ class FormatterDateTimeToJson implements FormatterInterface
         );
     }
 
-    public function normaliseConfigValue($config, $options = [])
+    public function setClassBasedOnConfig($config, $options = [])
     {
+        $this->resetClassVariables();
         if (isset($config['formatter'][$this->name])) {
             if (is_array($config['formatter'][$this->name])) {
-                if (array_key_exists('revert', $config['formatter'][$this->name])) {
+                if (
+                    array_key_exists(
+                        'revert',
+                        $config['formatter'][$this->name]
+                    )
+                ) {
                     $this->revert = $config['formatter'][$this->name]['revert'];
                 }
-                if (array_key_exists('inputTimezone', $config['formatter'][$this->name])) {
+                if (
+                    array_key_exists(
+                        'inputTimezone',
+                        $config['formatter'][$this->name]
+                    )
+                ) {
                     $this->inputTimezone = $config['formatter'][$this->name]['inputTimezone'];
                 }
             }
-            return $this;
+            $this->active = true;
         }
-        return $config['formatter'] ?? null;
+    }
+
+    public function isActive(): bool
+    {
+        return $this->active;
+    }
+
+    private function resetClassVariables()
+    {
+        $this->active = false;
+        $this->revert = false;
+        $this->inputTimezone = 'UTC';
     }
 }

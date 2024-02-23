@@ -10,12 +10,32 @@ namespace LimeSurvey\Api\Transformer\Formatter;
 class FormatterMandatory extends FormatterYnToBool
 {
     private string $name = 'mandatory';
+
     /**
      * @param bool $revert
      */
     public function __construct($revert = false)
     {
         parent::__construct(!$revert);
+        parent::setName($this->name);
+    }
+
+    /**
+     * @param ?mixed $value
+     * @param array $config
+     * @param array $options
+     * @return ?mixed
+     */
+    public function format($value, $config, $options = [])
+    {
+        $this->setClassBasedOnConfig($config);
+        if ($this->active) {
+            return $this->revert
+                ? $this->revert($value)
+                : $this->apply($value);
+        } else {
+            return $value;
+        }
     }
 
     /**
@@ -30,11 +50,21 @@ class FormatterMandatory extends FormatterYnToBool
         return $string === null ? 'S' : $string;
     }
 
-    public function normaliseConfigValue($config, $options = [])
+    public function setClassBasedOnConfig($config, $options = [])
     {
+        $this->resetClassVariables();
         if (isset($config['formatter'][$this->name])) {
-            return $this;
+            $this->active = true;
         }
-        return $config['formatter'] ?? null;
+    }
+
+    public function isActive(): bool
+    {
+        return $this->active;
+    }
+
+    private function resetClassVariables()
+    {
+        $this->active = false;
     }
 }

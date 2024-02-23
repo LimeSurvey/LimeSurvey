@@ -6,9 +6,11 @@ class FormatterYnToBool implements FormatterInterface
 {
     private string $name = 'ynToBool';
     /** @var bool */
-    private $revert = false;
+    public $active = false;
     /** @var bool */
-    private $lowercaseCase = false;
+    public $revert = false;
+    /** @var bool */
+    public $lowercaseCase = false;
 
     /**
      * @param bool $revert
@@ -20,6 +22,11 @@ class FormatterYnToBool implements FormatterInterface
         $this->lowercaseCase = $lowercase;
     }
 
+    public function setName(string $name)
+    {
+        $this->name = $name;
+    }
+
     /**
      * Cast y/n to boolean
      *
@@ -28,13 +35,20 @@ class FormatterYnToBool implements FormatterInterface
      * Any other value will produce null.
      *
      * @param ?mixed $value
+     * @param array $config
+     * @param array $options
      * @return ?mixed
      */
-    public function format($value)
+    public function format($value, $config, $options = [])
     {
-        return $this->revert
-            ? $this->revert($value)
-            : $this->apply($value);
+        $this->setClassBasedOnConfig($config);
+        if ($this->active) {
+            return $this->revert
+                ? $this->revert($value)
+                : $this->apply($value);
+        } else {
+            return $value;
+        }
     }
 
     /**
@@ -53,9 +67,9 @@ class FormatterYnToBool implements FormatterInterface
             ? strtolower($value)
             : $value;
         if (
-             $value === null
-             || $value === ''
-             || !in_array($lowercase, ['y', 'n'])
+            $value === null
+            || $value === ''
+            || !in_array($lowercase, ['y', 'n'])
         ) {
             return null;
         }
@@ -85,19 +99,42 @@ class FormatterYnToBool implements FormatterInterface
             : strtoupper($string);
     }
 
-    public function normaliseConfigValue($config, $options = [])
+    public function setClassBasedOnConfig($config, $options = [])
     {
+        $this->resetClassVariables();
         if (isset($config['formatter'][$this->name])) {
             if (is_array($config['formatter'][$this->name])) {
-                if (array_key_exists('revert', $config['formatter'][$this->name])) {
+                if (
+                    array_key_exists(
+                        'revert',
+                        $config['formatter'][$this->name]
+                    )
+                ) {
                     $this->revert = $config['formatter'][$this->name]['revert'];
                 }
-                if (array_key_exists('lowercaseCase', $config['formatter'][$this->name])) {
+                if (
+                    array_key_exists(
+                        'lowercaseCase',
+                        $config['formatter'][$this->name]
+                    )
+                ) {
                     $this->lowercaseCase = $config['formatter'][$this->name]['lowercaseCase'];
                 }
             }
-            return $this;
+            $this->active = true;
         }
-        return $config['formatter'] ?? null;
+    }
+
+    public function isActive(): bool
+    {
+        return $this->active;
+    }
+
+    private function resetClassVariables()
+    {
+        $this->name = 'ynToBool';
+        $this->active = false;
+        $this->revert = false;
+        $this->lowercaseCase = false;
     }
 }

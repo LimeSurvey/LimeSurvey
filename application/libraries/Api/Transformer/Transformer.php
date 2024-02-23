@@ -58,6 +58,7 @@ class Transformer implements TransformerInterface
             }
             // Null value and null default
             // - skip if not required and if it wasn't set to null explicitly
+            // required config needed here
             if (is_null($value) && !$config['required'] && !$valueIsSet) {
                 continue;
             }
@@ -114,9 +115,10 @@ class Transformer implements TransformerInterface
             $configTemp,
             is_array($config) ? $config : []
         );
-
         if ($this->registry) {
-            $config = $this->registry->normaliseConfig($config, $options);
+            // RequiredValidator config needs to be evaluated here already
+            $required = $this->registry->getValidator('required');
+            $config['required'] = $required->normaliseConfigValue($config, $options);
         }
         $config['key'] = isset($config['key']) ? $config['key'] : $inputKey;
         $config['type'] = isset($config['type']) ? $config['type'] : null;
@@ -204,7 +206,6 @@ class Transformer implements TransformerInterface
             if (is_null($value) && isset($config['default'])) {
                 $value = $config['default'];
             }
-
             $fieldErrors = $this->validateKey(
                 $key,
                 $value,
@@ -236,22 +237,14 @@ class Transformer implements TransformerInterface
         $options = $options ?? [];
         $errors = [];
         $value = $this->filter($value, $config);
-        foreach ($config as $validationKey => $validationConfig) {
-            if ($this->registry) {
-                $validator = $this->registry->getValidator($validationKey);
-                if ($validator) {
-                    $result = $validator->validate(
-                        $key,
-                        $value,
-                        $config,
-                        $data,
-                        $options
-                    );
-                    if (is_array($result)) {
-                        $errors[$key][] = $result;
-                    }
-                }
-            }
+        if ($this->registry) {
+            $errors = $this->registry->validate(
+                $key,
+                $value,
+                $config,
+                $data,
+                $options
+            );
         }
 
         if (

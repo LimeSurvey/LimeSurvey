@@ -21,6 +21,7 @@ class RegexValidator implements ValidatorInterface
     public function validate($key, $value, $config, $data, $options = [])
     {
         $messages = [];
+        $config[$this->name] = $this->normaliseConfigValue($config, $options);
         if ($config[$this->name] !== false && !empty($value)) {
             $result = $this->validateByPattern($config[$this->name], $value);
             if (is_string($result)) {

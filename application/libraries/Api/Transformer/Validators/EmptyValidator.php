@@ -20,6 +20,7 @@ class EmptyValidator implements ValidatorInterface
      */
     public function validate($key, $value, $config, $data, $options = [])
     {
+        $config[$this->name] = $this->normaliseConfigValue($config, $options);
         $messages = [];
         if (empty($value) && $config[$this->name] === false) {
             $messages[] = $key . ' cannot be empty';

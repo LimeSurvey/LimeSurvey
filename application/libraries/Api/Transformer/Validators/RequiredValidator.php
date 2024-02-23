@@ -22,6 +22,7 @@ class RequiredValidator implements ValidatorInterface
      */
     public function validate($key, $value, $config, $data, $options = [])
     {
+        $config[$this->name] = $this->normaliseConfigValue($config, $options);
         $messages = [];
         if (
             $config[$this->name]

@@ -16,6 +16,7 @@ use LimeSurvey\Api\Transformer\Validators\NumericalValidator;
 use LimeSurvey\Api\Transformer\Validators\RangeValidator;
 use LimeSurvey\Api\Transformer\Validators\RegexValidator;
 use LimeSurvey\Api\Transformer\Validators\RequiredValidator;
+use LimeSurvey\Api\Transformer\Validators\ValidatorInterface;
 
 /**
  * Handles the registering of validators and formatters
@@ -98,49 +99,55 @@ class Registry
     }
 
     /**
+     * Loops through all available validators and applies the validation.
+     * Returns array of errors.
+     * @param string $key
+     * @param mixed $value
      * @param array $config
-     * @param ?array $options
+     * @param array $data
+     * @param array $options
      * @return array
      */
-    public function normaliseConfig(array $config, $options = []): array
+    public function validate($key, $value, $config, $data, $options = [])
     {
-        foreach ($this->validators as $name => $validator) {
-            $config[$name] = $validator->normaliseConfigValue(
-                $config,
-                $options
-            );
-        }
-        // There can be only one formatter
-        foreach ($this->formatters as $formatter) {
-            if (!isset($config['formatter']) ||  !($config['formatter'] instanceof FormatterInterface)) {
-                $config['formatter'] = $formatter->normaliseConfigValue(
-                    $config,
-                    $options
-                );
+        $errors = [];
+        foreach ($this->validators as $validator) {
+            /** @var ValidatorInterface $validator */
+            $result = $validator->validate($key, $value, $config, $data, $options);
+            if (is_array($result)) {
+                $errors[$key][] = $result;
             }
         }
-
-        return $config;
+        return $errors;
     }
 
     /**
+     * If the config contains a formatter option,
+     * it loops through all available formatters and attempts to format
+     * the value. The loop will stop when a formatter actually formats the value,
+     * as there can be only one formatter per key.
      * @param mixed $value
      * @param array $config
      * @return mixed
      */
     public function format($value, $config)
     {
-        if (
-            isset($config['formatter'])
-            && $config['formatter'] instanceof FormatterInterface
-        ) {
-            $value = $config['formatter']->format($value);
+        if (array_key_exists('formatter', $config)) {
+            foreach ($this->formatters as $formatter) {
+                /* @var FormatterInterface $formatter */
+                $value = $formatter->format($value, $config);
+                if ($formatter->isActive()) {
+                    break;
+                }
+            }
         }
 
         return $value;
     }
 
     /**
+     * If the config contains a filter option,
+     * it will apply the filter to the value.
      * @param mixed $value
      * @param array $config
      * @return mixed
