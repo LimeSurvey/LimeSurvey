@@ -138,7 +138,7 @@ class PluginManager extends \CApplicationComponent
 
         $newName = (string) $extensionConfig->xml->metadata->name;
         if (!$this->isWhitelisted($newName)) {
-            return [false, gT('The plugin is not in the plugin whitelist.')];
+            return [false, gT('The plugin is not in the plugin allowlist.')];
         }
 
         $otherPlugin = Plugin::model()->findAllByAttributes(['name' => $newName]);
@@ -640,14 +640,14 @@ class PluginManager extends \CApplicationComponent
     }
 
     /**
-     * Returns true if the plugin name is whitelisted or the whitelist is disabled.
+     * Returns true if the plugin name is allowlisted or the allowlist is disabled.
      * @param string $pluginName
      * @return boolean
      */
     public function isWhitelisted($pluginName)
     {
         if (App()->getConfig('usePluginWhitelist')) {
-            // Get the user plugins whitelist
+            // Get the user plugins allowlist
             $whiteList = App()->getConfig('pluginWhitelist');
             // Get the list of allowed core plugins
             $coreList = $this->getAllowedCorePluginList();
@@ -690,7 +690,7 @@ class PluginManager extends \CApplicationComponent
 
     /**
      * Return the list of core plugins allowed to be loaded.
-     * That is, all core plugins not in the black list.
+     * That is, all core plugins not in the blocklist.
      * @return string[]
      */
     private function getAllowedCorePluginList()

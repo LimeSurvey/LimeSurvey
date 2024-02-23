@@ -73,7 +73,7 @@ class SurveyCommonAction extends CAction
         $aActions = array_merge(Yii::app()->getController()->getActionClasses(), Yii::app()->getController()->getAdminModulesActionClasses());
 
         if (empty($aActions[$this->getId()]) || strtolower($oMethod->getDeclaringClass()->name) != strtolower((string) $aActions[$this->getId()]) || !$oMethod->isPublic()) {
-            // Either action doesn't exist in our whitelist, or the method class doesn't equal the action class or the method isn't public
+            // Either action doesn't exist in our allowlist, or the method class doesn't equal the action class or the method isn't public
             // So let us get the last possible default method, ie. index
             $oMethod = new ReflectionMethod($this, $sDefault);
         }
