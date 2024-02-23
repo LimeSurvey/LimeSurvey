@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2024-02-23 08:56:55+00:00\n"
+"POT-Creation-Date: 2024-02-23 09:07:05+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -6927,11 +6927,11 @@ msgid "Warning! Invalid IP addresses have been excluded from '%s' setting."
 msgstr ""
 
 #: application/controllers/admin/globalsettings.php:324
-msgid "IP allowlist for login"
+msgid "IP allowlist for administration login"
 msgstr ""
 
 #: application/controllers/admin/globalsettings.php:329
-msgid "IP allowlist for token access"
+msgid "IP allowlist for participants with access code"
 msgstr ""
 
 #: application/controllers/admin/globalsettings.php:377
