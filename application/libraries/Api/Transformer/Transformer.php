@@ -100,7 +100,7 @@ class Transformer implements TransformerInterface
      *
      * @param bool|int|string|array $config
      * @param string|int $inputKey
-     * @param ?array $options
+     * @param array $options
      * @return array
      */
     private function normaliseConfig($config, $inputKey, $options = [])
