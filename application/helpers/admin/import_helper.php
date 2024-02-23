@@ -605,7 +605,7 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
     $sXMLdata = file_get_contents($sFullFilePath);
     $xml = simplexml_load_string($sXMLdata, 'SimpleXMLElement', LIBXML_NONET);
     if ($xml->LimeSurveyDocType != 'Question') {
-        throw new Exception('This is not a valid LimeSurvey question structure XML file.');
+        throw new \CHttpException(500, 'This is not a valid LimeSurvey question structure XML file.');
     }
     $iDBVersion = (int) $xml->DBVersion;
     $aQIDReplacements = array();
