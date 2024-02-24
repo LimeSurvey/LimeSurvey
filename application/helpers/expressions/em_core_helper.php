@@ -2011,19 +2011,20 @@ class ExpressionManager
             } else {
                 ++$this->substitutionNum;
                 $expr = $this->ExpandThisVar(substr((string) $stringPart[0], 1, -1));
+                $prettyPrinted = $this->GetPrettyPrintString();
                 if ($this->RDP_Evaluate($expr, false, $this->resetErrorsAndWarningsOnEachPart)) {
                     $resolvedPart = $this->GetResult();
                 } else {
                     // show original and errors in-line only if user have the right to update survey content
                     if ($this->sid && Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'update')) {
-                        $resolvedPart = $this->GetPrettyPrintString();
+                        $resolvedPart = $prettyPrinted;
                     } else {
                         $resolvedPart = '';
                     }
                 }
                 $onpageJsVarsUsed = $this->GetOnPageJsVarsUsed();
                 $jsVarsUsed = $this->GetJsVarsUsed();
-                $prettyPrintParts[] = $this->GetPrettyPrintString();
+                $prettyPrintParts[] = $prettyPrinted;
                 $this->allVarsUsed = array_merge($this->allVarsUsed, $this->GetVarsUsed());
 
                 if (count($onpageJsVarsUsed) > 0 && !$staticReplacement) {
