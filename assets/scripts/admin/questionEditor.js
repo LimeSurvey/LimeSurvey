@@ -1881,6 +1881,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
           },
           error: (response) => {
             alert('Internal error in updateQuestionSummary: ' + response);
+            return false;
           },
         });
       };
@@ -2001,6 +2002,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
                 // Just submit form.
                 button.click();
               }
+              return true;
             }
           }
         },
@@ -2028,6 +2030,11 @@ $(document).on('ready pjax:scriptcomplete', function () {
   /**
    * questionCode need specific ajax validation
    */
+  /** deactivate the check when needed */
+  function deActivateQuestionCodeChecker() {
+    $('#questionCode').off('blur keypress');
+  }
+  /** activate the check when event happen on questionCode */
   function activateQuestionCodeChecker() {
     $('#questionCode').on('blur', function() {
       let qid = 0;
@@ -2040,11 +2047,14 @@ $(document).on('ready pjax:scriptcomplete', function () {
     $('#questionCode').on('keypress', function(e) {
       if (e.which == 13) {
         e.preventDefault();
+        deActivateQuestionCodeChecker();
         /* Set CustomValidity to empty to allow check again by checkIfSaveIsValid */
         $('#questionCode')[0].setCustomValidity('');
         $('#question-title-warning').text('');
         $('#question-title-warning').addClass('d-none');
-        LS.questionEditor.checkIfSaveIsValid(e, 'enter');
+        if (!LS.questionEditor.checkIfSaveIsValid(e, 'enter')) {
+          activateQuestionCodeChecker();
+        }
       }
     });
 
