@@ -34,6 +34,12 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.6.55 (build 240220) to 5.6.56 (build 240227) February 26, 2024
+-Fixed issue #19098: Add XSD files to allowed files for plugin uploads (Marko Bischof)
+-Fixed issue #19087: [security] Account takeover through Import User function (#3736) (Denis Chenu)
+#Updated translation: Turkish by kayazeren
+
+
 Changes from 5.6.54 (build 240206) to 5.6.55 (build 240220) February 19, 2024
 -Fixed issue #19399: Survey does not show translated text on the register page(#3733) (Denis Chenu)
 #Updated translation: Korean by modernity4r
