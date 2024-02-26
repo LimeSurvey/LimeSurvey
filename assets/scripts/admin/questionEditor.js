@@ -1778,12 +1778,11 @@ $(document).on('ready pjax:scriptcomplete', function () {
      *
      * @param {string} code
      * @param {number} qid Question id (0 when creating new question)
-     * @param {boolean} submit try to submit for if valid
      * @return {void}
      */
-    checkQuestionValidateTitle: function(code, qid, submit = false) {
-      $('#questionCode')[0].setCustomValidity("");
-      $('#question-title-warning').text("");
+    checkQuestionValidateTitle: function(code, qid) {
+      $('#questionCode')[0].setCustomValidity('');
+      $('#question-title-warning').text('');
       $('#question-title-warning').addClass('d-none');
       $.ajax({
         url: languageJson.checkQuestionValidateTitleURL,
@@ -1800,9 +1799,6 @@ $(document).on('ready pjax:scriptcomplete', function () {
               $('#question-title-warning').text(message);
               $('#questionCode')[0].setCustomValidity(message); // must set customvalidity to avoid submit by another enter
           } else {
-              if (submit) {
-                $("#edit-question-form :submit").click(); // Simulate a click on first submit button
-              }
               // Continue
           }
         },
@@ -1988,8 +1984,8 @@ $(document).on('ready pjax:scriptcomplete', function () {
               $('#questionCode')[0].setCustomValidity(message); // must set customvalidity to avoid submit by another enter
           } else {
             $('#question-title-warning').addClass('d-none');
-            $('#question-title-warning').text("");
-            $('#questionCode')[0].setCustomValidity("");
+            $('#question-title-warning').text('');
+            $('#questionCode')[0].setCustomValidity('');
             // TODO: Check other things too.
             const button = document.getElementById('submit-create-question');
             if (button instanceof HTMLElement) {
@@ -2029,24 +2025,33 @@ $(document).on('ready pjax:scriptcomplete', function () {
     showAnswerOptionCodeUniqueError: createCheckUniqueFunction(languageJson.answeroptions.duplicateanswercode)
   };
 
-  $("#questionCode").on('blur', function() {
-    let qid = 0;
-    if ($(this).data('qid')) {
-      qid = $(this).data('qid');
-    }
-    LS.questionEditor.checkQuestionValidateTitle($(this).val(), qid);
-  });
-  /* Check question code validatiry when press ENTER mantis #19440 */
-  $("#questionCode").on('keyup keypress', function(e) {
-    if (e.which == 13) {
-      e.preventDefault();
+  /**
+   * questionCode need specific ajax validation
+   */
+  function activateQuestionCodeChecker() {
+    $('#questionCode').on('blur', function() {
       let qid = 0;
       if ($(this).data('qid')) {
         qid = $(this).data('qid');
       }
-      LS.questionEditor.checkQuestionValidateTitle($(this).val(), qid, true);
-    }
-  });
+      LS.questionEditor.checkQuestionValidateTitle($(this).val(), qid);
+    });
+    /* Check question code validatiry when press ENTER mantis #19440 */
+    $('#questionCode').on('keypress', function(e) {
+      if (e.which == 13) {
+        e.preventDefault();
+        /* Set CustomValidity to empty to allow check again by checkIfSaveIsValid */
+        $('#questionCode')[0].setCustomValidity('');
+        $('#question-title-warning').text('');
+        $('#question-title-warning').addClass('d-none');
+        LS.questionEditor.checkIfSaveIsValid(e, 'enter');
+      }
+    });
+
+  }
+  /* Attach event when ready */
+  activateQuestionCodeChecker();
+  /** */
   function showConditionsWarning(e) {
     if (!$(this).data('hasConditions')) {
       return;
