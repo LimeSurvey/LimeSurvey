@@ -34,6 +34,23 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.4.8 (build 240221) to 6.4.9 (build 240226) February 26, 2024
+-Fixed issue: getQuestionQttributesForEMPerformance performance optimization (#3751) (lajosarpad)
+-Fixed issue: HTML tooltips for question attributes not properly showing (Carsten Schmitz)
+-Fixed issue: Assessment values not properly validated on input (Carsten Schmitz)
+-Fixed issue #19440: Pressing enter in question code circumvents validation (#3758) (Denis Chenu)
+-Fixed issue #19426: Survey listing : multiple call of same user (#3741) (Denis Chenu)
+-Fixed issue #19420: "Share survey" links not using alias (Carsten Schmitz)
+-Fixed issue #18473: Survey listing : multiple call of SurveyGroup (#3737) (Denis Chenu)
+-Fixed issue #16287: Contentious wording in the application texts (#3755) (Carsten Schmitz)
+#Updated translation: Turkish by kayazeren
+#Updated translation: Korean by modernity4r
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Finnish by Jmantysalo
+
+
 Changes from 6.4.7 (build 240219) to 6.4.8 (build 240221) February 21, 2024
 -Fixed issue: Using URL prefill you could post longer strings than allowed to a List type question resulting in a DB error (Carsten Schmitz)
 -Fixed issue: Tab-separated survey structure could not be exported if there is only one default value in the survey (Carsten Schmitz)
