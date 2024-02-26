@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2024-02-26 07:43:16+00:00\n"
+"POT-Creation-Date: 2024-02-26 12:47:25+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -14011,18 +14011,18 @@ msgid "Longitude:"
 msgstr ""
 
 #: application/helpers/twig_translation_helper.php:33
-#: tmp/runtime/twig_cache/cd/cde0e9ce27b6dbf2f57c6b782fc1f131ecce2f880d318a8c5937c0bab2f525cc.php:255
+#: tmp/runtime/twig_cache/85/8544856496f09e1297219db2724fc320cb18a7eeae3fa6958d9e708f90a5d127.php:255
 msgid "Some example answer option"
 msgstr ""
 
 #: application/helpers/twig_translation_helper.php:34
 #: tmp/runtime/twig_cache/00/00c962d9a1da53488939c4d6e046f20fc875ac20e4f68beea6027b8d7000eb38.php:119
-#: tmp/runtime/twig_cache/cd/cde0e9ce27b6dbf2f57c6b782fc1f131ecce2f880d318a8c5937c0bab2f525cc.php:73
+#: tmp/runtime/twig_cache/85/8544856496f09e1297219db2724fc320cb18a7eeae3fa6958d9e708f90a5d127.php:73
 msgid "Drag to sort"
 msgstr ""
 
 #: application/helpers/twig_translation_helper.php:35
-#: tmp/runtime/twig_cache/cd/cde0e9ce27b6dbf2f57c6b782fc1f131ecce2f880d318a8c5937c0bab2f525cc.php:308
+#: tmp/runtime/twig_cache/85/8544856496f09e1297219db2724fc320cb18a7eeae3fa6958d9e708f90a5d127.php:308
 msgid "Insert a new answer option after this one"
 msgstr ""
 
@@ -24112,7 +24112,7 @@ msgid "This survey is anonymized and/or token persistence is disabled."
 msgstr ""
 
 #: application/views/responses/partial/topbarBtns/responseViewTopbarRight_view.php:30
-#: tmp/runtime/twig_cache/cd/cde0e9ce27b6dbf2f57c6b782fc1f131ecce2f880d318a8c5937c0bab2f525cc.php:315
+#: tmp/runtime/twig_cache/85/8544856496f09e1297219db2724fc320cb18a7eeae3fa6958d9e708f90a5d127.php:315
 msgid "Delete this entry"
 msgstr ""
 
@@ -25745,6 +25745,10 @@ msgstr ""
 msgid "default"
 msgstr ""
 
+#: tmp/runtime/twig_cache/85/8544856496f09e1297219db2724fc320cb18a7eeae3fa6958d9e708f90a5d127.php:269
+msgid "Answer option:"
+msgstr ""
+
 #: tmp/runtime/twig_cache/8b/8b054ca49ecfdce2cc512b23714976af6e5fdb4d65ed4e9b290842d65bcc53e9.php:40
 msgid "Group 1: The first lot of questions"
 msgstr ""
@@ -25921,10 +25925,6 @@ msgstr ""
 
 #: tmp/runtime/twig_cache/c9/c911dbfad7ef10b0238c97a32d6fa3486fd671d1dd51d6145d34613cfdbf2e65.php:144
 msgid "Error: Theme \"%s\" is not installed."
-msgstr ""
-
-#: tmp/runtime/twig_cache/cd/cde0e9ce27b6dbf2f57c6b782fc1f131ecce2f880d318a8c5937c0bab2f525cc.php:269
-msgid "Answer option:"
 msgstr ""
 
 #: tmp/runtime/twig_cache/d5/d5c17408e446b337c788eb9b13cfcf024eeb7d664e183009f5bf740fec5b2b47.php:47
