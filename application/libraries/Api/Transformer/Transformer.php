@@ -5,6 +5,7 @@ namespace LimeSurvey\Api\Transformer;
 use LimeSurvey\Api\Transformer\Filter\Filter;
 use LimeSurvey\Api\Transformer\Formatter\FormatterInterface;
 use LimeSurvey\Api\Transformer\Registry\Registry;
+use LimeSurvey\Api\Transformer\Validator\ValidatorInterface;
 use LimeSurvey\Api\Transformer\Validator\ValidatorRequired;
 
 /**
@@ -169,7 +170,7 @@ class Transformer implements TransformerInterface
         if ($this->registry) {
             if (array_key_exists('formatter', $config)) {
                 $formatter = $this->registry->getFormatter(
-                    array_key_first($config['formatter'])
+                    strval(array_key_first($config['formatter']))
                 );
                 if ($formatter instanceof FormatterInterface) {
                     $value = $formatter->format($value, $config);
@@ -258,13 +259,19 @@ class Transformer implements TransformerInterface
         $errors = [];
         $value = $this->filter($value, $config);
         if ($this->registry) {
-            $errors = $this->registry->validate(
-                $key,
-                $value,
-                $config,
-                $data,
-                $options
-            );
+            foreach ($this->registry->getAllValidators() as $validator) {
+                /** @var ValidatorInterface $validator */
+                $result = $validator->validate(
+                    $key,
+                    $value,
+                    $config,
+                    $data,
+                    $options
+                );
+                if (is_array($result)) {
+                    $errors[$key][] = $result;
+                }
+            }
         }
 
         if (

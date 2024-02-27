@@ -58,6 +58,11 @@ class Registry
         return null;
     }
 
+    public function getAllValidators(): array
+    {
+        return $this->validators;
+    }
+
     /**
      * @param string $key
      * @param mixed $value
@@ -123,28 +128,5 @@ class Registry
         $this->setFormatter('mandatory', new FormatterMandatory());
         // Filters
         $this->setFilter('filter', new Filter());
-    }
-
-    /**
-     * Loops through all available validators and applies the validation.
-     * Returns array of errors.
-     * @param string $key
-     * @param mixed $value
-     * @param array $config
-     * @param array $data
-     * @param array $options
-     * @return array
-     */
-    public function validate($key, $value, $config, $data, $options = [])
-    {
-        $errors = [];
-        foreach ($this->validators as $validator) {
-            /** @var ValidatorInterface $validator */
-            $result = $validator->validate($key, $value, $config, $data, $options);
-            if (is_array($result)) {
-                $errors[$key][] = $result;
-            }
-        }
-        return $errors;
     }
 }
