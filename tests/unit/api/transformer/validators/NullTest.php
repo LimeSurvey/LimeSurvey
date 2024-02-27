@@ -2,7 +2,7 @@
 
 namespace ls\tests\unit\api;
 
-use LimeSurvey\Api\Transformer\Validators\NullValidator;
+use LimeSurvey\Api\Transformer\Validator\ValidatorNull;
 use LimeSurvey\DI;
 use ls\tests\TestBaseClass;
 use LimeSurvey\Api\Transformer\Transformer;
@@ -23,7 +23,7 @@ class NullTest extends TestBaseClass
             'null' => false
         ];
 
-        $validator = new NullValidator();
+        $validator = new ValidatorNull();
         $normalisedConfig = $validator->normaliseConfigValue($configEmpty);
         $this->assertTrue($normalisedConfig);
         $normalisedConfig = $validator->normaliseConfigValue($config);
@@ -53,7 +53,7 @@ class NullTest extends TestBaseClass
         $dataNotExists = [
             'not' => 'value'
         ];
-        $validator = new NullValidator();
+        $validator = new ValidatorNull();
         $result = $validator->validate($key, $valueNotNull, $configFalse, $dataNotNull);
         $this->assertTrue($result);
         $result = $validator->validate($key, $valueNull, $configTrue, $dataNull);

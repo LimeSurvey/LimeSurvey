@@ -2,7 +2,7 @@
 
 namespace ls\tests\unit\api;
 
-use LimeSurvey\Api\Transformer\Validators\LengthValidator;
+use LimeSurvey\Api\Transformer\Validator\ValidatorLength;
 use LimeSurvey\DI;
 use ls\tests\TestBaseClass;
 use LimeSurvey\Api\Transformer\Transformer;
@@ -26,7 +26,7 @@ class LengthTest extends TestBaseClass
             'length' => ['min' => 4]
         ];
 
-        $validator = new LengthValidator();
+        $validator = new ValidatorLength();
         $normalisedConfig = $validator->normaliseConfigValue($configEmpty);
         $this->assertFalse($normalisedConfig);
         $normalisedConfig = $validator->normaliseConfigValue($configMinMax);
@@ -69,7 +69,7 @@ class LengthTest extends TestBaseClass
         $dataNotExists = [
             'not' => 'value'
         ];
-        $validator = new LengthValidator();
+        $validator = new ValidatorLength();
         $result = $validator->validate($key, $value, $config, $data);
         $this->assertTrue($result);
         $result = $validator->validate($key, $value, $configMin, $data);

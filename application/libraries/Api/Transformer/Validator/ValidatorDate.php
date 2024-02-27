@@ -1,6 +1,6 @@
 <?php
 
-namespace LimeSurvey\Api\Transformer\Validators;
+namespace LimeSurvey\Api\Transformer\Validator;
 
 /**
  * Example config:
@@ -8,7 +8,7 @@ namespace LimeSurvey\Api\Transformer\Validators;
  * or
  * 'expires' => ['date' => true]
  */
-class DateValidator implements ValidatorInterface
+class ValidatorDate implements ValidatorInterface
 {
     private string $name = 'date';
 
@@ -36,7 +36,7 @@ class DateValidator implements ValidatorInterface
             $noTime = '^\d{4}-\d{2}-\d{2}$';
 
             $regex = "/($complete)|($noMili)|($noSec)|($noTime)/";
-            $regexValidator = new RegexValidator();
+            $regexValidator = new ValidatorRegex();
             $result = $regexValidator->validateByPattern($regex, $value);
 
             if (is_string($result)) {

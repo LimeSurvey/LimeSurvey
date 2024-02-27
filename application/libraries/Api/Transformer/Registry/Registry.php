@@ -2,21 +2,23 @@
 
 namespace LimeSurvey\Api\Transformer\Registry;
 
-use LimeSurvey\Api\Transformer\Filter\Filter;
-use LimeSurvey\Api\Transformer\Formatter\FormatterDateTimeToJson;
-use LimeSurvey\Api\Transformer\Formatter\FormatterInterface;
-use LimeSurvey\Api\Transformer\Formatter\FormatterIntToBool;
-use LimeSurvey\Api\Transformer\Formatter\FormatterMandatory;
-use LimeSurvey\Api\Transformer\Formatter\FormatterYnToBool;
-use LimeSurvey\Api\Transformer\Validators\DateValidator;
-use LimeSurvey\Api\Transformer\Validators\EmptyValidator;
-use LimeSurvey\Api\Transformer\Validators\LengthValidator;
-use LimeSurvey\Api\Transformer\Validators\NullValidator;
-use LimeSurvey\Api\Transformer\Validators\NumericalValidator;
-use LimeSurvey\Api\Transformer\Validators\RangeValidator;
-use LimeSurvey\Api\Transformer\Validators\RegexValidator;
-use LimeSurvey\Api\Transformer\Validators\RequiredValidator;
-use LimeSurvey\Api\Transformer\Validators\ValidatorInterface;
+use LimeSurvey\Api\Transformer\{
+    Filter\Filter,
+    Formatter\FormatterDateTimeToJson,
+    Formatter\FormatterInterface,
+    Formatter\FormatterIntToBool,
+    Formatter\FormatterMandatory,
+    Formatter\FormatterYnToBool,
+    Validator\ValidatorDate,
+    Validator\ValidatorEmpty,
+    Validator\ValidatorLength,
+    Validator\ValidatorNull,
+    Validator\ValidatorNumerical,
+    Validator\ValidatorRange,
+    Validator\ValidatorRegex,
+    Validator\ValidatorRequired,
+    Validator\ValidatorInterface
+};
 
 /**
  * Handles the registering of validators and formatters
@@ -83,14 +85,14 @@ class Registry
     private function initDefault()
     {
         // Validators
-        $this->setValidator('required', new RequiredValidator());
-        $this->setValidator('null', new NullValidator());
-        $this->setValidator('empty', new EmptyValidator());
-        $this->setValidator('length', new LengthValidator());
-        $this->setValidator('range', new RangeValidator());
-        $this->setValidator('numerical', new NumericalValidator());
-        $this->setValidator('pattern', new RegexValidator());
-        $this->setValidator('date', new DateValidator());
+        $this->setValidator('required', new ValidatorRequired());
+        $this->setValidator('null', new ValidatorNull());
+        $this->setValidator('empty', new ValidatorEmpty());
+        $this->setValidator('length', new ValidatorLength());
+        $this->setValidator('range', new ValidatorRange());
+        $this->setValidator('numerical', new ValidatorNumerical());
+        $this->setValidator('pattern', new ValidatorRegex());
+        $this->setValidator('date', new ValidatorDate());
         // Formatters
         $this->setFormatter('dateTimeToJson', new FormatterDateTimeToJson());
         $this->setFormatter('ynToBool', new FormatterYnToBool());

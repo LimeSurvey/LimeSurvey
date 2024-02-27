@@ -2,7 +2,7 @@
 
 namespace ls\tests\unit\api;
 
-use LimeSurvey\Api\Transformer\Validators\RangeValidator;
+use LimeSurvey\Api\Transformer\Validator\ValidatorRange;
 use LimeSurvey\DI;
 use ls\tests\TestBaseClass;
 use LimeSurvey\Api\Transformer\Transformer;
@@ -23,7 +23,7 @@ class RangeTest extends TestBaseClass
             'range' => ['A', 'B', 'C']
         ];
 
-        $validator = new RangeValidator();
+        $validator = new ValidatorRange();
         $normalisedConfig = $validator->normaliseConfigValue($configEmpty);
         $this->assertFalse($normalisedConfig);
         $normalisedConfig = $validator->normaliseConfigValue($config);
@@ -54,7 +54,7 @@ class RangeTest extends TestBaseClass
         $dataNotExists = [
             'not' => 'value'
         ];
-        $validator = new RangeValidator();
+        $validator = new ValidatorRange();
         $result = $validator->validate($key, $valueInRange, $configTrue, $dataInRange);
         $this->assertTrue($result);
         $result = $validator->validate($key, $valueInRange, $configFalse, $dataInRange);

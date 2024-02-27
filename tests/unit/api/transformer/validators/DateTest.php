@@ -2,7 +2,7 @@
 
 namespace ls\tests\unit\api;
 
-use LimeSurvey\Api\Transformer\Validators\DateValidator;
+use LimeSurvey\Api\Transformer\Validator\ValidatorDate;
 use LimeSurvey\DI;
 use ls\tests\TestBaseClass;
 use LimeSurvey\Api\Transformer\Transformer;
@@ -26,7 +26,7 @@ class DateTest extends TestBaseClass
             'date'
         ];
 
-        $validator = new DateValidator();
+        $validator = new ValidatorDate();
         $normalisedConfig = $validator->normaliseConfigValue($configEmpty);
         $this->assertFalse($normalisedConfig);
         $normalisedConfig = $validator->normaliseConfigValue($config);
@@ -71,7 +71,7 @@ class DateTest extends TestBaseClass
         $dataNotExists = [
             'not' => 'value'
         ];
-        $validator = new DateValidator();
+        $validator = new ValidatorDate();
         $result = $validator->validate($key, $valueDoesntMatch, $configFalse, $dataDoesntMatch);
         $this->assertTrue($result);
         $result = $validator->validate($key, $valueComplete, $configTrue, $dataComplete);

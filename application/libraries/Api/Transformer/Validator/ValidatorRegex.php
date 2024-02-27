@@ -1,12 +1,12 @@
 <?php
 
-namespace LimeSurvey\Api\Transformer\Validators;
+namespace LimeSurvey\Api\Transformer\Validator;
 
 /**
  * Example config:
  * 'googleAnalyticsApiKey' => ['pattern' => '/^[a-zA-Z\-\d]*$/']
  */
-class RegexValidator implements ValidatorInterface
+class ValidatorRegex implements ValidatorInterface
 {
     private string $name = 'pattern';
 

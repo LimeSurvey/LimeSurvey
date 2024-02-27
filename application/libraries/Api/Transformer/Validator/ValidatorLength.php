@@ -1,6 +1,6 @@
 <?php
 
-namespace LimeSurvey\Api\Transformer\Validators;
+namespace LimeSurvey\Api\Transformer\Validator;
 
 /**
  * Example config (requires min and/or max):
@@ -10,7 +10,7 @@ namespace LimeSurvey\Api\Transformer\Validators;
  * or
  * 'admin' => ['length' => ['max' => 50]]
  */
-class LengthValidator implements ValidatorInterface
+class ValidatorLength implements ValidatorInterface
 {
     private string $name = 'length';
 

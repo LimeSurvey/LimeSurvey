@@ -1,6 +1,6 @@
 <?php
 
-namespace LimeSurvey\Api\Transformer\Validators;
+namespace LimeSurvey\Api\Transformer\Validator;
 
 /**
  * Example config:
@@ -8,7 +8,7 @@ namespace LimeSurvey\Api\Transformer\Validators;
  * or required only on certain operation types
  * 'expires' => ['required' => ['create', 'update']]
  */
-class RequiredValidator implements ValidatorInterface
+class ValidatorRequired implements ValidatorInterface
 {
     private string $name = 'required';
 

@@ -2,7 +2,7 @@
 
 namespace ls\tests\unit\api;
 
-use LimeSurvey\Api\Transformer\Validators\RequiredValidator;
+use LimeSurvey\Api\Transformer\Validator\ValidatorRequired;
 use LimeSurvey\DI;
 use ls\tests\TestBaseClass;
 use LimeSurvey\Api\Transformer\Transformer;
@@ -34,7 +34,7 @@ class RequiredTest extends TestBaseClass
         $options = [
             'operation' => 'update'
         ];
-        $validator = new RequiredValidator();
+        $validator = new ValidatorRequired();
         $normalisedConfig = $validator->normaliseConfigValue($configEmpty, $options);
         $this->assertFalse($normalisedConfig);
         $normalisedConfig = $validator->normaliseConfigValue($configCreate, $options);
@@ -66,7 +66,7 @@ class RequiredTest extends TestBaseClass
         $dataNotExists = [
             'not' => 'value'
         ];
-        $validator = new RequiredValidator();
+        $validator = new ValidatorRequired();
         $result = $validator->validate($key, $value, $configTrue, $dataExists);
         $this->assertTrue($result);
         $result = $validator->validate($key, $value, $configFalse, $dataExists);

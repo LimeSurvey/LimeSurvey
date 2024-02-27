@@ -2,9 +2,8 @@
 
 namespace LimeSurvey\Api\Transformer;
 
-use LimeSurvey\Api\Transformer\Formatter\FormatterInterface;
 use LimeSurvey\Api\Transformer\Registry\Registry;
-use LimeSurvey\Api\Transformer\Validators\ValidatorInterface;
+use LimeSurvey\Api\Transformer\Validator\ValidatorInterface;
 
 /**
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)

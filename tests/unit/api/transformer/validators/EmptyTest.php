@@ -2,7 +2,7 @@
 
 namespace ls\tests\unit\api;
 
-use LimeSurvey\Api\Transformer\Validators\EmptyValidator;
+use LimeSurvey\Api\Transformer\Validator\ValidatorEmpty;
 use LimeSurvey\DI;
 use ls\tests\TestBaseClass;
 use LimeSurvey\Api\Transformer\Transformer;
@@ -23,7 +23,7 @@ class EmptyTest extends TestBaseClass
             'empty' => false
         ];
 
-        $validator = new EmptyValidator();
+        $validator = new ValidatorEmpty();
         $normalisedConfig = $validator->normaliseConfigValue($configEmpty);
         $this->assertTrue($normalisedConfig);
         $normalisedConfig = $validator->normaliseConfigValue($config);
@@ -58,7 +58,7 @@ class EmptyTest extends TestBaseClass
         $dataEmpty3 = [
             'test' => $valueEmpty3
         ];
-        $validator = new EmptyValidator();
+        $validator = new ValidatorEmpty();
         $result = $validator->validate($key, $valueNotEmpty, $configFalse, $dataNotEmpty);
         $this->assertTrue($result);
         $result = $validator->validate($key, $valueEmpty1, $configTrue, $dataEmpty1);

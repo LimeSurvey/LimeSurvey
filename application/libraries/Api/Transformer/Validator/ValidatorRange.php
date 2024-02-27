@@ -1,12 +1,12 @@
 <?php
 
-namespace LimeSurvey\Api\Transformer\Validators;
+namespace LimeSurvey\Api\Transformer\Validator;
 
 /**
  * Example config:
  * 'showGroupInfo' => ['range' => ['B', 'N', 'D', 'X', 'I']]
  */
-class RangeValidator implements ValidatorInterface
+class ValidatorRange implements ValidatorInterface
 {
     private string $name = 'range';
 

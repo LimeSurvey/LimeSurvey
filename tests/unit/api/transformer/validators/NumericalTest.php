@@ -2,7 +2,7 @@
 
 namespace ls\tests\unit\api;
 
-use LimeSurvey\Api\Transformer\Validators\NumericalValidator;
+use LimeSurvey\Api\Transformer\Validator\ValidatorNumerical;
 use LimeSurvey\DI;
 use ls\tests\TestBaseClass;
 use LimeSurvey\Api\Transformer\Transformer;
@@ -35,7 +35,7 @@ class NumericalTest extends TestBaseClass
             'numerical' => ['min' => 1, 'max' => 50]
         ];
 
-        $validator = new NumericalValidator();
+        $validator = new ValidatorNumerical();
         $normalisedConfig = $validator->normaliseConfigValue($configEmpty);
         $this->assertFalse($normalisedConfig);
         $normalisedConfig = $validator->normaliseConfigValue($configTrue);
@@ -85,7 +85,7 @@ class NumericalTest extends TestBaseClass
         $dataNotExists = [
             'not' => 'value'
         ];
-        $validator = new NumericalValidator();
+        $validator = new ValidatorNumerical();
         $result = $validator->validate($key, $valueNumerical, $configTrue, $dataNumerical);
         $this->assertTrue($result);
         $result = $validator->validate($key, $valueNumerical, $configMinMax, $dataNumerical);

@@ -2,7 +2,7 @@
 
 namespace ls\tests\unit\api;
 
-use LimeSurvey\Api\Transformer\Validators\RegexValidator;
+use LimeSurvey\Api\Transformer\Validator\ValidatorRegex;
 use LimeSurvey\DI;
 use ls\tests\TestBaseClass;
 use LimeSurvey\Api\Transformer\Transformer;
@@ -23,7 +23,7 @@ class RegexTest extends TestBaseClass
             'pattern' => '/^[a-zA-Z0-9]+$/'
         ];
 
-        $validator = new RegexValidator();
+        $validator = new ValidatorRegex();
         $normalisedConfig = $validator->normaliseConfigValue($configEmpty);
         $this->assertFalse($normalisedConfig);
         $normalisedConfig = $validator->normaliseConfigValue($config);
@@ -54,7 +54,7 @@ class RegexTest extends TestBaseClass
         $dataNotExists = [
             'not' => 'value'
         ];
-        $validator = new RegexValidator();
+        $validator = new ValidatorRegex();
         $result = $validator->validate($key, $valueMatches, $configTrue, $dataExists);
         $this->assertTrue($result);
         $result = $validator->validate($key, $valueMatches, $configFalse, $dataDoesntMatch);

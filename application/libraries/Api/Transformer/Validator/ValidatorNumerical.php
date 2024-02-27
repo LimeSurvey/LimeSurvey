@@ -1,6 +1,6 @@
 <?php
 
-namespace LimeSurvey\Api\Transformer\Validators;
+namespace LimeSurvey\Api\Transformer\Validator;
 
 /**
  * Example config (optional min and max):
@@ -12,7 +12,7 @@ namespace LimeSurvey\Api\Transformer\Validators;
  * or
  * 'tokenLength' => ['numerical' => ['min' => -1, 'max' => 50]]
  */
-class NumericalValidator implements ValidatorInterface
+class ValidatorNumerical implements ValidatorInterface
 {
     private string $name = 'numerical';
 
