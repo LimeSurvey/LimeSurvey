@@ -6,8 +6,6 @@ class FormatterIntToBool implements FormatterInterface
 {
     private string $name = 'intToBool';
     /** @var bool */
-    private $active = false;
-    /** @var bool */
     private $revert = false;
 
     /**
@@ -34,13 +32,9 @@ class FormatterIntToBool implements FormatterInterface
     public function format($value, $config, $options = [])
     {
         $this->setClassBasedOnConfig($config);
-        if ($this->active) {
-            return $this->revert
-                ? $this->revert($value)
-                : $this->apply($value);
-        } else {
-            return $value;
-        }
+        return $this->revert
+            ? $this->revert($value)
+            : $this->apply($value);
     }
 
     /**
@@ -81,40 +75,19 @@ class FormatterIntToBool implements FormatterInterface
 
     /**
      * Checks config for this specific formatter,
-     * if so it could adjust class properties based on the config.
-     * Returns true if this formatter is configured, false otherwise.
+     * and adjusts class properties based on the config.
      * @param array $config
      * @return void
      */
     public function setClassBasedOnConfig($config)
     {
-        $this->resetClassVariables();
         if (isset($config['formatter'][$this->name])) {
-            if (is_array($config['formatter'][$this->name])) {
-                if (
-                    array_key_exists(
-                        'revert',
-                        $config['formatter'][$this->name]
-                    )
-                ) {
-                    $this->revert = $config['formatter'][$this->name]['revert'];
+            $formatterConfig = $config['formatter'][$this->name];
+            if (is_array($formatterConfig)) {
+                if (array_key_exists('revert', $formatterConfig)) {
+                    $this->revert = $formatterConfig['revert'];
                 }
             }
-            $this->active = true;
         }
-    }
-
-    public function isActive(): bool
-    {
-        return $this->active;
-    }
-
-    /**
-     * @return void
-     */
-    private function resetClassVariables()
-    {
-        $this->active = false;
-        $this->revert = false;
     }
 }

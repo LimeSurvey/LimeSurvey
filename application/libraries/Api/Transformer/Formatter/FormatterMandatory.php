@@ -29,13 +29,9 @@ class FormatterMandatory extends FormatterYnToBool
     public function format($value, $config, $options = [])
     {
         $this->setClassBasedOnConfig($config);
-        if ($this->active) {
-            return $this->revert
-                ? $this->revert($value)
-                : $this->apply($value);
-        } else {
-            return $value;
-        }
+        return $this->revert
+            ? $this->revert($value)
+            : $this->apply($value);
     }
 
     /**
@@ -48,33 +44,5 @@ class FormatterMandatory extends FormatterYnToBool
     {
         $string = parent::revert($value);
         return $string === null ? 'S' : $string;
-    }
-
-    /**
-     * Checks config for this specific formatter,
-     * if so it could adjust class properties based on the config.
-     * Returns true if this formatter is configured, false otherwise.
-     * @param array $config
-     * @return void
-     */
-    public function setClassBasedOnConfig($config)
-    {
-        $this->resetClassVariables();
-        if (isset($config['formatter'][$this->name])) {
-            $this->active = true;
-        }
-    }
-
-    public function isActive(): bool
-    {
-        return $this->active;
-    }
-
-    /**
-     * @return void
-     */
-    private function resetClassVariables()
-    {
-        $this->active = false;
     }
 }

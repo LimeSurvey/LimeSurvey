@@ -24,9 +24,15 @@ class Filter
     private $filterParams = [];
 
     /**
+     * Tries to execute a data transforming filter.
+     * This can deal with basic php functions, e.g. trim, strtolower, etc
+     * where the value is always passed as the first argument.
+     *
+     * @param ?mixed $value
      * @param array|string $config
+     * @return ?mixed
      */
-    public function __construct($config)
+    public function filter($value, $config)
     {
         if (is_array($config) && !empty($config)) {
             $this->filter = array_key_first($config);
@@ -34,18 +40,6 @@ class Filter
         } elseif (is_string($config) && !empty($config)) {
             $this->filter = $config;
         }
-    }
-
-    /**
-     * Tries to execute a data transforming filter.
-     * This can deal with basic php functions, e.g. trim, strtolower, etc
-     * where the value is always passed as the first argument.
-     *
-     * @param ?mixed $value
-     * @return ?mixed
-     */
-    public function filter($value)
-    {
         $filteredValue = false;
         if (is_callable($this->filter)) {
             array_unshift($this->filterParams, $value);

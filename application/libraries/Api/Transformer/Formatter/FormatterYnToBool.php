@@ -6,8 +6,6 @@ class FormatterYnToBool implements FormatterInterface
 {
     private string $name = 'ynToBool';
     /** @var bool */
-    public $active = false;
-    /** @var bool */
     public $revert = false;
     /** @var bool */
     public $lowercaseCase = false;
@@ -46,13 +44,9 @@ class FormatterYnToBool implements FormatterInterface
     public function format($value, $config, $options = [])
     {
         $this->setClassBasedOnConfig($config);
-        if ($this->active) {
-            return $this->revert
-                ? $this->revert($value)
-                : $this->apply($value);
-        } else {
-            return $value;
-        }
+        return $this->revert
+            ? $this->revert($value)
+            : $this->apply($value);
     }
 
     /**
@@ -105,50 +99,22 @@ class FormatterYnToBool implements FormatterInterface
 
     /**
      * Checks config for this specific formatter,
-     * if so it could adjust class properties based on the config.
-     * Returns true if this formatter is configured, false otherwise.
+     * and adjusts class properties based on the config.
      * @param array $config
      * @return void
      */
     public function setClassBasedOnConfig($config)
     {
-        $this->resetClassVariables();
         if (isset($config['formatter'][$this->name])) {
-            if (is_array($config['formatter'][$this->name])) {
-                if (
-                    array_key_exists(
-                        'revert',
-                        $config['formatter'][$this->name]
-                    )
-                ) {
-                    $this->revert = $config['formatter'][$this->name]['revert'];
+            $formatterConfig = $config['formatter'][$this->name];
+            if (is_array($formatterConfig)) {
+                if (array_key_exists('revert', $formatterConfig)) {
+                    $this->revert = $formatterConfig['revert'];
                 }
-                if (
-                    array_key_exists(
-                        'lowercaseCase',
-                        $config['formatter'][$this->name]
-                    )
-                ) {
-                    $this->lowercaseCase = $config['formatter'][$this->name]['lowercaseCase'];
+                if (array_key_exists('lowercaseCase', $formatterConfig)) {
+                    $this->lowercaseCase = $formatterConfig['lowercaseCase'];
                 }
             }
-            $this->active = true;
         }
-    }
-
-    public function isActive(): bool
-    {
-        return $this->active;
-    }
-
-    /**
-     * @return void
-     */
-    private function resetClassVariables()
-    {
-        $this->name = 'ynToBool';
-        $this->active = false;
-        $this->revert = false;
-        $this->lowercaseCase = false;
     }
 }

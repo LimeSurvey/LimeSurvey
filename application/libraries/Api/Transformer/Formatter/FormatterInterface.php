@@ -12,11 +12,4 @@ interface FormatterInterface
      * @return ?mixed
      */
     public function format($value, $config, $options = []);
-
-
-    /**
-     * Returns boolean indicating whether this formatter is active.
-     * @return boolean
-     */
-    public function isActive();
 }

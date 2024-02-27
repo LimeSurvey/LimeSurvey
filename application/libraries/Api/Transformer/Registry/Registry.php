@@ -5,7 +5,6 @@ namespace LimeSurvey\Api\Transformer\Registry;
 use LimeSurvey\Api\Transformer\{
     Filter\Filter,
     Formatter\FormatterDateTimeToJson,
-    Formatter\FormatterInterface,
     Formatter\FormatterIntToBool,
     Formatter\FormatterMandatory,
     Formatter\FormatterYnToBool,
@@ -27,11 +26,13 @@ class Registry
 {
     private array $validators;
     private array $formatters;
+    private array $filters;
 
     public function __construct()
     {
         $this->validators = [];
         $this->formatters = [];
+        $this->filters = [];
         $this->initDefault();
     }
 
@@ -80,6 +81,28 @@ class Registry
     }
 
     /**
+     * @param string $key
+     * @param mixed $value
+     * @return void
+     */
+    public function setFilter($key, $value): void
+    {
+        $this->filters[$key] = $value;
+    }
+
+    /**
+     * @param string $key
+     * @return mixed|null
+     */
+    public function getFilter($key = 'filter')
+    {
+        if (isset($this->filters[$key])) {
+            return $this->filters[$key];
+        }
+        return null;
+    }
+
+    /**
      * @return void
      */
     private function initDefault()
@@ -98,6 +121,8 @@ class Registry
         $this->setFormatter('ynToBool', new FormatterYnToBool());
         $this->setFormatter('intToBool', new FormatterIntToBool());
         $this->setFormatter('mandatory', new FormatterMandatory());
+        // Filters
+        $this->setFilter('filter', new Filter());
     }
 
     /**
@@ -121,45 +146,5 @@ class Registry
             }
         }
         return $errors;
-    }
-
-    /**
-     * If the config contains a formatter option,
-     * it loops through all available formatters and attempts to format
-     * the value. The loop will stop when a formatter actually formats the value,
-     * as there can be only one formatter per key.
-     * @param mixed $value
-     * @param array $config
-     * @return mixed
-     */
-    public function format($value, $config)
-    {
-        if (array_key_exists('formatter', $config)) {
-            foreach ($this->formatters as $formatter) {
-                /* @var FormatterInterface $formatter */
-                $value = $formatter->format($value, $config);
-                if ($formatter->isActive()) {
-                    break;
-                }
-            }
-        }
-
-        return $value;
-    }
-
-    /**
-     * If the config contains a filter option,
-     * it will apply the filter to the value.
-     * @param mixed $value
-     * @param array $config
-     * @return mixed
-     */
-    public function filter($value, $config)
-    {
-        if (isset($config['filter']) && !is_null($value)) {
-            $filter = new Filter($config['filter']);
-            return $filter->filter($value);
-        }
-        return $value;
     }
 }

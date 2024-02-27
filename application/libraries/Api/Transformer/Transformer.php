@@ -2,6 +2,8 @@
 
 namespace LimeSurvey\Api\Transformer;
 
+use LimeSurvey\Api\Transformer\Filter\Filter;
+use LimeSurvey\Api\Transformer\Formatter\FormatterInterface;
 use LimeSurvey\Api\Transformer\Registry\Registry;
 use LimeSurvey\Api\Transformer\Validator\ValidatorRequired;
 
@@ -155,6 +157,8 @@ class Transformer implements TransformerInterface
 
     /**
      * Format Value
+     * Looks for possible formatter in the config, tries to
+     * get it from the registry and calls the format method on it.
      *
      * @param mixed $value
      * @param array $config
@@ -163,7 +167,14 @@ class Transformer implements TransformerInterface
     private function format($value, $config)
     {
         if ($this->registry) {
-            $value = $this->registry->format($value, $config);
+            if (array_key_exists('formatter', $config)) {
+                $formatter = $this->registry->getFormatter(
+                    array_key_first($config['formatter'])
+                );
+                if ($formatter instanceof FormatterInterface) {
+                    $value = $formatter->format($value, $config);
+                }
+            }
         }
 
         return $value;
@@ -179,7 +190,12 @@ class Transformer implements TransformerInterface
     private function filter($value, $config)
     {
         if ($this->registry) {
-            $value = $this->registry->filter($value, $config);
+            if (isset($config['filter']) && !is_null($value)) {
+                $filter = $this->registry->getFilter();
+                if ($filter instanceof Filter) {
+                    $value = $filter->filter($value, $config['filter']);
+                }
+            }
         }
 
         return $value;

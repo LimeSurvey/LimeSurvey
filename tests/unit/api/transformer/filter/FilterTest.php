@@ -17,8 +17,8 @@ class FilterTest extends TestBaseClass
     {
         $config = 'trim';
         $value = '  test  ';
-        $filter = new Filter($config);
-        $this->assertEquals('test', $filter->filter($value));
+        $filter = new Filter();
+        $this->assertEquals('test', $filter->filter($value, $config));
     }
 
     /**
@@ -28,8 +28,8 @@ class FilterTest extends TestBaseClass
     {
         $config = ['trim' => [' t!']];
         $value = '  test!  ';
-        $filter = new Filter($config);
-        $this->assertEquals('es', $filter->filter($value));
+        $filter = new Filter();
+        $this->assertEquals('es', $filter->filter($value, $config));
     }
 
     /**
@@ -39,7 +39,7 @@ class FilterTest extends TestBaseClass
     {
         $config = ['sdf' => [' t!']];
         $value = '  test!  ';
-        $filter = new Filter($config);
-        $this->assertEquals($value, $filter->filter($value));
+        $filter = new Filter();
+        $this->assertEquals($value, $filter->filter($value, $config));
     }
 }
