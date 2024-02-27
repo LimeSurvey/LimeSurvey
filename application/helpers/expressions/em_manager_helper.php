@@ -5143,8 +5143,8 @@ class LimeExpressionManager
                         }
                         break;
                     case Question::QT_L_LIST: //NUMERICAL QUESTION TYPE
-                        if ($val !== null) {
-                            $val = substr($val, 0, 5); 
+                        if ($val !== null && substr_compare($key, 'other', -strlen('other')) !== 0) {
+                            $val = substr($val, 0, 5);
                         }
                         break;
                     default:
