@@ -34,6 +34,14 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.4.9 (build 240226) to 6.4.10 (build 240228) February 27, 2024
+-Fixed issue: Survey permission improvements (#3759) (lajosarpad)
+-Fixed issue #CT-674: other field in list(radio) is cut off after 5 characters (#3763) (Carsten Schmitz)
+-Fixed issue #19435: Input validation does not work correctly with input numeric when reload response (#3753) (Denis Chenu)
+#Updated translation: Japanese by d_inoue
+#Updated translation: French (France) by DenisChenu, mapage
+
+
 Changes from 6.4.8 (build 240221) to 6.4.9 (build 240226) February 26, 2024
 -Fixed issue: getQuestionQttributesForEMPerformance performance optimization (#3751) (lajosarpad)
 -Fixed issue: HTML tooltips for question attributes not properly showing (Carsten Schmitz)
