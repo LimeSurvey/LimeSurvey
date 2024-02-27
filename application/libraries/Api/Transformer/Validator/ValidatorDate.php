@@ -22,7 +22,7 @@ class ValidatorDate implements ValidatorInterface
      */
     public function validate($key, $value, $config, $data, $options = [])
     {
-        $config[$this->name] = $this->normaliseConfigValue($config, $options);
+        $config[$this->name] = $this->normaliseConfigValue($config);
         $messages = [];
         if ($config[$this->name] !== false && !empty($value)) {
             // we expect incoming dates to be in ISO 8601 format (Z at the end is optional)
