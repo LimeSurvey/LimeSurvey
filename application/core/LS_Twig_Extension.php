@@ -743,7 +743,7 @@ class LS_Twig_Extension extends Twig_Extension
             }
         }
 
-        $trackURL = htmlspecialchars($surveyName . '-[' . $surveyId . ']/[' . $page . ']-' . $groupName);
+        $trackURL = htmlspecialchars($surveyName . '-[' . $surveyId . ']/[' . $page . ']-' . $groupName, ENT_QUOTES);
         return $trackURL;
     }
 }
