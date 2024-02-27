@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2024-02-26 12:47:25+00:00\n"
+"POT-Creation-Date: 2024-02-27 19:46:30+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -2157,7 +2157,7 @@ msgstr ""
 #: application/controllers/SurveyAdministrationController.php:1046
 #: application/extensions/UserPermissionsWidget/views/table.php:18
 #: application/helpers/userstatistics_helper.php:2719
-#: application/models/Permission.php:901
+#: application/models/Permission.php:913
 #: application/views/admin/labels/partials/topbarBtns_export/rightSideButtons.php:25
 #: application/views/admin/participants/massive_actions/_selector.php:65
 #: application/views/admin/participants/modal_subviews/_exportCSV.php:44
@@ -2212,8 +2212,8 @@ msgstr ""
 #: application/models/Assessment.php:118 application/models/Box.php:162
 #: application/models/FailedEmail.php:243 application/models/LabelSet.php:159
 #: application/models/ParticipantAttributeName.php:126
-#: application/models/Permission.php:671 application/models/Permission.php:680
-#: application/models/Permission.php:899
+#: application/models/Permission.php:674 application/models/Permission.php:683
+#: application/models/Permission.php:911
 #: application/models/Permissiontemplates.php:220
 #: application/models/Question.php:754 application/models/QuestionGroup.php:341
 #: application/models/Quota.php:237 application/models/Quota.php:247
@@ -2440,7 +2440,7 @@ msgstr ""
 #: application/controllers/admin/Themes.php:394
 #: application/core/SurveyCommonAction.php:1047
 #: application/helpers/SurveyRuntimeHelper.php:1452
-#: application/helpers/frontend_helper.php:2239
+#: application/helpers/frontend_helper.php:2245
 #: application/models/services/CopySurveyResources.php:68
 #: application/models/services/FilterImportedResources.php:69
 #: application/views/admin/participants/participantsPanel_view.php:19
@@ -3409,7 +3409,7 @@ msgstr ""
 
 #: application/controllers/ThemeOptionsController.php:481
 #: application/core/LsDefaultDataSets.php:901
-#: application/models/Permission.php:852
+#: application/models/Permission.php:864
 #: application/views/admin/super/_configuration_menu.php:147
 #: application/views/admin/super/welcome.php:26
 msgid "Themes"
@@ -7040,7 +7040,7 @@ msgid "The answer to the security question is incorrect."
 msgstr ""
 
 #: application/controllers/survey/SurveyIndex.php:445
-#: application/helpers/frontend_helper.php:1262
+#: application/helpers/frontend_helper.php:1268
 msgid "You have exceeded the number of maximum access code validation attempts. Please wait %d minutes before trying again."
 msgstr ""
 
@@ -7414,7 +7414,7 @@ msgstr ""
 #: application/core/LsDefaultDataSets.php:725
 #: application/core/LsDefaultDataSets.php:726
 #: application/core/LsDefaultDataSets.php:727
-#: application/models/Permission.php:870
+#: application/models/Permission.php:882
 #: application/views/admin/token/massive_actions/_selector.php:129
 msgid "Central participant database"
 msgstr ""
@@ -7628,7 +7628,7 @@ msgid "Manage administrators"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:892
-#: application/models/Permission.php:857
+#: application/models/Permission.php:869
 #: application/views/admin/labels/import_view.php:36
 #: application/views/admin/super/_configuration_menu.php:156
 #: application/views/admin/super/welcome.php:24
@@ -9349,7 +9349,7 @@ msgid "Please fix the following input errors:"
 msgstr ""
 
 #: application/extensions/BreadcrumbWidget/BreadcrumbWidget.php:85
-#: application/models/Permission.php:823
+#: application/models/Permission.php:835
 #: application/views/admin/globalsettings/_overview.php:19
 #: application/views/admin/super/_configuration_menu.php:49
 #: application/views/admin/survey/copySurvey_view.php:28
@@ -9554,7 +9554,7 @@ msgid "Permission"
 msgstr ""
 
 #: application/extensions/UserPermissionsWidget/views/table.php:13
-#: application/models/Permission.php:896
+#: application/models/Permission.php:908
 #: application/views/admin/surveymenu/_form.php:106
 #: application/views/admin/surveymenu_entries/_form.php:279
 #: application/views/admin/surveymenu_entries/create.php:7
@@ -9572,7 +9572,7 @@ msgid "Create"
 msgstr ""
 
 #: application/extensions/UserPermissionsWidget/views/table.php:14
-#: application/models/Permission.php:897
+#: application/models/Permission.php:909
 #: application/views/admin/user/setuserpermissions.php:27
 #: application/views/surveyPermissions/partial/editpermission.php:17
 #: application/views/userManagement/massiveAction/_updatepermissions.php:31
@@ -9583,7 +9583,7 @@ msgid "View/read"
 msgstr ""
 
 #: application/extensions/UserPermissionsWidget/views/table.php:15
-#: application/models/Permission.php:898
+#: application/models/Permission.php:910
 #: application/views/admin/labels/editlabel_view.php:81
 #: application/views/admin/pluginmanager/uploadConfirm.php:75
 #: application/views/admin/user/setuserpermissions.php:28
@@ -9596,7 +9596,7 @@ msgid "Update"
 msgstr ""
 
 #: application/extensions/UserPermissionsWidget/views/table.php:17
-#: application/models/Permission.php:900
+#: application/models/Permission.php:912
 #: application/views/admin/dataentry/vvimport.php:135
 #: application/views/admin/participants/partial/topbarBtns/leftSideButtons.php:53
 #: application/views/admin/survey/subview/import_ressources_modal.php:29
@@ -11375,23 +11375,23 @@ msgstr ""
 msgid "Missing %s closing left parentheses"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:2163
+#: application/helpers/expressions/em_core_helper.php:2162
 msgid "Function must have at least %s argument|Function must have at least %s arguments"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:2246
+#: application/helpers/expressions/em_core_helper.php:2245
 msgid "Function does not support %s arguments"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:2247
+#: application/helpers/expressions/em_core_helper.php:2246
 msgid "Function supports this many arguments, where -1=unlimited: %s"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:2459
+#: application/helpers/expressions/em_core_helper.php:2458
 msgid "Tried to pop value off of empty stack"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:3280
+#: application/helpers/expressions/em_core_helper.php:3279
 msgid "Invalid PERL Regular Expression: %s"
 msgstr ""
 
@@ -11866,95 +11866,95 @@ msgstr ""
 msgid "Usage of + with numeric value, see manual about usage of sum."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:297
+#: application/helpers/frontend_helper.php:299
 msgid "Sorry, the uploaded file (%s) is larger than the allowed filesize of %s KB."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:308
-#: application/helpers/frontend_helper.php:312
+#: application/helpers/frontend_helper.php:310
+#: application/helpers/frontend_helper.php:314
 msgid "Sorry, only %s extensions are allowed!"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:323
+#: application/helpers/frontend_helper.php:325
 msgid "The minimum number of files has not been uploaded."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:385
+#: application/helpers/frontend_helper.php:387
 msgid "Invalid access code"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:553
+#: application/helpers/frontend_helper.php:556
 msgid "Basic admin notification could not be sent because of error: %s"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:600
+#: application/helpers/frontend_helper.php:605
 msgid "Detailed admin notification could not be sent because of error: %s"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:723
+#: application/helpers/frontend_helper.php:729
 msgid "Did Not Save"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:725
+#: application/helpers/frontend_helper.php:731
 msgid "An unexpected error has occurred and your responses cannot be saved."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:729
+#: application/helpers/frontend_helper.php:735
 msgid "Your responses have not been lost and have been emailed to the survey administrator and will be entered into our database at a later point."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:734
+#: application/helpers/frontend_helper.php:740
 msgid "An error occurred saving a response to survey %s"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:735
+#: application/helpers/frontend_helper.php:741
 msgid "DATA TO BE ENTERED"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:744
+#: application/helpers/frontend_helper.php:750
 msgid "SQL CODE THAT FAILED"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:748
+#: application/helpers/frontend_helper.php:754
 msgid "ERROR MESSAGE"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:754
+#: application/helpers/frontend_helper.php:760
 msgid "Error saving results"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:760
+#: application/helpers/frontend_helper.php:766
 msgid "Try to submit again"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1275
+#: application/helpers/frontend_helper.php:1281
 msgid "The access code you have provided is either not valid, or has already been used."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1434
-#: application/helpers/frontend_helper.php:1459
+#: application/helpers/frontend_helper.php:1440
+#: application/helpers/frontend_helper.php:1465
 msgid "This survey cannot be tested or completed for the following reason(s):"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1438
+#: application/helpers/frontend_helper.php:1444
 #: tmp/runtime/twig_cache/94/94c1892a8db15feecb2c277e044caa42c227e9a10ce7e170f1e9e067ae457466.php:111
 #: tmp/runtime/twig_cache/e5/e5c7f01e7d680e2df67745615f7d0ac54db1d00a0c3ed6d5a97903a4198c4c73.php:112
 msgid "There are no questions in this survey."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1442
+#: application/helpers/frontend_helper.php:1448
 msgid "There are empty question groups in this survey - please create at least one question within a question group."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:2238
+#: application/helpers/frontend_helper.php:2244
 msgid "By continuing this survey you approve the data protection policy of the service provider."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:2240
+#: application/helpers/frontend_helper.php:2246
 msgid "View policy"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:2241
+#: application/helpers/frontend_helper.php:2247
 msgid "Please be patient until you are forwarded to the final URL."
 msgstr ""
 
@@ -14792,19 +14792,19 @@ msgstr ""
 msgid "Can edit?"
 msgstr ""
 
-#: application/models/Permission.php:158
+#: application/models/Permission.php:161
 msgid "Superadministrator"
 msgstr ""
 
-#: application/models/Permission.php:159
+#: application/models/Permission.php:162
 msgid "Unlimited administration permissions"
 msgstr ""
 
-#: application/models/Permission.php:168 application/models/Permission.php:169
+#: application/models/Permission.php:171 application/models/Permission.php:172
 msgid "Use internal database authentication"
 msgstr ""
 
-#: application/models/Permission.php:660 application/models/User.php:605
+#: application/models/Permission.php:663 application/models/User.php:605
 #: application/views/SurveysGroupsPermission/subviews/currentUsersList.php:22
 #: application/views/SurveysGroupsPermission/subviews/currentUsersList.php:23
 #: application/views/surveyPermissions/_overview_table.php:37
@@ -14817,33 +14817,33 @@ msgstr ""
 msgid "Edit permissions"
 msgstr ""
 
-#: application/models/Permission.php:681
+#: application/models/Permission.php:684
 #: application/views/surveyPermissions/_overview_table.php:49
 msgid "Delete user survey permissions"
 msgstr ""
 
-#: application/models/Permission.php:682
+#: application/models/Permission.php:685
 #: application/views/responses/partial/topbarBtns/responseViewTopbarRight_view.php:20
 #: application/views/surveyPermissions/_overview_table.php:43
 #: application/views/userGroup/partial/topbarBtns_manageGroup/leftSideButtons.php:51
 msgid "Are you sure you want to delete this entry?"
 msgstr ""
 
-#: application/models/Permission.php:824
+#: application/models/Permission.php:836
 msgid "Permission to create surveys (for which all permissions are automatically given) and view, update and delete surveys from other users"
 msgstr ""
 
-#: application/models/Permission.php:833
+#: application/models/Permission.php:845
 #: application/views/surveyAdministration/listSurveys_view.php:16
 #: application/views/surveyAdministration/listSurveys_view.php:29
 msgid "Survey groups"
 msgstr ""
 
-#: application/models/Permission.php:834
+#: application/models/Permission.php:846
 msgid "Permission to create survey groups (for which all permissions are automatically given) and view, update and delete survey groups from other users."
 msgstr ""
 
-#: application/models/Permission.php:840
+#: application/models/Permission.php:852
 #: application/views/admin/globalsettings/_overview.php:16
 #: application/views/admin/super/_configuration_menu.php:45
 #: application/views/admin/super/_configuration_menu.php:200
@@ -14851,36 +14851,36 @@ msgstr ""
 msgid "Users"
 msgstr ""
 
-#: application/models/Permission.php:841
+#: application/models/Permission.php:853
 msgid "Permission to create, view, update and delete users"
 msgstr ""
 
-#: application/models/Permission.php:847
+#: application/models/Permission.php:859
 #: application/views/admin/super/_configuration_menu.php:216
 msgid "User groups"
 msgstr ""
 
-#: application/models/Permission.php:848
+#: application/models/Permission.php:860
 msgid "Permission to create, view, update and delete user groups"
 msgstr ""
 
-#: application/models/Permission.php:853
+#: application/models/Permission.php:865
 msgid "Permission to create, view, update, delete, export and import themes"
 msgstr ""
 
-#: application/models/Permission.php:858
+#: application/models/Permission.php:870
 msgid "Permission to create, view, update, delete, export and import label sets/labels"
 msgstr ""
 
-#: application/models/Permission.php:865
+#: application/models/Permission.php:877
 msgid "Settings & Plugins"
 msgstr ""
 
-#: application/models/Permission.php:866
+#: application/models/Permission.php:878
 msgid "Permission to view and update global settings & plugins and to delete and import plugins"
 msgstr ""
 
-#: application/models/Permission.php:871
+#: application/models/Permission.php:883
 msgid "Permission to create participants in the central participants database (for which all permissions are automatically given) and view, update and delete participants from other users"
 msgstr ""
 
