@@ -47,20 +47,18 @@ class ValidatorDate implements ValidatorInterface
         return empty($messages) ? true : $messages;
     }
 
-    public function normaliseConfigValue(
-        $config,
-        $options = []
-    ) {
+    /**
+     * Normalises the config value for this validator
+     * @param array $config
+     * @return mixed
+     */
+    public function normaliseConfigValue($config)
+    {
         // date is also allowed as array value
         $key = array_search($this->name, $config, true);
         if (is_int($key)) {
             $config[$this->name] = true;
         }
-        return $config[$this->name] ?? $this->getDefaultConfig();
-    }
-
-    public function getDefaultConfig()
-    {
-        return false;
+        return $config[$this->name] ?? false;
     }
 }

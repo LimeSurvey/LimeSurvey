@@ -21,7 +21,7 @@ class ValidatorRegex implements ValidatorInterface
     public function validate($key, $value, $config, $data, $options = [])
     {
         $messages = [];
-        $config[$this->name] = $this->normaliseConfigValue($config, $options);
+        $config[$this->name] = $this->normaliseConfigValue($config);
         if ($config[$this->name] !== false && !empty($value)) {
             $result = $this->validateByPattern($config[$this->name], $value);
             if (is_string($result)) {
@@ -49,15 +49,13 @@ class ValidatorRegex implements ValidatorInterface
         return $matched;
     }
 
-    public function normaliseConfigValue(
-        $config,
-        $options = []
-    ) {
-        return $config[$this->name] ?? $this->getDefaultConfig();
-    }
-
-    public function getDefaultConfig()
+    /**
+     * Normalises the config value for this validator
+     * @param array $config
+     * @return mixed
+     */
+    public function normaliseConfigValue($config)
     {
-        return false;
+        return $config[$this->name] ?? false;
     }
 }

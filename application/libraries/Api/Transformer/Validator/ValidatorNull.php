@@ -20,7 +20,7 @@ class ValidatorNull implements ValidatorInterface
      */
     public function validate($key, $value, $config, $data, $options = [])
     {
-        $config[$this->name] = $this->normaliseConfigValue($config, $options);
+        $config[$this->name] = $this->normaliseConfigValue($config);
         $messages = [];
         if ($value === null && $config[$this->name] === false) {
             $messages[] = $key . ' cannot be null';
@@ -29,15 +29,13 @@ class ValidatorNull implements ValidatorInterface
         return empty($messages) ? true : $messages;
     }
 
-    public function normaliseConfigValue(
-        $config,
-        $options = []
-    ) {
-        return isset($config[$this->name]) ? (bool)$config[$this->name] : $this->getDefaultConfig();
-    }
-
-    public function getDefaultConfig()
+    /**
+     * Normalises the config value for this validator
+     * @param array $config
+     * @return boolean
+     */
+    public function normaliseConfigValue($config)
     {
-        return true;
+        return !isset($config[$this->name]) || $config[$this->name];
     }
 }

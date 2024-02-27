@@ -14,19 +14,4 @@ interface ValidatorInterface
      * @return array|bool Returns true on success or array of errors.
      */
     public function validate($key, $value, $config, $data, $options = []);
-
-    /**
-     * Returns the default config for this validator
-     * @return mixed
-     */
-    public function getDefaultConfig();
-
-
-    /**
-     * Normalises the config value for this validator
-     * @param array $config
-     * @param array $options
-     * @return mixed
-     */
-    public function normaliseConfigValue($config, $options = []);
 }

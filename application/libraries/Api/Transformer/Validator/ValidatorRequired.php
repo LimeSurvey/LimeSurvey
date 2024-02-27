@@ -34,10 +34,14 @@ class ValidatorRequired implements ValidatorInterface
         return empty($messages) ? true : $messages;
     }
 
-    public function normaliseConfigValue(
-        $config,
-        $options = []
-    ) {
+    /**
+     * Normalises the config value for this validator
+     * @param array $config
+     * @param array $options
+     * @return mixed
+     */
+    public function normaliseConfigValue($config, $options = [])
+    {
         $key = array_search($this->name, $config, true);
         if (is_int($key)) {
             $config[$this->name] = true;
@@ -68,14 +72,9 @@ class ValidatorRequired implements ValidatorInterface
                 );
             }
         } else {
-            $config[$this->name] = $this->getDefaultConfig();
+            $config[$this->name] = false;
         }
 
         return $config[$this->name];
-    }
-
-    public function getDefaultConfig()
-    {
-        return false;
     }
 }

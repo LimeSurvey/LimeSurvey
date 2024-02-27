@@ -27,7 +27,7 @@ class ValidatorNumerical implements ValidatorInterface
      */
     public function validate($key, $value, $config, $data, $options = [])
     {
-        $config[$this->name] = $this->normaliseConfigValue($config, $options);
+        $config[$this->name] = $this->normaliseConfigValue($config);
         $messages = [];
         $validate = ($config[$this->name] == true
                 || is_array($config[$this->name]))
@@ -77,20 +77,18 @@ class ValidatorNumerical implements ValidatorInterface
         ) ? (int)$config[$this->name]['max'] : false;
     }
 
-    public function normaliseConfigValue(
-        $config,
-        $options = []
-    ) {
+    /**
+     * Normalises the config value for this validator
+     * @param array $config
+     * @return mixed
+     */
+    public function normaliseConfigValue($config)
+    {
         // numeric is also allowed as array value
         $key = array_search($this->name, $config, true);
         if (is_int($key)) {
             $config[$this->name] = true;
         }
-        return $config[$this->name] ?? $this->getDefaultConfig();
-    }
-
-    public function getDefaultConfig()
-    {
-        return false;
+        return $config[$this->name] ?? false;
     }
 }

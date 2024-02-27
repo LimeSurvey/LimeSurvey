@@ -79,7 +79,14 @@ class FormatterIntToBool implements FormatterInterface
         return is_bool($result) ? (int) $result : null;
     }
 
-    public function setClassBasedOnConfig($config, $options = [])
+    /**
+     * Checks config for this specific formatter,
+     * if so it could adjust class properties based on the config.
+     * Returns true if this formatter is configured, false otherwise.
+     * @param array $config
+     * @return void
+     */
+    public function setClassBasedOnConfig($config)
     {
         $this->resetClassVariables();
         if (isset($config['formatter'][$this->name])) {

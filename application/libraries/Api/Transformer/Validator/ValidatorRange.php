@@ -20,7 +20,7 @@ class ValidatorRange implements ValidatorInterface
      */
     public function validate($key, $value, $config, $data, $options = [])
     {
-        $config[$this->name] = $this->normaliseConfigValue($config, $options);
+        $config[$this->name] = $this->normaliseConfigValue($config);
         $messages = [];
         if ($config[$this->name] !== false && !empty($value)) {
             $range = $this->getRange($config);
@@ -43,15 +43,13 @@ class ValidatorRange implements ValidatorInterface
         return is_array($config[$this->name]) ? $config[$this->name] : [];
     }
 
-    public function normaliseConfigValue(
-        $config,
-        $options = []
-    ) {
-        return $config[$this->name] ?? $this->getDefaultConfig();
-    }
-
-    public function getDefaultConfig()
+    /**
+     * Normalises the config value for this validator
+     * @param array $config
+     * @return mixed
+     */
+    public function normaliseConfigValue($config)
     {
-        return false;
+        return $config[$this->name] ?? false;
     }
 }
