@@ -107,7 +107,9 @@ class TransformerInputSurvey extends Transformer
                 'key' => 'tokenanswerspersistence',
                 'formatter' => ['ynToBool' => ['revert' => true]]
             ],
-            'assessments' => ['formatter' => ['ynToBool' => ['revert' => true]]],
+            'assessments' => [
+                'formatter' => ['ynToBool' => ['revert' => true]]
+            ],
             'useCaptcha' => [
                 'key' => 'usecaptcha',
                 'range' => [
@@ -117,14 +119,17 @@ class TransformerInputSurvey extends Transformer
                 ]
             ],
             'useTokens' => [
-                'key' => 'usetokens', 'formatter' => ['ynToBool' => ['revert' => true]]
+                'key' => 'usetokens',
+                'formatter' => ['ynToBool' => ['revert' => true]]
             ],
             'bounceEmail' => ['key' => 'bounce_email', 'filter' => 'trim'],
             'attributeDescriptions' => 'attributedescriptions',
             'emailResponseTo' => 'emailresponseto',
             'emailNotificationTo' => 'emailnotificationto',
             'tokenLength' => [
-                'key' => 'tokenlength', 'type' => 'int', 'numerical' => ['min' => -1]
+                'key' => 'tokenlength',
+                'type' => 'int',
+                'numerical' => ['min' => -1]
             ],
             'showXQuestions' => [
                 'key' => 'showxquestions',
@@ -181,10 +186,13 @@ class TransformerInputSurvey extends Transformer
                 'numerical' => ['min' => 0, 'max' => 3]
             ],
             'googleAnalyticsApiKey' => [
-                'key' => 'googleanalyticsapikey', 'pattern' => '/^[a-zA-Z\-\d]*$/'
+                'key' => 'googleanalyticsapikey',
+                'pattern' => '/^[a-zA-Z\-\d]*$/'
             ],
             'showSurveyPolicyNotice' => [
-                'key' => 'showsurveypolicynotice', 'type' => 'int', 'range' => [0, 1, 2]
+                'key' => 'showsurveypolicynotice',
+                'type' => 'int',
+                'range' => [0, 1, 2]
             ],
             'template' => true,
             'format' => ['range' => ['G', 'S', 'A', 'I']]

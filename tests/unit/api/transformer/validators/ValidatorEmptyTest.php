@@ -11,7 +11,7 @@ use LimeSurvey\Api\Transformer\TransformerException;
 /**
  * @testdox API Empty Validator
  */
-class EmptyTest extends TestBaseClass
+class ValidatorEmptyTest extends TestBaseClass
 {
     /**
      * @testdox API empty validator normaliseConfigValue() returns expected boolean

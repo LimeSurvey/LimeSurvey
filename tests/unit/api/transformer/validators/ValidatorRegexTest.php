@@ -11,7 +11,7 @@ use LimeSurvey\Api\Transformer\TransformerException;
 /**
  * @testdox API Regex Validator
  */
-class RegexTest extends TestBaseClass
+class ValidatorRegexTest extends TestBaseClass
 {
     /**
      * @testdox API regex validator normaliseConfigValue() returns expected boolean

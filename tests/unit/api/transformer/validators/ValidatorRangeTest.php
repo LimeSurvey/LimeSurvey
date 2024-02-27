@@ -11,7 +11,7 @@ use LimeSurvey\Api\Transformer\TransformerException;
 /**
  * @testdox API Range Validator
  */
-class RangeTest extends TestBaseClass
+class ValidatorRangeTest extends TestBaseClass
 {
     /**
      * @testdox API range validator normaliseConfigValue() returns expected boolean

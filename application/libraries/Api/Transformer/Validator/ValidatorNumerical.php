@@ -39,7 +39,8 @@ class ValidatorNumerical implements ValidatorInterface
                 $minValid = $min === false || $value >= $min;
                 $maxValid = $max === false || $value <= $max;
                 if (!$minValid && !$maxValid) {
-                    $messages[] = $key . ' must be between ' . $min . ' and ' . $max . '.';
+                    $messages[] = $key . ' must be between ' . $min . ' and ' .
+                        $max . '.';
                 } elseif (!$minValid) {
                     $messages[] = $key . ' must be higher than ' . $min . '.';
                 } elseif (!$maxValid) {

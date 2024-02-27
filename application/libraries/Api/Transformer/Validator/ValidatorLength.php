@@ -31,7 +31,8 @@ class ValidatorLength implements ValidatorInterface
             $min = $this->getMin($config);
             $max = $this->getMax($config, $length);
             if ($length < $min || $length > $max) {
-                $messages[] = $key . ' length must be between ' . $min . ' and ' . $max . '.';
+                $messages[] = $key . ' length must be between ' . $min .
+                    ' and ' . $max . '.';
             }
         }
 

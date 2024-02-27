@@ -11,7 +11,7 @@ use LimeSurvey\Api\Transformer\TransformerException;
 /**
  * @testdox API Date Validator
  */
-class DateTest extends TestBaseClass
+class ValidatorDateTest extends TestBaseClass
 {
     /**
      * @testdox API date validator normaliseConfigValue() returns expected boolean

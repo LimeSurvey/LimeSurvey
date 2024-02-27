@@ -11,7 +11,7 @@ use LimeSurvey\Api\Transformer\TransformerException;
 /**
  * @testdox API Length Validator
  */
-class LengthTest extends TestBaseClass
+class ValidatorLengthTest extends TestBaseClass
 {
     /**
      * @testdox API length validator normaliseConfigValue() returns expected boolean

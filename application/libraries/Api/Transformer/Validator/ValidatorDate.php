@@ -25,7 +25,8 @@ class ValidatorDate implements ValidatorInterface
         $config[$this->name] = $this->normaliseConfigValue($config);
         $messages = [];
         if ($config[$this->name] !== false && !empty($value)) {
-            // we expect incoming dates to be in ISO 8601 format (Z at the end is optional)
+            // we expect incoming dates to be in ISO 8601 format
+            // (Z at the end is optional)
             //-- Complete precision (2024-12-24T18:00:01.1234):
             $complete = '^\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.(\d+$|\d+Z$)';
             //-- No milliseconds (2024-12-24T18:00:01):

@@ -16,7 +16,6 @@ use LimeSurvey\Api\Transformer\{
     Validator\ValidatorRange,
     Validator\ValidatorRegex,
     Validator\ValidatorRequired,
-    Validator\ValidatorInterface
 };
 
 /**
