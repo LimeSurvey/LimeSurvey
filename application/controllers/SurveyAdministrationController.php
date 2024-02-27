@@ -2441,7 +2441,8 @@ class SurveyAdministrationController extends LSBaseController
             LimeExpressionManager::StartProcessingPage(true, true);
             $aGrouplist = QuestionGroup::model()->findAllByAttributes(['sid' => $aImportResults['newsid']]);
             foreach ($aGrouplist as $aGroup) {
-                LimeExpressionManager::StartProcessingGroup($aGroup['gid'], $oSurvey->anonymized != 'Y', $aImportResults['newsid']);
+                $gid = $aGroup->gid;
+                LimeExpressionManager::StartProcessingGroup(LimeExpressionManager::GetGroupSeq($gid), $oSurvey->anonymized !== 'Y', $aImportResults['newsid']);
                 LimeExpressionManager::FinishProcessingGroup();
             }
             LimeExpressionManager::FinishProcessingPage();
@@ -2679,7 +2680,7 @@ class SurveyAdministrationController extends LSBaseController
         foreach ($groups as $iGID => $oGroup) {
             $groupData[$iGID]['gid'] = $oGroup->gid;
             $groupData[$iGID]['group_text'] = $oGroup->gid . ' ' . $oGroup->questiongroupl10ns[$sBaseLanguage]->group_name;
-            LimeExpressionManager::StartProcessingGroup($oGroup->gid, false, $iSurveyID);
+            LimeExpressionManager::StartProcessingGroup(LimeExpressionManager::GetGroupSeq($oGroup->gid), false, $iSurveyID);
             if (!$initializedReplacementFields) {
                 templatereplace("{SITENAME}"); // Hack to ensure the EM sets values of LimeReplacementFields
                 $initializedReplacementFields = true;

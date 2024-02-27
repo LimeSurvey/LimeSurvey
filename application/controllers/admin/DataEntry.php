@@ -2112,7 +2112,7 @@ class DataEntry extends SurveyCommonAction
             $aGroups = $survey->groups;
             $aDataentryoutput = '';
             foreach ($aGroups as $arGroup) {
-                LimeExpressionManager::StartProcessingGroup($arGroup->gid, ($thissurvey['anonymized'] != "N"), $surveyid);
+                LimeExpressionManager::StartProcessingGroup(LimeExpressionManager::GetGroupSeq($arGroup->gid), ($thissurvey['anonymized'] != "N"), $surveyid);
 
                 $aQuestions = $arGroup->questions;
                 $aDataentryoutput .= "\t<tr class='info'>\n"

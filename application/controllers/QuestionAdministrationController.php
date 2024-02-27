@@ -401,9 +401,10 @@ class QuestionAdministrationController extends LSBaseController
         $groupData = [];
         $initializedReplacementFields = false;
         foreach ($groups as $iGID => $oGroup) {
-            $groupData[$iGID]['gid'] = $oGroup->gid;
-            $groupData[$iGID]['group_text'] = $oGroup->gid . ' ' . $oGroup->questiongroupl10ns[$baselang]->group_name;
-            LimeExpressionManager::StartProcessingGroup($oGroup->gid, false, $iSurveyID);
+            $gid = $oGroup->gid;
+            $groupData[$iGID]['gid'] = $gid;
+            $groupData[$iGID]['group_text'] = $gid . ' ' . $oGroup->questiongroupl10ns[$baselang]->group_name;
+            LimeExpressionManager::StartProcessingGroup(LimeExpressionManager::GetGroupSeq($gid), false, $iSurveyID);
             if (!$initializedReplacementFields) {
                 templatereplace("{SITENAME}"); // Hack to ensure the EM sets values of LimeReplacementFields
                 $initializedReplacementFields = true;

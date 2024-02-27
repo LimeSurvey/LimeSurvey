@@ -156,7 +156,7 @@ class PrintanswersController extends LSYii_Controller
             $oPDF->initAnswerPDF($aSurveyInfo, $aPdfLanguageSettings, Yii::app()->getConfig('sitename'), $sSurveyName, $sDefaultHeaderString);
             LimeExpressionManager::StartProcessingPage(true); // means that all variables are on the same page
             // Since all data are loaded, and don't need JavaScript, pretend all from Group 1
-            LimeExpressionManager::StartProcessingGroup(1, ($aSurveyInfo['anonymized'] != "N"), $iSurveyID);
+            LimeExpressionManager::StartProcessingGroup(0, ($aSurveyInfo['anonymized'] != "N"), $iSurveyID);
             $aData['aSurveyInfo']['printPdf'] = 1;
             $aData['aSurveyInfo']['include_content'] = 'printanswers';
             Yii::app()->clientScript->registerPackage($oTemplate->sPackageName);

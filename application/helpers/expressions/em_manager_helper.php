@@ -5630,7 +5630,7 @@ class LimeExpressionManager
         $qInfo = $LEM->questionSeq2relevance[$groupSeqInfo['qstart']];
         $gseq = $qInfo['gseq'];
         $gid = $qInfo['gid'];
-        $LEM->StartProcessingGroup($gseq, $LEM->surveyOptions['anonymized'], $LEM->sid); // analyze the data we have about this group
+        $LEM->StartProcessingGroup(LimeExpressionManager::GetGroupSeq($gid), $LEM->surveyOptions['anonymized'], $LEM->sid); // analyze the data we have about this group
 
         $grel = false;  // assume irrelevant until find a relevant question
         $ghidden = true;   // assume hidden until find a non-hidden question.  If there are no relevant questions on this page, $ghidden will stay true
@@ -7868,7 +7868,7 @@ var job='{TOKEN:ATTRIBUTE_1}';
         $alltests[] = 'This line has a hidden script: <script type="text/javascript" language="Javascript">' . $javascript2 . '</script>';
 
         LimeExpressionManager::StartProcessingPage();
-        LimeExpressionManager::StartProcessingGroup(1);
+        LimeExpressionManager::StartProcessingGroup(0);
 
         $LEM =& LimeExpressionManager::singleton();
         $LEM->tempVars = $vars;
@@ -7952,7 +7952,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
 
 
         LimeExpressionManager::StartProcessingPage(true);
-        LimeExpressionManager::StartProcessingGroup(1); // pretending this is group 1
+        LimeExpressionManager::StartProcessingGroup(0); // pretending this is group 1
 
         // collect variables
         $i = 0;
