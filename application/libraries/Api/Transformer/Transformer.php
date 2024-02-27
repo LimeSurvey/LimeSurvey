@@ -3,7 +3,7 @@
 namespace LimeSurvey\Api\Transformer;
 
 use LimeSurvey\Api\Transformer\Registry\Registry;
-use LimeSurvey\Api\Transformer\Validator\ValidatorInterface;
+use LimeSurvey\Api\Transformer\Validator\ValidatorRequired;
 
 /**
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
@@ -117,10 +117,12 @@ class Transformer implements TransformerInterface
         if ($this->registry) {
             // RequiredValidator config needs to be evaluated here already
             $required = $this->registry->getValidator('required');
-            $config['required'] = $required->normaliseConfigValue(
-                $config,
-                $options
-            );
+            if ($required instanceof ValidatorRequired) {
+                $config['required'] = $required->normaliseConfigValue(
+                    $config,
+                    $options
+                );
+            }
         }
         $config['key'] = isset($config['key']) ? $config['key'] : $inputKey;
         $config['type'] = isset($config['type']) ? $config['type'] : null;
