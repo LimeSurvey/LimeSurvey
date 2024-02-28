@@ -67,9 +67,9 @@ class LSUserIdentity extends CUserIdentity
             if (is_null($this->plugin)) {
                 $result->setError(self::ERROR_UNKNOWN_HANDLER);
             } else {
-                // Never allow login for non-active users.
-                $user = User::model()->findByAttributes(array('users_name' => $this->username));
-                if ($user && (int) $user->user_status === 0) {
+                // Never allow login for non-active or expired users.
+                $user = User::model()->notexpired()->active()->findByAttributes(array('users_name' => $this->username));
+                if (is_null($user)) {
                     throw new CHttpException(403, gT("You do not have permission to access this page."));
                 }
                 // Delegate actual authentication to plugin
