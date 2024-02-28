@@ -23,7 +23,6 @@ use LimeSurvey\PluginManager\PluginEvent;
  */
 class LSUserIdentity extends CUserIdentity
 {
-
     const ERROR_IP_LOCKED_OUT = 98;
     const ERROR_UNKNOWN_HANDLER = 99;
 
@@ -70,6 +69,7 @@ class LSUserIdentity extends CUserIdentity
                 // Never allow login for non-active or expired users.
                 $user = User::model()->notexpired()->active()->findByAttributes(array('users_name' => $this->username));
                 if (is_null($user)) {
+                    /* Set the result as invalid if user didn't exist */
                     $result->setError(self::ERROR_USERNAME_INVALID);
                 } else {
                     // Delegate actual authentication to plugin
