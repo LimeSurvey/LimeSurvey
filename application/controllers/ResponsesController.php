@@ -196,7 +196,6 @@ class ResponsesController extends LSBaseController
             } elseif ($field['aid'] !== 'filecount') {
                 $qids[] = $field['qid'];
                 $fields[] = $field;
-
             } else {
                 $fnames[] = [$field['fieldname'], gT("File count")];
             }
