@@ -34,6 +34,7 @@ class Filter
      */
     public function filter($value, $config)
     {
+        $this->filterParams = [];
         if (is_array($config) && !empty($config)) {
             $this->filter = strval(array_key_first($config));
             $this->filterParams = $config[$this->filter];
