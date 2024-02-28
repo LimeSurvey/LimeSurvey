@@ -167,6 +167,8 @@ class ResponsesController extends LSBaseController
             $fnames[] = ["submitdate", gT("Submission date"), gT("Completed"), "0", 'D', 'code' => 'submitdate'];
         }
         $fnames[] = ["completed", gT("Completed"), "0"];
+        $qids = [];
+        $fields = [];
 
         foreach ($fieldmap as $field) {
             if ($field['fieldname'] == 'lastpage' || $field['fieldname'] == 'submitdate') {
@@ -192,7 +194,22 @@ class ResponsesController extends LSBaseController
                     'code' => viewHelper::getFieldCode($field, ['LEMcompat' => true])
                 ];
             } elseif ($field['aid'] !== 'filecount') {
-                $qidattributes = QuestionAttribute::model()->getQuestionAttributes($field['qid']);
+                $qids[] = $field['qid'];
+                $fields[] = $field;
+
+            } else {
+                $fnames[] = [$field['fieldname'], gT("File count")];
+            }
+        }
+
+        if (count($qids)) {
+            $rawQuestions = Question::model()->findAllByPk($qids);
+            $questions = [];
+            foreach ($rawQuestions as $rawQuestion) {
+                $questions[$rawQuestion->qid] = $rawQuestion;
+            }
+            foreach ($fields as $field) {
+                $qidattributes = QuestionAttribute::model()->getQuestionAttributes($questions[$field['qid']]);
 
                 for ($i = 0; $i < $qidattributes['max_num_of_files']; $i++) {
                     $filenum = sprintf(gT("File %s"), $i + 1);
@@ -236,8 +253,6 @@ class ResponsesController extends LSBaseController
                         "index"    => $i
                     ];
                 }
-            } else {
-                $fnames[] = [$field['fieldname'], gT("File count")];
             }
         }
 
