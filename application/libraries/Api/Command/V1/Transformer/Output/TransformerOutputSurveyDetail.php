@@ -68,6 +68,7 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
 
         $options = $options ?? [];
 
+        $data = $this->setInheritedBetaOptions($data);
         $survey = $this->transformerSurvey->transform($data);
         $survey['templateInherited'] = $data->oOptions->template;
         $survey['formatInherited'] = $data->oOptions->format;
@@ -233,5 +234,36 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
             }
         }
         return $output;
+    }
+
+    /**
+     * Some survey settings are inherited from the survey group, so we need to
+     * replace the inherited info ("I") with the real values.
+     * This is a temporary solution until we display the inherit option
+     * in the new UI.
+     *
+     * @param Survey $survey
+     * @return Survey $survey
+     */
+    private function setInheritedBetaOptions(Survey $survey)
+    {
+        $affectedSettings = [
+            'allowprev',
+            'showprogress',
+            'autoredirect',
+            'anonymized',
+            'alloweditaftercompletion'
+        ];
+        foreach ($affectedSettings as $setting) {
+            if (
+                isset($survey->$setting)
+                && $survey->$setting === 'I'
+            ) {
+                if (isset($survey->oOptions->$setting)) {
+                    $survey->$setting = $survey->oOptions->$setting;
+                }
+            }
+        }
+        return $survey;
     }
 }
