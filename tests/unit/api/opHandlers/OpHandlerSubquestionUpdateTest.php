@@ -3,9 +3,8 @@
 namespace ls\tests\unit\api\opHandlers;
 
 use LimeSurvey\Api\Command\V1\SurveyPatch\OpHandlerSubQuestion;
-use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestion;
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputSubQuestion;
-use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputSubQuestionL10ns;
+use LimeSurvey\DI;
 use LimeSurvey\Models\Services\QuestionAggregateService;
 use LimeSurvey\ObjectPatch\ObjectPatchException;
 use LimeSurvey\ObjectPatch\Op\OpStandard;
@@ -158,17 +157,11 @@ class OpHandlerSubquestionUpdateTest extends TestBaseClass
             QuestionAggregateService\QuestionService::class
         )->makePartial();
 
-        /** @var \LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputSubQuestion */
-        $transformerInputSubQuestion = new TransformerInputSubQuestion(
-            new TransformerInputQuestion(),
-            new TransformerInputSubQuestionL10ns()
-        );
-
         return new OpHandlerSubQuestion(
             $mockQuestionAggregateService,
             $mockSubQuestionsService,
             $mockQuestionService,
-            $transformerInputSubQuestion
+            DI::getContainer()->get(TransformerInputSubQuestion::class)
         );
     }
 }

@@ -13,10 +13,18 @@ class TransformerInputAnswer extends Transformer
             'aid' => ['type' => 'int', 'required' => 'update'],
             'qid' => ['type' => 'int'],
             'oldCode' => 'oldcode',
-            'code' => ['required' => 'create'],
-            'sortOrder' => ['key' => 'sortorder', 'type' => 'int'],
-            'assessmentValue' => ['key' => 'assessment_value', 'type' => 'int'],
-            'scaleId' => ['key' => 'scale_id', 'type' => 'int'],
+            'code' => [
+                'required' => 'create',
+                'length' => ['min' => 1, 'max' => 5],
+                'pattern' => '/^[[:alnum:]]*$/',
+            ],
+            'sortOrder' => ['key' => 'sortorder', 'type' => 'int', 'numerical'],
+            'assessmentValue' => [
+                'key' => 'assessment_value',
+                'type' => 'int',
+                'numerical'
+            ],
+            'scaleId' => ['key' => 'scale_id', 'type' => 'int', 'numerical'],
             'tempId' => ['required' => 'create'],
             'l10ns' => [
                 'key' => 'answeroptionl10n',
@@ -25,6 +33,7 @@ class TransformerInputAnswer extends Transformer
             ]
         ]);
     }
+
     public function transformAll($collection, $options = [])
     {
         $collection = parent::transformAll($collection, $options);

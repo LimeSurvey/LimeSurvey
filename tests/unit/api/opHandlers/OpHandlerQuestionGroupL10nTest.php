@@ -4,10 +4,10 @@ namespace ls\tests\unit\api\opHandlers;
 
 use LimeSurvey\Api\Command\V1\SurveyPatch\OpHandlerQuestionGroupL10n;
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestionGroupL10ns;
+use LimeSurvey\DI;
 use LimeSurvey\ObjectPatch\{
     Op\OpInterface,
     Op\OpStandard,
-    OpHandler\OpHandlerException
 };
 use ls\tests\TestBaseClass;
 use ls\tests\unit\services\QuestionGroup\QuestionGroupMockSetFactory;
@@ -144,7 +144,7 @@ class OpHandlerQuestionGroupL10nTest extends TestBaseClass
         $mockSet = (new QuestionGroupMockSetFactory())->make();
         return new OpHandlerQuestionGroupL10n(
             $mockSet->modelQuestionGroupL10n,
-            new TransformerInputQuestionGroupL10ns()
+            DI::getContainer()->get(TransformerInputQuestionGroupL10ns::class)
         );
     }
 }

@@ -11,8 +11,12 @@ class TransformerInputAnswerL10ns extends Transformer
         $this->setDataMap([
             'id' => ['type' => 'int'],
             'aid' => ['type' => 'int'],
-            'answer' => ['required' => true, 'type' => 'string'],
-            'language' => ['required' => true, 'type' => 'string']
+            'answer' => ['required', 'type' => 'string'],
+            'language' => [
+                'required',
+                'type' => 'string',
+                'length' => ['min' => 2, 'max' => 20]
+            ],
         ]);
     }
 

@@ -4,6 +4,7 @@ namespace LimeSurvey\Api\Transformer\Formatter;
 
 class FormatterIntToBool implements FormatterInterface
 {
+    private string $name = 'intToBool';
     /** @var bool */
     private $revert = false;
 
@@ -24,10 +25,13 @@ class FormatterIntToBool implements FormatterInterface
      * Null is passed through unchanged.
      *
      * @param ?mixed $value
+     * @param array $config
+     * @param array $options
      * @return ?mixed
      */
-    public function format($value)
+    public function format($value, $config, $options = [])
     {
+        $this->setClassBasedOnConfig($config);
         return $this->revert
             ? $this->revert($value)
             : $this->apply($value);
@@ -67,5 +71,23 @@ class FormatterIntToBool implements FormatterInterface
     {
         $result = $this->apply($value);
         return is_bool($result) ? (int) $result : null;
+    }
+
+    /**
+     * Checks config for this specific formatter,
+     * and adjusts class properties based on the config.
+     * @param array $config
+     * @return void
+     */
+    public function setClassBasedOnConfig($config)
+    {
+        if (isset($config['formatter'][$this->name])) {
+            $formatterConfig = $config['formatter'][$this->name];
+            if (is_array($formatterConfig)) {
+                if (array_key_exists('revert', $formatterConfig)) {
+                    $this->revert = $formatterConfig['revert'];
+                }
+            }
+        }
     }
 }

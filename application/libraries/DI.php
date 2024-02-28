@@ -43,6 +43,7 @@ class DI
     public static function makeContainer()
     {
         $builder = new ContainerBuilder();
+        $builder->useAnnotations(true);
         $builder->addDefinitions([
             LSYii_Application::class => function () {
                 return App();

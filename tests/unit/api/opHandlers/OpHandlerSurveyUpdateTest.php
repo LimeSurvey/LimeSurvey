@@ -4,6 +4,7 @@ namespace ls\tests\unit\api\opHandlers;
 
 use LimeSurvey\Api\Command\V1\SurveyPatch\OpHandlerSurveyUpdate;
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputSurvey;
+use LimeSurvey\DI;
 use LimeSurvey\ObjectPatch\{
     Op\OpStandard,
     OpHandler\OpHandlerException
@@ -85,7 +86,7 @@ class OpHandlerSurveyUpdateTest extends TestBaseClass
     private function getPropsValid()
     {
         return [
-            'expires' => '2020-01-01 00:00',
+            'expires' => '2020-01-01T00:00',
             'ipanonymize' => true,
         ];
     }
@@ -121,7 +122,7 @@ class OpHandlerSurveyUpdateTest extends TestBaseClass
         $mockSet = (new GeneralSettingsMockSetFactory())->make();
         return new OpHandlerSurveyUpdate(
             $mockSet->modelSurvey,
-            new TransformerInputSurvey()
+            DI::getContainer()->get(TransformerInputSurvey::class)
         );
     }
 }

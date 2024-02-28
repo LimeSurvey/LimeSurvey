@@ -9,7 +9,6 @@ use LimeSurvey\Api\Command\V1\SurveyPatch\OpHandlerQuestionGroup;
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestionGroupAggregate;
 use LimeSurvey\ObjectPatch\{
     Op\OpStandard,
-    OpHandler\OpHandlerException
 };
 use ls\tests\TestBaseClass;
 use ls\tests\unit\services\QuestionGroup\QuestionGroupMockSetFactory;

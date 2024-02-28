@@ -2,7 +2,11 @@
 
 namespace LimeSurvey\Api\Transformer;
 
+use LimeSurvey\Api\Transformer\Filter\Filter;
 use LimeSurvey\Api\Transformer\Formatter\FormatterInterface;
+use LimeSurvey\Api\Transformer\Registry\Registry;
+use LimeSurvey\Api\Transformer\Validator\ValidatorInterface;
+use LimeSurvey\Api\Transformer\Validator\ValidatorRequired;
 
 /**
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
@@ -14,6 +18,9 @@ class Transformer implements TransformerInterface
 
     /** @var array */
     protected $defaultConfig = [];
+
+    /** @var ?Registry */
+    public $registry;
 
     /**
      * Transform data
@@ -54,11 +61,11 @@ class Transformer implements TransformerInterface
             }
             // Null value and null default
             // - skip if not required and if it wasn't set to null explicitly
+            // required config needed here
             if (is_null($value) && !$config['required'] && !$valueIsSet) {
                 continue;
             }
             $value = $this->cast($value, $config);
-            $value = $this->format($value, $config);
             $errors = $this->validateKey(
                 $key,
                 $value,
@@ -66,8 +73,9 @@ class Transformer implements TransformerInterface
                 $data,
                 $options
             );
-            if (is_array($errors) && !empty($errors)) {
-                throw new TransformerException(current(current($errors)));
+            $value = $this->format($value, $config);
+            if (is_array($errors)) {
+                throw new TransformerException(print_r($errors, true));
             }
 
             if (
@@ -94,12 +102,11 @@ class Transformer implements TransformerInterface
      *
      * @param bool|int|string|array $config
      * @param string|int $inputKey
-     * @param ?array $options
+     * @param array $options
      * @return array
      */
     private function normaliseConfig($config, $inputKey, $options = [])
     {
-        $options = $options ?? [];
         $configTemp = ['key' => $inputKey];
         if (is_string($config) || is_int($config)) {
             // map to new key name
@@ -110,41 +117,21 @@ class Transformer implements TransformerInterface
             $configTemp,
             is_array($config) ? $config : []
         );
-
+        if ($this->registry) {
+            // RequiredValidator config needs to be evaluated here already
+            $required = $this->registry->getValidator('required');
+            if ($required instanceof ValidatorRequired) {
+                $config['required'] = $required->normaliseConfigValue(
+                    $config,
+                    $options
+                );
+            }
+        }
         $config['key'] = isset($config['key']) ? $config['key'] : $inputKey;
         $config['type'] = isset($config['type']) ? $config['type'] : null;
         $config['collection'] = isset($config['collection']) ? $config['collection'] : false;
         $config['transformer'] = isset($config['transformer']) ? $config['transformer'] : null;
-        $config['formatter'] = isset($config['formatter']) ? $config['formatter'] : null;
         $config['default'] = isset($config['default']) ? $config['default'] : null;
-        $config['required'] = isset($config['required']) ? $config['required'] : false;
-        $config['null'] = isset($config['null']) ? (bool) $config['null'] : true;
-        $config['empty'] = isset($config['empty']) ? (bool) $config['empty'] : true;
-
-        // required can be operation specific by specifying
-        // - a string or an array of operation names
-        if (
-            isset($options['operation'])
-            && (
-                is_string($config['required'])
-                || is_array($config['required'])
-            )
-        ) {
-            $config['required'] = (
-                (
-                    is_string($config['required'])
-                    && $config['required'] == $options['operation']
-                )
-                ||
-                (
-                    is_array($config['required'])
-                    && in_array(
-                        $options['operation'],
-                        $config['required']
-                    )
-                )
-            );
-        }
 
         return $config;
     }
@@ -171,6 +158,8 @@ class Transformer implements TransformerInterface
 
     /**
      * Format Value
+     * Looks for possible formatter in the config, tries to
+     * get it from the registry and calls the format method on it.
      *
      * @param mixed $value
      * @param array $config
@@ -178,12 +167,38 @@ class Transformer implements TransformerInterface
      */
     private function format($value, $config)
     {
-        if (
-            isset($config['formatter'])
-            && $config['formatter'] instanceof FormatterInterface
-        ) {
-            $value = $config['formatter']->format($value);
+        if ($this->registry) {
+            if (array_key_exists('formatter', $config)) {
+                $formatter = $this->registry->getFormatter(
+                    strval(array_key_first($config['formatter']))
+                );
+                if ($formatter instanceof FormatterInterface) {
+                    $value = $formatter->format($value, $config);
+                }
+            }
         }
+
+        return $value;
+    }
+
+    /**
+     * Filter Value
+     *
+     * @param mixed $value
+     * @param array $config
+     * @return mixed
+     */
+    private function filter($value, $config)
+    {
+        if ($this->registry) {
+            if (isset($config['filter']) && !is_null($value)) {
+                $filter = $this->registry->getFilter();
+                if ($filter instanceof Filter) {
+                    $value = $filter->filter($value, $config['filter']);
+                }
+            }
+        }
+
         return $value;
     }
 
@@ -212,9 +227,6 @@ class Transformer implements TransformerInterface
             if (is_null($value) && isset($config['default'])) {
                 $value = $config['default'];
             }
-            $value = $this->cast($value, $config);
-            $value = $this->format($value, $config);
-
             $fieldErrors = $this->validateKey(
                 $key,
                 $value,
@@ -245,26 +257,21 @@ class Transformer implements TransformerInterface
     {
         $options = $options ?? [];
         $errors = [];
-        if (
-            $config['required']
-            && (
-                !array_key_exists($key, $data)
-                || (
-                    is_string($config['required'])
-                    && isset($options['operation'])
-                    && $config['required'] == $options['operation']
-                )
-            )
-        ) {
-            $errors[$key][] = $key . ' is required';
-        }
-
-        if ($value === null && $config['null'] === false) {
-            $errors[$key][] = $key . ' cannot be null';
-        }
-
-        if (empty($value) && $config['empty'] === false) {
-            $errors[$key][] = $key . ' cannot be empty';
+        $value = $this->filter($value, $config);
+        if ($this->registry) {
+            foreach ($this->registry->getAllValidators() as $validator) {
+                /** @var ValidatorInterface $validator */
+                $result = $validator->validate(
+                    $key,
+                    $value,
+                    $config,
+                    $data,
+                    $options
+                );
+                if (is_array($result)) {
+                    $errors[$key][] = $result;
+                }
+            }
         }
 
         if (
@@ -312,13 +319,17 @@ class Transformer implements TransformerInterface
     public function validateAll($collection, $options = [])
     {
         $options = $options ?? [];
-        $result = array_reduce($collection, function ($carry, $data) use ($options) {
-            $carry = is_array($carry) ? $carry : [];
-            $oneResult = $this->validate($data, $options);
-            return is_array($oneResult)
-                ? array_merge($carry, $oneResult)
-                : $carry;
-        }, []);
+        $result = array_reduce(
+            $collection,
+            function ($carry, $data) use ($options) {
+                $carry = is_array($carry) ? $carry : [];
+                $oneResult = $this->validate($data, $options);
+                return is_array($oneResult)
+                    ? array_merge($carry, $oneResult)
+                    : $carry;
+            },
+            []
+        );
         return empty($result) ?: $result;
     }
 
@@ -364,7 +375,7 @@ class Transformer implements TransformerInterface
      *
      * @return array
      */
-    public function getDefaultConfig()
+    private function getDefaultConfig()
     {
         return array_merge(
             [
@@ -375,5 +386,17 @@ class Transformer implements TransformerInterface
             ],
             $this->defaultConfig
         );
+    }
+
+    /**
+     * Called automatically by DI container via @Inject annotation
+     * Whenever we are on PHP 8.1 we can switch this to PHP attributes
+     * @param Registry $registry
+     * @return void
+     * @Inject
+     */
+    public function setRegistry(Registry $registry)
+    {
+        $this->registry = $registry;
     }
 }

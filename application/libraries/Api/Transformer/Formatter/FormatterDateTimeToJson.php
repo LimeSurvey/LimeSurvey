@@ -4,6 +4,7 @@ namespace LimeSurvey\Api\Transformer\Formatter;
 
 class FormatterDateTimeToJson implements FormatterInterface
 {
+    private string $name = 'dateTimeToJson';
     /** @var bool */
     private $revert = false;
     /** @var string */
@@ -24,10 +25,13 @@ class FormatterDateTimeToJson implements FormatterInterface
      *
      * @see https://www.w3.org/TR/NOTE-datetime
      * @param ?mixed $value
+     * @param array $config
+     * @param array $options
      * @return ?mixed
      */
-    public function format($value)
+    public function format($value, $config, $options = [])
     {
+        $this->setClassBasedOnConfig($config);
         return $this->revert
             ? $this->revert($value)
             : $this->apply($value);
@@ -99,5 +103,26 @@ class FormatterDateTimeToJson implements FormatterInterface
         return $dateTime->format(
             $outputFormat
         );
+    }
+
+    /**
+     * Checks config for this specific formatter,
+     * and adjusts class properties based on the config.
+     * @param array $config
+     * @return void
+     */
+    public function setClassBasedOnConfig($config)
+    {
+        if (isset($config['formatter'][$this->name])) {
+            $formatterConfig = $config['formatter'][$this->name];
+            if (is_array($formatterConfig)) {
+                if (array_key_exists('revert', $formatterConfig)) {
+                    $this->revert = $formatterConfig['revert'];
+                }
+                if (array_key_exists('inputTimezone', $formatterConfig)) {
+                    $this->inputTimezone = $formatterConfig['inputTimezone'];
+                }
+            }
+        }
     }
 }

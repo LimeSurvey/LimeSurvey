@@ -32,6 +32,11 @@ class ValidationErrorItem
     public string $op;
 
     /**
+     * @var array the context of the whole patch
+     */
+    public array $context;
+
+    /**
      * @param string $error
      * @param array $errorMessages
      * @param OpInterface $patchOpData
@@ -46,5 +51,6 @@ class ValidationErrorItem
         $this->entity = $patchOpData->getEntityType();
         $this->op = $patchOpData->getType()->getId();
         $this->id = $patchOpData->getEntityId();
+        $this->context = $patchOpData->getContext();
     }
 }

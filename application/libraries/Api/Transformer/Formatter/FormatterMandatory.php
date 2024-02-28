@@ -9,12 +9,29 @@ namespace LimeSurvey\Api\Transformer\Formatter;
  */
 class FormatterMandatory extends FormatterYnToBool
 {
+    private string $name = 'mandatory';
+
     /**
      * @param bool $revert
      */
     public function __construct($revert = false)
     {
         parent::__construct(!$revert);
+        parent::setName($this->name);
+    }
+
+    /**
+     * @param ?mixed $value
+     * @param array $config
+     * @param array $options
+     * @return ?mixed
+     */
+    public function format($value, $config, $options = [])
+    {
+        $this->setClassBasedOnConfig($config);
+        return $this->revert
+            ? $this->revert($value)
+            : $this->apply($value);
     }
 
     /**

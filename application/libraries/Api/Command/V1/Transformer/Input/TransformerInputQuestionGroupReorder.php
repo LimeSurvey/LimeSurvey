@@ -14,6 +14,7 @@ class TransformerInputQuestionGroupReorder extends Transformer
         $dataMap['sortOrder'] = [
             'key'      => 'group_order',
             'type'     => 'int',
+            'numerical',
             'required' => 'update'
         ];
         $dataMap['gid'] = ['type' => 'int', 'required' => 'update'];
@@ -22,6 +23,7 @@ class TransformerInputQuestionGroupReorder extends Transformer
         $dataMapQuestions['sortOrder'] = [
             'key'      => 'question_order',
             'type'     => 'int',
+            'numerical',
             'required' => 'update'
         ];
         $dataMapQuestions['gid'] = [

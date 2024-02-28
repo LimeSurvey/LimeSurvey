@@ -2,9 +2,8 @@
 
 namespace ls\tests\unit\api;
 
-use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestion;
-use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestionGroup;
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestionGroupReorder;
+use LimeSurvey\DI;
 use LimeSurvey\ObjectPatch\Op\OpStandard;
 use ls\tests\TestBaseClass;
 
@@ -22,9 +21,8 @@ class TransformerInputQuestionGroupReorderTest extends TestBaseClass
             $this->getStandardGroupParamsArray()
         );
 
-        $transformer = new TransformerInputQuestionGroupReorder(
-            new TransformerInputQuestionGroup(),
-            new TransformerInputQuestion()
+        $transformer = DI::getContainer()->get(
+            TransformerInputQuestionGroupReorder::class
         );
         $transformedData = $transformer->transformAll(
             (array)$op->getProps(),
@@ -63,7 +61,7 @@ class TransformerInputQuestionGroupReorderTest extends TestBaseClass
                 '1' => $groupParams,
                 '2' => [
                     'sortOrder' => '10',
-                    'questions'  => [
+                    'questions' => [
                         '4' => [
                             'sortOrder' => '10'
                         ],
@@ -86,14 +84,14 @@ class TransformerInputQuestionGroupReorderTest extends TestBaseClass
     {
         return [
             'sortOrder' => '10',
-            'questions'  => [
+            'questions' => [
                 '2' => [
                     'sortOrder' => '10',
-                    'tempId' => '1'
+                    'tempId'    => '1'
                 ],
                 '3' => [
                     'sortOrder' => '20',
-                    'tempId' => '2'
+                    'tempId'    => '2'
                 ]
             ]
         ];
