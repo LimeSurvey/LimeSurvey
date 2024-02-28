@@ -15,7 +15,7 @@ class TransformerInputAnswer extends Transformer
             'oldCode' => 'oldcode',
             'code' => [
                 'required' => 'create',
-                ['length' => ['min' => 1, 'max' => 5]],
+                'length' => ['min' => 1, 'max' => 5],
                 'pattern' => '/^[[:alnum:]]*$/',
             ],
             'sortOrder' => ['key' => 'sortorder', 'type' => 'int', 'numerical'],
