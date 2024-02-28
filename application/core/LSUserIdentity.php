@@ -70,17 +70,18 @@ class LSUserIdentity extends CUserIdentity
                 // Never allow login for non-active or expired users.
                 $user = User::model()->notexpired()->active()->findByAttributes(array('users_name' => $this->username));
                 if (is_null($user)) {
-                    throw new CHttpException(403, gT("You do not have permission to access this page."));
-                }
-                // Delegate actual authentication to plugin
-                $authEvent = new PluginEvent('newUserSession', $this); // TODO: rename the plugin function authenticate()
-                $authEvent->set('identity', $this);
-                App()->getPluginManager()->dispatchEvent($authEvent);
-                $pluginResult = $authEvent->get('result');
-                if ($pluginResult instanceof LSAuthResult) {
-                    $result = $pluginResult;
+                    $result->setError(self::ERROR_USERNAME_INVALID);
                 } else {
-                    $result->setError(self::ERROR_UNKNOWN_IDENTITY);
+                    // Delegate actual authentication to plugin
+                    $authEvent = new PluginEvent('newUserSession', $this); // TODO: rename the plugin function authenticate()
+                    $authEvent->set('identity', $this);
+                    App()->getPluginManager()->dispatchEvent($authEvent);
+                    $pluginResult = $authEvent->get('result');
+                    if ($pluginResult instanceof LSAuthResult) {
+                        $result = $pluginResult;
+                    } else {
+                        $result->setError(self::ERROR_UNKNOWN_IDENTITY);
+                    }
                 }
             }
         }
