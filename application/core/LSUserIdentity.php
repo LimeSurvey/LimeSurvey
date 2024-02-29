@@ -61,7 +61,7 @@ class LSUserIdentity extends CUserIdentity
             $result->setError(self::ERROR_IP_LOCKED_OUT, $message);
         }
 
-        // If still ok, continue
+        /* Plugin action(s) : need a plugin */
         if ($result->isValid()) {
             if (is_null($this->plugin)) {
                 $result->setError(self::ERROR_UNKNOWN_HANDLER);
@@ -76,16 +76,19 @@ class LSUserIdentity extends CUserIdentity
                 } else {
                     $result->setError(self::ERROR_UNKNOWN_IDENTITY);
                 }
-                // Never allow login for non-active or expired users. Check it only if user exist, plugin can create user
-                /** @var \User|null */
-                $user = User::model()->findByAttributes(array('users_name' => $this->username));
-                if (!is_null($user) && (!$user->isActive() || $user->isExpired())) {
-                    // Set the result as invalid if user is  not active : no message for default message
-                    $result->setError(self::ERROR_USERNAME_INVALID);
-                }
             }
         }
 
+        /* Check user exist, valid and not expired after plugin actions */
+        if ($result->isValid()) {
+            /** @var \User|null */
+            $user = User::model()->notexpired()->active()->findByAttributes(array('users_name' => $this->username));
+            if (is_null($user)) {
+                // Set the result as invalid if user is  not active : no message for default message
+                $result->setError(self::ERROR_USERNAME_INVALID);
+            }
+        }
+        /* All action and test done : finalize */
         if ($result->isValid()) {
             // Perform postlogin
             regenerateCSRFToken();
