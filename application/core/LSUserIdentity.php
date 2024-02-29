@@ -66,23 +66,22 @@ class LSUserIdentity extends CUserIdentity
             if (is_null($this->plugin)) {
                 $result->setError(self::ERROR_UNKNOWN_HANDLER);
             } else {
+                // Delegate actual authentication to plugin
+                $authEvent = new PluginEvent('newUserSession', $this); // TODO: rename the plugin function authenticate()
+                $authEvent->set('identity', $this);
+                App()->getPluginManager()->dispatchEvent($authEvent);
+                $pluginResult = $authEvent->get('result');
+                if ($pluginResult instanceof LSAuthResult) {
+                    $result = $pluginResult;
+                } else {
+                    $result->setError(self::ERROR_UNKNOWN_IDENTITY);
+                }
                 // Never allow login for non-active or expired users. Check it only if user exist, plugin can create user
                 /** @var \User|null */
                 $user = User::model()->findByAttributes(array('users_name' => $this->username));
                 if (!is_null($user) && (!$user->isActive() || $user->isExpired())) {
-                    // Set the result as invalid if user didn't exist : no message for default message
+                    // Set the result as invalid if user is  not active : no message for default message
                     $result->setError(self::ERROR_USERNAME_INVALID);
-                } else {
-                    // Delegate actual authentication to plugin
-                    $authEvent = new PluginEvent('newUserSession', $this); // TODO: rename the plugin function authenticate()
-                    $authEvent->set('identity', $this);
-                    App()->getPluginManager()->dispatchEvent($authEvent);
-                    $pluginResult = $authEvent->get('result');
-                    if ($pluginResult instanceof LSAuthResult) {
-                        $result = $pluginResult;
-                    } else {
-                        $result->setError(self::ERROR_UNKNOWN_IDENTITY);
-                    }
                 }
             }
         }
