@@ -355,7 +355,6 @@ class Plugin extends LSActiveRecord
 
             ];
         } else {
-
             $dropdownItems[] = [
                 'title'            => gT('Activate'),
                 'url'              => $activateUrl,
