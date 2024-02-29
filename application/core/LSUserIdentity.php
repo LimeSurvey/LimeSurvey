@@ -66,10 +66,11 @@ class LSUserIdentity extends CUserIdentity
             if (is_null($this->plugin)) {
                 $result->setError(self::ERROR_UNKNOWN_HANDLER);
             } else {
-                // Never allow login for non-active or expired users.
-                $user = User::model()->notexpired()->active()->findByAttributes(array('users_name' => $this->username));
-                if (is_null($user)) {
-                    /* Set the result as invalid if user didn't exist */
+                // Never allow login for non-active or expired users. Check it only if user exist, plugin can create user
+                /** @var \User|null */
+                $user = User::model()->findByAttributes(array('users_name' => $this->username));
+                if (!is_null($user) && (!$user->isActive() || $user->isExpired())) {
+                    // Set the result as invalid if user didn't exist : no message for default message
                     $result->setError(self::ERROR_USERNAME_INVALID);
                 } else {
                     // Delegate actual authentication to plugin

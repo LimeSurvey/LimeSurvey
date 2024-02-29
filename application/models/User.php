@@ -997,6 +997,16 @@ class User extends LSActiveRecord
     }
 
     /**
+     * Returns true if user is active
+     * @return boolean
+     */
+    public function isActive()
+    {
+        /* Default is active, user_status must be set (to be tested during DB update); deactivated set user_status to 0 */
+        return !(isset($this->user_status) && $this->user_status === 0);
+    }
+
+    /**
      * Get the decription to be used in list
      * @return $string
      */
