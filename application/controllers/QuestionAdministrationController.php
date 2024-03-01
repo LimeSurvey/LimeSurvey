@@ -195,6 +195,7 @@ class QuestionAdministrationController extends LSBaseController
         $jsVariablesHtml = $this->renderPartial(
             '/admin/survey/Question/_subQuestionsAndAnwsersJsVariables',
             [
+                'qid'               => $question->qid,
                 'anslangs'          => $question->survey->allLanguages,
                 // TODO
                 'assessmentvisible' => false,
@@ -264,6 +265,36 @@ class QuestionAdministrationController extends LSBaseController
         $this->render(
             'create',
             $viewData
+        );
+    }
+
+    /**
+     * @param int $questionId
+     * @return void
+     */
+    public function actionAjaxLoadExtraOptions($questionId)
+    {
+        $questionId = (int) $questionId;
+        $question = Question::model()->findByPk($questionId);
+        if (empty($question)) {
+            throw new CHttpException(404, gT('Invalid question id'));
+        }
+
+        if (!Permission::model()->hasSurveyPermission($question->sid, 'surveycontent', 'read')) {
+            Yii::app()->user->setFlash('error', gT("Access denied"));
+            $this->redirect(Yii::app()->request->urlReferrer);
+        }
+        Yii::app()->loadHelper("admin.htmleditor");
+        PrepareEditorScript(false, $this);
+        App()->session['FileManagerContext'] = "edit:survey:{$question->sid}";
+        initKcfinder();
+
+        $this->renderPartial(
+            'extraOptions',
+            [
+                'question' => $question,
+                'survey' => $question->survey,
+            ]
         );
     }
 
@@ -1710,6 +1741,7 @@ class QuestionAdministrationController extends LSBaseController
         $aData['jsVariablesHtml'] = $this->renderPartial(
             '/admin/survey/Question/_subQuestionsAndAnwsersJsVariables',
             [
+                'qid'               => $oQuestion->qid,
                 'anslangs'          => $oQuestion->survey->allLanguages,
                 // TODO
                 'assessmentvisible' => false,
@@ -2769,7 +2801,7 @@ class QuestionAdministrationController extends LSBaseController
     {
         $questionOrder = 0;
         $subquestionIds = [];
-        foreach ($subquestionsArray as $subquestionArray) {
+        foreach ($subquestionsArray as $subquestionId => $subquestionArray) {
             foreach ($subquestionArray as $scaleId => $data) {
                 if (!isset($data['code'])) {
                     throw new CHttpException(
@@ -2778,7 +2810,7 @@ class QuestionAdministrationController extends LSBaseController
                     );
                 }
                 $subquestion = null;
-                if (isset($data['oldcode'])) {
+                if (is_numeric($subquestionId)) {
                     $subquestion = Question::model()->findByAttributes([
                         'sid' => $question->sid,
                         'parent_qid' => $question->qid,
@@ -2792,13 +2824,17 @@ class QuestionAdministrationController extends LSBaseController
                 $subquestion->sid = $question->sid;
                 $subquestion->gid = $question->gid;
                 $subquestion->parent_qid = $question->qid;
+                if ($scaleId === 0) {
+                    $subquestion->relevance = array_key_exists(
+                        'relevance',
+                        $data
+                    ) ? $data['relevance'] : null;
+                }
                 $subquestion->scale_id = $scaleId;
                 $subquestion->question_order = $questionOrder;
                 $questionOrder++;
                 $subquestion->title = $data['code'];
-                if ($scaleId === 0) {
-                    $subquestion->relevance = $data['relevance'];
-                }
+                $subquestion->setScenario('saveall');
                 if (!$subquestion->save()) {
                     throw (new LSUserException(500, gT("Could not save subquestion")))
                         ->setDetailedErrorsFromModel($subquestion);
@@ -2836,8 +2872,7 @@ class QuestionAdministrationController extends LSBaseController
     private function updateSubquestions($question, $subquestionsArray)
     {
         $questionOrder = 0;
-        $subquestionIds = [];
-        foreach ($subquestionsArray as $subquestionId => $subquestionArray) {
+        foreach ($subquestionsArray as $subquestionArray) {
             foreach ($subquestionArray as $scaleId => $data) {
                 $subquestion = Question::model()->findByAttributes(
                     [
@@ -2870,7 +2905,6 @@ class QuestionAdministrationController extends LSBaseController
                         ->setDetailedErrorsFromModel($subquestion);
                 }
                 $subquestion->refresh();
-                $subquestionIds[] = $subquestion->qid;
                 foreach ($data['subquestionl10n'] as $lang => $questionText) {
                     $l10n = QuestionL10n::model()->findByAttributes(
                         [
@@ -2891,7 +2925,6 @@ class QuestionAdministrationController extends LSBaseController
                 }
             }
         }
-        $question->deleteAllSubquestions($subquestionIds);
     }
 
     /**
