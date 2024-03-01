@@ -25,18 +25,21 @@ class ValidatorDate implements ValidatorInterface
         $config[$this->name] = $this->normaliseConfigValue($config);
         $messages = [];
         if ($config[$this->name] !== false && !empty($value)) {
-            // we expect incoming dates to be in ISO 8601 format
-            // (Z at the end is optional)
-            //-- Complete precision (2024-12-24T18:00:01.1234):
-            $complete = '^\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.(\d+$|\d+Z$)';
-            //-- No milliseconds (2024-12-24T18:00:01):
-            $noMili = '^\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:([0-5]\d$|[0-5]\dZ$)';
-            //-- No Seconds (2024-12-24T18:00):
-            $noSec = '^\d{4}-[01]\d-[0-3]\dT[0-2]\d:([0-5]\d$|[0-5]\dZ$)';
+            // We expect incoming dates to be in ISO 8601 format
+            //-- Complete precision
+            //- 2024-12-24T18:00:01.1234Z
+            //- 2024-12-24T18:00:01.1234
+            //- 2024-12-24T18:00:01
+            //- 2024-12-24 18:00:01
+            $complete = '^\d{4}-\d{2}-\d{2}(T|\s)\d{2}:\d{2}:\d{2}(\.\d+)?Z?$';
+            //-- No Seconds
+            //- 2024-12-24T18:00
+            //- 2024-12-24 18:00
+            $noSec = '^\d{4}-\d{2}-\d{2}(T|\s)\d{2}:\d{2}$';
             //-- No Time (2024-12-24):
             $noTime = '^\d{4}-\d{2}-\d{2}$';
 
-            $regex = "/($complete)|($noMili)|($noSec)|($noTime)/";
+            $regex = "/($complete)|($noSec)|($noTime)/";
             $regexValidator = new ValidatorRegex();
             $result = $regexValidator->validateByPattern($regex, $value);
 

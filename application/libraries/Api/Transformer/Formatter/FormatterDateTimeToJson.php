@@ -2,6 +2,19 @@
 
 namespace LimeSurvey\Api\Transformer\Formatter;
 
+/**
+ * Formatter DateTime to Json
+ *
+ * This formatter converts date/time string values assumed to be in server timezone
+ * to UTC time and formats to the JSON standard 'Y-m-d\TH:i:s.000\Z'.
+ *
+ *
+ * For values that should always be displayed as is, we should not use this formatter
+ * but instead use only the 'date' valitator. For exmaple we use this formatter on
+ * 'survey.dateCreated' but not on 'survey.expires' or 'survey.startDate' because we
+ * want to display and edit the values of 'survey.expires' or 'survey.startDate' using
+ * the server timezone not the local timezone.
+ */
 class FormatterDateTimeToJson implements FormatterInterface
 {
     private string $name = 'dateTimeToJson';

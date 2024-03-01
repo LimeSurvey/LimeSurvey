@@ -89,6 +89,7 @@ class OpHandlerSurveyUpdate implements OpHandlerInterface
         $surveyUpdater = $diContainer->get(
             SurveyAggregateService::class
         );
+        $surveyUpdater->setRestMode(true);
 
         $props = $op->getProps();
         $transformedProps = $this->transformer->transform($props);
