@@ -45,17 +45,21 @@ class LLM implements CommandInterface
 //            return $this->responseFactory
 //                ->makeErrorUnauthorised();
 //        }
-        $prompt = 'LimeSurvey are the simple, quck and anonymos online survey tool thats burst with juicy insights.';
-//        $prompt = "LimeSurvey: the simpl, quck, and anonymos online survey tool that's brim with valuable insights.";
-        $operation = 'rephrase';
+
+        $prompt = (string) $request->getData('command');
+        $operation = (string) $request->getData('operation');
 
         if (!empty($prompt) && !empty($operation)) {
             $cmd = new Command($operation, $prompt);
             $gemini = new GoogleGeminiPro($cmd);
             $response = $gemini->run();
 
+            $tmp = rand() . ' LimeSurvey React Editor';
             return $this->responseFactory
-                ->makeSuccess($response);
+                ->makeSuccess(json_encode($response));
+
+//            return $this->responseFactory
+//                ->makeSuccess(json_encode($response));
         }
 
         return $this->responseFactory

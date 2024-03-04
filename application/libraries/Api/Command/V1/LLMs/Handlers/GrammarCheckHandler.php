@@ -2,12 +2,12 @@
 
 namespace LimeSurvey\Libraries\Api\Command\V1\LLMs\Handlers;
 
-class GrammerCheckHandler implements CommandHandlerInterface
+class GrammarCheckHandler implements CommandHandlerInterface
 {
     public function canHandle(Command $command)
     {
         $cmd = strtolower($command->getOperation());
-        if (str_contains($cmd, 'grammer')) {
+        if (str_contains($cmd, 'grammar')) {
             return true;
         }
         return false;
@@ -15,7 +15,7 @@ class GrammerCheckHandler implements CommandHandlerInterface
 
     public function execute(Command $command, AIClientInterface $client)
     {
-        $command->setOperation('fix grammer errors and typos then print the plain text');
+        $command->setOperation('fix grammar errors and typos then print the plain text');
         return $client->generateContent();
     }
 }

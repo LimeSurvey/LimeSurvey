@@ -22,6 +22,7 @@ class CommandPatcher
         foreach ($this->handlers as $handler) {
             $op = (new $handler());
             if ($op->canHandle($this->command) == true) {
+//                return $handler;
                 return $op->execute($this->command, $this->client);
             }
         }
@@ -30,10 +31,11 @@ class CommandPatcher
     public function registerHandlers(): void
     {
         $this->addHandler(ExtendTextHandler::class);
-        $this->addHandler(GrammerCheckHandler::class);
+        $this->addHandler(GrammarCheckHandler::class);
         $this->addHandler(RephraseHandler::class);
         $this->addHandler(ShortenTextHandler::class);
-        //$this->addHandler(TranslateHandler::class);
+        $this->addHandler(TranslateHandler::class);
+        $this->addHandler(AnswerHandler::class);
     }
 
     public function addHandler($handler): void
