@@ -143,11 +143,16 @@ class UploaderController extends SurveyController
             $filename = sanitize_filename($_FILES['uploadfile']['name'], false, false, true);
             $size = $_FILES['uploadfile']['size'] / 1024;
             $preview = Yii::app()->session['preview'];
-            $aFieldMap = createFieldMap($oSurvey, 'short', false, false, $sLanguage);
-            if (!isset($aFieldMap[$sFieldName])) {
-                throw new CHttpException(400); // See for debug > 1
+            /* Find the question by sFieldName : must be a upload question type, and id is end of sFieldName in $surveyid*/
+            $aFieldName = explode("X", $sFieldName);
+            if (empty($aFieldName[2]) || !ctype_digit($aFieldName[2])) {
+                throw new CHttpException(400);
             }
-            $aAttributes = QuestionAttribute::model()->getQuestionAttributes($aFieldMap[$sFieldName]['qid']);
+            $oQuestion = Question::model()->find("sid = :sid and qid = :qid and type = :type", [":sid" => $surveyid, ":qid" => $aFieldName[2], ":type" =>  Question::QT_VERTICAL_FILE_UPLOAD]);
+            if (empty($oQuestion)) {
+                throw new CHttpException(400);
+            }
+            $aAttributes = QuestionAttribute::model()->getQuestionAttributes($oQuestion);
             $maxfilesize = min(intval($aAttributes['max_filesize']), getMaximumFileUploadSize() / 1024);
             if ($maxfilesize <= 0) {
                 $maxfilesize = getMaximumFileUploadSize() / 1024;
@@ -347,7 +352,11 @@ class UploaderController extends SurveyController
 
         $fn = $sFieldName;
         $qid = (int) Yii::app()->request->getParam('qid');
-        $qidattributes = QuestionAttribute::model()->getQuestionAttributes($qid);
+        $oQuestion = Question::model()->find("sid = :sid and qid = :qid and type = :type", [":sid" => $surveyid, ":qid" => $qid, ":type" => Question::QT_VERTICAL_FILE_UPLOAD]);
+        if (empty($oQuestion)) {
+            throw new CHttpException(400);
+        }
+        $qidattributes = QuestionAttribute::model()->getQuestionAttributes($oQuestion);
         $qidattributes['max_filesize'] = floor(min(intval($qidattributes['max_filesize']), getMaximumFileUploadSize() / 1024));
         if ($qidattributes['max_filesize'] <= 0) {
             $qidattributes['max_filesize'] = getMaximumFileUploadSize() / 1024;
