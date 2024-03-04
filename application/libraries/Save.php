@@ -211,11 +211,11 @@ class Save
                 $mailer->emailType = 'savesurveydetails';
                 $mailer->isHTML(false);
                 $mailer->Subject = gT("Saved Survey Details") . " - " . $thissurvey['name'];
-                $message  = gT("Thank you for saving your survey in progress.  The following details can be used to return to this survey and continue where you left off.  Please make sure to remember your password - we cannot retrieve it for you.");
+                $message  = gT("Thank you for saving your survey in progress.  The following details can be used to return to this survey and continue where you left off.  Please make sure to remember your password - we cannot retrieve it for you.", "unescaped");
                 $message .= "\n\n" . $thissurvey['name'] . "\n\n";
                 $message .= gT("Name") . ": " . Yii::app()->getRequest()->getPost('savename') . "\n";
                 $message .= gT("Password") . ": ***************\n\n";
-                $message .= gT("Reload your survey by clicking on the following link (or pasting it into your browser):") . "\n";
+                $message .= gT("Reload your survey by clicking on the following link (or pasting it into your browser):", "unescaped") . "\n";
                 $aParams  = array('scid' => $scid, 'lang' => App()->language);
                 if (!empty($clienttoken)) {
                     $aParams['token'] = $clienttoken;

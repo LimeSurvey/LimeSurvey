@@ -1922,11 +1922,12 @@ class DataEntry extends SurveyCommonAction
                                 $mailer->addAddress($saver['email']);
                                 $mailer->setSurvey($surveyid);
                                 $mailer->emailType = 'savesurveydetails';
+                                $mailer->isHTML(false);
                                 $mailer->Subject = gT("Saved Survey Details");
-                                $message = gT("Thank you for saving your survey in progress. The following details can be used to return to this survey and continue where you left off.");
+                                $message = gT("Thank you for saving your survey in progress. The following details can be used to return to this survey and continue where you left off.", "unescaped");
                                 $message .= "\n\n" . $thissurvey['name'] . "\n\n";
                                 $message .= gT("Name") . ": " . $saver['identifier'] . "\n";
-                                $message .= gT("Reload your survey by clicking on the following link (or pasting it into your browser):") . "\n";
+                                $message .= gT("Reload your survey by clicking on the following link (or pasting it into your browser):", "unescaped") . "\n";
                                 $aParams = array('lang' => $saver['language'], 'loadname' => $saver['identifier']);
                                 $message .= Yii::app()->getController()->createAbsoluteUrl("/survey/index/sid/{$surveyid}/loadall/reload/scid/{$arSaveControl->scid}/", $aParams);
                                 $mailer->Body = $message;
