@@ -80,7 +80,7 @@ class FormatterDateTimeToJson implements FormatterInterface
             $value,
             'UTC',
             $this->inputTimezone,
-            'c'
+            'Y-m-d\TH:i:s.000\Z'
         );
     }
 
