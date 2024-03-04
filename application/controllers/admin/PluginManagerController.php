@@ -407,13 +407,15 @@ class PluginManagerController extends SurveyCommonAction
         $pluginId = (int) $pluginId;
         $plugin = Plugin::model()->find('id = :id', [':id' => $pluginId]);
         if ($plugin) {
+            $pluginName = $plugin->name;
+            $pluginType = $plugin->plugin_type;
             $plugin->load_error = 0;
             $plugin->load_error_message = '';
             $result = $plugin->update();
             if ($result) {
-                Yii::app()->user->setFlash('success', sprintf(gt('Reset load error for plugin %d'), $pluginId));
+                Yii::app()->user->setFlash('success', sprintf(gt('Reset load error for plugin %s (%s)'), $pluginName, $pluginType));
             } else {
-                Yii::app()->user->setFlash('error', sprintf(gt('Could not update plugin %d'), $pluginId));
+                Yii::app()->user->setFlash('error', sprintf(gt('Could not update plugin %s (%s)'), $pluginName, $pluginType));
             }
             $this->getController()->redirect($url);
         } else {
