@@ -61,7 +61,7 @@ echo viewHelper::getViewTestTag('participantsBlacklistControl');
                     <div class="row ls-space margin top-10 bottom-10">
                         <div class="mb-3">
                             <label class='form-label col-md-8'>
-                                <?php eT('Prevent blacklisted participants from being added to a survey:'); ?>
+                                <?php eT('Prevent blocklisted participants from being added to a survey:'); ?>
                             </label>
                             <div class='col-md-3'>
                                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
@@ -78,7 +78,7 @@ echo viewHelper::getViewTestTag('participantsBlacklistControl');
                     <div class="row ls-space margin top-10 bottom-10">
                         <div class="mb-3">
                             <label class='form-label col-md-8'>
-                                <?php eT('Hide blacklisted participants:'); ?>
+                                <?php eT('Hide blocklisted participants:'); ?>
                             </label>
                             <div class='col-md-3'>
                                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
@@ -95,7 +95,7 @@ echo viewHelper::getViewTestTag('participantsBlacklistControl');
                     <div class="row ls-space margin top-10 bottom-10">
                         <div class="mb-3">
                             <label class='form-label col-md-8'>
-                                <?php eT( 'Delete globally blacklisted participant from the database:'); ?>
+                                <?php eT( 'Delete globally blocklisted participant from the database:'); ?>
                             </label>
                             <div class='col-md-3'>
                                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [

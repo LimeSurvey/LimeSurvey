@@ -151,7 +151,7 @@ class remotecontrol_handle
      * @param string $sSurveyTitle Title of the new Survey
      * @param string $sSurveyLanguage Default language of the Survey
      * @param string $sformat (optional) Question appearance format (A, G or S) for "All on one page", "Group by Group", "Single questions", default to group by group (G)
-     * @return int|array The survey id in case of success
+     * @return int|array The survey ID in case of success
      */
     public function add_survey($sSessionKey, $iSurveyID, $sSurveyTitle, $sSurveyLanguage, $sformat = 'G')
     {
@@ -488,7 +488,7 @@ class remotecontrol_handle
             return array('status' => self::INVALID_SESSION_KEY);
         }
         $iSurveyID = (int) $iSurveyID;
-        // check valid survey id and current user has permission
+        // check valid survey ID and current user has permission
         if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveyactivation', 'update')) {
             return array('status' => 'No permission');
         }

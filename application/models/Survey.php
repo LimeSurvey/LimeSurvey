@@ -182,6 +182,14 @@ class Survey extends LSActiveRecord implements PermissionInterface
             $this->gsid = null;
             return;
         }
+        if ($this->isNewRecord) {
+            $this->setAttributeDefaults();
+        }
+        $this->attachEventHandler("onAfterFind", array($this, 'afterFindSurvey'));
+    }
+
+    private function setAttributeDefaults()
+    {
         // Set the default values
         $this->htmlemail = 'Y';
         $this->format = 'G';
@@ -213,8 +221,6 @@ class Survey extends LSActiveRecord implements PermissionInterface
                 }
             }
         }
-
-        $this->attachEventHandler("onAfterFind", array($this, 'afterFindSurvey'));
     }
 
     /** @inheritdoc */
@@ -349,7 +355,11 @@ class Survey extends LSActiveRecord implements PermissionInterface
         } elseif (isset($this->languagesettings[$this->language])) {
             return $this->languagesettings[$this->language];
         } else {
-            throw new Exception('Selected Surveys language not found');
+            $errorString = 'Survey language not found - looked for ' . App()->language;
+            if ($this->language != App()->language) {
+                $errorString .= ' and ' . $this->language;
+            }
+            throw new Exception($errorString);
         }
     }
 
@@ -666,7 +676,9 @@ class Survey extends LSActiveRecord implements PermissionInterface
     public function getTokenAttributes()
     {
         $attdescriptiondata = decodeTokenAttributes($this->attributedescriptions ?? '');
-
+        if (!is_array(reset($attdescriptiondata))) {
+            $attdescriptiondata = null;
+        }
         // Catches malformed data
         if ($attdescriptiondata && strpos((string) key(reset($attdescriptiondata)), 'attribute_') === false) {
             // don't know why yet but this breaks normal tokenAttributes functionning
@@ -951,7 +963,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
             $survey->sid = intval(randomChars(6, '123456789'));
             /* If it's happen : there are an issue in server … (or in randomChars function …) */
             if ($attempts > 50) {
-                throw new Exception("Unable to get a valid survey id after 50 attempts");
+                throw new Exception("Unable to get a valid survey ID after 50 attempts");
             }
         }
 
@@ -2061,7 +2073,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
     }
 
     /**
-     * Get the final label for survey id
+     * Get the final label for survey ID
      * @param string $dataSecurityNoticeLabel current label
      * @param integer $surveyId unused
      * @return string
@@ -2076,6 +2088,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
             '/subviews/privacy/privacy_datasecurity_notice_label.twig',
             [
                 'dataSecurityNoticeLabel' => $dataSecurityNoticeLabel,
+                'sid' => $surveyId,
             ]
         );
     }

@@ -167,6 +167,8 @@ class ResponsesController extends LSBaseController
             $fnames[] = ["submitdate", gT("Submission date"), gT("Completed"), "0", 'D', 'code' => 'submitdate'];
         }
         $fnames[] = ["completed", gT("Completed"), "0"];
+        $qids = [];
+        $fields = [];
 
         foreach ($fieldmap as $field) {
             if ($field['fieldname'] == 'lastpage' || $field['fieldname'] == 'submitdate') {
@@ -192,7 +194,21 @@ class ResponsesController extends LSBaseController
                     'code' => viewHelper::getFieldCode($field, ['LEMcompat' => true])
                 ];
             } elseif ($field['aid'] !== 'filecount') {
-                $qidattributes = QuestionAttribute::model()->getQuestionAttributes($field['qid']);
+                $qids[] = $field['qid'];
+                $fields[] = $field;
+            } else {
+                $fnames[] = [$field['fieldname'], gT("File count")];
+            }
+        }
+
+        if (count($qids)) {
+            $rawQuestions = Question::model()->findAllByPk($qids);
+            $questions = [];
+            foreach ($rawQuestions as $rawQuestion) {
+                $questions[$rawQuestion->qid] = $rawQuestion;
+            }
+            foreach ($fields as $field) {
+                $qidattributes = QuestionAttribute::model()->getQuestionAttributes($questions[$field['qid']]);
 
                 for ($i = 0; $i < $qidattributes['max_num_of_files']; $i++) {
                     $filenum = sprintf(gT("File %s"), $i + 1);
@@ -236,8 +252,6 @@ class ResponsesController extends LSBaseController
                         "index"    => $i
                     ];
                 }
-            } else {
-                $fnames[] = [$field['fieldname'], gT("File count")];
             }
         }
 
@@ -630,7 +644,7 @@ class ResponsesController extends LSBaseController
     /**
      * Deletes a single response and redirects to the gridview.
      *
-     * @param int $surveyId -- the survey id
+     * @param int $surveyId -- the survey ID
      * @param int $responseId -- the response id to be deleted
      * @throws CDbException
      * @throws CHttpException
@@ -662,7 +676,7 @@ class ResponsesController extends LSBaseController
      * Download individual file by response and filename
      *
      * @access public
-     * @param int $surveyId : survey id
+     * @param int $surveyId : survey ID
      * @param int $responseId
      * @param int $qid
      * @param int $index
@@ -731,7 +745,7 @@ class ResponsesController extends LSBaseController
      * Construct a zip files from a list of response
      *
      * @access public
-     * @param int $surveyId : survey id
+     * @param int $surveyId : survey ID
      * @param string $responseIds : list of responses as string
      * @return void application/zip
      * @throws CException
@@ -1036,7 +1050,7 @@ class ResponsesController extends LSBaseController
 
         $thissurvey = getSurveyInfo($surveyId);
 
-        // Reinit LEMlang and LEMsid: ensure LEMlang are set to default lang, surveyid are set to this survey id
+        // Reinit LEMlang and LEMsid: ensure LEMlang are set to default lang, surveyid are set to this survey ID
         // Ensure Last GetLastPrettyPrintExpression get info from this sid and default lang
         LimeExpressionManager::SetEMLanguage($thissurvey['oSurvey']->language);
         LimeExpressionManager::SetSurveyId($surveyId);

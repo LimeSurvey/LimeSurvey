@@ -1745,7 +1745,7 @@ class Participant extends LSActiveRecord
     /**
      * Copies central attributes/participants to an individual survey survey participants table
      *
-     * @param int $surveyId The survey id
+     * @param int $surveyId The survey ID
      * @param string $participantIds Array containing the participant ids of the participants we are adding
      * @param array $mappedAttributes An array containing a list of /mapped attributes in the form of "token_field_name" => "participant_attribute_id"
      * @param array $newAttributes An array containing new attributes to create in the tokens table
@@ -2295,7 +2295,7 @@ class Participant extends LSActiveRecord
     }
 
     /**
-     * Returns the list of blacklisted participant IDs
+     * Returns the list of blocklisted participant IDs
      * @return string[]
      */
     public function getBlacklistedParticipantIds()

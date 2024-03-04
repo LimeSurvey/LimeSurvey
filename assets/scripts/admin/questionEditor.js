@@ -52,7 +52,6 @@ var LS = LS || {};
 // TODO: Use component for quick-add
 // TODO: Use component for label sets
 $(document).on('ready pjax:scriptcomplete', function () {
-
   // TODO: Routing?
   if (window.location.href.indexOf('questionAdministration') === -1) {
     return;
@@ -1782,7 +1781,8 @@ $(document).on('ready pjax:scriptcomplete', function () {
      * @return {void}
      */
     checkQuestionValidateTitle: function(code, qid) {
-      $('#question-title-warning').text("");
+      $('#questionCode')[0].setCustomValidity('');
+      $('#question-title-warning').text('');
       $('#question-title-warning').addClass('d-none');
       $.ajax({
         url: languageJson.checkQuestionValidateTitleURL,
@@ -1797,6 +1797,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
           if (message !== null) {
               $('#question-title-warning').removeClass('d-none');
               $('#question-title-warning').text(message);
+              $('#questionCode')[0].setCustomValidity(message); // must set customvalidity to avoid submit by another enter
           } else {
               // Continue
           }
@@ -1826,6 +1827,16 @@ $(document).on('ready pjax:scriptcomplete', function () {
         return false;
       }
       const saveWithAjax = target.dataset.saveWithAjax === 'true';
+      const form = document.getElementById('edit-question-form');
+      if (!(form instanceof HTMLFormElement)) {
+        throw 'form is not HTMLFormElement';
+      }
+      /* Check if input are HTML5 valid */
+      if (!form.checkValidity() ) {
+          // the form is invalid : show invalid part
+          form.reportValidity();
+          return false;
+      }
 
       const firstSubquestionRow = document.querySelector('.subquestions-table tr');
       if (firstSubquestionRow) {
@@ -1844,10 +1855,6 @@ $(document).on('ready pjax:scriptcomplete', function () {
       }
 
       const updateQuestionSummary = () => {
-        const form = document.getElementById('edit-question-form');
-        if (!(form instanceof HTMLFormElement)) {
-          throw 'form is not HTMLFormElement';
-        }
         $.ajax({
           url: form.dataset.summaryUrl,
           method: 'GET',
@@ -1874,6 +1881,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
           },
           error: (response) => {
             alert('Internal error in updateQuestionSummary: ' + response);
+            return false;
           },
         });
       };
@@ -1974,7 +1982,11 @@ $(document).on('ready pjax:scriptcomplete', function () {
           if (message !== null) {
               $('#question-title-warning').removeClass('d-none');
               $('#question-title-warning').text(message);
+              $('#questionCode')[0].setCustomValidity(message); // must set customvalidity to avoid submit by another enter
           } else {
+            $('#question-title-warning').addClass('d-none');
+            $('#question-title-warning').text('');
+            $('#questionCode')[0].setCustomValidity('');
             // TODO: Check other things too.
             const button = document.getElementById('submit-create-question');
             if (button instanceof HTMLElement) {
@@ -1990,8 +2002,8 @@ $(document).on('ready pjax:scriptcomplete', function () {
                 // Just submit form.
                 button.click();
               }
+              return true;
             }
-            $('#question-title-warning').removeClass('d-none');
           }
         },
         error: (response) => {
@@ -2015,14 +2027,41 @@ $(document).on('ready pjax:scriptcomplete', function () {
     showAnswerOptionCodeUniqueError: createCheckUniqueFunction(languageJson.answeroptions.duplicateanswercode)
   };
 
-  $("#questionCode").on('blur', function() {
-    let qid = 0;
-    if ($(this).data('qid')) {
-      qid = $(this).data('qid');
-    }
-    LS.questionEditor.checkQuestionValidateTitle($(this).val(), qid);
-  });
+  /**
+   * questionCode need specific ajax validation
+   */
+  /** deactivate the check when needed */
+  function deActivateQuestionCodeChecker() {
+    $('#questionCode').off('blur keypress');
+  }
+  /** activate the check when event happen on questionCode */
+  function activateQuestionCodeChecker() {
+    $('#questionCode').on('blur', function() {
+      let qid = 0;
+      if ($(this).data('qid')) {
+        qid = $(this).data('qid');
+      }
+      LS.questionEditor.checkQuestionValidateTitle($(this).val(), qid);
+    });
+    /* Check question code validatiry when press ENTER mantis #19440 */
+    $('#questionCode').on('keypress', function(e) {
+      if (e.which == 13) {
+        e.preventDefault();
+        deActivateQuestionCodeChecker();
+        /* Set CustomValidity to empty to allow check again by checkIfSaveIsValid */
+        $('#questionCode')[0].setCustomValidity('');
+        $('#question-title-warning').text('');
+        $('#question-title-warning').addClass('d-none');
+        if (!LS.questionEditor.checkIfSaveIsValid(e, 'enter')) {
+          activateQuestionCodeChecker();
+        }
+      }
+    });
 
+  }
+  /* Attach event when ready */
+  activateQuestionCodeChecker();
+  /** */
   function showConditionsWarning(e) {
     if (!$(this).data('hasConditions')) {
       return;

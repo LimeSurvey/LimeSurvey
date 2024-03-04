@@ -57,7 +57,7 @@ class HelloWorld extends SurveyCommonAction
       /*
        * This function is the root one. It will say "hello root" and nothing else. You can access it via :
        * index.php?r=admin/HelloWorld/sa/HelloWorldSurvey&surveyid=XXXXX
-       * where XXXXX is any valid survey id.
+       * where XXXXX is any valid survey ID.
        */
       public function HelloWorldSurvey($surveyid)
       {

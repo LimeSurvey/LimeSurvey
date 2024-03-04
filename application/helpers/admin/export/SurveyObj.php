@@ -80,17 +80,16 @@ class SurveyObj
      * @param string|null $answerCode
      * @param Translator $translator
      * @param string $sLanguageCode
-     * @return string
+     * @return string|null
      */
     public function getFullAnswer($fieldName, $answerCode, Translator $translator, $sLanguageCode)
     {
-        $fullAnswer = '';
+        $fullAnswer = null;
         $fieldType = $this->fieldMap[$fieldName]['type'];
         $question = $this->fieldMap[$fieldName];
         $questionId = $question['qid'];
-        $answer = '';
-        $answerCode = strval($answerCode);
-        if ($questionId) {
+        $answer = $answerCode;
+        if ($questionId && $answerCode !== "" && !is_null($answerCode)) {
             $answers = $this->getAnswers($questionId);
             if (isset($answers[$answerCode])) {
                 $answer = $answers[$answerCode];
@@ -102,7 +101,7 @@ class SurveyObj
             case Question::QT_K_MULTIPLE_NUMERICAL:
             case Question::QT_N_NUMERICAL:
                 $fullAnswer = $answerCode;
-                if (trim($fullAnswer) !== '') {
+                if (!is_null($fullAnswer) && trim($fullAnswer) !== '') {
                     // SQL DECIMAL
                     if ($fullAnswer[0] === ".") {
                         $fullAnswer = "0" . $fullAnswer;
@@ -148,7 +147,7 @@ class SurveyObj
                 break;
 
             case Question::QT_O_LIST_WITH_COMMENT:   //DROPDOWN LIST WITH COMMENT
-                if (isset($answer)) {
+                if (!empty($answer)) {
                     //This is one of the dropdown list options.
                     $fullAnswer = $answer;
                 } else {
@@ -196,7 +195,7 @@ class SurveyObj
                     if ($answerCode == 'Y') {
                         $fullAnswer = $translator->translate('Yes', $sLanguageCode);
                     } elseif ($answerCode == 'N' || $answerCode === '') {
-// Strict check for empty string to find null values
+                        // Strict check for empty string to find null values
                         $fullAnswer = $translator->translate('No', $sLanguageCode);
                     } else {
                         $fullAnswer = $translator->translate('N/A', $sLanguageCode);
@@ -243,7 +242,7 @@ class SurveyObj
                 break;
 
             default:
-                $fullAnswer .= $answerCode;
+                $fullAnswer = $answerCode;
         }
 
         return $fullAnswer;
@@ -254,12 +253,12 @@ class SurveyObj
      *
      * @param string $sFieldName
      * @param string|null $sValue
-     * @return string
+     * @return string|null
      */
     public function getShortAnswer($sFieldName, $sValue)
     {
         if (is_null($sValue)) {
-            return "";
+            return null;
         }
         $aQuestion = $this->fieldMap[$sFieldName];
         $sFieldType = $aQuestion['type'];

@@ -163,5 +163,3 @@ if (isset($editorEnabled) && $editorEnabled && $editorUrl) {
     );
 }
 ?>
-
-

@@ -34,6 +34,163 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.4.9 (build 240226) to 6.4.10 (build 240228) February 27, 2024
+-Fixed issue: Survey permission improvements (#3759) (lajosarpad)
+-Fixed issue #CT-674: other field in list(radio) is cut off after 5 characters (#3763) (Carsten Schmitz)
+-Fixed issue #19435: Input validation does not work correctly with input numeric when reload response (#3753) (Denis Chenu)
+#Updated translation: Japanese by d_inoue
+#Updated translation: French (France) by DenisChenu, mapage
+
+
+Changes from 6.4.8 (build 240221) to 6.4.9 (build 240226) February 26, 2024
+-Fixed issue: getQuestionQttributesForEMPerformance performance optimization (#3751) (lajosarpad)
+-Fixed issue: HTML tooltips for question attributes not properly showing (Carsten Schmitz)
+-Fixed issue: Assessment values not properly validated on input (Carsten Schmitz)
+-Fixed issue #19440: Pressing enter in question code circumvents validation (#3758) (Denis Chenu)
+-Fixed issue #19426: Survey listing : multiple call of same user (#3741) (Denis Chenu)
+-Fixed issue #19420: "Share survey" links not using alias (Carsten Schmitz)
+-Fixed issue #18473: Survey listing : multiple call of SurveyGroup (#3737) (Denis Chenu)
+-Fixed issue #16287: Contentious wording in the application texts (#3755) (Carsten Schmitz)
+#Updated translation: Turkish by kayazeren
+#Updated translation: Korean by modernity4r
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Finnish by Jmantysalo
+
+
+Changes from 6.4.7 (build 240219) to 6.4.8 (build 240221) February 21, 2024
+-Fixed issue: Using URL prefill you could post longer strings than allowed to a List type question resulting in a DB error (Carsten Schmitz)
+-Fixed issue: Tab-separated survey structure could not be exported if there is only one default value in the survey (Carsten Schmitz)
+-Fixed issue: Quick translation not working if server is using IPv6 (Carsten Schmitz)
+-Fixed issue: Multilingual surveys not properly saved (Carsten Schmitz)
+-Fixed issue: Improved performance of survey logic file (#3747) (lajosarpad)
+-Fixed issue #19087: [security] Account takeover through Import User function (#3735) (Denis Chenu)
+#Updated translation: Slovak by jelen1, PR_SOZA
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Portuguese (Brazil) by c_schmitz, foguinho.peruca
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Japanese by nomoto
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
+Changes from 6.4.6 (build 240212) to 6.4.7 (build 240219) February 19, 2024
+-Fixed issue: Untranslated string in optin/optout screen (Carsten Schmitz)
+-Fixed issue: Survey language consistency is checked even though only one language exists (Carsten Schmitz)
+-Fixed issue: Slow performance when saving a survey with more than one language (#3739) (Carsten Schmitz)
+-Fixed issue: Partial missing frontend validation on answer option codes (Carsten Schmitz)
+-Fixed issue: Integrity check very slow when having a lot of surveys (#3744) (Carsten Schmitz)
+-Fixed issue: Error message "Call to undefined method stdClass::decrypt()" when deleting a participant while using that to fill out the survey (Carsten Schmitz)
+-Fixed issue: Avoiding session reset upon database preview (#3745) (lajosarpad)
+-Fixed issue #LB-126: Prevent template removal when the files are temporarily unavailable (#3726) (lajosarpad)
+-Fixed issue #19399: Survey does not show translated text when on register page(#3732) (Denis Chenu)
+-Fixed issue #19392: Partial missing frontend validation on subquestion codes (#3729) (Denis Chenu)
+-Fixed issue #19383: When export multiple choice filtered : loose N/A value (#3718) (Denis Chenu)
+-Fixed issue #19359: JS error in console about CKeditor (#3730) (Gabriel Jenik)
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Mongolian by amidral
+#Updated translation: Korean by modernity4r
+#Updated translation: Japanese by d_inoue
+#Updated translation: Italian by sielte
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Catalan by qualitatuvic
+
+
+Changes from 6.4.5 (build 240205) to 6.4.6 (build 240212) February 12, 2024
+-Fixed issue #CR-1397: error in vue js code, resulting in sidebar events not being executed (#3728) (Patrick Teichmann)
+-Fixed issue #19396: Upgrade failure encountered at migration 620 (#3724) (Mohab Elsheikh)
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Japanese by d_inoue
+#Updated translation: French (France) by DenisChenu
+#Updated translation: Finnish by Jmantysalo
+
+
+Changes from 6.4.4 (build 240130) to 6.4.5 (build 240205) February 5, 2024
+-Fixed issue #LA-37: Set the timeout for notifications to 10s (#3715) (Mohab Elsheikh)
+-Fixed issue #19351: Limesurvey broken after 5.6.50 to 6.4.2 upgrade (#3713) (Mohab Elsheikh)
+-Fixed issue #19347: No generation of new user within first LDAP login (#3711) (Denis Chenu)
+-Fixed issue #19320: Error after accessing to response export view (#3683) (Gabriel Jenik)
+-Fixed issue #19313: No warning list when import same question code (#3695) (Gabriel Jenik)
+-Fixed issue #19253: CSV injection in export quota (#3677) (Gabriel Jenik)
+-Fixed issue #CT-627: incorrect qid highlighted in structure tab (#3719) (Patrick Teichmann)
+#Updated translation: Vietnamese by binhbot, dupd
+#Updated translation: Spanish (Mexican) by josanes
+#Updated translation: Spanish (Argentina) (Informal) by kwelladm
+#Updated translation: Slovenian by c_schmitz, junoslukan
+#Updated translation: Slovak by jelen1
+#Updated translation: Serbian (Latin script) by wakizashi
+#Updated translation: Russian by gcgops, sBoston
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Portuguese (Brazil) by dti.proplan, phph, Tiller
+#Updated translation: Portuguese (Brazil) by Tiller
+#Updated translation: Persian by sdhadi
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Lithuanian by Morta
+#Updated translation: Latvian by c_schmitz, daugavietis
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Hungarian by kkd
+#Updated translation: Hindi by KapilSabarwal
+#Updated translation: Hebrew by jonasfashions
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Georgian by Davitus, giorgi
+#Updated translation: French (France) by Aura97, c_schmitz, mapage, Tobixnator, twilllig
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch (Informal) by Aanouk
+#Updated translation: Danish by nonformality
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Croatian by tibor.pacalat
+#Updated translation: Chinese (Taiwan) (Traditional) by Yu-Jyun Guo
+#Updated translation: Chinese (Simplified) by flying9841, zengqing
+#Updated translation: Chinese (Simplified) by flying9841, markboo, q2019715, xiongrui
+#Updated translation: Chinese (Hong Kong) (Traditional) by GIF_IT
+#Updated translation: Arabic by mkhasawneh, Shatha
+
+
+Changes from 6.4.3 (build 240122) to 6.4.4 (build 240130) January 30, 2024
+-Fixed issue: Index cannot be set if already exists (Carsten Schmitz)
+-Fixed issue: Certain DB updates not skipped properly but end up in exception (Carsten Schmitz)
+-Fixed issue #CT-614: exporting responses in "Full answers" mode does not export the comment field of the "List with comment" question type (Patrick Teichmann)
+-Fixed issue #19331: Try to add a subquestion to a matrix type question throws an SQL error (#3686) (Gabriel Jenik)
+-Fixed issue #19251: Can't add Regex condition in survey (#3710) (Gabriel Jenik)
+-Fixed issue #18895: No way to add textarea with core config.xml (#3703) (Denis Chenu)
+#Updated translation: Slovak by dusanm, jelen1
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Czech by jelen1, slansky
+#Updated translation: Czech (Informal) by jelen1, slansky
+
+
+Changes from 6.4.2 (build 240115) to 6.4.3 (build 240122) January 22, 2024
++New feature #19299: Unmask token field (#3673) (Denis Chenu)
+-Fixed issue: LimeSurvey getting slower as more answer options are across all surveys (Carsten Schmitz)
+-Fixed issue #CT-605: column selector in responses tab wasn't working anymore (twilligls)
+-Fixed issue #CT-604: edit action in "Panel integration" wasn't working (twilligls)
+-Fixed issue #CT-598: removing additional languages didn't work anymore (twilligls)
+-Fixed issue #CR-1392: SQL not compatible with MSSQL and Postgres (#3700) (Mohab E)
+-Fixed issue #CR-1390: Translation string contains hardcoded action in placeholder (#3699) (Mohab E)
+-Fixed issue #19344: Survey activation error when create a new survey using MSSQL (#3696) (Carsten Schmitz)
+-Fixed issue #19274: Attribute encryption can not be turned OFF, it can only be turned on (#3670) (Gabriel Jenik)
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Korean by modernity4r, zist21
+#Updated translation: Japanese by nomoto
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by urbana
+#Updated translation: German (Informal) by c_schmitz, metaworx
+
+
 Changes from 6.4.1 (build 240108) to 6.4.2 (build 240115) January 15, 2024
 -Fixed issue: Don't use disk_free_space if function doesn't exist (ComfortUpdate) (Olle Haerstedt)
 -Fixed issue #2565: Label set panel description typo (Kevin Foster)

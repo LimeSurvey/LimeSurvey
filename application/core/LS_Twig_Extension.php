@@ -700,7 +700,7 @@ class LS_Twig_Extension extends AbstractExtension
      * Returns the "tracking url" for Google Analytics when style is "Survey-SID/GROUP"
      * @param int $surveyId
      * @param string $trackUrlPageName  Specific page name to include in the tracking url. If it's empty, we will try to infer it from the context.
-     * @return string The tracking URL as "<survey name>-[<survey id>]/[<page name|group seq>]-<group name>"
+     * @return string The tracking URL as "<survey name>-[<survey ID>]/[<page name|group seq>]-<group name>"
      */
     public static function getGoogleAnalyticsTrackingUrl($surveyId, $trackUrlPageName = '')
     {

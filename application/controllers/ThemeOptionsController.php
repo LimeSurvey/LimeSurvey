@@ -782,7 +782,7 @@ class ThemeOptionsController extends LSBaseController
             $basePageTitle = sprintf('Survey options for theme %s', $templateName);
 
             if (!is_null($sid)) {
-                $addictionalSubtitle = gT(" for survey id: $sid");
+                $addictionalSubtitle = gT(" for survey ID: $sid");
             } elseif (!is_null($gsid)) {
                 $addictionalSubtitle = gT(" for survey group id: $gsid");
             } else {
@@ -812,7 +812,7 @@ class ThemeOptionsController extends LSBaseController
 
     /**
      * Try to get the get-parameter from request.
-     * At the moment there are three namings for a survey id:
+     * At the moment there are three namings for a survey ID:
      * 'sid'
      * 'surveyid'
      * 'iSurveyID'

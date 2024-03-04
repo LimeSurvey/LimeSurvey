@@ -74,6 +74,8 @@ class SurveysGroupsettings extends LSActiveRecord
     public $active;
     public $additional_languages;
 
+    /* self[] used in self::getInstance() */
+    private static $aSurveysGroupSettings = [];
 
     /**
      * @return string the associated database table name
@@ -112,6 +114,14 @@ class SurveysGroupsettings extends LSActiveRecord
         );
     }
 
+    /** @inheritdoc
+     * unset static aSurveysGroupSettings
+     **/
+    public function save($runValidation = true, $attributes = null)
+    {
+        unset(self::$aSurveysGroupSettings[$this->gsid]);
+        parent::save($runValidation, $attributes);
+    }
     /**
      * @return array relational rules.
      */
@@ -292,21 +302,23 @@ class SurveysGroupsettings extends LSActiveRecord
      * It steps up (see param $iStep) until it has found the real settings ...
      *
      * @param int $iSurveyGroupId
-     * @param null $oSurvey
-     * @param null $instance
+     * @param  \Survey|null $oSurvey
+     * @param \self|null $instance
      * @param int $iStep      this is inheritance step (recursive step) (parent, parentParent, parentParentParent ?)
      * @param bool $bRealValues
      * @return SurveysGroupsettings instance
      */
     public static function getInstance($iSurveyGroupId = 0, $oSurvey = null, $instance = null, $iStep = 1, $bRealValues = false)
     {
-
-        if ($iSurveyGroupId > 0) {
-            $model = SurveysGroupsettings::model()->with('SurveysGroups')->findByPk($iSurveyGroupId);
-        } else {
-            //this is the default group setting with gsid=0 !!!
-            $model = SurveysGroupsettings::model()->findByPk($iSurveyGroupId);
+        if (!array_key_exists($iSurveyGroupId, self::$aSurveysGroupSettings)) {
+            if ($iSurveyGroupId > 0) {
+                self::$aSurveysGroupSettings[$iSurveyGroupId] = SurveysGroupsettings::model()->with('SurveysGroups')->findByPk($iSurveyGroupId);
+            } else {
+                //this is the default group setting with gsid=0 !!!
+                self::$aSurveysGroupSettings[$iSurveyGroupId] = SurveysGroupsettings::model()->findByPk($iSurveyGroupId);
+            }
         }
+        $model = self::$aSurveysGroupSettings[$iSurveyGroupId];
 
         // set initial values to instance on first run
         if ($instance === null) {
@@ -418,7 +430,12 @@ class SurveysGroupsettings extends LSActiveRecord
         } elseif ($attribute == 'owner_id' && $value != -1) {
             $instance->oOptions->owner = "";
             $instance->oOptions->ownerLabel = "";
-            $oUser = User::model()->findByPk($instance->oOptions->{$attribute});
+            /* \User|false[] see mantis #19426 */
+            static $oStaticUsers = array();
+            if (!array_key_exists($instance->oOptions->{$attribute}, $oStaticUsers)) {
+                $oStaticUsers[$instance->oOptions->{$attribute}] = User::model()->findByPk($instance->oOptions->{$attribute});
+            }
+            $oUser = $oStaticUsers[$instance->oOptions->{$attribute}];
             if (!empty($oUser)) {
                 $instance->oOptions->owner = $oUser->attributes;
                 $instance->oOptions->ownerLabel = $oUser->users_name . ($oUser->full_name ? " - " . $oUser->full_name : "");

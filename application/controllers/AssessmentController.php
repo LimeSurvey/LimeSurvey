@@ -48,7 +48,7 @@ class AssessmentController extends LSBaseController
      * Renders th view for: show the list of assessments(if assessment is activated)
      *                      or the button to activate assessment mode
      *
-     * @param int $surveyid the survey id
+     * @param int $surveyid the survey ID
      *
      */
     public function actionIndex($surveyid)

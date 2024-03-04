@@ -187,7 +187,7 @@ class RegisterController extends LSYii_Controller
     /**
      * Creates the array for the registration success page
      *
-     * @param Integer $iSurveyId The survey id
+     * @param Integer $iSurveyId The survey ID
      * @param Integer $iTokenId The token id
      *
      * @return array The rendereable array
@@ -325,7 +325,7 @@ class RegisterController extends LSYii_Controller
             if ($oToken->usesleft < 1 && $aSurveyInfo['alloweditaftercompletion'] != 'Y') {
                 $this->aRegisterErrors[] = gT("The email address you have entered is already registered and the survey has been completed.");
             } elseif (strtolower(substr(trim((string) $oToken->emailstatus), 0, 6)) === "optout") {
-                // And global blacklisting ?
+                // And global blocklisting ?
                 {
                 $this->aRegisterErrors[] = gT("This email address cannot be used because it was opted out of this survey.");
                 }
@@ -432,7 +432,7 @@ class RegisterController extends LSYii_Controller
         $this->aReplacementData['sMessage'] = $this->sMessage;
 
         $oTemplate = Template::model()->getInstance('', $iSurveyId);
-        $aSurveyInfo  =  getsurveyinfo($iSurveyId);
+        $aSurveyInfo  =  getsurveyinfo($iSurveyId, $sLanguage);
 
         if ($iTokenId !== null) {
             $aData['aSurveyInfo'] = self::getRegisterSuccess($iSurveyId, $iTokenId);

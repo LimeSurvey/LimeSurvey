@@ -136,20 +136,8 @@ class LSUserIdentity extends CUserIdentity
         $user = $this->getUser();
         App()->user->login($this);
 
-        // Check for default password
-        if ($this->password === 'password') {
-            $not = new UniqueNotification(array(
-                'user_id' => App()->user->id,
-                'importance' => Notification::HIGH_IMPORTANCE,
-                'title' => 'Password warning',
-                'message' => '<span class="ri-error-warning-fill"></span>&nbsp;' .
-                    gT("Warning: You are still using the default password ('password'). Please change your password and re-login again.")
-            ));
-            $not->save();
-        }
-
         if ((int) App()->request->getPost('width', '1220') < 1220) {
-// Should be 1280 but allow 60 lenience pixels for browser frame and scrollbar
+            // Should be 1280 but allow 60 lenience pixels for browser frame and scrollbar
             Yii::app()->setFlashMessage(gT("Your browser screen size is too small to use the administration properly. The minimum size required is 1280*1024 px."), 'error');
         }
 

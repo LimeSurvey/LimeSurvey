@@ -20,7 +20,7 @@ trait OpHandlerSurveyTrait
         if ($surveyId === null) {
             throw new OpHandlerException(
                 printf(
-                    'Missing survey id in context for entity %s',
+                    'Missing survey ID in context for entity %s',
                     $op->getEntityType()
                 )
             );

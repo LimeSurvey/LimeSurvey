@@ -291,7 +291,7 @@ class LimesurveyApi
     }
 
     /**
-     * Return a token object from a token id and a survey id
+     * Return a token object from a token id and a survey ID
      *
      * @param int $iSurveyId
      * @param int $iTokenId
@@ -327,7 +327,7 @@ class LimesurveyApi
     }
 
     /**
-     * Gets the table name for responses for the specified survey id.
+     * Gets the table name for responses for the specified survey ID.
      * @param int $surveyId
      * @return string
      */
