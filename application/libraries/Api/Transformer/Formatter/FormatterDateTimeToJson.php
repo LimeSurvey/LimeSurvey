@@ -21,7 +21,7 @@ class FormatterDateTimeToJson implements FormatterInterface
     /** @var bool */
     private $revert = false;
     /** @var string */
-    private $inputTimezone = 'UTC';
+    private $inputTimezone;
 
     /**
      * @param bool $revert If true performs reverse format conversion
@@ -80,7 +80,7 @@ class FormatterDateTimeToJson implements FormatterInterface
             $value,
             'UTC',
             $this->inputTimezone,
-            'Y-m-d\TH:i:s.000\Z'
+            'Y-m-d H:i:s'
         );
     }
 
@@ -100,7 +100,7 @@ class FormatterDateTimeToJson implements FormatterInterface
         $outputFormat
     ) {
         $timezone = $inputTimeZone;
-        if ($value === null || $value === "") {
+        if ($value === null || $value === '') {
             return null;
         }
         $dateTime = date_create(

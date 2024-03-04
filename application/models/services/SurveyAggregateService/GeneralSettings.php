@@ -36,7 +36,7 @@ class GeneralSettings
     private $restMode = false;
 
     public const FIELD_TYPE_YN = 'yesorno';
-    public const FIELD_TYPE_DATETIME = 'dateime';
+    public const FIELD_TYPE_DATETIME = 'datetime';
     public const FIELD_TYPE_GAKEY = 'gakey';
     public const FIELD_TYPE_USE_CAPTCHA = 'use_captcha';
 

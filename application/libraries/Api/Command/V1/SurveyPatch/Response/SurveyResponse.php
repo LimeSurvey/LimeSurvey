@@ -54,7 +54,7 @@ class SurveyResponse
     {
         // add error message and full operation info to ErrorItemList
         $exceptionErrorItem = new ExceptionErrorItem(
-            $e->getMessage(),
+            $e->getMessage() . ' ' . $e->getTraceAsString(),
             $patchOpData
         );
         $this->exceptionErrors->addExceptionErrorItem(
