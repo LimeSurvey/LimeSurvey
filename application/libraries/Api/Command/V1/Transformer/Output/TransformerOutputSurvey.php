@@ -27,7 +27,6 @@ class TransformerOutputSurvey extends TransformerOutputActiveRecord
             'adminemail' => 'adminEmail',
             'language' => true,
             'expires' => [
-                'key' => 'expires',
                 'formatter' => ['dateTimeToJson' => true]
             ],
             'startdate' => [

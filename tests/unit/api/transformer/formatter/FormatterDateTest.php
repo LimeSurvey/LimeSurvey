@@ -29,7 +29,7 @@ class FormatterDateTimeToJsonTest extends TestBaseClass
         $formatter = new FormatterDateTimeToJson(true);
         $config = $this->getConfig(true);
         $tr = $formatter->format('2024-02-01T18:17:16.000Z', $config);
-        $this->assertEquals('2024-02-01T18:17:16+00:00', $tr);
+        $this->assertEquals('2024-02-01 18:17:16', $tr);
     }
 
     private function getConfig($revert = false)

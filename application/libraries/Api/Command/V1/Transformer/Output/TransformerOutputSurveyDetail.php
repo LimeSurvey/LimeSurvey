@@ -12,6 +12,7 @@ use LimeSurvey\Api\Transformer\Output\TransformerOutputActiveRecord;
 class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
 {
     private TransformerOutputSurvey $transformerSurvey;
+    private TransformerOutputSurveyGroup $transformerSurveyGroup;
     private TransformerOutputQuestionGroup $transformerQuestionGroup;
     private TransformerOutputQuestionGroupL10ns $transformerQuestionGroupL10ns;
     private TransformerOutputQuestion $transformerQuestion;
@@ -27,6 +28,7 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
      */
     public function __construct(
         TransformerOutputSurvey $transformerOutputSurvey,
+        TransformerOutputSurveyGroup $transformerOutputSurveyGroup,
         TransformerOutputQuestionGroup $transformerOutputQuestionGroup,
         TransformerOutputQuestionGroupL10ns $transformerOutputQuestionGroupL10ns,
         TransformerOutputQuestion $transformerOutputQuestion,
@@ -38,6 +40,7 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
         QuestionService $questionService
     ) {
         $this->transformerSurvey = $transformerOutputSurvey;
+        $this->transformerSurveyGroup = $transformerOutputSurveyGroup;
         $this->transformerQuestionGroup = $transformerOutputQuestionGroup;
         $this->transformerQuestionGroupL10ns = $transformerOutputQuestionGroupL10ns;
         $this->transformerQuestion = $transformerOutputQuestion;
@@ -77,7 +80,7 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
             "survey/index",
             array('sid' => $data->sid, 'newtest' => "Y", 'lang' => $data->language)
         );
-        $survey['surveyGroup'] = $data->surveygroup;
+        $survey['surveyGroup'] = $this->transformerSurveyGroup->transform($data->surveygroup);
         $survey['owner'] = $this->transformerSurveyOwner->transform($data->owner);
         $survey['ownerInherited'] = $this->transformerSurveyOwner->transform($data->oOptions->owner);
 
