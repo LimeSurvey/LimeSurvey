@@ -38,9 +38,11 @@ const SaveController = () => {
     },
     isSubmitting = () => formSubmitting,
     displayLoadingState = (el) => {
-        if((el.id === 'save-button') || (el.id === 'save-form-button') || ($(el).data('form-id') == 'addnewsurvey')) {
+        if(($(el).data('form-id') == 'addnewsurvey')) {
             const loadingSpinner = '<i class="ri-settings-5-fill remix-spin lsLoadingStateIndicator"></i>';
             $(el).prop('disabled', true).append(loadingSpinner);
+        } else if ((el.id === 'save-button') || (el.id === 'save-form-button') || (el.id === 'save-and-close-button') || (el.id = 'save-and-close-button-create-question')) {
+            $('#ls-loading').show();
         }
     },
     stopDisplayLoadingState = () => {
