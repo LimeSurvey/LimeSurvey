@@ -22,7 +22,6 @@ class CommandPatcher
         foreach ($this->handlers as $handler) {
             $op = (new $handler());
             if ($op->canHandle($this->command) == true) {
-//                return $handler;
                 return $op->execute($this->command, $this->client);
             }
         }

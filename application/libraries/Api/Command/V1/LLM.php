@@ -39,12 +39,12 @@ class LLM implements CommandInterface
      */
     public function run(Request $request)
     {
-//        $sessionKey = (string) $request->getData('sessionKey');
-//        if (!$this->authSession->checkKey($sessionKey)
-//        ) {
-//            return $this->responseFactory
-//                ->makeErrorUnauthorised();
-//        }
+        $sessionKey = (string) $request->getData('sessionKey');
+        if (!$this->authSession->checkKey($sessionKey)
+        ) {
+            return $this->responseFactory
+                ->makeErrorUnauthorised();
+        }
 
         $prompt = (string) $request->getData('command');
         $operation = (string) $request->getData('operation');
@@ -54,12 +54,8 @@ class LLM implements CommandInterface
             $gemini = new GoogleGeminiPro($cmd);
             $response = $gemini->run();
 
-            $tmp = rand() . ' LimeSurvey React Editor';
             return $this->responseFactory
                 ->makeSuccess(json_encode($response));
-
-//            return $this->responseFactory
-//                ->makeSuccess(json_encode($response));
         }
 
         return $this->responseFactory
