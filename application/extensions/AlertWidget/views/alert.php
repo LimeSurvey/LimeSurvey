@@ -24,11 +24,11 @@ if ($header != '') {
         echo CHtml::openTag("span", ['class' => $icon . ' me-2']);
         echo CHtml::closeTag("span");
     }
-    echo CHtml::encode($header);
+    echo viewHelper::purified($header);
     echo CHtml::closeTag("span");
     echo CHtml::openTag('br');
 }
-echo CHtml::encode($text);
+echo viewHelper::purified($text);
 if ($inErrorMode) {
     echo $this->render('error-summary', ['errors' => $errors]);
 }
