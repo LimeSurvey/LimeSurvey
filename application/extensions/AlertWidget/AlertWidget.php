@@ -70,17 +70,17 @@ class AlertWidget extends CWidget
         // View is only rendered when there is a message to be shown:
         if ($notInErrorMode || $inErrorMode) {
             $this->render('alert', [
-                'tag' => $this->tag,
-                'text' => $this->text,
-                'header' => $this->header,
-                'showIcon' => $this->showIcon,
-                'showCloseButton' => $this->showCloseButton,
+                'tag' => sanitize_alphanumeric($this->tag),
+                'text' => $this->text, // Text shown
+                'header' => $this->header, // Text shown
+                'showIcon' => boolval($this->showIcon),
+                'showCloseButton' => boolval($this->showCloseButton),
                 'errors' => $errors,
-                'inErrorMode' => $inErrorMode,
+                'inErrorMode' => boolval($inErrorMode),
                 'htmlOptions' => $this->htmlOptions,
-                'icon' => $this->icon,
+                'icon' => sanitize_alphanumeric($this->icon),
                 'type' => $this->type,
-                'isFilled' => $this->isFilled
+                'isFilled' => boolval($this->isFilled)
             ]);
         }
     }

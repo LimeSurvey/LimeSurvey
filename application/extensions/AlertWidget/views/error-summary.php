@@ -4,7 +4,7 @@
 <?php if (!empty($errors)) : ?>
 <ul class="d-flex flex-column">
     <?php foreach ($errors as $error) : ?>
-        <li><?= $error ?></li>
+        <li><?= CHtml::encode($error) ?></li>
     <?php endforeach; ?>
 </ul>
 <?php endif; ?>
