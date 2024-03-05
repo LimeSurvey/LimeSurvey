@@ -25,7 +25,8 @@ class SiteSettings implements CommandInterface
      *
      * @param ResponseFactory $responseFactory
      */
-    public function __construct(ResponseFactory $responseFactory) {
+    public function __construct(ResponseFactory $responseFactory)
+    {
         $this->responseFactory = $responseFactory;
     }
 
