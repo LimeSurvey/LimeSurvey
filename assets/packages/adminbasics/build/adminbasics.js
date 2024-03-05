@@ -17970,7 +17970,7 @@
 	    return window.event ? window.event.keyCode : e ? e.which : null;
 	  },
 	  goodchars: (e, goods) => {
-	    const key = globalWindowMethods.getkey(e);
+	    const key = getkey(e);
 	    if (key == null) return true;
 
 	    // get character
@@ -19193,7 +19193,7 @@
 	    },
 	    isSubmitting = () => formSubmitting,
 	    displayLoadingState = el => {
-	      if ((el.id === "save-button") || (el.id === "save-form-button") || ($(el).data('form-id') == 'addnewsurvey')) {
+	      if (el.id === "save-button" || el.id === "save-form-button" || $(el).data('form-id') == 'addnewsurvey') {
 	        const loadingSpinner = '<i class="ri-settings-5-fill remix-spin lsLoadingStateIndicator"></i>';
 	        $(el).prop('disabled', true).append(loadingSpinner);
 	      }
