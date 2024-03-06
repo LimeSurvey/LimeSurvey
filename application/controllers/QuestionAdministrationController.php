@@ -2812,10 +2812,10 @@ class QuestionAdministrationController extends LSBaseController
                 $subquestion = null;
                 if (is_numeric($subquestionId)) {
                     $subquestion = Question::model()->findByAttributes([
+                        'qid' => $subquestionId,
                         'sid' => $question->sid,
                         'parent_qid' => $question->qid,
-                        'scale_id' => $scaleId,
-                        'title' => $data['oldcode']
+                        'scale_id' => $scaleId
                     ]);
                 }
                 if (!$subquestion) {
