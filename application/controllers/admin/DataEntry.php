@@ -639,9 +639,10 @@ class DataEntry extends SurveyCommonAction
                 // Second column (Answer)
                 $aDataentryoutput .= "<td class=\"answers-cell\">\n";
                 //$aDataentryoutput .= "\t-={$fname[3]}=-"; //Debugging info
+                /* @var (string|array)[] : all question attributes of this question */
                 $qidattributes = [];
                 if (isset($fname['qid']) && isset($fname['type'])) {
-                    $qidattributes = QuestionAttribute::model()->getQuestionAttributes($fname['qid']);
+                    $qidattributes = QuestionAttribute::model()->getQuestionAttributes(Question::model()->findByPk($fname['qid']));
                 }
                 /** @var array<string,string> */
                 $questionInputs = [];
@@ -758,7 +759,6 @@ class DataEntry extends SurveyCommonAction
                         break;
                     case Question::QT_L_LIST: //LIST drop-down
                     case Question::QT_EXCLAMATION_LIST_DROPDOWN: //List (Radio)
-                        $qidattributes = QuestionAttribute::model()->getQuestionAttributes($fname['qid']);
                         if (isset($qidattributes['category_separator']) && trim((string) $qidattributes['category_separator']) != '') {
                             $optCategorySeparator = $qidattributes['category_separator'];
                         } else {
@@ -1002,12 +1002,11 @@ class DataEntry extends SurveyCommonAction
                         if ($fname['aid'] !== 'filecount' && isset($idrow[$fname['fieldname'] . '_filecount']) && ($idrow[$fname['fieldname'] . '_filecount'] > 0)) {
                             //file metadata
                             $metadata = json_decode((string) $idrow[$fname['fieldname']], true);
-                            $qAttributes = QuestionAttribute::model()->getQuestionAttributes($fname['qid']);
-                            for ($i = 0; ($i < $qAttributes['max_num_of_files']) && isset($metadata[$i]); $i++) {
-                                if ($qAttributes['show_title']) {
+                            for ($i = 0; ($i < $qidattributes['max_num_of_files']) && isset($metadata[$i]); $i++) {
+                                if ($qidattributes['show_title']) {
                                     $questionInput .= '<tr><td>' . gT("Title") . '</td><td><input type="text" class="' . $fname['fieldname'] . '" id="' . $fname['fieldname'] . '_title_' . $i . '" name="title"    size=50 value="' . htmlspecialchars((string) $metadata[$i]["title"]) . '" /></td></tr>';
                                 }
-                                if ($qAttributes['show_comment']) {
+                                if ($qidattributes['show_comment']) {
                                     $questionInput .= '<tr><td >' . gT("Comment") . '</td><td><input type="text" class="' . $fname['fieldname'] . '" id="' . $fname['fieldname'] . '_comment_' . $i . '" name="comment"  size=50 value="' . htmlspecialchars((string) $metadata[$i]["comment"]) . '" /></td></tr>';
                                 }
 
@@ -1239,7 +1238,6 @@ class DataEntry extends SurveyCommonAction
                         $fname = prev($fnames);
                         break;
                     case Question::QT_COLON_ARRAY_NUMBERS: // Array (Numbers)
-                        $qidattributes = QuestionAttribute::model()->getQuestionAttributes($fname['qid']);
                         $minvalue = 1;
                         $maxvalue = 10;
                         if (trim((string) $qidattributes['multiflexible_max']) != '' && trim((string) $qidattributes['multiflexible_min']) == '') {
@@ -1565,7 +1563,6 @@ class DataEntry extends SurveyCommonAction
                         $oResponse->$fieldname = null;
                         break;
                     }
-                    $qidattributes = QuestionAttribute::model()->getQuestionAttributes($irow['qid']);
                     $dateformatdetails = getDateFormatDataForQID($qidattributes, $thissurvey);
                     $datetimeobj = DateTime::createFromFormat('!' . $dateformatdetails['phpdate'], $thisvalue);
                     if (!$datetimeobj) {
@@ -1820,7 +1817,6 @@ class DataEntry extends SurveyCommonAction
                                 }
                             }
                         } elseif ($irow['type'] == Question::QT_D_DATE) {
-                            $qidattributes = QuestionAttribute::model()->getQuestionAttributes($irow['qid']);
                             $dateformatdetails = getDateFormatDataForQID($qidattributes, $thissurvey);
                             $datetimeobj = DateTime::createFromFormat('!' . $dateformatdetails['phpdate'], $_POST[$fieldname]);
                             if ($datetimeobj) {
@@ -2126,14 +2122,13 @@ class DataEntry extends SurveyCommonAction
                 $bgc = 'odd';
                 foreach ($aQuestions as $arQuestion) {
                     $cdata = array();
-                    $qidattributes = QuestionAttribute::model()->getQuestionAttributes($arQuestion['qid']);
+                    $qidattributes = QuestionAttribute::model()->getQuestionAttributes($arQuestion);
                     $cdata['qidattributes'] = $qidattributes;
 
                     $qinfo = LimeExpressionManager::GetQuestionStatus($arQuestion['qid']);
                     $relevance = trim((string) $qinfo['info']['relevance']);
                     $explanation = trim((string) $qinfo['relEqn']);
                     $validation = trim((string) $qinfo['prettyValidTip']);
-                    $qidattributes = QuestionAttribute::model()->getQuestionAttributes($arQuestion['qid']);
                     $arrayFilterHelp = flattenText($this->arrayFilterHelp($qidattributes, $sDataEntryLanguage, $surveyid));
 
                     if (true || ($relevance != '' && $relevance != '1') || ($validation != '') || ($arrayFilterHelp != '')) {
