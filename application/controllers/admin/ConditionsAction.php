@@ -1484,9 +1484,10 @@ class ConditionsAction extends SurveyCommonAction
                             'questionl10ns' => array(
                                 'condition' => 'questionl10ns.language = :lang',
                                 'params' => array(':lang' => $this->language)
-                            )))->findAllByAttributes(array('parent_qid' => $rows['qid']), array('order' => 'question_order desc'));
+                            )))->findAllByAttributes(array('parent_qid' => $rows['qid']), array('order' => 'question_order ASC, scale_id ASC'));
                 foreach ($aresult as $arows) {
-                    $attr = QuestionAttribute::model()->getQuestionAttributes($rows['qid']);
+                    /* Used to get dualscale_headerA and dualscale_headerB */
+                    $attr = QuestionAttribute::model()->getQuestionAttributes(Question::model()->findByPk($rows['qid']));
                     $sLanguage = $this->language;
                     // dualscale_header are always set, but can be empty
                     $label1 = empty($attr['dualscale_headerA'][$sLanguage]) ? gT('Scale 1') : $attr['dualscale_headerA'][$sLanguage];
