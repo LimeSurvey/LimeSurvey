@@ -15,7 +15,7 @@ class ExtendTextHandler implements CommandHandlerInterface
 
     public function execute(command $command, AIClientInterface $client)
     {
-        $command->setOperation('Expand the text slightly, adding no more than 10 extra words');
+        $command->setOperation('Extend the text slightly, adding no more than 10 extra words and without changing the sentence type');
         return $client->generateContent();
     }
 }

@@ -15,7 +15,7 @@ class GrammarCheckHandler implements CommandHandlerInterface
 
     public function execute(Command $command, AIClientInterface $client)
     {
-        $command->setOperation('fix grammar errors and typos then print the plain text');
+        $command->setOperation('only fix grammar errors and typos then print the plain text and without changing the sentence type');
         return $client->generateContent();
     }
 }
