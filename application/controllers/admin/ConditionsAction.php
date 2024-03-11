@@ -265,15 +265,21 @@ class ConditionsAction extends SurveyCommonAction
         if ($questionscount > 0) {
             $qids = [];
             for ($index = 0; $index < count($theserows); $index++) {
-                $qids[] = $theserows[$index]['qid'];
+                if ($theserows[$index]['type'] == "1") {
+                    $qids[] = $theserows[$index]['qid'];
+                }
             }
-            $rawQuestions = Question::model()->findAllByPk($qids);
-            $questions = [];
-            foreach ($rawQuestions as $rawQuestion) {
-                $questions[$rawQuestion->qid] = $rawQuestion;
-            }
-            for ($index = 0; $index < count($theserows); $index++) {
-                $theserows[$index]['qObject'] = $questions[$theserows[$index]['qid']];
+            if (count($qids)) {
+                $rawQuestions = Question::model()->findAllByPk($qids);
+                $questions = [];
+                foreach ($rawQuestions as $rawQuestion) {
+                    $questions[$rawQuestion->qid] = $rawQuestion;
+                }
+                for ($index = 0; $index < count($theserows); $index++) {
+                    if ($theserows[$index]['type'] == "1") {
+                        $theserows[$index]['qObject'] = $questions[$theserows[$index]['qid']];
+                    }
+                }
             }
 
             list($cquestions, $canswers) = $this->getCAnswersAndCQuestions($theserows);
