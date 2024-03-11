@@ -618,6 +618,12 @@ class DataEntry extends SurveyCommonAction
 
         $questionTypes = QuestionType::modelsAttributes();
         $aDataentryoutput = '';
+        /* Keep track of previous qid to not ask question model multiple time */
+        $previousQid = 0;
+        /* @var null\Question: the current question model */
+        $oQuestion = null;
+        /* @var (string|array)[] : all question attributes of this question */
+        $qidattributes = [];
         foreach ($results as $idrow) {
             $fname = reset($fnames);
             do {
@@ -639,10 +645,10 @@ class DataEntry extends SurveyCommonAction
                 // Second column (Answer)
                 $aDataentryoutput .= "<td class=\"answers-cell\">\n";
                 //$aDataentryoutput .= "\t-={$fname[3]}=-"; //Debugging info
-                /* @var (string|array)[] : all question attributes of this question */
-                $qidattributes = [];
-                if (isset($fname['qid']) && isset($fname['type'])) {
-                    $qidattributes = QuestionAttribute::model()->getQuestionAttributes(Question::model()->findByPk($fname['qid']));
+                if (isset($fname['qid']) && $fname['qid'] && $fname['qid'] != $previousQid) {
+                    // if $fname['qid'] : we must have a question, else survey is broken : DB have error
+                    $oQuestion = Question::model()->findByPk($fname['qid']);
+                    $qidattributes = QuestionAttribute::model()->getQuestionAttributes($oQuestion);
                 }
                 /** @var array<string,string> */
                 $questionInputs = [];
@@ -816,8 +822,7 @@ class DataEntry extends SurveyCommonAction
                                     $questionInput .= ">{$optionarray['answer']}</option>\n";
                                 }
                             }
-                            $oresult = Question::model()->findByPk($fname['qid']);
-                            if ($oresult->other == "Y") {
+                            if ($oQuestion->other == "Y") {
                                 $questionInput .= "<option value='-oth-'";
                                 if ($idrow[$fname['fieldname']] == "-oth-") {
                                     $questionInput .= " selected='selected'";
@@ -1399,6 +1404,7 @@ class DataEntry extends SurveyCommonAction
                 $aDataentryoutput .= "        </td>
                 </tr>\n";
             } while ($fname = next($fnames));
+            $previousQid = $fname['qid'] ?? 0;
         }
         $aDataentryoutput .= "</table>\n"
         . "<p>\n";
