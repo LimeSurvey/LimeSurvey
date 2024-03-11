@@ -1479,6 +1479,8 @@ class ConditionsAction extends SurveyCommonAction
                 }
                 unset($x_axis);
             } elseif ($rows['type'] == "1") {
+                /* Used to get dualscale_headerA and dualscale_headerB */
+                $attr = QuestionAttribute::model()->getQuestionAttributes(Question::model()->findByPk($rows['qid']));
                 //Dual scale
                 $aresult = Question::model()->with(array(
                             'questionl10ns' => array(
@@ -1486,8 +1488,6 @@ class ConditionsAction extends SurveyCommonAction
                                 'params' => array(':lang' => $this->language)
                             )))->findAllByAttributes(array('parent_qid' => $rows['qid']), array('order' => 'question_order ASC, scale_id ASC'));
                 foreach ($aresult as $arows) {
-                    /* Used to get dualscale_headerA and dualscale_headerB */
-                    $attr = QuestionAttribute::model()->getQuestionAttributes(Question::model()->findByPk($rows['qid']));
                     $sLanguage = $this->language;
                     // dualscale_header are always set, but can be empty
                     $label1 = empty($attr['dualscale_headerA'][$sLanguage]) ? gT('Scale 1') : $attr['dualscale_headerA'][$sLanguage];
