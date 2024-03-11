@@ -148,7 +148,7 @@ class UploaderController extends SurveyController
             if (empty($aFieldName[2]) || !ctype_digit($aFieldName[2])) {
                 throw new CHttpException(400);
             }
-           $oQuestion = self::getQuestion($surveyid, $aFieldName[2]);
+            $oQuestion = self::getQuestion($surveyid, $aFieldName[2]);
             $aAttributes = QuestionAttribute::model()->getQuestionAttributes($oQuestion);
             $maxfilesize = min(intval($aAttributes['max_filesize']), getMaximumFileUploadSize() / 1024);
             if ($maxfilesize <= 0) {
@@ -405,8 +405,8 @@ class UploaderController extends SurveyController
      * @throw CHttpException if question is invalid
      * @return \Question
      */
-     private static function getQuestion($surveyid, $qid)
-     {
+    private static function getQuestion($surveyid, $qid)
+    {
         $oQuestion = Question::model()->find("sid = :sid and qid = :qid and type = :type", [":sid" => $surveyid, ":qid" => $qid, ":type" =>  Question::QT_VERTICAL_FILE_UPLOAD]);
         if ($oQuestion) {
             return $oQuestion;
@@ -418,5 +418,5 @@ class UploaderController extends SurveyController
             throw new CHttpException(400, sprintf(gT("Invalid upload question %s in survey %s"), $qid, $surveyid));
         }
         throw new CHttpException(400);
-     }
+    }
 }
