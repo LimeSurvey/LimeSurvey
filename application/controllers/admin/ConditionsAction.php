@@ -260,8 +260,22 @@ class ConditionsAction extends SurveyCommonAction
             }
         }
 
+
         // Previous question parsing ==> building cquestions[] and canswers[]
         if ($questionscount > 0) {
+            $qids = [];
+            for ($index = 0; $index < count($theserows); $index++) {
+                $qids[] = $theserows[$index]['qid'];
+            }
+            $rawQuestions = Question::model()->findAllByPk($qids);
+            $questions = [];
+            foreach ($rawQuestions as $rawQuestion) {
+                $questions[$rawQuestion->qid] = $rawQuestion;
+            }
+            for ($index = 0; $index < count($theserows); $index++) {
+                $theserows[$index]['qObject'] = $questions[$theserows[$index]['qid']];
+            }
+
             list($cquestions, $canswers) = $this->getCAnswersAndCQuestions($theserows);
         } //if questionscount > 0
         //END Gather Information for this question
@@ -1480,7 +1494,7 @@ class ConditionsAction extends SurveyCommonAction
                 unset($x_axis);
             } elseif ($rows['type'] == "1") {
                 /* Used to get dualscale_headerA and dualscale_headerB */
-                $attr = QuestionAttribute::model()->getQuestionAttributes(Question::model()->findByPk($rows['qid']));
+                $attr = QuestionAttribute::model()->getQuestionAttributes($rows['qObject']);
                 //Dual scale
                 $aresult = Question::model()->with(array(
                             'questionl10ns' => array(
