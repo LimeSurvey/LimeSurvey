@@ -1569,6 +1569,7 @@ class DataEntry extends SurveyCommonAction
                         $oResponse->$fieldname = null;
                         break;
                     }
+                    $qidattributes = QuestionAttribute::model()->getQuestionAttributes(Question::model()->findByPk($irow['qid']));
                     $dateformatdetails = getDateFormatDataForQID($qidattributes, $thissurvey);
                     $datetimeobj = DateTime::createFromFormat('!' . $dateformatdetails['phpdate'], $thisvalue);
                     if (!$datetimeobj) {
@@ -1823,6 +1824,7 @@ class DataEntry extends SurveyCommonAction
                                 }
                             }
                         } elseif ($irow['type'] == Question::QT_D_DATE) {
+                            $qidattributes = QuestionAttribute::model()->getQuestionAttributes(Question::model()->findByPk($irow['qid']));
                             $dateformatdetails = getDateFormatDataForQID($qidattributes, $thissurvey);
                             $datetimeobj = DateTime::createFromFormat('!' . $dateformatdetails['phpdate'], $_POST[$fieldname]);
                             if ($datetimeobj) {
