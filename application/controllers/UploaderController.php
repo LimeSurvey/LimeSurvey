@@ -148,10 +148,7 @@ class UploaderController extends SurveyController
             if (empty($aFieldName[2]) || !ctype_digit($aFieldName[2])) {
                 throw new CHttpException(400);
             }
-            $oQuestion = Question::model()->find("sid = :sid and qid = :qid and type = :type", [":sid" => $surveyid, ":qid" => $aFieldName[2], ":type" =>  Question::QT_VERTICAL_FILE_UPLOAD]);
-            if (empty($oQuestion)) {
-                throw new CHttpException(400);
-            }
+           $oQuestion = self::getQuestion($surveyid, $aFieldName[2]);
             $aAttributes = QuestionAttribute::model()->getQuestionAttributes($oQuestion);
             $maxfilesize = min(intval($aAttributes['max_filesize']), getMaximumFileUploadSize() / 1024);
             if ($maxfilesize <= 0) {
@@ -352,10 +349,7 @@ class UploaderController extends SurveyController
 
         $fn = $sFieldName;
         $qid = (int) Yii::app()->request->getParam('qid');
-        $oQuestion = Question::model()->find("sid = :sid and qid = :qid and type = :type", [":sid" => $surveyid, ":qid" => $qid, ":type" => Question::QT_VERTICAL_FILE_UPLOAD]);
-        if (empty($oQuestion)) {
-            throw new CHttpException(400);
-        }
+        $oQuestion = self::getQuestion($surveyid, $qid);
         $qidattributes = QuestionAttribute::model()->getQuestionAttributes($oQuestion);
         $qidattributes['max_filesize'] = floor(min(intval($qidattributes['max_filesize']), getMaximumFileUploadSize() / 1024));
         if ($qidattributes['max_filesize'] <= 0) {
@@ -403,4 +397,26 @@ class UploaderController extends SurveyController
         App()->getClientScript()->render($body);
         echo $body;
     }
+
+    /**
+     * Helper function to get question
+     * @param integer $surveyid the survey id
+     * @param integer $qid the question id
+     * @throw CHttpException if question is invalid
+     * @return \Question
+     */
+     private static function getQuestion($surveyid, $qid)
+     {
+        $oQuestion = Question::model()->find("sid = :sid and qid = :qid and type = :type", [":sid" => $surveyid, ":qid" => $qid, ":type" =>  Question::QT_VERTICAL_FILE_UPLOAD]);
+        if ($oQuestion) {
+            return $oQuestion;
+        }
+        /* Log as warning */
+        \Yii::log(sprintf("Invalid upload question %s in survey %s", $qid, $surveyid), 'warning', 'application.UploaderController');
+        /* Show information if user have surveycontent/update (can set question type) */
+        if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'update')) {
+            throw new CHttpException(400, sprintf(gT("Invalid upload question %s in survey %s"), $qid, $surveyid));
+        }
+        throw new CHttpException(400);
+     }
 }
