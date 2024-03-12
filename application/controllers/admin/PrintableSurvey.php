@@ -137,6 +137,20 @@ class PrintableSurvey extends SurveyCommonAction
 
             $fieldmap = createFieldMap($oSurvey, 'full', false, false, $sLanguageCode);
 
+            // For print condition text : need questionobject of some specific question
+            $criteria = new CDBCriteria();
+            $criteria->select = ['cqid'];
+            $criteria->with = ['questions'];
+            $criteria->compare('questions.sid', $surveyid);
+            $neededTypes = [QuestionType::QT_1_ARRAY_DUAL];
+            $criteria->addInCondition('questions.type', $neededTypes);
+            $oConditions = Condition::model()->with('questions')->findAll($criteria);
+            // We need only the question attributes
+            /* \Question[] */
+            $conditionQuestions = [];
+            foreach ($oConditions as $oCondition) {
+                $conditionQuestions[$oCondition->cqid] = $oCondition->questions;
+            }
             // =========================================================
             // START doin the business:
             foreach ($arGroups as $arQuestionGroup) {
@@ -171,9 +185,7 @@ class PrintableSurvey extends SurveyCommonAction
                     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
                     // START doing questions
 
-                    $qidattributes = QuestionAttribute::model()->getQuestionAttributes($arQuestion['qid']);
-
-
+                    $qidattributes = QuestionAttribute::model()->getQuestionAttributes($arQuestion);
                     if ($qidattributes['hidden'] == 1 && $arQuestion['type'] != Question::QT_ASTERISK_EQUATION) {
                         continue;
                     }
@@ -184,8 +196,6 @@ class PrintableSurvey extends SurveyCommonAction
                     $sExplanation = ''; //reset conditions explanation
                     $s = 0;
                     // TMSW Condition->Relevance:  show relevance instead of this whole section to create $explanation
-
-
                     $scenarioresult = Condition::model()->getScenarios($arQuestion['qid']);
                     $scenarioresult = $scenarioresult->readAll();
                     //Loop through distinct scenarios, thus grouping them together.
@@ -260,7 +270,6 @@ class PrintableSurvey extends SurveyCommonAction
                             }
 
                             $conresult = Condition::model()->getConditionsQuestions($distinctrow['cqid'], $arQuestion['qid'], $scenariorow['scenario'], $sLanguageCode);
-
                             $conditions = array();
                             foreach ($conresult->readAll() as $conrow) {
                                 $value = $conrow['value'];
@@ -389,7 +398,7 @@ class PrintableSurvey extends SurveyCommonAction
                                         $thiscquestion = $fieldmap[$conrow['cfieldname']];
                                         $condition = "parent_qid='{$conrow['cqid']}' AND title='{$thiscquestion['aid']}'";
                                         $ansresult = Question::model()->findAll(['condition' => $condition, 'order' => 'question_order']);
-                                        $cqidattributes = QuestionAttribute::model()->getQuestionAttributes($conrow['cqid']);
+                                        $cqidattributes = QuestionAttribute::model()->getQuestionAttributes($conditionQuestions[$conrow['cqid']]);
                                         if ($labelIndex == 0) {
                                             if (trim((string) $cqidattributes['dualscale_headerA'][$sLanguageCode]) != '') {
                                                 $header = gT($cqidattributes['dualscale_headerA'][$sLanguageCode]);
