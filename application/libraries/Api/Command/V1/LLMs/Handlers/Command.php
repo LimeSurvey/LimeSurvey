@@ -23,7 +23,7 @@ class Command
         return $this->prompt;
     }
 
-    public function setOperation($operation): void
+    public function setOperation(string $operation): void
     {
         $this->operation = $operation;
     }

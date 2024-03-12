@@ -23,6 +23,7 @@ class CommandPatcher
                 return $op->execute($this->command, $this->client);
             }
         }
+        return (new AnswerHandler())->execute($this->command, $this->client);
     }
 
     public function registerHandlers(): void
@@ -32,10 +33,10 @@ class CommandPatcher
         $this->addHandler(RephraseHandler::class);
         $this->addHandler(ShortenTextHandler::class);
         $this->addHandler(TranslateHandler::class);
-        $this->addHandler(AnswerHandler::class);
+        //$this->addHandler(AnswerHandler::class);
     }
 
-    public function addHandler($handler): void
+    public function addHandler(string $handler)//: void
     {
         $this->handlers[] = $handler;
     }
