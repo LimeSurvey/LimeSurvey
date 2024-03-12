@@ -14,7 +14,7 @@ class ShortenTextHandler implements CommandHandlerInterface
 
     public function execute(Command $command, AIClientInterface $client)
     {
-        $command->setOperation('make the text shorter and without changing the sentence type');
+        $command->setOperation('Shorten the text without altering the sentence type');
         return $client->generateContent();
     }
 }

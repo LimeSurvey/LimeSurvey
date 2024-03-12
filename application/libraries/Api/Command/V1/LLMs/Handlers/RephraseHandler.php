@@ -15,7 +15,7 @@ class RephraseHandler implements CommandHandlerInterface
 
     public function execute(Command $command, AIClientInterface $client)
     {
-        $command->setOperation('give only one suggestion for rephrase in plain text and maintaining the same sentence type');
+        $command->setOperation('Provide just one alternative rephrasing in simple text while keeping the same sentence structure');
         return $client->generateContent();
     }
 }
