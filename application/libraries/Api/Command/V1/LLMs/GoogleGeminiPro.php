@@ -103,7 +103,7 @@ class GoogleGeminiPro implements AIClientInterface
         if (isset($responseData['candidates'][0]['content']['parts'][0]['text'])) {
             return $responseData['candidates'][0]['content']['parts'][0]['text'];
         } else {
-            return "No generated text found.";
+            return "No text";
         }
     }
 
@@ -118,7 +118,10 @@ class GoogleGeminiPro implements AIClientInterface
             $response = curl_exec($ch);
             curl_close($ch);
 
-            return $this->handleResponse($response);
+            if (!empty($response)) {
+                return $this->handleResponse($response);
+            }
+            return 'No text';
         }
         return 'No API key';
     }
