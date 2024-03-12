@@ -4,26 +4,26 @@ namespace LimeSurvey\Libraries\Api\Command\V1\LLMs\Handlers;
 
 class Command
 {
-    protected $prompt = null;
-    protected $operation = null;
+    protected string $prompt;
+    protected string $operation;
 
-    public function __construct($operation, $prompt)
+    public function __construct(string $operation, string $prompt)
     {
         $this->prompt = $prompt;
         $this->operation = $operation;
     }
 
-    public function getOperation()
+    public function getOperation(): string
     {
         return $this->operation;
     }
 
-    public function getPrompt()
+    public function getPrompt(): string
     {
         return $this->prompt;
     }
 
-    public function setOperation($operation)
+    public function setOperation($operation): void
     {
         $this->operation = $operation;
     }

@@ -13,19 +13,19 @@ class GoogleGeminiPro implements AIClientInterface
      *
      * @var string
      */
-    protected $googleai_url = 'https://generativelanguage.googleapis.com/v1beta';
+    protected string $googleai_url = 'https://generativelanguage.googleapis.com/v1beta';
 
     /**
      * GeminiAPI model
      * @var string
      */
-    protected $googleai_model = 'models/gemini-pro';
+    protected string $googleai_model = 'models/gemini-pro';
 
     /**
      * GeminiAPI model
      * @var string
      */
-    protected $googleai_apikey = null;
+    protected string $googleai_apikey;
 
     protected Command $command;
 
@@ -35,7 +35,7 @@ class GoogleGeminiPro implements AIClientInterface
         $this->command = $command;
     }
 
-    private function buildPostFields()
+    private function buildPostFields(): string
     {
         // Temperature controls the degree of randomness in token selectiom
         $temperature = 0.1;
@@ -84,7 +84,7 @@ class GoogleGeminiPro implements AIClientInterface
         ]);
     }
 
-    private function buildHeader()
+    private function buildHeader(): array
     {
         return [
             'Content-Type: application/json',
@@ -92,12 +92,12 @@ class GoogleGeminiPro implements AIClientInterface
         ];
     }
 
-    private function buildURL()
+    private function buildURL(): string
     {
         return "{$this->googleai_url}/{$this->googleai_model}:generateContent?key={$this->googleai_apikey}";
     }
 
-    private function handleResponse($response)
+    private function handleResponse($response): string
     {
         $responseData = json_decode($response, true);
         if (isset($responseData['candidates'][0]['content']['parts'][0]['text'])) {
@@ -107,7 +107,7 @@ class GoogleGeminiPro implements AIClientInterface
         }
     }
 
-    public function generateContent()
+    public function generateContent(): string
     {
         if (!empty($this->googleai_apikey)) {
             $ch = curl_init($this->buildURL());
@@ -123,7 +123,7 @@ class GoogleGeminiPro implements AIClientInterface
         return 'No API key';
     }
 
-    public function run()
+    public function run(): string
     {
         $patcher = new CommandPatcher($this->command, $this);
         return $patcher->apply();

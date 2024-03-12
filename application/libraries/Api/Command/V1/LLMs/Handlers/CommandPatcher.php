@@ -4,7 +4,7 @@ namespace LimeSurvey\Libraries\Api\Command\V1\LLMs\Handlers;
 
 class CommandPatcher
 {
-    private $handlers = [];
+    private array $handlers = [];
     private Command $command;
     private AIClientInterface $client;
 
@@ -15,7 +15,7 @@ class CommandPatcher
         $this->client = $client;
     }
 
-    public function apply()
+    public function apply(): string
     {
         foreach ($this->handlers as $handler) {
             $op = (new $handler());
