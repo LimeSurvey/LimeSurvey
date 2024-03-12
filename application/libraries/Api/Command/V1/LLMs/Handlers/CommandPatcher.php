@@ -36,7 +36,7 @@ class CommandPatcher
         //$this->addHandler(AnswerHandler::class);
     }
 
-    public function addHandler(string $handler)//: void
+    public function addHandler(string $handler): void
     {
         $this->handlers[] = $handler;
     }
