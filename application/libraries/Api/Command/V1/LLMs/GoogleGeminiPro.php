@@ -118,7 +118,7 @@ class GoogleGeminiPro implements AIClientInterface
             $response = curl_exec($ch);
             curl_close($ch);
 
-            if (!empty($response)) {
+            if (is_string($response)) {
                 return $this->handleResponse($response);
             }
             return 'No text';
