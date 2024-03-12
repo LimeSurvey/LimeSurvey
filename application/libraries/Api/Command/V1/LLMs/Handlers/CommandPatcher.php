@@ -2,10 +2,8 @@
 
 namespace LimeSurvey\Libraries\Api\Command\V1\LLMs\Handlers;
 
-
 class CommandPatcher
 {
-
     private $handlers = [];
     private Command $command;
     private AIClientInterface $client;

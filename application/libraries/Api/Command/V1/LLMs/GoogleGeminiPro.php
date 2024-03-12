@@ -29,19 +29,21 @@ class GoogleGeminiPro implements AIClientInterface
 
     protected Command $command;
 
-    public function __construct(Command $command) {
+    public function __construct(Command $command)
+    {
         $this->googleai_apikey = trim((string) \Yii::app()->getConfig("googleGeminiAPIKey"));
         $this->command = $command;
     }
 
-    private function buildPostFields() {
+    private function buildPostFields()
+    {
         // Temperature controls the degree of randomness in token selectiom
         $temperature = 0.1;
         //top-K & topP change how the model selects tokens for output.
         // Specify a lower value for less random responses and a higher value for more random responses.
         $topK = 1;
         $topP = 1;
-        //	Maximum number of tokens that can be generated in the response
+        //  Maximum number of tokens that can be generated in the response
         $maxOutputTokens = 2000;
 
         $prompt = "{$this->command->getOperation()}: {$this->command->getPrompt()}";
@@ -82,18 +84,21 @@ class GoogleGeminiPro implements AIClientInterface
         ]);
     }
 
-    private function buildHeader() {
+    private function buildHeader()
+    {
         return [
             'Content-Type: application/json',
             'Content-Length: ' . strlen($this->buildPostFields())
         ];
     }
 
-    private function buildURL() {
+    private function buildURL()
+    {
         return "{$this->googleai_url}/{$this->googleai_model}:generateContent?key={$this->googleai_apikey}";
     }
 
-    private function handleResponse($response) {
+    private function handleResponse($response)
+    {
         $responseData = json_decode($response, true);
         if (isset($responseData['candidates'][0]['content']['parts'][0]['text'])) {
             return $responseData['candidates'][0]['content']['parts'][0]['text'];
@@ -102,7 +107,8 @@ class GoogleGeminiPro implements AIClientInterface
         }
     }
 
-    public function generateContent() {
+    public function generateContent()
+    {
         if (!empty($this->googleai_apikey)) {
             $ch = curl_init($this->buildURL());
             curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
@@ -117,10 +123,9 @@ class GoogleGeminiPro implements AIClientInterface
         return 'No API key';
     }
 
-    public function run() {
+    public function run()
+    {
         $patcher = new CommandPatcher($this->command, $this);
         return $patcher->apply();
     }
-
-
 }

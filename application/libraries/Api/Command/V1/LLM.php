@@ -40,7 +40,8 @@ class LLM implements CommandInterface
     public function run(Request $request)
     {
         $sessionKey = (string) $request->getData('sessionKey');
-        if (!$this->authSession->checkKey($sessionKey)
+        if (
+            !$this->authSession->checkKey($sessionKey)
         ) {
             return $this->responseFactory
                 ->makeErrorUnauthorised();

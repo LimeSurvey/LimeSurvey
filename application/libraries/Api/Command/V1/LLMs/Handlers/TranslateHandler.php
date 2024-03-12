@@ -19,5 +19,4 @@ class TranslateHandler implements CommandHandlerInterface
         $command->setOperation("{$op} in a plain text");
         return $client->generateContent();
     }
-
 }

@@ -14,5 +14,4 @@ class AnswerHandler implements CommandHandlerInterface
         $command->setOperation("Answer briefly with no more than 15 words");
         return $client->generateContent();
     }
-
 }
