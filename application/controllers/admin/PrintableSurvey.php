@@ -146,10 +146,10 @@ class PrintableSurvey extends SurveyCommonAction
             $criteria->addInCondition('questions.type', $neededTypes);
             $oConditions = Condition::model()->with('questions')->findAll($criteria);
             // We need only the question attributes
-            /* \Question[] */
-            $conditionQuestions = [];
+            /* array[] Needed question attributes for condition question */
+            $conditionQuestionsAttributes = [];
             foreach ($oConditions as $oCondition) {
-                $conditionQuestions[$oCondition->cqid] = $oCondition->questions;
+                $conditionQuestionsAttributes[$oCondition->cqid] = QuestionAttribute::model()->getQuestionAttributes($oCondition->questions);
             }
             // =========================================================
             // START doin the business:
@@ -398,7 +398,7 @@ class PrintableSurvey extends SurveyCommonAction
                                         $thiscquestion = $fieldmap[$conrow['cfieldname']];
                                         $condition = "parent_qid='{$conrow['cqid']}' AND title='{$thiscquestion['aid']}'";
                                         $ansresult = Question::model()->findAll(['condition' => $condition, 'order' => 'question_order']);
-                                        $cqidattributes = QuestionAttribute::model()->getQuestionAttributes($conditionQuestions[$conrow['cqid']]);
+                                        $cqidattributes = $conditionQuestionsAttributes[$conrow['cqid']];
                                         if ($labelIndex == 0) {
                                             if (trim((string) $cqidattributes['dualscale_headerA'][$sLanguageCode]) != '') {
                                                 $header = gT($cqidattributes['dualscale_headerA'][$sLanguageCode]);
