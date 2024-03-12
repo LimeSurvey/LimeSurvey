@@ -97,7 +97,7 @@ class GoogleGeminiPro implements AIClientInterface
         return "{$this->googleai_url}/{$this->googleai_model}:generateContent?key={$this->googleai_apikey}";
     }
 
-    private function handleResponse(bool|string $response): string
+    private function handleResponse(string $response): string
     {
         $responseData = json_decode($response, true);
         if (isset($responseData['candidates'][0]['content']['parts'][0]['text'])) {
