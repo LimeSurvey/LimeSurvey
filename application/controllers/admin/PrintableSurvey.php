@@ -184,7 +184,6 @@ class PrintableSurvey extends SurveyCommonAction
                 foreach ($arQuestions as $arQuestion) {
                     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
                     // START doing questions
-
                     $qidattributes = QuestionAttribute::model()->getQuestionAttributes($arQuestion);
                     if ($qidattributes['hidden'] == 1 && $arQuestion['type'] != Question::QT_ASTERISK_EQUATION) {
                         continue;
@@ -248,7 +247,7 @@ class PrintableSurvey extends SurveyCommonAction
                                 // cqid == 0  ==> token attribute match
                                 $tokenData = getTokenFieldsAndNames($surveyid);
                                 preg_match('/^{TOKEN:([^}]*)}$/', (string) $distinctrow['cfieldname'], $extractedTokenAttr);
-                                $sExplanation .= "Your " . $tokenData[strtolower($extractedTokenAttr[1])]['description'] . " ";
+                                $sExplanation .= "Your " . ($tokenData[strtolower($extractedTokenAttr[1])]['description'] ?? "") . " ";
                                 if ($distinctrow['method'] == '==') {
                                     $sExplanation .= gT("is") . " ";
                                 } elseif ($distinctrow['method'] == '!=') {
@@ -266,7 +265,7 @@ class PrintableSurvey extends SurveyCommonAction
                                 } else {
                                     $sExplanation .= gT("is") . " ";
                                 }
-                                $answer_section = ' ' . $distinctrow['value'] . ' ';
+                                $answer_section = ' ' . ($distinctrow['value'] ?? "") . ' ';
                             }
 
                             $conresult = Condition::model()->getConditionsQuestions($distinctrow['cqid'], $arQuestion['qid'], $scenariorow['scenario'], $sLanguageCode);
@@ -451,7 +450,7 @@ class PrintableSurvey extends SurveyCommonAction
                             if ($distinctrow['cqid']) {
                                 $sExplanation .= " <span class='scenario-at-separator'>" . gT("at question") . "</span> '" . " [" . $subresult['title'] . "]' (" . strip_tags((string) $subresult->questionl10ns[$sLanguageCode]->question) . "$answer_section)";
                             } else {
-                                $sExplanation .= " " . $distinctrow['value'];
+                                $sExplanation .= " " . ($distinctrow['value'] ?? "");
                             }
                             //$distinctrow
                             $x++;
@@ -459,7 +458,13 @@ class PrintableSurvey extends SurveyCommonAction
                         $s++;
                     }
 
-                    $qinfo = LimeExpressionManager::GetQuestionStatus($arQuestion['qid']);
+                    $qinfo = LimeExpressionManager::GetQuestionStatus($arQuestion['qid']) ?? [
+                        "info" => [
+                            "relevance" => ""
+                        ],
+                        "relEqn" => "",
+                        "validTip" => ""
+                    ];
                     $relevance = trim((string) $qinfo['info']['relevance']);
                     $sEquation = $qinfo['relEqn'];
 
@@ -640,7 +645,7 @@ class PrintableSurvey extends SurveyCommonAction
                                 }
                             }
 
-                            if ($arQuestion['other'] == 'Y') {
+                            if (($arQuestion['other'] == 'Y') && isset($qidattributes["printable_help"])) {
                                 /*echo '<pre>';
                                 print_r($qidattributes);
                                 echo '</pre>';
@@ -718,7 +723,7 @@ class PrintableSurvey extends SurveyCommonAction
                                     ++$colcounter;
                                 }
                             }
-                            if ($arQuestion['other'] == "Y") {
+                            if (($arQuestion['other'] == "Y") && (isset($qidatteibutes["printable_help"]))) {
                                 if (trim((string) $qidattributes["printable_help"][$sLanguageCode]) == '') {
                                     $qidattributes["printable_help"][$sLanguageCode] = "Other";
                                 }
