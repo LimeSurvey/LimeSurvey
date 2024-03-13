@@ -724,7 +724,7 @@ class PrintableSurvey extends SurveyCommonAction
                                     ++$colcounter;
                                 }
                             }
-                            if (($arQuestion['other'] == "Y") && (isset($qidatteibutes["printable_help"]))) {
+                            if (($arQuestion['other'] == "Y") && (isset($qidattributes["printable_help"]))) {
                                 if (trim((string) $qidattributes["printable_help"][$sLanguageCode]) == '') {
                                     $qidattributes["printable_help"][$sLanguageCode] = "Other";
                                 }
