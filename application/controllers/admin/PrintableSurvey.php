@@ -458,6 +458,7 @@ class PrintableSurvey extends SurveyCommonAction
                         $s++;
                     }
 
+                    //Defaulting to dummy array to avoid crashes when qinfo is not found for this question
                     $qinfo = LimeExpressionManager::GetQuestionStatus($arQuestion['qid']) ?? [
                         "info" => [
                             "relevance" => ""
