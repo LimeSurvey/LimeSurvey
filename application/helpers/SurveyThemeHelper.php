@@ -464,4 +464,82 @@ class SurveyThemeHelper
         // It may look like a path (maybe a file that no longer exists), or be something completely different.
         return $value;
     }
+
+    public static function checkConfigFiles($configFile)
+    {
+        $domDocument = new \DOMDocument;
+        $domDocument->load($configFile);
+        if (!$domDocument) {
+            \Yii::log('Invalid config file at ' . $configFile, \CLogger::LEVEL_WARNING, 'application');
+            return;
+        }
+        try {
+            $newDomDocument = self::checkDomDocument($domDocument);
+            if ($newDomDocument) {
+                $newDomDocument->save($configFile);
+            }
+        } catch (\Exception $e) {
+            \Yii::log('Error: ' . $e->getMessage() . 'found in ' . $configFile, \CLogger::LEVEL_WARNING, 'application');
+        }
+    }
+
+    private static function checkDomDocument($domDocument)
+    {
+
+        $isChangedDomDocument = false;
+
+        // Find first 'cssframework' nodes in the document
+        $cssFrameworkNode = $domDocument->getElementsByTagName('cssframework');
+
+        if ($cssFrameworkNode) {
+
+            $defaultOption = '';
+            $dropDownOptionsNode = null;
+
+            foreach ($cssFrameworkNode->childNodes as $child) {
+                if ($child->nodeType === XML_TEXT_NODE) {
+                    $deafultOption = $child->nodeValue;
+                } elseif ($child->nodeName === 'dropdownoptions') {
+                    $dropDownOptionsNode = $child;
+                }
+            }
+
+            if ($dropDownOptionsNode) {
+                $optGroupNode = $dropDownOptionsNode->getElementByTag('optgroup');
+                if (!$optGroupNode) {
+
+                    // Create a new 'optgroup' element
+                    $optGroupNode = $domDocument->createElement('optgroup');
+
+                    // Loop through all 'option' nodes and move them to 'optgroup'
+                    while ($dropDownOptionsNode->childNodes->length > 0) {
+                        $optionNode = $dropDownOptionsNode->firstChild;
+                        if ($optionNode->nodeName != 'option') {
+                            throw new \Exception('Invalid node in the config file.');
+                        }
+                        $optGroupNode->appendChild($optionNode);
+                    }
+
+                    // Append the 'optgroup' with all the 'option' nodes into 'dropdownoptions'
+                    $dropDownOptionsNode->appendChild($optGroupNode);
+                    $isChangedDomDocument = true;
+                }
+            } else {
+                throw new \Exception('No "dropdownoptions" nodes were found.');
+            }
+
+            if ($defaultOption === '') {
+                $defaultOption = $optGroupNode->firsChild->nodeValue;
+                if (is_string($defaultOption)) {
+                    $textNode = $domDocument->createTextNode($defaultOption);
+                    $cssFrameworkNode->insertBefore($textNode, $dropDownOptionsNode);
+                    $isChangedDomDocument = true;
+                }
+            }
+        }
+        if ($isChangedDomDocument) {
+            return $domDocument;
+        }
+        return null;
+    }
 }
