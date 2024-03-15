@@ -147,7 +147,7 @@ class Template extends LSActiveRecord
         /* Validate if template is OK in user dir, DIRECTORY_SEPARATOR not needed "/" is OK */
         $oTemplate = self::model()->findByPk($sTemplateName);
 
-        if (is_object($oTemplate) && $oTemplate->checkTemplate() && (self::checkTemplateXML($oTemplate->folder))) {
+        if (is_object($oTemplate) && $oTemplate->checkTemplate() && $oTemplate->name === $sTemplateName && self::checkTemplateXML($oTemplate->folder)) {
             self::$aNamesFiltered[$sTemplateName] = $sTemplateName;
             return self::$aNamesFiltered[$sTemplateName];
         }
