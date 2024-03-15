@@ -627,14 +627,17 @@ function getResponseTableReplacement($surveyid, $responseId, $emailLanguage, $bI
     Yii::import('application.helpers.viewHelper');
     foreach ($aFullResponseTable as $sFieldname => $fname) {
         if (substr($sFieldname, 0, 4) === 'gid_') {
-            $ResultTableHTML .= "\t<tr class='printanswersgroup'><td colspan='2'>" . viewHelper::flatEllipsizeText($fname[0], true, 0) . "</td></tr>\n";
-            $ResultTableText .= "\n{$fname[0]}\n\n";
+            $questionText = viewHelper::flatEllipsizeText($fname[0], true, 0);
+            $ResultTableHTML .= "\t<tr class='printanswersgroup'><td colspan='2'>" . $questionText . "</td></tr>\n";
+            $ResultTableText .= "\n" . $questionText . "\n\n";
         } elseif (substr($sFieldname, 0, 4) === 'qid_') {
-            $ResultTableHTML .= "\t<tr class='printanswersquestionhead'><td  colspan='2'>" . viewHelper::flatEllipsizeText($fname[0], true, 0) . "</td></tr>\n";
-            $ResultTableText .= "\n{$fname[0]}\n";
+            $questionText = viewHelper::flatEllipsizeText($fname[0], true, 0);
+            $ResultTableHTML .= "\t<tr class='printanswersquestionhead'><td  colspan='2'>" . $questionText . "</td></tr>\n";
+            $ResultTableText .= "\n" . $questionText . "\n";
         } else {
-            $ResultTableHTML .= "\t<tr class='printanswersquestion'><td>" . viewHelper::flatEllipsizeText("{$fname[0]} {$fname[1]}", true, 0) . "</td><td class='printanswersanswertext'>" . CHtml::encode($fname[2]) . "</td></tr>\n";
-            $ResultTableText .= "     {$fname[0]} {$fname[1]}: {$fname[2]}\n";
+            $questionText = viewHelper::flatEllipsizeText($fname[0], true, 0) . " " .  viewHelper::flatEllipsizeText($fname[1], true, 0);
+            $ResultTableHTML .= "\t<tr class='printanswersquestion'><td>" . $questionText . "</td><td class='printanswersanswertext'>" . CHtml::encode($fname[2]) . "</td></tr>\n";
+            $ResultTableText .= "     " . $questionText . ": {$fname[2]}\n";
         }
     }
     $ResultTableHTML .= "</table>\n";
