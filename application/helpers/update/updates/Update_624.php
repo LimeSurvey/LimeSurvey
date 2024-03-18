@@ -106,7 +106,10 @@ class Update_624 extends DatabaseUpdateBase
         $isChangedDomDocument = false;
 
         // Find first 'cssframework' nodes in the document
-        $cssFrameworkNode = $domDocument->getElemenstByTagName('cssframework');
+        $cssFrameworkNodes = $domDocument->getElementsByTagName('cssframework');
+        if ($cssFrameworkNodes) {
+            $cssFrameworkNode = $cssFrameworkNodes->item(0);
+        }
 
         if ($cssFrameworkNode) {
 

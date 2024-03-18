@@ -520,7 +520,10 @@ class SurveyThemeHelper
         $isChangedDomDocument = false;
 
         // Find first 'cssframework' nodes in the document
-        $cssFrameworkNode = $domDocument->getElementsByTagName('cssframework');
+        $cssFrameworkNodes = $domDocument->getElementsByTagName('cssframework');
+        if ($cssFrameworkNodes) {
+            $cssFrameworkNode = $cssFrameworkNodes->item(0);
+        }
 
         if ($cssFrameworkNode) {
 
