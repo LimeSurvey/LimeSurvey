@@ -465,6 +465,20 @@ class SurveyThemeHelper
         return $value;
     }
 
+    /**
+     * Checks and updates the given configuration file if necessary.
+     *
+     * This function loads the specified XML configuration file into a DOMDocument object, checks for its validity,
+     * and if applicable, updates it by calling `checkDomDocument`. If the file is invalid or an exception occurs,
+     * a warning is logged with details about the issue.
+     *
+     * @param string $configFile Path to the configuration file to be checked and potentially updated.
+     *
+     * @return void This function does not return a value. It may either update the configuration file
+     *              or log a warning if the file is invalid or cannot be processed.
+     *
+     * @throws \Exception Propagates any exceptions thrown by `checkDomDocument`.
+     */
     public static function checkConfigFiles($configFile)
     {
         $domDocument = new \DOMDocument;
@@ -483,6 +497,23 @@ class SurveyThemeHelper
         }
     }
 
+    /**
+     * Processes a DOMDocument object to check and potentially modify its structure.
+     *
+     * This method specifically looks for 'cssframework' nodes within the given DOMDocument.
+     * If found, it examines child nodes for a default option and 'dropdownoptions'. It ensures that
+     * all 'option' nodes are wrapped within an 'optgroup' element. If any modifications are made,
+     * the DOMDocument is marked as changed.
+     *
+     * @param \DOMDocument $domDocument The DOMDocument object to be checked and potentially modified.
+     *
+     * @return \DOMDocument|null Returns the modified DOMDocument if changes were made, otherwise null.
+     *                           Changes include ensuring 'option' nodes within 'cssframework' are properly
+     *                           grouped under an 'optgroup' and setting a default option if not present.
+     *
+     * @throws \Exception If an invalid node is found within 'dropdownoptions' or if no 'dropdownoptions'
+     *                    nodes are found when expected.
+     */
     private static function checkDomDocument($domDocument)
     {
 
