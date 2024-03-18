@@ -6,7 +6,6 @@ use CException;
 
 class Update_624 extends DatabaseUpdateBase
 {
-
     private $defaultOptions = [];
 
     /**
@@ -83,7 +82,7 @@ class Update_624 extends DatabaseUpdateBase
     private function checkConfigFiles($templateList)
     {
         foreach ($templateList as $templateName => $templatePath) {
-            $domDocument = new \DOMDocument;
+            $domDocument = new \DOMDocument();
             $domDocument->load("$templatePath/config.xml");
             if (!$domDocument) {
                 \Yii::log('No "config.xml" files were found in ' . $templatePath . ' directory.', \CLogger::LEVEL_WARNING, 'application');
@@ -100,19 +99,29 @@ class Update_624 extends DatabaseUpdateBase
         }
     }
 
+    private function getFirstElementByTag($domDocument, $tag)
+    {
+        if (!$domDocument) {
+            return null;
+        }
+        $elements = $domDocument->getElementsByTagName($tag);
+        if ($elements->length > 0) {
+            return $elements->item(0);
+        }
+        return null;
+    }
+
     private function checkDomDocument($domDocument, $templateName)
     {
-
         $isChangedDomDocument = false;
 
         // Find first 'cssframework' nodes in the document
-        $cssFrameworkNodes = $domDocument->getElementsByTagName('cssframework');
+        $cssFrameworkNodes = $this->getFirstElementByTagName($domDocument, 'cssframework');
         if ($cssFrameworkNodes) {
             $cssFrameworkNode = $cssFrameworkNodes->item(0);
         }
 
         if ($cssFrameworkNode) {
-
             $defaultOption = '';
             $dropDownOptionsNode = null;
 
@@ -125,7 +134,7 @@ class Update_624 extends DatabaseUpdateBase
             }
 
             if ($dropDownOptionsNode) {
-                $optGroupNode = $dropDownOptionsNode->getElementByTag('optgroup');
+                $optGroupNode = $this->getFirstElementByTag($dropDownOptionsNode, 'optgroup');
                 if (!$optGroupNode) {
 
                     // Create a new 'optgroup' element
