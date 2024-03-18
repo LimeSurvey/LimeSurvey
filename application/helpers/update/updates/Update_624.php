@@ -116,7 +116,7 @@ class Update_624 extends DatabaseUpdateBase
         $isChangedDomDocument = false;
 
         // Find first 'cssframework' nodes in the document
-        $cssFrameworkNodes = $this->getFirstElementByTagName($domDocument, 'cssframework');
+        $cssFrameworkNodes = $this->getFirstElementByTag($domDocument, 'cssframework');
         if ($cssFrameworkNodes) {
             $cssFrameworkNode = $cssFrameworkNodes->item(0);
         }
@@ -136,7 +136,6 @@ class Update_624 extends DatabaseUpdateBase
             if ($dropDownOptionsNode) {
                 $optGroupNode = $this->getFirstElementByTag($dropDownOptionsNode, 'optgroup');
                 if (!$optGroupNode) {
-
                     // Create a new 'optgroup' element
                     $optGroupNode = $domDocument->createElement('optgroup');
 
