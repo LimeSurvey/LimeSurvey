@@ -76,13 +76,9 @@ class Endpoint
     public function run()
     {
         $renderer = $this->getResponseRenderer();
-        try {
-            $response = $this->getCommand()->run(
-                new Request($this->commandParams)
-            );
-            $renderer->returnResponse($response);
-        } catch (\Exception $e) {
-            $renderer->returnException($e);
-        }
+        $response = $this->getCommand()->run(
+            new Request($this->commandParams)
+        );
+        $renderer->returnResponse($response);
     }
 }

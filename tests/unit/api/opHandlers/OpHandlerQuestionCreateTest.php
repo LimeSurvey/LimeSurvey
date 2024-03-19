@@ -2,16 +2,12 @@
 
 namespace ls\tests\unit\api\opHandlers;
 
+use LimeSurvey\DI;
 use LimeSurvey\Api\Command\V1\SurveyPatch\OpHandlerQuestionCreate;
-use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputAnswer;
-use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputAnswerL10ns;
-use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestion;
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestionAggregate;
-use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestionAttribute;
-use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestionL10ns;
-use LimeSurvey\ObjectPatch\Op\OpInterface;
-use LimeSurvey\ObjectPatch\Op\OpStandard;
-use LimeSurvey\ObjectPatch\OpHandler\OpHandlerException;
+use LimeSurvey\ObjectPatch\{
+    Op\OpStandard,
+};
 use ls\tests\TestBaseClass;
 use ls\tests\unit\services\QuestionGroup\QuestionGroupMockSetFactory;
 
@@ -20,35 +16,16 @@ use ls\tests\unit\services\QuestionGroup\QuestionGroupMockSetFactory;
  */
 class OpHandlerQuestionCreateTest extends TestBaseClass
 {
-    protected OpInterface $op;
-
-    /**
-     * @testdox throws OpHandlerException if required entity is missing
-     */
-    public function testQuestionCreateThrowsMissingEntitiesException()
-    {
-        $this->expectException(
-            OpHandlerException::class
-        );
-        $this->initializePatcher(
-            $this->getIncompleteProps()
-        );
-        $opHandler = $this->getOpHandler();
-
-        $opHandler->handle($this->op);
-    }
-
     /**
      * @testdox can handle correct patch
      */
     public function testQuestionCreateCanHandle()
     {
-        $this->initializePatcher(
+        $op = $this->getOp(
             $this->getCorrectProps()
         );
-
         $opHandler = $this->getOpHandler();
-        self::assertTrue($opHandler->canHandle($this->op));
+        self::assertTrue($opHandler->canHandle($op));
     }
 
     /**
@@ -56,88 +33,52 @@ class OpHandlerQuestionCreateTest extends TestBaseClass
      */
     public function testQuestionCreateCanNotHandle()
     {
-        $this->initializePatcher(
+        $op = $this->getOp(
             $this->getCorrectProps(),
             'update'
         );
-
         $opHandler = $this->getOpHandler();
-        self::assertFalse($opHandler->canHandle($this->op));
+        self::assertFalse($opHandler->canHandle($op));
     }
 
     /**
-     * @testdox converts "advanced settings" to correct structure
+     * @testdox validation hits if required values are not provided
      */
-    public function testQuestionCreateAttributesStructure()
+    public function testQuestionCreateValidation()
     {
-        $preparedData = $this->getPreparedData();
-        $this->assertArrayHasKey('advancedSettings', $preparedData);
-        $this->assertIsArray($preparedData['advancedSettings']);
-        $this->assertArrayHasKey(
-            'dualscale_headerA',
-            $preparedData['advancedSettings'][0]
+        $op = $this->getOp(
+            $this->getIncompleteProps(),
+            'create'
         );
-        $this->assertIsArray(
-            $preparedData['advancedSettings'][0]['dualscale_headerA']
-        );
-        $this->assertArrayHasKey(
-            'de',
-            $preparedData['advancedSettings'][0]['dualscale_headerA']
-        );
-        $this->assertArrayHasKey(
-            'public_statistics',
-            $preparedData['advancedSettings'][0]
-        );
-        $this->assertIsNotArray(
-            $preparedData['advancedSettings'][0]['public_statistics']
-        );
+        $opHandler = $this->getOpHandler();
+        $validation = $opHandler->validateOperation($op);
+        $this->assertIsArray($validation);
+        $this->assertNotEmpty($validation);
     }
 
     /**
-     * @testdox converts "answers" to correct structure
+     * @testdox validation doesn't hit when everything's fine
      */
-    public function testQuestionCreateAnswersStructure()
+    public function testQuestionCreateValidationSuccess()
     {
-        $preparedData = $this->getPreparedData();
-        $this->assertArrayHasKey('answeroptions', $preparedData);
-        $this->assertIsArray($preparedData['answeroptions']);
-        $this->assertIsArray($preparedData['answeroptions'][0]);
-        $this->assertArrayHasKey('code', $preparedData['answeroptions'][0][0]);
-//        @TODO index
-    }
-
-    /**
-     * @testdox converts "subquestions" to correct structure
-     */
-    public function testQuestionCreateSuQuestionsStructure()
-    {
-        $preparedData = $this->getPreparedData();
-        $this->assertArrayHasKey('subquestions', $preparedData);
-        $this->assertIsArray($preparedData['subquestions']);
-        $this->assertIsArray($preparedData['subquestions'][0]);
-        $this->assertArrayHasKey('code', $preparedData['subquestions'][0][0]);
-    }
-
-    private function getPreparedData()
-    {
-        $this->initializePatcher(
+        $op = $this->getOp(
             $this->getCorrectProps(),
-            'update'
         );
-
         $opHandler = $this->getOpHandler();
-        return $opHandler->prepareData($this->op);
+        $validation = $opHandler->validateOperation($op);
+        $this->assertIsArray($validation);
+        $this->assertEmpty($validation);
     }
 
     /**
      * @param array $props
      * @param string $type
-     * @return void
-     * @throws \LimeSurvey\ObjectPatch\ObjectPatchException
+     * @return OpStandard
+     * @throws \LimeSurvey\ObjectPatch\OpHandlerException
      */
-    private function initializePatcher(array $props, string $type = 'create')
+    private function getOp(array $props, string $type = 'create')
     {
-        $this->op = OpStandard::factory(
+        return OpStandard::factory(
             'question',
             $type,
             0,
@@ -155,6 +96,7 @@ class OpHandlerQuestionCreateTest extends TestBaseClass
     {
         return [
             'question'     => [
+                'tempId'              => 123456,
                 'title'               => 'G01Q01',
                 'type'                => '1',
                 'question_theme_name' => 'arrays\/dualscale',
@@ -169,34 +111,32 @@ class OpHandlerQuestionCreateTest extends TestBaseClass
             ],
             'attributes'   => [
                 "public_statistics" => [
-                    '' => [
-                        'value' => '1'
-                    ]
+                    '' => '1'
                 ],
                 'dualscale_headerA' => [
-                    'en' => [
-                        'value' => 'Header Text'
-                    ],
-                    'de' => [
-                        'value' => 'Kopf Text'
-                    ]
+                    'en' => 'Header Text',
+                    'de' => 'Kopf Text'
                 ]
             ],
             'answers'      => [
                 '0' => [
+                    'tempId' => 456,
                     'code'  => 'AO01',
                     'l10ns' => [
                         'en' => [
-                            'answer' => 'answer'
+                            'answer' => 'answer',
+                            'language' => 'en'
                         ],
                         'de' => [
-                            'answer' => 'answerger'
+                            'answer' => 'answerger',
+                            'language' => 'de'
                         ]
                     ]
                 ]
             ],
             'subquestions' => [
                 '0' => [
+                    'tempId' => 789,
                     'title' => 'SQ001',
                     'l10ns' => [
                         'en' => [
@@ -233,15 +173,11 @@ class OpHandlerQuestionCreateTest extends TestBaseClass
     private function getOpHandler()
     {
         $mockSet = (new QuestionGroupMockSetFactory())->make();
-
         return new OpHandlerQuestionCreate(
             $mockSet->modelQuestion,
-            new TransformerInputQuestion(),
-            new TransformerInputQuestionL10ns(),
-            new TransformerInputQuestionAttribute(),
-            new TransformerInputAnswer(),
-            new TransformerInputAnswerL10ns(),
-            new TransformerInputQuestionAggregate()
+            DI::getContainer()->get(
+                TransformerInputQuestionAggregate::class
+            )
         );
     }
 }

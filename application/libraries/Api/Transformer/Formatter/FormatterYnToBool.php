@@ -2,12 +2,13 @@
 
 namespace LimeSurvey\Api\Transformer\Formatter;
 
-class FormatterYnToBool implements FormatterRevertibleInterface
+class FormatterYnToBool implements FormatterInterface
 {
+    private string $name = 'ynToBool';
     /** @var bool */
-    private $revert = false;
+    public $revert = false;
     /** @var bool */
-    private $lowercaseCase = false;
+    public $lowercaseCase = false;
 
     /**
      * @param bool $revert
@@ -20,6 +21,15 @@ class FormatterYnToBool implements FormatterRevertibleInterface
     }
 
     /**
+     * @param string $name
+     * @return void
+     */
+    public function setName(string $name)
+    {
+        $this->name = $name;
+    }
+
+    /**
      * Cast y/n to boolean
      *
      * Converts 'Y' or 'y' to boolean true.
@@ -27,10 +37,13 @@ class FormatterYnToBool implements FormatterRevertibleInterface
      * Any other value will produce null.
      *
      * @param ?mixed $value
+     * @param array $config
+     * @param array $options
      * @return ?mixed
      */
-    public function format($value)
+    public function format($value, $config, $options = [])
     {
+        $this->setClassBasedOnConfig($config);
         return $this->revert
             ? $this->revert($value)
             : $this->apply($value);
@@ -46,15 +59,15 @@ class FormatterYnToBool implements FormatterRevertibleInterface
      * @param ?string $value
      * @return ?boolean
      */
-    private function apply($value)
+    protected function apply($value)
     {
         $lowercase = is_string($value)
             ? strtolower($value)
             : $value;
         if (
-             $value === null
-             || $value === ''
-             || !in_array($lowercase, ['y', 'n'])
+            $value === null
+            || $value === ''
+            || !in_array($lowercase, ['y', 'n'])
         ) {
             return null;
         }
@@ -71,7 +84,7 @@ class FormatterYnToBool implements FormatterRevertibleInterface
      * @param ?mixed $value
      * @return ?mixed
      */
-    public function revert($value)
+    protected function revert($value)
     {
         if (!is_bool($value)) {
             return null;
@@ -82,5 +95,26 @@ class FormatterYnToBool implements FormatterRevertibleInterface
         return $this->lowercaseCase
             ? $string
             : strtoupper($string);
+    }
+
+    /**
+     * Checks config for this specific formatter,
+     * and adjusts class properties based on the config.
+     * @param array $config
+     * @return void
+     */
+    public function setClassBasedOnConfig($config)
+    {
+        if (isset($config['formatter'][$this->name])) {
+            $formatterConfig = $config['formatter'][$this->name];
+            if (is_array($formatterConfig)) {
+                if (array_key_exists('revert', $formatterConfig)) {
+                    $this->revert = $formatterConfig['revert'];
+                }
+                if (array_key_exists('lowercaseCase', $formatterConfig)) {
+                    $this->lowercaseCase = $formatterConfig['lowercaseCase'];
+                }
+            }
+        }
     }
 }
