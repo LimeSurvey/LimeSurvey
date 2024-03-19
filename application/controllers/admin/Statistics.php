@@ -703,7 +703,7 @@ class Statistics extends SurveyCommonAction
                 // Double scale cases
                 case Question::QT_COLON_ARRAY_NUMBERS:
                     $qidattributes = QuestionAttribute::model()->getQuestionAttributes($questions[$row['qid']] ?? $row['qid']);
-                    if (false && !$qidattributes['input_boxes']) {
+                    if (!$qidattributes['input_boxes']) {
                         $qid = $row['qid'];
                         $results = Question::model()->getQuestionsForStatistics('*', "parent_qid='$qid'  AND scale_id = 0", 'question_order, title');
                         $fresults = Question::model()->getQuestionsForStatistics('*', "parent_qid='$qid'  AND scale_id = 1", 'question_order, title');
