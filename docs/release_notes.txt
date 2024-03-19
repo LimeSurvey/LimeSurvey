@@ -34,6 +34,14 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.4.12 (build 240311) to 6.5.0 (build 240319) March 19, 2024
++New feature: Updated internal REST API with more functions
+-Fixed issue: Replaced image on error screen (Carsten Schmitz)
+-Fixed issue #19459: [security] Potential XSS via ajaxHelper (#3781) (Denis Chenu)
+-Fixed issue #19456: ANSWERTABLE contains html tags with text email in admin notification (#3778) (Denis Chenu)
+-Fixed issue #19367: javascript file are outdated after update (#3707) (Denis Chenu)
+
+
 Changes from 6.4.11 (build 240304) to 6.4.12 (build 240311) March 11, 2024
 -Fixed issue: Survey not viewable if invalid str_repeat call is used in expressions (Carsten Schmitz)
 -Fixed issue: Cannot create URL panel parameters without assigning it to a question (Carsten Schmitz)
