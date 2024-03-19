@@ -561,7 +561,7 @@ class Statistics extends SurveyCommonAction
             $aFieldmap = createFieldMap($oSurvey, 'full', false, false, $sStatisticsLanguage);
             $qtype = $aFieldmap[$sQCode]['type'];
             $qqid = $aFieldmap[$sQCode]['qid'];
-            $aattr = QuestionAttribute::model()->getQuestionAttributes($qqid);
+            $aattr = QuestionAttribute::model()->getQuestionAttributes(Question::model()->findByPk($qqid));
             $field = substr((string) $_POST['id'], 1);
 
             switch ($_POST['cmd']) {
