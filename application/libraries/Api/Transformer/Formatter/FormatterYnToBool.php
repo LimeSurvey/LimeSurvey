@@ -41,7 +41,7 @@ class FormatterYnToBool implements FormatterInterface
      * @param array $options
      * @return ?mixed
      */
-    public function format($value, $config, $options = [])
+    public function format($value, $config = [], $options = [])
     {
         $this->setClassBasedOnConfig($config);
         return $this->revert
@@ -100,20 +100,22 @@ class FormatterYnToBool implements FormatterInterface
     /**
      * Checks config for this specific formatter,
      * and adjusts class properties based on the config.
+     *
      * @param array $config
      * @return void
      */
     public function setClassBasedOnConfig($config)
     {
-        if (isset($config['formatter'][$this->name])) {
-            $formatterConfig = $config['formatter'][$this->name];
-            if (is_array($formatterConfig)) {
-                if (array_key_exists('revert', $formatterConfig)) {
-                    $this->revert = $formatterConfig['revert'];
-                }
-                if (array_key_exists('lowercaseCase', $formatterConfig)) {
-                    $this->lowercaseCase = $formatterConfig['lowercaseCase'];
-                }
+        $formatterConfig = is_array($config)
+            && isset($config['formatter'])
+            && isset($config['formatter'][$this->name])
+            ? $config['formatter'][$this->name] : [];
+        if (is_array($formatterConfig)) {
+            if (array_key_exists('revert', $formatterConfig)) {
+                $this->revert = $formatterConfig['revert'];
+            }
+            if (array_key_exists('inputTimezone', $formatterConfig)) {
+                $this->inputTimezone = $formatterConfig['inputTimezone'];
             }
         }
     }

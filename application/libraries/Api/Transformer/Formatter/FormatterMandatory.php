@@ -26,7 +26,7 @@ class FormatterMandatory extends FormatterYnToBool
      * @param array $options
      * @return ?mixed
      */
-    public function format($value, $config, $options = [])
+    public function format($value, $config = [], $options = [])
     {
         $this->setClassBasedOnConfig($config);
         return $this->revert
