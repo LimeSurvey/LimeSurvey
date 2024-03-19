@@ -76,7 +76,6 @@ class FormatterIntToBool implements FormatterInterface
     /**
      * Checks config for this specific formatter,
      * and adjusts class properties based on the config.
-     *
      * @param array $config
      * @return void
      */
@@ -89,9 +88,6 @@ class FormatterIntToBool implements FormatterInterface
         if (is_array($formatterConfig)) {
             if (array_key_exists('revert', $formatterConfig)) {
                 $this->revert = $formatterConfig['revert'];
-            }
-            if (array_key_exists('inputTimezone', $formatterConfig)) {
-                $this->inputTimezone = $formatterConfig['inputTimezone'];
             }
         }
     }
