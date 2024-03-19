@@ -624,6 +624,12 @@ class DataEntry extends SurveyCommonAction
         $oQuestion = null;
         /* @var (string|array)[] : all question attributes of this question */
         $qidattributes = [];
+        $rawQuestions = Question::model()->findAll("sid = :sid", [":sid" => $surveyid]);
+        $qs = [];
+        $totalTime = 0;
+        foreach ($rawQuestions as $rawQuestion) {
+            $qs[$rawQuestion->qid] = $rawQuestion;
+        }
         foreach ($results as $idrow) {
             $fname = reset($fnames);
             do {
@@ -647,8 +653,7 @@ class DataEntry extends SurveyCommonAction
                 //$aDataentryoutput .= "\t-={$fname[3]}=-"; //Debugging info
                 if (isset($fname['qid']) && $fname['qid'] && $fname['qid'] != $previousQid) {
                     // if $fname['qid'] : we must have a question, else survey is broken : DB have error
-                    $oQuestion = Question::model()->findByPk($fname['qid']);
-                    $qidattributes = QuestionAttribute::model()->getQuestionAttributes($oQuestion);
+                    $qidattributes = QuestionAttribute::model()->getQuestionAttributes($qs[$fname['qid']] ?? $fname['qid']);
                 }
                 /** @var array<string,string> */
                 $questionInputs = [];
@@ -822,7 +827,7 @@ class DataEntry extends SurveyCommonAction
                                     $questionInput .= ">{$optionarray['answer']}</option>\n";
                                 }
                             }
-                            if ($oQuestion->other == "Y") {
+                            if (($oQuestion->other ?? "N") == "Y") {
                                 $questionInput .= "<option value='-oth-'";
                                 if ($idrow[$fname['fieldname']] == "-oth-") {
                                     $questionInput .= " selected='selected'";
@@ -1534,6 +1539,14 @@ class DataEntry extends SurveyCommonAction
             }
         }
 
+        $rawQuestions = Question::model()->findAll("sid = :sid", [":sid" => $surveyid]);
+
+        $questions = [];
+
+        foreach ($rawQuestions as $rawQuestion) {
+            $questions[$rawQuestion->qid] = $rawQuestion;
+        }
+
         $thissurvey = getSurveyInfo($surveyid);
         foreach ($fieldmap as $irow) {
             $fieldname = $irow['fieldname'];
@@ -1569,7 +1582,7 @@ class DataEntry extends SurveyCommonAction
                         $oResponse->$fieldname = null;
                         break;
                     }
-                    $qidattributes = QuestionAttribute::model()->getQuestionAttributes(Question::model()->findByPk($irow['qid']));
+                    $qidattributes = QuestionAttribute::model()->getQuestionAttributes($questions[$irow['qid']] ?? Question::model()->findByPk($irow['qid']));
                     $dateformatdetails = getDateFormatDataForQID($qidattributes, $thissurvey);
                     $datetimeobj = DateTime::createFromFormat('!' . $dateformatdetails['phpdate'], $thisvalue);
                     if (!$datetimeobj) {
@@ -1686,6 +1699,15 @@ class DataEntry extends SurveyCommonAction
 
         $insertSubaction = $subaction == 'insert';
         $hasResponsesCreatePermission = Permission::model()->hasSurveyPermission($surveyid, 'responses', 'create');
+        $rawQuestions = Question::model()->findAll("sid = :sid", [":sid" => $surveyid]);
+
+        $questions = [];
+
+        $totalTime = 0;
+
+        foreach ($rawQuestions as $rawQuestion) {
+            $questions[$rawQuestion->qid] = $rawQuestion;
+        }
         if ($insertSubaction && $hasResponsesCreatePermission) {
             // TODO: $surveytable is unused. Remove it.
             $surveytable = "{{survey_{$surveyid}}}";
@@ -1824,7 +1846,7 @@ class DataEntry extends SurveyCommonAction
                                 }
                             }
                         } elseif ($irow['type'] == Question::QT_D_DATE) {
-                            $qidattributes = QuestionAttribute::model()->getQuestionAttributes(Question::model()->findByPk($irow['qid']));
+                            $qidattributes = QuestionAttribute::model()->getQuestionAttributes($questions[$irow['qid']] ?? Question::model()->findByPk($irow['qid']));
                             $dateformatdetails = getDateFormatDataForQID($qidattributes, $thissurvey);
                             $datetimeobj = DateTime::createFromFormat('!' . $dateformatdetails['phpdate'], $_POST[$fieldname]);
                             if ($datetimeobj) {
@@ -2112,6 +2134,14 @@ class DataEntry extends SurveyCommonAction
 
             Yii::app()->loadHelper('database');
 
+            $rawQuestions = Question::model()->findAll("sid = :sid", [":sid" => $surveyid]);
+
+            $questions = [];
+    
+            foreach ($rawQuestions as $rawQuestion) {
+                $questions[$rawQuestion->qid] = $rawQuestion;
+            }
+    
             // SURVEY NAME AND DESCRIPTION TO GO HERE
             $aGroups = $survey->groups;
             $aDataentryoutput = '';
@@ -2130,7 +2160,7 @@ class DataEntry extends SurveyCommonAction
                 $bgc = 'odd';
                 foreach ($aQuestions as $arQuestion) {
                     $cdata = array();
-                    $qidattributes = QuestionAttribute::model()->getQuestionAttributes($arQuestion);
+                    $qidattributes = QuestionAttribute::model()->getQuestionAttributes($questions[$arQuestion['qid']] ?? $arQuestion);
                     $cdata['qidattributes'] = $qidattributes;
 
                     $qinfo = LimeExpressionManager::GetQuestionStatus($arQuestion['qid']);
