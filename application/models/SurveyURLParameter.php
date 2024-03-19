@@ -31,11 +31,10 @@ class SurveyURLParameter extends LSActiveRecord
      */
     public function rules()
     {
-        return [
+        return  [
             ['sid', 'required'],
             ['sid', 'numerical', 'integerOnly' => true],
             ['parameter', 'required'],
-            ['targetqid', 'required'],
             ['targetqid', 'numerical', 'integerOnly' => true],
             ['targetsqid', 'numerical', 'integerOnly' => true, 'allowEmpty' => true],
         ];
