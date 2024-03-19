@@ -2137,11 +2137,11 @@ class DataEntry extends SurveyCommonAction
             $rawQuestions = Question::model()->findAll("sid = :sid", [":sid" => $surveyid]);
 
             $questions = [];
-    
+
             foreach ($rawQuestions as $rawQuestion) {
                 $questions[$rawQuestion->qid] = $rawQuestion;
             }
-    
+
             // SURVEY NAME AND DESCRIPTION TO GO HERE
             $aGroups = $survey->groups;
             $aDataentryoutput = '';
