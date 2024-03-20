@@ -80,7 +80,7 @@
                     'headerHtmlOptions' => ['class' => 'text-nowrap'],
                 ],
                 [
-                    'header'            => gT('Created'),
+                    'header'            => gT('Created at'),
                     'name'              => 'creation_date',
                     'value'             => '$data->creationdate',
                     'headerHtmlOptions' => ['class' => 'd-none d-sm-table-cell text-nowrap'],
