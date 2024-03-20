@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2024-03-11 14:15:06+00:00\n"
+"POT-Creation-Date: 2024-03-20 15:03:46+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -2252,7 +2252,7 @@ msgstr ""
 #: application/controllers/admin/Themes.php:390
 #: application/core/SurveyCommonAction.php:1131
 #: application/helpers/SurveyRuntimeHelper.php:1452
-#: application/helpers/frontend_helper.php:2235
+#: application/helpers/frontend_helper.php:2238
 #: application/models/services/CopySurveyResources.php:68
 #: application/models/services/FilterImportedResources.php:69
 #: application/views/admin/participants/participantsPanel_view.php:19
@@ -7289,7 +7289,7 @@ msgid "The answer to the security question is incorrect."
 msgstr ""
 
 #: application/controllers/survey/index.php:439
-#: application/helpers/frontend_helper.php:1258
+#: application/helpers/frontend_helper.php:1261
 msgid "You have exceeded the number of maximum access code validation attempts. Please wait %d minutes before trying again."
 msgstr ""
 
@@ -12261,69 +12261,69 @@ msgstr ""
 msgid "Detailed admin notification could not be sent because of error: %s"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:720
+#: application/helpers/frontend_helper.php:723
 msgid "Did Not Save"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:722
+#: application/helpers/frontend_helper.php:725
 msgid "An unexpected error has occurred and your responses cannot be saved."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:726
+#: application/helpers/frontend_helper.php:729
 msgid "Your responses have not been lost and have been emailed to the survey administrator and will be entered into our database at a later point."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:731
+#: application/helpers/frontend_helper.php:734
 msgid "An error occurred saving a response to survey id"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:732
+#: application/helpers/frontend_helper.php:735
 msgid "DATA TO BE ENTERED"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:741
+#: application/helpers/frontend_helper.php:744
 msgid "SQL CODE THAT FAILED"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:745
+#: application/helpers/frontend_helper.php:748
 msgid "ERROR MESSAGE"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:751
+#: application/helpers/frontend_helper.php:754
 msgid "Error saving results"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:757
+#: application/helpers/frontend_helper.php:760
 msgid "Try to submit again"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1271
+#: application/helpers/frontend_helper.php:1274
 msgid "The access code you have provided is either not valid, or has already been used."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1430
-#: application/helpers/frontend_helper.php:1455
+#: application/helpers/frontend_helper.php:1433
+#: application/helpers/frontend_helper.php:1458
 msgid "This survey cannot be tested or completed for the following reason(s):"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1434
+#: application/helpers/frontend_helper.php:1437
 #: tmp/runtime/twig_cache/3b/3bb1eebe8dd6769cf133ef8b80986c077b073ba3ca5f8c7d7ab804577c6912bb.php:105
 msgid "There are no questions in this survey."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1438
+#: application/helpers/frontend_helper.php:1441
 msgid "There are empty question groups in this survey - please create at least one question within a question group."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:2234
+#: application/helpers/frontend_helper.php:2237
 msgid "By continuing this survey you approve the data protection policy of the service provider."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:2236
+#: application/helpers/frontend_helper.php:2239
 msgid "View policy"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:2237
+#: application/helpers/frontend_helper.php:2240
 msgid "Please be patient until you are forwarded to the final URL."
 msgstr ""
 
