@@ -405,33 +405,35 @@ class SurveyDynamic extends LSActiveRecord
             $sSurveyEntry = "<table class='table table-condensed upload-question'>";
             $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($oFieldMap->qid);
             $aFilesInfo = json_decode_ls($this->$colName);
-            foreach ($aFilesInfo as $iFileIndex => $fileInfo) {
-                if (empty($fileInfo)) {
-                    continue;
-                }
-                $sSurveyEntry .= '<tr>';
-                $url = App()->createUrl("responses/downloadfile", ["surveyId" => self::$sid, "responseId" => $this->id, "qid" => $oFieldMap->qid, "index" => $iFileIndex]);
-                $filename = CHtml::encode(rawurldecode($fileInfo['name']));
-                $size = "";
-                if ($fileInfo['size'] && strval(floatval($fileInfo['size'])) == strval($fileInfo['size'])) {
-                    // avoid to throw PHP error if size is invalid
-                    $size = sprintf('%s Mb', round($fileInfo['size'] / 1000, 2));
-                }
-                $sSurveyEntry .= '<td>' . CHtml::link($filename, $url) . '</td>';
-                $sSurveyEntry .= '<td>' . $size . '</td>';
-                if ($aQuestionAttributes['show_title']) {
-                    if (!isset($fileInfo['title'])) {
-                        $fileInfo['title'] = '';
+            if (!empty($aFilesInfo)) {
+                foreach ($aFilesInfo as $iFileIndex => $fileInfo) {
+                    if (empty($fileInfo)) {
+                        continue;
                     }
-                    $sSurveyEntry .= '<td>' . htmlspecialchars((string) $fileInfo['title'], ENT_QUOTES, 'UTF-8') . '</td>';
-                }
-                if ($aQuestionAttributes['show_comment']) {
-                    if (!isset($fileInfo['comment'])) {
-                        $fileInfo['comment'] = '';
+                    $sSurveyEntry .= '<tr>';
+                    $url = App()->createUrl("responses/downloadfile", ["surveyId" => self::$sid, "responseId" => $this->id, "qid" => $oFieldMap->qid, "index" => $iFileIndex]);
+                    $filename = CHtml::encode(rawurldecode($fileInfo['name']));
+                    $size = "";
+                    if ($fileInfo['size'] && strval(floatval($fileInfo['size'])) == strval($fileInfo['size'])) {
+                        // avoid to throw PHP error if size is invalid
+                        $size = sprintf('%s Mb', round($fileInfo['size'] / 1000, 2));
                     }
-                    $sSurveyEntry .= '<td>' . htmlspecialchars((string) $fileInfo['comment'], ENT_QUOTES, 'UTF-8') . '</td>';
+                    $sSurveyEntry .= '<td>' . CHtml::link($filename, $url) . '</td>';
+                    $sSurveyEntry .= '<td>' . $size . '</td>';
+                    if ($aQuestionAttributes['show_title']) {
+                        if (!isset($fileInfo['title'])) {
+                            $fileInfo['title'] = '';
+                        }
+                        $sSurveyEntry .= '<td>' . htmlspecialchars((string) $fileInfo['title'], ENT_QUOTES, 'UTF-8') . '</td>';
+                    }
+                    if ($aQuestionAttributes['show_comment']) {
+                        if (!isset($fileInfo['comment'])) {
+                            $fileInfo['comment'] = '';
+                        }
+                        $sSurveyEntry .= '<td>' . htmlspecialchars((string) $fileInfo['comment'], ENT_QUOTES, 'UTF-8') . '</td>';
+                    }
+                    $sSurveyEntry .= '</tr>';
                 }
-                $sSurveyEntry .= '</tr>';
             }
             $sSurveyEntry .= '</table>';
             $sValue = $sSurveyEntry;
