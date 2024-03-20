@@ -22,7 +22,7 @@
         <version>1.0.0</version>
         <apiVersion>3.0</apiVersion>
         <description twig="on"><![CDATA[{{gT("Our default theme for a fruity and flexible use. This theme offers single color variations")}}]]></description>
-        <lastUpdate>2023-03-15 12:00:00</lastUpdate>
+        <lastUpdate>2023-10-03 10:31:00</lastUpdate>
     </metadata>
 
     <compatibility>
