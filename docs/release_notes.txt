@@ -34,6 +34,20 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.5.0 (build 240319) to 6.5.1 (build 240320) March 20, 2024
+-Fixed issue: Error on MSSQL after install/update (Carsten Schmitz)
+#Updated translation: Slovak by dusanm, jelen1, sweetakasha
+#Updated translation: Portuguese (Brazil) by holch
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Korean by modernity4r
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1, slansky, VBraun
+#Updated translation: Czech (Informal) by jelen1, slansky, VBraun
+
+
 Changes from 6.4.12 (build 240311) to 6.5.0 (build 240319) March 19, 2024
 +New feature: Updated internal REST API with more functions
 -Fixed issue: Replaced image on error screen (Carsten Schmitz)
