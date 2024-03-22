@@ -179,7 +179,6 @@ class Survey extends LSActiveRecord implements PermissionInterface
     private $sSurveyUrl;
 
     /**
-     * Set defaults
      * @inheritdoc
      */
     public function init()
@@ -190,6 +189,18 @@ class Survey extends LSActiveRecord implements PermissionInterface
             $this->gsid = null;
             return;
         }
+        if ($this->isNewRecord) {
+            $this->setAttributeDefaults();
+        }
+        $this->attachEventHandler("onAfterFind", array($this, 'afterFindSurvey'));
+    }
+
+    /**
+     * Set the default values for new record
+     * @return void
+     */
+    public function setAttributeDefaults()
+    {
         // Set the default values
         $this->htmlemail = 'Y';
         $this->format = 'G';
@@ -221,8 +232,6 @@ class Survey extends LSActiveRecord implements PermissionInterface
                 }
             }
         }
-
-        $this->attachEventHandler("onAfterFind", array($this, 'afterFindSurvey'));
     }
 
     /** @inheritdoc */
