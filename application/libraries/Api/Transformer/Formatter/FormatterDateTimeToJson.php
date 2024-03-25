@@ -126,13 +126,11 @@ class FormatterDateTimeToJson implements FormatterInterface
      */
     public function setClassBasedOnConfig($config)
     {
-        if (is_array($config)) {
-            if (array_key_exists('revert', $config)) {
-                $this->revert = $config['revert'];
-            }
-            if (array_key_exists('inputTimezone', $config)) {
-                $this->inputTimezone = $config['inputTimezone'];
-            }
+        if (array_key_exists('revert', $config)) {
+            $this->revert = $config['revert'];
+        }
+        if (array_key_exists('inputTimezone', $config)) {
+            $this->inputTimezone = $config['inputTimezone'];
         }
     }
 }
