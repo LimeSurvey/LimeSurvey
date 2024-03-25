@@ -34,6 +34,55 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.5.0 (build 240319) to 6.5.1 (build 240320) March 20, 2024
+-Fixed issue: Error on MSSQL after install/update (Carsten Schmitz)
+#Updated translation: Slovak by dusanm, jelen1, sweetakasha
+#Updated translation: Portuguese (Brazil) by holch
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Korean by modernity4r
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1, slansky, VBraun
+#Updated translation: Czech (Informal) by jelen1, slansky, VBraun
+
+
+Changes from 6.4.12 (build 240311) to 6.5.0 (build 240319) March 19, 2024
++New feature: Updated internal REST API with more functions
+-Fixed issue: Replaced image on error screen (Carsten Schmitz)
+-Fixed issue #19459: [security] Potential XSS via ajaxHelper (#3781) (Denis Chenu)
+-Fixed issue #19456: ANSWERTABLE contains html tags with text email in admin notification (#3778) (Denis Chenu)
+-Fixed issue #19367: javascript file are outdated after update (#3707) (Denis Chenu)
+
+
+Changes from 6.4.11 (build 240304) to 6.4.12 (build 240311) March 11, 2024
+-Fixed issue: Survey not viewable if invalid str_repeat call is used in expressions (Carsten Schmitz)
+-Fixed issue: Cannot create URL panel parameters without assigning it to a question (Carsten Schmitz)
+-Fixed issue #CT-698: Fixed a link (#3788) (lajosarpad)
+-Fixed issue #CT-681: Answer options order (answer_order) is missing as an attribute definition and causes the value to not persist through tsv exports and imports (#3777) (Patrick Teichmann)
+-Fixed issue #19442: Generated analytics script does not properly escape question group name (#3761) (Matthew)
+-Fixed issue #19239: Plugin with PHP error can not be resetted (#3772) (Denis Chenu)
+-Fixed issue #19164: Extra action button for Question are really badly placed (#3766) (Denis Chenu)
+-Fixed issue #18473: Survey listing - multiple calls of template (#3738) (Denis Chenu)
+#Updated translation: Turkish by kayazeren
+#Updated translation: Portuguese (Brazil) by c_schmitz, femariso, holch, marcelovincenzi, mauriciofurtado, paulohpmoraes, samarta, thiagosmartins
+#Updated translation: Korean by modernity4r
+#Updated translation: Japanese by d_inoue
+#Updated translation: Finnish by Jmantysalo
+
+
+Changes from 6.4.10 (build 240228) to 6.4.11 (build 240304) March 4, 2024
+-Fixed issue: Cannot log in anymore after updating when using MSSQL server (Carsten Schmitz)
+-Fixed issue #19429: Menus that don't want to disappear (#3764) (Matthew)
+-Fixed issue #19394: Off-button not shown in 'Create example question group and question:' (#3765) (Matthew)
+-Fixed issue #19344: Survey activation error using MSSQL (Carsten Schmitz)
+#Updated translation: Portuguese (Portugal)
+#Updated translation: Italian by lfanfoni, mike73rn, tebala
+#Updated translation: Italian (Informal) by lfanfoni, sielte
+#Updated translation: Finnish by Jmantysalo
+
+
 Changes from 6.4.9 (build 240226) to 6.4.10 (build 240228) February 27, 2024
 -Fixed issue: Survey permission improvements (#3759) (lajosarpad)
 -Fixed issue #CT-674: other field in list(radio) is cut off after 5 characters (#3763) (Carsten Schmitz)

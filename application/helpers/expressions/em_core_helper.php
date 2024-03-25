@@ -2221,7 +2221,12 @@ class ExpressionManager
                                         }
                                         break;
                                     default:
-                                        $result = call_user_func($funcName, $params[0], $params[1]);
+                                        try {
+                                            $result = call_user_func($funcName, $params[0], $params[1]);
+                                        } catch (\Throwable $e) {
+                                            $this->RDP_AddError($e->getMessage(), $funcNameToken);
+                                            return false;
+                                        }
                                         break;
                                 }
                             }

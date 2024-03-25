@@ -27,21 +27,22 @@ class AjaxAlertController extends LSBaseController
         $customOptions = $request->getPost('customOptions', []);
 
         $translatedOptions = [];
-        $translatedOptions['text'] = $request->getPost('message', 'message');
-        $translatedOptions['type'] = $request->getPost('alertType', 'success');
+        $translatedOptions['text'] = CHtml::encode($request->getPost('message', 'message'));
+        $translatedOptions['type'] = sanitize_alphanumeric($request->getPost('alertType', 'success'));
         $knownOptions = ['tag', 'isFilled', 'showIcon', 'showCloseButton', 'timeout'];
         foreach ($knownOptions as $knownOption) {
             if (array_key_exists($knownOption, $customOptions)) {
                 if ($knownOption == 'tag') {
-                    $translatedOptions[$knownOption] = $customOptions[$knownOption];
+                    $translatedOptions[$knownOption] = sanitize_alphanumeric($customOptions[$knownOption]);
                 } elseif ($knownOption == 'timeout') {
-                    $translatedOptions[$knownOption] = (int) $customOptions[$knownOption];
+                    $translatedOptions[$knownOption] = intval($customOptions[$knownOption]);
                 } else {
                     $translatedOptions[$knownOption] = $customOptions[$knownOption] !== 'false';
                 }
             }
         }
         if (array_key_exists('htmlOptions', $customOptions)) {
+            // htmlOptions is encoded by view
             $translatedOptions['htmlOptions'] = json_decode_ls($customOptions['htmlOptions']);
         }
 

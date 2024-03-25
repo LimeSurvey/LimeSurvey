@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2024-02-27 19:46:30+00:00\n"
+"POT-Creation-Date: 2024-03-20 15:03:27+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -125,12 +125,12 @@ msgstr ""
 #: application/controllers/FailedEmailController.php:229
 #: application/controllers/ResponsesController.php:103
 #: application/controllers/ResponsesController.php:130
-#: application/controllers/ResponsesController.php:537
-#: application/controllers/ResponsesController.php:588
-#: application/controllers/ResponsesController.php:647
-#: application/controllers/ResponsesController.php:726
-#: application/controllers/ResponsesController.php:775
-#: application/controllers/ResponsesController.php:794
+#: application/controllers/ResponsesController.php:551
+#: application/controllers/ResponsesController.php:602
+#: application/controllers/ResponsesController.php:661
+#: application/controllers/ResponsesController.php:740
+#: application/controllers/ResponsesController.php:789
+#: application/controllers/ResponsesController.php:808
 #: application/controllers/SurveyAdministrationController.php:323
 #: application/controllers/SurveyAdministrationController.php:2052
 #: application/controllers/SurveyAdministrationController.php:2501
@@ -243,7 +243,7 @@ msgstr ""
 #: application/controllers/QuotasController.php:163
 #: application/controllers/QuotasController.php:223
 #: application/controllers/QuotasController.php:323
-#: application/controllers/ResponsesController.php:861
+#: application/controllers/ResponsesController.php:875
 #: application/controllers/SurveyAdministrationController.php:149
 #: application/controllers/SurveyAdministrationController.php:151
 #: application/controllers/SurveyAdministrationController.php:675
@@ -388,7 +388,7 @@ msgstr ""
 
 #: application/controllers/AssessmentController.php:329
 #: application/core/LsDefaultDataSets.php:446
-#: application/models/Survey.php:2178
+#: application/models/Survey.php:2197
 #: application/models/TemplateManifest.php:174
 #: application/views/admin/survey/copySurvey_view.php:54
 #: application/views/assessment/assessments_view.php:14
@@ -423,15 +423,15 @@ msgstr ""
 #: application/controllers/QuestionAdministrationController.php:787
 #: application/controllers/QuestionAdministrationController.php:2612
 #: application/controllers/ResponsesController.php:122
-#: application/controllers/ResponsesController.php:395
-#: application/controllers/ResponsesController.php:551
-#: application/controllers/ResponsesController.php:585
-#: application/controllers/ResponsesController.php:641
-#: application/controllers/ResponsesController.php:675
-#: application/controllers/ResponsesController.php:742
-#: application/controllers/ResponsesController.php:791
-#: application/controllers/ResponsesController.php:1033
-#: application/controllers/ResponsesController.php:1046
+#: application/controllers/ResponsesController.php:409
+#: application/controllers/ResponsesController.php:565
+#: application/controllers/ResponsesController.php:599
+#: application/controllers/ResponsesController.php:655
+#: application/controllers/ResponsesController.php:689
+#: application/controllers/ResponsesController.php:756
+#: application/controllers/ResponsesController.php:805
+#: application/controllers/ResponsesController.php:1047
+#: application/controllers/ResponsesController.php:1060
 #: application/controllers/SurveyAdministrationController.php:2352
 #: application/controllers/admin/DataEntry.php:1513
 #: application/controllers/admin/Statistics.php:113
@@ -1204,8 +1204,8 @@ msgstr ""
 
 #: application/controllers/QuestionAdministrationController.php:1378
 #: application/controllers/QuestionGroupsAdministrationController.php:380
-#: application/controllers/ResponsesController.php:591
-#: application/controllers/ResponsesController.php:798
+#: application/controllers/ResponsesController.php:605
+#: application/controllers/ResponsesController.php:812
 #: application/controllers/SurveysGroupsPermissionController.php:189
 #: application/controllers/SurveysGroupsPermissionController.php:249
 #: application/controllers/SurveysGroupsPermissionController.php:359
@@ -1543,8 +1543,8 @@ msgid "Sorry, this response was not found."
 msgstr ""
 
 #: application/controllers/ResponsesController.php:125
-#: application/controllers/ResponsesController.php:644
-#: application/controllers/ResponsesController.php:678
+#: application/controllers/ResponsesController.php:658
+#: application/controllers/ResponsesController.php:692
 msgid "Invalid response ID"
 msgstr ""
 
@@ -1604,11 +1604,16 @@ msgstr ""
 msgid "Submission date"
 msgstr ""
 
-#: application/controllers/ResponsesController.php:198
+#: application/controllers/ResponsesController.php:200
+#: application/controllers/admin/DataEntry.php:1023
+msgid "File count"
+msgstr ""
+
+#: application/controllers/ResponsesController.php:214
 msgid "File %s"
 msgstr ""
 
-#: application/controllers/ResponsesController.php:202
+#: application/controllers/ResponsesController.php:218
 #: application/controllers/UploaderController.php:320
 #: application/controllers/admin/DataEntry.php:1008
 #: application/extensions/admin/survey/ListSurveysWidget/views/listSurveys.php:69
@@ -1628,7 +1633,7 @@ msgstr ""
 msgid "Title"
 msgstr ""
 
-#: application/controllers/ResponsesController.php:213
+#: application/controllers/ResponsesController.php:229
 #: application/controllers/UploaderController.php:321
 #: application/controllers/admin/DataEntry.php:1011
 #: application/helpers/common_helper.php:1575
@@ -1642,7 +1647,7 @@ msgstr ""
 msgid "Comment"
 msgstr ""
 
-#: application/controllers/ResponsesController.php:223
+#: application/controllers/ResponsesController.php:239
 #: application/controllers/UploaderController.php:322
 #: application/controllers/admin/DataEntry.php:1014
 #: application/views/admin/emailtemplates/email_language_template_tab.php:103
@@ -1651,78 +1656,73 @@ msgstr ""
 msgid "File name"
 msgstr ""
 
-#: application/controllers/ResponsesController.php:232
+#: application/controllers/ResponsesController.php:248
 msgid "File size"
 msgstr ""
 
-#: application/controllers/ResponsesController.php:240
-#: application/controllers/admin/DataEntry.php:1023
-msgid "File count"
-msgstr ""
-
-#: application/controllers/ResponsesController.php:307
+#: application/controllers/ResponsesController.php:321
 msgid "%s KB"
 msgstr ""
 
-#: application/controllers/ResponsesController.php:359
+#: application/controllers/ResponsesController.php:373
 msgid "This response ID is invalid."
 msgstr ""
 
-#: application/controllers/ResponsesController.php:614
+#: application/controllers/ResponsesController.php:628
 msgid "A response was not deleted.|{n} responses were not deleted."
 msgstr ""
 
-#: application/controllers/ResponsesController.php:615
+#: application/controllers/ResponsesController.php:629
 msgid "A timing record was not deleted.|{n} timing records were not deleted."
 msgstr ""
 
-#: application/controllers/ResponsesController.php:624
-#: application/controllers/ResponsesController.php:626
+#: application/controllers/ResponsesController.php:638
+#: application/controllers/ResponsesController.php:640
 msgid "Response(s) deleted."
 msgstr ""
 
-#: application/controllers/ResponsesController.php:652
+#: application/controllers/ResponsesController.php:666
 msgid "Response could not be deleted"
 msgstr ""
 
-#: application/controllers/ResponsesController.php:657
+#: application/controllers/ResponsesController.php:671
 msgid "Response deleted."
 msgstr ""
 
-#: application/controllers/ResponsesController.php:681
+#: application/controllers/ResponsesController.php:695
 msgid "Invalid question ID"
 msgstr ""
 
-#: application/controllers/ResponsesController.php:685
-#: application/controllers/ResponsesController.php:723
-#: application/controllers/ResponsesController.php:747
+#: application/controllers/ResponsesController.php:699
+#: application/controllers/ResponsesController.php:737
+#: application/controllers/ResponsesController.php:761
 msgid "Sorry, this file was not found."
 msgstr ""
 
-#: application/controllers/ResponsesController.php:692
-#: application/controllers/ResponsesController.php:826
+#: application/controllers/ResponsesController.php:706
+#: application/controllers/ResponsesController.php:840
 msgid "Found no response with ID %d"
 msgstr ""
 
-#: application/controllers/ResponsesController.php:771
+#: application/controllers/ResponsesController.php:785
 msgid "The requested files do not exist on the server."
 msgstr ""
 
-#: application/controllers/ResponsesController.php:830
+#: application/controllers/ResponsesController.php:844
 msgid "Error: Could not delete some files: "
 msgstr ""
 
-#: application/controllers/ResponsesController.php:840
+#: application/controllers/ResponsesController.php:854
 msgid "%d file deleted.|%d files deleted."
 msgstr ""
 
-#: application/controllers/ResponsesController.php:868
 #: application/controllers/ResponsesController.php:882
+#: application/controllers/ResponsesController.php:896
 #: application/helpers/common_helper.php:1971
 msgid "Total time"
 msgstr ""
 
-#: application/controllers/ResponsesController.php:886
+#: application/controllers/ResponsesController.php:900
 #: application/extensions/admin/survey/ListSurveysWidget/views/listSurveys.php:76
 #: application/helpers/admin/export/HtmlWriter.php:72
 #: application/models/Assessment.php:149 application/models/Question.php:1085
@@ -1732,11 +1732,11 @@ msgstr ""
 msgid "Group"
 msgstr ""
 
-#: application/controllers/ResponsesController.php:888
+#: application/controllers/ResponsesController.php:902
 msgid "Group: "
 msgstr ""
 
-#: application/controllers/ResponsesController.php:894
+#: application/controllers/ResponsesController.php:908
 #: application/helpers/admin/statistics_helper.php:4236
 #: application/models/Question.php:1071
 #: application/models/TemplateManifest.php:167
@@ -1749,11 +1749,11 @@ msgstr ""
 msgid "Question"
 msgstr ""
 
-#: application/controllers/ResponsesController.php:896
+#: application/controllers/ResponsesController.php:910
 msgid "Question: "
 msgstr ""
 
-#: application/controllers/ResponsesController.php:904
+#: application/controllers/ResponsesController.php:918
 #: application/controllers/SurveyAdministrationController.php:3349
 #: application/core/plugins/TwoFactorAdminLogin/models/TFAUser.php:138
 #: application/core/plugins/TwoFactorAdminLogin/models/TFAUserKey.php:101
@@ -1786,17 +1786,17 @@ msgstr ""
 msgid "Action"
 msgstr ""
 
-#: application/controllers/ResponsesController.php:1018
+#: application/controllers/ResponsesController.php:1032
 msgid "Sorry, there are no files for this response."
 msgstr ""
 
-#: application/controllers/ResponsesController.php:1049
+#: application/controllers/ResponsesController.php:1063
 #: application/controllers/admin/DataEntry.php:521
 #: application/models/Surveymenu.php:183
 msgid "This survey has not been activated. There are no results to browse."
 msgstr ""
 
-#: application/controllers/ResponsesController.php:1058
+#: application/controllers/ResponsesController.php:1072
 #: application/controllers/admin/DataEntry.php:527
 msgid "Invalid response id."
 msgstr ""
@@ -1950,7 +1950,7 @@ msgstr ""
 #: application/extensions/SettingsWidget/SettingsWidget.php:354
 #: application/helpers/questionHelper.php:452
 #: application/helpers/questionHelper.php:708
-#: application/helpers/questionHelper.php:1011
+#: application/helpers/questionHelper.php:1024
 #: application/libraries/FormExtension/Inputs/GlobalSettingsRenderer.php:59
 #: application/models/SurveysGroupsettings.php:418
 #: application/models/SurveysGroupsettings.php:423
@@ -2033,12 +2033,12 @@ msgid "Off"
 msgstr ""
 
 #: application/controllers/SurveyAdministrationController.php:410
-#: application/helpers/questionHelper.php:1081
-#: application/helpers/questionHelper.php:1106
-#: application/helpers/questionHelper.php:1130
-#: application/helpers/questionHelper.php:1156
-#: application/helpers/questionHelper.php:1215
-#: application/models/QuestionTemplate.php:398
+#: application/helpers/questionHelper.php:1094
+#: application/helpers/questionHelper.php:1119
+#: application/helpers/questionHelper.php:1143
+#: application/helpers/questionHelper.php:1169
+#: application/helpers/questionHelper.php:1228
+#: application/models/QuestionTemplate.php:401
 #: application/views/admin/authentication/ajaxLogin.php:74
 #: application/views/admin/authentication/login.php:75
 #: application/views/admin/authentication/login.php:82
@@ -2055,7 +2055,7 @@ msgid "Current user"
 msgstr ""
 
 #: application/controllers/SurveyAdministrationController.php:412
-#: application/helpers/questionHelper.php:988
+#: application/helpers/questionHelper.php:1001
 msgid "Custom"
 msgstr ""
 
@@ -2148,6 +2148,7 @@ msgstr ""
 
 #: application/controllers/SurveyAdministrationController.php:944
 #: application/controllers/SurveyAdministrationController.php:1080
+#: application/views/questionAdministration/partial/topbarBtns/questionToolsDropdownItems.php:45
 #: application/views/questionAdministration/partial/topbarBtns/questionToolsDropdownItems.php:59
 #: application/views/questionGroupsAdministration/partial/topbarBtns/groupToolsDropdownItems.php:6
 msgid "Check logic"
@@ -2219,7 +2220,7 @@ msgstr ""
 #: application/models/Quota.php:237 application/models/Quota.php:247
 #: application/models/SurveyDynamic.php:341
 #: application/models/SurveyDynamic.php:357
-#: application/models/SurveyURLParameter.php:194
+#: application/models/SurveyURLParameter.php:193
 #: application/models/TemplateManifest.php:687
 #: application/models/TemplateManifest.php:689
 #: application/models/TemplateManifest.php:692
@@ -2440,7 +2441,7 @@ msgstr ""
 #: application/controllers/admin/Themes.php:394
 #: application/core/SurveyCommonAction.php:1047
 #: application/helpers/SurveyRuntimeHelper.php:1452
-#: application/helpers/frontend_helper.php:2245
+#: application/helpers/frontend_helper.php:2248
 #: application/models/services/CopySurveyResources.php:68
 #: application/models/services/FilterImportedResources.php:69
 #: application/views/admin/participants/participantsPanel_view.php:19
@@ -2613,21 +2614,21 @@ msgstr ""
 #: application/helpers/questionHelper.php:787
 #: application/helpers/questionHelper.php:832
 #: application/helpers/questionHelper.php:843
-#: application/helpers/questionHelper.php:856
-#: application/helpers/questionHelper.php:867
-#: application/helpers/questionHelper.php:878
-#: application/helpers/questionHelper.php:898
-#: application/helpers/questionHelper.php:948
-#: application/helpers/questionHelper.php:959
-#: application/helpers/questionHelper.php:1025
-#: application/helpers/questionHelper.php:1036
-#: application/helpers/questionHelper.php:1047
-#: application/helpers/questionHelper.php:1178
-#: application/helpers/questionHelper.php:1279
-#: application/helpers/questionHelper.php:1289
-#: application/helpers/questionHelper.php:1460
-#: application/helpers/questionHelper.php:1471
-#: application/helpers/questionHelper.php:1538
+#: application/helpers/questionHelper.php:869
+#: application/helpers/questionHelper.php:880
+#: application/helpers/questionHelper.php:891
+#: application/helpers/questionHelper.php:911
+#: application/helpers/questionHelper.php:961
+#: application/helpers/questionHelper.php:972
+#: application/helpers/questionHelper.php:1038
+#: application/helpers/questionHelper.php:1049
+#: application/helpers/questionHelper.php:1060
+#: application/helpers/questionHelper.php:1191
+#: application/helpers/questionHelper.php:1292
+#: application/helpers/questionHelper.php:1302
+#: application/helpers/questionHelper.php:1473
+#: application/helpers/questionHelper.php:1484
+#: application/helpers/questionHelper.php:1551
 #: application/helpers/userstatistics_helper.php:1167
 #: application/helpers/userstatistics_helper.php:1277
 #: application/models/Participant.php:298
@@ -2642,7 +2643,7 @@ msgstr ""
 #: application/models/ParticipantShare.php:144
 #: application/models/ParticipantShare.php:153
 #: application/models/ParticipantShare.php:266
-#: application/models/Survey.php:1083 application/models/Survey.php:1091
+#: application/models/Survey.php:1084 application/models/Survey.php:1092
 #: application/models/services/Quotas.php:166
 #: application/views/admin/dataentry/content_view.php:611
 #: application/views/admin/dataentry/content_view.php:680
@@ -2761,21 +2762,21 @@ msgstr ""
 #: application/helpers/questionHelper.php:787
 #: application/helpers/questionHelper.php:832
 #: application/helpers/questionHelper.php:843
-#: application/helpers/questionHelper.php:856
-#: application/helpers/questionHelper.php:867
-#: application/helpers/questionHelper.php:878
-#: application/helpers/questionHelper.php:898
-#: application/helpers/questionHelper.php:948
-#: application/helpers/questionHelper.php:959
-#: application/helpers/questionHelper.php:1025
-#: application/helpers/questionHelper.php:1036
-#: application/helpers/questionHelper.php:1047
-#: application/helpers/questionHelper.php:1178
-#: application/helpers/questionHelper.php:1279
-#: application/helpers/questionHelper.php:1289
-#: application/helpers/questionHelper.php:1460
-#: application/helpers/questionHelper.php:1471
-#: application/helpers/questionHelper.php:1538
+#: application/helpers/questionHelper.php:869
+#: application/helpers/questionHelper.php:880
+#: application/helpers/questionHelper.php:891
+#: application/helpers/questionHelper.php:911
+#: application/helpers/questionHelper.php:961
+#: application/helpers/questionHelper.php:972
+#: application/helpers/questionHelper.php:1038
+#: application/helpers/questionHelper.php:1049
+#: application/helpers/questionHelper.php:1060
+#: application/helpers/questionHelper.php:1191
+#: application/helpers/questionHelper.php:1292
+#: application/helpers/questionHelper.php:1302
+#: application/helpers/questionHelper.php:1473
+#: application/helpers/questionHelper.php:1484
+#: application/helpers/questionHelper.php:1551
 #: application/helpers/userstatistics_helper.php:1166
 #: application/helpers/userstatistics_helper.php:1276
 #: application/models/Participant.php:297
@@ -2790,7 +2791,7 @@ msgstr ""
 #: application/models/ParticipantShare.php:143
 #: application/models/ParticipantShare.php:153
 #: application/models/ParticipantShare.php:266
-#: application/models/Survey.php:1083 application/models/Survey.php:1091
+#: application/models/Survey.php:1084 application/models/Survey.php:1092
 #: application/models/services/Quotas.php:165
 #: application/views/admin/conditions/deleteAllConditions.php:17
 #: application/views/admin/dataentry/content_view.php:610
@@ -2949,7 +2950,7 @@ msgid "(No target question)"
 msgstr ""
 
 #: application/controllers/SurveyAdministrationController.php:3358
-#: application/models/SurveyURLParameter.php:197
+#: application/models/SurveyURLParameter.php:196
 msgid "Are you sure you want to delete this URL parameter?"
 msgstr ""
 
@@ -3052,7 +3053,7 @@ msgstr ""
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_export_archive_results.php:44
 #: application/helpers/SurveyRuntimeHelper.php:1451
 #: application/models/Box.php:161 application/models/Question.php:756
-#: application/models/SurveyURLParameter.php:193
+#: application/models/SurveyURLParameter.php:192
 #: application/models/TemplateConfiguration.php:748
 #: application/models/TemplateConfiguration.php:772
 #: application/models/TemplateConfiguration.php:790
@@ -4596,13 +4597,13 @@ msgstr ""
 #: application/helpers/questionHelper.php:704
 #: application/helpers/questionHelper.php:720
 #: application/helpers/questionHelper.php:784
-#: application/helpers/questionHelper.php:1212
-#: application/helpers/questionHelper.php:1226
-#: application/helpers/questionHelper.php:1238
-#: application/helpers/questionHelper.php:1480
-#: application/helpers/questionHelper.php:1490
-#: application/helpers/questionHelper.php:1501
-#: application/helpers/questionHelper.php:1512
+#: application/helpers/questionHelper.php:1225
+#: application/helpers/questionHelper.php:1239
+#: application/helpers/questionHelper.php:1251
+#: application/helpers/questionHelper.php:1493
+#: application/helpers/questionHelper.php:1503
+#: application/helpers/questionHelper.php:1514
+#: application/helpers/questionHelper.php:1525
 #: application/helpers/update/updatedb_helper.php:613
 #: application/helpers/update/updatedb_helper.php:930
 #: application/helpers/userstatistics_helper.php:621
@@ -4764,7 +4765,7 @@ msgstr ""
 #: application/core/SurveyCommonAction.php:819
 #: application/helpers/LayoutHelper.php:132
 #: application/helpers/common_helper.php:653
-#: application/helpers/questionHelper.php:1201
+#: application/helpers/questionHelper.php:1214
 #: application/views/admin/dataentry/content_view.php:237
 #: application/views/admin/globalsettings/_email.php:97
 #: application/views/admin/survey/subview/accordion/_notification_panel.php:24
@@ -4781,7 +4782,7 @@ msgstr ""
 #: application/controllers/admin/DataEntry.php:918
 #: application/core/QuestionTypes/RankingStyle/RenderRanking.php:139
 #: application/helpers/qanda_helper.php:1364
-#: application/helpers/questionHelper.php:1244
+#: application/helpers/questionHelper.php:1257
 #: application/views/admin/dataentry/content_view.php:264
 msgid "Your ranking"
 msgstr ""
@@ -5242,7 +5243,6 @@ msgstr ""
 #: application/core/LsDefaultDataSets.php:699
 #: application/views/admin/survey/surveybar_tools.php:113
 #: application/views/admin/survey/surveybar_tools.php:122
-#: application/views/questionAdministration/partial/topbarBtns/questionToolsDropdownItems.php:45
 #: application/views/surveyAdministration/partial/topbar/surveyToolsDropdownItems.php:80
 #: application/views/surveyAdministration/partial/topbar/surveyToolsDropdownItems.php:89
 msgid "Survey logic file"
@@ -5704,11 +5704,11 @@ msgid "Save and close"
 msgstr ""
 
 #: application/controllers/admin/PluginManagerController.php:414
-msgid "Reset load error for plugin %d"
+msgid "Reset load error for plugin %s (%s)"
 msgstr ""
 
 #: application/controllers/admin/PluginManagerController.php:416
-msgid "Could not update plugin %d"
+msgid "Could not update plugin %s (%s)"
 msgstr ""
 
 #: application/controllers/admin/PluginManagerController.php:420
@@ -6027,7 +6027,7 @@ msgstr ""
 #: application/helpers/questionHelper.php:430
 #: application/helpers/questionHelper.php:829
 #: application/helpers/userstatistics_helper.php:2582
-#: application/models/Survey.php:1504 application/models/Survey.php:2200
+#: application/models/Survey.php:1505 application/models/Survey.php:2219
 #: application/views/admin/export/statistics_user_view.php:18
 #: application/views/admin/export/statistics_view.php:23
 msgid "Statistics"
@@ -6092,7 +6092,7 @@ msgstr ""
 #: application/controllers/admin/SurveysGroupsController.php:341
 #: application/controllers/admin/globalsettings.php:557
 #: application/core/LsDefaultDataSets.php:840
-#: application/models/Survey.php:2250 application/models/SurveysGroups.php:322
+#: application/models/Survey.php:2269 application/models/SurveysGroups.php:322
 #: application/models/SurveysGroups.php:471
 msgid "Survey settings"
 msgstr ""
@@ -7040,7 +7040,7 @@ msgid "The answer to the security question is incorrect."
 msgstr ""
 
 #: application/controllers/survey/SurveyIndex.php:445
-#: application/helpers/frontend_helper.php:1268
+#: application/helpers/frontend_helper.php:1271
 msgid "You have exceeded the number of maximum access code validation attempts. Please wait %d minutes before trying again."
 msgstr ""
 
@@ -7197,7 +7197,7 @@ msgid "Open general survey settings"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:80
-#: application/core/LsDefaultDataSets.php:82 application/models/Survey.php:2234
+#: application/core/LsDefaultDataSets.php:82 application/models/Survey.php:2253
 #: tmp/runtime/twig_cache/a8/a8c553029103104cca2f1b701e4d689db3063620d1ab909a8ae5386fa5a44871.php:49
 msgid "Survey text elements"
 msgstr ""
@@ -7320,7 +7320,7 @@ msgid "Edit quotas"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:418
-#: application/models/Survey.php:2185
+#: application/models/Survey.php:2204
 #: application/views/admin/survey/copySurvey_view.php:55
 #: application/views/surveyAdministration/importSurvey_view.php:119
 msgid "Quotas"
@@ -7354,7 +7354,7 @@ msgstr ""
 #: application/core/LsDefaultDataSets.php:501
 #: application/core/LsDefaultDataSets.php:502
 #: application/core/LsDefaultDataSets.php:503
-#: application/models/Survey.php:2190
+#: application/models/Survey.php:2209
 #: application/views/admin/export/exportresult_panels/_responses.php:4
 #: application/views/admin/survey/surveybar_statistics.php:18
 #: application/views/admin/survey/surveybar_statistics.php:23
@@ -8605,7 +8605,7 @@ msgstr ""
 
 #: application/core/QuestionTypes/RankingStyle/RenderRanking.php:133
 #: application/helpers/qanda_helper.php:1359
-#: application/helpers/questionHelper.php:1232
+#: application/helpers/questionHelper.php:1245
 #: application/views/admin/dataentry/content_view.php:263
 msgid "Available items"
 msgstr ""
@@ -9812,7 +9812,7 @@ msgstr ""
 
 #: application/extensions/admin/survey/ListSurveysWidget/views/searchBox.php:41
 #: application/helpers/common_helper.php:170 application/models/Quota.php:97
-#: application/models/Survey.php:1191 tests/unit/models/SurveyTest.php:156
+#: application/models/Survey.php:1192 tests/unit/models/SurveyTest.php:156
 msgid "Active"
 msgstr ""
 
@@ -9821,7 +9821,7 @@ msgid "Active and running"
 msgstr ""
 
 #: application/extensions/admin/survey/ListSurveysWidget/views/searchBox.php:47
-#: application/helpers/common_helper.php:178 application/models/Survey.php:1159
+#: application/helpers/common_helper.php:178 application/models/Survey.php:1160
 #: tests/unit/models/SurveyTest.php:142
 msgid "Inactive"
 msgstr ""
@@ -10014,7 +10014,7 @@ msgstr ""
 #: application/helpers/userstatistics_helper.php:2593
 #: application/helpers/userstatistics_helper.php:2696
 #: application/helpers/userstatistics_helper.php:2795
-#: application/models/Survey.php:2210 application/models/Surveymenu.php:340
+#: application/models/Survey.php:2229 application/models/Surveymenu.php:340
 #: application/views/admin/participants/modal_subviews/_addToSurvey.php:22
 #: application/views/admin/super/quickmenu.php:6
 msgid "Survey"
@@ -11379,19 +11379,19 @@ msgstr ""
 msgid "Function must have at least %s argument|Function must have at least %s arguments"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:2245
+#: application/helpers/expressions/em_core_helper.php:2250
 msgid "Function does not support %s arguments"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:2246
+#: application/helpers/expressions/em_core_helper.php:2251
 msgid "Function supports this many arguments, where -1=unlimited: %s"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:2458
+#: application/helpers/expressions/em_core_helper.php:2463
 msgid "Tried to pop value off of empty stack"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:3279
+#: application/helpers/expressions/em_core_helper.php:3284
 msgid "Invalid PERL Regular Expression: %s"
 msgstr ""
 
@@ -11891,70 +11891,70 @@ msgstr ""
 msgid "Detailed admin notification could not be sent because of error: %s"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:729
+#: application/helpers/frontend_helper.php:732
 msgid "Did Not Save"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:731
+#: application/helpers/frontend_helper.php:734
 msgid "An unexpected error has occurred and your responses cannot be saved."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:735
+#: application/helpers/frontend_helper.php:738
 msgid "Your responses have not been lost and have been emailed to the survey administrator and will be entered into our database at a later point."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:740
+#: application/helpers/frontend_helper.php:743
 msgid "An error occurred saving a response to survey %s"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:741
+#: application/helpers/frontend_helper.php:744
 msgid "DATA TO BE ENTERED"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:750
+#: application/helpers/frontend_helper.php:753
 msgid "SQL CODE THAT FAILED"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:754
+#: application/helpers/frontend_helper.php:757
 msgid "ERROR MESSAGE"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:760
+#: application/helpers/frontend_helper.php:763
 msgid "Error saving results"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:766
+#: application/helpers/frontend_helper.php:769
 msgid "Try to submit again"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1281
+#: application/helpers/frontend_helper.php:1284
 msgid "The access code you have provided is either not valid, or has already been used."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1440
-#: application/helpers/frontend_helper.php:1465
+#: application/helpers/frontend_helper.php:1443
+#: application/helpers/frontend_helper.php:1468
 msgid "This survey cannot be tested or completed for the following reason(s):"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1444
+#: application/helpers/frontend_helper.php:1447
 #: tmp/runtime/twig_cache/94/94c1892a8db15feecb2c277e044caa42c227e9a10ce7e170f1e9e067ae457466.php:111
 #: tmp/runtime/twig_cache/e5/e5c7f01e7d680e2df67745615f7d0ac54db1d00a0c3ed6d5a97903a4198c4c73.php:112
 msgid "There are no questions in this survey."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1448
+#: application/helpers/frontend_helper.php:1451
 msgid "There are empty question groups in this survey - please create at least one question within a question group."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:2244
+#: application/helpers/frontend_helper.php:2247
 msgid "By continuing this survey you approve the data protection policy of the service provider."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:2246
+#: application/helpers/frontend_helper.php:2249
 msgid "View policy"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:2247
+#: application/helpers/frontend_helper.php:2250
 msgid "Please be patient until you are forwarded to the final URL."
 msgstr ""
 
@@ -12107,20 +12107,21 @@ msgstr ""
 #: application/helpers/questionHelper.php:817
 #: application/helpers/questionHelper.php:840
 #: application/helpers/questionHelper.php:853
-#: application/helpers/questionHelper.php:864
-#: application/helpers/questionHelper.php:875
-#: application/helpers/questionHelper.php:886
-#: application/helpers/questionHelper.php:1007
-#: application/helpers/questionHelper.php:1065
-#: application/helpers/questionHelper.php:1076
-#: application/helpers/questionHelper.php:1101
-#: application/helpers/questionHelper.php:1125
-#: application/helpers/questionHelper.php:1151
-#: application/helpers/questionHelper.php:1175
-#: application/helpers/questionHelper.php:1187
-#: application/helpers/questionHelper.php:1197
-#: application/helpers/questionHelper.php:1442
-#: application/helpers/questionHelper.php:1562
+#: application/helpers/questionHelper.php:866
+#: application/helpers/questionHelper.php:877
+#: application/helpers/questionHelper.php:888
+#: application/helpers/questionHelper.php:899
+#: application/helpers/questionHelper.php:1020
+#: application/helpers/questionHelper.php:1078
+#: application/helpers/questionHelper.php:1089
+#: application/helpers/questionHelper.php:1114
+#: application/helpers/questionHelper.php:1138
+#: application/helpers/questionHelper.php:1164
+#: application/helpers/questionHelper.php:1188
+#: application/helpers/questionHelper.php:1200
+#: application/helpers/questionHelper.php:1210
+#: application/helpers/questionHelper.php:1455
+#: application/helpers/questionHelper.php:1575
 msgid "Display"
 msgstr ""
 
@@ -12174,7 +12175,7 @@ msgstr ""
 #: application/helpers/questionHelper.php:600
 #: application/helpers/questionHelper.php:751
 #: application/helpers/questionHelper.php:762
-#: application/helpers/questionHelper.php:1522
+#: application/helpers/questionHelper.php:1535
 msgid "Logic"
 msgstr ""
 
@@ -12195,7 +12196,7 @@ msgid "Array filter exclusion"
 msgstr ""
 
 #: application/helpers/questionHelper.php:127
-#: application/helpers/questionHelper.php:1131
+#: application/helpers/questionHelper.php:1144
 msgid "Hidden"
 msgstr ""
 
@@ -12351,9 +12352,9 @@ msgstr ""
 #: application/helpers/questionHelper.php:610
 #: application/helpers/questionHelper.php:620
 #: application/helpers/questionHelper.php:682
-#: application/helpers/questionHelper.php:1423
-#: application/helpers/questionHelper.php:1432
-#: application/helpers/questionHelper.php:1535
+#: application/helpers/questionHelper.php:1436
+#: application/helpers/questionHelper.php:1445
+#: application/helpers/questionHelper.php:1548
 msgid "Input"
 msgstr ""
 
@@ -12825,583 +12826,603 @@ msgstr ""
 msgid "Random order"
 msgstr ""
 
-#: application/helpers/questionHelper.php:858
+#: application/helpers/questionHelper.php:856
+msgid "Normal"
+msgstr ""
+
+#: application/helpers/questionHelper.php:856
+msgid "Random"
+msgstr ""
+
+#: application/helpers/questionHelper.php:856
+msgid "Alphabetical"
+msgstr ""
+
+#: application/helpers/questionHelper.php:860
+msgid "Present answer options in normal, random or alphabetical order"
+msgstr ""
+
+#: application/helpers/questionHelper.php:861
+msgid "Answer options order"
+msgstr ""
+
+#: application/helpers/questionHelper.php:871
 msgid "Show javascript alert"
 msgstr ""
 
-#: application/helpers/questionHelper.php:859
+#: application/helpers/questionHelper.php:872
 msgid "Show an alert if answers exceeds the number of max answers"
 msgstr ""
 
-#: application/helpers/questionHelper.php:869
+#: application/helpers/questionHelper.php:882
 msgid "Same height for all answer options"
 msgstr ""
 
-#: application/helpers/questionHelper.php:870
+#: application/helpers/questionHelper.php:883
 msgid "Force each answer option to have the same height."
 msgstr ""
 
-#: application/helpers/questionHelper.php:870
-#: application/helpers/questionHelper.php:881
+#: application/helpers/questionHelper.php:883
+#: application/helpers/questionHelper.php:894
 msgid "If you have a lot of items and use a filter you can disable this to improve browser speed."
 msgstr ""
 
-#: application/helpers/questionHelper.php:880
+#: application/helpers/questionHelper.php:893
 msgid "Same height for lists"
 msgstr ""
 
-#: application/helpers/questionHelper.php:881
+#: application/helpers/questionHelper.php:894
 msgid "Force the choice list and the rank list to have the same height."
 msgstr ""
 
-#: application/helpers/questionHelper.php:889
+#: application/helpers/questionHelper.php:902
 msgid "Get order from previous question"
 msgstr ""
 
-#: application/helpers/questionHelper.php:890
+#: application/helpers/questionHelper.php:903
 msgid "Enter question ID to get subquestion order from a previous question"
 msgstr ""
 
-#: application/helpers/questionHelper.php:895
-#: application/helpers/questionHelper.php:906
-#: application/helpers/questionHelper.php:916
-#: application/helpers/questionHelper.php:926
-#: application/helpers/questionHelper.php:936
-#: application/helpers/questionHelper.php:945
-#: application/helpers/questionHelper.php:956
-#: application/helpers/questionHelper.php:967
-#: application/helpers/questionHelper.php:981
-#: application/helpers/questionHelper.php:997
-#: application/helpers/questionHelper.php:1022
-#: application/helpers/questionHelper.php:1033
-#: application/helpers/questionHelper.php:1044
-#: application/helpers/questionHelper.php:1055
+#: application/helpers/questionHelper.php:908
+#: application/helpers/questionHelper.php:919
+#: application/helpers/questionHelper.php:929
+#: application/helpers/questionHelper.php:939
+#: application/helpers/questionHelper.php:949
+#: application/helpers/questionHelper.php:958
+#: application/helpers/questionHelper.php:969
+#: application/helpers/questionHelper.php:980
+#: application/helpers/questionHelper.php:994
+#: application/helpers/questionHelper.php:1010
+#: application/helpers/questionHelper.php:1035
+#: application/helpers/questionHelper.php:1046
+#: application/helpers/questionHelper.php:1057
+#: application/helpers/questionHelper.php:1068
 msgid "Slider"
 msgstr ""
 
-#: application/helpers/questionHelper.php:900
-#: application/helpers/questionHelper.php:901
-#: application/helpers/questionHelper.php:1016
-#: application/helpers/questionHelper.php:1017
+#: application/helpers/questionHelper.php:913
+#: application/helpers/questionHelper.php:914
+#: application/helpers/questionHelper.php:1029
+#: application/helpers/questionHelper.php:1030
 msgid "Use slider layout"
 msgstr ""
 
-#: application/helpers/questionHelper.php:910
+#: application/helpers/questionHelper.php:923
 msgid "You can use Expression manager, but this must be a number before showing the page else set to 0. If minimum value is not set, this value is used."
 msgstr ""
 
-#: application/helpers/questionHelper.php:911
+#: application/helpers/questionHelper.php:924
 msgid "Slider minimum value"
 msgstr ""
 
-#: application/helpers/questionHelper.php:920
+#: application/helpers/questionHelper.php:933
 msgid "You can use Expression manager, but this must be a number before showing the page else set to 100. If maximum value is not set, this value is used."
 msgstr ""
 
-#: application/helpers/questionHelper.php:921
+#: application/helpers/questionHelper.php:934
 msgid "Slider maximum value"
 msgstr ""
 
-#: application/helpers/questionHelper.php:930
+#: application/helpers/questionHelper.php:943
 msgid "You can use Expression manager, but this must be a number before showing the page else set to 1."
 msgstr ""
 
-#: application/helpers/questionHelper.php:931
+#: application/helpers/questionHelper.php:944
 msgid "Slider accuracy"
 msgstr ""
 
-#: application/helpers/questionHelper.php:940
+#: application/helpers/questionHelper.php:953
 msgid "Slider start as this value. You can use Expression manager, but this must be a number before showing the page. This setting has priority over slider starts at the middle position."
 msgstr ""
 
-#: application/helpers/questionHelper.php:941
+#: application/helpers/questionHelper.php:954
 msgid "Slider initial value"
 msgstr ""
 
-#: application/helpers/questionHelper.php:950
+#: application/helpers/questionHelper.php:963
 msgid "When using slider initial value set this value at survey start."
 msgstr ""
 
-#: application/helpers/questionHelper.php:951
+#: application/helpers/questionHelper.php:964
 msgid "Slider initial value set at start"
 msgstr ""
 
-#: application/helpers/questionHelper.php:961
+#: application/helpers/questionHelper.php:974
 msgid "The handle is displayed at the middle of the slider except if Slider initial value is set (this will not set the initial value)."
 msgstr ""
 
-#: application/helpers/questionHelper.php:962
+#: application/helpers/questionHelper.php:975
 msgid "Slider starts at the middle position"
 msgstr ""
 
-#: application/helpers/questionHelper.php:971
+#: application/helpers/questionHelper.php:984
 msgid "Horizontal"
 msgstr ""
 
-#: application/helpers/questionHelper.php:972
+#: application/helpers/questionHelper.php:985
 msgid "Vertical"
 msgstr ""
 
-#: application/helpers/questionHelper.php:975
+#: application/helpers/questionHelper.php:988
 msgid "Set the orientation."
 msgstr ""
 
-#: application/helpers/questionHelper.php:976
+#: application/helpers/questionHelper.php:989
 msgid "Orientation"
 msgstr ""
 
-#: application/helpers/questionHelper.php:985
+#: application/helpers/questionHelper.php:998
 msgid "Circle"
 msgstr ""
 
-#: application/helpers/questionHelper.php:986
+#: application/helpers/questionHelper.php:999
 msgid "Square"
 msgstr ""
 
-#: application/helpers/questionHelper.php:987
+#: application/helpers/questionHelper.php:1000
 msgid "Triangle"
 msgstr ""
 
-#: application/helpers/questionHelper.php:991
+#: application/helpers/questionHelper.php:1004
 msgid "Set the handle shape. 'Custom' is defined in CSS using the Font Awesome font."
 msgstr ""
 
-#: application/helpers/questionHelper.php:992
+#: application/helpers/questionHelper.php:1005
 msgid "Handle shape"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1001
+#: application/helpers/questionHelper.php:1014
 msgid "Accepts Font Awesome Unicode characters."
 msgstr ""
 
-#: application/helpers/questionHelper.php:1002
+#: application/helpers/questionHelper.php:1015
 msgid "Custom handle Unicode code"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1012
+#: application/helpers/questionHelper.php:1025
 msgid "Stars"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1013
+#: application/helpers/questionHelper.php:1026
 msgid "Slider with emoticon"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1027
+#: application/helpers/questionHelper.php:1040
 msgid "Reverses the slider direction and repositions the min/max text accordingly."
 msgstr ""
 
-#: application/helpers/questionHelper.php:1028
+#: application/helpers/questionHelper.php:1041
 msgid "Reverse the slider direction"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1038
+#: application/helpers/questionHelper.php:1051
 msgid "Add a button to reset the slider. If you choose an start value, it reset at start value, else empty the answer."
 msgstr ""
 
-#: application/helpers/questionHelper.php:1039
+#: application/helpers/questionHelper.php:1052
 msgid "Allow slider reset"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1049
+#: application/helpers/questionHelper.php:1062
 msgid "Display min and max value under the slider"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1050
+#: application/helpers/questionHelper.php:1063
 msgid "Display slider min and max value"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1058
+#: application/helpers/questionHelper.php:1071
 msgid "Answer|Left-slider-text|Right-slider-text separator character"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1060
+#: application/helpers/questionHelper.php:1073
 msgid "Slider left/right text separator"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1070
+#: application/helpers/questionHelper.php:1083
 msgid "Add a suffix to the answer field"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1071
+#: application/helpers/questionHelper.php:1084
 msgid "Answer suffix"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1095
-#: application/helpers/questionHelper.php:1120
+#: application/helpers/questionHelper.php:1108
+#: application/helpers/questionHelper.php:1133
 msgid "Relative width of the text input wrapper element"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1096
-#: application/helpers/questionHelper.php:1121
+#: application/helpers/questionHelper.php:1109
+#: application/helpers/questionHelper.php:1134
 msgid "Text input box width"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1145
+#: application/helpers/questionHelper.php:1158
 msgid "Relative width of the labels"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1146
+#: application/helpers/questionHelper.php:1159
 msgid "Label wrapping width"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1170
+#: application/helpers/questionHelper.php:1183
 msgid "Relative width of checkbox wrapper element"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1171
+#: application/helpers/questionHelper.php:1184
 msgid "Choice column width"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1180
+#: application/helpers/questionHelper.php:1193
 msgid "Present dropdown control(s) instead of list of radio buttons"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1181
+#: application/helpers/questionHelper.php:1194
 msgid "Use dropdown presentation"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1191
+#: application/helpers/questionHelper.php:1204
 msgid "For list dropdown boxes, show up to this many rows"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1192
+#: application/helpers/questionHelper.php:1205
 msgid "Height of dropdown"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1202
+#: application/helpers/questionHelper.php:1215
 msgid "Order - like 3)"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1206
+#: application/helpers/questionHelper.php:1219
 msgid "Accelerator keys for list items"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1207
+#: application/helpers/questionHelper.php:1220
 msgid "Prefix for list items"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1216
+#: application/helpers/questionHelper.php:1229
 msgid "Nominal"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1217
+#: application/helpers/questionHelper.php:1230
 msgid "Ordinal"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1218
+#: application/helpers/questionHelper.php:1231
 msgid "Scale"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1220
+#: application/helpers/questionHelper.php:1233
 msgid "Set a specific SPSS export scale type for this question"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1221
+#: application/helpers/questionHelper.php:1234
 msgid "SPSS export scale type"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1232
+#: application/helpers/questionHelper.php:1245
 msgid "Replace choice header (default: \"%s\")"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1233
+#: application/helpers/questionHelper.php:1246
 msgid "Choice header"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1244
+#: application/helpers/questionHelper.php:1257
 msgid "Replace rank header (default: \"%s\")"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1245
+#: application/helpers/questionHelper.php:1258
 msgid "Rank header"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1251
-#: application/helpers/questionHelper.php:1260
-#: application/helpers/questionHelper.php:1275
-#: application/helpers/questionHelper.php:1286
-#: application/helpers/questionHelper.php:1297
-#: application/helpers/questionHelper.php:1308
-#: application/helpers/questionHelper.php:1318
-#: application/helpers/questionHelper.php:1327
-#: application/helpers/questionHelper.php:1338
-#: application/helpers/questionHelper.php:1347
-#: application/helpers/questionHelper.php:1356
-#: application/helpers/questionHelper.php:1365
-#: application/helpers/questionHelper.php:1376
-#: application/helpers/questionHelper.php:1385
-#: application/helpers/questionHelper.php:1394
-#: application/helpers/questionHelper.php:1403
-#: application/helpers/questionHelper.php:1414
+#: application/helpers/questionHelper.php:1264
+#: application/helpers/questionHelper.php:1273
+#: application/helpers/questionHelper.php:1288
+#: application/helpers/questionHelper.php:1299
+#: application/helpers/questionHelper.php:1310
+#: application/helpers/questionHelper.php:1321
+#: application/helpers/questionHelper.php:1331
+#: application/helpers/questionHelper.php:1340
+#: application/helpers/questionHelper.php:1351
+#: application/helpers/questionHelper.php:1360
+#: application/helpers/questionHelper.php:1369
+#: application/helpers/questionHelper.php:1378
+#: application/helpers/questionHelper.php:1389
+#: application/helpers/questionHelper.php:1398
+#: application/helpers/questionHelper.php:1407
+#: application/helpers/questionHelper.php:1416
+#: application/helpers/questionHelper.php:1427
 msgid "Timer"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1254
+#: application/helpers/questionHelper.php:1267
 msgid "Limit time to answer question (in seconds)"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1255
+#: application/helpers/questionHelper.php:1268
 msgid "Time limit"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1264
+#: application/helpers/questionHelper.php:1277
 msgid "Warn and move on"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1265
+#: application/helpers/questionHelper.php:1278
 msgid "Move on without warning"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1266
+#: application/helpers/questionHelper.php:1279
 msgid "Disable only"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1269
+#: application/helpers/questionHelper.php:1282
 msgid "Action to perform when time limit is up"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1270
+#: application/helpers/questionHelper.php:1283
 msgid "Time limit action"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1280
+#: application/helpers/questionHelper.php:1293
 msgid "Disable the next button until time limit expires"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1281
+#: application/helpers/questionHelper.php:1294
 msgid "Time limit disable next"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1291
+#: application/helpers/questionHelper.php:1304
 msgid "Disable the prev button until the time limit expires"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1292
+#: application/helpers/questionHelper.php:1305
 msgid "Time limit disable prev"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1302
+#: application/helpers/questionHelper.php:1315
 msgid "The text message that displays in the countdown timer during the countdown"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1303
+#: application/helpers/questionHelper.php:1316
 msgid "Time limit countdown message"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1312
+#: application/helpers/questionHelper.php:1325
 msgid "CSS Style for the message that displays in the countdown timer during the countdown"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1313
+#: application/helpers/questionHelper.php:1326
 msgid "Time limit timer CSS style"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1321
+#: application/helpers/questionHelper.php:1334
 msgid "Display the 'time limit expiry message' for this many seconds before performing the 'time limit action' (defaults to 1 second if left blank)"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1322
+#: application/helpers/questionHelper.php:1335
 msgid "Time limit expiry message display time"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1332
+#: application/helpers/questionHelper.php:1345
 msgid "The message to display when the time limit has expired (a default message will display if this setting is left blank)"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1333
+#: application/helpers/questionHelper.php:1346
 msgid "Time limit expiry message"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1341
+#: application/helpers/questionHelper.php:1354
 msgid "CSS style for the 'time limit expiry message'"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1342
+#: application/helpers/questionHelper.php:1355
 msgid "Time limit message CSS style"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1350
+#: application/helpers/questionHelper.php:1363
 msgid "Display a 'time limit warning' when there are this many seconds remaining in the countdown (warning will not display if left blank)"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1351
+#: application/helpers/questionHelper.php:1364
 msgid "1st time limit warning message timer"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1359
+#: application/helpers/questionHelper.php:1372
 msgid "The 'time limit warning' will stay visible for this many seconds (will not turn off if this setting is left blank)"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1360
+#: application/helpers/questionHelper.php:1373
 msgid "1st time limit warning message display time"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1370
+#: application/helpers/questionHelper.php:1383
 msgid "The message to display as a 'time limit warning' (a default warning will display if this is left blank)"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1371
+#: application/helpers/questionHelper.php:1384
 msgid "1st time limit warning message"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1379
+#: application/helpers/questionHelper.php:1392
 msgid "CSS style used when the 'time limit warning' message is displayed"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1380
+#: application/helpers/questionHelper.php:1393
 msgid "1st time limit warning CSS style"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1388
+#: application/helpers/questionHelper.php:1401
 msgid "Display the 2nd 'time limit warning' when there are this many seconds remaining in the countdown (warning will not display if left blank)"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1389
+#: application/helpers/questionHelper.php:1402
 msgid "2nd time limit warning message timer"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1397
+#: application/helpers/questionHelper.php:1410
 msgid "The 2nd 'time limit warning' will stay visible for this many seconds (will not turn off if this setting is left blank)"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1398
+#: application/helpers/questionHelper.php:1411
 msgid "2nd time limit warning message display time"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1408
+#: application/helpers/questionHelper.php:1421
 msgid "The 2nd message to display as a 'time limit warning' (a default warning will display if this is left blank)"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1409
+#: application/helpers/questionHelper.php:1422
 msgid "2nd time limit warning message"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1417
+#: application/helpers/questionHelper.php:1430
 msgid "CSS style used when the 2nd 'time limit warning' message is displayed"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1418
+#: application/helpers/questionHelper.php:1431
 msgid "2nd time limit warning CSS style"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1426
+#: application/helpers/questionHelper.php:1439
 msgid "Specify a custom date/time format (the <i>d/dd m/mm yy/yyyy H/HH M/MM</i> formats and \"-./: \" characters are allowed for day/month/year/hour/minutes without or with leading zero respectively. Defaults to survey's date format"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1427
+#: application/helpers/questionHelper.php:1440
 msgid "Date/Time format"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1436
+#: application/helpers/questionHelper.php:1449
 msgid "Minute step interval when using select boxes"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1437
+#: application/helpers/questionHelper.php:1450
 msgid "Minute step interval"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1446
+#: application/helpers/questionHelper.php:1459
 msgid "Short names"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1447
+#: application/helpers/questionHelper.php:1460
 msgid "Full names"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1448
+#: application/helpers/questionHelper.php:1461
 msgid "Numbers"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1451
+#: application/helpers/questionHelper.php:1464
 msgid "Change the display style of the month when using select boxes"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1452
+#: application/helpers/questionHelper.php:1465
 msgid "Month display style"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1457
-#: application/helpers/questionHelper.php:1468
+#: application/helpers/questionHelper.php:1470
+#: application/helpers/questionHelper.php:1481
 msgid "File metadata"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1462
+#: application/helpers/questionHelper.php:1475
 msgid "Is the participant required to give a title to the uploaded file?"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1463
+#: application/helpers/questionHelper.php:1476
 msgid "Show title"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1473
+#: application/helpers/questionHelper.php:1486
 msgid "Is the participant required to give a comment to the uploaded file?"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1474
+#: application/helpers/questionHelper.php:1487
 msgid "Show comment"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1484
+#: application/helpers/questionHelper.php:1497
 msgid "The participant cannot upload a single file larger than this size. Server configuration allow a maximum file size of %s KB."
 msgstr ""
 
-#: application/helpers/questionHelper.php:1485
+#: application/helpers/questionHelper.php:1498
 msgid "Maximum file size allowed (in KB)"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1495
+#: application/helpers/questionHelper.php:1508
 msgid "Maximum number of files that the participant can upload for this question"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1496
+#: application/helpers/questionHelper.php:1509
 msgid "Max number of files"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1506
+#: application/helpers/questionHelper.php:1519
 msgid "Minimum number of files that the participant must upload for this question"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1507
+#: application/helpers/questionHelper.php:1520
 msgid "Min number of files"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1516
+#: application/helpers/questionHelper.php:1529
 msgid "Allowed file types in comma separated format. e.g. pdf,doc,odt"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1517
+#: application/helpers/questionHelper.php:1530
 msgid "Allowed file types"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1525
+#: application/helpers/questionHelper.php:1538
 msgid "Place questions into a specified randomization group, all questions included in the specified group will appear in a random order"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1526
+#: application/helpers/questionHelper.php:1539
 msgid "Randomization group name"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1540
+#: application/helpers/questionHelper.php:1553
 msgid "Is no answer (missing) allowed when either 'Equals sum value' or 'Minimum sum value' are set?"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1541
+#: application/helpers/questionHelper.php:1554
 msgid "Value range allows missing"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1566
+#: application/helpers/questionHelper.php:1579
 msgid "Button group"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1567
+#: application/helpers/questionHelper.php:1580
 msgid "Radio list"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1570
+#: application/helpers/questionHelper.php:1583
 msgid "Use button group or radio list"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1571
+#: application/helpers/questionHelper.php:1584
 msgid "Display type"
 msgstr ""
 
@@ -14204,6 +14225,64 @@ msgstr ""
 msgid "Survey %s"
 msgstr ""
 
+#: application/libraries/Api/Command/V1/SurveyPatch/OpHandlerAnswer.php:210
+#: application/models/services/QuestionAggregateService/AnswersService.php:186
+msgid "Could not save answer option"
+msgstr ""
+
+#: application/libraries/Api/Command/V1/SurveyPatch/OpHandlerAnswerDelete.php:79
+msgid "Could not delete answer option"
+msgstr ""
+
+#: application/libraries/Api/Command/V1/SurveyPatch/OpHandlerLanguageSettingsUpdate.php:152
+msgid "Could not save language settings"
+msgstr ""
+
+#: application/libraries/Api/Command/V1/SurveyPatch/OpHandlerQuestionAttributeUpdate.php:120
+#: application/models/services/QuestionAggregateService/AttributesService.php:144
+msgid "Could not save question attributes"
+msgstr ""
+
+#: application/libraries/Api/Command/V1/SurveyPatch/OpHandlerQuestionCreate.php:250
+msgid "Could not create question"
+msgstr ""
+
+#: application/libraries/Api/Command/V1/SurveyPatch/OpHandlerQuestionDelete.php:70
+msgid "Could not delete question"
+msgstr ""
+
+#: application/libraries/Api/Command/V1/SurveyPatch/OpHandlerQuestionGroup.php:292
+#: application/libraries/Api/Command/V1/SurveyPatch/OpHandlerQuestionGroupL10n.php:118
+msgid "Could not save question group"
+msgstr ""
+
+#: application/libraries/Api/Command/V1/SurveyPatch/OpHandlerQuestionGroup.php:294
+msgid "Could not delete question group"
+msgstr ""
+
+#: application/libraries/Api/Command/V1/SurveyPatch/OpHandlerQuestionGroupReorder.php:133
+msgid "Could not reorder"
+msgstr ""
+
+#: application/libraries/Api/Command/V1/SurveyPatch/OpHandlerQuestionL10nUpdate.php:107
+#: application/libraries/Api/Command/V1/SurveyPatch/OpHandlerQuestionUpdate.php:110
+#: application/models/services/QuestionAggregateService/AttributesService.php:151
+#: application/models/services/QuestionAggregateService/QuestionService.php:227
+msgid "Could not save question"
+msgstr ""
+
+#: application/libraries/Api/Command/V1/SurveyPatch/OpHandlerSubQuestion.php:209
+msgid "Could not save subquestions"
+msgstr ""
+
+#: application/libraries/Api/Command/V1/SurveyPatch/OpHandlerSubquestionDelete.php:72
+msgid "Could not delete subquestion"
+msgstr ""
+
+#: application/libraries/Api/Command/V1/SurveyPatch/OpHandlerSurveyUpdate.php:120
+msgid "Could not save survey"
+msgstr ""
+
 #: application/libraries/ExtensionInstaller/ExtensionUpdater.php:140
 msgid "There are security updates available for %s (type: %s)."
 msgstr ""
@@ -14914,54 +14993,54 @@ msgid "Modified"
 msgstr ""
 
 #: application/models/Plugin.php:131
-msgid "Plugin load error"
+msgid "Plugin load error : %s"
 msgstr ""
 
 #: application/models/Plugin.php:187
 msgid "Error: Could not get plugin description: %s"
 msgstr ""
 
-#: application/models/Plugin.php:209
+#: application/models/Plugin.php:210 application/models/Plugin.php:347
 msgid "Attempt plugin reload"
 msgstr ""
 
-#: application/models/Plugin.php:245 application/models/Plugin.php:344
+#: application/models/Plugin.php:247 application/models/Plugin.php:369
 msgid "Activate plugin"
 msgstr ""
 
-#: application/models/Plugin.php:274 application/models/Plugin.php:363
+#: application/models/Plugin.php:277 application/models/Plugin.php:388
 msgid "Are you sure you want to deactivate this plugin?"
 msgstr ""
 
-#: application/models/Plugin.php:274 application/models/Plugin.php:362
+#: application/models/Plugin.php:277 application/models/Plugin.php:387
 msgid "Deactivate plugin"
 msgstr ""
 
-#: application/models/Plugin.php:303 application/models/Plugin.php:381
+#: application/models/Plugin.php:307 application/models/Plugin.php:406
 msgid "Are you sure you want to uninstall this plugin?"
 msgstr ""
 
-#: application/models/Plugin.php:303 application/models/Plugin.php:380
+#: application/models/Plugin.php:307 application/models/Plugin.php:405
 msgid "Uninstall plugin"
 msgstr ""
 
-#: application/models/Plugin.php:334 application/models/Plugin.php:343
+#: application/models/Plugin.php:359 application/models/Plugin.php:368
 #: application/models/User.php:595
 #: application/views/quotas/viewquotas_massive_selector.php:20
 msgid "Activate"
 msgstr ""
 
-#: application/models/Plugin.php:345
+#: application/models/Plugin.php:370
 msgid "Are you sure you want to activate this plugin?"
 msgstr ""
 
-#: application/models/Plugin.php:352 application/models/Plugin.php:361
+#: application/models/Plugin.php:377 application/models/Plugin.php:386
 #: application/models/User.php:584
 #: application/views/quotas/viewquotas_massive_selector.php:36
 msgid "Deactivate"
 msgstr ""
 
-#: application/models/Plugin.php:370 application/models/Plugin.php:379
+#: application/models/Plugin.php:395 application/models/Plugin.php:404
 #: application/models/TemplateConfiguration.php:763
 #: application/models/TemplateConfiguration.php:773
 #: application/views/themeOptions/_selector.php:47
@@ -15360,46 +15439,46 @@ msgstr ""
 msgid "Date saved"
 msgstr ""
 
-#: application/models/Survey.php:229
+#: application/models/Survey.php:230
 msgid "running"
 msgstr ""
 
-#: application/models/Survey.php:507
+#: application/models/Survey.php:508
 msgid "You are not allowed to use this group"
 msgstr ""
 
-#: application/models/Survey.php:544
+#: application/models/Survey.php:545
 msgid "Token length cannot be bigger than {max} characters."
 msgstr ""
 
-#: application/models/Survey.php:561
+#: application/models/Survey.php:562
 msgid "Google Analytics Tracking ID may only contain alphanumeric characters and hyphens."
 msgstr ""
 
-#: application/models/Survey.php:1173 tests/unit/models/SurveyTest.php:174
+#: application/models/Survey.php:1174 tests/unit/models/SurveyTest.php:174
 #: tests/unit/models/SurveyTest.php:182
 msgid "End: Never"
 msgstr ""
 
-#: application/models/Survey.php:1174 tests/unit/models/SurveyTest.php:202
+#: application/models/Survey.php:1175 tests/unit/models/SurveyTest.php:202
 #: tests/unit/models/SurveyTest.php:212 tests/unit/models/SurveyTest.php:235
 #: tests/unit/models/SurveyTest.php:245
 msgid "End: %s"
 msgstr ""
 
-#: application/models/Survey.php:1175 tests/unit/models/SurveyTest.php:327
+#: application/models/Survey.php:1176 tests/unit/models/SurveyTest.php:327
 #: tests/unit/models/SurveyTest.php:336 tests/unit/models/SurveyTest.php:357
 #: tests/unit/models/SurveyTest.php:367
 msgid "Expired: %s"
 msgstr ""
 
-#: application/models/Survey.php:1176 tests/unit/models/SurveyTest.php:265
+#: application/models/Survey.php:1177 tests/unit/models/SurveyTest.php:265
 #: tests/unit/models/SurveyTest.php:275 tests/unit/models/SurveyTest.php:297
 #: tests/unit/models/SurveyTest.php:307
 msgid "Start: %s"
 msgstr ""
 
-#: application/models/Survey.php:1487
+#: application/models/Survey.php:1488
 #: application/views/admin/survey/surveybar_addgroupquestion.php:40
 #: application/views/admin/survey/surveybar_addgroupquestion.php:48
 #: application/views/admin/survey/surveybar_addgroupquestion.php:55
@@ -15409,7 +15488,7 @@ msgstr ""
 msgid "Add new question"
 msgstr ""
 
-#: application/models/Survey.php:1496
+#: application/models/Survey.php:1497
 #: application/views/admin/survey/surveybar_addgroupquestion.php:18
 #: application/views/admin/survey/surveybar_addgroupquestion.php:24
 #: application/views/questionAdministration/partial/topbarBtns/listquestiongroupsTopbarLeft_view.php:14
@@ -15419,83 +15498,83 @@ msgstr ""
 msgid "Add new group"
 msgstr ""
 
-#: application/models/Survey.php:1512
+#: application/models/Survey.php:1513
 msgid "General settings & texts"
 msgstr ""
 
-#: application/models/Survey.php:2066
+#: application/models/Survey.php:2085
 msgid "Show policy"
 msgstr ""
 
-#: application/models/Survey.php:2179
+#: application/models/Survey.php:2198
 msgid "Permission to create, view, update, delete assessments rules for a survey"
 msgstr ""
 
-#: application/models/Survey.php:2186
+#: application/models/Survey.php:2205
 msgid "Permission to create, view, update, delete quota rules for a survey"
 msgstr ""
 
-#: application/models/Survey.php:2191
+#: application/models/Survey.php:2210
 msgid "Permission to create(data entry), view, update, delete, import, export responses"
 msgstr ""
 
-#: application/models/Survey.php:2201
+#: application/models/Survey.php:2220
 msgid "Permission to view statistics"
 msgstr ""
 
-#: application/models/Survey.php:2211
+#: application/models/Survey.php:2230
 msgid "Permission for survey access. Read permission is a requirement to give any further permission to a survey."
 msgstr ""
 
-#: application/models/Survey.php:2220
+#: application/models/Survey.php:2239
 msgid "Survey activation"
 msgstr ""
 
-#: application/models/Survey.php:2221
+#: application/models/Survey.php:2240
 msgid "Permission to activate, deactivate a survey"
 msgstr ""
 
-#: application/models/Survey.php:2225
+#: application/models/Survey.php:2244
 msgid "Survey content"
 msgstr ""
 
-#: application/models/Survey.php:2226
+#: application/models/Survey.php:2245
 msgid "Permission to create, view, update, delete, import, export the questions, groups, answers & conditions of a survey"
 msgstr ""
 
-#: application/models/Survey.php:2235
+#: application/models/Survey.php:2254
 msgid "Permission to view, update the survey text elements, e.g. survey title, survey description, welcome and end message"
 msgstr ""
 
-#: application/models/Survey.php:2241
+#: application/models/Survey.php:2260
 msgid "Survey security"
 msgstr ""
 
-#: application/models/Survey.php:2242
+#: application/models/Survey.php:2261
 msgid "Permission to modify survey security settings"
 msgstr ""
 
-#: application/models/Survey.php:2251
+#: application/models/Survey.php:2270
 msgid "Permission to view, update the survey settings including survey participants table creation"
 msgstr ""
 
-#: application/models/Survey.php:2255
+#: application/models/Survey.php:2274
 msgid "Participants"
 msgstr ""
 
-#: application/models/Survey.php:2255
+#: application/models/Survey.php:2274
 msgid "Permission to create, update, delete, import, export participants"
 msgstr ""
 
-#: application/models/Survey.php:2263
+#: application/models/Survey.php:2282
 msgid "Quick translation"
 msgstr ""
 
-#: application/models/Survey.php:2264
+#: application/models/Survey.php:2283
 msgid "Permission to view & update the translations using the quick-translation feature"
 msgstr ""
 
-#: application/models/Survey.php:2393
+#: application/models/Survey.php:2412
 #: application/views/admin/survey/subview/accordion/_publication_panel.php:20
 msgid "Expiration date can't be lower than the start date"
 msgstr ""
@@ -15559,11 +15638,11 @@ msgstr ""
 msgid "Submitted"
 msgstr ""
 
-#: application/models/SurveyURLParameter.php:177
+#: application/models/SurveyURLParameter.php:176
 msgid "Edit parameter"
 msgstr ""
 
-#: application/models/SurveyURLParameter.php:188
+#: application/models/SurveyURLParameter.php:187
 msgid "Delete parameter"
 msgstr ""
 
@@ -16502,26 +16581,13 @@ msgstr ""
 msgid "Here are your new credentials."
 msgstr ""
 
-#: application/models/services/QuestionAggregateService/AnswersService.php:129
+#: application/models/services/QuestionAggregateService/AnswersService.php:139
 msgid "Could not save answer"
 msgstr ""
 
-#: application/models/services/QuestionAggregateService/AnswersService.php:178
-msgid "Could not save answer option"
-msgstr ""
-
 #: application/models/services/QuestionAggregateService/AttributesService.php:71
-#: application/models/services/QuestionAggregateService/AttributesService.php:126
+#: application/models/services/QuestionAggregateService/AttributesService.php:125
 msgid "Could not store advanced options"
-msgstr ""
-
-#: application/models/services/QuestionAggregateService/AttributesService.php:145
-msgid "Could not save question attributes"
-msgstr ""
-
-#: application/models/services/QuestionAggregateService/AttributesService.php:152
-#: application/models/services/QuestionAggregateService/QuestionService.php:227
-msgid "Could not save question"
 msgstr ""
 
 #: application/models/services/QuestionAggregateService/QuestionService.php:289
@@ -16532,7 +16598,7 @@ msgstr ""
 msgid "No question specified."
 msgstr ""
 
-#: application/models/services/QuestionGroupService.php:397
+#: application/models/services/QuestionGroupService.php:399
 msgid "Nothing to reorder."
 msgstr ""
 
