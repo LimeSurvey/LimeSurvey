@@ -168,12 +168,16 @@ class Transformer implements TransformerInterface
     private function format($value, $config)
     {
         if ($this->registry) {
-            if (array_key_exists('formatter', $config)) {
+            if (is_array($config) && is_array($config['formatter'])) {
+                $formatterName = strval(array_key_first($config['formatter']));
                 $formatter = $this->registry->getFormatter(
                     strval(array_key_first($config['formatter']))
                 );
                 if ($formatter instanceof FormatterInterface) {
-                    $value = $formatter->format($value, $config);
+                    $value = $formatter->format(
+                        $value,
+                       $config['formatter'][$formatterName] ?? []
+                    );
                 }
             }
         }
