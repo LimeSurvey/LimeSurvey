@@ -80,10 +80,8 @@ class FormatterIntToBool implements FormatterInterface
      */
     public function setClassBasedOnConfig($config)
     {
-        if (is_array($config)) {
-            if (array_key_exists('revert', $config)) {
-                $this->revert = $config['revert'];
-            }
+        if (array_key_exists('revert', $config)) {
+            $this->revert = $config['revert'];
         }
     }
 }

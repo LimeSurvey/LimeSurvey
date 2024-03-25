@@ -173,10 +173,13 @@ class Transformer implements TransformerInterface
                 $formatter = $this->registry->getFormatter(
                     strval(array_key_first($config['formatter']))
                 );
+                $formatterConfig = isset($config['formatter'][$formatterName])
+                    && is_array($config['formatter'][$formatterName])
+                    ? $config['formatter'][$formatterName] : [];
                 if ($formatter instanceof FormatterInterface) {
                     $value = $formatter->format(
                         $value,
-                       $config['formatter'][$formatterName] ?? []
+                        $formatterConfig
                     );
                 }
             }

@@ -56,6 +56,6 @@ class FormatterYnToBoolTest extends TestBaseClass
 
     private function getConfig($revert = false)
     {
-        return $revert ? ['revert' => true] : true;
+        return $revert ? ['revert' => true] : [];
     }
 }
