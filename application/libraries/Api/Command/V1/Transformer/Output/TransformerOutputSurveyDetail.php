@@ -254,6 +254,7 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
             'allowprev',
             'showprogress',
             'autoredirect',
+            'showwelcome',
             'anonymized',
             'alloweditaftercompletion'
         ];
