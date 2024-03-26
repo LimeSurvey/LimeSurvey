@@ -132,6 +132,7 @@ class Transformer implements TransformerInterface
         $config['collection'] = isset($config['collection']) ? $config['collection'] : false;
         $config['transformer'] = isset($config['transformer']) ? $config['transformer'] : null;
         $config['default'] = isset($config['default']) ? $config['default'] : null;
+        $config['formatter'] = isset($config['formatter']) ? $config['formatter'] : null;
 
         return $config;
     }

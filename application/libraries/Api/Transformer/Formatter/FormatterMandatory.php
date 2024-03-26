@@ -10,14 +10,8 @@ namespace LimeSurvey\Api\Transformer\Formatter;
 class FormatterMandatory extends FormatterYnToBool
 {
     /**
-     * @param bool $revert
-     */
-    public function __construct($revert = false)
-    {
-        parent::__construct(!$revert);
-    }
-
-    /**
+     * this formatter is set to revert mode by default as it is only called
+     * from an input transformer
      * @param ?mixed $value
      * @param array $config
      * @param array $options
@@ -25,8 +19,11 @@ class FormatterMandatory extends FormatterYnToBool
      */
     public function format($value, $config = [], $options = [])
     {
-        $this->setClassBasedOnConfig($config);
-        return $this->revert
+        $revert = array_key_exists(
+            'revert',
+            $config
+        ) ? $config['revert'] : true;
+        return $revert
             ? $this->revert($value)
             : $this->apply($value);
     }
@@ -35,11 +32,12 @@ class FormatterMandatory extends FormatterYnToBool
      * if parent revert function returns null, 'S' is returned
      *
      * @param ?mixed $value
+     * @param array $config
      * @return ?mixed
      */
-    protected function revert($value)
+    protected function revert($value, array $config = [])
     {
-        $string = parent::revert($value);
+        $string = parent::revert($value, $config);
         return $string === null ? 'S' : $string;
     }
 }
