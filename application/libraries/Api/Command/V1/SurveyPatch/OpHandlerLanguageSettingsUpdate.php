@@ -51,20 +51,7 @@ class OpHandlerLanguageSettingsUpdate implements OpHandlerInterface
     }
 
     /**
-     * This handler accepts two different approaches to update the language settings:
-     * Approach 1 (single language):
-     * - in this case the language needs to be part of the id array
-     * - patch structure:
-     *      {
-     *          "entity": "languageSetting",
-     *          "op": "update",
-     *          "id": "de",
-     *          "props": {
-     *              "title": "Beispielfragebogen"
-     *          }
-     *      }
-     *
-     * Approach 2 (multiple languages):
+     * This handler accepts the following format to update the language settings:
      * - in this case the languages need to be indexes of the props array
      * - language must not be part of the id array
      * - patch structure:
