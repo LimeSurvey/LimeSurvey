@@ -79,12 +79,12 @@ class LSUserIdentity extends CUserIdentity
             }
         }
 
-        /* Check user exist, valid and not expired after plugin actions */
+        /* Check user exist, and can login after plugin actions */
         if ($result->isValid()) {
             /** @var \User|null */
-            $user = User::model()->notexpired()->active()->findByAttributes(array('users_name' => $this->username));
-            if (is_null($user)) {
-                // Set the result as invalid if user is  not active : no message for default message
+            $user = User::model()->findByAttributes(array('users_name' => $this->username));
+            if (is_null($user) || !$user->canLogin()) {
+                // Set the result as invalid if user is  not active : no specific message
                 $result->setError(self::ERROR_USERNAME_INVALID);
             }
         }

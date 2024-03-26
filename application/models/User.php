@@ -997,13 +997,22 @@ class User extends LSActiveRecord
     }
 
     /**
-     * Returns true if user is active
+     * Check if user is active
      * @return boolean
      */
     public function isActive()
     {
         /* Default is active, user_status must be set (to be tested during DB update); deactivated set user_status to 0 */
-        return !(isset($this->user_status) && $this->user_status === 0);
+        return !isset($this->user_status) || $this->user_status !== 0;
+    }
+
+    /**
+     * Check if user can login
+     * @return boolean
+     */
+    public function canLogin()
+    {
+        return $this->isActive() && !$this->isExpired();
     }
 
     /**
