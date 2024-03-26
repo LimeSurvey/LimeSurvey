@@ -3,10 +3,9 @@
 namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestionAttribute;
-use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\{
-    OpHandlerQuestionTrait,
-    OpHandlerSurveyTrait
-};
+use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\{OpHandlerExceptionTrait,
+    OpHandlerSurveyTrait,
+    OpHandlerValidationTrait};
 use LimeSurvey\Models\Services\{
     QuestionAggregateService,
     QuestionAggregateService\AttributesService,
@@ -23,7 +22,8 @@ use LimeSurvey\ObjectPatch\{
 class OpHandlerQuestionAttributeUpdate implements OpHandlerInterface
 {
     use OpHandlerSurveyTrait;
-    use OpHandlerQuestionTrait;
+    use OpHandlerValidationTrait;
+    use OpHandlerExceptionTrait;
 
     protected string $entity;
     protected AttributesService $attributesService;
@@ -53,7 +53,7 @@ class OpHandlerQuestionAttributeUpdate implements OpHandlerInterface
     }
 
     /**
-     * Updates multiple attributes for a single question. Format exactly the
+     * Updates multiple attributes for a single question. Format is exactly the
      * same as in Question create, so they share the prepare function.
      *
      * patch structure:
@@ -61,28 +61,18 @@ class OpHandlerQuestionAttributeUpdate implements OpHandlerInterface
      *     "patch": [{
      *             "entity": "questionAttribute",
      *             "op": "update",
-     *             "id": 744, // qid !
+     *             "id": 809,
      *             "props": {
      *                 "dualscale_headerA": {
-     *                     "de-informal": {
-     *                         "value": "A ger"
-     *                     },
-     *                     "en": {
-     *                         "value": "A"
-     *                     }
+     *                     "de": "A ger",
+     *                     "en": "A"
      *                 },
      *                 "dualscale_headerB": {
-     *                     "de-informal": {
-     *                         "value": "B ger"
-     *                     },
-     *                     "en": {
-     *                         "value": "B"
-     *                     }
+     *                     "de": "B ger",
+     *                     "en": "B"
      *                 },
      *                 "public_statistics": {
-     *                     "": {
-     *                         "value": "1"
-     *                     }
+     *                     "": "1"
      *                 }
      *             }
      *         }
@@ -98,12 +88,10 @@ class OpHandlerQuestionAttributeUpdate implements OpHandlerInterface
     {
         $surveyId = $this->getSurveyIdFromContext($op);
         $this->questionAggregateService->checkUpdatePermission($surveyId);
-        $preparedData = $this->prepareAdvancedSettings(
-            $op,
-            $this->transformer,
-            $op->getProps(),
-            ['attributes']
-        );
+        $preparedData = $this->transformer->transformAll($op->getProps());
+        if (empty($preparedData)) {
+            $this->throwNoValuesException($op);
+        }
         $questionId = $op->getEntityId();
         $this->attributesService->saveAdvanced(
             $this->questionService->getQuestionBySidAndQid(
@@ -117,11 +105,21 @@ class OpHandlerQuestionAttributeUpdate implements OpHandlerInterface
     /**
      * Checks if patch is valid for this operation.
      * @param OpInterface $op
-     * @return bool
+     * @return array
      */
-    public function isValidPatch(OpInterface $op): bool
+    public function validateOperation(OpInterface $op): array
     {
-        // prepareAdvancedSettings is taking care of validation
-        return true;
+        $validationData = $this->validateCollectionIndex($op, []);
+        if (empty($validationData)) {
+            $validationData = $this->transformer->validateAll(
+                $op->getProps(),
+                ['operation' => $op->getType()->getId()]
+            );
+        }
+        return $this->getValidationReturn(
+            gT('Could not save question attributes'),
+            !is_array($validationData) ? [] : $validationData,
+            $op
+        );
     }
 }

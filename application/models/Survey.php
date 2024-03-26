@@ -142,6 +142,7 @@ use LimeSurvey\PluginManager\PluginEvent;
  * @property bool $isNoKeyboard Show on-screen keyboard
  * @property bool $isAllowEditAfterCompletion Allow multiple responses or update responses with one token
  * @property SurveyLanguageSetting $defaultlanguage
+ * @property SurveysGroups $surveygroup
  * @property boolean $isDateExpired Whether survey is expired depending on the current time and survey configuration status
  * @method mixed active()
  */
@@ -1519,15 +1520,35 @@ class Survey extends LSActiveRecord implements PermissionInterface
     }
 
     /**
+     * Search
+     *
+     * $options = [
+     *  'pageSize' => 10,
+     *  'currentPage' => 1
+     * ];
+     *
+     * @param array $options
      * @return CActiveDataProvider
      */
-    public function search()
+    public function search($options = [])
     {
+        $options = $options ?? [];
         // Flush cache to get proper counts for partial/complete/total responses
         if (method_exists(Yii::app()->cache, 'flush')) {
             Yii::app()->cache->flush();
         }
-        $pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
+        $pagination = [
+            'pageSize' => Yii::app()->user->getState(
+                'pageSize',
+                Yii::app()->params['defaultPageSize']
+            )
+        ];
+        if (isset($options['pageSize'])) {
+            $pagination['pageSize'] = $options['pageSize'];
+        }
+        if (isset($options['currentPage'])) {
+            $pagination['currentPage'] = $options['currentPage'];
+        }
 
         $sort = new CSort();
         $sort->attributes = array(
@@ -1653,9 +1674,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
         $dataProvider = new CActiveDataProvider('Survey', array(
             'sort' => $sort,
             'criteria' => $criteria,
-            'pagination' => array(
-                'pageSize' => $pageSize,
-            ),
+            'pagination' => $pagination,
         ));
 
         $dataProvider->setTotalItemCount($this->count($criteria));

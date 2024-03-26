@@ -73,9 +73,9 @@ class OpHandlerActiveRecordUpdate implements OpHandlerInterface
         $record->save();
     }
 
-    public function isValidPatch(OpInterface $op): bool
+    public function validateOperation(OpInterface $op): array
     {
-        // TODO: Implement isValidPatch() method.
-        return true;
+        // TODO: Implement validateOperation() method.
+        return [];
     }
 }

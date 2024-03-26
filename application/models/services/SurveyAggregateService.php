@@ -29,6 +29,7 @@ class SurveyAggregateService
     private UrlParams $urlParams;
     private ProxyExpressionManager $proxyExpressionManager;
     private TemplateConfiguration $templateConfiguration;
+    private $restMode = false;
 
     public function __construct(
         LanguageSettings $languageSettings,
@@ -42,6 +43,21 @@ class SurveyAggregateService
         $this->urlParams = $urlParams;
         $this->proxyExpressionManager = $proxyExpressionManager;
         $this->templateConfiguration = $templateConfiguration;
+    }
+
+    /**
+     * Set REST Mode
+     *
+     * In rest mode we have different expecations about data formats.
+     * For example datetime objects inputs/output
+     * as UTC JSON format Y-m-d\TH:i:s.000\Z.
+     *
+     * @param bool $restMode
+     */
+    public function setRestMode($restMode)
+    {
+        $this->restMode = (bool) $restMode;
+        $this->generalSettings->setRestMode($this->restMode);
     }
 
     /**

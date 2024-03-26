@@ -618,6 +618,18 @@ class DataEntry extends SurveyCommonAction
 
         $questionTypes = QuestionType::modelsAttributes();
         $aDataentryoutput = '';
+        /* Keep track of previous qid to not ask question model multiple time */
+        $previousQid = 0;
+        /* @var null\Question: the current question model */
+        $oQuestion = null;
+        /* @var (string|array)[] : all question attributes of this question */
+        $qidattributes = [];
+        $rawQuestions = Question::model()->findAll("sid = :sid", [":sid" => $surveyid]);
+        $qs = [];
+        $totalTime = 0;
+        foreach ($rawQuestions as $rawQuestion) {
+            $qs[$rawQuestion->qid] = $rawQuestion;
+        }
         foreach ($results as $idrow) {
             $fname = reset($fnames);
             do {
@@ -639,9 +651,9 @@ class DataEntry extends SurveyCommonAction
                 // Second column (Answer)
                 $aDataentryoutput .= "<td class=\"answers-cell\">\n";
                 //$aDataentryoutput .= "\t-={$fname[3]}=-"; //Debugging info
-                $qidattributes = [];
-                if (isset($fname['qid']) && isset($fname['type'])) {
-                    $qidattributes = QuestionAttribute::model()->getQuestionAttributes($fname['qid']);
+                if (isset($fname['qid']) && $fname['qid'] && $fname['qid'] != $previousQid) {
+                    // if $fname['qid'] : we must have a question, else survey is broken : DB have error
+                    $qidattributes = QuestionAttribute::model()->getQuestionAttributes($qs[$fname['qid']] ?? $fname['qid']);
                 }
                 /** @var array<string,string> */
                 $questionInputs = [];
@@ -758,7 +770,6 @@ class DataEntry extends SurveyCommonAction
                         break;
                     case Question::QT_L_LIST: //LIST drop-down
                     case Question::QT_EXCLAMATION_LIST_DROPDOWN: //List (Radio)
-                        $qidattributes = QuestionAttribute::model()->getQuestionAttributes($fname['qid']);
                         if (isset($qidattributes['category_separator']) && trim((string) $qidattributes['category_separator']) != '') {
                             $optCategorySeparator = $qidattributes['category_separator'];
                         } else {
@@ -816,8 +827,7 @@ class DataEntry extends SurveyCommonAction
                                     $questionInput .= ">{$optionarray['answer']}</option>\n";
                                 }
                             }
-                            $oresult = Question::model()->findByPk($fname['qid']);
-                            if ($oresult->other == "Y") {
+                            if (($oQuestion->other ?? "N") == "Y") {
                                 $questionInput .= "<option value='-oth-'";
                                 if ($idrow[$fname['fieldname']] == "-oth-") {
                                     $questionInput .= " selected='selected'";
@@ -1002,12 +1012,11 @@ class DataEntry extends SurveyCommonAction
                         if ($fname['aid'] !== 'filecount' && isset($idrow[$fname['fieldname'] . '_filecount']) && ($idrow[$fname['fieldname'] . '_filecount'] > 0)) {
                             //file metadata
                             $metadata = json_decode((string) $idrow[$fname['fieldname']], true);
-                            $qAttributes = QuestionAttribute::model()->getQuestionAttributes($fname['qid']);
-                            for ($i = 0; ($i < $qAttributes['max_num_of_files']) && isset($metadata[$i]); $i++) {
-                                if ($qAttributes['show_title']) {
+                            for ($i = 0; ($i < $qidattributes['max_num_of_files']) && isset($metadata[$i]); $i++) {
+                                if ($qidattributes['show_title']) {
                                     $questionInput .= '<tr><td>' . gT("Title") . '</td><td><input type="text" class="' . $fname['fieldname'] . '" id="' . $fname['fieldname'] . '_title_' . $i . '" name="title"    size=50 value="' . htmlspecialchars((string) $metadata[$i]["title"]) . '" /></td></tr>';
                                 }
-                                if ($qAttributes['show_comment']) {
+                                if ($qidattributes['show_comment']) {
                                     $questionInput .= '<tr><td >' . gT("Comment") . '</td><td><input type="text" class="' . $fname['fieldname'] . '" id="' . $fname['fieldname'] . '_comment_' . $i . '" name="comment"  size=50 value="' . htmlspecialchars((string) $metadata[$i]["comment"]) . '" /></td></tr>';
                                 }
 
@@ -1239,7 +1248,6 @@ class DataEntry extends SurveyCommonAction
                         $fname = prev($fnames);
                         break;
                     case Question::QT_COLON_ARRAY_NUMBERS: // Array (Numbers)
-                        $qidattributes = QuestionAttribute::model()->getQuestionAttributes($fname['qid']);
                         $minvalue = 1;
                         $maxvalue = 10;
                         if (trim((string) $qidattributes['multiflexible_max']) != '' && trim((string) $qidattributes['multiflexible_min']) == '') {
@@ -1401,6 +1409,7 @@ class DataEntry extends SurveyCommonAction
                 $aDataentryoutput .= "        </td>
                 </tr>\n";
             } while ($fname = next($fnames));
+            $previousQid = $fname['qid'] ?? 0;
         }
         $aDataentryoutput .= "</table>\n"
         . "<p>\n";
@@ -1530,6 +1539,14 @@ class DataEntry extends SurveyCommonAction
             }
         }
 
+        $rawQuestions = Question::model()->findAll("sid = :sid", [":sid" => $surveyid]);
+
+        $questions = [];
+
+        foreach ($rawQuestions as $rawQuestion) {
+            $questions[$rawQuestion->qid] = $rawQuestion;
+        }
+
         $thissurvey = getSurveyInfo($surveyid);
         foreach ($fieldmap as $irow) {
             $fieldname = $irow['fieldname'];
@@ -1565,7 +1582,7 @@ class DataEntry extends SurveyCommonAction
                         $oResponse->$fieldname = null;
                         break;
                     }
-                    $qidattributes = QuestionAttribute::model()->getQuestionAttributes($irow['qid']);
+                    $qidattributes = QuestionAttribute::model()->getQuestionAttributes($questions[$irow['qid']] ?? Question::model()->findByPk($irow['qid']));
                     $dateformatdetails = getDateFormatDataForQID($qidattributes, $thissurvey);
                     $datetimeobj = DateTime::createFromFormat('!' . $dateformatdetails['phpdate'], $thisvalue);
                     if (!$datetimeobj) {
@@ -1682,6 +1699,15 @@ class DataEntry extends SurveyCommonAction
 
         $insertSubaction = $subaction == 'insert';
         $hasResponsesCreatePermission = Permission::model()->hasSurveyPermission($surveyid, 'responses', 'create');
+        $rawQuestions = Question::model()->findAll("sid = :sid", [":sid" => $surveyid]);
+
+        $questions = [];
+
+        $totalTime = 0;
+
+        foreach ($rawQuestions as $rawQuestion) {
+            $questions[$rawQuestion->qid] = $rawQuestion;
+        }
         if ($insertSubaction && $hasResponsesCreatePermission) {
             // TODO: $surveytable is unused. Remove it.
             $surveytable = "{{survey_{$surveyid}}}";
@@ -1820,7 +1846,7 @@ class DataEntry extends SurveyCommonAction
                                 }
                             }
                         } elseif ($irow['type'] == Question::QT_D_DATE) {
-                            $qidattributes = QuestionAttribute::model()->getQuestionAttributes($irow['qid']);
+                            $qidattributes = QuestionAttribute::model()->getQuestionAttributes($questions[$irow['qid']] ?? Question::model()->findByPk($irow['qid']));
                             $dateformatdetails = getDateFormatDataForQID($qidattributes, $thissurvey);
                             $datetimeobj = DateTime::createFromFormat('!' . $dateformatdetails['phpdate'], $_POST[$fieldname]);
                             if ($datetimeobj) {
@@ -2108,6 +2134,14 @@ class DataEntry extends SurveyCommonAction
 
             Yii::app()->loadHelper('database');
 
+            $rawQuestions = Question::model()->findAll("sid = :sid", [":sid" => $surveyid]);
+
+            $questions = [];
+
+            foreach ($rawQuestions as $rawQuestion) {
+                $questions[$rawQuestion->qid] = $rawQuestion;
+            }
+
             // SURVEY NAME AND DESCRIPTION TO GO HERE
             $aGroups = $survey->groups;
             $aDataentryoutput = '';
@@ -2126,14 +2160,13 @@ class DataEntry extends SurveyCommonAction
                 $bgc = 'odd';
                 foreach ($aQuestions as $arQuestion) {
                     $cdata = array();
-                    $qidattributes = QuestionAttribute::model()->getQuestionAttributes($arQuestion['qid']);
+                    $qidattributes = QuestionAttribute::model()->getQuestionAttributes($questions[$arQuestion['qid']] ?? $arQuestion);
                     $cdata['qidattributes'] = $qidattributes;
 
                     $qinfo = LimeExpressionManager::GetQuestionStatus($arQuestion['qid']);
                     $relevance = trim((string) $qinfo['info']['relevance']);
                     $explanation = trim((string) $qinfo['relEqn']);
                     $validation = trim((string) $qinfo['prettyValidTip']);
-                    $qidattributes = QuestionAttribute::model()->getQuestionAttributes($arQuestion['qid']);
                     $arrayFilterHelp = flattenText($this->arrayFilterHelp($qidattributes, $sDataEntryLanguage, $surveyid));
 
                     if (true || ($relevance != '' && $relevance != '1') || ($validation != '') || ($arrayFilterHelp != '')) {
