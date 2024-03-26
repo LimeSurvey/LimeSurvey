@@ -96,21 +96,23 @@ class OpHandlerLanguageSettingsUpdate implements OpHandlerInterface
         $languageSettings = $diContainer->get(
             LanguageSettings::class
         );
-        $data = $this->transformer->transformAll(
-            $op->getProps(),
-            [
-                'operation' => $op->getType()->getId(),
-                'entityId'  => $op->getEntityId(),
-                'sid'       => $this->getSurveyIdFromContext($op)
-            ]
-        );
-        if (empty($data)) {
-            $this->throwNoValuesException($op);
+        foreach ($op->getProps() as $languageCode => $props) {
+            $data = $this->transformer->transformAll(
+                $props,
+                [
+                    'operation' => $op->getType()->getId(),
+                    'entityId'  => $languageCode,
+                    'sid'       => $this->getSurveyIdFromContext($op)
+                ]
+            );
+            if (empty($data)) {
+                $this->throwNoValuesException($op);
+            }
+            $languageSettings->update(
+                $this->getSurveyIdFromContext($op),
+                $data
+            );
         }
-        $languageSettings->update(
-            $this->getSurveyIdFromContext($op),
-            $data
-        );
     }
 
     /**
@@ -125,10 +127,7 @@ class OpHandlerLanguageSettingsUpdate implements OpHandlerInterface
         $checkDataCollection = $this->validateCollection($op, []);
         if (empty($checkDataEntityId) && empty($checkDataCollection)) {
             // operation data has an entity id and props came as collection
-            $validationData = $this->addErrorToValidationData(
-                'props can not come as collection if id is set',
-                $validationData
-            );
+            // kept this case to avoid redefining the else ifs
         } elseif (!empty($checkDataEntityId) && !empty($checkDataCollection)) {
             // operation data has no entity id and props came not as collection
             $validationData = $checkDataCollection;
