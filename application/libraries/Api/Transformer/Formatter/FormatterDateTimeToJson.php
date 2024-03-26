@@ -114,21 +114,4 @@ class FormatterDateTimeToJson implements FormatterInterface
             $outputFormat
         );
     }
-
-    /**
-     * Checks config for this specific formatter,
-     * and adjusts class properties based on the config.
-     *
-     * @param array $config
-     * @return void
-     */
-    public function setClassBasedOnConfig($config)
-    {
-        if (array_key_exists('revert', $config)) {
-            $this->revert = $config['revert'];
-        }
-        if (array_key_exists('inputTimezone', $config)) {
-            $this->inputTimezone = $config['inputTimezone'];
-        }
-    }
 }
