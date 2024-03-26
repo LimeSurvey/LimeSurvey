@@ -123,7 +123,10 @@ class OpHandlerLanguageSettingsUpdate implements OpHandlerInterface
         $validationData = [];
         $checkDataEntityId = $this->validateEntityId($op, []);
         $checkDataCollection = $this->validateCollection($op, []);
-        if (!empty($checkDataEntityId) && !empty($checkDataCollection)) {
+        if (empty($checkDataEntityId) && empty($checkDataCollection)) {
+            // operation data has an entity id and props came as collection
+            // kept this case to avoid redefining the else ifs
+        } elseif (!empty($checkDataEntityId) && !empty($checkDataCollection)) {
             // operation data has no entity id and props came not as collection
             $validationData = $checkDataCollection;
         } elseif (!empty($checkDataEntityId)) {
