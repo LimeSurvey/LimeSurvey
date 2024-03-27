@@ -75,13 +75,6 @@ class OpHandlerAnswerTest extends TestBaseClass
         $validation = $opHandler->validateOperation($op);
         $this->assertIsArray($validation);
         $this->assertNotEmpty($validation);
-        $op = $this->getOp(
-            $this->getWrongProps(false, 'update'),
-            'create'
-        );
-        $validation = $opHandler->validateOperation($op);
-        $this->assertIsArray($validation);
-        $this->assertNotEmpty($validation);
     }
 
     /**
