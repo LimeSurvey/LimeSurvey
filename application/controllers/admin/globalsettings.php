@@ -58,7 +58,7 @@ class GlobalSettings extends SurveyCommonAction
      */
     public function showphpinfo()
     {
-        if (!Yii::app()->getConfig('demoMode')) {
+        if (!Yii::app()->getConfig('demoMode') && Permission::model()->hasGlobalPermission('superadmin','read')) {
             phpinfo();
         }
     }
