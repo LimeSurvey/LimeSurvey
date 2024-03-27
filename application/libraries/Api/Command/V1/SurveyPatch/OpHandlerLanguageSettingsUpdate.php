@@ -108,7 +108,7 @@ class OpHandlerLanguageSettingsUpdate implements OpHandlerInterface
     public function validateOperation(OpInterface $op): array
     {
         $validationData = [];
-        
+
         $validationData = $this->validateCollectionIndex($op, $validationData);
 
         if (empty($validationData)) {
