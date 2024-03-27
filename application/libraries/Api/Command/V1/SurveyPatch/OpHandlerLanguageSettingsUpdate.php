@@ -108,23 +108,8 @@ class OpHandlerLanguageSettingsUpdate implements OpHandlerInterface
     public function validateOperation(OpInterface $op): array
     {
         $validationData = [];
-        $checkDataEntityId = $this->getSurveyIdFromContext($op);
-        $checkDataCollection = $this->validateCollection($op, []);
-        if (empty($checkDataEntityId) && empty($checkDataCollection)) {
-            if (!$this->getSurveyIdFromContext($op)) {
-                // operation data has an entity id and props came as collection
-                $validationData = $this->addErrorToValidationData(
-                    'props can not come as collection if id is set',
-                    $validationData
-                );
-            }
-        } elseif (!empty($checkDataEntityId) && !empty($checkDataCollection)) {
-            // operation data has no entity id and props came not as collection
-            $validationData = $checkDataCollection;
-        } elseif (!empty($checkDataEntityId)) {
-            // operation data has no entity id so collection indexes are validated
-            $validationData = $this->validateCollectionIndex($op, $validationData);
-        }
+        
+        $validationData = $this->validateCollectionIndex($op, $validationData);
 
         if (empty($validationData)) {
             $validationData = $this->transformer->validateAll(
