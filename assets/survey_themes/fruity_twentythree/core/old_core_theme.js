@@ -21,9 +21,13 @@ export var ThemeScripts = function () {
     /**
      * fix padding of body according to navbar-fixed-top
      * in endpage and in $(window).resize
+     * also fix the max height for the dropdown menu as it depends
+     * on the same value
      */
     var fixBodyPadding = function fixBodyPadding() {
-        $('body').css('padding-top', Math.round($('#survey-nav').outerHeight()) + 'px');
+        var navHeightPx = Math.round($('#survey-nav').outerHeight());
+        $('body').css('padding-top', navHeightPx + 'px');
+        $('#main-dropdown').css('max-height', 'calc(100vh - ' + navHeightPx + 'px)');
     };
 
     /**
