@@ -51,20 +51,7 @@ class OpHandlerLanguageSettingsUpdate implements OpHandlerInterface
     }
 
     /**
-     * This handler accepts two different approaches to update the language settings:
-     * Approach 1 (single language):
-     * - in this case the language needs to be part of the id array
-     * - patch structure:
-     *      {
-     *          "entity": "languageSetting",
-     *          "op": "update",
-     *          "id": "de",
-     *          "props": {
-     *              "title": "Beispielfragebogen"
-     *          }
-     *      }
-     *
-     * Approach 2 (multiple languages):
+     * This handler accepts the following format to update the language settings:
      * - in this case the languages need to be indexes of the props array
      * - language must not be part of the id array
      * - patch structure:
@@ -121,21 +108,8 @@ class OpHandlerLanguageSettingsUpdate implements OpHandlerInterface
     public function validateOperation(OpInterface $op): array
     {
         $validationData = [];
-        $checkDataEntityId = $this->validateEntityId($op, []);
-        $checkDataCollection = $this->validateCollection($op, []);
-        if (empty($checkDataEntityId) && empty($checkDataCollection)) {
-            // operation data has an entity id and props came as collection
-            $validationData = $this->addErrorToValidationData(
-                'props can not come as collection if id is set',
-                $validationData
-            );
-        } elseif (!empty($checkDataEntityId) && !empty($checkDataCollection)) {
-            // operation data has no entity id and props came not as collection
-            $validationData = $checkDataCollection;
-        } elseif (!empty($checkDataEntityId)) {
-            // operation data has no entity id so collection indexes are validated
-            $validationData = $this->validateCollectionIndex($op, $validationData);
-        }
+
+        $validationData = $this->validateCollectionIndex($op, $validationData);
 
         if (empty($validationData)) {
             $validationData = $this->transformer->validateAll(
