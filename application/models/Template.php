@@ -426,7 +426,6 @@ class Template extends LSActiveRecord
         $criteria = new CDBCriteria();
         $criteria->select = 'template_name';
         $criteria->with = ['template' => ['select' => 'folder']];
-        $criteria->order = 'template_name';
         $oTemplateList = TemplateConfiguration::model()->with('template')->findAll($criteria);
         $aTemplateInStandard = SurveyThemeHelper::getTemplateInStandard();
         $aTemplateInUpload = SurveyThemeHelper::getTemplateInUpload();
