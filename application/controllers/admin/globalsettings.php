@@ -58,7 +58,7 @@ class GlobalSettings extends SurveyCommonAction
      */
     public function showphpinfo()
     {
-        if (Yii::app()->getConfig('demoMode') || !Permission::model()->hasGlobalPermission('superadmin','read')) {
+        if (Yii::app()->getConfig('demoMode') || !Permission::model()->hasGlobalPermission('superadmin', 'read')) {
             throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
         phpinfo();
