@@ -34,6 +34,14 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.6.57 (build 240312) to 5.6.58 (build 240403) April 2, 2024
+-Fixed issue #19456: {ANSWERTABLE} expression contains html tags with text email in admin notification (#3779) (Denis Chenu)
+-Fixed issue #18906: Unable to fix or edit survey with UpperCase template name (#3319) (Denis Chenu)
+#Updated translation: Portuguese (Portugal) by magdacorreia, samarta
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+
+
 Changes from 5.6.56 (build 240227) to 5.6.57 (build 240312) March 11, 2024
 -Fixed issue #19442: Generated analytics script does not properly escape question group name (#3760) (Matthew)
 -Fixed issue #14661: Plugin development need a "Don't disable plugin" (#3709) (Denis Chenu)
