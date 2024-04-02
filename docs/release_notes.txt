@@ -34,6 +34,21 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.5.1 (build 240320) to 6.5.2 (build 240402) April 2, 2024
+-Fixed issue: Wrong caption for function that prompts to set up 2FA after login (Carsten Schmitz)
+-Fixed issue #19484: File upload question - max_num_of_files problem (#3794) (Gabriel Jenik)
+-Fixed issue #19452: Improve usage of getQuestionAttributes PrintableSurvey (#3789) (Denis Chenu)
+-Fixed issue #19452: Improve usage of getQuestionAttributes DataEntry (#3784) (Denis Chenu)
+-Fixed issue #19452: getQuestionAttributes for UploaderController (Denis Chenu)
+#Updated translation: Portuguese (Portugal) by c_schmitz, holch, samarta, sazevedo
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Korean by modernity4r
+#Updated translation: Japanese by d_inoue
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+
+
 Changes from 6.5.0 (build 240319) to 6.5.1 (build 240320) March 20, 2024
 -Fixed issue: Error on MSSQL after install/update (Carsten Schmitz)
 #Updated translation: Slovak by dusanm, jelen1, sweetakasha
