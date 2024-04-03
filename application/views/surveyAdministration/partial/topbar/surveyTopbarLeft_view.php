@@ -39,6 +39,9 @@ App()->getClientScript()->registerScriptFile(
     $htmlOptions = [
         'class' => 'btn btn-primary btntooltip',
         'role' => 'button',
+        'data-surveyid' => $sid,
+        'data-url' => Yii::app()->createUrl('surveyAdministration/activateSurvey'),
+        'onclick' => 'openModalActivate();'
     ];
     ?>
     <?php if (!$canactivate) : ?>
@@ -53,14 +56,7 @@ App()->getClientScript()->registerScriptFile(
             'text' => gT('Activate survey'),
             'icon' => 'ri-check-fill',
             //'link' => App()->createUrl("surveyAdministration/activate/", ['iSurveyID' => $sid]),
-            'htmlOptions' => [
-                'class' => 'btn btn-primary btntooltip',
-                // 'data-bs-toggle' => 'modal',
-                //'data-bs-target' => '#surveyactivation-modal',
-                'data-surveyid' => $sid,
-                'data-url' => Yii::app()->createUrl('surveyAdministration/activateSurvey'),
-                'onclick' => 'openModalActivate();'
-            ],
+            'htmlOptions' => $htmlOptions,
         ]); ?>
     <?php if (!$canactivate) : ?>
         </span>
