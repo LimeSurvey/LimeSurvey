@@ -204,7 +204,10 @@ class TopbarConfiguration
             || $hasSurveyContentPermission
             || !is_null($extraToolsMenuItems);
 
-        $editorEnabled = Yii::app()->getConfig('editorEnabled') ?? false;
+        $editorEnabled = $event->get('isEditorEnabled');
+        if ($editorEnabled===null) {
+            $editorEnabled = Yii::app()->getConfig('editorEnabled') ?? false;
+        }
 
         $editorUrl = Yii::app()->request->getUrlReferrer(
             Yii::app()->createUrl(
