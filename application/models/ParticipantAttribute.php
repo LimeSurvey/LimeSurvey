@@ -102,4 +102,20 @@ class ParticipantAttribute extends LSActiveRecord
     {
         return 0;
     }
+
+    /**
+     * @inheritdoc
+     * But without filter on attributes (not same than activerecords)
+     * @param string $action
+     * @return void
+     */
+    public function decryptEncryptAttributes($action = 'decrypt')
+    {
+        // load sodium library
+        $sodium = Yii::app()->sodium;
+        $aParticipantAttributes = CHtml::listData(ParticipantAttributeName::model()->findAll(["select" => "attribute_id", "condition" => "encrypted = 'Y' and core_attribute <> 'Y'"]), 'attribute_id', '');
+        if (array_key_exists($this->attribute_id, $aParticipantAttributes)) {
+            $this->value = $sodium->$action($this->value);
+        }
+    }
 }

@@ -1872,102 +1872,104 @@ class DataEntry extends SurveyCommonAction
                 $beforeDataEntryCreate->set('oModel', $new_response);
                 App()->getPluginManager()->dispatchEvent($beforeDataEntryCreate);
 
-                $new_response->encryptSave();
-                $last_db_id = $new_response->getPrimaryKey();
-                if (isset($_POST['closerecord']) && isset($_POST['token']) && $_POST['token'] != '') {
-                    // submittoken
-                    // get submit date
-                    if (isset($_POST['closedate'])) {
-                        $submitdate = $_POST['closedate'];
-                    } else {
-                        $submitdate = date("Y-m-d H:i:s");
-                    }
-                    // query for updating tokens uses left
-                    $aToken = Token::model($surveyid)->findByAttributes(['token' => $_POST['token']]);
-                    if (isTokenCompletedDatestamped($thissurvey)) {
-                        if ($aToken->usesleft <= 1) {
-                            $aToken->usesleft = ((int) $aToken->usesleft) - 1;
-                            $aToken->completed = $submitdate;
+                if ($new_response->encryptSave()) {
+                    $last_db_id = $new_response->getPrimaryKey();
+                    /* Related token */
+                    if (!empty(App()->getRequest()->getPost('closerecord')) && !empty(App()->getRequest()->getPost('token'))) {
+                        // submittoken
+                        // get submit date
+                        $submitdate = App()->getRequest()->getPost('closedate', date("Y-m-d H:i:s"));
+                           // query for updating tokens uses left
+                        $aToken = Token::model($surveyid)->findByAttributes(['token' => App()->getRequest()->getPost('token')]);
+                        if (isTokenCompletedDatestamped($thissurvey)) {
+                            if ($aToken->usesleft <= 1) {
+                                $aToken->usesleft = ((int) $aToken->usesleft) - 1;
+                                $aToken->completed = $submitdate;
+                            } else {
+                                $aToken->usesleft = ((int) $aToken->usesleft) - 1;
+                            }
                         } else {
-                            $aToken->usesleft = ((int) $aToken->usesleft) - 1;
-                        }
-                    } else {
-                        if ($aToken->usesleft <= 1) {
-                            $aToken->usesleft = ((int) $aToken->usesleft) - 1;
-                            $aToken->completed = 'Y';
-                        } else {
-                            $aToken->usesleft = ((int) $aToken->usesleft) - 1;
-                        }
-                    }
-                    $aToken->save();
-
-                    // save submitdate into survey table
-                    $aResponse = Response::model($surveyid)->findByPk($last_db_id);
-                    $aResponse->submitdate = $submitdate;
-                    $aResponse->save();
-                }
-                if (isset($_POST['save']) && $_POST['save'] == "on") {
-                    $srid = $last_db_id;
-                    $aUserData = Yii::app()->session;
-                    //CREATE ENTRY INTO "saved_control"
-
-                    $arSaveControl = new SavedControl();
-                    $arSaveControl->sid = $surveyid;
-                    $arSaveControl->srid = $srid;
-                    $arSaveControl->identifier = $saver['identifier'];
-                    $arSaveControl->access_code = $password;
-                    $arSaveControl->email = $saver['email'];
-                    $arSaveControl->ip = !empty($aUserData['ip_address']) ? $aUserData['ip_address'] : "";
-                    $arSaveControl->refurl = (string) getenv("HTTP_REFERER");
-                    $arSaveControl->saved_thisstep = '0';
-                    $arSaveControl->status = 'S';
-                    $arSaveControl->saved_date = dateShift((string) date("Y-m-d H:i:s"), "Y-m-d H:i", "'" . Yii::app()->getConfig('timeadjust'));
-                    $arSaveControl->save();
-                    if ($arSaveControl->save()) {
-                        $aDataentrymsgs[] = CHtml::tag('font', array('class' => 'successtitle'), gT("Your survey responses have been saved successfully.  You will be sent a confirmation email. Please make sure to save your password, since we will not be able to retrieve it for you."));
-                        $tokens_table = "{{tokens_$surveyid}}";
-                        if (tableExists($tokens_table)) {
-                            $tokendata = array(
-                            "firstname" => $saver['identifier'],
-                            "lastname" => $saver['identifier'],
-                            "email" => $saver['email'],
-                            "token" => $password,
-                            "language" => $saver['language'],
-                            "sent" => date("Y-m-d H:i:s"),
-                            "completed" => "N");
-
-                            $aToken = new TokenDynamic($surveyid);
-                            $aToken->setAttributes($tokendata, false);
-                            $aToken->encryptSave(true);
-                            $aDataentrymsgs[] = CHtml::tag('font', array('class' => 'successtitle'), gT("A survey participant entry for the saved survey has been created, too."));
-                        }
-                        if ($saver['email']) {
-                            //Send email
-                            if (validateEmailAddress($saver['email']) && !returnGlobal('redo')) {
-                                $mailer = new \LimeMailer();
-                                $mailer->addAddress($saver['email']);
-                                $mailer->setSurvey($surveyid);
-                                $mailer->emailType = 'savesurveydetails';
-                                $mailer->Subject = gT("Saved Survey Details");
-                                $message = gT("Thank you for saving your survey in progress. The following details can be used to return to this survey and continue where you left off.");
-                                $message .= "\n\n" . $thissurvey['name'] . "\n\n";
-                                $message .= gT("Name") . ": " . $saver['identifier'] . "\n";
-                                $message .= gT("Reload your survey by clicking on the following link (or pasting it into your browser):") . "\n";
-                                $aParams = array('lang' => $saver['language'], 'loadname' => $saver['identifier']);
-                                $message .= Yii::app()->getController()->createAbsoluteUrl("/survey/index/sid/{$surveyid}/loadall/reload/scid/{$arSaveControl->scid}/", $aParams);
-                                $mailer->Body = $message;
-                                if ($mailer->sendMessage()) {
-                                    $aDataentrymsgs[] = CHtml::tag('strong', array('class' => 'successtitle text-success'), gT("An email has been sent with details about your saved survey. Please make sure to remember your password."));
-                                } else {
-                                    $aDataentrymsgs[] = CHtml::tag('strong', array('class' => 'errortitle text-danger'), sprintf(gT("Unable to send email about your saved survey (Error: %s)."), $mailer->getError()));
-                                }
+                            if ($aToken->usesleft <= 1) {
+                                $aToken->usesleft = ((int) $aToken->usesleft) - 1;
+                                $aToken->completed = 'Y';
+                            } else {
+                                $aToken->usesleft = ((int) $aToken->usesleft) - 1;
                             }
                         }
-                    } else {
-                        safeDie("Unable to insert record into saved_control table.<br /><br />");
+                        $aToken->save(
+                            true,
+                            ['usesleft', 'completed']
+                        );
+
+                        // save submitdate into survey table
+                        $aResponse = Response::model($surveyid)->findByPk($last_db_id);
+                        $aResponse->submitdate = $submitdate;
+                        $aResponse->save();
                     }
+                    /* Create save if needed */
+                    if (App()->getRequest()->getPost('save') == "on") {
+                        $srid = $last_db_id;
+                        $aUserData = Yii::app()->session;
+                        //CREATE ENTRY INTO "saved_control"
+                        $arSaveControl = new SavedControl();
+                        $arSaveControl->sid = $surveyid;
+                        $arSaveControl->srid = $srid;
+                        $arSaveControl->identifier = $saver['identifier'];
+                        $arSaveControl->access_code = $password;
+                        $arSaveControl->email = $saver['email'];
+                        $arSaveControl->ip = !empty($aUserData['ip_address']) ? $aUserData['ip_address'] : "";
+                        $arSaveControl->refurl = (string) getenv("HTTP_REFERER");
+                        $arSaveControl->saved_thisstep = '0';
+                        $arSaveControl->status = 'S';
+                        $arSaveControl->saved_date = dateShift((string) date("Y-m-d H:i:s"), "Y-m-d H:i", "'" . Yii::app()->getConfig('timeadjust'));
+                        if ($arSaveControl->save()) {
+                            $aDataentrymsgs[] = CHtml::tag('font', array('class' => 'successtitle'), gT("Your survey responses have been saved successfully.  You will be sent a confirmation email. Please make sure to save your password, since we will not be able to retrieve it for you."));
+                            $tokens_table = "{{tokens_$surveyid}}";
+                            if (tableExists($tokens_table)) {
+                                $tokendata = array(
+                                "firstname" => $saver['identifier'],
+                                "lastname" => $saver['identifier'],
+                                "email" => $saver['email'],
+                                "token" => $password,
+                                "language" => $saver['language'],
+                                "sent" => date("Y-m-d H:i:s"),
+                                "completed" => "N");
+
+                                $aToken = new TokenDynamic($surveyid);
+                                $aToken->setAttributes($tokendata, false);
+                                $aToken->encryptSave(true);
+                                $aDataentrymsgs[] = CHtml::tag('font', array('class' => 'successtitle'), gT("A survey participant entry for the saved survey has been created, too."));
+                            }
+                            if ($saver['email']) {
+                                //Send email
+                                if (validateEmailAddress($saver['email']) && !returnGlobal('redo')) {
+                                    $mailer = new \LimeMailer();
+                                    $mailer->addAddress($saver['email']);
+                                    $mailer->setSurvey($surveyid);
+                                    $mailer->emailType = 'savesurveydetails';
+                                    $mailer->Subject = gT("Saved Survey Details");
+                                    $message = gT("Thank you for saving your survey in progress. The following details can be used to return to this survey and continue where you left off.");
+                                    $message .= "\n\n" . $thissurvey['name'] . "\n\n";
+                                    $message .= gT("Name") . ": " . $saver['identifier'] . "\n";
+                                    $message .= gT("Reload your survey by clicking on the following link (or pasting it into your browser):") . "\n";
+                                    $aParams = array('lang' => $saver['language'], 'loadname' => $saver['identifier']);
+                                    $message .= Yii::app()->getController()->createAbsoluteUrl("/survey/index/sid/{$surveyid}/loadall/reload/scid/{$arSaveControl->scid}/", $aParams);
+                                    $mailer->Body = $message;
+                                    if ($mailer->sendMessage()) {
+                                        $aDataentrymsgs[] = CHtml::tag('strong', array('class' => 'successtitle text-success'), gT("An email has been sent with details about your saved survey. Please make sure to remember your password."));
+                                    } else {
+                                        $aDataentrymsgs[] = CHtml::tag('strong', array('class' => 'errortitle text-danger'), sprintf(gT("Unable to send email about your saved survey (Error: %s)."), $mailer->getError()));
+                                    }
+                                }
+                            }
+                        } else {
+                            safeDie("Unable to insert record into saved_control table.<br /><br />");
+                        }
+                    }
+                    $aData['thisid'] = $last_db_id;
+                } else {
+                    $errormsg .= Chtml::errorSummary($new_response);
                 }
-                $aData['thisid'] = $last_db_id;
             }
 
             $aData['errormsg'] = $errormsg;
