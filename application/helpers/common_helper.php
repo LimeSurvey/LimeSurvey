@@ -774,7 +774,7 @@ function getSurveyInfo($surveyid, $languagecode = '', $force = false)
         if ($result) {
             $aSurveyAtrributes = array_replace($result->survey->attributes, $aSurveyOptions);
             $thissurvey = array_merge($aSurveyAtrributes, $result->attributes);
-            $thissurvey['name'] = $thissurvey['surveyls_title'];
+            $thissurvey['name'] = htmlspecialchars($thissurvey['surveyls_title'], ENT_QUOTES, 'UTF-8');
             $thissurvey['description'] = $thissurvey['surveyls_description'];
             $thissurvey['welcome'] = $thissurvey['surveyls_welcometext'];
             $thissurvey['datasecurity_notice_label'] = $thissurvey['surveyls_policy_notice_label'];
