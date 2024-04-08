@@ -3235,7 +3235,8 @@ class LimeExpressionManager
      * @param array $afelist - the list of array_filter_exclude $qroot codes
      * @return array
      */
-    private function _recursivelyFindAntecdentArrayFilters($qroot, $aflist, $afelist) {
+    private function _recursivelyFindAntecdentArrayFilters($qroot, $aflist, $afelist)
+    {
         if (isset($this->qrootVarName2arrayFilter[$qroot])) {
             if (isset($this->qrootVarName2arrayFilter[$qroot]['array_filter'])) {
                 $_afs = explode(';', (string) $this->qrootVarName2arrayFilter[$qroot]['array_filter']);
@@ -4983,7 +4984,9 @@ class LimeExpressionManager
                     } else {
                         // Display new question
                         // Show error only if this question are not viewed before (question hidden by condition before <= maxQuestionSeq>currentQuestionSeq)
-                        $message .= $LEM->_UpdateValuesInDatabase();
+                        if (count($updatedValues)) {
+                            $message .= $LEM->_UpdateValuesInDatabase();
+                        }
                         $LEM->runtimeTimings[] = [__METHOD__, (microtime(true) - $now)];
                         $LEM->lastMoveResult = [
                             'finished'      => false,
@@ -9112,8 +9115,8 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
         $criteria->params[':sid'] = $sid;
         $criteria->index = 'qid';
         $questions = Question::model()->with('question_theme')->findAll($criteria);
-        
-        $_gseq = -1;        
+
+        $_gseq = -1;
         $baseQuestionThemes = QuestionTheme::findQuestionMetaDataForAllTypes();
         foreach ($LEM->currentQset as $q) {
             $gseq = $q['info']['gseq'];
