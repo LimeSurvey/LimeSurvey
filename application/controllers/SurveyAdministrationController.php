@@ -1799,7 +1799,11 @@ class SurveyAdministrationController extends LSBaseController
         Yii::app()->loadHelper("admin/activate");
         $failedgroupcheck = checkGroup($surveyId);
         $failedcheck = checkQuestions($surveyId, $surveyId);
-        $checkFailed = (isset($failedcheck) && $failedcheck) || (isset($failedgroupcheck) && $failedgroupcheck);
+        $error = "";
+        if (!$oSurvey->countTotalQuestions) {
+            $error = gT("There are no questions in this survey.");
+        }
+        $checkFailed = (isset($failedcheck) && $failedcheck) || (isset($failedgroupcheck) && $failedgroupcheck) || !empty($error);
         $footerButton = '';
         if ($checkFailed) {
             //survey can not be activated
@@ -1808,6 +1812,7 @@ class SurveyAdministrationController extends LSBaseController
                 [
                 'failedcheck' => $failedcheck,
                 'failedgroupcheck' => $failedgroupcheck,
+                'error' => $error,
                 'surveyid' => $oSurvey->sid
                 ],
                 true

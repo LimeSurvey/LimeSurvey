@@ -63,7 +63,7 @@ App()->getClientScript()->registerScriptFile(
     <?php endif; ?>
 <?php else : ?>
     <!-- Stop survey -->
-    <?php if ($canactivate) : ?>
+    <?php if ($candeactivate) : ?>
         <?php
         $this->widget('ext.ButtonWidget.ButtonWidget', [
             'name' => 'stop-survey',
