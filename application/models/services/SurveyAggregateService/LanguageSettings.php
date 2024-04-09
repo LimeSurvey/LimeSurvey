@@ -142,13 +142,15 @@ class LanguageSettings
 
             $surveyLanguageSetting->setAttributes($data);
             if (!$surveyLanguageSetting->save()) {
-                throw new PersistErrorException(
+                $e = new PersistErrorException(
                     sprintf(
                         'Failed saving language settings for survey #%s and language "%s"',
                         $survey->sid,
                         $languageCode
                     )
                 );
+                $e->setErrorModel($surveyLanguageSetting);
+                throw $e;
             }
         }
     }

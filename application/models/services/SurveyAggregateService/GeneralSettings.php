@@ -177,12 +177,14 @@ class GeneralSettings
             );
 
             if (!$survey->save()) {
-                throw new PersistErrorException(
+                $e = new PersistErrorException(
                     sprintf(
                         'Failed saving general settings for survey #%s',
                         $survey->sid
                     )
                 );
+                $e->setErrorModel($survey);
+                throw $e;
             }
         }
 
