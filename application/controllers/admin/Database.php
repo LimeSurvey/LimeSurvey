@@ -390,13 +390,6 @@ class Database extends SurveyCommonAction
                 ),
                 "error"
             );
-
-            /*
-            Yii::app()->setFlashMessage(
-                $e->getMessage(),
-                'error'
-            );
-            */
         }
 
         Yii::app()->end();
