@@ -60,6 +60,11 @@ class SurveyAggregateService
         $this->generalSettings->setRestMode($this->restMode);
     }
 
+    public function getRestMode()
+    {
+        return $this->restMode;
+    }
+
     /**
      * Update
      *
