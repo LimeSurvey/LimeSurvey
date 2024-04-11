@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2024-04-02 11:57:57+00:00\n"
+"POT-Creation-Date: 2024-04-11 14:35:28+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -402,8 +402,8 @@ msgstr ""
 #: application/models/Assessment.php:106 application/models/Box.php:146
 #: application/views/questionAdministration/partial/topbarBtns/questionTopbarRight_view.php:17
 #: application/views/questionGroupsAdministration/partial/topbarBtns/groupTopbarRight_view.php:9
-#: tmp/runtime/twig_cache/4a/4aae147d0605ccb94fdf6ccd1eb672ca2ba3d680e0d206b7f0be667bd4949c5f.php:215
-#: tmp/runtime/twig_cache/4a/4aae147d0605ccb94fdf6ccd1eb672ca2ba3d680e0d206b7f0be667bd4949c5f.php:337
+#: tmp/runtime/twig_cache/25/2593ae4c6f956475a07e90c09eca4dba3449e4ffa3257d4678533726a90d8729.php:215
+#: tmp/runtime/twig_cache/25/2593ae4c6f956475a07e90c09eca4dba3449e4ffa3257d4678533726a90d8729.php:337
 msgid "Edit"
 msgstr ""
 
@@ -1634,8 +1634,8 @@ msgstr ""
 #: application/views/admin/notification/index.php:26
 #: application/views/homepageSettings/index.php:60
 #: application/views/questionGroupsAdministration/group_view.php:14
-#: tmp/runtime/twig_cache/4a/4aae147d0605ccb94fdf6ccd1eb672ca2ba3d680e0d206b7f0be667bd4949c5f.php:113
-#: tmp/runtime/twig_cache/4a/4aae147d0605ccb94fdf6ccd1eb672ca2ba3d680e0d206b7f0be667bd4949c5f.php:199
+#: tmp/runtime/twig_cache/25/2593ae4c6f956475a07e90c09eca4dba3449e4ffa3257d4678533726a90d8729.php:113
+#: tmp/runtime/twig_cache/25/2593ae4c6f956475a07e90c09eca4dba3449e4ffa3257d4678533726a90d8729.php:199
 msgid "Title"
 msgstr ""
 
@@ -1648,8 +1648,8 @@ msgstr ""
 #: application/helpers/update/updatedb_helper.php:649
 #: application/helpers/update/updatedb_helper.php:905
 #: application/views/admin/dataentry/content_view.php:210
-#: tmp/runtime/twig_cache/4a/4aae147d0605ccb94fdf6ccd1eb672ca2ba3d680e0d206b7f0be667bd4949c5f.php:122
-#: tmp/runtime/twig_cache/4a/4aae147d0605ccb94fdf6ccd1eb672ca2ba3d680e0d206b7f0be667bd4949c5f.php:203
+#: tmp/runtime/twig_cache/25/2593ae4c6f956475a07e90c09eca4dba3449e4ffa3257d4678533726a90d8729.php:122
+#: tmp/runtime/twig_cache/25/2593ae4c6f956475a07e90c09eca4dba3449e4ffa3257d4678533726a90d8729.php:203
 msgid "Comment"
 msgstr ""
 
@@ -1657,8 +1657,8 @@ msgstr ""
 #: application/controllers/UploaderController.php:324
 #: application/controllers/admin/DataEntry.php:1023
 #: application/views/admin/emailtemplates/email_language_template_tab.php:103
-#: tmp/runtime/twig_cache/4a/4aae147d0605ccb94fdf6ccd1eb672ca2ba3d680e0d206b7f0be667bd4949c5f.php:128
-#: tmp/runtime/twig_cache/4a/4aae147d0605ccb94fdf6ccd1eb672ca2ba3d680e0d206b7f0be667bd4949c5f.php:207
+#: tmp/runtime/twig_cache/25/2593ae4c6f956475a07e90c09eca4dba3449e4ffa3257d4678533726a90d8729.php:128
+#: tmp/runtime/twig_cache/25/2593ae4c6f956475a07e90c09eca4dba3449e4ffa3257d4678533726a90d8729.php:207
 msgid "File name"
 msgstr ""
 
@@ -2267,7 +2267,7 @@ msgstr ""
 #: application/views/userRole/massiveAction/_selector.php:17
 #: application/views/userRole/massiveAction/_updatepermissions.php:35
 #: application/views/userRole/partials/_permissions.php:36
-#: tmp/runtime/twig_cache/4a/4aae147d0605ccb94fdf6ccd1eb672ca2ba3d680e0d206b7f0be667bd4949c5f.php:211
+#: tmp/runtime/twig_cache/25/2593ae4c6f956475a07e90c09eca4dba3449e4ffa3257d4678533726a90d8729.php:211
 msgid "Delete"
 msgstr ""
 
@@ -4921,6 +4921,10 @@ msgstr ""
 #: application/controllers/admin/Database.php:296
 #: application/controllers/admin/Database.php:380
 msgid "Survey settings were successfully saved."
+msgstr ""
+
+#: application/controllers/admin/Database.php:388
+msgid "Survey could not be updated, please fix the following error:"
 msgstr ""
 
 #: application/controllers/admin/EmailTemplates.php:78
@@ -12004,7 +12008,7 @@ msgid "Your time to answer this question has nearly expired. You have {TIME} rem
 msgstr ""
 
 #: application/helpers/qanda_helper.php:1792
-#: tmp/runtime/twig_cache/4a/4aae147d0605ccb94fdf6ccd1eb672ca2ba3d680e0d206b7f0be667bd4949c5f.php:151
+#: tmp/runtime/twig_cache/25/2593ae4c6f956475a07e90c09eca4dba3449e4ffa3257d4678533726a90d8729.php:151
 msgid "Upload file|Upload files"
 msgstr ""
 
@@ -13900,115 +13904,114 @@ msgid "Slovenian"
 msgstr ""
 
 #: application/helpers/surveytranslator_helper.php:837
-#: application/helpers/surveytranslator_helper.php:845
 msgid "Somali"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:853
+#: application/helpers/surveytranslator_helper.php:845
 msgid "Spanish"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:861
+#: application/helpers/surveytranslator_helper.php:853
 msgid "Spanish (informal)"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:871
+#: application/helpers/surveytranslator_helper.php:863
 msgid "Spanish (Argentina)"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:879
+#: application/helpers/surveytranslator_helper.php:871
 msgid "Spanish (Argentina) (Informal)"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:888
+#: application/helpers/surveytranslator_helper.php:880
 msgid "Spanish (Chile)"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:896
+#: application/helpers/surveytranslator_helper.php:888
 msgid "Spanish (Colombia)"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:904
+#: application/helpers/surveytranslator_helper.php:896
 msgid "Spanish (Mexico)"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:912
+#: application/helpers/surveytranslator_helper.php:904
 msgid "Swahili"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:921
+#: application/helpers/surveytranslator_helper.php:913
 msgid "Swedish"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:929
+#: application/helpers/surveytranslator_helper.php:921
 msgid "Tagalog"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:937
+#: application/helpers/surveytranslator_helper.php:929
 msgid "Tajik"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:945
+#: application/helpers/surveytranslator_helper.php:937
 msgid "Tamil"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:953
+#: application/helpers/surveytranslator_helper.php:945
 msgid "Telugu"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:961
+#: application/helpers/surveytranslator_helper.php:953
 msgid "Thai"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:969
+#: application/helpers/surveytranslator_helper.php:961
 msgid "Tigrinya"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:977
+#: application/helpers/surveytranslator_helper.php:969
 msgid "Turkish"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:985
+#: application/helpers/surveytranslator_helper.php:977
 msgid "Ukrainian"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:993
+#: application/helpers/surveytranslator_helper.php:985
 msgid "Urdu"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:1001
+#: application/helpers/surveytranslator_helper.php:993
 msgid "Uyghur"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:1009
+#: application/helpers/surveytranslator_helper.php:1001
 msgid "Vietnamese"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:1017
+#: application/helpers/surveytranslator_helper.php:1009
 msgid "Welsh"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:1025
+#: application/helpers/surveytranslator_helper.php:1017
 msgid "Xhosa"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:1033
+#: application/helpers/surveytranslator_helper.php:1025
 msgid "Yakut"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:1041
+#: application/helpers/surveytranslator_helper.php:1033
 msgid "Yoruba"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:1049
+#: application/helpers/surveytranslator_helper.php:1041
 msgid "Zulu"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:1079
+#: application/helpers/surveytranslator_helper.php:1071
 msgid "Dot (.)"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:1080
+#: application/helpers/surveytranslator_helper.php:1072
 msgid "Comma (,)"
 msgstr ""
 
@@ -19305,7 +19308,7 @@ msgstr ""
 #: application/views/admin/token/ldapform.php:83
 #: application/views/themeOptions/advanced.php:25
 #: application/views/themeOptions/options_core.php:330
-#: tmp/runtime/twig_cache/4a/4aae147d0605ccb94fdf6ccd1eb672ca2ba3d680e0d206b7f0be667bd4949c5f.php:164
+#: tmp/runtime/twig_cache/25/2593ae4c6f956475a07e90c09eca4dba3449e4ffa3257d4678533726a90d8729.php:164
 msgid "Upload"
 msgstr ""
 
@@ -25571,6 +25574,22 @@ msgstr ""
 msgid "Enter access code"
 msgstr ""
 
+#: tmp/runtime/twig_cache/25/2593ae4c6f956475a07e90c09eca4dba3449e4ffa3257d4678533726a90d8729.php:171
+msgid "Save changes"
+msgstr ""
+
+#: tmp/runtime/twig_cache/25/2593ae4c6f956475a07e90c09eca4dba3449e4ffa3257d4678533726a90d8729.php:191
+msgid "Upload your files"
+msgstr ""
+
+#: tmp/runtime/twig_cache/25/2593ae4c6f956475a07e90c09eca4dba3449e4ffa3257d4678533726a90d8729.php:195
+#: tmp/runtime/twig_cache/2f/2f675ad35e99cab3ce5ebd472b8eab29943d065fd93ad4fbc6ab5d4f51c50c40.php:329
+#: tmp/runtime/twig_cache/38/38c1c396d39ab2cb99ad9bb599a8c03077cded571275e367ada645e715852e76.php:355
+#: tmp/runtime/twig_cache/ba/baf03403c1367d77e6534846727261b27a47a76618319a4adec4d515681ea56e.php:464
+#: tmp/runtime/twig_cache/dd/dd7cbd00aa1ae2ee5d3372685e0701e9523da1f39d746c70c3f23843e2ebdd3f.php:494
+msgid "Return to survey"
+msgstr ""
+
 #: tmp/runtime/twig_cache/28/288bd27cf70f6fecd7add5bc3a03a5c23d4fa8b0dc6dd124b65ff932fe16e7ae.php:88
 msgid "Enter your first name"
 msgstr ""
@@ -25627,14 +25646,6 @@ msgstr ""
 #: tmp/runtime/twig_cache/2f/2f675ad35e99cab3ce5ebd472b8eab29943d065fd93ad4fbc6ab5d4f51c50c40.php:263
 #: tmp/runtime/twig_cache/ba/baf03403c1367d77e6534846727261b27a47a76618319a4adec4d515681ea56e.php:402
 msgid "Security question"
-msgstr ""
-
-#: tmp/runtime/twig_cache/2f/2f675ad35e99cab3ce5ebd472b8eab29943d065fd93ad4fbc6ab5d4f51c50c40.php:329
-#: tmp/runtime/twig_cache/38/38c1c396d39ab2cb99ad9bb599a8c03077cded571275e367ada645e715852e76.php:355
-#: tmp/runtime/twig_cache/4a/4aae147d0605ccb94fdf6ccd1eb672ca2ba3d680e0d206b7f0be667bd4949c5f.php:195
-#: tmp/runtime/twig_cache/ba/baf03403c1367d77e6534846727261b27a47a76618319a4adec4d515681ea56e.php:464
-#: tmp/runtime/twig_cache/dd/dd7cbd00aa1ae2ee5d3372685e0701e9523da1f39d746c70c3f23843e2ebdd3f.php:494
-msgid "Return to survey"
 msgstr ""
 
 #: tmp/runtime/twig_cache/2f/2f675ad35e99cab3ce5ebd472b8eab29943d065fd93ad4fbc6ab5d4f51c50c40.php:354
@@ -25725,14 +25736,6 @@ msgstr ""
 #: tmp/runtime/twig_cache/41/41edafcd43394ac138c44d97d03c628b3aa743e34cc846f1f5553238df7a1d6a.php:477
 #: tmp/runtime/twig_cache/41/41edafcd43394ac138c44d97d03c628b3aa743e34cc846f1f5553238df7a1d6a.php:533
 msgid "Tweet it"
-msgstr ""
-
-#: tmp/runtime/twig_cache/4a/4aae147d0605ccb94fdf6ccd1eb672ca2ba3d680e0d206b7f0be667bd4949c5f.php:171
-msgid "Save changes"
-msgstr ""
-
-#: tmp/runtime/twig_cache/4a/4aae147d0605ccb94fdf6ccd1eb672ca2ba3d680e0d206b7f0be667bd4949c5f.php:191
-msgid "Upload your files"
 msgstr ""
 
 #: tmp/runtime/twig_cache/5b/5b4d89ae4120b3733a208abdcd384d9b41d55f26b5856d729a248962d9fa84c5.php:43
