@@ -469,7 +469,7 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['attr']['passwordrowcolspan'] = $aClassAndAttributes['attr']['captcharow'] = $aClassAndAttributes['attr']['captcharowlabel'] = $aClassAndAttributes['attr']['captcharowcol'] = $aClassAndAttributes['attr']['captcharowcoldiv'] = $aClassAndAttributes['attr']['loadrow'] = '';
         $aClassAndAttributes['attr']['loadrowcol'] = $aClassAndAttributes['class']['returntosurvey'] = $aClassAndAttributes['attr']['returntosurveydiv'] = $aClassAndAttributes['class']['returntosurveydiva'] = '';
 
-        //Ã‚Â Save
+        // Save
         $aClassAndAttributes['class']['savecontainer']                 = ' save-message ';
         $aClassAndAttributes['class']['savecontainertitle']            = '  ';
         $aClassAndAttributes['class']['savecontainertext']             = '  ';
@@ -821,8 +821,8 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['class']['surveylistfooter']          = ' footer ';
         $aClassAndAttributes['class']['surveylistfootercont']      = '  ';
 
-        $aClassAndAttributes['attr']['surveylistfootercontpaa']      = ' href="http://www.limesurvey.org"  target="_blank" ';
-        $aClassAndAttributes['attr']['surveylistfootercontpaa']      = ' href="http://www.limesurvey.org"  target="_blank" ';
+        $aClassAndAttributes['attr']['surveylistfootercontpaa']      = ' href="https://www.limesurvey.org"  target="_blank" ';
+        $aClassAndAttributes['attr']['surveylistfootercontpab']      = ' href="https://www.limesurvey.org"  target="_blank" ';
 
         $aClassAndAttributes['attr']['surveylistrow'] = $aClassAndAttributes['attr']['surveylistrowjumbotron'] = $aClassAndAttributes['attr']['surveylistrowdiva'] = $aClassAndAttributes['attr']['surveylistrowdivadiv'] = $aClassAndAttributes['attr']['surveylistrowdivb'] = $aClassAndAttributes['attr']['surveylistrowdivbdivul'] = '';
         $aClassAndAttributes['attr']['surveylistrowdivbdivulli'] = $aClassAndAttributes['attr']['surveylistrowdivc'] = $aClassAndAttributes['attr']['surveylistfooter'] = $aClassAndAttributes['attr']['surveylistfootercont'] = $aClassAndAttributes['class']['surveylistfootercontp'] = '';
