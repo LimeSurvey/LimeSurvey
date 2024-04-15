@@ -36,15 +36,17 @@ class FormatterIntToBool implements FormatterInterface
      * Convert empty string to null.
      * Null is passed through unchanged.
      *
-     * @param ?string $value
-     * @return ?boolean
+     * @param ?mixed $value
+     * @return ?mixed
      */
     protected function apply($value)
     {
         if ($value === null || $value === '') {
             return null;
         }
-        return !is_numeric($value) || intval($value) > 0;
+        return !is_numeric($value) && !empty($value)
+            ? true
+            : intval($value) > 0;
     }
 
     /**
