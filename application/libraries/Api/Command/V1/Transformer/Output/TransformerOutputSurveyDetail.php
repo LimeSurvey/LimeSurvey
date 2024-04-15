@@ -257,12 +257,14 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
             'showwelcome',
             'showxquestions',
             'anonymized',
-            'alloweditaftercompletion'
+            'alloweditaftercompletion',
+            'format',
+            'template'
         ];
         foreach ($affectedSettings as $setting) {
             if (
                 isset($survey->$setting)
-                && $survey->$setting === 'I'
+                && ($survey->$setting === 'I' || $survey->$setting === 'inherit')
             ) {
                 if (isset($survey->oOptions->$setting)) {
                     $survey->$setting = $survey->oOptions->$setting;
