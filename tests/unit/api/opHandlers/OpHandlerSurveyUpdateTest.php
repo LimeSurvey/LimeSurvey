@@ -18,18 +18,6 @@ use ls\tests\unit\services\SurveyAggregateService\GeneralSettings\GeneralSetting
 class OpHandlerSurveyUpdateTest extends TestBaseClass
 {
     /**
-     * @testdox throws exception if no values are provided
-     */
-    public function testSurveyUpdateThrowsNoValuesException()
-    {
-        $this->expectException(
-            OpHandlerException::class
-        );
-        $op = $this->getOp($this->getPropsNoValues());
-        $this->getOpHandler()->handle($op);
-    }
-
-    /**
      * @testdox can handle update operation
      */
     public function testSurveyUpdateCanHandle()

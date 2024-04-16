@@ -187,9 +187,15 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
      * @throws \LimeSurvey\Models\Services\Exception\NotFoundException
      * @throws PermissionDeniedException
      * @throws PersistErrorException
+     * @throws \CException
      */
     public function handle(OpInterface $op): array
     {
+        $questionService = DI::getContainer()->get(
+            QuestionAggregateService::class
+        );
+        $surveyId = $this->getSurveyIdFromContext($op);
+        $questionService->checkUpdatePermission($surveyId);
         $transformOptions = ['operation' => $op->getType()->getId()];
         $data = $this->transformer->transform(
             $op->getProps(),
@@ -203,12 +209,9 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
         $answerOptionsData = $data['answeroptions'] ?? [];
 
         $tempId = $this->extractTempId($questionData);
-        $questionService = DI::getContainer()->get(
-            QuestionAggregateService::class
-        );
 
         $question = $questionService->save(
-            $this->getSurveyIdFromContext($op),
+            $surveyId,
             $data
         );
 

@@ -62,6 +62,7 @@ class SubQuestionsService
      * @param int $subquestionId
      * @throws PermissionDeniedException
      * @throws NotFoundException
+     * @throws \CDbException
      */
     public function delete($surveyId, $subquestionId)
     {

@@ -85,6 +85,8 @@ class OpHandlerLanguageSettingsUpdate implements OpHandlerInterface
         $languageSettings = $diContainer->get(
             LanguageSettings::class
         );
+        $surveyId = $this->getSurveyIdFromContext($op);
+        $languageSettings->checkUpdatePermission($surveyId);
         $data = $this->transformer->transformAll(
             $op->getProps(),
             [
@@ -97,7 +99,7 @@ class OpHandlerLanguageSettingsUpdate implements OpHandlerInterface
             $this->throwNoValuesException($op);
         }
         $languageSettings->update(
-            $this->getSurveyIdFromContext($op),
+            $surveyId,
             $data
         );
     }

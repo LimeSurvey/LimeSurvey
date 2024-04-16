@@ -74,6 +74,8 @@ class OpHandlerQuestionUpdate implements OpHandlerInterface
      */
     public function handle(OpInterface $op): void
     {
+        $surveyId = $this->getSurveyIdFromContext($op);
+        $this->questionAggregateService->checkUpdatePermission($surveyId);
         $transformedProps = $this->transformer->transform(
             $op->getProps(),
             [
@@ -85,7 +87,7 @@ class OpHandlerQuestionUpdate implements OpHandlerInterface
             $this->throwNoValuesException($op);
         }
         $this->questionAggregateService->save(
-            $this->getSurveyIdFromContext($op),
+            $surveyId,
             [
                 'question' => $transformedProps
             ]

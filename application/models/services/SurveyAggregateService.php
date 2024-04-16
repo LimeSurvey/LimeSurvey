@@ -56,7 +56,7 @@ class SurveyAggregateService
      */
     public function setRestMode($restMode)
     {
-        $this->restMode = (bool) $restMode;
+        $this->restMode = (bool)$restMode;
         $this->generalSettings->setRestMode($this->restMode);
     }
 
@@ -70,10 +70,10 @@ class SurveyAggregateService
      *
      * @param int $surveyId
      * @param array $input
-     * @throws PersistErrorException
+     * @return array
      * @throws NotFoundException
      * @throws PermissionDeniedException
-     * @return array
+     * @throws PersistErrorException
      */
     public function update($surveyId, $input)
     {
@@ -101,5 +101,19 @@ class SurveyAggregateService
             ->update($surveyId);
 
         return $meta;
+    }
+
+    public function checkSurveySettingsUpdatePermission($surveyId)
+    {
+        $hasPermission = \Permission::model()->hasSurveyPermission(
+            $surveyId,
+            'surveysettings',
+            'update'
+        );
+        if (!$hasPermission) {
+            throw new PermissionDeniedException(
+                'Permission denied'
+            );
+        }
     }
 }

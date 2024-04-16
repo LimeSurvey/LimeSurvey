@@ -61,6 +61,9 @@ class OpHandlerAnswerDelete implements OpHandlerInterface
      */
     public function handle(OpInterface $op)
     {
+        $this->questionAggregateService->checkDeletePermission(
+            $this->getSurveyIdFromContext($op)
+        );
         $this->questionAggregateService->deleteAnswer(
             $this->getSurveyIdFromContext($op),
             $op->getEntityId()

@@ -95,6 +95,8 @@ class OpHandlerSurveyUpdate implements OpHandlerInterface
         $surveyUpdater = $diContainer->get(
             SurveyAggregateService::class
         );
+        $surveyId = $this->getSurveyIdFromContext($op);
+        $surveyUpdater->checkSurveySettingsUpdatePermission($surveyId);
         $surveyUpdater->setRestMode(true);
 
         $props = $op->getProps();
@@ -105,7 +107,7 @@ class OpHandlerSurveyUpdate implements OpHandlerInterface
         }
         /** @var array $transformedProps */
         $surveyUpdater->update(
-            $this->getSurveyIdFromContext($op),
+            $surveyId,
             $transformedProps
         );
     }

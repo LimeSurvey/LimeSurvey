@@ -2,15 +2,15 @@
 
 namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
+use LimeSurvey\DI;
 use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\{
     OpHandlerSurveyTrait,
     OpHandlerValidationTrait
 };
-use LimeSurvey\Models\Services\{
-    Exception\NotFoundException,
+use LimeSurvey\Models\Services\{Exception\NotFoundException,
     Exception\PermissionDeniedException,
-    QuestionAggregateService\SubQuestionsService
-};
+    QuestionAggregateService,
+    QuestionAggregateService\SubQuestionsService};
 use LimeSurvey\ObjectPatch\{
     Op\OpInterface,
     OpHandler\OpHandlerInterface,
@@ -59,8 +59,13 @@ class OpHandlerSubquestionDelete implements OpHandlerInterface
      */
     public function handle(OpInterface $op)
     {
+        $questionService = DI::getContainer()->get(
+            QuestionAggregateService::class
+        );
+        $surveyId = $this->getSurveyIdFromContext($op);
+        $questionService->checkDeletePermission($surveyId);
         $this->subQuestionsService->delete(
-            $this->getSurveyIdFromContext($op),
+            $surveyId,
             $op->getEntityId()
         );
     }

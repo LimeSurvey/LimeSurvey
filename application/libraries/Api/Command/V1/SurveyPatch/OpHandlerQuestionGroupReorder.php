@@ -11,7 +11,11 @@ use LimeSurvey\Api\Command\V1\Transformer\Input\{
     TransformerInputQuestionGroupReorder
 };
 use QuestionGroup;
-use LimeSurvey\Models\Services\QuestionGroupService;
+use LimeSurvey\Models\Services\{
+    QuestionGroupService,
+    Exception\PermissionDeniedException,
+    Exception\NotFoundException
+};
 use LimeSurvey\ObjectPatch\{
     Op\OpInterface,
     OpHandler\OpHandlerException,
@@ -96,7 +100,8 @@ class OpHandlerQuestionGroupReorder implements OpHandlerInterface
      * @throws OpHandlerException
      * @throws \DI\DependencyException
      * @throws \DI\NotFoundException
-     * @throws \LimeSurvey\Models\Services\Exception\NotFoundException
+     * @throws NotFoundException
+     * @throws PermissionDeniedException
      */
     public function handle(OpInterface $op): void
     {
@@ -104,6 +109,8 @@ class OpHandlerQuestionGroupReorder implements OpHandlerInterface
         $questionGroupService = $diContainer->get(
             QuestionGroupService::class
         );
+        $surveyId = $this->getSurveyIdFromContext($op);
+        $questionGroupService->checkUpdatePermission($surveyId);
         $transformedProps = $this->transformer->transformAll(
             $op->getProps(),
             ['operation' => $op->getType()->getId()]
@@ -112,7 +119,7 @@ class OpHandlerQuestionGroupReorder implements OpHandlerInterface
             $this->throwNoValuesException($op);
         }
         $questionGroupService->reorderQuestionGroups(
-            $this->getSurveyIdFromContext($op),
+            $surveyId,
             $transformedProps
         );
     }

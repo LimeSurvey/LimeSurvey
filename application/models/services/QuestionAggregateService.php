@@ -104,7 +104,7 @@ class QuestionAggregateService
      * @return Question
      * @throws NotFoundException
      * @throws PermissionDeniedException
-     * @throws PersistErrorException
+     * @throws PersistErrorException|\CException
      */
     public function save($surveyId, $input)
     {
@@ -124,36 +124,34 @@ class QuestionAggregateService
         return $question;
     }
 
-    /*
-     * @param int $questionIds
-     * @throws PersistErrorException
-     * @throws QuestionHasConditionsException
+    /**
+     * @param $surveyId
+     * @param $questionId
      * @return void
+     * @throws Exception\QuestionHasConditionsException
+     * @throws PermissionDeniedException
+     * @throws PersistErrorException
+     * @throws \CDbException
+     * @throws \CException
      */
     public function delete($surveyId, $questionId)
     {
         $this->deleteMany($surveyId, [$questionId]);
     }
 
-    /*
-     * @param array $questionIds
-     * @throws PersistErrorException
-     * @throws QuestionHasConditionsException
+    /**
+     * @param $surveyId
+     * @param $questionIds
      * @return void
+     * @throws Exception\QuestionHasConditionsException
+     * @throws PermissionDeniedException
+     * @throws PersistErrorException
+     * @throws \CDbException
+     * @throws \CException
      */
     public function deleteMany($surveyId, $questionIds)
     {
-        if (
-            !$this->modelPermission->hasSurveyPermission(
-                $surveyId,
-                'surveycontent',
-                'delete'
-            )
-        ) {
-            throw new PermissionDeniedException(
-                'Access denied'
-            );
-        }
+        $this->checkDeletePermission($surveyId);
 
         $transaction = $this->yiiDb->beginTransaction();
         try {
@@ -188,13 +186,11 @@ class QuestionAggregateService
     }
 
     /**
-     * Delete answer from a question.
-     * All language entries for this answer will be deleted.
      * @param $surveyId
-     * @param $answerId
      * @return void
+     * @throws PermissionDeniedException
      */
-    public function deleteAnswer($surveyId, $answerId)
+    public function checkDeletePermission($surveyId): void
     {
         if (
             !$this->modelPermission->hasSurveyPermission(
@@ -207,6 +203,18 @@ class QuestionAggregateService
                 'Access denied'
             );
         }
+    }
+
+    /**
+     * Delete answer from a question.
+     * All language entries for this answer will be deleted.
+     * @param $surveyId
+     * @param $answerId
+     * @return void
+     */
+    public function deleteAnswer($surveyId, $answerId)
+    {
+        $this->checkDeletePermission($surveyId);
 
         $transaction = $this->yiiDb->beginTransaction();
         try {

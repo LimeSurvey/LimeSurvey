@@ -84,8 +84,10 @@ class OpHandlerQuestionGroupL10n implements OpHandlerInterface
         $questionGroupService = $diContainer->get(
             QuestionGroupService::class
         );
+        $surveyId = $this->getSurveyIdFromContext($op);
+        $questionGroupService->checkUpdatePermission($surveyId);
         $questionGroup = $questionGroupService->getQuestionGroupForUpdate(
-            $this->getSurveyIdFromContext($op),
+            $surveyId,
             $op->getEntityId()
         );
         $transformedProps = $this->transformer->transformAll(
