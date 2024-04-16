@@ -23,7 +23,6 @@ use LimeSurvey\PluginManager\PluginEvent;
  */
 class LSUserIdentity extends CUserIdentity
 {
-
     const ERROR_IP_LOCKED_OUT = 98;
     const ERROR_UNKNOWN_HANDLER = 99;
 
@@ -62,16 +61,11 @@ class LSUserIdentity extends CUserIdentity
             $result->setError(self::ERROR_IP_LOCKED_OUT, $message);
         }
 
-        // If still ok, continue
+        /* Plugin action(s) : need a plugin */
         if ($result->isValid()) {
             if (is_null($this->plugin)) {
                 $result->setError(self::ERROR_UNKNOWN_HANDLER);
             } else {
-                // Never allow login for non-active users.
-                $user = User::model()->findByAttributes(array('users_name' => $this->username));
-                if ($user && (int) $user->user_status === 0) {
-                    throw new CHttpException(403, gT("You do not have permission to access this page."));
-                }
                 // Delegate actual authentication to plugin
                 $authEvent = new PluginEvent('newUserSession', $this); // TODO: rename the plugin function authenticate()
                 $authEvent->set('identity', $this);
@@ -85,6 +79,16 @@ class LSUserIdentity extends CUserIdentity
             }
         }
 
+        /* Check user exist, and can login after plugin actions */
+        if ($result->isValid()) {
+            /** @var \User|null */
+            $user = User::model()->findByAttributes(array('users_name' => $this->username));
+            if (is_null($user) || !$user->canLogin()) {
+                // Set the result as invalid if user is  not active : no specific message
+                $result->setError(self::ERROR_USERNAME_INVALID);
+            }
+        }
+        /* All action and test done : finalize */
         if ($result->isValid()) {
             // Perform postlogin
             regenerateCSRFToken();
