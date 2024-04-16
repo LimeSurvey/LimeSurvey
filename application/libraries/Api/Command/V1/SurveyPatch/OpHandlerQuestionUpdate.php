@@ -3,15 +3,17 @@
 namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
 use LimeSurvey\Api\Transformer\TransformerException;
-use LimeSurvey\Models\Services\Exception\NotFoundException;
-use LimeSurvey\Models\Services\Exception\PermissionDeniedException;
-use LimeSurvey\Models\Services\Exception\PersistErrorException;
+use LimeSurvey\Models\Services\{
+    Exception\NotFoundException,
+    Exception\PermissionDeniedException,
+    Exception\PersistErrorException,
+    QuestionAggregateService
+};
 use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\{OpHandlerSurveyTrait,
     OpHandlerExceptionTrait,
     OpHandlerValidationTrait
 };
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestion;
-use LimeSurvey\Models\Services\QuestionAggregateService;
 use LimeSurvey\ObjectPatch\{
     Op\OpInterface,
     OpHandler\OpHandlerException,
@@ -76,7 +78,7 @@ class OpHandlerQuestionUpdate implements OpHandlerInterface
             $op->getProps(),
             [
                 'operation' => $op->getType()->getId(),
-                'id'        => $op->getEntityId()
+                'id' => $op->getEntityId()
             ]
         );
         if (empty($transformedProps)) {
@@ -104,6 +106,10 @@ class OpHandlerQuestionUpdate implements OpHandlerInterface
         $validationData = $this->validateEntityId(
             $op,
             !is_array($validationData) ? [] : $validationData
+        );
+        $validationData = $this->validateSurveyIdFromContext(
+            $op,
+            $validationData
         );
 
         return $this->getValidationReturn(

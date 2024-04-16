@@ -2,8 +2,10 @@
 
 namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
-use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\OpHandlerSurveyTrait;
-use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\OpHandlerValidationTrait;
+use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\{
+    OpHandlerSurveyTrait,
+    OpHandlerValidationTrait
+};
 use LimeSurvey\Models\Services\QuestionAggregateService;
 use LimeSurvey\ObjectPatch\{
     Op\OpInterface,
@@ -65,7 +67,8 @@ class OpHandlerQuestionDelete implements OpHandlerInterface
      */
     public function validateOperation(OpInterface $op): array
     {
-        $validationData = $this->validateEntityId($op, []);
+        $validationData = $this->validateSurveyIdFromContext($op, []);
+        $validationData = $this->validateEntityId($op, $validationData);
         return $this->getValidationReturn(
             gT('Could not delete question'),
             $validationData,

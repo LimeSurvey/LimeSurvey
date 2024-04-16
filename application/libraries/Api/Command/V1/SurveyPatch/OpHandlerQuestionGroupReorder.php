@@ -2,13 +2,15 @@
 
 namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
-use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\OpHandlerExceptionTrait;
-use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\OpHandlerSurveyTrait;
-use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\OpHandlerValidationTrait;
-use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestionGroupReorder;
+use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\{
+    OpHandlerExceptionTrait,
+    OpHandlerSurveyTrait,
+    OpHandlerValidationTrait
+};
+use LimeSurvey\Api\Command\V1\Transformer\Input\{
+    TransformerInputQuestionGroupReorder
+};
 use QuestionGroup;
-use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestion;
-use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestionGroup;
 use LimeSurvey\Models\Services\QuestionGroupService;
 use LimeSurvey\ObjectPatch\{
     Op\OpInterface,
@@ -122,7 +124,12 @@ class OpHandlerQuestionGroupReorder implements OpHandlerInterface
      */
     public function validateOperation(OpInterface $op): array
     {
-        $validationData = $this->validateCollectionIndex($op, [], false);
+        $validationData = $this->validateSurveyIdFromContext($op, []);
+        $validationData = $this->validateCollectionIndex(
+            $op,
+            $validationData,
+            false
+        );
         if (empty($validationData)) {
             $validationData = $this->transformer->validateAll(
                 $op->getProps(),

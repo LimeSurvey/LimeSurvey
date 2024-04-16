@@ -194,7 +194,8 @@ class OpHandlerAnswer implements OpHandlerInterface
      */
     public function validateOperation(OpInterface $op): array
     {
-        $validationData = $this->validateCollectionIndex($op, [], false);
+        $validationData = $this->validateSurveyIdFromContext($op, []);
+        $validationData = $this->validateCollectionIndex($op, $validationData, false);
         if (empty($validationData)) {
             $validationData = $this->transformer->validateAll(
                 $op->getProps(),

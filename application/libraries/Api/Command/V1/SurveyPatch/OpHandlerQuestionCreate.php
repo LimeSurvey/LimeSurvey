@@ -10,12 +10,15 @@ use LimeSurvey\Api\Command\V1\Transformer\{
     Input\TransformerInputQuestionAggregate
 };
 use LimeSurvey\Api\Command\V1\SurveyPatch\Response\TempIdMapItem;
-use LimeSurvey\Models\Services\Exception\PermissionDeniedException;
-use LimeSurvey\Models\Services\Exception\PersistErrorException;
+use LimeSurvey\Models\Services\Exception\{
+    PermissionDeniedException,
+    PersistErrorException
+};
 use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\{OpHandlerSurveyTrait,
     OpHandlerExceptionTrait,
     OpHandlerQuestionTrait,
-    OpHandlerValidationTrait};
+    OpHandlerValidationTrait
+};
 use LimeSurvey\ObjectPatch\{
     Op\OpInterface,
     OpType\OpTypeCreate,
@@ -209,7 +212,7 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
             $data
         );
 
-        $mapping =  array_merge(
+        $mapping = array_merge(
             [
                 'questionsMap' => [
                     new TempIdMapItem(
@@ -239,7 +242,8 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
      */
     public function validateOperation(OpInterface $op): array
     {
-        $validationData = $this->validateCollectionIndex($op, []);
+        $validationData = $this->validateSurveyIdFromContext($op, []);
+        $validationData = $this->validateCollectionIndex($op, $validationData);
         if (empty($validationData)) {
             $validationData = $this->transformer->validate(
                 $op->getProps(),

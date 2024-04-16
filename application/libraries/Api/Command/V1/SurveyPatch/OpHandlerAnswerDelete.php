@@ -2,15 +2,16 @@
 
 namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
-use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\OpHandlerSurveyTrait;
 use LimeSurvey\Models\Services\{
     Exception\PermissionDeniedException,
     QuestionAggregateService
 };
-use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\OpHandlerValidationTrait;
+use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\{
+    OpHandlerValidationTrait,
+    OpHandlerSurveyTrait
+};
 use LimeSurvey\ObjectPatch\{
     Op\OpInterface,
-    OpHandler\OpHandlerException,
     OpHandler\OpHandlerInterface,
     OpType\OpTypeDelete
 };
@@ -57,7 +58,6 @@ class OpHandlerAnswerDelete implements OpHandlerInterface
      * @param OpInterface $op
      * @return void
      * @throws PermissionDeniedException
-     * @throws OpHandlerException
      */
     public function handle(OpInterface $op)
     {
@@ -74,7 +74,8 @@ class OpHandlerAnswerDelete implements OpHandlerInterface
      */
     public function validateOperation(OpInterface $op): array
     {
-        $validationData = $this->validateEntityId($op, []);
+        $validationData = $this->validateSurveyIdFromContext($op, []);
+        $validationData = $this->validateEntityId($op, $validationData);
         return $this->getValidationReturn(
             gt('Could not delete answer option'),
             $validationData,

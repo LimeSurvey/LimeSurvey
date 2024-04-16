@@ -94,7 +94,8 @@ class OpHandlerQuestionL10nUpdate implements OpHandlerInterface
      */
     public function validateOperation(OpInterface $op): array
     {
-        $validationData = $this->validateCollectionIndex($op, []);
+        $validationData = $this->validateSurveyIdFromContext($op, []);
+        $validationData = $this->validateCollectionIndex($op, $validationData);
         $validationData = $this->validateEntityId($op, $validationData);
         if (empty($validationData)) {
             $validationData = $this->transformer->validateAll(

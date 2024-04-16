@@ -2,11 +2,15 @@
 
 namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
-use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\OpHandlerExceptionTrait;
-use LimeSurvey\Api\Command\V1\SurveyPatch\Response\TempIdMapItem;
-use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\OpHandlerSurveyTrait;
-use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\OpHandlerValidationTrait;
-use LimeSurvey\Models\Services\Exception\PermissionDeniedException;
+use LimeSurvey\Api\Command\V1\SurveyPatch\{
+    Traits\OpHandlerExceptionTrait,
+    Traits\OpHandlerSurveyTrait,
+    Traits\OpHandlerValidationTrait,
+    Exception\NotFoundException,
+    Exception\PermissionDeniedException,
+    Exception\PersistErrorException,
+    Response\TempIdMapItem
+};
 use QuestionGroup;
 use LimeSurvey\Models\Services\QuestionGroupService;
 use LimeSurvey\Api\Command\V1\Transformer\Input\{
@@ -70,7 +74,11 @@ class OpHandlerQuestionGroup implements OpHandlerInterface
      * Saves the changes to the database.
      *
      * @param OpInterface $op
+     * @return array
      * @throws OpHandlerException
+     * @throws PermissionDeniedException
+     * @throws NotFoundException
+     * @throws PersistErrorException
      */
     public function handle(OpInterface $op): array
     {
@@ -277,6 +285,10 @@ class OpHandlerQuestionGroup implements OpHandlerInterface
     {
         $this->setOperationTypes($op);
         $validationData = [];
+        $validationData = $this->validateSurveyIdFromContext(
+            $op,
+            $validationData
+        );
         if ($this->isUpdateOperation || $this->isCreateOperation) {
             $validationData = $this->transformer->validate(
                 $op->getProps(),
