@@ -2146,8 +2146,10 @@ function SetSurveyLanguage($surveyid, $sLanguage)
     $default_language = Yii::app()->getConfig('defaultlang');
 
     if (isset($surveyid) && $surveyid > 0) {
-        $default_survey_language     = Survey::model()->findByPk($surveyid)->language;
-        $additional_survey_languages = Survey::model()->findByPk($surveyid)->getAdditionalLanguages();
+        $oSurvey = Survey::model()->findByPk($surveyid);
+
+        $default_survey_language     = $oSurvey->language;
+        $additional_survey_languages = $oSurvey->getAdditionalLanguages();
 
         if (
             empty($sLanguage)                                                   //check if there

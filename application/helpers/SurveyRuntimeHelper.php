@@ -1524,8 +1524,9 @@ class SurveyRuntimeHelper
                 if ($oResponse) {
                     $oResponse->delete(true); /* delete response line + files uploaded , warninbg : beforeDelete don't happen with deleteAll */
                 }
+                $oSurvey = Survey::model()->findByPk($this->iSurveyid);
 
-                if (Survey::model()->findByPk($this->iSurveyid)->savetimings == "Y") {
+                if ($oSurvey->savetimings == "Y") {
                     SurveyTimingDynamic::model($this->iSurveyid)->deleteAll("id=:srid", array(":srid" => $sessionSurvey['srid'])); /* delete timings ( @todo must move it to Response )*/
                 }
 
@@ -1550,7 +1551,7 @@ class SurveyRuntimeHelper
 
             $this->aSurveyInfo['surveyUrl'] = $restarturl;
             $this->aSurveyInfo['include_content'] = 'clearall';
-            Yii::app()->twigRenderer->renderTemplateFromFile("layout_global.twig", array('oSurvey' => Survey::model()->findByPk($this->iSurveyid), 'aSurveyInfo' => $this->aSurveyInfo), false);
+            Yii::app()->twigRenderer->renderTemplateFromFile("layout_global.twig", array('oSurvey' => $oSurvey, 'aSurveyInfo' => $this->aSurveyInfo), false);
         }
     }
 

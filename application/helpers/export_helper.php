@@ -1033,8 +1033,9 @@ function surveyGetXMLData($iSurveyID, $exclude = array())
     $xml->writeElement('LimeSurveyDocType', 'Survey');
     $xml->writeElement('DBVersion', getGlobalSetting("DBVersion"));
     $xml->startElement('languages');
-    $surveylanguages = Survey::model()->findByPk($iSurveyID)->additionalLanguages;
-    $surveylanguages[] = Survey::model()->findByPk($iSurveyID)->language;
+    $oSurvey = Survey::model()->findByPk($iSurveyID);
+    $surveylanguages = $oSurvey->additionalLanguages;
+    $surveylanguages[] = $oSurvey->language;
     foreach ($surveylanguages as $surveylanguage) {
         $xml->writeElement('language', $surveylanguage);
     }
@@ -1072,8 +1073,9 @@ function getXMLDataSingleTable($iSurveyID, $sTableName, $sDocType, $sXMLTableTag
     $xml->writeElement('LimeSurveyDocType', $sDocType);
     $xml->writeElement('DBVersion', getGlobalSetting("DBVersion"));
     $xml->startElement('languages');
-    $aSurveyLanguages = Survey::model()->findByPk($iSurveyID)->additionalLanguages;
-    $aSurveyLanguages[] = Survey::model()->findByPk($iSurveyID)->language;
+    $oSurvey = Survey::model()->findByPk($iSurveyID);
+    $aSurveyLanguages = $oSurvey->additionalLanguages;
+    $aSurveyLanguages[] = $oSurvey->language;
     foreach ($aSurveyLanguages as $sSurveyLanguage) {
         $xml->writeElement('language', $sSurveyLanguage);
     }
@@ -2200,8 +2202,9 @@ function questionExport($action, $iSurveyID, $gid, $qid)
     $xml->writeElement('LimeSurveyDocType', 'Question');
     $xml->writeElement('DBVersion', getGlobalSetting('DBVersion'));
     $xml->startElement('languages');
-    $aLanguages = Survey::model()->findByPk($iSurveyID)->additionalLanguages;
-    $aLanguages[] = Survey::model()->findByPk($iSurveyID)->language;
+    $oSurvey = Survey::model()->findByPk($iSurveyID);
+    $aLanguages = $oSurvey->additionalLanguages;
+    $aLanguages[] = $oSurvey->language;
     foreach ($aLanguages as $sLanguage) {
         $xml->writeElement('language', $sLanguage);
     }

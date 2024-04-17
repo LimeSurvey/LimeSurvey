@@ -1457,7 +1457,6 @@ class Tokens extends SurveyCommonAction
      */
     public function email(int $iSurveyId)
     {
-        $iSurveyId = (int) $iSurveyId;
         $aData = array();
         $survey = Survey::model()->findByPk($iSurveyId);
 
@@ -1485,8 +1484,8 @@ class Tokens extends SurveyCommonAction
         initKcfinder();
         Yii::app()->loadHelper('replacements');
 
-        $aSurveyLangs = Survey::model()->findByPk($iSurveyId)->additionalLanguages;
-        $sBaseLanguage = Survey::model()->findByPk($iSurveyId)->language;
+        $aSurveyLangs = $survey->additionalLanguages;
+        $sBaseLanguage = $survey->language;
         array_unshift($aSurveyLangs, $sBaseLanguage);
         $aTokenFields = getTokenFieldsAndNames($iSurveyId, true);
         $iAttributes = 0;
@@ -1555,12 +1554,13 @@ class Tokens extends SurveyCommonAction
                 $mail->setSurvey($iSurveyId);
                 $mail->emailType = $sSubAction;
                 $mail->replaceTokenAttributes = true;
+                $allLanguages = $survey->getAllLanguages();
                 foreach ($emresult as $emrow) {
                     $mailLanguage = $emrow['language'];
                     if (empty($mailLanguage)) {
                         $mailLanguage = $sBaseLanguage;
                     }
-                    if (!in_array($mailLanguage, Survey::model()->findByPk($iSurveyId)->getAllLanguages())) {
+                    if (!in_array($mailLanguage, $allLanguages)) {
                         $mailLanguage = $sBaseLanguage;
                         $tokenoutput .= CHtml::tag(
                             "div",
@@ -1726,7 +1726,6 @@ class Tokens extends SurveyCommonAction
      */
     public function exportdialog(int $iSurveyId)
     {
-        $iSurveyId = (int)$iSurveyId;
         $survey = Survey::model()->findByPk($iSurveyId);
         $aData = array();
 
@@ -1759,10 +1758,9 @@ class Tokens extends SurveyCommonAction
                     'name' => 'submit',
                 ),
             );
-            $oSurvey = Survey::model()->findByPk($iSurveyId);
 
             $aOptionsStatus = array('0' => gT('All participants'), '1' => gT('Completed'), '2' => gT('Not completed'));
-            if (!$oSurvey->isAnonymized && $oSurvey->isActive) {
+            if (!$survey->isAnonymized && $survey->isActive) {
                 $aOptionsStatus['3'] = gT('Not started');
                 $aOptionsStatus['4'] = gT('Started but not yet completed');
             }

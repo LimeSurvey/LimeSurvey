@@ -676,9 +676,11 @@ window.addEventListener('message', function(event) {
         $aData["aSurveyInfo"] = array_merge($aData["aSurveyInfo"], $oTemplate->getClassAndAttributes());
 
         $languagecode = App()->getLanguage();
-        if (!empty($aData['aSurveyInfo']['sid']) && Survey::model()->findByPk($aData['aSurveyInfo']['sid'])) {
-            if (!in_array($languagecode, Survey::model()->findByPk($aData['aSurveyInfo']['sid'])->getAllLanguages())) {
-                $languagecode = Survey::model()->findByPk($aData['aSurveyInfo']['sid'])->language;
+        $surveyId = $aData['aSurveyInfo']['sid'];
+        $oSurvey = Survey::model()->findByPk($surveyId);
+        if ($oSurvey instanceof Survey) {
+            if (!in_array($languagecode, $oSurvey->getAllLanguages())) {
+                $languagecode = $oSurvey->language;
             }
         }
 

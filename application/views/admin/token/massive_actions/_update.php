@@ -4,9 +4,9 @@
  * Edit multiple tokens
  */
 $iSurveyId = (int) Yii::app()->request->getParam('surveyid');
-$attrfieldnames = Survey::model()->findByPk($iSurveyId)->tokenAttributes;
-$aCoreTokenFields = array('validfrom', 'validuntil', 'firstname', 'lastname', 'emailstatus', 'token', 'language', 'sent', 'remindersent', 'completed', 'usesleft');
 $oSurvey = Survey::model()->findByPk($iSurveyId);
+$attrfieldnames = $oSurvey->tokenAttributes;
+$aCoreTokenFields = array('validfrom', 'validuntil', 'firstname', 'lastname', 'emailstatus', 'token', 'language', 'sent', 'remindersent', 'completed', 'usesleft');
 $sCointainerClass = ($oSurvey->anonymized != 'Y' ?  'yes-no-date-container' : 'yes-no-container');
 $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
 ?>

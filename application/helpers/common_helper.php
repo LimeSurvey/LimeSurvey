@@ -2369,8 +2369,9 @@ function languageDropdown($surveyid, $selected)
  */
 function languageDropdownClean($surveyid, $selected)
 {
-    $slangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
-    $baselang = Survey::model()->findByPk($surveyid)->language;
+    $oSurvey = Survey::model()->findByPk($surveyid);
+    $slangs = $oSurvey->additionalLanguages;
+    $baselang = $oSurvey->language;
     array_unshift($slangs, $baselang);
     $html = "<select class='form-select listboxquestions' id='language' name='language'>\n";
     foreach ($slangs as $lang) {
@@ -3701,8 +3702,9 @@ function cleanLanguagesFromSurvey($iSurveyID, $availlangs, $baselang = null)
 function fixLanguageConsistency($sid, $availlangs = '', $baselang = '')
 {
     $sid = (int) $sid;
+    $oSurvey = Survey::model()->findByPk($sid);
     if (empty($baselang)) {
-        $baselang = Survey::model()->findByPk($sid)->language;
+        $baselang = $oSurvey->language;
     }
     if (trim($availlangs) != '') {
         $availlangs = sanitize_languagecodeS($availlangs);
@@ -3715,7 +3717,7 @@ function fixLanguageConsistency($sid, $availlangs = '', $baselang = '')
             unset($languagesToCheck[$key]);
         }
     } else {
-        $languagesToCheck = Survey::model()->findByPk($sid)->additionalLanguages;
+        $languagesToCheck = $oSurvey->additionalLanguages;
     }
     if (count($languagesToCheck) == 0) {
         return true; // Survey only has one language
