@@ -8,6 +8,7 @@ use LimeSurvey\Api\Command\V1\SurveyPatch\Response\{ExceptionErrorItem,
     TempIdMapItem,
     TempIdMapping,
     ValidationErrors};
+use LimeSurvey\Models\Services\Exception\PermissionDeniedException;
 use LimeSurvey\ObjectPatch\{
     ObjectPatchException,
     Op\OpStandard,
@@ -128,6 +129,9 @@ class PatcherSurvey extends Patcher
                     $response = $this->handleOp($op);
                     $this->surveyResponse->handleResponse($response);
                 } catch (\Exception $e) {
+//                    if ($e->getCode() === 403) {
+//                        throw new PermissionDeniedException($e->getMessage());
+//                    }
                     $this->surveyResponse->handleException($e, $op);
                 }
             }
