@@ -10,7 +10,7 @@ trait OpHandlerSurveyTrait
     /**
      * Extracts and returns surveyId from context
      * @param OpInterface $op
-     * @return int
+     * @return int|null
      */
     public function getSurveyIdFromContext(OpInterface $op)
     {
