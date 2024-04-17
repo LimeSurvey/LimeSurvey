@@ -10,12 +10,12 @@ trait OpHandlerSurveyTrait
     /**
      * Extracts and returns surveyId from context
      * @param OpInterface $op
-     * @return int|null
+     * @return int
      */
     public function getSurveyIdFromContext(OpInterface $op)
     {
         $context = $op->getContext();
-        return isset($context['id']) ? (int)$context['id'] : null;
+        return isset($context['id']) ? (int)$context['id'] : 0;
     }
 
     /**

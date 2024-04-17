@@ -133,7 +133,7 @@ trait OpHandlerValidationTrait
         array $validationData
     ) {
         $sid = $this->getSurveyIdFromContext($op);
-        $hasSid = ((int)$sid) > 0;
+        $hasSid = $sid > 0;
         $error = $hasSid ? false : 'No survey ID provided in context';
         if (is_string($error)) {
             $validationData = $this->addErrorToValidationData(
