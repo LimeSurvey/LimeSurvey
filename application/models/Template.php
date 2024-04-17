@@ -365,6 +365,12 @@ class Template extends LSActiveRecord
      */
     public static function getTemplateConfiguration($sTemplateName = null, $iSurveyId = null, $iSurveyGroupId = null, $bForceXML = false, $abstractInstance = false)
     {
+        $event = new PluginEvent('beforeGetTemplate');
+        $event->set('surveyId', $iSurveyId);
+        $event->set('template', $sTemplateName);
+        $event = App()->getPluginManager()->dispatchEvent($event);
+        $sTemplateName = $event->get('template');
+
 
         // First we try to get a configuration row from DB
         if (!$bForceXML) {
