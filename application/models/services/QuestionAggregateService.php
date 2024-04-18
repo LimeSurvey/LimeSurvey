@@ -4,6 +4,7 @@ namespace LimeSurvey\Models\Services;
 
 use Permission;
 use Question;
+use Survey;
 use CDbConnection;
 use LimeSurvey\Models\Services\{
     QuestionAggregateService\SaveService,
@@ -25,6 +26,7 @@ class QuestionAggregateService
     private SaveService $saveService;
     private DeleteService $deleteService;
     private Permission $modelPermission;
+    private Survey $modelSurvey;
     private CDbConnection $yiiDb;
 
     public function __construct(
@@ -143,7 +145,7 @@ class QuestionAggregateService
      */
     public function deleteMany($surveyId, $questionIds)
     {
-        $survey = \Survey::model()->findByPk($surveyId);
+        $survey = $this->modelSurvey->findByPk($surveyId);
         if (
             $survey->isActive ||
             !$this->modelPermission->hasSurveyPermission(
