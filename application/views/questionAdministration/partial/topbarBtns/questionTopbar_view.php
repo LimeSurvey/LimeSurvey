@@ -25,7 +25,7 @@ App()->getClientScript()->registerScriptFile(
                      class='row' <?= empty($tabOverviewEditor) || $tabOverviewEditor === 'editor' ? 'style="display: none;"' : "" ?>>
                     <!-- Title or breadcrumb -->
                     <div class="ls-breadcrumb col-xl-4 col-xxl-3">
-                        <h1><?= $breadcrumb ?></h1>
+                        <div><?= $breadcrumb ?></div>
                     </div>
                     <!-- Left Side -->
                     <div class="ls-topbar-buttons col">
@@ -41,7 +41,7 @@ App()->getClientScript()->registerScriptFile(
                  class='row' <?= !empty($tabOverviewEditor) && $tabOverviewEditor !== 'editor' ? 'style="display: none;"' : "" ?>>
                 <!-- Title or breadcrumb -->
                 <div class="ls-breadcrumb col-xl-4 col-xxl-3">
-                    <h1><?= $breadcrumb ?></h1>
+                    <div><?= $breadcrumb ?></div>
                 </div>
                 <!-- Left Side -->
                 <div class="ls-topbar-buttons col">

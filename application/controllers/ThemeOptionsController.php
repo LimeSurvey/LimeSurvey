@@ -730,7 +730,16 @@ class ThemeOptionsController extends LSBaseController
             null,
             true
         );
-
+        /* @var \Survey|null used by view for UX */
+        $oSurvey = null;
+        /* @var \SurveysGroups|null used by view for UX */
+        $oSurveysgroup = null;
+        if ($sid) {
+            $oSurvey = Survey::model()->findByPk($sid);
+        }
+        if ($gsid) {
+            $oSurveysgroup = SurveysGroups::model()->findByPk($gsid);
+        }
         $oSimpleInheritance->options = 'inherit';
         $oSimpleInheritanceTemplate = $oSimpleInheritance->prepareTemplateRendering(
             $oModelWithInheritReplacement->sTemplateName
@@ -748,7 +757,9 @@ class ThemeOptionsController extends LSBaseController
             'oParentOptions'  => $oParentOptions,
             'sPackagesToLoad' => $oModelWithInheritReplacement->packages_to_load,
             'sid' => $sid,
-            'gsid' => $gsid
+            'oSurvey' => $oSurvey,
+            'gsid' => $gsid,
+            'oSurveysgroup' => $oSurveysgroup,
         );
 
         if ($sid !== null) {

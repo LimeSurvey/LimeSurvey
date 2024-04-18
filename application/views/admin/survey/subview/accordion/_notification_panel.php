@@ -32,6 +32,10 @@ $googleAnalyticsStyleOptions = array(
 );
 ?>
 <!-- Notification panel -->
+<h1 class="h1 pagetitle">
+    <?php eT('Participant settings'); ?> :
+    <?php echo viewHelper::flatEllipsizeText($oSurvey->currentLanguageSettings->surveyls_title, TRUE, 60, '…') . " (" . gT("ID") . " " . $oSurvey->sid . ")"; ?>
+</h1>
 <div id='notification-panel'>
     <?php if ($oSurvey->isActive) : ?>
         <div class="row ls-panelboxes mb-5">

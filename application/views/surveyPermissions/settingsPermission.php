@@ -9,11 +9,12 @@
 /**
  * This page shows the permissions that could be set for a user or a user group.
  */
-
+/** deprecated since ? */ 
+/** see mantis issue #19270 */
 ?>
 
 <div id='edit-permission' class='side-body  <?= getSideBodyClass(false) ?> "'>
-    <h3>
+    <h1>
         <?php
         if ($isUserGroup) {
             echo sprintf(gT("Edit survey permissions for user group %s"), "<em>" . \CHtml::encode($name) . "</em>");
@@ -21,7 +22,7 @@
             echo sprintf(gT("Edit survey permissions for user %s"), "<em>" . \CHtml::encode($name) . "</em>");
         }
         ?>
-    </h3>
+    </h1>
     <div class="row" id="trigger-save-button">
         <div class="col-lg-12 content-right">
             <?php echo CHtml::form(

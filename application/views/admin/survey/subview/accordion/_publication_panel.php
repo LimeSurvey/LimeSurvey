@@ -21,6 +21,10 @@ echo viewHelper::getViewTestTag('surveyPublicationOptions');
 ", LSYii_ClientScript::POS_BEGIN);
 ?>
 <!-- Publication panel -->
+<h1 class="h1 pagetitle">
+    <?php eT('Publication and access control'); ?> :
+    <?php echo viewHelper::flatEllipsizeText($oSurvey->currentLanguageSettings->surveyls_title, TRUE, 60, '…') . " (" . gT("ID") . " " . $oSurvey->sid . ")"; ?>
+</h1>
 <div id='publication-panel'>
     <?php if ($bShowAllOptions === true){ ?>
     <div class="row">

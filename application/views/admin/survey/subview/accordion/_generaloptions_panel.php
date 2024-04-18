@@ -38,6 +38,10 @@ if ($bShowInherited) {
 }
 ?>
 <?php if ($action == 'editsurveysettings'): ?>
+<h1 class="h1 pagetitle">
+    <?php eT('General survey settings'); ?> :
+    <?php echo viewHelper::flatEllipsizeText($oSurvey->currentLanguageSettings->surveyls_title, TRUE, 60, '…') . " (" . gT("ID") . " " . $oSurvey->sid . ")"; ?>
+</h1>
 <?php
 $sConfirmLanguageScript = "
         $(document).on('submit','#globalsetting',function(){

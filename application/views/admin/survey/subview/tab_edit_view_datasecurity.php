@@ -23,6 +23,10 @@ initKcfinder();
 PrepareEditorScript(false, $this);
 ?>
 <!-- security notice -->
+<h1 class="h1 pagetitle">
+    <?php eT('Privacy policy settings'); ?> :
+    <?php echo viewHelper::flatEllipsizeText($oSurvey->currentLanguageSettings->surveyls_title, TRUE, 60, '…') . " (" . gT("ID") . " " . $oSurvey->sid . ")"; ?>
+</h1>
 <div class="mb-3">
             <label class="form-label" for='showsurveypolicynotice'><?php  eT("Show privacy policy text with mandatory checkbox:") ; ?></label>
     <div class="">
