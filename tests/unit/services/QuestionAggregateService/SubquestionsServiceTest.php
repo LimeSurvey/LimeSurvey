@@ -4,6 +4,8 @@ namespace ls\tests\unit\services\QuestionAggregateService;
 
 use Mockery;
 use Question;
+use Survey;
+use Permission;
 
 use LimeSurvey\DI;
 
@@ -45,6 +47,12 @@ class SubQuestionsServiceTest extends TestBaseClass
         $modelQuestion = Mockery::mock(Question::class)
             ->makePartial();
 
+        $modelSurvey = Mockery::mock(Survey::class)
+            ->makePartial();
+
+        $modelPermission = Mockery::mock(Permission::class)
+            ->makePartial();
+
         // The code under test creates a new Question
         // - using dependency injection.
         // Configure DI to return a mock question
@@ -83,7 +91,9 @@ class SubQuestionsServiceTest extends TestBaseClass
 
         $subquestionsService = new SubQuestionsService(
             $l10nService,
-            $modelQuestion
+            $modelQuestion,
+            $modelSurvey,
+            $modelPermission
         );
 
         $subquestions = [
@@ -124,6 +134,12 @@ class SubQuestionsServiceTest extends TestBaseClass
             ->shouldReceive('findByAttributes')
             ->andReturn(null);
 
+        $modelSurvey = Mockery::mock(Survey::class)
+            ->makePartial();
+
+        $modelPermission = Mockery::mock(Permission::class)
+            ->makePartial();
+
         // Create a mock of the question we are editing
         $question = Mockery::mock(Question::class)
             ->makePartial();
@@ -148,7 +164,9 @@ class SubQuestionsServiceTest extends TestBaseClass
 
         $subquestionsService = new SubQuestionsService(
             $l10nService,
-            $modelQuestion
+            $modelQuestion,
+            $modelSurvey,
+            $modelPermission
         );
 
         $subquestions = [
@@ -188,6 +206,12 @@ class SubQuestionsServiceTest extends TestBaseClass
             ->shouldReceive('findByAttributes')
             ->andReturn(null);
 
+        $modelSurvey = Mockery::mock(Survey::class)
+            ->makePartial();
+
+        $modelPermission = Mockery::mock(Permission::class)
+            ->makePartial();
+
         // Create a mock of the question we are editing
         $question = Mockery::mock(Question::class)
             ->makePartial();
@@ -212,7 +236,9 @@ class SubQuestionsServiceTest extends TestBaseClass
 
         $subquestionsService = new SubQuestionsService(
             $l10nService,
-            $modelQuestion
+            $modelQuestion,
+            $modelSurvey,
+            $modelPermission
         );
 
         $subquestions = [
@@ -249,6 +275,12 @@ class SubQuestionsServiceTest extends TestBaseClass
         $modelQuestion = Mockery::mock(Question::class)
             ->makePartial();
 
+        $modelSurvey = Mockery::mock(Survey::class)
+            ->makePartial();
+
+        $modelPermission = Mockery::mock(Permission::class)
+            ->makePartial();
+
         // Create a mock of the question we are editing
         $question = Mockery::mock(Question::class)
             ->makePartial();
@@ -272,7 +304,9 @@ class SubQuestionsServiceTest extends TestBaseClass
 
         $subquestionsService = new SubQuestionsService(
             $l10nService,
-            $modelQuestion
+            $modelQuestion,
+            $modelSurvey,
+            $modelPermission
         );
 
         $subquestions = [
@@ -312,6 +346,12 @@ class SubQuestionsServiceTest extends TestBaseClass
             ->shouldReceive('findByAttributes')
             ->andReturn(Mockery::mock(Question::class));
 
+        $modelSurvey = Mockery::mock(Survey::class)
+            ->makePartial();
+
+        $modelPermission = Mockery::mock(Permission::class)
+            ->makePartial();
+
         // Create a mock of the question we are editing
         $question = Mockery::mock(Question::class)
             ->makePartial();
@@ -336,7 +376,9 @@ class SubQuestionsServiceTest extends TestBaseClass
 
         $subquestionsService = new SubQuestionsService(
             $l10nService,
-            $modelQuestion
+            $modelQuestion,
+            $modelSurvey,
+            $modelPermission
         );
 
         $subquestions = [
