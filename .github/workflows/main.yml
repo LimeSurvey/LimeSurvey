@@ -25,7 +25,7 @@ jobs:
     name: PHP ${{ matrix.php-versions }} # Check each version of php specified in matrix
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       # This will change the php version for every version specified in matrix https://github.com/marketplace/actions/setup-php-action
       - name: Install specified PHP
         uses: shivammathur/setup-php@v2
@@ -144,7 +144,7 @@ jobs:
         run: php vendor/bin/phpunit --testdox --stop-on-failure tests/functional
 
       - name: Upload Screenshots
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: failure()
         with:
           name: screenshots
@@ -160,7 +160,7 @@ jobs:
     env:
       DBENGINE: INNODB
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       - name: Install specified PHP
         uses: shivammathur/setup-php@v2
@@ -206,7 +206,7 @@ jobs:
         run: php vendor/bin/phpunit --testdox --stop-on-failure tests/unit
 
       - name: Upload cov.xml
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: cov-file-${{ matrix.php-versions }}
           path: cov.xml
@@ -219,7 +219,7 @@ jobs:
         # Specify what versions of php you want to test
         php-versions: ['7.4', '8.2']
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       - name: Install specified PHP
         uses: shivammathur/setup-php@v2
@@ -234,7 +234,7 @@ jobs:
 
       - name: Download cov.xml
         if: steps.check_coverage_artifact.outputs.exists == 'true'
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: cov-file-${{ matrix.php-versions }}
 
@@ -250,7 +250,7 @@ jobs:
         # Specify what versions of php you want to test
         php-versions: ['7.4', '8.2']
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       - name: Install specified PHP
         uses: shivammathur/setup-php@v2
