@@ -65,7 +65,9 @@ class SubQuestionsService
      */
     public function delete($surveyId, $subquestionId)
     {
+        $survey = \Survey::model()->findByPk($surveyId);
         if (
+            $survey->isActive ||
             !\Permission::model()->hasSurveyPermission(
                 $surveyId,
                 'surveycontent',

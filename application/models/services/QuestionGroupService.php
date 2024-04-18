@@ -184,7 +184,9 @@ class QuestionGroupService
      */
     public function deleteGroup(int $questionGroupId, int $surveyId)
     {
+        $survey = $this->modelSurvey->findByPk($surveyId);
         if (
+            $survey->isActive ||
             !$this->modelPermission->hasSurveyPermission(
                 $surveyId,
                 'surveycontent',
@@ -192,7 +194,7 @@ class QuestionGroupService
             )
         ) {
             throw new PermissionDeniedException(
-                gT('You are not authorized to delete questions.')
+                gT('Access denied')
             );
         }
 

@@ -143,7 +143,9 @@ class QuestionAggregateService
      */
     public function deleteMany($surveyId, $questionIds)
     {
+        $survey = \Survey::model()->findByPk($surveyId);
         if (
+            $survey->isActive ||
             !$this->modelPermission->hasSurveyPermission(
                 $surveyId,
                 'surveycontent',
