@@ -3,6 +3,7 @@
 namespace LimeSurvey\Models\Services\QuestionAggregateService;
 
 use Question;
+use Permission;
 use LimeSurvey\DI;
 use LimeSurvey\Models\Services\Exception\{
     PersistErrorException,
@@ -24,13 +25,16 @@ class SubQuestionsService
 
     private L10nService $l10nService;
     private Question $modelQuestion;
+    private Permission $modelPermission;
 
     public function __construct(
         L10nService $l10nService,
-        Question $modelQuestion
+        Question $modelQuestion,
+        Permission $modelPermission
     ) {
         $this->l10nService = $l10nService;
         $this->modelQuestion = $modelQuestion;
+        $this->modelPermission = $modelPermission;
     }
 
     /**
@@ -67,7 +71,7 @@ class SubQuestionsService
     public function delete($surveyId, $subquestionId)
     {
         if (
-            !\Permission::model()->hasSurveyPermission(
+            !$this->modelPermission->hasSurveyPermission(
                 $surveyId,
                 'surveycontent',
                 'delete'

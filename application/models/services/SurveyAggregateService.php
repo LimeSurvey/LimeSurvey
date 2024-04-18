@@ -2,6 +2,7 @@
 
 namespace LimeSurvey\Models\Services;
 
+use Permission;
 use LimeSurvey\Models\Services\SurveyAggregateService\{
     LanguageSettings,
     GeneralSettings,
@@ -29,6 +30,7 @@ class SurveyAggregateService
     private UrlParams $urlParams;
     private ProxyExpressionManager $proxyExpressionManager;
     private TemplateConfiguration $templateConfiguration;
+    private Permission $modelPermission;
     private $restMode = false;
 
     public function __construct(
@@ -36,13 +38,15 @@ class SurveyAggregateService
         GeneralSettings $generalSettings,
         UrlParams $urlParams,
         ProxyExpressionManager $proxyExpressionManager,
-        TemplateConfiguration $templateConfiguration
+        TemplateConfiguration $templateConfiguration,
+        Permission $modelPermission
     ) {
         $this->languageSettings = $languageSettings;
         $this->generalSettings = $generalSettings;
         $this->urlParams = $urlParams;
         $this->proxyExpressionManager = $proxyExpressionManager;
         $this->templateConfiguration = $templateConfiguration;
+        $this->modelPermission = $modelPermission;
     }
 
     /**
@@ -105,7 +109,7 @@ class SurveyAggregateService
 
     public function checkSurveySettingsUpdatePermission($surveyId)
     {
-        $hasPermission = \Permission::model()->hasSurveyPermission(
+        $hasPermission = $this->modelPermission->hasSurveyPermission(
             $surveyId,
             'surveysettings',
             'update'
