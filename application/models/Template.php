@@ -483,7 +483,7 @@ class Template extends LSActiveRecord
         $criteria->select = 'template_name';
         $criteria->condition = 'sid IS NULL AND gsid IS NULL AND template.folder IS NOT NULL';
         $oTemplateList = TemplateConfiguration::model()->with(array(
-            'template' => ['select'=>'id, folder'],
+            'template' => ['select' => 'id, folder'],
         ))->findAll($criteria);
         $aTemplateInStandard = SurveyThemeHelper::getTemplateInStandard();
         $aTemplateInUpload = SurveyThemeHelper::getTemplateInUpload();
