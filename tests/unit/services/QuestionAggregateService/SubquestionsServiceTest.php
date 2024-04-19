@@ -4,16 +4,13 @@ namespace ls\tests\unit\services\QuestionAggregateService;
 
 use Mockery;
 use Question;
-
+use Permission;
 use LimeSurvey\DI;
-
 use ls\tests\TestBaseClass;
-
 use LimeSurvey\Models\Services\QuestionAggregateService\{
     SubQuestionsService,
     L10nService
 };
-
 use LimeSurvey\Models\Services\Exception\{
     PersistErrorException,
     BadRequestException,
@@ -43,6 +40,9 @@ class SubQuestionsServiceTest extends TestBaseClass
         // Model question is a required dependency
         // but is not executed for this test
         $modelQuestion = Mockery::mock(Question::class)
+            ->makePartial();
+
+        $modelPermission = Mockery::mock(Permission::class)
             ->makePartial();
 
         // The code under test creates a new Question
@@ -83,7 +83,8 @@ class SubQuestionsServiceTest extends TestBaseClass
 
         $subquestionsService = new SubQuestionsService(
             $l10nService,
-            $modelQuestion
+            $modelQuestion,
+            $modelPermission
         );
 
         $subquestions = [
@@ -124,6 +125,9 @@ class SubQuestionsServiceTest extends TestBaseClass
             ->shouldReceive('findByAttributes')
             ->andReturn(null);
 
+        $modelPermission = Mockery::mock(Permission::class)
+            ->makePartial();
+
         // Create a mock of the question we are editing
         $question = Mockery::mock(Question::class)
             ->makePartial();
@@ -148,7 +152,8 @@ class SubQuestionsServiceTest extends TestBaseClass
 
         $subquestionsService = new SubQuestionsService(
             $l10nService,
-            $modelQuestion
+            $modelQuestion,
+            $modelPermission
         );
 
         $subquestions = [
@@ -188,6 +193,9 @@ class SubQuestionsServiceTest extends TestBaseClass
             ->shouldReceive('findByAttributes')
             ->andReturn(null);
 
+        $modelPermission = Mockery::mock(Permission::class)
+            ->makePartial();
+
         // Create a mock of the question we are editing
         $question = Mockery::mock(Question::class)
             ->makePartial();
@@ -212,7 +220,8 @@ class SubQuestionsServiceTest extends TestBaseClass
 
         $subquestionsService = new SubQuestionsService(
             $l10nService,
-            $modelQuestion
+            $modelQuestion,
+            $modelPermission
         );
 
         $subquestions = [
@@ -249,6 +258,9 @@ class SubQuestionsServiceTest extends TestBaseClass
         $modelQuestion = Mockery::mock(Question::class)
             ->makePartial();
 
+        $modelPermission = Mockery::mock(Permission::class)
+            ->makePartial();
+
         // Create a mock of the question we are editing
         $question = Mockery::mock(Question::class)
             ->makePartial();
@@ -272,7 +284,8 @@ class SubQuestionsServiceTest extends TestBaseClass
 
         $subquestionsService = new SubQuestionsService(
             $l10nService,
-            $modelQuestion
+            $modelQuestion,
+            $modelPermission
         );
 
         $subquestions = [
@@ -312,6 +325,9 @@ class SubQuestionsServiceTest extends TestBaseClass
             ->shouldReceive('findByAttributes')
             ->andReturn(Mockery::mock(Question::class));
 
+        $modelPermission = Mockery::mock(Permission::class)
+            ->makePartial();
+
         // Create a mock of the question we are editing
         $question = Mockery::mock(Question::class)
             ->makePartial();
@@ -336,7 +352,8 @@ class SubQuestionsServiceTest extends TestBaseClass
 
         $subquestionsService = new SubQuestionsService(
             $l10nService,
-            $modelQuestion
+            $modelQuestion,
+            $modelPermission
         );
 
         $subquestions = [
