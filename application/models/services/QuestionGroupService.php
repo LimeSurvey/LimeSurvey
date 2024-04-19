@@ -567,7 +567,9 @@ class QuestionGroupService
      */
     public function checkDeletePermission(int $surveyId)
     {
+        $survey = $this->modelSurvey->findByPk($surveyId);
         if (
+            $survey->isActive ||
             !$this->modelPermission->hasSurveyPermission(
                 $surveyId,
                 'surveycontent',
@@ -575,7 +577,7 @@ class QuestionGroupService
             )
         ) {
             throw new PermissionDeniedException(
-                'Permission denied'
+                gT('Access denied')
             );
         }
     }

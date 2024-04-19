@@ -6,6 +6,7 @@ use ls\tests\TestBaseClass;
 
 use Mockery;
 use Permission;
+use Survey;
 
 use LimeSurvey\Models\Services\Exception\{
     PermissionDeniedException
@@ -51,9 +52,17 @@ class ExceptionsTest extends TestBaseClass
             ->makePartial();
         $modelPermission->shouldReceive('hasSurveyPermission')
             ->andReturn(false);
-
+        $survey = Mockery::mock(Survey::class)
+            ->makePartial();
+        $survey->shouldReceive('isActive')
+            ->andReturn(true);
+        $modelSurvey = Mockery::mock(Survey::class)
+        ->makePartial();
+        $modelSurvey->shouldReceive('findByPk')
+            ->andReturn($survey);
         $mockSet = (new MockSetFactory)->make();
         $mockSet->modelPermission = $modelPermission;
+        $mockSet->modelSurvey = $modelSurvey;
 
         $questionAggregateService = (new Factory)->make( $mockSet);
 

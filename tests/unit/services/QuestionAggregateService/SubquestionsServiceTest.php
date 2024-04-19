@@ -4,7 +4,9 @@ namespace ls\tests\unit\services\QuestionAggregateService;
 
 use Mockery;
 use Question;
+use Survey;
 use Permission;
+
 use LimeSurvey\DI;
 use ls\tests\TestBaseClass;
 use LimeSurvey\Models\Services\QuestionAggregateService\{
@@ -40,6 +42,9 @@ class SubQuestionsServiceTest extends TestBaseClass
         // Model question is a required dependency
         // but is not executed for this test
         $modelQuestion = Mockery::mock(Question::class)
+            ->makePartial();
+
+        $modelSurvey = Mockery::mock(Survey::class)
             ->makePartial();
 
         $modelPermission = Mockery::mock(Permission::class)
@@ -84,6 +89,7 @@ class SubQuestionsServiceTest extends TestBaseClass
         $subquestionsService = new SubQuestionsService(
             $l10nService,
             $modelQuestion,
+            $modelSurvey,
             $modelPermission
         );
 
@@ -125,6 +131,9 @@ class SubQuestionsServiceTest extends TestBaseClass
             ->shouldReceive('findByAttributes')
             ->andReturn(null);
 
+        $modelSurvey = Mockery::mock(Survey::class)
+            ->makePartial();
+
         $modelPermission = Mockery::mock(Permission::class)
             ->makePartial();
 
@@ -153,6 +162,7 @@ class SubQuestionsServiceTest extends TestBaseClass
         $subquestionsService = new SubQuestionsService(
             $l10nService,
             $modelQuestion,
+            $modelSurvey,
             $modelPermission
         );
 
@@ -193,6 +203,9 @@ class SubQuestionsServiceTest extends TestBaseClass
             ->shouldReceive('findByAttributes')
             ->andReturn(null);
 
+        $modelSurvey = Mockery::mock(Survey::class)
+            ->makePartial();
+
         $modelPermission = Mockery::mock(Permission::class)
             ->makePartial();
 
@@ -221,6 +234,7 @@ class SubQuestionsServiceTest extends TestBaseClass
         $subquestionsService = new SubQuestionsService(
             $l10nService,
             $modelQuestion,
+            $modelSurvey,
             $modelPermission
         );
 
@@ -258,6 +272,9 @@ class SubQuestionsServiceTest extends TestBaseClass
         $modelQuestion = Mockery::mock(Question::class)
             ->makePartial();
 
+        $modelSurvey = Mockery::mock(Survey::class)
+            ->makePartial();
+
         $modelPermission = Mockery::mock(Permission::class)
             ->makePartial();
 
@@ -285,6 +302,7 @@ class SubQuestionsServiceTest extends TestBaseClass
         $subquestionsService = new SubQuestionsService(
             $l10nService,
             $modelQuestion,
+            $modelSurvey,
             $modelPermission
         );
 
@@ -325,6 +343,9 @@ class SubQuestionsServiceTest extends TestBaseClass
             ->shouldReceive('findByAttributes')
             ->andReturn(Mockery::mock(Question::class));
 
+        $modelSurvey = Mockery::mock(Survey::class)
+            ->makePartial();
+
         $modelPermission = Mockery::mock(Permission::class)
             ->makePartial();
 
@@ -353,6 +374,7 @@ class SubQuestionsServiceTest extends TestBaseClass
         $subquestionsService = new SubQuestionsService(
             $l10nService,
             $modelQuestion,
+            $modelSurvey,
             $modelPermission
         );
 
