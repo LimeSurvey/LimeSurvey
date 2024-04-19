@@ -33,11 +33,13 @@ class QuestionAggregateService
         SaveService $saveService,
         DeleteService $deleteService,
         Permission $modelPermission,
+        Survey $modelSurvey,
         CDbConnection $yiiDb
     ) {
         $this->saveService = $saveService;
         $this->deleteService = $deleteService;
         $this->modelPermission = $modelPermission;
+        $this->modelSurvey = $modelSurvey;
         $this->yiiDb = $yiiDb;
     }
 
