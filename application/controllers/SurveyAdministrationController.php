@@ -1867,8 +1867,10 @@ class SurveyAdministrationController extends LSBaseController
 
 
         ######### OLD #########
-        if ((isset($result['error']) && $result['error'] == 'plugin')
-            || (isset($result['blockFeedback']) && $result['blockFeedback'])) {
+        if (
+            (isset($result['error']) && $result['error'] == 'plugin')
+            || (isset($result['blockFeedback']) && $result['blockFeedback'])
+        ) {
             // Got false from plugin, redirect to survey front-page
             $this->redirect(['surveyAdministration/view', 'surveyid' => $surveyId]);
         } elseif (isset($result['pluginFeedback'])) {
@@ -1882,8 +1884,9 @@ class SurveyAdministrationController extends LSBaseController
             $this->render('surveyActivation/_activation_error', $data);
         } else {
             $warning = (isset($result['warning'])) ? true : false;
-            $allowregister = $survey->isAllowRegister; //todo: where to ask for this one here
+            $allowregister = $result['isAllowRegister']; //todo: where to ask for this one here
 
+            $openAccessMode = Yii::app()->request->getPost('openAccessMode', null);
             if ($openAccessMode !== null) {
                 switch ($openAccessMode) {
                     case 'Y': //show a modal or give feedback on another page

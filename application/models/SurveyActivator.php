@@ -85,7 +85,8 @@ class SurveyActivator
 
         $aResult = array(
             'status' => 'OK',
-            'pluginFeedback' => $event->get('pluginFeedback')
+            'pluginFeedback' => $event->get('pluginFeedback'),
+            'isAllowRegister' => $survey->isAllowRegister
         );
         if (!$this->createSurveyDirectory()) {
             $aResult['warning'] = 'nouploadsurveydir';
