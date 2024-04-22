@@ -105,7 +105,8 @@ function afterAjaxResponsesReload() {
     reinstallResponsesFilterDatePicker();
     initColumnFilter();
 }
-
-onDocumentReadyListresponse();
-reinstallResponsesFilterDatePicker();
-initColumnFilter();
+$(document).on('ready pjax:scriptcomplete', function() {
+    onDocumentReadyListresponse();
+    reinstallResponsesFilterDatePicker();
+    initColumnFilter();
+});
