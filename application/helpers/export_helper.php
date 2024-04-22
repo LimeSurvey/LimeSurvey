@@ -761,7 +761,7 @@ function SPSSGetQuery($iSurveyID, $limit = null, $offset = null)
 */
 function buildXMLFromQuery($xmlwriter, $Query, $tagname = '', $excludes = array(), $iSurveyID = 0)
 {
-    $iChunkSize = 3000; // This works even for very large result sets and leaves a minimal memory footprint
+    $iChunkSize = 1000; // This works even for very large result sets and leaves a minimal memory footprint
 
     preg_match('/\bfrom\b\s*{{(\w+)}}/i', (string) $Query, $MatchResults);
     if ($tagname != '') {

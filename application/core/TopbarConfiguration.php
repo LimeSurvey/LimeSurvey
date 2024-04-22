@@ -225,6 +225,7 @@ class TopbarConfiguration
             'sid' => $sid,
             'oSurvey' => $oSurvey,
             'canactivate' => $canactivate,
+            'candeactivate' => $hasSurveyActivationPermission,
             'expired' => $expired,
             'notstarted' => $notstarted,
             'context' => $context,
