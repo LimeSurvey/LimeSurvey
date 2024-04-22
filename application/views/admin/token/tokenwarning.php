@@ -7,7 +7,7 @@
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
     <h1 class="h1 pagetitle"> 
         <?= gT("Survey participants") ?> :
-        <?= viewHelper::flatEllipsizeText($oSurvey->currentLanguageSettings->surveyls_title, TRUE, 60, '…') . " (" . gT("ID") . " " . $oSurvey->sid . ")"; ?>
+        <small class="d-block"><?= viewHelper::flatEllipsizeText($oSurvey->currentLanguageSettings->surveyls_title, TRUE, 60, '…') . " (" . gT("ID") . " " . $oSurvey->sid . ")"; ?></small>
     </h1>
     <div class="row welcome survey-action">
         <div class="col-12 content-right">

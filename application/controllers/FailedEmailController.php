@@ -29,14 +29,19 @@ class FailedEmailController extends LSBaseController
     public function actionIndex(): void
     {
         $surveyId = sanitize_int(App()->request->getParam('surveyid'));
+        if (!$surveyId) {
+            throw new CHttpException(400, gT("Invalid survey ID"));
+        }
+        $oSurvey = Survey::model()->findByPk($surveyId);
+        if (!$oSurvey) {
+            throw new CHttpException(404, gT("Survey not found"));
+        }
         $permissions = [
             'update' => Permission::model()->hasSurveyPermission($surveyId, 'responses', 'update'),
             'delete' => Permission::model()->hasSurveyPermission($surveyId, 'responses', 'delete'),
             'read'   => Permission::model()->hasSurveyPermission($surveyId, 'responses', 'read')
         ];
-        if (!$surveyId) {
-            throw new CHttpException(403, gT("Invalid survey ID"));
-        }
+
         if (!$permissions['read']) {
             App()->user->setFlash('error', gT("You do not have permission to access this page."));
             $this->redirect(['surveyAdministration/view', 'surveyid' => $surveyId]);
@@ -72,6 +77,7 @@ class FailedEmailController extends LSBaseController
             'failedEmailModel' => $failedEmailModel,
             'pageSize'         => $pageSize,
             'massiveAction'    => $massiveAction,
+            'oSurvey' => $oSurvey
         ]);
     }
 

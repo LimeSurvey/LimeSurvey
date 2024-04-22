@@ -7,7 +7,10 @@
 ?>
 <?= viewHelper::getViewTestTag('surveyFailedEmail') ?>
     <div class='side-body <?php echo getSideBodyClass(false); ?>'>
-        <h3><?php eT("Failed email notifications"); ?></h3>
+        <h1 class="h1 pagetitle"> 
+            <?php eT('Failed email notifications'); ?> : 
+            <?php echo viewHelper::flatEllipsizeText($oSurvey->currentLanguageSettings->surveyls_title, TRUE, 60, '…') . " (" . gT("ID") . " " . $oSurvey->sid . ")"; ?>
+        </h1>
         <?php
         $this->widget('ext.AlertWidget.AlertWidget', [
             'text' => gT("Please note that failed email notifications will be automatically deleted after 30 days."),

@@ -1,8 +1,8 @@
 <!-- Token export options -->
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
     <h1 class="h1 pagetitle"> 
-        <?php eT('Survey participant export options'); ?>
-        <?php echo viewHelper::flatEllipsizeText($oSurvey->currentLanguageSettings->surveyls_title, TRUE, 60, '…') . " (" . gT("ID") . " " . $oSurvey->sid . ")"; ?>
+        <?php eT('Survey participant export options'); ?> : 
+        <small class="d-block"><?php echo viewHelper::flatEllipsizeText($oSurvey->currentLanguageSettings->surveyls_title, TRUE, 60, '…') . " (" . gT("ID") . " " . $oSurvey->sid . ")"; ?></small>
     </h1>
     <div class="row">
         <div class="col-12 content-right">
