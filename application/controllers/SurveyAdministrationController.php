@@ -1854,56 +1854,34 @@ class SurveyAdministrationController extends LSBaseController
     {
         $surveyId = (int) App()->request->getPost('surveyId');
         $diContainer = \LimeSurvey\DI::getContainer();
-        $surveyUpdater = $diContainer->get(
+        $surveyActivate = $diContainer->get(
             LimeSurvey\Models\Services\SurveyActivate::class
         );
 
-        if (!Permission::model()->hasSurveyPermission($surveyId, 'surveyactivation', 'update')) {
-            Yii::app()->user->setFlash('error', gT("Access denied"));
-            $this->redirect(Yii::app()->request->urlReferrer);
+        try {
+            $result = $surveyActivate->activate($surveyId);
+        } catch (Exception $e) {
+            App()->user->setFlash('error', $e->getMessage());
         }
 
-        $survey = Survey::model()->findByPk($surveyId);
-        $surveyActivator = new SurveyActivator($survey);
-        $aData['oSurvey'] = $survey;
-        $aData['sidemenu']['state'] = false;
-        $aData['aSurveysettings'] = getSurveyInfo($surveyId);
-        $aData['surveyid'] = $surveyId;
 
-        $openAccessMode = Yii::app()->request->getPost('openAccessMode', null);
 
-        if (!is_null($survey)) {
-            $survey->anonymized = Yii::app()->request->getPost('anonymized');
-            $survey->datestamp = Yii::app()->request->getPost('datestamp');
-            $survey->ipaddr = Yii::app()->request->getPost('ipaddr');
-            $survey->ipanonymize = Yii::app()->request->getPost('ipanonymize');
-            $survey->refurl = Yii::app()->request->getPost('refurl');
-            $survey->savetimings = Yii::app()->request->getPost('savetimings');
-            $survey->save();
-
-            // Make sure the saved values will be picked up
-            Survey::model()->resetCache();
-            $survey->setOptions();
-        }
-
-        $aResult = $surveyActivator->activate();
-        if (
-            (isset($aResult['error']) && $aResult['error'] == 'plugin')
-            || (isset($aResult['blockFeedback']) && $aResult['blockFeedback'])
-        ) {
+        ######### OLD #########
+        if ((isset($result['error']) && $result['error'] == 'plugin')
+            || (isset($result['blockFeedback']) && $result['blockFeedback'])) {
             // Got false from plugin, redirect to survey front-page
-            $this->redirect(array('surveyAdministration/view', 'surveyid' => $surveyId));
-        } elseif (isset($aResult['pluginFeedback'])) {
+            $this->redirect(['surveyAdministration/view', 'surveyid' => $surveyId]);
+        } elseif (isset($result['pluginFeedback'])) {
             // Special feedback from plugin should be given to user
             //todo: what should be done here ...
-            $this->render('surveyActivation/_activation_feedback', $aResult);
-        } elseif (isset($aResult['error'])) {
-            $data['result'] = $aResult;
+            $this->render('surveyActivation/_activation_feedback', $result);
+        } elseif (isset($result['error'])) {
+            $data['result'] = $result;
             //$this->aData = $aData;
             //todo: what should be done here ...
             $this->render('surveyActivation/_activation_error', $data);
         } else {
-            $warning = (isset($aResult['warning'])) ? true : false;
+            $warning = (isset($result['warning'])) ? true : false;
             $allowregister = $survey->isAllowRegister; //todo: where to ask for this one here
 
             if ($openAccessMode !== null) {
@@ -1911,14 +1889,14 @@ class SurveyAdministrationController extends LSBaseController
                     case 'Y': //show a modal or give feedback on another page
                         $this->redirect([
                             '/surveyAdministration/view/',
-                            'surveyid' => $surveyId,
+                            'surveyid'                 => $surveyId,
                             'surveyActivationFeedback' => 'surveyActivationFeedback'
                         ]);
                         break;
                     case 'N': //check if token table exists or 'allowRegister' set to true
                         $this->redirect([
                             '/admin/tokens/sa/index/',
-                            'surveyid' => $surveyId,
+                            'surveyid'                 => $surveyId,
                             'surveyActivationFeedback' => 'surveyActivationFeedback'
                         ]);
                         break;
@@ -1926,12 +1904,12 @@ class SurveyAdministrationController extends LSBaseController
                 }
             }
 
-            $activationData = array(
-                'iSurveyID'           => $surveyId,
-                'survey'              => $survey,
-                'warning'             => $warning,
-                'allowregister'       => $allowregister,
-            );
+            $activationData = [
+                'iSurveyID'     => $surveyId,
+                'survey'        => $survey,
+                'warning'       => $warning,
+                'allowregister' => $allowregister,
+            ];
             $this->aData = $aData;
             $this->render('surveyActivation/_activation_feedback', $activationData);
         }

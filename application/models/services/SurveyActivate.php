@@ -2,9 +2,11 @@
 
 namespace LimeSurvey\Models\Services;
 
+use LimeSurvey\Models\Services\Exception\PermissionDeniedException;
 use LimeSurvey\Models\Services\SurveyAggregateService\GeneralSettings;
 use Permission;
 use Survey;
+use SurveyActivator;
 
 class SurveyActivate
 {
@@ -21,34 +23,43 @@ class SurveyActivate
         $this->permission = $permission;
     }
 
-    public function activate($surveyId, $params)
+    /**
+     * @param $surveyId
+     * @param array $params
+     * @return array
+     * @throws PermissionDeniedException
+     */
+    public function activate($surveyId, array $params = []): array
     {
         if (!$this->permission->hasSurveyPermission($surveyId, 'surveyactivation', 'update')) {
-            App()->user->setFlash('error', gT("Access denied"));
-            $this->redirect(App()->request->urlReferrer);
+            throw new PermissionDeniedException(
+                'Access denied'
+            );
         }
 
-        $survey = Survey::model()->findByPk($surveyId);
-        $surveyActivator = new SurveyActivator($survey);
+        $survey = $this->survey->findByPk($surveyId);
         $aData['oSurvey'] = $survey;
         $aData['sidemenu']['state'] = false;
         $aData['aSurveysettings'] = getSurveyInfo($surveyId);
         $aData['surveyid'] = $surveyId;
 
-        $openAccessMode = Yii::app()->request->getPost('openAccessMode', null);
-
+        $openAccessMode = App()->request->getPost('openAccessMode', null);
         if (!is_null($survey)) {
-            $survey->anonymized = Yii::app()->request->getPost('anonymized');
-            $survey->datestamp = Yii::app()->request->getPost('datestamp');
-            $survey->ipaddr = Yii::app()->request->getPost('ipaddr');
-            $survey->ipanonymize = Yii::app()->request->getPost('ipanonymize');
-            $survey->refurl = Yii::app()->request->getPost('refurl');
-            $survey->savetimings = Yii::app()->request->getPost('savetimings');
+            $survey->anonymized = App()->request->getPost('anonymized');
+            $survey->datestamp = App()->request->getPost('datestamp');
+            $survey->ipaddr = App()->request->getPost('ipaddr');
+            $survey->ipanonymize = App()->request->getPost('ipanonymize');
+            $survey->refurl = App()->request->getPost('refurl');
+            $survey->savetimings = App()->request->getPost('savetimings');
             $survey->save();
 
             // Make sure the saved values will be picked up
             Survey::model()->resetCache();
             $survey->setOptions();
         }
+
+        $surveyActivator = new SurveyActivator($survey);
+        $result = $surveyActivator->activate();
+        return $result;
     }
 }
