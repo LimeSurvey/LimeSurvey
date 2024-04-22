@@ -58,14 +58,14 @@ class SurveyDetail implements CommandInterface
     {
         $sessionKey = (string) $request->getData('sessionKey');
         $surveyId = (string) $request->getData('_id');
+        $authorized = $this->authSession->checkKey($sessionKey);
         $hasPermission = $this->permission->hasSurveyPermission(
             (int)$surveyId,
             'survey',
             'read'
         );
         if (
-            !$this->authSession
-                ->checkKey($sessionKey)
+            !$authorized
             || !$hasPermission
         ) {
             return $this->responseFactory
