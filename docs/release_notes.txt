@@ -34,6 +34,22 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.5.3 (build 240415) to 6.5.4 (build 240422) April 22, 2024
+-Fixed issue #19518: Downloading responses does not exit loading animation once finished (#3813) (Gabriel Jenik)
+-Fixed issue #19319: potential error during login, after Updating To LS 6.4.0 (#3767) (Denis Chenu)
+-Fixed issue #19302: Wrong redirect when directLogin is true (#3822) (Gabriel Jenik)
+#Updated translation: Spanish (Spain) by davidperez00
+#Updated translation: Slovak by jelen1
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Korean by modernity4r
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
 Changes from 6.5.2 (build 240402) to 6.5.3 (build 240415) April 15, 2024
 -Fixed issue: Survey general settings error message with more detail (#3809) (K Foster)
 -Fixed issue: Reduced chunk size to avoid memory-size crashes on survey archive exports (#3812) (lajosarpad)
