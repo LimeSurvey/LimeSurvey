@@ -7,8 +7,10 @@
  */
 ?>
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
-    <h3><?php eT("Manage attribute fields"); ?></h3>
-
+    <h1 class="h1 pagetitle"> 
+        <?= gT("Manage attribute fields") ?> :
+        <?= viewHelper::flatEllipsizeText($oSurvey->currentLanguageSettings->surveyls_title, TRUE, 60, '…') . " (" . gT("ID") . " " . $oSurvey->sid . ")"; ?>
+    </h1>
     <div class="row">
         <div class="col-12 content-right">
             <?php echo CHtml::form(array("admin/tokens/sa/updatetokenattributedescriptions/surveyid/{$surveyid}"), 'post'); ?>
@@ -171,7 +173,7 @@
         </div>
     </div>
 
-    <h3><?php eT("Add/delete survey participant attributes"); ?></h3>
+    <h2><?php eT("Add/delete survey participant attributes"); ?></h2>
 
     <div class="row">
         <div class="col-12 content-right">

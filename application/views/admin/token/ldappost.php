@@ -7,7 +7,10 @@
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
     <div class="row">
         <div class="col-12 content-right">
-            
+        <h1 class="h1 pagetitle"> 
+            <?php eT('Import survey participants from LDAP'); ?>
+            <?php echo viewHelper::flatEllipsizeText($oSurvey->currentLanguageSettings->surveyls_title, TRUE, 60, '…') . " (" . gT("ID") . " " . $oSurvey->sid . ")"; ?>
+        </h1>        
             <!-- Success -->
             <?php if ($xz != 0): ?>
                 <div class="jumbotron message-box">

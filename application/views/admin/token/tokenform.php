@@ -7,17 +7,16 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
 ?>
 <div class='<?php if (!isset($ajax) || $ajax = false): ?>col-12 side-body <?php echo getSideBodyClass(false); ?> <?php endif; ?>'>
     <?php if (!isset($ajax) || $ajax = false) { ?>
-        <h3>
+        <h1 class="h1 pagetitle"> 
             <?php
-
-            if ($token_subaction == "edit") {
-                eT("Edit survey participant");
-            } else {
-                eT("Add survey participant");
-            }
-
-            ?>
-        </h3>
+                if ($token_subaction == "edit") {
+                    eT("Edit survey participant");
+                } else {
+                    eT("Add survey participant");
+                }
+            ?> : 
+            <?= viewHelper::flatEllipsizeText($oSurvey->currentLanguageSettings->surveyls_title, TRUE, 60, '…') . " (" . gT("ID") . " " . $oSurvey->sid . ")"; ?>
+        </h1>
     <?php } ?>
     <?php
     foreach ($tokendata as $Key => $Value) {

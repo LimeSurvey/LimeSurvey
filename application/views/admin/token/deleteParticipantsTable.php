@@ -12,7 +12,10 @@
                     'post',
                     array('id' => 'deletetokentable', 'name' => 'deletetokentable')
                 ); ?>
-                <h3 class="lead"><?php eT('Delete survey participants table'); ?></h3>
+                <h1 class="h1 pagetitle"> 
+                    <?php eT('Delete survey participants table'); ?>
+                    <?php echo viewHelper::flatEllipsizeText($oSurvey->currentLanguageSettings->surveyls_title, TRUE, 60, '…') . " (" . gT("ID") . " " . $oSurvey->sid . ")"; ?>
+                </h1>
                 <p>
                     <?php eT('Deleting the participants table will switch the survey back to open-access mode.'); ?>
                     <br /> <br />

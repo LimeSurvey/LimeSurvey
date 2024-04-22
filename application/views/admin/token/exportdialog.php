@@ -1,6 +1,9 @@
 <!-- Token export options -->
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
-    <h3><?php eT("Survey participant export options"); ?></h3>
+    <h1 class="h1 pagetitle"> 
+        <?php eT('Survey participant export options'); ?>
+        <?php echo viewHelper::flatEllipsizeText($oSurvey->currentLanguageSettings->surveyls_title, TRUE, 60, '…') . " (" . gT("ID") . " " . $oSurvey->sid . ")"; ?>
+    </h1>
     <div class="row">
         <div class="col-12 content-right">
             <?php echo CHtml::form(array("admin/tokens/sa/exportdialog/surveyid/$surveyid"), 'post',array('class'=>'form-core settingswidget ','id'=>'bouncesettings','name'=>'frmeditquestion')); ?>

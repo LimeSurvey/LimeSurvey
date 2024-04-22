@@ -10,7 +10,10 @@ echo viewHelper::getViewTestTag('surveyParticipantsIndex');
 
 ?>
 <div class='side-body survey-response-page <?php echo getSideBodyClass(true); ?>'>
-    <h1> <?= gT("Survey participants") ?> </h1>
+    <h1 class="h1 pagetitle"> 
+        <?= gT("Survey participants") ?> :
+        <?= viewHelper::flatEllipsizeText($oSurvey->currentLanguageSettings->surveyls_title, TRUE, 60, '…') . " (" . gT("ID") . " " . $oSurvey->sid . ")"; ?>
+    </h1>
     <div class="mt-4">
         <div class="accordion">
             <div class="accordion-item">

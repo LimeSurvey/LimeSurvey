@@ -5,13 +5,15 @@
 ?>
 
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
+    <h1 class="h1 pagetitle"> 
+        <?= gT("Adding survey participant entry…") ?> :
+        <?= viewHelper::flatEllipsizeText($oSurvey->currentLanguageSettings->surveyls_title, TRUE, 60, '…') . " (" . gT("ID") . " " . $oSurvey->sid . ")"; ?>
+    </h1>
     <div class="row">
         <div class="col-12 content-right">
-
             <!-- Success -->
             <?php if ($success): ?>
                 <div class="jumbotron message-box">
-                    <h2><?php eT("Adding survey participant entry..."); ?></h2>
                     <p class="lead text-success"><?php eT("Success"); ?></p>
                     <p><?php eT("New entry was added."); ?></p>
                     <div class="container">
@@ -27,7 +29,6 @@
             <!-- Fail -->
             <?php else:?>
                 <div class="jumbotron message-box message-box-error">
-                    <h2 class="text-danger"><?php eT("Add participant entry"); ?></h2>
                     <p class="lead text-danger"><?php eT("Failed"); ?></p>
                     <?php foreach ($errors as $error): ?>
                         <p class='lead'><?php echo $error[0]; ?></p>
