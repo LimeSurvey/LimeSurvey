@@ -737,17 +737,16 @@ class Tokens extends SurveyCommonAction
      * Edit Tokens
      * @param int $iSurveyId
      * @param int $iTokenId
-     * @param boolean $ajax
      * @return false|null
-     * @todo When is this function used without Ajax?
      */
-    public function edit($iSurveyId, $iTokenId, $ajax = false)
+    public function edit($iSurveyId, $iTokenId)
     {
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'tokens.js', LSYii_ClientScript::POS_BEGIN);
         $iSurveyId = (int) $iSurveyId;
         $iTokenId = (int) $iTokenId;
         $survey = Survey::model()->findByPk($iSurveyId);
-
+        $request = Yii::app()->request;
+        $ajax = $request->getIsAjaxRequest();
         // Check permission
         if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update')) {
             if ($ajax) {
@@ -766,8 +765,6 @@ class Tokens extends SurveyCommonAction
 
         Yii::app()->loadHelper("surveytranslator");
         $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
-
-        $request = Yii::app()->request;
 
         if ($request->getPost('subaction')) {
             Yii::import('application.helpers.admin.ajax_helper', true);
