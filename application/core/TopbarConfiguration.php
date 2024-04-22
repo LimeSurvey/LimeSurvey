@@ -216,7 +216,7 @@ class TopbarConfiguration
 
         $editorUrl = Yii::app()->request->getUrlReferrer(
             Yii::app()->createUrl(
-                'editorlink/index',
+                'editorLink/index',
                 ['route' => 'survey/' . $sid]
             )
         );
