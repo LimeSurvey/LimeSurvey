@@ -34,6 +34,12 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.6.59 (build 240416) to 5.6.60 (build 240423) April 22, 2024
+-Fixed issue #19426: Survey listing - multiple call of same user (#3785) (Denis Chenu)
+-Fixed issue #18473: Survey listing - multiple call of template (#3786) (Denis Chenu)
+-Fixed issue #18473: Survey listing - multiple call of SurveyGroup (#3787) (Denis Chenu)
+
+
 Changes from 5.6.58 (build 240403) to 5.6.59 (build 240416) April 15, 2024
 -Fixed issue: Missing link in footer of index page (Carsten Schmitz)
 #Updated translation: Slovak by jelen1
