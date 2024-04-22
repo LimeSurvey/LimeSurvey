@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2024-04-15 09:06:22+00:00\n"
+"POT-Creation-Date: 2024-04-22 09:40:00+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -372,7 +372,7 @@ msgstr ""
 
 #: application/controllers/AssessmentController.php:271
 #: application/core/LsDefaultDataSets.php:501
-#: application/models/Survey.php:2218
+#: application/models/Survey.php:2227
 #: application/models/TemplateManifest.php:172
 #: application/views/admin/survey/copySurvey_view.php:54
 #: application/views/assessment/assessments_view.php:14
@@ -1819,10 +1819,10 @@ msgstr ""
 #: application/extensions/GeneralOptionWidget/views/switch.php:33
 #: application/extensions/SettingsWidget/SettingsWidget.php:349
 #: application/libraries/FormExtension/Inputs/GlobalSettingsRenderer.php:37
-#: application/models/SurveysGroupsettings.php:381
-#: application/models/SurveysGroupsettings.php:386
-#: application/models/SurveysGroupsettings.php:391
-#: application/models/SurveysGroupsettings.php:412
+#: application/models/SurveysGroupsettings.php:393
+#: application/models/SurveysGroupsettings.php:398
+#: application/models/SurveysGroupsettings.php:403
+#: application/models/SurveysGroupsettings.php:429
 #: application/views/admin/export/exportresult_panels/_headings.php:35
 #: application/views/admin/export/exportresult_panels/_headings.php:51
 #: application/views/admin/export/exportresult_panels/_headings.php:67
@@ -1914,10 +1914,10 @@ msgstr ""
 #: application/helpers/questionHelper.php:708
 #: application/helpers/questionHelper.php:1011
 #: application/libraries/FormExtension/Inputs/GlobalSettingsRenderer.php:38
-#: application/models/SurveysGroupsettings.php:383
-#: application/models/SurveysGroupsettings.php:388
-#: application/models/SurveysGroupsettings.php:393
-#: application/models/SurveysGroupsettings.php:412
+#: application/models/SurveysGroupsettings.php:395
+#: application/models/SurveysGroupsettings.php:400
+#: application/models/SurveysGroupsettings.php:405
+#: application/models/SurveysGroupsettings.php:429
 #: application/views/admin/export/exportresult_panels/_headings.php:36
 #: application/views/admin/export/exportresult_panels/_headings.php:52
 #: application/views/admin/export/exportresult_panels/_headings.php:68
@@ -2464,8 +2464,8 @@ msgstr ""
 #: application/models/ParticipantShare.php:139
 #: application/models/ParticipantShare.php:144
 #: application/models/ParticipantShare.php:259
-#: application/models/Question.php:720 application/models/Survey.php:1080
-#: application/models/Survey.php:1088
+#: application/models/Question.php:720 application/models/Survey.php:1089
+#: application/models/Survey.php:1097
 #: application/views/admin/conditions/includes/conditions_edit.php:8
 #: application/views/admin/dataentry/content_view.php:624
 #: application/views/admin/dataentry/content_view.php:693
@@ -2627,8 +2627,8 @@ msgstr ""
 #: application/models/ParticipantShare.php:139
 #: application/models/ParticipantShare.php:144
 #: application/models/ParticipantShare.php:259
-#: application/models/Question.php:720 application/models/Survey.php:1080
-#: application/models/Survey.php:1088
+#: application/models/Question.php:720 application/models/Survey.php:1089
+#: application/models/Survey.php:1097
 #: application/views/admin/conditions/deleteAllConditions.php:17
 #: application/views/admin/conditions/includes/conditions_edit.php:8
 #: application/views/admin/dataentry/content_view.php:623
@@ -6233,7 +6233,7 @@ msgstr ""
 
 #: application/controllers/admin/Quotas.php:189
 #: application/core/LsDefaultDataSets.php:473
-#: application/models/Survey.php:2225
+#: application/models/Survey.php:2234
 #: application/views/admin/survey/copySurvey_view.php:55
 #: application/views/surveyAdministration/importSurvey_view.php:83
 msgid "Quotas"
@@ -6320,7 +6320,7 @@ msgstr ""
 #: application/helpers/questionHelper.php:430
 #: application/helpers/questionHelper.php:829
 #: application/helpers/userstatistics_helper.php:2584
-#: application/models/Survey.php:1552 application/models/Survey.php:2240
+#: application/models/Survey.php:1561 application/models/Survey.php:2249
 #: application/views/admin/export/statistics_subviews/_statistics_header.php:3
 #: application/views/admin/export/statistics_user_view.php:18
 #: application/views/admin/export/statistics_view.php:23
@@ -6389,7 +6389,7 @@ msgstr ""
 #: application/controllers/admin/SurveysGroupsController.php:331
 #: application/controllers/admin/globalsettings.php:523
 #: application/core/LsDefaultDataSets.php:895
-#: application/models/Survey.php:2290 application/models/SurveysGroups.php:315
+#: application/models/Survey.php:2299 application/models/SurveysGroups.php:315
 #: application/models/SurveysGroups.php:451
 msgid "Survey settings"
 msgstr ""
@@ -7445,7 +7445,7 @@ msgid "Open general survey settings"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:80
-#: application/core/LsDefaultDataSets.php:82 application/models/Survey.php:2274
+#: application/core/LsDefaultDataSets.php:82 application/models/Survey.php:2283
 #: tmp/runtime/twig_cache/4b/4bc999cec5ba23e8686a2429d9d8fbc0fd1efd598bd4f547a9796e19c4d5e89e.php:42
 msgid "Survey text elements"
 msgstr ""
@@ -7612,7 +7612,7 @@ msgstr ""
 #: application/core/LsDefaultDataSets.php:556
 #: application/core/LsDefaultDataSets.php:557
 #: application/core/LsDefaultDataSets.php:558
-#: application/models/Survey.php:2230
+#: application/models/Survey.php:2239
 #: application/views/admin/export/exportresult_panels/_responses.php:4
 #: application/views/admin/survey/surveybar_statistics.php:18
 #: application/views/admin/survey/surveybar_statistics.php:23
@@ -9646,7 +9646,7 @@ msgstr ""
 
 #: application/extensions/TopbarWidget/views/includes/listquestiongroupsTopbarLeft_view.php:5
 #: application/extensions/TopbarWidget/views/includes/listquestiongroupsTopbarLeft_view.php:16
-#: application/models/Survey.php:1546
+#: application/models/Survey.php:1555
 #: application/views/admin/survey/subview/_survey_quickaction.php:105
 #: application/views/admin/survey/subview/_survey_quickaction.php:109
 #: application/views/admin/survey/subview/_survey_quickaction.php:152
@@ -9659,7 +9659,7 @@ msgstr ""
 #: application/extensions/TopbarWidget/views/includes/listquestionsTopbarLeft_view.php:5
 #: application/extensions/TopbarWidget/views/includes/listquestionsTopbarLeft_view.php:17
 #: application/extensions/TopbarWidget/views/includes/listquestionsTopbarLeft_view.php:28
-#: application/models/Survey.php:1544
+#: application/models/Survey.php:1553
 #: application/views/admin/survey/subview/_survey_quickaction.php:125
 #: application/views/admin/survey/subview/_survey_quickaction.php:131
 #: application/views/admin/survey/subview/_survey_quickaction.php:179
@@ -10113,7 +10113,7 @@ msgid "Partial"
 msgstr ""
 
 #: application/extensions/admin/survey/ListSurveysWidget/views/listSurveys.php:126
-#: application/models/SurveysGroupsettings.php:406
+#: application/models/SurveysGroupsettings.php:423
 #: application/views/admin/globalsettings/_general.php:284
 #: application/views/admin/globalsettings/_general.php:304
 #: application/views/admin/survey/subview/accordion/_presentation_panel.php:29
@@ -10279,7 +10279,7 @@ msgstr ""
 
 #: application/extensions/admin/survey/ListSurveysWidget/views/searchBox.php:40
 #: application/helpers/common_helper.php:170 application/models/Quota.php:96
-#: application/models/Survey.php:1202 tests/unit/models/SurveyTest.php:151
+#: application/models/Survey.php:1211 tests/unit/models/SurveyTest.php:151
 msgid "Active"
 msgstr ""
 
@@ -10288,7 +10288,7 @@ msgid "Active and running"
 msgstr ""
 
 #: application/extensions/admin/survey/ListSurveysWidget/views/searchBox.php:42
-#: application/helpers/common_helper.php:178 application/models/Survey.php:1164
+#: application/helpers/common_helper.php:178 application/models/Survey.php:1173
 #: tests/unit/models/SurveyTest.php:137
 msgid "Inactive"
 msgstr ""
@@ -10455,7 +10455,7 @@ msgstr ""
 #: application/helpers/userstatistics_helper.php:2595
 #: application/helpers/userstatistics_helper.php:2698
 #: application/helpers/userstatistics_helper.php:2799
-#: application/models/Survey.php:2250 application/models/Surveymenu.php:336
+#: application/models/Survey.php:2259 application/models/Surveymenu.php:336
 #: application/views/admin/participants/modal_subviews/_addToSurvey.php:22
 #: application/views/admin/super/quickmenu.php:6
 msgid "Survey"
@@ -12570,7 +12570,7 @@ msgid "Hidden"
 msgstr ""
 
 #: application/helpers/questionHelper.php:128
-#: application/models/SurveysGroupsettings.php:406
+#: application/models/SurveysGroupsettings.php:423
 #: application/views/admin/globalsettings/_security.php:139
 #: application/views/admin/globalsettings/_security.php:149
 #: application/views/admin/globalsettings/_security.php:175
@@ -15634,123 +15634,123 @@ msgstr ""
 msgid "Date saved"
 msgstr ""
 
-#: application/models/Survey.php:232
+#: application/models/Survey.php:241
 msgid "running"
 msgstr ""
 
-#: application/models/Survey.php:508
+#: application/models/Survey.php:517
 msgid "You are not allowed to use this group"
 msgstr ""
 
-#: application/models/Survey.php:544
+#: application/models/Survey.php:553
 msgid "Token length cannot be bigger than {max} characters."
 msgstr ""
 
-#: application/models/Survey.php:561
+#: application/models/Survey.php:570
 msgid "Google Analytics Tracking ID may only contain alphanumeric characters and hyphens."
 msgstr ""
 
-#: application/models/Survey.php:1184 tests/unit/models/SurveyTest.php:169
+#: application/models/Survey.php:1193 tests/unit/models/SurveyTest.php:169
 #: tests/unit/models/SurveyTest.php:177
 msgid "End: Never"
 msgstr ""
 
-#: application/models/Survey.php:1185 tests/unit/models/SurveyTest.php:197
+#: application/models/Survey.php:1194 tests/unit/models/SurveyTest.php:197
 #: tests/unit/models/SurveyTest.php:207 tests/unit/models/SurveyTest.php:230
 #: tests/unit/models/SurveyTest.php:240
 msgid "End: %s"
 msgstr ""
 
-#: application/models/Survey.php:1186 tests/unit/models/SurveyTest.php:322
+#: application/models/Survey.php:1195 tests/unit/models/SurveyTest.php:322
 #: tests/unit/models/SurveyTest.php:332 tests/unit/models/SurveyTest.php:353
 #: tests/unit/models/SurveyTest.php:363
 msgid "Expired: %s"
 msgstr ""
 
-#: application/models/Survey.php:1187 tests/unit/models/SurveyTest.php:260
+#: application/models/Survey.php:1196 tests/unit/models/SurveyTest.php:260
 #: tests/unit/models/SurveyTest.php:270 tests/unit/models/SurveyTest.php:292
 #: tests/unit/models/SurveyTest.php:302
 msgid "Start: %s"
 msgstr ""
 
-#: application/models/Survey.php:1555
+#: application/models/Survey.php:1564
 msgid "General settings & texts"
 msgstr ""
 
-#: application/models/Survey.php:2107
+#: application/models/Survey.php:2116
 msgid "Show policy"
 msgstr ""
 
-#: application/models/Survey.php:2219
+#: application/models/Survey.php:2228
 msgid "Permission to create/view/update/delete assessments rules for a survey"
 msgstr ""
 
-#: application/models/Survey.php:2226
+#: application/models/Survey.php:2235
 msgid "Permission to create/view/update/delete quota rules for a survey"
 msgstr ""
 
-#: application/models/Survey.php:2231
+#: application/models/Survey.php:2240
 msgid "Permission to create(data entry)/view/update/delete/import/export responses"
 msgstr ""
 
-#: application/models/Survey.php:2241
+#: application/models/Survey.php:2250
 msgid "Permission to view statistics"
 msgstr ""
 
-#: application/models/Survey.php:2251
+#: application/models/Survey.php:2260
 msgid "Permission for survey access. Read permission is a requirement to give any further permission to a survey."
 msgstr ""
 
-#: application/models/Survey.php:2260
+#: application/models/Survey.php:2269
 msgid "Survey activation"
 msgstr ""
 
-#: application/models/Survey.php:2261
+#: application/models/Survey.php:2270
 msgid "Permission to activate/deactivate a survey"
 msgstr ""
 
-#: application/models/Survey.php:2265
+#: application/models/Survey.php:2274
 msgid "Survey content"
 msgstr ""
 
-#: application/models/Survey.php:2266
+#: application/models/Survey.php:2275
 msgid "Permission to create/view/update/delete/import/export the questions, groups, answers & conditions of a survey"
 msgstr ""
 
-#: application/models/Survey.php:2275
+#: application/models/Survey.php:2284
 msgid "Permission to view/update the survey text elements, e.g. survey title, survey description, welcome and end message"
 msgstr ""
 
-#: application/models/Survey.php:2281
+#: application/models/Survey.php:2290
 msgid "Survey security"
 msgstr ""
 
-#: application/models/Survey.php:2282
+#: application/models/Survey.php:2291
 msgid "Permission to modify survey security settings"
 msgstr ""
 
-#: application/models/Survey.php:2291
+#: application/models/Survey.php:2300
 msgid "Permission to view/update the survey settings including survey participants table creation"
 msgstr ""
 
-#: application/models/Survey.php:2295
+#: application/models/Survey.php:2304
 #: application/views/admin/survey/subview/accordion/_accordion_container.php:109
 msgid "Participants"
 msgstr ""
 
-#: application/models/Survey.php:2295
+#: application/models/Survey.php:2304
 msgid "Permission to create/update/delete/import/export participants"
 msgstr ""
 
-#: application/models/Survey.php:2303
+#: application/models/Survey.php:2312
 msgid "Quick translation"
 msgstr ""
 
-#: application/models/Survey.php:2304
+#: application/models/Survey.php:2313
 msgid "Permission to view & update the translations using the quick-translation feature"
 msgstr ""
 
-#: application/models/Survey.php:2433
+#: application/models/Survey.php:2442
 #: application/views/admin/survey/subview/accordion/_publication_panel.php:20
 msgid "Expiration date can't be lower than the start date"
 msgstr ""
@@ -16035,58 +16035,58 @@ msgstr ""
 msgid "Permission to modify survey group security settings"
 msgstr ""
 
-#: application/models/SurveysGroupsettings.php:404
+#: application/models/SurveysGroupsettings.php:421
 #: application/views/admin/survey/subview/_survey_quickaction.php:78
 msgid "Question by question"
 msgstr ""
 
-#: application/models/SurveysGroupsettings.php:404
+#: application/models/SurveysGroupsettings.php:421
 #: application/views/admin/survey/subview/_survey_quickaction.php:79
 msgid "Group by group"
 msgstr ""
 
-#: application/models/SurveysGroupsettings.php:404
+#: application/models/SurveysGroupsettings.php:421
 #: application/views/admin/survey/subview/_survey_quickaction.php:80
 #: application/views/admin/survey/subview/accordion/_generaloptions_panel.php:32
 #: application/views/limereplacementfields/limeReplacementFields_view.php:76
 msgid "All in one"
 msgstr ""
 
-#: application/models/SurveysGroupsettings.php:406
+#: application/models/SurveysGroupsettings.php:423
 #: application/views/admin/survey/subview/accordion/_presentation_panel.php:28
 msgid "Incremental"
 msgstr ""
 
-#: application/models/SurveysGroupsettings.php:408
-#: application/models/SurveysGroupsettings.php:410
+#: application/models/SurveysGroupsettings.php:425
+#: application/models/SurveysGroupsettings.php:427
 #: application/views/admin/survey/subview/accordion/_presentation_panel.php:98
 #: application/views/admin/survey/subview/accordion/_presentation_panel.php:126
 msgid "Show both"
 msgstr ""
 
-#: application/models/SurveysGroupsettings.php:408
+#: application/models/SurveysGroupsettings.php:425
 #: application/views/admin/survey/subview/accordion/_presentation_panel.php:100
 msgid "Show group description only"
 msgstr ""
 
-#: application/models/SurveysGroupsettings.php:408
+#: application/models/SurveysGroupsettings.php:425
 #: application/views/admin/survey/subview/accordion/_presentation_panel.php:99
 msgid "Show group name only"
 msgstr ""
 
-#: application/models/SurveysGroupsettings.php:408
-#: application/models/SurveysGroupsettings.php:410
+#: application/models/SurveysGroupsettings.php:425
+#: application/models/SurveysGroupsettings.php:427
 #: application/views/admin/survey/subview/accordion/_presentation_panel.php:101
 #: application/views/admin/survey/subview/accordion/_presentation_panel.php:129
 msgid "Hide both"
 msgstr ""
 
-#: application/models/SurveysGroupsettings.php:410
+#: application/models/SurveysGroupsettings.php:427
 #: application/views/admin/survey/subview/accordion/_presentation_panel.php:128
 msgid "Show question code only"
 msgstr ""
 
-#: application/models/SurveysGroupsettings.php:410
+#: application/models/SurveysGroupsettings.php:427
 #: application/views/admin/survey/subview/accordion/_presentation_panel.php:127
 msgid "Show question number only"
 msgstr ""
