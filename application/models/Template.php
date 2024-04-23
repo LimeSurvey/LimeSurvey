@@ -442,8 +442,9 @@ class Template extends LSActiveRecord
     }
 
     /**
-     * @return array
-     * TODO: replace the calls to that function by a data provider based on search
+     * Return the array of existing and installed template with the preview images
+     * @todo deprecated to use directly Template::getTemplateList, usage of value seems deprecated
+     * @return array[]
      */
     public static function getTemplateListWithPreviews()
     {
