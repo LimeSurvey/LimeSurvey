@@ -1913,7 +1913,7 @@ class SurveyAdministrationController extends LSBaseController
                 'warning'       => $warning,
                 'allowregister' => $allowregister,
             ];
-            $this->aData = $aData;
+            $this->aData = $result;
             $this->render('surveyActivation/_activation_feedback', $activationData);
         }
     }
