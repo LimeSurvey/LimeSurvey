@@ -447,16 +447,18 @@ class Template extends LSActiveRecord
      */
     public static function getTemplateListWithPreviews()
     {
+        $criteria = new CDBCriteria();
+        $criteria->select = 'template_name';
+        $criteria->condition = 'sid IS NULL AND gsid IS NULL';
+        $criteria->addInCondition('template_name', array_keys(self::getTemplateList()));
 
+        $oTemplateList = TemplateConfiguration::model()->with(array(
+            'template' => ['select' => 'id, name'],
+        ))->findAll($criteria);
         $aTemplateList = array();
-
-        $oTemplateList = TemplateConfiguration::model()->search();
-        $oTemplateList->setPagination(false);
-
-        foreach ($oTemplateList->getData() as $oTemplate) {
+        foreach ($oTemplateList as $oTemplate) {
             $aTemplateList[$oTemplate->template_name]['preview'] = $oTemplate->preview;
         }
-
         return $aTemplateList;
     }
 
