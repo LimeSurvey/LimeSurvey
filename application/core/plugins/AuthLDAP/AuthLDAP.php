@@ -121,7 +121,8 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
         // Need to be defined here otherwise saving does not work
         'defaultRole' => array(
             'type' => 'select',
-            'options' => array('none'=>'None'),
+            'options' => array(),
+            'htmlOptions' => array('empty' => 'None'),
             'default' => 'none', 
             'label' => 'Select a default role for all LDAP users',
             'help' => 'The role must have the "Use LDAP authentication" permission. Other global permissions are disabled.'
@@ -408,7 +409,7 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
         $aPluginSettings = parent::getPluginSettings($getValues);
         // Dynamically append available roles as options
         $roles = $this->api->getRoles();
-        $roleOptions = array("none"=>'None');
+        $roleOptions = array();
         foreach ($roles as $role){
             $roleOptions[$role->ptid] = $role->name;
         }
@@ -610,7 +611,7 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
         // If we made it here, authentication was a success and we do have a valid user
         
         // If requested assign role to user
-        if ($defaultrole !== 'none'){
+        if (!empty($defaultrole)){
             // Ensure $defaultrole is a valid ptid 
             // the id can be invalid if the role set as default is deleted and 
             // the plugin settings are never saved after
