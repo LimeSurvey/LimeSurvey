@@ -313,8 +313,8 @@
                         <option value="inherit" <?php echo ($oSurvey->template == 'inherit')?'selected="selected"':''; ?>><?php echo eT('Inherit').' ['. $oSurveyOptions->template . ']'; ?></option>
                     <?php } ?>
                     <?php
-                    $aTemplateList = Template::getTemplateListWithPreviews();
-                    foreach ($aTemplateList as $templateName => $preview) {
+                    $aTemplateList = Template::getTemplateList();
+                    foreach ($aTemplateList as $templateName => $folder) {
                         if (Permission::model()->hasGlobalPermission('templates','read') || Permission::model()->hasTemplatePermission($templateName) || $oSurvey->template==htmlspecialchars($templateName) ) { ?>
                             <option value='<?php echo CHtml::encode($templateName); ?>'
                                 <?php if ($oSurvey->template && htmlspecialchars($templateName) == $oSurvey->template && $oSurvey->template != 'inherit') { ?>
