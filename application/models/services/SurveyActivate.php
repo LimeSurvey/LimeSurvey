@@ -15,7 +15,7 @@ class SurveyActivate
 
     public function __construct(
         Survey $survey,
-        Permission $permission,
+        Permission $permission
     ) {
         $this->survey = $survey;
         $this->permission = $permission;
