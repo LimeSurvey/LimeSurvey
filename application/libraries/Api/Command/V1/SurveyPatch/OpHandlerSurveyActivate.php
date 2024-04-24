@@ -28,6 +28,10 @@ class OpHandlerSurveyActivate implements OpHandlerInterface
         $this->transformer = $transformer;
     }
 
+    /**
+     * @param OpInterface $op
+     * @return bool
+     */
     public function canHandle(OpInterface $op): bool
     {
         $isUpdateOperation = $op->getType()->getId() === OpTypeActivate::ID;
@@ -36,6 +40,21 @@ class OpHandlerSurveyActivate implements OpHandlerInterface
         return $isUpdateOperation && $isSurveyEntity;
     }
 
+    /**
+     * Handle subquestion delete operation.
+     *
+     *   Expects a patch structure like this:
+     *   {
+     *        "entity": "subquestion",
+     *        "op": "delete",
+     *        "id": 1
+     *   }
+     * @param OpInterface $op
+     * @return void
+     * @throws \LimeSurvey\Models\Services\Exception\NotFoundException
+     * @throws \LimeSurvey\Models\Services\Exception\PermissionDeniedException
+     * @throws \LimeSurvey\ObjectPatch\OpHandler\OpHandlerException
+     */
     public function handle(OpInterface $op)
     {
         $diContainer = \LimeSurvey\DI::getContainer();
@@ -46,6 +65,11 @@ class OpHandlerSurveyActivate implements OpHandlerInterface
         $surveyActivateService->activate($op->getEntityId(), $props);
     }
 
+    /**
+     * Checks if patch is valid for this operation.
+     * @param OpInterface $op
+     * @return array
+     */
     public function validateOperation(OpInterface $op): array
     {
         $validationData = $this->transformer->validate(
