@@ -1853,6 +1853,10 @@ class SurveyAdministrationController extends LSBaseController
     public function actionActivate()
     {
         $surveyId = (int) App()->request->getPost('surveyId');
+        if (!Permission::model()->hasSurveyPermission($surveyId, 'surveyactivation', 'update')) {
+            Yii::app()->user->setFlash('error', gT("Access denied"));
+            $this->redirect(Yii::app()->request->urlReferrer);
+        }
         $diContainer = \LimeSurvey\DI::getContainer();
         $surveyActivate = $diContainer->get(
             LimeSurvey\Models\Services\SurveyActivate::class
