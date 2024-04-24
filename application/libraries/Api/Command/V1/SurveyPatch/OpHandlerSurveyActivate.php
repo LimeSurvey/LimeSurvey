@@ -51,6 +51,7 @@ class OpHandlerSurveyActivate implements OpHandlerInterface
      *        "error": false,
      *        "props": {
      *            "anonymized": false
+     *        }
      *   }
      *
      * @param OpInterface $op
