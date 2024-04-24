@@ -25,7 +25,7 @@ abstract class OpType implements OpTypeInterface
      */
     public static function factory($type): OpTypeInterface
     {
-        $validTypes = ['create', 'update', 'delete'];
+        $validTypes = ['create', 'update', 'delete', 'activate'];
 
         if (!in_array($type, $validTypes)) {
             throw new ObjectPatchException(sprintf(
@@ -34,6 +34,6 @@ abstract class OpType implements OpTypeInterface
             ));
         }
         $class = __NAMESPACE__ . '\OpType' . ucfirst($type);
-        return new $class;
+        return new $class();
     }
 }

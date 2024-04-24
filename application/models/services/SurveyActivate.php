@@ -37,20 +37,29 @@ class SurveyActivate
             );
         }
 
+        if (!is_array($params)) {
+            $params = [];
+        }
+
         $survey = $this->survey->findByPk($surveyId);
         $aData['oSurvey'] = $survey;
         $aData['sidemenu']['state'] = false;
         $aData['aSurveysettings'] = getSurveyInfo($surveyId);
         $aData['surveyid'] = $surveyId;
 
-        $openAccessMode = App()->request->getPost('openAccessMode', null);
+        $openAccessMode = App()->request->getPost('openAccessMode', $params['openAccessMode'] ?? null);
         if (!is_null($survey)) {
-            $survey->anonymized = App()->request->getPost('anonymized');
-            $survey->datestamp = App()->request->getPost('datestamp');
-            $survey->ipaddr = App()->request->getPost('ipaddr');
-            $survey->ipanonymize = App()->request->getPost('ipanonymize');
-            $survey->refurl = App()->request->getPost('refurl');
-            $survey->savetimings = App()->request->getPost('savetimings');
+            $fields = [
+                'anonymized',
+                'datestamp',
+                'ipaddr',
+                'ipanonymize',
+                'refurl',
+                'savetimings'
+            ];
+            foreach ($fields as $field) {
+                $survey->{$field} = App()->request->getPost($field, $params[$field] ?? null);
+            }
             $survey->save();
 
             // Make sure the saved values will be picked up
