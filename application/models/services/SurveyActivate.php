@@ -10,10 +10,8 @@ use SurveyActivator;
 
 class SurveyActivate
 {
-    private GeneralSettings $generalSettings;
     private Survey $survey;
     private Permission $permission;
-    private $restMode = false;
 
     public function __construct(
         Survey $survey,
@@ -47,7 +45,6 @@ class SurveyActivate
         $aData['aSurveysettings'] = getSurveyInfo($surveyId);
         $aData['surveyid'] = $surveyId;
 
-        $openAccessMode = App()->request->getPost('openAccessMode', $params['openAccessMode'] ?? null);
         if (!is_null($survey)) {
             $fields = [
                 'anonymized',
