@@ -1913,7 +1913,7 @@ class SurveyAdministrationController extends LSBaseController
 
             $activationData = [
                 'iSurveyID'     => $surveyId,
-                'survey'        => $survey,
+                'survey'        => $result['oSurvey'],
                 'warning'       => $warning,
                 'allowregister' => $allowregister,
             ];
