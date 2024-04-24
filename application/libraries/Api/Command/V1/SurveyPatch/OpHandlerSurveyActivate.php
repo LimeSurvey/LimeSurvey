@@ -45,10 +45,14 @@ class OpHandlerSurveyActivate implements OpHandlerInterface
      *
      *   Expects a patch structure like this:
      *   {
-     *        "entity": "subquestion",
-     *        "op": "delete",
-     *        "id": 1
+     *        "id": 571271,
+     *        "op": "activate",
+     *        "entity": "survey",
+     *        "error": false,
+     *        "props": {
+     *            "anonymized": false
      *   }
+     *
      * @param OpInterface $op
      * @return void
      * @throws \LimeSurvey\Models\Services\Exception\NotFoundException
