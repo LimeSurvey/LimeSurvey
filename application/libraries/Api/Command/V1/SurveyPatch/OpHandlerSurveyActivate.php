@@ -7,10 +7,27 @@ use LimeSurvey\ObjectPatch\{
     OpHandler\OpHandlerInterface,
     OpType\OpTypeActivate
 };
+use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputSurvey;
 use LimeSurvey\Models\Services\SurveyAggregateService;
+use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\{
+    OpHandlerExceptionTrait,
+    OpHandlerSurveyTrait,
+    OpHandlerValidationTrait
+};
 
 class OpHandlerSurveyActivate implements OpHandlerInterface
 {
+    use OpHandlerExceptionTrait;
+    use OpHandlerSurveyTrait;
+    use OpHandlerValidationTrait;
+
+    protected TransformerInputSurvey $transformer;
+
+    public function __construct(TransformerInputSurvey $transformer)
+    {
+        $this->transformer = $transformer;
+    }
+
     public function canHandle(OpInterface $op): bool
     {
         $isUpdateOperation = $op->getType()->getId() === OpTypeActivate::ID;
@@ -31,6 +48,15 @@ class OpHandlerSurveyActivate implements OpHandlerInterface
 
     public function validateOperation(OpInterface $op): array
     {
-        return [];
+        $validationData = $this->transformer->validate(
+            $op->getProps(),
+            ['operation' => $op->getType()->getId()]
+        );
+
+        return $this->getValidationReturn(
+            gT('Could not save survey'),
+            !is_array($validationData) ? [] : $validationData,
+            $op
+        );
     }
 }
