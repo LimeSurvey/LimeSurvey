@@ -31,10 +31,11 @@ $respstatsread  = Permission::model()->hasSurveyPermission($iSurveyID, 'response
 
 ?>
 <!-- START surveySummary -->
-<h1 class="h1 pagetitle">
-    <?php eT('Survey summary'); ?> :
-    <?php echo viewHelper::flatEllipsizeText($oSurvey->currentLanguageSettings->surveyls_title, TRUE, 60, '…') . " (" . gT("ID") . " " . $oSurvey->sid . ")"; ?>
-</h1>
+<?php $this->widget('ext.admin.survey.PageTitle.PageTitle', array(
+            'title' => gT('Survey summary'),
+            'model' => $oSurvey,
+    ));
+?>
 <div class="ls-card-grid">
 <?php
     //survey has been activated in open-access mode

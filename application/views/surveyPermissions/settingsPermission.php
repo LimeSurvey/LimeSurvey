@@ -17,11 +17,14 @@
     <h1>
         <?php
         if ($isUserGroup) {
-            echo sprintf(gT("Edit survey permissions for user group %s"), "<em>" . \CHtml::encode($name) . "</em>");
+            $title = gT("Edit survey permissions for user group %s"), "<em>" . \CHtml::encode($name) . "</em>";
         } else {
-            echo sprintf(gT("Edit survey permissions for user %s"), "<em>" . \CHtml::encode($name) . "</em>");
+            $title = gT("Edit survey permissions for user %s"), "<em>" . \CHtml::encode($name) . "</em>";
         }
-        ?>
+        $this->widget('ext.admin.survey.PageTitle.PageTitle', array(
+            'title' => $title,
+            'model' => $oSurvey,
+        ));
     </h1>
     <div class="row" id="trigger-save-button">
         <div class="col-lg-12 content-right">

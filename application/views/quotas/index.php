@@ -8,10 +8,10 @@ echo viewHelper::getViewTestTag('surveyQuotas');
 ?>
 
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
-    <h1 class="h1 pagetitle"> 
-        <?= gT("Survey quotas") ?> :
-        <small class="d-block"><?= viewHelper::flatEllipsizeText($oSurvey->currentLanguageSettings->surveyls_title, TRUE, 60, '…') . " (" . gT("ID") . " " . $oSurvey->sid . ")"; ?></small>
-    </h1>
+    <?php $this->widget('ext.admin.survey.PageTitle.PageTitle', array(
+        'title' => gT('Survey quotas'),
+        'model' => $oSurvey,
+    )); ?>
     <div class="row">
         <div class="col-12 content-right">
             <?php

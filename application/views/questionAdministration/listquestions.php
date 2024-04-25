@@ -14,10 +14,10 @@ $baseLanguage = $oSurvey->language;
 ?>
 
 <div class='side-body <?php echo getSideBodyClass(true); ?>'>
-    <h1 class="h1 pagetitle">
-        <?php eT('Questions and groups'); ?> :
-        <?php echo viewHelper::flatEllipsizeText($oSurvey->currentLanguageSettings->surveyls_title, TRUE, 60, '…') . " (" . gT("ID") . " " . $oSurvey->sid . ")"; ?>
-    </h1>
+    <?php $this->widget('ext.admin.survey.PageTitle.PageTitle', array(
+        'title' => gT('Questions and groups'),
+        'model' => $oSurvey,
+    )); ?>
     <ul class="nav nav-tabs  mt-4" role="tablist">
         <li id='overviewTab' class="nav-item"><a class="nav-link active" href="#questions" aria-controls="questions" role="tab" data-bs-toggle="tab"><?php eT('Questions'); ?></a></li>
         <li id='overviewTab' class="nav-item"><a class="nav-link" href="#groups" aria-controls="groups" role="tab" data-bs-toggle="tab"><?php eT('Groups'); ?></a></li>

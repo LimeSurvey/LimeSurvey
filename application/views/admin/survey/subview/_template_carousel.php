@@ -5,6 +5,8 @@
  * @var $templates
  * @var Survey $oSurvey
  * @var $iSurveyId
+ * @todo : check if still used (2024-04-25)
+ * @see : mantis issue #19537 https://bugs.limesurvey.org/view.php?id=19537
  */
  $count = 0;
 

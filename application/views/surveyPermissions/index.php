@@ -9,10 +9,10 @@
 
 ?>
 <?php echo viewHelper::getViewTestTag('surveyPermissions'); ?>
-<h1 class="h1 pagetitle">
-    <?php eT('Survey permissions'); ?> :
-    <?php echo viewHelper::flatEllipsizeText($oSurvey->currentLanguageSettings->surveyls_title, TRUE, 60, '…') . " (" . gT("ID") . " " . $oSurvey->sid . ")"; ?>
-</h1>
+<?php $this->widget('ext.admin.survey.PageTitle.PageTitle', array(
+    'title' => gT('Survey permissions'),
+    'model' => $oSurvey,
+)); ?>
 <div id='edit-permission' class='side-body position-relative  ls-settings-wrapper <?= getSideBodyClass(false) ?> "'>
     <div class="row pt-2 pb-2 align-items-center">
         <div class="col-12 align-items-center">

@@ -37,10 +37,11 @@ if ($bShowInherited) {
     $optionsQuestionIndex['-1'] = $oSurveyOptions->questionindex . " ᴵ";
 }
 ?>
-<h1 class="h1 pagetitle">
-    <?php eT('Presentation and navigation'); ?> :
-    <?php echo viewHelper::flatEllipsizeText($oSurvey->currentLanguageSettings->surveyls_title, TRUE, 60, '…') . " (" . gT("ID") . " " . $oSurvey->sid . ")"; ?>
-</h1>
+<?php $this->widget('ext.admin.survey.PageTitle.PageTitle', array(
+            'title' => gT('Presentation and navigation'),
+            'model' => $oSurvey,
+    ));
+?>
 <!-- Presentation panel -->
 <div id='presentation-panel'>
     <div class="row">

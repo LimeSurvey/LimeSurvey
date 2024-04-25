@@ -103,10 +103,11 @@ App()->getClientScript()->registerScript("edit-after-completion-message", "
 ", LSYii_ClientScript::POS_BEGIN);
 ?>
 <!-- tokens panel -->
-<h1 class="h1 pagetitle">
-    <?php eT('Notification and data management'); ?> :
-    <?php echo viewHelper::flatEllipsizeText($oSurvey->currentLanguageSettings->surveyls_title, TRUE, 60, '…') . " (" . gT("ID") . " " . $oSurvey->sid . ")"; ?>
-</h1>
+<?php $this->widget('ext.admin.survey.PageTitle.PageTitle', array(
+    'title' => gT('Notification and data management'),
+    'model' => $oSurvey,
+));
+?>
 <div id='tokens-panel'>
     <div class="row">
         <div class="col-12 col-lg-6">
