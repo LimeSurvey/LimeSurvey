@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2024-04-25 15:38:06+00:00\n"
+"POT-Creation-Date: 2024-04-25 15:43:45+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -24483,7 +24483,7 @@ msgid "Save and activate"
 msgstr ""
 
 #: application/views/surveyAdministration/partial/topbar/surveyTopbarRight_view.php:18
-msgid "New question editor is only allowed for Fruity23"
+msgid "The new question editor is only available for surveys using the FruityTwentyThree theme."
 msgstr ""
 
 #: application/views/surveyAdministration/partial/topbar/surveyTopbarRight_view.php:28
