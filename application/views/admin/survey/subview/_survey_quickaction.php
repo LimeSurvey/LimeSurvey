@@ -5,6 +5,7 @@
  * @var Survey $oSurvey
  */
  $count= 0;
+ /* Use $template['preview'] in ./application/views/admin/survey/subview/_template_carousel.php */
  $templates = Template::getTemplateListWithPreviews();
  $surveylocale = Permission::model()->hasSurveyPermission($oSurvey->sid, 'surveylocale', 'read');
  // EDIT SURVEY SETTINGS BUTTON

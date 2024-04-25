@@ -10,8 +10,8 @@
         <div class=" ">
             <select id='theme' class="form-control custom-data"  name='theme' >
                 <?php
-                    $athemeList = Template::getTemplateListWithPreviews();
-                    foreach ($athemeList as $themeName => $preview) {
+                    $athemeList = Template::getTemplateList();
+                    foreach ($athemeList as $themeName => $folder) {
                         if (Permission::model()->hasGlobalPermission('themes','read') || Permission::model()->hasTemplatePermission($themeName) ) { ?>
                             <option value='<?php echo CHtml::encode($themeName); /* sanitize_filename aloow single quote */?>'>
                                 <?php echo CHtml::encode($themeName); ?>

@@ -14,9 +14,6 @@
 // DO NOT REMOVE This is for automated testing to validate we see that page
 echo viewHelper::getViewTestTag('surveySummary');
 
-//TODO : move to controller
-$templates = Template::getTemplateListWithPreviews();
-//print_r($templates);
 $count = 0;
 $surveyid = $oSurvey->sid;
 $templateModel = Template::model()->findByPk($oSurvey->oOptions->template);
