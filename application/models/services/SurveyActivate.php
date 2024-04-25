@@ -66,7 +66,7 @@ class SurveyActivate
             $survey->save();
 
             // Make sure the saved values will be picked up
-            Survey::model()->resetCache();
+            $this->survey->resetCache();
             $survey->setOptions();
         }
 
