@@ -46,13 +46,14 @@ class OpHandlerSurveyActivate implements OpHandlerInterface
      *   Expects a patch structure like this:
      *   {
      *        "id": 571271,
-     *        "op": "activate",
-     *        "entity": "survey",
+     *        "op": "update",
+     *        "entity": "surveyActivate",
      *        "error": false,
      *        "props": {
      *            "anonymized": false
      *        }
      *   }
+
      *
      * @param OpInterface $op
      * @return void
