@@ -331,8 +331,8 @@ Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", 
                         </option>
                     <?php endif; ?>
                     <?php
-                    $aTemplateList = Template::getTemplateListWithPreviews();
-                    foreach ($aTemplateList as $templateName => $preview) {
+                    $aTemplateList = Template::getTemplateList();
+                    foreach ($aTemplateList as $templateName => $folder) {
                         if (Permission::model()->hasGlobalPermission('templates', 'read') || Permission::model()->hasTemplatePermission($templateName
                             ) || $oSurvey->template == htmlspecialchars((string) $templateName)) { ?>
                             <option value='<?php echo CHtml::encode($templateName); ?>'
