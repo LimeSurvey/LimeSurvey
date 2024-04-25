@@ -5,7 +5,7 @@ namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 use LimeSurvey\ObjectPatch\{
     Op\OpInterface,
     OpHandler\OpHandlerInterface,
-    OpType\OpTypeActivate
+    OpType\OpTypeUpdate
 };
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputSurvey;
 use LimeSurvey\Models\Services\SurveyAggregateService;
@@ -34,8 +34,8 @@ class OpHandlerSurveyActivate implements OpHandlerInterface
      */
     public function canHandle(OpInterface $op): bool
     {
-        $isUpdateOperation = $op->getType()->getId() === OpTypeActivate::ID;
-        $isSurveyEntity = $op->getEntityType() === 'survey';
+        $isUpdateOperation = $op->getType()->getId() === OpTypeUpdate::ID;
+        $isSurveyEntity = $op->getEntityType() === 'surveyActivate';
 
         return $isUpdateOperation && $isSurveyEntity;
     }

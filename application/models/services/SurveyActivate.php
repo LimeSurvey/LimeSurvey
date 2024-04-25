@@ -3,7 +3,7 @@
 namespace LimeSurvey\Models\Services;
 
 use LimeSurvey\Models\Services\Exception\PermissionDeniedException;
-use LimeSurvey\Models\Services\SurveyAggregateService\GeneralSettings;
+use LSYii_Application;
 use Permission;
 use Survey;
 use SurveyActivator;
@@ -12,13 +12,19 @@ class SurveyActivate
 {
     private Survey $survey;
     private Permission $permission;
+    private SurveyActivator $surveyActivator;
+    private LSYii_Application $app;
 
     public function __construct(
         Survey $survey,
-        Permission $permission
+        Permission $permission,
+        SurveyActivator $surveyActivator,
+        LSYii_Application $app
     ) {
         $this->survey = $survey;
         $this->permission = $permission;
+        $this->surveyActivator = $surveyActivator;
+        $this->app = $app;
     }
 
     /**
@@ -55,7 +61,7 @@ class SurveyActivate
                 'savetimings'
             ];
             foreach ($fields as $field) {
-                $survey->{$field} = App()->request->getPost($field, $params[$field] ?? null);
+                $survey->{$field} = $this->app->request->getPost($field, $params[$field] ?? null);
             }
             $survey->save();
 
@@ -64,8 +70,7 @@ class SurveyActivate
             $survey->setOptions();
         }
 
-        $surveyActivator = new SurveyActivator($survey);
-        $result = $surveyActivator->activate();
+        $result = $this->surveyActivator->setSurvey($survey)->activate();
         return $result;
     }
 }

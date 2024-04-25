@@ -25,7 +25,7 @@ abstract class OpType implements OpTypeInterface
      */
     public static function factory($type): OpTypeInterface
     {
-        $validTypes = ['create', 'update', 'delete', 'activate'];
+        $validTypes = ['create', 'update', 'delete'];
 
         if (!in_array($type, $validTypes)) {
             throw new ObjectPatchException(sprintf(
