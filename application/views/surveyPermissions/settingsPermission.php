@@ -14,18 +14,17 @@
 ?>
 
 <div id='edit-permission' class='side-body  <?= getSideBodyClass(false) ?> "'>
-    <h1>
-        <?php
-        if ($isUserGroup) {
-            $title = gT("Edit survey permissions for user group %s"), "<em>" . \CHtml::encode($name) . "</em>";
-        } else {
-            $title = gT("Edit survey permissions for user %s"), "<em>" . \CHtml::encode($name) . "</em>";
-        }
-        $this->widget('ext.admin.survey.PageTitle.PageTitle', array(
-            'title' => $title,
-            'model' => $oSurvey,
-        ));
-    </h1>
+    <?php
+    if ($isUserGroup) {
+        $title = sprintf(gT("Edit survey permissions for user group %s"), "<em>" . \CHtml::encode($name) . "</em>");
+    } else {
+        $title = sprintf(gT("Edit survey permissions for user %s"), "<em>" . \CHtml::encode($name) . "</em>");
+    }
+    $this->widget('ext.admin.survey.PageTitle.PageTitle', array(
+        'title' => $title,
+        'model' => $oSurvey,
+    ));
+    ?>
     <div class="row" id="trigger-save-button">
         <div class="col-lg-12 content-right">
             <?php echo CHtml::form(
