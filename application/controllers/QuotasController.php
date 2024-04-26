@@ -24,7 +24,6 @@ class QuotasController extends LSBaseController
         $this->layout = 'layout_questioneditor';
         LimeExpressionManager::SetSurveyId($this->aData['surveyid']);
         LimeExpressionManager::StartProcessingPage(false, true);
-
         return parent::beforeRender($view);
     }
 
@@ -132,12 +131,15 @@ class QuotasController extends LSBaseController
     public function actionAddNewQuota($surveyid)
     {
         $surveyid = sanitize_int($surveyid);
+        $oSurvey = Survey::model()->findByPk($surveyid);
+        if (!$oSurvey) {
+            throw new CHttpException(404, gT("This survey don't exist."));
+        }
         if (!Permission::model()->hasSurveyPermission($surveyid, 'quotas', 'create')) {
             throw new CHttpException(403, gT("You do not have permission for this survey."));
         }
         Yii::app()->loadHelper('admin.htmleditor');
 
-        $oSurvey = Survey::model()->findByPk($surveyid);
         $aData['surveyid'] = $oSurvey->sid;
         $aData['thissurvey'] = getSurveyInfo($surveyid);
         $aData['langs'] = $oSurvey->allLanguages;
@@ -181,6 +183,7 @@ class QuotasController extends LSBaseController
         }
         $this->aData = $aData;
         $this->render('newquota_view', [
+            'oSurvey' => $oSurvey,
             'oQuota' => $oQuota,
             'aQuotaLanguageSettings' => $aQuotaLanguageSettings
         ]);
@@ -240,6 +243,7 @@ class QuotasController extends LSBaseController
         $this->aData = $aData;
         $this->render('editquota_view', [
             'oQuota' => $oQuota,
+            'oSurvey' => $oSurvey,
             'aQuotaLanguageSettings' => $aQuotaLanguageSettings
         ]);
     }
@@ -268,18 +272,17 @@ class QuotasController extends LSBaseController
      */
     public function actionNewAnswer()
     {
-
         $quotaId = Yii::app()->request->getParam('quota_id');
         $quota = $this->getQuotaWithPermission($quotaId, 'delete');
         $surveyid = $quota->sid;
         $oSurvey = Survey::model()->findByPk($surveyid);
         $aData['surveyid'] = $surveyid;
+        $aData['oSurvey'] = $oSurvey;
         $sSubAction = Yii::app()->request->getParam('sSubaction', 'newanswer');
 
         $renderView = array();
         $quota = Quota::model()->findByPk($quotaId);
         $aData['oQuota'] = $quota;
-
         if (
             ($sSubAction == "newanswer" || ($sSubAction == "new_answer_two" && !isset($_POST['quota_qid']))) &&
             Permission::model()->hasSurveyPermission($surveyid, 'quotas', 'create')

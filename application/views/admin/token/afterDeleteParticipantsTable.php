@@ -4,10 +4,10 @@
      */
 ?>
 <div class="side-body <?php echo getSideBodyClass(false); ?>">
-    <h1 class="h1 pagetitle"> 
-        <?= gT("Survey participants table deleted") ?> :
-        <small class="d-block"><?= viewHelper::flatEllipsizeText($oSurvey->currentLanguageSettings->surveyls_title, TRUE, 60, '…') . " (" . gT("ID") . " " . $oSurvey->sid . ")"; ?></small>
-    </h1>
+    <?php $this->widget('ext.admin.survey.PageTitle.PageTitle', array(
+        'title' => gT("Survey participants table deleted"),
+        'model' => $oSurvey,
+    )); ?>
     <div class="row welcom survey-action">
         <div class="col-12 content-right">
             <div class="card card-primary">

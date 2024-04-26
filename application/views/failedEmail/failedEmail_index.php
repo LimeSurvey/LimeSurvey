@@ -8,7 +8,7 @@
 <?= viewHelper::getViewTestTag('surveyFailedEmail') ?>
     <div class='side-body <?php echo getSideBodyClass(false); ?>'>
         <?php $this->widget('ext.admin.survey.PageTitle.PageTitle', array(
-            'title' => gT('Questions and groups'),
+            'title' => gT('Failed email notifications'),
             'model' => $oSurvey,
         )); ?>
         <?php

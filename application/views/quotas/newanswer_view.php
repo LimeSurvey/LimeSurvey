@@ -4,13 +4,12 @@
 ?>
 
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
+    <?php $this->widget('ext.admin.survey.PageTitle.PageTitle', array(
+        'title' => sprintf(gT("New answer for quota “%s”"), '<em>' . CHtml::encode($oQuota->name) . '</em>'),
+        'model' => $oSurvey,
+    )); ?>
     <div class="row">
         <div class="col-xl-8 content-right">
-            <h3>
-                <?php eT("Survey quota");?>: <?php eT("Add answer");?>
-            </h3>
-
-
             <div class="jumbotron message-box">
                 <div class='row'>
                     <h2><?php echo sprintf(gT("New answer for quota '%s'"), CHtml::encode($oQuota->name));?></h2>

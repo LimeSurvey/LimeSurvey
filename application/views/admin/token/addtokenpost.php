@@ -5,10 +5,10 @@
 ?>
 
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
-    <h1 class="h1 pagetitle"> 
-        <?= gT("Adding survey participant entry…") ?> :
-        <?= viewHelper::flatEllipsizeText($oSurvey->currentLanguageSettings->surveyls_title, TRUE, 60, '…') . " (" . gT("ID") . " " . $oSurvey->sid . ")"; ?>
-    </h1>
+    <?php $this->widget('ext.admin.survey.PageTitle.PageTitle', array(
+        'title' => gT("Adding survey participant entry…"),
+        'model' => $oSurvey,
+    )); ?>
     <div class="row">
         <div class="col-12 content-right">
             <!-- Success -->

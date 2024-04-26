@@ -1,8 +1,8 @@
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
-    <h1 class="h1 pagetitle"> 
-        <?= gT("Bounce settings") ?> :
-        <?= viewHelper::flatEllipsizeText($oSurvey->currentLanguageSettings->surveyls_title, TRUE, 60, '…') . " (" . gT("ID") . " " . $oSurvey->sid . ")"; ?>
-    </h1>
+    <?php $this->widget('ext.admin.survey.PageTitle.PageTitle', array(
+        'title' => gT("Bounce settings"),
+        'model' => $oSurvey,
+    )); ?>
     <div class="row">
         <div class="col-12">
             <div id='bouncesettingsdiv'>

@@ -7,11 +7,12 @@ echo viewHelper::getViewTestTag('addQuota');
 
 ?>
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
+    <?php $this->widget('ext.admin.survey.PageTitle.PageTitle', array(
+        'title' => gT('New quota'),
+        'model' => $oSurvey,
+    )); ?>
     <div class="row">
         <div class="col-12 content-right">
-            <h3>
-                <?php eT("New quota");?>
-            </h3>
             <?php $this->renderPartial('/quotas/_form',
                 array(
                     'oQuota'=>$oQuota,

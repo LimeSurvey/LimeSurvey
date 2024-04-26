@@ -6,6 +6,10 @@
 
 ?>
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
+    <?php $this->widget('ext.admin.survey.PageTitle.PageTitle', array(
+        'title' => gT("Survey participants import result"),
+        'model' => $oSurvey,
+    )); ?>
     <div class="row">
         <div class="col-12 content-right">
             <?php if (empty($aTokenListArray) || $iRecordImported == 0) :?>
