@@ -27,7 +27,7 @@ echo viewHelper::getViewTestTag('participantsBlacklistControl');
                     <div class="row ls-space margin top-10 bottom-10">
                         <div class="mb-3">
                             <label class='form-label col-md-8'>
-                                <?php eT('Blacklist all current surveys for participant once the global field is set:'); ?>
+                                <?php eT('Blocklist all current surveys for participant once the global field is set:'); ?>
                             </label>
                             <div class='col-md-3'>
                                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
@@ -44,7 +44,7 @@ echo viewHelper::getViewTestTag('participantsBlacklistControl');
                     <div class="row ls-space margin top-10 bottom-10">
                         <div class="mb-3">
                             <label class='form-label col-md-8'>
-                                <?php eT('Blacklist participant for any new added survey once the global field is set:'); ?>
+                                <?php eT('Blocklist participant for any new added survey once the global field is set:'); ?>
                             </label>
                             <div class='col-md-3'>
                                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
@@ -112,7 +112,7 @@ echo viewHelper::getViewTestTag('participantsBlacklistControl');
                     <div class="row ls-space margin top-10 bottom-10">
                         <div class="mb-3">
                             <label class='form-label col-md-8'>
-                                <?php eT('Allow participant to unblacklist himself/herself:'); ?>
+                                <?php eT('Allow participant to remove himself/herself from blocklist:'); ?>
                             </label>
                             <div class='col-md-3'>
                                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [

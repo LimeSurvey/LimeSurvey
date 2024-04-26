@@ -481,8 +481,10 @@ class Template extends LSActiveRecord
         /* Get the template name by TemplateConfiguration and fiolder by template , no need other data */
         $criteria = new CDBCriteria();
         $criteria->select = 'template_name';
-        $criteria->with = ['template' => ['select' => 'folder']];
-        $oTemplateList = TemplateConfiguration::model()->with('template')->findAll($criteria);
+        $criteria->condition = 'sid IS NULL AND gsid IS NULL AND template.folder IS NOT NULL';
+        $oTemplateList = TemplateConfiguration::model()->with(array(
+            'template' => ['select' => 'id, folder'],
+        ))->findAll($criteria);
         $aTemplateInStandard = SurveyThemeHelper::getTemplateInStandard();
         $aTemplateInUpload = SurveyThemeHelper::getTemplateInUpload();
         foreach ($oTemplateList as $oTemplate) {
@@ -496,21 +498,24 @@ class Template extends LSActiveRecord
     }
 
     /**
-     * @return array
-     * TODO: replace the calls to that function by a data provider based on search
+     * Return the array of existing and installed template with the preview images
+     * @deprecated 2024-04-25 use directly Template::getTemplateList
+     * @return array[]
      */
     public static function getTemplateListWithPreviews()
     {
+        $criteria = new CDBCriteria();
+        $criteria->select = 'template_name';
+        $criteria->condition = 'sid IS NULL AND gsid IS NULL';
+        $criteria->addInCondition('template_name', array_keys(self::getTemplateList()));
 
+        $oTemplateList = TemplateConfiguration::model()->with(array(
+            'template' => ['select' => 'id, name'],
+        ))->findAll($criteria);
         $aTemplateList = array();
-
-        $oTemplateList = TemplateConfiguration::model()->search();
-        $oTemplateList->setPagination(false);
-
-        foreach ($oTemplateList->getData() as $oTemplate) {
+        foreach ($oTemplateList as $oTemplate) {
             $aTemplateList[$oTemplate->template_name]['preview'] = $oTemplate->preview;
         }
-
         return $aTemplateList;
     }
 
