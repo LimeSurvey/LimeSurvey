@@ -737,7 +737,7 @@ class Tokens extends SurveyCommonAction
      * Edit Tokens
      * @param int $iSurveyId
      * @param int $iTokenId
-     * @param null $deprecated
+     * @param null $deprecated in 6.5.5, used before to show partial view, move to Yii::app()->request->getIsAjaxRequest()
      * @return false|null
      */
     public function edit($iSurveyId, $iTokenId, $deprecated = null)
