@@ -737,9 +737,10 @@ class Tokens extends SurveyCommonAction
      * Edit Tokens
      * @param int $iSurveyId
      * @param int $iTokenId
+     * @param null $deprecated
      * @return false|null
      */
-    public function edit($iSurveyId, $iTokenId)
+    public function edit($iSurveyId, $iTokenId, $deprecated = null)
     {
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'tokens.js', LSYii_ClientScript::POS_BEGIN);
         $iSurveyId = (int) $iSurveyId;
