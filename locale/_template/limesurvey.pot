@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2024-04-25 15:43:45+00:00\n"
+"POT-Creation-Date: 2024-04-26 13:07:06+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -3729,7 +3729,7 @@ msgstr ""
 #: application/controllers/UserManagementController.php:1260
 #: application/controllers/UserManagementController.php:1308
 #: application/controllers/UserManagementController.php:1356
-#: application/core/LsDefaultDataSets.php:2831
+#: application/core/LsDefaultDataSets.php:2836
 #: application/core/plugins/AuthLDAP/AuthLDAP.php:386
 #: application/core/plugins/Authdb/Authdb.php:142
 #: application/core/plugins/TwoFactorAdminLogin/models/TFAUser.php:110
@@ -8440,31 +8440,47 @@ msgstr ""
 msgid "I confirm"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2828
+#: application/core/LsDefaultDataSets.php:2815
+msgid "Show link to legal notice in survey:"
+msgstr ""
+
+#: application/core/LsDefaultDataSets.php:2816
+msgid "Show link to data policy in survey:"
+msgstr ""
+
+#: application/core/LsDefaultDataSets.php:2817
+msgid "Survey legal notice:"
+msgstr ""
+
+#: application/core/LsDefaultDataSets.php:2818
+msgid "Legal notice"
+msgstr ""
+
+#: application/core/LsDefaultDataSets.php:2833
 msgid "Hello"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2829
+#: application/core/LsDefaultDataSets.php:2834
 msgid "This is an automated email notification that a user has been created for you on the website %s."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2830
+#: application/core/LsDefaultDataSets.php:2835
 msgid "You can use now the following credentials to log in:"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2834
+#: application/core/LsDefaultDataSets.php:2839
 msgid "Click here to set your password"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2835
+#: application/core/LsDefaultDataSets.php:2840
 msgid "If you have any questions regarding this email, please do not hesitate to contact the site administrator at"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2836
+#: application/core/LsDefaultDataSets.php:2841
 msgid "Thank you"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2839
+#: application/core/LsDefaultDataSets.php:2844
 msgid "User registration at '%s'"
 msgstr ""
 
