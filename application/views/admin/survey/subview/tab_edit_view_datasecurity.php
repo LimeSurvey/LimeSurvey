@@ -23,10 +23,11 @@ initKcfinder();
 PrepareEditorScript(false, $this);
 ?>
 <!-- security notice -->
-<h1 class="h1 pagetitle">
-    <?php eT('Privacy policy settings'); ?> :
-    <?php echo viewHelper::flatEllipsizeText($oSurvey->currentLanguageSettings->surveyls_title, TRUE, 60, '…') . " (" . gT("ID") . " " . $oSurvey->sid . ")"; ?>
-</h1>
+<?php $this->widget('ext.admin.survey.PageTitle.PageTitle', array(
+    'title' => gT('Privacy policy settings'),
+    'model' => $oSurvey,
+));
+?>
 <div class="mb-3">
             <label class="form-label" for='showsurveypolicynotice'><?php  eT("Show privacy policy text with mandatory checkbox:") ; ?></label>
     <div class="">

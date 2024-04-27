@@ -28,12 +28,12 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
 <?php else : ?>
     <div class="col-12 side-body ls-settings-wrapper <?= getSideBodyClass(false) ?>" id="theme-option-sidebody">
 <?php endif; ?>
-<?php if (!empty($oSurvey)) : ?>
-<h1 class="h1 pagetitle">
-    <?php printf(gT('Theme options (%s)'), Chtml::encode($model->template_name)); ?> :
-    <?php echo viewHelper::flatEllipsizeText($oSurvey->currentLanguageSettings->surveyls_title, TRUE, 60, '…') . " (" . gT("ID") . " " . $oSurvey->sid . ")"; ?>
-</h1>
-<?php endif; ?>
+<?php if (!empty($oSurvey)) {
+    $this->widget('ext.admin.survey.PageTitle.PageTitle', array(
+        'title' => sprintf(gT('Theme options (%s)'), Chtml::encode($model->template_name)),
+        'model' => $oSurvey,
+    ));
+} ?>
 
     <!-- Using bootstrap tabs to differ between just hte options and advanced direct settings -->
     <div class="row">

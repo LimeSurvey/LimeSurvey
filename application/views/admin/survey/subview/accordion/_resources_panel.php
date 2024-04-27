@@ -27,6 +27,11 @@ var sAddParam = '';
 
 <!-- resources panel -->
 <div id='resources'>
+    <?php $this->widget('ext.admin.survey.PageTitle.PageTitle', array(
+        'title' => gT('Add/edit resources (files/images)'),
+        'model' => $oSurvey,
+    ));
+    ?>
     <div class="row">
         <!-- Export -->
         <div class="col-md-3">

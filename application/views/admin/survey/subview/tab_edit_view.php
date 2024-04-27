@@ -32,10 +32,10 @@ $count = 0;
 PrepareEditorScript(false, $this);
 ?>
 <!-- Text Elements Tabs -->
-<h1 class="h1 pagetitle">
-    <?php eT('Survey text elements'); ?> :
-    <?php echo viewHelper::flatEllipsizeText($oSurvey->currentLanguageSettings->surveyls_title, TRUE, 60, '…') . " (" . gT("ID") . " " . $oSurvey->sid . ")"; ?>
-</h1>
+<?php $this->widget('ext.admin.survey.PageTitle.PageTitle', array(
+    'title' => gT('Survey text elements'),
+    'model' => $oSurvey,
+)); ?>
 <ul class="nav nav-tabs" id="edit-survey-text-element-language-selection">
     <?php foreach ($aTabTitles as $i => $title): ?>
         <li role="presentation" class="nav-item">

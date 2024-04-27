@@ -4,17 +4,17 @@
 * @var $title string
 * @var $message html
 */
-
-if(isset($nosidebodyblock) && $nosidebodyblock === true ){ ?>
+if(!empty($nosidebodyblock)){ ?>
     <div class='side-body  <?php echo getSideBodyClass(false); ?>'>
     <!-- div not closed ? -->
 <?php } ?>
-<?php 
-    $title = ($bEmail) ? gT("Sending invitations…") : gT("Sending reminders...");
+<?php if (empty($lefttosend)) { // emailwarning loaded before
+    $title = ($bEmail) ? gT("Sending invitations result") : gT("Sending reminders result");
     $this->widget('ext.admin.survey.PageTitle.PageTitle', array(
         'title' => $title,
         'model' => $oSurvey,
-)); ?>
+    ));
+} ?>
 <div class="row" id="token-emailpost-messagebox">
     <div class="col-12 content-right">
         <div class="jumbotron message-box">
