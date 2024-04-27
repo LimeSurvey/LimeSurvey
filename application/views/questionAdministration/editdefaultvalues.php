@@ -10,9 +10,10 @@
 
 ?>
     <div id='edit-question-body' class='side-body <?php echo getSideBodyClass(false); ?>'>
-        <div class="pagetitle h1">
-            <?php eT('Edit default answer values') ?>
-        </div>
+        <?php $this->widget('ext.admin.survey.PageTitle.PageTitle', array(
+            'title' => sprintf(gT("Edit default answer values for question “%s” (ID %s)"), $questionrow['title'], $questionrow['qid']),
+            'model' => $oSurvey,
+        )); ?>
         <div class="row">
             <div class="col-xl-8 content-right">
                 <?php echo CHtml::form(["admin/database/index"], 'post', ['class' => '', 'id' => 'frmdefaultvalues', 'name' => 'frmdefaultvalues']); ?>

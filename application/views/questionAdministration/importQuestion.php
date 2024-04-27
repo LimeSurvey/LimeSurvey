@@ -10,7 +10,10 @@
 
 ?>
 <div id='edit-question-body' class='side-body <?php echo getSideBodyClass(false); ?>'>
-    <div class="pagetitle h1"><?php eT("Import a question"); ?></div>
+    <?php $this->widget('ext.admin.survey.PageTitle.PageTitle', array(
+        'title' => gT("Import a question"),
+        'model' => $oSurvey,
+    )); ?>
     <div class="row">
         <div class="col-6">
             <?php echo CHtml::form(

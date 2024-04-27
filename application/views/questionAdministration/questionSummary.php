@@ -11,17 +11,11 @@
 <div id="question-overview"<?= empty($visibilityOverview) ? ' style="display:none;"' : '' ?>>
     <?php
     if ($question->qid !== 0): ?>
-            <!-- Question summary -->
-            <div class="pagetitle">
-                <span class="h1"><?php
-                    eT('Question summary'); ?>&nbsp;</span>
-                <small>
-                    <em>
-                        <?= $question->title; ?> (ID: <?= (int)$question->qid; ?>)
-                    </em>&nbsp;
-                </small>
-            </div>
-            <?php
+        <?php $this->widget('ext.admin.survey.PageTitle.PageTitle', array(
+            'title' => sprintf(gT("Question “%s” summary (ID %s)"), "<em>" . CHtml::encode($question->title) . "</em>", intval($question->qid)),
+            'model' => $survey,
+        )); ?>
+        <?php
             $this->renderPartial(
                 "summary",
                 [

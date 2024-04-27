@@ -2,12 +2,16 @@
     dataentry/caption_view.php
 -->
 <div class="side-body <?php echo getSideBodyClass(false); ?>">
-    <h3><?php eT("Data entry"); ?></h3>
+    <?php
+    $this->widget('ext.admin.survey.PageTitle.PageTitle', array(
+        'title' => gT("Data entry"),
+        'model' => $oSurvey,
+    ));
+    ?>
     <div class="row">
         <div class="col-12 content-right">
             <!-- Survey name and description -->
             <div class="jumbotron ">
-            <h2><?php echo stripJavaScript($thissurvey['name']); ?></h2>
             <p><?php echo flattenText($thissurvey['description'],true); ?></p>
             </div>
         <?php echo CHtml::form(array("admin/dataentry/sa/insert"), 'post', array('name'=>'addsurvey', 'id'=>'addsurvey', 'enctype'=>'multipart/form-data'));?>

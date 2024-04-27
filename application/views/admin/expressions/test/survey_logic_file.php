@@ -11,7 +11,10 @@ echo viewHelper::getViewTestTag('surveyLogicFile');
 ?>
 
 <div id='edit-survey-text-element' class='side-body <?php echo getSideBodyClass(false); ?>'>
-    <div class="pagetitle h1"><?php eT("Survey logic view");?> </div>
+    <?php $this->widget('ext.admin.survey.PageTitle.PageTitle', array(
+        'title' => gT("Survey logic view"), /* @todo : title according to group, question or survey */
+        'model' => $oSurvey,
+    )); ?>
     <div class="row">
         <?=TbHtml::form(array('admin/expressions/sa/survey_logic_file'), 'post', array('id'=>'survey_logic_file_form', 'target' => '_blank'))?>
             <input name="sid" type="hidden" value="<?=$sid?>" />

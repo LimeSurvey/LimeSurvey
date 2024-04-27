@@ -68,6 +68,12 @@ $questionTheme = !empty($oQuestion->questionTheme) ? $oQuestion->questionTheme :
     />
     <div id="advanced-question-editor" class="row"<?= empty($visibilityEditor) ? ' style="display:none;"' : '' ?>>
         <x-test id="action::addQuestion"></x-test>
+        <?php 
+        $title = $oQuestion->qid ? sprintf(gT("Edit question “%s” (ID %s)"), "<em>" . CHtml::encode($oQuestion->title) . "</em>", intval($oQuestion->qid)) : gT("Create a new question");
+        $this->widget('ext.admin.survey.PageTitle.PageTitle', array(
+            'title' => $title,
+            'model' => $oSurvey,
+        )); ?>
         <div class="col-xl-8 pe-1">
             <div class="row">
                 <div class="col-12">

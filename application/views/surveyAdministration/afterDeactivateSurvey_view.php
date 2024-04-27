@@ -6,13 +6,12 @@
 ?>
 
 <div class="row ">
+    <?php $this->widget('ext.admin.survey.PageTitle.PageTitle', array(
+        'title' => sprintf(gT("Your survey (%d) was deactivated."), $surveyid),
+        'model' => $oSurvey,
+    )); ?>
     <div class="col-8 content-right">
         <div class="card card-primary border-left-success">
-            <div class="card-header ">
-                <h2>
-                    <?php printf(gT("Your survey (%d) was deactivated."), $surveyid); ?>
-                </h2>
-            </div>
             <div class="card-body d-flex">
                 <ul>
                     <li><?php eT("Responses are no longer available in LimeSurvey."); ?></li>

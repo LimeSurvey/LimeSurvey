@@ -124,7 +124,6 @@ class ResponsesController extends LSBaseController
         if (!is_numeric(Yii::app()->request->getParam('id'))) {
             throw new CHttpException(403, gT("Invalid response ID"));
         }
-        $this->aData['oSurvey'] = $survey = Survey::model()->findByPk($surveyId);
         if (!Permission::model()->hasSurveyPermission($surveyId, 'responses', 'read')) {
             App()->user->setFlash('error', gT("You do not have permission to access this page."));
             $this->redirect(['surveyAdministration/view', 'surveyid' => $surveyId]);
@@ -132,6 +131,8 @@ class ResponsesController extends LSBaseController
         }
         /* TODO : Check if response still exist, after checking survey */
         $aData = $this->getData($surveyId, $id, $browseLang);
+        $aData['oSurvey'] = $survey = Survey::model()->findByPk($surveyId);
+
         $sBrowseLanguage = $aData['language'];
 
         extract($aData, EXTR_OVERWRITE);
@@ -393,6 +394,7 @@ class ResponsesController extends LSBaseController
         $this->render('browseidrow_view', [
             'id'              => $aData['id'],
             'surveyid'        => $aData['surveyId'],
+            'oSurvey'         => $aData['oSurvey'],
             'answers'         => $aData['answers'],
             'inserthighlight' => $aData['inserthighlight'],
             'fnames'          => $aData['fnames'],

@@ -28,12 +28,6 @@ class PageTitle extends CWidget
      * - Question : QID and question->tile (WIP)
      **/
     public $title;
-    /* @var boolean use sprintf */
-    public $sprintf = false;
-    /* @var \Question optionnal question */
-    public $Question;
-    /* @var \Question optionnal question group */
-    public $QuestionGroup;
 
     /** @inheritdoc */
     public function run()

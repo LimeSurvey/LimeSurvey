@@ -1,23 +1,16 @@
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
     <?php echo CHtml::form(array("admin/export/sa/vvexport/surveyid/{$surveyid}"), 'post', array('id' => 'vvexport', 'class' => '')); ?>
-    <div class="row">
-        <div class="col-12">
-            <div class="col-lg-6 text-start">
-                <h4>
-                    <?php eT("Export a VV survey file"); ?>
-                </h4>
-            </div>
-        </div>
-        <h3></h3>
-    </div>
-
+    <?php $this->widget('ext.admin.survey.PageTitle.PageTitle', array(
+        'title' => gT("Export a VV survey file"),
+        'model' => $oSurvey,
+    )); ?>
     <div class="row">
         <div class="col-md-6 content-right">
             <div class="card" id="panel-1" style="opacity: 1; top: 0px;">
                 <div class="card-header ">
-                    <div class="">
+                    <h2 class="">
                         <?php eT("Export survey"); ?>
-                    </div>
+                    </h2>
                 </div>
 
                 <div class="card-body">
@@ -49,9 +42,9 @@
 
             <div class="card" id="panel-extension" style="opacity: 1; top: 0px;">
                 <div class="card-header ">
-                    <div class="">
+                    <h2 class="">
                         <?php eT("Format"); ?>
-                    </div>
+                    </h2>
                 </div>
                 <div class="card-body">
                     <div class="row mb-3">

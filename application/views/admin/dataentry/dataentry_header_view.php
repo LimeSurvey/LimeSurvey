@@ -1,14 +1,12 @@
 <div class="side-body <?php echo getSideBodyClass(false); ?>">
-    <h3>
-    <?php eT("Data entry"); ?> -
-    <?php
-        if ($subaction == "edit") {
-                echo sprintf(gT("Editing response (ID %s)"), $id);
-        } else {
-                echo sprintf(gT("Viewing response (ID %s)"), $id);
-        }
-    ?>
-    </h3>
+
+<?php 
+    $title = $subaction == "edit" ? sprintf(gT("Data entry, editing response (ID %s)"), $id) : sprintf(gT("Viewing response (ID %s)"), $id);
+    $this->widget('ext.admin.survey.PageTitle.PageTitle', array(
+            'title' => $title,
+            'model' => $survey,
+    ));
+?>
         <div class="row">
             <div class="col-12 content-right">
         

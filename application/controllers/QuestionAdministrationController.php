@@ -1104,7 +1104,8 @@ class QuestionAdministrationController extends LSBaseController
             'importQuestion',
             [
                 'gid' => $aData['gid'],
-                'sid' => $aData['sid']
+                'sid' => $aData['sid'],
+                'oSurvey' => $survey
             ]
         );
     }
@@ -1230,6 +1231,7 @@ class QuestionAdministrationController extends LSBaseController
                 'aImportResults' => $aData['aImportResults'],
                 'sExtension'     => $aData['sExtension'],
                 'sid'            => $aData['sid'],
+                'oSurvey'        => $oSurvey,
                 'gid'            => $aData['gid']
             ]
         );
@@ -2652,7 +2654,6 @@ class QuestionAdministrationController extends LSBaseController
         if (!Permission::model()->hasSurveyPermission($question->sid, 'surveycontent', 'read')) {
             throw new CHttpException(403, gT('No permission'));
         }
-
         // Use the question's theme if it exists, or a dummy theme if it doesn't
         /** @var QuestionTheme */
         $questionTheme = !empty($question->questionTheme) ? $question->questionTheme : QuestionTheme::getDummyInstance($question->type);

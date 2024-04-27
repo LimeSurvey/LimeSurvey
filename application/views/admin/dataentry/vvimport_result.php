@@ -1,10 +1,12 @@
 
-
+<?php $this->widget('ext.admin.survey.PageTitle.PageTitle', array(
+    'title' => $title,
+    'model' => $oSurvey,
+)); ?>
 <div class="row">
     <div class="col-md-11 offset-md-1 content-right">
         <!-- Message box from super admin -->
         <div class="jumbotron message-box <?php echo isset($class) ? $class : ""; ?>">
-            <div class="h2"><?php echo $title;?></div>
             <dl>
             <?php if(isset($aResult['success']) && is_array($aResult['success'])) {?>
                 <dt class='success'><?php eT("Success"); ?></dt>

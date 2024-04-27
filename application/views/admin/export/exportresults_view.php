@@ -10,30 +10,30 @@ echo viewHelper::getViewTestTag('exportResults');
 
 $scriptBegin = "var sMsgColumnCount = '" . gT("%s of %s columns selected", 'js') . "';";
 App()->getClientScript()->registerScript('ExportresultsVariables', $scriptBegin, LSYii_ClientScript::POS_BEGIN);
-
-
 ?>
 
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
+    <?php $this->widget('ext.admin.survey.PageTitle.PageTitle', array(
+        'title' => gT("Export results"),
+        'model' => $oSurvey,
+    )); ?>
     <?php echo CHtml::form(array('admin/export/sa/exportresults/surveyid/' . $surveyid), 'post', array('id' => 'resultexport', 'class' => '')); ?>
+    <?php if (App()->getRequest()->getPost('sql') || $SingleResponse) : ?>
     <div class="row">
         <div class="col-12">
             <div class="col-lg-6 text-start">
-                <h4>
-                    <?php eT("Export results"); ?>
                     <?php
                     if (App()->getRequest()->getPost('sql')) {
-                        echo " - " . gT("Filtered from statistics script");
+                        echo "<h2>" . gT("Filtered from statistics script") . "</h2>";
                     }
                     if ($SingleResponse) {
-                        echo " - " . sprintf(gT("Single response: ID %s"), $SingleResponse);
+                        echo "<h2>" . sprintf(gT("Single response: ID %s"), $SingleResponse)  . "</h2>";
                     }
                     ?>
-                </h4>
             </div>
         </div>
-        <h3></h3>
     </div>
+    <?php endif; ?>
 
     <div class="row">
         <div class="col-md-12 content-right">
