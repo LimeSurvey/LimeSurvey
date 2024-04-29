@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2024-04-26 13:07:06+00:00\n"
+"POT-Creation-Date: 2024-04-29 14:33:06+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -288,7 +288,7 @@ msgstr ""
 #: application/models/SurveymenuEntries.php:182
 #: application/models/SurveysGroups.php:96
 #: application/models/TokenDynamic.php:629
-#: application/views/surveyAdministration/surveySummary_view.php:38
+#: application/views/surveyAdministration/surveySummary_view.php:35
 #: modules/admin/HelloWorld/controller/HelloWorld.php:78
 #: modules/admin/HelloWorld/controller/HelloWorld.php:114
 msgid "ID"
@@ -24791,7 +24791,7 @@ msgstr ""
 msgid "By default, surveys are activated in open-access mode and participants don't need an invitation code. "
 msgstr ""
 
-#: application/views/surveyAdministration/surveySummary_view.php:37
+#: application/views/surveyAdministration/surveySummary_view.php:34
 msgid "Survey summary"
 msgstr ""
 
