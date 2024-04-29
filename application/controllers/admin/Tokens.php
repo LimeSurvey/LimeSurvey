@@ -2690,10 +2690,10 @@ class Tokens extends SurveyCommonAction
      * @param int $iSurveyId
      * @param string $subaction
      * @param integer $iTokenId
-     * @param boolean $ajax
+     * @param null $deprecated in 6.5.5, used before to show partial view, move to Yii::app()->request->getIsAjaxRequest()
      * @return void
      */
-    public function handletokenform($iSurveyId, $subaction, $iTokenId = "", $ajax = false)
+    public function handletokenform($iSurveyId, $subaction, $iTokenId = "", $deprecated = null)
     {
         $oSurvey = Survey::model()->findByPk($iSurveyId);
         if (!$oSurvey->hasTokensTable) {
@@ -2712,7 +2712,8 @@ class Tokens extends SurveyCommonAction
         }
 
         $aData['iTokenLength'] = !empty(Token::model($iSurveyId)->survey->oOptions->tokenlength) ? Token::model($iSurveyId)->survey->oOptions->tokenlength : 15;
-
+        /* @var boolean is it an ajax request */
+        $ajax = App()->request->getIsAjaxRequest();
 
         $thissurvey = $oSurvey->attributes;
         $aAdditionalAttributeFields = $oSurvey->decodedAttributedescriptions;
