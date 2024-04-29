@@ -837,7 +837,13 @@ class Tokens extends SurveyCommonAction
                 foreach ($aAdditionalAttributeFields as $attr_name => $desc) {
                     $value = $request->getPost($attr_name, '');
                     if ($desc['mandatory'] == 'Y' && trim($value) == '') {
-                        $sOutput .= sprintf(gT("Notice: Field '%s' was left empty, even though it is a mandatory attribute."), $desc['description']) . '<br>';
+                        /* All this part is disable via JS, no way to submit */
+                        $warningString = sprintf(gT("Notice: Field '%s' (%s) was left empty, even though it is a mandatory attribute."), $desc['description'], $attr_name);
+                        if ($ajax) {
+                            $sOutput .= $warningString . '<br>';
+                        } else {
+                            App()->setFlashMessage($warningString, 'warning');
+                        }
                     }
                     $aTokenData[$attr_name] = $request->getPost($attr_name);
                 }
@@ -851,22 +857,32 @@ class Tokens extends SurveyCommonAction
                 foreach ($aTokenData as $k => $v) {
                     $token->$k = $v;
                 }
-
                 $result = $token->encryptSave(true);
 
                 if ($result) {
-                    \ls\ajax\AjaxHelper::outputSuccess(gT('The survey participant was successfully updated.'));
+                    if ($ajax) {
+                        \ls\ajax\AjaxHelper::outputSuccess(gT('The survey participant was successfully updated.'));
+                        // App->end in AjaxHelper
+                    }
+                    App()->setFlashMessage(gT('The survey participant was successfully updated.'), 'success');
                 } else {
-                    $errors = $token->getErrors();
-                    $firstError = reset($errors);
-                    \ls\ajax\AjaxHelper::outputError($firstError[0]);
+                    if ($ajax) {
+                        $errors = $token->getErrors();
+                        $firstError = reset($errors);
+                        \ls\ajax\AjaxHelper::outputError($firstError[0]);
+                        // App->end in AjaxHelper
+                    }
+                    App()->setFlashMessage(CHtml::errorSummary($token, '<div><strong>' . gT('The survey participant was not updated.'). '</strong></div>'), 'danger');
                 }
             } else {
-                \ls\ajax\AjaxHelper::outputError(gT('There is already an entry with that exact access code in the table. The same access code cannot be used in multiple entries.'));
+                if ($ajax) {
+                    \ls\ajax\AjaxHelper::outputError(gT('There is already an entry with that exact access code in the table. The same access code cannot be used in multiple entries.'));
+                    // App->end in AjaxHelper
+                }
+                App()->setFlashMessage(gT('There is already an entry with that exact access code in the table. The same access code cannot be used in multiple entries.'), 'error');
             }
-        } else {
-            $this->handletokenform($iSurveyId, "edit", $iTokenId, $ajax);
         }
+        $this->handletokenform($iSurveyId, "edit", $iTokenId, $ajax);
     }
 
     /**
@@ -2729,7 +2745,7 @@ class Tokens extends SurveyCommonAction
         $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
             '/surveyAdministration/partial/topbar/surveyTopbarRight_view',
             [
-                'showGreenSaveAndCloseButton' => true,
+                'showSaveButton' => true,
                 'showWhiteCloseButton' => true,
                 'closeUrl' => Yii::app()->createUrl(
                     "admin/tokens",
