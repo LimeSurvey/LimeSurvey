@@ -34,6 +34,19 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.6.60 (build 240423) to 5.6.61 (build 240430) April 29, 2024
+-Fixed issue #19527: surveys list throw error 500 with invalid template (#3829) (Denis Chenu)
+-Fixed issue #19504: Potential PHP Warning when get Survey listing (#3820) (Denis Chenu)
+#Updated translation: Swahili by Mazi
+#Updated translation: Somali by Mazi
+#Updated translation: Persian (Afghanistan) - Dari by Mazi
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Montenegrin by ivan.vp, kristinakom, lauraspr
+#Updated translation: Greek by kajetan
+#Updated translation: French (France) by DenisChenu
+#Updated translation: Amharic by Mazi, tibor.pacalat
+
+
 Changes from 5.6.59 (build 240416) to 5.6.60 (build 240423) April 22, 2024
 -Fixed issue #19426: Survey listing - multiple call of same user (#3785) (Denis Chenu)
 -Fixed issue #18473: Survey listing - multiple call of template (#3786) (Denis Chenu)
