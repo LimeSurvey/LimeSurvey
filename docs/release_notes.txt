@@ -34,6 +34,23 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.5.4 (build 240422) to 6.5.5 (build 240429) April 29, 2024
+-Fixed issue: Add/import user role buttons must have unique id (#3832) (K Foster)
+-Fixed issue #CT-771: clear selection and select all not working in responses grid column filter (#3828) (Patrick Teichmann)
+-Fixed issue #CT-711: email templates, add attachment, failed to open the resource manager (kcfinder) resulting in being unable to attach files to the email template (Patrick Teichmann)
+-Fixed issue #19527: Potential 500 error in survey list (#3833) (Denis Chenu)
+-Fixed issue #19504: Potential PHP Warning when get Survey listing (#3821) (Denis Chenu)
+-Fixed issue #19465: Apply new term blocklist (Carsten Schmitz)
+#Updated translation: Portuguese (Portugal) by holch, samarta
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Montenegrin by c_schmitz, kristinakom
+#Updated translation: Japanese by d_inoue
+#Updated translation: German by c_schmitz
+#Updated translation: German by Transcaretech
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Finnish by Jmantysalo
+
+
 Changes from 6.5.3 (build 240415) to 6.5.4 (build 240422) April 22, 2024
 -Fixed issue #19518: Downloading responses does not exit loading animation once finished (#3813) (Gabriel Jenik)
 -Fixed issue #19319: potential error during login, after Updating To LS 6.4.0 (#3767) (Denis Chenu)
