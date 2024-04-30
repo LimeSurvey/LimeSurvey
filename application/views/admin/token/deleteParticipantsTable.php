@@ -4,6 +4,10 @@
  */
 ?>
 <div class="side-body <?php echo getSideBodyClass(false); ?>">
+    <?php $this->widget('ext.admin.survey.PageTitle.PageTitle', array(
+        'title' => gT("Delete survey participants table"),
+        'model' => $oSurvey,
+    )); ?>
     <div class="row welcom survey-action">
         <div class="col-12 content-right">
             <div class="card card-primary border-left-danger">
@@ -12,7 +16,6 @@
                     'post',
                     array('id' => 'deletetokentable', 'name' => 'deletetokentable')
                 ); ?>
-                <h3 class="lead"><?php eT('Delete survey participants table'); ?></h3>
                 <p>
                     <?php eT('Deleting the participants table will switch the survey back to open-access mode.'); ?>
                     <br /> <br />

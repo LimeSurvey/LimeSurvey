@@ -10,7 +10,10 @@ echo viewHelper::getViewTestTag('surveyParticipantsIndex');
 
 ?>
 <div class='side-body survey-response-page <?php echo getSideBodyClass(true); ?>'>
-    <h1> <?= gT("Survey participants") ?> </h1>
+    <?php $this->widget('ext.admin.survey.PageTitle.PageTitle', array(
+        'title' => gT("Survey participants"),
+        'model' => $oSurvey,
+    )); ?>
     <div class="mt-4">
         <div class="accordion">
             <div class="accordion-item">

@@ -1738,7 +1738,7 @@ class SurveyAdministrationController extends LSBaseController
 
             $aData['sidemenu']['state'] = false;
         }
-
+        $aData['oSurvey'] = $survey;
         $this->aData = $aData;
         $this->render('deactivateSurvey_view', $aData);
     }

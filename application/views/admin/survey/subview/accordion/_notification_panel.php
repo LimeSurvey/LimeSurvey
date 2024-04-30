@@ -32,6 +32,11 @@ $googleAnalyticsStyleOptions = array(
 );
 ?>
 <!-- Notification panel -->
+<?php $this->widget('ext.admin.survey.PageTitle.PageTitle', array(
+            'title' => gT('Participant settings'),
+            'model' => $oSurvey,
+    ));
+?>
 <div id='notification-panel'>
     <?php if ($oSurvey->isActive) : ?>
         <div class="row ls-panelboxes mb-5">

@@ -9,7 +9,10 @@
 ?>
 
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
-    <h3><?php echo sprintf(gT("View response ID %d"), $id); ?></h3>
+    <?php $this->widget('ext.admin.survey.PageTitle.PageTitle', array(
+        'title' => sprintf(gT("View response ID %d"), $id),
+        'model' => $oSurvey,
+    ));?>
     <div class="row">
         <div class="col-12 content-right">
             <?php echo CHtml::form(["responses/browse/", ['surveyId' => $surveyid]], 'post', ['id' => 'resulttableform']); ?>

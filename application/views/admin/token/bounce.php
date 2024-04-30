@@ -1,10 +1,12 @@
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
-    <h3><?php eT("Bounce settings"); ?></h3>
+    <?php $this->widget('ext.admin.survey.PageTitle.PageTitle', array(
+        'title' => gT("Bounce settings"),
+        'model' => $oSurvey,
+    )); ?>
     <div class="row">
         <div class="col-12">
             <div id='bouncesettingsdiv'>
                 <?php echo CHtml::form(array("admin/tokens/sa/bouncesettings/surveyid/$surveyid"), 'post', array('class' => 'form-core settingswidget ','id' => 'bouncesettings','name' => 'frmeditquestion')); ?>
-
                         <div class="settings-list">
 
                             <!-- Survey bounce email -->

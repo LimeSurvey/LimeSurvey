@@ -22,6 +22,11 @@ echo viewHelper::getViewTestTag('surveyPlugins');
 ?>
 
 <div id="advanced-question-editor">
+    <?php $this->widget('ext.admin.survey.PageTitle.PageTitle', array(
+                'title' => gT('Simple plugin settings'),
+                'model' => $oSurvey,
+        ));
+    ?>
     <?php if (isset($pluginSettings)):
             foreach ($pluginSettings as $id => $plugin)
             {

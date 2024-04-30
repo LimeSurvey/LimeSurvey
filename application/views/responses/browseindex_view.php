@@ -12,7 +12,10 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
 
 ?>
 <div class='side-body survey-response-page <?php echo getSideBodyClass(true); ?>'>
-    <h1> <?= gT("Survey responses") ?> </h1>
+    <?php $this->widget('ext.admin.survey.PageTitle.PageTitle', array(
+        'title' => gT('Survey responses'),
+        'model' => $oSurvey,
+    )); ?>
     <div class="mt-4">
         <?php echo $this->renderPartial(
             'partial/responseSummary',

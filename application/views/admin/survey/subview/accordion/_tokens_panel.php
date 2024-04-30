@@ -102,8 +102,12 @@ App()->getClientScript()->registerScript("edit-after-completion-message", "
     
 ", LSYii_ClientScript::POS_BEGIN);
 ?>
-
 <!-- tokens panel -->
+<?php $this->widget('ext.admin.survey.PageTitle.PageTitle', array(
+    'title' => gT('Notification and data management'),
+    'model' => $oSurvey,
+));
+?>
 <div id='tokens-panel'>
     <div class="row">
         <div class="col-12 col-lg-6">

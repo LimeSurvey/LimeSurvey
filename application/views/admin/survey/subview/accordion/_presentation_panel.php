@@ -37,7 +37,11 @@ if ($bShowInherited) {
     $optionsQuestionIndex['-1'] = $oSurveyOptions->questionindex . " ᴵ";
 }
 ?>
-
+<?php $this->widget('ext.admin.survey.PageTitle.PageTitle', array(
+    'title' => gT('Presentation and navigation'),
+    'model' => $oSurvey,
+));
+?>
 <!-- Presentation panel -->
 <div id='presentation-panel'>
     <div class="row">

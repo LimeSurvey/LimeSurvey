@@ -3,9 +3,12 @@ echo PrepareEditorScript(false, $this);
 $count = 0;
 ?>
 <div id='edit-group' class='side-body <?php echo getSideBodyClass(false); ?>'>
+<?php $this->widget('ext.admin.survey.PageTitle.PageTitle', array(
+    'title' => sprintf(gT("Edit group “%s” (ID %s)"), $oQuestionGroup['group_order'], $oQuestionGroup['gid']),
+    'model' => $oSurvey,
+)); ?>
     <div class="row">
         <div class="col-12 content-right">
-            <div class="pagetitle h1"><?php eT("Edit Group"); ?></div>
             <ul class="nav nav-tabs" id="edit-group-language-selection">
                 <?php foreach ($tabtitles as $i => $eachtitle): ?>
                     <li role="presentation" class="nav-item">

@@ -6,8 +6,10 @@
 ?>
 
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
-    <h3><?php eT("Import survey participants from CSV file"); ?></h3>
-
+    <?php $this->widget('ext.admin.survey.PageTitle.PageTitle', array(
+        'title' => gT("Import survey participants from CSV file"),
+        'model' => $oSurvey,
+    )); ?>
     <div class="row">
         <div class="col-12 content-right">
             <?php echo CHtml::form(["admin/tokens/sa/import/surveyid/{$iSurveyId}"],

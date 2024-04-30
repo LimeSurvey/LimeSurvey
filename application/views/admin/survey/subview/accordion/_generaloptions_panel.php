@@ -38,6 +38,11 @@ if ($bShowInherited) {
 }
 ?>
 <?php if ($action == 'editsurveysettings'): ?>
+<?php $this->widget('ext.admin.survey.PageTitle.PageTitle', array(
+            'title' => gT('General survey settings'),
+            'model' => $oSurvey,
+    ));
+?>
 <?php
 $sConfirmLanguageScript = "
         $(document).on('submit','#globalsetting',function(){

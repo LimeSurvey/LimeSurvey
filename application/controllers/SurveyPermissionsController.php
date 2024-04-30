@@ -69,6 +69,7 @@ class SurveyPermissionsController extends LSBaseController
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'surveypermissions.js');
         $oSurvey = Survey::model()->findByPk($surveyid);
         $aData['surveyid'] = $surveyid;
+        $aData['oSurvey'] = $oSurvey;
         $aData['sidemenu']['state'] = false;
 
         $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $surveyid . ")";
@@ -93,6 +94,7 @@ class SurveyPermissionsController extends LSBaseController
             'basePermissions' => $aBaseSurveyPermissions,
             'userCreatePermission' => Permission::model()->hasSurveyPermission($surveyid, 'surveysecurity', 'create'),
             'surveyid' => $surveyid,
+            'oSurvey' => $oSurvey,
             'userList' => $oSurveyPermissions->getSurveyUserList(),
             'userGroupList' => $oSurveyPermissions->getSurveyUserGroupList(),
             'tableContent' => $oSurveyPermissions->getUsersSurveyPermissions(),

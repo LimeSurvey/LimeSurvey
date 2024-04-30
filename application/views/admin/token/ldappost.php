@@ -7,7 +7,10 @@
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
     <div class="row">
         <div class="col-12 content-right">
-            
+            <?php $this->widget('ext.admin.survey.PageTitle.PageTitle', array(
+                'title' => gT('Import survey participants from LDAP'),
+                'model' => $oSurvey,
+            )); ?>
             <!-- Success -->
             <?php if ($xz != 0): ?>
                 <div class="jumbotron message-box">

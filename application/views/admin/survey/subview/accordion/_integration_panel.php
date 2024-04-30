@@ -15,6 +15,11 @@ echo viewHelper::getViewTestTag('surveyPanelIntegration');
 <!-- Datatable translation-data -->
 <!-- Container -->
 <div id='panelintegration' class="tab-pane fade show active">
+<?php $this->widget('ext.admin.survey.PageTitle.PageTitle', array(
+            'title' => gT('Edit panel integration'),
+            'model' => $oSurvey,
+    ));
+?>
         <div class="row">
             <div class="col-lg-12 ls-flex ls-flex-row">
                 <div class="ls-flex-item text-start">

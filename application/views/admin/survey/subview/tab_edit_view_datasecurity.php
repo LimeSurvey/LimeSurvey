@@ -23,6 +23,11 @@ initKcfinder();
 PrepareEditorScript(false, $this);
 ?>
 <!-- security notice -->
+<?php $this->widget('ext.admin.survey.PageTitle.PageTitle', array(
+    'title' => gT('Privacy policy settings'),
+    'model' => $oSurvey,
+));
+?>
 <div class="mb-3">
             <label class="form-label" for='showsurveypolicynotice'><?php  eT("Show privacy policy text with mandatory checkbox:") ; ?></label>
     <div class="">

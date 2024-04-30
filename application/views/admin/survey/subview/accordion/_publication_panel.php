@@ -21,10 +21,15 @@ echo viewHelper::getViewTestTag('surveyPublicationOptions');
 ", LSYii_ClientScript::POS_BEGIN);
 ?>
 <!-- Publication panel -->
+<?php $this->widget('ext.admin.survey.PageTitle.PageTitle', array(
+    'title' => gT('Publication and access control'),
+    'model' => $oSurvey,
+));
+?>
 <div id='publication-panel'>
     <?php if ($bShowAllOptions === true){ ?>
     <div class="row">
-            <h1><?php eT("Publication date"); ?></h1>
+            <h2 class='h1'><?php eT("Publication date"); ?></h2>
             <!-- Start date/time -->
             <div class="col-lg-3 mb-3">
                 <label class=" form-label" for='startdate'><?php  eT("Start date/time:"); ?></label>
@@ -67,7 +72,7 @@ echo viewHelper::getViewTestTag('surveyPublicationOptions');
     <div>
             <!-- List survey publicly -->
             <div class="mb-3 mt-4">
-                <h1><?php eT("Access control"); ?></h1>
+                <h2 class='h1'><?php eT("Access control"); ?></h2>
                 <label class=" form-label" for='listpublic'><?php printf(gT("Link survey on %spublic index page%s:"), "<a href='" . Yii::app()->getConfig("publicurl") . "' target='_blank' >", "</a>");?></label>
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
@@ -104,7 +109,7 @@ echo viewHelper::getViewTestTag('surveyPublicationOptions');
             
             ?>
             <div class="mb-3 mt-4">
-                <h1><?php eT("CAPTCHA"); ?></h1>
+                <h2 class='h1'><?php eT("CAPTCHA"); ?></h2>
                 <label class=" form-label" for='usecaptcha_surveyaccess'><?php  eT("Use CAPTCHA for survey access:"); ?></label>
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [

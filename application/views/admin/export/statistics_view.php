@@ -14,18 +14,10 @@ echo viewHelper::getViewTestTag('statisticsIndex');
 <?php $this->renderPartial('/admin/export/statistics_subviews/_statistics_view_scripts', array('sStatisticsLanguage' => $sStatisticsLanguage, 'surveyid' => $surveyid, 'showtextinline' => $showtextinline)); ?>
 <?php echo CHtml::form(array("admin/statistics/sa/index/surveyid/{$surveyid}/"), 'post', array('name' => 'generate-statistics', 'class' => '', 'id' => 'generate-statistics')); ?>
 <div id='statisticsview' class='side-body <?php echo getSideBodyClass(false); ?>'>
-    <div class="h1 d-print-block d-none text-center"><?php echo flattenText($oSurvey->defaultlanguage->surveyls_title, 1); ?></div>
-    <div class="row d-print-none">
-        <div class="col-12">
-            <div class="col-lg-3 text-start">
-                <h4 class="d-print-none">
-                    <span class="ri-bar-chart-fill"></span> &nbsp;&nbsp;&nbsp;
-                    <?php eT("Statistics"); ?>
-                </h4>
-            </div>
-        </div>
-    </div>
-
+<?php $this->widget('ext.admin.survey.PageTitle.PageTitle', array(
+    'title' => gT("Statistics"),
+    'model' => $oSurvey,
+)); ?>
 
 <?php
     $submitted = ($filterchoice_state != '' || !empty($summary));

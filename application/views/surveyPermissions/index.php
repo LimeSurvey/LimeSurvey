@@ -8,9 +8,12 @@
 /* @var $oSurveyPermissions \LimeSurvey\Models\Services\SurveyPermissions */
 
 ?>
+<?php echo viewHelper::getViewTestTag('surveyPermissions'); ?>
+<?php $this->widget('ext.admin.survey.PageTitle.PageTitle', array(
+    'title' => gT('Survey permissions'),
+    'model' => $oSurvey,
+)); ?>
 <div id='edit-permission' class='side-body position-relative  ls-settings-wrapper <?= getSideBodyClass(false) ?> "'>
-    <?php echo viewHelper::getViewTestTag('surveyPermissions'); ?>
-    <h1> <?= gT("Survey permissions") ?> </h1>
     <div class="row pt-2 pb-2 align-items-center">
         <div class="col-12 align-items-center">
             <?php

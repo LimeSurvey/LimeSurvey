@@ -1,6 +1,9 @@
 <!-- Token export options -->
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
-    <h3><?php eT("Survey participant export options"); ?></h3>
+    <?php $this->widget('ext.admin.survey.PageTitle.PageTitle', array(
+        'title' => gT('Survey participant export options'),
+        'model' => $oSurvey,
+    )); ?>
     <div class="row">
         <div class="col-12 content-right">
             <?php echo CHtml::form(array("admin/tokens/sa/exportdialog/surveyid/$surveyid"), 'post',array('class'=>'form-core settingswidget ','id'=>'bouncesettings','name'=>'frmeditquestion')); ?>

@@ -1,4 +1,10 @@
 <div class='side-body  <?php echo getSideBodyClass(false); ?>'>
+<?php 
+    $title = ($bEmail) ? gT("Sending invitations…") : gT("Sending reminders…");
+    $this->widget('ext.admin.survey.PageTitle.PageTitle', array(
+        'title' => $title,
+        'model' => $oSurvey,
+)); ?>
 <div class="jumbotron message-box message-box-warning">
     <h2><?php eT("Warning"); ?></h2>
     <?php echo CHtml::form(array("admin/tokens/sa/email/action/{$sSubAction}/surveyid/{$surveyid}"), 'post', ['id' => 'tokenSubmitInviteForm']); ?>

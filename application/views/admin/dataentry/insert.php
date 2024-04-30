@@ -1,4 +1,8 @@
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
+<?php $this->widget('ext.admin.survey.PageTitle.PageTitle', array(
+    'title' => gT("Data entry"),
+    'model' => $oSurvey,
+)); ?>
 <div class="col-12 list-surveys">
     <div class="row">
         <div class="col-12 content-right">

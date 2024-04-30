@@ -48,7 +48,7 @@ class ResponsesController extends LSBaseController
         App()->getClientScript()->registerCssFile(App()->getConfig('publicstyleurl') . 'browse.css');
 
         $surveyId = (int)App()->request->getParam('surveyId');
-        $oSurvey = Survey::model()->findByPk($surveyId);
+        $this->aData['oSurvey'] = $oSurvey = Survey::model()->findByPk($surveyId); /* $this->aData are not sent to view if updated in beforeRender */
         $this->aData['subaction'] = gT("Responses and statistics");
         $this->aData['display']['menu_bars']['browse'] = gT('Browse responses'); // browse is independent of the above
         $this->aData['title_bar']['title'] = gT('Browse responses') . ': ' . $oSurvey->currentLanguageSettings->surveyls_title;
@@ -124,8 +124,6 @@ class ResponsesController extends LSBaseController
         if (!is_numeric(Yii::app()->request->getParam('id'))) {
             throw new CHttpException(403, gT("Invalid response ID"));
         }
-        $survey = Survey::model()->findByPk($surveyId);
-
         if (!Permission::model()->hasSurveyPermission($surveyId, 'responses', 'read')) {
             App()->user->setFlash('error', gT("You do not have permission to access this page."));
             $this->redirect(['surveyAdministration/view', 'surveyid' => $surveyId]);
@@ -133,6 +131,8 @@ class ResponsesController extends LSBaseController
         }
         /* TODO : Check if response still exist, after checking survey */
         $aData = $this->getData($surveyId, $id, $browseLang);
+        $aData['oSurvey'] = $survey = Survey::model()->findByPk($surveyId);
+
         $sBrowseLanguage = $aData['language'];
 
         extract($aData, EXTR_OVERWRITE);
@@ -394,6 +394,7 @@ class ResponsesController extends LSBaseController
         $this->render('browseidrow_view', [
             'id'              => $aData['id'],
             'surveyid'        => $aData['surveyId'],
+            'oSurvey'         => $aData['oSurvey'],
             'answers'         => $aData['answers'],
             'inserthighlight' => $aData['inserthighlight'],
             'fnames'          => $aData['fnames'],
@@ -535,11 +536,13 @@ class ResponsesController extends LSBaseController
             $this->aData = $aData;
 
             $this->render('browseindex_view', [
+                /* Why not sed aData directly ?*/
                 // summary table data
                 'num_completed_answers' => $aData['num_completed_answers'],
                 'num_total_answers'     => $aData['num_total_answers'],
                 // response table data
                 'surveyid' => $aData['surveyid'],
+                'oSurvey' => Survey::model()->findByPk($aData['surveyid']),
                 'dateformatdetails' => $aData['dateformatdetails'],
                 'model' => $aData['model'],
                 'bHaveToken' => $aData['bHaveToken'],

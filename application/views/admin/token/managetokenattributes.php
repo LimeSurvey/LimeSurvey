@@ -7,8 +7,10 @@
  */
 ?>
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
-    <h3><?php eT("Manage attribute fields"); ?></h3>
-
+    <?php $this->widget('ext.admin.survey.PageTitle.PageTitle', array(
+        'title' => gT('Manage attribute fields'),
+        'model' => $oSurvey,
+    )); ?>
     <div class="row">
         <div class="col-12 content-right">
             <?php echo CHtml::form(array("admin/tokens/sa/updatetokenattributedescriptions/surveyid/{$surveyid}"), 'post'); ?>
@@ -171,7 +173,7 @@
         </div>
     </div>
 
-    <h3><?php eT("Add/delete survey participant attributes"); ?></h3>
+    <h2><?php eT("Add/delete survey participant attributes"); ?></h2>
 
     <div class="row">
         <div class="col-12 content-right">

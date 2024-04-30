@@ -1,4 +1,8 @@
 <div class="col-12 list-surveys">
+<?php $this->widget('ext.admin.survey.PageTitle.PageTitle', array(
+    'title' => gT("Data entry"),
+    'model' => $oSurvey,
+)); ?>
     <div class="row">
         <div class="col-12 content-right">
             <div class="jumbotron message-box <?php if(isset($errormsg) && $errormsg) {echo 'message-box-error';}?>">

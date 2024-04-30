@@ -4,11 +4,13 @@
      */
 ?>
 <div class="side-body <?php echo getSideBodyClass(false); ?>">
+    <?php $this->widget('ext.admin.survey.PageTitle.PageTitle', array(
+        'title' => gT("Survey participants table deleted"),
+        'model' => $oSurvey,
+    )); ?>
     <div class="row welcom survey-action">
         <div class="col-12 content-right">
             <div class="card card-primary">
-                <h3 class="lead"><?php eT('Survey participants table deleted'); ?></h3>
-                <br /> <br />
                 <p>
                     <?php eT('The survey participants table has been deleted and your survey has been switched back to open-access mode. Participants no longer require an access code to access the survey.'); ?>
                     <br /> <br />

@@ -6,7 +6,10 @@
 
 ?>
 <div class='side-body <?= getSideBodyClass(true); ?>'>
-    <div class="pagetitle h1"><?php eT('Group summary'); ?></div>
+<?php $this->widget('ext.admin.survey.PageTitle.PageTitle', array(
+    'title' => sprintf(gT("Group “%s” summary (ID %s)"), $grow['group_order'], $grow['gid']),
+    'model' => $oSurvey,
+)); ?>
     <div id="groupdetails" class="summary-table">
         <div class="row">
             <div class="col-2"><strong>

@@ -8,11 +8,12 @@ echo viewHelper::getViewTestTag('surveyQuotas');
 ?>
 
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
+    <?php $this->widget('ext.admin.survey.PageTitle.PageTitle', array(
+        'title' => gT('Survey quotas'),
+        'model' => $oSurvey,
+    )); ?>
     <div class="row">
         <div class="col-12 content-right">
-            <h3>
-                <?php eT("Survey quotas");?>
-            </h3>
             <?php
             $massiveAction = '';
             if ($oDataProvider->itemCount > 0) {

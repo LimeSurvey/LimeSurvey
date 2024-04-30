@@ -11,14 +11,11 @@
 <div id='edit-question-body' class='side-body <?php echo getSideBodyClass(false); ?>'>
 
     <?= $jsVariablesHtml; ?>
-
+    <?php $this->widget('ext.admin.survey.PageTitle.PageTitle', array(
+        'title' => sprintf(gT("Copy question “%s” (ID %s)"), "<em>" . CHtml::encode($oQuestion->title) . "</em>", intval($oQuestion->qid)),
+        'model' => $oSurvey,
+    )); ?>
     <!-- Page Title-->
-    <div class="pagetitle h1">
-        <?php
-        eT("Copy question");
-        ?>
-    </div>
-
     <div id="copy-question" class="row">
         <!-- Form for the whole page-->
         <?php echo CHtml::form(array("questionAdministration/copyQuestion"), 'post',

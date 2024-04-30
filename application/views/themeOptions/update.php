@@ -28,6 +28,12 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
 <?php else : ?>
     <div class="col-12 side-body ls-settings-wrapper <?= getSideBodyClass(false) ?>" id="theme-option-sidebody">
 <?php endif; ?>
+<?php if (!empty($oSurvey)) {
+    $this->widget('ext.admin.survey.PageTitle.PageTitle', array(
+        'title' => sprintf(gT('Theme options (%s)'), Chtml::encode($model->template_name)),
+        'model' => $oSurvey,
+    ));
+} ?>
 
     <!-- Using bootstrap tabs to differ between just hte options and advanced direct settings -->
     <div class="row">

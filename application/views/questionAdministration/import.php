@@ -14,10 +14,13 @@ $headerComplete = $isGroupImport ? gT("Question group import is complete.") : gT
 ?>
 
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
+    <?php $this->widget('ext.admin.survey.PageTitle.PageTitle', array(
+        'title' => $header,
+        'model' => $oSurvey,
+    )); ?>
     <div class="row">
         <div class="col-12 content-right">
             <div class="jumbotron message-box">
-                <h1 class="text-info"><?= $header ?></h1>
                 <p class="lead text-info"><?php eT("Success") ?></p>
                 <p>
                     <?php eT("File upload succeeded.") ?>

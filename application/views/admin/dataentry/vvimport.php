@@ -1,19 +1,9 @@
 <div class="side-body <?php echo getSideBodyClass(false); ?>">
 <?php echo CHtml::form(array('admin/dataentry/sa/vvimport/surveyid/'.$surveyid), 'post', array('enctype'=>'multipart/form-data', 'id'=>'vvexport',  'class'=>''));?>
-    <?php if($tableExists):?>
-        <div class="row">
-        <div class="col-12">
-            <div class="col-lg-6 text-start">
-                <h4>
-                    <?php  eT("Import a VV response data file"); ?>
-                </h4>
-            </div>
-        </div>
-        <h3></h3>
-    </div>
-    <?php endif;?>
-    
-
+    <?php $this->widget('ext.admin.survey.PageTitle.PageTitle', array(
+        'title' => gT("Import a VV response data file"),
+        'model' => $oSurvey,
+    )); ?>
         <div class="row">
             <div class="col-12 content-right">
 
@@ -143,7 +133,6 @@
     <?php } else { ?>
 
     <div class="jumbotron message-box message-box-error">
-        <h2 class="danger"><?php eT("Import a VV response data file"); ?>:</h2>
         <p class="lead text-danger">
             <?php eT("Cannot import the VVExport file."); ?>
         </p>

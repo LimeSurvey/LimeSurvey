@@ -24,7 +24,11 @@ var LS = LS || {};  // namespace
 
 ?>
 <div class="side-body <?php echo getSideBodyClass(false); ?>">
-    <h3><?php eT("Edit email templates"); ?></h3>
+<?php $this->widget('ext.admin.survey.PageTitle.PageTitle', array(
+            'title' => gT('Edit email templates'),
+            'model' => $oSurvey,
+    ));
+?>
     <div class="row">
         <div class="col-12 content-right">
             <?php echo CHtml::form(['admin/emailtemplates/sa/update/surveyid/' . $surveyid], 'post', ['name' => 'emailtemplates', 'class' => '', 'id' => 'emailtemplates']); ?>

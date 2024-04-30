@@ -32,6 +32,10 @@ $count = 0;
 PrepareEditorScript(false, $this);
 ?>
 <!-- Text Elements Tabs -->
+<?php $this->widget('ext.admin.survey.PageTitle.PageTitle', array(
+    'title' => gT('Survey text elements'),
+    'model' => $oSurvey,
+)); ?>
 <ul class="nav nav-tabs" id="edit-survey-text-element-language-selection">
     <?php foreach ($aTabTitles as $i => $title): ?>
         <li role="presentation" class="nav-item">

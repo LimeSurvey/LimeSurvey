@@ -1,7 +1,9 @@
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
-    <div class="pagetitle h1 pt-3 pb-2">
-        <?php eT("Conditions designer"); ?>
-
+    <?php $this->widget('ext.admin.survey.PageTitle.PageTitle', array(
+        'title' => gT("Conditions designer"),
+        'model' => $oSurvey,
+    )); ?>
+    <div class="clearfix">
         <?php if ($scenariocount > 0): ?>
             <?php
             $this->widget('ext.ButtonWidget.ButtonWidget', [
