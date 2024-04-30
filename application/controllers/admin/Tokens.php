@@ -748,6 +748,7 @@ class Tokens extends SurveyCommonAction
         $survey = Survey::model()->findByPk($iSurveyId);
         $request = Yii::app()->request;
         $ajax = $request->getIsAjaxRequest();
+        $redirect = $request->getPost('close-after-save');
         // Check permission
         if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update')) {
             if ($ajax) {
@@ -837,12 +838,13 @@ class Tokens extends SurveyCommonAction
                 foreach ($aAdditionalAttributeFields as $attr_name => $desc) {
                     $value = $request->getPost($attr_name, '');
                     if ($desc['mandatory'] == 'Y' && trim($value) == '') {
-                        /* All this part is disable via JS, no way to submit */
+                        /* All this part is disable via JS, no way to submit : issue #19548 https://bugs.limesurvey.org/view.php?id=19548*/
                         $warningString = sprintf(gT("Notice: Field '%s' (%s) was left empty, even though it is a mandatory attribute."), $desc['description'], $attr_name);
                         if ($ajax) {
                             $sOutput .= $warningString . '<br>';
                         } else {
                             App()->setFlashMessage($warningString, 'warning');
+                            $redirect = false; /* Do not redirecty to allow editing */
                         }
                     }
                     $aTokenData[$attr_name] = $request->getPost($attr_name);
@@ -865,6 +867,16 @@ class Tokens extends SurveyCommonAction
                         // App->end in AjaxHelper
                     }
                     App()->setFlashMessage(gT('The survey participant was successfully updated.'), 'success');
+                    if ($redirect) {
+                        $redirectUrl = Yii::app()->createUrl(
+                            "admin/tokens",
+                            [
+                                "sa" => 'index',
+                                "surveyid" => $iSurveyId,
+                            ]
+                        );
+                        $this->getController()->redirect($redirectUrl);
+                    }
                 } else {
                     if ($ajax) {
                         $errors = $token->getErrors();
