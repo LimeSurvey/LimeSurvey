@@ -872,7 +872,7 @@ class Tokens extends SurveyCommonAction
                         \ls\ajax\AjaxHelper::outputError($firstError[0]);
                         // App->end in AjaxHelper
                     }
-                    App()->setFlashMessage(CHtml::errorSummary($token, '<div><strong>' . gT('The survey participant was not updated.'). '</strong></div>'), 'danger');
+                    App()->setFlashMessage(CHtml::errorSummary($token, '<div><strong>' . gT('The survey participant was not updated.') . '</strong></div>'), 'danger');
                 }
             } else {
                 if ($ajax) {
