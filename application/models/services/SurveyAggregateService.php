@@ -31,6 +31,7 @@ class SurveyAggregateService
     private TemplateConfiguration $templateConfiguration;
     private $restMode = false;
     private SurveyActivate $surveyActivate;
+    private SurveyDeactivate $surveyDeactivate;
 
     public function __construct(
         LanguageSettings $languageSettings,
@@ -38,7 +39,8 @@ class SurveyAggregateService
         UrlParams $urlParams,
         ProxyExpressionManager $proxyExpressionManager,
         TemplateConfiguration $templateConfiguration,
-        SurveyActivate $surveyActivate
+        SurveyActivate $surveyActivate,
+        SurveyDeactivate $surveyDeactivate
     ) {
         $this->languageSettings = $languageSettings;
         $this->generalSettings = $generalSettings;
@@ -46,6 +48,7 @@ class SurveyAggregateService
         $this->proxyExpressionManager = $proxyExpressionManager;
         $this->templateConfiguration = $templateConfiguration;
         $this->surveyActivate = $surveyActivate;
+        $this->surveyDeactivate = $surveyDeactivate;
     }
 
     /**
@@ -116,5 +119,16 @@ class SurveyAggregateService
     public function activate($surveyId, $input)
     {
         return $this->surveyActivate->activate($surveyId, $input);
+    }
+
+    /**
+     * Deactivate
+     *
+     * @param int $surveyId
+     * @return array
+     */
+    public function deactivate($surveyId)
+    {
+        return $this->surveyDeactivate->deactivate($surveyId);
     }
 }

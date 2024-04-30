@@ -15,7 +15,7 @@ use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\{
     OpHandlerValidationTrait
 };
 
-class OpHandlerSurveyActivate implements OpHandlerInterface
+class OpHandlerSurveyDeactivate implements OpHandlerInterface
 {
     use OpHandlerExceptionTrait;
     use OpHandlerSurveyTrait;
@@ -35,26 +35,12 @@ class OpHandlerSurveyActivate implements OpHandlerInterface
     public function canHandle(OpInterface $op): bool
     {
         $isUpdateOperation = $op->getType()->getId() === OpTypeUpdate::ID;
-        $isSurveyActivate = $op->getEntityType() === 'surveyActivate';
+        $isSurveyDeactivate = $op->getEntityType() === "surveyDeactivate";
 
-        return $isUpdateOperation && $isSurveyActivate;
+        return $isUpdateOperation && $isSurveyDeactivate;
     }
 
     /**
-     * Handle subquestion delete operation.
-     *
-     *   Expects a patch structure like this:
-     *   {
-     *        "id": 571271,
-     *        "op": "update",
-     *        "entity": "surveyActivate",
-     *        "error": false,
-     *        "props": {
-     *            "anonymized": false
-     *        }
-     *   }
-
-     *
      * @param OpInterface $op
      * @return void
      * @throws \LimeSurvey\Models\Services\Exception\NotFoundException
@@ -64,17 +50,17 @@ class OpHandlerSurveyActivate implements OpHandlerInterface
     public function handle(OpInterface $op)
     {
         $diContainer = \LimeSurvey\DI::getContainer();
-        $surveyActivateService = $diContainer->get(
+        $surveyDeactivateService = $diContainer->get(
             SurveyAggregateService::class
         );
         $props = $op->getProps();
-        $surveyActivateService->activate($op->getEntityId(), $props);
+        $surveyDeactivateService->deactivate($op->getEntityId(), $props);
     }
 
     /**
-     * Checks if patch is valid for this operation.
+     * Checks if patchs is valid for this operation
      * @param OpInterface $op
-     * @return array
+     * @return  array
      */
     public function validateOperation(OpInterface $op): array
     {
