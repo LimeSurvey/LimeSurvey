@@ -86,8 +86,6 @@ class SurveyDeactivate
             return $result;
         }
 
-        $aData = [];
-
         if ($isOk) {
             if (!empty($this->app->session->get('sNewSurveyTableName'))) {
                 $this->app->session->remove('sNewSurveyTableName');
