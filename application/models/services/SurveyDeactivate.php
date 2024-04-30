@@ -100,32 +100,7 @@ class SurveyDeactivate
         } else {
             //See if there is a tokens table for this survey
             if (tableExists("{{tokens_{$iSurveyID}}}")) {
-                $toldtable = $this->app->db->tablePrefix . "tokens_{$iSurveyID}";
-                $tnewtable = $this->app->db->tablePrefix . "old_tokens_{$iSurveyID}_{$date}";
-                if ($this->app->db->getDriverName() == 'pgsql') {
-                    // Find out the trigger name for tid column
-                    $tidDefault = $this->app->db->createCommand("SELECT pg_get_expr(adbin, adrelid) as adsrc FROM pg_attribute JOIN pg_class ON (pg_attribute.attrelid=pg_class.oid) JOIN pg_attrdef ON(pg_attribute.attrelid=pg_attrdef.adrelid AND pg_attribute.attnum=pg_attrdef.adnum) WHERE pg_class.relname='$toldtable' and pg_attribute.attname='tid'")->queryScalar();
-                    if (preg_match("/nextval\('(tokens_\d+_tid_seq\d*)'::regclass\)/", (string) $tidDefault, $matches)) {
-                        $oldSeq = $matches[1];
-                        $this->app->db->createCommand()->renameTable($oldSeq, $tnewtable . '_tid_seq');
-                        $setsequence = "ALTER TABLE " . $this->app->db->quoteTableName($toldtable) . " ALTER COLUMN tid SET DEFAULT nextval('{$tnewtable}_tid_seq'::regclass);";
-                        $this->app->db->createCommand($setsequence)->query();
-                    }
-                }
-
-                $this->app->db->createCommand()->renameTable($toldtable, $tnewtable);
-
-                $this->archivedTokenSettings->survey_id = $iSurveyID;
-                $this->archivedTokenSettings->user_id = $userID;
-                $this->archivedTokenSettings->tbl_name = "old_tokens_{$iSurveyID}_{$date}";
-                $this->archivedTokenSettings->tbl_type = 'token';
-                $this->archivedTokenSettings->created = $DBDate;
-                $this->archivedTokenSettings->properties = $aData['aSurveysettings']['tokenencryptionoptions'];
-                $this->archivedTokenSettings->attributes = json_encode($aData['aSurveysettings']['attributedescriptions']);
-                $this->archivedTokenSettings->save();
-
-                $aData['tnewtable'] = $tnewtable;
-                $aData['toldtable'] = $toldtable;
+                $this->archiveToken($iSurveyID, $date, $userID, $DBDate, $aData);
             }
 
             // Reset the session of the survey when deactivating it
@@ -201,5 +176,46 @@ class SurveyDeactivate
         }
         $result['aData'] = $aData;
         return $result;
+    }
+
+    /**
+     * Archives token table
+     *
+     * @param int $iSurveyID
+     * @param string $date
+     * @param int $userID
+     * @param string $DBDate
+     * @param array &$aData
+     *
+     * @return void
+     */
+    public function archiveToken($iSurveyID, $date, $userID, $DBDate, &$aData)
+    {
+        $toldtable = $this->app->db->tablePrefix . "tokens_{$iSurveyID}";
+        $tnewtable = $this->app->db->tablePrefix . "old_tokens_{$iSurveyID}_{$date}";
+        if ($this->app->db->getDriverName() == 'pgsql') {
+            // Find out the trigger name for tid column
+            $tidDefault = $this->app->db->createCommand("SELECT pg_get_expr(adbin, adrelid) as adsrc FROM pg_attribute JOIN pg_class ON (pg_attribute.attrelid=pg_class.oid) JOIN pg_attrdef ON(pg_attribute.attrelid=pg_attrdef.adrelid AND pg_attribute.attnum=pg_attrdef.adnum) WHERE pg_class.relname='$toldtable' and pg_attribute.attname='tid'")->queryScalar();
+            if (preg_match("/nextval\('(tokens_\d+_tid_seq\d*)'::regclass\)/", (string) $tidDefault, $matches)) {
+                $oldSeq = $matches[1];
+                $this->app->db->createCommand()->renameTable($oldSeq, $tnewtable . '_tid_seq');
+                $setsequence = "ALTER TABLE " . $this->app->db->quoteTableName($toldtable) . " ALTER COLUMN tid SET DEFAULT nextval('{$tnewtable}_tid_seq'::regclass);";
+                $this->app->db->createCommand($setsequence)->query();
+            }
+        }
+
+        $this->app->db->createCommand()->renameTable($toldtable, $tnewtable);
+
+        $this->archivedTokenSettings->survey_id = $iSurveyID;
+        $this->archivedTokenSettings->user_id = $userID;
+        $this->archivedTokenSettings->tbl_name = "old_tokens_{$iSurveyID}_{$date}";
+        $this->archivedTokenSettings->tbl_type = 'token';
+        $this->archivedTokenSettings->created = $DBDate;
+        $this->archivedTokenSettings->properties = $aData['aSurveysettings']['tokenencryptionoptions'];
+        $this->archivedTokenSettings->attributes = json_encode($aData['aSurveysettings']['attributedescriptions']);
+        $this->archivedTokenSettings->save();
+
+        $aData['tnewtable'] = $tnewtable;
+        $aData['toldtable'] = $toldtable;
     }
 }
