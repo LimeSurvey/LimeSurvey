@@ -2746,6 +2746,7 @@ class Tokens extends SurveyCommonAction
         $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
             '/surveyAdministration/partial/topbar/surveyTopbarRight_view',
             [
+                'showGreenSaveAndCloseButton' => true,
                 'showSaveButton' => true,
                 'showWhiteCloseButton' => true,
                 'closeUrl' => Yii::app()->createUrl(
