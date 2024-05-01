@@ -214,6 +214,11 @@ class SurveyDeactivate
 
         $this->app->db->createCommand()->renameTable($sOldSurveyTableName, $sNewSurveyTableName);
         $this->archiveTable($iSurveyID, $userID, "old_tokens_{$iSurveyID}_{$date}", 'response', $DBDate, json_encode(Response::getEncryptedAttributes($iSurveyID)));
+        // Load the active record again, as there have been sporadic errors with the dataset not being updated
+        $survey = $this->survey->findByAttributes(array('sid' => $iSurveyID));
+        $survey->scenario = 'activationStateChange';
+        $survey->active = 'N';
+        $survey->save();
     }
 
     /**
