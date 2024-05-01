@@ -135,7 +135,7 @@ class SurveyDeactivate
         $this->app->db->createCommand()->renameTable($toldtable, $tnewtable);
 
 
-        $this->archiveTable($iSurveyID, $userID, "old_tokens_{$iSurveyID}_{$date}", 'token', $DBDate, $aData['aSurveysettings']['tokenencryptionoptions'], json_encode($aData['aSurveysettings']['attributedescriptions']));
+        $this->archiveTable($iSurveyID, $userID, "old_tokens_{$iSurveyID}_{$date}", 'token', $DBDate, $aData['aSurveysettings']['tokenencryptionoptions'], json_decode($aData['aSurveysettings']['attributedescriptions']));
         $this->archivedTokenSettings->save();
 
         $aData['tnewtable'] = $tnewtable;
