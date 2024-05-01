@@ -151,7 +151,7 @@ class SurveyDeactivate
      * @param string $tableType
      * @param string $DBDate
      * @param string $properties
-     * @param string $attributes
+     * @param array $attributes
      *
      * @return void
      */
