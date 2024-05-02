@@ -851,8 +851,7 @@ class TokenDynamic extends LSActiveRecord
             'title'            => gT('Edit this survey participant'),
             'url'              => App()->createUrl("/admin/tokens/sa/edit", [
                 "iSurveyId" => self::$sid,
-                "iTokenId"  => $this->tid,
-                "ajax"      => "true"
+                "iTokenId"  => $this->tid
             ]),
             'iconClass'        => 'ri-pencil-fill',
             'linkAttributes'    => [
