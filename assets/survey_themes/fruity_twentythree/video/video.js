@@ -1,17 +1,18 @@
 export var Video = function () {
-    return {
-        fixVideoHeight: function () {
+    let fixVideoHeight = function () {
+        $(document).on('ready pjax:scriptcomplete', function () {
             if (/iPad/i.test(navigator.userAgent)) {
-                let videoElements = document.getElementsByName('video');
-                videoElements.forEach(element => {
-                    element.classList.add('os-based-height');
-                });
+                let videoElements = document.getElementsByTagName('video');
+                for (let video of videoElements) {
+                    video.classList.add('video-ipad'); // Replace "my-video-class" with your desired class name
+                }
             }
-        }
+        });
+    };
+    return {
+        fixVideoHeight: fixVideoHeight
     };
 };
 
-
-$(document).on('ready pjax:scriptcomplete', function () {
-    Video.fixVideoHeight();
-});
+window.video = new Video();
+video.fixVideoHeight();
