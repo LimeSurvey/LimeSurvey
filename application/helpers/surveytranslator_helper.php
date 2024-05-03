@@ -695,6 +695,13 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['oc']['radixpoint'] = 1;
     $supportedLanguages['oc']['momentjs'] = 'oc-lnc';
 
+    // Odia
+    $supportedLanguages['ory']['description'] = gT('Odia');
+    $supportedLanguages['ory']['nativedescription'] = "&#xB13;&#xB21;&#xB3C;&#xB3F;&#xB06;";
+    $supportedLanguages['ory']['rtl'] = false;
+    $supportedLanguages['ory']['dateformat'] = 5;
+    $supportedLanguages['ory']['radixpoint'] = 1;
+
     // Pashto
     $supportedLanguages['ps']['description'] = gT('Pashto');
     $supportedLanguages['ps']['nativedescription'] = '&#1662;&#1690;&#1578;&#1608;';
