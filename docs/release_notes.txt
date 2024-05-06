@@ -34,6 +34,11 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.6.61 (build 240430) to 5.6.62 (build 240507) May 6, 2024
+-Fixed issue #18459: When filtering the survey list by a parent survey group, surveys assigned to a child survey group are not listed (#3201) (Gabriel Jenik)
+#Updated translation: Portuguese (Brazil) by Antonio Albuquerque, holch, magdacorreia, mauriciofurtado
+
+
 Changes from 5.6.60 (build 240423) to 5.6.61 (build 240430) April 29, 2024
 -Fixed issue #19527: surveys list throw error 500 with invalid template (#3829) (Denis Chenu)
 -Fixed issue #19504: Potential PHP Warning when get Survey listing (#3820) (Denis Chenu)
