@@ -403,7 +403,7 @@ class LSYii_Application extends CWebApplication
      */
     public function onException($event)
     {
-        (new AppErrorHandler)->onException($this->dbVersion, $event);
+        (new AppErrorHandler())->onException($this->dbVersion, $event);
     }
 
     /**
@@ -414,7 +414,7 @@ class LSYii_Application extends CWebApplication
      */
     public function onError($event)
     {
-        (new AppErrorHandler)->onError($this->dbVersion, $event);
+        (new AppErrorHandler())->onError($this->dbVersion, $event);
     }
 
     /**
@@ -514,7 +514,7 @@ class LSYii_Application extends CWebApplication
      * @inheritdoc
      * Special handling for SEO friendly URLs
      */
-    public function createController($route, $owner=null)
+    public function createController($route, $owner = null)
     {
         $controller = parent::createController($route, $owner);
 
@@ -590,5 +590,150 @@ class LSYii_Application extends CWebApplication
         App()->getSession()->setCookieParams([
             'lifetime' => $lifetime
         ]);
+    }
+
+    /**
+     * Creates a table based on another
+     *
+     * @param string $table
+     * @param string $pattern
+     * @param array $columns
+     * @param array $where
+     * @return integer number of rows affected by the execution.
+     * @throws CDbException execution failed
+     */
+    public function createTableFromPattern($table, $pattern, $columns = [], $where = [])
+    {
+        if (!is_array($columns)) {
+            $columns = [];
+        }
+        if (!is_array($where)) {
+            $where = [];
+        }
+        $whereClause = "";
+        $criterias = [];
+        if (count($where)) {
+            foreach ($where as $field => $value) {
+                $criterias[] = $this->db->quoteColumnName($field) . " = " . $this->db->quoteValue($value);
+            }
+            $whereClause = " WHERE " . implode(" AND ", $criterias);
+        }
+        if (count($columns)) {
+            foreach ($columns as $index => $column) {
+                if (!ctype_alnum($column)) {
+                    $columns[$index] = $this->db->quoteColumnName($column);
+                }
+            }
+            $command = "CREATE TABLE " . $this->db->quoteTableName($table) . " AS SELECT " . implode(",", $columns) . " FROM " . $this->db->quoteTableName($pattern) . $whereClause;
+        } else {
+            $command = "CREATE TABLE " . $this->db->quoteTableName($table) . " LIKE " . $this->db->quoteTableName($pattern) . ";";
+        }
+        return $this->db->createCommand($command)->execute();
+    }
+
+    /**
+     * Gets the unchanged columns
+     *
+     * @param int $sid
+     * @param int $qTimestamp
+     * @param int $sTimestamp
+     * @return array all rows of the query result. Each array element is an array representing a row.
+     * An empty array is returned if the query results in nothing.
+     * @throws CException execution failed
+     */
+    public function getUnchangedColumns($sid, $sTimestamp, $qTimestamp)
+    {
+        $command = "
+            SELECT new_s_c.COLUMN_NAME
+            FROM " . $this->db->tablePrefix . "old_questions_" . $sid . "_" . $qTimestamp . " old_q
+            JOIN " . $this->db->tablePrefix . "questions new_q
+            ON old_q.qid = new_q.qid AND old_q.type = new_q.type
+            JOIN information_schema.columns new_s_c
+            ON new_s_c.TABLE_SCHEMA = DATABASE() AND new_s_c.TABLE_NAME = '" . $this->db->tablePrefix . "survey_" . $sid . "' AND new_s_c.COLUMN_NAME LIKE CONCAT(new_q.sid, 'X', new_q.gid, 'X', new_q.qid, '%')
+            JOIN information_schema.columns old_s_c
+            ON old_s_c.TABLE_SCHEMA = new_s_c.TABLE_SCHEMA AND old_s_c.TABLE_NAME = '" . $this->db->tablePrefix . "old_survey_{$sid}_{$sTimestamp}' AND new_s_c.COLUMN_NAME = old_s_c.COLUMN_NAME;
+        ";
+
+        $rawResults = $this->db->createCommand($command)->queryAll();
+        $results = [];
+        foreach ($rawResults as $rawResult) {
+            $results[] = $rawResult['COLUMN_NAME'];
+        }
+        return $results;
+    }
+
+    /**
+     * Finds the newest archive table from each kind
+     *
+     * @param int $sid
+     * @return array all rows of the query result. Each array element is an array representing a row.
+     * An empty array is returned if the query results in nothing.
+     * @throws CException execution failed
+     */
+    public function getNewestArchives($sid)
+    {
+        $sid = intval($sid);
+        $command = "
+            SELECT n, MAX(TABLE_NAME) AS TABLE_NAME
+            FROM information_schema.tables
+            JOIN (
+                SELECT 'survey' AS n
+                UNION
+                SELECT 'tokens' AS n
+                UNION
+                SELECT 'timings' AS n
+                UNION
+                SELECT 'questions' AS n
+            ) t
+            ON TABLE_SCHEMA = DATABASE() AND TABLE_NAME LIKE CONCAT('%', n, '%') AND TABLE_NAME LIKE '%old%' AND TABLE_NAME LIKE '%{$sid}%' AND
+            ((n <> 'survey') OR (TABLE_NAME NOT LIKE '%timings%'))
+            GROUP BY n;
+        ";
+        $rawResults = $this->db->createCommand($command)->queryAll();
+        $results = [];
+        foreach ($rawResults as $rawResult) {
+            $results[$rawResult['n']] = $rawResult["TABLE_NAME"];
+        }
+        return $results;
+    }
+
+    /**
+     * Recovers archived survey responses
+     *
+     * @param string $surveyTable
+     * @param string $oldSurveyTable
+     * @param array $columns
+     * @return integer number of rows affected by the execution.
+     * @throws CDbException execution failed
+     */
+    public function recoverSurveyResponses($surveyTable, $oldSurveyTable, $columns = [])
+    {
+        if (!is_array($columns)) {
+            $columns = [];
+        }
+        $columnText = (count($columns) ? ("," . implode(",", $columns)) : "");
+        $command = "
+            INSERT INTO " . $this->db->quoteTableName($surveyTable) . " (id, token, submitdate, lastpage, startlanguage, seed" .
+            $columnText .
+            ")
+            SELECT id, token, submitdate, lastpage, startlanguage, seed" .
+            $columnText . "
+            FROM " .
+            $this->db->quoteTableName($oldSurveyTable) . "
+        ";
+        return $this->db->createCommand($command)->execute();
+    }
+
+    /**
+     * Copying all data from source table to a target table having the same structure
+     *
+     * @param string $source
+     * @param string $destination
+     * @return integer number of rows affected by the execution.
+     * @throws CDbException execution failed
+     */
+    public function copyFromOneTableToTheOther($source, $destination)
+    {
+        return $this->db->createCommand("INSERT INTO " . $this->db->quoteTableName($destination) . " SELECT * FROM " . $this->db->quoteTableName($source))->execute();
     }
 }

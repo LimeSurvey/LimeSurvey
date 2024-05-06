@@ -71,6 +71,40 @@ class SurveyActivate
         }
 
         $result = $this->surveyActivator->setSurvey($survey)->activate();
+        $result['restored'] = $this->restoreData($surveyId);
         return $result;
+    }
+
+    /**
+     * Restores data
+     *
+     * @param int $sid
+     * @return bool
+     */
+    public function restoreData($sid)
+    {
+        $archives = $this->app->getNewestArchives($sid);
+        if (is_array($archives) && isset($archives['survey']) && isset($archives['questions'])) {
+            //Recover survey
+            $qParts = explode("_", $archives['questions']);
+            $qTimestamp = $qParts[count($qParts) - 1];
+            $sParts = explode("_", $archives['survey']);
+            $sTimestamp = $sParts[count($sParts) - 1];
+            $dynamicColumns = $this->app->getUnchangedColumns($sid, $sTimestamp, $qTimestamp);
+            $this->app->recoverSurveyResponses($this->app->db->tablePrefix . "survey_" . $sid, $archives["survey"], $dynamicColumns);
+            if (isset($archives["tokens"])) {
+                $tokenTable = $this->app->db->tablePrefix . "tokens_" . $sid;
+                $this->app->createTableFromPattern($tokenTable, $archives["tokens"]);
+                $this->app->copyFromOneTableToTheOther($archives["tokens"], $tokenTable);
+            }
+            if (isset($archives["timings"])) {
+                $timingsTable = $this->app->db->tablePrefix . "survey_" . $sid . "_timings";
+                $this->app->createTableFromPattern($timingsTable, $archives["timings"]);
+                $this->app->copyFromOneTableToTheOther($archives["timings"], $timingsTable);
+            }
+            return true;
+        } else {
+            return false; //not recoverable
+        }
     }
 }
