@@ -135,7 +135,8 @@ class SurveyDeactivate
         $this->app->db->createCommand()->renameTable($toldtable, $tnewtable);
 
         $this->archiveTable(
-            $iSurveyID, $userID,
+            $iSurveyID,
+            $userID,
             "old_tokens_{$iSurveyID}_{$date}",
             'token',
             $DBDate,
