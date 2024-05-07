@@ -153,6 +153,8 @@ class SurveyDeactivate
      * @param string $properties
      * @param string $attributes
      *
+     * @SuppressWarnings(PHPMD.InvalidPropertyAssignmentValue)
+     *
      * @return void
      */
     protected function archiveTable($iSurveyID, $userID, $tableName, $tableType, $DBDate, $properties, $attributes = null)
