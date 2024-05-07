@@ -7,7 +7,7 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
     protected static $description = 'Core: LDAP authentication';
     protected static $name = 'LDAP';
 
-    /** @inheritdoc, this plugin didn't have any public method */
+    /** @inheritdoc this plugin didn't have any public method */
     public $allowedPublicMethods = array();
 
     /**
