@@ -134,8 +134,17 @@ class SurveyDeactivate
 
         $this->app->db->createCommand()->renameTable($toldtable, $tnewtable);
 
-
-        $this->archiveTable($iSurveyID, $userID, "old_tokens_{$iSurveyID}_{$date}", 'token', $DBDate, $aData['aSurveysettings']['tokenencryptionoptions'], json_encode($aData['aSurveysettings']['attributedescriptions']));
+        $this->archiveTable(
+            $iSurveyID, $userID,
+            "old_tokens_{$iSurveyID}_{$date}",
+            'token',
+            $DBDate,
+            $aData['aSurveysettings']['tokenencryptionoptions'],
+            json_decode(
+                json_encode($aData['aSurveysettings']['attributedescriptions']),
+                true
+            )
+        );
         $this->archivedTokenSettings->save();
 
         $aData['tnewtable'] = $tnewtable;
@@ -151,10 +160,8 @@ class SurveyDeactivate
      * @param string $tableType
      * @param string $DBDate
      * @param string $properties
-     * @param string $attributes
-     *
+     * @param ?array $attributes JSON encoded attributes
      * @return void
-     * @SuppressWarnings(PHPMD.InvalidPropertyAssignmentValue)
      */
     protected function archiveTable($iSurveyID, $userID, $tableName, $tableType, $DBDate, $properties, $attributes = null)
     {
