@@ -441,7 +441,7 @@ class QuestionAdministrationController extends LSBaseController
     /**
      * Returns all languages in a specific survey as a JSON document
      *
-     * todo: is this action still in use?? where in the frontend?
+     * @todo is this action still in use?? where in the frontend?
      *
      * @param int $iSurveyId
      *
@@ -872,7 +872,7 @@ class QuestionAdministrationController extends LSBaseController
     {
         $oldCode = false;
 
-        // TODO: Fix question type 'A'. Needed?
+        // @todo Fix question type 'A'. Needed?
         $oQuestion = $this->getQuestionObject($qid, 'A', $gid);
         $answerOption = $oQuestion->getEmptyAnswerOption();
         $answerOption->aid = $qid;
@@ -1532,7 +1532,7 @@ class QuestionAdministrationController extends LSBaseController
     /**
      * Loads the possible Positions where a Question could be inserted to
      *
-     * @param $gid
+     * @param int $gid
      * @param string $classes
      * @return CWidget|mixed|void
      * @throws Exception
@@ -1822,7 +1822,7 @@ class QuestionAdministrationController extends LSBaseController
         if (empty($questionType)) {
             throw new CHttpException(405, 'Internal error: No question type');
         }
-        // TODO: Difference between create and update permissions?
+        // @todo Difference between create and update permissions?
         if (!Permission::model()->hasSurveyPermission($surveyId, 'surveycontent', 'update')) {
             throw new CHttpException(403, gT('No permission'));
         }
@@ -1864,7 +1864,7 @@ class QuestionAdministrationController extends LSBaseController
         if (empty($questionType)) {
             throw new CHttpException(405, 'Internal error: No question type');
         }
-        // TODO: Difference between create and update permissions?
+        // @todo Difference between create and update permissions?
         if (!Permission::model()->hasSurveyPermission($surveyId, 'surveycontent', 'update')) {
             throw new CHttpException(403, gT('No permission'));
         }
@@ -1971,11 +1971,11 @@ class QuestionAdministrationController extends LSBaseController
     }
 
     /**
-     * Check if label set is what???
+     * Check if label set can be replaced without problems
      *
      * @param int $lid
-     * @param ??? $languages
-     * @param ??? $checkAssessments
+     * @param array $languages
+     * @param boolean $checkAssessments
      * @return void
      */
     public function actionCheckLabel($lid, $languages, $checkAssessments)
@@ -2002,7 +2002,7 @@ class QuestionAdministrationController extends LSBaseController
         }
     }
 
-    /** ++++++++++++  TODO: The following functions should be moved to model or a service class ++++++++++++++++++++++++++ */
+    /** @todo The following functions should be moved to model or a service class ++++++++++++++++++++++++++ */
 
 
     /**
