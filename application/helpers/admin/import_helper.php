@@ -1063,7 +1063,7 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
 * Function resp[onsible to import a labelset from XML format.
 * @param string $sFullFilePath
 * @param mixed $options
-* @return
+* @return array Array with count of imported labelsets, labels, warning, etc.
 */
 function XMLImportLabelsets($sFullFilePath, $options)
 {
