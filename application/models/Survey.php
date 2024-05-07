@@ -2006,7 +2006,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
     }
 
     /**
-     * @return integer
+     * @return int
      */
     public function getCountTotalQuestions()
     {
@@ -2017,7 +2017,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
 
     /**
      * Get the coutn of questions that do not need input (skipping text-display etc.)
-     * @return integer
+     * @return int
      */
     public function getCountNoInputQuestions()
     {
@@ -2032,7 +2032,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
 
     /**
      * Get the coutn of questions that need input (skipping text-display etc.)
-     * @return integer
+     * @return int
      */
     public function getCountInputQuestions()
     {
@@ -2123,7 +2123,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
     }
 
     /**
-     * @param ? $tmp
+     * @param array $tmp
      */
     public function setTokenEncryptionOptions($options)
     {
@@ -2336,7 +2336,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
      * If $preferShortUrl is true (default), and an alias is available, it returns the short
      * version of the URL.
      * @param string|null $language
-     * @param array<string,mixed> $params   Optional parameters to include in the URL.
+     * @param array|string|mixed $params   Optional parameters to include in the URL.
      * @param bool $preferShortUrl  If true, tries to return the short URL instead of the traditional one.
      * @return string
      */
