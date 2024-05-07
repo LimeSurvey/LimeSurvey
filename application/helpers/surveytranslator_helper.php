@@ -841,14 +841,6 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['so']['radixpoint'] = 1;
     $supportedLanguages['so']['momentjs'] = null;
 
-    // Somali
-    $supportedLanguages['so']['description'] = gT('Somali');
-    $supportedLanguages['so']['nativedescription'] = 'Af-Soomaali';
-    $supportedLanguages['so']['rtl'] = false;
-    $supportedLanguages['so']['dateformat'] = 9;
-    $supportedLanguages['so']['radixpoint'] = 1;
-    $supportedLanguages['so']['momentjs'] = null;
-
     // Spanish
     $supportedLanguages['es']['description'] = gT('Spanish');
     $supportedLanguages['es']['nativedescription'] = 'Espa&#241;ol';
