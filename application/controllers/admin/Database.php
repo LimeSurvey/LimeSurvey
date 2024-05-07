@@ -48,8 +48,8 @@ class Database extends SurveyCommonAction
 
     /**
      * Database::index()
-     * todo 1591726928167: move called functions to their respective Controllers
-     * @return
+     * @todo move called functions to their respective Controllers
+     * @return void
      */
     public function index()
     {

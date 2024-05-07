@@ -83,7 +83,7 @@ class RegisterController extends LSYii_Controller
      * Process register form data and take appropriate action
      * @param $sid Survey Id to register
      * @param $aRegisterErrors array of errors when try to register
-     * @return
+     * @return void
      */
     public function actionIndex($sid = null)
     {

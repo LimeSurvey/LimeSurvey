@@ -655,10 +655,10 @@ window.addEventListener('message', function(event) {
      * (surveyRuntime, frontend_helper, etc)
      * In LS3, we did a first cycle of refactorisation. Some logic common to the different
      * files are for now here, in this function.
-     * TODO: move all the display logic to surveyRuntime so we don't need this function here
      *
+     * @todo move all the display logic to surveyRuntime so we don't need this function here
      * @param TemplateConfiguration $oTemplate
-     * @return
+     * @return array
      */
     private function getAdditionalInfos($aData, $oTemplate)
     {

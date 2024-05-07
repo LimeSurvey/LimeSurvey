@@ -11,7 +11,7 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
-  */
+ */
 
 /**
  * Class Template
@@ -469,7 +469,7 @@ class Template extends LSActiveRecord
     /**
      * Returns an array of all available template names - check if template exist
      * key is template name, value is template folder
-     * @return string|]
+     * @return string|array
      */
     public static function getTemplateList()
     {
