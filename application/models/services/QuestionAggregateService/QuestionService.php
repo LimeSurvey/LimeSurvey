@@ -54,7 +54,7 @@ class QuestionService
     /**
      * Based on QuestionAdministrationController::actionSaveQuestionData()
      *
-     * @param array{
+     * @param array {
      *  ?sid: int,
      *  ?same_default: int,
      *  ?question: array{

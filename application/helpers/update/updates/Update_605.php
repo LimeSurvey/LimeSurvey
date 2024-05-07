@@ -13,7 +13,6 @@ use Exception;
  * because we catch the exception.
  *
  * @package LimeSurvey\Helpers\Update
- * @
  */
 
 class Update_605 extends DatabaseUpdateBase
