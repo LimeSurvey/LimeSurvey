@@ -1008,7 +1008,9 @@ class Survey extends LSActiveRecord implements PermissionInterface
             }
         }
         $model = parent::findByPk($pk, $condition, $params);
-        $model ?? $model->afterFindSurvey();
+        if (!is_null($model)) {
+            $model->afterFindSurvey();
+        }
         return $model;
     }
 
