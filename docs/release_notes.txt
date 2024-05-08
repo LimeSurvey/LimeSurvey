@@ -34,6 +34,9 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.6.62 (build 240507) to 5.6.63 (build 240508) May 8, 2024
+Added end-of-life notification - see https://manual.limesurvey.org/LimeSurvey_roadmap
+
 Changes from 5.6.61 (build 240430) to 5.6.62 (build 240507) May 6, 2024
 -Fixed issue #18459: When filtering the survey list by a parent survey group, surveys assigned to a child survey group are not listed (#3201) (Gabriel Jenik)
 #Updated translation: Portuguese (Brazil) by Antonio Albuquerque, holch, magdacorreia, mauriciofurtado
