@@ -165,11 +165,11 @@ class image_gd extends image {
         $x =
             ($left === true) ? 0 : (
             ($left === null) ? round(($this->width - $w) / 2) : (
-            (($left === false) || !preg_match('/^\d+$/', $left)) ? ($this->width - $w) : $left));
+            (($left === false) || !preg_match('/^\d+$/', (string) $left)) ? ($this->width - $w) : $left));
         $y =
             ($top === true) ? 0 : (
             ($top === null) ? round(($this->height - $h) / 2) : (
-            (($top === false) || !preg_match('/^\d+$/', $top)) ? ($this->height - $h) : $top));
+            (($top === false) || !preg_match('/^\d+$/', (string) $top)) ? ($this->height - $h) : $top));
 
         if ((($x + $w) > $this->width) ||
             (($y + $h) > $this->height) ||
@@ -261,8 +261,8 @@ class image_gd extends image {
 
     protected function output_png(array $options=array()) {
         $file = isset($options['file']) ? $options['file'] : null;
-        $quality = isset($options['quality']) ? $options['quality'] : null;
-        $filters = isset($options['filters']) ? $options['filters'] : null;
+        $quality = isset($options['quality']) ? $options['quality'] : 0;
+        $filters = isset($options['filters']) ? $options['filters'] : 0;
         if (($file === null) && !headers_sent())
             header("Content-Type: image/png");
         return imagepng($this->image, $file, $quality, $filters);
@@ -299,25 +299,25 @@ class image_gd extends image {
         if (count($args[0]) == 3) {
             list($r, $g, $b) = $args[0];
 
-        } elseif (preg_match($exprRGB, $args[0], $match)) {
+        } elseif (preg_match($exprRGB, (string) $args[0], $match)) {
             list($tmp, $r, $g, $b) = $match;
 
-        } elseif (preg_match($exprHex1, $args[0], $match)) {
+        } elseif (preg_match($exprHex1, (string) $args[0], $match)) {
             list($tmp, $r, $g, $b) = $match;
             $r = hexdec($r);
             $g = hexdec($g);
             $b = hexdec($b);
 
-        } elseif (preg_match($exprHex2, $args[0], $match)) {
+        } elseif (preg_match($exprHex2, (string) $args[0], $match)) {
             list($tmp, $r, $g, $b) = $match;
             $r = hexdec("$r$r");
             $g = hexdec("$g$g");
             $b = hexdec("$b$b");
 
         } elseif ((count($args) == 3) &&
-            preg_match($exprByte, $args[0]) &&
-            preg_match($exprByte, $args[1]) &&
-            preg_match($exprByte, $args[2])
+            preg_match($exprByte, (string) $args[0]) &&
+            preg_match($exprByte, (string) $args[1]) &&
+            preg_match($exprByte, (string) $args[2])
         ) {
             list($r, $g, $b) = $args;
 
