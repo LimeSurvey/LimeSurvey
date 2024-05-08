@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2024-05-03 12:06:01+00:00\n"
+"POT-Creation-Date: 2024-05-08 10:11:51+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -388,7 +388,7 @@ msgstr ""
 
 #: application/controllers/AssessmentController.php:329
 #: application/core/LsDefaultDataSets.php:446
-#: application/models/Survey.php:2197
+#: application/models/Survey.php:2198
 #: application/models/TemplateManifest.php:174
 #: application/views/admin/survey/copySurvey_view.php:54
 #: application/views/assessment/assessments_view.php:14
@@ -655,12 +655,12 @@ msgstr ""
 msgid "The password you have chosen at the optional settings step."
 msgstr ""
 
-#: application/controllers/InstallerController.php:995
+#: application/controllers/InstallerController.php:1005
 #: application/core/LSSodium.php:214 application/core/LSSodiumOld.php:189
 msgid "Configuration directory is not writable"
 msgstr ""
 
-#: application/controllers/InstallerController.php:996
+#: application/controllers/InstallerController.php:1006
 msgid "You will be redirected in about 5 secs. If not, click <a href=\"%s\">here</a>."
 msgstr ""
 
@@ -1857,7 +1857,7 @@ msgstr ""
 #: application/extensions/GeneralOptionWidget/settings/SaveAsDefaultGeneralOption.php:27
 #: application/extensions/GeneralOptionWidget/views/switch.php:19
 #: application/extensions/GeneralOptionWidget/views/switch.php:48
-#: application/extensions/SettingsWidget/SettingsWidget.php:353
+#: application/extensions/SettingsWidget/SettingsWidget.php:355
 #: application/libraries/FormExtension/Inputs/GlobalSettingsRenderer.php:58
 #: application/models/SurveysGroupsettings.php:416
 #: application/models/SurveysGroupsettings.php:421
@@ -1944,7 +1944,7 @@ msgstr ""
 #: application/extensions/GeneralOptionWidget/settings/SaveAsDefaultGeneralOption.php:26
 #: application/extensions/GeneralOptionWidget/views/switch.php:33
 #: application/extensions/GeneralOptionWidget/views/switch.php:63
-#: application/extensions/SettingsWidget/SettingsWidget.php:354
+#: application/extensions/SettingsWidget/SettingsWidget.php:356
 #: application/helpers/questionHelper.php:452
 #: application/helpers/questionHelper.php:708
 #: application/helpers/questionHelper.php:1024
@@ -2574,8 +2574,8 @@ msgstr ""
 #: application/controllers/admin/PrintableSurvey.php:929
 #: application/controllers/admin/PrintableSurvey.php:943
 #: application/controllers/admin/Tokens.php:2532
-#: application/core/plugins/ExportSPSSsav/SPSSWriter.php:204
-#: application/core/plugins/ExportSPSSsav/SPSSWriter.php:213
+#: application/core/plugins/ExportSPSSsav/SPSSWriter.php:203
+#: application/core/plugins/ExportSPSSsav/SPSSWriter.php:212
 #: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:232
 #: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:241
 #: application/core/plugins/TwoFactorAdminLogin/models/TFAUser.php:126
@@ -2715,10 +2715,10 @@ msgstr ""
 #: application/controllers/admin/PrintableSurvey.php:927
 #: application/controllers/admin/PrintableSurvey.php:941
 #: application/controllers/admin/Tokens.php:2530
-#: application/core/plugins/ExportSPSSsav/SPSSWriter.php:173
-#: application/core/plugins/ExportSPSSsav/SPSSWriter.php:182
-#: application/core/plugins/ExportSPSSsav/SPSSWriter.php:200
-#: application/core/plugins/ExportSPSSsav/SPSSWriter.php:209
+#: application/core/plugins/ExportSPSSsav/SPSSWriter.php:172
+#: application/core/plugins/ExportSPSSsav/SPSSWriter.php:181
+#: application/core/plugins/ExportSPSSsav/SPSSWriter.php:199
+#: application/core/plugins/ExportSPSSsav/SPSSWriter.php:208
 #: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:201
 #: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:210
 #: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:228
@@ -4445,7 +4445,7 @@ msgstr ""
 #: application/controllers/admin/PrintableSurvey.php:309
 #: application/controllers/admin/PrintableSurvey.php:928
 #: application/controllers/admin/PrintableSurvey.php:942
-#: application/core/plugins/ExportSPSSsav/SPSSWriter.php:217
+#: application/core/plugins/ExportSPSSsav/SPSSWriter.php:216
 #: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:245
 #: application/helpers/admin/statistics_helper.php:1211
 #: application/helpers/common_helper.php:1064
@@ -4463,7 +4463,7 @@ msgstr ""
 #: application/controllers/admin/PrintableSurvey.php:319
 #: application/controllers/admin/PrintableSurvey.php:958
 #: application/controllers/admin/PrintableSurvey.php:971
-#: application/core/plugins/ExportSPSSsav/SPSSWriter.php:222
+#: application/core/plugins/ExportSPSSsav/SPSSWriter.php:221
 #: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:250
 #: application/helpers/admin/statistics_helper.php:1227
 #: application/helpers/common_helper.php:1071
@@ -4481,7 +4481,7 @@ msgstr ""
 #: application/controllers/admin/PrintableSurvey.php:325
 #: application/controllers/admin/PrintableSurvey.php:959
 #: application/controllers/admin/PrintableSurvey.php:972
-#: application/core/plugins/ExportSPSSsav/SPSSWriter.php:226
+#: application/core/plugins/ExportSPSSsav/SPSSWriter.php:225
 #: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:254
 #: application/helpers/admin/statistics_helper.php:1228
 #: application/helpers/common_helper.php:1077
@@ -4499,7 +4499,7 @@ msgstr ""
 #: application/controllers/admin/PrintableSurvey.php:322
 #: application/controllers/admin/PrintableSurvey.php:960
 #: application/controllers/admin/PrintableSurvey.php:973
-#: application/core/plugins/ExportSPSSsav/SPSSWriter.php:230
+#: application/core/plugins/ExportSPSSsav/SPSSWriter.php:229
 #: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:258
 #: application/helpers/admin/statistics_helper.php:1229
 #: application/helpers/common_helper.php:1074
@@ -4544,7 +4544,7 @@ msgstr ""
 #: application/controllers/admin/DataEntry.php:766
 #: application/controllers/admin/PrintableSurvey.php:292
 #: application/controllers/admin/PrintableSurvey.php:592
-#: application/core/plugins/ExportSPSSsav/SPSSWriter.php:191
+#: application/core/plugins/ExportSPSSsav/SPSSWriter.php:190
 #: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:219
 #: application/helpers/admin/statistics_helper.php:1327
 #: application/helpers/common_helper.php:1049
@@ -4564,7 +4564,7 @@ msgstr ""
 #: application/controllers/admin/DataEntry.php:767
 #: application/controllers/admin/PrintableSurvey.php:289
 #: application/controllers/admin/PrintableSurvey.php:593
-#: application/core/plugins/ExportSPSSsav/SPSSWriter.php:195
+#: application/core/plugins/ExportSPSSsav/SPSSWriter.php:194
 #: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:223
 #: application/helpers/admin/statistics_helper.php:1328
 #: application/helpers/common_helper.php:1046
@@ -6039,7 +6039,7 @@ msgstr ""
 #: application/helpers/questionHelper.php:430
 #: application/helpers/questionHelper.php:829
 #: application/helpers/userstatistics_helper.php:2582
-#: application/models/Survey.php:1505 application/models/Survey.php:2219
+#: application/models/Survey.php:1505 application/models/Survey.php:2220
 #: application/views/admin/export/statistics_user_view.php:18
 #: application/views/admin/export/statistics_view.php:23
 msgid "Statistics"
@@ -6104,7 +6104,7 @@ msgstr ""
 #: application/controllers/admin/SurveysGroupsController.php:341
 #: application/controllers/admin/globalsettings.php:558
 #: application/core/LsDefaultDataSets.php:840
-#: application/models/Survey.php:2269 application/models/SurveysGroups.php:322
+#: application/models/Survey.php:2270 application/models/SurveysGroups.php:322
 #: application/models/SurveysGroups.php:471
 msgid "Survey settings"
 msgstr ""
@@ -7215,7 +7215,7 @@ msgid "Open general survey settings"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:80
-#: application/core/LsDefaultDataSets.php:82 application/models/Survey.php:2253
+#: application/core/LsDefaultDataSets.php:82 application/models/Survey.php:2254
 #: tmp/runtime/twig_cache/a8/a8c553029103104cca2f1b701e4d689db3063620d1ab909a8ae5386fa5a44871.php:49
 msgid "Survey text elements"
 msgstr ""
@@ -7338,7 +7338,7 @@ msgid "Edit quotas"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:418
-#: application/models/Survey.php:2204
+#: application/models/Survey.php:2205
 #: application/views/admin/survey/copySurvey_view.php:55
 #: application/views/surveyAdministration/importSurvey_view.php:119
 msgid "Quotas"
@@ -7372,7 +7372,7 @@ msgstr ""
 #: application/core/LsDefaultDataSets.php:501
 #: application/core/LsDefaultDataSets.php:502
 #: application/core/LsDefaultDataSets.php:503
-#: application/models/Survey.php:2209
+#: application/models/Survey.php:2210
 #: application/views/admin/export/exportresult_panels/_responses.php:4
 #: application/views/admin/survey/surveybar_statistics.php:18
 #: application/views/admin/survey/surveybar_statistics.php:23
@@ -8904,8 +8904,8 @@ msgstr ""
 msgid "SPSS (.sav)"
 msgstr ""
 
-#: application/core/plugins/ExportSPSSsav/SPSSWriter.php:177
-#: application/core/plugins/ExportSPSSsav/SPSSWriter.php:186
+#: application/core/plugins/ExportSPSSsav/SPSSWriter.php:176
+#: application/core/plugins/ExportSPSSsav/SPSSWriter.php:185
 #: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:205
 #: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:214
 #: application/helpers/export_helper.php:388
@@ -10048,7 +10048,7 @@ msgstr ""
 #: application/helpers/userstatistics_helper.php:2593
 #: application/helpers/userstatistics_helper.php:2696
 #: application/helpers/userstatistics_helper.php:2795
-#: application/models/Survey.php:2229 application/models/Surveymenu.php:340
+#: application/models/Survey.php:2230 application/models/Surveymenu.php:340
 #: application/views/admin/participants/modal_subviews/_addToSurvey.php:22
 #: application/views/admin/super/quickmenu.php:6
 msgid "Survey"
@@ -15533,79 +15533,79 @@ msgstr ""
 msgid "General settings & texts"
 msgstr ""
 
-#: application/models/Survey.php:2085
+#: application/models/Survey.php:2086
 msgid "Show policy"
 msgstr ""
 
-#: application/models/Survey.php:2198
+#: application/models/Survey.php:2199
 msgid "Permission to create, view, update, delete assessments rules for a survey"
 msgstr ""
 
-#: application/models/Survey.php:2205
+#: application/models/Survey.php:2206
 msgid "Permission to create, view, update, delete quota rules for a survey"
 msgstr ""
 
-#: application/models/Survey.php:2210
+#: application/models/Survey.php:2211
 msgid "Permission to create(data entry), view, update, delete, import, export responses"
 msgstr ""
 
-#: application/models/Survey.php:2220
+#: application/models/Survey.php:2221
 msgid "Permission to view statistics"
 msgstr ""
 
-#: application/models/Survey.php:2230
+#: application/models/Survey.php:2231
 msgid "Permission for survey access. Read permission is a requirement to give any further permission to a survey."
 msgstr ""
 
-#: application/models/Survey.php:2239
+#: application/models/Survey.php:2240
 msgid "Survey activation"
 msgstr ""
 
-#: application/models/Survey.php:2240
+#: application/models/Survey.php:2241
 msgid "Permission to activate, deactivate a survey"
 msgstr ""
 
-#: application/models/Survey.php:2244
+#: application/models/Survey.php:2245
 msgid "Survey content"
 msgstr ""
 
-#: application/models/Survey.php:2245
+#: application/models/Survey.php:2246
 msgid "Permission to create, view, update, delete, import, export the questions, groups, answers & conditions of a survey"
 msgstr ""
 
-#: application/models/Survey.php:2254
+#: application/models/Survey.php:2255
 msgid "Permission to view, update the survey text elements, e.g. survey title, survey description, welcome and end message"
 msgstr ""
 
-#: application/models/Survey.php:2260
+#: application/models/Survey.php:2261
 msgid "Survey security"
 msgstr ""
 
-#: application/models/Survey.php:2261
+#: application/models/Survey.php:2262
 msgid "Permission to modify survey security settings"
 msgstr ""
 
-#: application/models/Survey.php:2270
+#: application/models/Survey.php:2271
 msgid "Permission to view, update the survey settings including survey participants table creation"
 msgstr ""
 
-#: application/models/Survey.php:2274
+#: application/models/Survey.php:2275
 msgid "Participants"
 msgstr ""
 
-#: application/models/Survey.php:2274
+#: application/models/Survey.php:2275
 msgid "Permission to create, update, delete, import, export participants"
 msgstr ""
 
-#: application/models/Survey.php:2282
+#: application/models/Survey.php:2283
 msgid "Quick translation"
 msgstr ""
 
-#: application/models/Survey.php:2283
+#: application/models/Survey.php:2284
 msgid "Permission to view & update the translations using the quick-translation feature"
 msgstr ""
 
-#: application/models/Survey.php:2412
+#: application/models/Survey.php:2413
 #: application/views/admin/survey/subview/accordion/_publication_panel.php:20
 msgid "Expiration date can't be lower than the start date"
 msgstr ""
