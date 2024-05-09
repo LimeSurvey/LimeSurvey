@@ -644,20 +644,23 @@ class LSYii_Application extends CWebApplication
     public function getUnchangedColumns($sid, $sTimestamp, $qTimestamp)
     {
         $command = "
-            SELECT new_s_c.COLUMN_NAME
+            SELECT old_s_c.COLUMN_NAME AS old_c, new_s_c.COLUMN_NAME AS new_c
             FROM " . $this->db->tablePrefix . "old_questions_" . $sid . "_" . $qTimestamp . " old_q
             JOIN " . $this->db->tablePrefix . "questions new_q
             ON old_q.qid = new_q.qid AND old_q.type = new_q.type
             JOIN information_schema.columns new_s_c
             ON new_s_c.TABLE_SCHEMA = DATABASE() AND new_s_c.TABLE_NAME = '" . $this->db->tablePrefix . "survey_" . $sid . "' AND new_s_c.COLUMN_NAME LIKE CONCAT(new_q.sid, 'X', new_q.gid, 'X', new_q.qid, '%')
             JOIN information_schema.columns old_s_c
-            ON old_s_c.TABLE_SCHEMA = new_s_c.TABLE_SCHEMA AND old_s_c.TABLE_NAME = '" . $this->db->tablePrefix . "old_survey_{$sid}_{$sTimestamp}' AND new_s_c.COLUMN_NAME = old_s_c.COLUMN_NAME;
+            ON old_s_c.TABLE_SCHEMA = new_s_c.TABLE_SCHEMA AND old_s_c.TABLE_NAME = '" . $this->db->tablePrefix . "old_survey_{$sid}_{$sTimestamp}' AND
+            old_s_c.COLUMN_NAME LIKE CONCAT(old_q.sid, 'X', old_q.gid, 'X', old_q.qid, '%') AND
+            SUBSTRING(old_s_c.COLUMN_NAME, 1 + LENGTH(CONCAT(old_q.sid, 'X', old_q.gid, 'X', old_q.qid))) = SUBSTRING(new_s_c.COLUMN_NAME, 1 + LENGTH(CONCAT(new_q.sid, 'X', new_q.gid, 'X', new_q.qid)));
         ";
 
         $rawResults = $this->db->createCommand($command)->queryAll();
-        $results = [];
+        $results = ['old_c' => [], 'new_c' => []];
         foreach ($rawResults as $rawResult) {
-            $results[] = $rawResult['COLUMN_NAME'];
+            $results['old_c'][] = $rawResult['old_c'];
+            $results['new_c'][] = $rawResult['new_c'];
         }
         return $results;
     }
@@ -711,13 +714,14 @@ class LSYii_Application extends CWebApplication
         if (!is_array($columns)) {
             $columns = [];
         }
-        $columnText = (count($columns) ? ("," . implode(",", $columns)) : "");
+        $columnTextOld = (count($columns['old_c']) ? ("," . implode(",", $columns['old_c'])) : "");
+        $columnTextNew = (count($columns['new_c']) ? ("," . implode(",", $columns['new_c'])) : "");
         $command = "
             INSERT INTO " . $this->db->quoteTableName($surveyTable) . " (id, token, submitdate, lastpage, startlanguage, seed" .
-            $columnText .
+            $columnTextNew .
             ")
             SELECT id, token, submitdate, lastpage, startlanguage, seed" .
-            $columnText . "
+            $columnTextOld . "
             FROM " .
             $this->db->quoteTableName($oldSurveyTable) . "
         ";
