@@ -30,19 +30,25 @@ class SurveyAggregateService
     private ProxyExpressionManager $proxyExpressionManager;
     private TemplateConfiguration $templateConfiguration;
     private $restMode = false;
+    private SurveyActivate $surveyActivate;
+    private SurveyDeactivate $surveyDeactivate;
 
     public function __construct(
         LanguageSettings $languageSettings,
         GeneralSettings $generalSettings,
         UrlParams $urlParams,
         ProxyExpressionManager $proxyExpressionManager,
-        TemplateConfiguration $templateConfiguration
+        TemplateConfiguration $templateConfiguration,
+        SurveyActivate $surveyActivate,
+        SurveyDeactivate $surveyDeactivate
     ) {
         $this->languageSettings = $languageSettings;
         $this->generalSettings = $generalSettings;
         $this->urlParams = $urlParams;
         $this->proxyExpressionManager = $proxyExpressionManager;
         $this->templateConfiguration = $templateConfiguration;
+        $this->surveyActivate = $surveyActivate;
+        $this->surveyDeactivate = $surveyDeactivate;
     }
 
     /**
@@ -101,5 +107,28 @@ class SurveyAggregateService
             ->update($surveyId);
 
         return $meta;
+    }
+
+    /**
+     * Activate
+     *
+     * @param int $surveyId
+     * @param array $input
+     * @return array
+     */
+    public function activate($surveyId, $input)
+    {
+        return $this->surveyActivate->activate($surveyId, $input);
+    }
+
+    /**
+     * Deactivate
+     *
+     * @param int $surveyId
+     * @return array
+     */
+    public function deactivate($surveyId)
+    {
+        return $this->surveyDeactivate->deactivate($surveyId);
     }
 }
