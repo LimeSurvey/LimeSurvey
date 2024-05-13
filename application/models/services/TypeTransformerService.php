@@ -12,8 +12,8 @@ class TypeTransformerService
      * Converts an input from its source type into Long Free Text (T)
      *
      * @param string $from the source type
-     * @param mix $input the value according to the source type
-     * @return mix
+     * @param mixed $input the value according to the source type
+     * @return mixed
      */
     protected function convertToLongFreeText(string $from, $input)
     {
@@ -30,8 +30,8 @@ class TypeTransformerService
      *
      * @param string $from the source type
      * @param string $to the destination type
-     * @param mix $input
-     * @return mix
+     * @param mixed $input
+     * @return mixed
      *
      */
     public function convert(string $from, string $to, $input)
