@@ -141,7 +141,7 @@ class TransformerInputSurvey extends Transformer
                 'key' => 'shownoanswer',
                 'formatter' => ['ynToBool' => ['revert' => true]]
             ],
-            'showQNumCode' => [
+            'showQuestionCode' => [
                 'key' => 'showqnumcode', 'range' => ['B', 'N', 'C', 'X', 'I']
             ],
             'bounceTime' => [
