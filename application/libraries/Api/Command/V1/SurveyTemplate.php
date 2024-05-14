@@ -74,7 +74,8 @@ class SurveyTemplate implements CommandInterface
             $response['subtitle'] = $languageSettings->surveyls_description;
         }
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, "https://ls-ce/index.php/{$surveyId}?newtest=Y&lang={$language}&popuppreview=true");
+        $root = (!empty($_SERVER['HTTPS']) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'];
+        curl_setopt($ch, CURLOPT_URL, $root . "/{$surveyId}?newtest=Y&lang={$language}&popuppreview=true");
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
