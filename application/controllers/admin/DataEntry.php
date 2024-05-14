@@ -2173,46 +2173,43 @@ class DataEntry extends SurveyCommonAction
                     $validation = trim((string) $qinfo['prettyValidTip']);
                     $arrayFilterHelp = flattenText($this->arrayFilterHelp($qidattributes, $sDataEntryLanguage, $surveyid));
 
-                    if (true || ($relevance != '' && $relevance != '1') || ($validation != '') || ($arrayFilterHelp != '')) {
-                        $message = '';
-                        $alert = '';
-                        if ($bgc == "even") {
-                            $bgc = "odd";
-                        } else {
-                            $bgc = "even";
-                        } //Do no alternate on explanation row
-                        if ($relevance != '' && $relevance != '1') {
-                            $message .= '<strong>' . gT(
-                                "Only answer this if the following conditions are met:",
-                                'html',
-                                $sDataEntryLanguage
-                            ) . "</strong><br />$explanation\n";
-                        }
-                        if ($validation != '') {
-                            $message .= '<strong>' . gT(
-                                "The answer(s) must meet these validation criteria:",
-                                'html',
-                                $sDataEntryLanguage
-                            ) . "</strong><br />$validation\n";
-                        }
-                        if ($message != '' && $arrayFilterHelp != '') {
-                            $message .= '<br/>';
-                        }
-                        if ($arrayFilterHelp != '') {
-                            $message .= '<strong>' . gT(
-                                "The answer(s) must meet these array_filter criteria:",
-                                'html',
-                                $sDataEntryLanguage
-                            ) . "</strong><br />$arrayFilterHelp\n";
-                        }
-                        if ($message != '') {
-                            $alert = App()->getController()->widget('ext.AlertWidget.AlertWidget', [
-                                'text' => $message,
-                                'type' => 'warning',
-                                'htmlOptions' => ['class' => 'col-md-8 offset-md-2']
-                            ], true);
-                            $cdata['explanation'] = "<tr class ='data-entry-explanation'><td class='data-entry-small-text' colspan='3' align='left'>$alert</td></tr>\n";
-                        }
+                    $message = '';
+                    if ($bgc == "even") {
+                        $bgc = "odd";
+                    } else {
+                        $bgc = "even";
+                    } //Do no alternate on explanation row
+                    if ($relevance != '' && $relevance != '1') {
+                        $message .= '<strong>' . gT(
+                            "Only answer this if the following conditions are met:",
+                            'html',
+                            $sDataEntryLanguage
+                        ) . "</strong><br />$explanation\n";
+                    }
+                    if ($validation != '') {
+                        $message .= '<strong>' . gT(
+                            "The answer(s) must meet these validation criteria:",
+                            'html',
+                            $sDataEntryLanguage
+                        ) . "</strong><br />$validation\n";
+                    }
+                    if ($message != '' && $arrayFilterHelp != '') {
+                        $message .= '<br/>';
+                    }
+                    if ($arrayFilterHelp != '') {
+                        $message .= '<strong>' . gT(
+                            "The answer(s) must meet these array_filter criteria:",
+                            'html',
+                            $sDataEntryLanguage
+                        ) . "</strong><br />$arrayFilterHelp\n";
+                    }
+                    if ($message != '') {
+                        $alert = App()->getController()->widget('ext.AlertWidget.AlertWidget', [
+                            'text'        => $message,
+                            'type'        => 'warning',
+                            'htmlOptions' => ['class' => 'col-md-8 offset-md-2']
+                        ], true);
+                        $cdata['explanation'] = "<tr class ='data-entry-explanation'><td class='data-entry-small-text' colspan='3' align='left'>$alert</td></tr>\n";
                     }
 
                     //END OF GETTING CONDITIONS
