@@ -69,7 +69,7 @@ class ResponseArchiveService
             $matches = array();
             if (preg_match($pattern, (string)$name, $matches)) {
                 // Column name is SIDXGIDXQID
-                $archiveQid = $matches[3];
+                $archiveQuestionCode = $matches[3];
                 if ($archiveQuestionCode=== $questionCode) {
                     return true;
                 }
