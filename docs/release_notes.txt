@@ -34,6 +34,10 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.6.63 (build 240508) to 5.6.64 (build 240516) May 15, 2024
+-Fixed issue #18821: Public url is not used for SURVEYURL (#3371) (Gabriel Jenik)
+
+
 Changes from 5.6.62 (build 240507) to 5.6.63 (build 240508) May 8, 2024
 Added end-of-life notification - see https://manual.limesurvey.org/LimeSurvey_roadmap
 
