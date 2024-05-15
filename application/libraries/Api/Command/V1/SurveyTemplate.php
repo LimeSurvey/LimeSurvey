@@ -36,7 +36,7 @@ class SurveyTemplate implements CommandInterface
         $this->surveyLanguageSetting = $surveyLanguageSetting;
     }
     /**
-     * Run survey detail command
+     * Run survey template command
      *
      * @param Request $request
      * @return Response
