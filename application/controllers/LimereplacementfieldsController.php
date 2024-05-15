@@ -212,8 +212,26 @@ class LimeReplacementFieldsController extends LSBaseController
                 $question = "[{$row['subquestion2']}] " . $question;
             }
 
+            $replacementCode = $row['title'];
+            if (array_key_exists('aid', $row) && $row['aid'] !== '') {
+                $replacementCode = $row['title'] . '_' . $row['aid'];
+                if (array_key_exists('scale_id', $row)) {
+                    $replacementCode = $replacementCode . '_' . $row['scale_id'];
+                }
+                if (strpos($replacementCode, '_other') === false) {
+                    $replacementCode = $replacementCode . '.shown';
+                }
+            }
             $shortquestion = $row['title'] . ": " . flattenText($question);
-            $cquestions[] = array($shortquestion, $row['qid'], $row['type'], $row['fieldname'], $row['previouspage'], $row['title']);
+            $cquestions[] = array(
+                $shortquestion,
+                $row['qid'],
+                $row['type'],
+                $row['fieldname'],
+                $row['previouspage'],
+                $row['title'],
+                $replacementCode
+            );
         }
         return $cquestions;
     }
