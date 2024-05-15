@@ -34,6 +34,26 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.5.6 (build 240506) to 6.5.7 (build 240515) May 15, 2024
+-Fixed issue #CT-800: Fixed styling for vanilla/fruity related to Bootstrap (twilligls)
+-Fixed issue #CT-774: Ranking advanced was not persisting answers on reload (prev, error modal) (twilligls)
+-Fixed issue #19562: Special character icon is doubled inside CKEditor (#3843) (tiborpacalat)
+-Fixed issue #19543: KCFinder needs to be updated when using with PHP 8.1 (#3837) (Gabriel Jenik)
+#Updated translation: Portuguese (Portugal) by c_schmitz, educaticteced, holch, samarta
+#Updated translation: Portuguese (Brazil) by c_schmitz, holch, samarta
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Korean by modernity4r
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Greek by baltzis
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 6.5.5 (build 240429) to 6.5.6 (build 240506) May 6, 2024
 -Fixed issue #CT-784: video elements are hidden on iPad beneath a certain height (#3838) (Patrick Teichmann)
 -Fixed issue #19528: Bad usability when opening participant edit in a new tab(#3826) (Denis Chenu)
