@@ -46,7 +46,7 @@ class SurveyDeactivate
      * @return array
      * @throws PermissionDeniedException
      */
-    public function deactivate(int $iSurveyID, $isOk = [])
+    public function deactivate(int $iSurveyID, $params = [])
     {
         if (!$this->permission->hasSurveyPermission($iSurveyID, 'surveyactivation', 'update')) {
             throw new PermissionDeniedException(
@@ -78,7 +78,7 @@ class SurveyDeactivate
         if (!$result["surveyTableExists"]) {
             return $result;
         }
-        if ($isOk) {
+        if (!is_array($params) || (($params['ok'] ?? '') == '')) {
             if (!empty($this->app->session->get('sNewSurveyTableName'))) {
                 $this->app->session->remove('sNewSurveyTableName');
             }
