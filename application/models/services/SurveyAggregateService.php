@@ -125,10 +125,11 @@ class SurveyAggregateService
      * Deactivate
      *
      * @param int $surveyId
+     * @param array $input
      * @return array
      */
-    public function deactivate($surveyId)
+    public function deactivate($surveyId, $input)
     {
-        return $this->surveyDeactivate->deactivate($surveyId);
+        return $this->surveyDeactivate->deactivate($surveyId, $input);
     }
 }
