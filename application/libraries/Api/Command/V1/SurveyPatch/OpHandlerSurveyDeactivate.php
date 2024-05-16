@@ -53,7 +53,7 @@ class OpHandlerSurveyDeactivate implements OpHandlerInterface
         $surveyDeactivateService = $diContainer->get(
             SurveyAggregateService::class
         );
-        $surveyDeactivateService->deactivate($op->getEntityId());
+        $surveyDeactivateService->deactivate($op->getEntityId(), $op->getProps());
     }
 
     /**

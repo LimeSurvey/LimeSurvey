@@ -32,7 +32,6 @@ class PatcherSurvey extends Patcher
         SurveyResponse $surveyResponse
     ) {
         $this->surveyResponse = $surveyResponse;
-
         $classes = [
             OpHandlerSurveyUpdate::class,
             OpHandlerLanguageSettingsUpdate::class,

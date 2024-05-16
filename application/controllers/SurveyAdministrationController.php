@@ -1592,29 +1592,53 @@ class SurveyAdministrationController extends LSBaseController
             LimeSurvey\Models\Services\SurveyDeactivate::class
         );
 
-        try {
-            $result = $surveyDeactivate->deactivate($iSurveyID, Yii::app()->request->getPost('ok'));
-        } catch (Exception $e) {
-            App()->user->setFlash('error', $e->getMessage());
-        }
+        $aData = array();
 
-        if (!empty($result["beforeDeactivate"]["message"])) {
-            Yii::app()->user->setFlash('error', $result["beforeDeactivate"]["message"]);
-        }
-        if ($result["beforeDeactivate"]["message"] === false) {
-            // @todo: What if two plugins change this?
-            $aData = [];
-            $aData['nostep'] = true;
-            $this->aData = $aData;
-        } else {
-            if (!$result["surveyTableExists"]) {
-                $_SESSION['flashmessage'] = gT("Error: Response table does not exist. Survey cannot be deactivated.");
-                $this->redirect($this->createUrl("surveyAdministration/view/surveyid/{$iSurveyID}"));
+        $datestamp = time();
+        $date = date('YmdHis', $datestamp); //'His' adds 24hours+minutes to name to allow multiple deactiviations in a day
+        $survey = Survey::model()->findByPk($iSurveyID);
+        $aData['aSurveysettings'] = getSurveyInfo($iSurveyID);
+        $aData['surveyid'] = $iSurveyID;
+        $aData['sid'] = $iSurveyID;
+        $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $iSurveyID . ")";
+        $aData['topBar']['hide'] = true;
+        $ok = Yii::app()->request->getPost('ok');
+
+        if ($ok == '') {
+            if (!empty(Yii::app()->session->get('sNewSurveyTableName'))) {
+                Yii::app()->session->remove('sNewSurveyTableName');
             }
 
-            $aData = $result['aData'];
+            Yii::app()->session->add('sNewSurveyTableName', Yii::app()->db->tablePrefix . "old_survey_{$iSurveyID}_{$date}");
+            $aData['date'] = $date;
+            $aData['dbprefix'] = Yii::app()->db->tablePrefix;
+            $aData['sNewSurveyTableName'] = Yii::app()->session->get('sNewSurveyTableName');
+            $aData['step1'] = true;
+        } else {
+            try {
+                $result = $surveyDeactivate->deactivate($iSurveyID, ['ok' => $ok]);
+            } catch (Exception $e) {
+                App()->user->setFlash('error', $e->getMessage());
+            }
 
-            $aData['sidemenu']['state'] = false;
+            if (!empty($result["beforeDeactivate"]["message"])) {
+                Yii::app()->user->setFlash('error', $result["beforeDeactivate"]["message"]);
+            }
+            if ($result["beforeDeactivate"]["message"] === false) {
+                // @todo: What if two plugins change this?
+                $aData = [];
+                $aData['nostep'] = true;
+                $this->aData = $aData;
+            } else {
+                if (!$result["surveyTableExists"]) {
+                    $_SESSION['flashmessage'] = gT("Error: Response table does not exist. Survey cannot be deactivated.");
+                    $this->redirect($this->createUrl("surveyAdministration/view/surveyid/{$iSurveyID}"));
+                }
+
+                $aData = $result['aData'];
+
+                $aData['sidemenu']['state'] = false;
+            }
         }
 
         $this->aData = $aData;
