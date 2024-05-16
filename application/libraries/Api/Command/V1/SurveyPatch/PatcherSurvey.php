@@ -104,12 +104,7 @@ class PatcherSurvey extends Patcher
         );
         $this->addOpHandler(
             $diContainer->get(
-                OpHandlerSurveyActivate::class
-            )
-        );
-        $this->addOpHandler(
-            $diContainer->get(
-                OpHandlerSurveyDeactivate::class
+                OpHandlerSurveyStatus::class
             )
         );
     }
