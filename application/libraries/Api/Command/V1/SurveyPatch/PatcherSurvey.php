@@ -47,8 +47,8 @@ class PatcherSurvey extends Patcher
             OpHandlerSubquestionDelete::class,
             OpHandlerAnswerDelete::class,
             OpHandlerSubQuestion::class,
-            OpHandlerSurveyActivate::class,
-            OpHandlerSurveyDeactivate::class
+            OpHandlerSurveyStatus::class,
+            OpHandlerSurveyStatus::class,
         ];
 
         foreach ($classes as $class) {
