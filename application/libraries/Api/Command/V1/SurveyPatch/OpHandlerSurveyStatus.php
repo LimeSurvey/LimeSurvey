@@ -15,7 +15,7 @@ use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\{
     OpHandlerValidationTrait
 };
 
-class OpHandlerSurveyDeactivate implements OpHandlerInterface
+class OpHandlerSurveyStatus implements OpHandlerInterface
 {
     use OpHandlerExceptionTrait;
     use OpHandlerSurveyTrait;
@@ -35,12 +35,26 @@ class OpHandlerSurveyDeactivate implements OpHandlerInterface
     public function canHandle(OpInterface $op): bool
     {
         $isUpdateOperation = $op->getType()->getId() === OpTypeUpdate::ID;
-        $isSurveyDeactivate = $op->getEntityType() === "surveyDeactivate";
+        $isSurveyStatus = $op->getEntityType() === 'surveyStatus';
 
-        return $isUpdateOperation && $isSurveyDeactivate;
+        return $isUpdateOperation && $isSurveyStatus;
     }
 
     /**
+     * Handle subquestion delete operation.
+     *
+     *   Expects a patch structure like this:
+     *   {
+     *        "id": 571271,
+     *        "op": "update",
+     *        "entity": "surveyActivate",
+     *        "error": false,
+     *        "props": {
+     *            "anonymized": false
+     *        }
+     *   }
+
+     *
      * @param OpInterface $op
      * @return void
      * @throws \LimeSurvey\Models\Services\Exception\NotFoundException
@@ -50,16 +64,21 @@ class OpHandlerSurveyDeactivate implements OpHandlerInterface
     public function handle(OpInterface $op)
     {
         $diContainer = \LimeSurvey\DI::getContainer();
-        $surveyDeactivateService = $diContainer->get(
+        $surveyActivateService = $diContainer->get(
             SurveyAggregateService::class
         );
-        $surveyDeactivateService->deactivate($op->getEntityId(), $op->getProps());
+        $props = $op->getProps();
+        $action = (($props['activate'] ?? false) ? 'activate' : 'deactivate');
+        if (!isset($props['ok'])) {
+            $props['ok'] = true;
+        }
+        $surveyActivateService->{$action}($op->getEntityId(), $props);
     }
 
     /**
-     * Checks if patchs is valid for this operation
+     * Checks if patch is valid for this operation.
      * @param OpInterface $op
-     * @return  array
+     * @return array
      */
     public function validateOperation(OpInterface $op): array
     {
