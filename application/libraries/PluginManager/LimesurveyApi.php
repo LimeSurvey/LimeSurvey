@@ -180,7 +180,7 @@ class LimesurveyApi
 
     /**
      * Returns an array of all available template names - does a basic check if the template might be valid
-     * @return array
+     * @return array|string
      */
     public function getTemplateList()
     {

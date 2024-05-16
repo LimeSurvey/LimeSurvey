@@ -6,3 +6,4 @@ import * as Bootstrap from '../../../assets/bootstrap_5/js/bootstrap_5.js';
 import ThemeScripts from './core/old_core_theme.js';
 import ArrayScripts from './questiontypes/array/array.js';
 import NavbarScripts from './navbar/navbar.js';
+import Video from './video/video.js';

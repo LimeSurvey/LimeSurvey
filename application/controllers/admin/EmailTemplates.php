@@ -25,7 +25,7 @@ class EmailTemplates extends SurveyCommonAction
     /**
      * Load edit email template screen.
      * @param mixed $iSurveyId
-     * @return
+     * @return void
      */
     public function index($iSurveyId)
     {
@@ -111,7 +111,7 @@ class EmailTemplates extends SurveyCommonAction
 
     /**
      * Function responsible to process any change in email template.
-     * @return
+     * @return void
      */
     public function update($iSurveyId)
     {

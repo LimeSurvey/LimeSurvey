@@ -136,7 +136,7 @@
                         $fieldsarray["{ADMINEMAIL}"] = $thissurvey['adminemail'];
                         $fieldsarray["{SURVEYNAME}"] = $thissurvey[$language]['name'];
                         $fieldsarray["{SURVEYDESCRIPTION}"] = $thissurvey[$language]['description'];
-                        $fieldsarray["{EXPIRY}"] = $thissurvey["expiry"];
+                        $fieldsarray["{EXPIRY}"] = strval($thissurvey["expiry"]);
 
                         $subject = Replacefields($thissurvey[$language]['email_remind_subj'], $fieldsarray, false);
                         $textarea = Replacefields($thissurvey[$language]['email_remind'], $fieldsarray, false);
