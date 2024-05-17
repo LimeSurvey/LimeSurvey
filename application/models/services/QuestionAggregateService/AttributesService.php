@@ -29,7 +29,7 @@ class AttributesService
      * Based on QuestionAdministrationController::unparseAndSetAdvancedOptions()
      *
      * @param Question $question
-     * @param array{
+     * @param array {
      *      ?logic: array{
      *          ?min_answers: int,
      *          ?max_answers: int,
@@ -77,7 +77,7 @@ class AttributesService
      * @todo document me
      *
      * @param Question $question
-     * @param array{
+     * @param array {
      *      ?min_answers: int,
      *      ?max_answers: int,
      *      ?array_filter_style: int,

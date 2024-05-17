@@ -16,8 +16,8 @@
 /**
 * Strips html tags and replaces new lines
 *
-* @param $string
-* @param $removeOther   if 'true', removes '-oth-' from the string.
+* @param string $string
+* @param boolean $removeOther   if 'true', removes '-oth-' from the string.
 * @return string
 */
 function stripTagsFull($string, $removeOther = true)

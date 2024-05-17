@@ -36,7 +36,7 @@ class PrintanswersController extends LSYii_Controller
      * View answers at the end of a survey in one place. To export as pdf, set 'usepdfexport' = 1 in lsconfig.php and $printableexport='pdf'.
      * @param mixed $surveyid
      * @param bool $printableexport
-     * @return
+     * @return void
      */
     public function actionView($surveyid, $printableexport = false)
     {
