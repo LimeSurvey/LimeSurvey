@@ -64,7 +64,9 @@ class SurveyTemplate implements CommandInterface
             );
         }
         $language = (($request->getData('language') ?? $survey->language) ?? 'en');
-        $languageSettings = $this->surveyLanguageSetting->find('surveyls_survey_id = :sid and surveyls_language = :language', [
+        $languageSettings = $this
+            ->surveyLanguageSetting
+            ->find('surveyls_survey_id = :sid and surveyls_language = :language', [
             ':sid' => $surveyId,
             ':language' => $language
         ]);
@@ -93,7 +95,11 @@ class SurveyTemplate implements CommandInterface
         /*
             You can decode the HTML as
             $.get('https://ls-ce/rest/v1/survey-template/571271', function(resp) {
-                console.log(new DOMParser().parseFromString(resp.template, "text/html").querySelector("form"));
+                console.log(
+                    new DOMParser()
+                    .parseFromString(resp.template, "text/html")
+                    .querySelector("form")
+                );
             })
         */
         return $this->responseFactory->makeSuccess(array_merge($response, ['template' => $result]));
