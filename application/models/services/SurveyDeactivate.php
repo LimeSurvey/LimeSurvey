@@ -146,7 +146,6 @@ class SurveyDeactivate
                 true
             )
         );
-        $this->archivedTokenSettings->save();
 
         $aData['tnewtable'] = $tnewtable;
         $aData['toldtable'] = $toldtable;
@@ -175,7 +174,7 @@ class SurveyDeactivate
         if ($attributes) {
             $this->archivedTokenSettings->attributes = $attributes;
         }
-        $this->archivedTokenSettings->save();
+        @$this->archivedTokenSettings->save();
     }
 
     /**
