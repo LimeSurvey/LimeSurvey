@@ -92,16 +92,6 @@ class SurveyTemplate implements CommandInterface
             );
         }
         curl_close(($ch));
-        /*
-            You can decode the HTML as
-            $.get('https://ls-ce/rest/v1/survey-template/571271', function(resp) {
-                console.log(
-                    new DOMParser()
-                    .parseFromString(resp.template, "text/html")
-                    .querySelector("form")
-                );
-            })
-        */
         return $this->responseFactory->makeSuccess(array_merge($response, ['template' => $result]));
     }
 }
