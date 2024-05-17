@@ -157,7 +157,7 @@ class SurveysController extends LSYii_Controller
         $aError['type'] = $error['code'];
         $aError['error'] = $title;
         if (!empty($error['message'])) {
-            $aError['title'] = ' - ' . nl2br(CHtml::encode($error['message']) ?? '');   
+            $aError['title'] = ' - ' . nl2br(CHtml::encode($error['message']) ?? '');
         }
         $aError['message'] = $message;
         $aError['contact'] = $contact;
