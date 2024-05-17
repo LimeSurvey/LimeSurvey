@@ -2,27 +2,33 @@
 
 namespace LimeSurvey\Models\Services;
 
+use LimeSurvey\Api\Transformer\Registry\Registry;
+use LimeSurvey\Api\Transformer\Formatter\{
+    FormatterLongText
+};
+
 class TypeTransformerService
 {
-    public function __construct()
-    {
-    }
+    protected Registry $registry;
+
+    protected array $mapping;
+
+    protected FormatterLongText $formatterLongText;
 
     /**
-     * Converts an input from its source type into Long Free Text (T)
+     * Constructor
      *
-     * @param string $from the source type
-     * @param mixed $input the value according to the source type
-     * @return mixed
+     * @param Registry $registry
      */
-    protected function convertToLongFreeText(string $from, $input)
-    {
-        switch ($from) {
-            case \Question::QT_S_SHORT_FREE_TEXT:
-                return $input;
-            default:
-                return null;
-        }
+    public function __construct(
+        Registry $registry,
+        FormatterLongText $formatterLongText
+    ) {
+        $this->registry = $registry;
+        $this->formatterLongText = $formatterLongText;
+        $this->mapping = [
+            \Question::QT_T_LONG_FREE_TEXT => $this->formatterLongText,
+        ];
     }
 
     /**
@@ -36,13 +42,14 @@ class TypeTransformerService
      */
     public function convert(string $from, string $to, $input)
     {
-        switch ($to) {
-            case $from:
-                return $input;
-            case \Question::QT_T_LONG_FREE_TEXT:
-                return $this->convertToLongFreeText($from, $input);
-            default:
-                return null;
+        if ($from === $to) {
+            return $input;
+        } elseif (isset($this->mapping[$to])) {
+            return $this->mapping[$to]->format($input, [], [
+                'type' => $from
+            ]);
+        } else {
+            return null;
         }
     }
 }
