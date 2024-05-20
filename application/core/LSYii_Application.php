@@ -648,12 +648,32 @@ class LSYii_Application extends CWebApplication
             FROM " . $this->db->tablePrefix . "old_questions_" . $sid . "_" . $qTimestamp . " old_q
             JOIN " . $this->db->tablePrefix . "questions new_q
             ON old_q.qid = new_q.qid AND old_q.type = new_q.type
-            JOIN information_schema.columns new_s_c
-            ON new_s_c.TABLE_SCHEMA = DATABASE() AND new_s_c.TABLE_NAME = '" . $this->db->tablePrefix . "survey_" . $sid . "' AND new_s_c.COLUMN_NAME LIKE CONCAT(new_q.sid, 'X', new_q.gid, 'X', new_q.qid, '%')
-            JOIN information_schema.columns old_s_c
-            ON old_s_c.TABLE_SCHEMA = new_s_c.TABLE_SCHEMA AND old_s_c.TABLE_NAME = '" . $this->db->tablePrefix . "old_survey_{$sid}_{$sTimestamp}' AND
-            old_s_c.COLUMN_NAME LIKE CONCAT(old_q.sid, 'X', old_q.gid, 'X', old_q.qid, '%') AND
-            SUBSTRING(old_s_c.COLUMN_NAME, 1 + LENGTH(CONCAT(old_q.sid, 'X', old_q.gid, 'X', old_q.qid))) = SUBSTRING(new_s_c.COLUMN_NAME, 1 + LENGTH(CONCAT(new_q.sid, 'X', new_q.gid, 'X', new_q.qid)));
+            JOIN (
+                SELECT SUBSTRING_INDEX(temp.COLUMN_NAME, 'X', 1) AS sid,
+                       SUBSTRING_INDEX(SUBSTRING_INDEX(temp.COLUMN_NAME, 'X', 2), 'X', -1) AS gid,
+                       SUBSTRING_INDEX(temp.COLUMN_NAME, 'X', -1) AS qidsuffix,
+                       temp.COLUMN_NAME
+                FROM information_schema.columns temp
+                WHERE temp.TABLE_SCHEMA = DATABASE() AND 
+                      temp.TABLE_NAME = '" . $this->db->tablePrefix . "survey_" . $sid . "'
+            ) new_s_c
+            ON new_s_c.sid = new_q.sid AND
+               new_s_c.gid = new_q.gid AND
+               new_s_c.qidsuffix like concat(new_q.qid, '%')
+            JOIN (
+                SELECT SUBSTRING_INDEX(temp.COLUMN_NAME, 'X', 1) AS sid,
+                       SUBSTRING_INDEX(SUBSTRING_INDEX(temp.COLUMN_NAME, 'X', 2), 'X', -1) AS gid,
+                       SUBSTRING_INDEX(temp.COLUMN_NAME, 'X', -1) AS qidsuffix,
+                       temp.COLUMN_NAME
+                FROM information_schema.columns temp
+                WHERE temp.TABLE_SCHEMA = DATABASE() AND
+                      temp.TABLE_NAME = '" . $this->db->tablePrefix . "old_survey_{$sid}_{$sTimestamp}'
+            ) old_s_c
+            ON old_s_c.sid = old_q.sid AND
+               old_s_c.gid = old_q.gid AND
+               old_s_c.qidsuffix LIKE CONCAT(old_q.qid, '%') AND
+               old_s_c.qidsuffix = new_s_c.qidsuffix
+            ;
         ";
 
         $rawResults = $this->db->createCommand($command)->queryAll();
