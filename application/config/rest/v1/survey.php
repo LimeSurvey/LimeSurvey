@@ -16,6 +16,7 @@ use LimeSurvey\Api\Rest\V1\SchemaFactory\{
 
 $errorSchema = (new SchemaFactoryError())->make();
 $surveyPatchSchema = (new SchemaFactorySurveyPatch())->make();
+$surveyTemplateSchema = (new SchemaFactorySurveyTemplate())->make();
 
 $rest = [];
 
@@ -123,12 +124,14 @@ $rest['v1/survey-template/$id'] = [
         'description' => 'Survey template',
         'commandClass' => SurveyTemplate::class,
         'auth' => 'session',
+        'example' => __DIR__ . '/example/survey-post-template.json',
+        'schema' => $surveyTemplateSchema,
         'responses' => [
             'success' => [
                 'code' => 200,
                 'description' => 'Success',
                 'content' => null,
-                'schema' => (new SchemaFactorySurveyTemplate())->make()
+                'schema' => $surveyTemplateSchema
             ],
             'not-found' => [
                 'code' => 404,
