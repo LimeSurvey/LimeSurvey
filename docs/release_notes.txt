@@ -34,6 +34,12 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.5.8 (build 240517) to 6.5.9 (build 240521) May 21, 2024
+-Fixed issue: On group/question preview a PHP error is thrown if the qid/gid is invalid (#3849) (Carsten Schmitz)
+#Updated translation: Korean by modernity4r
+#Updated translation: Japanese by hl_sales
+
+
 Changes from 6.5.7 (build 240515) to 6.5.8 (build 240517) May 16, 2024
 -Fixed issue: L10ns must be initialized with qid not gid (Kevin Foster)
 #Updated translation: Norwegian (Bokmål) by pmonstad
