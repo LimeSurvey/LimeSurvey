@@ -38,6 +38,23 @@ class SurveyTemplate implements CommandInterface
     /**
      * Run survey template command
      *
+     * Supports GET and POST, with the sid at the end of the endpoint,
+     * lookin like rest/v1/survey-template/571271
+     *
+     * If it's a GET request, then language is not specified, so it is inferred from the survey's default language and falling back to en if not found
+     *
+     * If it's a POST, language can be specified like this:
+     * {
+     *     "language": "en",
+     * }
+     *
+     * Responds with an object, like this:
+     * {
+     *     "template": "<some HTML>"
+     *     "title": "Lunch"
+     *     "subtitle": "What should we eat for lunch?"
+     * }
+     *
      * @param Request $request
      * @return Response
      */
