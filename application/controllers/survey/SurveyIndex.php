@@ -106,8 +106,18 @@ class SurveyIndex extends CAction
                 throw new CHttpException(401, $message);
             } else {
                 killSurveySession($surveyid);
-                if ((intval($param['qid']) && $param['action'] == 'previewquestion')) {
+                // Check if group exists in this survey
+                $arGroup = QuestionGroup::model()->find("sid = :sid and gid = :gid", [":sid" => $surveyid, ":gid" => intval($param['gid'])]);
+                if (empty($arGroup)) {
+                    throw new CHttpException(400, gT("Invalid group ID"));
+                }
+                if ($param['action'] == 'previewquestion') {
                     $previewmode = 'question';
+                    // Check if question exists in this survey and group
+                    $arQuestion = Question::model()->find("sid = :sid and qid = :qid and gid = :gid", [":sid" => $surveyid, ":qid" => intval($param['qid']), ":gid" => intval($param['gid'])]);
+                    if (empty($arQuestion)) {
+                        throw new CHttpException(400, gT("Invalid question ID"));
+                    }
                 }
                 if ((intval($param['gid']) && $param['action'] == 'previewgroup')) {
                     $previewmode = 'group';
@@ -649,7 +659,7 @@ class SurveyIndex extends CAction
     private function getParameters($args = array(), $post = array())
     {
         $param = array();
-        if (@$args[0] == __CLASS__) {
+        if (isset($args[0]) && $args[0] == __CLASS__) {
             array_shift($args);
         }
         $iArgCount = count($args);

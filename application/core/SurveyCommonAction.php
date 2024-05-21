@@ -162,7 +162,7 @@ class SurveyCommonAction extends CAction
         if (!empty($params['iGroupId'])) {
             if ((string) (int) $params['iGroupId'] !== (string) $params['iGroupId']) {
                 // pgsql need filtering before find
-                throw new CHttpException(403, gT("Invalid group id"));
+                throw new CHttpException(403, gT("Invalid group ID"));
             }
             $oGroup = QuestionGroup::model()->find("gid=:gid", array(":gid" => $params['iGroupId'])); //Move this in model to use cache
             if (!$oGroup) {
