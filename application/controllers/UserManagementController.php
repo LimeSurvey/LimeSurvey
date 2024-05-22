@@ -187,7 +187,7 @@ class UserManagementController extends LSBaseController
                 return App()->getController()->renderPartial('/admin/super/_renderJson', [
                     "data" => [
                         'success' => false,
-                        'errors'  => $this->renderErrors($oUser->getErrors()) ?? ''
+                        'errors'  => CHtml::errorSummary($oUser)
                     ]
                 ]);
             }
