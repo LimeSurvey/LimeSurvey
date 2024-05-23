@@ -23,5 +23,5 @@ jobs:
           GOOGLE_PROJECT: ${{ secrets.GOOGLE_PROJECT }}
         run: |
           gcloud auth configure-docker europe-west1-docker.pkg.dev
-          docker build -t europe-west1-docker.pkg.dev/$GOOGLE_PROJECT/air-tools/limesurvey:v0.0.11 .
-          docker push europe-west1-docker.pkg.dev/$GOOGLE_PROJECT/air-tools/limesurvey:v0.0.11
+          docker build -t europe-west1-docker.pkg.dev/$GOOGLE_PROJECT/air-tools/limesurvey:v0.0.12 .
+          docker push europe-west1-docker.pkg.dev/$GOOGLE_PROJECT/air-tools/limesurvey:v0.0.12
