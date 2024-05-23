@@ -12,6 +12,11 @@ class ExceptionErrorItem
     public ?string $error;
 
     /**
+     * @var int the http response code from the exception
+     */
+    public int $code;
+
+    /**
      * @var string the name of the entity of that operation
      */
     public string $entity;
@@ -33,13 +38,16 @@ class ExceptionErrorItem
 
     /**
      * @param string|null $errorMessage
+     * @param int $code
      * @param OpInterface $patchOpData
      */
     public function __construct(
         ?string $errorMessage,
+        int $code,
         OpInterface $patchOpData
     ) {
         $this->error = $errorMessage;
+        $this->code = $code;
         $this->entity = $patchOpData->getEntityType();
         $this->op = $patchOpData->getType()->getId();
         $this->id = $patchOpData->getEntityId();

@@ -32,6 +32,8 @@ class SurveyAggregateService
     private TemplateConfiguration $templateConfiguration;
     private Permission $modelPermission;
     private $restMode = false;
+    private SurveyActivate $surveyActivate;
+    private SurveyDeactivate $surveyDeactivate;
 
     public function __construct(
         LanguageSettings $languageSettings,
@@ -39,7 +41,9 @@ class SurveyAggregateService
         UrlParams $urlParams,
         ProxyExpressionManager $proxyExpressionManager,
         TemplateConfiguration $templateConfiguration,
-        Permission $modelPermission
+        Permission $modelPermission,
+        SurveyActivate $surveyActivate,
+        SurveyDeactivate $surveyDeactivate
     ) {
         $this->languageSettings = $languageSettings;
         $this->generalSettings = $generalSettings;
@@ -47,6 +51,8 @@ class SurveyAggregateService
         $this->proxyExpressionManager = $proxyExpressionManager;
         $this->templateConfiguration = $templateConfiguration;
         $this->modelPermission = $modelPermission;
+        $this->surveyActivate = $surveyActivate;
+        $this->surveyDeactivate = $surveyDeactivate;
     }
 
     /**
@@ -119,5 +125,29 @@ class SurveyAggregateService
                 'Permission denied'
             );
         }
+    }
+
+    /**
+     * Activate
+     *
+     * @param int $surveyId
+     * @param array $input
+     * @return array
+     */
+    public function activate($surveyId, $input)
+    {
+        return $this->surveyActivate->activate($surveyId, $input);
+    }
+
+    /**
+     * Deactivate
+     *
+     * @param int $surveyId
+     * @param array $input
+     * @return array
+     */
+    public function deactivate($surveyId, $input)
+    {
+        return $this->surveyDeactivate->deactivate($surveyId, $input);
     }
 }

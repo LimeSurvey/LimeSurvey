@@ -15,7 +15,6 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
             } else {
                 eT("Add survey participant");
             }
-
             ?>
         </h3>
     <?php } ?>

@@ -34,6 +34,102 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.5.6 (build 240506) to 6.5.7 (build 240515) May 15, 2024
+-Fixed issue #CT-800: Fixed styling for vanilla/fruity related to Bootstrap (twilligls)
+-Fixed issue #CT-774: Ranking advanced was not persisting answers on reload (prev, error modal) (twilligls)
+-Fixed issue #19562: Special character icon is doubled inside CKEditor (#3843) (tiborpacalat)
+-Fixed issue #19543: KCFinder needs to be updated when using with PHP 8.1 (#3837) (Gabriel Jenik)
+#Updated translation: Portuguese (Portugal) by c_schmitz, educaticteced, holch, samarta
+#Updated translation: Portuguese (Brazil) by c_schmitz, holch, samarta
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Korean by modernity4r
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Greek by baltzis
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Catalan by qualitatuvic
+
+
+Changes from 6.5.5 (build 240429) to 6.5.6 (build 240506) May 6, 2024
+-Fixed issue #CT-784: video elements are hidden on iPad beneath a certain height (#3838) (Patrick Teichmann)
+-Fixed issue #19528: Bad usability when opening participant edit in a new tab(#3826) (Denis Chenu)
+-Fixed issue #19526: debug=2 PHP8.1 - unable to send email without expiry (#3827) (Denis Chenu)
+#Updated translation: Turkish by kayazeren
+#Updated translation: Slovak by jelen1
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Odia by rajkumar_dms
+#Updated translation: Korean by modernity4r
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1, slansky
+#Updated translation: Czech (Informal) by jelen1
+
+
+Changes from 6.5.4 (build 240422) to 6.5.5 (build 240429) April 29, 2024
+-Fixed issue: Add/import user role buttons must have unique id (#3832) (K Foster)
+-Fixed issue #CT-771: clear selection and select all not working in responses grid column filter (#3828) (Patrick Teichmann)
+-Fixed issue #CT-711: email templates, add attachment, failed to open the resource manager (kcfinder) resulting in being unable to attach files to the email template (Patrick Teichmann)
+-Fixed issue #19527: Potential 500 error in survey list (#3833) (Denis Chenu)
+-Fixed issue #19504: Potential PHP Warning when get Survey listing (#3821) (Denis Chenu)
+-Fixed issue #19465: Apply new term blocklist (Carsten Schmitz)
+#Updated translation: Portuguese (Portugal) by holch, samarta
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Montenegrin by c_schmitz, kristinakom
+#Updated translation: Japanese by d_inoue
+#Updated translation: German by c_schmitz
+#Updated translation: German by Transcaretech
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Finnish by Jmantysalo
+
+
+Changes from 6.5.3 (build 240415) to 6.5.4 (build 240422) April 22, 2024
+-Fixed issue #19518: Downloading responses does not exit loading animation once finished (#3813) (Gabriel Jenik)
+-Fixed issue #19319: potential error during login, after Updating To LS 6.4.0 (#3767) (Denis Chenu)
+-Fixed issue #19302: Wrong redirect when directLogin is true (#3822) (Gabriel Jenik)
+#Updated translation: Spanish (Spain) by davidperez00
+#Updated translation: Slovak by jelen1
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Korean by modernity4r
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
+Changes from 6.5.2 (build 240402) to 6.5.3 (build 240415) April 15, 2024
+-Fixed issue: Survey general settings error message with more detail (#3809) (K Foster)
+-Fixed issue: Reduced chunk size to avoid memory-size crashes on survey archive exports (#3812) (lajosarpad)
+-Fixed issue: Missing mbstring library requirement was not properly checked during installation (Carsten Schmitz)
+-Fixed issue: Missing link in footer of index page (Carsten Schmitz)
+-Fixed issue #19514: File Upload, scrolling not possible on mobile (#3810) (Gabriel Jenik)
+-Fixed issue #19408: Users can activate a survey without groups and questions (#3808) (Gabriel Jenik)
+#Updated translation: Turkish by bulent, kayazeren
+#Updated translation: Slovak by jelen1
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Nepali by limeguy
+#Updated translation: Malay by aidi.ahmi
+#Updated translation: Korean by modernity4r
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Greek by kajetan
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by Akaer, c_schmitz
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Amharic by tibor.pacalat
+
+
 Changes from 6.5.1 (build 240320) to 6.5.2 (build 240402) April 2, 2024
 -Fixed issue: Wrong caption for function that prompts to set up 2FA after login (Carsten Schmitz)
 -Fixed issue #19484: File upload question - max_num_of_files problem (#3794) (Gabriel Jenik)

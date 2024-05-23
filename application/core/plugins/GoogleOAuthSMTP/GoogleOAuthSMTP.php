@@ -10,7 +10,7 @@ class GoogleOAuthSMTP extends SmtpOAuthPluginBase
     protected static $description = 'Core: Adds Google OAuth support for email sending';
     protected static $name = 'GoogleOAuthSMTP';
 
-    /** @inheritdoc, this plugin doesn't have any public method */
+    /** @inheritdoc this plugin doesn't have any public method */
     public $allowedPublicMethods = [];
 
     /** @inheritdoc */
