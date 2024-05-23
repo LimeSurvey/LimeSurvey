@@ -22,10 +22,14 @@ jobs:
         with:
           credentials_json: '${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}'
 
+      - name: Extract tag name
+        id: get_tag
+        run: echo "::set-output name=TAG::${GITHUB_REF#refs/tags/}"
+
       - name: Build and push the docker image
         env:
           GOOGLE_PROJECT: ${{ secrets.GOOGLE_PROJECT }}
         run: |
           gcloud auth configure-docker europe-west1-docker.pkg.dev
-          docker build -t europe-west1-docker.pkg.dev/$GOOGLE_PROJECT/air-tools/limesurvey:v0.0.15 .
-          docker push europe-west1-docker.pkg.dev/$GOOGLE_PROJECT/air-tools/limesurvey:v0.0.15
+          docker build -t europe-west1-docker.pkg.dev/$GOOGLE_PROJECT/air-tools/limesurvey:${{ steps.get_tag.outputs.TAG }} .
+          docker push europe-west1-docker.pkg.dev/$GOOGLE_PROJECT/air-tools/limesurvey:${{ steps.get_tag.outputs.TAG }}
