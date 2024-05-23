@@ -20,12 +20,12 @@ jobs:
       - name: Login to gcloud
         uses: google-github-actions/auth@v2
         with:
-          credentials_json: '${{ secrets.GOOGLE_CREDENTIALS }}'
+          credentials_json: '${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}'
 
       - name: Build and push the docker image
         env:
           GOOGLE_PROJECT: ${{ secrets.GOOGLE_PROJECT }}
         run: |
           gcloud auth configure-docker europe-west1-docker.pkg.dev
-          docker build -t europe-west1-docker.pkg.dev/$GOOGLE_PROJECT/air-tools/limesurvey:v0.0.14 .
-          docker push europe-west1-docker.pkg.dev/$GOOGLE_PROJECT/air-tools/limesurvey:v0.0.14
+          docker build -t europe-west1-docker.pkg.dev/$GOOGLE_PROJECT/air-tools/limesurvey:v0.0.15 .
+          docker push europe-west1-docker.pkg.dev/$GOOGLE_PROJECT/air-tools/limesurvey:v0.0.15
