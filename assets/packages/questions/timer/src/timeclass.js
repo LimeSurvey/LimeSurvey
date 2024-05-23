@@ -191,7 +191,7 @@ export default class TimerConstructor {
      */
     _getTimerFromLocalStorage() {
         if(!window.localStorage) {
-            return 0;
+            return null;
         }
         const timeLeft = window.localStorage.getItem('limesurvey_timers_' + this.timersessionname);
         return (!isNaN(parseInt(timeLeft)) ? timeLeft : 0);
