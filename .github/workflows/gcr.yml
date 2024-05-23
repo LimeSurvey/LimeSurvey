@@ -4,23 +4,24 @@ on:
     tags:
       - '*'
 jobs:
-  build-and-push-to-gcr:
+  deploy:
     runs-on: ubuntu-latest
-    permissions:
-      contents: 'read'
-      id-token: 'write'
     steps:
-      - uses: actions/checkout@v3
-      - name: Authenticate to Google Cloud
-        id: auth
-        uses: google-github-actions/auth@v2
+
+      - name: code checkout
+        uses: actions/checkout@v2
+
+      - name: install the gcloud cli
+        uses: google-github-actions/setup-gcloud@v0
         with:
-          credentials_json: '${{ secrets.JSON_GCLOUD_SERVICE_ACCOUNT_JSON }}'
-      - uses: RafikFarhad/push-to-gcr-github-action@v5-rc1
-        with:
-          # gcloud_service_key: ${{ secrets.GCLOUD_SERVICE_KEY }} # can be base64 encoded or plain text || not needed if you use google-github-actions/auth
-          registry: europe-west1-docker.pkg.dev
-          project_id: air-tools-prod
-          image_name: limesurvey
-          image_tag: ${{ github.ref_name }}
-          dockerfile: .
+          project_id: ${{ secrets.GOOGLE_PROJECT }}
+          service_account_key: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+          export_default_credentials: true
+
+      - name: build and push the docker image
+        env:
+          GOOGLE_PROJECT: ${{ secrets.GOOGLE_PROJECT }}
+        run: |
+          gcloud auth configure-docker us-central1-docker.pkg.dev
+          docker build -t europe-west1-docker.pkg.dev/$GOOGLE_PROJECT/air-tools/limesurvey:v0.0.9 .
+          docker push europe-west1-docker.pkg.dev/$GOOGLE_PROJECT/air-tools/limesurvey:v0.0.9
