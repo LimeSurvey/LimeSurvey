@@ -5,7 +5,10 @@ namespace ls\tests\unit\api\opHandlers;
 use LimeSurvey\Api\Command\V1\SurveyPatch\OpHandlerQuestionL10nUpdate;
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestionL10ns;
 use LimeSurvey\DI;
-use LimeSurvey\Models\Services\QuestionAggregateService\L10nService;
+use LimeSurvey\Models\Services\{
+    QuestionAggregateService,
+    QuestionAggregateService\L10nService
+};
 use LimeSurvey\ObjectPatch\{
     ObjectPatchException,
     Op\OpStandard,
@@ -97,11 +100,11 @@ class OpHandlerQuestionL10nUpdateTest extends TestBaseClass
         return [
             'en' => [
                 'question' => 'test',
-                'help'     => 'help'
+                'help' => 'help'
             ],
             'de' => [
                 'question' => 'Frage',
-                'help'     => 'Hilfe'
+                'help' => 'Hilfe'
             ],
         ];
     }
@@ -126,9 +129,14 @@ class OpHandlerQuestionL10nUpdateTest extends TestBaseClass
         $mockQuestionL10nService = \Mockery::mock(
             L10nService::class
         )->makePartial();
+        /** @var QuestionAggregateService */
+        $mockQuestionAggregateService = \Mockery::mock(
+            QuestionAggregateService::class
+        );
         return new OpHandlerQuestionL10nUpdate(
             $mockQuestionL10nService,
-            DI::getContainer()->get(TransformerInputQuestionL10ns::class)
+            DI::getContainer()->get(TransformerInputQuestionL10ns::class),
+            $mockQuestionAggregateService
         );
     }
 }

@@ -2,6 +2,7 @@
 
 namespace LimeSurvey\Api\Command\V1;
 
+use Permission;
 use Survey;
 use LimeSurvey\Api\Command\V1\Transformer\Output\TransformerOutputSurveyDetail;
 use LimeSurvey\Api\Command\{
@@ -22,25 +23,29 @@ class SurveyDetail implements CommandInterface
     protected AuthSession $authSession;
     protected TransformerOutputSurveyDetail $transformerOutputSurveyDetail;
     protected ResponseFactory $responseFactory;
+    protected Permission $permission;
 
     /**
      * Constructor
      *
      * @param Survey $survey
      * @param AuthSession $authSession
-     * @param TransformerOutputSurvey $transformerOutputSurvey
+     * @param TransformerOutputSurveyDetail $transformerOutputSurveyDetail
      * @param ResponseFactory $responseFactory
+     * @param Permission $permission
      */
     public function __construct(
         Survey $survey,
         AuthSession $authSession,
         TransformerOutputSurveyDetail $transformerOutputSurveyDetail,
-        ResponseFactory $responseFactory
+        ResponseFactory $responseFactory,
+        Permission $permission
     ) {
         $this->survey = $survey;
         $this->authSession = $authSession;
         $this->transformerOutputSurveyDetail = $transformerOutputSurveyDetail;
         $this->responseFactory = $responseFactory;
+        $this->permission = $permission;
     }
 
     /**
@@ -53,10 +58,15 @@ class SurveyDetail implements CommandInterface
     {
         $sessionKey = (string) $request->getData('sessionKey');
         $surveyId = (string) $request->getData('_id');
-
+        $authorized = $this->authSession->checkKey($sessionKey);
+        $hasPermission = $this->permission->hasSurveyPermission(
+            (int)$surveyId,
+            'survey',
+            'read'
+        );
         if (
-            !$this->authSession
-                ->checkKey($sessionKey)
+            !$authorized
+            || !$hasPermission
         ) {
             return $this->responseFactory
                 ->makeErrorUnauthorised();
