@@ -1,0 +1,27 @@
+name: Push to GCR
+on:
+  push:
+    tags:
+      - '*'
+jobs:
+  build-and-push-to-gcr:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+    steps:
+      - uses: actions/checkout@v3
+      - name: Authenticate to Google Cloud
+        id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: '${{ secrets.JSON_GCLOUD_SERVICE_ACCOUNT_JSON }}'
+      - uses: RafikFarhad/push-to-gcr-github-action@v5-rc1
+        with:
+          # gcloud_service_key: ${{ secrets.GCLOUD_SERVICE_KEY }} # can be base64 encoded or plain text || not needed if you use google-github-actions/auth
+          registry: gcr.io
+          project_id: air-tools-prod
+          image_name: limesurvey
+          image_tag: ${{ github.ref_name }}
+          dockerfile: .
+          context: ./docker
