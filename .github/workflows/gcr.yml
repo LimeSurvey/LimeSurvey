@@ -19,7 +19,7 @@ jobs:
       - uses: RafikFarhad/push-to-gcr-github-action@v5-rc1
         with:
           # gcloud_service_key: ${{ secrets.GCLOUD_SERVICE_KEY }} # can be base64 encoded or plain text || not needed if you use google-github-actions/auth
-          registry: gcr.io
+          registry: europe-west1-docker.pkg.dev
           project_id: air-tools-prod
           image_name: limesurvey
           image_tag: ${{ github.ref_name }}
