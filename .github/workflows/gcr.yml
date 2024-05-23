@@ -24,4 +24,3 @@ jobs:
           image_name: limesurvey
           image_tag: ${{ github.ref_name }}
           dockerfile: .
-          context: ./docker
