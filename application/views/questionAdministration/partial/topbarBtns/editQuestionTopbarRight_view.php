@@ -17,6 +17,15 @@
 <?php endif; ?>
 */ ?>
 
+<?php
+// new question editor btn
+$this->renderPartial('/surveyAdministration/partial/topbar/_newQuestionEditorBtn', [
+    'editorUrl' => $editorUrl,
+    'enableEditorButton' => $enableEditorButton,
+    'editorEnabled' => $editorEnabled
+]);
+?>
+
 <!-- Close -->
 <?php if(!empty($showCloseButton)): ?>
     <?php if (!empty($oQuestion->qid)): ?>
