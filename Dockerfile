@@ -10,14 +10,18 @@ COPY . .
 # Remove the .git folder since it is huge
 RUN rm -r .git
 
-RUN ls -al
 # Set permissions as stated here: https://manual.limesurvey.org/Installation_-_LimeSurvey_CE
 RUN chmod -R 777 /var/www/html
 
 # Install PHP extensions and other dependencies
-RUN apt update
-#    apt install -y libpng-dev && \
-#    docker-php-ext-install pdo pdo_mysql gd
+RUN apt update && \
+    apt install -y libpng-dev libjpeg-dev libfreetype6-dev libicu-dev libldap2-dev libzip-dev libc-client-dev libkrb5-dev && \
+    docker-php-ext-configure gd --with-freetype --with-jpeg && \
+    docker-php-ext-configure ldap --with-libdir=lib/x86_64-linux-gnu/ && \
+    docker-php-ext-configure imap --with-kerberos --with-imap-ssl && \
+    docker-php-ext-install pdo pdo_mysql gd intl ldap zip imap && \
+    apt clean && \
+    rm -rf /var/lib/apt/lists/*
 
 # Expose the port Apache listens on
 EXPOSE 80
