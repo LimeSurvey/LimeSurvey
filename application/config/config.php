@@ -10,6 +10,7 @@ return array(
             'charset' => 'utf8mb4',
             'tablePrefix' => 'lime_',
         ),
+    ),
     'config'=>array(
         'debug'=>0,
         'debugsql'=>0,
