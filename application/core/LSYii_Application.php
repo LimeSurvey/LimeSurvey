@@ -644,11 +644,9 @@ class LSYii_Application extends CWebApplication
     public function getUnchangedColumns($sid, $sTimestamp, $qTimestamp)
     {
         $command = "
-            SELECT old_s_c.COLUMN_NAME AS old_c, new_s_c.COLUMN_NAME AS new_c
-            FROM " . $this->db->tablePrefix . "old_questions_" . $sid . "_" . $qTimestamp . " old_q
-            JOIN " . $this->db->tablePrefix . "questions new_q
-            ON old_q.qid = new_q.qid AND old_q.type = new_q.type
-            JOIN (
+            CREATE TEMPORARY TABLE new_s_c
+            SELECT *
+            FROM (
                 SELECT SUBSTRING_INDEX(temp.COLUMN_NAME, 'X', 1) AS sid,
                        SUBSTRING_INDEX(SUBSTRING_INDEX(temp.COLUMN_NAME, 'X', 2), 'X', -1) AS gid,
                        SUBSTRING_INDEX(temp.COLUMN_NAME, 'X', -1) AS qidsuffix,
@@ -656,11 +654,32 @@ class LSYii_Application extends CWebApplication
                 FROM information_schema.columns temp
                 WHERE temp.TABLE_SCHEMA = DATABASE() AND 
                       temp.TABLE_NAME = '" . $this->db->tablePrefix . "survey_" . $sid . "'
-            ) new_s_c
-            ON new_s_c.sid = new_q.sid AND
-               new_s_c.gid = new_q.gid AND
-               new_s_c.qidsuffix like concat(new_q.qid, '%')
-            JOIN (
+            ) t;
+            CREATE TEMPORARY TABLE new_parent1
+            SELECT *
+            FROM (
+                SELECT SUBSTRING_INDEX(temp.COLUMN_NAME, 'X', 1) AS sid,
+                       SUBSTRING_INDEX(SUBSTRING_INDEX(temp.COLUMN_NAME, 'X', 2), 'X', -1) AS gid,
+                       SUBSTRING_INDEX(temp.COLUMN_NAME, 'X', -1) AS qidsuffix,
+                       temp.COLUMN_NAME
+                FROM information_schema.columns temp
+                WHERE temp.TABLE_SCHEMA = DATABASE() AND 
+                      temp.TABLE_NAME = '" . $this->db->tablePrefix . "survey_" . $sid . "'
+            ) t;
+            CREATE TEMPORARY TABLE new_parent2
+            SELECT *
+            FROM (
+                SELECT SUBSTRING_INDEX(temp.COLUMN_NAME, 'X', 1) AS sid,
+                       SUBSTRING_INDEX(SUBSTRING_INDEX(temp.COLUMN_NAME, 'X', 2), 'X', -1) AS gid,
+                       SUBSTRING_INDEX(temp.COLUMN_NAME, 'X', -1) AS qidsuffix,
+                       temp.COLUMN_NAME
+                FROM information_schema.columns temp
+                WHERE temp.TABLE_SCHEMA = DATABASE() AND 
+                      temp.TABLE_NAME = '" . $this->db->tablePrefix . "survey_" . $sid . "'
+            ) t;
+            CREATE TEMPORARY TABLE old_s_c
+            SELECT *
+            FROM (
                 SELECT SUBSTRING_INDEX(temp.COLUMN_NAME, 'X', 1) AS sid,
                        SUBSTRING_INDEX(SUBSTRING_INDEX(temp.COLUMN_NAME, 'X', 2), 'X', -1) AS gid,
                        SUBSTRING_INDEX(temp.COLUMN_NAME, 'X', -1) AS qidsuffix,
@@ -668,11 +687,71 @@ class LSYii_Application extends CWebApplication
                 FROM information_schema.columns temp
                 WHERE temp.TABLE_SCHEMA = DATABASE() AND
                       temp.TABLE_NAME = '" . $this->db->tablePrefix . "old_survey_{$sid}_{$sTimestamp}'
-            ) old_s_c
+            ) t;
+            CREATE TEMPORARY TABLE old_parent1
+            SELECT *
+            FROM (
+                SELECT SUBSTRING_INDEX(temp.COLUMN_NAME, 'X', 1) AS sid,
+                       SUBSTRING_INDEX(SUBSTRING_INDEX(temp.COLUMN_NAME, 'X', 2), 'X', -1) AS gid,
+                       SUBSTRING_INDEX(temp.COLUMN_NAME, 'X', -1) AS qidsuffix,
+                       temp.COLUMN_NAME
+                FROM information_schema.columns temp
+                WHERE temp.TABLE_SCHEMA = DATABASE() AND
+                      temp.TABLE_NAME = '" . $this->db->tablePrefix . "old_survey_{$sid}_{$sTimestamp}'
+            ) t;
+            CREATE TEMPORARY TABLE old_parent2
+            SELECT *
+            FROM (
+                SELECT SUBSTRING_INDEX(temp.COLUMN_NAME, 'X', 1) AS sid,
+                       SUBSTRING_INDEX(SUBSTRING_INDEX(temp.COLUMN_NAME, 'X', 2), 'X', -1) AS gid,
+                       SUBSTRING_INDEX(temp.COLUMN_NAME, 'X', -1) AS qidsuffix,
+                       temp.COLUMN_NAME
+                FROM information_schema.columns temp
+                WHERE temp.TABLE_SCHEMA = DATABASE() AND
+                      temp.TABLE_NAME = '" . $this->db->tablePrefix . "old_survey_{$sid}_{$sTimestamp}'
+            ) t;
+            SELECT old_s_c.COLUMN_NAME AS old_c, new_s_c.COLUMN_NAME AS new_c
+            FROM " . $this->db->tablePrefix . "old_questions_" . $sid . "_" . $qTimestamp . " old_q
+            JOIN " . $this->db->tablePrefix . "questions new_q
+            ON old_q.qid = new_q.qid AND old_q.type = new_q.type
+            JOIN new_s_c
+            ON new_s_c.sid = new_q.sid AND
+               new_s_c.gid = new_q.gid AND
+               new_s_c.qidsuffix like concat(new_q.qid, '%')
+            JOIN old_s_c
             ON old_s_c.sid = old_q.sid AND
                old_s_c.gid = old_q.gid AND
                old_s_c.qidsuffix LIKE CONCAT(old_q.qid, '%') AND
                old_s_c.qidsuffix = new_s_c.qidsuffix
+            LEFT JOIN new_parent1
+            ON new_s_c.sid = new_parent1.sid AND
+               new_s_c.gid = new_parent1.gid AND
+               new_s_c.qidsuffix <> new_parent1.qidsuffix AND
+               new_parent1.qidsuffix LIKE CONCAT(new_s_c.qidsuffix, '%')
+            LEFT JOIN new_parent2
+            ON new_s_c.sid = new_parent2.sid AND
+               new_s_c.gid = new_parent2.gid AND
+               new_s_c.qidsuffix <> new_parent2.qidsuffix AND new_parent1.qidsuffix <> new_parent2.qidsuffix AND
+               new_parent2.qidsuffix LIKE CONCAT(new_s_c.qidsuffix, '%')
+            LEFT JOIN old_parent1
+            ON old_s_c.sid = old_parent1.sid AND
+               old_s_c.gid = old_parent1.gid AND
+               old_s_c.qidsuffix <> old_parent1.qidsuffix AND
+               old_parent1.qidsuffix LIKE CONCAT(old_s_c.qidsuffix, '%')
+            LEFT JOIN old_parent2
+               ON old_s_c.sid = old_parent2.sid AND
+                  old_s_c.gid = old_parent2.gid AND
+                  old_s_c.qidsuffix <> old_parent2.qidsuffix AND old_parent1.qidsuffix <> old_parent2.qidsuffix AND
+                  old_parent2.qidsuffix LIKE CONCAT(old_s_c.qidsuffix, '%')
+            WHERE (new_parent2.sid IS NULL) AND
+                  (old_parent2.sid IS NULL) AND
+                  (((new_parent1.sid IS NULL) AND (old_parent1.sid IS NULL)) OR
+                   (
+                    (new_parent1.sid = old_parent1.sid) AND
+                    (new_parent1.gid = old_parent1.gid) AND
+                    (new_parent1.qidsuffix = old_parent1.qidsuffix)
+                   )
+                  )
             ;
         ";
 
