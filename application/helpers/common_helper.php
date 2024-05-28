@@ -5125,3 +5125,22 @@ function csvEscape($string)
 
     return $string;
 }
+
+function scanDirectory($dir) {
+    $result = [];
+    if (is_dir($dir)) {
+        foreach(scandir($dir) as $filename) {
+            if ($filename === '.' || $filename === '..')
+                continue;
+            $filePath = $dir . DIRECTORY_SEPARATOR . $filename;
+            if (is_dir($filePath)) {
+                foreach (scanDirectory($filePath) as $childFilename) {
+                    $result[] = $filename . DIRECTORY_SEPARATOR . $childFilename;
+                }
+            } else {
+                $result[] = $filename;
+            }
+        }
+    }
+    return $result;
+}
