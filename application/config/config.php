@@ -3,7 +3,7 @@
 return array(
     'components' => array(
         'db' => array(
-            'connectionString' => 'mysql:host=localhost;port=3306;dbname=limesurvey;',
+            'connectionString' => 'mysql:host=127.0.0.1;port=3306;dbname=limesurvey;',
             'emulatePrepare' => true,
             'username' => getenv('DB_USERNAME'),
             'password' => getenv('DB_PASSWORD'),
