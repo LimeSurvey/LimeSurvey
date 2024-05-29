@@ -113,10 +113,10 @@ class SurveyThemeHelper
 
     public static function getNestedThemeConfigPath($templateName) {
         $directory = Yii::app()->getConfig("userthemerootdir") . DIRECTORY_SEPARATOR . $templateName;
-        $paths = scanDirectory($directory);
+        $paths = CFileHelper::findFiles($directory, ['level' => 200]);
         foreach ($paths as $path) {
             if (str_contains($path, 'config.xml')) {
-                return $directory . DIRECTORY_SEPARATOR . substr($path, 0, strrpos($path, '/') + 1);
+                return substr($path, 0, strrpos($path, '/') + 1);
             }
         }
         return null;
