@@ -94,7 +94,14 @@ class SurveyThemeHelper
 
         if ($folder && $handle = opendir($folder)) {
             while (false !== ($fileName = readdir($handle))) {
-                if (!is_file("$folder/$fileName") && $fileName != "." && $fileName != ".." && $fileName != ".svn" && (file_exists("{$folder}/{$fileName}/config.xml"))) {
+                if (
+                    !is_file("$folder/$fileName")
+                    && $fileName != "."
+                    && $fileName != ".."
+                    && $fileName != ".svn"
+                    && $fileName != "generalfiles"
+                    //&& (file_exists("{$folder}/{$fileName}/config.xml"))
+                ) {
                     $templateList[$fileName] = $folder . DIRECTORY_SEPARATOR . $fileName;
                 }
             }
@@ -102,6 +109,17 @@ class SurveyThemeHelper
         }
         ksort($templateList);
         return  $templateList;
+    }
+
+    public static function getNestedThemeConfigPath($templateName) {
+        $directory = Yii::app()->getConfig("userthemerootdir") . DIRECTORY_SEPARATOR . $templateName;
+        $paths = CFileHelper::findFiles($directory, ['level' => 200]);
+        foreach ($paths as $path) {
+            if (str_contains($path, 'config.xml')) {
+                return substr($path, 0, strrpos($path, '/') + 1);
+            }
+        }
+        return null;
     }
 
     /**
