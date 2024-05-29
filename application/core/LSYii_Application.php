@@ -726,8 +726,8 @@ class LSYii_Application extends CWebApplication
             'old_parent1',
             'old_parent2'
         ];
+        $this->db->createCommand(implode("\n\n", $this->generateTemporaryTableCreates($sourceTables, $destinationTables)))->execute();
         $command =
-        implode("\n\n", $this->generateTemporaryTableCreates($sourceTables, $destinationTables)) .
         "
             SELECT old_s_c.COLUMN_NAME AS old_c, new_s_c.COLUMN_NAME AS new_c
             FROM " . $this->db->tablePrefix . "old_questions_" . $sid . "_" . $qTimestamp . " old_q
@@ -772,8 +772,7 @@ class LSYii_Application extends CWebApplication
                    )
                   )
             ;
-        " .
-        implode("\n\n", $this->generateTemporaryTableDrops($destinationTables))
+        "
         ;
 
         $rawResults = $this->db->createCommand($command)->queryAll();
@@ -782,6 +781,7 @@ class LSYii_Application extends CWebApplication
             $results['old_c'][] = $rawResult['old_c'];
             $results['new_c'][] = $rawResult['new_c'];
         }
+        $this->db->createCommand(implode("\n\n", $this->generateTemporaryTableDrops($destinationTables)))->execute();
         return $results;
     }
 
