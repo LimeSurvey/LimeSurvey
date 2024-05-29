@@ -632,6 +632,73 @@ class LSYii_Application extends CWebApplication
     }
 
     /**
+     * Generates a temporary table creation script
+     *
+     * @param string $source
+     * @param string $destination
+     * @return string
+     */
+    protected function generateTemporaryTableCreate(string $source, string $destination)
+    {
+        return  "
+            CREATE TEMPORARY TABLE {$destination}
+            SELECT *
+            FROM (
+                SELECT SUBSTRING_INDEX(temp.COLUMN_NAME, 'X', 1) AS sid,
+                       SUBSTRING_INDEX(SUBSTRING_INDEX(temp.COLUMN_NAME, 'X', 2), 'X', -1) AS gid,
+                       SUBSTRING_INDEX(temp.COLUMN_NAME, 'X', -1) AS qidsuffix,
+                       temp.COLUMN_NAME
+                FROM information_schema.columns temp
+                WHERE temp.TABLE_SCHEMA = DATABASE() AND 
+                      temp.TABLE_NAME = '{$source}'
+            ) t;
+        ";
+    }
+
+    /**
+     * Generates a drop statement for a temporary table
+     *
+     * @param string $name
+     * @return string
+     */
+    protected function generateTemporaryTableDrop(string $name)
+    {
+        return "DROP TEMPORARY TABLE {$name};";
+    }
+
+    /**
+     * Generates temporary table creation scripts from the arrays received and returns the scripts that were generated,
+     * we expect count($sourceTables) and count($destinationTables) to be the same
+     *
+     * @param array $sourceTables
+     * @param array $destinationTables
+     * @return array
+     */
+    protected function generateTemporaryTableCreates(array $sourceTables, array $destinationTables)
+    {
+        $output = [];
+        for ($index = 0; $index < count($sourceTables); $index++) {
+            $output [] = $this->generateTemporaryTableCreate($sourceTables[$index], $destinationTables[$index]);
+        }
+        return $output;
+    }
+
+    /**
+     * Generates temporary table drops for the tables received and returns the scripts
+     *
+     * @param array $tables
+     * @return array
+     */
+    protected function generateTemporaryTableDrops(array $tables)
+    {
+        $output = [];
+        foreach ($tables as $table) {
+            $output [] = $this->generateTemporaryTableDrop($table);
+        }
+        return $output;
+    }
+
+    /**
      * Gets the unchanged columns
      *
      * @param int $sid
@@ -643,73 +710,25 @@ class LSYii_Application extends CWebApplication
      */
     public function getUnchangedColumns($sid, $sTimestamp, $qTimestamp)
     {
-        $command = "
-            CREATE TEMPORARY TABLE new_s_c
-            SELECT *
-            FROM (
-                SELECT SUBSTRING_INDEX(temp.COLUMN_NAME, 'X', 1) AS sid,
-                       SUBSTRING_INDEX(SUBSTRING_INDEX(temp.COLUMN_NAME, 'X', 2), 'X', -1) AS gid,
-                       SUBSTRING_INDEX(temp.COLUMN_NAME, 'X', -1) AS qidsuffix,
-                       temp.COLUMN_NAME
-                FROM information_schema.columns temp
-                WHERE temp.TABLE_SCHEMA = DATABASE() AND 
-                      temp.TABLE_NAME = '" . $this->db->tablePrefix . "survey_" . $sid . "'
-            ) t;
-            CREATE TEMPORARY TABLE new_parent1
-            SELECT *
-            FROM (
-                SELECT SUBSTRING_INDEX(temp.COLUMN_NAME, 'X', 1) AS sid,
-                       SUBSTRING_INDEX(SUBSTRING_INDEX(temp.COLUMN_NAME, 'X', 2), 'X', -1) AS gid,
-                       SUBSTRING_INDEX(temp.COLUMN_NAME, 'X', -1) AS qidsuffix,
-                       temp.COLUMN_NAME
-                FROM information_schema.columns temp
-                WHERE temp.TABLE_SCHEMA = DATABASE() AND 
-                      temp.TABLE_NAME = '" . $this->db->tablePrefix . "survey_" . $sid . "'
-            ) t;
-            CREATE TEMPORARY TABLE new_parent2
-            SELECT *
-            FROM (
-                SELECT SUBSTRING_INDEX(temp.COLUMN_NAME, 'X', 1) AS sid,
-                       SUBSTRING_INDEX(SUBSTRING_INDEX(temp.COLUMN_NAME, 'X', 2), 'X', -1) AS gid,
-                       SUBSTRING_INDEX(temp.COLUMN_NAME, 'X', -1) AS qidsuffix,
-                       temp.COLUMN_NAME
-                FROM information_schema.columns temp
-                WHERE temp.TABLE_SCHEMA = DATABASE() AND 
-                      temp.TABLE_NAME = '" . $this->db->tablePrefix . "survey_" . $sid . "'
-            ) t;
-            CREATE TEMPORARY TABLE old_s_c
-            SELECT *
-            FROM (
-                SELECT SUBSTRING_INDEX(temp.COLUMN_NAME, 'X', 1) AS sid,
-                       SUBSTRING_INDEX(SUBSTRING_INDEX(temp.COLUMN_NAME, 'X', 2), 'X', -1) AS gid,
-                       SUBSTRING_INDEX(temp.COLUMN_NAME, 'X', -1) AS qidsuffix,
-                       temp.COLUMN_NAME
-                FROM information_schema.columns temp
-                WHERE temp.TABLE_SCHEMA = DATABASE() AND
-                      temp.TABLE_NAME = '" . $this->db->tablePrefix . "old_survey_{$sid}_{$sTimestamp}'
-            ) t;
-            CREATE TEMPORARY TABLE old_parent1
-            SELECT *
-            FROM (
-                SELECT SUBSTRING_INDEX(temp.COLUMN_NAME, 'X', 1) AS sid,
-                       SUBSTRING_INDEX(SUBSTRING_INDEX(temp.COLUMN_NAME, 'X', 2), 'X', -1) AS gid,
-                       SUBSTRING_INDEX(temp.COLUMN_NAME, 'X', -1) AS qidsuffix,
-                       temp.COLUMN_NAME
-                FROM information_schema.columns temp
-                WHERE temp.TABLE_SCHEMA = DATABASE() AND
-                      temp.TABLE_NAME = '" . $this->db->tablePrefix . "old_survey_{$sid}_{$sTimestamp}'
-            ) t;
-            CREATE TEMPORARY TABLE old_parent2
-            SELECT *
-            FROM (
-                SELECT SUBSTRING_INDEX(temp.COLUMN_NAME, 'X', 1) AS sid,
-                       SUBSTRING_INDEX(SUBSTRING_INDEX(temp.COLUMN_NAME, 'X', 2), 'X', -1) AS gid,
-                       SUBSTRING_INDEX(temp.COLUMN_NAME, 'X', -1) AS qidsuffix,
-                       temp.COLUMN_NAME
-                FROM information_schema.columns temp
-                WHERE temp.TABLE_SCHEMA = DATABASE() AND
-                      temp.TABLE_NAME = '" . $this->db->tablePrefix . "old_survey_{$sid}_{$sTimestamp}'
-            ) t;
+        $sourceTables = [
+            $this->db->tablePrefix . "survey_" . $sid,
+            $this->db->tablePrefix . "survey_" . $sid,
+            $this->db->tablePrefix . "survey_" . $sid,
+            $this->db->tablePrefix . "old_survey_{$sid}_{$sTimestamp}",
+            $this->db->tablePrefix . "old_survey_{$sid}_{$sTimestamp}",
+            $this->db->tablePrefix . "old_survey_{$sid}_{$sTimestamp}",
+        ];
+        $destinationTables = [
+            'new_s_c',
+            'new_parent1',
+            'new_parent2',
+            'old_s_c',
+            'old_parent1',
+            'old_parent2'
+        ];
+        $command =
+        implode("\n\n", $this->generateTemporaryTableCreates($sourceTables, $destinationTables)) .
+        "
             SELECT old_s_c.COLUMN_NAME AS old_c, new_s_c.COLUMN_NAME AS new_c
             FROM " . $this->db->tablePrefix . "old_questions_" . $sid . "_" . $qTimestamp . " old_q
             JOIN " . $this->db->tablePrefix . "questions new_q
@@ -753,7 +772,9 @@ class LSYii_Application extends CWebApplication
                    )
                   )
             ;
-        ";
+        " .
+        implode("\n\n", $this->generateTemporaryTableDrops($destinationTables))
+        ;
 
         $rawResults = $this->db->createCommand($command)->queryAll();
         $results = ['old_c' => [], 'new_c' => []];
