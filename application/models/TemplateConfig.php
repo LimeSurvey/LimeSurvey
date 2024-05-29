@@ -1123,7 +1123,10 @@ class TemplateConfig extends CActiveRecord
                     // Get the theme manifest by forcing xml load
                     try {
                         $aTemplatesWithoutDB['valid'][$sName] = Template::getTemplateConfiguration($sName, null, null, true);
-                        if (empty($aTemplatesWithoutDB['valid'][$sName]->config)) {
+                        if (
+                            empty($aTemplatesWithoutDB['valid'][$sName]->config)
+                            || empty($aTemplatesWithoutDB['valid'][$sName]->config->metadata)
+                        ) {
                             unset($aTemplatesWithoutDB['valid'][$sName]);
                             $aTemplatesWithoutDB['invalid'][$sName]['error'] = gT('Invalid theme configuration file');
                         }
