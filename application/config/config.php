@@ -19,6 +19,12 @@ return array(
         // 'sessionTableName' => '{{sessions}}',
         // ),
 
+        'session' => array(
+            'class' => 'application.core.web.DbHttpSession',
+            'connectionID' => 'db',
+            'sessionTableName' => '{{sessions}}',
+        ),
+
         'urlManager' => array(
             'urlFormat' => 'get',
             'rules' => array(
