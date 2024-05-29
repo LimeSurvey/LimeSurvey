@@ -5126,15 +5126,20 @@ function csvEscape($string)
     return $string;
 }
 
-function scanDirectory($dir) {
+function scanDirectory($dir, $depthLimit = 200)
+{
     $result = [];
+    if ($depthLimit <= 0) {
+        return $result;
+    }
     if (is_dir($dir)) {
-        foreach(scandir($dir) as $filename) {
-            if ($filename === '.' || $filename === '..')
+        foreach (scandir($dir) as $filename) {
+            if ($filename === '.' || $filename === '..') {
                 continue;
+            }
             $filePath = $dir . DIRECTORY_SEPARATOR . $filename;
             if (is_dir($filePath)) {
-                foreach (scanDirectory($filePath) as $childFilename) {
+                foreach (scanDirectory($filePath, $depthLimit - 1) as $childFilename) {
                     $result[] = $filename . DIRECTORY_SEPARATOR . $childFilename;
                 }
             } else {
