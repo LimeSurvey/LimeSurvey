@@ -20,10 +20,14 @@ return array(
         // ),
 
         'session' => array(
+            'cookieParams' => array(
+                'domain' => '.example.org',
+            ),
             'class' => 'application.core.web.DbHttpSession',
             'connectionID' => 'db',
             'sessionTableName' => '{{sessions}}',
         ),
+
 
         'urlManager' => array(
             'urlFormat' => 'get',
