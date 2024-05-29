@@ -79,8 +79,12 @@ class EditorLinkController extends LSYii_Controller
             date('c', $session->expire)
         );
 
+        /** @var \LSYii_Application */
+        $app = \Yii::app();
+
         $cookieDataJson = json_encode([
             'token' => $session->id,
+            'userId' => $app->user->id,
             'expires' => $sessionExpires->format('Y-m-d\TH:i:s.000\Z')
         ]);
 
