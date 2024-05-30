@@ -312,12 +312,20 @@ class SurveymenuEntries extends LSActiveRecord
         $dropdownItems[] = [
             'title'            => gT('Edit this survey menu entry'),
             'linkClass'        => 'action_surveymenuEntries_editModal',
+            'linkAttributes'   => [
+                'data-menuentryid' => $this->id,
+            ],
+            /* @todo : allow managing via open in new tab */
+            //'url'              => App()->urlManager->createUrl('/admin/menuentries', ['sa' => 'getsurveymenuentryform', 'menuentryid' => $this->id]),
             'iconClass'        => 'ri-pencil-fill',
             'enabledCondition' => $permission_settings_update
         ];
         $dropdownItems[] = [
             'title'            => gT('Delete this survey menu entry'),
             'linkClass'        => 'action_surveymenuEntries_deleteModal',
+            'linkAttributes'   => [
+                'data-menuentryid' => $this->id,
+            ],
             'iconClass'        => 'ri-delete-bin-fill text-danger',
             'enabledCondition' => $permission_settings_update
         ];
