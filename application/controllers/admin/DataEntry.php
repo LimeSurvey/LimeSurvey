@@ -1884,20 +1884,11 @@ class DataEntry extends SurveyCommonAction
                     }
                     // query for updating tokens uses left
                     $aToken = Token::model($surveyid)->findByAttributes(['token' => $_POST['token']]);
+                    $aToken->usesleft = ((int) $aToken->usesleft) - 1;
                     if (isTokenCompletedDatestamped($thissurvey)) {
-                        if ($aToken->usesleft <= 1) {
-                            $aToken->usesleft = ((int) $aToken->usesleft) - 1;
-                            $aToken->completed = $submitdate;
-                        } else {
-                            $aToken->usesleft = ((int) $aToken->usesleft) - 1;
-                        }
+                        $aToken->completed = $submitdate;
                     } else {
-                        if ($aToken->usesleft <= 1) {
-                            $aToken->usesleft = ((int) $aToken->usesleft) - 1;
-                            $aToken->completed = 'Y';
-                        } else {
-                            $aToken->usesleft = ((int) $aToken->usesleft) - 1;
-                        }
+                        $aToken->completed = 'Y';
                     }
                     $aToken->save();
 
