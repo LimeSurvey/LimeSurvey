@@ -58,13 +58,13 @@ class ComfortUpdateChecker extends PluginBase
 
         $update = (array)$this->getUpdate();
 
-        if ($update && $update['result']) {
+        if (true) {
             //Default icon class
             $iconClass = "";
-            $NotificationText = "End-of-life for v5 on 31 May 2024 - " . gT("Update available");
+            $NotificationText = "V5 is out of support - " . gT("Security update available");
 
             if ($update[key($update)]->security_update) {
-                $NotificationText = "End-of-life for v5 on 31 May 2024 - " . gT("Security update available");
+                $NotificationText = "V5 is out of support - " . gT("Security update available");
             }
             //Append cu-checker class to icon when animate option is true in plugin settings
             if ($this->get('animate_icon', null, null, false)) {
