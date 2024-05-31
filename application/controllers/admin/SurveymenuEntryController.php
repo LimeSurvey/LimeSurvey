@@ -77,7 +77,7 @@ class SurveymenuEntryController extends SurveyCommonAction
         if ($menuentryid != null) {
             $model = SurveymenuEntries::model()->findByPk(((int) $menuentryid));
             if (empty($model)) {
-                throw new CHttpException(404, gT("This menuentries don't exist."));
+                throw new CHttpException(404, gT("Invalid menu entry."));
             }
         } else {
             $model = new SurveymenuEntries();
@@ -133,7 +133,7 @@ class SurveymenuEntryController extends SurveyCommonAction
             $model = new SurveymenuEntries();
         }
         if (empty($model)) {
-            throw new CHttpException(404, gT("Invalid menu entrie."));
+            throw new CHttpException(404, gT("Invalid menu entry."));
         }
         //Don't update  main menu entries when not superadmin
         if (($model->menu_id == 1 || $model->menu_id == 2) && !Permission::model()->hasGlobalPermission('superadmin', 'read')) {
