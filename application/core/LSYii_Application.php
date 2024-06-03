@@ -835,6 +835,7 @@ class LSYii_Application extends CWebApplication
             $validatedColumns = [];
         }
 
+        $targetSchema = SurveyDynamic::model($surveyId)->getTableSchema();
         $encryptedAttributes = Response::getEncryptedAttributes($surveyId);
         if (strpos($archivedResponseTableName, App()->db->tablePrefix) === 0) {
             $tbl_name = substr($archivedResponseTableName, strlen(App()->db->tablePrefix));
