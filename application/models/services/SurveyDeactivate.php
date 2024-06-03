@@ -18,7 +18,7 @@ class SurveyDeactivate
     private Permission $permission;
     private SurveyDeactivator $surveyDeactivator;
     private LSYii_Application $app;
-    private ArchivedTableSettings $archivedTokenSettings;
+    private ArchivedTableSettings $archivedTableSettings;
     private SurveyLink $surveyLink;
     private SavedControl $savedControl;
 
@@ -35,7 +35,7 @@ class SurveyDeactivate
         $this->permission = $permission;
         $this->surveyDeactivator = $surveyDeactivator;
         $this->app = $app;
-        $this->archivedTokenSettings = $archivedTokenSettings;
+        $this->archivedTableSettings = $archivedTokenSettings;
         $this->surveyLink = $surveyLink;
         $this->savedControl = $savedControl;
     }
@@ -165,16 +165,16 @@ class SurveyDeactivate
      */
     protected function archiveTable($iSurveyID, $userID, $tableName, $tableType, $DBDate, $properties, $attributes = null)
     {
-        $this->archivedTokenSettings->survey_id = $iSurveyID;
-        $this->archivedTokenSettings->user_id = $userID;
-        $this->archivedTokenSettings->tbl_name = $tableName;
-        $this->archivedTokenSettings->tbl_type = $tableType;
-        $this->archivedTokenSettings->created = $DBDate;
-        $this->archivedTokenSettings->properties = $properties;
+        $this->archivedTableSettings->survey_id = $iSurveyID;
+        $this->archivedTableSettings->user_id = $userID;
+        $this->archivedTableSettings->tbl_name = $tableName;
+        $this->archivedTableSettings->tbl_type = $tableType;
+        $this->archivedTableSettings->created = $DBDate;
+        $this->archivedTableSettings->properties = $properties;
         if ($attributes) {
-            $this->archivedTokenSettings->attributes = $attributes;
+            $this->archivedTableSettings->attributes = $attributes;
         }
-        @$this->archivedTokenSettings->save();
+        @$this->archivedTableSettings->save();
     }
 
     /**

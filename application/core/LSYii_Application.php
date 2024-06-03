@@ -823,29 +823,72 @@ class LSYii_Application extends CWebApplication
     /**
      * Recovers archived survey responses
      *
-     * @param string $surveyTable
-     * @param string $oldSurveyTable
-     * @param array $columns
+     * @param int $surveyId survey ID
+     * @param string $archivedResponseTableName archived response table name to be imported
+     * @param array $validatedColumns the columns that are validated and can be inserted again
      * @return integer number of rows affected by the execution.
      * @throws CDbException execution failed
      */
-    public function recoverSurveyResponses($surveyTable, $oldSurveyTable, $columns = [])
+    public function recoverSurveyResponses($surveyId, $archivedResponseTableName, $validatedColumns = [])
     {
-        if (!is_array($columns)) {
-            $columns = [];
+        if (!is_array($validatedColumns)) {
+            $validatedColumns = [];
         }
-        $columnTextOld = (count($columns['old_c']) ? ("," . implode(",", $columns['old_c'])) : "");
-        $columnTextNew = (count($columns['new_c']) ? ("," . implode(",", $columns['new_c'])) : "");
-        $command = "
-            INSERT INTO " . $this->db->quoteTableName($surveyTable) . " (id, token, submitdate, lastpage, startlanguage, seed" .
-            $columnTextNew .
-            ")
-            SELECT id, token, submitdate, lastpage, startlanguage, seed" .
-            $columnTextOld . "
-            FROM " .
-            $this->db->quoteTableName($oldSurveyTable) . "
-        ";
-        return $this->db->createCommand($command)->execute();
+
+        $encryptedAttributes = Response::getEncryptedAttributes($surveyId);
+        if (strpos($archivedResponseTableName, App()->db->tablePrefix) === 0) {
+            $tbl_name = substr($archivedResponseTableName, strlen(App()->db->tablePrefix));
+        }
+        $archivedTableSettings = ArchivedTableSettings::model()->findByAttributes(['tbl_name' => $tbl_name]);
+        $archivedEncryptedAttributes = [];
+        if ($archivedTableSettings) {
+            $archivedEncryptedAttributes = json_decode($archivedTableSettings->properties);
+        }
+        $archivedResponses = new CDataProviderIterator(new CActiveDataProvider($archivedResponseTableName), 500);
+        $preserveIDs = (bool)App()->getRequest()->getPost('preserveIDs');
+        $importedResponses = 0;
+        foreach ($archivedResponses as $archivedResponse) {
+            // Using plugindynamic model because I dont trust surveydynamic.
+            $targetResponse = new PluginDynamic("{{survey_$surveyId}}");
+            if ($preserveIDs) {
+                $targetResponse->id = $archivedResponse->id;
+            }
+
+            foreach ($validatedColumns as $validatedColumn => $validatedColumnValue) {
+                $targetResponse[$validatedColumnValue] = $archivedResponse[$validatedColumn];
+                if (in_array($validatedColumn, $archivedEncryptedAttributes, false) && !in_array($validatedColumn, $encryptedAttributes, false)) {
+                    $targetResponse[$validatedColumnValue] = $archivedResponse->decryptSingle($archivedResponse[$validatedColumn]);
+                }
+                if (!in_array($validatedColumn, $archivedEncryptedAttributes, false) && in_array($validatedColumn, $encryptedAttributes, false)) {
+                    $targetResponse[$validatedColumnValue] = $archivedResponse->encryptSingle($archivedResponse[$validatedColumn]);
+                }
+            }
+
+            if (isset($targetSchema->columns['startdate']) && empty($targetResponse['startdate'])) {
+                $targetResponse['startdate'] = date("Y-m-d H:i", (int)mktime(0, 0, 0, 1, 1, 1980));
+            }
+
+            if (isset($targetSchema->columns['datestamp']) && empty($targetResponse['datestamp'])) {
+                $targetResponse['datestamp'] = date("Y-m-d H:i", (int)mktime(0, 0, 0, 1, 1, 1980));
+            }
+
+            $beforeDataEntryImport = new PluginEvent('beforeDataEntryImport');
+            $beforeDataEntryImport->set('iSurveyID', $surveyId);
+            $beforeDataEntryImport->set('oModel', $targetResponse);
+            App()->getPluginManager()->dispatchEvent($beforeDataEntryImport);
+
+            if ($preserveIDs) {
+                switchMSSQLIdentityInsert("survey_$surveyId", true);
+            }
+            $targetResponse->save();
+            if ($preserveIDs) {
+                switchMSSQLIdentityInsert("survey_$surveyId", false);
+            }
+            $aSRIDConversions[$archivedResponse->id] = $targetResponse->id;
+            unset($targetResponse);
+            $importedResponses++;
+        }
+        return $importedResponses;
     }
 
     /**
