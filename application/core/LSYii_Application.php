@@ -341,11 +341,11 @@ class LSYii_Application extends CWebApplication
     /**
      * Get the pluginManager
      *
-     * @return PluginManager
+     * @return \LimeSurvey\PluginManager\PluginManager
      */
-    public function getPluginManager()
+    public function getPluginManager(): \LimeSurvey\PluginManager\PluginManager
     {
-        /** @var PluginManager $pluginManager */
+        /** @var \LimeSurvey\PluginManager\PluginManager $pluginManager */
         $pluginManager = $this->getComponent('pluginManager');
         return $pluginManager;
     }
