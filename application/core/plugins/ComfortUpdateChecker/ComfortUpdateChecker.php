@@ -61,10 +61,10 @@ class ComfortUpdateChecker extends PluginBase
         if (true) {
             //Default icon class
             $iconClass = "";
-            $NotificationText = "V5 is out of support - " . gT("Security update available");
+            $NotificationText = "V5 is out of support - " . gT("Upgrade now!");
 
             if ($update[key($update)]->security_update) {
-                $NotificationText = "V5 is out of support - " . gT("Security update available");
+                $NotificationText = "V5 is out of support - " . gT("Upgrade now!");
             }
             //Append cu-checker class to icon when animate option is true in plugin settings
             if ($this->get('animate_icon', null, null, false)) {
