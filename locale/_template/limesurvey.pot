@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2024-04-25 15:38:18+00:00\n"
+"POT-Creation-Date: 2024-06-03 13:08:36+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -8959,11 +8959,8 @@ msgid "The server key is not currently set. If you set this plugin as default yo
 msgstr ""
 
 #: application/core/plugins/ComfortUpdateChecker/ComfortUpdateChecker.php:64
-msgid "Update available"
-msgstr ""
-
 #: application/core/plugins/ComfortUpdateChecker/ComfortUpdateChecker.php:67
-msgid "Security update available"
+msgid "Upgrade now!"
 msgstr ""
 
 #: application/core/plugins/ExportR/ExportR.php:32
