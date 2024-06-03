@@ -51,10 +51,11 @@ class SurveymenuEntries extends LSActiveRecord
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('title, menu_title, menu_icon, menu_icon_type, changed_at', 'required'),
+            array('title, menu_title, changed_at', 'required'),
             array('menu_id', 'required'),
             array('menu_id, user_id, ordering, changed_by, created_by', 'numerical', 'integerOnly' => true),
-            array('title, menu_title, menu_icon, menu_icon_type, menu_class, menu_link, action, template, partial, permission, permission_grade, classes, getdatamethod', 'length', 'max' => 255),
+            array('menu_icon_type', 'in', 'range' => array_keys($this->getMenuIconTypeOptions()), 'allowEmpty' => true),
+            array('title, menu_title, menu_icon,  menu_class, menu_link, action, template, partial, permission, permission_grade, classes, getdatamethod', 'length', 'max' => 255),
             array('name', 'unique'),
             array('name, menu_description, language, data, created_at', 'safe'),
             // The following rule is used by search().
@@ -231,12 +232,18 @@ class SurveymenuEntries extends LSActiveRecord
      **/
     public static function returnMenuIcon($data)
     {
-        if ($data->menu_icon_type == 'fontawesome') {
-            return "<i class='fa fa-" . $data->menu_icon . "'></i>";
-        } elseif ($data->menu_icon_type == 'image') {
-            return '<img width="60px" src="' . CHtml::encode($data->menu_icon) . '" />';
-        } else {
-            return $data->menu_icon_type . '|' . $data->menu_icon;
+        switch ($data->menu_icon_type) {
+            case 'fontawesome':
+                return "<i class='fa fa-" . CHtml::encode($data->menu_icon) . "'></i>";
+            case 'image':
+                return '<img width="60px" src="' . CHtml::encode($data->menu_icon) . '" />';
+            case 'remix':
+                return "<i class='icon " . CHtml::encode($data->menu_icon) . "'></i>";
+            case '':
+                return "";
+            default:
+                /* No way except old issue or DB update manually since menu_icon_type is restricted */
+                return CHtml::encode($data->menu_icon_type) . '|' . CHtml::encode($data->menu_icon);
         }
     }
 
@@ -296,11 +303,10 @@ class SurveymenuEntries extends LSActiveRecord
     public function getMenuIconTypeOptions()
     {
         return [
+            'remix'         => gT('Remix icon'), // In fact any class name here : can be `fa fa-address-book text-danger h1` for example
             'fontawesome'   => gT('Fontawesome icon'),
             'image'         => gT('Image'),
         ];
-        // return "<option value='fontawesome'>".gT("FontAwesome icon")."</option>"
-        //      ."<option value='image'>".gT('Image')."</option>";
     }
 
     /**

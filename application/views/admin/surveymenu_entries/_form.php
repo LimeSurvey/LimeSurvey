@@ -73,22 +73,22 @@ Yii::app()->getController()->renderPartial(
         </div>
 
         <div class="ex-form-group mb-3">
+            <?php echo $form->labelEx($model, 'menu_icon_type'); ?>
+            <?php echo $form->dropDownList($model, 'menu_icon_type', $model->getMenuIconTypeOptions(), ['class' => 'form-select', 'required' => false, 'empty' => gT("None") ]); ?>
+            <?php echo $form->error($model, 'menu_icon_type'); ?>
+        </div>
+
+        <div class="ex-form-group mb-3">
             <?php echo $form->labelEx($model, 'menu_icon'); ?>
             <?php
             $this->widget('ext.AlertWidget.AlertWidget', [
-                'text' => gT('Use a remix icon classname, or a link to the image.'),
+                'text' => gT('Use a remix icon classname or any other classname, font awesome partial classname or a link to the image.'),
                 'type' => 'info',
                 'htmlOptions' => ['class' => 'selector_infoBox d-none']
             ]);
             ?>
-            <?php echo $form->textField($model, 'menu_icon', array('class' => 'selector__hasInfoBox', 'size' => 60, 'required' => true, 'maxlength' => 255)); ?>
+            <?php echo $form->textField($model, 'menu_icon', array('class' => 'selector__hasInfoBox', 'size' => 60, 'maxlength' => 255)); ?>
             <?php echo $form->error($model, 'menu_icon'); ?>
-        </div>
-
-        <div class="ex-form-group mb-3">
-            <?php echo $form->labelEx($model, 'menu_icon_type'); ?>
-            <?php echo $form->dropDownList($model, 'menu_icon_type', $model->getMenuIconTypeOptions(), ['class' => 'form-select', 'required' => true, ]); ?>
-            <?php echo $form->error($model, 'menu_icon_type'); ?>
         </div>
 
         <div class="ex-form-group mb-3">
