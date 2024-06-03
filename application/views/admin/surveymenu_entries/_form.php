@@ -48,7 +48,7 @@ Yii::app()->getController()->renderPartial(
 
         <div class="ex-form-group mb-3">
             <?php echo $form->labelEx($model, 'menu_id'); ?>
-            <?php echo $form->dropDownList($model, 'menu_id', $model->getMenuIdOptions(), ['options' => ['2' => ['selected' => true]], 'class' => 'form-select']); ?>
+            <?php echo $form->dropDownList($model, 'menu_id', $model->getMenuIdOptions(), ['class' => 'form-select', 'required' => true, 'empty' => gT("Please choose")]); ?>
             <?php echo $form->error($model, 'menu_id'); ?>
         </div>
 
