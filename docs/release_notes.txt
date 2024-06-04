@@ -34,6 +34,37 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.5.9 (build 240521) to 6.5.10 (build 240603) June 3, 2024
+-Fixed issue #CR-1421: themes overview page showing error when configuration can't be loaded or is invalid (#3857) (Mohab Elsheikh)
+-Fixed issue #CT-778: wrong placeholder fields in html editor (#3851) (Tim Willig)
+-Fixed issue #19561: popup messages come with HTML inside (#3848) (Denis Chenu)
+#Updated translation: Slovak by jelen1
+#Updated translation: Portuguese (Brazil) by mauriciofurtado
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Korean by modernity4r
+#Updated translation: Korean by c_schmitz, modernity4r
+#Updated translation: Japanese by nomoto
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
+Changes from 6.5.8 (build 240517) to 6.5.9 (build 240521) May 21, 2024
+-Fixed issue: On group/question preview a PHP error is thrown if the qid/gid is invalid (#3849) (Carsten Schmitz)
+#Updated translation: Korean by modernity4r
+#Updated translation: Japanese by hl_sales
+
+
+Changes from 6.5.7 (build 240515) to 6.5.8 (build 240517) May 16, 2024
+-Fixed issue: L10ns must be initialized with qid not gid (Kevin Foster)
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Japanese by d_inoue, nomoto
+
+
 Changes from 6.5.6 (build 240506) to 6.5.7 (build 240515) May 15, 2024
 -Fixed issue #CT-800: Fixed styling for vanilla/fruity related to Bootstrap (twilligls)
 -Fixed issue #CT-774: Ranking advanced was not persisting answers on reload (prev, error modal) (twilligls)

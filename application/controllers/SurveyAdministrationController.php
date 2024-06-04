@@ -1663,6 +1663,7 @@ class SurveyAdministrationController extends LSBaseController
 
         $success = false;
         if (($surveyId > 0) && ($questionId > 0)) {
+            App()->loadHelper('admin/activate');
             fixNumbering($questionId, $surveyId);
             $success = true;
         }
