@@ -2,7 +2,7 @@
 
 namespace LimeSurvey\Api\Command\V1\Transformer\Input;
 
-use LimeSurvey\Api\Transformer\{
+use LimeSurvey\Transformer\{
     Transformer,
     TransformerException};
 

@@ -2,8 +2,8 @@
 
 namespace LimeSurvey\Models\Services;
 
-use LimeSurvey\Api\Transformer\Registry\Registry;
-use LimeSurvey\Api\Transformer\Formatter\{
+use LimeSurvey\Transformer\Registry\Registry;
+use LimeSurvey\Transformer\Formatter\{
     FormatterLongText
 };
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace LimeSurvey\Api\Transformer\Filter;
+namespace LimeSurvey\Transformer\Filter;
 
 /**
  * Filters are applied before validation.

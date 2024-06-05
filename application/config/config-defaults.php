@@ -829,7 +829,7 @@ $config['passwordValidationRules'] = array(
 );
 
 // Enable or disable single page application editor
-$config['editorEnabled'] = false;
+$config['editorEnabled'] = true;
 
 return $config;
 //settings deleted

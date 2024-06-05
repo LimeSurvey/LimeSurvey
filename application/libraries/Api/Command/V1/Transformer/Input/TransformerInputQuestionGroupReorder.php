@@ -2,7 +2,7 @@
 
 namespace LimeSurvey\Api\Command\V1\Transformer\Input;
 
-use LimeSurvey\Api\Transformer\Transformer;
+use LimeSurvey\Transformer\Transformer;
 
 class TransformerInputQuestionGroupReorder extends Transformer
 {

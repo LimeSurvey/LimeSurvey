@@ -2,7 +2,7 @@
 
 namespace ls\tests\unit\api;
 
-use LimeSurvey\Api\Transformer\Filter\Filter;
+use LimeSurvey\Transformer\Filter\Filter;
 use ls\tests\TestBaseClass;
 
 /**

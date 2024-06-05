@@ -1,6 +1,6 @@
 <?php
 
-namespace LimeSurvey\Api\Transformer\Formatter;
+namespace LimeSurvey\Transformer\Formatter;
 
 /**
  * Formatter DateTime to Json

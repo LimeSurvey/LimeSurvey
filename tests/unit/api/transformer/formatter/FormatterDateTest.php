@@ -3,7 +3,7 @@
 namespace ls\tests\unit\api;
 
 use ls\tests\TestBaseClass;
-use LimeSurvey\Api\Transformer\Formatter\FormatterDateTimeToJson;
+use LimeSurvey\Transformer\Formatter\FormatterDateTimeToJson;
 
 /**
  * @testdox API Formatter Date

@@ -2,11 +2,11 @@
 
 namespace ls\tests\unit\api;
 
-use LimeSurvey\Api\Transformer\Validator\ValidatorDate;
+use LimeSurvey\Transformer\Validator\ValidatorDate;
 use LimeSurvey\DI;
 use ls\tests\TestBaseClass;
-use LimeSurvey\Api\Transformer\Transformer;
-use LimeSurvey\Api\Transformer\TransformerException;
+use LimeSurvey\Transformer\Transformer;
+use LimeSurvey\Transformer\TransformerException;
 
 /**
  * @testdox API Date Validator

@@ -11,7 +11,7 @@ use LimeSurvey\Api\Command\V1\Transformer\{
     Input\TransformerInputSurveyLanguageSettings,
 };
 use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\OpHandlerSurveyTrait;
-use LimeSurvey\Api\Transformer\TransformerInterface;
+use LimeSurvey\Transformer\TransformerInterface;
 use LimeSurvey\Models\Services\{
     Exception\PermissionDeniedException,
     Exception\PersistErrorException,

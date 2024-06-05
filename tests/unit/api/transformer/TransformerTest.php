@@ -4,7 +4,7 @@ namespace ls\tests\unit\api;
 
 use LimeSurvey\DI;
 use ls\tests\TestBaseClass;
-use LimeSurvey\Api\Transformer\Transformer;
+use LimeSurvey\Transformer\Transformer;
 
 /**
  * @testdox API Transformer
@@ -294,7 +294,7 @@ class TransformerOutputTest extends TestBaseClass
         $this->assertIsArray($errors);
         $this->assertNotEmpty($errors);
     }
-    
+
     private function getTransformer()
     {
         return DI::getContainer()->get(

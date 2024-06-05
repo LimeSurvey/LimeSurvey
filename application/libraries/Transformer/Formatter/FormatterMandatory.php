@@ -1,6 +1,6 @@
 <?php
 
-namespace LimeSurvey\Api\Transformer\Formatter;
+namespace LimeSurvey\Transformer\Formatter;
 
 /**
  * This class is extending the FormatterYnToBool class in revert mode

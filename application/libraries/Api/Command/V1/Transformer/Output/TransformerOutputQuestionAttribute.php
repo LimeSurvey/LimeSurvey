@@ -2,7 +2,7 @@
 
 namespace LimeSurvey\Api\Command\V1\Transformer\Output;
 
-use LimeSurvey\Api\Transformer\Output\TransformerOutputActiveRecord;
+use LimeSurvey\Transformer\Output\TransformerOutputActiveRecord;
 
 class TransformerOutputQuestionAttribute extends TransformerOutputActiveRecord
 {

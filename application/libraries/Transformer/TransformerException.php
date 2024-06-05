@@ -1,6 +1,6 @@
 <?php
 
-namespace LimeSurvey\Api\Transformer;
+namespace LimeSurvey\Transformer;
 
 use LimeSurvey\Api\ApiException;
 

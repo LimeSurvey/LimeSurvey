@@ -1,9 +1,9 @@
 <?php
 
-namespace LimeSurvey\Api\Transformer\Output;
+namespace LimeSurvey\Transformer\Output;
 
 use CActiveRecord;
-use LimeSurvey\Api\Transformer\Transformer;
+use LimeSurvey\Transformer\Transformer;
 
 abstract class TransformerOutputActiveRecord extends Transformer
 {

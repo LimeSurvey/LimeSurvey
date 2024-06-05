@@ -3,7 +3,7 @@
 namespace LimeSurvey\ObjectPatch\OpHandler;
 
 use CModel;
-use LimeSurvey\Api\Transformer\TransformerInterface;
+use LimeSurvey\Transformer\TransformerInterface;
 use LimeSurvey\ObjectPatch\{
     OpHandler\OpHandlerInterface,
     OpHandler\OpHandlerException,

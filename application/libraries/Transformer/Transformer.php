@@ -1,12 +1,12 @@
 <?php
 
-namespace LimeSurvey\Api\Transformer;
+namespace LimeSurvey\Transformer;
 
-use LimeSurvey\Api\Transformer\Filter\Filter;
-use LimeSurvey\Api\Transformer\Formatter\FormatterInterface;
-use LimeSurvey\Api\Transformer\Registry\Registry;
-use LimeSurvey\Api\Transformer\Validator\ValidatorInterface;
-use LimeSurvey\Api\Transformer\Validator\ValidatorRequired;
+use LimeSurvey\Transformer\Filter\Filter;
+use LimeSurvey\Transformer\Formatter\FormatterInterface;
+use LimeSurvey\Transformer\Registry\Registry;
+use LimeSurvey\Transformer\Validator\ValidatorInterface;
+use LimeSurvey\Transformer\Validator\ValidatorRequired;
 
 /**
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)

@@ -3,7 +3,7 @@
 namespace LimeSurvey\Api\Command\V1\Transformer\Output;
 
 use SurveysGroups;
-use LimeSurvey\Api\Transformer\{
+use LimeSurvey\Transformer\{
     Output\TransformerOutputActiveRecord,
 };
 

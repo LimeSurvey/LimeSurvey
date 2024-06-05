@@ -4,7 +4,7 @@ namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
 use DI\DependencyException;
 use DI\NotFoundException;
-use LimeSurvey\Api\Transformer\TransformerException;
+use LimeSurvey\Transformer\TransformerException;
 use LimeSurvey\DI;
 use LimeSurvey\Api\Command\V1\Transformer\{
     Input\TransformerInputQuestionAggregate

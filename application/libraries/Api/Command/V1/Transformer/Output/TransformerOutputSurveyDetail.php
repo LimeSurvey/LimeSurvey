@@ -4,7 +4,7 @@ namespace LimeSurvey\Api\Command\V1\Transformer\Output;
 
 use Survey;
 use LimeSurvey\Models\Services\QuestionAggregateService\QuestionService;
-use LimeSurvey\Api\Transformer\Output\TransformerOutputActiveRecord;
+use LimeSurvey\Transformer\Output\TransformerOutputActiveRecord;
 
 /**
  * TransformerOutputSurveyDetail
@@ -60,7 +60,7 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
      * @param ?mixed $data
      * @param ?mixed $options
      * @return ?mixed
-     * @throws \LimeSurvey\Api\Transformer\TransformerException
+     * @throws \LimeSurvey\Transformer\TransformerException
      * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     public function transform($data, $options = [])

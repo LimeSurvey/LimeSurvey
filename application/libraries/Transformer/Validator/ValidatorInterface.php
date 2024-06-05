@@ -1,6 +1,6 @@
 <?php
 
-namespace LimeSurvey\Api\Transformer\Validator;
+namespace LimeSurvey\Transformer\Validator;
 
 interface ValidatorInterface
 {

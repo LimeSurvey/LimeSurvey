@@ -1,6 +1,6 @@
 <?php
 
-namespace LimeSurvey\Api\Transformer\Validator;
+namespace LimeSurvey\Transformer\Validator;
 
 /**
  * Example config (requires min and/or max):

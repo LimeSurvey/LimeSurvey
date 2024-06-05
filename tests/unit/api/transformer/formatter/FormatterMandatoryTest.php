@@ -3,7 +3,7 @@
 namespace ls\tests\unit\api;
 
 use ls\tests\TestBaseClass;
-use LimeSurvey\Api\Transformer\Formatter\FormatterMandatory;
+use LimeSurvey\Transformer\Formatter\FormatterMandatory;
 
 /**
  * @testdox API Formatter Mandatory

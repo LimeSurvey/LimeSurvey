@@ -1,8 +1,8 @@
 <?php
 
-namespace LimeSurvey\Api\Transformer\Registry;
+namespace LimeSurvey\Transformer\Registry;
 
-use LimeSurvey\Api\Transformer\{
+use LimeSurvey\Transformer\{
     Filter\Filter,
     Formatter\FormatterDateTimeToJson,
     Formatter\FormatterIntToBool,
