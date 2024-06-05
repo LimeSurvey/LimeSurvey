@@ -11,9 +11,15 @@ use LimeSurvey\Api\Command\{
     Response\ResponseFactory,
     ResponseData\ResponseDataError
 };
+use LimeSurvey\Api\Auth\AuthSession;
+use LimeSurvey\Api\Command\Mixin\Auth\AuthPermissionTrait;
+
 
 class SurveyTemplate implements CommandInterface
 {
+    use AuthPermissionTrait;
+
+    protected AuthSession $authSession;
     protected ResponseFactory $responseFactory;
 
     protected Survey $survey;
@@ -23,15 +29,18 @@ class SurveyTemplate implements CommandInterface
      * Constructor
      *
      * @param ResponseFactory $responseFactory
+     * @param AuthSession $authSession
      * @param Survey $survey
      * @param SurveyLanguageSetting $surveyLanguageSetting
      */
     public function __construct(
         ResponseFactory $responseFactory,
+        AuthSession $authSession,
         Survey $survey,
         SurveyLanguageSetting $surveyLanguageSetting
     ) {
         $this->responseFactory = $responseFactory;
+        $this->authSession = $authSession;
         $this->survey = $survey;
         $this->surveyLanguageSetting = $surveyLanguageSetting;
     }
@@ -60,7 +69,28 @@ class SurveyTemplate implements CommandInterface
      */
     public function run(Request $request)
     {
-        $surveyId = intval($request->getData('_id'));
+        $sessionKey = (string) $request->getData('sessionKey');
+        $surveyId = (string) $request->getData('_id');
+
+        if (
+            !$this->authSession
+                ->checkKey($sessionKey)
+        ) {
+            return $this->responseFactory
+                ->makeErrorUnauthorised();
+        }
+
+        if (
+            !$this->hasSurveyPermission(
+                $surveyId,
+                'surveycontent',
+                'read'
+            )
+        ) {
+            return $this->responseFactory
+                ->makeErrorForbidden();
+        }
+
         if (!$surveyId) {
             return $this->responseFactory->makeErrorNotFound(
                 (new ResponseDataError(
@@ -70,6 +100,7 @@ class SurveyTemplate implements CommandInterface
                 )->toArray()
             );
         }
+
         $survey = $this->survey->findByPk($surveyId);
         if (!$survey) {
             return $this->responseFactory->makeErrorNotFound(
