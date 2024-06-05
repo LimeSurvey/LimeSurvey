@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2024-05-29 18:20:06+00:00\n"
+"POT-Creation-Date: 2024-06-05 13:24:00+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -27,10 +27,10 @@ msgstr ""
 #: application/controllers/admin/DataEntry.php:2027
 #: application/controllers/admin/DataEntry.php:2038
 #: application/controllers/admin/DataEntry.php:2049
-#: application/controllers/survey/SurveyIndex.php:101
-#: application/controllers/survey/SurveyIndex.php:357
-#: application/controllers/survey/SurveyIndex.php:378
-#: application/controllers/survey/SurveyIndex.php:400
+#: application/controllers/survey/SurveyIndex.php:110
+#: application/controllers/survey/SurveyIndex.php:366
+#: application/controllers/survey/SurveyIndex.php:387
+#: application/controllers/survey/SurveyIndex.php:409
 #: application/core/plugins/TwoFactorAdminLogin/views/_partial/error.php:11
 #: application/extensions/PanelBoxWidget/PanelBoxWidget.php:62
 #: application/extensions/PanelBoxWidget/PanelBoxWidget.php:63
@@ -285,7 +285,7 @@ msgstr ""
 #: application/helpers/userstatistics_helper.php:1669
 #: application/models/Notification.php:158
 #: application/models/SavedControl.php:153
-#: application/models/SurveymenuEntries.php:182
+#: application/models/SurveymenuEntries.php:184
 #: application/models/SurveysGroups.php:96
 #: application/models/TokenDynamic.php:629
 #: application/views/surveyAdministration/surveySummary_view.php:35
@@ -1029,12 +1029,12 @@ msgstr ""
 
 #: application/controllers/PrintanswersController.php:84
 #: application/controllers/UploaderController.php:28
-#: application/controllers/survey/SurveyIndex.php:294
+#: application/controllers/survey/SurveyIndex.php:303
 msgid "We are sorry but your session has expired."
 msgstr ""
 
 #: application/controllers/PrintanswersController.php:89
-#: application/controllers/survey/SurveyIndex.php:296
+#: application/controllers/survey/SurveyIndex.php:305
 msgid "Either you have been inactive for too long, you have cookies disabled for your browser, or there were problems with your connection."
 msgstr ""
 
@@ -1075,13 +1075,13 @@ msgstr ""
 #: application/controllers/admin/SurveymenuController.php:196
 #: application/controllers/admin/SurveymenuController.php:245
 #: application/controllers/admin/SurveymenuController.php:291
-#: application/controllers/admin/SurveymenuEntryController.php:118
-#: application/controllers/admin/SurveymenuEntryController.php:130
-#: application/controllers/admin/SurveymenuEntryController.php:224
-#: application/controllers/admin/SurveymenuEntryController.php:273
-#: application/controllers/admin/SurveymenuEntryController.php:321
+#: application/controllers/admin/SurveymenuEntryController.php:125
+#: application/controllers/admin/SurveymenuEntryController.php:140
+#: application/controllers/admin/SurveymenuEntryController.php:234
+#: application/controllers/admin/SurveymenuEntryController.php:283
 #: application/controllers/admin/SurveymenuEntryController.php:331
-#: application/controllers/admin/SurveymenuEntryController.php:370
+#: application/controllers/admin/SurveymenuEntryController.php:341
+#: application/controllers/admin/SurveymenuEntryController.php:380
 msgid "Access denied"
 msgstr ""
 
@@ -1159,7 +1159,7 @@ msgstr ""
 #: application/controllers/admin/Export.php:989
 #: application/controllers/admin/QuestionThemes.php:15
 #: application/controllers/admin/SurveymenuController.php:183
-#: application/controllers/admin/SurveymenuEntryController.php:211
+#: application/controllers/admin/SurveymenuEntryController.php:221
 #: application/controllers/admin/Themes.php:33
 #: application/controllers/admin/Themes.php:72
 #: application/controllers/admin/Themes.php:121
@@ -1173,9 +1173,10 @@ msgstr ""
 #: application/controllers/admin/Themes.php:958
 #: application/controllers/admin/Tokens.php:172
 #: application/controllers/admin/Tokens.php:587
-#: application/controllers/survey/SurveyIndex.php:102
-#: application/controllers/survey/SurveyIndex.php:277
-#: application/controllers/survey/SurveyIndex.php:279
+#: application/controllers/survey/SurveyIndex.php:100
+#: application/controllers/survey/SurveyIndex.php:111
+#: application/controllers/survey/SurveyIndex.php:286
+#: application/controllers/survey/SurveyIndex.php:288
 #: application/views/admin/participants/blacklist_view.php:141
 #: application/views/surveyAdministration/partial/topbar_tokens/tokensInvRemDropdownItems.php:49
 #: application/views/userManagement/index.php:18
@@ -1630,7 +1631,7 @@ msgstr ""
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_action_results.php:10
 #: application/models/Notification.php:166
 #: application/models/Surveymenu.php:345
-#: application/models/SurveymenuEntries.php:186
+#: application/models/SurveymenuEntries.php:188
 #: application/models/SurveysGroups.php:98
 #: application/models/SurveysGroups.php:140
 #: application/models/TutorialEntry.php:60
@@ -1696,7 +1697,7 @@ msgid "Response deleted."
 msgstr ""
 
 #: application/controllers/ResponsesController.php:700
-#: application/controllers/survey/SurveyIndex.php:119
+#: application/controllers/survey/SurveyIndex.php:128
 msgid "Invalid question ID"
 msgstr ""
 
@@ -1772,8 +1773,8 @@ msgstr ""
 #: application/models/Permissiontemplates.php:271
 #: application/models/Question.php:1106 application/models/SavedControl.php:176
 #: application/models/Surveymenu.php:427
-#: application/models/SurveymenuEntries.php:194
-#: application/models/SurveymenuEntries.php:207
+#: application/models/SurveymenuEntries.php:196
+#: application/models/SurveymenuEntries.php:209
 #: application/models/SurveysGroups.php:181
 #: application/models/TokenDynamic.php:763 application/models/User.php:843
 #: application/models/User.php:865
@@ -3948,7 +3949,7 @@ msgstr ""
 #: application/models/ParticipantAttributeName.php:257
 #: application/models/Permissiontemplates.php:248
 #: application/models/Surveymenu.php:344
-#: application/models/SurveymenuEntries.php:187
+#: application/models/SurveymenuEntries.php:189
 #: application/models/UserGroup.php:293 application/models/UserGroup.php:401
 #: application/models/UserInPermissionrole.php:57
 #: application/views/admin/labels/labelsets_view.php:42
@@ -4758,6 +4759,7 @@ msgstr ""
 #: application/views/admin/dataentry/content_view.php:677
 #: application/views/admin/dataentry/content_view.php:702
 #: application/views/admin/dataentry/content_view.php:840
+#: application/views/admin/surveymenu_entries/_form.php:51
 msgid "Please choose"
 msgstr ""
 
@@ -4783,6 +4785,7 @@ msgstr ""
 #: application/views/admin/dataentry/content_view.php:237
 #: application/views/admin/globalsettings/_email.php:97
 #: application/views/admin/survey/subview/accordion/_notification_panel.php:24
+#: application/views/admin/surveymenu_entries/_form.php:77
 #: application/views/admin/token/bounce.php:31
 #: application/views/surveyPermissions/index.php:39
 #: application/views/surveyPermissions/index.php:70
@@ -5379,7 +5382,7 @@ msgstr ""
 
 #: application/controllers/admin/ParticipantsAction.php:676
 #: application/controllers/admin/SurveymenuController.php:171
-#: application/controllers/admin/SurveymenuEntryController.php:199
+#: application/controllers/admin/SurveymenuEntryController.php:209
 #: application/controllers/admin/Tokens.php:567
 #: application/models/FailedEmail.php:81 application/models/FailedEmail.php:164
 msgid "Updated"
@@ -5387,7 +5390,7 @@ msgstr ""
 
 #: application/controllers/admin/ParticipantsAction.php:684
 #: application/controllers/admin/SurveymenuController.php:179
-#: application/controllers/admin/SurveymenuEntryController.php:207
+#: application/controllers/admin/SurveymenuEntryController.php:217
 #: application/controllers/admin/Tokens.php:579
 msgid "Nothing to update"
 msgstr ""
@@ -6062,7 +6065,7 @@ msgid "Something went wrong!"
 msgstr ""
 
 #: application/controllers/admin/SurveymenuController.php:308
-#: application/controllers/admin/SurveymenuEntryController.php:242
+#: application/controllers/admin/SurveymenuEntryController.php:252
 msgid "You don't have the right to restore the settings to default"
 msgstr ""
 
@@ -6078,11 +6081,16 @@ msgstr ""
 msgid "Menu entries"
 msgstr ""
 
-#: application/controllers/admin/SurveymenuEntryController.php:258
+#: application/controllers/admin/SurveymenuEntryController.php:80
+#: application/controllers/admin/SurveymenuEntryController.php:136
+msgid "Invalid menu entry."
+msgstr ""
+
+#: application/controllers/admin/SurveymenuEntryController.php:268
 msgid "Default survey menu entries restored."
 msgstr ""
 
-#: application/controllers/admin/SurveymenuEntryController.php:258
+#: application/controllers/admin/SurveymenuEntryController.php:268
 msgid "Something went wrong! Are the survey menus properly restored?"
 msgstr ""
 
@@ -7006,98 +7014,98 @@ msgstr ""
 msgid "The survey in which you are trying to participate does not seem to exist."
 msgstr ""
 
-#: application/controllers/survey/SurveyIndex.php:112
+#: application/controllers/survey/SurveyIndex.php:121
 #: application/core/SurveyCommonAction.php:165
 msgid "Invalid group ID"
 msgstr ""
 
-#: application/controllers/survey/SurveyIndex.php:200
+#: application/controllers/survey/SurveyIndex.php:209
 msgid "Access code mismatch"
 msgstr ""
 
-#: application/controllers/survey/SurveyIndex.php:201
+#: application/controllers/survey/SurveyIndex.php:210
 msgid "The access code you provided doesn't match the one in your session."
 msgstr ""
 
-#: application/controllers/survey/SurveyIndex.php:205
-#: application/controllers/survey/SurveyIndex.php:243
-#: application/controllers/survey/SurveyIndex.php:306
+#: application/controllers/survey/SurveyIndex.php:214
+#: application/controllers/survey/SurveyIndex.php:252
+#: application/controllers/survey/SurveyIndex.php:315
 msgid "Click here to start the survey."
 msgstr ""
 
-#: application/controllers/survey/SurveyIndex.php:255
+#: application/controllers/survey/SurveyIndex.php:264
 msgid "Previous session is set to be finished."
 msgstr ""
 
-#: application/controllers/survey/SurveyIndex.php:256
+#: application/controllers/survey/SurveyIndex.php:265
 msgid ""
 "Your browser reports that it was used previously to answer this survey.\n"
 "            We are resetting the session so that you can start from the beginning."
 msgstr ""
 
-#: application/controllers/survey/SurveyIndex.php:359
+#: application/controllers/survey/SurveyIndex.php:368
 msgid "We are sorry but the survey is expired and no longer available."
 msgstr ""
 
-#: application/controllers/survey/SurveyIndex.php:380
+#: application/controllers/survey/SurveyIndex.php:389
 msgid "This survey is not yet started."
 msgstr ""
 
-#: application/controllers/survey/SurveyIndex.php:402
+#: application/controllers/survey/SurveyIndex.php:411
 msgid "You have already completed this survey."
 msgstr ""
 
-#: application/controllers/survey/SurveyIndex.php:426
+#: application/controllers/survey/SurveyIndex.php:435
 msgid "You did not provide a name."
 msgstr ""
 
-#: application/controllers/survey/SurveyIndex.php:430
+#: application/controllers/survey/SurveyIndex.php:439
 msgid "You did not provide a password."
 msgstr ""
 
-#: application/controllers/survey/SurveyIndex.php:434
+#: application/controllers/survey/SurveyIndex.php:443
 msgid "You cannot reload responses because the survey is not activated, yet."
 msgstr ""
 
-#: application/controllers/survey/SurveyIndex.php:444
+#: application/controllers/survey/SurveyIndex.php:453
 msgid "You did not answer to the security question."
 msgstr ""
 
-#: application/controllers/survey/SurveyIndex.php:450
+#: application/controllers/survey/SurveyIndex.php:459
 #: application/libraries/Save.php:154
 msgid "The answer to the security question is incorrect."
 msgstr ""
 
-#: application/controllers/survey/SurveyIndex.php:455
+#: application/controllers/survey/SurveyIndex.php:464
 #: application/helpers/frontend_helper.php:1271
 msgid "You have exceeded the number of maximum access code validation attempts. Please wait %d minutes before trying again."
 msgstr ""
 
-#: application/controllers/survey/SurveyIndex.php:470
+#: application/controllers/survey/SurveyIndex.php:479
 msgid "There is no matching saved response."
 msgstr ""
 
-#: application/controllers/survey/SurveyIndex.php:524
+#: application/controllers/survey/SurveyIndex.php:533
 msgid "This invitation has already been used."
 msgstr ""
 
-#: application/controllers/survey/SurveyIndex.php:526
+#: application/controllers/survey/SurveyIndex.php:535
 msgid "This invitation has no uses left."
 msgstr ""
 
-#: application/controllers/survey/SurveyIndex.php:528
+#: application/controllers/survey/SurveyIndex.php:537
 msgid "This invitation is not valid yet."
 msgstr ""
 
-#: application/controllers/survey/SurveyIndex.php:530
+#: application/controllers/survey/SurveyIndex.php:539
 msgid "This invitation is not valid anymore."
 msgstr ""
 
-#: application/controllers/survey/SurveyIndex.php:533
+#: application/controllers/survey/SurveyIndex.php:542
 msgid "This is a controlled survey. You need a valid access code to participate."
 msgstr ""
 
-#: application/controllers/survey/SurveyIndex.php:537
+#: application/controllers/survey/SurveyIndex.php:546
 msgid "We are sorry but you are not allowed to enter this survey."
 msgstr ""
 
@@ -9583,7 +9591,7 @@ msgid "Unknown box ID!"
 msgstr ""
 
 #: application/extensions/UserPermissionsWidget/views/table.php:7
-#: application/models/SurveymenuEntries.php:198
+#: application/models/SurveymenuEntries.php:200
 #: application/models/SurveysGroups.php:315
 #: application/views/admin/user/setuserpermissions.php:24
 #: application/views/surveyPermissions/partial/editpermission.php:14
@@ -9703,7 +9711,7 @@ msgid "Anonymized responses"
 msgstr ""
 
 #: application/extensions/admin/survey/ListSurveysWidget/views/listSurveys.php:104
-#: application/models/SurveymenuEntries.php:196
+#: application/models/SurveymenuEntries.php:198
 #: application/views/admin/labels/importlabelresources_view.php:18
 #: application/views/admin/themes/importuploaded_view.php:11
 #: application/views/surveyAdministration/importSurveyResources_view.php:48
@@ -14518,7 +14526,7 @@ msgstr ""
 #: application/models/Assessment.php:87 application/models/FailedEmail.php:183
 #: application/models/Participant.php:198
 #: application/models/QuestionGroupL10n.php:81
-#: application/models/SurveymenuEntries.php:197
+#: application/models/SurveymenuEntries.php:199
 #: application/models/TokenDynamic.php:673 application/models/User.php:180
 #: application/views/admin/authentication/ajaxLogin.php:80
 #: application/views/admin/authentication/login.php:95
@@ -14812,7 +14820,7 @@ msgid "Active survey ID"
 msgstr ""
 
 #: application/models/Participant.php:202 application/models/Surveymenu.php:350
-#: application/models/SurveymenuEntries.php:205
+#: application/models/SurveymenuEntries.php:207
 #: application/models/SurveysGroups.php:104 application/models/User.php:789
 #: application/models/User.php:898
 msgid "Created on"
@@ -15127,7 +15135,7 @@ msgstr ""
 
 #: application/models/Question.php:387
 #: application/models/QuestionTheme.php:1045
-#: application/models/SurveymenuEntries.php:195
+#: application/models/SurveymenuEntries.php:197
 msgid "Template"
 msgstr ""
 
@@ -15697,7 +15705,7 @@ msgid "All surveys"
 msgstr ""
 
 #: application/models/Surveymenu.php:291
-#: application/models/SurveymenuEntries.php:267
+#: application/models/SurveymenuEntries.php:275
 msgid "All users"
 msgstr ""
 
@@ -15722,7 +15730,7 @@ msgid "Parent"
 msgstr ""
 
 #: application/models/Surveymenu.php:341
-#: application/models/SurveymenuEntries.php:184
+#: application/models/SurveymenuEntries.php:186
 #: application/models/TemplateManifest.php:1497
 #: application/views/admin/super/permissions/addUserForm.php:4
 #: application/views/surveyPermissions/index.php:26
@@ -15730,7 +15738,7 @@ msgid "User"
 msgstr ""
 
 #: application/models/Surveymenu.php:342
-#: application/models/SurveymenuEntries.php:185
+#: application/models/SurveymenuEntries.php:187
 #: application/models/SurveysGroups.php:175
 msgid "Order"
 msgstr ""
@@ -15754,7 +15762,7 @@ msgid "Changed by"
 msgstr ""
 
 #: application/models/Surveymenu.php:351
-#: application/models/SurveymenuEntries.php:206
+#: application/models/SurveymenuEntries.php:208
 #: application/models/SurveysGroups.php:106 application/models/User.php:794
 #: application/models/User.php:893
 msgid "Created by"
@@ -15768,89 +15776,93 @@ msgstr ""
 msgid "Delete this survey menu"
 msgstr ""
 
-#: application/models/SurveymenuEntries.php:183
-#: application/models/SurveymenuEntries.php:436
+#: application/models/SurveymenuEntries.php:185
+#: application/models/SurveymenuEntries.php:451
 msgid "Menu"
 msgstr ""
 
-#: application/models/SurveymenuEntries.php:188
+#: application/models/SurveymenuEntries.php:190
 msgid "Menu title"
 msgstr ""
 
-#: application/models/SurveymenuEntries.php:189
+#: application/models/SurveymenuEntries.php:191
 msgid "Menu name"
 msgstr ""
 
-#: application/models/SurveymenuEntries.php:190
+#: application/models/SurveymenuEntries.php:192
 msgid "Menu icon"
 msgstr ""
 
-#: application/models/SurveymenuEntries.php:191
+#: application/models/SurveymenuEntries.php:193
 msgid "Menu icon type"
 msgstr ""
 
-#: application/models/SurveymenuEntries.php:192
+#: application/models/SurveymenuEntries.php:194
 msgid "Menu class"
 msgstr ""
 
-#: application/models/SurveymenuEntries.php:193
+#: application/models/SurveymenuEntries.php:195
 msgid "Menu link"
 msgstr ""
 
-#: application/models/SurveymenuEntries.php:199
+#: application/models/SurveymenuEntries.php:201
 msgid "Permission level"
 msgstr ""
 
-#: application/models/SurveymenuEntries.php:200
+#: application/models/SurveymenuEntries.php:202
 msgid "Classes"
 msgstr ""
 
-#: application/models/SurveymenuEntries.php:201
+#: application/models/SurveymenuEntries.php:203
 msgid "Data"
 msgstr ""
 
-#: application/models/SurveymenuEntries.php:202
+#: application/models/SurveymenuEntries.php:204
 msgid "GET data method"
 msgstr ""
 
-#: application/models/SurveymenuEntries.php:203
+#: application/models/SurveymenuEntries.php:205
 #: application/models/SurveysGroups.php:105
 msgid "Modified on"
 msgstr ""
 
-#: application/models/SurveymenuEntries.php:204
+#: application/models/SurveymenuEntries.php:206
 msgid "Modified by"
 msgstr ""
 
-#: application/models/SurveymenuEntries.php:208
+#: application/models/SurveymenuEntries.php:210
 msgid "Show in collapse"
 msgstr ""
 
-#: application/models/SurveymenuEntries.php:221
+#: application/models/SurveymenuEntries.php:223
 msgid "Action: "
 msgstr ""
 
-#: application/models/SurveymenuEntries.php:222
+#: application/models/SurveymenuEntries.php:224
 msgid "Template: "
 msgstr ""
 
-#: application/models/SurveymenuEntries.php:223
+#: application/models/SurveymenuEntries.php:225
 msgid "Partial: "
 msgstr ""
 
-#: application/models/SurveymenuEntries.php:298
+#: application/models/SurveymenuEntries.php:306
+msgid "Remix icon"
+msgstr ""
+
+#: application/models/SurveymenuEntries.php:307
 msgid "Fontawesome icon"
 msgstr ""
 
-#: application/models/SurveymenuEntries.php:299
+#: application/models/SurveymenuEntries.php:308
 msgid "Image"
 msgstr ""
 
-#: application/models/SurveymenuEntries.php:313
+#: application/models/SurveymenuEntries.php:320
 msgid "Edit this survey menu entry"
 msgstr ""
 
-#: application/models/SurveymenuEntries.php:319
+#: application/models/SurveymenuEntries.php:331
 #: application/views/admin/surveymenu_entries/index.php:59
 msgid "Delete this survey menu entry"
 msgstr ""
@@ -21367,8 +21379,8 @@ msgstr ""
 msgid "This will be shown when hovering over the menu."
 msgstr ""
 
-#: application/views/admin/surveymenu_entries/_form.php:79
-msgid "Use a remix icon classname, or a link to the image."
+#: application/views/admin/surveymenu_entries/_form.php:85
+msgid "Use a remix icon classname or any other classname, font awesome partial classname or a link to the image."
 msgstr ""
 
 #: application/views/admin/surveymenu_entries/_form.php:98

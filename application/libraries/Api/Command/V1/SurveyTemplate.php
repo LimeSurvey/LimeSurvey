@@ -100,7 +100,6 @@ class SurveyTemplate implements CommandInterface
                 )->toArray()
             );
         }
-
         $survey = $this->survey->findByPk($surveyId);
         if (!$survey) {
             return $this->responseFactory->makeErrorNotFound(
