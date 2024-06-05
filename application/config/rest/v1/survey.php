@@ -3,17 +3,20 @@
 use LimeSurvey\Api\Command\V1\{
     SurveyList,
     SurveyDetail,
-    SurveyPatch
+    SurveyPatch,
+    SurveyTemplate
 };
 use LimeSurvey\Api\Rest\V1\SchemaFactory\{
     SchemaFactoryError,
     SchemaFactorySurveyList,
     SchemaFactorySurveyDetail,
-    SchemaFactorySurveyPatch
+    SchemaFactorySurveyPatch,
+    SchemaFactorySurveyTemplate
 };
 
-$errorSchema = (new SchemaFactoryError)->make();
-$surveyPatchSchema = (new SchemaFactorySurveyPatch)->make();
+$errorSchema = (new SchemaFactoryError())->make();
+$surveyPatchSchema = (new SchemaFactorySurveyPatch())->make();
+$surveyTemplateSchema = (new SchemaFactorySurveyTemplate())->make();
 
 $rest = [];
 
@@ -31,7 +34,7 @@ $rest['v1/survey'] = [
                 'code' => 200,
                 'description' => 'Success',
                 'content' => null,
-                'schema' => (new SchemaFactorySurveyList)->make()
+                'schema' => (new SchemaFactorySurveyList())->make()
             ],
             'unauthorized' => [
                 'code' => 401,
@@ -53,7 +56,7 @@ $rest['v1/survey-detail/$id'] = [
                 'code' => 200,
                 'description' => 'Success',
                 'content' => null,
-                'schema' => (new SchemaFactorySurveyDetail)->make()
+                'schema' => (new SchemaFactorySurveyDetail())->make()
             ],
             'unauthorized' => [
                 'code' => 401,
@@ -94,6 +97,49 @@ $rest['v1/survey-detail/$id'] = [
             ]
         ]
     ]
+];
+
+$rest['v1/survey-template/$id'] = [
+    'GET' => [
+        'tag' => 'survey',
+        'description' => 'Survey template',
+        'commandClass' => SurveyTemplate::class,
+        'auth' => 'session',
+        'responses' => [
+            'success' => [
+                'code' => 200,
+                'description' => 'Success',
+                'content' => null,
+                'schema' => (new SchemaFactorySurveyTemplate())->make()
+            ],
+            'not-found' => [
+                'code' => 404,
+                'description' => 'Not Found',
+                'schema' => $errorSchema
+            ]
+        ]
+    ],
+    'POST' => [
+        'tag' => 'survey',
+        'description' => 'Survey template',
+        'commandClass' => SurveyTemplate::class,
+        'auth' => 'session',
+        'example' => __DIR__ . '/example/survey-post-template.json',
+        'schema' => $surveyTemplateSchema,
+        'responses' => [
+            'success' => [
+                'code' => 200,
+                'description' => 'Success',
+                'content' => null,
+                'schema' => $surveyTemplateSchema
+            ],
+            'not-found' => [
+                'code' => 404,
+                'description' => 'Not Found',
+                'schema' => $errorSchema
+            ]
+        ]
+    ],
 ];
 
 return $rest;
