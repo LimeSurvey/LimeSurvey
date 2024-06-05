@@ -44,7 +44,7 @@ class SubQuestionsService
     /**
      * Based on QuestionAdministrationController::actionSaveQuestionData()
      *
-     * @param array{
+     * @param array {
      *  ...<array-key, mixed>
      * } $subquestions
      * @return void

@@ -34,6 +34,92 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.5.9 (build 240521) to 6.5.10 (build 240603) June 3, 2024
+-Fixed issue #CR-1421: themes overview page showing error when configuration can't be loaded or is invalid (#3857) (Mohab Elsheikh)
+-Fixed issue #CT-778: wrong placeholder fields in html editor (#3851) (Tim Willig)
+-Fixed issue #19561: popup messages come with HTML inside (#3848) (Denis Chenu)
+#Updated translation: Slovak by jelen1
+#Updated translation: Portuguese (Brazil) by mauriciofurtado
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Korean by modernity4r
+#Updated translation: Korean by c_schmitz, modernity4r
+#Updated translation: Japanese by nomoto
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
+Changes from 6.5.8 (build 240517) to 6.5.9 (build 240521) May 21, 2024
+-Fixed issue: On group/question preview a PHP error is thrown if the qid/gid is invalid (#3849) (Carsten Schmitz)
+#Updated translation: Korean by modernity4r
+#Updated translation: Japanese by hl_sales
+
+
+Changes from 6.5.7 (build 240515) to 6.5.8 (build 240517) May 16, 2024
+-Fixed issue: L10ns must be initialized with qid not gid (Kevin Foster)
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Japanese by d_inoue, nomoto
+
+
+Changes from 6.5.6 (build 240506) to 6.5.7 (build 240515) May 15, 2024
+-Fixed issue #CT-800: Fixed styling for vanilla/fruity related to Bootstrap (twilligls)
+-Fixed issue #CT-774: Ranking advanced was not persisting answers on reload (prev, error modal) (twilligls)
+-Fixed issue #19562: Special character icon is doubled inside CKEditor (#3843) (tiborpacalat)
+-Fixed issue #19543: KCFinder needs to be updated when using with PHP 8.1 (#3837) (Gabriel Jenik)
+#Updated translation: Portuguese (Portugal) by c_schmitz, educaticteced, holch, samarta
+#Updated translation: Portuguese (Brazil) by c_schmitz, holch, samarta
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Korean by modernity4r
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Greek by baltzis
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Catalan by qualitatuvic
+
+
+Changes from 6.5.5 (build 240429) to 6.5.6 (build 240506) May 6, 2024
+-Fixed issue #CT-784: video elements are hidden on iPad beneath a certain height (#3838) (Patrick Teichmann)
+-Fixed issue #19528: Bad usability when opening participant edit in a new tab(#3826) (Denis Chenu)
+-Fixed issue #19526: debug=2 PHP8.1 - unable to send email without expiry (#3827) (Denis Chenu)
+#Updated translation: Turkish by kayazeren
+#Updated translation: Slovak by jelen1
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Odia by rajkumar_dms
+#Updated translation: Korean by modernity4r
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1, slansky
+#Updated translation: Czech (Informal) by jelen1
+
+
+Changes from 6.5.4 (build 240422) to 6.5.5 (build 240429) April 29, 2024
+-Fixed issue: Add/import user role buttons must have unique id (#3832) (K Foster)
+-Fixed issue #CT-771: clear selection and select all not working in responses grid column filter (#3828) (Patrick Teichmann)
+-Fixed issue #CT-711: email templates, add attachment, failed to open the resource manager (kcfinder) resulting in being unable to attach files to the email template (Patrick Teichmann)
+-Fixed issue #19527: Potential 500 error in survey list (#3833) (Denis Chenu)
+-Fixed issue #19504: Potential PHP Warning when get Survey listing (#3821) (Denis Chenu)
+-Fixed issue #19465: Apply new term blocklist (Carsten Schmitz)
+#Updated translation: Portuguese (Portugal) by holch, samarta
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Montenegrin by c_schmitz, kristinakom
+#Updated translation: Japanese by d_inoue
+#Updated translation: German by c_schmitz
+#Updated translation: German by Transcaretech
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Finnish by Jmantysalo
+
+
 Changes from 6.5.3 (build 240415) to 6.5.4 (build 240422) April 22, 2024
 -Fixed issue #19518: Downloading responses does not exit loading animation once finished (#3813) (Gabriel Jenik)
 -Fixed issue #19319: potential error during login, after Updating To LS 6.4.0 (#3767) (Denis Chenu)

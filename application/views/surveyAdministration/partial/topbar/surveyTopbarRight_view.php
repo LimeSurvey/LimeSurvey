@@ -15,7 +15,7 @@ if (isset($editorEnabled) && $editorEnabled && $editorUrl) {
     $tooltip = '';
     if (!$enableEditorButton) {
         $disabled = 'disabled';
-        $tooltip = gT('New question editor is only allowed for Fruity23');
+        $tooltip = gT('The new question editor is only available for surveys using the FruityTwentyThree theme.');
     }
     ?>
     <span data-bs-toggle="tooltip" data-bs-original-title="<?=$tooltip?>">

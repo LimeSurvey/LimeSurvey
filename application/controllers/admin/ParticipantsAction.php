@@ -1289,7 +1289,7 @@ class ParticipantsAction extends SurveyCommonAction
      */
     public function blacklistControl()
     {
-        $title = gT("Blacklist settings");
+        $title = gT("Blocklist settings");
         $aData = array(
             'blacklistallsurveys' => Yii::app()->getConfig('blacklistallsurveys'),
             'blacklistnewsurveys' => Yii::app()->getConfig('blacklistnewsurveys'),
@@ -1334,7 +1334,7 @@ class ParticipantsAction extends SurveyCommonAction
                 $stg->save();
             }
         }
-        Yii::app()->setFlashMessage(gT('Blacklist settings were saved.'), 'success');
+        Yii::app()->setFlashMessage(gT('Blocklist settings were saved.'), 'success');
         Yii::app()->getController()->redirect(array('admin/participants/sa/blacklistControl'));
     }
 
