@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  limesurvey:
+    build: .
+    ports:
+      - "80:80"
+    depends_on:
+      - mariadb
+    volumes:
+      - limesurvey_tmp:/var/www/html/tmp
+      - limesurvey_upload:/var/www/html/upload
+      - limesurvey_config:/var/www/html/application/config
+
+  mariadb:
+    image: mariadb:11.4.2
+    environment:
+      - MYSQL_ROOT_PASSWORD=rootpassword
+      - MYSQL_DATABASE=limesurvey
+      - MYSQL_USER=limesurvey
+      - MYSQL_PASSWORD=limesurvey
+    volumes:
+      - mariadb_data:/var/lib/mysql
+
+volumes:
+  mariadb_data:
+  limesurvey_tmp:
+  limesurvey_upload:
+  limesurvey_config:
