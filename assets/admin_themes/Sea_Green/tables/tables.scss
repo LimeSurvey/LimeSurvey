@@ -148,7 +148,7 @@ table {
 
 /** For all grid view table */
 .scrolling-wrapper {
-    overflow-x: scroll;
+    overflow-x: auto;
     overflow-y: hidden;
 
     // if go to last page of table, the action dropdown is hidden.
