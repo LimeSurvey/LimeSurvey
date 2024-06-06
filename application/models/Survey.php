@@ -187,7 +187,6 @@ class Survey extends LSActiveRecord implements PermissionInterface
         }
         $this->attachEventHandler("onAfterFind", array($this, 'afterFindSurvey'));
         $this->attachEventHandler("onAfterSave", array($this, 'unsetFromStaticPkCache'));
-
     }
 
     /**
