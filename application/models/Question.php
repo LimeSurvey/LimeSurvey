@@ -110,11 +110,12 @@ class Question extends LSActiveRecord
      * @inheritdoc
      * replace under condition $oQuestion->survey to use Survey::$findByPkCache
      */
-    public function getRelated($name, $refresh=false, $params=array()) {
+    public function getRelated($name, $refresh = false, $params = array())
+    {
         if ($name == 'survey' && !$refresh && empty($params)) {
             return Survey::model()->findByPk($this->sid);
         }
-        return parent::getRelated($name, $refresh,$params);
+        return parent::getRelated($name, $refresh, $params);
     }
 
     /** @inheritdoc */
