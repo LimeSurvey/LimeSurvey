@@ -106,6 +106,17 @@ class Question extends LSActiveRecord
         return $model;
     }
 
+    /**
+     * @inheritdoc
+     * replace under condition $oQuestion->survey to use Survey::$findByPkCache
+     */
+    public function getRelated($name, $refresh=false, $params=array()) {
+        if ($name == 'survey' && !$refresh && empty($params)) {
+            return Survey::model()->findByPk($this->sid);
+        }
+        return parent::getRelated($name, $refresh,$params);
+    }
+
     /** @inheritdoc */
     public function tableName()
     {
@@ -1544,6 +1555,7 @@ class Question extends LSActiveRecord
 
         return !$isAlreadySorted;
     }
+
 
     /**
      * Returns the highest question_order value that exists for a questiongroup inside the related questions.
