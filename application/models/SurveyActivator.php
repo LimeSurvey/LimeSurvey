@@ -82,6 +82,8 @@ class SurveyActivator
         $survey->scenario = 'activationStateChange';
         $survey->active = 'Y';
         $survey->save();
+        /* Check for test */
+        $survey->resetCache();
 
         $aResult = array(
             'status' => 'OK',
