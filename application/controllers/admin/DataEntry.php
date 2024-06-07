@@ -1844,12 +1844,16 @@ class DataEntry extends SurveyCommonAction
                         $submitdate = date("Y-m-d H:i:s");
                     }
                     // query for updating tokens uses left
-                    if ($lastanswfortoken == '') {
+                    if ($lastanswfortoken == '' || $lastanswfortoken == 'AnonymousNotCompleted') {
                         $aToken = Token::model($surveyid)->findByAttributes(['token' => $_POST['token']]);
                         if (isTokenCompletedDatestamped($thissurvey)) {
                             if ($aToken->usesleft <= 1) {
                                 $aToken->usesleft = ((int) $aToken->usesleft) - 1;
-                                $aToken->completed = $submitdate;
+                                if ($lastanswfortoken == 'AnonymousNotCompleted') {
+                                    $aToken->completed = "Y";
+                                } else {
+                                    $aToken->completed = $submitdate;
+                                }
                             } else {
                                 $aToken->usesleft = ((int) $aToken->usesleft) - 1;
                             }
