@@ -1698,30 +1698,23 @@ class DataEntry extends SurveyCommonAction
                 if ($lastanswfortoken == '') {
                     // token is valid, survey not anonymous, try to get last recorded response id
                     $aresult = Response::model($surveyid)->findAllByAttributes(['token' => $postToken]);
-                    foreach ($aresult as $arow) {
-                        if ($aToken->completed != "N") {
-                            $lastanswfortoken = $arow['id'];
+                    if ($aresult) {
+                        foreach ($aresult as $arow) {
+                            if ($aToken->completed != "N") {
+                                $lastanswfortoken = $arow['id'];
+                            }
+                            $rlanguage = $arow['startlanguage'];
                         }
-                        $rlanguage = $arow['startlanguage'];
                     }
                 }
             }
-
             $tokenTableExists = $survey->hasTokensTable;
 
             // First Check if the survey uses tokens and if a token has been provided
             if ($tokenTableExists && (!$postToken)) {
                 $errormsg = $this->returnClosedAccessSurveyErrorMessage();
-            } elseif ($tokenTableExists && $lastanswfortoken == 'UnknownToken') {
-                $errormsg = $this->returnAccessCodeIsNotValidOrAlreadyInUseErrorMessage();
-            } elseif ($tokenTableExists && $lastanswfortoken != '') {
-                $errormsg = $this->returnAlreadyRecordedAnswerForAccessCodeErrorMessage();
-
-                if ($lastanswfortoken != 'PrivacyProtected') {
-                    $errormsg .= $this->returnErrorMessageIfLastAnswerForTokenIsNotPrivacyProtected($lastanswfortoken, $surveyid, $errormsg);
-                } else {
-                    $errormsg .= $this->returnErrorMessageIfLastAnswerForTokenIsPrivacyProtected($errormsg);
-                }
+            } elseif ($tokenTableExists && $lastanswfortoken == 'PrivacyProtected') {
+                $errormsg .= $this->returnErrorMessageIfLastAnswerForTokenIsPrivacyProtected($errormsg);
             } else {
                 if (isset($_POST['save']) && $_POST['save'] == "on") {
                     $aData['save'] = true;
@@ -1851,23 +1844,25 @@ class DataEntry extends SurveyCommonAction
                         $submitdate = date("Y-m-d H:i:s");
                     }
                     // query for updating tokens uses left
-                    $aToken = Token::model($surveyid)->findByAttributes(['token' => $_POST['token']]);
-                    if (isTokenCompletedDatestamped($thissurvey)) {
-                        if ($aToken->usesleft <= 1) {
-                            $aToken->usesleft = ((int) $aToken->usesleft) - 1;
-                            $aToken->completed = $submitdate;
+                    if ($lastanswfortoken == '') {
+                        $aToken = Token::model($surveyid)->findByAttributes(['token' => $_POST['token']]);
+                        if (isTokenCompletedDatestamped($thissurvey)) {
+                            if ($aToken->usesleft <= 1) {
+                                $aToken->usesleft = ((int) $aToken->usesleft) - 1;
+                                $aToken->completed = $submitdate;
+                            } else {
+                                $aToken->usesleft = ((int) $aToken->usesleft) - 1;
+                            }
                         } else {
-                            $aToken->usesleft = ((int) $aToken->usesleft) - 1;
+                            if ($aToken->usesleft <= 1) {
+                                $aToken->usesleft = ((int) $aToken->usesleft) - 1;
+                                $aToken->completed = 'Y';
+                            } else {
+                                $aToken->usesleft = ((int) $aToken->usesleft) - 1;
+                            }
                         }
-                    } else {
-                        if ($aToken->usesleft <= 1) {
-                            $aToken->usesleft = ((int) $aToken->usesleft) - 1;
-                            $aToken->completed = 'Y';
-                        } else {
-                            $aToken->usesleft = ((int) $aToken->usesleft) - 1;
-                        }
+                        $aToken->save();
                     }
-                    $aToken->save();
 
                     // save submitdate into survey table
                     $aResponse = Response::model($surveyid)->findByPk($last_db_id);
@@ -1962,9 +1957,9 @@ class DataEntry extends SurveyCommonAction
     }
 
     /**
-     * Returns the last answer for token or anonymous survey.
-     * @param Survey $survey Survey
-     * @param Token  $token  Token
+     * Returns the last answer information if exist for token or anonymous survey.
+     * @param \Survey $survey Survey
+     * @param \Token  $token  Token
      * @return string
      */
     private function getLastAnswerByTokenOrAnonymousSurvey(Survey $survey, Token $token = null): string
@@ -1972,15 +1967,16 @@ class DataEntry extends SurveyCommonAction
         $lastAnswer = '';
         $isTokenNull  = $token == null;
         $isTokenEmpty = empty($token);
-        $isTokenCompleted = $token->completed;
+        $isTokenCompleted = empty($token) ? "" : $token->completed;
         $isTokenCompletedEmpty = empty($isTokenCompleted);
         $isSurveyAnonymous = $survey->isAnonymized;
-
         if ($isTokenNull || $isTokenEmpty) {
             $lastAnswer = 'UnknownToken';
         } elseif ($isSurveyAnonymous) {
             if (!$isTokenCompletedEmpty && $isTokenCompleted !== "N") {
                 $lastAnswer = 'PrivacyProtected';
+            } else {
+                $lastAnswer = 'AnonymousNotCompleted';
             }
         }
         return $lastAnswer;
