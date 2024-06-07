@@ -106,18 +106,6 @@ class Question extends LSActiveRecord
         return $model;
     }
 
-    /**
-     * @inheritdoc
-     * replace under condition $oQuestion->survey to use Survey::$findByPkCache
-     */
-    public function getRelated($name, $refresh = false, $params = array())
-    {
-        if ($name == 'survey' && !$refresh && empty($params)) {
-            return Survey::model()->findByPk($this->sid);
-        }
-        return parent::getRelated($name, $refresh, $params);
-    }
-
     /** @inheritdoc */
     public function tableName()
     {
@@ -152,6 +140,18 @@ class Question extends LSActiveRecord
             // when using question editor on create mode. Better use getQuestionTheme()
             'question_theme' => [self::HAS_ONE, 'QuestionTheme', ['question_type' => 'type', 'name' => 'question_theme_name']],
         );
+    }
+
+    /**
+     * @inheritdoc
+     * replace under condition $oQuestion->survey to use Survey::$findByPkCache
+     */
+    public function getRelated($name, $refresh = false, $params = array())
+    {
+        if ($name == 'survey' && !$refresh && empty($params)) {
+            return Survey::model()->findByPk($this->sid);
+        }
+        return parent::getRelated($name, $refresh, $params);
     }
 
     /**
