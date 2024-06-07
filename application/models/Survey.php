@@ -185,7 +185,6 @@ class Survey extends LSActiveRecord implements PermissionInterface
         if ($this->isNewRecord) {
             $this->setAttributeDefaults();
         }
-        $this->attachEventHandler("onAfterFind", array($this, 'afterFindSurvey'));
     }
 
     private function setAttributeDefaults()
@@ -1003,11 +1002,15 @@ class Survey extends LSActiveRecord implements PermissionInterface
                 $model = parent::findByPk($pk, $condition, $params);
                 if (!is_null($model)) {
                     self::$findByPkCache[$pk] = $model;
+                    $model->afterFindSurvey();
                 }
                 return $model;
             }
         }
         $model = parent::findByPk($pk, $condition, $params);
+        if (!is_null($model)) {
+            $model->afterFindSurvey();
+        }
         return $model;
     }
 
