@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2024-06-03 13:08:36+00:00\n"
+"POT-Creation-Date: 2024-06-10 10:30:54+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -20,9 +20,9 @@ msgstr ""
 #: application/controllers/AdminController.php:98
 #: application/controllers/UserManagementController.php:1102
 #: application/controllers/admin/DataEntry.php:189
-#: application/controllers/admin/DataEntry.php:1741
-#: application/controllers/admin/DataEntry.php:1744
-#: application/controllers/admin/DataEntry.php:1747
+#: application/controllers/admin/DataEntry.php:1734
+#: application/controllers/admin/DataEntry.php:1737
+#: application/controllers/admin/DataEntry.php:1740
 #: application/controllers/admin/DataEntry.php:1995
 #: application/controllers/admin/DataEntry.php:2006
 #: application/controllers/admin/DataEntry.php:2017
@@ -4960,39 +4960,39 @@ msgstr ""
 msgid "The response record %s was updated."
 msgstr ""
 
-#: application/controllers/admin/DataEntry.php:1741
+#: application/controllers/admin/DataEntry.php:1734
 #: application/libraries/Save.php:132
 msgid "You must supply a name for this saved session."
 msgstr ""
 
-#: application/controllers/admin/DataEntry.php:1744
+#: application/controllers/admin/DataEntry.php:1737
 #: application/libraries/Save.php:135
 msgid "You must supply a password for this saved session."
 msgstr ""
 
-#: application/controllers/admin/DataEntry.php:1747
+#: application/controllers/admin/DataEntry.php:1740
 #: application/libraries/Save.php:138
 msgid "Your passwords do not match."
 msgstr ""
 
-#: application/controllers/admin/DataEntry.php:1895
+#: application/controllers/admin/DataEntry.php:1894
 msgid "Your survey responses have been saved successfully.  You will be sent a confirmation email. Please make sure to save your password, since we will not be able to retrieve it for you."
 msgstr ""
 
-#: application/controllers/admin/DataEntry.php:1910
+#: application/controllers/admin/DataEntry.php:1909
 msgid "A survey participant entry for the saved survey has been created, too."
 msgstr ""
 
-#: application/controllers/admin/DataEntry.php:1919
+#: application/controllers/admin/DataEntry.php:1918
 #: application/libraries/Save.php:217
 msgid "Saved Survey Details"
 msgstr ""
 
-#: application/controllers/admin/DataEntry.php:1920
+#: application/controllers/admin/DataEntry.php:1919
 msgid "Thank you for saving your survey in progress. The following details can be used to return to this survey and continue where you left off."
 msgstr ""
 
-#: application/controllers/admin/DataEntry.php:1922
+#: application/controllers/admin/DataEntry.php:1921
 #: application/libraries/Save.php:220 application/models/Assessment.php:83
 #: application/models/ParticipantAttributeName.php:256
 #: application/models/Permissiontemplates.php:260
@@ -5008,16 +5008,16 @@ msgstr ""
 msgid "Name"
 msgstr ""
 
-#: application/controllers/admin/DataEntry.php:1923
+#: application/controllers/admin/DataEntry.php:1922
 #: application/libraries/Save.php:222
 msgid "Reload your survey by clicking on the following link (or pasting it into your browser):"
 msgstr ""
 
-#: application/controllers/admin/DataEntry.php:1928
+#: application/controllers/admin/DataEntry.php:1927
 msgid "An email has been sent with details about your saved survey. Please make sure to remember your password."
 msgstr ""
 
-#: application/controllers/admin/DataEntry.php:1930
+#: application/controllers/admin/DataEntry.php:1929
 msgid "Unable to send email about your saved survey (Error: %s)."
 msgstr ""
 
