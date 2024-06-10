@@ -14,7 +14,6 @@ use LimeSurvey\Api\Command\{
 use LimeSurvey\Api\Auth\AuthSession;
 use LimeSurvey\Api\Command\Mixin\Auth\AuthPermissionTrait;
 
-
 /**
  * Survey Template
  *
@@ -120,11 +119,9 @@ class SurveyTemplate implements CommandInterface
     private function ensurePermissions($sessionKey, $surveyId)
     {
         if (
-            !$this->authSession
-                ->checkKey($sessionKey)
+            !$this->authSession->checkKey($sessionKey)
         ) {
-            return $this->responseFactory
-                ->makeErrorUnauthorised();
+            return $this->responseFactory->makeErrorUnauthorised();
         }
 
         if (
