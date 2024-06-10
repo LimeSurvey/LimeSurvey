@@ -70,8 +70,46 @@ class SurveyTemplate implements CommandInterface
     public function run(Request $request)
     {
         $sessionKey = (string)$request->getData('sessionKey');
-        $surveyId = (string)$request->getData('_id');
+        $surveyId = (int)$request->getData('_id');
 
+        $this->ensurePermissions($sessionKey, $surveyId);
+
+        $survey = $this->survey->findByPk($surveyId);
+        if (!$survey) {
+            return $this->responseFactory->makeErrorNotFound(
+                (new ResponseDataError(
+                    'SURVEY_NOT_FOUND',
+                    'Survey not found'
+                )
+                )->toArray()
+            );
+        }
+        $language = (($request->getData('language') ?? $survey->language) ?? 'en');
+        $languageSettings = $this
+            ->surveyLanguageSetting
+            ->find('surveyls_survey_id = :sid and surveyls_language = :language', [
+                ':sid'      => $surveyId,
+                ':language' => $language
+            ]);
+        $response = [];
+        if ($languageSettings) {
+            $response['title'] = $languageSettings->surveyls_title;
+            $response['subtitle'] = $languageSettings->surveyls_description;
+        }
+        $result = $this->getTemplateData($surveyId, $language);
+        return $this->responseFactory->makeSuccess(
+            array_merge($response, ['template' => $result])
+        );
+    }
+
+    /**
+     * Ensure Permissions
+     *
+     * @param string $sessionKey
+     * @param int $surveyId
+     */
+    private function ensurePermissions($sessionKey, $surveyId)
+    {
         if (
             !$this->authSession
                 ->checkKey($sessionKey)
@@ -100,29 +138,16 @@ class SurveyTemplate implements CommandInterface
                 )->toArray()
             );
         }
+    }
 
-        $survey = $this->survey->findByPk($surveyId);
-        if (!$survey) {
-            return $this->responseFactory->makeErrorNotFound(
-                (new ResponseDataError(
-                    'SURVEY_NOT_FOUND',
-                    'Survey not found'
-                )
-                )->toArray()
-            );
-        }
-        $language = (($request->getData('language') ?? $survey->language) ?? 'en');
-        $languageSettings = $this
-            ->surveyLanguageSetting
-            ->find('surveyls_survey_id = :sid and surveyls_language = :language', [
-                ':sid'      => $surveyId,
-                ':language' => $language
-            ]);
-        $response = [];
-        if ($languageSettings) {
-            $response['title'] = $languageSettings->surveyls_title;
-            $response['subtitle'] = $languageSettings->surveyls_description;
-        }
+    /**
+     * Get template data
+     *
+     * @param int $surveyId
+     * @param string $language
+     */
+    private function getTemplateData($surveyId, $language)
+    {
         $ch = curl_init();
         $root = (!empty($_SERVER['HTTPS']) ? 'https' : 'http') . '://' . ($_SERVER['HTTP_HOST'] ?? '');
         curl_setopt($ch, CURLOPT_URL, $root . "/{$surveyId}?newtest=Y&lang={$language}&popuppreview=true");
@@ -140,6 +165,6 @@ class SurveyTemplate implements CommandInterface
             );
         }
         curl_close(($ch));
-        return $this->responseFactory->makeSuccess(array_merge($response, ['template' => $result]));
+        return $result;
     }
 }
