@@ -14,7 +14,6 @@ use LimeSurvey\Api\Command\{
 use LimeSurvey\Api\Auth\AuthSession;
 use LimeSurvey\Api\Command\Mixin\Auth\AuthPermissionTrait;
 
-
 class SurveyTemplate implements CommandInterface
 {
     use AuthPermissionTrait;
@@ -44,6 +43,7 @@ class SurveyTemplate implements CommandInterface
         $this->survey = $survey;
         $this->surveyLanguageSetting = $surveyLanguageSetting;
     }
+
     /**
      * Run survey template command
      *
@@ -69,8 +69,8 @@ class SurveyTemplate implements CommandInterface
      */
     public function run(Request $request)
     {
-        $sessionKey = (string) $request->getData('sessionKey');
-        $surveyId = (string) $request->getData('_id');
+        $sessionKey = (string)$request->getData('sessionKey');
+        $surveyId = (string)$request->getData('_id');
 
         if (
             !$this->authSession
@@ -115,9 +115,9 @@ class SurveyTemplate implements CommandInterface
         $languageSettings = $this
             ->surveyLanguageSetting
             ->find('surveyls_survey_id = :sid and surveyls_language = :language', [
-            ':sid' => $surveyId,
-            ':language' => $language
-        ]);
+                ':sid'      => $surveyId,
+                ':language' => $language
+            ]);
         $response = [];
         if ($languageSettings) {
             $response['title'] = $languageSettings->surveyls_title;
