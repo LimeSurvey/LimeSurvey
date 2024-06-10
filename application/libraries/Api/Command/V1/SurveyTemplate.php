@@ -14,6 +14,12 @@ use LimeSurvey\Api\Command\{
 use LimeSurvey\Api\Auth\AuthSession;
 use LimeSurvey\Api\Command\Mixin\Auth\AuthPermissionTrait;
 
+
+/**
+ * Survey Template
+ *
+ * Used by cloud / account to retrieve templates.
+ */
 class SurveyTemplate implements CommandInterface
 {
     use AuthPermissionTrait;
@@ -72,7 +78,9 @@ class SurveyTemplate implements CommandInterface
         $sessionKey = (string)$request->getData('sessionKey');
         $surveyId = (int)$request->getData('_id');
 
-        $this->ensurePermissions($sessionKey, $surveyId);
+        if ($response = $this->ensurePermissions($sessionKey, $surveyId)) {
+            return $response;
+        }
 
         $survey = $this->survey->findByPk($surveyId);
         if (!$survey) {
@@ -107,7 +115,7 @@ class SurveyTemplate implements CommandInterface
      *
      * @param string $sessionKey
      * @param int $surveyId
-     * @return ?Response
+     * @return Response|bool
      */
     private function ensurePermissions($sessionKey, $surveyId)
     {
@@ -139,6 +147,8 @@ class SurveyTemplate implements CommandInterface
                 )->toArray()
             );
         }
+
+        return false;
     }
 
     /**
