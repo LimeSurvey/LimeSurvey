@@ -107,6 +107,7 @@ class SurveyTemplate implements CommandInterface
      *
      * @param string $sessionKey
      * @param int $surveyId
+     * @return ?Response
      */
     private function ensurePermissions($sessionKey, $surveyId)
     {
@@ -145,6 +146,7 @@ class SurveyTemplate implements CommandInterface
      *
      * @param int $surveyId
      * @param string $language
+     * @return Response|bool|string
      */
     private function getTemplateData($surveyId, $language)
     {
