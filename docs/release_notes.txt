@@ -34,6 +34,12 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.6.66 (build 240604) to 5.6.67 (build 240612) June 11, 2024
+-Fixed issue #19580: Data entry at anonymous survey with tokens crashed on save (#3872) (Denis Chenu)
+-Fixed issue #19527: Theme listing broke with invalid template (#3858) (Denis Chenu)
+-Fixed issue #19501: Upgrade broke at 430 with ComfortUpdateChecker (#3803) (Denis Chenu)
+
+
 Changes from 5.6.65 (build 240522) to 5.6.66 (build 240604) June 4, 2024
 -Fixed issue: Updated warning to show permanent update notice that version 5 is out of support (Carsten Schmitz)
 -Fixed issue: Update ComfortUpdate warning to reflect that version 5 is out of support (Carsten Schmitz)
