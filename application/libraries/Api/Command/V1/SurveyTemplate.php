@@ -15,7 +15,6 @@ use LimeSurvey\Api\Command\{
 use LimeSurvey\Api\Auth\AuthSession;
 use LimeSurvey\Api\Command\Mixin\Auth\AuthPermissionTrait;
 
-
 /**
  * Survey Template
  *
