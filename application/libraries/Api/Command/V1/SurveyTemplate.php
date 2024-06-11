@@ -2,6 +2,7 @@
 
 namespace LimeSurvey\Api\Command\V1;
 
+use CHttpSession;
 use Survey;
 use SurveyLanguageSetting;
 use LimeSurvey\Api\Command\{
@@ -24,6 +25,7 @@ class SurveyTemplate implements CommandInterface
     use AuthPermissionTrait;
 
     protected AuthSession $authSession;
+    protected CHttpSession $session;
     protected ResponseFactory $responseFactory;
 
     protected Survey $survey;
@@ -40,11 +42,13 @@ class SurveyTemplate implements CommandInterface
     public function __construct(
         ResponseFactory $responseFactory,
         AuthSession $authSession,
+        CHttpSession $session,
         Survey $survey,
         SurveyLanguageSetting $surveyLanguageSetting
     ) {
         $this->responseFactory = $responseFactory;
         $this->authSession = $authSession;
+        $this->session = $session;
         $this->survey = $survey;
         $this->surveyLanguageSetting = $surveyLanguageSetting;
     }
@@ -114,7 +118,7 @@ class SurveyTemplate implements CommandInterface
      *
      * @param string $sessionKey
      * @param int $surveyId
-     * @return Response|bool
+     * @return Response|false
      */
     private function ensurePermissions($sessionKey, $surveyId)
     {
@@ -157,12 +161,31 @@ class SurveyTemplate implements CommandInterface
      */
     private function getTemplateData($surveyId, $language)
     {
+        // @todo This shouldnt require a HTTP request we should be able to
+        // - render survey content internally. To handle this correctly
+        // - we should refactor the survey view functionality to make it
+        // - reusable (move it out of the controllers).
+
+        $strCookie = $this->session->getSessionName()
+        . '=' . $this->session->getSessionID() . '; path=/';
+        $this->session->close();
+
         $ch = curl_init();
-        $root = (!empty($_SERVER['HTTPS']) ? 'https' : 'http') . '://' . ($_SERVER['HTTP_HOST'] ?? '');
-        curl_setopt($ch, CURLOPT_URL, $root . "/{$surveyId}?newtest=Y&lang={$language}&popuppreview=true");
+        $root = (
+            !empty($_SERVER['HTTPS'])
+            ? 'https'
+            : 'http'
+        ) . '://' . ($_SERVER['HTTP_HOST'] ?? '');
+        curl_setopt(
+            $ch,
+            CURLOPT_URL,
+            $root . "/{$surveyId}?newtest=Y&lang={$language}&popuppreview=true"
+        );
+        curl_setopt($ch, CURLOPT_TIMEOUT, 10);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_COOKIE, $strCookie);
         $result = curl_exec($ch);
         if (curl_errno($ch)) {
             return $this->responseFactory->makeErrorNotFound(
