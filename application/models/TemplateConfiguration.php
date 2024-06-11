@@ -996,7 +996,7 @@ class TemplateConfiguration extends TemplateConfig
     }
 
     /**
-     * @todo document me
+     * Prepares the rendering of the custom options.js and options.twig that can be used in every theme
      *
      * @return mixed
      */
@@ -1641,25 +1641,10 @@ class TemplateConfiguration extends TemplateConfig
     public function prepareTemplateRendering($sTemplateName = '', $iSurveyId = '', $bUseMagicInherit = true)
     {
         if (!empty($sTemplateName) && !empty($iSurveyId)) {
-            if (!empty(self::$aPreparedToRender[$sTemplateName])) {
-                if (!empty(self::$aPreparedToRender[$sTemplateName][$iSurveyId])) {
-                    if (!empty(self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit])) {
-                        return self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit];
-                    } else {
-                        /** @psalm-supress InvalidArrayOffset */
-                        self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit] = array();
-                    }
-                } else {
-                    self::$aPreparedToRender[$sTemplateName][$iSurveyId] = array();
-                    /** @psalm-suppress InvalidArrayOffset */
-                    self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit] = array();
-                }
-            } else {
-                self::$aPreparedToRender = array();
-                self::$aPreparedToRender[$sTemplateName][$iSurveyId] = array();
-                /** @psalm-suppress InvalidArrayOffset */
-                self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit] = array();
+            if (!empty(self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit])) {
+                return self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit];
             }
+            self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit] = [];
         }
 
         $this->setBasics($sTemplateName, $iSurveyId, $bUseMagicInherit);
