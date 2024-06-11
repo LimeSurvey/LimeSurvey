@@ -34,6 +34,17 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.5.11 (build 240605) to 6.5.12 (build 240611) June 11, 2024
+-Fixed issue #19580: Data entry at anonymous survey with tokens crashed on save (#3873) (Denis Chenu)
+-Fixed issue #19570: JavaScript exception on survey taking on browsers not supporting localstorage (#3856) (Tõnis Ormisson)
+-Fixed issue #19457: [security] Stored Cross-Site Scripting (XSS) in file upload question (#3874) (Gabriel Jenik)
+#Updated translation: Slovak by jelen1
+#Updated translation: Korean by modernity4r
+#Updated translation: Japanese by nomoto
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
 Changes from 6.5.10 (build 240603) to 6.5.11 (build 240605) June 5, 2024
 +New feature: Survey preview by Rest API (MW-1149) (lajosarpad)
 -Fixed issue: [security] Viewing surveys with popuppreview option should be limited to authorized admins (#3865) (K Foster)
