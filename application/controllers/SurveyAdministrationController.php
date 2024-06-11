@@ -217,9 +217,7 @@ class SurveyAdministrationController extends LSBaseController
         $aData['surveyActivationFeedback'] = $surveyActivationFeedback;
 
         $this->aData = $aData;
-        $this->render('sidebody', [
-            'sideMenuOpen' => true
-        ]);
+        $this->render('sidebody');
     }
 
     /**
