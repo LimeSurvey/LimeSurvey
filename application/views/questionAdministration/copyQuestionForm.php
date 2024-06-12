@@ -8,7 +8,7 @@
 
 ?>
 
-<div id='edit-question-body' class='side-body <?php echo getSideBodyClass(false); ?>'>
+<div id='edit-question-body' class='side-body'>
 
     <?= $jsVariablesHtml; ?>
 
