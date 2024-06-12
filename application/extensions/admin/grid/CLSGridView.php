@@ -51,6 +51,7 @@ class CLSGridView extends TbGridView
      */
     protected function initColumns()
     {
+        $this->appendFilteredColumns();
         foreach ($this->columns as $i => $column) {
             if (is_array($column) && !isset($column['class'])) {
                 $this->columns[$i]['class'] = '\TbDataColumn';
@@ -180,5 +181,21 @@ class CLSGridView extends TbGridView
             "jQuery('#$id').yiiGridView($options);",
             LSYii_ClientScript::POS_POSTSCRIPT
         );
+    }
+
+    protected function appendFilteredColumns(): void
+    {
+        if (
+            !empty(App()->request->getQuery('columnFilter'))
+            && $this->ajaxUpdate == App()->request->getQuery('ajax')
+        ) {
+            $filtered_columns = App()->request->getParam('columnFilter');
+            foreach ($filtered_columns as $i => $filtered_column) {
+                parse_str($filtered_column, $output);
+                if (is_array($output)) {
+                    array_splice($this->columns, count($this->columns) - 2, 0, [$output]);
+                }
+            }
+        }
     }
 }

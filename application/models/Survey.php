@@ -1157,7 +1157,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
 
         // If the survey is not active, no date test is needed
         if ($this->active === 'N') {
-            $running = '<a href="' . App()->createUrl('/surveyAdministration/view/surveyid/' . $this->sid) . '" class="survey-state" data-bs-toggle="tooltip" title="' . gT('Inactive') . '"><i class="ri-stop-fill text-secondary me-1"></i>' . gT('Inactive') . '</a>';
+            $running = '<a href="' . App()->createUrl('/surveyAdministration/view/surveyid/' . $this->sid) . '" class="survey-state disabled" data-bs-toggle="tooltip" title="' . gT('Inactive') . '"><i class="ri-stop-fill text-secondary me-1"></i>' . gT('Inactive') . '</a>';
         } elseif (!empty($this->expires) || !empty($this->startdate)) {
             // Create DateTime for now, stop and start for date comparison
             $oNow = self::shiftedDateTime("now");
@@ -1173,7 +1173,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
             // Icon generaton (for CGridView)
             $sIconRunNoEx = '<a href="' . App()->createUrl('/surveyAdministration/view/surveyid/' . $this->sid) . '" class="survey-state" data-bs-toggle="tooltip" title="' . gT('End: Never') . '"><i class="ri-play-fill text-primary me-1"></i>' . gT('End: Never') . '</a>';
             $sIconRunning = '<a href="' . App()->createUrl('/surveyAdministration/view/surveyid/' . $this->sid) . '" class="survey-state" data-bs-toggle="tooltip" title="' . sprintf(gT('End: %s'), $sStop) . '"><i class="ri-play-fill text-primary me-1"></i>' . sprintf(gT('End: %s'), $sStop) . '</a>';
-            $sIconExpired = '<a href="' . App()->createUrl('/surveyAdministration/view/surveyid/' . $this->sid) . '" class="survey-state" data-bs-toggle="tooltip" title="' . sprintf(gT('Expired: %s'), $sStop) . '"><i class="ri-skip-forward-fill text-secondary me-1"></i>' . sprintf(gT('Expired: %s'), $sStop) . '</a>';
+            $sIconExpired = '<a href="' . App()->createUrl('/surveyAdministration/view/surveyid/' . $this->sid) . '" class="survey-state disabled" data-bs-toggle="tooltip" title="' . sprintf(gT('Expired: %s'), $sStop) . '"><i class="ri-skip-forward-fill text-secondary me-1"></i>' . sprintf(gT('Expired: %s'), $sStop) . '</a>';
             $sIconFuture  = '<a href="' . App()->createUrl('/surveyAdministration/view/surveyid/' . $this->sid) . '" class="survey-state" data-bs-toggle="tooltip" title="' . sprintf(gT('Start: %s'), $sStart) . '"><i class="ri-time-line text-secondary me-1"></i>' . sprintf(gT('Start: %s'), $sStart) . '</a>';
 
             // Icon parsing
@@ -1520,6 +1520,58 @@ class Survey extends LSActiveRecord implements PermissionInterface
     }
 
     /**
+     * Returns buttons for gridview.
+     * @return string
+     * @throws CException
+     * @throws Exception
+     */
+    public function getActionButtons(): string
+    {
+        $permissions = [
+            'statistics_read'  => Permission::model()->hasSurveyPermission($this->sid, 'statistics', 'read'),
+            'survey_update'    => Permission::model()->hasSurveyPermission($this->sid, 'survey', 'update'),
+            'responses_create' => Permission::model()->hasSurveyPermission($this->sid, 'responses', 'create'),
+        ];
+
+        $items = [];
+        $items[] = [
+            'title' => gT('Add new question'),
+            'url' => App()->createUrl("/questionAdministration/create/surveyid/" . $this->sid),
+            'iconClass' => 'ri-add-line',
+            'enabledCondition' =>
+                $this->active !== "Y"
+                && $permissions['responses_create']
+                && $this->groupsCount > 0,
+        ];
+        $items[] = [
+            'title' => gT('Add new group'),
+            'url' => App()->createUrl("/questionGroupsAdministration/add/surveyid/" . $this->sid),
+            'iconClass' => 'ri-add-circle-line',
+            'enabledCondition' =>
+                $this->active !== "Y"
+                && $permissions['responses_create'],
+        ];
+
+        $items[] = [
+            'title' => gT('General settings & texts'),
+            'url' => App()->createUrl("/surveyAdministration/rendersidemenulink/subaction/generalsettings/surveyid/" . $this->sid),
+            'iconClass' => 'ri-check-line',
+            'enabledCondition' => $permissions['survey_update'],
+        ];
+        $items[] = [
+            'title' => gT('Statistics'),
+            'url' => App()->createUrl("/admin/statistics/sa/simpleStatistics/surveyid/" . $this->sid),
+            'iconClass' => 'ri-line-chart-line',
+            'enabledCondition' =>
+                $this->active === "Y"
+                && $permissions['statistics_read'],
+        ];
+
+
+        return App()->getController()->widget('ext.admin.grid.BarActionsWidget.BarActionsWidget', ['items' => $items], true);
+    }
+
+    /**
      * Search
      *
      * $options = [
@@ -1538,7 +1590,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
             Yii::app()->cache->flush();
         }
         $pagination = [
-            'pageSize' => Yii::app()->user->getState(
+            'pageSize' => App()->user->getState(
                 'pageSize',
                 Yii::app()->params['defaultPageSize']
             )

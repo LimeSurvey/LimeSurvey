@@ -3391,4 +3391,32 @@ class SurveyAdministrationController extends LSBaseController
         }
         $this->redirect($redirectUrl);
     }
+
+    /**
+     * Saves the hidden columns for surveys list browsing in the session
+     * @access public
+     * @param int $surveyId
+     */
+    public function actionSetFilteredColumns(string $sessionKey): void
+    {
+//        if (!empty((array)App()->request->getPost('columns'))) {
+            $aFilteredColumns = [];
+            $aColumns = (array)App()->request->getPost('columns');
+        if (isset($aColumns)) {
+            if (!empty($aColumns)) {
+                foreach ($aColumns as $sColumn) {
+                    if (isset($sColumn)) {
+                        $aFilteredColumns[] = $sColumn;
+                    }
+                }
+                $_SESSION['survey_' . $sessionKey]['filteredColumns'] = $aFilteredColumns;
+            } else {
+                $_SESSION['survey_' . $sessionKey]['filteredColumns'] = [];
+            }
+        }
+//        }
+
+
+//        $this->redirect(["responses/browse", "surveyId" => $sessionKey]);
+    }
 }
