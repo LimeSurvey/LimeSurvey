@@ -51,14 +51,14 @@
             'id'                    => 'survey-grid',
             'emptyText'             => gT('No surveys found.'),
             'summaryText'           => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
-                gT('%s rows per page'),
-                CHtml::dropDownList(
-                    'surveygrid--pageSize',
-                    $this->pageSize,
-                    Yii::app()->params['pageSizeOptions'],
-                    ['class' => 'changePageSize form-select', 'style' => 'display: inline; width: auto']
-                )
-            ),
+                    gT('%s rows per page'),
+                    CHtml::dropDownList(
+                        'surveygrid--pageSize',
+                        $this->pageSize,
+                        Yii::app()->params['pageSizeOptions'],
+                        ['class' => 'changePageSize form-select', 'style' => 'display: inline; width: auto']
+                    )
+                ),
             'ajaxUpdate'            => 'survey-grid',
             'lsAfterAjaxUpdate'     => [
                 'window.LS.doToolTip();',
@@ -73,13 +73,12 @@
         ]);
 
         App()->getController()->widget('ext.admin.grid.ColumnFilterWidget.ColumnFilterWidget', [
+            'model' => $this->model::class,
             'modalId' => $modalId,
             'filterableColumns' => $filterableColumns,
             'filteredColumns' => $filteredColumns,
             'columnsData' => $aColumns,
         ]);
-
-
         ?>
     </div>
 </div>
