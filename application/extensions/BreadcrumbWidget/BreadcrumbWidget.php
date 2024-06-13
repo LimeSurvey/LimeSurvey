@@ -12,7 +12,7 @@ class BreadcrumbWidget extends CWidget
     /**
      * @const int the allowed maximal number of characters the breadcrumb should display
      */
-    private const THRESHOLD = 44;
+    private const THRESHOLD = 500;
 
     /**
      * @var array containing different objects and strings needed for the building of the breadcrumbs
@@ -90,20 +90,14 @@ class BreadcrumbWidget extends CWidget
                     [
                         'id' => 'breadcrumb__survey--overview',
                         'href' => App()->createUrl('/surveyAdministration/view/', ['iSurveyID' => $survey->sid]),
-                        'text' => flattenText($survey->defaultlanguage->surveyls_title) . ' (' . $survey->sid . ')',
+                        'text' => $survey->defaultlanguage->surveyls_title . ' (' . $survey->sid . ')',
                     ];
             } else {
                 $breadcrumbs[] =
                     [
                         'id' => 'breadcrumb__survey--overview',
                         'href' => App()->createUrl('/surveyAdministration/view/', ['iSurveyID' => $survey->sid]),
-                        'text' => flattenText($survey->defaultlanguage->surveyls_title),
-                    ];
-            }
-            if (isset($subAction) && !isset($questionGroup) && !isset($question)) {
-                $breadcrumbs[] =
-                    [
-                        'text' => gt($subAction),
+                        'text' => $survey->defaultlanguage->surveyls_title,
                     ];
             }
         }
