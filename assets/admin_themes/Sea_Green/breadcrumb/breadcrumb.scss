@@ -1,6 +1,7 @@
 ol.breadcrumb.title-bar-breadcrumb {
     background : transparent;
     color      : $breadcrumb-active-color;
+    display: -webkit-box;
     a {
         color       : $breadcrumb-link-color;
         font-weight : $font-weight-normal;
@@ -11,6 +12,7 @@ ol.breadcrumb.title-bar-breadcrumb {
     li {
         background : transparent;
         color      : $breadcrumb-active-color;
+        max-width  : 300px;
         &.active {
             color       : $breadcrumb-active-color;
             font-weight : $font-weight-base;

@@ -17173,6 +17173,7 @@ a {
 ol.breadcrumb.title-bar-breadcrumb {
   background: transparent;
   color: #1E1E1E;
+  display: -webkit-box;
 }
 ol.breadcrumb.title-bar-breadcrumb a {
   color: #14AE5C;
@@ -17184,6 +17185,7 @@ ol.breadcrumb.title-bar-breadcrumb a:hover {
 ol.breadcrumb.title-bar-breadcrumb li {
   background: transparent;
   color: #1E1E1E;
+  max-width: 300px;
 }
 ol.breadcrumb.title-bar-breadcrumb li.active {
   color: #1E1E1E;
