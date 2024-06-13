@@ -15,7 +15,7 @@ ol.breadcrumb.title-bar-breadcrumb {
         max-width  : 300px;
         &.active {
             color       : $breadcrumb-active-color;
-            font-weight : $font-weight-base;
+            font-weight : 600;
         }
     }
 }

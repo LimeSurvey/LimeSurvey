@@ -89,7 +89,6 @@ class BreadcrumbWidget extends CWidget
                 $breadcrumbs[] =
                     [
                         'id' => 'breadcrumb__survey--overview',
-                        'href' => App()->createUrl('/surveyAdministration/view/', ['iSurveyID' => $survey->sid]),
                         'text' => $survey->defaultlanguage->surveyls_title . ' (' . $survey->sid . ')',
                     ];
             } else {
