@@ -35,6 +35,19 @@ class UserManagementController extends LSBaseController
     }
 
     /**
+     * @inheritdoc
+     */
+    public function filters()
+    {
+        return [
+            'postOnly + applyEdit, runAddDummyUser, deleteUser, userActivateDeactivate,'
+            . ' batchStatus, saveUserPermissions, saveThemePermissions, saveRole, importUsers, deleteMultiple,'
+            . ' batchSendAndResetLoginData, batchPermissions, batchAddGroup, batchApplyRoles,'
+            . ' TakeOwnership'
+        ];
+    }
+
+    /**
      * @return string|string[]|null
      * @throws CException
      */
@@ -1255,6 +1268,9 @@ class UserManagementController extends LSBaseController
      */
     public function deleteUser(int $uid): bool
     {
+        if (!App()->getRequest()->getIsPostRequest()) {
+            throw new CHttpException(400, gT('Your request is invalid.'));
+        }
         $permission_users_delete = Permission::model()->hasGlobalPermission('users', 'delete');
         $permission_superadmin_read = Permission::model()->hasGlobalPermission('superadmin', 'read');
         if (!$permission_users_delete) {
@@ -1335,6 +1351,12 @@ class UserManagementController extends LSBaseController
      */
     public function updateAdminUser(array $aUser): User
     {
+        if (
+            !App()->getRequest()->getIsPostRequest()
+            && !(defined('PHP_ENV') && PHP_ENV == 'test') // For unit test
+        ) {
+            throw new CHttpException(400, gT('Your request is invalid.'));
+        }
         $oUser = $this->loadModel($aUser['uid']);
         // Abort if logged in user has no access to this user.
         // Using same logic as User::getButtons().
@@ -1416,6 +1438,9 @@ class UserManagementController extends LSBaseController
      */
     public function createNewUser(array $aUser): array
     {
+        if (!App()->getRequest()->getIsPostRequest()) {
+            throw new CHttpException(400, gT('Your request is invalid.'));
+        }
         if (!Permission::model()->hasGlobalPermission('users', 'create')) {
             return Yii::app()->getController()->renderPartial('/admin/super/_renderJson', [
                 "data" => [
