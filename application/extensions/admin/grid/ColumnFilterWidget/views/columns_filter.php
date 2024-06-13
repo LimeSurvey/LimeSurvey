@@ -1,6 +1,6 @@
 <?php
 /**
- * @var $modal object
+ * @var $model object
  * @var $modalId string
  * @var $filterableColumns array
  * @var $filteredColumns array
@@ -57,7 +57,7 @@
                         <?php endforeach; ?>
                     </div>
 
-                    <?php echo CHtml::hiddenField('columns_data', json_encode((array)$columnsData)); ?>
+                    <input type="hidden" name="model" class="model-name" value="<?= $model ?>"/>
                     <input type="hidden" name="<?= Yii::app()->request->csrfTokenName ?>" value="<?= App()->request->csrfToken ?>"/>
                 </div>
                 <div class="modal-footer">

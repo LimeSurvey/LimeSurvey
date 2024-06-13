@@ -8,6 +8,7 @@ class ColumnFilterWidget extends CWidget
     public $filterableColumns = [];
     public $columnsData;
     public $modalId;
+    public $model;
 
     /** Initializes the widget */
     public function init(): void
@@ -29,6 +30,7 @@ class ColumnFilterWidget extends CWidget
     public function renderActions(): void
     {
         $this->render('columns_filter', [
+            'model' => $this->model,
             'modalId' => $this->modalId,
             'filterableColumns' => $this->filterableColumns,
             'filteredColumns' => $this->filteredColumns,

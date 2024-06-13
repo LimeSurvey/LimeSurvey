@@ -186,28 +186,25 @@ class CLSGridView extends TbGridView
 
     protected function appendFilteredColumns(): void
     {
-        if (
-            App()->request->getQuery('columnFilter') == 'empty'
-            && $this->ajaxUpdate == App()->request->getQuery('ajax')
-        ) {
+        if (App()->request->getQuery('columnFilter') == 'empty' && $this->ajaxUpdate == App()->request->getQuery('ajax')) {
             SettingsUser::setUserSetting('column_filter_' . $this->ajaxUpdate, '');
-        } elseif (
-            App()->request->getQuery('columnFilter') !== null
-            && $this->ajaxUpdate == App()->request->getQuery('ajax')
-        ) {
+            SettingsUser::setUserSetting('column_filter_model_' . $this->ajaxUpdate, '');
+        } elseif (App()->request->getQuery('columnFilter') !== null && $this->ajaxUpdate == App()->request->getQuery('ajax')) {
+            $model = App()->request->getParam('model');
             $submitted_column_filter = App()->request->getParam('columnFilter');
             SettingsUser::setUserSetting('column_filter_' . $this->ajaxUpdate, implode('|', $submitted_column_filter));
-            $this->addColumns($submitted_column_filter);
+            SettingsUser::setUserSetting('column_filter_model_' . $this->ajaxUpdate, $model);
+            $this->addColumns($model, $submitted_column_filter);
         } elseif ($column_filter = SettingsUser::getUserSettingValue('column_filter_' . $this->ajaxUpdate)) {
+            $model = SettingsUser::getUserSettingValue('column_filter_model_' . $this->ajaxUpdate);
             $column_filter = explode('|', $column_filter);
-            $this->addColumns($column_filter);
+            $this->addColumns($model, $column_filter);
         }
     }
 
-    protected function addColumns($columns_list): void
+    protected function addColumns($model, $columns_list): void
     {
-        if (!empty(App()->request->getQuery('model'))) {
-            $model = App()->request->getQuery('model');
+        if (!empty($model)) {
             list($columns, $filterableColumns) = $model::model()->getFilterableColumns();
             foreach ($columns_list as $filter) {
                 $column_data = null;

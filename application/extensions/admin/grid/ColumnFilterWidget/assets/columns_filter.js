@@ -10,6 +10,7 @@ function initColumnFilter()
     $('#' + modalId + '-submit').on('click', function (e) {
         e.preventDefault();
         var form = $('#' + modalId);
+        var model = $('#' + modalId + ' input.model-name').val();
         var filterData = $('#' + modalId + ' .checkbox input:checked').map(function () {
             if ($(this).val().trim() !== '') {
                 return $(this).val();
@@ -20,7 +21,7 @@ function initColumnFilter()
             filterData = 'empty'
         }
 
-        $.fn.yiiGridView.update('survey-grid', {data: {columnFilter: filterData}});
+        $.fn.yiiGridView.update('survey-grid', {data: {model: model, columnFilter: filterData}});
         form.modal('hide');
     });
 
