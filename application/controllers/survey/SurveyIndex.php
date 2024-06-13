@@ -94,10 +94,19 @@ class SurveyIndex extends CAction
         $redata = compact(array_keys(get_defined_vars()));
         $redata['popuppreview'] = Yii::app()->request->getParam('popuppreview', false);
 
+        $canPreviewSurvey = $this->canUserPreviewSurvey($surveyid);
+
+        if ($redata['popuppreview'] && !$canPreviewSurvey) {
+            $message = gT("We are sorry but you don't have permissions to do this.", 'unescaped');
+            if (Permission::model()->getUserId()) {
+                throw new CHttpException(403, $message);
+            }
+            throw new CHttpException(401, $message);
+        }
 
         $previewmode = false;
         if (isset($param['action']) && (in_array($param['action'], array('previewgroup', 'previewquestion')))) {
-            if (!$this->canUserPreviewSurvey($surveyid)) {
+            if (!$canPreviewSurvey) {
                 $aErrors  = array(gT('Error'));
                 $message = gT("We are sorry but you don't have permissions to do this.", 'unescaped');
                 if (Permission::model()->getUserId()) {
