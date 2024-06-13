@@ -1502,8 +1502,9 @@ class UserManagementController extends LSBaseController
      */
     public function updateAdminUser(array $aUser): User
     {
-        if (!App()->getRequest()->getIsPostRequest()
-            && !(Yii::app() instanceof CConsoleApplication) // For unit test
+        if (
+            !App()->getRequest()->getIsPostRequest()
+            && !(defined('PHP_ENV') && PHP_ENV == 'test') // For unit test
         ) {
             throw new CHttpException(400, gT('Your request is invalid.'));
         }
