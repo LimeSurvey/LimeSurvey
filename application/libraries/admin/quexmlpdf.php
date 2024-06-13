@@ -1605,7 +1605,6 @@ class quexmlpdf extends pdf
 
         // set document information
         $this->SetCreator('queXMLPDF (http://quexml.sourceforge.net)');
-        $this->SetAuthor('Adam Zammit <adam.zammit@acspri.org.au>');
         $this->SetTitle('queXML Document');
         $this->SetSubject('queXML');
         $this->SetKeywords('queXML queXF');
