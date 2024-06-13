@@ -204,7 +204,7 @@ class CLSGridView extends TbGridView
 
     protected function addColumns($model, $columns_list): void
     {
-        if (!empty($model)) {
+        if (!empty($model) && method_exists($model::model(), 'getFilterableColumns')) {
             list($columns, $filterableColumns) = $model::model()->getFilterableColumns();
             foreach ($columns_list as $filter) {
                 $column_data = null;
