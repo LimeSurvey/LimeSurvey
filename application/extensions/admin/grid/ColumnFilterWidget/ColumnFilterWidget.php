@@ -47,10 +47,5 @@ class ColumnFilterWidget extends CWidget
             App()->getConfig("extensionsurl") . 'admin/grid/ColumnFilterWidget/assets/columns_filter.js',
             CClientScript::POS_END
         );
-//        // Link for each row
-//        App()->clientScript->registerScriptFile(
-//            App()->getConfig("extensionsurl") . 'admin/grid/assets/rowLink.js',
-//            CClientScript::POS_END
-//        );
     }
 }

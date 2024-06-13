@@ -186,15 +186,33 @@ class CLSGridView extends TbGridView
     protected function appendFilteredColumns(): void
     {
         if (
-            !empty(App()->request->getQuery('columnFilter'))
+            App()->request->getQuery('columnFilter') == 'empty'
             && $this->ajaxUpdate == App()->request->getQuery('ajax')
         ) {
-            $filtered_columns = App()->request->getParam('columnFilter');
-            foreach ($filtered_columns as $i => $filtered_column) {
-                parse_str($filtered_column, $output);
-                if (is_array($output)) {
-                    array_splice($this->columns, count($this->columns) - 2, 0, [$output]);
-                }
+            SettingsUser::setUserSetting('column_filter_' . $this->ajaxUpdate, '');
+        } elseif (
+            App()->request->getQuery('columnFilter') !== null
+            && $this->ajaxUpdate == App()->request->getQuery('ajax')
+        ) {
+            $submitted_column_filter = App()->request->getParam('columnFilter');
+            SettingsUser::setUserSetting('column_filter_' . $this->ajaxUpdate, implode('|', $submitted_column_filter));
+            $this->addColumns($submitted_column_filter);
+        } elseif ($column_filter = SettingsUser::getUserSettingValue('column_filter_' . $this->ajaxUpdate)) {
+            $column_filter = explode('|', $column_filter);
+            $this->addColumns($column_filter);
+        }
+    }
+
+    protected function addColumns($columns_list): void
+    {
+        list($columns, $filterableColumns) = Survey::model()->getFilterableColumns();
+        foreach ($columns_list as $filter) {
+            $column_data = null;
+            if (isset($filterableColumns[$filter])) {
+                $column_data = $filterableColumns[$filter];
+            }
+            if (is_array($column_data)) {
+                array_splice($this->columns, count($this->columns) - 2, 0, [$column_data]);
             }
         }
     }

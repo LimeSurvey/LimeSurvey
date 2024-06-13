@@ -25,4 +25,19 @@ class BarActionsWidget extends CWidget
             'id' => self::$id
         ]);
     }
+
+    /** Initializes the widget */
+    public function init(): void
+    {
+        $this->registerClientScript();
+    }
+
+    /** Registers required script files */
+    public function registerClientScript(): void
+    {
+        App()->getClientScript()->registerScriptFile(
+            App()->getConfig("extensionsurl") . 'admin/grid/BarActionsWidget/assets/action_list.js',
+            CClientScript::POS_END
+        );
+    }
 }

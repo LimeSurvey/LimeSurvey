@@ -1484,35 +1484,47 @@ class Survey extends LSActiveRecord implements PermissionInterface
         ];
 
         $dropdownItems = [];
+
+
+        $dropdownItems = [];
         $dropdownItems[] = [
-            'title' => gT('Add new question'),
-            'url' => App()->createUrl("/questionAdministration/create/surveyid/" . $this->sid),
-            'iconClass' => 'ri-add-circle-fill',
-            'enabledCondition' =>
-                $this->active !== "Y"
-                && $permissions['responses_create']
-                && $this->groupsCount > 0,
-        ];
-        $dropdownItems[] = [
-            'title' => gT('Add new group'),
-            'url' => App()->createUrl("/questionGroupsAdministration/add/surveyid/" . $this->sid),
-            'iconClass' => 'ri-add-circle-fill',
-            'enabledCondition' =>
-                $this->active !== "Y"
-                && $permissions['responses_create'],
-        ];
-        $dropdownItems[] = [
-            'title' => gT('Statistics'),
-            'url' => App()->createUrl("/admin/statistics/sa/simpleStatistics/surveyid/" . $this->sid),
-            'iconClass' => 'ri-line-chart-line',
-            'enabledCondition' =>
-                $this->active === "Y"
-                && $permissions['statistics_read'],
-        ];
-        $dropdownItems[] = [
-            'title' => gT('General settings & texts'),
+            'title' => gT('General settings'),
             'url' => App()->createUrl("/surveyAdministration/rendersidemenulink/subaction/generalsettings/surveyid/" . $this->sid),
-            'iconClass' => 'ri-settings-5-line',
+
+            'enabledCondition' => $permissions['survey_update'],
+        ];
+        $dropdownItems[] = [
+            'title' => gT('Preview'),
+            'url' => Yii::App()->createUrl(
+                "survey/index",
+                array('sid' => $this->sid, 'newtest' => "Y", 'lang' => $this->language)
+            ),
+            'enabledCondition' => $permissions['survey_update'],
+            'htmlOptions' => [
+                'target' => '_blank',
+            ],
+        ];
+        $dropdownItems[] = [
+            'title' => gT('Share'),
+            'url' => App()->createUrl("/surveyAdministration/view", array('iSurveyID' => $this->sid)),
+            'enabledCondition' => $permissions['survey_update'],
+        ];
+        $dropdownItems[] = [
+            'title' => gT('Copy'),
+            'url' => App()->createUrl("/surveyAdministration/newSurvey#copy"),
+
+            'enabledCondition' => $permissions['survey_update'],
+        ];
+        $dropdownItems[] = [
+            'title' => gT('Add user'),
+            'url' => App()->createUrl("/userManagement"),
+            'enabledCondition' => $permissions['survey_update'],
+        ];
+
+        $dropdownItems[] = [
+            'title' => gT('Delete'),
+            'url' => App()->createUrl("/surveyAdministration/delete", array('iSurveyID' =>$this->sid)),
+
             'enabledCondition' => $permissions['survey_update'],
         ];
 
@@ -1553,10 +1565,12 @@ class Survey extends LSActiveRecord implements PermissionInterface
         ];
 
         $items[] = [
-            'title' => gT('General settings & texts'),
+            'title' => gT('Activate'),
             'url' => App()->createUrl("/surveyAdministration/rendersidemenulink/subaction/generalsettings/surveyid/" . $this->sid),
             'iconClass' => 'ri-check-line',
-            'enabledCondition' => $permissions['survey_update'],
+            'enabledCondition' =>
+                $this->active === "N"
+                && $permissions['survey_update'],
         ];
         $items[] = [
             'title' => gT('Statistics'),
@@ -1570,6 +1584,101 @@ class Survey extends LSActiveRecord implements PermissionInterface
 
         return App()->getController()->widget('ext.admin.grid.BarActionsWidget.BarActionsWidget', ['items' => $items], true);
     }
+
+    public function getFilterableColumns(): array
+    {
+        $columns = [
+            [
+                'id'                => 'sid',
+                'class'             => 'CCheckBoxColumn',
+                'selectableRows'    => '100',
+                'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
+                'htmlOptions'       => ['class' => 'ls-sticky-column']
+            ],
+            [
+                'header'            => gT('Status'),
+                'name'              => 'running',
+                'value'             => '$data->running',
+                'type'              => 'raw',
+                'headerHtmlOptions' => ['class' => 'd-none d-sm-table-cell text-nowrap'],
+                'htmlOptions'       => ['class' => 'd-none d-sm-table-cell has-link'],
+            ],
+            [
+                'header'            => gT('Title'),
+                'name'              => 'title',
+                'value'             => '$data->defaultlanguage->surveyls_title ?? null',
+                'htmlOptions'       => ['class' => 'has-link'],
+                'headerHtmlOptions' => ['class' => 'text-nowrap'],
+            ],
+            [
+                'header'            => gT('Created'),
+                'name'              => 'creation_date',
+                'value'             => '$data->creationdate',
+                'headerHtmlOptions' => ['class' => 'd-none d-sm-table-cell text-nowrap'],
+                'htmlOptions'       => ['class' => 'd-none d-sm-table-cell has-link'],
+            ],
+            [
+                'header'            => gT('Responses'),
+                'name'              => 'responses',
+                'value'             => '$data->countFullAnswers',
+                'headerHtmlOptions' => ['class' => 'd-md-none d-lg-table-cell'],
+                'htmlOptions'       => ['class' => 'd-md-none d-lg-table-cell has-link'],
+            ]
+        ];
+
+        $filterableColumns = [
+            'group' => [
+                'header'            => gT('Group'),
+                'name'              => 'group',
+                'value'             => '$data->surveygroup->title',
+                'htmlOptions'       => ['class' => 'has-link'],
+                'headerHtmlOptions' => ['class' => 'text-nowrap'],
+            ],
+            'owner' => [
+                'header'            => gT('Owner'),
+                'name'              => 'owner',
+                'value'             => '$data->ownerUserName',
+                'headerHtmlOptions' => ['class' => 'd-md-none d-xl-table-cell text-nowrap'],
+                'htmlOptions'       => ['class' => 'd-md-none d-xl-table-cell has-link'],
+            ],
+            'anonymized_responses' => [
+                'header'            => gT('Anonymized responses'),
+                'name'              => 'anonymized_responses',
+                'value'             => '$data->anonymizedResponses',
+                'headerHtmlOptions' => ['class' => 'd-md-none d-lg-table-cell'],
+                'htmlOptions'       => ['class' => 'd-md-none d-lg-table-cell has-link'],
+            ],
+            'partial' => [
+                'header'      => gT('Partial'),
+                'value'       => '$data->countPartialAnswers',
+                'name'        => 'partial',
+                'htmlOptions' => ['class' => 'has-link'],
+            ],
+            'full' => [
+                'header'      => gT('Full'),
+                'name'        => 'full',
+                'value'       => '$data->countFullAnswers',
+                'htmlOptions' => ['class' => 'has-link'],
+            ],
+            'total' => [
+                'header'      => gT('Total'),
+                'name'        => 'total',
+                'value'       => '$data->countTotalAnswers',
+                'htmlOptions' => ['class' => 'has-link'],
+            ],
+            'uses_tokens' => [
+                'header'      => gT('Closed group'),
+                'name'        => 'uses_tokens',
+                'type'        => 'raw',
+                'value'       => '$data->hasTokensTable ? gT("Yes"):gT("No")',
+                'htmlOptions' => ['class' => 'has-link'],
+            ]
+        ];
+
+        return [$columns, $filterableColumns];
+    }
+
+
 
     /**
      * Search

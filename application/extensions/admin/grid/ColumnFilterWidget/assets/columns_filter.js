@@ -16,6 +16,10 @@ function initColumnFilter()
             }
         }).get();
 
+        if (filterData.length === 0) {
+            filterData = 'empty'
+        }
+
         $.fn.yiiGridView.update('survey-grid', {data: {columnFilter: filterData}});
         form.modal('hide');
     });

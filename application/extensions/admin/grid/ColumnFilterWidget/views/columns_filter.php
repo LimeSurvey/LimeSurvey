@@ -36,7 +36,7 @@
                     </div>
                     <div class="mb-3 responses-multiselect-checkboxes">
                         <?php foreach ($columnsData as $column) : ?>
-                            <?php if (!empty($column['header']) && $column['name'] != 'dropdown_actions') : ?>
+                            <?php if (!empty($column['header']) && $column['name'] != 'dropdown_actions' && !array_key_exists($column['name'], $filterableColumns)) : ?>
                                 <div class="checkbox">
                                     <label>
                                         <input name="columns[]" type="checkbox" value="" checked disabled>
@@ -49,7 +49,7 @@
                         <?php foreach ($filterableColumns as $column) : ?>
                             <div class="checkbox">
                                 <label>
-                                    <input name="columns[]" type="checkbox" value='<?php echo http_build_query($column) ?>' <?php echo !isset($filteredColumns) || in_array($column['name'], $filteredColumns) ? 'checked' : '' ?>>
+                                    <input name="columns[]" type="checkbox" value='<?php echo $column["name"] ?>' <?php echo !isset($filteredColumns) || in_array($column['name'], $filteredColumns) ? 'checked' : '' ?>>
                                     <?php echo $column['header'] ?>
                                 </label>
                             </div>

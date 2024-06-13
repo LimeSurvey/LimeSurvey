@@ -10,8 +10,10 @@
             <li class="list-inline-item">
                 <a href="<?= $item['enabledCondition'] ? $item['url'] : '#'?>"
                    class="<?=$item['enabledCondition'] ? '' : 'disabled'?>"
-                   data-bs-toggle="tooltip"
-                   data-bs-original-title="<?=$item['title']?>"
+                    <?php if ($item['enabledCondition']) : ?>
+                       data-bs-toggle="tooltip"
+                       data-bs-original-title="<?=$item['title'] ?>"
+                    <?php endif;?>
                 >
                     <i class="<?=$item['iconClass']?>"></i>
                 </a>
@@ -19,3 +21,6 @@
         <?php endforeach; ?>
     </ul>
 </div>
+<script>
+
+</script>
