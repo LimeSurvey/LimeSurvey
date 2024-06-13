@@ -32,11 +32,6 @@ class TransformerInputQuestion extends Transformer
                 'formatter' => ['ynToBool' => ['revert' => true]],
                 'range' => [true, false]
             ],
-            'questionOrder' => [
-                'key' => 'question_order',
-                'type' => 'int',
-                'numerical'
-            ],
             'sortOrder' => [
                 'key' => 'question_order',
                 'type' => 'int',
