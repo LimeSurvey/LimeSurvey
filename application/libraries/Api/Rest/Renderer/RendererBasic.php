@@ -62,8 +62,8 @@ class RendererBasic implements RendererInterface
     protected function renderJSON($data, $responseCode = 200)
     {
         header('Access-Control-Allow-Origin: *');
-        header('Access-Control-Allow-Headers: *');
-        header('Access-Control-Allow-Methods: Authorization *');
+        header('Access-Control-Allow-Headers: Authorization, *');
+        header('Access-Control-Allow-Methods: *');
         http_response_code($responseCode);
 
         if ($data !== null) {
