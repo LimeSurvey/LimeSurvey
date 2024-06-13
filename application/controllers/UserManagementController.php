@@ -45,7 +45,7 @@ class UserManagementController extends LSBaseController
             . ' batchSendAndResetLoginData, batchPermissions, batchAddGroup, batchApplyRoles,'
             . ' TakeOwnership'
         ];
-     }
+    }
 
     /**
      * @return string|string[]|null
@@ -1475,7 +1475,7 @@ class UserManagementController extends LSBaseController
      * Returns the data model based on the primary key given in the GET variable.
      * If the data model is not found, an HTTP exception will be raised.
      * Why not a private function here ?
-     * 
+     *
      * @param int $id the ID of the model to be loaded
      *
      * @return User|null  object
@@ -1494,7 +1494,7 @@ class UserManagementController extends LSBaseController
 
     /**
      * Update admin-user
-     * @todo : move to and private function
+     * @todo : move to and private function, but need review unit test before.
      *
      * @param array $aUser array with user details
      * @return object user - updated user object
@@ -1502,7 +1502,9 @@ class UserManagementController extends LSBaseController
      */
     public function updateAdminUser(array $aUser): User
     {
-        if (!App()->getRequest()->getIsPostRequest()) {
+        if (!App()->getRequest()->getIsPostRequest()
+            && !(Yii::app() instanceof CConsoleApplication) // For unit test
+        ) {
             throw new CHttpException(400, gT('Your request is invalid.'));
         }
         $oUser = $this->loadModel($aUser['uid']);
