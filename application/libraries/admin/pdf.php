@@ -597,9 +597,46 @@ class pdf extends TCPDF
             return false;
         }
     }
+
+
+    /**
+     * Output PDF to the browser to download. Used to replace TCPDF Output
+     * function to ensure cache control is set to no-store
+     *
+     * @param $name string Filename to output
+     */
     public function write_out($name)
     {
-        $this->Output($name, "D");
+        if ($this->state < 3) {
+            $this->Close();
+        }
+
+        // download PDF as file
+        if (ob_get_contents()) {
+            $this->Error('Some data has already been output, can\'t send PDF file');
+        }
+        header('Content-Description: File Transfer');
+        if (headers_sent()) {
+            $this->Error('Some data has already been output to browser, can\'t send PDF file');
+        }
+        header('Cache-Control: no-store, no-cache, private, must-revalidate, post-check=0, pre-check=0, max-age=1');
+        header('Pragma: no-cache');
+        header('Expires: Sat, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+        header('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT');
+        // force download dialog
+        if (strpos(php_sapi_name(), 'cgi') === false) {
+            header('Content-Type: application/force-download');
+            header('Content-Type: application/octet-stream', false);
+            header('Content-Type: application/download', false);
+            header('Content-Type: application/pdf', false);
+        } else {
+            header('Content-Type: application/pdf');
+        }
+        // use the Content-Disposition header to supply a recommended filename
+        header('Content-Disposition: attachment; filename="' . rawurlencode(basename($name)) . '"; ' .
+            'filename*=UTF-8\'\'' . rawurlencode(basename($name)));
+        header('Content-Transfer-Encoding: binary');
+        TCPDF_STATIC::sendOutputData($this->getBuffer(), $this->bufferlen);
     }
 
     public function delete_html($text)
