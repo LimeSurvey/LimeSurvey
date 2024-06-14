@@ -9,11 +9,11 @@ Yii::app()->getController()->renderPartial(
     <div class="container-center list-group">
         <div class="row list-group-item">
             <div class="col-sm-4"><?=gT('User groups')?>:</div>
-            <div class="col-sm-8"><?=join(', ',$usergroups)?></div>
+            <div class="col-sm-8"><?=CHTml::encode(join(', ',$usergroups))?></div>
         </div>
         <div class="row list-group-item">
             <div class="col-sm-4"><?=gT('Created by')?>:</div>
-            <div class="col-sm-8"><?=$oUser->parentUser['full_name']?></div>
+            <div class="col-sm-8"><?=CHTml::encode($oUser->parentUser['full_name'])?></div>
         </div>
         <div class="row list-group-item">
             <div class="col-sm-4"><?=gT('Surveys owned')?>:</div>
