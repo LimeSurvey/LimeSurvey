@@ -82,14 +82,15 @@ class UserManager
 
     /**
      * Deletes the user with the given id.
-     * @param int $userId
+     * @param User $user
      * @return OperationResult
      */
-    public function deleteUser($userId)
+    public function deleteUser($user)
     {
         $messages = [];
 
         $siteAdminName = \User::model()->findByPk(1)->users_name;
+        $userId = $user->uid;
 
         $transaction = \Yii::app()->db->beginTransaction();
         try {
@@ -116,7 +117,6 @@ class UserManager
             // TODO: User permissions should be deleted also...
 
             // Delete the user
-            $user = \User::model()->findByPk($userId);
             $success = $user->delete();
             if (!$success) {
                 $messages = [new TypedMessage(gT("User could not be deleted."), 'error')];
