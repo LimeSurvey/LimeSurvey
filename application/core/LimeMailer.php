@@ -320,8 +320,9 @@ class LimeMailer extends PHPMailer
             throw new \CException("Invalid token");
         }
         $this->oToken = $oToken;
-        $this->mailLanguage = Survey::model()->findByPk($this->surveyId)->language;
-        if (in_array($oToken->language, Survey::model()->findByPk($this->surveyId)->getAllLanguages())) {
+        $oSurvey = Survey::model()->findByPk($this->surveyId);
+        $this->mailLanguage = $oSurvey->language;
+        if (in_array($oToken->language, $oSurvey->getAllLanguages())) {
             $this->mailLanguage = $oToken->language;
         }
         $this->eventName = 'beforeTokenEmail';
@@ -348,8 +349,9 @@ class LimeMailer extends PHPMailer
             /* To force to current language with token must send Yii::app()->getLanguage() as param */
             $language = $this->oToken->language;
         }
-        if (!in_array($language, Survey::model()->findByPk($this->surveyId)->getAllLanguages())) {
-            $language = Survey::model()->findByPk($this->surveyId)->language;
+        $oSurvey = Survey::model()->findByPk($this->surveyId);
+        if (!in_array($language, $oSurvey->getAllLanguages())) {
+            $language = $oSurvey->language;
         }
         $this->mailLanguage = $language;
         if (!in_array($emailType, ['invite','remind','register','confirm','admin_notification','admin_responses'])) {

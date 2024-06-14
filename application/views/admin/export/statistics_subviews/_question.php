@@ -373,10 +373,10 @@
                 break;
 
 
-
+            $oSurvey = Survey::model()->findByPk($surveyid);
             case Question::QT_I_LANGUAGE: // Language
-                $survlangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
-                $survlangs[] = Survey::model()->findByPk($surveyid)->language;
+                $survlangs = $oSurvey->additionalLanguages;
+                $survlangs[] = $oSurvey->language;
                 foreach ($survlangs  as $availlang)
                 {
                     echo "\t<option value='".$availlang."'";

@@ -42,8 +42,9 @@
         "top" => [],
         "bottom" => [],
     ];
+    $oSurvey = Survey::model()->findByPk($surveyid);
     foreach ($menuObjectArray as $position => $arr) {
-        $menuObjectArray[$position] = Survey::model()->findByPk($surveyid)->getSurveyMenus($position);
+        $menuObjectArray[$position] = $oSurvey->getSurveyMenus($position);
     }
 
 
@@ -56,7 +57,7 @@
             gid: '.($gid ?? 'null').',
             options: [],
             surveyid: '.$surveyid.',
-            isActive: '.(Survey::model()->findByPk($surveyid)->isActive ? "true" : "false").',
+            isActive: '.($oSurvey->isActive ? "true" : "false").',
             basemenus: '.json_encode($menuObjectArray).',
             updateOrderLink: "'.$updateOrderLink.'",
             unlockLockOrganizerUrl: "'.$unlockLockOrganizerUrl.'",

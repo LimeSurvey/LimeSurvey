@@ -881,8 +881,9 @@ class LimeExpressionManager
     {
         $LEM =& LimeExpressionManager::singleton();
         $LEM->SetSurveyId($iSurveyId); // This update session only if needed
-        if (!in_array(Yii::app()->session['LEMlang'], Survey::model()->findByPk($iSurveyId)->getAllLanguages())) {
-            $LEM->SetEMLanguage(Survey::model()->findByPk($iSurveyId)->language);// Reset language only if needed
+        $oSurvey = Survey::model()->findByPk($iSurveyId);
+        if (!in_array(Yii::app()->session['LEMlang'], $oSurvey->getAllLanguages())) {
+            $LEM->SetEMLanguage($oSurvey->language);// Reset language only if needed
         }
         $LEM->setVariableAndTokenMappingsForExpressionManager($iSurveyId);
         return $LEM->qcode2sgqa;

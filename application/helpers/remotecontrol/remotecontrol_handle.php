@@ -428,7 +428,6 @@ class remotecontrol_handle
                 // Remove invalid fields
                 $aDestinationFields = array_flip(Survey::model()->tableSchema->columnNames);
                 $aSurveyData = array_intersect_key($aSurveyData, $aDestinationFields);
-                $oSurvey = Survey::model()->findByPk($iSurveyID);
                 $aBasicAttributes = $oSurvey->getAttributes();
                 $aResult = array();
 
@@ -865,7 +864,6 @@ class remotecontrol_handle
                 if (!isset($aLanguages[$sLanguage])) {
                     return array('status' => 'Invalid language');
                 }
-                $oSurvey = Survey::model()->findByPk($iSurveyID);
                 if ($sLanguage == $oSurvey->language) {
                     return array('status' => 'Cannot remove base language');
                 }
@@ -1058,7 +1056,7 @@ class remotecontrol_handle
                 $oQuestionGroupL10n = new QuestionGroupL10n();
                 $oQuestionGroupL10n->group_name = $sGroupTitle;
                 $oQuestionGroupL10n->description = $sGroupDescription;
-                $oQuestionGroupL10n->language = Survey::model()->findByPk($iSurveyID)->language;
+                $oQuestionGroupL10n->language = $oSurvey->language;
                 $oQuestionGroupL10n->gid = $oGroup->gid;
 
                 if ($oQuestionGroupL10n->save()) {
@@ -3399,7 +3397,7 @@ class remotecontrol_handle
     {
          // check sessionKey is valid or not
         if ($this->_checkSessionKey($sSessionKey)) {
-                $oSurvey = Survey::model()->findByPk($iSurveyID);
+            $oSurvey = Survey::model()->findByPk($iSurveyID);
             if (!isset($oSurvey)) {
                   return array('status' => 'Error: Invalid survey ID');
             }

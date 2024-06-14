@@ -1081,11 +1081,11 @@ class ResponsesController extends LSBaseController
         $aData['imageurl'] = App()->getConfig('imageurl');
         $aData['action'] = App()->request->getParam('action');
         $aData['all'] = App()->request->getParam('all');
-
+        $oSurvey = Survey::model()->findByPk($surveyId);
         //OK. IF WE GOT THIS FAR, THEN THE SURVEY EXISTS AND IT IS ACTIVE, SO LETS GET TO WORK.
         if (!empty($language)) {
             $aData['language'] = $language;
-            $aData['languagelist'] = $languagelist = Survey::model()->findByPk($surveyId)->additionalLanguages;
+            $aData['languagelist'] = $languagelist = $oSurvey->additionalLanguages;
             $aData['languagelist'][] = Survey::model()->findByPk($surveyId)->language;
             if (!in_array($aData['language'], $languagelist)) {
                 $aData['language'] = $thissurvey['language'];
@@ -1094,7 +1094,7 @@ class ResponsesController extends LSBaseController
             $aData['language'] = $thissurvey['language'];
         }
 
-        $aData['qulanguage'] = Survey::model()->findByPk($surveyId)->language;
+        $aData['qulanguage'] = $oSurvey->language;
 
         $aData['surveyoptions'] = '';
         $aData['browseoutput'] = '';

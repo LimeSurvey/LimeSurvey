@@ -622,15 +622,18 @@ function testKeypad($sUseKeyPad)
 // ---------------------------------------------------------------
 function do_language($ia)
 {
+    $surveyId = (int) Yii::app()->getConfig('surveyID');
+    $oSurvey = Survey::model()->findByPk($surveyId);
+
     $checkconditionFunction = "checkconditions";
-    $answerlangs            = Survey::model()->findByPk(Yii::app()->getConfig('surveyID'))->additionalLanguages;
-    $answerlangs[]          = Survey::model()->findByPk(Yii::app()->getConfig('surveyID'))->language;
-    $sLang                  = $_SESSION['survey_' . Yii::app()->getConfig('surveyID')]['s_lang'];
+    $answerlangs            = $oSurvey->additionalLanguages;
+    $answerlangs[]          = $oSurvey->language;
+    $sLang                  = $_SESSION['survey_' . $surveyId]['s_lang'];
     $coreClass              = "ls-answers answer-item dropdow-item language-item";
     $inputnames = [];
 
     if (!in_array($sLang, $answerlangs)) {
-        $sLang = Survey::model()->findByPk(Yii::app()->getConfig('surveyID'))->language;
+        $sLang = $oSurvey->language;
     }
 
     $inputnames[] = $ia[1];
