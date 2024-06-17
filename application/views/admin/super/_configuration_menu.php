@@ -256,12 +256,15 @@
                         </li>
 
                         <?php if (Permission::model()->hasGlobalPermission('settings', 'read')): ?>
-                            <!-- Dashboard  -->
-                            <li class="dropdown-item">
-                                <a href="<?php echo $this->createUrl("homepageSettings/index"); ?>">
-                                    <?php eT("Dashboard"); ?>
-                                </a>
-                            </li>
+
+                            <?php if (strtotime(Yii::app()->getConfig('boxes_deprecation_date')) - strtotime(User::model()->getSuperAdmins()[0]->created) > 0): ?>
+                                <!-- Dashboard  -->
+                                <li class="dropdown-item">
+                                    <a href="<?php echo $this->createUrl("homepageSettings/index"); ?>">
+                                        <?php eT("Dashboard"); ?>
+                                    </a>
+                                </li>
+                            <?php endif; ?>
 
                             <!-- Global -->
                             <li class="dropdown-item">
