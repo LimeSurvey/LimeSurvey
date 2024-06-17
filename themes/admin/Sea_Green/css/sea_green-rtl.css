@@ -18269,6 +18269,7 @@ input[type=number] {
   white-space: nowrap;
   overflow: hidden;
   padding-right: 2px;
+  min-height: 1.4em;
 }
 #sidebar svg {
   color: #9094A7;
