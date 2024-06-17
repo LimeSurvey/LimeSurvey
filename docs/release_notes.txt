@@ -34,6 +34,14 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.5.12 (build 240611) to 6.5.13 (build 240617) June 17, 2024
+-Fixed issue #CR-1426: custom.css in survey themes and files_css not loaded correctly when using a theme variation (#3876) (Patrick Teichmann)
+#Updated translation: Korean by modernity4r
+#Updated translation: Japanese by d_inoue
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech (Informal) by jelen1
+
+
 Changes from 6.5.11 (build 240605) to 6.5.12 (build 240611) June 11, 2024
 -Fixed issue #19580: Data entry at anonymous survey with tokens crashed on save (#3873) (Denis Chenu)
 -Fixed issue #19570: JavaScript exception on survey taking on browsers not supporting localstorage (#3856) (Tõnis Ormisson)
