@@ -604,7 +604,7 @@ class TemplateConfiguration extends TemplateConfig
             $this->bTemplateCheckResult = true;
             if (
                 !is_object($this->template) ||
-                (is_object($this->template) && !Template::checkTemplateXML($this->template->name, $this->template->folder))
+                (is_object($this->template) && !Template::checkTemplateXML($this->template))
             ) {
                 $this->bTemplateCheckResult = false;
             }
@@ -1600,7 +1600,7 @@ class TemplateConfiguration extends TemplateConfig
     }
 
     /**
-     * @todo document me
+     * Returns the html to render the previewimage of the template
      * @return array|mixed|string|null
      */
     public function getPreview()
