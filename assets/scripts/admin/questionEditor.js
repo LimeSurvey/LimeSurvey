@@ -52,7 +52,6 @@ var LS = LS || {};
 // TODO: Use component for quick-add
 // TODO: Use component for label sets
 $(document).on('ready pjax:scriptcomplete', function () {
-
   // TODO: Routing?
   if (window.location.href.indexOf('questionAdministration') === -1) {
     return;
@@ -1782,7 +1781,8 @@ $(document).on('ready pjax:scriptcomplete', function () {
      * @return {void}
      */
     checkQuestionValidateTitle: function(code, qid) {
-      $('#question-title-warning').text("");
+      $('#questionCode')[0].setCustomValidity('');
+      $('#question-title-warning').text('');
       $('#question-title-warning').addClass('d-none');
       $.ajax({
         url: languageJson.checkQuestionValidateTitleURL,
@@ -1797,6 +1797,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
           if (message !== null) {
               $('#question-title-warning').removeClass('d-none');
               $('#question-title-warning').text(message);
+              $('#questionCode')[0].setCustomValidity(message); // must set customvalidity to avoid submit by another enter
           } else {
               // Continue
           }
@@ -1817,23 +1818,27 @@ $(document).on('ready pjax:scriptcomplete', function () {
      * @return {boolean}
      */
     checkIfSaveIsValid: function(event /*: Event */, tabQuestionEditor = 'editor') {
+      $('#ls-loading').show();
       event.preventDefault();
       const qid = parseInt($('input[name="question[qid]"]').val());
       const code = $('input[name="question[title]"]').val();
       const target = event.currentTarget;
       if (!(target instanceof HTMLElement)) {
         alert('Internal error in checkIfSaveIsValid: target is not an HTMLElement, but ' + typeof target);
+        $('#ls-loading').hide();
         return false;
       }
       const saveWithAjax = target.dataset.saveWithAjax === 'true';
       const form = document.getElementById('edit-question-form');
       if (!(form instanceof HTMLFormElement)) {
+        $('#ls-loading').hide();
         throw 'form is not HTMLFormElement';
       }
       /* Check if input are HTML5 valid */
       if (!form.checkValidity() ) {
           // the form is invalid : show invalid part
           form.reportValidity();
+          $('#ls-loading').hide();
           return false;
       }
 
@@ -1841,6 +1846,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
       if (firstSubquestionRow) {
         // This will show error message if subquestion code is not unique.
         if (!LS.questionEditor.showSubquestionCodeUniqueError(firstSubquestionRow)) {
+          $('#ls-loading').hide();
           return false;
         }
       }
@@ -1849,17 +1855,20 @@ $(document).on('ready pjax:scriptcomplete', function () {
       if (firstAnsweroptionRow) {
         // This will show error message if answer option code is not unique.
         if (!LS.questionEditor.showAnswerOptionCodeUniqueError(firstAnsweroptionRow)) {
+          $('#ls-loading').hide();
           return false;
         }
       }
 
       const updateQuestionSummary = () => {
+        $('#ls-loading').show();
         $.ajax({
           url: form.dataset.summaryUrl,
           method: 'GET',
           data: {},
           dataType: 'html',
           success: (summaryHtml) => {
+            $('#ls-loading').hide();
             const isVisible = $('#question-overview').is(':visible');
             const newSummary = $(summaryHtml);
             if (isVisible) {
@@ -1879,7 +1888,9 @@ $(document).on('ready pjax:scriptcomplete', function () {
             });
           },
           error: (response) => {
+            $('#ls-loading').hide();
             alert('Internal error in updateQuestionSummary: ' + response);
+            return false;
           },
         });
       };
@@ -1912,6 +1923,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
         const data = {};
         const form = document.getElementById('edit-question-form');
         if (!(form instanceof HTMLFormElement)) {
+          $('#ls-loading').hide();
           throw 'form is not HTMLFormElement';
         }
 
@@ -1980,7 +1992,11 @@ $(document).on('ready pjax:scriptcomplete', function () {
           if (message !== null) {
               $('#question-title-warning').removeClass('d-none');
               $('#question-title-warning').text(message);
+              $('#questionCode')[0].setCustomValidity(message); // must set customvalidity to avoid submit by another enter
           } else {
+            $('#question-title-warning').addClass('d-none');
+            $('#question-title-warning').text('');
+            $('#questionCode')[0].setCustomValidity('');
             // TODO: Check other things too.
             const button = document.getElementById('submit-create-question');
             if (button instanceof HTMLElement) {
@@ -1994,10 +2010,11 @@ $(document).on('ready pjax:scriptcomplete', function () {
                 saveFormWithAjax();
               } else {
                 // Just submit form.
+                $('#ls-loading').show();
                 button.click();
               }
+              return true;
             }
-            $('#question-title-warning').removeClass('d-none');
           }
         },
         error: (response) => {
@@ -2021,14 +2038,41 @@ $(document).on('ready pjax:scriptcomplete', function () {
     showAnswerOptionCodeUniqueError: createCheckUniqueFunction(languageJson.answeroptions.duplicateanswercode)
   };
 
-  $("#questionCode").on('blur', function() {
-    let qid = 0;
-    if ($(this).data('qid')) {
-      qid = $(this).data('qid');
-    }
-    LS.questionEditor.checkQuestionValidateTitle($(this).val(), qid);
-  });
+  /**
+   * questionCode need specific ajax validation
+   */
+  /** deactivate the check when needed */
+  function deActivateQuestionCodeChecker() {
+    $('#questionCode').off('blur keypress');
+  }
+  /** activate the check when event happen on questionCode */
+  function activateQuestionCodeChecker() {
+    $('#questionCode').on('blur', function() {
+      let qid = 0;
+      if ($(this).data('qid')) {
+        qid = $(this).data('qid');
+      }
+      LS.questionEditor.checkQuestionValidateTitle($(this).val(), qid);
+    });
+    /* Check question code validatiry when press ENTER mantis #19440 */
+    $('#questionCode').on('keypress', function(e) {
+      if (e.which == 13) {
+        e.preventDefault();
+        deActivateQuestionCodeChecker();
+        /* Set CustomValidity to empty to allow check again by checkIfSaveIsValid */
+        $('#questionCode')[0].setCustomValidity('');
+        $('#question-title-warning').text('');
+        $('#question-title-warning').addClass('d-none');
+        if (!LS.questionEditor.checkIfSaveIsValid(e, 'enter')) {
+          activateQuestionCodeChecker();
+        }
+      }
+    });
 
+  }
+  /* Attach event when ready */
+  activateQuestionCodeChecker();
+  /** */
   function showConditionsWarning(e) {
     if (!$(this).data('hasConditions')) {
       return;

@@ -13,7 +13,7 @@
 ?>
 <?php $pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']); ?>
 
-<div class='side-body <?php echo getSideBodyClass(true); ?>'>
+<div class='side-body'>
     <div class="row">
 
 

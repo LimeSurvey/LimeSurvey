@@ -94,7 +94,7 @@ class RenderDate extends QuestionBaseRenderer
                 $this->minDate = '{' . $this->getQuestionAttribute('date_min') . '}';
             }
         } else {
-            $this->minDate = '1900-01-01'; // Why 1900 ?
+            $this->minDate = '1900-01-01'; // We need some default value
         }
     }
 

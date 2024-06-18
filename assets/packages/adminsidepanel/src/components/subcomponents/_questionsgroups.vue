@@ -398,8 +398,8 @@ export default {
                                 </span>
                             </div>
 
-                            <div v-if="groupActivated(questiongroup) || (hoveredQuestionGroup && hoveredQuestionGroup.gid === questiongroup.gid)"
-                                class="ls-questiongroup-tools cursor-pointer" id="dropdownMenuButton1"
+                            <div v-if="groupActivated(questiongroup) || (hoveredQuestionGroup && hoveredQuestionGroup.gid === questiongroup.gid)">
+                            <div class="ls-questiongroup-tools cursor-pointer" id="dropdownMenuButton1"
                                 data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="ri-more-fill"></i>
                             </div>
@@ -432,7 +432,7 @@ export default {
 
                                 </li>
                             </ul>
-        
+                            </div>
 
                         </div>
                     </div>

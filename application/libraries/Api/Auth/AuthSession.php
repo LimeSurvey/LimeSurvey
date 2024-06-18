@@ -86,7 +86,11 @@ class AuthSession
             'htmleditormode' => $aUserData['htmleditormode'],
             'templateeditormode' => $aUserData['templateeditormode'],
             'questionselectormode' => $aUserData['questionselectormode'],
-            'dateformat' => $aUserData['dateformat'],
+            // When using the REST API, data is transferred using the format
+            // YYYY-MM-DD since the browser handles formatting for display.
+            // This format is defined as '6' in
+            // insurveytranslator_helper.php / getDateFormatData()
+            'dateformat' => 6,
             'adminlang' => 'en'
         );
         foreach ($session as $k => $v) {

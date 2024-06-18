@@ -204,10 +204,10 @@ class file {
   * @return string */
 
     static function normalizeFilename($filename) {
-        $string = htmlentities($filename, ENT_QUOTES, 'UTF-8');
+        $string = htmlentities((string) $filename, ENT_QUOTES, 'UTF-8');
         if (strpos($string, '&') !== false)
-            $filename = html_entity_decode(preg_replace('~&([a-z]{1,2})(?:acute|cedil|circ|grave|lig|orn|ring|slash|tilde|uml);~i', '$1', $string), ENT_QUOTES, 'UTF-8');
-        $filename = trim(preg_replace('~[^0-9a-z\.\- ]~i', "_", $filename));
+            $filename = html_entity_decode((string) preg_replace('~&([a-z]{1,2})(?:acute|cedil|circ|grave|lig|orn|ring|slash|tilde|uml);~i', '$1', $string), ENT_QUOTES, 'UTF-8');
+        $filename = trim(preg_replace('~[^0-9a-z\.\- ]~i', "_", (string) $filename));
         return $filename;
     }
 

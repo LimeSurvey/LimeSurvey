@@ -47,7 +47,7 @@ class SaveService
      * Based on QuestionAdministrationController::actionSaveQuestionData()
      *
      * @param int $surveyId
-     * @param array{
+     * @param array {
      *  sid: int,
      *  ?question: array{
      *      ?qid: int,
@@ -134,17 +134,17 @@ class SaveService
                 $data['question']
             );
 
-        if (isset($input['answeroptions'])) {
+        if (isset($data['answeroptions'])) {
             $this->answersService->save(
                 $question,
-                $input['answeroptions']
+                $data['answeroptions']
             );
         }
 
-        if (isset($input['subquestions'])) {
+        if (isset($data['subquestions'])) {
             $this->subQuestionsService->save(
                 $question,
-                $input['subquestions']
+                $data['subquestions']
             );
         }
 

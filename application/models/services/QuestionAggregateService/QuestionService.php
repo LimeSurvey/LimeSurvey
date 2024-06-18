@@ -54,7 +54,7 @@ class QuestionService
     /**
      * Based on QuestionAdministrationController::actionSaveQuestionData()
      *
-     * @param array{
+     * @param array {
      *  ?sid: int,
      *  ?same_default: int,
      *  ?question: array{
@@ -184,7 +184,7 @@ class QuestionService
 
         $question = $this->saveQuestionData($data, $questionGroupId);
 
-        $this->initL10nService($survey, $question->gid);
+        $this->initL10nService($survey, $question->qid);
 
         return $question;
     }

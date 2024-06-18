@@ -16,8 +16,8 @@
 /**
 * Strips html tags and replaces new lines
 *
-* @param $string
-* @param $removeOther   if 'true', removes '-oth-' from the string.
+* @param string $string
+* @param boolean $removeOther   if 'true', removes '-oth-' from the string.
 * @return string
 */
 function stripTagsFull($string, $removeOther = true)
@@ -367,11 +367,10 @@ function SPSSGetValues($field, $qidattributes, $language)
                 $reverse = false;
             }
 
-            if ($qidattributes['multiflexible_checkbox']!=0)
-            {
-                $minvalue=0;
-                $maxvalue=1;
-                $stepvalue=1;
+            if ($qidattributes['multiflexible_checkbox'] != 0) {
+                $minvalue = 0;
+                $maxvalue = 1;
+                $stepvalue = 1;
             }
             for ($i = $minvalue; $i <= $maxvalue; $i += $stepvalue) {
                 $answers[] = array('code' => $i, 'value' => $i);
@@ -762,7 +761,7 @@ function SPSSGetQuery($iSurveyID, $limit = null, $offset = null)
 */
 function buildXMLFromQuery($xmlwriter, $Query, $tagname = '', $excludes = array(), $iSurveyID = 0)
 {
-    $iChunkSize = 3000; // This works even for very large result sets and leaves a minimal memory footprint
+    $iChunkSize = 1000; // This works even for very large result sets and leaves a minimal memory footprint
 
     preg_match('/\bfrom\b\s*{{(\w+)}}/i', (string) $Query, $MatchResults);
     if ($tagname != '') {
@@ -794,7 +793,7 @@ function buildXMLFromQuery($xmlwriter, $Query, $tagname = '', $excludes = array(
         } else {
             /** @var CDbConnection $db */
             $db = Yii::app()->db;
-            if(is_string($Query)) {
+            if (is_string($Query)) {
                 $commandBuilder = $db->getCommandBuilder();
                 $limitedQuery = $commandBuilder->applyLimit($Query, $iChunkSize, $iStart);
                 $QueryResult = $db->createCommand($limitedQuery)->query();
@@ -2410,7 +2409,6 @@ function tokensExport($iSurveyID)
         $bresult = $oRecordSetQuery->query();
         // fetching all records into array, values need to be decrypted
         foreach ($bresult as $tokenValue) {
-
             // Populate TokenDynamic object with values
             // NB: $tokenValue also contains values not belonging to TokenDynamic model (joined with survey)
             foreach ($tokenValue as $key => $value) {
@@ -2731,6 +2729,9 @@ function tsvSurveyExport($surveyid)
     // insert translations to defaultvalues_datas
     if (array_key_exists('defaultvalue_l10ns', $xmlData)) {
         $defaultvalues_l10ns_data = $xmlData['defaultvalue_l10ns']['rows']['row'];
+        if (!array_key_exists('0', $defaultvalues_l10ns_data)) {
+            $defaultvalues_l10ns_data = array($defaultvalues_l10ns_data);
+        }
         $defaultvalues_datas = [];
         foreach ($defaultvalues_l10ns_data as $defaultvalue_l10ns_key => $defaultvalue_l10ns_data) {
             foreach ($defaultvalues_data as $defaultvalue_key => $defaultvalue_data) {
@@ -2744,9 +2745,9 @@ function tsvSurveyExport($surveyid)
             }
         }
     }
-    unset($defaultvalues_data);
-    unset($defaultvalues_l10ns_data);
-    $defaultvalues = array();
+        unset($defaultvalues_data);
+        unset($defaultvalues_l10ns_data);
+        $defaultvalues = array();
     foreach ($defaultvalues_datas as $key => $defaultvalue) {
         if ($defaultvalue['sqid'] > 0) {
             $defaultvalues[$defaultvalue['language']][$defaultvalue['sqid']] = $defaultvalue['defaultvalue'];
@@ -2755,8 +2756,8 @@ function tsvSurveyExport($surveyid)
         }
     }
 
-    $groups = array();
-    $index_languages = 0;
+        $groups = array();
+        $index_languages = 0;
     foreach ($aSurveyLanguages as $key => $language) {
         // groups data
         if (array_key_exists('groups', $xmlData)) {
@@ -2871,7 +2872,7 @@ function tsvSurveyExport($surveyid)
         }
         $assessments = array();
         foreach ($assessments_data as $key => $assessment) {
-                $assessments[] = $assessment;
+            $assessments[] = $assessment;
         }
 
         // quotas data
@@ -2885,7 +2886,7 @@ function tsvSurveyExport($surveyid)
         }
         $quotas = array();
         foreach ($quotas_data as $key => $quota) {
-                $quotas[$quota['id']] = $quota;
+            $quotas[$quota['id']] = $quota;
         }
 
         // quota members data
@@ -3108,9 +3109,9 @@ function tsvSurveyExport($surveyid)
         }
     }
 
-    $output = $out;
-    fclose($out);
-    return $output;
+        $output = $out;
+        fclose($out);
+        return $output;
 }
 
 /**

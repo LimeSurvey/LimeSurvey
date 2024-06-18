@@ -26,7 +26,7 @@ class Saved extends SurveyCommonAction
      * Show the list of save response
      * @param int $surveyid
      * @return void
-     * @throw Exception
+     * @throws Exception
      */
     public function view($iSurveyId)
     {
@@ -60,11 +60,11 @@ class Saved extends SurveyCommonAction
     }
 
     /**
-     * Undocumented function
+     * Unfinished function
      *
      * @todo write function
-     * @param [type] $surveyid
-     * @param [type] $id
+     * @param int $surveyid
+     * @param int $id
      * @return void
      */
     public function resendAccesscode($surveyid, $id)
@@ -76,7 +76,7 @@ class Saved extends SurveyCommonAction
      * Function responsible to delete saved responses.
      * @param int $surveyid
      * @return void
-     * @throw Exception
+     * @throws Exception
      */
     public function actionDelete($surveyid)
     {
@@ -118,7 +118,7 @@ class Saved extends SurveyCommonAction
      * Renders template(s) wrapped in header and footer
      *
      * @param string $sAction Current action, the folder to fetch views from
-     * @param string[] $aViewUrls View url(s)
+     * @param array $aViewUrls View url(s)
      * @param array $aData Data to be passed on. Optional.
      */
     protected function renderWrappedTemplate($sAction = 'saved', $aViewUrls = array(), $aData = array(), $sRenderFile = false)

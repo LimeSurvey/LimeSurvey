@@ -36,7 +36,7 @@ class SubQuestionsService
     /**
      * Based on QuestionAdministrationController::actionSaveQuestionData()
      *
-     * @param array{
+     * @param array {
      *  ...<array-key, mixed>
      * } $subquestions
      * @return void
@@ -186,7 +186,7 @@ class SubQuestionsService
         $subquestion->refresh();
         $this->updateSubquestionL10nService(
             $subquestion,
-            $data['subquestionl10n']
+            $data['subquestionl10n'] ?? []
         );
 
         return $subquestion;
@@ -196,7 +196,7 @@ class SubQuestionsService
      * Save subquestion L10nService
      *
      * @param Question $question
-     * @param string $language
+     * @param array $data
      * @return void
      * @throws PersistErrorException
      * @throws BadRequestException

@@ -15,9 +15,9 @@
 // gets a valid drupal_path
 function get_drupal_path() {
     if (!empty($_SERVER['SCRIPT_FILENAME'])) {
-        $drupal_path = dirname(dirname(dirname(dirname($_SERVER['SCRIPT_FILENAME']))));
+        $drupal_path = dirname(dirname(dirname(dirname((string) $_SERVER['SCRIPT_FILENAME']))));
         if (!file_exists($drupal_path . '/includes/bootstrap.inc')) {
-            $drupal_path = dirname(dirname(dirname($_SERVER['SCRIPT_FILENAME'])));
+            $drupal_path = dirname(dirname(dirname((string) $_SERVER['SCRIPT_FILENAME'])));
             $depth = 2;
             do {
                 $drupal_path = dirname($drupal_path);
@@ -56,9 +56,9 @@ function CheckAuthentication($drupal_path) {
 
             global $base_url;
             $base_root = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https' : 'http';
-            $base_url = $base_root .= '://'. preg_replace('/[^a-z0-9-:._]/i', '', $_SERVER['HTTP_HOST']);
+            $base_url = $base_root .= '://'. preg_replace('/[^a-z0-9-:._]/i', '', (string) $_SERVER['HTTP_HOST']);
 
-            if ($dir = trim(dirname($_SERVER['SCRIPT_NAME']), '\,/')) {
+            if ($dir = trim(dirname((string) $_SERVER['SCRIPT_NAME']), '\,/')) {
                 $base_path = "/$dir";
                 $base_url .= $base_path;
             }

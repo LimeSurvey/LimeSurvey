@@ -821,7 +821,8 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['class']['surveylistfooter']          = ' footer ';
         $aClassAndAttributes['class']['surveylistfootercont']      = '  ';
 
-        $aClassAndAttributes['attr']['surveylistfootercontpaa']      = ' href="http://www.limesurvey.org"  target="_blank" ';
+        $aClassAndAttributes['attr']['surveylistfootercontpaa']    = ' href="https://www.limesurvey.org"  target="_blank" ';
+        $aClassAndAttributes['attr']['surveylistfootercontpab']    = ' href="https://www.limesurvey.org"  target="_blank" ';
 
         $aClassAndAttributes['attr']['surveylistrow'] = $aClassAndAttributes['attr']['surveylistrowjumbotron'] = $aClassAndAttributes['attr']['surveylistrowdiva'] = $aClassAndAttributes['attr']['surveylistrowdivadiv'] = $aClassAndAttributes['attr']['surveylistrowdivb'] = $aClassAndAttributes['attr']['surveylistrowdivbdivul'] = '';
         $aClassAndAttributes['attr']['surveylistrowdivbdivulli'] = $aClassAndAttributes['attr']['surveylistrowdivc'] = $aClassAndAttributes['attr']['surveylistfooter'] = $aClassAndAttributes['attr']['surveylistfootercont'] = $aClassAndAttributes['class']['surveylistfootercontp'] = '';
@@ -1122,7 +1123,10 @@ class TemplateConfig extends CActiveRecord
                     // Get the theme manifest by forcing xml load
                     try {
                         $aTemplatesWithoutDB['valid'][$sName] = Template::getTemplateConfiguration($sName, null, null, true);
-                        if (empty($aTemplatesWithoutDB['valid'][$sName]->config)) {
+                        if (
+                            empty($aTemplatesWithoutDB['valid'][$sName]->config)
+                            || empty($aTemplatesWithoutDB['valid'][$sName]->config->metadata)
+                        ) {
                             unset($aTemplatesWithoutDB['valid'][$sName]);
                             $aTemplatesWithoutDB['invalid'][$sName]['error'] = gT('Invalid theme configuration file');
                         }

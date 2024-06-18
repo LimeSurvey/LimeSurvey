@@ -22,8 +22,8 @@ use LimeSurvey\PluginManager\PluginEvent;
  * @property integer $gsid survey group id, from which this survey belongs to and inherits values from when set to 'I'
  * @property string $admin Survey Admin's full name
  * @property string $active Whether survey is acive or not (Y/N)
- * @property string $expires Expiry date (YYYY-MM-DD hh:mm:ss)
- * @property string $startdate Survey Start date (YYYY-MM-DD hh:mm:ss)
+ * @property string|null $expires Expiry date as SQL datetime (YYYY-MM-DD hh:mm:ss)
+ * @property string|null $startdate Survey Start date as SQL datetime (YYYY-MM-DD hh:mm:ss)
  * @property string $adminemail Survey administrator email address
  * @property string $anonymized Whether survey is anonymized or not (Y/N)
  * @property string $format A : All in one, G : Group by group, Q : question by question, I : inherit value from survey group
@@ -43,7 +43,7 @@ use LimeSurvey\PluginManager\PluginEvent;
  * @property string $ipaddr Whether Participants IP address will be saved: (Y/N)
  * @property string $ipanonymize Whether id addresses should be anonymized (Y/N)
  * @property string $refurl Save referrer URL: (Y/N)
- * @property string $datecreated Date survey was created (YYYY-MM-DD hh:mm:ss)
+ * @property string $datecreated Date survey was created  as SQL datetime (YYYY-MM-DD hh:mm:ss)
  * @property string $publicstatistics Public statistics: (Y/N)
  * @property string $publicgraphs Show graphs in public statistics: (Y/N)
  * @property string $listpublic List survey publicly: (Y/N)
@@ -142,6 +142,7 @@ use LimeSurvey\PluginManager\PluginEvent;
  * @property bool $isNoKeyboard Show on-screen keyboard
  * @property bool $isAllowEditAfterCompletion Allow multiple responses or update responses with one token
  * @property SurveyLanguageSetting $defaultlanguage
+ * @property SurveysGroups $surveygroup
  * @property boolean $isDateExpired Whether survey is expired depending on the current time and survey configuration status
  * @method mixed active()
  */
@@ -181,6 +182,14 @@ class Survey extends LSActiveRecord implements PermissionInterface
             $this->gsid = null;
             return;
         }
+        if ($this->isNewRecord) {
+            $this->setAttributeDefaults();
+        }
+        $this->attachEventHandler("onAfterFind", array($this, 'afterFindSurvey'));
+    }
+
+    private function setAttributeDefaults()
+    {
         // Set the default values
         $this->htmlemail = 'Y';
         $this->format = 'G';
@@ -212,8 +221,6 @@ class Survey extends LSActiveRecord implements PermissionInterface
                 }
             }
         }
-
-        $this->attachEventHandler("onAfterFind", array($this, 'afterFindSurvey'));
     }
 
     /** @inheritdoc */
@@ -348,7 +355,11 @@ class Survey extends LSActiveRecord implements PermissionInterface
         } elseif (isset($this->languagesettings[$this->language])) {
             return $this->languagesettings[$this->language];
         } else {
-            throw new Exception('Survey language not found - looked for ' . App()->language . ' and ' . $this->language);
+            $errorString = 'Survey language not found - looked for ' . App()->language;
+            if ($this->language != App()->language) {
+                $errorString .= ' and ' . $this->language;
+            }
+            throw new Exception($errorString);
         }
     }
 
@@ -1509,15 +1520,35 @@ class Survey extends LSActiveRecord implements PermissionInterface
     }
 
     /**
+     * Search
+     *
+     * $options = [
+     *  'pageSize' => 10,
+     *  'currentPage' => 1
+     * ];
+     *
+     * @param array $options
      * @return CActiveDataProvider
      */
-    public function search()
+    public function search($options = [])
     {
+        $options = $options ?? [];
         // Flush cache to get proper counts for partial/complete/total responses
         if (method_exists(Yii::app()->cache, 'flush')) {
             Yii::app()->cache->flush();
         }
-        $pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
+        $pagination = [
+            'pageSize' => Yii::app()->user->getState(
+                'pageSize',
+                Yii::app()->params['defaultPageSize']
+            )
+        ];
+        if (isset($options['pageSize'])) {
+            $pagination['pageSize'] = $options['pageSize'];
+        }
+        if (isset($options['currentPage'])) {
+            $pagination['currentPage'] = $options['currentPage'];
+        }
 
         $sort = new CSort();
         $sort->attributes = array(
@@ -1643,9 +1674,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
         $dataProvider = new CActiveDataProvider('Survey', array(
             'sort' => $sort,
             'criteria' => $criteria,
-            'pagination' => array(
-                'pageSize' => $pageSize,
-            ),
+            'pagination' => $pagination,
         ));
 
         $dataProvider->setTotalItemCount($this->count($criteria));
@@ -1810,8 +1839,9 @@ class Survey extends LSActiveRecord implements PermissionInterface
 
     /**
      * Method to make an approximation on how long a survey will last
-     * @deprecated, unused since 3.X
      * Approx is 3 questions each minute.
+     *
+     * @deprecated Unused since 3.X
      * @return double
      */
     public function calculateEstimatedTime()
@@ -1976,7 +2006,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
     }
 
     /**
-     * @return integer
+     * @return int
      */
     public function getCountTotalQuestions()
     {
@@ -1987,7 +2017,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
 
     /**
      * Get the coutn of questions that do not need input (skipping text-display etc.)
-     * @return integer
+     * @return int
      */
     public function getCountNoInputQuestions()
     {
@@ -2002,7 +2032,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
 
     /**
      * Get the coutn of questions that need input (skipping text-display etc.)
-     * @return integer
+     * @return int
      */
     public function getCountInputQuestions()
     {
@@ -2093,7 +2123,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
     }
 
     /**
-     * @param ? $tmp
+     * @param array $tmp
      */
     public function setTokenEncryptionOptions($options)
     {
@@ -2306,7 +2336,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
      * If $preferShortUrl is true (default), and an alias is available, it returns the short
      * version of the URL.
      * @param string|null $language
-     * @param array<string,mixed> $params   Optional parameters to include in the URL.
+     * @param array|string|mixed $params   Optional parameters to include in the URL.
      * @param bool $preferShortUrl  If true, tries to return the short URL instead of the traditional one.
      * @return string
      */

@@ -6,14 +6,21 @@ use LimeSurvey\Api\Transformer\Transformer;
 
 class TransformerInputQuestionAttribute extends Transformer
 {
-    public function __construct()
+    /**
+     * Converts the raw array to the expected format.
+     */
+    public function transformAll($collection, $options = [])
     {
-        $this->setDataMap([
-            'qaid' => ['type' => 'int'],
-            'qid' => ['type' => 'int'],
-            'attribute' => true,
-            'value' => true,
-            'language' => true
-        ]);
+        $attributes = [];
+        foreach ($collection as $attrName => $languages) {
+            foreach ($languages as $lang => $value) {
+                if ($lang !== '') {
+                    $attributes[0][$attrName][$lang] = $value;
+                } else {
+                    $attributes[0][$attrName] = $value;
+                }
+            }
+        }
+        return $attributes;
     }
 }

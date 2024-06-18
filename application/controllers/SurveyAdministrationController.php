@@ -217,9 +217,7 @@ class SurveyAdministrationController extends LSBaseController
         $aData['surveyActivationFeedback'] = $surveyActivationFeedback;
 
         $this->aData = $aData;
-        $this->render('sidebody', [
-            'sideMenuOpen' => true
-        ]);
+        $this->render('sidebody');
     }
 
     /**
@@ -1761,6 +1759,7 @@ class SurveyAdministrationController extends LSBaseController
 
         $success = false;
         if (($surveyId > 0) && ($questionId > 0)) {
+            App()->loadHelper('admin/activate');
             fixNumbering($questionId, $surveyId);
             $success = true;
         }
@@ -1799,7 +1798,11 @@ class SurveyAdministrationController extends LSBaseController
         Yii::app()->loadHelper("admin/activate");
         $failedgroupcheck = checkGroup($surveyId);
         $failedcheck = checkQuestions($surveyId, $surveyId);
-        $checkFailed = (isset($failedcheck) && $failedcheck) || (isset($failedgroupcheck) && $failedgroupcheck);
+        $error = "";
+        if (!$oSurvey->countTotalQuestions) {
+            $error = gT("There are no questions in this survey.");
+        }
+        $checkFailed = (isset($failedcheck) && $failedcheck) || (isset($failedgroupcheck) && $failedgroupcheck) || !empty($error);
         $footerButton = '';
         if ($checkFailed) {
             //survey can not be activated
@@ -1808,6 +1811,7 @@ class SurveyAdministrationController extends LSBaseController
                 [
                 'failedcheck' => $failedcheck,
                 'failedgroupcheck' => $failedgroupcheck,
+                'error' => $error,
                 'surveyid' => $oSurvey->sid
                 ],
                 true

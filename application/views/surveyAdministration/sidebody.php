@@ -1,7 +1,6 @@
 <?php
 
 /** @var $this SurveyAdministrationController */
-/** @var $sideMenuOpen boolean */
 
 ?>
 
@@ -106,7 +105,7 @@ if ((Yii::app()->request->getParam('popuppreview', false) !== false) && ($sid = 
 }
 ?>
 
-<div id="vue-side-body-app" class='side-body <?php echo getSideBodyClass($sideMenuOpen); ?>'>
+<div id="vue-side-body-app" class='side-body'>
     <?php // OLD echo $content; ?>
     <?php  $this->renderPartial("surveySummary_view", $this->aData); ?>
 </div>
