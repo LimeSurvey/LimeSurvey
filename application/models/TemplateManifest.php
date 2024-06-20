@@ -639,17 +639,17 @@ class TemplateManifest extends TemplateConfiguration
      */
     public function getButtons()
     {
-        $sEditorUrl  = Yii::app()->getController()->createUrl('admin/themes/sa/view', array("templatename" => $this->sTemplateName));
+        //$sEditorUrl  = Yii::app()->getController()->createUrl('admin/themes/sa/view', array("templatename" => $this->sTemplateName));
         $sDeleteUrl   = Yii::app()->getController()->createUrl('admin/themes/sa/deleteAvailableTheme/');
-
+        $templatezip = Yii::app()->getController()->createUrl('admin/themes/sa/templatezip/templatename/' . $this->sTemplateName);
 
         // TODO: load to DB
-        $sEditorLink = "<a
-            id='template_editor_link_" . $this->sTemplateName . "'
-            href='" . $sEditorUrl . "'
+        $sExportLink = "<a
+            id='button-export'
+            href='" . $templatezip . "'
             class='btn btn-outline-secondary btn-sm'>
-                <span class='ri-brush-fill'></span>
-                " . gT('Theme editor') . "
+                <span class='ri-upload-2-fill'></span>
+                " . gT('Export') . "
             </a>";
 
             //
@@ -693,7 +693,7 @@ class TemplateManifest extends TemplateConfiguration
                   </a>';
         }
 
-        return '<div class="d-grid gap-2">' . $sEditorLink . $sLoadLink . $sDeleteLink . '</div>';
+        return '<div class="d-grid gap-2">' . $sLoadLink . $sExportLink . $sDeleteLink . '</div>';
     }
 
     /**
@@ -769,7 +769,7 @@ class TemplateManifest extends TemplateConfiguration
             $oTemplateConfiguration->sid = $iSurveyId;
 
             if (isAssociativeArray((array)$xml->config->options)) {
-                $oTemplateConfiguration->options  = TemplateConfig::formatToJsonArray($xml->config->options);
+                $oTemplateConfiguration->options  = TemplateConfig::convertOptionsToJson($xml->config->options[0]);
             }
 
             if ($oTemplateConfiguration->save()) {
@@ -1015,33 +1015,53 @@ class TemplateManifest extends TemplateConfiguration
 
     /**
      * Read the config.xml file of the template and push its contents to $this->config
+     * @throws Exception
      */
-    private function readManifest()
+    private function readManifest(): void
     {
         $this->xmlFile = $this->path . 'config.xml';
 
+        if (!file_exists(realpath($this->xmlFile)) && $path = SurveyThemeHelper::getNestedThemeConfigPath($this->sTemplateName)) {
+            $templateDir = Yii::app()->getConfig("userthemerootdir") . DIRECTORY_SEPARATOR . $this->sTemplateName;
+            $tempDir = Yii::app()->getConfig("userthemerootdir") . DIRECTORY_SEPARATOR . $this->sTemplateName . '_tmp';
+
+            mkdir($tempDir);
+            rename($path, $tempDir);
+            rmdirr($templateDir);
+            rename($tempDir, $templateDir);
+
+            $this->xmlFile = $templateDir . DIRECTORY_SEPARATOR .  'config.xml';
+        }
+
         if (file_exists(realpath($this->xmlFile))) {
             if (\PHP_VERSION_ID < 80000) {
-                $bOldEntityLoaderState = libxml_disable_entity_loader(true); // @see: http://phpsecurity.readthedocs.io/en/latest/Injection-Attacks.html#xml-external-entity-injection
+                $bOldEntityLoaderState = libxml_disable_entity_loader(
+                    true
+                ); // @see: http://phpsecurity.readthedocs.io/en/latest/Injection-Attacks.html#xml-external-entity-injection
             }
-            $sXMLConfigFile        = file_get_contents(realpath($this->xmlFile)); // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
+            $sXMLConfigFile = file_get_contents(
+                realpath($this->xmlFile)
+            ); // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
             $oDOMConfig = new DOMDocument();
-            $oDOMConfig->loadXML($sXMLConfigFile);
-            $oXPath = new DOMXpath($oDOMConfig);
-            foreach ($oXPath->query('//comment()') as $oComment) {
-                $oComment->parentNode->removeChild($oComment);
-            }
-            $oXMLConfig = simplexml_import_dom($oDOMConfig);
-            $filenames = $oXMLConfig->config->xpath("//file");
-            if ($filenames) {
-                foreach ($filenames as $oFileName) {
-                    $oFileName[0] = get_absolute_path($oFileName[0]);
+            // the loadXML is error suppressed, so we can check the return value
+            $bLoadXMLSuccess = @$oDOMConfig->loadXML($sXMLConfigFile);
+            if ($bLoadXMLSuccess) {
+                $oXPath = new DOMXpath($oDOMConfig);
+                foreach ($oXPath->query('//comment()') as $oComment) {
+                    $oComment->parentNode->removeChild($oComment);
                 }
-            }
+                $oXMLConfig = simplexml_import_dom($oDOMConfig);
+                $filenames = $oXMLConfig->config->xpath("//file");
+                if ($filenames) {
+                    foreach ($filenames as $oFileName) {
+                        $oFileName[0] = get_absolute_path($oFileName[0]);
+                    }
+                }
 
-            $this->config = $oXMLConfig; // Using PHP >= 5.4 then no need to decode encode + need attributes : then other function if needed :https://secure.php.net/manual/en/book.simplexml.php#108688 for example
-            if (\PHP_VERSION_ID < 80000) {
-                libxml_disable_entity_loader($bOldEntityLoaderState); // Put back entity loader to its original state, to avoid contagion to other applications on the server
+                $this->config = $oXMLConfig; // Using PHP >= 5.4 then no need to decode encode + need attributes : then other function if needed :https://secure.php.net/manual/en/book.simplexml.php#108688 for example
+                if (\PHP_VERSION_ID < 80000) {
+                    libxml_disable_entity_loader($bOldEntityLoaderState); // Put back entity loader to its original state, to avoid contagion to other applications on the server
+                }
             }
         } else {
             throw new Exception(" Error: Can't find a manifest for $this->sTemplateName in ' $this->path ' ");
@@ -1085,7 +1105,7 @@ class TemplateManifest extends TemplateConfiguration
 
     /**
      * Set the template name.
-     * If no templateName provided, then a survey id should be given (it will then load the template related to the survey)
+     * If no templateName provided, then a survey ID should be given (it will then load the template related to the survey)
      *
      * @var     $sTemplateName  string the name of the template
      * @var     $iSurveyId      int    the id of the survey
@@ -1093,9 +1113,9 @@ class TemplateManifest extends TemplateConfiguration
     private function setTemplateName($sTemplateName = '', $iSurveyId = '')
     {
         // If it is called from the template editor, a template name will be provided.
-        // If it is called for survey taking, a survey id will be provided
+        // If it is called for survey taking, a survey ID will be provided
         if ($sTemplateName == '' && $iSurveyId == '') {
-            /* Some controller didn't test completely survey id (PrintAnswersController for example), then set to default here */
+            /* Some controller didn't test completely survey ID (PrintAnswersController for example), then set to default here */
             $sTemplateName = App()->getConfig('defaulttheme');
         }
 
@@ -1412,6 +1432,8 @@ class TemplateManifest extends TemplateConfiguration
                 $aOptions['optionAttributes'][$key]['title'] = !empty($option['title']) ? (string)$option['title'] : '';
                 $aOptions['optionAttributes'][$key]['category'] = !empty($option['category']) ? (string)$option['category'] : gT('Simple options');
                 $aOptions['optionAttributes'][$key]['width'] = !empty($option['width']) ? (string)$option['width'] : '2';
+                /* rows for textarea */
+                $aOptions['optionAttributes'][$key]['rows'] = !empty($option['rows']) ? (string)$option['rows'] : '4';
                 $aOptions['optionAttributes'][$key]['options'] = !empty($option['options']) ? (string)$option['options'] : '';
                 $aOptions['optionAttributes'][$key]['optionlabels'] = !empty($option['optionlabels']) ? (string)$option['optionlabels'] : '';
                 $aOptions['optionAttributes'][$key]['parent'] = !empty($option['parent']) ? (string)$option['parent'] : '';

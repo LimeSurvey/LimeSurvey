@@ -19,13 +19,13 @@ class Update_172 extends DatabaseUpdateBase
                 try {
                     setTransactionBookmark();
                     $this->db->createCommand()->dropIndex('permissions_idx2', '{{permissions}}');
-                } catch (Exception $e) {
+                } catch (\Exception $e) {
                     rollBackToTransactionBookmark();
                 };
                 try {
                     setTransactionBookmark();
                     $this->db->createCommand()->dropIndex('idxPermissions', '{{permissions}}');
-                } catch (Exception $e) {
+                } catch (\Exception $e) {
                     rollBackToTransactionBookmark();
                 };
                 alterColumn('{{permissions}}', 'entity_id', "INTEGER", false);

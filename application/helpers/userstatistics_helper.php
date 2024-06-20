@@ -559,7 +559,7 @@ class userstatistics_helper
      *
      * @param string $rt The code passed from the statistics form listing the field/answer (SGQA) combination to be displayed
      * @param mixed $language The language to present output in
-     * @param mixed $surveyid The survey id
+     * @param mixed $surveyid The survey ID
      * @param string $outputType
      * @param boolean $browse
      * @psalm-suppress UndefinedVariable
@@ -2444,7 +2444,7 @@ class userstatistics_helper
     /**
      * Generates statistics
      *
-     * @param int $surveyid The survey id
+     * @param int $surveyid The survey ID
      * @param mixed $allfields
      * @param mixed $q2show
      * @param integer $usegraph

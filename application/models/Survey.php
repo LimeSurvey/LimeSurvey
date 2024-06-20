@@ -22,8 +22,8 @@ use LimeSurvey\PluginManager\PluginEvent;
  * @property integer $gsid survey group id, from which this survey belongs to and inherits values from when set to 'I'
  * @property string $admin Survey Admin's full name
  * @property string $active Whether survey is acive or not (Y/N)
- * @property string $expires Expiry date (YYYY-MM-DD hh:mm:ss)
- * @property string $startdate Survey Start date (YYYY-MM-DD hh:mm:ss)
+ * @property string|null $expires Expiry date as SQL datetime (YYYY-MM-DD hh:mm:ss)
+ * @property string|null $startdate Survey Start date as SQL datetime (YYYY-MM-DD hh:mm:ss)
  * @property string $adminemail Survey administrator email address
  * @property string $anonymized Whether survey is anonymized or not (Y/N)
  * @property string $format A : All in one, G : Group by group, Q : question by question, I : inherit value from survey group
@@ -43,7 +43,7 @@ use LimeSurvey\PluginManager\PluginEvent;
  * @property string $ipaddr Whether Participants IP address will be saved: (Y/N)
  * @property string $ipanonymize Whether id addresses should be anonymized (Y/N)
  * @property string $refurl Save referrer URL: (Y/N)
- * @property string $datecreated Date survey was created (YYYY-MM-DD hh:mm:ss)
+ * @property string $datecreated Date survey was created  as SQL datetime (YYYY-MM-DD hh:mm:ss)
  * @property string $publicstatistics Public statistics: (Y/N)
  * @property string $publicgraphs Show graphs in public statistics: (Y/N)
  * @property string $listpublic List survey publicly: (Y/N)
@@ -142,6 +142,7 @@ use LimeSurvey\PluginManager\PluginEvent;
  * @property bool $isNoKeyboard Show on-screen keyboard
  * @property bool $isAllowEditAfterCompletion Allow multiple responses or update responses with one token
  * @property SurveyLanguageSetting $defaultlanguage
+ * @property SurveysGroups $surveygroup
  * @property boolean $isDateExpired Whether survey is expired depending on the current time and survey configuration status
  * @method mixed active()
  */
@@ -149,15 +150,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
 {
     use PermissionTrait;
 
-    /**
-     * This is a static cache, it lasts only during the active request. If you ever need
-     * to clear it, like on activation of a survey when in the same request a row is read,
-     * saved and read again you can use resetCache() method.
-     *
-     * @var array $findByPkCache
-     */
-    protected $findByPkCache = array();
-
+    protected static array $findByPkCache = [];
 
     // survey options
     public $oOptions;
@@ -189,6 +182,14 @@ class Survey extends LSActiveRecord implements PermissionInterface
             $this->gsid = null;
             return;
         }
+        if ($this->isNewRecord) {
+            $this->setAttributeDefaults();
+        }
+        $this->attachEventHandler("onAfterFind", array($this, 'afterFindSurvey'));
+    }
+
+    private function setAttributeDefaults()
+    {
         // Set the default values
         $this->htmlemail = 'Y';
         $this->format = 'G';
@@ -220,8 +221,6 @@ class Survey extends LSActiveRecord implements PermissionInterface
                 }
             }
         }
-
-        $this->attachEventHandler("onAfterFind", array($this, 'afterFindSurvey'));
     }
 
     /** @inheritdoc */
@@ -338,10 +337,9 @@ class Survey extends LSActiveRecord implements PermissionInterface
         }
 
         // Remove from cache
-        if (array_key_exists($this->sid, $this->findByPkCache)) {
-            unset($this->findByPkCache[$this->sid]);
+        if (array_key_exists($this->sid, self::$findByPkCache)) {
+            unset(self::$findByPkCache[$this->sid]);
         }
-
         return true;
     }
 
@@ -357,7 +355,11 @@ class Survey extends LSActiveRecord implements PermissionInterface
         } elseif (isset($this->languagesettings[$this->language])) {
             return $this->languagesettings[$this->language];
         } else {
-            throw new Exception('Selected Surveys language not found');
+            $errorString = 'Survey language not found - looked for ' . App()->language;
+            if ($this->language != App()->language) {
+                $errorString .= ' and ' . $this->language;
+            }
+            throw new Exception($errorString);
         }
     }
 
@@ -641,6 +643,9 @@ class Survey extends LSActiveRecord implements PermissionInterface
      */
     public function getAdditionalLanguages()
     {
+        if (is_null($this->additional_languages)) {
+            return [];
+        }
         $sLanguages = trim($this->additional_languages);
         if ($sLanguages != '') {
             return explode(' ', $sLanguages);
@@ -671,7 +676,9 @@ class Survey extends LSActiveRecord implements PermissionInterface
     public function getTokenAttributes()
     {
         $attdescriptiondata = decodeTokenAttributes($this->attributedescriptions ?? '');
-
+        if (!is_array(reset($attdescriptiondata))) {
+            $attdescriptiondata = null;
+        }
         // Catches malformed data
         if ($attdescriptiondata && strpos((string) key(reset($attdescriptiondata)), 'attribute_') === false) {
             // don't know why yet but this breaks normal tokenAttributes functionning
@@ -956,7 +963,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
             $survey->sid = intval(randomChars(6, '123456789'));
             /* If it's happen : there are an issue in server … (or in randomChars function …) */
             if ($attempts > 50) {
-                throw new Exception("Unable to get a valid survey id after 50 attempts");
+                throw new Exception("Unable to get a valid survey ID after 50 attempts");
             }
         }
 
@@ -990,12 +997,12 @@ class Survey extends LSActiveRecord implements PermissionInterface
     {
         /** @var self $model */
         if (empty($condition) && empty($params)) {
-            if (array_key_exists($pk, $this->findByPkCache)) {
-                return $this->findByPkCache[$pk];
+            if (array_key_exists($pk, self::$findByPkCache)) {
+                return self::$findByPkCache[$pk];
             } else {
                 $model = parent::findByPk($pk, $condition, $params);
                 if (!is_null($model)) {
-                    $this->findByPkCache[$pk] = $model;
+                    self::$findByPkCache[$pk] = $model;
                 }
                 return $model;
             }
@@ -1007,9 +1014,9 @@ class Survey extends LSActiveRecord implements PermissionInterface
     /**
      * findByPk uses a cache to store a result. Use this method to force clearing that cache.
      */
-    public function resetCache()
+    public function resetCache(): void
     {
-        $this->findByPkCache = array();
+        self::$findByPkCache = [];
     }
 
     /**
@@ -1102,19 +1109,13 @@ class Survey extends LSActiveRecord implements PermissionInterface
         if ($this->active == 'N') {
             return 'inactive';
         }
-        if ($this->expires != '' || $this->startdate != '') {
-            // Time adjust
-            $sNow    = date("Y-m-d H:i:s", strtotime((string) Yii::app()->getConfig('timeadjust'), strtotime(date("Y-m-d H:i:s"))));
-            $sStop   = ($this->expires != '') ? date("Y-m-d H:i:s", strtotime((string) Yii::app()->getConfig('timeadjust'), strtotime($this->expires))) : null;
-            $sStart  = ($this->startdate != '') ? date("Y-m-d H:i:s", strtotime((string) Yii::app()->getConfig('timeadjust'), strtotime($this->startdate))) : null;
-
-            // Time comparison
-            $oNow   = new DateTime($sNow);
-            $oStop  = empty($sStop) ? null : new DateTime($sStop);
-            $oStart = empty($sStart) ? null : new DateTime($sStart);
-
-            $bExpired = (!is_null($sStop) && $oStop < $oNow);
-            $bWillRun = (!is_null($sStart) && $oStart > $oNow);
+        if (!empty($this->expires) || !empty($this->startdate)) {
+            // Create DateTime for now, stop and start for date comparison
+            $oNow = self::shiftedDateTime("now");
+            $oStop = self::shiftedDateTime($this->expires);
+            $oStart = self::shiftedDateTime($this->startdate);
+            $bExpired = (!is_null($oStop) && $oStop < $oNow);
+            $bWillRun = (!is_null($oStart) && $oStart > $oNow);
 
             if ($bExpired) {
                 return 'expired';
@@ -1123,7 +1124,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
                 // And what happen if $sStop < $sStart : must return something other ?
                 return 'willRun';
             }
-            if (!is_null($sStop)) {
+            if (!is_null($oStop)) {
                 return 'willExpire';
             }
         }
@@ -1138,12 +1139,9 @@ class Survey extends LSActiveRecord implements PermissionInterface
     public function getIsDateExpired()
     {
         if (!empty($this->expires)) {
-            $sNow = date("Y-m-d H:i:s", strtotime((string) Yii::app()->getConfig('timeadjust'), strtotime(date("Y-m-d H:i:s"))));
-            $sStop = ($this->expires != '') ? date("Y-m-d H:i:s", strtotime((string) Yii::app()->getConfig('timeadjust'), strtotime($this->expires))) : $sNow;
-
-            $oNow = new DateTime($sNow);
-            $oStop = new DateTime($sStop);
-            return $oStop < $oNow;
+            $oNow = self::shiftedDateTime("now");
+            $oStop = self::shiftedDateTime($this->expires);
+            return !empty($oStop) && $oStop < $oNow;
         }
         return false;
     }
@@ -1160,23 +1158,17 @@ class Survey extends LSActiveRecord implements PermissionInterface
         // If the survey is not active, no date test is needed
         if ($this->active === 'N') {
             $running = '<a href="' . App()->createUrl('/surveyAdministration/view/surveyid/' . $this->sid) . '" class="survey-state" data-bs-toggle="tooltip" title="' . gT('Inactive') . '"><i class="ri-stop-fill text-secondary me-1"></i>' . gT('Inactive') . '</a>';
-        } elseif ($this->expires != '' || $this->startdate != '') {
-            // If it's active, then we check if not expired
-            // Time adjust
-            $sNow    = date("Y-m-d H:i:s", strtotime((string) Yii::app()->getConfig('timeadjust'), strtotime(date("Y-m-d H:i:s"))));
-            $sStop   = ($this->expires != '') ? date("Y-m-d H:i:s", strtotime((string) Yii::app()->getConfig('timeadjust'), strtotime($this->expires))) : null;
-            $sStart  = ($this->startdate != '') ? date("Y-m-d H:i:s", strtotime((string) Yii::app()->getConfig('timeadjust'), strtotime($this->startdate))) : null;
+        } elseif (!empty($this->expires) || !empty($this->startdate)) {
+            // Create DateTime for now, stop and start for date comparison
+            $oNow = self::shiftedDateTime("now");
+            $oStop = self::shiftedDateTime($this->expires);
+            $oStart = self::shiftedDateTime($this->startdate);
 
-            // Time comparaison
-            $oNow   = new DateTime($sNow);
-            $oStop  = new DateTime($sStop);
-            $oStart = new DateTime($sStart);
+            $bExpired = (!is_null($oStop) && $oStop < $oNow);
+            $bWillRun = (!is_null($oStart) && $oStart > $oNow);
 
-            $bExpired = (!is_null($sStop) && $oStop < $oNow);
-            $bWillRun = (!is_null($sStart) && $oStart > $oNow);
-
-            $sStop = $sStop != null ? convertToGlobalSettingFormat($sStop) : null;
-            $sStart = convertToGlobalSettingFormat($sStart);
+            $sStop = !is_null($oStop) ? convertToGlobalSettingFormat($oStop->format('Y-m-d H:i:s')) : "";
+            $sStart = !is_null($oStart) ? convertToGlobalSettingFormat($oStart->format('Y-m-d H:i:s')) : "";
 
             // Icon generaton (for CGridView)
             $sIconRunNoEx = '<a href="' . App()->createUrl('/surveyAdministration/view/surveyid/' . $this->sid) . '" class="survey-state" data-bs-toggle="tooltip" title="' . gT('End: Never') . '"><i class="ri-play-fill text-primary me-1"></i>' . gT('End: Never') . '</a>';
@@ -1189,7 +1181,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
                 // Expire prior to will start
                 $running = ($bExpired) ? $sIconExpired : $sIconFuture;
             } else {
-                if (is_null($sStop)) {
+                if ($sStop === "") {
                     $running = $sIconRunNoEx;
                 } else {
                     $running = $sIconRunning;
@@ -1528,15 +1520,35 @@ class Survey extends LSActiveRecord implements PermissionInterface
     }
 
     /**
+     * Search
+     *
+     * $options = [
+     *  'pageSize' => 10,
+     *  'currentPage' => 1
+     * ];
+     *
+     * @param array $options
      * @return CActiveDataProvider
      */
-    public function search()
+    public function search($options = [])
     {
+        $options = $options ?? [];
         // Flush cache to get proper counts for partial/complete/total responses
         if (method_exists(Yii::app()->cache, 'flush')) {
             Yii::app()->cache->flush();
         }
-        $pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
+        $pagination = [
+            'pageSize' => Yii::app()->user->getState(
+                'pageSize',
+                Yii::app()->params['defaultPageSize']
+            )
+        ];
+        if (isset($options['pageSize'])) {
+            $pagination['pageSize'] = $options['pageSize'];
+        }
+        if (isset($options['currentPage'])) {
+            $pagination['currentPage'] = $options['currentPage'];
+        }
 
         $sort = new CSort();
         $sort->attributes = array(
@@ -1636,15 +1648,18 @@ class Survey extends LSActiveRecord implements PermissionInterface
                     $criteria->addCondition("t.startdate >'$sNow'");
                 }
 
+                // Filter for surveys that are running now
+                // Must be active, started and not expired
                 if ($this->active == "R") {
                     $criteria->compare("t.active", 'Y');
-                    $subCriteria1 = new CDbCriteria();
-                    $subCriteria2 = new CDbCriteria();
-                    $subCriteria1->addCondition("'{$sNow}' > t.startdate", 'AND');
-                    $subCriteria1->addCondition("t.startdate IS NULL", 'OR');
-                    $subCriteria2->addCondition("t.expires IS NULL", 'AND');
-                    $subCriteria2->addCondition("'{$sNow}' < t.expires", 'OR');
-                    $criteria->mergeWith($subCriteria1);
+                    $startedCriteria = new CDbCriteria();
+                    $startedCriteria->addCondition("'{$sNow}' > t.startdate");
+                    $startedCriteria->addCondition('t.startdate IS NULL', "OR");
+                    $notExpiredCriteria = new CDbCriteria();
+                    $notExpiredCriteria->addCondition("'{$sNow}' < t.expires");
+                    $notExpiredCriteria->addCondition('t.expires IS NULL', "OR");
+                    $criteria->mergeWith($startedCriteria);
+                    $criteria->mergeWith($notExpiredCriteria);
                 }
             }
         }
@@ -1659,9 +1674,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
         $dataProvider = new CActiveDataProvider('Survey', array(
             'sort' => $sort,
             'criteria' => $criteria,
-            'pagination' => array(
-                'pageSize' => $pageSize,
-            ),
+            'pagination' => $pagination,
         ));
 
         $dataProvider->setTotalItemCount($this->count($criteria));
@@ -1826,8 +1839,9 @@ class Survey extends LSActiveRecord implements PermissionInterface
 
     /**
      * Method to make an approximation on how long a survey will last
-     * @deprecated, unused since 3.X
      * Approx is 3 questions each minute.
+     *
+     * @deprecated Unused since 3.X
      * @return double
      */
     public function calculateEstimatedTime()
@@ -1992,7 +2006,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
     }
 
     /**
-     * @return integer
+     * @return int
      */
     public function getCountTotalQuestions()
     {
@@ -2003,7 +2017,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
 
     /**
      * Get the coutn of questions that do not need input (skipping text-display etc.)
-     * @return integer
+     * @return int
      */
     public function getCountNoInputQuestions()
     {
@@ -2018,7 +2032,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
 
     /**
      * Get the coutn of questions that need input (skipping text-display etc.)
-     * @return integer
+     * @return int
      */
     public function getCountInputQuestions()
     {
@@ -2060,7 +2074,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
     }
 
     /**
-     * Get the final label for survey id
+     * Get the final label for survey ID
      * @param string $dataSecurityNoticeLabel current label
      * @param integer $surveyId unused
      * @return string
@@ -2075,6 +2089,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
             '/subviews/privacy/privacy_datasecurity_notice_label.twig',
             [
                 'dataSecurityNoticeLabel' => $dataSecurityNoticeLabel,
+                'sid' => $surveyId,
             ]
         );
     }
@@ -2108,7 +2123,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
     }
 
     /**
-     * @param ? $tmp
+     * @param array $tmp
      */
     public function setTokenEncryptionOptions($options)
     {
@@ -2213,7 +2228,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
                 'import' => false,
                 'export' => false,
                 'title' => gT("Survey"),
-                'description' => gT("Permission on survey (delete). Read permission is used to give access to this group."),
+                'description' => gT("Permission for survey access. Read permission is a requirement to give any further permission to a survey."),
                 'img' => ' ri-list-check',
             ),
             'surveyactivation' => array(
@@ -2321,7 +2336,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
      * If $preferShortUrl is true (default), and an alias is available, it returns the short
      * version of the URL.
      * @param string|null $language
-     * @param array<string,mixed> $params   Optional parameters to include in the URL.
+     * @param array|string|mixed $params   Optional parameters to include in the URL.
      * @param bool $preferShortUrl  If true, tries to return the short URL instead of the traditional one.
      * @return string
      */
@@ -2397,5 +2412,19 @@ class Survey extends LSActiveRecord implements PermissionInterface
         if ($this->expires < $this->startdate) {
             $this->addError('expires', gT("Expiration date can't be lower than the start date", 'unescaped'));
         }
+    }
+
+    /**
+     * Get a dateime DB and return DateTime or null adjusted
+     * @var string|null $datetime in PHP datetime formats
+     * @return \DateTime|null
+     */
+    private static function shiftedDateTime($datetime)
+    {
+        if (is_string($datetime) && strtotime($datetime)) {
+            $datetime = dateShift($datetime, "Y-m-d H:i:s", strval(Yii::app()->getConfig('timeadjust')));
+            return new DateTime($datetime);
+        }
+        return null;
     }
 }

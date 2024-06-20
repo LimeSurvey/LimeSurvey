@@ -20,6 +20,8 @@
 require_once(dirname(dirname(__FILE__)) . '/helpers/globals.php');
 require_once __DIR__ . '/Traits/LSApplicationTrait.php';
 
+use LimeSurvey\Yii\Application\AppErrorHandler;
+
 /**
 * Implements global config
 * @property CLogRouter $log Log router component.
@@ -401,37 +403,18 @@ class LSYii_Application extends CWebApplication
      */
     public function onException($event)
     {
-        if (!Yii::app() instanceof CWebApplication) {
-            /* Don't update for CLI */
-            return;
-        }
-        if (defined('PHP_ENV') && PHP_ENV == 'test') {
-            // If run from phpunit, die with exception message.
-            die($event->exception->getMessage());
-        }
-        if (!$this->dbVersion) {
-            /* Not installed or DB broken or to old */
-            return;
-        }
-        if ($this->dbVersion < 200) {
-            /* Activate since DBVersion for 2.50 and up (i know it include previous line, but stay clear) */
-            return;
-        }
-        // Handle specific exception cases, like "user friendly" exceptions and exceptions on ajax requests
-        $this->handleSpecificExceptions($event->exception);
-        $statusCode = $event->exception->statusCode ?? null; // Needed ?
-        if (Yii::app()->getConfig('debug') > 1) {
-            /* Can restrict to admin ? */
-            /* debug ro 2 : always send Yii debug even 404 */
-            return;
-        }
-        if (Yii::app()->getConfig('debug') > 0 && $statusCode != '404') {
-            /* debug is set and not a 404 : always send Yii debug*/
-            return;
-        }
-        Yii::app()->setComponent('errorHandler', array(
-            'errorAction' => 'surveys/error',
-        ));
+        (new AppErrorHandler)->onException($this->dbVersion, $event);
+    }
+
+    /**
+     * @see http://www.yiiframework.com/doc/api/1.1/CApplication#onError-detail
+
+     * @param CErrorEvent $event
+     * @return void
+     */
+    public function onError($event)
+    {
+        (new AppErrorHandler)->onError($this->dbVersion, $event);
     }
 
     /**
@@ -584,75 +567,6 @@ class LSYii_Application extends CWebApplication
     }
 
     /**
-     * Handles specific exception cases, like "user friendly" exceptions and exceptions on ajax requests.
-     *
-     * @param CException $exception
-     * @return void
-     */
-    private function handleSpecificExceptions($exception)
-    {
-        if (
-            Yii::app()->request->isAjaxRequest &&
-            $exception instanceof CHttpException
-        ) {
-            $this->outputJsonError($exception);
-        } elseif ($exception instanceof LSUserException) {
-            $this->handleFriendlyException($exception);
-        }
-    }
-
-    /**
-     * Handles "friendly" exceptions by setting a flash message and redirecting.
-     * If the exception doesn't specify a redirect URL, the referrer is used.
-     *
-     * @param array $error
-     * @param LSUserException $exception
-     * @return void
-     */
-    private function handleFriendlyException($exception)
-    {
-        $message = "<p>" . $exception->getMessage() . "</p>" . $exception->getDetailedErrorSummary();
-        Yii::app()->setFlashMessage($message, 'error');
-        if ($exception->getRedirectUrl() != null) {
-            $redirectTo = $exception->getRedirectUrl();
-        } else {
-            $redirectTo = Yii::app()->request->urlReferrer;
-        }
-        Yii::app()->request->redirect($redirectTo);
-    }
-
-    /**
-     * Outputs an exception as JSON.
-     *
-     * @param CHttpException $exception
-     * @return void
-     */
-    private function outputJsonError($exception)
-    {
-        $outputData = [
-            'success' => false,
-            'message' => $exception->getMessage(),
-        ];
-        if ($exception instanceof LSUserException) {
-            if ($exception->getRedirectUrl() != null) {
-                $outputData['redirectTo'] = $exception->getRedirectUrl();
-            }
-            if ($exception->getNoReload() != null) {
-                $outputData['noReload'] = $exception->getNoReload();
-            }
-            // Add the detailed errors to the message, so simple handlers can just show it.
-            $outputData['message'] = "<p>" . $exception->getMessage() . "</p>". $exception->getDetailedErrorSummary();
-            // But save the "simpler" message on 'error', and the list of errors on "detailedErrors"
-            // so that more complex handlers can decide what to show.
-            $outputData['error'] = $exception->getMessage();
-            $outputData['detailedErrors'] = $exception->getDetailedErrors();
-        }
-        header('Content-Type: application/json');
-        http_response_code($exception->statusCode);
-        die(json_encode($outputData));
-    }
-
-    /**
      * Set the session after start,
      * Limited to DbHttpSession
      * @param array Application config
@@ -676,45 +590,5 @@ class LSYii_Application extends CWebApplication
         App()->getSession()->setCookieParams([
             'lifetime' => $lifetime
         ]);
-    }
-
-    /**
-     * Creates an absolute URL based on the given controller and action information.
-     * @param string $route the URL route. This should be in the format of 'ControllerID/ActionID'.
-     * @param array $params additional GET parameters (name=>value). Both the name and value will be URL-encoded.
-     * @param string $schema schema to use (e.g. http, https). If empty, the schema used for the current request will be used.
-     * @param string $ampersand the token separating name-value pairs in the URL.
-     * @return string the constructed URL
-     */
-    public function createPublicUrl($route, $params = array(), $schema = '', $ampersand = '&')
-    {
-        $sPublicUrl = $this->getPublicBaseUrl(true);
-        $sActualBaseUrl = Yii::app()->getBaseUrl(true);
-        if ($sPublicUrl !== $sActualBaseUrl) {
-            $url = parent::createAbsoluteUrl($route, $params, $schema, $ampersand);
-            if (substr((string)$url, 0, strlen((string)$sActualBaseUrl)) == $sActualBaseUrl) {
-                $url = substr((string)$url, strlen((string)$sActualBaseUrl));
-            }
-            return trim((string)$sPublicUrl, "/") . $url;
-        } else {
-            return parent::createAbsoluteUrl($route, $params, $schema, $ampersand);
-        }
-    }
-
-    /**
-     * Returns the relative URL for the application while
-     * considering if a "publicurl" config parameter is set to a valid url
-     * @param boolean $absolute whether to return an absolute URL. Defaults to false, meaning returning a relative one.
-     * @return string the relative or the configured public URL for the application
-     */
-    public function getPublicBaseUrl($absolute = false)
-    {
-        $sPublicUrl = Yii::app()->getConfig("publicurl");
-        $aPublicUrl = parse_url($sPublicUrl);
-        $baseUrl = parent::getBaseUrl($absolute);
-        if (isset($aPublicUrl['scheme']) && isset($aPublicUrl['host'])) {
-            $baseUrl = $sPublicUrl;
-        }
-        return $baseUrl;
     }
 }

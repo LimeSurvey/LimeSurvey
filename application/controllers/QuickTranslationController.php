@@ -346,7 +346,7 @@ class QuickTranslationController extends LSBaseController
     /**
      *
      *
-     * @param $string
+     * @param string $string
      * @return string|null
      */
     private function cleanup($string): ?string

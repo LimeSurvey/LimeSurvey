@@ -16,8 +16,8 @@ class LimeReplacementFieldsController extends LSBaseController
 {
     /**
      *
-     * @todo: document me ...
-     *
+     * action used to provide the html editor with data for the
+     * placeholder fields modal
      * @return false|string|string[]|null
      * @throws CException
      * @throws CHttpException
@@ -75,8 +75,13 @@ class LimeReplacementFieldsController extends LSBaseController
     }
 
     /**
+     * Returns array of relevant questions based on the given fieldmap
+     *
+     * @param mixed $action
      * @param integer $gid
      * @param integer $qid
+     * @param array $fieldmap
+     * @param mixed $questionType
      * @param string $surveyformat
      * @return array
      */
@@ -102,11 +107,16 @@ class LimeReplacementFieldsController extends LSBaseController
     }
 
     /**
+     * Returns true if the question should be added to the list
+     * or false if it should not
+     * depending on the passed parameters
      *
-     * @todo: document me ..
-     *
+     * @param mixed $action
      * @param integer $gid
      * @param integer $qid
+     * @param array $question
+     * @param mixed $previousQuestion
+     * @return bool|void
      */
     private function shouldAddQuestion($action, $gid, $qid, array $question, $previousQuestion)
     {
@@ -161,11 +171,18 @@ class LimeReplacementFieldsController extends LSBaseController
     }
 
     /**
+     * Updates the question list with info on
+     * previouspage (isPreviousPageQuestion).
+     * Returns the value of $isPreviousPageQuestion
      *
-     * @todo: document me
-     *
+     * @param mixed $action
      * @param integer $gid
+     * @param array $field
+     * @param mixed $questionType
      * @param string $surveyformat
+     * @param bool $isPreviousPageQuestion
+     * @param array $questionList
+     * @return bool
      */
     private function addQuestionToList($action, $gid, array $field, $questionType, $surveyformat, $isPreviousPageQuestion, &$questionList)
     {
@@ -189,8 +206,9 @@ class LimeReplacementFieldsController extends LSBaseController
     }
 
     /**
-     *
-     * @todo: document me
+     * Returns array with relevant question data especially
+     * for limeReplacementFields view to populate the replacement field list
+     * in the html editor
      *
      * @param array $questions
      * @return array
@@ -211,9 +229,18 @@ class LimeReplacementFieldsController extends LSBaseController
             if (isset($row['subquestion2'])) {
                 $question = "[{$row['subquestion2']}] " . $question;
             }
+            $replacementCode = $this->getReplacementCodeByArray($row);
 
             $shortquestion = $row['title'] . ": " . flattenText($question);
-            $cquestions[] = array($shortquestion, $row['qid'], $row['type'], $row['fieldname'], $row['previouspage'], $row['title']);
+            $cquestions[] = array(
+                $shortquestion,
+                $row['qid'],
+                $row['type'],
+                $row['fieldname'],
+                $row['previouspage'],
+                $row['title'],
+                $replacementCode
+            );
         }
         return $cquestions;
     }
@@ -444,14 +471,14 @@ class LimeReplacementFieldsController extends LSBaseController
     }
 
     /**
+     * Returns an multidimensional array
+     * containing the replacement fields for the given fieldtype.
+     * Probably never used.
      *
-     *
-     * @todo document me ..
-     *
-     * @param $fieldtype
-     * @param null $surveyid
-     * @param null $gid
-     * @param null $qid
+     * @param mixed $fieldtype
+     * @param integer $surveyid
+     * @param integer $gid
+     * @param integer $qid
      * @return array
      */
     public function getNewTypeResponse($fieldtype, $surveyid = null, $gid = null, $qid = null)
@@ -474,16 +501,37 @@ class LimeReplacementFieldsController extends LSBaseController
     }
 
     /**
+     * Should return previous questions as a multidimensional array.
+     * [
+     *   QUESTIONCODE_SUBQUESTIONCODE = [
+     *     "type" => 'question',
+     *     "value" => 'Question text'
+     *   ],
+     *   QUESTIONCODE = [
+     *     "type" => 'question',
+     *     "value" => 'Question text'
+     *   ],
+     * ]
      *
-     * @todo: document me
+     * Most likely not used anymore.
+     * The building of the criteria has a logical error when qid is passed.
+     * if group id is passed but no question id:
+     *   -> we get all (parent) questions of the group and of the groups before.
+     * if question id is passed
+     *   -> we get all questions of the group and of the groups before
+     *      but only those with a sortorder below the ordernumber of the
+     *      current question. (This is the error)
      *
      * @param $surveyid
-     * @param null $gid
-     * @param null $qid
+     * @param integer $gid
+     * @param integer $qid
      * @return array
      */
-    private function collectQuestionReplacements($surveyid, $gid = null, $qid = null)
-    {
+    private function collectQuestionReplacements(
+        $surveyid,
+        $gid = null,
+        $qid = null
+    ) {
         $oSurvey = Survey::model()->findByPk($surveyid);
         $oCurrentQuestion = Question::model()->findByPk($qid);
         $aResult = [];
@@ -500,11 +548,20 @@ class LimeReplacementFieldsController extends LSBaseController
 
         if ($qid != null) {
             $oCriteria->with = ['group'];
-            $oCriteria->compare('group_order', '<=' . $oCurrentQuestion->group->group_order);
+            $oCriteria->compare(
+                'group_order',
+                '<=' . $oCurrentQuestion->group->group_order
+            );
             if ($oCurrentQuestion->parent_qid != 0) {
-                $oCriteria->compare('question_order', '<' . $oCurrentQuestion->parent->question_order);
+                $oCriteria->compare(
+                    'question_order',
+                    '<' . $oCurrentQuestion->parent->question_order
+                );
             } else {
-                $oCriteria->compare('question_order', '<' . $oCurrentQuestion->question_order);
+                $oCriteria->compare(
+                    'question_order',
+                    '<' . $oCurrentQuestion->question_order
+                );
             }
         }
 
@@ -546,5 +603,31 @@ class LimeReplacementFieldsController extends LSBaseController
             }
         }
         return $aResult;
+    }
+
+    /**
+     * Analyzes the question parameters and returns the replacement code
+     * for html editor "Placeholder fields"
+     * simple questions: QUESTIONCODE.shown
+     * subquestions:  QUESTIONCODE_SUBQCODE.shown
+     * other option: QUESTIONCODE_other (.shown is not working in that case)
+     * question types using scale_id: QUESTIONCODE_SUBQCODE_SCALEID.shown
+     *
+     * @param array $question
+     * @return string
+     */
+    private function getReplacementCodeByArray(array $question)
+    {
+        $replacementCode = $question['title'];
+        if (array_key_exists('aid', $question) && $question['aid'] !== '') {
+            $replacementCode = $question['title'] . '_' . $question['aid'];
+            if (array_key_exists('scale_id', $question)) {
+                $replacementCode = $replacementCode . '_' . $question['scale_id'];
+            }
+        }
+        if (strpos($replacementCode, '_other') === false) {
+            $replacementCode = $replacementCode . '.shown';
+        }
+        return $replacementCode;
     }
 }

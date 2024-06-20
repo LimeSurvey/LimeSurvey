@@ -19,7 +19,9 @@
  */
 #}
 <!-- answer_row -->
-<li id='javatbd{{ myfname }}' class='question-item answer-item checkbox-item {{ relevanceClass }}'>
+
+{# inline style used to set the flex basis based on calculation in php to prevent having to use javascript when this is very simple #}
+<li id='javatbd{{ myfname }}' class='question-item answer-item checkbox-item {{ relevanceClass }}' style="flex-basis: {{ columnWidth }}%">
     <div class="row">
         <div class="col-auto">
             <input

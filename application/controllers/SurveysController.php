@@ -126,7 +126,7 @@ class SurveysController extends LSYii_Controller
                 /* CRSF issue */
                 $title = gT('400: Bad Request');
                 $message = gT('The request could not be understood by the server due to malformed syntax.')
-                    . gT('Please do not repeat the request without modifications.');
+                    . ' ' . gT('Please do not repeat the request without modifications.');
                 break;
             case '401':
                 $title = gT('401: Unauthorized');
@@ -156,7 +156,9 @@ class SurveysController extends LSYii_Controller
         }
         $aError['type'] = $error['code'];
         $aError['error'] = $title;
-        $aError['title'] = nl2br(CHtml::encode($error['message']) ?? '');
+        if (!empty($error['message'])) {
+            $aError['title'] = ' - ' . nl2br(CHtml::encode($error['message']) ?? '');
+        }
         $aError['message'] = $message;
         $aError['contact'] = $contact;
 

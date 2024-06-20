@@ -67,7 +67,7 @@ class Update_133 extends DatabaseUpdateBase
                     $this->db->createCommand(
                         "UPDATE {{labels}} SET assessment_value=CAST([code] as int) WHERE ISNUMERIC([code])=1"
                     )->execute();
-                } catch (Exception $e) {
+                } catch (\Exception $e) {
                 };
                 // copy assessment link to message since from now on we will have HTML assignment messages
                 \alterColumn('{{assessments}}', 'link', "text", false);

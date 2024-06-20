@@ -38,7 +38,7 @@ class LimeMailer extends PHPMailer
     /* Plugin */
     const MethodPlugin = 'plugin';
 
-    /* @var null|integer $surveyId Current survey id */
+    /* @var null|integer $surveyId Current survey ID */
     public $surveyId;
     /* @var null|string $mailLanguage Current language for the mail (=language is used for language of mailer (error etc …) */
     public $mailLanguage;
@@ -110,7 +110,7 @@ class LimeMailer extends PHPMailer
     public $BodySubjectCharset = 'utf-8';
 
     /**
-     * @inheritdoc, defaultto utf-8
+     * @inheritdoc defaultto utf-8
      */
     public $CharSet = 'utf-8';
 

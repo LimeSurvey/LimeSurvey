@@ -260,8 +260,28 @@ class ConditionsAction extends SurveyCommonAction
             }
         }
 
+
         // Previous question parsing ==> building cquestions[] and canswers[]
         if ($questionscount > 0) {
+            $qids = [];
+            for ($index = 0; $index < count($theserows); $index++) {
+                if ($theserows[$index]['type'] == "1") {
+                    $qids[] = $theserows[$index]['qid'];
+                }
+            }
+            if (count($qids)) {
+                $rawQuestions = Question::model()->findAllByPk($qids);
+                $questions = [];
+                foreach ($rawQuestions as $rawQuestion) {
+                    $questions[$rawQuestion->qid] = $rawQuestion;
+                }
+                for ($index = 0; $index < count($theserows); $index++) {
+                    if ($theserows[$index]['type'] == "1") {
+                        $theserows[$index]['qObject'] = $questions[$theserows[$index]['qid']];
+                    }
+                }
+            }
+
             list($cquestions, $canswers) = $this->getCAnswersAndCQuestions($theserows);
         } //if questionscount > 0
         //END Gather Information for this question
@@ -1479,14 +1499,15 @@ class ConditionsAction extends SurveyCommonAction
                 }
                 unset($x_axis);
             } elseif ($rows['type'] == "1") {
+                /* Used to get dualscale_headerA and dualscale_headerB */
+                $attr = QuestionAttribute::model()->getQuestionAttributes($rows['qObject']);
                 //Dual scale
                 $aresult = Question::model()->with(array(
                             'questionl10ns' => array(
                                 'condition' => 'questionl10ns.language = :lang',
                                 'params' => array(':lang' => $this->language)
-                            )))->findAllByAttributes(array('parent_qid' => $rows['qid']), array('order' => 'question_order desc'));
+                            )))->findAllByAttributes(array('parent_qid' => $rows['qid']), array('order' => 'question_order ASC, scale_id ASC'));
                 foreach ($aresult as $arows) {
-                    $attr = QuestionAttribute::model()->getQuestionAttributes($rows['qid']);
                     $sLanguage = $this->language;
                     // dualscale_header are always set, but can be empty
                     $label1 = empty($attr['dualscale_headerA'][$sLanguage]) ? gT('Scale 1') : $attr['dualscale_headerA'][$sLanguage];

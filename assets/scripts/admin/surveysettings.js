@@ -168,9 +168,9 @@ $(document).on('click', '#addParameterButton', function(e){
     e.preventDefault();
     newParameter(e);
 });
-$(document).on('click', '#urlparams .surveysettings_edit_intparameter', function(e){
+$(document).on('click', '.surveysettings_edit_intparameter', function(e){
     e.preventDefault();
-    editParameter(e,$(this).closest('tr').data());
+    editParameter(e,$(this).data());
 });
 
 $(document).on('click', '#btnSaveParams', saveParameter);

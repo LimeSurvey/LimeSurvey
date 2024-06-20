@@ -56,7 +56,7 @@ class SurveyDetail implements CommandInterface
 
         if (
             !$this->authSession
-                    ->checkKey($sessionKey)
+                ->checkKey($sessionKey)
         ) {
             return $this->responseFactory
                 ->makeErrorUnauthorised();
@@ -66,15 +66,17 @@ class SurveyDetail implements CommandInterface
             ->with(
                 'languagesettings',
                 'defaultlanguage',
+                'owner',
+                'surveygroup',
                 'groups',
                 'groups.questiongroupl10ns',
                 'groups.questions',
                 'groups.questions.questionl10ns',
                 'groups.questions.questionattributes',
                 'groups.questions.answers',
+                'groups.questions.answers.answerl10ns',
                 'groups.questions.subquestions',
                 'groups.questions.subquestions.questionl10ns',
-                'groups.questions.subquestions.questionattributes',
                 'groups.questions.subquestions.questionattributes',
                 'groups.questions.subquestions.answers'
             )->findByPk($surveyId);
@@ -88,6 +90,10 @@ class SurveyDetail implements CommandInterface
                 )->toArray()
             );
         }
+
+        //set real survey options with inheritance to get value of "inherit" attribute from db
+        // for example get inherit template value  $surveyModel->options->template
+        $surveyModel->setOptionsFromDatabase();
 
         $survey = $this->transformerOutputSurveyDetail
             ->transform($surveyModel);

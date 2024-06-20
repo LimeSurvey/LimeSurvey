@@ -174,7 +174,11 @@ class Themes extends SurveyCommonAction
             App()->getController()->forward("/surveyAdministration/uploadimagefile/");
             App()->end();
         }
-        $sTemplateName = trim(App()->request->getPost('templatename'));
+        $sTemplateName = trim(App()->request->getPost('templatename', ''));
+        // This controller has several actions. Even actions that manage multiple subactions.
+        // In case you are uploading a template, the templatename does not exist in the POST.
+        // It's not going to fail, but it's checking for a permission with an empty templatename.
+        // Surely it works as expected, but it would be nice if the code was clearer.
         if (Permission::model()->hasGlobalPermission('templates', 'import') || Permission::model()->hasTemplatePermission($sTemplateName)) {
             App()->loadHelper('admin/template');
             // NB: lid = label id
@@ -616,7 +620,7 @@ JAVASCRIPT
     public function templatefiledelete()
     {
         if (Permission::model()->hasGlobalPermission('templates', 'update')) {
-            $sTemplateName   = Template::templateNameFilter(trim(App()->request->getPost('templatename')));
+            $sTemplateName   = Template::templateNameFilter(trim(App()->request->getPost('templatename', '')));
             $oEditedTemplate = Template::getInstance($sTemplateName);
             $templatedir     = $oEditedTemplate->viewPath;
             $sPostedFiletype = CHtml::decode(App()->request->getPost('filetype'));
@@ -813,7 +817,11 @@ JAVASCRIPT
 
         if (Permission::model()->hasGlobalPermission('templates', 'delete')) {
             // First we check that the theme is really broken
-            $aBrokenThemes = Template::getBrokenThemes();
+            $aBrokenThemes = [];
+            $aTemplatesWithNoDB = TemplateConfig::getTemplatesWithNoDb();
+            if (!empty($aTemplatesWithNoDB['invalid'])) {
+                $aBrokenThemes = $aTemplatesWithNoDB['invalid'];
+            }
             $templatename  = sanitize_dirname($templatename);
             if (array_key_exists($templatename, $aBrokenThemes)) {
                 if (rmdirr(Yii::app()->getConfig('userthemerootdir') . "/" . $templatename)) {
@@ -887,7 +895,7 @@ JAVASCRIPT
             $action               = returnGlobal('action');
             $editfile             = returnGlobal('editfile');
             $relativePathEditfile = returnGlobal('relativePathEditfile');
-            $sTemplateName        = Template::templateNameFilter(trim(App()->request->getPost('templatename')));
+            $sTemplateName        = Template::templateNameFilter(trim(App()->request->getPost('templatename', '')));
             $screenname           = returnGlobal('screenname');
             $oEditedTemplate      = Template::model()->getTemplateConfiguration($sTemplateName, null, null, true)->prepareTemplateRendering($sTemplateName);
 
@@ -1090,7 +1098,7 @@ JAVASCRIPT
      * @param string $screenname
      * @param string $editfile
      * @param bool $showsummary
-     * @return
+     * @return void
      */
     protected function initialise($templatename, $screenname, $editfile, $showsummary = true)
     {

@@ -80,6 +80,11 @@ class RenderMultipleChoice extends QuestionBaseRenderer
             $otherAdded = true;
         }
 
+        // enforce limit of 16 columns, which is a hard limit for the current layout design
+        if ($this->iNbCols > 16) {
+            $this->iNbCols = 16;
+        }
+        $columnWidth = 100 / $this->iNbCols;
         $checkconditionFunction = "checkconditions";
         /// Generate answer rows
         foreach ($this->aSubQuestions[0] as $oQuestion) {
@@ -99,8 +104,10 @@ class RenderMultipleChoice extends QuestionBaseRenderer
                 'sValue'                  => $this->setDefaultIfEmpty($this->aSurveySessionArray[$myfname], ''),
                 'relevanceClass'          => $this->getCurrentRelevecanceClass($myfname),
                 'anscount'                => $this->getQuestionCount(),
-                'iNbCols'                 => $this->iNbCols
+                'iNbCols'                 => $this->iNbCols,
+                'columnWidth'             => $columnWidth
             );
+
             if ($this->hasOther && $this->otherPosition == self::OTHER_POS_AFTER_SUBQUESTION && $this->subquestionBeforeOther == $oQuestion->title) {
                 $aRows[] = $this->getOtherRow();
                 $otherAdded = true;

@@ -37,17 +37,27 @@ class AuthSession
             }
             throw new ExceptionInvalidUser('Invalid user name or password');
         } else {
-            $this->jumpStartSession($sUsername);
-            $sSessionKey = (string) Yii::app()->securityManager->generateRandomString(32);
-            $session = new Session();
-            $session->id = $sSessionKey;
-            $session->expire = time() + (int) Yii::app()
-                ->getConfig('iSessionExpirationTime', ini_get('session.gc_maxlifetime'));
-            $session->data = $sUsername;
-            $session->save();
-
-            return $sSessionKey;
+            return ($this->createSession($sUsername))->id;
         }
+    }
+
+    /**
+     * Create session key
+     *
+     * @param string $username The username
+     * @return Session
+     */
+    public function createSession($username)
+    {
+        $this->jumpStartSession($username);
+        $sessionKey = (string) Yii::app()->securityManager
+            ->generateRandomString(32);
+        $session = new Session();
+        $session->id = $sessionKey;
+        $session->expire = time() + (60 * 60 * 24 * 7);
+        $session->data = $username;
+        $session->save();
+        return $session;
     }
 
     /**
@@ -76,7 +86,11 @@ class AuthSession
             'htmleditormode' => $aUserData['htmleditormode'],
             'templateeditormode' => $aUserData['templateeditormode'],
             'questionselectormode' => $aUserData['questionselectormode'],
-            'dateformat' => $aUserData['dateformat'],
+            // When using the REST API, data is transferred using the format
+            // YYYY-MM-DD since the browser handles formatting for display.
+            // This format is defined as '6' in
+            // insurveytranslator_helper.php / getDateFormatData()
+            'dateformat' => 6,
             'adminlang' => 'en'
         );
         foreach ($session as $k => $v) {

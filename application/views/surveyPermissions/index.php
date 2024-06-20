@@ -8,7 +8,7 @@
 /* @var $oSurveyPermissions \LimeSurvey\Models\Services\SurveyPermissions */
 
 ?>
-<div id='edit-permission' class='side-body position-relative  ls-settings-wrapper <?= getSideBodyClass(false) ?> "'>
+<div id='edit-permission' class='side-body position-relative  ls-settings-wrapper"'>
     <?php echo viewHelper::getViewTestTag('surveyPermissions'); ?>
     <h1> <?= gT("Survey permissions") ?> </h1>
     <div class="row pt-2 pb-2 align-items-center">

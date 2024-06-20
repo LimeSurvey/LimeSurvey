@@ -1,4 +1,4 @@
-<div class='side-body <?php echo getSideBodyClass(false); ?>'>
+<div class='side-body'>
     <?php echo CHtml::form(array("admin/export/sa/vvexport/surveyid/{$surveyid}"), 'post', array('id' => 'vvexport', 'class' => '')); ?>
     <div class="row">
         <div class="col-12">

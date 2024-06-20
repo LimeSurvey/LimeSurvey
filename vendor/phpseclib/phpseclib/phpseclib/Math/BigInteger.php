@@ -143,13 +143,16 @@ class BigInteger implements \JsonSerializable
                 ['PHP64', ['DefaultEngine']],
                 ['PHP32', ['DefaultEngine']]
             ];
+
             foreach ($engines as $engine) {
                 try {
                     self::setEngine($engine[0], $engine[1]);
-                    break;
+                    return;
                 } catch (\Exception $e) {
                 }
             }
+
+            throw new \UnexpectedValueException('No valid BigInteger found. This is only possible when JIT is enabled on Windows and neither the GMP or BCMath extensions are available so either disable JIT or install GMP / BCMath');
         }
     }
 

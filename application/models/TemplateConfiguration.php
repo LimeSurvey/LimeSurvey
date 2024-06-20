@@ -67,7 +67,7 @@ class TemplateConfiguration extends TemplateConfig
     /** @var array $aInstancesFromTemplateName cache for method getInstanceFromTemplateName*/
     public static $aInstancesFromTemplateName;
 
-    /** @var array $aInstancesFromTemplateName cache for method prepareTemplateRendering*/
+    /** @var array $aPreparedToRender cache for method prepareTemplateRendering*/
     public static $aPreparedToRender;
 
     /** @var boolean $bTemplateCheckResult is the template valid?*/
@@ -275,9 +275,8 @@ class TemplateConfiguration extends TemplateConfig
 
         $oTemplateConfigurationModel = TemplateConfiguration::model()->find($criteria);
 
-        // No specific template configuration for this surveygroup => create one
-        // TODO: Move to SurveyGroup creation, right now the 'lazy loading' approach is ok.
-        if (!is_a($oTemplateConfigurationModel, 'TemplateConfiguration') && $sTemplateName != null) {
+        // If the TemplateConfiguration could not be found go up the inheritance hierarchy
+        if (empty($oTemplateConfigurationModel)) {
             $oTemplateConfigurationModel = TemplateConfiguration::getInstanceFromTemplateName(
                 $sTemplateName,
                 $abstractInstance
@@ -329,7 +328,7 @@ class TemplateConfiguration extends TemplateConfig
                 $aTemplateConfigurations[$key]['sid'] = $iSurveyId;
                 $aTemplateConfigurations[$key]['template_name'] = $oAttributes['template_name'];
                 $aTemplateConfigurations[$key]['config']['options'] = isJson($oAttributes['options'])
-                    ? (array)json_decode((string) $oAttributes['options'])
+                    ? json_decode((string) $oAttributes['options'], true)
                     : $oAttributes['options'];
             }
         }
@@ -340,54 +339,23 @@ class TemplateConfiguration extends TemplateConfig
     /**
      * For a given survey, it checks if its theme have a all the needed configuration entries (survey + survey group).
      * Else, it will create it.
-     * @TODO: recursivity for survey group
      * @param int $iSurveyId
      * @return TemplateConfiguration the template configuration for the survey group
      */
     public static function checkAndcreateSurveyConfig($iSurveyId)
     {
-        //if a template name is given also check against that
         $oSurvey = Survey::model()->findByPk($iSurveyId);
-        $sTemplateName  = $oSurvey->oOptions->template;
         $iSurveyGroupId = $oSurvey->gsid;
+        // set real value from inheritance
+        $sTemplateName = $oSurvey->oOptions->template;
 
-        $criteria = new CDbCriteria();
-        $criteria->addCondition('sid=:sid');
-        $criteria->addCondition('template_name=:template_name');
-        $criteria->params = array('sid' => $iSurveyId, 'template_name' => $sTemplateName);
+        // load or create a new entry if none is found based on $iSurveyId
+        self::getInstanceFromSurveyId($iSurveyId, $sTemplateName);
 
-        $oTemplateConfigurationModel = TemplateConfiguration::model()->find($criteria);
+        // load or create a new entry if none is found based on $iSurveyGroupId
+        $oGroupTemplateConfigurationModel = self::getInstanceFromSurveyGroup($iSurveyGroupId, $sTemplateName);
 
-        // TODO: Move to SurveyGroup creation, right now the 'lazy loading' approach is ok.
-        if (!is_a($oTemplateConfigurationModel, 'TemplateConfiguration') && $sTemplateName != null) {
-            $oTemplateConfigurationModel = TemplateConfiguration::getInstanceFromTemplateName($sTemplateName);
-            $oTemplateConfigurationModel->bUseMagicInherit = false;
-            $oTemplateConfigurationModel->id = null;
-            $oTemplateConfigurationModel->isNewRecord = true;
-            $oTemplateConfigurationModel->gsid = null;
-            $oTemplateConfigurationModel->sid = $iSurveyId;
-            $oTemplateConfigurationModel->setToInherit();
-            $oTemplateConfigurationModel->save();
-        }
-
-        $criteria = new CDbCriteria();
-        $criteria->addCondition('gsid=:gsid');
-        $criteria->addCondition('template_name=:template_name');
-        $criteria->params = array('gsid' => $iSurveyGroupId, 'template_name' => $sTemplateName);
-        $oTemplateConfigurationModel = TemplateConfiguration::model()->find($criteria);
-
-        if (!is_a($oTemplateConfigurationModel, 'TemplateConfiguration') && $sTemplateName != null) {
-            $oTemplateConfigurationModel = TemplateConfiguration::getInstanceFromTemplateName($sTemplateName);
-            $oTemplateConfigurationModel->bUseMagicInherit = false;
-            $oTemplateConfigurationModel->id = null;
-            $oTemplateConfigurationModel->isNewRecord = true;
-            $oTemplateConfigurationModel->sid = null;
-            $oTemplateConfigurationModel->gsid = $iSurveyGroupId;
-            $oTemplateConfigurationModel->setToInherit();
-            $oTemplateConfigurationModel->save();
-        }
-
-        return $oTemplateConfigurationModel;
+        return $oGroupTemplateConfigurationModel;
     }
 
     /**
@@ -449,13 +417,13 @@ class TemplateConfiguration extends TemplateConfig
 
         $criteria = new CDbCriteria();
 
-        $criteria->join = 'INNER JOIN {{templates}} AS template ON ' .
+        $criteria->join = 'INNER JOIN {{templates}} AS tmpl ON ' .
             App()->db->quoteColumnName("t.template_name") .
-            ' = template.name';
-        //Don't show surveyspecifi settings on the overview
+            ' = tmpl.name';
+        //Don't show survey specific settings on the overview
         $criteria->addCondition('t.sid IS NULL');
         $criteria->addCondition('t.gsid IS NULL');
-        $criteria->addCondition('template.name IS NOT NULL');
+        $criteria->addInCondition('tmpl.name', array_keys(Template::getTemplateList()));
 
         $criteria->compare('id', $this->id);
         $criteria->compare('template_name', $this->template_name, true);
@@ -493,7 +461,7 @@ class TemplateConfiguration extends TemplateConfig
         $criteria->together = true;
         //Don't show surveyspecifi settings on the overview
         $criteria->addCondition('t.sid IS NULL');
-        $criteria->addCondition('template.name IS NOT NULL');
+        $criteria->addInCondition('template.name', array_keys(Template::getTemplateList()));
 
         if ($gsid !== null) {
             /* Group configuration */
@@ -636,7 +604,7 @@ class TemplateConfiguration extends TemplateConfig
             $this->bTemplateCheckResult = true;
             if (
                 !is_object($this->template) ||
-                (is_object($this->template) && !Template::checkTemplateXML($this->template->name, $this->template->folder))
+                (is_object($this->template) && !Template::checkTemplateXML($this->template))
             ) {
                 $this->bTemplateCheckResult = false;
             }
@@ -645,7 +613,7 @@ class TemplateConfiguration extends TemplateConfig
     }
 
     /**
-     * @todo document me
+     * Sets bUseMagicInherit sTemplate isStandard and path of the theme
      *
      * @param string $sTemplateName
      * @param string $iSurveyId
@@ -674,7 +642,7 @@ class TemplateConfiguration extends TemplateConfig
     public function addFileReplacement($sFile, $sType)
     {
         $sField = 'files_' . $sType;
-        $oFiles = (array) json_decode((string) $this->$sField);
+        $oFiles = json_decode((string) $this->$sField, true);
 
         $oFiles['replace'][] = $sFile;
 
@@ -1014,7 +982,7 @@ class TemplateConfiguration extends TemplateConfig
             foreach ($fileList as $file) {
                 $imageInfo = $this->getImageInfo($basePath . $file['name'], $pathPrefix);
                 if ($imageInfo) {
-                    $aData['imageFileList'][] = array_merge(
+                    $aData['imageFileList'][$imageInfo['filepath']] = array_merge(
                         [
                             'group' => $category->title,
                         ],
@@ -1028,7 +996,7 @@ class TemplateConfiguration extends TemplateConfig
     }
 
     /**
-     * @todo document me
+     * Prepares the rendering of the custom options.js and options.twig that can be used in every theme
      *
      * @return mixed
      */
@@ -1104,7 +1072,7 @@ class TemplateConfiguration extends TemplateConfig
                     if ($action == $sAction) {
                         // Specific inheritance of one of the value of the json array
                         if ($aFileList[0] == 'inherit') {
-                            $aParentjFiles = (array) json_decode((string) $oTemplate->getParentConfiguration->$sField);
+                            $aParentjFiles = json_decode((string) $oTemplate->getParentConfiguration->$sField, true);
                             $aFileList = $aParentjFiles[$action];
                         }
 
@@ -1315,7 +1283,7 @@ class TemplateConfiguration extends TemplateConfig
      */
     protected function getOptionKey($key)
     {
-        $aOptions = (array) json_decode($this->options);
+        $aOptions = json_decode($this->options, true);
         if (isset($aOptions[$key])) {
             $value = $aOptions[$key];
             if ($value === 'inherit') {
@@ -1362,7 +1330,7 @@ class TemplateConfiguration extends TemplateConfig
         $this->aFrameworkAssetsToReplace[$sType] = array();
 
         $sFieldName  = 'cssframework_' . $sType;
-        $aFieldValue = (array) json_decode((string) $this->$sFieldName);
+        $aFieldValue = json_decode((string) $this->$sFieldName, true);
 
         if (!empty($aFieldValue) && !empty($aFieldValue['replace'])) {
             $this->aFrameworkAssetsToReplace[$sType] = (array) $aFieldValue['replace'];
@@ -1632,7 +1600,7 @@ class TemplateConfiguration extends TemplateConfig
     }
 
     /**
-     * @todo document me
+     * Returns the html to render the previewimage of the template
      * @return array|mixed|string|null
      */
     public function getPreview()
@@ -1673,25 +1641,10 @@ class TemplateConfiguration extends TemplateConfig
     public function prepareTemplateRendering($sTemplateName = '', $iSurveyId = '', $bUseMagicInherit = true)
     {
         if (!empty($sTemplateName) && !empty($iSurveyId)) {
-            if (!empty(self::$aPreparedToRender[$sTemplateName])) {
-                if (!empty(self::$aPreparedToRender[$sTemplateName][$iSurveyId])) {
-                    if (!empty(self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit])) {
-                        return self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit];
-                    } else {
-                        /** @psalm-supress InvalidArrayOffset */
-                        self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit] = array();
-                    }
-                } else {
-                    self::$aPreparedToRender[$sTemplateName][$iSurveyId] = array();
-                    /** @psalm-suppress InvalidArrayOffset */
-                    self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit] = array();
-                }
-            } else {
-                self::$aPreparedToRender = array();
-                self::$aPreparedToRender[$sTemplateName][$iSurveyId] = array();
-                /** @psalm-suppress InvalidArrayOffset */
-                self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit] = array();
+            if (!empty(self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit])) {
+                return self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit];
             }
+            self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit] = [];
         }
 
         $this->setBasics($sTemplateName, $iSurveyId, $bUseMagicInherit);
