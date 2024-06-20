@@ -2029,7 +2029,6 @@ class ExpressionManager
                 if (count($onpageJsVarsUsed) > 0 && !$staticReplacement) {
                     $idName = "LEMtailor_Q_" . $questionNum . "_" . $this->substitutionNum;
                     $resolvedParts[] = "<span id='" . $idName . "'>" . $resolvedPart . "</span>";
-                    $this->substitutionVars[$idName] = 1;
                     $this->substitutionInfo[] = array(
                         'questionNum' => $questionNum,
                         'num' => $this->substitutionNum,
@@ -2222,7 +2221,12 @@ class ExpressionManager
                                         }
                                         break;
                                     default:
-                                        $result = call_user_func($funcName, $params[0], $params[1]);
+                                        try {
+                                            $result = call_user_func($funcName, $params[0], $params[1]);
+                                        } catch (\Throwable $e) {
+                                            $this->RDP_AddError($e->getMessage(), $funcNameToken);
+                                            return false;
+                                        }
                                         break;
                                 }
                             }

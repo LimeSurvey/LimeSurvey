@@ -133,8 +133,7 @@
                 </optgroup>
             </dropdownoptions>
         </font>
-        <cssframework type="dropdown" category="Simple options" width="12" title="Variations" parent="cssframework">
-            Apple
+        <cssframework type="dropdown" category="Simple options" width="12" title="Variations" parent="cssframework">Apple
             <dropdownoptions>
                 <optgroup>
                     <option data-value="css/variations/theme_apple.css" value="apple">Apple</option>

@@ -6,7 +6,7 @@
 /** @var string $sNewSurveyTableName */
 
 ?>
-<div class='side-body stop-survey-body <?php echo getSideBodyClass(false); ?>'>
+<div class='side-body stop-survey-body'>
     <div class="row">
         <div class="col-6 content-right">
             <h2>

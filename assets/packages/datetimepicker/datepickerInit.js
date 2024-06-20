@@ -105,9 +105,9 @@ function initDatePicker(element, locale, dateFormat) {
     locale = getValueFromConfigObject(options, 'locale', locale);
     let config = getConfig(options, locale,dateFormat);
     let constName = 'picker_' + element.id;
-
+    let elementDate = element.value;
     pickers[constName] = new tempusDominus.TempusDominus(element, config);
-    setDatePickerFormat(pickers[constName], dateFormat, element.value);
+    setDatePickerFormat(pickers[constName], dateFormat, elementDate);
     attachCalendarIconToDatepicker(options);
     if(getValueFromConfigObject(options, 'allowinputtoggle', false)) {
         fixAllowInputToggle(element.id);

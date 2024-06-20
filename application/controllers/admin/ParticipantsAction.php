@@ -1059,7 +1059,7 @@ class ParticipantsAction extends SurveyCommonAction
                 }
                 if ($thisduplicate == 1) {
                     $dupfound = true;
-                    $duplicatelist[] = $writearray['firstname'] . " " . $writearray['lastname'] . " (" . $writearray['email'] . ")";
+                    $duplicatelist[] = CHtml::encode($writearray['firstname'] . " " . $writearray['lastname'] . " (" . $writearray['email'] . ")");
                 }
 
                 //Checking the email address is in a valid format
@@ -1071,7 +1071,7 @@ class ParticipantsAction extends SurveyCommonAction
                     $sEmailaddress = $aEmailAddresses[0];
                     if (!validateEmailAddress($sEmailaddress)) {
                         $invalidemail = true;
-                        $invalidemaillist[] = $line[0] . " " . $line[1] . " (" . $line[2] . ")";
+                        $invalidemaillist[] = CHtml::encode($line[0] . " " . $line[1] . " (" . $line[2] . ")");
                     }
                 }
                 if (!$dupfound && !$invalidemail) {
@@ -1289,7 +1289,7 @@ class ParticipantsAction extends SurveyCommonAction
      */
     public function blacklistControl()
     {
-        $title = gT("Blacklist settings");
+        $title = gT("Blocklist settings");
         $aData = array(
             'blacklistallsurveys' => Yii::app()->getConfig('blacklistallsurveys'),
             'blacklistnewsurveys' => Yii::app()->getConfig('blacklistnewsurveys'),
@@ -1306,7 +1306,7 @@ class ParticipantsAction extends SurveyCommonAction
     }
 
     /**
-     * Stores the blacklist setting to the database
+     * Stores the blocklist setting to the database
      * @return void
      */
     public function storeBlacklistValues()
@@ -1334,12 +1334,12 @@ class ParticipantsAction extends SurveyCommonAction
                 $stg->save();
             }
         }
-        Yii::app()->setFlashMessage(gT('Blacklist settings were saved.'), 'success');
+        Yii::app()->setFlashMessage(gT('Blocklist settings were saved.'), 'success');
         Yii::app()->getController()->redirect(array('admin/participants/sa/blacklistControl'));
     }
 
     /**
-     * AJAX Method to change the blacklist status of a participant
+     * AJAX Method to change the blocklist status of a participant
      * Requires POST with 'participant_id' (varchar) and 'blacklist' (boolean)
      * Echos JSON-encoded array with 'success' (boolean) and 'newValue' ('Y' || 'N')
      * @return void
@@ -1441,23 +1441,23 @@ class ParticipantsAction extends SurveyCommonAction
         $encrypted = Yii::app()->request->getPost('encrypted');
         $encrypted_value = $encrypted ? 'Y' : 'N';
         $attributeName = ParticipantAttributeName::model()->findByPk($attributeId);
-        $sEncryptedBeforeChange = $attributeName->encrypted;
+        $encryptedBeforeChange = $attributeName->isEncrypted();
         $attributeName->encrypted = $encrypted_value;
-        $sEncryptedAfterChange = $attributeName->encrypted;
+        $encryptedAfterChange = $attributeName->isEncrypted();
         $sDefaultname = $attributeName->defaultname;
 
         // encryption/decryption MUST be done in a one synchronous step, either all succeeded or none
         $oDB = Yii::app()->db;
         $oTransaction = $oDB->beginTransaction();
         try {
-            if ($attributeName->core_attribute == 'Y') {
+            if ($attributeName->isCoreAttribute()) {
                 // core participant attributes
                 $oParticipants = Participant::model()->findAll();
                 foreach ($oParticipants as $participant) {
                     $aUpdateData = array();
-                    if ($sEncryptedBeforeChange == 'Y' && $sEncryptedAfterChange == 'N') {
+                    if ($encryptedBeforeChange && !$encryptedAfterChange) {
                         $aUpdateData[$sDefaultname] = LSActiveRecord::decryptSingle($participant->$sDefaultname);
-                    } elseif ($sEncryptedBeforeChange == 'N' && $sEncryptedAfterChange == 'Y') {
+                    } elseif (!$encryptedBeforeChange && $encryptedAfterChange) {
                         $aUpdateData[$sDefaultname] = LSActiveRecord::encryptSingle($participant->$sDefaultname);
                     }
                     if (!empty($aUpdateData)) {
@@ -1472,9 +1472,9 @@ class ParticipantsAction extends SurveyCommonAction
                 );
                 foreach ($oAttributes as $attribute) {
                     $aUpdateData = array();
-                    if ($sEncryptedBeforeChange == 'Y' && $sEncryptedAfterChange == 'N') {
+                    if ($encryptedBeforeChange && !$encryptedAfterChange) {
                         $aUpdateData['value'] = LSActiveRecord::decryptSingle($attribute->value);
-                    } elseif ($sEncryptedBeforeChange == 'N' && $sEncryptedAfterChange == 'Y') {
+                    } elseif (!$encryptedBeforeChange && $encryptedAfterChange) {
                         $aUpdateData['value'] = LSActiveRecord::encryptSingle($attribute->value);
                     }
                     if (!empty($aUpdateData) && $aUpdateData['value'] !== null) {
@@ -2098,7 +2098,7 @@ class ParticipantsAction extends SurveyCommonAction
      * Receives an ajax call containing the participant id in the fourth segment of the url
      * Supplies list of survey links - surveys of which this participant is on the tokens table
      * URL: [localurl]/limesurvey/admin/participants/getSurveyInfoJson/pid/[participant_id]
-     * Echoes json data containing linked survey information (Survey name, survey id, token_id and date_added)
+     * Echoes json data containing linked survey information (Survey name, survey ID, token_id and date_added)
      * @return void
      * @todo Where is this called from?
      */
@@ -2559,7 +2559,7 @@ class ParticipantsAction extends SurveyCommonAction
         }
         if ($response['blacklistskipped'] > 0) {
             echo "<p>";
-            printf(gT("%s entries were skipped because they are blacklisted"), "<span class='badge rounded-pill bg-danger'>" . $response['blacklistskipped'] . "</span>");
+            printf(gT("%s entries were skipped because they are blocklisted"), "<span class='badge rounded-pill bg-danger'>" . $response['blacklistskipped'] . "</span>");
             echo "</p>";
         }
         if ($response['overwriteauto'] == "true" || $response['overwriteman'] == "true") {

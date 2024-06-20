@@ -13,7 +13,7 @@ echo viewHelper::getViewTestTag('statisticsIndex');
 <!-- Javascript variables  -->
 <?php $this->renderPartial('/admin/export/statistics_subviews/_statistics_view_scripts', array('sStatisticsLanguage' => $sStatisticsLanguage, 'surveyid' => $surveyid, 'showtextinline' => $showtextinline)); ?>
 <?php echo CHtml::form(array("admin/statistics/sa/index/surveyid/{$surveyid}/"), 'post', array('name' => 'generate-statistics', 'class' => '', 'id' => 'generate-statistics')); ?>
-<div id='statisticsview' class='side-body <?php echo getSideBodyClass(false); ?>'>
+<div id='statisticsview' class='side-body'>
     <div class="h1 d-print-block d-none text-center"><?php echo flattenText($oSurvey->defaultlanguage->surveyls_title, 1); ?></div>
     <div class="row d-print-none">
         <div class="col-12">
@@ -36,6 +36,7 @@ echo viewHelper::getViewTestTag('statisticsIndex');
             [
                 'id' => 'general-filters-item',
                 'title' => 'General filters',
+                'open' => $filterchoice_state == '' && empty($summary),
                 'content' => $this->renderPartial(
                     '/admin/export/statistics_subviews/_general_filters',
                     array(
@@ -56,6 +57,7 @@ echo viewHelper::getViewTestTag('statisticsIndex');
             [
                 'id' => 'response-filters-item',
                 'title' => 'Response filters',
+                'open' => $filterchoice_state == '' && empty($summary),
                 'content' => $this->renderPartial(
                     '/admin/export/statistics_subviews/_response_filters',
                     array(

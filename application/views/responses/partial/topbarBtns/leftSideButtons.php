@@ -1,4 +1,12 @@
 <?php
+/**
+ * @var $hasResponsesCreatePermission bool
+ * @var $hasResponsesExportPermission bool
+ * @var $hasStatisticsReadPermission bool
+ * @var $hasResponsesDeletePermission bool
+ * @var $oSurvey Survey
+ */
+
 if ($hasResponsesCreatePermission) {
     $this->widget(
         'ext.ButtonWidget.ButtonWidget',
@@ -16,8 +24,7 @@ if ($hasResponsesCreatePermission) {
     );
 }
 
-if ($hasResponsesExportPermission) { ?>
-    <?php
+if ($hasResponsesExportPermission) {
     $exportDropdownItems = $this->renderPartial(
         '/responses/partial/topbarBtns/responsesExportDropdownItems',
         get_defined_vars(),
@@ -34,11 +41,9 @@ if ($hasResponsesExportPermission) { ?>
             'class' => 'btn btn-outline-secondary',
         ],
     ]);
-    ?>
-<?php }
+ }
 
-if ($hasResponsesCreatePermission) { ?>
-        <?php
+if ($hasResponsesCreatePermission) {
         $importDropdownItems = $this->renderPartial(
             '/responses/partial/topbarBtns/responsesImportDropdownItems',
             get_defined_vars(),
@@ -55,8 +60,48 @@ if ($hasResponsesCreatePermission) { ?>
                 'class' => 'btn btn-outline-secondary',
             ],
         ]);
+ }
+
+if ($hasStatisticsReadPermission) {
+    if ($oSurvey->getIsSaveTimings()) {
+        $this->widget(
+            'ext.ButtonWidget.ButtonWidget',
+            [
+                'name'        => 'response-timingStatistics',
+                'id'          => 'response-timingStatistics',
+                'text'        => gT('Timing statistics'),
+                'icon'        => 'ri-time-line',
+                'link'        => App()->createUrl("responses/time/", ['surveyId' => $oSurvey->sid]),
+                'htmlOptions' => [
+                    'class' => 'btn btn-outline-secondary',
+                    'role'  => 'button'
+                ],
+            ]
+        );
+    } else {
         ?>
-<?php }
+        <span class="btntooltip d-inline-block" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php eT("Timing statistics are disabled for this survey."); ?>"
+              data-bs-toggle="tooltip" data-bs-placement="bottom">
+        <?php
+        $this->widget(
+            'ext.ButtonWidget.ButtonWidget',
+            [
+                'name'        => 'response-timingStatistics',
+                'id'          => 'response-timingStatistics',
+                'text'        => gT('Timing statistics'),
+                'icon'        => 'ri-time-line',
+                'htmlOptions' => [
+                    'class' => 'btn btn-outline-secondary',
+                    'role'  => 'button',
+                    'disabled' => 'disabled'
+                ],
+            ]
+        );
+        ?>
+        </span>
+        <?php
+    }
+}
 
 if ($hasResponsesDeletePermission) {
     if (!$oSurvey->isAnonymized && $oSurvey->isTokenAnswersPersistence) {
@@ -76,8 +121,8 @@ if ($hasResponsesDeletePermission) {
         );
     } else {
         // Show a disabled button if the survey is anonymized or token persistence is disabled
-        ?> 
-        <span class="btntooltip" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php eT("This survey is anonymized and/or token persistence is disabled."); ?>" style="display: inline-block" data-bs-toggle="tooltip" data-bs-placement="bottom">
+        ?>
+        <span class="btntooltip d-inline-block" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php eT("This survey is anonymized and/or token persistence is disabled."); ?>" data-bs-toggle="tooltip" data-bs-placement="bottom">
         <?php
         $this->widget(
             'ext.ButtonWidget.ButtonWidget',

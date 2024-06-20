@@ -783,8 +783,8 @@
               imageOrPlaceholderHtml = '<div class="upload-placeholder"></div>';
             }
 
-            title = show_title != 0 ? item.title : '';
-            comment = show_comment != 0 ? item.comment : '';
+            title = show_title != 0 ? htmlentities(item.title) : '';
+            comment = show_comment != 0 ? htmlentities(item.comment) : '';
             name = item.name;
             filepointer = iterator;
             const rowHtml = this.replaceWithObject(templateHtml, {
@@ -948,7 +948,7 @@
             // you can disable upload button
 
             this.disable();
-            button.append('<i id="loading-icon-fielupload" class="fa fa-spinner fa-pulse fa-3x fa-fw ri-loader-fill remix-pulse ri-3x"></i>');
+            button.append('<i id="loading-icon-fielupload" class="fa fa-spinner fa-pulse fa-3x fa-fw ri-loader-fill remix-pulse ri-3x" ></i>');
           },
           onComplete: function (file, response) {
             button.text(uploadLang.selectfile);

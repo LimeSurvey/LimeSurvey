@@ -8,8 +8,14 @@
             <div class="modal-body">
                 <div class="form">
                     <div class='mb-3 row'>
-                        <label class='form-label col-md-4' for='attributes'><?php eT('Attributes to export:');?></label>
-                        <div class='col-md-8'>
+                        <div class="col-4">
+                            <label class='form-label' for='attributes'><?php eT('Attributes to export:');?></label>
+                            <input type="checkbox" value="" id="select-all">
+                            <label class="form-check-label" for="select-all">
+                                <?= gT('Select all'); ?>
+                            </label>
+                        </div>
+                        <div class='col-8'>
                             <?php $this->widget('yiiwheels.widgets.select2.WhSelect2',
                                 array(
                                     'asDropDownList' => true,
@@ -25,7 +31,7 @@
                 <?php if (Yii::app()->getConfig('hideblacklisted') != 'N'): ?>
                     <?php
                     $this->widget('ext.AlertWidget.AlertWidget', [
-                        'text' => gT('If you want to export blacklisted participants, set "Hide blacklisted participants" to "No" in CPDB settings.'),
+                        'text' => gT('If you want to export blocklisted participants, set "Hide blocklisted participants" to "No" in CPDB settings.'),
                         'type' => 'info',
                     ]);
                     ?>

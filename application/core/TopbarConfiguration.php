@@ -93,7 +93,7 @@ class TopbarConfiguration
         if (!empty($sid)) {
             $config['sid'] = $sid;
         }
-     
+
         return new self($config);
     }
 
@@ -204,10 +204,28 @@ class TopbarConfiguration
             || $hasSurveyContentPermission
             || !is_null($extraToolsMenuItems);
 
+        $editorEnabled = $event->get('isEditorEnabled');
+        if ($editorEnabled===null) {
+            $editorEnabled = Yii::app()->getConfig('editorEnabled') ?? false;
+        }
+
+        $enableEditorButton = true;
+        if ($oSurvey->getTemplateEffectiveName() !== 'fruity_twentythree') {
+            $enableEditorButton = false;
+        }
+
+        $editorUrl = Yii::app()->request->getUrlReferrer(
+            Yii::app()->createUrl(
+                'editorLink/index',
+                ['route' => 'survey/' . $sid]
+            )
+        );
+
         return array(
             'sid' => $sid,
             'oSurvey' => $oSurvey,
             'canactivate' => $canactivate,
+            'candeactivate' => $hasSurveyActivationPermission,
             'expired' => $expired,
             'notstarted' => $notstarted,
             'context' => $context,
@@ -233,6 +251,9 @@ class TopbarConfiguration
             'beforeSurveyBarRender' => $beforeSurveyBarRender ?? [],
             'showToolsMenu' => $showToolsMenu,
             'surveyLanguages' => self::getSurveyLanguagesArray($oSurvey),
+            'editorEnabled' => $editorEnabled,
+            'editorUrl' => $editorUrl,
+            'enableEditorButton' => $enableEditorButton,
         );
     }
 
@@ -286,10 +307,15 @@ class TopbarConfiguration
             return [];
         }
 
-        $closeUrl = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl("responses/browse/", ['surveyId' => $sid]));
+        $closeUrl = Yii::app()->request->getUrlReferrer(
+            Yii::app()->createUrl(
+                "responses/browse/",
+                ['surveyId' => $sid]
+            )
+        );
 
         return array(
-            'closeUrl' => $closeUrl,
+            'closeUrl' => $closeUrl
         );
     }
 

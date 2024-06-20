@@ -193,11 +193,9 @@ class DateTimePicker extends CInputWidget
         $locale = $this->getValue('locale', $this->pluginOptions, 'en');
         $tooltips = $this->getConvertedTempusOptions($this->getTranslatedTooltips());
         foreach ($tooltips as $key => $tooltip) {
-            $localeScript .= "      $key: '$tooltip',
-          ";
+            $localeScript .= "      $key: '$tooltip',\n";
         }
-        $localeScript .= "      dayViewHeaderFormat: { month: 'long', year: 'numeric' },
-                locale: '$locale'";
+        $localeScript .= "      dayViewHeaderFormat: { month: 'long', year: 'numeric' },\nlocale: '$locale'";
 
         return "{
           $localeScript
@@ -399,6 +397,7 @@ class DateTimePicker extends CInputWidget
             'clear' => gT('Clear selection'),
             'prevMonth' => gT('Previous month'),
             'nextMonth' => gT('Next month'),
+            "selectMonth"  => gT('Select month'),
             'selectYear' => gT('Select year'),
             'prevYear' => gT('Previous year'),
             'nextYear' => gT('Next year'),
