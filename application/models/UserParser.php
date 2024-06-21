@@ -30,7 +30,7 @@ class UserParser
         } elseif (strtolower($sExtension) == 'csv') {
             $bMoveFileResult = @move_uploaded_file($_FILES['the_file']['tmp_name'], $sFilePath);
         } else {
-            Yii::app()->setFlashMessage(gT("This is not a .csv file.") . 'It is a ' . $sExtension, 'error');
+            Yii::app()->setFlashMessage(gT("This is not a .csv file."), 'error');
             Yii::app()->getController()->redirect(array('/userManagement/index'));
             Yii::app()->end();
         }
@@ -49,7 +49,11 @@ class UserParser
         }
 
         $aFirstLine = fgetcsv($oCSVFile, 0, $delimiter, '"');
-
+        if (empty($aFirstLine)) {
+            Yii::app()->setFlashMessage(gT("CSV file seems to be empty"), 'error');
+            Yii::app()->getController()->redirect(array('/userManagement/index'));
+            Yii::app()->end();
+        }
         $iHeaderCount = count($aFirstLine);
         $aToBeAddedUsers = [];
         while (($row = fgetcsv($oCSVFile, 0, $delimiter, '"')) !== false) {
