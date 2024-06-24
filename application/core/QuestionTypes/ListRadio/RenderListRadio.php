@@ -194,7 +194,7 @@ class RenderListRadio extends QuestionBaseRenderer
             'othertext' => $this->sOthertext,
             'iNbCols' => $this->iNbCols,
             /* @deprecated since 6.3.3 : Leave it for old question theme compatibility, be sure to don't add columns */
-            'iMaxRowsByColumn' => $this->getQuestionCount() + 3,
+            'iMaxRowsByColumn' => $this->getAnswerCount() + 3,
             'iCountAnswers' => $this->iCountAnswers,
             'hasOther' => $this->hasOther,
             'otherPosition' => $this->otherPosition,
