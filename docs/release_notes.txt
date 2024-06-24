@@ -34,6 +34,14 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.6.67 (build 240612) to 5.6.68 (build 240625) June 24, 2024
+-Fixed issue #19608: [security] XSS under user management (thanks to OIZ Stadt Zürich and Protec7) (#3888) (Denis Chenu)
+-Fixed issue #19599: [security] Stored XSS through csv file upload (thanks to paoloelia ) (#3884) (Denis Chenu)
+-Fixed issue #19598: [security] No CSRF protection on userManagement (thanks to paoloelia) (#3881) (Denis Chenu)
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+
+
 Changes from 5.6.66 (build 240604) to 5.6.67 (build 240612) June 11, 2024
 -Fixed issue #19580: Data entry at anonymous survey with tokens crashed on save (#3872) (Denis Chenu)
 -Fixed issue #19527: Theme listing broke with invalid template (#3858) (Denis Chenu)
