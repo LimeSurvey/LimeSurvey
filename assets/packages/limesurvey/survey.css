@@ -157,26 +157,20 @@ box-shadow: 0 0 0 #fff;
 
 /* Max width for some answer part */
 @media (min-width: 768px) {
-  /* See https://caniuse.com/?search=attr
-   * attr() is supported for effectively all browsers for the content property
-   */
-  [data-column-count]{column-count:attr(data-column-count)}
-  /* Add until 17 */
-  [data-column-count="1"]{column-count:1}
-  [data-column-count="2"]{column-count:2}
-  [data-column-count="3"]{column-count:3}
-  [data-column-count="4"]{column-count:4}
-  [data-column-count="5"]{column-count:5}
-  [data-column-count="6"]{column-count:6}
-  [data-column-count="7"]{column-count:7}
-  [data-column-count="8"]{column-count:8}
-  [data-column-count="9"]{column-count:9}
-  [data-column-count="10"]{column-count:10}
-  [data-column-count="11"]{column-count:11}
-  [data-column-count="12"]{column-count:12}
-  [data-column-count="13"]{column-count:13}
-  [data-column-count="14"]{column-count:14}
-  [data-column-count="15"]{column-count:15}
-  [data-column-count="16"]{column-count:16}
-  [data-column-count="17"]{column-count:17}
+  /* Add until 16 */
+  .flex-wrap.ls-column-count-2 .answer-item{width:50%}
+  .flex-wrap.ls-column-count-3 .answer-item{width:33.333%}
+  .flex-wrap.ls-column-count-4 .answer-item{width:25%}
+  .flex-wrap.ls-column-count-5 .answer-item{width:20%}
+  .flex-wrap.ls-column-count-6 .answer-item{width:16.6667%}
+  .flex-wrap.ls-column-count-7 .answer-item{width:14.2857%}
+  .flex-wrap.ls-column-count-8 .answer-item{width:12.5%}
+  .flex-wrap.ls-column-count-9 .answer-item{width:11.1111%}
+  .flex-wrap.ls-column-count-10 .answer-item{width:10%}
+  .flex-wrap.ls-column-count-11 .answer-item{width:9.0909%}
+  .flex-wrap.ls-column-count-12 .answer-item{width:8.3333%}
+  .flex-wrap.ls-column-count-13 .answer-item{width:7.6923%}
+  .flex-wrap.ls-column-count-14 .answer-item{width:7.1429%}
+  .flex-wrap.ls-column-count-15 .answer-item{width:6.6667%}
+  .flex-wrap.ls-column-count-16 .answer-item{width:6.25%}  
 }
