@@ -346,7 +346,6 @@ class ThemeOptionsController extends LSBaseController
             $model->attributes = $_POST['TemplateConfiguration'];
             if ($model->save()) {
                 App()->user->setFlash('success', gT('Theme options saved.'));
-                $this->redirect(array("themeOptions/updateSurvey", 'surveyid' => $sid, 'gsid' => $gsid));
             }
         }
         $this->updateCommon($model, $sid, $gsid);
@@ -472,6 +471,8 @@ class ThemeOptionsController extends LSBaseController
         }
 
         $aData['oSurveyTheme'] = $oSurveyTheme;
+        $aData['aTemplatesWithoutDB'] = TemplateConfig::getTemplatesWithNoDb();
+
         $aData['canImport']  = $canImport;
         $aData['importErrorMessage']  = $importErrorMessage;
         $aData['pageSize'] = App()->user->getState('pageSizeTemplateView', App()->params['defaultPageSize']); // Page size
@@ -560,9 +561,15 @@ class ThemeOptionsController extends LSBaseController
         if (Permission::model()->hasGlobalPermission('templates', 'update')) {
             if ($theme === 'questiontheme') {
                 $templateFolder = App()->request->getPost('templatefolder');
+                if (strpos($templateFolder, "..") !== false) {
+                    throw new CHttpException(eT("Unsafe path"));
+                }
+                //$themeType is being sanitized inside getAbsolutePathForType
+                $themeType = App()->request->getPost('theme_type');
+                $fullTemplateFolder = QuestionTheme::getAbsolutePathForType($templateFolder, $themeType);
                 $questionTheme = new QuestionTheme();
                 //skip convertion LS3ToLS4 (this should have been happen BEFORE theme was moved to the uninstalled themes
-                $themeName = $questionTheme->importManifest($templateFolder, true);
+                $themeName = $questionTheme->importManifest($fullTemplateFolder, true);
                 if (isset($themeName)) {
                     App()->setFlashMessage(sprintf(gT('The Question theme "%s" has been successfully installed'), "$themeName"), 'success');
                 } else {
@@ -712,7 +719,7 @@ class ThemeOptionsController extends LSBaseController
             App()->clientScript->registerPackage('themeoptions-core');
             $templateOptionPage = '';
         } else {
-             $templateOptionPage = $oModelWithInheritReplacement->optionPage;
+             $templateOptionPage = $oModelWithInheritReplacement->getOptionPage();
         }
 
         $oSimpleInheritance = Template::getInstance(
@@ -774,7 +781,7 @@ class ThemeOptionsController extends LSBaseController
             $basePageTitle = sprintf('Survey options for theme %s', $templateName);
 
             if (!is_null($sid)) {
-                $addictionalSubtitle = gT(" for survey id: $sid");
+                $addictionalSubtitle = gT(" for survey ID: $sid");
             } elseif (!is_null($gsid)) {
                 $addictionalSubtitle = gT(" for survey group id: $gsid");
             } else {
@@ -796,6 +803,23 @@ class ThemeOptionsController extends LSBaseController
                 true
             );
         }
+        $actionBaseUrl = 'themeOptions/update/';
+        $actionUrlArray = ['id' => $model->id];
+
+        if ($model->sid) {
+            $actionBaseUrl = 'themeOptions/updateSurvey/';
+            unset($actionUrlArray['id']);
+            $actionUrlArray['surveyid'] = $model->sid;
+            $actionUrlArray['gsid'] = $model->gsid ?  $model->gsid : $gsid;
+        }
+        if ($model->gsid) {
+            $actionBaseUrl = 'themeOptions/updateSurveyGroup/';
+            unset($actionUrlArray['id']);
+            $actionUrlArray['gsid'] = $model->gsid;
+            $actionUrlArray['id'] = $model->id;
+        }
+
+        $aData['actionUrl'] = $this->createUrl($actionBaseUrl, $actionUrlArray);
 
         $this->aData = $aData;
         // here, render update //
@@ -804,7 +828,7 @@ class ThemeOptionsController extends LSBaseController
 
     /**
      * Try to get the get-parameter from request.
-     * At the moment there are three namings for a survey id:
+     * At the moment there are three namings for a survey ID:
      * 'sid'
      * 'surveyid'
      * 'iSurveyID'

@@ -6,20 +6,25 @@ use CHttpRequest;
 use Yii;
 use DI\FactoryInterface;
 use LimeSurvey\Api\{
+    Command\Options,
     Rest\Endpoint,
+    Rest\RestConfig,
     ApiException
 };
 
 class EndpointFactory
 {
     protected FactoryInterface $diFactory;
+    protected RestConfig $restConfig;
 
     /**
      * @param FactoryInterface $diFactory
+     * @param RestConfig $restConfig
      */
-    public function __construct(FactoryInterface $diFactory)
+    public function __construct(FactoryInterface $diFactory, RestConfig $restConfig)
     {
         $this->diFactory = $diFactory;
+        $this->restConfig = $restConfig;
     }
 
     /**
@@ -38,7 +43,7 @@ class EndpointFactory
     }
 
     /**
-     * Get Endpoint
+     * Get Endpoint Config
      *
      * @param CHttpRequest $request
      * @throws ApiException
@@ -46,15 +51,48 @@ class EndpointFactory
      */
     protected function getEndpointConfig(CHttpRequest $request)
     {
+        $endpointConfig = [];
+        if ($request->getRequestType() == 'OPTIONS') {
+            // OPTIONS has a standard command class
+            // - to handle CORS preflight requests
+            $endpointConfig = [
+                'commandClass' => Options::class
+            ];
+        } else {
+            $endpointConfig = $this->parseEndpointConfig($request);
+        }
+
+        if (!$endpointConfig) {
+            throw new ApiException('Endpoint not configured');
+        }
+        if (!isset($endpointConfig['commandClass'])) {
+            throw new ApiException('Command class not specified');
+        }
+        if (!class_exists($endpointConfig['commandClass'])) {
+            throw new ApiException('Invalid command class');
+        }
+
+        return $endpointConfig;
+    }
+
+    /**
+     * Parse Endpoint Config
+     *
+     * @param CHttpRequest $request
+     * @throws ApiException
+     * @return array
+     */
+    protected function parseEndpointConfig(CHttpRequest $request)
+    {
         // rest config contains specification of all endpoints
-        $restConfig = Yii::app()->getConfig('rest');
+        $restConfig = $this->restConfig->getConfig();
         $apiVersion = $request->getParam('_api_version');
         $entity = $request->getParam('_entity');
         $id = $request->getParam('_id', null);
         $requestMethod = $request->getRequestType();
 
-        // lookup the endpoint config matching the http request
         $endpointConfig = [];
+        // lookup the endpoint config matching the http request
         foreach ($restConfig as $key => $config) {
             $keyParts = explode('/', $key);
 
@@ -75,7 +113,10 @@ class EndpointFactory
             if (
                 $keyApiVersion == $apiVersion
                 && $keyEntity == $entity
-                && is_array($config[$requestMethod])
+                && (
+                    isset($config[$requestMethod])
+                    && is_array($config[$requestMethod])
+                )
                 && (false === $keyId || !is_null($id))
             ) {
                 $endpointConfig = $config[$requestMethod];
@@ -83,16 +124,6 @@ class EndpointFactory
                 $endpointConfig['apiVersion'] = $apiVersion;
                 break;
             }
-        }
-
-        if (!$endpointConfig) {
-            throw new ApiException('Endpoint not configured');
-        }
-        if (!isset($endpointConfig['commandClass'])) {
-            throw new ApiException('Command class not specified');
-        }
-        if (!class_exists($endpointConfig['commandClass'])) {
-            throw new ApiException('Invalid command class');
         }
 
         return $endpointConfig;

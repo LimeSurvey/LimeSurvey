@@ -408,6 +408,11 @@ For iPads specifically : add this : (min-device-width: 768px) and (max-device-wi
     table.ls-answers td.visible-xs, table.ls-answers th.visible-xs {
         display : block !important
     }
+
+    /* Don't display repeating header on mobile devices'*/
+    table.ls-answers tr.ls-heading-repeat {
+        display: none;
+    }
 }
 
 /* Fix for IE11 - no array question radio buttons on small screens */

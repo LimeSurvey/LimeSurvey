@@ -52,7 +52,6 @@ var LS = LS || {};
 // TODO: Use component for quick-add
 // TODO: Use component for label sets
 $(document).on('ready pjax:scriptcomplete', function () {
-
   // TODO: Routing?
   if (window.location.href.indexOf('questionAdministration') === -1) {
     return;
@@ -176,6 +175,29 @@ $(document).on('ready pjax:scriptcomplete', function () {
       $('.relevance').data('toggle', '').tooltip('destroy');
       $('.relevance').off('click');
     });
+  }
+
+  function bindSubQuestionEvents() {
+    $('.btnaddsubquestion').off('click.subquestions').on('click.subquestions', addSubquestionInput);
+    $('.btndelsubquestion').off('click.subquestions').on('click.subquestions', deleteSubquestionInput);
+  }
+
+  function bindAnswerEvents() {
+    $('.btnaddanswer').off('click.subquestions').on('click.subquestions', addAnswerOptionInput);
+    $('.btndelanswer').off('click.subquestions').on('click.subquestions', deleteAnswerOptionInput);
+  }
+
+  function toggleLanguageElements() {
+    // get selected lang from dropdown
+    let lang = $('.active .lang-switch-button').data('lang');
+    //fallback: display main language
+    if (lang === undefined) {
+      const languages = languageJson.langs.split(';');
+      lang = languages[0];
+    }
+    const langClass = `.lang-${lang}`;
+    $('.lang-hide').hide();
+    $(langClass).show();
   }
 
   /**
@@ -527,8 +549,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
     const target = e.target;
     const data = $('#add-subquestion-input-javascript-datas').data();
     const rebindClickHandler = () => {
-      $('.btnaddsubquestion').off('click.subquestions').on('click.subquestions', addSubquestionInput);
-      $('.btndelsubquestion').off('click.subquestions').on('click.subquestions', deleteSubquestionInput);
+      bindSubQuestionEvents()
     };
     addNewInputAux(target, data, rebindClickHandler);
   }
@@ -544,8 +565,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
     const target = e.target;
     const data = $('#add-answer-option-input-javascript-datas').data();
     const rebindClickHandler = () => {
-      $('.btnaddanswer').off('click.subquestions').on('click.subquestions', addAnswerOptionInput);
-      $('.btndelanswer').off('click.subquestions').on('click.subquestions', deleteAnswerOptionInput);
+      bindAnswerEvents();
     };
     addNewInputAux(target, data, rebindClickHandler);
   }
@@ -1165,15 +1185,9 @@ $(document).on('ready pjax:scriptcomplete', function () {
         bindClickIfNotExpanded();
 
         // Unbind and bind events.
-        $(`.btnaddanswer`).off('click.subquestions');
-        $(`.btndelanswer`).off('click.subquestions');
-        $(`.btnaddsubquestion`).off('click.subquestions');
-        $(`.btndelsubquestion`).off('click.subquestions');
         $(`.answer`).off('focus');
-        $(`.btnaddanswer`).on('click.subquestions', addAnswerOptionInput);
-        $(`.btndelanswer`).on('click.subquestions', deleteAnswerOptionInput);
-        $(`.btnaddsubquestion`).on('click.subquestions', addSubquestionInput);
-        $(`.btndelsubquestion`).on('click.subquestions', deleteSubquestionInput);
+        bindSubQuestionEvents();
+        bindAnswerEvents();
       },
     );
   }
@@ -1690,11 +1704,8 @@ $(document).on('ready pjax:scriptcomplete', function () {
         const languages = languageJson.langs.split(';');
         $('.lang-switch-button[data-lang="' + languages[0] + '"]').trigger('click');
 
-        // TODO: Duplication.
-        $('.btnaddsubquestion').on('click.subquestions', addSubquestionInput);
-        $('.btndelsubquestion').on('click.subquestions', deleteSubquestionInput);
-        $('.btnaddanswer').on('click.subquestions', addAnswerOptionInput);
-        $('.btndelanswer').on('click.subquestions', deleteAnswerOptionInput);
+        bindSubQuestionEvents();
+        bindAnswerEvents();
       } catch (ex) {
         $('#ls-loading').hide();
         // TODO: How to show internal errors?
@@ -1770,7 +1781,8 @@ $(document).on('ready pjax:scriptcomplete', function () {
      * @return {void}
      */
     checkQuestionValidateTitle: function(code, qid) {
-      $('#question-title-warning').text("");
+      $('#questionCode')[0].setCustomValidity('');
+      $('#question-title-warning').text('');
       $('#question-title-warning').addClass('d-none');
       $.ajax({
         url: languageJson.checkQuestionValidateTitleURL,
@@ -1785,6 +1797,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
           if (message !== null) {
               $('#question-title-warning').removeClass('d-none');
               $('#question-title-warning').text(message);
+              $('#questionCode')[0].setCustomValidity(message); // must set customvalidity to avoid submit by another enter
           } else {
               // Continue
           }
@@ -1805,20 +1818,35 @@ $(document).on('ready pjax:scriptcomplete', function () {
      * @return {boolean}
      */
     checkIfSaveIsValid: function(event /*: Event */, tabQuestionEditor = 'editor') {
+      $('#ls-loading').show();
       event.preventDefault();
       const qid = parseInt($('input[name="question[qid]"]').val());
       const code = $('input[name="question[title]"]').val();
       const target = event.currentTarget;
       if (!(target instanceof HTMLElement)) {
         alert('Internal error in checkIfSaveIsValid: target is not an HTMLElement, but ' + typeof target);
+        $('#ls-loading').hide();
         return false;
       }
       const saveWithAjax = target.dataset.saveWithAjax === 'true';
+      const form = document.getElementById('edit-question-form');
+      if (!(form instanceof HTMLFormElement)) {
+        $('#ls-loading').hide();
+        throw 'form is not HTMLFormElement';
+      }
+      /* Check if input are HTML5 valid */
+      if (!form.checkValidity() ) {
+          // the form is invalid : show invalid part
+          form.reportValidity();
+          $('#ls-loading').hide();
+          return false;
+      }
 
       const firstSubquestionRow = document.querySelector('.subquestions-table tr');
       if (firstSubquestionRow) {
         // This will show error message if subquestion code is not unique.
         if (!LS.questionEditor.showSubquestionCodeUniqueError(firstSubquestionRow)) {
+          $('#ls-loading').hide();
           return false;
         }
       }
@@ -1827,21 +1855,20 @@ $(document).on('ready pjax:scriptcomplete', function () {
       if (firstAnsweroptionRow) {
         // This will show error message if answer option code is not unique.
         if (!LS.questionEditor.showAnswerOptionCodeUniqueError(firstAnsweroptionRow)) {
+          $('#ls-loading').hide();
           return false;
         }
       }
 
       const updateQuestionSummary = () => {
-        const form = document.getElementById('edit-question-form');
-        if (!(form instanceof HTMLFormElement)) {
-          throw 'form is not HTMLFormElement';
-        }
+        $('#ls-loading').show();
         $.ajax({
           url: form.dataset.summaryUrl,
           method: 'GET',
           data: {},
           dataType: 'html',
           success: (summaryHtml) => {
+            $('#ls-loading').hide();
             const isVisible = $('#question-overview').is(':visible');
             const newSummary = $(summaryHtml);
             if (isVisible) {
@@ -1861,7 +1888,9 @@ $(document).on('ready pjax:scriptcomplete', function () {
             });
           },
           error: (response) => {
+            $('#ls-loading').hide();
             alert('Internal error in updateQuestionSummary: ' + response);
+            return false;
           },
         });
       };
@@ -1874,9 +1903,10 @@ $(document).on('ready pjax:scriptcomplete', function () {
             url: languageJson.lsextraoptionsurl,
             success: (response /*: string */, textStatus /*: string */) => {
               $('#extra-options-container').replaceWith( response );
-              $('.btnaddsubquestion').off('click.subquestions').on('click.subquestions', addSubquestionInput);
-              $('.btndelsubquestion').off('click.subquestions').on('click.subquestions', deleteSubquestionInput);
+              bindSubQuestionEvents();
+              bindAnswerEvents();
               makeAnswersTableSortable();
+              toggleLanguageElements();
               // Hide loading gif.
               $('#ls-loading').hide();
             },
@@ -1893,6 +1923,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
         const data = {};
         const form = document.getElementById('edit-question-form');
         if (!(form instanceof HTMLFormElement)) {
+          $('#ls-loading').hide();
           throw 'form is not HTMLFormElement';
         }
 
@@ -1961,7 +1992,11 @@ $(document).on('ready pjax:scriptcomplete', function () {
           if (message !== null) {
               $('#question-title-warning').removeClass('d-none');
               $('#question-title-warning').text(message);
+              $('#questionCode')[0].setCustomValidity(message); // must set customvalidity to avoid submit by another enter
           } else {
+            $('#question-title-warning').addClass('d-none');
+            $('#question-title-warning').text('');
+            $('#questionCode')[0].setCustomValidity('');
             // TODO: Check other things too.
             const button = document.getElementById('submit-create-question');
             if (button instanceof HTMLElement) {
@@ -1975,10 +2010,11 @@ $(document).on('ready pjax:scriptcomplete', function () {
                 saveFormWithAjax();
               } else {
                 // Just submit form.
+                $('#ls-loading').show();
                 button.click();
               }
+              return true;
             }
-            $('#question-title-warning').removeClass('d-none');
           }
         },
         error: (response) => {
@@ -2002,14 +2038,41 @@ $(document).on('ready pjax:scriptcomplete', function () {
     showAnswerOptionCodeUniqueError: createCheckUniqueFunction(languageJson.answeroptions.duplicateanswercode)
   };
 
-  $("#questionCode").on('blur', function() {
-    let qid = 0;
-    if ($(this).data('qid')) {
-      qid = $(this).data('qid');
-    }
-    LS.questionEditor.checkQuestionValidateTitle($(this).val(), qid);
-  });
+  /**
+   * questionCode need specific ajax validation
+   */
+  /** deactivate the check when needed */
+  function deActivateQuestionCodeChecker() {
+    $('#questionCode').off('blur keypress');
+  }
+  /** activate the check when event happen on questionCode */
+  function activateQuestionCodeChecker() {
+    $('#questionCode').on('blur', function() {
+      let qid = 0;
+      if ($(this).data('qid')) {
+        qid = $(this).data('qid');
+      }
+      LS.questionEditor.checkQuestionValidateTitle($(this).val(), qid);
+    });
+    /* Check question code validatiry when press ENTER mantis #19440 */
+    $('#questionCode').on('keypress', function(e) {
+      if (e.which == 13) {
+        e.preventDefault();
+        deActivateQuestionCodeChecker();
+        /* Set CustomValidity to empty to allow check again by checkIfSaveIsValid */
+        $('#questionCode')[0].setCustomValidity('');
+        $('#question-title-warning').text('');
+        $('#question-title-warning').addClass('d-none');
+        if (!LS.questionEditor.checkIfSaveIsValid(e, 'enter')) {
+          activateQuestionCodeChecker();
+        }
+      }
+    });
 
+  }
+  /* Attach event when ready */
+  activateQuestionCodeChecker();
+  /** */
   function showConditionsWarning(e) {
     if (!$(this).data('hasConditions')) {
       return;
@@ -2039,10 +2102,8 @@ $(document).on('ready pjax:scriptcomplete', function () {
 
     makeAnswersTableSortable();
 
-    $('.btnaddsubquestion').off('click.subquestions').on('click.subquestions', addSubquestionInput);
-    $('.btndelsubquestion').off('click.subquestions').on('click.subquestions', deleteSubquestionInput);
-    $('.btnaddanswer').off('click.subquestions').on('click.subquestions', addAnswerOptionInput);
-    $('.btndelanswer').off('click.subquestions').on('click.subquestions', deleteAnswerOptionInput);
+    bindSubQuestionEvents();
+    bindAnswerEvents();
 
     $('#labelsetbrowserModal').on('hidden.bs.modal.', labelSetDestruct);
 

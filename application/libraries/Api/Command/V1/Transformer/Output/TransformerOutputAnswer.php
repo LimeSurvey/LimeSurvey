@@ -18,9 +18,9 @@ class TransformerOutputAnswer extends TransformerOutputActiveRecord
         ]);
     }
 
-    public function transformAll($collection)
+    public function transformAll($collection, $options = [])
     {
-        $collection = parent::transformAll($collection);
+        $collection = parent::transformAll($collection, $options);
 
         usort(
             $collection,
@@ -31,11 +31,6 @@ class TransformerOutputAnswer extends TransformerOutputActiveRecord
             }
         );
 
-        $output = [];
-        foreach ($collection as $value) {
-            $output[$value['aid']] = $value;
-        }
-
-        return (object) $output;
+        return $collection;
     }
 }

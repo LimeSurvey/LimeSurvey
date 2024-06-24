@@ -185,31 +185,27 @@ export default {
                 }
             });
 
-            //check for corresponding question group
-            let lastQuestionObject = false;
-            LS.ld.each(this.questiongroups, (itm, i) => {
-                LS.ld.each(itm.questions, (itmm, j) => {
-                    let regTest = new RegExp(
-                        'questionAdministration/edit\\?questionId=' + itmm.qid +
-                        '|questionAdministration/view\\?surveyid=\\d*&gid=\\d*&qid=' + itmm.qid +
-                        '|questionAdministration/edit/questionId/' + itmm.qid +
-                        '|questionAdministration/view/surveyid/\\d*/gid/\\d*/qid/' + itmm.qid
-                    );
-                    lastQuestionObject =
-                        LS.ld.endsWith(currentUrl, itmm.link) ||
-                        regTest.test(currentUrl)
-                            ? itmm
-                            : lastQuestionObject;
-                    if (lastQuestionObject != false) {
-                        lastQuestionGroupObject = itm;
-                        return false;
-                    }
-                });
-                if (lastQuestionObject != false) {
-                    lastQuestionGroupObject = itm;
-                    return false;
-                }
-            });
+			//check for corresponding question
+			let lastQuestionObject = false;
+			let questionId = document.querySelector('#edit-question-form [name="question[qid]"]');
+			if (questionId !== null) {
+				questionId = questionId.value;
+				LS.ld.each(this.questiongroups, (itm, i) => {
+					LS.ld.each(itm.questions, (itmm, j) => {
+						lastQuestionObject = questionId === itmm.qid
+								? itmm
+								: lastQuestionObject;
+						if (lastQuestionObject !== false) {
+							lastQuestionGroupObject = itm;
+							return false;
+						}
+					});
+					if (lastQuestionObject !== false) {
+						lastQuestionGroupObject = itm;
+						return false;
+					}
+				});
+			}
 
             //unload every selection
             this.$store.commit("closeAllMenus");

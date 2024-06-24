@@ -6,7 +6,7 @@
  * The following are the available columns in table '{{notifications}}':
  * @property integer $id
  * @property string $entity survey or user
- * @property string $entity_id survey id or user id
+ * @property string $entity_id survey ID or user id
  * @property string $title
  * @property string $message
  * @property string $status new, read

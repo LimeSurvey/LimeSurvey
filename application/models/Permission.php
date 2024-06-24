@@ -35,6 +35,9 @@ class Permission extends LSActiveRecord
     /* @var array[]|null The global base Permission LimeSurvey installation */
     protected static $aGlobalBasePermissions;
 
+    /* @var array[] The already loaded survey permissions */
+    protected static $aCachedSurveyPermissions = [];
+
     /** @inheritdoc */
     public function tableName()
     {
@@ -703,11 +706,20 @@ class Permission extends LSActiveRecord
      */
     public function hasSurveyPermission($iSurveyID, $sPermission, $sCRUD = 'read', $iUserID = null)
     {
-        $oSurvey = Survey::Model()->findByPk($iSurveyID);
-        if (!$oSurvey) {
-            return false;
+        if (isset(self::$aCachedSurveyPermissions[$iSurveyID][$sPermission][$sCRUD][$iUserID])) {
+            return self::$aCachedSurveyPermissions[$iSurveyID][$sPermission][$sCRUD][$iUserID];
         }
-        return $oSurvey->hasPermission($sPermission, $sCRUD, $iUserID);
+        if (!isset(self::$aCachedSurveyPermissions[$iSurveyID])) {
+            self::$aCachedSurveyPermissions[$iSurveyID] = [];
+        }
+        if (!isset(self::$aCachedSurveyPermissions[$iSurveyID][$sPermission])) {
+            self::$aCachedSurveyPermissions[$iSurveyID][$sPermission] = [];
+        }
+        if (!isset(self::$aCachedSurveyPermissions[$iSurveyID][$sPermission][$sCRUD])) {
+            self::$aCachedSurveyPermissions[$iSurveyID][$sPermission][$iUserID] = [];
+        }
+        $oSurvey = Survey::Model()->findByPk($iSurveyID);
+        return self::$aCachedSurveyPermissions[$iSurveyID][$sPermission][$sCRUD][$iUserID] = ($oSurvey ? $oSurvey->hasPermission($sPermission, $sCRUD, $iUserID) : false);
     }
 
     /**

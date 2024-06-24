@@ -10,7 +10,7 @@ class Update_156 extends DatabaseUpdateBase
     {
         try {
             $this->db->createCommand()->dropTable('{{survey_url_parameters}}');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             // do nothing
         }
         $this->db->createCommand()->createTable(
@@ -26,7 +26,7 @@ class Update_156 extends DatabaseUpdateBase
 
         try {
             $this->db->createCommand()->dropTable('{{sessions}}');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             // do nothing
         }
         if ($this->db->driverName == 'mysql') {

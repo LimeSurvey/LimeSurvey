@@ -18,7 +18,7 @@ abstract class Response extends Dynamic
     }
     /**
      *
-     * @param mixed $className Either the classname or the survey id.
+     * @param mixed $className Either the classname or the survey ID.
      * @return Response
      */
     public static function model($className = null)

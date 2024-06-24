@@ -219,7 +219,7 @@ class PEAR
             );
         }
         return call_user_func_array(
-            array(self::class, '_' . $method),
+            array(get_class(), '_' . $method),
             array_merge(array($this), $arguments)
         );
     }
@@ -232,7 +232,7 @@ class PEAR
             );
         }
         return call_user_func_array(
-            array(self::class, '_' . $method),
+            array(get_class(), '_' . $method),
             array_merge(array(null), $arguments)
         );
     }

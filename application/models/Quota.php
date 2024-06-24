@@ -81,6 +81,7 @@ class Quota extends LSActiveRecord
         return array(
             array('name,qlimit,action', 'required'),
             array('name', 'LSYii_Validators'), // Maybe more restrictive
+            array('name', 'LSYii_NonFormulaValidator'), // Avoid CSV injection
             array('qlimit', 'numerical', 'integerOnly' => true, 'min' => '0', 'max' => 2147483647, 'allowEmpty' => true),
             array('action', 'numerical', 'integerOnly' => true, 'min' => '1', 'max' => '2', 'allowEmpty' => true), // Default is null ?
             array('active', 'numerical', 'integerOnly' => true, 'min' => '0', 'max' => '1', 'allowEmpty' => true),

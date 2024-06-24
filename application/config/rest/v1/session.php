@@ -30,7 +30,7 @@ $rest['v1/session'] = [
                 'schema' => (new SchemaFactoryAuthToken)->make()
             ],
             'unauthorized' => [
-                'code' => 403,
+                'code' => 401,
                 'description' => 'Unauthorized',
                 'schema' => $errorSchema
             ]
@@ -49,7 +49,7 @@ $rest['v1/session'] = [
             ],
             'unauthorized' => [
                 'code' => 403,
-                'description' => 'Unauthorized',
+                'description' => 'Forbidden',
                 'schema' => $errorSchema
             ]
         ]

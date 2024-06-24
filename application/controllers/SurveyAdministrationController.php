@@ -54,6 +54,16 @@ class SurveyAdministrationController extends LSBaseController
     }
 
     /**
+     * Set filters for all actions
+     * @return string[]
+     */
+    public function filters()
+    {
+        return [
+            'postOnly + copy'
+        ];
+    }
+    /**
      * SurveyAdministrationController constructor.
      * @param $id
      * @param null $module
@@ -127,7 +137,7 @@ class SurveyAdministrationController extends LSBaseController
 
         $aData = array('aAdditionalLanguages' => $survey->additionalLanguages);
 
-        // Reinit LEMlang and LEMsid: ensure LEMlang are set to default lang, surveyid are set to this survey id
+        // Reinit LEMlang and LEMsid: ensure LEMlang are set to default lang, surveyid are set to this survey ID
         // Ensure Last GetLastPrettyPrintExpression get info from this sid and default lang
         LimeExpressionManager::SetEMLanguage($baselang);
         LimeExpressionManager::SetSurveyId($iSurveyID);
@@ -207,9 +217,7 @@ class SurveyAdministrationController extends LSBaseController
         $aData['surveyActivationFeedback'] = $surveyActivationFeedback;
 
         $this->aData = $aData;
-        $this->render('sidebody', [
-            'sideMenuOpen' => true
-        ]);
+        $this->render('sidebody');
     }
 
     /**
@@ -1751,6 +1759,7 @@ class SurveyAdministrationController extends LSBaseController
 
         $success = false;
         if (($surveyId > 0) && ($questionId > 0)) {
+            App()->loadHelper('admin/activate');
             fixNumbering($questionId, $surveyId);
             $success = true;
         }
@@ -1789,7 +1798,11 @@ class SurveyAdministrationController extends LSBaseController
         Yii::app()->loadHelper("admin/activate");
         $failedgroupcheck = checkGroup($surveyId);
         $failedcheck = checkQuestions($surveyId, $surveyId);
-        $checkFailed = (isset($failedcheck) && $failedcheck) || (isset($failedgroupcheck) && $failedgroupcheck);
+        $error = "";
+        if (!$oSurvey->countTotalQuestions) {
+            $error = gT("There are no questions in this survey.");
+        }
+        $checkFailed = (isset($failedcheck) && $failedcheck) || (isset($failedgroupcheck) && $failedgroupcheck) || !empty($error);
         $footerButton = '';
         if ($checkFailed) {
             //survey can not be activated
@@ -1798,6 +1811,7 @@ class SurveyAdministrationController extends LSBaseController
                 [
                 'failedcheck' => $failedcheck,
                 'failedgroupcheck' => $failedgroupcheck,
+                'error' => $error,
                 'surveyid' => $oSurvey->sid
                 ],
                 true
@@ -2148,6 +2162,7 @@ class SurveyAdministrationController extends LSBaseController
     /**
      * Load ordering of question group screen.
      * questiongroup::organize()
+     * @TODO Reordering should be handled by existing function in new QuestionGroupService class
      *
      * @param int $iSurveyID Given Survey ID
      *
@@ -2271,7 +2286,7 @@ class SurveyAdministrationController extends LSBaseController
 
         //maybe thing about permission check for copy surveys
         //at the moment dropDown selection shows only surveys for the user he owns himself ...
-        $action = Yii::app()->request->getParam('action');
+        $action = Yii::app()->request->getPost('action');
         $iSurveyID = sanitize_int(Yii::app()->request->getParam('sid'));
         $aData = [];
 
@@ -2308,7 +2323,7 @@ class SurveyAdministrationController extends LSBaseController
                     $aData['bFailed'] = true;
                 }
             } elseif ($action == 'copysurvey') {
-                $iSurveyID = sanitize_int(Yii::app()->request->getParam('copysurveylist'));
+                $iSurveyID = sanitize_int(App()->request->getPost('copysurveylist'));
                 $aExcludes = array();
                 if (Yii::app()->request->getPost('copysurveyexcludequotas') == "1") {
                     $aExcludes['quotas'] = true;
@@ -2570,7 +2585,7 @@ class SurveyAdministrationController extends LSBaseController
 
     /**
      * Try to get the get-parameter from request.
-     * At the moment there are three namings for a survey id:
+     * At the moment there are three namings for a survey ID:
      * 'sid'
      * 'surveyid'
      * 'iSurveyID'

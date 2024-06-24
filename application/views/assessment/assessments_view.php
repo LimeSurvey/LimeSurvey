@@ -9,7 +9,7 @@
 $pageSize = intval(Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']));
 
 ?>
-  <div class="side-body <?=getSideBodyClass(false)?>">
+  <div class="side-body">
     <?=viewHelper::getViewTestTag('surveyAssessments');?>
       <h3 class="page-title"><?=gT("Assessments")?></h3>
         <?php

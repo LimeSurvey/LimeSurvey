@@ -92,7 +92,7 @@ class SurveyRuntimeHelper
     private $aSurveyInfo = null;
 
     /**
-     * The survey id
+     * The survey ID
      * @var int|null
      */
     private $iSurveyid              = null;
@@ -793,7 +793,7 @@ class SurveyRuntimeHelper
     }
 
     /**
-     * If a step is requested, but the survey id in the session is different from the requested one
+     * If a step is requested, but the survey ID in the session is different from the requested one
      * It reload the needed infos for the requested survey and jump to the requested step.
      */
     private function initDirtyStep()
@@ -1382,7 +1382,7 @@ class SurveyRuntimeHelper
 
     /**
      * Check in a string if it uses expressions to replace them
-     * @param string $sString the string to evaluate
+     * @param string|null $sString the string to evaluate
      * @param integer $numRecursionLevels - the number of times to recursively subtitute values in this string
      * @param boolean $static - return static string
      * @return string
@@ -1392,7 +1392,7 @@ class SurveyRuntimeHelper
     {
         $sProcessedString = $sString;
 
-        if ((strpos($sProcessedString, "{") !== false)) {
+        if ((strpos((string) $sProcessedString, "{") !== false)) {
             // process string anyway so that it can be pretty-printed
             $aStandardsReplacementFields = getStandardsReplacementFields($this->aSurveyInfo);
             $sProcessedString = LimeExpressionManager::ProcessStepString($sString, $aStandardsReplacementFields, $iRecursionLevel, $static);
@@ -1434,7 +1434,7 @@ class SurveyRuntimeHelper
      * setJavascriptVar
      *
      * @return void
-     * @param mixed $iSurveyId : the survey id for the script
+     * @param mixed $iSurveyId : the survey ID for the script
      */
     public function setJavascriptVar($iSurveyId = '')
     {
@@ -1729,6 +1729,15 @@ class SurveyRuntimeHelper
         extract($args);
 
         $this->aSurveyInfo                 = getSurveyInfo($this->iSurveyid, App()->getLanguage());
+        if (isset($args['popuppreview']) && $args['popuppreview']) {
+            $this->aSurveyInfo['showxquestions'] = 'N';
+            $this->aSurveyInfo['shownoanswer'] = 'N';
+            $this->aSurveyInfo['showwelcome'] = 'N';
+            $this->aSurveyInfo['showprogress'] = 'N';
+            $this->aSurveyInfo['format'] = 'A';
+            $this->aSurveyInfo['listpublic'] = 'N';
+            $this->aSurveyInfo['popupPreview'] = true;
+        }
         $this->aSurveyInfo['surveyUrl']    = App()->createUrl("/survey/index", array("sid" => $this->iSurveyid));
 
         // TODO: check this:

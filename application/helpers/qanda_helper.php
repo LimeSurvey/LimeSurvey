@@ -514,7 +514,7 @@ function return_timer_script($aQuestionAttributes, $ia, $disable = null)
 
 /**
 * Return class of a specific row (hidden by relevance)
-* @param int $surveyId actual survey id
+* @param int $surveyId actual survey ID
 * @param string $baseName the base name of the question
 * @param string $name The name of the question/row to test
 * @param array $aQuestionAttributes the question attributes
@@ -660,7 +660,7 @@ function do_list_dropdown($ia)
 
     // Question attribute variables
     $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
-    $iSurveyId              = Yii::app()->getConfig('surveyID'); // survey id
+    $iSurveyId              = Yii::app()->getConfig('surveyID'); // survey ID
     $sSurveyLang = $_SESSION['survey_' . $iSurveyId]['s_lang']; // survey language
     $othertext              = (trim((string) $aQuestionAttributes['other_replace_text'][$sSurveyLang]) != '') ? $aQuestionAttributes['other_replace_text'][$sSurveyLang] : gT('Other:'); // text for 'other'
     $optCategorySeparator   = (trim((string) $aQuestionAttributes['category_separator']) != '') ? $aQuestionAttributes['category_separator'] : '';
@@ -883,7 +883,7 @@ function do_list_radio($ia)
     global $thissurvey;
     $kpclass                = testKeypad($thissurvey['nokeyboard']); // Virtual keyboard (probably obsolete today)
     $checkconditionFunction = "checkconditions"; // name of the function to check condition TODO : check is used more than once
-    $iSurveyId              = Yii::app()->getConfig('surveyID'); // survey id
+    $iSurveyId              = Yii::app()->getConfig('surveyID'); // survey ID
     $sSurveyLang            = $_SESSION['survey_' . $iSurveyId]['s_lang']; // survey language
     $inputnames = [];
     $coreClass = "ls-answers answers-list radio-list";
@@ -1107,7 +1107,7 @@ function do_listwithcomment($ia)
     global $thissurvey;
     $kpclass                = testKeypad($thissurvey['nokeyboard']); // Virtual keyboard (probably obsolete today)
     $checkconditionFunction = "checkconditions";
-    $iSurveyId              = Yii::app()->getConfig('surveyID'); // survey id
+    $iSurveyId              = Yii::app()->getConfig('surveyID'); // survey ID
     $sSurveyLang            = $_SESSION['survey_' . $iSurveyId]['s_lang']; // survey language
     $maxoptionsize          = 35;
     $coreClass              = "ls-answers";
@@ -1399,7 +1399,7 @@ function do_multiplechoice($ia)
     $kpclass                = testKeypad($thissurvey['nokeyboard']); // Virtual keyboard (probably obsolete today)
     $inputnames             = array(); // It is used!
     $checkconditionFunction = "checkconditions"; // name of the function to check condition TODO : check is used more than once
-    $iSurveyId              = Yii::app()->getConfig('surveyID'); // survey id
+    $iSurveyId              = Yii::app()->getConfig('surveyID'); // survey ID
     $sSurveyLang            = $_SESSION['survey_' . $iSurveyId]['s_lang']; // survey language
     $coreClass = "ls-answers checkbox-list answers-list";
     // Question attribute variables
