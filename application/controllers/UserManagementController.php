@@ -618,7 +618,18 @@ class UserManagementController extends LSBaseController
             return $oUGMap->group->name;
         }, UserInGroup::model()->findAllByAttributes(['uid' => $oUser->uid]));
 
-        return $this->renderPartial('partial/showuser', ['usergroups' => $userGroups, 'oUser' => $oUser]);
+        if (App()->getRequest()->getIsAjaxRequest()) {
+            return $this->renderPartial('partial/showuser', [
+                'usergroups' => $userGroups,
+                'oUser' => $oUser,
+                'ajax' => true
+            ]);
+        }
+        return $this->render('partial/showuser', [
+            'usergroups' => $userGroups,
+            'oUser' => $oUser,
+            'ajax' => false
+        ]);
     }
 
     /**
