@@ -34,6 +34,29 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.5.13 (build 240617) to 6.5.14 (build 240624) June 24, 2024
+-Fixed issue #19608: [security] XSS under user management (thanks to OIZ Stadt Zürich and Protec7) (#3887) (Denis Chenu)
+-Fixed issue #19599: [security] Stored XSS through csv file upload (thanks to paoloelia ) (#3882) (Denis Chenu)
+-Fixed issue #19598: [security] No CSRF protection on userManagement (thanks to paoloelia) (#3880) (Denis Chenu)
+-Fixed issue #19579: Styling of question summary breaks if there is RegEx Validation (#3891) (Gabriel Jenik)
+-Fixed issue #19509: Postgres error when adding language (#3890) (Gabriel Jenik)
+-Fixed issue #14661: Plugin development needs a "Don't disable plugin" option (#3770) (Denis Chenu)
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Aanouk, c_schmitz, Han, jorynagel, kpadm, L191
+#Updated translation: Dutch (Informal) by c_schmitz, Han, jorynagel, thompol, zfocuz
+
+
+Changes from 6.5.12 (build 240611) to 6.5.13 (build 240617) June 17, 2024
+-Fixed issue #CR-1426: custom.css in survey themes and files_css not loaded correctly when using a theme variation (#3876) (Patrick Teichmann)
+#Updated translation: Korean by modernity4r
+#Updated translation: Japanese by d_inoue
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech (Informal) by jelen1
+
+
 Changes from 6.5.11 (build 240605) to 6.5.12 (build 240611) June 11, 2024
 -Fixed issue #19580: Data entry at anonymous survey with tokens crashed on save (#3873) (Denis Chenu)
 -Fixed issue #19570: JavaScript exception on survey taking on browsers not supporting localstorage (#3856) (Tõnis Ormisson)
