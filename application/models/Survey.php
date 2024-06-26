@@ -2006,13 +2006,26 @@ class Survey extends LSActiveRecord implements PermissionInterface
     }
 
     /**
+     * @param boolean $countHidden determines whether to count hidden questions or not.
      * @return int
      */
-    public function getCountTotalQuestions()
+    public function getCountTotalQuestions($countHidden = true)
     {
+      $sumresult;
+
+      if ($countHidden) {
         $condn = array('sid' => $this->sid, 'parent_qid' => 0);
         $sumresult = Question::model()->countByAttributes($condn);
-        return (int) $sumresult;
+      } else {
+        $sumresult = Question::model()->with('questionattributes')
+          ->count(
+            "sid=:sid AND parent_qid=:parent_qid AND attribute='hidden' AND value !=:hidden", 
+            ['sid' => $this->sid, 'parent_qid' => 0, 'hidden' => 1]
+          );
+      }
+
+      
+      return (int) $sumresult;
     }
 
     /**

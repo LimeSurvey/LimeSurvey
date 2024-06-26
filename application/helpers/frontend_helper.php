@@ -824,10 +824,12 @@ function buildsurveysession($surveyid, $preview = false)
 
     UpdateGroupList($surveyid, $_SESSION['survey_' . $surveyid]['s_lang']);
 
-    $totalquestions               = $survey->countTotalQuestions;
+    $totalquestions               = $survey->getCountTotalQuestions(false);
     $iTotalGroupsWithoutQuestions = QuestionGroup::model()->getTotalGroupsWithoutQuestions($surveyid);
 
-    $_SESSION['survey_' . $surveyid]['totalquestions'] = $survey->countInputQuestions;
+    $_SESSION['survey_' . $surveyid]['totalquestions'] = $survey->getCountTotalQuestions(false);
+    // $_SESSION['survey_' . $surveyid]['totalquestions'] = $survey->countInputQuestions;
+
 
     // 2. SESSION VARIABLE: totalsteps
     setTotalSteps($surveyid, $thissurvey, $totalquestions);
