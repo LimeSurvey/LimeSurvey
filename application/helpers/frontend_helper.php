@@ -828,8 +828,6 @@ function buildsurveysession($surveyid, $preview = false)
     $iTotalGroupsWithoutQuestions = QuestionGroup::model()->getTotalGroupsWithoutQuestions($surveyid);
 
     $_SESSION['survey_' . $surveyid]['totalquestions'] = $survey->getCountTotalQuestions(false);
-    // $_SESSION['survey_' . $surveyid]['totalquestions'] = $survey->countInputQuestions;
-
 
     // 2. SESSION VARIABLE: totalsteps
     setTotalSteps($surveyid, $thissurvey, $totalquestions);
