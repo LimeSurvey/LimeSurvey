@@ -25,10 +25,9 @@ jobs:
     name: PHP ${{ matrix.php-versions }} # Check each version of php specified in matrix
     steps:
       - name: Check php compatibility
-        uses: pantheon-systems/phpcompatibility-action@v1
+        uses: pantheon-systems/phpcompatibility-action@dev
         with:
           test-versions: 8.3
-          paths: ${{ github.workspace }}/application
 
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v4
