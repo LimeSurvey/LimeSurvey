@@ -2011,7 +2011,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
      */
     public function getCountTotalQuestions($countHidden = true)
     {
-        $sumresult;
+        $sumresult = null;
 
         if ($countHidden) {
             $condn = array('sid' => $this->sid, 'parent_qid' => 0);
