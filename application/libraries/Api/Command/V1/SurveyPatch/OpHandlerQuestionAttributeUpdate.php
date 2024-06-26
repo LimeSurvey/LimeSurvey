@@ -3,15 +3,17 @@
 namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestionAttribute;
-use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\{OpHandlerExceptionTrait,
+use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\{
+    OpHandlerExceptionTrait,
     OpHandlerSurveyTrait,
     OpHandlerValidationTrait};
 use LimeSurvey\Models\Services\{
+    Exception\NotFoundException,
+    Exception\PermissionDeniedException,
     QuestionAggregateService,
     QuestionAggregateService\AttributesService,
     QuestionAggregateService\QuestionService,
-    Exception\PersistErrorException
-};
+    Exception\PersistErrorException};
 use LimeSurvey\ObjectPatch\{
     Op\OpInterface,
     OpHandler\OpHandlerException,
@@ -83,6 +85,8 @@ class OpHandlerQuestionAttributeUpdate implements OpHandlerInterface
      * @return void
      * @throws OpHandlerException
      * @throws PersistErrorException
+     * @throws NotFoundException
+     * @throws PermissionDeniedException
      */
     public function handle(OpInterface $op): void
     {
@@ -109,7 +113,8 @@ class OpHandlerQuestionAttributeUpdate implements OpHandlerInterface
      */
     public function validateOperation(OpInterface $op): array
     {
-        $validationData = $this->validateCollectionIndex($op, []);
+        $validationData = $this->validateSurveyIdFromContext($op, []);
+        $validationData = $this->validateCollectionIndex($op, $validationData);
         if (empty($validationData)) {
             $validationData = $this->transformer->validateAll(
                 $op->getProps(),

@@ -34,6 +34,83 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.5.13 (build 240617) to 6.5.14 (build 240624) June 24, 2024
+-Fixed issue #19608: [security] XSS under user management (thanks to OIZ Stadt Zürich and Protec7) (#3887) (Denis Chenu)
+-Fixed issue #19599: [security] Stored XSS through csv file upload (thanks to paoloelia ) (#3882) (Denis Chenu)
+-Fixed issue #19598: [security] No CSRF protection on userManagement (thanks to paoloelia) (#3880) (Denis Chenu)
+-Fixed issue #19579: Styling of question summary breaks if there is RegEx Validation (#3891) (Gabriel Jenik)
+-Fixed issue #19509: Postgres error when adding language (#3890) (Gabriel Jenik)
+-Fixed issue #14661: Plugin development needs a "Don't disable plugin" option (#3770) (Denis Chenu)
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Aanouk, c_schmitz, Han, jorynagel, kpadm, L191
+#Updated translation: Dutch (Informal) by c_schmitz, Han, jorynagel, thompol, zfocuz
+
+
+Changes from 6.5.12 (build 240611) to 6.5.13 (build 240617) June 17, 2024
+-Fixed issue #CR-1426: custom.css in survey themes and files_css not loaded correctly when using a theme variation (#3876) (Patrick Teichmann)
+#Updated translation: Korean by modernity4r
+#Updated translation: Japanese by d_inoue
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech (Informal) by jelen1
+
+
+Changes from 6.5.11 (build 240605) to 6.5.12 (build 240611) June 11, 2024
+-Fixed issue #19580: Data entry at anonymous survey with tokens crashed on save (#3873) (Denis Chenu)
+-Fixed issue #19570: JavaScript exception on survey taking on browsers not supporting localstorage (#3856) (Tõnis Ormisson)
+-Fixed issue #19457: [security] Stored Cross-Site Scripting (XSS) in file upload question (#3874) (Gabriel Jenik)
+#Updated translation: Slovak by jelen1
+#Updated translation: Korean by modernity4r
+#Updated translation: Japanese by nomoto
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
+Changes from 6.5.10 (build 240603) to 6.5.11 (build 240605) June 5, 2024
++New feature: Survey preview by Rest API (MW-1149) (lajosarpad)
+-Fixed issue: [security] Viewing surveys with popuppreview option should be limited to authorized admins (#3865) (K Foster)
+-Fixed issue #19527: Theme listing broke with invalid template (#3859) (Denis Chenu)
+-Fixed issue #19397: Editing menu entries not possible (#3862) (Denis Chenu)
+#Updated translation: Slovak by jelen1
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
+Changes from 6.5.9 (build 240521) to 6.5.10 (build 240603) June 3, 2024
+-Fixed issue #CR-1421: themes overview page showing error when configuration can't be loaded or is invalid (#3857) (Mohab Elsheikh)
+-Fixed issue #CT-778: wrong placeholder fields in html editor (#3851) (Tim Willig)
+-Fixed issue #19561: popup messages come with HTML inside (#3848) (Denis Chenu)
+#Updated translation: Slovak by jelen1
+#Updated translation: Portuguese (Brazil) by mauriciofurtado
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Korean by modernity4r
+#Updated translation: Korean by c_schmitz, modernity4r
+#Updated translation: Japanese by nomoto
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
+Changes from 6.5.8 (build 240517) to 6.5.9 (build 240521) May 21, 2024
+-Fixed issue: On group/question preview a PHP error is thrown if the qid/gid is invalid (#3849) (Carsten Schmitz)
+#Updated translation: Korean by modernity4r
+#Updated translation: Japanese by hl_sales
+
+
+Changes from 6.5.7 (build 240515) to 6.5.8 (build 240517) May 16, 2024
+-Fixed issue: L10ns must be initialized with qid not gid (Kevin Foster)
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Japanese by d_inoue, nomoto
+
+
 Changes from 6.5.6 (build 240506) to 6.5.7 (build 240515) May 15, 2024
 -Fixed issue #CT-800: Fixed styling for vanilla/fruity related to Bootstrap (twilligls)
 -Fixed issue #CT-774: Ranking advanced was not persisting answers on reload (prev, error modal) (twilligls)

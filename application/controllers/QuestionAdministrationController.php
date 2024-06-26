@@ -470,13 +470,7 @@ class QuestionAdministrationController extends LSBaseController
 
         // Check the POST data is not truncated
         if (!$request->getPost('bFullPOST')) {
-            $message = gT(
-                'The data received seems incomplete. '
-                . 'This usually happens due to server limitations '
-                . '(PHP setting max_input_vars) - '
-                . 'please contact your system administrator.'
-            );
-
+            $message = gT('The data received seems incomplete. This usually happens due to server limitations (PHP setting max_input_vars). Please contact your system administrator.');
             if ($calledWithAjax) {
                 echo json_encode(['message' => $message]);
                 Yii::app()->end();

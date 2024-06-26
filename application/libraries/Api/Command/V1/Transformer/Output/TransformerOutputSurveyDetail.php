@@ -129,6 +129,7 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
                 $options
             );
         }
+        $survey['hasSurveyUpdatePermission'] = $data->hasPermission('surveycontent', 'update');
 
         return $survey;
     }

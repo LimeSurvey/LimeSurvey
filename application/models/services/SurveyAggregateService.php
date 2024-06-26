@@ -2,6 +2,7 @@
 
 namespace LimeSurvey\Models\Services;
 
+use Permission;
 use LimeSurvey\Models\Services\SurveyAggregateService\{
     LanguageSettings,
     GeneralSettings,
@@ -29,6 +30,7 @@ class SurveyAggregateService
     private UrlParams $urlParams;
     private ProxyExpressionManager $proxyExpressionManager;
     private TemplateConfiguration $templateConfiguration;
+    private Permission $modelPermission;
     private $restMode = false;
     private SurveyActivate $surveyActivate;
     private SurveyDeactivate $surveyDeactivate;
@@ -39,6 +41,7 @@ class SurveyAggregateService
         UrlParams $urlParams,
         ProxyExpressionManager $proxyExpressionManager,
         TemplateConfiguration $templateConfiguration,
+        Permission $modelPermission,
         SurveyActivate $surveyActivate,
         SurveyDeactivate $surveyDeactivate
     ) {
@@ -47,6 +50,7 @@ class SurveyAggregateService
         $this->urlParams = $urlParams;
         $this->proxyExpressionManager = $proxyExpressionManager;
         $this->templateConfiguration = $templateConfiguration;
+        $this->modelPermission = $modelPermission;
         $this->surveyActivate = $surveyActivate;
         $this->surveyDeactivate = $surveyDeactivate;
     }
@@ -62,7 +66,7 @@ class SurveyAggregateService
      */
     public function setRestMode($restMode)
     {
-        $this->restMode = (bool) $restMode;
+        $this->restMode = (bool)$restMode;
         $this->generalSettings->setRestMode($this->restMode);
     }
 
@@ -76,10 +80,10 @@ class SurveyAggregateService
      *
      * @param int $surveyId
      * @param array $input
-     * @throws PersistErrorException
+     * @return array
      * @throws NotFoundException
      * @throws PermissionDeniedException
-     * @return array
+     * @throws PersistErrorException
      */
     public function update($surveyId, $input)
     {
@@ -107,6 +111,20 @@ class SurveyAggregateService
             ->update($surveyId);
 
         return $meta;
+    }
+
+    public function checkSurveySettingsUpdatePermission($surveyId)
+    {
+        $hasPermission = $this->modelPermission->hasSurveyPermission(
+            $surveyId,
+            'surveysettings',
+            'update'
+        );
+        if (!$hasPermission) {
+            throw new PermissionDeniedException(
+                'Permission denied'
+            );
+        }
     }
 
     /**
