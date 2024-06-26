@@ -72,4 +72,22 @@ class ListSurveysWidget extends CWidget
 
         $this->render('listSurveys');
     }
+
+    /** Initializes the widget */
+    public function init(): void
+    {
+        $this->registerClientScript();
+    }
+
+    public function registerClientScript()
+    {
+        App()->getClientScript()->registerScriptFile(
+            App()->getConfig("extensionsurl") . 'admin/survey/ListSurveysWidget/assets/filters.js',
+            CClientScript::POS_END
+        );
+
+        App()->getClientScript()->registerCssFile(
+            App()->getConfig("extensionsurl") . 'admin/survey/ListSurveysWidget/assets/css/ListSurveysWidget.css'
+        );
+    }
 }

@@ -198,7 +198,6 @@ gT('Themes');
 
     <?php if ($bShowSurveyList) : ?>
         <div class="col-12 list-surveys">
-            <h2><?php eT('Survey list'); ?></h2>
             <?php
             $this->widget('ext.admin.survey.ListSurveysWidget.ListSurveysWidget', array(
                 'model'            => $oSurveySearch,

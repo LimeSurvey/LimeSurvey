@@ -21,59 +21,80 @@
 
 <!-- Begin Form -->
 <div class="row">
-    <div class="col-12">
-        <?php $form = $this->beginWidget('CActiveForm', ['action' => App()->createUrl($this->formUrl), 'method' => 'get', 'htmlOptions' => ['class' => ''],]); ?>
-        <div class="row row-cols-lg-auto g-2 align-items-end mb-3">
-            <!-- search input -->
-            <div class="col">
-                <?= $form->label($this->model, 'searched_value', ['label' => gT('Search:'), 'class' => 'col-sm-3 col-form-label col-form-label-sm']) ?>
-                <?= $form->textField($this->model, 'searched_value', ['class' => 'form-control']) ?>
-            </div>
+    <div class="menu col-12">
+        <?php $form = $this->beginWidget('CActiveForm', ['action' => App()->createUrl($this->formUrl), 'method' => 'get', 'htmlOptions' => ['id' => 'survey-search'],]); ?>
+        <div class="row">
 
             <!-- select state -->
-            <div class="col">
-                <?= $form->label($this->model, 'active', ['label' => gT('Status:'), 'class' => 'col-sm-3 col-form-label col-form-label-sm']) ?>
-                <select name="active" id='Survey_active' class="form-select">
-                    <option value="" <?= empty($this->model->active) ? "selected" : '' ?>>
-                        <?= gT('(Any)') ?>
-                    </option>
-                    <option value="Y" <?= $this->model->active === "Y" ? "selected" : '' ?>>
-                        <?= gT('Active') ?>
-                    </option>
-                    <option value="R" <?= $this->model->active === "R" ? "selected" : '' ?>>
-                        <?= gT('Active and running') ?>
-                    </option>
-                    <option value="N" <?= $this->model->active === "N" ? "selected" : '' ?>>
-                        <?= gT('Inactive') ?>
-                    </option>
-                    <option value="E" <?= $this->model->active === "E" ? "selected" : '' ?>>
-                        <?= gT('Active but expired') ?>
-                    </option>
-                    <option value="S" <?= $this->model->active === "S" ? "selected" : '' ?>>
-                        <?= gT('Active but not yet started') ?>
-                    </option>
-                </select>
+            <div class="col-1">
+                <h2><?php eT('All surveys'); ?></h2>
             </div>
 
             <!-- select group -->
-            <div class="col">
-                <?= $form->label($this->model, 'group', ['label' => gT('Group:'), 'class' => 'col-sm-3 col-form-label col-form-label-sm']) ?>
-                <select name="gsid" id='Survey_gsid' class="form-select activate-search">
-                    <option value=""><?= gT('(Any group)') ?></option>
-                    <?php foreach (SurveysGroups::getSurveyGroupsList() as $gsid => $group_title) : ?>
-                        <option value="<?= $gsid ?>" <?= ($gsid === $this->model->gsid) ? "selected" : "" ?>><?= CHtml::encode($group_title) ?></option>
-                    <?php endforeach; ?>
-                </select>
+            <div class="col-6">
+                <div  class="pull-right">
+
+                    <div class="search-bar">
+                        <?= $form->textField($this->model, 'searched_value', ['class' => 'form-control', 'placeholder' => 'Search']) ?>
+                        <i class="ri-search-line"></i>
+                    </div>
+                    <div class="dropdown">
+                        <select name="active" id='survey_active' class="form-select">
+                            <option value="" <?= empty($this->model->active) ? "selected" : '' ?>>
+                                <?= gT('Status') ?>
+                            </option>
+                            <option value="Y" <?= $this->model->active === "Y" ? "selected" : '' ?>>
+                                <?= gT('Active') ?>
+                            </option>
+                            <option value="R" <?= $this->model->active === "R" ? "selected" : '' ?>>
+                                <?= gT('Running') ?>
+                            </option>
+                            <option value="N" <?= $this->model->active === "N" ? "selected" : '' ?>>
+                                <?= gT('Inactive') ?>
+                            </option>
+                            <option value="E" <?= $this->model->active === "E" ? "selected" : '' ?>>
+                                <?= gT('Expired') ?>
+                            </option>
+<!--                            <option value="S" --><?php //= $this->model->active === "S" ? "selected" : '' ?><!-->-->
+<!--                                --><?php //= gT('Active but not yet started') ?>
+<!--                            </option>-->
+                        </select>
+                    </div>
+                    <div class="dropdown">
+                        <select name="gsid" id='survey_gsid' class="form-select">
+                            <option value=""><?= gT('Group') ?></option>
+                            <?php foreach (SurveysGroups::getSurveyGroupsList() as $gsid => $group_title) : ?>
+                                <option value="<?= $gsid ?>" <?= ($gsid === $this->model->gsid) ? "selected" : "" ?>><?= CHtml::encode($group_title) ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <button id="survey_reset" class="btn btn-outline-secondary menu-button b-none <?= !empty(App()->request->getParam('Survey')) ? '' : 'd-none' ?>">
+                        <i class="ri-refresh-line"></i>
+                        <?= gT('Reset') ?>
+                    </button>
+
+                </div>
             </div>
-            <div class="col">
-                <?= CHtml::submitButton(gT('Search', 'unescaped'), ['class' => 'btn btn-secondary']) ?>
+
+            <div class="col-4">
+                <div class="pull-right">
+                    <a href="<?= Yii::app()->createUrl('surveyAdministration/newSurvey') ?>" class="btn btn-outline-secondary menu-button purple purple-bg">
+                        <i class="ri-add-line"></i>
+                        <?= gT('Create survey') ?>
+                    </a>
+                    <a href="<?= Yii::app()->createUrl('admin/surveysgroups/sa/create') ?>" class="btn btn-outline-secondary menu-button">
+                        <i class="ri-add-line"></i>
+                        <?= gT('Create survey group') ?>
+                    </a>
+                </div>
             </div>
-            <div class="col">
-                <a href="<?= Yii::app()->createUrl('surveyAdministration/listsurveys') ?>" class="btn btn-warning">
-                    <i class="ri-refresh-line"></i>
-                    <?= gT('Reset') ?>
-                </a>
+            <div class="col-1">
+                <div class="pull-right menu-icon">
+                    <i class="ri-grid-fill"></i>
+                    <i class="ri-menu-line purple"></i>
+                </div>
             </div>
+
         </div>
         <?php $this->endWidget(); ?>
     </div>
