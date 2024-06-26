@@ -857,7 +857,7 @@ class LsDefaultDataSets
                           'ico'        => 'ri-add-line',
                           'desc'       => gT('Create a new survey from scratch. Or simply copy or import an existing survey.'),
                           'page'       => 'welcome',
-                          'usergroup'  => '-2',
+                          'usergroup'  => '-3',
                           'buttontext' => gt('Create survey')
         ];
         $returnArray[] = ['position'   => '2',
@@ -866,7 +866,7 @@ class LsDefaultDataSets
                           'ico'        => 'ri-list-unordered',
                           'desc'       => gT('List available surveys'),
                           'page'       => 'welcome',
-                          'usergroup'  => '-1',
+                          'usergroup'  => '-3',
                           'buttontext' => null
         ];
         $returnArray[] = ['position'   => '3',
@@ -875,7 +875,7 @@ class LsDefaultDataSets
                           'ico'        => 'ri-settings-5-line',
                           'desc'       => gT('Edit global settings'),
                           'page'       => 'welcome',
-                          'usergroup'  => '-2',
+                          'usergroup'  => '-3',
                           'buttontext' => gt('View global settings')
         ];
         $returnArray[] = ['position'   => '4',
@@ -884,7 +884,7 @@ class LsDefaultDataSets
                           'ico'        => 'ri-user-line',
                           'desc'       => gT('The user management allows you to add additional users to your survey administration.'),
                           'page'       => 'welcome',
-                          'usergroup'  => '-2',
+                          'usergroup'  => '-3',
                           'buttontext' => gt('Manage administrators')
         ];
         $returnArray[] = ['position'   => '5',
@@ -893,7 +893,7 @@ class LsDefaultDataSets
                           'ico'        => 'ri-price-tag-3-line',
                           'desc'       => gT('Label sets can be used as answer options or subquestions to speed up creation of similar questions.'),
                           'page'       => 'welcome',
-                          'usergroup'  => '-2',
+                          'usergroup'  => '-3',
                           'buttontext' => gt('Edit label sets')
         ];
         $returnArray[] = ['position'   => '6',
@@ -902,7 +902,7 @@ class LsDefaultDataSets
                           'ico'        => 'ri-brush-line',
                           'desc'       => gT('The themes functionality allows you to edit survey-, admin- or question themes.'),
                           'page'       => 'welcome',
-                          'usergroup'  => '-2',
+                          'usergroup'  => '-3',
                           'buttontext' => gt('Edit themes')
         ];
 

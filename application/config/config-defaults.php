@@ -754,13 +754,14 @@ $config['bFixNumAuto']             = 1;
 $config['bNumRealValue'] = 0;
 
 // Home page default Settings
-$config['show_logo'] = 'show';
-$config['show_last_survey_and_question'] = 'show';
+$config['show_logo'] = 'hide';
+$config['show_last_survey_and_question'] = 'hide';
 $config['show_survey_list_search'] = 'show';
-$config['show_survey_list'] = 'hide';
-$config['boxes_by_row'] = '3';
-$config['boxes_offset'] = '3';
-$config['boxes_in_container'] = 'yes';
+$config['show_survey_list'] = 'show';
+$config['boxes_by_row'] = '1';
+$config['boxes_offset'] = '0';
+$config['boxes_in_container'] = 'no';
+$config['boxes_deprecation_date'] = '2024-07-01'; // Hide the dashboard setting after QE release
 
 // Bounce settings
 $config['bounceaccounthost'] = '';
