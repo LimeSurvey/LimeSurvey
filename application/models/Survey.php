@@ -2019,8 +2019,8 @@ class Survey extends LSActiveRecord implements PermissionInterface
         } else {
             $sumresult = Question::model()->with('questionattributes')
               ->count(
-                  "sid=:sid AND parent_qid=:parent_qid AND attribute='hidden' AND value !=:hidden",
-                  ['sid' => $this->sid, 'parent_qid' => 0, 'hidden' => 1]
+                  "sid=:sid AND parent_qid=:parent_qid AND((attribute='hidden' AND value!=:hidden )OR attribute IS :null)",
+                  ['sid' => $this->sid, 'parent_qid' => 0, 'hidden' => 1, 'null' => NULL]
               );
         }
 
