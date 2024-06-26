@@ -341,11 +341,11 @@ class LSYii_Application extends CWebApplication
     /**
      * Get the pluginManager
      *
-     * @return PluginManager
+     * @return \LimeSurvey\PluginManager\PluginManager
      */
-    public function getPluginManager()
+    public function getPluginManager(): \LimeSurvey\PluginManager\PluginManager
     {
-        /** @var PluginManager $pluginManager */
+        /** @var \LimeSurvey\PluginManager\PluginManager $pluginManager */
         $pluginManager = $this->getComponent('pluginManager');
         return $pluginManager;
     }
@@ -403,7 +403,7 @@ class LSYii_Application extends CWebApplication
      */
     public function onException($event)
     {
-        (new AppErrorHandler)->onException($this->dbVersion, $event);
+        (new AppErrorHandler())->onException($this->dbVersion, $event);
     }
 
     /**
@@ -414,7 +414,7 @@ class LSYii_Application extends CWebApplication
      */
     public function onError($event)
     {
-        (new AppErrorHandler)->onError($this->dbVersion, $event);
+        (new AppErrorHandler())->onError($this->dbVersion, $event);
     }
 
     /**
@@ -514,7 +514,7 @@ class LSYii_Application extends CWebApplication
      * @inheritdoc
      * Special handling for SEO friendly URLs
      */
-    public function createController($route, $owner=null)
+    public function createController($route, $owner = null)
     {
         $controller = parent::createController($route, $owner);
 
@@ -590,5 +590,328 @@ class LSYii_Application extends CWebApplication
         App()->getSession()->setCookieParams([
             'lifetime' => $lifetime
         ]);
+    }
+
+    /**
+     * Creates a table based on another
+     *
+     * @param string $table
+     * @param string $pattern
+     * @param array $columns
+     * @param array $where
+     * @return integer number of rows affected by the execution.
+     * @throws CDbException execution failed
+     */
+    public function createTableFromPattern($table, $pattern, $columns = [], $where = [])
+    {
+        if (!is_array($columns)) {
+            $columns = [];
+        }
+        if (!is_array($where)) {
+            $where = [];
+        }
+        $whereClause = "";
+        $criterias = [];
+        if (count($where)) {
+            foreach ($where as $field => $value) {
+                $criterias[] = $this->db->quoteColumnName($field) . " = " . $this->db->quoteValue($value);
+            }
+            $whereClause = " WHERE " . implode(" AND ", $criterias);
+        }
+        if (count($columns)) {
+            foreach ($columns as $index => $column) {
+                if (!ctype_alnum($column)) {
+                    $columns[$index] = $this->db->quoteColumnName($column);
+                }
+            }
+            $command = "CREATE TABLE " . $this->db->quoteTableName($table) . " AS SELECT " . implode(",", $columns) . " FROM " . $this->db->quoteTableName($pattern) . $whereClause;
+        } else {
+            $command = "CREATE TABLE " . $this->db->quoteTableName($table) . " LIKE " . $this->db->quoteTableName($pattern) . ";";
+        }
+        return $this->db->createCommand($command)->execute();
+    }
+
+    /**
+     * Generates a temporary table creation script
+     *
+     * @param string $source
+     * @param string $destination
+     * @return string
+     */
+    protected function generateTemporaryTableCreate(string $source, string $destination)
+    {
+        return  "
+            CREATE TEMPORARY TABLE {$destination}
+            SELECT *
+            FROM (
+                SELECT SUBSTRING_INDEX(temp.COLUMN_NAME, 'X', 1) AS sid,
+                       SUBSTRING_INDEX(SUBSTRING_INDEX(temp.COLUMN_NAME, 'X', 2), 'X', -1) AS gid,
+                       SUBSTRING_INDEX(temp.COLUMN_NAME, 'X', -1) AS qidsuffix,
+                       temp.COLUMN_NAME
+                FROM information_schema.columns temp
+                WHERE temp.TABLE_SCHEMA = DATABASE() AND 
+                      temp.TABLE_NAME = '{$source}'
+            ) t;
+        ";
+    }
+
+    /**
+     * Generates a drop statement for a temporary table
+     *
+     * @param string $name
+     * @return string
+     */
+    protected function generateTemporaryTableDrop(string $name)
+    {
+        return "DROP TEMPORARY TABLE {$name};";
+    }
+
+    /**
+     * Generates temporary table creation scripts from the arrays received and returns the scripts that were generated,
+     * we expect count($sourceTables) and count($destinationTables) to be the same
+     *
+     * @param array $sourceTables
+     * @param array $destinationTables
+     * @return array
+     */
+    protected function generateTemporaryTableCreates(array $sourceTables, array $destinationTables)
+    {
+        $output = [];
+        for ($index = 0; $index < count($sourceTables); $index++) {
+            $output [] = $this->generateTemporaryTableCreate($sourceTables[$index], $destinationTables[$index]);
+        }
+        return $output;
+    }
+
+    /**
+     * Generates temporary table drops for the tables received and returns the scripts
+     *
+     * @param array $tables
+     * @return array
+     */
+    protected function generateTemporaryTableDrops(array $tables)
+    {
+        $output = [];
+        foreach ($tables as $table) {
+            $output [] = $this->generateTemporaryTableDrop($table);
+        }
+        return $output;
+    }
+
+    /**
+     * Gets the unchanged columns
+     *
+     * @param int $sid
+     * @param int $qTimestamp
+     * @param int $sTimestamp
+     * @return array all rows of the query result. Each array element is an array representing a row.
+     * An empty array is returned if the query results in nothing.
+     * @throws CException execution failed
+     */
+    public function getUnchangedColumns($sid, $sTimestamp, $qTimestamp)
+    {
+        $sourceTables = [
+            $this->db->tablePrefix . "survey_" . $sid,
+            $this->db->tablePrefix . "survey_" . $sid,
+            $this->db->tablePrefix . "survey_" . $sid,
+            $this->db->tablePrefix . "old_survey_{$sid}_{$sTimestamp}",
+            $this->db->tablePrefix . "old_survey_{$sid}_{$sTimestamp}",
+            $this->db->tablePrefix . "old_survey_{$sid}_{$sTimestamp}",
+        ];
+        $destinationTables = [
+            'new_s_c',
+            'new_parent1',
+            'new_parent2',
+            'old_s_c',
+            'old_parent1',
+            'old_parent2'
+        ];
+        $this->db->createCommand(implode("\n\n", $this->generateTemporaryTableCreates($sourceTables, $destinationTables)))->execute();
+        $command =
+        "
+            SELECT old_s_c.COLUMN_NAME AS old_c, new_s_c.COLUMN_NAME AS new_c
+            FROM " . $this->db->tablePrefix . "old_questions_" . $sid . "_" . $qTimestamp . " old_q
+            JOIN " . $this->db->tablePrefix . "questions new_q
+            ON old_q.qid = new_q.qid AND old_q.type = new_q.type
+            JOIN new_s_c
+            ON new_s_c.sid = new_q.sid AND
+               new_s_c.gid = new_q.gid AND
+               new_s_c.qidsuffix like concat(new_q.qid, '%')
+            JOIN old_s_c
+            ON old_s_c.sid = old_q.sid AND
+               old_s_c.gid = old_q.gid AND
+               old_s_c.qidsuffix LIKE CONCAT(old_q.qid, '%') AND
+               old_s_c.qidsuffix = new_s_c.qidsuffix
+            LEFT JOIN new_parent1
+            ON new_s_c.sid = new_parent1.sid AND
+               new_s_c.gid = new_parent1.gid AND
+               new_s_c.qidsuffix <> new_parent1.qidsuffix AND
+               new_parent1.qidsuffix LIKE CONCAT(new_s_c.qidsuffix, '%')
+            LEFT JOIN new_parent2
+            ON new_s_c.sid = new_parent2.sid AND
+               new_s_c.gid = new_parent2.gid AND
+               new_s_c.qidsuffix <> new_parent2.qidsuffix AND new_parent1.qidsuffix <> new_parent2.qidsuffix AND
+               new_parent2.qidsuffix LIKE CONCAT(new_s_c.qidsuffix, '%')
+            LEFT JOIN old_parent1
+            ON old_s_c.sid = old_parent1.sid AND
+               old_s_c.gid = old_parent1.gid AND
+               old_s_c.qidsuffix <> old_parent1.qidsuffix AND
+               old_parent1.qidsuffix LIKE CONCAT(old_s_c.qidsuffix, '%')
+            LEFT JOIN old_parent2
+               ON old_s_c.sid = old_parent2.sid AND
+                  old_s_c.gid = old_parent2.gid AND
+                  old_s_c.qidsuffix <> old_parent2.qidsuffix AND old_parent1.qidsuffix <> old_parent2.qidsuffix AND
+                  old_parent2.qidsuffix LIKE CONCAT(old_s_c.qidsuffix, '%')
+            WHERE (new_parent2.sid IS NULL) AND
+                  (old_parent2.sid IS NULL) AND
+                  (((new_parent1.sid IS NULL) AND (old_parent1.sid IS NULL)) OR
+                   (
+                    (new_parent1.sid = old_parent1.sid) AND
+                    (new_parent1.gid = old_parent1.gid) AND
+                    (new_parent1.qidsuffix = old_parent1.qidsuffix)
+                   )
+                  )
+            ;
+        "
+        ;
+
+        $rawResults = $this->db->createCommand($command)->queryAll();
+        $results = ['old_c' => [], 'new_c' => []];
+        foreach ($rawResults as $rawResult) {
+            $results['old_c'][] = $rawResult['old_c'];
+            $results['new_c'][] = $rawResult['new_c'];
+        }
+        $this->db->createCommand(implode("\n\n", $this->generateTemporaryTableDrops($destinationTables)))->execute();
+        return $results;
+    }
+
+    /**
+     * Finds the newest archive table from each kind
+     *
+     * @param int $sid
+     * @return array all rows of the query result. Each array element is an array representing a row.
+     * An empty array is returned if the query results in nothing.
+     * @throws CException execution failed
+     */
+    public function getNewestArchives($sid)
+    {
+        $sid = intval($sid);
+        $command = "
+            SELECT n, MAX(TABLE_NAME) AS TABLE_NAME
+            FROM information_schema.tables
+            JOIN (
+                SELECT 'survey' AS n
+                UNION
+                SELECT 'tokens' AS n
+                UNION
+                SELECT 'timings' AS n
+                UNION
+                SELECT 'questions' AS n
+            ) t
+            ON TABLE_SCHEMA = DATABASE() AND TABLE_NAME LIKE CONCAT('%', n, '%') AND TABLE_NAME LIKE '%old%' AND TABLE_NAME LIKE '%{$sid}%' AND
+            ((n <> 'survey') OR (TABLE_NAME NOT LIKE '%timings%'))
+            GROUP BY n;
+        ";
+        $rawResults = $this->db->createCommand($command)->queryAll();
+        $results = [];
+        foreach ($rawResults as $rawResult) {
+            $results[$rawResult['n']] = $rawResult["TABLE_NAME"];
+        }
+        return $results;
+    }
+
+    /**
+     * Recovers archived survey responses
+     *
+     * @param int $surveyId survey ID
+     * @param string $archivedResponseTableName archived response table name to be imported
+     * @param bool $preserveIDs if archived response IDs should be preserved
+     * @param array $validatedColumns the columns that are validated and can be inserted again
+     * @return integer number of rows affected by the execution.
+     * @throws Exception execution failed
+     */
+    public function recoverSurveyResponses(int $surveyId, string $archivedResponseTableName, $preserveIDs, array $validatedColumns = []): int
+    {
+        if (!is_array($validatedColumns)) {
+            $validatedColumns = [];
+        }
+        $pluginDynamicArchivedResponseModel = PluginDynamic::model($archivedResponseTableName);
+        $targetSchema = SurveyDynamic::model($surveyId)->getTableSchema();
+        $encryptedAttributes = Response::getEncryptedAttributes($surveyId);
+        if (strpos($archivedResponseTableName, App()->db->tablePrefix) === 0) {
+            $tbl_name = substr($archivedResponseTableName, strlen(App()->db->tablePrefix));
+        }
+        $archivedTableSettings = ArchivedTableSettings::model()->findByAttributes(['tbl_name' => $tbl_name]);
+        $archivedEncryptedAttributes = [];
+        if ($archivedTableSettings) {
+            $archivedEncryptedAttributes = json_decode($archivedTableSettings->properties);
+        }
+        $archivedResponses = new CDataProviderIterator(new CActiveDataProvider($pluginDynamicArchivedResponseModel), 500);
+
+        $tableName = "{{survey_$surveyId}}";
+        $importedResponses = 0;
+        foreach ($archivedResponses as $archivedResponse) {
+            // Using plugindynamic model because I dont trust surveydynamic.
+            $targetResponse = new PluginDynamic($tableName);
+            if ($preserveIDs) {
+                $targetResponse->id = $archivedResponse->id;
+            }
+
+            foreach ($validatedColumns as $validatedColumn => $validatedColumnValue) {
+                $targetResponse[$validatedColumnValue] = $archivedResponse[$validatedColumnValue];
+                if (in_array($validatedColumnValue, $archivedEncryptedAttributes, false) && !in_array($validatedColumnValue, $encryptedAttributes, false)) {
+                    $targetResponse[$validatedColumnValue] = $archivedResponse->decryptSingle($archivedResponse[$validatedColumnValue]);
+                }
+                if (!in_array($validatedColumnValue, $archivedEncryptedAttributes, false) && in_array($validatedColumnValue, $encryptedAttributes, false)) {
+                    $targetResponse[$validatedColumnValue] = $archivedResponse->encryptSingle($archivedResponse[$validatedColumnValue]);
+                }
+            }
+
+            if (isset($targetSchema->columns['startdate']) && empty($targetResponse['startdate'])) {
+                $targetResponse['startdate'] = date("Y-m-d H:i", (int)mktime(0, 0, 0, 1, 1, 1980));
+            }
+
+            if (isset($targetSchema->columns['datestamp']) && empty($targetResponse['datestamp'])) {
+                $targetResponse['datestamp'] = date("Y-m-d H:i", (int)mktime(0, 0, 0, 1, 1, 1980));
+            }
+
+            $beforeDataEntryImport = new PluginEvent('beforeDataEntryImport');
+            $beforeDataEntryImport->set('iSurveyID', $surveyId);
+            $beforeDataEntryImport->set('oModel', $targetResponse);
+            App()->getPluginManager()->dispatchEvent($beforeDataEntryImport);
+
+            if ($targetResponse->validate()){
+                $batchData[] = $targetResponse;
+            }
+            if (($archivedResponses->key() + 1) / 500 === 1 || ($archivedResponses->key() + 1) === $archivedResponses->getTotalItemCount()) {
+                if ($preserveIDs) {
+                    switchMSSQLIdentityInsert("survey_$surveyId", true);
+                }
+                $builder = App()->db->getCommandBuilder();
+                $command = $builder->createMultipleInsertCommand($tableName, $batchData);
+                $importedResponses += $command->execute();
+                if ($preserveIDs) {
+                    switchMSSQLIdentityInsert("survey_$surveyId", false);
+                }
+            }
+
+            $aSRIDConversions[$archivedResponse->id] = $targetResponse->id;
+            unset($targetResponse);
+        }
+
+        return $importedResponses;
+    }
+
+    /**
+     * Copying all data from source table to a target table having the same structure
+     *
+     * @param string $source
+     * @param string $destination
+     * @return integer number of rows affected by the execution.
+     * @throws CDbException execution failed
+     */
+    public function copyFromOneTableToTheOther($source, $destination)
+    {
+        return $this->db->createCommand("INSERT INTO " . $this->db->quoteTableName($destination) . " SELECT * FROM " . $this->db->quoteTableName($source))->execute();
     }
 }
