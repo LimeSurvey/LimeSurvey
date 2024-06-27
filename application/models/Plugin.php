@@ -125,7 +125,7 @@ class Plugin extends LSActiveRecord
      */
     public function getStatus()
     {
-        if (!$this->getLoadError()) {
+        if ($this->getLoadError()) {
             return sprintf(
                 "<span data-bs-toggle='tooltip' title='%s' class='btntooltip ri-close-fill text-danger'></span>",
                 CHtml::encode(sprintf(gT('Plugin load error: %s'), $this->load_error_message))
