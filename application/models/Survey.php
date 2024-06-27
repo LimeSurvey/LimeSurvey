@@ -186,6 +186,16 @@ class Survey extends LSActiveRecord implements PermissionInterface
             $this->setAttributeDefaults();
         }
         $this->attachEventHandler("onAfterFind", array($this, 'afterFindSurvey'));
+        $this->attachEventHandler("onAfterSave", array($this, 'unsetFromStaticPkCache'));
+    }
+
+    /**
+     * Delete from static $findByPkCache
+     * return void
+     */
+    public function unsetFromStaticPkCache()
+    {
+        unset(self::$findByPkCache[$this->sid]);
     }
 
     private function setAttributeDefaults()
