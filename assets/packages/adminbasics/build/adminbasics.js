@@ -21301,7 +21301,13 @@
 	    /**
 	     * Card shown one by one
 	     */
-	    document.querySelectorAll(".card").forEach(function (e, i) {
+	    /**
+	     * @todo Added .welcome to restrict this to the welcome page (as it was intended), but the animation doesn't work
+	     *       anyway because the cards are already visible. On older versions, the panels (now cards) were hidden by
+	     *       the definition of ".welcome .panel" in adminbasics.css. We should either fix all the CSS related to these
+	     *       panels, or clean it and remove this CSS if the animation is not needed.
+	     */
+	    document.querySelectorAll(".welcome .card").forEach(function (e, i) {
 	      setTimeout(() => {
 	        e.animate({
 	          top: '0px',
