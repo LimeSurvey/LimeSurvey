@@ -457,29 +457,33 @@ class UserManagementController extends LSBaseController
      */
     public function actionUserActivateDeactivate()
     {
-        if (!Permission::model()->hasGlobalPermission('users', 'delete')) {
+        // See User_>getManagementButtons for permission
+        if (!Permission::model()->hasGlobalPermission('users', 'update')) {
             throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
         $userId = sanitize_int(Yii::app()->request->getParam('userid'));
-        // One can never deactivate the superadmin. Button should already be disabled in JS.
-        if ($userId === 1) {
-            throw new CHttpException(403, gT("You do not have permission to access this page."));
-        }
         $action = Yii::app()->request->getParam('action');
         $oUser = User::model()->findByPk($userId);
 
         if ($oUser == null) {
             throw new CHttpException(404, gT("Invalid user ID"));
-        } else {
-            if ($oUser->setActivationStatus($action)) {
-                return $this->renderPartial('/admin/super/_renderJson', [
-                    'data' => [
-                        'success' => true,
-                        'message' => gT('Status successfully updated')
-                    ]
-                ]);
-            };
         }
+        if (Permission::model()->getUserId() == $userId) { // canEdit allow user to update himself
+            throw new CHttpException(403, gT("You can not update this user."));
+        }
+        if (!$oUser->canEdit()) {
+            throw new CHttpException(403, gT("You can not update this user."));
+        }
+
+        if ($oUser->setActivationStatus($action)) {
+            return $this->renderPartial('/admin/super/_renderJson', [
+                'data' => [
+                    'success' => true,
+                    'message' => gT('Status successfully updated')
+                ]
+            ]);
+        };
+        /* activationstatus is not OK */
         return $this->renderPartial('/admin/super/_renderJson', [
             'data' => [
                 'success' => false
