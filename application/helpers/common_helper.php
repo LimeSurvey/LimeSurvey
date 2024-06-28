@@ -962,9 +962,10 @@ function sendCacheHeaders()
 * @param string $sFieldCode Field code of the particular field
 * @param string $sValue The stored response value
 * @param string $sLanguage Initialized limesurvey_lang object for the resulting response data
+* @param Question|null $question
 * @return string
 */
-function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage)
+function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage, $question = null)
 {
 
     if ($sValue == null || $sValue == '') {
@@ -974,7 +975,7 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage)
     //Fieldcode used to determine question, $sValue used to match against answer code
     //Returns NULL if question type does not suit
     if (strpos($sFieldCode, "{$iSurveyID}X") === 0) {
-//Only check if it looks like a real fieldcode
+        //Only check if it looks like a real fieldcode
         $fieldmap = createFieldMap($survey, 'short', false, false, $sLanguage);
         if (isset($fieldmap[$sFieldCode])) {
             $fields = $fieldmap[$sFieldCode];
@@ -992,7 +993,7 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage)
         switch ($this_type) {
             case Question::QT_D_DATE:
                 if (trim($sValue) != '') {
-                    $qidattributes = QuestionAttribute::model()->getQuestionAttributes($fields['qid']);
+                    $qidattributes = QuestionAttribute::model()->getQuestionAttributes($question ?? $fields['qid']);
                     $dateformatdetails = getDateFormatDataForQID($qidattributes, $iSurveyID);
                     $sValue = convertDateTimeFormat($sValue, "Y-m-d H:i:s", $dateformatdetails['phpdate']);
                 }
