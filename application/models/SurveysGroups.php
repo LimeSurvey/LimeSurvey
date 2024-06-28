@@ -214,7 +214,7 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
     {
         // @todo Please modify the following code to remove attributes that should not be searched.
         $pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
-        $criteria = new CDbCriteria();
+        $criteria = new LSDbCriteria();
 
         $criteria->select = array('DISTINCT t.*');
 
