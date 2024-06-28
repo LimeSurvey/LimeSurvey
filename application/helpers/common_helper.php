@@ -1459,6 +1459,15 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
     $aquery .= " ORDER BY group_order, question_order";
     /** @var Question[] $questions */
     $questions = Yii::app()->db->createCommand($aquery)->queryAll();
+    $qids = [0];
+    foreach ($questions as $q) {
+        $qids[] = $q['qid'];
+    }
+    $rawQuestions = Question::model()->findAllByPk($qids);
+    $qs = [];
+    foreach ($rawQuestions as $rawQuestion) {
+        $qs[$rawQuestion->qid] = $rawQuestion;
+    }
     $questionSeq = -1; // this is incremental question sequence across all groups
     $groupSeq = -1;
     $_groupOrder = -1;
@@ -1721,7 +1730,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                 }
             }
         } elseif ($arow['type'] == Question::QT_VERTICAL_FILE_UPLOAD) {
-            $qidattributes = QuestionAttribute::model()->getQuestionAttributes($arow['qid']);
+            $qidattributes = QuestionAttribute::model()->getQuestionAttributes($qs[$arow['qid']] ?? $arow['qid']);
             $fieldname = "{$arow['sid']}X{$arow['gid']}X{$arow['qid']}";
             $fieldmap[$fieldname] = array(
                 "fieldname" => $fieldname,
