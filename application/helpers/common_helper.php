@@ -2276,7 +2276,7 @@ function getArrayFilterExcludesCascadesForGroup($surveyid, $gid = "", $output = 
     foreach ($qrows as $qrow) {
         if (isset($qrow['gid']) && !empty($qrow['gid'])) {
             $qids[] = $qrow['qid'];
-            $grows[$qrow['qid']] = array('qid' => $qrow['qid'], 'type' => $qrow['type'], 'mandatory' => $qrow['mandatory'] ?? true, 'title' => $qrow['title'] ?? 'abc', 'gid' => $qrow['gid']);
+            $grows[$qrow['qid']] = array('qid' => $qrow['qid'], 'type' => $qrow['type'], 'mandatory' => $qrow['mandatory'], 'title' => $qrow['title'], 'gid' => $qrow['gid']);
         }
     }
     $rawQuestions = Question::model()->findAllByPk($qids);
