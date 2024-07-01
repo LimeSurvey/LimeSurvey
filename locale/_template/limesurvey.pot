@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2024-06-24 11:12:31+00:00\n"
+"POT-Creation-Date: 2024-07-01 13:11:42+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -18,8 +18,8 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 
 #: application/controllers/AdminController.php:98
-#: application/controllers/UserManagementController.php:554
-#: application/controllers/UserManagementController.php:1276
+#: application/controllers/UserManagementController.php:558
+#: application/controllers/UserManagementController.php:1280
 #: application/controllers/admin/DataEntry.php:196
 #: application/controllers/admin/DataEntry.php:1767
 #: application/controllers/admin/DataEntry.php:1770
@@ -151,27 +151,26 @@ msgstr ""
 #: application/controllers/UserManagementController.php:144
 #: application/controllers/UserManagementController.php:258
 #: application/controllers/UserManagementController.php:438
-#: application/controllers/UserManagementController.php:461
-#: application/controllers/UserManagementController.php:466
-#: application/controllers/UserManagementController.php:498
-#: application/controllers/UserManagementController.php:591
-#: application/controllers/UserManagementController.php:612
-#: application/controllers/UserManagementController.php:651
-#: application/controllers/UserManagementController.php:710
-#: application/controllers/UserManagementController.php:743
-#: application/controllers/UserManagementController.php:780
-#: application/controllers/UserManagementController.php:812
-#: application/controllers/UserManagementController.php:854
-#: application/controllers/UserManagementController.php:891
-#: application/controllers/UserManagementController.php:927
-#: application/controllers/UserManagementController.php:1029
-#: application/controllers/UserManagementController.php:1110
-#: application/controllers/UserManagementController.php:1187
-#: application/controllers/UserManagementController.php:1242
-#: application/controllers/UserManagementController.php:1302
-#: application/controllers/UserManagementController.php:1312
-#: application/controllers/UserManagementController.php:1350
-#: application/controllers/UserManagementController.php:1529
+#: application/controllers/UserManagementController.php:462
+#: application/controllers/UserManagementController.php:502
+#: application/controllers/UserManagementController.php:595
+#: application/controllers/UserManagementController.php:616
+#: application/controllers/UserManagementController.php:655
+#: application/controllers/UserManagementController.php:714
+#: application/controllers/UserManagementController.php:747
+#: application/controllers/UserManagementController.php:784
+#: application/controllers/UserManagementController.php:816
+#: application/controllers/UserManagementController.php:858
+#: application/controllers/UserManagementController.php:895
+#: application/controllers/UserManagementController.php:931
+#: application/controllers/UserManagementController.php:1033
+#: application/controllers/UserManagementController.php:1114
+#: application/controllers/UserManagementController.php:1191
+#: application/controllers/UserManagementController.php:1246
+#: application/controllers/UserManagementController.php:1306
+#: application/controllers/UserManagementController.php:1316
+#: application/controllers/UserManagementController.php:1354
+#: application/controllers/UserManagementController.php:1533
 #: application/controllers/UserRoleController.php:146
 #: application/controllers/UserRoleController.php:193
 #: application/controllers/UserRoleController.php:310
@@ -409,7 +408,7 @@ msgstr ""
 
 #: application/controllers/FailedEmailController.php:20
 #: application/controllers/FailedEmailController.php:21
-#: application/controllers/admin/Authentication.php:427
+#: application/controllers/admin/Authentication.php:430
 #: application/core/LsDefaultDataSets.php:389
 #: application/core/LsDefaultDataSets.php:390
 #: application/views/failedEmail/failedEmail_index.php:10
@@ -1068,7 +1067,7 @@ msgstr ""
 #: application/controllers/SurveyAdministrationController.php:2186
 #: application/controllers/SurveyAdministrationController.php:2283
 #: application/controllers/UserGroupController.php:396
-#: application/controllers/UserManagementController.php:1411
+#: application/controllers/UserManagementController.php:1415
 #: application/controllers/admin/ParticipantsAction.php:628
 #: application/controllers/admin/SurveymenuController.php:68
 #: application/controllers/admin/SurveymenuController.php:138
@@ -1202,7 +1201,7 @@ msgstr ""
 
 #: application/controllers/QuestionAdministrationController.php:1355
 #: application/controllers/SurveyAdministrationController.php:273
-#: application/controllers/UserManagementController.php:1133
+#: application/controllers/UserManagementController.php:1137
 #: application/controllers/UserRoleController.php:391
 msgid "Deleted"
 msgstr ""
@@ -1239,13 +1238,13 @@ msgstr ""
 #: application/controllers/SurveyAdministrationController.php:287
 #: application/controllers/ThemeOptionsController.php:209
 #: application/controllers/ThemeOptionsController.php:251
-#: application/controllers/UserManagementController.php:512
-#: application/controllers/UserManagementController.php:1127
-#: application/controllers/UserManagementController.php:1163
-#: application/controllers/UserManagementController.php:1219
-#: application/controllers/UserManagementController.php:1280
-#: application/controllers/UserManagementController.php:1328
-#: application/controllers/UserManagementController.php:1376
+#: application/controllers/UserManagementController.php:516
+#: application/controllers/UserManagementController.php:1131
+#: application/controllers/UserManagementController.php:1167
+#: application/controllers/UserManagementController.php:1223
+#: application/controllers/UserManagementController.php:1284
+#: application/controllers/UserManagementController.php:1332
+#: application/controllers/UserManagementController.php:1380
 #: application/controllers/UserRoleController.php:385
 #: application/extensions/admin/survey/ListSurveysWidget/views/listSurveys.php:61
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_action_results.php:10
@@ -1268,8 +1267,8 @@ msgstr ""
 #: application/controllers/SurveyAdministrationController.php:301
 #: application/controllers/ThemeOptionsController.php:248
 #: application/controllers/ThemeOptionsController.php:257
-#: application/controllers/UserManagementController.php:1160
-#: application/controllers/UserManagementController.php:1169
+#: application/controllers/UserManagementController.php:1164
+#: application/controllers/UserManagementController.php:1173
 #: application/extensions/admin/grid/MassiveActionsWidget/views/_selected_items.php:31
 #: application/views/themeOptions/index.php:252
 msgid "Selected"
@@ -3680,7 +3679,7 @@ msgstr ""
 
 #: application/controllers/UserManagementController.php:122
 #: application/controllers/UserManagementController.php:316
-#: application/controllers/UserManagementController.php:1399
+#: application/controllers/UserManagementController.php:1403
 msgid "User does not exist"
 msgstr ""
 
@@ -3705,22 +3704,27 @@ msgstr ""
 msgid "All of the user's surveys were transferred to %s."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:472
-#: application/controllers/UserManagementController.php:544
+#: application/controllers/UserManagementController.php:469
+#: application/controllers/UserManagementController.php:548
 msgid "Invalid user ID"
 msgstr ""
 
-#: application/controllers/UserManagementController.php:478
+#: application/controllers/UserManagementController.php:472
+#: application/controllers/UserManagementController.php:475
+msgid "You can not update this user."
+msgstr ""
+
+#: application/controllers/UserManagementController.php:482
 msgid "Status successfully updated"
 msgstr ""
 
-#: application/controllers/UserManagementController.php:512
-#: application/controllers/UserManagementController.php:1127
-#: application/controllers/UserManagementController.php:1163
-#: application/controllers/UserManagementController.php:1219
-#: application/controllers/UserManagementController.php:1280
-#: application/controllers/UserManagementController.php:1328
-#: application/controllers/UserManagementController.php:1376
+#: application/controllers/UserManagementController.php:516
+#: application/controllers/UserManagementController.php:1131
+#: application/controllers/UserManagementController.php:1167
+#: application/controllers/UserManagementController.php:1223
+#: application/controllers/UserManagementController.php:1284
+#: application/controllers/UserManagementController.php:1332
+#: application/controllers/UserManagementController.php:1380
 #: application/core/plugins/TwoFactorAdminLogin/models/TFAUser.php:17
 #: application/core/plugins/TwoFactorAdminLogin/models/TFAUserKey.php:48
 #: application/models/User.php:175 application/models/User.php:772
@@ -3728,13 +3732,13 @@ msgstr ""
 msgid "User ID"
 msgstr ""
 
-#: application/controllers/UserManagementController.php:512
-#: application/controllers/UserManagementController.php:1127
-#: application/controllers/UserManagementController.php:1163
-#: application/controllers/UserManagementController.php:1219
-#: application/controllers/UserManagementController.php:1280
-#: application/controllers/UserManagementController.php:1328
-#: application/controllers/UserManagementController.php:1376
+#: application/controllers/UserManagementController.php:516
+#: application/controllers/UserManagementController.php:1131
+#: application/controllers/UserManagementController.php:1167
+#: application/controllers/UserManagementController.php:1223
+#: application/controllers/UserManagementController.php:1284
+#: application/controllers/UserManagementController.php:1332
+#: application/controllers/UserManagementController.php:1380
 #: application/core/LsDefaultDataSets.php:2836
 #: application/core/plugins/AuthLDAP/AuthLDAP.php:386
 #: application/core/plugins/Authdb/Authdb.php:142
@@ -3752,142 +3756,142 @@ msgstr ""
 msgid "Username"
 msgstr ""
 
-#: application/controllers/UserManagementController.php:516
-#: application/controllers/UserManagementController.php:1286
+#: application/controllers/UserManagementController.php:520
+#: application/controllers/UserManagementController.php:1290
 #: application/views/userManagement/partial/permissionsuccess.php:8
 #: application/views/userManagement/partial/success.php:4
 #: application/views/userRole/partials/success.php:2
 msgid "Saved successfully"
 msgstr ""
 
-#: application/controllers/UserManagementController.php:538
-#: application/controllers/UserManagementController.php:1431
-#: application/controllers/UserManagementController.php:1520
-#: application/controllers/UserManagementController.php:1605
+#: application/controllers/UserManagementController.php:542
+#: application/controllers/UserManagementController.php:1435
+#: application/controllers/UserManagementController.php:1524
+#: application/controllers/UserManagementController.php:1609
 msgid "Your request is invalid."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:548
+#: application/controllers/UserManagementController.php:552
 msgid "Unauthorized"
 msgstr ""
 
-#: application/controllers/UserManagementController.php:663
+#: application/controllers/UserManagementController.php:667
 #: application/views/userManagement/massiveAction/_updatepermissions.php:6
 #: application/views/userRole/massiveAction/_updatepermissions.php:6
 msgid "Note: You can only give limited permissions to other users because your own permissions are limited, too."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:727
+#: application/controllers/UserManagementController.php:731
 msgid "Saved permissions successfully."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:792
+#: application/controllers/UserManagementController.php:796
 msgid "Saved template permissions successfully."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:895
-#: application/controllers/UserManagementController.php:931
+#: application/controllers/UserManagementController.php:899
+#: application/controllers/UserManagementController.php:935
 msgid "Invalid format"
 msgstr ""
 
-#: application/controllers/UserManagementController.php:900
+#: application/controllers/UserManagementController.php:904
 msgid "Please make sure that your JSON arrays contain the fields '%s', '%s', '%s', '%s', and '%s'"
 msgstr ""
 
-#: application/controllers/UserManagementController.php:905
+#: application/controllers/UserManagementController.php:909
 msgid "Please make sure that your CSV contains the fields '%s', '%s', '%s', '%s', and '%s'"
 msgstr ""
 
-#: application/controllers/UserManagementController.php:944
+#: application/controllers/UserManagementController.php:948
 msgid "No user definition found in file."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:958
+#: application/controllers/UserManagementController.php:962
 msgid "You don't have permission to edit user %s."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:963
+#: application/controllers/UserManagementController.php:967
 msgid "You can't use the import function to update your own account."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1009
+#: application/controllers/UserManagementController.php:1013
 msgid "Users imported successfully."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1123
+#: application/controllers/UserManagementController.php:1127
 msgid "You cannot delete yourself or a protected user."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1201
+#: application/controllers/UserManagementController.php:1205
 msgid "Error! Please change your password from your profile settings."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1207
+#: application/controllers/UserManagementController.php:1211
 msgid "Error! You do not have the permission to edit this user."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1214
+#: application/controllers/UserManagementController.php:1218
 msgid "Error: New password could not be sent to %s"
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1225
+#: application/controllers/UserManagementController.php:1229
 msgid "Email successfully sent."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1256
+#: application/controllers/UserManagementController.php:1260
 msgid "You can not update your own permission."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1262
+#: application/controllers/UserManagementController.php:1266
 msgid "You are not allowed to assign permissions to this user."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1308
+#: application/controllers/UserManagementController.php:1312
 #: application/core/SurveyCommonAction.php:169
 msgid "Group not found"
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1324
+#: application/controllers/UserManagementController.php:1328
 msgid "User is already a member of the group."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1334
+#: application/controllers/UserManagementController.php:1338
 msgid "Usergroup updated"
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1362
+#: application/controllers/UserManagementController.php:1366
 msgid "You are not allowed to update your own roles."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1368
+#: application/controllers/UserManagementController.php:1372
 msgid "You are not allowed to assign a role to this user."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1382
+#: application/controllers/UserManagementController.php:1386
 msgid "Role updated"
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1560
+#: application/controllers/UserManagementController.php:1564
 msgid "User successfully created"
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1590
+#: application/controllers/UserManagementController.php:1594
 msgid "Error: User was not created"
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1611
+#: application/controllers/UserManagementController.php:1615
 msgid "You do not have permission for this action."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1622
+#: application/controllers/UserManagementController.php:1626
 msgid "A username was not supplied or the username is invalid."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1631
+#: application/controllers/UserManagementController.php:1635
 msgid "A user with this username already exists."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1638
+#: application/controllers/UserManagementController.php:1642
 #: application/core/plugins/AuthLDAP/AuthLDAP.php:286
 #: application/core/plugins/AuthLDAP/AuthLDAP.php:308
 #: application/core/plugins/Authdb/Authdb.php:79
@@ -3895,7 +3899,7 @@ msgstr ""
 msgid "Failed to add user"
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1639
+#: application/controllers/UserManagementController.php:1643
 msgid "Plugin is not active"
 msgstr ""
 
@@ -3984,29 +3988,29 @@ msgstr ""
 msgid "The validation key expired. Please contact the administrator."
 msgstr ""
 
-#: application/controllers/admin/Authentication.php:251
+#: application/controllers/admin/Authentication.php:254
 msgid "Password cannot be blank and must fulfill minimum requirements: %s"
 msgstr ""
 
-#: application/controllers/admin/Authentication.php:274
+#: application/controllers/admin/Authentication.php:277
 msgid "Logout successful."
 msgstr ""
 
-#: application/controllers/admin/Authentication.php:303
+#: application/controllers/admin/Authentication.php:306
 #: application/models/services/PasswordManagement.php:179
 #: application/models/services/PasswordManagement.php:184
 msgid "If the username and email address is valid a password reminder email has been sent to you. This email can only be requested once in %d minutes."
 msgstr ""
 
-#: application/controllers/admin/Authentication.php:348
+#: application/controllers/admin/Authentication.php:351
 msgid "Please log in first."
 msgstr ""
 
-#: application/controllers/admin/Authentication.php:353
+#: application/controllers/admin/Authentication.php:356
 msgid "Welcome %s!"
 msgstr ""
 
-#: application/controllers/admin/Authentication.php:357
+#: application/controllers/admin/Authentication.php:360
 msgid "Reloading screen. Please wait."
 msgstr ""
 
@@ -14503,7 +14507,7 @@ msgstr ""
 msgid "Your survey was successfully saved."
 msgstr ""
 
-#: application/libraries/admin/quexmlpdf.php:1938
+#: application/libraries/admin/quexmlpdf.php:1937
 msgid "Section"
 msgstr ""
 
