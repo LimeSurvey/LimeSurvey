@@ -3251,9 +3251,18 @@ function getFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonorC
     $aResultTable = array();
     $oldgid = 0;
     $oldqid = 0;
+    $qids = [0];
+    foreach ($aRelevantFields as $sKey => $fname) {
+        $qids[] = $fname['qid'];
+    }
+    $rawQuestions = Question::model()->findAllByPk($qids);
+    $questions = [];
+    foreach ($rawQuestions as $rawQuestion) {
+        $questions[$rawQuestion->qid] = $rawQuestion;
+    }
     foreach ($aRelevantFields as $sKey => $fname) {
         if (!empty($fname['qid'])) {
-            $attributes = QuestionAttribute::model()->getQuestionAttributes($fname['qid']);
+            $attributes = QuestionAttribute::model()->getQuestionAttributes($questions[$fname['qid']] ?? $fname['qid']);
             if (getQuestionAttributeValue($attributes, 'hidden') == 1) {
                 continue;
             }
@@ -3275,13 +3284,13 @@ function getFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonorC
                 if (isset($fname['subquestion']) || isset($fname['subquestion1']) || isset($fname['subquestion2'])) {
                     $aResultTable['qid_' . $fname['sid'] . 'X' . $fname['gid'] . 'X' . $fname['qid']] = array($fname['question'], '', '');
                 } else {
-                    $answer = getExtendedAnswer($iSurveyID, $fname['fieldname'], $idrow[$fname['fieldname']], $sLanguageCode);
+                    $answer = getExtendedAnswer($iSurveyID, $fname['fieldname'], $idrow[$fname['fieldname']], $sLanguageCode, $questions[$fname['qid']] ?? null);
                     $aResultTable[$fname['fieldname']] = array($question, '', $answer);
                     continue;
                 }
             }
         } else {
-            $answer = getExtendedAnswer($iSurveyID, $fname['fieldname'], $idrow[$fname['fieldname']], $sLanguageCode);
+            $answer = getExtendedAnswer($iSurveyID, $fname['fieldname'], $idrow[$fname['fieldname']], $sLanguageCode, $questions[$fname['qid']] ?? null);
             $aResultTable[$fname['fieldname']] = array($question, '', $answer);
             continue;
         }
@@ -3297,7 +3306,7 @@ function getFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonorC
                     $subquestion .= "[{$fname['subquestion2']}]";
         }
 
-        $answer = getExtendedAnswer($iSurveyID, $fname['fieldname'], $idrow[$fname['fieldname']], $sLanguageCode);
+        $answer = getExtendedAnswer($iSurveyID, $fname['fieldname'], $idrow[$fname['fieldname']], $sLanguageCode, $questions[$fname['qid']] ?? null);
         $aResultTable[$fname['fieldname']] = array($question, $subquestion, $answer);
     }
     return $aResultTable;
