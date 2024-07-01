@@ -1613,7 +1613,7 @@ class SurveyAdministrationController extends LSBaseController
             $aData['nostep'] = true;
             $this->aData = $aData;
         } else {
-            if (!tableExists('survey_' . $iSurveyID)) {
+            if (!tableExists('responses_' . $iSurveyID)) {
                 $_SESSION['flashmessage'] = gT("Error: Response table does not exist. Survey cannot be deactivated.");
                 $this->redirect($this->createUrl("surveyAdministration/view/surveyid/{$iSurveyID}"));
             }
@@ -1667,7 +1667,7 @@ class SurveyAdministrationController extends LSBaseController
 
                 // IF there are any records in the saved_control table related to this survey, they have to be deleted
                 SavedControl::model()->deleteSomeRecords(array('sid' => $iSurveyID)); //Yii::app()->db->createCommand($query)->query();
-                $sOldSurveyTableName = Yii::app()->db->tablePrefix . "survey_{$iSurveyID}";
+                $sOldSurveyTableName = Yii::app()->db->tablePrefix . "responses_{$iSurveyID}";
                 $sNewSurveyTableName = Yii::app()->session->get('sNewSurveyTableName');
                 $aData['sNewSurveyTableName'] = $sNewSurveyTableName;
 
@@ -1693,7 +1693,7 @@ class SurveyAdministrationController extends LSBaseController
                 $archivedTokenSettings = new ArchivedTableSettings();
                 $archivedTokenSettings->survey_id = $iSurveyID;
                 $archivedTokenSettings->user_id = $userID;
-                $archivedTokenSettings->tbl_name = "old_survey_{$iSurveyID}_{$date}";
+                $archivedTokenSettings->tbl_name = "old_responses_{$iSurveyID}_{$date}";
                 $archivedTokenSettings->tbl_type = 'response';
                 $archivedTokenSettings->created = $DBDate;
                 $archivedTokenSettings->properties = json_encode(Response::getEncryptedAttributes($iSurveyID));
@@ -1707,8 +1707,8 @@ class SurveyAdministrationController extends LSBaseController
 
                 $prow = Survey::model()->find('sid = :sid', array(':sid' => $iSurveyID));
                 if ($prow->savetimings == "Y") {
-                    $sOldTimingsTableName = Yii::app()->db->tablePrefix . "survey_{$iSurveyID}_timings";
-                    $sNewTimingsTableName = Yii::app()->db->tablePrefix . "old_survey_{$iSurveyID}_timings_{$date}";
+                    $sOldTimingsTableName = Yii::app()->db->tablePrefix . "timings_{$iSurveyID}";
+                    $sNewTimingsTableName = Yii::app()->db->tablePrefix . "old_timings_{$iSurveyID}_{$date}";
                     Yii::app()->db->createCommand()->renameTable($sOldTimingsTableName, $sNewTimingsTableName);
                     $aData['sNewTimingsTableName'] = $sNewTimingsTableName;
                 }
@@ -1716,7 +1716,7 @@ class SurveyAdministrationController extends LSBaseController
                 $archivedTokenSettings = new ArchivedTableSettings();
                 $archivedTokenSettings->survey_id = $iSurveyID;
                 $archivedTokenSettings->user_id = $userID;
-                $archivedTokenSettings->tbl_name = "old_survey_{$iSurveyID}_timings_{$date}";
+                $archivedTokenSettings->tbl_name = "old_timings_{$iSurveyID}_{$date}";
                 $archivedTokenSettings->tbl_type = 'timings';
                 $archivedTokenSettings->created = $DBDate;
                 $archivedTokenSettings->properties = '';
@@ -3018,7 +3018,7 @@ class SurveyAdministrationController extends LSBaseController
 
         $aData['activated'] = $activated;
         if ($oSurvey->isActive) {
-            $aData['surveydb'] = Yii::app()->db->tablePrefix . "survey_" . $iSurveyID;
+            $aData['surveydb'] = Yii::app()->db->tablePrefix . "responses_" . $iSurveyID;
         }
 
         $aData['warnings'] = [];

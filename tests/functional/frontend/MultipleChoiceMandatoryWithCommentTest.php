@@ -67,7 +67,7 @@ class MultipleChoiceMandatoryWithComment extends TestBaseClassWeb
             // Submit
             $web->submit();
 
-            $query = "SELECT * FROM {{survey_$sid}}";
+            $query = "SELECT * FROM {{responses_$sid}}";
             $answers = $dbo->createCommand($query)->queryAll();
 
             $this->assertCount(1, $answers, 'Exactly one answer');
@@ -104,7 +104,7 @@ class MultipleChoiceMandatoryWithComment extends TestBaseClassWeb
 
             $web->submit();
 
-            $query = "SELECT * FROM {{survey_$sid}}";
+            $query = "SELECT * FROM {{responses_$sid}}";
             $answers = $dbo->createCommand($query)->queryAll();
 
             $this->assertCount(1, $answers, 'Exactly one answer');

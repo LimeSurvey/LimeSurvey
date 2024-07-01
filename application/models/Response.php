@@ -241,7 +241,7 @@ abstract class Response extends Dynamic
     }
     public function tableName()
     {
-        return '{{survey_' . $this->dynamicId . '}}';
+        return '{{responses_' . $this->dynamicId . '}}';
     }
     /**
      * Get current surveyId for other model/function

@@ -736,7 +736,7 @@ class userstatistics_helper
                 // 1) Total number of files uploaded
                 // 2)      Number of respondents who uploaded at least one file (with the inverse being the number of respondents who didn t upload any)
                 $fieldname = substr($rt, 1, strlen($rt));
-                $query = "SELECT SUM(" . Yii::app()->db->quoteColumnName($fieldname . '_filecount') . ") as sum, AVG(" . Yii::app()->db->quoteColumnName($fieldname . '_filecount') . ") as avg FROM {{survey_$surveyid}}";
+                $query = "SELECT SUM(" . Yii::app()->db->quoteColumnName($fieldname . '_filecount') . ") as sum, AVG(" . Yii::app()->db->quoteColumnName($fieldname . '_filecount') . ") as avg FROM {{responses_$surveyid}}";
                 $result = Yii::app()->db->createCommand($query)->query();
 
                 $showem = array();
@@ -746,7 +746,7 @@ class userstatistics_helper
                     $showem[] = array(gT("Average no. of files per respondent"), $row['avg']);
                 }
 
-                $query = "SELECT " . Yii::app()->db->quoteColumnName($fieldname) . " as json FROM {{survey_$surveyid}}";
+                $query = "SELECT " . Yii::app()->db->quoteColumnName($fieldname) . " as json FROM {{responses_$surveyid}}";
                 $result = Yii::app()->db->createCommand($query)->query();
 
                 $responsecount = 0;
@@ -924,7 +924,7 @@ class userstatistics_helper
                     //special treatment for MS SQL databases
                     if ($sDatabaseType == 'mssql' || $sDatabaseType == 'sqlsrv' || $sDatabaseType == 'dblib') {
                         //no NULL/empty values please
-                        $query .= " FROM {{survey_$surveyid}} WHERE " . Yii::app()->db->quoteColumnName($fieldname) . " IS NOT NULL";
+                        $query .= " FROM {{responses_$surveyid}} WHERE " . Yii::app()->db->quoteColumnName($fieldname) . " IS NOT NULL";
                         if (!$excludezeros) {
                             //NO ZERO VALUES
                             $query .= " AND (" . Yii::app()->db->quoteColumnName($fieldname) . " <> 0)";
@@ -932,7 +932,7 @@ class userstatistics_helper
                     } //other databases (MySQL, Postgres)
                     else {
                         //no NULL/empty values please
-                        $query .= " FROM {{survey_$surveyid}} WHERE " . Yii::app()->db->quoteColumnName($fieldname) . " IS NOT NULL";
+                        $query .= " FROM {{responses_$surveyid}} WHERE " . Yii::app()->db->quoteColumnName($fieldname) . " IS NOT NULL";
                         if (!$excludezeros) {
                             //NO ZERO VALUES
                             $query .= " AND (" . Yii::app()->db->quoteColumnName($fieldname) . " != 0)";
@@ -2635,7 +2635,7 @@ class userstatistics_helper
         $selects = buildSelects($allfields, $surveyid, $language);
 
         //count number of answers
-        $query = "SELECT count(*) FROM {{survey_$surveyid}}";
+        $query = "SELECT count(*) FROM {{responses_$surveyid}}";
 
         //if incompleted answers should be filtert submitdate has to be not null
         if (incompleteAnsFilterState() == "incomplete") {
@@ -2847,7 +2847,7 @@ class userstatistics_helper
 
         if ($surveyid !== $sid || $fieldname !== $field) {
             //get data
-            $query = " FROM {{survey_$surveyid}} WHERE " . Yii::app()->db->quoteColumnName($fieldname) . " IS NOT null";
+            $query = " FROM {{responses_$surveyid}} WHERE " . Yii::app()->db->quoteColumnName($fieldname) . " IS NOT null";
             //NO ZEROES
             if (!$excludezeros) {
                 $query .= " AND " . Yii::app()->db->quoteColumnName($fieldname) . " != 0";

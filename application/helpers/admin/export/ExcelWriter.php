@@ -37,7 +37,7 @@ class ExcelWriter extends Writer
         $worksheetName = $survey->languageSettings['surveyls_title'];
         $worksheetName = mb_substr(str_replace(array('*', ':', '/', '\\', '?', '[', ']'), array(' '), (string) $worksheetName), 0, 31, 'utf-8'); // Remove invalid characters
         if ($worksheetName == '') {
-            $worksheetName = 'survey_' . $survey->id;
+            $worksheetName = 'responses_' . $survey->id;
         }
         $this->currentSheet = $worksheetName;
         $this->forceDownload = !($oOptions->output == 'file');

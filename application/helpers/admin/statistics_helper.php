@@ -272,13 +272,13 @@ function createChart($iQuestionID, $iSurveyID, $type, $lbl, $gdata, $grawdata, $
 /**
 * Return data to populate a Google Map
 * @param string$sField    Field name
-* @param $qsid             Survey id
+* @param $sid             Survey id
 * @param string $sField
 * @return array
 */
-function getQuestionMapData($sField, $qsid)
+function getQuestionMapData($sField, $sid)
 {
-    $aresult = SurveyDynamic::model($qsid)->findAll();
+    $aresult = SurveyDynamic::model($sid)->findAll();
 
     $d = array();
 
@@ -316,7 +316,7 @@ function buildSelects($allfields, $surveyid, $language)
     $fieldmap = createFieldMap($survey, "full", false, false, $language);
     foreach ($fieldmap as $field) {
         if (isset($field['qid']) && $field['qid'] != '') {
-            $aQuestionMap[] = $field['sid'] . 'X' . $field['gid'] . 'X' . $field['qid'];
+            $aQuestionMap[] = 'Q' . $field['qid'];
         }
     }
 
@@ -600,8 +600,8 @@ class statistics_helper
         $qquestion = "";
         $qtype = "";
         $subquestionText = "";
-        $sQuestionType = substr($rt, 0, 1);
         $fieldmap = createFieldMap($survey, "full", false, false, $language);
+        $sQuestionType = isset($fieldmap[$rt]['type'])?$fieldmap[$rt]['type']:'';
         $sDatabaseType = Yii::app()->db->getDriverName();
         $statisticsoutput = "";
         $qqid = "";
@@ -622,7 +622,7 @@ class statistics_helper
         //M - Multiple choice, therefore multiple fields - one for each answer
         if ($sQuestionType == "M" || $sQuestionType == "P") {
             //get SGQ data
-            [$qsid, $qgid, $qqid] = explode("X", substr($rt, 1, strlen($rt)), 3);
+            $qqid = substr($rt, 1);
 
             //select details for this question
             $nresult = Question::model()->find('parent_qid=0 AND qid=:qid', array(':qid' => $qqid));
@@ -714,7 +714,7 @@ class statistics_helper
         elseif ($sQuestionType == "R") {
             //getting the needed IDs somehow
             $lengthofnumeral = substr($rt, strpos($rt, "-") + 1, 1);
-            list($qsid, $qgid, $qqid) = explode("X", substr($rt, 1, strpos($rt, "-") - ($lengthofnumeral + 1)), 3);
+            $qqid = substr($rt, 1, strpos($rt, "-") - ($lengthofnumeral + 1));
 
             $qqid = (int) $qqid;
 
@@ -745,7 +745,7 @@ class statistics_helper
             // File Upload
 
             //get SGQ data
-            list($qsid, $qgid, $qqid) = explode("X", substr($rt, 1, strlen($rt)), 3);
+            $qqid = substr($rt, 1, strlen($rt));
 
             //select details for this question
             $nresult = Question::model()->find('language=:language AND parent_qid=0 AND qid=:qid', array(':language' => $language, ':qid' => substr($qqid, 0)));
@@ -766,7 +766,7 @@ class statistics_helper
             // 1) Total number of files uploaded
             // 2)      Number of respondents who uploaded at least one file (with the inverse being the number of respondents who didn t upload any)
             $fieldname = substr($rt, 1, strlen($rt));
-            $query = "SELECT SUM(" . Yii::app()->db->quoteColumnName($fieldname . '_filecount') . ") as sum, AVG(" . Yii::app()->db->quoteColumnName($fieldname . '_filecount') . ") as avg FROM {{survey_$surveyid}}";
+            $query = "SELECT SUM(" . Yii::app()->db->quoteColumnName($fieldname . '_filecount') . ") as sum, AVG(" . Yii::app()->db->quoteColumnName($fieldname . '_filecount') . ") as avg FROM {{responses_$surveyid}}";
             $rows = Yii::app()->db->createCommand($query)->query();
 
             $showem = array();
@@ -776,7 +776,7 @@ class statistics_helper
                 $showem[] = array(gT("Average no. of files per respondent"), $row['avg']);
             }
 
-            $query = "SELECT " . Yii::app()->db->quoteColumnName($fieldname) . " as json FROM {{survey_$surveyid}}";
+            $query = "SELECT " . Yii::app()->db->quoteColumnName($fieldname) . " as json FROM {{responses_$surveyid}}";
             $rows = Yii::app()->db->createCommand($query)->query();
 
             $responsecount = 0;
@@ -928,7 +928,7 @@ class statistics_helper
 
                 $query = "SELECT " . Yii::app()->db->quoteColumnName($fieldname);
                 //Only select responses where there is an actual number response, ignore nulls and empties (if these are included, they are treated as zeroes, and distort the deviation/mean calculations)
-                $query .= " FROM {{survey_$surveyid}} WHERE " . Yii::app()->db->quoteColumnName($fieldname) . " IS NOT NULL";
+                $query .= " FROM {{responses_$surveyid}} WHERE " . Yii::app()->db->quoteColumnName($fieldname) . " IS NOT NULL";
                 //special treatment for MS SQL databases
                 if ($sDatabaseType === 'mssql' || $sDatabaseType === 'sqlsrv' || $sDatabaseType === 'dblib') {
                     //no NULL/empty values please
@@ -1999,7 +1999,7 @@ class statistics_helper
 
 
         //-------------------------- PCHART OUTPUT ----------------------------
-        list(, $qgid, $qqid) = explode("X", (string) $rt, 3);
+        $qqid = substr($rt, 1);
         $attrQid = $outputs['parentqid'] > 0 ? $outputs['parentqid'] : $qqid; // use parentqid if exists
         $aattr = QuestionAttribute::model()->getQuestionAttributes($attrQid);
 
@@ -2028,18 +2028,6 @@ class statistics_helper
                 'grawdata' => $grawdata
             );
             Yii::app()->session['stats'] = $stats;
-
-            if ($bShowGraph == true) {
-                $cachefilename = '';
-                if ($outputType == 'xls' || $outputType == 'pdf') {
-                    /**
-                     *
-                    //FIXME $MyCache is undefined
-                    $cachefilename = createChart($qqid, $qsid, $bShowPieChart, $lbl, $gdata, $grawdata, $MyCache, $sLanguage, $outputs['qtype']);
-                     *
-                     */
-                }
-            }
         }
 
 
@@ -3181,8 +3169,7 @@ class statistics_helper
         // _statisticsoutput_graphs.php
 
         //-------------------------- PCHART OUTPUT ----------------------------
-        list($qsid, $qgid, $qqid) = explode("X", (string) $rt, 3);
-        $qsid = $surveyid;
+        $qqid = substr($rt, 1);
         $attrQid = $outputs['parentqid'] > 0 ? $outputs['parentqid'] : $qqid; // use parentqid if exists
         $aattr = QuestionAttribute::model()->getQuestionAttributes($attrQid);
 
@@ -3255,7 +3242,7 @@ class statistics_helper
                         $graphLbl[] = key($lbl);
                         reset($lbl);
                     }
-                    $cachefilename = createChart($qqid, $qsid, $bShowPieChart, $graphLbl, $gdata, $grawdata, $MyCache, $sLanguage, $outputs['qtype']);
+                    $cachefilename = createChart($qqid, $surveyid, $bShowPieChart, $graphLbl, $gdata, $grawdata, $MyCache, $sLanguage, $outputs['qtype']);
                 }
 
                 if ($cachefilename || $outputType == 'html') {
@@ -3442,7 +3429,7 @@ class statistics_helper
          */
 
         //count number of answers
-        $query = "SELECT count(*) FROM {{survey_$surveyid}}";
+        $query = "SELECT count(*) FROM {{responses_$surveyid}}";
 
         //get me some data Scotty
         $results = $total = Yii::app()->db->createCommand($query)->queryScalar();
@@ -3534,33 +3521,7 @@ class statistics_helper
             $summaryRs = Yii::app()->db->createCommand($summarySql)->query()->readAll();
 
             foreach ($summaryRs as $field) {
-                $myField = $surveyid . "X" . $field['gid'] . "X" . $field['qid'];
-
-                // Multiple choice get special treatment
-                if ($field['type'] == Question::QT_M_MULTIPLE_CHOICE) {
-                    $myField = "M" . $myField;
-                }
-                if ($field['type'] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS) {
-                    $myField = "P" . $myField;
-                }
-                //Numerical input will get special treatment (arihtmetic mean, standard derivation, ...)
-                if ($field['type'] == Question::QT_N_NUMERICAL) {
-                    $myField = "N" . $myField;
-                }
-                if ($field['type'] == Question::QT_VERTICAL_FILE_UPLOAD) {
-                    $myField = "|" . $myField;
-                }
-                if ($field['type'] == Question::QT_Q_MULTIPLE_SHORT_TEXT) {
-                    $myField = "Q" . $myField;
-                }
-                // textfields get special treatment
-                if ($field['type'] == Question::QT_S_SHORT_FREE_TEXT || $field['type'] == Question::QT_T_LONG_FREE_TEXT || $field['type'] == Question::QT_U_HUGE_FREE_TEXT) {
-                    $myField = "T" . $myField;
-                }
-                //statistics for Date questions are not implemented yet.
-                if ($field['type'] == Question::QT_D_DATE) {
-                    $myField = "D" . $myField;
-                }
+                $myField = "Q" . $field['qid'];
 
                 if ($field['type'] == Question::QT_F_ARRAY || $field['type'] == "Question::QT_H_ARRAY_COLUMN") {
                     $db = Yii::app()->db;
@@ -3573,7 +3534,6 @@ class statistics_helper
                             $row = array_values($row);
                             $myField = "$myField{$row[0]}";
                     }
-                    //$myField = "{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}[]";
                 }
 
                 if ($q2show == 'all') {
@@ -3602,7 +3562,7 @@ class statistics_helper
         $selects = buildSelects($allfields, $surveyid, $language);
 
         //count number of answers
-        $query = "SELECT count(*) FROM {{survey_$surveyid}}";
+        $query = "SELECT count(*) FROM {{responses_$surveyid}}";
 
         //if incompleted answers should be filtert submitdate has to be not null
         if (incompleteAnsFilterState() == "incomplete") {
@@ -3793,7 +3753,6 @@ class statistics_helper
                         $row = array_values($row);
                         $myField = "$myField{$row[0]}";
                     }
-                    //$myField = "{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}[]";
                 }
 
                 $summary[] = $myField;
@@ -3869,7 +3828,7 @@ class statistics_helper
         $selects = buildSelects($allfields, $surveyid, $language);
 
         //count number of answers
-        $query = "SELECT count(*) FROM {{survey_$surveyid}}";
+        $query = "SELECT count(*) FROM {{responses_$surveyid}}";
 
         //if incompleted answers should be filtert submitdate has to be not null
         if (incompleteAnsFilterState() == "incomplete") {
@@ -4118,7 +4077,7 @@ class statistics_helper
             $field = $fielddata['fieldname'];
             $criteria->select = Yii::app()->db->quoteColumnName($fielddata['fieldname']);
             $criteria->order = Yii::app()->db->quoteColumnName($fielddata['fieldname']);
-            $allRows = Yii::app()->db->getCommandBuilder()->createFindCommand("{{survey_{$fielddata['sid']}}}", $criteria)->queryAll();
+            $allRows = Yii::app()->db->getCommandBuilder()->createFindCommand("{{responses_{$fielddata['sid']}}}", $criteria)->queryAll();
             $criteria->select = "COUNT(" . Yii::app()->db->quoteColumnName($fielddata['fieldname']) . ")";
             $recordCount = Response::model($fielddata['sid'])->count($criteria); // Record count for THIS $fieldname
         }

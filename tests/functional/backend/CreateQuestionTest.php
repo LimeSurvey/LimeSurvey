@@ -193,7 +193,7 @@ class CreateQuestionTest extends TestBaseClassWeb
 
             // Check so that response is recorded in database.
             $query = sprintf(
-                'SELECT * FROM {{survey_%d}}',
+                'SELECT * FROM {{responses_%d}}',
                 $sid
             );
             $result = $dbo->createCommand($query)->queryAll();
