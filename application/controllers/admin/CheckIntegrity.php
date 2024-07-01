@@ -644,7 +644,7 @@ class CheckIntegrity extends SurveyCommonAction
 
         /*** Check for active survey tables with missing survey entry or where survey entry is inactivate and rename them ***/
         $sDBPrefix = Yii::app()->db->tablePrefix;
-        $aResult = Yii::app()->db->createCommand(dbSelectTablesLike('{{survey}}\_%'))->queryColumn();
+        $aResult = Yii::app()->db->createCommand(dbSelectTablesLike('{{responses}}\_%'))->queryColumn();
         $sSurveyIDs = Yii::app()->db->createCommand("select sid from {{surveys}} where active='Y'")->queryColumn();
         foreach ($aResult as $aRow) {
             $sTableName = (string) substr((string) $aRow, strlen((string) $sDBPrefix));
@@ -662,7 +662,7 @@ class CheckIntegrity extends SurveyCommonAction
                     // Check if it's really a survey_XXX table mantis #14938
                     if (empty($aTableName[2])) {
                         $sOldTable = "responses_{$iSurveyID}";
-                        $sNewTable = "old_responses_{$iSurveyID}_{$sDate}";
+                        $sNewTable = "old_responses_{$iSurveyID}_{$date}";
                         Yii::app()->db->createCommand()->renameTable("{{{$sOldTable}}}", "{{{$sNewTable}}}");
                         $archivedTokenSettings = new ArchivedTableSettings();
                         $archivedTokenSettings->survey_id = $iSurveyID;
@@ -676,7 +676,7 @@ class CheckIntegrity extends SurveyCommonAction
                     }
                     if (!empty($aTableName[2]) && $aTableName[2] == "timings" && empty($aTableName[3])) {
                         $sOldTable = "timings_{$iSurveyID}";
-                        $sNewTable = "old_timings_{$iSurveyID}_{$sDate}";
+                        $sNewTable = "old_timings_{$iSurveyID}_{$date}";
                         Yii::app()->db->createCommand()->renameTable("{{{$sOldTable}}}", "{{{$sNewTable}}}");
                         $archivedTokenSettings = new ArchivedTableSettings();
                         $archivedTokenSettings->survey_id = $iSurveyID;
