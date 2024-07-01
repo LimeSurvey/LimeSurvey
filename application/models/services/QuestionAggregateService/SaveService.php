@@ -105,12 +105,13 @@ class SaveService
      *      ...<array-key, mixed>
      *  }
      * } $input
+     * @param bool $apiCall
      * @throws PersistErrorException
      * @throws NotFoundException
      * @throws PermissionDeniedException
      * @return Question
      */
-    public function save($surveyId, $input)
+    public function save($surveyId, $input, $apiCall = false)
     {
         $data = $this->normaliseInput($surveyId, $input);
 
@@ -128,6 +129,12 @@ class SaveService
                 $data['advancedSettings']
             );
 
+        if($apiCall) {
+            $this->attributesService->saveMissingAttributes(
+                $question,
+                $surveyId
+            );
+        }
         $this->attributesService
             ->save(
                 $question,

@@ -105,20 +105,22 @@ class QuestionAggregateService
      *      ...<array-key, mixed>
      *  }
      * } $input
+     * @param bool $apiCall
      * @return Question
      * @throws NotFoundException
      * @throws PermissionDeniedException
      * @throws PersistErrorException
      * @throws \CException
      */
-    public function save($surveyId, $input)
+    public function save($surveyId, $input, $apiCall = false)
     {
         $this->checkUpdatePermission($surveyId);
         $transaction = $this->yiiDb->beginTransaction();
         try {
             $question = $this->saveService->save(
                 $surveyId,
-                $input
+                $input,
+                $apiCall
             );
             $transaction->commit();
         } catch (\Exception $e) {
