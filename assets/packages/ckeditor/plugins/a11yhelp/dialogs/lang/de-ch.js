@@ -1,6 +1,6 @@
 ﻿/*
- Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
- For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
+ Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
+ CKEditor 4 LTS ("Long Term Support") is available under the terms of the Extended Support Model.
 */
 CKEDITOR.plugins.setLang("a11yhelp","de-ch",{title:"Barrierefreiheitinformationen",contents:"Hilfeinhalt. Um den Dialog zu schliessen, die Taste ESC drücken.",legend:[{name:"Allgemein",items:[{name:"Editorwerkzeugleiste",legend:"Drücken Sie ${toolbarFocus} auf der Symbolleiste. Gehen Sie zur nächsten oder vorherigen Symbolleistengruppe mit TAB und SHIFT+TAB. Gehen Sie zur nächsten oder vorherigen Symbolleiste auf die Schaltfläche mit dem RECHTS- oder LINKS-Pfeil. Drücken Sie die Leertaste oder Eingabetaste, um die Schaltfläche in der Symbolleiste zu aktivieren."},
 {name:"Editordialog",legend:"Drücken Sie innerhalb eines Dialogs TAB, um zum nächsten Element zu springen. Drücken Sie SHIFT+TAB, um zum vorigen Element zu springen, drücke ENTER um das Formular im Dialog abzusenden, drücken Sie ESC, um den Dialog zu schliessen. Hat der Dialog mehrere Tabs, dann können Sie durch ALT+F10 die Tab-Liste aufrufen or mittels TAB als Teil der Dialog-Tab-Reihenfolge. Ist die Tab-Liste fokussiert, kann mithilfe der Pfeiltasten (LINKS und RECHTS) zwischen den Tabs gewechselt werden."},

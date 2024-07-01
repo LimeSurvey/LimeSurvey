@@ -26,7 +26,7 @@ class expressionQuestionHelp extends PluginBase
     protected static $description = 'Add .help to properties of questions.';
     protected static $name = 'expressionQuestionHelp';
 
-    /** @inheritdoc, this plugin didn't have any public method */
+    /** @inheritdoc this plugin didn't have any public method */
     public $allowedPublicMethods = array();
 
     public function init()
@@ -43,7 +43,7 @@ class expressionQuestionHelp extends PluginBase
         $knownVars = $this->event->get('knownVars');
         $language = $this->event->get('language');
         foreach ($knownVars as $var => $values) {
-            if (isset($values['question']) && isset($values['qid'])) {
+            if (isset($values['question']) && isset($values['qid']) && $values['qid'] != '') {
                 $oQuestionL10n = QuestionL10n::model()->find('qid = :qid and language = :language', array(":qid" => $values['qid'],":language" => $language));
                 if ($oQuestionL10n) {
                     $knownVars[$var]['help'] = $oQuestionL10n->help;

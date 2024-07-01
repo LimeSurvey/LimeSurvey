@@ -6,31 +6,31 @@
  * @var Survey $oSurvey
  */
 ?>
-<div class='side-body <?php echo getSideBodyClass(false); ?>'>
+<div class='side-body'>
     <h3><?php eT("Manage attribute fields"); ?></h3>
 
     <div class="row">
-        <div class="col-lg-12 content-right">
+        <div class="col-12 content-right">
             <?php echo CHtml::form(array("admin/tokens/sa/updatetokenattributedescriptions/surveyid/{$surveyid}"), 'post'); ?>
             <div>
                 <ul class="nav nav-tabs">
-                    <?php $c=true; ?>
-                    <?php foreach ($oSurvey->allLanguages as $sLanguage) {
-                        $sTabTitle = getLanguageNameFromCode($sLanguage, false);
-                        if ($sLanguage == $oSurvey->language) {
-                            $sTabTitle .= ' (' . gT("Base language") . ')';
-                        }
-                        ?>
-                        <li <?php if ($c){$c=false; echo 'class="active"'; }?> >
-                            <a data-toggle="tab" href="#language_<?php echo $sLanguage ?>"><?php echo $sTabTitle; ?></a>
+                    <?php $c = true; ?>
+                    <?php foreach ($oSurvey->allLanguages as $sLanguage): ?>
+                        <?php $sTabTitle = getLanguageNameFromCode($sLanguage, false) . " " . (($sLanguage == $oSurvey->language) ? "(" . gT("Base language") . ")" : "") ?>
+                        <li class="nav-item">
+                            <a class="nav-link <?= $c ? "active" : "" ?>" data-bs-toggle="tab" href="#language_<?php echo $sLanguage ?>">
+                                <?php $c = false; ?>
+                                <?php echo $sTabTitle; ?>
+                            </a>
                         </li>
-                        <?php } ?>
+                    <?php endforeach; ?>
                 </ul>
 
                 <div class="tab-content">
                     <?php $c=true;?>
                     <?php foreach ($oSurvey->allLanguages as $sLanguage) { ?>
-                        <div id="language_<?php echo $sLanguage ?>"  class="table-responsive tab-pane fade in <?php if ($c){$c=false; echo 'active'; }?>">
+                        <div id="language_<?php echo $sLanguage ?>"  class="table-responsive tab-pane fade <?= $c ? "show active" : "" ?>">
+                            <?php $c=false; ?>
                             <table class='listtokenattributes table table-hover'>
                                 <thead> <tr>
                                     <th><?php eT("Attribute field"); ?></th>
@@ -79,53 +79,50 @@
                                             <?php } ?>
                                         </td>
                                         <td>
-                                            <?php 
-                                                $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                                                    'name' => "show_register_{$sTokenField}",
-                                                    'id'=>"show_register_{$sTokenField}",
-                                                    'value' => $tokenvalues['show_register']=='Y'?'1':'0',
-                                                    'onLabel'=>gT('On'),
-                                                    'offLabel' => gT('Off'),
-                                                    'htmlOptions'=>array(
-                                                        'disabled'=>empty($tokenvalues['coreattribute']) ? false : true,
-                                                    )
-                                                ));
-                                            ?>
+                                            <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                                                'name'          => "show_register_{$sTokenField}",
+                                                'checkedOption' => $tokenvalues['show_register'] === 'Y' ? '1' : '0',
+                                                'selectOptions' => [
+                                                    '1' => gT('On'),
+                                                    '0' => gT('Off'),
+                                                ],
+                                                'htmlOptions'   => [
+                                                    'disabled' => !empty($tokenvalues['coreattribute']),
+                                                ]
+                                            ]); ?>
                                         </td>
                                         <td>
-                                            <?php
-                                                $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                                                    'name' => "mandatory_{$sTokenField}",
-                                                    'id'=>"mandatory_{$sTokenField}",
-                                                    'value' => $tokenvalues['mandatory']=='Y'?'1':'0',
-                                                    'onLabel'=>gT('On'),
-                                                    'offLabel' => gT('Off'),
-                                                    'htmlOptions'=>array(
-                                                        'disabled'=>empty($tokenvalues['coreattribute']) ? false : true,
-                                                    )
-                                                ));
-                                            ?>
+                                            <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                                                'name'          => "mandatory_{$sTokenField}",
+                                                'checkedOption' => $tokenvalues['mandatory'] === 'Y' ? '1' : '0',
+                                                'selectOptions' => [
+                                                    '1' => gT('On'),
+                                                    '0' => gT('Off'),
+                                                ],
+                                                'htmlOptions'   => [
+                                                    'disabled' => !empty($tokenvalues['coreattribute']),
+                                                ]
+                                            ]); ?>
                                         </td>
                                         <td>
-                                            <?php
-                                                $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                                                    'name' => "encrypted_{$sTokenField}",
-                                                    'id'=>"encrypted_{$sTokenField}",
-                                                    'value' => $tokenvalues['encrypted']=='Y'?'1':'0',
-                                                    'onLabel'=>gT('On'),
-                                                    'offLabel' => gT('Off'),
-                                                    'htmlOptions'=>array(
-                                                        'disabled' => !$bEncrypted,
-                                                    )
-                                                ));
-                                            ?>
+                                            <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                                                'name'          => "encrypted_{$sTokenField}",
+                                                'checkedOption' => $tokenvalues['encrypted'] === 'Y' ? '1' : '0',
+                                                'selectOptions' => [
+                                                    '1' => gT('On'),
+                                                    '0' => gT('Off'),
+                                                ],
+                                                'htmlOptions'   => [
+                                                    'disabled' => !$bEncrypted,
+                                                ]
+                                            ]); ?>
                                         </td>
                                         <?php
                                     }
                                     else
                                     {
                                         echo "
-                                        <td>", htmlspecialchars($tokenvalues['description'], ENT_QUOTES, 'UTF-8'), "</td>
+                                        <td>", htmlspecialchars((string) $tokenvalues['description'], ENT_QUOTES, 'UTF-8'), "</td>
                                         <td>", $tokenvalues['mandatory'] == 'Y' ? eT('Yes') : eT('No'), "</td>
                                         <td>", $tokenvalues['encrypted'] == 'Y' ? eT('Yes') : eT('No'), "</td>
                                         <td>", $tokenvalues['show_register'] == 'Y' ? eT('Yes') : eT('No'), "</td>";
@@ -134,7 +131,7 @@
                                         <?php
                                             echo CHtml::textField(
                                                 "caption_{$sTokenField}_{$sLanguage}",
-                                                isset($tokencaptions[$sLanguage][$sTokenField]) ? $tokencaptions[$sLanguage][$sTokenField] : '',
+                                                $tokencaptions[$sLanguage][$sTokenField] ?? '',
                                                 array('class' => 'form-control')
                                             );
                                         ?>
@@ -142,7 +139,7 @@
                                     <td><?php
                                         if ($sLanguage == $oSurvey->language){
                                             if (empty($tokenvalues['coreattribute'])){
-                                                echo CHtml::dropDownList('cpdbmap_'.$sTokenField,$tokenvalues['cpdbmap'],$aCPDBAttributes, array('class' => 'form-control'));
+                                                echo CHtml::dropDownList('cpdbmap_'.$sTokenField,$tokenvalues['cpdbmap'],$aCPDBAttributes, array('class' => 'form-select'));
                                             }
                                         }
                                         else
@@ -165,7 +162,7 @@
                 </div>
             </div>
             <p>
-                <input type="submit" class="btn btn-success" value="<?php eT('Save'); ?>" />
+                <input type="submit" class="btn btn-primary" value="<?php eT('Save'); ?>" />
                 <input type='hidden' name='action' value='tokens' />
                 <input type='hidden' name='subaction' value='updatetokenattributedescriptions' />
             </p>
@@ -177,7 +174,7 @@
     <h3><?php eT("Add/delete survey participant attributes"); ?></h3>
 
     <div class="row">
-        <div class="col-lg-12 content-right">
+        <div class="col-12 content-right">
             <p><?php neT('There is {n} user attribute field in this survey participants table.|There are {n} user attribute fields in this survey participants table.', $nrofattributes); ?></p>
             <?php echo CHtml::form(array("admin/tokens/sa/updatetokenattributes/surveyid/{$surveyid}"), 'post',array('id'=>'addattribute')); ?>
             <p>
@@ -198,7 +195,7 @@
                 <p>
                     <label for="deleteattribute"><?php eT('Delete this attribute:'); ?></label>
                     <div class=''>
-                        <?php  echo CHtml::dropDownList('deleteattribute',"",CHtml::listData($tokenfieldlist,'id','description'),array('empty' => gT('(None)','unescaped'), 'class'=>'form-control')); ?>
+                        <?php  echo CHtml::dropDownList('deleteattribute',"",CHtml::listData($tokenfieldlist,'id','description'),array('empty' => gT('(None)','unescaped'), 'class'=>'form-select')); ?>
                     </div>
                 </p>
                 <p>
@@ -212,8 +209,3 @@
         </div>
     </div>
 </div>
-<?php
-App()->getClientScript()->registerScript('ManageTokenAttributesViewBSSwitcher', "
-LS.renderBootstrapSwitch();
-", LSYii_ClientScript::POS_POSTSCRIPT);
-?>

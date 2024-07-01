@@ -8,7 +8,6 @@
  * @var $first
  * @var $subquestion
  * @var $subquestionl10n
- * @var $oldCode ???
  *
  * NB : !!! If you edit this view, remember to check if answer option row view need also to be updated !!!
  */
@@ -34,6 +33,7 @@
                 value="{{ subquestion.title|escape('html_attr') }}"
                 required='required'
                 maxlength="20"
+                pattern="[a-zA-Z0-9]+"
                 {% if question.survey.active == 'Y' %}
                 readonly="readonly"
                 {% endif %}
@@ -50,27 +50,15 @@
           style="text-align: center;"
         >
             <span
-              class="fa fa-bars bigIcons move-icon"
+              class="ri-menu-fill move-icon"
               role="button"
-              data-toggle="tooltip"
+              data-bs-toggle="tooltip"
               data-title="{{ gT("Drag to sort") }}"
             ></span>
         </td>
 
         <!-- Code (title) -->
         <td class="code-title" style="vertical-align: middle;">
-            <!-- TODO: What is "oldCode"??? -->
-            {% if oldCode %}
-                <input
-                    type='hidden'
-                    class='oldcode code-title'
-                    maxlength="20"
-                    id='subquestions[{{ subquestion.qid }}][{{ scale_id }}][oldcode]'
-                    name='subquestions[{{ subquestion.qid }}][{{ scale_id }}][oldcode]'
-                    value="{{ subquestion.title|escape('html_attr') }}"
-                />
-            {% endif %}
-
             <input
                 type='text'
                 class="code form-control input"
@@ -80,6 +68,7 @@
                 value="{{ subquestion.title|escape('html_attr') }}"
                 required='required'
                 maxlength="20"
+                pattern="[a-zA-Z0-9]+"
                 {% if question.survey.active == 'Y' %}
                 readonly="readonly"
                 {% endif %}
@@ -102,7 +91,7 @@
 
     <!-- Subquestion text -->
     <td  class="subquestion-text" style="vertical-align: middle;">
-        <div class="input-group">        
+        <div class="input-group">
             <!-- NB: Class "answer" is used for both subquestions and answer options. -->
             <input
                 type='text'
@@ -115,35 +104,30 @@
                 data-contents-dir="{{ getLanguageRTL(language) ? 'rtl' : 'ltr' }}"
                 onkeypress=" if(event.keyCode==13) { if (event && event.preventDefault) event.preventDefault(); document.getElementById('save-button').click(); return false;}"
             />
-            <span class="input-group-addon">
-                {{ getEditor(
-                    "editanswer",
-                    "subquestions["~subquestion.qid~"]["~scale_id~"][subquestionl10n]["~language~"]",
-                    "["~gT("Subquestion:", "js")~"]("~language~")",
-                    subquestion.sid,
-                    gid,
-                    (subquestion.qid matches '/^\\d+$/') ? subquestion.qid : "",
-                    'editanswer'
-                ) }}
-            </span>
+            {{ getEditor(
+                "editanswer",
+                "subquestions["~subquestion.qid~"]["~scale_id~"][subquestionl10n]["~language~"]",
+                "["~gT("Subquestion:", "js")~"]("~language~")",
+                subquestion.sid,
+                gid,
+                (subquestion.qid matches '/^\\d+$/') ? subquestion.qid : "",
+                'editanswer'
+            ) }}
         </div>
     </td>
-
-    {% set relevanceTooltip = supportsRelevance ? gT("Click to expand") : gT("Relevance is not currently supported for columns") %}
 
     <!-- Relevance equation -->
     {% if first and scale_id == 0 %}
         <td class="relevance-equation">
             <input
-                data-toggle="tooltip"
-                data-title="{{ relevanceTooltip }}"
+                data-bs-toggle="tooltip"
+                data-title="{{ gT("Click to expand") }}"
                 type='text'
                 class='relevance form-control input'
                 id='subquestions[{{ subquestion.qid }}][{{ scale_id }}][relevance]'
                 name='subquestions[{{ subquestion.qid }}][{{ scale_id }}][relevance]'
                 value="{{ subquestion.relevance|escape('html_attr') }}"
                 onkeypress=" if(event.keyCode==13) { if (event && event.preventDefault) event.preventDefault(); document.getElementById('save-button').click(); return false;}"
-                {{ supportsRelevance ? '' : 'readonly="readonly"' }}
             />
         </td>
     {%  else %}
@@ -156,21 +140,21 @@
     <!-- Icons add/edit/delete -->
     <td style="vertical-align: middle; white-space: nowrap;" class="subquestion-actions">
         {% if activated != 'Y' and first %}
-            <button class="btn btn-default btn-sm btnaddsubquestion">
+            <button class="btn btn-outline-secondary btn-sm btnaddsubquestion">
                 <i
-                    class="icon-add text-success"
+                    class="ri-add-circle-fill text-primary"
                     data-code="{{ subquestion.title|escape('html_attr') }}"
-                    data-toggle="tooltip"
+                    data-bs-toggle="tooltip"
                     data-scale-id="{{ scale_id }}"
-                    data-placement="bottom"
+                    data-bs-placement="bottom"
                     title="{{ gT("Insert a new subquestion after this one") }}"
                 ></i>
             </button>
-            <button class="btn btn-default btn-sm btndelsubquestion">
+            <button class="btn btn-outline-secondary btn-sm btndelsubquestion">
                 <i
-                    class="fa fa-minus-circle text-danger"
-                    data-toggle="tooltip"
-                    data-placement="bottom"
+                    class="ri-indeterminate-circle-fill text-danger"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="bottom"
                     title="{{ gT("Delete this subquestion") }}"
                 ></i>
             </button>

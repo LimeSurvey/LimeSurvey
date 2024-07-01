@@ -13,6 +13,7 @@
 
 namespace ls\tests;
 
+use Exception;
 use Facebook\WebDriver\WebDriver;
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverElement;
@@ -135,11 +136,12 @@ class TestBaseClassWeb extends TestBaseClass
     /**
      * @param string $userName
      * @param string $password
+     * @param boolean $wait If true, wait for and disregard popups at first login; useful to set to false during local testing and development
      * @return void
      * @throws \Exception
      * @throws \Facebook\WebDriver\Exception\NoSuchElementException
      */
-    public static function adminLogin($userName, $password)
+    public static function adminLogin($userName, $password, $wait = true)
     {
         $url = self::getUrl(['login', 'route'=>'authentication/sa/login']);
         self::openView($url);
@@ -169,10 +171,19 @@ class TestBaseClassWeb extends TestBaseClass
         $passWordField->clear()->sendKeys($password);
 
         $submit = self::$webDriver->findElement(WebDriverBy::name('login_submit'));
-        $submit->click();
+        self::$webDriver->click($submit);
 
-        self::ignoreAdminNotification();
-        self::ignoreAdminNotification();
+        if ($wait) {
+            self::$webDriver->wait()->until(
+                WebDriverExpectedCondition::presenceOfElementLocated(
+                    WebDriverBy::id('welcome-jumbotron')
+                )
+            );
+            self::ignoreWelcomeModal();
+            self::ignoreAdminNotification();
+            sleep(3);
+            self::ignoreAdminNotification();
+        }
 
         /*
         try {
@@ -233,18 +244,68 @@ class TestBaseClassWeb extends TestBaseClass
     {
         // Ignore password warning.
         try {
-            $button = self::$webDriver->wait(1)->until(
-                WebDriverExpectedCondition::elementToBeClickable(
-                    WebDriverBy::cssSelector('#admin-notification-modal button.btn-default')
+            try {
+                self::$webDriver->wait(3)->until(
+                    WebDriverExpectedCondition::visibilityOfElementLocated(
+                        WebDriverBy::id('admin-notification-modal')
+                    )
+                );
+            } catch (TimeoutException $ex) {
+                // ignore
+                return;
+            }
+            $button = self::$webDriver->wait()->until(
+                WebDriverExpectedCondition::visibilityOfElementLocated(
+                    WebDriverBy::cssSelector('#admin-notification-modal button.btn-outline-secondary')
                 )
             );
-            $button->click();
-        } catch (TimeOutException $ex) {
-            // Do nothing.
-        } catch (NoSuchElementException $ex) {
-            // Do nothing.
-        } catch (UnrecognizedExceptionException $ex) {
-            // Do nothing.
+            // modal fade in is 1 second.
+            sleep(1);
+            self::$webDriver->click($button);
+        } catch (Exception $ex) {
+            $screenshot = self::$webDriver->takeScreenshot();
+            $filename = self::$screenshotsFolder . '/ignoreAdminNotification.png';
+            file_put_contents($filename, $screenshot);
+            self::assertTrue(
+                false,
+                'Screenshot in ' . $filename . PHP_EOL . $ex->getMessage()
+            );
+        }
+    }
+
+    /**
+     * Closes the welcome modal if present
+     * @return void
+     */
+    protected static function ignoreWelcomeModal()
+    {
+        try {
+            try {
+                self::$webDriver->wait(3)->until(
+                    WebDriverExpectedCondition::presenceOfElementLocated(
+                        WebDriverBy::id('welcomeModal')
+                    )
+                );
+            } catch (TimeoutException $ex) {
+                // ignore
+                return;
+            }
+            $button = self::$webDriver->wait()->until(
+                WebDriverExpectedCondition::visibilityOfElementLocated(
+                    WebDriverBy::cssSelector('#welcomeModal button.btn-outline-secondary')
+                )
+            );
+            // modal fade in is 1 second.
+            sleep(1);
+            self::$webDriver->click($button);
+        } catch (Exception $ex) {
+            $screenshot = self::$webDriver->takeScreenshot();
+            $filename = self::$screenshotsFolder . '/ignoreWelcomeModal.png';
+            file_put_contents($filename, $screenshot);
+            self::assertTrue(
+                false,
+                'Screenshot in ' . $filename . PHP_EOL . $ex->getMessage()
+            );
         }
     }
 }

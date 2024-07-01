@@ -1,0 +1,91 @@
+{#
+    LimeSurvey
+    Copyright (C) 2007-2017 The LimeSurvey Project Team / Louis Gac
+    All rights reserved.
+    License: GNU/GPL License v2 or later, see LICENSE.php
+    LimeSurvey is free software. This version may have been modified pursuant
+    to the GNU General Public License, and as distributed it includes or
+    is derivative of works licensed under the GNU General Public License or
+    other free or open source software licenses.
+    See COPYRIGHT.php for copyright notices and details.
+
+
+
+    (¯`·._.·(¯`·._.· Vanilla Theme Errors Layout  ·._.·´¯)·._.·´¯)
+
+    This layout is used to render errors that block survey rendering.
+    Eg: wrong survey ID, empty group in preview group, etc.
+
+    It has no obligation to be the same layout as layout_global.twig, it can be completly different.
+
+    NOTE: To see it: just try to preview a survey with an empty group.
+
+    NOTE: see layout_global.twig for more infos
+#}
+
+{# We register a specific css file for that layout. #}
+{% set aError     = aSurveyInfo.aError    %}
+
+<!DOCTYPE html>
+<html lang="{{ aSurveyInfo.languagecode }}" dir="{{ aSurveyInfo.dir }}"
+      class="{{ aSurveyInfo.languagecode }} dir-{{ aSurveyInfo.dir }} {{ aSurveyInfo.class.html }}" {{ aSurveyInfo.attr.html }}
+      xmlns="http://www.w3.org/1999/html">
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+    <title>
+        {% if aError.error %}
+            {{ aError.error }}
+        {% else %}
+            Error {{ aSurveyInfo.surveyls_title }}
+        {% endif %}
+    </title>
+
+    <meta name="generator" content="LimeSurvey http://www.limesurvey.org"/>
+    {% if(imageSrc('./files/favicon.ico')) %}
+        <link rel="shortcut icon" href="{{ imageSrc('./files/favicon.ico') }}"/>
+    {% endif %}
+</head>
+
+<body class="error-page {{ aSurveyInfo.class.body }} lang-{{ aSurveyInfo.languagecode }} {{ surveyformat }}" marginwidth="0"
+      marginheight="0" {{ aSurveyInfo.attr.body }}>
+    <div class="container m-auto ">
+        <div class="row align-items-center">
+            <div class="col">
+                <h2 class="error-title">
+                    {% if aError.error %}
+                        {{ aError.error }}
+                    {% endif %}
+                    {{ aError.title }}
+                </h2>
+                <div class="error-content">{{ aError.message }}</div>
+                {% if aError.contact %}
+                    {{ aError.contact }}
+                {% else %}
+                    {{ gT("For further information please contact %s:")|format (aSurveyInfo.admin) }}
+                    {% if aSurveyInfo.adminemail %}
+                        <br>
+                        <a class="error-link" href='mailto:{{ aSurveyInfo.adminemail }}'>{{ aSurveyInfo.adminemail }}</a>
+                    {% endif %}
+                {% endif %}
+                {% if aError.trace is not empty %}
+                    <pre>
+                            {{ aError.trace }}
+                    </pre>
+                {% endif %}
+            </div>
+            <div class="col d-flex">
+              {% if(imageSrc('./files/error.png')) %}
+                {{ image("./files/error.png", "Survey Error", {class: 'm-auto'}) }}
+              {% endif %}
+            </div>      
+        </div>
+    </div>
+{% block footer %}
+    {{ include('./subviews/footer/footer.twig') }}
+{% endblock %}
+</body>
+</html>

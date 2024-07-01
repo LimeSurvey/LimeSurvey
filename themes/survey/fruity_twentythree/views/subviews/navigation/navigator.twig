@@ -1,0 +1,66 @@
+{#
+    LimeSurvey
+    Copyright (C) 2007-2017 The LimeSurvey Project Team / Louis Gac
+    All rights reserved.
+    License: GNU/GPL License v2 or later, see LICENSE.php
+    LimeSurvey is free software. This version may have been modified pursuant
+    to the GNU General Public License, and as distributed it includes or
+    is derivative of works licensed under the GNU General Public License or
+    other free or open source software licenses.
+    See COPYRIGHT.php for copyright notices and details.
+
+
+
+    (¯`·._.·(¯`·._.· Navigator  ·._.·´¯)·._.·´¯)
+
+    Render the navigator: Previous, Next, Submit, Load, Save
+    All needed datas are inside aSurveyInfo.aNavigator
+    If you want to see what is availabe in aNavigator, turn debug mode on in application/config.php, and move out of comments the following line:
+    {{ dump(aSurveyInfo.aNavigator) }}
+#}
+
+{# create a shortcut for aSurveyInfo.aNavigator #}
+{% set aNavigator = aSurveyInfo.aNavigator %}
+
+<!-- PRESENT THE NAVIGATOR -->
+<div class="{{ aSurveyInfo.class.navigatorcontainer }} row navigator space-col" id="{{ aSurveyInfo.id.navigatorcontainer }}" {{ aSurveyInfo.attr.navigatorcontainer }}>
+
+    <!-- Previous button container -->
+    <div class="{{ aSurveyInfo.class.navigatorbuttonl }} col-6 text-start" {{ aSurveyInfo.attr.navigatorbuttonl }}>
+
+        {# Previous button must be set to ON in survey settings (and it's not shown in first page, in All in One survey mode, etc) #}
+        {% if (not aSurveyInfo.popupPreview) and aNavigator.aMovePrev.show %}
+            <!-- Button previous -->
+            <button {{ aSurveyInfo.attr.navigatorbuttonprev }} accesskey="p" class=" {{ aNavigator.disabled }} {{ aSurveyInfo.class.navigatorbuttonprev }} btn btn-lg btn-outline-secondary " >
+                {{ gT("Previous") }}
+            </button>
+        {% endif %}
+    </div>
+    <div class="{{ aSurveyInfo.class.navigatorbuttonr }} col-6 text-end">
+
+        {# Next button is not always shown (last page, all in one mode, etc) #}
+        {% if (not aSurveyInfo.popupPreview) and aNavigator.aMoveNext.show %}
+
+            {# On last page, Next button become submit button. #}
+            {% if (not aSurveyInfo.popupPreview) and aNavigator.aMoveNext.value == "movesubmit" %}
+                {% if not empty(aSurveyInfo.mandViolation) and not empty(aSurveyInfo.mandSoft) and empty(aSurveyInfo.mandNonSoft) and aSurveyInfo.showPopups != 1 %}
+                <span class="checkbox-item">
+                    <input class="{{ aSurveyInfo.class.mandsoftcheckbox }}" type="checkbox" name="mandSoft" id="mandSoft" value="{{ aSurveyInfo.aNavigator.aMoveNext.value }}" />
+                    <label for="mandSoft" class="control-label {{ aSurveyInfo.class.mandsoftcheckboxlabel }}">{{ gT("Continue without answering") }}</label>&nbsp;
+                </span>
+                {% endif %}
+                <!-- Button submit -->
+                <button {{ aSurveyInfo.attr.navigatorbuttonsubmit }} accesskey="n" class=" {{ aNavigator.disabled }} {{ aSurveyInfo.class.navigatorbuttonsubmit }} btn btn-lg btn-primary">
+                    {{ gT("Submit") }}
+                </button>
+            {% else %}
+                <!-- Button Next -->
+                <button {{ aSurveyInfo.attr.navigatorbuttonnext }} accesskey="n" class=" {{ aNavigator.disabled }} {{ aSurveyInfo.class.navigatorbuttonnext }} btn btn-lg btn-primary " >
+                    {{ gT("Next") }}
+                </button>
+            {% endif %}
+        {% endif %}
+    </div>
+</div>
+<!-- Extra navigator part -->
+{{ include('./subviews/navigation/navigator_complement.twig') }}

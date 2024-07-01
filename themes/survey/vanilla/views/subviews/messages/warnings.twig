@@ -26,18 +26,18 @@
 #}
 
 {# Preview mode warning #}
-{% if aSurveyInfo.active != 'Y' %}
+{% if (aSurveyInfo.active != 'Y') and (not aSurveyInfo.popupPreview) %}
     <!-- Preview mode warning -->
-    <div class="{{ aSurveyInfo.class.activealert }} alert alert-warning alert-dismissible fade in alert-dismissible" {{ aSurveyInfo.attr.activealert }} >
-        <button  {{ aSurveyInfo.attr.activealertbutton }} class="{{ aSurveyInfo.class.activealertbutton }} close" ><span aria-hidden="true">×</span></button>
+    <div class="{{ aSurveyInfo.class.activealert }} row alert alert-warning alert-dismissible fade in show alert-dismissible" {{ aSurveyInfo.attr.activealert }} >
+        <button  {{ aSurveyInfo.attr.activealertbutton }} class="{{ aSurveyInfo.class.activealertbutton }} btn-close" ></button>
         {{ gT("This survey is currently not active. You will not be able to save your responses.") }}
     </div>
 {% endif %}
 
 {# Error Html warnings #}
 {% if aSurveyInfo.errorHtml.show %}
-    <p class=' {# Uncomment to hide when popup is on { aSurveyInfo.errorHtml.hiddenClass } #} fade in alert-dismissible alert alert-danger {{ aSurveyInfo.class.errorHtml }} ' role='alert'>
-        <button  {{ aSurveyInfo.attr.errorHtmlbutton }} class="{{ aSurveyInfo.class.errorHtmlbutton }} close" ><span aria-hidden="true">×</span></button>
+    <p class=' {# Uncomment to hide when popup is on { aSurveyInfo.errorHtml.hiddenClass } #} row fade in show alert-dismissible alert alert-danger {{ aSurveyInfo.class.errorHtml }} ' role='alert'>
+        <button  {{ aSurveyInfo.attr.errorHtmlbutton }} class="{{ aSurveyInfo.class.errorHtmlbutton }} btn-close" ></button>
     {% for aMessage in aSurveyInfo.errorHtml.messages  %}
         <!-- Error Html warnings -->
             {{ aMessage }}

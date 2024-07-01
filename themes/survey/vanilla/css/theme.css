@@ -29,26 +29,25 @@
 */
 
 body {
-     padding-bottom: 10px;
-     padding-top: 60px;/* now is redefine in JS to fit any title length */
+    padding-bottom: 10px;
+    padding-top: 90px; /* now is redefine in JS to fit any title length */
 }
-.script-container{
-    height:1px; 
-    width:1px; 
-    overflow:hidden;
+
+.script-container {
+    height: 1px;
+    width: 1px;
+    overflow: hidden;
 }
-.navbar-action-link{
-    padding-right:1em; /* really close to window without */
+
+.navbar-action-link {
+    padding-right: 1em; /* really close to window without */
 }
 
 /* specific for survey listing */
 @media (min-width: 761px) {
-  .surveys-list .btn-group {
-    width: 50%;
-  }
-  .language_change_container{
-      height: 90vh;
-  }
+    .surveys-list .btn-group {
+        width: 49%;
+    }
 }
 
 .space-col {
@@ -56,16 +55,17 @@ body {
     margin-bottom: 2em;
 }
 
-.group-outer-container{
+.group-outer-container {
     display: flex;
 }
-.group-container{
-    width:100%;
+
+.group-container {
+    width: 100%;
 }
 
 .group-title-container {
-  padding: 1em;
-  background:transparent;
+    padding: 1em;
+    background: transparent;
 }
 
 .top-container {
@@ -74,40 +74,61 @@ body {
     color: inherit;
 }
 
-.top-container .top-content{
-    padding-top:1em;
-    padding-bottom:1em;
-    margin-bottom:2em;
+.top-container .top-content {
+    padding-top: 1em;
+    padding-bottom: 1em;
+    margin-bottom: 2em;
 }
 
-.top-content .form-change-lang{float:right}
-.dir-rtl .top-content .form-change-lang{float:left}
-.no-js .top-content .form-change-lang{display:none}
+.top-content .form-change-lang {
+    float: right
+}
 
-.top-container .top-content:empty{display:none}
-.group-description:empty{display:none}
-.group-title:empty{display:none}
+.dir-rtl .top-content .form-change-lang {
+    float: left
+}
+
+.no-js .top-content .form-change-lang {
+    display: none
+}
+
+.top-container .top-content:empty {
+    display: none
+}
+
+.group-description:empty {
+    display: none
+}
+
+.group-title:empty {
+    display: none
+}
+
 .top-container .progress {
     height: 21px;
     margin-bottom: 0;
 }
+
 .progress .progress-bar {
-    line-height:19px;
+    line-height: 19px;
 }
-.top-container .form-change-lang {text-align:center}
+
+.top-container .form-change-lang {
+    text-align: center
+}
 
 /**
  * Navigator
  */
 
- #navigator-container {
-     padding-bottom: 1em;
- }
- #navigator-container > hr
- {
+#navigator-container {
+    padding-bottom: 1em;
+}
+
+#navigator-container > hr {
     margin-top: 0px;
     margin-bottom: 0px;
- }
+}
 
 /**
  * Question part
@@ -115,63 +136,77 @@ body {
 /** Question Design **/
 
 .question-container {
-  margin-bottom: 2em;
-  border: 1px solid #e7e7e7;
-  background-color: #f8f8f8;
+    margin-bottom: 2em;
+    border: 1px solid #e7e7e7;
+    background-color: #f8f8f8;
 }
+
 .question-container-printanswers {
-  margin-top: 2em ;
-  margin-bottom: 2em ;
-  padding-bottom: 2em ;
-}
-.question-container.row {
-    margin-right: 0;
-    margin-left: 0;
+    margin-top: 2em;
+    margin-bottom: 2em;
+    padding-bottom: 2em;
 }
 
 .question-title-container {
-  padding-top: 1em;
-  padding-bottom:1em;
+    padding-top: 1em;
+    padding-bottom: 1em;
 }
-.question-number,.question-code{float:left;margin:0 0.3em}
-.question-number:empty,.question-code:empty{display:none}
+
+.question-number, .question-code {
+    float: left;
+    margin: 0 0.3em
+}
+
+.question-number:empty, .question-code:empty {
+    display: none
+}
 
 .question-valid-container {
-  position: relative;
+    position: relative;
 }
 
-.ls-question-help,
-.ls-questionhelp{
-  margin-bottom:5px;
+.ls-questionhelp {
+    margin-bottom: 5px;
 }
 
-.question-valid-container .text-danger{
-  font-weight: bold;
+.question-valid-container .text-danger {
+    font-weight: bold;
 }
 
-.question-valid-container .text-info{
-  font-weight: bold;
+.question-valid-container .text-info {
+    font-weight: bold;
 }
 
-.ls-answers{
-  padding-top:15px;
-  padding-bottom:15px;
-  margin-bottom:0;
+.ls-answers {
+    padding-top: 15px;
+    padding-bottom: 15px;
+    margin-bottom: 0;
 }
 
 /* little icon near the question-help */
-.ls-questionhelp{position: relative;}
-.dir-ltr .ls-questionhelp{margin-left:1.2em;}
-.dir-rtl .ls-questionhelp{margin-right:1.2em;}
+.ls-questionhelp {
+    position: relative;
+}
 
-.ls-questionhelp:before{content:"\f059"}
+.dir-ltr .ls-questionhelp {
+    margin-left: 1.2em;
+}
+
+.dir-rtl .ls-questionhelp {
+    margin-right: 1.2em;
+}
+
+.ls-questionhelp:before {
+    content: "\f059"
+}
+
 .ls-questionhelp:before {
     display: block;
-    position:absolute;
+    position: absolute;
     font-family: FontAwesome;
     font-size: inherit;
     line-height: inherit;
-    height:100%;
+    height: 100%;
 }
 
 /* If you want to center the icon */
@@ -182,33 +217,33 @@ body {
 }
 */
 .dir-ltr .ls-questionhelp:before {
-    left:-1.1em;
+    left: -1.1em;
 }
+
 .dir-rtl .ls-questionhelp:before {
-    right:-1.1em;
+    right: -1.1em;
 }
 
 /**
  * Unsure part
  */
 
- #main-col {
-     margin-top: 1em;
- }
+#main-col {
+    margin-top: 1em;
+}
 
- .col-centered{
-     float: none;
-     margin: 0 auto;
- }
+.col-centered {
+    float: none;
+    margin: 0 auto;
+}
 
-.radio-list li
-{
+.radio-list li {
     display: block;
     clear: both;
     margin-right: 3rem;
 }
-.question-item .other-label
-{
+
+.question-item .other-label {
     margin: 0px;
     padding: 0px;
 }
@@ -216,10 +251,9 @@ body {
 /**
  * For em-type
  */
- .hide-tip
- {
-     display: none;
- }
+.hide-tip {
+    display: none;
+}
 
 /**
  * Surveys list
@@ -228,9 +262,11 @@ body {
     margin-top: 1em;
     list-style: none;
 }
+
 .surveys-list li {
     padding: 0.5em;
 }
+
 .surveys-list li a {
     margin-left: 0.5em;
 }
@@ -261,7 +297,7 @@ body {
     height: 60px;
 }
 
-@media (max-width: 768px){
+@media (max-width: 768px) {
     #surveyListFooter {
         padding-bottom: 40px;
         padding-top: 5px;
@@ -269,20 +305,24 @@ body {
         height: 40px;
     }
 }
+
 /**
  * Specific question part
  */
-.radio-item label,.checkbox-item label {
+.radio-item label, .checkbox-item label {
     cursor: pointer;
 }
-.radio-item [type='radio'],.checkbox-item [type='checkbox'] { /* Why we must positionning at same place */
+
+.radio-item [type='radio'], .checkbox-item [type='checkbox'] { /* Why we must positionning at same place */
     cursor: pointer;
 }
-.js td.radio-item,.js td.checkbox-item{
+
+.js td.radio-item, .js td.checkbox-item {
     cursor: pointer;
 }
 
 .slider-item {
+    margin-bottom: 20px;
     min-height: 50px;
 }
 
@@ -291,58 +331,73 @@ body {
 }
 
 /* Show more the heading in table */
-.ls-answers .ls-heading th{font-weight:700}
+.ls-answers .ls-heading th {
+    font-weight: 700
+}
+
 /* Max width for some answer part */
 @media (min-width: 768px) {
-  .yesno-button,.gender-button {
-    width: 50%;
-  }
-  .yesno-button,.gender-button {
-    float: left;
-  }
-  .dir-rtl .yesno-button,.dir-rtl .gender-button {
-    float: right;
-  }
+    .yesno-button, .gender-button {
+        width: 50%;
+    }
+
+    .yesno-button, .gender-button {
+        float: left;
+    }
+
+    .dir-rtl .yesno-button, .dir-rtl .gender-button {
+        float: right;
+    }
 }
+
 /* table color */
-.ls-even{
+.ls-even {
 }
+
 /* dynamic group (multiple-numeric) .form-control-static same padding and border width than form-control for better alignment */
-.ls-group-dynamic .form-control-static{ padding-left:15px;padding-right:15px;}
+.ls-group-dynamic .form-control-static {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
 /* array by column hover column */
 .table-col-hover col:hover, /* This, maybe, work in CSS4 :) */
 .table-col-hover col.hover /* Actual solution : js only*/
 {
 }
-@media
-only screen and (max-width: 760px),
-(min-device-width: 768px) and (max-device-width: 1024px)  {
+
+@media only screen and (max-width: 760px),
+(min-device-width: 768px) and (max-device-width: 1024px) {
     .ls-answers > tbody > tr.ls-even:hover {
     }
 }
+
 /**
  * Gender buttons
  */
 
 /* General */
-.button-item .ls-icon {
+.button-item .ls-icon, .ls-button-label .ls-icon {
     display: block;
 }
-.button-item .ls-icon {
+
+.button-item .ls-icon, .ls-button-label .ls-icon {
     font-size: 1.4em;
+    line-height: 1.4em;
 }
 
 html body .navbar.navbar-default.navbar-fixed-top {
     z-index: 2000;
 }
-.file-upload-modal,.modal{
+
+.file-upload-modal, .modal {
     z-index: 2001;
 }
 
 /* Title of survey can be big, allow multiline, but leave the minimum */
 .navbar-brand {
     height: auto;
-    min-height:60px;
+    min-height: 60px;
 }
 
 
@@ -353,23 +408,22 @@ Responsive navbar-brand image CSS
 ***********************************/
 
 .logo-container {
-  padding: 0px;
-  float: left;
+    padding: 0px;
+    float: left;
 
-  font-size: 18px;
-  line-height: 20px;
+    font-size: 18px;
+    line-height: 20px;
 }
 
-.logo-container>img {
-  max-height: 90px;
-  padding: 15px;
-  width: auto;
+.logo-container > img {
+    max-height: 90px;
+    padding: 15px;
+    width: auto;
 }
 
-.brand-logo  .top-container .top-content{
+.brand-logo .top-container .top-content {
     padding-top: 2em;
 }
-
 
 
 /* Wrap text in e.g. gender button "No answer */
@@ -380,8 +434,9 @@ Responsive navbar-brand image CSS
 /* Center modal vertically, used by file-upload modal */
 .modal {
     text-align: center;
-    padding: 0!important;
+    padding: 0 !important;
 }
+
 .modal:before {
     content: '';
     display: inline-block;
@@ -389,10 +444,11 @@ Responsive navbar-brand image CSS
     vertical-align: middle;
     margin-right: -4px;
 }
+
 .modal-dialog {
     display: inline-block;
-     text-align: left;
-     vertical-align: middle;
+    text-align: left;
+    vertical-align: middle;
 }
 
 #yii-flash-message {
@@ -453,19 +509,19 @@ table > tbody > tr > td.ddprefix {
  * (Both in portrait mode.)
  * We don't have to collapse tables on pads.
  */
-@media
-only screen and (max-width: 760px),
-(min-device-width: 768px) and (max-device-width: 1024px)  {
-    table.ls-answers  tbody {
+@media only screen and (max-width: 760px),
+(min-device-width: 768px) and (max-device-width: 1024px) {
+    table.ls-answers tbody {
         padding: 0 1em 0 1em;
     }
-    table.ls-answers  tr{
+
+    table.ls-answers tr {
         padding: 1em;
     }
-    table.ls-answers  tr th {
+
+    table.ls-answers tr th {
         font-size: 1.1em;
         text-align: center;
-
     }
 
     /* Add some margin for Multiple short text */
@@ -477,9 +533,9 @@ only screen and (max-width: 760px),
         padding: 0;
     }
 
-    table.ls-answers  tr{
+    table.ls-answers tr {
         padding: 0;
-        margin-bottom:1em;
+        margin-bottom: 1em;
     }
 
     /* Line header ; color is h4 color */
@@ -506,7 +562,7 @@ only screen and (max-width: 760px),
         /*padding-left: 95%;*/
         padding-bottom: 1em;
         white-space: normal;
-        text-align:left ;
+        text-align: left;
     }
 
     /* Hide the first column in array-by-column */
@@ -538,7 +594,7 @@ only screen and (max-width: 760px),
         right: 0.5em;
     }
 
-    .col-xs-12.question-container {
+    .col-12.question-container {
         padding-right: 0;
         padding-left: 0;
     }
@@ -554,12 +610,11 @@ only screen and (max-width: 760px),
     }
 
     /*
-    .col-sm-12.answer {
+    .col-12.answer {
         padding-left: 0;
         padding-right: 0;
     }
     */
-
     .no-more-tables tbody {
         padding-left: 0;
         padding-right: 0;
@@ -603,8 +658,7 @@ only screen and (max-width: 760px),
  */
 
 
-.table > tbody > tr > th
-{
+.table > tbody > tr > th {
     vertical-align: middle;
 }
 
@@ -618,22 +672,19 @@ only screen and (max-width: 760px),
 }
 
 
-
-
 /* Give help text some space */
 .questionhelp {
-  padding-bottom:0.5em;
+    padding-bottom: 0.5em;
 }
 
 
 /* Asterix */
 .input-error .asterisk {
     font-size: 1.2em;
-    margin-top:-0.2em;
+    margin-top: -0.2em;
 }
 
-#surveys-list-container
-{
+#surveys-list-container {
     margin-top: 50px;
 }
 
@@ -661,73 +712,72 @@ only screen and (max-width: 760px),
 
 
 div.yes-no .btn-group label {
-  white-space:normal;
+    white-space: normal;
 }
 
-.privacy-header{
+.privacy-header {
     font-weight: bold;
     font-style: italic;
 }
 
 
-@media only screen and (max-device-width: 760px){
+@media only screen and (max-device-width: 760px) {
 
-  h1, .h3{
-    font-size:18px;
-  }
+    h1, .h3 {
+        font-size: 18px;
+    }
 
-  .h4{
-    font-size:16px;
-  }
+    .h4 {
+        font-size: 16px;
+    }
 
-  .question-container{
-    margin-bottom:1em;
-  }
+    .question-container {
+        margin-bottom: 1em;
+    }
 
-  .question-title-container{
-    padding-top:5px;
-    padding-bottom: 5px;
-  }
+    .question-title-container {
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
 
-  .answer-container{
-    //padding-top:0.5em;
-    //padding-bottom:0.5em;
-  }
+    .answer-container {
+    / / padding-top: 0.5 em;
+    / / padding-bottom: 0.5 em;
+    }
 
-  .ls-question-help,
-  .ls-questionhelp{
-    font-size:14px;
-  }
+    .ls-questionhelp {
+        font-size: 14px;
+    }
 
-  .ls-answers tbody:last-child tr:last-child{
-    margin-bottom:0;
-  }
+    .ls-answers tbody:last-child tr:last-child {
+        margin-bottom: 0;
+    }
 
-  .ls-answers{
-    padding-top:0;
-    padding-bottom:0;
-  }
+    .ls-answers {
+        padding-top: 0;
+        padding-bottom: 0;
+    }
 
-  .ls-answers > tbody > tr > td.radio-item ,
-  .ls-answers > tbody > tr > td.checkbox-item{
-    min-height:44px; /*minimal height for touching with finger */
-    padding-top:10px;
-    padding-left:28px;
-  }
+    .ls-answers > tbody > tr > td.radio-item,
+    .ls-answers > tbody > tr > td.checkbox-item {
+        min-height: 44px; /*minimal height for touching with finger */
+        padding-top: 10px;
+        padding-left: 28px;
+    }
 
 
-  .help-block:last-child{
-    margin-bottom:0;
-  }
+    .help-block:last-child {
+        margin-bottom: 0;
+    }
 
-  .ls-questionhelp,
-  .help-block{
-    font-size:90%;
-  }
+    .ls-questionhelp,
+    .help-block {
+        font-size: 90%;
+    }
 }
 
-p.return-to-survey{
-    clear:left;
+p.return-to-survey {
+    clear: left;
 }
 
 /* Make sure question index menu is not too long. */
@@ -735,15 +785,16 @@ p.return-to-survey{
     max-height: 50vh;
     overflow-y: scroll;
 }
-    
+
 .text-break-pre {
     white-space: pre-line;
 }
 
-.child-row-spacing>.row{
+.child-row-spacing > .row {
     padding-bottom: 8px;
 }
-.child-row-border-bottom>.row:last-child{
+
+.child-row-border-bottom > .row:last-child {
     padding-bottom: 0;
 }
 
@@ -753,7 +804,6 @@ p.return-to-survey{
 }
 
 .limit-text-window {
-    max-height: 40rem;
     max-height: 33vh;
     padding: 15px 5px;
     overflow: auto;
@@ -765,4 +815,34 @@ p.return-to-survey{
 }
 
 /* Define the color for Awesome Bootsrap Checkboxes ; based on bg-primary background-color*/
-label::after{background-color:#337ab7}
+label::after {
+    background-color: #337ab7
+}
+
+#survey-nav .nav-link:hover {
+    color: #333;
+}
+#survey-nav .nav-link:focus {
+    color: #333;
+}
+
+.dropdown-item:focus, .dropdown-item:hover {
+    background-color: #e9ecef !important;
+}
+
+label {
+    font-weight: bold;
+}
+
+/* Multiplechoice bootstrap buttons unchecked focus*/
+.btn-check .btn-primary:focus, .btn-check:focus+.btn-primary {
+    background-color: #0d6efd;
+    border: 1px solid #0d6efd;
+    box-shadow: none;
+    color: #fff;
+}
+.btn-check:focus:checked + .btn-primary, .btn-check .btn-primary:focus:checked {
+    background-color: #0a58ca;
+    border-color: #0a53be;
+    color: #fff;
+ }

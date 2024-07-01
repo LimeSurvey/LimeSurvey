@@ -1,15 +1,25 @@
-<div class='side-body  <?php echo getSideBodyClass(false); ?>'>
+<div class='side-body'>
 <div class="jumbotron message-box message-box-warning">
     <h2><?php eT("Warning"); ?></h2>
     <?php echo CHtml::form(array("admin/tokens/sa/email/action/{$sSubAction}/surveyid/{$surveyid}"), 'post', ['id' => 'tokenSubmitInviteForm']); ?>
         <span id="tokenSendNotice"><?php printf(ngT("There are more emails pending than can be sent in one batch. Continue sending emails by clicking below, or wait %s{n}%s second.|There are more emails pending than can be sent in one batch. Continue sending emails by clicking below, or wait %s{n}%s seconds.", Yii::app()->getConfig('sendingrate')), '<span id="tokenSendCounter">', '</span>'); ?></span>
         <br />
         <br />
-        <?php echo str_replace("{EMAILCOUNT}", (string) $lefttosend, gT("There are {EMAILCOUNT} emails still to be sent.")); ?>
+        <?php echo str_replace("{EMAILCOUNT}", (string) $lefttosend, (string) gT("There are {EMAILCOUNT} emails still to be sent.")); ?>
         <br />
         <br />
-        <input type='button' class="btn btn-default" id="sendTokenInvitationsNow" value='<?php eT("Continue"); ?>' />
-        <span>&nbsp;&nbsp;&nbsp;</span><button id="cancelAutomaticSubmission" class="btn btn-danger"><?php eT("Cancel automatic sending"); ?></button>
+        <input 
+            type='button' 
+            class="btn btn-outline-secondary" 
+            id="sendTokenInvitationsNow" 
+            value='<?php eT("Continue"); ?>' />
+        <span>&nbsp;&nbsp;&nbsp;</span>
+        <button 
+            id="cancelAutomaticSubmission" 
+            class="btn btn-danger"
+            type="button">
+            <?php eT("Cancel automatic sending"); ?>
+        </button>
         <input type='hidden' name='ok' value="absolutely" />
         <input type='hidden' name='action' value="tokens" />
         <input type='hidden' name='bypassbademails' value="<?php echo (int) Yii::app()->request->getPost('bypassbademails'); ?>" />
@@ -19,20 +29,32 @@
         {
             if (intval(Yii::app()->request->getPost('minreminderdelay')) != 0)
             { ?>
-                    <input type='hidden' name='minreminderdelay' value="<?php echo (int) Yii::app()->request->getPost('minreminderdelay'); ?>" />
-                    <?php }
+                <input 
+                    type='hidden' 
+                    name='minreminderdelay' 
+                    value="<?php echo (int) Yii::app()->request->getPost('minreminderdelay'); ?>" />
+                <?php }
             if (intval(Yii::app()->request->getPost('maxremindercount')) != 0)
             { ?>
-                    <input type='hidden' name='maxremindercount' value="<?php echo (int) Yii::app()->request->getPost('maxremindercount'); ?>" />
-                    <?php }
+                <input 
+                    type='hidden' 
+                    name='maxremindercount' 
+                    value="<?php echo (int) Yii::app()->request->getPost('maxremindercount'); ?>" />
+                <?php }
             if (Yii::app()->request->getPost('bypassdatecontrol')=='1')
             { ?>
-                        <input type='hidden' name='bypassdatecontrol' value="<?php echo (int)  Yii::app()->request->getPost('bypassdatecontrol'); ?>" />
-                        <?php }
+                <input 
+                    type='hidden' 
+                    name='bypassdatecontrol' 
+                    value="<?php echo (int) Yii::app()->request->getPost('bypassdatecontrol'); ?>" />
+                <?php }
         }
         ?>
         <?php if (!empty($tids)) { ?>
-            <input type='hidden' name='tokenids' value="<?php echo $tids; ?>" />
+            <input 
+                type='hidden'
+                name='tokenids' 
+                value="<?php echo $tids; ?>" />
         <?php } ?>
         <?php
             foreach ($aSurveyLangs as $language)
@@ -45,9 +67,15 @@
     </form>
     <br/>
     <div class="progress">
-        <div class="progress-bar progress-bar-striped active" id="countdown-progress" role="progressbar" aria-valuenow="70"
-        aria-valuemin="0" aria-valuemax="100" style="width:100%">
-            <span class="sr-only"><?php neT("{n} second to go|{n} seconds to go", Yii::app()->getConfig('sendingrate')); ?></span>
+        <div 
+            class="progress-bar progress-bar-striped active" 
+            id="countdown-progress" 
+            role="progressbar" 
+            aria-valuenow="70"
+            aria-valuemin="0" 
+            aria-valuemax="100" 
+            style="width:100%">
+            <span class="visually-hidden"><?php neT("{n} second to go|{n} seconds to go", Yii::app()->getConfig('sendingrate')); ?></span>
         </div>
     </div>
 </div>
@@ -60,7 +88,7 @@ App()->getClientScript()->registerScript('TokenInviteLooper', "
 
     var submitInviteForm = function() {
         $('body').append('<div class=\"overlay\"></div>');
-        $('#sendTokenInvitationsNow').after('<p class=\"text-center\"><i class=\"fa fa-cog fa-spin\"></i></p>');
+        $('#sendTokenInvitationsNow').after('<p class=\"text-center\"><i class=\"ri-settings-5-fill remix-spin\"></i></p>');
         $('#cancelAutomaticSubmission').remove();
         $('#sendTokenInvitationsNow').remove();
         $('#tokenSubmitInviteForm').trigger('submit');

@@ -35,6 +35,10 @@ class Authentication extends SurveyCommonAction
      */
     public function index()
     {
+        // if the session is not readeable clear browser cookies
+        if (!session_id()) {
+            App()->request->cookies->clear();
+        }
         /* Set adminlang to the one set in dropdown */
         if (Yii::app()->request->getParam('loginlang', 'default') != 'default') {
             Yii::app()->session['adminlang'] = Yii::app()->request->getParam('loginlang', 'default');
@@ -266,17 +270,8 @@ class Authentication extends SurveyCommonAction
      */
     public function logout()
     {
-        /* Adding beforeLogout event */
-        $beforeLogout = new PluginEvent('beforeLogout');
-        App()->getPluginManager()->dispatchEvent($beforeLogout);
-        regenerateCSRFToken();
         App()->user->logout();
         App()->user->setFlash('loginmessage', gT('Logout successful.'));
-
-        /* Adding afterLogout event */
-        $event = new PluginEvent('afterLogout');
-        App()->getPluginManager()->dispatchEvent($event);
-
         $this->getController()->redirect(array('/admin/authentication/sa/login'));
     }
 
@@ -356,7 +351,7 @@ class Authentication extends SurveyCommonAction
             case 'login':
             default:
                 $sSummary = '<br />' . sprintf(gT('Welcome %s!'), Yii::app()->session['full_name']) . '<br />&nbsp;';
-                if (!empty(Yii::app()->session['redirect_after_login']) && strpos(Yii::app()->session['redirect_after_login'], 'logout') === false) {
+                if (!empty(Yii::app()->session['redirect_after_login']) && strpos((string) Yii::app()->session['redirect_after_login'], 'logout') === false) {
                     Yii::app()->session['metaHeader'] = '<meta http-equiv="refresh"'
                     . ' content="1;URL=' . Yii::app()->session['redirect_after_login'] . '" />';
                     $sSummary = '<p><font size="1"><i>' . gT('Reloading screen. Please wait.') . '</i></font>';

@@ -1,13 +1,13 @@
 
-function toggleSection(chevron, section) {
-    section.toggle();
-    chevron.toggleClass('fa-chevron-up').toggleClass('fa-chevron-down');
-}
-
-function hideSection(chevron, section) {
-    section.hide();
-    chevron.removeClass('fa-chevron-up');
-    chevron.addClass('fa-chevron-down');
+function hideSection(section) {
+    var collapsible = document.getElementById(section);
+    // Try to get the bootstrap collapse instance
+    var bsCollapse = bootstrap.Collapse.getInstance(collapsible);
+    // If there is no previous instance, create a new one
+    if (!bsCollapse) {
+        bsCollapse = new bootstrap.Collapse(collapsible);
+    }
+    bsCollapse.hide();
 }
 
 /**
@@ -264,24 +264,10 @@ LS.Statistics2 = function () {
         $('#statisticsoutput .row').first().find('.chartjs-container').loadGraph();
     }
 
-    $('#generalfilters-chevron').click(function () {
-        toggleSection($('#generalfilters-chevron'), $('#statisticsgeneralfilters'));
-    });
-
-    $('#responsefilters-chevron').click(function () {
-        toggleSection($('#responsefilters-chevron'), $('#filterchoices'));
-    });
-
-    $('#statistics-render-chevron').click(function () {
-        toggleSection($('#statistics-render-chevron'), $('#statisticsoutput'));
-    });
-
     $('#generate-statistics').submit(function () {
-        hideSection($('#generalfilters-chevron'), $('#statisticsgeneralfilters'));
-        hideSection($('#responsefilters-chevron'), $('#filterchoices'))
+        hideSection('general-filters-item-body');
+        hideSection('response-filters-item-body');
         $('#statisticsoutput').show();
-        $('#statistics-render-chevron').removeClass('fa-chevron-up');
-        $('#statistics-render-chevron').addClass('fa-chevron-down');
         $('#view-stats-alert-info').hide();
         $('#statsContainerLoading').show();
         if ($('input[name=outputtype]:checked').val() != 'html') {
@@ -291,13 +277,6 @@ LS.Statistics2 = function () {
             return false;
         }
         //alert('ok');
-    });
-
-    $('.group-question-chevron').click(function () {
-        //alert('ok');
-        $group_to_hide = $('#' + $(this).data('grouptohide'));
-        toggleSection($(this), $group_to_hide)
-        //$('#'+group_to_hide).hide();
     });
 
     // If the graph are displayed
@@ -394,21 +373,29 @@ LS.Statistics2 = function () {
     $('#usegraph').click(function () {
         if ($('#grapherror').length > 0) {
             $('#grapherror').show();
-            $('#usegraph').prop('checked', false);
+            $('#usegraph_2').prop('checked', true);
         }
     });
 
     /***
      * Select all questions
      */
-    $("[name='viewsummaryall']").on('change', function (event) {
-        if (this.value == '1') {
-            $('#filterchoices input[type=checkbox]').prop('checked', true);
-        } else {
-            $('#filterchoices input[type=checkbox]').prop('checked', false);
-
-        }
-    });
+    let viewsummaryallbuttons = document.querySelectorAll('input[name="viewsummaryall"]');
+    for (let viewsummaryallbutton of viewsummaryallbuttons) {
+        viewsummaryallbutton.addEventListener("change", () => {
+            if (viewsummaryallbutton.value === '1') {
+                let filterchoices = document.querySelectorAll('#filterchoices input[type=checkbox]');
+                filterchoices.forEach((filterchoice) => {
+                    filterchoice.checked = true;
+                });
+            } else {
+                let filterchoices = document.querySelectorAll('#filterchoices input[type=checkbox]');
+                filterchoices.forEach((filterchoice) => {
+                    filterchoice.checked = false;
+                });
+            }
+        });
+    }
 
     /* Show and hide the three major sections of the statistics page */
     /* The response filters */
@@ -659,7 +646,7 @@ function selectCheckboxes(Div, CheckBoxName, Button) {
 }
 
 function nographs() {
-    document.getElementById('usegraph').checked = false;
+    document.getElementById('usegraph_2').checked = false;
 }
 
 function gMapInit(id, data) {
@@ -851,7 +838,7 @@ $(document).on('ready  pjax:scriptcomplete', function () {
     $('body').addClass('onStatistics');
     var exportImagesButton = $('#statisticsExportImages');
     exportImagesButton.on('click', exportImages);
-    exportImagesButton.wrap('<div class="col-md-12 text-center"></div>')
+    exportImagesButton.wrap('<div class="col-12 text-center"></div>')
     $('#statisticsview').children('div.row').last().append(exportImagesButton);
     $('body').on('click', '.action_js_export_to_pdf', function () {
 

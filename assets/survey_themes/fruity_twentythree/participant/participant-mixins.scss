@@ -1,0 +1,9 @@
+@mixin control-label {
+    margin-bottom : 12px;
+    font-weight   : $font-weight-normal;
+    line-height   : $line-height-24;
+}
+
+@mixin submit-button {
+    margin-top: 40px;
+}

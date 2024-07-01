@@ -120,14 +120,14 @@ class Update_145 extends DatabaseUpdateBase
         try {
             setTransactionBookmark();
             $this->db->createCommand()->dropIndex('questions_idx4', '{{questions}}');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             rollBackToTransactionBookmark();
         }
 
         \alterColumn('{{questions}}', 'type', "string(1)", false, 'T');
         try {
             $this->db->createCommand()->createIndex('questions_idx4', '{{questions}}', 'type');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
         };
         \alterColumn('{{questions}}', 'other', "string(1)", false, 'N');
         \alterColumn('{{questions}}', 'mandatory', "string(1)");
@@ -200,7 +200,7 @@ class Update_145 extends DatabaseUpdateBase
         try {
             setTransactionBookmark();
             $this->db->createCommand()->dropIndex('email', '{{users}}');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             // do nothing
             rollBackToTransactionBookmark();
         }
@@ -212,11 +212,11 @@ class Update_145 extends DatabaseUpdateBase
 
         try {
             $this->db->createCommand()->dropIndex('user_in_groups_idx1', '{{user_in_groups}}');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
         }
         try {
             addPrimaryKey('user_in_groups', array('ugid', 'uid'));
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
         }
 
         addColumn('{{surveys_languagesettings}}', 'surveyls_numberformat', "integer NOT NULL DEFAULT 0");

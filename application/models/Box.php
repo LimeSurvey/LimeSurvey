@@ -8,7 +8,7 @@
  * @property integer $position
  * @property string $url
  * @property string $title
- * @property string $ico the icon class
+ * @property string $ico the icon ID
  * @property string $desc Description
  * @property string $page
  * @property integer $usergroup UserGroup ID
@@ -27,9 +27,10 @@ class Box extends CActiveRecord
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('url, title, ico, desc, page', 'required'),
+            array('url, title, ico, position, desc, page', 'required'),
             array('url', 'match', 'pattern' => '/(http:\/\/)?[a-zA-Z]([a-zA-Z0-9-_?&"\'=]\/?)*/'),
             array('position', 'numerical', 'integerOnly' => true),
+            array('position', 'unique', 'message' => gT('Position {value} already exists.')),
             array('usergroup', 'numerical', 'integerOnly' => true, 'min' => -3),
             array('ico', 'match', 'pattern' => '/^[A-Za-z0-9_ \-]+$/u','message' => gT('Icon name must be a simple class name (alphanumeric, space, minus and underscore).')),
             // The following rule is used by search().
@@ -102,7 +103,7 @@ class Box extends CActiveRecord
      */
     public function getSpanIcon()
     {
-        $spanicon = '<span class="' . CHtml::encode($this->ico) . ' text-success"></span>';
+        $spanicon = '<span class="' . CHtml::encode($this->getIconName()) . ' text-success"></span>';
         return $spanicon;
     }
 
@@ -138,96 +139,112 @@ class Box extends CActiveRecord
      */
     public function getbuttons()
     {
-        $url = Yii::app()->createUrl("/homepageSettings/updateBox/id/");
-        $url .= '/' . $this->id;
-        $button = "<div class='icon-btn-row'>";
-        $button .= '<a class="btn btn-sm btn-default green-border" data-toggle="tooltip" data-target="top" '
-         . 'title="' . gT('Edit') . '"'
-         . 'href="'
-         . $url
-         . '" role="button"><span class="fa fa-pencil" ></span></a>';
+        $permission_box_edit = Permission::model()->hasGlobalPermission('settings', 'update');
+        $permission_box_delete = Permission::model()->hasGlobalPermission('settings', 'delete');
+        $dropdownItems = [];
+        $dropdownItems[] = [
+            'title'            => gT('Edit'),
+            'iconClass'        => 'ri-pencil-fill',
+            'url'              => Yii::app()->createUrl("/homepageSettings/updateBox/id/$this->id"),
+            'enabledCondition' => $permission_box_edit
+        ];
 
-        $url = Yii::app()->createUrl("/homepageSettings/deleteBox");
-        $button .= '<a class="btn btn-sm btn-default selector--ConfirmModal"'
-        . ' data-button-no="' . gT('Cancel') . '"'
-        . ' data-button-yes="' . gT('Delete') . '"'
-        . ' data-button-type="btn-danger"'
-        . ' href="' . $url . '"'
-        . ' data-toggle="tooltip"'
-        . ' data-target="top"'
-        . ' title="' . gT('Delete the box') . '"'
-        . ' role="button" data-post=\'' . json_encode(['id' => $this->id]) . '\''
-        . ' data-text="' . gT('Are you sure you want to delete this box ?') . '"'
-        . '><span class="fa fa-trash text-danger" ></span></a>';
-        $button .= "</div>";
-        return $button;
+        $dropdownItems[] = [
+            'title'            => gT('Delete box'),
+            'iconClass'        => 'ri-delete-bin-fill text-danger',
+            'enabledCondition' => $permission_box_delete,
+            'url' => Yii::app()->createUrl("/homepageSettings/deleteBox"),
+            'linkClass' => 'selector--ConfirmModal',
+            'linkAttributes'   => [
+                'data-bs-toggle' => "tooltip",
+                'data-bs-target' => 'top',
+                'data-button-no' => gT('Cancel'),
+                'data-button-yes' => gT('Delete'),
+                'data-button-type' => 'btn-danger',
+                'data-post'  => json_encode(['id' => $this->id]),
+                'data-text'   => gT("Are you sure you want to delete this box?"),
+            ]
+        ];
+        return App()->getController()->widget(
+            'ext.admin.grid.GridActionsWidget.GridActionsWidget',
+            ['dropdownItems' => $dropdownItems],
+            true
+        );
     }
 
     /**
-     * List of all icons available for user
-     * Command to generate this list: grep -oh "icon-[a-z]*" styles/Sea_Green/css/fonts.css | sort -u > ~/my_icon_list.txt
-     * @return string[]
+     * List of all icons available for user [['id' => 1, 'icon' => 'name'],...]
+     * Command to generate this list: grep -oh "icon-[a-z]*"
+     * styles/Sea_Green/css/fonts.css | sort -u > ~/my_icon_list.txt
+     * @return array
      */
     public function getIcons()
     {
-        return array(
-            'icon-active',
-            'icon-add',
-            'icon-assessments',
-            'icon-browse',
-            'icon-conditions',
-            'icon-copy',
-            'icon-cpdb',
-            'icon-databack',
-            'icon-databegin',
-            'icon-dataend',
-            'icon-dataforward',
-            'icon-defaultanswers',
-            'icon-do',
-            'icon-edit',
-            'icon-emailtemplates',
-            'icon-expired',
-            'icon-export',
-            'icon-exportcsv',
-            'icon-exportr',
-            'icon-exportspss',
-            'icon-exportvv',
-            'icon-expression',
-            'icon-expressionmanagercheck',
-            'icon-global',
-            'icon-import',
-            'icon-importcsv',
-            'icon-importldap',
-            'icon-importvv',
-            'icon-inactive',
-            'icon-invite',
-            'icon-label',
-            'icon-labels',
-            'icon-list',
-            'icon-logout',
-            'icon-maximize',
-            'icon-minimize',
-            'icon-organize',
-            'icon-quota',
-            'icon-remind',
-            'icon-renumber',
-            'icon-resetsurveylogic',
-            'icon-responses',
-            'icon-saved',
-            'icon-security',
-            'icon-settings',
-            'icon-shield',
-            'icon-superadmin',
-            'icon-survey',
-            'icon-takeownership',
-            'icon-template',
-            'icon-templatepermissions',
-            'icon-templates',
-            'icon-tools',
-            'icon-user',
-            'icon-usergroup',
-            'icon-viewlast'
-        );
+        return [
+            ['id' => 1 , 'icon' => 'ri-play-fill'],
+            ['id' => 2 , 'icon' => 'ri-add-circle-fill'],
+            ['id' => 3 , 'icon' => 'ri-chat-3-line'],
+            ['id' => 4 , 'icon' => 'ri-chat-1-line'],
+            ['id' => 5 , 'icon' => 'ri-git-branch-fill'],
+            ['id' => 6 , 'icon' => 'ri-file-copy-line'],
+            ['id' => 7 , 'icon' => 'ri-shield-user-line'],
+            ['id' => 8 , 'icon' => 'ri-arrow-left-circle-fill'],
+            ['id' => 9 , 'icon' => 'ri-skip-back-fill'],
+            ['id' => 10, 'icon' => 'ri-skip-forward-fill'],
+            ['id' => 11, 'icon' => 'ri-arrow-right-circle-fill'],
+            ['id' => 12, 'icon' => 'ri-grid-line'],
+            ['id' => 13, 'icon' => 'ri-settings-5-fill'],
+            ['id' => 14, 'icon' => 'ri-pencil-fill'],
+            ['id' => 15, 'icon' => 'ri-mail-settings-line'],
+            ['id' => 17, 'icon' => 'ri-download-fill'],
+            ['id' => 18, 'icon' => 'ri-superscript'],
+            ['id' => 19, 'icon' => 'ri-checkbox-fill'],
+            ['id' => 20, 'icon' => 'ri-list-settings-line'],
+            ['id' => 21, 'icon' => 'ri-upload-fill'],
+            ['id' => 22, 'icon' => 'ri-mail-send-fill'],
+            ['id' => 23, 'icon' => 'ri-price-tag-3-line'],
+            ['id' => 24, 'icon' => 'ri-list-unordered'],
+            ['id' => 25, 'icon' => 'ri-shut-down-line'],
+            ['id' => 26, 'icon' => 'ri-fullscreen-fill'],
+            ['id' => 27, 'icon' => 'ri-fullscreen-exit-fill'],
+            ['id' => 28, 'icon' => 'ri-shape-fill'],
+            ['id' => 29, 'icon' => 'ri-eject-fill'],
+            ['id' => 30, 'icon' => 'ri-mail-volume-fill'],
+            ['id' => 31, 'icon' => 'ri-list-ordered'],
+            ['id' => 32, 'icon' => 'ri-survey-fill'],
+            ['id' => 33, 'icon' => 'ri-exchange-funds-fill'],
+            ['id' => 34, 'icon' => 'ri-save-line'],
+            ['id' => 35, 'icon' => 'ri-lock-line'],
+            ['id' => 36, 'icon' => 'ri-shield-check-fill'],
+            ['id' => 37, 'icon' => 'ri-star-fill'],
+            ['id' => 38, 'icon' => 'ri-user-shared-fill'],
+            ['id' => 39, 'icon' => 'ri-brush-fill'],
+            ['id' => 40, 'icon' => 'ri-admin-fill'],
+            ['id' => 41, 'icon' => 'ri-tools-fill'],
+            ['id' => 42, 'icon' => 'ri-user-fill'],
+            ['id' => 43, 'icon' => 'ri-group-fill'],
+            ['id' => 44, 'icon' => 'ri-history-line'],
+            ['id' => 45, 'icon' => 'ri-stop-fill'],
+            ['id' => 46, 'icon' => 'ri-shopping-cart-fill'],
+            ['id' => 47, 'icon' => 'ri-user-line'],
+            ['id' => 48, 'icon' => 'ri-settings-5-line'],
+            ['id' => 49, 'icon' => 'ri-brush-line'],
+            ['id' => 50, 'icon' => 'ri-add-line'],
+
+        ];
+    }
+
+    /**
+     * Search the iconName for current icon
+     *
+     * @return string
+     */
+    public function getIconName()
+    {
+        $icons = $this->getIcons();
+        $iconArrayKey = array_search($this->ico, array_column($icons, 'icon'), false);
+        $iconName = $icons[$iconArrayKey]['icon'] ?: '';
+        return $iconName;
     }
 
     /**

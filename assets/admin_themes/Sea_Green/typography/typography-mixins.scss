@@ -1,0 +1,24 @@
+@mixin h1 {
+  color       : $heading-title-color;
+  font-family : $ibm-font-family;
+  font-weight : $font-weight-600;
+  font-size   : $font-size-lg;
+  line-height : $line-height-26;
+}
+
+@mixin h2 {
+  color       : $heading-sub-title-color;
+  font-family : $ibm-font-family;
+  font-weight : $font-weight-600;
+  font-size   : $font-size-base;
+  line-height : $line-height-26;
+}
+
+
+@mixin h3 {
+  color       : $heading-title-color;
+  font-family : $ibm-font-family;
+  font-weight : $font-weight-500;
+  font-size   : $font-size-sm;
+  line-height : $line-height-20;
+}

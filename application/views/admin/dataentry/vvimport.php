@@ -1,9 +1,9 @@
-<div class="side-body <?php echo getSideBodyClass(false); ?>">
+<div class="side-body">
 <?php echo CHtml::form(array('admin/dataentry/sa/vvimport/surveyid/'.$surveyid), 'post', array('enctype'=>'multipart/form-data', 'id'=>'vvexport',  'class'=>''));?>
     <?php if($tableExists):?>
         <div class="row">
-        <div class="col-md-12">
-            <div class="col-md-6 text-left">
+        <div class="col-12">
+            <div class="col-lg-6 text-start">
                 <h4>
                     <?php  eT("Import a VV response data file"); ?>
                 </h4>
@@ -15,23 +15,23 @@
     
 
         <div class="row">
-            <div class="col-lg-12 content-right">
+            <div class="col-12 content-right">
 
 <?php
     if ($tableExists) {
     ?>
     
     
-    <div class="panel panel-primary" id="panel-1">
-        <div class="panel-heading">
-            <div class="panel-title h4">
+    <div class="card card-primary" id="panel-1">
+        <div class="card-header ">
+            <div class="">
                 <?php eT("General");?>
             </div>
         </div>
 
-        <div class="panel-body">
-            <div class="form-group">
-                <label for="csv_vv_file" class=" control-label">
+        <div class="card-body">
+            <div class="mb-3">
+                <label for="csv_vv_file" class=" form-label">
                     <?php printf(gT("Response data file (*.csv,*.vv,*.txt) (maximum size: %d MB):"),getMaximumFileUploadSize()/1024/1024); ?>
                 </label>
                 <div class="">
@@ -39,23 +39,24 @@
                 </div>
             </div>
 
-            <div class="form-group">
-                <label for="noid" class=" control-label">
+            <div class="mb-3">
+                <label for="noid" class=" form-label">
                     <?php eT("Exclude record IDs?"); ?>
                 </label>
-                <div class="">
-                    <?php  $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                <div>
+                    <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name' => 'noid',
-                        'value'=> 'noid',
-                        'onLabel'=>gT('Yes'),
-                        'offLabel'=>gT('No')
-                        ));
-                    ?>
+                        'checkedOption' => '1',
+                        'selectOptions' => [
+                            '1' => gT('Yes'),
+                            '0' => gT('No'),
+                        ]
+                    ]); ?>
                 </div>
             </div>
 
-            <div class="form-group" id="insertmethod-container">
-                <label for="insertmethod" class=" control-label">
+            <div class="mb-3 d-none" id="insertmethod-container">
+                <label for="insertmethod" class=" form-label">
                     <?php eT("When an imported record matches an existing record ID:"); ?>
                 </label>
                 <div class="">
@@ -64,62 +65,65 @@
                             'renumber' => gT("Renumber the new record."),
                             'replace' => gT("Replace the existing record."),
                             'replaceanswers' => gT("Replace answers in file in the existing record."),
-                            ),array('disabled'=>'disabled','class'=>'form-control'));
+                            ),array('class'=>'form-control'));
                      ?>
                 </div>
             </div>
 
-            <div class="form-group">
-                <label for="notfinalized" class=" control-label">
+            <div class="mb-3">
+                <label for="notfinalized" class=" form-label">
                     <?php eT("Import as not finalized answers?"); ?>
                 </label>
-                <div class="">
-                    <?php  $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                <div>
+                    <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name' => 'notfinalized',
-                        'value'=> false,
-                        'onLabel'=>gT('Yes'),
-                        'offLabel'=>gT('No')
-                        ));
-                    ?>
+                        'checkedOption' => '0',
+                        'selectOptions' => [
+                            '1' => gT('Yes'),
+                            '0' => gT('No'),
+                        ]
+                    ]); ?>
                 </div>
             </div>
 
-            <div class="form-group">
-                <label for="vvcharset" class=" control-label">
+            <div class="mb-3">
+                <label for="vvcharset" class=" form-label">
                     <?php eT("Character set of the file:"); ?>
                 </label>
                 <div class="">
-                    <?php  echo CHtml::dropDownList('vvcharset',false,$aEncodings,array('class'=>'form-control', 'empty' => gT('Automatic (UTF-8)'))); ?>
+                    <?php  echo CHtml::dropDownList('vvcharset',false,$aEncodings,array('class'=>'form-select', 'empty' => gT('Automatic (UTF-8)'))); ?>
                 </div>
             </div>
 
-            <div class="form-group">
-                <label for="dontdeletefirstline" class=" control-label" title='<?php eT("With real vv file : questions code are in second line"); ?>' data-toggle="tooltip" data-placement="right">
+            <div class="mb-3">
+                <label for="dontdeletefirstline" class=" form-label" title='<?php eT("With real vv file : questions code are in second line"); ?>' data-bs-toggle="tooltip" data-bs-placement="right">
                     <?php eT("First line contains the code of questions:"); ?>
                 </label>
                 <div class="">
-                    <?php  $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                    <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name' => 'dontdeletefirstline',
-                        'value'=> false,
-                        'onLabel'=>gT('Yes'),
-                        'offLabel'=>gT('No')
-                        ));
-                    ?>
+                        'checkedOption' => '0',
+                        'selectOptions' => [
+                            '1' => gT('Yes'),
+                            '0' => gT('No'),
+                        ]
+                    ]); ?>
                 </div>
             </div>
 
-            <div class="form-group">
-                <label for="forceimport" class=" control-label" title='<?php eT("Try to import even if question codes don't match"); ?>' data-toggle="tooltip" data-placement="right">
+            <div class="mb-3">
+                <label for="forceimport" class=" form-label" title='<?php eT("Try to import even if question codes don't match"); ?>' data-bs-toggle="tooltip" data-bs-placement="right">
                     <?php eT("Force import:"); ?>
                 </label>
-                <div class="">
-                    <?php  $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                <div>
+                    <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name' => 'forceimport',
-                        'value'=> false,
-                        'onLabel'=>gT('Yes'),
-                        'offLabel'=>gT('No')
-                        ));
-                    ?>
+                        'checkedOption' => '0',
+                        'selectOptions' => [
+                            '1' => gT('Yes'),
+                            '0' => gT('No'),
+                        ]
+                    ]); ?>
                 </div>
             </div>
 
@@ -128,7 +132,7 @@
     </div>
 
         <p>
-            <input type='submit' class="hidden" value='<?php eT("Import"); ?>' />
+            <input type='submit' class="d-none" value='<?php eT("Import"); ?>' />
             <input type='hidden' name='action' value='vvimport' />
             <input type='hidden' name='subaction' value='upload' />
             <input type='hidden' name='sid' value='<?php echo $surveyid; ?>' />
@@ -147,7 +151,7 @@
             <?php eT("This survey is not active. You must activate the survey before attempting to import a VVexport file."); ?>
         </p>
         <p>
-            <a class="btn btn-lg btn-default" href='<?php echo $this->createUrl('surveyAdministration/view/'.$surveyid); ?>'><?php eT("Return to survey administration"); ?></a>
+            <a class="btn btn-lg btn-outline-secondary" href='<?php echo $this->createUrl('surveyAdministration/view/'.$surveyid); ?>'><?php eT("Return to survey administration"); ?></a>
         </p>
     </div>
 
@@ -155,17 +159,17 @@
 
 </div></div></div>
 <?php
-App()->getClientScript()->registerScript('VVImportBSSwitcher', "
-LS.renderBootstrapSwitch();
-
-$('#noid').on('switchChange.bootstrapSwitch', function(event, state) {
-    if (!state){
-        $('#insertmethod').removeAttr('disabled');
-        $('#insertmethod-container').show('slow');
-    }else{
-        $('#insertmethod').attr('disabled','disabled');
-        $('#insertmethod-container').hide('slow');
-    }
+$excludeRecordActive = <<<JAVASCRIPT
+$('#noid_1').on('change', function (evt) {
+    $('#insertmethod-container').addClass('d-none');
+    $('#insertmethod').attr('disabled','disabled');
 });
-", LSYii_ClientScript::POS_POSTSCRIPT);
+
+$('#noid_2').on('change', function (evt) {
+    $('#insertmethod-container').removeClass('d-none');
+    $('#insertmethod').removeAttr('disabled');
+});
+JAVASCRIPT;
+
+App()->getClientScript()->registerScript('VVImportBS5Switcher', $excludeRecordActive, LSYii_ClientScript::POS_POSTSCRIPT);
 ?>

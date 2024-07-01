@@ -1,4 +1,4 @@
-/*!
+ /*!
  * Style for public survey
  * This file is part of LimeSurvey API for template
  *
@@ -36,9 +36,7 @@
   clip: rect(0, 0, 0, 0);
 }
 
-.form-horizontal .control-label.col-sm-12 {text-align: left;}
-.dir-rtl .form-horizontal .control-label.col-sm-12 {text-align: right;}
-/** ls-label-xs-visibility : set sr-only by default : template can reinit it with initial */
+/** ls-label-xs-visibility : set visually-hidden by default : template can reinit it with initial */
 .ls-label-xs-visibility{
   position:absolute;
   top:auto;
@@ -57,7 +55,7 @@
  * BS use px size, use rem to easily update body font-size : @link http://caniuse.com/rem/embed/
  **/
 @media (max-width: 768px) {
-.ls-answers .text-right,.ls-answers .text-left {text-align:center;}
+.ls-answers .text-end,.ls-answers .text-start {text-align:center;}
 }
 
 /**
@@ -91,7 +89,7 @@
     white-space: nowrap;
     vertical-align: middle;
     display: table-cell;
-    padding: 0.6rem 1.2rem;
+    padding: 0.5rem 1.2rem;
     line-height: 1;
   }
   .ls-input-sized .ls-input-group-extra{width:initial}

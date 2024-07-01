@@ -149,7 +149,7 @@ class TokenDynamic extends LSActiveRecord
             }
             Yii::app()->db->schema->getTable($sTableName, true); // Refresh schema cache just in case the table existed in the past
         } else {
-            // On some installs we have created not null for participant_id and blacklisted fix this
+            // On some installs we have created not null for participant_id and blocklisted fix this
             $columns = array('blacklisted', 'participant_id');
 
             foreach ($columns as $columnname) {
@@ -574,15 +574,15 @@ class TokenDynamic extends LSActiveRecord
     {
         if ($field != 'N' && $field != '') {
             if ($field == 'Q') {
-                $field     = '<span class="text-warning">' . gT('Quota out') . '</span>';
+                $field     = '<span class="text-danger">' . gT('Quota out') . '</span>';
             } elseif ($field != 'Y') {
                 $fieldDate = convertToGlobalSettingFormat($field);
                 $field     = '<span class="text-success">' . $fieldDate . '</span>';
             } else {
-                $field     = '<span class="text-success fa fa-check"></span>';
+                $field     = '<span class="text-success ri-check-fill"></span>';
             }
         } elseif ($field != '') {
-            $field = '<i class="fa fa-minus text-warning"></i>';
+            $field = '<i class="ri-subtract-fill text-danger"></i>';
         }
         return $field;
     }
@@ -593,7 +593,7 @@ class TokenDynamic extends LSActiveRecord
     public function getEmailFormated()
     {
         if (substr($this->emailstatus, 0, 7) == "bounced") {
-            return '<span class="text-warning"><strong> ' . CHtml::encode($this->email) . '</strong></span>';
+            return '<span class="text-danger"><strong> ' . CHtml::encode($this->email) . '</strong></span>';
         } else {
             return CHtml::encode($this->email);
         }
@@ -605,7 +605,7 @@ class TokenDynamic extends LSActiveRecord
     public function getEmailstatusFormated()
     {
         if (substr($this->emailstatus, 0, 7) == "bounced") {
-            return '<span class="text-warning"><strong> ' . CHtml::encode($this->emailstatus) . '</strong></span>';
+            return '<span class="text-danger"><strong> ' . CHtml::encode($this->emailstatus) . '</strong></span>';
         } else {
             return CHtml::encode($this->emailstatus);
         }
@@ -616,138 +616,121 @@ class TokenDynamic extends LSActiveRecord
      */
     public function getStandardColsForGrid()
     {
-        return array(
-            array(
-                'id' => 'tid',
-                'class' => 'CCheckBoxColumn',
-                'selectableRows' => '100',
-            ),
-            array(
-                'header' => gT('Action'),
-                'class' => 'bootstrap.widgets.TbButtonColumn',
-                'template' => '{edit}{viewresponse}{spacerviewresponse}{previewsurvey}{launchsurvey}{previewsurveyspacer}{mail}{remind}{mailspacer}{viewparticipant}<span data-toggle="tooltip" title="' . gt('Delete survey participant') . '">{deletetoken}</span>{viewparticipantspacer}',
-                'htmlOptions' => array('class' => 'icon-btn-row'),
-                'buttons' => $this->getGridButtons(),
-            ),
-
-            array(
-                'header' => gT('ID'),
-                'name' => 'tid',
-                'value' => '$data->tid',
-                'headerHtmlOptions' => array('class' => 'hidden-xs'),
-                'htmlOptions' => array('class' => 'hidden-xs text-right'),
-            ),
-
-
-            array(
-                'header' => gT('First name') . $this->setEncryptedAttributeLabel(self::$sid, 'Token', 'firstname'),
-                'name' => 'firstname',
-                'value' => '$data->firstname',
-                'headerHtmlOptions' => array('class' => 'hidden-xs'),
-                'htmlOptions' => array('class' => 'hidden-xs name'),
-            ),
-
-            array(
-                'header' => gT('Last name') . $this->setEncryptedAttributeLabel(self::$sid, 'Token', 'lastname'),
-                'name' => 'lastname',
-                'value' => '$data->lastname',
-                'headerHtmlOptions' => array('class' => 'hidden-xs'),
-                'htmlOptions' => array('class' => 'hidden-xs name'),
-            ),
-
-            array(
-                'header' => gT('Email address') . $this->setEncryptedAttributeLabel(self::$sid, 'Token', 'email'),
-                'name' => 'email',
-                'type' => 'raw',
-                'value' => '$data->emailFormated',
-                'headerHtmlOptions' => array('class' => 'hidden-xs'),
-                'htmlOptions' => array('class' => 'hidden-xs name'),
-            ),
-
-            array(
-                'header' => gT('Email status') . $this->setEncryptedAttributeLabel(self::$sid, 'Token', 'emailstatus'),
-                'name' => 'emailstatus',
-                'value' => '$data->emailstatusFormated',
-                'type' => 'raw',
-                'headerHtmlOptions' => array('class' => 'hidden-xs'),
-                'htmlOptions' => array('class' => 'hidden-xs'),
-            ),
-
-            array(
-                'header' => gT('Access code'),
-                'name' => 'token',
-                'value' => '$data->token',
-                'headerHtmlOptions' => array('class' => 'hidden-xs'),
-                'htmlOptions' => array('class' => 'hidden-xs'),
-            ),
-
-            array(
-                'header' => gT('Language'),
-                'name' => 'language',
-                'value' => '$data->language',
-                'headerHtmlOptions' => array('class' => 'hidden-xs'),
-                'htmlOptions' => array('class' => 'hidden-xs'),
-            ),
-
-            array(
-                'header' => gT('Invitation sent?'),
-                'name' => 'sent',
-                'type' => 'raw',
-                'value' => '$data->sentFormated',
-                'headerHtmlOptions' => array('class' => 'hidden-xs'),
-                'htmlOptions' => array('class' => 'hidden-xs  text-center'),
-            ),
-
-            array(
-                'header' => gT('Reminder sent?'),
-                'name' => 'remindersent',
-                'type' => 'raw',
-                'value' => '$data->remindersentFormated',
-                'headerHtmlOptions' => array('class' => 'hidden-xs'),
-                'htmlOptions' => array('class' => 'hidden-xs text-center'),
-            ),
-
-            array(
-                'header' => gT('Reminder count'),
-                'name' => 'remindercount',
-                'value' => '$data->remindercount',
-                'headerHtmlOptions' => array('class' => 'hidden-xs'),
-                'htmlOptions' => array('class' => 'hidden-xs text-right'),
-            ),
-
-            array(
-                'header' => gT('Completed?'),
-                'name' => 'completed',
-                'type' => 'raw',
-                'value' => '$data->completedFormated',
-                'headerHtmlOptions' => array('class' => 'hidden-xs'),
-                'htmlOptions' => array('class' => 'hidden-xs text-center'),
-            ),
-
-            array(
-                'header' => gT('Uses left'),
-                'name' => 'usesleft',
-                'value' => '$data->usesleft',
-                'headerHtmlOptions' => array('class' => 'hidden-xs'),
-                'htmlOptions' => array('class' => 'hidden-xs text-right'),
-            ),
-            array(
-                'header' => gT('Valid from'),
-                'name' => 'validfrom',
-                'type' => 'raw',
-                'value' => '$data->validfromFormated',
-                'headerHtmlOptions' => array('class' => 'hidden-xs'),
-                'htmlOptions' => array('class' => 'hidden-xs name'),
-            ),
-            array(
-                'header' => gT('Valid until'),
-                'type' => 'raw',
-                'name' => 'validuntil',
-                'value' => '$data->validuntilFormated',
-                'headerHtmlOptions' => array('class' => 'hidden-xs'),
-                'htmlOptions' => array('class' => 'hidden-xs name'),
-            ),
-        );
+        return [
+            [
+                'id'                => 'tid',
+                'class'             => 'CCheckBoxColumn',
+                'selectableRows'    => '100',
+                'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
+                'filterHtmlOptions' => ['class' => 'ls-sticky-column'],
+                'htmlOptions'       => ['class' => 'ls-sticky-column']
+            ],
+            [
+                'header'            => gT('ID'),
+                'name'              => 'tid',
+                'value'             => '$data->tid',
+                'headerHtmlOptions' => ['class' => ''],
+                'htmlOptions'       => ['class' => ' text-end'],
+            ],
+            [
+                'header'            => gT('First name') . $this->setEncryptedAttributeLabel(self::$sid, 'Token', 'firstname'),
+                'name'              => 'firstname',
+                'value'             => '$data->firstname',
+                'headerHtmlOptions' => ['class' => ''],
+                'htmlOptions'       => ['class' => ' name'],
+            ],
+            [
+                'header'            => gT('Last name') . $this->setEncryptedAttributeLabel(self::$sid, 'Token', 'lastname'),
+                'name'              => 'lastname',
+                'value'             => '$data->lastname',
+                'headerHtmlOptions' => ['class' => ''],
+                'htmlOptions'       => ['class' => ' name'],
+            ],
+            [
+                'header'            => gT('Email address') . $this->setEncryptedAttributeLabel(self::$sid, 'Token', 'email'),
+                'name'              => 'email',
+                'type'              => 'raw',
+                'value'             => '$data->emailFormated',
+                'headerHtmlOptions' => ['class' => ''],
+                'htmlOptions'       => ['class' => ' name'],
+            ],
+            [
+                'header'            => gT('Email status') . $this->setEncryptedAttributeLabel(self::$sid, 'Token', 'emailstatus'),
+                'name'              => 'emailstatus',
+                'value'             => '$data->emailstatusFormated',
+                'type'              => 'raw',
+                'headerHtmlOptions' => ['class' => ''],
+                'htmlOptions'       => ['class' => ''],
+            ],
+            [
+                'header'            => gT('Access code'),
+                'name'              => 'token',
+                'value'             => '$data->token',
+                'headerHtmlOptions' => ['class' => ''],
+                'htmlOptions'       => ['class' => ''],
+            ],
+            [
+                'header'            => gT('Language'),
+                'name'              => 'language',
+                'value'             => '$data->language',
+                'headerHtmlOptions' => ['class' => ''],
+                'htmlOptions'       => ['class' => ''],
+            ],
+            [
+                'header'            => gT('Invitation sent?'),
+                'name'              => 'sent',
+                'type'              => 'raw',
+                'value'             => '$data->sentFormated',
+                'headerHtmlOptions' => ['class' => ''],
+                'htmlOptions'       => ['class' => '  text-center'],
+            ],
+            [
+                'header'            => gT('Reminder sent?'),
+                'name'              => 'remindersent',
+                'type'              => 'raw',
+                'value'             => '$data->remindersentFormated',
+                'headerHtmlOptions' => ['class' => ''],
+                'htmlOptions'       => ['class' => ' text-center'],
+            ],
+            [
+                'header'            => gT('Reminder count'),
+                'name'              => 'remindercount',
+                'value'             => '$data->remindercount',
+                'headerHtmlOptions' => ['class' => ''],
+                'htmlOptions'       => ['class' => ' text-end'],
+            ],
+            [
+                'header'            => gT('Completed?'),
+                'name'              => 'completed',
+                'type'              => 'raw',
+                'value'             => '$data->completedFormated',
+                'headerHtmlOptions' => ['class' => ''],
+                'htmlOptions'       => ['class' => ' text-center'],
+            ],
+            [
+                'header'            => gT('Uses left'),
+                'name'              => 'usesleft',
+                'value'             => '$data->usesleft',
+                'headerHtmlOptions' => ['class' => ''],
+                'htmlOptions'       => ['class' => ' text-end'],
+            ],
+            [
+                'header'            => gT('Valid from'),
+                'name'              => 'validfrom',
+                'type'              => 'raw',
+                'value'             => '$data->validfromFormated',
+                'headerHtmlOptions' => ['class' => ''],
+                'htmlOptions'       => ['class' => ' name'],
+            ],
+            [
+                'header'            => gT('Valid until'),
+                'type'              => 'raw',
+                'name'              => 'validuntil',
+                'value'             => '$data->validuntilFormated',
+                'headerHtmlOptions' => ['class' => ''],
+                'htmlOptions'       => ['class' => ' name'],
+            ],
+        ];
     }
 
     /**
@@ -766,13 +749,26 @@ class TokenDynamic extends LSActiveRecord
             $aCustomAttributesCols[] = array(
                 'header' => $desc . $this->setEncryptedAttributeLabel(self::$sid, 'Token', $sColName), // $aAttributedescriptions->$sColName->description,
                 'name' => $sColName,
+                'type' => 'longtext',
                 'value' => '$data->' . $sColName,
-                'headerHtmlOptions' => array('class' => 'hidden-xs'),
-                'htmlOptions' => array('class' => 'hidden-xs'),
+                'headerHtmlOptions' => array('class' => ''),
+                'htmlOptions' => array('class' => ''),
             );
         }
 
-        return array_merge($this->standardColsForGrid, $aCustomAttributesCols);
+        $actionColumn = [
+            [
+                "name"              => 'actions',
+                "type"              => 'raw',
+                "header"            => gT("Action"),
+                "filter"            => false,
+                'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
+                'filterHtmlOptions' => ['class' => 'ls-sticky-column'],
+                'htmlOptions'       => ['class' => 'ls-sticky-column']
+            ]
+        ];
+
+        return array_merge($this->getStandardColsForGrid(), $aCustomAttributesCols, $actionColumn);
     }
 
     /**
@@ -782,168 +778,121 @@ class TokenDynamic extends LSActiveRecord
      * @see https://bugs.limesurvey.org/view.php?id=14222: When deleting a single response : all page is reloaded (not only grid)
      * @return array
      */
-    public function getGridButtons()
+    public function getActions()
     {
-        /* viewresponse button */
-        $baseView = intval(Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'read') && $this->survey->active == "Y" && $this->survey->anonymized != "Y");
-        $gridButtons['viewresponse'] = array(
-            'label' => '<span class="sr-only">' . gT("View response details") . '</span><span class="fa fa-list-alt" aria-hidden="true"></span>',
-            'imageUrl' => false,
-            'url' => 'App()->createUrl("responses/viewbytoken",array("surveyId"=>' . self::$sid . ',"token"=>$data->token));',
-            'options' => array(
-                'class' => "btn btn-default btn-sm",
-                'data-toggle' => "tooltip",
-                'title' => gT("View response details")
-            ),
-            'visible' => $baseView . ' && $data->getHasResponses($data->token)',
-        );
-        $gridButtons['spacerviewresponse'] = array(
-            'label' => '<span class="fa fa-list-alt text-muted" aria-hidden="true"></span>',
-            'imageUrl' => false,
-            'url' => '#',
-            'options' => array(
-                'class' => "btn btn-default btn-sm invisible",
-                'disabled' => 'disabled',
-                'title' => ''
-            ),
-            'visible' => $baseView . '&& !$data->getHasResponses($data->token)',
-            'click' => 'function(event){ window.LS.gridButton.noGridAction(event,$(this)); }',
-        );
-        /* previewsurvey button */
-        $baseView = intval(Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'create'));
-        $gridButtons['previewsurvey'] = array(
-            'label' => '<span class="sr-only">' . gT("Preview the survey with this participant") . '</span><span class="fa fa-eye" aria-hidden="true"></span>',
-            'imageUrl' => false,
-            'url' => 'App()->createUrl("/survey/index",array("sid"=>' . self::$sid . ',"token"=>$data->token,"newtest"=>"Y"));',
-            'options' => array(
-                'class' => "btn btn-default btn-sm",
-                'target' => "_blank",
-                'data-toggle' => "tooltip",
-                'title' => gT("Preview the survey with this participant")
-            ),
-            'visible' => $baseView . ' && !$data->survey->isActive && !empty($data->token) && ( $data->completed == "N" || empty($data->completed) || $data->survey->alloweditaftercompletion == "Y")'
-        );
-        $gridButtons['launchsurvey'] = array(
-            'label' => '<span class="sr-only">' . gT("Launch the survey with this participant") . '</span><span class="fa fa-play" aria-hidden="true"></span>',
-            'imageUrl' => false,
-            'url' => 'App()->createUrl("/survey/index",array("sid"=>' . self::$sid . ',"token"=>$data->token,"newtest"=>"Y"));',
-            'options' => array(
-                'class' => "btn btn-default btn-sm",
-                'target' => "_blank",
-                'data-toggle' => "tooltip",
-                'title' => gT("Launch the survey with this participant")
-            ),
-            'visible' => $baseView . ' && $data->survey->isActive && !empty($data->token) && ( $data->completed == "N" || empty($data->completed) || $data->survey->alloweditaftercompletion == "Y")'
-        );
-        $gridButtons['previewsurveyspacer'] = array(
-            'label' => '<span class="fa fa-eye  text-muted" aria-hidden="true"></span>',
-            'imageUrl' => false,
-            'url' => '#',
-            'options' => array(
-                'class' => "btn btn-default btn-sm invisible",
-                'disabled' => 'disabled',
-                'title' => ''
-            ),
-            'visible' => $baseView . ' && (empty($data->token) || !( $data->completed == "N" || empty($data->completed) || $data->survey->alloweditaftercompletion == "Y"))',
-            'click' => 'function(event){ window.LS.gridButton.noGridAction(event,$(this)); }',
-        );
-        /* mail button */
-        $baseView = Permission::model()->hasSurveyPermission(self::$sid, 'tokens', 'update');
-        /* mailing mail button */
-        $gridButtons['mail'] = array(
-            'label' => '<span class="sr-only">' . gT("Send email invitation") . '</span><span class="icon-invite" aria-hidden="true"></span>',// fa-enveloppe-o
-            'imageUrl' => false,
-            'url' => 'App()->createUrl("/admin/tokens/sa/email",array("surveyid"=>' . self::$sid . ',"tokenids"=>$data->tid,));',
-            'options' => array(
-                'class' => "btn btn-default btn-sm btn-email",
-                'data-toggle' => "tooltip",
-                'title' => gT("Send email invitation")
-            ),
-            'visible' => $baseView . ' && !empty($data->token) && ($data->sent== "N" || empty($data->sent)) && $data->emailstatus == "OK" && $data->email && $data->completed == "N" && ($data->usesleft > 0 || $data->survey->alloweditaftercompletion == "Y")',
-        );
-        /* mailing remind button */
-        $gridButtons['remind'] = array(
-            'label' => '<span class="sr-only">' . gT("Send email reminder") . '</span><span class="icon-remind" aria-hidden="true"></span>',
-            'imageUrl' => false,
-            'url' => 'App()->createUrl("/admin/tokens/sa/email/action/remind",array("surveyid"=>' . self::$sid . ',"tokenids"=>$data->tid));',
-            'options' => array(
-                'class' => "btn btn-default btn-sm btn-email",
-                'data-toggle' => "tooltip",
-                'title' => gT("Send email reminder")
-            ),
-            'visible' => $baseView . ' && !empty($data->token) && !($data->sent== "N" || empty($data->sent)) && $data->emailstatus == "OK" && $data->email && $data->completed == "N" && ($data->usesleft > 0 || $data->survey->alloweditaftercompletion == "Y")',
-        );
-        $gridButtons['mailspacer'] = array(
-            'label' => '<span class="fa fa-envelope-o text-muted" aria-hidden="true"></span>',
-            'imageUrl' => false,
-            'url' => '#',
-            'options' => array(
-                'class' => "btn btn-default btn-sm invisible",
-                'disabled' => 'disabled',
-                'title' => ''
-            ),
-            'visible' => $baseView . ' && (empty($data->token) || ($data->emailstatus != "OK" || empty($data->email) || $data->completed != "N" || ($data->usesleft <= 0 && $data->survey->alloweditaftercompletion != "Y")))',
-        );
-        /* edit button button */
-        $gridButtons['edit'] = array(
-            'label' => '<span class="sr-only">' . gT('Edit this survey participant') . '</span><span class="fa fa-pencil" aria-hidden="true"></span>',
-            'imageUrl' => false,
-            'url' => 'App()->createUrl("/admin/tokens/sa/edit",array("iSurveyId"=>' . self::$sid . ',"iTokenId"=>$data->tid,"ajax"=>"true"));',
-            'options' => array(
-                'class' => "btn btn-default btn-sm btn-edit",
-                'data-toggle' => "tooltip",
-                'title' => gT('Edit this survey participant'),
+        $permission_responses_read = Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'read');
+        $permission_reponses_create = intval(Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'create'));
+        $permission_tokens_update = Permission::model()->hasSurveyPermission(self::$sid, 'tokens', 'update');
+        $permission_tokens_delete = Permission::model()->hasSurveyPermission(self::$sid, 'tokens', 'delete');
+        $permission_participantpanel_read = Permission::model()->hasGlobalPermission('participantpanel', 'read');
+
+        $dropdownItems = [];
+        $dropdownItems[] = [
+            'title'            => gT('View response details'),
+            'url'              => App()->createUrl("responses/viewbytoken", [
+                "surveyId" => self::$sid,
+                "token"    => $this->token
+            ]),
+            'iconClass'        => 'ri-list-unordered',
+            'enabledCondition' => $permission_responses_read
+                && $this->survey->active === "Y"
+                && $this->survey->anonymized !== "Y"
+                && $this->getHasResponses($this->token)
+        ];
+        $dropdownItems[] = [
+            'title'            => gT('Preview the survey with this participant'),
+            'url'              => App()->createUrl("/survey/index", [
+                "sid"     => self::$sid,
+                "token"   => $this->token,
+                "newtest" => "Y"
+            ]),
+            'linkAttributes'   => ['target' => "_blank"],
+            'iconClass'        => 'ri-eye-fill',
+            'enabledCondition' => $permission_reponses_create
+                && !$this->survey->isActive
+                && $this->canBeUsed()
+        ];
+        $dropdownItems[] = [
+            'title'            => gT('Launch the survey with this participant'),
+            'url'              => App()->createUrl("/survey/index", [
+                "sid"     => self::$sid,
+                "token"   => $this->token,
+                "newtest" => "Y"
+            ]),
+            'linkAttributes'   => ['target' => "_blank"],
+            'iconClass'        => 'ri-play-fill',
+            'enabledCondition' => $permission_reponses_create
+                && $this->survey->isActive
+                && $this->canBeUsed()
+        ];
+        $dropdownItems[] = [
+            'title'            => gT('Send email invitation'),
+            'url'              => App()->createUrl("/admin/tokens/sa/email", [
+                "surveyid" => self::$sid,
+                "tokenids" => $this->tid,
+            ]),
+            'iconClass'        => 'ri-mail-send-fill',
+            'enabledCondition' => $permission_tokens_update
+                && ($this->sent === "N" || empty($this->sent))
+                && $this->canBeEmailed()
+        ];
+        $dropdownItems[] = [
+            'title'            => gT('Send email reminder'),
+            'url'              => App()->createUrl("/admin/tokens/sa/email/action/remind", [
+                "surveyid" => self::$sid,
+                "tokenids" => $this->tid
+            ]),
+            'iconClass'        => 'ri-mail-send-fill',
+            'enabledCondition' => $permission_tokens_update
+                && !($this->sent === "N" || empty($this->sent))
+                && $this->canBeEmailed()
+        ];
+        $dropdownItems[] = [
+            'title'            => gT('Edit this survey participant'),
+            'url'              => App()->createUrl("/admin/tokens/sa/edit", [
+                "iSurveyId" => self::$sid,
+                "iTokenId"  => $this->tid
+            ]),
+            'iconClass'        => 'ri-pencil-fill',
+            'linkAttributes'    => [
+                'onclick'  => "startEditToken(event, $(this))",
                 'data-sid' => self::$sid
-            ),
-            'visible' => '' . Permission::model()->hasSurveyPermission(self::$sid, 'tokens', 'update'),
-            'click' => 'startEditToken'
-        );
-        /* delete button */
-        $gridButtons['deletetoken'] = array(
-            'label' => '<span class="sr-only">' . gT('Delete survey participant') . '</span><span class="fa fa-trash text-danger" aria-hidden="true"></span>',
-            'imageUrl' => false,
-            //'url' => 'App()->createUrl("/admin/tokens/sa/deleteToken",array("sid"=>' . self::$sid . ',"sItem"=>$data->tid,"ajax"=>"true"));',
-            'options' => array(
-                'class' => "btn btn-default btn-sm btn-delete",
-                ///'data-toggle' => "tooltip",
-                'data-toggle' => "modal",
-                'data-target' => '#confirmation-modal',
-                'data-message' => gt('Do you really want to delete this participant') . '?',
-                'data-post-url' => 'App()->createUrl("/admin/tokens/sa/deleteToken",array("sid"=>' . self::$sid . ',"sItem"=>$data->tid));',
-                'evaluateOptions' => array('data-post-url'),
-                'data-btntext' => gt('Delete'),
-                'title' => gT('Delete survey participant'),
-            ),
-            'visible' => '' . Permission::model()->hasSurveyPermission(self::$sid, 'tokens', 'delete'),
-            //'click' => 'function(event){ window.LS.gridButton.confirmGridAction(event,$(this)); }',
-        );
-        /* CPDB link */
-        $baseVisible = intval(Permission::model()->hasGlobalPermission('participantpanel', 'read') && self::model(self::$sid)->count("participant_id is not null"));
-        $gridButtons['viewparticipant'] = array(
-            'label' => '<span class="sr-only">' . gT('View this participant in the central participants database') . '</span><span class="icon-cpdb" aria-hidden="true"></span>',
-            'imageUrl' => false,
-            'url' => 'App()->createUrl("admin/participants/sa/displayParticipants",array("#" => json_encode(["searchcondition"=>"participant_id||equal||".$data->participant_id],JSON_FORCE_OBJECT)))',
-            'options' => array(
-                'class' => "btn btn-default btn-sm btn-participant",
-                'data-toggle' => "tooltip",
-                'title' => gT('View this participant in the central participants database'),
-            ),
-            'click' => 'function(event){ window.LS.gridButton.postGridAction(event,$(this)); }',
-            'visible' => $baseVisible . ' && $data->participant_id',
-        );
-        $gridButtons['viewparticipantspacer'] = array(
-            'label' => '<span class="icon-cpdb text-muted" aria-hidden="true"></span>',
-            'imageUrl' => false,
-            'url' => '#',
-            'options' => array(
-                'class' => "btn btn-default btn-sm invisible",
-                'data-toggle' => "tooltip",
-                'title' => "",
-            ),
-            'visible' => $baseVisible . ' && empty($data->participant_id)',
-            'click' => 'function(event){ window.LS.gridButton.noGridAction(event,$(this)); }',
-        );
-        return $gridButtons;
+            ],
+            'enabledCondition' => $permission_tokens_update
+        ];
+        $dropdownItems[] = [
+            'title'            => gT('Delete survey participant'),
+            'iconClass'        => 'ri-delete-bin-fill text-danger',
+            'linkAttributes'    => [
+                'data-bs-toggle'  => "modal",
+                'data-bs-target'  => '#confirmation-modal',
+                'data-btnclass' => 'btn-danger',
+                'data-message'    => gt('Do you really want to delete this participant'),
+                'data-post-url'   => App()->createUrl("/admin/tokens/sa/deleteToken", [
+                    "sid"   => self::$sid,
+                    "sItem" => $this->tid
+                ]),
+                'data-btntext'    => gt('Delete'),
+            ],
+            'enabledCondition' => $permission_tokens_delete
+        ];
+        $dropdownItems[] = [
+            'title'            => gT('View this participant in the central participants database'),
+            'url'              => App()->createUrl("admin/participants/sa/displayParticipants", [
+                "#" => json_encode(
+                    ["searchcondition" => "participant_id||equal||" . $this->participant_id],
+                    JSON_FORCE_OBJECT
+                )
+            ]),
+            'iconClass'        => 'ri-shield-user-line',
+            'linkAttributes'    => [
+                'onclick' => "window.LS.gridButton.postGridAction(event,$(this))",
+            ],
+            'enabledCondition' => $permission_participantpanel_read
+                && self::model(self::$sid)->count("participant_id is not null")
+        ];
+
+        return App()->getController()->widget('ext.admin.grid.GridActionsWidget.GridActionsWidget', ['dropdownItems' => $dropdownItems], true);
     }
 
     /**
@@ -1052,6 +1001,7 @@ class TokenDynamic extends LSActiveRecord
                 'desc' => $sColName . ' desc',
             );
         }
+        $this->decryptEncryptAttributes('encrypt');
 
         $criteria = new LSDbCriteria();
         $criteria->compare('tid', $this->tid, false);
@@ -1071,14 +1021,18 @@ class TokenDynamic extends LSActiveRecord
         $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
         if ($this->validfrom) {
             $s = DateTime::createFromFormat($dateformatdetails['phpdate'] . ' H:i', $this->validfrom);
-            $s2 = $s->format('Y-m-d H:i');
-            $criteria->addCondition('validfrom <= \'' . $s2 . '\'');
+            if (is_object($s)) {
+                $s2 = $s->format('Y-m-d H:i');
+                $criteria->addCondition('validfrom <= \'' . $s2 . '\'');
+            }
         }
 
         if ($this->validuntil) {
             $s = DateTime::createFromFormat($dateformatdetails['phpdate'] . ' H:i', $this->validuntil);
-            $s2 = $s->format('Y-m-d H:i');
-            $criteria->addCondition('validuntil >= \'' . $s2 . '\'');
+            if (is_object($s)) {
+                $s2 = $s->format('Y-m-d H:i');
+                $criteria->addCondition('validuntil >= \'' . $s2 . '\'');
+            }
         }
 
         foreach ($this->custom_attributes as $sColName => $oColumn) {
@@ -1092,6 +1046,7 @@ class TokenDynamic extends LSActiveRecord
                 'pageSize' => $pageSizeTokenView,
             ),
         ));
+        $this->decryptEncryptAttributes();
 
         return $dataProvider;
     }
@@ -1103,5 +1058,31 @@ class TokenDynamic extends LSActiveRecord
     public function getSurveyId()
     {
         return self::$sid;
+    }
+
+    /**
+     * Returns true if the token can be used
+     * @return bool
+     */
+    public function canBeUsed()
+    {
+        return !empty($this->token)
+            && (
+                $this->completed == "N"
+                || empty($this->completed)
+                || $this->survey->isAllowEditAfterCompletion
+            );
+    }
+
+    public function canBeEmailed()
+    {
+        return !empty($this->token)
+            && $this->emailstatus == "OK"
+            && $this->email
+            && $this->completed == "N"
+            && (
+                $this->usesleft > 0
+                || $this->survey->isAllowEditAfterCompletion
+            );
     }
 }

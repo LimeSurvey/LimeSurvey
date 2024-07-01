@@ -1,0 +1,236 @@
+{#
+LimeSurvey
+Copyright (C) 2007-2017 The LimeSurvey Project Team / Louis Gac
+All rights reserved.
+License: GNU/GPL License v2 or later, see LICENSE.php
+LimeSurvey is free software. This version may have been modified pursuant
+to the GNU General Public License, and as distributed it includes or
+is derivative of works licensed under the GNU General Public License or
+other free or open source software licenses.
+See COPYRIGHT.php for copyright notices and details.
+(¯`·._.·(¯`·._.· Survey List Layout  ·._.·´¯)·._.·´¯)
+This file renders the list of publicly listed surveys in your LimeSurvey home page.
+NOTE: see layout_main.twig for more infos
+#}
+
+
+
+{#
+LimeSurvey
+Copyright (C) 2007-2017 The LimeSurvey Project Team / Louis Gac
+All rights reserved.
+License: GNU/GPL License v2 or later, see LICENSE.php
+LimeSurvey is free software. This version may have been modified pursuant
+to the GNU General Public License, and as distributed it includes or
+is derivative of works licensed under the GNU General Public License or
+other free or open source software licenses.
+See COPYRIGHT.php for copyright notices and details.
+
+(¯`·._.·(¯`·._.· Global Layout  ·._.·´¯)·._.·´¯)
+
+This is the global layout that will be used to displayed most pages (less the error page)
+If you're creating your own template, remember there is no obligation to respect the current file flow of this template.
+This is different from the old LimeSurvey template engine, where you had to provide every one of the pstpl files.
+Here, you must have a file called main_layout.twig (called from SurveyRuntimeHelper::run() ).
+Other than that, you're free to organize your files and inclusions as you want.
+
+
+
+(¯`·._.·(¯`·._.· Bootstrap ·._.·´¯)·._.·´¯)
+
+LimeSurvey uses Bootstrap.
+See: https://getbootstrap.com
+
+This template is an instance of Bootswatch Theme Flatly.
+See: https://bootswatch.com/
+
+
+
+(¯`·._.·(¯`·._.· Twig Engine  ·._.·´¯)·._.·´¯)
+
+The template engine uses Twig.
+See: http://twig.sensiolabs.org/
+
+The main variable is aSurveyInfo. It's an array containing the main information about the survey.
+aSurveyInfo also contains other needed arrays, such as aNavigator, or aQuestionGroups (which contain aQuestions), etc.
+
+If you want to see what is availabe in aSurveyInfo, turn debug mode on in application/config.php, and copy the following line to the end of the <body> element below:
+{{ dump(aSurveyInfo) }}
+
+To echo a variable, just insert                      : {{ variable }}
+To translate a string, just insert                   : {{gT( string )}}
+
+NOTE: aSurveyInfo should be cleaned to remove the unnecessary data.
+
+
+(¯`·._.·(¯`·._.· Twig Engine: advanced  ·._.·´¯)·._.·´¯)
+
+For security reason, Twig is in a sandBox.
+About sandBox, see: http://twig.sensiolabs.org/doc/2.x/api.html#sandbox-extension
+
+Available functions/Object Methods are defined in internal.php: components => twigRenderer
+Eg:
+     Functions : 'include', 'dump', 'flatEllipsizeText', 'getLanguageData', 'array_flip', 'array_intersect_key', 'registerPublicCssFile', 'getAllQuestionClasses', 'getShowqnumcode', 'intval'
+
+     Methods   :
+                - CHtml::textfield() (and: form, link, emailField, beginForm, endForm, dropDownList,htmlButton)
+                - Survey::getAllLanguages()
+                - LSHttpRequest::getParam()
+
+If you need to add simple functions or static methods, just add them to internal.php.
+If you need to add complex process, use application/core/LS_Twig_Extension.php (more help/comments there)
+
+
+NOTE: Feel free to ask for functions, variables, etc, that you feel are missing - https://bugs.limesurvey.org/my_view_page.php
+#}
+
+<!DOCTYPE html>
+<html lang="{{ aSurveyInfo.languagecode }}" dir="{{ aSurveyInfo.dir }}"
+      class="{{ aSurveyInfo.languagecode }} dir-{{ aSurveyInfo.dir }} {{ aSurveyInfo.class.html }}" {{ aSurveyInfo.attr.html }}>
+
+{# Headers, metadata, etc #}
+{{ include('./subviews/header/head.twig') }}
+
+<body
+    class=" {{ aSurveyInfo.class.body }} font-{{ aSurveyInfo.options.font }} lang-{{ aSurveyInfo.languagecode }} {{ aSurveyInfo.surveyformat }} {% if( aSurveyInfo.options.brandlogo == "on") %}brand-logo{% endif %}" {{ aSurveyInfo.attr.body }} >
+
+{# This used for the pjax system #}
+<div id="beginScripts">
+    <###begin###>
+</div>
+
+{# Ajaxify cannot handle an element that is a direct child of body, so => create simple wrapper section #}
+<article>
+
+    <div id="{{ aSurveyInfo.id.dynamicreload }}">
+        {% block body %}
+            {# Bootstrap Navigation Bar: the top menu #}
+            {% block nav_bar %}
+                {{ include('./subviews/header/nav_bar.twig') }}
+            {% endblock %}
+
+
+            {# Replace the content block #}
+            {% block content %}
+                <div class="container-md">
+                    {{ registerTemplateCssFile('./css/survey-list.css') }}
+
+                    <div class="{{ aSurveyInfo.class.surveylistrow }} row"
+                         id="{{ aSurveyInfo.id.surveylistrow }}" {{ aSurveyInfo.attr.surveylistrow }}>
+                        <div class="col-12">
+                            {# include the alert for no JavaScript #}
+                            {{ include('./subviews/messages/no_js_alert.twig') }}
+                            <div class="row justify-content-center mb-3">
+                                <div
+                                    id="{{ aSurveyInfo.id.surveylistrowjumbotron }}" {{ aSurveyInfo.attr.surveylistrowjumbotron }}>
+                                    <div class="img-fluid mx-auto d-block">
+                                        {{ include('./ls_logo_svg.twig') }}
+                                    </div>
+                                    <span class="text-center h3">{{ aSurveyInfo.sSiteName }}</span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-4"></div>
+                                <div class="col">
+                                    <div id="surveylist-language-changer" class="ls-js-hidden">
+                                        {{ include('./subviews/navigation/language_changer_form.twig') }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div
+                                    class="{{ aSurveyInfo.class.surveylistrowdiva }} col-12" {{ aSurveyInfo.attr.surveylistrowdiva }}>
+                                    <div
+                                        class='{{ aSurveyInfo.class.surveylistrowdivadiv }} form-heading' {{ aSurveyInfo.attr.surveylistrowdivadiv }}>
+                                        {{ gT("The following surveys are available:") }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div
+                                    class="{{ aSurveyInfo.class.surveylistrowdivb }} col-12" {{ aSurveyInfo.attr.surveylistrowdivb }}>
+                                    <div
+                                        class='{{ aSurveyInfo.class.surveylistrowdivbdiv }}' {{ aSurveyInfo.attr.surveylistrowdivbdiv }}>
+                                        <ul class='{{ aSurveyInfo.class.surveylistrowdivbdivul }} list-unstyled ' {{ aSurveyInfo.attr.surveylistrowdivbdivul }}>
+
+                                            {% for key, oSurvey in aSurveyInfo.publicSurveys %}
+                                                <li class="{{ aSurveyInfo.class.surveylistrowdivbdivulli }} btn-group col-12 col-md-6" {{ aSurveyInfo.attr.surveylistrowdivbdivulli }}>
+                                                    <a
+                                                        href="{{ oSurvey.sSurveyUrl }}"
+                                                        title="{{ gT("Start survey") }}"
+                                                        lang="{{ oSurvey.language }}"
+                                                        class="{{ aSurveyInfo.class.surveylistrowdivbdivullia }} btn btn-primary col-12">
+                                                        {{ oSurvey.localizedTitle }}
+                                                    </a>
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div
+                                    class="{{ aSurveyInfo.class.surveylistrowdivc }} col-12" {{ aSurveyInfo.attr.surveylistrowdivc }}>
+                                    {{ sprintf( gT("Please contact %s ( %s ) for further assistance."), aSurveyInfo.sSiteAdminName, aSurveyInfo.sSiteAdminEmail ) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="{{ aSurveyInfo.id.surveylistfooter }}"
+                         class="{{ aSurveyInfo.class.surveylistfooter }}" {{ aSurveyInfo.attr.surveylistfooter }}>
+                        <div
+                            class="{{ aSurveyInfo.class.surveylistfootercont }}" {{ aSurveyInfo.attr.surveylistfootercont }}>
+                            <div {{ aSurveyInfo.attr.surveylistfootercontp }} class="row">
+                                <div class="col-6 col-md-12">
+                                    <a {{ aSurveyInfo.attr.surveylistfootercontpaa }}>
+                                        {{ image("./files/poweredby.png", "LimeSurvey Survey Software", {class: 'img-fluid'}) }}
+                                    </a>
+                                </div>
+                                <div class="col-12 d-block d-sm-none d-md-block text-center">
+                                    <a {{ aSurveyInfo.attr.surveylistfootercontpab }}>
+                                        The Online Survey Tool
+                                    </a>
+                                    - Free & Open Source
+                                </div>
+                                <div class="col-6 d-none d-sm-block d-md-none text-center">
+                                    <a {{ aSurveyInfo.attr.surveylistfootercontpab }}>
+                                        Online Surveytool
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endblock %}
+
+
+            {# Basic ThemeScript options #}
+            {{ registerScript("BasicThemeScripts", "
+            if(window.basicThemeScripts === undefined){
+                window.basicThemeScripts = new ThemeScripts();
+            }
+            if(window.navbarScripts === undefined){
+                window.navbarScripts = new NavbarScripts();
+            }
+            basicThemeScripts.initGlobal();
+            navbarScripts.initNavbarEvents();
+            ", "POS_END") }}
+
+        {% endblock %}
+    </div>
+</article>
+{% block footer %}
+    {{ include('./subviews/footer/footer.twig') }}
+{% endblock %}
+<div id="bottomScripts">
+    <###end###>
+</div>
+{% block themescripts %}
+    <script>
+        window.basicThemeScripts.init();
+    </script>
+{% endblock %}
+</body>
+</html>

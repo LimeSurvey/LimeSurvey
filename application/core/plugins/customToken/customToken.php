@@ -7,7 +7,7 @@ class customToken extends PluginBase
     protected static $name = 'customToken';
     protected static $description = 'At token generation this plugin enforces certain token formats like Numeric, non-ambiguous or uppercase tokens';
 
-    /** @inheritdoc, this plugin didn't have any public method */
+    /** @inheritdoc this plugin didn't have any public method */
     public $allowedPublicMethods = array();
 
     public function init()
@@ -49,7 +49,7 @@ class customToken extends PluginBase
                 $token = str_replace(
                     array('~','_','0','O','1','l','I'),
                     array('a','z','7','P','8','k','K'),
-                    Yii::app()->securityManager->generateRandomString($iTokenLength)
+                    (string) Yii::app()->securityManager->generateRandomString($iTokenLength)
                 );
                 break;
             case 3: // 3 = CAPITALS ONLY

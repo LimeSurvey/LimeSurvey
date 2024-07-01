@@ -1,0 +1,89 @@
+/* ---------------------------------------------------------------- */
+/*                        a11yfirsthelp.css                         */
+/* ---------------------------------------------------------------- */
+
+/* Button rules */
+
+a.cke_dialog_ui_button.a11yfirsthelp {
+  width: 11em;
+  margin-bottom: 0;
+  margin-top: 0;
+  text-align: left;
+}
+
+a.cke_dialog_ui_button.a11yfirsthelp > span {
+  padding-left: 6px;
+}
+
+a.cke_dialog_ui_button.a11yfirsthelp.selected {
+  background-color: #d1d1d1;
+}
+
+a.cke_dialog_ui_button.a11yfirsthelp:hover
+{
+  background-color: #d1d1d1;
+}
+
+.cke_dialog_ui_vbox_child.a11yfirsthelp {
+  padding: 3px 0px;
+}
+
+/* Content rules */
+
+.cke_dialog_ui_hbox .a11yfirsthelpcontent {
+  margin: 0;
+  margin-top: -1em;
+  margin-left: -5.5em;
+  padding-left: 1em;
+  border-left: 2px solid #ddd;
+  height: 400px;
+  overflow: auto
+}
+
+.cke_dialog_ui_hbox .a11yfirsthelpcontent * {
+  white-space: normal;
+  font-size: 13px;
+}
+
+.cke_dialog_ui_hbox .a11yfirsthelpcontent h2 {
+  margin-top: 1em;
+  font-size: 150%;
+  font-weight: bold;
+}
+
+.cke_dialog_ui_hbox .a11yfirsthelpcontent h3 {
+  margin-top: 1em;
+  margin-bottom: 0.5em;
+  font-size: 120%;
+  font-weight: bold;
+}
+
+.cke_dialog_ui_hbox .a11yfirsthelpcontent ul,
+.cke_dialog_ui_hbox .a11yfirsthelpcontent ol {
+  padding-left: 1.25em;
+}
+
+.cke_dialog_ui_hbox .a11yfirsthelpcontent p,
+.cke_dialog_ui_hbox .a11yfirsthelpcontent li,
+.cke_dialog_ui_hbox .a11yfirsthelpcontent li > p {
+  margin-bottom: 1em;
+}
+
+.cke_dialog_ui_hbox .a11yfirsthelpcontent a {
+  text-decoration: underline;
+  color: blue;
+}
+
+.cke_dialog_ui_hbox .a11yfirsthelpcontent strong {
+  font-weight: bold;
+}
+
+.cke_dialog_ui_hbox .a11yfirsthelpcontent em {
+  font-style: italic;
+}
+
+/* Links */
+
+.a11yfirsthelp_dialog a:hover {
+  cursor: pointer;
+}

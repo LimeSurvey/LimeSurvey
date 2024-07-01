@@ -7,81 +7,68 @@
         return true ;
     }
 </script>
-<div class="form-group">
+<div class="mb-3">
     <?php
-    if (count($replFields) > 0 || isset($cquestions) )
-    {
-        $InsertansUnsupportedtypes= Yii::app()->getConfig('InsertansUnsupportedtypes');
+    if (count($replFields) > 0 || isset($cquestions)) {
+        $InsertansUnsupportedtypes = Yii::app()->getConfig('InsertansUnsupportedtypes');
         ?>
-        <select name='cquestions' id='cquestions' size='14' style='width:390px' ondblclick="$('.cke_dialog_ui_button_ok').children().click();" class='form-control'>
+        <select name='cquestions' id='cquestions' size='14' style='width:390px' ondblclick="$('.cke_dialog_ui_button_ok').children().click();" class='form-select'>
             <?php
             $noselection = false;
-        }
-        else
-        {
-            eT("No replacement variable available for this field");
-            $noselection = true;
-        }
+    } else {
+        eT("No replacement variable available for this field");
+        $noselection = true;
+    }
 
-        if (count($replFields) > 0)
-        {
-            ?>
+    if (count($replFields) > 0) {
+        ?>
             <optgroup label='<?php eT("Standard fields");?>'>
-                <?php
-                foreach ($replFields as $stdfield=>$stdfieldvalue)
-                {
-                    ?>
+            <?php
+            foreach ($replFields as $stdfield => $stdfieldvalue) {
+                ?>
                     <option value='<?php echo $stdfield;?>' title='<?php echo $stdfieldvalue;?>'><?php echo $stdfieldvalue;?></option>
                     <?php
-                }
-                ?>
+            }
+            ?>
             </optgroup>
             <?php
-        }
+    }
 
-        if (isset($cquestions))
-        {
-            ?>
+    if (isset($cquestions)) {
+        ?>
             <optgroup label='<?php eT("Previous answer fields");?>'>
-                <?php
-                foreach ($cquestions as $cqn)
-                {
-                    $isDisabled="";
-                    if (in_array($cqn[2],$InsertansUnsupportedtypes))
-                    {
-                        $isDisabled=" disabled='disabled'";
-                    }
-                    elseif ($cqn[4] === false)
-                    {
-                        $isDisabled=" disabled='disabled'";
-                    }
-                    ?>
-                    <option value='INSERTANS:<?php echo $cqn[3];?>' title='<?php echo $cqn[0];?>' <?php echo $isDisabled;?>><?php echo $cqn[0];?></option>
-                    <?php
+            <?php
+            foreach ($cquestions as $cqn) {
+                $isDisabled = "";
+                if (in_array($cqn[2], $InsertansUnsupportedtypes)) {
+                    $isDisabled = " disabled='disabled'";
+                } elseif ($cqn[4] === false) {
+                    $isDisabled = " disabled='disabled'";
                 }
                 ?>
+                    <option value='<?php echo $cqn[6];?>' title='<?php echo $cqn[0];?>' <?php echo $isDisabled;?>><?php echo $cqn[0];?></option>
+                    <?php
+            }
+            ?>
             </optgroup>
             <?php
-        }
+    }
 
-        if ($noselection === false)
-        {
-            ?>
+    if ($noselection === false) {
+        ?>
         </select>
         <?php
     }
     ?>
     <?php
-    if (isset($surveyformat))
-    {
+    if (isset($surveyformat)) {
         ?>
-        <div class="panel panel-default">
+        <div class="card">
             <?php
-            switch ($surveyformat)
-            {
+            switch ($surveyformat) {
                 case 'A':
                     ?>
-                    <div class="panel-body">
+                    <div class="card-body">
 
                         <br />
                         <font color='orange'><?php eT("Some questions have been disabled");?></font>

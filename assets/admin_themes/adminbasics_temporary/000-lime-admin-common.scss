@@ -1,0 +1,3532 @@
+/**
+ * Lime Admin Common CSS File
+ *
+ * This file contain all the common css definitions for the different admin theme.
+ * It should not contain color definition (grey, blacks, and white are acceptable)
+ */
+// Disable border color between thead, tbody.
+.table > :not(:first-child) {
+    border-top: 0;
+}
+
+.ls-text-underline-hover {
+    text-decoration: none;
+}
+
+.ls-text-underline-hover:hover {
+    text-decoration: underline;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.ls-footer-label {
+    font-style: normal;
+    font-weight: $font-weight-500;
+    font-size: 1rem;
+    line-height: $line-height-20;
+    color: $g-700;
+}
+
+.ls-settings-wrapper {
+    position: relative !important;
+    min-height: 100vh !important;
+}
+.select2-selection__choice {
+    background-color: $g-200;
+    color: $g-600 !important;
+    font-weight: $font-weight-500 !important;
+    font-size: 12px !important;
+    line-height: 16px;
+}
+.ls-option-disabled {
+    z-index: 999 !important;
+    background-color: $white;
+    opacity: 0.8;
+    position: absolute;
+    inset: 0;
+}
+
+.ls-tab-disabled {
+    opacity: 0.4;
+    pointer-events: none !important;
+    cursor: not-allowed !important;
+
+}
+
+.tab-content {
+    padding-top: 1rem;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.ls-survey-menu-item {
+    padding-left: 30px !important;
+}
+
+.ls-survey-menu-item.menu-label{
+    padding-left: 33px !important;
+}
+
+#ls-loading {
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    position: fixed;
+    display: block;
+    opacity: 0.7;
+    background-color: #fff;
+    z-index: 3501;
+    text-align: center;
+    display: none;
+}
+
+/* The font-awesome spinner */
+#ls-loading-spinner {
+    position: absolute;
+    top: 30%;
+}
+
+.bg-white {
+    background: #fff;
+}
+
+.ui-datepicker {
+    width: 17em;
+    padding: .2em .2em 0;
+    display: none;
+}
+
+.ui-datepicker .ui-datepicker-header {
+    position: relative;
+    padding: .2em 0;
+}
+
+.ui-datepicker .ui-datepicker-next,
+.ui-datepicker .ui-datepicker-prev {
+    position: absolute;
+    top: 2px;
+    width: 1.8em;
+    height: 1.8em;
+}
+
+.ui-datepicker .ui-datepicker-next-hover,
+.ui-datepicker .ui-datepicker-prev-hover {
+    top: 1px;
+}
+
+.ui-datepicker .ui-datepicker-prev {
+    left: 2px;
+}
+
+.ui-datepicker .ui-datepicker-next {
+    right: 10px;
+}
+
+.ui-datepicker .ui-datepicker-prev-hover {
+    left: 1px;
+}
+
+.ui-datepicker .ui-datepicker-next-hover {
+    right: 10px;
+}
+
+.ui-datepicker .ui-datepicker-next span,
+.ui-datepicker .ui-datepicker-prev span {
+    display: block;
+    position: absolute;
+    left: 50%;
+    margin-left: -8px;
+    top: 50%;
+    margin-top: -8px;
+}
+
+.ui-datepicker .ui-datepicker-title {
+    margin: 0 2.3em;
+    line-height: 1.8em;
+    text-align: center;
+}
+
+.ui-datepicker .ui-datepicker-title select {
+    font-size: 1em;
+    margin: 1px 0;
+}
+
+.ui-datepicker select.ui-datepicker-month,
+.ui-datepicker select.ui-datepicker-year {
+    width: 49%;
+}
+
+.ui-datepicker table {
+    width: 100%;
+    font-size: .9em;
+    border-collapse: collapse;
+    margin: 0 0 .4em;
+}
+
+.ui-datepicker th {
+    padding: .7em .3em;
+    text-align: center;
+    font-weight: 700;
+    border: 0;
+}
+
+.ui-datepicker td {
+    border: 0;
+    padding: 1px;
+}
+
+.ui-datepicker td a,
+.ui-datepicker td span {
+    display: block;
+    padding: .2em;
+    text-align: right;
+    text-decoration: none;
+}
+
+.ui-datepicker .ui-datepicker-buttonpane {
+    background-image: none;
+    margin: .7em 0 0;
+    padding: 0 .2em;
+    border-left: 0;
+    border-right: 0;
+    border-bottom: 0;
+}
+
+.ui-datepicker .ui-datepicker-buttonpane button {
+    float: right;
+    margin: .5em .2em .4em;
+    cursor: pointer;
+    padding: .2em .6em .3em;
+    width: auto;
+    overflow: visible;
+}
+
+.ui-datepicker .ui-datepicker-buttonpane button.ui-datepicker-current,
+.ui-datepicker-multi .ui-datepicker-group,
+.ui-datepicker-rtl .ui-datepicker-buttonpane button {
+    float: left;
+}
+
+.ui-datepicker.ui-datepicker-multi {
+    width: auto;
+}
+
+.ui-datepicker-multi .ui-datepicker-group table {
+    width: 95%;
+    margin: 0 auto .4em;
+}
+
+.ui-datepicker-multi-2 .ui-datepicker-group {
+    width: 50%;
+}
+
+.ui-datepicker-multi-3 .ui-datepicker-group {
+    width: 33.3%;
+}
+
+.ui-datepicker-multi-4 .ui-datepicker-group {
+    width: 25%;
+}
+
+.ui-datepicker-multi .ui-datepicker-group-last .ui-datepicker-header,
+.ui-datepicker-multi .ui-datepicker-group-middle .ui-datepicker-header {
+    border-left-width: 0;
+}
+
+.ui-datepicker-multi .ui-datepicker-buttonpane {
+    clear: left;
+}
+
+.ui-datepicker-row-break {
+    clear: both;
+    width: 100%;
+    font-size: 0;
+}
+
+.ui-datepicker-rtl {
+    direction: rtl;
+}
+
+.ui-datepicker-rtl .ui-datepicker-prev {
+    right: 2px;
+    left: auto;
+}
+
+.ui-datepicker-rtl .ui-datepicker-next {
+    left: 2px;
+    right: auto;
+}
+
+.ui-datepicker-rtl .ui-datepicker-prev:hover {
+    right: 1px;
+    left: auto;
+}
+
+.ui-datepicker-rtl .ui-datepicker-next:hover {
+    left: 1px;
+    right: auto;
+}
+
+.ui-datepicker-rtl .ui-datepicker-buttonpane {
+    clear: right;
+}
+
+.ui-datepicker-rtl .ui-datepicker-buttonpane button.ui-datepicker-current,
+.ui-datepicker-rtl .ui-datepicker-group {
+    float: right;
+}
+
+.ui-datepicker-rtl .ui-datepicker-group-last .ui-datepicker-header,
+.ui-datepicker-rtl .ui-datepicker-group-middle .ui-datepicker-header {
+    border-right-width: 0;
+    border-left-width: 1px;
+}
+
+.side-body {
+    position: relative;
+}
+
+.side-body h3,
+.list-surveys h3 {
+    position: relative;
+    padding: 0.5em;
+    margin-bottom: 1em;
+}
+
+body {
+    font-size: 14px;
+    line-height: 1.428571429;
+    margin: 0;
+}
+
+.fa {
+    line-height: inherit;
+}
+
+
+html {
+    font-family: Roboto;
+    font-weight: 400;
+    position: relative;
+    min-height: 100%;
+}
+
+.main-container {
+    padding-bottom: 100px;
+}
+
+
+
+.surveymanagerbar {
+    padding-top: 5px;
+}
+
+.surveymanagerbar .h3 {
+    margin-top: 5px;
+    font-weight: 300;
+    font-size: 1.5em;
+}
+
+.menubar {
+    position: relative;
+}
+
+.surveybar {
+    width: 100%;
+    padding: 13px 0 8px;
+    margin: 0 auto 15px;
+    box-shadow: 3px 3px 3px #35363f;
+}
+
+.list-surveys {
+    margin-top: 10px;
+}
+
+#fullpagebar {
+    z-index: 100;
+}
+
+
+:focus {
+    outline: none;
+}
+
+.lime-icon {
+    display: inline-block;
+    height: 1em;
+    width: 1em;
+}
+
+
+.alert-security-update {
+    margin: 0;
+}
+
+#update-container .alert {
+    margin-bottom: 5px;
+}
+
+#ajaxupdaterLayoutLoading {
+    text-align: center;
+    margin-top: 200px;
+    margin-bottom: 200px;
+    display: none;
+}
+
+#info-header {
+    font-size: 3em;
+}
+
+@keyframes fadein {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@-moz-keyframes fadein {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@-webkit-keyframes fadein {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@-ms-keyframes fadein {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@-o-keyframes fadein {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slidefromtop {
+    from {
+        top: -15px;
+    }
+
+    to {
+        top: 0;
+    }
+}
+
+@-moz-keyframes slidefromtop {
+    from {
+        top: -15px;
+    }
+
+    to {
+        top: 0;
+    }
+}
+
+@-webkit-keyframes slidefromtop {
+    from {
+        top: -15px;
+    }
+
+    to {
+        top: 0;
+    }
+}
+
+@-ms-keyframes slidefromtop {
+    from {
+        top: -15px;
+    }
+
+    to {
+        top: 0;
+    }
+}
+
+@-o-keyframes slidefromtop {
+    from {
+        top: -15px;
+    }
+
+    to {
+        top: 0;
+    }
+}
+
+.form-group {
+    margin-bottom: 17px;
+}
+
+.cke_toolgroup {
+    cursor: pointer;
+    cursor: hand;
+    border-radius: 0;
+}
+
+.welcome {
+    #lime-logo {
+        animation: fadein 1s;
+    }
+
+    .recent-activity {
+        margin-top: 1.72rem;
+        font-size: 0.95rem;
+        padding-right: 3rem;
+        opacity: 0.7;
+    }
+}
+
+#welcomeModal {
+    z-index: 20000;
+}
+
+@media screen and (min-width: 1280px) and (max-width: 1366px) {
+    #user-control-table .form-group label {
+        min-width: 80px;
+    }
+}
+
+.htmleditorboot {
+    padding-top: 2em;
+}
+
+#edit-question-body {
+    min-height: 1200px;
+}
+
+.profile-img-card {
+    margin: 1.7rem 1rem 0 1rem;
+}
+
+#profile-img {
+    height: auto;
+    max-width: 21em;
+}
+
+@media screen and (min-width: 1280px) and (max-width: 1680px) {
+    #profile-img {
+        min-height: 0;
+    }
+}
+
+#s2id_loginlang {
+    border: none;
+    padding: 0;
+}
+
+.ui-state-default {
+    background-image: none;
+    background-color: transparent;
+    background-image: none;
+    background-color: transparent;
+}
+
+.ui-jqgrid .ui-jqgrid-bdiv {
+    overflow: hidden;
+}
+
+.ui-jqgrid .ui-jqgrid-view .ui-jqgrid-toppager {
+    background-image: none;
+    background-color: transparent;
+}
+
+.ui-jqgrid .ui-jqgrid-htable th div {
+    height: auto;
+}
+
+.ui-jqgrid .ui-jqgrid-htable th.ui-th-column div input {
+    margin-top: 8px;
+}
+
+.ui-jqgrid .ui-jqgrid-htable th.ui-th-column div input.cbox {
+    margin: 4px 0 0;
+}
+
+.ui-jqgrid td input.cbox {
+    margin: 4px 0 0;
+}
+
+.ui-jqgrid tr.ui-row-ltr td {
+    border: none;
+}
+
+#gs_completed {
+    display: block;
+    width: 100%;
+    height: 34px;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.428571429;
+    background-image: none;
+    border-radius: 4px;
+    transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+}
+
+.ui-th-column {
+    margin-top: 8px;
+}
+
+.info > p {
+    padding-top: 10px;
+    text-align: justify;
+}
+
+.checkbox label:after {
+    padding-left: 4px;
+    padding-top: 2px;
+    font-size: 9px;
+}
+
+.ui-widget-content .ui-state-default {
+    background-image: none;
+    background-color: transparent;
+    background-image: none;
+    background-color: transparent;
+}
+
+.ui-widget-header .ui-state-default {
+    background-image: none;
+    background-color: transparent;
+    background-image: none;
+    background-color: transparent;
+}
+
+.ui-search-toolbar th div {
+    min-height: 40px;
+}
+
+.absolute-wrapper {
+    position: fixed;
+    left: 0;
+    width: 300px;
+    height: 100%;
+}
+
+.side-menu {
+    position: absolute;
+    width: 300px;
+    padding: 0;
+    left: 0;
+}
+
+.side-menu .navbar {
+    border: none;
+    box-shadow: none;
+}
+
+.side-menu .navbar-header {
+    width: 100%;
+}
+
+.side-menu .navbar-nav li {
+    display: block;
+    width: 100%;
+}
+
+.side-menu .navbar-nav li a {
+    padding: 15px;
+}
+
+.side-menu .navbar-nav li a .glyphicon {
+    padding-right: 10px;
+}
+
+.side-menu .navbar-nav .question-link.active {
+    background-color: transparent;
+    padding: 15px 15px 15px 0px;
+    margin-bottom: 5px;
+    margin-right: -1px;
+}
+
+.side-menu .navbar-nav .question-link.active:hover {
+    text-decoration: none;
+    cursor: default;
+}
+
+.side-menu .navbar-nav .question-link {
+    display: block;
+    padding-left: 0px;
+}
+
+.side-menu .navbar-nav .question-link .question-collapse-title {
+    padding-left: 25px;
+}
+
+.side-menu #dropdown {
+    border: 0;
+    margin-bottom: 0;
+    border-radius: 0;
+    background-color: transparent;
+    box-shadow: none;
+}
+
+.side-menu #dropdown li:hover {
+    font-weight: 700;
+}
+
+.side-menu #dropdown li.active:hover {
+    cursor: default;
+    background-color: transparent;
+    margin-right: -1px;
+}
+
+.side-menu #dropdown li.disabled:hover {
+    font-weight: 700;
+    background-color: transparent;
+}
+
+.side-menu #dropdown .caret {
+    float: right;
+    margin: 9px 5px 0;
+}
+
+.side-menu #dropdown .indicator {
+    float: right;
+}
+
+.side-menu #dropdown .question-group-collapse .caret {
+    float: none;
+    margin-bottom: 9px;
+}
+
+.side-menu .hide-button {
+    border: 0;
+    border-radius: 0;
+    padding: 15px 18px;
+}
+
+.side-menu .brand-name-wrapper {
+    min-height: 50px;
+}
+
+.side-menu .brand-name-wrapper .navbar-brand {
+    display: block;
+}
+
+.side-menu #search {
+    position: relative;
+    z-index: 1000;
+}
+
+.side-menu #explorer-collapse .caret {
+    float: none;
+    margin-bottom: 9px;
+}
+
+#explorer {
+    border: 0;
+    margin-bottom: 0;
+    border-radius: 0;
+    background-color: transparent;
+    box-shadow: none;
+}
+
+#explorer ul {
+    font-size: 0.9em;
+}
+
+.dropdownstyle {
+    border: 0;
+    margin-bottom: 0;
+    border-radius: 0;
+    background-color: transparent;
+    box-shadow: none;
+}
+
+#sideMenu {
+    min-height: 700px;
+    overflow: hidden;
+}
+
+#sideMenu a[aria-expanded="true"] {
+    font-weight: 700;
+}
+
+#sideMenu #dropdown li:hover {
+    width: 100%;
+    font-weight: 700;
+}
+
+#sideMenu #dropdown li:hover > a {
+    width: 100%;
+    font-weight: 700;
+    border-bottom: none;
+}
+
+#sideMenu #dropdown li a[aria-expanded="true"] {
+    width: 100%;
+    font-weight: 700;
+}
+
+#sideMenu #dropdown li .active a:hover {
+    width: 100%;
+    font-weight: 700;
+}
+
+#sideMenu #dropdown li > a:hover {
+    width: 100%;
+    font-weight: 700;
+}
+
+#sideMenu #dropdown #explorer li:hover {
+    font-weight: 700;
+}
+
+#sideMenu #dropdown #explorer li:hover > a {
+    font-weight: 700;
+}
+
+#sideMenu #dropdown #explorer li a[aria-expanded="true"] {
+    font-weight: 700;
+}
+
+#sideMenu #dropdown #explorer li .active a:hover {
+    font-weight: 700;
+}
+
+#sideMenu #dropdown #explorer li > a:hover {
+    font-weight: 700;
+}
+
+#sideMenu #dropdown #explorer .questiongroupdropdown li:hover {
+    font-weight: 700;
+}
+
+#sideMenu #dropdown #explorer .questiongroupdropdown li:hover > a {
+    font-weight: 700;
+}
+
+#sideMenu #dropdown #explorer .questiongroupdropdown li a[aria-expanded="true"] {
+    font-weight: 700;
+}
+
+#sideMenu #dropdown #explorer .questiongroupdropdown li .active a:hover {
+    font-weight: 700;
+}
+
+#sideMenu #dropdown #explorer .questiongroupdropdown li > a:hover {
+    font-weight: 700;
+}
+
+#sideMenu .navbar-default .navbar-nav > .active > a {
+    background-color: transparent;
+}
+
+#sideMenu .side-menu .dropdownlvl1 > a:hover {
+    font-weight: 700;
+}
+
+#sideMenu .sidemenuscontainer li:hover {
+    font-weight: 700;
+}
+
+#sideMenu .sidemenuscontainer li:hover > a {
+    font-weight: 700;
+}
+
+.side-menu-hidden {
+    left: -250px;
+}
+
+.side-body {
+    min-height: 800px;
+}
+
+.side-body-margin {
+    margin-left: 70px;
+}
+
+.question-group-collapse-title {
+    display: block;
+    padding-left: 20px;
+}
+
+.question-collapse-title {
+    display: block;
+    padding-left: 30px;
+}
+
+.ck-content {
+    transition: height 400ms ease-in-out;
+}
+.ck-blurred {
+    max-height: 35vh;
+}
+.ck-blurred:hover {
+    max-height: initial;
+}
+.ckedit-nocollapse {
+    .ck-blurred {
+        max-height: initial;
+    }
+
+}
+.ck-focused {
+    max-height: initial;
+}
+
+
+.toWhite a:hover {
+    font-weight: 700;
+}
+
+.container-fluid .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-primary,
+.bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-primary {
+    color: #fff;
+}
+
+.container-fluid .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-warning {
+    color: #fff;
+}
+
+.radio,
+.checkbox {
+    position: relative;
+    display: block;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.radio label,
+.checkbox label {
+    min-height: 23px;
+    padding-left: 20px;
+    margin-bottom: 0;
+    font-weight: normal;
+    cursor: pointer;
+}
+
+.radio + .radio,
+.checkbox + .checkbox {
+    margin-top: -5px;
+}
+
+.radio-inline,
+.checkbox-inline {
+    position: relative;
+    display: inline-block;
+    padding-left: 20px;
+    margin-bottom: 0;
+    vertical-align: middle;
+    font-weight: normal;
+    cursor: pointer;
+}
+
+.radio-inline + .radio-inline,
+.checkbox-inline + .checkbox-inline {
+    margin-top: 0;
+    margin-left: 10px;
+}
+
+.radio-inline.disabled,
+.checkbox-inline.disabled,
+fieldset[disabled] .radio-inline,
+fieldset[disabled] .checkbox-inline {
+    cursor: not-allowed;
+}
+
+.radio.disabled label,
+.checkbox.disabled label,
+fieldset[disabled] .radio label,
+fieldset[disabled] .checkbox label {
+    cursor: not-allowed;
+}
+
+.has-success .help-block,
+.has-success .control-label,
+.has-success .radio,
+.has-success .checkbox,
+.has-success .radio-inline,
+.has-success .checkbox-inline,
+.has-success.radio label,
+.has-success.checkbox label,
+.has-success.radio-inline label,
+.has-success.checkbox-inline label {
+    color: #4caf50;
+}
+
+.has-warning .help-block,
+.has-warning .control-label,
+.has-warning .radio,
+.has-warning .checkbox,
+.has-warning .radio-inline,
+.has-warning .checkbox-inline,
+.has-warning.radio label,
+.has-warning.checkbox label,
+.has-warning.radio-inline label,
+.has-warning.checkbox-inline label {
+    color: #ff9800;
+}
+
+.has-error .help-block,
+.has-error .control-label,
+.has-error .radio,
+.has-error .checkbox,
+.has-error .radio-inline,
+.has-error .checkbox-inline,
+.has-error.radio label,
+.has-error.checkbox label,
+.has-error.radio-inline label,
+.has-error.checkbox-inline label {
+    color: #e51c23;
+}
+
+@media screen and (min-width: 768px) {
+    .navbar-form .radio,
+    .navbar-form .checkbox {
+        display: inline-block;
+        margin-top: 0;
+        margin-bottom: 0;
+        vertical-align: middle;
+    }
+
+    .navbar-form .radio label,
+    .navbar-form .checkbox label {
+        padding-left: 0;
+    }
+}
+
+.form-horizontal .radio,
+.form-horizontal .checkbox,
+.form-horizontal .radio-inline,
+.form-horizontal .checkbox-inline {
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-top: 7px;
+}
+
+.form-horizontal .radio,
+.form-horizontal .checkbox {
+    min-height: 30px;
+}
+
+.radio label,
+.radio-inline label,
+.checkbox label,
+.checkbox-inline label {
+    padding-left: 25px;
+}
+
+input[type="checkbox"],
+.checkbox input[type="checkbox"],
+.checkbox-inline input[type="checkbox"] {
+    position: relative;
+    border: none;
+    margin-bottom: -4px;
+    -webkit-appearance: none;
+    appearance: none;
+    cursor: pointer;
+}
+
+input[type="checkbox"]:focus,
+.checkbox input[type="checkbox"]:focus,
+.checkbox-inline input[type="checkbox"]:focus {
+    outline: none;
+}
+
+input[type="checkbox"]:focus:after,
+.checkbox input[type="checkbox"]:focus:after,
+.checkbox-inline input[type="checkbox"]:focus:after {
+    border-color: #2196f3;
+}
+
+input[type="checkbox"]:after,
+.checkbox input[type="checkbox"]:after,
+.checkbox-inline input[type="checkbox"]:after {
+    content: "";
+    display: block;
+    width: 18px;
+    height: 18px;
+    margin-top: -2px;
+    margin-right: 5px;
+    border: 2px solid #666666;
+    border-radius: 2px;
+    -webkit-transition: 240ms;
+    -o-transition: 240ms;
+    transition: 240ms;
+}
+
+input[type="checkbox"]:checked:before,
+.checkbox input[type="checkbox"]:checked:before,
+.checkbox-inline input[type="checkbox"]:checked:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 6px;
+    display: table;
+    width: 6px;
+    height: 12px;
+    border: 2px solid #fff;
+    border-top-width: 0;
+    border-left-width: 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+input[type="checkbox"]:indeterminate:before,
+.checkbox input[type="checkbox"]:indeterminate:before,
+.checkbox-inline input[type="checkbox"]:indeterminate:before {
+    content: "";
+    position: absolute;
+    top: 6px;
+    left: 2px;
+    display: table;
+    width: 12px;
+    height: 0;
+    border: 1px solid #fff;
+}
+
+input[type="checkbox"]:disabled:after,
+.checkbox input[type="checkbox"]:disabled:after,
+.checkbox-inline input[type="checkbox"]:disabled:after {
+    border-color: #bbbbbb;
+}
+
+input[type="checkbox"]:disabled:checked:after,
+.checkbox input[type="checkbox"]:disabled:checked:after,
+.checkbox-inline input[type="checkbox"]:disabled:checked:after {
+    background-color: #bbbbbb;
+    border-color: transparent;
+}
+
+.has-warning input:not([type=checkbox]),
+.has-warning .form-control,
+.has-warning input.form-control[readonly],
+.has-warning input[type=text][readonly],
+.has-warning [type=text].form-control[readonly],
+.has-warning input:not([type=checkbox]):focus,
+.has-warning .form-control:focus {
+    border-bottom: none;
+    -webkit-box-shadow: inset 0 -2px 0 #ff9800;
+    box-shadow: inset 0 -2px 0 #ff9800;
+}
+
+.has-error input:not([type=checkbox]),
+.has-error .form-control,
+.has-error input.form-control[readonly],
+.has-error input[type=text][readonly],
+.has-error [type=text].form-control[readonly],
+.has-error input:not([type=checkbox]):focus,
+.has-error .form-control:focus {
+    border-bottom: none;
+    -webkit-box-shadow: inset 0 -2px 0 #e51c23;
+    box-shadow: inset 0 -2px 0 #e51c23;
+}
+
+.has-success input:not([type=checkbox]),
+.has-success .form-control,
+.has-success input.form-control[readonly],
+.has-success input[type=text][readonly],
+.has-success [type=text].form-control[readonly],
+.has-success input:not([type=checkbox]):focus,
+.has-success .form-control:focus {
+    border-bottom: none;
+    -webkit-box-shadow: inset 0 -2px 0 #4caf50;
+    box-shadow: inset 0 -2px 0 #4caf50;
+}
+
+/* jqGrid */
+.ui-widget-content {
+    border: none;
+    background: none;
+    color: #404040;
+}
+
+.ui-jqgrid .ui-jqgrid-titlebar {
+    padding: 1em;
+}
+
+.container-fluid .ui-widget-content .ui-state-default,
+.container-fluid .ui-jqgrid .ui-jqgrid-bdiv {
+    padding: 0.5em;
+    /* Too much padding for tabs (both bootstrap and jquery ui) */
+    padding-bottom: 0;
+}
+
+.ui-dialog,
+.ui-jqdialog,
+.ui-dialog.ui-widget.ui-widget-content.ui-corner-all.ui-front.ui-dialog-buttons.ui-draggable.ui-resizable {
+    border-radius: 4px;
+    padding: 1em;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+}
+
+.ui-jqdialog-titlebar {
+    height: 2em;
+    width: 100%;
+}
+
+.EditTable tr td {
+    padding: 1em;
+}
+
+.ui-jqdialog-content input.FormElement {
+    padding: .3em;
+}
+
+.ui-jqdialog-content input[type="checkbox"].FormElement {
+    padding: 0em;
+}
+
+.EditTable td select,
+.EditTable td textarea {
+    display: inline-block;
+    width: auto;
+    vertical-align: middle;
+    display: block;
+    width: 100%;
+    height: 34px;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.428571429;
+    background-image: none;
+    border-radius: 4px;
+    -webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+    color: #636363;
+    background-color: #ffffff;
+    border: 1px solid #cccccc;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+}
+
+.EditTable td input,
+.EditTable td select,
+.EditTable td textarea {
+    margin: 0;
+}
+
+input[type="text"],
+input[type="password"],
+.ui-autocomplete-input,
+textarea,
+.uneditable-input {
+    display: inline-block;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
+
+#displayparticipants_firstname,
+#displayparticipants_lastname,
+#displayparticipants_owner_uid {
+    padding-left: 40px;
+}
+
+#displayparticipants_language {
+    padding-left: 50px;
+}
+
+#jqgh_displayparticipants_email {
+    padding-left: 140px;
+}
+
+#displayparticipants_survey {
+    padding-left: 20px;
+}
+
+.navtable {
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+}
+
+.ui-jqgrid-title {
+    padding: 1em 0em 1em 1em;
+    font-style: italic;
+    font-weight: 700;
+}
+
+.ui-pg-button {
+    padding: 0.4em;
+}
+
+.ui-pg-button:hover {
+    cursor: pointer;
+}
+
+.ui-state-disabled:hover {
+    cursor: default;
+}
+
+.ui-jqgrid.ui-widget.ui-widget-content.ui-corner-all .ui-jqgrid.ui-widget.ui-widget-content.ui-corner-all {
+    width: 100%;
+    overflow: hidden;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+}
+
+
+.modal-22 {
+    position: absolute;
+    width: 600px;
+}
+
+.modal-22 .ui-jqdialog-titlebar .ui-jqdialog-title {
+    width: 80%;
+}
+
+.modal-22 .ui-jqdialog-content {
+    padding: 1em;
+}
+
+.ui-dialog-titlebar-close {
+    border: 1px solid transparent;
+    border-radius: 4px;
+    float: right;
+    color: #333;
+    background-color: #fff;
+    border-color: #ccc;
+    display: inline-block;
+    padding: 6px 12px;
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-image: none;
+    -webkit-appearance: button;
+    cursor: pointer;
+    overflow: visible;
+    margin: 0;
+    font: normal normal normal 14px/1 FontAwesome;
+}
+
+.ui-dialog-titlebar-close:before {
+    content: "\f00d";
+}
+
+.data-entry-tbl tr.odd td,
+.data-entry-tbl tr.even td {
+    padding: 20px 0 20px 0;
+}
+
+h3 .glyphicon-chevron-up,
+h3 .glyphicon-chevron-down,
+h3 .glyphicon-chevron-right {
+    position: absolute;
+    right: 1em;
+    top: 10px;
+}
+
+h3 .glyphicon-chevron-up,
+h3 .glyphicon-chevron-down,
+h3 .glyphicon-chevron-right {
+    cursor: pointer;
+}
+
+/**
+ * Template selector
+ */
+#carousel-example-generic {
+    margin-left: 20px;
+}
+
+#carousel-example-generic .carousel-control {
+    font-size: 1em;
+    top: -80px;
+}
+
+#carousel-example-generic .left.carousel-control {
+    left: -20px;
+}
+
+#carousel-example-generic .right.carousel-control {
+    right: -20px;
+}
+
+
+#carousel-example-generic .carousel-inner img {
+    margin: auto;
+    top: 9px;
+    position: relative;
+}
+
+#carousel-example-generic .selectTemplate {
+    display: inline-block;
+    position: relative;
+    left: 0px;
+    top: 320px;
+}
+
+#carousel-example-generic .carousel-caption {
+    width: 100%;
+    left: 0;
+    top: 0px;
+    padding-top: 0px;
+}
+
+#carousel-example-generic,
+#carousel-example-generic .carousel-inner {
+    min-height: 150px;
+}
+
+#carousel-example-generic .carousel-indicators {
+    top: 370px;
+    width: 80%;
+    left: 39%;
+}
+
+#carousel-example-generic .carousel-indicators li {
+    margin: 0px;
+    width: 8px;
+    height: 8px;
+}
+
+.side-body #carousel-example-generic h3 {
+    border: none;
+}
+
+#systemoverview {
+    margin: 1em 0 1em 0;
+    dd {
+        margin: 0;
+    }
+}
+
+#systemoverview .box__title {
+    font-size: 14px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-weight: 500;
+    line-height: 1.1;
+    color: inherit;
+    text-align: center;
+}
+
+/**
+ * Ajax loader
+ * from : http://codepen.io/weaintplastic/pen/qEMZbx
+ */
+.preloader {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    font-size: 20px;
+    display: block;
+    width: 3.75em;
+    height: 4.25em;
+    margin-left: -1.875em;
+    margin-top: -2.125em;
+    transform-origin: center center;
+    transform: rotateY(180deg) rotateZ(-60deg);
+}
+
+.preloader .slice {
+    border-top: 1.125em solid transparent;
+    border-right: none;
+    border-bottom: 1em solid transparent;
+    border-left: 1.875em solid #f7484e;
+    position: absolute;
+    top: 0px;
+    left: 50%;
+    transform-origin: left bottom;
+    border-radius: 3px 3px 0 0;
+}
+
+.preloader .slice:nth-child(1) {
+    transform: rotateZ(60deg) rotateY(0deg) rotateX(0);
+    animation: 0.15s linear 0.82s preload-hide-1 both 1;
+}
+
+.preloader .slice:nth-child(2) {
+    transform: rotateZ(120deg) rotateY(0deg) rotateX(0);
+    animation: 0.15s linear 0.74s preload-hide-2 both 1;
+}
+
+.preloader .slice:nth-child(3) {
+    transform: rotateZ(180deg) rotateY(0deg) rotateX(0);
+    animation: 0.15s linear 0.66s preload-hide-3 both 1;
+}
+
+.preloader .slice:nth-child(4) {
+    transform: rotateZ(240deg) rotateY(0deg) rotateX(0);
+    animation: 0.15s linear 0.58s preload-hide-4 both 1;
+}
+
+.preloader .slice:nth-child(5) {
+    transform: rotateZ(300deg) rotateY(0deg) rotateX(0);
+    animation: 0.15s linear 0.5s preload-hide-5 both 1;
+}
+
+.preloader .slice:nth-child(6) {
+    transform: rotateZ(360deg) rotateY(0deg) rotateX(0);
+    animation: 0.15s linear 0.42s preload-hide-6 both 1;
+}
+
+.preloader.loading {
+    animation: 2s preload-flip steps(2) infinite both;
+}
+
+.preloader.loading .slice:nth-child(1) {
+    transform: rotateZ(60deg) rotateY(90deg) rotateX(0);
+    animation: 2s preload-cycle-1 linear infinite both;
+}
+
+.preloader.loading .slice:nth-child(2) {
+    transform: rotateZ(120deg) rotateY(90deg) rotateX(0);
+    animation: 2s preload-cycle-2 linear infinite both;
+}
+
+.preloader.loading .slice:nth-child(3) {
+    transform: rotateZ(180deg) rotateY(90deg) rotateX(0);
+    animation: 2s preload-cycle-3 linear infinite both;
+}
+
+.preloader.loading .slice:nth-child(4) {
+    transform: rotateZ(240deg) rotateY(90deg) rotateX(0);
+    animation: 2s preload-cycle-4 linear infinite both;
+}
+
+.preloader.loading .slice:nth-child(5) {
+    transform: rotateZ(300deg) rotateY(90deg) rotateX(0);
+    animation: 2s preload-cycle-5 linear infinite both;
+}
+
+.preloader.loading .slice:nth-child(6) {
+    transform: rotateZ(360deg) rotateY(90deg) rotateX(0);
+    animation: 2s preload-cycle-6 linear infinite both;
+}
+
+html body .nav-tabs > li.active > a,
+html body .nav-tabs > li.active > a:hover,
+html body .nav-tabs > li.active > a:focus {
+    border-bottom-color: transparent;
+    cursor: default;
+}
+
+.answertable.table td {
+    vertical-align: middle;
+}
+
+.glyphicon-move:hover {
+    cursor: pointer;
+}
+
+.answertable .glyphicon-pencil {
+    margin-left: 3px;
+}
+
+#explorer-collapse {
+    border-bottom: none;
+}
+
+#explorer-collapse:hover,
+#sideMenu #dropdown li a#explorer-collapse[aria-expanded="true"],
+#sideMenu #dropdown li a.question-group-collapse[aria-expanded="true"] {
+    width: auto;
+}
+
+#sideMenu #dropdown #explorer li#questionexplorer-group-container,
+#sideMenu #dropdown li#questionexplorer-group-container > a {
+    line-height: 1.4;
+}
+
+#sideMenu #dropdown #explorer li#questionexplorer-group-container:hover,
+#sideMenu #dropdown li#questionexplorer-group-container:hover > a {
+    background-color: #fafafa;
+    font-weight: 400;
+    line-height: 1.4;
+}
+
+.explorer-group-title {
+    margin-top: 1em;
+    padding: 0em 0 1em 0;
+}
+
+.explorer-group-title a.explorer-group,
+.question-collapse-title {
+    color: #163c19;
+}
+
+#item-container,
+#jcarousel-wrapper-container {
+    width: 300px;
+}
+
+#item-container h4 {
+    margin-bottom: 30px;
+}
+
+.selectTemplate {
+    margin-top: 10px;
+}
+
+.imgSelectTemplate {
+    cursor: pointer;
+}
+
+.template-img {
+    padding: 1em;
+}
+
+#additional_languages {
+    min-width: 200px;
+}
+
+#available_languages {
+    min-width: 200px;
+}
+
+#tokensidemenu {
+    border-top: 1px solid #e3e3e3;
+}
+
+.question-item {
+    padding: 1em;
+    margin: 1em 0 1em 0;
+    cursor: pointer;
+}
+
+/*
+$color_deep_fir_approx: darken( $base-color, 20% );
+$color_acapulco_approx: adjust-color($base-color, $hue: 24deg, $saturation: -22%, $lightness: 25%);
+$color_aqua_forest_approx: adjust-color($base-color, $hue: 4deg, $saturation: -24%, $lightness: 14%);
+$color_paradiso_approx:adjust-color($base-color, $lightness: 5%); ;
+$color_norway_approx: adjust-color($base-color, $hue: 0deg, $saturation: -28%, $lightness: 31%);
+*/
+.placeholder {
+    padding: 1em;
+    margin: 1em 0 1em 0;
+}
+
+/* RTL stuff (right-to-left locale) */
+.no-gutter > [class*='col-'] {
+    padding-right: 0;
+    padding-left: 0;
+}
+
+.inputbuttons {
+    width: 120px;
+}
+
+.inputbuttons-square {
+    width: 20px;
+    height: 16px;
+    float: left;
+}
+
+/* Avoid numerical right aligned to be too close to word left aligned */
+.jqgrid-tokens-number-padding {
+    padding-right: 4px;
+}
+
+
+/** Search criteria pop-up for survey participants table */
+#search {
+    display: none;
+    overflow-y: auto;
+}
+
+/** Popup when validating email template */
+iframe#dialog {
+    width: 100%;
+    height: 100%;
+}
+
+/** Fixed pager width */
+/* jqgrid table must take all place if avalaible, but header and footer must not be outside the screen */
+/* Myabe use a pseudo fixd-y solution is a good idea */
+.ui-jqgrid,
+.ui-jqgrid-view,
+.ui-jqgrid-titlebar,
+.ui-jqgrid-toppager,
+.ui-jqgrid-pager {
+    min-width: 100%;
+    max-width: 100%;
+    margin-right: 0;
+    margin-left: 0;
+    box-sizing: border-box
+}
+
+/** Needed for jQgrid pager to stay still while scrolling */
+#pager {
+    position: relative;
+}
+
+/** Stuff for CPDB participant export */
+.ui-sortable-placeholder {
+    color: #f00;
+    background-color: #0f0;
+    border: solid black 5px;
+}
+
+/** Arrow between mapped attributes in CPDB */
+.tokenatt-arrow {
+    position: absolute;
+    right: -1.5em;
+}
+
+/** Arrow between mapped attributes in CPDB when doing CSV import */
+.csvatt-arrow {
+    position: absolute;
+    right: -0.5em;
+    top: 1em;
+}
+
+/** Help class to remove padding */
+.no-padding {
+    padding: 0;
+}
+
+/** */
+.droppable-new,
+.droppable-csv {
+    min-height: 40px;
+}
+
+#labelsetpreview {
+    overflow-x: hidden;
+}
+
+
+.question-filter-container {
+    border: 1px solid #efefef;
+    padding: 2em;
+    margin: 0;
+    min-width: 33%;
+    max-width: 100%;
+}
+
+/* Subquestion */
+td.subquestion-actions span:hover {
+    cursor: pointer;
+}
+
+/* edit survey */
+.template-img {
+    padding-top: 0;
+}
+
+/* Accordion*/
+.full-page-wrapper .handleAccordion {
+    display: none;
+}
+
+/* Box in resopnses list need a little more space */
+div#gview_displayresponses th#displayresponses_cb {
+    width: 35px;
+    /* Override jQgrid stuff */
+}
+
+/* View detail response, make sure left column is not too wide*/
+.detailbrowsetable tr th {
+    width: 50%;
+}
+
+.lead {
+    font-weight: 300;
+}
+
+/* Proper overflow */
+.time-statistics-table {
+    overflow: auto;
+}
+
+/* In survey permissions, make grey check icon if only partial permissions */
+.mixed {
+    opacity: 0.4;
+}
+
+#sidemenu-home {
+    padding-left: 15px;
+}
+
+#quick-menu-container {
+    position: absolute;
+    width: 50px;
+    right: 0;
+    top: 50px;
+}
+
+.quick-icon-wrapper {
+    padding: 15px;
+    height: 50px;
+}
+
+#quick-menu-container .glyphicon {
+    font-size: 18px;
+}
+
+#quick-menu-container .navbar-brand {
+    padding: 0
+}
+
+a.explorer-group:hover,
+a.explorer-group:focus {
+    text-decoration: none;
+}
+
+.question-explorer-question {
+
+    display: inline-block;
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.question-explorer-group-name {
+    display: inline-block;
+    max-width: 140px;
+    overflow: hidden;
+    position: relative;
+    top: 5px;
+    text-overflow: ellipsis;
+}
+
+.question-explorer-add-question {
+    position: relative;
+    top: 5px;
+}
+
+.explorer-group-title a.disabled {
+    opacity: 0.5;
+}
+
+#displayResponsesContainer .ui-jqgrid-bdiv,
+#gbox_displaytokens .ui-jqgrid-bdiv {
+    overflow: hidden;
+}
+
+.statisticstable {
+    word-wrap: break-word;
+}
+
+.summary-container,
+.summary,
+#massive-action-container,
+#surveyListActions,
+.listActions {
+    margin : 0 0 20px;
+}
+
+.summary-container {
+    text-align: right;
+}
+
+#massive-action-container,
+#surveyListActions,
+.listActions {
+    padding-left: 0px;
+    text-align: left;
+}
+
+.push-grid-pager {
+    /* push the pager for massive action dropup */
+    min-height: 25em;
+}
+
+.hoverAction .table-striped > tbody > tr:hover > td {
+    background-color: transparent;
+}
+
+.hoverAction .table-striped > tbody > tr:hover > td > a:not(.btn) {
+    color: white;
+}
+
+.ui-priority-secondary {
+    background-color: #f5f5f5;
+}
+
+
+#token-grid .table .filters > td .filter-container {
+    padding: 0px;
+}
+
+#token-grid table.table {
+    width: none;
+    max-width: none;
+}
+
+#token-grid table thead tr #action {
+    min-width: 150px;
+}
+
+#token-grid .filter-container {
+    min-width: 50px;
+}
+
+#token-grid table thead tr th {
+    /*white-space: nowrap;*/
+}
+
+#token-grid table tr.odd .blank_button {
+    /*For older Browsers with compatibilty issues*/
+    border-color: #f9f9f9;
+    background-color: #f9f9f9;
+    /*New CSS3 Style of doing it*/
+    border-color: rgba(0, 0, 0, 0);
+    background-color: rgba(0, 0, 0, 0);
+}
+
+#token-grid table tr .blank_button {
+    border-color: white;
+    background-color: white;
+}
+
+#token-grid table tr.selected .blank_button {
+
+    border-color: #eee;
+    /* from yiistrap.css*/
+    background-color: #eee;
+}
+
+#token-grid .name {
+    min-width: 150px;
+}
+
+#tokenListPager {
+    position: relative;
+}
+
+.blank_button span {
+    max-width: 12px;
+}
+
+#edittoken .tab-content #general .form-group .col-md-4 .col-md-4,
+#edittoken .tab-content #general .form-group .col-md-4 .col-md-8 {
+    padding: 0;
+}
+
+div[id^="alertmod_"] {
+    display: none;
+}
+
+/* Can be removed when jqGrid is replaced */
+
+.ui-helper-clearfix {
+    min-height: 0;
+}
+
+.ui-dialog .ui-dialog-buttonpane {
+    background-image: none;
+    border-width: 1px 0 0;
+    margin-top: 0.5em;
+    padding: 0.3em 1em 0.5em 0.4em;
+    text-align: left;
+}
+
+.ui-helper-clearfix::before,
+.ui-helper-clearfix::after {
+    border-collapse: collapse;
+    content: "";
+    display: table;
+}
+
+.ui-helper-clearfix::after {
+    clear: both;
+}
+
+.ui-helper-clearfix::before,
+.ui-helper-clearfix::after {
+    border-collapse: collapse;
+    content: "";
+    display: table;
+}
+
+.ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset {
+    float: right;
+}
+
+.yiiLog {
+    margin-bottom: 70px
+}
+
+table#responsedetail tr td {
+    max-width: 100px;
+    word-wrap: break-word;
+}
+
+.in-title {
+    position: relative;
+    top: -65px;
+    right: 15px;
+}
+
+.input-group-addon {
+    padding: 5px 12px;
+}
+
+.multiselect-container > li > a > label > input[type="checkbox"] {
+    margin-left: 0;
+}
+
+.notification-list {
+    top: 100%;
+    left: 0;
+    z-index: 1000;
+    float: left;
+    min-width: 160px;
+    padding: 5px 0;
+    margin: 2px 0 0;
+    list-style: none;
+    font-size: 14px;
+    border-radius: 4px;
+    background-clip: padding-box;
+    overflow-y: auto;
+}
+
+.notification-list > li > a {
+    display: block;
+    padding: 3px 20px;
+    clear: both;
+    font-weight: normal;
+    line-height: 1.428571429;
+    white-space: nowrap;
+}
+
+.notification-list > li > a:hover,
+.notification-list > li > a:focus {
+    text-decoration: none;
+}
+
+.notification-list > .active > a,
+.notification-list > .active > a:hover,
+.notification-list > .active > a:focus {
+    text-decoration: none;
+    outline: 0;
+}
+
+.notification-list > .disabled > a,
+.notification-list > .disabled > a:hover,
+.notification-list > .disabled > a:focus {
+}
+
+.notification-list > .disabled > a:hover,
+.notification-list > .disabled > a:focus {
+    text-decoration: none;
+    background-color: transparent;
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+    cursor: not-allowed;
+}
+
+#notification-outer-ul {
+    height: 400px;
+    width: 400px;
+}
+
+#notification-inner-ul {
+    height: 340px;
+    width: 390px;
+}
+
+/* Override fixed font in select2 CSS */
+.select2-container--bootstrap .select2-selection {
+    font-family: Roboto !important;
+}
+
+#responses-grid .table-condensed.upload-question {
+    margin-bottom: 0;
+    background-color: inherit;
+}
+
+#responses-grid .filter-container {
+    min-width: 6em;
+    /* defaut em is 13px : 75/13 = 5.76… */
+}
+
+.edit-participant-modal-body {
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+/* Condition builder */
+.scenario-heading {
+    padding: 0;
+}
+
+.scenario-heading .delete-scenario-form {
+    padding-top: 6px;
+}
+
+.condition-header-button {
+    margin-top: -10px;
+    margin-right: 10px;
+}
+
+/* Needed for buttons that are pulled right in the conditions bar */
+.margin-left {
+    margin-left: 5px;
+}
+
+.conditions-table {
+    margin-bottom: 0;
+}
+
+.condition-and-or-or {
+    margin-left: 20px;
+}
+
+/* Tabs used within form in condition designer */
+#editconditions .tab-content,
+#quick-add-conditions-form .tab-content {
+    padding-top: 0;
+}
+
+/*
+ * Row with equal height columns
+ * --------------------------------------------------
+ */
+.row-eq-height {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    margin-bottom: 30px;
+}
+
+
+/* Some printing optimization */
+@media print {
+    html, body {
+        margin: 0;
+        padding: 0;
+        max-width: none;
+    }
+    body {
+        text-align: left;
+        margin: 0;
+        padding: 0;
+        width: 100% !important;
+    }
+    .side-body {
+        margin: 0;
+        padding: 0;
+    }
+    #sidebar {
+        display: none
+    }
+    #browsermenubarid {
+        display: none
+    }
+    .surveymanagerbar {
+        display: none
+    }
+    #vue-apps-main-container #vue-sidebar-container {
+        display: none
+    }
+    #statisticsview .col-12 {
+        float: none;
+        width: 100%;
+        display: block;
+    }
+    #pjax-content .side-body {
+        float: none;
+        width: 100%;
+        display: block;
+    }
+    #pjax-content {
+        max-width: none !important;
+    }
+    /* Some stat specific */
+    .statisticsbloc {
+        float: none;
+        width: auto;
+        display: block;
+    }
+    .statisticstable {
+        break-inside: avoid;
+        page-break-inside: avoid;
+        break-after: always;
+        page-break-after: always;
+    }
+    .canvas-chart {
+        break-inside: avoid;
+        page-break-inside: avoid;
+        max-width: 100%;
+        height: auto;
+    }
+    /* Only for stat ? */
+    .statisticsbrowsebutton {
+        display: none
+    }
+    /* Chartjs and legend width */
+    body.onStatistics .chartjs-container {
+        width: 70%;
+        float: left
+    }
+    body.onStatistics .legend {
+        width: 30%;
+        float: left
+    }
+    body.onStatistics .legend .col-md-1 {
+        display: inline-block;
+        width: auto;
+        padding: 0;
+        padding-right: 3pt;
+        padding-left: 3pt;
+    }
+    body.onStatistics .legend .col-md-10 {
+        display: inline-block;
+        width: auto;
+        padding: 0;
+    }
+    /* Relaced in adminsidepanel */
+    body.onStatistics .ls-flex,
+    body.onStatistics .ls-flex-column,
+    body.onStatistics .ls-flex-row {
+        display: block;
+    }
+    body.onStatistics #sidebar {
+        display: none;
+    }
+    body.onStatistics .ls-flex-column .col-11,
+    body.onStatistics .ls-flex-row .col-11,
+    body.onStatistics .ls-flex .col-11 {
+        width: auto;
+    }
+}
+
+.currentQuestionTypeImageContainer img {
+    max-width: 100%;
+}
+
+/*custom margin and padding*/
+
+.custom.custom-no-padding {
+    padding: 0;
+}
+
+.custom.custom-no-margin {
+    padding: 0;
+}
+
+.custom.custom-padding.add5 {
+    padding: 5px;
+}
+
+.custom.custom-padding.left-5 {
+    padding-left: 5px;
+}
+
+.custom.custom-padding.right-5 {
+    padding-right: 5px;
+}
+
+.custom.custom-padding.top-5 {
+    padding-top: 5px;
+}
+
+.custom.custom-padding.bottom-5 {
+    padding-bottom: 5px;
+}
+
+.custom.custom-padding.add10 {
+    padding: 10px;
+}
+
+.custom.custom-padding.left-10 {
+    padding-left: 10px;
+}
+
+.custom.custom-padding.right-10 {
+    padding-right: 10px;
+}
+
+.custom.custom-padding.top-10 {
+    padding-top: 10px;
+}
+
+.custom.custom-padding.bottom-10 {
+    padding-bottom: 10px;
+}
+
+.custom.custom-padding.add15 {
+    padding: 15px;
+}
+
+.custom.custom-padding.left-15 {
+    padding-left: 15px;
+}
+
+.custom.custom-padding.right-15 {
+    padding-right: 15px;
+}
+
+.custom.custom-padding.top-15 {
+    padding-top: 15px;
+}
+
+.custom.custom-padding.bottom-15 {
+    padding-bottom: 15px;
+}
+
+.custom.custom-padding.add20 {
+    padding: 20px;
+}
+
+.custom.custom-padding.left-20 {
+    padding-left: 20px;
+}
+
+.custom.custom-padding.right-20 {
+    padding-right: 20px;
+}
+
+.custom.custom-padding.top-20 {
+    padding-top: 20px;
+}
+
+.custom.custom-padding.bottom-20 {
+    padding-bottom: 20px;
+}
+
+.custom.custom-padding.add25 {
+    padding: 25px;
+}
+
+.custom.custom-padding.left-25 {
+    padding-left: 25px;
+}
+
+.custom.custom-padding.right-25 {
+    padding-right: 25px;
+}
+
+.custom.custom-padding.top-25 {
+    padding-top: 25px;
+}
+
+.custom.custom-padding.bottom-25 {
+    padding-bottom: 25px;
+}
+
+.custom.custom-padding.add30 {
+    padding: 30px;
+}
+
+.custom.custom-padding.left-30 {
+    padding-left: 30px;
+}
+
+.custom.custom-padding.right-30 {
+    padding-right: 30px;
+}
+
+.custom.custom-padding.top-30 {
+    padding-top: 30px;
+}
+
+.custom.custom-padding.bottom-30 {
+    padding-bottom: 30px;
+}
+
+.custom.custom-padding.add35 {
+    padding: 35px;
+}
+
+.custom.custom-padding.left-35 {
+    padding-left: 35px;
+}
+
+.custom.custom-padding.right-35 {
+    padding-right: 35px;
+}
+
+.custom.custom-padding.top-35 {
+    padding-top: 35px;
+}
+
+.custom.custom-padding.bottom-35 {
+    padding-bottom: 35px;
+}
+
+@media only screen and (min-width: 961px) {
+    .custom.custom-padding-responsive.large.add5 {
+        padding: 5px;
+    }
+
+    .custom.custom-padding-responsive.large.left-5 {
+        padding-left: 5px;
+    }
+
+    .custom.custom-padding-responsive.large.right-5 {
+        padding-right: 5px;
+    }
+
+    .custom.custom-padding-responsive.large.top-5 {
+        padding-top: 5px;
+    }
+
+    .custom.custom-padding-responsive.large.bottom-5 {
+        padding-bottom: 5px;
+    }
+
+    .custom.custom-padding-responsive.large.add10 {
+        padding: 10px;
+    }
+
+    .custom.custom-padding-responsive.large.left-10 {
+        padding-left: 10px;
+    }
+
+    .custom.custom-padding-responsive.large.right-10 {
+        padding-right: 10px;
+    }
+
+    .custom.custom-padding-responsive.large.top-10 {
+        padding-top: 10px;
+    }
+
+    .custom.custom-padding-responsive.large.bottom-10 {
+        padding-bottom: 10px;
+    }
+
+    .custom.custom-padding-responsive.large.add15 {
+        padding: 15px;
+    }
+
+    .custom.custom-padding-responsive.large.left-15 {
+        padding-left: 15px;
+    }
+
+    .custom.custom-padding-responsive.large.right-15 {
+        padding-right: 15px;
+    }
+
+    .custom.custom-padding-responsive.large.top-15 {
+        padding-top: 15px;
+    }
+
+    .custom.custom-padding-responsive.large.bottom-15 {
+        padding-bottom: 15px;
+    }
+
+    .custom.custom-padding-responsive.large.add20 {
+        padding: 20px;
+    }
+
+    .custom.custom-padding-responsive.large.left-20 {
+        padding-left: 20px;
+    }
+
+    .custom.custom-padding-responsive.large.right-20 {
+        padding-right: 20px;
+    }
+
+    .custom.custom-padding-responsive.large.top-20 {
+        padding-top: 20px;
+    }
+
+    .custom.custom-padding-responsive.large.bottom-20 {
+        padding-bottom: 20px;
+    }
+
+    .custom.custom-padding-responsive.large.add25 {
+        padding: 25px;
+    }
+
+    .custom.custom-padding-responsive.large.left-25 {
+        padding-left: 25px;
+    }
+
+    .custom.custom-padding-responsive.large.right-25 {
+        padding-right: 25px;
+    }
+
+    .custom.custom-padding-responsive.large.top-25 {
+        padding-top: 25px;
+    }
+
+    .custom.custom-padding-responsive.large.bottom-25 {
+        padding-bottom: 25px;
+    }
+
+    .custom.custom-padding-responsive.large.add30 {
+        padding: 30px;
+    }
+
+    .custom.custom-padding-responsive.large.left-30 {
+        padding-left: 30px;
+    }
+
+    .custom.custom-padding-responsive.large.right-30 {
+        padding-right: 30px;
+    }
+
+    .custom.custom-padding-responsive.large.top-30 {
+        padding-top: 30px;
+    }
+
+    .custom.custom-padding-responsive.large.bottom-30 {
+        padding-bottom: 30px;
+    }
+
+    .custom.custom-padding-responsive.large.add35 {
+        padding: 35px;
+    }
+
+    .custom.custom-padding-responsive.large.left-35 {
+        padding-left: 35px;
+    }
+
+    .custom.custom-padding-responsive.large.right-35 {
+        padding-right: 35px;
+    }
+
+    .custom.custom-padding-responsive.large.top-35 {
+        padding-top: 35px;
+    }
+
+    .custom.custom-padding-responsive.large.bottom-35 {
+        padding-bottom: 35px;
+    }
+}
+
+@media only screen and (min-width: 769px) {
+    .custom.custom-padding-responsive.medium.add5 {
+        padding: 5px;
+    }
+
+    .custom.custom-padding-responsive.medium.left-5 {
+        padding-left: 5px;
+    }
+
+    .custom.custom-padding-responsive.medium.right-5 {
+        padding-right: 5px;
+    }
+
+    .custom.custom-padding-responsive.medium.top-5 {
+        padding-top: 5px;
+    }
+
+    .custom.custom-padding-responsive.medium.bottom-5 {
+        padding-bottom: 5px;
+    }
+
+    .custom.custom-padding-responsive.medium.add10 {
+        padding: 10px;
+    }
+
+    .custom.custom-padding-responsive.medium.left-10 {
+        padding-left: 10px;
+    }
+
+    .custom.custom-padding-responsive.medium.right-10 {
+        padding-right: 10px;
+    }
+
+    .custom.custom-padding-responsive.medium.top-10 {
+        padding-top: 10px;
+    }
+
+    .custom.custom-padding-responsive.medium.bottom-10 {
+        padding-bottom: 10px;
+    }
+
+    .custom.custom-padding-responsive.medium.add15 {
+        padding: 15px;
+    }
+
+    .custom.custom-padding-responsive.medium.left-15 {
+        padding-left: 15px;
+    }
+
+    .custom.custom-padding-responsive.medium.right-15 {
+        padding-right: 15px;
+    }
+
+    .custom.custom-padding-responsive.medium.top-15 {
+        padding-top: 15px;
+    }
+
+    .custom.custom-padding-responsive.medium.bottom-15 {
+        padding-bottom: 15px;
+    }
+
+    .custom.custom-padding-responsive.medium.add20 {
+        padding: 20px;
+    }
+
+    .custom.custom-padding-responsive.medium.left-20 {
+        padding-left: 20px;
+    }
+
+    .custom.custom-padding-responsive.medium.right-20 {
+        padding-right: 20px;
+    }
+
+    .custom.custom-padding-responsive.medium.top-20 {
+        padding-top: 20px;
+    }
+
+    .custom.custom-padding-responsive.medium.bottom-20 {
+        padding-bottom: 20px;
+    }
+
+    .custom.custom-padding-responsive.medium.add25 {
+        padding: 25px;
+    }
+
+    .custom.custom-padding-responsive.medium.left-25 {
+        padding-left: 25px;
+    }
+
+    .custom.custom-padding-responsive.medium.right-25 {
+        padding-right: 25px;
+    }
+
+    .custom.custom-padding-responsive.medium.top-25 {
+        padding-top: 25px;
+    }
+
+    .custom.custom-padding-responsive.medium.bottom-25 {
+        padding-bottom: 25px;
+    }
+
+    .custom.custom-padding-responsive.medium.add30 {
+        padding: 30px;
+    }
+
+    .custom.custom-padding-responsive.medium.left-30 {
+        padding-left: 30px;
+    }
+
+    .custom.custom-padding-responsive.medium.right-30 {
+        padding-right: 30px;
+    }
+
+    .custom.custom-padding-responsive.medium.top-30 {
+        padding-top: 30px;
+    }
+
+    .custom.custom-padding-responsive.medium.bottom-30 {
+        padding-bottom: 30px;
+    }
+
+    .custom.custom-padding-responsive.medium.add35 {
+        padding: 35px;
+    }
+
+    .custom.custom-padding-responsive.medium.left-35 {
+        padding-left: 35px;
+    }
+
+    .custom.custom-padding-responsive.medium.right-35 {
+        padding-right: 35px;
+    }
+
+    .custom.custom-padding-responsive.medium.top-35 {
+        padding-top: 35px;
+    }
+
+    .custom.custom-padding-responsive.medium.bottom-35 {
+        padding-bottom: 35px;
+    }
+}
+
+.custom.custom-padding-responsive.small.add5 {
+    padding: 5px;
+}
+
+.custom.custom-padding-responsive.small.left-5 {
+    padding-left: 5px;
+}
+
+.custom.custom-padding-responsive.small.right-5 {
+    padding-right: 5px;
+}
+
+.custom.custom-padding-responsive.small.top-5 {
+    padding-top: 5px;
+}
+
+.custom.custom-padding-responsive.small.bottom-5 {
+    padding-bottom: 5px;
+}
+
+.custom.custom-padding-responsive.small.add10 {
+    padding: 10px;
+}
+
+.custom.custom-padding-responsive.small.left-10 {
+    padding-left: 10px;
+}
+
+.custom.custom-padding-responsive.small.right-10 {
+    padding-right: 10px;
+}
+
+.custom.custom-padding-responsive.small.top-10 {
+    padding-top: 10px;
+}
+
+.custom.custom-padding-responsive.small.bottom-10 {
+    padding-bottom: 10px;
+}
+
+.custom.custom-padding-responsive.small.add15 {
+    padding: 15px;
+}
+
+.custom.custom-padding-responsive.small.left-15 {
+    padding-left: 15px;
+}
+
+.custom.custom-padding-responsive.small.right-15 {
+    padding-right: 15px;
+}
+
+.custom.custom-padding-responsive.small.top-15 {
+    padding-top: 15px;
+}
+
+.custom.custom-padding-responsive.small.bottom-15 {
+    padding-bottom: 15px;
+}
+
+.custom.custom-padding-responsive.small.add20 {
+    padding: 20px;
+}
+
+.custom.custom-padding-responsive.small.left-20 {
+    padding-left: 20px;
+}
+
+.custom.custom-padding-responsive.small.right-20 {
+    padding-right: 20px;
+}
+
+.custom.custom-padding-responsive.small.top-20 {
+    padding-top: 20px;
+}
+
+.custom.custom-padding-responsive.small.bottom-20 {
+    padding-bottom: 20px;
+}
+
+.custom.custom-padding-responsive.small.add25 {
+    padding: 25px;
+}
+
+.custom.custom-padding-responsive.small.left-25 {
+    padding-left: 25px;
+}
+
+.custom.custom-padding-responsive.small.right-25 {
+    padding-right: 25px;
+}
+
+.custom.custom-padding-responsive.small.top-25 {
+    padding-top: 25px;
+}
+
+.custom.custom-padding-responsive.small.bottom-25 {
+    padding-bottom: 25px;
+}
+
+.custom.custom-padding-responsive.small.add30 {
+    padding: 30px;
+}
+
+.custom.custom-padding-responsive.small.left-30 {
+    padding-left: 30px;
+}
+
+.custom.custom-padding-responsive.small.right-30 {
+    padding-right: 30px;
+}
+
+.custom.custom-padding-responsive.small.top-30 {
+    padding-top: 30px;
+}
+
+.custom.custom-padding-responsive.small.bottom-30 {
+    padding-bottom: 30px;
+}
+
+.custom.custom-padding-responsive.small.add35 {
+    padding: 35px;
+}
+
+.custom.custom-padding-responsive.small.left-35 {
+    padding-left: 35px;
+}
+
+.custom.custom-padding-responsive.small.right-35 {
+    padding-right: 35px;
+}
+
+.custom.custom-padding-responsive.small.top-35 {
+    padding-top: 35px;
+}
+
+.custom.custom-padding-responsive.small.bottom-35 {
+    padding-bottom: 35px;
+}
+
+.custom.custom-margin.add5 {
+    margin: 5px;
+}
+
+.custom.custom-margin.left-5 {
+    margin-left: 5px;
+}
+
+.custom.custom-margin.right-5 {
+    margin-right: 5px;
+}
+
+.custom.custom-margin.top-5 {
+    margin-top: 5px;
+}
+
+.custom.custom-margin.bottom-5 {
+    margin-bottom: 5px;
+}
+
+.custom.custom-margin.add10 {
+    margin: 10px;
+}
+
+.custom.custom-margin.left-10 {
+    margin-left: 10px;
+}
+
+.custom.custom-margin.right-10 {
+    margin-right: 10px;
+}
+
+.custom.custom-margin.top-10 {
+    margin-top: 10px;
+}
+
+.custom.custom-margin.bottom-10 {
+    margin-bottom: 10px;
+}
+
+.custom.custom-margin.add15 {
+    margin: 15px;
+}
+
+.custom.custom-margin.left-15 {
+    margin-left: 15px;
+}
+
+.custom.custom-margin.right-15 {
+    margin-right: 15px;
+}
+
+.custom.custom-margin.top-15 {
+    margin-top: 15px;
+}
+
+.custom.custom-margin.bottom-15 {
+    margin-bottom: 15px;
+}
+
+.custom.custom-margin.add20 {
+    margin: 20px;
+}
+
+.custom.custom-margin.left-20 {
+    margin-left: 20px;
+}
+
+.custom.custom-margin.right-20 {
+    margin-right: 20px;
+}
+
+.custom.custom-margin.top-20 {
+    margin-top: 20px;
+}
+
+.custom.custom-margin.bottom-20 {
+    margin-bottom: 20px;
+}
+
+.custom.custom-margin.add25 {
+    margin: 25px;
+}
+
+.custom.custom-margin.left-25 {
+    margin-left: 25px;
+}
+
+.custom.custom-margin.right-25 {
+    margin-right: 25px;
+}
+
+.custom.custom-margin.top-25 {
+    margin-top: 25px;
+}
+
+.custom.custom-margin.bottom-25 {
+    margin-bottom: 25px;
+}
+
+.custom.custom-margin.add30 {
+    margin: 30px;
+}
+
+.custom.custom-margin.left-30 {
+    margin-left: 30px;
+}
+
+.custom.custom-margin.right-30 {
+    margin-right: 30px;
+}
+
+.custom.custom-margin.top-30 {
+    margin-top: 30px;
+}
+
+.custom.custom-margin.bottom-30 {
+    margin-bottom: 30px;
+}
+
+.custom.custom-margin.add35 {
+    margin: 35px;
+}
+
+.custom.custom-margin.left-35 {
+    margin-left: 35px;
+}
+
+.custom.custom-margin.right-35 {
+    margin-right: 35px;
+}
+
+.custom.custom-margin.top-35 {
+    margin-top: 35px;
+}
+
+.custom.custom-margin.bottom-35 {
+    margin-bottom: 35px;
+}
+
+.custom.custom-child-margin.left-to-right * {
+    margin-left: 3px;
+}
+
+.custom.custom-child-margin.right-to-left * {
+    margin-right: 3px;
+}
+
+@media only screen and (min-width: 961px) {
+    .custom.custom-margin-responsive.large.add5 {
+        margin: 5px;
+    }
+
+    .custom.custom-margin-responsive.large.left-5 {
+        margin-left: 5px;
+    }
+
+    .custom.custom-margin-responsive.large.right-5 {
+        margin-right: 5px;
+    }
+
+    .custom.custom-margin-responsive.large.top-5 {
+        margin-top: 5px;
+    }
+
+    .custom.custom-margin-responsive.large.bottom-5 {
+        margin-bottom: 5px;
+    }
+
+    .custom.custom-margin-responsive.large.add10 {
+        margin: 10px;
+    }
+
+    .custom.custom-margin-responsive.large.left-10 {
+        margin-left: 10px;
+    }
+
+    .custom.custom-margin-responsive.large.right-10 {
+        margin-right: 10px;
+    }
+
+    .custom.custom-margin-responsive.large.top-10 {
+        margin-top: 10px;
+    }
+
+    .custom.custom-margin-responsive.large.bottom-10 {
+        margin-bottom: 10px;
+    }
+
+    .custom.custom-margin-responsive.large.add15 {
+        margin: 15px;
+    }
+
+    .custom.custom-margin-responsive.large.left-15 {
+        margin-left: 15px;
+    }
+
+    .custom.custom-margin-responsive.large.right-15 {
+        margin-right: 15px;
+    }
+
+    .custom.custom-margin-responsive.large.top-15 {
+        margin-top: 15px;
+    }
+
+    .custom.custom-margin-responsive.large.bottom-15 {
+        margin-bottom: 15px;
+    }
+
+    .custom.custom-margin-responsive.large.add20 {
+        margin: 20px;
+    }
+
+    .custom.custom-margin-responsive.large.left-20 {
+        margin-left: 20px;
+    }
+
+    .custom.custom-margin-responsive.large.right-20 {
+        margin-right: 20px;
+    }
+
+    .custom.custom-margin-responsive.large.top-20 {
+        margin-top: 20px;
+    }
+
+    .custom.custom-margin-responsive.large.bottom-20 {
+        margin-bottom: 20px;
+    }
+
+    .custom.custom-margin-responsive.large.add25 {
+        margin: 25px;
+    }
+
+    .custom.custom-margin-responsive.large.left-25 {
+        margin-left: 25px;
+    }
+
+    .custom.custom-margin-responsive.large.right-25 {
+        margin-right: 25px;
+    }
+
+    .custom.custom-margin-responsive.large.top-25 {
+        margin-top: 25px;
+    }
+
+    .custom.custom-margin-responsive.large.bottom-25 {
+        margin-bottom: 25px;
+    }
+
+    .custom.custom-margin-responsive.large.add30 {
+        margin: 30px;
+    }
+
+    .custom.custom-margin-responsive.large.left-30 {
+        margin-left: 30px;
+    }
+
+    .custom.custom-margin-responsive.large.right-30 {
+        margin-right: 30px;
+    }
+
+    .custom.custom-margin-responsive.large.top-30 {
+        margin-top: 30px;
+    }
+
+    .custom.custom-margin-responsive.large.bottom-30 {
+        margin-bottom: 30px;
+    }
+
+    .custom.custom-margin-responsive.large.add35 {
+        margin: 35px;
+    }
+
+    .custom.custom-margin-responsive.large.left-35 {
+        margin-left: 35px;
+    }
+
+    .custom.custom-margin-responsive.large.right-35 {
+        margin-right: 35px;
+    }
+
+    .custom.custom-margin-responsive.large.top-35 {
+        margin-top: 35px;
+    }
+
+    .custom.custom-margin-responsive.large.bottom-35 {
+        margin-bottom: 35px;
+    }
+}
+
+@media only screen and (min-width: 769px) {
+    .custom.custom-margin-responsive.medium.add5 {
+        margin: 5px;
+    }
+
+    .custom.custom-margin-responsive.medium.left-5 {
+        margin-left: 5px;
+    }
+
+    .custom.custom-margin-responsive.medium.right-5 {
+        margin-right: 5px;
+    }
+
+    .custom.custom-margin-responsive.medium.top-5 {
+        margin-top: 5px;
+    }
+
+    .custom.custom-margin-responsive.medium.bottom-5 {
+        margin-bottom: 5px;
+    }
+
+    .custom.custom-margin-responsive.medium.add10 {
+        margin: 10px;
+    }
+
+    .custom.custom-margin-responsive.medium.left-10 {
+        margin-left: 10px;
+    }
+
+    .custom.custom-margin-responsive.medium.right-10 {
+        margin-right: 10px;
+    }
+
+    .custom.custom-margin-responsive.medium.top-10 {
+        margin-top: 10px;
+    }
+
+    .custom.custom-margin-responsive.medium.bottom-10 {
+        margin-bottom: 10px;
+    }
+
+    .custom.custom-margin-responsive.medium.add15 {
+        margin: 15px;
+    }
+
+    .custom.custom-margin-responsive.medium.left-15 {
+        margin-left: 15px;
+    }
+
+    .custom.custom-margin-responsive.medium.right-15 {
+        margin-right: 15px;
+    }
+
+    .custom.custom-margin-responsive.medium.top-15 {
+        margin-top: 15px;
+    }
+
+    .custom.custom-margin-responsive.medium.bottom-15 {
+        margin-bottom: 15px;
+    }
+
+    .custom.custom-margin-responsive.medium.add20 {
+        margin: 20px;
+    }
+
+    .custom.custom-margin-responsive.medium.left-20 {
+        margin-left: 20px;
+    }
+
+    .custom.custom-margin-responsive.medium.right-20 {
+        margin-right: 20px;
+    }
+
+    .custom.custom-margin-responsive.medium.top-20 {
+        margin-top: 20px;
+    }
+
+    .custom.custom-margin-responsive.medium.bottom-20 {
+        margin-bottom: 20px;
+    }
+
+    .custom.custom-margin-responsive.medium.add25 {
+        margin: 25px;
+    }
+
+    .custom.custom-margin-responsive.medium.left-25 {
+        margin-left: 25px;
+    }
+
+    .custom.custom-margin-responsive.medium.right-25 {
+        margin-right: 25px;
+    }
+
+    .custom.custom-margin-responsive.medium.top-25 {
+        margin-top: 25px;
+    }
+
+    .custom.custom-margin-responsive.medium.bottom-25 {
+        margin-bottom: 25px;
+    }
+
+    .custom.custom-margin-responsive.medium.add30 {
+        margin: 30px;
+    }
+
+    .custom.custom-margin-responsive.medium.left-30 {
+        margin-left: 30px;
+    }
+
+    .custom.custom-margin-responsive.medium.right-30 {
+        margin-right: 30px;
+    }
+
+    .custom.custom-margin-responsive.medium.top-30 {
+        margin-top: 30px;
+    }
+
+    .custom.custom-margin-responsive.medium.bottom-30 {
+        margin-bottom: 30px;
+    }
+
+    .custom.custom-margin-responsive.medium.add35 {
+        margin: 35px;
+    }
+
+    .custom.custom-margin-responsive.medium.left-35 {
+        margin-left: 35px;
+    }
+
+    .custom.custom-margin-responsive.medium.right-35 {
+        margin-right: 35px;
+    }
+
+    .custom.custom-margin-responsive.medium.top-35 {
+        margin-top: 35px;
+    }
+
+    .custom.custom-margin-responsive.medium.bottom-35 {
+        margin-bottom: 35px;
+    }
+}
+
+.custom.custom-margin-responsive.small.add5 {
+    margin: 5px;
+}
+
+.custom.custom-margin-responsive.small.left-5 {
+    margin-left: 5px;
+}
+
+.custom.custom-margin-responsive.small.right-5 {
+    margin-right: 5px;
+}
+
+.custom.custom-margin-responsive.small.top-5 {
+    margin-top: 5px;
+}
+
+.custom.custom-margin-responsive.small.bottom-5 {
+    margin-bottom: 5px;
+}
+
+.custom.custom-margin-responsive.small.add10 {
+    margin: 10px;
+}
+
+.custom.custom-margin-responsive.small.left-10 {
+    margin-left: 10px;
+}
+
+.custom.custom-margin-responsive.small.right-10 {
+    margin-right: 10px;
+}
+
+.custom.custom-margin-responsive.small.top-10 {
+    margin-top: 10px;
+}
+
+.custom.custom-margin-responsive.small.bottom-10 {
+    margin-bottom: 10px;
+}
+
+.custom.custom-margin-responsive.small.add15 {
+    margin: 15px;
+}
+
+.custom.custom-margin-responsive.small.left-15 {
+    margin-left: 15px;
+}
+
+.custom.custom-margin-responsive.small.right-15 {
+    margin-right: 15px;
+}
+
+.custom.custom-margin-responsive.small.top-15 {
+    margin-top: 15px;
+}
+
+.custom.custom-margin-responsive.small.bottom-15 {
+    margin-bottom: 15px;
+}
+
+.custom.custom-margin-responsive.small.add20 {
+    margin: 20px;
+}
+
+.custom.custom-margin-responsive.small.left-20 {
+    margin-left: 20px;
+}
+
+.custom.custom-margin-responsive.small.right-20 {
+    margin-right: 20px;
+}
+
+.custom.custom-margin-responsive.small.top-20 {
+    margin-top: 20px;
+}
+
+.custom.custom-margin-responsive.small.bottom-20 {
+    margin-bottom: 20px;
+}
+
+.custom.custom-margin-responsive.small.add25 {
+    margin: 25px;
+}
+
+.custom.custom-margin-responsive.small.left-25 {
+    margin-left: 25px;
+}
+
+.custom.custom-margin-responsive.small.right-25 {
+    margin-right: 25px;
+}
+
+.custom.custom-margin-responsive.small.top-25 {
+    margin-top: 25px;
+}
+
+.custom.custom-margin-responsive.small.bottom-25 {
+    margin-bottom: 25px;
+}
+
+.custom.custom-margin-responsive.small.add30 {
+    margin: 30px;
+}
+
+.custom.custom-margin-responsive.small.left-30 {
+    margin-left: 30px;
+}
+
+.custom.custom-margin-responsive.small.right-30 {
+    margin-right: 30px;
+}
+
+.custom.custom-margin-responsive.small.top-30 {
+    margin-top: 30px;
+}
+
+.custom.custom-margin-responsive.small.bottom-30 {
+    margin-bottom: 30px;
+}
+
+.custom.custom-margin-responsive.small.add35 {
+    margin: 35px;
+}
+
+.custom.custom-margin-responsive.small.left-35 {
+    margin-left: 35px;
+}
+
+.custom.custom-margin-responsive.small.right-35 {
+    margin-right: 35px;
+}
+
+.custom.custom-margin-responsive.small.top-35 {
+    margin-top: 35px;
+}
+
+.custom.custom-margin-responsive.small.bottom-35 {
+    margin-bottom: 35px;
+}
+
+textarea.form-control.input-text {
+    /* Show a textarea not so big at starting */
+    height: 2.4em;
+}
+
+.template-files-delete-button {
+    margin: 1px 0 0 0;
+    padding: 0 5px;
+}
+
+/* Override sort icons for datatables */
+table.dataTable thead .sorting:after,
+table.dataTable thead .sorting_asc:after,
+table.dataTable thead .sorting_desc:after,
+table.dataTable thead .sorting_asc_disabled:after,
+table.dataTable thead .sorting_desc_disabled:after {
+    font-family: 'FontAwesome' !important;
+}
+table.dataTable thead .sorting:after {
+    content: "\f0dc" !important;
+    /* sort */
+}
+table.dataTable thead .sorting_asc:after {
+    content: "\f0de" !important;
+    /* sort-by-attributes */
+}
+table.dataTable thead .sorting_desc:after {
+    content: "\f0dd" !important;
+    /* sort-by-attributes-alt */
+}
+
+// Sticky topbar
+.menubar.sticky {
+    position:   fixed;
+    top:        0;
+    margin-top: 0;
+    z-index:    1030;
+}
+#sticky-topbar-placeholder {
+    display: none;
+}
+.menubar.sticky + #sticky-topbar-placeholder {
+    display: block;
+}
+
+// Fix alignment of form-groups (like condition designer's navigator) on the topbar
+.baseline-align > * {
+    vertical-align: baseline;
+}
+.baseline-align > .form-group {
+    display: inline-block;
+}
+
+/* Reduce margins for question editor */
+
+
+/** Surveys Grid View **/
+#survey-grid {
+    overflow-x: visible;
+}
+
+/* Fix text alignment on RTL */
+html[dir="rtl"] .dropdown-menu,
+html[dir="rtl"] th {
+    text-align: initial;
+}
+
+#survey-nav {
+    .nav-link {
+        border: none;
+    }
+    .nav-link:hover {
+        color: #333;
+    }
+    .nav-link:focus {
+        color: #333;
+    }
+}
+
+/** List Questions Grid **/
+#question-grid {
+    overflow-x: visible;
+}
+
+/** Hide Relevance Equation column for subquestions when not supported */
+.subquestions-table.hide-relevance {
+    #rel-eq-th, td.relevance-equation {
+        display: none;
+    }
+}
+
+/** Styles for Data Entry screen */
+#responsedetail {
+    .checkbox {
+        input[type="checkbox"] {
+            margin-left: 0;
+        }
+        label {
+            padding-left: 0px;
+        }
+    }
+
+    .answer-item {
+        display:flex;
+        gap:1em;
+        margin-bottom: 1em;
+    }
+
+    .checkbox.unseen-checkbox {
+        margin-top: 0;
+        min-width: 6em;
+    }
+
+    .checkbox:not(.unseen-checkbox) {
+        margin-top: 0;
+    }
+
+    tr.multiple-opt-comments {
+        input[type="text"] {
+            width: 100%;
+        }
+        .checkbox {
+            margin-bottom: 0;
+        }
+        .answer-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            gap: .5em;
+        }
+    }
+
+    tr.array-5-pt,
+    tr.array-10-pt,
+    tr.array-yes-uncertain-no,
+    tr.array-increase-same-decrease,
+    tr.array-flexible-row,
+    tr.array-flexible-column,
+    tr.array-flexible-dual-scale {
+        .answer-wrapper {
+            display: flex;
+            gap: 1em;
+        }
+        .answer-wrapper > span {
+            flex: 1;
+        }
+        .answer-wrapper > span:first-of-type {
+            text-align: end;
+        }
+    }
+
+    tr.array-multi-flexi,
+    tr.array-multi-flexi-text {
+        .answer-wrapper {
+            display: flex;
+            gap: 1em;
+        }
+        .answer-wrapper > span {
+            flex: 1;
+        }
+    }
+
+    .answer-wrapper {
+        flex-grow: 1;
+    }
+}

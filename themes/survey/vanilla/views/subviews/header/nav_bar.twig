@@ -1,51 +1,61 @@
 {#
-    LimeSurvey
-    Copyright (C) 2007-2017 The LimeSurvey Project Team / Louis Gac
-    All rights reserved.
-    License: GNU/GPL License v2 or later, see LICENSE.php
-    LimeSurvey is free software. This version may have been modified pursuant
-    to the GNU General Public License, and as distributed it includes or
-    is derivative of works licensed under the GNU General Public License or
-    other free or open source software licenses.
-    See COPYRIGHT.php for copyright notices and details.
+LimeSurvey
+Copyright (C) 2007-2017 The LimeSurvey Project Team / Louis Gac
+All rights reserved.
+License: GNU/GPL License v2 or later, see LICENSE.php
+LimeSurvey is free software. This version may have been modified pursuant
+to the GNU General Public License, and as distributed it includes or
+is derivative of works licensed under the GNU General Public License or
+other free or open source software licenses.
+See COPYRIGHT.php for copyright notices and details.
 
-    (¯`·._.·(¯`·._.· Bootstrap Navigation Bar ·._.·´¯)·._.·´¯)
+(¯`·._.·(¯`·._.· Bootstrap Navigation Bar ·._.·´¯)·._.·´¯)
 
-    This file renders a typical bootstrap navigation bar.
-    See: https://getbootstrap.com/components/#navbar
+This file renders a typical bootstrap navigation bar.
+See: https://getbootstrap.com/components/#navbar
 
-    For the survey navigator ("Next", "Back", etc.), see: navigation/navigator.twig
+For the survey navigator ("Next", "Back", etc.), see: navigation/navigator.twig
 #}
-
-<!-- Bootstrap Navigation Bar -->
-{% if(aSurveyInfo.class.navbar) %}
-<div class="{{ aSurveyInfo.class.navbar }} navbar-fixed-top" {{ aSurveyInfo.attr.navbar }}>
-    <div class="{{ aSurveyInfo.class.navbarheader }}  " {{ aSurveyInfo.attr.navbarheader }} >
-        <button type="button" class="{{ aSurveyInfo.class.navbartoggle }}" {{ aSurveyInfo.attr.navbartoggle }}  >
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-        </button>
-
-        {# Logo option #}
-        {% if( aSurveyInfo.options.brandlogo == "on") %}
-            <div class="{{ aSurveyInfo.class.navbarbrand }} logo-container hidden-xs"  {{ aSurveyInfo.attr.navbarbrand }}  >
-                {{ image(aSurveyInfo.options.brandlogofile, aSurveyInfo.name, {"class": "logo img-responsive"}) }}
-            </div>
-        {% else %}
-            <div class="{{ aSurveyInfo.class.navbarbrand }}"  {{ aSurveyInfo.attr.navbarbrand }} >
-                {{ aSurveyInfo.name }}
-            </div>
-        {% endif %}
+{% if not aSurveyInfo.popupPreview %}
+    {% set navClass = "navbar-light bg-light" %}
+    {% if( aSurveyInfo.template == "bootswatch") %}
+        {% set navClass = "navbar-default bg-primary" %}
+    {% endif %}
+    <!-- Bootstrap Navigation Bar -->
+    {# ShowMenu used for navbar-toggler and navbar-collapse #}
+    {% set ShowMenu = (aSurveyInfo.aNavigator.load.show == "Y" or aSurveyInfo.aNavigator.save.show == "Y")
+        or ((aSurveyInfo.bShowClearAll == true or aSurveyInfo.bShowClearAll == null) and aSurveyInfo.options.showclearall == 'on')
+        or (aSurveyInfo.aQuestionIndex.bShow == true and aSurveyInfo.format != 'A')
+        or (aSurveyInfo.alanguageChanger.show)
+    %}
+    <div id="survey-nav" class="navbar {{ navClass }} navbar-expand-md fixed-top border-bottom pt-0 pb-0">
+        <div class="container-fluid">
+            {% if ShowMenu %}
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar"
+                        aria-controls="small-screens-menus" aria-expanded="false">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            {% endif %}
+            {# Logo option #}
+            {% if( aSurveyInfo.options.brandlogo == "on") %}
+                <div class="navbar-brand logo-container d-none d-md-block">
+                    {{ image(aSurveyInfo.options.brandlogofile, aSurveyInfo.name, {"class": "logo img-fluid"}) }}
+                </div>
+            {% else %}
+                <div class="navbar-brand">
+                    {{ aSurveyInfo.name }}
+                </div>
+            {% endif %}
+            {% if ShowMenu %}
+                <div id="navbar" class="collapse navbar-collapse navbar-nav-scroll pt-2">
+                    <ul class="nav navbar-nav navbar-action-link navbar-right ms-auto">
+                        {{ include('./subviews/navigation/save_links.twig') }}
+                        {{ include('./subviews/navigation/clearall_links.twig') }}
+                        {{ include('./subviews/navigation/question_index_menu.twig') }}
+                        {{ include('./subviews/navigation/language_changer_top_menu.twig') }}
+                    </ul>
+                </div>
+            {% endif %}
+        </div>
     </div>
-    <div id="{{ aSurveyInfo.id.navbar }}" class="{{ aSurveyInfo.class.navbarcollapse }}" {{ aSurveyInfo.attr.navbarcollapse }} >
-        <ul class="{{ aSurveyInfo.class.navbarlink }} navbar-right" {{ aSurveyInfo.attr.navbarlink }}>
-            {{ include('./subviews/navigation/save_links.twig') }}
-            {{ include('./subviews/navigation/clearall_links.twig') }}
-            {{ include('./subviews/navigation/question_index_menu.twig') }}
-            {{ include('./subviews/navigation/language_changer_top_menu.twig') }}
-        </ul>
-    </div>
-</div>
 {% endif %}

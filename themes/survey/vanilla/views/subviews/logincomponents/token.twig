@@ -5,84 +5,117 @@
     {% endblock %}
 
     {% block description %}
-        <p class='{{ aSurveyInfo.class.maincoldivdivbp }} text-info' {{ aSurveyInfo.attr.maincoldivdivbp }}>
-            {% if aSurveyInfo.aForm.token == null  %}
-                {{ gT("If you have been issued an access code, please enter it in the box below and click continue.") }}
-            {% else %}
-                {{ gT("Please confirm the access code by answering the security question below and click continue.") }}
-            {% endif %}
-        </p>
+        <div class="col-lg-8 offset-lg-2">
+            <p class='{{ aSurveyInfo.class.maincoldivdivbp }} text-info' {{ aSurveyInfo.attr.maincoldivdivbp }}>
+                {% if aSurveyInfo.aForm.token == null %}
+                    {{ gT("If you have been issued an access code, please enter it in the box below and click continue.") }}
+                {% else %}
+                    {{ gT("Please confirm the access code by answering the security question below and click continue.") }}
+                {% endif %}
+            </p>
+        </div>
     {% endblock %}
 
 
-    {% block formcontent  %}
-
-        <div class='{{ aSurveyInfo.class.maincolform }} form-group' {{ aSurveyInfo.attr.maincolform }}>
-            <label class='{{ aSurveyInfo.class.maincolformlabel }} control-label col-sm-3' {{ aSurveyInfo.attr.maincolformlabel }}>
-                <small class="{{ aSurveyInfo.class.maincolformlabelsmall }} text-danger asterisk fa fa-asterisk small " {{ aSurveyInfo.attr.maincolformlabelsmall }} ></small>
-                {{ gT("Access code:") }}
-                <span class="{{ aSurveyInfo.class.maincolformlabelspan }} sr-only text-danger asterisk " {{ aSurveyInfo.attr.maincolformlabelspan }}>
+    {% block formcontent %}
+        <div class="col-lg-8 offset-lg-2">
+            <div class='{{ aSurveyInfo.class.maincolform }} mb-3' {{ aSurveyInfo.attr.maincolform }}>
+                <label
+                    class='{{ aSurveyInfo.class.maincolformlabel }} control-label col-md-3' {{ aSurveyInfo.attr.maincolformlabel }}>
+                    <small
+                        class="{{ aSurveyInfo.class.maincolformlabelsmall }} text-danger asterisk fa fa-asterisk small " {{ aSurveyInfo.attr.maincolformlabelsmall }} ></small>
+                    {{ gT("Access code:") }}
+                    <span
+                        class="{{ aSurveyInfo.class.maincolformlabelspan }} visually-hidden text-danger asterisk " {{ aSurveyInfo.attr.maincolformlabelspan }}>
                     ( {{ gT("Mandatory") }} )
                 </span>
 
-            </label>
+                </label>
 
-            <div class='{{ aSurveyInfo.class.maincolformdiva }} col-sm-7' {{ aSurveyInfo.attr.maincolformdiva }}>
-                {% if aSurveyInfo.aForm.token == null  %}
-                    <input class='{{ aSurveyInfo.class.maincolformdivainput }} form-control' {{ aSurveyInfo.attr.maincolformdivainput }} >
-                {% else %}
+                <div class='{{ aSurveyInfo.class.maincolformdiva }}' {{ aSurveyInfo.attr.maincolformdiva }}>
+                    {% if aSurveyInfo.aForm.token == null %}
+                        <div class='input-group'>
+                            <input
+                                class='{{ aSurveyInfo.class.maincolformdivainput }} form-control' {{ aSurveyInfo.attr.maincolformdivainput }} >
+                            <button type="button" class="input-group-text ls-no-js-hidden" id="ls-toggle-token-show" data-passwordstate="hidden">
+                                <i class="fa fa-eye ls-password-hidden" aria-hidden="true"></i><span class="visually-hidden ls-password-hidden">gT("Show code")</span>
+                                <i class="fa fa-eye-slash d-none ls-password-shown" aria-hidden="true"></i><span class="visually-hidden d-none ls-password-shown">gT("Hide code")</span>
+                            </button>
+                        </div>
+                        <script>
+                            $("#ls-toggle-token-show").on('click', function () {
+                                if ($(this).data('passwordstate') == "hidden") {
+                                    $(this).prev("input").attr('type', 'text');
+                                    $(this).find('.ls-password-hidden').addClass('d-none');
+                                    $(this).find('.ls-password-shown').removeClass('d-none');
+                                    $(this).data('passwordstate', 'shown');
+                                } else {
+                                    $(this).prev("input").attr('type', 'password');
+                                    $(this).find('.ls-password-hidden').removeClass('d-none');
+                                    $(this).find('.ls-password-shown').addClass('d-none');
+                                    $(this).data('passwordstate', 'hidden');
+                                }
+                            });
+                        </script>
+                    {% else %}
+                        {# token is OK, captcha not #}
+                        {% set passwordFieldHtmlOptions = {
+                            'id'       : 'token',
+                            'required' : true,
+                            'readonly' : true,
+                            'class'    : 'form-control'
+                        } %}
 
-                    {% set passwordFieldHtmlOptions = {
-                        'id'       : 'token',
-                        'required' : true,
-                        'readonly' : true,
-                        'class'    : 'form-control'
-                        }
-                    %}
-
-                    {{
-                        C.Html.passwordField(
+                        {{ C.Html.passwordField(
                             'token',
                             (( aSurveyInfo.aForm.token )),
-                            (passwordFieldHtmlOptions)
-                        )
-                    }}
-                {% endif %}
+                        (passwordFieldHtmlOptions)
+                        ) }}
+                    {% endif %}
+                </div>
             </div>
-        </div>
 
-        {#  CAPTACHA INSIDE TOKEN FORM #}
-        {% if ( aSurveyInfo.aForm.bCaptchaEnabled == true ) %}
-            <div class='{{ aSurveyInfo.class.maincolformdivb }}  form-group ' {{ aSurveyInfo.attr.maincolformdivb }}>
-
-                <!-- Doesn't seems aria capable -->
-                <label class='{{ aSurveyInfo.class.maincolformdivblabel }} control-label col-sm-3' {{ aSurveyInfo.attr.maincolformdivblabel }} >
-                    {{ gT("Please solve the following equation:") }}
-                    <small class="{{ aSurveyInfo.class.maincolformdivblabelsmall }} text-danger asterisk fa fa-asterisk pull-left small"  {{ aSurveyInfo.attr.maincolformdivblabelsmall }} ></small>
-                    <span  class="{{ aSurveyInfo.class.maincolformdivblabelspan }} sr-only text-danger asterisk" {{ aSurveyInfo.attr.maincolformdivblabelspan }}>
+            {# CAPTACHA INSIDE TOKEN FORM #}
+            {% if ( aSurveyInfo.aForm.bCaptchaEnabled == true ) %}
+                <div class="{{ aSurveyInfo.class.maincolformdivb }} mb-3" {{ aSurveyInfo.attr.maincolformdivb }}>
+                    <label
+                        class='{{ aSurveyInfo.class.maincolformdivblabel }} control-label' {{ aSurveyInfo.attr.maincolformdivblabel }} >
+                        {{ gT("Please solve the following equation:") }}
+                        <small
+                            class="{{ aSurveyInfo.class.maincolformdivblabelsmall }} text-danger asterisk fa fa-asterisk float-start small" {{ aSurveyInfo.attr.maincolformdivblabelsmall }} >&nbsp;</small>
+                        <span
+                            class="{{ aSurveyInfo.class.maincolformdivblabelspan }} visually-hidden text-danger asterisk" {{ aSurveyInfo.attr.maincolformdivblabelspan }}>
                         ( {{ gT("Mandatory") }} )
                     </span>
-                </label>
-                <div class="col-sm-2">
-                    <div class='{{ aSurveyInfo.class.maincolformdivbdivdivdiv }}' {{ aSurveyInfo.attr.maincolformdivbdivdivdiv }} >
-                        {# see: LS_Twig_Extension::renderCaptcha() in application/core/LS_Twig_Extension.php #}
-                        {{ renderCaptcha().renderOut() }}
-                        <a href="#" class="btn btn-sm btn-default" id="reloadCaptcha" title="{{ gT("Reload captcha") }}" data-toggle="captcha"><i class="fa fa-refresh"></i></a>
+                    </label>
+                    <div class="row">
+                        <div class="col-2">
+                            {{ renderCaptcha().renderOut() }}
+                        </div>
+                        <div class="col-1 align-self-center">
+                            <a href="#" class="btn btn-sm btn-outline-secondary" id="reloadCaptcha"
+                               title="{{ gT("Reload captcha") }}" data-bs-toggle="captcha"><i
+                                    class="fa fa-refresh"></i></a>
+                        </div>
+                        <div
+                            class="{{ aSurveyInfo.class.maincolformdivbdiv }} col-9 align-self-center" {{ aSurveyInfo.attr.maincolformdivbdiv }}>
+                            <input
+                                class='form-control {{ aSurveyInfo.class.maincolformdivbdivdivinput }}' {{ aSurveyInfo.attr.maincolformdivbdivdivinput }} >
+                        </div>
                     </div>
                 </div>
-                <div class='{{ aSurveyInfo.class.maincolformdivbdiv }} col-sm-5' {{ aSurveyInfo.attr.maincolformdivbdiv }}>
-                    <input class='form-control {{ aSurveyInfo.class.maincolformdivbdivdivinput }}' {{ aSurveyInfo.attr.maincolformdivbdivdivinput }} >
+            {% endif %}
+
+            {{ aSurveyInfo.aForm.hiddenFields }}
+
+            <div class='{{ aSurveyInfo.class.maincolformdivc }} mb-3 ' {{ aSurveyInfo.attr.maincolformdivc }}>
+                <div
+                    class='{{ aSurveyInfo.class.maincolformdivcdiv }} float-end ' {{ aSurveyInfo.attr.maincolformdivcdiv }}>
+                    <button type="submit"
+                            class='{{ aSurveyInfo.class.maincolformdivcdivbutton }} btn btn-outline-secondary' {{ aSurveyInfo.attr.maincolformdivcdivbutton }}>
+                        {{ gT("Continue") }}
+                    </button>
                 </div>
-            </div>
-        {% endif %}
-
-        {{ aSurveyInfo.aForm.hiddenFields }}
-
-        <div class='{{ aSurveyInfo.class.maincolformdivc }} form-group ' {{ aSurveyInfo.attr.maincolformdivc }}>
-            <div class='{{ aSurveyInfo.class.maincolformdivcdiv }} col-sm-7 col-md-offset-3 ' {{ aSurveyInfo.attr.maincolformdivcdiv }}>
-                <button type="submit" class='{{ aSurveyInfo.class.maincolformdivcdivbutton }} btn btn-default' {{ aSurveyInfo.attr.maincolformdivcdivbutton }}>
-                    {{ gT("Continue") }}
-                </button>
             </div>
         </div>
     {% endblock %}

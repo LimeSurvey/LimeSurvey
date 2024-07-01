@@ -70,12 +70,8 @@ class Save
     {
         //Show 'SAVE FORM' only when click the 'Save so far' button the first time, or when duplicate is found on SAVE FORM.
         //~ global $errormsg, $thissurvey, $surveyid, $clienttoken, $thisstep;
-        $thisstep    = isset($_SESSION['survey_' . $iSurveyId]['step']) ? $_SESSION['survey_' . $iSurveyId]['step'] : 0;
-        $clienttoken = isset($_SESSION['survey_' . $iSurveyId]['token']) ? $_SESSION['survey_' . $iSurveyId]['token'] : '';
-
-        $oSurvey   = Survey::model()->findByPk($iSurveyId);
-        $sTemplate = $oSurvey->template;
-        $oTemplate = Template::model()->getInstance($sTemplate);
+        $thisstep    = $_SESSION['survey_' . $iSurveyId]['step'] ?? 0;
+        $clienttoken = $_SESSION['survey_' . $iSurveyId]['token'] ?? '';
 
         $aSaveForm['aErrors'] = $this->aSaveErrors;
         $this->launchSaveFormEvent($iSurveyId);
@@ -140,8 +136,8 @@ class Save
         $duplicate = SavedControl::model()->findByAttributes(array('sid' => $surveyid, 'identifier' => $this->saveData['identifier']));
         // Check name
         if (
-            strpos($this->saveData['identifier'], '/') !== false || strpos($this->saveData['identifier'], '/') !== false || strpos($this->saveData['identifier'], '&') !== false || strpos($this->saveData['identifier'], '&') !== false
-            || strpos($this->saveData['identifier'], '\\') !== false || strpos($this->saveData['identifier'], '\\') !== false
+            strpos((string) $this->saveData['identifier'], '/') !== false || strpos((string) $this->saveData['identifier'], '/') !== false || strpos((string) $this->saveData['identifier'], '&') !== false || strpos((string) $this->saveData['identifier'], '&') !== false
+            || strpos((string) $this->saveData['identifier'], '\\') !== false || strpos((string) $this->saveData['identifier'], '\\') !== false
         ) {
             $this->aSaveErrors[] = gT("You may not use slashes or ampersands in your name or password.");
         } elseif (!empty($duplicate) && $duplicate->count() > 0) {
@@ -167,7 +163,7 @@ class Save
                     "datestamp"     => $today,
                     "ipaddr"        => getIPAddress(),
                     "startlanguage" => $_SESSION['survey_' . $surveyid]['s_lang'],
-                    "refurl"        => ((isset($_SESSION['survey_' . $surveyid]['refurl'])) ? $_SESSION['survey_' . $surveyid]['refurl'] : getenv('HTTP_REFERER'))
+                    "refurl"        => ($_SESSION['survey_' . $surveyid]['refurl'] ?? getenv('HTTP_REFERER'))
                 );
 
                 if (SurveyDynamic::model($thissurvey['sid'])->insert($sdata)) {
@@ -214,12 +210,12 @@ class Save
                 $mailer->setSurvey($thissurvey['sid']);
                 $mailer->emailType = 'savesurveydetails';
                 $mailer->isHTML(false);
-                $mailer->Subject = gT("Saved Survey Details") . " - " . $thissurvey['name'];
-                $message  = gT("Thank you for saving your survey in progress.  The following details can be used to return to this survey and continue where you left off.  Please make sure to remember your password - we cannot retrieve it for you.");
+                $mailer->Subject = gT("Saved Survey Details", "unescaped") . " - " . $thissurvey['name'];
+                $message  = gT("Thank you for saving your survey in progress.  The following details can be used to return to this survey and continue where you left off.  Please make sure to remember your password - we cannot retrieve it for you.", "unescaped");
                 $message .= "\n\n" . $thissurvey['name'] . "\n\n";
-                $message .= gT("Name") . ": " . Yii::app()->getRequest()->getPost('savename') . "\n";
-                $message .= gT("Password") . ": ***************\n\n";
-                $message .= gT("Reload your survey by clicking on the following link (or pasting it into your browser):") . "\n";
+                $message .= gT("Name", "unescaped") . ": " . Yii::app()->getRequest()->getPost('savename') . "\n";
+                $message .= gT("Password", "unescaped") . ": ***************\n\n";
+                $message .= gT("Reload your survey by clicking on the following link (or pasting it into your browser):", "unescaped") . "\n";
                 $aParams  = array('scid' => $scid, 'lang' => App()->language);
                 if (!empty($clienttoken)) {
                     $aParams['token'] = $clienttoken;
@@ -231,7 +227,7 @@ class Save
                     $errormsg .= gT('Error: Email failed, this may indicate a PHP Mail Setup problem on the server. Your survey details have still been saved, however you will not get an email with the details. You should note the "name" and "password" you just used for future reference.');
                     if (Permission::model()->hasSurveyPermission($thissurvey['sid'], 'surveysettings')) {
                         $errormsg .= sprintf(gT("Email error message %s"), $mailer->getError());
-                        if (trim($thissurvey['adminemail']) == '') {
+                        if (trim((string) $thissurvey['adminemail']) == '') {
                             $errormsg .= gT('(Reason: Administrator email address empty)');
                         }
                     }

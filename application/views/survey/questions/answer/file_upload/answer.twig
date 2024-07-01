@@ -12,22 +12,24 @@
 <!--answer -->
 <div class="{{ coreClass }}">
     <div class='upload-button'>
-        <a
-            id='upload_{{ fileid }}'
-            class='btn btn-primary upload'
-            href='{{uploadurl}}'
-            data-toggle="modal"
-            data-target="file-upload-modal-{{fileid}}"
-            data-showtitle="{{showTitle}}"
-            data-showcomment="{{showComment}}"
-            data-fieldname="{{basename}}"
+        <a role="button"
+           id='upload_{{ fileid }}'
+           class='btn btn-primary upload'
+           href='{{ uploadurl }}'
+           data-bs-toggle="modal"
+           data-bs-target="#file-upload-modal-{{ fileid }}"
+           data-showtitle="{{ showTitle }}"
+           data-showcomment="{{ showComment }}"
+           data-fieldname="{{ basename }}"
         >
-            <span class='fa fa-upload'></span>&nbsp;{{ uploadButtonLabel }}
+            <span class='fa fa-upload ri-upload-fill'></span>
+            &nbsp;
+            {{ uploadButtonLabel }}
         </a>
     </div>
-    <input type='hidden' id='java{{ fileid }}' name='{{ fileid }}' value='{{ value }}' />
+    <input type='hidden' id='java{{ fileid }}' name='{{ fileid }}' value='{{ value|escape("html_attr") }}' />
     <input type='hidden' id='java{{ fileid }}_filecount' name='{{ fileid }}_filecount' value="{{ filecountvalue }}" />
-    <div id='{{ fileid }}_uploadedfiles' class="hidden">
+    <div id='{{ fileid }}_uploadedfiles' class="d-none">
         <table width="100%" class="question uploadedfiles">
             <thead>
                 <tr>
@@ -50,19 +52,21 @@
 
 <!-- modal -->
 <div id="file-upload-modal-{{fileid}}" class="modal fade file-upload-modal" role="dialog">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
 
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header file-upload-modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <div class="h4 modal-title"> {{ ngT("Upload file|Upload files", maxFiles) }}</div>
+                <h5 class="modal-title"> {{ ngT("Upload file|Upload files", maxFiles) }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body file-upload-modal-body">
                 <div id="uploader{{fileid}}" name="uploader{{fileid}}" class="uploader-frame" data-src="{{uploadurl}}" title="{{gT("Upload")}}"></div>
             </div>
             <div class="modal-footer file-upload-modal-footer">
-                <button type="button" class="btn btn-success" data-dismiss="modal">{{ gT("Save changes") }}</button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+                    {{ gT("Save changes") }}
+                </button>
             </div>
         </div>
 
@@ -135,8 +139,10 @@
         {% endif %}
         <td class="upload edit">{name}</td>
         <td>
-            <a class="btn btn-primary trigger_edit_upload_{{fileid}}" data-file="{filepointer}">
-                <i class="fa fa-pencil"></i> &nbsp; {{ "Edit" | gT }}
+            <a role="button" class="btn btn-primary trigger_edit_upload_{{fileid}}" data-file="{filepointer}">
+                <i class="fa fa-pencil ri-pencil-fill"></i>
+                &nbsp; 
+                {{ "Edit" | gT }}
             </a>
         </td>
     </tr>

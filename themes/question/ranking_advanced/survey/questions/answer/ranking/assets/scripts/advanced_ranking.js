@@ -23,7 +23,7 @@ var AdvancedRankingQuestion = function (options) {
         rankingID = "javatbd" + rankingName;
 
     //define HTML snippets
-    var screenReader = "<div class='sr-only'>" + $('#question' + questionId + ' .em_default').html() + "</div><div aria-hidden='true'>" + LSvar.lang.rankhelp + "</div>"
+    var screenReader = "<div class='visually-hidden'>" + $('#question' + questionId + ' .em_default').html() + "</div><div aria-hidden='true'>" + LSvar.lang.rankadvancedhelp + "</div>"
 
     //define functions
     var createSorting = function(){
@@ -33,12 +33,21 @@ var AdvancedRankingQuestion = function (options) {
         var sortableObjectChoice = {
             group: "sortable-" + questionId,
             ghostClass: "ls-rank-placeholder",
-            onEnd: function(){updateRankingNumber();}
+            onEnd: function(){
+                updateRankingNumber();
+            },
+            onMove: function (ev) {
+                if (max_answers > 0 && $('#sortable-rank-' + questionId + ' li').length >= max_answers) {
+                    return false;
+                }
+            }
         },
         sortableObjectRank = {
             group: "sortable-" + questionId,
             ghostClass: "ls-rank-placeholder",
-            onEnd: function(){updateRankingNumber();},
+            onEnd: function(){
+                updateRankingNumber();
+            },
             onSort: function (evt) {
                 if ($(evt.item).hasClass("disabled")) {
                     /* see https://github.com/RubaXa/Sortable/issues/933 */
@@ -56,8 +65,8 @@ var AdvancedRankingQuestion = function (options) {
         }
 
 
-        $('#sortable-choice-' + questionId).sortable(sortableObjectChoice);
-        $('#sortable-rank-' + questionId).sortable(sortableObjectRank);
+        Sortable.create(document.getElementById('sortable-choice-' + questionId), sortableObjectChoice);
+        Sortable.create(document.getElementById('sortable-rank-' + questionId), sortableObjectRank);
 
         $('#question' + questionId + ' .ls-remove').remove();
         // Adapt choice and list height
@@ -145,14 +154,13 @@ var AdvancedRankingQuestion = function (options) {
             window.templateCore.alertSurveyDialog(txtAlert, '');
         }
     },
-    loadDragDropRank = function (questionId) {
-        
+    loadDragDropRank = function () {
         // Update #relevance
         $("[id^=" + relevancename + "]").val('0');
         $('#sortable-rank-' + questionId + ' .answer-item.sortable-item.ls-choice').each(function () {
             $(this).appendTo('#sortable-choice-' + questionId );
         });
-        $('#question' + questionId + ' .select-item select').each(function (index) {
+        $('#question' + questionId + ' .select-item select :selected').each(function (index) {
             if ($(this).val() != '') {
                 $("#" + relevancename + (index+1)).val("1");
                 $('#sortable-choice-' + questionId + ' #' + rankingID + $(this).val()).appendTo('#sortable-rank-' + questionId);

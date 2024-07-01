@@ -1,0 +1,57 @@
+{#
+LimeSurvey
+Copyright (C) 2007-2017 The LimeSurvey Project Team / Louis Gac
+All rights reserved.
+License: GNU/GPL License v2 or later, see LICENSE.php
+LimeSurvey is free software. This version may have been modified pursuant
+to the GNU General Public License, and as distributed it includes or
+is derivative of works licensed under the GNU General Public License or
+other free or open source software licenses.
+See COPYRIGHT.php for copyright notices and details.
+
+(¯`·._.·(¯`·._.· Bootstrap Navigation Bar ·._.·´¯)·._.·´¯)
+
+This file renders a typical bootstrap navigation bar.
+See: https://getbootstrap.com/components/#navbar
+
+For the survey navigator ("Next", "Back", etc.), see: navigation/navigator.twig
+#}
+{% if not aSurveyInfo.popupPreview %}
+    <!-- Bootstrap Navigation Bar -->
+    <div id="survey-nav" class="navbar fixed-top">
+        <div class="container-fluid col-xl-8">
+            {% if( aSurveyInfo.options.brandlogo == "on") %}
+                <div class="navbar-brand logo-container d-none d-md-block">
+                    {{ image(aSurveyInfo.options.brandlogofile, aSurveyInfo.name, {"class": "logo img-fluid"}) }}
+                </div>
+            {% endif %}
+            <div id="navbar-menu" class="dropdown ms-auto ls-no-js-hidden">
+                {% if( aSurveyInfo.aNavigator.load.show == "Y" or
+                    aSurveyInfo.aNavigator.save.show == "Y" or
+                    ((aSurveyInfo.bShowClearAll == true or aSurveyInfo.bShowClearAll == null) and
+                    aSurveyInfo.options.showclearall == 'on') or
+                    aSurveyInfo.aQuestionIndex.bShow == true or
+                    aSurveyInfo.alanguageChanger.show == true) %}
+                    <div id="navbar-toggler" class="navbar-toggler" data-bs-toggle="dropdown"
+                        data-bs-auto-close="outside" aria-expanded="false">
+                        <span class="ri-more-fill"></span>
+                    </div>
+                    <ul id="main-dropdown" class="dropdown-menu dropdown-menu-end" aria-labelledby="navbar-toggler">
+                        {{ include('./subviews/navigation/language_changer_top_menu.twig') }}
+                        {% if( aSurveyInfo.aNavigator.load.show == "Y" or
+                            aSurveyInfo.aNavigator.save.show == "Y" or
+                            ((aSurveyInfo.bShowClearAll == true or aSurveyInfo.bShowClearAll == null) and
+                            aSurveyInfo.options.showclearall == 'on') or
+                            aSurveyInfo.aQuestionIndex.bShow == true) %}
+                            <li class="dropdown-header text-uppercase">{{ gT("Survey options") }}</li>
+                        {% endif %}
+                        {{ include('./subviews/navigation/save_links.twig') }}
+                        {{ include('./subviews/navigation/question_index_menu.twig') }}
+                        {{ include('./subviews/navigation/clearall_links.twig') }}
+                    </ul>
+                {% endif %}
+            </div>
+            <ul id="back-content" class="d-none"></ul>
+        </div>
+    </div>
+{% endif %}

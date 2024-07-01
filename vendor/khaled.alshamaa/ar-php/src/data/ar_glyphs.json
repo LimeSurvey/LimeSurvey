@@ -1,0 +1,498 @@
+{
+    "ا": {
+        "0": "0627",
+        "1": "FE8E",
+        "2": "0627",
+        "3": "FE8E",
+        "prevLink": false,
+        "nextLink": true
+    },
+    "ب": {
+        "0": "0628",
+        "1": "FE90",
+        "2": "FE91",
+        "3": "FE92",
+        "prevLink": true,
+        "nextLink": true
+    },
+    "ت": {
+        "0": "062A",
+        "1": "FE96",
+        "2": "FE97",
+        "3": "FE98",
+        "prevLink": true,
+        "nextLink": true
+    },
+    "ث": {
+        "0": "062B",
+        "1": "FE9A",
+        "2": "FE9B",
+        "3": "FE9C",
+        "prevLink": true,
+        "nextLink": true
+    },
+    "ج": {
+        "0": "062C",
+        "1": "FE9E",
+        "2": "FE9F",
+        "3": "FEA0",
+        "prevLink": true,
+        "nextLink": true
+    },
+    "ح": {
+        "0": "062D",
+        "1": "FEA2",
+        "2": "FEA3",
+        "3": "FEA4",
+        "prevLink": true,
+        "nextLink": true
+    },
+    "خ": {
+        "0": "062E",
+        "1": "FEA6",
+        "2": "FEA7",
+        "3": "FEA8",
+        "prevLink": true,
+        "nextLink": true
+    },
+    "د": {
+        "0": "062F",
+        "1": "FEAA",
+        "2": "062F",
+        "3": "FEAA",
+        "prevLink": false,
+        "nextLink": true
+    },
+    "ذ": {
+        "0": "0630",
+        "1": "FEAC",
+        "2": "0630",
+        "3": "FEAC",
+        "prevLink": false,
+        "nextLink": true
+    },
+    "ر": {
+        "0": "0631",
+        "1": "FEAE",
+        "2": "0631",
+        "3": "FEAE",
+        "prevLink": false,
+        "nextLink": true
+    },
+    "ز": {
+        "0": "0632",
+        "1": "FEB0",
+        "2": "0632",
+        "3": "FEB0",
+        "prevLink": false,
+        "nextLink": true
+    },
+    "س": {
+        "0": "0633",
+        "1": "FEB2",
+        "2": "FEB3",
+        "3": "FEB4",
+        "prevLink": true,
+        "nextLink": true
+    },
+    "ش": {
+        "0": "0634",
+        "1": "FEB6",
+        "2": "FEB7",
+        "3": "FEB8",
+        "prevLink": true,
+        "nextLink": true
+    },
+    "ص": {
+        "0": "0635",
+        "1": "FEBA",
+        "2": "FEBB",
+        "3": "FEBC",
+        "prevLink": true,
+        "nextLink": true
+    },
+    "ض": {
+        "0": "0636",
+        "1": "FEBE",
+        "2": "FEBF",
+        "3": "FEC0",
+        "prevLink": true,
+        "nextLink": true
+    },
+    "ط": {
+        "0": "0637",
+        "1": "FEC2",
+        "2": "FEC3",
+        "3": "FEC4",
+        "prevLink": true,
+        "nextLink": true
+    },
+    "ظ": {
+        "0": "0638",
+        "1": "FEC6",
+        "2": "FEC7",
+        "3": "FEC8",
+        "prevLink": true,
+        "nextLink": true
+    },
+    "ع": {
+        "0": "0639",
+        "1": "FECA",
+        "2": "FECB",
+        "3": "FECC",
+        "prevLink": true,
+        "nextLink": true
+    },
+    "غ": {
+        "0": "063A",
+        "1": "FECE",
+        "2": "FECF",
+        "3": "FED0",
+        "prevLink": true,
+        "nextLink": true
+    },
+    "ف": {
+        "0": "0641",
+        "1": "FED2",
+        "2": "FED3",
+        "3": "FED4",
+        "prevLink": true,
+        "nextLink": true
+    },
+    "ق": {
+        "0": "0642",
+        "1": "FED6",
+        "2": "FED7",
+        "3": "FED8",
+        "prevLink": true,
+        "nextLink": true
+    },
+    "ك": {
+        "0": "0643",
+        "1": "FEDA",
+        "2": "FEDB",
+        "3": "FEDC",
+        "prevLink": true,
+        "nextLink": true
+    },
+    "ل": {
+        "0": "0644",
+        "1": "FEDE",
+        "2": "FEDF",
+        "3": "FEE0",
+        "prevLink": true,
+        "nextLink": true
+    },
+    "م": {
+        "0": "0645",
+        "1": "FEE2",
+        "2": "FEE3",
+        "3": "FEE4",
+        "prevLink": true,
+        "nextLink": true
+    },
+    "ن": {
+        "0": "0646",
+        "1": "FEE6",
+        "2": "FEE7",
+        "3": "FEE8",
+        "prevLink": true,
+        "nextLink": true
+    },
+    "ه": {
+        "0": "0647",
+        "1": "FEEA",
+        "2": "FEEB",
+        "3": "FEEC",
+        "prevLink": true,
+        "nextLink": true
+    },
+    "و": {
+        "0": "0648",
+        "1": "FEEE",
+        "2": "0648",
+        "3": "FEEE",
+        "prevLink": false,
+        "nextLink": true
+    },
+    "ي": {
+        "0": "064A",
+        "1": "FEF2",
+        "2": "FEF3",
+        "3": "FEF4",
+        "prevLink": true,
+        "nextLink": true
+    },
+    "آ": {
+        "0": "0622",
+        "1": "FE82",
+        "2": "0622",
+        "3": "FE82",
+        "prevLink": false,
+        "nextLink": true
+    },
+    "ة": {
+        "0": "0629",
+        "1": "FE94",
+        "2": "0629",
+        "3": "FE94",
+        "prevLink": false,
+        "nextLink": true
+    },
+    "ى": {
+        "0": "0649",
+        "1": "FEF0",
+        "2": "0649",
+        "3": "FEF0",
+        "prevLink": true,
+        "nextLink": true
+    },
+    "پ": {
+        "0": "FB56",
+        "1": "FB57",
+        "2": "FB58",
+        "3": "FB59",
+        "prevLink": true,
+        "nextLink": true
+    },
+    "چ": {
+        "0": "FB7A",
+        "1": "FB7B",
+        "2": "FB7C",
+        "3": "FB7D",
+        "prevLink": true,
+        "nextLink": true
+    },
+    "ژ": {
+        "0": "FB8A",
+        "1": "FB8B",
+        "2": "FB8A",
+        "3": "FB8B",
+        "prevLink": false,
+        "nextLink": true
+    },
+    "گ": {
+        "0": "FB92",
+        "1": "FB93",
+        "2": "FB94",
+        "3": "FB95",
+        "prevLink": true,
+        "nextLink": true
+    },
+    "ی": {
+        "0": "FBFC",
+        "1": "FBFD",
+        "2": "FBFE",
+        "3": "FBFF",
+        "prevLink": true,
+        "nextLink": true
+    },
+    "ء": {
+        "0": "0621",
+        "1": "0621",
+        "2": "0621",
+        "3": "0621",
+        "prevLink": false,
+        "nextLink": false
+    },
+    "أ": {
+        "0": "0623",
+        "1": "FE84",
+        "2": "0623",
+        "3": "FE84",
+        "prevLink": false,
+        "nextLink": true
+    },
+    "ؤ": {
+        "0": "0624",
+        "1": "FE86",
+        "2": "0624",
+        "3": "FE86",
+        "prevLink": false,
+        "nextLink": true
+    },
+    "إ": {
+        "0": "0625",
+        "1": "FE88",
+        "2": "0625",
+        "3": "FE88",
+        "prevLink": false,
+        "nextLink": true
+    },
+    "ئ": {
+        "0": "0626",
+        "1": "FE8A",
+        "2": "FE8B",
+        "3": "FE8C",
+        "prevLink": true,
+        "nextLink": true
+    },
+    "ـ": {
+        "0": "0640",
+        "1": "0640",
+        "2": "0640",
+        "3": "0640",
+        "prevLink": true,
+        "nextLink": true
+    },
+    "،": {
+        "0": "060C",
+        "1": "060C",
+        "2": "060C",
+        "3": "060C",
+        "prevLink": false,
+        "nextLink": false
+    },
+    "؟": {
+        "0": "061F",
+        "1": "061F",
+        "2": "061F",
+        "3": "061F",
+        "prevLink": false,
+        "nextLink": false
+    },
+    "؛": {
+        "0": "061B",
+        "1": "061B",
+        "2": "061B",
+        "3": "061B",
+        "prevLink": false,
+        "nextLink": false
+    },
+    "لآ": {
+        "0": "FEF5",
+        "1": "FEF6",
+        "2": "FEF5",
+        "3": "FEF6",
+        "prevLink": false,
+        "nextLink": true
+    },
+    "لأ": {
+        "0": "FEF7",
+        "1": "FEF8",
+        "2": "FEF7",
+        "3": "FEF8",
+        "prevLink": false,
+        "nextLink": true
+    },
+    "لإ": {
+        "0": "FEF9",
+        "1": "FEFA",
+        "2": "FEF9",
+        "3": "FEFA",
+        "prevLink": false,
+        "nextLink": true
+    },
+    "لا": {
+        "0": "FEFB",
+        "1": "FEFC",
+        "2": "FEFB",
+        "3": "FEFC",
+        "prevLink": false,
+        "nextLink": true
+    },
+    "ٰ":{
+        "0": "0670",
+        "1": "0670",
+        "2": "0670",
+        "3": "0670",
+        "prevLink": true,
+        "nextLink": false
+    },
+    "ىٰ":{
+        "0": "FC5D",
+        "1": "FC5D",
+        "2": "0670",
+        "3": "FC5D",
+        "prevLink": true,
+        "nextLink": true
+    },
+    "ﲐ":{
+        "0": "FC5D",
+        "1": "FC90",
+        "2": "0670",
+        "3": "0670",
+        "prevLink": true,
+        "nextLink": false
+    },
+    "٠":{
+        "0": "0660",
+        "1": "0660",
+        "2": "0660",
+        "3": "0660",
+        "prevLink": false,
+        "nextLink": false
+    },
+    "١":{
+        "0": "0661",
+        "1": "0661",
+        "2": "0661",
+        "3": "0661",
+        "prevLink": false,
+        "nextLink": false
+    },
+    "٢":{
+        "0": "0662",
+        "1": "0662",
+        "2": "0662",
+        "3": "0662",
+        "prevLink": false,
+        "nextLink": false
+    },
+    "٣":{
+        "0": "0663",
+        "1": "0663",
+        "2": "0663",
+        "3": "0663",
+        "prevLink": false,
+        "nextLink": false
+    },
+    "٤":{
+        "0": "0664",
+        "1": "0664",
+        "2": "0664",
+        "3": "0664",
+        "prevLink": false,
+        "nextLink": false
+    },
+    "٥":{
+        "0": "0665",
+        "1": "0665",
+        "2": "0665",
+        "3": "0665",
+        "prevLink": false,
+        "nextLink": false
+    },
+    "٦":{
+        "0": "0666",
+        "1": "0666",
+        "2": "0666",
+        "3": "0666",
+        "prevLink": false,
+        "nextLink": false
+    },
+    "٧":{
+        "0": "0667",
+        "1": "0667",
+        "2": "0667",
+        "3": "0667",
+        "prevLink": false,
+        "nextLink": false
+    },
+    "٨":{
+        "0": "0668",
+        "1": "0668",
+        "2": "0668",
+        "3": "0668",
+        "prevLink": false,
+        "nextLink": false
+    },
+    "٩":{
+        "0": "0669",
+        "1": "0669",
+        "2": "0669",
+        "3": "0669",
+        "prevLink": false,
+        "nextLink": false
+    }
+}

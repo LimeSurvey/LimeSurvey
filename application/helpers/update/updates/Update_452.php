@@ -18,7 +18,7 @@ class Update_452 extends DatabaseUpdateBase
             if ($emailsmtppassword && !empty($emailsmtppassword['stg_value']) && $emailsmtppassword['stg_value'] !== 'somepassword') {
                 $decryptedValue = \LSActiveRecord::decryptSingleOld($emailsmtppassword['stg_value']);
                 $encryptedValue = \LSActiveRecord::encryptSingle($decryptedValue);
-                $this->db->createCommand()->update('{{settings_global}}', ['stg_value' => $encryptedValue], "stg_name='emailsmtppassword'");
+                $this->db->createCommand()->update('{{settings_global}}', ['stg_value' => $encryptedValue ?? ''], "stg_name='emailsmtppassword'");
             }
 
             // update encryption for bounceaccountpass
@@ -30,7 +30,7 @@ class Update_452 extends DatabaseUpdateBase
             if ($bounceaccountpass && !empty($bounceaccountpass['stg_value']) && $bounceaccountpass['stg_value'] !== 'enteredpassword') {
                 $decryptedValue = \LSActiveRecord::decryptSingleOld($bounceaccountpass['stg_value']);
                 $encryptedValue = \LSActiveRecord::encryptSingle($decryptedValue);
-                $this->db->createCommand()->update('{{settings_global}}', ['stg_value' => $encryptedValue], "stg_name='bounceaccountpass'");
+                $this->db->createCommand()->update('{{settings_global}}', ['stg_value' => $encryptedValue ?? ''], "stg_name='bounceaccountpass'");
             }
         }
     }

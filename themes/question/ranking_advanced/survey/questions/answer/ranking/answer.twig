@@ -35,7 +35,7 @@
 {% set show_number=question_template_attribute.show_number %}
 {# {% set show_handle="yes" %} #}
 
-{% set show_number="yes" %}
+{#{% set show_number="yes" %}#}
 
 
 <!-- answer -->
@@ -44,8 +44,8 @@
             {# rows/answer_row.twig #}
             {{sSelects}}
     </ul>
-    {% set rankingView = './views/' ~ question_template_attribute.visualize ~ '.twig' %}
-    {% set rankingView = './views/blocks.twig' %}
+    {% set visualization = (question_template_attribute.visualize is not empty) ? question_template_attribute.visualize : "blocks" %}
+    {% set rankingView = './views/' ~ visualization ~ '.twig' %}
     {{ include(rankingView) }}
 </div>
 
@@ -69,11 +69,11 @@
     }
 {% endset %}
 {# DEBUG #}
-<div class="hidden">
+<div class="d-none">
 {{script}}
 </div>
+{{ registerPackage('sortablejs') }}
 {{ registerScript( 'RankingQuestion'~qId, script, 'POS_POSTSCRIPT') }}
-{{ registerPackage( 'sortable' ) }}
 
 
 <!-- end of answer -->

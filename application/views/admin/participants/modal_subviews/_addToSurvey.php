@@ -3,26 +3,26 @@
     ), 'post'
 ); ?>
     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <div class="modal-title h4" id="participant_edit_modal"><?php echo ngT('Add participant to survey|Add participants to survey', $count); ?></div>
+        <h5 class="modal-title" id="participant_edit_modal"><?php echo ngT('Add participant to survey|Add participants to survey', $count); ?></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
 
     <div class="modal-body ">
 
-        <div class='col-sm-4'></div>
-        <div class='col-sm-8'>
+        <div class='col-md-4'></div>
+        <div class='col-md-8'>
             <p><?php echo ngT('Add the selected participant to survey.|Add the {n} selected participants to survey.', $count); ?></p>
         </div>
 
         <!-- Comma separated list -->
         <input type='hidden' name='participant_id' value='<?php echo $participant_id; ?>'/>
         <div class="row ls-space margin top-10 bottom-10">
-            <div class='form-group'>
-                <label class='control-label col-sm-4'>
+            <div class='mb-3'>
+                <label class='form-label col-md-4'>
                     <?php eT('Survey'); ?>
                 </label>
-                <div class='col-sm-8'>
-                    <select name='survey_id' class='form-control'>
+                <div class='col-md-8'>
+                    <select name='survey_id' class='form-select'>
                         <?php foreach ($surveys as $survey): ?>
                             <?php if ($hasGlobalPermission || Permission::model()->hasSurveyPermission($survey->sid, 'tokens', 'update')): ?>
                                 <option value='<?php echo $survey->sid; ?>'><?php echo $survey->languagesettings[$survey->language]->surveyls_title; ?> (<?php echo $survey->sid; ?>)</option>
@@ -33,19 +33,28 @@
             </div>
         </div>
         <div class="row ls-space margin top-10 bottom-10">
-            <div class='form-group'>
-                <label class='control-label col-sm-4'>
+            <div class='mb-3'>
+                <label class='form-label col-md-4'>
                     <?php eT('Display survey participant table after addition?'); ?>
                 </label>
-                <div class='col-sm-8'>
-                    <input name='redirect' type='checkbox' data-size='small' data-on-color='primary' data-off-color='warning' data-off-text='<?php eT('No'); ?>' data-on-text='<?php eT('Yes'); ?>' class='ls-bootstrap-switch' />
+                <div class='col-md-8'>
+                    <?php App()->getController()->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                        'name'          => "redirect",
+                        'checkedOption' => "0",
+                        'selectOptions' => [
+                            '1' => gT('Yes'),
+                            '0' => gT('No'),
+                        ]
+                    ]); ?>
                 </div>
             </div>
         </div>
     </div>
 
     <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal"><?php eT('Cancel') ?></button>
-        <input type="submit" class="btn btn-primary action_save_modal_shareparticipant" value='<?php eT('Add')?>' />
+        <button type="button" class="btn btn-cancel" data-bs-dismiss="modal"><?php eT('Cancel') ?></button>
+        <button role="button" type="submit" class="btn btn-primary action_save_modal_shareparticipant">
+            <?php eT('Add')?>
+        </button>
     </div>
 <?php $this->endWidget('CActiveForm'); ?>

@@ -121,7 +121,7 @@ export default class TimerConstructor {
             this.timerLogger.log('Warning called!');
             const timeObject = this._parseTimeToObject(this.option.warning, true);
             this.$warningTimeDisplayElement.html(timeObject.hours + ':' + timeObject.minutes + ':' + timeObject.seconds);
-            this.$warningDisplayElement.removeClass('hidden').css({
+            this.$warningDisplayElement.removeClass('hidden d-none').css({
                 opacity: 0
             }).animate({
                 'opacity': 1
@@ -131,7 +131,7 @@ export default class TimerConstructor {
                 this.$warningDisplayElement.animate({
                     opacity: 0
                 }, 200, () => {
-                    this.$warningDisplayElement.addClass('hidden');
+                    this.$warningDisplayElement.addClass('hidden d-none');
                 })
             }, 1000 * this.option.warninghide);
         }
@@ -145,7 +145,7 @@ export default class TimerConstructor {
             this.timerLogger.log('Warning2 called!');
             const timeObject = this._parseTimeToObject(this.option.warning, true);
             this.$warning2TimeDisplayElement.html(timeObject.hours + ':' + timeObject.minutes + ':' + timeObject.seconds);
-            this.$warning2DisplayElement.removeClass('hidden').css({
+            this.$warning2DisplayElement.removeClass('hidden d-none').css({
                 opacity: 0
             }).animate({
                 'opacity': 1
@@ -155,7 +155,7 @@ export default class TimerConstructor {
                 this.$warning2DisplayElement.animate({
                     opacity: 0
                 }, 200, () => {
-                    this.$warning2DisplayElement.addClass('hidden');
+                    this.$warning2DisplayElement.addClass('hidden d-none');
                 })
             }, 1000 * this.option.warning2hide);
         }
@@ -190,6 +190,9 @@ export default class TimerConstructor {
      * Gets the current timer from the localStorage
      */
     _getTimerFromLocalStorage() {
+        if(!window.localStorage) {
+            return null;
+        }
         const timeLeft = window.localStorage.getItem('limesurvey_timers_' + this.timersessionname);
         return (!isNaN(parseInt(timeLeft)) ? timeLeft : 0);
     }
@@ -198,6 +201,9 @@ export default class TimerConstructor {
      * Sets the current timer to localStorage
      */
     _setTimerToLocalStorage(timerValue) {
+        if(!window.localStorage) {
+            return;
+        }
         window.localStorage.setItem('limesurvey_timers_' + this.timersessionname, timerValue);
     }
     
@@ -205,6 +211,9 @@ export default class TimerConstructor {
      * Appends the current timer's qid to the list of timers for the survey
      */
     _appendTimerToSurveyTimersList() {
+        if(!window.localStorage) {
+            return;
+        }
         var timers = JSON.parse(window.localStorage.getItem(this.surveyTimersItemName) || "[]");
         if (!timers.includes(this.timersessionname)) timers.push(this.timersessionname);
         window.localStorage.setItem(this.surveyTimersItemName, JSON.stringify(timers));
@@ -214,6 +223,9 @@ export default class TimerConstructor {
      * Unsets the timer in localStorage
      */
     _unsetTimerInLocalStorage() {
+        if(!window.localStorage) {
+            return;
+        }
         window.localStorage.removeItem('limesurvey_timers_' + this.timersessionname);
     }
 
@@ -237,7 +249,7 @@ export default class TimerConstructor {
      * Show the notice that the time is up and the input is expired
      */
     _showExpiredNotice() {
-        this.$timerExpiredElement.removeClass('hidden');
+        this.$timerExpiredElement.removeClass('hidden d-none');
     }
 
     /**

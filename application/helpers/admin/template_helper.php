@@ -20,7 +20,7 @@
 function doreplacement($file, $data, $oTemplate = '')
 {
     //Produce sample page from template file
-    $aReplacements = isset($data['aReplacements']) ? $data['aReplacements'] : array();
+    $aReplacements = $data['aReplacements'] ?? array();
     return (array) templatereplace(file_get_contents($file), $aReplacements, $data, 'Unspecified', false, null, array(), false, $oTemplate);
 }
 
@@ -41,7 +41,7 @@ function getListOfFiles($wh)
         }
         closedir($handle);
     }
-    $arr = explode("\n", $files);
+    $arr = explode("\n", (string) $files);
     sort($arr);
     return $arr;
 }
@@ -132,9 +132,9 @@ function templateExtractFilter($p_event, &$p_header)
 {
     $aAllowExtensions = explode(',', Yii::app()->getConfig('allowedthemeuploads') . ',' . Yii::app()->getConfig('allowedthemeimageformats'));
     $aAllowExtensions[] = 'twig';
-    $info = pathinfo($p_header['filename']);
+    $info = pathinfo((string) $p_header['filename']);
 
-    if ($p_header['folder'] || !isset($info['extension']) || in_array($info['extension'], $aAllowExtensions)) {
+    if ($p_header['folder'] || !isset($info['extension']) || in_array(strtolower($info['extension']), $aAllowExtensions)) {
         return 1;
     } else {
         return 0;

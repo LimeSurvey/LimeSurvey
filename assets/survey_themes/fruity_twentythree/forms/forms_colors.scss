@@ -1,0 +1,141 @@
+$input-color                 : $g-900;
+$input-border-color          : $g-700;
+$input-border-color-disabled : $g-600;
+$input-box-shadow            : 4px 4px 0 $elevation-shadow;
+$input-focus-border-color    : $g-900;
+$input-group-addon-color     : $white;
+$input-font-size             : 14px;
+// input field
+.form-control {
+    color        : $input-color;
+    border-color : $input-border-color;
+    font-size    : $input-font-size;
+    &:focus {
+        box-shadow   : $input-box-shadow;
+        border-color : $input-focus-border-color
+    }
+    &::placeholder {
+        color   : $g-600;
+        opacity : 1;
+    }
+    &:-ms-input-placeholder {
+        color   : $g-600;
+        opacity : 1;
+    }
+}
+
+.form-control[disabled] {
+    color            : $color_mercury_approx;
+    &.total {
+        color : $color_gravel_approx;
+    }
+    background-color : $color_wild_sand_approx;
+    opacity          : 1;
+}
+
+.form-control[readonly] {
+    background-color : $color_wild_sand_approx;
+    opacity          : 1;
+}
+
+.form-control.ls-important-field {
+    border      : 2px solid $g-900 !important;
+    box-shadow  : 8px 8px 0px $g-200;
+    &:focus {
+        box-shadow : 8px 8px 0px $elevation-shadow;
+    }
+    &:disabled, &[readonly] {
+        border           : 2px solid $input-border-color-disabled !important;
+    }
+}
+
+fieldset[disabled] {
+    .form-control {
+        background-color : $color_wild_sand_approx;
+        opacity          : 1;
+    }
+}
+
+.ls-answers label, .answer-item label, .control-label {
+    color : $g-700;
+}
+
+.input-group-text, label .input-group-text {
+    color            : $input-group-addon-color;
+    background-color : $base-color;
+    border-color     : $input-border-color;
+    & label {
+        color : $input-group-addon-color;
+    }
+    &.ls-important-field {
+        border : 2px solid $g-900;
+    }
+}
+
+input[type="password"],
+.ui-autocomplete-input,
+textarea,
+.uneditable-input {
+    color : $color_storm_dust_approx;
+}
+
+// select
+.form-select {
+    border-color : $input-border-color;
+    &:focus {
+        box-shadow   : 4px 4px 0px $elevation-shadow;
+        border-color : $input-border-color;
+    }
+    &:disabled {
+        border-color     : $input-border-color-disabled;
+        background-color : $g-400;
+        color            : $g-600;
+    }
+    &.ls-important-field {
+        border     : 2px solid $input-focus-border-color !important;
+        box-shadow : 8px 8px 0px $g-200;
+        z-index    : 3;
+        &:focus {
+            box-shadow : 8px 8px 0px $elevation-shadow;
+        }
+        &:disabled, &[readonly] {
+            border           : 2px solid $input-border-color-disabled !important;
+            background-color : $g-400;
+        }
+    }
+}
+
+.has-success {
+    .form-control {
+        box-shadow : 4px 4px 0 $base-color;
+        z-index    : 3;
+        &:focus {
+            box-shadow : 4px 4px 0 $base-color;
+        }
+    }
+}
+
+.has-warning {
+    .form-control {
+        box-shadow : 4px 4px 0 $warning;
+        z-index    : 3;
+        &:focus {
+            box-shadow : 4px 4px 0 $warning;
+        }
+    }
+}
+
+.has-error,
+.input-error {
+    .form-control {
+        box-shadow : 4px 4px 0 $error;
+        z-index    : 3;
+        &:focus {
+            box-shadow : 4px 4px 0 $error;
+        }
+    }
+}
+
+.control-label {
+    @include control-label_color;
+}

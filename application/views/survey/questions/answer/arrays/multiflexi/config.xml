@@ -244,7 +244,8 @@
             <category>Display</category>
             <sortorder>111</sortorder>
             <inputtype>integer</inputtype>
-            <default></default>
+            <default>1</default>
+            <min>1</min>
             <help>Step value</help>
             <caption>Step value</caption>
             <i18n></i18n>

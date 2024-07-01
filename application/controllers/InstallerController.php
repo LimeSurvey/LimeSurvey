@@ -47,7 +47,11 @@ class InstallerController extends CController
     {
         $this->checkInstallation();
         $this->sessioncontrol();
-        Yii::import('application.helpers.common_helper', true);
+        App()->loadHelper('common');
+        App()->loadHelper('surveytranslator');
+        AdminTheme::getInstance();
+        App()->getClientScript()->registerCssFile(App()->baseUrl . '/installer/css/main.css');
+        App()->getClientScript()->registerCssFile(App()->baseUrl . '/installer/css/fonts.css');
 
         switch ($action) {
             case 'welcome':
@@ -141,7 +145,7 @@ class InstallerController extends CController
         }
         $aLanguages = [];
         foreach (getLanguageData(true, $sCurrentLanguage) as $sKey => $aLanguageInfo) {
-            $aLanguages[htmlspecialchars($sKey)] = sprintf('%s - %s', $aLanguageInfo['nativedescription'], $aLanguageInfo['description']);
+            $aLanguages[htmlspecialchars((string) $sKey)] = sprintf('%s - %s', $aLanguageInfo['nativedescription'], $aLanguageInfo['description']);
         }
         $aData['languages'] = $aLanguages;
         $this->render('/installer/welcome_view', $aData);
@@ -159,7 +163,7 @@ class InstallerController extends CController
         $aData['classesForStep'] = array('off', 'on', 'off', 'off', 'off', 'off');
         $aData['progressValue'] = 15;
 
-        if (strtolower($_SERVER['REQUEST_METHOD']) == 'post') {
+        if (strtolower((string) $_SERVER['REQUEST_METHOD']) == 'post') {
             $this->redirect(array('installer/precheck'));
         }
         Yii::app()->session['saveCheck'] = 'save'; // Checked in next step
@@ -375,10 +379,11 @@ class InstallerController extends CController
             Yii::app()->session['populatedatabase'] = true;
             Yii::app()->session['databaseexist'] = true;
             unset(Yii::app()->session['databaseDontExist']);
-
-            $aData['adminoutputText'] = "<tr bgcolor='#efefef'><td colspan='2' align='center'>"
-            . "<div class='alert alert-success''><strong>\n"
-            . gT("Database has been created.") . "</strong></div>\n"
+            $successAlert = $this->widget('ext.AlertWidget.AlertWidget', [
+                'text' => '<strong>' . gT("Database has been created") . '.</strong>',
+                'type' => 'success',
+            ], true);
+            $aData['adminoutputText'] =  $successAlert . "\n"
             . gT("Please continue with populating the database.") . "<br /><br />\n";
             $aData['next'] = array(
                 'action' => 'installer/populatedb',
@@ -592,9 +597,9 @@ class InstallerController extends CController
     public function chekHtmlImage($result)
     {
         if ($result) {
-            return "<span class='fa fa-check text-success' alt='right'></span>";
+            return "<span class='ri-check-fill text-success' alt='right'></span>";
         } else {
-            return "<span class='fa fa-exclamation-triangle text-danger' alt='wrong'></span>";
+            return "<span class='ri-error-warning-fill text-danger' alt='wrong'></span>";
         }
     }
 
@@ -813,7 +818,7 @@ class InstallerController extends CController
             $aLines = file($sFileName);
         }
         foreach ($aLines as $sLine) {
-            $sLine = rtrim($sLine);
+            $sLine = rtrim((string) $sLine);
             $iLineLength = strlen($sLine);
 
             if ($iLineLength && $sLine[0] != '#' && substr($sLine, 0, 2) != '--') {
@@ -859,7 +864,7 @@ class InstallerController extends CController
             //{
             $sShowScriptName = 'true';
             //}
-            if (stripos($_SERVER['SERVER_SOFTWARE'], 'apache') !== false || (ini_get('security.limit_extensions') && ini_get('security.limit_extensions') != '')) {
+            if (stripos((string) $_SERVER['SERVER_SOFTWARE'], 'apache') !== false || (ini_get('security.limit_extensions') && ini_get('security.limit_extensions') != '')) {
                 $sURLFormat = 'path';
             } else {
                 // Apache
@@ -917,8 +922,8 @@ class InstallerController extends CController
             if ($model->dbtype != InstallerConfigForm::DB_TYPE_SQLSRV && $model->dbtype != InstallerConfigForm::DB_TYPE_DBLIB) {
                 $sConfig .= "\t\t\t" . "'emulatePrepare' => true," . "\n";
             }
-            $sConfig .= "\t\t\t" . "'username' => '" . addcslashes($model->dbuser, "'") . "'," . "\n"
-            . "\t\t\t" . "'password' => '" . addcslashes($model->dbpwd, "'") . "'," . "\n"
+            $sConfig .= "\t\t\t" . "'username' => '" . addcslashes((string) $model->dbuser, "'") . "'," . "\n"
+            . "\t\t\t" . "'password' => '" . addcslashes((string) $model->dbpwd, "'") . "'," . "\n"
             . "\t\t\t" . "'charset' => '{$sCharset}'," . "\n"
             . "\t\t\t" . "'tablePrefix' => '{$model->dbprefix}'," . "\n";
 
@@ -956,6 +961,11 @@ class InstallerController extends CController
             . "\t\t" . ")," . "\n"
             . "\t" . "" . "\n"
 
+            . "\t\t" . "// If URLs generated while running on CLI are wrong, you need to set the baseUrl in the request component. For example:" . "\n"
+            . "\t\t" . "//'request' => array(" . "\n"
+            . "\t\t" . "//\t'baseUrl' => '/limesurvey'," . "\n"
+            . "\t\t" . "//)," . "\n"
+
             . "\t" . ")," . "\n"
             . "\t" . "// For security issue : it's better to set runtimePath out of web access" . "\n"
             . "\t" . "// Directory must be readable and writable by the webuser" . "\n"
@@ -967,7 +977,12 @@ class InstallerController extends CController
             . "\t" . "// on your webspace." . "\n"
             . "\t" . "// LimeSurvey developers: Set this to 2 to additionally display STRICT PHP error messages and get full access to standard templates" . "\n"
             . "\t\t" . "'debug'=>0," . "\n"
-            . "\t\t" . "'debugsql'=>0, // Set this to 1 to enanble sql logging, only active when debug = 2" . "\n";
+            . "\t\t" . "'debugsql'=>0, // Set this to 1 to enanble sql logging, only active when debug = 2" . "\n"
+            . "\n"
+            . "\t\t" . "// If URLs generated while running on CLI are wrong, you need to uncomment the following line and set your" . "\n"
+            . "\t\t" . "// public URL (the URL facing survey participants). You will also need to set the request->baseUrl in the section above." . "\n"
+            . "\t\t" . "//'publicurl' => 'https://www.example.org/limesurvey'," . "\n"
+            . "\n";
 
             if ($model->isMysql) {
                 $sConfig .= "\t\t" . "// Mysql database engine (INNODB|MYISAM):" . "\n"
