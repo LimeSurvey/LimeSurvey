@@ -1810,7 +1810,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                     }
                 }
                 if ($arow['type'] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS) {
-                    $fieldname = "{Q{$arow['qid']}{$abrow['title']}comment";
+                    $fieldname = "Q{$arow['qid']}{$abrow['title']}comment";
                     if (isset($fieldmap[$fieldname])) {
                         $aDuplicateQIDs[$arow['qid']] = array('fieldname' => $fieldname, 'question' => $arow['question'], 'gid' => $arow['gid']);
                     }
