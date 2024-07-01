@@ -302,7 +302,7 @@ class ParticipantAttributeName extends LSActiveRecord
         // Warning: Please modify the following code to remove attributes that
         // should not be searched.
 
-        $criteria = new CDbCriteria();
+        $criteria = new LSDbCriteria();
 
         $criteria->compare('defaultname', $this->defaultname, true, 'AND', true);
         $criteria->compare('attribute_id', $this->attribute_id);

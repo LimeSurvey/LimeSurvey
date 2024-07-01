@@ -1161,7 +1161,7 @@ class Question extends LSActiveRecord
             'question_order' => CSort::SORT_ASC,
         );
 
-        $criteria = new CDbCriteria();
+        $criteria = new LSDbCriteria();
         $criteria->compare("t.sid", $this->sid, false, 'AND');
         $criteria->compare("t.parent_qid", 0, false, 'AND');
         //$criteria->group = 't.qid, t.parent_qid, t.sid, t.gid, t.type, t.title, t.preg, t.other, t.mandatory, t.question_order, t.scale_id, t.same_default, t.relevance, t.modulename, t.encrypted';
@@ -1172,7 +1172,7 @@ class Question extends LSActiveRecord
         ];
 
         if (!empty($this->title)) {
-            $criteria2 = new CDbCriteria();
+            $criteria2 = new LSDbCriteria();
             $criteria2->compare('t.title', $this->title, true, 'OR');
             $criteria2->compare('ql10n.question', $this->title, true, 'OR');
             $criteria2->compare('t.type', $this->title, true, 'OR');

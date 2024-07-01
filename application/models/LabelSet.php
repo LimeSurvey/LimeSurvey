@@ -179,8 +179,8 @@ class LabelSet extends LSActiveRecord implements PermissionInterface
     {
         $pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
 
-        $criteria = new CDbCriteria();
-        // Permission : do nnot use for list : All labelSets can be used by anyone currently.
+        $criteria = new LSDbCriteria();
+        // Permission : do not use for list : All labelSets can be used by anyone currently.
         $criteriaPerm = self::getPermissionCriteria();
         $criteria->mergeWith($criteriaPerm, 'AND');
 
