@@ -2271,16 +2271,23 @@ function getArrayFilterExcludesCascadesForGroup($surveyid, $gid = "", $output = 
         $qrows = $fieldmap;
     }
     $grows = array(); //Create an empty array in case query not return any rows
+    $qids = [0];
     // Store each result as an array with in the $grows array
     foreach ($qrows as $qrow) {
         if (isset($qrow['gid']) && !empty($qrow['gid'])) {
-            $grows[$qrow['qid']] = array('qid' => $qrow['qid'], 'type' => $qrow['type'], 'mandatory' => $qrow['mandatory'], 'title' => $qrow['title'], 'gid' => $qrow['gid']);
+            $qids[] = $qrow['qid'];
+            $grows[$qrow['qid']] = array('qid' => $qrow['qid'], 'type' => $qrow['type'], 'mandatory' => $qrow['mandatory'] ?? true, 'title' => $qrow['title'] ?? 'abc', 'gid' => $qrow['gid']);
         }
+    }
+    $rawQuestions = Question::model()->findAllByPk($qids);
+    $questions = [];
+    foreach ($rawQuestions as $rawQuestion) {
+        $questions[$rawQuestion->qid] = $rawQuestion;
     }
     foreach ($grows as $qrow) {
     // Cycle through questions to see if any have list_filter attributes
         $qidtotitle[$qrow['qid']] = $qrow['title'];
-        $qresult = QuestionAttribute::model()->getQuestionAttributes($qrow['qid']);
+        $qresult = QuestionAttribute::model()->getQuestionAttributes($questions[$qrow['qid']] ?? $qrow['qid']);
         if (isset($qresult['array_filter_exclude'])) {
         // We Found a array_filter attribute
             $val = $qresult['array_filter_exclude']; // Get the Value of the Attribute ( should be a previous question's title in same group )
