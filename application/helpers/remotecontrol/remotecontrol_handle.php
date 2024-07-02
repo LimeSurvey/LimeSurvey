@@ -1134,8 +1134,8 @@ class remotecontrol_handle
      * @param int $iSurveyID The ID of the Survey that the group will belong
      * @param string $sImportData String containing the BASE 64 encoded data of a lsg,csv
      * @param string $sImportDataType  lsg,csv
-     * @param string $sNewGroupName  Optional new name for the group
-     * @param string $sNewGroupDescription  Optional new description for the group
+     * @param string $sNewGroupName  Optional new name for the group in the survey's base language
+     * @param string $sNewGroupDescription  Optional new description for the group in the survey's base language
      * @return array|integer iGroupID  - ID of the new group or status
      */
     public function import_group($sSessionKey, $iSurveyID, $sImportData, $sImportDataType, $sNewGroupName = null, $sNewGroupDescription = null)
@@ -1192,14 +1192,17 @@ class remotecontrol_handle
                     $iNewgid = $aImportResults['newgid'];
 
                     $oGroup = QuestionGroup::model()->findByAttributes(array('gid' => $iNewgid));
+                    $sLanguage = Survey::model()->findByPk($iSurveyID)->language;
+                    $oGroupL10n = $oGroup->questiongroupl10ns[$sLanguage];
+
                     if ($sNewGroupName != '') {
-                                            $oGroup->setAttribute('group_name', (string) $sNewGroupName);
+                                            $oGroupL10n->setAttribute('group_name', (string) $sNewGroupName);
                     }
                     if ($sNewGroupDescription != '') {
-                                        $oGroup->setAttribute('description', (string) $sNewGroupDescription);
+                                        $oGroupL10n->setAttribute('description', (string) $sNewGroupDescription);
                     }
                     try {
-                        $oGroup->save();
+                        $oGroupL10n->save();
                     } catch (Exception $e) {
                         // no need to throw exception
                     }
