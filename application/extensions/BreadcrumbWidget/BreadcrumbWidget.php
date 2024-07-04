@@ -12,7 +12,7 @@ class BreadcrumbWidget extends CWidget
     /**
      * @const int the allowed maximal number of characters the breadcrumb should display
      */
-    private const THRESHOLD = 44;
+    private const THRESHOLD = 65;
 
     /**
      * @var array containing different objects and strings needed for the building of the breadcrumbs
