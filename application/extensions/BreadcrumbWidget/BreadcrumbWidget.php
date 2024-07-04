@@ -12,7 +12,7 @@ class BreadcrumbWidget extends CWidget
     /**
      * @const int the allowed maximal number of characters the breadcrumb should display
      */
-    private const THRESHOLD = 500;
+    private const THRESHOLD = 44;
 
     /**
      * @var array containing different objects and strings needed for the building of the breadcrumbs
@@ -84,8 +84,16 @@ class BreadcrumbWidget extends CWidget
                 'href' => App()->createUrl('surveyAdministration/listsurveys'),
                 'text' => gt('Surveys')
             ];
+
         if (isset($survey)) {
-            if (!isset($questionGroup)) {
+            $breadcrumbs[] =
+            [
+                'id' => 'breadcrumb__survey--overview',
+                //'href' => App()->createUrl('/surveyAdministration/view/', ['iSurveyID' => $survey->sid]),
+                'text' => $survey->defaultlanguage->surveyls_title . "({$survey->sid})"
+            ];
+
+            /*if (!isset($questionGroup)) {
                 $breadcrumbs[] =
                     [
                         'id' => 'breadcrumb__survey--overview',
@@ -98,7 +106,7 @@ class BreadcrumbWidget extends CWidget
                         'href' => App()->createUrl('/surveyAdministration/view/', ['iSurveyID' => $survey->sid]),
                         'text' => $survey->defaultlanguage->surveyls_title,
                     ];
-            }
+            }*/
         }
         return $breadcrumbs;
     }
@@ -117,7 +125,7 @@ class BreadcrumbWidget extends CWidget
         $question = $breadcrumbConfigArray['oQuestion'];
         if (isset($questionGroup)) {
             // If the questiongroup view is active right now, don't link it?
-            if (!$subAction && !isset($question)) {
+            /*if (!$subAction && !isset($question)) {
                 $breadcrumbs[] = [
                     'text' => $questionGroup->isNewRecord ? gT('New question group') : flattenText(
                         $questionGroup->questiongroupl10ns[$survey->language]->group_name
@@ -139,7 +147,7 @@ class BreadcrumbWidget extends CWidget
                             'text' => $subAction,
                         ];
                 }
-            }
+            }*/
         }
         return $breadcrumbs;
     }
@@ -156,7 +164,7 @@ class BreadcrumbWidget extends CWidget
         $question = $breadcrumbConfigArray['oQuestion'];
         if (isset($question)) {
             // If the question view is active right now, don't link it
-            if (!isset($subAction)) {
+            /*if (!isset($subAction)) {
                 $breadcrumbs[] =
                     [
                         'text' => $question->title,
@@ -175,7 +183,7 @@ class BreadcrumbWidget extends CWidget
                     [
                         'text' => $subAction
                     ];
-            }
+            }*/
         }
         return $breadcrumbs;
     }
@@ -191,7 +199,7 @@ class BreadcrumbWidget extends CWidget
         $survey = $breadcrumbConfigArray['oSurvey'];
         $token = $breadcrumbConfigArray['token'];
         $active = $breadcrumbConfigArray['active'];
-        if (isset($token)) {
+        /*if (isset($token)) {
             $breadcrumbs[] =
                 [
                     'id' => 'breadcrumb__survey--participants',
@@ -202,7 +210,7 @@ class BreadcrumbWidget extends CWidget
                 [
                     'text' => gT($active),
                 ];
-        }
+        }*/
         return $breadcrumbs;
     }
 
@@ -218,7 +226,7 @@ class BreadcrumbWidget extends CWidget
         $moduleSubActionUrl = $breadcrumbConfigArray['module_subaction_url'];
         $moduleCurrentAction = $breadcrumbConfigArray['module_current_action'];
         $active = $breadcrumbConfigArray['active'];
-        if (isset($moduleSubAction)) {
+        /*if (isset($moduleSubAction)) {
             $breadcrumbs[] =
                 [
                     'id' => 'breadcrumb__module--subaction',
@@ -232,7 +240,7 @@ class BreadcrumbWidget extends CWidget
                         'text' => gT($active),
                     ];
             }
-        }
+        }*/
         return $breadcrumbs;
     }
 

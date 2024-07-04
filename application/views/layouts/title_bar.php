@@ -25,8 +25,7 @@ App()->getController()->widget('ext.BreadcrumbWidget.BreadcrumbWidget', [
     'htmlOptions' => [
         'id' => 'breadcrumb-container',
         'class' => "ls-ba",
+        'style' => 'margin: 0 auto;'
 
     ],
 ]);
-?>
-
