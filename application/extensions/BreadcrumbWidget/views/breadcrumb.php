@@ -15,7 +15,7 @@
             $lastOne = count($breadcrumbs) === $i + 1;
             ?>
             <li class="breadcrumb-item <?= $lastOne ? 'active' : '' ?>" <?= $lastOne ? 'aria-current="page"' : '' ?> data-bs-toggle="tooltip"
-                title="<?= CHtml::encode($breadcrumbArray['fullText']) ?>">
+                title="<?= CHtml::encode($breadcrumbArray['fullText']) ?>" data-bs-placement="bottom">
                 <?php if ($href !== '') : ?>
                     <a id="<?= $id ?>" class="pjax animate"
                        href="<?= $href ?>">
