@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2024-07-01 13:11:42+00:00\n"
+"POT-Creation-Date: 2024-07-04 11:31:06+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -35,7 +35,7 @@ msgstr ""
 #: application/extensions/PanelBoxWidget/PanelBoxWidget.php:62
 #: application/extensions/PanelBoxWidget/PanelBoxWidget.php:63
 #: application/extensions/admin/grid/MassiveActionsWidget/views/modals/first-select.php:6
-#: application/helpers/SurveyRuntimeHelper.php:1163
+#: application/helpers/SurveyRuntimeHelper.php:1169
 #: application/helpers/admin/import_helper.php:97
 #: application/helpers/admin/import_helper.php:206
 #: application/helpers/admin/import_helper.php:316
@@ -387,7 +387,7 @@ msgstr ""
 
 #: application/controllers/AssessmentController.php:329
 #: application/core/LsDefaultDataSets.php:446
-#: application/models/Survey.php:2198
+#: application/models/Survey.php:2210
 #: application/models/TemplateManifest.php:174
 #: application/views/admin/survey/copySurvey_view.php:54
 #: application/views/assessment/assessments_view.php:14
@@ -1471,7 +1471,7 @@ msgid "You do not have permission for this quota."
 msgstr ""
 
 #: application/controllers/RegisterController.php:166
-#: application/helpers/SurveyRuntimeHelper.php:1663
+#: application/helpers/SurveyRuntimeHelper.php:1669
 msgid "Your answer to the security question was not correct - please try again."
 msgstr ""
 
@@ -2128,7 +2128,7 @@ msgid "Survey update failed"
 msgstr ""
 
 #: application/controllers/SurveyAdministrationController.php:842
-#: application/helpers/SurveyRuntimeHelper.php:1157
+#: application/helpers/SurveyRuntimeHelper.php:1163
 #: application/helpers/update/update_helper.php:37
 #: application/models/services/PasswordManagement.php:99
 #: application/views/admin/dataentry/insert.php:37
@@ -2364,7 +2364,7 @@ msgid "Error: Response table does not exist. Survey cannot be deactivated."
 msgstr ""
 
 #: application/controllers/SurveyAdministrationController.php:1803
-#: application/helpers/frontend_helper.php:1447
+#: application/helpers/frontend_helper.php:1451
 #: tmp/runtime/twig_cache/94/94c1892a8db15feecb2c277e044caa42c227e9a10ce7e170f1e9e067ae457466.php:111
 #: tmp/runtime/twig_cache/e5/e5c7f01e7d680e2df67745615f7d0ac54db1d00a0c3ed6d5a97903a4198c4c73.php:112
 msgid "There are no questions in this survey."
@@ -2449,8 +2449,8 @@ msgstr ""
 #: application/controllers/admin/ParticipantsAction.php:871
 #: application/controllers/admin/Themes.php:394
 #: application/core/SurveyCommonAction.php:1047
-#: application/helpers/SurveyRuntimeHelper.php:1452
-#: application/helpers/frontend_helper.php:2215
+#: application/helpers/SurveyRuntimeHelper.php:1458
+#: application/helpers/frontend_helper.php:2219
 #: application/models/services/CopySurveyResources.php:68
 #: application/models/services/FilterImportedResources.php:69
 #: application/views/admin/participants/participantsPanel_view.php:19
@@ -2588,7 +2588,7 @@ msgstr ""
 #: application/core/plugins/expressionFixedDbVar/expressionFixedDbVar.php:165
 #: application/extensions/admin/grid/MassiveActionsWidget/views/modals/yes-no-lg.php:52
 #: application/extensions/admin/grid/MassiveActionsWidget/views/modals/yes-no.php:52
-#: application/helpers/SurveyRuntimeHelper.php:552
+#: application/helpers/SurveyRuntimeHelper.php:558
 #: application/helpers/admin/statistics_helper.php:1210
 #: application/helpers/admin/statistics_helper.php:1335
 #: application/helpers/common_helper.php:1037
@@ -2733,7 +2733,7 @@ msgstr ""
 #: application/core/plugins/expressionFixedDbVar/expressionFixedDbVar.php:164
 #: application/extensions/admin/grid/MassiveActionsWidget/views/modals/yes-no-lg.php:43
 #: application/extensions/admin/grid/MassiveActionsWidget/views/modals/yes-no.php:43
-#: application/helpers/SurveyRuntimeHelper.php:552
+#: application/helpers/SurveyRuntimeHelper.php:558
 #: application/helpers/admin/statistics_helper.php:1209
 #: application/helpers/admin/statistics_helper.php:1334
 #: application/helpers/common_helper.php:1027
@@ -3060,7 +3060,7 @@ msgstr ""
 #: application/core/plugins/TwoFactorAdminLogin/views/_partial/create.php:39
 #: application/extensions/admin/survey/LanguagesWidget/LanguagesWidget.php:22
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_export_archive_results.php:44
-#: application/helpers/SurveyRuntimeHelper.php:1451
+#: application/helpers/SurveyRuntimeHelper.php:1457
 #: application/models/Box.php:161 application/models/Question.php:756
 #: application/models/SurveyURLParameter.php:192
 #: application/models/TemplateConfiguration.php:748
@@ -4378,7 +4378,7 @@ msgstr ""
 
 #: application/controllers/admin/ConditionsAction.php:673
 #: application/controllers/admin/Tokens.php:1732
-#: application/helpers/SurveyRuntimeHelper.php:1172
+#: application/helpers/SurveyRuntimeHelper.php:1178
 #: application/views/admin/checkintegrity/fix_view.php:30
 #: application/views/admin/dataentry/vvimport_result.php:22
 #: application/views/admin/survey/subview/accordion/_tokens_panel.php:224
@@ -6058,7 +6058,7 @@ msgstr ""
 #: application/helpers/questionHelper.php:430
 #: application/helpers/questionHelper.php:829
 #: application/helpers/userstatistics_helper.php:2582
-#: application/models/Survey.php:1505 application/models/Survey.php:2220
+#: application/models/Survey.php:1505 application/models/Survey.php:2232
 #: application/views/admin/export/statistics_user_view.php:18
 #: application/views/admin/export/statistics_view.php:23
 msgid "Statistics"
@@ -6128,7 +6128,7 @@ msgstr ""
 #: application/controllers/admin/SurveysGroupsController.php:341
 #: application/controllers/admin/globalsettings.php:558
 #: application/core/LsDefaultDataSets.php:840
-#: application/models/Survey.php:2270 application/models/SurveysGroups.php:322
+#: application/models/Survey.php:2282 application/models/SurveysGroups.php:322
 #: application/models/SurveysGroups.php:471
 msgid "Survey settings"
 msgstr ""
@@ -7087,7 +7087,7 @@ msgid "The answer to the security question is incorrect."
 msgstr ""
 
 #: application/controllers/survey/SurveyIndex.php:464
-#: application/helpers/frontend_helper.php:1271
+#: application/helpers/frontend_helper.php:1274
 msgid "You have exceeded the number of maximum access code validation attempts. Please wait %d minutes before trying again."
 msgstr ""
 
@@ -7244,7 +7244,7 @@ msgid "Open general survey settings"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:80
-#: application/core/LsDefaultDataSets.php:82 application/models/Survey.php:2254
+#: application/core/LsDefaultDataSets.php:82 application/models/Survey.php:2266
 #: tmp/runtime/twig_cache/a8/a8c553029103104cca2f1b701e4d689db3063620d1ab909a8ae5386fa5a44871.php:49
 msgid "Survey text elements"
 msgstr ""
@@ -7367,7 +7367,7 @@ msgid "Edit quotas"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:418
-#: application/models/Survey.php:2205
+#: application/models/Survey.php:2217
 #: application/views/admin/survey/copySurvey_view.php:55
 #: application/views/surveyAdministration/importSurvey_view.php:119
 msgid "Quotas"
@@ -7401,7 +7401,7 @@ msgstr ""
 #: application/core/LsDefaultDataSets.php:501
 #: application/core/LsDefaultDataSets.php:502
 #: application/core/LsDefaultDataSets.php:503
-#: application/models/Survey.php:2210
+#: application/models/Survey.php:2222
 #: application/views/admin/export/exportresult_panels/_responses.php:4
 #: application/views/admin/survey/surveybar_statistics.php:18
 #: application/views/admin/survey/surveybar_statistics.php:23
@@ -9962,98 +9962,98 @@ msgstr ""
 msgid "Unknown view!"
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:333
+#: application/helpers/SurveyRuntimeHelper.php:339
 #: tmp/runtime/twig_cache/69/69ce10c7010729c5b5e1ac3c2f76fcd861eefb23f14641e0c58326f156b802bf.php:61
 #: tmp/runtime/twig_cache/69/69ce10c7010729c5b5e1ac3c2f76fcd861eefb23f14641e0c58326f156b802bf.php:65
 #: tmp/runtime/twig_cache/e7/e7d14bbf9e594c4d6e204d4777b4200a9419c099d1234f95311a959d30a959ea.php:59
 msgid "You have completed %s%% of this survey"
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:863
+#: application/helpers/SurveyRuntimeHelper.php:869
 msgid "Please use the survey navigation buttons or index.  It appears you attempted to use the browser back button to re-submit a page."
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:1066
+#: application/helpers/SurveyRuntimeHelper.php:1072
 msgid "To continue please first accept our survey privacy policy."
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:1070
+#: application/helpers/SurveyRuntimeHelper.php:1076
 msgid "We are sorry but you can't proceed without first agreeing to our survey privacy policy."
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:1158
+#: application/helpers/SurveyRuntimeHelper.php:1164
 msgid "Your responses were successfully saved."
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:1164
+#: application/helpers/SurveyRuntimeHelper.php:1170
 msgid "Your responses were not saved. Please contact the survey administrator."
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:1173
+#: application/helpers/SurveyRuntimeHelper.php:1179
 msgid "Saving responses is disabled if survey is not activated."
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:1278
+#: application/helpers/SurveyRuntimeHelper.php:1284
 #: tmp/runtime/twig_cache/08/087c000f42b750cff8681ee3aa243d32396533decd7cf2c015548235b64beaa9.php:188
 #: tmp/runtime/twig_cache/d0/d0d28da1d75caa2b420f5284db8f94c028565a74ea67c5a3a65e17c278590f2e.php:184
 msgid "Print your answers."
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:1279
-#: application/helpers/SurveyRuntimeHelper.php:1287
+#: application/helpers/SurveyRuntimeHelper.php:1285
+#: application/helpers/SurveyRuntimeHelper.php:1293
 msgid "Note: This link only works if the survey is activated."
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:1286
+#: application/helpers/SurveyRuntimeHelper.php:1292
 #: tmp/runtime/twig_cache/08/087c000f42b750cff8681ee3aa243d32396533decd7cf2c015548235b64beaa9.php:227
 #: tmp/runtime/twig_cache/d0/d0d28da1d75caa2b420f5284db8f94c028565a74ea67c5a3a65e17c278590f2e.php:223
 msgid "View the statistics for this survey."
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:1365
+#: application/helpers/SurveyRuntimeHelper.php:1371
 msgid "Note: Automatically loading the end URL works only if the survey is activated."
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:1476
+#: application/helpers/SurveyRuntimeHelper.php:1482
 #: application/helpers/qanda_helper.php:324
 msgid "One or more mandatory questions have not been answered. You cannot proceed until these have been completed."
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:1478
+#: application/helpers/SurveyRuntimeHelper.php:1484
 #: application/helpers/qanda_helper.php:317
 msgid "One or more mandatory questions have not been answered. If possible, please complete them before continuing to the next page."
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:1484
+#: application/helpers/SurveyRuntimeHelper.php:1490
 #: application/helpers/qanda_helper.php:346
 msgid "One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid."
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:1489
+#: application/helpers/SurveyRuntimeHelper.php:1495
 msgid "One or more uploaded files are not in proper format/size. You cannot proceed until these files are valid."
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:1665
+#: application/helpers/SurveyRuntimeHelper.php:1671
 msgid "Your have to answer the security question - please try again."
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:1773
+#: application/helpers/SurveyRuntimeHelper.php:1779
 msgid "Invalid group number for this survey: "
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:1779
+#: application/helpers/SurveyRuntimeHelper.php:1785
 msgid "This group contains no questions.  You must add questions to this group before you can preview it"
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:1789
+#: application/helpers/SurveyRuntimeHelper.php:1795
 msgid "This group is empty"
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:1807
+#: application/helpers/SurveyRuntimeHelper.php:1813
 msgid "Submit your answers"
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:1808
+#: application/helpers/SurveyRuntimeHelper.php:1814
 msgid "There are no more questions. Please press the <Submit> button to finish this survey."
 msgstr ""
 
@@ -10073,7 +10073,7 @@ msgstr ""
 #: application/helpers/userstatistics_helper.php:2593
 #: application/helpers/userstatistics_helper.php:2696
 #: application/helpers/userstatistics_helper.php:2795
-#: application/models/Survey.php:2230 application/models/Surveymenu.php:340
+#: application/models/Survey.php:2242 application/models/Surveymenu.php:340
 #: application/views/admin/participants/modal_subviews/_addToSurvey.php:22
 #: application/views/admin/super/quickmenu.php:6
 msgid "Survey"
@@ -11986,28 +11986,28 @@ msgstr ""
 msgid "Try to submit again"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1284
+#: application/helpers/frontend_helper.php:1287
 msgid "The access code you have provided is either not valid, or has already been used."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1443
-#: application/helpers/frontend_helper.php:1468
+#: application/helpers/frontend_helper.php:1447
+#: application/helpers/frontend_helper.php:1472
 msgid "This survey cannot be tested or completed for the following reason(s):"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1451
+#: application/helpers/frontend_helper.php:1455
 msgid "There are empty question groups in this survey - please create at least one question within a question group."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:2214
+#: application/helpers/frontend_helper.php:2218
 msgid "By continuing this survey you approve the data protection policy of the service provider."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:2216
+#: application/helpers/frontend_helper.php:2220
 msgid "View policy"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:2217
+#: application/helpers/frontend_helper.php:2221
 msgid "Please be patient until you are forwarded to the final URL."
 msgstr ""
 
@@ -13740,330 +13740,334 @@ msgid "Greenlandic"
 msgstr ""
 
 #: application/helpers/surveytranslator_helper.php:407
+msgid "Hazaragi"
+msgstr ""
+
+#: application/helpers/surveytranslator_helper.php:415
 msgid "Hausa"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:414
+#: application/helpers/surveytranslator_helper.php:422
 msgid "Hebrew"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:422
+#: application/helpers/surveytranslator_helper.php:430
 msgid "Hindi"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:430
+#: application/helpers/surveytranslator_helper.php:438
 msgid "Hiligaynon"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:437
+#: application/helpers/surveytranslator_helper.php:445
 msgid "Hungarian"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:445
+#: application/helpers/surveytranslator_helper.php:453
 msgid "Icelandic"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:453
+#: application/helpers/surveytranslator_helper.php:461
 msgid "Indonesian"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:461
+#: application/helpers/surveytranslator_helper.php:469
 msgid "Inuktitut"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:469
+#: application/helpers/surveytranslator_helper.php:477
 msgid "Irish"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:478
+#: application/helpers/surveytranslator_helper.php:486
 msgid "Ilocano"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:485
+#: application/helpers/surveytranslator_helper.php:493
 msgid "Italian"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:493
+#: application/helpers/surveytranslator_helper.php:501
 msgid "Italian (informal)"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:502
+#: application/helpers/surveytranslator_helper.php:510
 msgid "Japanese"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:510
+#: application/helpers/surveytranslator_helper.php:518
 msgid "Kannada"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:518
+#: application/helpers/surveytranslator_helper.php:526
 msgid "Kazakh"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:526
+#: application/helpers/surveytranslator_helper.php:534
 msgid "Kinyarwanda"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:534
+#: application/helpers/surveytranslator_helper.php:542
 msgid "Korean"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:542
+#: application/helpers/surveytranslator_helper.php:550
 msgid "Khmer"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:551
+#: application/helpers/surveytranslator_helper.php:559
 msgid "Kirundi"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:559
+#: application/helpers/surveytranslator_helper.php:567
 msgid "Kurdish (Sorani)"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:568
+#: application/helpers/surveytranslator_helper.php:576
 msgid "Kurdish (Kurmanji)"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:577
+#: application/helpers/surveytranslator_helper.php:585
 msgid "Kyrgyz"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:585
+#: application/helpers/surveytranslator_helper.php:593
 msgid "Latvian"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:593
+#: application/helpers/surveytranslator_helper.php:601
 msgid "Lithuanian"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:601
+#: application/helpers/surveytranslator_helper.php:609
 msgid "Luxembourgish"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:610
+#: application/helpers/surveytranslator_helper.php:618
 msgid "Macedonian"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:618
+#: application/helpers/surveytranslator_helper.php:626
 msgid "Malay"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:626
+#: application/helpers/surveytranslator_helper.php:634
 msgid "Malayalam"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:634
+#: application/helpers/surveytranslator_helper.php:642
 msgid "Maltese"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:642
+#: application/helpers/surveytranslator_helper.php:650
 msgid "Marathi"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:650
+#: application/helpers/surveytranslator_helper.php:658
 msgid "Mongolian"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:658
+#: application/helpers/surveytranslator_helper.php:666
 msgid "Montenegrin"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:667
+#: application/helpers/surveytranslator_helper.php:675
 msgid "Myanmar (Burmese)"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:675
+#: application/helpers/surveytranslator_helper.php:683
 msgid "Norwegian (Bokmal)"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:683
+#: application/helpers/surveytranslator_helper.php:691
 msgid "Norwegian (Nynorsk)"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:691
+#: application/helpers/surveytranslator_helper.php:699
 msgid "Occitan"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:699
+#: application/helpers/surveytranslator_helper.php:707
 msgid "Odia"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:706
+#: application/helpers/surveytranslator_helper.php:714
 msgid "Pashto"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:714
+#: application/helpers/surveytranslator_helper.php:722
 msgid "Persian"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:722
+#: application/helpers/surveytranslator_helper.php:730
 msgid "Papiamento (Curaçao & Bonaire)"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:731
+#: application/helpers/surveytranslator_helper.php:739
 msgid "Polish"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:739
+#: application/helpers/surveytranslator_helper.php:747
 msgid "Polish (Informal)"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:748
+#: application/helpers/surveytranslator_helper.php:756
 msgid "Portuguese"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:756
+#: application/helpers/surveytranslator_helper.php:764
 msgid "Portuguese (Brazilian)"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:764
+#: application/helpers/surveytranslator_helper.php:772
 msgid "Punjabi"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:772
+#: application/helpers/surveytranslator_helper.php:780
 msgid "Romanian"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:780
+#: application/helpers/surveytranslator_helper.php:788
 msgid "Romansh"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:788
+#: application/helpers/surveytranslator_helper.php:796
 msgid "Russian"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:796
+#: application/helpers/surveytranslator_helper.php:804
 msgid "Sami (Northern)"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:804
+#: application/helpers/surveytranslator_helper.php:812
 msgid "Serbian (Cyrillic)"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:812
+#: application/helpers/surveytranslator_helper.php:820
 msgid "Serbian (Latin)"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:820
+#: application/helpers/surveytranslator_helper.php:828
 msgid "Sinhala"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:828
+#: application/helpers/surveytranslator_helper.php:836
 msgid "Slovak"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:836
+#: application/helpers/surveytranslator_helper.php:844
 msgid "Slovenian"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:844
+#: application/helpers/surveytranslator_helper.php:852
 msgid "Somali"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:852
+#: application/helpers/surveytranslator_helper.php:860
 msgid "Spanish"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:860
+#: application/helpers/surveytranslator_helper.php:868
 msgid "Spanish (informal)"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:870
+#: application/helpers/surveytranslator_helper.php:878
 msgid "Spanish (Argentina)"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:878
+#: application/helpers/surveytranslator_helper.php:886
 msgid "Spanish (Argentina) (Informal)"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:887
+#: application/helpers/surveytranslator_helper.php:895
 msgid "Spanish (Chile)"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:895
+#: application/helpers/surveytranslator_helper.php:903
 msgid "Spanish (Colombia)"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:903
+#: application/helpers/surveytranslator_helper.php:911
 msgid "Spanish (Mexico)"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:911
+#: application/helpers/surveytranslator_helper.php:919
 msgid "Swahili"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:920
+#: application/helpers/surveytranslator_helper.php:928
 msgid "Swedish"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:928
+#: application/helpers/surveytranslator_helper.php:936
 msgid "Tagalog"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:936
+#: application/helpers/surveytranslator_helper.php:944
 msgid "Tajik"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:944
+#: application/helpers/surveytranslator_helper.php:952
 msgid "Tamil"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:952
+#: application/helpers/surveytranslator_helper.php:960
 msgid "Telugu"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:960
+#: application/helpers/surveytranslator_helper.php:968
 msgid "Thai"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:968
+#: application/helpers/surveytranslator_helper.php:976
 msgid "Tigrinya"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:976
+#: application/helpers/surveytranslator_helper.php:984
 msgid "Turkish"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:984
+#: application/helpers/surveytranslator_helper.php:992
 msgid "Ukrainian"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:992
+#: application/helpers/surveytranslator_helper.php:1000
 msgid "Urdu"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:1000
+#: application/helpers/surveytranslator_helper.php:1008
 msgid "Uyghur"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:1008
+#: application/helpers/surveytranslator_helper.php:1016
 msgid "Vietnamese"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:1016
+#: application/helpers/surveytranslator_helper.php:1024
 msgid "Welsh"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:1024
+#: application/helpers/surveytranslator_helper.php:1032
 msgid "Xhosa"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:1032
+#: application/helpers/surveytranslator_helper.php:1040
 msgid "Yakut"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:1040
+#: application/helpers/surveytranslator_helper.php:1048
 msgid "Yoruba"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:1048
+#: application/helpers/surveytranslator_helper.php:1056
 msgid "Zulu"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:1078
+#: application/helpers/surveytranslator_helper.php:1086
 msgid "Dot (.)"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:1079
+#: application/helpers/surveytranslator_helper.php:1087
 msgid "Comma (,)"
 msgstr ""
 
@@ -15558,79 +15562,79 @@ msgstr ""
 msgid "General settings & texts"
 msgstr ""
 
-#: application/models/Survey.php:2086
+#: application/models/Survey.php:2098
 msgid "Show policy"
 msgstr ""
 
-#: application/models/Survey.php:2199
+#: application/models/Survey.php:2211
 msgid "Permission to create, view, update, delete assessments rules for a survey"
 msgstr ""
 
-#: application/models/Survey.php:2206
+#: application/models/Survey.php:2218
 msgid "Permission to create, view, update, delete quota rules for a survey"
 msgstr ""
 
-#: application/models/Survey.php:2211
+#: application/models/Survey.php:2223
 msgid "Permission to create(data entry), view, update, delete, import, export responses"
 msgstr ""
 
-#: application/models/Survey.php:2221
+#: application/models/Survey.php:2233
 msgid "Permission to view statistics"
 msgstr ""
 
-#: application/models/Survey.php:2231
+#: application/models/Survey.php:2243
 msgid "Permission for survey access. Read permission is a requirement to give any further permission to a survey."
 msgstr ""
 
-#: application/models/Survey.php:2240
+#: application/models/Survey.php:2252
 msgid "Survey activation"
 msgstr ""
 
-#: application/models/Survey.php:2241
+#: application/models/Survey.php:2253
 msgid "Permission to activate, deactivate a survey"
 msgstr ""
 
-#: application/models/Survey.php:2245
+#: application/models/Survey.php:2257
 msgid "Survey content"
 msgstr ""
 
-#: application/models/Survey.php:2246
+#: application/models/Survey.php:2258
 msgid "Permission to create, view, update, delete, import, export the questions, groups, answers & conditions of a survey"
 msgstr ""
 
-#: application/models/Survey.php:2255
+#: application/models/Survey.php:2267
 msgid "Permission to view, update the survey text elements, e.g. survey title, survey description, welcome and end message"
 msgstr ""
 
-#: application/models/Survey.php:2261
+#: application/models/Survey.php:2273
 msgid "Survey security"
 msgstr ""
 
-#: application/models/Survey.php:2262
+#: application/models/Survey.php:2274
 msgid "Permission to modify survey security settings"
 msgstr ""
 
-#: application/models/Survey.php:2271
+#: application/models/Survey.php:2283
 msgid "Permission to view, update the survey settings including survey participants table creation"
 msgstr ""
 
-#: application/models/Survey.php:2275
+#: application/models/Survey.php:2287
 msgid "Participants"
 msgstr ""
 
-#: application/models/Survey.php:2275
+#: application/models/Survey.php:2287
 msgid "Permission to create, update, delete, import, export participants"
 msgstr ""
 
-#: application/models/Survey.php:2283
+#: application/models/Survey.php:2295
 msgid "Quick translation"
 msgstr ""
 
-#: application/models/Survey.php:2284
+#: application/models/Survey.php:2296
 msgid "Permission to view & update the translations using the quick-translation feature"
 msgstr ""
 
-#: application/models/Survey.php:2413
+#: application/models/Survey.php:2425
 #: application/views/admin/survey/subview/accordion/_publication_panel.php:20
 msgid "Expiration date can't be lower than the start date"
 msgstr ""
