@@ -92,21 +92,6 @@ class BreadcrumbWidget extends CWidget
                 //'href' => App()->createUrl('/surveyAdministration/view/', ['iSurveyID' => $survey->sid]),
                 'text' => $survey->defaultlanguage->surveyls_title . "({$survey->sid})"
             ];
-
-            /*if (!isset($questionGroup)) {
-                $breadcrumbs[] =
-                    [
-                        'id' => 'breadcrumb__survey--overview',
-                        'text' => $survey->defaultlanguage->surveyls_title . ' (' . $survey->sid . ')',
-                    ];
-            } else {
-                $breadcrumbs[] =
-                    [
-                        'id' => 'breadcrumb__survey--overview',
-                        'href' => App()->createUrl('/surveyAdministration/view/', ['iSurveyID' => $survey->sid]),
-                        'text' => $survey->defaultlanguage->surveyls_title,
-                    ];
-            }*/
         }
         return $breadcrumbs;
     }
@@ -123,32 +108,6 @@ class BreadcrumbWidget extends CWidget
         $questionGroup = $breadcrumbConfigArray['oQuestionGroup'];
         $subAction = $breadcrumbConfigArray['sSubaction'];
         $question = $breadcrumbConfigArray['oQuestion'];
-        if (isset($questionGroup)) {
-            // If the questiongroup view is active right now, don't link it?
-            /*if (!$subAction && !isset($question)) {
-                $breadcrumbs[] = [
-                    'text' => $questionGroup->isNewRecord ? gT('New question group') : flattenText(
-                        $questionGroup->questiongroupl10ns[$survey->language]->group_name
-                    )
-                ];
-            } else {
-                $breadcrumbs[] =
-                    [
-                        'id' => 'breadcrumb__group--detail',
-                        'href' => App()->createUrl(
-                            'questionGroupsAdministration/view/',
-                            ['surveyid' => $questionGroup->sid, 'gid' => $questionGroup->gid]
-                        ),
-                        'text' => flattenText($questionGroup->questiongroupl10ns[$survey->language]->group_name),
-                    ];
-                if (isset($subAction) && !isset($question)) {
-                    $breadcrumbs[] =
-                        [
-                            'text' => $subAction,
-                        ];
-                }
-            }*/
-        }
         return $breadcrumbs;
     }
 
@@ -162,29 +121,6 @@ class BreadcrumbWidget extends CWidget
     {
         $subAction = $breadcrumbConfigArray['sSubaction'];
         $question = $breadcrumbConfigArray['oQuestion'];
-        if (isset($question)) {
-            // If the question view is active right now, don't link it
-            /*if (!isset($subAction)) {
-                $breadcrumbs[] =
-                    [
-                        'text' => $question->title,
-                    ];
-            } else {
-                $breadcrumbs[] =
-                    [
-                        'id' => 'breadcrumb__question--detail',
-                        'href' => App()->createUrl(
-                            'questionAdministration/view/',
-                            ['surveyid' => $question->sid, 'gid' => $question->gid, 'qid' => $question->qid]
-                        ),
-                        'text' => $question->title,
-                    ];
-                $breadcrumbs[] =
-                    [
-                        'text' => $subAction
-                    ];
-            }*/
-        }
         return $breadcrumbs;
     }
 
@@ -199,18 +135,6 @@ class BreadcrumbWidget extends CWidget
         $survey = $breadcrumbConfigArray['oSurvey'];
         $token = $breadcrumbConfigArray['token'];
         $active = $breadcrumbConfigArray['active'];
-        /*if (isset($token)) {
-            $breadcrumbs[] =
-                [
-                    'id' => 'breadcrumb__survey--participants',
-                    'href' => App()->createUrl('admin/tokens/sa/index/', ['surveyid' => $survey->sid]),
-                    'text' => gT('Survey participants'),
-                ];
-            $breadcrumbs[] =
-                [
-                    'text' => gT($active),
-                ];
-        }*/
         return $breadcrumbs;
     }
 
@@ -226,21 +150,6 @@ class BreadcrumbWidget extends CWidget
         $moduleSubActionUrl = $breadcrumbConfigArray['module_subaction_url'];
         $moduleCurrentAction = $breadcrumbConfigArray['module_current_action'];
         $active = $breadcrumbConfigArray['active'];
-        /*if (isset($moduleSubAction)) {
-            $breadcrumbs[] =
-                [
-                    'id' => 'breadcrumb__module--subaction',
-                    'href' => $moduleSubActionUrl,
-                    'text' => $moduleSubAction,
-                ];
-
-            if (isset($moduleCurrentAction)) {
-                $breadcrumbs[] =
-                    [
-                        'text' => gT($active),
-                    ];
-            }
-        }*/
         return $breadcrumbs;
     }
 
