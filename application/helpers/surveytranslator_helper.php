@@ -410,6 +410,7 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['haz']['dateformat'] = 2;
     $supportedLanguages['haz']['radixpoint'] = 0;
     $supportedLanguages['haz']['momentjs'] = 'fa';
+    $supportedLanguages['haz']['cldr'] = 'fa';
 
     // Hausa
     $supportedLanguages['ha']['description'] = gT('Hausa');
