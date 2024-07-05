@@ -98,7 +98,7 @@ class ResponsesController extends LSBaseController
             App()->loadHelper('export');
             $quexml = quexml_export($surveyId, $sBrowseLanguage, $id);
             $quexmlpdf->create($quexmlpdf->createqueXML($quexml));
-            $quexmlpdf->Output("$surveyId-$id-queXML.pdf", 'D');
+            $quexmlpdf->write_out("$surveyId-$id-queXML.pdf");
         } else {
             App()->user->setFlash('error', gT("You do not have permission to access this page."));
             $this->redirect(['surveyAdministration/view', 'surveyid' => $surveyId]);
