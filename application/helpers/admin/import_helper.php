@@ -44,6 +44,9 @@ function XMLImportGroup($sFullFilePath, $iNewSID)
     $results['importwarnings'] = [];
 
     if ($iDBVersion>=400) {
+        Yii::import('application.helpers.admin.ImportCompatibilityConverter', true);
+        $converter = new ImportCompatibilityConverter($xml);
+        $converter->convert();
         $results['fatalerror'] = gT("The file is not compatible with this LimeSurvey version.");
         return $results;
     } 

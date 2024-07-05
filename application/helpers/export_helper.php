@@ -151,7 +151,7 @@ function SPSSExportData($iSurveyID, $iLength, $na = '', $q = '\'', $header = fal
             if ($field['SPSStype'] == 'DATETIME23.2') {
                 // convert mysql datestamp (yyyy-mm-dd hh:mm:ss) to SPSS datetime (dd-mmm-yyyy hh:mm:ss) format
                 if (isset($row[$fieldno])) {
-                    list($year, $month, $day, $hour, $minute, $second) = preg_split('([^0-9])', $row[$fieldno]);
+                    [$year, $month, $day, $hour, $minute, $second] = preg_split('([^0-9])', $row[$fieldno]);
                     if ($year != '' && (int) $year >= 1900) {
                         echo quoteSPSS(date('d-m-Y H:i:s', mktime($hour, $minute, $second, $month, $day, $year)),$q,$field);
                     } else {
@@ -778,6 +778,40 @@ function buildXMLFromQuery($xmlwriter, $Query, $tagname = '', $excludes = array(
         $xmlwriter->endElement(); // close rows
         $xmlwriter->endElement(); // close tablename
     }
+}
+
+/**
+ * @param XMLWriter $xmlwriter
+ * @param array $Row
+ * @return XMLWriter
+ */
+function addArrayToXml($xmlwriter, $Row) {
+    $xmlwriter->startElement('row');
+    foreach ($Row as $Key=>$Value) {
+        if (!isset($exclude[$Key])) {
+            if (!(is_null($Value))) {
+                // If the $value is null don't output an element at all
+                if (is_numeric($Key[0])) {
+                    // mask invalid element names with an underscore
+                    $Key = '_'.$Key;
+                }
+                $Key = str_replace('#', '-', $Key);
+                if (!$xmlwriter->startElement($Key)) {
+                    safeDie('Invalid element key: '.$Key);
+                }
+
+                if ($Value !== '') {
+                    // Remove invalid XML characters
+                    $Value = preg_replace('/[^\x0\x9\xA\xD\x20-\x{D7FF}\x{E000}-\x{FFFD}\x{10000}-\x{10FFFF}]/u', '', $Value);
+                    $Value = str_replace(']]>', ']] >', $Value);
+                    $xmlwriter->writeCData($Value);
+                }
+                $xmlwriter->endElement();
+            }
+        }
+    }
+    $xmlwriter->endElement(); // close row
+    return $xmlwriter;
 }
 
 /**
