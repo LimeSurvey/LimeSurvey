@@ -194,16 +194,21 @@ class AttributesService
         );
         // get all languages of the survey:
         $surveyModel = $this->modelSurvey->findByPk($surveyId);
-        $allSurveyLanguages = array_merge([$surveyModel->language],
-            explode(" ", (string)$surveyModel->additional_languages));
+        $allSurveyLanguages = array_merge(
+            [$surveyModel->language],
+            explode(" ", (string)$surveyModel->additional_languages)
+        );
 
         //only add those with their default values who are not already there
         foreach ($defaultSet as $attrName => $attrData) {
             $default = $attrData['default'] !== null ? $attrData['default'] : '';
-            if ($attrData['i18n'] !== '1' && !array_key_exists(
+            if (
+                $attrData['i18n'] !== '1' &&
+                !array_key_exists(
                     $attrName,
                     $existingAttrSimplified
-                )) {
+                )
+            ) {
                 $this->modelQuestionAttribute->setQuestionAttributeWithLanguage(
                     $question->qid,
                     $attrName,
