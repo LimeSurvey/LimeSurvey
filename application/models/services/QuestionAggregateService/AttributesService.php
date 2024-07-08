@@ -180,11 +180,7 @@ class AttributesService
 
         foreach ($existingAttributes as $attr) {
             /* @var QuestionAttribute $attr ; */
-            if ($attr->language !== '') {
                 $existingAttrSimplified[$attr->attribute][$attr->language] = $attr->value;
-            } else {
-                $existingAttrSimplified[$attr->attribute] = $attr->value;
-            }
         }
 
         $defaultSet = $this->questionAttributeHelper->getQuestionAttributesWithValues(
