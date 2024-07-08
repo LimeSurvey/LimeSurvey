@@ -129,7 +129,7 @@ class SaveService
                 $data['advancedSettings']
             );
 
-        if($apiCall) {
+        if ($apiCall) {
             $this->attributesService->saveMissingAttributes(
                 $question,
                 $surveyId
