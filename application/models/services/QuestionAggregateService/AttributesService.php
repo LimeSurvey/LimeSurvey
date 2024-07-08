@@ -171,16 +171,17 @@ class AttributesService
     public function saveMissingAttributes(Question $question, int $surveyId)
     {
         $existingAttrSimplified = [];
-        $existingAttributes = $this->modelQuestionAttribute->resetScope()->findAll(
+        $existingAttributes = $this->modelQuestionAttribute->resetScope(
+        )->findAll(
             'qid = :qid',
             [':qid' => $question->qid]
         );
 
-        foreach($existingAttributes as $attr) {
-            /* @var QuestionAttribute $attr; */
-            if($attr->language !== '') {
+        foreach ($existingAttributes as $attr) {
+            /* @var QuestionAttribute $attr ; */
+            if ($attr->language !== '') {
                 $existingAttrSimplified[$attr->attribute][$attr->language] = $attr->value;
-            }else{
+            } else {
                 $existingAttrSimplified[$attr->attribute] = $attr->value;
             }
         }
@@ -189,7 +190,8 @@ class AttributesService
             $question,
             null,
             null,
-            true);
+            true
+        );
         // get all languages of the survey:
         $surveyModel = $this->modelSurvey->findByPk($surveyId);
         $allSurveyLanguages = array_merge([$surveyModel->language],
