@@ -761,10 +761,7 @@ function buildXMLFromQuery($xmlwriter, $Query, $tagname = '', $excludes = array(
                         }
 
                         if ($Value !== '') {
-                            // Remove invalid XML characters
-                            $Value = preg_replace('/[^\x0\x9\xA\xD\x20-\x{D7FF}\x{E000}-\x{FFFD}\x{10000}-\x{10FFFF}]/u', '', $Value);
-                            $Value = str_replace(']]>', ']] >', $Value);
-                            $xmlwriter->writeCData($Value);
+                            $xmlwriter->writeCData(cleanXmlValueForCdata($Value));
                         }
                         $xmlwriter->endElement();
                     }
@@ -781,37 +778,15 @@ function buildXMLFromQuery($xmlwriter, $Query, $tagname = '', $excludes = array(
 }
 
 /**
- * @param XMLWriter $xmlwriter
- * @param array $Row
- * @return XMLWriter
+ * @param string $value
+ * @return string
  */
-function addArrayToXml($xmlwriter, $Row) {
-    $xmlwriter->startElement('row');
-    foreach ($Row as $Key=>$Value) {
-        if (!isset($exclude[$Key])) {
-            if (!(is_null($Value))) {
-                // If the $value is null don't output an element at all
-                if (is_numeric($Key[0])) {
-                    // mask invalid element names with an underscore
-                    $Key = '_'.$Key;
-                }
-                $Key = str_replace('#', '-', $Key);
-                if (!$xmlwriter->startElement($Key)) {
-                    safeDie('Invalid element key: '.$Key);
-                }
+function cleanXmlValueForCdata($value) {
+    // Remove invalid XML characters
+    $value = preg_replace('/[^\x0\x9\xA\xD\x20-\x{D7FF}\x{E000}-\x{FFFD}\x{10000}-\x{10FFFF}]/u', '', $value);
+    $value = str_replace(']]>', ']] >', $value);
+    return $value;
 
-                if ($Value !== '') {
-                    // Remove invalid XML characters
-                    $Value = preg_replace('/[^\x0\x9\xA\xD\x20-\x{D7FF}\x{E000}-\x{FFFD}\x{10000}-\x{10FFFF}]/u', '', $Value);
-                    $Value = str_replace(']]>', ']] >', $Value);
-                    $xmlwriter->writeCData($Value);
-                }
-                $xmlwriter->endElement();
-            }
-        }
-    }
-    $xmlwriter->endElement(); // close row
-    return $xmlwriter;
 }
 
 /**

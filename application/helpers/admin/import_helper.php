@@ -46,10 +46,8 @@ function XMLImportGroup($sFullFilePath, $iNewSID)
     if ($iDBVersion>=400) {
         Yii::import('application.helpers.admin.ImportCompatibilityConverter', true);
         $converter = new ImportCompatibilityConverter($xml);
-        $converter->convert();
-        $results['fatalerror'] = gT("The file is not compatible with this LimeSurvey version.");
-        return $results;
-    } 
+        $xml = $converter->convert();
+    }
 
     $importlanguages = array();
     foreach ($xml->languages->language as $language) {
@@ -240,6 +238,12 @@ function XMLImportGroup($sFullFilePath, $iNewSID)
             $oQuestion->setAttributes($insertdata, false);
 
             // Try to fix question title for valid question code enforcement
+            try {
+                $oQuestion->validate(['title']);
+            } catch (\Exception) {
+                var_dump($insertdata);
+                var_dump($oQuestion);die;
+            }
             if (!$oQuestion->validate(['title'])) {
                 $sOldTitle = $oQuestion->title;
                 $sNewTitle = preg_replace("/[^A-Za-z0-9]/", '', $sOldTitle);
@@ -456,9 +460,10 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $newgid, $options = array('
     $iDBVersion = (int) $xml->DBVersion;
 
     if ($iDBVersion>=400) {
-        $results['fatalerror'] = gT("The file is not compatible with this LimeSurvey version.");
-        return $results;
-    } 
+        Yii::import('application.helpers.admin.ImportCompatibilityConverter', true);
+        $converter = new ImportCompatibilityConverter($xml);
+        $xml = $converter->convert();
+    }
 
     $aQIDReplacements = array();
     $aSQIDReplacements = array(0=>0);
@@ -928,8 +933,9 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
     $sTemplateName = '';
 
     if ($iDBVersion>=400) {
-        $results['error'] = gT("The file is not compatible with this LimeSurvey version.");
-        return $results;
+        Yii::import('application.helpers.admin.ImportCompatibilityConverter', true);
+        $converter = new ImportCompatibilityConverter($xml);
+        $xml = $converter->convert();
     } 
 
 

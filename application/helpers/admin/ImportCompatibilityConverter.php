@@ -22,20 +22,61 @@ class ImportCompatibilityConverter
         $this->xml = $xml;
     }
 
+    /**
+     * @return SimpleXMLElement
+     */
     public function convert()
     {
 
-        $writer = new XMLWriter();
-        $groups = $this->convertGroups();
 
-        $writer = addArrayToXml($writer, $groups);
-        $xml = $writer->outputMemory();
-        var_dump($xml);die;
+        $items = $this->convertGroups();
+        if(!empty($items)) {
+            unset($this->xml->groups->rows);
+            $this->addRows('groups', $items);
+            unset($this->xml->group_l10ns);
+        }
 
-        //$this->convertGroups();
-        var_dump($this->xml->groups->rows);die;
+        $items = $this->convertQuestions();
+        if(!empty($items)) {
+            unset($this->xml->questions->rows);
+            $this->addRows('questions', $items);
+            unset($this->xml->question_l10ns);
+        }
+
+        $items = $this->convertAnswers();
+        if(!empty($items)) {
+            unset($this->xml->answers->rows);
+            $this->addRows('answers', $items);
+            unset($this->xml->answer_l10ns);
+
+        }
+
+        return $this->xml;
 
     }
+
+
+
+
+    /**
+     * @param string $xmlElementName
+     * @param array $data
+     * @return void
+     */
+    private function addRows($xmlElementName,$data)
+    {
+        $this->xml->{$xmlElementName}->addChild('rows');
+        foreach ($data as $item) {
+            $row = $this->xml->{$xmlElementName}->rows->addChild('row');
+            foreach ($item as $name => $value) {
+                $item = $row->addChild($name);
+                $child_node = dom_import_simplexml($item);
+                $child_owner = $child_node->ownerDocument;
+                $child_node->appendChild($child_owner->createCDATASection(cleanXmlValueForCdata($value)));
+            }
+        }
+    }
+
 
     private function convertGroups()
     {
@@ -45,6 +86,7 @@ class ImportCompatibilityConverter
             $newGroups = $this->convertGroup($group);
             $out = array_merge($out, $newGroups);
         }
+        return $out;
 
     }
 
@@ -71,12 +113,13 @@ class ImportCompatibilityConverter
     private function convertAnswers()
     {
         $answers = $this->parseAnswers();
+
         $out = [];
         foreach ($answers as $answer) {
             $newAnswers = $this->convertAnswer($answer);
             $out = array_merge($out, $newAnswers);
         }
-        var_dump($out);die;
+        return $out;
 
     }
 
@@ -89,11 +132,13 @@ class ImportCompatibilityConverter
         $languages = $this->parseLanguages();
         $allL10Ns = $this->parseAnswerL10ns();
         $l10ns = $allL10Ns[$answer['aid']];
+
         $out = [];
         foreach ($languages as $language) {
             $newFormat = $answer;
             $newFormat['answer'] = $l10ns[$language]['answer'];
             $newFormat['language'] = $language;
+            unset($newFormat['aid']);
             $out[] = $newFormat;
         }
         return $out;
@@ -107,7 +152,7 @@ class ImportCompatibilityConverter
             $newQuestions = $this->convertQuestion($question);
             $out = array_merge($out, $newQuestions);
         }
-        var_dump($out);die;
+        return $out;
     }
 
     /**
@@ -255,13 +300,16 @@ class ImportCompatibilityConverter
             return $this->answers;
         }
         $out = [];
+        if(empty($this->xml->answers->rows)) {
+            return $out;
+        }
         foreach ($this->xml->answers->rows as $row) {
             foreach ($row as $item) {
                 $itemData = [];
                 foreach ($item as $key => $value) {
                     $itemData[(string)$key] = (string)$value;
                 }
-                $out[$itemData['aid']] = $itemData;
+                $out[] = $itemData;
             }
 
         }
