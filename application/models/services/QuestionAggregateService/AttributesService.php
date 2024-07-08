@@ -167,6 +167,7 @@ class AttributesService
      * @param Question $question
      * @param int $surveyId
      * @return Question
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     public function saveMissingAttributes(Question $question, int $surveyId)
     {
@@ -194,10 +195,7 @@ class AttributesService
         );
         // get all languages of the survey:
         $surveyModel = $this->modelSurvey->findByPk($surveyId);
-        $allSurveyLanguages = array_merge(
-            [$surveyModel->language],
-            explode(" ", (string)$surveyModel->additional_languages)
-        );
+        $allSurveyLanguages = $surveyModel->getAllLanguages();
 
         //only add those with their default values who are not already there
         foreach ($defaultSet as $attrName => $attrData) {
