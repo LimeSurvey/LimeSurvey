@@ -2,7 +2,7 @@
 
 namespace LimeSurvey\Api\Command\V1;
 
-use LimeSurvey\Api\Auth\AuthSession;
+use LimeSurvey\Api\Auth\AuthTokenSimple;
 use LimeSurvey\Api\Command\V1\Exception\ExceptionInvalidUser;
 use LimeSurvey\Api\Command\{
     CommandInterface,
@@ -14,20 +14,20 @@ use LimeSurvey\Api\Command\{
 
 class SessionKeyCreate implements CommandInterface
 {
-    protected AuthSession $authSession;
+    protected AuthTokenSimple $authTokenSimple;
     protected ResponseFactory $responseFactory;
 
     /**
      * Constructor
      *
-     * @param AuthSession $authSession
+     * @param AuthTokenSimple $authTokenSimple
      * @param ResponseFactory $responseFactory
      */
     public function __construct(
-        AuthSession $authSession,
+        AuthTokenSimple $authTokenSimple,
         ResponseFactory $responseFactory
     ) {
-        $this->authSession = $authSession;
+        $this->authTokenSimple = $authTokenSimple;
         $this->responseFactory = $responseFactory;
     }
 
@@ -48,7 +48,7 @@ class SessionKeyCreate implements CommandInterface
 
         try {
             return $this->responseFactory->makeSuccess(
-                $this->authSession->doLogin(
+                $this->authTokenSimple->doLogin(
                     $username,
                     $password,
                     $plugin

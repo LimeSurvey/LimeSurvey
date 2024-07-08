@@ -7,7 +7,7 @@ use CDbCriteria;
 use Session;
 use Yii;
 
-class AuthSession
+class AuthTokenSimple
 {
     const ERROR_INVALID_SESSION_KEY = 'INVALID_SESSION_KEY';
 

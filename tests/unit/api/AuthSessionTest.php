@@ -3,12 +3,12 @@
 namespace ls\tests\unit\api;
 
 use ls\tests\TestBaseClass;
-use LimeSurvey\Api\Auth\AuthSession;
+use LimeSurvey\Api\Auth\AuthTokenSimple;
 
 /**
  * @testdox Auth Session
  */
-class AuthSessionTest extends TestBaseClass
+class AuthTokenSimpleTest extends TestBaseClass
 {
     public static function tearDownAfterClass(): void
     {
@@ -31,8 +31,8 @@ class AuthSessionTest extends TestBaseClass
             $password = 'password';
         }
 
-        $authSession = new AuthSession();
-        $result = $authSession->doLogin(
+        $authTokenSimple = new AuthTokenSimple();
+        $result = $authTokenSimple->doLogin(
             $username,
             $password
         );
@@ -46,8 +46,8 @@ class AuthSessionTest extends TestBaseClass
      */
     public function testCheckKeySessionNotFound()
     {
-        $authSession = new AuthSession();
-        $result = $authSession->checkKey('invalid-key');
+        $authTokenSimple = new AuthTokenSimple();
+        $result = $authTokenSimple->checkKey('invalid-key');
         $this->assertFalse($result);
     }
 
@@ -61,8 +61,8 @@ class AuthSessionTest extends TestBaseClass
             $username = 'admin';
         }
 
-        $authSession = new AuthSession();
-        $result = $authSession->jumpStartSession($username);
+        $authTokenSimple = new AuthTokenSimple();
+        $result = $authTokenSimple->jumpStartSession($username);
         $this->assertTrue($result);
     }
 }

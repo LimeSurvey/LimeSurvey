@@ -12,7 +12,7 @@ use LimeSurvey\Api\Command\{
     Response\ResponseFactory,
     ResponseData\ResponseDataError
 };
-use LimeSurvey\Api\Auth\AuthSession;
+use LimeSurvey\Api\Auth\AuthTokenSimple;
 use LimeSurvey\Api\Command\Mixin\Auth\AuthPermissionTrait;
 
 /**
@@ -24,7 +24,7 @@ class SurveyTemplate implements CommandInterface
 {
     use AuthPermissionTrait;
 
-    protected AuthSession $authSession;
+    protected AuthTokenSimple $authTokenSimple;
     protected CHttpSession $session;
     protected ResponseFactory $responseFactory;
 
@@ -35,19 +35,19 @@ class SurveyTemplate implements CommandInterface
      * Constructor
      *
      * @param ResponseFactory $responseFactory
-     * @param AuthSession $authSession
+     * @param AuthTokenSimple $authTokenSimple
      * @param Survey $survey
      * @param SurveyLanguageSetting $surveyLanguageSetting
      */
     public function __construct(
         ResponseFactory $responseFactory,
-        AuthSession $authSession,
+        AuthTokenSimple $authTokenSimple,
         CHttpSession $session,
         Survey $survey,
         SurveyLanguageSetting $surveyLanguageSetting
     ) {
         $this->responseFactory = $responseFactory;
-        $this->authSession = $authSession;
+        $this->authTokenSimple = $authTokenSimple;
         $this->session = $session;
         $this->survey = $survey;
         $this->surveyLanguageSetting = $surveyLanguageSetting;
@@ -123,7 +123,7 @@ class SurveyTemplate implements CommandInterface
     private function ensurePermissions($sessionKey, $surveyId)
     {
         if (
-            !$this->authSession->checkKey($sessionKey)
+            !$this->authTokenSimple->checkKey($sessionKey)
         ) {
             return $this->responseFactory->makeErrorUnauthorised();
         }

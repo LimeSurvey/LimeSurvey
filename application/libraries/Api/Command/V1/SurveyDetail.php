@@ -12,7 +12,7 @@ use LimeSurvey\Api\Command\{
     ResponseData\ResponseDataError,
     Response\ResponseFactory
 };
-use LimeSurvey\Api\Auth\AuthSession;
+use LimeSurvey\Api\Auth\AuthTokenSimple;
 use LimeSurvey\Api\Command\Mixin\Auth\AuthPermissionTrait;
 
 class SurveyDetail implements CommandInterface
@@ -20,7 +20,7 @@ class SurveyDetail implements CommandInterface
     use AuthPermissionTrait;
 
     protected Survey $survey;
-    protected AuthSession $authSession;
+    protected AuthTokenSimple $authTokenSimple;
     protected TransformerOutputSurveyDetail $transformerOutputSurveyDetail;
     protected ResponseFactory $responseFactory;
     protected Permission $permission;
@@ -29,20 +29,20 @@ class SurveyDetail implements CommandInterface
      * Constructor
      *
      * @param Survey $survey
-     * @param AuthSession $authSession
+     * @param AuthTokenSimple $authTokenSimple
      * @param TransformerOutputSurveyDetail $transformerOutputSurveyDetail
      * @param ResponseFactory $responseFactory
      * @param Permission $permission
      */
     public function __construct(
         Survey $survey,
-        AuthSession $authSession,
+        AuthTokenSimple $authTokenSimple,
         TransformerOutputSurveyDetail $transformerOutputSurveyDetail,
         ResponseFactory $responseFactory,
         Permission $permission
     ) {
         $this->survey = $survey;
-        $this->authSession = $authSession;
+        $this->authTokenSimple = $authTokenSimple;
         $this->transformerOutputSurveyDetail = $transformerOutputSurveyDetail;
         $this->responseFactory = $responseFactory;
         $this->permission = $permission;
@@ -58,7 +58,7 @@ class SurveyDetail implements CommandInterface
     {
         $sessionKey = (string) $request->getData('sessionKey');
         $surveyId = (string) $request->getData('_id');
-        $authorized = $this->authSession->checkKey($sessionKey);
+        $authorized = $this->authTokenSimple->checkKey($sessionKey);
         $hasPermission = $this->permission->hasSurveyPermission(
             (int)$surveyId,
             'survey',

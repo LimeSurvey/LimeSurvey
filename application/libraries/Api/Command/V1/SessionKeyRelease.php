@@ -2,7 +2,7 @@
 
 namespace LimeSurvey\Api\Command\V1;
 
-use LimeSurvey\Api\Auth\AuthSession;
+use LimeSurvey\Api\Auth\AuthTokenSimple;
 use LimeSurvey\Api\Command\{
     CommandInterface,
     Request\Request,
@@ -12,20 +12,20 @@ use LimeSurvey\Api\Command\{
 
 class SessionKeyRelease implements CommandInterface
 {
-    protected AuthSession $authSession;
+    protected AuthTokenSimple $authTokenSimple;
     protected ResponseFactory $responseFactory;
 
     /**
      * Constructor
      *
-     * @param AuthSession $authSession
+     * @param AuthTokenSimple $authTokenSimple
      * @param ResponseFactory $responseFactory
      */
     public function __construct(
-        AuthSession $authSession,
+        AuthTokenSimple $authTokenSimple,
         ResponseFactory $responseFactory
     ) {
-        $this->authSession = $authSession;
+        $this->authTokenSimple = $authTokenSimple;
         $this->responseFactory = $responseFactory;
     }
 
@@ -37,7 +37,7 @@ class SessionKeyRelease implements CommandInterface
      */
     public function run(Request $request)
     {
-        $this->authSession->doLogout(
+        $this->authTokenSimple->doLogout(
             $request
             ->getData('sessionKey')
         );

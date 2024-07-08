@@ -10,7 +10,7 @@ use LimeSurvey\Api\Command\{
     Response\Response,
     Response\ResponseFactory
 };
-use LimeSurvey\Api\Auth\AuthSession;
+use LimeSurvey\Api\Auth\AuthTokenSimple;
 use LimeSurvey\Api\Command\Mixin\Auth\AuthPermissionTrait;
 use DI\FactoryInterface;
 
@@ -19,20 +19,20 @@ class SurveyList implements CommandInterface
     use AuthPermissionTrait;
 
     protected Survey $survey;
-    protected AuthSession $authSession;
+    protected AuthTokenSimple $authTokenSimple;
     protected TransformerOutputSurvey $transformerOutputSurvey;
     protected ResponseFactory $responseFactory;
 
     /**
      * Constructor
      *
-     * @param AuthSession $authSession
+     * @param AuthTokenSimple $authTokenSimple
      * @param TransformerOutputSurvey $transformerOutputSurvey
      * @param FactoryInterface $diFactory
      * @param ResponseFactory $responseFactory
      */
     public function __construct(
-        AuthSession $authSession,
+        AuthTokenSimple $authTokenSimple,
         TransformerOutputSurvey $transformerOutputSurvey,
         FactoryInterface $diFactory,
         ResponseFactory $responseFactory
@@ -41,7 +41,7 @@ class SurveyList implements CommandInterface
             Survey::class,
             ['scenario' => 'search']
         );
-        $this->authSession = $authSession;
+        $this->authTokenSimple = $authTokenSimple;
         $this->transformerOutputSurvey = $transformerOutputSurvey;
         $this->responseFactory = $responseFactory;
     }
@@ -57,7 +57,7 @@ class SurveyList implements CommandInterface
         $sessionKey = (string) $request->getData('sessionKey');
 
         if (
-            !$this->authSession
+            !$this->authTokenSimple
                 ->checkKey($sessionKey)
         ) {
             return $this->responseFactory
