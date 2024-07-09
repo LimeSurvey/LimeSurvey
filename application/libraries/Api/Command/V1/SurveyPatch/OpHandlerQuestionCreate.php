@@ -212,7 +212,7 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
 
         $question = $questionService->save(
             $surveyId,
-            $data,
+            $data
         );
 
         $mapping = array_merge(
