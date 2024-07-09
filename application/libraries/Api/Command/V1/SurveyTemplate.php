@@ -78,10 +78,10 @@ class SurveyTemplate implements CommandInterface
      */
     public function run(Request $request)
     {
-        $sessionKey = (string)$request->getData('sessionKey');
+        $authToken = (string)$request->getData('authToken');
         $surveyId = (int)$request->getData('_id');
 
-        if ($response = $this->ensurePermissions($sessionKey, $surveyId)) {
+        if ($response = $this->ensurePermissions($authToken, $surveyId)) {
             return $response;
         }
 
@@ -116,14 +116,14 @@ class SurveyTemplate implements CommandInterface
     /**
      * Ensure Permissions
      *
-     * @param string $sessionKey
+     * @param string $authToken
      * @param int $surveyId
      * @return Response|false
      */
-    private function ensurePermissions($sessionKey, $surveyId)
+    private function ensurePermissions($authToken, $surveyId)
     {
         if (
-            !$this->authTokenSimple->checkKey($sessionKey)
+            !$this->authTokenSimple->isAuthenticated($authToken)
         ) {
             return $this->responseFactory->makeErrorUnauthorised();
         }

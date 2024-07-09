@@ -55,11 +55,11 @@ class UserList implements CommandInterface
      */
     public function run(Request $request)
     {
-        $sessionKey = (string) $request->getData('sessionKey');
+        $authToken = (string) $request->getData('authToken');
 
         if (
             !$this->authTokenSimple
-                ->checkKey($sessionKey)
+                ->isAuthenticated($authToken)
         ) {
             return $this->responseFactory
                 ->makeErrorUnauthorised();

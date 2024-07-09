@@ -56,9 +56,9 @@ class SurveyDetail implements CommandInterface
      */
     public function run(Request $request)
     {
-        $sessionKey = (string) $request->getData('sessionKey');
+        $authToken = (string) $request->getData('authToken');
         $surveyId = (string) $request->getData('_id');
-        $authorized = $this->authTokenSimple->checkKey($sessionKey);
+        $authorized = $this->authTokenSimple->isAuthenticated($authToken);
         $hasPermission = $this->permission->hasSurveyPermission(
             (int)$surveyId,
             'survey',

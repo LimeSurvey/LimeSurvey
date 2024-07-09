@@ -49,13 +49,13 @@ class SurveyPatch implements CommandInterface
      */
     public function run(Request $request)
     {
-        $sessionKey = (string) $request->getData('sessionKey');
+        $authToken = (string) $request->getData('authToken');
         $id = (string) $request->getData('_id');
         $patch = $request->getData('patch');
 
         if (
             !$this->authTokenSimple
-                ->checkKey($sessionKey)
+                ->isAuthenticated($authToken)
         ) {
             return $this->responseFactory
                 ->makeErrorUnauthorised();

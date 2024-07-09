@@ -28,7 +28,7 @@ $rest = [
 return array_merge(
     $rest,
     include_once __DIR__ . '/v1/survey.php',
-    include_once __DIR__ . '/v1/session.php',
+    include_once __DIR__ . '/v1/auth.php',
     include_once __DIR__ . '/v1/survey-group.php',
     include_once __DIR__ . '/v1/user.php',
     include_once __DIR__ . '/v1/site-settings.php',

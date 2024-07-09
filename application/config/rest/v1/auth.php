@@ -1,8 +1,8 @@
 <?php
 
 use LimeSurvey\Api\Command\V1\{
-    SessionKeyCreate,
-    SessionKeyRelease
+    AuthKeyCreate,
+    AuthKeyRelease
 };
 use LimeSurvey\Api\Rest\V1\SchemaFactory\{
     SchemaFactoryError,
@@ -16,7 +16,7 @@ $rest = [];
 $rest['v1/session'] = [
     'POST' => [
         'description' => 'Generate new authentication token',
-        'commandClass' => SessionKeyCreate::class,
+        'commandClass' => AuthKeyCreate::class,
         'params' => [
             'username' => ['src' => 'form'],
             'password' => ['src' => 'form']
@@ -38,7 +38,7 @@ $rest['v1/session'] = [
     ],
     'DELETE' => [
         'description' => 'Destroy currently used authentication token',
-        'commandClass' => SessionKeyRelease::class,
+        'commandClass' => AuthKeyRelease::class,
         'auth' => 'session',
         'params' => [],
         'bodyParams' => [],
