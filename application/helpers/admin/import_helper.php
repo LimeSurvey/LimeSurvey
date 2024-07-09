@@ -238,12 +238,6 @@ function XMLImportGroup($sFullFilePath, $iNewSID)
             $oQuestion->setAttributes($insertdata, false);
 
             // Try to fix question title for valid question code enforcement
-            try {
-                $oQuestion->validate(['title']);
-            } catch (\Exception) {
-                var_dump($insertdata);
-                var_dump($oQuestion);die;
-            }
             if (!$oQuestion->validate(['title'])) {
                 $sOldTitle = $oQuestion->title;
                 $sNewTitle = preg_replace("/[^A-Za-z0-9]/", '', $sOldTitle);
