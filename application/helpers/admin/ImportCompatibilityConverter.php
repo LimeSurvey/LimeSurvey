@@ -10,6 +10,7 @@ class ImportCompatibilityConverter
     private array $languages;
     private array $groups;
     private array $questions;
+    private array $subQuestions;
     private array $answers;
     private array $questionL10ns;
     private array $groupL10ns;
@@ -36,10 +37,23 @@ class ImportCompatibilityConverter
             unset($this->xml->group_l10ns);
         }
 
+        $items = $this->convertSubQuestions();
+        if(!empty($items)) {
+            unset($this->xml->subquestions->rows);
+            $this->addRows('subquestions', $items);
+        }
+
         $items = $this->convertQuestions();
         if(!empty($items)) {
             unset($this->xml->questions->rows);
             $this->addRows('questions', $items);
+            unset($this->xml->question_l10ns);
+        }
+
+        $items = $this->convertSubQuestions();
+        if(!empty($items)) {
+            unset($this->xml->subquestions->rows);
+            $this->addRows('subquestions', $items);
             unset($this->xml->question_l10ns);
         }
 
@@ -143,6 +157,18 @@ class ImportCompatibilityConverter
         }
         return $out;
     }
+
+    private function convertSubQuestions()
+    {
+        $questions = $this->parseSubQuestions();
+        $out = [];
+        foreach ($questions as $question) {
+            $newQuestions = $this->convertQuestion($question);
+            $out = array_merge($out, $newQuestions);
+        }
+        return $out;
+    }
+
 
     private function convertQuestions()
     {
@@ -251,6 +277,27 @@ class ImportCompatibilityConverter
         return $out;
 
     }
+    private function parseSubQuestions()
+    {
+        if(isset($this->subQuestions)) {
+            return $this->subQuestions;
+        }
+        $out = [];
+        foreach ($this->xml->subquestions->rows as $row) {
+            foreach ($row as $item) {
+                $itemData = [];
+                foreach ($item as $key => $value) {
+                    $itemData[(string)$key] = (string)$value;
+                }
+                $out[] = $itemData;
+            }
+
+        }
+        $this->subQuestions = $out;
+        return $out;
+
+    }
+
 
     private function parseQuestions()
     {
