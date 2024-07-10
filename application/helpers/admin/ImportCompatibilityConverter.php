@@ -6,7 +6,7 @@
  */
 class ImportCompatibilityConverter
 {
-    private \SimpleXMLElement $xml;
+    private SimpleXMLElement $xml;
     private array $languages;
     private array $groups;
     private array $questions;
