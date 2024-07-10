@@ -23,7 +23,7 @@
         </a>
     </div>
     <div class="navbar-header" style="padding-top:1em;">
-            <span style='color:#ff1111; font-size:0.9em; font-weight:bold;'>Important: As of December 1st, LimeSurvey 3 is <a style='font-size:0.9em; font-weight:bold;' href='https://manual.limesurvey.org/LimeSurvey_roadmap#Limesurvey_3.x_-_First_release:_Dec_2017'>no longer supported</a>. For security reasons update (e.g. by <a style='font-size:0.9em; font-weight:bold;' href='<?php echo $this->createUrl("/admin/update"); ?>'>ComfortUpdate</a>) to the next major version.</span>
+            <span style='color:#ff1111; font-size:0.9em; font-weight:bold;'>Important: As of December 1st, LimeSurvey 3 is <a style='font-size:0.9em; font-weight:bold;' href='https://manual.limesurvey.org/LimeSurvey_roadmap#Limesurvey_3.x_-_First_release:_Dec_2017'>no longer supported</a></span>
     </div>
 
     <!-- Only on xs screens -->

@@ -34,6 +34,9 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+## 3.29.1 Jul 10th, 2024
+- Remove comfortupdate link from not supported notice from admin head (TonisOrmisson)
+
 ## 3.29.0 Jul 10th, 2024
 - ENH added ImportCompatibilityConverter to enable backwards compatibility importing files from LS version 4+ to v3 (TonisOrmisson)
 - skip php 5 from github actions pipeline (TonisOrmisson)
