@@ -438,11 +438,11 @@ function submittokens($quotaexit = false)
 //            {
                 $from = "{$thissurvey['adminname']} <{$thissurvey['adminemail']}>";
                 $subject = $thissurvey['email_confirm_subj'];
+                $bIsHTML = ($thissurvey['htmlemail'] == 'Y');
 
                 $aReplacementVars = array();
                 $aReplacementVars["ADMINNAME"] = $thissurvey['admin'];
                 $aReplacementVars["ADMINEMAIL"] = $thissurvey['adminemail'];
-                $aReplacementVars['ADMINEMAIL'] = $thissurvey['adminemail'];
                 //Fill with token info, because user can have his information with anonimity control
                 $aReplacementVars["FIRSTNAME"] = $token->firstname;
                 $aReplacementVars["LASTNAME"] = $token->lastname;
@@ -451,6 +451,7 @@ function submittokens($quotaexit = false)
                 // added survey url in replacement vars
                 $surveylink = Yii::app()->getController()->createAbsoluteUrl("/survey/index/sid/{$surveyid}", array('lang'=>$_SESSION['survey_'.$surveyid]['s_lang'], 'token'=>$token->token));
                 $aReplacementVars['SURVEYURL'] = $surveylink;
+                $aReplacementVars['ANSWERTABLE'] = getAnswersTable($surveyid, $bIsHTML);
 
                 $attrfieldnames = getAttributeFieldNames($surveyid);
                 foreach ($attrfieldnames as $attr_name) {
@@ -596,28 +597,8 @@ function sendSubmitNotifications($surveyid)
         $ResultTableHTML = "<table class='printouttable' >\n";
         $ResultTableText = "\n\n";
         $oldgid = 0;
-        $oldqid = 0;
-        Yii::import('application.helpers.viewHelper');
-        foreach ($aFullResponseTable as $sFieldname=>$fname) {
-            if (substr($sFieldname, 0, 4) == 'gid_') {
-                $ResultTableHTML .= "\t<tr class='printanswersgroup'><td colspan='2'>".viewHelper::flatEllipsizeText($fname[0], true, 0)."</td></tr>\n";
-                $ResultTableText .= "\n{$fname[0]}\n\n";
-            } elseif (substr($sFieldname, 0, 4) == 'qid_') {
-                $ResultTableHTML .= "\t<tr class='printanswersquestionhead'><td  colspan='2'>".viewHelper::flatEllipsizeText($fname[0], true, 0)."</td></tr>\n";
-                $ResultTableText .= "\n{$fname[0]}\n";
-            } else {
-                $ResultTableHTML .= "\t<tr class='printanswersquestion'><td>".viewHelper::flatEllipsizeText("{$fname[0]} {$fname[1]}", true, 0)."</td><td class='printanswersanswertext'>".CHtml::encode($fname[2])."</td></tr>\n";
-                $ResultTableText .= "     {$fname[0]} {$fname[1]}: {$fname[2]}\n";
-            }
-        }
-
-        $ResultTableHTML .= "</table>\n";
-        $ResultTableText .= "\n\n";
-        if ($bIsHTML) {
-            $aReplacementVars['ANSWERTABLE'] = $ResultTableHTML;
-        } else {
-            $aReplacementVars['ANSWERTABLE'] = $ResultTableText;
-        }
+        $oldgid = 0;
+        $aReplacementVars['ANSWERTABLE'] = getAnswersTable($surveyid, $bIsHTML);
     }
 
     $sFrom = $thissurvey['adminname'].' <'.$thissurvey['adminemail'].'>';
@@ -713,6 +694,28 @@ function sendSubmitNotifications($surveyid)
     }
 
 
+}
+function getAnswersTable($surveyid,$bIsHTML) {
+    $aFullResponseTable = getFullResponseTable($surveyid, $_SESSION['survey_'.$surveyid]['srid'], $_SESSION['survey_'.$surveyid]['s_lang']);
+    $ResultTableHTML = "<table class='printouttable' >\n";
+    $ResultTableText = "\n\n";
+    Yii::import('application.helpers.viewHelper');
+    foreach ($aFullResponseTable as $sFieldname=>$fname) {
+        if (substr($sFieldname, 0, 4) == 'gid_') {
+            $ResultTableHTML .= "\t<tr class='printanswersgroup'><td colspan='2'>".viewHelper::flatEllipsizeText($fname[0], true, 0)."</td></tr>\n";
+            $ResultTableText .= "\n{$fname[0]}\n\n";
+        } elseif (substr($sFieldname, 0, 4) == 'qid_') {
+            $ResultTableHTML .= "\t<tr class='printanswersquestionhead'><td  colspan='2'>".viewHelper::flatEllipsizeText($fname[0], true, 0)."</td></tr>\n";
+            $ResultTableText .= "\n{$fname[0]}\n";
+        } else {
+            $ResultTableHTML .= "\t<tr class='printanswersquestion'><td>".viewHelper::flatEllipsizeText("{$fname[0]} {$fname[1]}", true, 0)."</td><td class='printanswersanswertext'>".CHtml::encode($fname[2])."</td></tr>\n";$ResultTableText .= "     {$fname[0]} {$fname[1]}: {$fname[2]}\n";
+        }
+    }
+
+    $ResultTableHTML .= "</table>\n";
+    $ResultTableText .= "\n\n";
+
+    return $bIsHTML ? $ResultTableHTML : $ResultTableText;
 }
 
 /**
