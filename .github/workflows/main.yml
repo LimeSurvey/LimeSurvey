@@ -22,7 +22,7 @@ jobs:
     name: PHP ${{ matrix.php-versions }}  # Check each version of php specified in matrix
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       # This will change the php version for every version specified in matrix https://github.com/marketplace/actions/setup-php-action
       - name: Install specified PHP
         uses: shivammathur/setup-php@v2
@@ -41,8 +41,6 @@ jobs:
           touch enabletests
           # NB: PHPUnit 6.5.* is installed with composer.
           composer install -vvv
-          # Update on PHP 5.x to get a compatible version
-          composer update 
           ./third_party/bin/phpunit --version
       - name: Set up Apache+PHP
         run: |
