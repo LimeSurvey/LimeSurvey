@@ -167,7 +167,8 @@ class PasswordManagement
             $username = sprintf(gT('Username: %s'), $this->user->users_name);
             /* Usage of Yii::app()->createAbsoluteUrl, disable publicurl, See mantis #19619 */
             $linkToResetPage = \Yii::app()->createAbsoluteUrl(
-                'admin/authentication/sa/newPassword/', ['param' => $this->user->validation_key]
+                'admin/authentication/sa/newPassword/',
+                ['param' => $this->user->validation_key]
             );
             $linkText = gT("Click here to set your password: ") . $linkToResetPage;
             $body = array();
@@ -260,7 +261,8 @@ class PasswordManagement
         /* Usage of Yii::app()->createAbsoluteUrl, disable publicurl, See mantis #19619 */
         $absoluteUrl = \Yii::app()->createAbsoluteUrl("/admin");
         $passwordResetUrl = \Yii::app()->createAbsoluteUrl(
-            'admin/authentication/sa/newPassword', ['param' => $this->user->validation_key]
+            'admin/authentication/sa/newPassword',
+            ['param' => $this->user->validation_key]
         );
         return [
             'surveyapplicationname' => \Yii::app()->getConfig("sitename"),
