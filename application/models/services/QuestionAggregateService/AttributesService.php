@@ -2,9 +2,11 @@
 
 namespace LimeSurvey\Models\Services\QuestionAggregateService;
 
+use LimeSurvey\Models\Services\QuestionAttributeHelper;
 use Question;
 use QuestionAttribute;
 use LimeSurvey\Models\Services\Exception\PersistErrorException;
+use Survey;
 
 /**
  * Question Aggregate Attributes Service
@@ -16,17 +18,22 @@ use LimeSurvey\Models\Services\Exception\PersistErrorException;
 class AttributesService
 {
     private QuestionAttribute $modelQuestionAttribute;
+    private QuestionAttributeHelper $questionAttributeHelper;
+    private Survey $modelSurvey;
 
     public function __construct(
-        QuestionAttribute $modelQuestionAttribute
+        QuestionAttribute $modelQuestionAttribute,
+        QuestionAttributeHelper $questionAttributeHelper,
+        Survey $modelSurvey
     ) {
         $this->modelQuestionAttribute = $modelQuestionAttribute;
+        $this->questionAttributeHelper = $questionAttributeHelper;
+        $this->modelSurvey = $modelSurvey;
     }
 
     /**
-     * @todo document me
-     *
      * Based on QuestionAdministrationController::unparseAndSetAdvancedOptions()
+     * Saves the advanced question attributes as they are in the $dataSet array
      *
      * @param Question $question
      * @param array {
@@ -74,7 +81,7 @@ class AttributesService
     }
 
     /**
-     * @todo document me
+     * Saves the base attributes of questions as they come in
      *
      * @param Question $question
      * @param array {
@@ -153,5 +160,76 @@ class AttributesService
         }
 
         $question->refresh();
+    }
+
+    /**
+     * Adds missing question attributes with default values to the passed question
+     * @param Question $question
+     * @param int $surveyId
+     * @return Question
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+     */
+    public function saveMissingAttributes(Question $question, int $surveyId)
+    {
+        $existingAttrSimplified = [];
+        $existingAttributes = $this->modelQuestionAttribute->resetScope(
+        )->findAll(
+            'qid = :qid',
+            [':qid' => $question->qid]
+        );
+
+        foreach ($existingAttributes as $attr) {
+            /* @var QuestionAttribute $attr ; */
+                $existingAttrSimplified[$attr->attribute][$attr->language] = $attr->value;
+        }
+
+        $defaultSet = $this->questionAttributeHelper->getQuestionAttributesWithValues(
+            $question,
+            null,
+            null,
+            true
+        );
+        // get all languages of the survey:
+        $surveyModel = $this->modelSurvey->findByPk($surveyId);
+        $allSurveyLanguages = $surveyModel->getAllLanguages();
+
+        //only add those with their default values who are not already there
+        foreach ($defaultSet as $attrName => $attrData) {
+            $default = $attrData['default'] !== null ? $attrData['default'] : '';
+            if (
+                $attrData['i18n'] !== '1' &&
+                !array_key_exists(
+                    $attrName,
+                    $existingAttrSimplified
+                )
+            ) {
+                $this->modelQuestionAttribute->setQuestionAttributeWithLanguage(
+                    $question->qid,
+                    $attrName,
+                    $default,
+                    ''
+                );
+            } elseif ($attrData['i18n'] === '1') {
+                // for language based attributes, add the default value for each language if not existing
+                foreach ($allSurveyLanguages as $lngKey) {
+                    if (
+                        !array_key_exists($attrName, $existingAttrSimplified) ||
+                        !array_key_exists(
+                            $lngKey,
+                            $existingAttrSimplified[$attrName]
+                        )
+                    ) {
+                        $this->modelQuestionAttribute->setQuestionAttributeWithLanguage(
+                            $question->qid,
+                            $attrName,
+                            $default,
+                            $lngKey
+                        );
+                    }
+                }
+            }
+        }
+        $question->refresh();
+        return $question;
     }
 }
