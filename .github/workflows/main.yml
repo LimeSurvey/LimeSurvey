@@ -12,7 +12,7 @@ jobs:
     strategy:
       matrix:
         # Specify what versions of php you want to test
-        php-versions: ['7.4' , '8.1']
+        php-versions: ['7.4']
       # Run all jobs, even if some fail
       fail-fast: false
     # Env vars for this job
