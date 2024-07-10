@@ -1,5 +1,7 @@
 <?php
 
+use SimpleXMLElement;
+
 /**
  * This will convert LSv4+ survey XML element (with L10Ns) to ls v3 compatible format (without L10Ns) to be able
  * to import new version XML files to ls v3
