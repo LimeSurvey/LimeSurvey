@@ -34,6 +34,13 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+## DEV
+
+
+## 3.29.2 Jul 15th, 2024
+- fixed issue #19570: javascript exception on survey taking on browsers not supporting localstorage (TonisOrmisson)
+- fixed ImportCompatibilityConverter not handling unsupported inherited survey attributes from v4+ imports
+
 ## 3.29.1 Jul 10th, 2024
 - Remove comfortupdate link from not supported notice from admin head (TonisOrmisson)
 
