@@ -18,6 +18,7 @@ class ImportCompatibilityConverter
     private array $groupL10ns;
     private array $answerL10ns;
     private array $surveyAttributes;
+    private array $messages = [];
 
     public function __construct($xml)
     {
@@ -76,6 +77,14 @@ class ImportCompatibilityConverter
 
         return $this->xml;
 
+    }
+
+    /**
+     * @return array of messages
+     */
+    public function getMessages()
+    {
+        return $this->messages;
     }
 
 
@@ -160,16 +169,20 @@ class ImportCompatibilityConverter
                 'nokeyboard' => 'N',
                 'alloweditaftercompletion' => 'N',
             ];
-
+            $attributeReplacedWithDefault = false;
             if(in_array($value, $inCompatibleInheritedValues)) {
-
-                $out[$attribute] = $inCompatibleDefaultValues[$attribute] ?? '';
                 // replace with default value
+                $attributeReplacedWithDefault = true;
+                $out[$attribute] = $inCompatibleDefaultValues[$attribute] ?? '';
             } else if(in_array($attribute, array_keys($inCompatibleInheritedValuesByAttribute)) && in_array($value, $inCompatibleInheritedValuesByAttribute[$attribute])) {
+                $attributeReplacedWithDefault = true;
                 $out[$attribute] = $inCompatibleDefaultValues[$attribute] ?? '';
             }
             else {
                 $out[$attribute] = $value;
+            }
+            if($attributeReplacedWithDefault) {
+                $this->messages[] = sprintf(gT("NB! Attribute '%s' was overwritten due to using inheritance (not available in LS v3), please check your survey settings '%s' !!"), $attribute, $attribute);
             }
         }
         return $out;

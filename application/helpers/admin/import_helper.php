@@ -47,6 +47,9 @@ function XMLImportGroup($sFullFilePath, $iNewSID)
         Yii::import('application.helpers.admin.ImportCompatibilityConverter', true);
         $converter = new ImportCompatibilityConverter($xml);
         $xml = $converter->convert();
+        foreach ($converter->getMessages() as $message) {
+            $results['importwarnings'][] = $message;
+        }
     }
 
     $importlanguages = array();
@@ -457,6 +460,10 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $newgid, $options = array('
         Yii::import('application.helpers.admin.ImportCompatibilityConverter', true);
         $converter = new ImportCompatibilityConverter($xml);
         $xml = $converter->convert();
+        foreach ($converter->getMessages() as $message) {
+            $results['importwarnings'][] = $message;
+        }
+
     }
 
     $aQIDReplacements = array();
@@ -930,6 +937,10 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
         Yii::import('application.helpers.admin.ImportCompatibilityConverter', true);
         $converter = new ImportCompatibilityConverter($xml);
         $xml = $converter->convert();
+        foreach ($converter->getMessages() as $message) {
+            $results['importwarnings'][] = $message;
+        }
+
     } 
 
 
