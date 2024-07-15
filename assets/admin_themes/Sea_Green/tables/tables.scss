@@ -148,9 +148,142 @@ table {
 
 /** For all grid view table */
 .scrolling-wrapper {
-    overflow-x: scroll;
+    overflow-x: auto;
     overflow-y: hidden;
 
     // if go to last page of table, the action dropdown is hidden.
     min-height: 300px;
+}
+
+
+.grid-view, .grid-view-ls {
+  .table {
+    padding: 20px;
+    //background-color: $g-100;
+    border-radius: 4px;
+    border: solid 1px rgb(39 39 39 / 15%);
+    box-shadow: 0px 10px 13px -7px rgba(0, 0, 0, 0.2);
+
+    .ls-sticky-column, .checkbox-column {
+      text-align: center;
+      padding: 7px 20px;
+      box-shadow : none;
+    }
+
+
+    thead {
+      tr {
+        border: 0 none white;
+
+        th {
+          padding-bottom: 9px;
+          //padding-left: 25px;
+          font-weight: 600;
+          vertical-align: middle;
+          border-bottom: solid 1px  #9DA1B2;
+
+          .sort-link  {
+            color: black;
+            font-weight: 600;
+
+            ::before {
+              visibility: hidden;
+              font-weight: 500;
+              color: var(--bs-primary);
+            }
+          }
+        }
+
+        th:hover .sort-link :before {
+          visibility: visible;
+        }
+      }
+    }
+
+    tbody {
+
+      td input[type=checkbox]:after {
+        margin-right: 0;
+      }
+
+      tr {
+        border: solid 1px #F9F9FB;
+      }
+
+      tr:hover td .dropdown.ls-action_dropdown button.btn .ri-more-fill:before,
+      tr td .dropdown.ls-action_dropdown button.btn.show .ri-more-fill:before {
+        visibility: visible;
+        color: black;
+      }
+
+      .dropdown.ls-action_dropdown {
+
+      }
+    }
+
+
+    button {
+      //color: white;
+      //border: solid 1px  white;
+      border-color: white;
+    }
+
+    button:hover,
+    button:focus {
+      color: black;
+      box-shadow : none;
+      border-color: white;
+    }
+
+    button.btn .ri-more-fill:before {
+      font-size: 1.1em;
+      visibility: hidden;
+    }
+
+  }
+
+  .ri-play-fill:before,
+  .ri-stop-fill:before,
+  .ri-skip-forward-fill:before{
+    display: inline-block;
+    vertical-align: middle;
+    padding-bottom: 0px;
+    margin-bottom: 4px;
+    font-size: 1.6em;
+  }
+
+  .survey-state.disabled {
+    opacity: 0.5;
+  }
+
+  .action-list {
+    .disabled {
+      opacity: 0.3;
+    }
+
+    ul {
+      padding: 0;
+      margin: 0;
+      padding-left: 0;
+
+      li a {
+        //background-color: lightgray;
+        display: inline-block;
+        padding: 2px;
+        margin: 0;
+
+        i:before {
+          display: inline-block;
+          color: black;
+          font-size: 1.4em;
+        }
+      }
+
+      li:last-child a {
+        padding-right: 0;
+      }
+
+    }
+
+  }
 }

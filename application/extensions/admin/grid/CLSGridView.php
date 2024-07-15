@@ -51,6 +51,7 @@ class CLSGridView extends TbGridView
      */
     protected function initColumns()
     {
+        $this->appendFilteredColumns();
         foreach ($this->columns as $i => $column) {
             if (is_array($column) && !isset($column['class'])) {
                 $this->columns[$i]['class'] = '\TbDataColumn';
@@ -180,5 +181,39 @@ class CLSGridView extends TbGridView
             "jQuery('#$id').yiiGridView($options);",
             LSYii_ClientScript::POS_POSTSCRIPT
         );
+    }
+
+    protected function appendFilteredColumns(): void
+    {
+        if (App()->request->getQuery('columnFilter') == 'empty' && $this->ajaxUpdate == App()->request->getQuery('ajax')) {
+            SettingsUser::setUserSetting('column_filter_' . $this->ajaxUpdate, '');
+            SettingsUser::setUserSetting('column_filter_model_' . $this->ajaxUpdate, '');
+        } elseif (App()->request->getQuery('columnFilter') !== null && $this->ajaxUpdate == App()->request->getQuery('ajax')) {
+            $model = App()->request->getParam('model');
+            $submitted_column_filter = App()->request->getParam('columnFilter');
+            SettingsUser::setUserSetting('column_filter_' . $this->ajaxUpdate, implode('|', $submitted_column_filter));
+            SettingsUser::setUserSetting('column_filter_model_' . $this->ajaxUpdate, $model);
+            $this->addColumns($model, $submitted_column_filter);
+        } elseif ($column_filter = SettingsUser::getUserSettingValue('column_filter_' . $this->ajaxUpdate)) {
+            $model = SettingsUser::getUserSettingValue('column_filter_model_' . $this->ajaxUpdate);
+            $column_filter = explode('|', $column_filter);
+            $this->addColumns($model, $column_filter);
+        }
+    }
+
+    protected function addColumns($model, $columns_list): void
+    {
+        if (!empty($model) && method_exists($model::model(), 'getFilterableColumns')) {
+            list($columns, $filterableColumns) = $model::model()->getFilterableColumns();
+            foreach ($columns_list as $filter) {
+                $column_data = null;
+                if (isset($filterableColumns[$filter])) {
+                    $column_data = $filterableColumns[$filter];
+                }
+                if (is_array($column_data)) {
+                    array_splice($this->columns, count($this->columns) - 2, 0, [$column_data]);
+                }
+            }
+        }
     }
 }
