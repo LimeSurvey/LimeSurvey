@@ -190,6 +190,9 @@ export default class TimerConstructor {
      * Gets the current timer from the localStorage
      */
     _getTimerFromLocalStorage() {
+        if(!window.localStorage) {
+            return null;
+        }
         const timeLeft = window.localStorage.getItem('limesurvey_timers_' + this.timersessionname);
         return (!isNaN(parseInt(timeLeft)) ? timeLeft : 0);
     }
@@ -198,6 +201,10 @@ export default class TimerConstructor {
      * Sets the current timer to localStorage
      */
     _setTimerToLocalStorage(timerValue) {
+        if(!window.localStorage) {
+            return null;
+        }
+
         window.localStorage.setItem('limesurvey_timers_' + this.timersessionname, timerValue);
     }
 
@@ -205,6 +212,9 @@ export default class TimerConstructor {
      * Appends the current timer's qid to the list of timers for the survey
      */
     _appendTimerToSurveyTimersList() {
+        if(!window.localStorage) {
+            return null;
+        }
         var timers = JSON.parse(window.localStorage.getItem(this.surveyTimersItemName) || "[]");
         if (!timers.includes(this.timersessionname)) timers.push(this.timersessionname);
         window.localStorage.setItem(this.surveyTimersItemName, JSON.stringify(timers));

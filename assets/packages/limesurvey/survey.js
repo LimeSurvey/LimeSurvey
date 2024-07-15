@@ -425,6 +425,9 @@ function updateMandatoryErrorClass(){
 }
 
 function resetQuestionTimers(sid) {
+    if(!window.localStorage) {
+        return;
+    }
     var surveyTimersItemName = 'limesurvey_timers_by_sid_' + sid;
     var timers = JSON.parse(window.localStorage.getItem(surveyTimersItemName) || "[]");
     timers.forEach(function(timersessionname, idx){
