@@ -17,6 +17,7 @@ class ImportCompatibilityConverter
     private array $questionL10ns;
     private array $groupL10ns;
     private array $answerL10ns;
+    private array $surveyAttributes;
 
     public function __construct($xml)
     {
@@ -31,6 +32,12 @@ class ImportCompatibilityConverter
     public function convert()
     {
 
+        $items = $this->convertSurveyInheritedSettings();
+
+        if(!empty($items)) {
+            unset($this->xml->surveys->rows);
+            $this->addRows('surveys', [$items]);
+        }
 
         $items = $this->convertGroups();
         if(!empty($items)) {
@@ -92,6 +99,83 @@ class ImportCompatibilityConverter
             }
         }
     }
+
+
+
+    private function convertSurveyInheritedSettings()
+    {
+        $surveyAttributes = $this->parseSurveyAttributes();
+        $out = [];
+        foreach ($surveyAttributes as $attribute => $value) {
+            $inCompatibleInheritedValues = ['I', 'inherit'];
+
+            $inCompatibleInheritedValuesByAttribute = [
+                'questionindex' => ['-1'],
+                'tokenlength' => ['-1'],
+                'navigationdelay' => ['-1'],
+                'usecaptcha' => ['E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'O', 'P', 'T', 'U', '1', '2', '3', '4', '5', '6'],
+            ];
+
+            $inCompatibleDefaultValues = [
+                'admin' => 'Administrator',
+                'adminemail' => "example@example.com",
+                'anonymized' => 'N',
+                'faxto' => '',
+                'format' => 'G',
+                'savetimings' => 'N',
+                'template' => 'vanilla',
+                'datestamp' => 'Y',
+                'usecookie' => 'N',
+                'allowregister' => 'N',
+                'allowsave' => 'N',
+                'autonumber_start' => '0',
+                'autoredirect' => 'Y',
+                'allowprev' => 'N',
+                'printanswers' => 'N',
+                'ipaddr' => 'N',
+                'refurl' => 'N',
+                'showsurveypolicynotice' => '0',
+                'publicstatistics' => 'N',
+                'publicgraphs' => 'N',
+                'listpublic' => 'N',
+                'htmlemail' => 'Y',
+                'sendconfirmation' => 'N',
+                'tokenanswerspersistence' => 'Y',
+                'assessments' => 'N',
+                'usecaptcha' => 'N',
+                'usetokens' => 'N',
+                'bounce_email' => '',
+                'emailresponseto' => '',
+                'emailnotificationto' => '',
+                'tokenlength' => '32',
+                'showxquestions' => 'Y',
+                'showgroupinfo' => 'N',
+                'shownoanswer' => 'N',
+                'showqnumcode' => 'N',
+                'bounceprocessing' => 'N',
+                'showwelcome' => 'N',
+                'showprogress' => 'Y',
+                'questionindex' => '0',
+                'navigationdelay' => '0',
+                'nokeyboard' => 'N',
+                'alloweditaftercompletion' => 'N',
+            ];
+
+            if(in_array($value, $inCompatibleInheritedValues)) {
+
+                $out[$attribute] = $inCompatibleDefaultValues[$attribute] ?? '';
+                // replace with default value
+            } else if(in_array($attribute, array_keys($inCompatibleInheritedValuesByAttribute)) && in_array($value, $inCompatibleInheritedValuesByAttribute[$attribute])) {
+                $out[$attribute] = $inCompatibleDefaultValues[$attribute] ?? '';
+            }
+            else {
+                $out[$attribute] = $value;
+            }
+        }
+        return $out;
+
+    }
+
 
 
     private function convertGroups()
@@ -205,18 +289,21 @@ class ImportCompatibilityConverter
     }
 
 
-    private function parseCurrentData()
-    {
-        $groups = $this->parseGroups();
-        $questions = $this->parseQuestions();
-        $answers = $this->parseAnswers();
-        $groupL10ns = $this->parseGroupL10ns();
-        $questionL10ns = $this->parseQuestionL10ns();
-        $answerL10ns = $this->parseAnswerL10ns();
 
-        var_dump($answers);die;
+    private function parseSurveyAttributes()
+    {
+        if(isset($this->surveyAttributes)) {
+            return $this->surveyAttributes;
+        }
+        $out = [];
+        foreach ($this->xml->surveys->rows->row[0] as $attributeName =>  $value) {
+            $out[(string)$attributeName] = (string)$value;
+        }
+        $this->surveyAttributes = $out;
+        return $out;
 
     }
+
     private function parseAnswerL10ns()
     {
         if(isset($this->answerL10ns)) {
