@@ -34,6 +34,20 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.5.16 (build 240708) to 6.5.17 (build 240715) July 15, 2024
+-Fixed issue #CT-896: Fixed question PDF export at statistics (lajosarpad)
+-Fixed issue #CT-892: Answers for array question types are not correctly displayed on mobile devices (#3911) (Patrick Teichmann)
+-Fixed issue #19631: Very hard to match attributes in the CPDB when importing CSV data (#3908) (Gabriel Jenik)
+-Fixed issue #19619: bad admin url, with the publicurl variable (#3910) (Denis Chenu)
+-Fixed issue #19105: Store XSS in Central participant management (#3902) (Gabriel Jenik)
+#Updated translation: Slovak by jelen1
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 6.5.15 (build 240701) to 6.5.16 (build 240708) July 8, 2024
 -Fixed issue #QE-1027: Survey progress bar does not reflect correct progress (#3898) (Rami Shenouda)
 #Updated translation: Polish by elissa
