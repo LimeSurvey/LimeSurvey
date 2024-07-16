@@ -14,20 +14,20 @@ use LimeSurvey\Api\Command\{
 
 class AuthKeyCreate implements CommandInterface
 {
-    protected AuthTokenSimple $authTokenSimple;
+    protected AuthTokenSimple $auth;
     protected ResponseFactory $responseFactory;
 
     /**
      * Constructor
      *
-     * @param AuthTokenSimple $authTokenSimple
+     * @param AuthTokenSimple $auth
      * @param ResponseFactory $responseFactory
      */
     public function __construct(
-        AuthTokenSimple $authTokenSimple,
+        AuthTokenSimple $auth,
         ResponseFactory $responseFactory
     ) {
-        $this->authTokenSimple = $authTokenSimple;
+        $this->auth = $auth;
         $this->responseFactory = $responseFactory;
     }
 
@@ -44,7 +44,7 @@ class AuthKeyCreate implements CommandInterface
 
         try {
             return $this->responseFactory->makeSuccess(
-                $this->authTokenSimple->login(
+                $this->auth->login(
                     $username,
                     $password
                 )

@@ -20,7 +20,7 @@ class UserList implements CommandInterface
 
     protected User $user;
     protected Permission $permission;
-    protected AuthTokenSimple $authTokenSimple;
+    protected AuthTokenSimple $auth;
     protected TransformerOutputSurveyOwner $transformerOutputSurveyOwner;
     protected ResponseFactory $responseFactory;
 
@@ -29,20 +29,20 @@ class UserList implements CommandInterface
      *
      * @param User $user
      * @param Permission $permission
-     * @param AuthTokenSimple $authTokenSimple
+     * @param AuthTokenSimple $auth
      * @param TransformerOutputSurveyOwner $transformerOutputSurveyOwner
      * @param ResponseFactory $responseFactory
      */
     public function __construct(
         User $user,
         Permission $permission,
-        AuthTokenSimple $authTokenSimple,
+        AuthTokenSimple $auth,
         TransformerOutputSurveyOwner $transformerOutputSurveyOwner,
         ResponseFactory $responseFactory
     ) {
         $this->user = $user;
         $this->permission = $permission;
-        $this->authTokenSimple = $authTokenSimple;
+        $this->auth = $auth;
         $this->transformerOutputSurveyOwner = $transformerOutputSurveyOwner;
         $this->responseFactory = $responseFactory;
     }
@@ -58,7 +58,7 @@ class UserList implements CommandInterface
         $authToken = (string) $request->getData('authToken');
 
         if (
-            !$this->authTokenSimple
+            !$this->auth
                 ->isAuthenticated($authToken)
         ) {
             return $this->responseFactory

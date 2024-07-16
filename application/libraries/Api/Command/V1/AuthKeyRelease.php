@@ -12,20 +12,20 @@ use LimeSurvey\Api\Command\{
 
 class AuthKeyRelease implements CommandInterface
 {
-    protected AuthTokenSimple $authTokenSimple;
+    protected AuthTokenSimple $auth;
     protected ResponseFactory $responseFactory;
 
     /**
      * Constructor
      *
-     * @param AuthTokenSimple $authTokenSimple
+     * @param AuthTokenSimple $auth
      * @param ResponseFactory $responseFactory
      */
     public function __construct(
-        AuthTokenSimple $authTokenSimple,
+        AuthTokenSimple $auth,
         ResponseFactory $responseFactory
     ) {
-        $this->authTokenSimple = $authTokenSimple;
+        $this->auth = $auth;
         $this->responseFactory = $responseFactory;
     }
 
@@ -37,7 +37,7 @@ class AuthKeyRelease implements CommandInterface
      */
     public function run(Request $request)
     {
-        $this->authTokenSimple->logout(
+        $this->auth->logout(
             $request
             ->getData('authToken')
         );

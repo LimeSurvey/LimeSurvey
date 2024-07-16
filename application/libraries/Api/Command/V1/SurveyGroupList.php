@@ -18,7 +18,7 @@ class SurveyGroupList implements CommandInterface
     use AuthPermissionTrait;
 
     protected SurveysGroups $surveyGroup;
-    protected AuthTokenSimple $authTokenSimple;
+    protected AuthTokenSimple $auth;
     protected TransformerOutputSurveyGroup $transformerOutputSurveyGroup;
     protected ResponseFactory $responseFactory;
 
@@ -26,18 +26,18 @@ class SurveyGroupList implements CommandInterface
      * Constructor
      *
      * @param SurveysGroups $surveyGroup
-     * @param AuthTokenSimple $authTokenSimple
+     * @param AuthTokenSimple $auth
      * @param TransformerOutputSurveyGroup $transformerOutputSurveyGroup
      * @param ResponseFactory $responseFactory
      */
     public function __construct(
         SurveysGroups $surveyGroup,
-        AuthTokenSimple $authTokenSimple,
+        AuthTokenSimple $auth,
         TransformerOutputSurveyGroup $transformerOutputSurveyGroup,
         ResponseFactory $responseFactory
     ) {
         $this->surveyGroup = $surveyGroup;
-        $this->authTokenSimple = $authTokenSimple;
+        $this->auth = $auth;
         $this->transformerOutputSurveyGroup = $transformerOutputSurveyGroup;
         $this->responseFactory = $responseFactory;
     }
@@ -53,7 +53,7 @@ class SurveyGroupList implements CommandInterface
         $authToken = (string) $request->getData('authToken');
 
         if (
-            !$this->authTokenSimple
+            !$this->auth
                 ->isAuthenticated($authToken)
         ) {
             return $this->responseFactory

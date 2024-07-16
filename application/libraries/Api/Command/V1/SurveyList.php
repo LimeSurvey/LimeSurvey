@@ -19,20 +19,20 @@ class SurveyList implements CommandInterface
     use AuthPermissionTrait;
 
     protected Survey $survey;
-    protected AuthTokenSimple $authTokenSimple;
+    protected AuthTokenSimple $auth;
     protected TransformerOutputSurvey $transformerOutputSurvey;
     protected ResponseFactory $responseFactory;
 
     /**
      * Constructor
      *
-     * @param AuthTokenSimple $authTokenSimple
+     * @param AuthTokenSimple $auth
      * @param TransformerOutputSurvey $transformerOutputSurvey
      * @param FactoryInterface $diFactory
      * @param ResponseFactory $responseFactory
      */
     public function __construct(
-        AuthTokenSimple $authTokenSimple,
+        AuthTokenSimple $auth,
         TransformerOutputSurvey $transformerOutputSurvey,
         FactoryInterface $diFactory,
         ResponseFactory $responseFactory
@@ -41,7 +41,7 @@ class SurveyList implements CommandInterface
             Survey::class,
             ['scenario' => 'search']
         );
-        $this->authTokenSimple = $authTokenSimple;
+        $this->auth = $auth;
         $this->transformerOutputSurvey = $transformerOutputSurvey;
         $this->responseFactory = $responseFactory;
     }
@@ -57,7 +57,7 @@ class SurveyList implements CommandInterface
         $authToken = (string) $request->getData('authToken');
 
         if (
-            !$this->authTokenSimple
+            !$this->auth
                 ->isAuthenticated($authToken)
         ) {
             return $this->responseFactory

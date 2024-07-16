@@ -20,7 +20,7 @@ class SurveyDetail implements CommandInterface
     use AuthPermissionTrait;
 
     protected Survey $survey;
-    protected AuthTokenSimple $authTokenSimple;
+    protected AuthTokenSimple $auth;
     protected TransformerOutputSurveyDetail $transformerOutputSurveyDetail;
     protected ResponseFactory $responseFactory;
     protected Permission $permission;
@@ -29,20 +29,20 @@ class SurveyDetail implements CommandInterface
      * Constructor
      *
      * @param Survey $survey
-     * @param AuthTokenSimple $authTokenSimple
+     * @param AuthTokenSimple $auth
      * @param TransformerOutputSurveyDetail $transformerOutputSurveyDetail
      * @param ResponseFactory $responseFactory
      * @param Permission $permission
      */
     public function __construct(
         Survey $survey,
-        AuthTokenSimple $authTokenSimple,
+        AuthTokenSimple $auth,
         TransformerOutputSurveyDetail $transformerOutputSurveyDetail,
         ResponseFactory $responseFactory,
         Permission $permission
     ) {
         $this->survey = $survey;
-        $this->authTokenSimple = $authTokenSimple;
+        $this->auth = $auth;
         $this->transformerOutputSurveyDetail = $transformerOutputSurveyDetail;
         $this->responseFactory = $responseFactory;
         $this->permission = $permission;
@@ -58,7 +58,7 @@ class SurveyDetail implements CommandInterface
     {
         $authToken = (string) $request->getData('authToken');
         $surveyId = (string) $request->getData('_id');
-        $authorized = $this->authTokenSimple->isAuthenticated($authToken);
+        $authorized = $this->auth->isAuthenticated($authToken);
         $hasPermission = $this->permission->hasSurveyPermission(
             (int)$surveyId,
             'survey',

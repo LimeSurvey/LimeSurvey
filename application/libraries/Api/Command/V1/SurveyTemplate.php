@@ -24,7 +24,7 @@ class SurveyTemplate implements CommandInterface
 {
     use AuthPermissionTrait;
 
-    protected AuthTokenSimple $authTokenSimple;
+    protected AuthTokenSimple $auth;
     protected CHttpSession $session;
     protected ResponseFactory $responseFactory;
 
@@ -35,19 +35,19 @@ class SurveyTemplate implements CommandInterface
      * Constructor
      *
      * @param ResponseFactory $responseFactory
-     * @param AuthTokenSimple $authTokenSimple
+     * @param AuthTokenSimple $auth
      * @param Survey $survey
      * @param SurveyLanguageSetting $surveyLanguageSetting
      */
     public function __construct(
         ResponseFactory $responseFactory,
-        AuthTokenSimple $authTokenSimple,
+        AuthTokenSimple $auth,
         CHttpSession $session,
         Survey $survey,
         SurveyLanguageSetting $surveyLanguageSetting
     ) {
         $this->responseFactory = $responseFactory;
-        $this->authTokenSimple = $authTokenSimple;
+        $this->auth = $auth;
         $this->session = $session;
         $this->survey = $survey;
         $this->surveyLanguageSetting = $surveyLanguageSetting;
@@ -123,7 +123,7 @@ class SurveyTemplate implements CommandInterface
     private function ensurePermissions($authToken, $surveyId)
     {
         if (
-            !$this->authTokenSimple->isAuthenticated($authToken)
+            !$this->auth->isAuthenticated($authToken)
         ) {
             return $this->responseFactory->makeErrorUnauthorised();
         }

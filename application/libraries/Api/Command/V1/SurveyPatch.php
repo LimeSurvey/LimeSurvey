@@ -18,23 +18,23 @@ class SurveyPatch implements CommandInterface
 {
     use AuthPermissionTrait;
 
-    protected AuthTokenSimple $authTokenSimple;
+    protected AuthTokenSimple $auth;
     protected FactoryInterface $diFactory;
     protected ResponseFactory $responseFactory;
 
     /**
      * Constructor
      *
-     * @param AuthTokenSimple $authTokenSimple
+     * @param AuthTokenSimple $auth
      * @param FactoryInterface $diFactory
      * @param ResponseFactory $responseFactory
      */
     public function __construct(
-        AuthTokenSimple $authTokenSimple,
+        AuthTokenSimple $auth,
         FactoryInterface $diFactory,
         ResponseFactory $responseFactory
     ) {
-        $this->authTokenSimple = $authTokenSimple;
+        $this->auth = $auth;
         $this->diFactory = $diFactory;
         $this->responseFactory = $responseFactory;
     }
@@ -54,7 +54,7 @@ class SurveyPatch implements CommandInterface
         $patch = $request->getData('patch');
 
         if (
-            !$this->authTokenSimple
+            !$this->auth
                 ->isAuthenticated($authToken)
         ) {
             return $this->responseFactory
