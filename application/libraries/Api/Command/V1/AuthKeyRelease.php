@@ -38,8 +38,8 @@ class AuthKeyRelease implements CommandInterface
     public function run(Request $request)
     {
         $this->auth->logout(
-            $request
-            ->getData('authToken')
+            (string) $request
+            ->getData('authToken', '')
         );
         return $this->responseFactory
             ->makeSuccess('OK');

@@ -99,6 +99,8 @@ class Endpoint
      */
     public function run()
     {
+        $renderer = $this->getResponseRenderer();
+
         if (!empty($this->config['auth'])) {
             if (
                 !$this->getAuthenticator()
@@ -106,12 +108,14 @@ class Endpoint
                     $this->commandParams['authToken']
                 )
             ) {
-                return $this->responseFactory
-                    ->makeErrorUnauthorised();
+                $renderer->returnResponse(
+                    $this->responseFactory
+                        ->makeErrorUnauthorised()
+                );
+                return;
             }
         }
 
-        $renderer = $this->getResponseRenderer();
         $response = $this->getCommand()->run(
             new Request($this->commandParams)
         );

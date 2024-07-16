@@ -9,8 +9,8 @@ interface AuthInterface
     /**
      * Login with username and password
      *
-     * @param $username
-     * @param $password
+     * @param string $username
+     * @param string $password
      * @return ?mixed Response data
      * @throws ApiAuthException
      */
