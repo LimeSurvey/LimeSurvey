@@ -2,7 +2,7 @@
 
 namespace LimeSurvey\Api\Command\V1;
 
-use LimeSurvey\Api\Auth\AuthTokenSimple;
+use LimeSurvey\Api\Authentication\AuthenticationTokenSimple;
 use LimeSurvey\Api\Command\{
     CommandInterface,
     Request\Request,
@@ -10,22 +10,18 @@ use LimeSurvey\Api\Command\{
     Response\ResponseFactory
 };
 
-class AuthKeyRelease implements CommandInterface
+class AuthTokenSimpleRelease implements CommandInterface
 {
-    protected AuthTokenSimple $auth;
     protected ResponseFactory $responseFactory;
 
     /**
      * Constructor
      *
-     * @param AuthTokenSimple $auth
      * @param ResponseFactory $responseFactory
      */
     public function __construct(
-        AuthTokenSimple $auth,
         ResponseFactory $responseFactory
     ) {
-        $this->auth = $auth;
         $this->responseFactory = $responseFactory;
     }
 
@@ -37,10 +33,6 @@ class AuthKeyRelease implements CommandInterface
      */
     public function run(Request $request)
     {
-        $this->auth->logout(
-            (string) $request
-            ->getData('authToken', '')
-        );
         return $this->responseFactory
             ->makeSuccess('OK');
     }

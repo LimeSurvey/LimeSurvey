@@ -1,8 +1,8 @@
 <?php
 
 use LimeSurvey\Api\Command\V1\{
-    AuthKeyCreate,
-    AuthKeyRelease
+    AuthTokenSimpleCreate,
+    AuthTokenSimpleRelease
 };
 use LimeSurvey\Api\Rest\V1\SchemaFactory\{
     SchemaFactoryError,
@@ -13,10 +13,10 @@ $errorSchema = (new SchemaFactoryError)->make();
 
 $rest = [];
 
-$rest['v1/session'] = [
+$rest['v1/auth'] = [
     'POST' => [
         'description' => 'Generate new authentication token',
-        'commandClass' => AuthKeyCreate::class,
+        'commandClass' => AuthTokenSimpleCreate::class,
         'params' => [
             'username' => ['src' => 'form'],
             'password' => ['src' => 'form']
@@ -38,7 +38,7 @@ $rest['v1/session'] = [
     ],
     'DELETE' => [
         'description' => 'Destroy currently used authentication token',
-        'commandClass' => AuthKeyRelease::class,
+        'commandClass' => AuthTokenSimpleRelease::class,
         'auth' => true,
         'params' => [],
         'bodyParams' => [],
@@ -55,5 +55,10 @@ $rest['v1/session'] = [
         ]
     ]
 ];
+
+// Add session endpoints to auth endpoints for backward compatibility
+// - can remove this once the survey template functionality is calling
+// - /auth instead of /session
+$rest['v1/session'] = $rest['v1/auth'];
 
 return $rest;

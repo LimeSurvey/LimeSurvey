@@ -1,8 +1,8 @@
 <?php
 
-namespace LimeSurvey\Api\Auth;
+namespace LimeSurvey\Api\Authentication;
 
-use LimeSurvey\Api\Auth\AuthInterface;
+use LimeSurvey\Api\Authentication\AuthenticationInterface;
 use LimeSurvey\Api\Command\V1\Exception\ExceptionInvalidUser;
 use LSUserIdentity;
 use PluginEvent;
@@ -11,7 +11,7 @@ use Session;
 use User;
 use Yii;
 
-class AuthTokenSimple implements AuthInterface
+class AuthenticationTokenSimple implements AuthenticationInterface
 {
     const ERROR_INVALID_SESSION_KEY = 'INVALID_SESSION_KEY';
 

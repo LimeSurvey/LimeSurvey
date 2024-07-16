@@ -8,9 +8,9 @@ use LimeSurvey\Api\Command\{
     Response\ResponseFactory,
     Request\Request
 };
-use LimeSurvey\Api\Auth\{
-    AuthInterface,
-    AuthTokenSimple
+use LimeSurvey\Api\Authentication\{
+    AuthenticationInterface,
+    AuthenticationTokenSimple
 };
 use LimeSurvey\Api\Rest\Renderer\RendererInterface;
 use Psr\Container\ContainerInterface;
@@ -61,13 +61,13 @@ class Endpoint
     /**
      * Get Authenticator
      *
-     * @return AuthInterface
+     * @return AuthenticationInterface
      */
     protected function getAuthenticator()
     {
         $authenticatorClass = !empty($this->config['authenticatorClass'])
             ? $this->config['authenticatorClass']
-            : AuthTokenSimple::class;
+            : AuthenticationTokenSimple::class;
         return $this->diContainer->get($authenticatorClass);
     }
 

@@ -1,10 +1,10 @@
 <?php
 
-namespace LimeSurvey\Api\Auth;
+namespace LimeSurvey\Api\Authentication;
 
-use LimeSurvey\Api\Auth\ApiAuthException;
+use LimeSurvey\Api\Authentication\ApiAuthenticationException;
 
-interface AuthInterface
+interface AuthenticationInterface
 {
     /**
      * Login with username and password
@@ -12,14 +12,14 @@ interface AuthInterface
      * @param string $username
      * @param string $password
      * @return ?mixed Response data
-     * @throws ApiAuthException
+     * @throws ApiAuthenticationException
      */
     public function login($username, $password);
 
     /**
      * @param string $token
      * @return void
-     * @throws ApiAuthException
+     * @throws ApiAuthenticationException
      */
     public function logout($token);
 
