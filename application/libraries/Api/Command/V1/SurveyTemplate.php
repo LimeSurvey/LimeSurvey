@@ -75,7 +75,7 @@ class SurveyTemplate implements CommandInterface
     {
         $surveyId = (int)$request->getData('_id');
 
-        if ($response = $this->ensurePermissions( $surveyId)) {
+        if ($response = $this->ensurePermissions($surveyId)) {
             return $response;
         }
 

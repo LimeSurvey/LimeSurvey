@@ -4,6 +4,7 @@ namespace LimeSurvey\Api\Auth;
 
 use LimeSurvey\Api\Auth\AuthInterface;
 use LimeSurvey\Api\Command\V1\Exception\ExceptionInvalidUser;
+
 use LSUserIdentity,
     PluginEvent,
     CDbCriteria,

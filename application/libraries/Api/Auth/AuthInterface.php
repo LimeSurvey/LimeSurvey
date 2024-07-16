@@ -28,5 +28,4 @@ interface AuthInterface
      * @return boolean
      */
     public function isAuthenticated($token);
-
 }
