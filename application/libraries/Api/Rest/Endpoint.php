@@ -41,7 +41,7 @@ class Endpoint
         $commandParams,
         ResponseFactory $responseFactory,
         ContainerInterface $diContainer
-    ){
+    ) {
         $this->config = $config;
         $this->commandParams = $commandParams;
         $this->responseFactory = $responseFactory;
