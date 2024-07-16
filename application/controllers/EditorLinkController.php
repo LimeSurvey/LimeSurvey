@@ -13,7 +13,7 @@
  *
  */
 
-use LimeSurvey\Api\Auth\AuthTokenSimple;
+use LimeSurvey\Api\Authentication\AuthenticationTokenSimple;
 
 class EditorLinkController extends LSYii_Controller
 {
@@ -50,7 +50,7 @@ class EditorLinkController extends LSYii_Controller
      */
     public function run($action)
     {
-        $this->setAuthInitCookie();
+        $this->setAuthenticationInitCookie();
         $editorUrl = Yii::app()->request->getQuery(
             'url',
             Yii::app()->request->baseUrl
@@ -66,11 +66,11 @@ class EditorLinkController extends LSYii_Controller
      *
      * @return void
      */
-    private function setAuthInitCookie()
+    private function setAuthenticationInitCookie()
     {
         $cookieName = 'LS_AUTH_INIT';
 
-        $authTokenSimple = new AuthTokenSimple();
+        $authTokenSimple = new AuthenticationTokenSimple();
         $session = $authTokenSimple->createSession(
             Yii::app()->session['user']
         );
