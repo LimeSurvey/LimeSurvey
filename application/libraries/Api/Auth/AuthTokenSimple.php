@@ -4,7 +4,12 @@ namespace LimeSurvey\Api\Auth;
 
 use LimeSurvey\Api\Auth\AuthInterface;
 use LimeSurvey\Api\Command\V1\Exception\ExceptionInvalidUser;
-use LSUserIdentity, PluginEvent, CDbCriteria, Session, User, Yii;
+use LSUserIdentity;
+use PluginEvent;
+use CDbCriteria;
+use Session;
+use User;
+use Yii;
 
 class AuthTokenSimple implements AuthInterface
 {
