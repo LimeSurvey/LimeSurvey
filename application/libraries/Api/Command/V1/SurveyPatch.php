@@ -2,7 +2,6 @@
 
 namespace LimeSurvey\Api\Command\V1;
 
-use LimeSurvey\Api\Auth\AuthTokenSimple;
 use LimeSurvey\Api\Command\V1\SurveyPatch\PatcherSurvey;
 use LimeSurvey\Api\Command\{
     CommandInterface,
@@ -18,23 +17,19 @@ class SurveyPatch implements CommandInterface
 {
     use AuthPermissionTrait;
 
-    protected AuthTokenSimple $auth;
     protected FactoryInterface $diFactory;
     protected ResponseFactory $responseFactory;
 
     /**
      * Constructor
      *
-     * @param AuthTokenSimple $auth
      * @param FactoryInterface $diFactory
      * @param ResponseFactory $responseFactory
      */
     public function __construct(
-        AuthTokenSimple $auth,
         FactoryInterface $diFactory,
         ResponseFactory $responseFactory
     ) {
-        $this->auth = $auth;
         $this->diFactory = $diFactory;
         $this->responseFactory = $responseFactory;
     }
@@ -49,17 +44,8 @@ class SurveyPatch implements CommandInterface
      */
     public function run(Request $request)
     {
-        $authToken = (string) $request->getData('authToken');
         $id = (string) $request->getData('_id');
         $patch = $request->getData('patch');
-
-        if (
-            !$this->auth
-                ->isAuthenticated($authToken)
-        ) {
-            return $this->responseFactory
-                ->makeErrorUnauthorised();
-        }
 
         $patcher = $this->diFactory->make(
             PatcherSurvey::class

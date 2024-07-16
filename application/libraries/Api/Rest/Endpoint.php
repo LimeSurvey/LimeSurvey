@@ -5,7 +5,12 @@ namespace LimeSurvey\Api\Rest;
 use LimeSurvey\Api\Rest\Renderer\RendererBasic;
 use LimeSurvey\Api\Command\{
     CommandInterface,
+    Response\ResponseFactory,
     Request\Request
+};
+use LimeSurvey\Api\Auth\{
+    AuthInterface,
+    AuthTokenSimple
 };
 use LimeSurvey\Api\Rest\Renderer\RendererInterface;
 use Psr\Container\ContainerInterface;
@@ -20,6 +25,7 @@ class Endpoint
     protected $config = [];
     /** @var array */
     protected $commandParams = [];
+    protected ResponseFactory $responseFactory;
     protected ContainerInterface $diContainer;
 
     /**
@@ -30,10 +36,16 @@ class Endpoint
      * @param ContainerInterface $diContainer
      * @return string|null
      */
-    public function __construct($config, $commandParams, ContainerInterface $diContainer)
+    public function __construct(
+        $config,
+        $commandParams,
+        ResponseFactory $responseFactory,
+        ContainerInterface $diContainer
+    )
     {
         $this->config = $config;
         $this->commandParams = $commandParams;
+        $this->responseFactory = $responseFactory;
         $this->diContainer = $diContainer;
     }
 
@@ -45,6 +57,19 @@ class Endpoint
     protected function getCommand()
     {
         return $this->diContainer->get($this->config['commandClass']);
+    }
+
+    /**
+     * Get Authenticator
+     *
+     * @return AuthInterface
+     */
+    protected function getAuthenticator()
+    {
+        $authenticatorClass = !empty($this->config['authenticatorClass'])
+            ? $this->config['authenticatorClass']
+            : AuthTokenSimple::class;
+        return $this->diContainer->get($authenticatorClass);
     }
 
     /**
@@ -75,6 +100,18 @@ class Endpoint
      */
     public function run()
     {
+        if (!empty($this->config['auth'])) {
+            if (
+                !$this->getAuthenticator()
+                ->isAuthenticated(
+                    $this->commandParams['authToken']
+                )
+            ) {
+                return $this->responseFactory
+                    ->makeErrorUnauthorised();
+            }
+        }
+
         $renderer = $this->getResponseRenderer();
         $response = $this->getCommand()->run(
             new Request($this->commandParams)

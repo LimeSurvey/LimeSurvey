@@ -10,7 +10,6 @@ use LimeSurvey\Api\Command\{
     Response\Response,
     Response\ResponseFactory
 };
-use LimeSurvey\Api\Auth\AuthTokenSimple;
 use LimeSurvey\Api\Command\Mixin\Auth\AuthPermissionTrait;
 
 class SurveyGroupList implements CommandInterface
@@ -18,7 +17,6 @@ class SurveyGroupList implements CommandInterface
     use AuthPermissionTrait;
 
     protected SurveysGroups $surveyGroup;
-    protected AuthTokenSimple $auth;
     protected TransformerOutputSurveyGroup $transformerOutputSurveyGroup;
     protected ResponseFactory $responseFactory;
 
@@ -32,12 +30,10 @@ class SurveyGroupList implements CommandInterface
      */
     public function __construct(
         SurveysGroups $surveyGroup,
-        AuthTokenSimple $auth,
         TransformerOutputSurveyGroup $transformerOutputSurveyGroup,
         ResponseFactory $responseFactory
     ) {
         $this->surveyGroup = $surveyGroup;
-        $this->auth = $auth;
         $this->transformerOutputSurveyGroup = $transformerOutputSurveyGroup;
         $this->responseFactory = $responseFactory;
     }
@@ -50,16 +46,6 @@ class SurveyGroupList implements CommandInterface
      */
     public function run(Request $request)
     {
-        $authToken = (string) $request->getData('authToken');
-
-        if (
-            !$this->auth
-                ->isAuthenticated($authToken)
-        ) {
-            return $this->responseFactory
-                ->makeErrorUnauthorised();
-        }
-
         $dataProvider = $this->surveyGroup->search();
 
         $data = $this->transformerOutputSurveyGroup

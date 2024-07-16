@@ -10,7 +10,6 @@ use LimeSurvey\Api\Command\{
     Response\Response,
     Response\ResponseFactory
 };
-use LimeSurvey\Api\Auth\AuthTokenSimple;
 use LimeSurvey\Api\Command\Mixin\Auth\AuthPermissionTrait;
 use DI\FactoryInterface;
 
@@ -19,20 +18,17 @@ class SurveyList implements CommandInterface
     use AuthPermissionTrait;
 
     protected Survey $survey;
-    protected AuthTokenSimple $auth;
     protected TransformerOutputSurvey $transformerOutputSurvey;
     protected ResponseFactory $responseFactory;
 
     /**
      * Constructor
      *
-     * @param AuthTokenSimple $auth
      * @param TransformerOutputSurvey $transformerOutputSurvey
      * @param FactoryInterface $diFactory
      * @param ResponseFactory $responseFactory
      */
     public function __construct(
-        AuthTokenSimple $auth,
         TransformerOutputSurvey $transformerOutputSurvey,
         FactoryInterface $diFactory,
         ResponseFactory $responseFactory
@@ -41,7 +37,6 @@ class SurveyList implements CommandInterface
             Survey::class,
             ['scenario' => 'search']
         );
-        $this->auth = $auth;
         $this->transformerOutputSurvey = $transformerOutputSurvey;
         $this->responseFactory = $responseFactory;
     }
@@ -54,16 +49,6 @@ class SurveyList implements CommandInterface
      */
     public function run(Request $request)
     {
-        $authToken = (string) $request->getData('authToken');
-
-        if (
-            !$this->auth
-                ->isAuthenticated($authToken)
-        ) {
-            return $this->responseFactory
-                ->makeErrorUnauthorised();
-        }
-
         unset($this->survey->active);
         $dataProvider = $this->survey
             ->with('defaultlanguage')

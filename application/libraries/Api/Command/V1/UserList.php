@@ -11,7 +11,6 @@ use LimeSurvey\Api\Command\{
     Response\Response,
     Response\ResponseFactory
 };
-use LimeSurvey\Api\Auth\AuthTokenSimple;
 use LimeSurvey\Api\Command\Mixin\Auth\AuthPermissionTrait;
 
 class UserList implements CommandInterface
@@ -20,7 +19,6 @@ class UserList implements CommandInterface
 
     protected User $user;
     protected Permission $permission;
-    protected AuthTokenSimple $auth;
     protected TransformerOutputSurveyOwner $transformerOutputSurveyOwner;
     protected ResponseFactory $responseFactory;
 
@@ -36,13 +34,11 @@ class UserList implements CommandInterface
     public function __construct(
         User $user,
         Permission $permission,
-        AuthTokenSimple $auth,
         TransformerOutputSurveyOwner $transformerOutputSurveyOwner,
         ResponseFactory $responseFactory
     ) {
         $this->user = $user;
         $this->permission = $permission;
-        $this->auth = $auth;
         $this->transformerOutputSurveyOwner = $transformerOutputSurveyOwner;
         $this->responseFactory = $responseFactory;
     }
@@ -55,16 +51,6 @@ class UserList implements CommandInterface
      */
     public function run(Request $request)
     {
-        $authToken = (string) $request->getData('authToken');
-
-        if (
-            !$this->auth
-                ->isAuthenticated($authToken)
-        ) {
-            return $this->responseFactory
-                ->makeErrorUnauthorised();
-        }
-
         if (!$this->permission->hasGlobalPermission('users', 'read')) {
             return $this->responseFactory
                 ->makeErrorForbidden();

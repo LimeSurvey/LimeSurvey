@@ -12,7 +12,6 @@ use LimeSurvey\Api\Command\{
     Response\ResponseFactory,
     ResponseData\ResponseDataError
 };
-use LimeSurvey\Api\Auth\AuthTokenSimple;
 use LimeSurvey\Api\Command\Mixin\Auth\AuthPermissionTrait;
 
 /**
@@ -24,7 +23,6 @@ class SurveyTemplate implements CommandInterface
 {
     use AuthPermissionTrait;
 
-    protected AuthTokenSimple $auth;
     protected CHttpSession $session;
     protected ResponseFactory $responseFactory;
 
@@ -35,19 +33,16 @@ class SurveyTemplate implements CommandInterface
      * Constructor
      *
      * @param ResponseFactory $responseFactory
-     * @param AuthTokenSimple $auth
      * @param Survey $survey
      * @param SurveyLanguageSetting $surveyLanguageSetting
      */
     public function __construct(
         ResponseFactory $responseFactory,
-        AuthTokenSimple $auth,
         CHttpSession $session,
         Survey $survey,
         SurveyLanguageSetting $surveyLanguageSetting
     ) {
         $this->responseFactory = $responseFactory;
-        $this->auth = $auth;
         $this->session = $session;
         $this->survey = $survey;
         $this->surveyLanguageSetting = $surveyLanguageSetting;
@@ -78,10 +73,9 @@ class SurveyTemplate implements CommandInterface
      */
     public function run(Request $request)
     {
-        $authToken = (string)$request->getData('authToken');
         $surveyId = (int)$request->getData('_id');
 
-        if ($response = $this->ensurePermissions($authToken, $surveyId)) {
+        if ($response = $this->ensurePermissions( $surveyId)) {
             return $response;
         }
 
@@ -120,14 +114,8 @@ class SurveyTemplate implements CommandInterface
      * @param int $surveyId
      * @return Response|false
      */
-    private function ensurePermissions($authToken, $surveyId)
+    private function ensurePermissions($surveyId)
     {
-        if (
-            !$this->auth->isAuthenticated($authToken)
-        ) {
-            return $this->responseFactory->makeErrorUnauthorised();
-        }
-
         if (
             !$this->hasSurveyPermission(
                 $surveyId,

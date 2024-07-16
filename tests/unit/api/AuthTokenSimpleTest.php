@@ -32,7 +32,7 @@ class AuthTokenSimpleTest extends TestBaseClass
         }
 
         $authTokenSimple = new AuthTokenSimple();
-        $result = $authTokenSimple->doLogin(
+        $result = $authTokenSimple->login(
             $username,
             $password
         );
@@ -47,7 +47,7 @@ class AuthTokenSimpleTest extends TestBaseClass
     public function testCheckKeySessionNotFound()
     {
         $authTokenSimple = new AuthTokenSimple();
-        $result = $authTokenSimple->checkKey('invalid-key');
+        $result = $authTokenSimple->isAuthenticated('invalid-key');
         $this->assertFalse($result);
     }
 

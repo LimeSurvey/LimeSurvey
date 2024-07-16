@@ -70,7 +70,7 @@ class AuthTokenSimple implements AuthInterface
      * @param string $username The username
      * @return bool
      */
-    private function jumpStartSession($username)
+    public function jumpStartSession($username)
     {
         $oUser = User::model()->findByAttributes(
             array('users_name' => $username)
