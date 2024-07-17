@@ -9,9 +9,13 @@ $rest = [
                 'name' => 'Survey',
                 'description' => 'Survey',
             ],
+            'auth' => [
+                'name' => 'Auth',
+                'description' => 'Auth',
+            ],
             'session' => [
                 'name' => 'Session',
-                'description' => 'Session',
+                'description' => 'Session (deprecated - use auth)',
             ],
             'survey-group' => [
                 'name' => 'Survey Group',
@@ -20,7 +24,11 @@ $rest = [
             'site-settings' => [
                 'name' => 'Site Settings',
                 'description' => 'Site Settings',
-            ]
+            ],
+            'user' => [
+                'name' => 'User',
+                'description' => 'User',
+            ],
         ]
     ]
 ];
