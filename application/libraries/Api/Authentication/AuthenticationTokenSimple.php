@@ -70,9 +70,7 @@ class AuthenticationTokenSimple implements AuthenticationInterface
             throw new ExceptionInvalidUser('Invalid token');
         }
 
-        $result = $this->createSession(
-            $existingSession->data ?: ''
-        )->id;
+        $result = $this->createSession($existingSession->data)->id;
 
         // Expire existing token
         $existingSession->expire = time() - 1;
