@@ -73,6 +73,7 @@ Yii::app()->getController()->renderPartial(
             <label class='form-label '><?php eT("Blacklist user:"); ?></label>
             <div>
                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                    'ariaLabel'=> gT('Blacklist user:'),
                     'model'         => $model,
                     'attribute'     => 'blacklisted',
                     'checkedOption' => $model->blacklisted ?? 'N',

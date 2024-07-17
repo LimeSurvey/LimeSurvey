@@ -3,7 +3,7 @@
 ///////////////////////////
 // Blacks, whites and greys
 
-$primary: #328637;
+$primary: #246128;
 $primary-2: #35363F;
 
 $notification-pulse-1: #eeeeee;
@@ -87,7 +87,7 @@ $alert-info: #40ab82;
 
 :root {
     --LS-admintheme-basecolor: #{$primary};
-    --bs-info-rgb: 57, 153, 63;
+    --bs-info-rgb: #{$primary};
 }
 
 //@extend-elements
@@ -256,9 +256,25 @@ a {
                 color: $white;
             }
             background-color: $primary-bg_hover;
+            .wrapper{
+                .title{
+                    color: $primary-2 !important;
+                }
+                .icon{
+                    color: $primary-2 !important;
+                }
+            } 
         }
         &:focus {
             background-color: $primary-bg_hover;
+            .wrapper{
+                .title{
+                    color: $primary-2 !important;
+                }
+                .icon{
+                    color: $primary-2 !important;
+                }
+            }
         }
     }
     &.thumbnail {
@@ -623,6 +639,15 @@ fieldset[disabled] {
         a:focus  {
             color: $navbar-light-active-color;
         }
+    }
+}
+
+.navbar{
+    .navbar-toggler{
+        .navbar-toggler-icon {
+                background-image: escape-svg($navbar-light-toggler-icon-bg);
+        }
+        background-color: white;
     }
 }
 

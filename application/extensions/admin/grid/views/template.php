@@ -12,6 +12,6 @@
     <div class="col-md-4" id="massive-action-container">
         <?= $massiveActionTemplate ?>
     </div>
-    <div class="col-md-4 ">{pager}</div>
+    <div role="navigation" aria-label="Pagination" class="col-md-4 ">{pager}</div>
     <div class="col-md-4 summary-container">{summary}</div>
 </div>

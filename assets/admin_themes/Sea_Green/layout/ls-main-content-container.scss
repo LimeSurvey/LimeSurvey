@@ -187,3 +187,31 @@
     }
 
 }
+
+.focus-black-outline {
+    &.offset-1:focus {
+        outline-offset: 1px;
+    }
+
+    &.offset-2:focus {
+        outline-offset: 2px;
+    }
+
+    &:focus {
+        outline: 2px dotted black;
+    }
+}
+
+.focus-white-outline {
+    &.offset-1:focus {
+        outline-offset: 1px;
+    }
+
+    &.offset-2:focus {
+        outline-offset: 2px;
+    }
+
+    &:focus {
+        outline: 2px dotted white;
+    }
+}

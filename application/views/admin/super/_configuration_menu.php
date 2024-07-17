@@ -22,7 +22,7 @@
     || Permission::model()->hasGlobalPermission('settings', 'read')
 ): ?>
     <li class="dropdown mega-dropdown nav-item">
-        <a href="#" class="nav-link dropdown-toggle mainmenu-dropdown-toggle" data-bs-toggle="dropdown">
+        <a role="button" href="#" class="nav-link dropdown-toggle mainmenu-dropdown-toggle" data-bs-toggle="dropdown">
             <!-- <i class="ri-settings-5-fill"></i> -->
             <?php eT('Configuration'); ?>
             <span class="caret"></span>
@@ -137,8 +137,8 @@
 
                         <!-- Advanced -->
                         <li class="dropdown-header">
-                            <span class="ri-tools-fill"></span>
-                            <?php eT('Advanced'); ?>
+                            <span class="ri-tools-fill" aria-hidden="true"></span>
+                            <span role="heading" aria-level="2"><?php eT('Advanced'); ?></span>
                         </li>
                         <?php if (Permission::model()->hasGlobalPermission('templates', 'read')): ?>
                             <!-- Theme Editor -->
@@ -196,8 +196,8 @@
                         <!-- Users -->
                         <li class="dropdown-header">
 
-                            <i class="ri-user-fill"></i>
-                            <?php eT('Users'); ?>
+                            <i class="ri-user-fill" aria-hidden="true"></i>
+                            <span role="heading" aria-level="2"><?php eT('Users'); ?></span>
                         </li>
 
                         <!-- User management -->
@@ -251,8 +251,8 @@
 
                         <!-- Settings -->
                         <li class="dropdown-header">
-                            <span class="ri-list-settings-line"></span>
-                            <?php eT('Settings'); ?>
+                            <span class="ri-list-settings-line" aria-hidden="true"></span>
+                            <span role="heading" aria-level="2"> <?php eT('Settings'); ?></span>
                         </li>
 
                         <?php if (Permission::model()->hasGlobalPermission('settings', 'read')): ?>

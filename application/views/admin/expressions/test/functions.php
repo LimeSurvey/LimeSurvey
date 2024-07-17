@@ -36,6 +36,7 @@ $aFunctions = array_map(
                     //public function getPagination() { return null; }
                 },
                  */
+                'caption' => gT('Functions available within ExpressionScript Engine'),
                 'dataProvider' => new CArrayDataProvider($aFunctions),
                 'columns' => [
                     [

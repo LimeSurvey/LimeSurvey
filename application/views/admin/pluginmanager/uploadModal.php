@@ -1,8 +1,8 @@
-<div class="modal fade" tabindex="-1" role="dialog" id="installPluginZipModal">
+<div class="modal fade" tabindex="-1" aria-modal="true"  tabindex="-1" role="dialog" id="installPluginZipModal">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title"><?php eT("Install plugin ZIP file") ?></h5>
+                <h5 role="heading" aria-level="2" class="modal-title"><?php eT("Install plugin ZIP file") ?></h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <?php echo CHtml::form(
@@ -29,9 +29,9 @@
                 <input type='hidden' name='action' value='templateupload' />
                 <div  class="mb-3">
                     <label for='the_file'><?php eT("Select plugin ZIP file:") ?></label>
-                    <input id='the_file' class="form-control" name='the_file' type="file" accept='.zip' />
+                    <input id='the_file' class="form-control" name='the_file' type="file" accept='.zip' aria-describedby="sizehint"/>
                     <br/>
-                    <?php printf(gT('(Maximum file size: %01.2f MB)'), getMaximumFileUploadSize()/1024/1024); ?>
+                    <p id="sizehint"><?php printf(gT('(Maximum file size: %01.2f MB)'), getMaximumFileUploadSize()/1024/1024); ?></p>
                 </div>
             </div>
             <div class="modal-footer">

@@ -1,4 +1,5 @@
 <?php
+
 /** @var String $id */
 /** @var String $ariaLabel */
 /** @var String $name */
@@ -15,7 +16,15 @@
 $iconLeft = $icon && $iconPosition != 'right' ? '<i class="' .  $icon . '" ></i> ' : '';
 $iconRight = $icon && $iconPosition == 'right' ? ' <i class="' .  $icon . '" ></i>' : '';
 $dropDownIconHtml = $displayDropDownIcon ? '<span class="menu-button-divider"></span><i class="' . $dropDownIcon . '" ></i>' : '';
+
+if (array_key_exists('class', $htmlOptions)) {
+    if (strpos($htmlOptions['class'], 'disabled') !== false) {
+        $htmlOptions['disabled'] = 'disabled';
+    }
+}
+
 ?>
+
 <?php if ($link == '' || $isDropDown || array_key_exists('disabled', $htmlOptions)) : ?>
         <?= CHtml::htmlButton($iconLeft . $text . $iconRight . $dropDownIconHtml, $htmlOptions) ?>
     <?php if ($dropDownContent != '') : ?>

@@ -7,7 +7,7 @@
 ?>
 <?= viewHelper::getViewTestTag('surveyFailedEmail') ?>
     <div class='side-body <?php echo getSideBodyClass(false); ?>'>
-        <h3><?php eT("Failed email notifications"); ?></h3>
+        <h3 role="heading" aria-level="2"><?php eT("Failed email notifications"); ?></h3>
         <?php
         $this->widget('ext.AlertWidget.AlertWidget', [
             'text' => gT("Please note that failed email notifications will be automatically deleted after 30 days."),
@@ -22,6 +22,7 @@
                     'dataProvider' => $failedEmailModel->search(),
                     'filter' => $failedEmailModel,
                     'id' => 'failedemail-grid',
+                    'caption' => gT('Failed email notifications'),
                     'emptyText' => gT('No failed email notifications found'),
                     'massiveActionTemplate' => $massiveAction,
                     'summaryText' => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
@@ -43,7 +44,7 @@
             </div>
         </div>
     </div>
-    <div id="failedemail-action-modal" class="modal fade" role="dialog">
+    <div id="failedemail-action-modal" class="modal fade" tabindex="-1" aria-modal="true"  role="dialog">
         <div id="failedemail-action-modal--dialog" class="modal-dialog" role="document">
             <div class="modal-content">
             </div>

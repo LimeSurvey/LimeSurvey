@@ -10,10 +10,10 @@ $banana       : #FFE872; // tertiary
 $apple        : #B2FF8E; // tertiary
 $success      : #4DD753; // success
 $warning      : #FFE046; // warning
-$error        : #FF515F; // danger/error
+$error        : #75131b; // danger/error
 $lime-green   : #7FF409; // links on dark
 $action       : #4200FF; // links on light
-$active-green : #14AE5C; // buttons & links
+$active-green : #246128; // buttons & links
 $elevation-shadow: rgba(66, 0, 255, 0.2); // LSD/Elevation/Shadow
 $elevation-shadow-soft: rgba(0, 0, 0, 0.2); // LSD/Elevation/ShadowSoft
 
@@ -36,15 +36,15 @@ $g-100        : #F9F9FB;
 
 $theme-colors: (
     "primary":    $active-green,
-    "secondary":  $g-600,
+    "secondary":  $g-700,
     "success":    $success,
     "danger":     $error,
     "warning":    $warning,
     "info":       $grape,
-    "light":      $g-200,
+    "light":      $g-700,
     "dark":       $g-900,
     "black60":    $black60,
-    "cancel":     $g-600, // replace with secondary
+    "cancel":     $g-700, // replace with secondary
 );
 
 $border-radius: 4px;

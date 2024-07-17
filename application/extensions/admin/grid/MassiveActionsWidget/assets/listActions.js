@@ -388,8 +388,10 @@ function switchStatusOfListActions(e) {
         var actionButton = $('.massiveAction');
         if (isAnyCheckboxChecked()) {
             actionButton.removeClass('disabled');
+            actionButton.attr('disabled', false);
         } else {
             actionButton.addClass('disabled');
+            actionButton.attr('disabled', true);
         }
     });
 }

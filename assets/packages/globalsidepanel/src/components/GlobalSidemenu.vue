@@ -116,13 +116,14 @@ export default {
     @mouseup="mouseup"
   >
     <div class="col-12">
-      <div class="mainMenu col-12 ">
+      <div class="mainMenu col-12 test">
         <sidemenu :menu="currentMenue" :style="{ 'min-height': calculateSideBarMenuHeight }"></sidemenu>
       </div>
     </div>
     <div class="resize-handle ls-flex-column" 
          :style="{ 'height': '100%', 'max-height': getWindowHeight }">
       <button 
+        aria-label="resize side menu"
         v-show="!$store.state.isCollapsed" class="btn " 
         @mousedown="mousedown"
         @click.prevent="() => { return false; }">

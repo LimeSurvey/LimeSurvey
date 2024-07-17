@@ -15,6 +15,7 @@ echo viewHelper::getViewTestTag('exportSpss');
         <label for='completionstate' class='col-md-2  form-form-label'><?php eT("Data selection:");?></label>
         <div class="col-md-10">
             <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', array(
+                'ariaLabel'=> gT('Data selection:'),
                 'name' => 'completionstate',
                 'checkedOption'=> 'all' ,
                 'selectOptions'=>array(
@@ -29,6 +30,7 @@ echo viewHelper::getViewTestTag('exportSpss');
         <label for='spssver'  class='col-sm-2  form-label'><?php eT("SPSS version:");?></label>
         <div class="col-md-10">
             <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', array(
+                'ariaLabel'=> gT('SPSS version:'),
                 'name' => 'spssver',
                 'checkedOption'=> $spssver ,
                 'selectOptions'=> array(

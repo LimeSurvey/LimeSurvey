@@ -14,7 +14,7 @@
             <div class="row">
 
                 <!-- Select file -->
-                <div class="mb-3 col-4">
+                <div class="mb-3 col-12 col-md-4">
                     <label class='form-label ' for='the_file'>
                         <?php printf(gT("Select survey structure file (*.lss, *.txt) or survey archive (*.lsa) (maximum file size: %01.2f MB)"), getMaximumFileUploadSize() / 1024 / 1024); ?>
                     </label>
@@ -45,11 +45,11 @@
     </div>
 </div>
 
-<div id='pleaseselectfile-popup' class="modal fade" tabindex="-1" role="dialog">
+<div id='pleaseselectfile-popup' class="modal fade" aria-modal="true"  tabindex="-1" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title"><?php eT("No file selected"); ?></h5>
+                <h5 role="heading" aria-level="2" class="modal-title"><?php eT("No file selected"); ?></h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">

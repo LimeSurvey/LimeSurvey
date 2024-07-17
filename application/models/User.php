@@ -750,7 +750,7 @@ class User extends LSActiveRecord
 
     public function getManagementCheckbox()
     {
-        return "<input type='checkbox' class='usermanagement--selector-userCheckbox' name='selectedUser[]' value='" . $this->uid . "'>";
+        return "<input aria-label='Select Row - Username: " . $this->users_name . "' type='checkbox' class='usermanagement--selector-userCheckbox' name='selectedUser[]' value='" . $this->uid . "'>";
     }
     /**
      * @return array
@@ -761,7 +761,7 @@ class User extends LSActiveRecord
             [
                 'name'              => 'managementCheckbox',
                 'type'              => 'raw',
-                'header'            => "<input type='checkbox' id='usermanagement--action-toggleAllUsers' />",
+                'header'            => "<input aria-label='Select All Users' type='checkbox' id='usermanagement--action-toggleAllUsers' />",
                 'filter'            => false,
                 'filterHtmlOptions' => ['class' => 'ls-sticky-column'],
                 'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
@@ -994,6 +994,25 @@ class User extends LSActiveRecord
             $expired = new DateTime($expirationTime) < new DateTime($now);
         }
         return $expired;
+    }
+
+    /**
+     * Check if user is active
+     * @return boolean
+     */
+    public function isActive()
+    {
+        /* Default is active, user_status must be set (to be tested during DB update); deactivated set user_status to 0 */
+        return !isset($this->user_status) || $this->user_status !== 0;
+    }
+
+    /**
+     * Check if user can login
+     * @return boolean
+     */
+    public function canLogin()
+    {
+        return $this->isActive() && !$this->isExpired();
     }
 
     /**

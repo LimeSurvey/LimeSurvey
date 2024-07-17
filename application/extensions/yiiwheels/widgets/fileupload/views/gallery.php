@@ -1,8 +1,8 @@
 <!-- modal-gallery is the modal dialog used for the image gallery -->
 <div id="modal-gallery" class="modal modal-gallery hide fade" tabindex="-1">
     <div class="modal-header">
-        <a class="btn-close" data-bs-dismiss="modal"></a>
-        <h3 class="modal-title"></h3>
+        <a class="btn-close" data-bs-dismiss="modal" aria-label="close" role="button" href="javascript:void(0);"></a>
+        <h3 class="modal-title" role="heading" aria-level="2"></h3>
     </div>
     <div class="modal-body"><div class="modal-image"></div></div>
     <div class="modal-footer">

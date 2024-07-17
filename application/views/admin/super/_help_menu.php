@@ -11,7 +11,7 @@
             <a href="http://manual.limesurvey.org/" target="_blank" class="dropdown-item">
                 <!-- <i class="ri-question-fill"></i> -->
                 <?php eT('LimeSurvey Manual');?>
-                <i class=" ri-external-link-fill  float-end"></i>
+                <i role="img" aria-label="<?=eT('Open in a new Tab')?>" class=" ri-external-link-fill  float-end"></i>
             </a>
         </li>
         <li>
@@ -21,7 +21,7 @@
                     <span class="ri-group-fill fa-inverse fa-stack-1x halfed" ></span>
                 </span>
                 <?php eT('LimeSurvey Forums');?>
-                <i class=" ri-external-link-fill  float-end"></i>
+                <i role="img" aria-label="<?=eT('Open in a new Tab')?>" class=" ri-external-link-fill  float-end"></i>
             </a>
         </li>
         <li class="dropdown-divider"></li>
@@ -29,14 +29,14 @@
             <a href="https://bugs.limesurvey.org/" target="_blank" class="dropdown-item">
                 <span class="ri-bug-fill" ></span>
                 <?php eT('Report bugs');?>
-                <i class=" ri-external-link-fill  float-end"></i>
+                <i role="img" aria-label="<?=eT('Open in a new Tab')?>" class=" ri-external-link-fill  float-end"></i>
             </a>
         </li>
         <li>
             <a href="https://limesurvey.org/" target="_blank" class="dropdown-item">
                 <span class="ri-star-fill" ></span>
                 <?php eT('LimeSurvey Homepage');?>
-                <i class=" ri-external-link-fill  float-end"></i>
+                <i role="img" aria-label="<?=eT('Open in a new Tab')?>" class=" ri-external-link-fill  float-end"></i>
             </a>
         </li>
     </ul>

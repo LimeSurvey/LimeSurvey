@@ -46,6 +46,7 @@ $dataProvider = $model->searchUserGroupMembers($ugid);
             $this->widget('application.extensions.admin.grid.CLSGridView',
                 [
                     'id' => 'usergroup-members-grid',
+                    'caption' => gT('Group members'),
                     'dataProvider' => $dataProvider,
                     'filter' => $model,
                     'ajaxType'        => 'POST',

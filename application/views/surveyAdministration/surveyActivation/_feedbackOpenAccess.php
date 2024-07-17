@@ -6,9 +6,9 @@
     <div class="col-12">
         <div class="card card-primary border-left-success h-100">
             <div class="card-header">
-                <h5 class="card-title">
+                <h2 class="card-title">
                     <?php et('Congrats! Your survey has been activated successfully in open-access mode.');?>
-                </h5>
+                </h2>
             </div>
             <div class="card-body d-flex">
                 <ul class="list-unstyled">

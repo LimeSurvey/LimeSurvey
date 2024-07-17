@@ -9,12 +9,19 @@ body {
   flex-direction: column;
 }
 
+.full-page-wrapper {
+  // flex: 1;
+  padding-bottom: 70px;
+}
+
 .selector_openSharePanel {
   display: inline-block;
 }
+
 .summary-table {
   font-size: $font-size-sm;
   padding-left: 0.5rem;
+
   strong {
     font-weight: $font-weight-600;
   }
@@ -31,19 +38,24 @@ body {
     @include h3;
   }
 }
+
 .side-body {
+
   h3,
   h2 {
     border-bottom: solid 2px $g-400;
   }
 }
+
 .survey-response-page {
   .accordion-item {
     border: none;
   }
+
   .summary-title {
     @include h2;
   }
+
   .ls-response-summary.table {
     background: none;
     border-collapse: collapse;
@@ -54,14 +66,17 @@ body {
       border: none;
     }
   }
+
   .accordion-button,
   .accordion-body {
     background: $g-100;
   }
+
   .accordion-button {
     padding-left: 0;
     padding-bottom: 5px;
   }
+
   .summary-detail {
     @include h2;
   }
@@ -119,6 +134,7 @@ body {
 #comfortUpdateGeneralWrap #key-actions {
   padding-left: 1em;
 }
+
 /**
  * comfortUpdate END
  */
@@ -126,22 +142,28 @@ body {
 // Blockquotes
 blockquote {
   border-left: 8px solid var(--bs-primary);
+
   footer {
     color: $g-600;
   }
+
   small {
     color: $g-600;
   }
+
   .small {
     color: $g-600;
   }
+
   &.float-end {
     border-right: 8px solid var(--bs-primary);
   }
 }
+
 .blockquote-reverse {
   border-right: 8px solid var(--bs-primary);
 }
+
 // Blockquotes END
 
 // Question editor START
@@ -163,15 +185,16 @@ blockquote {
   min-width: 70px;
 }
 
-.subquestions-table > tbody > tr > td:first-of-type,
-.answeroptions-table > tbody > tr > td:first-of-type {
+.subquestions-table>tbody>tr>td:first-of-type,
+.answeroptions-table>tbody>tr>td:first-of-type {
   padding-left: 0;
 }
 
-.subquestions-table > tbody > tr > td:last-of-type,
-.answeroptions-table > tbody > tr > td:last-of-type {
+.subquestions-table>tbody>tr>td:last-of-type,
+.answeroptions-table>tbody>tr>td:last-of-type {
   padding-right: 0;
 }
+
 // Question editor END
 
 // Main Design (to achieve 20px padding left an right for the main container) START
@@ -184,14 +207,260 @@ blockquote {
   position: relative;
   padding-bottom: 65px;
 }
+
 // Main Design END
 
 #surveySettingsForThisGroup {
   column-gap: 20px;
 }
 
-#usermanagement--identity-gridPanel tr.disabled {
-  color: $g-400;
-  pointer-events: auto;
-  cursor: not-allowed;
+body {
+  & * {
+    &:focus {
+      box-shadow: 0px 0px 0px 2px black, 0px 0px 0px 4px white !important;
+    }
+  }
+}
+
+@media screen and (max-height: 400px) {
+  .sticky-top {
+    position: static;
+  }
+}
+
+.hidden-radio-outline {
+  input {
+    &.btn-check {
+      &:focus {
+        &+label {
+          &.btn {
+            outline: 1px solid black;
+            outline-offset: 2px;
+          }
+        }
+      }
+    }
+  }
+}
+
+.text-danger {
+  color: #75131b;
+}
+
+#boxes-form {
+  .alert-filled-danger {
+    color: white;
+  }
+
+  .help-block {
+    color: #696969;
+  }
+
+  #chosen-icon {
+    color: #208d26 !important;
+  }
+}
+
+#labelsetform {
+  .select2-selection__choice__display {
+    color: black !important;
+  }
+}
+
+body .select2-selection__choice {
+  color: black !important;
+}
+
+@media (max-width: 320px) {
+  // .tab-pane div.col-4 {
+  //   width: 99.333333%;
+  // }
+
+  .jumbotron.message-box{
+    word-wrap: break-word;
+    padding: 1px;
+  }
+  .tab-pane #import-submit {
+    padding: 9px 6px;
+  }
+
+  #copy div.col-4 {
+    width: 99.333333% !important;
+  }
+}
+
+footer>div>a,
+.ls-footer-label a,
+label a {
+  text-decoration: underline;
+}
+
+.alert-filled-danger {
+  color: white !important;
+}
+
+#preUpdaterContainer {
+  .alert-filled-danger {
+    color: white;
+  }
+}
+
+body .ls-footer-label {
+  color: #6e6e6e;
+}
+
+input:focus+label {
+  outline: 2px solid black !important;
+}
+
+.modal-footer {
+
+  .btn-danger,
+  .btn-danger:hover,
+  .btn-danger:focus {
+    color: white;
+  }
+}
+
+.ls-topbar-buttons {
+
+  .btn-danger,
+  .btn-danger:hover,
+  .btn-danger:focus {
+    color: white;
+  }
+}
+
+.summary-container {
+  .summary {
+    color: #6e6e6e !important;
+  }
+}
+
+body .card.card-primary .card-label {
+  color: #6e6e6e;
+}
+
+#surveys-groups-form {
+
+  .form-text,
+  #SurveysGroups_title_em_ {
+    color: #6e6e6e;
+  }
+
+  .alert-filled-danger {
+    color: white;
+  }
+}
+
+#template-options-form #upload_image_frontend {
+  position: absolute;
+}
+
+.btn-outline-secondary:focus-within {
+  outline: 2px solid black;
+}
+
+.tempus-dominus-widget {
+  .text-success {
+    color: #246128 !important;
+  }
+
+  .calendar-header .previous,
+  .calendar-header .next {
+    color: #919191 !important;
+  }
+}
+
+#last_survey a {
+  text-decoration: underline;
+}
+
+.question-list b a {
+  text-decoration: underline;
+}
+
+.pagination {
+
+  .page-link:focus,
+  .page-link:hover {
+    background-color: #1d4e20;
+    color: white;
+  }
+}
+
+.cke_contents .cke_voice_label {
+  display: block;
+  font-size: 12px;
+  margin-left: 6px;
+  color: #707070;
+}
+
+.modal .modal-body a {
+  text-decoration: underline;
+}
+
+#csvattribute .card-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+#in_survey_common_action {
+  .help-block {
+    color: #737373;
+  }
+
+  #move-all:hover,
+  #move-all:focus {
+    color: black;
+  }
+}
+
+#addLanguageField .text-success {
+  color: #25A22B !important;
+}
+
+body .list-group a.list-group-item {
+  color: #424242;
+}
+
+#sidebar {
+  .subpanel {
+    .list-group-item {
+      .wrapper {
+        .title {
+          color: #6e6e6e;
+        }
+      }
+    }
+  }
+}
+
+body.disable-pointer-events,
+body.disable-pointer-events * {
+  pointer-events: none !important;
+  transform: none !important;
+}
+
+body.disable-pointer-events .tempus-dominus-widget{
+  display: none !important;
+}
+
+#toolbar a:focus {
+  outline: 2px solid black;
+}
+
+.table-responsive {
+  display: block;
+  width: 100%;
+
+  .table {
+    min-width: 1280px;
+  }
+
+  overflow-x: scroll !important;
+}
+
+#parameterError .alert.alert-filled-danger{
+  color: white;
 }

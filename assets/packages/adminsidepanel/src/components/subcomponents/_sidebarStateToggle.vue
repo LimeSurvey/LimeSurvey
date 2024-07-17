@@ -5,13 +5,15 @@
             <transition name="fade">
                 <div class="ls-flex-item grow-10 col-12" v-if="!$store.getters.isCollapsed">
                     <ul class="nav nav-tabs" id="surveysystem" role="tablist">
-                     <li class="nav-item"><a id="adminsidepanel__sidebar--selectorSettingsButton" :class="currentTab == 'settings' ? 'nav-link active' : 'nav-link'" href="#settings" aria-controls="settings" role="tab" data-bs-toggle="tab"  @click="currentTab='settings'"> {{"settings"|translate}} </a></li>
-                     <li class="nav-item"><a id="adminsidepanel__sidebar--selectorStructureButton" :class="currentTab == 'questiontree' ? 'nav-link active' : 'nav-link'" href="#structure" aria-controls="structure" role="tab" data-bs-toggle="tab"   @click="currentTab='questiontree'"> {{"structure"|translate}} </a></li>
+                     <li class="nav-item" role="none">
+                        <a :tabindex="currentTab == 'settings' ? '0' : '-1'" :aria-selected="currentTab == 'settings'? 'true' : 'false'" id="adminsidepanel__sidebar--selectorSettingsButton" :class="currentTab == 'settings' ? 'nav-link active' : 'nav-link'" href="#settings" aria-controls="settings" role="tab" data-bs-toggle="tab"  @click="currentTab='settings'"> {{"settings"|translate}} </a></li>
+                     <li class="nav-item" role="none">
+                        <a :tabindex="currentTab == 'questiontree' ? '0' : '-1'" :aria-selected="currentTab == 'questiontree'? 'true' : 'false'" id="adminsidepanel__sidebar--selectorStructureButton" :class="currentTab == 'questiontree' ? 'nav-link active' : 'nav-link'" href="#structure" aria-controls="structure" role="tab" data-bs-toggle="tab"   @click="currentTab='questiontree'"> {{"structure"|translate}} </a></li>
                     </ul>
                 </div>
             </transition>
             <transition name="fade">
-                <button class="btn btn-outline-secondary ls-space padding left-15 right-15" v-if="$store.getters.isCollapsed" @click="$emit('collapse')">
+                <button class="btn btn-outline-secondary ls-space padding left-15 right-15" v-if="$store.getters.isCollapsed" @click="$emit('collapse')" aria-label="Expand Side menu">
                     <i :class="$store.getters.isRTL ? 'ri-arrow-left-s-line' : 'ri-arrow-right-s-line'"></i>
                 </button>
             </transition>

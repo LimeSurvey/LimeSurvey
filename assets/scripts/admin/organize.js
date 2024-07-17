@@ -51,9 +51,13 @@ $(document).on('ready  pjax:scriptcomplete', function(){
         toleranceElement: '> div'
     });
 
+
+    $('.organizer.group-list .ui-icon-minusthick.disclose').attr('aria-expanded','false');
+    $('.organizer.group-list .disclose').attr('aria-expanded','true');
     $('.disclose').on('click', function() {
         $(this).closest('li').toggleClass('mjs-nestedSortable-collapsed').toggleClass('mjs-nestedSortable-expanded');
         $(this).toggleClass('ui-icon-plusthick').toggleClass('ui-icon-minusthick');
+        $(this).attr("aria-expanded", $(this).attr("aria-expanded") == "false");
     });
 
     $('#btnSave').click(function(){

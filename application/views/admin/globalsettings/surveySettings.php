@@ -19,7 +19,7 @@ $optionsOnOff = array(
     <div class="d-flex flex-wrap flex-lg-nowrap" id="surveySettingsForThisGroup">
         <div class="" id="global-sidebar-container">
             <ul class="nav nav-tabs" role="tablist">
-                <li class="nav-item"><a class="nav-link active" href="#sidebar" aria-controls="sidebar" role="tab" data-bs-toggle="tab" aria-selected="true"><?php eT("Settings") ?></a></li>
+                <li class="nav-item" role="none"><a class="nav-link active" href="#sidebar" aria-controls="sidebar" role="tab" data-bs-toggle="tab" aria-selected="true"><?php eT("Settings") ?></a></li>
             </ul>
             <div class="tab-content pt-0 h-100">
                 <global-sidemenu/>

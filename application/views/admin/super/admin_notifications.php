@@ -16,7 +16,7 @@
     </li>
 <?php elseif($showLoader): ?>
 <li id='notification-li' class='dropdown nav-item' onclick='LS.updateNotificationWidget("<?php echo $updateUrl; ?>");' >
-        <a class='nav-link dropdown-toggle' data-bs-toggle='dropdown' role='button' aria-expanded='false' href='#'>
+        <a aria-label="<?=eT('Notifications')?> (<?=$nrOfNewNotifications?>)" class='nav-link dropdown-toggle' data-bs-toggle='dropdown' role='button' aria-expanded='false' href='#'>
             <?php // Use class 'notification-bell-pulse' for pulsating bell ?>
             <!-- <span id='notification-bell' class='ri-notification-2-fill <?php echo $bellColor; ?>'></span> -->
             <i id='notification-bell' class="ri-notification-2-line  <?php echo $bellColor; ?>"></i>
@@ -26,7 +26,7 @@
 
             <span class='caret'></span>
         </a>
-        <ul class='dropdown-menu dropdown-menu-end' role='menu'>
+        <ul class='dropdown-menu dropdown-menu-end'>
             <li>
                 <a class="dropdown-item"><span class='ri-loader-2-fill remix-spin'></span><span class='visually-hidden'>Loading notifications</span></a>
             </li>
@@ -34,7 +34,7 @@
     </li>
 <?php else: ?>
     <li id='notification-li' class='dropdown nav-item' onclick='LS.styleNotificationMenu();'>
-        <a class='nav-link dropdown-toggle' data-bs-toggle='dropdown' role='button' aria-expanded='false' href='#'>
+        <a aria-label="<?=eT('Notifications')?> (<?=$nrOfNewNotifications?>)" class='nav-link dropdown-toggle' data-bs-toggle='dropdown' role='button' aria-expanded='false' href='#'>
             <?php // Use class 'notification-bell-pulse' for pulsating bell ?>
             <span id='notification-bell' class='ri-notification-2-line <?php echo $bellColor; ?>'></span>
 
@@ -63,11 +63,11 @@
                                     <span class='ri-checkbox-blank-circle-fill text-<?php echo $not->display_class; ?>'></span>&nbsp;
                                     <strong><?php echo $not->title; ?></strong>
                                     <br />
-                                    <span class='text-muted'><?php echo ellipsize($not->message, 50); ?></span>
+                                    <span ><?php echo ellipsize($not->message, 50); ?></span>
                                 <?php else: ?>
-                                    <span class='text-muted'><?php echo $not->title; ?></span>
+                                    <span ><?php echo $not->title; ?></span>
                                     <br />
-                                    <span class='text-muted' style='opacity: 0.5;'><?php echo ellipsize($not->message, 50); ?></span>
+                                    <span ><?php echo ellipsize($not->message, 50); ?></span>
                                 <?php endif; ?>
                             </a>
                         </li>
@@ -77,8 +77,8 @@
             <li id='notification-divider' class="dropdown-divider"></li>
 
             <li id='notification-clear-all'>
-                <a href='#'  class="dropdown-item" onclick='(function() { LS.deleteAllNotifications("<?php echo $clearAllNotificationsUrl ?>", "<?php echo $updateUrl; ?>"); })()' data-params="<?= $clearAllNotificationsParams ?>">
-                    <span class='ri-delete-bin-fill text-danger'></span>&nbsp;
+                <a href='#' role="button" class="dropdown-item d-flex" onclick='(function() { LS.deleteAllNotifications("<?php echo $clearAllNotificationsUrl ?>", "<?php echo $updateUrl; ?>"); })()' data-params="<?= $clearAllNotificationsParams ?>">
+                    <span class='ri-delete-bin-fill text-danger' aria-hidden="true"></span>&nbsp;
                     <?php eT('Delete all notifications'); ?>
                 </a>
             </li>

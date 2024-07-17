@@ -16,7 +16,7 @@
 <!-- Message Box -->
 
 <div style="clear: both; margin-bottom: 10px;" class="d-print-none"></div>
-<div class="jumbotron message-box">
+<div class="jumbotron message-box" role="alert">
 
     <h2><?php eT("Results"); ?></h2>
     <p><?php eT("Number of records in this query:") ?>&nbsp;<?php echo $results; ?></p>

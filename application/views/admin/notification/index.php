@@ -8,6 +8,7 @@
     <?php
     $surveyGrid = $this->widget('application.extensions.admin.grid.CLSGridView', [
         'dataProvider' => $model->search(),
+        'caption' => gT('Notifications'),
         'id'           => 'notification-grid',
         'emptyText'    => gT('No notifications found'),
         'htmlOptions'  => ['class' => 'table-responsive grid-view-ls'],

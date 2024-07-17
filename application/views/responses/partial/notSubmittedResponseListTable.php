@@ -4,6 +4,7 @@ $this->widget(
     'application.extensions.admin.grid.CLSGridView',
     [
         'id'           => 'saved-grid',
+        'caption'      => gT('Saved responses'),
         'ajaxUpdate'   => 'saved-grid',
         'dataProvider' => $model->search(),
         'columns'      => $model->columns,

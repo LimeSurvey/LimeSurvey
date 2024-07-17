@@ -84,6 +84,10 @@ abstract class CBaseListView extends CWidget
 	/**
 	 * @var string the HTML tag name for the container of the {@link emptyText} property.
 	 */
+	public $caption='';
+	/**
+	 * @var string the HTML tag name for the container of the {@link caption} property.
+	 */
 	public $emptyTagName='span';
 	/**
 	 * @var string the CSS class name for the container of the {@link emptyText} property. Defaults to 'empty'.

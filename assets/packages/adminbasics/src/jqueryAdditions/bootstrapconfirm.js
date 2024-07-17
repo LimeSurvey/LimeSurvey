@@ -12,11 +12,11 @@ $.fn.extend({
         i18n = i18n || {};
 
         var modalHtml = $(`
-            <div id="identity__bsconfirmModal" class="modal fade">
+            <div id="identity__bsconfirmModal" class="modal fade" tabindex="-1" aria-modal="true" >
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h1 class="modal-title">${text}</h1>
+                            <h1 role="heading" aria-level="2" class="modal-title">${text}</h1>
                             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                         </div>
                         <div class="modal-body">

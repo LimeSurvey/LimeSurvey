@@ -43,7 +43,7 @@ Yii::app()->getController()->renderPartial(
         <?php echo $form->error($oUser, 'email'); ?>
     </div>
     <div class="mb-3">
-        <label class="form-label" for='expires'><?php eT("Expiry date/time"); ?></label>
+        <label class="form-label" for='expires'><?php eT("Expire date/time:"); ?></label>
         <div class="has-feedback">
             <?php
             Yii::app()->getController()->widget('ext.DateTimePickerWidget.DateTimePicker', [
@@ -80,7 +80,7 @@ Yii::app()->getController()->renderPartial(
             <div class="col-6">
                 <label><?= gT("Set password now?") ?></label>
             </div>
-            <div class="btn-group col-6" data-bs-toggle="buttons">
+            <div class="btn-group col-6" data-bs-toggle="buttons" role="group" aria-label="Set password now?">
                 <input class="btn-check" type="radio" id="utility_set_password_yes" name="preset_password" value="1">
                 <label for="utility_set_password_yes" class="btn btn-outline-secondary col-xs-6">
                     <?= gT("Yes") ?>
@@ -107,9 +107,10 @@ Yii::app()->getController()->renderPartial(
                 $oUser,
                 'password',
                 ($oUser->isNewRecord
-                    ? ['id' => 'User_Form_password', 'value' => '']
+                    ? ['id' => 'User_Form_password', 'value' => '', 'placeholder' => '********']
                     : ['id'          => 'User_Form_password',
                        'value'       => '',
+                       'placeholder' => '********',
                        "disabled"    => "disabled"
                     ]
                 )
@@ -117,19 +118,19 @@ Yii::app()->getController()->renderPartial(
             <?php echo $form->error($oUser, 'password'); ?>
         </div>
         <div class="mb-3">
-            <label for="password_repeat" class="required" required><?= gT("Repeat password") ?> <span
+            <label for="password_repeat" class="required" required><?= gT("Password safety") ?> <span
                     class="required">*</span></label>
             <input name="password_repeat"
-                   <?= ($oUser->isNewRecord ? '' : 'disabled="disabled"') ?> id="password_repeat"
+                   placeholder='********' <?= ($oUser->isNewRecord ? '' : 'disabled="disabled"') ?> id="password_repeat"
                    class="form-control" type="password">
         </div>
         <?php if ($oUser->isNewRecord) { ?>
             <div class="mb-3">
-                <label class="form-label">
+                <label class="form-label" for="random_example_password1">
                     <?= gT('Random password (suggestion):') ?>
                 </label>
                 <input type="text" class="form-control" readonly name="random_example_password"
-                       value="<?= htmlspecialchars((string) $randomPassword) ?>"/>
+                       value="<?= htmlspecialchars((string) $randomPassword) ?>"id="random_example_password1"/>
             </div>
         <?php } ?>
     </div>

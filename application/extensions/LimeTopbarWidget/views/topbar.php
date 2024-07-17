@@ -4,20 +4,21 @@
 /** @var ButtonWidget[] $rightSide */
 
 ?>
-
 <div class="topbar sticky-top" id="pjax-content">
     <div class="container-fluid">
         <div class="row">
             <!-- Title or breadcrumb -->
             <div class="ls-breadcrumb col-xl-4 col-xxl-3">
-                <h1 class="align-items-center d-flex">
+                <div class="align-items-center d-flex">
                 <?php
                     if ($titleBackLink !== null) {
-                        echo '<a class="h1" href="'.$titleBackLink.'">
+                        echo '<a class="h1" href="'.$titleBackLink.'" aria-label="Back">
                         <i class="ri-arrow-left-s-line"></i></a>' ;
                     }
                 ?>
-                <?= $leftSide ?></h1>
+                <h1><?= $leftSide ?></h1>
+                </div>
+                
             </div>
 
             <!-- middle part with buttons -->

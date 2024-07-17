@@ -1050,6 +1050,7 @@ class Question extends LSActiveRecord
                 'id' => 'id',
                 'class' => 'CCheckBoxColumn',
                 'selectableRows' => '100',
+                'checkBoxHtmlOptions'=>['aria-labelF'=> 'Select Questions - ', 'aria-labelL'=> '$data->qid'],
             ),
             array(
                 'header' => gT('Question ID'),

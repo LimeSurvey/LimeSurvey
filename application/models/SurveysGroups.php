@@ -120,6 +120,7 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
                     'class' => 'CCheckBoxColumn',
                     'selectableRows' => '100',
                     'htmlOptions' => ['class' => 'ls-sticky-column'],
+                    'checkBoxHtmlOptions'=>['aria-labelF'=> 'Select Survey - ', 'aria-labelL'=> '$data->name'],
                 ),
                 array(
                     'header' => gT('Survey group ID'),

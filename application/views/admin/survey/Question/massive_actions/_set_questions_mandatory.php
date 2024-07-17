@@ -13,6 +13,7 @@ $surveyid = App()->request->getParam('surveyid', 0);
         <label class="col-md-4 form-label"><?php eT("Mandatory:"); ?></label>
         <div class="col-md-8">
             <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                'ariaLabel'=> gT('Mandatory'),
                 'name'          => 'mandatory',
                 'checkedOption' => 'N',
                 'selectOptions' => [

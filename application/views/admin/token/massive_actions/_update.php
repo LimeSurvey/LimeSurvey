@@ -58,6 +58,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
 
                                 <div class="col-md-4">
                                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                                        'ariaLabel'=> gT('Completed?'),
                                         'name'          => "completed-switch",
                                         'id'            => "massedit_completed-switch",
                                         'htmlOptions'   => ['class' => "YesNoSwitch YesNoDateSwitch bootstrap-switch-integer", 'disabled' => true],
@@ -181,6 +182,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                             <div class="col-md-4">
                                 <?php if ($oSurvey->anonymized !== 'Y') : ?>
                                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                                        'ariaLabel'=> gT('Invitation sent?'),
                                         'name'          => "sent-switch",
                                         'id'            => "massedit_sent-switch",
                                         'htmlOptions'   => ['class' => "YesNoSwitch YesNoDateSwitch bootstrap-switch-integer", 'disabled' => true],
@@ -192,6 +194,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                     ]); ?>
                                 <?php else : ?>
                                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                                        'ariaLabel'=> gT('Invitation sent?'),
                                         'name'          => "sent-switch",
                                         'id'            => "massedit_sent-switch",
                                         'htmlOptions'   => ['class' => "YesNoSwitch bootstrap-switch-integer", 'disabled' => true],
@@ -232,6 +235,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                             <div class="col-md-4">
                                 <?php if ($oSurvey->anonymized !== 'Y') : ?>
                                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                                        'ariaLabel'=> gT('Reminder sent?'),
                                         'name'          => "remind-switch",
                                         'id'            => "massedit_remind-switch",
                                         'htmlOptions'   => ['class' => "YesNoSwitch YesNoDateSwitch bootstrap-switch-integer", 'disabled' => true],
@@ -243,6 +247,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                     ]); ?>
                                 <?php else : ?>
                                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                                        'ariaLabel'=> gT('Reminder sent?'),
                                         'name'          => "sent-switch",
                                         'id'            => "massedit_sent-switch",
                                         'htmlOptions'   => ['class' => "YesNoSwitch bootstrap-switch-integer", 'disabled' => true],

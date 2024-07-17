@@ -69,7 +69,7 @@ echo viewHelper::getViewTestTag('checkIntegrity');
                         <ul class="list-unstyled">
                             <?php
                             foreach ($assessments as $assessment) { ?>
-                                <li>AID:<?php echo $assessment['id']; ?><?php eT("Assessment:"); ?><?php eT("Reason:"); ?> <?php echo $assessment['reason']; ?></li><?php
+                                <li>AID:<?php echo $assessment['id']; ?><?php eT("Assessment:"); ?><?php eT("Reason:"); ?><?php echo $assessment['reason']; ?></li><?php
                             } ?>
                         </ul>
                     </li>
@@ -84,7 +84,7 @@ echo viewHelper::getViewTestTag('checkIntegrity');
                         <ul class="list-unstyled">
                             <?php
                             foreach ($answers as $answer) { ?>
-                                <li>QID:<?php echo $answer['qid']; ?> <?php eT("Code:"); ?> <?php echo $answer['code']; ?> <?php eT("Reason:"); ?><?php echo $answer['reason']; ?></li><?php
+                                <li>QID:<?php echo $answer['qid']; ?><?php eT("Code:"); ?><?php echo $answer['code']; ?><?php eT("Reason:"); ?><?php echo $answer['reason']; ?></li><?php
                             } ?>
                         </ul>
                     </li>
@@ -99,7 +99,7 @@ echo viewHelper::getViewTestTag('checkIntegrity');
                         <ul class="list-unstyled">
                             <?php
                             foreach ($answer_l10ns as $answer) { ?>
-                                <li>AID:<?php echo $answer['aid']; ?> <?php eT("ID:"); ?><?php echo $answer['id']; ?> <?php eT("Reason:"); ?><?php echo $answer['reason']; ?></li><?php
+                                <li>AID:<?php echo $answer['aid']; ?><?php eT("ID:"); ?><?php echo $answer['id']; ?><?php eT("Reason:"); ?><?php echo $answer['reason']; ?></li><?php
                             } ?>
                         </ul>
                     </li>
@@ -114,7 +114,7 @@ echo viewHelper::getViewTestTag('checkIntegrity');
                         <ul class="list-unstyled">
                             <?php
                             foreach ($surveys as $survey) { ?>
-                                <li>SID:<?php echo $survey['sid']; ?> <?php eT("Reason:"); ?><?php echo $survey['reason']; ?></li><?php
+                                <li>SID:<?php echo $survey['sid']; ?><?php eT("Reason:"); ?><?php echo $survey['reason']; ?></li><?php
                             } ?>
                         </ul>
                     </li>
@@ -129,7 +129,7 @@ echo viewHelper::getViewTestTag('checkIntegrity');
                         <ul class="list-unstyled">
                             <?php
                             foreach ($surveylanguagesettings as $surveylanguagesetting) { ?>
-                                <li>SLID:<?php echo $surveylanguagesetting['slid']; ?> <?php eT("Reason:"); ?><?php echo $surveylanguagesetting['reason']; ?></li><?php
+                                <li>SLID:<?php echo $surveylanguagesetting['slid']; ?><?php eT("Reason:"); ?><?php echo $surveylanguagesetting['reason']; ?></li><?php
                             } ?>
                         </ul>
                     </li>
@@ -144,7 +144,7 @@ echo viewHelper::getViewTestTag('checkIntegrity');
                         <ul class="list-unstyled">
                             <?php
                             foreach ($questions as $question) { ?>
-                                <li>QID:<?php echo $question['qid']; ?> <?php eT("Reason:"); ?><?php echo $question['reason']; ?></li><?php
+                                <li>QID:<?php echo $question['qid']; ?><?php eT("Reason:"); ?><?php echo $question['reason']; ?></li><?php
                             } ?>
                         </ul>
                     </li>
@@ -159,7 +159,7 @@ echo viewHelper::getViewTestTag('checkIntegrity');
                         <ul class="list-unstyled">
                             <?php
                             foreach ($question_l10ns as $question) { ?>
-                                <li>QID:<?php echo $question['qid']; ?><?php eT("ID:"); ?><?php echo $question['id']; ?> <?php eT("Reason:"); ?><?php echo $question['reason']; ?></li><?php
+                                <li>QID:<?php echo $question['qid']; ?><?php eT("ID:"); ?><?php echo $question['id']; ?><?php eT("Reason:"); ?><?php echo $question['reason']; ?></li><?php
                             } ?>
                         </ul>
                     </li>
@@ -192,7 +192,7 @@ echo viewHelper::getViewTestTag('checkIntegrity');
                         <ul class="list-unstyled">
                             <?php
                             foreach ($groups as $group) { ?>
-                                <li>GID:<?php echo $group['gid']; ?> <?php eT("Reason:"); ?><?php echo $group['reason']; ?></li><?php
+                                <li>GID:<?php echo $group['gid']; ?><?php eT("Reason:"); ?><?php echo $group['reason']; ?></li><?php
                             } ?>
                         </ul>
                     </li>
@@ -207,7 +207,7 @@ echo viewHelper::getViewTestTag('checkIntegrity');
                         <ul class="list-unstyled">
                             <?php
                             foreach ($group_l10ns as $group) { ?>
-                                <li>GID:<?php echo $group['gid']; ?><?php eT("ID:"); ?><?php echo $group['id']; ?> <?php eT("Reason:"); ?><?php echo $group['reason']; ?></li><?php
+                                <li>GID:<?php echo $group['gid']; ?><?php eT("ID:"); ?><?php echo $group['id']; ?><?php eT("Reason:"); ?><?php echo $group['reason']; ?></li><?php
                             } ?>
                         </ul>
                     </li>
@@ -222,7 +222,7 @@ echo viewHelper::getViewTestTag('checkIntegrity');
                         <ul class="list-unstyled">
                             <?php
                             foreach ($user_in_groups as $user_in_group) { ?>
-                                <li>UID:<?php echo $user_in_group['uid']; ?> UGID:<?php echo $user_in_group['ugid']; ?> <?php eT("Reason:"); ?><?php echo $user_in_group['reason']; ?></li><?php
+                                <li>UID:<?php echo $user_in_group['uid']; ?> UGID:<?php echo $user_in_group['ugid']; ?><?php eT("Reason:"); ?><?php echo $user_in_group['reason']; ?></li><?php
                             } ?>
                         </ul>
                     </li>
@@ -289,7 +289,7 @@ echo viewHelper::getViewTestTag('checkIntegrity');
                     type='submit'
                     value='Y'
                     name='ok'
-                    class="btn btn-danger">
+                    class="btn btn-danger text-white">
                     <?php eT("Yes - Delete Them!"); ?>
                 </button>
                 </form>
@@ -313,10 +313,10 @@ echo viewHelper::getViewTestTag('checkIntegrity');
                     ?>
                 <?php } else { ?>
                 <?php echo CHtml::form(["admin/checkintegrity", 'sa' => 'fixredundancy'], 'post'); ?>
-            <ul id="data-redundancy-list" class='data-redundancy-list list-unstyled'>
+            <ul role="none" id="data-redundancy-list" class='data-redundancy-list list-unstyled'>
                 <?php
                 if (isset($redundantsurveytables)) { ?>
-                    <li><?php eT("The following old survey response tables exist and may be deleted if no longer required:"); ?>
+                    <li role="group" aria-labelledby="a11y_grouping"><span id="a11y_grouping"><?php eT("The following old survey response tables exist and may be deleted if no longer required:"); ?></span>
                         <ul class='response-tables-list list-unstyled'>
                             <?php
                             foreach ($redundantsurveytables as $surveytable) { ?>
@@ -350,7 +350,7 @@ echo viewHelper::getViewTestTag('checkIntegrity');
             </ul>
              <input type='hidden' name='ok' value='Y' />
             <button id='delete-checked-items-button' type='submit' name='ok' value='Y'
-                    class="btn btn-danger mb-2"><?php
+                    class="btn btn-danger mb-2 text-white"><?php
                     eT("Delete checked items!"); ?>
             </button>
             <?php

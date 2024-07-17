@@ -47,13 +47,13 @@
 <?php App()->getClientScript()->registerScript("conditionshead_onrun_javascript", 'window.LS.doToolTip();', LSYii_ClientScript::POS_POSTSCRIPT);?>
 
 <!-- Modal for quick add -->
-<div id="quick-add-condition-modal" class="modal fade" role="dialog">
+<div id="quick-add-condition-modal" class="modal fade" tabindex="-1" aria-modal="true"  role="dialog">
     <div class="modal-dialog modal-lg">
         <!-- Modal content-->
         <div class="modal-content">  <?php // JS add not.type as panel-type, e.g. panel-default, panel-danger ?>
             <div class="modal-header">
-                <h5 class="modal-title"><?php eT('Quick-add conditions'); ?></h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                <h5 role="heading" aria-level="2" class="modal-title"><?php eT('Quick-add conditions'); ?></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="close"></button>
             </div>
             <div class="modal-body">
                 <!-- Condition form is in file quickAddConditionForm.php -->

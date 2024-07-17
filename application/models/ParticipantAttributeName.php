@@ -141,9 +141,9 @@ class ParticipantAttributeName extends LSActiveRecord
         if ($this->core_attribute == 'Y') {
             // BugFix: 317(op), whithout this hidden inputfields, massive action 'delete' is not working correctly
             // as we have only that special case in cpdb at the moment, it's not necessary to change it in the frontend part (listAction.js line 27)
-            return "<input type='hidden' class='selector_attributeNamesCheckbox' name='selectedAttributeNames[]' value='" . $this->attribute_id . "' >";
+            return "<input aria-label='Select attribute ". $this->defaultname ."' type='hidden' class='selector_attributeNamesCheckbox' name='selectedAttributeNames[]' value='" . $this->attribute_id . "' >";
         }
-        return "<input type='checkbox' class='selector_attributeNamesCheckbox' name='selectedAttributeNames[]' value='" . $this->attribute_id . "' >";
+        return "<input aria-label='Select attribute ". $this->defaultname ."' type='checkbox' class='selector_attributeNamesCheckbox' name='selectedAttributeNames[]' value='" . $this->attribute_id . "' >";
     }
 
     /**
@@ -245,7 +245,7 @@ class ParticipantAttributeName extends LSActiveRecord
             [
                 "name"              => 'massiveActionCheckbox',
                 "type"              => 'raw',
-                "header"            => "<input type='checkbox' id='action_toggleAllAttributeNames' />",
+                "header"            => "<input aria-label='Select all Attribute' type='checkbox' id='action_toggleAllAttributeNames' />",
                 "filter"            => false,
                 'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
                 'filterHtmlOptions' => ['class' => 'ls-sticky-column'],

@@ -39,7 +39,7 @@ echo viewHelper::getViewTestTag('surveyTexts');
             <?php echo CHtml::textField(
                 "dataseclabel_{$aSurveyLanguageSettings['surveyls_language']}",
                 $aSurveyLanguageSettings['surveyls_policy_notice_label'],
-                array('class' => 'form-control', 'size' => "80", 'id' => "dataseclabel_{$aSurveyLanguageSettings['surveyls_language']}")
+                array('class' => 'form-control', 'size' => "80", 'id' => "dataseclabel_{$aSurveyLanguageSettings['surveyls_language']}",'aria-label' => 'Privacy policy checkbox label')
             ); ?>
         </div>
         <div class="col-12 col-xl-6">

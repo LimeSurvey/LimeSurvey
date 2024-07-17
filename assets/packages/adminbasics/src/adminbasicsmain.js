@@ -29,6 +29,7 @@ import './jqueryAdditions/isEmpty.js';
 import './jqueryAdditions/bootstrapconfirm.js';
 import './parts/prototypeDefinition';
 import './components/bootstrap-remote-modals';
+import './components/a11y.js';
 
 
 //import page wise functionality

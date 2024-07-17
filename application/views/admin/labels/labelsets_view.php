@@ -20,6 +20,7 @@ echo viewHelper::getViewTestTag('viewLabelSets');
                 'dataProvider' => $model->search(),
                 // Number of row per page selection
                 'id' => 'labelsets-grid',
+                'caption' => gT('Label sets list'),
                 'emptyText' => gT('No label sets found.'),
                 'ajaxUpdate' => 'labelsets-grid',
                 'summaryText' => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(

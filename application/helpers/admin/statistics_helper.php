@@ -3934,7 +3934,7 @@ class statistics_helper
                 break;
 
             case 'html':
-                $sOutputHTML .= '<div class="jumbotron message-box">';
+                $sOutputHTML .= '<div class="jumbotron message-box" role="alert">';
                 $sOutputHTML .= '<h2>' . gT("Results") . "</h2>";
                 $sOutputHTML .= '<p>' . gT("Number of records in this query:") . '' . $results . '</p>';
                 $sOutputHTML .= '<p>' . gT("Total records in survey:") . '' . $total . '</p>';

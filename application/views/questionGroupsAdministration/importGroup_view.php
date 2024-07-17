@@ -37,6 +37,7 @@ echo viewHelper::getViewTestTag('importQuestionGroup');
                     <label for='translinksfields' class="form-label"><?php eT("Convert resource links?"); ?></label>
                     <div>
                         <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                            'ariaLabel'=> gT('Convert resource links?'),
                             'name'          => 'translinksfields',
                             'checkedOption' => 1,
                             'selectOptions' => [

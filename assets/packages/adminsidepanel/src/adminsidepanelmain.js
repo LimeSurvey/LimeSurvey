@@ -89,6 +89,7 @@ const Lsadminsidepanel = (userid, surveyid) => {
                 });
 
                 $(document).trigger("vue-reload-remote");
+                console.log("sidebar mounted");
             }
         });
     };
@@ -173,6 +174,7 @@ const Lsadminsidepanel = (userid, surveyid) => {
 
 
 $(document).ready(function(){
+    console.log("workin...");
     let surveyid = 'newSurvey';
     if(window.LS != undefined) {
         surveyid = window.LS.parameters.$GET.surveyid || window.LS.parameters.keyValuePairs.surveyid;

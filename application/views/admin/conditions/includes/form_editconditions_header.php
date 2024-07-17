@@ -65,7 +65,7 @@
             <div class='mb-3'>
                 <label class='form-label '><?php eT("Question"); ?></label>
                 <div class=''>
-                    <ul class='nav nav-tabs'>
+                    <ul class='nav nav-tabs' role="tablist">
                         <li class='nav-item src-tab' role='presentation'>
                             <a class='nav-link active' href="#SRCPREVQUEST" aria-controls='SRCPREVQUEST' role='tab' data-bs-toggle='tab'><?php eT('Previous questions'); ?></a>
                         </li>

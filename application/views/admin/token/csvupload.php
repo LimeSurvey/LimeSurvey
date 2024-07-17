@@ -35,6 +35,7 @@
                 <label class=" form-label" for='separator'><?php eT("Separator used:"); ?> </label>
                 <div class="">
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                        'ariaLabel'=> gT('Separator used:'),
                         'name'          => 'separator',
                         'checkedOption'         => 'auto',
                         'selectOptions' => [
@@ -51,6 +52,7 @@
                 <label class="form-label" for='filterblankemail'><?php eT("Filter blank email addresses:"); ?></label>
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                        'ariaLabel'=> gT('Filter blank email addresses:'),
                         'name'          => 'filterblankemail',
                         'checkedOption' => '1',
                         'selectOptions' => [
@@ -66,6 +68,7 @@
                 <label class=" form-label" for='allowinvalidemail'><?php eT("Allow invalid email addresses:"); ?></label>
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                        'ariaLabel'=> gT('Allow invalid email addresses:'),
                         'name'          => 'allowinvalidemail',
                         'checkedOption' => '0',
                         'selectOptions' => [
@@ -81,6 +84,7 @@
                 <label class=" form-label" for='showwarningtoken'><?php eT("Display attribute warnings:"); ?></label>
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                        'ariaLabel'=> gT('Display attribute warnings:'),
                         'name'          => 'showwarningtoken',
                         'checkedOption' => '0',
                         'selectOptions' => [
@@ -96,6 +100,7 @@
                 <label class=" form-label" for='filterduplicatetoken'><?php eT("Filter duplicate records:"); ?></label>
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                        'ariaLabel'=> gT('Filter duplicate records:'),
                         'name'          => 'filterduplicatetoken',
                         'checkedOption' => '1',
                         'selectOptions' => [

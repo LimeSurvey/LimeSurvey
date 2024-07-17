@@ -5002,6 +5002,7 @@
             const previous = document.createElement('div');
             previous.classList.add(Namespace.css.previous);
             previous.setAttribute('data-action', ActionTypes$1.previous);
+            previous.setAttribute('aria-label', 'Previous month');
             previous.appendChild(this._iconTag(this.optionsStore.options.display.icons.previous));
             const switcher = document.createElement('div');
             switcher.classList.add(Namespace.css.switch);

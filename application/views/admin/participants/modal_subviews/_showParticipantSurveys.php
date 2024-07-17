@@ -1,5 +1,5 @@
 <div class="modal-header">
-    <h5 class="modal-title" id="participant_edit_modal"><?php eT('List active surveys'); ?></h5>
+    <h5 role="heading" aria-level="2" class="modal-title" id="participant_edit_modal"><?php eT('List active surveys'); ?></h5>
     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 </div>
 <div class="modal-body ">
@@ -17,6 +17,7 @@
         <?php
         $this->widget('application.extensions.admin.grid.CLSGridView', [
             'id'              => 'list_participant_surveys',
+            'caption'         => gT('List active surveys'),
             'dataProvider'    => $surveymodel->search(),
             'columns'         => $surveymodel->columns,
             'htmlOptions'     => ['class' => 'table-responsive grid-view-ls'],

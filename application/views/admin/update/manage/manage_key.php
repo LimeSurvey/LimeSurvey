@@ -63,7 +63,8 @@
                                 data-post-url="<?= App()->createUrl('/admin/update/sa/deleteKey');?>"
                                 class="btn btn-sm btn-outline-secondary"
                                 data-bs-toggle="modal"
-                                data-bs-target="#confirmation-modal">
+                                data-bs-target="#confirmation-modal"
+                                role="button" href="javascript:void(0)">
                             <span class="ri-delete-bin-fill text-danger"></span>
                         </a>
                     </span>

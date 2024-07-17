@@ -63,7 +63,9 @@
   .btn-create {
     height: 36px;
     width: 36px;
-    padding: 0px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }
 
@@ -93,7 +95,7 @@
   padding: $grid-gutter-width $container-padding;
   width: 100%;
   .dropdown-header {
-    color: $g-600;
+    color: $g-700;
     font-weight: $font-weight-600;
     font-size   : 18px;
     padding     : 5px 60px 5px 5px;
@@ -160,4 +162,12 @@
   }
 }
 
-
+.skip-to-main {
+  margin: 5px;
+  padding: 5px;
+  width: 10em;
+  &:focus {
+    position: static;
+    height: auto;
+  }
+}

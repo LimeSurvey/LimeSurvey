@@ -96,7 +96,20 @@ class CLSYiiPager extends CLinkPager
         if ($hidden || $selected) {
             $class .= ' ' . ($hidden ? $this->hiddenPageCssClass : 'active');
         }
-
-        return '<li class="page-item ' . $class . '">' . CHtml::link($label, $this->createPageUrl($page), ['class' => 'page-link']) . '</li>';
+        $attributes = array();
+        if ($hidden) {
+            $attributes['tabindex'] = '-1';
+            $attributes['aria-disabled'] = 'true';
+        }
+        $attributes['class'] = 'page-link';
+        $attributes['aria-label'] = 'Page ' . ($label ==
+            $this->firstPageLabel ? 'First' : ($label ==
+                $this->prevPageLabel ? 'Previous' : ($label ==
+                    $this->nextPageLabel ? 'Next' : ($label ==
+                        $this->lastPageLabel ? 'Last' : $label))));
+        if ($selected) {
+            $attributes['aria-current'] = 'true';
+        }
+        return '<li class="page-item ' . $class . '">' . CHtml::link($label, $this->createPageUrl($page), $attributes) . '</li>';
     }
 }

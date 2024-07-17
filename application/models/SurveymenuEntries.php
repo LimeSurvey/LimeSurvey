@@ -332,7 +332,7 @@ class SurveymenuEntries extends LSActiveRecord
     {
         $cols = [
             [
-                'value'             => '\'<input type="checkbox" name="id[]" class="action_selectthisentry" value="\'.$data->id.\'" />\'',
+                'value'             => '\'<input aria-label="Select Survey menu entries \'.$data->title.\'" type="checkbox" name="id[]" class="action_selectthisentry" value="\'.$data->id.\'" />\'',
                 'type'              => 'raw',
                 'filter'            => false,
                 'headerHtmlOptions' => ['class' => 'ls-sticky-column'],

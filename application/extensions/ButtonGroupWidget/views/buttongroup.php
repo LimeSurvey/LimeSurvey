@@ -11,7 +11,9 @@
 
 <div class="btn-group <?= $htmlOptions['class'] ?? '' ?>" data-bs-toggle="tooltip" title="<?= $htmlOptions['title'] ?? '' ?>"
      id="<?= $id ?>" role="group"
-     aria-label="<?= $ariaLabel ?? '' ?>"
+     <?php print(!empty($ariaLabelledby) ? 'aria-labelledby="'.$ariaLabelledby.'"':'') ?>
+     <?php print(!empty($ariaDescribedby) ? 'aria-describedby="'.$ariaDescribedby.'"':'') ?>
+     <?php print(!empty($ariaLabel) ? 'aria-label="'.$ariaLabel.'"':'') ?>
     <?= isset($htmlOptions['data-url']) ? "data-url='" . $htmlOptions["data-url"] . "'" : '' ?>>
     <?php $count = 1 ?>
     <?php foreach ($selectOptions as $value => $caption) : ?>

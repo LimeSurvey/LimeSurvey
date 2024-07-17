@@ -21,12 +21,13 @@
     <?php
     $this->widget('ext.AlertWidget.AlertWidget', ['errorSummaryModel' => $model]);
     ?>
+    <!-- <p>* indicating required field</p> -->
 
 
     <div class="mb-3">
-        <label class='form-label '><?php echo $form->labelEx($model, 'position'); ?></label>
+        <div class='form-label '><?php echo $form->labelEx($model, 'position'); ?></div>
         <div class=''>
-            <?php echo $form->numberField($model, 'position', array('class' => 'form-control')); ?>
+            <?php echo $form->numberField($model, 'position', array('class' => 'form-control', 'aria-required' => 'true')); ?>
         </div>
         <?php if ($form->error($model, 'position')): ?>
             <div class=" text-danger">
@@ -36,9 +37,9 @@
     </div>
 
     <div class="mb-3">
-        <label class='form-label '><?php echo $form->labelEx($model, 'url'); ?></label>
+        <div class='form-label '><?php echo $form->labelEx($model, 'url'); ?></div>
         <div class=''>
-            <?php echo $form->textField($model, 'url', array('class' => 'form-control')); ?>
+            <?php echo $form->textField($model, 'url', array('class' => 'form-control' , 'aria-required' => 'true')); ?>
         </div>
         <?php if ($form->error($model, 'url')): ?>
             <div class=' text-danger'>
@@ -48,9 +49,9 @@
     </div>
 
     <div class="mb-3">
-        <label class='form-label '><?php echo $form->labelEx($model, 'title'); ?></label>
+        <div class='form-label '><?php echo $form->labelEx($model, 'title'); ?></div>
         <div class=''>
-            <?php echo $form->textField($model, 'title', array('class' => 'form-control')); ?>
+            <?php echo $form->textField($model, 'title', array('class' => 'form-control' , 'aria-required' => 'true')); ?>
         </div>
         <?php if ($form->error($model, 'title')): ?>
             <div class=" text-danger">
@@ -60,24 +61,24 @@
     </div>
 
     <div class="mb-3">
-        <label class='form-label '><?php echo $form->labelEx($model, 'ico'); ?></label>
+        <div class='form-label '><?php echo $form->labelEx($model, 'ico'); ?></div>
         <div class='row align-items-center'>
             <div class='btn-group col-2'>
-                <button type='button' class='btn btn-outline-secondary dropdown-toggle limebutton form-control' data-bs-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
+                <button aria-label="Icon: *" type='button' class='btn btn-outline-secondary dropdown-toggle limebutton form-control' data-bs-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
                     <?= gT('Select icon') ?>
                     <span class='caret'></span>
                 </button>
                 <ul class='dropdown-menu'>
                     <li>
                         <?php foreach ($icons as $icon) : ?>
-                            <a href="#" class="m-2">
-                                <span data-icon='<?php echo $icon['icon']; ?>' data-iconId='<?php echo $icon['id']; ?>' class='option-icon <?php echo $icon['icon']; ?>'></span>
+                            <a href="javascript:void(0)" role="button" class="m-2 a11y-enter">
+                                <span data-icon='<?php echo $icon['icon']; ?>' data-iconId='<?php echo $icon['id']; ?>' class='a11y-enter-trigger option-icon <?php echo $icon['icon']; ?>'></span>
                             </a>
                         <?php endforeach; ?>
                     </li>
                 </ul></div>
             <div class="col-2"><span>&nbsp;<?= gT('Chosen icon:') ?></span>&nbsp;<span id="chosen-icon" class="<?= $model->getIconName() ?> text-success"></span></div>
-            <?php echo $form->textField($model, 'ico', array('size' => 60, 'maxlength' => 255, 'class' => 'form-control d-none')); ?>
+            <?php echo $form->textField($model, 'ico', array('size' => 60, 'maxlength' => 255, 'class' => 'form-control d-none' , 'aria-required' => 'true')); ?>
         </div>
 
         <?php if ($form->error($model, 'ico')): ?>
@@ -88,9 +89,9 @@
     </div>
 
     <div class="mb-3">
-        <label class='form-label '><?php echo $form->labelEx($model, 'desc'); ?></label>
+        <div class='form-label '><?php echo $form->labelEx($model, 'desc'); ?></div>
         <div class=''>
-            <?php echo $form->textArea($model, 'desc', array('rows' => 6, 'cols' => 50, 'class' => 'form-control')); ?>
+            <?php echo $form->textArea($model, 'desc', array('rows' => 6, 'cols' => 50, 'class' => 'form-control' , 'aria-required' => 'true')); ?>
         </div>
         <?php if ($form->error($model, 'desc')): ?>
             <div class=" text-danger" role="alert">
@@ -109,7 +110,7 @@
     </div>
 
     <div class="mb-3">
-        <label class='form-label '><?php echo $form->labelEx($model, 'usergroup'); ?></label>
+        <div class='form-label '><?php echo $form->labelEx($model, 'usergroup'); ?></div>
         <div class=''>
             <?php
             $options_array = CHtml::listData(UserGroup::model()->findAll(), 'ugid', 'name');

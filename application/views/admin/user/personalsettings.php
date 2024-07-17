@@ -103,12 +103,12 @@ echo $oQuestionSelector->getModal();
                     <div class="row">
                         <div class="col-12">
                             <div class="mb-3">
-                                <?php echo TbHtml::label(gT("User name:"), 'lang', ['class' => " form-label"]); ?>
+                                <?php echo TbHtml::label(gT("User name:"), 'username', ['class' => " form-label"]); ?>
                                 <div class="">
-                                    <?php echo TbHtml::textField('username', $sUsername, ['class' => 'form-control', 'readonly' => 'readonly']); ?>
+                                    <?php echo TbHtml::textField('username', $sUsername, ['class' => 'form-control', 'readonly' => 'readonly', 'aria-describedby' => 'hint_not_changed']); ?>
                                 </div>
                                 <div class="">
-                                    <span class='text-info'><?php eT("The user name cannot be changed."); ?></span>
+                                    <span id="hint_not_changed" class='text-info'><?php eT("The user name cannot be changed."); ?></span>
                                 </div>
                             </div>
                         </div>
@@ -119,7 +119,7 @@ echo $oQuestionSelector->getModal();
                     <div class="row">
                         <div class="col-12 col-lg-6">
                             <div class="mb-3">
-                                <?php echo TbHtml::label(gT("Full name:"), 'lang', ['class' => " form-label"]); ?>
+                                <?php echo TbHtml::label(gT("Full name:"), 'fullname', ['class' => " form-label"]); ?>
                                 <div class="">
                                     <?php echo TbHtml::textField('fullname', $sFullname, ['class' => 'form-control', 'maxlength' => 50]); ?>
                                 </div>
@@ -127,7 +127,7 @@ echo $oQuestionSelector->getModal();
                         </div>
                         <div class="col-12 col-lg-6">
                             <div class="mb-3">
-                                <?php echo TbHtml::label(gT("Email address:"), 'lang', ['class' => " form-label"]); ?>
+                                <?php echo TbHtml::label(gT("Email address:"), 'email', ['class' => " form-label"]); ?>
                                 <div class="">
                                     <?php echo TbHtml::emailField('email', $sEmailAdress, ['readonly' => true, 'class' => 'form-control', 'maxlength' => 254]); ?>
                                 </div>
@@ -167,18 +167,18 @@ echo $oQuestionSelector->getModal();
                         <input type="hidden" id="newpasswordshown" name="newpasswordshown" value="0" />
                         <div class="col-lg-6">
                             <div class="mb-3">
-                                <?php echo TbHtml::label(gT("New password:"), 'lang', ['class' => " form-label"]); ?>
+                                <?php echo TbHtml::label(gT("New password:"), 'password', ['class' => " form-label"]); ?>
                                 <div class="">
-                                    <?php echo TbHtml::passwordField('password', '', ['disabled' => true, 'class' => 'form-control', 'autocomplete' => "off", 'placeholder' => html_entity_decode(str_repeat("&#9679;", 10), ENT_COMPAT, 'utf-8')]); ?>
+                                    <?php echo TbHtml::passwordField('password', '', ['disabled' => true, 'class' => 'form-control', 'autocomplete' => "off", 'placeholder' => html_entity_decode(str_repeat("&#9679;", 10), ENT_COMPAT, 'utf-8'), 'aria-describedby' =>'hint-meet-password']); ?>
                                 </div>
                                 <div class="">
-                                    <span class='text-info'><?php echo $passwordHelpText; ?></span>
+                                    <span class='text-info' id="hint-meet-password"><?php echo $passwordHelpText; ?></span>
                                 </div>
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="mb-3">
-                                <?php echo TbHtml::label(gT("Repeat new password:"), 'lang', ['class' => " form-label"]); ?>
+                                <?php echo TbHtml::label(gT("Repeat new password:"), 'repeatpassword', ['class' => " form-label"]); ?>
                                 <div class="">
                                     <?php echo TbHtml::passwordField('repeatpassword', '', ['disabled' => true, 'class' => 'form-control', 'autocomplete' => "off", 'placeholder' => html_entity_decode(str_repeat("&#9679;", 10), ENT_COMPAT, 'utf-8')]); ?>
                                 </div>
@@ -189,7 +189,7 @@ echo $oQuestionSelector->getModal();
                         <input type="hidden" id="newemailshown" name="newemailshown" value="0" />
                         <div class="col-12 col-lg-6">
                             <div class="mb-3">
-                                <?php echo TbHtml::label(gT("New email address:"), 'lang', ['class' => " form-label"]); ?>
+                                <?php echo TbHtml::label(gT("New email address:"), 'newemail', ['class' => " form-label"]); ?>
                                 <div class="">
                                     <?php echo TbHtml::emailField('newemail', $sEmailAdress, ['class' => 'form-control', 'maxlength' => 254]); ?>
                                 </div>
@@ -351,6 +351,7 @@ echo $oQuestionSelector->getModal();
                                 <div>
                                     <?php
                                     $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                                        'ariaLabel'=> gT('Show script field:'),
                                         'name'          => 'showScriptEdit',
                                         'checkedOption' => $aUserSettings['showScriptEdit'] ?? 0,
                                         'selectOptions' =>    [
@@ -369,6 +370,7 @@ echo $oQuestionSelector->getModal();
                                 <div>
                                     <?php
                                     $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                                        'ariaLabel'=> gT('Directly show edit mode:'),
                                         'name'          => 'noViewMode',
                                         'checkedOption' => $aUserSettings['noViewMode'] ?? 0,
                                         'selectOptions' =>    [
@@ -388,6 +390,7 @@ echo $oQuestionSelector->getModal();
                                 <div>
                                     <?php
                                     $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                                        'ariaLabel'=> gT('Lock question organizer in sidebar by default:'),
                                         'name'          => 'lock_organizer',
                                         'checkedOption' => $aUserSettings['lock_organizer'] ?? 0,
                                         'selectOptions' =>    [
@@ -406,6 +409,7 @@ echo $oQuestionSelector->getModal();
                                 <div>
                                     <?php
                                     $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                                        'ariaLabel'=> gT('Create example question group and question:'),
                                         'name'          => 'createsample',
                                         'checkedOption' => $aUserSettings['createsample'] ?? 'default',
                                         'selectOptions' =>    [

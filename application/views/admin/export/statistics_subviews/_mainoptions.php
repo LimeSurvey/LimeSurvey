@@ -1,4 +1,4 @@
-<h4 class=""><?php
+<h4 class="" role="heading" aria-level="2"><?php
     eT("Main options"); ?></h4>
 <div class="row">
     <div class="col-lg-6 col-md-12">
@@ -8,6 +8,7 @@
             <div class="">
                 <?php
                 $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', array(
+                    'ariaLabel'=> gT('Include:'),
                     'name' => 'completionstate',
                     'checkedOption' => incompleteAnsFilterState(),
                     'selectOptions' => array(
@@ -23,6 +24,7 @@
                 eT("Output format:") ?></label>
             <div>
                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                    'ariaLabel'=> gT('Output format:'),
                     'name'          => 'outputtype',
                     'checkedOption' => 'html',
                     'selectOptions' => [
@@ -42,6 +44,7 @@
                 eT("View summary of all available fields:"); ?></label>
             <div>
                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                    'ariaLabel'=> gT('View summary of all available fields:'),
                     'name'          => 'viewsummaryall',
                     'checkedOption' => $sViewsummaryall,
                     'selectOptions' => [
@@ -60,6 +63,7 @@
             <div class=''>
                 <?php $sUsegraph = (int)Yii::app()->request->getPost('usegraph'); ?>
                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                    'ariaLabel'=> gT('Show graphs:'),
                     'name'          => 'usegraph',
                     'checkedOption' => $sUsegraph,
                     'selectOptions' => [
@@ -73,7 +77,7 @@
             </div>
             <?php
             if ($error != '') {
-                echo "<div id='grapherror' style='display:none'>$error<hr /></div>";
+                echo "<div id='grapherror' style='display:none' role='alert'>$error<hr /></div>";
             } ?>
         </div>
         <?php

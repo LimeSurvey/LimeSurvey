@@ -12,7 +12,7 @@
 </button>
 
 <!-- Modal -->
-<div class="modal fade" id="responses-column-filter-modal" tabindex="-1" role="dialog" aria-labelledby="responses-column-filter-label">
+<div class="modal fade" aria-modal="true"  id="responses-column-filter-modal" tabindex="-1" role="dialog" aria-labelledby="responses-column-filter-label">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <form action="<?= App()->createUrl('responses/setfilteredcolumns/', ['surveyId' => $surveyId]) ?>" class="pjax" method="POST" data-filtered-columns=<?php echo json_encode($filteredColumns) ?>>

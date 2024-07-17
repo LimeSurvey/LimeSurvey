@@ -24,6 +24,7 @@
                                 </label>
                                 <div class="default controls">
                                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', array(
+                                        'ariaLabel'=> gT('Used bounce settings:'),
                                         'name' => 'bounceprocessing',
                                         'value'=> $settings['bounceprocessing'] ,
                                         'checkedOption'=> $settings['bounceprocessing'] ,
@@ -45,6 +46,7 @@
                                 </label>
                                 <div class="default controls">
                                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', array(
+                                        'ariaLabel'=> gT('Server type:'),
                                         'name' => 'bounceaccounttype',
                                         'checkedOption'=> $settings['bounceaccounttype'] ,
                                         'selectOptions' => array(
@@ -96,6 +98,7 @@
                                 </label>
                                 <div class="default controls">
                                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', array(
+                                        'ariaLabel'=> gT('Encryption type:'),
                                         'name' => 'bounceaccountencryption',
                                         'checkedOption'=> strtolower((string) $settings['bounceaccountencryption']),
                                         'selectOptions' => array(

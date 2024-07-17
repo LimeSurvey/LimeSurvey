@@ -345,6 +345,8 @@ class CGridView extends CBaseListView
 	 */
 	public $enableHistory=false;
 
+	public $caption = "";
+
 
 	/**
 	 * Initializes the grid view.
@@ -500,6 +502,7 @@ class CGridView extends CBaseListView
 		if($this->dataProvider->getItemCount()>0 || $this->showTableOnEmpty)
 		{
 			echo "<table class=\"{$this->itemsCssClass}\">\n";
+			echo "<caption class='sr-only'>{$this->caption}</caption>\n";
 			$this->renderTableHeader();
 			ob_start();
 			$this->renderTableBody();

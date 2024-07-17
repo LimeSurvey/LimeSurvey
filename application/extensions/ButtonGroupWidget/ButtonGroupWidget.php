@@ -13,6 +13,12 @@ class ButtonGroupWidget extends CInputWidget
     /** @var string aria label for btn-group */
     public $ariaLabel = '';
 
+    /** @var string aria labelledby for btn-group */
+    public $ariaLabelledby = '';
+
+    /** @var string aria describedby for btn-group */
+    public $ariaDescribedby = '';
+
     /** @var array html options */
     public $htmlOptions = [];
 
@@ -36,7 +42,9 @@ class ButtonGroupWidget extends CInputWidget
     {
         list($name, $id) = $this->resolveNameID();
         $this->render('buttongroup', [
+            'ariaLabelledby' => $this->ariaLabelledby,
             'ariaLabel' => $this->ariaLabel,
+            'ariaDescribedby' => $this->ariaDescribedby,
             'name' => $name,
             'id' => $id,
             'selectOptions' => $this->selectOptions,

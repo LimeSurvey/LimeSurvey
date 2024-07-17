@@ -44,7 +44,7 @@
 <!-- Success -->
 <?php else:?>
     <div class="jumbotron message-box">
-        <h2 class="text-success"><?php eT("Success"); ?></h2>
+        <h2 class="text-success" style="color: #246128 !important;"><?php eT("Success"); ?></h2>
 
         <p class="lead"><?php echo $sSummaryHeader; ?></p>
 
@@ -164,9 +164,9 @@
 
         <!-- Import Result -->
         <?php if ($action == 'importsurvey'): ?>
-            <p class="text-info"><?php eT("Import of survey is completed.");?></p>
+            <p class="text-info" role="alert" aria-atomic="true"><?php eT("Import of survey is completed.");?></p>
         <?php elseif($action == 'copysurvey'): ?>
-            <p class="text-info"><?php eT("Copy of survey is completed.");?></p>
+            <p class="text-info" role="alert"><?php eT("Copy of survey is completed.");?></p>
         <?php endif; ?>
 
         <!-- Buttons -->

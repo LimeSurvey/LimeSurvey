@@ -446,7 +446,7 @@
   z-index: 1; }
 
 .selector--edit-permissions-container .specific-permission-selector:after {
-  opacity: 0.6; }
+  opacity: 0.8; }
 
 @media (max-width: 768px ){
     .modal-xl {

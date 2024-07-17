@@ -47,6 +47,7 @@ echo viewHelper::getViewTestTag('surveyPanelIntegration');
                 'application.extensions.admin.grid.CLSGridView',
                 [
                     'id' => 'urlparams',
+                    'caption' => gT('URL parameters'),
                     'dataProvider'    => $model->search(),
                     'emptyText'       => gT('No parameters defined'),
                     'htmlOptions'     => ['class' => 'table-responsive grid-view-ls'],

@@ -18,7 +18,7 @@ echo viewHelper::getViewTestTag('importParticipants');
                                 <?php eT("Choose the file to upload:"); ?>
                             </label>
                             <div class="col-6">
-                                <input type="file" class="form-control" name="the_file" accept='.csv'/>
+                                <input id="the_file" type="file" class="form-control" name="the_file" accept='.csv'/>
                             </div>
                         </div>
                     </div>
@@ -26,11 +26,11 @@ echo viewHelper::getViewTestTag('importParticipants');
                 <div class="row ls-space margin top-25 bottom-25">
                     <div class="col-lg-6">
                         <div class="mb-3">
-                            <label for="characterset" id="characterset" class='form-label '>
+                            <label for="characterset1" id="characterset" class='form-label '>
                                 <?php eT("Character set of file:"); ?>
                             </label>
                             <div class="col-12">
-                                <select name="characterset"  class="form-select">
+                                <select name="characterset"  class="form-select" id="characterset1">
                                     <?php
                                     foreach (aEncodingsArray() as $key => $encoding):
                                         ?>
@@ -46,7 +46,7 @@ echo viewHelper::getViewTestTag('importParticipants');
                     </div>
                     <div class="col-lg-6">
                         <div class="mb-3">
-                            <label for="separatorused" id="separatorused" class='form-label '>
+                            <label for="separatorused1" id="separatorused" class='form-label '>
                                 <?php eT("Separator used:"); ?>
                             </label>
                             <div class="col-12">
@@ -58,7 +58,7 @@ echo viewHelper::getViewTestTag('importParticipants');
                                 );
                                 ?>
 
-                                <select name="separatorused"  class="form-select">
+                                <select name="separatorused"  class="form-select" id="separatorused1">
                                     <option value="auto" selected="selected"><?php eT("(Autodetect)"); ?></option>
                                     <?php
                                     foreach ($separatorused as $key => $separator):
@@ -76,11 +76,11 @@ echo viewHelper::getViewTestTag('importParticipants');
                 <div class="row  ls-space margin top-25 bottom-25">
                     <div class="col-lg-6">
                         <div class="mb-3">
-                            <label for="filter" id="filter" class='form-label '>
+                            <label for="filter1" id="filter" class='form-label '>
                                 <?php
                                 eT("Filter blank email addresses:");
                                 ?>
-                                <input class="ls-space margin left-15" type="checkbox" name="filterbea" value="accept" checked="checked">
+                                <input class="ls-space margin left-15" type="checkbox" name="filterbea" value="accept" checked="checked" id="filter1">
                             </label>
                         </div>
                     </div>
@@ -97,9 +97,9 @@ echo viewHelper::getViewTestTag('importParticipants');
 
                 <div class="col-12 ls-space margin top-25 bottom-25">
                     <div class="card card-primary">
-                        <div class="card-header ">
+                        <h2 class="card-header ">
                             <?php eT("CSV input format") ?>
-                        </div>
+                        </h2>
                         <div class='card-body'>
 
                             <p>

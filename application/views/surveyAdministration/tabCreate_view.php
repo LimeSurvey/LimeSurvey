@@ -61,7 +61,7 @@ App()->getClientScript()->registerScript("tabCreate-view-variables", "
 
                 ?>
 
-                <div class="col-4">
+                <div class="col-12 col-md-4">
                     <div class="mb-3">
                         <label for="surveyTitle"><?= gT('Survey title:') ?></label>
                         <input type="text" class="form-control" name="surveyls_title" id="surveyTitle" required="required" maxlength="200">
@@ -99,6 +99,7 @@ App()->getClientScript()->registerScript("tabCreate-view-variables", "
                         <label class="form-label" for="administrator"><?= gT("Administrator:") ?></label>
                         <div>
                             <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                                'ariaLabel'=> gT('Administrator:'),
                                 'name'          => 'administrator',
                                 'checkedOption' => 'default',
                                 'selectOptions' => $optionsAdmin ?? [],

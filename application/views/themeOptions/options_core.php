@@ -105,7 +105,7 @@ foreach ($aOptionAttributes['categories'] as $key => $category) { ?>
                 <div class='row' id="general_inherit_active">
                     <label for='simple_edit_options_general_inherit' class='form-label'><?php echo gT("Inherit everything"); ?></label>
                     <div class='col-12'>
-                        <div class="btn-group" role="group">
+                        <div class="btn-group" role="group" aria-label="Inherit everything">
                             <input id="general_inherit_on" name='general_inherit' type='radio' value='on' class='btn-check selector_option_general_inherit ' data-id='simple_edit_options_general_inherit' />
                             <label for="general_inherit_on" class="btn btn-outline-secondary">
                                 <?php echo gT("Inherited"); ?>
@@ -173,7 +173,7 @@ foreach ($aOptionAttributes['categories'] as $key => $category) { ?>
                     }
 
                     echo '<div class="col-12">
-                                        <div class="btn-group">';
+                                        <div role="group" aria-label="'.gT($attribute['title']).'" class="btn-group">';
                     foreach ($options as $optionKey => $optionValue) {
                         $id = $attributeKey . "_" . $optionKey;
                         echo '<input id="' . $id . '" type="radio" name="' . $attributeKey . '" value="' . $optionKey . '" class="btn-check selector_option_radio_field simple_edit_options_' . $attributeKey . ' " id="' . $attributeKey . '"/>';
@@ -325,7 +325,7 @@ foreach ($aOptionAttributes['categories'] as $key => $category) { ?>
                         <div class="col-8">
                                     <span id="fileselector_frontend">
                                         <label class="btn btn-outline-secondary" for="upload_image_frontend">
-                                            <input class="d-none" id="upload_image_frontend" name="upload_image_frontend" type="file">
+                                            <input class="sr-only" id="upload_image_frontend" name="upload_image_frontend" type="file">
                                             <i class="ri-upload-fill ls-space margin right-10"></i>
                                             <?php eT("Upload"); ?>
                                         </label>
@@ -350,7 +350,7 @@ foreach ($aOptionAttributes['categories'] as $key => $category) { ?>
 
 <?php } ?>
 
-<div class="modal fade" tabindex="-1" role="dialog" id="lightbox-modal">
+<div class="modal fade" aria-modal="true"  tabindex="-1" role="dialog" id="lightbox-modal">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">

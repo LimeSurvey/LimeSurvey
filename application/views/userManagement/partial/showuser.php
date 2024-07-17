@@ -6,7 +6,7 @@ Yii::app()->getController()->renderPartial(
 ?>
 
 <div class="modal-body">
-    <table class="table table-striped">
+    <table class="table table-striped" role="none">
         <tr>
             <td><?=gT('User groups:')?></td>
             <td><?=join(', ',$usergroups)?></td>

@@ -16,6 +16,7 @@ $pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPa
                 [
                     'dataProvider'  => $model->search(),
                     'id'            => 'surveymenu-shortlist-grid',
+                    'caption'       => gT('Survey menu'),
                     'columns'       => $model->getShortListColumns(),
                     'emptyText'     => gT('No customizable entries found.'),
                     'summaryText'   => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(

@@ -80,6 +80,7 @@
                                         </td>
                                         <td>
                                             <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                                                'ariaLabel'=> gT('Core attribute'),
                                                 'name'          => "show_register_{$sTokenField}",
                                                 'checkedOption' => $tokenvalues['show_register'] === 'Y' ? '1' : '0',
                                                 'selectOptions' => [
@@ -93,6 +94,7 @@
                                         </td>
                                         <td>
                                             <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                                                'ariaLabel'=> gT('Core attribute'),
                                                 'name'          => "mandatory_{$sTokenField}",
                                                 'checkedOption' => $tokenvalues['mandatory'] === 'Y' ? '1' : '0',
                                                 'selectOptions' => [
@@ -106,6 +108,7 @@
                                         </td>
                                         <td>
                                             <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                                                'ariaLabel'=> gT('Core attribute'),
                                                 'name'          => "encrypted_{$sTokenField}",
                                                 'checkedOption' => $tokenvalues['encrypted'] === 'Y' ? '1' : '0',
                                                 'selectOptions' => [

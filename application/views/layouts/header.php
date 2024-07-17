@@ -62,7 +62,7 @@
 <!-- Loading wrapper -->
 <div id='ls-loading'>
     <span id='ls-loading-spinner' class='ri-loader-2-fill remix-spin remix-4x'></span>
-    <span class='visually-hidden'><?php eT('Loading...'); ?></span>
+    <span class='visually-hidden' role="alert"><?php eT('Loading...'); ?></span>
 </div>
 
 <?php $this->widget('ext.FlashMessage.FlashMessage'); ?>

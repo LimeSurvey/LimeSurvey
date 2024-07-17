@@ -11,7 +11,7 @@ $pageSize = intval(Yii::app()->user->getState('pageSize', Yii::app()->params['de
 ?>
   <div class="side-body <?=getSideBodyClass(false)?>">
     <?=viewHelper::getViewTestTag('surveyAssessments');?>
-      <h3 class="page-title"><?=gT("Assessments")?></h3>
+      <h3 role="heading" aria-level="1" class="page-title"><?=gT("Assessments")?></h3>
         <?php
             $messageLink = gT("Assessment mode for this survey is not activated.").'<br/>'
                 . gT("If you want to activate it, click here:").'<br/>'
@@ -30,12 +30,13 @@ $pageSize = intval(Yii::app()->user->getState('pageSize', Yii::app()->params['de
         <?php
         } else {
         ?>
-            <h4><?php eT("Assessment rules");?></h4>
+            <h4 role="heading" aria-level="2" id="assesments-heading"><?php eT("Assessment rules");?></h4>
             <div class="row">
-                <a href="#" id="loadEditUrl_forModalView" data-editurl="<?=$this->createUrl("assessment/edit/", ["surveyid" => $surveyid]);?>"></a>
+                <a href="#" id="loadEditUrl_forModalView" data-editurl="<?=$this->createUrl("assessment/edit/", ["surveyid" => $surveyid]);?>" style="display: none;"></a>
                 <?php
                     $this->widget('ext.admin.grid.CLSGridView', array(//done
                         'dataProvider' => $model->search(),
+                        'caption' => gT("Assessment rules"),
                         'id' => 'assessments-grid',
                         'columns' => $model->getColumns(),
                         'filter' => $model,

@@ -30,6 +30,7 @@ echo viewHelper::getViewTestTag('2faUsersIndex');
         'columns'         => $model->getColumns(),
         'filter'          => $model,
         'afterAjaxUpdate' => 'window.TFA.bind',
+        'caption'          => gT('Users with 2-Factor-Authentication'),
         'summaryText'     => "<div class='row'>"
             . "<div class='col-6'></div>"
             . "<div class='col-6'>"

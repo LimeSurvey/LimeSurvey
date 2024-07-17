@@ -57,6 +57,7 @@ $dateformatdata                  = getDateFormatData(Yii::app()->session['datefo
             </label>
             <div class="col-12">
                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                    'ariaLabel'=> gT('Create example question group and question:'),
                     'name' => 'createsample',
                     'checkedOption' => App()->getConfig('createsample'),
                     'selectOptions' => [
@@ -73,7 +74,7 @@ $dateformatdata                  = getDateFormatData(Yii::app()->session['datefo
                 <?php eT("Administration theme:"); ?>
             </label>
             <div class="col-12">
-                <select class="form-select" name="admintheme" id="admintheme">
+                <select class="form-select" name="admintheme" id="admintheme" aria-describedby="adminthemehint">
                     <?php foreach ($aListOfThemeObjects as $templatename => $templateconfig): ?>
                         <option value='<?php echo CHtml::encode($templatename); ?>' <?php echo ($thisadmintheme == $templatename) ? "selected='selected'" : "" ?> >
                             <?php echo CHtml::encode($templateconfig->metadata->name); ?>
@@ -83,7 +84,7 @@ $dateformatdata                  = getDateFormatData(Yii::app()->session['datefo
             </div>
             <?php if (Permission::model()->hasGlobalPermission('superadmin', 'read')): ?>
                 <div class="col-12 form-label ">
-                    <span class="hint">
+                    <span class="hint" id="adminthemehint">
                     <?php eT("You can add your custom themes in upload/admintheme"); ?>
                     </span>
                 </div>
@@ -92,16 +93,16 @@ $dateformatdata                  = getDateFormatData(Yii::app()->session['datefo
 
         <!-- Time difference -->
         <div class="mb-3">
-            <label class="col-12 form-label" for='timeadjust'>
+            <label class="col-12 form-label" for='timeadjust1'>
                 <?php eT("Time difference (in hours):"); ?>
             </label>
             <div class="col-md-4">
                     <span>
-                        <input class="form-control" type='text' id='timeadjust' name='timeadjust'
+                        <input class="form-control" aria-describedby="timeadjust" type='text' id='timeadjust1' name='timeadjust'
                                value="<?php echo htmlspecialchars((string) (str_replace(array('+', ' hours', ' minutes'), array('', '', ''), (string) getGlobalSetting('timeadjust')) / 60)); ?>"/>
                     </span>
             </div>
-            <div class="col-md-8">
+            <div class="col-md-8" id="timeadjust">
                 <?php echo gT("Server time:") . ' ' . convertDateTimeFormat(date('Y-m-d H:i:s'), 'Y-m-d H:i:s', $dateformatdata['phpdate'] . ' H:i')
                     . "<br>"
                     . gT("Corrected time:") . ' '
@@ -194,6 +195,7 @@ Full lock - none of participants are allowed to take survey, even if they alread
             </label>
             <div class="col-12">
                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                    'ariaLabel'=> gT("Maintenance mode:"),
                     'name'          => 'maintenancemode',
                     'checkedOption' => $thismaintenancemode,
                     'selectOptions' => [
@@ -207,12 +209,12 @@ Full lock - none of participants are allowed to take survey, even if they alread
 
         <!-- Refresh assets -->
         <div class="mb-3">
-            <label class="col-12 form-label" for='refreshassets'>
+            <label class="col-12 form-label" id='refreshassets'>
                 <?php eT("Clear assets cache:"); ?> <small>(<?php echo getGlobalSetting('customassetversionnumber'); ?>)</small>
             </label>
             <div class="col-12">
                 <a href="<?php echo App()->createUrl('admin/globalsettings', array("sa" => "refreshAssets")); ?>"
-                   class="btn btn-outline-dark btn-large">
+                   class="btn btn-outline-dark btn-large" aria-describedby="refreshassets">
                    	<?php eT("Clear now"); ?>
                 </a>
             </div>
@@ -227,6 +229,7 @@ Full lock - none of participants are allowed to take survey, even if they alread
             <div class="col-12">
                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget',
                     [
+                        'ariaLabel'=> gT('Default HTML editor mode:'),
                         'name'          => 'defaulthtmleditormode',
                         'checkedOption' => $thisdefaulthtmleditormode,
                         'selectOptions' => [
@@ -246,6 +249,7 @@ Full lock - none of participants are allowed to take survey, even if they alread
             </label>
             <div class='col-md-4'>
                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                    'ariaLabel'=> gT('Side-menu behaviour:'),
                     'name'          => 'sideMenuBehaviour',
                     'checkedOption' => $sideMenuBehaviour,
                     'selectOptions' => [
@@ -265,6 +269,7 @@ Full lock - none of participants are allowed to take survey, even if they alread
             </label>
             <div class="col-12">
                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                    'ariaLabel'=> gT('Question type selector:'),
                     'name'          => 'defaultquestionselectormode',
                     'checkedOption' => $thisdefaultquestionselectormode,
                     'selectOptions' => [
@@ -283,6 +288,7 @@ Full lock - none of participants are allowed to take survey, even if they alread
             </label>
             <div class="col-12">
                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                    'ariaLabel'=> gT('Template editor:'),
                     'name'          => 'defaultthemeteeditormode',
                     'checkedOption' => $thisdefaultthemeteeditormode,
                     'selectOptions' => [
@@ -301,6 +307,7 @@ Full lock - none of participants are allowed to take survey, even if they alread
             </label>
             <div class="col-12">
                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                    'ariaLabel'=> gT('JS-Debug mode [Backend]:'),
                     'name' => 'javascriptdebugbcknd',
                     'checkedOption' => App()->getConfig('javascriptdebugbcknd'),
                     'selectOptions' => [
@@ -319,6 +326,7 @@ Full lock - none of participants are allowed to take survey, even if they alread
             </label>
             <div class="col-12">
                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                    'ariaLabel'=> gT('JS-Debug mode [Frontend]:'),
                     'name' => 'javascriptdebugfrntnd',
                     'checkedOption' => App()->getConfig('javascriptdebugfrntnd'),
                     'selectOptions' => [
@@ -337,6 +345,8 @@ Full lock - none of participants are allowed to take survey, even if they alread
                 </label>
                 <div class="col-12">
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                        'ariaLabel'=> gT('Allow unstable extension updates:'),
+                        'ariaDescribedby' => gT('hint_update'),
                         'name' => 'allow_unstable_extension_update',
                         'checkedOption' => App()->getConfig('allow_unstable_extension_update'),
                         'selectOptions' => [
@@ -346,7 +356,7 @@ Full lock - none of participants are allowed to take survey, even if they alread
                     ]); ?>
                 </div>
                 <div class="col-12 form-label ">
-                        <span class="hint">
+                        <span class="hint" id="hint_update">
                             <?php eT("Enabling unstable updates will allow you to try alpha and beta versions of extensions. Talk to the extension author for more information."); ?>
                         </span>
                 </div>

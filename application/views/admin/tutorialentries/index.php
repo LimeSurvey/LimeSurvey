@@ -28,6 +28,7 @@ echo viewHelper::getViewTestTag('tutorialentries');
                 'dataProvider'             => $model->search(),
                 // Number of row per page selection
                 'id'                       => 'tutorial-grid',
+                'caption'                   => gT('Tutorial entries'),
                 'columns'                  => $model->getColumns(),
                 'filter'                   => $model,
                 'emptyText'                => gT('No customizable entries found.'),

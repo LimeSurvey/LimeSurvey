@@ -41,7 +41,7 @@ if ($bShowInherited) {
 <!-- Presentation panel -->
 <div id='presentation-panel'>
     <div class="row">
-        <h1>
+        <h1 role="heading" aria-level="2">
             <?php eT('Show...'); ?>
         </h1>
         <div class="col-12 col-lg-6">
@@ -52,6 +52,7 @@ if ($bShowInherited) {
                     <?php $this->widget(
                         'ext.ButtonGroupWidget.ButtonGroupWidget',
                         array(
+                            'ariaLabel'=> gT('No answer'),
                             'name' => 'shownoanswer',
                             'checkedOption' => $oSurvey->shownoanswer,
                             'selectOptions' => ($bShowInherited) ?
@@ -70,6 +71,7 @@ if ($bShowInherited) {
                     <?php $this->widget(
                         'ext.ButtonGroupWidget.ButtonGroupWidget',
                         array(
+                            'ariaLabel'=> gT('There are X questions in this survey'),
                             'name' => 'showxquestions',
                             'checkedOption' => $oSurvey->showxquestions,
                             'selectOptions' => ($bShowInherited) ?
@@ -154,6 +156,7 @@ if ($bShowInherited) {
                     <?php $this->widget(
                         'ext.ButtonGroupWidget.ButtonGroupWidget',
                         array(
+                            'ariaLabel'=> gT('welcome screen'),
                             'name' => 'showwelcome',
                             'checkedOption' => $oSurvey->showwelcome,
                             'selectOptions' => ($bShowInherited) ?
@@ -171,6 +174,7 @@ if ($bShowInherited) {
                     <?php $this->widget(
                         'ext.ButtonGroupWidget.ButtonGroupWidget',
                         array(
+                            'ariaLabel'=> gT('on-screen keyboard'),
                             'name' => 'nokeyboard',
                             'checkedOption' => $oSurvey->nokeyboard,
                             'selectOptions' => ($bShowInherited) ?
@@ -188,6 +192,7 @@ if ($bShowInherited) {
                     <?php $this->widget(
                         'ext.ButtonGroupWidget.ButtonGroupWidget',
                         array(
+                            'ariaLabel'=> gT('Progress bar'),
                             'name' => 'showprogress',
                             'checkedOption' => $oSurvey->showprogress,
                             'selectOptions' => ($bShowInherited) ?
@@ -205,6 +210,7 @@ if ($bShowInherited) {
                     <?php $this->widget(
                         'ext.ButtonGroupWidget.ButtonGroupWidget',
                         array(
+                            'ariaLabel'=> gT('question index, allow jumping'),
                             'name' => 'questionindex',
                             'checkedOption' => $oSurvey->questionindex,
                             'selectOptions' => $optionsQuestionIndex
@@ -218,7 +224,7 @@ if ($bShowInherited) {
     </div>
 
     <div class="row mt-5">
-        <h1><?php eT('Navigation') ?></h1>
+        <h1 role="heading" aria-level="2"><?php eT('Navigation') ?></h1>
         <!-- Navigation delay -->
         <div class="col-12 col-lg-6 mb-3">
             <?php $navigationdelay = $oSurvey->navigationdelay; ?>
@@ -229,7 +235,7 @@ if ($bShowInherited) {
                     <input class="form-control inherit-edit <?= ($bShowInherited && $navigationdelay == '-1' ? 'd-none' : 'd-block') ?>"
                            type='text' size='10' id='navigationdelay' name='navigationdelay'
                            value="<?= htmlspecialchars($navigationdelay ?? "") ?>" data-inherit-value="-1" data-saved-value="<?= $navigationdelay ?>"/>
-                    <input class="form-control inherit-readonly <?php echo($bShowInherited && $navigationdelay == '-1' ? 'd-block' : 'd-none'); ?>"
+                    <input aria-label="<?php eT("Navigation delay (seconds):"); ?>" class="form-control inherit-readonly <?php echo($bShowInherited && $navigationdelay == '-1' ? 'd-block' : 'd-none'); ?>"
                            type='text' size='10' value="<?php echo htmlspecialchars($oSurveyOptions->navigationdelay ?? ""); ?>" readonly/>
                 </div>
                 <div class="col-12 col-lg-4 <?php echo($bShowInherited ? 'd-block' : 'd-none'); ?>">
@@ -237,6 +243,7 @@ if ($bShowInherited) {
                     <?php $this->widget(
                         'ext.ButtonGroupWidget.ButtonGroupWidget',
                         [
+                            'ariaLabel'=> gT('Navigation Inherit'),
                             'name' => 'navigationdelaybutton',
                             // NB: Do NOT use === when comparing navigationdelay with '-1', it won't work with Postgresql.
                             'checkedOption' => ($bShowInherited && $navigationdelay == '-1' ? 'Y' : 'N'),
@@ -255,6 +262,7 @@ if ($bShowInherited) {
                     <?php $this->widget(
                         'ext.ButtonGroupWidget.ButtonGroupWidget',
                         array(
+                            'ariaLabel'=> gT('Automatically load end URL when survey complete:'),
                             'name' => 'autoredirect',
                             'checkedOption' => $oSurvey->autoredirect,
                             'selectOptions' => ($bShowInherited)
@@ -274,6 +282,7 @@ if ($bShowInherited) {
                     <?php $this->widget(
                         'ext.ButtonGroupWidget.ButtonGroupWidget',
                         array(
+                            'ariaLabel'=> gT('Allow backward navigation:'),
                             'name' => 'allowprev',
                             'checkedOption' => $oSurvey->allowprev,
                             'selectOptions' => ($bShowInherited) ? array_merge($optionsOnOff, array('I' => $oSurveyOptions->allowprev . " ᴵ")) : $optionsOnOff
@@ -289,6 +298,7 @@ if ($bShowInherited) {
                     <?php $this->widget(
                         'ext.ButtonGroupWidget.ButtonGroupWidget',
                         array(
+                            'ariaLabel'=> gT('Participants may print answers:'),
                             'name' => 'printanswers',
                             'checkedOption' => $oSurvey->printanswers,
                             'selectOptions' => ($bShowInherited) ?
@@ -302,7 +312,7 @@ if ($bShowInherited) {
     </div>
 
     <div class="row mt-5 mb-3">
-        <h1><?php eT('Public statistics') ?></h1>
+        <h1 role="heading" aria-level="2"><?php eT('Public statistics') ?></h1>
         <div class="col-12 col-lg-4 col-xl-3">
             <!-- Public statistics -->
             <div class="mb-3">
@@ -311,6 +321,7 @@ if ($bShowInherited) {
                     <?php $this->widget(
                         'ext.ButtonGroupWidget.ButtonGroupWidget',
                         array(
+                            'ariaLabel'=> gT('Public statistics'),
                             'name' => 'publicstatistics',
                             'checkedOption' => $oSurvey->publicstatistics,
                             'selectOptions' => ($bShowInherited) ?
@@ -331,6 +342,7 @@ if ($bShowInherited) {
                 <?php $this->widget(
                     'ext.ButtonGroupWidget.ButtonGroupWidget',
                     array(
+                        'ariaLabel'=> gT('Show graphs in public statistics:'),
                         'name' => 'publicgraphs',
                         'checkedOption' => $oSurvey->publicgraphs,
                         'selectOptions' => ($bShowInherited) ?

@@ -6,7 +6,7 @@
         <?php
         eT("Cancel"); ?>
     </button>
-    <a role="button" class="btn btn-primary btn-ok">
+    <a role="button" class="btn btn-primary btn-ok" href="javascript:void(0)">
         <?php eT("Export"); ?>
     </a>
 </div>

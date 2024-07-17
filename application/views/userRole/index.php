@@ -20,6 +20,7 @@ echo viewHelper::getViewTestTag('roles');
                 'application.extensions.admin.grid.CLSGridView',
                 [
                     'id' => 'RoleControl--identity-gridPanel',
+                    'caption' => gT('Users Roles'),
                     'htmlOptions' => ['class' => 'table-responsive grid-view-ls'],
                     'dataProvider' => $model->search(),
                     'columns' => $model->columns,

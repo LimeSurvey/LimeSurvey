@@ -12,6 +12,7 @@
         <label class="col-md-4 form-label"><?php eT("Option 'Other':"); ?></label>
         <div class="col-md-8">
             <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                'ariaLabel'=> gT('Option Other:'),
                 'name'          => 'other',
                 'checkedOption' => '0',
                 'selectOptions' => [

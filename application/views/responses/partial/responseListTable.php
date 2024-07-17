@@ -49,6 +49,7 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                 ? 'compact'
                 : App()->user->getState('responsesGridSwitchDisplayState');
             $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                'ariaLabel'=> gT('Display mode:'),
                 'name'          => 'displaymode',
                 'checkedOption' => $state,
                 'selectOptions' => [
@@ -222,9 +223,8 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                     ['afterquestion' => "<hr>", 'separator' => ['', '<br>']]);
 
                 if (!isset($filteredColumns) || in_array($column->name, $filteredColumns)) {
-                    $encodedTitle = CHtml::encode($colTitle) == '' ? ' ' : CHtml::encode($colTitle);
                     $aColumns[] = [
-                        'header'            => '<div data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-placement="bottom" title="' . $colName . '" data-bs-content="' . $encodedTitle . '" data-bs-html="true" data-container="#responses-grid">' . $colName . ' <br/> ' . $colDetails . $encryptionSymbol . '</div>',
+                        'header'            => '<div data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-placement="bottom" title="' . $colName . '" data-bs-content="' . CHtml::encode($colTitle) . '" data-bs-html="true" data-container="#responses-grid">' . $colName . ' <br/> ' . $colDetails . $encryptionSymbol . '</div>',
                         'headerHtmlOptions' => ['style' => 'min-width: 350px;'],
                         'name'              => $column->name,
                         'type'              => 'raw',
@@ -260,6 +260,7 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                 'filter'                => $model,
                 'columns'               => $aColumns,
                 'id'                    => 'responses-grid',
+                'caption'                => gT('All Responses'),
                 'ajaxUpdate'            => 'responses-grid',
                 'ajaxType'              => 'POST',
                 'lsAfterAjaxUpdate'     => [
@@ -302,11 +303,11 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
 
 <!-- Edit Token Modal -->
 <?php // @todo Duplicate, original in application/views/admin/token/browse.php. Remove this? ?>
-<div class="modal fade" tabindex="-1" role="dialog" id="editTokenModal">
+<div class="modal fade" aria-modal="true"  tabindex="-1" role="dialog" id="editTokenModal">
     <div class="modal-dialog" style="width: 1100px">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title"><?php eT('Edit survey participant'); ?></h5>
+                <h5 role="heading" aria-level="2" class="modal-title"><?php eT('Edit survey participant'); ?></h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">

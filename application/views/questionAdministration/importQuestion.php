@@ -42,6 +42,7 @@
                 <label class=" form-label" for='autorename'><?php eT("Automatically rename question code if already exists?"); ?></label>
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                        'ariaLabel'=> gT('Automatically rename question code if already exists?'),
                         'name'          => 'autorename',
                         'checkedOption' => 1,
                         'selectOptions' => [
@@ -55,6 +56,7 @@
                 <label class=" form-label" for='translinksfields'><?php eT("Convert resource links?"); ?></label>
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                        'ariaLabel'=> gT('Convert resource links?'),
                         'name'          => 'translinksfields',
                         'checkedOption' => 1,
                         'selectOptions' => [
@@ -68,6 +70,7 @@
                 <label class=" form-label" for='jumptoquestion'><?php eT("Jump to question after import?"); ?></label>
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                        'ariaLabel'=> gT('Jump to question after import?'),
                         'name'          => 'jumptoquestion',
                         'id'            => 'jumptoquestion',
                         'checkedOption' => 1,
