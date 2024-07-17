@@ -73,7 +73,7 @@
         ]);
 
         App()->getController()->widget('ext.admin.grid.ColumnFilterWidget.ColumnFilterWidget', [
-            'model' => $this->model::class,
+            'model' => get_class($this->model),
             'modalId' => $modalId,
             'filterableColumns' => $filterableColumns,
             'filteredColumns' => $filteredColumns,
