@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2024-07-08 10:17:06+00:00\n"
+"POT-Creation-Date: 2024-07-15 09:17:41+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -58,7 +58,7 @@ msgstr ""
 #: application/helpers/admin/import_helper.php:3619
 #: application/helpers/admin/import_helper.php:3664
 #: application/models/TemplateManifest.php:173
-#: application/models/services/PasswordManagement.php:85
+#: application/models/services/PasswordManagement.php:88
 #: application/views/admin/checkintegrity/fix_view.php:16
 #: application/views/admin/dataentry/active_html_view.php:116
 #: application/views/admin/dataentry/vvimport_result.php:16
@@ -2130,7 +2130,7 @@ msgstr ""
 #: application/controllers/SurveyAdministrationController.php:842
 #: application/helpers/SurveyRuntimeHelper.php:1163
 #: application/helpers/update/update_helper.php:37
-#: application/models/services/PasswordManagement.php:99
+#: application/models/services/PasswordManagement.php:102
 #: application/views/admin/dataentry/insert.php:37
 #: application/views/admin/dataentry/iteratesurvey.php:6
 #: application/views/admin/dataentry/vvimport_result.php:10
@@ -3997,8 +3997,8 @@ msgid "Logout successful."
 msgstr ""
 
 #: application/controllers/admin/Authentication.php:306
-#: application/models/services/PasswordManagement.php:179
-#: application/models/services/PasswordManagement.php:184
+#: application/models/services/PasswordManagement.php:183
+#: application/models/services/PasswordManagement.php:188
 msgid "If the username and email address is valid a password reminder email has been sent to you. This email can only be requested once in %d minutes."
 msgstr ""
 
@@ -16604,51 +16604,51 @@ msgstr ""
 msgid "Participant ID cannot be empty"
 msgstr ""
 
-#: application/models/services/PasswordManagement.php:90
+#: application/models/services/PasswordManagement.php:93
 msgid "Email to %s (%s) failed."
 msgstr ""
 
-#: application/models/services/PasswordManagement.php:104
+#: application/models/services/PasswordManagement.php:107
 msgid "Username : %s - Email : %s."
 msgstr ""
 
-#: application/models/services/PasswordManagement.php:109
+#: application/models/services/PasswordManagement.php:112
 msgid "An email with a generated link was sent to the user."
 msgstr ""
 
-#: application/models/services/PasswordManagement.php:154
+#: application/models/services/PasswordManagement.php:157
 msgid "User data"
 msgstr ""
 
-#: application/models/services/PasswordManagement.php:164
+#: application/models/services/PasswordManagement.php:167
 msgid "Username: %s"
 msgstr ""
 
-#: application/models/services/PasswordManagement.php:169
+#: application/models/services/PasswordManagement.php:173
 msgid "Click here to set your password: "
 msgstr ""
 
-#: application/models/services/PasswordManagement.php:171
+#: application/models/services/PasswordManagement.php:175
 msgid "Your link to reset password %s"
 msgstr ""
 
-#: application/models/services/PasswordManagement.php:181
+#: application/models/services/PasswordManagement.php:185
 msgid "Email failed"
 msgstr ""
 
-#: application/models/services/PasswordManagement.php:221
+#: application/models/services/PasswordManagement.php:225
 msgid "Your login credentials have been reset"
 msgstr ""
 
-#: application/models/services/PasswordManagement.php:263
+#: application/models/services/PasswordManagement.php:269
 msgid "Hello %s,"
 msgstr ""
 
-#: application/models/services/PasswordManagement.php:265
+#: application/models/services/PasswordManagement.php:271
 msgid "This is an automated email to notify you that your login credentials for '%s' have been reset."
 msgstr ""
 
-#: application/models/services/PasswordManagement.php:270
+#: application/models/services/PasswordManagement.php:276
 msgid "Here are your new credentials."
 msgstr ""
 
