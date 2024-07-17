@@ -66,7 +66,13 @@ class AuthenticationTokenSimple implements AuthenticationInterface
     {
         $existingSession = Session::model()->findByPk($token);
 
-        $result = $this->createSession($existingSession->data)->id;
+        if (!$existingSession || empty($existingSession->data)) {
+            throw new ExceptionInvalidUser('Invalid token');
+        }
+
+        $result = $this->createSession(
+            $existingSession->data ?: ''
+        )->id;
 
         // Expire existing token
         $existingSession->expire = time() - 1;
