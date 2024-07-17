@@ -12064,6 +12064,17 @@ Responsive navbar-brand image CSS
 }
 #survey-nav #main-dropdown {
   min-width: 250px;
+  overflow-y: auto;
+  max-height: 90vh;
+}
+@media (max-width: 768px) {
+  #survey-nav #main-dropdown {
+    max-width: 350px;
+    max-height: 70vh;
+  }
+  #survey-nav #main-dropdown li a {
+    font-size: 0.7em !important;
+  }
 }
 #survey-nav .dropdown-header {
   font-weight: 500;
