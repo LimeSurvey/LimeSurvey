@@ -27,7 +27,7 @@ class expressionFixedDbVar extends PluginBase
     protected static $description = 'Add SEED and other DB var in ExpressionScript Engine.';
     protected static $name = 'expressionFixedDbVar';
 
-    /** @inheritdoc, this plugin didn't have any public method */
+    /** @inheritdoc this plugin didn't have any public method */
     public $allowedPublicMethods = array();
 
     /**

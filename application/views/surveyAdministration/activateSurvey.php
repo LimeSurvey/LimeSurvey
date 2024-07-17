@@ -8,7 +8,7 @@
 //todo: this view is deprecated, we moved content to a modal
 
 ?>
-<div class='side-body <?php echo getSideBodyClass(false); ?>'>
+<div class='side-body'>
     <h3>
         <?php eT('Activate Survey'); ?> (<?php echo $oSurvey->currentLanguageSettings->surveyls_title; ?>)
     </h3>

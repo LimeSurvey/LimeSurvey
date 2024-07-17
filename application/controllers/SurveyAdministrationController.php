@@ -217,9 +217,7 @@ class SurveyAdministrationController extends LSBaseController
         $aData['surveyActivationFeedback'] = $surveyActivationFeedback;
 
         $this->aData = $aData;
-        $this->render('sidebody', [
-            'sideMenuOpen' => true
-        ]);
+        $this->render('sidebody');
     }
 
     /**
@@ -1761,6 +1759,7 @@ class SurveyAdministrationController extends LSBaseController
 
         $success = false;
         if (($surveyId > 0) && ($questionId > 0)) {
+            App()->loadHelper('admin/activate');
             fixNumbering($questionId, $surveyId);
             $success = true;
         }

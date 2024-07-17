@@ -2,8 +2,43 @@
 /**
  * @var string $closeUrl
  * @var string $returnUrl
+ * @var string $editorUrl
+ * @var bool   $enableEditorButton
  */
 
+?>
+
+<?php
+// new question editor
+if (isset($editorEnabled) && $editorEnabled && $editorUrl) {
+    $disabled = '';
+    $tooltip = '';
+    if (!$enableEditorButton) {
+        $disabled = 'disabled';
+        $tooltip = gT('The new question editor is only available for surveys using the FruityTwentyThree theme.');
+    }
+    ?>
+    <span data-bs-toggle="tooltip" data-bs-original-title="<?=$tooltip?>">
+        <?php
+        $this->widget(
+            'ext.ButtonWidget.ButtonWidget',
+            [
+                'name' => 'editor-link-button',
+                'id' => 'editor-link-button',
+                'text' => gT('Open in new editor'),
+                'icon' => 'ri-article-line',
+                'link' => $editorUrl,
+                'htmlOptions' => [
+                    'class' => 'btn btn-secondary',
+                    'role' => 'button',
+                    'disabled' => $disabled,
+                ],
+            ]
+        );
+        ?>
+    </span>
+    <?php
+}
 ?>
 
 <!-- White Close button -->
@@ -145,21 +180,3 @@ if (!empty($showImportButton)) {
 }
 ?>
 
-<?php
-if (isset($editorEnabled) && $editorEnabled && $editorUrl) {
-    $this->widget(
-        'ext.ButtonWidget.ButtonWidget',
-        [
-            'name' => 'editor-link-button',
-            'id' => 'editor-link-button',
-            'text' => gT('Open in new editor'),
-            'icon' => 'ri-article-line',
-            'link' => $editorUrl,
-            'htmlOptions' => [
-                'class' => 'btn btn-secondary',
-                'role' => 'button',
-            ],
-        ]
-    );
-}
-?>

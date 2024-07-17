@@ -961,6 +961,11 @@ class InstallerController extends CController
             . "\t\t" . ")," . "\n"
             . "\t" . "" . "\n"
 
+            . "\t\t" . "// If URLs generated while running on CLI are wrong, you need to set the baseUrl in the request component. For example:" . "\n"
+            . "\t\t" . "//'request' => array(" . "\n"
+            . "\t\t" . "//\t'baseUrl' => '/limesurvey'," . "\n"
+            . "\t\t" . "//)," . "\n"
+
             . "\t" . ")," . "\n"
             . "\t" . "// For security issue : it's better to set runtimePath out of web access" . "\n"
             . "\t" . "// Directory must be readable and writable by the webuser" . "\n"
@@ -972,7 +977,12 @@ class InstallerController extends CController
             . "\t" . "// on your webspace." . "\n"
             . "\t" . "// LimeSurvey developers: Set this to 2 to additionally display STRICT PHP error messages and get full access to standard templates" . "\n"
             . "\t\t" . "'debug'=>0," . "\n"
-            . "\t\t" . "'debugsql'=>0, // Set this to 1 to enanble sql logging, only active when debug = 2" . "\n";
+            . "\t\t" . "'debugsql'=>0, // Set this to 1 to enanble sql logging, only active when debug = 2" . "\n"
+            . "\n"
+            . "\t\t" . "// If URLs generated while running on CLI are wrong, you need to uncomment the following line and set your" . "\n"
+            . "\t\t" . "// public URL (the URL facing survey participants). You will also need to set the request->baseUrl in the section above." . "\n"
+            . "\t\t" . "//'publicurl' => 'https://www.example.org/limesurvey'," . "\n"
+            . "\n";
 
             if ($model->isMysql) {
                 $sConfig .= "\t\t" . "// Mysql database engine (INNODB|MYISAM):" . "\n"

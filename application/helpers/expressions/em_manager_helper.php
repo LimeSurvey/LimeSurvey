@@ -8632,7 +8632,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 // NB: No break needed
             case 'code':
             case 'NAOK':
-                if (isset($var['code'])) {
+                if (array_key_exists('code', $var) && isset($var['code'])) {
                     return $var['code'];    // for static values like TOKEN
                 } else {
                     if (isset($_SESSION[$this->sessid][$sgqa])) {

@@ -53,7 +53,6 @@ extract($tabData);
                     // @todo: use all_fields_empty in this loop?
                     $allFieldsEmpty = $fieldData['all_fields_empty'] && $allFieldsEmpty;
                     $textfrom = $fieldData['fieldData']['textfrom'];
-                    $textfrom2 = $fieldData['fieldData']['textfrom2'];
                     foreach ($fieldData['translateFields'] as $field) {
                         if (strlen(trim((string)$field['textfrom'])) > 0) {
                             $this->renderPartial('translateFieldData', $field);
@@ -73,7 +72,7 @@ extract($tabData);
         <?php endif; ?>
         <input type='hidden' name='<?php echo $type; ?>_size' value='<?php echo count($singleTabFieldsData) - 1; ?>'/>
         <?php if ($singleTabFieldsData[0]['fieldData']['associated']) : ?>
-            <input type='hidden' name='<?php echo $singleTabFieldsData[0]['fieldData']['type2']; ?>_size'
+            <input type='hidden' name='<?php echo $singleTabFieldsData[0]['fieldData']['associatedName']; ?>_size'
                    value='<?= count($singleTabFieldsData) - 1; ?>'/>
         <?php endif;
     } else { ?>

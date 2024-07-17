@@ -10,8 +10,13 @@
 echo viewHelper::getViewTestTag('surveyLogicFile');
 ?>
 
+<<<<<<< HEAD
 <div id='edit-survey-text-element' class='side-body <?php echo getSideBodyClass(false); ?>'>
     <h1 class="pagetitle h1"><?php eT("Survey logic view");?> </h1>
+=======
+<div id='edit-survey-text-element' class='side-body'>
+    <div class="pagetitle h1"><?php eT("Survey logic view");?> </div>
+>>>>>>> master
     <div class="row">
         <?=TbHtml::form(array('admin/expressions/sa/survey_logic_file'), 'post', array('id'=>'survey_logic_file_form', 'target' => '_blank'))?>
             <input name="sid" type="hidden" value="<?=$sid?>" />

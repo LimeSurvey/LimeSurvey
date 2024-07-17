@@ -246,6 +246,9 @@ class Authentication extends SurveyCommonAction
             if (($password !== null && $passwordRepeat !== null) && ($password === $passwordRepeat) && $oPasswordTestEvent->get('passwordOk')) {
                 //now everything is ok, save password
                 $user->setPassword($password, true);
+                // And remove validation_key
+                $user->unsetAttributes(['validation_key', 'validation_key_expiration']);
+                $user->save(false, ['validation_key', 'validation_key_expiration']);
                 App()->getController()->redirect(array('/admin/authentication/sa/login'));
             } else {
                 Yii::app()->setFlashMessage(sprintf(gT('Password cannot be blank and must fulfill minimum requirements: %s'), $passwordError), 'error');
@@ -258,7 +261,7 @@ class Authentication extends SurveyCommonAction
             'errorExists' => $errorExists,
             'errorMsg' => $errorMsg,
             'randomPassword' => $randomPassword,
-            'validationKey' => $user->validation_key
+            'validationKey' => $validation_key
         ];
 
         $this->renderWrappedTemplate('authentication', 'newPassword', $aData);

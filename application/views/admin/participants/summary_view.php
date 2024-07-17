@@ -51,8 +51,13 @@ echo viewHelper::getViewTestTag('participantsSummary');
                         </td>
                     </tr>
                     <tr>
+<<<<<<< HEAD
                         <th scope="row">
                             <?php eT("Blacklisted participants"); ?>
+=======
+                        <th>
+                            <?php eT("Blocklisted participants"); ?>
+>>>>>>> master
                         </th>
                         <td>
                             <?php echo $blacklisted; ?>

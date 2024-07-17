@@ -300,7 +300,7 @@ class PluginManager extends \CApplicationComponent
                         $plugin = Plugin::model()->find('name = :name', [':name' => $pluginName]);
                         if (
                             empty($plugin)
-                            || ($includeInstalledPlugins && $plugin->load_error == 0)
+                            || ($includeInstalledPlugins && !$plugin->getLoadError())
                         ) {
                             if (file_exists($file) && $this->isWhitelisted($pluginName)) {
                                 try {
@@ -320,9 +320,13 @@ class PluginManager extends \CApplicationComponent
                                         'message' => $ex->getMessage(),
                                         'file'  => $ex->getFile()
                                     ];
-                                    $saveResult = Plugin::setPluginLoadError($plugin, $pluginName, $error);
+                                    $saveResult = Plugin::handlePluginLoadError($plugin, $pluginName, $error);
                                     if (!$saveResult) {
-                                        // This only happens if database save fails.
+                                        // If handlePluginLoadError return 0 because debug is set
+                                        if (App()->getConfig('debug') >= 2) {
+                                            throw $ex;
+                                        }
+                                        // If handlePluginLoadError fail without debug : have a DB related issue
                                         $this->shutdownObject->disable();
                                         throw new \Exception(
                                             'Internal error: Could not save load error for plugin ' . $pluginName
@@ -330,7 +334,7 @@ class PluginManager extends \CApplicationComponent
                                     }
                                 }
                             }
-                        } elseif ($plugin->load_error == 1) {
+                        } elseif ($plugin->getLoadError()) {
                             // List faulty plugins in scan files view.
                             $result[$pluginName] = [
                                 'pluginName' => $pluginName,
@@ -464,9 +468,13 @@ class PluginManager extends \CApplicationComponent
                 'file'  => $ex->getFile()
             ];
             $plugin = Plugin::model()->find('name = :name', [':name' => $pluginName]);
-            $saveResult = Plugin::setPluginLoadError($plugin, $pluginName, $error);
+            $saveResult = Plugin::handlePluginLoadError($plugin, $pluginName, $error);
             if (!$saveResult) {
-                // This only happens if database save fails.
+                // If handlePluginLoadError return 0 because debug is set
+                if (App()->getConfig('debug') >= 2) {
+                    throw $ex;
+                }
+                // If handlePluginLoadError fail without debug : have a DB related issue
                 $this->shutdownObject->disable();
                 throw new \Exception(
                     'Internal error: Could not save load error for plugin ' . $pluginName
@@ -500,8 +508,7 @@ class PluginManager extends \CApplicationComponent
 
             foreach ($records as $record) {
                 if (
-                    !isset($record->load_error)
-                    || $record->load_error == 0
+                    !$record->getLoadError()
                     // NB: Authdb is hardcoded since updating sometimes causes error.
                     // @see https://bugs.limesurvey.org/view.php?id=15908
                     || $record->name == 'Authdb'
@@ -523,7 +530,7 @@ class PluginManager extends \CApplicationComponent
     {
         $records = Plugin::model()->findAll();
         foreach ($records as $record) {
-            if ($record->load_error == 0) {
+            if (!$record->getLoadError()) {
                 $this->loadPlugin($record->name, $record->id, $record->active);
             }
         }

@@ -43,7 +43,7 @@ class QuestionAggregateService
      * Based on QuestionAdministrationController::actionSaveQuestionData()
      *
      * @param int $surveyId
-     * @param array{
+     * @param array {
      *  sid: int,
      *  ?question: array{
      *      ?qid: int,
