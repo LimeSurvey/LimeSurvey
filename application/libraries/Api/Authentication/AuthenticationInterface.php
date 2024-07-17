@@ -17,6 +17,15 @@ interface AuthenticationInterface
     public function login($username, $password);
 
     /**
+     * Refresh authentication token
+     *
+     * @param string $token
+     * @return ?mixed Response data
+     * @throws ApiAuthenticationException
+     */
+    public function refresh($token);
+
+    /**
      * @param string $token
      * @return void
      * @throws ApiAuthenticationException

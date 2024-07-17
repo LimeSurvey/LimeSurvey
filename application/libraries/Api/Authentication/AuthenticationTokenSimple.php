@@ -57,6 +57,25 @@ class AuthenticationTokenSimple implements AuthenticationInterface
     }
 
     /**
+     * Refresh token
+     *
+     * @param string $token
+     * @return bool|string
+     */
+    public function refresh($token)
+    {
+        $existingSession = Session::model()->findByPk($token);
+
+        $result = $this->createSession($existingSession->data)->id;
+
+        // Expire existing token
+        $existingSession->expire = time() - 1;
+        $existingSession->save();
+
+        return $result;
+    }
+
+    /**
      * Create session key
      *
      * @param string $username The username

@@ -2,6 +2,7 @@
 
 use LimeSurvey\Api\Command\V1\{
     AuthTokenSimpleCreate,
+    AuthTokenSimpleRefresh,
     AuthTokenSimpleRelease
 };
 use LimeSurvey\Api\Rest\V1\SchemaFactory\{
@@ -27,6 +28,26 @@ $rest['v1/auth'] = [
                 'code' => 200,
                 'description' => 'Success - returns string access token for use in header '
                     . '"Authorization: Bearer $token"',
+                'schema' => (new SchemaFactoryAuthToken)->make()
+            ],
+            'unauthorized' => [
+                'code' => 401,
+                'description' => 'Unauthorized',
+                'schema' => $errorSchema
+            ]
+        ]
+    ],
+    'PUT' => [
+        'description' => 'Refresh authentication token',
+        'commandClass' => AuthTokenSimpleRefresh::class,
+        'auth' => true,
+        'params' => [],
+        'bodyParams' => [],
+        'responses' => [
+            'success' => [
+                'code' => 200,
+                'description' => 'Success - returns string access token for use in header '
+                . '"Authorization: Bearer $token"',
                 'schema' => (new SchemaFactoryAuthToken)->make()
             ],
             'unauthorized' => [
