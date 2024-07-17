@@ -6,13 +6,8 @@
  */
 ?>
 <?= viewHelper::getViewTestTag('surveyFailedEmail') ?>
-<<<<<<< HEAD
     <div class='side-body <?php echo getSideBodyClass(false); ?>'>
         <h3 role="heading" aria-level="2"><?php eT("Failed email notifications"); ?></h3>
-=======
-    <div class='side-body'>
-        <h3><?php eT("Failed email notifications"); ?></h3>
->>>>>>> master
         <?php
         $this->widget('ext.AlertWidget.AlertWidget', [
             'text' => gT("Please note that failed email notifications will be automatically deleted after 30 days."),

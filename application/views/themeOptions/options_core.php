@@ -99,14 +99,8 @@ $aOptionAttributes['optionAttributes']['brandlogofile']['dropdownoptions'] = $br
                 <div class='row' id="general_inherit_active">
                     <label for='simple_edit_options_general_inherit' class='form-label'><?php echo gT("Inherit everything"); ?></label>
                     <div class='col-12'>
-<<<<<<< HEAD
                         <div class="btn-group" role="group" aria-label="Inherit everything">
                             <input id="general_inherit_on" name='general_inherit' type='radio' value='on' class='btn-check selector_option_general_inherit ' data-id='simple_edit_options_general_inherit' />
-=======
-                        <div class="btn-group" role="group">
-                            <input id="general_inherit_on" name='general_inherit' type='radio' value='on' class='btn-check selector_option_general_inherit '
-                                   data-id='simple_edit_options_general_inherit'/>
->>>>>>> master
                             <label for="general_inherit_on" class="btn btn-outline-secondary">
                                 <?php echo gT("Inherited"); ?>
                             </label>
@@ -132,7 +126,6 @@ $aOptionAttributes['optionAttributes']['brandlogofile']['dropdownoptions'] = $br
                     if ($attributeKey === 'ajaxmode') {
                         continue;
                     }
-<<<<<<< HEAD
                     echo '<div class="row action_hide_on_inherit p-1">';
                 }
 
@@ -170,42 +163,6 @@ $aOptionAttributes['optionAttributes']['brandlogofile']['dropdownoptions'] = $br
                     echo '<div class="input-group">
                                     <div class="input-group-text style__colorpicker">
                                         <input type="color" name="' . $attributeKey . '_picker" data-value="' . $sParentOption . '" class="selector__colorpicker-inherit-value"/>
-=======
-                    ?>
-                    <?php if (array_key_exists('category', $attribute) && $category === $attribute['category']) : ?>
-                        <div class="col-<?= $attribute['width'] ?>">
-                            <label for="simple_edit_options_<?= $attributeKey ?>" class="form-label">
-                                <?= gT($attribute['title']) ?>
-                            </label>
-                            <?php if ($attribute['type'] === 'buttons') : ?>
-                                <?php
-                                $optionsValues = !empty($attribute['options']) ? explode('|', $attribute['options']) : [];
-                                $optionLabels = !empty($attribute['optionlabels']) ? explode('|', $attribute['optionlabels']) : [];
-                                $options = array_combine($optionsValues, $optionLabels);
-                                if ($bInherit && isset($sParentOption)) {
-                                    $options['inherit'] = $sParentOption . " ᴵ";
-                                }
-                                if ($bInherit && isset($sParentOption)) {
-                                    if (is_numeric($sParentOption) && array_key_exists($sParentOption, $options)) {
-                                        $sParentLabelOption = $options[$sParentOption];
-                                        $options['inherit'] = gT($sParentLabelOption) . " ᴵ";
-                                    } else {
-                                        $sParentOption = !empty($options[$sParentOption]) ? gT($options[$sParentOption]) : '';
-                                        $options['inherit'] = $sParentOption . " ᴵ";
-                                    }
-                                }
-                                ?>
-                                <div class="col-12">
-                                    <div class="btn-group" role="group">
-                                        <?php foreach ($options as $optionKey => $optionValue) : ?>
-                                            <?php $id = $attributeKey . "_" . $optionKey; ?>
-                                            <input id="<?= $id ?>" type="radio" name="<?= $attributeKey ?>" value="<?= $optionKey ?>"
-                                                   class="btn-check selector_option_radio_field simple_edit_options_<?= $attributeKey ?>"/>
-                                            <label for="<?= $id ?>" class="btn btn-outline-secondary">
-                                                <?= gT($optionValue) ?>
-                                            </label>
-                                        <?php endforeach; ?>
->>>>>>> master
                                     </div>
                                 </div>
                             <?php elseif ($attribute['type'] === 'colorpicker') : ?>
@@ -364,7 +321,6 @@ $aOptionAttributes['optionAttributes']['brandlogofile']['dropdownoptions'] = $br
                                 </span>
                             </div>
                         </div>
-<<<<<<< HEAD
                         <div class="col-8">
                                     <span id="fileselector_frontend">
                                         <label class="btn btn-outline-secondary" for="upload_image_frontend">
@@ -380,15 +336,6 @@ $aOptionAttributes['optionAttributes']['brandlogofile']['dropdownoptions'] = $br
                             <div class="progress">
                                 <div id="upload_progress_frontend" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
                                     <span class="visually-hidden">0%</span>
-=======
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="progress">
-                                    <div id="upload_progress_frontend" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"
-                                         style="width: 0%;">
-                                        <span class="visually-hidden">0%</span>
-                                    </div>
->>>>>>> master
                                 </div>
                             </div>
                         </div>

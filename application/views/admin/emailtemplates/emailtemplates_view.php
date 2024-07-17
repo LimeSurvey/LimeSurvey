@@ -23,13 +23,8 @@ var LS = LS || {};  // namespace
     LSYii_ClientScript::POS_BEGIN);
 
 ?>
-<<<<<<< HEAD
 <div class="side-body <?php echo getSideBodyClass(false); ?>">
     <h3 role="heading" aria-level="2"><?php eT("Edit email templates"); ?></h3>
-=======
-<div class="side-body">
-    <h3><?php eT("Edit email templates"); ?></h3>
->>>>>>> master
     <div class="row">
         <div class="col-12 content-right">
             <?php echo CHtml::form(['admin/emailtemplates/sa/update/surveyid/' . $surveyid], 'post', ['name' => 'emailtemplates', 'class' => '', 'id' => 'emailtemplates']); ?>
