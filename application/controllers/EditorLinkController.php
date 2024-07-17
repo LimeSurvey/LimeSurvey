@@ -72,7 +72,7 @@ class EditorLinkController extends LSYii_Controller
         $cookieName = 'LS_AUTH_INIT';
 
         $authTokenSimple = new AuthenticationTokenSimple(
-            new SessionUtil
+            new SessionUtil()
         );
         $session = $authTokenSimple->createSession(
             Yii::app()->session['user']
