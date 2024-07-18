@@ -36,7 +36,7 @@ class AuthenticationTokenSimple implements AuthenticationInterface
      *
      * @param string $username
      * @param string $password
-     * @return bool|string
+     * @return array<array-key, mixed>
      */
     public function login($username, $password)
     {
@@ -68,8 +68,8 @@ class AuthenticationTokenSimple implements AuthenticationInterface
      * Get Token Data
      *
      * @param Session $session
-     * @param int $userId
-     * @return array
+     * @param string|int $userId
+     * @return array<array-key, mixed>
      */
     public function getTokenData($session, $userId)
     {
@@ -86,7 +86,7 @@ class AuthenticationTokenSimple implements AuthenticationInterface
      * Refresh token
      *
      * @param string $token
-     * @return bool|string
+     * @return array<array-key, mixed>
      */
     public function refresh($token)
     {
@@ -96,10 +96,13 @@ class AuthenticationTokenSimple implements AuthenticationInterface
             throw new ExceptionInvalidUser('Invalid token');
         }
 
+        /* @var $app LSYii_Application */
+        $app = Yii::app();
+
         $session = $this->createSession($existingSession->data);
         $result = $this->getTokenData(
             $session,
-            \Yii::app()->user->id
+            $app->user->id
         );
 
         // Expire existing token
