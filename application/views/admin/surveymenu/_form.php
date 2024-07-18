@@ -41,57 +41,57 @@ Yii::app()->getController()->renderPartial(
             ?>
 
 			<div class="mb-3">
-				<?php echo $form->labelEx($model,'parent_id'); ?>
-				<?php echo $form->dropDownList($model,'parent_id', $model->getMenuIdOptions(), ['class' => 'form-select']); ?>
+				<?php echo $form->labelEx($model,'parent_id', ['for' => 'parent_id_label']); ?>
+				<?php echo $form->dropDownList($model,'parent_id', $model->getMenuIdOptions(), ['class' => 'form-select', 'id' => 'parent_id_label']); ?>
 				<?php echo $form->error($model,'parent_id'); ?>
 			</div>
 
 			<div class="mb-3">
-				<?php echo $form->labelEx($model,'survey_id'); ?>
-				<?php echo $form->dropDownList($model,'survey_id', $model->getSurveyIdOptions(), ['class' => 'form-select']); ?>
+				<?php echo $form->labelEx($model,'survey_id', ['for' => 'survey_id_label']); ?>
+				<?php echo $form->dropDownList($model,'survey_id', $model->getSurveyIdOptions(), ['class' => 'form-select', 'id' => 'survey_id_label']); ?>
 				<?php echo $form->error($model,'survey_id'); ?>
             </div>
 
 			<div class="mb-3">
-				<?php echo $form->labelEx($model,'user_id'); ?>
-				<?php echo $form->dropDownList($model,'user_id', $model->getUserIdOptions(), ['class' => 'form-select']); ?>
+				<?php echo $form->labelEx($model,'user_id', ['for' => 'user_id_label']); ?>
+				<?php echo $form->dropDownList($model,'user_id', $model->getUserIdOptions(), ['class' => 'form-select', 'id' => 'user_id_label']); ?>
 				<?php echo $form->error($model,'user_id'); ?>
 			</div>
 
 			<div class="mb-3">
-				<?php echo $form->labelEx($model,'ordering'); ?>
+				<?php echo $form->labelEx($model,'ordering', ['for' => 'ordering_label']); ?>
 				<?php $model->ordering = $model->getNextOrderPosition(); ?>
-				<?php echo $form->dropDownList($model,'ordering', $model->getOrderOptions(), ['class' => 'form-select']); ?>
+				<?php echo $form->dropDownList($model,'ordering', $model->getOrderOptions(), ['class' => 'form-select', 'id' => 'ordering_label']); ?>
 				<?php echo $form->error($model,'ordering'); ?>
 			</div>
 
 			<div class="mb-3">
-				<?php echo $form->labelEx($model,'showincollapse'); ?>
-				<?php echo $form->checkbox($model,'showincollapse'); ?>
+				<?php echo $form->labelEx($model,'showincollapse', ['for' => 'showincollapse_label']); ?>
+				<?php echo $form->checkbox($model,'showincollapse', ['id' => 'showincollapse_label']); ?>
 				<?php echo $form->error($model,'showincollapse'); ?>
 			</div>
 
 			<div class="mb-3">
-				<?php echo $form->labelEx($model,'name'); ?>
-				<?php echo $form->textField($model,'name',array('title'=>gT('Lowercase characters and digits, starting with a character - length from 6 to 60 characters'), 'required'=>true, 'size'=>60,'maxlength'=>255, 'pattern' => '[a-z][a-z0-9]{5,59}')); ?>
+				<?php echo $form->labelEx($model,'name', array('for' => 'name_label')); ?>
+				<?php echo $form->textField($model,'name',array('title'=>gT('Lowercase characters and digits, starting with a character - length from 6 to 60 characters'), 'required'=>true, 'size'=>60,'maxlength'=>255, 'pattern' => '[a-z][a-z0-9]{5,59}', 'id' => 'name_label')); ?>
 				<?php echo $form->error($model,'name'); ?>
 			</div>
 
 			<div class="mb-3">
-				<?php echo $form->labelEx($model,'title'); ?>
-				<?php echo $form->textField($model,'title',array('size'=>60,'maxlength'=>255)); ?>
+				<?php echo $form->labelEx($model,'title', array('for' => 'title_label')); ?>
+				<?php echo $form->textField($model,'title',array('size'=>60,'maxlength'=>255, 'id' => 'title_label')); ?>
 				<?php echo $form->error($model,'title'); ?>
 			</div>
 
 			<div class="mb-3">
-				<?php echo $form->labelEx($model,'description'); ?>
-				<?php echo $form->textArea($model,'description',array('rows'=>6, 'cols'=>50)); ?>
+				<?php echo $form->labelEx($model,'description', array('for' => 'description_label')); ?>
+				<?php echo $form->textArea($model,'description',array('rows'=>6, 'cols'=>50, 'id' => 'description_label')); ?>
 				<?php echo $form->error($model,'description'); ?>
 			</div>
 
 			<div class="mb-3">
-				<?php echo $form->labelEx($model,'position'); ?>
-				<?php echo $form->dropDownList($model,'position',$model->getPositionOptions(), ['class' => 'form-select']); ?>
+				<?php echo $form->labelEx($model,'position', array('for' => 'position_label')); ?>
+				<?php echo $form->dropDownList($model,'position',$model->getPositionOptions(), ['class' => 'form-select', 'id' => 'position_label']); ?>
 				<?php echo $form->error($model,'position'); ?>
 			</div>
 

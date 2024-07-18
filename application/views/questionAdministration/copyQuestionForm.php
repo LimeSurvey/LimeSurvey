@@ -74,6 +74,7 @@
                                     <label class=" form-label" for='copysubquestions'><?php eT("Copy subquestions?"); ?></label>
                                     <div>
                                         <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                                            'ariaLabel'=> gT('Copy subquestions?'),
                                             'name'          => 'copysubquestions',
                                             'checkedOption' => '1',
                                             'selectOptions' => [
@@ -87,6 +88,7 @@
                                     <label class=" form-label" for='copyanswers'><?php eT("Copy answer options?"); ?></label>
                                     <div>
                                         <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                                            'ariaLabel'=> gT('Copy answer options?'),
                                             'name'          => 'copyanswers',
                                             'checkedOption' => '1',
                                             'selectOptions' => [
@@ -100,6 +102,7 @@
                                     <label class=" form-label" for='copydefaultanswers'><?php eT("Copy default answers?"); ?></label>
                                     <div>
                                         <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                                            'ariaLabel'=> gT('Copy default answers?'),
                                             'name'          => 'copydefaultanswers',
                                             'checkedOption' => '1',
                                             'selectOptions' => [
@@ -115,8 +118,9 @@
                                     </label>
                                     <div class="">
                                         <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                                            'ariaLabel'=> gT('Copy question settings?'),
                                             'name'          => 'copyattributes',
-                                            'checkedOption' => '1',
+                                            'checkedOption' => 'Y',
                                             'selectOptions' => [
                                                 '1' => gT('Yes'),
                                                 '0' => gT('No'),

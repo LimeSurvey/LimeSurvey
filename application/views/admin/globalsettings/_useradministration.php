@@ -17,6 +17,7 @@
                 <label class="form-label" for='sendadmincreationemail'><?php eT("Send email to new user administrators:"); ?></label>
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                        'ariaLabel'=> gT('Send email to new user administrators:'),
                         'name'          => 'sendadmincreationemail',
                         'checkedOption' => $sSendAdminCreationEmail ?? 0,
                         'selectOptions' => [
@@ -32,8 +33,8 @@
             <div class="mb-3">
                 <label class="form-label" for='admincreationemailsubject'><?php eT("Admin creation email subject"); ?>:</label>
                 <br/>
-                <small id="template help" class="form-text text-muted"><?php eT("Available placeholders") ?>: {SITENAME}</small>
-                <input class="form-control" type='text' size='50' id='admincreationemailsubject' name='admincreationemailsubject' value="<?php echo htmlspecialchars((string) $sAdminCreationEmailSubject); ?>" />
+                <small id="templatehelphintsub" class="form-text text-muted" ><?php eT("Available placeholders") ?>: {SITENAME}</small>
+                <input class="form-control" type='text' size='50' id='admincreationemailsubject' name='admincreationemailsubject' value="<?php echo htmlspecialchars((string) $sAdminCreationEmailSubject); ?>" aria-describedby="templatehelphintsub" />
             </div>
             <!-- admin default email template -->
             <div class="mb-3">

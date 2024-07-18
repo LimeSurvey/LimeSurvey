@@ -198,11 +198,11 @@ $ajaxloader = array(
 <?php echo CHtml::image($ajaxloader['src'], $ajaxloader['alt']); ?>
 </div>
 
-<div id='attribute-map-participant-modal' class="modal fade" tabindex="-1" role="dialog">
+<div id='attribute-map-participant-modal' class="modal fade" tabindex="-1" aria-modal="true"  tabindex="-1" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title"><?php eT("Map participant attributes"); ?></h5>
+                <h5 role="heading" aria-level="2" class="modal-title"><?php eT("Map participant attributes"); ?></h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">

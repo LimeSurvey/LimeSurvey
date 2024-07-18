@@ -17,8 +17,9 @@ echo viewHelper::getViewTestTag('participantsSummary');
         <div class="row">
             <div class="col-12 content-right table-responsive">
                 <table class='ls-statisticssummary table table-hover'>
+                    <caption class="sr-only">Central participants database summary</caption>
                     <tr>
-                        <th>
+                        <th scope="row">
                             <?php eT("Total participants in central table"); ?>
                         </th>
                         <td>
@@ -26,7 +27,7 @@ echo viewHelper::getViewTestTag('participantsSummary');
                         </td>
                     </tr>
                     <tr>
-                        <th>
+                        <th scope="row">
                             <?php eT("Participants owned by you"); ?>
                         </th>
                         <td>
@@ -34,7 +35,7 @@ echo viewHelper::getViewTestTag('participantsSummary');
                         </td>
                     </tr>
                     <tr>
-                        <th>
+                        <th scope="row">
                             <?php eT("Participants shared with you"); ?>
                         </th>
                         <td>
@@ -42,7 +43,7 @@ echo viewHelper::getViewTestTag('participantsSummary');
                         </td>
                     </tr>
                     <tr>
-                        <th>
+                        <th scope="row">
                             <?php eT("Participants you have shared"); ?>
                         </th>
                         <td>
@@ -50,15 +51,15 @@ echo viewHelper::getViewTestTag('participantsSummary');
                         </td>
                     </tr>
                     <tr>
-                        <th>
-                            <?php eT("Blocklisted participants"); ?>
+                        <th scope="row">
+                            <?php eT("Blacklisted participants"); ?>
                         </th>
                         <td>
                             <?php echo $blacklisted; ?>
                         </td>
                     </tr>
                     <tr>
-                        <th>
+                        <th scope="row">
                             <?php eT("Total attributes in the central table"); ?>
                         </th>
                         <td>

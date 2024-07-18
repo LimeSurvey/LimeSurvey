@@ -18,7 +18,7 @@
                 title="<?= CHtml::encode($breadcrumbArray['fullText']) ?>">
                 <?php if ($href !== '') : ?>
                     <a id="<?= $id ?>" class="pjax animate"
-                       href="<?= $href ?>">
+                       href="<?= $href ?>" aria-label="<?= CHtml::encode($breadcrumbArray['fullText']) ?>">
                         <?= $text ?>
                     </a>
                 <?php else : ?>

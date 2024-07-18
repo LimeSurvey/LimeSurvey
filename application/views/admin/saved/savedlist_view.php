@@ -18,6 +18,7 @@
             <?php
             $this->widget('application.extensions.admin.grid.CLSGridView', [
                     'id'           => 'saved-grid',
+                    'caption'      => gT('Saved but not submitted responses'),
                     'ajaxUpdate'   => 'saved-grid',
                     'dataProvider' => $model->search(),
                     'columns'      => $model->columns,

@@ -9,9 +9,11 @@
 ?>
 
 <!-- admin menu bar -->
-<nav class="navbar navbar-expand-md">
+<header>
+<a href="#in_survey_common_action" id="skip-to-main" class="sr-only skip-to-main">Skip to main</a>
+<div class="navbar navbar-expand-md">
     <div class="container-fluid">
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#small-screens-menus" aria-controls="small-screens-menus" aria-expanded="false">
+        <button aria-label="Menu" class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".multi-show-toggle-menu" aria-controls="small-screens-menus small-screens-menus2 small-screens-menus3" aria-expanded="false">
             <span class="navbar-toggler-icon"></span>
         </button>
         <a class="navbar-brand" href="<?php echo $this->createUrl("/admin/"); ?>">
@@ -19,7 +21,7 @@
             <?= $sitename ?>
         </a>
         <!-- Only on xs screens -->
-        <div class="collapse navbar-collapse " id="small-screens-menus">
+        <div class="collapse navbar-collapse multi-show-toggle-menu" id="small-screens-menus">
             <ul class="nav navbar-nav">
                 <!-- active surveys -->
                 <?php if ($activesurveyscount > 0) : ?>
@@ -44,8 +46,13 @@
             </ul>
         </div>
 
-        <div class="collapse navbar-collapse justify-content-center">
-            <ul class="nav navbar-nav">
+        <nav aria-label="<?= gT('Primary Navigation') ?>" class="collapse navbar-collapse justify-content-center multi-show-toggle-menu" id="#small-screens-menus2">    
+        <ul class="nav navbar-nav">
+                <!-- <li class="nav-item">
+                    <a class="nav-link" href="<?php echo App()->createUrl('admin/globalsettings', array("sa" => "refreshAssets")); ?>">
+                        <?php eT("Refresh assets"); ?>
+                    </a>
+                </li> -->
                 <!-- Maintenance mode -->
                 <?php $sMaintenanceMode = getGlobalSetting('maintenancemode');
                 if ($sMaintenanceMode === 'hard' || $sMaintenanceMode === 'soft') { ?>
@@ -62,24 +69,17 @@
 
                 <!-- create survey -->
                 <li class="nav-item">
-                    <a href="<?php echo $this->createUrl("surveyAdministration/newSurvey"); ?>" class="nav-link">
-                        <button type="button" class="btn btn-info btn-create" data-bs-toggle="tooltip"
-                                data-bs-placement="bottom" title="<?= gT('Create survey') ?>">
+                    <a role="button" aria-label="Create Survey" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?= gT('Create survey') ?>" href="<?php echo $this->createUrl("surveyAdministration/newSurvey"); ?>" class="nav-link">
+                        <div class="btn btn-info btn-create">
                             <i class="ri-add-line"></i>
-                        </button>
+                        </div>
                     </a>
                 </li>
                 <!-- Surveys menus -->
 
-                <li
-                    class="nav-item d-flex"><a
-                        href="<?php echo $this->createUrl("surveyAdministration/listsurveys"); ?>"
-                        class="nav-link ps-0"><?php eT("Surveys"); ?></a>
+                <li class="nav-item d-flex justify-content-between"><a href="<?php echo $this->createUrl("surveyAdministration/listsurveys"); ?>" class="nav-link ps-0"><?php eT("Surveys"); ?></a>
                     <?php if ($activesurveyscount > 0) : ?>
-                        <a
-                            class="nav-link ps-0 active-surveys"
-                            href="<?php echo $this->createUrl('surveyAdministration/listsurveys/active/Y'); ?>"
-                        ><span class="badge"> <?php echo $activesurveyscount ?> </span></a>
+                        <a class="nav-link ps-0 active-surveys" href="<?php echo $this->createUrl('surveyAdministration/listsurveys/active/Y'); ?>"><span class="badge"> <?php echo $activesurveyscount ?> </span></a>
                     <?php endif; ?>
                 </li>
 
@@ -94,8 +94,8 @@
                 <!-- Extra menus from plugins -->
                 <?php $this->renderPartial("application.libraries.MenuObjects.views._extraMenu", ['extraMenus' => $extraMenus, 'middleSection' => true, 'prependedMenu' => false]); ?>
             </ul>
-        </div>
-        <div class="collapse navbar-collapse justify-content-end">
+        </nav>
+        <div class="collapse navbar-collapse justify-content-end multi-show-toggle-menu" id="#small-screens-menus3">
             <ul class="nav navbar-nav">
                 <!-- Extra menus from plugins -->
                 <?php $this->renderPartial("application.libraries.MenuObjects.views._extraMenu", ['extraMenus' => $extraMenus, 'middleSection' => false, 'prependedMenu' => true]); ?>
@@ -105,19 +105,19 @@
                 <li class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown" role="button" aria-expanded="false">
                         <!-- <i class="ri-user-fill"></i> <?php echo Yii::app()->session['user']; ?> <span class="caret"></span></a> -->
-                        <span class='rounded-circle text-center d-flex align-items-center justify-content-center me-1'>
+                        <span class='rounded-circle text-center d-flex align-items-center justify-content-center me-1' aria-hidden="true">
                             <?= strtoupper(substr((string) Yii::app()->session['user'], 0, 1)) ?>
                         </span>
                         <?= Yii::app()->session['user']; ?>
                         <span class="caret"></span></a>
-                    <ul class="dropdown-menu dropdown-menu-end" role="menu">
-                        <li id="admin-menu-item-account">
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li>
                             <a class="dropdown-item" href="<?php echo $this->createUrl("/admin/user/sa/personalsettings"); ?>">
                                 <?php eT("Account"); ?>
                             </a>
                         </li>
 
-                        <li class="dropdown-divider"></li>
+                        <li aria-hidden="true" class="dropdown-divider"></li>
 
                         <!-- Logout -->
                         <li>
@@ -133,13 +133,21 @@
         </div><!-- /.nav-collapse -->
 
     </div>
-</nav>
+</div>
+</header>
 <script type="text/javascript">
     //show tooltips
     var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
     var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
-        return new bootstrap.Tooltip(tooltipTriggerEl);
-    })
+        var tooltip = new bootstrap.Tooltip(tooltipTriggerEl);
+        tooltipTriggerEl.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                console.log('working....', tooltip);
+                tooltip.hide();
+            }
+        })
+        return tooltip;
+    });
 
     $(document).ajaxComplete(function(handler) {
         window.LS.doToolTip();

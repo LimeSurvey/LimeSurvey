@@ -32,7 +32,7 @@ gT('Themes');
     <!-- Logo & Presentation -->
     <?php if ($bShowLogo) : ?>
         <div class="jumbotron" id="welcome-jumbotron">
-            <img alt="logo" src="<?php echo LOGO_URL; ?>" id="lime-logo" class="profile-img-card img-fluid" />
+            <img alt="<?= eT('Limesurvey logo') ?>" src="<?php echo LOGO_URL; ?>" id="lime-logo" class="profile-img-card img-fluid" />
             <p class="d-xs-none"><?php echo PRESENTATION; // Defined in AdminController
                                     ?></p>
         </div>
@@ -52,11 +52,13 @@ gT('Themes');
             };
         </script>
 
-        <div class="modal fade" id="welcomeModal" aria-labelledby="welcome-modal-title">
+        <div class="modal fade" tabindex="-1" aria-modal="true"  id="welcomeModal" aria-labelledby="welcome-modal-title">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5
+                            role="heading" 
+                            aria-level="2"
                             class="modal-title"
                             id="welcome-modal-title"
                         ><?php echo sprintf(gT("Welcome to %s!"), 'LimeSurvey'); ?></h5>

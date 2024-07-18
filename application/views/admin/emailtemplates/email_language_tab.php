@@ -2,12 +2,12 @@
 $tabs = emailtemplates::getTabTypeArray($surveyid);
 ?>
 <div id="tab-<?= CHtml::encode($grouplang) ?>" class="tab-pane fade <?= CHtml::encode($active) ?>">
-    <ul class="nav nav-tabs">
+    <ul class="nav nav-tabs" role="tablist">
         <?php $count = 0;
         $state = 'active'; ?>
         <?php foreach ($tabs as $tab => $details): ?>
             <li role='presentation' class='nav-item'>
-                <a class="nav-link <?= $state ?>" data-bs-toggle='tab' href='#tab-<?= $grouplang ?>-<?= $tab ?>'>
+                <a role="tab" class="nav-link <?= $state ?>" data-bs-toggle='tab' href='#tab-<?= $grouplang ?>-<?= $tab ?>'>
                     <?= $details['title'] ?>
                 </a>
             </li>

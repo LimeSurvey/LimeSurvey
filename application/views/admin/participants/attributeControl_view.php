@@ -13,6 +13,7 @@ echo viewHelper::getViewTestTag('participantsAttributeControl');
     <div class="row">
         <?php
         $this->widget('application.extensions.admin.grid.CLSGridView', [
+            'caption' => gT('Attributes Control'),
             'id' => 'list_attributes',
             'dataProvider' => $model->search(),
             'columns' => $model->columns,

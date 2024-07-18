@@ -57,10 +57,11 @@
         </div>
     </div>
     <div class="row">
-        <div class='mb-3 col-md-12'>
-            <label class=' form-label'><?php et('Actions:');?></label>
+        <div class='mb-3 col-md-12' role="group" aria-labelledby="actionslabel">
+            <label class=' form-label' id="actionslabel"><?php et('Actions:');?></label>
             <div class=''>
-                <a class='btn btn-outline-secondary' 
+                <a class='btn btn-outline-secondary a11y-enter',
+                   tabindex="0",
                    id="validate_expression_<?=$grouplang?>_<?=$tab?>" 
                    data-parent-element="#in_survey_common" 
                    data-bs-target="modal" 
@@ -83,9 +84,9 @@
     if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'update'))
     { ?>
     <div class="row">
-            <label class='form-label col-12' for="attachments_<?php echo "{$grouplang}-{$tab}"; ?>"><?php echo $details['attachments']; ?></label>
+            <label class='form-label col-12' id="attachments_<?php echo "{$grouplang}-{$tab}"; ?>"><?php echo $details['attachments']; ?></label>
             <div class="col-12">
-                <button class="add-attachment btn btn-outline-secondary" data-target="#attachments-<?php echo $grouplang; ?>-<?php echo $tab ?>" data-ck-target="<?="email_{$tab}_{$grouplang}"?>" id="add-attachment-<?php echo "{$grouplang}-{$tab}"; ?>"><?php eT("Add file"); ?></button> &nbsp;
+                <button aria-describedby="attachments_<?php echo "{$grouplang}-{$tab}"; ?>" class="add-attachment btn btn-outline-secondary" data-target="#attachments-<?php echo $grouplang; ?>-<?php echo $tab ?>" data-ck-target="<?="email_{$tab}_{$grouplang}"?>" id="add-attachment-<?php echo "{$grouplang}-{$tab}"; ?>"><?php eT("Add file"); ?></button> &nbsp;
             </div>
     </div>
 

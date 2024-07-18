@@ -26,7 +26,7 @@ PrepareEditorScript(false, $this);
 <div class="mb-3">
             <label class="form-label" for='showsurveypolicynotice'><?php  eT("Show privacy policy text with mandatory checkbox:") ; ?></label>
     <div class="">
-                <div class="btn-group" data-bs-toggle="buttons">
+                <div class="btn-group" data-bs-toggle="buttons" role="group" aria-label="Show privacy policy text with mandatory checkbox:">
                     <input class="btn-check" type="radio" id="showsurveypolicynotice_0" name="showsurveypolicynotice" value="0" <?=$oSurvey->showsurveypolicynotice==0 ? 'checked' : ''?> autocomplete="off">
                     <label for="showsurveypolicynotice_0" class="btn btn-outline-secondary">
                         <?=gT("Don't show");?>

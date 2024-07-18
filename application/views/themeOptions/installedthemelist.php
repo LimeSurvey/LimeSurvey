@@ -23,6 +23,7 @@ $this->widget('application.extensions.admin.grid.CLSGridView', [
     'dataProvider'          => $oQuestionTheme->search(),
     'filter'                => $oQuestionTheme,
     'id'                    => 'questionthemes-grid',
+    'caption'                => gT('Question themes'),
     'massiveActionTemplate' => $massiveAction,
     'summaryText'           => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
             gT('%s rows per page'),
@@ -38,6 +39,7 @@ $this->widget('application.extensions.admin.grid.CLSGridView', [
             'id'             => 'questionId',
             'class'          => 'CCheckBoxColumn',
             'selectableRows' => '100',
+            'checkBoxHtmlOptions'=>['aria-labelF'=> 'Select Question themes - ', 'aria-labelL'=> '$data->name'],
         ],
 
         [

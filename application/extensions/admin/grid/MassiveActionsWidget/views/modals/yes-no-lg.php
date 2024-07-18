@@ -6,13 +6,13 @@
 
 ?>
 <!-- Modal confirmation for <?php echo $aAction['action'];?> -->
-<div id="massive-actions-modal-<?php echo $this->gridid;?>-<?php echo $aAction['action'];?>-<?php echo $key; ?>" class="modal fade" role="dialog" data-keepopen="<?php echo $aAction['keepopen'];?>" data-show-selected="<?php if(isset($aAction['showSelected'])){echo $aAction['showSelected'];}else{ echo 'no'; }?>" data-selected-url="<?php if(isset($aAction['selectedUrl'])){ echo $aAction['selectedUrl'];}else{ echo '#'; }?>">
+<div id="massive-actions-modal-<?php echo $this->gridid;?>-<?php echo $aAction['action'];?>-<?php echo $key; ?>" class="modal fade" data-keepopen="<?php echo $aAction['keepopen'];?>" data-show-selected="<?php if(isset($aAction['showSelected'])){echo $aAction['showSelected'];}else{ echo 'no'; }?>" data-selected-url="<?php if(isset($aAction['selectedUrl'])){ echo $aAction['selectedUrl'];}else{ echo '#'; }?>" tabindex="-1" aria-modal="true" role="dialog">
     <div class="modal-dialog modal-lg">
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title"><?php echo $aAction['sModalTitle']; ?></h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                <h5 class="modal-title" role="heading" aria-level="2"><?php echo $aAction['sModalTitle']; ?></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <div class='modal-body-text'><?php echo $aAction['htmlModalBody']; ?></div>
@@ -35,7 +35,7 @@
                 <?php endif; ?>
             </div>
             <div class="modal-footer modal-footer-buttons">
-                <a role="button" class="btn btn-primary btn-ok"><span class='ri-check-fill'></span>
+                <a role="button" class="btn btn-primary btn-ok" href="javascript:void(0)"><span class='ri-check-fill'></span>
                     &nbsp;
                     <?php if(isset($aAction['yes'])):?>
                         <?php echo $aAction['yes'];?>

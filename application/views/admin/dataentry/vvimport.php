@@ -45,6 +45,7 @@
                 </label>
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                        'ariaLabel'=> gT('Exclude record IDs?'),
                         'name' => 'noid',
                         'checkedOption' => '1',
                         'selectOptions' => [
@@ -76,6 +77,7 @@
                 </label>
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                        'ariaLabel'=> gT('Import as not finalized answers?'),
                         'name' => 'notfinalized',
                         'checkedOption' => '0',
                         'selectOptions' => [
@@ -101,6 +103,7 @@
                 </label>
                 <div class="">
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                        'ariaLabel'=> gT('First line contains the code of questions:'),
                         'name' => 'dontdeletefirstline',
                         'checkedOption' => '0',
                         'selectOptions' => [
@@ -117,6 +120,7 @@
                 </label>
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                        'ariaLabel'=> gT('Force import:'),
                         'name' => 'forceimport',
                         'checkedOption' => '0',
                         'selectOptions' => [

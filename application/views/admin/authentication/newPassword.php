@@ -44,11 +44,11 @@ echo viewHelper::getViewTestTag('login');
                                            class="form-control ls-important-field" type="password">
                                 </span>
                             <span>
-                                    <label class="form-label">
+                                    <label class="form-label" for="random_example_password2">
                                         <?= gT('Random password (suggestion):') ?>
                                     </label>
                                     <input type="text" class="form-control" readonly name="random_example_password"
-                                           value="<?= htmlspecialchars((string) $randomPassword) ?>"/>
+                                           value="<?= htmlspecialchars((string) $randomPassword) ?>" id="random_example_password2"/>
                                 </span>
                             <input type="hidden" name="validation_key" value="<?= CHtml::encode($validationKey) ?>">
                         </div>

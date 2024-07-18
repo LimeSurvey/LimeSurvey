@@ -6,11 +6,11 @@
 */
 ?>
 
-  <div class="modal fade" id="importRessourcesModal" tabindex="-1" role="dialog" aria-labelledby="importRessourcesModalLabel">
+  <div class="modal fade" tabindex="-1" aria-modal="true"  id="importRessourcesModal" tabindex="-1" role="dialog" aria-labelledby="importRessourcesModalLabel">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="importRessourcesModalLabel"><?php eT("Import resources ZIP archive"); ?></h5>
+          <h5 role="heading" aria-level="2" class="modal-title" id="importRessourcesModalLabel"><?php eT("Import resources ZIP archive"); ?></h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <?php echo CHtml::form(array('surveyAdministration/importsurveyresources'), 'post', array('id'=>'importsurveyresources', 'name'=>'importsurveyresources', 'class'=>'form30', 'enctype'=>'multipart/form-data', 'onsubmit'=>'return window.LS.validatefilename(this,"'. gT('Please select a file to import!', 'js').'");')); ?>

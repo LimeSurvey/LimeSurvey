@@ -55,7 +55,7 @@ if ($oQuota->action == Quota::ACTION_TERMINATE){
                     );
                 }?>
             <?php } else {?>
-                <tr><td class="text-danger" colspan="3"><?php eT("No answers have been set for this quota.");?></td></tr>
+                <tr><td class="text-danger" colspan="3" role="alert"><?php eT("No answers have been set for this quota.");?></td></tr>
             <?php }?>
         </tbody>
     </table>

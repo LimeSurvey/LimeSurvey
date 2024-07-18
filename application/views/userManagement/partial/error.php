@@ -8,7 +8,7 @@
  */
 ?>
 <div class="modal-header">
-    <h5 class="modal-title"><?= gT('Error') ?></h5>
+    <h5 role="heading" aria-level="2" class="modal-title"><?= gT('Error') ?></h5>
 </div>
 <div class="modal-body">
     <div class="row selector--animated_row">

@@ -8,7 +8,7 @@ $optionsOnOff = ['Y' => gt('On'), 'N' => gt('Off')];
 <div class="row">
     <div class='col-md-12'>
         <h2><?php eT("Please keep in mind:"); ?></h2>
-        <h2><?php eT("Once a survey has been activated you can no longer add or delete questions, question groups or subquestions.") ?> </h2>
+        <h2 role="none"><?php eT("Once a survey has been activated you can no longer add or delete questions, question groups or subquestions.") ?> </h2>
         <p>
             <?php eT("Editing questions, question groups or subquestions is still possible. The following settings cannot be changed once a survey has been activated.", 'unescaped'); ?>
         </p>
@@ -40,13 +40,14 @@ $optionsOnOff = ['Y' => gt('On'), 'N' => gt('Off')];
     <div class='col-md-6'>
         <div class="ex-form-group mb-3">
             <label class=" form-label" for='anonymized'><?php eT("Anonymized responses"); ?></label>
-            <i class="ri-information-line"
+            <i class="ri-information-line" tabindex="0" role="button"
                data-bs-toggle="tooltip"
                title="<?= gT("If enabled, responses will be anonymized - there will be no way to connect responses and participants."); ?>"
             ></i>
             <div class="">
                 <?php
                 $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                    'ariaLabel' => gT("Anonymized responses"),
                     'name' => 'anonymized',
                     'checkedOption' => $aSurveysettings['anonymized'],
                     'selectOptions' => $optionsOnOff
@@ -60,13 +61,14 @@ $optionsOnOff = ['Y' => gt('On'), 'N' => gt('Off')];
     <div class='col-md-6'>
         <div class="ex-form-group mb-3">
             <label class=" form-label" for='datestamp'><?php eT("Date stamp"); ?></label>
-            <i class="ri-information-line"
+            <i class="ri-information-line" tabindex="0" role="button"
                data-bs-toggle="tooltip"
                title="<?= gT("If enabled, the submission time of a response will be recorded."); ?>"
             ></i>
             <div class="">
                 <?php
                 $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                    'ariaLabel' => gT("Date stamp"),
                     'name' => 'datestamp',
                     'checkedOption' => $aSurveysettings['datestamp'],
                     'selectOptions' => $optionsOnOff
@@ -81,13 +83,14 @@ $optionsOnOff = ['Y' => gt('On'), 'N' => gt('Off')];
     <div class='col-md-6'>
         <div class="ex-form-group mb-3">
             <label class=" form-label" for='ipaddr'><?php eT("Save IP address"); ?></label>
-            <i class="ri-information-line"
+            <i class="ri-information-line" tabindex="0" role="button"
                data-bs-toggle="tooltip"
                title="<?= gT("If enabled, the IP address of the survey respondent will be stored together with the response."); ?>"
             ></i>
             <div class="">
                 <?php
                 $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                    'ariaLabel' => gT("Save IP address"),
                     'name' => 'ipaddr',
                     'checkedOption' => $aSurveysettings['ipaddr'],
                     'selectOptions' => $optionsOnOff
@@ -99,13 +102,14 @@ $optionsOnOff = ['Y' => gt('On'), 'N' => gt('Off')];
     <div class='col-md-6'>
         <div class="ex-form-group mb-3">
             <label class="form-label" for='ipanonymize'><?php eT("Anonymize IP address"); ?></label>
-            <i class="ri-information-line"
+            <i class="ri-information-line" tabindex="0" role="button"
                data-bs-toggle="tooltip"
                title="<?= gT("If enabled, the IP address of the respondent is not recorded."); ?>"
             ></i>
             <div class="">
                 <?php
                 $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                    'ariaLabel' => gT("Anonymize IP address"),
                     'name' => 'ipanonymize',
                     'checkedOption' => $aSurveysettings['ipanonymize'],
                     'selectOptions' => $optionsOnOff
@@ -120,13 +124,14 @@ $optionsOnOff = ['Y' => gt('On'), 'N' => gt('Off')];
     <div class='col-md-6'>
         <div class="ex-form-group mb-3">
             <label class="form-label" for='savetimings'><?php eT("Save timings"); ?></label>
-            <i class="ri-information-line"
+            <i class="ri-information-line" tabindex="0" role="button"
                data-bs-toggle="tooltip"
                title="<?= gT("If enabled, the time spent on each page of the survey by each survey participant is recorded."); ?>"
             ></i>
             <div class="">
                 <?php
                 $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                    'ariaLabel' => gT("Save timings"),
                     'name' => 'savetimings',
                     'checkedOption' => $aSurveysettings['savetimings'],
                     'selectOptions' => $optionsOnOff
@@ -138,13 +143,14 @@ $optionsOnOff = ['Y' => gt('On'), 'N' => gt('Off')];
     <div class='col-md-6'>
         <div class="ex-form-group mb-3">
             <label class="form-label" for='refurl'><?php eT("Save referrer URL"); ?></label>
-            <i class="ri-information-line"
+            <i class="ri-information-line" tabindex="0" role="button"
                data-bs-toggle="tooltip"
                title="<?= gT("If enabled, the referrer URL will be stored together with the response."); ?>"
             ></i>
             <div class="">
                 <?php
                 $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                    'ariaLabel' => gT("Save referrer URL"),
                     'name' => 'refurl',
                     'checkedOption' => $aSurveysettings['refurl'],
                     'selectOptions' => $optionsOnOff
@@ -162,7 +168,7 @@ if (!$closeAccessMode) {
         <div class="col-12 mt-5 mb-3">
             <div class="sub_footer_border"></div>
         </div>
-        <h3><?php eT("Do you want your survey to be public for everyone (open-access mode) or invite only (closed-access mode)?"); ?></h3>
+        <h3 role="none"><?php eT("Do you want your survey to be public for everyone (open-access mode) or invite only (closed-access mode)?"); ?></h3>
         <div class='col-md-10'>
             <div class="mb-5">
                 <?php
@@ -171,6 +177,7 @@ if (!$closeAccessMode) {
                 //close-access-mode means that 'N' should be selected
                 $optionsOnOff = ['Y' => gt('Open-access mode'), 'N' => gt('Closed-access mode')];
                 $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                    'ariaLabel' => gT("Do you want your survey to be public for everyone (open-access mode) or invite only (closed-access mode)?"),
                     'name' => 'openAccessMode',
                     'checkedOption' => $closeAccessMode ? 'N' : 'Y',
                     'selectOptions' => $optionsOnOff

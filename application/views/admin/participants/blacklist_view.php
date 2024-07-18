@@ -31,6 +31,7 @@ echo viewHelper::getViewTestTag('participantsBlacklistControl');
                             </label>
                             <div class='col-md-3'>
                                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                                    'ariaLabel'=> gT('Blacklist all current surveys for participant once the global field is set:'),
                                     'name'          => 'blacklistallsurveys',
                                     'checkedOption' => $blacklistallsurveys === 'Y' ? '1' : 0,
                                     'selectOptions' => [
@@ -48,6 +49,7 @@ echo viewHelper::getViewTestTag('participantsBlacklistControl');
                             </label>
                             <div class='col-md-3'>
                                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                                    'ariaLabel'=> gT('Blacklist participant for any new added survey once the global field is set:'),
                                     'name'          => 'blacklistnewsurveys',
                                     'checkedOption' => $blacklistnewsurveys === 'Y' ? '1' : 0,
                                     'selectOptions' => [
@@ -65,6 +67,7 @@ echo viewHelper::getViewTestTag('participantsBlacklistControl');
                             </label>
                             <div class='col-md-3'>
                                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                                    'ariaLabel'=> gT('Prevent blocklisted participants from being added to a survey:'),
                                     'name'          => 'blockaddingtosurveys',
                                     'checkedOption' => $blockaddingtosurveys === 'Y' ? '1' : 0,
                                     'selectOptions' => [
@@ -82,6 +85,7 @@ echo viewHelper::getViewTestTag('participantsBlacklistControl');
                             </label>
                             <div class='col-md-3'>
                                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                                    'ariaLabel'=> gT('Hide blocklisted participants:'),
                                     'name'          => 'hideblacklisted',
                                     'checkedOption' => $hideblacklisted === 'Y' ? '1' : 0,
                                     'selectOptions' => [
@@ -99,6 +103,7 @@ echo viewHelper::getViewTestTag('participantsBlacklistControl');
                             </label>
                             <div class='col-md-3'>
                                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                                    'ariaLabel'=> gT('Delete globally blocklisted participant from the database:'),
                                     'name'          => 'deleteblacklisted',
                                     'checkedOption' => $deleteblacklisted === 'Y' ? '1' : 0,
                                     'selectOptions' => [
@@ -116,6 +121,7 @@ echo viewHelper::getViewTestTag('participantsBlacklistControl');
                             </label>
                             <div class='col-md-3'>
                                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                                    'ariaLabel'=> gT('Allow participant to unblacklist himself/herself:'),
                                     'name'          => 'allowunblacklist',
                                     'checkedOption' => $allowunblacklist === 'Y' ? '1' : 0,
                                     'selectOptions' => [

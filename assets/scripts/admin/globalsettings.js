@@ -129,10 +129,12 @@ function BounceChange(ui,evt)
     if (bounce_disabled==true) {
         bounce_disabled='disabled';
         $('#bounceencryption label').addClass('disabled');
+        $('#bounceencryption input').prop('disabled',true);        
     }
     else {
         bounce_disabled='';
         $('#bounceencryption label').removeClass('disabled');
+        $('#bounceencryption input').prop('disabled',false);
     }
     $("#bounceaccounthost").prop('disabled',bounce_disabled);
     $("#bounceaccountuser").prop('disabled',bounce_disabled);

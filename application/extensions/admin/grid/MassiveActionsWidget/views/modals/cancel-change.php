@@ -31,6 +31,7 @@ echo $key; ?>"
      data-keepopen="<?php echo $aAction['keepopen']; ?>"
      data-show-selected="<?php echo $showSelected; ?>"
      data-selected-url="<?php echo $selectedUrl ?>"
+     tabindex="-1" aria-modal="true"
 >
     <div class="modal-dialog <?php echo $largeModalView?>">
         <!-- Modal content-->

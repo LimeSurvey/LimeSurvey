@@ -34,14 +34,14 @@ class TbDataColumn extends CDataColumn
             if ($sort->resolveAttribute($this->name) !== false) {
                 $isAscending = $sort->getDirection($this->name);
                 if ($isAscending) {
-                    $label .= '<i class="ri-sort-asc ms-2"></i>';
+                    $label .= '<i role="img" aria-label="Ascending" class="ri-sort-asc ms-2"></i>';
                 }
                 if (!$isAscending) {
-                    $label .= '<i class="ri-sort-desc ms-2"></i>';
+                    $label .= '<i role="img" aria-label="Descending" class="ri-sort-desc ms-2"></i>';
                 }
             }
 
-            echo $sort->link($this->name, $label, array('class' => 'sort-link'));
+            echo $sort->link($this->name, $label, array('class' => 'sort-link', 'role' => 'button', 'aria-live' => 'assertive'));
         } else {
             if ($this->name !== null && $this->header === null) {
                 if ($this->grid->dataProvider instanceof CActiveDataProvider) {
@@ -91,6 +91,9 @@ class TbDataColumn extends CDataColumn
                 if (is_array($this->filter)) {
                     $filterInputOptions['class'] = ' form-select ';
                     $filterInputOptions['prompt'] = '';
+                    $sort = $this->grid->dataProvider->getSort();
+                    $label = isset($this->header) ? $this->header : $sort->resolveLabel($this->name);
+                    $filterInputOptions['aria-label'] = trim(strip_tags($label));
                     echo TbHtml::activeDropDownList(
                         $this->grid->filter,
                         $this->name,
@@ -99,6 +102,9 @@ class TbDataColumn extends CDataColumn
                     );
                 } else {
                     if ($this->filter === null) {
+                        $sort = $this->grid->dataProvider->getSort();
+                        $label = isset($this->header) ? $this->header : $sort->resolveLabel($this->name);
+                        $filterInputOptions['aria-label'] = $label;
                         echo TbHtml::activeTextField($this->grid->filter, $this->name, $filterInputOptions);
                     }
                 }

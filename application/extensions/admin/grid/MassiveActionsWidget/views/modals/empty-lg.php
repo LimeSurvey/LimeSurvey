@@ -1,12 +1,12 @@
 <!-- Modal confirmation for <?php echo $aAction['action'];?> -->
-<div id="massive-actions-modal-<?php echo $this->gridid;?>-<?php echo $aAction['action'];?>-<?php echo $key; ?>" class="modal fade" role="dialog">
+<div id="massive-actions-modal-<?php echo $this->gridid;?>-<?php echo $aAction['action'];?>-<?php echo $key; ?>" class="modal fade" role="dialog" tabindex="-1" aria-modal="true">
     <div class="modal-dialog modal-lg">
         <!-- Modal content-->
         <div class="modal-content">
 
             <div class="modal-header">
-                <h5 class="modal-title"><?php echo $aAction['sModalTitle']; ?></h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                <h5 class="modal-title" role="heading" aria-level="2"><?php echo $aAction['sModalTitle']; ?></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
             <div class="modal-body">

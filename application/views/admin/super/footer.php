@@ -89,13 +89,13 @@ $questionEditor = $questionEditor ?? false;
 
 <!-- Modal for system information -->
 
-<div id="modalSystemInformation" class="modal fade" role="dialog">
+<div id="modalSystemInformation" class="modal fade" tabindex="-1" aria-modal="true"  role="dialog">
     <div class="modal-dialog">
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title"><?php eT("System information"); ?></h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                <h5 role="heading" aria-level="2" class="modal-title"><?php eT("System information"); ?></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="close"></button>
             </div>
             <div class="modal-body">
                 <?php if (Permission::model()->hasGlobalPermission('superadmin', 'read') && !Yii::app()->getConfig('demoMode')) { ?>
@@ -135,13 +135,13 @@ $questionEditor = $questionEditor ?? false;
 ?>
 
 <?php /** this one works with assets/packages/adminbasics/src/parts/confirmationModal.js */ ?>
-<div id="confirmation-modal" class="modal fade" role="dialog">
+<div id="confirmation-modal" class="modal fade" tabindex="-1" aria-modal="true"  role="dialog">
     <div class="modal-dialog">
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title"><?php eT("Confirm"); ?></h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                <h5 role="heading" aria-level="2" class="modal-title"><?php eT("Confirm"); ?></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="close"></button>
             </div>
             <div class="modal-body">
                 <p class='modal-body-text'><?php eT("Are you sure?"); ?></p>
@@ -161,7 +161,7 @@ $questionEditor = $questionEditor ?? false;
             </div>
             <div class="modal-footer modal-footer-yes-no">
                 <button type="button" class="btn btn-cancel" data-bs-dismiss="modal"><?php eT("Cancel"); ?></button>
-                <a id="actionBtn" class="btn btn-ok" data-actionbtntext="<?php eT('Confirm'); ?>"></a>
+                <a href="javascript:void(0);" role="button" id="actionBtn" class="btn btn-ok" data-actionbtntext="<?php eT('Confirm'); ?>"></a>
             </div>
             <div class="modal-footer-close modal-footer" style="display: none;">
                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
@@ -173,13 +173,13 @@ $questionEditor = $questionEditor ?? false;
 </div>
 
 <!-- Modal for errors -->
-<div id="error-modal" class="modal fade" role="dialog">
+<div id="error-modal" class="modal fade" tabindex="-1" aria-modal="true"  role="dialog">
     <div class="modal-dialog">
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header card-header">
-                <h5 class="modal-title"><?php eT("Error"); ?></h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                <h5 role="heading" aria-level="2" class="modal-title"><?php eT("Error"); ?></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="close"></button>
             </div>
             <div class="modal-body">
                 <p class='modal-body-text'><?php eT("An error occurred."); ?></p>
@@ -192,13 +192,13 @@ $questionEditor = $questionEditor ?? false;
 </div>
 
 <!-- Modal for success -->
-<div id="success-modal" class="modal fade" role="dialog">
+<div id="success-modal" class="modal fade" tabindex="-1" aria-modal="true"  role="dialog">
     <div class="modal-dialog">
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header card-header">
-                <h5 class="modal-title"><?php eT("Success"); ?></h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                <h5 role="heading" aria-level="2" class="modal-title"><?php eT("Success"); ?></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="close"></button>
             </div>
             <div class="modal-body">
                 <p class='modal-body-text'><?php /* This must be set in Javascript */ ?></p>
@@ -216,13 +216,13 @@ App()->getController()->renderPartial('/surveyAdministration/partial/topbar/_mod
 ?>
 
 <!-- Modal for admin notifications -->
-<div id="admin-notification-modal" class="modal fade" role="dialog">
+<div id="admin-notification-modal" class="modal fade" tabindex="-1" aria-modal="true"  role="dialog">
     <div class="modal-dialog">
         <!-- Modal content-->
         <div class="modal-content"> <?php // JS add not.type as panel-type, e.g. panel-default, panel-danger
         ?>
             <div class="modal-header card-header">
-                <h5 class="modal-title"><?php eT("Notifications"); ?></h5>
+                <h5 role="heading" aria-level="2" class="modal-title"><?php eT("Notifications"); ?></h5>
                 <span class='notification-date'></span>
             </div>
             <div class="modal-body">
@@ -236,7 +236,7 @@ App()->getController()->renderPartial('/surveyAdministration/partial/topbar/_mod
 </div>
 
 <!-- Yet another general purpose modal, this one used by AjaxHelper to display JsonOutputModal messages -->
-<div id="ajax-helper-modal" class="modal fade" role="dialog">
+<div id="ajax-helper-modal" class="modal fade" tabindex="-1" aria-modal="true"  role="dialog">
     <div class="modal-dialog">
         <!-- Modal content-->
         <div class="modal-content">

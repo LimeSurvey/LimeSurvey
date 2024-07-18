@@ -48,7 +48,8 @@
                     'class'             => 'CCheckBoxColumn',
                     'selectableRows'    => '100',
                     'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
-                    'htmlOptions'       => ['class' => 'ls-sticky-column']
+                    'htmlOptions'       => ['class' => 'ls-sticky-column'],
+                    'checkBoxHtmlOptions'=>['aria-labelF'=> 'Select Survey - ', 'aria-labelL'=> '$data->sid']
                 ],
                 [
                     'header'            => gT('Survey ID'),
@@ -135,6 +136,7 @@
                 ],
 
             ],
+            'caption' => gT('Surveys List'),
         ]);
         ?>
     </div>

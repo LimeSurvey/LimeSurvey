@@ -36,7 +36,7 @@
                 background-color : $g-200;
             }
             &:focus {
-                color            : $white;
+                color            : $white !important;
                 background-color : var(--bs-primary);
             }
         }
@@ -59,7 +59,7 @@
 }
 
 .dropdown-header {
-    color       : $g-600;
+    color       : $g-700;
     font-weight : 600;
     font-size   : $dropdown-font-size;
 }

@@ -51,7 +51,7 @@
                 </div>
                 <div class="col-12">
                     <?php
-                    echo $form->textField($questionModel, 'title', array('class' => 'form-control')); ?>
+                    echo $form->textField($questionModel, 'title', array('class' => 'form-control', 'aria-label' => 'Search')); ?>
                 </div>
 
                 <!-- Select group -->
@@ -64,7 +64,7 @@
                     ); ?>
                 </div>
                 <div class="col-12">
-                    <select name="gid" class="form-select">
+                    <select name="gid" class="form-select" aria-label="Group">
                         <option value=""><?php eT('(Any group)'); ?></option>
                         <?php foreach ($oSurvey->groups as $group) : ?>
                             <option value="<?php echo $group->gid; ?>" <?php if ($group->gid == $questionModel->gid) {
@@ -87,7 +87,7 @@
                                     'questionAdministration/listquestions',
                                     ['surveyid' => $oSurvey->primaryKey]
                                 ); ?>" class="btn btn-warning">
-                        <span class="ri-refresh-line"></span>
+                        <span class="ri-refresh-line" aria-hidden="true"></span>
                         <?php
                         eT('Reset'); ?>
                     </a>
@@ -112,6 +112,7 @@
             $this->widget('ext.admin.grid.CLSGridView', array( //done
                 'dataProvider' => $questionModel->search(),
                 'id' => 'question-grid',
+                'caption' => gT('Questions'),
                 'emptyText' => gT('No questions found.'),
                 'massiveActionTemplate' => $massiveAction,
                 'summaryText' => gT('Displaying {start}-{end} of {count} result(s).') . ' '

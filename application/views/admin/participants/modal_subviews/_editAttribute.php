@@ -1,5 +1,5 @@
 <div class="modal-header">
-    <h5 class="modal-title" id="participant_edit_modal"><?php if ($editType == 'new') : eT('Add attribute'); else: eT('Edit attribute'); endif; ?></h5>
+    <h5 role="heading" aria-level="2" class="modal-title" id="participant_edit_modal"><?php if ($editType == 'new') : eT('Add attribute'); else: eT('Edit attribute'); endif; ?></h5>
     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 </div>
 <div class="modal-body ">
@@ -32,6 +32,7 @@
         <label class='form-label'><?php eT("Should this attribute be visible on the panel?"); ?></label>
         <div>
             <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                'ariaLabel'=> gT('Should this attribute be visible on the panel?'),
                 'name'          => "ParticipantAttributeName[visible]",
                 'checkedOption' => $model['visible'] === 'TRUE' ? '1' : '0',
                 'selectOptions' => [
@@ -45,6 +46,7 @@
         <label class=" form-label selector_languageAddLabel" for="dummyNameForInputLabel" title="<?php !$bEncrypted ? eT("Encryption is disabled because Sodium library isn't installed") : ''; ?>"><?php eT('Encrypted'); ?></label>
         <div>
             <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                'ariaLabel'=> gT('Encrypted'),
                 'name'          => "ParticipantAttributeName[encrypted]",
                 'id'            => "encrypted",
                 'checkedOption' => $model['encrypted'] === 'Y' ? '1' : '0',
@@ -76,7 +78,7 @@
                     ]);
                     echo "</div>";
                     echo '<div class="col-1">
-                            <button class="btn btn-outline-secondary ex-form-group mb-3 action_delDropdownField">
+                            <button class="btn btn-outline-secondary ex-form-group mb-3 action_delDropdownField" aria-label="Delete">
                                 <i class="ri-delete-bin-fill text-danger"></i>
                             </button>
                         </div>
@@ -88,7 +90,7 @@
                     <input class='form-control' name='ParticipantAttributeNamesDropdown[]' value='' />
                 </div>
                 <div class="col-1">
-                    <button class="btn btn-outline-secondary ex-form-group mb-3 action_delDropdownField">
+                    <button class="btn btn-outline-secondary ex-form-group mb-3 action_delDropdownField" aria-label="Delete">
                         <i class="ri-delete-bin-fill text-danger"></i>
                     </button>
                 </div>
@@ -105,7 +107,7 @@
                 ?>
                 </div>
                 <div class="col-1">
-                    <button class="btn btn-outline-secondary ex-form-group ms-2" id="addLanguageField" data-bs-toggle="tooltip" title="<?php eT("Add a new language") ?>">
+                    <button class="btn btn-outline-secondary ex-form-group ms-2" id="addLanguageField" data-bs-toggle="tooltip" title="<?php eT("Add a new language") ?>" aria-label="Add a new language">
                         <i class="ri-add-circle-fill text-success"></i>
                     </button>
                 </div>
@@ -123,7 +125,7 @@
                                 <input required class="form-control" name="ParticipantAttributeNameLanguages['.$languageKey.']" id="ParticipantAttributeNameLanguages_'.$languageKey.'" type="text" value="">
                             </div>
                             <div class="col-1">
-                                <button class="btn btn-outline-secondary ex-form-group ms-2 action_delLanguageField">
+                                <button class="btn btn-outline-secondary ex-form-group ms-2 action_delLanguageField" aria-label="Delete">
                                     <i class="ri-delete-bin-fill text-danger"></i>
                                 </button>
                             </div>
@@ -140,7 +142,7 @@
                                 <input class="form-control" name="ParticipantAttributeNameLanguages['.$languageKey.']" id="ParticipantAttributeNameLanguages_'.$languageKey.'" type="text" value="'.CHtml::encode($languageOfAttribute).'">
                             </div>
                             <div class="col-1">
-                                <button class="btn btn-outline-secondary ex-form-group ms-2 action_delLanguageField">
+                                <button class="btn btn-outline-secondary ex-form-group ms-2 action_delLanguageField" aria-label="Delete>
                                     <i class="ri-delete-bin-fill text-danger"></i>
                                 </button>
                             </div>
@@ -162,7 +164,7 @@
                         <input class='form-control' name='dummyParticipantAttributeNamesDropdown' value='' />
                     </div>
                     <div class="col-1">
-                        <button class="btn btn-outline-secondary ex-form-group mb-3 action_delDropdownField">
+                        <button class="btn btn-outline-secondary ex-form-group mb-3 action_delDropdownField" aria-label="Delete">
                             <i class="ri-delete-bin-fill text-danger"></i>
                         </button>
                     </div>

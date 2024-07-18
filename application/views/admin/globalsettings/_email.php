@@ -26,6 +26,7 @@
             <label class="  form-label" for='emailmethod'><?php eT("Email method:"); ?></label>
             <div>
                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                    'ariaLabel'=> gT('Email method:'),
                     'name'          => 'emailmethod',
                     'checkedOption' => Yii::app()->getConfig('emailmethod'),
                     'selectOptions' => [
@@ -41,8 +42,8 @@
         <div class="mb-3">
             <label class="  form-label" for="emailsmtphost"><?php eT("SMTP host:"); ?></label>
             <div class="">
-                <input class="form-control" type='text' size='50' id='emailsmtphost' name='emailsmtphost' value="<?php echo htmlspecialchars((string) getGlobalSetting('emailsmtphost')); ?>"/>
-                <span class="hint"><?php printf(gT("Enter your hostname and port, e.g.: %s"), "smtp.example.org:25"); ?></span>
+                <input class="form-control" type='text' size='50' id='emailsmtphost' name='emailsmtphost' value="<?php echo htmlspecialchars((string) getGlobalSetting('emailsmtphost')); ?>" aria-describedby="emailsmtphosthint"/>
+                <span class="hint" id="emailsmtphosthint"><?php printf(gT("Enter your hostname and port, e.g.: %s"), "smtp.example.org:25"); ?></span>
             </div>
         </div>
         <div class="mb-3">
@@ -62,6 +63,7 @@
             <div class="">
                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget',
                     array(
+                        'ariaLabel'=> gT('SMTP encryption:'),
                         'name' => 'emailsmtpssl',
                         'checkedOption' => getGlobalSetting('emailsmtpssl'),
                         'selectOptions' => array(
@@ -77,6 +79,7 @@
             <label class="  form-label" for='emailsmtpdebug'><?php eT("SMTP debug mode:"); ?></label>
             <div>
                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                    'ariaLabel'=> gT('SMTP debug mode:'),
                     'name'          => 'emailsmtpdebug',
                     'checkedOption' => getGlobalSetting('emailsmtpdebug'),
                     'selectOptions' => [
@@ -117,8 +120,8 @@
         <div class="mb-3">
             <label class="form-label" for="sendingrate"><?php eT("Email sending rate:"); ?></label>
             <div>
-                <?php echo CHtml::numberField("sendingrate", App()->getConfig('sendingrate'), array('class' => 'form-control', 'size' => 5, 'min' => 1)); ?>
-                <span class="hint"><?php eT("Number of seconds to wait until the next email batch is sent."); ?></span>
+                <?php echo CHtml::numberField("sendingrate", App()->getConfig('sendingrate'), array('class' => 'form-control', 'size' => 5, 'min' => 1, 'aria-describedby' => 'sendingratehint')); ?>
+                <span class="hint" id="sendingratehint"><?php eT("Number of seconds to wait until the next email batch is sent."); ?></span>
             </div>
         </div>
         <!-- Test email -->
@@ -140,7 +143,7 @@
         </div>
     </div>
 </div>
-<div id="sendtestemail-confirmation-modal" class="modal fade" role="dialog">
+<div id="sendtestemail-confirmation-modal" class="modal fade" tabindex="-1" aria-modal="true"  role="dialog">
     <div class="modal-dialog">
         <!-- the ajax loader -->
         <div class="ajaxloader">

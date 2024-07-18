@@ -36,14 +36,14 @@ export default {
     },
     computed: {
         useMobileView() { return window.innerWidth < 768; },
-        isActive(){ return window.SideMenuData.isActive; },
+        isActive() { return window.SideMenuData.isActive; },
         questiongroups() { return this.$store.state.questiongroups },
         sidemenus: {
-            get(){return this.$store.state.sidemenus; },
+            get() { return this.$store.state.sidemenus; },
             set(newValue) { this.$store.commit("updateSidemenus", newValue); }
         },
         collapsedmenus: {
-            get(){return this.$store.state.collapsedmenus; },
+            get() { return this.$store.state.collapsedmenus; },
             set(newValue) { this.$store.commit("updateCollapsedmenus", newValue); }
         },
         currentTab: {
@@ -135,7 +135,7 @@ export default {
                     self.$log.error("questiongroups updating error!");
                     this.post(window.SideMenuData.updateOrderLink, {
                         surveyid: this.$store.surveyid
-                    }).then(()=>{
+                    }).then(() => {
                         self.getQuestions().then(() => {
                             self.showLoader = false;
                         });
@@ -185,27 +185,31 @@ export default {
                 }
             });
 
-			//check for corresponding question
-			let lastQuestionObject = false;
-			let questionId = document.querySelector('#edit-question-form [name="question[qid]"]');
-			if (questionId !== null) {
-				questionId = questionId.value;
-				LS.ld.each(this.questiongroups, (itm, i) => {
-					LS.ld.each(itm.questions, (itmm, j) => {
-						lastQuestionObject = questionId === itmm.qid
-								? itmm
-								: lastQuestionObject;
-						if (lastQuestionObject !== false) {
-							lastQuestionGroupObject = itm;
-							return false;
-						}
-					});
-					if (lastQuestionObject !== false) {
-						lastQuestionGroupObject = itm;
-						return false;
-					}
-				});
-			}
+            //check for corresponding question group
+            let lastQuestionObject = false;
+            LS.ld.each(this.questiongroups, (itm, i) => {
+                LS.ld.each(itm.questions, (itmm, j) => {
+                    let regTest = new RegExp(
+                        'questionAdministration/edit\\?questionId=' + itmm.qid +
+                        '|questionAdministration/view\\?surveyid=\\d*&gid=\\d*&qid=' + itmm.qid +
+                        '|questionAdministration/edit/questionId/' + itmm.qid +
+                        '|questionAdministration/view/surveyid/\\d*/gid/\\d*/qid/' + itmm.qid
+                    );
+                    lastQuestionObject =
+                        LS.ld.endsWith(currentUrl, itmm.link) ||
+                            regTest.test(currentUrl)
+                            ? itmm
+                            : lastQuestionObject;
+                    if (lastQuestionObject != false) {
+                        lastQuestionGroupObject = itm;
+                        return false;
+                    }
+                });
+                if (lastQuestionObject != false) {
+                    lastQuestionGroupObject = itm;
+                    return false;
+                }
+            });
 
             //unload every selection
             this.$store.commit("closeAllMenus");
@@ -262,7 +266,7 @@ export default {
             this.smallScreenHidden = !this.smallScreenHidden;
         },
         mousedown(e) {
-            if(this.useMobileView) {
+            if (this.useMobileView) {
                 this.$store.commit("changeIsCollapsed", false);
                 this.smallScreenHidden = !this.smallScreenHidden;
             }
@@ -297,15 +301,15 @@ export default {
         },
         mousemove(e, self) {
             if (this.isMouseDown) {
-                if(self.$store.getters.isRTL) {
+                if (self.$store.getters.isRTL) {
                     if (e.screenX === 0 && e.screenY === 0) {
                         return;
                     }
-                    if ((window.innerWidth-e.clientX) > screen.width / 2) {
+                    if ((window.innerWidth - e.clientX) > screen.width / 2) {
                         this.$store.commit("maxSideBarWidth", true);
                         return;
                     }
-                    self.sideBarWidth = (window.innerWidth-e.pageX) - 8 + "px";
+                    self.sideBarWidth = (window.innerWidth - e.pageX) - 8 + "px";
                     this.$store.commit("changeSidebarwidth", self.sideBarWidth);
                     this.$store.commit("maxSideBarWidth", false);
                 } else {
@@ -321,14 +325,14 @@ export default {
                     this.$store.commit("changeSidebarwidth", self.sideBarWidth);
                     this.$store.commit("maxSideBarWidth", false);
                 }
-                
+
                 window.clearTimeout(self.isMouseDownTimeOut);
                 self.isMouseDownTimeOut = null;
             }
         },
-        setBaseMenuPosition(entries, position){
-            switch(position) {
-                case 'side' : 
+        setBaseMenuPosition(entries, position) {
+            switch (position) {
+                case 'side':
                     this.sidemenus = LS.ld.orderBy(
                         entries,
                         a => {
@@ -354,22 +358,22 @@ export default {
             } else {
                 tab = 'settings';
             }
-
             this.currentTab = tab;
+            console.log(tab, "changed");
         }
     },
     created() {
         const self = this;
-        if(window.innerWidth < 768) {
+        if (window.innerWidth < 768) {
             this.$store.commit("changeIsCollapsed", false);
         }
-        self.$store.commit('setSurveyActiveState', (parseInt(this.isActive)===1));
+        self.$store.commit('setSurveyActiveState', (parseInt(this.isActive) === 1));
         // self.$log.debug(this.$store.state);
         this.activeMenuIndex = this.$store.state.lastMenuOpen;
         if (this.$store.getters.isCollapsed) {
             this.sideBarWidth = "98";
         } else {
-          console.log('Created: ' + self.$store.state.sidebarwidth);
+            console.log('Created: ' + self.$store.state.sidebarwidth);
             this.sideBarWidth = self.$store.state.sidebarwidth;
         }
         LS.ld.each(window.SideMenuData.basemenus, this.setBaseMenuPosition)
@@ -382,18 +386,18 @@ export default {
             const promises = [
                 Promise.resolve()
             ];
-            if(payload.updateQuestions) {
+            if (payload.updateQuestions) {
                 promises.push(this.$store.dispatch('getQuestions'));
             }
-            if(payload.collectMenus) {
+            if (payload.collectMenus) {
                 promises.push(this.$store.dispatch('collectMenus'));
             }
-            if(payload.activeMenuIndex) {
+            if (payload.activeMenuIndex) {
                 this.controlActiveLink();
                 promises.push(Promise.resolve());
             }
             Promise.all(promises)
-                .then((results) => {})
+                .then((results) => { })
                 .catch((errors) => {
                     this.$log.error(errors);
                 })
@@ -409,10 +413,10 @@ export default {
         window.addEventListener("resize", () => {
             self.calculateHeight(self);
         });
-        
+
 
         $(document).on("pjax:send", () => {
-            if(this.useMobileView && this.smallScreenHidden) {
+            if (this.useMobileView && this.smallScreenHidden) {
                 this.smallScreenHidden = false
             }
         });
@@ -442,133 +446,141 @@ export default {
         });
 
         if (this.landOnTab !== '') {
-           this.changeCurrentTab(this.landOnTab);
+            this.changeCurrentTab(this.landOnTab);
         }
 
         $(document).on('pjax:refresh', () => {
             this.controlActiveLink();
+
+            if ($(document.body).attr('data-last-focus')) {
+                setTimeout(() => {
+                    $(`#${$(document.body).attr('data-last-focus')}`).focus();
+                    $(document.body).removeAttr('data-last-focus');
+                }, 500);
+            }
+
+            $('ul.nav.nav-tabs').each(function () {
+                $(this).attr('role', 'tablist');
+                $(this).find('> li').attr('role', 'none');
+                $(this).find('> li > a').attr('role', 'tab');
+                $(this).find('> li > a.active').attr({ 'tabindex': '0', 'aria-selected': 'true' });
+                $(this).find('> li > a:not(.active)').attr({ 'tabindex': '-1', 'aria-selected': 'false' });
+                $(this).find('> li > a').removeAttr('aria-controls');
+            });
+
+            $(document).off('.a11y');
+
+            $(document).on('click.a11y', 'ul.nav.nav-tabs > li > a', function (e) {
+                $(this).closest('ul').find('li > a').attr({ 'tabindex': '-1', 'aria-selected': 'false' });
+                $(this).attr({ 'tabindex': '0', 'aria-selected': 'true' });
+            });
+            $(document).on('keydown.a11y', 'ul.nav.nav-tabs > li > a', function (e) {
+                if (e.key === 'ArrowLeft') {
+                    $(document.body).attr({ 'data-last-focus': $(this).closest('li').prev().find('a').attr('id') });
+                    $(this).closest('li').prev().find('a').focus();
+                } else if (e.key === 'ArrowRight') {
+                    $(document.body).attr({ 'data-last-focus': $(this).closest('li').next().find('a').attr('id') });
+                    $(this).closest('li').next().find('a').focus();
+                } else if (e.key === 'Enter') {
+                    $(this).click();
+                }
+            });
         });
     }
 };
 </script>
 
 <template>
-    <div 
-        id="sidebar" 
-        class="d-flex col-lg-4 ls-ba position-relative transition-animate-width"
-        :class=" smallScreenHidden ? 'toggled' : ''"
-        :style="{'max-height': $store.state.inSurveyViewHeight, 'display': hiddenStateToggleDisplay}" 
-        @mouseleave="mouseleave" 
-        @mouseup="mouseup"
-    >
+    <div id="sidebar" class="d-flex col-lg-4 ls-ba position-relative transition-animate-width"
+        :class="smallScreenHidden ? 'toggled' : ''"
+        :style="{ 'max-height': $store.state.inSurveyViewHeight, 'display': hiddenStateToggleDisplay }"
+        @mouseleave="mouseleave" @mouseup="mouseup">
         <template v-if="(useMobileView && smallScreenHidden) || !useMobileView">
-            <div 
-                v-if="showLoader"
-                key="dragaroundLoader" 
-                class="sidebar_loader" 
-                :style="{width: getSideBarWidth, height: getloaderHeight}" 
-            >
+            <div v-if="showLoader" key="dragaroundLoader" class="sidebar_loader"
+                :style="{ width: getSideBarWidth, height: getloaderHeight }">
                 <div class="ls-flex ls-flex-column fill align-content-center align-items-center">
                     <i class="ri-loader-2-fill remix-2x remix-spin"></i>
                 </div>
             </div>
-            <div 
-                class="col-12 mainContentContainer"
-                key="mainContentContainer"
-            >
-                <div class="mainMenu col-12 position-relative" >
-                    <sidebar-state-toggle @collapse="toggleCollapse"/>
+            <div class="col-12 mainContentContainer test" key="mainContentContainer">
+                <div class="mainMenu col-12 position-relative">
+                    <sidebar-state-toggle @collapse="toggleCollapse" />
                     <transition name="slide-fade">
-                        <sidemenu 
-                            v-show="showSideMenu"
-                            :loading="loading" 
-                            :style="{'min-height': calculateSideBarMenuHeight}" 
-                            @changeLoadingState="applyLoadingState" 
-                        />
+                        <sidemenu v-show="showSideMenu" :loading="loading"
+                            :style="{ 'min-height': calculateSideBarMenuHeight }" @changeLoadingState="applyLoadingState" />
                     </transition>
                     <transition name="slide-fade">
-                        <questionexplorer 
-                            v-show="showQuestionTree" 
-                            :loading="loading" 
-                            :style="{'min-height': calculateSideBarMenuHeight}" 
-                            @changeLoadingState="applyLoadingState" 
-                            @openentity="openEntity" 
-                            @questiongrouporder="changedQuestionGroupOrder"
-                        />
+                        <questionexplorer v-show="showQuestionTree" :loading="loading"
+                            :style="{ 'min-height': calculateSideBarMenuHeight }" @changeLoadingState="applyLoadingState"
+                            @openentity="openEntity" @questiongrouporder="changedQuestionGroupOrder" />
                     </transition>
-                    <div 
-            v-if="(useMobileView && !smallScreenHidden) || !useMobileView"
-            class="resize-handle ls-flex-column" 
-            key="resizeHandle"
-            :style="{'height': calculateSideBarMenuHeight}"
-        >
-            <button 
-                v-show="!$store.getters.isCollapsed" 
-                class="btn " 
-                @mousedown="mousedown" @click.prevent="()=>{return false;}"
-            >
-              <svg width="9" height="14" viewBox="0 0 9 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path fill-rule="evenodd" clip-rule="evenodd" d="M0.4646 0.125H3.24762V2.625H0.4646V0.125ZM6.03064 0.125H8.81366V2.625H6.03064V0.125ZM0.4646 5.75H3.24762V8.25H0.4646V5.75ZM6.03064 5.75H8.81366V8.25H6.03064V5.75ZM0.4646 11.375H3.24762V13.875H0.4646V11.375ZM6.03064 11.375H8.81366V13.875H6.03064V11.375Z" fill="currentColor"/>
-              </svg>
-            </button>
-        </div>
+                    <div v-if="(useMobileView && !smallScreenHidden) || !useMobileView" class="resize-handle ls-flex-column"
+                        key="resizeHandle" :style="{ 'height': calculateSideBarMenuHeight }">
+                        <button aria-label="resize menu handle" v-show="!$store.getters.isCollapsed" class="btn "
+                            @mousedown="mousedown" @click.prevent="() => { return false; }">
+                            <svg width="9" height="14" viewBox="0 0 9 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" clip-rule="evenodd"
+                                    d="M0.4646 0.125H3.24762V2.625H0.4646V0.125ZM6.03064 0.125H8.81366V2.625H6.03064V0.125ZM0.4646 5.75H3.24762V8.25H0.4646V5.75ZM6.03064 5.75H8.81366V8.25H6.03064V5.75ZM0.4646 11.375H3.24762V13.875H0.4646V11.375ZM6.03064 11.375H8.81366V13.875H6.03064V11.375Z"
+                                    fill="currentColor" />
+                            </svg>
+                        </button>
+                    </div>
                 </div>
             </div>
         </template>
-      
-        <div class="scoped-placeholder-greyed-area" 
-            v-if="(useMobileView && smallScreenHidden)" 
-            @click="toggleSmallScreenHide" 
-            v-html="' '"
-        />
+
+        <div class="scoped-placeholder-greyed-area" v-if="(useMobileView && smallScreenHidden)"
+            @click="toggleSmallScreenHide" v-html="' '" />
         <!-- this is used for fixing resize handler bug -->
         <div v-if="isMouseDown" style="position:fixed; inset: 0;" />
     </div>
-    
-
 </template>
 <style lang="scss" scoped>
-    .sidebar_loader {
-        height: 100%;
-        position: absolute;
-        width: 100%;
-        background: rgba(231, 231, 231, 0.3);
-        z-index: 4501;
-        box-shadow: 8px 0px 15px rgba(231, 231, 231, 0.3);
-        top: 0;
+.sidebar_loader {
+    height: 100%;
+    position: absolute;
+    width: 100%;
+    background: rgba(231, 231, 231, 0.3);
+    z-index: 4501;
+    box-shadow: 8px 0px 15px rgba(231, 231, 231, 0.3);
+    top: 0;
+}
+
+.scoped-placeholder-greyed-area {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .scoped-hide-on-small {
+        position: fixed;
+        top: 49px;
+        left: -96vw;
+        width: 100vw;
+        height: 95vh;
+        z-index: 10;
+
+        &.toggled {
+            left: 0;
+        }
+
+        .mainContentContainer {
+            max-width: 80vw;
+            background: white;
+        }
+    }
+
+    #sidebar .resize-handle {
+        &>button {
+            width: 20px;
+            background: var(--LS-admintheme-basecolor);
+        }
     }
 
     .scoped-placeholder-greyed-area {
-        display: none;
+        display: block;
+        background: rgba(125, 125, 125, 0.2);
+        height: 100%;
+        width: 20vw;
     }
-
-    @media (max-width: 768px) {
-        .scoped-hide-on-small {
-            position: fixed;
-            top: 49px;
-            left:-96vw;
-            width: 100vw;
-            height:95vh;
-            z-index: 10;
-            &.toggled {
-                left:0;
-            }
-            .mainContentContainer {
-                max-width: 80vw;
-                background: white;
-            }
-        }
-        #sidebar .resize-handle {
-            &>button {
-                width:20px;
-                background: var(--LS-admintheme-basecolor);
-            }
-        }
-        .scoped-placeholder-greyed-area {
-            display: block;
-            background: rgba(125,125,125,0.2);
-            height:100%;
-            width:20vw;
-        }
-    }
+}
 </style>

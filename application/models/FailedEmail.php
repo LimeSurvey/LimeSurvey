@@ -139,7 +139,8 @@ class FailedEmail extends LSActiveRecord
                 'selectableRows' => '100',
                 'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
                 'filterHtmlOptions' => ['class' => 'ls-sticky-column'],
-                'htmlOptions'       => ['class' => 'ls-sticky-column']
+                'htmlOptions'       => ['class' => 'ls-sticky-column'],
+                'checkBoxHtmlOptions'=>['aria-labelF'=> 'Select failed email - ', 'aria-labelL'=> 'responseUrl'],
             ],
             [
                 'header' => gT('Status'),

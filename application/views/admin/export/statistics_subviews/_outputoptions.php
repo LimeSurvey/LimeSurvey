@@ -1,4 +1,4 @@
-<h4 class="h4"><?php
+<h4 class="h4" role="heading" aria-level="2"><?php
     eT("Output options"); ?></h4>
 <div class="row">
     <div class="col-lg-6 col-md-12">
@@ -8,6 +8,7 @@
             <div>
                 <?php $sShowtextinline = (int)Yii::app()->request->getPost('showtextinline'); ?>
                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                    'ariaLabel'=> gT('Show text responses inline:'),
                     'name'          => 'showtextinline',
                     'checkedOption' => $sShowtextinline,
                     'selectOptions' => [
@@ -30,6 +31,7 @@
                 eT("Subtotals based on displayed questions:"); ?></label>
             <div>
                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                    'ariaLabel'=> gT('Subtotals based on displayed questions:'),
                     'name'          => 'noncompleted',
                     'checkedOption' => $sNoncompleted,
                     'selectOptions' => [
@@ -75,6 +77,7 @@
                 eT("Number of columns:") ?></label>
             <div>
                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                    'ariaLabel'=> gT('Number of columns:'),
                     'name'          => 'stats_columns',
                     'checkedOption' =>  $sStatsColumn,
                     'selectOptions' => [
@@ -92,6 +95,7 @@
                 eT("Graph labels:") ?></label>
             <div>
                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                    'ariaLabel'=> gT('Graph labels:'),
                     'name'          => 'graph_labels',
                     'checkedOption' => $sGraphLabels,
                     'selectOptions' => [

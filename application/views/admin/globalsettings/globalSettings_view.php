@@ -10,7 +10,7 @@ echo viewHelper::getViewTestTag('globalsettings');
     var msgCantRemoveDefaultLanguage = '<?php eT("You can't remove the default language.", 'js'); ?>';
 </script>
 <div class="welcome full-page-wrapper ls-space margin left-15 right-15">
-    <ul class="nav nav-tabs" id="settingTabs">
+    <ul class="nav nav-tabs" id="settingTabs" role="tablist">
         <li role="presentation" class="nav-item"><a class="nav-link active" role="tab" data-bs-toggle="tab" href='#overview'><?php eT("Overview"); ?></a></li>
         <li role="presentation" class="nav-item"><a class="nav-link" role="tab" data-bs-toggle="tab" href='#general'><?php eT("General"); ?></a></li>
         <li role="presentation" class="nav-item"><a class="nav-link" role="tab" data-bs-toggle="tab" href='#email'><?php eT("Email settings"); ?></a></li>

@@ -24,6 +24,7 @@
                     </th>
                     <th>
                         <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                            'ariaLabel'=> gT('All themes'),
                             'name'          => 'alltemplates',
                             'checkedOption' => 0,
                             'selectOptions' => [

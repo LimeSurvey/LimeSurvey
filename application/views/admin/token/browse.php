@@ -45,6 +45,7 @@ $aLanguageNames = implode(";", $aLanguageNames);
                 'dataProvider'          => $model->search(),
                 'filter'                => $model,
                 'id'                    => 'token-grid',
+                'caption'                => gT('List of survey participants'),
                 'emptyText'             => gT('No survey participants found.'),
                 'massiveActionTemplate' => $massiveAction,
                 'summaryText'           => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(gT('%s rows per page'),
@@ -80,11 +81,11 @@ $aLanguageNames = implode(";", $aLanguageNames);
 
 
 <!-- Edit Token Modal -->
-<div class="modal fade" tabindex="-1" role="dialog" id="editTokenModal">
+<div class="modal fade" aria-modal="true"  tabindex="-1" role="dialog" id="editTokenModal">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title"><?php eT('Edit survey participant'); ?></h5>
+                <h5 role="heading" aria-level="2" class="modal-title"><?php eT('Edit survey participant'); ?></h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">

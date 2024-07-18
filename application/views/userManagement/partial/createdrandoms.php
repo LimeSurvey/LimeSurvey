@@ -19,9 +19,9 @@ Yii::app()->getController()->renderPartial(
     </div>
     <div class="row ls-space margin top-10 bottom-10">
         <div class="col-12">
-            <ul class="list-group">
+            <ul class="list-group" role="none">
                 <?php foreach ($randomUsers as $randomUser) { ?>
-                    <li class="list-group-item">
+                    <li class="list-group-item" role="none">
                         <div class="row">
                             <div class="col-6">
                                 <?= gT('Username') ?>

@@ -18,23 +18,18 @@ $alert-status : (
     border-left      : 8px solid $color;
   } @else {
     background-color : $color;
-    @if ($color== var(--bs-info) or  $color== var(--bs-dark)) {
+    @if ($color== var(--bs-info)) {
       color: $white;
-      .alert-link {
-        color : $white;
-        text-decoration: underline;
-      }
     } @else {
       color  : $g-900;
-      .alert-link {
-        color : $g-900;
-        text-decoration: underline;
-      }
     }
   }
 
   hr {
     border-top-color : $color;
+  }
+  .alert-link {
+    color : $grape;
   }
 }
 

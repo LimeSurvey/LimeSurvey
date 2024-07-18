@@ -98,11 +98,11 @@ if (empty($errorinupload)) {
 }
 
 ?>
-<div id='attribute-map-csv-modal' class="modal fade" tabindex="-1" role="dialog">
+<div id='attribute-map-csv-modal' class="modal fade" tabindex="-1" aria-modal="true"  tabindex="-1" role="dialog">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title"><?php eT("CPDB CSV summary"); ?></h5>
+                <h5 role="heading" aria-level="2" class="modal-title"><?php eT("CPDB CSV summary"); ?></h5>
                 <a href="<?= App()->createUrl("admin/participants/sa/displayParticipants") ?>" type="button" class="btn-close" aria-label="Close"></a>
             </div>
             <div class="modal-body">

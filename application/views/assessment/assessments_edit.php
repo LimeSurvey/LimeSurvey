@@ -3,7 +3,7 @@
 * Assessments edit
 */
 ?>
-<div id="assesements-edit-add" class="modal fade" role="dialog" data-bs-focus="false">
+<div id="assesements-edit-add" class="modal fade" tabindex="-1" aria-modal="true"  aria-label="<?php echo gt('Add assessment rule') ?>" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
             <?php echo CHtml::form(["/assessment/insertUpdate/surveyid/$surveyid"], 'post', ['class' => 'form', 'id' => 'assessmentsform', 'name' => 'assessmentsform', 'role' => 'form']); ?>
@@ -21,11 +21,11 @@
                             <?php eT("Scope:"); ?>
                         </label>
                         <div class='col-md-10 ls-flex wrap'>
-                            <div class="btn-group" role="group">
-                                <input class='btn-check' type='radio' id='radiototal' name='scope' value='T' checked='checked'/>
+                            <div class="btn-group hidden-radio-outline" role="group" aria-label="<?php echo eT("Scope"); ?>">
+                                <input class='btn-check' type='radio' id='radiototal' name='scope' value='T' checked='checked' />
                                 <label class='btn btn-outline-secondary' for="radiototal"><?php eT("Total"); ?></label>
 
-                                <input class='btn-check' type='radio' id='radiogroup' name='scope' value='G'/>
+                                <input class='btn-check' type='radio' id='radiogroup' name='scope' value='G' />
                                 <label class='btn btn-outline-secondary' for="radiogroup"><?php eT("Group"); ?></label>
                             </div>
                         </div>
@@ -57,7 +57,7 @@
                         <?php eT("Minimum:"); ?>
                     </label>
                     <div class='col-md-10'>
-                        <input class='form-control numbersonly' type='text' id='minimum' name='minimum'/>
+                        <input class='form-control numbersonly' type='text' id='minimum' name='minimum' />
                     </div>
                     <div class='col-md-2 hide-xs'></div>
                 </div>
@@ -68,19 +68,19 @@
                         <?php eT("Maximum:"); ?>
                     </label>
                     <div class='col-md-10'>
-                        <input class='form-control numbersonly' type='text' id='maximum' name='maximum'/>
+                        <input class='form-control numbersonly' type='text' id='maximum' name='maximum' />
                     </div>
                     <div class='col-md-2 hide-xs'></div>
                 </div>
 
                 <!-- Languages tabs -->
                 <div id="languagetabs" class="row">
-                    <ul class="nav nav-tabs" id="edit-survey-text-element-language-selection">
+                    <ul class="nav nav-tabs" role="tablist" id="edit-survey-text-element-language-selection">
                         <?php foreach ($assessmentlangs as $assessmentlang) {
                             $position = 0;
-                            ?>
+                        ?>
                             <li role="presentation" class="nav-item">
-                                <a class="nav-link <?= ($assessmentlang == $baselang ? 'active' : '') ?>" data-bs-toggle="tab" href="#tablang<?= $assessmentlang ?>">
+                                <a role="tab" aria-selected="<?= ($assessmentlang == $baselang ? 'true' : 'false') ?>" class="nav-link <?= ($assessmentlang == $baselang ? 'active' : '') ?>" data-bs-toggle="tab" href="#tablang<?= $assessmentlang ?>">
                                     <?php
                                     echo getLanguageNameFromCode($assessmentlang, false);
                                     if ($assessmentlang == $baselang) {
@@ -98,17 +98,17 @@
                         foreach ($assessmentlangs as $assessmentlang) {
                             $heading = '';
                             $message = '';
-                            ?>
+                        ?>
                             <div id="tablang<?= $assessmentlang; ?>" class="tab-pane fade <?php if ($count == 0) {
-                                echo "show active ";
-                                $count++;
-                            } ?>">
+                                                                                                echo "show active ";
+                                                                                                $count++;
+                                                                                            } ?>">
                                 <div class='col-12'></div>
                                 <div class='mb-3 col-12'>
                                     <label class='form-label col-12' for='name_<?= $assessmentlang ?>'>
                                         <?php eT("Heading"); ?>:</label>
                                     <div class='col-12'>
-                                        <input class='form-control' type='text' name='name_<?= $assessmentlang ?>' id='name_<?= $assessmentlang ?>>' size='80' value='<?= $heading ?>'/>
+                                        <input class='form-control' type='text' name='name_<?= $assessmentlang ?>' id='name_<?= $assessmentlang ?>' size='80' value='<?= $heading ?>' />
                                     </div>
                                 </div>
                                 <div class='mb-3 col-12'>
@@ -116,7 +116,7 @@
                                         <?php eT("Message"); ?>:</label>
                                     <div class='col-12'>
                                         <div class="htmleditor input-group">
-                                            <textarea name='assessmentmessage_<?= $assessmentlang ?>' class="form-control" id='assessmentmessage_<?= $assessmentlang ?>' rows='10'><?php echo $message; ?></textarea>
+                                            <textarea lableForFrame="<?php eT("Message"); ?>" name='assessmentmessage_<?= $assessmentlang ?>' class="form-control" id='assessmentmessage_<?= $assessmentlang ?>' rows='10'><?php echo $message; ?></textarea>
                                             <?php echo getEditor("assessment-text", "assessmentmessage_" . $assessmentlang, "[" . gT("Message:", "js") . "]", $surveyid, $gid, null, ''); ?>
                                         </div>
                                     </div>
@@ -124,7 +124,7 @@
                                 <div class='mb-3'>
                                     <div class='col-md-2'></div>
                                     <div class='col-md-4'>
-                                        <input type='submit' class="btn btn-outline-secondary d-none" value='<?php eT("Save"); ?>'/>
+                                        <input type='submit' class="btn btn-outline-secondary d-none" value='<?php eT("Save"); ?>' />
                                     </div>
                                 </div>
                             </div>
@@ -134,9 +134,9 @@
 
                 <!-- action buttons -->
                 <div>
-                    <input type='hidden' name='sid' value='<?php echo $surveyid; ?>'/>
-                    <input type='hidden' name='action' value='assessmentadd'/>
-                    <input type='hidden' name='id' value='<?php echo $editId; ?>'/>
+                    <input type='hidden' name='sid' value='<?php echo $surveyid; ?>' />
+                    <input type='hidden' name='action' value='assessmentadd' />
+                    <input type='hidden' name='id' value='<?php echo $editId; ?>' />
                 </div>
             </div>
             <div class="modal-footer">

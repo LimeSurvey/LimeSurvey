@@ -20,7 +20,7 @@ if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
 }
 ?>
 <div class="modal-header">
-    <h5 class="modal-title"><?php eT("Edit permissions"); ?></h5>
+    <h5 role="heading" aria-level="2" class="modal-title"><?php eT("Edit permissions"); ?></h5>
 </div>
 <div class="modal-body selector--edit-permissions-container">
     <table id='UserManagement--userpermissions-table' class='activecell table table-striped'>

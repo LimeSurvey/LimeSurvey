@@ -9017,7 +9017,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
 
         $out = '<div id="showlogicfilediv" class="table-responsive"><div class="pagetitle h3">' . $LEM->gT('Logic File for Survey # ') . '[' . $LEM->sid . "]: $surveyname</div>\n";
         $out .= "<table id='logicfiletable' class='table table-bordered'>";
-
+        $out .= '<caption class="sr-only">' . $LEM->gT('Logic File for Survey # ') . '[' . $LEM->sid . "]: $surveyname</caption>\n";
         if (is_null($gid) && is_null($qid)) {
             if ($aSurveyInfo['surveyls_description'] != '') {
                 $LEM->em->ResetErrorsAndWarnings();

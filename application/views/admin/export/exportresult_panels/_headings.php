@@ -33,6 +33,7 @@
       </label>
       <div class='col-md-12'>
           <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+              'ariaLabel'=> gT('Strip HTML code:'),
               'name' => 'striphtmlcode',
               'checkedOption' => '1',
               'selectOptions' => [
@@ -50,6 +51,7 @@
       </label>
       <div class='col-md-12'>
           <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+              'ariaLabel'=> gT('Convert spaces in question text to underscores:'),
               'name' => 'headspacetounderscores',
               'checkedOption' => 0,
               'selectOptions' => [
@@ -67,6 +69,7 @@
       </label>
       <div class='col-md-12'>
           <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+              'ariaLabel'=> gT('Text abbreviated:'),
               'name' => 'abbreviatedtext',
               'checkedOption' => 0,
               'selectOptions' => [
@@ -84,6 +87,7 @@
       </label>
       <div class='col-md-12'>
           <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+              'ariaLabel'=> gT('Use ExpressionScript code:'),
               'name' => 'emcode',
               'checkedOption' => 0,
               'selectOptions' => [

@@ -104,6 +104,7 @@
                        for='queXMLAllowSplittingSingleChoiceHorizontal'><?php eT("Allow array style questions to be split over multiple pages"); ?></label>
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                        'ariaLabel'=> gT('Allow array style questions to be split over multiple pages'),
                         'name'          => 'queXMLAllowSplittingSingleChoiceHorizontal',
                         'checkedOption' => $queXMLAllowSplittingSingleChoiceHorizontal == 1,
                         'selectOptions' => [
@@ -119,6 +120,7 @@
                        for='queXMLAllowSplittingSingleChoiceVertical'><?php eT("Allow single choice questions to be split over multiple pages"); ?></label>
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                        'ariaLabel'=> gT('Allow single choice questions to be split over multiple pages'),
                         'name'          => 'queXMLAllowSplittingSingleChoiceVertical',
                         'checkedOption' => $queXMLAllowSplittingSingleChoiceVertical == 1,
                         'selectOptions' => [
@@ -134,6 +136,7 @@
                        for='queXMLAllowSplittingMatrixText'><?php eT("Allow Multiple short text / numeric questions to be split over multiple pages"); ?></label>
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                        'ariaLabel'=> gT('Allow Multiple short text / numeric questions to be split over multiple pages'),
                         'name'          => 'queXMLAllowSplittingMatrixText',
                         'checkedOption' => $queXMLAllowSplittingMatrixText == 1,
                         'selectOptions' => [
@@ -149,6 +152,7 @@
                        for='queXMLAllowSplittingVas'><?php eT("Allow slider questions to be split over multiple pages"); ?></label>
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                        'ariaLabel'=> gT('Allow slider questions to be split over multiple pages'),
                         'name'          => 'queXMLAllowSplittingVas',
                         'checkedOption' => $queXMLAllowSplittingVas == 1,
                         'selectOptions' => [
@@ -163,6 +167,7 @@
                 <label class="form-label" for='queXMLPageOrientation'><?php eT("Page orientation:"); ?></label>
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                        'ariaLabel'=> gT('Page orientation:'),
                         'name'          => 'queXMLPageOrientation',
                         'checkedOption' => $queXMLPageOrientation,
                         'selectOptions' => [
@@ -177,6 +182,7 @@
                 <label class="form-label" for='queXMLPageFormat'><?php eT("Page format:"); ?></label>
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                        'ariaLabel'=> gT('Page format:'),
                         'name'          => 'queXMLPageFormat',
                         'checkedOption' => $queXMLPageFormat,
                         'selectOptions' => [
@@ -192,6 +198,7 @@
                 <label class="form-label" for='queXMLEdgeDetectionFormat'><?php eT("Edge detection format:"); ?></label>
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                        'ariaLabel'=> gT('Edge detection format:'),
                         'name'          => 'queXMLEdgeDetectionFormat',
                         'checkedOption' => $queXMLEdgeDetectionFormat,
                         'selectOptions' => [

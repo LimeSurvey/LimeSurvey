@@ -123,6 +123,7 @@ App()->getClientScript()->registerScript("edit-after-completion-message", "
                         <input type='hidden' id='anonymized' name='anonymized' value="<?php echo $oSurvey->anonymized; ?>"/>
                     <?php } else {
                         $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                            'ariaLabel'=> gT('Anonymized responses:'),
                             'name' => 'anonymized',
                             'checkedOption' => $oSurvey->anonymized,
                             'selectOptions' => ($bShowInherited) ? array_merge($optionsOnOff,
@@ -139,6 +140,7 @@ App()->getClientScript()->registerScript("edit-after-completion-message", "
                 </label>
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                        'ariaLabel'=> gT('Enable participant-based response persistence:'),
                         'name'          => 'tokenanswerspersistence',
                         'checkedOption' => $oSurvey->tokenanswerspersistence,
                         'selectOptions' => ($bShowInherited)
@@ -150,12 +152,13 @@ App()->getClientScript()->registerScript("edit-after-completion-message", "
 
             <!-- Allow multiple responses or update responses with one token -->
             <div class="mb-3">
-                <label class=" form-label" for='alloweditaftercompletion' title='<?php  eT("If participant-based response persistence is enabled a participant can update his response after completion, otherwise a participant can add new responses without restriction."); ?>'>
+                <label class=" form-label" id="alloweditaftercompletion_1" for='alloweditaftercompletion' title='<?php  eT("If participant-based response persistence is enabled a participant can update his response after completion, otherwise a participant can add new responses without restriction."); ?>'>
                     <div id="alloweditaftercompletion-update" class="hidden"><?php eT('Allow to update the responses using the access code'); ?></div>
                     <div id="alloweditaftercompletion-multiple" class="hidden"><?php eT('Allow multiple responses with the same access code'); ?></div>
                 </label>
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                        'ariaLabelledby' => 'alloweditaftercompletion_1',
                         'name'          => 'alloweditaftercompletion',
                         'checkedOption' => $oSurvey->alloweditaftercompletion,
                         'selectOptions' => ($bShowInherited)
@@ -174,13 +177,14 @@ App()->getClientScript()->registerScript("edit-after-completion-message", "
                             <label class=" form-label"  for='tokenlength'><?php  eT("Set access code length to:"); ?></label>
                             <div style='width:170px'>
                               <input class="form-control inherit-edit <?php echo ($bShowInherited && $tokenlength == '-1' ? 'd-none' : 'd-block'); ?>" type='text' size='50' id='tokenlength' name='tokenlength' value="<?php echo htmlspecialchars((string) $tokenlength); ?>" data-inherit-value="-1" data-saved-value="<?php echo $tokenlength; ?>"/>
-                              <input class="form-control inherit-readonly <?php echo ($bShowInherited && $tokenlength == '-1' ? 'd-block' : 'd-none'); ?>" type='text' size='50' value="<?php echo htmlspecialchars((string) $oSurveyOptions->tokenlength); ?>" readonly />
+                              <input aria-label="<?php  eT("Set access code length to:"); ?>" class="form-control inherit-readonly <?php echo ($bShowInherited && $tokenlength == '-1' ? 'd-block' : 'd-none'); ?>" type='text' size='50' value="<?php echo htmlspecialchars((string) $oSurveyOptions->tokenlength); ?>" readonly />
                             </div>
                            
                     </div>
                     <div class="content-right <?php echo ($bShowInherited ? 'd-block' : 'd-none'); ?>">
                         <label class=" form-label content-center col-12"  for='tokenlength'><?php  eT("Inherit:"); ?></label>
                         <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                            'ariaLabel'=> gT('Inherit:'),
                             'name'          => 'tokenlengthbutton',
                             'checkedOption' => ($bShowInherited && $tokenlength == '-1' ? 'Y' : 'N'),
                             'selectOptions' => $optionsOnOff,
@@ -199,6 +203,7 @@ App()->getClientScript()->registerScript("edit-after-completion-message", "
                 <label class=" form-label" for='allowregister'><?php eT("Allow public registration:"); ?></label>
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                        'ariaLabel'=> gT('Allow public registration:'),
                         'name'          => 'allowregister',
                         'checkedOption' => $oSurvey->allowregister,
                         'selectOptions' => ($bShowInherited)
@@ -213,6 +218,7 @@ App()->getClientScript()->registerScript("edit-after-completion-message", "
                 <label class=" form-label" for='htmlemail'><?php  eT("Use HTML format for participant emails:"); ?></label>
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                        'ariaLabel'=> gT('Use HTML format for participant emails:'),
                         'name'          => 'htmlemail',
                         'checkedOption' => $oSurvey->htmlemail,
                         'selectOptions' => ($bShowInherited)
@@ -233,6 +239,7 @@ App()->getClientScript()->registerScript("edit-after-completion-message", "
                 <label class=" form-label" for='sendconfirmation'><?php eT("Send confirmation emails:"); ?></label>
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                        'ariaLabel'=> gT('Send confirmation emails:'),
                         'name' => 'sendconfirmation',
                         'checkedOption' => $oSurvey->sendconfirmation,
                         'selectOptions' => ($bShowInherited) ? array_merge($optionsOnOff,

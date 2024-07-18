@@ -27,37 +27,37 @@
 
 <br />
 <div class="table-responsive">
-    <table class='table table-hover'>
-        <tr>
-            <th><?php eT("Users"); ?>:</th>
-            <td><?php echo $usercount; ?></td>
+    <table class='table table-hover' role="list">
+        <tr role="listitem">
+            <th role="none"><?php eT("Users"); ?>:</th>
+            <td role="none"><?php echo $usercount; ?></td>
         </tr>
-        <tr>
-            <th><?php eT("Surveys"); ?>:</th>
-            <td><?php echo $surveycount; ?></td>
+        <tr role="listitem">
+            <th role="none"><?php eT("Surveys"); ?>:</th>
+            <td role="none"><?php echo $surveycount; ?></td>
         </tr>
-        <tr>
-            <th><?php eT("Active surveys"); ?>:</th>
-            <td><?php echo $activesurveycount; ?></td>
+        <tr role="listitem">
+            <th role="none"><?php eT("Active surveys"); ?>:</th>
+            <td role="none"><?php echo $activesurveycount; ?></td>
         </tr>
-        <tr>
-            <th><?php eT("Deactivated result tables"); ?>:</th>
-            <td><?php echo $deactivatedsurveys; ?></td>
+        <tr role="listitem">
+            <th role="none"><?php eT("Deactivated result tables"); ?>:</th>
+            <td role="none"><?php echo $deactivatedsurveys; ?></td>
         </tr>
-        <tr>
-            <th><?php eT("Active survey participants tables"); ?>:</th>
-            <td><?php echo $activetokens; ?></td>
+        <tr role="listitem">
+            <th role="none"><?php eT("Active survey participants tables"); ?>:</th>
+            <td role="none"><?php echo $activetokens; ?></td>
         </tr>
-        <tr>
-            <th><?php eT("Deactivated survey participants tables"); ?>:</th>
-            <td><?php echo $deactivatedtokens; ?></td>
+        <tr role="listitem">
+            <th role="none"><?php eT("Deactivated survey participants tables"); ?>:</th>
+            <td role="none"><?php echo $deactivatedtokens; ?></td>
         </tr>
 
         <?php if (YII_DEBUG) : ?>
             <!-- If debug mode is on, we show the new parameter -->
-            <tr>
-                <th>Value of myNewParam :</th>
-                <td><?php echo $myNewParam; ?></td>
+            <tr role="listitem">
+                <th role="none">Value of myNewParam :</th>
+                <td role="none"><?php echo $myNewParam; ?></td>
             </tr>
         <?php endif; ?>
         <?php

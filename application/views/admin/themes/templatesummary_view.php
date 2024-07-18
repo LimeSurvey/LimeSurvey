@@ -100,7 +100,7 @@ Yii::app()->getClientScript()->registerScript('editorfiletype', "editorfiletype 
                                         <?= CHtml::endForm() ?>
                                     <?php } ?>
                                 <?php } else { ?>
-                                    <span class="badge bg-danger"> <?php eT("Inherited"); ?> </span>
+                                    <span class="badge bg-danger text-white"> <?php eT("Inherited"); ?> </span>
                                 <?php } ?>
                             </div>
                         </div>
@@ -138,7 +138,7 @@ Yii::app()->getClientScript()->registerScript('editorfiletype', "editorfiletype 
                                         <?= CHtml::endForm() ?>
                                     <?php } ?>
                                 <?php } else { ?>
-                                    <span class="badge bg-danger "><?php eT("Inherited"); ?></span>
+                                    <span class="badge bg-danger text-white"><?php eT("Inherited"); ?></span>
                                 <?php } ?>
                             </div>
                         </div>
@@ -177,7 +177,7 @@ Yii::app()->getClientScript()->registerScript('editorfiletype', "editorfiletype 
                                         <?= CHtml::endForm() ?>
                                     <?php } ?>
                                 <?php } else { ?>
-                                    <span class="badge bg-danger "><?php eT("Inherited"); ?></span>
+                                    <span class="badge bg-danger text-white"><?php eT("Inherited"); ?></span>
                                 <?php } ?>
                             </div>
                         </div>
@@ -214,7 +214,7 @@ Yii::app()->getClientScript()->registerScript('editorfiletype', "editorfiletype 
                                             <?= CHtml::endForm() ?>
                                         <?php } ?>
                                     <?php } else { ?>
-                                        <span class="badge bg-danger "><?php eT("Inherited"); ?></span>
+                                        <span class="badge bg-danger text-white"><?php eT("Inherited"); ?></span>
                                     <?php } ?>
                                 </div>
                             </div>
@@ -266,11 +266,11 @@ Yii::app()->getClientScript()->registerScript('editorfiletype', "editorfiletype 
             </div>
         </div>
         <!-- Modal -->
-        <div class="modal fade" id="fileHelp" tabindex="-1" role="dialog">
+        <div class="modal fade" aria-modal="true"  id="fileHelp" tabindex="-1" role="dialog">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="myModalLabel"><?php eT('Tip: How to display a picture in your theme?'); ?></h5>
+                        <h5 role="heading" aria-level="2" class="modal-title" id="myModalLabel"><?php eT('Tip: How to display a picture in your theme?'); ?></h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">

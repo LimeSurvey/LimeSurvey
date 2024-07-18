@@ -18,6 +18,7 @@ echo viewHelper::getViewTestTag('surveyMenuEntries');
         $this->widget('application.extensions.admin.grid.CLSGridView', [
             'dataProvider' => $model->search(),
             'id' => 'surveymenu-entries-grid',
+            'caption' => gT('Survey menu entries'),
             'columns' => $model->getColumns(),
             'filter' => $model,
             'emptyText' => gT('No customizable entries found.'),
@@ -43,14 +44,14 @@ echo viewHelper::getViewTestTag('surveyMenuEntries');
 <input type="hidden" id="surveymenu_open_url_selected_entry" value=""/>
 <!-- modal! -->
 
-<div class="modal fade" id="editcreatemenuentry" tabindex="-1" role="dialog">
+<div class="modal fade" aria-modal="true"  id="editcreatemenuentry" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
         </div>
     </div>
 </div>
 
-<div class="modal fade" id="deletemodal" tabindex="-1" role="dialog">
+<div class="modal fade" aria-modal="true"  id="deletemodal" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <?php

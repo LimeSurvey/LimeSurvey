@@ -120,7 +120,7 @@ $importModal = false;
                 '</strong> ' .
                 sprintf(
                     gT('If you want to modify it %s you can extend it%s.'),
-                    "<a href='#' title=\"" . gT("Extend theme") . "\""
+                    "<a class='text-white' style='text-decoration: underline;' role='button' href='#' title=\"" . gT("Extend theme") . "\""
                     . " onclick=\"javascript: copyprompt('" . gT("Please enter the name for the new theme:") . "', '" . gT("extends_") . "$templatename', '$templatename', 'copy')\">",
                     '</a>'
                 );

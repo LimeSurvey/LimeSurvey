@@ -35,6 +35,7 @@ App()->getClientScript()->registerScript(
                     'application.extensions.admin.grid.CLSGridView',
                     [
                         'id' => 'boxes-grid',
+                        'caption' => gT('Boxes'),
                         'dataProvider' => $dataProviderBox->search(),
                         'pager' => [
                             'class' => 'application.extensions.admin.grid.CLSYiiPager',
@@ -106,6 +107,7 @@ App()->getClientScript()->registerScript(
                     <label class="col-md-2 col-form-label"><?php eT("Display logo:"); ?> </label>
                     <div class="col-md-2">
                         <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                            'ariaLabel'=> gT('Display logo:'),
                             'name'          => 'show_logo',
                             'checkedOption' => $bShowLogo,
                             'selectOptions' => [
@@ -119,6 +121,7 @@ App()->getClientScript()->registerScript(
                     <label class="col-md-2 col-form-label"><?php eT("Show last visited survey and question:"); ?> </label>
                     <div class="col-md-2">
                         <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                            'ariaLabel'=> gT('Show last visited survey and question:'),
                             'name'          => 'show_last_survey_and_question',
                             'checkedOption' => $bShowLastSurveyAndQuestion,
                             'selectOptions' => [
@@ -136,6 +139,7 @@ App()->getClientScript()->registerScript(
                     <label class="col-md-2 col-form-label"><?php eT("Show survey list:"); ?> </label>
                     <div class="col-md-2">
                         <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                            'ariaLabel'=> gT('Show survey list:'),
                             'name'          => 'show_survey_list',
                             'checkedOption' => $bShowSurveyList,
                             'selectOptions' => [
@@ -149,6 +153,7 @@ App()->getClientScript()->registerScript(
                     <label class="col-md-2 col-form-label"><?php eT("Show search box on survey list:"); ?> </label>
                     <div class="col-md-2">
                         <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                            'ariaLabel'=> gT('Show search box on survey list:'),
                             'name'          => 'show_survey_list_search',
                             'checkedOption' => $bShowSurveyListSearch,
                             'selectOptions' => [
@@ -166,6 +171,7 @@ App()->getClientScript()->registerScript(
                     <label class="col-md-2 col-form-label"><?php eT("Wrap container around boxes"); ?> </label>
                     <div class="col-md-2">
                         <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                            'ariaLabel'=> gT('Wrap container around boxes'),
                             'name'          => 'boxes_in_container',
                             'checkedOption' => $bBoxesInContainer,
                             'selectOptions' => [
@@ -180,11 +186,11 @@ App()->getClientScript()->registerScript(
                 </div>
 
                 <div class="row">
-                    <label class="col-md-2 col-form-label"><?php eT("Boxes by row:"); ?></label>
+                    <label class="col-md-2 col-form-label" for="iBoxesByRow"><?php eT("Boxes by row:"); ?></label>
                     <div class="col-md-1">
                         <input class="form-control" type="number" id="iBoxesByRow" value="<?php echo $iBoxesByRow; ?>" max="6" min="0" name="boxes_by_row"/>
                     </div>
-                    <label class="col-md-2 offset-md-1 col-form-label"><?php eT("Box orientation:"); ?></label>
+                    <label class="col-md-2 offset-md-1 col-form-label" for="iBoxesOffset"><?php eT("Box orientation:"); ?></label>
                     <div class="col-md-1">
                         <select class="form-select" id="iBoxesOffset" name="boxes_offset">
                             <option value="1" <?php if ($iBoxesOffset == '1') {

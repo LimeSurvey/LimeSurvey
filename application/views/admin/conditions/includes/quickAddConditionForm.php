@@ -20,7 +20,7 @@
         <div class='mb-3 row'>
             <label class='form-label col-md-2'><?php eT("Question"); ?></label>
             <div class='col-md-10'>
-                <ul class='nav nav-tabs'>
+                <ul class='nav nav-tabs' role="tablist">
                     <li role='presentation' class='nav-item src-tab'>
                         <a class="nav-link active" href='#QUICKADD-SRCPREVQUEST' aria-controls='SRCPREVQUEST' role='tab' data-bs-toggle='tab'><?php eT('Previous questions'); ?></a>
                     </li>
@@ -79,7 +79,7 @@
         <div class='mb-3 row'>
             <label class='form-label col-md-2'><?php echo gT("Answer"); ?></label>
             <div class='col-md-10'>
-                <ul class='nav nav-tabs'>
+                <ul class='nav nav-tabs' role="tablist">
                     <li role='presentation' class='nav-item target-tab'>
                         <a class="nav-link active" href='#QUICKADD-CANSWERSTAB' aria-controls='CANSWERSTAB' role='tab' data-bs-toggle='tab'><?php eT('Predefined'); ?></a>
                     </li>
@@ -124,7 +124,7 @@
                 </div>
             </div>
 
-            <div role='tabpanel' class='tab-pane' id='QUICKADD-PREVQUESTIONS'>
+            <div role='tabpanel' class='tab-pane active' id='QUICKADD-PREVQUESTIONS'>
                 <div class='mb-3 answer-option row'>
                     <div class='col-md-2'></div>
                     <div class='col-md-10'>

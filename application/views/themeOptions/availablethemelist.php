@@ -11,6 +11,7 @@ $aQuestionThemes = $oQuestionTheme->getAvailableQuestionThemes();
 
             <div id="templates_no_db" >
                 <table class="items table table-hover">
+                <caption class="sr-only"><?php eT('Available question themes'); ?></caption>
                     <thead>
                         <tr>
                             <th><?php eT('Preview'); ?></th>
@@ -44,6 +45,7 @@ $aQuestionThemes = $oQuestionTheme->getAvailableQuestionThemes();
     <h3><?php eT('Broken question themes'); ?></h3>
     <div id="templates_no_db" >
         <table class="items table table-hover">
+        <caption class="sr-only"><?php eT('Broken question themes'); ?></caption>
             <thead>
             <tr>
                 <th><?php eT('Path'); ?></th>

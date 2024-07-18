@@ -107,6 +107,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                             } ?>
                                             <div>
                                                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                                                    'ariaLabel'=> gT('Completed?'),
                                                     'name'          => "completed-switch",
                                                     'htmlOptions'   => ['class' => "YesNoDateSwitch action_toggle_bootstrap_switch mb-1"],
                                                     'checkedOption' => $bCompletedValue,
@@ -122,6 +123,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                                 $bCompletedValue = (isset($completed) && $completed != 'N') ? "1" : "0";
                                                 $completed = (isset($completed) && $completed != 'N') ? 'Y' : 'N'; ?>
                                                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                                                    'ariaLabel'=> gT('Completed?'),
                                                     'name'          => "completed-switch",
                                                     'htmlOptions'   => ['class' => "YesNoSwitch action_toggle_bootstrap_switch mb-1"],
                                                     'checkedOption' => $bCompletedValue,
@@ -292,6 +294,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                                 $remindersent        = convertToGlobalSettingFormat($remindersent, true);
                                             } ?>
                                             <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                                                'ariaLabel'=> gT('Completed?'),
                                                 'name'          => "sent-switch",
                                                 'htmlOptions'   => ['class' => "YesNoDateSwitch action_toggle_bootstrap_switch mb-1"],
                                                 'checkedOption' => $bSwitchValue,
@@ -308,6 +311,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                             $bRemindSwitchValue  = (isset($remindersent) && $remindersent != 'N') ? "1" : "0";
                                             ?>
                                             <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                                                'ariaLabel'=> gT('Completed?'),
                                                 'name'          => "sent-switch",
                                                 'htmlOptions'   => ['class' => "YesNoSwitch action_toggle_bootstrap_switch mb-1"],
                                                 'checkedOption' => $bSwitchValue,
@@ -351,6 +355,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                     <div>
                                         <?php if ($oSurvey->anonymized !== 'Y'): ?>
                                             <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                                                'ariaLabel'=> gT('Reminder sent?'),
                                                 'name'          => "remind-switch",
                                                 'htmlOptions'   => ['class' => "YesNoDateSwitch action_toggle_bootstrap_switch mb-1"],
                                                 'checkedOption' => $bRemindSwitchValue,
@@ -361,6 +366,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                             ]); ?>
                                         <?php else: ?>
                                             <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                                                'ariaLabel'=> gT('Reminder sent?'),
                                                 'name'          => "remind-switch",
                                                 'htmlOptions'   => ['class' => "YesNoSwitch action_toggle_bootstrap_switch mb-1"],
                                                 'checkedOption' => $bRemindSwitchValue,
@@ -510,11 +516,11 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
 
 <?php if ($token_subaction == "addnew"): ?>
     <!-- Empty Token Confirmation Modal -->
-    <div class="modal fade" tabindex="-1" role="dialog" id="emptyTokenConfirmationModal">
+    <div class="modal fade" aria-modal="true"  tabindex="-1" role="dialog" id="emptyTokenConfirmationModal">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title"><?= gT('Create empty participant') ?></h5>
+                    <h5 role="heading" aria-level="2" class="modal-title"><?= gT('Create empty participant') ?></h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">

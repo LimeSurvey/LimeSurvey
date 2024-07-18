@@ -5,7 +5,7 @@
 /** @var array $aSurveysettings */
 ?>
 
-<div id="surveyactivation-modal" class="modal fade" role="dialog">
+<div id="surveyactivation-modal" class="modal fade" tabindex="-1" aria-modal="true"  role="dialog">
     <div class="modal-dialog">
         <!-- Modal content-->
         <div class="modal-content">

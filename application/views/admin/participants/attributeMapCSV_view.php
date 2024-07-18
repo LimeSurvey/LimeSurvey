@@ -1,14 +1,15 @@
 <div class='header pt-2'>
-    <h3 class='pagetitle'><?php neT("Select which fields to import as attributes with your {n} participant.|Select which fields to import as attributes with your {n} participants.", $linecount); ?></h3>
+    <h3 role="none" class='pagetitle'><?php neT("Select which fields to import as attributes with your {n} participant.|Select which fields to import as attributes with your {n} participants.", $linecount); ?></h3>
 </div>
 
 <div class="row justify-content-start">
     <div class='col-4'>
         <div id="csvattribute" class="card card-primary h-100">
             <div class="card-header ">
-                <?php eT("CSV field names "); ?>
+                <h2><?php eT("CSV field names "); ?></h2>
                 <div class='float-end'>
-                    <span id='move-all' class='btn ri-arrow-right-fill no-padding' data-bs-toggle='tooltip' data-title='<?php eT('Move all fields to create column'); ?>'></span>
+                    <button id='move-all' class='btn ri-arrow-right-fill no-padding' data-bs-toggle='tooltip' data-title='<?php eT('Move all fields to create column'); ?>' aria-label="Move all CSV fields" aria-describedby="instructionsfields"></span>
+                    <span aria-hidden="true" id="instructionsfields" class="sr-only">Move fields from CSV field names to Attributes to be created</span>
                 </div>
             </div>
             <div class='card-body'>
@@ -33,9 +34,9 @@
     </div>
     <div class='col-4'>
         <div id="newcreated" class="card card-primary h-100">
-            <div class="card-header ">
+            <h2 class="card-header ">
                 <?php eT("Attributes to be created") ?>
-            </div>
+            </h2>
             <div class='card-body'>
                 <p class='help-block'><?php eT("Drop a CSV field into this area to create a new participant attribute and import your data into it."); ?></p>
                 <div class="newcreate droppable-new">
@@ -45,7 +46,7 @@
     </div>
     <div class='col-4'>
         <div id="centralattribute" class="card card-primary h-100">
-            <div class="card-header "><?php eT("Existing attribute"); ?></div>
+            <h2 class="card-header "><?php eT("Existing attribute"); ?></h2>
             <div class='card-body'>
                 <p class='help-block'><?php eT("Drop a CSV field into an existing participant attribute listed below to import your data into it."); ?></p>
                 <div class="centralatt">

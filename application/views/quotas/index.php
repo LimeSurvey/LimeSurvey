@@ -10,7 +10,7 @@ echo viewHelper::getViewTestTag('surveyQuotas');
 <div class='side-body'>
     <div class="row">
         <div class="col-12 content-right">
-            <h3>
+            <h3 role="heading" aria-level="2">
                 <?php eT("Survey quotas");?>
             </h3>
             <?php
@@ -37,6 +37,7 @@ echo viewHelper::getViewTestTag('surveyQuotas');
                     <?php $this->widget('application.extensions.admin.grid.CLSGridView', [
                         'dataProvider'          => $oDataProvider,
                         'id'                    => 'quota-grid',
+                        'caption'               => gT('Survey quotas'),
                         'ajaxUpdate'            => 'quota-grid',
                         'lsAfterAjaxUpdate'     => ['onQuotaOpenAction();', 'bindListItemclick();'],
                         'emptyText'             => gT('No quotas'),
@@ -60,6 +61,7 @@ echo viewHelper::getViewTestTag('surveyQuotas');
                                 'class'          => 'CCheckBoxColumn',
                                 'selectableRows' => '100',
                                 'htmlOptions'    => ['style' => 'vertical-align:top'],
+                                'checkBoxHtmlOptions'=>['aria-label'=> 'Select Survey quota'],
                             ],
                             [
                                 'name'        => gT('Quota members'),

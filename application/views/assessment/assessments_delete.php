@@ -3,7 +3,7 @@
  * Assessments delete
  */
 ?>
-<div id="assesements-delete" class="modal fade" role="dialog">
+<div id="assesements-delete" class="modal fade" tabindex="-1" aria-modal="true"  role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
             <?php echo CHtml::form(array("assessment/delete/surveyid/$surveyid"), 'post', array('class'=>'form','id'=>'assessmentsdeleteform','name'=>'assessmentsdeleteform', 'role' => 'form'));?>

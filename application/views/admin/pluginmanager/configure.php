@@ -10,7 +10,7 @@ echo viewHelper::getViewTestTag('configurePlugin');
 <div class="plugin--configure">
     <div class="row">
         <div class="col-12">
-            <ul class="nav nav-tabs" id="settingTabs">
+            <ul class="nav nav-tabs" id="settingTabs" role="tablist">
                 <li role="presentation" class="nav-item">
                     <a class="nav-link active" role="tab" data-bs-toggle="tab" href='#overview'><?php eT("Overview"); ?></a>
                 </li>

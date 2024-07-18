@@ -43,6 +43,7 @@
                                 <label class='form-label ' for='bypassbademails'><?php eT("Bypass participants with failing email addresses:"); ?></label>
                                 <div>
                                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                                        'ariaLabel'=> gT('Bypass participants with failing email addresses:'),
                                         'name'          => "bypassbademails",
                                         'checkedOption' => '1',
                                         'selectOptions' => [
@@ -66,6 +67,7 @@
                                     ); ?>
                                 <div>
                                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                                        'ariaLabel'=> gT('Bypass date control before sending email:'),
                                         'name'          => "bypassdatecontrol",
                                         'checkedOption' => '0',
                                         'selectOptions' => [

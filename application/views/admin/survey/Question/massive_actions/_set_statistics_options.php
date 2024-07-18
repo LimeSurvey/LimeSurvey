@@ -13,6 +13,7 @@
         <label class="col-md-4 form-label" for="public_statistics"><?php eT("Show in public statistics:"); ?></label>
         <div class="col-md-8">
             <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                'ariaLabel'=> gT('Show in public statistics:'),
                 'name'          => 'public_statistics',
                 'checkedOption' => '0',
                 'selectOptions' => [
@@ -30,6 +31,7 @@
         <label class="col-md-4 form-label" for="statistics_showgraph"><?php eT("Display chart:"); ?></label>
         <div class="col-md-8">
             <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                'ariaLabel'=> gT('Display chart:'),
                 'name'          => 'statistics_showgraph',
                 'checkedOption' => '0',
                 'selectOptions' => [

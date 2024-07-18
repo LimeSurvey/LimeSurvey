@@ -7,7 +7,7 @@ $class = !$generalSettingsView ? 'mb-4 col-12 scoped-responsive-fix-height' : ''
 ?>
 <div class="<?= $class ?>">
     <label for="questionCode"><?= gT('Code'); ?></label>
-    <i class="ri-information-fill"
+    <i tabindex="0" role="button" class="ri-information-fill"
         data-bs-toggle="tooltip"
         title="<?= gT("The question code is used for quick identification of this question and must be unique. It is especially useful if you wish to use the LimeSurvey assessments feature and/or the ExpressionScript."); ?>"
         ></i>

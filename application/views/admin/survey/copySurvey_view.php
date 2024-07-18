@@ -68,7 +68,7 @@
         </p>
     <?php endif; ?>
 
-    <p><strong><?php eT("Copy of survey is completed."); ?></strong></p>
+    <p role="alert"><strong><?php eT("Copy of survey is completed."); ?></strong></p>
 
     <p>
         <a class="btn btn-outline-secondary btn-large" href='<?php echo $this->createUrl("surveyAdministration/view/".$aImportResults['newsid']); ?>'>

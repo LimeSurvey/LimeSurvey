@@ -1,6 +1,6 @@
 <div class="modal-header">
-    <h5 class="modal-title"><?php eT("Test email settings"); ?></h5>
-    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+    <h5 role="heading" aria-level="2" class="modal-title"><?php eT("Test email settings"); ?></h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="close"></button>
 </div>
 <div class="modal-body">
     <p><?php printf(gT("Test email will be sent to: %s"), "<strong>" . $testEmail . "</strong>"); ?></p>

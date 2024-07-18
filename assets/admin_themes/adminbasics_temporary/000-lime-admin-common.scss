@@ -345,6 +345,9 @@ html {
 
 .list-surveys {
     margin-top: 10px;
+    & #admin_themes{
+        overflow-x: scroll;
+    }
 }
 
 #fullpagebar {
@@ -501,7 +504,7 @@ html {
         margin-top: 1.72rem;
         font-size: 0.95rem;
         padding-right: 3rem;
-        opacity: 0.7;
+        opacity: 1;
     }
 }
 

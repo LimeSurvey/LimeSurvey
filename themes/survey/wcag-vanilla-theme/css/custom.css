@@ -1,0 +1,178 @@
+/******************
+    User custom CSS
+    ---------------
+
+    In this file you can add your own custom CSS
+    It will be loaded last, so you can override any other property.
+    Also, it will never be updated. So if you inheritate a core template and just add here some CSS, you'll still benefit of all the updates
+*/
+
+body .ls-emojislider .slider-line{
+    outline: 2px solid black;
+    margin: 2px;
+}
+a {color: #698027}
+a:hover {color: #000000}
+
+.slider.slider-horizontal > .tooltip.tooltip-main.bs-tooltip-top.show{
+    display:block !important;
+}
+
+.subquestion-list.questions-list.radio-array input[type=radio]:focus+label{
+    outline: 2px dotted black;
+}
+
+.ls-table-wrapper tbody, td, tfoot, th, thead, tr{
+    border-color: #909090 !important;
+}
+
+.select-sortable-lists.ranking-advanced-style ul > li select{
+    display:none;
+}
+
+.upload-item div[id$='_uploadedfiles']{
+    overflow-x: scroll;
+}
+
+.upload-item div[id$='_uploadedfiles'] .question.uploadedfiles{
+    overflow-x: scroll;
+    min-width: 40em;
+}
+
+body .radio-item label::before{
+    border-color: #757575;
+}
+
+.outlined-element, *:focus {
+    outline: 2px dotted black !important;
+    box-shadow:none !important;
+}
+
+input.form-control{
+    border-color:#757575;
+}
+
+.text-danger {
+    color: #D42B3B !important;
+}
+
+.text-info{
+    color: #007795 !important;
+}
+
+
+body {font-size: 16px}
+
+@media (min-width: 992px) {
+  #outerframeContainer {
+    width: 95%;
+  }
+}
+.top-container .progress {
+    width: 86%;
+    margin: 0 auto;
+}
+
+body .top-container {
+    margin-top: 25px!important;
+}
+
+.h1, h1 {
+    font-size: 2.9rem;
+}
+  .table-bordered > thead > tr > th {
+    border: 1px solid #dadada;
+  }
+  .table-bordered > thead > tr > td {
+    border: 1px solid #dadada;
+  }
+
+.progress-bar {
+    background-color: #698027;
+    color: #fff;
+}  
+.btn-outline-secondary, .btn-primary {
+    background-color: #698027;
+    border-color: #698027;
+    color: #fff;
+    padding: 10px 15px 10px 15px;
+    text-transform: uppercase;
+}
+.ls-move-previous-btn {
+    border: 1px solid #000;
+    color: #fff;
+}    
+.btn-outline-secondary:hover {
+    background-color: #40520e!important;
+    border-color: #40520e!important;
+    color: #fff!important;
+}
+.btn-check:focus+.btn-primary, .btn-primary:focus, .btn-primary:hover {
+    background-color: #40520e!important;
+    border-color: #40520e!important;
+    color: #fff;
+}
+
+.btn-check:active+.btn-primary, .btn-check:checked+.btn-primary, .btn-primary.active, .btn-primary:active, .show>.btn-primary.dropdown-toggle {
+    background-color: #40520e!important;
+    border-color: #40520e!important;
+    color: #fff;
+}
+
+#welcome-container .text-info, .text-primary {
+    --bs-text-opacity: 100;
+    color: #000!important;
+}
+
+.navcssstyle {width:16px; height:17px}
+.survey-welcome {margin-top:40px; border: 1px solid #ccc; padding: 18px;}
+
+.privacy {margin-top:40px; border: 1px dashed #dbdada; color: #444; padding: 18px; background-color: #f1f1f1}
+
+.question-container {
+    border: 1px dashed #e7e7e7;
+    background-color: #f9f9f9;
+    padding:20px;
+}    
+
+.ls-question-mandatory {font-weight: normal!important; margin-left: 0.55em} 
+.text-danger {font-weight: normal!important}
+
+
+.dir-ltr .ls-questionhelp {margin-left: 1.7em}
+.ls-questionhelp {color: #698027} 
+.group-title {text-transform: uppercase; color: #000}    
+    
+/*.btn-check:focus+.btn, .btn:focus, .btn-check:focus+.btn-outline-secondary, .btn-outline-secondary:focus {box-shadow: 0 0 0 0.25rem #ff0000!important}*/
+
+.question-number {font-weight: bold; color: #000!important}
+.div.slider-handle.min-slider-handle.round {background: #698027!important}
+.ls-table-wrapper .table>thead {background: #f1f1f1}
+.ls-table-wrapper .table>:not(:first-child) {border: none!importantimportant}
+.ls-table-wrapper .table>tbody {background: #fff;}
+.ls-table-wrapper tbody, td, tfoot, th, thead, tr {border: 1px solid #f1f1f1}
+.table>:not(:first-child) {border-top: none;}
+.completed-wrapper  .alert-warning {margin-bottom:50px}
+
+.save-survey-form {margin-top:50px}
+.load-form, .survey-form-container {margin-bottom:30px}
+.card-body .h2 {text-transform: uppercase}
+.card-body .text-info {color: #698027!important}
+.card-body .text-warning {color: #ff0000!important}
+label.load-survey-label, label.save-survey-label {font-weight: normal}
+.navbar-right a.nav-link, a.ls-link-loadall, .url-wrapper-survey-return a, a.ls-return {margin-left: 10px; border: 2px solid #ccc; padding: 8px; font-weight: bold; text-transform: Capitalize!important}
+.navbar-right a.nav-link, a.ls-link-loadall {color: #698027!important; font-size:12px; text-transform: uppercase!important}
+.navbar-right a.nav-link:hover, a.ls-link-loadall:hover {color: #000!important}
+.btn-outline-secondary {padding: 10px 15px 10px 15px; text-transform: uppercase}
+
+.footernavstyle {padding: 15px; text-align: center}
+.footernavstyle a {color:#698027; font-size: 12px; text-transform: uppercase; font-weight: bold}
+.footernavstyle a:hover {color: #000000; font-weight: bold}
+
+.question-number::after {display: inline-block; content: "."; margin-left: -4px;}
+
+.text-start {text-align: right!important;}
+.text-end {text-align: left!important;}
+
+
+

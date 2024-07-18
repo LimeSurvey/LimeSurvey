@@ -59,6 +59,7 @@
                 <label class=" form-label" for='pdfshowsurveytitle'><?php eT("Show survey title in export PDFs:"); ?></label>
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                        'ariaLabel'=> gT('Show survey title in export PDFs:'),
                         'name'          => 'pdfshowsurveytitle',
                         'checkedOption' => App()->getConfig('pdfshowsurveytitle') === 'Y' ? '1' : 0,
                         'selectOptions' => [
@@ -73,6 +74,7 @@
                 <label class=" form-label" for='pdfshowheader'><?php eT("Show header in answers export PDFs:"); ?></label>
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                        'ariaLabel'=> gT('Show header in answers export PDFs:'),
                         'name'          => 'pdfshowheader',
                         'checkedOption' => App()->getConfig('pdfshowheader') === 'Y' ? '1' : 0,
                         'selectOptions' => [
@@ -87,6 +89,7 @@
                 <label class=" form-label" for='bPdfQuestionFill'><?php eT("Add gray background to questions in PDF:"); ?></label>
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                        'ariaLabel'=> gT('Add gray background to questions in PDF:'),
                         'name'          => 'bPdfQuestionFill',
                         'checkedOption' => App()->getConfig('bPdfQuestionFill'),
                         'selectOptions' => [
@@ -101,6 +104,7 @@
                 <label class=" form-label" for='bPdfQuestionBold'><?php eT("PDF questions in bold:"); ?></label>
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                        'ariaLabel'=> gT('PDF questions in bold:'),
                         'name'          => 'bPdfQuestionBold',
                         'checkedOption' => App()->getConfig('bPdfQuestionBold'),
                         'selectOptions' => [
@@ -115,6 +119,7 @@
                 <label class=" form-label" for='bPdfQuestionBorder'><?php eT("Borders around questions in PDF:"); ?></label>
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                        'ariaLabel'=> gT('Borders around questions in PDF:'),
                         'name'          => 'bPdfQuestionBorder',
                         'checkedOption' => App()->getConfig('bPdfQuestionBorder'),
                         'selectOptions' => [
@@ -129,6 +134,7 @@
                 <label class=" form-label" for='bPdfResponseBorder'><?php eT("Borders around responses in PDF:"); ?></label>
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                        'ariaLabel'=> gT('Borders around responses in PDF:'),
                         'name'          => 'bPdfResponseBorder',
                         'checkedOption' => App()->getConfig('bPdfResponseBorder'),
                         'selectOptions' => [

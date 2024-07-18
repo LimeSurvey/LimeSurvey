@@ -40,6 +40,7 @@ echo viewHelper::getViewTestTag('surveyMenus');
                             'application.extensions.admin.grid.CLSGridView',
                             [
                                 'dataProvider' => $model->search(),
+                                'caption' => gT('Survey menus'),
                                 'id' => 'surveymenu-grid',
                                 'columns' => $model->getColumns(),
                                 'filter' => $model,
@@ -75,17 +76,17 @@ echo viewHelper::getViewTestTag('surveyMenus');
 <input type="hidden" id="surveymenu_open_url_selected_entry" value="0"/>
 <!-- modal! -->
 
-<div class="modal fade" id="editcreatemenu" tabindex="-1" role="dialog">
+<div class="modal fade" aria-modal="true"  id="editcreatemenu" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
         </div>
     </div>
 </div>
-<div class="modal fade" id="deletesurveymenumodal" tabindex="-1" role="dialog">
+<div class="modal fade" aria-modal="true"  id="deletesurveymenumodal" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title"><?php eT("Delete this survey menu?"); ?></h5>
+                <h5 role="heading" aria-level="2" class="modal-title"><?php eT("Delete this survey menu?"); ?></h5>
             </div>
             <div class="modal-body">
                 <?php eT("All menu entries of this menu will also be deleted."); ?>
@@ -100,11 +101,11 @@ echo viewHelper::getViewTestTag('surveyMenus');
     </div>
 </div>
 
-<div class="modal fade" id="restoremodalsurveymenu" tabindex="-1" role="dialog">
+<div class="modal fade" aria-modal="true"  id="restoremodalsurveymenu" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title"><?php eT("Really restore the default survey menus (survey menu entries)?"); ?></h5>
+                <h5 role="heading" aria-level="2" class="modal-title"><?php eT("Really restore the default survey menus (survey menu entries)?"); ?></h5>
             </div>
             <div class="modal-body">
                 <p>

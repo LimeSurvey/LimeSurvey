@@ -19,6 +19,7 @@
     $this->widget('application.extensions.admin.grid.CLSGridView', [
             'dataProvider' => $model->search($surveyId, $language),
             'id' => 'time-grid',
+            'caption' => gT('List of responses'),
             'emptyText' => gT('No surveys found.'),
             'ajaxUpdate' => 'time-grid',
             'lsAfterAjaxUpdate' => ['window.LS.doToolTip();'],

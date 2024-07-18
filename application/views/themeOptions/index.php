@@ -17,19 +17,19 @@
 echo viewHelper::getViewTestTag('templateOptions');
 ?>
 <div class="list-themes">
-    <ul class="nav nav-tabs" id="themelist">
-        <li class="nav-item">
-            <a class="nav-link active" href="#surveythemes" data-bs-toggle="tab">
+    <ul class="nav nav-tabs" id="themelist" role="tablist">
+        <li class="nav-item" role="none">
+            <a class="nav-link active" href="#surveythemes" data-bs-toggle="tab" role="tab">
                 <?php eT('Survey themes'); ?>
             </a>
         </li>
-        <li>
-            <a class="nav-link" href="#adminthemes" data-bs-toggle="tab">
+        <li role="none">
+            <a class="nav-link" href="#adminthemes" data-bs-toggle="tab" role="tab">
                 <?php eT('Admin themes'); ?>
             </a>
         </li>
-        <li>
-            <a class="nav-link" href="#questionthemes" data-bs-toggle="tab">
+        <li role="none">
+            <a class="nav-link" href="#questionthemes" data-bs-toggle="tab" role="tab">
                 <?php eT('Question themes'); ?>
             </a>
         </li>
@@ -78,12 +78,12 @@ echo viewHelper::getViewTestTag('templateOptions');
                                                         data-bs-target="#templates_no_db_error_<?= $surveyThemeIterator ?>">
                                                     <i class="ri-error-warning-fill"></i><?= gT('Show errors') ?>
                                                 </button>
-                                                <div class="modal fade" id="templates_no_db_error_<?= $surveyThemeIterator ?>" tabindex="-1"
+                                                <div class="modal fade" aria-modal="true"  id="templates_no_db_error_<?= $surveyThemeIterator ?>" tabindex="-1"
                                                      aria-labelledby="templates_no_db_error_title_<?= $surveyThemeIterator ?>" aria-hidden="true">
                                                     <div class="modal-dialog modal-lg">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
-                                                                <h5 class="modal-title" id="templates_no_db_error_title_<?= $surveyThemeIterator ?>"><?= gT('Errors') ?></h5>
+                                                                <h5 role="heading" aria-level="2" class="modal-title" id="templates_no_db_error_title_<?= $surveyThemeIterator ?>"><?= gT('Errors') ?></h5>
                                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                             </div>
                                                             <div class="modal-body">
@@ -192,6 +192,7 @@ echo viewHelper::getViewTestTag('templateOptions');
                     <h3><?php eT('Deprecated survey themes:'); ?></h3>
                     <div id="deprecatedThemes" >
                         <table class="items table table-hover">
+                        <caption class="sr-only"><?php eT('Deprecated survey themes'); ?></caption>
                             <thead>
                             <tr>
                                 <th><?php eT('Name'); ?></th>
@@ -229,6 +230,7 @@ echo viewHelper::getViewTestTag('templateOptions');
                 <h3><?php eT('Available admin themes:'); ?></h3>
                 <div id="admin_themes">
                     <table class="items table table-hover">
+                    <caption class="sr-only"><?php eT('Available admin themes'); ?></caption>
                         <thead>
                         <tr>
                             <th><?php eT('Preview'); ?></th>
@@ -249,7 +251,7 @@ echo viewHelper::getViewTestTag('templateOptions');
                                 <td class="col-lg-1">
                                     <?php if (TemplateConfig::isCompatible($oTheme->path . 'config.xml')): ?>
                                         <?php if ($oTheme->name === App()->getConfig('admintheme')) : ?>
-                                            <h3><strong class="text-info"><?php eT("Selected") ?></strong></h3>
+                                            <h3><strong class="text-primary"><?php eT("Selected") ?></strong></h3>
                                         <?php else : ?>
                                             <a href="<?= $this->createUrl("themeOptions/setAdminTheme/", ['sAdminThemeName' => $oTheme->name]) ?>"
                                                class="btn btn-outline-secondary btn-sm">
@@ -260,12 +262,12 @@ echo viewHelper::getViewTestTag('templateOptions');
                                         <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#admin_theme_error_<?= $adminThemeIterator ?>">
                                             <i class="ri-error-warning-fill"></i><?= gT('Show errors') ?>
                                         </button>
-                                        <div class="modal fade" id="admin_theme_error_<?= $adminThemeIterator ?>" tabindex="-1"
+                                        <div class="modal fade" aria-modal="true"  id="admin_theme_error_<?= $adminThemeIterator ?>" tabindex="-1"
                                              aria-labelledby="#admin_theme_error_title_<?= $adminThemeIterator ?>" aria-hidden="true">
                                             <div class="modal-dialog modal-lg">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title" id="admin_theme_error_title_<?= $adminThemeIterator ?>"><?= gT('Errors') ?></h5>
+                                                        <h5 role="heading" aria-level="2" class="modal-title" id="admin_theme_error_title_<?= $adminThemeIterator ?>"><?= gT('Errors') ?></h5>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
                                                     <div class="modal-body">

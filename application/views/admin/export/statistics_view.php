@@ -18,7 +18,7 @@ echo viewHelper::getViewTestTag('statisticsIndex');
     <div class="row d-print-none">
         <div class="col-12">
             <div class="col-lg-3 text-start">
-                <h4 class="d-print-none">
+                <h4 class="d-print-none" role="heading" aria-level="1">
                     <span class="ri-bar-chart-fill"></span> &nbsp;&nbsp;&nbsp;
                     <?php eT("Statistics"); ?>
                 </h4>

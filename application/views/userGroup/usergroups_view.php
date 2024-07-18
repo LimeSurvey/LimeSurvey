@@ -23,6 +23,7 @@
             $this->widget('application.extensions.admin.grid.CLSGridView',
                 [
                     'id' => 'usergroups-grid-mine',
+                    'caption' => gT('User groups'),
                     'dataProvider' => $model->searchMine(true),
                     'columns' => $model->getManagementButtons(),
                     'emptyText' => gT('No user groups found.'),
@@ -60,6 +61,7 @@
                     [
                         'dataProvider' => $model->searchMine(false),
                         'id' => 'usergroups-grid-belong-to',
+                        'caption' => gT('Groups to which I belong'),
                         'emptyText' => gT('No user groups found.'),
                         'summaryText' => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
                                 gT('%s rows per page'),

@@ -5,7 +5,7 @@
 
 ?>
 
-<div id="" class="modal fade" role="dialog">
+<div id="" class="modal fade" tabindex="-1" aria-modal="true"  role="dialog">
     <div class="modal-dialog">
         <!-- Modal content-->
         <div class="modal-content">

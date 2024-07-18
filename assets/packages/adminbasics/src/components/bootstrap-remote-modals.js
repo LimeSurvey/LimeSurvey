@@ -32,11 +32,11 @@ var BootstrapRemoteModal = function(presetOptions, templateOptions){
     };
 
     //Define all the blocks and combine them by jquery methods
-    var outerBlock      = $('<div id="bootstrap-remote-modal" class="modal fade" tabindex="-1" role="dialog"></div>'),
+    var outerBlock      = $('<div id="bootstrap-remote-modal" class="modal fade" tabindex="-1" aria-modal="true"  tabindex="-1" role="dialog"></div>'),
         innerBlock      = $('<div class="modal-dialog" role="document"></div>'),
         contentBlock    = $('<div class="modal-content"></div>'),
         headerBlock     = $('<div class="modal-header"></div>'),
-        headlineBlock   = $('<h5 class="modal-title"></h5>'),
+        headlineBlock   = $('<h5 role="heading" aria-level="2" class="modal-title"></h5>'),
         bodyBlock       = $('<div class="modal-body"></div>'),
         footerBlock     = $('<div class="modal-footer"></div>'),
         closeIcon       = $(templateOptions.closeIcon),

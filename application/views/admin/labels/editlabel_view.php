@@ -18,15 +18,15 @@
     <div class="row">
         <div class="col-12 content-right">
             <!-- Tabs -->
-            <ul class="nav nav-tabs" id="edit-survey-text-element-language-selection">
-                <li class="nav-item">
-                    <a class="nav-link active" href='#neweditlblset0' data-bs-toggle="tab">
+            <ul class="nav nav-tabs" role="tablist" id="edit-survey-text-element-language-selection">
+                <li class="nav-item" role="none">
+                    <a class="nav-link active" role="tab" aria-selected="true" href='#neweditlblset0' data-bs-toggle="tab">
                         <?php echo $tabitem; ?>
                     </a>
                 </li>
                 <?php if ($action === "newlabelset" && Permission::model()->hasGlobalPermission('labelsets', 'import')): ?>
-                    <li class="nav-item">
-                        <a class="nav-link" href='#neweditlblset1' data-bs-toggle="tab">
+                    <li class="nav-item" role="none">
+                        <a class="nav-link" href='#neweditlblset1' data-bs-toggle="tab" role="tab">
                             <?php eT("Import label set(s)"); ?>
                         </a>
                     </li>
