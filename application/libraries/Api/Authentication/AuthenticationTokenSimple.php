@@ -96,7 +96,7 @@ class AuthenticationTokenSimple implements AuthenticationInterface
             throw new ExceptionInvalidUser('Invalid token');
         }
 
-        /* @var $app LSYii_Application */
+        /** @var \LSYii_Application */
         $app = Yii::app();
 
         $session = $this->createSession($existingSession->data);
