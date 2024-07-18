@@ -3725,8 +3725,17 @@ class LimeExpressionManager
             }
 
             if (
-                !is_null($rowdivid) || $type == Question::QT_L_LIST || $type == Question::QT_N_NUMERICAL || $type == Question::QT_EXCLAMATION_LIST_DROPDOWN || $type == Question::QT_O_LIST_WITH_COMMENT || !is_null($preg)
-                || $type == Question::QT_S_SHORT_FREE_TEXT || $type == Question::QT_D_DATE || $type == Question::QT_T_LONG_FREE_TEXT || $type == Question::QT_U_HUGE_FREE_TEXT || $type == Question::QT_VERTICAL_FILE_UPLOAD
+                !is_null($rowdivid)
+                || $type == Question::QT_L_LIST
+                || $type == Question::QT_N_NUMERICAL
+                || $type == Question::QT_EXCLAMATION_LIST_DROPDOWN
+                || $type == Question::QT_O_LIST_WITH_COMMENT
+                || (!is_null($preg) && $type != Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS)
+                || $type == Question::QT_S_SHORT_FREE_TEXT
+                || $type == Question::QT_D_DATE
+                || $type == Question::QT_T_LONG_FREE_TEXT
+                || $type == Question::QT_U_HUGE_FREE_TEXT
+                || $type == Question::QT_VERTICAL_FILE_UPLOAD
             ) {
                 if (!isset($q2subqInfo[$questionNum])) {
                     $q2subqInfo[$questionNum] = [
