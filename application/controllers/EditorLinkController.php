@@ -13,6 +13,7 @@
  *
  */
 
+use LimeSurvey\DI;
 use LimeSurvey\Api\Authentication\AuthenticationTokenSimple;
 use LimeSurvey\Api\Authentication\SessionUtil;
 
@@ -69,27 +70,24 @@ class EditorLinkController extends LSYii_Controller
      */
     private function setAuthenticationInitCookie()
     {
+        $diContainer = DI::getContainer();
+
         $cookieName = 'LS_AUTH_INIT';
 
-        $authTokenSimple = new AuthenticationTokenSimple(
-            new SessionUtil()
-        );
+        $authTokenSimple = $diContainer->get(AuthenticationTokenSimple::class);
         $session = $authTokenSimple->createSession(
             Yii::app()->session['user']
-        );
-
-        $sessionExpires = new \DateTime(
-            date('c', $session->expire)
         );
 
         /** @var \LSYii_Application */
         $app = \Yii::app();
 
-        $cookieDataJson = json_encode([
-            'token' => $session->id,
-            'userId' => $app->user->id,
-            'expires' => $sessionExpires->format('Y-m-d\TH:i:s.000\Z')
-        ]);
+        $cookieDataJson = json_encode(
+            $authTokenSimple->getTokenData(
+                $session,
+                $app->user->id
+            )
+        );
 
         $cookie = new CHttpCookie($cookieName, $cookieDataJson);
         $cookie->expire = time() + (60 * 2); // 2 minutes

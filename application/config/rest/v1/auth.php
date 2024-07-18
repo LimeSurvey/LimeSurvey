@@ -1,6 +1,7 @@
 <?php
 
 use LimeSurvey\Api\Command\V1\{
+    AuthSessionCreate,
     AuthTokenSimpleCreate,
     AuthTokenSimpleRefresh,
     AuthTokenSimpleRelease
@@ -81,5 +82,6 @@ $rest['v1/auth'] = [
 // - can remove this once the survey template functionality is calling
 // - /auth instead of /session
 $rest['v1/session'] = $rest['v1/auth'];
+$rest['v1/session']['POST']['commandClass'] = AuthSessionCreate::class;
 
 return $rest;

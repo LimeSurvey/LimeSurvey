@@ -4,9 +4,11 @@ namespace LimeSurvey\Api\Authentication;
 
 use LimeSurvey\Api\Authentication\AuthenticationInterface;
 use LimeSurvey\Api\Command\V1\Exception\ExceptionInvalidUser;
+use LimeSurvey\Api\Transformer\Formatter\FormatterDateTimeToJson;
 use LSUserIdentity;
 use PluginEvent;
 use CDbCriteria;
+use DateTime;
 use Session;
 use Yii;
 
@@ -15,15 +17,19 @@ class AuthenticationTokenSimple implements AuthenticationInterface
     const ERROR_INVALID_SESSION_KEY = 'INVALID_SESSION_KEY';
 
     protected SessionUtil $sessionUtil;
+    protected FormatterDateTimeToJson $formatterDateTimeToJson;
 
     /**
      * Constructor
      *
      * @param SessionUtil $sessionUtil
      */
-    public function __construct(SessionUtil $sessionUtil)
-    {
+    public function __construct(
+        SessionUtil $sessionUtil,
+        FormatterDateTimeToJson $formatterDateTimeToJson
+    ) {
         $this->sessionUtil = $sessionUtil;
+        $this->formatterDateTimeToJson = $formatterDateTimeToJson;
     }
 
     /**
@@ -52,8 +58,29 @@ class AuthenticationTokenSimple implements AuthenticationInterface
             }
             throw new ExceptionInvalidUser('Invalid user name or password');
         } else {
-            return ($this->createSession($username))->id;
+            $session = $this->createSession($username);
+            return $this->getTokenData(
+                $session,
+                $identity->getId()
+            );
         }
+    }
+    /**
+     * Get Token Data
+     *
+     * @param Session $session
+     * @param int $userId
+     * @return array
+     */
+    public function getTokenData($session, $userId)
+    {
+        return [
+            'token' => $session->id,
+            'expires' => $this->formatterDateTimeToJson->format(
+            '@' . $session->expire
+            ),
+            'userId' => (int) $userId,
+        ];
     }
 
     /**
@@ -70,10 +97,14 @@ class AuthenticationTokenSimple implements AuthenticationInterface
             throw new ExceptionInvalidUser('Invalid token');
         }
 
-        $result = $this->createSession($existingSession->data)->id;
+        $session = $this->createSession($existingSession->data);
+        $result = $this->getTokenData(
+            $session,
+            \Yii::app()->user->id
+        );
 
         // Expire existing token
-        $existingSession->expire = time() - 1;
+        $existingSession->expire = time() + 5;
         $existingSession->save();
 
         return $result;
