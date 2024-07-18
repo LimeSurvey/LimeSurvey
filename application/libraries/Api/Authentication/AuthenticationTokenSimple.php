@@ -8,7 +8,6 @@ use LimeSurvey\Api\Transformer\Formatter\FormatterDateTimeToJson;
 use LSUserIdentity;
 use PluginEvent;
 use CDbCriteria;
-use DateTime;
 use Session;
 use Yii;
 

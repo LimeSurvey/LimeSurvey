@@ -15,7 +15,6 @@
 
 use LimeSurvey\DI;
 use LimeSurvey\Api\Authentication\AuthenticationTokenSimple;
-use LimeSurvey\Api\Authentication\SessionUtil;
 
 class EditorLinkController extends LSYii_Controller
 {
@@ -74,7 +73,9 @@ class EditorLinkController extends LSYii_Controller
 
         $cookieName = 'LS_AUTH_INIT';
 
-        $authTokenSimple = $diContainer->get(AuthenticationTokenSimple::class);
+        $authTokenSimple = $diContainer->get(
+            AuthenticationTokenSimple::class
+        );
         $session = $authTokenSimple->createSession(
             Yii::app()->session['user']
         );
@@ -85,7 +86,7 @@ class EditorLinkController extends LSYii_Controller
         $cookieDataJson = json_encode(
             $authTokenSimple->getTokenData(
                 $session,
-                $app->user->id
+                $app->user->getId()
             )
         );
 
