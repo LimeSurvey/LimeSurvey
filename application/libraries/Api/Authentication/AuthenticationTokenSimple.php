@@ -76,7 +76,7 @@ class AuthenticationTokenSimple implements AuthenticationInterface
         return [
             'token' => $session->id,
             'expires' => $this->formatterDateTimeToJson->format(
-            '@' . $session->expire
+                '@' . $session->expire
             ),
             'userId' => (int) $userId,
         ];
