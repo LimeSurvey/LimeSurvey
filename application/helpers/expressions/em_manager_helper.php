@@ -9927,7 +9927,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
         $sid = intval($this->sid); // Show 0 for null, more clear
         Yii::log(sprintf("Survey %s invalid value %s for %s : %s (%s)", $sid, $value, $sgqa, $message, ($add ? "added" : "silently")), 'error', 'application.LimeExpressionManager.invalidAnswerString.addValidityString');
         if ($add) {
-            $this->invalidAnswerString[$sgqa] = sprintf($message, CHtml::tag('code', [], CHtml::encode($value)));
+            $this->invalidAnswerString[$sgqa] = sprintf($message, CHtml::tag('code', [], self::htmlSpecialCharsUserValue($value)));
         }
     }
 
