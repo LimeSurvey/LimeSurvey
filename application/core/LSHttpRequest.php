@@ -298,7 +298,7 @@ class LSHttpRequest extends CHttpRequest
     }
 
     /**
-     * Check if an url are in allowed hosb (igf exist)
+     * Check if an url are in allowed host (if exist)
      * @var string $hostInfo
      * @throw Exception
      * @return void
@@ -308,7 +308,7 @@ class LSHttpRequest extends CHttpRequest
         $allowedHosts = App()->getConfig('allowedHosts');
         if (!empty($allowedHosts) && is_array($allowedHosts)) {
             $host = parse_url($hostInfo, PHP_URL_HOST);
-            if (!in_array($host, $allowedHosts)) {
+            if ($host && !in_array($host, $allowedHosts)) {
                  throw new CHttpException(400, gT("The request hostname is invalid.", 'unescaped'));
             }
         }
