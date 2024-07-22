@@ -283,6 +283,7 @@ function SPSSExportData($iSurveyID, $iLength, $na = '', $sEmptyAnswerValue = '',
 */
 function SPSSGetValues($field, $qidattributes, $language)
 {
+    $question = Question::model()->findByPk($field['qid']);
     $language = sanitize_languagecode($language);
 
     $length_vallabel = 120; // Constant ?
@@ -326,7 +327,7 @@ function SPSSGetValues($field, $qidattributes, $language)
     if ($field['LStype'] == ':') {
         //Get the labels that could apply!
         if (is_null($qidattributes)) {
-            $qidattributes = QuestionAttribute::model()->getQuestionAttributes($field["qid"], $language);
+            $qidattributes = QuestionAttribute::model()->getQuestionAttributes($question, $language);
         }
 
         if ($qidattributes['multiflexible_checkbox']) {
@@ -445,7 +446,7 @@ function SPSSGetValues($field, $qidattributes, $language)
         // For questions types with answer options, if all answer codes are numeric but "Other" option is enabled,
         // field should be exported as SPSS type 'A', size 6. See issue #16939
         if (strpos("!LORFH1", (string) $field['LStype']) !== false && $spsstype == 'F') {
-            $oQuestion = Question::model()->findByPk($field["qid"]);
+            $oQuestion = $question;
             if ($oQuestion->other == 'Y') {
                 $spsstype = 'A';
                 $size = 6;
