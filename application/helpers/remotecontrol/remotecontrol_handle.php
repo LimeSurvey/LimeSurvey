@@ -3886,15 +3886,11 @@ class remotecontrol_handle
         // Remove param is set to True
         // Remove all participants whose ID does not appear in the import list.
         if ($remove) {
-            $allParticipants = Participant::model()->getParticipantsWithoutLimit();
-            foreach ($allParticipants as $dbParticipant) {
-                if (!array_search($dbParticipant["participant_id"], array_column($participants, "participant_id"))) {
-                    Participant::model()->deleteParticipants($dbParticipant["participant_id"]);
-                    $aResponse['RemoveCount']++;
-                }
-            }
+    		$participantsId = array_column($participants, 'participant_id');
+    		$criteria = new CDbCriteria();
+    		$criteria->addNotInCondition('participant_id', $participantsId);
+    		$aResponse['RemoveCount'] = Participant::model()->deleteAll($criteria);
         }
-
         return $aResponse;
     }
 
