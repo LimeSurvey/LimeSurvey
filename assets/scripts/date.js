@@ -29,10 +29,12 @@ function doPopupDate(qId) {
             picker.dates.setValue(picker.optionsStore.options.restrictions.maxDate);
         }
 
+        picker.display.decadeDisplay._update(picker.display.widget, picker.display.paint);
         picker.display._update('year');
         picker.display._update('month');
         picker.display._update('date');
         picker.display._update('clock');
+        picker.display._updateCalendarHeader();
     });
 
     /* need to launch EM each time is updated */
