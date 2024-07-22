@@ -5,7 +5,8 @@ var EventEmitter = require("./lib/event_emitter").EventEmitter;
 var Editor = require("./editor").Editor;
 var Renderer = require("./virtual_renderer").VirtualRenderer;
 var EditSession = require("./edit_session").EditSession;
-var Split = function (container, theme, splits) {
+var Split;
+Split = function (container, theme, splits) {
     this.BELOW = 1;
     this.BESIDE = 0;
     this.$container = container;

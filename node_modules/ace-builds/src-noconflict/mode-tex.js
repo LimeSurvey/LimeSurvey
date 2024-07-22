@@ -48,14 +48,14 @@ var TexHighlightRules = function (textClass) {
                 token: "comment",
                 regex: "%.*$"
             }, {
-                token: textClass,
+                token: textClass, // non-command
                 regex: "\\\\[$&%#\\{\\}]"
             }, {
-                token: "keyword",
+                token: "keyword", // command
                 regex: "\\\\(?:documentclass|usepackage|newcounter|setcounter|addtocounter|value|arabic|stepcounter|newenvironment|renewenvironment|ref|vref|eqref|pageref|label|cite[a-zA-Z]*|tag|begin|end|bibitem)\\b",
                 next: "nospell"
             }, {
-                token: "keyword",
+                token: "keyword", // command
                 regex: "\\\\(?:[a-zA-Z0-9]+|[^a-zA-Z0-9])"
             }, {
                 token: "paren.keyword.operator",
@@ -74,13 +74,13 @@ var TexHighlightRules = function (textClass) {
                 regex: "%.*$",
                 next: "start"
             }, {
-                token: "nospell." + textClass,
+                token: "nospell." + textClass, // non-command
                 regex: "\\\\[$&%#\\{\\}]"
             }, {
-                token: "keyword",
+                token: "keyword", // command
                 regex: "\\\\(?:documentclass|usepackage|newcounter|setcounter|addtocounter|value|arabic|stepcounter|newenvironment|renewenvironment|ref|vref|eqref|pageref|label|cite[a-zA-Z]*|tag|begin|end|bibitem)\\b"
             }, {
-                token: "keyword",
+                token: "keyword", // command
                 regex: "\\\\(?:[a-zA-Z0-9]+|[^a-zA-Z0-9])",
                 next: "start"
             }, {

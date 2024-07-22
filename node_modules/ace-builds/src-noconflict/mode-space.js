@@ -5,10 +5,7 @@ var Range = require("../../range").Range;
 var FoldMode = exports.FoldMode = function () { };
 oop.inherits(FoldMode, BaseFoldMode);
 (function () {
-    this.getFoldWidgetRange = function (session, foldStyle, row) {
-        var range = this.indentationBlock(session, row);
-        if (range)
-            return range;
+    this.commentBlock = function (session, row) {
         var re = /\S/;
         var line = session.getLine(row);
         var startLevel = line.search(re);
@@ -31,6 +28,14 @@ oop.inherits(FoldMode, BaseFoldMode);
             var endColumn = session.getLine(endRow).length;
             return new Range(startRow, startColumn, endRow, endColumn);
         }
+    };
+    this.getFoldWidgetRange = function (session, foldStyle, row) {
+        var range = this.indentationBlock(session, row);
+        if (range)
+            return range;
+        range = this.commentBlock(session, row);
+        if (range)
+            return range;
     };
     this.getFoldWidget = function (session, foldStyle, row) {
         var line = session.getLine(row);

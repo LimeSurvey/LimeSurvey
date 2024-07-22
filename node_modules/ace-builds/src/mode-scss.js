@@ -74,7 +74,7 @@ var CssHighlightRules = function () {
                     + "|swash|ornaments|annotation|stylistic|styleset|character-variant)"
             }],
         "comments": [{
-                token: "comment",
+                token: "comment", // multi line comment
                 regex: "\\/\\*",
                 push: [{
                         token: "comment",
@@ -103,10 +103,10 @@ var CssHighlightRules = function () {
                 token: "constant.numeric",
                 regex: numRe
             }, {
-                token: "constant.numeric",
+                token: "constant.numeric", // hex6 color
                 regex: "#[a-f0-9]{6}"
             }, {
-                token: "constant.numeric",
+                token: "constant.numeric", // hex3 color
                 regex: "#[a-f0-9]{3}"
             }, {
                 token: ["punctuation", "entity.other.attribute-name.pseudo-element.css"],
@@ -119,6 +119,9 @@ var CssHighlightRules = function () {
             }, {
                 token: keywordMapper,
                 regex: "\\-?[a-zA-Z_][a-zA-Z0-9_\\-]*"
+            }, {
+                token: "paren.lparen",
+                regex: "\\{"
             }, {
                 caseInsensitive: true
             }],
@@ -210,31 +213,31 @@ var ScssHighlightRules = function () {
                 regex: "\\/\\/.*$"
             },
             {
-                token: "comment",
+                token: "comment", // multi line comment
                 regex: "\\/\\*",
                 next: "comment"
             }, {
-                token: "string",
+                token: "string", // single line
                 regex: '["](?:(?:\\\\.)|(?:[^"\\\\]))*?["]'
             }, {
-                token: "string",
+                token: "string", // multi line string start
                 regex: '["].*\\\\$',
                 next: "qqstring"
             }, {
-                token: "string",
+                token: "string", // single line
                 regex: "['](?:(?:\\\\.)|(?:[^'\\\\]))*?[']"
             }, {
-                token: "string",
+                token: "string", // multi line string start
                 regex: "['].*\\\\$",
                 next: "qstring"
             }, {
                 token: "constant.numeric",
                 regex: numRe + "(?:ch|cm|deg|em|ex|fr|gd|grad|Hz|in|kHz|mm|ms|pc|pt|px|rad|rem|s|turn|vh|vmax|vmin|vm|vw|%)"
             }, {
-                token: "constant.numeric",
+                token: "constant.numeric", // hex6 color
                 regex: "#[a-f0-9]{6}"
             }, {
-                token: "constant.numeric",
+                token: "constant.numeric", // hex3 color
                 regex: "#[a-f0-9]{3}"
             }, {
                 token: "constant.numeric",
@@ -293,7 +296,7 @@ var ScssHighlightRules = function () {
         ],
         "comment": [
             {
-                token: "comment",
+                token: "comment", // closing comment
                 regex: "\\*\\/",
                 next: "start"
             }, {
