@@ -1563,14 +1563,14 @@ function quexml_set_default_value(&$element, $iResponseID, $qid, $iSurveyID, $fi
  * Format defaultValue of Date/Time questions according to question date format
  *
  * @param mixed $element DOM element with the date to change
- * @param int $qid The qid of the question
+ * @param int|Question $question The qid of the question
  * @param int $iSurveyID The survey ID
  * @return void
  */
-function quexml_reformat_date(DOMElement $element, $qid, $iSurveyID)
+function quexml_reformat_date(DOMElement $element, $question, $iSurveyID)
 {
     // Retrieve date format from the question
-    $questionAttributes = QuestionAttribute::model()->getQuestionAttributes($qid);
+    $questionAttributes = QuestionAttribute::model()->getQuestionAttributes($question);
     $dateformatArr = getDateFormatDataForQID($questionAttributes, $iSurveyID);
     $dateformat = $dateformatArr['phpdate'];
 
@@ -1923,7 +1923,7 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false)
                         $response->appendChild(QueXMLCreateFree("date", "19", ""));
                         quexml_set_default_value($response, $iResponseID, $qid, $iSurveyID, $fieldmap);
                         if (Yii::app()->getConfig('quexmlkeepsurveydateformat') == true) {
-                            quexml_reformat_date($response, $qid, $iSurveyID);
+                            quexml_reformat_date($response, $questions[$qid] ?? $qid, $iSurveyID);
                         }
                         $question->appendChild($response);
                         break;
