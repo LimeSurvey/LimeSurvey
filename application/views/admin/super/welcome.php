@@ -284,3 +284,21 @@ gT('Themes');
         ?>
     </div>
 </div>
+<script>
+    // $("#load-more").click(function(event){
+    //     event.preventDefault();
+    //     event.stopPropagation()
+    //     $.ajax({
+    //         url : '/surveyAdministration/boxList',
+    //         type : 'GET',
+    //         success: function(html, statue){
+    //             comsole.log(html)
+    //         },
+    //         error: function(requestObject, error, errorThrown){
+    //             console.log(error);
+    //         }
+    //     });
+    // })
+
+
+</script>
