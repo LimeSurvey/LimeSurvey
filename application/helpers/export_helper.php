@@ -1563,7 +1563,7 @@ function quexml_set_default_value(&$element, $iResponseID, $qid, $iSurveyID, $fi
  * Format defaultValue of Date/Time questions according to question date format
  *
  * @param mixed $element DOM element with the date to change
- * @param Question $question The qid of the question
+ * @param Question|int $question The qid of the question
  * @param int $iSurveyID The survey ID
  * @return void
  */
