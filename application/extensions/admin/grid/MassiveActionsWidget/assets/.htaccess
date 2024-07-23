@@ -6,8 +6,6 @@
     <IfModule !mod_access_compat.c>
         Require all granted
     </IfModule>
-    <IfModule mod_access_compat.c>
-        Order Allow,Deny
-        Allow from all
-    </IfModule>
+    Order Allow,Deny
+    Allow from all
 </IfVersion>
