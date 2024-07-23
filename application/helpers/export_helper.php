@@ -544,6 +544,22 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V', $sLanguage = '')
     $diff = 0;
     $noQID = array('id', 'token', 'datestamp', 'submitdate', 'startdate', 'startlanguage', 'ipaddr', 'refurl', 'lastpage','seed');
     # Build array that has to be returned
+
+    $qids = [0];
+    for ($i = 0; $i < $num_results; $i++) {
+        if (!((in_array($fieldnames[$i], $noQID) || substr($fieldnames[$i], 0, 10) == 'attribute_')) && isset($fieldmap[$fieldnames[$i]])) {
+            $qids[] = $fieldmap[$fieldnames[$i]]['qid'];
+        }
+    }
+
+    $rawQuestions = Question::model()->findAllByPk($qids);
+
+    $questions = [];
+
+    foreach ($rawQuestions as $rawQuestion) {
+        $questions[$rawQuestion->qid] = $rawQuestion;
+    }
+
     for ($i = 0; $i < $num_results; $i++) {
         #Condition for SPSS fields:
         # - Length may not be longer than 8 characters
@@ -655,7 +671,7 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V', $sLanguage = '')
                     $export_scale = $typeMap[$ftype]['Scale'];
                 }
                 //But allow override
-                $aQuestionAttribs = QuestionAttribute::model()->getQuestionAttributes($qid, $sLanguage);
+                $aQuestionAttribs = QuestionAttribute::model()->getQuestionAttributes($questions[$qid] ?? $qid, $sLanguage);
                 if (isset($aQuestionAttribs['scale_export'])) {
                     $export_scale = $aQuestionAttribs['scale_export'];
                 }
