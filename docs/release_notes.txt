@@ -34,6 +34,23 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.5.17 (build 240715) to 6.5.18 (build 240723) July 23, 2024
+-Fixed issue #QE-1019: badge info should be purple (#3913) (Patricia Stell)
+-Fixed issue #CT-877: labelset not creating dummy entries for languages not supplied by the labelset (#3914) (Patrick Teichmann)
+-Fixed issue #CT-863: response export with JSON format missing questions (#3921) (Tim Willig)
+-Fixed issue #CT-854: Fix logo path for PDF export (#3916) (Mohab Elsheikh)
+-Fixed issue #19651: Internal error when taking survey on PostgreSQL (#3919) (Gabriel Jenik)
+-Fixed issue #19455: Regex used at multi choice with comments question fails and keeps the user from going to the next page (#3909) (Gabriel Jenik)
+-Fixed issue #18207: User entered value can be parsed by expression script and is visible in validation answer string (#3925) (Denis Chenu)
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Japanese by d_inoue
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: German by c_schmitz, Mazi
+#Updated translation: German (Informal) by c_schmitz
+
+
 Changes from 6.5.16 (build 240708) to 6.5.17 (build 240715) July 15, 2024
 -Fixed issue #CT-896: Fixed question PDF export at statistics (lajosarpad)
 -Fixed issue #CT-892: Answers for array question types are not correctly displayed on mobile devices (#3911) (Patrick Teichmann)
