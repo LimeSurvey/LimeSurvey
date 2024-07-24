@@ -246,6 +246,8 @@ class ResponsesController extends LSBaseController
                 }
                 $qidattributes = QuestionAttribute::model()->getQuestionAttributes($questions[$field['qid']]);
 
+                $question = viewHelper::getFieldText($field);
+
                 for ($i = 0; $i < count($filesInfo); $i++) {
                     $filenum = sprintf(gT("File %s"), $i + 1);
                     if ($qidattributes['show_title'] == 1) {
