@@ -8,6 +8,7 @@ class BoxesWidget extends CWidget
     public $items = [];
     public $limit = 3;
     public $boxesbyrow = 4;
+    public $searchBox = true;
 
     /** Initializes the widget */
     public function init(): void
@@ -43,9 +44,18 @@ class BoxesWidget extends CWidget
                     'color' => $item->color ?? '',
                 ];
             } elseif ($item->type == self::TYPE_PRODUCT) {
-                 $surveys = $item->model->search(
-                     ['pageSize' => $item->limit]
-                 )->getData();
+                if ($state = App()->request->getQuery('state')) {
+                    $surveys = $item->model->findAll(
+                        'active = :active Limit :limit',
+                        array(':active' => $state, ':limit' => $item->limit)
+                    );
+                } else {
+                    $surveys = $item->model->findAll(
+                        '1 Limit :limit',
+                        array(':limit' => $item->limit)
+                    );
+                }
+
 
                 foreach ($surveys as $survey) {
                     $state = strip_tags($survey->getRunning());
@@ -61,9 +71,15 @@ class BoxesWidget extends CWidget
                 }
             }
         }
+
+        if ($this->searchBox) {
+            $this->render('searchBox');
+        }
+
         $this->render('boxes', [
             'items' => $boxes,
-            'boxesbyrow' => $this->boxesbyrow
+            'boxesbyrow' => $this->boxesbyrow,
+            'limit' => $this->limit
         ]);
     }
 }

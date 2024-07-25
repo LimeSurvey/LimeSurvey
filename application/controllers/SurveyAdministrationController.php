@@ -3393,17 +3393,25 @@ class SurveyAdministrationController extends LSBaseController
 
     public function actionBoxList()
     {
-        $limit = App()->request->getQuery('limit');
-        $page = App()->request->getQuery('page');
+        $limit = (int)App()->request->getQuery('limit');
+        $page = (int)App()->request->getQuery('page');
+        $offset = ($page ) * $limit;
 
-        if ($page * $limit >= Survey::model()->count()) {
-            return false;
+        if ($state = App()->request->getQuery('state')) {
+            $surveys = Survey::model()->findAll(
+                'active = :active LIMIT  :limit OFFSET :offset',
+                array(':active' => $state, ':limit' => $limit, ':offset' => $offset)
+            );
+        } else {
+            $surveys = Survey::model()->findAll(
+                '1 LIMIT :limit OFFSET :offset',
+                array(':limit' => $limit, ':offset' => $offset)
+            );
         }
 
-        $surveys = Survey::model()->search([
-            'pageSize' => (int)$limit,
-            'currentPage' => (int)$page
-        ])->getData();
+        if (empty($surveys)) {
+            return false;
+        }
 
         $boxes = [];
         foreach ($surveys as $survey) {

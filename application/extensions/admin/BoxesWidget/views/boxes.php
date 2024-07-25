@@ -44,6 +44,6 @@
         <?php endforeach; ?>
     </div>
     <div class="btn-container">
-        <a href="#" id="load-more" data-page="1" data-limit="8">Load more</a>
+        <a href="#" id="load-more" data-page="1" data-limit="<?php echo $limit?>">Load more</a>
     </div>
 </div>

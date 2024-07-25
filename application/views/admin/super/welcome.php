@@ -196,7 +196,7 @@ gT('Themes');
     ));
     ?>
 
-    <?php if ($bShowSurveyList) : ?>
+    <?php if (0) : ?>
         <div class="col-12 list-surveys">
             <?php
             $this->widget('ext.admin.survey.ListSurveysWidget.ListSurveysWidget', array(
@@ -204,6 +204,38 @@ gT('Themes');
                 'bRenderSearchBox' => $bShowSurveyListSearch,
             ));
             ?>
+        </div>
+    <?php else: ?>
+        <div class="welcome full-page-wrapper">
+            <div class="col-12 list-surveys">
+                <?php
+                $this->widget('ext.admin.BoxesWidget.BoxesWidget', [
+                    'boxesbyrow' => 5,
+                    'limit' => 4,
+                    'items' => [
+                        [
+                            'type' => 2,
+                            'link' => App()->createUrl('/surveyAdministration/newSurvey/'),
+                            'text' => 'Create survey',
+                            'icon' => 'ri-add-line',
+                            'color' => '#8146F6'
+                        ],
+                        [
+                            'type' => 2,
+                            'link' => App()->createUrl('/admin/surveysgroups/sa/create/'),
+                            'text' => 'Create survey group',
+                            'icon' => 'ri-add-line',
+                            'color' => '#6D748C'
+                        ],
+                        [
+                            'type' => 0,
+                            'model' => Survey::model(),
+                            'limit' => 4
+                        ],
+                    ]
+                ]);
+                ?>
+            </div>
         </div>
     <?php endif; ?>
 
@@ -253,52 +285,4 @@ gT('Themes');
     <input type="hidden" id="absolute_notification" />
 </div>
 
-<div class="welcome full-page-wrapper">
-    <div class="col-12 list-surveys">
-        <?php
-        $this->widget('ext.admin.BoxesWidget.BoxesWidget', [
-            'boxesbyrow' => 5,
-            'limit' => 8,
-            'items' => [
-                [
-                    'type' => 2,
-                    'link' => App()->createUrl('/surveyAdministration/newSurvey/'),
-                    'text' => 'Create survey',
-                    'icon' => 'ri-add-line',
-                    'color' => '#8146F6'
-                ],
-                [
-                    'type' => 2,
-                    'link' => App()->createUrl('/admin/surveysgroups/sa/create/'),
-                    'text' => 'Create survey group',
-                    'icon' => 'ri-add-line',
-                    'color' => '#6D748C'
-                ],
-                [
-                    'type' => 0,
-                    'model' => Survey::model(),
-                    'limit' => 8
-                ],
-            ]
-        ]);
-        ?>
-    </div>
-</div>
-<script>
-    // $("#load-more").click(function(event){
-    //     event.preventDefault();
-    //     event.stopPropagation()
-    //     $.ajax({
-    //         url : '/surveyAdministration/boxList',
-    //         type : 'GET',
-    //         success: function(html, statue){
-    //             comsole.log(html)
-    //         },
-    //         error: function(requestObject, error, errorThrown){
-    //             console.log(error);
-    //         }
-    //     });
-    // })
 
-
-</script>
