@@ -216,9 +216,6 @@ class ResponsesController extends LSBaseController
                 continue;
             }
 
-            //$question = $field['question'];
-            $question = viewHelper::getFieldText($field);
-
             if ($field['type'] != Question::QT_VERTICAL_FILE_UPLOAD) {
                 $fnames[] = [
                     $field['fieldname'],
