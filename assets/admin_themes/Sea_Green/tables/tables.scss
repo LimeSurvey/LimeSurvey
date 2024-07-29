@@ -187,7 +187,7 @@ table {
             font-weight: 600;
 
             ::before {
-              visibility: hidden;
+              //visibility: hidden;
               font-weight: 500;
               color: var(--bs-primary);
             }
@@ -210,11 +210,11 @@ table {
         border: solid 1px #F9F9FB;
       }
 
-      tr:hover td .dropdown.ls-action_dropdown button.btn .ri-more-fill:before,
-      tr td .dropdown.ls-action_dropdown button.btn.show .ri-more-fill:before {
-        visibility: visible;
-        color: black;
-      }
+      //tr:hover td .dropdown.ls-action_dropdown button.btn .ri-more-fill:before,
+      //tr td .dropdown.ls-action_dropdown button.btn.show .ri-more-fill:before {
+      //  visibility: visible;
+      //  color: black;
+      //}
 
       .dropdown.ls-action_dropdown {
 
@@ -237,7 +237,7 @@ table {
 
     button.btn .ri-more-fill:before {
       font-size: 1.1em;
-      visibility: hidden;
+      //visibility: hidden;
     }
 
   }

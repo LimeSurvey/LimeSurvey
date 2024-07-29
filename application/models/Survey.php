@@ -1543,22 +1543,21 @@ class Survey extends LSActiveRecord implements PermissionInterface
 
         $items = [];
         $items[] = [
-            'title' => gT('Add new question'),
-            'url' => App()->createUrl("/questionAdministration/create/surveyid/" . $this->sid),
-            'iconClass' => 'ri-add-line',
+            'title' => gT('Edit survey'),
+            'url' => App()->createUrl("/surveyAdministration/view?iSurveyID=" . $this->sid),
+            'iconClass' => 'ri-edit-line',
             'enabledCondition' =>
                 $this->active !== "Y"
                 && $permissions['responses_create']
-                && $this->groupsCount > 0,
         ];
-        $items[] = [
-            'title' => gT('Add new group'),
-            'url' => App()->createUrl("/questionGroupsAdministration/add/surveyid/" . $this->sid),
-            'iconClass' => 'ri-add-circle-line',
-            'enabledCondition' =>
-                $this->active !== "Y"
-                && $permissions['responses_create'],
-        ];
+//        $items[] = [
+//            'title' => gT('Add new group'),
+//            'url' => App()->createUrl("/questionGroupsAdministration/add/surveyid/" . $this->sid),
+//            'iconClass' => 'ri-edit-line',
+//            'enabledCondition' =>
+//                $this->active !== "Y"
+//                && $permissions['responses_create'],
+//        ];
 
         $items[] = [
             'title' => gT('Activate'),
@@ -1566,7 +1565,9 @@ class Survey extends LSActiveRecord implements PermissionInterface
             'iconClass' => 'ri-check-line',
             'enabledCondition' =>
                 $this->active === "N"
-                && $permissions['survey_update'],
+                && $permissions['survey_update']
+                && $this->groupsCount > 0
+                && $this->getQuestionsCount() > 0
         ];
         $items[] = [
             'title' => gT('Statistics'),
@@ -2158,6 +2159,14 @@ class Survey extends LSActiveRecord implements PermissionInterface
     public function getGroupsCount()
     {
         return QuestionGroup::model()->countByAttributes(['sid' => $this->sid]);
+    }
+
+    /**
+     * Gets number of Questions inside a particular survey
+     */
+    public function getQuestionsCount()
+    {
+        return Question::model()->countByAttributes(['sid' => $this->sid]);
     }
 
     /**

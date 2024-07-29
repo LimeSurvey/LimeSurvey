@@ -18648,7 +18648,6 @@ table [class^=ri-], table [class*=" ri-"] {
   font-weight: 600;
 }
 .grid-view .table thead tr th .sort-link ::before, .grid-view-ls .table thead tr th .sort-link ::before {
-  visibility: hidden;
   font-weight: 500;
   color: var(--bs-primary);
 }
@@ -18660,12 +18659,6 @@ table [class^=ri-], table [class*=" ri-"] {
 }
 .grid-view .table tbody tr, .grid-view-ls .table tbody tr {
   border: solid 1px #F9F9FB;
-}
-.grid-view .table tbody tr:hover td .dropdown.ls-action_dropdown button.btn .ri-more-fill:before,
-.grid-view .table tbody tr td .dropdown.ls-action_dropdown button.btn.show .ri-more-fill:before, .grid-view-ls .table tbody tr:hover td .dropdown.ls-action_dropdown button.btn .ri-more-fill:before,
-.grid-view-ls .table tbody tr td .dropdown.ls-action_dropdown button.btn.show .ri-more-fill:before {
-  visibility: visible;
-  color: black;
 }
 .grid-view .table button, .grid-view-ls .table button {
   border-color: white;
@@ -18679,7 +18672,6 @@ table [class^=ri-], table [class*=" ri-"] {
 }
 .grid-view .table button.btn .ri-more-fill:before, .grid-view-ls .table button.btn .ri-more-fill:before {
   font-size: 1.1em;
-  visibility: hidden;
 }
 .grid-view .ri-play-fill:before,
 .grid-view .ri-stop-fill:before,
