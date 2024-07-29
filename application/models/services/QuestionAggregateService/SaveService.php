@@ -128,6 +128,11 @@ class SaveService
                 $data['advancedSettings']
             );
 
+        $this->attributesService->saveMissingAttributes(
+            $question,
+            $surveyId
+        );
+
         $this->attributesService
             ->save(
                 $question,

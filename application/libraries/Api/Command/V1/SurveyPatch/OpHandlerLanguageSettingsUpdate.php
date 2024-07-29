@@ -4,13 +4,15 @@ namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
 use DI\DependencyException;
 use DI\NotFoundException;
-use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\OpHandlerExceptionTrait;
-use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\OpHandlerValidationTrait;
+use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\{
+    OpHandlerExceptionTrait,
+    OpHandlerValidationTrait,
+    OpHandlerSurveyTrait
+};
 use SurveyLanguageSetting;
 use LimeSurvey\Api\Command\V1\Transformer\{
     Input\TransformerInputSurveyLanguageSettings,
 };
-use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\OpHandlerSurveyTrait;
 use LimeSurvey\Api\Transformer\TransformerInterface;
 use LimeSurvey\Models\Services\{
     Exception\PermissionDeniedException,
@@ -51,20 +53,7 @@ class OpHandlerLanguageSettingsUpdate implements OpHandlerInterface
     }
 
     /**
-     * This handler accepts two different approaches to update the language settings:
-     * Approach 1 (single language):
-     * - in this case the language needs to be part of the id array
-     * - patch structure:
-     *      {
-     *          "entity": "languageSetting",
-     *          "op": "update",
-     *          "id": "de",
-     *          "props": {
-     *              "title": "Beispielfragebogen"
-     *          }
-     *      }
-     *
-     * Approach 2 (multiple languages):
+     * This handler accepts the following format to update the language settings:
      * - in this case the languages need to be indexes of the props array
      * - language must not be part of the id array
      * - patch structure:
@@ -96,19 +85,21 @@ class OpHandlerLanguageSettingsUpdate implements OpHandlerInterface
         $languageSettings = $diContainer->get(
             LanguageSettings::class
         );
+        $surveyId = $this->getSurveyIdFromContext($op);
+        $languageSettings->checkUpdatePermission($surveyId);
         $data = $this->transformer->transformAll(
             $op->getProps(),
             [
                 'operation' => $op->getType()->getId(),
-                'entityId'  => $op->getEntityId(),
-                'sid'       => $this->getSurveyIdFromContext($op)
+                'entityId' => $op->getEntityId(),
+                'sid' => $this->getSurveyIdFromContext($op)
             ]
         );
         if (empty($data)) {
             $this->throwNoValuesException($op);
         }
         $languageSettings->update(
-            $this->getSurveyIdFromContext($op),
+            $surveyId,
             $data
         );
     }
@@ -121,29 +112,19 @@ class OpHandlerLanguageSettingsUpdate implements OpHandlerInterface
     public function validateOperation(OpInterface $op): array
     {
         $validationData = [];
-        $checkDataEntityId = $this->validateEntityId($op, []);
-        $checkDataCollection = $this->validateCollection($op, []);
-        if (empty($checkDataEntityId) && empty($checkDataCollection)) {
-            // operation data has an entity id and props came as collection
-            $validationData = $this->addErrorToValidationData(
-                'props can not come as collection if id is set',
-                $validationData
-            );
-        } elseif (!empty($checkDataEntityId) && !empty($checkDataCollection)) {
-            // operation data has no entity id and props came not as collection
-            $validationData = $checkDataCollection;
-        } elseif (!empty($checkDataEntityId)) {
-            // operation data has no entity id so collection indexes are validated
-            $validationData = $this->validateCollectionIndex($op, $validationData);
-        }
+        $validationData = $this->validateSurveyIdFromContext(
+            $op,
+            $validationData
+        );
+        $validationData = $this->validateCollectionIndex($op, $validationData);
 
         if (empty($validationData)) {
             $validationData = $this->transformer->validateAll(
                 $op->getProps(),
                 [
                     'operation' => $op->getType()->getId(),
-                    'entityId'  => $op->getEntityId(),
-                    'sid'       => $this->getSurveyIdFromContext($op)
+                    'entityId' => $op->getEntityId(),
+                    'sid' => $this->getSurveyIdFromContext($op)
                 ]
             );
         }
