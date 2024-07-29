@@ -3,12 +3,15 @@
 namespace ls\tests\unit\api;
 
 use ls\tests\TestBaseClass;
-use LimeSurvey\Api\Auth\AuthSession;
+use LimeSurvey\Api\Authentication\AuthenticationTokenSimple;
+use LimeSurvey\Api\Authentication\SessionUtil;
+use LimeSurvey\Api\Transformer\Formatter\FormatterDateTimeToJson;
+
 
 /**
- * @testdox Auth Session
+ * @testdox Authentication Token Simple
  */
-class AuthSessionTest extends TestBaseClass
+class AuthenticationTokenSimpleTest extends TestBaseClass
 {
     public static function tearDownAfterClass(): void
     {
@@ -31,14 +34,19 @@ class AuthSessionTest extends TestBaseClass
             $password = 'password';
         }
 
-        $authSession = new AuthSession();
-        $result = $authSession->doLogin(
+        $authTokenSimple = new AuthenticationTokenSimple(
+            new SessionUtil,
+            new FormatterDateTimeToJson
+        );
+        $result = $authTokenSimple->login(
             $username,
             $password
         );
 
         $this->assertNotEmpty($result);
-        $this->assertIsString($result);
+        $this->assertIsString($result['token']);
+        $this->assertIsString($result['expires']);
+        $this->assertIsInt($result['userId']);
     }
 
     /**
@@ -46,23 +54,11 @@ class AuthSessionTest extends TestBaseClass
      */
     public function testCheckKeySessionNotFound()
     {
-        $authSession = new AuthSession();
-        $result = $authSession->checkKey('invalid-key');
+        $authTokenSimple = new AuthenticationTokenSimple(
+            new SessionUtil,
+            new FormatterDateTimeToJson
+        );
+        $result = $authTokenSimple->isAuthenticated('invalid-key');
         $this->assertFalse($result);
-    }
-
-    /**
-     * @testdox jumpStartSession() init session from key.
-     */
-    public function testJumpStartSessionInitSessionFromKey()
-    {
-        $username = getenv('ADMINUSERNAME');
-        if (!$username) {
-            $username = 'admin';
-        }
-
-        $authSession = new AuthSession();
-        $result = $authSession->jumpStartSession($username);
-        $this->assertTrue($result);
     }
 }
