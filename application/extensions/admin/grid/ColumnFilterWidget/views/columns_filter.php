@@ -37,11 +37,11 @@
                     </div>
                     <div class="mb-3 responses-multiselect-checkboxes">
                         <?php foreach ($columnsData as $column) : ?>
-                            <?php if (!empty($column['header']) && $column['name'] != 'dropdown_actions' && !array_key_exists($column['name'], $filterableColumns)) : ?>
+                            <?php if (!empty($column->header) && $column->name !== 'dropdown_actions' && !array_key_exists($column->name, $filterableColumns)) : ?>
                                 <div class="checkbox">
                                     <label>
                                         <input name="columns[]" type="checkbox" value="" checked disabled>
-                                        <?php echo $column['header'] ?>
+                                        <?= $column->name ?>
                                     </label>
                                 </div>
                             <?php endif; ?>
@@ -57,7 +57,6 @@
                         <?php endforeach; ?>
                     </div>
 
-                    <input type="hidden" name="model" class="model-name" value="<?= $model ?>"/>
                     <input type="hidden" name="<?= Yii::app()->request->csrfTokenName ?>" value="<?= App()->request->csrfToken ?>"/>
                 </div>
                 <div class="modal-footer">

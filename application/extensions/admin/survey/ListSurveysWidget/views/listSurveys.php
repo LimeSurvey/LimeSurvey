@@ -12,38 +12,15 @@
 *
 */
 
+/**
+ * @var $this ListSurveysWidget
+ */
 ?>
 
 <!-- Grid -->
 <div class="row">
     <div class="col-12">
         <?php
-        $gridId = 'survey-grid';
-        $modalId = 'survey-column-filter-modal';
-        list($aColumns, $filterableColumns) = $this->model->getFilterableColumns();
-        $filteredColumns = explode('|', SettingsUser::getUserSettingValue('column_filter_' . $gridId));
-
-        $columns_filter_button = '<button role="button" type="button" class="btn b-0" data-bs-toggle="modal" data-bs-target="#'. $modalId .'">
-                <i class="ri-add-fill"></i>
-            </button>';
-
-
-        $aColumns [] = [
-            'header'            => gT('Action'),
-            'name'              => 'actions',
-            'value'             => '$data->actionButtons',
-            'type'              => 'raw'
-        ];
-
-        $aColumns [] = [
-            'header'            => $columns_filter_button,
-            'name'              => 'dropdown_actions',
-            'value'             => '$data->buttons',
-            'type'              => 'raw',
-            'headerHtmlOptions' => ['class' => 'ls-sticky-column', 'style' => 'font-size: 1.5em; font-weight: 400;'],
-            'htmlOptions'       => ['class' => 'text-center ls-sticky-column'],
-        ];
-
 
         $surveyGrid = $this->widget('application.extensions.admin.grid.CLSGridView', [
             'dataProvider'          => $this->model->search(),
@@ -68,16 +45,9 @@
             'rowLink'               => 'Yii::app()->createUrl("surveyAdministration/view/",array("iSurveyID"=>$data->sid))',
             // 'template'  => $this->template,
             'massiveActionTemplate' => $this->render('massive_actions/_selector', [], true, false),
-            'columns'               => $aColumns,
+            'columns'               => $this->model->getColumns(),
+            'lsAdditionalColumns' => $this->model->getAdditionalColumns(),
 
-        ]);
-
-        App()->getController()->widget('ext.admin.grid.ColumnFilterWidget.ColumnFilterWidget', [
-            'model' => get_class($this->model),
-            'modalId' => $modalId,
-            'filterableColumns' => $filterableColumns,
-            'filteredColumns' => $filteredColumns,
-            'columnsData' => $aColumns,
         ]);
         ?>
     </div>

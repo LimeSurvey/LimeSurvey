@@ -21,6 +21,3 @@
         <?php endforeach; ?>
     </ul>
 </div>
-<script>
-
-</script>
