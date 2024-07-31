@@ -157,6 +157,9 @@ table {
 
 
 .grid-view, .grid-view-ls {
+  --main-color: #8046F5;
+  --main-border-color: #6D748C;
+
   .table {
     padding: 20px;
     //background-color: $g-100;
@@ -281,6 +284,10 @@ table {
 
       li:last-child a {
         padding-right: 0;
+      }
+
+      li a.active i::before {
+        color: var(--main-color);
       }
 
     }

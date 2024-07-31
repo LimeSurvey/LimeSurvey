@@ -20,9 +20,10 @@
 <!-- Search Box -->
 
 <!-- Begin Form -->
-<div class="container-fluid">
+<div class="container-fluid" style="padding: 0  5% !important;">
     <div class="menu col-12">
         <?php $form = $this->beginWidget('CActiveForm', [ 'method' => 'get', 'htmlOptions' => ['id' => 'survey-search'],]); ?>
+        <?php $state = App()->request->getQuery('state'); ?>
         <div class="row">
 
             <!-- select state -->
@@ -35,17 +36,11 @@
                         <option value="" >
                             <?= gT('Status') ?>
                         </option>
-                        <option value="Y">
+                        <option value="Y" <?php echo $state == 'Y' ? 'selected' : ''?>>
                             <?= gT('Active') ?>
                         </option>
-                        <option value="R">
-                            <?= gT('Running') ?>
-                        </option>
-                        <option value="N" >
+                        <option value="N" <?php echo $state == 'N' ? 'selected' : ''?>>
                             <?= gT('Inactive') ?>
-                        </option>
-                        <option value="E" >
-                            <?= gT('Expired') ?>
                         </option>
                     </select>
                 </div>

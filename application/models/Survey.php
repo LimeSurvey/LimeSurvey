@@ -1546,18 +1546,8 @@ class Survey extends LSActiveRecord implements PermissionInterface
             'title' => gT('Edit survey'),
             'url' => App()->createUrl("/surveyAdministration/view?iSurveyID=" . $this->sid),
             'iconClass' => 'ri-edit-line',
-            'enabledCondition' =>
-                $this->active !== "Y"
-                && $permissions['responses_create']
+            'enabledCondition' => $this->active !== "Y" && $permissions['responses_create']
         ];
-//        $items[] = [
-//            'title' => gT('Add new group'),
-//            'url' => App()->createUrl("/questionGroupsAdministration/add/surveyid/" . $this->sid),
-//            'iconClass' => 'ri-edit-line',
-//            'enabledCondition' =>
-//                $this->active !== "Y"
-//                && $permissions['responses_create'],
-//        ];
 
         $items[] = [
             'title' => gT('Activate'),

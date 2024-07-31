@@ -1,4 +1,7 @@
 .box-widget {
+    --main-color: #8046F5;
+    --main-border-color: #6D748C;
+
     padding:  0  5% !important;
 }
 .box-widget .card {
@@ -137,4 +140,14 @@
 
 .icons a *:not(i) {
     display: none;
+}
+.card-header .label {
+    display: inline-block;
+    color: white;
+    padding: 1px 10px;
+    margin-bottom: 7px;
+    border-radius: 15px;
+}
+a.active i::before {
+    color: var(--main-color);
 }

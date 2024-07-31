@@ -63,8 +63,8 @@ class BoxesWidget extends CWidget
                         'survey' => $survey,
                         'type' => self::TYPE_PRODUCT,
                         'external' => $item->external ?? false,
-                        'icon' => str_replace($state . '</a>', '</a>', $survey->getRunning()),
-                        'state' => $state,
+                        'icon' => $this->getButton($survey),
+                        'state' => $survey->getState(),
                         'buttons' => $survey->getButtons(),
                         'link' => App()->createUrl('/surveyAdministration/view/surveyid/' . $survey->sid),
                     ];
@@ -81,5 +81,39 @@ class BoxesWidget extends CWidget
             'boxesbyrow' => $this->boxesbyrow,
             'limit' => $this->limit
         ]);
+    }
+
+    public function getButton($survey)
+    {
+        $permissions = [
+            'statistics_read'  => Permission::model()->hasSurveyPermission($survey->sid, 'statistics', 'read'),
+            'survey_update'    => Permission::model()->hasSurveyPermission($survey->sid, 'survey', 'update'),
+            'responses_create' => Permission::model()->hasSurveyPermission($survey->sid, 'responses', 'create'),
+        ];
+
+        if (
+            $survey->active === "N"
+            && $permissions['survey_update']
+            && $survey->groupsCount > 0
+            && $survey->getQuestionsCount() > 0
+        ) {
+            return [
+                'title' => gT('Activate'),
+                'url' => App()->createUrl("/surveyAdministration/rendersidemenulink/subaction/generalsettings/surveyid/" . $survey->sid),
+                'iconClass' => 'ri-check-line'
+            ];
+        } elseif ($survey->active !== "Y" && $permissions['responses_create']) {
+            return [
+                'title' => gT('Edit survey'),
+                'url' => App()->createUrl("/surveyAdministration/view?iSurveyID=" . $survey->sid),
+                'iconClass' => 'ri-edit-line'
+            ];
+        } elseif ($survey->active === "Y" && $permissions['statistics_read']) {
+            return [
+                'title' => gT('Statistics'),
+                'url' => App()->createUrl("/admin/statistics/sa/simpleStatistics/surveyid/" . $survey->sid),
+                'iconClass' => 'ri-line-chart-line',
+            ];
+        }
     }
 }

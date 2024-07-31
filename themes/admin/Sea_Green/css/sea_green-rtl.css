@@ -18623,6 +18623,10 @@ table [class^=ri-], table [class*=" ri-"] {
   min-height: 300px;
 }
 
+.grid-view, .grid-view-ls {
+  --main-color: #8046F5;
+  --main-border-color: #6D748C;
+}
 .grid-view .table, .grid-view-ls .table {
   padding: 20px;
   border-radius: 4px;
@@ -18707,6 +18711,9 @@ table [class^=ri-], table [class*=" ri-"] {
 }
 .grid-view .action-list ul li:last-child a, .grid-view-ls .action-list ul li:last-child a {
   padding-left: 0;
+}
+.grid-view .action-list ul li a.active i::before, .grid-view-ls .action-list ul li a.active i::before {
+  color: var(--main-color);
 }
 
 .pagination {

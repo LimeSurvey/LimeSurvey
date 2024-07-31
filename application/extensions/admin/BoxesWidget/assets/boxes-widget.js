@@ -53,5 +53,10 @@ $('#survey_active').change(function (e) {
             searchParams.set('state', filter)
             window.location.href =  domain + '?' + searchParams.toString();
         }
+    } else {
+        let url = window.location.href;
+        const params = new URLSearchParams(url.split('?')[1]);
+        params.delete("state");
+        console.log(params.toString())
     }
 });
