@@ -5,7 +5,10 @@
  * TODO : make a recursive function, taking any number of box in the database, calculating how much rows are needed.
  */
 
-/** @var String $belowLogoHtml */
+/**
+ * @var $belowLogoHtml String
+ * @var $this AdminController
+ **/
 
 // DO NOT REMOVE This is for automated testing to validate we see that page
 echo viewHelper::getViewTestTag('index');
@@ -196,91 +199,55 @@ gT('Themes');
     ));
     ?>
 
-    <?php if (0) : ?>
-        <div class="col-12 list-surveys">
-            <?php
-            $this->widget('ext.admin.survey.ListSurveysWidget.ListSurveysWidget', array(
-                'model'            => $oSurveySearch,
-                'bRenderSearchBox' => $bShowSurveyListSearch,
-            ));
-            ?>
-        </div>
-    <?php else: ?>
-        <div class="welcome full-page-wrapper">
-            <div class="col-12 list-surveys">
-                <?php
-                $this->widget('ext.admin.BoxesWidget.BoxesWidget', [
-                    'boxesbyrow' => 5,
-                    'limit' => 4,
-                    'items' => [
-                        [
-                            'type' => 2,
-                            'link' => App()->createUrl('/surveyAdministration/newSurvey/'),
-                            'text' => 'Create survey',
-                            'icon' => 'ri-add-line',
-                            'color' => '#8146F6'
-                        ],
-                        [
-                            'type' => 2,
-                            'link' => App()->createUrl('/admin/surveysgroups/sa/create/'),
-                            'text' => 'Create survey group',
-                            'icon' => 'ri-add-line',
-                            'color' => '#6D748C'
-                        ],
-                        [
-                            'type' => 0,
-                            'model' => Survey::model(),
-                            'limit' => 4
-                        ],
-                    ]
-                ]);
-                ?>
-            </div>
-        </div>
-    <?php endif; ?>
+    <div class="survey-dashboard d-flex">
+<!--        --><?php
+//        $this->widget('ext.SideBarWidget.SideBarWidget');
+//        ?>
 
-
-    <!-- Boxes for smartphones -->
-    <div class="row d-sm-none d-md-none d-lg-none">
-        <div
-            class="card card-clickable card-primary" id="panel-7"
-            data-url="<?php echo $this->createUrl("surveyAdministration/listSurveys") ?>"
-            style="opacity: 1; top: 0px;">
-            <div class="card-header ">
-                <?php eT('List surveys'); ?>
+        <?php if (0) : ?>
+            <div class="list-surveys">
+                <div class="col-12">
+                    <?php
+                    $this->widget('ext.admin.survey.ListSurveysWidget.ListSurveysWidget', array(
+                        'model' => $oSurveySearch,
+                        'bRenderSearchBox' => $bShowSurveyListSearch,
+                    ));
+                    ?></div>
             </div>
-            <div class="card-body">
-                <a href='<?php echo $this->createUrl("surveyAdministration/listsurveys") ?>'>
-                    <span class="ri-list-unordered" style="font-size: 4em"></span>
-                    <span class="visually-hidden"><?php eT('List surveys'); ?></span>
-                </a><br><br>
-                <a
-                    href='<?php echo $this->createUrl("surveyAdministration/listsurveys") ?>'
-                ><?php eT('List surveys'); ?></a>
+        <?php else: ?>
+            <div class="list-surveys">
+                <div class="col-12">
+                    <?php
+                    $this->widget('ext.admin.BoxesWidget.BoxesWidget', [
+                        'boxesbyrow' => 5,
+                        'limit' => 4,
+                        'items' => [
+                            [
+                                'type' => 2,
+                                'link' => App()->createUrl('/surveyAdministration/newSurvey/'),
+                                'text' => 'Create survey',
+                                'icon' => 'ri-add-line',
+                                'color' => '#8146F6'
+                            ],
+                            [
+                                'type' => 2,
+                                'link' => App()->createUrl('/admin/surveysgroups/sa/create/'),
+                                'text' => 'Create survey group',
+                                'icon' => 'ri-add-line',
+                                'color' => '#6D748C'
+                            ],
+                            [
+                                'type' => 0,
+                                'model' => Survey::model(),
+                                'limit' => 4
+                            ],
+                        ]
+                    ]);
+                    ?>
+                </div>
             </div>
-        </div>
-
-        <div
-            class="card card-clickable card-primary" id="panel-8"
-            data-url="<?php echo $this->createUrl("admin/globalsettings") ?>"
-            style="opacity: 1; top: 0px;">
-            <div class="card-header ">
-                <?php eT('Edit global settings'); ?>
-            </div>
-            <div class="card-body">
-                <a href='<?php echo $this->createUrl("admin/globalsettings") ?>'>
-                    <span class="ri-settings-5-fill" style="font-size: 4em"></span>
-                    <span class="visually-hidden"><?php eT('Edit global settings'); ?></span>
-                </a><br><br>
-                <a
-                    href='<?php echo $this->createUrl("admin/globalsettings") ?>'
-                ><?php eT('Edit global settings'); ?></a>
-            </div>
-        </div>
-
-        </>
+        <?php endif; ?>
     </div>
-
     <!-- Notification setting -->
     <input type="hidden" id="absolute_notification" />
 </div>

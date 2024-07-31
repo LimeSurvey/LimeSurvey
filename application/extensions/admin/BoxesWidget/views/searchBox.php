@@ -20,7 +20,7 @@
 <!-- Search Box -->
 
 <!-- Begin Form -->
-<div class="container-fluid" style="padding: 0  5% !important;">
+<div class="container">
     <div class="menu col-12">
         <?php $form = $this->beginWidget('CActiveForm', [ 'method' => 'get', 'htmlOptions' => ['id' => 'survey-search'],]); ?>
         <?php $state = App()->request->getQuery('state'); ?>
