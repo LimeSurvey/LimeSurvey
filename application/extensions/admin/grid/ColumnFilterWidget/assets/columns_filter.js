@@ -18,10 +18,10 @@ function initColumnFilter()
         }).get();
 
         if (filterData.length === 0) {
-            filterData = 'empty'
+            filterData = [];
         }
 
-        $.fn.yiiGridView.update('survey-grid', {data: {model: model, columnFilter: filterData}});
+        $.fn.yiiGridView.update('survey-grid', {data: {model: model, columnsSelected: filterData}});
         form.modal('hide');
     });
 

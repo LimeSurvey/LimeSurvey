@@ -1572,7 +1572,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
         return App()->getController()->widget('ext.admin.grid.BarActionsWidget.BarActionsWidget', ['items' => $items], true);
     }
 
-    public function getFilterableColumns(): array
+    public function getColumns(): array
     {
         $columns = [
             [
@@ -1610,10 +1610,19 @@ class Survey extends LSActiveRecord implements PermissionInterface
                 'value'             => '$data->countFullAnswers',
                 'headerHtmlOptions' => ['class' => 'd-md-none d-lg-table-cell'],
                 'htmlOptions'       => ['class' => 'd-md-none d-lg-table-cell has-link'],
+            ],
+            [
+                'header' => gT('Action'),
+                'name'   => 'actions',
+                'value'  => '$data->actionButtons',
+                'type'   => 'raw'
             ]
         ];
-
-        $filterableColumns = [
+        return $columns;
+    }
+    public function getAdditionalColumns(): array
+    {
+        $additionalColumns = [
             'group' => [
                 'header'            => gT('Group'),
                 'name'              => 'group',
@@ -1662,7 +1671,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
             ]
         ];
 
-        return [$columns, $filterableColumns];
+        return $additionalColumns;
     }
 
     /**

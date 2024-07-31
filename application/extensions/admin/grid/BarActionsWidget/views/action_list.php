@@ -9,7 +9,7 @@
         <?php foreach ($items as $item) : ?>
             <li class="list-inline-item">
                 <a href="<?= $item['enabledCondition'] ? $item['url'] : '#'?>"
-                   class="<?=$item['enabledCondition'] ? 'active' : 'disabled'?>"
+                   class="<?=$item['enabledCondition'] ? '' : 'disabled'?>"
                     <?php if ($item['enabledCondition']) : ?>
                         data-bs-toggle="tooltip"
                         data-bs-original-title="<?=$item['title'] ?>"
