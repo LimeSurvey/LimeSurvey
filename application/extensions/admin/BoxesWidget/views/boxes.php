@@ -1,4 +1,4 @@
-<div class="container-fluid box-widget">
+<div class="container box-widget">
     <div class="row row-cols-<?php echo $boxesbyrow ?>">
         <?php $this->render('box', array('items' => $items)); ?>
     </div>

@@ -41,10 +41,8 @@ gT('Themes');
         </div>
     <?php endif; ?>
 
-    <?php
-        //show extra banner after logo
-        echo $belowLogoHtml;
-    ?>
+    <!-- Extra banner after logo-->
+    <?= $belowLogoHtml ?>
 
     <!-- Message when first start -->
     <?php if ($countSurveyList == 0  && Permission::model()->hasGlobalPermission('surveys', 'create')) : ?>
@@ -128,10 +126,12 @@ gT('Themes');
 
     <?php endif; ?>
 
-    <?php
-    //Check for IE and show a warning box
-    if (preg_match('~MSIE|Internet Explorer~i', (string) $_SERVER['HTTP_USER_AGENT']) || (strpos((string) $_SERVER['HTTP_USER_AGENT'], 'Trident/7.0') !== false && strpos((string) $_SERVER['HTTP_USER_AGENT'], 'rv:11.0') !== false)) {
-    ?>
+    <?php //Check for IE and show a warning box ?>
+    <?php if (preg_match('~MSIE|Internet Explorer~i', (string)$_SERVER['HTTP_USER_AGENT'])
+        || (strpos((string)$_SERVER['HTTP_USER_AGENT'], 'Trident/7.0') !== false
+            && strpos((string)$_SERVER['HTTP_USER_AGENT'], 'rv:11.0') !== false
+        )
+    ) : ?>
         <div class="container">
             <?php
             $htmlContent = "
@@ -154,9 +154,10 @@ gT('Themes');
             ]);
             ?>
         </div>
+    <?php endif;?>
 
     <?php
-    }
+
     App()->getClientScript()->registerScript('WelcomeCheckIESafety', "
     if(!/(MSIE|Trident\/)/i.test(navigator.userAgent)) {
         $('#warningIE11').remove();
@@ -165,27 +166,26 @@ gT('Themes');
     ?>
     <!-- Last visited survey/question -->
     <?php
-        // bShowLastSurveyAndQuestion is the homepage setting,
-        // - showLastSurvey & showLastQuestion are about if infos are available
-        if ($bShowLastSurveyAndQuestion && ($showLastSurvey || $showLastQuestion)) :
-    ?>
+    // bShowLastSurveyAndQuestion is the homepage setting,
+    // - showLastSurvey & showLastQuestion are about if infos are available
+    if ($bShowLastSurveyAndQuestion && ($showLastSurvey || $showLastQuestion)) : ?>
         <div class="container text-end recent-activity">
             <?php if ($showLastSurvey) : ?>
-                <span id="last_survey" class=""> <!-- to enable rotation again set class back to "rotateShown" -->
+                <div id="last_survey" class=""> <!-- to enable rotation again set class back to "rotateShown" -->
                     <?php eT("Last visited survey:"); ?>
-                    <a
-                        href="<?php echo $surveyUrl; ?>"
-                        class=""><?php echo viewHelper::flatEllipsizeText($surveyTitle, true, 60); ?></a>
-                </span>
+                    <a href="<?php echo $surveyUrl; ?>">
+                        <?= viewHelper::flatEllipsizeText($surveyTitle, true, 60) ?>
+                    </a>
+                </div>
             <?php endif; ?>
 
             <?php if ($showLastQuestion) : ?>
-                <span id="last_question" class=""> <!-- to enable rotation again set class back to "rotateHidden" -->
+                <div id="last_question" class=""> <!-- to enable rotation again set class back to "rotateHidden" -->
                     <?php eT("Last visited question:"); ?>
-                    <a
-                        href="<?php echo $last_question_link; ?>"
-                        class=""><?php echo viewHelper::flatEllipsizeText($last_question_name, true, 60); ?></a>
-                </span>
+                    <a href="<?php echo $last_question_link; ?>">
+                        <?= viewHelper::flatEllipsizeText($last_question_name, true, 60) ?>
+                    </a>
+                </div>
             <?php endif; ?>
         </div>
     <?php endif; ?>
@@ -199,10 +199,10 @@ gT('Themes');
     ));
     ?>
 
-    <div class="survey-dashboard d-flex">
-<!--        --><?php
-//        $this->widget('ext.SideBarWidget.SideBarWidget');
-//        ?>
+    <div class="survey-dashboard">
+        <?php
+        $this->widget('ext.SideBarWidget.SideBarWidget');
+        ?>
 
         <?php if (0) : ?>
             <div class="list-surveys">

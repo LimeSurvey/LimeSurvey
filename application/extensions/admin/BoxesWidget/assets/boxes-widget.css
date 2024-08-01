@@ -1,8 +1,6 @@
 .box-widget {
     --main-color: #8046F5;
     --main-border-color: #6D748C;
-
-    padding:  0  5% !important;
 }
 .box-widget .card {
     vertical-align: middle;
