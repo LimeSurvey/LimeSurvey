@@ -39,24 +39,3 @@ $("#load-more").click(function (event) {
     });
 })
 
-$('#survey_active').change(function (e) {
-    if ($(this).find(":selected").val()) {
-        var filter = $(this).find(":selected").val()
-        let url = window.location.href;
-
-        if (location.href.indexOf("?") === -1) {
-            window.location = location.href += "?state=" + filter;
-        } else {
-            const params = url.split('?')[1]
-            const domain = url.split('?')[0]
-            const searchParams = new URLSearchParams(params);
-            searchParams.set('state', filter)
-            window.location.href =  domain + '?' + searchParams.toString();
-        }
-    } else {
-        let url = window.location.href;
-        const params = new URLSearchParams(url.split('?')[1]);
-        params.delete("state");
-        console.log(params.toString())
-    }
-});

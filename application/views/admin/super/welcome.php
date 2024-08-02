@@ -34,7 +34,7 @@ gT('Themes');
         <div class="jumbotron" id="welcome-jumbotron">
             <img alt="logo" src="<?php echo LOGO_URL; ?>" id="lime-logo" class="profile-img-card img-fluid" />
             <p class="d-xs-none"><?php echo PRESENTATION; // Defined in AdminController
-                                    ?></p>
+            ?></p>
         </div>
     <?php endif; ?>
 
@@ -73,8 +73,8 @@ gT('Themes');
                             <div>
                                 <ol>
                                     <li><?php echo sprintf(
-                                            gT('Create a new survey by clicking on the %s icon.'),
-                                            "<i class='ri-add-circle-fill text-success'></i>"
+                                        gT('Create a new survey by clicking on the %s icon.'),
+                                        "<i class='ri-add-circle-fill text-success'></i>"
                                     ); ?></li>
                                     <li><?php eT('Create a new question group inside your survey.'); ?></li>
                                     <li><?php eT('Create one or more questions inside the new question group.'); ?></li>
@@ -83,7 +83,7 @@ gT('Themes');
                                             gT('Done. Test your survey using the %s icon.'),
                                             "<i class='ri-settings-5-fill text-success'></i>"
                                         );
-                                    ?></li>
+                                        ?></li>
                                 </ol>
                             </div>
                             <div>
@@ -128,7 +128,7 @@ gT('Themes');
     <?php
     //Check for IE and show a warning box
     if (preg_match('~MSIE|Internet Explorer~i', (string) $_SERVER['HTTP_USER_AGENT']) || (strpos((string) $_SERVER['HTTP_USER_AGENT'], 'Trident/7.0') !== false && strpos((string) $_SERVER['HTTP_USER_AGENT'], 'rv:11.0') !== false)) {
-    ?>
+        ?>
         <div class="container">
             <?php
             $htmlContent = "
@@ -152,7 +152,7 @@ gT('Themes');
             ?>
         </div>
 
-    <?php
+        <?php
     }
     App()->getClientScript()->registerScript('WelcomeCheckIESafety', "
     if(!/(MSIE|Trident\/)/i.test(navigator.userAgent)) {
@@ -164,26 +164,26 @@ gT('Themes');
     <?php
         // bShowLastSurveyAndQuestion is the homepage setting,
         // - showLastSurvey & showLastQuestion are about if infos are available
-        if ($bShowLastSurveyAndQuestion && ($showLastSurvey || $showLastQuestion)) :
-    ?>
+    if ($bShowLastSurveyAndQuestion && ($showLastSurvey || $showLastQuestion)) :
+        ?>
         <div class="container text-end recent-activity">
-            <?php if ($showLastSurvey) : ?>
+        <?php if ($showLastSurvey) : ?>
                 <span id="last_survey" class=""> <!-- to enable rotation again set class back to "rotateShown" -->
                     <?php eT("Last visited survey:"); ?>
                     <a
                         href="<?php echo $surveyUrl; ?>"
                         class=""><?php echo viewHelper::flatEllipsizeText($surveyTitle, true, 60); ?></a>
                 </span>
-            <?php endif; ?>
+        <?php endif; ?>
 
-            <?php if ($showLastQuestion) : ?>
+        <?php if ($showLastQuestion) : ?>
                 <span id="last_question" class=""> <!-- to enable rotation again set class back to "rotateHidden" -->
                     <?php eT("Last visited question:"); ?>
                     <a
                         href="<?php echo $last_question_link; ?>"
                         class=""><?php echo viewHelper::flatEllipsizeText($last_question_name, true, 60); ?></a>
                 </span>
-            <?php endif; ?>
+        <?php endif; ?>
         </div>
     <?php endif; ?>
 
@@ -194,9 +194,53 @@ gT('Themes');
         'offset' => $sBoxesOffSet,
         'boxesincontainer' => $bBoxesInContainer
     ));
-    ?>
+?>
 
-    <?php if (0) : ?>
+    <?php if (App()->request->getQuery('viewtype')) : ?>
+        <?php if (App()->request->getQuery('viewtype') == 'list-widget') : ?>
+            <div class="container col-12 list-surveys">
+                <?php
+                $this->widget('ext.admin.survey.ListSurveysWidget.ListSurveysWidget', array(
+                    'model'            => $oSurveySearch,
+                    'bRenderSearchBox' => $bShowSurveyListSearch,
+                ));
+                ?>
+            </div>
+        <?php elseif (App()->request->getQuery('viewtype') == 'box-widget') : ?>
+            <div class="container welcome full-page-wrapper">
+                <div class="col-12 list-surveys">
+                    <?php
+                    $this->widget('ext.admin.BoxesWidget.BoxesWidget', [
+                        'model' => new Survey('search'),
+                        'boxesbyrow' => 5,
+                        'limit' => 4,
+                        'items' => [
+                            [
+                                'type' => 2,
+                                'link' => App()->createUrl('/surveyAdministration/newSurvey/'),
+                                'text' => 'Create survey',
+                                'icon' => 'ri-add-line',
+                                'color' => '#8146F6'
+                            ],
+                            [
+                                'type' => 2,
+                                'link' => App()->createUrl('/admin/surveysgroups/sa/create/'),
+                                'text' => 'Create survey group',
+                                'icon' => 'ri-add-line',
+                                'color' => '#6D748C'
+                            ],
+                            [
+                                'type' => 0,
+                                'model' => Survey::model(),
+                                'limit' => 4
+                            ],
+                        ]
+                    ]);
+                    ?>
+                </div>
+            </div>
+        <?php endif; ?>
+    <?php elseif (SettingsUser::getUserSettingValue('welcome_page_widget') == 'list-widget') : ?>
         <div class="col-12 list-surveys">
             <?php
             $this->widget('ext.admin.survey.ListSurveysWidget.ListSurveysWidget', array(
@@ -205,11 +249,12 @@ gT('Themes');
             ));
             ?>
         </div>
-    <?php else: ?>
-        <div class="welcome full-page-wrapper">
+    <?php elseif (SettingsUser::getUserSettingValue('welcome_page_widget') == 'box-widget') : ?>
+        <div class="container welcome full-page-wrapper">
             <div class="col-12 list-surveys">
                 <?php
                 $this->widget('ext.admin.BoxesWidget.BoxesWidget', [
+                    'model' => new Survey('search'),
                     'boxesbyrow' => 5,
                     'limit' => 4,
                     'items' => [

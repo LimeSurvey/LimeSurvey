@@ -30,13 +30,33 @@
                             <?php echo $item['survey']->countFullAnswers == 0 ? 'No' : $item['survey']->countFullAnswers?> responses
                         </div>
                         <div class="icons">
-                            <a href="<?= $item['icon']['url'] ?? '#'?>"
-                               class="active"
-                               data-bs-toggle="tooltip"
-                               data-bs-original-title="<?=$item['icon']['title'] ?>"
-                            >
-                                <i class="<?=$item['icon']['iconClass']?>"></i>
-                            </a>
+
+                                <?php if ($item['survey']->active === "N" && $item['survey']->groupsCount > 0 && $item['survey']->getQuestionsCount() > 0) : ?>
+                                    <a href="<?= App()->createUrl("/surveyAdministration/rendersidemenulink/subaction/generalsettings/surveyid/" . $item['survey']->sid) ?? '#'?>"
+                                       class="active"
+                                       data-bs-toggle="tooltip"
+                                       data-bs-original-title="<?=gT('Activate') ?>"
+                                    >
+                                        <i class="ri-check-line"></i>
+                                    </a>
+                                <?php elseif ($item['survey']->active !== "Y") : ?>
+                                    <a href="<?= App()->createUrl("/surveyAdministration/view?iSurveyID=" . $item['survey']->sid) ?? '#'?>"
+                                       class="active"
+                                       data-bs-toggle="tooltip"
+                                       data-bs-original-title="<?=gT('Edit survey')?>"
+                                    >
+                                        <i class="ri-edit-line"></i>
+                                    </a>
+                                <?php elseif ($item['survey']->active === "Y") : ?>
+                                    <a href="<?= App()->createUrl("/admin/statistics/sa/simpleStatistics/surveyid/" . $item['survey']->sid) ?? '#'?>"
+                                       class="active"
+                                       data-bs-toggle="tooltip"
+                                       data-bs-original-title="<?=gT('Statistics') ?>"
+                                    >
+                                        <i class="ri-line-chart-line"></i>
+                                    </a>
+                                <?php endif; ?>
+
                             <?php echo $item['survey']->getButtons(); ?>
                         </div>
                     </div>

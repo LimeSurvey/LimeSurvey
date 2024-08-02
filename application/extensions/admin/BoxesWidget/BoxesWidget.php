@@ -2,6 +2,7 @@
 
 class BoxesWidget extends CWidget
 {
+    public $model;
     const TYPE_PRODUCT = 0;
     const TYPE_PRODUCT_GROUP = 1;
     const TYPE_LINK = 2;
@@ -30,6 +31,18 @@ class BoxesWidget extends CWidget
 
     public function run()
     {
+        $this->model->active = "";
+
+        // Filter state
+        if (isset($_GET['active']) && !empty($_GET['active'])) {
+            $this->model->active = $_GET['active'];
+        }
+
+        // Set number of page
+        if (isset($_GET['pageSize'])) {
+            App()->user->setState('pageSize', 4);
+        }
+
         $boxes = [];
         foreach ($this->items as $item) {
             $item = (object)$item;
@@ -44,26 +57,13 @@ class BoxesWidget extends CWidget
                     'color' => $item->color ?? '',
                 ];
             } elseif ($item->type == self::TYPE_PRODUCT) {
-                if ($state = App()->request->getQuery('state')) {
-                    $surveys = $item->model->findAll(
-                        'active = :active Limit :limit',
-                        array(':active' => $state, ':limit' => $item->limit)
-                    );
-                } else {
-                    $surveys = $item->model->findAll(
-                        '1 Limit :limit',
-                        array(':limit' => $item->limit)
-                    );
-                }
-
-
+                $surveys = $this->model->search()->getData();
                 foreach ($surveys as $survey) {
                     $state = strip_tags($survey->getRunning());
                     $boxes[] = [
                         'survey' => $survey,
                         'type' => self::TYPE_PRODUCT,
                         'external' => $item->external ?? false,
-                        'icon' => $this->getButton($survey),
                         'state' => $survey->getState(),
                         'buttons' => $survey->getButtons(),
                         'link' => App()->createUrl('/surveyAdministration/view/surveyid/' . $survey->sid),
@@ -73,7 +73,11 @@ class BoxesWidget extends CWidget
         }
 
         if ($this->searchBox) {
-            $this->render('searchBox');
+            $this->controller->widget('ext.admin.SearchBoxWidget.SearchBoxWidget', [
+                'model' => new Survey('search'),
+                'onlyfilter' => true,
+                'switch' => App()->request->getPathInfo() == 'admin/index'
+            ]);
         }
 
         $this->render('boxes', [
@@ -81,39 +85,5 @@ class BoxesWidget extends CWidget
             'boxesbyrow' => $this->boxesbyrow,
             'limit' => $this->limit
         ]);
-    }
-
-    public function getButton($survey)
-    {
-        $permissions = [
-            'statistics_read'  => Permission::model()->hasSurveyPermission($survey->sid, 'statistics', 'read'),
-            'survey_update'    => Permission::model()->hasSurveyPermission($survey->sid, 'survey', 'update'),
-            'responses_create' => Permission::model()->hasSurveyPermission($survey->sid, 'responses', 'create'),
-        ];
-
-        if (
-            $survey->active === "N"
-            && $permissions['survey_update']
-            && $survey->groupsCount > 0
-            && $survey->getQuestionsCount() > 0
-        ) {
-            return [
-                'title' => gT('Activate'),
-                'url' => App()->createUrl("/surveyAdministration/rendersidemenulink/subaction/generalsettings/surveyid/" . $survey->sid),
-                'iconClass' => 'ri-check-line'
-            ];
-        } elseif ($survey->active !== "Y" && $permissions['responses_create']) {
-            return [
-                'title' => gT('Edit survey'),
-                'url' => App()->createUrl("/surveyAdministration/view?iSurveyID=" . $survey->sid),
-                'iconClass' => 'ri-edit-line'
-            ];
-        } elseif ($survey->active === "Y" && $permissions['statistics_read']) {
-            return [
-                'title' => gT('Statistics'),
-                'url' => App()->createUrl("/admin/statistics/sa/simpleStatistics/surveyid/" . $survey->sid),
-                'iconClass' => 'ri-line-chart-line',
-            ];
-        }
     }
 }
