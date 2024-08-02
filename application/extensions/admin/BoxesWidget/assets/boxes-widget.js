@@ -17,8 +17,8 @@ $("#load-more").click(function (event) {
 
     var url = '/surveyAdministration/boxList?page=' + page + '&limit=' + limit;
     let params = new URLSearchParams(window.location.href.split('?')[1]);
-    if (params.get('state')) {
-        url += '&state=' + params.get('state')
+    if (params.get('active')) {
+        url += '&active=' + params.get('active')
     }
     console.log(url)
 

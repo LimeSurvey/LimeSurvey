@@ -3397,7 +3397,7 @@ class SurveyAdministrationController extends LSBaseController
         $page = (int)App()->request->getQuery('page');
         $offset = ($page ) * $limit;
 
-        if ($state = App()->request->getQuery('state')) {
+        if ($state = App()->request->getQuery('active')) {
             $surveys = Survey::model()->findAll(
                 'active = :active LIMIT  :limit OFFSET :offset',
                 array(':active' => $state, ':limit' => $limit, ':offset' => $offset)

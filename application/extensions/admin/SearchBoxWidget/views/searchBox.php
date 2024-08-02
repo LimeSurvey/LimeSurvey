@@ -1,5 +1,4 @@
 <!-- Search Box -->
-
 <!-- Begin Form -->
 <div class="row">
     <div class="menu col-12">
@@ -7,27 +6,27 @@
         <div class="row">
 
             <!-- select state -->
-            <div class="col-1">
+            <div class="col-2">
                 <h2><?php eT('All surveys'); ?></h2>
             </div>
             <?php if ($this->onlyfilter) : ?>
-                <div class="offset-8 col-2">
+                <div class="offset-7 col-2">
                     <div  class="pull-right">
                         <div class="dropdown">
                             <select name="active" id='survey_active' class="form-select">
-                                <option value="" <?= empty($this->model->active) ? "selected" : '' ?>>
+                                <option value="" <?= empty(App()->request->getQuery('active')) ? "selected" : '' ?>>
                                     <?= gT('Status') ?>
                                 </option>
-                                <option value="Y" <?= $this->model->active === "Y" ? "selected" : '' ?>>
+                                <option value="Y" <?= App()->request->getQuery('active') === "Y" ? "selected" : '' ?>>
                                     <?= gT('Active') ?>
                                 </option>
-                                <option value="R" <?= $this->model->active === "R" ? "selected" : '' ?>>
+                                <option value="R" <?= App()->request->getQuery('active') === "R" ? "selected" : '' ?>>
                                     <?= gT('Running') ?>
                                 </option>
-                                <option value="N" <?= $this->model->active === "N" ? "selected" : '' ?>>
+                                <option value="N" <?= App()->request->getQuery('active') === "N" ? "selected" : '' ?>>
                                     <?= gT('Inactive') ?>
                                 </option>
-                                <option value="E" <?= $this->model->active === "E" ? "selected" : '' ?>>
+                                <option value="E" <?= App()->request->getQuery('active') === "E" ? "selected" : '' ?>>
                                     <?= gT('Expired') ?>
                                 </option>
                                 <!--                            <option value="S" --><?php //= $this->model->active === "S" ? "selected" : '' ?><!-->-->
@@ -39,7 +38,7 @@
                 </div>
             <?php else : ?>
                 <!-- select group -->
-                <div class="col-6">
+                <div class="col-5">
                     <div  class="pull-right">
 
                         <div class="search-bar">
@@ -48,19 +47,19 @@
                         </div>
                         <div class="dropdown">
                             <select name="active" id='survey_active' class="form-select">
-                                <option value="" <?= empty($this->model->active) ? "selected" : '' ?>>
+                                <option value="" <?= empty(App()->request->getQuery('active')) ? "selected" : '' ?>>
                                     <?= gT('Status') ?>
                                 </option>
-                                <option value="Y" <?= $this->model->active === "Y" ? "selected" : '' ?>>
+                                <option value="Y" <?= App()->request->getQuery('active') === "Y" ? "selected" : '' ?>>
                                     <?= gT('Active') ?>
                                 </option>
-                                <option value="R" <?= $this->model->active === "R" ? "selected" : '' ?>>
+                                <option value="R" <?= App()->request->getQuery('active') === "R" ? "selected" : '' ?>>
                                     <?= gT('Running') ?>
                                 </option>
-                                <option value="N" <?= $this->model->active === "N" ? "selected" : '' ?>>
+                                <option value="N" <?= App()->request->getQuery('active') === "N" ? "selected" : '' ?>>
                                     <?= gT('Inactive') ?>
                                 </option>
-                                <option value="E" <?= $this->model->active === "E" ? "selected" : '' ?>>
+                                <option value="E" <?= App()->request->getQuery('active') === "E" ? "selected" : '' ?>>
                                     <?= gT('Expired') ?>
                                 </option>
                             </select>

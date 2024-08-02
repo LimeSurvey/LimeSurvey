@@ -105,8 +105,9 @@
 
 @media screen and (max-width: 767px) {
     .box-widget .row .col {
-        width: 75%;
-        aspect-ratio: 1/1;
+        display: flex;
+        justify-content: center;
+        width: 100%;
         margin: 0 auto;
         padding: 0;
     }
@@ -149,9 +150,9 @@
 }
 .card-header .label {
     display: inline-block;
-    font-size: 14px;
+    font-size: 12px;
     color: white;
-    padding: 1px 7px;
+    padding: 2px 10px;
     margin-bottom: 5px;
     border-radius: 15px;
     font-weight: 400;

@@ -40,7 +40,7 @@ class BoxesWidget extends CWidget
 
         // Set number of page
         if (isset($_GET['pageSize'])) {
-            App()->user->setState('pageSize', 4);
+            App()->user->setState('pageSize', $this->limit);
         }
 
         $boxes = [];
