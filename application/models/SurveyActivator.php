@@ -27,9 +27,19 @@ class SurveyActivator
     /**
      * @param Survey $survey
      */
-    public function __construct($survey)
+    public function __construct($survey = null)
     {
         $this->survey = $survey;
+    }
+
+    /**
+     * @param Survey $survey
+     * @return SurveyActivator
+     */
+    public function setSurvey(Survey $survey)
+    {
+        $this->survey = $survey;
+        return $this;
     }
 
     /**
@@ -85,7 +95,8 @@ class SurveyActivator
 
         $aResult = array(
             'status' => 'OK',
-            'pluginFeedback' => $event->get('pluginFeedback')
+            'pluginFeedback' => $event->get('pluginFeedback'),
+            'isAllowRegister' => $survey->isAllowRegister
         );
         if (!$this->createSurveyDirectory()) {
             $aResult['warning'] = 'nouploadsurveydir';

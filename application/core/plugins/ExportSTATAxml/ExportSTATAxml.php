@@ -8,7 +8,7 @@ class ExportSTATAxml extends \LimeSurvey\PluginManager\PluginBase
     protected static $description = 'Core: Export survey results to a STATA xml file';
     protected static $name = 'STATA Export';
 
-    /** @inheritdoc, this plugin didn't have any public method */
+    /** @inheritdoc this plugin didn't have any public method */
     public $allowedPublicMethods = array();
 
     public function init()

@@ -7,6 +7,8 @@ use LimeSurvey\ObjectPatch\Op\OpInterface;
 
 trait OpHandlerValidationTrait
 {
+    use OpHandlerSurveyTrait;
+
     /**
      * @param array $validationData
      * @param OpInterface $op
@@ -44,7 +46,7 @@ trait OpHandlerValidationTrait
     ): array {
         $id = $op->getEntityId();
         $hasId = ((int)$id) > 0 || (is_string($id) && $id !== '');
-        $error = $hasId ? true : 'No entity id provided';
+        $error = $hasId ? false : 'No entity id provided';
         if (is_string($error)) {
             $validationData = $this->addErrorToValidationData(
                 $error,
@@ -71,7 +73,7 @@ trait OpHandlerValidationTrait
         if (is_array($props) && !empty($props)) {
             $error = is_array(
                 $props[array_key_first($props)]
-            ) ? true : "Props didn't come as collection";
+            ) ? false : "Props didn't come as collection";
             if (is_string($error)) {
                 $validationData = $this->addErrorToValidationData(
                     $error,
@@ -116,6 +118,28 @@ trait OpHandlerValidationTrait
         } else {
             // validateCollection found errors
             $validationData = $validCollectionData;
+        }
+        return $validationData;
+    }
+
+    /**
+     * checks for survey ID being there, otherwise adds error to validationData
+     * @param OpInterface $op
+     * @param array $validationData
+     * @return array
+     */
+    public function validateSurveyIdFromContext(
+        OpInterface $op,
+        array $validationData
+    ) {
+        $sid = $this->getSurveyIdFromContext($op);
+        $hasSid = $sid > 0;
+        $error = $hasSid ? false : 'No survey ID provided in context';
+        if (is_string($error)) {
+            $validationData = $this->addErrorToValidationData(
+                $error,
+                $validationData
+            );
         }
         return $validationData;
     }

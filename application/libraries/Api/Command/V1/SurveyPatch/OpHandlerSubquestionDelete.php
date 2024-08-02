@@ -2,9 +2,15 @@
 
 namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
-use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\OpHandlerSurveyTrait;
-use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\OpHandlerValidationTrait;
-use LimeSurvey\Models\Services\QuestionAggregateService\SubQuestionsService;
+use LimeSurvey\DI;
+use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\{
+    OpHandlerSurveyTrait,
+    OpHandlerValidationTrait
+};
+use LimeSurvey\Models\Services\{Exception\NotFoundException,
+    Exception\PermissionDeniedException,
+    QuestionAggregateService,
+    QuestionAggregateService\SubQuestionsService};
 use LimeSurvey\ObjectPatch\{
     Op\OpInterface,
     OpHandler\OpHandlerInterface,
@@ -48,14 +54,18 @@ class OpHandlerSubquestionDelete implements OpHandlerInterface
      *   }
      * @param OpInterface $op
      * @return void
-     * @throws \LimeSurvey\Models\Services\Exception\NotFoundException
-     * @throws \LimeSurvey\Models\Services\Exception\PermissionDeniedException
-     * @throws \LimeSurvey\ObjectPatch\OpHandler\OpHandlerException
+     * @throws NotFoundException
+     * @throws PermissionDeniedException
      */
     public function handle(OpInterface $op)
     {
+        $questionService = DI::getContainer()->get(
+            QuestionAggregateService::class
+        );
+        $surveyId = $this->getSurveyIdFromContext($op);
+        $questionService->checkDeletePermission($surveyId);
         $this->subQuestionsService->delete(
-            $this->getSurveyIdFromContext($op),
+            $surveyId,
             $op->getEntityId()
         );
     }
@@ -67,7 +77,8 @@ class OpHandlerSubquestionDelete implements OpHandlerInterface
      */
     public function validateOperation(OpInterface $op): array
     {
-        $validationData = $this->validateEntityId($op, []);
+        $validationData = $this->validateSurveyIdFromContext($op, []);
+        $validationData = $this->validateEntityId($op, $validationData);
         return $this->getValidationReturn(
             gT('Could not delete subquestion'),
             $validationData,

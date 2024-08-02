@@ -1017,7 +1017,7 @@ class User extends LSActiveRecord
 
     /**
      * Get the decription to be used in list
-     * @return $string
+     * @return string
      */
     public function getDisplayName()
     {

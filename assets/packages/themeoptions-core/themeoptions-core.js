@@ -125,7 +125,7 @@ var ThemeOptions = function () {
     var applyColorPickerValue = function (item) {
         if ($(item).hasClass('selector__color-picker')) {
             console.ls.log($(item).data('inheritvalue'), $(item).val(), item);
-            if ($(item).val() == 'inherit') {
+            if ($(item).val() === 'inherit') {
                 $(item).closest('.input-group').find('.selector__colorpicker-inherit-value').val($(item).data('inheritvalue')).trigger('change');
             } else {
                 $(item).closest('.input-group').find('.selector__colorpicker-inherit-value').val($(item).val()).trigger('change');
@@ -140,14 +140,14 @@ var ThemeOptions = function () {
                 $(item).val((inheritPossible ? 'inherit' : 1000));
             }
         }
-    }
+    };
 
     // display inherited options as tooltips
     var showInheritedValue = function () {
-        $.each($("#simple_edit_add_css > option"), function (i, option) {
+        $.each($('#simple_edit_add_css > option'), function (i, option) {
             $.each(optionCssFiles.add, function (i, item) {
-                if (option.value == item && $("#simple_edit_add_css option:first").val() == 'inherit'){
-                    $("#simple_edit_add_css option:first").text($("#simple_edit_add_css option:first").text()+' '+option.text+']');
+                if (option.value === item && $('#simple_edit_add_css option:first').val() === 'inherit') {
+                    $('#simple_edit_add_css option:first').text($('#simple_edit_add_css option:first').text() + ' ' + option.text + ']');
                 }
             });
         });
@@ -172,13 +172,13 @@ var ThemeOptions = function () {
             optionObject[$(item).attr('name')] = itemValue;
         }
         return itemValue;
-    }
+    };
 
     //Set value and propagate to bootstrapSwitch
     var setAndPropageteToSwitch = function (item) {
         $(item).prop('checked', true).trigger('change');
         //$(item).closest('label').addClass('active');
-    }
+    };
 
 
     ///////////////
@@ -272,14 +272,14 @@ var ThemeOptions = function () {
         }
 
         $(childEl).prop('disabled', !enabled);
-    }
+    };
 
     // grab the parent for a given child field
     const getParent = function(childEl) {
         const parentName = $(childEl).data('parent');
         const parentEl = $(`input[name=${parentName}]`);
         return parentEl;
-    }
+    };
 
     // go through each child field, grab parent, and update disabled status
     const updateAllChildren = function() {
@@ -287,7 +287,7 @@ var ThemeOptions = function () {
             const parentEl = getParent(childEl);
             updateChild(parentEl, childEl);
         });
-    }
+    };
 
     ///////////////
     // HotSwap methods
@@ -327,7 +327,14 @@ var ThemeOptions = function () {
     var hotswapGeneralInherit = function () {
         //hotswapping the general inherit
         $('#general_inherit_on').on('change', function (evt) {
+            $('#TemplateConfiguration_files_css').val('inherit');
+            $('#TemplateConfiguration_files_js').val('inherit');
+            $('#TemplateConfiguration_files_print_css').val('inherit');
             $('#TemplateConfiguration_options').val('inherit');
+            $('#TemplateConfiguration_cssframework_name').val('inherit');
+            $('#TemplateConfiguration_cssframework_css').val('inherit');
+            $('#TemplateConfiguration_cssframework_js').val('inherit');
+            $('#TemplateConfiguration_packages_to_load').val('inherit');
             $('.action_hide_on_inherit_wrapper').removeClass('d-none');
             $('.tab_action_hide_on_inherit').addClass('ls-tab-disabled');
 
@@ -347,27 +354,25 @@ var ThemeOptions = function () {
                 JSON.parse($('#TemplateConfiguration_packages_to_load').val()) :
                 $(this).data('inheritvalue');
 
-            if (currentPackageObject === 'inherit') currentPackageObject = {add:[]};
-
+            if (currentPackageObject === 'inherit') {
+                currentPackageObject = {add: []};
+            }
             if ($('#simple_edit_options_font').val() === 'inherit') {
-
                 $('#TemplateConfiguration_packages_to_load').val('inherit');
-
             } else {
-
                 var selectedFontPackage = $(this).find('option:selected');
                 var packageName = selectedFontPackage.data('font-package');
-                var formatedPackageName = "font-" + packageName;
+                var formatedPackageName = 'font-' + packageName;
 
                 var filteredAdd = currentPackageObject.add.filter(function (value, index) {
-                    return !(/^font-.*$/.test(String(value)))
-                })
+                    return !(/^font-.*$/.test(String(value)));
+                });
                 filteredAdd.push(formatedPackageName);
-                currentPackageObject.add = filteredAdd
+                currentPackageObject.add = filteredAdd;
                 $('#TemplateConfiguration_packages_to_load').val(JSON.stringify(currentPackageObject));
             }
-        })
-    }
+        });
+    };
 
     //hotswapping the colorpickers and adding the reset functionality
     var hotswapColorPicker = function () {
@@ -388,84 +393,81 @@ var ThemeOptions = function () {
         });
     };
 
-    var hotswapFruityTheme = function () {
-        $('#simple_edit_add_css').on('change', function (evt) {
-            if ($('#simple_edit_add_css').val() === 'inherit') {
-                $('#TemplateConfiguration_files_css').val('inherit');
-            } else {
-                var cssThemeToAdd = $('#simple_edit_add_css').val();
-                var currentThemeObject = $('#TemplateConfiguration_files_css').val() != 'inherit' ?
-                    JSON.parse($('#TemplateConfiguration_files_css').val()) :
-                    $(this).data('inheritvalue');
-
-                currentThemeObject.add = currentThemeObject.add.filter(function (item, i) {
-                    return !(/^css\/variations\/.*$/.test(item));
-                });
-                currentThemeObject.add.push(cssThemeToAdd);
-
-                $('#TemplateConfiguration_files_css').val(JSON.stringify(currentThemeObject));
-            }
-        });
-    }
-
     var removeVariationsFromField = function (fieldSelector) {
-        if ($(fieldSelector).val() === 'inherit') return;
-        try {
-            var currentValue = JSON.parse($(fieldSelector).val());
-        } catch (error) {
-            var currentValue = {};
+        if ($(fieldSelector).val() === 'inherit') {
+            fieldSelector = '#optionCssFiles';
         }
-        var empty = true;
-        ['add','replace','remove'].forEach(function(action){
+        let currentValue = {};
+        try {
+            currentValue = JSON.parse($(fieldSelector).val());
+        } catch (error) {
+            currentValue = {};
+        }
+        let empty = true;
+        ['add', 'replace', 'remove'].forEach(function (action) {
             if (currentValue.hasOwnProperty(action)) {
                 currentValue[action] = currentValue[action].filter(function (item) {
-                    var itemToTest = action=='replace' ? item[1] : item;
+                    let itemToTest = action === 'replace' ? item[1] : item;
                     return !(/^css\/variations\/.*$/.test(itemToTest));
                 });
-                if (currentValue[action].length) empty = false;;
+                if (currentValue[action].length) {
+                    empty = false;
+                }
             }
         });
         if (!empty) {
             $(fieldSelector).val(JSON.stringify(currentValue));
         } else {
-            $(fieldSelector).val(inheritPossible ? "inherit" : JSON.stringify({}));
+            $(fieldSelector).val(inheritPossible ? 'inherit' : JSON.stringify({}));
         }
-    }
+    };
 
-    var addVariationToField = function (file, fieldSelector, action) {
-        var defaultValue = {};
-        defaultValue[action] = [];
+    // update the files_css field to be saved in the database
+    var addVariationToField = function (selectedVariation, filesCssId, selectedMode) {
+        let filesCss = [];
 
         try {
-            var currentValue = JSON.parse($(fieldSelector).val());
+            filesCss = JSON.parse($(filesCssId).val());
         } catch (error) {
         }
 
-        if (!currentValue || currentValue==='inherit') var currentValue = defaultValue;
-        if (!currentValue.hasOwnProperty(action)) currentValue[action] = [];
-
-        if (action == 'replace') {
-            currentValue[action].push(["css/bootstrap.css", file]);
-        } else {
-            currentValue[action].unshift(file);
+        if (!filesCss.hasOwnProperty(selectedMode)) {
+            filesCss[selectedMode] = [];
         }
-        $(fieldSelector).val(JSON.stringify(currentValue));
-    }
+
+        if (selectedMode === 'replace') {
+            filesCss[selectedMode].push([selectedVariation]);
+        } else {
+            filesCss[selectedMode].unshift(selectedVariation);
+        }
+        $(filesCssId).val(JSON.stringify(filesCss));
+    };
 
     var hotswapTheme = function () {
         $('#simple_edit_options_cssframework').on('change', function (evt) {
-            var newThemeDataValue = $('option:selected', this).attr('data-value') || false;
-            var selectedTheme = newThemeDataValue || $('#simple_edit_options_cssframework').val();
-            var selectedThemeMode = $('#simple_edit_options_cssframework').find("option[value='"+selectedTheme+"']").attr('data-mode') || 'add';
-
-            var filesField = selectedThemeMode == 'add' ? '#TemplateConfiguration_files_css' : '#TemplateConfiguration_cssframework_css';
-            removeVariationsFromField('#TemplateConfiguration_files_css');
+            let newThemeDataValue = $('option:selected', this).attr('data-value') || false;
+            let selectedVariation = newThemeDataValue || $('#simple_edit_options_cssframework').val();
+            let selectedMode = $('#simple_edit_options_cssframework').find('option[value=\'' + selectedVariation + '\']').attr('data-mode') || 'add';
+            let filesCssId = '#TemplateConfiguration_files_css';
+            let filesCss = {};
+            try {
+                filesCss = JSON.parse($(filesCssId).val());
+            } catch (e) {
+                filesCss = $(filesCssId).val();
+            }
+            // load the parent data if set to inherit, so no data gets lost
+            if (filesCss.length === 0 || filesCss === 'inherit') {
+                $(filesCssId).val($('#optionCssFiles').val());
+            }
+            removeVariationsFromField(filesCssId);
             removeVariationsFromField('#TemplateConfiguration_cssframework_css');
-            if (selectedTheme != 'inherit') {
-                addVariationToField(selectedTheme, filesField, selectedThemeMode);
+            if (selectedVariation !== 'inherit') {
+                addVariationToField(selectedVariation, filesCssId, selectedMode);
+            } else {
+                $(filesCssId).val('inherit');
             }
         });
-    }
+    };
 
     ///////////////
     // Event methods
@@ -502,7 +504,6 @@ var ThemeOptions = function () {
         hotswapGeneralInherit();
         hotswapColorPicker();
         hotswapFontField();
-        //hotswapFruityTheme();
         hotswapTheme();
     };
 
@@ -528,21 +529,20 @@ var ThemeOptions = function () {
 
 };
 
-var prepare = function () {
-
-    var deferred = $.Deferred();
-
-    var themeOptionStarter = new ThemeOptions();
-    themeOptionStarter();
-
-    setTimeout(function () {
-        deferred.resolve()
-    }, 650);
-    return deferred.promise();
-};
-
-
 $(function () {
+    var prepare = function () {
+
+        var deferred = $.Deferred();
+
+        var themeOptionStarter = new ThemeOptions();
+        themeOptionStarter();
+
+        setTimeout(function () {
+            deferred.resolve();
+        }, 650);
+        return deferred.promise();
+    };
+
     $('.simple-template-edit-loading').css('display', 'block');
     prepare().then(function (runsesolve) {
         $('.simple-template-edit-loading').css('display', 'none');
@@ -566,21 +566,108 @@ $(function () {
         if ($(this).val() == 'inherit') {
             $(this).siblings('.selector__checkicon-preview').find('i').html('&#x' + $(this).siblings('.selector__checkicon-preview').find('i').data('inheritvalue') + ';');
         }
-    })
+    });
+});
+$(function () {
+    let selectedTabHash = window.location.hash;
+    let selectedTabElement = document.querySelector('[data-bs-target="' + selectedTabHash + '"]');
+    if (selectedTabElement !== null) {
+        let tab = new bootstrap.Tab(selectedTabElement);
+        tab.show();
+    }
 
-    var uploadImageBind = new bindUpload({
+    var BindUpload = function (options) {
+        var $activeForm = $(options.form);
+        var $activeInput = $(options.input);
+        var $progressBar = $(options.progress);
+
+        var onSuccess = options.onSuccess || function () {
+        };
+        var onBeforeSend = options.onBeforeSend || function () {
+        };
+
+        var progressHandling = function (event) {
+            var percent = 0;
+            var position = event.loaded || event.position;
+            var total = event.total;
+            if (event.lengthComputable) {
+                percent = Math.ceil(position / total * 100);
+            }
+            // update progressbars classes so it fits your code
+            $progressBar.css('width', String(percent) + '%');
+            $progressBar.find('span.visually-hidden').text(percent + '%');
+        };
+
+        $activeInput.on('change', function (e) {
+            e.preventDefault();
+            var formData = new FormData($activeForm[0]);
+            console.log(JSON.stringify(formData));
+            // add assoc key values, this will be posts values
+            formData.append('file', $activeInput.prop('files')[0]);
+
+            $.ajax({
+                type: 'POST',
+                url: $activeForm.attr('action'),
+                xhr: function () {
+                    var myXhr = $.ajaxSettings.xhr();
+                    if (myXhr.upload) {
+                        myXhr.upload.addEventListener('progress', progressHandling, false);
+                    }
+                    return myXhr;
+                },
+                beforeSend: onBeforeSend,
+                success: function (data) {
+                    console.log(data);
+                    if (data.success === true) {
+                        LS.LsGlobalNotifier.createAlert(data.message, 'success', {showCloseButton: true});
+                        $progressBar.css('width', '0%');
+                        $progressBar.find('span.visually-hidden').text('0%');
+                        onSuccess(options.input);
+                    } else {
+                        LS.LsGlobalNotifier.createAlert(data.message, 'danger', {showCloseButton: true});
+                        $progressBar.css('width', '0%');
+                        $progressBar.find('span.visually-hidden').text('0%');
+                    }
+                },
+                error: function (error) {
+                    $progressBar.css('width', '0%');
+                    $progressBar.find('span.visually-hidden').text('0%');
+                    console.log(error);
+                },
+                async: true,
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
+                timeout: 60000
+            });
+        });
+        return this;
+    };
+    new BindUpload({
+        form: '#upload_frontend',
+        input: '#upload_image',
+        progress: '#upload_progress'
+    });
+    new BindUpload({
         form: '#upload_frontend',
         input: '#upload_image_frontend',
         progress: '#upload_progress_frontend',
         onBeforeSend: function () {
             $('.simple-template-edit-loading').css('display', 'block');
         },
-        onSuccess: function () {
-            setTimeout(function () {
-                $(document).trigger('pjax:load', {
-                    url: window.location.href
-                });
-            }, 2500);
+        onSuccess: function (inputId) {
+            let url = new URL(window.location.href);
+            let inputElement = document.querySelector(inputId);
+            if (inputElement !== null) {
+                url.hash = inputElement.closest('.CoreThemeOptions--settingsTab') !== null
+                    ? inputElement.closest('.CoreThemeOptions--settingsTab').id
+                    : '';
+            }
+            $(document).trigger('pjax:load', {
+                url: url.href
+            });
         }
     });
 });
+

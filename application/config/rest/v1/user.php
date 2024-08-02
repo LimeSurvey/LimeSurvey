@@ -17,7 +17,7 @@ $rest['v1/user'] = [
     'GET' => [
         'description' => 'User list',
         'commandClass' => UserList::class,
-        'auth' => 'session',
+        'auth' => true,
         'params' => [
             'pageSize' => ['type' => 'int'],
             'page' => ['type' => 'int']
