@@ -3417,8 +3417,6 @@ class SurveyAdministrationController extends LSBaseController
         foreach ($surveys as $survey) {
             $survey = (object)$survey;
             $state = strip_tags($survey->getRunning());
-            $state_1 = $survey->getRunning();
-            $state_2 = str_replace($state . '</a>', '</a>', $survey->getRunning());
             $boxes[] = [
                 'survey' => $survey,
                 'type' => 0,
