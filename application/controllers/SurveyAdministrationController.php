@@ -3420,7 +3420,7 @@ class SurveyAdministrationController extends LSBaseController
             $boxes[] = [
                 'survey' => $survey,
                 'type' => 0,
-                'external' => $item->external ?? false,
+                'external' => false,
                 'iconAlter' => $state,
                 'state' => $survey->getState(),
                 'buttons' => $survey->getButtons(),
