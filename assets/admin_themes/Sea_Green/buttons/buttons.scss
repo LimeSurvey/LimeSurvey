@@ -410,12 +410,19 @@
     width      : 36px;
     padding    : 0;
     border     : none;
-    box-shadow : none;
     display: flex;
     justify-content: center;
     align-items: center;
-    &:hover, &:focus, &:active, &.active, &:active:focus {
-        box-shadow : none;
+    &.btn-g-800 {
+        &:hover, &:focus {
+            background-color : $g-700;
+            box-shadow       : none;
+        }
+        &:active, &.active, &:active:focus {
+            color            : $g-800;
+            background-color : $g-200;
+            box-shadow       : none;
+        }
     }
 }
 

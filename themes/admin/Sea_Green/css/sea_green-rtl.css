@@ -16812,12 +16812,17 @@ tr.info, tr.danger {
   width: 36px;
   padding: 0;
   border: none;
-  box-shadow: none;
   display: flex;
   justify-content: center;
   align-items: center;
 }
-.btn-icon:hover, .btn-icon:focus, .btn-icon:active, .btn-icon.active, .btn-icon:active:focus {
+.btn-icon.btn-g-800:hover, .btn-icon.btn-g-800:focus {
+  background-color: #6E748C;
+  box-shadow: none;
+}
+.btn-icon.btn-g-800:active, .btn-icon.btn-g-800.active, .btn-icon.btn-g-800:active:focus {
+  color: #333641;
+  background-color: #EEEFF7;
   box-shadow: none;
 }
 
