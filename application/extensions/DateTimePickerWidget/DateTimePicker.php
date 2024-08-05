@@ -314,6 +314,7 @@ class DateTimePicker extends CInputWidget
                     close: $close,
                 },
                 sideBySide: $sideBySide,
+                theme : (document.body.hasAttribute('data-thememode')) ? document.body.getAttribute('data-thememode') : 'auto'
             },
             stepping: $stepping,
             $viewDateOption
