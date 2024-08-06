@@ -406,7 +406,7 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     // Hazaragi
     $supportedLanguages['haz']['description'] = gT('Hazaragi');
     $supportedLanguages['haz']['nativedescription'] = '&#x622;&#x632;&#x631;&#x6AF;&#x6CC;';
-    $supportedLanguages['haz']['rtl'] = false;
+    $supportedLanguages['haz']['rtl'] = true;
     $supportedLanguages['haz']['dateformat'] = 2;
     $supportedLanguages['haz']['radixpoint'] = 0;
     $supportedLanguages['haz']['momentjs'] = 'fa';
