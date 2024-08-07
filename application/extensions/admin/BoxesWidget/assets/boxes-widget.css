@@ -87,32 +87,16 @@
     padding-right: 5px;
 }
 
-@media (max-width: 1400px) {
-    .box-widget .card .card-header .card-title {
-        -webkit-line-clamp: 3;
-    }
-    .box-widget .row .col {
-        width: 33%;
-    }
-}
 
-
-@media (max-width: 1000px) {
-    .box-widget .row .col {
-        width: 50%;
-    }
-}
-
-@media screen and (max-width: 767px) {
-    .box-widget .row .col {
-        display: flex;
-        justify-content: center;
-        width: 100%;
-        margin: 0 auto;
-        padding: 0;
-    }
-    .dropdown {
+@media screen and (max-width: 1200px) {
+    #survey_active {
         display: none;
+    }
+    .box-widget{
+        text-align: center;
+    }
+    .card {
+        text-align: left;
     }
 }
 .box-widget .card .card-footer .content .dropdown.ls-action_dropdown {

@@ -1,5 +1,5 @@
 <?php foreach ($items as $item) : ?>
-    <div class="col">
+    <div class="m-2 align-middle d-inline-block">
         <?php if ($item['type'] == 0) : ?>
             <div class="card card-primary "
                  data-url="<?php echo $item['link']?>"
