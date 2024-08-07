@@ -1,1 +1,11 @@
-Allow from all
+<IfVersion < 2.4>
+    Order Allow,Deny
+    Allow from all
+</IfVersion>
+<IfVersion >= 2.4>
+    Require all granted
+    <IfModule mod_access_compat.c>
+        Order Allow,Deny
+        Allow from all
+    </IfModule>
+</IfVersion>
