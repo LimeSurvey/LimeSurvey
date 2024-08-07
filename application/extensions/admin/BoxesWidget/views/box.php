@@ -6,7 +6,7 @@
                 <?php if ($item['external']) : ?> data-target="_blank" <?php endif; ?>
             >
                 <div class="card-header">
-                    <?php if ($item['state'] == 'running') : ?>
+                    <?php if ($item['state'] == 'running' || $item['state'] == 'willExpire') : ?>
                         <span class="label label-success">
                                     <?php echo gT("Active"); ?>
                                 </span>
