@@ -68,7 +68,7 @@ class ExportSTATAxml extends \LimeSurvey\PluginManager\PluginBase
         $exports = $event->get('exportplugins');
         
         // Yes we overwrite existing classes if available
-        $exports['stataxml'] = get_class();
+        $exports['stataxml'] = get_class($this);
         $event->set('exportplugins', $exports);
     }
     

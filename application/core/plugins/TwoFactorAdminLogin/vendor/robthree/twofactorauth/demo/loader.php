@@ -14,7 +14,7 @@ class Loader
         if (static::$initialized) return;
         static::$initialized = true;
         static::$parentPath = __FILE__;
-        for ($i=substr_count(get_class(), (string) static::$nsChar);$i>=0;$i--) {
+        for ($i=substr_count(get_class(new static), (string) static::$nsChar);$i>=0;$i--) {
             static::$parentPath = dirname(static::$parentPath);
         }
         static::$paths = array();

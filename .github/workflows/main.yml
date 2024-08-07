@@ -17,7 +17,7 @@ jobs:
     strategy:
       matrix:
         # Specify what versions of php you want to test
-        php-versions: ['7.4', '8.2']
+        php-versions: ['7.4', '8.3']
     # Env vars for this job
     env:
       DBENGINE: INNODB
@@ -156,7 +156,7 @@ jobs:
     strategy:
       matrix:
         # Specify what versions of php you want to test
-        php-versions: ['7.4', '8.2']
+        php-versions: ['7.4', '8.3']
     env:
       DBENGINE: INNODB
     steps:
@@ -217,7 +217,7 @@ jobs:
     strategy:
       matrix:
         # Specify what versions of php you want to test
-        php-versions: ['7.4', '8.2']
+        php-versions: ['7.4', '8.3']
     steps:
       - uses: actions/checkout@v4
 
@@ -248,7 +248,7 @@ jobs:
     strategy:
       matrix:
         # Specify what versions of php you want to test
-        php-versions: ['7.4', '8.2']
+        php-versions: ['7.4', '8.3']
     steps:
       - uses: actions/checkout@v4
 

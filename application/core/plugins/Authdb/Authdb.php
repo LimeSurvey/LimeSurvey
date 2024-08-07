@@ -258,7 +258,7 @@ class Authdb extends AuthPluginBase
         $exports = $event->get('exportplugins');
 
         // Yes we overwrite existing classes if available
-        $className = get_class();
+        $className = get_class($this);
         $exports['csv'] = $className;
         $exports['xls'] = $className;
         $exports['pdf'] = $className;
