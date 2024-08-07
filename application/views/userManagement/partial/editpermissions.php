@@ -14,7 +14,6 @@ Yii::app()->getController()->renderPartial(
         <thead>
             <tr>
                 <th><?php eT("Name"); ?></th>
-<!--                <th>--><?php //eT("Permission"); ?><!--</th>-->
                 <th><?php eT("General"); ?></th>
                 <th><?php eT("Create"); ?></th>
                 <th><?php eT("View/read"); ?></th>
@@ -28,11 +27,6 @@ Yii::app()->getController()->renderPartial(
         <!-- Permissions -->
         <?php foreach ($aBasePermissions as $sPermissionKey => $aCRUDPermissions) : ?>
             <tr>
-                <!-- Icon -->
-<!--                <td>-->
-<!--                    -->
-<!--                </td>-->
-
                 <!-- Warning super admin -->
                 <td>
                     <i class="<?php echo $aCRUDPermissions['img']; ?> text-success"
