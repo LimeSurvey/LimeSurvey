@@ -2,6 +2,7 @@
 
 namespace LimeSurvey\Models\Services;
 
+use CException;
 use LimeSurvey\Models\Services\Exception\PermissionDeniedException;
 use LSYii_Application;
 use Permission;
@@ -28,12 +29,13 @@ class SurveyActivate
     }
 
     /**
-     * @param $surveyId
+     * @param int $surveyId
      * @param array $params
      * @return array
      * @throws PermissionDeniedException
+     * @throws CException
      */
-    public function activate($surveyId, array $params = []): array
+    public function activate(int $surveyId, array $params = []): array
     {
         if (!$this->permission->hasSurveyPermission($surveyId, 'surveyactivation', 'update')) {
             throw new PermissionDeniedException(
@@ -71,6 +73,43 @@ class SurveyActivate
         }
 
         $result = $this->surveyActivator->setSurvey($survey)->activate();
+        if ($params['restore'] ?? false) {
+            $result['restored'] = $this->restoreData($surveyId);
+        }
         return $result;
+    }
+
+    /**
+     * Restores all archived data tables
+     *
+     * @param int $surveyId
+     * @return bool
+     * @throws CException
+     */
+    public function restoreData(int $surveyId): bool
+    {
+        $archives = $this->app->getNewestArchives($surveyId);
+        if (is_array($archives) && isset($archives['survey']) && isset($archives['questions'])) {
+            //Recover survey
+            $qParts = explode("_", $archives['questions']);
+            $qTimestamp = $qParts[count($qParts) - 1];
+            $sParts = explode("_", $archives['survey']);
+            $sTimestamp = $sParts[count($sParts) - 1];
+            $dynamicColumns = $this->app->getUnchangedColumns($surveyId, $sTimestamp, $qTimestamp);
+            $this->app->recoverSurveyResponses($surveyId, $archives["survey"], $dynamicColumns);
+            if (isset($archives["tokens"])) {
+                $tokenTable = $this->app->db->tablePrefix . "tokens_" . $surveyId;
+                $this->app->createTableFromPattern($tokenTable, $archives["tokens"]);
+                $this->app->copyFromOneTableToTheOther($archives["tokens"], $tokenTable);
+            }
+            if (isset($archives["timings"])) {
+                $timingsTable = $this->app->db->tablePrefix . "survey_" . $surveyId . "_timings";
+                $this->app->createTableFromPattern($timingsTable, $archives["timings"]);
+                $this->app->copyFromOneTableToTheOther($archives["timings"], $timingsTable);
+            }
+            return true;
+        } else {
+            return false; //not recoverable
+        }
     }
 }
