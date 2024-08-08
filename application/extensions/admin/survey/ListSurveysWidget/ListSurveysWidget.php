@@ -26,6 +26,11 @@ class ListSurveysWidget extends CWidget
     public $massiveAction;                                                      // Used to render massive action in GridViews footer
     public $pageSize;                                                           // Default page size (should be set to Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']))
     public $template;
+    /**
+     * For rendering the switch to decide which view widget is rendered
+     * @var $switch bool
+     */
+    public bool $switch = false;
 
     /**
      * Run
@@ -70,7 +75,7 @@ class ListSurveysWidget extends CWidget
             $this->controller->widget('ext.admin.SearchBoxWidget.SearchBoxWidget', [
                 'model' => new Survey('search'),
                 'formUrl' => App()->request->getPathInfo(),
-                'switch' => App()->request->getPathInfo() == 'admin/index'
+                'switch' => $this->switch
             ]);
         }
 

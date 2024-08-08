@@ -97,8 +97,8 @@
             <?php if ($this->switch) : ?>
                 <div class="col-1">
                     <div class="pull-right menu-icon">
-                        <i class="view-switch ri-grid-fill <?php echo SettingsUser::getUserSettingValue('welcome_page_widget') == 'box-widget' ? 'purple' : ''?>" data-action="box-widget"></i>
-                        <i class="view-switch ri-menu-line <?php echo SettingsUser::getUserSettingValue('welcome_page_widget') == 'list-widget' ? 'purple' : ''?>" data-action="list-widget"></i>
+                        <i class="view-switch ri-grid-fill <?php echo SettingsUser::getUserSettingValue('welcome_page_widget') === 'box-widget' ? 'purple' : ''?>" data-action="box-widget"></i>
+                        <i class="view-switch ri-menu-line <?php echo SettingsUser::getUserSettingValue('welcome_page_widget') === 'list-widget' ? 'purple' : ''?>" data-action="list-widget"></i>
                     </div>
                 </div>
             <?php endif; ?>

@@ -5,15 +5,26 @@ class SearchBoxWidget extends CWidget
     public $formUrl          = 'admin/index';
 
     public $model;
-    public $switch = false;
     public $onlyfilter = false;
+    /**
+     * For deciding which view widget to render
+     * @var $viewtype string|null
+     */
+    public  $viewtype = '';
+    /**
+     * For rendering the switch to decide which view widget is rendered
+     * @var $switch bool
+     */
+    public $switch = false;
+
     /**
      * @throws \CException
      */
     public function run()
     {
-        if ($viewtype = App()->request->getQuery('viewtype')) {
-            SettingsUser::setUserSetting('welcome_page_widget', $viewtype);
+        $this->viewtype = App()->request->getQuery('viewtype');
+        if (!empty($this->viewtype) && $this->switch) {
+            SettingsUser::setUserSetting('welcome_page_widget', $this->viewtype);
         }
         $this->render('searchBox');
     }

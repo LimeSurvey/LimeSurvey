@@ -204,87 +204,58 @@ gT('Themes');
         $this->widget('ext.SideBarWidget.SideBarWidget');
         ?>
 
-        <?php if (App()->request->getQuery('viewtype')) : ?>
-            <?php if (App()->request->getQuery('viewtype') == 'list-widget') : ?>
-                <div class="container">
-                    <div class="col-12 list-surveys">
-                        <?php
-                        $this->widget('ext.admin.survey.ListSurveysWidget.ListSurveysWidget', [
-                            'model'            => $oSurveySearch,
-                            'bRenderSearchBox' => $bShowSurveyListSearch,
-                        ]);
-                        ?>
-                    </div>
-                </div>
-            <?php elseif (App()->request->getQuery('viewtype') == 'box-widget') : ?>
-                <div class="container">
-                    <div class="col-12 list-surveys">
-                        <?php
-                        $this->widget('ext.admin.BoxesWidget.BoxesWidget', [
-                            'model'      => new Survey('search'),
-                            'boxesbyrow' => 5,
-                            'limit'      => 4,
-                            'items'      => [
-                                [
-                                    'type'  => 2,
-                                    'link'  => App()->createUrl('/surveyAdministration/newSurvey/'),
-                                    'text'  => 'Create survey',
-                                    'icon'  => 'ri-add-line',
-                                    'color' => '#8146F6'
-                                ],
-                                [
-                                    'type'  => 2,
-                                    'link'  => App()->createUrl('/admin/surveysgroups/sa/create/'),
-                                    'text'  => 'Create survey group',
-                                    'icon'  => 'ri-add-line',
-                                    'color' => '#6D748C'
-                                ],
-                                [
-                                    'type'  => 0,
-                                    'model' => Survey::model(),
-                                    'limit' => 4
-                                ],
-                            ]
-                        ]);
-                        ?>
-                    </div>
-                </div>
-            <?php endif; ?>
-        <?php elseif (SettingsUser::getUserSettingValue('welcome_page_widget') == 'list-widget') : ?>
+        <?php if (empty(App()->request->getQuery('viewtype')) && empty(SettingsUser::getUserSettingValue('welcome_page_widget'))) : ?>
             <div class="container">
                 <div class="col-12 list-surveys">
-                    <?php
-                    $this->widget('ext.admin.survey.ListSurveysWidget.ListSurveysWidget', [
-                        'model'            => $oSurveySearch,
+                    <?php $this->widget('ext.admin.survey.ListSurveysWidget.ListSurveysWidget', [
+                        'model' => $oSurveySearch,
                         'bRenderSearchBox' => $bShowSurveyListSearch,
+                        'switch' => true
                     ]);
                     ?></div>
             </div>
-        <?php elseif (SettingsUser::getUserSettingValue('welcome_page_widget') == 'box-widget') : ?>
+        <?php elseif (
+            (!empty(App()->request->getQuery('viewtype'))
+                && App()->request->getQuery('viewtype') === 'list-widget'
+            )
+            || (empty(App()->request->getQuery('viewtype'))
+                && (SettingsUser::getUserSettingValue('welcome_page_widget') === 'list-widget')
+            )
+        ) : ?>
+            <div class="container">
+                <div class="col-12 list-surveys">
+                    <?php $this->widget('ext.admin.survey.ListSurveysWidget.ListSurveysWidget', [
+                        'model' => $oSurveySearch,
+                        'bRenderSearchBox' => $bShowSurveyListSearch,
+                        'switch' => true
+                    ]);
+                    ?></div>
+            </div>
+        <?php else : ?>
             <div class="container welcome full-page-wrapper">
                 <div class="col-12 list-surveys">
-                    <?php
-                    $this->widget('ext.admin.BoxesWidget.BoxesWidget', [
-                        'model'      => new Survey('search'),
+                    <?php $this->widget('ext.admin.BoxesWidget.BoxesWidget', [
+                        'model' => new Survey('search'),
+                        'switch' => true,
                         'boxesbyrow' => 5,
-                        'limit'      => 4,
-                        'items'      => [
+                        'limit' => 4,
+                        'items' => [
                             [
-                                'type'  => 2,
-                                'link'  => App()->createUrl('/surveyAdministration/newSurvey/'),
-                                'text'  => 'Create survey',
-                                'icon'  => 'ri-add-line',
+                                'type' => 2,
+                                'link' => App()->createUrl('/surveyAdministration/newSurvey/'),
+                                'text' => 'Create survey',
+                                'icon' => 'ri-add-line',
                                 'color' => '#8146F6'
                             ],
                             [
-                                'type'  => 2,
-                                'link'  => App()->createUrl('/admin/surveysgroups/sa/create/'),
-                                'text'  => 'Create survey group',
-                                'icon'  => 'ri-add-line',
+                                'type' => 2,
+                                'link' => App()->createUrl('/admin/surveysgroups/sa/create/'),
+                                'text' => 'Create survey group',
+                                'icon' => 'ri-add-line',
                                 'color' => '#6D748C'
                             ],
                             [
-                                'type'  => 0,
+                                'type' => 0,
                                 'model' => Survey::model(),
                                 'limit' => 4
                             ],

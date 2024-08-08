@@ -10,6 +10,11 @@ class BoxesWidget extends CWidget
     public $limit = 3;
     public $boxesbyrow = 4;
     public $searchBox = true;
+    /**
+     * For rendering the switch to decide which view widget is rendered
+     * @var $switch bool
+     */
+    public bool $switch = false;
 
     /** Initializes the widget */
     public function init(): void
@@ -76,7 +81,7 @@ class BoxesWidget extends CWidget
             $this->controller->widget('ext.admin.SearchBoxWidget.SearchBoxWidget', [
                 'model' => new Survey('search'),
                 'onlyfilter' => true,
-                'switch' => App()->request->getPathInfo() == 'admin/index'
+                'switch' => $this->switch
             ]);
         }
 
