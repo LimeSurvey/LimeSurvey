@@ -1,5 +1,5 @@
 <div class="box-widget">
-    <div>
+    <div class="box-widget-list">
         <?php $this->render('box', array('items' => $items)); ?>
     </div>
     <div class="btn-container">

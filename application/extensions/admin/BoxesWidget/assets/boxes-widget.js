@@ -28,7 +28,7 @@ $("#load-more").click(function (event) {
         success: function (html, status) {
             if (html && html.includes("card")) {
                 $("#load-more").attr('data-page', parseInt(page) + 1)
-                $('.box-widget .row').append(html);
+                $('.box-widget .box-widget-list').append(html);
             } else {
                 $("#load-more").hide()
             }

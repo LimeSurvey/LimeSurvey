@@ -8,7 +8,6 @@ class BoxesWidget extends CWidget
     const TYPE_LINK = 2;
     public $items = [];
     public $limit = 3;
-    public $boxesbyrow = 4;
     public $searchBox = true;
     /**
      * For rendering the switch to decide which view widget is rendered
@@ -44,9 +43,7 @@ class BoxesWidget extends CWidget
         }
 
         // Set number of page
-        if (isset($_GET['pageSize'])) {
-            App()->user->setState('pageSize', $this->limit);
-        }
+        App()->user->setState('pageSize', $this->limit);
 
         $boxes = [];
         foreach ($this->items as $item) {
@@ -76,18 +73,17 @@ class BoxesWidget extends CWidget
                 }
             }
         }
-
         if ($this->searchBox) {
             $this->controller->widget('ext.admin.SearchBoxWidget.SearchBoxWidget', [
                 'model' => new Survey('search'),
                 'onlyfilter' => true,
+                'formUrl' => App()->request->getRequestUri(),
                 'switch' => $this->switch
             ]);
         }
 
         $this->render('boxes', [
             'items' => $boxes,
-            'boxesbyrow' => $this->boxesbyrow,
             'limit' => $this->limit
         ]);
     }

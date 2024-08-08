@@ -237,7 +237,6 @@ gT('Themes');
                     <?php $this->widget('ext.admin.BoxesWidget.BoxesWidget', [
                         'model' => new Survey('search'),
                         'switch' => true,
-                        'boxesbyrow' => 5,
                         'limit' => 4,
                         'items' => [
                             [
