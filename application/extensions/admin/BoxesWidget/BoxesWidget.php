@@ -31,23 +31,6 @@ class BoxesWidget extends CWidget
         App()->getClientScript()->registerCssFile(
             App()->getConfig("extensionsurl") . 'admin/BoxesWidget/assets/boxes-widget.css'
         );
-
-        $var = [
-            [
-                'type' => 2,
-                'link' => App()->createUrl('/surveyAdministration/newSurvey/'),
-                'text' => 'Create survey',
-                'icon' => 'ri-add-line',
-                'color' => '#8146F6'
-            ],
-            [
-                'type' => 2,
-                'link' => App()->createUrl('/admin/surveysgroups/sa/create/'),
-                'text' => 'Create survey group',
-                'icon' => 'ri-add-line',
-                'color' => '#6D748C'
-            ],
-        ];
     }
 
     public function run()
