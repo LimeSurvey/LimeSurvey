@@ -2,7 +2,7 @@
 <!-- Begin Form -->
 <div class="row">
     <div class="menu col-12">
-        <?php $form = $this->beginWidget('CActiveForm', ['action' => App()->createUrl($this->formUrl), 'method' => 'get', 'htmlOptions' => ['id' => 'survey-search'],]); ?>
+        <?php $form = $this->beginWidget('CActiveForm', ['action' => $this->formUrl, 'method' => 'get', 'htmlOptions' => ['id' => 'survey-search'],]); ?>
         <div class="row">
 
             <!-- select state -->
