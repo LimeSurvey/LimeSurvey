@@ -235,28 +235,12 @@ gT('Themes');
             <div class="container welcome full-page-wrapper">
                 <div class="col-12 list-surveys">
                     <?php $this->widget('ext.admin.BoxesWidget.BoxesWidget', [
-                        'model' => new Survey('search'),
                         'switch' => true,
-                        'limit' => 4,
                         'items' => [
-                            [
-                                'type' => 2,
-                                'link' => App()->createUrl('/surveyAdministration/newSurvey/'),
-                                'text' => 'Create survey',
-                                'icon' => 'ri-add-line',
-                                'color' => '#8146F6'
-                            ],
-                            [
-                                'type' => 2,
-                                'link' => App()->createUrl('/admin/surveysgroups/sa/create/'),
-                                'text' => 'Create survey group',
-                                'icon' => 'ri-add-line',
-                                'color' => '#6D748C'
-                            ],
                             [
                                 'type' => 0,
                                 'model' => Survey::model(),
-                                'limit' => 4
+                                'limit' => 5,
                             ],
                         ]
                     ]);

@@ -7,7 +7,7 @@ class BoxesWidget extends CWidget
     const TYPE_PRODUCT_GROUP = 1;
     const TYPE_LINK = 2;
     public $items = [];
-    public $limit = 3;
+    public $limit = 5;
     public $searchBox = true;
     /**
      * For rendering the switch to decide which view widget is rendered
@@ -31,25 +31,32 @@ class BoxesWidget extends CWidget
         App()->getClientScript()->registerCssFile(
             App()->getConfig("extensionsurl") . 'admin/BoxesWidget/assets/boxes-widget.css'
         );
+
+        $var = [
+            [
+                'type' => 2,
+                'link' => App()->createUrl('/surveyAdministration/newSurvey/'),
+                'text' => 'Create survey',
+                'icon' => 'ri-add-line',
+                'color' => '#8146F6'
+            ],
+            [
+                'type' => 2,
+                'link' => App()->createUrl('/admin/surveysgroups/sa/create/'),
+                'text' => 'Create survey group',
+                'icon' => 'ri-add-line',
+                'color' => '#6D748C'
+            ],
+        ];
     }
 
     public function run()
     {
-        $this->model->active = "";
-
-        // Filter state
-        if (isset($_GET['active']) && !empty($_GET['active'])) {
-            $this->model->active = $_GET['active'];
-        }
-
-        // Set number of page
-        App()->user->setState('pageSize', $this->limit);
-
         $boxes = [];
         foreach ($this->items as $item) {
             $item = (object)$item;
 
-            if ($item->type == self::TYPE_LINK) {
+            if (!empty($item->type) && $item->type == self::TYPE_LINK) {
                 $boxes[] = [
                     'link' => $item->link,
                     'type' => self::TYPE_LINK,
@@ -58,10 +65,20 @@ class BoxesWidget extends CWidget
                     'external' => $item->external ?? false,
                     'color' => $item->color ?? '',
                 ];
-            } elseif ($item->type == self::TYPE_PRODUCT) {
-                $surveys = $this->model->search()->getData();
+            } elseif (!empty($item->type) && $item->type == self::TYPE_PRODUCT) {
+                $item->model->active = "";
+
+                // Filter state
+                if (isset($_GET['active']) && !empty($_GET['active'])) {
+                    $item->model->active = $_GET['active'];
+                }
+
+                // Set number of page
+                App()->user->setState('pageSize', $item->limit);
+                $this->limit = $item->limit;
+
+                $surveys = $item->model->search()->getData();
                 foreach ($surveys as $survey) {
-                    $state = strip_tags($survey->getRunning());
                     $boxes[] = [
                         'survey' => $survey,
                         'type' => self::TYPE_PRODUCT,
@@ -80,6 +97,25 @@ class BoxesWidget extends CWidget
                 'formUrl' => App()->request->getRequestUri(),
                 'switch' => $this->switch
             ]);
+        }
+
+        if (empty($boxes)) {
+            $boxes[] = [
+                'type' => self::TYPE_LINK,
+                'link' => App()->createUrl('/surveyAdministration/newSurvey/'),
+                'text' => 'Create survey',
+                'icon' => 'ri-add-line',
+                'color' => '#8146F6',
+                'external' => false
+            ];
+            $boxes[] = [
+                'type' => self::TYPE_LINK,
+                'link' => App()->createUrl('/admin/surveysgroups/sa/create/'),
+                'text' => 'Create survey group',
+                'icon' => 'ri-add-line',
+                'color' => '#6D748C',
+                'external' => false
+            ];
         }
 
         $this->render('boxes', [

@@ -10,7 +10,7 @@
                 <h2><?php eT('All surveys'); ?></h2>
             </div>
             <?php if ($this->onlyfilter) : ?>
-                <div class="offset-7 col-2">
+                <div class="offset-3 col-2">
                     <div  class="pull-right">
                         <div class="dropdown">
                             <select name="active" id='survey_active' class="form-select">
@@ -29,13 +29,27 @@
                                 <option value="E" <?= App()->request->getQuery('active') === "E" ? "selected" : '' ?>>
                                     <?= gT('Expired') ?>
                                 </option>
-                                <!--                            <option value="S" --><?php //= $this->model->active === "S" ? "selected" : '' ?><!-->-->
-                                <!--                                --><?php //= gT('Active but not yet started') ?>
-                                <!--                            </option>-->
+                                <!--<option value="S" --><?php //= $this->model->active === "S" ? "selected" : '' ?><!-->-->
+                                <!--    --><?php //= gT('Active but not yet started') ?>
+                                <!--</option>-->
                             </select>
                         </div>
                     </div>
                 </div>
+
+                <div class="col-4">
+                    <div class="pull-right">
+                        <a href="<?= Yii::app()->createUrl('surveyAdministration/newSurvey') ?>" class="btn btn-outline-secondary menu-button purple purple-bg">
+                            <i class="ri-add-line"></i>
+                            <?= gT('Create survey') ?>
+                        </a>
+                        <a href="<?= Yii::app()->createUrl('admin/surveysgroups/sa/create') ?>" class="btn btn-outline-secondary menu-button">
+                            <i class="ri-add-line"></i>
+                            <?= gT('Create survey group') ?>
+                        </a>
+                    </div>
+                </div>
+
             <?php else : ?>
                 <!-- select group -->
                 <div class="col-5">
