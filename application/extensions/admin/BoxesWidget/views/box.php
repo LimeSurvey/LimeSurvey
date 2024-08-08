@@ -3,7 +3,9 @@
         <?php if ($item['type'] == 0) : ?>
             <div class="card card-primary "
                  data-url="<?php echo $item['link']?>"
-                <?php if ($item['external']) : ?> data-target="_blank" <?php endif; ?>
+                <?php if ($item['external']) :
+                    ?> data-target="_blank" <?php
+                endif; ?>
             >
                 <div class="card-header">
                     <?php if ($item['state'] == 'running' || $item['state'] == 'willExpire') : ?>
@@ -65,8 +67,12 @@
         <?php elseif ($item['type'] == 2) : ?>
             <div class="card card-primary card-clickable card-link"
                  data-url="<?php echo $item['link']?>"
-                <?php if ($item['color']) : ?> style="color:<?php echo $item['color']?>;border-color:<?php echo $item['color']?>" <?php endif; ?>
-                <?php if ($item['external']) : ?> data-target="_blank" <?php endif; ?>
+                <?php if ($item['color']) :
+                    ?> style="color:<?php echo $item['color']?>;border-color:<?php echo $item['color']?>" <?php
+                endif; ?>
+                <?php if ($item['external']) :
+                    ?> data-target="_blank" <?php
+                endif; ?>
             >
                 <div class="card-body">
                     <i class="<?php echo $item['icon']?>"></i>

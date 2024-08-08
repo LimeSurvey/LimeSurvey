@@ -39,7 +39,7 @@ class BoxesWidget extends CWidget
         foreach ($this->items as $item) {
             $item = (object)$item;
 
-            if (!empty($item->type) && $item->type == self::TYPE_LINK) {
+            if (isset($item->type) && $item->type == self::TYPE_LINK) {
                 $boxes[] = [
                     'link' => $item->link,
                     'type' => self::TYPE_LINK,
@@ -48,7 +48,7 @@ class BoxesWidget extends CWidget
                     'external' => $item->external ?? false,
                     'color' => $item->color ?? '',
                 ];
-            } elseif (!empty($item->type) && $item->type == self::TYPE_PRODUCT) {
+            } elseif (isset($item->type) && $item->type == self::TYPE_PRODUCT) {
                 $item->model->active = "";
 
                 // Filter state
@@ -81,8 +81,9 @@ class BoxesWidget extends CWidget
                 'switch' => $this->switch
             ]);
         }
+        $enableLoadMoreBtn = !empty($boxes);
 
-        if (empty($boxes)) {
+        if (!$enableLoadMoreBtn) {
             $boxes[] = [
                 'type' => self::TYPE_LINK,
                 'link' => App()->createUrl('/surveyAdministration/newSurvey/'),
@@ -103,7 +104,8 @@ class BoxesWidget extends CWidget
 
         $this->render('boxes', [
             'items' => $boxes,
-            'limit' => $this->limit
+            'limit' => $this->limit,
+            'enableLoadMoreBtn' => $enableLoadMoreBtn
         ]);
     }
 }
