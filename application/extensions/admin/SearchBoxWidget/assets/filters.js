@@ -1,9 +1,6 @@
-
 $('#survey_gsid, #survey_active').change(function (e) {
-    console.log($(this).find(":selected").val())
-    if ($(this).find(":selected").val()) {
-        $('#survey-search').submit();
-    }
+    console.log($(this).find(':selected').val());
+    $('#survey-search').submit();
 });
 
 $('.search-bar input')

@@ -21,7 +21,6 @@ class ListSurveysWidget extends CWidget
     public $model;                                                              // Survey model
     public $bRenderFooter    = true;                                            // Should the footer be rendered?
     public $bRenderSearchBox = true;                                            // Should the search box be rendered?
-    public $formUrl          = 'surveyAdministration/listsurveys/';
 
     public $massiveAction;                                                      // Used to render massive action in GridViews footer
     public $pageSize;                                                           // Default page size (should be set to Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']))
@@ -70,11 +69,11 @@ class ListSurveysWidget extends CWidget
         } else {
             $this->template = "{items}";
         }*/
-
+$test = App()->request->getRequestUri();
         if ($this->bRenderSearchBox) {
             $this->controller->widget('ext.admin.SearchBoxWidget.SearchBoxWidget', [
                 'model' => new Survey('search'),
-                'formUrl' => App()->request->getPathInfo(),
+                'formUrl' => App()->request->getRequestUri(),
                 'switch' => $this->switch
             ]);
         }
