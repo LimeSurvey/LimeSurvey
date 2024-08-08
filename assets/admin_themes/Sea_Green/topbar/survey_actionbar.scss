@@ -1,0 +1,56 @@
+.survey-actionbar {
+    padding : 16px 12px;
+    .survey-actionbar-item {
+        display : inline-block;
+        &:not(:first-child) {
+            margin-left : 4px;
+        }
+    }
+    .survey-actionbar-button {
+        border-width  : 2px;
+        border-radius : 5px;
+        :hover {
+            box-shadow : none;
+        }
+    }
+    .survey-actionbar-formfield {
+        cursor        : pointer;
+        color         : $g-700;
+        border-width  : 2px;
+        border-radius : 5px;
+        border-color  : $g-700;
+    }
+
+    .survey-actionbar-filters {
+        margin-left : 16px;
+    }
+
+    .survey-actionbar-switch {
+        align-self  : center;
+        display     : flex;
+        align-items : center;
+        margin-left : 16px;
+        i {
+            cursor         : pointer;
+            display        : inline-block;
+            vertical-align : middle;
+            &:before {
+                font-size : 1.4em;
+                opacity   : 0.8;
+            }
+            &:not(:first-child) {
+                margin-left : 8px;
+            }
+        }
+    }
+    .search-bar {
+        position : relative;
+        i {
+            position  : absolute;
+            top       : 8px;
+            right     : 5px;
+            font-size : 1.2em;
+            color     : $g-700;
+        }
+    }
+}

@@ -69,7 +69,6 @@ class ListSurveysWidget extends CWidget
         } else {
             $this->template = "{items}";
         }*/
-$test = App()->request->getRequestUri();
         if ($this->bRenderSearchBox) {
             $this->controller->widget('ext.admin.SearchBoxWidget.SearchBoxWidget', [
                 'model' => new Survey('search'),
@@ -89,13 +88,6 @@ $test = App()->request->getRequestUri();
 
     public function registerClientScript()
     {
-//        App()->getClientScript()->registerScriptFile(
-//            App()->getConfig("extensionsurl") . 'admin/survey/ListSurveysWidget/assets/filters.js',
-//            CClientScript::POS_END
-//        );
 
-        App()->getClientScript()->registerCssFile(
-            App()->getConfig("extensionsurl") . 'admin/survey/ListSurveysWidget/assets/css/ListSurveysWidget.css'
-        );
     }
 }

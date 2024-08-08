@@ -136,6 +136,21 @@
     }
 }
 
+.btn-g-700 {
+    color : $white;
+    &:hover, &:focus, &:active, &.active, &:active:focus {
+        color            : $white;
+        background-color : $g-700;
+        border-color     : $g-700;
+    }
+    &:hover {
+        box-shadow : $btn-hover-boxshadow;
+    }
+    &:focus, &:active, &.active, &:active:focus {
+        box-shadow : $btn-focus-boxshadow;
+    }
+}
+
 .btn-g-800 {
     color : $white;
     &:hover, &:focus, &:active, &.active, &:active:focus {
@@ -307,6 +322,21 @@
     &:focus, &:active, &.active, &:active:focus, &.dropdown-toggle.show, &.dropdown-toggle.show:focus, &.show {
         color        : var(--bs-dark);
         border-color : var(--bs-dark);
+        box-shadow   : $btn-focus-boxshadow;
+    }
+}
+
+.btn-outline-g-700 {
+    color        : $g-700;
+    border-color : $g-700;
+    &:hover {
+        color        : $g-700;
+        border-color : $g-700;
+        box-shadow   : $btn-hover-boxshadow;
+    }
+    &:focus, &:active, &.active, &:active:focus, &.dropdown-toggle.show, &.dropdown-toggle.show:focus, &.show {
+        color        : $g-700;
+        border-color : $g-700;
         box-shadow   : $btn-focus-boxshadow;
     }
 }

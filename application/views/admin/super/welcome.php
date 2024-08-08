@@ -223,7 +223,7 @@ gT('Themes');
             )
         ) : ?>
             <div class="container">
-                <div class="col-12 list-surveys">
+                <div class="col-12">
                     <?php $this->widget('ext.admin.survey.ListSurveysWidget.ListSurveysWidget', [
                         'model' => $oSurveySearch,
                         'bRenderSearchBox' => $bShowSurveyListSearch,

@@ -41,9 +41,5 @@ class SearchBoxWidget extends CWidget
             App()->getConfig("extensionsurl") . 'admin/SearchBoxWidget/assets/filters.js',
             CClientScript::POS_END
         );
-
-        App()->getClientScript()->registerCssFile(
-            App()->getConfig("extensionsurl") . 'admin/SearchBoxWidget/assets/css/SearchBoxWidget.css'
-        );
     }
 }
