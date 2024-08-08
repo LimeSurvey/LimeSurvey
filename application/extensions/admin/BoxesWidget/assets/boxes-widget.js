@@ -1,11 +1,11 @@
-$(".card-header").click(function (event) {
-    console.log($(this).parent().attr("data-url"))
-    if ($(this).parent().attr("data-url")) {
-        window.location.href = $(this).parent().attr("data-url");
-    }
-})
-
-
+let cardHeaderRedirection = function () {
+    $(".card-header").click(function (event) {
+        console.log($(this).parent().attr("data-url"))
+        if ($(this).parent().attr("data-url")) {
+            window.location.href = $(this).parent().attr("data-url");
+        }
+    })
+};
 
 $("#load-more").click(function (event) {
     event.preventDefault();
@@ -20,7 +20,6 @@ $("#load-more").click(function (event) {
     if (params.get('active')) {
         url += '&active=' + params.get('active')
     }
-    console.log(url)
 
     $.ajax({
         url : url,
@@ -29,6 +28,7 @@ $("#load-more").click(function (event) {
             if (html && html.includes("card")) {
                 $("#load-more").attr('data-page', parseInt(page) + 1)
                 $('.box-widget .box-widget-list').append(html);
+                cardHeaderRedirection()
             } else {
                 $("#load-more").hide()
             }
@@ -39,3 +39,7 @@ $("#load-more").click(function (event) {
     });
 })
 
+
+$(document).on('ready pjax:scriptcomplete', function () {
+    cardHeaderRedirection()
+});
