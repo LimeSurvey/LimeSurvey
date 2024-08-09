@@ -22,7 +22,13 @@ class SearchBoxWidget extends CWidget
      */
     public function run()
     {
-        $this->viewtype = App()->request->getQuery('viewtype');
+        if (App()->request->getQuery('viewtype')) {
+            $this->viewtype = App()->request->getQuery('viewtype');
+        } elseif (SettingsUser::getUserSettingValue('welcome_page_widget')) {
+            $this->viewtype = SettingsUser::getUserSettingValue('welcome_page_widget');
+        } else {
+            $this->viewtype = 'list-widget';
+        }
         if (!empty($this->viewtype) && $this->switch) {
             SettingsUser::setUserSetting('welcome_page_widget', $this->viewtype);
         }

@@ -114,8 +114,8 @@
 
             <?php if ($this->switch) : ?>
                 <div class="survey-actionbar-switch">
-                    <i class="view-switch ri-grid-fill survey-actionbar-item" data-action="box-widget"></i>
-                    <i class="view-switch ri-menu-line survey-actionbar-item" data-action="list-widget"></i>
+                    <i class="view-switch ri-grid-fill survey-actionbar-item" data-action="box-widget" <?= $this->viewtype === 'box-widget' ? 'active' : '' ?>></i>
+                    <i class="view-switch ri-menu-line survey-actionbar-item" data-action="list-widget" <?= $this->viewtype === 'list-widget' ? 'active' : '' ?>></i>
                 </div>
             <?php endif; ?>
 

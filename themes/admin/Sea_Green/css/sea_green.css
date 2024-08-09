@@ -17833,6 +17833,9 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
   display: inline-block;
   vertical-align: middle;
 }
+.survey-actionbar .survey-actionbar-switch i[active] {
+  color: #8146F6;
+}
 .survey-actionbar .survey-actionbar-switch i:before {
   font-size: 1.4em;
   opacity: 0.8;

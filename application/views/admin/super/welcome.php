@@ -237,8 +237,8 @@ gT('Themes');
                     ?></div>
             </div>
         <?php else : ?>
-            <div class="container welcome">
-                <div class="col-12 list-surveys">
+            <div class="container">
+                <div class="col-12s">
                     <?php $this->widget('ext.admin.BoxesWidget.BoxesWidget', [
                         'switch' => true,
                         'items' => [
