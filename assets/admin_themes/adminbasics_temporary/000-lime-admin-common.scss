@@ -1812,25 +1812,6 @@ a.explorer-group:focus {
     word-wrap: break-word;
 }
 
-.summary-container,
-.summary,
-#massive-action-container,
-#surveyListActions,
-.listActions {
-    margin : 0 0 20px;
-}
-
-.summary-container {
-    text-align: right;
-}
-
-#massive-action-container,
-#surveyListActions,
-.listActions {
-    padding-left: 0px;
-    text-align: left;
-}
-
 .push-grid-pager {
     /* push the pager for massive action dropup */
     min-height: 25em;

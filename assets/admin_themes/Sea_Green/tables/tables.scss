@@ -149,6 +149,7 @@ table {
 /** For all grid view table */
 .scrolling-wrapper {
     overflow-x: auto;
+    min-height: 300px;
 }
 
 .grid-view, .grid-view-ls {
@@ -216,5 +217,38 @@ table {
         i::before {
             font-size : $font-size-base * 1.5;
         }
+    }
+    .grid-view-ls-footer {
+        display: flex;
+        justify-content: space-between;
+        margin-top: $grid-gutter-width;
+        .massive-action-container,
+        .pagination-container,
+        .summary-container {
+            flex: 1 1 0
+
+        }
+
+    }
+    .listActions,
+    #responses-column-filter-button,
+    .pager,
+    .summary {
+        margin: 4px 0;
+    }
+    #responses-column-filter-modal .checkbox label {
+        vertical-align: text-bottom;
+        white-space: nowrap;
+        overflow-x: hidden;
+    }
+
+    .responses-multiselect-checkboxes {
+        overflow-y: scroll;
+        height: 60vh;
+    }
+
+    .responses-column-filter-modal-checkbox-buttons {
+        text-align: left;
+        padding-bottom: 15px;
     }
 }

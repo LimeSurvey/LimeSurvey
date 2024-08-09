@@ -63,12 +63,6 @@ class ListSurveysWidget extends CWidget
 
         $this->massiveAction = $this->render('massive_actions/_selector', array(), true, false);
 
-        /* ---> all gridviews will use the same footer template
-        if ($this->bRenderFooter) {
-            $this->template = "{items}\n<div class=\"row-fluid\"><div class=\"col-md-4\" id=\"massive-action-container\">$this->massiveAction</div><div class=\"col-md-4 pager-container ls-ba \">{pager}</div><div class=\"col-md-4 summary-container\">{summary}</div></div>";
-        } else {
-            $this->template = "{items}";
-        }*/
         if ($this->bRenderSearchBox) {
             $this->controller->widget('ext.admin.SearchBoxWidget.SearchBoxWidget', [
                 'model' => new Survey('search'),

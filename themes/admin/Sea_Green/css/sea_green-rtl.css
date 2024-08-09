@@ -13175,25 +13175,6 @@ a.explorer-group:focus {
   word-wrap: break-word;
 }
 
-.summary-container,
-.summary,
-#massive-action-container,
-#surveyListActions,
-.listActions {
-  margin: 0 0 20px;
-}
-
-.summary-container {
-  text-align: left;
-}
-
-#massive-action-container,
-#surveyListActions,
-.listActions {
-  padding-right: 0px;
-  text-align: right;
-}
-
 .push-grid-pager {
   /* push the pager for massive action dropup */
   min-height: 25em;
@@ -15010,22 +14991,6 @@ div.mappable-attribute-wrapper.paired.ui-state-disabled {
   padding: 10px;
   border-radius: 3px;
   margin: 8px;
-}
-
-#responses-column-filter-modal .checkbox label {
-  vertical-align: text-bottom;
-  white-space: nowrap;
-  overflow-x: hidden;
-}
-
-.responses-multiselect-checkboxes {
-  overflow-y: scroll;
-  height: 60vh;
-}
-
-.responses-column-filter-modal-checkbox-buttons {
-  text-align: right;
-  padding-bottom: 15px;
 }
 
 .translate > table {
@@ -18858,6 +18823,7 @@ table [class^=ri-], table [class*=" ri-"] {
 /** For all grid view table */
 .scrolling-wrapper {
   overflow-x: auto;
+  min-height: 300px;
 }
 
 .grid-view .table, .grid-view-ls .table {
@@ -18922,9 +18888,43 @@ table [class^=ri-], table [class*=" ri-"] {
 .grid-view .action-list i::before, .grid-view-ls .action-list i::before {
   font-size: 1.71rem;
 }
+.grid-view .grid-view-ls-footer, .grid-view-ls .grid-view-ls-footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 24px;
+}
+.grid-view .grid-view-ls-footer .massive-action-container,
+.grid-view .grid-view-ls-footer .pagination-container,
+.grid-view .grid-view-ls-footer .summary-container, .grid-view-ls .grid-view-ls-footer .massive-action-container,
+.grid-view-ls .grid-view-ls-footer .pagination-container,
+.grid-view-ls .grid-view-ls-footer .summary-container {
+  flex: 1 1 0;
+}
+.grid-view .listActions,
+.grid-view #responses-column-filter-button,
+.grid-view .pager,
+.grid-view .summary, .grid-view-ls .listActions,
+.grid-view-ls #responses-column-filter-button,
+.grid-view-ls .pager,
+.grid-view-ls .summary {
+  margin: 4px 0;
+}
+.grid-view #responses-column-filter-modal .checkbox label, .grid-view-ls #responses-column-filter-modal .checkbox label {
+  vertical-align: text-bottom;
+  white-space: nowrap;
+  overflow-x: hidden;
+}
+.grid-view .responses-multiselect-checkboxes, .grid-view-ls .responses-multiselect-checkboxes {
+  overflow-y: scroll;
+  height: 60vh;
+}
+.grid-view .responses-column-filter-modal-checkbox-buttons, .grid-view-ls .responses-column-filter-modal-checkbox-buttons {
+  text-align: right;
+  padding-bottom: 15px;
+}
 
 .pagination {
-  flex-wrap: wrap;
+  margin: 0;
 }
 .pagination .page-item .page-link {
   margin: 0 2px 4px 2px;
