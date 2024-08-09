@@ -18881,19 +18881,12 @@ table [class^=ri-], table [class*=" ri-"] {
 /** For all grid view table */
 .scrolling-wrapper {
   overflow-x: auto;
-  overflow-y: hidden;
-  min-height: 300px;
 }
 
-.grid-view, .grid-view-ls {
-  --main-color: #8046F5;
-  --main-border-color: #6D748C;
-}
 .grid-view .table, .grid-view-ls .table {
   padding: 20px;
   border-radius: 4px;
-  border: solid 1px rgba(39, 39, 39, 0.15);
-  box-shadow: 0px 10px 13px -7px rgba(0, 0, 0, 0.2);
+  border: #D3D5DA;
 }
 .grid-view .table .ls-sticky-column, .grid-view .table .checkbox-column, .grid-view-ls .table .ls-sticky-column, .grid-view-ls .table .checkbox-column {
   text-align: center;
@@ -18901,21 +18894,21 @@ table [class^=ri-], table [class*=" ri-"] {
   box-shadow: none;
 }
 .grid-view .table thead tr, .grid-view-ls .table thead tr {
-  border: 0 none white;
+  border: 0 none #fff;
 }
 .grid-view .table thead tr th, .grid-view-ls .table thead tr th {
   padding-bottom: 9px;
   font-weight: 600;
   vertical-align: middle;
-  border-bottom: solid 1px #9DA1B2;
+  border-bottom: solid 1px #9094A7;
 }
 .grid-view .table thead tr th .sort-link, .grid-view-ls .table thead tr th .sort-link {
-  color: black;
+  color: #000;
   font-weight: 600;
 }
 .grid-view .table thead tr th .sort-link ::before, .grid-view-ls .table thead tr th .sort-link ::before {
   font-weight: 500;
-  color: var(--bs-primary);
+  color: #14AE5C;
 }
 .grid-view .table thead tr th:hover .sort-link :before, .grid-view-ls .table thead tr th:hover .sort-link :before {
   visibility: visible;
@@ -18927,55 +18920,30 @@ table [class^=ri-], table [class*=" ri-"] {
   border: solid 1px #F9F9FB;
 }
 .grid-view .table button, .grid-view-ls .table button {
-  border-color: white;
+  border-color: #fff;
 }
 .grid-view .table button:hover,
 .grid-view .table button:focus, .grid-view-ls .table button:hover,
 .grid-view-ls .table button:focus {
-  color: black;
+  color: #000;
   box-shadow: none;
-  border-color: white;
+  border-color: #fff;
 }
 .grid-view .table button.btn .ri-more-fill:before, .grid-view-ls .table button.btn .ri-more-fill:before {
   font-size: 1.1em;
 }
-.grid-view .ri-play-fill:before,
-.grid-view .ri-stop-fill:before,
-.grid-view .ri-skip-forward-fill:before, .grid-view-ls .ri-play-fill:before,
-.grid-view-ls .ri-stop-fill:before,
-.grid-view-ls .ri-skip-forward-fill:before {
-  display: inline-block;
-  vertical-align: middle;
-  padding-bottom: 0px;
-  margin-bottom: 4px;
-  font-size: 1.6em;
-}
 .grid-view .survey-state.disabled, .grid-view-ls .survey-state.disabled {
   opacity: 0.5;
 }
-.grid-view .action-list .disabled, .grid-view-ls .action-list .disabled {
-  opacity: 0.3;
+.grid-view .action-list, .grid-view-ls .action-list {
+  display: flex;
+  color: #000;
 }
-.grid-view .action-list ul, .grid-view-ls .action-list ul {
-  padding: 0;
-  margin: 0;
-  padding-left: 0;
+.grid-view .action-list a:not(:first-child), .grid-view-ls .action-list a:not(:first-child) {
+  margin-left: 12px;
 }
-.grid-view .action-list ul li a, .grid-view-ls .action-list ul li a {
-  display: inline-block;
-  padding: 2px;
-  margin: 0;
-}
-.grid-view .action-list ul li a i:before, .grid-view-ls .action-list ul li a i:before {
-  display: inline-block;
-  color: black;
-  font-size: 1.4em;
-}
-.grid-view .action-list ul li:last-child a, .grid-view-ls .action-list ul li:last-child a {
-  padding-right: 0;
-}
-.grid-view .action-list ul li a.active i::before, .grid-view-ls .action-list ul li a.active i::before {
-  color: var(--main-color);
+.grid-view .action-list i::before, .grid-view-ls .action-list i::before {
+  font-size: 1.71rem;
 }
 
 .pagination {
