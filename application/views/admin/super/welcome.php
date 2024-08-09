@@ -8,6 +8,7 @@
 /**
  * @var $belowLogoHtml String
  * @var $this AdminController
+ * @var $oldDashboard bool
  **/
 
 // DO NOT REMOVE This is for automated testing to validate we see that page
@@ -30,10 +31,10 @@ gT('Themes');
 ?>
 
 <!-- Welcome view -->
-<div class="welcome full-page-wrapper">
+<div class="welcome">
 
     <!-- Logo & Presentation -->
-    <?php if ($bShowLogo) : ?>
+    <?php if ($bShowLogo && $oldDashboard) : ?>
         <div class="jumbotron" id="welcome-jumbotron">
             <img alt="logo" src="<?php echo LOGO_URL; ?>" id="lime-logo" class="profile-img-card img-fluid" />
             <p class="d-xs-none"><?php echo PRESENTATION; // Defined in AdminController
@@ -155,14 +156,16 @@ gT('Themes');
             ?>
         </div>
     <?php endif;?>
-
-        <?php
-
-    App()->getClientScript()->registerScript('WelcomeCheckIESafety', "
+    <?php
+    App()->getClientScript()->registerScript(
+        'WelcomeCheckIESafety',
+        "
     if(!/(MSIE|Trident\/)/i.test(navigator.userAgent)) {
         $('#warningIE11').remove();
     }
-    ", LSYii_ClientScript::POS_POSTSCRIPT);
+    ",
+        LSYii_ClientScript::POS_POSTSCRIPT
+    );
     ?>
     <!-- Last visited survey/question -->
     <?php
@@ -191,13 +194,15 @@ gT('Themes');
     <?php endif; ?>
 
     <!-- Rendering all boxes in database -->
-    <?php $this->widget('ext.PanelBoxWidget.PanelBoxWidget', array(
-        'display' => 'allboxesinrows',
-        'boxesbyrow' => $iBoxesByRow,
-        'offset' => $sBoxesOffSet,
-        'boxesincontainer' => $bBoxesInContainer
-    ));
-?>
+    <?php if ($oldDashboard) : ?>
+        <?php $this->widget('ext.PanelBoxWidget.PanelBoxWidget', [
+            'display'          => 'allboxesinrows',
+            'boxesbyrow'       => $iBoxesByRow,
+            'offset'           => $sBoxesOffSet,
+            'boxesincontainer' => $bBoxesInContainer
+        ]);
+        ?>
+    <?php endif; ?>
 
     <div class="survey-dashboard">
         <?php
@@ -232,7 +237,7 @@ gT('Themes');
                     ?></div>
             </div>
         <?php else : ?>
-            <div class="container welcome full-page-wrapper">
+            <div class="container welcome">
                 <div class="col-12 list-surveys">
                     <?php $this->widget('ext.admin.BoxesWidget.BoxesWidget', [
                         'switch' => true,

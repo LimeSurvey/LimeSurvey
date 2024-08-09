@@ -35,9 +35,6 @@ class BarActionsWidget extends CWidget
     /** Registers required script files */
     public function registerClientScript(): void
     {
-        App()->getClientScript()->registerScriptFile(
-            App()->getConfig("extensionsurl") . 'admin/grid/BarActionsWidget/assets/action_list.js',
-            CClientScript::POS_END
-        );
+
     }
 }
