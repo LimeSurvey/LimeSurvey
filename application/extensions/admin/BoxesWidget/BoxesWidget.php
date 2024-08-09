@@ -27,10 +27,6 @@ class BoxesWidget extends CWidget
             App()->getConfig("extensionsurl") . 'admin/BoxesWidget/assets/boxes-widget.js',
             CClientScript::POS_END
         );
-
-        App()->getClientScript()->registerCssFile(
-            App()->getConfig("extensionsurl") . 'admin/BoxesWidget/assets/boxes-widget.css'
-        );
     }
 
     public function run()
@@ -72,14 +68,6 @@ class BoxesWidget extends CWidget
                     ];
                 }
             }
-        }
-        if ($this->searchBox) {
-            $this->controller->widget('ext.admin.SearchBoxWidget.SearchBoxWidget', [
-                'model' => new Survey('search'),
-                'onlyfilter' => true,
-                'formUrl' => App()->request->getRequestUri(),
-                'switch' => $this->switch
-            ]);
         }
         $enableLoadMoreBtn = !empty($boxes);
 

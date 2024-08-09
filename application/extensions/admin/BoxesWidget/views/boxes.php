@@ -1,8 +1,25 @@
-<div class="box-widget">
-    <div class="box-widget-list">
-        <?php $this->render('box', array('items' => $items)); ?>
-    </div>
-    <div class="btn-container <?php echo !$enableLoadMoreBtn ? 'd-none' : ''?>">
-        <a href="#" id="load-more" data-page="1" data-limit="<?php echo $limit?>">Load more</a>
+<div class="container">
+    <div class="col-12">
+        <?php if ($this->searchBox) : ?>
+            <?php $this->controller->widget('ext.admin.SearchBoxWidget.SearchBoxWidget', [
+                'model'      => new Survey('search'),
+                'onlyfilter' => true,
+                'formUrl'    => App()->request->getRequestUri(),
+                'switch'     => $this->switch
+            ]);
+            ?>
+        <?php endif; ?>
+        <div class="row">
+            <div class="box-widget p-0">
+                <div class="box-widget-list">
+                    <?php $this->render('box', ['items' => $items]); ?>
+                </div>
+                <div class="box-widget-loadmore <?= !$enableLoadMoreBtn ? 'd-none' : '' ?>">
+                    <a href="#" id="load-more" data-page="1" data-limit="<?= $limit ?>">
+                        <?= gT('Load more') ?>
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

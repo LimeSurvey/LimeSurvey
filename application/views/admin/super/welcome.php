@@ -211,7 +211,7 @@ gT('Themes');
 
         <?php if (empty(App()->request->getQuery('viewtype')) && empty(SettingsUser::getUserSettingValue('welcome_page_widget'))) : ?>
             <div class="container">
-                <div class="col-12 list-surveys">
+                <div class="col-12">
                     <?php $this->widget('ext.admin.survey.ListSurveysWidget.ListSurveysWidget', [
                         'model' => $oSurveySearch,
                         'bRenderSearchBox' => $bShowSurveyListSearch,
@@ -237,21 +237,17 @@ gT('Themes');
                     ?></div>
             </div>
         <?php else : ?>
-            <div class="container">
-                <div class="col-12s">
-                    <?php $this->widget('ext.admin.BoxesWidget.BoxesWidget', [
-                        'switch' => true,
-                        'items' => [
-                            [
-                                'type' => 0,
-                                'model' => Survey::model(),
-                                'limit' => 5,
-                            ],
-                        ]
-                    ]);
-                    ?>
-                </div>
-            </div>
+            <?php $this->widget('ext.admin.BoxesWidget.BoxesWidget', [
+                'switch' => true,
+                'items'  => [
+                    [
+                        'type'  => 0,
+                        'model' => Survey::model(),
+                        'limit' => 5,
+                    ],
+                ]
+            ]);
+            ?>
         <?php endif; ?>
     </div>
     <!-- Notification setting -->

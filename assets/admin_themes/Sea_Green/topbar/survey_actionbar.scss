@@ -1,5 +1,5 @@
 .survey-actionbar {
-    padding : 16px 12px;
+    padding: 16px 10px;
     .survey-actionbar-item {
         display : inline-block;
         &:not(:first-child) {
@@ -20,11 +20,9 @@
         border-radius : 5px;
         border-color  : $g-700;
     }
-
     .survey-actionbar-filters {
         margin-left : 16px;
     }
-
     .survey-actionbar-switch {
         align-self  : center;
         display     : flex;
@@ -35,7 +33,7 @@
             display        : inline-block;
             vertical-align : middle;
             &[active] {
-                color: $grape;
+                color : $grape;
             }
             &:before {
                 font-size : 1.4em;
