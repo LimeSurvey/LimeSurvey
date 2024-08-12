@@ -66,7 +66,6 @@ class ListSurveysWidget extends CWidget
         if ($this->bRenderSearchBox) {
             $this->controller->widget('ext.admin.SearchBoxWidget.SearchBoxWidget', [
                 'model' => new Survey('search'),
-                'formUrl' => App()->request->getRequestUri(),
                 'switch' => $this->switch
             ]);
         }

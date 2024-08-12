@@ -10,7 +10,7 @@ class SearchBoxWidget extends CWidget
      * For deciding which view widget to render
      * @var $viewtype string|null
      */
-    public  $viewtype = '';
+    public $viewtype = '';
     /**
      * For rendering the switch to decide which view widget is rendered
      * @var $switch bool
@@ -22,6 +22,7 @@ class SearchBoxWidget extends CWidget
      */
     public function run()
     {
+        $this->formUrl = $this->getFormUrl();
         if (App()->request->getQuery('viewtype')) {
             $this->viewtype = App()->request->getQuery('viewtype');
         } elseif (SettingsUser::getUserSettingValue('welcome_page_widget')) {
@@ -47,5 +48,15 @@ class SearchBoxWidget extends CWidget
             App()->getConfig("extensionsurl") . 'admin/SearchBoxWidget/assets/filters.js',
             CClientScript::POS_END
         );
+    }
+
+    public function getFormUrl(): string
+    {
+        $url = App()->createAbsoluteUrl(App()->request->getPathInfo());
+        if (Yii::app()->getUrlManager()->getUrlFormat() == CUrlManager::GET_FORMAT) {
+            // Ignore all GET params (searchbox filters) except admin param
+            return $url . '?' . http_build_query(['r' => App()->request->getParam('r')]);
+        }
+        return $url;
     }
 }

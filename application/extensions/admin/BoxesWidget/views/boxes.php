@@ -4,7 +4,6 @@
             <?php $this->controller->widget('ext.admin.SearchBoxWidget.SearchBoxWidget', [
                 'model'      => new Survey('search'),
                 'onlyfilter' => true,
-                'formUrl'    => App()->request->getRequestUri(),
                 'switch'     => $this->switch
             ]);
             ?>

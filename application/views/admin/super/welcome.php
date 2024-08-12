@@ -243,7 +243,7 @@ gT('Themes');
                     [
                         'type'  => 0,
                         'model' => Survey::model(),
-                        'limit' => 5,
+                        'limit' => 15,
                     ],
                 ]
             ]);
