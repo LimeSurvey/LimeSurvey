@@ -7,7 +7,7 @@
 <!-- Begin Form -->
 <div class="row">
     <div class="survey-actionbar col-12">
-        <?php $form = $this->beginWidget('CActiveForm', ['action' => $this->formUrl, 'method' => 'get', 'htmlOptions' => ['id' => 'survey-search'],]); ?>
+        <?php $form = $this->beginWidget('CActiveForm', ['action' => $this->formUrl, 'method' => 'get', 'id' => 'survey-search']); ?>
         <div class="d-flex align-items-baseline">
 
             <!-- select state -->
@@ -57,7 +57,7 @@
                 <!-- select group -->
                 <div class="survey-actionbar-filters">
                     <div class="survey-actionbar-item search-bar">
-                        <?= $form->textField($this->model, 'searched_value', ['class' => 'form-control survey-actionbar-formfield', 'placeholder' => 'Search']) ?>
+                        <?= $form->textField($this->model, 'searched_value', ['class' => 'form-control survey-actionbar-formfield', 'placeholder' => 'Search', 'value' => App()->request->getQuery('Survey')['searched_value'] ?? '']) ?>
                         <i class="ri-search-line"></i>
                     </div>
                     <div class="survey-actionbar-item">

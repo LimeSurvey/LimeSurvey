@@ -26,7 +26,12 @@ $('.search-bar i').click(function (e) {
 
 $('#survey_reset').click(function (e) {
     e.preventDefault()
-    location.href = location.href.split('?')[0]
+    let url = location.toString().replace(location.search, "")
+    let params = Object.fromEntries(new URLSearchParams(location.search));
+    delete params['Survey[searched_value]'];
+    delete params['active'];
+    delete params['gsid'];
+    location.href = url + '?' + new URLSearchParams(params).toString()
 });
 
 $('.view-switch').click(function (e) {

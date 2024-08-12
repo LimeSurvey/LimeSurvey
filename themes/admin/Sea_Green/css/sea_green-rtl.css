@@ -17883,6 +17883,7 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
   border-width: 2px;
   border-radius: 5px;
   border-color: #6E748C;
+  padding-left: 25px;
 }
 .survey-actionbar .survey-actionbar-filters {
   margin-right: 16px;
