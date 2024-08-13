@@ -146,7 +146,7 @@ class QuestionTheme extends LSActiveRecord
     {
         $pageSizeTemplateView = App()->user->getState('pageSizeTemplateView', App()->params['defaultPageSize']);
 
-        $criteria = new CDbCriteria();
+        $criteria = new LSDbCriteria();
         $criteria->compare('id', $this->id);
         $criteria->compare('name', $this->name, true);
         $criteria->compare('visible', $this->visible, true);
