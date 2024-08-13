@@ -309,7 +309,7 @@ class LSHttpRequest extends CHttpRequest
         if (!empty($allowedHosts) && is_array($allowedHosts)) {
             $host = parse_url($hostInfo, PHP_URL_HOST);
             if ($host && !in_array($host, $allowedHosts)) {
-                 throw new CHttpException(400, gT("The request hostname is invalid.", 'unescaped'));
+                 throw new CHttpException(400, gT("The requested hostname is invalid.", 'unescaped'));
             }
         }
     }

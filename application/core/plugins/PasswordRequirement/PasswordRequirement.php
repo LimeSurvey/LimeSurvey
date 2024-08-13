@@ -208,14 +208,14 @@ class PasswordRequirement extends \LimeSurvey\PluginManager\PluginBase
         $settings['needsUppercase']['label'] = $this->gT("Require at least one uppercase character");
         $settings['needsNonAlphanumeric']['label'] = $this->gT("Require at least one special character");
         $settings['minimumSize']['label'] = $this->gT("Minimum password length");
-        $settings['minimumSize']['help'] = sprintf(gT('Default will be %d if left blank'), self::DEFAULT_MINIMUM_SIZE);
+        $settings['minimumSize']['help'] = sprintf(gT('Default value will be %d if left blank'), self::DEFAULT_MINIMUM_SIZE);
         $settings['surveyPart']['content'] = $this->gT("Password requirements for “Save and return later” feature");
         $settings['surveySaveActive']['label'] = $this->gT("Check password when use “Save and return later” feature");
         $settings['surveySaveNeedsNumber']['label'] = $this->gT("Require at least one digit");
         $settings['surveySaveNeedsUppercase']['label'] = $this->gT("Require at least one uppercase character");
         $settings['surveySaveNeedsNonAlphanumeric']['label'] = $this->gT("Require at least one special character");
         $settings['surveySaveMinimumSize']['label'] = $this->gT("Minimum password length");
-        $settings['surveySaveMinimumSize']['help'] = sprintf(gT('Default will be %d if left blank'), self::DEFAULT_SURVEY_SAVE_MINIMUM_SIZE);
+        $settings['surveySaveMinimumSize']['help'] = sprintf(gT('Default value will be %d if left blank'), self::DEFAULT_SURVEY_SAVE_MINIMUM_SIZE);
         return $settings;
     }
 
