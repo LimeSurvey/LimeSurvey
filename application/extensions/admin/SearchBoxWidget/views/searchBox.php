@@ -1,6 +1,10 @@
 <?php
 /**
- * @var $form CActiveForm
+ * This template renders a search box and action bar for managing surveys view type.
+ * It includes filters for survey status, group selection, and a search field.
+ * Additionally, it provides options for creating new surveys and survey groups if the user has the appropriate permissions.
+ *
+ * @var CActiveForm $form The form widget used for submitting search and filter parameters.
  */
 ?>
 <!-- Search Box -->

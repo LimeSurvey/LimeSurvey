@@ -1,8 +1,8 @@
 let cardHeaderRedirection = function () {
-    $(".card-header").click(function (event) {
-        console.log($(this).parent().attr("data-url"))
-        if ($(this).parent().attr("data-url")) {
-            window.location.href = $(this).parent().attr("data-url");
+    $(".box-widget-card-header, .box-widget-card-text").click(function (event) {
+        console.log()
+        if ($(this).closest('.box-widget-card').attr("data-url")) {
+            window.location.href = $(this).closest('.box-widget-card').attr("data-url");
         }
     })
 };

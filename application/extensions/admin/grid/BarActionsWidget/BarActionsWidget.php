@@ -2,10 +2,14 @@
 
 Yii::import('zii.widgets.grid.CGridView');
 
+/**
+ * Renders a list of actions available for each CGridView row.
+ */
 class BarActionsWidget extends CWidget
 {
-    /** @var int Since button dropdown is placed inside different HTML element than <ul> dropdown, this id
-     * can be used by test code to connect the two. */
+    /**
+     * @var int $id A static counter to generate unique IDs for each widget instance.
+     */
     private static $id = 1;
 
     /**
@@ -30,11 +34,5 @@ class BarActionsWidget extends CWidget
     public function init(): void
     {
         $this->registerClientScript();
-    }
-
-    /** Registers required script files */
-    public function registerClientScript(): void
-    {
-
     }
 }

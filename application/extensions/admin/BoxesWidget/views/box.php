@@ -1,11 +1,43 @@
+<?php
+
+    /**
+    * Renders a list of items as widget cards. Each item can be a survey box/card or a link box/card.
+    *
+    * @param array $items An array of items where each item contains information about either a survey or a link.
+    *
+    * @example
+    * $items = [
+    *     [
+    *         'type' => 0, // Survey type
+    *         'link' => 'survey-link',
+    *         'survey' => (object)[
+    *             'defaultlanguage' => (object)['surveyls_title' => 'Survey Title'],
+    *             'creationdate' => '2023-01-01',
+    *             'getRunning' => 'Running Status',
+    *             'countFullAnswers' => 5,
+    *             'active' => 'Y',
+    *             'groupsCount' => 3,
+    *             'getQuestionsCount' => 10,
+    *             'sid' => 12345,
+    *             'getButtons' => '<button>Button</button>'
+    *         ]
+    *     ],
+    *     [
+    *         'type' => 2, // Link type
+    *         'link' => 'external-link',
+    *         'color' => '#ff0000',
+    *         'icon' => 'icon-class',
+    *         'text' => 'Link Text',
+    *         'external' => true
+    *     ]
+    * ];
+    */
+
+?>
 <?php foreach ($items as $item) : ?>
     <?php if ($item['type'] == 0) : ?>
         <div class="box-widget-card align-middle d-inline-block"
-             data-url="<?php echo $item['link'] ?>"
-            <?php if ($item['external']) :
-                ?> data-target="_blank" <?php
-            endif; ?>
-        >
+             data-url="<?php echo $item['link'] ?>">
             <div class="box-widget-card-body">
                 <div class="box-widget-card-header">
                     <div class="box-widget-card-title">
@@ -30,7 +62,7 @@
                                 ($item['survey']->active === "N")
                                 && ($item['survey']->groupsCount > 0)
                                 && ($item['survey']->getQuestionsCount() > 0)
-                            ) : ?>
+) : ?>
                                 <a href="<?= App()->createUrl("/surveyAdministration/rendersidemenulink/subaction/generalsettings/surveyid/" . $item['survey']->sid) ?? '#' ?>"
                                    class="active"
                                    data-bs-toggle="tooltip"

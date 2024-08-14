@@ -1,9 +1,12 @@
 <?php
 /**
- * @var array $items
+ * This template renders an action list for a table row, where each action is represented as an icon with a link.
+ *
+ * @var array $items An array of actions to be displayed.
+ * @var int $id A unique identifier for the action list container.
  */
-
 ?>
+
 <div id="<?= 'action-list-' . $id; ?>" class="action-list">
     <?php foreach ($items as $item) : ?>
         <a href="<?= $item['enabledCondition'] ? $item['url'] : '#' ?>"

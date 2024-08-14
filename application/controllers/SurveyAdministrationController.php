@@ -3391,6 +3391,12 @@ class SurveyAdministrationController extends LSBaseController
         $this->redirect($redirectUrl);
     }
 
+    /**
+     * Retrieves and renders a list of surveys with optional active status filter for the box widget Ajax.
+     *
+     * @return string|false Rendered partial view if surveys are found, otherwise false.
+     * @throws CException
+     */
     public function actionBoxList()
     {
         $limit = (int)App()->request->getQuery('limit');

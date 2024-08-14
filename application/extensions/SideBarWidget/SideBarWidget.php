@@ -1,6 +1,5 @@
 <?php
 
-
 class SideBarWidget extends CWidget
 {
     /** Initializes the widget */
@@ -17,7 +16,8 @@ class SideBarWidget extends CWidget
         $this->renderActions();
     }
 
-    /** Renders the actions for a row in CLSGridView tables
+    /**
+     * Renders the sidebar menu on the dashboard page
      * @throws CException
      */
     public function renderActions(): void
@@ -64,8 +64,7 @@ class SideBarWidget extends CWidget
         }
         $this->render('side_bar', [
                 'icons' => $boxesData
-            ]
-        );
+        ]);
     }
 
 
