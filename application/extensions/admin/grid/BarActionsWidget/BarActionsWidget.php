@@ -29,10 +29,4 @@ class BarActionsWidget extends CWidget
             'id' => self::$id
         ]);
     }
-
-    /** Initializes the widget */
-    public function init(): void
-    {
-        $this->registerClientScript();
-    }
 }
