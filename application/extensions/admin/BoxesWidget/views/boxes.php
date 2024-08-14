@@ -8,17 +8,23 @@
             ]);
             ?>
         <?php endif; ?>
-        <div class="row">
-            <div class="box-widget p-0">
-                <div class="box-widget-list">
-                    <?php $this->render('box', ['items' => $items]); ?>
-                </div>
-                <div class="box-widget-loadmore <?= !$enableLoadMoreBtn ? 'd-none' : '' ?>">
-                    <a href="#" id="load-more" data-page="1" data-limit="<?= $limit ?>">
-                        <?= gT('Load more') ?>
-                    </a>
+        <?php if (Permission::model()->hasGlobalPermission('surveys', 'read')) : ?>
+            <div class="row">
+                <div class="box-widget p-0">
+                    <div class="box-widget-list">
+                        <?php $this->render('box', ['items' => $items]); ?>
+                    </div>
+                    <div class="box-widget-loadmore <?= !$enableLoadMoreBtn ? 'd-none' : '' ?>">
+                        <a href="#" id="load-more" data-page="1" data-limit="<?= $limit ?>">
+                            <?= gT('Load more') ?>
+                        </a>
+                    </div>
                 </div>
             </div>
-        </div>
+        <?php elseif (!Permission::model()->hasGlobalPermission('surveys', 'create')
+            || !Permission::model()->hasGlobalPermission('surveysgroups', 'create')
+        ) : ?>
+            <?php echo gT('No surveys found.'); ?>
+        <?php endif; ?>
     </div>
 </div>

@@ -76,6 +76,14 @@
         }
     }
     .box-widget-card.card-link {
+      display: block;
+      align-content: center;
+      text-align: center;
+        .box-widget-card-body {
+          flex-direction: row;
+          align-items: center;
+          justify-content: center;
+        }
         .box-widget-card {
             border : solid $g-700 3px;
             color  : $g-700;

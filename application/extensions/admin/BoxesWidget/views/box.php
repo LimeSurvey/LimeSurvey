@@ -65,8 +65,9 @@
     <?php elseif ($item['type'] == 2) : ?>
         <div class="box-widget-card card-link m-2 align-middle d-inline-block"
              data-url="<?php echo $item['link'] ?>"
-            <?php if ($item['color']) : ?> style="color:<?php echo $item['color'] ?>;border-color:<?= $item['color'] ?>" <?php
-            endif; ?>
+            <?php if ($item['color']) : ?>
+                style="color:<?php echo $item['color'] ?>;border: solid 2px <?= $item['color'] ?>"
+            <?php endif; ?>
             <?php if ($item['external']) :
                 ?> data-target="_blank" <?php
             endif; ?>

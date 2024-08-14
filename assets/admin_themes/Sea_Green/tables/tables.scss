@@ -214,6 +214,10 @@ table {
         a:not(:first-child) {
             margin-left: 12px;
         }
+        .disabled i::before {
+          opacity: 0.5;
+          color: $g-700;
+        }
         i::before {
             font-size : $font-size-base * 1.5;
         }

@@ -72,22 +72,27 @@ class BoxesWidget extends CWidget
         $enableLoadMoreBtn = !empty($boxes);
 
         if (!$enableLoadMoreBtn) {
-            $boxes[] = [
-                'type' => self::TYPE_LINK,
-                'link' => App()->createUrl('/surveyAdministration/newSurvey/'),
-                'text' => 'Create survey',
-                'icon' => 'ri-add-line',
-                'color' => '#8146F6',
-                'external' => false
-            ];
-            $boxes[] = [
-                'type' => self::TYPE_LINK,
-                'link' => App()->createUrl('/admin/surveysgroups/sa/create/'),
-                'text' => 'Create survey group',
-                'icon' => 'ri-add-line',
-                'color' => '#6D748C',
-                'external' => false
-            ];
+            if (Permission::model()->hasGlobalPermission('surveys', 'create')) {
+                $boxes[] = [
+                    'type' => self::TYPE_LINK,
+                    'link' => App()->createUrl('/surveyAdministration/newSurvey/'),
+                    'text' => 'Create survey',
+                    'icon' => 'ri-add-line',
+                    'color' => '#8146F6',
+                    'external' => false
+                ];
+            }
+
+            if (Permission::model()->hasGlobalPermission('surveysgroups', 'create')) {
+                $boxes[] = [
+                    'type' => self::TYPE_LINK,
+                    'link' => App()->createUrl('/admin/surveysgroups/sa/create/'),
+                    'text' => 'Create survey group',
+                    'icon' => 'ri-add-line',
+                    'color' => '#6D748C',
+                    'external' => false
+                ];
+            }
         }
 
         $this->render('boxes', [

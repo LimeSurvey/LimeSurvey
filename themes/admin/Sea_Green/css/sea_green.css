@@ -17713,6 +17713,16 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
   display: inline-block;
   font-size: 1em;
 }
+.box-widget .box-widget-card.card-link {
+  display: block;
+  align-content: center;
+  text-align: center;
+}
+.box-widget .box-widget-card.card-link .box-widget-card-body {
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
 .box-widget .box-widget-card.card-link .box-widget-card {
   border: solid #6E748C 3px;
   color: #6E748C;
@@ -18999,6 +19009,10 @@ table [class^=ri-], table [class*=" ri-"] {
 }
 .grid-view .action-list a:not(:first-child), .grid-view-ls .action-list a:not(:first-child) {
   margin-left: 12px;
+}
+.grid-view .action-list .disabled i::before, .grid-view-ls .action-list .disabled i::before {
+  opacity: 0.5;
+  color: #6E748C;
 }
 .grid-view .action-list i::before, .grid-view-ls .action-list i::before {
   font-size: 1.71rem;
