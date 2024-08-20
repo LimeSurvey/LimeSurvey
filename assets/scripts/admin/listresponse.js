@@ -63,12 +63,6 @@ function onDocumentReadyListresponse() {
 
 }
 
-$(window).bind("load", function () {
-    onDocumentReadyListresponse();
-    reinstallResponsesFilterDatePicker();
-    initColumnFilter();
-});
-
 $(document).off('pjax:scriptcomplete.listresponse').on('pjax:scriptcomplete.listresponse', onDocumentReadyListresponse);
 $(document).off('bindscroll.listresponse').on('bindscroll.listresponse', reinstallResponsesFilterDatePicker);
 
@@ -87,7 +81,7 @@ function initColumnFilter() {
         $(".responses-multiselect-checkboxes .checkbox input").prop('checked', true);
     });
 
-    // remove selection fir the response table
+    // remove selection for the response table
     $('#responses-column-filter-modal-clear').on('click', function (e) {
         e.preventDefault();
         $(".responses-multiselect-checkboxes .checkbox input").prop('checked', false);
@@ -109,6 +103,10 @@ function initColumnFilter() {
 
 function afterAjaxResponsesReload() {
     reinstallResponsesFilterDatePicker();
-    bindListItemclick();
     initColumnFilter();
 }
+$(document).on('ready pjax:scriptcomplete', function() {
+    onDocumentReadyListresponse();
+    reinstallResponsesFilterDatePicker();
+    initColumnFilter();
+});

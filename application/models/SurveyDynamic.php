@@ -43,10 +43,13 @@ class SurveyDynamic extends LSActiveRecord
     public static function model($sid = null)
     {
         $refresh = false;
-        $survey = Survey::model()->findByPk($sid);
+        $survey = Yii::app()->db->createCommand()
+            ->select('{{surveys.sid}}')
+            ->from('{{surveys}}')
+            ->where('{{surveys.sid}} = :sid', array(':sid' => $sid))
+            ->queryRow();
         if ($survey) {
-            self::sid($survey->sid);
-            self::$survey = $survey;
+            self::sid($survey['sid']);
             $refresh = true;
         }
 
@@ -120,12 +123,8 @@ class SurveyDynamic extends LSActiveRecord
             $record->$k = $v;
         }
 
-        try {
-            $record->encryptSave();
-            return $record->id;
-        } catch (Exception $e) {
-            return false;
-        }
+        $res = $record->encryptSave();
+        return $res ? $record->id : $res;
     }
 
     /**
@@ -167,7 +166,7 @@ class SurveyDynamic extends LSActiveRecord
         }
         $alias = $this->getTableAlias();
 
-        $newCriteria->join = "LEFT JOIN " . self::$survey->tokensTableName . " survey_timings ON $alias.id = survey_timings.id";
+        $newCriteria->join = "LEFT JOIN " . $this->survey->tokensTableName . " survey_timings ON $alias.id = survey_timings.id";
         $newCriteria->select = 'survey_timings.*'; // Otherwise we don't get records from the survey participants table
         $newCriteria->mergeWith($criteria);
 
@@ -184,7 +183,7 @@ class SurveyDynamic extends LSActiveRecord
     {
         $newCriteria = new CDbCriteria();
         $criteria = $this->getCommandBuilder()->createCriteria($condition);
-        $aSelectFields = Yii::app()->db->schema->getTable(self::$survey->responsesTableName)->getColumnNames();
+        $aSelectFields = Yii::app()->db->schema->getTable($this->survey->responsesTableName)->getColumnNames();
         $aSelectFields = array_diff($aSelectFields, array('token'));
         $aSelect = array();
         $alias = $this->getTableAlias();
@@ -200,7 +199,7 @@ class SurveyDynamic extends LSActiveRecord
 
         $newCriteria->join = "LEFT JOIN {{tokens_" . self::$sid . "}} tokens ON $alias.token = tokens.token";
 
-        $aTokenFields = Yii::app()->db->schema->getTable(self::$survey->tokensTableName)->getColumnNames();
+        $aTokenFields = Yii::app()->db->schema->getTable($this->survey->tokensTableName)->getColumnNames();
         $aTokenFields = array_diff($aTokenFields, array('token'));
 
         $newCriteria->select = $aTokenFields; // Otherwise we don't get records from the survey participants table
@@ -229,7 +228,7 @@ class SurveyDynamic extends LSActiveRecord
     /**
      * Return true if actual survey is completed
      *
-     * @param integer $srid : actual save survey id
+     * @param integer $srid : actual save survey ID
      *
      * @return boolean
      */
@@ -288,6 +287,18 @@ class SurveyDynamic extends LSActiveRecord
             'iconClass'        => 'ri-eye-fill',
             'url'              => App()->createUrl(
                 "responses/view",
+                [
+                    "surveyId" => self::$sid,
+                    "id" => $this->id,
+                    "browseLang" => $sBrowseLanguage
+                ]
+            ),
+        ];
+        $dropdownItems[] = [
+            'title'            => gT('View response details as queXML PDF'),
+            'iconClass'        => 'ri-file-pdf-line',
+            'url'              => App()->createUrl(
+                "responses/viewquexmlpdf",
                 [
                     "surveyId" => self::$sid,
                     "id" => $this->id,
@@ -394,26 +405,35 @@ class SurveyDynamic extends LSActiveRecord
             $sSurveyEntry = "<table class='table table-condensed upload-question'>";
             $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($oFieldMap->qid);
             $aFilesInfo = json_decode_ls($this->$colName);
-            for ($iFileIndex = 0; $iFileIndex < $aQuestionAttributes['max_num_of_files']; $iFileIndex++) {
-                $sSurveyEntry .= '<tr>';
-                if (isset($aFilesInfo[$iFileIndex])) {
-                    $sSurveyEntry .= '<td>' . CHtml::link(CHtml::encode(rawurldecode((string) $aFilesInfo[$iFileIndex]['name'])), App()->createUrl("responses/downloadfile", ["surveyId" => self::$sid, "responseId" => $this->id, "qid" => $oFieldMap->qid, "index" => $iFileIndex])) . '</td>';
-                    $sSurveyEntry .= '<td>' . sprintf('%s Mb', round($aFilesInfo[$iFileIndex]['size'] / 1000, 2)) . '</td>';
-
+            if (!empty($aFilesInfo)) {
+                foreach ($aFilesInfo as $iFileIndex => $fileInfo) {
+                    if (empty($fileInfo)) {
+                        continue;
+                    }
+                    $sSurveyEntry .= '<tr>';
+                    $url = App()->createUrl("responses/downloadfile", ["surveyId" => self::$sid, "responseId" => $this->id, "qid" => $oFieldMap->qid, "index" => $iFileIndex]);
+                    $filename = CHtml::encode(rawurldecode($fileInfo['name']));
+                    $size = "";
+                    if ($fileInfo['size'] && strval(floatval($fileInfo['size'])) == strval($fileInfo['size'])) {
+                        // avoid to throw PHP error if size is invalid
+                        $size = sprintf('%s Mb', round($fileInfo['size'] / 1000, 2));
+                    }
+                    $sSurveyEntry .= '<td>' . CHtml::link($filename, $url) . '</td>';
+                    $sSurveyEntry .= '<td>' . $size . '</td>';
                     if ($aQuestionAttributes['show_title']) {
-                        if (!isset($aFilesInfo[$iFileIndex]['title'])) {
-                            $aFilesInfo[$iFileIndex]['title'] = '';
+                        if (!isset($fileInfo['title'])) {
+                            $fileInfo['title'] = '';
                         }
-                        $sSurveyEntry .= '<td>' . htmlspecialchars((string) $aFilesInfo[$iFileIndex]['title'], ENT_QUOTES, 'UTF-8') . '</td>';
+                        $sSurveyEntry .= '<td>' . htmlspecialchars((string) $fileInfo['title'], ENT_QUOTES, 'UTF-8') . '</td>';
                     }
                     if ($aQuestionAttributes['show_comment']) {
-                        if (!isset($aFilesInfo[$iFileIndex]['comment'])) {
-                            $aFilesInfo[$iFileIndex]['comment'] = '';
+                        if (!isset($fileInfo['comment'])) {
+                            $fileInfo['comment'] = '';
                         }
-                        $sSurveyEntry .= '<td>' . htmlspecialchars((string) $aFilesInfo[$iFileIndex]['comment'], ENT_QUOTES, 'UTF-8') . '</td>';
+                        $sSurveyEntry .= '<td>' . htmlspecialchars((string) $fileInfo['comment'], ENT_QUOTES, 'UTF-8') . '</td>';
                     }
+                    $sSurveyEntry .= '</tr>';
                 }
-                $sSurveyEntry .= '</tr>';
             }
             $sSurveyEntry .= '</table>';
             $sValue = $sSurveyEntry;
@@ -425,7 +445,7 @@ class SurveyDynamic extends LSActiveRecord
     /**
      * Return true if actual response exist in database
      *
-     * @param integer $srid : actual save survey id
+     * @param integer $srid : actual save survey ID
      *
      * @return boolean
      */
@@ -449,7 +469,7 @@ class SurveyDynamic extends LSActiveRecord
     /**
      * Return next id if next response exist in database
      *
-     * @param integer $srId : actual save survey id
+     * @param integer $srId : actual save survey ID
      * @param boolean $useFilterState
      *
      * @return integer
@@ -482,7 +502,7 @@ class SurveyDynamic extends LSActiveRecord
     /**
      * Return previous id if previous response exist in database
      *
-     * @param integer $srId : actual save survey id
+     * @param integer $srId : actual save survey ID
      * @param boolean $useFilterState
      *
      * @return integer
@@ -648,7 +668,7 @@ class SurveyDynamic extends LSActiveRecord
     {
 
         $pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
-        $criteria = new CDbCriteria();
+        $criteria = new LSDbCriteria();
         $sort     = new CSort();
         $sort->defaultOrder = 'id ASC';
 
@@ -784,7 +804,7 @@ class SurveyDynamic extends LSActiveRecord
 
         if (
             !(LimeExpressionManager::QuestionIsRelevant($oQuestion->qid) && $bHonorConditions == true)
-            || $attributes['hidden'] === 1
+            || (is_array($attributes) && $attributes['hidden'] === 1)
         ) {
             return false;
         }
@@ -876,7 +896,7 @@ class SurveyDynamic extends LSActiveRecord
         }
 
         if ($aQuestionAttributes['questionclass'] === 'date') {
-            $aQuestionAttributes['dateformat'] = getDateFormatDataForQID($aQuestionAttributes, array_merge(self::$survey->attributes, $oQuestion->survey->languagesettings[$sLanguage]->attributes));
+            $aQuestionAttributes['dateformat'] = getDateFormatDataForQID($aQuestionAttributes, array_merge($this->survey->attributes, $oQuestion->survey->languagesettings[$sLanguage]->attributes));
         }
 
         $aQuestionAttributes['answervalue'] = $oResponses[$fieldname] ?? null;
@@ -918,7 +938,7 @@ class SurveyDynamic extends LSActiveRecord
             $aQuestionAttributes['fileinfo'] = json_decode((string) $aQuestionAttributes['answervalue'], true);
         }
 
-        if ($oQuestion->parent_qid != 0 && $oQuestion->parent['type'] === "1") {
+        if ($oQuestion->parent_qid != 0 && isset($oQuestion->parent['type']) && $oQuestion->parent['type'] === "1") {
             $aAnswers = (
                 $oQuestion->parent != null
                 ? $oQuestion->parent->answers
@@ -972,7 +992,7 @@ class SurveyDynamic extends LSActiveRecord
         }
 
         /* Second (X) scale for array text and array number */
-        if ($oQuestion->parent_qid != 0 && in_array($oQuestion->parent['type'], [";", ":"])) {
+        if ($oQuestion->parent_qid != 0 && isset($oQuestion->parent['type']) && in_array($oQuestion->parent['type'], [";", ":"])) {
             $oScaleXSubquestions = Question::model()->with('questionl10ns')->findAll(array(
                 'condition' => "parent_qid = :parent_qid and scale_id = :scale_id",
                 'order' => "question_order ASC",
@@ -986,7 +1006,7 @@ class SurveyDynamic extends LSActiveRecord
             }
         }
 
-        if ($oQuestion->type == 'N' || ($oQuestion->parent_qid != 0 && $oQuestion->parent['type'] === "K")) {
+        if ($oQuestion->type == 'N' || ($oQuestion->parent_qid != 0 && isset($oQuestion->parent['type']) && $oQuestion->parent['type'] === "K")) {
             if (strpos((string) $aQuestionAttributes['answervalue'], ".") !== false) { // Remove last 0 and last . ALWAYS (see \SurveyObj\getShortAnswer)
                 $aQuestionAttributes['answervalue'] = rtrim(rtrim((string) $aQuestionAttributes['answervalue'], "0"), ".");
             }
@@ -1001,12 +1021,31 @@ class SurveyDynamic extends LSActiveRecord
         return $aQuestionAttributes;
     }
 
+    /**
+     * Decrypts all encrypted response values for output (e.g. printanswers, detailed admin info)
+     *
+     * @return void
+     */
+    public function decryptBeforeOutput()
+    {
+        //get response values which are encrypted
+        $encryptedAttr = Response::getEncryptedAttributes($this->getSurveyId());
+        $attributes = $this->attributes;
+        $sodium = Yii::app()->sodium;
+        foreach ($encryptedAttr as $key) {
+            $this->setAttribute($key, $sodium->decrypt($attributes[$key]));
+        }
+    }
+
     public function getPrintAnswersArray($sSRID, $sLanguage, $bHonorConditions = false)
     {
 
-        $oSurvey = self::$survey;
+        $oSurvey = $this->survey;
         $aGroupArray = array();
+
         $oResponses = SurveyDynamic::model($oSurvey->sid)->findByAttributes(array('id' => $sSRID));
+        $oResponses->decryptBeforeOutput();
+
         $oGroupList = $oSurvey->groups;
 
         foreach ($oGroupList as $oGroup) {
@@ -1045,5 +1084,18 @@ class SurveyDynamic extends LSActiveRecord
     public function getSurveyId()
     {
         return self::$sid;
+    }
+
+    /**
+     * Get current survey for other model/function
+     * Using a getter to avoid query during model creation
+     * @return Survey
+     */
+    public function getSurvey()
+    {
+        if (self::$sid && self::$survey === null) {
+            self::$survey = Survey::model()->findByPk(self::$sid);
+        }
+        return self::$survey;
     }
 }

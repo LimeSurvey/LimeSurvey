@@ -23,10 +23,11 @@ $black60      : #666666; // rgba(0, 0, 0, 0.6);
 $black75      : rgba(0, 0, 0, 0.75);
 $grape75 : rgba(123, 97, 255, 0.4);
 $heading-title-color: #152536;
+$heading-sub-title-color: #182535;
 
 $g-900        : #1E1E1E;
 $g-800        : #333641;
-$g-700        : #5E6372;
+$g-700        : #6E748C;
 $g-600        : #9094A7;
 $g-400        : #D3D5DA;
 $g-300        : #DDDEE8;
@@ -72,6 +73,7 @@ $ibm-font-family:
 $font-size-base: 1.14rem; // 16px, Browser default usually is 14px
 $font-size-xs: $font-size-base * 0.75; // 12px
 $font-size-sm: $font-size-base * 0.875; // 14px
+$font-size-md: $font-size-base * 1.125; // 18px
 $font-size-lg: $font-size-base * 1.25; // 20px
 
 $font-weight-300: 300;

@@ -70,7 +70,7 @@ Yii::app()->getController()->renderPartial(
             </div>
         </div>
         <div class='mb-3'>
-            <label class='form-label '><?php eT("Blacklist user:"); ?></label>
+            <label class='form-label '><?php eT("Blocklist user:"); ?></label>
             <div>
                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                     'model'         => $model,
@@ -140,9 +140,7 @@ Yii::app()->getController()->renderPartial(
         <?php echo $buttonTitle; ?>
     </button>
 </div>
-<script>
-$('#editPartcipantActiveForm .bootstrap-switch').bootstrapSwitch();
-</script>
+
 <?php
 $this->endWidget();
 ?>

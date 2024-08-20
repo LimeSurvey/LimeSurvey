@@ -5,7 +5,7 @@
  */
 ?>
 
-<div class='side-body <?php echo getSideBodyClass(false); ?>'>
+<div class='side-body'>
     <h3><?php eT("Import survey participants from CSV file"); ?></h3>
 
     <div class="row">
@@ -160,10 +160,3 @@
         </div>
     </div>
 </div>
-<?php
-App()->getClientScript()->registerScript('CSVUploadViewBSSwitcher',
-    "
-LS.renderBootstrapSwitch();
-",
-    LSYii_ClientScript::POS_POSTSCRIPT);
-?>

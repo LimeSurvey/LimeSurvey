@@ -15,7 +15,7 @@ use LimeSurvey\Datavalueobjects\SimpleSurveyValues;
  */
 class CreateSurvey
 {
-    /** @var int number of attempts to find a valid survey id */
+    /** @var int number of attempts to find a valid survey ID */
     const ATTEMPTS_CREATE_SURVEY_ID = 50;
 
     /** @var string all attributes that have the value "NO" */
@@ -159,7 +159,7 @@ class CreateSurvey
     }
 
     /**
-     * Creates a unique survey id. A survey id always consists of 6 numbers [123456789].
+     * Creates a unique survey ID. A survey ID always consists of 6 numbers [123456789].
      *
      * If not possible within ATTEMPTS_CREATE_SURVEY_ID an Exception is thrown
      *
@@ -175,7 +175,7 @@ class CreateSurvey
             $this->survey->sid = intval(randomChars(6, '123456789'));
             /* If it's happen : there are an issue in server … (or in randomChars function …) */
             if ($attempts > self::ATTEMPTS_CREATE_SURVEY_ID) {
-                throw new \Exception("Unable to get a valid survey id after " . self::ATTEMPTS_CREATE_SURVEY_ID . " attempts");
+                throw new \Exception("Unable to get a valid survey ID after " . self::ATTEMPTS_CREATE_SURVEY_ID . " attempts");
             }
         }
     }

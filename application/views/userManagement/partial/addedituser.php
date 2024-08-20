@@ -7,8 +7,9 @@ Yii::app()->getController()->renderPartial(
     '/layouts/partial_modals/modal_header',
     ['modalTitle' => $modalTitle]
 );
-?>
 
+?>
+<?php /** @var $form TbActiveForm */ ?>
 <?php $form = $this->beginWidget('TbActiveForm', [
     'id'                     => 'UserManagement--modalform',
     'action'                 => App()->createUrl('userManagement/applyedit'),
@@ -23,13 +24,11 @@ Yii::app()->getController()->renderPartial(
     </div>
     <div class="mb-3">
         <?php echo $form->labelEx($oUser, 'users_name', ['for' => 'User_Form_users_name']); ?>
-        <?php
-        if ($oUser->isNewRecord) {
-            echo $form->textField($oUser, 'users_name', ['id' => 'User_Form_users_name', 'required' => 'required']);
-        } else {
-            echo '<input class="form-control" type="text" name="usernameshim" value="' . $oUser->users_name . '" disabled="true" />';
-        }
-        ?>
+        <?php if ($oUser->isNewRecord) : ?>
+            <?= $form->textField($oUser, 'users_name', ['id' => 'User_Form_users_name', 'required' => 'required']) ?>
+        <?php else : ?>
+            <input class="form-control" type="text" value="<?= CHtml::encode($oUser->users_name) ?>" disabled="true"/>
+        <?php endif; ?>
 
         <?php echo $form->error($oUser, 'users_name'); ?>
     </div>
@@ -44,7 +43,7 @@ Yii::app()->getController()->renderPartial(
         <?php echo $form->error($oUser, 'email'); ?>
     </div>
     <div class="mb-3">
-        <label class="form-label" for='expires'><?php eT("Expire date/time:"); ?></label>
+        <label class="form-label" for='expires'><?php eT("Expiry date/time"); ?></label>
         <div class="has-feedback">
             <?php
             Yii::app()->getController()->widget('ext.DateTimePickerWidget.DateTimePicker', [
@@ -108,10 +107,9 @@ Yii::app()->getController()->renderPartial(
                 $oUser,
                 'password',
                 ($oUser->isNewRecord
-                    ? ['id' => 'User_Form_password', 'value' => '', 'placeholder' => '********']
+                    ? ['id' => 'User_Form_password', 'value' => '']
                     : ['id'          => 'User_Form_password',
                        'value'       => '',
-                       'placeholder' => '********',
                        "disabled"    => "disabled"
                     ]
                 )
@@ -119,10 +117,10 @@ Yii::app()->getController()->renderPartial(
             <?php echo $form->error($oUser, 'password'); ?>
         </div>
         <div class="mb-3">
-            <label for="password_repeat" class="required" required><?= gT("Password safety") ?> <span
+            <label for="password_repeat" class="required" required><?= gT("Repeat password") ?> <span
                     class="required">*</span></label>
             <input name="password_repeat"
-                   placeholder='********' <?= ($oUser->isNewRecord ? '' : 'disabled="disabled"') ?> id="password_repeat"
+                   <?= ($oUser->isNewRecord ? '' : 'disabled="disabled"') ?> id="password_repeat"
                    class="form-control" type="password">
         </div>
         <?php if ($oUser->isNewRecord) { ?>

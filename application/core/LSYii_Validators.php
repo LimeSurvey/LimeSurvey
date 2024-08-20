@@ -46,21 +46,21 @@ class LSYii_Validators extends CValidator
 
     public function __construct()
     {
-        if (Yii::app()->getConfig('DBVersion') < 172) {
+        if (App()->getConfig('DBVersion') < 172) {
             // Permission::model exist only after 172 DB version
-            return $this->xssfilter = ($this->xssfilter && Yii::app()->getConfig('filterxsshtml'));
+            return $this->xssfilter = ($this->xssfilter && App()->getConfig('filterxsshtml'));
         }
         // If run from console there is no user
         $this->xssfilter = (
-            $this->xssfilter && // this
-            (
-                (defined('PHP_ENV') && PHP_ENV == 'test') || // phpunit test : don't check controller
-                (
-                    ($controller = Yii::app()->getController()) !== null && // no controller
-                    (get_class($controller) !== 'ConsoleApplication') // ConsoleApplication
+            $this->xssfilter
+            && ((defined('PHP_ENV') // phpunit test : don't check controller
+                    && PHP_ENV == 'test'
                 )
-            ) &&
-            Yii::app()->user->isXssFiltered() // user
+                || (($controller = App()->getController()) !== null // no controller
+                    && (get_class($controller) !== 'ConsoleApplication') // ConsoleApplication
+                )
+            )
+            && App()->user->isXssFiltered() // user
         );
         return;
     }
@@ -70,7 +70,9 @@ class LSYii_Validators extends CValidator
         if ($this->xssfilter) {
             $object->$attribute = $this->xssFilter($object->$attribute);
             if ($this->isUrl) {
-                $object->$attribute = str_replace('javascript:', '', $object->$attribute);
+                if (self::isXssUrl($object->$attribute)) {
+                    $object->$attribute = "";
+                }
             }
         }
         // Note that URL checking only checks basic URL properties. As a URL can contain EM expression there needs to be a lot of freedom.
@@ -117,11 +119,15 @@ class LSYii_Validators extends CValidator
     /**
      * Remove any script or dangerous HTML
      *
-     * @param string $value
+     * @param null|string $value
      * @return string
      */
     public function xssFilter($value)
     {
+        /* No need to filter empty $value */
+        if (empty($value)) {
+            return strval($value);
+        }
         $filter = LSYii_HtmlPurifier::getXssPurifier();
 
         /** Start to get complete filtered value with  url decode {QCODE} (bug #09300). This allow only question number in url, seems OK with XSS protection **/
@@ -164,10 +170,14 @@ class LSYii_Validators extends CValidator
      * Defines the customs validation rule for language string
      *
      * @param mixed $value
-     * @return mixed
+     * @return string
      */
     public function languageFilter($value)
     {
+        /* No need to filter empty $value */
+        if (empty($value)) {
+            return strval($value);
+        }
         // Maybe use the array of language ?
         return preg_replace('/[^a-z0-9-]/i', '', (string) $value);
     }
@@ -180,8 +190,74 @@ class LSYii_Validators extends CValidator
      */
     public function multiLanguageFilter($value)
     {
+        /* No need to filter empty $value */
+        if (empty($value)) {
+            return strval($value);
+        }
         $aValue = explode(" ", trim((string) $value));
         $aValue = array_map("sanitize_languagecode", $aValue);
         return implode(" ", $aValue);
+    }
+
+    /**
+     * Checks whether an URL seems unsafe in terms of XSS.
+     * @param string $url
+     * @return boolean Returns true if the URL is unsafe.
+     */
+    public static function isXssUrl($url)
+    {
+        /* No need to filter empty $value */
+        if (empty($url)) {
+            return false;
+        }
+        $decodedUrl = self::treatSpecialChars($url);
+        $clean = self::removeInvisibleChars($decodedUrl);
+
+        // Remove javascript:
+        if (self::hasUnsafeScheme($clean)) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Removes invisible characters from a string.
+     * @param string $string
+     * @return string
+     */
+    public static function removeInvisibleChars($string)
+    {
+        // Remove invisible characters
+        $prevString = '';
+        while ($prevString != $string) {
+            $prevString = $string;
+            $string = preg_replace('/\p{C}/u', '', $string);
+        };
+
+        return $string;
+    }
+
+    /**
+     * Checks if URL contains an unsafe scheme.
+     * It currently checks for "javascript:" only.
+     * Note: URL should be previously decoded.
+     * @param string $url
+     * @return boolean
+     */
+    public static function hasUnsafeScheme($url)
+    {
+        // TODO: Check for other schemes? FTP? vbscript?
+        return stripos($url, "javascript:") !== false;
+    }
+
+    /**
+     * Decodes URL encoded characters and html entities.
+     * @param string $string
+     * @return string
+     */
+    public static function treatSpecialChars($string)
+    {
+        // TODO: Recurse?
+        return urldecode(html_entity_decode($string));
     }
 }

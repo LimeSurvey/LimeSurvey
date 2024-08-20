@@ -1,0 +1,49 @@
+{#
+    LimeSurvey
+    Copyright (C) 2007-2017 The LimeSurvey Project Team / Louis Gac
+    All rights reserved.
+    License: GNU/GPL License v2 or later, see LICENSE.php
+    LimeSurvey is free software. This version may have been modified pursuant
+    to the GNU General Public License, and as distributed it includes or
+    is derivative of works licensed under the GNU General Public License or
+    other free or open source software licenses.
+    See COPYRIGHT.php for copyright notices and details.
+
+
+
+    (¯`·._.·(¯`·._.· Warnings  ·._.·´¯)·._.·´¯)
+
+    Show various warnings on top of the form
+
+    Error Html warnings can be:
+        - One or more mandatory questions have not been answered. You cannot proceed until these have been completed.
+        - One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid.
+        - One or more uploaded files are not in proper format/size. You cannot proceed until these files are valid.
+
+    The easiest way to change the text in the warnings is to create a new translation.
+
+    These warnings are complementary to the popup ones. If you're using popups (set in config file), and then don't want to show these alerts, you can uncomment the hiddenClass checker
+#}
+
+{# Preview mode warning #}
+{% if (aSurveyInfo.active != 'Y') and (not aSurveyInfo.popupPreview) %}
+    <!-- Preview mode warning -->
+    <div class="{{ aSurveyInfo.class.activealert }} alert alert-warning alert-dismissible fade in show alert-dismissible" {{ aSurveyInfo.attr.activealert }} >
+        <button  {{ aSurveyInfo.attr.activealertbutton }} class="{{ aSurveyInfo.class.activealertbutton }} btn-close" ></button>
+        {{ gT("This survey is currently not active. You will not be able to save your responses.") }}
+    </div>
+{% endif %}
+
+{# Error Html warnings #}
+{% if aSurveyInfo.errorHtml.show %}
+    <p class=' {# Uncomment to hide when popup is on { aSurveyInfo.errorHtml.hiddenClass } #} fade in show alert-dismissible alert alert-danger {{ aSurveyInfo.class.errorHtml }} ' role='alert'>
+        <button  {{ aSurveyInfo.attr.errorHtmlbutton }} class="{{ aSurveyInfo.class.errorHtmlbutton }} btn-close" ></button>
+    {% for aMessage in aSurveyInfo.errorHtml.messages  %}
+        <!-- Error Html warnings -->
+            {{ aMessage }}
+            <br/>
+    {% endfor %}
+    </p>
+{% endif %}
+
+{{ makeFlashMessage() }}

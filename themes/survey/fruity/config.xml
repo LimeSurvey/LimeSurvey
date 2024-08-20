@@ -10,8 +10,8 @@
 <config>
     <!-- Those metadata are displayed in the theme configuration page.  -->
     <metadata>
-        <name>Fruity</name>
-        <title>Fruity Theme</title>
+        <name>fruity</name>
+        <title>Fruity</title>
         <type>theme</type>
         <creationDate>08/01/2016</creationDate>
         <author>LimeSurvey GmbH</author>
@@ -21,10 +21,14 @@
         <license>GNU General Public License version 2 or later</license>
         <version>3.0.1</version>
         <apiVersion>3</apiVersion>
-        <description  twig="on"><![CDATA[<strong>{{gT("LimeSurvey Fruity Theme")}}</strong><br>{{gT("A fruity theme for a flexible use. This theme offers monochromes variations and many options for easy customizations.")}}]]></description>
+        <description twig="on"><![CDATA[{{gT("A fruity theme for a flexible use. This theme offers monochromes variations and many options for easy customizations.")}}]]></description>
         <lastUpdate>2019-10-24 12:00:00</lastUpdate>
         <extends>vanilla</extends>
     </metadata>
+
+    <compatibility>
+        <version>6.0</version>
+    </compatibility>
 
     <!--
         Here the list of the css/js files to add to the template package.
@@ -78,7 +82,7 @@
         <notables type="buttons" category="Simple options" width="4" title="Break tables" options="2|1|0" optionlabels="Always on|Small screens|Off">1</notables>
         <showclearall type="buttons" category="Simple options" width="4" title="Show Clear All button" options="on|off" optionlabels="Yes|No">off</showclearall>
         <questionhelptextposition type="buttons" category="Simple options" width="4" title="Question help text position" options="top|bottom" optionlabels="Top|Bottom">top</questionhelptextposition>
-        <fixnumauto type="buttons" category="Simple options" width="4" title="Fix automatically numeric value" options="enable|partial|disable" optionlabels="Yes|For expression|No">off</fixnumauto>
+        <fixnumauto type="buttons" category="Simple options" width="4" title="Fix automatically numeric value" options="enable|partial|disable" optionlabels="Yes|For expression|No">enable</fixnumauto>
         <questionborder type="buttons" category="Simple options" width="4" title="Question borders" options="on|off" optionlabels="Yes|No">on</questionborder>
         <questioncontainershadow type="buttons" category="Simple options" width="4" title="Question shadow" options="on|off" optionlabels="Yes|No">on</questioncontainershadow>
         <!-- colors -->
@@ -677,16 +681,18 @@
             </optgroup>
             </dropdownoptions>
         </font>
-        <cssframework type="dropdown" category="Simple options" width="12" title="Variations" parent="cssframework">
+        <cssframework type="dropdown" category="Simple options" width="12" title="Variations" parent="cssframework">Sea Green
             <dropdownoptions>
-                <option value="css/variations/sea_green.css">Sea Green</option>
-                <option value="css/variations/apple_blossom.css">Apple Blossom</option>
-                <option value="css/variations/bay_of_many.css">Bay of Many</option>
-                <option value="css/variations/black_pearl.css">Black Pearl</option>
-                <option value="css/variations/free_magenta.css">Free Magenta</option>
-                <option value="css/variations/purple_tentacle.css">Purple Tentacle</option>
-                <option value="css/variations/sunset_orange.css">Sunset Orange</option>
-                <option value="css/variations/skyline_blue.css">Skyline Blue</option>
+                <optgroup>
+                    <option value="css/variations/sea_green.css">Sea Green</option>
+                    <option value="css/variations/apple_blossom.css">Apple Blossom</option>
+                    <option value="css/variations/bay_of_many.css">Bay of Many</option>
+                    <option value="css/variations/black_pearl.css">Black Pearl</option>
+                    <option value="css/variations/free_magenta.css">Free Magenta</option>
+                    <option value="css/variations/purple_tentacle.css">Purple Tentacle</option>
+                    <option value="css/variations/sunset_orange.css">Sunset Orange</option>
+                    <option value="css/variations/skyline_blue.css">Skyline Blue</option>
+                </optgroup>
             </dropdownoptions>
         </cssframework>
     </options>

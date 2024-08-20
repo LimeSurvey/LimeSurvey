@@ -1,0 +1,156 @@
+.checkbox-item {
+    padding-left: 20px;
+    &.mb-1 {
+        margin-bottom: 20px !important;
+    }
+}
+
+.checkbox-item label {
+    display: inline-block;
+    vertical-align: middle;
+    position: relative;
+    padding-left: 20px;
+}
+
+.checkbox-item .ls-label-xs-visibility {
+    display: inline-block;
+    position: relative;
+    overflow: hidden;
+    width: 24px;
+    height: 24px;
+    line-height: 21px;
+    text-indent: 21px;
+}
+
+.checkbox-item label::before {
+    content: "";
+    display: inline-block;
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    left: 0;
+    top:0;
+    margin-left: -20px;
+    border-radius: 0px;
+    -webkit-transition: border 0.15s ease-in-out, color 0.15s ease-in-out;
+    -o-transition: border 0.15s ease-in-out, color 0.15s ease-in-out;
+    transition: border 0.15s ease-in-out, color 0.15s ease-in-out;
+}
+
+.checkbox-item label::after {
+    display: inline-block;
+    position: absolute;
+    left: 2px;
+    top: 2px;
+    margin-left: -20px;
+}
+
+.checkbox-item input[type="checkbox"]:checked + label::after,
+.checkbox-item input[type="radio"]:checked + label::after {
+    font-family: "remixicon";
+    content: "\eb7b";
+    padding: 0;
+    font-size: 20px;
+    font-weight: $font-weight-900;
+    text-align: center;
+}
+.checkbox-item input[type="checkbox"]:indeterminate + label::after,
+.checkbox-item input[type="radio"]:indeterminate + label::after {
+    display: block;
+    content: "";
+    width: 10px;
+    height: 3px;
+    border-radius: 2px;
+    margin-left: -16.5px;
+    margin-top: 7px;
+}
+.checkbox-item input[type="checkbox"]:disabled + label,
+.checkbox-item input[type="radio"]:disabled + label {
+    opacity: 0.65;
+}
+
+.form-horizontal .checkbox-item label::before{
+    top: 3px;
+}
+
+.form-horizontal .checkbox-item label::after{
+    top: 4px;
+}
+.checkbox-item input[type="checkbox"] {
+    opacity: 0;
+    z-index: -1;
+    /* set the position at same place than label::after */
+    position: absolute;
+    left: 0;
+    /* margin-right: -20px; input is out of label : must remove position:relative from label and set it to .checkbox-item*/
+}
+
+.checkbox-item input[type="checkbox"]:disabled + label::before,
+.checkbox-item input[type="radio"]:disabled + label::before {
+    cursor: not-allowed;
+}
+.checkbox-item.checkbox-circle label::before {
+    border-radius: 50%;
+}
+.checkbox-item.checkbox-inline {
+    margin-top: 0;
+}
+
+/**
+ *  awesome-bootstrap-checkbox inside table with an visually-hidden label
+ */
+/* reset the margin and review the padding set by bootstrap */
+table.ls-answers input[type="checkbox"],
+table.ls-answers input[type="radio"] {
+    margin : 0;
+}
+
+/* We need complete width in array , but don't touch to padding-(top|bottom) */
+.ls-answers td.checkbox-item {
+    padding-left  : 20px;
+    padding-right : 0;
+}
+
+.checkbox-item .ls-label-xs-visibility {
+    left        : auto;
+    margin-left : -20px;
+}
+
+/* no margin on label : no margin after and before too */
+.checkbox-item label.ls-label-xs-visibility::before {
+    margin-left : 0;
+}
+
+.checkbox-item label.ls-label-xs-visibility::after {
+    margin-left  : 0;
+    padding-left : 0;
+}
+
+.checkbox-item label.ls-label-xs-visibility::after {
+    text-align  : center;
+    text-indent : 0;
+}
+
+/* Hide the other content inside visually-hidden */
+.checkbox-item label.ls-label-xs-visibility > * {
+    position : absolute;
+    top      : auto;
+    width    : 1px;
+    height   : 1px;
+    overflow : hidden;
+}
+
+.checkbox-item label.ls-label-xs-visibility > * {
+    left : -10000px;
+}
+
+@media only screen and (max-width : 760px), (min-device-width : 768px) and (max-device-width : 1024px) {
+    .checkbox-item label.ls-label-xs-visibility > * {
+        left : auto;
+    }
+}
+
+/* Align privacy policy checkbox to top */
+#datasecurity_accepted {
+    vertical-align : top;
+}

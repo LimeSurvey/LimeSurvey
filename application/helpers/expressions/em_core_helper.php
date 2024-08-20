@@ -39,20 +39,23 @@ class ExpressionManager
         'valueNAOK',
         'value',
     );
-    // These are the allowable static suffixes for variables - each represents an attribute of a variable that can not be updated on same page
+    /* var string[] allowable static suffixes for variables - each represents an attribute of a variable that can not be updated on same page
+     * @see LimeExpressionManager->knownVars definition
+     */
     private $aRDP_regexpStaticAttribute = array(
-        'gid',
-        'grelevance',
-        'gseq',
-        'jsName',
-        'mandatory',
         'qid',
-        'qseq',
+        'gid',
         'question',
-        'relevance',
-        'rowdivid',
         'sgqa',
         'type',
+        'relevance',
+        'grelevance',
+        'qseq',
+        'gseq',
+        'jsName',
+        'jsName_on',
+        'mandatory',
+        'rowdivid',
     );
     // These three variables are effectively static once constructed
     private $RDP_ExpressionRegex;
@@ -192,14 +195,14 @@ class ExpressionManager
         // If the value is -1, the function must have a least one argument but can have an unlimited number of them
         // -2 means that at least one argument is required.  -3 means at least two arguments are required, etc.
         $this->RDP_ValidFunctions = array(
-            'abs' => array('abs', 'Decimal.asNum.abs', gT('Absolute value'), 'number abs(number)', 'http://php.net/abs', 1),
+            'abs' => array('exprmgr_abs', 'Decimal.asNum.abs', gT('Absolute value'), 'number abs(number)', 'http://php.net/abs', 1),
             'acos' => array('acos', 'Decimal.asNum.acos', gT('Arc cosine'), 'number acos(number)', 'http://php.net/acos', 1),
             'addslashes' => array('addslashes', gT('addslashes'), 'Quote string with slashes', 'string addslashes(string)', 'http://php.net/addslashes', 1),
             'asin' => array('asin', 'Decimal.asNum.asin', gT('Arc sine'), 'number asin(number)', 'http://php.net/asin', 1),
             'atan' => array('atan', 'Decimal.asNum.atan', gT('Arc tangent'), 'number atan(number)', 'http://php.net/atan', 1),
             'atan2' => array('atan2', 'Decimal.asNum.atan2', gT('Arc tangent of two variables'), 'number atan2(number, number)', 'http://php.net/atan2', 2),
             'ceil' => array('ceil', 'Decimal.asNum.ceil', gT('Round fractions up'), 'number ceil(number)', 'http://php.net/ceil', 1),
-            'checkdate' => array('checkdate', 'checkdate', gT('Returns true(1) if it is a valid date in gregorian calendar'), 'bool checkdate(month,day,year)', 'http://php.net/checkdate', 3),
+            'checkdate' => array('exprmgr_checkdate', 'checkdate', gT('Returns true(1) if it is a valid date in gregorian calendar'), 'bool checkdate(month,day,year)', 'http://php.net/checkdate', 3),
             'cos' => array('cos', 'Decimal.asNum.cos', gT('Cosine'), 'number cos(number)', 'http://php.net/cos', 1),
             'count' => array('exprmgr_count', 'LEMcount', gT('Count the number of answered questions in the list'), 'number count(arg1, arg2, ... argN)', '', -1),
             'countif' => array('exprmgr_countif', 'LEMcountif', gT('Count the number of answered questions in the list equal the first argument'), 'number countif(matches, arg1, arg2, ... argN)', '', -2),
@@ -2026,7 +2029,6 @@ class ExpressionManager
                 if (count($onpageJsVarsUsed) > 0 && !$staticReplacement) {
                     $idName = "LEMtailor_Q_" . $questionNum . "_" . $this->substitutionNum;
                     $resolvedParts[] = "<span id='" . $idName . "'>" . $resolvedPart . "</span>";
-                    $this->substitutionVars[$idName] = 1;
                     $this->substitutionInfo[] = array(
                         'questionNum' => $questionNum,
                         'num' => $this->substitutionNum,
@@ -2192,6 +2194,9 @@ class ExpressionManager
                                     case 'sin':
                                     case 'sqrt':
                                     case 'tan':
+                                    case 'ceil':
+                                    case 'floor':
+                                    case 'round':
                                         if (is_numeric($params[0])) {
                                             $result = $funcName(floatval($params[0]));
                                         } else {
@@ -2208,6 +2213,7 @@ class ExpressionManager
                             if (!$this->RDP_onlyparse) {
                                 switch ($funcName) {
                                     case 'atan2':
+                                    case 'pow':
                                         if (is_numeric($params[0]) && is_numeric($params[1])) {
                                             $result = $funcName(floatval($params[0]), floatval($params[1]));
                                         } else {
@@ -2215,7 +2221,12 @@ class ExpressionManager
                                         }
                                         break;
                                     default:
-                                        $result = call_user_func($funcName, $params[0], $params[1]);
+                                        try {
+                                            $result = call_user_func($funcName, $params[0], $params[1]);
+                                        } catch (\Throwable $e) {
+                                            $this->RDP_AddError($e->getMessage(), $funcNameToken);
+                                            return false;
+                                        }
                                         break;
                                 }
                             }
@@ -2882,6 +2893,28 @@ function exprmgr_sumifop($args)
 }
 
 /**
+ * Validate a Gregorian date
+ * @see https://www.php.net/checkdate
+ * Check if all params are valid before send it to PHP checkdate to avoid PHP Warning
+ *
+ * @param mixed $month
+ * @param mixed $day
+ * @param mixed $year
+ * @return boolean
+ */
+function exprmgr_checkdate($month, $day, $year)
+{
+    if (
+        (!ctype_digit($month) && !is_int($month))
+        || (!ctype_digit($day) && !is_int($day))
+        || (!ctype_digit($year) && !is_int($year))
+    ) {
+        return false;
+    }
+    return checkdate(intval($month), intval($day), intval($year));
+}
+
+/**
  * Find the closest matching Numerical input values in a list an replace it by the
  * corresponding value within another list
  *
@@ -2940,6 +2973,17 @@ function exprmgr_date($format, $timestamp = null)
         return false;
     }
     return date($format, $timestamp);
+}
+
+function exprmgr_abs($num)
+{
+    if (!is_numeric($num)) {
+        return false;
+    }
+
+    // Trying to cast either to int or float, depending on the value.
+    $num = $num + 0;
+    return abs($num);
 }
 
 /**

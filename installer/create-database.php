@@ -49,7 +49,7 @@ function populateDatabase($oDB)
             'scale_id' => 'integer NOT NULL DEFAULT 0',
         ), $options);
 
-        $oDB->createCommand()->createIndex('{{answers_idx}}', '{{answers}}', ['qid', 'code', 'scale_id'], true);
+        $oDB->createCommand()->createIndex('{{answers_idx}}', '{{answers}}', ['qid', 'code', 'scale_id'], false);
         $oDB->createCommand()->createIndex('{{answers_idx2}}', '{{answers}}', 'sortorder', false);
 
         $oDB->createCommand()->createTable('{{answer_l10ns}}', array(
@@ -183,6 +183,7 @@ function populateDatabase($oDB)
         $oDB->createCommand()->createIndex('{{idx4_labels}}', '{{labels}}', ['lid','sortorder'], false);
         $oDB->createCommand()->createIndex('{{idx5_labels}}', '{{labels}}', ['lid','code'], true);
 
+
         // label_l10ns
         $oDB->createCommand()->createTable('{{label_l10ns}}', array(
             'id' =>  "pk",
@@ -194,10 +195,12 @@ function populateDatabase($oDB)
         // labelsets
         $oDB->createCommand()->createTable('{{labelsets}}', array(
             'lid' => 'pk',
+            'owner_id' => "integer NULL",
             'label_name' =>  "string(100) NOT NULL DEFAULT ''",
             'languages' =>  "string(255) NOT NULL",
         ), $options);
-
+        $oDB->createCommand()->createIndex('{{idx1_labelsets}}', '{{labelsets}}', 'owner_id', false);
+        $oDB->createCommand()->createIndex('{{idx2_labelsets}}', '{{labelsets}}', ['lid','owner_id'], false);
 
         // notifications
         $oDB->createCommand()->createTable('{{notifications}}', array(
@@ -764,7 +767,7 @@ function populateDatabase($oDB)
             'anonymized' => 'N',
             'format' => 'G',
             'savetimings' => 'N',
-            'template' => 'fruity',
+            'template' => 'fruity_twentythree',
             'datestamp' => 'N',
             'usecookie' => 'N',
             'allowregister' => 'N',
@@ -1095,7 +1098,8 @@ function populateDatabase($oDB)
             'validation_key' => 'string(38)',
             'validation_key_expiration' => 'datetime',
             'last_forgot_email_password' => 'datetime',
-            'expires' => 'datetime'
+            'expires' => 'datetime',
+            'user_status' => 'integer NOT NULL DEFAULT 1'
         ), $options);
 
         $oDB->createCommand()->createIndex('{{idx1_users}}', '{{users}}', 'users_name', true);
@@ -1175,7 +1179,7 @@ function populateDatabase($oDB)
                 'created' => "datetime NOT NULL",  //this one has always to be set to delete after x days ...
                 'status' => "string(20) NULL DEFAULT 'SEND FAILED'",
                 'updated' => "datetime NULL",
-                'resend_vars' => "text NOT NULL"
+                'resend_vars' => "mediumtext NOT NULL"
             ]
         );
 

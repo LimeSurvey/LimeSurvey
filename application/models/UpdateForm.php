@@ -582,7 +582,7 @@ class UpdateForm extends CFormModel
                                 $security_update_available = true;
                             }
 
-                            if ($update->branch != 'master') {
+                            if (!in_array($update->branch, ['master','5.x','3.x-LTS'])) {
                                 $unstable_update_available = true;
                             }
                         }
@@ -799,7 +799,7 @@ class UpdateForm extends CFormModel
         } else {
             $check->writable = 'pass';
         }
-        if ($obj->freespaceCheck) {
+        if ($obj->freespaceCheck && function_exists('disk_free_space')) {
             $check->freespace = (@disk_free_space($obj->name) > $obj->minfreespace);
         } else {
             $check->freespace = 'pass';
@@ -941,7 +941,6 @@ class UpdateForm extends CFormModel
         curl_setopt($ch, CURLOPT_COOKIEFILE, $this->path_cookie);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HEADER, false); // We don't want the header to be written in the zip file !
-        curl_setopt($ch, CURLOPT_BINARYTRANSFER, true);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
         curl_setopt($ch, CURLOPT_FILE, $pFile);
         curl_exec($ch);

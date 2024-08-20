@@ -147,11 +147,6 @@ body {
     padding-bottom: 2em;
 }
 
-.question-container.row {
-    margin-right: 0;
-    margin-left: 0;
-}
-
 .question-title-container {
     padding-top: 1em;
     padding-bottom: 1em;
@@ -170,7 +165,6 @@ body {
     position: relative;
 }
 
-.ls-question-help,
 .ls-questionhelp {
     margin-bottom: 5px;
 }
@@ -328,6 +322,7 @@ body {
 }
 
 .slider-item {
+    margin-bottom: 20px;
     min-height: 50px;
 }
 
@@ -750,7 +745,6 @@ div.yes-no .btn-group label {
     / / padding-bottom: 0.5 em;
     }
 
-    .ls-question-help,
     .ls-questionhelp {
         font-size: 14px;
     }

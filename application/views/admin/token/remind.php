@@ -4,7 +4,7 @@
  */
 ?>
 
-<div class='side-body <?php echo getSideBodyClass(false); ?>'>
+<div class='side-body'>
     <h3><?php eT("Send email reminder"); ?></h3>
     <div class="row">
         <div class="col-12 content-right">
@@ -74,9 +74,16 @@
                         <label class='form-label '
                                for='partialonly'><?php eT("Send email only to participants with partial responses:"); ?></label>
                         <div>
+                            <?php
+                                $disabledTip = gT('Not supported for anonymous surveys.');
+                            ?>
                             <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
-                                'name'          => 'partialonly',
+                                'name' => 'partialonly',
                                 'checkedOption' => '0',
+                                'htmlOptions' => [
+                                    'title' => $oSurvey->anonymized == 'Y' ? $disabledTip : '',
+                                    'disabled' => $oSurvey->anonymized == 'Y' ? '1' : '0',
+                                ],
                                 'selectOptions' => [
                                     '1' => gT('On'),
                                     '0' => gT('Off'),
@@ -129,7 +136,7 @@
                         $fieldsarray["{ADMINEMAIL}"] = $thissurvey['adminemail'];
                         $fieldsarray["{SURVEYNAME}"] = $thissurvey[$language]['name'];
                         $fieldsarray["{SURVEYDESCRIPTION}"] = $thissurvey[$language]['description'];
-                        $fieldsarray["{EXPIRY}"] = $thissurvey["expiry"];
+                        $fieldsarray["{EXPIRY}"] = strval($thissurvey["expiry"]);
 
                         $subject = Replacefields($thissurvey[$language]['email_remind_subj'], $fieldsarray, false);
                         $textarea = Replacefields($thissurvey[$language]['email_remind'], $fieldsarray, false);
@@ -162,7 +169,7 @@
                             <div class='mb-3'>
                                 <label class='form-label '
                                        for='message_<?php echo $language; ?>'><?php eT("Message:"); ?></label>
-                                <div class="htmleditor ">
+                                <div class="input-group htmleditor ">
                                     <?php echo CHtml::textArea("message_{$language}", $textarea, array('cols' => 80, 'rows' => 20, 'class' => 'form-control')); ?>
                                     <?php echo getEditor("email-reminder", "message_$language", "[" . gT("Reminder Email:", "js") . "](" . $language . ")", $surveyid, '', '', "tokens"); ?>
                                 </div>
@@ -192,7 +199,6 @@
 
         <?php
         App()->getClientScript()->registerScript("Tokens:BindReminderView", "
-        LS.renderBootstrapSwitch();
         $('#send-reminders-button').on('click', function(){
             $('#sendreminder').submit();
         })

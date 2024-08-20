@@ -281,11 +281,12 @@ class QuestionTemplate extends CFormModel
                 $this->bHasCustomAttributes    = !empty($this->oConfig->attributes);
 
                 // Set the custom attributes
+                // In QuestionTheme set at a complete array using json_decode(json_encode((array)$xml_config->attributes), true);
                 if ($this->bHasCustomAttributes) {
                     $this->aCustomAttributes = array();
                     foreach ($this->oConfig->attributes->attribute as $oCustomAttribute) {
                         $attribute_name = (string) $oCustomAttribute->name;
-                        if (isset($oCustomAttribute->i18n) && $oCustomAttribute->i18n) {
+                        if (isset($oCustomAttribute->i18n) && strval($oCustomAttribute->i18n)) {
                             $sLang = App()->language;
                             $oAttributeValue = QuestionAttribute::model()->find("qid=:qid and attribute=:custom_attribute and language =:language", array('qid' => $oQuestion->qid, 'custom_attribute' => $attribute_name, 'language' => $sLang));
                         } else {
@@ -380,9 +381,12 @@ class QuestionTemplate extends CFormModel
      * @param string $type
      * @return array
      * @todo Move to QuestionTheme?
+     * @todo This is not the same as QuestionTheme::findQuestionMetaDataForAllTypes() which is the database layer
+     * @todo this should check the filestructure instead of the database as this is the filestructure layer
      */
     public static function getQuestionTemplateList($type)
     {
+        // todo: incorrect, this should check the filestructure instead of the database as this is the filestructure layer
         /** @var QuestionTheme[] */
         $questionThemes = QuestionTheme::model()->findAllByAttributes(
             [],

@@ -24,7 +24,7 @@ class statFunctions extends PluginBase
     protected static $description = 'Add some function in ExpressionScript Engine to get count from other responses';
     protected static $name = 'statCountFunctions';
 
-    /** @inheritdoc, this plugin didn't have any public method */
+    /** @inheritdoc this plugin didn't have any public method */
     public $allowedPublicMethods = array();
 
     public function init()

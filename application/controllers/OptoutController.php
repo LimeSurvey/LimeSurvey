@@ -37,7 +37,7 @@ class OptoutController extends LSYii_Controller
         Yii::app()->loadHelper('database');
         Yii::app()->loadHelper('sanitize');
 
-        //IF there is no survey id, redirect back to the default public page
+        //IF there is no survey ID, redirect back to the default public page
         if (!$iSurveyID) {
             $this->redirect(array('/'));
         }
@@ -85,7 +85,7 @@ class OptoutController extends LSYii_Controller
         Yii::app()->loadHelper('database');
         Yii::app()->loadHelper('sanitize');
 
-        //IF there is no survey id, redirect back to the default public page
+        //IF there is no survey ID, redirect back to the default public page
         if (!$surveyId) {
             $this->redirect(array('/'));
         }
@@ -149,7 +149,7 @@ class OptoutController extends LSYii_Controller
         Yii::app()->loadHelper('database');
         Yii::app()->loadHelper('sanitize');
 
-        // If there is no survey id, redirect back to the default public page
+        // If there is no survey ID, redirect back to the default public page
         if (!$surveyId) {
             $this->redirect(['/']);
         }

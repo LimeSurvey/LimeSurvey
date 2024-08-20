@@ -3,10 +3,10 @@
      * View which will appear, if the particpants table is deleted.
      */
 ?>
-<div class="side-body <?php echo getSideBodyClass(false); ?>">
+<div class="side-body">
     <div class="row welcom survey-action">
         <div class="col-12 content-right">
-            <div class="jumbotron message-box">
+            <div class="card card-primary">
                 <h3 class="lead"><?php eT('Survey participants table deleted'); ?></h3>
                 <br /> <br />
                 <p>

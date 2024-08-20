@@ -7,7 +7,8 @@
 echo viewHelper::getViewTestTag('surveyResources');
 
 App()->getClientScript()->registerScript(
-  "resources-panel-variables", "
+    "resources-panel-variables",
+    "
 var jsonUrl = '';
 var sAction = '';
 var sParameter = '';
@@ -39,7 +40,7 @@ var sAddParam = '';
                     'images' => gT('Images', 'unescaped')
                 ),
                 array(
-                    'class'     =>'form-select',
+                    'class'     => 'form-select',
                     'data-href' => App()->request->getBaseUrl() . "/vendor/kcfinder/browse.php?language=" . sTranslateLangCode2CK(App()->language)
                 )
             );
@@ -55,7 +56,7 @@ var sAddParam = '';
                 <?php eT("Import resources ZIP archive"); ?>
             </a>
         </div>
-        <div class="col-12">
+        <div class="col-12 file-manager">
             <iframe
                 id="browseiframe"
                 src="<?php echo App()->request->getBaseUrl(); ?>/vendor/kcfinder/browse.php?language='<?php echo sTranslateLangCode2CK(App()->language); ?>'"

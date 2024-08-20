@@ -1,27 +1,9 @@
 /**
- * Welcome page card animations
+ * Welcome page animations
  * NB: Bootstrap 5 replaced panels with cards
  */
-import LOG from './lslog';
-
 export default function panelsAnimation() {
     setTimeout(() => {
-        LOG.log('Triggering card animation');
-        /**
-         * Card shown one by one
-         */
-        document.querySelectorAll(".card").forEach(function (e, i) {
-            setTimeout(() => {
-                e.animate({
-                    top: '0px',
-                    opacity: 1
-                }, {
-                    duration: 200,
-                    fill: 'forwards'
-                });
-            }, i * 200);
-        });
-
         /**
          * Rotate last survey/question
          */

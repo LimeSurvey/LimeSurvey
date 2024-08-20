@@ -58,9 +58,10 @@ class GlobalSettings extends SurveyCommonAction
      */
     public function showphpinfo()
     {
-        if (!Yii::app()->getConfig('demoMode')) {
-            phpinfo();
+        if (Yii::app()->getConfig('demoMode') || !Permission::model()->hasGlobalPermission('superadmin', 'read')) {
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
+        phpinfo();
     }
 
     /**
@@ -142,6 +143,12 @@ class GlobalSettings extends SurveyCommonAction
         $data['thischaracterset'] = getGlobalSetting('characterset');
         $data['sideMenuBehaviour'] = getGlobalSetting('sideMenuBehaviour');
         $data['aListOfThemeObjects'] = AdminTheme::getAdminThemeList();
+
+        // List of available email plugins
+        $event = new PluginEvent('listEmailPlugins', $this);
+        Yii::app()->getPluginManager()->dispatchEvent($event);
+        $emailPlugins = $event->get('plugins');
+        $data['emailPlugins'] = $emailPlugins;
 
         $this->renderWrappedTemplate('globalsettings', 'globalSettings_view', $data);
     }
@@ -299,7 +306,7 @@ class GlobalSettings extends SurveyCommonAction
             SettingGlobal::setSetting('allow_unstable_extension_update', sanitize_paranoid_string(Yii::app()->getRequest()->getPost('allow_unstable_extension_update', false)));
         }
 
-        SettingGlobal::setSetting('createsample', (bool) Yii::app()->getRequest()->getPost('createsample'));
+        SettingGlobal::setSetting('createsample', Yii::app()->getRequest()->getPost('createsample'));
 
         if (!Yii::app()->getConfig('demoMode')) {
             $sTemplate = Yii::app()->getRequest()->getPost("defaulttheme");
@@ -315,19 +322,20 @@ class GlobalSettings extends SurveyCommonAction
         $validatedLoginIpWhitelistInput = $this->validateIpAddresses(Yii::app()->getRequest()->getPost('loginIpWhitelist'));
         SettingGlobal::setSetting('loginIpWhitelist', $validatedLoginIpWhitelistInput['valid']);
         if (!empty($validatedLoginIpWhitelistInput['invalid'])) {
-            $warning .= sprintf(gT("Warning! Invalid IP addresses have been excluded from '%s' setting."), gT("IP whitelist for login")) . '<br/>';
+            $warning .= sprintf(gT("Warning! Invalid IP addresses have been excluded from '%s' setting."), gT("IP allowlist for administration login")) . '<br/>';
         }
         $validatedTokenIpWhitelistInput = $this->validateIpAddresses(Yii::app()->getRequest()->getPost('tokenIpWhitelist'));
         SettingGlobal::setSetting('tokenIpWhitelist', $validatedTokenIpWhitelistInput['valid']);
         if (!empty($validatedTokenIpWhitelistInput['invalid'])) {
-            $warning .= sprintf(gT("Warning! Invalid IP addresses have been excluded from '%s' setting."), gT("IP whitelist for token access")) . '<br/>';
+            $warning .= sprintf(gT("Warning! Invalid IP addresses have been excluded from '%s' setting."), gT("IP allowlist for participants with access code")) . '<br/>';
         }
 
         // we set the admin theme
         $sAdmintheme = sanitize_paranoid_string(Yii::app()->getRequest()->getPost('admintheme'));
         SettingGlobal::setSetting('admintheme', $sAdmintheme);
 
-        SettingGlobal::setSetting('emailmethod', strip_tags(Yii::app()->getRequest()->getPost('emailmethod', '')));
+        $emailMethod = strip_tags(Yii::app()->getRequest()->getPost('emailmethod', ''));
+        SettingGlobal::setSetting('emailmethod', $emailMethod);
         SettingGlobal::setSetting('emailsmtphost', strip_tags((string) returnGlobal('emailsmtphost')));
         if (returnGlobal('emailsmtppassword') != 'somepassword') {
             SettingGlobal::setSetting('emailsmtppassword', LSActiveRecord::encryptSingle(returnGlobal('emailsmtppassword')));
@@ -346,6 +354,20 @@ class GlobalSettings extends SurveyCommonAction
         SettingGlobal::setSetting('emailsmtpuser', strip_tags((string) returnGlobal('emailsmtpuser')));
         SettingGlobal::setSetting('filterxsshtml', strip_tags(Yii::app()->getRequest()->getPost('filterxsshtml', '')));
         SettingGlobal::setSetting('disablescriptwithxss', strip_tags(Yii::app()->getRequest()->getPost('disablescriptwithxss', '')));
+
+        $oldEmailPlugin = Yii::app()->getConfig('emailplugin');
+        $emailPlugin = strip_tags(Yii::app()->getRequest()->getPost('emailplugin', ''));
+        SettingGlobal::setSetting('emailplugin', $emailPlugin);
+        // If the email plugin has changed, dispatch an event to allow the new plugin to do any necessary setup.
+        if ($emailMethod == LimeMailer::MethodPlugin && $oldEmailPlugin != $emailPlugin) {
+            $event = new PluginEvent('afterSelectEmailPlugin', $this);
+            Yii::app()->getPluginManager()->dispatchEvent($event, $emailPlugin);
+            $emailPluginWarning = $event->get('warning');
+            if (!empty($emailPluginWarning)) {
+                $warning .= $emailPluginWarning . '<br/>';
+            }
+        }
+
         // make sure emails are valid before saving them
         if (
             Yii::app()->request->getPost('siteadminbounce', '') == ''
@@ -393,8 +415,8 @@ class GlobalSettings extends SurveyCommonAction
         SettingGlobal::setSetting('googletranslateapikey', Yii::app()->getRequest()->getPost('googletranslateapikey'));
         SettingGlobal::setSetting('surveyPreview_require_Auth', Yii::app()->getRequest()->getPost('surveyPreview_require_Auth'));
         SettingGlobal::setSetting('RPCInterface', Yii::app()->getRequest()->getPost('RPCInterface'));
-        SettingGlobal::setSetting('rpc_publish_api', (bool) Yii::app()->getRequest()->getPost('rpc_publish_api'));
-        SettingGlobal::setSetting('add_access_control_header', (bool) Yii::app()->getRequest()->getPost('add_access_control_header'));
+        SettingGlobal::setSetting('rpc_publish_api', Yii::app()->getRequest()->getPost('rpc_publish_api'));
+        SettingGlobal::setSetting('add_access_control_header', Yii::app()->getRequest()->getPost('add_access_control_header'));
         SettingGlobal::setSetting('characterset', Yii::app()->getRequest()->getPost('characterset'));
         SettingGlobal::setSetting('sideMenuBehaviour', Yii::app()->getRequest()->getPost('sideMenuBehaviour', 'adaptive'));
         SettingGlobal::setSetting('overwritefiles', Yii::app()->getRequest()->getPost('overwritefiles') == '1' ? 'Y' : 'N');
@@ -490,16 +512,24 @@ class GlobalSettings extends SurveyCommonAction
 
         $sPartial = Yii::app()->request->getParam('partial', '_generaloptions_panel');
 
-        if (isset($_POST)) {
+        if (!empty($_POST)) {
             $oSurveyGroupSetting->attributes = $_POST;
             $oSurveyGroupSetting->gsid = 0;
             $oSurveyGroupSetting->usecaptcha = Survey::saveTranscribeCaptchaOptions();
 
             //todo: when changing ipanonymiez from "N" to "Y", call the function that anonymizes the ip-addresses
 
-
             if ($oSurveyGroupSetting->save()) {
                 $bRedirect = 1;
+                Yii::app()->setFlashMessage(gT("Global survey settings were saved."));
+            } else {
+                Yii::app()->setFlashMessage(
+                    CHtml::errorSummary(
+                        $oSurveyGroupSetting,
+                        CHtml::tag("p", ['class' => 'strong'], gT("Global survey settings could not be updated, please fix the following error:"))
+                    ),
+                    "error"
+                );
             }
         }
 

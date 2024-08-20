@@ -132,6 +132,18 @@ if (!function_exists('mb_str_split')) {
     function mb_str_split($string, $length = 1, $encoding = null) { return p\Mbstring::mb_str_split($string, $length, $encoding); }
 }
 
+if (!function_exists('mb_str_pad')) {
+    function mb_str_pad(string $string, int $length, string $pad_string = ' ', int $pad_type = STR_PAD_RIGHT, ?string $encoding = null): string { return p\Mbstring::mb_str_pad($string, $length, $pad_string, $pad_type, $encoding); }
+}
+
+if (!function_exists('mb_ucfirst')) {
+    function mb_ucfirst(string $string, ?string $encoding = null): string { return p\Mbstring::mb_ucfirst($string, $encoding); }
+}
+
+if (!function_exists('mb_lcfirst')) {
+    function mb_lcfirst(string $string, ?string $encoding = null): string { return p\Mbstring::mb_lcfirst($string, $encoding); }
+}
+
 if (extension_loaded('mbstring')) {
     return;
 }

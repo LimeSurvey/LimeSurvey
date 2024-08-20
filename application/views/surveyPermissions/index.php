@@ -3,12 +3,12 @@
 /* @var $userCreatePermission bool true if current user has permission to set survey permission for other users */
 /* @var $surveyid int */
 /* @var $userList array users that could be added to survey permissions */
-/* @var $userGroupList array usergroups that could be added to survey permissions */
+/* @var $userGroupList array user groups that could be added to survey permissions */
 /* @var $tableContent CActiveDataProvider dataProvider for the gridview (table) */
 /* @var $oSurveyPermissions \LimeSurvey\Models\Services\SurveyPermissions */
 
 ?>
-<div id='edit-permission' class='side-body position-relative  ls-settings-wrapper <?= getSideBodyClass(false) ?> "'>
+<div id='edit-permission' class='side-body position-relative  ls-settings-wrapper"'>
     <?php echo viewHelper::getViewTestTag('surveyPermissions'); ?>
     <h1> <?= gT("Survey permissions") ?> </h1>
     <div class="row pt-2 pb-2 align-items-center">
@@ -26,7 +26,7 @@
                         <?= gT("User") ?>:
                     </label>
                     <div class='col-4'>
-                        <select id='uidselect' name='uid' class='form-select activate-search'>
+                        <select style="width:100%;" id='uidselect' name='uid' class='form-select activate-search'>
                             <?php
                             if (count($userList) > 0) {
                                 echo "<option value='-1' selected='selected'>" . gT("Please choose...") . "</option>";
@@ -59,7 +59,7 @@
                         <?= gT("User group") ?>:
                     </label>
                     <div class='col-4'>
-                        <select id='ugidselect' name='ugid' class='form-select activate-search'>
+                        <select style="width:100%;" id='ugidselect' name='ugid' class='form-select activate-search'>
                             <?php
                             if (count($userGroupList) > 0) {
                                 echo "<option value='-1' selected='selected'>" . gT("Please choose...") . "</option>";
@@ -152,6 +152,7 @@
                     ]
 
                 ], $baseColumns),
+                'lsAfterAjaxUpdate' => ['LS.UserManagement.bindButtons();']
 
             ]
         );
@@ -160,4 +161,10 @@
     </div>
     <?php $this->renderPartial('/surveyAdministration/_user_management_sub_footer'); ?>
 
+</div>
+<div id='UserManagement-action-modal' class="modal fade UserManagement--selector--modal" tabindex="-1" role="dialog">
+    <div id="usermanagement-modal-doalog" class="modal-dialog" role="document">
+        <div class="modal-content">
+        </div>
+    </div>
 </div>

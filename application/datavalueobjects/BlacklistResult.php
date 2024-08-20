@@ -5,7 +5,7 @@ namespace LimeSurvey\Datavalueobjects;
 /**
  * Class BlacklistResult
  *
- * This class represents the result of a blacklist operation
+ * This class represents the result of a blocklist operation
  *
  * @package LimeSurvey\Datavalueobjects
  */

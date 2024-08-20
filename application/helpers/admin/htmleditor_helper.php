@@ -118,6 +118,8 @@ function sTranslateLangCode2CK($sLanguageCode)
 
     /**
      * @param CController $controller
+     *
+     * TODO: Allow to be called automatically (and only load once) from getEditor, or from a widget.
      */
 function PrepareEditorScript($load = false, $controller = null)
 {
@@ -134,8 +136,11 @@ function PrepareEditorScript($load = false, $controller = null)
     /**
      * Returns Editor.
      *
+     * PrepareEditorScript function must be called first.
+     * If getting a JS error about missing CKEditor files, please review if PrepareEditorScript was called.
+     *
      * @param string   $fieldtype Field Type
-     * @param string   $fieldname Field Name
+     * @param string   $fieldname Field Name, the id attribute of the textarea
      * @param int|null $surveyID  Survey ID
      * @param int|null $gID       Group ID
      * @param int|null $qID       Question ID
@@ -206,7 +211,7 @@ function getPopupEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $g
     ) {
         $class = "editorLink";
     } else {
-        $class = "editorLink input-group-text";
+        $class = "editorLink";
     }
     /* @var string[] parameters of the editor url */
     $editorUrlParams = array(
@@ -235,14 +240,14 @@ function getPopupEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $g
     );
     /* @var string content of the action link */
     $content = CHtml::tag('i', array(
-        'class' => "fa fa-pencil btneditanswerena",
+        'class' => "ri-pencil-fill btneditanswerena",
         'id' => $fieldname . "_popupctrlena",
-        'data-bs-toggle' => "tooltip",
-        'data-placement' => "tooltip",
-        'title' => gT("Start HTML editor in a popup window")
     ), '')
+    . CHtml::tag('span', array(
+        'class' => "sr-only",
+    ), gT("Start HTML editor in a popup window"))
     . CHtml::tag('i', array(
-        'class' => "fa fa-pencil btneditanswerdis",
+        'class' => "ri-pencil-fill btneditanswerdis",
         'id' => $fieldname . "_popupctrldis",
         'style' => "display:none",
     ), '');
@@ -252,7 +257,10 @@ function getPopupEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $g
         "javascript:start_popup_editor('{$fieldname}','" . $editorUrl . "');",
         array(
             'id' => $fieldname . "_ctrl",
-            'class' => "{$class} btn btn-default btn-xs",
+            'class' => "{$class} btn btn-outline-secondary",
+            'title' => gT("Start HTML editor in a popup window"),
+            'data-bs-toggle' => "tooltip",
+            'data-bs-placement' => "bottom",
         )
     );
 }

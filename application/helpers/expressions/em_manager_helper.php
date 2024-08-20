@@ -1569,7 +1569,7 @@ class LimeExpressionManager
                                 // date_min: Determine whether we have an expression, a full date (YYYY-MM-DD) or only a year(YYYY)
                                 if (trim((string) $qattr['date_min']) != '') {
                                     $mindate = $qattr['date_min'];
-                                    if ((strlen((string) $mindate) == 4) && ($mindate >= 1900) && ($mindate <= 2099)) {
+                                    if ((strlen((string)$mindate) == 4)) {
                                         // backward compatibility: if only a year is given, add month and day
                                         $date_min = '\'' . $mindate . '-01-01' . ' 00:00\'';
                                     } elseif (preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])/", (string) $mindate)) {
@@ -1627,7 +1627,7 @@ class LimeExpressionManager
                                 // date_max: Determine whether we have an expression, a full date (YYYY-MM-DD) or only a year(YYYY)
                                 if (trim((string) $qattr['date_max']) != '') {
                                     $maxdate = $qattr['date_max'];
-                                    if ((strlen((string) $maxdate) == 4) && ($maxdate >= 1900) && ($maxdate <= 2099)) {
+                                    if ((strlen((string)$maxdate) == 4)) {
                                         // backward compatibility: if only a year is given, add month and day
                                         $date_max = '\'' . $maxdate . '-12-31 23:59' . '\'';
                                     } elseif (preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])/", (string) $maxdate)) {
@@ -3276,7 +3276,7 @@ class LimeExpressionManager
         if (isset($_SESSION['LEMforceRefresh'])) {
             unset($_SESSION['LEMforceRefresh']);
             $forceRefresh = true;
-        } elseif ($forceRefresh === false && !empty($this->knownVars) && !$this->sPreviewMode) {
+        } elseif ($forceRefresh === false && !empty($this->knownVars) && ((!$this->sPreviewMode) || ($this->sPreviewMode === 'database') || ($this->sPreviewMode === 'logic'))) {
             return false;   // means that those variables have been cached and no changes needed
         }
         $now = microtime(true);
@@ -3725,8 +3725,17 @@ class LimeExpressionManager
             }
 
             if (
-                !is_null($rowdivid) || $type == Question::QT_L_LIST || $type == Question::QT_N_NUMERICAL || $type == Question::QT_EXCLAMATION_LIST_DROPDOWN || $type == Question::QT_O_LIST_WITH_COMMENT || !is_null($preg)
-                || $type == Question::QT_S_SHORT_FREE_TEXT || $type == Question::QT_D_DATE || $type == Question::QT_T_LONG_FREE_TEXT || $type == Question::QT_U_HUGE_FREE_TEXT || $type == Question::QT_VERTICAL_FILE_UPLOAD
+                !is_null($rowdivid)
+                || $type == Question::QT_L_LIST
+                || $type == Question::QT_N_NUMERICAL
+                || $type == Question::QT_EXCLAMATION_LIST_DROPDOWN
+                || $type == Question::QT_O_LIST_WITH_COMMENT
+                || (!is_null($preg) && $type != Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS)
+                || $type == Question::QT_S_SHORT_FREE_TEXT
+                || $type == Question::QT_D_DATE
+                || $type == Question::QT_T_LONG_FREE_TEXT
+                || $type == Question::QT_U_HUGE_FREE_TEXT
+                || $type == Question::QT_VERTICAL_FILE_UPLOAD
             ) {
                 if (!isset($q2subqInfo[$questionNum])) {
                     $q2subqInfo[$questionNum] = [
@@ -4125,7 +4134,7 @@ class LimeExpressionManager
 
     /**
      * Translate all Expressions, Macros, registered variables, etc. in $string
-     * @param string $string - the string to be replaced
+     * @param string|null $string - the string to be replaced
      * @param integer $questionNum - the $qid of question being replaced - needed for properly alignment of question-level relevance and tailoring
      * @param array|null $replacementFields - optional replacement values
      * @param integer $numRecursionLevels - the number of times to recursively subtitute values in this string
@@ -4140,9 +4149,9 @@ class LimeExpressionManager
         $now = microtime(true);
         $LEM =& LimeExpressionManager::singleton();
 
-        if ($noReplacements) {
-            $LEM->em->SetPrettyPrintSource($string);
-            return $string;
+        if ($noReplacements || empty($string)) {
+            $LEM->em->SetPrettyPrintSource(strval($string));
+            return strval($string);
         }
         if (!empty($replacementFields) && is_array($replacementFields)) {
             self::updateReplacementFields($replacementFields);
@@ -4166,7 +4175,7 @@ class LimeExpressionManager
 
     /**
      * Translate all Expressions, Macros, registered variables, etc. in $string for current step
-     * @param string $string - the string to be replaced
+     * @param string|null $string - the string to be replaced
      * @param array $replacementFields - optional replacement values
      * @param integer $numRecursionLevels - the number of times to recursively subtitute values in this string
      * @param boolean $static - return static string (without any javascript)
@@ -4174,6 +4183,9 @@ class LimeExpressionManager
      */
     public static function ProcessStepString($string, $replacementFields = [], $numRecursionLevels = 3, $static = false)
     {
+        if (empty($string)) {
+            return strval($string);
+        }
         if ((strpos($string, "{") === false)) {
             return $string;
         }
@@ -5055,15 +5067,22 @@ class LimeExpressionManager
             SurveyDynamic::sid($this->sid);
             $oSurvey = new SurveyDynamic();
 
-            $iNewID = $oSurvey->insertRecords($sdata);
-            if ($iNewID) {    // Checked
+            try {
+                $iNewID = $oSurvey->insertRecords($sdata);
+                if (!$iNewID) {
+                    throw new Exception("Error, no entry id was returned.", 1);
+                }
                 $srid = $iNewID;
                 $_SESSION[$this->sessid]['srid'] = $iNewID;
-            } else {
+            } catch (Exception $e) {
                 $srid = null;
-                $message .= $this->gT("Unable to insert record into survey table"); // TODO - add SQL error?
-                submitfailed($this->gT("Unable to insert record into survey table"));
+                $query = $e->getMessage();
+                $trace = $e->getTraceAsString();
+                $message = submitfailed($this->gT("Unable to insert record into survey table"), $query . "\n\n" . $trace);
+                LimeExpressionManager::addFrontendFlashMessage('error', $message, $this->sid);
+                return $message;
             }
+
             //Insert Row for Timings, if needed
             if ($this->surveyOptions['savetimings']) {
                 SurveyTimingDynamic::sid($this->sid);
@@ -5116,7 +5135,7 @@ class LimeExpressionManager
                 $val = (is_null($value) ? null : $value['value']);
                 $type = (is_null($value) ? null : $value['type']);
                 // Clean up the values to cope with database storage requirements : some value are fitered in ProcessCurrentResponses
-                // @todo fix whole type according to DB : use Yii for this ?
+                // @todo These validations need to be moved to the question models
                 switch ($type) {
                     case Question::QT_D_DATE: //DATE
                         if (trim((string) $val) == '' || $val == "INVALID") {// otherwise will already be in yyyy-mm-dd format after ProcessCurrentResponses() (not for default value, GET value, Expression set value etc ... cf todo
@@ -5130,6 +5149,11 @@ class LimeExpressionManager
                         } elseif (!preg_match("/^[-]?(\d{1,20}\.\d{0,10}|\d{1,20})$/", $val)) { // DECIMAL(30,10)
                             // Here : we must ADD a message for the user and set the question "not valid" : show the same page + show with input-error class
                             $val = null;
+                        }
+                        break;
+                    case Question::QT_L_LIST: //NUMERICAL QUESTION TYPE
+                        if ($val !== null && substr_compare($key, 'other', -strlen('other')) !== 0) {
+                            $val = substr($val, 0, 5);
                         }
                         break;
                     default:
@@ -5149,9 +5173,9 @@ class LimeExpressionManager
                     // This can happen if admin deletes incomple response while survey is running.
                     $message = submitfailed($this->gT('The data could not be saved because the response does not exist in the database.'));
                     LimeExpressionManager::addFrontendFlashMessage('error', $message, $this->sid);
-                    return;
+                    return $message;
                 }
-                if ($oResponse->submitdate == null || Survey::model()->findByPk($this->sid)->alloweditaftercompletion == 'Y') {
+                if ($oResponse->submitdate == null || Survey::model()->findByPk($this->sid)->isAllowEditAfterCompletion) {
                     try {
                         $oResponse->setAllAttributes($aResponseAttributes, false);
                     } catch (Exception $ex) {
@@ -5200,7 +5224,7 @@ class LimeExpressionManager
                 if ($aQuotas && !empty($aQuotas)) {
                     checkCompletedQuota($this->sid);  // will create a page and quit: why not use it directly ?
                 } else {
-                    if ($finished && ($oResponse->submitdate == null || Survey::model()->findByPk($this->sid)->alloweditaftercompletion == 'Y')) {
+                    if ($finished && ($oResponse->submitdate == null || Survey::model()->findByPk($this->sid)->isAllowEditAfterCompletion)) {
                         /* Less update : just do what you need to to */
                         if ($this->surveyOptions['datestamp']) {
                             $submitdate = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $this->surveyOptions['timeadjust']);
@@ -6917,7 +6941,7 @@ class LimeExpressionManager
             try{ 
                 triggerEmClassChange(); 
             } catch(e) {
-                console.ls.warn('triggerEmClassChange could not be run. Is survey.js correctly loaded?');
+                console.ls.warn('triggerEmClassChange could not be run. Is survey.js/old_template_core_pre.js correctly loaded?');
             }\n",
             LSYii_ClientScript::POS_END
         );
@@ -8258,38 +8282,29 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
 #                return $aStaticQuestionAttributesForEM[$surveyid][0][$lang][$qid];
 #            }
         if ($qid) {
-            $oQids = Question::model()->findAll(
+            $oQuestions = Question::model()->findAll(
                 [
-                    'select'    => 'qid',
-                    'group'     => 'qid',
-                    'distinct'  => true,
                     'condition' => "qid=:qid and parent_qid=0",
                     'params'    => [':qid' => $qid]
                 ]
             );
         } elseif ($surveyid) {
-            $oQids = Question::model()->findAll(
+            $oQuestions = Question::model()->findAll(
                 [
-                    'select'    => 'qid',
-                    'group'     => 'qid',
-                    'distinct'  => true,
                     'condition' => "sid=:sid and parent_qid=0",
                     'params'    => [':sid' => $surveyid]
                 ]
             );
         } else {
-            $oQids = Question::model()->findAll(
+            $oQuestions = Question::model()->findAll(
                 [
-                    'select'    => 'qid',
-                    'group'     => 'qid',
-                    'distinct'  => true,
                     'condition' => "parent_qid=0",
                 ]
             );
         }
         $aQuestionAttributesForEM = [];
-        foreach ($oQids as $oQid) {
-            $aAttributesValues = QuestionAttribute::model()->getQuestionAttributes($oQid->qid, $lang);
+        foreach ($oQuestions as $oQuestion) {
+            $aAttributesValues = QuestionAttribute::model()->getQuestionAttributes($oQuestion, $lang);
             // Change array lang to value
             foreach ($aAttributesValues as &$aAttributeValue) {
                 if (is_array($aAttributeValue)) {
@@ -8301,7 +8316,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     }
                 }
             }
-            $aQuestionAttributesForEM[$oQid->qid] = $aAttributesValues;
+            $aQuestionAttributesForEM[$oQuestion->qid] = $aAttributesValues;
         }
         EmCacheHelper::set($cacheKey, $aQuestionAttributesForEM);
         return $aQuestionAttributesForEM;
@@ -8506,6 +8521,8 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                                             }
                                             $aFiles[$i]->filename = $sDestinationFileName;
                                         }
+                                        /* Sanitize size */
+                                        $aFiles[$i]->size = floatval($aFiles[$i]->size);
                                     }
                                     $value = ls_json_encode($aFiles);  // so that EM doesn't try to parse it.
                                 }
@@ -8624,7 +8641,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 // NB: No break needed
             case 'code':
             case 'NAOK':
-                if (isset($var['code'])) {
+                if (array_key_exists('code', $var) && isset($var['code'])) {
                     return $var['code'];    // for static values like TOKEN
                 } else {
                     if (isset($_SESSION[$this->sessid][$sgqa])) {
@@ -9668,7 +9685,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
     }
 
     /**
-     * Add a flash message to state-key 'frontend{survey id}'
+     * Add a flash message to state-key 'frontend{survey ID}'
      * The flash messages are templatereplaced in startpage.tstpl, {FLASHMESSAGE}
      * @param string $type Yii type of flash: `error`, `notice`, 'success'
      * @param string $message
@@ -9910,7 +9927,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
         $sid = intval($this->sid); // Show 0 for null, more clear
         Yii::log(sprintf("Survey %s invalid value %s for %s : %s (%s)", $sid, $value, $sgqa, $message, ($add ? "added" : "silently")), 'error', 'application.LimeExpressionManager.invalidAnswerString.addValidityString');
         if ($add) {
-            $this->invalidAnswerString[$sgqa] = sprintf($message, CHtml::tag('code', [], CHtml::encode($value)));
+            $this->invalidAnswerString[$sgqa] = sprintf($message, CHtml::tag('code', [], self::htmlSpecialCharsUserValue($value)));
         }
     }
 

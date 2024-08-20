@@ -125,25 +125,37 @@ class Participant extends LSActiveRecord
             'title'            => gT('Edit this participant'),
             'linkClass'        => 'action_participant_editModal',
             'iconClass'        => 'ri-pencil-fill',
-            'enabledCondition' => $this->userHasPermissionToEdit()
+            'enabledCondition' => $this->userHasPermissionToEdit(),
+            'linkAttributes'   => [
+                'data-participant-id' => $this->participant_id
+            ],
         ];
         $dropdownItems[] = [
             'title'            => gT('Add participant to survey'),
             'linkClass'        => 'action_participant_addToSurvey',
             'iconClass'        => 'ri-user-add-fill',
-            'enabledCondition' => $this->userHasPermissionToEdit()
+            'enabledCondition' => $this->userHasPermissionToEdit(),
+            'linkAttributes'   => [
+                'data-participant-id' => $this->participant_id
+            ],
         ];
         $dropdownItems[] = [
             'title'            => gT('List active surveys'),
             'linkClass'        => 'action_participant_infoModal',
             'iconClass'        => 'ri-search-line',
-            'enabledCondition' => $this->userHasPermissionToEdit()
+            'enabledCondition' => $this->userHasPermissionToEdit(),
+            'linkAttributes'   => [
+                'data-participant-id' => $this->participant_id
+            ],
         ];
         $dropdownItems[] = [
             'title'            => gT('Share this participant'),
             'linkClass'        => 'action_participant_shareParticipant',
             'iconClass'        => 'ri-share-forward-fill',
-            'enabledCondition' => $this->userHasPermissionToEdit()
+            'enabledCondition' => $this->userHasPermissionToEdit(),
+            'linkAttributes'   => [
+                'data-participant-id' => $this->participant_id
+            ],
         ];
         $dropdownItems[] = [
             'title'            => gT('Delete this participant'),
@@ -156,7 +168,10 @@ class Participant extends LSActiveRecord
                         || $permission_participantpanel_delete
                     )
                 )
-                || $permission_participantpanel_delete
+                || $permission_participantpanel_delete,
+            'linkAttributes'   => [
+                'data-participant-id' => $this->participant_id
+            ],
         ];
 
         return App()->getController()->widget('ext.admin.grid.GridActionsWidget.GridActionsWidget', ['dropdownItems' => $dropdownItems], true);
@@ -312,13 +327,13 @@ class Participant extends LSActiveRecord
                 'htmlOptions'       => ['class' => 'ls-sticky-column'],
             ],
             [
-                "name" => 'lastname'
+                "name" => 'lastname',
             ],
             [
-                "name" => 'firstname'
+                "name" => 'firstname',
             ],
             [
-                "name" => 'email'
+                "name" => 'email',
             ],
             [
                 "name"   => 'language',
@@ -383,16 +398,16 @@ class Participant extends LSActiveRecord
                 $col_array["filter"] = TbHtml::textField("extraAttribute[" . $name . "]", $extraAttributeParams[$name]);
             }
             $cols[] = $col_array;
-            $cols[] = [
-                "name"              => 'buttons',
-                "type"              => 'raw',
-                "header"            => gT("Action"),
-                "filter"            => false,
-                'filterHtmlOptions' => ['class' => 'ls-sticky-column'],
-                'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
-                'htmlOptions'       => ['class' => 'ls-sticky-column'],
-            ];
         }
+        $cols[] = [
+            "name"              => 'buttons',
+            "type"              => 'raw',
+            "header"            => gT("Action"),
+            "filter"            => false,
+            'filterHtmlOptions' => ['class' => 'ls-sticky-column'],
+            'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
+            'htmlOptions'       => ['class' => 'ls-sticky-column'],
+        ];
         return $cols;
     }
 
@@ -402,6 +417,15 @@ class Participant extends LSActiveRecord
      */
     public function search()
     {
+        $encryptedAttributes = $this->getParticipantsEncryptionOptions();
+        $encryptedAttributesColums = isset($encryptedAttributes) && isset($encryptedAttributes['columns'])
+            ? $encryptedAttributes['columns']
+            : [];
+        $encryptedAttributesColums = array_filter($encryptedAttributesColums, function ($column) {
+            return $column === 'Y';
+        });
+        $encryptedAttributesColums = array_keys($encryptedAttributesColums);
+
         $sort = new CSort();
         $sort->defaultOrder = 'lastname';
         $sortAttributes = array(
@@ -438,8 +462,17 @@ class Participant extends LSActiveRecord
                 'desc' => 't.created desc'
             )
         );
+        $this->decryptEncryptAttributes('encrypt');
 
-        $criteria = new CDbCriteria();
+        if (!empty($encryptedAttributesColums)) {
+            foreach ($encryptedAttributesColums as $encryptedColum) {
+                if (isset($sortAttributes[$encryptedColum])) {
+                    unset($sortAttributes[$encryptedColum]);
+                }
+            }
+        }
+
+        $criteria = new LSDbCriteria();
         $criteria->join = 'LEFT JOIN {{users}} as owner on uid=owner_uid LEFT JOIN {{participant_shares}} AS shares ON t.participant_id = shares.participant_id AND (shares.share_uid = ' . Yii::app()->user->id . ' OR shares.share_uid = -1)';
         $criteria->compare('t.participant_id', $this->participant_id, true, 'AND', true);
         $criteria->compare('t.firstname', $this->firstname, true, 'AND', true);
@@ -521,6 +554,8 @@ class Participant extends LSActiveRecord
         }
 
         $pageSize = Yii::app()->user->getState('pageSizeParticipantView', Yii::app()->params['defaultPageSize']);
+        $this->decryptEncryptAttributes();
+
         return new LSCActiveDataProvider($this, array(
             'criteria' => $criteria,
             'sort' => $sort,
@@ -1727,7 +1762,7 @@ class Participant extends LSActiveRecord
     /**
      * Copies central attributes/participants to an individual survey survey participants table
      *
-     * @param int $surveyId The survey id
+     * @param int $surveyId The survey ID
      * @param string $participantIds Array containing the participant ids of the participants we are adding
      * @param array $mappedAttributes An array containing a list of /mapped attributes in the form of "token_field_name" => "participant_attribute_id"
      * @param array $newAttributes An array containing new attributes to create in the tokens table
@@ -2277,7 +2312,7 @@ class Participant extends LSActiveRecord
     }
 
     /**
-     * Returns the list of blacklisted participant IDs
+     * Returns the list of blocklisted participant IDs
      * @return string[]
      */
     public function getBlacklistedParticipantIds()

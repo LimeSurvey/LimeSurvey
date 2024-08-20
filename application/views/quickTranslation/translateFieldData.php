@@ -25,9 +25,9 @@ if ($type == 'question_help' || $type == 'question') {
     $translateoutput .= "<td class='col-sm-2'>" . htmlspecialchars((string) $rowfrom['parent']['title']) . " ({$rowfrom['parent']['qid']}) </td>";
 }
 
-$translateoutput .= "<td class='_from_ col-sm-5' id='" . $type . "_from_" . $j . "'><div class='question-text-from'>"
+$translateoutput .= "<td class='_from_ col-sm-5' id='" . $type . "_from_" . $j . "'>"
     . showJavaScript($textfrom)
-    . "</div></td>";
+    . "</td>";
 
 $translateoutput .= "<td class='col-sm-5'>";
 

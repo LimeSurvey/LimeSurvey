@@ -159,7 +159,10 @@ class UserGroup extends LSActiveRecord
     }
 
     /**
-     * TODO should be in controller
+     * TODO should be in controller?
+     * When user is allowed to edit the group,
+     * it will be updated in the database.
+     * Returns true, when it was possible to save.
      * @param string $name
      * @param string $description
      * @param integer $ugId
@@ -167,18 +170,26 @@ class UserGroup extends LSActiveRecord
      */
     public function updateGroup($name, $description, $ugId)
     {
-        $group = UserGroup::model()->findByPk($ugId);
-        $group->name = $name;
-        $group->description = $description;
-        $group->save();
-        if ($group->getErrors()) {
-            return false;
-        } else {
-            return true;
+        $group = $this->requestEditGroup($ugId, App()->user->id);
+        if ($group !== null) {
+            $group->name = $name;
+            $group->description = $description;
+            $group->save();
+            if ($group->getErrors()) {
+                return false;
+            } else {
+                return true;
+            }
         }
+        return false;
     }
 
     /**
+     * Works as permission check on db level for editing user groups.
+     * The user group needs to exist, and if the user is not a superadmin,
+     * user also has to be the owner of that group.
+     * If successful, the user group is returned.
+     *
      * @param integer $ugId
      * @param integer $ownerId
      * @return static
@@ -196,14 +207,15 @@ class UserGroup extends LSActiveRecord
 
         $aParams[':ugid'] = $ugId;
         $criteria->params = $aParams;
-        $result = UserGroup::model()->find($criteria);
-        return $result;
+
+        return UserGroup::model()->find($criteria);
     }
 
     /**
      * @param integer $ugId
      * @param integer $userId
      * @return array
+     * @deprecated Not needed anymore
      */
     public function requestViewGroup($ugId, $userId)
     {
@@ -294,7 +306,7 @@ class UserGroup extends LSActiveRecord
             array(
                 'header' => gT('Owner'),
                 'name' => 'owner',
-                'value' => '$data->owner->users_name',
+                'value' => '$data->owner ? $data->owner->users_name : gT("(Deleted user)")',
                 'htmlOptions' => array('class' => 'col-lg-1'),
             ),
 
@@ -347,7 +359,6 @@ class UserGroup extends LSActiveRecord
             'url'              => Yii::app()->createUrl("userGroup/mailToAllUsersInGroup/ugid/$this->ugid"),
             'enabledCondition' => $permissionUsergroupsEdit
         ];
-
         $deletePostData = json_encode(['ugid' => $this->ugid]);
         $dropdownItems[] = [
             'title'            => gT('Delete user group'),
@@ -357,7 +368,7 @@ class UserGroup extends LSActiveRecord
                 'data-bs-toggle' => "modal",
                 'data-post-url'  => App()->createUrl("userGroup/deleteGroup"),
                 'data-post-datas' => $deletePostData,
-                'data-message'   => sprintf(gt("Are you sure you want to delete user group '%s'?"), $this->name),
+                'data-message'   => sprintf(gt("Are you sure you want to delete user group '%s'?"), CHtml::encode($this->name)),
                 'data-bs-target' => "#confirmation-modal",
                 'data-btnclass'  => 'btn-danger',
                 'data-btntext'   => gt('Delete'),
@@ -403,7 +414,7 @@ class UserGroup extends LSActiveRecord
             array(
                 'header'      => gT('Owner'),
                 'name'        => 'owner',
-                'value'       => '$data->owner->users_name',
+                'value'       => '$data->owner ? $data->owner->users_name : gT("(Deleted user)")',
                 'htmlOptions' => array('class' => ''),
             ),
 
@@ -426,9 +437,9 @@ class UserGroup extends LSActiveRecord
 
 
     /**
-     * This function search usergroups for a user
-     * If $isMine = true then usergroups are those that have been created by the current user
-     * else this function provides usergroups which contain the current user
+     * This function searches user groups for a user
+     * If $isMine = true then user groups are those that have been created by the current user
+     * else this function provides s which contain the current user
      *
      * The object \CActiveDataProvider returned is used to generate the view in application/views/admin/usergroup/usergroups_view.php
      *

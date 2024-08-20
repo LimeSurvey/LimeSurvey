@@ -356,15 +356,6 @@ return array(
             'jszip'
         )
     ),
-    /* Used by ranking question type */
-    'sortable' => array(
-        'devBaseUrl' => 'vendor/sortable',
-        'basePath' => 'vendor.sortable', /* for sorting ability */
-        'position' => CClientScript::POS_BEGIN,
-        'js' => array(
-            'jquery.fn.sortable' . $minVersion . '.js'
-            )
-        ),
     /* Used for samechoiceheight/samelistheight */
     'jquery-actual' => array(
         'position' => CClientScript::POS_BEGIN,

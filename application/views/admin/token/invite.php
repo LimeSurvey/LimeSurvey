@@ -7,7 +7,7 @@
  */
 ?>
 
-<div class='side-body <?php echo getSideBodyClass(false); ?>'>
+<div class='side-body'>
     <h3><?php eT("Send email invitations"); ?></h3>
     <div class="row">
         <div class="col-12 content-right">
@@ -101,7 +101,7 @@
                                 $fieldsarray["{ADMINEMAIL}"] = $admin_email;
                                 $fieldsarray["{SURVEYNAME}"] = $oSurvey->languagesettings[$language]->surveyls_title;
                                 $fieldsarray["{SURVEYDESCRIPTION}"] = $oSurvey->languagesettings[$language]->surveyls_description;
-                                $fieldsarray["{EXPIRY}"] = $oSurvey->expires;
+                                $fieldsarray["{EXPIRY}"] = strval($oSurvey->expires);
 
                                 $subject = Replacefields($oSurvey->languagesettings[$language]->surveyls_email_invite_subj, $fieldsarray, false);
                                 $textarea = Replacefields($oSurvey->languagesettings[$language]->surveyls_email_invite, $fieldsarray, false);
@@ -129,7 +129,7 @@
 
                                     <label class='form-label ' for='message_<?php echo $language; ?>'><?php eT("Message:"); ?></label>
                                     <div class=''>
-                                        <div class="htmleditor">
+                                        <div class="input-group htmleditor">
                                             <?php echo CHtml::textArea("message_{$language}",$textarea,array('cols'=>80,'rows'=>20, 'class' => 'form-control')); ?>
                                             <?php echo getEditor("email-invitation", "message_$language", "[" . gT("Invitation email:", "js") . "](" . $language . ")", $surveyid, '', '', "tokens"); ?>
                                         </div>
@@ -174,7 +174,6 @@
 <?php
 
 App()->getClientScript()->registerScript("Tokens:BindInviteView", "
-        LS.renderBootstrapSwitch();
         $('#send-invitation-button').on('click', function(){
             $('#sendinvitation').submit();
         })

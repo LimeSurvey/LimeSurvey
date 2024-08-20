@@ -35,6 +35,10 @@ class Authentication extends SurveyCommonAction
      */
     public function index()
     {
+        // if the session is not readeable clear browser cookies
+        if (!session_id()) {
+            App()->request->cookies->clear();
+        }
         /* Set adminlang to the one set in dropdown */
         if (Yii::app()->request->getParam('loginlang', 'default') != 'default') {
             Yii::app()->session['adminlang'] = Yii::app()->request->getParam('loginlang', 'default');
@@ -242,6 +246,9 @@ class Authentication extends SurveyCommonAction
             if (($password !== null && $passwordRepeat !== null) && ($password === $passwordRepeat) && $oPasswordTestEvent->get('passwordOk')) {
                 //now everything is ok, save password
                 $user->setPassword($password, true);
+                // And remove validation_key
+                $user->unsetAttributes(['validation_key', 'validation_key_expiration']);
+                $user->save(false, ['validation_key', 'validation_key_expiration']);
                 App()->getController()->redirect(array('/admin/authentication/sa/login'));
             } else {
                 Yii::app()->setFlashMessage(sprintf(gT('Password cannot be blank and must fulfill minimum requirements: %s'), $passwordError), 'error');
@@ -254,7 +261,7 @@ class Authentication extends SurveyCommonAction
             'errorExists' => $errorExists,
             'errorMsg' => $errorMsg,
             'randomPassword' => $randomPassword,
-            'validationKey' => $user->validation_key
+            'validationKey' => $validation_key
         ];
 
         $this->renderWrappedTemplate('authentication', 'newPassword', $aData);
@@ -266,17 +273,8 @@ class Authentication extends SurveyCommonAction
      */
     public function logout()
     {
-        /* Adding beforeLogout event */
-        $beforeLogout = new PluginEvent('beforeLogout');
-        App()->getPluginManager()->dispatchEvent($beforeLogout);
-        regenerateCSRFToken();
         App()->user->logout();
         App()->user->setFlash('loginmessage', gT('Logout successful.'));
-
-        /* Adding afterLogout event */
-        $event = new PluginEvent('afterLogout');
-        App()->getPluginManager()->dispatchEvent($event);
-
         $this->getController()->redirect(array('/admin/authentication/sa/login'));
     }
 

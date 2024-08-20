@@ -97,28 +97,30 @@ function loadanswers()
         if ($column === "startdate") {
             $_SESSION['survey_' . $surveyid]['startdate'] = $value;
         } else {
-            //Only make session variables for those in insertarray[]
+            //Only make session variables for those in insertarray[] or in fieldmap
             if (in_array($column, $_SESSION['survey_' . $surveyid]['insertarray']) && isset($_SESSION['survey_' . $surveyid]['fieldmap'][$column])) {
-                if (
-                    ($_SESSION['survey_' . $surveyid]['fieldmap'][$column]['type'] == Question::QT_N_NUMERICAL ||
-                        $_SESSION['survey_' . $surveyid]['fieldmap'][$column]['type'] == Question::QT_K_MULTIPLE_NUMERICAL ||
-                        $_SESSION['survey_' . $surveyid]['fieldmap'][$column]['type'] == Question::QT_D_DATE) && $value == null
-                ) {
-                    // For type N,K,D NULL in DB is to be considered as NoAnswer in any case.
-                    // We need to set the _SESSION[field] value to '' in order to evaluate conditions.
-                    // This is especially important for the deletenonvalue feature,
-                    // otherwise we would erase any answer with condition such as EQUALS-NO-ANSWER on such
-                    // question types (NKD)
-                    $_SESSION['survey_' . $surveyid][$column] = '';
-                } else {
-                    $_SESSION['survey_' . $surveyid][$column] = $value;
+                /* Fix for numeric value */
+                if (in_array($_SESSION['survey_' . $surveyid]['fieldmap'][$column]['type'], [Question::QT_N_NUMERICAL, Question::QT_K_MULTIPLE_NUMERICAL])) {
+                    /* Value need to be a string if it's null to evaluate conditions. This is especially important for the deletenonvalue feature, otherwise we would erase any answer with condition such as EQUALS-NO-ANSWER */
+                    $value = is_null($value) ? "" : trim($value);
+                    /* If value is set : it came from DB as decimal, must fix for some validation (mantis #19435) */
+                    if ($value != '') {
+                        if ($value[0] === ".") {
+                            $value = "0" . $value;
+                        }
+                        if (strpos($value, ".") !== false) {
+                            $value = rtrim(rtrim($value, "0"), ".");
+                        }
+                    }
                 }
-                if (isset($token) && !empty($token)) {
-                    $_SESSION['survey_' . $surveyid][$column] = $value;
+                if ($_SESSION['survey_' . $surveyid]['fieldmap'][$column]['type'] == Question::QT_D_DATE) {
+                    /* Value need to be a string if it's null to evaluate conditions. This is especially important for the deletenonvalue feature, otherwise we would erase any answer with condition such as EQUALS-NO-ANSWER */
+                    $value = is_null($value) ? "" : trim($value);
                 }
-            }  // if (in_array(
-        }  // else
-    } // foreach
+                $_SESSION['survey_' . $surveyid][$column] = $value;
+            }
+        }
+    }
     $_SESSION['survey_' . $surveyid]['LEMtokenResume'] = true;
     return true;
 }
@@ -381,6 +383,9 @@ function submittokens($quotaexit = false)
 
     // check how many uses the token has left
     $token = Token::model($surveyid)->findByAttributes(array('token' => $clienttoken));
+    if (!$token) {
+        throw new CHttpException(403, gT("Invalid access code"));
+    }
     $token->scenario = 'FinalSubmit'; // Do not XSS filter token data
 
     if ($quotaexit == true) {
@@ -531,7 +536,7 @@ function sendSubmitNotifications($surveyid, array $emails = [], bool $return = f
                 LimeExpressionManager::updateReplacementFields($aReplacementVars);
                 $mailer->setTypeWithRaw('admin_notification', $emailLanguage);
                 $mailer->setTo($notificationRecipient);
-                $mailerSuccess = $mailer->resend(json_decode((string) $sRecipient['resendVars'],true));
+                $mailerSuccess = $mailer->resend(json_decode((string) $sRecipient['resendVars'], true));
             } else {
                 $failedNotificationId = null;
                 $notificationRecipient = $sRecipient;
@@ -545,11 +550,13 @@ function sendSubmitNotifications($surveyid, array $emails = [], bool $return = f
                 saveFailedEmail($failedNotificationId, $notificationRecipient, $surveyid, $responseId, 'admin_notification', $emailLanguage, $mailer);
                 if (empty($emails) && $debug > 0 && Permission::model()->hasSurveyPermission($surveyid, 'surveysettings', 'update')) {
                     /* Find a better way to show email error … */
-                    echo CHtml::tag("div",
+                    echo CHtml::tag(
+                        "div",
                         ['class' => 'alert alert-danger'],
-                        sprintf(gT("Basic admin notification could not be sent because of error: %s"), $mailer->getError()));
+                        sprintf(gT("Basic admin notification could not be sent because of error: %s"), $mailer->getError())
+                    );
                 }
-            } else{
+            } else {
                 $successfullEmailCount++;
                 //preserve failedEmail if it exists
                 failedEmailSuccess($failedNotificationId);
@@ -578,7 +585,7 @@ function sendSubmitNotifications($surveyid, array $emails = [], bool $return = f
                 LimeExpressionManager::updateReplacementFields($aReplacementVars);
                 $mailer->setTypeWithRaw('admin_responses', $emailLanguage);
                 $mailer->setTo($responseRecipient);
-                $mailerSuccess = $mailer->resend(json_decode((string) $sRecipient['resendVars'],true));
+                $mailerSuccess = $mailer->resend(json_decode((string) $sRecipient['resendVars'], true));
             } else {
                 $failedNotificationId = null;
                 $responseRecipient = $sRecipient;
@@ -592,9 +599,11 @@ function sendSubmitNotifications($surveyid, array $emails = [], bool $return = f
                 saveFailedEmail($failedNotificationId, $responseRecipient, $surveyid, $responseId, 'admin_responses', $emailLanguage, $mailer);
                 if (empty($emails) && $debug > 0 && Permission::model()->hasSurveyPermission($surveyid, 'surveysettings', 'update')) {
                     /* Find a better way to show email error … */
-                    echo CHtml::tag("div",
+                    echo CHtml::tag(
+                        "div",
                         ['class' => 'alert alert-danger'],
-                        sprintf(gT("Detailed admin notification could not be sent because of error: %s"), $mailer->getError()));
+                        sprintf(gT("Detailed admin notification could not be sent because of error: %s"), $mailer->getError())
+                    );
                 }
             } else {
                 $successfullEmailCount++;
@@ -627,14 +636,17 @@ function getResponseTableReplacement($surveyid, $responseId, $emailLanguage, $bI
     Yii::import('application.helpers.viewHelper');
     foreach ($aFullResponseTable as $sFieldname => $fname) {
         if (substr($sFieldname, 0, 4) === 'gid_') {
-            $ResultTableHTML .= "\t<tr class='printanswersgroup'><td colspan='2'>" . viewHelper::flatEllipsizeText($fname[0], true, 0) . "</td></tr>\n";
-            $ResultTableText .= "\n{$fname[0]}\n\n";
+            $questionText = viewHelper::flatEllipsizeText($fname[0], true, 0);
+            $ResultTableHTML .= "\t<tr class='printanswersgroup'><td colspan='2'>" . $questionText . "</td></tr>\n";
+            $ResultTableText .= "\n" . $questionText . "\n\n";
         } elseif (substr($sFieldname, 0, 4) === 'qid_') {
-            $ResultTableHTML .= "\t<tr class='printanswersquestionhead'><td  colspan='2'>" . viewHelper::flatEllipsizeText($fname[0], true, 0) . "</td></tr>\n";
-            $ResultTableText .= "\n{$fname[0]}\n";
+            $questionText = viewHelper::flatEllipsizeText($fname[0], true, 0);
+            $ResultTableHTML .= "\t<tr class='printanswersquestionhead'><td  colspan='2'>" . $questionText . "</td></tr>\n";
+            $ResultTableText .= "\n" . $questionText . "\n";
         } else {
-            $ResultTableHTML .= "\t<tr class='printanswersquestion'><td>" . viewHelper::flatEllipsizeText("{$fname[0]} {$fname[1]}", true, 0) . "</td><td class='printanswersanswertext'>" . CHtml::encode($fname[2]) . "</td></tr>\n";
-            $ResultTableText .= "     {$fname[0]} {$fname[1]}: {$fname[2]}\n";
+            $questionText = viewHelper::flatEllipsizeText($fname[0], true, 0) . " " .  viewHelper::flatEllipsizeText($fname[1], true, 0);
+            $ResultTableHTML .= "\t<tr class='printanswersquestion'><td>" . $questionText . "</td><td class='printanswersanswertext'>" . CHtml::encode($fname[2]) . "</td></tr>\n";
+            $ResultTableText .= "     " . $questionText . ": {$fname[2]}\n";
         }
     }
     $ResultTableHTML .= "</table>\n";
@@ -728,7 +740,7 @@ function submitfailed($errormsg = '', $query = null)
         if (Yii::app()->getConfig('debug') > 0 && !empty($errormsg)) {
             $completed .= 'Error message: ' . htmlspecialchars($errormsg) . '<br />';
         }
-        $email = gT("An error occurred saving a response to survey id", "unescaped") . " " . $thissurvey['name'] . " - $surveyid\n\n";
+        $email = sprintf(gT("An error occurred saving a response to survey %s", "unescaped"), $thissurvey['name'] . " - $surveyid\n\n");
         $email .= gT("DATA TO BE ENTERED", "unescaped") . ":\n";
         foreach ($_SESSION['survey_' . $surveyid]['insertarray'] as $value) {
             if (isset($_SESSION['survey_' . $surveyid][$value])) {
@@ -795,6 +807,7 @@ function buildsurveysession($surveyid, $preview = false)
     if (empty($lang)) {
         // Multi lingual support order : by REQUEST, if not by Token->language else by survey default language
 
+        /** @psalm-suppress UndefinedVariable TODO: $oTokenEntry is never defined */
         if (returnGlobal('lang', true)) {
             $language_to_set = returnGlobal('lang', true);
         } elseif (isset($oTokenEntry) && $oTokenEntry) {
@@ -811,13 +824,16 @@ function buildsurveysession($surveyid, $preview = false)
 
     UpdateGroupList($surveyid, $_SESSION['survey_' . $surveyid]['s_lang']);
 
-    $totalquestions               = $survey->countTotalQuestions;
+    $totalquestions = $survey->countTotalQuestions;
+    $totalVisibleQuestions = $survey->getCountTotalQuestions(false);
+
     $iTotalGroupsWithoutQuestions = QuestionGroup::model()->getTotalGroupsWithoutQuestions($surveyid);
 
-    $_SESSION['survey_' . $surveyid]['totalquestions'] = $survey->countInputQuestions;
+    $_SESSION['survey_' . $surveyid]['totalquestions'] = $totalquestions;
+    $_SESSION['survey_' . $surveyid]['totalVisibleQuestions'] = $totalVisibleQuestions;
 
     // 2. SESSION VARIABLE: totalsteps
-    setTotalSteps($surveyid, $thissurvey, $totalquestions);
+    setTotalSteps($surveyid, $thissurvey, $totalquestions, $totalVisibleQuestions);
 
     // Break out and crash if there are no questions!
     if (($totalquestions == 0 || $iTotalGroupsWithoutQuestions > 0) && !$preview) {
@@ -1397,7 +1413,7 @@ function resetAllSessionVariables($surveyid)
  * @param integer $totalquestions
  * @return void
  */
-function setTotalSteps($surveyid, array $thissurvey, $totalquestions)
+function setTotalSteps($surveyid, array $thissurvey, $totalquestions, $totalVisibleQuestions)
 {
     switch ($thissurvey['format']) {
         case "A":
@@ -1412,6 +1428,7 @@ function setTotalSteps($surveyid, array $thissurvey, $totalquestions)
 
         case "S":
             $_SESSION['survey_' . $surveyid]['totalsteps'] = $totalquestions;
+            $_SESSION['survey_' . $surveyid]['totalVisibleSteps'] = $totalVisibleQuestions;
     }
 }
 
@@ -1873,7 +1890,7 @@ function checkCompletedQuota($surveyid, $return = false)
                     'qid' => $aQuotaQid,
                     'attribute' => 'hidden',
                     'value' => '1',
-            )) == count($aQuotaQid);
+                )) == count($aQuotaQid);
 
             if ($iMatchedAnswers == count($aQuotaFields) && ($bPostedField || $bAllHidden)) {
                 if ($oQuota->qlimit == 0) {
@@ -1943,6 +1960,7 @@ function checkCompletedQuota($surveyid, $return = false)
 
 
     // Datas for twig view
+    $thissurvey['sid'] = $surveyid;
     $thissurvey['aQuotas']                       = array();
     $thissurvey['aQuotas']['sMessage']           = $sMessage;
     $thissurvey['aQuotas']['bShowNavigator']     = !$closeSurvey;
@@ -2188,39 +2206,6 @@ function getMove()
         }
     }
     return $move;
-}
-
-/**
- * Get the margin class for side-body div depending
- * on side-menu behaviour config and page (edit or not
- * etc).
- *
- * @param boolean $sideMenustate - False for pages with collapsed side-menu
- * @return string
- * @throws CException
- */
-function getSideBodyClass($sideMenustate = false)
-{
-    $sideMenuBehaviour = getGlobalSetting('sideMenuBehaviour');
-
-    $class = "";
-
-    if ($sideMenuBehaviour == 'adaptive' || $sideMenuBehaviour == '') {
-        // Adaptive and closed, as in edit question
-        if (!$sideMenustate) {
-            $class = 'side-body-margin';
-        }
-    } elseif ($sideMenuBehaviour == 'alwaysClosed') {
-        $class = 'side-body-margin';
-    } elseif ($sideMenuBehaviour == 'alwaysOpen') {
-        // No margin class
-    } else {
-        throw new \CException("Unknown value for sideMenuBehaviour: $sideMenuBehaviour");
-    }
-
-    //TODO something unfinished here?
-    return "";
-    $class;
 }
 
 /**

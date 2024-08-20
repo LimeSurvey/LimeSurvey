@@ -35,7 +35,6 @@ if (empty($errorinupload)) {
     if ($overwritten > 0) {
         $infoSummary .= "<li>" . sprintf(gT("%s records were duplicate but had attributes updated"), $overwritten) . "</li>";
     }
-    $warningSummary .= "</ul>";
     if (count($duplicatelist) || count($invalidemaillist) || count($invalidattribute) || count($aInvalidFormatlist)) {
         $warningSummary .= "<div class='warningheader'>" . gT('Warnings') . "</div><ul>";
         if (count($duplicatelist) > 0) {
@@ -82,11 +81,13 @@ if (empty($errorinupload)) {
         'htmlOptions' => ['class' => 'successheader']
     ], true);
 
-    $alerts .= $this->widget('ext.AlertWidget.AlertWidget', [
-        'text' => $warningSummary,
-        'type' => 'warning',
-        'htmlOptions' => ['class' => 'warningheader']
-    ], true);
+    if ($warningSummary !== '') {
+        $alerts .= $this->widget('ext.AlertWidget.AlertWidget', [
+            'text' => $warningSummary,
+            'type' => 'warning',
+            'htmlOptions' => ['class' => 'warningheader']
+        ], true);
+    }
 } else {
     $alerts .= $this->widget('ext.AlertWidget.AlertWidget', [
         'header' => gT('Error'),

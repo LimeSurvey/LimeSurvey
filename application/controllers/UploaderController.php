@@ -143,11 +143,13 @@ class UploaderController extends SurveyController
             $filename = sanitize_filename($_FILES['uploadfile']['name'], false, false, true);
             $size = $_FILES['uploadfile']['size'] / 1024;
             $preview = Yii::app()->session['preview'];
-            $aFieldMap = createFieldMap($oSurvey, 'short', false, false, $sLanguage);
-            if (!isset($aFieldMap[$sFieldName])) {
-                throw new CHttpException(400); // See for debug > 1
+            /* Find the question by sFieldName : must be a upload question type, and id is end of sFieldName in $surveyid*/
+            $aFieldName = explode("X", $sFieldName);
+            if (empty($aFieldName[2]) || !ctype_digit($aFieldName[2])) {
+                throw new CHttpException(400);
             }
-            $aAttributes = QuestionAttribute::model()->getQuestionAttributes($aFieldMap[$sFieldName]['qid']);
+            $oQuestion = self::getQuestion($surveyid, $aFieldName[2]);
+            $aAttributes = QuestionAttribute::model()->getQuestionAttributes($oQuestion);
             $maxfilesize = min(intval($aAttributes['max_filesize']), getMaximumFileUploadSize() / 1024);
             if ($maxfilesize <= 0) {
                 $maxfilesize = getMaximumFileUploadSize() / 1024;
@@ -240,6 +242,7 @@ class UploaderController extends SurveyController
             // If this is just a preview, don't save the file
             if ($preview) {
                 if (move_uploaded_file($_FILES['uploadfile']['tmp_name'], $randfileloc)) {
+                    /** @psalm-suppress UndefinedVariable TODO: Dead code? */
                     $return = array(
                                 "success"       => true,
                                 "file_index"    => $filecount,
@@ -304,7 +307,7 @@ class UploaderController extends SurveyController
         $oEvent->set('surveyId', $surveyid);
         App()->getPluginManager()->dispatchEvent($oEvent);
         if (!is_null($oEvent->get('template'))) {
-            $aSurveyInfo['templatedir'] = $event->get('template');
+            $aSurveyInfo['templatedir'] = $oEvent->get('template');
         }
         $sTemplateDir = getTemplatePath($aSurveyInfo['template']);
         $sTemplateUrl = getTemplateURL($aSurveyInfo['template']) . "/";
@@ -346,7 +349,8 @@ class UploaderController extends SurveyController
 
         $fn = $sFieldName;
         $qid = (int) Yii::app()->request->getParam('qid');
-        $qidattributes = QuestionAttribute::model()->getQuestionAttributes($qid);
+        $oQuestion = self::getQuestion($surveyid, $qid);
+        $qidattributes = QuestionAttribute::model()->getQuestionAttributes($oQuestion);
         $qidattributes['max_filesize'] = floor(min(intval($qidattributes['max_filesize']), getMaximumFileUploadSize() / 1024));
         if ($qidattributes['max_filesize'] <= 0) {
             $qidattributes['max_filesize'] = getMaximumFileUploadSize() / 1024;
@@ -392,5 +396,27 @@ class UploaderController extends SurveyController
         </html>';
         App()->getClientScript()->render($body);
         echo $body;
+    }
+
+    /**
+     * Helper function to get question
+     * @param integer $surveyid the survey id
+     * @param integer $qid the question id
+     * @throw CHttpException if question is invalid
+     * @return \Question
+     */
+    private static function getQuestion($surveyid, $qid)
+    {
+        $oQuestion = Question::model()->find("sid = :sid and qid = :qid and type = :type", [":sid" => $surveyid, ":qid" => $qid, ":type" =>  Question::QT_VERTICAL_FILE_UPLOAD]);
+        if ($oQuestion) {
+            return $oQuestion;
+        }
+        /* Log as warning */
+        \Yii::log(sprintf("Invalid upload question %s in survey %s", $qid, $surveyid), 'warning', 'application.UploaderController');
+        /* Show information if user have surveycontent/update (can set question type) */
+        if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'update')) {
+            throw new CHttpException(400, sprintf(gT("Invalid upload question %s in survey %s"), $qid, $surveyid));
+        }
+        throw new CHttpException(400);
     }
 }
