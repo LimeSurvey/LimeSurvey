@@ -56,3 +56,43 @@
         }
     }
 }
+
+@media (max-width: 768px) {
+  .survey-actionbar {
+    #survey-search {
+      .align-items-baseline {
+        display: block !important;
+
+        .survey-actionbar-switch {
+          position: absolute;
+          right: 40px;
+          top: 115px;
+        }
+
+        .survey-actionbar-filters,
+        .survey-actionbar-actions,
+        .survey-actionbar-button {
+          display: block !important;
+          width: 100%;
+          margin: 0 !important;
+
+          .survey-actionbar-item,
+          .survey-actionbar-item,
+          .survey-actionbar-item {
+            width: 100%;
+            margin: 5px 0 !important;
+          }
+        }
+      }
+    }
+  }
+
+  .box-widget-list {
+    margin: 0 auto;
+    text-align: center;
+
+    .box-widget-card {
+      text-align: left;
+    }
+  }
+}
