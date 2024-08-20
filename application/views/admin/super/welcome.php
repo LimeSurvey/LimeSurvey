@@ -172,7 +172,7 @@ gT('Themes');
     // bShowLastSurveyAndQuestion is the homepage setting,
     // - showLastSurvey & showLastQuestion are about if infos are available
     if ($bShowLastSurveyAndQuestion && ($showLastSurvey || $showLastQuestion)) : ?>
-        <div class="container text-end recent-activity">
+        <div class="container-fluid text-end recent-activity">
         <?php if ($showLastSurvey) : ?>
                 <div id="last_survey" class=""> <!-- to enable rotation again set class back to "rotateShown" -->
                     <?php eT("Last visited survey:"); ?>
@@ -210,7 +210,7 @@ gT('Themes');
         ?>
 
         <?php if (empty(App()->request->getQuery('viewtype')) && empty(SettingsUser::getUserSettingValue('welcome_page_widget'))) : ?>
-            <div class="container">
+            <div class="container-fluid">
                 <div class="col-12">
                     <?php $this->widget('ext.admin.survey.ListSurveysWidget.ListSurveysWidget', [
                         'model' => $oSurveySearch,
@@ -227,7 +227,7 @@ gT('Themes');
                 && (SettingsUser::getUserSettingValue('welcome_page_widget') === 'list-widget')
             )
         ) : ?>
-            <div class="container">
+            <div class="container-fluid">
                 <div class="col-12">
                     <?php $this->widget('ext.admin.survey.ListSurveysWidget.ListSurveysWidget', [
                         'model' => $oSurveySearch,
@@ -237,17 +237,21 @@ gT('Themes');
                     ?></div>
             </div>
         <?php else : ?>
-            <?php $this->widget('ext.admin.BoxesWidget.BoxesWidget', [
-                'switch' => true,
-                'items'  => [
-                    [
-                        'type'  => 0,
-                        'model' => Survey::model(),
-                        'limit' => 15,
-                    ],
-                ]
-            ]);
-            ?>
+            <div class="container-fluid">
+                <div class="col-12">
+                <?php $this->widget('ext.admin.BoxesWidget.BoxesWidget', [
+                    'switch' => true,
+                    'items'  => [
+                        [
+                            'type'  => 0,
+                            'model' => Survey::model(),
+                            'limit' => 15,
+                        ],
+                    ]
+                ]);
+                ?>
+                </div>
+            </div>
         <?php endif; ?>
     </div>
     <!-- Notification setting -->
