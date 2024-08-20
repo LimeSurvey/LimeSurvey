@@ -17953,6 +17953,36 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
   color: #6E748C;
 }
 
+@media (max-width: 768px) {
+  .survey-actionbar #survey-search .align-items-baseline {
+    display: block !important;
+  }
+  .survey-actionbar #survey-search .align-items-baseline .survey-actionbar-filters,
+  .survey-actionbar #survey-search .align-items-baseline .survey-actionbar-actions,
+  .survey-actionbar #survey-search .align-items-baseline .survey-actionbar-button {
+    display: block !important;
+    width: 100%;
+    margin: 0 !important;
+  }
+  .survey-actionbar #survey-search .align-items-baseline .survey-actionbar-filters .survey-actionbar-item,
+  .survey-actionbar #survey-search .align-items-baseline .survey-actionbar-actions .survey-actionbar-item,
+  .survey-actionbar #survey-search .align-items-baseline .survey-actionbar-button .survey-actionbar-item {
+    width: 100%;
+    margin: 5px 0 !important;
+  }
+  .survey-actionbar #survey-search .align-items-baseline .survey-actionbar-switch {
+    position: absolute;
+    right: 40px;
+    top: 115px;
+  }
+  .box-widget-list {
+    margin: 0 auto;
+    text-align: center;
+  }
+  .box-widget-list .box-widget-card {
+    text-align: left;
+  }
+}
 .ls-panelboxes .ls-panelboxes-panelbox {
   min-height: 220px;
   margin: 24px 0;
