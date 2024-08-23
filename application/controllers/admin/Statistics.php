@@ -685,7 +685,7 @@ class Statistics extends SurveyCommonAction
         $rows = Question::model()->primary()->getQuestionList($surveyid);
         ;
 
-        $rawQuestions = Question::model()->findAll("sid = :sid and `type` = :type", [
+        $rawQuestions = Question::model()->findAll("sid = :sid and type = :type", [
             ":sid" => $surveyid,
             ":type" => Question::QT_COLON_ARRAY_NUMBERS
         ]);
