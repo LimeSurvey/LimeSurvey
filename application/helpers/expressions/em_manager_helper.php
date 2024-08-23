@@ -3328,6 +3328,12 @@ class LimeExpressionManager
             'jsName'    => '',
             'readWrite' => 'N',
         ];
+        $this->knownVars['LANG'] = [
+            'code'      => self::getEMlanguage(),
+            'jsName_on' => '',
+            'jsName'    => '',
+            'readWrite' => 'N',
+        ];
         if ($survey->getIsAssessments()) {
             $this->knownVars['ASSESSMENT_CURRENT_TOTAL'] = [
                 'code'      => 0,
@@ -3337,6 +3343,7 @@ class LimeExpressionManager
             ];
         }
         /* Add the core replacement before question code : needed if use it in equation , use SID to never send error */
+        /* Added replacement can not be used in condition, only for replacement */
         templatereplace("{SID}");
 
         // Since building array of allowable answers, need to know preset values for certain question types
