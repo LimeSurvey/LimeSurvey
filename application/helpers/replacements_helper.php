@@ -19,7 +19,7 @@ if (!defined('BASEPATH')) {
 /**
 * This function replaces keywords in a text and is mainly intended for templates
 * Replacement done on this function can not be used in Expression for condition or equation
-* If you want keywords available on condition, use LimeExpressionManager::setValueToKnowVar
+* If you want keywords available on both replacement and condition, use LimeExpressionManager::setValueToKnowVar
 * Or add it in LimeExpressionManager->setVariableAndTokenMappingsForExpressionManager
 * If you use this functions put your replacement strings into the $replacements variable
 * instead of using global variables
@@ -340,7 +340,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
 /**
  * This function replaces keywords in a text
  * Replacement done on this function can not be used in Expression for condition or equation
- * If you want keywords available on condition, use LimeExpressionManager::setValueToKnowVar
+ * If you want keywords available on both replacement and condition, use LimeExpressionManager::setValueToKnowVar
  * Or add it in LimeExpressionManager->setVariableAndTokenMappingsForExpressionManager
  * @psalm-suppress UndefinedVariable TODO
  */
