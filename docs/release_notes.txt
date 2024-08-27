@@ -34,6 +34,27 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.6.1 (build 240806) to 6.6.2 (build 240827) August 27, 2024
+-Fixed issue #CT-944: kal.mo was corrupted (twilligls)
+-Fixed issue #19717: SQL injection vulnerability when save survey (#3946) (Denis Chenu)
+#Updated translation: Sinhala by tixeon
+#Updated translation: Punjabi by tixeon
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Persian (Afghanistan) - Dari by tixeon
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Hazaragi by tixeon
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Finnish by Jmantysalo, puohis
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+
+
 Changes from 6.6.0 (build 240729) to 6.6.1 (build 240806) August 6, 2024
 -Fixed issue: Undefined variable $editorUrl in surveyTopbarRight_view.php (Kevin Foster)
 -Fixed issue #CT-887: Hazaragi language is now rtl (twilligls)
