@@ -756,7 +756,7 @@ class Template extends LSActiveRecord
     {
         // @todo Please modify the following code to remove attributes that should not be searched.
 
-        $criteria = new CDbCriteria();
+        $criteria = new LSDbCriteria();
 
         $criteria->compare('name', $this->name, true);
         $criteria->compare('folder', $this->folder, true);
