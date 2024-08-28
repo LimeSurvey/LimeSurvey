@@ -25,7 +25,12 @@ class TransformerInputQuestionAttribute extends Transformer
         return $attributes;
     }
 
-    private function convertAttributes($collection)
+    /**
+     * @param array $collection
+     * @return array
+     *
+     */
+    private function convertAttributes(array $collection)
     {
         foreach ($this->converterMap() as $attrName => $convDataArray) {
             if (array_key_exists($attrName, $collection)) {
@@ -59,15 +64,15 @@ class TransformerInputQuestionAttribute extends Transformer
      * conversion rules in convData.
      * A conversion to a languagebased attribute is only possible
      * if the triggering attribute is also languagebased
-     * @param $collection
-     * @param $language
-     * @param $convData
+     * @param array $collection
+     * @param string $language
+     * @param array $convData
      * @return array
      */
     private function applyConversion(
-        $collection,
-        $language,
-        $convData
+        array $collection,
+        string $language,
+        array $convData
     ) {
         if ($convData['isLanguageBased']) {
             $collection[$convData['targetAttribute']][$language] = $convData['newValue'];
