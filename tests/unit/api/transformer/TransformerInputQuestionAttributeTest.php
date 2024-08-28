@@ -9,7 +9,7 @@ use LimeSurvey\ObjectPatch\Op\OpStandard;
 use ls\tests\TestBaseClass;
 
 /**
- * @testdox TransformerInputAnswer
+ * @testdox TransformerInputQuestionAttribute
  */
 class TransformerInputQuestionAttributeTest extends TestBaseClass
 {
@@ -28,17 +28,15 @@ class TransformerInputQuestionAttributeTest extends TestBaseClass
         );
 
         self::assertIsArray($preparedData);
-        self::assertArrayHasKey('statistics_graphtype', $preparedData);
-        self::assertArrayHasKey('statistics_showgraph', $preparedData);
-        self::assertArrayHasKey('', $preparedData['statistics_graphtype']);
-        self::assertArrayHasKey('', $preparedData['statistics_showgraph']);
+        self::assertArrayHasKey('statistics_graphtype', $preparedData[0]);
+        self::assertArrayHasKey('statistics_showgraph', $preparedData[0]);
         self::assertEquals(
             '-1',
-            $preparedData['statistics_graphtype']['']
+            $preparedData[0]['statistics_graphtype']
         );
         self::assertEquals(
             '0',
-            $preparedData['statistics_showgraph']['']
+            $preparedData[0]['statistics_showgraph']
         );
 
         $op = $this->getOp();
@@ -49,11 +47,11 @@ class TransformerInputQuestionAttributeTest extends TestBaseClass
 
         self::assertEquals(
             '1',
-            $preparedData['statistics_graphtype']['']
+            $preparedData[0]['statistics_graphtype']
         );
         self::assertEquals(
             '1',
-            $preparedData['statistics_showgraph']['']
+            $preparedData[0]['statistics_showgraph']
         );
     }
 
