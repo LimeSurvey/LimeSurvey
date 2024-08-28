@@ -72,9 +72,9 @@ class TransformerInputQuestionAttributeTest extends TestBaseClass
         );
     }
 
-    private function getProps($hasGraphType = true)
+    private function getProps($hasGraphType)
     {
-        $value = $hasGraphType ? '-1' : '1';
+        $value = $hasGraphType ? '1' : '-1';
         return [
             'statistics_graphtype' => [
                 '' => $value,
