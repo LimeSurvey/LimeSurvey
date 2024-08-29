@@ -43,12 +43,6 @@
 
             {# On last page, Next button become submit button. #}
             {% if aNavigator.aMoveNext.value == "movesubmit" %}
-                {% if not empty(aSurveyInfo.mandViolation) and not empty(aSurveyInfo.mandSoft) and empty(aSurveyInfo.mandNonSoft) and aSurveyInfo.showPopups != 1 %}
-                <span class="checkbox-item">
-                    <input class="{{ aSurveyInfo.class.mandsoftcheckbox }}" type="checkbox" name="mandSoft" id="mandSoft" value="{{ aSurveyInfo.aNavigator.aMoveNext.value }}" />
-                    <label for="mandSoft" class="control-label {{ aSurveyInfo.class.mandsoftcheckboxlabel }}">{{ gT("Continue without answering") }}</label>&nbsp;
-                </span>
-                {% endif %}
                 <!-- Button submit -->
                 <button {{ aSurveyInfo.attr.navigatorbuttonsubmit }} accesskey="n" class=" {{ aNavigator.disabled }} {{ aSurveyInfo.class.navigatorbuttonsubmit }} btn btn-lg btn-primary">
                     {{ gT("Submit") }}

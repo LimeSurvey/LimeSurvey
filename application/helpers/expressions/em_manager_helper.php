@@ -6122,6 +6122,15 @@ class LimeExpressionManager
                     'qInfo'          => $qInfo
                 ]
             );
+            if ($qInfo['mandatory'] == 'S') {
+                $mandatoryTip .= App()->twigRenderer->renderPartial(
+                    '/survey/questions/question_help/softmandatory_input.twig',
+                    [
+                        'sCheckboxLabel' => $LEM->gT("Continue without answering to this question."),
+                        'qInfo'          => $qInfo
+                    ]
+                );
+            }
             switch ($qInfo['type']) {
                 case Question::QT_M_MULTIPLE_CHOICE:
                 case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS:
@@ -6276,20 +6285,34 @@ class LimeExpressionManager
                     break;
             }
         }
-        /* Set qmandViolation to false if mandSoft and POST is set or state is already forced */
         if (
             $qmandViolation
             && $qInfo['mandatory'] == 'S'
-            && (App()->request->getPost('mandSoft') || $qInfo['mandSoftForced'])
         ) {
-            $qmandViolation = false;
-            $mandatoryTip = '';
-            $LEM->questionSeq2relevance[$questionSeq]['mandSoftForced'] = true;
+            $mandSoftPost = App()->request->getPost('mandSoft', []);
+            /* Old template compatibility pre 6.2.3 */
+            if (is_string($mandSoftPost)) {
+                $qmandViolation = false;
+                $mandatoryTip = '';
+            }
+            /* New system mandSoft are an array with Y/N for each question in page */
+            if (is_array($mandSoftPost)) {
+                if (isset($mandSoftPost[$questionSeq])) {
+                    if ($mandSoftPost[$questionSeq] == "N") { // Currently, input are not shown after selection done. (no mandatiry violation)
+                        $this->questionSeq2relevance[$questionSeq]['mandSoftForced'] = $qInfo['mandSoftForced'] = false;
+                    } else {
+                        $this->questionSeq2relevance[$questionSeq]['mandSoftForced'] = $qInfo['mandSoftForced'] = true;
+                    }
+                }
+                if ($qInfo['mandSoftForced']) {
+                    $qmandViolation = false;
+                    $mandatoryTip = '';
+                }
+            }
         } else {
-            // If no mandatory violation : always resest mandSoftForced
+            /* If question are answered (or are not mandatory soft) : always set mandSoftForced to false */
             $LEM->questionSeq2relevance[$questionSeq]['mandSoftForced'] = false;
         }
-
         /////////////////////////////////////////////////////////////
         // DETECT WHETHER QUESTION SHOULD BE FLAGGED AS UNANSWERED //
         /////////////////////////////////////////////////////////////

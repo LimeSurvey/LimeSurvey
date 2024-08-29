@@ -27,7 +27,6 @@
     {{ registerScript('showStartPopups',"window.templateCore.alertSurveyDialog(" ~ aSurveyInfo.jPopup ~ ");", "POS_END") }}
     {{ registerScript('activateSoftMandatory',"activateSoftMandatory();", "POS_END") }}
 {% endif %}
-
 <!-- Bootstrap Modal Alert -->
 {% if(aSurveyInfo.id.alertmodal)%}
 <div id="{{ aSurveyInfo.id.alertmodal }}" class="{{ aSurveyInfo.class.alertmodal }}" {{ aSurveyInfo.attr.alertmodal }}>
@@ -41,7 +40,14 @@
             </div>
             {% if(aSurveyInfo.mandNonSoft == false and aSurveyInfo.mandSoft)%}
             <div class="{{ aSurveyInfo.class.modalfooter }}" {{ aSurveyInfo.attr.modalfooter }}>
-                <a id="{{ aSurveyInfo.id.mandatorySoftModal }}" class="{{ aSurveyInfo.class.modalfooterlink }}" data-movenext="{{ aSurveyInfo.aNavigator.aMoveNext.value }}">{{ gT("Continue without answering") }}</a>
+                <a id="{{ aSurveyInfo.id.mandatorySoftModal }}" class="{{ aSurveyInfo.class.modalfooterlink }}">{{ gT("Continue without answering") }}</a>
+                <script>
+                    {% if (intval(aSurveyInfo.options.showpopups) > 0) %}$(".ls-softmandatory-input").hide();{% endif %}
+                    $("#{{ aSurveyInfo.id.mandatorySoftModal }}").on('click', function() {
+                        $(".ls-mandSoft-checkbox").prop('checked',true);
+                        $("#ls-button-submit").trigger('click');
+                    });
+                </script>
                 <a {{ aSurveyInfo.attr.modalfooterlink }}  class="{{ aSurveyInfo.class.modalfooterlink }}">{{ gT("Answer question") }}</a>
             </div>
             {% else %}
