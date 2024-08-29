@@ -353,7 +353,8 @@ class LimeExpressionManager
      * 'hidden' => 0    // 1 if it should be always_hidden
      * 'gid' => "34"    // group id
      * 'mandatory' => 'N'   // 'Y' if mandatory, 'S' if soft mandatory
-     * 'eqn' => ""  // TODO ??
+     * 'mandSoftForced' => false // boolean True if already forced
+     * 'eqn' => ""  // TODO ?? Equation result for validation
      * 'help' => "" // the help text
      * 'qtext' => "Enter a larger number than {num}"    // the question text
      * 'code' => 'afDS_sq5_1' // the full variable name
@@ -3885,6 +3886,7 @@ class LimeExpressionManager
                 'hidden'         => $hidden,
                 'gid'            => $groupNum,
                 'mandatory'      => $mandatory,
+                'mandSoftForced' => false,
                 'eqn'            => '',
                 'help'           => $help,
                 'qtext'          => $fielddata['question'],    // $question,
@@ -6274,14 +6276,18 @@ class LimeExpressionManager
                     break;
             }
         }
-        /* Set qmandViolation to false if mandSoft and POST is set */
+        /* Set qmandViolation to false if mandSoft and POST is set or state is already forced */
         if (
             $qmandViolation
             && $qInfo['mandatory'] == 'S'
-            && App()->request->getPost('mandSoft')
+            && (App()->request->getPost('mandSoft') || $qInfo['mandSoftForced'])
         ) {
             $qmandViolation = false;
             $mandatoryTip = '';
+            $LEM->questionSeq2relevance[$questionSeq]['mandSoftForced'] = true;
+        } else {
+            // If no mandatory violation : always resest mandSoftForced
+            $LEM->questionSeq2relevance[$questionSeq]['mandSoftForced'] = false;
         }
 
         /////////////////////////////////////////////////////////////
