@@ -45,7 +45,7 @@
                 <div class="survey-actionbar-actions ms-auto">
                     <div class="survey-actionbar-item">
                         <?php if (Permission::model()->hasGlobalPermission('surveys', 'create')) : ?>
-                            <a href="<?= Yii::app()->createUrl('surveyAdministration/newSurvey') ?>" class="btn btn-outline-info survey-actionbar-button">
+                            <a href="<?= Yii::app()->createUrl('surveyAdministration/newSurvey') ?>" id="create-survey" class="btn btn-outline-info survey-actionbar-button">
                                 <i class="ri-add-line"></i>
                                 <?= gT('Create survey') ?>
                             </a>
@@ -53,7 +53,7 @@
                     </div>
                     <div class="survey-actionbar-item">
                         <?php if (\Permission::model()->hasGlobalPermission('surveysgroups', 'create')) : ?>
-                            <a href="<?= Yii::app()->createUrl('admin/surveysgroups/sa/create') ?>" class="btn btn-outline-g-700 survey-actionbar-button">
+                            <a href="<?= Yii::app()->createUrl('admin/surveysgroups/sa/create') ?>" id="create-survey-group" class="btn btn-outline-g-700 survey-actionbar-button">
                                 <i class="ri-add-line"></i>
                                 <?= gT('Create survey group') ?>
                             </a>
