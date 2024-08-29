@@ -19,7 +19,6 @@
         ]);
         ?>
     <?php endif; ?>
-    <?php if (Permission::model()->hasGlobalPermission('surveys', 'read')) : ?>
         <div class="row">
             <div class="box-widget p-0">
                 <div class="box-widget-list">
@@ -32,9 +31,4 @@
                 </div>
             </div>
         </div>
-    <?php elseif (!Permission::model()->hasGlobalPermission('surveys', 'create')
-        || !Permission::model()->hasGlobalPermission('surveysgroups', 'create')
-    ) : ?>
-        <?php echo gT('No surveys found.'); ?>
-    <?php endif; ?>
 </div>

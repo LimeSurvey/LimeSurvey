@@ -92,7 +92,7 @@ class BoxesWidget extends CWidget
                 $boxes[] = [
                     'type' => self::TYPE_LINK,
                     'link' => App()->createUrl('/surveyAdministration/newSurvey/'),
-                    'text' => 'Create survey',
+                    'text' => gT('Create survey'),
                     'icon' => 'ri-add-line',
                     'color' => '#8146F6',
                     'external' => false
@@ -103,7 +103,7 @@ class BoxesWidget extends CWidget
                 $boxes[] = [
                     'type' => self::TYPE_LINK,
                     'link' => App()->createUrl('/admin/surveysgroups/sa/create/'),
-                    'text' => 'Create survey group',
+                    'text' => gT('Create survey group'),
                     'icon' => 'ri-add-line',
                     'color' => '#6D748C',
                     'external' => false
