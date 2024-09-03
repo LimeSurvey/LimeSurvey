@@ -1013,6 +1013,14 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['ur']['radixpoint'] = 0;
     $supportedLanguages['ur']['momentjs'] = 'ur';
 
+    //Uzbek
+    $supportedLanguages['uz']['description'] = gT('Uzbek');
+    $supportedLanguages['uz']['nativedescription'] = "O'zbek";
+    $supportedLanguages['uz']['rtl'] = false;
+    $supportedLanguages['uz']['dateformat'] = 1;
+    $supportedLanguages['uz']['radixpoint'] = 1;
+    $supportedLanguages['uz']['momentjs'] = 'uz';
+
     //Uyghur
     $supportedLanguages['ug']['description'] = gT('Uyghur');
     $supportedLanguages['ug']['nativedescription'] = 'ئۇيغۇرچە';
