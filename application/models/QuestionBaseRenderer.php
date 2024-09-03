@@ -86,7 +86,7 @@ abstract class QuestionBaseRenderer extends StaticModel
         $oQuestion = $this->oQuestion;
         $oSurvey = $this->oQuestion->survey;
         $time_limit = intval($oQuestion->questionattributes['time_limit']['value']);
-        if($time_limit <= 0) {
+        if ($time_limit <= 0) {
             return;
         }
         Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts") . 'coookies.js', CClientScript::POS_BEGIN);
