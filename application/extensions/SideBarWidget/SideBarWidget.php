@@ -42,19 +42,24 @@ class SideBarWidget extends CWidget
             if (Permission::model()->hasGlobalPermission('superadmin', 'read')) {
                 $canSeeBox = true;
             }
+            // check the user group
+            $userGroup = UserGroup::model()->findByPk($box->usergroup);
+            if ($userGroup && $userGroup->hasUser(App()->user->id)) {
+                $canSeeBox = true;
+            }
             // everyone can see the box
-            if ($box->usergroup === -1) {
+            if ((int)$box->usergroup === -1) {
                 $canSeeBox = true;
             }
             // If the user group is not set, or set to -2, only admin can see the box
-            if ($box->usergroup === -2) {
+            if ((int)$box->usergroup === -2) {
                 $canSeeBox = false;
                 if (Permission::model()->hasGlobalPermission('superadmin', 'read')) {
                     $canSeeBox = true;
                 }
             }
             // If user group is set to -3, nobody can see the box
-            if ($box->usergroup === -3) {
+            if ((int)$box->usergroup === -3) {
                 $canSeeBox = false;
             }
             // pass the boxData to the view only if the user has the necessary permissions
