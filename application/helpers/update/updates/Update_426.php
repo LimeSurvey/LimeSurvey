@@ -10,7 +10,7 @@ class Update_426 extends DatabaseUpdateBase
             $this->db->createCommand()->addColumn(
                 '{{surveys_groupsettings}}',
                 'ipanonymize',
-                "string(1) NOT NULL default 'N'"
+                "string(1) NOT NULL DEFAULT 'N'"
             );
             $this->db->createCommand()->addColumn('{{surveys}}', 'ipanonymize', "string(1) NOT NULL DEFAULT 'N'");
 

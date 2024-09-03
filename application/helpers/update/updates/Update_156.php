@@ -51,7 +51,7 @@ class Update_156 extends DatabaseUpdateBase
 
         addPrimaryKey('sessions', array('id'));
         addColumn('{{surveys_languagesettings}}', 'surveyls_attributecaptions', "text");
-        addColumn('{{surveys}}', 'sendconfirmation', "string(1) default 'Y'");
+        addColumn('{{surveys}}', 'sendconfirmation', "string(1) DEFAULT 'Y'");
 
         upgradeSurveys156();
 
