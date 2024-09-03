@@ -49,6 +49,6 @@ class Update_406 extends DatabaseUpdateBase
                 )
             );
         }
-        $this->db->createCommand()->addColumn('{{questions}}', 'encrypted', "string(1) NULL default 'N'");
+        $this->db->createCommand()->addColumn('{{questions}}', 'encrypted', "string(1) NULL DEFAULT 'N'");
     }
 }
