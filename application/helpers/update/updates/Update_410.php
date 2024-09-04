@@ -6,6 +6,6 @@ class Update_410 extends DatabaseUpdateBase
 {
     public function up()
     {
-            $this->db->createCommand()->addColumn('{{question_l10ns}}', 'script', " text NULL default NULL");
+            $this->db->createCommand()->addColumn('{{question_l10ns}}', 'script', " text NULL DEFAULT NULL");
     }
 }

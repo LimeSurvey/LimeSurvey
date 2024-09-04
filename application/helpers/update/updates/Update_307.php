@@ -16,7 +16,7 @@ class Update_307 extends DatabaseUpdateBase
                     'uid' => 'integer NOT NULL',
                     'entity' => 'string(15)',
                     'entity_id' => 'string(31)',
-                    'stg_name' => 'string(63) not null',
+                    'stg_name' => 'string(63) NOT NULL',
                     'stg_value' => 'text',
 
                 )
