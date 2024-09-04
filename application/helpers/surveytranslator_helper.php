@@ -403,6 +403,15 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['kal']['radixpoint'] = 1;
     $supportedLanguages['kal']['momentjs'] = null;
 
+    // Hazaragi
+    $supportedLanguages['haz']['description'] = gT('Hazaragi');
+    $supportedLanguages['haz']['nativedescription'] = '&#x622;&#x632;&#x631;&#x6AF;&#x6CC;';
+    $supportedLanguages['haz']['rtl'] = true;
+    $supportedLanguages['haz']['dateformat'] = 2;
+    $supportedLanguages['haz']['radixpoint'] = 0;
+    $supportedLanguages['haz']['momentjs'] = 'fa';
+    $supportedLanguages['haz']['cldr'] = 'fa';
+
     // Hausa
     $supportedLanguages['ha']['description'] = gT('Hausa');
     $supportedLanguages['ha']['nativedescription'] = 'Hausa';

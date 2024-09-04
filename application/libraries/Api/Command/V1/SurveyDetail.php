@@ -12,7 +12,6 @@ use LimeSurvey\Api\Command\{
     ResponseData\ResponseDataError,
     Response\ResponseFactory
 };
-use LimeSurvey\Api\Auth\AuthSession;
 use LimeSurvey\Api\Command\Mixin\Auth\AuthPermissionTrait;
 
 class SurveyDetail implements CommandInterface
@@ -20,7 +19,6 @@ class SurveyDetail implements CommandInterface
     use AuthPermissionTrait;
 
     protected Survey $survey;
-    protected AuthSession $authSession;
     protected TransformerOutputSurveyDetail $transformerOutputSurveyDetail;
     protected ResponseFactory $responseFactory;
     protected Permission $permission;
@@ -29,20 +27,17 @@ class SurveyDetail implements CommandInterface
      * Constructor
      *
      * @param Survey $survey
-     * @param AuthSession $authSession
      * @param TransformerOutputSurveyDetail $transformerOutputSurveyDetail
      * @param ResponseFactory $responseFactory
      * @param Permission $permission
      */
     public function __construct(
         Survey $survey,
-        AuthSession $authSession,
         TransformerOutputSurveyDetail $transformerOutputSurveyDetail,
         ResponseFactory $responseFactory,
         Permission $permission
     ) {
         $this->survey = $survey;
-        $this->authSession = $authSession;
         $this->transformerOutputSurveyDetail = $transformerOutputSurveyDetail;
         $this->responseFactory = $responseFactory;
         $this->permission = $permission;
@@ -56,18 +51,13 @@ class SurveyDetail implements CommandInterface
      */
     public function run(Request $request)
     {
-        $sessionKey = (string) $request->getData('sessionKey');
         $surveyId = (string) $request->getData('_id');
-        $authorized = $this->authSession->checkKey($sessionKey);
         $hasPermission = $this->permission->hasSurveyPermission(
             (int)$surveyId,
             'survey',
             'read'
         );
-        if (
-            !$authorized
-            || !$hasPermission
-        ) {
+        if (!$hasPermission) {
             return $this->responseFactory
                 ->makeErrorUnauthorised();
         }

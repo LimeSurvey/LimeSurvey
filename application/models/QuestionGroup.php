@@ -376,7 +376,7 @@ class QuestionGroup extends LSActiveRecord
             ),
         );
 
-        $criteria = new CDbCriteria();
+        $criteria = new LSDbCriteria();
         $criteria->with = array('questiongroupl10ns' => array("select" => "group_name, description"));
         $criteria->together = true;
         $criteria->condition = 'sid=:surveyid AND language=:language';

@@ -21,7 +21,7 @@ class SurveyDeactivator
 
     public function __construct($survey = null)
     {
-        $this->$survey = $survey;
+        $this->survey = $survey;
     }
 
     /**
