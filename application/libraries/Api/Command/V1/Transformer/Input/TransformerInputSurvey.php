@@ -37,8 +37,7 @@ class TransformerInputSurvey extends Transformer
                 'formatter' => ['ynToBool' => ['revert' => true]]
             ],
             'additionalLanguages' => 'additional_languages',
-            'dateStamp' => [
-                'key' => 'datestamp',
+            'datestamp' => [
                 'filter' => 'trim',
                 'formatter' => ['ynToBool' => ['revert' => true]]
             ],
