@@ -17096,11 +17096,18 @@ tr.info, tr.danger {
   cursor: pointer;
   background-color: #EEEFF7;
 }
+.modal-dialog .table tbody tr:hover i:before {
+  color: var(--bs-primary);
+}
 .modal-dialog .table thead th:first-child, .modal-dialog .table .table tbody td:first-child {
   padding-left: 10px !important;
 }
 .modal-dialog .table i:before {
-  color: black;
+  display: inline-block;
+  vertical-align: middle;
+  color: grey;
+  font-size: 1.5em;
+  padding-left: 5px;
 }
 .modal-dialog .table input[type=checkbox]:before,
 .modal-dialog .table input[type=checkbox]:after {

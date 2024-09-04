@@ -28,13 +28,13 @@ Yii::app()->getController()->renderPartial(
         <?php foreach ($aBasePermissions as $sPermissionKey => $aCRUDPermissions) : ?>
             <tr>
                 <!-- Warning super admin -->
-                <td>
-                    <i class="<?php echo $aCRUDPermissions['img']; ?> text-success"
-                       data-bs-toggle="tooltip"
-                       data-bs-placement="right"
-                       title="<?php echo $aCRUDPermissions['description']; ?>"
-                       data-bs-original-title="<?php echo $aCRUDPermissions['description']; ?>">
-                    </i>
+                <td
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="bottom"
+                    title="<?php echo $aCRUDPermissions['description']; ?>"
+                    data-bs-original-title="<?php echo $aCRUDPermissions['description']; ?>"
+                >
+                    <i class="ri-information-fill text-success"></i>
 
                     <?php if ($sPermissionKey == 'superadmin') {
                         ?> <span class='warning'> <?php
