@@ -14,6 +14,7 @@ class FormatterIntToBoolTest extends TestBaseClass
     {
         $formatter = new FormatterIntToBool();
         $config = $this->getConfig();
+        $this->assertTrue($formatter->format(true, $config));
         $this->assertTrue($formatter->format(1, $config));
         $this->assertTrue($formatter->format('1', $config));
         $this->assertTrue($formatter->format('truey', $config));
@@ -23,6 +24,7 @@ class FormatterIntToBoolTest extends TestBaseClass
     {
         $formatter = new FormatterIntToBool();
         $config = $this->getConfig();
+        $this->assertFalse($formatter->format(false, $config));
         $this->assertFalse($formatter->format(0, $config));
         $this->assertFalse($formatter->format(-1, $config));
         $this->assertFalse($formatter->format('0', $config));
@@ -47,6 +49,7 @@ class FormatterIntToBoolTest extends TestBaseClass
     {
         $formatter = new FormatterIntToBool();
         $config = $this->getConfig(true);
+        $this->assertEquals(1, $formatter->format(true, $config));
         $this->assertEquals(1, $formatter->format(1, $config));
         $this->assertEquals(1, $formatter->format('Y', $config));
         $this->assertEquals(1, $formatter->format('truey', $config));
@@ -56,6 +59,7 @@ class FormatterIntToBoolTest extends TestBaseClass
     {
         $formatter = new FormatterIntToBool();
         $config = $this->getConfig(true);
+        $this->assertEquals(0, $formatter->format(false, $config));
         $this->assertEquals(0, $formatter->format(0, $config));
         $this->assertEquals(0, $formatter->format(-1, $config));
         $this->assertEquals(0, $formatter->format('0', $config));

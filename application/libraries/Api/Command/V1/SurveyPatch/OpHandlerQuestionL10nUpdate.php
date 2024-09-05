@@ -9,14 +9,17 @@ use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\{
 };
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestionL10ns;
 use LimeSurvey\Models\Services\{
+    QuestionAggregateService,
     QuestionAggregateService\L10nService,
+    Exception\PermissionDeniedException,
     Exception\NotFoundException,
     Exception\PersistErrorException
 };
 use LimeSurvey\ObjectPatch\{Op\OpInterface,
     OpHandler\OpHandlerException,
     OpType\OpTypeUpdate,
-    OpHandler\OpHandlerInterface};
+    OpHandler\OpHandlerInterface
+};
 
 class OpHandlerQuestionL10nUpdate implements OpHandlerInterface
 {
@@ -26,13 +29,16 @@ class OpHandlerQuestionL10nUpdate implements OpHandlerInterface
 
     protected L10nService $l10nService;
     protected TransformerInputQuestionL10ns $transformer;
+    protected QuestionAggregateService $questionAggregateService;
 
     public function __construct(
         L10nService $l10nService,
-        TransformerInputQuestionL10ns $transformer
+        TransformerInputQuestionL10ns $transformer,
+        QuestionAggregateService $questionAggregateService
     ) {
         $this->l10nService = $l10nService;
         $this->transformer = $transformer;
+        $this->questionAggregateService = $questionAggregateService;
     }
 
     /**
@@ -71,9 +77,13 @@ class OpHandlerQuestionL10nUpdate implements OpHandlerInterface
      * @throws PersistErrorException
      * @throws NotFoundException
      * @throws OpHandlerException
+     * @throws PermissionDeniedException
      */
     public function handle(OpInterface $op): void
     {
+        $this->questionAggregateService->checkUpdatePermission(
+            $this->getSurveyIdFromContext($op)
+        );
         $transformedProps = $this->transformer->transformAll(
             $op->getProps(),
             ['operation' => $op->getType()->getId()]
@@ -81,6 +91,7 @@ class OpHandlerQuestionL10nUpdate implements OpHandlerInterface
         if (empty($transformedProps)) {
             $this->throwNoValuesException($op);
         }
+
         $this->l10nService->save(
             (int)$op->getEntityId(),
             $transformedProps
@@ -94,7 +105,8 @@ class OpHandlerQuestionL10nUpdate implements OpHandlerInterface
      */
     public function validateOperation(OpInterface $op): array
     {
-        $validationData = $this->validateCollectionIndex($op, []);
+        $validationData = $this->validateSurveyIdFromContext($op, []);
+        $validationData = $this->validateCollectionIndex($op, $validationData);
         $validationData = $this->validateEntityId($op, $validationData);
         if (empty($validationData)) {
             $validationData = $this->transformer->validateAll(

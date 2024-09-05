@@ -10,12 +10,15 @@ use LimeSurvey\Api\Command\V1\Transformer\{
     Input\TransformerInputQuestionAggregate
 };
 use LimeSurvey\Api\Command\V1\SurveyPatch\Response\TempIdMapItem;
-use LimeSurvey\Models\Services\Exception\PermissionDeniedException;
-use LimeSurvey\Models\Services\Exception\PersistErrorException;
+use LimeSurvey\Models\Services\Exception\{
+    PermissionDeniedException,
+    PersistErrorException
+};
 use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\{OpHandlerSurveyTrait,
     OpHandlerExceptionTrait,
     OpHandlerQuestionTrait,
-    OpHandlerValidationTrait};
+    OpHandlerValidationTrait
+};
 use LimeSurvey\ObjectPatch\{
     Op\OpInterface,
     OpType\OpTypeCreate,
@@ -184,9 +187,15 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
      * @throws \LimeSurvey\Models\Services\Exception\NotFoundException
      * @throws PermissionDeniedException
      * @throws PersistErrorException
+     * @throws \CException
      */
     public function handle(OpInterface $op): array
     {
+        $questionService = DI::getContainer()->get(
+            QuestionAggregateService::class
+        );
+        $surveyId = $this->getSurveyIdFromContext($op);
+        $questionService->checkUpdatePermission($surveyId);
         $transformOptions = ['operation' => $op->getType()->getId()];
         $data = $this->transformer->transform(
             $op->getProps(),
@@ -200,16 +209,13 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
         $answerOptionsData = $data['answeroptions'] ?? [];
 
         $tempId = $this->extractTempId($questionData);
-        $questionService = DI::getContainer()->get(
-            QuestionAggregateService::class
-        );
 
         $question = $questionService->save(
-            $this->getSurveyIdFromContext($op),
+            $surveyId,
             $data
         );
 
-        $mapping =  array_merge(
+        $mapping = array_merge(
             [
                 'questionsMap' => [
                     new TempIdMapItem(
@@ -239,7 +245,8 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
      */
     public function validateOperation(OpInterface $op): array
     {
-        $validationData = $this->validateCollectionIndex($op, []);
+        $validationData = $this->validateSurveyIdFromContext($op, []);
+        $validationData = $this->validateCollectionIndex($op, $validationData);
         if (empty($validationData)) {
             $validationData = $this->transformer->validate(
                 $op->getProps(),

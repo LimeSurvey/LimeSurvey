@@ -2,13 +2,20 @@
 
 namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
-use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\OpHandlerExceptionTrait;
-use LimeSurvey\Api\Command\V1\SurveyPatch\Response\TempIdMapItem;
-use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\OpHandlerSurveyTrait;
-use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\OpHandlerValidationTrait;
-use LimeSurvey\Models\Services\Exception\PermissionDeniedException;
+use LimeSurvey\Api\Transformer\TransformerException;
+use LimeSurvey\Api\Command\V1\SurveyPatch\{
+    Traits\OpHandlerExceptionTrait,
+    Traits\OpHandlerSurveyTrait,
+    Traits\OpHandlerValidationTrait,
+    Response\TempIdMapItem
+};
 use QuestionGroup;
-use LimeSurvey\Models\Services\QuestionGroupService;
+use LimeSurvey\Models\Services\{
+    QuestionGroupService,
+    Exception\NotFoundException,
+    Exception\PermissionDeniedException,
+    Exception\PersistErrorException
+};
 use LimeSurvey\Api\Command\V1\Transformer\Input\{
     TransformerInputQuestionGroupAggregate
 };
@@ -70,7 +77,12 @@ class OpHandlerQuestionGroup implements OpHandlerInterface
      * Saves the changes to the database.
      *
      * @param OpInterface $op
+     * @return array
      * @throws OpHandlerException
+     * @throws PermissionDeniedException
+     * @throws NotFoundException
+     * @throws PersistErrorException
+     * @throws TransformerException
      */
     public function handle(OpInterface $op): array
     {
@@ -138,13 +150,15 @@ class OpHandlerQuestionGroup implements OpHandlerInterface
      * @param QuestionGroupService $groupService
      * @return void
      * @throws OpHandlerException
-     * @throws \LimeSurvey\Models\Services\Exception\NotFoundException
-     * @throws \LimeSurvey\Models\Services\Exception\PermissionDeniedException
-     * @throws \LimeSurvey\Models\Services\Exception\PersistErrorException
+     * @throws NotFoundException
+     * @throws PermissionDeniedException
+     * @throws PersistErrorException
+     * @throws TransformerException
      */
     private function update(OpInterface $op)
     {
         $surveyId = $this->getSurveyIdFromContext($op);
+        $this->questionGroupService->checkUpdatePermission($surveyId);
         $transformedProps = $this->transformer->transform(
             $op->getProps(),
             ['operation' => $op->getType()->getId()]
@@ -206,15 +220,17 @@ class OpHandlerQuestionGroup implements OpHandlerInterface
      * then be passed in a different patch operation.
      *
      * @param OpInterface $op
-     * @param QuestionGroupService $groupService
      * @return array
+     * @throws NotFoundException
      * @throws OpHandlerException
-     * @throws \LimeSurvey\Models\Services\Exception\NotFoundException
-     * @throws \LimeSurvey\Models\Services\Exception\PersistErrorException
+     * @throws PermissionDeniedException
+     * @throws PersistErrorException
+     * @throws TransformerException
      */
     private function create(OpInterface $op): array
     {
         $surveyId = $this->getSurveyIdFromContext($op);
+        $this->questionGroupService->checkCreatePermission($surveyId);
         $transformedProps = $this->transformer->transform(
             $op->getProps(),
             ['operation' => $op->getType()->getId()]
@@ -256,12 +272,12 @@ class OpHandlerQuestionGroup implements OpHandlerInterface
      *
      * @param OpInterface $op
      * @return void
-     * @throws OpHandlerException
      * @throws PermissionDeniedException
      */
     private function delete(OpInterface $op)
     {
         $surveyId = $this->getSurveyIdFromContext($op);
+        $this->questionGroupService->checkDeletePermission($surveyId);
         $this->questionGroupService->deleteGroup(
             $op->getEntityId(),
             $surveyId
@@ -277,6 +293,10 @@ class OpHandlerQuestionGroup implements OpHandlerInterface
     {
         $this->setOperationTypes($op);
         $validationData = [];
+        $validationData = $this->validateSurveyIdFromContext(
+            $op,
+            $validationData
+        );
         if ($this->isUpdateOperation || $this->isCreateOperation) {
             $validationData = $this->transformer->validate(
                 $op->getProps(),

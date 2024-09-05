@@ -465,7 +465,7 @@
   //  (Object) An object representing the deserialized params string.
   
   $.deparam = jq_deparam = function( params, coerce ) {
-    var obj = {},
+    var obj = Object.create(null),
       coerce_types = { 'true': !0, 'false': !1, 'null': null };
     
     // Iterate over all name=value pairs.
@@ -522,7 +522,7 @@
           for ( ; i <= keys_last; i++ ) {
             key = keys[i] === '' ? cur.length : keys[i];
             cur = cur[key] = i < keys_last
-              ? cur[key] || ( keys[i+1] && isNaN( keys[i+1] ) ? {} : [] )
+              ? cur[key] || ( keys[i+1] && isNaN( keys[i+1] ) ? Object.create(null) : [] )            
               : val;
           }
           

@@ -15,6 +15,7 @@ class TransformerInputSubQuestion extends Transformer
         $dataMap['type']['required'] = false;
         $dataMap['title'] = ['key' => 'code', 'required' => 'create'];
         $dataMap['qid'] = ['required' => 'update'];
+        $dataMap['tempId'] = true;
         $dataMap['l10ns'] = [
             'key' => 'subquestionl10n',
             'collection' => true,
@@ -58,7 +59,7 @@ class TransformerInputSubQuestion extends Transformer
         return array_key_exists(
             'qid',
             $questionData
-        ) ? (int)$questionData['qid'] : $index;
+        ) && (int)$questionData['qid'] > 0 ? (int)$questionData['qid'] : $index;
     }
 
     /**

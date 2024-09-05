@@ -4,15 +4,19 @@ namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
 use DI\DependencyException;
 use DI\NotFoundException;
-use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\OpHandlerExceptionTrait;
-use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\OpHandlerSurveyTrait;
-use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\OpHandlerValidationTrait;
+use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\{
+    OpHandlerExceptionTrait,
+    OpHandlerSurveyTrait,
+    OpHandlerValidationTrait
+};
 use LimeSurvey\Api\Transformer\TransformerException;
 use Survey;
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputSurvey;
-use LimeSurvey\Models\Services\{Exception\PermissionDeniedException,
-    SurveyAggregateService,
-    Exception\PersistErrorException};
+use LimeSurvey\Models\Services\{
+    Exception\PermissionDeniedException,
+    Exception\PersistErrorException,
+    SurveyAggregateService
+};
 use LimeSurvey\ObjectPatch\{
     Op\OpInterface,
     OpHandler\OpHandlerException,
@@ -30,8 +34,10 @@ class OpHandlerSurveyUpdate implements OpHandlerInterface
     protected Survey $model;
     protected TransformerInputSurvey $transformer;
 
-    public function __construct(Survey $model, TransformerInputSurvey $transformer)
-    {
+    public function __construct(
+        Survey $model,
+        TransformerInputSurvey $transformer
+    ) {
         $this->entity = 'survey';
         $this->model = $model;
         $this->transformer = $transformer;
@@ -89,6 +95,8 @@ class OpHandlerSurveyUpdate implements OpHandlerInterface
         $surveyUpdater = $diContainer->get(
             SurveyAggregateService::class
         );
+        $surveyId = $this->getSurveyIdFromContext($op);
+        $surveyUpdater->checkSurveySettingsUpdatePermission($surveyId);
         $surveyUpdater->setRestMode(true);
 
         $props = $op->getProps();
@@ -99,7 +107,7 @@ class OpHandlerSurveyUpdate implements OpHandlerInterface
         }
         /** @var array $transformedProps */
         $surveyUpdater->update(
-            $this->getSurveyIdFromContext($op),
+            $surveyId,
             $transformedProps
         );
     }
@@ -111,10 +119,13 @@ class OpHandlerSurveyUpdate implements OpHandlerInterface
      */
     public function validateOperation(OpInterface $op): array
     {
-        $validationData = $this->transformer->validate(
-            $op->getProps(),
-            ['operation' => $op->getType()->getId()]
-        );
+        $validationData = $this->validateSurveyIdFromContext($op, []);
+        if (empty($validationData)) {
+            $validationData = $this->transformer->validate(
+                $op->getProps(),
+                ['operation' => $op->getType()->getId()]
+            );
+        }
 
         return $this->getValidationReturn(
             gT('Could not save survey'),

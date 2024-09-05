@@ -20,6 +20,7 @@ class Factory
             $mockSet->saveService,
             $mockSet->deleteService,
             $mockSet->modelPermission,
+            $mockSet->modelSurvey,
             $mockSet->yiiDb
         );
     }

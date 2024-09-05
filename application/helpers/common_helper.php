@@ -3638,13 +3638,17 @@ function replaceExpressionCodes($iSurveyID, $aCodeMap)
 * cleanLanguagesFromSurvey() removes any languages from survey tables that are not in the passed list
 * @param string $sid - the currently selected survey
 * @param string $availlangs - space separated list of additional languages in survey
+* @param string|null $baselang - the base language to be used
 * @return void
 */
-function cleanLanguagesFromSurvey($iSurveyID, $availlangs, $baselang = null)
+function cleanLanguagesFromSurvey($iSurveyID, $availlangs, $baselang = '')
 {
     Yii::app()->loadHelper('database');
     $iSurveyID = (int) $iSurveyID;
-    $baselang = $baselang ?? Survey::model()->findByPk($iSurveyID)->language;
+    $baselang = sanitize_languagecode($baselang);
+    if (empty($baselang)) {
+        $baselang = Survey::model()->findByPk($sid)->language;
+    }
     $aLanguages = [];
     if (!empty($availlangs) && $availlangs != " ") {
         $availlangs = sanitize_languagecodeS($availlangs);
@@ -3701,6 +3705,7 @@ function cleanLanguagesFromSurvey($iSurveyID, $availlangs, $baselang = null)
 function fixLanguageConsistency($sid, $availlangs = '', $baselang = '')
 {
     $sid = (int) $sid;
+    $baselang = sanitize_languagecode($baselang);
     if (empty($baselang)) {
         $baselang = Survey::model()->findByPk($sid)->language;
     }

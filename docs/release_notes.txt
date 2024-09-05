@@ -34,6 +34,57 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.6.1 (build 240806) to 6.6.2 (build 240827) August 27, 2024
+-Fixed issue #CT-944: kal.mo was corrupted (twilligls)
+-Fixed issue #19717: SQL injection vulnerability when save survey (#3946) (Denis Chenu)
+#Updated translation: Sinhala by tixeon
+#Updated translation: Punjabi by tixeon
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Persian (Afghanistan) - Dari by tixeon
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Hazaragi by tixeon
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Finnish by Jmantysalo, puohis
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+
+
+Changes from 6.6.0 (build 240729) to 6.6.1 (build 240806) August 6, 2024
+-Fixed issue: Undefined variable $editorUrl in surveyTopbarRight_view.php (Kevin Foster)
+-Fixed issue #CT-887: Hazaragi language is now rtl (twilligls)
+-Fixed issue #19639: [security] Host Header Injection in password reset function (thanks to paoloelia) (#3920) (Denis Chenu)
+-Fixed issue #19607: Outdated libraries used with known vulnerabilities (#3904) (Gabriel Jenik)
+-Fixed issue #19589: Improve performance of survey queries (#3871) (Denis Chenu)
+-Fixed issue #18550: MSSQL response filter with underscore or bracket not working (#3900) (Denis Chenu)
+#Updated translation: Thai by tomzt
+#Updated translation: Slovak by jelen1
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Korean by modernity4r
+#Updated translation: Japanese by nomoto
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
+Changes from 6.5.18 (build 240723) to 6.6.0 (build 240729) July 29, 2024
++New feature: Updated internal REST API with more functions
+-Fixed issue #CT-907: Wrong File upload question texts in response view (#3930) (Mohab Elsheikh)
+-Fixed issue #CR-1421: Themes overview page showing error when configuration can't be loaded or is invalid (#3857) (Mohab Elsheikh)
+-Fixed issue #CT-854: Fix invalid logo path for PDF export (#3916) (Mohab Elsheikh)
+-Fixed issue #19492: Different minimum password requirements inside and outside of LimeSurvey (#3928) (Gabriel Jenik)
+#Updated translation: Korean by modernity4r
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 6.5.17 (build 240715) to 6.5.18 (build 240723) July 23, 2024
 -Fixed issue #QE-1019: badge info should be purple (#3913) (Patricia Stell)
 -Fixed issue #CT-877: labelset not creating dummy entries for languages not supplied by the labelset (#3914) (Patrick Teichmann)

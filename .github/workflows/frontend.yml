@@ -24,7 +24,7 @@ jobs:
     name: Build Frontend Packages
     steps:
       - name: Checkout the code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Run composer
         run: |
@@ -75,7 +75,7 @@ jobs:
     name: Run Frontend Tests
     steps:
       - name: Checkout the code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       
       - name: Prepare nvm with Node ${{ matrix.nodeJS-versions }}
         run: |
