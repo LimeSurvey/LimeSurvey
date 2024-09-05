@@ -74,10 +74,10 @@
             {# Before LS3 Master, this should be replace by a Twig block logic #}
             {{ aSurveyInfo.aCompleted.sPluginHTML }}
 
-            {% block endurl %}
+            {% block endurl %}FUCK
             {# NOTE: not very clear what the old replacement keyword {URL} was doing  #}
             {% if (aSurveyInfo.aCompleted.sSurveylsUrl) %}
-                <a href="{{ aSurveyInfo.aCompleted.sSurveylsUrl }}">{{ aSurveyInfo.aCompleted.sSurveylsUrlDescription }}</a>
+                <a href="{{ str_replace('"', '%22', aSurveyInfo.aCompleted.sSurveylsUrl) }}">{{ aSurveyInfo.aCompleted.sSurveylsUrlDescription }}</a>
             {% endif %}
             {% endblock %}
         </div>
