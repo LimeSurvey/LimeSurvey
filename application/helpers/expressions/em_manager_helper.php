@@ -353,7 +353,7 @@ class LimeExpressionManager
      * 'hidden' => 0    // 1 if it should be always_hidden
      * 'gid' => "34"    // group id
      * 'mandatory' => 'N'   // 'Y' if mandatory, 'S' if soft mandatory
-     * 'mandSoftForced' => false // boolean True if already forced
+     * 'mandSoftForced' => false // boolean value to keep Mandatroy soft question status. False if not seen, answered, not a soft mandatory or not checked one time. Check is done in self::_validateQuestion using $_POST['mandSoft']
      * 'eqn' => ""  // TODO ?? Equation result for validation
      * 'help' => "" // the help text
      * 'qtext' => "Enter a larger number than {num}"    // the question text
