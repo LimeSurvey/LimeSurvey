@@ -143,15 +143,6 @@ class TemplateConfiguration extends TemplateConfig
         );
     }
 
-    /** @inheritdoc
-     * Do not use DefaultScope to order for a criteria that might change later, as
-     * order criteria for the same column are always appended (NOT replaced) and will
-     * lead to errors with MSSQL and Postgres
-    */
-    public function defaultScope()
-    {
-    }
-
     /**
      * @todo document me
      *

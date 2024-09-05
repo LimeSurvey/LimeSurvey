@@ -629,9 +629,8 @@ class ParticipantAttributeName extends LSActiveRecord
                     ':attribute_id' => $data['attribute_id'])
             );
 
-        if (count($query) == 0) {
-            Yii::app()->db->createCommand()
-                        ->insert('{{participant_attribute}}', $data);
+        if (is_null($query)) {
+            Yii::app()->db->createCommand()->insert('{{participant_attribute}}', $data);
         } else {
             Yii::app()->db->createCommand()
                 ->update(
