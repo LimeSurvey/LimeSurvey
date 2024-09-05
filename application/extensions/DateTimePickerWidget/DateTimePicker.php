@@ -344,7 +344,7 @@ class DateTimePicker extends CInputWidget
     {
         $id = $this->getId();
         $date = $this->value;
-        $dateFormat = $this->format;
+        $dateFormat = CHtml::encode($this->format);
         return "
         //formatting when selected via datepicker
         picker_$id.dates.formatInput = function(date) { 
