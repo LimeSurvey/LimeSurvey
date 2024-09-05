@@ -216,9 +216,6 @@ class ResponsesController extends LSBaseController
                 continue;
             }
 
-            //$question = $field['question'];
-            $question = viewHelper::getFieldText($field);
-
             if ($field['type'] != Question::QT_VERTICAL_FILE_UPLOAD) {
                 $fnames[] = [
                     $field['fieldname'],
@@ -245,6 +242,8 @@ class ResponsesController extends LSBaseController
                     continue;
                 }
                 $qidattributes = QuestionAttribute::model()->getQuestionAttributes($questions[$field['qid']]);
+
+                $question = viewHelper::getFieldText($field);
 
                 for ($i = 0; $i < count($filesInfo); $i++) {
                     $filenum = sprintf(gT("File %s"), $i + 1);

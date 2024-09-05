@@ -130,6 +130,7 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
             );
         }
         $survey['hasSurveyUpdatePermission'] = $data->hasPermission('surveycontent', 'update');
+        $survey['googleAnalyticsApiKeySetting'] = $data->getGoogleanalyticsapikeysetting();
 
         return $survey;
     }
@@ -260,7 +261,17 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
             'anonymized',
             'alloweditaftercompletion',
             'format',
-            'template'
+            'template',
+            'datestamp',
+            'ipaddr',
+            'ipanonymize',
+            'refurl',
+            'savetimings',
+            'assessments',
+            'allowsave',
+            'emailnotificationto',
+            'emailresponseto',
+            'googleanalyticsapikey',
         ];
         foreach ($affectedSettings as $setting) {
             if (

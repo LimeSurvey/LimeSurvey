@@ -12,7 +12,6 @@ use LimeSurvey\Api\Command\{
     Response\ResponseFactory,
     ResponseData\ResponseDataError
 };
-use LimeSurvey\Api\Auth\AuthSession;
 use LimeSurvey\Api\Command\Mixin\Auth\AuthPermissionTrait;
 
 /**
@@ -24,7 +23,6 @@ class SurveyTemplate implements CommandInterface
 {
     use AuthPermissionTrait;
 
-    protected AuthSession $authSession;
     protected CHttpSession $session;
     protected ResponseFactory $responseFactory;
 
@@ -35,19 +33,16 @@ class SurveyTemplate implements CommandInterface
      * Constructor
      *
      * @param ResponseFactory $responseFactory
-     * @param AuthSession $authSession
      * @param Survey $survey
      * @param SurveyLanguageSetting $surveyLanguageSetting
      */
     public function __construct(
         ResponseFactory $responseFactory,
-        AuthSession $authSession,
         CHttpSession $session,
         Survey $survey,
         SurveyLanguageSetting $surveyLanguageSetting
     ) {
         $this->responseFactory = $responseFactory;
-        $this->authSession = $authSession;
         $this->session = $session;
         $this->survey = $survey;
         $this->surveyLanguageSetting = $surveyLanguageSetting;
@@ -78,10 +73,9 @@ class SurveyTemplate implements CommandInterface
      */
     public function run(Request $request)
     {
-        $sessionKey = (string)$request->getData('sessionKey');
         $surveyId = (int)$request->getData('_id');
 
-        if ($response = $this->ensurePermissions($sessionKey, $surveyId)) {
+        if ($response = $this->ensurePermissions($surveyId)) {
             return $response;
         }
 
@@ -116,18 +110,12 @@ class SurveyTemplate implements CommandInterface
     /**
      * Ensure Permissions
      *
-     * @param string $sessionKey
+     * @param string $authToken
      * @param int $surveyId
      * @return Response|false
      */
-    private function ensurePermissions($sessionKey, $surveyId)
+    private function ensurePermissions($surveyId)
     {
-        if (
-            !$this->authSession->checkKey($sessionKey)
-        ) {
-            return $this->responseFactory->makeErrorUnauthorised();
-        }
-
         if (
             !$this->hasSurveyPermission(
                 $surveyId,

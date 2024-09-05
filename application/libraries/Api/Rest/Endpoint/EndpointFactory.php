@@ -38,7 +38,10 @@ class EndpointFactory
         $endpointConfig = $this->getEndpointConfig($request);
         return $this->diFactory->make(Endpoint::class, [
             'config' => $endpointConfig,
-            'commandParams' => $this->getCommandParams($endpointConfig, $request)
+            'commandParams' => $this->getCommandParams(
+                $endpointConfig,
+                $request
+            )
         ]);
     }
 
@@ -141,14 +144,6 @@ class EndpointFactory
     public function getCommandParams($endpoint, CHttpRequest $request)
     {
         $params = [];
-
-        if (
-            !empty($endpoint['auth'])
-            && $endpoint['auth'] == 'session'
-        ) {
-            $params['sessionKey'] = $this->getAuthToken();
-        }
-
         // REST route defines optional param '_id'
         if ($id = $request->getParam('_id')) {
             $params['_id'] = $id;
@@ -161,11 +156,15 @@ class EndpointFactory
             '_query' => $query
         ];
 
+        $authParams = [];
+        $authParams['authToken'] = $this->getAuthToken();
+
         return array_merge(
             $query,
             $params,
             $content,
-            $source
+            $source,
+            $authParams
         );
     }
 

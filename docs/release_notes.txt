@@ -34,6 +34,78 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.6.0 (build 240729) to 6.6.1 (build 240806) August 6, 2024
+-Fixed issue: Undefined variable $editorUrl in surveyTopbarRight_view.php (Kevin Foster)
+-Fixed issue #CT-887: Hazaragi language is now rtl (twilligls)
+-Fixed issue #19639: [security] Host Header Injection in password reset function (thanks to paoloelia) (#3920) (Denis Chenu)
+-Fixed issue #19607: Outdated libraries used with known vulnerabilities (#3904) (Gabriel Jenik)
+-Fixed issue #19589: Improve performance of survey queries (#3871) (Denis Chenu)
+-Fixed issue #18550: MSSQL response filter with underscore or bracket not working (#3900) (Denis Chenu)
+#Updated translation: Thai by tomzt
+#Updated translation: Slovak by jelen1
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Korean by modernity4r
+#Updated translation: Japanese by nomoto
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
+Changes from 6.5.18 (build 240723) to 6.6.0 (build 240729) July 29, 2024
++New feature: Updated internal REST API with more functions
+-Fixed issue #CT-907: Wrong File upload question texts in response view (#3930) (Mohab Elsheikh)
+-Fixed issue #CR-1421: Themes overview page showing error when configuration can't be loaded or is invalid (#3857) (Mohab Elsheikh)
+-Fixed issue #CT-854: Fix invalid logo path for PDF export (#3916) (Mohab Elsheikh)
+-Fixed issue #19492: Different minimum password requirements inside and outside of LimeSurvey (#3928) (Gabriel Jenik)
+#Updated translation: Korean by modernity4r
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Catalan by qualitatuvic
+
+
+Changes from 6.5.17 (build 240715) to 6.5.18 (build 240723) July 23, 2024
+-Fixed issue #QE-1019: badge info should be purple (#3913) (Patricia Stell)
+-Fixed issue #CT-877: labelset not creating dummy entries for languages not supplied by the labelset (#3914) (Patrick Teichmann)
+-Fixed issue #CT-863: response export with JSON format missing questions (#3921) (Tim Willig)
+-Fixed issue #CT-854: Fix logo path for PDF export (#3916) (Mohab Elsheikh)
+-Fixed issue #19651: Internal error when taking survey on PostgreSQL (#3919) (Gabriel Jenik)
+-Fixed issue #19455: Regex used at multi choice with comments question fails and keeps the user from going to the next page (#3909) (Gabriel Jenik)
+-Fixed issue #18207: User entered value can be parsed by expression script and is visible in validation answer string (#3925) (Denis Chenu)
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Japanese by d_inoue
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: German by c_schmitz, Mazi
+#Updated translation: German (Informal) by c_schmitz
+
+
+Changes from 6.5.16 (build 240708) to 6.5.17 (build 240715) July 15, 2024
+-Fixed issue #CT-896: Fixed question PDF export at statistics (lajosarpad)
+-Fixed issue #CT-892: Answers for array question types are not correctly displayed on mobile devices (#3911) (Patrick Teichmann)
+-Fixed issue #19631: Very hard to match attributes in the CPDB when importing CSV data (#3908) (Gabriel Jenik)
+-Fixed issue #19619: bad admin url, with the publicurl variable (#3910) (Denis Chenu)
+-Fixed issue #19105: Store XSS in Central participant management (#3902) (Gabriel Jenik)
+#Updated translation: Slovak by jelen1
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Catalan by qualitatuvic
+
+
+Changes from 6.5.15 (build 240701) to 6.5.16 (build 240708) July 8, 2024
+-Fixed issue #QE-1027: Survey progress bar does not reflect correct progress (#3898) (Rami Shenouda)
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Korean by modernity4r
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Hazaragi by tixeon
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz, der-iThieler
+
+
 Changes from 6.5.14 (build 240624) to 6.5.15 (build 240701) July 1, 2024
 -Fixed issue #19610: [security] queXML PDF discloses version specific information (#3885) (Adam Zammit)
 -Fixed issue #19604: [security] The reset password link is reusable after password change (#3895) (Denis Chenu)
