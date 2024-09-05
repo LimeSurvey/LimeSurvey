@@ -78,11 +78,21 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
         $survey['languages'] = $data->allLanguages;
         $survey['previewLink'] = App()->createUrl(
             "survey/index",
-            array('sid' => $data->sid, 'newtest' => "Y", 'lang' => $data->language)
+            array(
+                'sid' => $data->sid,
+                'newtest' => "Y",
+                'lang' => $data->language
+            )
         );
-        $survey['surveyGroup'] = $this->transformerSurveyGroup->transform($data->surveygroup);
-        $survey['owner'] = $this->transformerSurveyOwner->transform($data->owner);
-        $survey['ownerInherited'] = $this->transformerSurveyOwner->transform($data->oOptions->owner);
+        $survey['surveyGroup'] = $this->transformerSurveyGroup->transform(
+            $data->surveygroup
+        );
+        $survey['owner'] = $this->transformerSurveyOwner->transform(
+            $data->owner
+        );
+        $survey['ownerInherited'] = $this->transformerSurveyOwner->transform(
+            $data->oOptions->owner
+        );
 
         // transformAll() can apply required entity sort so we must retain the sort order going forward
         // - We use a lookup array later to access entities without needing to know their position in the collection
@@ -97,7 +107,6 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
             'gid',
             $survey['questionGroups']
         );
-
 
         foreach ($data->groups as $questionGroupModel) {
             // Order of groups from the model relation may be different than from the transformed data
@@ -129,7 +138,13 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
                 $options
             );
         }
-        $survey['hasSurveyUpdatePermission'] = $data->hasPermission('surveycontent', 'update');
+        $survey['hasSurveyUpdatePermission'] = $data->hasPermission(
+            'surveycontent',
+            'update'
+        );
+        $survey['ownersList'] = array_map(function ($user) {
+            return ['value' => $user['uid'], 'label' => $user['user'] . ' - ' . $user['full_name']];
+        }, getUserList());
 
         return $survey;
     }
@@ -144,8 +159,11 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
      * @param ?array $options
      * @return void
      */
-    private function transformQuestions($questionLookup, $questions, $options = [])
-    {
+    private function transformQuestions(
+        $questionLookup,
+        $questions,
+        $options = []
+    ) {
         foreach ($questions as $questionModel) {
             // questions from the model relation may be different than from the transformed data
             // - so we use the lookup to get a reference to the required entity without needing to
@@ -208,8 +226,11 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
      * @param ?array $options
      * @return void
      */
-    private function transformAnswersL10n($answerLookup, $answers, $options = [])
-    {
+    private function transformAnswersL10n(
+        $answerLookup,
+        $answers,
+        $options = []
+    ) {
         foreach ($answers as $answerModel) {
             $answer = &$answerLookup[$answerModel->aid];
 
