@@ -335,6 +335,16 @@ class SurveyRuntimeHelper
                 $this->aSurveyInfo['progress']['currentstep'] = $_SESSION[$this->LEMsessid]['step'];
                 $this->aSurveyInfo['progress']['total']       = $totalVisibleSteps ? $totalVisibleSteps : $_SESSION[$this->LEMsessid]['totalsteps'] ?? 1;
             }
+
+            if ($this->aSurveyInfo['progress']['currentstep'] > $this->aSurveyInfo['progress']['total']) {
+                $this->aSurveyInfo['progress']['total'] = $_SESSION[$this->LEMsessid]['totalsteps'] ?? $_SESSION[$this->LEMsessid]['totalVisibleSteps'];
+            }
+
+            $progressValue = ($this->aSurveyInfo['progress']['currentstep'] - 1) / $this->aSurveyInfo['progress']['total'] * 100;
+            $progressValue = (int) round($progressValue);
+            $progressValue = max(0, min(100, $progressValue));
+            $this->aSurveyInfo['progress']['value'] = $progressValue;
+
             /* String used in vanilla/views/subviews/header/progress_bar.twig : for autotranslation */
             $this->aSurveyInfo['progress']['string'] = gT('You have completed %s%% of this survey');
         }
