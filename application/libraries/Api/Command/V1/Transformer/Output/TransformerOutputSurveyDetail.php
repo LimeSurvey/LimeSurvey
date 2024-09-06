@@ -2,6 +2,8 @@
 
 namespace LimeSurvey\Api\Command\V1\Transformer\Output;
 
+use LimeSurvey\Libraries\Api\Command\V1\Transformer\Output\TransformerOutputSurveyMenuItems;
+use LimeSurvey\Libraries\Api\Command\V1\Transformer\Output\TransformerOutputSurveyMenus;
 use Survey;
 use LimeSurvey\Models\Services\QuestionAggregateService\QuestionService;
 use LimeSurvey\Api\Transformer\Output\TransformerOutputActiveRecord;
@@ -22,6 +24,8 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
     private TransformerOutputSurveyOwner $transformerSurveyOwner;
     private QuestionService $questionService;
     private TransformerOutputAnswerL10ns $transformerAnswerL10ns;
+    private TransformerOutputSurveyMenus $transformerOutputSurveyMenus;
+    private TransformerOutputSurveyMenuItems $transformerOutputSurveyMenuItems;
 
     /**
      * Construct
@@ -37,6 +41,8 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
         TransformerOutputAnswer $transformerOutputAnswer,
         TransformerOutputAnswerL10ns $transformerOutputAnswerL10ns,
         TransformerOutputSurveyOwner $transformerOutputSurveyOwner,
+        TransformerOutputSurveyMenus $transformerOutputSurveyMenus,
+        TransformerOutputSurveyMenuItems $transformerOutputSurveyMenuItems,
         QuestionService $questionService
     ) {
         $this->transformerSurvey = $transformerOutputSurvey;
@@ -49,6 +55,8 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
         $this->transformerAnswer = $transformerOutputAnswer;
         $this->transformerAnswerL10ns = $transformerOutputAnswerL10ns;
         $this->transformerSurveyOwner = $transformerOutputSurveyOwner;
+        $this->transformerOutputSurveyMenus = $transformerOutputSurveyMenus;
+        $this->transformerOutputSurveyMenuItems = $transformerOutputSurveyMenuItems;
         $this->questionService = $questionService;
     }
 
@@ -129,7 +137,24 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
                 $options
             );
         }
-        $survey['hasSurveyUpdatePermission'] = $data->hasPermission('surveycontent', 'update');
+        $survey['hasSurveyUpdatePermission'] = $data->hasPermission(
+            'surveycontent',
+            'update'
+        );
+
+        $surveyMenus = $this->transformerOutputSurveyMenus->transformAll(
+            $data->getSurveyMenus(),
+            $options
+        );
+        $survey['surveyMenus'] = $this->createCollectionLookup(
+            'name',$surveyMenus
+
+        );
+        $this->transformSurveyMenuItems(
+            $survey['surveyMenus'],
+            $data->getSurveyMenus(),
+            $options
+        );
         $survey['googleAnalyticsApiKeySetting'] = $data->getGoogleanalyticsapikeysetting();
 
         return $survey;
@@ -284,5 +309,17 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
             }
         }
         return $survey;
+    }
+
+    private function transformSurveyMenuItems($menuLookup, $menus, $options = [])
+    {
+        foreach ($menus as $menuModel) {
+            $menu = &$menuLookup[$menuModel['name']];
+
+            $menu['entries'] = $this->transformerOutputSurveyMenuItems->transformAll(
+                $menuModel['entries'], $options
+            );
+        }
+
     }
 }
