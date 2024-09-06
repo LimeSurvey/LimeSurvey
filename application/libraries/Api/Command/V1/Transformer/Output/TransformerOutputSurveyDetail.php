@@ -314,13 +314,16 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
     /**
      * Transforms survey menu items and puts them into the main survey menus,
      * organized by their unique names.
-     * @param $menuLookup
-     * @param $menus
-     * @param $options
+     * @param array $menuLookup
+     * @param array $menus
+     * @param array $options
      * @return void
      */
-    private function transformSurveyMenuItems($menuLookup, $menus, $options = [])
-    {
+    private function transformSurveyMenuItems(
+        array $menuLookup,
+        array $menus,
+        array $options = []
+    ) {
         foreach ($menus as $menuModel) {
             $menu = &$menuLookup[$menuModel['name']];
 
