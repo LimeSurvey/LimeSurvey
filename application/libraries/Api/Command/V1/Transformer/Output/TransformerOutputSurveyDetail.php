@@ -147,8 +147,8 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
             $options
         );
         $survey['surveyMenus'] = $this->createCollectionLookup(
-            'name',$surveyMenus
-
+            'name',
+            $surveyMenus
         );
         $this->transformSurveyMenuItems(
             $survey['surveyMenus'],
@@ -317,9 +317,9 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
             $menu = &$menuLookup[$menuModel['name']];
 
             $menu['entries'] = $this->transformerOutputSurveyMenuItems->transformAll(
-                $menuModel['entries'], $options
+                $menuModel['entries'],
+                $options
             );
         }
-
     }
 }
