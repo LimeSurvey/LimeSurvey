@@ -1,23 +1,49 @@
+.imageselect-list {
+    .imageselect-listitem {
+    }
+    .imageselect-listitem .imageselect-container {
+        .imageselect-checkbox {
+            display : none;
+        }
+        .imageselect-radiobutton::before {
+            content       : "";
+            display       : inline-block;
+            position      : absolute;
+            width         : 26px;
+            height        : 26px;
+            left          : 0;
+            top           : 0;
+            margin-left   : 0;
+            border-radius : 50%;
+            transition    : border 0.15s ease-in-out;
+            z-index       : 1;
+        }
+    }
+    .imageselect-radiobutton.d-none {
+        display  : inline-block !important;
+        position : absolute;
+        top      : 8px;
+        left     : 8px;
+    }
+}
+
 // hidden in other themes:
-.imageselect-radiobutton.d-none, .imageselect-select.d-none {
+.imageselect-select.d-none {
     display  : inline-block !important;
     position : absolute;
     top      : 8px;
 }
 
-.imageselect-radiobutton.d-none, .imageselect-select.d-none {
+.imageselect-select.d-none {
     left : 45px;
 }
 
-
 // imageselect list radio
-
 li.imageselect-listitem .imageselect-container .imageselect-label {
     border-radius : $border-radius !important;
-    overflow: hidden;
+    overflow      : hidden;
 }
 
-.imageselect-container .imageselect-radiobutton::before,
 .imageselect-list .no-anwser-item .radio-label::before,
 .imageselect-list .radio-text-item .label-radio::before {
     content       : "";
@@ -66,17 +92,14 @@ li.imageselect-listitem .imageselect-container input.imageselect-checkbox:checke
     .no-anwser-item, .radio-text-item, .radio-item {
         padding-left : 55px;
     }
-
     no-anwser-item .radio-label, .radio-text-item .label-radio {
         padding-left : 10px;
         padding-top  : 2px;
     }
-
     no-anwser-item {
         // "row g-1" without the actual class, to match other-item
         margin-left : calc(4px * -.5);
     }
-
     .othertext-label-checkox-container {
         padding-left : 0;
     }

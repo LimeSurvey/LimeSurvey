@@ -2706,6 +2706,7 @@ exports.Tooltip = exports.Toast = exports.Tab = exports.ScrollSpy = exports.Popo
 var Popper = _interopRequireWildcard(require("@popperjs/core"));
 function _getRequireWildcardCache(e) { if ("function" != typeof WeakMap) return null; var r = new WeakMap(), t = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(e) { return e ? t : r; })(e); }
 function _interopRequireWildcard(e, r) { if (!r && e && e.__esModule) return e; if (null === e || "object" != _typeof(e) && "function" != typeof e) return { "default": e }; var t = _getRequireWildcardCache(r); if (t && t.has(e)) return t.get(e); var n = { __proto__: null }, a = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var u in e) if ("default" !== u && {}.hasOwnProperty.call(e, u)) { var i = a ? Object.getOwnPropertyDescriptor(e, u) : null; i && (i.get || i.set) ? Object.defineProperty(n, u, i) : n[u] = e[u]; } return n["default"] = e, t && t.set(e, n), n; }
+function _superPropGet(t, e, o, r) { var p = _get(_getPrototypeOf(1 & r ? t.prototype : t), e, o); return 2 & r && "function" == typeof p ? function (t) { return p.apply(o, t); } : p; }
 function _get() { return _get = "undefined" != typeof Reflect && Reflect.get ? Reflect.get.bind() : function (e, t, r) { var p = _superPropBase(e, t); if (p) { var n = Object.getOwnPropertyDescriptor(p, t); return n.get ? n.get.call(arguments.length < 3 ? e : r) : n.value; } }, _get.apply(null, arguments); }
 function _superPropBase(t, o) { for (; !{}.hasOwnProperty.call(t, o) && null !== (t = _getPrototypeOf(t));); return t; }
 function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
@@ -2865,7 +2866,7 @@ var isDisabled = function isDisabled(element) {
   }
   return element.hasAttribute('disabled') && element.getAttribute('disabled') !== 'false';
 };
-var findShadowRoot = function findShadowRoot(element) {
+var _findShadowRoot = function findShadowRoot(element) {
   if (!document.documentElement.attachShadow) {
     return null;
   } // Can find the shadow root otherwise it'll return the document
@@ -2881,7 +2882,7 @@ var findShadowRoot = function findShadowRoot(element) {
   if (!element.parentNode) {
     return null;
   }
-  return findShadowRoot(element.parentNode);
+  return _findShadowRoot(element.parentNode);
 };
 var noop = function noop() {};
 /**
@@ -2955,16 +2956,16 @@ var executeAfterTransition = function executeAfterTransition(callback, transitio
   var durationPadding = 5;
   var emulatedDuration = getTransitionDurationFromElement(transitionElement) + durationPadding;
   var called = false;
-  var handler = function handler(_ref) {
+  var _handler = function handler(_ref) {
     var target = _ref.target;
     if (target !== transitionElement) {
       return;
     }
     called = true;
-    transitionElement.removeEventListener(TRANSITION_END, handler);
+    transitionElement.removeEventListener(TRANSITION_END, _handler);
     execute(callback);
   };
-  transitionElement.addEventListener(TRANSITION_END, handler);
+  transitionElement.addEventListener(TRANSITION_END, _handler);
   setTimeout(function () {
     if (!called) {
       triggerTransitionEnd(transitionElement);
@@ -4626,7 +4627,7 @@ var Dropdown = exports.Dropdown = /*#__PURE__*/function (_BaseComponent5) {
       if (this._popper) {
         this._popper.destroy();
       }
-      _get(_getPrototypeOf(Dropdown.prototype), "dispose", this).call(this);
+      _superPropGet(Dropdown, "dispose", this, 3)([]);
     }
   }, {
     key: "update",
@@ -5371,7 +5372,7 @@ var Modal = exports.Modal = /*#__PURE__*/function (_BaseComponent6) {
       });
       this._backdrop.dispose();
       this._focustrap.deactivate();
-      _get(_getPrototypeOf(Modal.prototype), "dispose", this).call(this);
+      _superPropGet(Modal, "dispose", this, 3)([]);
     }
   }, {
     key: "handleUpdate",
@@ -5752,7 +5753,7 @@ var Offcanvas = exports.Offcanvas = /*#__PURE__*/function (_BaseComponent7) {
     value: function dispose() {
       this._backdrop.dispose();
       this._focustrap.deactivate();
-      _get(_getPrototypeOf(Offcanvas.prototype), "dispose", this).call(this);
+      _superPropGet(Offcanvas, "dispose", this, 3)([]);
     } // Private
   }, {
     key: "_getConfig",
@@ -6128,7 +6129,7 @@ var Tooltip = exports.Tooltip = /*#__PURE__*/function (_BaseComponent8) {
         this.tip.remove();
       }
       this._disposePopper();
-      _get(_getPrototypeOf(Tooltip.prototype), "dispose", this).call(this);
+      _superPropGet(Tooltip, "dispose", this, 3)([]);
     }
   }, {
     key: "show",
@@ -6141,7 +6142,7 @@ var Tooltip = exports.Tooltip = /*#__PURE__*/function (_BaseComponent8) {
         return;
       }
       var showEvent = EventHandler.trigger(this._element, this.constructor.Event.SHOW);
-      var shadowRoot = findShadowRoot(this._element);
+      var shadowRoot = _findShadowRoot(this._element);
       var isInTheDom = shadowRoot === null ? this._element.ownerDocument.documentElement.contains(this._element) : shadowRoot.contains(this._element);
       if (showEvent.defaultPrevented || !isInTheDom) {
         return;
@@ -6857,7 +6858,7 @@ var ScrollSpy = exports.ScrollSpy = /*#__PURE__*/function (_BaseComponent9) {
     key: "dispose",
     value: function dispose() {
       EventHandler.off(this._scrollElement, EVENT_KEY$2);
-      _get(_getPrototypeOf(ScrollSpy.prototype), "dispose", this).call(this);
+      _superPropGet(ScrollSpy, "dispose", this, 3)([]);
     } // Private
   }, {
     key: "_getConfig",
@@ -7292,7 +7293,7 @@ var Toast = exports.Toast = /*#__PURE__*/function (_BaseComponent11) {
       if (this._element.classList.contains(CLASS_NAME_SHOW)) {
         this._element.classList.remove(CLASS_NAME_SHOW);
       }
-      _get(_getPrototypeOf(Toast.prototype), "dispose", this).call(this);
+      _superPropGet(Toast, "dispose", this, 3)([]);
     } // Private
   }, {
     key: "_getConfig",

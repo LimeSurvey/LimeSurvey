@@ -15001,13 +15001,36 @@ html, body {
   height: 50px;
 }
 
-.imageselect-radiobutton.d-none, .imageselect-select.d-none {
+.imageselect-list .imageselect-listitem .imageselect-container .imageselect-checkbox {
+  display: none;
+}
+.imageselect-list .imageselect-listitem .imageselect-container .imageselect-radiobutton::before {
+  content: "";
+  display: inline-block;
+  position: absolute;
+  width: 26px;
+  height: 26px;
+  right: 0;
+  top: 0;
+  margin-right: 0;
+  border-radius: 50%;
+  transition: border 0.15s ease-in-out;
+  z-index: 1;
+}
+.imageselect-list .imageselect-radiobutton.d-none {
+  display: inline-block !important;
+  position: absolute;
+  top: 8px;
+  right: 8px;
+}
+
+.imageselect-select.d-none {
   display: inline-block !important;
   position: absolute;
   top: 8px;
 }
 
-.imageselect-radiobutton.d-none, .imageselect-select.d-none {
+.imageselect-select.d-none {
   right: 45px;
 }
 
@@ -15016,7 +15039,6 @@ li.imageselect-listitem .imageselect-container .imageselect-label {
   overflow: hidden;
 }
 
-.imageselect-container .imageselect-radiobutton::before,
 .imageselect-list .no-anwser-item .radio-label::before,
 .imageselect-list .radio-text-item .label-radio::before {
   content: "";
