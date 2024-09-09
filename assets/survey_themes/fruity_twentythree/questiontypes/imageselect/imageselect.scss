@@ -1,3 +1,4 @@
+// imageselect-radio with absoluteurl image
 .imageselect-list {
     .imageselect-listitem {
     }
@@ -17,6 +18,27 @@
             border-radius : 50%;
             transition    : border 0.15s ease-in-out;
             z-index       : 1;
+        }
+        .imageselect-radiobutton::after {
+            content            : " ";
+            display            : inline-block;
+            position           : absolute;
+            width              : 14px;
+            height             : 14px;
+            left               : 4px;
+            top                : 4px;
+            margin-left        : 2px;
+            margin-top         : 2px;
+            border-radius      : 50%;
+            -webkit-transform  : scale(0, 0);
+            -ms-transform      : scale(0, 0);
+            -o-transform       : scale(0, 0);
+            transform          : scale(0, 0);
+            -webkit-transition : -webkit-transform 0.1s cubic-bezier(0.8, -0.33, 0.2, 1.33);
+            -moz-transition    : -moz-transform 0.1s cubic-bezier(0.8, -0.33, 0.2, 1.33);
+            -o-transition      : -o-transform 0.1s cubic-bezier(0.8, -0.33, 0.2, 1.33);
+            transition         : transform 0.1s cubic-bezier(0.8, -0.33, 0.2, 1.33);
+            z-index            : 1;
         }
     }
     .imageselect-radiobutton.d-none {
@@ -59,7 +81,6 @@ li.imageselect-listitem .imageselect-container .imageselect-label {
     z-index       : 1;
 }
 
-.imageselect-container .imageselect-radiobutton::after,
 .imageselect-list .no-anwser-item .radio-label::after,
 .imageselect-list .radio-text-item .label-radio::after {
     display            : inline-block;

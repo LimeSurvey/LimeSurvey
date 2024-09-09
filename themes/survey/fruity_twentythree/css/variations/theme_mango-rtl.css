@@ -15017,6 +15017,21 @@ html, body {
   transition: border 0.15s ease-in-out;
   z-index: 1;
 }
+.imageselect-list .imageselect-listitem .imageselect-container .imageselect-radiobutton::after {
+  content: " ";
+  display: inline-block;
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  right: 4px;
+  top: 4px;
+  margin-right: 2px;
+  margin-top: 2px;
+  border-radius: 50%;
+  transform: scale(0, 0);
+  transition: transform 0.1s cubic-bezier(0.8, -0.33, 0.2, 1.33);
+  z-index: 1;
+}
 .imageselect-list .imageselect-radiobutton.d-none {
   display: inline-block !important;
   position: absolute;
@@ -15054,7 +15069,6 @@ li.imageselect-listitem .imageselect-container .imageselect-label {
   z-index: 1;
 }
 
-.imageselect-container .imageselect-radiobutton::after,
 .imageselect-list .no-anwser-item .radio-label::after,
 .imageselect-list .radio-text-item .label-radio::after {
   display: inline-block;
