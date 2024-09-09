@@ -40,12 +40,21 @@
             transition         : transform 0.1s cubic-bezier(0.8, -0.33, 0.2, 1.33);
             z-index            : 1;
         }
+        .imageselect-radiobutton.d-none {
+            display  : inline-block !important;
+            position : absolute;
+            top      : 8px;
+            left     : 8px;
+        }
     }
-    .imageselect-radiobutton.d-none {
-        display  : inline-block !important;
-        position : absolute;
-        top      : 8px;
-        left     : 8px;
+}
+
+// imageselect-radio with image url
+.imageselect-list {
+    .imageselect-container {
+        &.radio-item {
+            padding-left : 33px;
+        }
     }
 }
 
@@ -82,6 +91,7 @@ li.imageselect-listitem .imageselect-container .imageselect-label {
     z-index       : 1;
 }
 
+.imageselect-list .imageselect-radiobutton::after,
 .imageselect-list .no-anwser-item .radio-label::after,
 .imageselect-list .radio-text-item .label-radio::after {
     display            : inline-block;
