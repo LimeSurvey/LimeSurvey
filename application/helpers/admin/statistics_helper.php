@@ -3856,7 +3856,7 @@ class statistics_helper
             }
 
             // Creating the first worksheet
-            $this->sheet = $this->workbook->addWorksheet(utf8_decode('results-survey' . $surveyid));
+            $this->sheet = $this->workbook->addWorksheet(mb_convert_encoding('results-survey' . $surveyid, 'ISO-8859-1'));
             $this->xlsPercents = $this->workbook->addFormat();
             $this->xlsPercents->setNumFormat('0.00%');
             $this->formatBold = $this->workbook->addFormat(array('Bold' => 1));
