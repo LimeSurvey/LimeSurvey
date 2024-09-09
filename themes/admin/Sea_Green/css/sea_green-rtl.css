@@ -17651,6 +17651,9 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
   line-height: 24px;
   margin: 0;
 }
+.box-widget .box-widget-card .box-widget-card-text {
+  cursor: pointer;
+}
 .box-widget .box-widget-card .box-widget-card-text [class^=ri-], .box-widget .box-widget-card .box-widget-card-text [class*=" ri-"] {
   vertical-align: 0;
 }
@@ -17689,10 +17692,16 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
   display: inline-block;
   font-size: 1em;
 }
+.box-widget .card-link-highlight {
+  color: var(--bs-info) !important;
+  border: solid 2px var(--bs-info) !important;
+}
 .box-widget .box-widget-card.card-link {
   display: block;
   align-content: center;
   text-align: center;
+  color: #6D748C;
+  border: solid 2px #6D748C;
 }
 .box-widget .box-widget-card.card-link .box-widget-card-body {
   flex-direction: row;

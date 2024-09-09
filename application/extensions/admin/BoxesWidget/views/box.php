@@ -25,7 +25,7 @@
     *     [
     *         'type' => 2, // Link type
     *         'link' => 'external-link',
-    *         'color' => '#ff0000',
+    *         'colored' => true,
     *         'icon' => 'icon-class',
     *         'text' => 'Link Text',
     *         'external' => true
@@ -36,7 +36,7 @@
 ?>
 <?php if (!empty($items)) : ?>
     <?php foreach ($items as $item) : ?>
-        <?php if ($item['type'] == 0) : ?>
+        <?php if ($item['type'] == BoxesWidget::TYPE_PRODUCT) : ?>
             <div class="box-widget-card align-middle d-inline-block"
                  data-url="<?php echo $item['link'] ?>">
                 <div class="box-widget-card-body">
@@ -96,12 +96,9 @@
                     </div>
                 </div>
             </div>
-        <?php elseif ($item['type'] == 2) : ?>
-            <div class="box-widget-card card-link m-2 align-middle d-inline-block"
+        <?php elseif ($item['type'] == BoxesWidget::TYPE_LINK) : ?>
+            <div class="box-widget-card card-link m-2 align-middle d-inline-block <?php echo $item['colored']? 'card-link-highlight' : ''; ?>"
                  data-url="<?php echo $item['link'] ?>"
-                <?php if ($item['color']) : ?>
-                    style="color:<?php echo $item['color'] ?>;border: solid 2px <?= $item['color'] ?>"
-                <?php endif; ?>
                 <?php if ($item['external']) :
                     ?> data-target="_blank" <?php
                 endif; ?>

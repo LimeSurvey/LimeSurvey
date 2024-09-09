@@ -1,6 +1,5 @@
 let cardHeaderRedirection = function () {
     $(".box-widget-card-header, .box-widget-card-text").click(function (event) {
-        console.log()
         if ($(this).closest('.box-widget-card').attr("data-url")) {
             window.location.href = $(this).closest('.box-widget-card').attr("data-url");
         }

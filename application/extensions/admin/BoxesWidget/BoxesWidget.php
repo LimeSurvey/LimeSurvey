@@ -58,7 +58,7 @@ class BoxesWidget extends CWidget
                     'icon' => $item->icon ?? '',
                     'text' => $item->text,
                     'external' => $item->external ?? false,
-                    'color' => $item->color ?? '',
+                    'colored' => $item->colored ?? false,
                 ];
             } elseif (isset($item->type) && $item->type == self::TYPE_PRODUCT) {
                 $item->model->active = "";
@@ -94,7 +94,7 @@ class BoxesWidget extends CWidget
                     'link' => App()->createUrl('/surveyAdministration/newSurvey/'),
                     'text' => gT('Create survey'),
                     'icon' => 'ri-add-line',
-                    'color' => '#8146F6',
+                    'colored' => true,
                     'external' => false
                 ];
             }
@@ -105,7 +105,7 @@ class BoxesWidget extends CWidget
                     'link' => App()->createUrl('/admin/surveysgroups/sa/create/'),
                     'text' => gT('Create survey group'),
                     'icon' => 'ri-add-line',
-                    'color' => '#6D748C',
+                    'colored' => false,
                     'external' => false
                 ];
             }

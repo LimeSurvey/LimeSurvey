@@ -35,6 +35,7 @@
             }
         }
         .box-widget-card-text {
+          cursor : pointer;
             [class^=ri-], [class*=" ri-"] {
                 vertical-align: 0;
             }
@@ -75,10 +76,17 @@
             }
         }
     }
+    .card-link-highlight {
+      color: var(--bs-info) !important;
+      border: solid 2px var(--bs-info) !important;
+    }
     .box-widget-card.card-link {
       display: block;
       align-content: center;
       text-align: center;
+      color: #6D748C;
+      border: solid 2px #6D748C;
+
         .box-widget-card-body {
           flex-direction: row;
           align-items: center;
