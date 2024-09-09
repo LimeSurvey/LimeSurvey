@@ -66,6 +66,7 @@ li.imageselect-listitem .imageselect-container .imageselect-label {
     overflow      : hidden;
 }
 
+.imageselect-container .imageselect-radiobutton::before,
 .imageselect-list .no-anwser-item .radio-label::before,
 .imageselect-list .radio-text-item .label-radio::before {
     content       : "";
