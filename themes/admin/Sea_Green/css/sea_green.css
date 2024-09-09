@@ -17105,8 +17105,8 @@ tr.info, tr.danger {
   display: inline-block;
   vertical-align: middle;
   color: grey;
-  font-size: 1.5em;
-  padding-left: 5px;
+  font-size: 1.2em;
+  padding: 0 5px;
 }
 .modal-dialog .table input[type=checkbox]:before,
 .modal-dialog .table input[type=checkbox]:after {

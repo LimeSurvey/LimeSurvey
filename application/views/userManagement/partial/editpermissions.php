@@ -35,7 +35,7 @@ Yii::app()->getController()->renderPartial(
                         title="<?php echo $aCRUDPermissions['description']; ?>"
                         data-bs-original-title="<?php echo $aCRUDPermissions['description']; ?>"
                     >
-                        <i class="ri-information-fill text-success"></i>
+                        <i class="<?php echo $aCRUDPermissions['img']; ?> text-success"></i>
 
                         <?php if ($sPermissionKey == 'superadmin') {
                         ?> <span class='warning'> <?php

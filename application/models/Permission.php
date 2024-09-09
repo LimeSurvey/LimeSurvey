@@ -168,9 +168,9 @@ class Permission extends LSActiveRecord
             'delete' => false,
             'import' => false,
             'export' => false,
-            'title' => gT("Use internal database authentication"),
-            'description' => gT("Use internal database authentication"),
-            'img' => 'usergroup',
+            'title' => gT("Database authentication"),
+            'description' => gT("Database authentication"),
+            'img' => 'ri-user-settings-fill',
         );
 
         /**
