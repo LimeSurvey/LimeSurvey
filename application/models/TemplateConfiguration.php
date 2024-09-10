@@ -1471,7 +1471,17 @@ class TemplateConfiguration extends TemplateConfig
             if ($sAttribute === 'inherit') {
                 // NOTE: this is object recursive (if parent configuration field is set to inherit,
                 // then it will lead to this method again.)
-                $sAttribute = $this->getParentConfiguration()->$name;
+                $oParentConfiguration = $this->getParentConfiguration();
+                /**
+                 * We check if $oParentConfiguration is the same as $this because if it is, $oParentConfiguration->$name will
+                 * try to directly access the property instead of calling the magic method, and it will fail for dynamic properties.
+                 * @todo: Review the behavior of getParentConfiguration(). Returning the same object seems to be a bug.
+                 */
+                if ($oParentConfiguration != $this) {
+                    $sAttribute = $oParentConfiguration->$name;
+                } else {
+                    $sAttribute = $oParentConfiguration->getAttribute($name);
+                }
             }
         } else {
             $sAttribute = parent::__get($name);
