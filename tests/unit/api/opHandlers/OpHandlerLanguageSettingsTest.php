@@ -48,20 +48,6 @@ class OpHandlerLanguageSettingsTest extends TestBaseClass
     }
 
     /**
-     * @testdox has correct data output when provided with single language
-     */
-    public function testLanguageSettingsUpdateDataStructureSingle()
-    {
-        $op = $this->getOp(
-            $this->getPropsSingleArray(),
-            'en'
-        );
-        $outputData = $this->transformAll($op);
-        $this->assertArrayHasKey('en', $outputData);
-        $this->assertArrayHasKey('surveyls_title', $outputData['en']);
-    }
-
-    /**
      * @testdox has correct data output when provided with multiple languages
      */
     public function testLanguageSettingsUpdateDataStructureMultiple()

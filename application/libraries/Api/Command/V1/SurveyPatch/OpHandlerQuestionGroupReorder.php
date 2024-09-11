@@ -2,14 +2,20 @@
 
 namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
-use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\OpHandlerExceptionTrait;
-use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\OpHandlerSurveyTrait;
-use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\OpHandlerValidationTrait;
-use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestionGroupReorder;
+use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\{
+    OpHandlerExceptionTrait,
+    OpHandlerSurveyTrait,
+    OpHandlerValidationTrait
+};
+use LimeSurvey\Api\Command\V1\Transformer\Input\{
+    TransformerInputQuestionGroupReorder
+};
 use QuestionGroup;
-use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestion;
-use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestionGroup;
-use LimeSurvey\Models\Services\QuestionGroupService;
+use LimeSurvey\Models\Services\{
+    QuestionGroupService,
+    Exception\PermissionDeniedException,
+    Exception\NotFoundException
+};
 use LimeSurvey\ObjectPatch\{
     Op\OpInterface,
     OpHandler\OpHandlerException,
@@ -94,7 +100,8 @@ class OpHandlerQuestionGroupReorder implements OpHandlerInterface
      * @throws OpHandlerException
      * @throws \DI\DependencyException
      * @throws \DI\NotFoundException
-     * @throws \LimeSurvey\Models\Services\Exception\NotFoundException
+     * @throws NotFoundException
+     * @throws PermissionDeniedException
      */
     public function handle(OpInterface $op): void
     {
@@ -102,6 +109,8 @@ class OpHandlerQuestionGroupReorder implements OpHandlerInterface
         $questionGroupService = $diContainer->get(
             QuestionGroupService::class
         );
+        $surveyId = $this->getSurveyIdFromContext($op);
+        $questionGroupService->checkUpdatePermission($surveyId);
         $transformedProps = $this->transformer->transformAll(
             $op->getProps(),
             ['operation' => $op->getType()->getId()]
@@ -110,7 +119,7 @@ class OpHandlerQuestionGroupReorder implements OpHandlerInterface
             $this->throwNoValuesException($op);
         }
         $questionGroupService->reorderQuestionGroups(
-            $this->getSurveyIdFromContext($op),
+            $surveyId,
             $transformedProps
         );
     }
@@ -122,7 +131,12 @@ class OpHandlerQuestionGroupReorder implements OpHandlerInterface
      */
     public function validateOperation(OpInterface $op): array
     {
-        $validationData = $this->validateCollectionIndex($op, [], false);
+        $validationData = $this->validateSurveyIdFromContext($op, []);
+        $validationData = $this->validateCollectionIndex(
+            $op,
+            $validationData,
+            false
+        );
         if (empty($validationData)) {
             $validationData = $this->transformer->validateAll(
                 $op->getProps(),

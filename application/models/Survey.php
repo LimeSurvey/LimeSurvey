@@ -186,6 +186,16 @@ class Survey extends LSActiveRecord implements PermissionInterface
             $this->setAttributeDefaults();
         }
         $this->attachEventHandler("onAfterFind", array($this, 'afterFindSurvey'));
+        $this->attachEventHandler("onAfterSave", array($this, 'unsetFromStaticPkCache'));
+    }
+
+    /**
+     * Delete from static $findByPkCache
+     * return void
+     */
+    public function unsetFromStaticPkCache()
+    {
+        unset(self::$findByPkCache[$this->sid]);
     }
 
     private function setAttributeDefaults()
@@ -2006,12 +2016,24 @@ class Survey extends LSActiveRecord implements PermissionInterface
     }
 
     /**
+     * @param boolean $countHidden determines whether to count hidden questions or not.
      * @return int
      */
-    public function getCountTotalQuestions()
+    public function getCountTotalQuestions($countHidden = true)
     {
-        $condn = array('sid' => $this->sid, 'parent_qid' => 0);
-        $sumresult = Question::model()->countByAttributes($condn);
+        $sumresult = null;
+
+        if ($countHidden) {
+            $condn = array('sid' => $this->sid, 'parent_qid' => 0);
+            $sumresult = Question::model()->countByAttributes($condn);
+        } else {
+            $sumresult = Question::model()->with('questionattributes')
+              ->count(
+                  "sid=:sid AND parent_qid=:parent_qid AND((attribute='hidden' AND value!=:hidden )OR attribute IS NULL)",
+                  ['sid' => $this->sid, 'parent_qid' => 0, 'hidden' => '1']
+              );
+        }
+
         return (int) $sumresult;
     }
 

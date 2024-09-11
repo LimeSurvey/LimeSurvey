@@ -41,7 +41,7 @@ class CsvWriter extends Writer
         }
     }
 
-    protected function outputRecord($headers, $values, FormattingOptions $oOptions)
+    protected function outputRecord($headers, $values, FormattingOptions $oOptions, $fieldNames = [])
     {
         $sRecord = '';
         if (!empty($oOptions->csvFieldSeparator)) {

@@ -919,8 +919,13 @@ class pdf extends TCPDF
      */
     public function addHeader($aPdfLanguageSettings, $sSiteName, $sDefaultHeaderString)
     {
-
-        $oTemplate = Template::getLastInstance();
+        $oTemplate = null;
+        if (!empty($this->_aSurveyInfo['sid'])) {
+            $oTemplate = Template::getInstance(null, $this->_aSurveyInfo['sid']);
+        } else {
+            $oTemplate = Template::getLastInstance();
+        }
+        
         $sLogoFileName = $oTemplate->filesPath . Yii::app()->getConfig('pdflogofile');
         if (!file_exists($sLogoFileName)) {
             $sLogoFileName = '';

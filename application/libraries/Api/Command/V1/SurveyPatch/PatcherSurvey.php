@@ -102,6 +102,11 @@ class PatcherSurvey extends Patcher
                 OpHandlerSubQuestion::class
             )
         );
+        $this->addOpHandler(
+            $diContainer->get(
+                OpHandlerSurveyStatus::class
+            )
+        );
     }
 
     /**

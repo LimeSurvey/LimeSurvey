@@ -824,13 +824,16 @@ function buildsurveysession($surveyid, $preview = false)
 
     UpdateGroupList($surveyid, $_SESSION['survey_' . $surveyid]['s_lang']);
 
-    $totalquestions               = $survey->countTotalQuestions;
+    $totalquestions = $survey->countTotalQuestions;
+    $totalVisibleQuestions = $survey->getCountTotalQuestions(false);
+
     $iTotalGroupsWithoutQuestions = QuestionGroup::model()->getTotalGroupsWithoutQuestions($surveyid);
 
-    $_SESSION['survey_' . $surveyid]['totalquestions'] = $survey->countInputQuestions;
+    $_SESSION['survey_' . $surveyid]['totalquestions'] = $totalquestions;
+    $_SESSION['survey_' . $surveyid]['totalVisibleQuestions'] = $totalVisibleQuestions;
 
     // 2. SESSION VARIABLE: totalsteps
-    setTotalSteps($surveyid, $thissurvey, $totalquestions);
+    setTotalSteps($surveyid, $thissurvey, $totalquestions, $totalVisibleQuestions);
 
     // Break out and crash if there are no questions!
     if (($totalquestions == 0 || $iTotalGroupsWithoutQuestions > 0) && !$preview) {
@@ -1410,7 +1413,7 @@ function resetAllSessionVariables($surveyid)
  * @param integer $totalquestions
  * @return void
  */
-function setTotalSteps($surveyid, array $thissurvey, $totalquestions)
+function setTotalSteps($surveyid, array $thissurvey, $totalquestions, $totalVisibleQuestions)
 {
     switch ($thissurvey['format']) {
         case "A":
@@ -1425,6 +1428,7 @@ function setTotalSteps($surveyid, array $thissurvey, $totalquestions)
 
         case "S":
             $_SESSION['survey_' . $surveyid]['totalsteps'] = $totalquestions;
+            $_SESSION['survey_' . $surveyid]['totalVisibleSteps'] = $totalVisibleQuestions;
     }
 }
 

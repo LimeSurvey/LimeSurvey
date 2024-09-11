@@ -698,7 +698,7 @@ window.addEventListener('message', function(event) {
                 isset($_SESSION['survey_' . $aData['aSurveyInfo']['sid']]['totalquestions'])
             ) {
                 $aData["aSurveyInfo"]['iTotalquestions'] = $_SESSION['survey_' .
-                $aData['aSurveyInfo']['sid']]['totalquestions'];
+                $aData['aSurveyInfo']['sid']]['totalVisibleQuestions'];
             }
 
             // Add the survey theme options

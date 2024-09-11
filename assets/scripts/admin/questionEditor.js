@@ -886,8 +886,11 @@ $(document).on('ready pjax:scriptcomplete', function () {
         var generatedIds = currentIds;
 
         // Loop the preview table and copy rows to destination (subquestions or answer options).
-        $('#labelsetpreview').find(`#language_${lang}`).find('.selector_label-list').find('.selector_label-list-row')
-        .each((i, item) => {
+        let importedLabelset = $('#labelsetpreview').find(`#language_${lang}`).find('.selector_label-list').find('.selector_label-list-row');
+        if (importedLabelset.length === 0) {
+          importedLabelset = $('#labelsetpreview').find(`.tab-pane:first`).find('.selector_label-list').find('.selector_label-list-row');
+        }
+        importedLabelset.each((i, item) => {
           try {
             const label /*: {code: string, title: string} */ = $(item).data('label');
             const $row = $(row);

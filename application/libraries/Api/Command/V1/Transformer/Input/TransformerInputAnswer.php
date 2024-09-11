@@ -25,7 +25,7 @@ class TransformerInputAnswer extends Transformer
                 'numerical'
             ],
             'scaleId' => ['key' => 'scale_id', 'type' => 'int', 'numerical'],
-            'tempId' => ['required' => 'create'],
+            'tempId' => true,
             'l10ns' => [
                 'key' => 'answeroptionl10n',
                 'collection' => true,
@@ -47,7 +47,7 @@ class TransformerInputAnswer extends Transformer
             $index = array_key_exists(
                 'aid',
                 $answer
-            ) ? $answer['aid'] : $index;
+            ) && $answer['aid'] > 0 ? $answer['aid'] : $index;
             $output[$index][$scaleId] = $answer;
         }
         return $output;

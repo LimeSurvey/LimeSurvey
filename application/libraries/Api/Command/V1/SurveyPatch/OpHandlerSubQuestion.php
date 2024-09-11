@@ -4,7 +4,8 @@ namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
 use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\{OpHandlerQuestionTrait,
     OpHandlerSurveyTrait,
-    OpHandlerValidationTrait};
+    OpHandlerValidationTrait
+};
 use LimeSurvey\Api\Command\V1\Transformer\Input\{
     TransformerInputSubQuestion
 };
@@ -196,7 +197,12 @@ class OpHandlerSubQuestion implements OpHandlerInterface
      */
     public function validateOperation(OpInterface $op): array
     {
-        $validationData = $this->validateCollectionIndex($op, [], false);
+        $validationData = $this->validateSurveyIdFromContext($op, []);
+        $validationData = $this->validateCollectionIndex(
+            $op,
+            $validationData,
+            false
+        );
         $validationData = $this->validateEntityId($op, $validationData);
         if (empty($validationData)) {
             $validationData = $this->transformer->validateAll(
