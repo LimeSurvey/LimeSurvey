@@ -1474,7 +1474,7 @@ class TemplateConfiguration extends TemplateConfig
                  * try to directly access the property instead of calling the magic method, and it will fail for dynamic properties.
                  * @todo: Review the behavior of getParentConfiguration(). Returning the same object seems to be a bug.
                  */
-                if ($oParentConfiguration != $this) {
+                if ($oParentConfiguration !== $this) {
                     $sAttribute = $oParentConfiguration->$name;
                 } else {
                     $sAttribute = $oParentConfiguration->getAttribute($name);
