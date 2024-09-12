@@ -158,7 +158,8 @@
 
     class QRtools {
 
-        public $frames;
+        /** @todo: Is this used? */
+        public static $frames;
 
         //----------------------------------------------------------------------
         public static function binarize($frame)
