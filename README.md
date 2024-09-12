@@ -29,6 +29,14 @@ You may want to use the plain repository, which is also possible.
 
 Please be advised, that we sometimes push development versions into the repository, which may not be working correctly.
 
+## Self-Hosting Options
+
+### Elestio
+
+You can deploy LimeSurvey on Elestio using one-click deployment.
+
+[![Deploy on Elestio](https://elest.io/images/logos/deploy-to-elestio-btn.png)](https://elest.io/open-source/limesurvey)
+
 ## Requirements
 
 ### Minimal
