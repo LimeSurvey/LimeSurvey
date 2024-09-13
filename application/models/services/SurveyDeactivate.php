@@ -187,7 +187,7 @@ class SurveyDeactivate
         $model->created = $DBDate;
         $model->properties = $properties;
         if ($attributes) {
-            $model->attributes = isset($attributes) ? json_encode($attributes) : null;
+            $model->setAttribute("attributes", isset($attributes) ? json_encode($attributes) : null);
         }
         $model->save();
     }
