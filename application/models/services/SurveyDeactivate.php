@@ -144,7 +144,7 @@ class SurveyDeactivate
             'token',
             $DBDate,
             $aData['aSurveysettings']['tokenencryptionoptions'],
-            json_encode($aData['aSurveysettings']['attributedescriptions'])
+            $aData['aSurveysettings']['attributedescriptions']
         );
 
         $aData['tnewtable'] = $tnewtable;
@@ -160,7 +160,7 @@ class SurveyDeactivate
      * @param string $tableType
      * @param string $DBDate
      * @param string $properties
-     * @param ?array $attributes JSON encoded attributes
+     * @param ?array $attributes
      * @return void
      * @throws \InvalidArgumentException
      */
@@ -187,7 +187,7 @@ class SurveyDeactivate
         $model->created = $DBDate;
         $model->properties = $properties;
         if ($attributes) {
-            $model->attributes = $attributes;
+            $model->setAttribute("attributes", isset($attributes) ? json_encode($attributes) : null);
         }
         $model->save();
     }
@@ -236,7 +236,7 @@ class SurveyDeactivate
         }
 
         $this->app->db->createCommand()->renameTable($sOldSurveyTableName, $sNewSurveyTableName);
-        $this->archiveTable($iSurveyID, $userID, "old_tokens_{$iSurveyID}_{$date}", 'response', $DBDate, json_encode(Response::getEncryptedAttributes($iSurveyID)));
+        $this->archiveTable($iSurveyID, $userID, "old_survey_{$iSurveyID}_{$date}", 'response', $DBDate, json_encode(Response::getEncryptedAttributes($iSurveyID)));
         // Load the active record again, as there have been sporadic errors with the dataset not being updated
         $survey = $this->survey->findByAttributes(array('sid' => $iSurveyID));
         $survey->scenario = 'activationStateChange';
