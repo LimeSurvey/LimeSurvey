@@ -153,7 +153,7 @@ function createChart($iQuestionID, $iSurveyID, $type, $lbl, $gdata, $grawdata, $
 
             $counter = 0;
             foreach ($lblout as $sLabelName) {
-                $DataSet->SetSerieName(html_entity_decode($sLabelName, ENT_QUOTES|ENT_SUBSTITUTE, 'UTF-8'), "Serie" . $counter);
+                $DataSet->SetSerieName(html_entity_decode($sLabelName, ENT_COMPAT, 'UTF-8'), "Serie" . $counter);
                 $counter++;
             }
 
@@ -227,11 +227,11 @@ function createChart($iQuestionID, $iSurveyID, $type, $lbl, $gdata, $grawdata, $
                 }
             } elseif (getLanguageRTL($sLanguageCode)) {
                 foreach ($lbl as $kkey => $kval) {
-                    $lblout[] = UTF8Strrev(html_entity_decode($kkey, ENT_QUOTES|ENT_SUBSTITUTE, 'UTF-8') . ' )' . $kval . '(');
+                    $lblout[] = UTF8Strrev(html_entity_decode($kkey, ENT_COMPAT, 'UTF-8') . ' )' . $kval . '(');
                 }
             } else {
                 foreach ($lbl as $kkey => $kval) {
-                    $lblout[] = html_entity_decode($kkey, ENT_QUOTES|ENT_SUBSTITUTE, 'UTF-8') . ' (' . $kval . ')';
+                    $lblout[] = html_entity_decode($kkey, ENT_COMPAT, 'UTF-8') . ' (' . $kval . ')';
                 }
             }
 
@@ -3856,7 +3856,7 @@ class statistics_helper
             }
 
             // Creating the first worksheet
-            $this->sheet = $this->workbook->addWorksheet(mb_convert_encoding('results-survey' . $surveyid, 'ISO-8859-1'));
+            $this->sheet = $this->workbook->addWorksheet(mb_convert_encoding('results-survey' . $surveyid, 'ISO-8859-1', 'UTF-8'));
             $this->xlsPercents = $this->workbook->addFormat();
             $this->xlsPercents->setNumFormat('0.00%');
             $this->formatBold = $this->workbook->addFormat(array('Bold' => 1));
