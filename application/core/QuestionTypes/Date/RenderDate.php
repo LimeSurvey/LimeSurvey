@@ -275,8 +275,8 @@ class RenderDate extends QuestionBaseRenderer
                         'allowInputToggle' => true,
                         'showClear' => true,
                         'sideBySide' => true,
-                        'minDate' => $this->minDate,
-                        'maxDate' => $this->maxDate,
+                        'minDate' => strpos($this->minDate, '{') === false ? $this->minDate : '1900-01-01',
+                        'maxDate' => strpos($this->maxDate, '{') === false ? $this->maxDate : '2187-12-31',
                         'stepping' => intval($this->getQuestionAttribute('dropdown_dates_minute_step')),
                         'locale' => convertLStoDateTimePickerLocale(App()->getLanguage()),
                     )
