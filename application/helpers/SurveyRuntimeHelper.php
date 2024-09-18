@@ -332,12 +332,8 @@ class SurveyRuntimeHelper
                 $this->aSurveyInfo['progress']['currentstep'] = $_SESSION[$this->LEMsessid]['totalsteps'] + 1;
                 $this->aSurveyInfo['progress']['total']       = $totalVisibleSteps ? $totalVisibleSteps : $_SESSION[$this->LEMsessid]['totalsteps'];
             } else {
-                $this->aSurveyInfo['progress']['currentstep'] = $_SESSION[$this->LEMsessid]['step'];
+                $this->aSurveyInfo['progress']['currentstep'] = $_SESSION[$this->LEMsessid]['step'] - ($_SESSION[$this->LEMsessid]['hiddenSteps'] ?? 0);
                 $this->aSurveyInfo['progress']['total']       = $totalVisibleSteps ? $totalVisibleSteps : $_SESSION[$this->LEMsessid]['totalsteps'] ?? 1;
-            }
-
-            if ($this->aSurveyInfo['progress']['currentstep'] > $this->aSurveyInfo['progress']['total']) {
-                $this->aSurveyInfo['progress']['total'] = $_SESSION[$this->LEMsessid]['totalsteps'] ?? $_SESSION[$this->LEMsessid]['totalVisibleSteps'];
             }
 
             $progressValue = ($this->aSurveyInfo['progress']['currentstep'] - 1) / $this->aSurveyInfo['progress']['total'] * 100;
@@ -1063,6 +1059,7 @@ class SurveyRuntimeHelper
         if ($this->aMoveResult && isset($this->aMoveResult['seq'])) {
             if ($this->aMoveResult['finished'] != true) {
                 $_SESSION[$this->LEMsessid]['step'] = $this->aMoveResult['seq'] + 1; // step is index base 1
+                $_SESSION[$this->LEMsessid]['hiddenSteps'] = ($_SESSION[$this->LEMsessid]['hiddenSteps'] ?? 0) + $this->aMoveResult['hiddenSteps'];
                 $this->aStepInfo = LimeExpressionManager::GetStepIndexInfo($this->aMoveResult['seq']);
             }
         }
@@ -1797,6 +1794,7 @@ class SurveyRuntimeHelper
             }
 
             $_SESSION[$this->LEMsessid]['step'] = $this->aMoveResult['seq'] + 1; // step is index base 1?
+            $_SESSION[$this->LEMsessid]['hiddenSteps'] = ($_SESSION[$this->LEMsessid]['hiddenSteps'] ?? 0) + $this->aMoveResult['hiddenSteps'];
 
             $this->aStepInfo = LimeExpressionManager::GetStepIndexInfo($this->aMoveResult['seq']);
 
