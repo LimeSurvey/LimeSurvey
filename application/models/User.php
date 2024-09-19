@@ -241,12 +241,14 @@ class User extends LSActiveRecord
     }
 
     /**
-     * @todo Not used?
+     * Get formatted creation date of user to be displayed in the user list
      */
     public function getFormattedDateCreated()
     {
-        $dateCreated = $this->created;
-        $date = new DateTime($dateCreated);
+        if ($this->created===null) {
+            return null;
+        }
+        $date = new DateTime($this->created);
         return $date->format($this->getDateFormat());
     }
 
