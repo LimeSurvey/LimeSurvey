@@ -353,7 +353,8 @@ class LimeExpressionManager
      * 'hidden' => 0    // 1 if it should be always_hidden
      * 'gid' => "34"    // group id
      * 'mandatory' => 'N'   // 'Y' if mandatory, 'S' if soft mandatory
-     * 'eqn' => ""  // TODO ??
+     * 'mandSoftForced' => false // boolean value to keep Mandatroy soft question status. False if not seen, answered, not a soft mandatory or not checked one time. Check is done in self::_validateQuestion using $_POST['mandSoft']
+     * 'eqn' => ""  // TODO ?? Equation result for validation
      * 'help' => "" // the help text
      * 'qtext' => "Enter a larger number than {num}"    // the question text
      * 'code' => 'afDS_sq5_1' // the full variable name
@@ -3328,6 +3329,12 @@ class LimeExpressionManager
             'jsName'    => '',
             'readWrite' => 'N',
         ];
+        $this->knownVars['LANG'] = [
+            'code'      => self::getEMlanguage(),
+            'jsName_on' => '',
+            'jsName'    => '',
+            'readWrite' => 'N',
+        ];
         if ($survey->getIsAssessments()) {
             $this->knownVars['ASSESSMENT_CURRENT_TOTAL'] = [
                 'code'      => 0,
@@ -3337,6 +3344,7 @@ class LimeExpressionManager
             ];
         }
         /* Add the core replacement before question code : needed if use it in equation , use SID to never send error */
+        /* Added replacement can not be used in condition, only for replacement */
         templatereplace("{SID}");
 
         // Since building array of allowable answers, need to know preset values for certain question types
@@ -3885,6 +3893,7 @@ class LimeExpressionManager
                 'hidden'         => $hidden,
                 'gid'            => $groupNum,
                 'mandatory'      => $mandatory,
+                'mandSoftForced' => false,
                 'eqn'            => '',
                 'help'           => $help,
                 'qtext'          => $fielddata['question'],    // $question,
@@ -4655,11 +4664,14 @@ class LimeExpressionManager
                         $value = null;  // can't upload a file via GET
                         break;
                 }
-                $_SESSION[$LEM->sessid][$knownVar['sgqa']] = $value;
-                $LEM->updatedValues[$knownVar['sgqa']] = [
-                    'type'  => $knownVar['type'],
-                    'value' => $value,
-                ];
+                /* Validate validity of startingValues : do not show error */
+                if (self::checkValidityAnswer($knownVar['type'], $value, $knownVar['sgqa'], $LEM->questionSeq2relevance[$knownVar['qseq']], false)) {
+                    $_SESSION[$LEM->sessid][$knownVar['sgqa']] = $value;
+                    $LEM->updatedValues[$knownVar['sgqa']] = [
+                        'type'  => $knownVar['type'],
+                        'value' => $value,
+                    ];
+                }
             }
             $LEM->_UpdateValuesInDatabase();
         }
@@ -6120,6 +6132,15 @@ class LimeExpressionManager
                     'qInfo'          => $qInfo
                 ]
             );
+            if ($qInfo['mandatory'] == 'S') {
+                $mandatoryTip .= App()->twigRenderer->renderPartial(
+                    '/survey/questions/question_help/softmandatory_input.twig',
+                    [
+                        'sCheckboxLabel' => $LEM->gT("Continue without answering to this question."),
+                        'qInfo'          => $qInfo
+                    ]
+                );
+            }
             switch ($qInfo['type']) {
                 case Question::QT_M_MULTIPLE_CHOICE:
                 case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS:
@@ -6274,16 +6295,34 @@ class LimeExpressionManager
                     break;
             }
         }
-        /* Set qmandViolation to false if mandSoft and POST is set */
         if (
             $qmandViolation
             && $qInfo['mandatory'] == 'S'
-            && App()->request->getPost('mandSoft')
         ) {
-            $qmandViolation = false;
-            $mandatoryTip = '';
+            $mandSoftPost = App()->request->getPost('mandSoft', []);
+            /* Old template compatibility pre 6.2.3 */
+            if (is_string($mandSoftPost)) {
+                $qmandViolation = false;
+                $mandatoryTip = '';
+            }
+            /* New system mandSoft are an array with Y/N for each question in page */
+            if (is_array($mandSoftPost)) {
+                if (isset($mandSoftPost[$questionSeq])) {
+                    if ($mandSoftPost[$questionSeq] == "N") { // Currently, input are not shown after selection done. (no mandatiry violation)
+                        $this->questionSeq2relevance[$questionSeq]['mandSoftForced'] = $qInfo['mandSoftForced'] = false;
+                    } else {
+                        $this->questionSeq2relevance[$questionSeq]['mandSoftForced'] = $qInfo['mandSoftForced'] = true;
+                    }
+                }
+                if ($qInfo['mandSoftForced']) {
+                    $qmandViolation = false;
+                    $mandatoryTip = '';
+                }
+            }
+        } else {
+            /* If question are answered (or are not mandatory soft) : always set mandSoftForced to false */
+            $LEM->questionSeq2relevance[$questionSeq]['mandSoftForced'] = false;
         }
-
         /////////////////////////////////////////////////////////////
         // DETECT WHETHER QUESTION SHOULD BE FLAGGED AS UNANSWERED //
         /////////////////////////////////////////////////////////////
@@ -9898,7 +9937,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 /* No validty control ? size ? */
                 break;
             case 'M':
-                if ($value != "Y" && (substr($sgq, -5) != 'other' && $other == 'Y')) {
+                if ($value != "Y" || (substr($sgq, -5) != 'other' && $other == 'Y')) {
                     $LEM->addValidityString($sgq, $value, gT("%s is an invalid value for this question"), $set);
                     return false;
                 }

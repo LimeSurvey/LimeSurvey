@@ -2849,7 +2849,7 @@ class Tokens extends SurveyCommonAction
                 }
                 $attributedescriptions = $archivedTableSettings->attributes;
                 $attributedescriptionsOld = $aSurveyInfo['attributedescriptions'];
-                $attributedescriptionsArray = json_decode((string) $attributedescriptions, true);
+                $attributedescriptionsArray = json_decode((string) $attributedescriptions, true) ?? [];
                 foreach ($attributedescriptionsArray as $attributedescription) {
                     // if the encryption status is unknown
                     if ($attributedescription === 'unknown') {

@@ -143,12 +143,6 @@ class TemplateConfiguration extends TemplateConfig
         );
     }
 
-    /** @inheritdoc */
-    public function defaultScope()
-    {
-        return array('order' => App()->db->quoteColumnName($this->getTableAlias(false, false) . '.template_name'));
-    }
-
     /**
      * @todo document me
      *
@@ -437,7 +431,7 @@ class TemplateConfiguration extends TemplateConfig
         $criteria->compare('packages_to_load', $this->packages_to_load, true);
 
         return new CActiveDataProvider($this, array(
-            'criteria' => $criteria,
+            'criteria' => $criteria
         ));
     }
 
@@ -501,6 +495,9 @@ class TemplateConfiguration extends TemplateConfig
             'criteria' => $criteria,
             'pagination' => array(
                 'pageSize' => $pageSizeTemplateView,
+            ),
+            'sort' => array(
+                'defaultOrder' => 'template_name ASC' // Set default order here
             ),
         ));
     }

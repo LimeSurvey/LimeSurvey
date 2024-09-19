@@ -34,6 +34,59 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.6.2 (build 240827) to 6.6.3 (build 240909) September 9, 2024
+-Fixed issue: image select question, select button outside of image in certain sizes of the screen, image and column (Patrick Teichmann)
+-Fixed issue: Unable to open Quick statistics on non-MySQL databases (Carsten Schmitz)
+-Fixed issue: Database not shown in DB upgrade dialog when using MSSQL (Carsten Schmitz)
+-Fixed issue [security] #19735: XSS by simple user in image_select-listradio (Denis Chenu)
+-Fixed issue [security] #19734: XSS by simple user in image_select-multiplechoice (#3956) (Denis Chenu)
+-Fixed issue [security] #19732: XSS on date format (#3952) (Denis Chenu)
+-Fixed issue #19733: XSS by simple user with end url (#3954) (Denis Chenu)
+-Fixed issue #19729 [security] : XSS on time_limit (#3951) (Denis Chenu)
+-Fixed issue #19702 [security]: Prototype pollution in jquery-bbq - re-apply v1.4pre (Kevin Foster)
+-Fixed issue #19702 [security]: Prototype pollution in jquery-bbq (Carsten Schmitz)
+-Fixed issue #19578: After upgrading to 5 or 6 with MSSQL no way to access to plugin configuration (Carsten Schmitz)
+-Fixed issue #19534: Survey cannot be submitted if "soft force" options are used and "full index" is active (#3950) (Denis Chenu)
+-Fixed issue #19478: Error message "A column has been specified more than once in the order" when using MSSQL (Carsten Schmitz)
+-Fixed issue #19110: Using MSSQL unable to activate survey a second time (Carsten Schmitz)
+-Fixed issue  #19731: Error "null is not a countable type" when updating participant attribute (Carsten Schmitz)
+-* Fixed issue: Optional questions not working without javascript (Denis Chenu)
+-* Fixed issue #18443: Optional questions not working without "popup" (Denis Chenu)
+-* Fixed issue #18332: Mandatory soft must be related to Question not Page (Denis Chenu)
+#Updated translation: Uzbek by p_teichmann
+#Updated translation: Turkish by bulent, kayazeren
+#Updated translation: Slovak by jelen1
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Nepali by fesoj, twilllig
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
+Changes from 6.6.1 (build 240806) to 6.6.2 (build 240827) August 27, 2024
+-Fixed issue #CT-944: kal.mo was corrupted (twilligls)
+-Fixed issue #19717: SQL injection vulnerability when save survey (#3946) (Denis Chenu)
+#Updated translation: Sinhala by tixeon
+#Updated translation: Punjabi by tixeon
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Persian (Afghanistan) - Dari by tixeon
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Hazaragi by tixeon
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Finnish by Jmantysalo, puohis
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+
+
 Changes from 6.6.0 (build 240729) to 6.6.1 (build 240806) August 6, 2024
 -Fixed issue: Undefined variable $editorUrl in surveyTopbarRight_view.php (Kevin Foster)
 -Fixed issue #CT-887: Hazaragi language is now rtl (twilligls)

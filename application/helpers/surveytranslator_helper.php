@@ -688,6 +688,14 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['nb']['radixpoint'] = 1;
     $supportedLanguages['nb']['momentjs'] = 'nb';
 
+    // Nepali
+    $supportedLanguages['ne']['description'] = gT('Nepali');
+    $supportedLanguages['ne']['nativedescription'] = 'Nepali';
+    $supportedLanguages['ne']['rtl'] = false;
+    $supportedLanguages['ne']['dateformat'] = 6;
+    $supportedLanguages['ne']['radixpoint'] = 0;
+    $supportedLanguages['ne']['momentjs'] = 'ne';
+
     // Norwegian Nynorsk
     $supportedLanguages['nn']['description'] = gT('Norwegian (Nynorsk)');
     $supportedLanguages['nn']['nativedescription'] = 'Norsk Nynorsk';
@@ -1004,6 +1012,14 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['ur']['dateformat'] = 2;
     $supportedLanguages['ur']['radixpoint'] = 0;
     $supportedLanguages['ur']['momentjs'] = 'ur';
+
+    //Uzbek
+    $supportedLanguages['uz']['description'] = gT('Uzbek');
+    $supportedLanguages['uz']['nativedescription'] = "O'zbek";
+    $supportedLanguages['uz']['rtl'] = false;
+    $supportedLanguages['uz']['dateformat'] = 1;
+    $supportedLanguages['uz']['radixpoint'] = 1;
+    $supportedLanguages['uz']['momentjs'] = 'uz';
 
     //Uyghur
     $supportedLanguages['ug']['description'] = gT('Uyghur');
