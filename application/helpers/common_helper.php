@@ -256,34 +256,36 @@ function getGidNext($surveyid, $gid)
  */
 function convertGETtoPOST($url)
 {
-    $url = preg_replace('/&amp;/i', '&', (string) $url);
+    $url = str_replace('&amp;', '&', (string) $url);
     $stack = explode('?', $url);
     $calledscript = array_shift($stack);
     $query = array_shift($stack);
-    $aqueryitems = explode('&', $query);
     $postArray = [];
     $getArray = [];
-    foreach ($aqueryitems as $queryitem) {
-        $stack = explode('=', $queryitem);
-        $paramname = array_shift($stack);
-        $value = array_shift($stack);
-        if (in_array($paramname, array(Yii::app()->getComponent('urlManager')->routeVar))) {
-            $getArray[$paramname] = $value;
-        } else {
-            $postArray[$paramname] = $value;
+    if (!empty($query)) {
+        $aqueryitems = explode('&', $query);
+        foreach ($aqueryitems as $queryitem) {
+            $stack = explode('=', $queryitem);
+            $paramname = array_shift($stack);
+            $value = array_shift($stack);
+            if (in_array($paramname, array(Yii::app()->getComponent('urlManager')->routeVar))) {
+                $getArray[$paramname] = $value;
+            } else {
+                $postArray[$paramname] = $value;
+            }
+        }
+        if (!empty($getArray)) {
+            $calledscript .= '?' . implode('&', array_map(
+                function ($v, $k) {
+                    return $k . '=' . $v;
+                },
+                $getArray,
+                array_keys($getArray)
+            ));
         }
     }
-    if (!empty($getArray)) {
-        $calledscript = $calledscript . "?" . implode('&', array_map(
-            function ($v, $k) {
-                return $k . '=' . $v;
-            },
-            $getArray,
-            array_keys($getArray)
-        ));
-    }
-    $callscript = "window.LS.sendPost(\"" . $calledscript . "\",\"\"," . json_encode($postArray) . ");";
-    return $callscript;
+    // params: script-name (string) / empty string / parameters as json
+    return 'window.LS.sendPost('. json_encode($calledscript) . ',"",' . json_encode($postArray) . ');';
 }
 
 
@@ -1004,10 +1006,8 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage)
                     // issue #15685 mssql SAVE 0.01 AS .0100000000, set it at 0.0100000000
                     $sValue = "0" . $sValue;
                 }
-                if (trim($sValue) != '') {
-                    if (strpos($sValue, ".") !== false) {
+                if (trim($sValue) !== '' && strpos($sValue, ".") !== false) {
                         $sValue = rtrim(rtrim($sValue, "0"), ".");
-                    }
                 }
                 break;
             case Question::QT_L_LIST:
