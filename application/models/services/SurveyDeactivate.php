@@ -160,7 +160,7 @@ class SurveyDeactivate
      * @param string $tableType
      * @param string $DBDate
      * @param string $properties
-     * @param ?array $attributes JSON encoded attributes
+     * @param string $attributes JSON encoded attributes
      * @return void
      * @throws \InvalidArgumentException
      */
@@ -179,7 +179,6 @@ class SurveyDeactivate
             default:
                 throw new \InvalidArgumentException('Unknown table type: ' . $tableType);
         }
-        /** @var ArchivedTableSettings $model */
         $model->survey_id = $iSurveyID;
         $model->user_id = $userID;
         $model->tbl_name = $tableName;
