@@ -843,7 +843,7 @@ class pdf extends TCPDF
 
     public function delete_html($text)
     {
-        $text = html_entity_decode((string) $text, ENT_COMPAT, 'UTF-8');
+        $text = html_entity_decode((string) $text, ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML401, 'UTF-8');
         $text = str_replace("\t", ' ', $text);
         return strip_tags($text);
     }
