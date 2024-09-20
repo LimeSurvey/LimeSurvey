@@ -11,7 +11,7 @@
  * @property string $tbl_type
  * @property string $created
  * @property string $properties JSON encoded settings, ['unknown'] if encryption status is unknown
-// * @property string $attributes JSON encoded additional attributes
+ * @property string $attributes JSON encoded additional attributes
  */
 class ArchivedTableSettings extends LSActiveRecord
 {
