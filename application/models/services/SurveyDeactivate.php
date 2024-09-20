@@ -160,7 +160,7 @@ class SurveyDeactivate
      * @param string $tableType
      * @param string $DBDate
      * @param string $properties
-     * @param ?array $attributes JSON encoded attributes
+     * @param string $attributes JSON encoded attributes
      * @return void
      * @throws \InvalidArgumentException
      */
