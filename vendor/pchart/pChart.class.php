@@ -208,7 +208,7 @@
        }
 
        $C_White =$this->AllocateColor($this->Picture,255,255,255);
-       imagefilledrectangle($this->Picture,0,0,(int) round($XSize),(int) round($YSize),$C_White);
+       imagefilledrectangle($this->Picture,0,0,(int) round((float) $XSize),(int) round((float) $YSize),$C_White);
        imagecolortransparent($this->Picture,$C_White);
 
        $this->setFontProperties("tahoma.ttf",8);
@@ -2745,7 +2745,7 @@
      if ( $B < 0 ) { $B = 0; } if ( $B > 255 ) { $B = 255; }
 
      $C_Background = $this->AllocateColor($this->Picture,$R,$G,$B);
-     imagefilledrectangle($this->Picture,0,0,(int) round($this->XSize),(int) round($this->YSize),$C_Background);
+     imagefilledrectangle($this->Picture,0,0,(int) round((float) $this->XSize),(int) round((float) $this->YSize),$C_Background);
     }
 
    /* This function can be used to set the background color */
@@ -2770,7 +2770,7 @@
          if ( $Yi2 >= $Yi2 ) { $Yi2 = $Y2-1; }
 
          $C_Background = $this->AllocateColor($this->Picture,$R,$G,$B);
-         imagefilledrectangle($this->Picture,(int) round($X1),(int) round($Yi1),(int) round($X2),(int) round($Yi2),$C_Background);
+         imagefilledrectangle($this->Picture,(int) round($X1),(int) round($Yi1),(int) round((float) $X2),(int) round($Yi2),$C_Background);
         }
       }
 
@@ -2783,7 +2783,7 @@
         {
          $R+=1;$G+=1;$B+=1;
          $C_Background = $this->AllocateColor($this->Picture,$R,$G,$B);
-         imagefilledrectangle($this->Picture,(int) round($X1),(int) round($Yi1),(int) round($X2),(int) round($Yi2),$C_Background);
+         imagefilledrectangle($this->Picture,(int) round($X1),(int) round($Yi1),(int) round((float) $X2),(int) round($Yi2),$C_Background);
 
          $Yi1+= $YStep;
          $Yi2+= $YStep;
@@ -2837,7 +2837,7 @@
         }
 
        $C_Rectangle = $this->AllocateColor($this->Picture,$R,$G,$B);
-       imagefilledrectangle($this->Picture,(int) round($X1),(int) round($Y1),(int) round($X2),(int) round($Y2),$C_Rectangle);
+       imagefilledrectangle($this->Picture,(int) round((float) $X1),(int) round((float) $Y1),(int) round((float) $X2),(int) round((float) $Y2),$C_Rectangle);
       }
      else
       {
@@ -2938,8 +2938,8 @@
        $this->drawAntialiasPixel($Xi4,$Yi4,$R,$G,$B);
       }
 
-     imagefilledrectangle($this->Picture,(int) round($X1),(int) round($Y1+$Radius),(int) round($X2),(int) round($Y2-$Radius),$C_Rectangle);
-     imagefilledrectangle($this->Picture,(int) round($X1+$Radius),(int) round($Y1),(int) round($X2-$Radius),(int) round($Y2),$C_Rectangle);
+     imagefilledrectangle($this->Picture,(int) round((float) $X1),(int) round($Y1+$Radius),(int) round((float) $X2),(int) round($Y2-$Radius),$C_Rectangle);
+     imagefilledrectangle($this->Picture,(int) round($X1+$Radius),(int) round((float) $Y1),(int) round($X2-$Radius),(int) round((float) $Y2),$C_Rectangle);
 
      $X1=$X1-.2;$Y1=$Y1-.2;
      $X2=$X2+.2;$Y2=$Y2+.2;
@@ -3160,7 +3160,7 @@
 
      $this->Picture = imagecreatetruecolor($this->XSize,$this->YSize);
      $C_White = $this->AllocateColor($this->Picture,255,255,255);
-     imagefilledrectangle($this->Picture,0,0,(int) round($this->XSize),(int) round($this->YSize),$C_White);
+     imagefilledrectangle($this->Picture,0,0,(int) round((float) $this->XSize),(int) round((float) $this->YSize),$C_White);
      imagecolortransparent($this->Picture,$C_White);
      imagecopy($this->Picture,$Resampled,0,0,0,0,$this->XSize,$this->YSize);
     }
