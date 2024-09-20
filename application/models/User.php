@@ -245,7 +245,7 @@ class User extends LSActiveRecord
      */
     public function getFormattedDateCreated()
     {
-        if ($this->created===null) {
+        if ($this->created === null) {
             return null;
         }
         $date = new DateTime($this->created);
