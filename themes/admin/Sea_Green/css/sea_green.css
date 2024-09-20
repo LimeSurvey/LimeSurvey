@@ -11111,10 +11111,6 @@ body {
   flex-direction: column;
 }
 
-.full-page-wrapper {
-  padding-bottom: 70px;
-}
-
 .selector_openSharePanel {
   display: inline-block;
 }
@@ -15120,7 +15116,6 @@ div.mappable-attribute-wrapper.paired.ui-state-disabled {
 
 :root {
   --LS-admintheme-basecolor: #328637;
-  --bs-info-rgb: 57, 153, 63;
 }
 
 .open .dropdown-toggle.btn-outline-secondary {

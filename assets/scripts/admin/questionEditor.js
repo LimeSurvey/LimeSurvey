@@ -886,8 +886,11 @@ $(document).on('ready pjax:scriptcomplete', function () {
         var generatedIds = currentIds;
 
         // Loop the preview table and copy rows to destination (subquestions or answer options).
-        $('#labelsetpreview').find(`#language_${lang}`).find('.selector_label-list').find('.selector_label-list-row')
-        .each((i, item) => {
+        let importedLabelset = $('#labelsetpreview').find(`#language_${lang}`).find('.selector_label-list').find('.selector_label-list-row');
+        if (importedLabelset.length === 0) {
+          importedLabelset = $('#labelsetpreview').find(`.tab-pane:first`).find('.selector_label-list').find('.selector_label-list-row');
+        }
+        importedLabelset.each((i, item) => {
           try {
             const label /*: {code: string, title: string} */ = $(item).data('label');
             const $row = $(row);
@@ -1818,23 +1821,27 @@ $(document).on('ready pjax:scriptcomplete', function () {
      * @return {boolean}
      */
     checkIfSaveIsValid: function(event /*: Event */, tabQuestionEditor = 'editor') {
+      $('#ls-loading').show();
       event.preventDefault();
       const qid = parseInt($('input[name="question[qid]"]').val());
       const code = $('input[name="question[title]"]').val();
       const target = event.currentTarget;
       if (!(target instanceof HTMLElement)) {
         alert('Internal error in checkIfSaveIsValid: target is not an HTMLElement, but ' + typeof target);
+        $('#ls-loading').hide();
         return false;
       }
       const saveWithAjax = target.dataset.saveWithAjax === 'true';
       const form = document.getElementById('edit-question-form');
       if (!(form instanceof HTMLFormElement)) {
+        $('#ls-loading').hide();
         throw 'form is not HTMLFormElement';
       }
       /* Check if input are HTML5 valid */
       if (!form.checkValidity() ) {
           // the form is invalid : show invalid part
           form.reportValidity();
+          $('#ls-loading').hide();
           return false;
       }
 
@@ -1842,6 +1849,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
       if (firstSubquestionRow) {
         // This will show error message if subquestion code is not unique.
         if (!LS.questionEditor.showSubquestionCodeUniqueError(firstSubquestionRow)) {
+          $('#ls-loading').hide();
           return false;
         }
       }
@@ -1850,17 +1858,20 @@ $(document).on('ready pjax:scriptcomplete', function () {
       if (firstAnsweroptionRow) {
         // This will show error message if answer option code is not unique.
         if (!LS.questionEditor.showAnswerOptionCodeUniqueError(firstAnsweroptionRow)) {
+          $('#ls-loading').hide();
           return false;
         }
       }
 
       const updateQuestionSummary = () => {
+        $('#ls-loading').show();
         $.ajax({
           url: form.dataset.summaryUrl,
           method: 'GET',
           data: {},
           dataType: 'html',
           success: (summaryHtml) => {
+            $('#ls-loading').hide();
             const isVisible = $('#question-overview').is(':visible');
             const newSummary = $(summaryHtml);
             if (isVisible) {
@@ -1880,6 +1891,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
             });
           },
           error: (response) => {
+            $('#ls-loading').hide();
             alert('Internal error in updateQuestionSummary: ' + response);
             return false;
           },
@@ -1914,6 +1926,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
         const data = {};
         const form = document.getElementById('edit-question-form');
         if (!(form instanceof HTMLFormElement)) {
+          $('#ls-loading').hide();
           throw 'form is not HTMLFormElement';
         }
 
@@ -2000,6 +2013,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
                 saveFormWithAjax();
               } else {
                 // Just submit form.
+                $('#ls-loading').show();
                 button.click();
               }
               return true;

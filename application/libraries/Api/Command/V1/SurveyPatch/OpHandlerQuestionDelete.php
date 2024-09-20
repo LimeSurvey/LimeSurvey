@@ -2,7 +2,13 @@
 
 namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
-use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\OpHandlerSurveyTrait;
+use LimeSurvey\Models\Services\Exception\PermissionDeniedException;
+use LimeSurvey\Models\Services\Exception\PersistErrorException;
+use LimeSurvey\Models\Services\Exception\QuestionHasConditionsException;
+use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\{
+    OpHandlerSurveyTrait,
+    OpHandlerValidationTrait
+};
 use LimeSurvey\Models\Services\QuestionAggregateService;
 use LimeSurvey\ObjectPatch\{
     Op\OpInterface,
@@ -14,6 +20,7 @@ use LimeSurvey\ObjectPatch\{
 class OpHandlerQuestionDelete implements OpHandlerInterface
 {
     use OpHandlerSurveyTrait;
+    use OpHandlerValidationTrait;
 
     protected QuestionAggregateService $questionAggregateService;
 
@@ -46,12 +53,18 @@ class OpHandlerQuestionDelete implements OpHandlerInterface
      * }
      *
      * @param OpInterface $op
-     * @throws OpHandlerException
+     * @throws \CDbException
+     * @throws \CException
+     * @throws PermissionDeniedException
+     * @throws PersistErrorException
+     * @throws QuestionHasConditionsException
      */
     public function handle(OpInterface $op): void
     {
+        $surveyId = $this->getSurveyIdFromContext($op);
+        $this->questionAggregateService->checkDeletePermission($surveyId);
         $this->questionAggregateService->delete(
-            $this->getSurveyIdFromContext($op),
+            $surveyId,
             $op->getEntityId()
         );
     }
@@ -59,11 +72,16 @@ class OpHandlerQuestionDelete implements OpHandlerInterface
     /**
      * Checks if patch is valid for this operation.
      * @param OpInterface $op
-     * @return bool
+     * @return array
      */
-    public function isValidPatch(OpInterface $op): bool
+    public function validateOperation(OpInterface $op): array
     {
-        //this is not really important here, but other OpHandlers might need it
-        return ((int)$op->getEntityId()) > 0;
+        $validationData = $this->validateSurveyIdFromContext($op, []);
+        $validationData = $this->validateEntityId($op, $validationData);
+        return $this->getValidationReturn(
+            gT('Could not delete question'),
+            $validationData,
+            $op
+        );
     }
 }

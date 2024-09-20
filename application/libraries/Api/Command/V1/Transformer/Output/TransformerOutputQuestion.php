@@ -3,16 +3,13 @@
 namespace LimeSurvey\Api\Command\V1\Transformer\Output;
 
 use LimeSurvey\Api\Transformer\{
-    Output\TransformerOutputActiveRecord,
-    Formatter\FormatterYnToBool
+    Output\TransformerOutputActiveRecord
 };
 
 class TransformerOutputQuestion extends TransformerOutputActiveRecord
 {
     public function __construct()
     {
-        $formatterYn = new FormatterYnToBool();
-
         $this->setDataMap([
             'qid' => ['type' => 'int'],
             'parent_qid' => ['key' => 'parentQid', 'type' => 'int'],
@@ -20,23 +17,29 @@ class TransformerOutputQuestion extends TransformerOutputActiveRecord
             'type' => true,
             'title' => true,
             'preg' => true,
-            'other' => ['formatter' => $formatterYn],
-            'mandatory' => ['formatter' => $formatterYn],
-            'encrypted' => ['formatter' => $formatterYn],
+            'other' => ['formatter' => ['ynToBool' => true]],
+            'mandatory' => ['formatter' => ['ynToBool' => true]],
+            'encrypted' => ['formatter' => ['ynToBool' => true]],
             'question_order' => ['key' => 'questionOrder', 'type' => 'int'],
             'scale_id' => ['key' => 'scaleId', 'type' => 'int'],
-            'same_default' => ['key' => 'sameDefault', 'formatter' => $formatterYn],
+            'same_default' => [
+                'key' => 'sameDefault',
+                'formatter' => ['intToBool' => true]
+            ],
             'question_theme_name' => 'questionThemeName',
             'modulename' => 'moduleName',
             'gid' => ['type' => 'int'],
             'relevance' => true,
-            'same_script' => ['key' => 'sameScript', 'formatter' => $formatterYn]
+            'same_script' => [
+                'key' => 'sameScript',
+                'formatter' => ['intToBool' => true]
+            ]
         ]);
     }
 
-    public function transformAll($collection)
+    public function transformAll($collection, $options = [])
     {
-        $collection = parent::transformAll($collection);
+        $collection = parent::transformAll($collection, $options);
 
         usort(
             $collection,

@@ -346,7 +346,6 @@ class ThemeOptionsController extends LSBaseController
             $model->attributes = $_POST['TemplateConfiguration'];
             if ($model->save()) {
                 App()->user->setFlash('success', gT('Theme options saved.'));
-                $this->redirect(array("themeOptions/updateSurvey", 'surveyid' => $sid, 'gsid' => $gsid));
             }
         }
         $this->updateCommon($model, $sid, $gsid);
@@ -720,7 +719,7 @@ class ThemeOptionsController extends LSBaseController
             App()->clientScript->registerPackage('themeoptions-core');
             $templateOptionPage = '';
         } else {
-             $templateOptionPage = $oModelWithInheritReplacement->optionPage;
+             $templateOptionPage = $oModelWithInheritReplacement->getOptionPage();
         }
 
         $oSimpleInheritance = Template::getInstance(
@@ -804,6 +803,23 @@ class ThemeOptionsController extends LSBaseController
                 true
             );
         }
+        $actionBaseUrl = 'themeOptions/update/';
+        $actionUrlArray = ['id' => $model->id];
+
+        if ($model->sid) {
+            $actionBaseUrl = 'themeOptions/updateSurvey/';
+            unset($actionUrlArray['id']);
+            $actionUrlArray['surveyid'] = $model->sid;
+            $actionUrlArray['gsid'] = $model->gsid ?  $model->gsid : $gsid;
+        }
+        if ($model->gsid) {
+            $actionBaseUrl = 'themeOptions/updateSurveyGroup/';
+            unset($actionUrlArray['id']);
+            $actionUrlArray['gsid'] = $model->gsid;
+            $actionUrlArray['id'] = $model->id;
+        }
+
+        $aData['actionUrl'] = $this->createUrl($actionBaseUrl, $actionUrlArray);
 
         $this->aData = $aData;
         // here, render update //

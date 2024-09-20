@@ -2,12 +2,20 @@
 
 namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
-use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\OpHandlerExceptionTrait;
+use DI\DependencyException;
+use DI\NotFoundException;
+use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\{
+    OpHandlerExceptionTrait,
+    OpHandlerSurveyTrait,
+    OpHandlerValidationTrait
+};
+use LimeSurvey\Api\Transformer\TransformerException;
 use Survey;
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputSurvey;
 use LimeSurvey\Models\Services\{
-    SurveyAggregateService,
-    Exception\PersistErrorException
+    Exception\PermissionDeniedException,
+    Exception\PersistErrorException,
+    SurveyAggregateService
 };
 use LimeSurvey\ObjectPatch\{
     Op\OpInterface,
@@ -19,13 +27,17 @@ use LimeSurvey\ObjectPatch\{
 class OpHandlerSurveyUpdate implements OpHandlerInterface
 {
     use OpHandlerExceptionTrait;
+    use OpHandlerSurveyTrait;
+    use OpHandlerValidationTrait;
 
     protected string $entity;
     protected Survey $model;
     protected TransformerInputSurvey $transformer;
 
-    public function __construct(Survey $model, TransformerInputSurvey $transformer)
-    {
+    public function __construct(
+        Survey $model,
+        TransformerInputSurvey $transformer
+    ) {
         $this->entity = 'survey';
         $this->model = $model;
         $this->transformer = $transformer;
@@ -47,10 +59,35 @@ class OpHandlerSurveyUpdate implements OpHandlerInterface
 
     /**
      * Saves the changes to the database.
+     * NOTE: when we update the language,
+     *       additionalLanguages need also to be added in the props,
+     *       or they will be deleted.
+     * Expects this structure, note that the entity id is not required.
+     * as the survey id will be in the context:
+     * {
+     *       "patch": [{
+     *       "entity": "survey",
+     *       "op": "update",
+     *       "props": {
+     *         "anonymized": false,
+     *         "language": "en",
+     *         "additionalLanguages":["de"],
+     *         "expires": "2001-03-20 13:28:00",
+     *         "template": "fruity_twentythree",
+     *         "format": "G"
+     *       }
+     *     }
+     *   ]
+     * }
      *
      * @param OpInterface $op
      * @throws OpHandlerException
      * @throws PersistErrorException
+     * @throws DependencyException
+     * @throws NotFoundException
+     * @throws TransformerException
+     * @throws \LimeSurvey\Models\Services\Exception\NotFoundException
+     * @throws PermissionDeniedException
      */
     public function handle(OpInterface $op): void
     {
@@ -58,8 +95,10 @@ class OpHandlerSurveyUpdate implements OpHandlerInterface
         $surveyUpdater = $diContainer->get(
             SurveyAggregateService::class
         );
+        $surveyId = $this->getSurveyIdFromContext($op);
+        $surveyUpdater->checkSurveySettingsUpdatePermission($surveyId);
+        $surveyUpdater->setRestMode(true);
 
-        //here we should get the props from the op
         $props = $op->getProps();
         $transformedProps = $this->transformer->transform($props);
 
@@ -68,7 +107,7 @@ class OpHandlerSurveyUpdate implements OpHandlerInterface
         }
         /** @var array $transformedProps */
         $surveyUpdater->update(
-            $op->getEntityId(),
+            $surveyId,
             $transformedProps
         );
     }
@@ -76,10 +115,22 @@ class OpHandlerSurveyUpdate implements OpHandlerInterface
     /**
      * Checks if patch is valid for this operation.
      * @param OpInterface $op
-     * @return bool
+     * @return array
      */
-    public function isValidPatch(OpInterface $op): bool
+    public function validateOperation(OpInterface $op): array
     {
-        return ((int)$op->getEntityId()) > 0;
+        $validationData = $this->validateSurveyIdFromContext($op, []);
+        if (empty($validationData)) {
+            $validationData = $this->transformer->validate(
+                $op->getProps(),
+                ['operation' => $op->getType()->getId()]
+            );
+        }
+
+        return $this->getValidationReturn(
+            gT('Could not save survey'),
+            !is_array($validationData) ? [] : $validationData,
+            $op
+        );
     }
 }

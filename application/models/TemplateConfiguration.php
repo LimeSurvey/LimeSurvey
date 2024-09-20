@@ -143,12 +143,6 @@ class TemplateConfiguration extends TemplateConfig
         );
     }
 
-    /** @inheritdoc */
-    public function defaultScope()
-    {
-        return array('order' => App()->db->quoteColumnName($this->getTableAlias(false, false) . '.template_name'));
-    }
-
     /**
      * @todo document me
      *
@@ -415,15 +409,15 @@ class TemplateConfiguration extends TemplateConfig
     {
         // @todo Please modify the following code to remove attributes that should not be searched.
 
-        $criteria = new CDbCriteria();
+        $criteria = new LSDbCriteria();
 
         $criteria->join = 'INNER JOIN {{templates}} AS tmpl ON ' .
             App()->db->quoteColumnName("t.template_name") .
             ' = tmpl.name';
-        //Don't show surveyspecifi settings on the overview
+        //Don't show survey specific settings on the overview
         $criteria->addCondition('t.sid IS NULL');
         $criteria->addCondition('t.gsid IS NULL');
-        $criteria->addCondition('tmpl.name IS NOT NULL');
+        $criteria->addInCondition('tmpl.name', array_keys(Template::getTemplateList()));
 
         $criteria->compare('id', $this->id);
         $criteria->compare('template_name', $this->template_name, true);
@@ -437,7 +431,7 @@ class TemplateConfiguration extends TemplateConfig
         $criteria->compare('packages_to_load', $this->packages_to_load, true);
 
         return new CActiveDataProvider($this, array(
-            'criteria' => $criteria,
+            'criteria' => $criteria
         ));
     }
 
@@ -453,7 +447,7 @@ class TemplateConfiguration extends TemplateConfig
         // @todo Please modify the following code to remove attributes that should not be searched.
 
         $pageSizeTemplateView = App()->user->getState('pageSizeTemplateView', App()->params['defaultPageSize']);
-        $criteria = new CDbCriteria();
+        $criteria = new LSDbCriteria();
 
         $criteria->join = 'INNER JOIN {{templates}} AS template ON ' .
             App()->db->quoteColumnName("t.template_name") .
@@ -461,7 +455,7 @@ class TemplateConfiguration extends TemplateConfig
         $criteria->together = true;
         //Don't show surveyspecifi settings on the overview
         $criteria->addCondition('t.sid IS NULL');
-        $criteria->addCondition('template.name IS NOT NULL');
+        $criteria->addInCondition('template.name', array_keys(Template::getTemplateList()));
 
         if ($gsid !== null) {
             /* Group configuration */
@@ -501,6 +495,9 @@ class TemplateConfiguration extends TemplateConfig
             'criteria' => $criteria,
             'pagination' => array(
                 'pageSize' => $pageSizeTemplateView,
+            ),
+            'sort' => array(
+                'defaultOrder' => 'template_name ASC' // Set default order here
             ),
         ));
     }
@@ -604,7 +601,7 @@ class TemplateConfiguration extends TemplateConfig
             $this->bTemplateCheckResult = true;
             if (
                 !is_object($this->template) ||
-                (is_object($this->template) && !Template::checkTemplateXML($this->template->name, $this->template->folder))
+                (is_object($this->template) && !Template::checkTemplateXML($this->template))
             ) {
                 $this->bTemplateCheckResult = false;
             }
@@ -996,7 +993,7 @@ class TemplateConfiguration extends TemplateConfig
     }
 
     /**
-     * @todo document me
+     * Prepares the rendering of the custom options.js and options.twig that can be used in every theme
      *
      * @return mixed
      */
@@ -1600,7 +1597,7 @@ class TemplateConfiguration extends TemplateConfig
     }
 
     /**
-     * @todo document me
+     * Returns the html to render the previewimage of the template
      * @return array|mixed|string|null
      */
     public function getPreview()
@@ -1641,25 +1638,10 @@ class TemplateConfiguration extends TemplateConfig
     public function prepareTemplateRendering($sTemplateName = '', $iSurveyId = '', $bUseMagicInherit = true)
     {
         if (!empty($sTemplateName) && !empty($iSurveyId)) {
-            if (!empty(self::$aPreparedToRender[$sTemplateName])) {
-                if (!empty(self::$aPreparedToRender[$sTemplateName][$iSurveyId])) {
-                    if (!empty(self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit])) {
-                        return self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit];
-                    } else {
-                        /** @psalm-supress InvalidArrayOffset */
-                        self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit] = array();
-                    }
-                } else {
-                    self::$aPreparedToRender[$sTemplateName][$iSurveyId] = array();
-                    /** @psalm-suppress InvalidArrayOffset */
-                    self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit] = array();
-                }
-            } else {
-                self::$aPreparedToRender = array();
-                self::$aPreparedToRender[$sTemplateName][$iSurveyId] = array();
-                /** @psalm-suppress InvalidArrayOffset */
-                self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit] = array();
+            if (!empty(self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit])) {
+                return self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit];
             }
+            self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit] = [];
         }
 
         $this->setBasics($sTemplateName, $iSurveyId, $bUseMagicInherit);

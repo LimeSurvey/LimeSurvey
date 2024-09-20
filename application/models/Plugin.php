@@ -125,10 +125,10 @@ class Plugin extends LSActiveRecord
      */
     public function getStatus()
     {
-        if ($this->load_error == 1) {
+        if ($this->getLoadError()) {
             return sprintf(
                 "<span data-bs-toggle='tooltip' title='%s' class='btntooltip ri-close-fill text-danger'></span>",
-                CHtml::encode(sprintf(gT('Plugin load error : %s'), $this->load_error_message))
+                CHtml::encode(sprintf(gT('Plugin load error: %s'), $this->load_error_message))
             );
         } elseif ($this->active == 1) {
             return "<span class='ri-checkbox-blank-circle-fill'></span>";
@@ -150,7 +150,7 @@ class Plugin extends LSActiveRecord
                 'id' => $this->id
             ]
         );
-        if ($this->load_error == 0) {
+        if (!$this->getLoadError()) {
             return sprintf(
                 '<a href="%s">%s</a>',
                 $url,
@@ -199,7 +199,7 @@ class Plugin extends LSActiveRecord
         $output = '';
         if (Permission::model()->hasGlobalPermission('settings', 'update')) {
             $output .= "<div class='icon-btn-row'>";
-            if ($this->load_error == 1) {
+            if ($this->getLoadError()) {
                 $reloadUrl = Yii::app()->createUrl(
                     'admin/pluginmanager',
                     [
@@ -416,6 +416,20 @@ class Plugin extends LSActiveRecord
      * @param Plugin|null $plugin
      * @param string $pluginName
      * @param array $error Array with 'message' and 'file' keys (as get from error_get_last).
+     * @return int Rows affected, always 0 for debug >=2
+     */
+    public static function handlePluginLoadError($plugin, $pluginName, array $error)
+    {
+        if (App()->getConfig('debug') >= 2) {
+            return 0;
+        }
+        return self::setPluginLoadError($plugin, $pluginName, $error);
+    }
+
+    /**
+     * @param Plugin|null $plugin
+     * @param string $pluginName
+     * @param array $error Array with 'message' and 'file' keys (as get from error_get_last).
      * @return int Rows affected
      */
     public static function setPluginLoadError($plugin, $pluginName, array $error)
@@ -435,6 +449,18 @@ class Plugin extends LSActiveRecord
                 );
         }
         return $result;
+    }
+
+    /**
+     * Get load error as boolean
+     * @return boolean
+     */
+    public function getLoadError()
+    {
+        if (App()->getConfig('debug') >= 2) {
+            return false;
+        }
+        return isset($this->load_error) && boolval($this->load_error);
     }
 
     /**

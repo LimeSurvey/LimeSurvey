@@ -1101,7 +1101,7 @@ JAVASCRIPT
      * @param string $screenname
      * @param string $editfile
      * @param bool $showsummary
-     * @return
+     * @return void
      */
     protected function initialise($templatename, $screenname, $editfile, $showsummary = true)
     {

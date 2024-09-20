@@ -40,8 +40,11 @@ class PasswordManagement
     {
         $adminEmail = [];
         $siteName = \Yii::app()->getConfig("sitename");
-        $url = 'admin/authentication/sa/newPassword/param/' . $this->user->validation_key;
-        $loginUrl = \Yii::app()->getController()->createAbsoluteUrl($url);
+        /* Usage of Yii::app()->createAbsoluteUrl, disable publicurl, See mantis #19619 */
+        $loginUrl = \Yii::app()->createAbsoluteUrl(
+            'admin/authentication/sa/newPassword',
+            ['param' => $this->user->validation_key]
+        );
         $siteAdminEmail = \Yii::app()->getConfig("siteadminemail");
         $emailSubject = \Yii::app()->getConfig("admincreationemailsubject");
         $emailTemplate = \Yii::app()->getConfig("admincreationemailtemplate");
@@ -162,9 +165,10 @@ class PasswordManagement
             $this->user->last_forgot_email_password = $now->format('Y-m-d H:i:s');
             $this->user->save();
             $username = sprintf(gT('Username: %s'), $this->user->users_name);
-
-            $linkToResetPage = \Yii::app()->getController()->createAbsoluteUrl(
-                'admin/authentication/sa/newPassword/param/' . $this->user->validation_key
+            /* Usage of Yii::app()->createAbsoluteUrl, disable publicurl, See mantis #19619 */
+            $linkToResetPage = \Yii::app()->createAbsoluteUrl(
+                'admin/authentication/sa/newPassword/',
+                ['param' => $this->user->validation_key]
             );
             $linkText = gT("Click here to set your password: ") . $linkToResetPage;
             $body = array();
@@ -254,9 +258,11 @@ class PasswordManagement
      */
     public function getRenderArray()
     {
-        $absoluteUrl = \Yii::app()->getController()->createAbsoluteUrl("/admin");
-        $passwordResetUrl = \Yii::app()->getController()->createAbsoluteUrl(
-            'admin/authentication/sa/newPassword/param/' . $this->user->validation_key
+        /* Usage of Yii::app()->createAbsoluteUrl, disable publicurl, See mantis #19619 */
+        $absoluteUrl = \Yii::app()->createAbsoluteUrl("/admin");
+        $passwordResetUrl = \Yii::app()->createAbsoluteUrl(
+            'admin/authentication/sa/newPassword',
+            ['param' => $this->user->validation_key]
         );
         return [
             'surveyapplicationname' => \Yii::app()->getConfig("sitename"),
@@ -272,7 +278,7 @@ class PasswordManagement
             'linkToAdminpanel' => $absoluteUrl,
             'username' => $this->user->users_name,
             'password' => $passwordResetUrl,
-            'mainLogoFile' => \Yii::app()->getController()->createAbsoluteUrl(LOGO_URL),
+            'mainLogoFile' => \Yii::app()->createAbsoluteUrl(LOGO_URL),
             'showPasswordSection' => \Yii::app()->getConfig("auth_webserver") === false
             && \Permission::model() ->hasGlobalPermission('auth_db', 'read', $this->user->uid),
             'showPassword' => \Yii::app()->getConfig("display_user_password_in_email") === true,

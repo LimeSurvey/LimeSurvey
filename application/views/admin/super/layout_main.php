@@ -30,7 +30,7 @@ echo ' <div id="pjax-file-load-container" class="ls-flex-row col-12"><div style=
 
 $containerClass = !Yii::app()->user->isGuest ? 'container-fluid full-page-wrapper' : 'container-fluid ps-0';
 echo '<!-- Full page, started in SurveyCommonAction::renderWrappedTemplate() -->
-<div class="full-page-wrapper ' . $containerClass . '" id="in_survey_common_action">';
+<div class="' . $containerClass . '" id="in_survey_common_action">';
 
 echo $content;
 

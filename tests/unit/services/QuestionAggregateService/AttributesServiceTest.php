@@ -2,6 +2,7 @@
 
 namespace ls\tests\unit\services\QuestionAggregateService;
 
+use LimeSurvey\Models\Services\QuestionAttributeHelper;
 use Mockery;
 use Question;
 use QuestionAttribute;
@@ -13,6 +14,7 @@ use LimeSurvey\Models\Services\QuestionAggregateService\AttributesService;
 use LimeSurvey\Models\Services\Exception\{
     PersistErrorException
 };
+use Survey;
 
 /**
  * @group services
@@ -31,13 +33,21 @@ class AttributesServiceTest extends TestBaseClass
         $modelQuestionAttribute = Mockery::mock(QuestionAttribute::class)
             ->makePartial();
 
+        $modelSurvey = Mockery::mock(Survey::class)
+            ->makePartial();
+
+        $questionAttrHelper = Mockery::mock(QuestionAttributeHelper::class)
+            ->makePartial();
+
         $question = Mockery::mock(Question::class)
             ->makePartial();
         $question->shouldReceive('save')
             ->andReturn(false);
 
         $attributesServices = new AttributesService(
-            $modelQuestionAttribute
+            $modelQuestionAttribute,
+            $questionAttrHelper,
+            $modelSurvey
         );
 
         $attributesServices->saveAdvanced($question, []);
@@ -55,13 +65,20 @@ class AttributesServiceTest extends TestBaseClass
         $modelQuestionAttribute = Mockery::mock(QuestionAttribute::class)
             ->makePartial();
 
+        $modelSurvey = Mockery::mock(Survey::class)
+            ->makePartial();
+        $questionAttrHelper = Mockery::mock(QuestionAttributeHelper::class);
+
+
         $question = Mockery::mock(Question::class)
             ->makePartial();
         $question->shouldReceive('save')
            ->andReturn(false);
 
         $attributesServices = new AttributesService(
-            $modelQuestionAttribute
+            $modelQuestionAttribute,
+            $questionAttrHelper,
+            $modelSurvey
         );
 
         $attributesServices->save($question, []);
@@ -81,11 +98,18 @@ class AttributesServiceTest extends TestBaseClass
         $modelQuestionAttribute->shouldReceive('setQuestionAttributeWithLanguage')
             ->andReturn(false);
 
+        $modelSurvey = Mockery::mock(Survey::class)
+            ->makePartial();
+
+        $questionAttrHelper = Mockery::mock(QuestionAttributeHelper::class);
+
         $question = Mockery::mock(Question::class)
             ->makePartial();
 
         $attributesServices = new AttributesService(
-            $modelQuestionAttribute
+            $modelQuestionAttribute,
+            $questionAttrHelper,
+            $modelSurvey
         );
 
         $attributesServices->save($question, [
@@ -110,11 +134,18 @@ class AttributesServiceTest extends TestBaseClass
         $modelQuestionAttribute->shouldReceive('setQuestionAttribute')
             ->andReturn(false);
 
+        $modelSurvey = Mockery::mock(Survey::class)
+            ->makePartial();
+
+        $questionAttrHelper = Mockery::mock(QuestionAttributeHelper::class);
+
         $question = Mockery::mock(Question::class)
             ->makePartial();
 
         $attributesServices = new AttributesService(
-            $modelQuestionAttribute
+            $modelQuestionAttribute,
+            $questionAttrHelper,
+            $modelSurvey
         );
 
         $attributesServices->save($question, [

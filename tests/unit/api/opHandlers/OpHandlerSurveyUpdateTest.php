@@ -4,73 +4,120 @@ namespace ls\tests\unit\api\opHandlers;
 
 use LimeSurvey\Api\Command\V1\SurveyPatch\OpHandlerSurveyUpdate;
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputSurvey;
-use LimeSurvey\ObjectPatch\Op\OpInterface;
-use LimeSurvey\ObjectPatch\Op\OpStandard;
-use LimeSurvey\ObjectPatch\OpHandler\OpHandlerException;
+use LimeSurvey\DI;
+use LimeSurvey\ObjectPatch\{
+    ObjectPatchException,
+    Op\OpStandard,
+    OpHandler\OpHandlerException};
 use ls\tests\TestBaseClass;
 use ls\tests\unit\services\SurveyAggregateService\GeneralSettings\GeneralSettingsMockSetFactory;
 
+/**
+ * @testdox OpHandlerSurveyUpdateTest
+ */
 class OpHandlerSurveyUpdateTest extends TestBaseClass
 {
-    protected OpInterface $op;
-
-    public function testSurveyUpdateThrowsNoValuesException()
-    {
-        $this->expectException(
-            OpHandlerException::class
-        );
-        $this->initializeWrongPatcher();
-        $opHandler = $this->getOpHandler();
-
-        $opHandler->handle($this->op);
-    }
-
+    /**
+     * @testdox can handle update operation
+     */
     public function testSurveyUpdateCanHandle()
     {
-        $this->initializePatcher();
-
-        $opHandler = $this->getOpHandler();
-        self::assertTrue($opHandler->canHandle($this->op));
+        $op = $this->getOp($this->getPropsValid());
+        self::assertTrue($this->getOpHandler()->canHandle($op));
     }
 
-    public function testSurveyUpdateCanNotHandle()
+    /**
+     * @testdox can not handle create operation
+     */
+    public function testSurveyUpdateCanNotHandleCreate()
     {
-        $this->initializeWrongPatcher();
-
-        $opHandler = $this->getOpHandler();
-        self::assertFalse($opHandler->canHandle($this->op));
+        $op = $this->getOp($this->getPropsValid(), 'create');
+        self::assertFalse($this->getOpHandler()->canHandle($op));
     }
 
-    private function initializePatcher()
+    /**
+     * @testdox validation doesn't hit when everything is fine
+     */
+    public function testOpValidationSuccess()
     {
-        $this->op = OpStandard::factory(
-            'survey',
+        $op = $this->getOp(
+            $this->getPropsValid()
+        );
+        $opHandler = $this->getOpHandler();
+        $validation = $opHandler->validateOperation($op);
+        $this->assertIsArray($validation);
+        $this->assertEmpty($validation);
+    }
+
+    /**
+     * @testdox validation hits on missing survey ID in context
+     */
+    public function testOpValidationError()
+    {
+        $op = $this->getOp(
+            $this->getPropsValid(),
             'update',
+            []
+        );
+        $opHandler = $this->getOpHandler();
+        $validation = $opHandler->validateOperation($op);
+        $this->assertIsArray($validation);
+        $this->assertNotEmpty($validation);
+    }
+
+    /**
+     * @param array $props
+     * @param string $type
+     * @param array $context
+     * @return OpStandard
+     * @throws ObjectPatchException
+     */
+    private function getOp(
+        $props = [],
+        $type = 'update',
+        $context = ['id' => 123456]
+    ) {
+        return OpStandard::factory(
+            'survey',
+            $type,
             12345,
-            [
-                'expires' => '2020-01-01 00:00',
-                'ipanonymize' => true,
-            ],
-            [
-                'id' => 123456,
-            ]
+            $props,
+            $context
         );
     }
 
-    private function initializeWrongPatcher()
+    /**
+     * @return array
+     */
+    private function getPropsValid()
     {
-        $this->op = OpStandard::factory(
-            'survey',
-            'create',
-            12345,
-            [
-                'xxx' => '2020-01-01 00:00',
-                'yyy' => true,
-            ],
-            [
-                'id' => 123456,
-            ]
-        );
+        return [
+            'expires' => '2020-01-01T00:00',
+            'ipanonymize' => true,
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    private function getPropsInvalid()
+    {
+        return [
+            'expires' => '2020-01-01 00:00',
+            'ipanonymize' => true,
+            'ownerId' => 'OWNER',
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    private function getPropsNoValues()
+    {
+        return [
+            'xxx' => '2020-01-01 00:00',
+            'yyy' => true,
+        ];
     }
 
     /**
@@ -79,10 +126,9 @@ class OpHandlerSurveyUpdateTest extends TestBaseClass
     private function getOpHandler()
     {
         $mockSet = (new GeneralSettingsMockSetFactory())->make();
-
         return new OpHandlerSurveyUpdate(
             $mockSet->modelSurvey,
-            new TransformerInputSurvey()
+            DI::getContainer()->get(TransformerInputSurvey::class)
         );
     }
 }

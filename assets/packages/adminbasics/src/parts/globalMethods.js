@@ -50,22 +50,22 @@ const globalWindowMethods = {
 	});
     },
     // finds any duplicate array elements using the fewest possible comparison
-    arrHasDupes:  ( arrayToCheck ) => {  
+    arrHasDupes:  ( arrayToCheck ) => {
         return (_.uniq(arrayToCheck).length !== arrayToCheck.length);
     },
-    arrHasDupesWhich: ( arrayToCheck ) => {  
+    arrHasDupesWhich: ( arrayToCheck ) => {
         return (_.difference(_.uniq(arrayToCheck), arrayToCheck)).length > 0;
     },
     getkey :  (e) => {
         return (window.event) ? window.event.keyCode :(e ? e.which : null);
     },
     goodchars : (e, goods) => {
-        const key = getkey(e);
+        const key = globalWindowMethods.getkey(e);
         if (key == null) return true;
-        
+
         // get character
         const keychar = (String.fromCharCode(key)).toLowerCase();
-        
+
         goods = goods.toLowerCase();
 
         return (goods.indexOf(keychar) != -1) || ( key==null || key==0 || key==8 || key==9  || key==27 );
@@ -100,11 +100,11 @@ const globalWindowMethods = {
                 contentObject = _.merge(contentObject, JSON.parse(content));
             } catch(e) { console.error('JSON parse on sendPost failed!') }
         }
-        
+
         _.each(contentObject, (value,key) => {
             $("<input type='hidden'>").attr("name", key).attr("value", value).appendTo($form);
         });
-        
+
         $("<input type='hidden'>").attr("name", LS.data.csrfTokenName).attr("value", LS.data.csrfToken).appendTo($form);
         $form.appendTo("body");
         $form.submit();

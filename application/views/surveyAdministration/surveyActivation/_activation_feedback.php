@@ -12,7 +12,7 @@
 *
 */
 ?>
-<div class='side-body <?php echo getSideBodyClass(false); ?>'>
+<div class='side-body'>
     <div class="row welcome survey-action">
         <div class="col-12 content-right">
             <div class="card card-primary h-100">

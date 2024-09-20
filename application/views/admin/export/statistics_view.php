@@ -13,7 +13,7 @@ echo viewHelper::getViewTestTag('statisticsIndex');
 <!-- Javascript variables  -->
 <?php $this->renderPartial('/admin/export/statistics_subviews/_statistics_view_scripts', array('sStatisticsLanguage' => $sStatisticsLanguage, 'surveyid' => $surveyid, 'showtextinline' => $showtextinline)); ?>
 <?php echo CHtml::form(array("admin/statistics/sa/index/surveyid/{$surveyid}/"), 'post', array('name' => 'generate-statistics', 'class' => '', 'id' => 'generate-statistics')); ?>
-<div id='statisticsview' class='side-body <?php echo getSideBodyClass(false); ?>'>
+<div id='statisticsview' class='side-body'>
     <div class="h1 d-print-block d-none text-center"><?php echo flattenText($oSurvey->defaultlanguage->surveyls_title, 1); ?></div>
     <div class="row d-print-none">
         <div class="col-12">

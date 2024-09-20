@@ -10,8 +10,8 @@
     <div class="mb-3">
         <select id='theme' class="form-select custom-data"  name='theme' >
             <?php
-                $athemeList = Template::getTemplateListWithPreviews();
-                foreach ($athemeList as $themeName => $preview) {
+                $athemeList = Template::getTemplateList();
+                foreach ($athemeList as $themeName => $folder) {
                     if (Permission::model()->hasGlobalPermission('themes','read') || Permission::model()->hasTemplatePermission($themeName) ) { ?>
                         <option value='<?php echo $themeName; ?>'>
                             <?php echo $themeName; ?>

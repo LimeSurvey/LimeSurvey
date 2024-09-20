@@ -4,9 +4,13 @@ namespace LimeSurvey\Api\Command\V1\SurveyPatch\Response;
 
 use LimeSurvey\ObjectPatch\OpHandler\OpHandlerException;
 
+/**
+ * This class is responsible for handling and returning tempId <-> real Id
+ * mapping of newly created entities
+ * as part of the response of PatcherSurvey.
+ */
 class TempIdMapping
 {
-    private int $operationsApplied = 0;
     private array $itemGroupNames = [
         'questionGroupsMap',
         'questionsMap',
@@ -35,27 +39,35 @@ class TempIdMapping
                 )
             );
         }
-        $this->mapItems[$itemGroupName][] = $tempIdMapItem;
+        $this->mapItems['tempIdMapping'][$itemGroupName][] = $tempIdMapItem;
     }
 
     /**
-     * Returns the whole response array including all the added tempId mappings
-     * and the number of applied operations.
+     * Recursive function to extract TempIdMapItems from the $mappingItem
+     * @param TempIdMapItem|array $mappingItem
+     * @param string $groupName
+     * @return void
+     * @throws \LimeSurvey\ObjectPatch\OpHandler\OpHandlerException
+     */
+    public function addTempIdMapItems($mappingItem, string $groupName)
+    {
+        if ($mappingItem instanceof TempIdMapItem) {
+            $this->addTempIdMapItem(
+                $mappingItem,
+                $groupName
+            );
+        } else {
+            foreach ($mappingItem as $item) {
+                $this->addTempIdMapItems($item, $groupName);
+            }
+        }
+    }
+
+    /**
      * @return array
      */
     public function getMappingResponseObject(): array
     {
-        return array_merge(
-            [
-                'operationsApplied' => $this->operationsApplied,
-            ],
-            $this->mapItems
-        );
-    }
-
-
-    public function incrementOperationsApplied(): void
-    {
-        $this->operationsApplied++;
+        return $this->mapItems;
     }
 }

@@ -83,7 +83,7 @@ class RegisterController extends LSYii_Controller
      * Process register form data and take appropriate action
      * @param $sid Survey Id to register
      * @param $aRegisterErrors array of errors when try to register
-     * @return
+     * @return void
      */
     public function actionIndex($sid = null)
     {
@@ -134,7 +134,7 @@ class RegisterController extends LSYii_Controller
                     self::sendRegistrationEmail($iSurveyId, $iTokenId);
                 }
                 $oToken = Token::model($iSurveyId)->findByPk($iTokenId)->decrypt();
-                $redirectUrl = Yii::app()->getController()->createUrl('/survey/', array('sid' => $iSurveyId,'token' => $oToken->token, 'lang' => $sLanguage));
+                $redirectUrl = Yii::app()->getController()->createUrl('/survey/index', array('sid' => $iSurveyId,'token' => $oToken->token, 'lang' => $sLanguage));
                 Yii::app()->getController()->redirect($redirectUrl);
                 Yii::app()->end();
             }
@@ -330,7 +330,7 @@ class RegisterController extends LSYii_Controller
                 $this->aRegisterErrors[] = gT("This email address cannot be used because it was opted out of this survey.");
                 }
             } elseif (!$oToken->emailstatus && $oToken->emailstatus != "OK") {
-                $this->aRegisterErrors[] = gT("This email address is already registered but the email adress was bounced.");
+                $this->aRegisterErrors[] = gT("This email address is already registered but email to that adress could not be delivered.");
             } else {
                 $this->sMailMessage = gT("The address you have entered is already registered. An email has been sent to this address with a link that gives you access to the survey.");
                 return $oToken->tid;

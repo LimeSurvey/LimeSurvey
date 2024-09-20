@@ -170,7 +170,7 @@ vendor/composer/installed\.json
 vendor/composer/package-versions-deprecated/
 vendor/composer/semver/
 vendor/composer/xdebug-handler/
-vendor/doctrine/
+#vendor/doctrine/
 vendor/dnoegel/
 vendor/felixfbecker/
 vendor/myclabs/

@@ -5,7 +5,7 @@
 /** @var int $surveyid */
 
 if (!count($aErrorFilesInfo) && count($aImportedFilesInfo)) : ?>
-    <div class='side-body <?php echo getSideBodyClass(false); ?>'>
+    <div class='side-body'>
         <div class="row welcome survey-action">
             <div class="col-12 content-right">
                 <div class="jumbotron message-box">
@@ -39,7 +39,7 @@ if (!count($aErrorFilesInfo) && count($aImportedFilesInfo)) : ?>
         </div>
     </div>
 <?php elseif (count($aErrorFilesInfo) && count($aImportedFilesInfo)) : ?>
-    <div class='side-body <?php echo getSideBodyClass(false); ?>'>
+    <div class='side-body'>
         <div class="row welcome survey-action">
             <div class="col-12 content-right">
                 <div class="jumbotron message-box message-box-warning">
@@ -87,7 +87,7 @@ if (!count($aErrorFilesInfo) && count($aImportedFilesInfo)) : ?>
         </div>
     </div>
 <?php else : ?>
-    <div class='side-body <?php echo getSideBodyClass(false); ?>'>
+    <div class='side-body'>
         <div class="row welcome survey-action">
             <div class="col-12 content-right">
                 <div class="jumbotron message-box message-box-error">

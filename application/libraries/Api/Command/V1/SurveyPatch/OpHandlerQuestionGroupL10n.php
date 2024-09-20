@@ -2,20 +2,30 @@
 
 namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
-use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\OpHandlerSurveyTrait;
+use DI\DependencyException;
+use DI\NotFoundException;
+use LimeSurvey\Models\Services\{
+    Exception\PermissionDeniedException,
+    QuestionGroupService
+};
+use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\{
+    OpHandlerExceptionTrait,
+    OpHandlerSurveyTrait,
+    OpHandlerValidationTrait};
 use QuestionGroupL10n;
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestionGroupL10ns;
-use LimeSurvey\Models\Services\QuestionGroupService;
 use LimeSurvey\ObjectPatch\{
     Op\OpInterface,
+    OpType\OpTypeUpdate,
     OpHandler\OpHandlerException,
-    OpHandler\OpHandlerInterface,
-    OpType\OpTypeUpdate
+    OpHandler\OpHandlerInterface
 };
 
 class OpHandlerQuestionGroupL10n implements OpHandlerInterface
 {
     use OpHandlerSurveyTrait;
+    use OpHandlerValidationTrait;
+    use OpHandlerExceptionTrait;
 
     protected string $entity;
     protected QuestionGroupL10n $model;
@@ -50,11 +60,11 @@ class OpHandlerQuestionGroupL10n implements OpHandlerInterface
      *      "op": "update",
      *      "id": 1,
      *      "props": {
-     *          en": {
+     *          "en": {
      *              "groupName": "Name of group",
      *              "description": "English description"
      *          },
-     *          de": {
+     *          "de": {
      *              "groupName": "Gruppenname",
      *              "description": "Deutsche Beschreibung"
      *          }
@@ -63,6 +73,10 @@ class OpHandlerQuestionGroupL10n implements OpHandlerInterface
      *
      * @param OpInterface $op
      * @throws OpHandlerException
+     * @throws DependencyException
+     * @throws NotFoundException
+     * @throws \LimeSurvey\Models\Services\Exception\NotFoundException
+     * @throws PermissionDeniedException
      */
     public function handle(OpInterface $op): void
     {
@@ -70,31 +84,46 @@ class OpHandlerQuestionGroupL10n implements OpHandlerInterface
         $questionGroupService = $diContainer->get(
             QuestionGroupService::class
         );
-
+        $surveyId = $this->getSurveyIdFromContext($op);
+        $questionGroupService->checkUpdatePermission($surveyId);
         $questionGroup = $questionGroupService->getQuestionGroupForUpdate(
-            $this->getSurveyIdFromContext($op),
+            $surveyId,
             $op->getEntityId()
         );
-
+        $transformedProps = $this->transformer->transformAll(
+            $op->getProps(),
+            ['operation' => $op->getType()->getId()]
+        );
+        if (empty($transformedProps)) {
+            $this->throwNoValuesException($op);
+        }
         $questionGroupService->updateQuestionGroupLanguages(
             $questionGroup,
-            $this->getTransformedLanguageProps(
-                $op,
-                $this->transformer,
-                $this->entity
-            )
+            $transformedProps
         );
     }
 
     /**
      * Checks if patch is valid for this operation.
      * @param OpInterface $op
-     * @return bool
+     * @return array
      */
-    public function isValidPatch(OpInterface $op): bool
+    public function validateOperation(OpInterface $op): array
     {
-        //the function getTransformedLanguageProps checks if the patch is valid
-        //it is already used in the handle() method ...
-        return true;
+        $validationData = $this->validateSurveyIdFromContext($op, []);
+        $validationData = $this->validateCollectionIndex($op, $validationData);
+        $validationData = $this->validateEntityId($op, $validationData);
+        if (empty($validationData)) {
+            $validationData = $this->transformer->validateAll(
+                $op->getProps(),
+                ['operation' => $op->getType()->getId()]
+            );
+        }
+
+        return $this->getValidationReturn(
+            gT('Could not save question group'),
+            !is_array($validationData) ? [] : $validationData,
+            $op
+        );
     }
 }

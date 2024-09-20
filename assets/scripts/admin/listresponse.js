@@ -81,7 +81,7 @@ function initColumnFilter() {
         $(".responses-multiselect-checkboxes .checkbox input").prop('checked', true);
     });
 
-    // remove selection fir the response table
+    // remove selection for the response table
     $('#responses-column-filter-modal-clear').on('click', function (e) {
         e.preventDefault();
         $(".responses-multiselect-checkboxes .checkbox input").prop('checked', false);
@@ -105,10 +105,8 @@ function afterAjaxResponsesReload() {
     reinstallResponsesFilterDatePicker();
     initColumnFilter();
 }
-
-$(window).bind("load", function () {
+$(document).on('ready pjax:scriptcomplete', function() {
     onDocumentReadyListresponse();
     reinstallResponsesFilterDatePicker();
     initColumnFilter();
 });
-

@@ -1,8 +1,8 @@
 <?php
+
 /**
  * Subview: Misserfolgsmelder mit Animation
  *
- * @package SMKUserManagement
  * @author LimeSurvey GmbH <info@limesurvey.org>
  * @license GPL3.0
  */

@@ -11,10 +11,28 @@ class TransformerInputQuestionL10ns extends Transformer
         $this->setDataMap([
             'id' => ['type' => 'int'],
             'qid' => ['type' => 'int'],
-            'question' => true,
+            'question' => ['required' => 'create'],
             'help' => true,
             'script' => true,
             'language' => true
         ]);
+    }
+
+    public function validate($data, $options = [])
+    {
+        if (empty($data)) {
+            return ['Data can not be empty'];
+        } elseif (is_scalar($data)) {
+            return ['Can not be scalar'];
+        }
+        return parent::validate($data, $options);
+    }
+
+    public function validateAll($collection, $options = [])
+    {
+        if (empty($collection)) {
+            return ['Collection can not be empty'];
+        }
+        return parent::validateAll($collection, $options);
     }
 }

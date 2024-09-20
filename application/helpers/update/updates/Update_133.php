@@ -10,10 +10,10 @@ class Update_133 extends DatabaseUpdateBase
     {
         addColumn('{{users}}', 'one_time_pw', 'binary');
         // Add new assessment setting
-        addColumn('{{surveys}}', 'assessments', "string(1) NOT NULL default 'N'");
+        addColumn('{{surveys}}', 'assessments', "string(1) NOT NULL DEFAULT 'N'");
         // add new assessment value fields to answers & labels
-        addColumn('{{answers}}', 'assessment_value', "integer NOT NULL default '0'");
-        addColumn('{{labels}}', 'assessment_value', "integer NOT NULL default '0'");
+        addColumn('{{answers}}', 'assessment_value', "integer NOT NULL DEFAULT '0'");
+        addColumn('{{labels}}', 'assessment_value', "integer NOT NULL DEFAULT '0'");
 
         $this->applyUpdates();
 
@@ -22,7 +22,7 @@ class Update_133 extends DatabaseUpdateBase
             "UPDATE {{surveys}} SET assessments='Y' where sid in (SELECT sid FROM {{assessments}} group by sid)"
         )->execute();
         // add language field to assessment table
-        addColumn('{{assessments}}', 'language', "string(20) NOT NULL default 'en'");
+        addColumn('{{assessments}}', 'language', "string(20) NOT NULL DEFAULT 'en'");
         // update language field with default language of that particular survey
         $this->db->createCommand(
             "UPDATE {{assessments}} SET language=(select language from {{surveys}} where sid={{assessments}}.sid)"

@@ -2811,7 +2811,12 @@ class LsDefaultDataSets
             gT("Select variation:"),
             gT("Fruity fonts"),
             gT("Fruity variations"),
-            gT("I confirm") // Used in optin/optout and not picked up due to bug #19411
+            gT("I confirm"), // Used in optin/optout and not picked up due to bug #19411,
+            gt("Show link to legal notice in survey:"),
+            gt("Show link to data policy in survey:"),
+            gt("Survey legal notice:"),
+            gt("Legal notice")
+
         ];
     }
 

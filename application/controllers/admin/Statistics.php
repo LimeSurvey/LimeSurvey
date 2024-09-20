@@ -561,7 +561,7 @@ class Statistics extends SurveyCommonAction
             $aFieldmap = createFieldMap($oSurvey, 'full', false, false, $sStatisticsLanguage);
             $qtype = $aFieldmap[$sQCode]['type'];
             $qqid = $aFieldmap[$sQCode]['qid'];
-            $aattr = QuestionAttribute::model()->getQuestionAttributes($qqid);
+            $aattr = QuestionAttribute::model()->getQuestionAttributes(Question::model()->findByPk($qqid));
             $field = substr((string) $_POST['id'], 1);
 
             switch ($_POST['cmd']) {
@@ -685,13 +685,24 @@ class Statistics extends SurveyCommonAction
         $rows = Question::model()->primary()->getQuestionList($surveyid);
         ;
 
+        $rawQuestions = Question::model()->findAllByAttributes([
+            "sid" => $surveyid,
+            "type" => Question::QT_COLON_ARRAY_NUMBERS
+        ]);
+
+        $questions = [];
+
+        foreach ($rawQuestions as $rawQuestion) {
+            $questions[$rawQuestion->qid] = $rawQuestion;
+        }
+
         // The questions to display (all question)
         foreach ($rows as $row) {
             $type = $row['type'];
             switch ($type) {
                 // Double scale cases
                 case Question::QT_COLON_ARRAY_NUMBERS:
-                    $qidattributes = QuestionAttribute::model()->getQuestionAttributes($row['qid']);
+                    $qidattributes = QuestionAttribute::model()->getQuestionAttributes($questions[$row['qid']] ?? $row['qid']);
                     if (!$qidattributes['input_boxes']) {
                         $qid = $row['qid'];
                         $results = Question::model()->getQuestionsForStatistics('*', "parent_qid='$qid'  AND scale_id = 0", 'question_order, title');

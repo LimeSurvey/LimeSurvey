@@ -2,13 +2,16 @@
 
 namespace ls\tests\unit\api\opHandlers;
 
+use DI\DependencyException;
+use DI\NotFoundException;
+use LimeSurvey\DI;
 use LimeSurvey\Api\Command\V1\SurveyPatch\OpHandlerQuestionUpdate;
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestion;
 use LimeSurvey\Models\Services\QuestionAggregateService;
-use LimeSurvey\ObjectPatch\ObjectPatchException;
-use LimeSurvey\ObjectPatch\Op\OpInterface;
-use LimeSurvey\ObjectPatch\Op\OpStandard;
-use LimeSurvey\ObjectPatch\OpHandler\OpHandlerException;
+use LimeSurvey\ObjectPatch\{
+    ObjectPatchException,
+    Op\OpStandard,
+};
 use ls\tests\TestBaseClass;
 
 /**
@@ -16,49 +19,16 @@ use ls\tests\TestBaseClass;
  */
 class OpHandlerQuestionUpdateTest extends TestBaseClass
 {
-    protected OpInterface $op;
-
-    /**
-     * @testdox throws exception when no valid values are provided
-     */
-    public function testOpQuestionUpdateThrowsNoValuesException()
-    {
-        $this->expectException(
-            OpHandlerException::class
-        );
-        $this->initializePatcher(
-            $this->getWrongPropsArray()
-        );
-        $opHandler = $this->getOpHandler();
-        $opHandler->getPreparedData($this->op);
-    }
-
-    /**
-     * @testdox getPreparedData() is expected to return a certain data structure
-     */
-    public function testOpQuestionUpdateDataStructure()
-    {
-        $this->initializePatcher(
-            $this->getCorrectPropsArray()
-        );
-        $opHandler = $this->getOpHandler();
-        $preparedData = $opHandler->getPreparedData($this->op);
-        $this->assertArrayHasKey('question', $preparedData);
-        $this->assertArrayHasKey('qid', $preparedData['question']);
-        $this->assertEquals(77, $preparedData['question']['qid']);
-    }
-
     /**
      * @testdox can handle a question update
      */
     public function testOpQuestionUpdateCanHandle()
     {
-        $this->initializePatcher(
+        $op = $this->getOp(
             $this->getCorrectPropsArray()
         );
-
         $opHandler = $this->getOpHandler();
-        self::assertTrue($opHandler->canHandle($this->op));
+        self::assertTrue($opHandler->canHandle($op));
     }
 
     /**
@@ -66,27 +36,56 @@ class OpHandlerQuestionUpdateTest extends TestBaseClass
      */
     public function testOpQuestionUpdateCanNotHandle()
     {
-        $this->initializePatcher(
+        $op = $this->getOp(
             $this->getCorrectPropsArray(),
             'create'
         );
-
         $opHandler = $this->getOpHandler();
-        self::assertFalse($opHandler->canHandle($this->op));
+        self::assertFalse($opHandler->canHandle($op));
+    }
+
+    /**
+     * @testdox validation hits
+     */
+    public function testOpQuestionGroupValidationFailure()
+    {
+        $op = $this->getOp(
+            $this->getCorrectPropsArray(),
+            'create'
+        );
+        $opHandler = $this->getOpHandler();
+        $validation = $opHandler->validateOperation($op);
+        $this->assertIsArray($validation);
+        $this->assertNotEmpty($validation);
+    }
+
+    /**
+     * @testdox validation doesn't hit when everything is fine
+     */
+    public function testOpQuestionGroupValidationSuccess()
+    {
+        $op = $this->getOp(
+            $this->getCorrectPropsArray()
+        );
+        $opHandler = $this->getOpHandler();
+        $validation = $opHandler->validateOperation($op);
+        $this->assertIsArray($validation);
+        $this->assertEmpty($validation);
     }
 
     /**
      * @param array $props
      * @param string $type
-     * @return void
+     * @return OpStandard
      * @throws ObjectPatchException
      */
-    private function initializePatcher(array $props, string $type = 'update')
+    private function getOp(array $props, string $type = 'update')
     {
-        $this->op = OpStandard::factory(
+        $entityId = $type !== 'update' ? null : "77";
+        return OpStandard::factory(
             'question',
             $type,
-            "77",
+            $entityId,
             $props,
             [
                 'id' => 666
@@ -97,36 +96,29 @@ class OpHandlerQuestionUpdateTest extends TestBaseClass
     /**
      * @return array
      */
-    private function getCorrectPropsArray()
+    private function getCorrectPropsArray(): array
     {
         return [
             'title' => 'test title',
             'mandatory' => true,
-        ];
-    }
-
-    /**
-     * @return array
-     */
-    private function getWrongPropsArray()
-    {
-        return [
-            'xxx' => 'test title',
-            'yyy' => true,
+            'type' => 'S',
         ];
     }
 
     /**
      * @return OpHandlerQuestionUpdate
+     * @throws DependencyException
+     * @throws NotFoundException
      */
-    private function getOpHandler()
+    private function getOpHandler(): OpHandlerQuestionUpdate
     {
+        /** @var \LimeSurvey\Models\Services\QuestionAggregateService */
         $mockQuestionAggregateService = \Mockery::mock(
             QuestionAggregateService::class
         )->makePartial();
         return new OpHandlerQuestionUpdate(
             $mockQuestionAggregateService,
-            new TransformerInputQuestion()
+            DI::getContainer()->get(TransformerInputQuestion::class)
         );
     }
 }

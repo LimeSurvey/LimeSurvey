@@ -824,13 +824,16 @@ function buildsurveysession($surveyid, $preview = false)
 
     UpdateGroupList($surveyid, $_SESSION['survey_' . $surveyid]['s_lang']);
 
-    $totalquestions               = $survey->countTotalQuestions;
+    $totalquestions = $survey->countTotalQuestions;
+    $totalVisibleQuestions = $survey->getCountTotalQuestions(false);
+
     $iTotalGroupsWithoutQuestions = QuestionGroup::model()->getTotalGroupsWithoutQuestions($surveyid);
 
-    $_SESSION['survey_' . $surveyid]['totalquestions'] = $survey->countInputQuestions;
+    $_SESSION['survey_' . $surveyid]['totalquestions'] = $totalquestions;
+    $_SESSION['survey_' . $surveyid]['totalVisibleQuestions'] = $totalVisibleQuestions;
 
     // 2. SESSION VARIABLE: totalsteps
-    setTotalSteps($surveyid, $thissurvey, $totalquestions);
+    setTotalSteps($surveyid, $thissurvey, $totalquestions, $totalVisibleQuestions);
 
     // Break out and crash if there are no questions!
     if (($totalquestions == 0 || $iTotalGroupsWithoutQuestions > 0) && !$preview) {
@@ -1410,7 +1413,7 @@ function resetAllSessionVariables($surveyid)
  * @param integer $totalquestions
  * @return void
  */
-function setTotalSteps($surveyid, array $thissurvey, $totalquestions)
+function setTotalSteps($surveyid, array $thissurvey, $totalquestions, $totalVisibleQuestions)
 {
     switch ($thissurvey['format']) {
         case "A":
@@ -1425,6 +1428,7 @@ function setTotalSteps($surveyid, array $thissurvey, $totalquestions)
 
         case "S":
             $_SESSION['survey_' . $surveyid]['totalsteps'] = $totalquestions;
+            $_SESSION['survey_' . $surveyid]['totalVisibleSteps'] = $totalVisibleQuestions;
     }
 }
 
@@ -2202,39 +2206,6 @@ function getMove()
         }
     }
     return $move;
-}
-
-/**
- * Get the margin class for side-body div depending
- * on side-menu behaviour config and page (edit or not
- * etc).
- *
- * @param boolean $sideMenustate - False for pages with collapsed side-menu
- * @return string
- * @throws CException
- */
-function getSideBodyClass($sideMenustate = false)
-{
-    $sideMenuBehaviour = getGlobalSetting('sideMenuBehaviour');
-
-    $class = "";
-
-    if ($sideMenuBehaviour == 'adaptive' || $sideMenuBehaviour == '') {
-        // Adaptive and closed, as in edit question
-        if (!$sideMenustate) {
-            $class = 'side-body-margin';
-        }
-    } elseif ($sideMenuBehaviour == 'alwaysClosed') {
-        $class = 'side-body-margin';
-    } elseif ($sideMenuBehaviour == 'alwaysOpen') {
-        // No margin class
-    } else {
-        throw new \CException("Unknown value for sideMenuBehaviour: $sideMenuBehaviour");
-    }
-
-    //TODO something unfinished here?
-    return "";
-    $class;
 }
 
 /**

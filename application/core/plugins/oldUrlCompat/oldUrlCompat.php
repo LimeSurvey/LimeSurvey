@@ -23,7 +23,7 @@ class oldUrlCompat extends PluginBase
     protected static $name = 'oldUrlCompat';
     protected static $description = 'Old url (pre-2.0) compatible system';
 
-    /** @inheritdoc, this plugin didn't have any public method */
+    /** @inheritdoc this plugin didn't have any public method */
     public $allowedPublicMethods = array();
 
     public function init()

@@ -160,11 +160,11 @@ class image_imagick extends image {
         $x =
             ($left === true) ? 0 : (
             ($left === null) ? round(($this->width - $w) / 2) : (
-            (($left === false) || !preg_match('/^\d+$/', $left)) ? ($this->width - $w) : $left));
+            (($left === false) || !preg_match('/^\d+$/', (string) $left)) ? ($this->width - $w) : $left));
         $y =
             ($top === true) ? 0 : (
             ($top === null) ? round(($this->height - $h) / 2) : (
-            (($top === false) || !preg_match('/^\d+$/', $top)) ? ($this->height - $h) : $top));
+            (($top === false) || !preg_match('/^\d+$/', (string) $top)) ? ($this->height - $h) : $top));
 
         if ((($x + $w) > $this->width) ||
             (($y + $h) > $this->height) ||

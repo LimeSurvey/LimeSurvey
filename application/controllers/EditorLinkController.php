@@ -13,7 +13,8 @@
  *
  */
 
-use LimeSurvey\Api\Auth\AuthSession;
+use LimeSurvey\DI;
+use LimeSurvey\Api\Authentication\AuthenticationTokenSimple;
 
 class EditorLinkController extends LSYii_Controller
 {
@@ -50,10 +51,14 @@ class EditorLinkController extends LSYii_Controller
      */
     public function run($action)
     {
-        $this->setAuthInitCookie();
-        $route = Yii::app()->request->getQuery('route');
-        $path = static::REACT_APP_BASE_PATH . $route;
-        $url = Yii::app()->request->baseUrl . $path;
+        $this->setAuthenticationInitCookie();
+        $editorUrl = Yii::app()->request->getQuery(
+            'url',
+            Yii::app()->request->baseUrl
+                . static::REACT_APP_BASE_PATH
+        );
+        $editorRoute = Yii::app()->request->getQuery('route');
+        $url = $editorUrl . $editorRoute;
         $this->redirect($url);
     }
 
@@ -62,23 +67,28 @@ class EditorLinkController extends LSYii_Controller
      *
      * @return void
      */
-    private function setAuthInitCookie()
+    private function setAuthenticationInitCookie()
     {
+        $diContainer = DI::getContainer();
+
         $cookieName = 'LS_AUTH_INIT';
 
-        $authSession = new AuthSession();
-        $session = $authSession->createSession(
+        $authTokenSimple = $diContainer->get(
+            AuthenticationTokenSimple::class
+        );
+        $session = $authTokenSimple->createSession(
             Yii::app()->session['user']
         );
 
-        $sessionExpires = new \DateTime(
-            date('c', $session->expire)
-        );
+        /** @var \LSYii_Application */
+        $app = \Yii::app();
 
-        $cookieDataJson = json_encode([
-            'token' => $session->id,
-            'expires' => $sessionExpires->format('Y-m-d\TH:i:s.000\Z')
-        ]);
+        $cookieDataJson = json_encode(
+            $authTokenSimple->getTokenData(
+                $session,
+                $app->user->getId()
+            )
+        );
 
         $cookie = new CHttpCookie($cookieName, $cookieDataJson);
         $cookie->expire = time() + (60 * 2); // 2 minutes

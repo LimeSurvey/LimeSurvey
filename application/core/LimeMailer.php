@@ -110,7 +110,7 @@ class LimeMailer extends PHPMailer
     public $BodySubjectCharset = 'utf-8';
 
     /**
-     * @inheritdoc, defaultto utf-8
+     * @inheritdoc defaultto utf-8
      */
     public $CharSet = 'utf-8';
 
