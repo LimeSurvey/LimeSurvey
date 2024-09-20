@@ -4764,7 +4764,7 @@ class LimeExpressionManager
                             'message'       => $message,
                             'unansweredSQs' => (isset($result['unansweredSQs']) ? $result['unansweredSQs'] : ''),
                             'invalidSQs'    => (isset($result['invalidSQs']) ? $result['invalidSQs'] : ''),
-                            'hiddenSteps'   => $hiddenSteps ?? 0
+                            'hiddenSteps'   => isset($hiddenSteps) ? $hiddenSteps : 0
                         ];
                         return $LEM->lastMoveResult;
                     }
@@ -4785,7 +4785,7 @@ class LimeExpressionManager
                     $grel = $gRelInfo['result'];
 
                     if (!$grel || !$result['relevant'] || $result['hidden']) {
-                        $hiddenSteps = ($hiddenSteps ?? 0) - 1;
+                        $hiddenSteps = (isset($hiddenSteps) ? $hiddenSteps : 0) - 1;
                         // then skip this question - assume already saved?
                         continue;
                     } else {
@@ -4805,7 +4805,7 @@ class LimeExpressionManager
                             'valid'         => $result['valid'],
                             'unansweredSQs' => $result['unansweredSQs'],
                             'invalidSQs'    => $result['invalidSQs'],
-                            'hiddenSteps'   => $hiddenSteps ?? 0
+                            'hiddenSteps'   => isset($hiddenSteps) ?  $hiddenSteps : 0
                         ];
                     }
                 }
@@ -4960,7 +4960,7 @@ class LimeExpressionManager
                             'valid'         => $result['valid'],
                             'unansweredSQs' => $result['unansweredSQs'],
                             'invalidSQs'    => $result['invalidSQs'],
-                            'hiddenSteps'   => $hiddenSteps ?? 0
+                            'hiddenSteps'   => isset($hiddenSteps) ? $hiddenSteps : 0
                         ];
                         return $LEM->lastMoveResult;
                     }
@@ -4982,7 +4982,7 @@ class LimeExpressionManager
                             'valid'         => (($LEM->maxQuestionSeq > $LEM->currentQuestionSeq) ? $result['valid'] : true),
                             'unansweredSQs' => (isset($result['unansweredSQs']) ? $result['unansweredSQs'] : ''),
                             'invalidSQs'    => (isset($result['invalidSQs']) ? $result['invalidSQs'] : ''),
-                            'hiddenSteps'   => $hiddenSteps ?? 0
+                            'hiddenSteps'   => isset($hiddenSteps) ? $hiddenSteps : 0
                         ];
                         return $LEM->lastMoveResult;
                     }
@@ -5004,7 +5004,7 @@ class LimeExpressionManager
                     $grel = $gRelInfo['result'];
 
                     if (!$grel || !$result['relevant'] || $result['hidden']) {
-                        $hiddenSteps = ($hiddenSteps ?? 0) + 1;
+                        $hiddenSteps = (isset($hiddenSteps) ? $hiddenSteps : 0) + 1;
                         // then skip this question, $LEM->updatedValues updated in _ValidateQuestion
                         continue;
                     } else {
@@ -5024,7 +5024,7 @@ class LimeExpressionManager
                             'valid'         => (($LEM->maxQuestionSeq > $LEM->currentQuestionSeq) ? $result['valid'] : false),
                             'unansweredSQs' => $result['unansweredSQs'],
                             'invalidSQs'    => $result['invalidSQs'],
-                            'hiddenSteps'   => $hiddenSteps ?? 0
+                            'hiddenSteps'   => isset($hiddenSteps) ? $hiddenSteps : 0
                         ];
                         return $LEM->lastMoveResult;
                     }
@@ -5479,7 +5479,7 @@ class LimeExpressionManager
                             'valid'         => (($LEM->maxQuestionSeq > $LEM->currentQuestionSeq) ? $result['valid'] : true),
                             'unansweredSQs' => $result['unansweredSQs'],
                             'invalidSQs'    => $result['invalidSQs'],
-                            'hiddenSteps'   => $hiddenSteps ?? 0
+                            'hiddenSteps'   => isset($hiddenSteps) ? $hiddenSteps : 0
                         ];
                         return $LEM->lastMoveResult;
                     }
@@ -5504,7 +5504,7 @@ class LimeExpressionManager
                             'valid'         => (isset($result['valid']) ? $result['valid'] : false),
                             'unansweredSQs' => (isset($result['unansweredSQs']) ? $result['unansweredSQs'] : ''),
                             'invalidSQs'    => (isset($result['invalidSQs']) ? $result['invalidSQs'] : ''),
-                            'hiddenSteps'   => $hiddenSteps ?? 0
+                            'hiddenSteps'   => isset($hiddenSteps) ? $hiddenSteps : 0
                         ];
                         return $LEM->lastMoveResult;
                     }
@@ -5529,7 +5529,7 @@ class LimeExpressionManager
                     $grel = $gRelInfo['result'];
 
                     if (!$preview && (!$grel || !$result['relevant'] || $result['hidden'])) {
-                        $hiddenSteps = ($hiddenSteps ?? 0) + 1;
+                        $hiddenSteps = (isset($hiddenSteps) ? $hiddenSteps : 0) + 1;
                         // then skip this question
                         continue;
                     } elseif (!$preview && !($result['mandViolation'] || !$result['valid']) && $LEM->currentQuestionSeq < $seq) {
@@ -5553,7 +5553,7 @@ class LimeExpressionManager
                             'valid'         => (($LEM->maxQuestionSeq > $LEM->currentQuestionSeq) ? $result['valid'] : true),
                             'unansweredSQs' => $result['unansweredSQs'],
                             'invalidSQs'    => $result['invalidSQs'],
-                            'hiddenSteps'   => $hiddenSteps ?? 0
+                            'hiddenSteps'   => isset($hiddenSteps) ? $hiddenSteps : 0
                         ];
                         return $LEM->lastMoveResult;
                     }
