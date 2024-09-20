@@ -179,7 +179,6 @@ class SurveyDeactivate
             default:
                 throw new \InvalidArgumentException('Unknown table type: ' . $tableType);
         }
-        /** @var ArchivedTableSettings $model */
         $model->survey_id = $iSurveyID;
         $model->user_id = $userID;
         $model->tbl_name = $tableName;
