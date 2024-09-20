@@ -7,6 +7,7 @@ class SurveySidemenuWidget extends WhSelect2
     public $surveyMenu;
     public $activePanel;
     public $allLanguages;
+    public $presentation;
     /**
      * Runs the widget.
      */
@@ -15,6 +16,7 @@ class SurveySidemenuWidget extends WhSelect2
         $this->render('sidemenu', [
             'sid' => $this->sid,
             'menu' => $this->surveyMenu,
+            'presentation' => $this->presentation,
             'settings' => $this->surveySettings
         ]);
     }
@@ -25,6 +27,7 @@ class SurveySidemenuWidget extends WhSelect2
 
         $this->surveyMenu = $this->getSurveyMenu();
         $this->surveySettings = $this->getSurveySettings();
+        $this->presentation = $this->getPresentationSettings();
         $this->activePanel = $this->getActivePanel();
         $this->allLanguages = Survey::model()->findByPk($this->sid)->allLanguages;
     }
@@ -38,6 +41,11 @@ class SurveySidemenuWidget extends WhSelect2
             foreach ($this->surveyMenu as $item) {
                 if (strpos($item['url'], $currentPage)) {
                     return 'survey-menu-panel';
+                }
+            }
+            foreach ($this->presentation as $item) {
+                if (strpos($item['url'], $currentPage)) {
+                    return 'survey-presentation-panel';
                 }
             }
         }
@@ -115,23 +123,23 @@ class SurveySidemenuWidget extends WhSelect2
             ],
             [
                 'name' => gT('General'),
-                'url' => App()->createUrl('editorLink/index', ['route' => 'survey/' . $this->sid . '/general']),
+                'url' => App()->createUrl('editorLink/index', ['route' => 'survey/' . $this->sid . '/general/setting']),
             ],
             [
                 'name' => gT('Text elements'),
                 'url' => App()->createUrl('surveyAdministration/rendersidemenulink/', array('surveyid' => $this->sid, 'subaction' => 'surveytexts')),
             ],
-            [
-                'name' => gT('Theme options'),
-                'url' => App()->createUrl('themeOptions/updateSurvey/', array('surveyid' => $this->sid)),
-            ],
-            [
-                'name' => gT('Presentation'),
-                'url' => App()->createUrl('surveyAdministration/rendersidemenulink/', array('surveyid' => $this->sid, 'subaction' => 'presentation')),
-            ],
+//            [
+//                'name' => gT('Theme options'),
+//                'url' => App()->createUrl('themeOptions/updateSurvey/', array('surveyid' => $this->sid)),
+//            ],
+//            [
+//                'name' => gT('Presentation'),
+//                'url' => App()->createUrl('surveyAdministration/rendersidemenulink/', array('surveyid' => $this->sid, 'subaction' => 'presentation')),
+//            ],
             [
                 'name' => gT('Privacy Policy'),
-                'url' => App()->createUrl('editorLink/index', ['route' => 'survey/' . $this->sid . '/privacyPolicy']),
+                'url' => App()->createUrl('editorLink/index', ['route' => 'survey/' . $this->sid . '/privacyPolicy/setting']),
             ],
             [
                 'name' => gT('Participants'),
@@ -149,6 +157,21 @@ class SurveySidemenuWidget extends WhSelect2
                 'name' => gT('Survey permissions'),
                 'url' => App()->createUrl('surveyPermissions/index/', array('surveyid' => $this->sid)),
             ]
+        );
+    }
+
+    public function getPresentationSettings()
+    {
+        return array(
+            [
+                'name' => gT('Presentation'),
+                'url' => App()->createUrl('editorLink/index', ['route' => 'survey/' . $this->sid . '/presentation/presentation']),
+                //'url' => App()->createUrl('surveyAdministration/rendersidemenulink/', array('surveyid' => $this->sid, 'subaction' => 'presentation')),
+            ],
+            [
+                'name' => gT('Theme options'),
+                'url' => App()->createUrl('themeOptions/updateSurvey/', array('surveyid' => $this->sid)),
+            ],
         );
     }
 
