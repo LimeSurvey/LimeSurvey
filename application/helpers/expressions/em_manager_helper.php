@@ -4753,6 +4753,7 @@ class LimeExpressionManager
                 $LEM->StartProcessingPage();
                 $updatedValues = $LEM->ProcessCurrentResponses();
                 $message = '';
+                $hiddenSteps = $LEM->lastMoveResult['hiddenSteps'] ?? 0;
                 while (true) {
                     $LEM->currentQset = [];    // reset active list of questions
                     if (--$LEM->currentQuestionSeq < 0) { // Stop at start : can be a question
@@ -4764,7 +4765,7 @@ class LimeExpressionManager
                             'message'       => $message,
                             'unansweredSQs' => (isset($result['unansweredSQs']) ? $result['unansweredSQs'] : ''),
                             'invalidSQs'    => (isset($result['invalidSQs']) ? $result['invalidSQs'] : ''),
-                            'hiddenSteps'   => isset($hiddenSteps) ? $hiddenSteps : 0
+                            'hiddenSteps'   => $hiddenSteps
                         ];
                         return $LEM->lastMoveResult;
                     }
@@ -4785,7 +4786,7 @@ class LimeExpressionManager
                     $grel = $gRelInfo['result'];
 
                     if (!$grel || !$result['relevant'] || $result['hidden']) {
-                        $hiddenSteps = (isset($hiddenSteps) ? $hiddenSteps : 0) - 1;
+                        $hiddenSteps -= 1;
                         // then skip this question - assume already saved?
                         continue;
                     } else {
@@ -4805,7 +4806,7 @@ class LimeExpressionManager
                             'valid'         => $result['valid'],
                             'unansweredSQs' => $result['unansweredSQs'],
                             'invalidSQs'    => $result['invalidSQs'],
-                            'hiddenSteps'   => isset($hiddenSteps) ?  $hiddenSteps : 0
+                            'hiddenSteps'   => $hiddenSteps
                         ];
                     }
                 }
@@ -4938,6 +4939,7 @@ class LimeExpressionManager
                 $updatedValues = $LEM->ProcessCurrentResponses();
                 $message = '';
                 $result = [];
+                $hiddenSteps = $LEM->lastMoveResult['hiddenSteps'] ?? 0;
                 if (!$force && $LEM->currentQuestionSeq != -1) {
                     $result = $LEM->_ValidateQuestion($LEM->currentQuestionSeq);
                     $message .= $result['message'];
@@ -4960,7 +4962,7 @@ class LimeExpressionManager
                             'valid'         => $result['valid'],
                             'unansweredSQs' => $result['unansweredSQs'],
                             'invalidSQs'    => $result['invalidSQs'],
-                            'hiddenSteps'   => isset($hiddenSteps) ? $hiddenSteps : 0
+                            'hiddenSteps'   => $hiddenSteps
                         ];
                         return $LEM->lastMoveResult;
                     }
@@ -4982,7 +4984,7 @@ class LimeExpressionManager
                             'valid'         => (($LEM->maxQuestionSeq > $LEM->currentQuestionSeq) ? $result['valid'] : true),
                             'unansweredSQs' => (isset($result['unansweredSQs']) ? $result['unansweredSQs'] : ''),
                             'invalidSQs'    => (isset($result['invalidSQs']) ? $result['invalidSQs'] : ''),
-                            'hiddenSteps'   => isset($hiddenSteps) ? $hiddenSteps : 0
+                            'hiddenSteps'   => $hiddenSteps
                         ];
                         return $LEM->lastMoveResult;
                     }
@@ -5004,7 +5006,7 @@ class LimeExpressionManager
                     $grel = $gRelInfo['result'];
 
                     if (!$grel || !$result['relevant'] || $result['hidden']) {
-                        $hiddenSteps = (isset($hiddenSteps) ? $hiddenSteps : 0) + 1;
+                        $hiddenSteps += 1;
                         // then skip this question, $LEM->updatedValues updated in _ValidateQuestion
                         continue;
                     } else {
@@ -5024,7 +5026,7 @@ class LimeExpressionManager
                             'valid'         => (($LEM->maxQuestionSeq > $LEM->currentQuestionSeq) ? $result['valid'] : false),
                             'unansweredSQs' => $result['unansweredSQs'],
                             'invalidSQs'    => $result['invalidSQs'],
-                            'hiddenSteps'   => isset($hiddenSteps) ? $hiddenSteps : 0
+                            'hiddenSteps'   => $hiddenSteps
                         ];
                         return $LEM->lastMoveResult;
                     }
@@ -5457,6 +5459,7 @@ class LimeExpressionManager
                     $updatedValues = [];
                 }
                 $message = '';
+                $hiddenSteps = $LEM->lastMoveResult['hiddenSteps'] ?? 0;
                 if ($LEM->currentQuestionSeq != -1 && $seq > $LEM->currentQuestionSeq) {
                     $result = $LEM->_ValidateQuestion($LEM->currentQuestionSeq, $force);
                     $message .= $result['message'];
@@ -5479,7 +5482,7 @@ class LimeExpressionManager
                             'valid'         => (($LEM->maxQuestionSeq > $LEM->currentQuestionSeq) ? $result['valid'] : true),
                             'unansweredSQs' => $result['unansweredSQs'],
                             'invalidSQs'    => $result['invalidSQs'],
-                            'hiddenSteps'   => isset($hiddenSteps) ? $hiddenSteps : 0
+                            'hiddenSteps'   => $hiddenSteps
                         ];
                         return $LEM->lastMoveResult;
                     }
@@ -5504,7 +5507,7 @@ class LimeExpressionManager
                             'valid'         => (isset($result['valid']) ? $result['valid'] : false),
                             'unansweredSQs' => (isset($result['unansweredSQs']) ? $result['unansweredSQs'] : ''),
                             'invalidSQs'    => (isset($result['invalidSQs']) ? $result['invalidSQs'] : ''),
-                            'hiddenSteps'   => isset($hiddenSteps) ? $hiddenSteps : 0
+                            'hiddenSteps'   => $hiddenSteps
                         ];
                         return $LEM->lastMoveResult;
                     }
@@ -5529,7 +5532,7 @@ class LimeExpressionManager
                     $grel = $gRelInfo['result'];
 
                     if (!$preview && (!$grel || !$result['relevant'] || $result['hidden'])) {
-                        $hiddenSteps = (isset($hiddenSteps) ? $hiddenSteps : 0) + 1;
+                        $hiddenSteps += 1;
                         // then skip this question
                         continue;
                     } elseif (!$preview && !($result['mandViolation'] || !$result['valid']) && $LEM->currentQuestionSeq < $seq) {
@@ -5553,7 +5556,7 @@ class LimeExpressionManager
                             'valid'         => (($LEM->maxQuestionSeq > $LEM->currentQuestionSeq) ? $result['valid'] : true),
                             'unansweredSQs' => $result['unansweredSQs'],
                             'invalidSQs'    => $result['invalidSQs'],
-                            'hiddenSteps'   => isset($hiddenSteps) ? $hiddenSteps : 0
+                            'hiddenSteps'   => $hiddenSteps
                         ];
                         return $LEM->lastMoveResult;
                     }
