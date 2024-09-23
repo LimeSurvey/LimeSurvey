@@ -323,9 +323,11 @@ class DataEntry extends SurveyCommonAction
             $sourceSchema = $sourceTable->getTableSchema();
             $encryptedAttributes = Response::getEncryptedAttributes($iSurveyId);
             $tbl_name = $sourceSchema->name;
-            if (strpos((string) $sourceSchema->name, (string) Yii::app()->db->tablePrefix) === 0) {
-                $tbl_name = substr((string) $sourceSchema->name, strlen((string) Yii::app()->db->tablePrefix));
+
+            if (!empty(App()->db->tablePrefix) && strpos((string) $sourceSchema->name, (string) App()->db->tablePrefix) === 0) {
+                $tbl_name = substr((string) $sourceSchema->name, strlen((string) App()->db->tablePrefix));
             }
+
             $archivedTableSettings = ArchivedTableSettings::model()->findByAttributes(['tbl_name' => $tbl_name]);
             $archivedEncryptedAttributes = [];
             if ($archivedTableSettings) {
