@@ -124,7 +124,7 @@ class Update_624 extends DatabaseUpdateBase
             $dropDownOptionsNode = null;
             foreach ($cssFrameworkNode->childNodes as $child) {
                 if ($child->nodeType === XML_TEXT_NODE) {
-                    $deafultOption = $child->nodeValue;
+                    $defaultOption = $child->nodeValue;
                 } elseif ($child->nodeName === 'dropdownoptions') {
                     $dropDownOptionsNode = $child;
                 }
