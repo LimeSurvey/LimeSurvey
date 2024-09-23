@@ -114,17 +114,14 @@ class Update_624 extends DatabaseUpdateBase
     private function checkDomDocument($domDocument, $templateName)
     {
         $isChangedDomDocument = false;
-
         // Find first 'cssframework' nodes in the document
         $cssFrameworkNodes = $this->getFirstElementByTag($domDocument, 'cssframework');
-        if ($cssFrameworkNodes) {
+        if ($cssFrameworkNodes->length > 0) {
             $cssFrameworkNode = $cssFrameworkNodes->item(0);
         }
-
         if ($cssFrameworkNode) {
             $defaultOption = '';
             $dropDownOptionsNode = null;
-
             foreach ($cssFrameworkNode->childNodes as $child) {
                 if ($child->nodeType === XML_TEXT_NODE) {
                     $deafultOption = $child->nodeValue;
@@ -132,13 +129,11 @@ class Update_624 extends DatabaseUpdateBase
                     $dropDownOptionsNode = $child;
                 }
             }
-
             if ($dropDownOptionsNode) {
                 $optGroupNode = $this->getFirstElementByTag($dropDownOptionsNode, 'optgroup');
                 if (!$optGroupNode) {
                     // Create a new 'optgroup' element
                     $optGroupNode = $domDocument->createElement('optgroup');
-
                     // Loop through all 'option' nodes and move them to 'optgroup'
                     while ($dropDownOptionsNode->childNodes->length > 0) {
                         $optionNode = $dropDownOptionsNode->firstChild;
@@ -147,7 +142,6 @@ class Update_624 extends DatabaseUpdateBase
                         }
                         $optGroupNode->appendChild($optionNode);
                     }
-
                     // Append the 'optgroup' with all the 'option' nodes into 'dropdownoptions'
                     $dropDownOptionsNode->appendChild($optGroupNode);
                     $isChangedDomDocument = true;
@@ -155,7 +149,6 @@ class Update_624 extends DatabaseUpdateBase
             } else {
                 throw new \Exception('No "dropdownoptions" nodes were found.');
             }
-
             if ($defaultOption === '') {
                 $defaultOption = $optGroupNode->firsChild->nodeValue;
                 if (is_string($defaultOption)) {
