@@ -557,8 +557,8 @@ class SurveyThemeHelper
             }
 
             if ($dropDownOptionsNode) {
-                $optGroupNode = $dropDownOptionsNode->getElementByTag('optgroup');
-                if (!$optGroupNode) {
+                $optGroupNodeList = $dropDownOptionsNode->getElementsByTagName('optgroup');
+                if ($optGroupNodeList->length === 0) {
 
                     // Create a new 'optgroup' element
                     $optGroupNode = $domDocument->createElement('optgroup');
@@ -575,6 +575,8 @@ class SurveyThemeHelper
                     // Append the 'optgroup' with all the 'option' nodes into 'dropdownoptions'
                     $dropDownOptionsNode->appendChild($optGroupNode);
                     $isChangedDomDocument = true;
+                }  else {
+                    $optGroupNode = $optGroupNodeList->item(0);
                 }
             } else {
                 throw new \Exception('No "dropdownoptions" nodes were found.');
