@@ -9799,6 +9799,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             /* Must check 0 */
             return true;
         }
+        tracevar($qinfo);
         /* Fill some helper var */
         $qid = $qinfo['qid'];
         $other = !empty($qinfo['other']) ? $qinfo['other'] : null;
@@ -9947,7 +9948,11 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 }
                 break;
             case 'P':
-                if (substr($sgq, -7) != 'comment' && $value != "Y" && (substr($sgq, -5) != 'other' && $other == 'Y')) {
+                if (
+                    $value != "Y" // Y is always valid
+                    && !( $other == 'Y' && $sgq == $LEM->getLEMsurveyId() . 'X' . $qinfo['gid'] . 'X' . $qinfo['qid'] . 'other') // It's not other SGQA
+                    && substr($sgq, -7) != 'comment' // It's not a comment SGQA
+                ) {
                     $LEM->addValidityString($sgq, $value, gT("%s is an invalid value for this question"), $set);
                     return false;
                 }
