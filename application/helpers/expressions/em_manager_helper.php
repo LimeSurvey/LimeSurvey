@@ -9937,7 +9937,10 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 /* No validty control ? size ? */
                 break;
             case 'M':
-                if ($value != "Y" || (substr($sgq, -5) != 'other' && $other == 'Y')) {
+                if (
+                    $value != "Y" // Y is always valid
+                    && (substr($sgq, -5) != 'other' && $other == 'Y') // Other can be valid if it's other
+                ) {
                     $LEM->addValidityString($sgq, $value, gT("%s is an invalid value for this question"), $set);
                     return false;
                 }
