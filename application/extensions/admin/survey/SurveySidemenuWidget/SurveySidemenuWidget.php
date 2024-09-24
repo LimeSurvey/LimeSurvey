@@ -36,6 +36,8 @@ class SurveySidemenuWidget extends WhSelect2
     {
         if (App()->request->getPathInfo() == 'quickTranslation/index') {
             return 'survey-quick-translation';
+        } elseif (App()->request->getPathInfo() == 'surveyPermissions/index') {
+            return 'survey-permissions-panel';
         } else {
             $currentPage = App()->request->getPathInfo() . '?' . App()->request->getQueryString();
             foreach ($this->surveyMenu as $item) {
@@ -115,7 +117,6 @@ class SurveySidemenuWidget extends WhSelect2
     }
     public function getSurveySettings()
     {
-        $oSurvey = Survey::model()->findByPk($this->sid);
         return array(
             [
                 'name' => gT('Overview'),
@@ -129,14 +130,6 @@ class SurveySidemenuWidget extends WhSelect2
                 'name' => gT('Text elements'),
                 'url' => App()->createUrl('surveyAdministration/rendersidemenulink/', array('surveyid' => $this->sid, 'subaction' => 'surveytexts')),
             ],
-//            [
-//                'name' => gT('Theme options'),
-//                'url' => App()->createUrl('themeOptions/updateSurvey/', array('surveyid' => $this->sid)),
-//            ],
-//            [
-//                'name' => gT('Presentation'),
-//                'url' => App()->createUrl('surveyAdministration/rendersidemenulink/', array('surveyid' => $this->sid, 'subaction' => 'presentation')),
-//            ],
             [
                 'name' => gT('Privacy Policy'),
                 'url' => App()->createUrl('editorLink/index', ['route' => 'survey/' . $this->sid . '/privacyPolicy/setting']),
@@ -152,10 +145,6 @@ class SurveySidemenuWidget extends WhSelect2
             [
                 'name' => gT('Notifications & data'),
                 'url' => App()->createUrl('surveyAdministration/rendersidemenulink/', array('surveyid' => $this->sid, 'subaction' => 'notification')),
-            ],
-            [
-                'name' => gT('Survey permissions'),
-                'url' => App()->createUrl('surveyPermissions/index/', array('surveyid' => $this->sid)),
             ]
         );
     }

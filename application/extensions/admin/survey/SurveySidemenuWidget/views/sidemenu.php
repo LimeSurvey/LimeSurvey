@@ -43,6 +43,16 @@
                     </div>
                 </div>
             </div>
+            <div class="mt-3 cursor-pointer d-flex justify-content-center">
+                <div class="sidebar-icon" onclick="window.location='<?php echo App()->createUrl('surveyPermissions/index', ['surveyid' => $sid]);?>'">
+                    <div data-bs-toggle="tooltip"
+                         title="<?php echo gT('Survey permissions'); ?>"
+                         data-bs-offset="0, 20"
+                         data-bs-placement="right">
+                        <i class="ri-user-line btn btn-g-800 btn-icon <?php echo $this->activePanel == 'survey-permissions-panel' ? 'active':''?>"></i>
+                    </div>
+                </div>
+            </div>
 
             <?php if (count($this->allLanguages) > 1): ?>
                 <div class="mt-3 cursor-pointer d-flex justify-content-center">
