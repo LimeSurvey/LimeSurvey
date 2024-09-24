@@ -4664,14 +4664,11 @@ class LimeExpressionManager
                         $value = null;  // can't upload a file via GET
                         break;
                 }
-                /* Validate validity of startingValues : do not show error */
-                if (self::checkValidityAnswer($knownVar['type'], $value, $knownVar['sgqa'], $LEM->questionSeq2relevance[$knownVar['qseq']], false)) {
-                    $_SESSION[$LEM->sessid][$knownVar['sgqa']] = $value;
-                    $LEM->updatedValues[$knownVar['sgqa']] = [
-                        'type'  => $knownVar['type'],
-                        'value' => $value,
-                    ];
-                }
+                $_SESSION[$LEM->sessid][$knownVar['sgqa']] = $value;
+                $LEM->updatedValues[$knownVar['sgqa']] = [
+                    'type'  => $knownVar['type'],
+                    'value' => $value,
+                ];
             }
             $LEM->_UpdateValuesInDatabase();
         }
