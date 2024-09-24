@@ -2,6 +2,10 @@
 
 namespace LimeSurvey\Models\Services;
 
+use CActiveDataProvider;
+use CSort;
+use Yii;
+
 /**
  * This class is responsible for the relationship between permissions, users and surveys.
  * It could be handled as a specific permissions system for surveys.
@@ -38,6 +42,37 @@ class SurveyPermissions
     {
         $userPermissionCriteria = $this->getUserPermissionCriteria();
         return \Permission::model()->findAll($userPermissionCriteria);
+    }
+
+    /**
+     * @return CActiveDataProvider
+     */
+    public function getUsersSurveyPermissionsDataProvider(): CActiveDataProvider
+    {
+        $pageSize = App()->user->getState('pageSize', App()->params['defaultPageSize']);
+        $userPermissionCriteria = $this->getUserPermissionCriteria();
+        // $sort = new CSort();
+        // $sort->attributes = array(
+        //     'users_name' => array(
+        //         'asc' => 'users_name asc',
+        //         'desc' => 'users_name desc',
+        //     ),
+        //     'full_name' => array(
+        //         'asc'  => 'u.full_name asc',
+        //         'desc' => 'u.full_name desc',
+        //     ),
+
+        // );
+        // $sort->defaultOrder = array('creation_date' => CSort::SORT_DESC);
+
+        $dataProvider = new CActiveDataProvider('Permission', [
+            // 'sort' => $sort,
+            'criteria' => $userPermissionCriteria,
+            'pagination' => array(
+                'pageSize' => $pageSize,
+            ),
+        ]);
+        return $dataProvider;
     }
 
     /**
@@ -201,7 +236,7 @@ class SurveyPermissions
 
 
     /**
-     * Return a list (array) of usergroups which could still be added to survey permissions.
+     * Return a list (array) of user groups which could still be added to survey permissions.
      * A user group could be added to survey permissions if there is at least one user in the group
      * which has not already been added to survey permissions of this survey.
      *

@@ -11,61 +11,70 @@
 * See COPYRIGHT.php for copyright notices and details.
 *
 */
+
+/**
+ * @var $this ListSurveysWidget
+ */
 ?>
 
 <!-- Search Box -->
-<div class="row">
-    <div class="pull-right">
-        <div class="form text-right">
-            <!-- Begin Form -->
-            <?php $form  =  $this->beginWidget('CActiveForm', array(
-                'action' => Yii::app()->createUrl($this->formUrl),
-                'method' => 'get',
-                'htmlOptions'=>array(
-                    'class'=>'form-inline',
-                ),
-            )); ?>
 
+<!-- Begin Form -->
+<div class="row">
+    <div class="col-12">
+        <?php $form = $this->beginWidget('CActiveForm', ['action' => App()->createUrl($this->formUrl), 'method' => 'get', 'htmlOptions' => ['class' => ''],]); ?>
+        <div class="row row-cols-lg-auto g-2 align-items-end mb-3">
             <!-- search input -->
-            <div class="form-group">
-                <?php echo $form->label($this->model, 'searched_value', array('label'=>gT('Search:'),'class'=>'control-label')); ?>
-                <?php echo $form->textField($this->model, 'searched_value', array('class'=>'form-control')); ?>
+            <div class="col">
+                <?= $form->label($this->model, 'searched_value', ['label' => gT('Search:'), 'class' => 'col-sm-3 col-form-label col-form-label-sm']) ?>
+                <?= $form->textField($this->model, 'searched_value', ['class' => 'form-control']) ?>
             </div>
 
             <!-- select state -->
-            <div class="form-group">
-                <?php echo $form->label($this->model, 'active', array('label'=>gT('Status:'),'class'=>'control-label')); ?>
-                <select name="active" id='Survey_active' class="form-control">
-                    <option value="" <?php if( $this->model->active==""){echo "selected";}?>><?php eT('(Any)');?></option>
-                    <option value="Y" <?php if( $this->model->active=="Y"){echo "selected";}?>><?php eT('Active');?></option>
-                    <option value="R" <?php if( $this->model->active=="R"){echo "selected";}?>><?php eT('Active and running');?></option>
-                    <option value="N" <?php if( $this->model->active=="N"){echo "selected";}?>><?php eT('Inactive');?></option>
-                    <option value="E" <?php if( $this->model->active=="E"){echo "selected";}?>><?php eT('Active but expired');?></option>
-                    <option value="S" <?php if( $this->model->active=="S"){echo "selected";}?>><?php eT('Active but not yet started');?></option>
+            <div class="col">
+                <?= $form->label($this->model, 'active', ['label' => gT('Status:'), 'class' => 'col-sm-3 col-form-label col-form-label-sm']) ?>
+                <select name="active" id='Survey_active' class="form-select">
+                    <option value="" <?= empty($this->model->active) ? "selected" : '' ?>>
+                        <?= gT('(Any)') ?>
+                    </option>
+                    <option value="Y" <?= $this->model->active === "Y" ? "selected" : '' ?>>
+                        <?= gT('Active') ?>
+                    </option>
+                    <option value="R" <?= $this->model->active === "R" ? "selected" : '' ?>>
+                        <?= gT('Active and running') ?>
+                    </option>
+                    <option value="N" <?= $this->model->active === "N" ? "selected" : '' ?>>
+                        <?= gT('Inactive') ?>
+                    </option>
+                    <option value="E" <?= $this->model->active === "E" ? "selected" : '' ?>>
+                        <?= gT('Active but expired') ?>
+                    </option>
+                    <option value="S" <?= $this->model->active === "S" ? "selected" : '' ?>>
+                        <?= gT('Active but not yet started') ?>
+                    </option>
                 </select>
             </div>
 
-
             <!-- select group -->
-            <div class="form-group">
-                <?php echo $form->label($this->model, 'group', array('label'=>gT('Group:'),'class'=>'control-label')); ?>
-                    <select name="gsid" id='Survey_gsid' class="form-control">
-                        <option value=""><?php eT('(Any group)');?></option>
-                        <?php foreach( SurveysGroups::getSurveyGroupsList() as $gsid=>$group_title): ?>
-                            <option value="<?php echo $gsid;?>" <?php if( $gsid == $this->model->gsid){echo 'selected';} ?>>
-                                <?php echo flattenText($group_title);?>
-                            </option>
-                        <?php endforeach?>
-                    </select>
+            <div class="col">
+                <?= $form->label($this->model, 'group', ['label' => gT('Group:'), 'class' => 'col-sm-3 col-form-label col-form-label-sm']) ?>
+                <select name="gsid" id='Survey_gsid' class="form-select activate-search">
+                    <option value=""><?= gT('(Any group)') ?></option>
+                    <?php foreach (SurveysGroups::getSurveyGroupsList() as $gsid => $group_title) : ?>
+                        <option value="<?= $gsid ?>" <?= ($gsid === $this->model->gsid) ? "selected" : "" ?>><?= CHtml::encode($group_title) ?></option>
+                    <?php endforeach; ?>
+                </select>
             </div>
-
-            <?php echo CHtml::submitButton(gT('Search','unescaped'), array('class'=>'btn btn-success')); ?>
-            <a href="<?php echo Yii::app()->createUrl('surveyAdministration/listsurveys');?>" class="btn btn-warning">
-                <span class="fa fa-refresh" ></span>
-                <?php eT('Reset');?>
-            </a>
-
-            <?php $this->endWidget(); ?>
+            <div class="col">
+                <?= CHtml::submitButton(gT('Search', 'unescaped'), ['class' => 'btn btn-secondary']) ?>
+            </div>
+            <div class="col">
+                <a href="<?= Yii::app()->createUrl('surveyAdministration/listsurveys') ?>" class="btn btn-warning">
+                    <i class="ri-refresh-line"></i>
+                    <?= gT('Reset') ?>
+                </a>
+            </div>
         </div>
+        <?php $this->endWidget(); ?>
     </div>
 </div>

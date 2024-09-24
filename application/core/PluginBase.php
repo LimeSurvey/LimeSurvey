@@ -9,5 +9,4 @@
  */
 class PluginBase extends \LimeSurvey\PluginManager\PluginBase
 {
-
 }

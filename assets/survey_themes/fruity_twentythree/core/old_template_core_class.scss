@@ -1,0 +1,340 @@
+/*!
+* Style for public survey
+* This file is part of LimeSurvey API for template
+*
+* Licensed under the GPLv3
+*
+*/
+/**
+ * Used in answers : bootsrap fix (specific single choice list)
+ */
+
+/**
+ * Expression manager relevance system
+ */
+.js .ls-hidden {
+    display : none
+}
+
+/* 3 class , and don't hide without javascript*/
+.js .ls-irrelevant {
+    pointer-events : none;
+}
+
+/* Without js : NEED action accepted … */
+.js .ls-disabled {
+    opacity : 0.4;
+}
+
+
+/* Some tools
+ */
+.js .ls-js-hidden {
+    display : none !important;
+}
+
+.no-js .ls-no-js-hidden {
+    display : none !important;
+}
+
+/* boostrap navbar-toggle is broken without js */
+.no-js .navbar-toggle {
+    display : none
+}
+
+/* Using http://webaim.org/techniques/css/invisiblecontent/ technique : better with less part (to be more easily updatable by template : can use initial or inherit) */
+.js .ls-js-hidden-sr {
+    position    : absolute;
+    top         : auto;
+    width       : 1px;
+    white-space : nowrap;
+    height      : 1px;
+    overflow    : hidden;
+    clip        : rect(0, 0, 0, 0);
+}
+
+/** ls-label-xs-visibility : set visually-hidden by default : template can reinit it with initial */
+.ls-label-xs-visibility {
+    position    : absolute;
+    top         : auto;
+    width       : 1px;
+    white-space : nowrap;
+    height      : 1px;
+    overflow    : hidden;
+    clip        : rect(0, 0, 0, 0);
+}
+
+/* size or cols => set to with initial and add a max-width .... */
+.answer-item .form-control[size], .answer-item .form-control[cols] {
+    width     : initial;
+    max-width : 100%
+}
+
+/**
+ * The answers part
+ * BS use px size, use rem to easily update body font-size : @link http://caniuse.com/rem/embed/
+ **/
+@media (max-width : 768px) {
+    .ls-answers .text-end, .ls-answers .text-start {
+        text-align : center;
+    }
+}
+
+/**
+ * .ls-input-group (prefix/sufix): near same behaviour than BS input-group / input-group-addon */
+/* BUT : only with big screen : see @link https://bugs.limesurvey.org/view.php?id=11882
+ * Add .suffix-prefix-force in question to force with little screen too
+ **/
+/* some can be out of media part */
+.ls-input-group {
+    border-collapse : separate;
+    position        : relative;
+}
+
+/**
+ * Except for really little screen : show ls-input-group in same line
+ * ls-input-group used for suffix/preffix (a lot of time : very little and reset button
+ */
+@media (min-width : 481px) {
+    .ls-input-group {
+        display : table;
+    }
+    .ls-input-group .form-control {
+        display       : table-cell;
+        margin-bottom : 0;
+        position      : relative;
+        z-index       : 2;
+    }
+    .ls-input-group .form-control {
+        float : left;
+    }
+    .ls-input-group-extra {
+        width          : 1%;
+        white-space    : nowrap;
+        vertical-align : middle;
+        display        : table-cell;
+        padding        : 0.5rem 1.2rem;
+        line-height    : 1;
+    }
+    .ls-input-sized .ls-input-group-extra {
+        width : initial
+    }
+    .ls-input-sized .ls-input-group {
+        width        : auto;
+        max-width    : 100%;
+        display      : table;
+        table-layout : fixed
+    }
+    /* in inline form : width need to be auto */
+    .form-inline .ls-input-group {
+        display        : inline-table;
+        vertical-align : middle;
+        width          : auto
+    }
+    .form-inline .ls-input-group .ls-input-group-extra {
+        width       : auto;
+        white-space : initial;
+    }
+    .form-inline .ls-input-group {
+        width       : auto;
+        white-space : initial;
+    }
+}
+
+/* Specific class for forced */
+.suffix-prefix-force .ls-input-group {
+    display : table;
+}
+
+.suffix-prefix-force .ls-input-group .form-control {
+    display       : table-cell;
+    margin-bottom : 0;
+    position      : relative;
+    z-index       : 2;
+}
+
+.suffix-prefix-force .ls-input-group .form-control {
+    float : left;
+}
+
+.suffix-prefix-force .ls-input-group-extra {
+    width          : 1%;
+    white-space    : nowrap;
+    vertical-align : middle;
+    display        : table-cell;
+    padding        : 0.6rem 1.2rem;
+    line-height    : 1;
+}
+
+/* Survey list (home page) : break line in btn for long survey title*/
+.surveytitle.btn {
+    white-space : normal;
+}
+
+/**
+ * Question index : must be move to index.css ?
+ **/
+/* button */
+.ls-index-buttons .list-group .list-group-item:first-child {
+    border-top-left-radius  : 0;
+    border-top-right-radius : 0;
+}
+
+.ls-index-buttons .list-group:not(:last-child) {
+    margin-bottom : -1px;
+}
+
+.ls-index-buttons .list-group:not(:last-child) .list-group-item:last-child {
+    border-bottom-left-radius  : 0;
+    border-bottom-right-radius : 0;
+    margin-bottom              : -1px;
+}
+
+/* dropdown-sub-menu  for question index : no ls specific, then no ls- template can use it easily */
+.dropdown-menu .dropdown-sub-menu {
+    display    : block;
+    position   : relative;
+    float      : none;
+    box-shadow : 0 0 0 #fff;
+}
+
+.form-inline .checkbox-item {
+    display        : inline-block;
+    vertical-align : middle;
+}
+
+/**
+ * All of this part fix already included css (bootstrap + awesome) for this template
+ */
+li.question-item.answer-item.text-item.form-group {
+    clear : both;
+}
+
+/* Minimal RWD img/video */
+.ls-answers img:not(.fixed-width),
+.ls-answers video:not(.fixed-width),
+.ls-answers svg:not(.fixed-width) {
+    max-width : 100%;
+    height    : auto;
+}
+
+/* See https://github.com/h5bp/html5-boilerplate/issues/1874 and https://medium.com/@jessebeach/beware-smushed-off-screen-accessible-text-5952a4c2cbfe */
+.visually-hidden {
+    white-space : nowrap;
+}
+
+/* The sub question part must not be more visible than question */
+.ls-answers th {
+    font-weight : 400
+}
+
+/* no form-group on radio-item and checkbox-item */
+li.checkbox-item,
+li.radio-text-item,
+li.checkbox-text-item {
+    margin-bottom : 1em
+}
+
+/* awesome-bootstrap-checkbox */
+li.checkbox-item,
+li.radio-text-item,
+li.checkbox-text-item {
+    display : block
+}
+
+/* map item : .input-group-addon.checkbox-item : put awesome padding */
+.input-group-addon.checkbox-item {
+    padding-left : 25px;
+}
+
+/* Else big label break*/
+.checkbox-item label {
+    display : block
+}
+
+.checkbox-item {
+    position : relative;
+}
+
+.checkbox-item input[type="checkbox"] {
+    /*give near same position to real button (except in td : can fix but not needed )*/
+    display  : inline-block;
+    height   : 17px;
+    position : absolute;
+    width    : 17px;
+}
+
+.checkbox-item input[type="checkbox"] {
+    left : 0;
+}
+
+.checkbox-item input[type="checkbox"] {
+    opacity : 0;
+}
+
+
+/**
+ * Table .question feature
+ */
+/* We have some settings to set width of the table : use it */
+table.ls-answers {
+    table-layout : fixed
+}
+
+table.ls-answers {
+    width : 100%
+}
+
+/* Basic alignment forced vertical due to bs*/
+.ls-answers > tbody > tr > td {
+    vertical-align : middle
+}
+
+.ls-answers > tbody > tr > th {
+    vertical-align : middle
+}
+
+.ls-answers .ls-heading > th {
+    vertical-align : bottom
+}
+
+/* class replace multiple tag */
+/* Basic alignment base horizontal due to no-more-table*/
+.ls-answers tbody td {
+    text-align : center
+}
+
+.ls-answers td .form-control {
+    margin-left  : auto;
+    margin-right : auto
+}
+
+/* for .form-control[size] */
+/* display:inline-block is OK too */
+.ls-answers tbody .control-label {
+    text-align : right;
+}
+
+.ls-answers .ls-heading th {
+    text-align : center;
+}
+
+.ls-answers .answertextright {
+    text-align : left
+}
+
+#datapolicy {
+    margin-top: 1em;
+    flex: 1 1 auto;
+    display: flex;
+    align-items: flex-end;
+}
+
+.datapolicy-links a {
+    padding: 10px;
+}
+
+.datapolicy-links a:hover {
+    cursor: pointer;
+    text-decoration: none;
+}

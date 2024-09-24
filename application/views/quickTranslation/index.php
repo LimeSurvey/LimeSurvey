@@ -7,8 +7,8 @@
 
 ?>
 
-<div class="side-body <?php echo getSideBodyClass(false); ?>">
-    <h3><span class="fa fa-language text-success" ></span>&nbsp;&nbsp;<?php eT("Translate survey"); ?></h3>
+<div class="side-body">
+    <h3><span class="ri-global-line text-success" ></span>&nbsp;&nbsp;<?php eT("Translate survey"); ?></h3>
     <div class="row">
         <div class="col-lg-12 content-right">
             <?php
@@ -19,15 +19,20 @@
             );
             ?>
             <!-- select box for languages 'class' => 'form-group' -->
-            <div class="form-group">
+            <div class="row row-cols-lg-auto g-1 align-items-center mb-3">
+                <div class="col-12">
                 <?php
-                echo CHtml::tag('label', array('for' => 'translationlanguage', 'class' => 'control-label'), gT("Translate to") . ":");
+                echo CHtml::tag('label', array('for' => 'translationlanguage', 'class' => 'text-nowrap col col-form-label col-form-label-sm'), gT("Translate to") . ":");
+                ?>
+                </div>
+                <div class="col-12">
+                    <?php
                 echo CHtml::openTag(
                     'select',
                     array(
                         'id' => 'translationlanguage',
                         'name' => 'lang',
-                        'class' => 'form-control',
+                        'class' => 'form-select',
                         'onchange' => "$(this).closest('form').submit();"
                     )
                 );
@@ -55,6 +60,7 @@
                 }
                 echo CHtml::closeTag('select');
                 ?>
+                </div>
             </div>
             <?php
                 echo CHtml::endForm();
@@ -63,11 +69,6 @@
     </div>
 
     <div class="row">
-        <div class="col-lg-12 content-right">
-            <h4>
-                <?php eT("Translate survey");?>
-            </h4>
-        </div>
 
         <?php
             $this->renderpartial('translateformheader_view', ['viewData' => $viewData]);

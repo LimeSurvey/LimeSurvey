@@ -4,97 +4,76 @@ var LS = LS || {
 };
 
 /**
- * jQuery Plugin to manage the date in token modal edit.
- * Some fields, like "Completed", can have string value (eg: 'N') or a date value.
- * They are displayed via a switch hidding or showing a date picker.
+ *
+ * @type {{}}
  */
-$.fn.YesNoDate = function(options)
-{
-    var that            = $(this);                                              // calling element
-    that.onReadyMethod = function(){
-        var $elSwitch        = that.find('.YesNoDateSwitch').first(),           // switch element (generated with YiiWheels widgets)
-            $elDateContainer = that.find('.date-container').first(),            // date time picker container (to show/hide)
-            $elDate          = that.find('.YesNoDatePicker').first(),           // date time picker element (generated with YiiWheels widgets)
-            $elHiddenInput   = that.find('.YesNoDateHidden').first();           // input form, containing the value to submit to the database
+var filterData = {};
 
-        console.ls.log('tokenform', {
-            $elSwitch : $elSwitch,
-            $elDateContainer : $elDateContainer,
-            $elDate : $elDate,
-            $elHiddenInput : $elHiddenInput
-        });
+Tokens = {
+     /**
+      * jQuery Plugin to manage the date in token modal edit.
+      * Some fields, like "Completed", can have string value (eg: 'N') or a date value.
+      * They are displayed via a switch hidding or showing a date picker.
+      */
+     YesNoDate: function (el) {
+         var $elSwitch = el.querySelector('.YesNoDateSwitch'),           // switch element (generated with YiiWheels widgets)
+             $elDateContainer = el.querySelector('.date-container'),            // date time picker container (to show/hide)
+             $elDate = el.querySelector('.YesNoDatePicker'),           // date time picker element (generated with YiiWheels widgets)
+             $elHiddenInput = el.querySelector('.YesNoDateHidden');           // input form, containing the value to submit to the database
+         console.ls.log('tokenform', {
+             $elSwitch: $elSwitch,
+             $elDateContainer: $elDateContainer,
+             $elDate: $elDate,
+             $elHiddenInput: $elHiddenInput
+         });
 
-        // The view is called without processing output (no javascript)
-        // So we must apply js to widget elements
-        $elSwitch.bootstrapSwitch();                                            // Generate the switch
-        $elDate.datetimepicker({locale: that.data('locale')});                  // Generate the date time picker
+         // Generate the date time picker
+         initDatePicker($elDate);
 
-        console.ls.log('$elSwitch', $elSwitch);
-        // When user switch
-        $elSwitch.on('switchChange.bootstrapSwitch', function(event, state)
-        {
-            console.ls.log('$elSwitch', event, state);
-            if (state==true)
-            {
-                // Show date
-                $elDateContainer.show();
-                // If there is a date currently set in the date picker, assign that to the hidden input.
-                // Otherwise, use the current date.
-                const currentDate = $elDate.data('DateTimePicker').date() ?? moment();
-                $elHiddenInput.attr('value', currentDate.format($elDate.data('date-format')));
-            }
-            else
-            {
-                // Hide date, set hidden input to "N"
-                $elDateContainer.hide();
-                $elHiddenInput.val('N');
-            }
-        });
+         console.ls.log('$elSwitch', $elSwitch);
+         // When user switch
+         $elSwitch.addEventListener('change', (event, state) => {
+             console.ls.log('$elSwitch', event, state);
+             if ($elSwitch.querySelector('input').checked) {
+                 // Show date
 
-        // When user change date
-        $elDate.on('dp.change', function(e){
-            $elHiddenInput.val(e.date.format($elDate.data('date-format')));
-        })
-    };
-    return that;
-}
+                 $elDateContainer.classList.remove('d-none');
+                 $elHiddenInput.value = $elDate.value = moment().format($elDate.dataset.format);
+             } else {
+                 // Hide date, set hidden input to "N"
+                 $elDateContainer.classList.add('d-none');
+                 $elHiddenInput.value = 'N';
+             }
+         });
 
-$.fn.YesNo = function(options)
-{
-    var that              = $(this);                                            // calling element
-    var $elHiddenInput   = that.find('.YesNoDateHidden').first();           // input form, containing the value to submit to the database
-
-    that.onReadyMethod = function(){
-        var $elSwitch        = that.find('.YesNoSwitch').first();               // switch element (generated with YiiWheels widgets)
-        $elSwitch.bootstrapSwitch();                                            // Generate the switch
-
-        // When user change date
-        $elSwitch.on( 'switchChange.bootstrapSwitch', function(event, state)
-        {
-            if (state==true)
-            {
-                $elHiddenInput.attr('value', 'Y');
-            }
-            else
-            {
-                $elHiddenInput.attr('value', 'N');
-            }
-
-
-        })
-
-    };
-    return that;
-}
+         // When user change date
+         $elDate.addEventListener('change', function (e) {
+             $elHiddenInput.value = $elDate.value;
+         });
+     },
+     YesNo: function (el) {
+         let $elHiddenInput = el.querySelector('.YesNoDateHidden');           // input form, containing the value to submit to the database
+         let $elSwitch = el.querySelector('.YesNoSwitch');               // switch element (generated with YiiWheels widgets)
+         // When user change date
+         $elSwitch.addEventListener('change', () => {
+             if ($elSwitch.querySelector('input').checked) {
+                 $elHiddenInput.value = 'Y';
+             } else {
+                 $elHiddenInput.value = 'N';
+             }
+         });
+     }
+ };
 
 /**
  * Provide to this function a element containing form-groups,
  * it will stick the text labels on its border
+ * @TODO Does this function still make sense???
  */
 $.fn.stickLabelOnLeft  = function(options)
 {
     var that = $(this);
-    var formgroups = that.find('.form-group');
+    var formgroups = that.find('.ex-form-group');
     $maxWidth  = 0;
     $elWidestLeftLabel = '';
     formgroups.each( function() {
@@ -155,7 +134,11 @@ function submitEditToken(){
 
         success : function(result, stat) {
             if (result.success) {
-                $modal.modal('hide');
+                $modal.hide();
+                $('body').removeClass('modal-open');
+                $('body').removeAttr('style');
+                $('.modal-backdrop').remove();
+                window.LS.ajaxAlerts(result.success, 'success');
             } else {
                 var errorMsg = result.error.message ? result.error.message : result.error;
                 if (!errorMsg) errorMsg = "Unexpected error";
@@ -167,14 +150,18 @@ function submitEditToken(){
             try {
                 $.fn.yiiGridView.update($gridId, {
                     complete: function(s){
-                        $modal.modal('hide');
+                        $modal.hide();
+                        $('body').removeClass('modal-open');
+                        $('.modal-backdrop').remove();
                     } // Update the surveys list
                 });
             }
             catch (e){
                 if (e) {
                     console.ls.error(e);
-                    $modal.modal('hide');
+                    $modal.hide();
+                    $('body').removeClass('modal-open');
+                    $('.modal-backdrop').remove();
                 }
             }
         },
@@ -221,7 +208,8 @@ function validateNotEmptyTokenForm() {
     }
     var isFormEmpty = $('#email').val() == '' && $('#firstname').val() == '' && $('#lastname').val() == '';
     if (isFormEmpty) {
-        $('#emptyTokenConfirmationModal').modal('show');
+        const modal = new bootstrap.Modal(document.getElementById('emptyTokenConfirmationModal'));
+        modal.show();
         return false;
     }
     return true;
@@ -230,41 +218,42 @@ function validateNotEmptyTokenForm() {
 /**
  * Scroll the pager and the footer when scrolling horizontally
  */
-$(document).on('ready  pjax:scriptcomplete', function(){
+$(document).on('ready pjax:scriptcomplete', function(){
 
     if($('#sent-yes-no-date-container').length > 0)
     {
         $('#general').stickLabelOnLeft();
 
-        $('#validfrom').datetimepicker({locale: $('#validfrom').data('locale')});
-        $('#validuntil').datetimepicker({locale: $('#validuntil').data('locale')});
-
-        $('.date .input-group-addon').on('click', function(){
-            $prev = $(this).siblings();
-            $prev.data("DateTimePicker").show();
+        document.querySelectorAll('.yes-no-date-container').forEach((el) => {
+            Tokens.YesNoDate(el);
         });
+
+        document.querySelectorAll('.yes-no-container').forEach((el) => {
+            Tokens.YesNo(el);
+        });
+        initValidFromValidUntilPickers();
     }
 
     var modal = $('#massive-actions-modal-edit-0');
     if (modal.length) {
         modal.on('shown.bs.modal', function () {
             $('.yes-no-date-container').each(function(i,el){
-                $(this).YesNoDate().onReadyMethod();
+                Tokens.YesNoDate(el);
             });
 
             $('.yes-no-container').each(function(i,el){
-                $(this).YesNo().onReadyMethod();
+                Tokens.YesNo(el);
             });
         });
     }
 
     $(document).on('actions-updated', function() {
         $('.yes-no-date-container').each(function(i,el){
-            $(this).YesNoDate().onReadyMethod();
+            Tokens.YesNoDate(el);
         });
 
         $('.yes-no-container').each(function(i,el){
-            $(this).YesNo().onReadyMethod();
+            Tokens.YesNo(el);
         });
     });
 
@@ -297,16 +286,17 @@ $(document).on('ready  pjax:scriptcomplete', function(){
 
         $modal.data('ajax-url', actionUrl);
         $modal.data('href', "#");
-        $modal.modal('show');
+        const modal = new bootstrap.Modal(document.getElementById('confirmation-modal'));
+        modal.show();
         $modal.find('.modal-footer-yes-no').find('a.btn-ok').on('click', function(click){
             $.ajax({
                 url: actionUrl,
                 method: "GET",
                 success: function(data){
-                    
+
                     $('#token-grid').yiiGridView('update',{
                         complete: function(s){
-                            $modal.modal('hide');
+                            modal.hide();
                         } // Update the surveys list
                     });
                 }
@@ -314,9 +304,11 @@ $(document).on('ready  pjax:scriptcomplete', function(){
         })
     });
 
-    $(document).off('click.edittoken', '.edit-token').on('click.edittoken', '.edit-token', startEditToken);
+    $(document).off('click.edittoken', '.edit-token').on('click.edittoken', '.edit-token', function (event) {
+        startEditToken(event, $(this));
+    });
 
-    $(document).off('submit.edittoken', '#edittoken').on('submit.edittoken', '#edittoken', function(event, params){
+    $(document).off('submit.edittoken', '#edittoken').on('submit.edittoken', '#edittoken', function (event, params) {
         var eventParams = params || {};
         // When saving from the Edit Participant modal, handle the event in submitEditToken().
         if($('#editTokenModal').length > 0 ){
@@ -347,11 +339,6 @@ $(document).on('ready  pjax:scriptcomplete', function(){
         if (!eventParams.confirm_empty_save && !validateNotEmptyTokenForm()) {
             return false;
         }
-    });
-
-    // Disable Save and Close button on click
-    $("#save-and-close-button").on('click', function() {
-        $(this).addClass('disabled');
     });
 
     /**
@@ -390,6 +377,7 @@ $(document).on('ready  pjax:scriptcomplete', function(){
         var $that               = $(this);
         var $url                = $that.data('url');
         var $modal              = $('#tokenBounceModal');
+        const modal             = new bootstrap.Modal(document.getElementById('tokenBounceModal'));
         var $ajaxLoader         = $('#ajaxContainerLoading');
         var $modalBodyText      = $modal.find('.modal-body-text');
         var $limebutton         = $modal.find('.modal-footer .limebutton');
@@ -397,7 +385,7 @@ $(document).on('ready  pjax:scriptcomplete', function(){
         $modalBodyText.empty();
         $limebutton.empty().append('close');
         $ajaxLoader.show();
-        $modal.modal();
+        modal.show();
 
         $.ajax({
             url: $url,
@@ -450,8 +438,8 @@ $(document).on('ready  pjax:scriptcomplete', function(){
         <option value='greaterthan'>"+searchtypes[4]+"</option>\n\
         <option value='lessthan'>"+searchtypes[5]+"</option>\n\
         </select></td>\n\<td><input class='form-control' type='text' id='conditiontext_"+conditionid+"' /></td>\n\
-        <td><span data-toggle='tooltip' title='" + sDelete + "' class='ui-pg-button fa fa-trash text-danger' onClick= $(this).parent().parent().remove();$('#joincondition_"+conditionid+"').remove() id='ui-icon removebutton'"+conditionid+"></span>\n\
-        <span data-toggle='tooltip' title='" + sAdd + "' class='ui-pg-button addcondition-button ui-icon text-success icon-add' style='margin-bottom:4px'></span></td></tr><tr></tr>";
+        <td><span data-bs-toggle='tooltip' title='" + sDelete + "' class='ui-pg-button ri-delete-bin-fill text-danger' onClick= $(this).parent().parent().remove();$('#joincondition_"+conditionid+"').remove() id='ui-icon removebutton'"+conditionid+"></span>\n\
+        <span data-bs-toggle='tooltip' title='" + sAdd + "' class='ui-pg-button addcondition-button ui-icon text-success ri-add-circle-fill' style='margin-bottom:4px'></span></td></tr><tr></tr>";
         $('#searchtable tr:last').after(html);
         window.LS.doToolTip();
     });
@@ -467,11 +455,11 @@ $(document).on('ready  pjax:scriptcomplete', function(){
 /**
  * Token edit
  */
-var startEditToken = function(){
-    var $that       = $(this),
-        $sid        = $that.data('sid'),
-        $tid        = $that.data('tid'),
-        $actionUrl  = $that.data('url') || $that.attr("href"),
+var startEditToken = function(event, that){
+        event.preventDefault()
+        $sid        = $(that).data('sid'),
+        $tid        = $(that).data('tid'),
+        $actionUrl  = $(that).data('url') || $(that).attr("href"),
         $modal      = $('#editTokenModal'),
         $modalBody  = $modal.find('.modal-body'),
         $ajaxLoader = $('#ajaxContainerLoading2'),
@@ -479,7 +467,8 @@ var startEditToken = function(){
         modalContent = $modal.find('#modal-content');
     $ajaxLoader.show();
     modalContent.empty();
-    $modal.modal('show');
+    const modal = new bootstrap.Modal(document.getElementById('editTokenModal'));
+    modal.show();
 
     // Ajax request
     $.ajax({
@@ -500,28 +489,19 @@ var startEditToken = function(){
 
             modalContent.append(html);                       // Inject the returned HTML in the modal body
 
-            // Apply the yes/no/date jquery plugin to the elements loaded via ajax
-            /*
-                $('#sent-yes-no-date-container').YesNoDate();
-                $('#remind-yes-no-date-container').YesNoDate();
-                $('#completed-yes-no-date-container').YesNoDate();
-            */
-
-            $('.yes-no-date-container').each(function(el){
-                $(this).YesNoDate().onReadyMethod();
+            document.querySelectorAll('.yes-no-date-container').forEach((el) => {
+                Tokens.YesNoDate(el);
             });
 
-
-            $('.yes-no-container').each(function(el){
-                $(this).YesNo().onReadyMethod();
+            document.querySelectorAll('.yes-no-container').forEach((el) => {
+                Tokens.YesNo(el);
             });
 
-            $('#validfrom').datetimepicker({locale: $('#validfrom').data('locale')});
-            $('#validuntil').datetimepicker({locale: $('#validuntil').data('locale')});
+            initValidFromValidUntilPickers();
 
-            $('.date .input-group-addon').on('click', function(){
+            $('.date .input-group-text').on('click', function(){
                 $prev = $(this).siblings();
-                $prev.data("DateTimePicker").show();
+                // $prev.data("DateTimePicker").show();
             });
 
             var elGeneral  = $('#general');
@@ -583,9 +563,11 @@ function centerInfoDialog() {
     infoDialog.css({ 'left': Math.round((dialogparent.width() - infoDialog.width()) / 2)+'px' });
 }
 
-function onUpdateTokenGrid(){
+function onUpdateTokenGrid() {
     reinstallParticipantsFilterDatePicker();
-    $('.edit-token').off('click.edittoken').on('click.edittoken', startEditToken);
+    $('.edit-token').off('click.edittoken').on('click.edittoken', function (event) {
+        startEditToken(event, $(this));
+    });
 }
 
 /**
@@ -593,26 +575,50 @@ function onUpdateTokenGrid(){
  * @return
  */
 function reinstallParticipantsFilterDatePicker() {
-
     // Since grid view is updated with Ajax, we need to fetch date format each update
-    var dateFormatDetails = JSON.parse($('input[name="dateFormatDetails"]').val());
-
-    $('#TokenDynamic_validfrom').datetimepicker({
-        format: dateFormatDetails.jsdate + ' HH:mm'
-    });
-    $('#TokenDynamic_validuntil').datetimepicker({
-        format: dateFormatDetails.jsdate + ' HH:mm'
-    });
-
-    $('#TokenDynamic_validfrom').on('focusout', function() {
-        var data = $('#token-grid .filters input, #token-grid .filters select').serialize();
-        $.fn.yiiGridView.update('token-grid', {data: data});
-    });
-
-    $('#TokenDynamic_validuntil').on('focusout', function() {
-        var data = $('#token-grid .filters input, #token-grid .filters select').serialize();
-        $.fn.yiiGridView.update('token-grid', {data: data});
-    });
+    var dateFormatDetails = document.getElementById('dateFormatDetails');
+    var locale = document.getElementById('locale');
+    var validfromElement = document.getElementsByName('TokenDynamic[validfrom]')[0];
+    var validuntilElement = document.getElementsByName('TokenDynamic[validuntil]')[0];
+    if ((dateFormatDetails && dateFormatDetails.value) && (locale && locale.value)) {
+        dateFormatDetails = JSON.parse(dateFormatDetails.value);
+        var dateFormat = dateFormatDetails.jsdate + ' HH:mm';
+        if (validfromElement) {
+            initDatePicker(validfromElement, locale.value, dateFormat);
+            validfromElement.addEventListener("hide.td", function () {
+                reloadTokenGrid();
+            });
+        }
+        if (validuntilElement) {
+            initDatePicker(validuntilElement, locale.value, dateFormat);
+            validuntilElement.addEventListener("hide.td", function () {
+                reloadTokenGrid();
+            });
+        }
+    }
     $(document).trigger('actions-updated');
+}
 
+/**
+ * reload gridview only when data of filter input has changed
+ */
+function reloadTokenGrid() {
+    var newData = $('#token-grid .filters input, #token-grid .filters select').serialize();
+    if (filterData !== newData) {
+        filterData = newData;
+        $.fn.yiiGridView.update('token-grid', {data: filterData});
+    }
+}
+
+function initValidFromValidUntilPickers() {
+    var validfromElement = document.getElementById('validfrom');
+    var validuntilElement = document.getElementById('validuntil');
+    var dateFormat = validfromElement.dataset.dateformat;
+    var locale = validfromElement.dataset.locale;
+    if (validfromElement) {
+        initDatePicker(validfromElement, 'validfrom', locale, dateFormat);
+    }
+    if (validuntilElement) {
+        initDatePicker(validuntilElement, 'validuntil', locale, dateFormat);
+    }
 }

@@ -10,24 +10,23 @@
  */
 #}
 <!-- Array -->
-
 <!-- answer -->
-<table class="{{ coreClass }} table table-bordered table-hover table-array-dropdown" role="group" aria-labelledby="ls-question-text-{{ basename }}">
-    <colgroup class="col-responses">
-        <col class="col-answers" style='width: {{ answerwidth }}%;' />
-        <col class="odd" style='width: {{ columnswidth }}%;' />
-        {% if right_exists %}
-            <col class="col-answersright" style='width: {{ answerwidth }}%;' />
-        {% endif %}
-    </colgroup>
-    <tbody>
-        
-            {# rows/answer_row.php #}
-            {{ sRows }}
-            {% for aRow in aRows %}
-                {% include 'survey/questions/answer/arrays/array/dropdown/rows/answer_row.twig' with aRow only %}
-            {% endfor %}
-        
-    </tbody>
-</table>
+<div class="ls-table-wrapper" role="group" aria-labelledby="ls-question-text-{{ basename }}">
+    <table class="{{ coreClass }} table table-bordered table-hover table-array-dropdown">
+        <colgroup class="col-responses">
+            <col class="col-answers" style='width: {{ answerwidth }}%;' />
+            <col class="odd" style='width: {{ columnswidth }}%;' />
+            {% if right_exists %}
+                <col class="col-answersright" style='width: {{ answerwidth }}%;' />
+            {% endif %}
+        </colgroup>
+        <tbody>
+                {# rows/answer_row.php #}
+                {{ sRows }}
+                {% for aRow in aRows %}
+                    {% include 'survey/questions/answer/arrays/array/dropdown/rows/answer_row.twig' with aRow %}
+                {% endfor %}
+        </tbody>
+    </table>
+</div>
 <!-- end of answer -->

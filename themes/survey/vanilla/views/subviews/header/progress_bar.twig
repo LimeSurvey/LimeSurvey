@@ -22,7 +22,7 @@
     <div class="{{ aSurveyInfo.class.topcontainer  }} space-col"  {{ aSurveyInfo.attr.topcontainer  }} >
         <div class="{{ aSurveyInfo.class.topcontent  }} container-fluid" {{ aSurveyInfo.attr.topcontent  }} >
             {% set progressValue  = ( aSurveyInfo.progress.total > 0 ) ? intval( (aSurveyInfo.progress.currentstep - 1) / aSurveyInfo.progress.total * 100 ) : 0 %}
-            <div class="sr-only">{{ sprintf(gT('You have completed %s%% of this survey'),progressValue) }}</div>
+            <div class="visually-hidden">{{ sprintf(gT('You have completed %s%% of this survey'),progressValue) }}</div>
                 <div class="{{ aSurveyInfo.class.progress  }}" {{ aSurveyInfo.attr.progress  }}  aria-hidden="true">
                     <div class="{{ aSurveyInfo.class.progressbar  }}" {{ aSurveyInfo.attr.progressbar  }} style="min-width: 2em; width: {{ progressValue }}%;">
                         {{ progressValue }}%

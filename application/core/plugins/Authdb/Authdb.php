@@ -44,6 +44,7 @@ class Authdb extends AuthPluginBase
         $oEvent = $this->getEvent();
         $preCollectedUserArray = $oEvent->get('preCollectedUserArray', []);
         $expires = null;
+        $status = true;
 
         if (empty($preCollectedUserArray)) {
             // Do nothing if the user to be added is not DB type
@@ -54,6 +55,9 @@ class Authdb extends AuthPluginBase
             $new_email = flattenText(Yii::app()->request->getPost('new_email'), false, true);
             $new_full_name = flattenText(Yii::app()->request->getPost('new_full_name'), false, true);
             $presetPassword = null;
+            if (Yii::app()->request->getPost('status')) {
+                $status = flattenText(Yii::app()->request->getPost('status'), false, true);
+            }
             if (Yii::app()->request->getPost('expires')) {
                 $expires = flattenText(Yii::app()->request->getPost('expires'), false, true);
             }
@@ -62,11 +66,14 @@ class Authdb extends AuthPluginBase
             $new_email = flattenText($preCollectedUserArray['email']);
             $new_full_name = flattenText($preCollectedUserArray['full_name']);
             $presetPassword = flattenText($preCollectedUserArray['password']);
+            if (!empty($preCollectedUserArray['status'])) {
+                $status = $preCollectedUserArray['status'];
+            }
             if (!empty($preCollectedUserArray['expires'])) {
                 $expires = $preCollectedUserArray['expires'];
             }
         }
-        
+
         if (!LimeMailer::validateAddress($new_email)) {
             $oEvent->set('errorCode', self::ERROR_INVALID_EMAIL);
             $oEvent->set('errorMessageTitle', gT("Failed to add user"));
@@ -75,7 +82,7 @@ class Authdb extends AuthPluginBase
         }
 
         $new_pass = $presetPassword ?? createPassword();
-        $iNewUID = User::insertUser($new_user, $new_pass, $new_full_name, Yii::app()->session['loginID'], $new_email, $expires);
+        $iNewUID = User::insertUser($new_user, $new_pass, $new_full_name, Yii::app()->session['loginID'], $new_email, $expires, $status);
         if (!$iNewUID) {
             $oEvent->set('errorCode', self::ERROR_ALREADY_EXISTING_USER);
             $oEvent->set('errorMessageTitle', '');
@@ -132,8 +139,8 @@ class Authdb extends AuthPluginBase
         }
 
         $this->getEvent()->getContent($this)
-                ->addContent(CHtml::tag('span', array(), "<label for='user'>" . gT("Username") . "</label>" . CHtml::textField('user', $sUserName, array('size' => 240, 'maxlength' => 240, 'class' => "form-control"))))
-                ->addContent(CHtml::tag('span', array(), "<label for='password'>" . gT("Password") . "</label>" . CHtml::passwordField('password', $sPassword, array('size' => 240, 'maxlength' => 240, 'class' => "form-control"))));
+                ->addContent(CHtml::tag('span', array(), "<label for='user'>" . gT("Username") . "</label>" . CHtml::textField('user', $sUserName, array('size' => 240, 'maxlength' => 240, 'class' => "form-control ls-important-field"))))
+                ->addContent(CHtml::tag('span', array(), "<label for='password'>" . gT("Password") . "</label>" . CHtml::passwordField('password', $sPassword, array('size' => 240, 'maxlength' => 240, 'class' => "form-control ls-important-field"))));
     }
 
     public function newUserSession()

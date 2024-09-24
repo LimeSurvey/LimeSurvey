@@ -10,7 +10,7 @@
  * @package YiiWheels.widgets.daterangepicker
  * @uses YiiStrap.helpers.TbArray
  */
-Yii::import('bootstrap.helpers.TbArray');
+Yii::import('yiistrap_fork.helpers.TbArray');
 
 class WhDateRangePicker extends CInputWidget
 {

@@ -1,0 +1,52 @@
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+#outerframeContainer {
+    min-height: 88%;
+}
+
+.ls-logo {
+    width: 30%;
+}
+#surveys-list-container {
+    margin-top : 50px;
+}
+#surveyListFooter {
+    width            : 100%;
+    text-align       : center;
+    margin-bottom    : 0;
+    padding-bottom   : 80px;
+    padding-top      : 10px;
+    margin-top       : 10px;
+    bottom           : 0px;
+    height           : 60px;
+}
+
+@media (max-width : 992px) {
+    .ls-logo {
+        width : 50%;
+    }
+}
+
+@media (max-width : 768px) {
+    .ls-logo {
+        width: 90%;
+    }
+    #surveys-list-container {
+        margin-top : 50px;
+    }
+    #surveyListFooter {
+        padding-bottom : 40px;
+        padding-top    : 5px;
+        margin-top     : 5px;
+        height         : 40px;
+    }
+}
+
+@media (min-width : 761px) {
+    .surveys-list .btn-group {
+        width : 49%;
+    }
+}

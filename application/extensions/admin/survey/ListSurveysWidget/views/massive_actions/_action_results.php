@@ -10,6 +10,9 @@ if (!isset($tableLabels)) {
     $tableLabels = array(gT('ID'), gT('Title'), gT('Status'));
 }
 ?>
+<?php if(isset($additionalMessage)):?>
+    <?php echo $additionalMessage?>
+<?php endif;?>
 <table class="table table-striped">
     <thead>
         <?php foreach($tableLabels as $label):?>
@@ -30,7 +33,7 @@ if (!isset($tableLabels)) {
                         <?php echo $successLabel ?>
                     </td>
                 <?php else: ?>
-                    <td class="text-warning">
+                    <td class="text-danger">
                         <?php ;
                             if(isset($result['error'])){
                                 echo $result['error'] ;

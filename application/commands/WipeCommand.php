@@ -14,9 +14,12 @@
 class WipeCommand extends CConsoleCommand
 {
 
-    public function run($sArgument)
+    /**
+     * @return int
+     */
+    public function run($args)
     {
-        if (isset($sArgument) && isset($sArgument[0]) && $sArgument[0] = 'yes') {
+        if (isset($args) && isset($args[0]) && $args[0] = 'yes') {
             Yii::import('application.helpers.common_helper', true);
             $actquery = "truncate table {{assessments}}";
             Yii::app()->db->createCommand($actquery)->execute();
@@ -154,7 +157,7 @@ class WipeCommand extends CConsoleCommand
 
             $surveyidresult = dbGetTablesLike("survey\_%");
             foreach ($surveyidresult as $sv) {
-                if (strpos($sv, 'survey_links') === false && strpos($sv, 'survey_url_parameters') === false) {
+                if (strpos((string) $sv, 'survey_links') === false && strpos((string) $sv, 'survey_url_parameters') === false) {
                                     Yii::app()->db->createCommand("drop table " . $sv)->execute();
                 }
             }
@@ -168,6 +171,7 @@ class WipeCommand extends CConsoleCommand
             // TODO: a valid error process
             echo 'This CLI command wipes a LimeSurvey installation clean (including all user except for the user ID 1 and user-uploaded content). For security reasons this command can only started if you add the parameter \'yes\' to the command line.';
         }
+        return 0;
     }
 }
 

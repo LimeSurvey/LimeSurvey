@@ -100,12 +100,12 @@ abstract class EvalBarrett extends Base
         $cutoff = count($m) + (count($m) >> 1);
 
         $code = '
-            if (count($n) > ' . (2 * count($m)) . ') {
+            if (count($n) >= ' . (2 * count($m)) . ') {
                 $lhs = new ' . $class . '();
                 $rhs = new ' . $class . '();
                 $lhs->value = $n;
                 $rhs->value = [' .
-                implode(',', array_map('self::float2string', $m)) . '];
+                implode(',', array_map(self::class . '::float2string', $m)) . '];
                 list(, $temp) = $lhs->divide($rhs);
                 return $temp->value;
             }

@@ -24,7 +24,7 @@ class FunctionStatic extends PluginBase
     protected static $description = 'The function is used to return a static value of any expression.';
     protected static $name = 'FunctionStatic';
 
-    /** @inheritdoc, this plugin settings are update during getSettings */
+    /** @inheritdoc this plugin settings are update during getSettings */
     protected $settings = array(
         'information' => array(
             'type' => 'info',
@@ -33,7 +33,7 @@ class FunctionStatic extends PluginBase
         ),
     );
 
-    /** @inheritdoc, this plugin didn't have any public method */
+    /** @inheritdoc this plugin didn't have any public method */
     public $allowedPublicMethods = array();
 
     public function init()

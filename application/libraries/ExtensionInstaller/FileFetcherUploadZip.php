@@ -41,6 +41,7 @@ class FileFetcherUploadZip extends FileFetcher
     public function fetch()
     {
         $this->checkFileSizeError();
+        $this->clearTmpdir();
         $this->extractZipFile($this->getTempdir());
     }
 
@@ -121,7 +122,7 @@ class FileFetcherUploadZip extends FileFetcher
             // @see https://stackoverflow.com/questions/1860393/recursive-file-search-php
             foreach (new RecursiveIteratorIterator($it) as $file) {
                 // @see https://stackoverflow.com/questions/619610/whats-the-most-efficient-test-of-whether-a-php-string-ends-with-another-string?lq=1
-                if (stripos(strrev($file), strrev('config.xml')) === 0) {
+                if (stripos(strrev((string) $file), strrev('config.xml')) === 0) {
                     return ExtensionConfig::loadFromFile($file);
                 }
             }

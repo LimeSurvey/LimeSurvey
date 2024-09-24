@@ -9,6 +9,7 @@ class PanelBoxWidget extends CWidget
     public $title;
     public $ico;
     public $description;
+    public $buttontext;
     public $usergroup;
     public $offset = 3;
     public $display = 'singlebox';
@@ -44,20 +45,22 @@ class PanelBoxWidget extends CWidget
         ));
         if ($box) {
             $this->position = $box->position;
-            if (!preg_match("/^(http|https)/", $box->url)) {
+            if (!preg_match("/^(http|https)/", (string) $box->url)) {
                 $this->url = Yii::app()->createUrl($box->url);
             } else {
                 $this->url = $box->url;
                 $this->external = true;
             }
             $this->title = $box->title;
-            $this->ico = $box->ico;
+            $this->buttontext = $box->buttontext ?? $box->title;
+            $this->ico = $box->getIconName();
             $this->description = $box->desc;
             $this->usergroup = $box->usergroup;
         } else {
             $this->position = '1';
             $this->url = '';
             $this->title = gT('Error');
+            $this->buttontext = gT('Error');
             $this->description = gT('Unknown box ID!');
         }
     }
@@ -68,7 +71,7 @@ class PanelBoxWidget extends CWidget
     protected function renderBox()
     {
         if (self::canSeeBox()) {
-            $offset = ($this->offset != '') ? 'col-sm-offset-1 col-lg-offset-' . $this->offset : '';
+            $offset = ($this->offset != '') ? 'offset-md-1 offset-xl-' . $this->offset : '';
 
             $this->render('box', array(
                 'position' => $this->position,
@@ -77,8 +80,9 @@ class PanelBoxWidget extends CWidget
                 'title' => $this->title,
                 'ico' => $this->ico,
                 'description' => $this->description,
+                'buttontext' => $this->buttontext,
                 'external' => $this->external,
-                'sizeClass' => "col-md-".(12/$this->boxesbyrow)." col-sm-".(floor(24/$this->boxesbyrow))
+                'sizeClass' => "col-lg-".(12/$this->boxesbyrow)." col-md-".(floor(24/$this->boxesbyrow)) . " col-xs-12"
             ));
         }
     }
@@ -94,7 +98,7 @@ class PanelBoxWidget extends CWidget
         $bIsRowOpened = false;
                 $this->render('row_header', array(
                     'orientation' => $this->getOrientationClass(),
-                    'containerclass' => ($this->boxesincontainer ? 'container' : 'container-fluid')
+                    'containerclass' => ($this->boxesincontainer ? 'container' : '')
                 ));
         foreach ($boxes as $box) {
 
@@ -115,14 +119,14 @@ class PanelBoxWidget extends CWidget
         $box = ($box == '') ? $this : $box;
         if ($box->usergroup == '-1') {
             return true;
-        } // If the usergroup is not set, or set to -2, only admin can see the box
+        } // If the user group is not set, or set to -2, only admin can see the box
         elseif (empty($box->usergroup) || $box->usergroup == '-2') {
             if (Permission::model()->hasGlobalPermission('superadmin', 'read') ? 1 : 0) {
                 return true;
             } else {
                 return false;
             }
-        } // If usergroup is set to -3, nobody can see the box
+        } // If user group is set to -3, nobody can see the box
         elseif ($box->usergroup == '-3') {
             return false;
         } // If usegroup is set and exist, if the user belong to it, he can see the box
@@ -146,8 +150,8 @@ class PanelBoxWidget extends CWidget
 
     private function getOrientationClass(){
         switch($this->offset){
-            case 1: return 'align-content-flex-start'; break; 
-            case 2: return 'align-content-flex-end'; break; 
+            case 1: return 'align-content-flex-start'; break;
+            case 2: return 'align-content-flex-end'; break;
             case 3: //fallthrough
            default: return 'align-content-space-around'; break;
         }

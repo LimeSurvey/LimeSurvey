@@ -26,3 +26,16 @@ h2 {
     font: normal 22px/18px serif;
     margin: 5px 10px;
 }
+
+.anchor {
+    float: left;
+    padding-right: 4px;
+    margin-left: -20px;
+    line-height: 1;
+    cursor: pointer;
+    opacity: 0;
+}
+
+.anchor:hover {
+    opacity: 1;
+}

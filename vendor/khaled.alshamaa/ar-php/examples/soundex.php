@@ -36,7 +36,8 @@ languages because the original algorithm focus on phonetically characters alike 
 </div><br />
 
 <div class="Paragraph">
-<h2>Example Output:</h2>
+<h2 dir="ltr" id="example-1">
+<a href="#example-1" class="anchor"><img src="./images/link_icon.png" width="16" border="0"></a>Example Output 1:</h2>
 <?php
 
 error_reporting(E_STRICT);
@@ -136,7 +137,7 @@ echo '<tr><td colspan=3><i><small>
 
 </div><br />
 <div class="Paragraph">
-<h2>Example Code:</h2>
+<h2 dir="ltr">Example Code 1:</h2>
 <?php
 $code = <<< ENDALL
 <?php
@@ -227,6 +228,9 @@ ENDALL;
 
 highlight_string($code);
 ?>
+<hr/><i>Related Documentation: 
+<a href="https://khaled-alshamaa.github.io/ar-php/classes/ArPHP-I18N-Arabic.html#method_soundex" target="_blank">soundex</a>
+</i>
 </div>
 </center>
 <footer><i><a href="https://github.com/khaled-alshamaa/ar-php">Ar-PHP</a>, an open-source library for website developers to process Arabic content</i></footer>

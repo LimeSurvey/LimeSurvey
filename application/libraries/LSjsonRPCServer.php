@@ -16,7 +16,7 @@ class LSjsonRPCServer extends jsonRPCServer
         if (
             $_SERVER['REQUEST_METHOD'] != 'POST' ||
             empty($_SERVER['CONTENT_TYPE']) ||
-            strpos($_SERVER['CONTENT_TYPE'], "application/json") === false
+            strpos((string) $_SERVER['CONTENT_TYPE'], "application/json") === false
         ) {
             // This is not a JSON-RPC request
             return false;
@@ -60,7 +60,7 @@ class LSjsonRPCServer extends jsonRPCServer
         // output the response
         if (is_null($request) || !empty($request['id'])) {
 // notifications don't want response
-            header('content-type: text/javascript');
+            header('content-type: application/json');
             BigData::json_echo($response);
         }
 

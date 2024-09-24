@@ -3,13 +3,13 @@
     <div id="panel-1">
 
         <!-- Header -->
-        <div class="col-lg-12">
-          <img alt="logo" id="profile-img" class="profile-img-card img-responsive center-block" src="<?php echo LOGO_URL;?>" />
+        <div class="d-flex justify-content-center">
+          <img alt="logo" id="profile-img" class="profile-img-card img-fluid" src="<?php echo LOGO_URL;?>" />
         </div>
 
         <!-- Action Name -->
         <div class="row login-title login-content">
-            <div class="col-lg-12">
+            <div class="col-12">
                 <h3><?php eT("Log in");?></h3>
                 <p class='text-muted'><?php eT('You\'ve been logged out due to inactivity. Please log in again.'); ?></p>
             </div>
@@ -18,7 +18,7 @@
         <!-- Form -->
         <?php echo CHtml::form(array('admin/authentication/sa/login'), 'post', array('id'=>'loginform', 'name'=>'loginform'));?>
             <div class="row login-content login-content-form">
-                <div class="col-sm-6 col-sm-offset-3">
+                <div class="col-md-6 offset-md-3">
                     <?php
                         $pluginNames = array_keys($pluginContent);
                         if (!isset($defaultAuth))
@@ -75,7 +75,7 @@
                         );
                         foreach (getLanguageDataRestricted(true) as $sLangKey => $aLanguage)
                         {
-                            $languageData[$sLangKey] =  html_entity_decode($aLanguage['nativedescription'], ENT_NOQUOTES, 'UTF-8') . " - " . $aLanguage['description'];
+                            $languageData[$sLangKey] =  html_entity_decode((string) $aLanguage['nativedescription'], ENT_NOQUOTES, 'UTF-8') . " - " . $aLanguage['description'];
                         }
                         echo CHtml::label(gT('Language'), 'loginlang');
 
@@ -102,10 +102,10 @@
 
             <!-- Buttons -->
             <div class="row login-submit login-content">
-                <div class="col-lg-12">
+                <div class="col-12">
                         <p><input type='hidden' name='action' value='login' />
                            <input type='hidden' id='width' name='width' value='' />
-                            <button type="submit" class="btn btn-default" name='login_submit' value='login'><?php eT('Log in');?></button><br />
+                            <button type="submit" class="btn btn-outline-secondary" name='login_submit' value='login'><?php eT('Log in');?></button><br />
                             <br/>
                             <?php
                             if (Yii::app()->getConfig("display_user_password_in_email") === true)

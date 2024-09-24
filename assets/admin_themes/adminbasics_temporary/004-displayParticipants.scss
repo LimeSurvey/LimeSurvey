@@ -1,0 +1,19 @@
+#selectable .ui-selecting { background: #8CCE00;  }
+#selectable .ui-selected { background: 	#C1DD7F; color: #000000; }
+#selectable { list-style-type: none; margin: 2px; padding: 0; width: 90%; }
+#selectable li {  padding: 1em; font-size: 1em; height: 9px;text-align: center;margin: 4px;}
+
+#feedback { font-size: 1.4em; }
+
+#selectableadd .ui-selecting { background: #0066CC; }
+#selectableadd .ui-selected { background: #0066CC; color: white; }
+#selectableadd { list-style-type: none; margin: 0; padding: 0; width: 90%; text-align: center; }
+#selectableadd li { margin: 3px; padding: 0.4em; font-size: 1em; height: 18px; text-align: center;}
+
+.popupgroup {
+    border: 1px solid #DAE5F4;
+	padding: 10px;
+	border-radius: 3px;
+	margin: 8px;
+
+}

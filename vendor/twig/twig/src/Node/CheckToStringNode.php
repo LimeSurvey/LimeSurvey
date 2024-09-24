@@ -11,6 +11,7 @@
 
 namespace Twig\Node;
 
+use Twig\Attribute\YieldReady;
 use Twig\Compiler;
 use Twig\Node\Expression\AbstractExpression;
 
@@ -24,6 +25,7 @@ use Twig\Node\Expression\AbstractExpression;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
+#[YieldReady]
 class CheckToStringNode extends AbstractExpression
 {
     public function __construct(AbstractExpression $expr)
@@ -31,12 +33,15 @@ class CheckToStringNode extends AbstractExpression
         parent::__construct(['expr' => $expr], [], $expr->getTemplateLine(), $expr->getNodeTag());
     }
 
-    public function compile(Compiler $compiler)
+    public function compile(Compiler $compiler): void
     {
+        $expr = $this->getNode('expr');
         $compiler
             ->raw('$this->sandbox->ensureToStringAllowed(')
-            ->subcompile($this->getNode('expr'))
-            ->raw(')')
+            ->subcompile($expr)
+            ->raw(', ')
+            ->repr($expr->getTemplateLine())
+            ->raw(', $this->source)')
         ;
     }
 }

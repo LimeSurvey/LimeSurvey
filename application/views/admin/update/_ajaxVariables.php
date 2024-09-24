@@ -18,7 +18,7 @@ $p = new CHtmlPurifier();
 
 <script>
     var csrf_token_name = "<?php echo sanitize_paranoid_string(Yii::app()->request->csrfTokenName);?>";
-    var csrf_token = "<?php echo htmlspecialchars(Yii::app()->request->csrfToken);?>";
+    var csrf_token = "<?php echo htmlspecialchars((string) Yii::app()->request->csrfToken);?>";
 </script>
 
 <?php if(isset($_REQUEST['update'])):?>

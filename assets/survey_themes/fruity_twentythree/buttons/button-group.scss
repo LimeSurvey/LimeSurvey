@@ -1,0 +1,36 @@
+.yesno-button,
+.gender-button {
+    &.btn-group {
+        > .btn {
+            border-radius : 4px;
+            margin-right  : 0;
+            &:not(:last-child) {
+                border-radius : 4px;
+                margin-right  : 20px;
+            }
+        }
+    }
+    .ls-button-label {
+        min-width : 80px;
+        font-size: $font-size-sm;
+        .ls-icon {
+            font-size   : 32px;
+            display     : block;
+            line-height : 1;
+        }
+    }
+}
+
+.btn-check + .btn {
+    min-height  : $btn-height-lg;
+    padding     : 8px 12px;
+    line-height : $line-height-20;
+}
+
+.row > .bootstrap-buttons-div {
+    padding-left  : 0;
+    padding-right : 20px;
+    & .form-check {
+        padding-left : 0;
+    }
+}

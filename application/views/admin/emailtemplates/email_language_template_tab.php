@@ -1,12 +1,38 @@
 
 <?php
-$script = array();
+    $script = [];
+    $hideAttacehemtTable = true;
+    $attachmentsHaveErrors = false;
+    if (isset($esrow->attachments[$tab])) {
+        foreach ($esrow->attachments[$tab] as $attachment) {
+            $script[] = sprintf(
+                "prepEmailTemplates.addAttachment($('#attachments-%s-%s'), %s, %s, %s, %s);",
+                $grouplang,
+                $tab,
+                json_encode($attachment['url']),
+                json_encode($attachment['relevance']),
+                json_encode($attachment['size']),
+                json_encode($attachment['error'] ?? '')
+            );
+            if (!empty($attachment['error'])) {
+                $attachmentsHaveErrors = true;
+            }
+        }
+        $hideAttacehemtTable = false;
+    }
 ?>
 
 <div id='<?php echo "tab-".CHtml::encode($grouplang)."-".CHtml::encode($tab); ?>' class="tab-pane fade in <?=CHtml::encode($active); ?>">
+    <?php if ($attachmentsHaveErrors): ?>
+        <div class="row">
+            <div class='col-sm-12'>
+                <div class="alert alert-danger"><?= gT("There are errors with this template's attachments. Please check them below.") ?></div>
+            </div>
+        </div>
+    <?php endif; ?>
     <div class="row">
-        <div class='form-group col-sm-12'>
-            <label class=' control-label' for='email_<?php echo $tab; ?>_subj_<?php echo $grouplang; ?>'><?php echo $details['subject'] ?></label>
+        <div class='mb-3 col-md-12'>
+            <label class=' form-label' for='email_<?php echo $tab; ?>_subj_<?php echo $grouplang; ?>'><?php echo $details['subject'] ?></label>
             <div class=''>
                 <?php
                 $sSubjectField=$details['field']['subject'];
@@ -15,8 +41,8 @@ $script = array();
         </div>
     </div>
     <div class="row">
-        <div class='form-group col-sm-12'>
-            <label class=' control-label' for='email_<?php echo $tab; ?>_<?php echo $grouplang; ?>'><?php echo $details['body']; ?></label>
+        <div class='mb-3 col-md-12'>
+            <label class=' form-label' for='email_<?php echo $tab; ?>_<?php echo $grouplang; ?>'><?php echo $details['body']; ?></label>
             <?php if(getEmailFormat($surveyid) != 'html') { ?>
                 <div class="">
             <?php }else{ ?>
@@ -31,15 +57,21 @@ $script = array();
         </div>
     </div>
     <div class="row">
-        <div class='form-group col-sm-12'>
-            <label class=' control-label'><?php et('Actions:');?></label>
+        <div class='mb-3 col-md-12'>
+            <label class=' form-label'><?php et('Actions:');?></label>
             <div class=''>
-                <a class='btn btn-default' id="validate_expression_<?=$grouplang?>_<?=$tab?>" data-parent-element="#in_survey_common" data-target="modal" data-remote-link="<?=App()->createUrl('admin/validate',['sa'=>'email','sid'=>$surveyid,'lang'=>$grouplang,'type'=>$tab])?>" data-footer="false" data-modal-title="<?=$details['title']?>" > 
+                <a class='btn btn-outline-secondary' 
+                   id="validate_expression_<?=$grouplang?>_<?=$tab?>" 
+                   data-parent-element="#in_survey_common" 
+                   data-bs-target="modal" 
+                   data-remote-link="<?=App()->createUrl('admin/validate',['sa'=>'email','sid'=>$surveyid,'lang'=>$grouplang,'type'=>$tab])?>" 
+                   data-footer="false" 
+                   data-modal-title="<?=$details['title']?>" > 
                     <?=gT("Validate ExpressionScript")?> 
                 </a> 
                 <?php
                 $details['default']['body']=($tab=='admin_detailed_notification') ? $details['default']['body'] : conditionalNewlineToBreak($details['default']['body'],$ishtml) ;
-                echo CHtml::button(gT("Reset this template"),array( 'id'=>'reset_template_'.$grouplang.'_'.$tab, 'class'=>'fillin btn btn-default selector__reset_template','data-target'=>"email_{$tab}_{$grouplang}",'data-value'=>$details['default']['body']));
+                echo CHtml::button(gT("Reset this template"),array( 'id'=>'reset_template_'.$grouplang.'_'.$tab, 'class'=>'fillin btn btn-outline-secondary selector__reset_template','data-target'=>"email_{$tab}_{$grouplang}",'data-value'=>$details['default']['body']));
                 ?>
             </div>
         </div>
@@ -51,30 +83,20 @@ $script = array();
     if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'update'))
     { ?>
     <div class="row">
-            <label class='control-label col-xs-12' for="attachments_<?php echo "{$grouplang}-{$tab}"; ?>"><?php echo $details['attachments']; ?></label>
-            <div class="col-xs-12">
-                <button class="add-attachment btn btn-default" data-target="#attachments-<?php echo $grouplang; ?>-<?php echo $tab ?>" data-ck-target="<?="email_{$tab}_{$grouplang}"?>" id="add-attachment-<?php echo "{$grouplang}-{$tab}"; ?>"><?php eT("Add file"); ?></button> &nbsp;
+            <label class='form-label col-12' for="attachments_<?php echo "{$grouplang}-{$tab}"; ?>"><?php echo $details['attachments']; ?></label>
+            <div class="col-12">
+                <button class="add-attachment btn btn-outline-secondary" data-target="#attachments-<?php echo $grouplang; ?>-<?php echo $tab ?>" data-ck-target="<?="email_{$tab}_{$grouplang}"?>" id="add-attachment-<?php echo "{$grouplang}-{$tab}"; ?>"><?php eT("Add file"); ?></button> &nbsp;
             </div>
     </div>
 
 
     <?php } ?>
 
-    <?php
-    $hideAttacehemtTable = true;
-    if (isset($esrow->attachments[$tab])) {
-        foreach ($esrow->attachments[$tab] as $attachment) {
-            $script[] = sprintf("prepEmailTemplates.addAttachment($('#attachments-%s-%s'), %s, %s, %s );", $grouplang, $tab, json_encode($attachment['url']), json_encode($attachment['relevance']), json_encode($attachment['size']));
-        }
-        $hideAttacehemtTable = false;
-    }
-    ?>
-
-    <div class="row selector__table-container <?=($hideAttacehemtTable===true ? 'hidden' : '')?>">
-        <div class='form-group col-sm-12'>
-            <div class='form-group'>
+    <div class="row selector__table-container <?=($hideAttacehemtTable===true ? 'd-none' : '')?>">
+        <div class='mb-3 col-12'>
+            <div class='mb-3'>
                 <div class=' '>
-                    <table data-template="[<?php echo $grouplang; ?>][<?php echo $tab ?>]"  data-target="#attachments-<?php echo $grouplang; ?>-<?php echo $tab ?>" data-ck-target="<?="email_{$tab}_{$grouplang}"?>" id ="attachments-<?php echo $grouplang; ?>-<?php echo $tab ?>" class="attachments table table-striped" style="width: 100%;">
+                    <table data-template="[<?php echo $grouplang; ?>][<?php echo $tab ?>]"  data-bs-target="#attachments-<?php echo $grouplang; ?>-<?php echo $tab ?>" data-ck-target="<?="email_{$tab}_{$grouplang}"?>" id ="attachments-<?php echo $grouplang; ?>-<?php echo $tab ?>" class="attachments table table-striped" style="width: 100%;">
                         <thead>
                             <tr>
                                 <th><?php eT("Action"); ?></th>
@@ -93,11 +115,11 @@ $script = array();
 
 
 
-<table id="rowTemplate" class="hidden">
+<table id="rowTemplate" class="d-none">
     <tr>
         <td>
-            <button class="btn btn-default btn-xs btnattachmentremove" title="<?php eT('Remove attachment') ?>" data-toggle="tooltip" data-placement="bottom">
-                <i class="fa fa-trash text-danger" aria-hidden="true"></i><span class="sr-only"><?php eT('Remove attachment') ?></span>
+            <button class="btn btn-outline-secondary btn-xs btnattachmentremove" title="<?php eT('Remove attachment') ?>" data-bs-toggle="tooltip" data-bs-placement="bottom">
+                <i class="ri-delete-bin-fill text-danger" aria-hidden="true"></i><span class="visually-hidden"><?php eT('Remove attachment') ?></span>
             </button>
         </td>
         <td>
@@ -109,8 +131,11 @@ $script = array();
         </td>
         <td>
             <span class="relevance"></span>
-            <button class="btn btn-xs btn-default edit-relevance-equation" title="<?php eT('Edit condition') ?>" data-toggle="tooltip" data-placement="bottom">
-                <i class="fa fa-pencil" aria-hidden="true"></i><span class="sr-only"><?php eT('Edit condition')?></span>
+            <button class="btn btn-xs btn-outline-secondary edit-relevance-equation" 
+            	    title="<?php eT('Edit condition') ?>" 
+            	    data-bs-toggle="tooltip" 
+            	    data-bs-placement="bottom">
+                <i class="ri-pencil-fill" aria-hidden="true"></i><span class="visually-hidden"><?php eT('Edit condition')?></span>
             </button>
             <input class="relevance" type="hidden">
         </td>

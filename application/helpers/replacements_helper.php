@@ -15,8 +15,12 @@ if (!defined('BASEPATH')) {
 * See COPYRIGHT.php for copyright notices and details.
 *
 */
+
 /**
 * This function replaces keywords in a text and is mainly intended for templates
+* Replacement done on this function can not be used in Expression for condition or equation
+* If you want keywords available on both replacement and condition, use LimeExpressionManager::setValueToKnowVar
+* Or add it in LimeExpressionManager->setVariableAndTokenMappingsForExpressionManager
 * If you use this functions put your replacement strings into the $replacements variable
 * instead of using global variables
 * NOTE - Don't do any embedded replacements in this function.  Create the array of replacement values and
@@ -32,6 +36,8 @@ if (!defined('BASEPATH')) {
 * @param boolean bStaticReplacement - Default off, forces non-dynamic replacements without <SPAN> tags (e.g. for the Completed page)
 * @param object|string - the template object to be used
 * @return string Text with replaced strings
+*
+* @psalm-suppress UndefinedVariable
 */
 function templatereplace($line, $replacements = array(), &$redata = array(), $debugSrc = null, $anonymized = null, $questionNum = null, $registerdata = array(), $bStaticReplacement = false, $oTemplate = '')
 {
@@ -65,7 +71,6 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         'totalquestions',
         'flashmessage'
     );
-
     $varsPassed = array();
 
     foreach ($allowedvars as $var) {
@@ -127,7 +132,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
 
     // surveyformat
     if (isset($thissurvey['format'])) {
-        $surveyformat = str_replace(array("A", "S", "G"), array("allinone", "questionbyquestion", "groupbygroup"), $thissurvey['format']);
+        $surveyformat = str_replace(array("A", "S", "G"), array("allinone", "questionbyquestion", "groupbygroup"), (string) $thissurvey['format']);
     } else {
         $surveyformat = "";
     }
@@ -212,7 +217,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     if (isset($token)) {
         $_token = $token;
     } elseif (isset($clienttoken)) {
-        $_token = htmlentities($clienttoken, ENT_QUOTES, 'UTF-8'); // or should it be URL-encoded?
+        $_token = htmlentities((string) $clienttoken, ENT_QUOTES, 'UTF-8'); // or should it be URL-encoded?
     } else {
         $_token = '';
     }
@@ -236,7 +241,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     }
 
     if (isset($surveyid) && isset($_SESSION['survey_' . $surveyid]['srid'])) {
-        $_quexmlpdf = CHtml::link(gT("Save as PDF"), array("/printanswers/view/surveyid/{$surveyid}/printableexport/quexmlpdf"), array('data-toggle' => 'tooltip', 'data-placement' => 'right', 'title' => gT("Note: Print will not include items on this page")));
+        $_quexmlpdf = CHtml::link(gT("Save as PDF"), array("/printanswers/view/surveyid/{$surveyid}/printableexport/quexmlpdf"), array('data-bs-toggle' => 'tooltip', 'data-bs-placement' => 'right', 'title' => gT("Note: Print will not include items on this page")));
     } else {
         $_quexmlpdf = "";
     }
@@ -256,7 +261,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
 
     $_googleAnalyticsStyle = ($thissurvey['googleanalyticsstyle'] ?? '1');
     $_endtext = '';
-    if (isset($thissurvey['surveyls_endtext']) && trim($thissurvey['surveyls_endtext']) != '') {
+    if (isset($thissurvey['surveyls_endtext']) && trim((string) $thissurvey['surveyls_endtext']) != '') {
         $_endtext = $thissurvey['surveyls_endtext'];
     }
 
@@ -264,7 +269,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
 
     if (!empty($oTemplate->siteLogo)) {
         if (file_exists($oTemplate->path . $oTemplate->siteLogo)) {
-            $sitelogo = '<img class="img-responsive site-surveylist-logo custom custom-margin top-15 bottom-15" src="' . App()->getAssetManager()->publish($oTemplate->path . $oTemplate->siteLogo) . '" alt=""/>';
+            $sitelogo = '<img class="img-fluid site-surveylist-logo custom custom-margin top-15 bottom-15" src="' . App()->getAssetManager()->publish($oTemplate->path . $oTemplate->siteLogo) . '" alt=""/>';
         }
     }
 
@@ -291,7 +296,6 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     $coreReplacements['GID'] = Yii::app()->getConfig('gid', ''); // Use the gid of the question, except if we are not in question (Randomization group name)
     $coreReplacements['GROUPDESCRIPTION'] = $_groupdescription;
     $coreReplacements['GROUPNAME'] = $_groupname;
-    $coreReplacements['LANG'] = App()->language;
     $coreReplacements['NAVIGATOR'] = $navigator ?? ''; // global
     $coreReplacements['MOVEPREVBUTTON'] = $moveprevbutton ?? ''; // global
     $coreReplacements['MOVENEXTBUTTON'] = $movenextbutton ?? ''; // global
@@ -333,6 +337,13 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     return $line;
 }
 
+/**
+ * This function replaces keywords in a text
+ * Replacement done on this function can not be used in Expression for condition or equation
+ * If you want keywords available on both replacement and condition, use LimeExpressionManager::setValueToKnowVar
+ * Or add it in LimeExpressionManager->setVariableAndTokenMappingsForExpressionManager
+ * @psalm-suppress UndefinedVariable TODO
+ */
 function getStandardsReplacementFields($thissurvey)
 {
     $surveyid = $_SESSION['LEMsid'];
@@ -345,7 +356,7 @@ function getStandardsReplacementFields($thissurvey)
 
     // surveyformat
     if (isset($thissurvey['format'])) {
-        $surveyformat = str_replace(array("A", "S", "G"), array("allinone", "questionbyquestion", "groupbygroup"), $thissurvey['format']);
+        $surveyformat = str_replace(array("A", "S", "G"), array("allinone", "questionbyquestion", "groupbygroup"), (string) $thissurvey['format']);
     } else {
         $surveyformat = "";
     }
@@ -411,8 +422,6 @@ function getStandardsReplacementFields($thissurvey)
     $coreReplacements['ADMINNAME'] = $thissurvey['admin'] ?? '';
     $coreReplacements['ADMINEMAIL'] = $thissurvey['adminemail'] ?? '';
     $coreReplacements['GID'] = Yii::app()->getConfig('gid', ''); // Use the gid of the question, except if we are not in question (Randomization group name)
-
-    $coreReplacements['LANG'] = App()->language;
     $coreReplacements['NAVIGATOR'] = $navigator ?? ''; // global
     $coreReplacements['MOVEPREVBUTTON'] = $moveprevbutton ?? ''; // global
     $coreReplacements['MOVENEXTBUTTON'] = $movenextbutton ?? ''; // global
@@ -448,12 +457,12 @@ function ReplaceFields($text, $fieldsarray, $bReplaceInsertans = true, $staticRe
     if ($bReplaceInsertans) {
         $replacements = array();
         foreach ($fieldsarray as $key => $value) {
-            $replacements[substr($key, 1, -1)] = $value;
+            $replacements[substr((string) $key, 1, -1)] = $value;
         }
         $text = LimeExpressionManager::ProcessString($text, null, $replacements, 2, 1, false, false, $staticReplace);
     } else {
         foreach ($fieldsarray as $key => $value) {
-            $text = str_replace($key, $value, $text);
+            $text = str_replace($key, $value, (string) $text);
         }
     }
     return $text;
@@ -472,20 +481,20 @@ function ReplaceFields($text, $fieldsarray, $bReplaceInsertans = true, $staticRe
 */
 function PassthruReplace($line, $thissurvey)
 {
-    while (strpos($line, "{PASSTHRU:") !== false) {
-        $p1 = strpos($line, "{PASSTHRU:"); // startposition
+    while (strpos((string) $line, "{PASSTHRU:") !== false) {
+        $p1 = strpos((string) $line, "{PASSTHRU:"); // startposition
         $p2 = $p1 + 10; // position of the first arg char
-        $p3 = strpos($line, "}", $p1); // position of the last arg char
+        $p3 = strpos((string) $line, "}", $p1); // position of the last arg char
 
-        $cmd = substr($line, $p1, $p3 - $p1 + 1); // extract the complete passthru like "{PASSTHRU:myarg}"
-        $arg = substr($line, $p2, $p3 - $p2); // extract the arg to passthru (like "myarg")
+        $cmd = substr((string) $line, $p1, $p3 - $p1 + 1); // extract the complete passthru like "{PASSTHRU:myarg}"
+        $arg = substr((string) $line, $p2, $p3 - $p2); // extract the arg to passthru (like "myarg")
 
         // lookup for the fitting arg
         $sValue = '';
         if (isset($_SESSION['survey_' . $thissurvey['sid']]['urlparams'][$arg])) {
-            $sValue = urlencode($_SESSION['survey_' . $thissurvey['sid']]['urlparams'][$arg]);
+            $sValue = urlencode((string) $_SESSION['survey_' . $thissurvey['sid']]['urlparams'][$arg]);
         }
-        $line = str_replace($cmd, $sValue, $line); // replace
+        $line = str_replace($cmd, $sValue, (string) $line); // replace
     }
 
     return $line;

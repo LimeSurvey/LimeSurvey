@@ -1,0 +1,44 @@
+{#
+    LimeSurvey
+    Copyright (C) 2007-2017 The LimeSurvey Project Team / Louis Gac
+    All rights reserved.
+    License: GNU/GPL License v2 or later, see LICENSE.php
+    LimeSurvey is free software. This version may have been modified pursuant
+    to the GNU General Public License, and as distributed it includes or
+    is derivative of works licensed under the GNU General Public License or
+    other free or open source software licenses.
+    See COPYRIGHT.php for copyright notices and details.
+
+    (¯`·._.·(¯`·._.· Print Answers Layout  ·._.·´¯)·._.·´¯)
+
+    This is the layout that will be used to print the answers. 
+
+#}
+{% extends 'layout_global.twig' %}
+{% block ajaxindicator %}{% endblock %}
+{% block pjaxbegin %}{% endblock %}
+{% block body %}
+    {% block nav_bar %}
+        {% if (not aSurveyInfo.printPdf) %} 
+            {{ parent() }}
+        {% endif %}
+    {% endblock %}
+    {% block content %}
+        {% set sViewContent =  './subviews/content/' ~ aSurveyInfo.include_content ~ '.twig' %}
+        {% include './subviews/content/outerframe.twig' with {'include_content': sViewContent } %}
+    {% endblock %}
+    {% if (not aSurveyInfo.printPdf) %} 
+        {{ registerScript("BasicThemeScripts", "
+        if(window.basicThemeScripts === undefined){ 
+            window.basicThemeScripts = new ThemeScripts(); 
+        } 
+        basicThemeScripts.initGlobal(); 
+        ", "POS_END") }}
+    {% endif %}
+{% endblock %}
+{% block footer %}
+    {% if (not aSurveyInfo.printPdf) %} 
+        {{ parent() }}
+    {% endif %}
+{% endblock %}
+{% block pjaxend %}{% endblock %}

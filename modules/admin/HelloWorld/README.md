@@ -187,9 +187,9 @@ We define ourself the top menu HTML in our view :
 <div class='menubar surveybar' id="helloworldbarid">
     <div class='row container-fluid'>
         <!-- left buttons -->
-        <div class="col-md-10">
-          <a class="btn btn-default pjax" href='<?php echo $this->createUrl('admin/HelloWorld/sa/sayHelloUser/', ['surveyid' => $oSurvey->sid, 'sWho'=> "foo"]); ?>' role="button">
-              <span class="fa  fa-smile-o text-success"></span>
+        <div class="col-lg-10">
+          <a class="btn btn-outline-secondary pjax" href='<?php echo $this->createUrl('admin/HelloWorld/sa/sayHelloUser/', ['surveyid' => $oSurvey->sid, 'sWho'=> "foo"]); ?>' role="button">
+              <span class="ri-emotion-happy-line text-success"></span>
                 Hello user
           </a>
         </div>

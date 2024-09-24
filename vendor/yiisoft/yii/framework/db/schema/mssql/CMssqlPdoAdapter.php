@@ -20,9 +20,10 @@ class CMssqlPdoAdapter extends PDO
 	 * Get the last inserted id value
 	 * MSSQL doesn't support sequence, so, argument is ignored
 	 *
-	 * @param string|null sequence name. Defaults to null
+	 * @param string|null $sequence sequence name. Defaults to null
 	 * @return integer last inserted id
 	 */
+	#[ReturnTypeWillChange]
 	public function lastInsertId ($sequence=NULL)
 	{
 		return $this->query('SELECT CAST(COALESCE(SCOPE_IDENTITY(), @@IDENTITY) AS bigint)')->fetchColumn();
@@ -36,6 +37,7 @@ class CMssqlPdoAdapter extends PDO
 	 *
 	 * @return boolean
 	 */
+	#[ReturnTypeWillChange]
 	public function beginTransaction ()
 	{
 		$this->exec('BEGIN TRANSACTION');
@@ -50,6 +52,7 @@ class CMssqlPdoAdapter extends PDO
 	 *
 	 * @return boolean
 	 */
+	#[ReturnTypeWillChange]
 	public function commit ()
 	{
 		$this->exec('COMMIT TRANSACTION');
@@ -64,6 +67,7 @@ class CMssqlPdoAdapter extends PDO
 	 *
 	 * @return boolean
 	 */
+	#[ReturnTypeWillChange]
 	public function rollBack ()
 	{
 		$this->exec('ROLLBACK TRANSACTION');

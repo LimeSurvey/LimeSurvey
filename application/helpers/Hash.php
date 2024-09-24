@@ -115,10 +115,10 @@ class Hash
             $next = array();
 
             $conditions = false;
-            $position = strpos($token, '[');
+            $position = strpos((string) $token, '[');
             if ($position !== false) {
-                $conditions = substr($token, $position);
-                $token = substr($token, 0, $position);
+                $conditions = substr((string) $token, $position);
+                $token = substr((string) $token, 0, $position);
             }
 
             foreach ($context[$_key] as $item) {
@@ -200,7 +200,7 @@ class Hash
 
             // Pattern matches and other operators.
             if ($op === '=' && $val && $val[0] === '/') {
-                if (!preg_match($val, $prop)) {
+                if (!preg_match($val, (string) $prop)) {
                     return false;
                 }
             } elseif (
@@ -976,10 +976,10 @@ class Hash
         $return = $idMap = array();
         $ids = self::extract($data, $options['idPath']);
 
-        $idKeys = explode('.', $options['idPath']);
+        $idKeys = explode('.', (string) $options['idPath']);
         array_shift($idKeys);
 
-        $parentKeys = explode('.', $options['parentPath']);
+        $parentKeys = explode('.', (string) $options['parentPath']);
         array_shift($parentKeys);
 
         foreach ($data as $result) {

@@ -32,7 +32,7 @@ class TwoFactorAuth
             throw new TwoFactorAuthException('Period must be int > 0');
         $this->period = $period;
 
-        $algorithm = strtolower(trim($algorithm));
+        $algorithm = strtolower(trim((string) $algorithm));
         if (!in_array($algorithm, self::$_supportedalgos))
             throw new TwoFactorAuthException('Unsupported algorithm: ' . $algorithm);
         $this->algorithm = $algorithm;
@@ -40,7 +40,7 @@ class TwoFactorAuth
         $this->rngprovider = $rngprovider;
         $this->timeprovider = $timeprovider;
 
-        self::$_base32 = str_split(self::$_base32dict);
+        self::$_base32 = str_split((string) self::$_base32dict);
         self::$_base32lookup = array_flip(self::$_base32);
     }
 
@@ -68,7 +68,7 @@ class TwoFactorAuth
         $secretkey = $this->base32Decode($secret);
 
         $timestamp = "\0\0\0\0" . pack('N*', $this->getTimeSlice($this->getTime($time)));  // Pack time into binary string
-        $hashhmac = hash_hmac($this->algorithm, $timestamp, $secretkey, true);             // Hash it with users secret key
+        $hashhmac = hash_hmac((string) $this->algorithm, $timestamp, (string) $secretkey, true);             // Hash it with users secret key
         $hashpart = substr($hashhmac, ord(substr($hashhmac, -1)) & 0x0F, 4);               // Use last nibble of result as index/offset and grab 4 bytes of the result
         $value = unpack('N', $hashpart);                                                   // Unpack binary value
         $value = $value[1] & 0x7FFFFFFF;                                                   // Drop MSB, keep only 31 bits
@@ -107,9 +107,9 @@ class TwoFactorAuth
         }
         // In general, it's not possible to prevent length leaks. So it's OK to leak the length. The important part is that
         // we don't leak information about the difference of the two strings.
-        if (strlen($safe)===strlen($user)) {
+        if (strlen((string) $safe)===strlen((string) $user)) {
             $result = 0;
-            for ($i = 0; $i < strlen($safe); $i++)
+            for ($i = 0; $i < strlen((string) $safe); $i++)
                 $result |= (ord($safe[$i]) ^ ord($user[$i]));
             return $result === 0;
         }
@@ -128,7 +128,7 @@ class TwoFactorAuth
         return 'data:'
             . $qrcodeprovider->getMimeType()
             . ';base64,'
-            . base64_encode($qrcodeprovider->getQRCodeImage($this->getQRText($label, $secret), $size));
+            . base64_encode((string) $qrcodeprovider->getQRCodeImage($this->getQRText($label, $secret), $size));
     }
 
     /**
@@ -174,23 +174,23 @@ class TwoFactorAuth
      */
     public function getQRText($label, $secret)
     {
-        return 'otpauth://totp/' . rawurlencode($label)
-            . '?secret=' . rawurlencode($secret)
-            . '&issuer=' . rawurlencode($this->issuer)
+        return 'otpauth://totp/' . rawurlencode((string) $label)
+            . '?secret=' . rawurlencode((string) $secret)
+            . '&issuer=' . rawurlencode((string) $this->issuer)
             . '&period=' . intval($this->period)
-            . '&algorithm=' . rawurlencode(strtoupper($this->algorithm))
+            . '&algorithm=' . rawurlencode(strtoupper((string) $this->algorithm))
             . '&digits=' . intval($this->digits);
     }
 
     private function base32Decode($value)
     {
-        if (strlen($value)==0) return '';
+        if (strlen((string) $value)==0) return '';
 
-        if (preg_match('/[^'.preg_quote(self::$_base32dict).']/', $value) !== 0)
+        if (preg_match('/[^'.preg_quote((string) self::$_base32dict).']/', (string) $value) !== 0)
             throw new TwoFactorAuthException('Invalid base32 string');
 
         $buffer = '';
-        foreach (str_split($value) as $char)
+        foreach (str_split((string) $value) as $char)
         {
             if ($char !== '=')
                 $buffer .= str_pad(decbin(self::$_base32lookup[$char]), 5, 0, STR_PAD_LEFT);

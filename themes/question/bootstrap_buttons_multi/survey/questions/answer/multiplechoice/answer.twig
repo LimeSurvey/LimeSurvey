@@ -14,20 +14,20 @@
 <!-- answer -->
 
 {% set button_size_class = (question_template_attribute.button_size == 'default' or question_template_attribute.button_size is empty) ? '' : "btn-"~question_template_attribute.button_size %}
-{% set max_buttons_row = (question_template_attribute.max_buttons_row == 'default' or question_template_attribute.max_buttons_row is empty) ? 'col-sm-2' : question_template_attribute.max_buttons_row %}
+{% set max_buttons_row = (question_template_attribute.max_buttons_row == 'default' or question_template_attribute.max_buttons_row is empty) ? 'col-md-2' : question_template_attribute.max_buttons_row %}
 <input type="hidden" name="MULTI{{name}}" value="{{anscount}}" />
 <div class="{{coreClass}} row {{ extraclass }}" >
-    <div class="list-unstyled form-inline btn-toolbar col-sm-12 " data-toggle="buttons" role="group" aria-labelledby="ls-question-text-{{basename }}">
+    <div class="list-unstyled form-inline btn-toolbar col-12 " data-bs-toggle="buttons" role="group" aria-labelledby="ls-question-text-{{basename }}">
         {% for aRow in aRows %}
             {% set aRow = aRow|merge({'button_size_class': button_size_class})|merge({'max_buttons_row': max_buttons_row}) %}
             {% set rowTemplate = aRow.other ? './survey/questions/answer/multiplechoice/rows/answer_row_other.twig' : './survey/questions/answer/multiplechoice/rows/answer_row.twig' %}
-            {% include rowTemplate with aRow only %}
+            {% include rowTemplate with aRow %}
         {% endfor %}
     </div>
     <!-- other -->
     {% if other in aRows|keys %}
-    <div class="hide col-sm-12" id="{{ name }}other-div">
-            <div class="form-group text-item other-text-item">
+    <div class="d-none col-12" id="{{ name }}other-div">
+            <div class="mb-3 text-item other-text-item form-check">
                 {{ processString(othertext) }}
                 <input
                     class="form-control input-sm {{kpclass}} bootstrap-other-input"

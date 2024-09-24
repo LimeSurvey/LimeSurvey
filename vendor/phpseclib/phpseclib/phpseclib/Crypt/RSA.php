@@ -304,6 +304,11 @@ abstract class RSA extends AsymmetricKey
     {
         self::initialize_static_variables();
 
+        $class = new \ReflectionClass(static::class);
+        if ($class->isFinal()) {
+            throw new \RuntimeException('createKey() should not be called from final classes (' . static::class . ')');
+        }
+
         $regSize = $bits >> 1; // divide by two to see how many bits P and Q would be
         if ($regSize > self::$smallestPrime) {
             $num_primes = floor($bits / self::$smallestPrime);
@@ -327,6 +332,7 @@ abstract class RSA extends AsymmetricKey
                 openssl_pkey_export($rsa, $privatekeystr, null, $config);
 
                 // clear the buffer of error strings stemming from a minimalistic openssl.cnf
+                // https://github.com/php/php-src/issues/11054 talks about other errors this'll pick up
                 while (openssl_error_string() !== false) {
                 }
 
@@ -836,15 +842,15 @@ abstract class RSA extends AsymmetricKey
             self::ENCRYPTION_PKCS1,
             self::ENCRYPTION_NONE
         ];
-        $numSelected = 0;
+        $encryptedCount = 0;
         $selected = 0;
         foreach ($masks as $mask) {
             if ($padding & $mask) {
                 $selected = $mask;
-                $numSelected++;
+                $encryptedCount++;
             }
         }
-        if ($numSelected > 1) {
+        if ($encryptedCount > 1) {
             throw new InconsistentSetupException('Multiple encryption padding modes have been selected; at most only one should be selected');
         }
         $encryptionPadding = $selected;
@@ -854,22 +860,26 @@ abstract class RSA extends AsymmetricKey
             self::SIGNATURE_RELAXED_PKCS1,
             self::SIGNATURE_PKCS1
         ];
-        $numSelected = 0;
+        $signatureCount = 0;
         $selected = 0;
         foreach ($masks as $mask) {
             if ($padding & $mask) {
                 $selected = $mask;
-                $numSelected++;
+                $signatureCount++;
             }
         }
-        if ($numSelected > 1) {
+        if ($signatureCount > 1) {
             throw new InconsistentSetupException('Multiple signature padding modes have been selected; at most only one should be selected');
         }
         $signaturePadding = $selected;
 
         $new = clone $this;
-        $new->encryptionPadding = $encryptionPadding;
-        $new->signaturePadding = $signaturePadding;
+        if ($encryptedCount) {
+            $new->encryptionPadding = $encryptionPadding;
+        }
+        if ($signatureCount) {
+            $new->signaturePadding = $signaturePadding;
+        }
         return $new;
     }
 

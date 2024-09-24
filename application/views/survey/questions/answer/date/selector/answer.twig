@@ -2,66 +2,49 @@
 /**
  * Date Html, selector style :
  * @var $name
- * @var $qid
- * @var $iLength
+ * @var $coreClass
  * @var $dateoutput
  * @var $mindate
  * @var $maxdate
  * @var $dateformatdetails
  * @var $dateformatdetailsjs
- * @var $goodchars
- * @var $checkconditionFunction
- * @var $language
  * @var $hidetip
+ * @var $dateTimeWidget // by passing that over here the tempus dominus datepicker is automatically loaded
  */
 #}
 
 <!-- Date, selector layout -->
 
 <!-- answer -->
-<div class='form-inline'>
-    <div class='{{coreClass}} form-group'>
-        <label for='answer{{name}}' class='sr-only control-label'>
+<div class='{{ coreClass }} mb-3 row g-1 align-items-center'>
+    <div class="col-12 col-sm-auto">
+        <label for='answer{{ name }}' class='visually-hidden control-label'>
             {{ sprintf(gT('Date format: %s'), dateformatdetails) }}
         </label>
-        <div id="answer{{name}}_datetimepicker" class="input-group answer-item date-timepicker-group" data-basename="{{name}}"><!-- data-basename used in js function -->
+        <div id="answer{{ name }}_datetimepicker" class="input-group answer-item date-timepicker-group"
+             data-basename="{{ name }}"><!-- data-basename used in js function -->
             {{ C.Html.textField(name,dateoutput,{
                 'id' : "answer" ~ name,
                 'class' : "form-control date-control date",
                 'aria-describedby' : "ls-question-text-" ~ name,
             }) }}
             <div class="input-group-addon btn btn-primary">
-                <i class="fa fa-calendar" aria-hidden="true"></i><span class="sr-only"> {{ gT("Open date/time selector") }}</span>
+                <i class="fa fa-calendar ri-calendar-2-fill" aria-hidden="true"></i>
+                <span class="visually-hidden"> {{ gT("Open date/time selector") }}</span>
             </div>
         </div>
         {% if(hidetip) %}
-        <p class="tip help-block" aria-hidden='true'>
-           {{ sprintf(gT('Format: %s'),dateformatdetails) }}
-        </p>
+            <p class="tip help-block" aria-hidden='true'>
+                {{ sprintf(gT('Format: %s'),dateformatdetails) }}
+            </p>
         {% endif %}
     </div>
 </div>
 
-<div class='hidden' style='display:none'>
+<div class="d-none" style='display:none'>
     <!-- Obs: No spaces in the div - it will mess up Javascript string parsing , EM replacement done in qanda -->
-    <div id='datemin{{name}}'>{{ mindate }}</div>
-    <div id='datemax{{name}}'>{{ maxdate }}</div>
-    <div id='dateformat{{name}}'>{{ dateformatdetailsjs }}</div>
+    <div id='datemin{{ name }}'>{{ processString(mindate) }}</div>
+    <div id='datemax{{ name }}'>{{ processString(maxdate) }}</div>
+    <div id='dateformat{{ name }}'>{{ dateformatdetailsjs }}</div>
 </div>
-
-    {#  Set option for launch, can not set to default : maybe more than one datetimepicker in page  #}
-    {# get the same default value than qanda_helper #}
-    {% set aJsonOption = json_encode({
-            'format' : dateformatdetailsjs,
-            'minDate' : '{' in mindate ? '1900-01-01' : mindate,
-            'maxDate' : '{' in maxdate ? '2037-12-31' : maxdate,
-            'stepping' : minuteStep,
-            'sideBySide' :  true
-        })
-    %}
-    
-    {{ registerScript("doDatetimepicker_" ~ name, "jQuery('#answer" ~ name ~ "_datetimepicker').datetimepicker(" ~ aJsonOption ~ ");" , 'POS_POSTSCRIPT' ) }}
-    {# Min and max date sets default value, so use this to override it #}
-    {{ registerScript("resetDate" ~ name,"$('#answer" ~ name ~ "').val('" ~ dateoutput ~ "');", 'POS_POSTSCRIPT') }}
-    
 <!-- end of answer -->

@@ -6,7 +6,7 @@
         var tpl = {
             "font-styles":
                 "<li class='dropdown'>" +
-                  "<a class='btn dropdown-toggle' data-toggle='dropdown' href='#'>" +
+                  "<a class='btn dropdown-toggle' data-bs-toggle='dropdown' href='#'>" +
                   "<i class='icon-font'></i>&nbsp;<span class='current-font'>" + locale.font_styles.normal + "</span>&nbsp;<b class='caret'></b>" +
                   "</a>" +
                   "<ul class='dropdown-menu'>" +
@@ -81,7 +81,7 @@
 
             "color":
                 "<li class='dropdown'>" +
-                  "<a class='btn dropdown-toggle' data-toggle='dropdown' href='#'>" +
+                  "<a class='btn dropdown-toggle' data-bs-toggle='dropdown' href='#'>" +
                     "<span class='current-color'>" + locale.colours.black + "</span>&nbsp;<b class='caret'></b>" +
                   "</a>" +
                   "<ul class='dropdown-menu'>" +

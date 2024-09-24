@@ -47,7 +47,15 @@ class OLE_PPS_Root extends OLE_PPS
     * @var string
     */
     var $_tmp_dir;
-    
+
+    var $_BIG_BLOCK_SIZE;
+
+    var $_SMALL_BLOCK_SIZE;
+
+    var $_tmp_filename;
+
+    var $_FILEH_;
+
     /**
     * Constructor
     *

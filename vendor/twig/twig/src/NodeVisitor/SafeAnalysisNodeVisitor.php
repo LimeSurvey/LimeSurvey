@@ -24,19 +24,19 @@ use Twig\Node\Expression\ParentExpression;
 use Twig\Node\Node;
 
 /**
- * @final
+ * @internal
  */
-class SafeAnalysisNodeVisitor extends AbstractNodeVisitor
+final class SafeAnalysisNodeVisitor implements NodeVisitorInterface
 {
-    protected $data = [];
-    protected $safeVars = [];
+    private $data = [];
+    private $safeVars = [];
 
-    public function setSafeVars($safeVars)
+    public function setSafeVars(array $safeVars): void
     {
         $this->safeVars = $safeVars;
     }
 
-    public function getSafe(\Twig_NodeInterface $node)
+    public function getSafe(Node $node)
     {
         $hash = spl_object_hash($node);
         if (!isset($this->data[$hash])) {
@@ -56,7 +56,7 @@ class SafeAnalysisNodeVisitor extends AbstractNodeVisitor
         }
     }
 
-    protected function setSafe(\Twig_NodeInterface $node, array $safe)
+    private function setSafe(Node $node, array $safe): void
     {
         $hash = spl_object_hash($node);
         if (isset($this->data[$hash])) {
@@ -74,12 +74,12 @@ class SafeAnalysisNodeVisitor extends AbstractNodeVisitor
         ];
     }
 
-    protected function doEnterNode(Node $node, Environment $env)
+    public function enterNode(Node $node, Environment $env): Node
     {
         return $node;
     }
 
-    protected function doLeaveNode(Node $node, Environment $env)
+    public function leaveNode(Node $node, Environment $env): ?Node
     {
         if ($node instanceof ConstantExpression) {
             // constants are marked safe for all
@@ -98,7 +98,7 @@ class SafeAnalysisNodeVisitor extends AbstractNodeVisitor
             // filter expression is safe when the filter is safe
             $name = $node->getNode('filter')->getAttribute('value');
             $args = $node->getNode('arguments');
-            if (false !== $filter = $env->getFilter($name)) {
+            if ($filter = $env->getFilter($name)) {
                 $safe = $filter->getSafe($args);
                 if (null === $safe) {
                     $safe = $this->intersectSafe($this->getSafe($node->getNode('node')), $filter->getPreservesSafety());
@@ -111,8 +111,7 @@ class SafeAnalysisNodeVisitor extends AbstractNodeVisitor
             // function expression is safe when the function is safe
             $name = $node->getAttribute('name');
             $args = $node->getNode('arguments');
-            $function = $env->getFunction($name);
-            if (false !== $function) {
+            if ($function = $env->getFunction($name)) {
                 $this->setSafe($node, $function->getSafe($args));
             } else {
                 $this->setSafe($node, []);
@@ -125,8 +124,7 @@ class SafeAnalysisNodeVisitor extends AbstractNodeVisitor
             }
         } elseif ($node instanceof GetAttrExpression && $node->getNode('node') instanceof NameExpression) {
             $name = $node->getNode('node')->getAttribute('name');
-            // attributes on template instances are safe
-            if ('_self' == $name || \in_array($name, $this->safeVars)) {
+            if (\in_array($name, $this->safeVars)) {
                 $this->setSafe($node, ['all']);
             } else {
                 $this->setSafe($node, []);
@@ -138,7 +136,7 @@ class SafeAnalysisNodeVisitor extends AbstractNodeVisitor
         return $node;
     }
 
-    protected function intersectSafe(array $a = null, array $b = null)
+    private function intersectSafe(?array $a = null, ?array $b = null): array
     {
         if (null === $a || null === $b) {
             return [];
@@ -155,10 +153,8 @@ class SafeAnalysisNodeVisitor extends AbstractNodeVisitor
         return array_intersect($a, $b);
     }
 
-    public function getPriority()
+    public function getPriority(): int
     {
         return 0;
     }
 }
-
-class_alias('Twig\NodeVisitor\SafeAnalysisNodeVisitor', 'Twig_NodeVisitor_SafeAnalysis');

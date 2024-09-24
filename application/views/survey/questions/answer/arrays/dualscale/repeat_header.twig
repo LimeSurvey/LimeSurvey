@@ -1,0 +1,31 @@
+{#
+
+/**
+ * Header row for dual-scale array
+ * @var $labelans0 - Labels for answers
+ * @var $labelans1
+ * @var $shownoanswer
+ * @var $rightexists
+ * @var $class - Extra class, like 'repeat headers'
+ */
+
+#}
+<!-- repeat_header -->
+</tbody>
+<tbody>
+<tr class="ls-heading ls-heading-repeat " aria-hidden="true">
+    {{ doRender(
+        '/survey/questions/answer/arrays/dualscale/content_header',
+        ({
+            'basename'     : basename,
+            'labelans0'    : labelans0,
+            'labelans1'    : labelans1,
+            'shownoanswer' : shownoanswer,
+            'rightexists'  : rightexists,
+            'leftheader'   : leftheader,
+            'rightheader'  : rightheader,
+            'repeat'       : true
+        })
+    ) }}
+</tr>
+<!-- end of repeat_header -->

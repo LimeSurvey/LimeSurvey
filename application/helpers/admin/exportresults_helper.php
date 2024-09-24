@@ -105,7 +105,7 @@ class ExportSurveyResultsService
         $writer->init($survey, $sLanguageCode, $oOptions);
 
         $countResponsesCommand = $surveyDao->loadSurveyResults($survey, $oOptions->responseMinRecord, $oOptions->responseMaxRecord, $sFilter, $oOptions->responseCompletionState, $oOptions->selectedColumns, $oOptions->aResponses);
-        $countResponsesCommand->order = null;
+        $countResponsesCommand->order = false;
         $countResponsesCommand->select('count(*)');
         $responseCount = $countResponsesCommand->queryScalar();
         $maxRows = 100;

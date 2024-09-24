@@ -1,17 +1,17 @@
-<div class="panel panel-default">
+<div class="card card-primary h-100">
     <!-- Default panel contents -->
-    <div class="panel-heading">
-        <strong> {{ gT("Share survey") }} </strong>
+    <div class="card-header">
+        <h5 class="card-title">{{ gT("Share survey") }}</h5>
     </div>
     <!-- List group -->
-    <ul class="list-group">
+    <ul class="list-group list-group-flush">
         <!-- Base language -->
-        <li class="list-group-item" id="adminsidepanel__surveysummary--mainLanguageLink">
+        <li class="list-group-item p-0 border-0" id="adminsidepanel__surveysummary--mainLanguageLink">
             <div class="ls-flex-row col-12">
-                <div class="col-4">
+                <div class="col-4 card-label">
                     {{ getLanguageNameFromCode(oSurvey.language, false)}} ({{ gT("Base language") }}):
                 </div>
-                <div class="col-8">
+                <div class="col-8 ls-card-grid__description">
                     {% if oSurvey.sid %} {# pseudo condition due to reverse parsing problems while generating twig admin cache via console.php twig generateAdminCache #}
                         {% set tmp_url = surveyUrls[oSurvey.language] %}
                     {% endif %}
@@ -21,12 +21,12 @@
         </li>
         <!-- Additional languages  -->
         {% for langname in aAdditionalLanguages %}
-        <li class="list-group-item">
+        <li class="list-group-item p-0 border-0">
             <div class="ls-flex-row col-12">
-                <div class="col-4">
+               <div class="col-4 card-label">
                     {{ getLanguageNameFromCode(langname, false) ~ ":" }}
                 </div>
-                <div class="col-8">
+                <div class="col-8 ls-card-grid__description">
                     {% if oSurvey.sid %} {# pseudo condition due to reverse parsing problems while generating twig admin cache via console.php twig generateAdminCache #}
                         {% set tmp_url = surveyUrls[langname] %}
                     {% endif %}
@@ -37,193 +37,187 @@
         {% endfor %}
 
         <!-- End URL -->
-        <li class="list-group-item">
+        <li class="list-group-item p-0 border-0">
             <div class="ls-flex-row col-12">
-                <div class="col-4">
+               <div class="col-4 card-label">
                     {{ gT("End URL:") }}
                 </div>
-                <div class="col-8">
+                <div class="col-8 ls-card-grid__description">
                         {{endurl}}
                 </div>
             </div>
         </li>
         <!-- Number of questions/groups -->
-        <li class="list-group-item">
+        <li class="list-group-item p-0 border-0">
             <div class="ls-flex-row col-12">
-                <div class="col-4">
+               <div class="col-4 card-label">
                     {{ gT("Number of questions/groups:") }}
                 </div>
-                <div class="col-8">
+                <div class="col-8 ls-card-grid__description">
                     {{ sumcount3 ~ "/" ~ sumcount2 }}
                 </div>
             </div>
         </li>
         <!-- Sharing panel -->
-        {% if oSurvey.active == 'Y' %}
-            <li class="list-group-item">
-                <div class="ls-flex-row col-12">
-                    <div class="col-4">
-                        {{ gT("Sharing panel:") }}
-                    </div>
-                    <div class="col-8">
-                        <a href="#sharingdialog" class="btn btn-default selector_openSharePanel" data-toggle="modal" id="sharePanelButton_{{oSurvey.sid}}" data-surveyid="{{oSurvey.sid}}">
+        <li class="list-group-item p-0 border-0">
+            <div class="ls-flex-row col-12">
+                <div class="col-4 card-label">
+                    {{ gT("Sharing panel:") }}
+                </div>
+                <div class="col-8 ls-card-grid__description">
+                   <div class='selector_openSharePanel'  data-bs-toggle="tooltip" data-bs-placement="top" title="{{ oSurvey.active == 'Y' ? '' : gT('Activate your survey to open this panel') }}">
+                        <a href="#sharingdialog" class="btn btn-outline-secondary {{ oSurvey.active == 'Y' ? '' : 'disabled' }}" data-bs-toggle="modal"
+                        id="sharePanelButton_{{ oSurvey.sid }}" data-surveyid="{{ oSurvey.sid }}">
                             {{ gT("Open sharing panel") }}
                         </a>
                     </div>
                 </div>
-            </li>
-        {% endif %}
+            </div>
+        </li>
     </ul>
 </div>
 
 {% if oSurvey.active == 'Y' %}
-    <div class="modal fade" tabindex="-1" role="dialog" id="sharingdialog"> 
+    <div class="modal fade" tabindex="-1" role="dialog" id="sharingdialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">{{ gT("Share survey") }}</h4>
+                    <h5 class="modal-title">{{ gT("Share survey") }}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="row">
-                        <div class="panel panel-default">
-                            <div class="panel-heading"> {{ gT("Share QR-code:") }}</div>
-                            <div class="panel-body">
-                                <ul class="list-group">
-                                    {% if oSurvey.sid %} {# pseudo condition due to reverse parsing problems while generating twig admin cache via console.php twig generateAdminCache #}
-                                        {% set tmp_url = createAbsoluteUrl("survey/index", { "sid" : oSurvey.sid, "lang" : oSurvey.language}) %}
-                                    {% endif %}
-                                    <li class="list-group-item">
-                                        <div class="ls-flex-row col-12">
-                                            <div class="col-6">
-                                                {{ getLanguageNameFromCode(oSurvey.language, false)}}
+                    <div class="card card-primary h-100 mb-3 p-4">
+                        <div class="card-header">
+                            <h5 class="card-title">{{ gT("Share QR-code:") }}</h5>
+                        </div>
+                        <div class="card-body border rounded">
+                            <ul class="list-group list-group-flush">
+                                {% if oSurvey.sid %} {# pseudo condition due to reverse parsing problems while generating twig admin cache via console.php twig generateAdminCache #}
+                                        {% set tmp_url = surveyUrls[oSurvey.language] %}
+                                {% endif %}
+                                 <li class="list-group-item p-0 border-0 mb-2">
+                                    <div class="ls-flex-row col-12 align-items-center">
+                                        <div class="col-4">
+                                            {{ getLanguageNameFromCode(oSurvey.language, false)}}
+                                        </div>
+                                        <div class="col-8 d-flex justify-content-center">
+                                            <div class="selector__qrcode_container">
+                                                <button class="btn btn-outline-secondary selector__qrcode_trigger">{{ gT("Generate QR-Code") }}</button>
+                                                <div class="selector__qrcode" data-url="{{tmp_url}}"></div>
                                             </div>
-                                            <div class="col-6">
-                                                <div class="row selector__qrcode_container">
-                                                    <div class="col-6">
-                                                        <button class="btn btn-default selector__qrcode_trigger">{{ gT("Generate QR-Code") }}</button>
-                                                    </div>
-                                                    <div class="col-6">
-                                                        <div class="selector__qrcode" data-url="{{tmp_url}}"></div>
-                                                    </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                {% for langname in aAdditionalLanguages %}
+                                    {% if oSurvey.sid %} {# pseudo condition due to reverse parsing problems while generating twig admin cache via console.php twig generateAdminCache #}
+                                        {% set tmp_url = surveyUrls[langname] %}
+                                    {% endif %}
+                                    <li class="list-group-item p-0 border-0{% if not loop.last %} mb-2{% endif %}">
+                                        <div class="ls-flex-row col-12 align-items-center">
+                                            <div class="col-4">
+                                                {{ getLanguageNameFromCode(langname, false)}}
+                                            </div>
+                                            <div class="col-8 d-flex justify-content-center">
+                                                <div class="selector__qrcode_container">
+                                                    <button class="btn btn-outline-secondary selector__qrcode_trigger">{{ gT("Generate QR-Code") }}</button>
+                                                    <div class="selector__qrcode" data-url="{{tmp_url}}"></div>
                                                 </div>
                                             </div>
                                         </div>
                                     </li>
-                                    {% for langname in aAdditionalLanguages %}
-                                        {% if oSurvey.sid %} {# pseudo condition due to reverse parsing problems while generating twig admin cache via console.php twig generateAdminCache #}
-                                            {% set tmp_url = createAbsoluteUrl("survey/index", { "sid" : oSurvey.sid, "lang" : langname}) %}
-                                        {% endif %}
-                                        <li class="list-group-item">
-                                            <div class="ls-flex-row col-12">
-                                                <div class="col-6">
-                                                    {{ getLanguageNameFromCode(langname, false)}}
-                                                </div>
-                                                <div class="col-6">
-                                                    <div class="row selector__qrcode_container">
-                                                        <div class="col-6">
-                                                            <button class="btn btn-default selector__qrcode_trigger">{{ gT("Generate QR-Code") }}</button>
-                                                        </div>
-                                                        <div class="col-6">
-                                                            <div class="selector__qrcode" data-url="{{tmp_url}}"></div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    {% endfor %}
-                                </ul>
-                            </div>
+                                {% endfor %}
+                            </ul>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
+                    <div class="card card-primary h-100 mb-3 p-4">
+                        <div class="card-header">
+                            <h5 class="card-title">
                                 {{ gT("Share on Facebook:") }}
-                                <button class="btn btn-xs btn-warning pull-right facebook-button" id="selector_activateFacebookSharing">{{ gT("Enable") }}</button>
-                            </div>
-                            <div class="panel-body">
-                                <ul class="list-group">
+                            </h5>
+                            <button class="btn btn-xs btn-warning float-end facebook-button" 
+                                  id="selector_activateFacebookSharing">{{ gT("Enable") }}</button>
+                        </div>
+                        <div class="card-body border rounded">
+                            <ul class="list-group list-group-flush">
+                                {% if oSurvey.sid %} {# pseudo condition due to reverse parsing problems while generating twig admin cache via console.php twig generateAdminCache #}
+                                        {% set tmp_url = surveyUrls[oSurvey.language] %}
+                                {% endif %}
+                                    <li class="list-group-item p-0 border-0 mb-2">
+                                    <div class="ls-flex-row col-12 align-items-center">
+                                        <div class="col-4">
+                                            {{ getLanguageNameFromCode(oSurvey.language, false)}}
+                                        </div>
+                                        <div class="col-8 d-flex justify-content-center">
+                                            <button class="btn btn-disabled facebook-button selector_fb_share_disabled" disabled ><i class="ri-facebook-box-fill"></i> {{ gT("Disabled") }}</button>
+                                            <iframe class="selector_fb_share d-none" data-src="https://www.facebook.com/plugins/share_button.php?href={{tmp_url|url_encode}}&layout=button_count&size=large&mobile_iframe=true&appId=328433594315978&width=106&height=28" width="106" height="28" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true"></iframe>
+                                        </div>
+                                    </div>
+                                </li>
+                                {% for langname in aAdditionalLanguages %}
                                     {% if oSurvey.sid %} {# pseudo condition due to reverse parsing problems while generating twig admin cache via console.php twig generateAdminCache #}
-                                        {% set tmp_url = createAbsoluteUrl("survey/index", { "sid" : oSurvey.sid, "lang" : oSurvey.language}) %}
+                                        {% set tmp_url = surveyUrls[langname] %}
                                     {% endif %}
-                                    <li class="list-group-item">
-                                        <div class="ls-flex-row col-12">
-                                            <div class="col-6">
-                                                {{ getLanguageNameFromCode(oSurvey.language, false)}}
+                                    <li class="list-group-item p-0 border-0{% if not loop.last %} mb-2{% endif %}">
+                                        <div class="ls-flex-row col-12 align-items-center">
+                                            <div class="col-4">
+                                                {{ getLanguageNameFromCode(langname, false)}}
                                             </div>
-                                            <div class="col-6">
-                                                <button class="btn btn-disabled facebook-button selector_fb_share_disabled" disabled ><i class="fa fa-facebook-square"></i> {{ gT("Disabled") }}</button>
-                                                <iframe class="selector_fb_share hidden" data-src="https://www.facebook.com/plugins/share_button.php?href={{tmp_url|url_encode}}&layout=button_count&size=large&mobile_iframe=true&appId=328433594315978&width=106&height=28" width="106" height="28" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true"></iframe>
+                                            <div class="col-8 d-flex justify-content-center">
+                                                <button class="btn btn-disabled facebook-button selector_fb_share_disabled" disabled ><i class="ri-facebook-box-fill"></i> {{ gT("Disabled") }}</button>
+                                                <iframe class="selector_fb_share d-none h-12" data-src="https://www.facebook.com/plugins/share_button.php?href={{tmp_url|url_encode}}&layout=button_count&size=large&mobile_iframe=true&appId=1321262851319939&width=106&height=28" width="106" height="28" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true"></iframe>
                                             </div>
                                         </div>
                                     </li>
-                                    {% for langname in aAdditionalLanguages %}
-                                        {% if oSurvey.sid %} {# pseudo condition due to reverse parsing problems while generating twig admin cache via console.php twig generateAdminCache #}
-                                            {% set tmp_url = createAbsoluteUrl("survey/index", { "sid" : oSurvey.sid, "lang" : langname}) %}
-                                        {% endif %}
-                                        <li class="list-group-item">
-                                            <div class="ls-flex-row col-12">
-                                                <div class="col-6">
-                                                    {{ getLanguageNameFromCode(langname, false)}}
-                                                </div>
-                                                <div class="col-6">
-                                                    <button class="btn btn-disabled facebook-button selector_fb_share_disabled" disabled ><i class="fa fa-facebook-square"></i> {{ gT("Disabled") }}</button>
-                                                    <iframe class="selector_fb_share hidden" data-src="https://www.facebook.com/plugins/share_button.php?href={{tmp_url|url_encode}}&layout=button_count&size=small&mobile_iframe=true&appId=1321262851319939&width=183&height=20" width="103" height="20" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true"></iframe>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    {% endfor %}
-                                </ul>
-                            </div>
+                                {% endfor %}
+                            </ul>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
+                    <div class="card card-primary h-100 mb-3 p-4">
+                        <div class="card-header">
+                            <h5 class="card-title">
                                 {{ gT("Share on Twitter:") }}
-                            </div>
-                            <div class="panel-body">
-                                <ul class="list-group">
+                            </h5>
+                        </div>
+                        <div class="card-body border rounded">
+                            <ul class="list-group list-group-flush">
+                                {% if oSurvey.sid %} {# pseudo condition due to reverse parsing problems while generating twig admin cache via console.php twig generateAdminCache #}
+                                    {% set tmp_url = surveyUrls[oSurvey.language] %}
+                                {% endif %}
+                                <li class="list-group-item p-0 border-0 mb-2">
+                                    <div class="ls-flex-row col-12 align-items-center">
+                                        <div class="col-4">
+                                            {{ getLanguageNameFromCode(oSurvey.language, false)}}
+                                        </div>
+                                        <div class="col-8 d-flex justify-content-center">
+                                            <a class="btn btn-outline-secondary twitter-button" target='_blank' href="https://twitter.com/intent/tweet?text={{ gT("Thanks for taking this survey!")|url_encode}}&url={{tmp_url|url_encode}}&hashtags=limesurvey,survey">
+                                                <i class="ri-twitter-fill"></i>{{ gT("Tweet it") }}
+                                            </a>
+                                        </div>
+                                    </div>
+                                </li>
+                                {% for langname in aAdditionalLanguages %}
                                     {% if oSurvey.sid %} {# pseudo condition due to reverse parsing problems while generating twig admin cache via console.php twig generateAdminCache #}
-                                        {% set tmp_url = createAbsoluteUrl("survey/index", { "sid" : oSurvey.sid, "lang" : oSurvey.language}) %}
+                                        {% set tmp_url = surveyUrls[langname] %}
                                     {% endif %}
-                                    <li class="list-group-item">
-                                        <div class="ls-flex-row col-12">
-                                            <div class="col-6">
-                                                {{ getLanguageNameFromCode(oSurvey.language, false)}}
+                                    <li class="list-group-item p-0 border-0{% if not loop.last %} mb-2{% endif %}">
+                                        <div class="ls-flex-row col-12 align-items-center">
+                                            <div class="col-4">
+                                                {{ getLanguageNameFromCode(langname, false)}}
                                             </div>
-                                            <div class="col-6">
-                                                <a class="btn btn-default twitter-button" target='_blank' href="https://twitter.com/intent/tweet?text={{ gT("Thanks for taking this survey!")|url_encode}}&url={{tmp_url|url_encode}}&hashtags=limesurvey,survey">
-                                                    <i class="fa fa-twitter"></i>{{ gT("Tweet it") }}
+                                            <div class="col-8 d-flex justify-content-center">
+                                                <a class="btn btn-outline-secondary twitter-button" target='_blank' href="https://twitter.com/intent/tweet?text={{ gT("Thanks for taking this survey!")|url_encode}}&url={{tmp_url|url_encode}}&hashtags=limesurvey,survey">
+                                                    <i class="ri-twitter-fill"></i>{{ gT("Tweet it") }}
                                                 </a>
                                             </div>
                                         </div>
                                     </li>
-                                    {% for langname in aAdditionalLanguages %}
-                                        {% if oSurvey.sid %} {# pseudo condition due to reverse parsing problems while generating twig admin cache via console.php twig generateAdminCache #}
-                                            {% set tmp_url = createAbsoluteUrl("survey/index", { "sid" : oSurvey.sid, "lang" : langname}) %}
-                                        {% endif %}
-                                        <li class="list-group-item">
-                                            <div class="ls-flex-row col-12">
-                                                <div class="col-6">
-                                                    {{ getLanguageNameFromCode(langname, false)}}
-                                                </div>
-                                                <div class="col-6">
-                                                    <a class="btn btn-default twitter-button" target='_blank' href="https://twitter.com/intent/tweet?text={{ gT("Thanks for taking this survey!")|url_encode}}&url={{tmp_url|url_encode}}&hashtags=limesurvey,survey">
-                                                        <i class="fa fa-twitter"></i>{{ gT("Tweet it") }}
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    {% endfor %}
-                                </ul>
-                            </div>
+                                {% endfor %}
+                            </ul>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">{{gT ("Close") }}</button>
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">{{gT ("Close") }}</button>
                 </div>
             </div>
         </div>

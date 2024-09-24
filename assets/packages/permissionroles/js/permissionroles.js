@@ -62,7 +62,7 @@ var RoleControl = function () {
     };
     var startSubmit = function () {
         $('#submitForm').append(
-            '<i class="fa fa-spinner fa-pulse RoleControl-spinner"></i>'
+            '<i class="ri-loader-2-fill remix-pulse RoleControl-spinner"></i>'
         ).prop('disabled', true);
     };
     var stopSubmit = function () {
@@ -89,7 +89,7 @@ var RoleControl = function () {
 
                         if (!result.hasOwnProperty('html')){
                             triggerModalClose();
-                            window.LS.notifyFader(result.message, 'well-lg text-center ' + (result.success ? 'bg-primary' : 'bg-danger'));
+                            window.LS.ajaxAlerts(result.message, 'success', {showCloseButton: true});
                             return;
                         }
                         $('#exitForm').on('click.ROLECONTROLMODAL', function (e) {
@@ -99,12 +99,10 @@ var RoleControl = function () {
                         });
                         return;
                     }
-                    $('#RoleControl--errors').html(
-                        "<div class='alert alert-danger'>" + result.errors + "</div>"
-                    ).removeClass('hidden');
+                    window.LS.ajaxAlerts(result.errors, 'danger', {inline: '#RoleControl--errors'});
                 },
                 error: function () {
-                    alert('An error occured while trying to save, please reload the page Code:1571314170100');
+                    window.LS.ajaxAlerts('An error occured while trying to save, please reload the page Code:1571314170100', 'danger', {showCloseButton: true});
                 }
             });
         });

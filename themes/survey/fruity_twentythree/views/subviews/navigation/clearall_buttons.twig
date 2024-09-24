@@ -1,0 +1,15 @@
+{#
+    This file is part of LimeSurvey
+    Copyright (C) 2007-2018 The LimeSurvey Project Team
+    This file render the exit button accessible without javascript
+#}
+
+<div class="{{ aSurveyInfo.class.clearallwrapper }} mb-3 pe-2">
+    <a href="#" class='{{ aSurveyInfo.class.clearallbutton }} btn btn-outline-secondary'
+       data-bs-toggle="modal"
+       data-bs-target="#clear-all-modal"
+       data-limesurvey-submit='{ "clearall":"clearall" }'
+       data-confirmedby='{ "confirm-clearall":"confirm" }'>
+        {{ gT("Exit and clear survey" ) }}
+    </a>
+</div>

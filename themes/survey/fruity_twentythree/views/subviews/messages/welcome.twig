@@ -1,0 +1,56 @@
+{#
+LimeSurvey
+Copyright (C) 2007-2017 The LimeSurvey Project Team / Louis Gac
+All rights reserved.
+License: GNU/GPL License v2 or later, see LICENSE.php
+LimeSurvey is free software. This version may have been modified pursuant
+to the GNU General Public License, and as distributed it includes or
+is derivative of works licensed under the GNU General Public License or
+other free or open source software licenses.
+See COPYRIGHT.php for copyright notices and details.
+
+
+(¯`·._.·(¯`·._.·  Welcome page ·._.·´¯)·._.·´¯)
+
+This view is used to render the welcome message in All In One mode.
+TODO: use it for other modes too
+
+In this file, you have access to the array aSurveyInfo that contains the datas of the current survey
+To see what's inside aSurveyInfo, turn debug mode on and copy the following line to the end of this file:
+{{ dump(aSurveyInfo) }}
+#}
+
+<!-- Welcome Message -->
+<div id="{{ aSurveyInfo.id.welcomecontainer }}" class="{{ aSurveyInfo.class.welcomecontainer }}" {{ aSurveyInfo.attr.welcomecontainer }}>
+
+    <!-- Survey Name -->
+    <div class="{{ aSurveyInfo.class.surveyname }} large-heading" {{ aSurveyInfo.attr.surveyname }} >
+        {{ processString(aSurveyInfo.name,1) }}
+    </div>
+
+    <!-- Survey description -->
+    <div class="{{ aSurveyInfo.class.description }} form-heading" {{ aSurveyInfo.attr.description }}>
+        {{ processString(aSurveyInfo.description,1) }}
+    </div>
+
+    <!-- Welcome text -->
+    <div class="{{ aSurveyInfo.class.welcome }} form-heading" {{ aSurveyInfo.attr.welcome }}>
+        {{ processString(aSurveyInfo.welcome,1) }}
+    </div>
+
+    <!-- Question count -->
+    <div class="{{ aSurveyInfo.class.questioncount }}" {{ aSurveyInfo.attr.questioncount }}>
+        <div class='{{ aSurveyInfo.class.questioncounttext }}' {{ aSurveyInfo.attr.questioncounttext }}>
+            {# If survey creator set "show x questions" in survey setting  #}
+            {% if aSurveyInfo.bShowxquestions == true %}
+                {% if aSurveyInfo.iTotalquestions < 1 %}
+                    {{ gT("There are no questions in this survey.") }}
+                {% elseif aSurveyInfo.iTotalquestions == 1 %}
+                    {{ gT("There is 1 question in this survey.") }}
+                {% else %}
+                    {{ gT("There are %s questions in this survey.") | format(aSurveyInfo.iTotalquestions) }}
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
+</div>

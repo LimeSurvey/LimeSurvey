@@ -33,6 +33,10 @@ use LimeSurvey\Helpers\questionHelper;
  */
 class QuestionTheme extends LSActiveRecord
 {
+    const THEME_TYPE_CORE = 'coreQuestion';
+    const THEME_TYPE_CUSTOM = 'customCoreTheme';
+    const THEME_TYPE_USER = 'customUserTheme';
+
     /**
      * @return string the associated database table name
      */
@@ -142,7 +146,7 @@ class QuestionTheme extends LSActiveRecord
     {
         $pageSizeTemplateView = App()->user->getState('pageSizeTemplateView', App()->params['defaultPageSize']);
 
-        $criteria = new CDbCriteria();
+        $criteria = new LSDbCriteria();
         $criteria->compare('id', $this->id);
         $criteria->compare('name', $this->name, true);
         $criteria->compare('visible', $this->visible, true);
@@ -229,10 +233,11 @@ class QuestionTheme extends LSActiveRecord
     public function getManifestButtons()
     {
         $sLoadLink = CHtml::form(array("themeOptions/importManifest/"), 'post', array('id' => 'forminstallquestiontheme', 'name' => 'forminstallquestiontheme')) .
-            "<input type='hidden' name='templatefolder' value='" . $this->xml_path . "'>
+            "<input type='hidden' name='templatefolder' value='" . $this->getRelativeXmlPath() . "'>
+            <input type='hidden' name='theme_type' value='" . $this->getThemeType() . "'>
             <input type='hidden' name='theme' value='questiontheme'>
-            <button id='template_options_link_" . $this->name . "'class='btn btn-default btn-block'>
-            <span class='fa fa-download text-warning'></span>
+            <button id='template_options_link_" . $this->name . "'class='btn btn-outline-secondary btn-block'>
+            <span class='ri-download-fill'></span>
             " . gT('Install') . "
             </button>
             </form>";
@@ -369,7 +374,7 @@ class QuestionTheme extends LSActiveRecord
     {
         $questionDirectories = self::getQuestionThemeDirectories();
         foreach ($questionDirectories as $key => $questionDirectory) {
-            $questionDirectories[$key] = str_replace('\\', '/', $questionDirectory);
+            $questionDirectories[$key] = str_replace('\\', '/', (string) $questionDirectory);
         }
 
         $pathToXmlFolder = str_replace('\\', '/', $pathToXmlFolder);
@@ -426,14 +431,14 @@ class QuestionTheme extends LSActiveRecord
         ]);
 
         // override MetaData depending on directory
-        if (substr($pathToXmlFolder, 0, strlen($questionDirectories['coreQuestion'])) === $questionDirectories['coreQuestion']) {
+        if (substr($pathToXmlFolder, 0, strlen((string) $questionDirectories[self::THEME_TYPE_CORE])) === $questionDirectories[self::THEME_TYPE_CORE]) {
             $questionMetaData['coreTheme'] = 1;
             $questionMetaData['image_path'] = App()->getConfig("imageurl") . '/screenshots/' . self::getQuestionThemeImageName($questionMetaData['questionType']);
         }
-        if (substr($pathToXmlFolder, 0, strlen($questionDirectories['customCoreTheme'])) === $questionDirectories['customCoreTheme']) {
+        if (substr($pathToXmlFolder, 0, strlen((string) $questionDirectories[self::THEME_TYPE_CUSTOM])) === $questionDirectories[self::THEME_TYPE_CUSTOM]) {
             $questionMetaData['coreTheme'] = 1;
         }
-        if (substr($pathToXmlFolder, 0, strlen($questionDirectories['customUserTheme'])) === $questionDirectories['customUserTheme']) {
+        if (substr($pathToXmlFolder, 0, strlen((string) $questionDirectories[self::THEME_TYPE_USER])) === $questionDirectories[self::THEME_TYPE_USER]) {
             $questionMetaData['coreTheme'] = 0;
         }
 
@@ -459,15 +464,15 @@ class QuestionTheme extends LSActiveRecord
         $questionDirectories = self::getQuestionThemeDirectories();
         $questionDirectoriesAndPaths = [];
         if ($core) {
-            $coreQuestionsPath = $questionDirectories['coreQuestion'];
+            $coreQuestionsPath = $questionDirectories[self::THEME_TYPE_CORE];
             $selectedQuestionDirectories[] = $coreQuestionsPath;
         }
         if ($custom) {
-            $customQuestionThemesPath = $questionDirectories['customCoreTheme'];
+            $customQuestionThemesPath = $questionDirectories[self::THEME_TYPE_CUSTOM];
             $selectedQuestionDirectories[] = $customQuestionThemesPath;
         }
         if ($user) {
-            $userQuestionThemesPath = $questionDirectories['customUserTheme'];
+            $userQuestionThemesPath = $questionDirectories[self::THEME_TYPE_USER];
             if (!is_dir($userQuestionThemesPath)) {
                 mkdir($userQuestionThemesPath, 0777, true);
             }
@@ -479,9 +484,9 @@ class QuestionTheme extends LSActiveRecord
                 $directory = new RecursiveDirectoryIterator($questionThemeDirectory);
                 $iterator = new RecursiveIteratorIterator($directory);
                 foreach ($iterator as $info) {
-                    $ext = pathinfo($info->getPathname(), PATHINFO_EXTENSION);
+                    $ext = pathinfo((string) $info->getPathname(), PATHINFO_EXTENSION);
                     if ($ext == 'xml') {
-                        $questionDirectoriesAndPaths[$questionThemeDirectory][] = dirname($info->getPathname());
+                        $questionDirectoriesAndPaths[$questionThemeDirectory][] = dirname((string) $info->getPathname());
                     }
                 }
             }
@@ -596,7 +601,7 @@ class QuestionTheme extends LSActiveRecord
         $aQuestionsIndexedByType = [];
 
         foreach ($baseQuestions as $baseQuestion) {
-            $baseQuestion->settings = json_decode($baseQuestion['settings']);
+            $baseQuestion->settings = json_decode((string) $baseQuestion['settings']);
             $aQuestionsIndexedByType[$baseQuestion->question_type] = $baseQuestion;
         }
 
@@ -635,7 +640,7 @@ class QuestionTheme extends LSActiveRecord
         $questionTheme->group = gT($questionTheme->group, "html", $language);
 
         // decode settings json
-        $questionTheme->settings = json_decode($questionTheme->settings);
+        $questionTheme->settings = json_decode((string) $questionTheme->settings);
 
         return $questionTheme;
     }
@@ -662,7 +667,7 @@ class QuestionTheme extends LSActiveRecord
         $baseQuestionsModified = [];
         foreach ($baseQuestions as $baseQuestion) {
             //TODO: should be moved into DB column (question_theme_settings table)
-            $sQuestionConfigFile = @file_get_contents($baseQuestion->xml_path . DIRECTORY_SEPARATOR . 'config.xml');  // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
+            $sQuestionConfigFile = @file_get_contents($baseQuestion->getXmlPath() . DIRECTORY_SEPARATOR . 'config.xml');  // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
             if (!$sQuestionConfigFile) {
                 /* Not readable file : don't break */
                 continue;
@@ -681,7 +686,7 @@ class QuestionTheme extends LSActiveRecord
             $baseQuestion['group'] = gT($baseQuestion['group'], "html");
 
             // decode settings json
-            $baseQuestion['settings'] = json_decode($baseQuestion['settings']);
+            $baseQuestion['settings'] = json_decode((string) $baseQuestion['settings']);
 
             $baseQuestion['image_path'] = str_replace(
                 '//',
@@ -704,9 +709,9 @@ class QuestionTheme extends LSActiveRecord
      */
     public static function getQuestionThemeDirectories()
     {
-        $questionThemeDirectories['coreQuestion'] = App()->getConfig('corequestiontypedir') . '/survey/questions/answer';
-        $questionThemeDirectories['customCoreTheme'] = App()->getConfig('customquestionthemedir');
-        $questionThemeDirectories['customUserTheme'] = App()->getConfig('userquestionthemerootdir');
+        $questionThemeDirectories[self::THEME_TYPE_CORE] = App()->getConfig('corequestiontypedir') . '/survey/questions/answer';
+        $questionThemeDirectories[self::THEME_TYPE_CUSTOM] = App()->getConfig('customquestionthemedir');
+        $questionThemeDirectories[self::THEME_TYPE_USER] = App()->getConfig('userquestionthemerootdir');
 
         return $questionThemeDirectories;
     }
@@ -727,8 +732,8 @@ class QuestionTheme extends LSActiveRecord
             'visible'       => 'Y',
             'xml_path'      => $questionMetaData['xml_path'],
             'image_path'    => $questionMetaData['image_path'] ?? '',
-            'title'         => $questionMetaData['title'],
-            'creation_date' => date('Y-m-d H:i:s', strtotime($questionMetaData['creationDate'])),
+            'title'         => $questionMetaData['title'] ?? '',
+            'creation_date' => date('Y-m-d H:i:s', strtotime((string) $questionMetaData['creationDate'])),
             'author'        => $questionMetaData['author'] ?? '',
             'author_email'  => $questionMetaData['authorEmail'] ?? '',
             'author_url'    => $questionMetaData['authorUrl'] ?? '',
@@ -797,13 +802,14 @@ class QuestionTheme extends LSActiveRecord
         }
 
         $answerColumnDefinition = '';
-        if (isset($questionTheme->xml_path)) {
+        $xmlPath = $questionTheme->getXmlPath();
+        if (isset($xmlPath)) {
             if (\PHP_VERSION_ID < 80000) {
                 $bOldEntityLoaderState = libxml_disable_entity_loader(true);
             }
             // If xml_path is relative, cwd is assumed to be ROOTDIR.
             // TODO: Make it always relative depending on question theme type (core, custom, user).
-            $sQuestionConfigFile = file_get_contents($questionTheme->xml_path . DIRECTORY_SEPARATOR . 'config.xml');  // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
+            $sQuestionConfigFile = file_get_contents($xmlPath . DIRECTORY_SEPARATOR . 'config.xml');  // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
             $oQuestionConfig = simplexml_load_string($sQuestionConfigFile);
             if (isset($oQuestionConfig->metadata->answercolumndefinition)) {
                 // TODO: Check json_last_error.
@@ -834,7 +840,7 @@ class QuestionTheme extends LSActiveRecord
         if (empty($questionTheme)) {
             throw new \CException("The Database definition for Questiontype: " . $type . " is missing");
         }
-        $configXMLPath = App()->getConfig('rootdir') . '/' . $questionTheme->xml_path . '/config.xml';
+        $configXMLPath = App()->getConfig('rootdir') . '/' . $questionTheme->getXmlPath() . '/config.xml';
 
         return $configXMLPath;
     }
@@ -891,12 +897,18 @@ class QuestionTheme extends LSActiveRecord
         };
 
         // set compatibility version
-        if (count($oThemeConfig->compatibility->version) > 1) {
+        if (
+            $oThemeConfig->compatibility->version
+            && count($oThemeConfig->compatibility->version) > 1
+        ) {
             $length = count($oThemeConfig->compatibility->version);
             $compatibility = $oThemeConfig->addChild('compatibility');
             $compatibility->addChild('version');
             $oThemeConfig->compatibility->version[$length] = '5.0';
-        } elseif (count($oThemeConfig->compatibility->version) === 1) {
+        } elseif (
+            $oThemeConfig->compatibility->version
+            && count($oThemeConfig->compatibility->version) === 1
+        ) {
             $oThemeConfig->compatibility->version = '5.0';
         } else {
             $compatibility = $oThemeConfig->addChild('compatibility');
@@ -1007,7 +1019,7 @@ class QuestionTheme extends LSActiveRecord
         }
         $questionTheme = QuestionTheme::model()->findByAttributes([], 'name = :name AND extends = :extends', ['name' => $sQuestionThemeName, 'extends' => $type]);
         if ($questionTheme !== null) {
-            $xml_config = simplexml_load_file($questionTheme->xml_path . '/config.xml');
+            $xml_config = simplexml_load_file($questionTheme->getXmlPath() . '/config.xml');
             $attributes = json_decode(json_encode((array)$xml_config->attributes), true);
         }
         if (\PHP_VERSION_ID < 80000) {
@@ -1038,7 +1050,7 @@ class QuestionTheme extends LSActiveRecord
 
     public static function getThemeDirectoryPath($sQuestionConfigFilePath)
     {
-        $sQuestionConfigFilePath = str_replace('\\', '/', $sQuestionConfigFilePath);
+        $sQuestionConfigFilePath = str_replace('\\', '/', (string) $sQuestionConfigFilePath);
         $aMatches = array();
         $sThemeDirectoryName = '';
         if (preg_match('$questions/answer/(.*)/config.xml$', $sQuestionConfigFilePath, $aMatches)) {
@@ -1094,5 +1106,78 @@ class QuestionTheme extends LSActiveRecord
         $questionTheme->question_type = $questionType;
         $questionTheme->settings = $settings;
         return $questionTheme;
+    }
+
+    /**
+     * Returns the type of question theme (coreQuestion, customCoreTheme, customUserTheme)
+     *
+     * coreQuestion = Themes shipped with Limesurvey that don't extend other theme
+     * customCoreTheme = Themes shipped with Limesurvey that extend other theme
+     * customUserTheme = User provided question themes
+     *
+     * @return string
+     */
+    public function getThemeType()
+    {
+        if ($this->core_theme) {
+            if (empty($this->extends)) {
+                return self::THEME_TYPE_CORE;
+            } else {
+                return self::THEME_TYPE_CUSTOM;
+            }
+        } else {
+            return self::THEME_TYPE_USER;
+        }
+    }
+
+    /**
+     * Returns the XML path relative to the path configured for the question theme type
+     * @return string
+     */
+    public function getRelativeXmlPath()
+    {
+        $type = $this->getThemeType();
+        $typeDirectory = self::getQuestionThemeDirectoryForType($type);
+
+        // xml_path is supposed to contain the type directory, so we extract the rest of the path
+        $relativePath = substr($this->xml_path, strpos($this->xml_path, $typeDirectory) + strlen($typeDirectory));
+        $relativePath = ltrim($relativePath, "\\/");
+        return $relativePath;
+    }
+
+    /**
+     * Returns the XML path
+     * It may be absolute or relative to the Limesurvey root
+     * @return string
+     */
+    public function getXmlPath()
+    {
+        return $this->xml_path;
+    }
+
+    /**
+     * Returns the path for the specified question theme type
+     * @param string $themeType
+     * @return string
+     * @throws Exception if no directory is found for the given type
+     */
+    public static function getQuestionThemeDirectoryForType($themeType)
+    {
+        $directories = self::getQuestionThemeDirectories();
+        if (!isset($directories[$themeType])) {
+            throw new Exception(sprintf(gT("No question theme directory found for theme type '%s'"), $themeType));
+        }
+        return $directories[$themeType];
+    }
+
+    /**
+     * Returns the corresponding absolute path, given a relative path and the theme type.
+     * @param string $relativePath
+     * @param string $themeType
+     * @return string
+     */
+    public static function getAbsolutePathForType($relativePath, $themeType)
+    {
+        return self::getQuestionThemeDirectoryForType($themeType) . '/' . $relativePath;
     }
 }

@@ -141,6 +141,7 @@ abstract class PKCS8 extends PKCS
                 break;
             case 'RC2':
                 $cipher = new RC2('cbc');
+                $cipher->setKeyLength(64);
                 break;
             case '3-KeyTripleDES':
                 $cipher = new TripleDES('cbc');
@@ -218,7 +219,7 @@ abstract class PKCS8 extends PKCS
     {
         switch ($algo) {
             case 'desCBC':
-                $cipher = new TripleDES('cbc');
+                $cipher = new DES('cbc');
                 break;
             case 'des-EDE3-CBC':
                 $cipher = new TripleDES('cbc');
@@ -315,6 +316,13 @@ abstract class PKCS8 extends PKCS
      */
     protected static function load($key, $password = '')
     {
+        if (!Strings::is_stringable($key)) {
+            throw new \UnexpectedValueException('Key should be a string - not a ' . gettype($key));
+        }
+
+        $isPublic = strpos($key, 'PUBLIC') !== false;
+        $isPrivate = strpos($key, 'PRIVATE') !== false;
+
         $decoded = self::preParse($key);
 
         $meta = [];
@@ -445,6 +453,10 @@ abstract class PKCS8 extends PKCS
 
         $private = ASN1::asn1map($decoded[0], Maps\OneAsymmetricKey::MAP);
         if (is_array($private)) {
+            if ($isPublic) {
+                throw new \UnexpectedValueException('Human readable string claims public key but DER encoded string claims private key');
+            }
+
             if (isset($private['privateKeyAlgorithm']['parameters']) && !$private['privateKeyAlgorithm']['parameters'] instanceof ASN1\Element && isset($decoded[0]['content'][1]['content'][1])) {
                 $temp = $decoded[0]['content'][1]['content'][1];
                 $private['privateKeyAlgorithm']['parameters'] = new ASN1\Element(substr($key, $temp['start'], $temp['length']));
@@ -474,6 +486,10 @@ abstract class PKCS8 extends PKCS
         $public = ASN1::asn1map($decoded[0], Maps\PublicKeyInfo::MAP);
 
         if (is_array($public)) {
+            if ($isPrivate) {
+                throw new \UnexpectedValueException('Human readable string claims private key but DER encoded string claims public key');
+            }
+
             if ($public['publicKey'][0] != "\0") {
                 throw new \UnexpectedValueException('The first byte of the public key should be null - not ' . bin2hex($public['publicKey'][0]));
             }
@@ -650,10 +666,6 @@ abstract class PKCS8 extends PKCS
     {
         self::initialize_static_variables();
 
-        if (!Strings::is_stringable($key)) {
-            throw new \UnexpectedValueException('Key should be a string - not a ' . gettype($key));
-        }
-
         if (self::$format != self::MODE_DER) {
             $decoded = ASN1::extractBER($key);
             if ($decoded !== false) {
@@ -679,6 +691,10 @@ abstract class PKCS8 extends PKCS
      */
     public static function extractEncryptionAlgorithm($key)
     {
+        if (!Strings::is_stringable($key)) {
+            throw new \UnexpectedValueException('Key should be a string - not a ' . gettype($key));
+        }
+
         $decoded = self::preParse($key);
 
         $r = ASN1::asn1map($decoded[0], ASN1\Maps\EncryptedPrivateKeyInfo::MAP);

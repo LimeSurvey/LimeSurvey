@@ -1,0 +1,83 @@
+{
+    "patch": [
+        {
+            "entity": "survey",
+            "op": "update",
+            "id": 282267,
+            "props": {
+                "anonymized": false,
+                "language": "de-informal"
+            }
+        },
+        {
+            "entity": "languageSetting",
+            "op": "update",
+            "id": {
+                "sid": 282267,
+                "language": "de-informal"
+            },
+            "props": {
+                "title": "Beispielfragebogen für Limesurvey EN/FR/DE - reverted"
+            }
+        },
+        {
+            "entity": "questionGroup",
+            "op": "update",
+            "id": {
+                "gid": 1
+            },
+            "props": {
+                "groupOrder": 1000
+            }
+        },
+        {
+            "entity": "questionGroupL10n",
+            "op": "update",
+            "id": {
+                "gid": 1,
+                "language": "de-informal"
+            },
+            "props": {
+                "description": "r453q26ier steht die Beschreibung für die Gruppe der Textfragen. - edited"
+            }
+        },
+        {
+            "entity": "question",
+            "op": "update",
+            "id": 1,
+            "props": {
+                "mandatory": true,
+                "encrypted": true
+            }
+        },
+        {
+            "entity": "questionL10n",
+            "op": "update",
+            "id": {
+                "id": 1,
+                "language": "de-informal"
+            },
+            "props": {
+                "question": "Kurzer freier Text - edited"
+            }
+        },
+        {
+            "entity": "questionAttribute",
+            "op": "update",
+            "id": 1,
+            "props": {
+                "value": "1 - edited"
+            }
+        },
+        {
+            "entity": "questionAnswer",
+            "op": "update",
+            "id": {
+                "aid": 15
+            },
+            "props": {
+                "sortOrder": 1000
+            }
+        }
+    ]
+}

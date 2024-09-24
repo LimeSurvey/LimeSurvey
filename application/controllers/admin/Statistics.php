@@ -93,7 +93,7 @@ class Statistics extends SurveyCommonAction
 
         //if $summary isn't an array we create one
         if (isset($summary) && !is_array($summary)) {
-            $summary = explode("+", $summary);
+            $summary = explode("+", (string) $summary);
         }
 
         //no survey ID? -> come and get one
@@ -126,7 +126,7 @@ class Statistics extends SurveyCommonAction
         //Call the javascript file
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'statistics.js', CClientScript::POS_BEGIN);
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'json-js/json2.min.js');
-
+        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'createpdf_worker.js');
         yii::app()->clientScript->registerPackage('jszip');
         $aData['display']['menu_bars']['browse'] = gT("Quick statistics");
 
@@ -498,6 +498,7 @@ class Statistics extends SurveyCommonAction
         $aData['oStatisticsHelper'] = $helper;
         $aData['fresults'] = $aData['fresults'] ?? false;
         $aData['dateformatdetails'] = getDateFormatData(Yii::app()->session['dateformat']);
+        $aData['expertstats'] = false;
 
         if (!isset($aData['result'])) {
             $aData['result'] = null;
@@ -545,11 +546,11 @@ class Statistics extends SurveyCommonAction
         if (isset($_POST['cmd']) && isset($_POST['id'])) {
             $sStatisticsLanguage = sanitize_languagecode($_POST['sStatisticsLanguage']);
             $sQCode = $_POST['id'];
-            if (!is_numeric(substr($sQCode, 0, 1))) {
+            if (!is_numeric(substr((string) $sQCode, 0, 1))) {
                 // Strip first char when not numeric (probably T or D)
-                $sQCode = substr($sQCode, 1);
+                $sQCode = substr((string) $sQCode, 1);
             }
-            list($qsid, $qgid, $qqid) = explode("X", substr($sQCode, 0), 3);
+            list($qsid, $qgid, $qqid) = explode("X", substr((string) $sQCode, 0), 3);
 
             if (!Permission::model()->hasSurveyPermission($qsid, 'statistics', 'read')) {
                 throw new CHttpException(403, gT("You do not have permission to access this page."));
@@ -560,8 +561,8 @@ class Statistics extends SurveyCommonAction
             $aFieldmap = createFieldMap($oSurvey, 'full', false, false, $sStatisticsLanguage);
             $qtype = $aFieldmap[$sQCode]['type'];
             $qqid = $aFieldmap[$sQCode]['qid'];
-            $aattr = QuestionAttribute::model()->getQuestionAttributes($qqid);
-            $field = substr($_POST['id'], 1);
+            $aattr = QuestionAttribute::model()->getQuestionAttributes(Question::model()->findByPk($qqid));
+            $field = substr((string) $_POST['id'], 1);
 
             switch ($_POST['cmd']) {
                 case 'showmap':
@@ -668,7 +669,7 @@ class Statistics extends SurveyCommonAction
 
         if (!$oSurvey->isActive) {
             Yii::app()->setFlashMessage(gT("This survey is not active and has no responses."), 'error');
-            $this->getController()->redirect($this->getController()->createUrl("/surveyAdministration/view/surveyid/{$oSurveyid}"));
+            $this->getController()->redirect($this->getController()->createUrl("/surveyAdministration/view/surveyid/{$iSurveyId}"));
         }
 
         // Set language for questions and answers to base language of this survey
@@ -684,13 +685,24 @@ class Statistics extends SurveyCommonAction
         $rows = Question::model()->primary()->getQuestionList($surveyid);
         ;
 
+        $rawQuestions = Question::model()->findAllByAttributes([
+            "sid" => $surveyid,
+            "type" => Question::QT_COLON_ARRAY_NUMBERS
+        ]);
+
+        $questions = [];
+
+        foreach ($rawQuestions as $rawQuestion) {
+            $questions[$rawQuestion->qid] = $rawQuestion;
+        }
+
         // The questions to display (all question)
         foreach ($rows as $row) {
             $type = $row['type'];
             switch ($type) {
                 // Double scale cases
                 case Question::QT_COLON_ARRAY_NUMBERS:
-                    $qidattributes = QuestionAttribute::model()->getQuestionAttributes($row['qid']);
+                    $qidattributes = QuestionAttribute::model()->getQuestionAttributes($questions[$row['qid']] ?? $row['qid']);
                     if (!$qidattributes['input_boxes']) {
                         $qid = $row['qid'];
                         $results = Question::model()->getQuestionsForStatistics('*', "parent_qid='$qid'  AND scale_id = 0", 'question_order, title');
@@ -787,6 +799,7 @@ class Statistics extends SurveyCommonAction
         //Call the javascript file
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'statistics.js', CClientScript::POS_BEGIN);
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'json-js/json2.min.js');
+        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'createpdf_worker.js');
         yii::app()->clientScript->registerPackage('jspdf');
         yii::app()->clientScript->registerPackage('jszip');
         echo $this->renderWrappedTemplate('export', 'statistics_user_view', $aData);
@@ -817,11 +830,13 @@ class Statistics extends SurveyCommonAction
         $aData['menu']['closeurl'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl("/surveyAdministration/view/surveyid/" . $aData['surveyid']));
 
         $aData['display'] = array();
-        $aData['display']['menu_bars'] = false;
         $aData['display']['menu_bars']['browse'] = gT('Browse responses'); // browse is independent of the above
 
-        $aData['topBar']['name'] = 'baseTopbar_view';
-        $aData['topBar']['rightSideView'] = 'statisticsTopbarRight_view';
+        $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
+            '/surveyAdministration/partial/topbar_statistics/rightSideButtons',
+            ['expertstats' => $aData['expertstats'], 'surveyid' => $aData['surveyid']],
+            true
+        );
 
         $aData['sidemenu']['state'] = false;
 

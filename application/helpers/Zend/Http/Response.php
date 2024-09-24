@@ -165,7 +165,7 @@ class Zend_Http_Response
 
         foreach ($headers as $name => $value) {
             if (is_int($name)) {
-                $header = explode(":", $value, 2);
+                $header = explode(":", (string) $value, 2);
                 if (count($header) != 2) {
                     require_once 'Zend/Http/Exception.php';
                     throw new Zend_Http_Exception("'{$value}' is not a valid HTTP header");

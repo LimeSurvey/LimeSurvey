@@ -94,7 +94,7 @@ abstract class AsymmetricKey
 
     /**
      * @param string $type
-     * @return string
+     * @return array|string
      */
     abstract public function toString($type, array $options = []);
 
@@ -130,11 +130,16 @@ abstract class AsymmetricKey
      *
      * @param string $key
      * @param string $password optional
-     * @return AsymmetricKey
+     * @return \phpseclib3\Crypt\Common\PublicKey|\phpseclib3\Crypt\Common\PrivateKey
      */
     public static function load($key, $password = false)
     {
         self::initialize_static_variables();
+
+        $class = new \ReflectionClass(static::class);
+        if ($class->isFinal()) {
+            throw new \RuntimeException('load() should not be called from final classes (' . static::class . ')');
+        }
 
         $components = false;
         foreach (self::$plugins[static::ALGORITHM]['Keys'] as $format) {
@@ -377,7 +382,7 @@ abstract class AsymmetricKey
             $shortname = $meta->getShortName();
             self::$plugins[static::ALGORITHM]['Keys'][strtolower($shortname)] = $fullname;
             if ($meta->hasConstant('IS_INVISIBLE')) {
-                self::$invisiblePlugins[static::ALGORITHM] = strtolower($name);
+                self::$invisiblePlugins[static::ALGORITHM][] = strtolower($shortname);
             }
         }
     }

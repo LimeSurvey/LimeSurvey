@@ -10,7 +10,7 @@ class Update_171 extends DatabaseUpdateBase
     {
         try {
             dropColumn('{{sessions}}', 'data');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
         }
         switch ($this->db->driverName) {
             case 'mysql':

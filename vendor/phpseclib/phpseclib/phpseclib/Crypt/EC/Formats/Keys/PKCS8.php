@@ -23,7 +23,6 @@
 
 namespace phpseclib3\Crypt\EC\Formats\Keys;
 
-use phpseclib3\Common\Functions\Strings;
 use phpseclib3\Crypt\Common\Formats\Keys\PKCS8 as Progenitor;
 use phpseclib3\Crypt\EC\BaseCurves\Base as BaseCurve;
 use phpseclib3\Crypt\EC\BaseCurves\Montgomery as MontgomeryCurve;
@@ -74,22 +73,9 @@ abstract class PKCS8 extends Progenitor
         // one that's called
         self::initialize_static_variables();
 
-        if (!Strings::is_stringable($key)) {
-            throw new \UnexpectedValueException('Key should be a string - not a ' . gettype($key));
-        }
-
-        $isPublic = strpos($key, 'PUBLIC') !== false;
-
         $key = parent::load($key, $password);
 
         $type = isset($key['privateKey']) ? 'privateKey' : 'publicKey';
-
-        switch (true) {
-            case !$isPublic && $type == 'publicKey':
-                throw new \UnexpectedValueException('Human readable string claims non-public key but DER encoded string claims public key');
-            case $isPublic && $type == 'privateKey':
-                throw new \UnexpectedValueException('Human readable string claims public key but DER encoded string claims private key');
-        }
 
         switch ($key[$type . 'Algorithm']['algorithm']) {
             case 'id-Ed25519':
@@ -109,7 +95,7 @@ abstract class PKCS8 extends Progenitor
         $components = [];
         $components['curve'] = self::loadCurveByParam($params);
 
-        if ($isPublic) {
+        if ($type == 'publicKey') {
             $components['QA'] = self::extractPoint("\0" . $key['publicKey'], $components['curve']);
 
             return $components;
@@ -144,11 +130,13 @@ abstract class PKCS8 extends Progenitor
 
         if (isset($key['privateKey'])) {
             $components['curve'] = $key['privateKeyAlgorithm']['algorithm'] == 'id-Ed25519' ? new Ed25519() : new Ed448();
-
-            // 0x04 == octet string
-            // 0x20 == length (32 bytes)
-            if (substr($key['privateKey'], 0, 2) != "\x04\x20") {
-                throw new \RuntimeException('The first two bytes of the private key field should be 0x0420');
+            $expected = chr(ASN1::TYPE_OCTET_STRING) . ASN1::encodeLength($components['curve']::SIZE);
+            if (substr($key['privateKey'], 0, 2) != $expected) {
+                throw new \RuntimeException(
+                    'The first two bytes of the ' .
+                    $key['privateKeyAlgorithm']['algorithm'] .
+                    ' private key field should be 0x' . bin2hex($expected)
+                );
             }
             $arr = $components['curve']->extractSecret(substr($key['privateKey'], 2));
             $components['dA'] = $arr['dA'];
@@ -222,7 +210,7 @@ abstract class PKCS8 extends Progenitor
 
         if ($curve instanceof TwistedEdwardsCurve) {
             return self::wrapPrivateKey(
-                "\x04\x20" . $secret,
+                chr(ASN1::TYPE_OCTET_STRING) . ASN1::encodeLength($curve::SIZE) . $secret,
                 [],
                 null,
                 $password,

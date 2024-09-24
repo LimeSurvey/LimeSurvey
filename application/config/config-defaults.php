@@ -82,15 +82,15 @@ $config['allowexportalldb']          = 0; // Default 0 will only export prefixed
 $config['deletenonvalues']           = 1; // By default, LimeSurvey does not save responses to conditional questions that haven't been answered/shown. To have LimeSurvey save these responses change this value to 0.
 $config['stringcomparizonoperators'] = 0; // By default, LimeSurvey assumes the numrical order for comparizon operators in conditions. If you need string comparizon operators, set this parameter to 1
 $config['shownoanswer']              = 2; // Show 'no answer' for non mandatory questions ( 0 = no , 1 = yes , 2 = overridden by survey settings )
-$config['blacklistallsurveys']       = 'N'; // Blacklist all current surveys for participant once the global field is set
-$config['blacklistnewsurveys']       = 'N'; // Blacklist participant for any new added survey once the global field is set
-$config['blockaddingtosurveys']      = 'Y'; // Don't allow blacklisted participants to be added to new survey
-$config['hideblacklisted']           = 'N'; // Don't show blacklisted participants
-$config['deleteblacklisted']         = 'N'; // Delete globally blacklisted participant from the database
-$config['allowunblacklist']          = 'N'; // Allow participant to unblacklist himself/herself
+$config['blacklistallsurveys']       = 'N'; // Blocklist all current surveys for participant once the global field is set
+$config['blacklistnewsurveys']       = 'N'; // Blocklist participant for any new added survey once the global field is set
+$config['blockaddingtosurveys']      = 'Y'; // Don't allow blocklisted participants to be added to new survey
+$config['hideblacklisted']           = 'N'; // Don't show blocklisted participants
+$config['deleteblacklisted']         = 'N'; // Delete globally blocklisted participant from the database
+$config['allowunblacklist']          = 'N'; // Allow participant to unblocklist himself/herself
 $config['userideditable']            = 'N'; // Allow editing of user IDs
 
-$config['defaulttheme']              = 'fruity'; // This setting specifys the default theme used for the 'public list' of surveys
+$config['defaulttheme']              = 'fruity_twentythree'; // This setting specifys the default theme used for the 'public list' of surveys
 $config['createsample']              = true;
 $config['customassetversionnumber']  = 1;        // Used to generate the path of tmp assets (see: LSYii_AssetManager::generatePath()  )
 
@@ -111,7 +111,7 @@ $config['allowedfileuploads'] = [
 ];
 // NB: Allowing XML enables XSS, since XML can be an HTML page.
 $config['allowedresourcesuploads'] = '7z,aiff,asf,avi,bmp,csv,doc,docx,fla,flv,gif,gz,gzip,ico,jpeg,jpg,mid,mov,mp3,mp4,mpc,mpeg,mpg,ods,odt,pdf,png,ppt,pxd,qt,ram,rar,rm,rmi,rmvb,rtf,sdc,sitd,swf,sxc,sxw,tar,tgz,tif,tiff,txt,vsd,wav,wma,wmv,xls,xlsx,zip,css,js'; // File types allowed to be uploaded in the resources sections, and with the HTML Editor
-$config['allowedpluginuploads'] = 'gif,ico,jpg,png,css,js,map,json,eot,otf,ttf,woff,txt,md,xml,woff2,twig,php,html,po,mo';
+$config['allowedpluginuploads'] = 'gif,ico,jpg,png,css,js,map,json,eot,otf,ttf,woff,txt,md,xml,woff2,twig,php,html,po,mo,xsd';
 
 $config['memory_limit'] = '256'; // This sets how much memory LimeSurvey can access in megabytes. 256 MB is the minimum recommended - if you are using PDF functions up to 512 MB may be needed
 
@@ -685,6 +685,13 @@ $config['mysqlEngine'] = "MyISAM";
  */
 $config['defaultfixedtheme'] = 'vanilla';
 
+/**
+ * Use default site admin email (siteadminemail) for mailto link in error page
+ * Disable to shown only the administrator name. Default to avoid more spam on administration email.
+ * @var boolean
+ */
+$config['showEmailInError'] = false;
+
 // === Advanced Setup
 //The following url and dir locations do not need to be modified unless you have a non-standard
 //LimeSurvey installation. Do not change unless you know what you are doing.
@@ -708,7 +715,7 @@ $config['uploadurl']              = $config['publicurl'] . 'upload';
 $config['standardthemerooturl']   = $config['publicurl'] . 'themes/survey'; // Location of the standard themes
 $config['adminscripts']           = $config['publicurl'] . 'assets/scripts/admin/';
 $config['generalscripts']         = $config['publicurl'] . 'assets/scripts/';
-$config['packages']               = $config['publicurl'] . 'packages/';
+$config['packages']               = $config['publicurl'] . 'assets' . DIRECTORY_SEPARATOR . 'packages';
 $config['vendor']                 = $config['publicurl'] . 'vendor/';
 $config['styleurl']               = $config['publicurl'] . 'themes/admin/';
 $config['publicstyle']            = $config['publicurl'] . $config['assets'] . 'styles-public/';
@@ -797,13 +804,13 @@ $config['max_execution_time'] = 1200;
 $config['force_xmlsettings_for_survey_rendering'] = false;
 
 /**
- * When this setting is true, plugins that are not in the white list (see 'pluginWhitelist') cannot be installed nor loaded. This may disable
+ * When this setting is true, plugins that are not in the allowlist (see 'pluginWhitelist') cannot be installed nor loaded. This may disable
  * already installed plugins.
- * Core plugins are implicitly whitelisted, but can be excluded using the black list.
+ * Core plugins are implicitly allowlisted, but can be excluded using the blocklist.
  */
 $config['usePluginWhitelist'] = false;
 
-// List of plugin names allowed to be installed and loaded when 'usePluginWhitelist' is true. Core plugins are implicitly whitelisted.
+// List of plugin names allowed to be installed and loaded when 'usePluginWhitelist' is true. Core plugins are implicitly allowlisted.
 $config['pluginWhitelist'] = [];
 
 // List of core plugin names forbidden when 'usePluginWhitelist' is true.
@@ -827,6 +834,9 @@ $config['passwordValidationRules'] = array(
     'numeric' => 0,
     'symbol' => 0,
 );
+
+// Enable or disable single page application editor
+$config['editorEnabled'] = false;
 
 return $config;
 //settings deleted

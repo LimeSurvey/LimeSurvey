@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @var $aTabTitles
  * @var $aTabContents
@@ -6,61 +7,65 @@
  * @var $surveyid
  * @var $surveyls_language
  */
-if(isset($data)){
+if (isset($data)) {
     extract($data);
 }
- $count=0;
- if(isset($scripts))
+$count = 0;
+if (isset($scripts)) {
     echo $scripts;
+}
 
 
-    $iSurveyID = Yii::app()->request->getParam('surveyid');
-    Yii::app()->session['FileManagerContext'] = "edit:survey:{$iSurveyID}";
-    initKcfinder();
+$iSurveyID                                = Yii::app()->request->getParam('surveyid');
+Yii::app()->session['FileManagerContext'] = "edit:survey:{$iSurveyID}";
+initKcfinder();
 
 PrepareEditorScript(false, $this);
 ?>
-<div class="container-fluid">
-    <div class="row">
-        <!-- security notice -->
-        <div class="form-group">
-            <label class="control-label" for='showsurveypolicynotice'><?php  eT("Show privacy policy text with mandatory checkbox:") ; ?></label>
-            <div class="">
-                <div class="btn-group" data-toggle="buttons">
-                    <label class="btn btn-default <?=$oSurvey->showsurveypolicynotice==0 ? 'active' : ''?>" >
-                        <input type="radio" name="showsurveypolicynotice" value="0" <?=$oSurvey->showsurveypolicynotice==0 ? 'checked' : ''?> autocomplete="off"> <?=gT("Don't show");?>
-                    </label>
-                    <label class="btn btn-default <?=$oSurvey->showsurveypolicynotice==1 ? 'active' : ''?>" >
-                        <input type="radio" name="showsurveypolicynotice" value="1" <?=$oSurvey->showsurveypolicynotice==1 ? 'checked' : ''?> autocomplete="off"> <?=gT("Inline text");?>
-                    </label>
-                    <label class="btn btn-default <?=$oSurvey->showsurveypolicynotice==2 ? 'active' : ''?>" >
-                        <input type="radio" name="showsurveypolicynotice" value="2" <?=$oSurvey->showsurveypolicynotice==2 ? 'checked' : ''?> autocomplete="off"> <?=gT("Collapsible text");?>
-                    </label>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row ls-space margin top-15">
-        <ul class="nav nav-tabs" id="edit-survey-datasecurity-element-language-selection">
-            <?php foreach ($aTabTitles as $i=>$eachtitle):?>
-                <li role="presentation" class="<?php if($count==0) {echo "active"; }?>">
-                    <a data-toggle="tab" href="#editdatasecele-<?php echo $count; $count++; ?>">
-                        <?php echo $eachtitle;?>
-                    </a>
-                </li>
-            <?php endforeach;?>
-        </ul>
-        <div class="tab-content">
-            <?php foreach ($aTabContents as $i=>$sTabContent):?>
-                <?php
-                    echo $sTabContent;
-                ?>
-            <?php endforeach; ?>
+<!-- security notice -->
+<div class="mb-3">
+            <label class="form-label" for='showsurveypolicynotice'><?php  eT("Show privacy policy text with mandatory checkbox:") ; ?></label>
+    <div class="">
+                <div class="btn-group" data-bs-toggle="buttons">
+                    <input class="btn-check" type="radio" id="showsurveypolicynotice_0" name="showsurveypolicynotice" value="0" <?=$oSurvey->showsurveypolicynotice==0 ? 'checked' : ''?> autocomplete="off">
+                    <label for="showsurveypolicynotice_0" class="btn btn-outline-secondary">
+                        <?=gT("Don't show");?>
+            </label>
+                    <input class="btn-check" type="radio" id="showsurveypolicynotice_1" name="showsurveypolicynotice" value="1" <?=$oSurvey->showsurveypolicynotice==1 ? 'checked' : ''?> autocomplete="off">
+                    <label for="showsurveypolicynotice_1" class="btn btn-outline-secondary">
+                        <?=gT("Inline text");?>
+            </label>
+                    <input class="btn-check" type="radio" id="showsurveypolicynotice_2" name="showsurveypolicynotice" value="2" <?=$oSurvey->showsurveypolicynotice==2 ? 'checked' : ''?> autocomplete="off">
+                    <label for="showsurveypolicynotice_2" class="btn btn-outline-secondary">
+                        <?=gT("Collapsible text");?>
+            </label>
         </div>
     </div>
 </div>
+<nav>
+    <div class="nav nav-tabs" id="edit-survey-datasecurity-element-language-selection">
+        <?php foreach ($aTabTitles as $i => $eachtitle): ?>
+            <button class="nav-link <?php if ($count == 0) {
+                echo "active";
+            } ?>" data-bs-toggle="tab" data-bs-target="#editdatasecele-<?php echo $count;
+            $count++; ?>" type="button">
+                <?php echo $eachtitle; ?>
+            </button>
+        <?php endforeach; ?>
+    </div>
+    <div class="tab-content">
+        <?php foreach ($aTabContents as $i => $sTabContent): ?>
+            <?php
+            echo $sTabContent;
+            ?>
+        <?php endforeach; ?>
+    </div>
+</nav>
 
-<?php App()->getClientScript()->registerScript("EditSurveyDataSecurityTabs", "
+<?php App()->getClientScript()->registerScript("EditSurveyDataSecurityTabs",
+    "
 $('#edit-survey-text-element-language-selection').find('a').on('shown.bs.tab', function(e){
     try{ $(e.relatedTarget).find('textarea').ckeditor(); } catch(e){ }
-})", LSYii_ClientScript::POS_POSTSCRIPT); ?>
+})",
+    LSYii_ClientScript::POS_POSTSCRIPT
+); ?>

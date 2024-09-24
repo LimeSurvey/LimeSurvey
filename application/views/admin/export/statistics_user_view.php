@@ -8,20 +8,20 @@
 <!-- Javascript variables  -->
 <?php $this->renderPartial('/admin/export/statistics_subviews/_statistics_view_scripts', array('sStatisticsLanguage'=>$sStatisticsLanguage, 'surveyid'=>$surveyid, 'showtextinline'=>$showtextinline)) ; ?>
 
-<div id='statisticsview' class='side-body <?php echo getSideBodyClass(false); ?>'>
+<div id='statisticsview' class='side-body'>
 
     <div class="row">
-        <div class="col-md-12">
-            <div class="col-md-3 text-left">
+        <div class="col-12">
+            <div class="col-lg-3 text-start">
                 <h4>
-                    <span class="fa fa-bar-chart"></span> &nbsp;&nbsp;&nbsp;
+                    <span class="ri-bar-chart-fill"></span> &nbsp;&nbsp;&nbsp;
                     <?php eT("Statistics"); ?>
                 </h4>
             </div>
-            <div class="col-md-9 text-right">
-                <div class="form-group">
+            <div class="col-lg-9 text-end">
+                <div class="mb-3">
                     <div >
-                        <label for='completionstate' class="control-label"><?php eT("Include:"); ?> </label>
+                        <label for='completionstate' class="form-label"><?php eT("Include:"); ?> </label>
                         <?php
                         echo CHtml::dropDownList(
                             'completionstate',
@@ -48,14 +48,20 @@
 
 
     <div class="row">
-        <div class="col-lg-12 content-right">
+        <div class="col-12 content-right">
             <input type="hidden" id="showGraphOnPageLoad" />
             <div id='statisticsoutput' class='statisticsfilters'>
                 <?php echo $output; ?>
             </div>
         </div>
-        <div class="col-lg-12 content-left">
-            <button id="statisticsExportImages" class="btn btn-info" style="margin: auto;"><?=gT('Export images')?></button>
+        <div class="col-12 content-left">
+            <button 
+                type="button"
+                id="statisticsExportImages" 
+                class="btn btn-info" 
+                style="margin: auto;">
+                <?=gT('Export images')?>
+            </button>
             <p><?php eT('Make sure all images on this screen are loaded before clicking on the button.');?></p>
         </div>
     </div>

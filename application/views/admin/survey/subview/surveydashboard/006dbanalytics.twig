@@ -1,14 +1,14 @@
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <strong>{{gT("Database usage")}}:</strong>
+<div class="card card-primary h-100">
+    <div class="card-header">
+        <h5 class="card-title">{{gT("Database usage")}}</h5>
     </div>
-    <ul class="list-group">
+    <ul class="list-group list-group-flush">
         <!-- usage -->
         {% if tableusage != false %}
             {% if tableusage.dbtype == 'mysql' or tableusage.dbtype == 'mysqli' %}
                 {% set column_usage = tableusage.column[0] / tableusage.column[1] * 100  %}
                 {% set size_usage =  tableusage.size[0] / tableusage.size[1] * 100  %}
-                <li class="list-group-item">
+                <li class="list-group-item p-0 border-0">
                     <div class="ls-flex-row col-12">
                         <div class="col-4">
                             {{gT("Table column usage")}}:
@@ -18,7 +18,7 @@
                         </div>
                     </div>
                 </li>
-                <li class="list-group-item">
+                <li class="list-group-item p-0 border-0">
                     <div class="ls-flex-row col-12">
                         <div class="col-4">
                             {{gT("Table size usage")}}
@@ -30,7 +30,7 @@
                 </li>
             {% elseif ((arrCols.dbtype == 'mssql') or (arrCols.dbtype == 'postgre') or ( arrCols.dbtype == 'dblib' )) %}
                 {% set column_usage = tableusage.column[0] / tableusage.column[1] * 100 %}
-                <li class="list-group-item">
+                <li class="list-group-item p-0 border-0">
                     <div class="ls-flex-row col-12">
                         <div class="col-4">
                             {{gT("Table column usage")}}
@@ -42,7 +42,7 @@
                 </li>
             {% endif %}
         {% else %}
-        <li class="list-group-item">
+        <li class="list-group-item p-0 border-0">
             <div class="ls-flex-row col-12">
                 {{ gT("No info or no data found") }}
             </div>
@@ -50,4 +50,4 @@
         {% endif %}
     </ul>
 </div>
-    
+

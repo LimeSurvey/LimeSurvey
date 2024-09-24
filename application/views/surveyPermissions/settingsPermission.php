@@ -12,17 +12,17 @@
 
 ?>
 
-<div id='edit-permission' class='side-body  <?= getSideBodyClass(false) ?> "'>
+<div id='edit-permission' class='side-body'>
     <h3>
         <?php
         if ($isUserGroup) {
-            echo sprintf(gT("Edit survey permissions for usergroup %s"), "<em>" . \CHtml::encode($name) . "</em>");
+            echo sprintf(gT("Edit survey permissions for user group %s"), "<em>" . \CHtml::encode($name) . "</em>");
         } else {
             echo sprintf(gT("Edit survey permissions for user %s"), "<em>" . \CHtml::encode($name) . "</em>");
         }
         ?>
     </h3>
-    <div class="row">
+    <div class="row" id="trigger-save-button">
         <div class="col-lg-12 content-right">
             <?php echo CHtml::form(
                 array("surveyPermissions/savePermissions/surveyid/{$surveyid}")
@@ -32,7 +32,7 @@
                 ['aPermissions' => $aPermissions],
                 true
             );?>
-            <input class='btn btn-default hidden'  type='submit' value='<?=gT("Save Now") ?>' />"
+            <input class='btn btn-outline-secondary d-none'  type='submit' value='<?=gT("Save Now") ?>' />
             <?php
             if ($isUserGroup) { ?>
                     <input type='hidden' name='ugid' value="<?= $id?>" />

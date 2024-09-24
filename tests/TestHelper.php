@@ -2,6 +2,7 @@
 
 namespace ls\tests;
 
+use Survey;
 use Yii;
 use Exception;
 use Facebook\WebDriver\Exception\WebDriverException;
@@ -18,7 +19,6 @@ use SurveyActivator;
 
 class TestHelper extends TestCase
 {
-
     /**
      * Import all helpers etc.
      * @return void
@@ -107,17 +107,17 @@ class TestHelper extends TestCase
             'anonymized' => ($thissurvey['anonymized'] != 'N'),
             'assessments' => ($thissurvey['assessments'] == 'Y'),
             'datestamp' => ($thissurvey['datestamp'] == 'Y'),
-            'deletenonvalues'=>Yii::app()->getConfig('deletenonvalues'),
+            'deletenonvalues' => Yii::app()->getConfig('deletenonvalues'),
             'hyperlinkSyntaxHighlighting' => (($LEMdebugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY),
             'ipaddr' => ($thissurvey['ipaddr'] == 'Y'),
-            'radix'=>$radix,
+            'radix' => $radix,
             // FIXME !! $LEMsessid is not defined
             'refurl' => (($thissurvey['refurl'] == "Y" && isset($_SESSION[$LEMsessid]['refurl'])) ? $_SESSION[$LEMsessid]['refurl'] : null),
             'savetimings' => ($thissurvey['savetimings'] == "Y"),
             'surveyls_dateformat' => (isset($thissurvey['surveyls_dateformat']) ? $thissurvey['surveyls_dateformat'] : 1),
-            'startlanguage'=>(isset(App()->language) ? App()->language : $thissurvey['language']),
-            'target' => Yii::app()->getConfig('uploaddir').DIRECTORY_SEPARATOR.'surveys'.DIRECTORY_SEPARATOR.$thissurvey['sid'].DIRECTORY_SEPARATOR.'files'.DIRECTORY_SEPARATOR,
-            'tempdir' => Yii::app()->getConfig('tempdir').DIRECTORY_SEPARATOR,
+            'startlanguage' => (isset(App()->language) ? App()->language : $thissurvey['language']),
+            'target' => Yii::app()->getConfig('uploaddir') . DIRECTORY_SEPARATOR . 'surveys' . DIRECTORY_SEPARATOR . $thissurvey['sid'] . DIRECTORY_SEPARATOR . 'files' . DIRECTORY_SEPARATOR,
+            'tempdir' => Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR,
             'timeadjust' => (isset($timeadjust) ? $timeadjust : 0),
             'token' => (isset($clienttoken) ? $clienttoken : null),
         );
@@ -140,7 +140,8 @@ class TestHelper extends TestCase
         $survey->refurl = '';
         $survey->savetimings = '';
         $survey->save();
-        \Survey::model()->resetCache();  // Make sure the saved values will be picked up
+        // Make sure the saved values will be picked up
+        Survey::model()->resetCache();
 
         $surveyActivator = new SurveyActivator($survey);
         $result = $surveyActivator->activate();
@@ -157,7 +158,7 @@ class TestHelper extends TestCase
         $db->active = false;
         $db->active = true;
 
-        $this->assertEquals(['status' => 'OK', 'pluginFeedback' => null], $result, 'Activate survey is OK');
+        $this->assertEquals(['status' => 'OK', 'pluginFeedback' => null, 'isAllowRegister' => false], $result, 'Activate survey is OK');
     }
 
     /**
@@ -167,8 +168,8 @@ class TestHelper extends TestCase
     public function deactivateSurvey($surveyId)
     {
         $date     = date('YmdHis');
-        $oldSurveyTableName = Yii::app()->db->tablePrefix."survey_{$surveyId}";
-        $newSurveyTableName = Yii::app()->db->tablePrefix."old_survey_{$surveyId}_{$date}";
+        $oldSurveyTableName = Yii::app()->db->tablePrefix . "survey_{$surveyId}";
+        $newSurveyTableName = Yii::app()->db->tablePrefix . "old_survey_{$surveyId}_{$date}";
         Yii::app()->db->createCommand()->renameTable($oldSurveyTableName, $newSurveyTableName);
         $survey = \Survey::model()->findByPk($surveyId);
         $survey->active = 'N';
@@ -180,7 +181,7 @@ class TestHelper extends TestCase
      * Overwrite the db component with a new
      * configuration and database.
      * Before you run this, you might want to save
-     * the old db config in a variable, so you can 
+     * the old db config in a variable, so you can
      * reconnect to it after you're done with the new
      * database.
      *   $config = require(\Yii::app()->getBasePath() . '/config/config.php');
@@ -275,7 +276,7 @@ class TestHelper extends TestCase
         $this->assertFileExists($file, 'SQL file exists: ' . $file);
 
         // Run SQL install file.
-        $result = self::executeSQLFile($file,$connection);
+        $result = self::executeSQLFile($file, $connection);
         $this->assertEquals([], $result, 'No error messages from executeSQLFile' . print_r($result, true));
 
         // Run upgrade.
@@ -296,7 +297,6 @@ class TestHelper extends TestCase
         $this->assertEquals($versionConfig['dbversionnumber'], $currentDbVersion, 'Version in db is same as updated to');
 
         return $connection;
-
     }
 
     /**
@@ -360,8 +360,8 @@ class TestHelper extends TestCase
         $nameParts = explode('\\', $name);
         $name = $nameParts[count($nameParts) - 1];
 
-        $tempFolder = Yii::app()->getBasePath() .'/../tests/tmp';
-        $folder     = $tempFolder.'/screenshots/';
+        $tempFolder = Yii::app()->getBasePath() . '/../tests/tmp';
+        $folder     = $tempFolder . '/screenshots/';
         $screenshot = $webDriver->takeScreenshot();
         $filename   = $folder . $name . '.png';
         $result     = file_put_contents($filename, $screenshot);
@@ -393,7 +393,7 @@ class TestHelper extends TestCase
         while (true) {
             $current = "$file:$line";
             if (is_array($seen) && in_array($current, $seen)) {
-                $result[] = sprintf(' ... %d more', count($trace)+1);
+                $result[] = sprintf(' ... %d more', count($trace) + 1);
                 break;
             }
             $result[] = sprintf(
@@ -437,8 +437,10 @@ class TestHelper extends TestCase
                 $address = getenv('WEBDRIVERHOST') ?: 'localhost';
                 $host = 'http://' . $address . ':' . TestBaseClassWeb::$webPort . '/wd/hub'; // this is the default
                 $capabilities = DesiredCapabilities::firefox();
+                $capabilities->setCapability('acceptInsecureCerts', true);
                 $profile = new FirefoxProfile();
                 $profile->setPreference(FirefoxPreferences::READER_PARSE_ON_LOAD_ENABLED, false);
+
                 // Open target="_blank" in new tab.
                 $profile->setPreference('browser.link.open_newwindow', 3);
 
@@ -465,6 +467,7 @@ class TestHelper extends TestCase
 
                 $capabilities->setCapability(FirefoxDriver::PROFILE, $profile);
                 $webDriver = LimeSurveyWebDriver::create($host, $capabilities, 5000);
+
                 $success = true;
             } catch (WebDriverException $ex) {
                 $tries++;
@@ -505,7 +508,7 @@ class TestHelper extends TestCase
                     try {
                         $connection->createCommand($sCommand)->execute();
                     } catch (Exception $e) {
-                        $aMessages[] = "Executing: ".$sCommand." failed! Reason: ".$e;
+                        $aMessages[] = "Executing: " . $sCommand . " failed! Reason: " . $e;
                     }
 
                     $sCommand = '';
@@ -516,5 +519,4 @@ class TestHelper extends TestCase
         }
         return $aMessages;
     }
-
 }

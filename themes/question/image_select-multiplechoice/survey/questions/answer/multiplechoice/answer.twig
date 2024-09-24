@@ -1,0 +1,28 @@
+{#
+/**
+ * Multiple Choice question item Html
+ *
+ * @var $sRows      : the rows, generated with the views rows/answer_row*.twig
+ *
+ * @var $name
+ * @var $anscount
+ */
+#}
+<!-- Multiple Choice -->
+
+<!-- answer -->
+{# What is the usage of this input ? #}
+<input type="hidden" name="MULTI{{ name }}" value="{{ anscount }}" />
+<div class="{{ coreClass }} row" role="group" aria-labelledby="ls-question-text-{{ basename }}">
+    {% for aRow in aRows %}
+        {% if loop.index0 is divisible by(iMaxRowsByColumn) and loop.index0 != 0  %}
+            </ul>
+            <ul class="list-unstyled col-12 col-md-{{iColumnWidth}}">
+        {% endif %}
+
+        {% set rowTemplate = aRow.other ? './survey/questions/answer/multiplechoice/rows/answer_row_other.twig' : './survey/questions/answer/multiplechoice/rows/answer_row.twig' %}
+        {% include rowTemplate with aRow %}
+
+    {% endfor %}
+<!-- end of answer -->
+</div>

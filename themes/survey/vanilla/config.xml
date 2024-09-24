@@ -20,9 +20,13 @@
         <license>GNU General Public License version 2 or later</license>
         <version>3.0.1</version>
         <apiVersion>3</apiVersion>
-        <description><![CDATA[<strong>LimeSurvey Bootstrap Vanilla Survey Theme</strong><br>A clean and simple base that can be used by developers to create their own Bootstrap based theme.]]></description>
+        <description twig="on"><![CDATA[{{gT("A clean and simple base that can be used by developers to create their own Bootstrap based theme.")}}]]></description>
         <lastUpdate>2021-06-26 17:00:00</lastUpdate>
     </metadata>
+
+    <compatibility>
+        <version>6.0</version>
+    </compatibility>
 
     <!--
         Here the list of the css/js files to add to the template package.
@@ -63,7 +67,7 @@
         <showpopups type="buttons" category="Simple options" width="4" title="Show popups" options="1|0|-1" optionlabels="Popup|On page|No">1</showpopups>
         <showclearall type="buttons" category="Simple options" width="4" title="Show Clear All button" options="on|off" optionlabels="Yes|No">off</showclearall>
         <questionhelptextposition type="buttons" category="Simple options" width="4" title="Question help text position" options="top|bottom" optionlabels="Top|Bottom">top</questionhelptextposition>
-        <fixnumauto type="buttons" category="Simple options" width="4" title="Fix automatically numeric value" options="enable|partial|disable" optionlabels="Yes|For expression|No">off</fixnumauto>
+        <fixnumauto type="buttons" category="Simple options" width="4" title="Fix automatically numeric value" options="enable|partial|disable" optionlabels="Yes|For expression|No">enable</fixnumauto>
         <!-- images -->
         <brandlogo type="buttons" category="Images" width="4" title="Logo" options="on|off" optionlabels="Yes|No">on</brandlogo>
         <brandlogofile type="dropdown" category="Images" width="6" title="Logo file" parent="brandlogo">./files/logo.png</brandlogofile>
@@ -337,7 +341,7 @@
                 <surveyls_url type="data" twig="on">"https://www.limesurvey.org/"</surveyls_url>
                 <surveyls_urldescription type="data" twig="on"><![CDATA[ gT("Some URL description") ]]></surveyls_urldescription>
                 <showsurveypolicynotice>2</showsurveypolicynotice>
-                <datasecurity_notice_label type="data" twig="on"><![CDATA[ <a href='#data-security-modal-' data-toggle='collapse'> {{ gT('Show privacy policy') }} </a>  ]]></datasecurity_notice_label>
+                <datasecurity_notice_label type="data" twig="on"><![CDATA[ <a href='#data-security-modal-' data-bs-toggle='collapse'> {{ gT('Show privacy policy') }} </a>  ]]></datasecurity_notice_label>
                 <datasecurity_notice type="data" twig="on"><![CDATA[ {{ gT("Your privacy policy text is shown here.") }} ]]></datasecurity_notice>
               </survey>
               <group type="core">

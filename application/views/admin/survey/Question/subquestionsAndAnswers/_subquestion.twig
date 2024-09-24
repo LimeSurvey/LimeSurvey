@@ -49,7 +49,7 @@
 
         <!-- Move icon -->
         <td class="move-icon" >
-            <span class="fa fa-bars bigIcons"></span>
+            <span class="ri-menu-fill bigIcons"></span>
         </td>
 
         <!-- Code (title) -->
@@ -107,16 +107,14 @@
             value="{{ question }}"
             onkeypress=" if(event.keyCode==13) { if (event && event.preventDefault) event.preventDefault(); document.getElementById('save-button').click(); return false;}"
             />
-            <span class="input-group-addon">
-                {{ getEditor("editanswer","answer_"~language~"_"~qid~"_"~scale_id, "["~gT("Subquestion:", "js")~"]("~language~")",surveyid,gid,qid,'editanswer') }}
-            </span>
+            {{ getEditor("editanswer","answer_"~language~"_"~qid~"_"~scale_id, "["~gT("Subquestion:", "js")~"]("~language~")",surveyid,gid,qid,'editanswer') }}
         </div>
     </td>
 
     <!-- Relevance equation -->
     {% if first and scale_id == 0 %}
         <td class="relevance-equation">
-            <input data-toggle="tooltip" data-title="{{ gT("Click to expand") }}" type='text' class='relevance form-control input' id='relevance_{{ qid }}_{{ scale_id }}' name='relevance_{{ qid }}_{{ scale_id }}' value="{{ relevance }}" onkeypress=" if(event.keyCode==13) { if (event && event.preventDefault) event.preventDefault(); document.getElementById('save-button').click(); return false;}" />
+            <input data-bs-toggle="tooltip" data-title="{{ gT("Click to expand") }}" type='text' class='relevance form-control input' id='relevance_{{ qid }}_{{ scale_id }}' name='relevance_{{ qid }}_{{ scale_id }}' value="{{ relevance }}" onkeypress=" if(event.keyCode==13) { if (event && event.preventDefault) event.preventDefault(); document.getElementById('save-button').click(); return false;}" />
         </td>
     {%  else %}
         <span style="display: none" class="relevance relevance-equation">
@@ -132,8 +130,8 @@
         {%  if activated != 'Y' and first %}
             {# TODO : to merge subquestion and answer options,  implies : define in controller titles #}
 
-            <button class="btn btn-default btn-sm btnaddanswer"><i class="icon-add text-success" data-code="{{ title }}" data-toggle="tooltip" data-scale-id="{{ scale_id }}" data-placement="bottom" title="{{ gT("Insert a new subquestion after this one") }}"></i></button>
-            <button class="btn btn-default btn-sm btndelanswer"><i class="fa fa-trash text-danger"  data-toggle="tooltip" data-placement="bottom" title="{{ gT("Delete this subquestion") }}"></i></button>
+            <button class="btn btn-outline-secondary btn-sm btnaddanswer"><i class="ri-add-circle-fill text-success" data-code="{{ title }}" data-bs-toggle="tooltip" data-scale-id="{{ scale_id }}" data-bs-placement="bottom" title="{{ gT("Insert a new subquestion after this one") }}"></i></button>
+            <button class="btn btn-outline-secondary btn-sm btndelanswer"><i class="ri-delete-bin-fill text-danger"  data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ gT("Delete this subquestion") }}"></i></button>
         {%  endif %}
 
     </td>

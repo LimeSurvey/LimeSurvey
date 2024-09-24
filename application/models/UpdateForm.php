@@ -72,7 +72,7 @@ class UpdateForm extends CFormModel
         if (Yii::app()->getConfig("updatable")) {
             if ($this->build != '') {
                 $crosscheck = (int) $crosscheck;
-                $getters = '/index.php?r=updates/updateinfo&currentbuild=' . $this->build . '&id=' . md5(getGlobalSetting('SessionName')) . '&crosscheck=' . $crosscheck;
+                $getters = '/index.php?r=updates/updateinfo&currentbuild=' . $this->build . '&id=' . md5((string) getGlobalSetting('SessionName')) . '&crosscheck=' . $crosscheck;
                 $content = $this->performRequest($getters);
             } else {
                 $content = new stdClass();
@@ -192,7 +192,7 @@ class UpdateForm extends CFormModel
         $readOnly = array();
 
         // We check the write permission of files
-        $lsRootPath = dirname(Yii::app()->request->scriptFile) . '/';
+        $lsRootPath = dirname((string) Yii::app()->request->scriptFile) . '/';
         foreach ($toCheck as $check) {
             if (file_exists($lsRootPath . $check)) {
                 if (!is_writable($lsRootPath . $check)) {
@@ -313,7 +313,7 @@ class UpdateForm extends CFormModel
     public function removeDeletedFiles($updateinfos)
     {
         foreach ($updateinfos as $file) {
-            $sFileToDelete = str_replace("..", "", $file['file']);
+            $sFileToDelete = str_replace("..", "", (string) $file['file']);
             if ($file['type'] == 'D' && file_exists($this->rootdir . $sFileToDelete)) {
                 if (is_file($this->rootdir . $sFileToDelete)) {
                     // TODO: Deal with error here
@@ -388,10 +388,10 @@ class UpdateForm extends CFormModel
         $versionlines = file($this->rootdir . DIRECTORY_SEPARATOR . 'application' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'version.php');
         $handle = fopen($this->rootdir . DIRECTORY_SEPARATOR . 'application' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'version.php', "w");
         foreach ($versionlines as $line) {
-            if (strpos($line, 'buildnumber') !== false) {
+            if (strpos((string) $line, 'buildnumber') !== false) {
                 $line = '$config[\'buildnumber\'] = ' . $destinationBuild . ';' . "\r\n";
             }
-            fwrite($handle, $line);
+            fwrite($handle, (string) $line);
         }
         fclose($handle);
         Yii::app()->setConfig("buildnumber", $destinationBuild);
@@ -433,7 +433,7 @@ class UpdateForm extends CFormModel
         if (count($readonlyfiles)) {
             foreach (array_unique($readonlyfiles) as $sFile) {
                 // If substr return wrong, the root directory is not writable
-                $sCleanFile = substr($sFile, strlen(Yii::app()->getConfig("rootdir")));
+                $sCleanFile = substr((string) $sFile, strlen((string) Yii::app()->getConfig("rootdir")));
                 $aReadOnlyFiles[] = ($sCleanFile) ? $sCleanFile : $sFile;
             }
             sort($aReadOnlyFiles);
@@ -458,7 +458,7 @@ class UpdateForm extends CFormModel
 
         foreach ($updateinfos as $file) {
             // To block the access to subdirectories
-            $sFileToZip = str_replace("..", "", $file['file']);
+            $sFileToZip = str_replace("..", "", (string) $file['file']);
 
             if (is_file($this->publicdir . $sFileToZip) === true && basename($sFileToZip) != 'config.php' && filesize($this->publicdir . $sFileToZip) > 0) {
                 $filestozip[] = $this->publicdir . $sFileToZip;
@@ -571,20 +571,23 @@ class UpdateForm extends CFormModel
                     $security_update_available = false;
                     $unstable_update_available = false;
 
-                    if (is_array($updates) || $updates instanceof Countable) {
-                        if (count($updates) > 0) {
-                            $update_available = true;
-                            foreach ($updates as $update) {
-                                if ($update->security_update) {
-                                    $security_update_available = true;
-                                }
+                    if (!is_array($updates) && !($updates instanceof Countable)) {
+                        $updates = (array) $updates;
+                    }
 
-                                if ($update->branch != 'master') {
-                                    $unstable_update_available = true;
-                                }
+                    if (count($updates) > 0) {
+                        $update_available = true;
+                        foreach ($updates as $update) {
+                            if ($update->security_update) {
+                                $security_update_available = true;
+                            }
+
+                            if (!in_array($update->branch, ['master','5.x','3.x-LTS'])) {
+                                $unstable_update_available = true;
                             }
                         }
                     }
+
                     Yii::app()->session['update_result'] = $update_available;
                     Yii::app()->session['security_update'] = $security_update_available;
 
@@ -796,13 +799,13 @@ class UpdateForm extends CFormModel
         } else {
             $check->writable = 'pass';
         }
-        if ($obj->freespaceCheck) {
+        if ($obj->freespaceCheck && function_exists('disk_free_space')) {
             $check->freespace = (@disk_free_space($obj->name) > $obj->minfreespace);
         } else {
             $check->freespace = 'pass';
         }
 
-        $check->name = str_replace(array('/', '\\'), DIRECTORY_SEPARATOR, $check->name);
+        $check->name = str_replace(array('/', '\\'), DIRECTORY_SEPARATOR, (string) $check->name);
 
         return $check;
     }
@@ -938,7 +941,6 @@ class UpdateForm extends CFormModel
         curl_setopt($ch, CURLOPT_COOKIEFILE, $this->path_cookie);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HEADER, false); // We don't want the header to be written in the zip file !
-        curl_setopt($ch, CURLOPT_BINARYTRANSFER, true);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
         curl_setopt($ch, CURLOPT_FILE, $pFile);
         curl_exec($ch);
@@ -961,7 +963,7 @@ class UpdateForm extends CFormModel
     {
         if ((extension_loaded("curl"))) {
             if (isset($_REQUEST['access_token'])) {
-                $getters .= "&access_token=" . urlencode($_REQUEST['access_token']);
+                $getters .= "&access_token=" . urlencode((string) $_REQUEST['access_token']);
             }
             if (Yii::app()->getConfig("allow_non_public_release")) {
                 $getters .= "&debug=1";

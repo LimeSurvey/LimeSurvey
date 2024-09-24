@@ -10,56 +10,54 @@
 echo viewHelper::getViewTestTag('listSurveys');
 
 ?>
-<div class="container-fluid ls-space row list-surveys">
+<div class="ls-space list-surveys">
     <ul class="nav nav-tabs" id="surveysystem" role="tablist">
-        <li class="active"><a href="#surveys" aria-controls="surveys" role="tab" data-toggle="tab"><?php eT('Survey list'); ?></a></li>
-        <li><a href="#surveygroups" aria-controls="surveygroups" role="tab" data-toggle="tab"><?php eT('Survey groups'); ?></a></li>
+        <li class="nav-item"><a class="nav-link active" href="#surveys" aria-controls="surveys" role="tab" data-bs-toggle="tab"><?php eT('Survey list'); ?></a></li>
+        <li class="nav-item"><a class="nav-link" href="#surveygroups" aria-controls="surveygroups" role="tab" data-bs-toggle="tab"><?php eT('Survey groups'); ?></a></li>
     </ul>
     <div class="tab-content">
-        <div id="surveys" class="tab-pane active">
+        <div id="surveys" class="tab-pane show active">
             <!-- Survey List widget -->
             <?php $this->widget('ext.admin.survey.ListSurveysWidget.ListSurveysWidget', array(
                         'pageSize' => Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']),
-                        'model' => $model
+                        'model' => $model,
                 ));
-                                                                                                ?>
+            ?>
         </div>
 
         <div id="surveygroups" class="tab-pane">
             <div class="pagetitle h3 ls-space margin top-25"><?php eT('Survey groups'); ?></div>
             <div class="row">
-                <div class="col-sm-12 content-right">
+                <div class="col-12 content-right">
                     <?php
-                    $this->widget('bootstrap.widgets.TbGridView', array(
-                        'id'           => 'surveygroups--gridview',
-                        'dataProvider' => $groupModel->search(),
-                        'columns'      => $groupModel->columns,
-                        'template'     => "{items}\n<div id='surveygroupsListPager'><div class=\"col-sm-4\" id=\"massive-action-container\"></div><div class=\"col-sm-4 pager-container ls-ba \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
-                        'summaryText'  => gT('Displaying {start}-{end} of {count} result(s).') . ' '
+                    $this->widget('application.extensions.admin.grid.CLSGridView', [
+                        'id'               => 'surveygroups--gridview',
+                        'dataProvider'     => $groupModel->search(),
+                        'lsAfterAjaxUpdate'          => [],
+                        'columns'          => $groupModel->columns,
+                        'rowLink' => 'App()->createUrl("admin/surveysgroups/sa/update/",array("id"=>$data->gsid))',
+                        'summaryText'      => gT('Displaying {start}-{end} of {count} result(s).') . ' '
                             . sprintf(
                                 gT('%s rows per page'),
                                 CHtml::dropDownList(
                                     'surveygroups--pageSize',
                                     Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']),
                                     App()->params['pageSizeOptions'],
-                                    array('class' => 'changePageSize form-control', 'style' => 'display: inline; width: auto')
+                                    ['class' => 'changePageSize form-select', 'style' => 'display: inline; width: auto']
                                 )
                             ),
-                        'htmlOptions' => ['class' => 'table-responsive grid-view-ls'],
-                        'selectionChanged' => "function(id){window.location='" . Yii::app()->urlManager->createUrl("admin/surveysgroups/sa/update/id") . '/' . "' + $.fn.yiiGridView.getSelection(id.split(',', 1));}",
-
-                    ));
+                    ]);
                     ?>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<script>
+<script type="text/javascript">
     $('#surveysystem a').on('shown.bs.tab', function () {
         var tabId = $(this).attr('href');
-        $('.tab-dependent-button:not([data-tab="' + tabId + '"])').hide();
-        $('.tab-dependent-button[data-tab="' + tabId + '"]').show();
+        $('.tab-dependent-button:not([data-tab="' + tabId + '"])').toggleClass("d-none");
+        $('.tab-dependent-button[data-tab="' + tabId + '"]').toggleClass("d-none");
     });
     $(document).on('ready pjax:scriptcomplete', function(){
         if(window.location.hash){
@@ -75,5 +73,8 @@ echo viewHelper::getViewTestTag('listSurveys');
         });
     });
     //show tooltip for gridview icons
-    $('body').tooltip({selector: '[data-toggle="tooltip"]'});
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl)
+    })
 </script>

@@ -11,6 +11,7 @@
 
 namespace Twig\Node;
 
+use Twig\Attribute\YieldReady;
 use Twig\Compiler;
 use Twig\Node\Expression\AbstractExpression;
 use Twig\Node\Expression\ConstantExpression;
@@ -20,20 +21,19 @@ use Twig\Node\Expression\ConstantExpression;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
+#[YieldReady]
 class EmbedNode extends IncludeNode
 {
     // we don't inject the module to avoid node visitors to traverse it twice (as it will be already visited in the main module)
-    public function __construct($name, $index, ?AbstractExpression $variables, $only, $ignoreMissing, $lineno, $tag = null)
+    public function __construct(string $name, int $index, ?AbstractExpression $variables, bool $only, bool $ignoreMissing, int $lineno, ?string $tag = null)
     {
         parent::__construct(new ConstantExpression('not_used', $lineno), $variables, $only, $ignoreMissing, $lineno, $tag);
 
         $this->setAttribute('name', $name);
-        // to be removed in 2.0, used name instead
-        $this->setAttribute('filename', $name);
         $this->setAttribute('index', $index);
     }
 
-    protected function addGetTemplate(Compiler $compiler)
+    protected function addGetTemplate(Compiler $compiler): void
     {
         $compiler
             ->write('$this->loadTemplate(')
@@ -48,5 +48,3 @@ class EmbedNode extends IncludeNode
         ;
     }
 }
-
-class_alias('Twig\Node\EmbedNode', 'Twig_Node_Embed');

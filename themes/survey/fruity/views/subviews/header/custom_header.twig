@@ -26,7 +26,7 @@
 <style>
     {% if (aSurveyInfo.options.backgroundimage == "on" and imageSrc(aSurveyInfo.options.backgroundimagefile )) %}
         body {
-            background-image: url({{ imageSrc(aSurveyInfo.options.backgroundimagefile ) }});
+            background-image: url('{{ imageSrc(aSurveyInfo.options.backgroundimagefile ) }}');
             background-attachment: fixed;
             background-size: cover;
 
@@ -45,7 +45,7 @@
 
     body {
          padding-bottom: 10px;
-         padding-top: 60px;/* now is redefine in JS to fit any title length */
+         /*padding-top: 60px;!* now is redefine in JS to fit any title length *!*/
          background-color:{{ aSurveyInfo.options.bodybackgroundcolor  }} ;
          color: {{ aSurveyInfo.options.fontcolor  }};
     }
@@ -139,7 +139,7 @@
         .question-container {
             animation-name: {{ aSurveyInfo.options.questionanimation  }};
             animation-duration: {{ questionanimationduration }}ms;
-            animation-fill-mode: both;
+            animation-fill-mode: none; /* Issue #18648: Unable to upload a file with theme animations enabled - Set it to none to avoid overlay */
         }
     {% endif %}
 
@@ -169,7 +169,7 @@
         #outerframeContainer {
             animation-name: {{ aSurveyInfo.options.bodyanimation  }};
             animation-duration: {{ bodyanimationduration }}ms;
-            animation-fill-mode: both;
+            animation-fill-mode: none;  /* Issue #18648: Unable to upload a file with theme animations enabled - Set it to none to avoid overlay */
         }
     {% endif %}
 

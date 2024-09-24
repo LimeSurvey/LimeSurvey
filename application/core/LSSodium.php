@@ -61,7 +61,7 @@ class LSSodium
      */
     protected function getEncryptionNonce()
     {
-        return sodium_hex2bin(Yii::app()->getConfig('encryptionnonce'));
+        return sodium_hex2bin((string) Yii::app()->getConfig('encryptionnonce'));
     }
 
     /**
@@ -70,7 +70,7 @@ class LSSodium
      */
     protected function getEncryptionSecretBoxKey()
     {
-        return sodium_hex2bin(Yii::app()->getConfig('encryptionsecretboxkey'));
+        return sodium_hex2bin((string) Yii::app()->getConfig('encryptionsecretboxkey'));
     }
 
     /**
@@ -115,7 +115,7 @@ class LSSodium
     public function encrypt($sDataToEncrypt): string
     {
         if ($this->bLibraryExists === true) {
-            if ($sDataToEncrypt) {
+            if (isset($sDataToEncrypt) && $sDataToEncrypt !== "") {
                 $sEncrypted = base64_encode(ParagonIE_Sodium_Compat::crypto_secretbox((string) $sDataToEncrypt, $this->sEncryptionNonce, $this->sEncryptionSecretBoxKey));
                 return $sEncrypted;
             }
@@ -127,7 +127,7 @@ class LSSodium
     /**
      *
      * Decrypt encrypted string.
-     * @param string $sEncryptedString Encrypted string to decrypt
+     * @param string $sEncryptedString Encrypted string to decrypt, if it string 'null', didn't try to decode
      * @param bool $bReturnFalseIfError false by default. If TRUE, return false in case of error (bad decryption). Else, return given $encryptedInput value
      * @return string Return decrypted value (string or unsezialized object) if suceeded. Return FALSE if an error occurs (bad password/salt given) or inpyt encryptedString
      * @throws SodiumException

@@ -16,7 +16,7 @@ on:
 
 jobs:
   job_build_packages:
-    runs-on: ubuntu-18.04 # ubuntu runner hosted by Github
+    runs-on: ubuntu-20.04 # ubuntu runner hosted by Github
     strategy:
       matrix:
         # Specify what version of nodejs you want to test
@@ -24,7 +24,15 @@ jobs:
     name: Build Frontend Packages
     steps:
       - name: Checkout the code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
+
+      - name: Run composer
+        run: |
+          composer install -vvv
+
+      - name: Run yarn
+        run: |
+          yarn install
 
       - name: Prepare nvm with Node ${{ matrix.nodeJS-versions }}
         run: |
@@ -59,7 +67,7 @@ jobs:
     
   job_run_tests:
     needs: [job_build_packages]
-    runs-on: ubuntu-18.04 # ubuntu runner hosted by Github
+    runs-on: ubuntu-20.04 # ubuntu runner hosted by Github
     strategy:
       matrix:
         # Specify what version of nodejs you want to test
@@ -67,7 +75,7 @@ jobs:
     name: Run Frontend Tests
     steps:
       - name: Checkout the code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       
       - name: Prepare nvm with Node ${{ matrix.nodeJS-versions }}
         run: |

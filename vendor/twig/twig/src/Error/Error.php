@@ -38,180 +38,87 @@ use Twig\Template;
  */
 class Error extends \Exception
 {
-    protected $lineno;
-    // to be renamed to name in 2.0
-    protected $filename;
-    protected $rawMessage;
-
+    private $lineno;
+    private $name;
+    private $rawMessage;
     private $sourcePath;
     private $sourceCode;
 
     /**
      * Constructor.
      *
-     * Set the line number to -1 to enable its automatic guessing.
-     * Set the name to null to enable its automatic guessing.
+     * By default, automatic guessing is enabled.
      *
-     * @param string             $message  The error message
-     * @param int                $lineno   The template line where the error occurred
-     * @param Source|string|null $source   The source context where the error occurred
-     * @param \Exception         $previous The previous exception
+     * @param string      $message The error message
+     * @param int         $lineno  The template line where the error occurred
+     * @param Source|null $source  The source context where the error occurred
      */
-    public function __construct($message, $lineno = -1, $source = null, \Exception $previous = null)
+    public function __construct(string $message, int $lineno = -1, ?Source $source = null, ?\Throwable $previous = null)
     {
+        parent::__construct('', 0, $previous);
+
         if (null === $source) {
             $name = null;
-        } elseif (!$source instanceof Source) {
-            // for compat with the Twig C ext., passing the template name as string is accepted
-            $name = $source;
         } else {
             $name = $source->getName();
             $this->sourceCode = $source->getCode();
             $this->sourcePath = $source->getPath();
         }
-        parent::__construct('', 0, $previous);
 
         $this->lineno = $lineno;
-        $this->filename = $name;
+        $this->name = $name;
         $this->rawMessage = $message;
         $this->updateRepr();
     }
 
-    /**
-     * Gets the raw message.
-     *
-     * @return string The raw message
-     */
-    public function getRawMessage()
+    public function getRawMessage(): string
     {
         return $this->rawMessage;
     }
 
-    /**
-     * Gets the logical name where the error occurred.
-     *
-     * @return string The name
-     *
-     * @deprecated since 1.27 (to be removed in 2.0). Use getSourceContext() instead.
-     */
-    public function getTemplateFile()
-    {
-        @trigger_error(sprintf('The "%s" method is deprecated since version 1.27 and will be removed in 2.0. Use getSourceContext() instead.', __METHOD__), \E_USER_DEPRECATED);
-
-        return $this->filename;
-    }
-
-    /**
-     * Sets the logical name where the error occurred.
-     *
-     * @param string $name The name
-     *
-     * @deprecated since 1.27 (to be removed in 2.0). Use setSourceContext() instead.
-     */
-    public function setTemplateFile($name)
-    {
-        @trigger_error(sprintf('The "%s" method is deprecated since version 1.27 and will be removed in 2.0. Use setSourceContext() instead.', __METHOD__), \E_USER_DEPRECATED);
-
-        $this->filename = $name;
-
-        $this->updateRepr();
-    }
-
-    /**
-     * Gets the logical name where the error occurred.
-     *
-     * @return string The name
-     *
-     * @deprecated since 1.29 (to be removed in 2.0). Use getSourceContext() instead.
-     */
-    public function getTemplateName()
-    {
-        @trigger_error(sprintf('The "%s" method is deprecated since version 1.29 and will be removed in 2.0. Use getSourceContext() instead.', __METHOD__), \E_USER_DEPRECATED);
-
-        return $this->filename;
-    }
-
-    /**
-     * Sets the logical name where the error occurred.
-     *
-     * @param string $name The name
-     *
-     * @deprecated since 1.29 (to be removed in 2.0). Use setSourceContext() instead.
-     */
-    public function setTemplateName($name)
-    {
-        @trigger_error(sprintf('The "%s" method is deprecated since version 1.29 and will be removed in 2.0. Use setSourceContext() instead.', __METHOD__), \E_USER_DEPRECATED);
-
-        $this->filename = $name;
-        $this->sourceCode = $this->sourcePath = null;
-
-        $this->updateRepr();
-    }
-
-    /**
-     * Gets the template line where the error occurred.
-     *
-     * @return int The template line
-     */
-    public function getTemplateLine()
+    public function getTemplateLine(): int
     {
         return $this->lineno;
     }
 
-    /**
-     * Sets the template line where the error occurred.
-     *
-     * @param int $lineno The template line
-     */
-    public function setTemplateLine($lineno)
+    public function setTemplateLine(int $lineno): void
     {
         $this->lineno = $lineno;
 
         $this->updateRepr();
     }
 
-    /**
-     * Gets the source context of the Twig template where the error occurred.
-     *
-     * @return Source|null
-     */
-    public function getSourceContext()
+    public function getSourceContext(): ?Source
     {
-        return $this->filename ? new Source($this->sourceCode, $this->filename, $this->sourcePath) : null;
+        return $this->name ? new Source($this->sourceCode, $this->name, $this->sourcePath) : null;
     }
 
-    /**
-     * Sets the source context of the Twig template where the error occurred.
-     */
-    public function setSourceContext(Source $source = null)
+    public function setSourceContext(?Source $source = null): void
     {
         if (null === $source) {
-            $this->sourceCode = $this->filename = $this->sourcePath = null;
+            $this->sourceCode = $this->name = $this->sourcePath = null;
         } else {
             $this->sourceCode = $source->getCode();
-            $this->filename = $source->getName();
+            $this->name = $source->getName();
             $this->sourcePath = $source->getPath();
         }
 
         $this->updateRepr();
     }
 
-    public function guess()
+    public function guess(): void
     {
         $this->guessTemplateInfo();
         $this->updateRepr();
     }
 
-    public function appendMessage($rawMessage)
+    public function appendMessage($rawMessage): void
     {
         $this->rawMessage .= $rawMessage;
         $this->updateRepr();
     }
 
-    /**
-     * @internal
-     */
-    protected function updateRepr()
+    private function updateRepr(): void
     {
         $this->message = $this->rawMessage;
 
@@ -223,22 +130,22 @@ class Error extends \Exception
         }
 
         $dot = false;
-        if ('.' === substr($this->message, -1)) {
+        if (str_ends_with($this->message, '.')) {
             $this->message = substr($this->message, 0, -1);
             $dot = true;
         }
 
         $questionMark = false;
-        if ('?' === substr($this->message, -1)) {
+        if (str_ends_with($this->message, '?')) {
             $this->message = substr($this->message, 0, -1);
             $questionMark = true;
         }
 
-        if ($this->filename) {
-            if (\is_string($this->filename) || (\is_object($this->filename) && method_exists($this->filename, '__toString'))) {
-                $name = sprintf('"%s"', $this->filename);
+        if ($this->name) {
+            if (\is_string($this->name) || (\is_object($this->name) && method_exists($this->name, '__toString'))) {
+                $name = sprintf('"%s"', $this->name);
             } else {
-                $name = json_encode($this->filename);
+                $name = json_encode($this->name);
             }
             $this->message .= sprintf(' in %s', $name);
         }
@@ -256,20 +163,17 @@ class Error extends \Exception
         }
     }
 
-    /**
-     * @internal
-     */
-    protected function guessTemplateInfo()
+    private function guessTemplateInfo(): void
     {
         $template = null;
         $templateClass = null;
 
         $backtrace = debug_backtrace(\DEBUG_BACKTRACE_IGNORE_ARGS | \DEBUG_BACKTRACE_PROVIDE_OBJECT);
         foreach ($backtrace as $trace) {
-            if (isset($trace['object']) && $trace['object'] instanceof Template && 'Twig_Template' !== \get_class($trace['object'])) {
+            if (isset($trace['object']) && $trace['object'] instanceof Template) {
                 $currentClass = \get_class($trace['object']);
-                $isEmbedContainer = null === $templateClass ? false : 0 === strpos($templateClass, $currentClass);
-                if (null === $this->filename || ($this->filename == $trace['object']->getTemplateName() && !$isEmbedContainer)) {
+                $isEmbedContainer = null === $templateClass ? false : str_starts_with($templateClass, $currentClass);
+                if (null === $this->name || ($this->name == $trace['object']->getTemplateName() && !$isEmbedContainer)) {
                     $template = $trace['object'];
                     $templateClass = \get_class($trace['object']);
                 }
@@ -277,8 +181,8 @@ class Error extends \Exception
         }
 
         // update template name
-        if (null !== $template && null === $this->filename) {
-            $this->filename = $template->getTemplateName();
+        if (null !== $template && null === $this->name) {
+            $this->name = $template->getTemplateName();
         }
 
         // update template path if any
@@ -296,7 +200,7 @@ class Error extends \Exception
         $file = $r->getFileName();
 
         $exceptions = [$e = $this];
-        while ($e instanceof self && $e = $e->getPrevious()) {
+        while ($e = $e->getPrevious()) {
             $exceptions[] = $e;
         }
 
@@ -321,5 +225,3 @@ class Error extends \Exception
         }
     }
 }
-
-class_alias('Twig\Error\Error', 'Twig_Error');

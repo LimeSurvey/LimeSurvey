@@ -1,0 +1,81 @@
+{#
+LimeSurvey
+Copyright (C) 2007-2017 The LimeSurvey Project Team / Louis Gac
+All rights reserved.
+License: GNU/GPL License v2 or later, see LICENSE.php
+LimeSurvey is free software. This version may have been modified pursuant
+to the GNU General Public License, and as distributed it includes or
+is derivative of works licensed under the GNU General Public License or
+other free or open source software licenses.
+See COPYRIGHT.php for copyright notices and details.
+
+(¯`·._.·(¯`·._.· Privacy with modal ·._.·´¯)·._.·´¯)
+
+Show the privacy message and the data security message will be available in a modal
+#}
+
+{% if aSurveyInfo.datasecurity_error %}
+    <div class="ls-privacy-block">
+        <div class="{{ aSurveyInfo.class.activealert }} alert alert-danger alert-dismissible alert-dismissible {% if not aSurveyInfo.datasecuritynotaccepted %}ls-js-hidden {% endif %}" {{ aSurveyInfo.attr.activealert }}
+             id="datasecurity_error">
+            <a {{ aSurveyInfo.attr.activealertbutton }} class="{{ aSurveyInfo.class.activealertbutton }} btn-close" aria-hidden="true"></a>
+            {{ aSurveyInfo.datasecurity_error }}
+        </div>
+        {% if aSurveyInfo.datasecuritynotaccepted %}
+            {% set describeprivacy = "datasecurity_error " ~ describeprivacy %}
+        {% endif %}
+    </div>
+{% endif %}
+<div class="ls-privacy-block">
+    <div class="row row-cols-lg-auto align-items-center datasecurity-checkbox-container">
+        <div class="col-12 checkbox-item">
+            <input required class="{{ aSurveyInfo.class.privacydataseccheckbox }} form-check-input" type="checkbox" name="datasecurity_accepted" id="datasecurity_accepted"/>
+            <label for="datasecurity_accepted"
+                   class="control-label checkbox-label form-check-label datasecurity-checkbox-label {{ aSurveyInfo.class.privacydataseccheckboxlabel }}">
+                {{ aSurveyInfo.datasecurity_notice_label }}
+            </label>
+        </div>
+    </div>
+</div>
+<div id="data-security-modal-{{ aSurveyInfo.sid }}" class="modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{{ gT('Privacy policy') }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div id="datasecurity_notice" class="modal-body {{ aSurveyInfo.class.privacydatasecmodalbody }}">
+                {{ aSurveyInfo.datasecurity_notice }}
+            </div>
+            <div class="modal-footer ls-no-js-hidden">
+                <button type="button" class="btn btn-primary" onclick="$('#datasecurity_accepted').prop('checked',true).trigger('change');" data-bs-dismiss="modal">
+                    {{ gT("Accept") }}
+                </button>
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    {{ gT("Close") }}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        $('#ls-button-submit').on('click', function () {
+            if (!$('#datasecurity_accepted').prop('checked')) {
+                /* dynamic show error */
+                $('#datasecurity_error').removeClass('ls-js-hidden');
+                if ($('#datasecurity_error').length) {
+                    /* add it in aria and role */
+                    $('#datasecurity_error').attr('role', 'alert');
+                    $('#datasecurity_accepted').attr('aria-describedby', "datasecurity_error {{ datasecuritynotice }}");
+                }
+            }
+        });
+    });
+    $('#datasecurity_accepted').on('change', function () {
+        if ($('#datasecurity_accepted').prop('checked')) {
+            /* dynamic hide error */
+            $('#datasecurity_error').addClass('ls-js-hidden');
+        }
+    });
+</script>

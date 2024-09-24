@@ -112,7 +112,7 @@ class CaptchaExtendedAction extends CCaptchaAction{
 		$this->fontFile = dirname(__FILE__).'/fonts/nimbus.ttf';
 
 		// set captcha mode
-		$this->mode = strtolower($this->mode);
+		$this->mode = strtolower((string) $this->mode);
 
 		// set image size
 		switch ($this->mode){
@@ -167,7 +167,7 @@ class CaptchaExtendedAction extends CCaptchaAction{
 	 * @return string the generated verification code
 	 */
 	protected function generateVerifyCode(){
-		switch (strtolower($this->mode)){
+		switch (strtolower((string) $this->mode)){
 			case self::MODE_MATH:
 				return $this->getCodeMath();
 			case self::MODE_MATHVERBAL:
@@ -216,7 +216,7 @@ class CaptchaExtendedAction extends CCaptchaAction{
 			}
 			// purify word
 			$w = $this->purifyWord($w[0]);
-			if(strlen($w) > 3 && $w != $previous){
+			if(strlen((string) $w) > 3 && $w != $previous){
 				// accept only word with at least 3 characters
 				$found[] = $w;
 				break; // change: we pull out only 1 word to ease user experience
@@ -402,7 +402,7 @@ class CaptchaExtendedAction extends CCaptchaAction{
 		$result = $session[$name . 'result'];
 		// input always taken without whitespaces
 		$input = preg_replace('/\s/','',$input);
-		$valid = $caseSensitive ? strcmp($input, $result)===0 : strcasecmp($input, $result)===0;
+		$valid = $caseSensitive ? strcmp($input, (string) $result)===0 : strcasecmp($input, (string) $result)===0;
 		// increase attempts counter, but not in case of ajax-client validation (that is always POST request having variable 'ajax')
 		// otherwise captcha would be silently invalidated after entering the number of fields equaling to testlimit number
 		if(empty($_POST['ajax'])){
@@ -477,6 +477,7 @@ class CaptchaExtendedAction extends CCaptchaAction{
 		}
 
 		if($this->fontFile === null){
+            /** @psalm-suppress UndefinedFunction TODO: realname does not exist */
 			$this->fontFile = realname(Yii::app()->basePath."/../assets/fonts/font-src/lato-v11-latin-700.ttf");
 			
 		}

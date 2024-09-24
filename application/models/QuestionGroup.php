@@ -63,7 +63,7 @@ class QuestionGroup extends LSActiveRecord
     {
         return [
             ['group_order', 'numerical', 'integerOnly' => true, 'allowEmpty' => true],
-            ['grelevance', 'filter', 'filter' => 'trim'],
+            ['grelevance', 'LSYii_FilterValidator', 'filter' => 'trim', 'skipOnEmpty' => true],
             ['randomization_group', 'safe']
         ];
     }
@@ -73,7 +73,14 @@ class QuestionGroup extends LSActiveRecord
     {
         return array(
             'survey'    => array(self::BELONGS_TO, 'Survey', 'sid'),
-            'questions' => array(self::HAS_MANY, 'Question', 'gid', 'condition' => 'parent_qid=0', 'order' => 'question_order ASC'),
+            'questions' => array(
+                self::HAS_MANY,
+                'Question',
+                'gid',
+                'condition' => 'questions.parent_qid = 0',
+                'order' => 'questions.question_order ASC',
+                'together' => false
+            ),
             'questiongroupl10ns' => array(self::HAS_MANY, 'QuestionGroupL10n', 'gid', 'together' => true)
         );
     }
@@ -109,7 +116,7 @@ class QuestionGroup extends LSActiveRecord
         $iSurveyId = (int) $surveyid;
         $oSurvey = Survey::model()->findByPk($iSurveyId);
 
-        $aSurveyLanguages = array_merge([$oSurvey->language], explode(" ", $oSurvey->additional_languages));
+        $aSurveyLanguages = array_merge([$oSurvey->language], explode(" ", (string) $oSurvey->additional_languages));
 
         foreach ($aSurveyLanguages as $sSurveyLanguage) {
             $oCriteria = new CDbCriteria();
@@ -153,6 +160,8 @@ class QuestionGroup extends LSActiveRecord
     }
 
     /**
+     * Deletes a question group and all its dependencies.
+     * Returns affected rows of question group table (should be 1 or null)
      * @param integer $groupId
      * @param integer $surveyId
      * @return int|null
@@ -182,7 +191,7 @@ class QuestionGroup extends LSActiveRecord
      */
     public function getGroupDescription($iGroupId, $sLanguage)
     {
-        return $this->findByPk(array('gid' => $iGroupId, 'language' => $sLanguage))->description;
+        return $this->findByPk($iGroupId)->getGroupDescriptionI10N($sLanguage);
     }
 
     /**
@@ -259,71 +268,87 @@ class QuestionGroup extends LSActiveRecord
     {
         // Find out if the survey is active to disable add-button
         $oSurvey = Survey::model()->findByPk($this->sid);
-        $surveyIsActive = $oSurvey->active !== 'N';
+        $surveyIsNotActive = $oSurvey->active !== 'Y';
 
-        $buttons = "<div class='icon-btn-row'>";
-        // Group edition
-        // Edit
-        if (Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'update')) {
-            $url = Yii::app()->createUrl("questionGroupsAdministration/view/surveyid/$this->sid/gid/$this->gid");
-            $buttons .= '  <a class="btn btn-sm btn-default  list-btn" href="' . $url . '" role="button" data-toggle="tooltip" title="' . gT('Edit group') . '"><i class="fa fa-pencil " ></i></a>';
+        $permission_groups_edit = Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'update');
+        $permission_add_question_to_group = Permission::model()->hasSurveyPermission(
+            $this->sid,
+            'surveycontent',
+            'update'
+        );
+        $permission_summary_group = Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'read');
+        $permission_delete_group = Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'delete');
+
+        $dropdownItems = [];
+        $dropdownItems[] = [
+            'title'            => gT('Edit group'),
+            'iconClass'        => 'ri-pencil-fill',
+            'url'              => Yii::app()->createUrl(
+                "questionGroupsAdministration/edit/surveyid/$this->sid/gid/$this->gid"
+            ),
+            'enabledCondition' => $permission_groups_edit,
+            'linkAttributes'   => [
+                'data-bs-toggle' => "tooltip",
+            ]
+        ];
+        $dropdownItems[] = [
+            'title'            => gT('Add new question to group'),
+            'iconClass'        => 'ri-add-line',
+            'url'              => Yii::app()->createUrl(
+                "questionAdministration/create/surveyid/$this->sid/gid/$this->gid"
+            ),
+            'enabledCondition' => $surveyIsNotActive && $permission_add_question_to_group,
+            'linkAttributes'   => [
+                'data-bs-toggle' => "tooltip",
+            ]
+        ];
+        $url = Yii::app()->createUrl("/questionGroupsAdministration/view/surveyid/");
+        $url .= '/' . $this->sid . '/gid/' . $this->gid;
+        $dropdownItems[] = [
+            'title'            => gT('Group summary'),
+            'iconClass'        => 'ri-list-unordered',
+            'url'              => $url,
+            'enabledCondition' => $permission_summary_group,
+            'linkAttributes'   => [
+                'data-bs-toggle' => "tooltip",
+            ]
+        ];
+
+        $condarray = getGroupDepsForConditions($this->sid, "all", $this->gid, "by-targgid");
+        //group can only be deleted if there is still more than 1 group and there are no depending conditions
+        $groupIsDeletable = $oSurvey->groupsCount > 1 &&  is_null($condarray);
+        $msgNotDeletable = '';
+        if ($oSurvey->groupsCount == 1) {
+            $msgNotDeletable = gT("Cannot delete this group because it's the only group in the survey.");
         }
-        // Add question to this group
-        if (Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'update')) {
-            $url = Yii::app()->createUrl("questionAdministration/create/surveyid/$this->sid/gid/$this->gid");
-            $buttons .= '<a class="btn btn-sm btn-default list-btn ' . ($surveyIsActive ? 'disabled' : '') . ' "  data-toggle="tooltip"  data-placement="top" title="' . gT('Add new question to group') . '" href="' . $url . '" role="button"><i class="fa fa-plus " ></i></a>';
-        }
-        // View summary
-        if (Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'read')) {
-            $url = Yii::app()->createUrl("/questionGroupsAdministration/view/surveyid/");
-            $url .= '/' . $this->sid . '/gid/' . $this->gid;
-            $buttons .= '  <a class="btn btn-sm btn-default  list-btn" href="' . $url . '" role="button" data-toggle="tooltip" title="' . gT('Group summary') . '"><i class="fa fa-list-alt " ></i></a>';
+        if (!is_null($condarray)) {
+            $msgNotDeletable = gT('Group can not be deleted, because of depending conditions');
         }
 
-        // Delete
-        if ($oSurvey->active != "Y" && Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'delete')) {
-            $condarray = getGroupDepsForConditions($this->sid, "all", $this->gid, "by-targgid");
-            if ($oSurvey->groupsCount == 1) {
-                $buttons .= '<span data-toggle="tooltip" title="' . gT("Cannot delete this group because it's the only group in the survey.") . '">'
-                . '<button class="btn btn-sm btn-default" '
-                . ' disabled '
-                . ' role="button"'
-                . ' data-toggle="popover"'
-                . ' data-tooltip="true"'
-                . ' title="' . gT("Cannot delete this group because it's the only group in the survey.", "js") . '">'
-                    . '<i class="fa fa-trash text-muted "></i>'
-                    . '<span class="sr-only">' . gT('Deleting question group not possible') . '</span>'
-                . '</button>'
-                . '</span>';
-            } elseif (is_null($condarray)) {
-                $buttons .= '<span data-toggle="tooltip" title="' . gT('Delete question group') . '">'
-                    . '<button class="btn btn-sm btn-default" '
-                    . ' data-onclick="(function() { ' . CHtml::encode(convertGETtoPOST(Yii::app()->createUrl("questionGroupsAdministration/delete/", ["gid" => $this->gid]))) . ' })" '
-                    . ' data-target="#confirmation-modal"'
-                    . ' role="button"'
-                    . ' data-toggle="modal"'
-                    . ' data-message="' . gT("Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?", "js") . '"'
-                    . '>'
-                        . '<i class="fa fa-trash text-danger "></i>'
-                        . '<span class="sr-only">' . gT('Delete question group') . '</span>'
-                    . '</button>'
-                    . '</span>';
-            } else {
-                $buttons .= '<span data-toggle="tooltip" title="' . gT('Group cant be deleted, because of depending conditions') . '">'
-                    . '<button class="btn btn-sm btn-default" '
-                    . ' disabled '
-                    . ' role="button"'
-                    . ' data-toggle="popover"'
-                    . ' data-tooltip="true"'
-                    . ' title="' . gT("Impossible to delete this group because there is at least one question having a condition on its content", "js") . '">'
-                        . '<i class="fa fa-trash text-muted "></i>'
-                        . '<span class="sr-only">' . gT('Deleting question group not possible') . '</span>'
-                    . '</button>'
-                    . '</span>';
-            }
-        }
-        $buttons .= "</div>";
-        return $buttons;
+        $dropdownItems[] = [
+            'title'            => gT('Delete question group'),
+            'iconClass'        => 'ri-delete-bin-fill text-danger',
+            'tooltip'          => $msgNotDeletable,
+            'enabledCondition' => $surveyIsNotActive && $permission_delete_group && $groupIsDeletable,
+            'linkAttributes'   => [
+                'data-bs-toggle' => "modal",
+                'data-bs-target' => '#confirmation-modal',
+                'data-message'   => gT(
+                    "Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?",
+                    "js"
+                ),
+                'data-btnclass'  => 'btn-danger',
+                'data-btntext'   => gt('Delete'),
+                'data-onclick'  => '(function() { ' . CHtml::encode(convertGETtoPOST(
+                    Yii::app()->createUrl("questionGroupsAdministration/delete/", ["gid" => $this->gid])
+                )) . '})'
+            ]
+        ];
+        return App()->getController()->widget(
+            'ext.admin.grid.GridActionsWidget.GridActionsWidget',
+            ['dropdownItems' => $dropdownItems],
+            true
+        );
     }
 
 
@@ -351,7 +376,7 @@ class QuestionGroup extends LSActiveRecord
             ),
         );
 
-        $criteria = new CDbCriteria();
+        $criteria = new LSDbCriteria();
         $criteria->with = array('questiongroupl10ns' => array("select" => "group_name, description"));
         $criteria->together = true;
         $criteria->condition = 'sid=:surveyid AND language=:language';

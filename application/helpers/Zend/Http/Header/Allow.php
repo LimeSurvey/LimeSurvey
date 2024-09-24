@@ -50,13 +50,13 @@ class Allow implements HeaderInterface
         list($name, $value) = GenericHeader::splitHeaderLine($headerLine);
 
         // check to ensure proper header type for this factory
-        if (strtolower($name) !== 'allow') {
+        if (strtolower((string) $name) !== 'allow') {
             throw new Exception\InvalidArgumentException('Invalid header line for Allow string: "' . $name . '"');
         }
 
         $header = new static();
         $header->disallowMethods(array_keys($header->getAllMethods()));
-        $header->allowMethods(explode(',', $value));
+        $header->allowMethods(explode(',', (string) $value));
 
         return $header;
     }
@@ -110,7 +110,7 @@ class Allow implements HeaderInterface
     public function allowMethods($allowedMethods)
     {
         foreach ((array) $allowedMethods as $method) {
-            $method = trim(strtoupper($method));
+            $method = trim(strtoupper((string) $method));
             if (preg_match('/\s/', $method)) {
                 throw new Exception\InvalidArgumentException(sprintf(
                     'Unable to whitelist method; "%s" is not a valid method',
@@ -132,7 +132,7 @@ class Allow implements HeaderInterface
     public function disallowMethods($disallowedMethods)
     {
         foreach ((array) $disallowedMethods as $method) {
-            $method = trim(strtoupper($method));
+            $method = trim(strtoupper((string) $method));
             if (preg_match('/\s/', $method)) {
                 throw new Exception\InvalidArgumentException(sprintf(
                     'Unable to blacklist method; "%s" is not a valid method',

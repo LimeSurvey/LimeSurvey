@@ -219,7 +219,7 @@ class PEAR
             );
         }
         return call_user_func_array(
-            array(get_class(), '_' . $method),
+            array(__CLASS__, '_' . $method),
             array_merge(array($this), $arguments)
         );
     }
@@ -232,7 +232,7 @@ class PEAR
             );
         }
         return call_user_func_array(
-            array(get_class(), '_' . $method),
+            array(__CLASS__, '_' . $method),
             array_merge(array(null), $arguments)
         );
     }
@@ -859,6 +859,7 @@ class PEAR_Error
     var $message              = '';
     var $userinfo             = '';
     var $backtrace            = null;
+    var $callback             = null;
 
     /**
      * PEAR_Error constructor

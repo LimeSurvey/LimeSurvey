@@ -11,6 +11,7 @@
 
 namespace Twig\Node;
 
+use Twig\Attribute\YieldReady;
 use Twig\Compiler;
 
 /**
@@ -18,14 +19,15 @@ use Twig\Compiler;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
+#[YieldReady]
 class SandboxNode extends Node
 {
-    public function __construct(\Twig_NodeInterface $body, $lineno, $tag = null)
+    public function __construct(Node $body, int $lineno, ?string $tag = null)
     {
         parent::__construct(['body' => $body], [], $lineno, $tag);
     }
 
-    public function compile(Compiler $compiler)
+    public function compile(Compiler $compiler): void
     {
         $compiler
             ->addDebugInfo($this)
@@ -50,5 +52,3 @@ class SandboxNode extends Node
         ;
     }
 }
-
-class_alias('Twig\Node\SandboxNode', 'Twig_Node_Sandbox');

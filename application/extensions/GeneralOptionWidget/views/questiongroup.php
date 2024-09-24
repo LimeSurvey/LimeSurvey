@@ -1,5 +1,5 @@
 <select
-    class="form-control"
+    class="form-select"
     name="question[<?= $this->generalOption->name ?>]"
     id="<?= CHtml::getIdByName($this->generalOption->name) ?>"
     <?= ($this->generalOption->formElement->help) ? 'aria-describedby="help-' . CHtml::getIdByName($this->generalOption->name) . '"' : "" ?>

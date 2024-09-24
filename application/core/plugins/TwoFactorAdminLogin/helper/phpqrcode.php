@@ -98,7 +98,7 @@
 	
 	class qrstr {
 		public static function set(&$srctab, $x, $y, $repl, $replLen = false) {
-			$srctab[$y] = substr_replace($srctab[$y], ($replLen !== false)?substr($repl,0,$replLen):$repl, $x, ($replLen !== false)?$replLen:strlen($repl));
+			$srctab[$y] = substr_replace((string) $srctab[$y], ($replLen !== false)?substr((string) $repl,0,$replLen):$repl, $x, ($replLen !== false)?$replLen:strlen((string) $repl));
 		}
 	}	
 
@@ -178,7 +178,7 @@
             $barcode_array = array();
             
             if (!is_array($mode))
-                $mode = explode(',', $mode);
+                $mode = explode(',', (string) $mode);
                 
             $eccLevel = 'L';
                 
@@ -195,7 +195,7 @@
                 
             foreach ($qrTab as $line) {
                 $arrAdd = array();
-                foreach(str_split($line) as $char)
+                foreach(str_split((string) $line) as $char)
                     $arrAdd[] = ($char=='1')?1:0;
                 $barcode_array['bcode'][] = $arrAdd;
             }
@@ -237,7 +237,7 @@
             if (QR_LOG_DIR !== false) {
                 if ($err != '') {
                     if ($outfile !== false) {
-                        file_put_contents(QR_LOG_DIR.basename($outfile).'-errors.txt', date('Y-m-d H:i:s').': '.$err, FILE_APPEND);
+                        file_put_contents(QR_LOG_DIR.basename((string) $outfile).'-errors.txt', date('Y-m-d H:i:s').': '.$err, FILE_APPEND);
                     } else {
                         file_put_contents(QR_LOG_DIR.'errors.txt', date('Y-m-d H:i:s').': '.$err, FILE_APPEND);
                     }
@@ -302,7 +302,7 @@
         {           
             try {
                 $handle = fopen($filename_path, "w");
-                fwrite($handle, $content);
+                fwrite($handle, (string) $content);
                 fclose($handle);
                 return true;
             } catch (Exception $e) {
@@ -816,7 +816,7 @@
             if ($binary_mode) {
             
                     foreach ($frame as &$frameLine) {
-                        $frameLine = join('<span class="m">&nbsp;&nbsp;</span>', explode('0', $frameLine));
+                        $frameLine = join('<span class="m">&nbsp;&nbsp;</span>', explode('0', (string) $frameLine));
                         $frameLine = join('&#9608;&#9608;', explode('1', $frameLine));
                     }
                     
@@ -832,7 +832,7 @@
             } else {
             
                 foreach ($frame as &$frameLine) {
-                    $frameLine = join('<span class="m">&nbsp;</span>',  explode("\xc0", $frameLine));
+                    $frameLine = join('<span class="m">&nbsp;</span>',  explode("\xc0", (string) $frameLine));
                     $frameLine = join('<span class="m">&#9618;</span>', explode("\xc1", $frameLine));
                     $frameLine = join('<span class="p">&nbsp;</span>',  explode("\xa0", $frameLine));
                     $frameLine = join('<span class="p">&#9618;</span>', explode("\xa1", $frameLine));
@@ -991,7 +991,7 @@
         private static function image($frame, $pixelPerPoint = 4, $outerFrame = 4, $back_color = 0xFFFFFF, $fore_color = 0x000000)
         {
             $h = count($frame);
-            $w = strlen($frame[0]);
+            $w = strlen((string) $frame[0]);
 
             $imgW = $w + 2*$outerFrame;
             $imgH = $h + 2*$outerFrame;
@@ -2008,7 +2008,7 @@
         //----------------------------------------------------------------------
         public static function isdigitat($str, $pos)
         {
-            if ($pos >= strlen($str))
+            if ($pos >= strlen((string) $str))
                 return false;
 
             return ((ord($str[$pos]) >= ord('0'))&&(ord($str[$pos]) <= ord('9')));
@@ -2017,7 +2017,7 @@
         //----------------------------------------------------------------------
         public static function isalnumat($str, $pos)
         {
-            if ($pos >= strlen($str))
+            if ($pos >= strlen((string) $str))
                 return false;
 
             return (QRinput::lookAnTable(ord($str[$pos])) >= 0);
@@ -2026,7 +2026,7 @@
         //----------------------------------------------------------------------
         public function identifyMode($pos)
         {
-            if ($pos >= strlen($this->dataStr))
+            if ($pos >= strlen((string) $this->dataStr))
                 return QR_MODE_NUL;
 
             $c = $this->dataStr[$pos];
@@ -2037,7 +2037,7 @@
                 return QR_MODE_AN;
             } else if($this->modeHint == QR_MODE_KANJI) {
 
-                if ($pos+1 < strlen($this->dataStr))
+                if ($pos+1 < strlen((string) $this->dataStr))
                 {
                     $d = $this->dataStr[$pos+1];
                     $word = (ord($c) << 8) | ord($d);
@@ -2080,7 +2080,7 @@
                 }
             }
 
-            $ret = $this->input->append(QR_MODE_NUM, $run, str_split($this->dataStr));
+            $ret = $this->input->append(QR_MODE_NUM, $run, str_split((string) $this->dataStr));
             if($ret < 0)
                 return -1;
 
@@ -2127,7 +2127,7 @@
                 }
             }
 
-            $ret = $this->input->append(QR_MODE_AN, $run, str_split($this->dataStr));
+            $ret = $this->input->append(QR_MODE_AN, $run, str_split((string) $this->dataStr));
             if($ret < 0)
                 return -1;
 
@@ -2143,7 +2143,7 @@
                 $p += 2;
             }
 
-            $ret = $this->input->append(QR_MODE_KANJI, $p, str_split($this->dataStr));
+            $ret = $this->input->append(QR_MODE_KANJI, $p, str_split((string) $this->dataStr));
             if($ret < 0)
                 return -1;
 
@@ -2157,7 +2157,7 @@
             $ln = QRspec::lengthIndicator(QR_MODE_NUM, $this->input->getVersion());
 
             $p = 1;
-            $dataStrLen = strlen($this->dataStr);
+            $dataStrLen = strlen((string) $this->dataStr);
 
             while($p < $dataStrLen) {
 
@@ -2197,7 +2197,7 @@
             }
 
             $run = $p;
-            $ret = $this->input->append(QR_MODE_8, $run, str_split($this->dataStr));
+            $ret = $this->input->append(QR_MODE_8, $run, str_split((string) $this->dataStr));
 
             if($ret < 0)
                 return -1;
@@ -2208,7 +2208,7 @@
         //----------------------------------------------------------------------
         public function splitString()
         {
-            while (strlen($this->dataStr) > 0)
+            while (strlen((string) $this->dataStr) > 0)
             {
                 if($this->dataStr == '')
                     return 0;
@@ -2230,18 +2230,18 @@
                 if($length == 0) return 0;
                 if($length < 0)  return -1;
 
-                $this->dataStr = substr($this->dataStr, $length);
+                $this->dataStr = substr((string) $this->dataStr, $length);
             }
         }
 
         //----------------------------------------------------------------------
         public function toUpper()
         {
-            $stringLen = strlen($this->dataStr);
+            $stringLen = strlen((string) $this->dataStr);
             $p = 0;
 
             while ($p<$stringLen) {
-                $mode = self::identifyMode(substr($this->dataStr, $p));
+                $mode = self::identifyMode(substr((string) $this->dataStr, $p));
                 if($mode == QR_MODE_KANJI) {
                     $p += 2;
                 } else {
@@ -3083,7 +3083,7 @@
             $input = new QRinput($version, $level);
             if($input == NULL) return NULL;
 
-            $ret = $input->append($input, QR_MODE_8, strlen($string), str_split($string));
+            $ret = $input->append($input, QR_MODE_8, strlen((string) $string), str_split((string) $string));
             if($ret < 0) {
                 unset($input);
                 return NULL;
@@ -3461,7 +3461,7 @@
         private static function vectEPS($frame, $pixelPerPoint = 4, $outerFrame = 4, $back_color = 0xFFFFFF, $fore_color = 0x000000, $cmyk = false) 
         {
             $h = count($frame);
-            $w = strlen($frame[0]);
+            $w = strlen((string) $frame[0]);
             
             $imgW = $w + 2*$outerFrame;
             $imgH = $h + 2*$outerFrame;
@@ -3571,7 +3571,7 @@
         private static function vectSVG($frame, $pixelPerPoint = 4, $outerFrame = 4, $back_color = 0xFFFFFF, $fore_color = 0x000000) 
         {
             $h = count($frame);
-            $w = strlen($frame[0]);
+            $w = strlen((string) $frame[0]);
             
             $imgW = $w + 2*$outerFrame;
             $imgH = $h + 2*$outerFrame;

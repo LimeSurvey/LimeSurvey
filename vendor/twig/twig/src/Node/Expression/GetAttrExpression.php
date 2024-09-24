@@ -13,6 +13,7 @@
 namespace Twig\Node\Expression;
 
 use Twig\Compiler;
+use Twig\Extension\SandboxExtension;
 use Twig\Template;
 
 class GetAttrExpression extends AbstractExpression
@@ -24,57 +25,63 @@ class GetAttrExpression extends AbstractExpression
             $nodes['arguments'] = $arguments;
         }
 
-        parent::__construct($nodes, ['type' => $type, 'is_defined_test' => false, 'ignore_strict_check' => false, 'disable_c_ext' => false], $lineno);
+        parent::__construct($nodes, ['type' => $type, 'is_defined_test' => false, 'ignore_strict_check' => false, 'optimizable' => true], $lineno);
     }
 
-    public function compile(Compiler $compiler)
+    public function compile(Compiler $compiler): void
     {
-        if ($this->getAttribute('disable_c_ext')) {
-            @trigger_error(sprintf('Using the "disable_c_ext" attribute on %s is deprecated since version 1.30 and will be removed in 2.0.', __CLASS__), \E_USER_DEPRECATED);
+        $env = $compiler->getEnvironment();
+
+        // optimize array calls
+        if (
+            $this->getAttribute('optimizable')
+            && (!$env->isStrictVariables() || $this->getAttribute('ignore_strict_check'))
+            && !$this->getAttribute('is_defined_test')
+            && Template::ARRAY_CALL === $this->getAttribute('type')
+        ) {
+            $var = '$'.$compiler->getVarName();
+            $compiler
+                ->raw('(('.$var.' = ')
+                ->subcompile($this->getNode('node'))
+                ->raw(') && is_array(')
+                ->raw($var)
+                ->raw(') || ')
+                ->raw($var)
+                ->raw(' instanceof ArrayAccess ? (')
+                ->raw($var)
+                ->raw('[')
+                ->subcompile($this->getNode('attribute'))
+                ->raw('] ?? null) : null)')
+            ;
+
+            return;
         }
 
-        if (\function_exists('twig_template_get_attributes') && !$this->getAttribute('disable_c_ext')) {
-            $compiler->raw('twig_template_get_attributes($this, ');
-        } else {
-            $compiler->raw('$this->getAttribute(');
-        }
+        $compiler->raw('CoreExtension::getAttribute($this->env, $this->source, ');
 
         if ($this->getAttribute('ignore_strict_check')) {
             $this->getNode('node')->setAttribute('ignore_strict_check', true);
         }
 
-        $compiler->subcompile($this->getNode('node'));
+        $compiler
+            ->subcompile($this->getNode('node'))
+            ->raw(', ')
+            ->subcompile($this->getNode('attribute'))
+        ;
 
-        $compiler->raw(', ')->subcompile($this->getNode('attribute'));
-
-        // only generate optional arguments when needed (to make generated code more readable)
-        $needFourth = $this->getAttribute('ignore_strict_check');
-        $needThird = $needFourth || $this->getAttribute('is_defined_test');
-        $needSecond = $needThird || Template::ANY_CALL !== $this->getAttribute('type');
-        $needFirst = $needSecond || $this->hasNode('arguments');
-
-        if ($needFirst) {
-            if ($this->hasNode('arguments')) {
-                $compiler->raw(', ')->subcompile($this->getNode('arguments'));
-            } else {
-                $compiler->raw(', []');
-            }
+        if ($this->hasNode('arguments')) {
+            $compiler->raw(', ')->subcompile($this->getNode('arguments'));
+        } else {
+            $compiler->raw(', []');
         }
 
-        if ($needSecond) {
-            $compiler->raw(', ')->repr($this->getAttribute('type'));
-        }
-
-        if ($needThird) {
-            $compiler->raw(', ')->repr($this->getAttribute('is_defined_test'));
-        }
-
-        if ($needFourth) {
-            $compiler->raw(', ')->repr($this->getAttribute('ignore_strict_check'));
-        }
-
-        $compiler->raw(')');
+        $compiler->raw(', ')
+            ->repr($this->getAttribute('type'))
+            ->raw(', ')->repr($this->getAttribute('is_defined_test'))
+            ->raw(', ')->repr($this->getAttribute('ignore_strict_check'))
+            ->raw(', ')->repr($env->hasExtension(SandboxExtension::class))
+            ->raw(', ')->repr($this->getNode('node')->getTemplateLine())
+            ->raw(')')
+        ;
     }
 }
-
-class_alias('Twig\Node\Expression\GetAttrExpression', 'Twig_Node_Expression_GetAttr');

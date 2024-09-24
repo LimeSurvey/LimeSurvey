@@ -137,7 +137,7 @@ class WhTimeAgoFormatter extends CFormatter
                 } else {
                     $message = $this->data[$key];
                 }
-                return trim(implode($separator, array($prefix, preg_replace('/%d/i', $number, $message), $suffix)));
+                return trim(implode($separator, array($prefix, preg_replace('/%d/i', $number, (string) $message), $suffix)));
             }
         }
     }

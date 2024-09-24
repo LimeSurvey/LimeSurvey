@@ -10,7 +10,7 @@ class Update_156 extends DatabaseUpdateBase
     {
         try {
             $this->db->createCommand()->dropTable('{{survey_url_parameters}}');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             // do nothing
         }
         $this->db->createCommand()->createTable(
@@ -26,7 +26,7 @@ class Update_156 extends DatabaseUpdateBase
 
         try {
             $this->db->createCommand()->dropTable('{{sessions}}');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             // do nothing
         }
         if ($this->db->driverName == 'mysql') {
@@ -51,7 +51,7 @@ class Update_156 extends DatabaseUpdateBase
 
         addPrimaryKey('sessions', array('id'));
         addColumn('{{surveys_languagesettings}}', 'surveyls_attributecaptions', "text");
-        addColumn('{{surveys}}', 'sendconfirmation', "string(1) default 'Y'");
+        addColumn('{{surveys}}', 'sendconfirmation', "string(1) DEFAULT 'Y'");
 
         upgradeSurveys156();
 

@@ -22,6 +22,9 @@
  * @abstract TCPDF - Example: Full page background
  * @author Nicola Asuni
  * @since 2009-04-16
+ * @group background
+ * @group page
+ * @group pdf
  */
 
 // Include the main TCPDF library (search for installation path).
@@ -40,7 +43,7 @@ class MYPDF extends TCPDF {
 		$this->setAutoPageBreak(false, 0);
 		// set bacground image
 		$img_file = K_PATH_IMAGES.'image_demo.jpg';
-		$this->Image($img_file, 0, 0, 210, 297, '', '', '', false, 300, '', false, false, 0);
+		$this->Image($img_file, null, 0, 210, 297, '', '', '', false, 300, 'C', false, false, 0);
 		// restore auto-page-break status
 		$this->setAutoPageBreak($auto_page_break, $bMargin);
 		// set the starting point for the page content
@@ -124,7 +127,7 @@ $auto_page_break = $pdf->getAutoPageBreak();
 $pdf->setAutoPageBreak(false, 0);
 // set bacground image
 $img_file = K_PATH_IMAGES.'image_demo.jpg';
-$pdf->Image($img_file, 0, 0, 210, 297, '', '', '', false, 300, '', false, false, 0);
+$pdf->Image($img_file, null, 0, 210, 297, '', '', '', false, 300, 'C', false, false, 0);
 // restore auto-page-break status
 $pdf->setAutoPageBreak($auto_page_break, $bMargin);
 // set the starting point for the page content

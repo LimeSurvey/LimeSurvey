@@ -58,7 +58,8 @@ class ParticipantAttributeName extends LSActiveRecord
     {
         // NOTE: you should only define rules for those attributes that will receive user inputs.
         return array(
-            array('defaultname', 'filter', 'filter' => 'strip_tags'),
+            array('core_attribute', 'default', 'value' => 'N'),
+            array('defaultname', 'LSYii_FilterValidator', 'filter' => 'strip_tags', 'skipOnEmpty' => true),
             array('attribute_type, visible, encrypted, core_attribute', 'required'),
             array('attribute_type', 'length', 'max' => 4),
             array('visible, encrypted, core_attribute', 'length', 'max' => 5),
@@ -100,45 +101,35 @@ class ParticipantAttributeName extends LSActiveRecord
      */
     public function getButtons()
     {
-        // don't show action buttons for core attributes
-        if ($this->core_attribute == 'Y') {
-            return '';
-        }
-        $buttons = "<div class='icon-btn-row'>";
-        $raw_button_template = ""
-            . "<button class='btn btn-default btn-sm %s %s' role='button' data-toggle='tootltip' title='%s' onclick='return false;'>" //extra class //title
-            . "<span class='fa fa-%s' ></span>" //icon class
-            . "</button>";
-        $buttons .= "";
+        $isNotCoreAttribute = $this->core_attribute !== 'Y';
 
-        //Edit-button
-        $editData = array(
-            'green-border action_attributeNames_editModal',
-            '',
-            gT("Edit this attribute"),
-            'pencil'
-        );
-        $buttons .= vsprintf($raw_button_template, $editData);
+        $dropdownItems = [];
+        $dropdownItems[] = [
+            'title'            => gT('Edit this attribute'),
+            'linkClass'        => 'action_attributeNames_editModal',
+            'iconClass'        => 'ri-pencil-fill',
+            'enabledCondition' => $isNotCoreAttribute,
+            'linkAttributes'   => [
+                'data-attribute_id'   => $this->attribute_id,
+            ]
+        ];
+        $dropdownItems[] = [
+            'title'            => gT('Delete this attribute'),
+            'linkClass'        => 'action_attributeNames_deleteModal',
+            'iconClass'        => 'ri-delete-bin-fill text-danger',
+            'enabledCondition' => $isNotCoreAttribute,
+            'linkAttributes'   => [
+                'data-bs-toggle' => "modal",
+                'data-bs-target' => "#confirmation-modal",
+                'data-title'     => gT("Delete this attribute"),
+                'data-btnclass'  => "btn-danger",
+                'data-btntext'   => gt("Delete"),
+                'data-message'   => gt('Do you really want to delete this attribute') . "?",
+                'data-onclick'   => 'deleteAttributeAjax(' . $this->attribute_id . ")",
+            ]
+        ];
 
-        //delete-button
-        $deleteData = array(
-            'red-border action_attributeNames_deleteModal',
-            '',
-            gT("Delete this attribute"),
-            'trash text-danger'
-        );
-        $buttons .= "<a href='#' 
-        data-toggle='modal' 
-        data-target='#confirmation-modal' 
-        data-title='" . gT("Delete this attribute") . "'
-        data-btnclass='btn-danger'
-        data-btntext='" . gt("Delete") . "'
-        data-message=' " . gt("Do you really want to delete this attribute") . "?'
-        data-onclick='deleteAttributeAjax(" . $this->attribute_id . ")'>";
-        $buttons .= vsprintf($raw_button_template, $deleteData) . "</a>";
-        $buttons .= "</div>";
-
-        return $buttons;
+        return App()->getController()->widget('ext.admin.grid.GridActionsWidget.GridActionsWidget', ['dropdownItems' => $dropdownItems], true);
     }
 
     /**
@@ -196,11 +187,19 @@ class ParticipantAttributeName extends LSActiveRecord
      */
     public function getVisibleSwitch()
     {
-        $inputHtml = "<input type='checkbox' data-size='small' data-visible='" . $this->visible . "' data-on-color='primary' data-off-color='warning' data-off-text='" . gT('No') . "' data-on-text='" . gT('Yes') . "' class='action_changeAttributeVisibility' "
-            . ($this->visible == "TRUE" ? "checked" : "")
-            . ($this->core_attribute == "Y" ? " disabled" : "")
-            . "/>";
-        return  $inputHtml;
+        $inputHtml = App()->getController()->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+            'name'          => 'visible_' . $this->attribute_id,
+            'checkedOption' => $this->visible === "TRUE" ? "1" : "0",
+            'selectOptions' => [
+                '1' => gT('Yes'),
+                '0' => gT('No'),
+            ],
+            'htmlOptions'   => [
+                'class' => 'action_changeAttributeVisibility',
+                'disabled' => $this->core_attribute === "Y" ? true : false
+            ]
+        ], true);
+        return $inputHtml;
     }
 
     /**
@@ -208,12 +207,21 @@ class ParticipantAttributeName extends LSActiveRecord
      */
     public function getEncryptedSwitch()
     {
-        // load sodium library
         $sodium = Yii::app()->sodium;
         $bEncrypted = $sodium->bLibraryExists;
-        $inputHtml = "<input type='checkbox' data-size='small' data-encrypted='" . $this->encrypted . "' data-on-color='primary' data-off-color='warning' data-off-text='" . gT('No') . "' data-on-text='" . gT('Yes') . "' class='action_changeAttributeEncrypted' " . ($bEncrypted === true ? " " : "disabled='' ") . ($this->encrypted == "Y" ? "checked" : "")
-            . "/>";
-        return  $inputHtml;
+        $inputHtml = App()->getController()->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+            'name'          => 'encrypted_' . $this->attribute_id,
+            'checkedOption' => $this->encrypted === "Y" ? "1" : "0",
+            'selectOptions' => [
+                '1' => gT('Yes'),
+                '0' => gT('No'),
+            ],
+            'htmlOptions'   => [
+                'class' => 'action_changeAttributeEncrypted',
+                'disabled' => !$bEncrypted
+            ]
+        ], true);
+        return $inputHtml;
     }
 
     /**
@@ -221,11 +229,8 @@ class ParticipantAttributeName extends LSActiveRecord
      */
     public function getCoreAttributeSwitch()
     {
-        $inputHtml = "<input type='checkbox' data-size='small' data-encrypted='" . $this->encrypted . "' data-on-color='primary' data-off-color='warning' data-off-text='" . gT('No') . "' data-on-text='" . gT('Yes') . "' class='action_changeAttributeEncrypted' "
-            . ($this->core_attribute == "Y" ? "checked" : "")
-            . " disabled"
-            . "/>";
-        return  $inputHtml;
+        $inputHtml = $this->core_attribute === "Y" ? gT("Yes") : gT("No");
+        return $inputHtml;
     }
 
     /**
@@ -236,49 +241,55 @@ class ParticipantAttributeName extends LSActiveRecord
         // load sodium library
         $sodium = Yii::app()->sodium;
         $bEncrypted = $sodium->bLibraryExists;
-        $cols = array(
-            array(
-                "name" => 'massiveActionCheckbox',
-                "type" => 'raw',
-                "header" => "<input type='checkbox' id='action_toggleAllAttributeNames' />",
-                "filter" => false
-            ),
-            array(
-                "name" => 'buttons',
-                "type" => 'raw',
-                "header" => gT("Action"),
-                "filter" => false
-            ),
-            array(
-                "name" => 'defaultname',
-                "value" => '$data->getNamePlusLanguageName()',
+        $cols = [
+            [
+                "name"              => 'massiveActionCheckbox',
+                "type"              => 'raw',
+                "header"            => "<input type='checkbox' id='action_toggleAllAttributeNames' />",
+                "filter"            => false,
+                'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
+                'filterHtmlOptions' => ['class' => 'ls-sticky-column'],
+                'htmlOptions'       => ['class' => 'ls-sticky-column']
+            ],
+            [
+                "name"   => 'defaultname',
+                "value"  => '$data->getNamePlusLanguageName()',
                 "header" => gT("Name")
-            ),
-            array(
-                "name" => 'attribute_type',
-                "value" => '$data->getAttributeTypeNice()',
+            ],
+            [
+                "name"   => 'attribute_type',
+                "value"  => '$data->getAttributeTypeNice()',
                 "filter" => $this->attributeTypeDropdownArray
-            ),
-            array(
-                "name" => 'visible',
-                "value" => '$data->getVisibleSwitch()',
-                "type" => "raw",
-                "filter" => array("TRUE" => gT("Yes"), "FALSE" => gT("No"))
-            ),
-            array(
-                "name" => 'encrypted',
-                "value" => '$data->getEncryptedSwitch()',
-                "type" => "raw",
-                "filter" => array("Y" => gT("Yes"), "N" => gT("No")),
-                "header" => '<span ' . ($bEncrypted === true ? '' :  'title="' . gT("Encryption is disabled because Sodium library isn't installed") . '"') . '>' . gT("Encrypted") . '</span>',
-            ),
-            array(
-                "name" => 'core_attribute',
-                "value" => '$data->getCoreAttributeSwitch()',
-                "type" => "raw",
-                "filter" => array("Y" => gT("Yes"), "N" => gT("No")),
-            )
-        );
+            ],
+            [
+                "name"   => 'visible',
+                "value"  => '$data->getVisibleSwitch()',
+                "type"   => "raw",
+                "filter" => ["TRUE" => gT("Yes"), "FALSE" => gT("No")]
+            ],
+            [
+                "name"   => 'encrypted',
+                "value"  => '$data->getEncryptedSwitch()',
+                "type"   => "raw",
+                "filter" => ["Y" => gT("Yes"), "N" => gT("No")],
+                "header" => '<span ' . ($bEncrypted === true ? '' : 'title="' . gT("Encryption is disabled because Sodium library isn't installed") . '"') . '>' . gT("Encrypted") . '</span>',
+            ],
+            [
+                "name"   => 'core_attribute',
+                "value"  => '$data->getCoreAttributeSwitch()',
+                "type"   => "raw",
+                "filter" => ["Y" => gT("Yes"), "N" => gT("No")],
+            ],
+            [
+                "name"              => 'buttons',
+                "type"              => 'raw',
+                "header"            => gT("Action"),
+                "filter"            => false,
+                'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
+                'filterHtmlOptions' => ['class' => 'ls-sticky-column'],
+                'htmlOptions'       => ['class' => 'ls-sticky-column']
+            ],
+        ];
         return $cols;
     }
 
@@ -291,7 +302,7 @@ class ParticipantAttributeName extends LSActiveRecord
         // Warning: Please modify the following code to remove attributes that
         // should not be searched.
 
-        $criteria = new CDbCriteria();
+        $criteria = new LSDbCriteria();
 
         $criteria->compare('defaultname', $this->defaultname, true, 'AND', true);
         $criteria->compare('attribute_id', $this->attribute_id);
@@ -618,9 +629,8 @@ class ParticipantAttributeName extends LSActiveRecord
                     ':attribute_id' => $data['attribute_id'])
             );
 
-        if (count($query) == 0) {
-            Yii::app()->db->createCommand()
-                        ->insert('{{participant_attribute}}', $data);
+        if (is_null($query)) {
+            Yii::app()->db->createCommand()->insert('{{participant_attribute}}', $data);
         } else {
             Yii::app()->db->createCommand()
                 ->update(
@@ -893,5 +903,23 @@ class ParticipantAttributeName extends LSActiveRecord
     public function saveParticipantAttributeValue($data)
     {
         Yii::app()->db->createCommand()->insert('{{participant_attribute}}', $data);
+    }
+
+    /**
+     * Returns true if the attribute is encrypted
+     * @return bool
+     */
+    public function isEncrypted()
+    {
+        return $this->encrypted == 'Y';
+    }
+
+    /**
+     * Returns true if the attribute is a core attribute
+     * @return bool
+     */
+    public function isCoreAttribute()
+    {
+        return $this->core_attribute == 'Y';
     }
 }

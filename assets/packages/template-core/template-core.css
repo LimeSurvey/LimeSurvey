@@ -14,7 +14,7 @@ li.question-item.answer-item.text-item.form-group {
 }
 
 /* See https://github.com/h5bp/html5-boilerplate/issues/1874 and https://medium.com/@jessebeach/beware-smushed-off-screen-accessible-text-5952a4c2cbfe */
-.sr-only {
+.visually-hidden {
     white-space: nowrap;
 }
 
@@ -172,7 +172,7 @@ table.ls-answers {
 }
 
 /**
- *  awesome-bootstrap-checkbox inside table with an sr-only label
+ *  awesome-bootstrap-checkbox inside table with an visually-hidden label
  * @todo : .dir-rtl
  */
 /* reset the margin and review the padding set by bootstrap */
@@ -194,7 +194,7 @@ table.ls-answers input[type="radio"] {
     padding-left: 0;
 }
 
-/* show partially sr-only inside table */
+/* show partially visually-hidden inside table */
 .radio-item .ls-label-xs-visibility,
 .checkbox-item .ls-label-xs-visibility {
     display: inline-block;
@@ -248,7 +248,7 @@ table.ls-answers input[type="radio"] {
     text-indent: 0;
 }
 
-/* Hide the other content inside sr-only */
+/* Hide the other content inside visually-hidden */
 .radio-item label.ls-label-xs-visibility>*,
 .checkbox-item label.ls-label-xs-visibility>* {
     position: absolute;
@@ -355,4 +355,20 @@ only screen and (max-width: 760px),
     .dir-rtl table.ls-answers .radio-item label.ls-label-xs-visibility::before,.dir-rtl table.ls-answers .checkbox-item label.ls-label-xs-visibility::before {margin-right:0px;}
     .dir-ltr table.ls-answers .radio-item label.ls-label-xs-visibility::after,.dir-ltr table.ls-answers .checkbox-item label.ls-label-xs-visibility::after {margin-left:0px;}
     .dir-rtl table.ls-answers .radio-item label.ls-label-xs-visibility::after,.dir-rtl table.ls-answers .checkbox-item label.ls-label-xs-visibility::after {margin-right:0px;}
+}
+
+#datapolicy {
+    margin-top: 1em;
+    flex: 1 1 auto;
+    display: flex;
+    align-items: flex-end;
+}
+
+.datapolicy-links a {
+    padding: 10px;
+}
+
+.datapolicy-links a:hover {
+    cursor: pointer;
+    text-decoration: none;
 }

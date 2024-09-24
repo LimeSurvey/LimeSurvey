@@ -11,6 +11,7 @@
 
 namespace Twig\Node;
 
+use Twig\Attribute\YieldReady;
 use Twig\Compiler;
 use Twig\Node\Expression\AbstractExpression;
 
@@ -19,14 +20,15 @@ use Twig\Node\Expression\AbstractExpression;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
+#[YieldReady]
 class DoNode extends Node
 {
-    public function __construct(AbstractExpression $expr, $lineno, $tag = null)
+    public function __construct(AbstractExpression $expr, int $lineno, ?string $tag = null)
     {
         parent::__construct(['expr' => $expr], [], $lineno, $tag);
     }
 
-    public function compile(Compiler $compiler)
+    public function compile(Compiler $compiler): void
     {
         $compiler
             ->addDebugInfo($this)
@@ -36,5 +38,3 @@ class DoNode extends Node
         ;
     }
 }
-
-class_alias('Twig\Node\DoNode', 'Twig_Node_Do');

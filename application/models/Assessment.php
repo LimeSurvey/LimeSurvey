@@ -90,45 +90,51 @@ class Assessment extends LSActiveRecord
 
     public function getButtons()
     {
-        $buttons = "<div class='icon-btn-row'>";
-        $raw_button_template = ""
-            . "<button class='btn btn-default btn-sm %s %s' role='button' data-toggle='tooltip' title='%s' type='button'>" //extra class //title
-            . "<i class='fa fa-%s' aria-hidden='true' ></i><span class='sr-only'>%s</span>" //icon class
-            . "</button>";
-        $editData = array(
-            'action_assessments_editModal',
-            'text-info',
-            gT("Edit this assessment rule"),
-            'pencil',
-            gT("Edit")
-        );
-        $deleteData = array(
-            'action_assessments_deleteModal',
-            'text-danger',
-            gT("Delete this assessment rule"),
-            'trash text-danger',
-            gT("Delete")
-        );
-        if (Permission::model()->hasSurveyPermission($this->sid, 'assessments', 'update')) {
-            $buttons .= vsprintf($raw_button_template, $editData);
-        }
-        if (Permission::model()->hasSurveyPermission($this->sid, 'assessments', 'delete')) {
-            $buttons .= vsprintf($raw_button_template, $deleteData);
-        }
-        $buttons .= '</div>';
 
-        return $buttons;
+        $permission_assessment_edit = Permission::model()->hasSurveyPermission(
+            $this->sid,
+            'assessments',
+            'update'
+        );
+        $permission_assessment_delete = Permission::model()->hasSurveyPermission(
+            $this->sid,
+            'assessments',
+            'delete'
+        );
+        $dropdownItems = [];
+        $dropdownItems[] = [
+            'title'            => gT('Edit'),
+            'tooltip'          => gT('Edit this assessment rule'),
+            'iconClass'        => 'ri-pencil-fill',
+            'enabledCondition' => $permission_assessment_edit,
+            'linkClass'         => 'action_assessments_editModal',
+            'linkId'            => 'loadEditUrl_forModalView',
+            'linkAttributes'   => [
+                'data-editurl' => App()->createUrl("assessment/edit/", ["surveyid" => $this->sid]),
+                'data-assessment-id' => $this->id
+            ]
+        ];
+        $dropdownItems[] = [
+            'title'            => gT('Delete'),
+            'tooltip'          => gT('Delete this assessment rule'),
+            'iconClass'        => 'ri-delete-bin-fill text-danger',
+            'enabledCondition' => $permission_assessment_delete,
+            'linkClass'         => 'action_assessments_deleteModal',
+            'linkAttributes'   => [
+                'data-assessment-id' => $this->id
+            ]
+        ];
+
+        return App()->getController()->widget(
+            'ext.admin.grid.GridActionsWidget.GridActionsWidget',
+            ['dropdownItems' => $dropdownItems],
+            true
+        );
     }
 
     public function getColumns()
     {
         return array(
-            array(
-                "name"   => 'buttons',
-                "type"   => 'raw',
-                "header" => gT("Action"),
-                "filter" => false
-            ),
             array(
                 'name'   => 'id',
                 'filter' => false
@@ -160,7 +166,16 @@ class Assessment extends LSActiveRecord
                 'htmlOptions' => ['class' => ''],
                 'value' => 'viewHelper::flatEllipsizeText($data->message,true,0)',
                 "type" => 'raw'
-            )
+            ),
+            array(
+                "name"   => 'buttons',
+                "type"   => 'raw',
+                "header" => gT("Action"),
+                'value'             => '$data->buttons',
+                'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
+                'htmlOptions'       => ['class' => 'text-center button-column ls-sticky-column'],
+                "filter" => false
+            ),
         );
     }
 
@@ -170,7 +185,7 @@ class Assessment extends LSActiveRecord
 
         $survey = Survey::model()->findByPk($this->sid);
 
-        $criteria = new CDbCriteria();
+        $criteria = new LSDbCriteria();
 
         $criteria->compare('id', $this->id);
         $criteria->compare('sid', $this->sid);
@@ -219,6 +234,7 @@ class Assessment extends LSActiveRecord
      * @param integer $iSurveyID
      * @param string $language
      * @param array $data
+     * @return bool True if the assessment could be updated. False if the assessment is not found of the update failed.
      */
     public static function updateAssessment($id, $iSurveyID, $language, array $data)
     {
@@ -227,8 +243,9 @@ class Assessment extends LSActiveRecord
             foreach ($data as $k => $v) {
                             $assessment->$k = $v;
             }
-            $assessment->save();
+            return $assessment->save();
         }
+        return false;
     }
 
     /**

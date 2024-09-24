@@ -5,7 +5,7 @@
             <p><?php echo $aImportResults['fatalerror']; ?></p>
 
             <p>
-                <a class="btn btn-lg btn-success" href="<?php echo $this->createUrl("admin/labels/sa/view"); ?>" role="button">
+                <a class="btn btn-lg btn-primary" href="<?php echo $this->createUrl("admin/labels/sa/view"); ?>" role="button">
                     <?php eT("Return to label set administration"); ?>
                 </a>
             </p>
@@ -15,7 +15,7 @@
             <h2 class="text-success"><?php eT("Import Label Set") ?></h2>
             <p class="lead"><?php eT("File upload succeeded.") ?></p>
             <?php if (count($aImportResults['warnings']) > 0): ?>
-                <p  class="lead text-warning">
+                <p  class="lead text-danger">
                     <?php eT("Warnings") ?>
                 </p>
                 <p>
@@ -43,7 +43,7 @@
             </p>
 
             <p>
-                <a class="btn btn-lg btn-success" href="<?php echo $this->createUrl("admin/labels/sa/view"); ?>" role="button">
+                <a class="btn btn-lg btn-primary" href="<?php echo $this->createUrl("admin/labels/sa/view"); ?>" role="button">
                     <?php eT("Return to label set administration"); ?>
                 </a>
             </p>

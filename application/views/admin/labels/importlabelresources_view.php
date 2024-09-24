@@ -69,6 +69,6 @@
     }
 ?>
 <p>
-    <input class="btn btn-default btn-lg" type='submit' value='<?php eT("Back") ?>' onclick="window.open('<?php echo $this->createUrl('admin/labels/sa/view/lid/' . $lid) ?>', '_top')" />
+    <input class="btn btn-outline-secondary btn-lg" type='submit' value='<?php eT("Back") ?>' onclick="window.open('<?php echo $this->createUrl('admin/labels/sa/view/lid/' . $lid) ?>', '_top')" />
 </p>
 </div>

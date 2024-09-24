@@ -16,7 +16,7 @@
 			</div>
 		</td>
 		<td class="start">{% if (!o.options.autoUpload) { %}
-			<button class="btn btn-primary">
+			<button type="button" class="btn btn-primary">
 				<i class="icon-upload icon-white"></i>
 				<span>{%=locale.fileupload.start%}</span>
 			</button>
@@ -26,7 +26,7 @@
 		<td colspan="2"></td>
 		{% } %}
 		<td class="cancel">{% if (!i) { %}
-			<button class="btn btn-warning">
+			<button type="button" class="btn btn-warning">
 				<i class="icon-ban-circle icon-white"></i>
 				<span>{%=locale.fileupload.cancel%}</span>
 			</button>

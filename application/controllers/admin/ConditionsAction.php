@@ -115,22 +115,6 @@ class ConditionsAction extends SurveyCommonAction
         $aData['title_bar']['title'] = gT("Conditions designer");
 
         $aData['subaction'] = gT("Conditions designer");
-
-        // Top Bar
-        $aData['topBar']['name'] = 'baseTopbar_view';
-        $aData['topBar']['leftSideView']  = 'conditionDesignerTopbarLeft_view';
-        $aData['topBar']['rightSideView'] = 'conditionDesignerTopbarRight_view';
-
-        $returnUrl = Yii::app()->createUrl('questionAdministration/view/surveyid/' . $iSurveyID . '/gid/' . $gid . '/qid/' . $qid);
-
-        // Green Save and Close Button
-        $aData['showGreenSaveAndCloseButton'] = false;
-        $aData['closeUrl'] = $returnUrl;
-
-        // White Close Button
-        $aData['showWhiteCloseButton'] = true;
-        $aData['returnUrl'] = $returnUrl;
-
         $aData['currentMode'] = ($subaction == 'conditions' || $subaction == 'copyconditionsform') ? $subaction : 'edit';
 
         $postSubaction = $request->getPost('subaction');
@@ -164,10 +148,10 @@ class ConditionsAction extends SurveyCommonAction
         $p_csrctoken = returnGlobal('csrctoken');
         $p_prevquestionsgqa = returnGlobal('prevQuestionSGQA');
 
-        $p_canswers = null;
+        $p_canswers = [];
         if (is_array($request->getPost('canswers'))) {
             foreach ($request->getPost('canswers') as $key => $val) {
-                $p_canswers[$key] = preg_replace("/[^_.a-zA-Z0-9]@/", "", $val);
+                $p_canswers[$key] = preg_replace("/[^_.a-zA-Z0-9]@/", "", (string) $val);
             }
         }
 
@@ -177,7 +161,7 @@ class ConditionsAction extends SurveyCommonAction
             if (!in_array($request->getPost('method'), array_keys($method))) {
                 $p_method = "==";
             } else {
-                $p_method = trim($request->getPost('method'));
+                $p_method = trim($request->getPost('method', ''));
             }
         } else {
             $p_method = null;
@@ -271,13 +255,33 @@ class ConditionsAction extends SurveyCommonAction
         if (isset($postquestionscount) && $postquestionscount > 0) {
             //Build the array used for the questionNav and copyTo select boxes
             foreach ($postrows as $pr) {
-                $pquestions[] = array("text" => $pr['title'] . ": " . (string) substr(strip_tags($pr['question']), 0, 80),
+                $pquestions[] = array("text" => $pr['title'] . ": " . (string) substr(strip_tags((string) $pr['question']), 0, 80),
                     "fieldname" => $pr['sid'] . "X" . $pr['gid'] . "X" . $pr['qid']);
             }
         }
 
+
         // Previous question parsing ==> building cquestions[] and canswers[]
         if ($questionscount > 0) {
+            $qids = [];
+            for ($index = 0; $index < count($theserows); $index++) {
+                if ($theserows[$index]['type'] == "1") {
+                    $qids[] = $theserows[$index]['qid'];
+                }
+            }
+            if (count($qids)) {
+                $rawQuestions = Question::model()->findAllByPk($qids);
+                $questions = [];
+                foreach ($rawQuestions as $rawQuestion) {
+                    $questions[$rawQuestion->qid] = $rawQuestion;
+                }
+                for ($index = 0; $index < count($theserows); $index++) {
+                    if ($theserows[$index]['type'] == "1") {
+                        $theserows[$index]['qObject'] = $questions[$theserows[$index]['qid']];
+                    }
+                }
+            }
+
             list($cquestions, $canswers) = $this->getCAnswersAndCQuestions($theserows);
         } //if questionscount > 0
         //END Gather Information for this question
@@ -309,9 +313,6 @@ class ConditionsAction extends SurveyCommonAction
 
         // Back Button
         $aData['showBackButton'] = true;
-
-        // White Close Button
-        $aData['showWhiteCloseButton'] = false;
 
         $scenarios = $this->getAllScenarios($qid);
 
@@ -350,10 +351,6 @@ class ConditionsAction extends SurveyCommonAction
             $subaction == "updatescenario" ||
             $subaction == 'copyconditionsform' || $subaction == 'copyconditions' || $subaction == 'conditions'
         ) {
-            // Show Save Button instead of green Save and Close Button
-            $aData['showSaveButton'] = true;
-            $aData['showGreenSaveAndCloseButton'] = false;
-
             //3: Get other conditions currently set for this question
             $s = 0;
 
@@ -367,7 +364,7 @@ class ConditionsAction extends SurveyCommonAction
             $aData['sCurrentQuestionText'] = $questiontitle . ': ' . viewHelper::flatEllipsizeText($sCurrentFullQuestionText, true, '120');
 
             $aData['scenariocount'] = $scenariocount;
-            if (empty(trim($oQuestion->relevance)) || !empty($oQuestion->conditions)) {
+            if (empty(trim((string) $oQuestion->relevance)) || !empty($oQuestion->conditions)) {
                 $aViewUrls['conditionslist_view'][] = $aData;
             }
 
@@ -468,9 +465,9 @@ class ConditionsAction extends SurveyCommonAction
                             $data['method'] = $method;
 
                             $leftOperandType = 'unknown'; // prevquestion, tokenattr
-                            if (preg_match('/^{TOKEN:([^}]*)}$/', $rows['cfieldname'], $extractedTokenAttr) > 0) {
+                            if (preg_match('/^{TOKEN:([^}]*)}$/', (string) $rows['cfieldname'], $extractedTokenAttr) > 0) {
                                 if ($surveyIsAnonymized) {
-                                    $data['name'] = sprintf(gT("Unable to use %s in anonymized survey."), trim($rows['cfieldname'], "{}"));
+                                    $data['name'] = sprintf(gT("Unable to use %s in anonymized survey."), trim((string) $rows['cfieldname'], "{}"));
                                 } else {
                                     $leftOperandType = 'tokenattr';
                                     $thisAttrName = $this->getAttributeName($extractedTokenAttr);
@@ -503,7 +500,7 @@ class ConditionsAction extends SurveyCommonAction
                             if ($rows['method'] == 'RX') {
                                 $rightOperandType = 'regexp';
                                 $data['target'] = HTMLEscape($rows['value']);
-                            } elseif (preg_match('/^@([0-9]+X[0-9]+X[^@]*)@$/', $rows['value'], $matchedSGQA) > 0) {
+                            } elseif (preg_match('/^@([0-9]+X[0-9]+X[^@]*)@$/', (string) $rows['value'], $matchedSGQA) > 0) {
                                 // SGQA
                                 $rightOperandType = 'prevQsgqa';
                                 $textfound = false;
@@ -521,7 +518,7 @@ class ConditionsAction extends SurveyCommonAction
                                 }
 
                                 $data['target'] = HTMLEscape($matchedSGQAText);
-                            } elseif (!$surveyIsAnonymized && preg_match('/^{TOKEN:([^}]*)}$/', $rows['value'], $extractedTokenAttr) > 0) {
+                            } elseif (!$surveyIsAnonymized && preg_match('/^{TOKEN:([^}]*)}$/', (string) $rows['value'], $extractedTokenAttr) > 0) {
                                 $rightOperandType = 'tokenAttr';
                                 $aTokenAttrNames = $this->tokenFieldsAndNames;
                                 if ($this->tokenTableExists) {
@@ -592,7 +589,7 @@ class ConditionsAction extends SurveyCommonAction
                 }
                 // If we have a condition, all ways reset the condition, this can fix old import (see #09344)
                 // LimeExpressionManager::UpgradeConditionsToRelevance(NULL,$qid);
-            } elseif (!empty(trim($oQuestion->relevance)) ||  trim($oQuestion->relevance) == '1') {
+            } elseif (!empty(trim((string) $oQuestion->relevance)) ||  trim((string) $oQuestion->relevance) == '1') {
                 $aViewUrls['output'] = $this->getController()->renderPartial('/admin/conditions/customized_conditions', $aData, true);
             } else {
                 // no condition ==> disable delete all conditions button, and display a simple comment
@@ -627,6 +624,19 @@ class ConditionsAction extends SurveyCommonAction
             $aViewUrls['output'] .= $this->getEditConditionForm($args);
         }
 
+        $returnUrl = Yii::app()->createUrl('questionAdministration/view/surveyid/' . $iSurveyID . '/gid/' . $gid . '/qid/' . $qid);
+        $aData['returnUrl'] = $returnUrl;
+        // Top Bar
+        $aData['topbar']['middleButtons'] = Yii::app()->getController()->renderPartial(
+            '/admin/conditions/partial/topbarBtns/leftSideButtons',
+            ['aData' => $aData],
+            true
+        );
+        $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
+            '/admin/conditions/partial/topbarBtns/rightSideButtons',
+            ['aData' => $aData],
+            true
+        );
         $aData['conditionsoutput'] = $aViewUrls['output'];
         $this->renderWrappedTemplate('conditions', $aViewUrls, $aData);
 
@@ -692,6 +702,7 @@ class ConditionsAction extends SurveyCommonAction
         extract($args);
 
         $editSourceTab = $request->getPost('editSourceTab');
+        $editTargetTab = $request->getPost('editTargetTab');
 
         if (isset($p_cquestions) && $p_cquestions != '' && $editSourceTab == '#SRCPREVQUEST') {
             $conditionCfieldname = $p_cquestions;
@@ -707,7 +718,7 @@ class ConditionsAction extends SurveyCommonAction
             'method'     => $p_method
         );
 
-        if ($p_canswers) {
+        if ($editTargetTab == '#CANSWERSTAB') {
             $results = array();
 
             foreach ($p_canswers as $ca) {
@@ -743,7 +754,7 @@ class ConditionsAction extends SurveyCommonAction
             $request = Yii::app()->request;
 
             // Other conditions like constant, other question or token field
-            switch ($request->getPost('editTargetTab')) {
+            switch ($editTargetTab) {
                 case '#CONST':
                     $posted_condition_value = Yii::app()->request->getPost('ConditionConst', '');
                     break;
@@ -937,7 +948,7 @@ class ConditionsAction extends SurveyCommonAction
             'tokenAttr'
         );
         foreach ($keys as $key) {
-            $value = $request->getPost('quick-add-' . $key);
+            $value = $request->getPost('quick-add-' . $key, '');
             $value = str_replace('QUICKADD-', '', $value); // Remove QUICKADD- from editSourceTab/editTargetTab
             $result[$key] = $value;
         }
@@ -969,9 +980,11 @@ class ConditionsAction extends SurveyCommonAction
             $conditionCfieldname = $p_csrctoken;
         }
 
+        $editTargetTab = $request->getPost('editTargetTab');
+
         $results = array();
 
-        if ($p_canswers) {
+        if ($editTargetTab == '#CANSWERSTAB') {
             foreach ($p_canswers as $ca) {
                 // This is an Edit, there will only be ONE VALUE
                 $updated_data = array(
@@ -994,7 +1007,7 @@ class ConditionsAction extends SurveyCommonAction
                 Yii::app()->setFlashMessage(gT('Could not update condition.'), 'error');
             }
         } else {
-            switch ($request->getPost('editTargetTab')) {
+            switch ($editTargetTab) {
                 case "#CONST":
                     $posted_condition_value = Yii::app()->request->getPost('ConditionConst', '');
                     break;
@@ -1094,7 +1107,7 @@ class ConditionsAction extends SurveyCommonAction
             } // while
 
             foreach ($copyconditionsto as $copyc) {
-                list(,, $newqid) = explode("X", $copyc);
+                list(,, $newqid) = explode("X", (string) $copyc);
                 foreach ($proformaconditions as $pfc) {
                     //TIBO
 
@@ -1377,7 +1390,7 @@ class ConditionsAction extends SurveyCommonAction
         $canswers = array();
 
         foreach ($theserows as $rows) {
-            $shortquestion = $rows['title'] . ": " . strip_tags($rows['question']);
+            $shortquestion = $rows['title'] . ": " . strip_tags((string) $rows['question']);
 
             if ($rows['type'] == "A" || $rows['type'] == "B" || $rows['type'] == "C" || $rows['type'] == "E" || $rows['type'] == "F" || $rows['type'] == "H") {
                 $aresult = Question::model()->with('questionl10ns')->findAllByAttributes(array('parent_qid' => $rows['qid']), array('order' => 'question_order ASC'));
@@ -1481,7 +1494,7 @@ class ConditionsAction extends SurveyCommonAction
 
                 foreach ($y_axis_db->readAll() as $yrow) {
                     foreach ($x_axis as $key => $val) {
-                        $shortquestion = $rows['title'] . ":{$yrow['title']}:$key: [" . strip_tags($yrow['question']) . "][" . strip_tags($val) . "] " . flattenText($rows['question']);
+                        $shortquestion = $rows['title'] . ":{$yrow['title']}:$key: [" . strip_tags((string) $yrow['question']) . "][" . strip_tags((string) $val) . "] " . flattenText($rows['question']);
                         $cquestions[] = array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'] . $X . $rows['gid'] . $X . $rows['qid'] . $yrow['title'] . "_" . $key);
                         if ($rows['mandatory'] != 'Y' && $rows['mandatory'] != 'S') {
                         }
@@ -1489,24 +1502,25 @@ class ConditionsAction extends SurveyCommonAction
                 }
                 unset($x_axis);
             } elseif ($rows['type'] == "1") {
+                /* Used to get dualscale_headerA and dualscale_headerB */
+                $attr = QuestionAttribute::model()->getQuestionAttributes($rows['qObject']);
                 //Dual scale
                 $aresult = Question::model()->with(array(
                             'questionl10ns' => array(
                                 'condition' => 'questionl10ns.language = :lang',
                                 'params' => array(':lang' => $this->language)
-                            )))->findAllByAttributes(array('parent_qid' => $rows['qid']), array('order' => 'question_order desc'));
+                            )))->findAllByAttributes(array('parent_qid' => $rows['qid']), array('order' => 'question_order ASC, scale_id ASC'));
                 foreach ($aresult as $arows) {
-                    $attr = QuestionAttribute::model()->getQuestionAttributes($rows['qid']);
                     $sLanguage = $this->language;
                     // dualscale_header are always set, but can be empty
                     $label1 = empty($attr['dualscale_headerA'][$sLanguage]) ? gT('Scale 1') : $attr['dualscale_headerA'][$sLanguage];
                     $label2 = empty($attr['dualscale_headerB'][$sLanguage]) ? gT('Scale 2') : $attr['dualscale_headerB'][$sLanguage];
-                    $shortanswer = "{$arows['title']}: [" . strip_tags($arows->questionl10ns[$this->language]->question) . "][$label1]";
-                    $shortquestion = $rows['title'] . ":$shortanswer " . strip_tags($arows->questionl10ns[$this->language]->question);
+                    $shortanswer = "{$arows['title']}: [" . strip_tags((string) $arows->questionl10ns[$this->language]->question) . "][$label1]";
+                    $shortquestion = $rows['title'] . ":$shortanswer " . strip_tags((string) $arows->questionl10ns[$this->language]->question);
                     $cquestions[] = array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'] . $X . $rows['gid'] . $X . $rows['qid'] . $arows['title'] . "#0");
 
-                    $shortanswer = "{$arows['title']}: [" . strip_tags($arows->questionl10ns[$this->language]->question) . "][$label2]";
-                    $shortquestion = $rows['title'] . ":$shortanswer " . strip_tags($arows->questionl10ns[$this->language]->question);
+                    $shortanswer = "{$arows['title']}: [" . strip_tags((string) $arows->questionl10ns[$this->language]->question) . "][$label2]";
+                    $shortquestion = $rows['title'] . ":$shortanswer " . strip_tags((string) $arows->questionl10ns[$this->language]->question);
                     $cquestions[] = array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'] . $X . $rows['gid'] . $X . $rows['qid'] . $arows['title'] . "#1");
 
                     // first label
@@ -1546,8 +1560,8 @@ class ConditionsAction extends SurveyCommonAction
                 ), array('order' => 'question_order desc'));
 
                 foreach ($aresult as $arows) {
-                    $shortanswer = "{$arows['title']}: [" . strip_tags($arows->questionl10ns[$this->language]->question) . "]";
-                    $shortquestion = $rows['title'] . ":$shortanswer " . strip_tags($rows['question']);
+                    $shortanswer = "{$arows['title']}: [" . strip_tags((string) $arows->questionl10ns[$this->language]->question) . "]";
+                    $shortquestion = $rows['title'] . ":$shortanswer " . strip_tags((string) $rows['question']);
                     $cquestions[] = array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'] . $X . $rows['gid'] . $X . $rows['qid'] . $arows['title']);
 
                     // Only Show No-Answer if question is not mandatory
@@ -1577,7 +1591,7 @@ class ConditionsAction extends SurveyCommonAction
                 }
 
                 for ($i = 1; $i <= $acount; $i++) {
-                    $cquestions[] = array("{$rows['title']}: [RANK $i] " . strip_tags($rows['question']), $rows['qid'], $rows['type'], $rows['sid'] . $X . $rows['gid'] . $X . $rows['qid'] . $i);
+                    $cquestions[] = array("{$rows['title']}: [RANK $i] " . strip_tags((string) $rows['question']), $rows['qid'], $rows['type'], $rows['sid'] . $X . $rows['gid'] . $X . $rows['qid'] . $i);
                     foreach ($quicky as $qck) {
                         $canswers[] = array($rows['sid'] . $X . $rows['gid'] . $X . $rows['qid'] . $i, $qck[0], $qck[1]);
                     }
@@ -1590,7 +1604,7 @@ class ConditionsAction extends SurveyCommonAction
                 // End if type R
             } elseif ($rows['type'] == Question::QT_M_MULTIPLE_CHOICE || $rows['type'] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS) {
                 $shortanswer = " [" . gT("Group of checkboxes") . "]";
-                $shortquestion = $rows['title'] . ":$shortanswer " . strip_tags($rows['question']);
+                $shortquestion = $rows['title'] . ":$shortanswer " . strip_tags((string) $rows['question']);
                 $cquestions[] = array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'] . $X . $rows['gid'] . $X . $rows['qid']);
 
                 $aresult = Question::model()->with('questionl10ns')->findAllByAttributes(array(
@@ -1601,9 +1615,9 @@ class ConditionsAction extends SurveyCommonAction
                     $theanswer = $arows->questionl10ns[$this->language]->question;
                     $canswers[] = array($rows['sid'] . $X . $rows['gid'] . $X . $rows['qid'], $arows['title'], $theanswer);
 
-                    $shortanswer = "{$arows['title']}: [" . strip_tags($theanswer) . "]";
+                    $shortanswer = "{$arows['title']}: [" . strip_tags((string) $theanswer) . "]";
                     $shortanswer .= "[" . gT("Single checkbox") . "]";
-                    $shortquestion = $rows['title'] . ":$shortanswer " . strip_tags($rows['question']);
+                    $shortquestion = $rows['title'] . ":$shortanswer " . strip_tags((string) $rows['question']);
                     $cquestions[] = array($shortquestion, $rows['qid'], $rows['type'], "+" . $rows['sid'] . $X . $rows['gid'] . $X . $rows['qid'] . $arows['title']);
                     $canswers[] = array("+" . $rows['sid'] . $X . $rows['gid'] . $X . $rows['qid'] . $arows['title'], 'Y', gT("checked"));
                     $canswers[] = array("+" . $rows['sid'] . $X . $rows['gid'] . $X . $rows['qid'] . $arows['title'], '', gT("not checked"));
@@ -1779,7 +1793,6 @@ class ConditionsAction extends SurveyCommonAction
             'p_prevquestionsgqa'  => $p_prevquestionsgqa,
             'tokenFieldsAndNames' => $this->tokenFieldsAndNames,
             'method'        => $method,
-            'subaction'     => $subaction,
             'EDITConditionConst'  => $this->getEDITConditionConst($subaction),
             'EDITConditionRegexp' => $this->getEDITConditionRegexp($subaction),
             'submitLabel'   => $submitLabel,
@@ -1836,7 +1849,6 @@ class ConditionsAction extends SurveyCommonAction
             'p_prevquestionsgqa'  => $p_prevquestionsgqa,
             'tokenFieldsAndNames' => $this->tokenFieldsAndNames,
             'method'        => $method,
-            'subaction'     => $subaction,
         );
         $html = $this->getController()->renderPartial('/admin/conditions/includes/quickAddConditionForm', $data, true);
         return $html;
@@ -2026,21 +2038,21 @@ class ConditionsAction extends SurveyCommonAction
 
         $theserows2 = array();
         foreach ($theserows as $row) {
-            $question = strip_tags($row['question']);
+            $question = strip_tags((string) $row['question']);
             $questionselecter = viewHelper::flatEllipsizeText($question, true, '40');
             $theserows2[] = array(
                 'value' => $this->createNavigatorUrl($row['gid'], $row['qid']),
-                'text' => strip_tags($row['title']) . ':' . $questionselecter
+                'text' => strip_tags((string) $row['title']) . ':' . $questionselecter
             );
         }
 
         $postrows2 = array();
         foreach ($postrows as $row) {
-            $question = strip_tags($row['question']);
+            $question = strip_tags((string) $row['question']);
             $questionselecter = viewHelper::flatEllipsizeText($question, true, '40');
             $postrows2[] = array(
                 'value' => $this->createNavigatorUrl($row['gid'], $row['qid']),
-                'text' => strip_tags($row['title']) . ':' . $questionselecter
+                'text' => strip_tags((string) $row['title']) . ':' . $questionselecter
             );
         }
 
@@ -2048,7 +2060,7 @@ class ConditionsAction extends SurveyCommonAction
             'theserows' => $theserows2,
             'postrows' => $postrows2,
             'currentValue' => $this->createNavigatorUrl($gid, $qid),
-            'currentText' => $questiontitle . ':' . viewHelper::flatEllipsizeText(strip_tags($sCurrentFullQuestionText), true, '40')
+            'currentText' => $questiontitle . ':' . viewHelper::flatEllipsizeText(strip_tags((string) $sCurrentFullQuestionText), true, '40')
         );
 
         return $this->getController()->renderPartial('/admin/conditions/includes/navigator', $data, true);

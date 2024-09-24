@@ -13,6 +13,38 @@
 *
 */
 
+/** 
+ * About Theme Options Path Treatment - Theme Options Path Prefix
+ * =========================
+ *
+ * Path sanitization is applied to all Theme Options ('options' attribute) that match an existing path or a "virtual" path.
+ *
+ * The paths allowed in Theme Options are restricted to three categories:
+ *
+ * - General Files: Files under <userthemerootdir>/generalfiles
+ * - Theme Files: Files under the theme folder
+ * - Survey Files: Files under <uploaddir>/surveys/<sid>/images
+ *
+ * Please note that the paths must point to files inside those folders, so path traversal is not allowed.  
+ *
+ * To be clear about which of those categories the path belongs to, a prefix is added, making it a "virtual" path. 
+ * - General Files: image::generalfiles::
+ * - Theme Files: image::theme::
+ * - Survey Files: image::survey::
+ *
+ * Paths are considered invalid if:  
+ * - The path starts with one of the prefixes mentioned above but the file doesn't exist inside the category's folder.  
+ * - The path matches a real path to an existing file 
+ *   (either relative to the root of LS installation, to the current working dir or absolute),
+ *   but the file is not inside one of the categories folders.
+ * 
+ * After sanitization, valid paths are converted to virtual paths, and invalid paths are prefixed with "invalid:".
+ *
+ * NOTE: Paths that don't have one of the category prefixes but don't match an existing file are left untouched, 
+ *       because there is no way to be  100% * sure that they are actual paths.
+ */
+
+
 use LimeSurvey\Datavalueobjects\ThemeFileCategory;
 use LimeSurvey\Datavalueobjects\ThemeFileInfo;
 
@@ -62,7 +94,14 @@ class SurveyThemeHelper
 
         if ($folder && $handle = opendir($folder)) {
             while (false !== ($fileName = readdir($handle))) {
-                if (!is_file("$folder/$fileName") && $fileName != "." && $fileName != ".." && $fileName != ".svn" && (file_exists("{$folder}/{$fileName}/config.xml"))) {
+                if (
+                    !is_file("$folder/$fileName")
+                    && $fileName != "."
+                    && $fileName != ".."
+                    && $fileName != ".svn"
+                    && $fileName != "generalfiles"
+                    //&& (file_exists("{$folder}/{$fileName}/config.xml"))
+                ) {
                     $templateList[$fileName] = $folder . DIRECTORY_SEPARATOR . $fileName;
                 }
             }
@@ -70,6 +109,17 @@ class SurveyThemeHelper
         }
         ksort($templateList);
         return  $templateList;
+    }
+
+    public static function getNestedThemeConfigPath($templateName) {
+        $directory = Yii::app()->getConfig("userthemerootdir") . DIRECTORY_SEPARATOR . $templateName;
+        $paths = CFileHelper::findFiles($directory, ['level' => 200]);
+        foreach ($paths as $path) {
+            if (str_contains($path, 'config.xml')) {
+                return substr($path, 0, strrpos($path, '/') + 1);
+            }
+        }
+        return null;
     }
 
     /**
@@ -412,7 +462,7 @@ class SurveyThemeHelper
             // and try to get a valid virtual path from that.
             if (preg_match($pattern, $value, $m)) {
                 foreach ($alternatives as $replacement) {
-                    $path = preg_replace($pattern, $replacement, $value);
+                    $path = preg_replace($pattern, (string) $replacement, $value);
                     $virtualPath = self::getVirtualThemeFilePath($path, $themeName, $sid);
                     if (!empty($virtualPath)) {
                         $value = $virtualPath;

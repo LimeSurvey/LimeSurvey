@@ -133,7 +133,7 @@ class ExtensionConfig
 
         $lsVersion = require \Yii::app()->getBasePath() . '/config/version.php';
         foreach ($this->xml->compatibility->version as $version) {
-            if (substr($lsVersion['versionnumber'], 0, 1) != substr($version, 0, 1)) {
+            if (substr((string) $lsVersion['versionnumber'], 0, 1) != substr($version, 0, 1)) {
                 // 2 is not compatible with 3, etc.
                 continue;
             } elseif (version_compare($lsVersion['versionnumber'], $version) >= 0) {
@@ -144,6 +144,7 @@ class ExtensionConfig
     }
 
     /**
+     * Reads xml from file and creates an instance of ExtensionConfig
      * @param string $file Full file path.
      * @return ExtensionConfig
      */

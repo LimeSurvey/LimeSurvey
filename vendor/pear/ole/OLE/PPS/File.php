@@ -44,6 +44,14 @@ class OLE_PPS_File extends OLE_PPS
     var $_tmp_dir;
 
     /**
+    * The temporary file handle
+    * @var resource
+    */
+    var $_PPS_FILE;
+
+    var $_tmp_filename;
+
+    /**
     * The constructor
     *
     * @access public

@@ -1,0 +1,87 @@
+//[class^="ri-"], [class*=" ri-"] {
+//  &:not(.superset) {
+//    vertical-align : -0.25em;
+//  }
+//}
+
+a {
+  [class^="ri-"], [class*=" ri-"] {
+    font-size: $font-size-base;
+  }
+}
+
+.remix-2xs {
+  font-size: 10px;
+}
+.remix-xs {
+  font-size: 12px;
+}
+.remix-sm {
+  font-size: 14px;
+}
+.remix-lg {
+  font-size: 20px;
+}
+.remix-xl {
+  font-size: 24px;
+}
+.remix-2xl {
+  font-size: 32px;
+}
+.remix-1x {
+  font-size: 16px;
+}
+.remix-2x {
+  font-size: 32px;
+}
+.remix-3x {
+  font-size: 48px;
+}
+.remix-4x {
+  font-size: 64px;
+}
+.remix-5x {
+  font-size: 80px;
+}
+.remix-6x {
+  font-size: 96px;
+}
+.remix-7x {
+  font-size: 112px;
+}
+.remix-8x {
+  font-size: 128px;
+}
+.remix-9x {
+  font-size: 144px;
+}
+.remix-10x {
+  font-size: 160px;
+}
+
+.remix-spin {
+  display: inline-block;
+  animation: spin 2s linear infinite;
+
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+}
+
+.remix-pulse {
+  display: inline-block;
+  animation: spin 1s steps(5) infinite;
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+}

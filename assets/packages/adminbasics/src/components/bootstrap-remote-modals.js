@@ -26,17 +26,17 @@ var BootstrapRemoteModal = function(presetOptions, templateOptions){
     }
 
     var templateStrings = {
-        closeIcon   : templateOptions.closeIcon || '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>',
-        closeButton : templateOptions.closeButton || '<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>',
+        closeIcon   : templateOptions.closeIcon || '<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>',
+        closeButton : templateOptions.closeButton || '<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>',
         saveButton  : templateOptions.saveButton || '<button type="button" class="btn btn-primary">Save changes</button>'
     };
 
     //Define all the blocks and combine them by jquery methods
-    var outerBlock      = $('<div class="modal fade" tabindex="-1" role="dialog"></div>'),
+    var outerBlock      = $('<div id="bootstrap-remote-modal" class="modal fade" tabindex="-1" role="dialog"></div>'),
         innerBlock      = $('<div class="modal-dialog" role="document"></div>'),
         contentBlock    = $('<div class="modal-content"></div>'),
         headerBlock     = $('<div class="modal-header"></div>'),
-        headlineBlock   = $('<h4 class="modal-title"></h4>'),
+        headlineBlock   = $('<h5 class="modal-title"></h5>'),
         bodyBlock       = $('<div class="modal-body"></div>'),
         footerBlock     = $('<div class="modal-footer"></div>'),
         closeIcon       = $(templateOptions.closeIcon),
@@ -89,9 +89,9 @@ var BootstrapRemoteModal = function(presetOptions, templateOptions){
         if(options.header === true){
             var thisHeader = headerBlock.clone();
             headlineBlock.text(options.modalTitle);
-            thisHeader.append(closeIcon.clone());
             thisHeader.append(headlineBlock);
-            thisContent.prepend(thisHeader);   
+            thisHeader.append(closeIcon.clone());
+            thisContent.prepend(thisHeader);
         }
         if(options.footer === true){
             var thisFooter = footerBlock.clone();

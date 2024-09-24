@@ -25,33 +25,22 @@ class SyntaxError extends Error
      * @param string $name  The original name of the item that does not exist
      * @param array  $items An array of possible items
      */
-    public function addSuggestions($name, array $items)
-    {
-        if (!$alternatives = self::computeAlternatives($name, $items)) {
-            return;
-        }
-
-        $this->appendMessage(sprintf(' Did you mean "%s"?', implode('", "', $alternatives)));
-    }
-
-    /**
-     * @internal
-     *
-     * To be merged with the addSuggestions() method in 2.0.
-     */
-    public static function computeAlternatives($name, $items)
+    public function addSuggestions(string $name, array $items): void
     {
         $alternatives = [];
         foreach ($items as $item) {
             $lev = levenshtein($name, $item);
-            if ($lev <= \strlen($name) / 3 || false !== strpos($item, $name)) {
+            if ($lev <= \strlen($name) / 3 || str_contains($item, $name)) {
                 $alternatives[$item] = $lev;
             }
         }
+
+        if (!$alternatives) {
+            return;
+        }
+
         asort($alternatives);
 
-        return array_keys($alternatives);
+        $this->appendMessage(sprintf(' Did you mean "%s"?', implode('", "', array_keys($alternatives))));
     }
 }
-
-class_alias('Twig\Error\SyntaxError', 'Twig_Error_Syntax');

@@ -1,12 +1,1 @@
-.bootstrap-item label::before, .bootstrap-item label::after {
-    visibility:hidden !important;
-    display: none !important;
-}
 
- .bootstrap-item {
-    margin: 2px 2px; 
-}
-
- .bootstrap-buttons-div {
-    padding: 0 2px;
- }

@@ -53,20 +53,38 @@ class IpAddressAnonymizeTest extends TestBaseClassWeb
 
         sleep(1);
 
-        // Confirm.
-        $overview = self::$webDriver->findElement(WebDriverBy::id('activateSurvey__basicSettings--proceed'));
+        //activate survey in open-access mode
+        //modal has been opend, activate survey in open-access mode
+        $overview = self::$webDriver->findElement(WebDriverBy::id('saveactivateBtn'));
         $overview->click();
 
-        sleep(1);
+        /**
+
+        // Confirm.
+        $overview = self::$webDriver->wait(5)->until(
+            WebDriverExpectedCondition::presenceOfElementLocated(
+                WebDriverBy::id('activateSurvey__basicSettings--proceed')
+            )
+        );
+        $overview->click();
 
         // Click "No, thanks"
-        $overview = self::$webDriver->findElement(WebDriverBy::id('activateTokenTable__selector--no'));
+        $overview = $exceuteBtn = self::$webDriver->wait(5)->until(
+            WebDriverExpectedCondition::presenceOfElementLocated(
+                WebDriverBy::id('activateTokenTable__selector--no')
+            )
+        );
         $overview->click();
+         *
+         * */
 
         sleep(1);
-
         // Click "Run survey".
-        $exceuteBtn = self::$webDriver->findById('execute_survey_button') ;
+        $exceuteBtn = self::$webDriver->wait(20)->until(
+            WebDriverExpectedCondition::presenceOfElementLocated(
+                WebDriverBy::id('execute_survey_button')
+            )
+        );
         $exceuteBtn->click();
 
         sleep(1);
@@ -77,10 +95,12 @@ class IpAddressAnonymizeTest extends TestBaseClassWeb
             end($windowHandles)
         );
 
-        sleep(1);
-
         // New tab with active survey.
-        $nextButton = self::$webDriver->findElement(WebDriverBy::id('ls-button-submit'));
+        $nextButton = self::$webDriver->wait(10)->until(
+            WebDriverExpectedCondition::presenceOfElementLocated(
+                WebDriverBy::id('ls-button-submit')
+            )
+        );
         $nextButton->click();
         sleep(2);
 
@@ -115,25 +135,47 @@ class IpAddressAnonymizeTest extends TestBaseClassWeb
         $survey->save();
 
         // Click "Activate survey".
-        $overview = self::$webDriver->findElement(WebDriverBy::id('ls-activate-survey'));
+        $overview = self::$webDriver->wait(5)->until(
+            WebDriverExpectedCondition::presenceOfElementLocated(
+                WebDriverBy::id('ls-activate-survey')
+            )
+        );
         $overview->click();
 
-        sleep(3);
+        //modal has been opend, activate survey in open-access mode
+        $overview = self::$webDriver->wait(5)->until(
+            WebDriverExpectedCondition::visibilityOfElementLocated(
+                WebDriverBy::id('saveactivateBtn')
+            )
+        );
+        $overview->click();
 
+        /**
         // Confirm.
-        $overview = self::$webDriver->findElement(WebDriverBy::id('activateSurvey__basicSettings--proceed'));
+        $overview = self::$webDriver->wait(10)->until(
+            WebDriverExpectedCondition::presenceOfElementLocated(
+                WebDriverBy::id('activateSurvey__basicSettings--proceed')
+            )
+        );
         $overview->click();
-
-        sleep(3);
 
         // Click "No, thanks"
-        $overview = self::$webDriver->findElement(WebDriverBy::id('activateTokenTable__selector--no'));
+        $overview = self::$webDriver->wait(10)->until(
+            WebDriverExpectedCondition::presenceOfElementLocated(
+                WebDriverBy::id('activateTokenTable__selector--no')
+            )
+        );
         $overview->click();
+         *
+         * */
 
         sleep(1);
-
         // Click "Run survey".
-        $exceuteBtn = self::$webDriver->findById('execute_survey_button') ;
+        $exceuteBtn = self::$webDriver->wait(5)->until(
+            WebDriverExpectedCondition::presenceOfElementLocated(
+                WebDriverBy::id('execute_survey_button')
+            )
+        );
         $exceuteBtn->click();
 
         sleep(1);
@@ -144,16 +186,17 @@ class IpAddressAnonymizeTest extends TestBaseClassWeb
             end($windowHandles)
         );
 
-        sleep(2);
 
         // New tab with active survey.
-        $nextButton = self::$webDriver->findElement(WebDriverBy::id('ls-button-submit'));
+        $nextButton = self::$webDriver->wait(20)->until(
+            WebDriverExpectedCondition::presenceOfElementLocated(
+                WebDriverBy::id('ls-button-submit')
+            )
+        );
         $nextButton->click();
 
         sleep(2);
 
-        //now check if ip was anonymized (ipv4, last digit should be 0)
-        //get ipadr from table survey_573837 ...
         $models = \Response::model(self::$surveyId)->findAll();
 
         $this->assertTrue((isset($models[0]->ipaddr)) && ($models[0]->ipaddr==='127.0.0.1'));

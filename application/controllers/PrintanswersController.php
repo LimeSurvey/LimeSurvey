@@ -36,7 +36,7 @@ class PrintanswersController extends LSYii_Controller
      * View answers at the end of a survey in one place. To export as pdf, set 'usepdfexport' = 1 in lsconfig.php and $printableexport='pdf'.
      * @param mixed $surveyid
      * @param bool $printableexport
-     * @return
+     * @return void
      */
     public function actionView($surveyid, $printableexport = false)
     {
@@ -163,27 +163,28 @@ class PrintanswersController extends LSYii_Controller
 
             $html = Yii::app()->twigRenderer->renderTemplateFromFile('layout_printanswers.twig', $aData, true);
             //filter all scripts
-            $html = preg_replace("/<script>[^<]*<\/script>/", '', $html);
+            $html = preg_replace("/<script>[^<]*<\/script>/", '', (string) $html);
             //replace fontawesome icons
-            $html = preg_replace('/(<i class="fa fa-check-square-o"><\/i>|<i class="fa fa-close"><\/i>)/', '[X]', $html);
-            $html = preg_replace('/<i class="fa fa-minus-square-o">\<\/i>/', '[-]', $html);
-            $html = preg_replace('/<i class="fa fa-square-o"><\/i>/', '[ ]', $html);
-            $html = preg_replace('/<i class="fa fa-plus"><\/i>/', '+', $html);
-            $html = preg_replace('/<i class="fa fa-circle"><\/i>/', '|', $html);
-            $html = preg_replace('/<i class="fa fa-minus"><\/i>/', '-', $html);
+            $html = preg_replace('/(<i class="ri-checkbox-line"><\/i>|<i class="ri-close-fill"><\/i>)/', '[X]', $html);
+            $html = preg_replace('/<i class="ri-checkbox-indeterminate-line">\<\/i>/', '[-]', $html);
+            $html = preg_replace('/<i class="ri-checkbox-blank-line"><\/i>/', '[ ]', $html);
+            $html = preg_replace('/<i class="ri-add-line"><\/i>/', '+', $html);
+            $html = preg_replace('/<i class="ri-checkbox-blank-circle-fill"><\/i>/', '|', $html);
+            $html = preg_replace('/<i class="ri-subtract-fill"><\/i>/', '-', $html);
 
             $oPDF->writeHTML($html, true, false, true, false, '');
 
             header("Cache-Control: must-revalidate, no-store, no-cache"); // Don't store in cache because it is sensitive data
 
             $sExportFileName = sanitize_filename($sSurveyName);
-            $oPDF->Output($sExportFileName . "-" . $iSurveyID . ".pdf", "D");
+            $oPDF->write_out($sExportFileName . "-" . $iSurveyID . ".pdf");
             LimeExpressionManager::FinishProcessingGroup();
             LimeExpressionManager::FinishProcessingPage();
         } elseif ($sExportType == 'quexmlpdf') {
             Yii::import("application.libraries.admin.quexmlpdf", true);
 
             $quexmlpdf = new quexmlpdf();
+            $quexmlpdf->applyGlobalSettings();
 
             // Setting the selected language for printout
             App()->setLanguage($sLanguage);
@@ -199,7 +200,7 @@ class PrintanswersController extends LSYii_Controller
             $quexmlpdf->create($quexmlpdf->createqueXML($quexml));
 
             $sExportFileName = sanitize_filename($sSurveyName);
-            $quexmlpdf->Output($sExportFileName . "-" . $iSurveyID . "-queXML.pdf", 'D');
+            $quexmlpdf->write_out($sExportFileName . "-" . $iSurveyID . "-queXML.pdf");
         }
     }
 }

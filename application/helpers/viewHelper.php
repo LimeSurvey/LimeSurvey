@@ -51,7 +51,7 @@ class viewHelper
         }
         if (!empty($attribs)) {
             foreach ($attribs as $attrib => $value) {
-                $output .= ' ' . $attrib . '="' . str_replace('"', '&quot;', $value) . '"';
+                $output .= ' ' . $attrib . '="' . str_replace('"', '&quot;', (string) $value) . '"';
             }
         }
         $output .= '><img src="' . Yii::app()->getConfig('adminimageurl') . $imgName . '" alt="' . $linkTxt . '" title="' . $linkTxt . '"></a>';
@@ -88,7 +88,7 @@ class viewHelper
         }
         if (!empty($attribs)) {
             foreach ($attribs as $attrib => $value) {
-                $output .= ' ' . $attrib . '="' . str_replace('"', '&quot;', $value) . '"';
+                $output .= ' ' . $attrib . '="' . str_replace('"', '&quot;', (string) $value) . '"';
             }
         }
         $output .= '><span class="' . $icoClasses . '"></span></a>';
@@ -280,7 +280,7 @@ class viewHelper
             'HTML.Allowed' => '',
             'Output.Newline' => ' '
         );
-        return $oPurifier->purify($sHtml);
+        return (string) $oPurifier->purify($sHtml);
     }
 
     /**

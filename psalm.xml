@@ -13,11 +13,11 @@
         <directory name="application/libraries/ExtensionInstaller" />
         <directory name="application/helpers/update/updates" />
         <directory name="application/core/plugins/ExpressionAnswerOptions" />
+        <directory name="application/commands" />
         <file name="application/models/QuestionAttribute.php" />
         <file name="application/libraries/PluginManager/LimesurveyApi.php" />
         <file name="application/models/ArchivedTableSettings.php" />
         <file name="application/helpers/update/updatedb_helper.php" />
-        <file name="application/controllers/admin/DataEntry.php" />
         <ignoreFiles>
             <directory name="vendor" />
         </ignoreFiles>

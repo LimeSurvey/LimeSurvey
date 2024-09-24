@@ -1,5 +1,19 @@
 <?php
 
+ob_start();
+
+class TmpClass
+{
+    public function init()
+    {
+    }
+
+    public function handle($event)
+    {
+        echo $event->message . PHP_EOL;
+    }
+}
+
 // Code below copied from index.php.
 // File also used for Psalm checker.
 
@@ -43,20 +57,43 @@ Yii::import('application.helpers.qanda_helper', true);
 Yii::import('application.helpers.expressions.em_core_helper', true);
 Yii::import('application.helpers.expressions.em_manager_helper', true);
 Yii::import('application.helpers.replacements_helper', true);
+Yii::import('application.helpers.ldap_helper', true);
+Yii::import('application.helpers.export_helper', true);
+Yii::import('application.helpers.remotecontrol.*');
+Yii::import('application.helpers.admin.import_helper', true);
+Yii::import('application.helpers.admin.exportresults_helper', true);
 Yii::import('application.helpers.admin.export.*');
+Yii::import('application.helpers.admin.statistics_helper', true);
+Yii::import('application.helpers.admin.template_helper', true);
+Yii::import('application.helpers.admin.label_helper', true);
 Yii::import('application.helpers.admin.backupdb_helper', true);
 Yii::import('application.helpers.admin.activate_helper', true);
-Yii::import('application.helpers.admin.import_helper', true);
+Yii::import('application.helpers.admin.htmleditor_helper', true);
+Yii::import('application.helpers.admin.permission_helper', true);
+Yii::import('application.helpers.admin.token_helper', true);
 Yii::import('application.libraries.PluginManager.PluginManager', true);
 Yii::import('application.libraries.MenuObjects.*', true);
+Yii::import('application.libraries.jsonRPCClient', true);
+Yii::import('application.libraries.admin.quexmlpdf', true);  // Problem with AdminTheme, constants and session
 Yii::import('application.helpers.update.update_helper', true);
 Yii::import('application.helpers.update.updatedb_helper', true);
 Yii::import('application.helpers.admin.ajax_helper', true);
+Yii::import('application.controllers.admin.ExpressionValidate', true);
 Yii::import('webroot.installer.create-database', true);
 Yii::import('ext.GeneralOptionWidget.settings.*');
+Yii::import('zii.widgets.grid.*');
+Yii::import('zii.widgets.*');
+Yii::import('zii.widgets.jui.*');
 Yii::app()->loadLibrary('admin.pclzip');
 // TODO: Replace with autoload
 LoadQuestionTypes::loadAll();
+
+// TODO: PATH_SEPARATOR for Windows
+set_include_path(get_include_path() . ':' . APPPATH . 'helpers');
+require_once(APPPATH . '/helpers/Zend/XmlRpc/Client.php');
+require_once(APPPATH . '/helpers/Zend/XmlRpc/Server.php');
+Yii::import('application.libraries.LSZend_XmlRpc_Response_Http', true);
+Yii::import('application.libraries.LSjsonRPCServer', true);
 
 /** @var PluginManager */
 $pluginManager = Yii::app()->getComponent('pluginManager');
@@ -64,4 +101,7 @@ $pluginManager->scanPlugins(true);
 
 error_reporting(E_ALL);
 
-define('LOGO_URL', 'dummy_logo_url');
+//define("LOGO_URL", "ANYTHING");
+// Needed for LOGO_URL constant. TODO: Why is this defined in a class...? Should be Yii config?
+//$adminTheme = new AdminTheme();
+//$adminTheme->setAdminTheme();

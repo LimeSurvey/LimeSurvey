@@ -1,0 +1,38 @@
+$input-border-color : $g-700;
+
+.radio-item label::before {
+    border           : 2px solid $input-border-color;
+    background-color : #fff;
+}
+
+.radio-item label::after {
+    background-color : $base-color;
+}
+
+input[type="radio"] .styled:checked + label::before {
+    color : #fff;
+}
+
+input[type="radio"] .styled:checked + label::after {
+    color : #fff;
+}
+
+.radio-item input[type="radio"] + label::after {
+    background-color : $base-color;
+}
+
+.radio-item input[type="radio"]:checked + label::before {
+    border-color : $base-color;
+}
+
+.radio-item input[type="radio"]:checked + label::after {
+    background-color : $base-color;
+}
+
+.checkbox-item input[type="radio"]:focus + label::before {
+    outline : none;
+}
+
+.radio-item input[type="radio"]:checked + label {
+    color : $base-color;
+}

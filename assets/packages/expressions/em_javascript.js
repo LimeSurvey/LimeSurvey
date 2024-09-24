@@ -68,7 +68,9 @@ function checkconditions(value, name, type, evt_type)
     }*/
     try{
         ExprMgr_process_relevance_and_tailoring(evt_type,name,type);
-    } catch(e) { console.ls.error(e); }
+    } catch(e) {
+        console.ls.error(e);
+    }
 }
 
 /**
@@ -123,9 +125,17 @@ function fixnum_checkconditions(value, name, type, evt_type, intonly)
      */
     if(LSvar.bFixNumAuto)
     {
-        if(window.correctNumberField!=null) {
-            clearTimeout(window.correctNumberField);
-            window.correctNumberField = null;
+        // If the field value needs to be auto-corrected, we will do it with a timeout in order to avoid
+        // interfering with the user's typing. We will use window.correctNumberField to track one timer
+        // per field, and clear it when the user starts typing again.
+
+        if (typeof window.correctNumberField === 'undefined') {
+            window.correctNumberField = {};
+        }
+
+        if (window.correctNumberField[name] != null) {
+            clearTimeout(window.correctNumberField[name]);
+            window.correctNumberField[name] = null;
         }
 
         var addition = "";
@@ -176,7 +186,7 @@ function fixnum_checkconditions(value, name, type, evt_type, intonly)
         {
             newval=displayVal;
             if(cleansedValue == '' && value != cleansedValue) {
-                window.correctNumberField = setTimeout(function(){$('#answer'+name).val(cleansedValue).trigger("keyup");}, 500);
+                window.correctNumberField[name] = setTimeout(function(){$('#answer'+name).val(cleansedValue).trigger("keyup");}, 500);
             }
         }
         else{
@@ -192,7 +202,7 @@ function fixnum_checkconditions(value, name, type, evt_type, intonly)
             }
 
             if(value != newval){
-                window.correctNumberField = setTimeout(function(){$('#answer'+name).val(newval).trigger("keyup");}, 400);
+                window.correctNumberField[name] = setTimeout(function(){$('#answer'+name).val(newval).trigger("keyup");}, 1500);
             }
         }
     }
@@ -223,20 +233,36 @@ $(document).on("keyup change",".answer-item textarea:not([onkeyup]),.answer-item
     }
 });
 /* select/dropdown item */
-$(document).on("change",".select-item select:not([onchange]),.dropdown-item select:not([onchange])",function(event){
+$(document).on("change",".select-item select:not([onchange]),.ls-dropdown-item select:not([onchange]), select.list-question-select:not([onchange])",function(event){
     checkconditions($(this).val(), $(this).attr('name'), 'select-one', 'change')
 });
 /* radio/button item */
-$(document).on("change",".radio-item :radio:not([onclick]), .button-item :radio:not([onclick])",function(event){
+$(document).on("change",".radio-item :radio:not([onclick]), .button-item :radio:not([onclick]), .ls-button-radio",function(event){
     checkconditions($(this).val(), $(this).attr('name'), 'radio', 'click')
 });
 /* checkbox item */
-$(document).on("change",".checkbox-item :checkbox:not([onclick]),.button-item :checkbox:not([onclick])",function(event){
+$(document).on("change",".checkbox-item :checkbox:not([onclick]),.button-item :checkbox:not([onclick]), .ls-button-checkbox",function(event){
     checkconditions($(this).val(), $(this).attr('name'), 'checkbox', 'click')
 });
-/* hidden item */
-$(document).on("updated",".answer-item :hidden, .upload-item :hidden",function(event){
+/* upload item */
+$(document).on("updated",".upload-item :hidden",function(event){
+    checkconditions($(this).val(), $(this).attr('name'), 'upload', 'updated')
+});
+/* equation item */
+$(document).on("updated",".hidden-item :hidden",function(event){
+    /* equation item must have a name */
+    if(!$(this).attr('name')) {
+        return;
+    }
     checkconditions($(this).val(), $(this).attr('name'), 'equation', 'updated')
+});
+/* new multiple choice bootstrap buttons */
+$(document).on("change","input:checkbox.button-item.btn-check",function(event){
+    checkconditions($(this).val(), $(this).attr('name'), 'checkbox', 'click')
+});
+/* new singlechoice radio bootstrap buttons */
+$(document).on("change","input:radio.button-item.btn-check",function(event){
+    checkconditions($(this).val(), $(this).attr('name'), 'radio', 'click')
 });
 /**
  * For number

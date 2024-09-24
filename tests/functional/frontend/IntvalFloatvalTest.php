@@ -64,6 +64,9 @@ class IntvalFloatvalTest extends TestBaseClassWeb
             $intvalFalseJS = self::$webDriver->findElement(WebDriverBy::id('intval-false'))->getText();
             $floatvalFalseJS = self::$webDriver->findElement(WebDriverBy::id('floatval-false'))->getText();
 
+            self::$webDriver->executeScript('window.scrollTo(0,document.body.scrollHeight);');
+            sleep(1);
+
             /* Move next */
             $nextButton = self::$webDriver->findElement(WebDriverBy::id('ls-button-submit'));
             $nextButton->click();
@@ -134,8 +137,7 @@ class IntvalFloatvalTest extends TestBaseClassWeb
             file_put_contents($filename, $screenshot);
             $this->assertFalse(
                 true,
-                'Url: ' . $url . PHP_EOL .
-                'Screenshot in ' .$filename . PHP_EOL . $ex->getMessage()
+                self::$testHelper->javaTrace($ex)
             );
         }
     }

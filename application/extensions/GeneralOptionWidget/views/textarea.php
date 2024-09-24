@@ -1,6 +1,6 @@
 <div class="input-group col-12">
     <?php if (isset($this->generalOption->formElement->options['inputGroup']['prefix'])) : ?>
-        <div class="input-group-addon">
+        <div class="input-group-text">
             <?= $this->generalOption->formElement->options['inputGroup']['prefix']; ?>
         </div>
     <?php endif; ?>
@@ -11,7 +11,7 @@
         <?= ($this->generalOption->formElement->help) ? 'aria-describedby="help-' . CHtml::getIdByName($this->generalOption->name) . '"' : "" ?>
         ><?= $this->generalOption->formElement->value; ?></textarea>
     <?php if (isset($this->generalOption->formElement->options['inputGroup']['suffix'])) : ?>
-        <div class="input-group-addon">
+        <div class="input-group-text">
             <?= $this->generalOption->formElement->options['inputGroup']['suffix']; ?>
         </div>
     <?php endif; ?>

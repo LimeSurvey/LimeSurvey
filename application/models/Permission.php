@@ -35,6 +35,9 @@ class Permission extends LSActiveRecord
     /* @var array[]|null The global base Permission LimeSurvey installation */
     protected static $aGlobalBasePermissions;
 
+    /* @var array[] The already loaded survey permissions */
+    protected static $aCachedSurveyPermissions = [];
+
     /** @inheritdoc */
     public function tableName()
     {
@@ -64,7 +67,7 @@ class Permission extends LSActiveRecord
         return array(
             array('entity, entity_id, uid, permission', 'required'),
             array('entity', 'length', 'max' => 50),
-            array('entity',  'filter', 'filter' => 'strtolower'),
+            array('entity',  'LSYii_FilterValidator', 'filter' => 'strtolower', 'skipOnEmpty' => true),
             array('permission', 'length', 'max' => 100),
             array('create_p, read_p, update_p, delete_p, import_p, export_p', 'default', 'value' => 0),
             array('create_p, read_p, update_p, delete_p, import_p, export_p', 'numerical', 'integerOnly' => true),
@@ -157,7 +160,7 @@ class Permission extends LSActiveRecord
             'export' => false,
             'title' => gT("Superadministrator"),
             'description' => gT("Unlimited administration permissions"),
-            'img' => 'icon-superadmin',
+            'img' => 'ri-star-fill',
         );
         $aPermissions['auth_db'] = array(
             'create' => false,
@@ -647,6 +650,51 @@ class Permission extends LSActiveRecord
         return $this->hasPermission(0, 'global', $sPermission, $sCRUD, $iUserID);
     }
 
+    public function getButtons(): string
+    {
+        $setPermissionsUrl = App()->getController()->createUrl(
+            'surveyPermissions/settingsPermissions',
+            ['id' => $this->uid, 'action' => 'user','surveyid' => $this->entity_id,]
+        );
+
+        $dropdownItems = [];
+
+        $dropdownItems[] = [
+            'title'            => gT('Edit permissions'),
+            'iconClass'        => "ri-pencil-fill",
+            'linkClass'        => "UserManagement--action--openmodal UserManagement--action--permissions",
+            'linkAttributes'   => [
+                'data-href'      => $setPermissionsUrl,
+                'data-modalsize' => 'modal-lg',
+            ],
+            'enabledCondition' => Permission::model()->hasSurveyPermission($this->entity_id, 'surveysecurity', 'update')
+        ];
+
+        $dropdownItems[] = [
+            'title'            => gT('Delete'),
+            'url'              => App()->createUrl("surveyPermissions/deleteUserPermissions/"),
+            'iconClass'        => 'ri-delete-bin-fill text-danger',
+            'enabledCondition' => Permission::model()->hasSurveyPermission($this->entity_id, 'surveysecurity', 'delete'),
+            'linkAttributes'   => [
+                'data-bs-toggle'  => 'modal',
+                'data-bs-target'  => '#confirmation-modal',
+                'data-btnclass'   => 'btn-danger',
+                'type'            => 'submit',
+                'data-btntext'    => gt("Delete"),
+                'data-title'      => gt('Delete user survey permissions'),
+                'data-message'    => gT("Are you sure you want to delete this entry?"),
+                'data-post-url'   => App()->createUrl("surveyPermissions/deleteUserPermissions/"),
+                'data-post-datas' => json_encode(['surveyid' => $this->entity_id, 'userid' => $this->uid]),
+            ],
+        ];
+
+        return App()->getController()->widget(
+            'ext.admin.grid.GridActionsWidget.GridActionsWidget',
+            ['dropdownItems' => $dropdownItems],
+            true
+        );
+    }
+
     /**
      * Checks if a user has a certain permission in the given survey
      *
@@ -658,11 +706,20 @@ class Permission extends LSActiveRecord
      */
     public function hasSurveyPermission($iSurveyID, $sPermission, $sCRUD = 'read', $iUserID = null)
     {
-        $oSurvey = Survey::Model()->findByPk($iSurveyID);
-        if (!$oSurvey) {
-            return false;
+        if (isset(self::$aCachedSurveyPermissions[$iSurveyID][$sPermission][$sCRUD][$iUserID])) {
+            return self::$aCachedSurveyPermissions[$iSurveyID][$sPermission][$sCRUD][$iUserID];
         }
-        return $oSurvey->hasPermission($sPermission, $sCRUD, $iUserID);
+        if (!isset(self::$aCachedSurveyPermissions[$iSurveyID])) {
+            self::$aCachedSurveyPermissions[$iSurveyID] = [];
+        }
+        if (!isset(self::$aCachedSurveyPermissions[$iSurveyID][$sPermission])) {
+            self::$aCachedSurveyPermissions[$iSurveyID][$sPermission] = [];
+        }
+        if (!isset(self::$aCachedSurveyPermissions[$iSurveyID][$sPermission][$sCRUD])) {
+            self::$aCachedSurveyPermissions[$iSurveyID][$sPermission][$iUserID] = [];
+        }
+        $oSurvey = Survey::Model()->findByPk($iSurveyID);
+        return self::$aCachedSurveyPermissions[$iSurveyID][$sPermission][$sCRUD][$iUserID] = ($oSurvey ? $oSurvey->hasPermission($sPermission, $sCRUD, $iUserID) : false);
     }
 
     /**
@@ -708,11 +765,13 @@ class Permission extends LSActiveRecord
      */
     private static function comparePermissionTitle($aApermission, $aBpermission)
     {
-        return strcmp($aApermission['title'], $aBpermission['title']);
+        return strcmp((string) $aApermission['title'], (string) $aBpermission['title']);
     }
 
     /**
-     * get the default/fixed $iUserID
+     * Get the default/fixed $iUserID for Permission only
+     * Use App()->getCurrentUserId() for all other purpose
+     * @todo move to private function
      * @param integer|null $iUserID optional user id
      * @return int user id
      * @throws Exception
@@ -724,8 +783,7 @@ class Permission extends LSActiveRecord
                 /* Alt : return 1st forcedAdmin ? */
                 throw new Exception('Permission must not be tested with console application.');
             }
-            /* See TestBaseClass tearDownAfterClass */
-            $iUserID = Yii::app()->session['loginID'];
+            return App()->getCurrentUserId();
         }
         return $iUserID;
     }
@@ -776,7 +834,7 @@ class Permission extends LSActiveRecord
                 'import' => false,
                 'title' => gT("Surveys"),
                 'description' => gT("Permission to create surveys (for which all permissions are automatically given) and view, update and delete surveys from other users"),
-                'img' => ' icon-list',
+                'img' => ' ri-list-unordered',
             ),
             'surveysgroups' => array(
                 'create' => true,
@@ -786,31 +844,31 @@ class Permission extends LSActiveRecord
                 'export' => false,
                 'title' => gT("Survey groups"),
                 'description' => gT("Permission to create survey groups (for which all permissions are automatically given) and view, update and delete survey groups from other users."),
-                'img' => ' fa fa-indent',
+                'img' => ' ri-indent-increase',
             ),
             'users' => array(
                 'import' => false,
                 'export' => false,
                 'title' => gT("Users"),
                 'description' => gT("Permission to create, view, update and delete users"),
-                'img' => ' fa fa-shield',
+                'img' => ' ri-shield-check-fill',
             ),
             'usergroups' => array(
                 'import' => false,
                 'export' => false,
                 'title' => gT("User groups"),
                 'description' => gT("Permission to create, view, update and delete user groups"),
-                'img' => ' fa fa-users',
+                'img' => ' ri-group-fill',
             ),
             'templates' => array(
                 'title' => gT("Themes"),
                 'description' => gT("Permission to create, view, update, delete, export and import themes"),
-                'img' => ' fa fa-paint-brush',
+                'img' => ' ri-brush-fill',
             ),
             'labelsets' => array(
                 'title' => gT("Label sets"),
                 'description' => gT("Permission to create, view, update, delete, export and import label sets/labels"),
-                'img' => ' icon-defaultanswers',
+                'img' => ' ri-grid-line',
             ),
             'settings' => array(
                 'create' => false,
@@ -818,12 +876,12 @@ class Permission extends LSActiveRecord
                 'export' => false,
                 'title' => gT("Settings & Plugins"),
                 'description' => gT("Permission to view and update global settings & plugins and to delete and import plugins"),
-                'img' => 'fa fa-globe',
+                'img' => 'ri-earth-fill',
             ),
             'participantpanel' => array(
                 'title' => gT("Central participant database"),
                 'description' => gT("Permission to create participants in the central participants database (for which all permissions are automatically given) and view, update and delete participants from other users"),
-                'img' => 'fa fa-user-circle-o',
+                'img' => 'ri-user-fill',
             ),
         );
         return $key == null ? $aPermissions : ($aPermissions[$key] ?? $key);

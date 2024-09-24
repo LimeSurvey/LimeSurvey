@@ -18,9 +18,9 @@
                     <td>
                         <div class="icon-btn-row">
                             <?php if ($model->hasPermission('permission', 'update')) : ?>
-                                <a href="<?= $this->createUrl("surveysGroupsPermission/viewUser", ['id' => $model->gsid, 'to' => $oUser->uid]); ?>" class="btn btn-default btn-sm" role="button">
-                            <span class="fa fa-pencil text-success" aria-hidden="true" title="<?= gT("Edit permissions") ?>"><span>
-                            <span class="sr-only"><?= gT("Edit permissions") ?></span>
+                                <a href="<?= $this->createUrl("surveysGroupsPermission/viewUser", ['id' => $model->gsid, 'to' => $oUser->uid]); ?>" class="btn btn-outline-secondary btn-sm" role="button">
+                            <span class="ri-pencil-fill text-success" aria-hidden="true" title="<?= gT("Edit permissions") ?>"><span>
+                            <span class="visually-hidden"><?= gT("Edit permissions") ?></span>
                                 </a>
                             <?php endif; ?>
                             <?php if ($model->hasPermission('permission', 'delete')) : ?>
@@ -32,12 +32,12 @@
                                     ]
                                 ); ?>
                                 <?php /* @see https://bugs.limesurvey.org/view.php?id=16792 */ ?>
-                                <a class="btn btn-default btn-sm" role="button"
-                                   data-target='#confirmation-modal' data-toggle='modal'
+                                <a class="btn btn-outline-secondary btn-sm" role="button"
+                                   data-bs-target='#confirmation-modal' data-bs-toggle='modal'
                                    data-message='<?= gT("Are you sure you want to remove all permissions for this user?") ?>'
                                    data-post-url='<?= $deleteUrl ?>'
-                                ><span class="fa fa-trash text-danger" aria-hidden="true" title="<?= gT("Delete") ?>"><span>
-                            <span class="sr-only"><?= gT("Delete") ?></span>
+                                ><span class="ri-delete-bin-fill text-danger" aria-hidden="true" title="<?= gT("Delete") ?>"><span>
+                            <span class="visually-hidden"><?= gT("Delete") ?></span>
                                 </a>
                             <?php endif; ?>
                         </div>
@@ -47,9 +47,9 @@
                     <?php foreach ($aDefinitionPermissions as $sPermission => $aPermission) : ?>
                         <td class="text-center">
                             <?php if (!empty($aCurrentsUserRights[$oUser->uid][$sPermission])) : ?>
-                                <span data-toggle="tooltip" data-title="<?= implode(", ", $aCurrentsUserRights[$oUser->uid][$sPermission]) ?>"
-                                      class="fa fa-check <?= count($aCurrentsUserRights[$oUser->uid][$sPermission]) < $aPermission['maxCrud'] ? 'mixed' : "" ?>"></span>
-                                <span class="sr-only"><?= implode($aCurrentsUserRights[$oUser->uid][$sPermission]) ?></span>
+                                <span data-bs-toggle="tooltip" data-title="<?= implode(", ", $aCurrentsUserRights[$oUser->uid][$sPermission]) ?>"
+                                      class="ri-check-fill <?= count($aCurrentsUserRights[$oUser->uid][$sPermission]) < $aPermission['maxCrud'] ? 'mixed' : "" ?>"></span>
+                                <span class="visually-hidden"><?= implode($aCurrentsUserRights[$oUser->uid][$sPermission]) ?></span>
                             <?php else : ?>
                                 –
                             <?php endif; ?>

@@ -11,118 +11,130 @@
 
 namespace Twig;
 
+use Twig\Node\Expression\FilterExpression;
 use Twig\Node\Node;
 
 /**
  * Represents a template filter.
  *
- * @final
- *
  * @author Fabien Potencier <fabien@symfony.com>
+ *
+ * @see https://twig.symfony.com/doc/templates.html#filters
  */
-class TwigFilter
+final class TwigFilter
 {
-    protected $name;
-    protected $callable;
-    protected $options;
-    protected $arguments = [];
+    private $name;
+    private $callable;
+    private $options;
+    private $arguments = [];
 
-    public function __construct($name, $callable, array $options = [])
+    /**
+     * @param callable|array{class-string, string}|null $callable A callable implementing the filter. If null, you need to overwrite the "node_class" option to customize compilation.
+     */
+    public function __construct(string $name, $callable = null, array $options = [])
     {
         $this->name = $name;
         $this->callable = $callable;
         $this->options = array_merge([
             'needs_environment' => false,
             'needs_context' => false,
+            'needs_charset' => false,
             'is_variadic' => false,
             'is_safe' => null,
             'is_safe_callback' => null,
             'pre_escape' => null,
             'preserves_safety' => null,
-            'node_class' => '\Twig\Node\Expression\FilterExpression',
+            'node_class' => FilterExpression::class,
             'deprecated' => false,
             'alternative' => null,
         ], $options);
     }
 
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
+    /**
+     * Returns the callable to execute for this filter.
+     *
+     * @return callable|array{class-string, string}|null
+     */
     public function getCallable()
     {
         return $this->callable;
     }
 
-    public function getNodeClass()
+    public function getNodeClass(): string
     {
         return $this->options['node_class'];
     }
 
-    public function setArguments($arguments)
+    public function setArguments(array $arguments): void
     {
         $this->arguments = $arguments;
     }
 
-    public function getArguments()
+    public function getArguments(): array
     {
         return $this->arguments;
     }
 
-    public function needsEnvironment()
+    public function needsCharset(): bool
+    {
+        return $this->options['needs_charset'];
+    }
+
+    public function needsEnvironment(): bool
     {
         return $this->options['needs_environment'];
     }
 
-    public function needsContext()
+    public function needsContext(): bool
     {
         return $this->options['needs_context'];
     }
 
-    public function getSafe(Node $filterArgs)
+    public function getSafe(Node $filterArgs): ?array
     {
         if (null !== $this->options['is_safe']) {
             return $this->options['is_safe'];
         }
 
         if (null !== $this->options['is_safe_callback']) {
-            return \call_user_func($this->options['is_safe_callback'], $filterArgs);
+            return $this->options['is_safe_callback']($filterArgs);
         }
+
+        return null;
     }
 
-    public function getPreservesSafety()
+    public function getPreservesSafety(): ?array
     {
         return $this->options['preserves_safety'];
     }
 
-    public function getPreEscape()
+    public function getPreEscape(): ?string
     {
         return $this->options['pre_escape'];
     }
 
-    public function isVariadic()
+    public function isVariadic(): bool
     {
         return $this->options['is_variadic'];
     }
 
-    public function isDeprecated()
+    public function isDeprecated(): bool
     {
         return (bool) $this->options['deprecated'];
     }
 
-    public function getDeprecatedVersion()
+    public function getDeprecatedVersion(): string
     {
-        return $this->options['deprecated'];
+        return \is_bool($this->options['deprecated']) ? '' : $this->options['deprecated'];
     }
 
-    public function getAlternative()
+    public function getAlternative(): ?string
     {
         return $this->options['alternative'];
     }
 }
-
-class_alias('Twig\TwigFilter', 'Twig_SimpleFilter');
-
-// Ensure that the aliased name is loaded to keep BC for classes implementing the typehint with the old aliased name.
-class_exists('Twig\Node\Node');

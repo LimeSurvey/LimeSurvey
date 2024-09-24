@@ -10,60 +10,60 @@
 
 <form class="custom-modal-datas form form-horizontal">
 	<div class="container-fluid">
-        <div class="form-group">
-            <div class="col-sm-1">
+        <div class="ex-form-group mb-3">
+            <div class="col-md-1">
                 <label class="" >
                 <?php eT("Modify"); ?>
                 </label>
             </div>
-            <div class="col-sm-11"></div>
+            <div class="col-md-11"></div>
         </div>
-        <div class="form-group">
-            <div class="col-sm-1">
+        <div class="ex-form-group mb-3">
+            <div class="col-md-1">
                 <label class="" >
                     <input type="checkbox" class="action_check_to_keep_old_value"></input>
                 </label>
             </div>
-            <label class="col-sm-3 control-label"  for='menu_id'><?php eT("Position?"); ?></label>
-            <div class="col-sm-8">
-                <?php echo TbHtml::dropDownList('position', 'lskeep', array_merge(['lskeep' => gT('Keep old value')], $model->getPositionOptions()), ['disabled'=>'disabled','class'=>'custom-data selector_submitField'] );?>
+            <label class="col-md-3 form-label"  for='menu_id'><?php eT("Position?"); ?></label>
+            <div class="col-md-8">
+                <?php echo TbHtml::dropDownList('position', 'lskeep', array_merge(['lskeep' => gT('Keep old value')], $model->getPositionOptions()), ['disabled'=>'disabled','class'=>'form-select custom-data selector_submitField'] );?>
             </div>
         </div>
         
-		<div class="form-group">
-            <div class="col-sm-1">
+		<div class="ex-form-group mb-3">
+            <div class="col-md-1">
                 <label class="" >
                     <input type="checkbox" class="action_check_to_keep_old_value"></input>
                 </label>
             </div>
-            <label class="col-sm-3 control-label"  for='menu_class'><?php eT("Parent menu?"); ?></label>
-            <div class="col-sm-8">
-                    <?php echo TbHtml::dropDownList('parent_id', 'lskeep', array_merge(['lskeep' => gT('Keep old value')], $model->getMenuIdOptions()), ['disabled'=>'disabled','class'=>'custom-data selector_submitField'] );?>
+            <label class="col-md-3 form-label"  for='menu_class'><?php eT("Parent menu?"); ?></label>
+            <div class="col-md-8">
+                    <?php echo TbHtml::dropDownList('parent_id', 'lskeep', array_merge(['lskeep' => gT('Keep old value')], $model->getMenuIdOptions()), ['disabled'=>'disabled','class'=>'form-select custom-data selector_submitField'] );?>
                 </div>
             </div>
             
             
-            <div class="form-group">
-                <div class="col-sm-1">
+            <div class="ex-form-group mb-3">
+                <div class="col-md-1">
                     <label class="" >
                         <input type="checkbox" class="action_check_to_keep_old_value"></input>
                     </label>
                 </div>
-                <label class="col-sm-3 control-label"  for='permission'><?php eT("Survey?"); ?></label>
-                <div class="col-sm-8">
-                    <?php echo TbHtml::dropDownList('survey_id', 'lskeep', array_merge(['lskeep' => gT('Keep old value')], $model->getSurveyIdOptions()), ['disabled'=>'disabled','class'=>'custom-data selector_submitField'] );?>
+                <label class="col-md-3 form-label"  for='permission'><?php eT("Survey?"); ?></label>
+                <div class="col-md-8">
+                    <?php echo TbHtml::dropDownList('survey_id', 'lskeep', array_merge(['lskeep' => gT('Keep old value')], $model->getSurveyIdOptions()), ['disabled'=>'disabled','class'=>'form-select custom-data selector_submitField'] );?>
             </div>
 		</div>
 
-		<div class="form-group">
-            <div class="col-sm-1">
+		<div class="ex-form-group mb-3">
+            <div class="col-md-1">
                 <label class="" >
                     <input type="checkbox" class="action_check_to_keep_old_value"></input>
                 </label>
             </div>
-            <label class="col-sm-3 control-label"  for='permission_grade'><?php eT("User?"); ?></label>
-            <div class="col-sm-8">
-                <?php echo TbHtml::dropDownList('user_id', 'lskeep', array_merge(['lskeep' => gT('Keep old value')], $model->getUserIdOptions()), ['disabled'=>'disabled','class'=>'custom-data selector_submitField'] );?>
+            <label class="col-md-3 form-label"  for='permission_grade'><?php eT("User?"); ?></label>
+            <div class="col-md-8">
+                <?php echo TbHtml::dropDownList('user_id', 'lskeep', array_merge(['lskeep' => gT('Keep old value')], $model->getUserIdOptions()), ['disabled'=>'disabled','class'=>'form-select custom-data selector_submitField'] );?>
             </div>
 		</div>
 
@@ -76,15 +76,15 @@
 <script>
 $('.action_check_to_keep_old_value').on('click', function(){
         var currentValue = !$(this).prop('checked');
-        var myFormGroup = $(this).closest('.form-group');
-        
-        $(this).closest('.form-group').find('input:not(.action_check_to_keep_old_value)').prop('disabled', currentValue)
-        $(this).closest('.form-group').find('select').prop('disabled', currentValue)
+        var myFormGroup = $(this).closest('.ex-form-group');
+
+        myFormGroup.find('input:not(.action_check_to_keep_old_value)').prop('disabled', currentValue)
+        myFormGroup.find('select').prop('disabled', currentValue)
 
         if(currentValue){
-            $(this).closest('.form-group').find('.selector_submitField').val('lskeep');
+            myFormGroup.find('.selector_submitField').val('lskeep');
         } else {
-            $(this).closest('.form-group').find('input.selector_submitField').val('');
+            myFormGroup.find('input.selector_submitField').val('');
         }
 
     });

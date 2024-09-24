@@ -11,20 +11,20 @@
 #}
 
 {% set button_size_class = (question_template_attribute.button_size == 'default' or question_template_attribute.button_size is empty) ? '' : "btn-"~question_template_attribute.button_size %}
-{% set max_buttons_row = (question_template_attribute.max_buttons_row == 'default' or question_template_attribute.max_buttons_row is empty) ? 'col-sm-2' : question_template_attribute.max_buttons_row %}
+{% set max_buttons_row = (question_template_attribute.max_buttons_row == 'default' or question_template_attribute.max_buttons_row is empty) ? 'col-md-2' : question_template_attribute.max_buttons_row %}
 
 <!-- answer_row -->
-<div id="javatbd{{ myfname }}" class="bootstrap-buttons-div col-xs-12 {{ max_buttons_row }}">
-    <div class="button-item btn btn-primary {{ button_size_class }} {% if checkedState!='' %} active {% endif %} col-xs-12 col-sm-12">
+<div id="javatbd{{ myfname }}" class="bootstrap-buttons-div col-12 {{ max_buttons_row }}">
+    <div class="form-check col-12 {% if checkedState!='' %} active {% endif %}">
         <input
-            class="bootstrap-radio sr-only"
+            class="btn-check visually-hidden button-item"
             type="radio"
             name="{{ name }}"
             id="answer{{ name }}{{ code }}"
             value={{ code }}
             {{ checkedState }}
-        />
-        <label for="answer{{ name }}"> {{ processString(answer) }}
+        >
+        <label class="btn btn-primary w-100 {{ button_size_class }}" for="answer{{ name }}{{ code }}"> {{ processString(answer) }}
         </label>
     </div>
 </div>

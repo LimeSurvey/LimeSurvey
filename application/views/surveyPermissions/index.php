@@ -3,101 +3,168 @@
 /* @var $userCreatePermission bool true if current user has permission to set survey permission for other users */
 /* @var $surveyid int */
 /* @var $userList array users that could be added to survey permissions */
-/* @var $userGroupList array usergroups that could be added to survey permissions */
+/* @var $userGroupList array user groups that could be added to survey permissions */
 /* @var $tableContent CActiveDataProvider dataProvider for the gridview (table) */
 /* @var $oSurveyPermissions \LimeSurvey\Models\Services\SurveyPermissions */
 
 ?>
-<div id='edit-permission' class='side-body  <?= getSideBodyClass(false) ?> "'>
+<div id='edit-permission' class='side-body position-relative  ls-settings-wrapper"'>
     <?php echo viewHelper::getViewTestTag('surveyPermissions'); ?>
-    <h3> <?= gT("Survey permissions") ?> </h3>
-
-    <div class="row">
-        <div class="col-lg-12 content-right">
+    <h1> <?= gT("Survey permissions") ?> </h1>
+    <div class="row pt-2 pb-2 align-items-center">
+        <div class="col-12 align-items-center">
             <?php
-            $this->renderPartial('_overview_table', [
-                'basePermissions' => $basePermissions,
-                'tableContent' => $tableContent,
-                'surveyid' => $surveyid,
-                'oSurveyPermissions' => $oSurveyPermissions
-            ]);
-
-            if ($userCreatePermission) { //only show adduser and addusergroup buttons if permission is set
+            if ($userCreatePermission) {
                 echo CHtml::form(
-                    array("surveyPermissions/adduser/surveyid/{$surveyid}"),
+                    ["surveyPermissions/adduser/surveyid/{$surveyid}"],
                     'post',
-                    array('class' => "form44")
+                    ['class' => "form44"]
                 ); ?>
-                <br/><br/>
-                <ul class='list-unstyled'>
-                    <li>
-                        <label class='col-sm-1 col-md-offset-2 text-right control-label' for='uidselect'>
-                            <?= gT("User") ?>:
-                        </label>
-                        <div class='col-sm-4'>
-                            <select id='uidselect' name='uid' class='form-control'>
-                                <?php
-                                if (count($userList) > 0) {
-                                    echo "<option value='-1' selected='selected'>" . gT("Please choose...") . "</option>";
-                                    foreach ($userList as $selectableUser) {
-                                        echo "<option value='{$selectableUser['userid']}'>"
-                                            . \CHtml::encode($selectableUser['usersname']) . " "
-                                            . \CHtml::encode($selectableUser['fullname']) . "</option>\n";
-                                    }
-                                } else {
-                                    echo "<option value='-1'>" . gT("None") . "</option>";
+
+                <div class="row justify-content-md-end mb-2">
+                    <label class='col-1 text-end control-label' for='uidselect'>
+                        <?= gT("User") ?>:
+                    </label>
+                    <div class='col-4'>
+                        <select style="width:100%;" id='uidselect' name='uid' class='form-select activate-search'>
+                            <?php
+                            if (count($userList) > 0) {
+                                echo "<option value='-1' selected='selected'>" . gT("Please choose...") . "</option>";
+                                foreach ($userList as $selectableUser) {
+                                    echo "<option value='{$selectableUser['userid']}'>"
+                                        . \CHtml::encode($selectableUser['usersname']) . " "
+                                        . \CHtml::encode($selectableUser['fullname']) . "</option>\n";
                                 }
-                                ?>
-                            </select>
-                        </div>
-                        <input style='width: 15em;' class='btn btn-default' type='submit' value='<?= gT("Add user") ?>'
-                               onclick="if (document.getElementById('uidselect').value === -1) {
-                                   alert( <?= gT('Please select a user first', 'js') ?>);
-                                   return false;
-                                   }"/>
-                        <input type='hidden' name='action' value='addsurveysecurity'/>
-                    </li>
-                </ul>
-                </form>
+                            } else {
+                                echo "<option value='-1'>" . gT("None") . "</option>";
+                            }
+                            ?>
+                        </select>
+                    </div>
+                    <div class="col-3">
+                    <input class='btn btn-outline-secondary w-100' type='submit' value='<?= gT("Add user") ?>'/>
+                    <input type='hidden' name='action' value='addsurveysecurity'/>
+                    </div>
+                </div>
+                <?= CHtml::endForm() ?>
 
                 <?php
                 echo CHtml::form(
-                    array("surveyPermissions/addusergroup/surveyid/{$surveyid}"),
+                    ["surveyPermissions/addusergroup/surveyid/{$surveyid}"],
                     'post',
-                    array('class' => "form44")
+                    ['class' => "form44"]
                 ); ?>
-                <ul class='list-unstyled'>
-                    <li>
-                        <label class='col-sm-1 col-md-offset-2  text-right control-label' for='ugidselect'>
-                            <?= gT("User group") ?>:
-                        </label>
-                        <div class='col-sm-4'>
-                            <select id='ugidselect' name='ugid' class='form-control'>
-                                <?php
-                                if (count($userGroupList) > 0) {
-                                    echo "<option value='-1' selected='selected'>" . gT("Please choose...") . "</option>";
-                                    foreach ($userGroupList as $userGroup) {
-                                        echo "<option value='{$userGroup['ugid']}'>{$userGroup['name']}</option>";
-                                    }
-                                } else {
-                                    echo "<option value='-1'>" . gT("None") . "</option>";
+                <div class="row justify-content-md-end">
+                    <label class='col-2 text-end control-label' for='ugidselect'>
+                        <?= gT("User group") ?>:
+                    </label>
+                    <div class='col-4'>
+                        <select style="width:100%;" id='ugidselect' name='ugid' class='form-select activate-search'>
+                            <?php
+                            if (count($userGroupList) > 0) {
+                                echo "<option value='-1' selected='selected'>" . gT("Please choose...") . "</option>";
+                                foreach ($userGroupList as $userGroup) {
+                                    echo "<option value='{$userGroup['ugid']}'>{$userGroup['name']}</option>";
                                 }
-                                ?>
-                            </select>
-                        </div>
-                        <input style='width: 15em;' class='btn btn-default' type='submit'
-                               value='<?= gT("Add group users") ?>'
-                               onclick="if (document.getElementById('ugidselect').value == -1) {
-                                   alert(<?= gT("Please select a user group first", "js") ?>);
-                                   return false;
-                                   }"/>
-                        <input type='hidden' name='action' value='addusergroupsurveysecurity'/>
-                    </li>
-                </ul>
-                </form>
+                            } else {
+                                echo "<option value='-1'>" . gT("None") . "</option>";
+                            }
+                            ?>
+                        </select>
+                    </div>
+                    <div class="col-3">
+                    <input class='btn btn-outline-secondary w-100' type='submit' value='<?= gT("Add group users") ?>'/>
+                    <input type='hidden' name='action' value='addusergroupsurveysecurity'/>
+                    </div>
+                </div>
+                <?= CHtml::endForm() ?>
             <?php }
             ?>
+        </div>
+    </div>
+    <div class="row">
+        <?php
+        $baseColumns = [];
+        foreach ($basePermissions as $sPermission => $aSubPermissions) {
+            array_push(
+                $baseColumns,
+                [
+                    'header'            => $aSubPermissions['title'],
+                    'type'              => 'raw',
+                    'value'             => function ($data) use ($oSurveyPermissions, $sPermission, $aSubPermissions) {
+                        $result = $oSurveyPermissions->getTooltipAllPermissions($data->uid, $sPermission, $aSubPermissions);
+                        if ($result['hasPermissions']) {
+                            return CHtml::tag('div', [
+                                "data-bs-toggle" => "tooltip",
+                                'title'          => ucfirst(implode(', ', $result['permissionCrudArray'])),
+                                'class'          => $result['allPermissionsSet'] ? 'text-center' : 'text-center mixed'
+                            ], '<i class="ri-check-fill"></i>');
+                        }
+                        return CHtml::tag('div', ['class' => 'text-center'], '&#8211');
+                    },
+                    'headerHtmlOptions' => ['class' => 'd-none d-sm-table-cell text-nowrap'],
+                    'htmlOptions'       => ['class' => 'd-none d-sm-table-cell '],
+                ]
+            );
+        }
+        array_push($baseColumns, [
+            'header'            => gT('Action'),
+            'name'              => 'actions',
+            'value'             => '$data->buttons',
+            'type'              => 'raw',
+            'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
+            'htmlOptions'       => ['class' => 'text-center ls-sticky-column'],
+        ]);
 
+        $this->widget(
+            'application.extensions.admin.grid.CLSGridView',
+            [
+                'id'           => 'gridPanel',
+                'dataProvider' => $dataProvider,
+                'columns'      => array_merge([
+                    [
+                        'header'            => gT('Username'),
+                        'name'              => 'users_name',
+                        'type'              => 'raw',
+                        'value'             => '$data->user->users_name',
+                        'headerHtmlOptions' => ['class' => 'd-none d-sm-table-cell text-nowrap'],
+                        'htmlOptions'       => ['class' => 'd-none d-sm-table-cell'],
+                    ],
+                    [
+                        'header' => gT('User group'),
+                        'type'   => 'raw',
+                        'value'  => function ($data) use ($oSurveyPermissions) {
+                            $groupsStr = $oSurveyPermissions->getUserGroupNames($data->uid,
+                                App()->getConfig('usercontrolSameGroupPolicy'));
+                            return implode(", ", $groupsStr);
+                        },
+
+                        'headerHtmlOptions' => ['class' => 'd-none d-sm-table-cell text-nowrap'],
+                        'htmlOptions'       => ['class' => 'd-none d-sm-table-cell '],
+                    ],
+                    [
+                        'header'            => gT('Full name'),
+                        'name'              => 'full_name',
+                        'type'              => 'raw',
+                        'value'             => '$data->user->full_name',
+                        'headerHtmlOptions' => ['class' => 'd-none d-sm-table-cell text-nowrap'],
+                        'htmlOptions'       => ['class' => 'd-none d-sm-table-cell'],
+                    ]
+
+                ], $baseColumns),
+                'lsAfterAjaxUpdate' => ['LS.UserManagement.bindButtons();']
+
+            ]
+        );
+        ?>
+
+    </div>
+    <?php $this->renderPartial('/surveyAdministration/_user_management_sub_footer'); ?>
+
+</div>
+<div id='UserManagement-action-modal' class="modal fade UserManagement--selector--modal" tabindex="-1" role="dialog">
+    <div id="usermanagement-modal-doalog" class="modal-dialog" role="document">
+        <div class="modal-content">
         </div>
     </div>
 </div>

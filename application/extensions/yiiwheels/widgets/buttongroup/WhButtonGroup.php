@@ -66,18 +66,29 @@ class WhButtonGroup extends CInputWidget
         $html_array = $this->htmlOptions;
         $html_array['class'] = isset($html_array['class']) ? $html_array['class']." btn-group" : "btn-group";
         $html_array['id'] = $name;
-        $html_array['data-toggle'] = "buttons";
+        $html_array['role'] = 'group';
+        $html_array['aria-label'] = 'Administrator button group';
 
         echo CHtml::openTag('div', $html_array). "\n";
 
         $i=1;
         foreach( $this->selectOptions as $value=>$caption )
         {
+            echo CHtml::radioButton(
+                $name,
+                $value == $this->value,
+                array(
+                    'name'  => $name,
+                    'id'    => $name.'_opt'.$i,
+                    'value' => $value,
+                    'class' => 'btn-check',
+                    'autocomplete' => 'off'
+                )
+            );
             echo CHtml::openTag('label', array(
-                'class'=>($value==$this->value)?'btn btn-default active':'btn btn-default'
+                'class'=>($value==$this->value)?'btn btn-outline-secondary active':'btn btn-outline-secondary',
+                'for' => $name.'_opt'.$i
             ));
-            echo CHtml::radioButton($name,$value==$this->value,array('name'=>$name, 'id'=>$name.'_opt'.$i,
-                'value'=>$value));
             echo CHtml::encode($caption);
             echo CHtml::closeTag('label') . "\n";
             $i++;

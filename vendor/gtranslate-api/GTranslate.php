@@ -143,15 +143,19 @@ class GTranslate
 		return false;
 	}
 
-	/**
-	* Parse available language from language file
-	* @access private
-	*/	
-	private function parseLanguageFile()
-	{
-		$this->available_languages = parse_ini_file($this->available_languages_file);
-	}	
-	
+    /**
+     * Parse available language from language file
+     * @access private
+     */
+    private function parseLanguageFile()
+    {
+        $this->available_languages = parse_ini_string(
+            file_get_contents(
+                __DIR__ . '/' . $this->available_languages_file
+            )
+        );
+    }
+
         /**
         * URL Formater to use on request
         * @access private
@@ -285,6 +289,8 @@ class GTranslate
 	private function requestCurl($url)
 	{
 		$ch = curl_init();
+		// CGoogle translate API requires IPv4
+		curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);		
 		curl_setopt($ch, CURLOPT_URL, $this->url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($ch, CURLOPT_REFERER, $this->http_referer);

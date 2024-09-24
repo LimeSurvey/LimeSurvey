@@ -18,7 +18,7 @@ class Update_433 extends DatabaseUpdateBase
                         try {
                             setTransactionBookmark();
                             $this->db->createCommand()->createIndex('idx_email', $sTableName, 'email(30)', false);
-                        } catch (Exception $e) {
+                        } catch (\Exception $e) {
                             rollBackToTransactionBookmark();
                         }
                         break;
@@ -26,13 +26,13 @@ class Update_433 extends DatabaseUpdateBase
                         try {
                             setTransactionBookmark();
                             $this->db->createCommand()->createIndex('idx_email', $sTableName, 'email', false);
-                        } catch (Exception $e) {
+                        } catch (\Exception $e) {
                             rollBackToTransactionBookmark();
                         }
                         break;
                         // MSSQL does not support indexes on text fields so no dice
                 }
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 rollBackToTransactionBookmark();
             }
         }

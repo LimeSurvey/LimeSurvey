@@ -12,7 +12,7 @@
             'pk'          => 'sid',
             'gridid'      => 'survey-grid',
             'dropupId'    => 'surveyListActions',
-            'dropUpText'  => gT('Selected survey(s)...'),
+            'dropUpText'  => gT('Edit selected surveys'),
 
             'aActions'    => array(
                 // Delete
@@ -21,7 +21,7 @@
                     'type'        => 'action',
                     'action'      => 'delete',
                     'url'         => App()->createUrl('/surveyAdministration/deleteMultiple/'),
-                    'iconClasses' => 'fa fa-trash text-danger',
+                    'iconClasses' => 'ri-delete-bin-fill text-danger',
                     'text'        =>  gT('Delete'),
                     'grid-reload' => 'yes',
 
@@ -48,8 +48,8 @@
                     'type'        => 'action',
                     'action'      => 'updateTheme',
                     'url'         =>  App()->createUrl('/surveyAdministration/changeMultipleTheme/'),
-                    'iconClasses' => 'icon-templates',
-                    'text'        =>  gT("Survey theme"),
+                    'iconClasses' => 'ri-brush-fill',
+                    'text'        =>  gT("Set survey theme"),
                     'grid-reload' => 'no',
                     // modal
                     'actionType'   => 'modal',
@@ -67,8 +67,8 @@
                     'type'        => 'action',
                     'action'      => 'updateSurveygroup',
                     'url'         =>  App()->createUrl('/surveyAdministration/changeMultipleSurveyGroup/'),
-                    'iconClasses' => 'fa fa-group',
-                    'text'        =>  gT("Survey group"),
+                    'iconClasses' => 'ri-group-fill',
+                    'text'        =>  gT("Set survey group"),
                     'grid-reload' => 'yes',
                     // modal
                     'actionType'  => 'modal',
@@ -78,6 +78,24 @@
                     'selectedUrl'   => App()->createUrl('/surveyAdministration/renderItemsSelected/'),
                     'sModalTitle'   => gT('Change survey group'),
                     'htmlModalBody' => $this->controller->renderFile(__DIR__.'/_change_survey_group.php',array(),true),
+                ),
+                // Publication multiple
+                array(
+                    // li element
+                    'type'        => 'action',
+                    'action'      => 'expire',
+                    'url'         =>  App()->createUrl('/surveyAdministration/expireMultipleSurveys/'),
+                    'iconClasses' => 'ri-skip-forward-fill',
+                    'text'        =>  gT("Set expiry date"),
+                    'grid-reload' => 'yes',
+                    // modal
+                    'actionType'  => 'modal',
+                    'modalType'   => 'cancel-apply',
+                    'showSelected' => 'yes',
+                    'selectedUrl'  => App()->createUrl('/surveyAdministration/renderItemsSelected/'),
+                    'keepopen'    => 'yes',
+                    'sModalTitle'   => gT('Set expiry date'),
+                    'htmlModalBody' => $this->controller->renderFile(__DIR__.'/_expiry_dialog.php', array(), true),
                 ),
 
                 // Separator
@@ -101,7 +119,7 @@
                     'type'        => 'action',
                     'action'      => 'export',
                     'url'         => App()->createUrl('/admin/export/sa/exportMultipleArchiveSurveys/'),
-                    'iconClasses' => 'icon-export',
+                    'iconClasses' => 'ri-download-fill',
                     'text'        =>  gT("Survey archive (*.lsa)"),
 
                     // modal
@@ -121,7 +139,7 @@
                     'type'        => 'action',
                     'action'      => 'export',
                     'url'         =>  App()->createUrl('/admin/export/sa/exportMultipleStructureSurveys/'),
-                    'iconClasses' => 'icon-export',
+                    'iconClasses' => 'ri-download-fill',
                     'text'        =>  gT("Survey structure (*.lss)"),
 
                     // modal
@@ -140,7 +158,7 @@
                     'type'        => 'action',
                     'action'      => 'export',
                     'url'         =>  App()->createUrl('/admin/export/sa/exportMultiplePrintableSurveys/'),
-                    'iconClasses' => 'icon-export',
+                    'iconClasses' => 'ri-download-fill',
                     'text'        =>  gT("Printable survey (*.html)"),
                     // modal
                     'actionType'  => 'modal',
@@ -150,24 +168,6 @@
                     'selectedUrl'   => App()->createUrl('/surveyAdministration/renderItemsSelected/'),
                     'sModalTitle'   => gT('Export printable survey'),
                     'htmlModalBody' => gT('This will export a printable version of your survey.').' '.gT('Continue?'),
-                ),
-                // Publication multiple
-                array(
-                    // li element
-                    'type'        => 'action',
-                    'action'      => 'expire',
-                    'url'         =>  App()->createUrl('/surveyAdministration/expireMultipleSurveys/'),
-                    'iconClasses' => 'icon-expired',
-                    'text'        =>  gT("Set expiry date"),
-                    'grid-reload' => 'yes',
-                    // modal
-                    'actionType'  => 'modal',
-                    'modalType'   => 'cancel-apply',
-                    'showSelected' => 'yes',
-                    'selectedUrl'  => App()->createUrl('/surveyAdministration/renderItemsSelected/'),
-                    'keepopen'    => 'yes',
-                    'sModalTitle'   => gT('Set expiry date'),
-                    'htmlModalBody' => $this->controller->renderFile(__DIR__.'/_expiry_dialog.php', array(), true),
                 ),
             ),
 

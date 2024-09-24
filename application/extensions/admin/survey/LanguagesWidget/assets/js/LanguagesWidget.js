@@ -82,7 +82,8 @@ $.fn.select2.amd.define(
 
       var $rendered = this.$selection.find('.select2-selection__rendered');
 
-      Utils.appendMany($rendered, $selections);
+      //Utils.appendMany($rendered, $selections); // /Utils.appendMany (from v4.0.13) no longer exists
+      $rendered.append($selections); // New method since 4.1.0-rc.0
     };
     LanguagesWidgetSelectionAdapter.prototype.bind = function (container, $container) {
       var self = this;
@@ -94,7 +95,7 @@ $.fn.select2.amd.define(
           originalEvent: evt
         });
       });
-  
+
       this.$selection.on(
         'click',
         '.select2-selection__choice__remove',
@@ -105,12 +106,12 @@ $.fn.select2.amd.define(
           if (self.options.get('disabled')) {
             return;
           }
-  
+
           var $remove = $(this);
           var $selection = $remove.parent();
-  
+
           var data = $selection.data('data');
-  
+
           self.trigger('unselect', {
             originalEvent: evt,
             data: data
@@ -163,13 +164,10 @@ $.fn.select2.amd.define(
       data.selected = false;
 
       if (data.isBaseLanguage) {
-        LS.LsGlobalNotifier.create(
-          this.messages.cannotRemoveBaseLanguage,
-          'well-lg bg-danger text-center'
-        );
+        LS.LsGlobalNotifier.createAlert(this.messages.cannotRemoveBaseLanguage, 'danger', {showCloseButton: true});
         return;
       } else {
-        $.bsconfirm(
+        $.fn.bsconfirm(
           this.messages.removeLanguageConfirmation,
           {
             confirm_cancel: this.messages.cancel,
@@ -183,7 +181,7 @@ $.fn.select2.amd.define(
               self.$element.trigger('change');
               return;
             }
-      
+
             self.current(function (currentData) {
               var val = [];
               for (var d = 0; d < currentData.length; d++) {
@@ -192,7 +190,7 @@ $.fn.select2.amd.define(
                   val.push(id);
                 }
               }
-      
+
               self.$element.val(val);
               self.$element.trigger('change');
             });

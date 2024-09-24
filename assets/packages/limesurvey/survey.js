@@ -145,7 +145,7 @@ function manageIndex(){
     /* only needed if it's not inside form (form#limesurvey) */
     $(".ls-index-buttons").on('click','[name="move"]',function(e){
         if(!$(this).closest('form').length && $('form#limesurvey').length==1){
-            $(this).clone().addClass("hidden").appendTo('form#limesurvey').click();
+            $(this).clone().addClass("d-none").appendTo('form#limesurvey').click();
         }
     });
 }
@@ -433,6 +433,9 @@ function activateSoftMandatory(){
 }
 
 function resetQuestionTimers(sid) {
+    if(!window.localStorage) {
+        return;
+    }
     var surveyTimersItemName = 'limesurvey_timers_by_sid_' + sid;
     var timers = JSON.parse(window.localStorage.getItem(surveyTimersItemName) || "[]");
     timers.forEach(function(timersessionname, idx){

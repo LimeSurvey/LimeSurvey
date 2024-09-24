@@ -52,7 +52,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
      * @link https://manual.limesurvey.org/Database_versioning for explanations
      * @var array $aCriticalDBVersions An array of cricital database version.
      */
-    $aCriticalDBVersions = array(310, 400, 450);
+    $aCriticalDBVersions = array(310, 400, 450, 600);
     $aAllUpdates         = range($iOldDBVersion + 1, Yii::app()->getConfig('dbversionnumber'));
 
     // If trying to update silenty check if it is really possible
@@ -244,7 +244,7 @@ function decryptParticipantTables450($oDB)
             ->select('*')
             ->from("{{tokens_{$survey['sid']}}}")
             ->queryAll();
-        $tokenencryptionoptions = json_decode($survey['tokenencryptionoptions'], true);
+        $tokenencryptionoptions = json_decode((string) $survey['tokenencryptionoptions'], true);
 
         // default attributes
         if (!empty($tokenencryptionoptions)) {
@@ -258,8 +258,8 @@ function decryptParticipantTables450($oDB)
 
         // custom attributes
         foreach ($aCustomAttributes as $attributeName) {
-            if (isset(json_decode($survey['attributedescriptions'])->$attributeName->encrypted)) {
-                $columnEncryptions[$attributeName]['encrypted'] = json_decode($survey['attributedescriptions'], true)[$attributeName]['encrypted'];
+            if (isset(json_decode((string) $survey['attributedescriptions'])->$attributeName->encrypted)) {
+                $columnEncryptions[$attributeName]['encrypted'] = json_decode((string) $survey['attributedescriptions'], true)[$attributeName]['encrypted'];
             } else {
                 $columnEncryptions[$attributeName]['encrypted'] = 'N';
             }
@@ -353,8 +353,8 @@ function decryptArchivedTables450($oDB)
         if (!$tableExists) {
             continue;
         }
-        $archivedTableSettingsProperties = json_decode($archivedTableSettings['properties'], true);
-        $archivedTableSettingsAttributes = json_decode($archivedTableSettings['attributes'], true);
+        $archivedTableSettingsProperties = json_decode((string) $archivedTableSettings['properties'], true);
+        $archivedTableSettingsAttributes = json_decode((string) $archivedTableSettings['attributes'], true);
 
         // recrypt tokens
         if ($archivedTableSettings['tbl_type'] === 'token') {
@@ -379,7 +379,7 @@ function decryptArchivedTables450($oDB)
 
                 // custom attributes
                 foreach ($aCustomAttributes as $attributeName) {
-                    if (isset(json_decode($archivedTableSettings['attributes'])->$attributeName->encrypted)) {
+                    if (isset(json_decode((string) $archivedTableSettings['attributes'])->$attributeName->encrypted)) {
                         $columnEncryptions[$attributeName]['encrypted'] = $archivedTableSettingsAttributes[$attributeName]['encrypted'];
                     } else {
                         $columnEncryptions[$attributeName]['encrypted'] = 'N';
@@ -463,6 +463,7 @@ function decryptArchivedTables450($oDB)
  * @param $survey
  * @return array
  * @throws CException
+ * @psalm-suppress RedundantCondition
  */
 function createFieldMap450($survey): array
 {
@@ -493,7 +494,7 @@ function createFieldMap450($survey): array
         ->queryAll();
     $questionTypeMetaData = [];
     foreach ($baseQuestions as $baseQuestion) {
-        $baseQuestion['settings'] = json_decode($baseQuestion['settings']);
+        $baseQuestion['settings'] = json_decode((string) $baseQuestion['settings']);
         $questionTypeMetaData[$baseQuestion['question_type']] = $baseQuestion;
     }
 
@@ -1007,7 +1008,7 @@ function upgradeArchivedTableSettings446()
     $archivedTables = Yii::app()->db->createCommand($query)->queryColumn();
     $archivedTableSettings = Yii::app()->db->createCommand("SELECT * FROM {{archived_table_settings}}")->queryAll();
     foreach ($archivedTables as $archivedTable) {
-        $tableName = substr($archivedTable, strlen($DBPrefix));
+        $tableName = substr((string) $archivedTable, strlen((string) $DBPrefix));
         $tableNameParts = explode('_', $tableName);
         $type = $tableNameParts[1] ?? '';
         $surveyID = $tableNameParts[2] ?? '';
@@ -1525,10 +1526,10 @@ function createSurveysGroupSettingsTable(CDbConnection $oDB)
     $globalSetting3 = $oDB->createCommand()->select('stg_value')->from('{{settings_global}}')->where("stg_name=:stg_name", array('stg_name' => 'shownoanswer'))->queryRow();
     $globalSetting4 = $oDB->createCommand()->select('stg_value')->from('{{settings_global}}')->where("stg_name=:stg_name", array('stg_name' => 'showxquestions'))->queryRow();
     // set db values to model
-    $settings1->showqnumcode = ($globalSetting1 === false || $globalSetting1['stg_value'] == 'choose') ? 'X' : str_replace(array('both', 'number', 'code', 'none'), array('B', 'N', 'C', 'X'), $globalSetting1['stg_value']);
-    $settings1->showgroupinfo = ($globalSetting2 === false || $globalSetting2['stg_value'] == 'choose') ? 'B' : str_replace(array('both', 'name', 'description', 'none'), array('B', 'N', 'D', 'X'), $globalSetting2['stg_value']);
-    $settings1->shownoanswer = ($globalSetting3 === false || $globalSetting3['stg_value'] == '2') ? 'Y' : str_replace(array('1', '0'), array('Y', 'N'), $globalSetting3['stg_value']);
-    $settings1->showxquestions = ($globalSetting4 === false || $globalSetting4['stg_value'] == 'choose') ? 'Y' : str_replace(array('show', 'hide'), array('Y', 'N'), $globalSetting4['stg_value']);
+    $settings1->showqnumcode = ($globalSetting1 === false || $globalSetting1['stg_value'] == 'choose') ? 'X' : str_replace(array('both', 'number', 'code', 'none'), array('B', 'N', 'C', 'X'), (string) $globalSetting1['stg_value']);
+    $settings1->showgroupinfo = ($globalSetting2 === false || $globalSetting2['stg_value'] == 'choose') ? 'B' : str_replace(array('both', 'name', 'description', 'none'), array('B', 'N', 'D', 'X'), (string) $globalSetting2['stg_value']);
+    $settings1->shownoanswer = ($globalSetting3 === false || $globalSetting3['stg_value'] == '2') ? 'Y' : str_replace(array('1', '0'), array('Y', 'N'), (string) $globalSetting3['stg_value']);
+    $settings1->showxquestions = ($globalSetting4 === false || $globalSetting4['stg_value'] == 'choose') ? 'Y' : str_replace(array('show', 'hide'), array('Y', 'N'), (string) $globalSetting4['stg_value']);
 
     // Quick hack to remote ipanonymize.
     // TODO: Don't use models in updatedb_helper.
@@ -2053,7 +2054,7 @@ function upgradeSurveyTables183()
             $oTableSchema = $oSchema->getTable($sTableName);
             removeMysqlZeroDate($sTableName, $oTableSchema, $oDB);
             if (empty($oTableSchema->primaryKey)) {
-                addPrimaryKey(substr($sTableName, strlen(Yii::app()->getDb()->tablePrefix)), 'id');
+                addPrimaryKey(substr((string) $sTableName, strlen((string) Yii::app()->getDb()->tablePrefix)), 'id');
             }
         }
     }
@@ -2153,7 +2154,7 @@ function upgradeTokenTables179()
         foreach ($surveyidresult as $sTableName) {
             $oTableSchema = $oSchema->getTable($sTableName);
             foreach ($oTableSchema->columnNames as $sColumnName) {
-                if (strpos($sColumnName, 'attribute_') === 0) {
+                if (strpos((string) $sColumnName, 'attribute_') === 0) {
                     alterColumn($sTableName, $sColumnName, "text");
                 }
             }
@@ -2194,7 +2195,7 @@ function upgradeSurveys177()
     $oSurveyResult = $oDB->createCommand($sSurveyQuery)->queryAll();
     $sSurveyLSUpdateQuery = "update {{surveys_languagesettings}} set surveyls_attributecaptions=:attributecaptions where surveyls_survey_id=:surveyid and surveyls_language=:language";
     foreach ($oSurveyResult as $aSurveyRow) {
-        $aAttributeDescriptions = decodeTokenAttributes($aSurveyRow['surveyls_attributecaptions']);
+        $aAttributeDescriptions = decodeTokenAttributes($aSurveyRow['surveyls_attributecaptions'] ?? '');
         if (!$aAttributeDescriptions) {
             $aAttributeDescriptions = array();
         }
@@ -2208,7 +2209,7 @@ function upgradeSurveys177()
     $oSurveyResult = $oDB->createCommand($sSurveyQuery)->queryAll();
     $sSurveyUpdateQuery = "update {{surveys}} set attributedescriptions=:attributedescriptions where sid=:surveyid";
     foreach ($oSurveyResult as $aSurveyRow) {
-        $aAttributeDescriptions = decodeTokenAttributes($aSurveyRow['attributedescriptions']);
+        $aAttributeDescriptions = decodeTokenAttributes($aSurveyRow['attributedescriptions'] ?? '');
         if (!$aAttributeDescriptions) {
             $aAttributeDescriptions = array();
         }
@@ -2239,7 +2240,7 @@ function upgradeTokens176()
             $aAttributes = $arSurvey['attributedescriptions'];
             foreach ($aColumnNamesIterator as $sColumnName) {
                 // Check if an old atttribute_cpdb column exists in that token table
-                if (strpos($sColumnName, 'attribute_cpdb') !== false) {
+                if (strpos((string) $sColumnName, 'attribute_cpdb') !== false) {
                     $i = 1;
                     // Look for a an attribute ID that is available
                     while (in_array('attribute_' . $i, $aColumnNames)) {
@@ -2250,7 +2251,7 @@ function upgradeTokens176()
                     $oDB->createCommand()->renameColumn('{{' . $sTokenTableName . '}}', $sColumnName, $sNewName);
                     // Update attribute descriptions with the new mapping
                     if (isset($aAttributes[$sColumnName])) {
-                        $aAttributes[$sNewName]['cpdbmap'] = substr($sColumnName, 15);
+                        $aAttributes[$sNewName]['cpdbmap'] = substr((string) $sColumnName, 15);
                         unset($aAttributes[$sColumnName]);
                     }
                 }
@@ -2271,7 +2272,7 @@ function upgradeTokens176()
         $aColumnNames = $aColumnNamesIterator = $oDB->schema->getTable($sTable)->columnNames;
         foreach ($aColumnNamesIterator as $sColumnName) {
             // Check if an old atttribute_cpdb column exists in that token table
-            if (strpos($sColumnName, 'attribute_cpdb') !== false) {
+            if (strpos((string) $sColumnName, 'attribute_cpdb') !== false) {
                 $i = 1;
                 // Look for a an attribute ID that is available
                 while (in_array('attribute_' . $i, $aColumnNames)) {
@@ -2293,7 +2294,7 @@ function upgradeCPDBAttributeDefaultNames173()
     order by attribute_id";
     $oResult = Yii::app()->db->createCommand($sQuery)->queryAll();
     foreach ($oResult as $aAttribute) {
-        Yii::app()->getDb()->createCommand()->update('{{participant_attribute_names}}', array('defaultname' => substr($aAttribute['attribute_name'], 0, 50)), "attribute_id={$aAttribute['attribute_id']}");
+        Yii::app()->getDb()->createCommand()->update('{{participant_attribute_names}}', array('defaultname' => substr((string) $aAttribute['attribute_name'], 0, 50)), "attribute_id={$aAttribute['attribute_id']}");
     }
 }
 
@@ -2433,7 +2434,7 @@ function upgradeSurveys156()
     $oSurveyResult = Yii::app()->getDb()->createCommand($sSurveyQuery)->queryAll();
     foreach ($oSurveyResult as $aSurveyRow) {
         $aDefaultTexts = templateDefaultTexts($aSurveyRow['surveyls_language'], 'unescaped');
-        if (trim(strip_tags($aSurveyRow['surveyls_email_confirm'])) == '') {
+        if (trim(strip_tags((string) $aSurveyRow['surveyls_email_confirm'])) == '') {
             $sSurveyUpdateQuery = "update {{surveys}} set sendconfirmation='N' where sid=" . $aSurveyRow['surveyls_survey_id'];
             Yii::app()->getDb()->createCommand($sSurveyUpdateQuery)->execute();
 
@@ -2463,7 +2464,7 @@ function upgradeQuestionAttributes148()
     $aAllAttributes = \LimeSurvey\Helpers\questionHelper::getAttributesDefinitions();
     foreach ($oSurveyResult->readAll() as $aSurveyRow) {
         $iSurveyID = $aSurveyRow['sid'];
-        $aLanguages = array_merge(array($aSurveyRow['language']), explode(' ', $aSurveyRow['additional_languages']));
+        $aLanguages = array_merge(array($aSurveyRow['language']), explode(' ', (string) $aSurveyRow['additional_languages']));
         $sAttributeQuery = "select q.qid,attribute,value from {{question_attributes}} qa , {{questions}} q where q.qid=qa.qid and sid={$iSurveyID}";
         $oAttributeResult = dbExecuteAssoc($sAttributeQuery);
         foreach ($oAttributeResult->readAll() as $aAttributeRow) {
@@ -2493,7 +2494,7 @@ function upgradeTokens145()
 {
     $aTables = dbGetTablesLike("tokens%");
     foreach ($aTables as $sTable) {
-        addColumn($sTable, 'usesleft', "integer NOT NULL default 1");
+        addColumn($sTable, 'usesleft', "integer NOT NULL DEFAULT 1");
         Yii::app()->getDb()->createCommand()->update($sTable, array('usesleft' => '0'), "completed<>'N'");
     }
 }
@@ -2504,18 +2505,18 @@ function upgradeSurveys145()
     $sSurveyQuery = "SELECT * FROM {{surveys}} where notification<>'0'";
     $oSurveyResult = dbExecuteAssoc($sSurveyQuery);
     foreach ($oSurveyResult->readAll() as $aSurveyRow) {
-        if ($aSurveyRow['notification'] == '1' && trim($aSurveyRow['adminemail']) != '') {
-            $aEmailAddresses = explode(';', $aSurveyRow['adminemail']);
+        if ($aSurveyRow['notification'] == '1' && trim((string) $aSurveyRow['adminemail']) != '') {
+            $aEmailAddresses = explode(';', (string) $aSurveyRow['adminemail']);
             $sAdminEmailAddress = $aEmailAddresses[0];
             $sEmailnNotificationAddresses = implode(';', $aEmailAddresses);
             $sSurveyUpdateQuery = "update {{surveys}} set adminemail='{$sAdminEmailAddress}', emailnotificationto='{$sEmailnNotificationAddresses}' where sid=" . $aSurveyRow['sid'];
             Yii::app()->getDb()->createCommand($sSurveyUpdateQuery)->execute();
         } else {
-            $aEmailAddresses = explode(';', $aSurveyRow['adminemail']);
+            $aEmailAddresses = explode(';', (string) $aSurveyRow['adminemail']);
             $sAdminEmailAddress = $aEmailAddresses[0];
             $sEmailDetailedNotificationAddresses = implode(';', $aEmailAddresses);
-            if (trim($aSurveyRow['emailresponseto']) != '') {
-                $sEmailDetailedNotificationAddresses = $sEmailDetailedNotificationAddresses . ';' . trim($aSurveyRow['emailresponseto']);
+            if (trim((string) $aSurveyRow['emailresponseto']) != '') {
+                $sEmailDetailedNotificationAddresses = $sEmailDetailedNotificationAddresses . ';' . trim((string) $aSurveyRow['emailresponseto']);
             }
             $sSurveyUpdateQuery = "update {{surveys}} set adminemail='{$sAdminEmailAddress}', emailnotificationto='{$sEmailDetailedNotificationAddresses}' where sid=" . $aSurveyRow['sid'];
             Yii::app()->getDb()->createCommand($sSurveyUpdateQuery)->execute();
@@ -2806,7 +2807,7 @@ function alterColumn($sTable, $sColumn, $sFieldType, $bAllowNull = true, $sDefau
             }
             $oDB->createCommand()->alterColumn($sTable, $sColumn, $sType);
             if ($sDefault != 'NULL') {
-                $oDB->createCommand("ALTER TABLE {$sTable} ADD default '{$sDefault}' FOR [{$sColumn}];")->execute();
+                $oDB->createCommand("ALTER TABLE {$sTable} ADD DEFAULT '{$sDefault}' FOR [{$sColumn}];")->execute();
             }
             break;
         case 'pgsql':
@@ -3075,7 +3076,7 @@ function alterLanguageCode($sOldLanguageCode, $sNewLanguageCode)
 
     $resultdata = $oDB->createCommand("select * from {{labelsets}}");
     foreach ($resultdata->queryAll() as $datarow) {
-        $aLanguages = explode(' ', $datarow['languages']);
+        $aLanguages = explode(' ', (string) $datarow['languages']);
         foreach ($aLanguages as &$sLanguage) {
             if ($sLanguage == $sOldLanguageCode) {
                 $sLanguage = $sNewLanguageCode;
@@ -3087,7 +3088,7 @@ function alterLanguageCode($sOldLanguageCode, $sNewLanguageCode)
 
     $resultdata = $oDB->createCommand("select * from {{surveys}}");
     foreach ($resultdata->queryAll() as $datarow) {
-        $aLanguages = explode(' ', $datarow['additional_languages']);
+        $aLanguages = explode(' ', (string) $datarow['additional_languages']);
         foreach ($aLanguages as &$sLanguage) {
             if ($sLanguage == $sOldLanguageCode) {
                 $sLanguage = $sNewLanguageCode;
@@ -3198,7 +3199,7 @@ function regenerateLabelCodes400(int $lid, $hasLanguageColumn = true)
     $oDB = Yii::app()->getDb();
 
     $labelSet = $oDB->createCommand(
-        sprintf("SELECT * FROM {{labelsets}} WHERE lid = %d", (int) $lid)
+        sprintf("SELECT * FROM {{labelsets}} WHERE lid = %d", $lid)
     )->queryRow();
     if (empty($labelSet)) {
         // No belonging label set, remove orphan labels.
@@ -3206,22 +3207,22 @@ function regenerateLabelCodes400(int $lid, $hasLanguageColumn = true)
         $oDB->createCommand(
             sprintf(
                 'DELETE FROM {{labels}} WHERE lid = %d',
-                (int) $lid
+                $lid
             )
         )->execute();
         return;
     }
 
-    foreach (explode(' ', $labelSet['languages']) as $lang) {
+    foreach (explode(' ', (string) $labelSet['languages']) as $lang) {
         if ($hasLanguageColumn) {
             $query = sprintf(
                 "SELECT * FROM {{labels}} WHERE lid = %d AND language = %s",
-                (int) $lid,
+                $lid,
                 $oDB->quoteValue($lang)
             );
         } else {
             // When this function is used in update 475, the language column is already moved.
-            $query = sprintf("SELECT * FROM {{labels}} WHERE lid = %d", (int) $lid);
+            $query = sprintf("SELECT * FROM {{labels}} WHERE lid = %d", $lid);
         }
         $labels = $oDB->createCommand($query)->queryAll();
         if (empty($labels)) {
@@ -3231,7 +3232,7 @@ function regenerateLabelCodes400(int $lid, $hasLanguageColumn = true)
             $oDB->createCommand(
                 sprintf(
                     "UPDATE {{labels}} SET code = %s WHERE id = %d",
-                    $oDB->quoteValue("L" . (string) ($key + 1)),
+                    $oDB->quoteValue("L" . (string) ((int) $key + 1)),
                     $label['id']
                 )
             )->execute();

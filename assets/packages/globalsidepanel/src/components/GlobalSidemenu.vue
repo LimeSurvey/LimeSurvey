@@ -46,8 +46,8 @@ export default {
           : lastMenuItemObject;
       });
 
-      if(lastMenuItemObject === false) {
-        lastMenuItemObject = {partial: 'redundant/_generaloptions_panel'};
+      if (lastMenuItemObject === false) {
+        lastMenuItemObject = { partial: 'redundant/_generaloptions_panel' };
       }
       this.$store.commit("setLastMenuItemOpen", lastMenuItemObject.partial.split('/').pop());
     },
@@ -85,7 +85,7 @@ export default {
           self.sideBarWidth = screen.width / 2;
           return;
         }
-        self.sideBarWidth = e.pageX + 8 + "px";
+        self.sideBarWidth = e.pageX - 4 + "px";
         window.clearTimeout(self.isMouseDownTimeOut);
         self.isMouseDownTimeOut = null;
       }
@@ -95,12 +95,12 @@ export default {
     this.$store.dispatch("getMenus").then(
       () => {
         this.controlActiveLink();
-    });
+      });
   },
   mounted() {
     const self = this;
     $("body").on("mousemove", event => {
-        self.mousemove(event, self);
+      self.mousemove(event, self);
     });
   }
 };
@@ -110,62 +110,30 @@ export default {
 <template>
   <div
     id="sidebar"
-    class="ls-flex ls-ba ls-space padding left-0 col-md-4 hidden-xs nofloat transition-animate-width"
-    :style="{'height': '100%', 'min-width': '250px', width: sideBarWidth }"
+    class="d-flex col-lg-4 ls-ba position-relative transition-animate-width bg-white py-4 h-100"
+    :style="{'min-width': '250px', width: sideBarWidth }"
     @mouseleave="mouseleave"
     @mouseup="mouseup"
   >
-    <div class="col-12 fill-height ls-space padding all-0" style="height: 100%">
-      <div class="mainMenu container-fluid col-12 ls-space padding right-0 fill-height">
-        <sidemenu :menu="currentMenue" :style="{'min-height': calculateSideBarMenuHeight}"></sidemenu>
+    <div class="col-12">
+      <div class="mainMenu col-12 ">
+        <sidemenu :menu="currentMenue" :style="{ 'min-height': calculateSideBarMenuHeight }"></sidemenu>
       </div>
     </div>
-    <div
-      class="resize-handle ls-flex-column"
-      :style="{'height': '100%', 'max-height': getWindowHeight}"
-    >
-      <button
-        v-show="!$store.state.isCollapsed"
-        class="btn btn-default"
+    <div class="resize-handle ls-flex-column" 
+         :style="{ 'height': '100%', 'max-height': getWindowHeight }">
+      <button 
+        v-show="!$store.state.isCollapsed" class="btn " 
         @mousedown="mousedown"
-        @click.prevent="()=>{return false;}"
-      >
-        <i class="fa fa-ellipsis-v"></i>
+        @click.prevent="() => { return false; }">
+        <svg width="9" height="14" viewBox="0 0 9 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd" clip-rule="evenodd"
+            d="M0.4646 0.125H3.24762V2.625H0.4646V0.125ZM6.03064 0.125H8.81366V2.625H6.03064V0.125ZM0.4646 5.75H3.24762V8.25H0.4646V5.75ZM6.03064 5.75H8.81366V8.25H6.03064V5.75ZM0.4646 11.375H3.24762V13.875H0.4646V11.375ZM6.03064 11.375H8.81366V13.875H6.03064V11.375Z"
+            fill="currentColor" />
+        </svg>
       </button>
     </div>
+    <!-- this is used for fixing resize handler bug -->
+    <div v-if="isMouseDown" class="mouseup-support" style="position:fixed; inset: 0;" />
   </div>
 </template>
-
-
-<style lang="scss" scoped>
-.resize-handle {
-  position: absolute;
-  right: 14px;
-  top: 0;
-  bottom: 0;
-  height: 100%;
-  width: 4px;
-  cursor: col-resize;
-  button {
-    outline: 0;
-    &:focus,
-    &:active,
-    &:hover {
-      outline: 0 !important;
-    }
-    cursor: col-resize;
-    width: 100%;
-    height: 100%;
-    text-align: left;
-    border-radius: 0;
-    padding: 0px 7px 0px 4px;
-    i {
-      font-size: 12px;
-      width: 5px;
-    }
-  }
-  .dragPointer {
-      cursor: move;
-  }
-}
-</style>

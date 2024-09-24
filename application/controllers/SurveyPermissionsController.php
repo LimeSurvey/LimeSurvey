@@ -62,12 +62,23 @@ class SurveyPermissionsController extends LSBaseController
             $this->redirect(Yii::app()->request->urlReferrer);
         }
         App()->getClientScript()->registerPackage('jquery-tablesorter');
+        App()->getClientScript()->registerPackage('usermanagement');
+        App()->getClientScript()->registerPackage('select2-bootstrap');
+
+
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'surveypermissions.js');
         $oSurvey = Survey::model()->findByPk($surveyid);
         $aData['surveyid'] = $surveyid;
         $aData['sidemenu']['state'] = false;
 
         $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $surveyid . ")";
+        $topbarData = TopbarConfiguration::getSurveyTopbarData($surveyid);
+        $aData['topbar']['middleButtons'] = $this->renderPartial(
+            '/surveyAdministration/partial/topbar/surveyTopbarLeft_view',
+            $topbarData,
+            true
+        );
+
         $aData['subaction'] = gT("Survey permissions");
 
         $aData['surveybar']['closebutton']['url'] = 'surveyAdministration/view/surveyid/' . $surveyid; // Close button
@@ -85,7 +96,9 @@ class SurveyPermissionsController extends LSBaseController
             'userList' => $oSurveyPermissions->getSurveyUserList(),
             'userGroupList' => $oSurveyPermissions->getSurveyUserGroupList(),
             'tableContent' => $oSurveyPermissions->getUsersSurveyPermissions(),
-            'oSurveyPermissions' => $oSurveyPermissions
+            'oSurveyPermissions' => $oSurveyPermissions,
+            // newly added property
+            'dataProvider' => $oSurveyPermissions->getUsersSurveyPermissionsDataProvider(),
         ]);
     }
 
@@ -113,16 +126,7 @@ class SurveyPermissionsController extends LSBaseController
         $userAdded = $surveyPermissions->addUserToSurveyPermission($userId);
         if ($userAdded) {
             Yii::app()->user->setFlash('success', gT("User added."));
-            if (Permission::model()->hasSurveyPermission($surveyid, 'surveysecurity', 'update')) {
-                $this->redirect(array(
-                    'surveyPermissions/settingsPermissions',
-                    'surveyid' => $surveyid,
-                    'action' => 'user',
-                    'id' => $userId
-                ));
-            } else {
-                $this->redirect(['surveyPermissions/index', 'surveyid' => $surveyid]);
-            }
+            $this->redirect(['surveyPermissions/index', 'surveyid' => $surveyid]);
         } else {
             Yii::app()->user->setFlash('error', gT("User could not be added to survey permissions."));
             $this->redirect(['surveyPermissions/index', 'surveyid' => $surveyid]);
@@ -196,7 +200,7 @@ class SurveyPermissionsController extends LSBaseController
         if ($isUserGroup) {
             $oUserGroup = UserGroup::model()->findByPk($id);
             if (!isset($oUserGroup)) {
-                Yii::app()->user->setFlash('error', gT("Unknown usergroup."));
+                Yii::app()->user->setFlash('error', gT("Unknown user group."));
                 $this->redirect(Yii::app()->request->urlReferrer);
             }
             $name = $oUserGroup->name;
@@ -212,12 +216,12 @@ class SurveyPermissionsController extends LSBaseController
         }
         $aData['surveyid'] = $surveyid;
         $aData['sidemenu']['state'] = false;
-        $aData['topBar']['showSaveButton'] = true;
+        //$aData['topBar']['showSaveButton'] = true;
         $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $surveyid . ")";
-        $aData['surveybar']['savebutton']['form'] = 'frmeditgroup';
+
         $this->aData = $aData;
-        return $this->render(
-            'settingsPermission',
+        return $this->renderPartial(
+            'partial/editpermission',
             [
                 'surveyid' => $surveyid,
                 'aPermissions' => $aPermissions,
@@ -229,7 +233,7 @@ class SurveyPermissionsController extends LSBaseController
     }
 
     /**
-     * Save permissions for a user or a usergroup
+     * Save permissions for a user or a user group
      *
      * @param $surveyid
      * @return void
@@ -268,9 +272,9 @@ class SurveyPermissionsController extends LSBaseController
                 }
                 $success = $oSurveyPermissions->saveUserGroupPermissions($userGroupId, $setOfPermissions['Survey']);
                 if ($success) {
-                    Yii::app()->user->setFlash('success', gT("Successfully saved permissions for usergroup."));
+                    Yii::app()->user->setFlash('success', gT("Successfully saved permissions for user group."));
                 } else {
-                    Yii::app()->user->setFlash('error', gT("Error saving permissions for usergroup."));
+                    Yii::app()->user->setFlash('error', gT("Error saving permissions for user group."));
                 }
                 break;
             default: //error here unknown action

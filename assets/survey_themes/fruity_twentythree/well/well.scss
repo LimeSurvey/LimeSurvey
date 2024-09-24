@@ -1,0 +1,19 @@
+.well {
+  background: none !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  .thankyou {
+      font-size: $font-size-2xl;
+      font-style: normal;
+      font-weight: $font-weight-600;
+      line-height: $line-height-52;
+  }
+  .created-with {
+      font-size: 16px;
+  }
+  .img-fluid {
+      margin-bottom: 8px;
+      width: 150px;
+  }
+}

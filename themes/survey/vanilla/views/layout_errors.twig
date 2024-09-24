@@ -14,7 +14,7 @@
     (¯`·._.·(¯`·._.· Vanilla Theme Errors Layout  ·._.·´¯)·._.·´¯)
 
     This layout is used to render errors that block survey rendering.
-    Eg: wrong survey id, empty group in preview group, etc.
+    Eg: wrong survey ID, empty group in preview group, etc.
 
     It has no obligation to be the same layout as layout_global.twig, it can be completly different.
 
@@ -28,63 +28,62 @@
 {% set aError     = aSurveyInfo.aError    %}
 
 <!DOCTYPE html>
-<html lang="{{ aSurveyInfo.languagecode }}" dir="{{ aSurveyInfo.dir }}" class="{{ aSurveyInfo.languagecode }} dir-{{ aSurveyInfo.dir }} {{ aSurveyInfo.class.html }}" {{ aSurveyInfo.attr.html }}>
+<html lang="{{ aSurveyInfo.languagecode }}" dir="{{ aSurveyInfo.dir }}"
+      class="{{ aSurveyInfo.languagecode }} dir-{{ aSurveyInfo.dir }} {{ aSurveyInfo.class.html }}" {{ aSurveyInfo.attr.html }}
+      xmlns="http://www.w3.org/1999/html">
 
-    <head>
-        <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-        <title>
-            {% if aError.error %}
-                {{ aError.error }}
-            {% else %}
-                Error {{ aSurveyInfo.surveyls_title }}
-            {% endif %}
-        </title>
-
-        {#
-            NOTE: YES, it's very bad to do it here. It a first cycle. I'll see what to do once I'll done all those kind of error page
-            TODO: move it to a separated css file
-        #}
-        <meta name="generator" content="LimeSurvey http://www.limesurvey.org" />
-        {% if(imageSrc('./files/favicon.ico')) %}
-            <link rel="shortcut icon" href="{{ imageSrc('./files/favicon.ico') }}" />
+    <title>
+        {% if aError.error %}
+            {{ aError.error }}
+        {% else %}
+            Error {{ aSurveyInfo.surveyls_title }}
         {% endif %}
-    </head>
+    </title>
 
-    <body  class="{{ aSurveyInfo.class.body }} lang-{{aSurveyInfo.languagecode}} {{surveyformat}}" marginwidth="0" marginheight="0" {{ aSurveyInfo.attr.body }}>
-        <article id="block_error">
-            <div>
+    <meta name="generator" content="LimeSurvey http://www.limesurvey.org"/>
+    {% if(imageSrc('./files/favicon.ico')) %}
+        <link rel="shortcut icon" href="{{ imageSrc('./files/favicon.ico') }}"/>
+    {% endif %}
+</head>
+
+<body class="{{ aSurveyInfo.class.body }} lang-{{ aSurveyInfo.languagecode }} {{ surveyformat }}" marginwidth="0"
+      marginheight="0" {{ aSurveyInfo.attr.body }}>
+<div class="container">
+    <div id="error-card" class="card w-75 mt-6 mb-0 mx-auto">
+        <div class="card-body">
+            <h2 class="card-title">
                 {% if aError.error %}
-                    <h1>{{ aError.error }}</h1>
+                    {{ aError.error }}
                 {% endif %}
-                <h2>{{ aError.title }}</h2>
-                <p>
-                    {{ aError.message }}
-                </p>
-                <p>
-                    {% if aError.contact %}
-                        {{ aError.contact }}
-                    {% else %}
-                        {{gT("For further information please contact %s:")|format (aSurveyInfo.admin)}}
-                        {% if aSurveyInfo.adminemail %}
-                            <br>
-                            <a href='mailto:{{ aSurveyInfo.adminemail }}'>{{ aSurveyInfo.adminemail }}</a>
-                        {% endif %}
-                    {% endif %}
-                </p>
-            </div>
+                {{ aError.title }}
+            </h2>
+            <hr>
+            <div class="card-text">{{ aError.message }}</div>
+            {% if aError.contact %}
+                {{ aError.contact }}
+            {% else %}
+                {{ gT("For further information please contact %s:")|format (aSurveyInfo.admin) }}
+                {% if aSurveyInfo.adminemail %}
+                    <br>
+                    <a class="card-link" href='mailto:{{ aSurveyInfo.adminemail }}'>{{ aSurveyInfo.adminemail }}</a>
+                {% endif %}
+            {% endif %}
             {% if aError.trace is not empty %}
                 <pre>
-                    {{ aError.trace }}
+                        {{ aError.trace }}
                 </pre>
             {% endif %}
-            <div>
-            </div>
-        </article>
-        {% block footer %}
-            {{ include('./subviews/footer/footer.twig') }}
-        {% endblock %}
-    </body>
+        </div>
+
+    </div>
+</div>
+{% block footer %}
+    {{ include('./subviews/footer/footer.twig') }}
+{% endblock %}
+</body>
 </html>

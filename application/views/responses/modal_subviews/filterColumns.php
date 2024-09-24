@@ -7,9 +7,9 @@
 ?>
 
 <!-- Button trigger modal -->
-<a class="btn btn-default" data-toggle="modal" data-target="#responses-column-filter-modal" id="responses-column-filter-button">
-    <span class="fa fa-columns"></span>
-</a>
+<button role="button" type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#responses-column-filter-modal" id="responses-column-filter-button">
+    <span class="ri-layout-column-fill"></span>
+</button>
 
 <!-- Modal -->
 <div class="modal fade" id="responses-column-filter-modal" tabindex="-1" role="dialog" aria-labelledby="responses-column-filter-label">
@@ -24,14 +24,18 @@
                 ?>
                 <div class="modal-body">
                     <div class="responses-column-filter-modal-checkbox-buttons">
-                        <button id="responses-column-filter-modal-selectall" class="btn btn-default">
-                            <span class="fa fa-check"></span>&nbsp;<?php eT("Select all"); ?>
+                        <button role="button" type="button" id="responses-column-filter-modal-selectall" class="btn btn-outline-secondary">
+                            <span class="ri-check-fill"></span>
+                            &nbsp;
+                            <?php eT("Select all"); ?>
                         </button>
-                        <button id="responses-column-filter-modal-clear" class="btn btn-default">
-                            <span class="fa fa-trash text-danger"></span>&nbsp;<?php eT("Clear selection"); ?>
+                        <button role="button" type="button" id="responses-column-filter-modal-clear" class="btn btn-outline-secondary">
+                            <span class="ri-delete-bin-fill text-danger"></span>
+                            &nbsp;
+                            <?php eT("Clear selection"); ?>
                         </button>
                     </div>
-                    <div class="form-group responses-multiselect-checkboxes">
+                    <div class="mb-3 responses-multiselect-checkboxes">
                         <?php foreach ($filterableColumns as $columnName => $columnTitle): ?>
                             <div class="checkbox">
                                 <label>
@@ -45,8 +49,10 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button id="responses-column-filter-modal-cancel" type="button" class="btn btn-cancel" data-dismiss="modal"><?php eT("Cancel"); ?></button>
-                    <button id="responses-column-filter-modal-submit" class="btn btn-primary"><?php eT('Select'); ?></button>
+                    <button id="responses-column-filter-modal-cancel" type="button" class="btn btn-cancel" data-bs-dismiss="modal"><?php eT("Cancel"); ?></button>
+                    <button role="button" type="button"id="responses-column-filter-modal-submit" class="btn btn-primary">
+                        <?php eT('Select'); ?>
+                    </button>
                 </div>
             </form>
         </div>

@@ -13,7 +13,7 @@
  *
  */
  // TODO: move to controller
- $qqid = str_replace ( '-', '__' , $qqid );
+ $qqid = str_replace ( '-', '__' , (string) $qqid );
 ?>
 
 statisticsData['quid'+'<?php echo $qqid; ?>'] = {

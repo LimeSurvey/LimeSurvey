@@ -18,14 +18,14 @@
 <!-- answer_row_textarea -->
 <!-- Multiple short texts question, item text area Html -->
 <!-- question attribute "display_rows" is set -> we need a textarea to be able to show several rows -->
-<li id="javatbd{{ myfname }}" class="question-item answer-item text-item form-group {% if alert %} ls-error-mandatory has-error{% endif %}{{ extraclass }}" {{ sDisplayStyle }}>
+<li id="javatbd{{ myfname }}" class="question-item answer-item text-item mb-3 row {% if alert %} ls-error-mandatory has-error{% endif %}{{ extraclass }}" {{ sDisplayStyle }}>
         <!--  color code missing mandatory questions red -->
-        <label class="control-label col-xs-12 col-sm-{{ sLabelWidth }}{% if sLabelWidth==0 %} hidden {% endif %}" for="answer{{ myfname }}">
+        <label class="control-label col-12 col-md-{{ sLabelWidth }} {% if sLabelWidth==0 %}d-none{% endif %}" for="answer{{ myfname }}">
             {{ processString(question) }}
         </label>
 
 
-    <div class="col-xs-12 col-sm-{{ sInputContainerWidth }}">
+    <div class="col-12 col-md-{{ sInputContainerWidth }}">
         {% if prefix != '' or suffix != '' %}
             <div class="ls-input-group">
         {% endif %}

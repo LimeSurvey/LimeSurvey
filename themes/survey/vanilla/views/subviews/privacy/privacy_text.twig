@@ -23,19 +23,21 @@
         {% set describeprivacy = "datasecurity_notice" %}
     {% endif %}
     {% if aSurveyInfo.datasecurity_error %}
-    <div class="{{ aSurveyInfo.class.activealert }} alert alert-danger alert-dismissible fade in alert-dismissible {% if not aSurveyInfo.datasecuritynotaccepted %}ls-js-hidden {% endif %}" {{ aSurveyInfo.attr.activealert }} id="datasecurity_error">
-        <a {{ aSurveyInfo.attr.activealertbutton }} class="{{ aSurveyInfo.class.activealertbutton }} close" aria-hidden="true">&times;</a>
+    <div class="{{ aSurveyInfo.class.activealert }} alert alert-danger alert-dismissible alert-dismissible {% if not aSurveyInfo.datasecuritynotaccepted %}ls-js-hidden {% endif %}" {{ aSurveyInfo.attr.activealert }} id="datasecurity_error">
+        <a {{ aSurveyInfo.attr.activealertbutton }} class="{{ aSurveyInfo.class.activealertbutton }} btn-close" aria-hidden="true"></a>
         {{ aSurveyInfo.datasecurity_error }}
     </div>
         {% if aSurveyInfo.datasecuritynotaccepted %}
             {% set describeprivacy = "datasecurity_error " ~ describeprivacy %}
         {% endif %}
     {% endif %}
-    <div class="form-inline">
-        <label for="datasecurity_accepted" class="control-label {{ aSurveyInfo.class.privacydataseccheckboxlabel }}">
-            <input required class="{{ aSurveyInfo.class.privacydataseccheckbox }}" type="checkbox" name="datasecurity_accepted" id="datasecurity_accepted"{% if describeprivacy %} aria-describedby="{{describeprivacy}}" {% endif %}/>
-            {{ aSurveyInfo.datasecurity_notice_label }}
-        </label>
+    <div class="row row-cols-lg-auto g-1 align-items-center">
+        <div class="col-12">
+            <input required class="{{ aSurveyInfo.class.privacydataseccheckbox }} form-check-input" type="checkbox" name="datasecurity_accepted" id="datasecurity_accepted"{% if describeprivacy %} aria-describedby="{{describeprivacy}}" {% endif %}/>
+            <label for="datasecurity_accepted" class="form-check-label fw-bold {{ aSurveyInfo.class.privacydataseccheckboxlabel }}">
+                {{ aSurveyInfo.datasecurity_notice_label }}
+            </label>
+        </div>
     </div>
 </div>
 <script>

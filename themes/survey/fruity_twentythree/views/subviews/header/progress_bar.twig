@@ -1,0 +1,36 @@
+{#
+LimeSurvey
+Copyright (C) 2007-2017 The LimeSurvey Project Team / Louis Gac
+All rights reserved.
+License: GNU/GPL License v2 or later, see LICENSE.php
+LimeSurvey is free software. This version may have been modified pursuant
+to the GNU General Public License, and as distributed it includes or
+is derivative of works licensed under the GNU General Public License or
+other free or open source software licenses.
+See COPYRIGHT.php for copyright notices and details.
+
+(¯`·._.·(¯`·._.· Top Container·._.·´¯)·._.·´¯)
+
+This file generates the top container. It's above the form itself, and contains the progress bar.
+The progress bar is a Bootstrap progress bar.
+@see: http://getbootstrap.com/components/#progress
+#}
+{# do not show if : All in one or is not Y or on aCompleted #}
+{% if aSurveyInfo.showprogress == 'Y' and aSurveyInfo.format != 'A' and not aSurveyInfo.aCompleted %}
+    {% set progressValue  = ( aSurveyInfo.progress.total > 0 ) ? intval( (aSurveyInfo.progress.currentstep - 1) / aSurveyInfo.progress.total * 100 ) : 0 %}
+    <!-- Top container -->
+    <div class="{{ aSurveyInfo.class.topcontainer }} container-fluid" {{ aSurveyInfo.attr.topcontainer }} >
+        <div class="row justify-content-center">
+            <div class="{{ aSurveyInfo.class.topcontent }} col-12 col-xl-8" {{ aSurveyInfo.attr.topcontent }}>
+                <div class="ls-progress-container" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                     title="{{ sprintf(gT('You have completed %s%% of this survey'),progressValue) }}">
+                    <div class="visually-hidden">{{ sprintf(gT('You have completed %s%% of this survey'),progressValue) }}</div>
+                    <div class="{{ aSurveyInfo.class.progress }}" {{ aSurveyInfo.attr.progress }} aria-hidden="true" data-bs-placement="bottom">
+                        <div class="{{ aSurveyInfo.class.progressbar }}" {{ aSurveyInfo.attr.progressbar }} style="width: {{ progressValue }}%;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endif %}

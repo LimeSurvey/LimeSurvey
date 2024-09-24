@@ -1,0 +1,10 @@
+<div class="survey-group {{odd_even}}">
+    <h2>{{group.groupname}}</h2>
+    <div class="group-desc">
+        {{group.groupdescription}}
+    </div>
+    {% for question in group.questions %}
+        {% set questionTemplate = './subviews/print/print_question.twig' %}
+        {{ include(questionTemplate) }}
+    {% endfor %}
+</div>

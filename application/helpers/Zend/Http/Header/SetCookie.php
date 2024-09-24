@@ -125,7 +125,7 @@ class Zend_Http_Header_SetCookie
      */
     public static function fromString($headerLine, $bypassHeaderFieldName = false)
     {
-        list($name, $value) = explode(': ', $headerLine, 2);
+        list($name, $value) = explode(': ', (string) $headerLine, 2);
 
         // check to ensure proper header type for this factory
         if (strtolower($name) !== 'set-cookie') {
@@ -136,10 +136,10 @@ class Zend_Http_Header_SetCookie
         $headers = array();
         foreach ($multipleHeaders as $headerLine) {
             $header = new self();
-            $keyValuePairs = preg_split('#;\s*#', $headerLine);
+            $keyValuePairs = preg_split('#;\s*#', (string) $headerLine);
             foreach ($keyValuePairs as $keyValue) {
-                if (strpos($keyValue, '=')) {
-                    list($headerKey, $headerValue) = preg_split('#=\s*#', $keyValue, 2);
+                if (strpos((string) $keyValue, '=')) {
+                    list($headerKey, $headerValue) = preg_split('#=\s*#', (string) $keyValue, 2);
                 } else {
                     $headerKey = $keyValue;
                     $headerValue = null;
@@ -153,7 +153,7 @@ class Zend_Http_Header_SetCookie
                 }
 
                 // Process the remanining elements
-                switch (str_replace(array('-', '_'), '', strtolower($headerKey))) {
+                switch (str_replace(array('-', '_'), '', strtolower((string) $headerKey))) {
                     case 'expires':
                         $header->setExpires($headerValue);
                         break;
@@ -523,11 +523,11 @@ class Zend_Http_Header_SetCookie
 
     public function isValidForRequest($requestDomain, $path, $isSecure = false)
     {
-        if ($this->getDomain() && (strrpos($requestDomain, $this->getDomain()) !== false)) {
+        if ($this->getDomain() && (strrpos((string) $requestDomain, $this->getDomain()) !== false)) {
             return false;
         }
 
-        if ($this->getPath() && (strpos($path, $this->getPath()) !== 0)) {
+        if ($this->getPath() && (strpos((string) $path, $this->getPath()) !== 0)) {
             return false;
         }
 

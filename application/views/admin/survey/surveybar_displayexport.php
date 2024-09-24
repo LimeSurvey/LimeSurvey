@@ -65,7 +65,7 @@
         <p>".gT("It is not suitable for backing up a LimeSurvey survey as it cannot export conditions, and isn't able to export all question types.",'json')."</p>
         <p>".gT("Exporting a questionnaire to queXML allows you to create PDF documents that can be printed, filled then scanned and processed using queXF software.",'json')."</p>
         <p>".gT("To find out more about queXML check out this page:",'json')
-        ." <a href=\"https://quexml.acspri.org.au/\" target=\"_blank\">quexml.acspri.org.au <i class=\"fa fa-external-link\"></i></a>.</p>",
+        ." <a href=\"https://quexml.acspri.org.au/\" target=\"_blank\">quexml.acspri.org.au <i class=\" ri-external-link-fill\"></i></a>.</p>",
         "href" => $this->createUrl("admin/export/sa/survey/action/exportstructurequexml/surveyid/".$oSurvey->sid),
         "download" => true
     ];
@@ -77,7 +77,7 @@
         <p>".gT("queXML is an XML description of a questionnaire.",'json')."</p>
         <p>".gT("On the following page you will be able to create a pdf that can be printed filled out and scanned again.",'json')."</p>
         <p>".gT("It is not suitable for backing up a LimeSurvey survey as it cannot export conditions, and isn't able to export all question types.",'json')."</p>
-        <p>".gT("To get to know more about queXML check this page:",'json')." <a href=\"https://quexml.acspri.org.au/\" target=\"_blank\">quexml.acspri.org.au <i class=\"fa fa-external-link\"></i></a>.</p>",
+        <p>".gT("To get to know more about queXML check this page:",'json')." <a href=\"https://quexml.acspri.org.au/\" target=\"_blank\">quexml.acspri.org.au <i class=\" ri-external-link-fill\"></i></a>.</p>",
         "href" => $this->createUrl("admin/export/sa/quexml/surveyid/".$oSurvey->sid),
         "download" => false
     ];
@@ -89,7 +89,7 @@
         <p>".gT("This feature is designed to make it easy to use Excel to author and edit surveys.")."</p>
         <p>".gT("It completely eliminates the dependence upon SGQA codes.")."</p>
         <p>".gT("It also makes it easy to do bulk editing of your survey, such as find-replace, bulk-reordering, looping (repeating groups), and testing (such as temporarily disabling mandatory or validation criteria).")."</p>
-        <p><a href=\"https://manual.limesurvey.org/Excel_Survey_Structure\" target=\"_blank\" >".gT("Check out the dedicated documentation for this format.")." <i class=\"fa fa-external-link\"></i></a></p>
+        <p><a href=\"https://manual.limesurvey.org/Excel_Survey_Structure\" target=\"_blank\" >".gT("Check out the dedicated documentation for this format.")." <i class=\" ri-external-link-fill\"></i></a></p>
         ",
         "href" => $this->createUrl("admin/export/sa/survey/action/exportstructuretsv/surveyid/".$oSurvey->sid),
         "download" => true
@@ -105,7 +105,7 @@
         ",
         "href" => $this->createUrl("admin/export/sa/survey/action/exportprintables/surveyid/".$oSurvey->sid),
         "download" => true,
-        "downloadFilename" => $oSurvey->sid.'_'.strtolower(preg_replace('([^\w\s\d\-_~,;\[\]\(\).])','',$oSurvey->currentLanguageSettings->surveyls_title)).'.html'
+        "downloadFilename" => $oSurvey->sid.'_'.strtolower(preg_replace('([^\w\s\d\-_~,;\[\]\(\).])','',(string) $oSurvey->currentLanguageSettings->surveyls_title)).'.html'
     ];
     if (Permission::model()->hasSurveyPermission($oSurvey->sid, 'surveycontent', 'read')) {
         if ($onelanguage) {
@@ -144,7 +144,7 @@
                     ",
                     "href" => $this->createUrl("admin/printablesurvey/sa/index/surveyid/".$oSurvey->sid."/lang/".$tmp_lang),
                     "external" => true,
-                    "downloadFilename" => $oSurvey->sid.'_'.strtolower(preg_replace('([^\w\s\d\-_~,;\[\]\(\).])','',$oSurvey->currentLanguageSettings->surveyls_title)).'.html'
+                    "downloadFilename" => $oSurvey->sid.'_'.strtolower(preg_replace('([^\w\s\d\-_~,;\[\]\(\).])','',(string) $oSurvey->currentLanguageSettings->surveyls_title)).'.html'
                 ];
             }
         }
@@ -194,7 +194,7 @@
         ]
     ));
 ?>
-<div class="btn-group hidden-xs">
+<div class="d-inline-flex">
     <?=$oExportSelector->getModal(); ?>
 
     <?=$oExportSelector->getButtonOrSelect(); ?>

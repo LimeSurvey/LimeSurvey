@@ -295,7 +295,7 @@ abstract class Zend_Server_Reflection_Function_Abstract
                 if (preg_match_all('/@param\s+\S+\s+(\$\S+)\s+(.*?)(?=@|\*\/)/s', $docBlock, $matches)) {
                     $paramDesc = $matches[2];
                     foreach ($paramDesc as $key => $value) {
-                        $value = preg_replace('/\s?\*\s/m', '', $value);
+                        $value = preg_replace('/\s?\*\s/m', '', (string) $value);
                         $value = preg_replace('/\s{2,}/', ' ', $value);
                         $paramDesc[$key] = trim($value);
                     }
@@ -355,7 +355,7 @@ abstract class Zend_Server_Reflection_Function_Abstract
 
         $paramTypes = array();
         foreach ($paramTypesTmp as $i => $param) {
-            $tmp = explode('|', $param);
+            $tmp = explode('|', (string) $param);
             if ($parameters[$i]->isOptional()) {
                 array_unshift($tmp, null);
             }

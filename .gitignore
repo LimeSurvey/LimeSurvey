@@ -4,7 +4,6 @@
 /application/config/security.php
 
 # Don't include LS4 security.php
-/application/config/security.php
 
 ## Ignore any hidden folder/files (except explicitly defined)
 ## such as various IDE folders .idea .netbeans .vscode
@@ -45,7 +44,6 @@
 /upload/themes/survey/generalfiles/*.*
 !/upload/themes/survey/generalfiles/index.html
 !/upload/themes/survey/index.html
-!/upload/themes/survey/generalfiles/index.html
 /upload/themes/question/*.*
 /upload/themes/question/**/*.*
 !/upload/themes/question/readme.txt
@@ -66,16 +64,63 @@
 !/tmp/runtime/index.html
 !/tmp/upload/index.html
 
-# ignore plugins directory by default except LS plugin
-# if you want to add a new distributed plugin : add the directory here
-/plugins/*
-!/plugins/index.html
+# ignore editor contents - reserved for future use
+/editor/*
 
 #ignore old styles
 /styles/
 
 #ignore most of the js-build stuff
-node_modules/
+node_modules/*
+node_modules/**/docs
+node_modules/**/demo
+node_modules/**/meteor
+node_modules/**/src
+!/node_modules/devbridge-autocomplete/
+!/node_modules/ace-builds/
+!/node_modules/datatables.net/
+!/node_modules/datatables.net-bs5/
+!/node_modules/decimal.js/
+!/node_modules/dom-to-image/
+!/node_modules/jspdf/
+!/node_modules/jszip/
+!/node_modules/nestedSortable/
+!/node_modules/jquery/dist/
+!/node_modules/jquery-ui-dist/
+!/node_modules/jquery.actual/
+!/node_modules/jsuri/
+!/node_modules/jquery-ui-touch-punch/
+
+
+!/node_modules/select2
+/node_modules/select2/*
+!/node_modules/select2/dist/
+
+!/node_modules/select2-bootstrap-5-theme
+/node_modules/select2-bootstrap-5-theme/*
+!/node_modules/select2-bootstrap-5-theme/dist/
+
+!/node_modules/jquery-migrate
+/node_modules/jquery-migrate/*
+!/node_modules/jquery-migrate/dist/
+
+!/node_modules/tablesorter
+/node_modules/tablesorter/*
+!/node_modules/tablesorter/dist/
+
+!/node_modules/js-cookie
+/node_modules/js-cookie/*
+!/node_modules/js-cookie/dist/
+
+!/node_modules/moment
+/node_modules/moment/*
+!/node_modules/moment/min/
+
+!/node_modules/leaflet
+/node_modules/leaflet/*
+!/node_modules/leaflet/dist/
+
+
 vendor/**/docs/
 vendor/**/scripts/
 vendor/**/tests/
@@ -88,6 +133,7 @@ yarn-error.log
 
 # Test stuff
 chromedriver
+cov.xml
 
 # RFC and commons directory and files
 /.well-known/
@@ -124,7 +170,7 @@ vendor/composer/installed\.json
 vendor/composer/package-versions-deprecated/
 vendor/composer/semver/
 vendor/composer/xdebug-handler/
-vendor/doctrine/
+#vendor/doctrine/
 vendor/dnoegel/
 vendor/felixfbecker/
 vendor/myclabs/
@@ -139,7 +185,6 @@ vendor/phpdocumentor/
 vendor/phpmd/
 vendor/phpspec/
 vendor/phpunit/
-vendor/psr/
 vendor/sebastian/
 vendor/theseer/
 vendor/vimeo/
@@ -147,7 +192,6 @@ vendor/webmozart/
 vendor/misantron/
 upload/templates/
 assets/packages/ckeditor/samples
-
 
 ## ignore Vagrantfile and Adminer
 adminer.php
@@ -165,10 +209,10 @@ themes/survey/no_bootstrap/files/*
 !themes/survey/*/files/logo_w_s.png
 !themes/survey/*/files/pattern.png
 !themes/survey/*/files/print_img_radio.png
-adminer.php
 
 # Used by tests.
 geckodriver
+geckodriver.exe
 selenium-server-standalone-3.7.1.jar
 
 # Used by Vim and Emacs
@@ -183,3 +227,5 @@ package-lock.json
 docker-compose.yml
 docker/
 /geckodriver-v0.23.0-linux64.tar.gz
+/yarn.lock
+/geckodriver.exe
