@@ -19026,6 +19026,7 @@ table [class^=ri-], table [class*=" ri-"] {
 .grid-view .table .ls-sticky-column, .grid-view .table .checkbox-column, .grid-view-ls .table .ls-sticky-column, .grid-view-ls .table .checkbox-column {
   padding: 7px 20px;
   box-shadow: none;
+  z-index: 1;
 }
 .grid-view .table thead tr, .grid-view-ls .table thead tr {
   border: 0 none #fff;
