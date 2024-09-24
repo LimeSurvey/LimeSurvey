@@ -1794,7 +1794,7 @@ class SurveyRuntimeHelper
             }
 
             $_SESSION[$this->LEMsessid]['step'] = $this->aMoveResult['seq'] + 1; // step is index base 1?
-            $_SESSION[$this->LEMsessid]['hiddenSteps'] = ($_SESSION[$this->LEMsessid]['hiddenSteps'] ?? 0) + $this->aMoveResult['hiddenSteps'];
+            $_SESSION[$this->LEMsessid]['hiddenSteps'] = $this->aMoveResult['hiddenSteps'];
 
             $this->aStepInfo = LimeExpressionManager::GetStepIndexInfo($this->aMoveResult['seq']);
 
