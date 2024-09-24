@@ -9799,7 +9799,6 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             /* Must check 0 */
             return true;
         }
-        tracevar($qinfo);
         /* Fill some helper var */
         $qid = $qinfo['qid'];
         $other = !empty($qinfo['other']) ? $qinfo['other'] : null;
