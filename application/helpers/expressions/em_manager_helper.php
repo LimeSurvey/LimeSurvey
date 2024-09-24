@@ -3236,7 +3236,8 @@ class LimeExpressionManager
      * @param array $afelist - the list of array_filter_exclude $qroot codes
      * @return array
      */
-    private function _recursivelyFindAntecdentArrayFilters($qroot, $aflist, $afelist) {
+    private function _recursivelyFindAntecdentArrayFilters($qroot, $aflist, $afelist)
+    {
         if (isset($this->qrootVarName2arrayFilter[$qroot])) {
             if (isset($this->qrootVarName2arrayFilter[$qroot]['array_filter'])) {
                 $_afs = explode(';', (string) $this->qrootVarName2arrayFilter[$qroot]['array_filter']);
@@ -9160,8 +9161,8 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
         $criteria->params[':sid'] = $sid;
         $criteria->index = 'qid';
         $questions = Question::model()->with('question_theme')->findAll($criteria);
-        
-        $_gseq = -1;        
+
+        $_gseq = -1;
         $baseQuestionThemes = QuestionTheme::findQuestionMetaDataForAllTypes();
         foreach ($LEM->currentQset as $q) {
             $gseq = $q['info']['gseq'];
@@ -9816,7 +9817,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 break;
             case '!': //List - dropdown
             case 'L': //LIST drop-down/radio-button list
-                if (substr($sgq, -5) != 'other') {
+                if ($sgq != $LEM->getLEMsurveyId() . 'X' . $qinfo['gid'] . 'X' . $qinfo['qid'] . 'other') { // Check only not other
                     if ($value == "-oth-") {
                         if ($other != 'Y') {
                             $LEM->addValidityString($sgq, $value, gT("%s is an invalid value for this question"), $set);
@@ -9939,7 +9940,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             case 'M':
                 if (
                     $value != "Y" // Y is always valid
-                    && (substr($sgq, -5) != 'other' && $other == 'Y') // Other can be valid if it's other
+                    && !( $other == 'Y' && $sgq == $LEM->getLEMsurveyId() . 'X' . $qinfo['gid'] . 'X' . $qinfo['qid'] . 'other') // It's not other SGQA
                 ) {
                     $LEM->addValidityString($sgq, $value, gT("%s is an invalid value for this question"), $set);
                     return false;
