@@ -5,23 +5,16 @@ $('#survey_gsid, #survey_active').change(function (e) {
 
 $('.search-bar input')
     .blur(function (e) {
-        if ($(this).val()) {
-            $('#survey-search').submit();
-        }
+        $('#survey-search').submit();
     })
     .keydown(function (e) {
         if (e.keyCode === 13) {
-            e.preventDefault();
-            if ($(this).val()) {
-                $('#survey-search').submit();
-            }
+            $('#survey-search').submit();
         }
     });
 
 $('.search-bar i').click(function (e) {
-    if ($(this).val()) {
-        $('#survey-search').submit();
-    }
+    $('#survey-search').submit();
 });
 
 $('#survey_reset').click(function (e) {

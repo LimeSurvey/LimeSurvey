@@ -17725,6 +17725,7 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
   text-align: center;
   color: #6D748C;
   border: solid 2px #6D748C;
+  cursor: pointer;
 }
 .box-widget .box-widget-card.card-link .box-widget-card-body {
   flex-direction: row;
@@ -17924,7 +17925,6 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
   border-width: 2px;
   border-radius: 5px;
   border-color: #6E748C;
-  padding-right: 25px;
 }
 .survey-actionbar .survey-actionbar-filters {
   margin-left: 16px;
@@ -17961,14 +17961,43 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
   color: #6E748C;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1140px) {
   .survey-actionbar #survey-search .align-items-baseline {
     display: block !important;
+    width: 100%;
+    position: relative;
   }
   .survey-actionbar #survey-search .align-items-baseline .survey-actionbar-switch {
     position: absolute;
-    right: 40px;
-    top: 115px;
+    top: 0;
+    left: 100%;
+    margin: 0 -4rem;
+  }
+  .survey-actionbar #survey-search .align-items-baseline .survey-actionbar-filters,
+  .survey-actionbar #survey-search .align-items-baseline .survey-actionbar-actions {
+    display: inline-block !important;
+    width: 59%;
+    margin: 0 !important;
+  }
+  .survey-actionbar #survey-search .align-items-baseline .survey-actionbar-actions {
+    width: 40%;
+    text-align: right;
+    float: right;
+  }
+  .survey-actionbar #survey-search .align-items-baseline .survey-actionbar-filters a, .survey-actionbar #survey-search .align-items-baseline .survey-actionbar-filters button, .survey-actionbar #survey-search .align-items-baseline .survey-actionbar-filters input, .survey-actionbar #survey-search .align-items-baseline .survey-actionbar-filters select,
+  .survey-actionbar #survey-search .align-items-baseline .survey-actionbar-actions a,
+  .survey-actionbar #survey-search .align-items-baseline .survey-actionbar-actions button,
+  .survey-actionbar #survey-search .align-items-baseline .survey-actionbar-actions input,
+  .survey-actionbar #survey-search .align-items-baseline .survey-actionbar-actions select {
+    font-size: 0.7em;
+  }
+}
+@media (max-width: 800px) {
+  .sidebar {
+    display: none !important;
+  }
+  .survey-actionbar #survey-search .align-items-baseline {
+    display: block !important;
   }
   .survey-actionbar #survey-search .align-items-baseline .survey-actionbar-filters,
   .survey-actionbar #survey-search .align-items-baseline .survey-actionbar-actions,
@@ -17978,13 +18007,7 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
     margin: 0 !important;
   }
   .survey-actionbar #survey-search .align-items-baseline .survey-actionbar-filters .survey-actionbar-item,
-  .survey-actionbar #survey-search .align-items-baseline .survey-actionbar-filters .survey-actionbar-item,
-  .survey-actionbar #survey-search .align-items-baseline .survey-actionbar-filters .survey-actionbar-item,
   .survey-actionbar #survey-search .align-items-baseline .survey-actionbar-actions .survey-actionbar-item,
-  .survey-actionbar #survey-search .align-items-baseline .survey-actionbar-actions .survey-actionbar-item,
-  .survey-actionbar #survey-search .align-items-baseline .survey-actionbar-actions .survey-actionbar-item,
-  .survey-actionbar #survey-search .align-items-baseline .survey-actionbar-button .survey-actionbar-item,
-  .survey-actionbar #survey-search .align-items-baseline .survey-actionbar-button .survey-actionbar-item,
   .survey-actionbar #survey-search .align-items-baseline .survey-actionbar-button .survey-actionbar-item {
     width: 100%;
     margin: 5px 0 !important;
@@ -19001,7 +19024,6 @@ table [class^=ri-], table [class*=" ri-"] {
   border: #D3D5DA;
 }
 .grid-view .table .ls-sticky-column, .grid-view .table .checkbox-column, .grid-view-ls .table .ls-sticky-column, .grid-view-ls .table .checkbox-column {
-  text-align: center;
   padding: 7px 20px;
   box-shadow: none;
 }

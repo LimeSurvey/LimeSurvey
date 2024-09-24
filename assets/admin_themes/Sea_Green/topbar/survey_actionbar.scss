@@ -19,7 +19,6 @@
         border-width  : 2px;
         border-radius : 5px;
         border-color  : $g-700;
-        padding-right: 25px;
     }
     .survey-actionbar-filters {
         margin-left : 16px;
@@ -57,17 +56,54 @@
     }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1140px) {
   .survey-actionbar {
     #survey-search {
       .align-items-baseline {
         display: block !important;
+        width: 100%;
+        position: relative;
 
         .survey-actionbar-switch {
           position: absolute;
-          right: 40px;
-          top: 115px;
+          top: 0;
+          left: 100%;
+          margin: 0 -4rem;
         }
+
+        .survey-actionbar-filters,
+        .survey-actionbar-actions {
+          display: inline-block !important;
+          width: 59%;
+          margin: 0 !important;
+        }
+
+        .survey-actionbar-actions {
+          width: 40%;
+          text-align: right;
+          float:right;
+        }
+
+        .survey-actionbar-filters,
+        .survey-actionbar-actions {
+          a, button, input, select {
+            font-size: 0.7em;
+          }
+        }
+
+      }
+    }
+  }
+}
+
+@media (max-width: 800px) {
+  .sidebar {
+    display: none !important;
+  }
+  .survey-actionbar {
+    #survey-search {
+      .align-items-baseline {
+        display: block !important;
 
         .survey-actionbar-filters,
         .survey-actionbar-actions,
@@ -76,8 +112,6 @@
           width: 100%;
           margin: 0 !important;
 
-          .survey-actionbar-item,
-          .survey-actionbar-item,
           .survey-actionbar-item {
             width: 100%;
             margin: 5px 0 !important;
