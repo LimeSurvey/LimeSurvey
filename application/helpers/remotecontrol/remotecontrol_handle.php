@@ -3542,7 +3542,7 @@ class remotecontrol_handle
      * @param integer $iFromResponseID (optional) Frpm response id
      * @param integer $iToResponseID (optional) To response id
      * @param array $aFields (optional) Name the fields to export
-     * @param array $aAdditionalOptions (optional) Addition options for export, mainly 'convertY', 'convertN', 'nValue', 'yValue',
+     * @param array $aAdditionalOptions (optional) Addition options for export, @see \FormattingOptions, example : 'convertY', 'convertN', 'nValue', 'yValue', 'headerSpacesToUnderscores', 'useEMCode'
      * @return array|string On success: Requested file as base 64-encoded string. On failure array with error information
      * */
     public function export_responses($sSessionKey, $iSurveyID, $sDocumentType, $sLanguageCode = null, $sCompletionStatus = 'all', $sHeadingType = 'code', $sResponseType = 'short', $iFromResponseID = null, $iToResponseID = null, $aFields = null, $aAdditionalOptions = null)
@@ -3580,26 +3580,30 @@ class remotecontrol_handle
         $oFormattingOptions = new FormattingOptions();
 
         if (is_array($aAdditionalOptions)) {
-            if (isset($aAdditionalOptions['convertY']) && $aAdditionalOptions['convertY']) {
-                $oFormattingOptions->convertY = $aAdditionalOptions['convertY'];
-                $oFormattingOptions->yValue = isset($aAdditionalOptions['yValue']) ? $aAdditionalOptions['yValue'] : 'Y';
+            foreach ($aAdditionalOptions as $option => $value) {
+                if (property_exists($oFormattingOptions, $option )){
+                    $oFormattingOptions->$option = $value;
+                }
             }
-            if (isset($aAdditionalOptions['convertN']) && $aAdditionalOptions['convertN']) {
-                $oFormattingOptions->convertN = $aAdditionalOptions['convertN'];
-                $oFormattingOptions->nValue = isset($aAdditionalOptions['nValue']) ? $aAdditionalOptions['nValue'] : 'N';
+            /* fix some specific option (GUI use 1 and 2, but default for remote control are set to Y and N before) */
+            if (!empty($oFormattingOptions->convertY) && empty($oFormattingOptions->yValue)) {
+                $oFormattingOptions->yValue = 'Y';
+            }
+            if (!empty($oFormattingOptions->convertN) && empty($oFormattingOptions->nValue)) {
+                $oFormattingOptions->nValue = 'N';
             }
         }
 
         if ($iFromResponseID != null) {
-                    $oFormattingOptions->responseMinRecord = (int) $iFromResponseID;
+            $oFormattingOptions->responseMinRecord = (int) $iFromResponseID;
         } else {
-                    $oFormattingOptions->responseMinRecord = 1;
+            $oFormattingOptions->responseMinRecord = 1;
         }
 
         if ($iToResponseID != null) {
-                    $oFormattingOptions->responseMaxRecord = (int) $iToResponseID;
+            $oFormattingOptions->responseMaxRecord = (int) $iToResponseID;
         } else {
-                    $oFormattingOptions->responseMaxRecord = $maxId;
+            $oFormattingOptions->responseMaxRecord = $maxId;
         }
 
         $oFormattingOptions->selectedColumns = $aFields;

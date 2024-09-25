@@ -1349,6 +1349,7 @@ class quexmlpdf extends pdf
      */
     public function setStyle($style)
     {
+        $style = htmlspecialchars($style, ENT_NOQUOTES); // Allow  background url src
         $this->style = "<style>" . $style . "</style>";
     }
 
@@ -2333,7 +2334,7 @@ class quexmlpdf extends pdf
                 $iv = $this->$m(); // get the current data
 
                 if (isset($xml->$itemname)) {
-//if setting exists in xml then set it
+                    //if setting exists in xml then set it
                     if (is_bool($iv)) {
                         if ($xml->$itemname == "true") {
                             $this->$setname(true);
