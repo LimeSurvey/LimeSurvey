@@ -144,10 +144,7 @@ class SurveyDeactivate
             'token',
             $DBDate,
             $aData['aSurveysettings']['tokenencryptionoptions'],
-            json_decode(
-                json_encode($aData['aSurveysettings']['attributedescriptions']),
-                true
-            )
+            json_encode($aData['aSurveysettings']['attributedescriptions'])
         );
 
         $aData['tnewtable'] = $tnewtable;
