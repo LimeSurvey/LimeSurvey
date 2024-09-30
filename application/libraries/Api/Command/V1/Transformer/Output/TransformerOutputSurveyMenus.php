@@ -1,6 +1,6 @@
 <?php
 
-namespace LimeSurvey\Libraries\Api\Command\V1\Transformer\Output;
+namespace LimeSurvey\Api\Command\V1\Transformer\Output;
 
 use LimeSurvey\Api\Transformer\Output\TransformerOutputActiveRecord;
 
