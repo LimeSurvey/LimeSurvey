@@ -1811,7 +1811,7 @@ class SurveyRuntimeHelper
             if (($this->bShowEmptyGroup) || !isset($_SESSION[$this->LEMsessid]['grouplist'])) {
                 $this->gid              = -1; // Make sure the gid is unused. This will assure that the foreach (fieldarray as ia) has no effect.
                 $this->groupname        = gT("Submit your answers");
-                $this->groupdescription = gT("There are no more questions. Please press the <Submit> button to finish this survey.");
+                $this->groupdescription = gT("There are no more questions. Please use the `Submit` button to finish this survey.");
             } elseif ($this->sSurveyMode != 'survey') {
                 if ($this->sSurveyMode != 'group') {
                     $this->aStepInfo = LimeExpressionManager::GetStepIndexInfo($this->aMoveResult['seq']);
