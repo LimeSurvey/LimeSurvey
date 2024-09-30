@@ -64,7 +64,10 @@ class SurveySidemenuWidget extends WhSelect2
         $currentUrl = App()->request->requestUri;
         foreach ($this->sideMenu as $k => $menu) {
             foreach ($menu as $i => $menuItem) {
-                if ($menuItem['url'] == $currentUrl) {
+                if (
+                    $menuItem['url'] == $currentUrl
+                    || str_replace("/index.php", "", $menuItem['url']) == $currentUrl
+                ) {
                     $this->sideMenu[$k][$i]['selected'] = true;
                 }
             }
@@ -175,7 +178,7 @@ class SurveySidemenuWidget extends WhSelect2
                 ],
                 [
                     'name' => $this->getSurveyEntry('generalsettings')->menu_title,
-                    'url' => App()->createUrl('editorLink/index', ['route' => 'survey/' . $this->sid . '/general/setting']),
+                    'url' => App()->createUrl('editorLink/index', ['route' => 'survey/' . $this->sid . '/settings/general']),
                 ],
                 [
                     'name' => $this->getSurveyEntry('surveytexts')->menu_title,
@@ -183,7 +186,7 @@ class SurveySidemenuWidget extends WhSelect2
                 ],
                 [
                     'name' => $this->getSurveyEntry('datasecurity')->menu_title,
-                    'url' => App()->createUrl('editorLink/index', ['route' => 'survey/' . $this->sid . '/privacyPolicy/setting']),
+                    'url' => App()->createUrl('editorLink/index', ['route' => 'survey/' . $this->sid . '/settings/privacyPolicy']),
                 ],
                 [
                     'name' => $this->getSurveyEntry('participants')->menu_title,
