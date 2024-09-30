@@ -3539,7 +3539,7 @@ function do_array($ia)
             ), true);
     } else {
         $answer = doRender('/survey/questions/answer/arrays/array/dropdown/empty', [], true);
-        $inputnames = '';
+        $inputnames = [];
     }
     return array($answer, $inputnames);
 }
