@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2024-09-30 13:07:44+00:00\n"
+"POT-Creation-Date: 2024-09-30 14:04:44+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -10063,7 +10063,7 @@ msgid "Submit your answers"
 msgstr ""
 
 '#: 'application/helpers/SurveyRuntimeHelper.php:1814
-msgid "There are no more questions. Please press the <Submit> button to finish this survey."
+msgid "There are no more questions. Please use the `Submit` button to finish this survey."
 msgstr ""
 
 '#: 'application/helpers/SurveyThemeHelper.php:275
