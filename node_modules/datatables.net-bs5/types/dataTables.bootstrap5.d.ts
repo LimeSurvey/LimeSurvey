@@ -1,4 +1,5 @@
 
-import Api from "datatables.net";
+import DataTable from 'datatables.net';
 
-export default Api;
+export default DataTable;
+export * from 'datatables.net';

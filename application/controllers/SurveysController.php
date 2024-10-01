@@ -86,7 +86,7 @@ class SurveysController extends LSYii_Controller
             // TODO: Remove? It seems this can never happen because it's already caught by LSYii_Application::onException() (see commit c792c2e).
             $this->spitOutJsonError($error, $oException);
         } elseif ($error) {
-            $this->spitOutHtmlError($error, $request->getParam('sid', $request->getParam('surveyid')));
+            $this->spitOutHtmlError($error, (int) $request->getParam('sid', $request->getParam('surveyid')));
         } else {
             throw new CHttpException(404, 'Page not found.');
         }
