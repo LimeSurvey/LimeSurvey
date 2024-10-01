@@ -221,7 +221,7 @@ class CLSGridView extends TbGridView
             'name'              => 'dropdown_actions',
             'value'             => '$data->buttons',
             'type'              => 'raw',
-            'headerHtmlOptions' => ['class' => 'ls-sticky-column', 'style' => 'font-size: 1.5em; font-weight: 400;'],
+            'headerHtmlOptions' => ['class' => 'text-center ls-sticky-column', 'style' => 'font-size: 1.5em; font-weight: 400;'],
             'htmlOptions'       => ['class' => 'text-center ls-sticky-column'],
         ];
         // If there are no columns selected, we delete the user setting.

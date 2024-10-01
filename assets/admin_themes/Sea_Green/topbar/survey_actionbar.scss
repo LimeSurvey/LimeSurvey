@@ -130,3 +130,9 @@
     }
   }
 }
+
+@media (max-width: 767px) {
+  .survey-dashboard {
+    display: block !important;
+  }
+}
