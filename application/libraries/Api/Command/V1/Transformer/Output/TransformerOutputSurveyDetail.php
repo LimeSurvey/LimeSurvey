@@ -281,7 +281,10 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
             'anonymized',
             'alloweditaftercompletion',
             'format',
-            'template'
+            'template',
+            'admin',
+            'adminemail',
+            'bounce_email'
         ];
         foreach ($affectedSettings as $setting) {
             if (
