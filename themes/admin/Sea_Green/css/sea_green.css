@@ -19079,6 +19079,9 @@ table [class^=ri-], table [class*=" ri-"] {
   font-size: 1.1em;
 }
 .grid-view .survey-state.disabled, .grid-view-ls .survey-state.disabled {
+  color: grey;
+}
+.grid-view .survey-state.disabled, .grid-view-ls .survey-state.disabled {
   opacity: 0.5;
 }
 .grid-view .action-list, .grid-view-ls .action-list {

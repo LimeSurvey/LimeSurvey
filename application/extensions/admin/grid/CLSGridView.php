@@ -88,7 +88,7 @@ class CLSGridView extends TbGridView
             $this->afterAjaxUpdate .= 'LS.actionDropdown.create();';
             $this->afterAjaxUpdate .= 'LS.rowlink.create();';
             if ($this->lsAdditionalColumns) {
-                $this->afterAjaxUpdate.= 'initColumnFilter()';
+                $this->afterAjaxUpdate .= 'initColumnFilter()';
             }
             $this->afterAjaxUpdate .= '}';
         }
@@ -225,15 +225,20 @@ class CLSGridView extends TbGridView
             'htmlOptions'       => ['class' => 'text-center ls-sticky-column'],
         ];
         // If there are no columns selected, we delete the user setting.
-        if (empty($columnsSelected)
-            && $this->ajaxUpdate === $ajaxUpdate) {
+        if (
+            empty($columnsSelected)
+            && $this->ajaxUpdate === $ajaxUpdate
+            && App()->request->getQuery('sort') == null
+        ) {
             SettingsUser::deleteUserSetting('gridview_columns_' . $this->ajaxUpdate);
             return;
         }
 
         // If there are columns selected, we save them in the user setting.
-        if (!empty($columnsSelected)
-            && $this->ajaxUpdate === $ajaxUpdate) {
+        if (
+            !empty($columnsSelected)
+            && $this->ajaxUpdate === $ajaxUpdate
+        ) {
             SettingsUser::setUserSetting('gridview_columns_' . $this->ajaxUpdate, json_encode($columnsSelected));
             $this->addColumns($columnsSelected);
             return;
