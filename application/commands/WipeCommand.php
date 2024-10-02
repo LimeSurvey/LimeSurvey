@@ -137,7 +137,7 @@ class WipeCommand extends CConsoleCommand
             Yii::app()->db->createCommand($actquery)->execute();
             $actquery = "update {{settings_global}} set stg_value='Sea_Green' where stg_name='admintheme'";
             Yii::app()->db->createCommand($actquery)->execute();
-            $actquery = "update {{plugins}} set active=0 where name='TwoFactorAdminLogin'";
+            $actquery = "update {{plugins}} set active=0 where name='TwoFactorAdminLogin' OR name='AuditLog'";
             Yii::app()->db->createCommand($actquery)->execute();
 
             foreach (LsDefaultDataSets::getTemplatesData() as $template) {
