@@ -17745,6 +17745,9 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
   padding: 5px;
   margin-top: 25px;
 }
+.box-widget .survey-state {
+  color: grey;
+}
 
 #statisticsview .box {
   text-align: left;
@@ -18592,6 +18595,7 @@ input[type=number] {
   display: flex;
   padding: 8px;
   flex-grow: 1;
+  min-width: 0;
 }
 
 #sidebar {
@@ -19077,9 +19081,6 @@ table [class^=ri-], table [class*=" ri-"] {
 }
 .grid-view .table button.btn .ri-more-fill:before, .grid-view-ls .table button.btn .ri-more-fill:before {
   font-size: 1.1em;
-}
-.grid-view .survey-state.disabled, .grid-view-ls .survey-state.disabled {
-  color: grey;
 }
 .grid-view .survey-state.disabled, .grid-view-ls .survey-state.disabled {
   opacity: 0.5;
