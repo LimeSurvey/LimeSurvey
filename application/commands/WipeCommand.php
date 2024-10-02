@@ -119,6 +119,10 @@ class WipeCommand extends CConsoleCommand
                 $actquery = "truncate table {{auditlog_log}}";
                 Yii::app()->db->createCommand($actquery)->execute();
             }
+            if (tableExists('{{twoFactorUsers}}')) {
+                $actquery = "truncate table {{twoFactorUsers}}";
+                Yii::app()->db->createCommand($actquery)->execute();
+            }            
             $actquery = "delete from {{settings_global}} where stg_name LIKE 'last_question%'";
             Yii::app()->db->createCommand($actquery)->execute();
             $actquery = "delete from {{settings_global}} where stg_name LIKE 'last_survey%'";
@@ -132,6 +136,8 @@ class WipeCommand extends CConsoleCommand
             $actquery = "update {{settings_global}} set stg_value='Administrator' where stg_name='siteadminname'";
             Yii::app()->db->createCommand($actquery)->execute();
             $actquery = "update {{settings_global}} set stg_value='Sea_Green' where stg_name='admintheme'";
+            Yii::app()->db->createCommand($actquery)->execute();
+            $actquery = "update {{plugins}} set active=0 where name='TwoFactorAdminLogin'";
             Yii::app()->db->createCommand($actquery)->execute();
 
             foreach (LsDefaultDataSets::getTemplatesData() as $template) {
