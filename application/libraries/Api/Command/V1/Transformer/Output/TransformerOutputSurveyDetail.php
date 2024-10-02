@@ -22,6 +22,8 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
     private TransformerOutputSurveyOwner $transformerSurveyOwner;
     private QuestionService $questionService;
     private TransformerOutputAnswerL10ns $transformerAnswerL10ns;
+    private TransformerOutputSurveyMenus $transformerOutputSurveyMenus;
+    private TransformerOutputSurveyMenuItems $transformerOutputSurveyMenuItems;
 
     /**
      * Construct
@@ -37,6 +39,8 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
         TransformerOutputAnswer $transformerOutputAnswer,
         TransformerOutputAnswerL10ns $transformerOutputAnswerL10ns,
         TransformerOutputSurveyOwner $transformerOutputSurveyOwner,
+        TransformerOutputSurveyMenus $transformerOutputSurveyMenus,
+        TransformerOutputSurveyMenuItems $transformerOutputSurveyMenuItems,
         QuestionService $questionService
     ) {
         $this->transformerSurvey = $transformerOutputSurvey;
@@ -49,6 +53,8 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
         $this->transformerAnswer = $transformerOutputAnswer;
         $this->transformerAnswerL10ns = $transformerOutputAnswerL10ns;
         $this->transformerSurveyOwner = $transformerOutputSurveyOwner;
+        $this->transformerOutputSurveyMenus = $transformerOutputSurveyMenus;
+        $this->transformerOutputSurveyMenuItems = $transformerOutputSurveyMenuItems;
         $this->questionService = $questionService;
     }
 
@@ -141,6 +147,20 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
         $survey['hasSurveyUpdatePermission'] = $data->hasPermission(
             'surveycontent',
             'update'
+        );
+
+        $surveyMenus = $this->transformerOutputSurveyMenus->transformAll(
+            $data->getSurveyMenus(),
+            $options
+        );
+        $survey['surveyMenus'] = $this->createCollectionLookup(
+            'name',
+            $surveyMenus
+        );
+        $this->transformSurveyMenuItems(
+            $survey['surveyMenus'],
+            $data->getSurveyMenus(),
+            $options
         );
         $survey['googleAnalyticsApiKeySetting'] = $data->getGoogleanalyticsapikeysetting();
         $survey['ownersList'] = array_map(function ($user) {
@@ -308,5 +328,32 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
             }
         }
         return $survey;
+    }
+
+    /**
+     * Transforms survey menu items and puts them into the main survey menus,
+     * organized by their unique names.
+     * @param array $menuLookup
+     * @param array $menus
+     * @param array $options
+     * @return void
+     */
+    private function transformSurveyMenuItems(
+        array $menuLookup,
+        array $menus,
+        array $options = []
+    ) {
+        foreach ($menus as $menuModel) {
+            $menu = &$menuLookup[$menuModel['name']];
+
+            $itemsLookup = $this->createCollectionLookup(
+                'name',
+                $menuModel['entries']
+            );
+            $menu['entries'] = $this->transformerOutputSurveyMenuItems->transformAll(
+                $itemsLookup,
+                $options
+            );
+        }
     }
 }
