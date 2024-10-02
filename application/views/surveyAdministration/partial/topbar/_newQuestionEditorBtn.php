@@ -19,7 +19,7 @@ if (isset($editorEnabled) && $editorEnabled && $editorUrl) {
             [
                 'name' => 'editor-link-button',
                 'id' => 'editor-link-button',
-                'text' => gT('Open in Limesurvey Editor'),
+                'text' => gT('Open in Limesurvey editor'),
                 'link' => '',
                 'htmlOptions' => [
                     'class' => 'btn btn-info',

@@ -499,15 +499,15 @@ var MushCodeRules = function () {
     this.$rules = {
         "start": [
             {
-                token: "variable",
+                token: "variable", // mush substitution register
                 regex: "%[0-9]{1}"
             },
             {
-                token: "variable",
+                token: "variable", // mush substitution register
                 regex: "%q[0-9A-Za-z]{1}"
             },
             {
-                token: "variable",
+                token: "variable", // mush special character register
                 regex: "%[a-zA-Z]{1}"
             },
             {
@@ -515,16 +515,16 @@ var MushCodeRules = function () {
                 regex: "%[a-z0-9-_]+"
             },
             {
-                token: "constant.numeric",
+                token: "constant.numeric", // imaginary
                 regex: "(?:" + floatNumber + "|\\d+)[jJ]\\b"
             }, {
-                token: "constant.numeric",
+                token: "constant.numeric", // float
                 regex: floatNumber
             }, {
-                token: "constant.numeric",
+                token: "constant.numeric", // long integer
                 regex: integer + "[lL]\\b"
             }, {
-                token: "constant.numeric",
+                token: "constant.numeric", // integer
                 regex: integer + "\\b"
             }, {
                 token: keywordMapper,

@@ -547,7 +547,7 @@ class SFTP extends SSH2
      */
     private function partial_init_sftp_connection()
     {
-        $response = $this->openChannel(self::CHANNEL, true);
+        $response = $this->open_channel(self::CHANNEL, true);
         if ($response === true && $this->isTimeout()) {
             return false;
         }
@@ -705,7 +705,8 @@ class SFTP extends SSH2
                 throw $e;
             }
             $this->canonicalize_paths = false;
-            $this->reset_connection(NET_SSH2_DISCONNECT_CONNECTION_LOST);
+            $this->reset_sftp();
+            return $this->init_sftp_connection();
         }
 
         $this->update_stat_cache($this->pwd, []);
@@ -2100,7 +2101,7 @@ class SFTP extends SSH2
      * @param callable|null $progressCallback
      * @throws \UnexpectedValueException on receipt of unexpected packets
      * @throws \BadFunctionCallException if you're uploading via a callback and the callback function is invalid
-     * @throws \phpseclib3\Exception\FileNotFoundException if you're uploading via a file and the file doesn't exist
+     * @throws FileNotFoundException if you're uploading via a file and the file doesn't exist
      * @return bool
      */
     public function put($remote_file, $data, $mode = self::SOURCE_STRING, $start = -1, $local_start = -1, $progressCallback = null)
@@ -2129,8 +2130,8 @@ class SFTP extends SSH2
             $offset = $start;
         } elseif ($mode & (self::RESUME | self::RESUME_START)) {
             // if NET_SFTP_OPEN_APPEND worked as it should _size() wouldn't need to be called
-            $size = $this->stat($remote_file)['size'];
-            $offset = $size !== false ? $size : 0;
+            $stat = $this->stat($remote_file);
+            $offset = $stat !== false && $stat['size'] ? $stat['size'] : 0;
         } else {
             $offset = 0;
             if ($this->version >= 5) {
@@ -3268,6 +3269,7 @@ class SFTP extends SSH2
         // in SSH2.php the timeout is cumulative per function call. eg. exec() will
         // timeout after 10s. but for SFTP.php it's cumulative per packet
         $this->curTimeout = $this->timeout;
+        $this->is_timeout = false;
 
         $packet = $this->use_request_id ?
             pack('NCNa*', strlen($data) + 5, $type, $request_id, $data) :
@@ -3285,17 +3287,23 @@ class SFTP extends SSH2
     }
 
     /**
-     * Resets a connection for re-use
-     *
-     * @param int $reason
+     * Resets the SFTP channel for re-use
      */
-    protected function reset_connection($reason)
+    private function reset_sftp()
     {
-        parent::reset_connection($reason);
         $this->use_request_id = false;
         $this->pwd = false;
         $this->requestBuffer = [];
         $this->partial_init = false;
+    }
+
+    /**
+     * Resets a connection for re-use
+     */
+    protected function reset_connection()
+    {
+        parent::reset_connection();
+        $this->reset_sftp();
     }
 
     /**
@@ -3324,6 +3332,7 @@ class SFTP extends SSH2
         // in SSH2.php the timeout is cumulative per function call. eg. exec() will
         // timeout after 10s. but for SFTP.php it's cumulative per packet
         $this->curTimeout = $this->timeout;
+        $this->is_timeout = false;
 
         $start = microtime(true);
 
@@ -3446,7 +3455,7 @@ class SFTP extends SSH2
     }
 
     /**
-     * Returns all errors
+     * Returns all errors on the SFTP layer
      *
      * @return array
      */
@@ -3456,7 +3465,7 @@ class SFTP extends SSH2
     }
 
     /**
-     * Returns the last error
+     * Returns the last error on the SFTP layer
      *
      * @return string
      */

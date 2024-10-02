@@ -142,6 +142,7 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
             'surveycontent',
             'update'
         );
+        $survey['googleAnalyticsApiKeySetting'] = $data->getGoogleanalyticsapikeysetting();
         $survey['ownersList'] = array_map(function ($user) {
             return ['value' => $user['uid'], 'label' => $user['user'] . ' - ' . $user['full_name']];
         }, getUserList());
@@ -282,9 +283,19 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
             'alloweditaftercompletion',
             'format',
             'template',
+            'datestamp',
+            'ipaddr',
+            'ipanonymize',
+            'refurl',
+            'savetimings',
+            'assessments',
+            'allowsave',
+            'emailnotificationto',
+            'emailresponseto',
+            'googleanalyticsapikey',
             'admin',
             'adminemail',
-            'bounce_email'
+            'bounce_email',
         ];
         foreach ($affectedSettings as $setting) {
             if (
