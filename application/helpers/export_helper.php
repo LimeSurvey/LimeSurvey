@@ -283,6 +283,7 @@ function SPSSExportData($iSurveyID, $iLength, $na = '', $sEmptyAnswerValue = '',
 */
 function SPSSGetValues($field, $qidattributes, $language)
 {
+    $question = Question::model()->findByPk($field['qid']);
     $language = sanitize_languagecode($language);
 
     $length_vallabel = 120; // Constant ?
@@ -326,7 +327,7 @@ function SPSSGetValues($field, $qidattributes, $language)
     if ($field['LStype'] == ':') {
         //Get the labels that could apply!
         if (is_null($qidattributes)) {
-            $qidattributes = QuestionAttribute::model()->getQuestionAttributes($field["qid"], $language);
+            $qidattributes = QuestionAttribute::model()->getQuestionAttributes($question, $language);
         }
 
         if ($qidattributes['multiflexible_checkbox']) {
@@ -445,7 +446,7 @@ function SPSSGetValues($field, $qidattributes, $language)
         // For questions types with answer options, if all answer codes are numeric but "Other" option is enabled,
         // field should be exported as SPSS type 'A', size 6. See issue #16939
         if (strpos("!LORFH1", (string) $field['LStype']) !== false && $spsstype == 'F') {
-            $oQuestion = Question::model()->findByPk($field["qid"]);
+            $oQuestion = $question;
             if ($oQuestion->other == 'Y') {
                 $spsstype = 'A';
                 $size = 6;
@@ -543,6 +544,22 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V', $sLanguage = '')
     $diff = 0;
     $noQID = array('id', 'token', 'datestamp', 'submitdate', 'startdate', 'startlanguage', 'ipaddr', 'refurl', 'lastpage','seed');
     # Build array that has to be returned
+
+    $qids = [0];
+    for ($i = 0; $i < $num_results; $i++) {
+        if (!((in_array($fieldnames[$i], $noQID) || substr($fieldnames[$i], 0, 10) == 'attribute_')) && isset($fieldmap[$fieldnames[$i]])) {
+            $qids[] = $fieldmap[$fieldnames[$i]]['qid'];
+        }
+    }
+
+    $rawQuestions = Question::model()->findAllByPk($qids);
+
+    $questions = [];
+
+    foreach ($rawQuestions as $rawQuestion) {
+        $questions[$rawQuestion->qid] = $rawQuestion;
+    }
+
     for ($i = 0; $i < $num_results; $i++) {
         #Condition for SPSS fields:
         # - Length may not be longer than 8 characters
@@ -654,7 +671,7 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V', $sLanguage = '')
                     $export_scale = $typeMap[$ftype]['Scale'];
                 }
                 //But allow override
-                $aQuestionAttribs = QuestionAttribute::model()->getQuestionAttributes($qid, $sLanguage);
+                $aQuestionAttribs = QuestionAttribute::model()->getQuestionAttributes($questions[$qid] ?? $qid, $sLanguage);
                 if (isset($aQuestionAttribs['scale_export'])) {
                     $export_scale = $aQuestionAttribs['scale_export'];
                 }
@@ -1546,14 +1563,14 @@ function quexml_set_default_value(&$element, $iResponseID, $qid, $iSurveyID, $fi
  * Format defaultValue of Date/Time questions according to question date format
  *
  * @param mixed $element DOM element with the date to change
- * @param int $qid The qid of the question
+ * @param int|Question $question The qid of the question
  * @param int $iSurveyID The survey ID
  * @return void
  */
-function quexml_reformat_date(DOMElement $element, $qid, $iSurveyID)
+function quexml_reformat_date(DOMElement $element, $question, $iSurveyID)
 {
     // Retrieve date format from the question
-    $questionAttributes = QuestionAttribute::model()->getQuestionAttributes($qid);
+    $questionAttributes = QuestionAttribute::model()->getQuestionAttributes($question);
     $dateformatArr = getDateFormatDataForQID($questionAttributes, $iSurveyID);
     $dateformat = $dateformatArr['phpdate'];
 
@@ -1798,6 +1815,18 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false)
             ->order('question_order ASC')
             ->queryAll();
 
+        $ids = [0];
+        foreach ($Rows as $RowQ) {
+            $ids[] = $RowQ['qid'];
+        }
+
+        $rawQuestions = Question::model()->findAllByPk($ids);
+
+        $questions = [];
+        foreach ($rawQuestions as $rawQuestion) {
+            $questions['qid'] = $rawQuestion;
+        }
+
         foreach ($Rows as $RowQ) {
             $type = $RowQ['type'];
             $qid = $RowQ['qid'];
@@ -1894,7 +1923,7 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false)
                         $response->appendChild(QueXMLCreateFree("date", "19", ""));
                         quexml_set_default_value($response, $iResponseID, $qid, $iSurveyID, $fieldmap);
                         if (Yii::app()->getConfig('quexmlkeepsurveydateformat') == true) {
-                            quexml_reformat_date($response, $qid, $iSurveyID);
+                            quexml_reformat_date($response, $questions[$qid] ?? $qid, $iSurveyID);
                         }
                         $question->appendChild($response);
                         break;
