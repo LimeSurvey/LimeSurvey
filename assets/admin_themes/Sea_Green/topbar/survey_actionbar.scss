@@ -1,5 +1,12 @@
 .survey-actionbar {
     padding: 16px 10px;
+
+    .survey-actionbar-title {
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 20px;
+      color: $g-800;
+    }
     .survey-actionbar-item {
         display : inline-block;
         &:not(:first-child) {
@@ -9,6 +16,7 @@
     .survey-actionbar-button {
         border-width  : 2px;
         border-radius : 5px;
+        margin-bottom: 4px;
         :hover {
             box-shadow : none;
         }
@@ -40,7 +48,7 @@
                 opacity   : 0.8;
             }
             &:not(:first-child) {
-                margin-left : 8px;
+                margin-left : 16px;
             }
         }
     }

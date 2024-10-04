@@ -243,9 +243,9 @@ gT('Themes');
                     'switch' => true,
                     'items'  => [
                         [
-                            'type'  => 0,
-                            'model' => Survey::model(),
-                            'limit' => 15,
+//                            'type'  => 0,
+//                            'model' => Survey::model(),
+//                            'limit' => 15,
                         ],
                     ]
                 ]);

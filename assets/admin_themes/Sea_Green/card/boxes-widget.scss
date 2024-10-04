@@ -20,7 +20,7 @@
         .box-widget-card-header {
             cursor : pointer;
             .box-widget-card-title {
-                height             : 48px;
+                //height             : 48px;
                 display            : -webkit-box;
                 -webkit-line-clamp : 2;
                 -webkit-box-orient : vertical;
@@ -36,9 +36,29 @@
         }
         .box-widget-card-text {
           cursor : pointer;
-            [class^=ri-], [class*=" ri-"] {
-                vertical-align: 0;
+          margin-top: 6px;
+          [class^=ri-], [class*=" ri-"] {
+              vertical-align: 0;
+          }
+          .box-widget-card-date {
+            font-size: 12px;
+            line-height: 16px;
+            color: $g-700;
+          }
+          .box-widget-card-status {
+            margin-top: 4px;
+            font-size: 12px;
+            line-height: 14px;
+            color: $g-700;
+            i:before {
+              display   : inline-block;
+              width     : 16px;
+              height    : 16px;
+              font-size: 1.1em;
+              align-content: end;
+              text-align: center;
             }
+          }
         }
         .box-widget-card-footer {
             display         : flex;
@@ -50,6 +70,11 @@
                 display         : flex;
                 justify-content : space-between;
                 align-items     : baseline;
+              .box-widget-card-footer-response {
+                font-size: 14px;
+                line-height: 20px;
+                color: $g-700;
+              }
             }
             .icons {
                 display    : inline-flex;
@@ -58,10 +83,17 @@
                 a.active {
                     color   : $purple;
                     outline : none;
+                    i:before {
+                      display   : inline-block;
+                      width     : 24px;
+                      height    : 24px;
+                      font-size : 0.9em;
+                    }
                 }
                 .dropdown.ls-action_dropdown {
                     margin  : 0;
                     padding : 0;
+                    margin-left: 8px;
                     width   : 32px;
                 }
                 .dropdown.ls-action_dropdown button,
@@ -71,8 +103,16 @@
                 }
                 .dropdown.ls-action_dropdown button i:before {
                     display   : inline-block;
-                    font-size : 1em;
+                    width     : 24px;
+                    height    : 24px;
+                    font-size : 0.9em;
+                    color     : $g-700;
                 }
+              .ls-dropdown-toggle {
+                width     : 24px;
+                height    : 24px;
+                background-color: white;
+              }
             }
         }
     }
@@ -92,6 +132,16 @@
           flex-direction: row;
           align-items: center;
           justify-content: center;
+          font-size: 16px;
+          font-weight: 500;
+          line-height: 20px;
+          i:before {
+            display: block;
+            color: green;
+            padding-right: 4px;
+            width: 20px;
+            height: 20px;
+          }
         }
         .box-widget-card {
             border : solid $g-700 3px;

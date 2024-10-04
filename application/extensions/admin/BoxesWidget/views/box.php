@@ -1,5 +1,5 @@
 <?php
-
+    include_once './application/extensions/admin/BoxesWidget/BoxesWidget.php';
     /**
     * Renders a list of items as widget cards. Each item can be a survey box/card or a link box/card.
     *
@@ -32,7 +32,6 @@
     *     ]
     * ];
     */
-
 ?>
 <?php if (!empty($items)) : ?>
     <?php foreach ($items as $item) : ?>
@@ -46,16 +45,16 @@
                         </div>
                     </div>
                     <div class="box-widget-card-text">
-                        <div>
+                        <div class="box-widget-card-date">
                             <?= $item['survey']->creationdate ?>
                         </div>
-                        <div>
+                        <div class="box-widget-card-status">
                             <?= $item['survey']->getRunning() ?>
                         </div>
                     </div>
                     <div class="box-widget-card-footer">
                         <div class="box-widget-card-footer-items">
-                            <div>
+                            <div class="box-widget-card-footer-response">
                                 <?php echo $item['survey']->countFullAnswers == 0 ? 'No' : $item['survey']->countFullAnswers ?> responses
                             </div>
                             <div class="icons">
@@ -86,7 +85,7 @@
                                        data-bs-toggle="tooltip"
                                        data-bs-original-title="<?= gT('Statistics') ?>"
                                     >
-                                        <i class="ri-line-chart-line"></i>
+                                        <i class="ri-bar-chart-2-line"></i>
                                     </a>
                                 <?php endif; ?>
 

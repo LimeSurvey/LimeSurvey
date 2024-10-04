@@ -15,7 +15,7 @@
         <div class="d-flex align-items-baseline">
 
             <!-- select state -->
-            <h2><?php eT('All surveys'); ?></h2>
+            <p class="survey-actionbar-title"><?php eT('All surveys'); ?></p>
             <?php if ($this->onlyfilter) : ?>
                 <div class="survey-actionbar-filters">
                     <div class="survey-actionbar-item">
