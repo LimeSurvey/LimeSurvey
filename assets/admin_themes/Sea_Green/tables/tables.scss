@@ -229,6 +229,7 @@ table {
         display: flex;
         justify-content: space-between;
         margin-top: $grid-gutter-width;
+        flex-flow: wrap;
         .massive-action-container,
         .pagination-container,
         .summary-container {
@@ -258,4 +259,11 @@ table {
         text-align: left;
         padding-bottom: 15px;
     }
+}
+@media (max-width: 768px) {
+  .grid-view-ls-footer {
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: center;
+  }
 }

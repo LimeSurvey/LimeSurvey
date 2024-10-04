@@ -19138,6 +19138,7 @@ table [class^=ri-], table [class*=" ri-"] {
   display: flex;
   justify-content: space-between;
   margin-top: 24px;
+  flex-flow: wrap;
 }
 .grid-view .grid-view-ls-footer .massive-action-container,
 .grid-view .grid-view-ls-footer .pagination-container,
@@ -19169,6 +19170,13 @@ table [class^=ri-], table [class*=" ri-"] {
   padding-bottom: 15px;
 }
 
+@media (max-width: 768px) {
+  .grid-view-ls-footer {
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: center;
+  }
+}
 .pagination {
   margin: 0;
 }
