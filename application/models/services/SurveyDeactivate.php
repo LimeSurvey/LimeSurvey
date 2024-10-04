@@ -18,7 +18,12 @@ class SurveyDeactivate
     private Permission $permission;
     private SurveyDeactivator $surveyDeactivator;
     private LSYii_Application $app;
+    /** @Inject("archivedTokenSettings") */
     private ArchivedTableSettings $archivedTokenSettings;
+    /** @Inject("archivedTimingsSettings") */
+    private ArchivedTableSettings $archivedTimingsSettings;
+    /** @Inject("archivedResponseSettings") */
+    private ArchivedTableSettings $archivedResponseSettings;
     private SurveyLink $surveyLink;
     private SavedControl $savedControl;
 
@@ -27,7 +32,6 @@ class SurveyDeactivate
         Permission $permission,
         SurveyDeactivator $surveyDeactivator,
         LSYii_Application $app,
-        ArchivedTableSettings $archivedTokenSettings,
         SurveyLink $surveyLink,
         SavedControl $savedControl
     ) {
@@ -35,7 +39,6 @@ class SurveyDeactivate
         $this->permission = $permission;
         $this->surveyDeactivator = $surveyDeactivator;
         $this->app = $app;
-        $this->archivedTokenSettings = $archivedTokenSettings;
         $this->surveyLink = $surveyLink;
         $this->savedControl = $savedControl;
     }
@@ -141,12 +144,8 @@ class SurveyDeactivate
             'token',
             $DBDate,
             $aData['aSurveysettings']['tokenencryptionoptions'],
-            json_decode(
-                json_encode($aData['aSurveysettings']['attributedescriptions']),
-                true
-            )
+            json_encode($aData['aSurveysettings']['attributedescriptions'])
         );
-        $this->archivedTokenSettings->save();
 
         $aData['tnewtable'] = $tnewtable;
         $aData['toldtable'] = $toldtable;
@@ -161,21 +160,35 @@ class SurveyDeactivate
      * @param string $tableType
      * @param string $DBDate
      * @param string $properties
-     * @param ?array $attributes JSON encoded attributes
+     * @param string $attributes JSON encoded attributes
      * @return void
+     * @throws \InvalidArgumentException
      */
     protected function archiveTable($iSurveyID, $userID, $tableName, $tableType, $DBDate, $properties, $attributes = null)
     {
-        $this->archivedTokenSettings->survey_id = $iSurveyID;
-        $this->archivedTokenSettings->user_id = $userID;
-        $this->archivedTokenSettings->tbl_name = $tableName;
-        $this->archivedTokenSettings->tbl_type = $tableType;
-        $this->archivedTokenSettings->created = $DBDate;
-        $this->archivedTokenSettings->properties = $properties;
-        if ($attributes) {
-            $this->archivedTokenSettings->attributes = $attributes;
+        switch ($tableType) {
+            case 'token':
+                $model = $this->archivedTokenSettings;
+                break;
+            case 'timings':
+                $model = $this->archivedTimingsSettings;
+                break;
+            case 'response':
+                $model = $this->archivedResponseSettings;
+                break;
+            default:
+                throw new \InvalidArgumentException('Unknown table type: ' . $tableType);
         }
-        $this->archivedTokenSettings->save();
+        $model->survey_id = $iSurveyID;
+        $model->user_id = $userID;
+        $model->tbl_name = $tableName;
+        $model->tbl_type = $tableType;
+        $model->created = $DBDate;
+        $model->properties = $properties;
+        if ($attributes) {
+            $model->attributes = $attributes;
+        }
+        $model->save();
     }
 
     /**

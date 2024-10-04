@@ -143,12 +143,6 @@ class TemplateConfiguration extends TemplateConfig
         );
     }
 
-    /** @inheritdoc */
-    public function defaultScope()
-    {
-        return array('order' => App()->db->quoteColumnName($this->getTableAlias(false, false) . '.template_name'));
-    }
-
     /**
      * @todo document me
      *
@@ -437,7 +431,7 @@ class TemplateConfiguration extends TemplateConfig
         $criteria->compare('packages_to_load', $this->packages_to_load, true);
 
         return new CActiveDataProvider($this, array(
-            'criteria' => $criteria,
+            'criteria' => $criteria
         ));
     }
 
@@ -501,6 +495,9 @@ class TemplateConfiguration extends TemplateConfig
             'criteria' => $criteria,
             'pagination' => array(
                 'pageSize' => $pageSizeTemplateView,
+            ),
+            'sort' => array(
+                'defaultOrder' => 'template_name ASC' // Set default order here
             ),
         ));
     }
@@ -1471,7 +1468,17 @@ class TemplateConfiguration extends TemplateConfig
             if ($sAttribute === 'inherit') {
                 // NOTE: this is object recursive (if parent configuration field is set to inherit,
                 // then it will lead to this method again.)
-                $sAttribute = $this->getParentConfiguration()->$name;
+                $oParentConfiguration = $this->getParentConfiguration();
+                /**
+                 * We check if $oParentConfiguration is the same as $this because if it is, $oParentConfiguration->$name will
+                 * try to directly access the property instead of calling the magic method, and it will fail for dynamic properties.
+                 * @todo: Review the behavior of getParentConfiguration(). Returning the same object seems to be a bug.
+                 */
+                if ($oParentConfiguration !== $this) {
+                    $sAttribute = $oParentConfiguration->$name;
+                } else {
+                    $sAttribute = $oParentConfiguration->getAttribute($name);
+                }
             }
         } else {
             $sAttribute = parent::__get($name);
