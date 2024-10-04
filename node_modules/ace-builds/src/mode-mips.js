@@ -38,7 +38,7 @@ var MIPSHighlightRules = function () {
                 regex: /\bsyscall\b/,
                 comment: "Other"
             }, {
-                token: "string", // character
+                token: "string",
                 regex: "(?:'\")(?:" + escapeRe + "|.)?(?:'\")"
             }, {
                 token: "string.start",

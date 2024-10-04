@@ -74,7 +74,7 @@ var CssHighlightRules = function () {
                     + "|swash|ornaments|annotation|stylistic|styleset|character-variant)"
             }],
         "comments": [{
-                token: "comment", // multi line comment
+                token: "comment",
                 regex: "\\/\\*",
                 push: [{
                         token: "comment",
@@ -103,10 +103,10 @@ var CssHighlightRules = function () {
                 token: "constant.numeric",
                 regex: numRe
             }, {
-                token: "constant.numeric", // hex6 color
+                token: "constant.numeric",
                 regex: "#[a-f0-9]{6}"
             }, {
-                token: "constant.numeric", // hex3 color
+                token: "constant.numeric",
                 regex: "#[a-f0-9]{3}"
             }, {
                 token: ["punctuation", "entity.other.attribute-name.pseudo-element.css"],
@@ -119,9 +119,6 @@ var CssHighlightRules = function () {
             }, {
                 token: keywordMapper,
                 regex: "\\-?[a-zA-Z_][a-zA-Z0-9_\\-]*"
-            }, {
-                token: "paren.lparen",
-                regex: "\\{"
             }, {
                 caseInsensitive: true
             }],
@@ -213,31 +210,31 @@ var ScssHighlightRules = function () {
                 regex: "\\/\\/.*$"
             },
             {
-                token: "comment", // multi line comment
+                token: "comment",
                 regex: "\\/\\*",
                 next: "comment"
             }, {
-                token: "string", // single line
+                token: "string",
                 regex: '["](?:(?:\\\\.)|(?:[^"\\\\]))*?["]'
             }, {
-                token: "string", // multi line string start
+                token: "string",
                 regex: '["].*\\\\$',
                 next: "qqstring"
             }, {
-                token: "string", // single line
+                token: "string",
                 regex: "['](?:(?:\\\\.)|(?:[^'\\\\]))*?[']"
             }, {
-                token: "string", // multi line string start
+                token: "string",
                 regex: "['].*\\\\$",
                 next: "qstring"
             }, {
                 token: "constant.numeric",
                 regex: numRe + "(?:ch|cm|deg|em|ex|fr|gd|grad|Hz|in|kHz|mm|ms|pc|pt|px|rad|rem|s|turn|vh|vmax|vmin|vm|vw|%)"
             }, {
-                token: "constant.numeric", // hex6 color
+                token: "constant.numeric",
                 regex: "#[a-f0-9]{6}"
             }, {
-                token: "constant.numeric", // hex3 color
+                token: "constant.numeric",
                 regex: "#[a-f0-9]{3}"
             }, {
                 token: "constant.numeric",
@@ -296,7 +293,7 @@ var ScssHighlightRules = function () {
         ],
         "comment": [
             {
-                token: "comment", // closing comment
+                token: "comment",
                 regex: "\\*\\/",
                 next: "start"
             }, {
@@ -383,7 +380,10 @@ var Range = require("../../range").Range;
 var FoldMode = exports.FoldMode = function () { };
 oop.inherits(FoldMode, BaseFoldMode);
 (function () {
-    this.commentBlock = function (session, row) {
+    this.getFoldWidgetRange = function (session, foldStyle, row) {
+        var range = this.indentationBlock(session, row);
+        if (range)
+            return range;
         var re = /\S/;
         var line = session.getLine(row);
         var startLevel = line.search(re);
@@ -406,14 +406,6 @@ oop.inherits(FoldMode, BaseFoldMode);
             var endColumn = session.getLine(endRow).length;
             return new Range(startRow, startColumn, endRow, endColumn);
         }
-    };
-    this.getFoldWidgetRange = function (session, foldStyle, row) {
-        var range = this.indentationBlock(session, row);
-        if (range)
-            return range;
-        range = this.commentBlock(session, row);
-        if (range)
-            return range;
     };
     this.getFoldWidget = function (session, foldStyle, row) {
         var line = session.getLine(row);

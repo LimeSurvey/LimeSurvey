@@ -131,14 +131,14 @@ var RDocHighlightRules = function () {
                 token: "comment",
                 regex: "%.*$"
             }, {
-                token: "text", // non-command
+                token: "text",
                 regex: "\\\\[$&%#\\{\\}]"
             }, {
-                token: "keyword", // command
+                token: "keyword",
                 regex: "\\\\(?:name|alias|method|S3method|S4method|item|code|preformatted|kbd|pkg|var|env|option|command|author|email|url|source|cite|acronym|href|code|preformatted|link|eqn|deqn|keyword|usage|examples|dontrun|dontshow|figure|if|ifelse|Sexpr|RdOpts|inputencoding|usepackage)\\b",
                 next: "nospell"
             }, {
-                token: "keyword", // command
+                token: "keyword",
                 regex: "\\\\(?:[a-zA-Z0-9]+|[^a-zA-Z0-9])"
             }, {
                 token: "paren.keyword.operator",
@@ -157,13 +157,13 @@ var RDocHighlightRules = function () {
                 regex: "%.*$",
                 next: "start"
             }, {
-                token: "nospell.text", // non-command
+                token: "nospell.text",
                 regex: "\\\\[$&%#\\{\\}]"
             }, {
-                token: "keyword", // command
+                token: "keyword",
                 regex: "\\\\(?:name|alias|method|S3method|S4method|item|code|preformatted|kbd|pkg|var|env|option|command|author|email|url|source|cite|acronym|href|code|preformatted|link|eqn|deqn|keyword|usage|examples|dontrun|dontshow|figure|if|ifelse|Sexpr|RdOpts|inputencoding|usepackage)\\b"
             }, {
-                token: "keyword", // command
+                token: "keyword",
                 regex: "\\\\(?:[a-zA-Z0-9]+|[^a-zA-Z0-9])",
                 next: "start"
             }, {
