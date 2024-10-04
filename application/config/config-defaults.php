@@ -685,6 +685,13 @@ $config['mysqlEngine'] = "MyISAM";
  */
 $config['defaultfixedtheme'] = 'vanilla';
 
+/**
+ * Use default site admin email (siteadminemail) for mailto link in error page
+ * Disable to shown only the administrator name. Default to avoid more spam on administration email.
+ * @var boolean
+ */
+$config['showEmailInError'] = false;
+
 // === Advanced Setup
 //The following url and dir locations do not need to be modified unless you have a non-standard
 //LimeSurvey installation. Do not change unless you know what you are doing.

@@ -34,6 +34,48 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.6.5 (build 240924) to 6.6.6 (build 241002) October 2, 2024
+-Fixed issue: [security] XSS when using MSSQL server as database backend (Carsten Schmitz)
+-Fixed issue #19700: [security] Invalid DB value can be entered with start URL (#3974) (Denis Chenu)
+#Updated translation: Luxembourgish by c_schmitz
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz, evi3636
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Catalan by qualitatuvic
+
+
+Changes from 6.6.4 (build 240923) to 6.6.5 (build 240924) September 24, 2024
+Fixed issue: multiple choice question cannot be answered if "other" option has been enabled
+
+Changes from 6.6.3 (build 240909) to 6.6.4 (build 240923) September 23, 2024
++New feature #19722: Unable to use ExpressionScript code when export by remote control (#3948) (Denis Chenu)
+-Fixed issue #CR-1447:  Empty strpos() needle while importing answers to responses in debug mode (#3964) (Rami Shenouda)
+-Fixed issue #19750: [security] Server-Side Request Forgery attack on SPSS export style settings (#3966) (Denis Chenu)
+-Fixed issue #19744: showEmailInError missing documentation (#3969) (Denis Chenu)
+-Fixed issue #19700: [security] Invalid DB value can be entered with start URL (#3953) (Denis Chenu)
+-Fixed issue #19677: Conversion from comma to point fails (#3941) (Gabriel Jenik)
+-Fixed issue #19662: Improve .htaccess files to work with apache 2.4 w/o mod_access_compat (#3927) (Johannes Weberhofer)
+-Fixed issue #19659: Conditions based on {LANG} variable fail (#3944) (Denis Chenu)
+-Fixed issue #19658: Condition designer - first option in Multiple short text (Type: Q) question is always assigned predefined (No Answer) value (#3939) (Gabriel Jenik)
+-Fixed issue #19643: Date question with restrictions does not show up like in versions 3 and 5 (#3912) (Gabriel Jenik)
+-Fixed issue #19617: No way to get question text in get_question_properties (#3949) (Denis Chenu)
+-Fixed issue #19587: The theme option 'Background image' has a space in the name, so the image can't be loaded (#3940) (Gabriel Jenik)
+-Fixed issue #19519: When re-activating a token based survey the user is not asked to re-activate the token table (#3943) (Gabriel Jenik)
+#Updated translation: Slovak by jelen1
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Japanese by nomoto
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
 Changes from 6.6.2 (build 240827) to 6.6.3 (build 240909) September 9, 2024
 -Fixed issue: image select question, select button outside of image in certain sizes of the screen, image and column (Patrick Teichmann)
 -Fixed issue: Unable to open Quick statistics on non-MySQL databases (Carsten Schmitz)

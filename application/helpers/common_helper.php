@@ -1006,8 +1006,10 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage)
                     // issue #15685 mssql SAVE 0.01 AS .0100000000, set it at 0.0100000000
                     $sValue = "0" . $sValue;
                 }
-                if (trim($sValue) !== '' && strpos($sValue, ".") !== false) {
+                if (trim($sValue) != '') {
+                    if (strpos($sValue, ".") !== false) {
                         $sValue = rtrim(rtrim($sValue, "0"), ".");
+                    }
                 }
                 break;
             case Question::QT_L_LIST:
