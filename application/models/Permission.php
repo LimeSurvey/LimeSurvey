@@ -586,6 +586,13 @@ class Permission extends LSActiveRecord
                 ),
                 $bPermission
             );
+            /* get it by roles if exist */
+            $aRolesList = CHtml::listData(self::getUserRole($iUserID), 'ptid', 'ptid');
+            if ($aRolesList) {
+                /* Do it only for read and create : roles can remove permission */
+                $aPermissionStatic[0]['global'][$iUserID]['superadmin']['read_p'] = self::getPermissionByRoles($aRolesList, 'superadmin', 'read');
+                $aPermissionStatic[0]['global'][$iUserID]['superadmin']['create_p'] = self::getPermissionByRoles($aRolesList, 'superadmin', 'create');
+            }
         }
         /* If it's a superadmin Permission : get and return */
         if ($sPermission == 'superadmin') {
@@ -611,11 +618,6 @@ class Permission extends LSActiveRecord
         }
 
         /* Check in permission DB and static it */
-        // TODO: that should be the only way to get the permission,
-        // and it should be accessible from any object with relations :
-        // $obj->permissions->read or $obj->permissions->write, etc.
-        // relation :
-        // 'permissions' => array(self::HAS_ONE, 'Permission', array(), 'condition'=> 'entity_id='.{ENTITYID}.' && uid='.Yii::app()->user->id.' && entity="{ENTITY}" && permission="{PERMISSIONS}"', 'together' => true ),
         if (!isset($aPermissionStatic[$iEntityID][$sEntityName][$iUserID][$sPermission][$sCRUD])) {
             $query = $this->findByAttributes(array("entity_id" => $iEntityID, "uid" => $iUserID, "entity" => $sEntityName, "permission" => $sPermission));
             $bPermission = is_null($query) ? array() : $query->attributes;
@@ -796,6 +798,23 @@ class Permission extends LSActiveRecord
     public static function getUserRole($iUserID)
     {
         return UserInPermissionrole::model()->getRoleForUser($iUserID);
+    }
+
+    /**
+     * get permission by user roles
+     * @param integer[] $rolesIds array of roles id
+     * @param string $permission;
+     * @param string $crud
+     * @return boolean
+     */
+    public static function getPermissionByRoles($rolesIds, $permission, $crud = 'read')
+    {
+        $criteria = new CDbCriteria();
+        $criteria->compare("entity", "role");
+        $criteria->compare("permission", $permission);
+        $criteria->addInCondition('entity_id', $rolesIds);
+        $criteria->compare($crud . '_p', 1);
+        return boolval(self::model()->count($criteria));
     }
 
     /**
