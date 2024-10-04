@@ -99,7 +99,7 @@ class RemoteControl extends SurveyCommonAction
     public function test()
     {
         // Enable if you want to test this function
-        $enabled = true;
+        $enabled = false;
         if ($enabled) {
             $RPCType = Yii::app()->getConfig("RPCInterface");
             $serverUrl = App()->createAbsoluteUrl('/admin/remotecontrol');
