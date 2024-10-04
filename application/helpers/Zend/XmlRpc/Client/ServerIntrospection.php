@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Zend Framework
  *
@@ -16,9 +15,9 @@
  * @category   Zend
  * @package    Zend_XmlRpc
  * @subpackage Client
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: ServerIntrospection.php 23775 2011-03-01 17:25:24Z ralph $
+ * @version    $Id$
  */
 
 /**
@@ -27,7 +26,7 @@
  * @category   Zend
  * @package    Zend_XmlRpc
  * @subpackage Client
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_XmlRpc_Client_ServerIntrospection
@@ -85,15 +84,15 @@ class Zend_XmlRpc_Client_ServerIntrospection
             $methods = $this->listMethods();
         }
 
-        $multicallParams = array();
+        $multicallParams = [];
         foreach ($methods as $method) {
-            $multicallParams[] = array('methodName' => 'system.methodSignature',
-                                        'params'     => array($method));
+            $multicallParams[] = ['methodName' => 'system.methodSignature',
+                                       'params'     => [$method]];
         }
 
         $serverSignatures = $this->_system->multicall($multicallParams);
 
-        if (!is_array($serverSignatures)) {
+        if (! is_array($serverSignatures)) {
             $type = gettype($serverSignatures);
             $error = "Multicall return is malformed.  Expected array, got $type";
             require_once 'Zend/XmlRpc/Client/IntrospectException.php';
@@ -107,7 +106,7 @@ class Zend_XmlRpc_Client_ServerIntrospection
         }
 
         // Create a new signatures array with the methods name as keys and the signature as value
-        $signatures = array();
+        $signatures = [];
         foreach ($serverSignatures as $i => $signature) {
             $signatures[$methods[$i]] = $signature;
         }
@@ -128,7 +127,7 @@ class Zend_XmlRpc_Client_ServerIntrospection
             $methods = $this->listMethods();
         }
 
-        $signatures = array();
+        $signatures = [];
         foreach ($methods as $method) {
             $signatures[$method] = $this->getMethodSignature($method);
         }
@@ -156,10 +155,12 @@ class Zend_XmlRpc_Client_ServerIntrospection
     /**
      * Call system.listMethods()
      *
+     * @param  array  $method
      * @return array  array(method, method, method...)
      */
     public function listMethods()
     {
         return $this->_system->listMethods();
     }
+
 }

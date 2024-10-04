@@ -40,7 +40,7 @@ interface Zend_Http_Client_Adapter_Interface
      *
      * @param array $config
      */
-    public function setConfig($config = array());
+    public function setConfig($config = []);
 
     /**
      * Connect to the remote server
@@ -61,7 +61,7 @@ interface Zend_Http_Client_Adapter_Interface
      * @param string        $body
      * @return string Request as text
      */
-    public function write($method, $url, $http_ver = '1.1', $headers = array(), $body = '');
+    public function write($method, $url, $http_ver = '1.1', $headers = [], $body = '');
 
     /**
      * Read response from server

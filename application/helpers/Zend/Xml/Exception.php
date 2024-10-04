@@ -13,19 +13,24 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_Stdlib
+ * @package    Zend_Xml
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @version    $Id$
  */
 
+
 /**
- * Marker interface for Stdlib exceptions
- *
+ * @see Zend_Exception
+ */
+require_once 'Zend/Exception.php';
+
+
+/**
  * @category   Zend
- * @package    Zend_Stdlib
+ * @package    Zend_Xml
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-interface Zend_Stdlib_Exception
-{
-}
+class Zend_Xml_Exception extends Zend_Exception
+{}
