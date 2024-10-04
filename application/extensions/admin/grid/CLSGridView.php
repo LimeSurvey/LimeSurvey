@@ -228,6 +228,8 @@ class CLSGridView extends TbGridView
         if (
             empty($columnsSelected)
             && $this->ajaxUpdate === $ajaxUpdate
+            // Preserve selected column parameters during sorting
+            // The current sorting AJAX request resets the selected grid view columns
             && App()->request->getQuery('sort') == null
         ) {
             SettingsUser::deleteUserSetting('gridview_columns_' . $this->ajaxUpdate);
