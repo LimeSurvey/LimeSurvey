@@ -77,7 +77,7 @@
             {% block endurl %}
             {# NOTE: not very clear what the old replacement keyword {URL} was doing  #}
             {% if (aSurveyInfo.aCompleted.sSurveylsUrl) %}
-                <a href="{{ aSurveyInfo.aCompleted.sSurveylsUrl }}">{{ aSurveyInfo.aCompleted.sSurveylsUrlDescription }}</a>
+                <a href="{{ str_replace('"', '%22', aSurveyInfo.aCompleted.sSurveylsUrl) }}">{{ aSurveyInfo.aCompleted.sSurveylsUrlDescription }}</a>
             {% endif %}
             {% endblock %}
         </div>
