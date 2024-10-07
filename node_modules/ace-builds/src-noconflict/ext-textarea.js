@@ -1,6 +1,7 @@
-ace.define("ace/ext/textarea",["require","exports","module","ace/lib/event","ace/lib/useragent","ace/ace"], function(require, exports, module){"use strict";
+ace.define("ace/ext/textarea",["require","exports","module","ace/lib/event","ace/lib/useragent","ace/lib/net","ace/ace"], function(require, exports, module){"use strict";
 var event = require("../lib/event");
 var UA = require("../lib/useragent");
+var net = require("../lib/net");
 var ace = require("../ace");
 module.exports = exports = ace;
 var getCSSProperty = function (element, container, property) {
@@ -41,7 +42,7 @@ function setupContainer(element, getValue) {
         var height = getCSSProperty(element, container, 'height') || (element.clientHeight + "px");
         style += 'height:' + height + ';width:' + width + ';';
         style += 'display:inline-block;';
-        container.style.cssText = style;
+        container.setAttribute('style', style);
     };
     event.addListener(window, 'resize', resizeEvent);
     resizeEvent();
@@ -140,7 +141,7 @@ exports.transformTextarea = function (element, options) {
             editor.setDisplaySettings();
             return;
         }
-        container.style.zIndex = "100000";
+        container.style.zIndex = 100000;
         var rect = container.getBoundingClientRect();
         var startX = rect.width + rect.left - e.clientX;
         var startY = rect.height + rect.top - e.clientY;
@@ -152,7 +153,14 @@ exports.transformTextarea = function (element, options) {
     });
     return editor;
 };
+function load(url, module, callback) {
+    net.loadScript(url, function () {
+        require([module], callback);
+    });
+}
 function setupApi(editor, editorDiv, settingDiv, ace, options) {
+    var session = editor.getSession();
+    var renderer = editor.renderer;
     function toBool(value) {
         return value === "true" || value == true;
     }

@@ -216,28 +216,28 @@ var OcamlHighlightRules = function () {
                 next: "comment"
             },
             {
-                token: "string", // single line
+                token: "string",
                 regex: '["](?:(?:\\\\.)|(?:[^"\\\\]))*?["]'
             },
             {
-                token: "string", // single char
+                token: "string",
                 regex: "'.'"
             },
             {
-                token: "string", // " string
+                token: "string",
                 regex: '"',
                 next: "qstring"
             },
             {
-                token: "constant.numeric", // imaginary
+                token: "constant.numeric",
                 regex: "(?:" + floatNumber + "|\\d+)[jJ]\\b"
             },
             {
-                token: "constant.numeric", // float
+                token: "constant.numeric",
                 regex: floatNumber
             },
             {
-                token: "constant.numeric", // integer
+                token: "constant.numeric",
                 regex: integer + "\\b"
             },
             {
@@ -263,7 +263,7 @@ var OcamlHighlightRules = function () {
         ],
         "comment": [
             {
-                token: "comment", // closing comment
+                token: "comment",
                 regex: "\\*\\)",
                 next: "start"
             },

@@ -3,15 +3,15 @@ var oop = require("../lib/oop");
 var TextHighlightRules = require("./text_highlight_rules").TextHighlightRules;
 var DocCommentHighlightRules = function () {
     this.$rules = {
-        "start": [
-            {
+        "start": [{
                 token: "comment.doc.tag",
-                regex: "@\\w+(?=\\s|$)"
-            }, DocCommentHighlightRules.getTagRule(), {
-                defaultToken: "comment.doc.body",
+                regex: "@[\\w\\d_]+" // TODO: fix email addresses
+            },
+            DocCommentHighlightRules.getTagRule(),
+            {
+                defaultToken: "comment.doc",
                 caseInsensitive: true
-            }
-        ]
+            }]
     };
 };
 oop.inherits(DocCommentHighlightRules, TextHighlightRules);
@@ -23,14 +23,14 @@ DocCommentHighlightRules.getTagRule = function (start) {
 };
 DocCommentHighlightRules.getStartRule = function (start) {
     return {
-        token: "comment.doc", // doc comment
-        regex: /\/\*\*(?!\/)/,
+        token: "comment.doc",
+        regex: "\\/\\*(?=\\*)",
         next: start
     };
 };
 DocCommentHighlightRules.getEndRule = function (start) {
     return {
-        token: "comment.doc", // closing comment
+        token: "comment.doc",
         regex: "\\*\\/",
         next: start
     };
@@ -66,24 +66,24 @@ var GolangHighlightRules = function () {
             },
             DocCommentHighlightRules.getStartRule("doc-start"),
             {
-                token: "comment.start", // multi line comment
+                token: "comment.start",
                 regex: "\\/\\*",
                 next: "comment"
             }, {
-                token: "string", // single line
+                token: "string",
                 regex: /"(?:[^"\\]|\\.)*?"/
             }, {
-                token: "string", // raw
+                token: "string",
                 regex: '`',
                 next: "bqstring"
             }, {
-                token: "constant.numeric", // rune
+                token: "constant.numeric",
                 regex: "'(?:[^\\'\uD800-\uDBFF]|[\uD800-\uDBFF][\uDC00-\uDFFF]|" + stringEscapeRe.replace('"', '') + ")'"
             }, {
-                token: "constant.numeric", // hex
+                token: "constant.numeric",
                 regex: "0[xX][0-9a-fA-F]+\\b"
             }, {
-                token: "constant.numeric", // float
+                token: "constant.numeric",
                 regex: "[+-]?\\d+(?:(?:\\.\\d*)?(?:[eE][+-]?\\d+)?)?\\b"
             }, {
                 token: ["keyword", "text", "entity.name.function"],
@@ -290,16 +290,17 @@ oop.inherits(FoldMode, BaseFoldMode);
 
 });
 
-ace.define("ace/mode/golang",["require","exports","module","ace/lib/oop","ace/mode/text","ace/mode/golang_highlight_rules","ace/mode/matching_brace_outdent","ace/mode/folding/cstyle"], function(require, exports, module){var oop = require("../lib/oop");
+ace.define("ace/mode/golang",["require","exports","module","ace/lib/oop","ace/mode/text","ace/mode/golang_highlight_rules","ace/mode/matching_brace_outdent","ace/mode/behaviour/cstyle","ace/mode/folding/cstyle"], function(require, exports, module){var oop = require("../lib/oop");
 var TextMode = require("./text").Mode;
 var GolangHighlightRules = require("./golang_highlight_rules").GolangHighlightRules;
 var MatchingBraceOutdent = require("./matching_brace_outdent").MatchingBraceOutdent;
+var CstyleBehaviour = require("./behaviour/cstyle").CstyleBehaviour;
 var CStyleFoldMode = require("./folding/cstyle").FoldMode;
 var Mode = function () {
     this.HighlightRules = GolangHighlightRules;
     this.$outdent = new MatchingBraceOutdent();
     this.foldingRules = new CStyleFoldMode();
-    this.$behaviour = this.$defaultBehaviour;
+    this.$behaviour = new CstyleBehaviour();
 };
 oop.inherits(Mode, TextMode);
 (function () {

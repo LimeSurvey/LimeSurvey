@@ -285,17 +285,18 @@ exports.MatchingBraceOutdent = MatchingBraceOutdent;
 
 });
 
-ace.define("ace/mode/puppet",["require","exports","module","ace/lib/oop","ace/mode/text","ace/mode/puppet_highlight_rules","ace/mode/folding/cstyle","ace/mode/matching_brace_outdent"], function(require, exports, module){"use strict";
+ace.define("ace/mode/puppet",["require","exports","module","ace/lib/oop","ace/mode/text","ace/mode/puppet_highlight_rules","ace/mode/behaviour/cstyle","ace/mode/folding/cstyle","ace/mode/matching_brace_outdent"], function(require, exports, module){"use strict";
 var oop = require("../lib/oop");
 var TextMode = require("./text").Mode;
 var PuppetHighlightRules = require("./puppet_highlight_rules").PuppetHighlightRules;
+var CstyleBehaviour = require("./behaviour/cstyle").CstyleBehaviour;
 var CStyleFoldMode = require("./folding/cstyle").FoldMode;
 var MatchingBraceOutdent = require("./matching_brace_outdent").MatchingBraceOutdent;
 var Mode = function () {
     TextMode.call(this);
     this.HighlightRules = PuppetHighlightRules;
     this.$outdent = new MatchingBraceOutdent();
-    this.$behaviour = this.$defaultBehaviour;
+    this.$behaviour = new CstyleBehaviour();
     this.foldingRules = new CStyleFoldMode();
 };
 oop.inherits(Mode, TextMode);

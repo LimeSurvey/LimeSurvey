@@ -231,16 +231,18 @@ oop.inherits(FoldMode, BaseFoldMode);
 
 });
 
-ace.define("ace/mode/lsl",["require","exports","module","ace/mode/lsl_highlight_rules","ace/mode/matching_brace_outdent","ace/mode/text","ace/mode/folding/cstyle","ace/lib/oop"], function(require, exports, module){"use strict";
+ace.define("ace/mode/lsl",["require","exports","module","ace/mode/lsl_highlight_rules","ace/mode/matching_brace_outdent","ace/range","ace/mode/text","ace/mode/behaviour/cstyle","ace/mode/folding/cstyle","ace/lib/oop"], function(require, exports, module){"use strict";
 var Rules = require("./lsl_highlight_rules").LSLHighlightRules;
 var Outdent = require("./matching_brace_outdent").MatchingBraceOutdent;
+var Range = require("../range").Range;
 var TextMode = require("./text").Mode;
+var CstyleBehaviour = require("./behaviour/cstyle").CstyleBehaviour;
 var CStyleFoldMode = require("./folding/cstyle").FoldMode;
 var oop = require("../lib/oop");
 var Mode = function () {
     this.HighlightRules = Rules;
     this.$outdent = new Outdent();
-    this.$behaviour = this.$defaultBehaviour;
+    this.$behaviour = new CstyleBehaviour();
     this.foldingRules = new CStyleFoldMode();
 };
 oop.inherits(Mode, TextMode);

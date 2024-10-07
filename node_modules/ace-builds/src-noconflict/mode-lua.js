@@ -68,7 +68,7 @@ var LuaHighlightRules = function () {
                         regex: /\]=*\]/,
                         next: "start"
                     }, {
-                        defaultToken: "comment.body"
+                        defaultToken: "comment"
                     }
                 ]
             },
@@ -104,16 +104,16 @@ var LuaHighlightRules = function () {
                 ]
             },
             {
-                token: "string", // " string
+                token: "string",
                 regex: '"(?:[^\\\\]|\\\\.)*?"'
             }, {
-                token: "string", // ' string
+                token: "string",
                 regex: "'(?:[^\\\\]|\\\\.)*?'"
             }, {
-                token: "constant.numeric", // float
+                token: "constant.numeric",
                 regex: floatNumber
             }, {
-                token: "constant.numeric", // integer
+                token: "constant.numeric",
                 regex: integer + "\\b"
             }, {
                 token: keywordMapper,

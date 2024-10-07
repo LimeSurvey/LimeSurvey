@@ -46,19 +46,19 @@ var PythonHighlightRules = function () {
                 token: "comment",
                 regex: "#.*$"
             }, {
-                token: "string", // multi line """ string start
+                token: "string",
                 regex: strPre + '"{3}',
                 next: "qqstring3"
             }, {
-                token: "string", // " string
+                token: "string",
                 regex: strPre + '"(?=.)',
                 next: "qqstring"
             }, {
-                token: "string", // multi line ''' string start
+                token: "string",
                 regex: strPre + "'{3}",
                 next: "qstring3"
             }, {
-                token: "string", // ' string
+                token: "string",
                 regex: strPre + "'(?=.)",
                 next: "qstring"
             }, {
@@ -134,7 +134,7 @@ var PythonHighlightRules = function () {
                 token: "constant.language.escape",
                 regex: stringEscape
             }, {
-                token: "string", // multi line """ string end
+                token: "string",
                 regex: '"{3}',
                 next: "start"
             }, {
@@ -144,7 +144,7 @@ var PythonHighlightRules = function () {
                 token: "constant.language.escape",
                 regex: stringEscape
             }, {
-                token: "string", // multi line ''' string end
+                token: "string",
                 regex: "'{3}",
                 next: "start"
             }, {
@@ -179,14 +179,14 @@ var PythonHighlightRules = function () {
                 defaultToken: "string"
             }],
         "rawqqstring3": [{
-                token: "string", // multi line """ string end
+                token: "string",
                 regex: '"{3}',
                 next: "start"
             }, {
                 defaultToken: "string"
             }],
         "rawqstring3": [{
-                token: "string", // multi line ''' string end
+                token: "string",
                 regex: "'{3}",
                 next: "start"
             }, {
@@ -218,7 +218,7 @@ var PythonHighlightRules = function () {
                 token: "constant.language.escape",
                 regex: stringEscape
             }, {
-                token: "string", // multi line """ string end
+                token: "string",
                 regex: '"{3}',
                 next: "start"
             }, {
@@ -232,7 +232,7 @@ var PythonHighlightRules = function () {
                 token: "constant.language.escape",
                 regex: stringEscape
             }, {
-                token: "string", // multi line ''' string end
+                token: "string",
                 regex: "'{3}",
                 next: "start"
             }, {
@@ -275,7 +275,7 @@ var PythonHighlightRules = function () {
                 defaultToken: "string"
             }],
         "rfqqstring3": [{
-                token: "string", // multi line """ string end
+                token: "string",
                 regex: '"{3}',
                 next: "start"
             }, {
@@ -286,7 +286,7 @@ var PythonHighlightRules = function () {
                 defaultToken: "string"
             }],
         "rfqstring3": [{
-                token: "string", // multi line ''' string end
+                token: "string",
                 regex: "'{3}",
                 next: "start"
             }, {
@@ -352,19 +352,19 @@ var PythonHighlightRules = function () {
                 push: "fqstringParRules"
             }],
         "constants": [{
-                token: "constant.numeric", // imaginary
+                token: "constant.numeric",
                 regex: "(?:" + floatNumber + "|\\d+)[jJ]\\b"
             }, {
-                token: "constant.numeric", // float
+                token: "constant.numeric",
                 regex: floatNumber
             }, {
-                token: "constant.numeric", // long integer
+                token: "constant.numeric",
                 regex: integer + "[lL]\\b"
             }, {
-                token: "constant.numeric", // integer
+                token: "constant.numeric",
                 regex: integer + "\\b"
             }, {
-                token: ["punctuation", "function.support"], // method
+                token: ["punctuation", "function.support"],
                 regex: "(\\.)([a-zA-Z_]+)\\b"
             }, {
                 token: keywordMapper,
@@ -415,10 +415,6 @@ var Mode = function () {
 oop.inherits(Mode, TextMode);
 (function () {
     this.lineCommentStart = "#";
-    this.$pairQuotesAfter = {
-        "'": /[ruf]/i,
-        '"': /[ruf]/i
-    };
     this.getNextLineIndent = function (state, line, tab) {
         var indent = this.$getIndent(line);
         var tokenizedLine = this.getTokenizer().getLineTokens(line, state);

@@ -3,15 +3,15 @@ var oop = require("../lib/oop");
 var TextHighlightRules = require("./text_highlight_rules").TextHighlightRules;
 var DocCommentHighlightRules = function () {
     this.$rules = {
-        "start": [
-            {
+        "start": [{
                 token: "comment.doc.tag",
-                regex: "@\\w+(?=\\s|$)"
-            }, DocCommentHighlightRules.getTagRule(), {
-                defaultToken: "comment.doc.body",
+                regex: "@[\\w\\d_]+" // TODO: fix email addresses
+            },
+            DocCommentHighlightRules.getTagRule(),
+            {
+                defaultToken: "comment.doc",
                 caseInsensitive: true
-            }
-        ]
+            }]
     };
 };
 oop.inherits(DocCommentHighlightRules, TextHighlightRules);
@@ -23,14 +23,14 @@ DocCommentHighlightRules.getTagRule = function (start) {
 };
 DocCommentHighlightRules.getStartRule = function (start) {
     return {
-        token: "comment.doc", // doc comment
-        regex: /\/\*\*(?!\/)/,
+        token: "comment.doc",
+        regex: "\\/\\*(?=\\*)",
         next: start
     };
 };
 DocCommentHighlightRules.getEndRule = function (start) {
     return {
-        token: "comment.doc", // closing comment
+        token: "comment.doc",
         regex: "\\*\\/",
         next: start
     };
@@ -67,7 +67,7 @@ var RustHighlightRules = function () {
     this.$rules = {
         start: [
             {
-                token: 'variable.other.source.rust', // `(?![\\\'])` to keep a lifetime name highlighting from continuing one character
+                token: 'variable.other.source.rust',
                 regex: '\'' + wordPattern + '(?![\\\'])'
             }, {
                 token: 'string.quoted.single.source.rust',
@@ -119,14 +119,14 @@ var RustHighlightRules = function () {
                 ]
             }, {
                 token: ['keyword.source.rust', 'text', 'entity.name.function.source.rust', 'punctuation'],
-                regex: '\\b(fn)(\\s+)((?:r#)?' + wordPattern + ')(<)(?!<)',
+                regex: '\\b(fn)(\\s+)((?:r#)?' + wordPattern + ')(<)',
                 push: "generics"
             }, {
                 token: ['keyword.source.rust', 'text', 'entity.name.function.source.rust'],
                 regex: '\\b(fn)(\\s+)((?:r#)?' + wordPattern + ')'
             }, {
                 token: ['support.constant', "punctuation"],
-                regex: "(" + wordPattern + '::)(<)(?!<)',
+                regex: "(" + wordPattern + '::)(<)',
                 push: "generics"
             }, {
                 token: 'support.constant',
@@ -160,22 +160,22 @@ var RustHighlightRules = function () {
                 ]
             }, {
                 token: ["keyword.source.rust", "identifier", "punctuaction"],
-                regex: "(?:(impl)|(" + wordPattern + "))(<)(?!<)",
+                regex: "(?:(impl)|(" + wordPattern + "))(<)",
                 stateName: 'generics',
                 push: [
                     {
-                        token: 'keyword.operator',
-                        regex: /<<|=/
-                    }, {
                         token: "punctuaction",
-                        regex: "<(?!<)",
+                        regex: "<",
                         push: "generics"
                     }, {
-                        token: 'variable.other.source.rust', // `(?![\\\'])` to keep a lifetime name highlighting from continuing one character
+                        token: 'variable.other.source.rust',
                         regex: '\'' + wordPattern + '(?![\\\'])'
                     }, {
                         token: "storage.type.source.rust",
                         regex: "\\b(u8|u16|u32|u64|u128|usize|i8|i16|i32|i64|i128|isize|char|bool)\\b"
+                    }, {
+                        token: "punctuation.operator",
+                        regex: "[,:]"
                     }, {
                         token: "keyword",
                         regex: "\\b(?:const|dyn)\\b"
@@ -183,46 +183,39 @@ var RustHighlightRules = function () {
                         token: "punctuation",
                         regex: ">",
                         next: "pop"
-                    },
-                    { include: "punctuation" },
-                    { include: "operators" },
-                    { include: "constants" },
-                    {
+                    }, {
+                        token: "paren.lparen",
+                        regex: "[(]"
+                    }, {
+                        token: "paren.rparen",
+                        regex: "[)]"
+                    }, {
                         token: "identifier",
                         regex: "\\b" + wordPattern + "\\b"
+                    }, {
+                        token: 'keyword.operator',
+                        regex: "="
                     }
                 ]
             }, {
                 token: keywordMapper,
                 regex: wordPattern
             }, {
-                token: 'meta.preprocessor.source.rust',
-                regex: '\\b\\w\\(\\w\\)*!|#\\[[\\w=\\(\\)_]+\\]\\b'
-            },
-            { include: "punctuation" },
-            { include: "operators" },
-            { include: "constants" }
-        ],
-        punctuation: [
-            {
+                token: 'keyword.operator',
+                regex: /\$|[-=]>|[-+%^=!&|<>]=?|[*/](?![*/])=?/
+            }, {
+                token: "punctuation.operator",
+                regex: /[?:,;.]/
+            }, {
                 token: "paren.lparen",
                 regex: /[\[({]/
             }, {
                 token: "paren.rparen",
                 regex: /[\])}]/
             }, {
-                token: "punctuation.operator",
-                regex: /[?:,;.]/
-            }
-        ],
-        operators: [
-            {
-                token: 'keyword.operator', // `[*/](?![*/])=?` is separated because `//` and `/* */` become comments and must be
-                regex: /\$|[-=]>|[-+%^=!&|<>]=?|[*/](?![*/])=?/
-            }
-        ],
-        constants: [
-            {
+                token: 'meta.preprocessor.source.rust',
+                regex: '\\b\\w\\(\\w\\)*!|#\\[[\\w=\\(\\)_]+\\]\\b'
+            }, {
                 token: 'constant.numeric.source.rust',
                 regex: /\b(?:0x[a-fA-F0-9_]+|0o[0-7_]+|0b[01_]+|[0-9][0-9_]*(?!\.))(?:[iu](?:size|8|16|32|64|128))?\b/
             }, {

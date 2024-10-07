@@ -28,9 +28,7 @@ jQuery.fn.extend( {
 	},
 
 	hover: function( fnOver, fnOut ) {
-		return this
-			.on( "mouseenter", fnOver )
-			.on( "mouseleave", fnOut || fnOver );
+		return this.mouseenter( fnOver ).mouseleave( fnOut || fnOver );
 	}
 } );
 

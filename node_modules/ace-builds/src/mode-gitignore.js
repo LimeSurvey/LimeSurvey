@@ -8,7 +8,7 @@ var GitignoreHighlightRules = function () {
                 token: "comment",
                 regex: /^\s*#.*$/
             }, {
-                token: "keyword", // negated patterns
+                token: "keyword",
                 regex: /^\s*!.*$/
             }
         ]
