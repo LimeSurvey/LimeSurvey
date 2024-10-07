@@ -582,9 +582,9 @@ class SurveyThemeHelper
                 throw new \Exception('No "dropdownoptions" nodes were found.');
             }
 
-            if ($defaultOption === '') {
-                $defaultOption = $optGroupNode->firsChild->nodeValue;
-                if (is_string($defaultOption)) {
+            if ($defaultOption === '' && isset($optGroupNode->firstChild)) {
+                $defaultOption = $optGroupNode->firstChild->nodeValue;
+                if (is_string($defaultOption) && trim($defaultOption) !== '') {
                     $textNode = $domDocument->createTextNode($defaultOption);
                     $cssFrameworkNode->insertBefore($textNode, $dropDownOptionsNode);
                     $isChangedDomDocument = true;
