@@ -138,7 +138,10 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
                 $options
             );
         }
-        $survey['hasSurveyUpdatePermission'] = $data->hasPermission('surveycontent', 'update');
+        $survey['hasSurveyUpdatePermission'] = $data->hasPermission(
+            'surveycontent',
+            'update'
+        );
         $survey['googleAnalyticsApiKeySetting'] = $data->getGoogleanalyticsapikeysetting();
         $survey['ownersList'] = array_map(function ($user) {
             return ['value' => $user['uid'], 'label' => $user['user'] . ' - ' . $user['full_name']];
@@ -290,6 +293,9 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
             'emailnotificationto',
             'emailresponseto',
             'googleanalyticsapikey',
+            'admin',
+            'adminemail',
+            'bounce_email',
         ];
         foreach ($affectedSettings as $setting) {
             if (

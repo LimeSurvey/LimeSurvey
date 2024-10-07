@@ -2,6 +2,7 @@
 
 namespace LimeSurvey;
 
+use ArchivedTableSettings;
 use DI\ContainerBuilder;
 use CActiveRecord;
 use LSYii_Application;
@@ -56,7 +57,10 @@ class DI
             },
             CDbConnection::class => function () {
                 return App()->db;
-            }
+            },
+            'archivedTokenSettings' => \DI\create(ArchivedTableSettings::class),
+            'archivedTimingsSettings' => \DI\create(ArchivedTableSettings::class),
+            'archivedResponseSettings' => \DI\create(ArchivedTableSettings::class),
         ]);
 
         return $builder->build();
