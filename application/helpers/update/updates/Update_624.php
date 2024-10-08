@@ -118,8 +118,6 @@ class Update_624 extends DatabaseUpdateBase
         $cssFrameworkNodes = $this->getFirstElementByTag($domDocument, 'cssframework');
         if (!empty($cssFrameworkNodes->length)) {
             $cssFrameworkNode = $cssFrameworkNodes->item(0);
-        }
-        if ($cssFrameworkNode) {
             $defaultOption = '';
             $dropDownOptionsNode = null;
             foreach ($cssFrameworkNode->childNodes as $child) {
