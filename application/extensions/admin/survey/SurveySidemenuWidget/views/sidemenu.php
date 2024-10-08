@@ -183,8 +183,8 @@
                             $url = App()->createUrl('surveyPermissions/index', ['surveyid' => $sid]);
                         ?>
                         <a href="<?php echo $url;?>">
-                            <div class="px-4 py-3 d-flex align-items-center cursor-pointer rounded text-black <?php echo $currentPage == $url ? ' bg-primary' : ''; ?>">
-                                <label class=" cursor-pointer mb-0 form-label <?php echo $currentPage == $url ? ' text-white' : ' text-black'; ?>">
+                            <div class="px-4 py-3 d-flex align-items-center cursor-pointer rounded text-black <?php echo str_contains($url, $currentPage) ? ' bg-primary' : ''; ?>">
+                                <label class=" cursor-pointer mb-0 form-label <?php echo str_contains($url, $currentPage) ? ' text-white' : ' text-black'; ?>">
                                     <?php echo gT('Permissions'); ?>
                                 </label>
                             </div>
@@ -217,8 +217,8 @@
                                 $url = App()->createUrl('quickTranslation/index', ['surveyid' => $sid]);
                             ?>
                             <a href="<?php echo $url; ?>">
-                                <div class="px-4 py-3 d-flex align-items-center cursor-pointer rounded text-black <?php echo $currentPage == $url ? ' bg-primary' : ''; ?>">
-                                    <label class=" cursor-pointer mb-0 form-label <?php echo $currentPage == $url ? ' text-white' : ' text-black'; ?>">
+                                <div class="px-4 py-3 d-flex align-items-center cursor-pointer rounded text-black <?php echo str_contains($url, $currentPage) ? ' bg-primary' : ''; ?>">
+                                    <label class=" cursor-pointer mb-0 form-label <?php echo str_contains($url, $currentPage) ? ' text-white' : ' text-black'; ?>">
                                         <?php echo gT('Quick translation'); ?>
                                     </label>
                                 </div>
