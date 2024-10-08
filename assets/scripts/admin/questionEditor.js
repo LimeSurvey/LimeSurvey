@@ -1154,11 +1154,15 @@ $(document).on('ready pjax:scriptcomplete', function () {
                 throw 'inputText is not an HTMLInputElement';
               }
               inputText.value = row.text;
-              const inputCode = tableRow.querySelector('input.code');
+              let inputCode = tableRow.querySelector('input.code');
               if (inputCode instanceof HTMLInputElement) {
                 inputCode.value = row.code;
               } else {
-                // Ignore.
+                // If there is no input for the code, it's probably a "secondary" language.
+                inputCode = tableRow.querySelector('td.code-title');
+                if (inputCode instanceof HTMLElement) {
+                  inputCode.textContent = row.code;
+                }
               }
               const relevanceEquation = tableRow.querySelector('td.relevance-equation input');
               if (relevanceEquation instanceof HTMLInputElement) {
