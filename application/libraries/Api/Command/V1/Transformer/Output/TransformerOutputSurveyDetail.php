@@ -80,6 +80,8 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
         $data = $this->setInheritedBetaOptions($data);
         $survey = $this->transformerSurvey->transform($data);
         $survey['templateInherited'] = $data->oOptions->template;
+        $templateConf = \TemplateConfiguration::getInstanceFromTemplateName($data['template']);
+        $survey['templatePreview'] = $templateConf->getPreview(true);
         $survey['formatInherited'] = $data->oOptions->format;
         $survey['languages'] = $data->allLanguages;
         $survey['previewLink'] = App()->createUrl(
