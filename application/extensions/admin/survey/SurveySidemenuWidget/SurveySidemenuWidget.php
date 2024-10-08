@@ -78,143 +78,96 @@ class SurveySidemenuWidget extends WhSelect2
     {
         $oSurvey = Survey::model()->findByPk($this->sid);
         $sideMenu = array(
-             'menu' => array(
-                 [
-                     'name' => $this->getSurveyEntry('listQuestions')->menu_title,
-                     'url' => App()->createUrl(
-                         $this->getSurveyEntry('listQuestions')->menu_link,
-                         array('surveyid' => $this->sid)
-                     ),
-                     'enabled' => true
-                 ],
-                 [
-                     'name' => $this->getSurveyEntry('participants')->menu_title,
-                     'url' => App()->createUrl(
-                         $this->getSurveyEntry('participants')->menu_link,
-                         array('surveyid' => $this->sid)
-                     ),
-                     'enabled' => true
-                 ],
-                 [
-                     'name' => $this->getSurveyEntry('emailtemplates')->menu_title,
-                     'url' => App()->createUrl(
-                         $this->getSurveyEntry('emailtemplates')->menu_link,
-                         array('surveyid' => $this->sid)
-                     ),
-                     'enabled' => true
-                 ],
-                 [
-                     'name' => $this->getSurveyEntry('failedemail')->menu_title,
-                     'url' => App()->createUrl(
-                         $this->getSurveyEntry('failedemail')->menu_link,
-                         array('surveyid' => $this->sid)
-                     ),
-                     'enabled' => true
-                 ],
-                 [
-                     'name' => $this->getSurveyEntry('quotas')->menu_title,
-                     'url' => App()->createUrl(
-                         $this->getSurveyEntry('quotas')->menu_link,
-                         array('surveyid' => $this->sid)
-                     ),
-                     'enabled' => true
-                 ],
-                 [
-                     'name' => $this->getSurveyEntry('assessments')->menu_title,
-                     'url' => App()->createUrl(
-                         $this->getSurveyEntry('assessments')->menu_link,
-                         array('surveyid' => $this->sid)
-                     ),
-                     'enabled' => true
-                 ],
-                 [
-                     'name' => $this->getSurveyEntry('panelintegration')->menu_title,
-                     'url' => App()->createUrl(
-                         'surveyAdministration/rendersidemenulink/',
-                         array('surveyid' => $this->sid, 'subaction' => 'panelintegration')
-                     ),
-                     'enabled' => true
-                 ],
-                 [
-                     'name' => $this->getSurveyEntry('responses')->menu_title,
-                     'url' => App()->createUrl(
-                         $this->getSurveyEntry('responses')->menu_link,
-                         array('surveyId' => $this->sid)
-                     ),
-                     'enabled' => $oSurvey->active == 'Y'
-                 ],
-                 [
-                     'name' => $this->getSurveyEntry('statistics')->menu_title,
-                     'url' => App()->createUrl(
-                         $this->getSurveyEntry('statistics')->menu_link,
-                         array('surveyid' => $this->sid)
-                     ),
-                     'enabled' => $oSurvey->active == 'Y'
-                 ],
-                 [
-                     'name' => $this->getSurveyEntry('resources')->menu_title,
-                     'url' => App()->createUrl(
-                         'surveyAdministration/rendersidemenulink/',
-                         array('surveyid' => $this->sid, 'subaction' => 'resources')
-                     ),
-                     'enabled' => true
-                 ],
-                 [
-                     'name' => $this->getSurveyEntry('plugins')->menu_title,
-                     'url' => App()->createUrl(
-                         'surveyAdministration/rendersidemenulink/',
-                         array('surveyid' => $this->sid, 'subaction' => 'plugins')
-                     ),
-                     'enabled' => true
-                 ],
-             ),
-             'settings' => array(
+            'menu' => array(
+                [ 'name' => 'listQuestions' ],
+                [ 'name' => 'participants' ],
+                [ 'name' => 'emailtemplates'],
+                [ 'name' => 'failedemail' ],
+                [ 'name' => 'quotas' ],
+                [ 'name' => 'assessments' ],
                 [
-                    'name' => $this->getSurveyEntry('overview')->menu_title,
-                    'url' => App()->createUrl(
-                        $this->getSurveyEntry('overview')->menu_link,
-                        array('surveyid' => $this->sid)
-                    )
+                    'name' => 'panelintegration',
+                    'route' => 'surveyAdministration/rendersidemenulink/',
+                    'params' => array('surveyid' => $this->sid, 'subaction' => 'panelintegration')
                 ],
                 [
-                    'name' => $this->getSurveyEntry('generalsettings')->menu_title,
-                    'url' => App()->createUrl('editorLink/index', ['route' => 'survey/' . $this->sid . '/settings/general']),
+                    'name' => 'responses',
+                    'disabled' => $oSurvey->active != 'Y'
                 ],
                 [
-                    'name' => $this->getSurveyEntry('surveytexts')->menu_title,
-                    'url' => App()->createUrl('surveyAdministration/rendersidemenulink/', array('surveyid' => $this->sid, 'subaction' => 'surveytexts')),
+                    'name' => 'statistics',
+                    'disabled' => $oSurvey->active != 'Y'
                 ],
                 [
-                    'name' => $this->getSurveyEntry('datasecurity')->menu_title,
-                    'url' => App()->createUrl('editorLink/index', ['route' => 'survey/' . $this->sid . '/settings/privacyPolicy']),
+                    'name' => 'resources',
+                    'route' => 'surveyAdministration/rendersidemenulink/',
+                    'params' => array('surveyid' => $this->sid, 'subaction' => 'resources'),
                 ],
                 [
-                    'name' => $this->getSurveyEntry('participants')->menu_title,
-                    'url' => App()->createUrl('surveyAdministration/rendersidemenulink/', array('surveyid' => $this->sid, 'subaction' => 'tokens')),
+                    'name' => 'plugins',
+                    'route' => 'surveyAdministration/rendersidemenulink/',
+                    'params' => array('surveyid' => $this->sid, 'subaction' => 'plugins'),
+                ],
+            ),
+            'settings' => array(
+                [ 'name' => 'overview' ],
+                [
+                    'name' => 'generalsettings',
+                    'route' => 'editorLink/index',
+                    'params' => array('route' => 'survey/' . $this->sid . '/settings/general'),
                 ],
                 [
-                    'name' => $this->getSurveyEntry('publication')->menu_title,
-                    'url' => App()->createUrl('surveyAdministration/rendersidemenulink/', array('surveyid' => $this->sid, 'subaction' => 'publication')),
+                    'name' => 'surveytexts',
+                    'route' => 'surveyAdministration/rendersidemenulink/',
+                    'params' => array('surveyid' => $this->sid, 'subaction' => 'surveytexts'),
                 ],
                 [
-                    'name' => $this->getSurveyEntry('notification')->menu_title,
-                    'url' => App()->createUrl('surveyAdministration/rendersidemenulink/', array('surveyid' => $this->sid, 'subaction' => 'notification')),
+                    'name' => 'datasecurity',
+                    'route' => 'editorLink/index',
+                    'params' => array('route' => 'survey/' . $this->sid . '/settings/privacyPolicy'),
+                ],
+                [
+                    'name' => 'participants',
+                    'route' => 'surveyAdministration/rendersidemenulink/',
+                    'params' => array('surveyid' => $this->sid, 'subaction' => 'tokens'),
+                ],
+                [
+                    'name' => 'publication',
+                    'route' => 'surveyAdministration/rendersidemenulink/',
+                    'params' =>  array('surveyid' => $this->sid, 'subaction' => 'publication'),
+                ],
+                [
+                    'name' => 'notification',
+                    'route' => 'surveyAdministration/rendersidemenulink/',
+                    'params' =>  array('surveyid' => $this->sid, 'subaction' => 'notification'),
                 ]
-             ),
-             'presentation' => array(
-                 [
-                     'name' => $this->getSurveyEntry('presentation')->menu_title,
-                     'url' => App()->createUrl('editorLink/index', ['route' => 'survey/' . $this->sid . '/presentation/presentation']),
-                 ],
-                 [
-                     'name' => $this->getSurveyEntry('theme_options')->menu_title,
-                     'url' => App()->createUrl(
-                         $this->getSurveyEntry('theme_options')->menu_link,
-                         array('surveyid' => $this->sid)
-                     ),
-                 ],
-             )
+            ),
+            'presentation' => array(
+                [
+                    'name' => 'presentation',
+                    'route' => 'editorLink/index',
+                    'params' =>  array('route' => 'survey/' . $this->sid . '/presentation/presentation'),
+                ],
+                [ 'name' => 'theme_options' ],
+            )
         );
+
+        foreach ($sideMenu as $k => $panel) {
+            foreach ($panel as $i => $item) {
+                if ($entry = $this->getSurveyEntry($item['name'])) {
+                    $sideMenu[$k][$i]['name'] = $entry->menu_title;
+                    if (!isset($item['route'])) {
+                        $sideMenu[$k][$i]['url'] =
+                            App()->createUrl($entry->menu_link, array('surveyid' => $this->sid));
+                    } else {
+                        $sideMenu[$k][$i]['url'] =
+                            App()->createUrl($item['route'], $item['params']);
+                    }
+                } else {
+                    unset($sideMenu[$k][$i]);
+                }
+            }
+        }
 
         return $sideMenu;
     }

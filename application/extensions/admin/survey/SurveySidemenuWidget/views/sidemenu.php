@@ -119,7 +119,7 @@
                             </button>
                         </div>
                         <?php foreach ($sideMenu['menu'] as $item) : ?>
-                            <a href="<?php echo $item['enabled'] ? $item['url'] : '#'; ?>" class="<?php echo $item['enabled'] ? '' : 'disabled'; ?>">
+                            <a href="<?php echo $item['disabled'] ?? false ? '#' : $item['url']; ?>" class="<?php echo $item['disabled'] ?? false ? 'disabled' : ''; ?>">
                                 <div class="px-4 py-3 d-flex align-items-center cursor-pointer rounded text-black <?php echo (isset($item['selected']) && $item['selected']) ? ' bg-primary' : ''; ?>">
                                     <label class=" cursor-pointer mb-0 form-label <?php echo (isset($item['selected']) && $item['selected'])? ' text-white' : ' text-black'; ?>">
                                         <?php echo $item['name']; ?>
