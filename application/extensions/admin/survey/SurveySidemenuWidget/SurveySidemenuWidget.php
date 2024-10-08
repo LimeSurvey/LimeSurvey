@@ -178,7 +178,7 @@ class SurveySidemenuWidget extends WhSelect2
                 ],
                 [
                     'name' => $this->getSurveyEntry('generalsettings')->menu_title,
-                    'url' => App()->createUrl('editorLink/index', ['route' => 'survey/' . $this->sid . '/settings/general']),
+                    'url' => App()->createUrl('editorLink/index', ['route' => 'survey/' . $this->sid . '/settings/generalsettings']),
                 ],
                 [
                     'name' => $this->getSurveyEntry('surveytexts')->menu_title,
@@ -186,7 +186,7 @@ class SurveySidemenuWidget extends WhSelect2
                 ],
                 [
                     'name' => $this->getSurveyEntry('datasecurity')->menu_title,
-                    'url' => App()->createUrl('editorLink/index', ['route' => 'survey/' . $this->sid . '/settings/privacyPolicy']),
+                    'url' => App()->createUrl('editorLink/index', ['route' => 'survey/' . $this->sid . '/settings/datasecurity']),
                 ],
                 [
                     'name' => $this->getSurveyEntry('participants')->menu_title,
