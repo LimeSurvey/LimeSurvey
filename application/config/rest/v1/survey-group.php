@@ -1,8 +1,6 @@
 <?php
 
-use LimeSurvey\Api\Command\V1\{
-    SurveyGroupList,
-};
+use LimeSurvey\Api\Command\V1\{SurveyGroupList, SurveyGroups};
 
 use LimeSurvey\Api\Rest\V1\SchemaFactory\{
     SchemaFactoryError,
@@ -42,7 +40,7 @@ $rest['v1/survey-groups'] = [
     'GET' => [
         'description' => 'Survey groups',
         'commandClass' => SurveyGroups::class,
-        'auth' => true,
+        'auth' => false,
         'params' => [
             'pageSize' => ['type' => 'int'],
             'page' => ['type' => 'int']
