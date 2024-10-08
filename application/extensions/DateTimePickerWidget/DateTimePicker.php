@@ -298,6 +298,9 @@ class DateTimePicker extends CInputWidget
         $restrictions = $this->getRestrictionsOptionsString();
         $calendarComponents = $this->getComponentsOptionsString();
         $icons = $this->getCustomIconsString();
+        $viewDate = $this->getViewDate();
+        $viewDateOption = !empty($viewDate) ? "viewDate: $viewDate," : '';
+
         return "
         {
             localization: $localization,
@@ -311,8 +314,10 @@ class DateTimePicker extends CInputWidget
                     close: $close,
                 },
                 sideBySide: $sideBySide,
+                theme : (document.body.hasAttribute('data-thememode')) ? document.body.getAttribute('data-thememode') : 'auto'
             },
             stepping: $stepping,
+            $viewDateOption
         }";
     }
 
@@ -344,7 +349,7 @@ class DateTimePicker extends CInputWidget
     {
         $id = $this->getId();
         $date = $this->value;
-        $dateFormat = $this->format;
+        $dateFormat = CHtml::encode($this->format);
         return "
         //formatting when selected via datepicker
         picker_$id.dates.formatInput = function(date) { 
@@ -448,5 +453,34 @@ class DateTimePicker extends CInputWidget
         }
 
         return $formatMatch !== false && $formatMatch !== 0;
+    }
+
+    /**
+     * Returns the viewDate for the datepicker
+     * @return string
+     */
+    private function getViewDate()
+    {
+        if (!empty($this->value)) {
+            return "'" . $this->value . "'";
+        }
+
+        $minDate = $this->getValue('data-minDate', $this->htmlOptions, null);
+        if (isset($minDate)) {
+            // If min date is in the future, we set the view date to the min date
+            if (strtotime($minDate) > time()) {
+                return "'$minDate'";
+            }
+        }
+
+        $maxDate = $this->getValue('data-maxDate', $this->htmlOptions, null);
+        if (isset($maxDate)) {
+            // If max date is in the past, we set the view date to the max date
+            if (strtotime($maxDate) < time()) {
+                return "'$maxDate'";
+            }
+        }
+
+        return null;
     }
 }

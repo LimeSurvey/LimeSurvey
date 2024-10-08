@@ -1669,7 +1669,7 @@ class remotecontrol_handle
             $iSurveyID = $oQuestion->sid;
 
             if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'read')) {
-                if (is_null($sLanguage)) {
+                if (empty($sLanguage)) {
                     $sLanguage = Survey::model()->findByPk($iSurveyID)->language;
                 }
 
@@ -1687,6 +1687,13 @@ class remotecontrol_handle
                 }
 
                 $aBasicDestinationFields = Question::model()->tableSchema->columnNames;
+                /* Push questionl10ns data, like 3.X for less update of external scripts */
+                array_push($aBasicDestinationFields, 'question');
+                array_push($aBasicDestinationFields, 'help');
+                array_push($aBasicDestinationFields, 'script');
+                /* Push questionl10ns data but complete */
+                array_push($aBasicDestinationFields, 'questionl10ns');
+                /* Other fileds */
                 array_push($aBasicDestinationFields, 'available_answers');
                 array_push($aBasicDestinationFields, 'subquestions');
                 array_push($aBasicDestinationFields, 'attributes');
@@ -1812,6 +1819,10 @@ class remotecontrol_handle
                                 array(':qid' => $iQuestionID, ':language' => $sLanguage)
                             )
                             ->defaultvalue;
+                    } elseif ($sPropertyName == 'question' || $sPropertyName == 'help' || $sPropertyName == 'script') {
+                        $aResult[$sPropertyName] = $oQuestion->questionl10ns[$sLanguage]->$sPropertyName;
+                    } elseif ($sPropertyName == 'questionl10ns') {
+                        $aResult[$sPropertyName] = $oQuestion->questionl10ns[$sLanguage]->attributes;
                     } else {
                         $aResult[$sPropertyName] = $oQuestion->$sPropertyName;
                     }
@@ -3531,7 +3542,7 @@ class remotecontrol_handle
      * @param integer $iFromResponseID (optional) Frpm response id
      * @param integer $iToResponseID (optional) To response id
      * @param array $aFields (optional) Name the fields to export
-     * @param array $aAdditionalOptions (optional) Addition options for export, mainly 'convertY', 'convertN', 'nValue', 'yValue',
+     * @param array $aAdditionalOptions (optional) Addition options for export, @see \FormattingOptions, example : 'convertY', 'convertN', 'nValue', 'yValue', 'headerSpacesToUnderscores', 'useEMCode'
      * @return array|string On success: Requested file as base 64-encoded string. On failure array with error information
      * */
     public function export_responses($sSessionKey, $iSurveyID, $sDocumentType, $sLanguageCode = null, $sCompletionStatus = 'all', $sHeadingType = 'code', $sResponseType = 'short', $iFromResponseID = null, $iToResponseID = null, $aFields = null, $aAdditionalOptions = null)
@@ -3569,26 +3580,30 @@ class remotecontrol_handle
         $oFormattingOptions = new FormattingOptions();
 
         if (is_array($aAdditionalOptions)) {
-            if (isset($aAdditionalOptions['convertY']) && $aAdditionalOptions['convertY']) {
-                $oFormattingOptions->convertY = $aAdditionalOptions['convertY'];
-                $oFormattingOptions->yValue = isset($aAdditionalOptions['yValue']) ? $aAdditionalOptions['yValue'] : 'Y';
+            foreach ($aAdditionalOptions as $option => $value) {
+                if (property_exists($oFormattingOptions, $option )){
+                    $oFormattingOptions->$option = $value;
+                }
             }
-            if (isset($aAdditionalOptions['convertN']) && $aAdditionalOptions['convertN']) {
-                $oFormattingOptions->convertN = $aAdditionalOptions['convertN'];
-                $oFormattingOptions->nValue = isset($aAdditionalOptions['nValue']) ? $aAdditionalOptions['nValue'] : 'N';
+            /* fix some specific option (GUI use 1 and 2, but default for remote control are set to Y and N before) */
+            if (!empty($oFormattingOptions->convertY) && empty($oFormattingOptions->yValue)) {
+                $oFormattingOptions->yValue = 'Y';
+            }
+            if (!empty($oFormattingOptions->convertN) && empty($oFormattingOptions->nValue)) {
+                $oFormattingOptions->nValue = 'N';
             }
         }
 
         if ($iFromResponseID != null) {
-                    $oFormattingOptions->responseMinRecord = (int) $iFromResponseID;
+            $oFormattingOptions->responseMinRecord = (int) $iFromResponseID;
         } else {
-                    $oFormattingOptions->responseMinRecord = 1;
+            $oFormattingOptions->responseMinRecord = 1;
         }
 
         if ($iToResponseID != null) {
-                    $oFormattingOptions->responseMaxRecord = (int) $iToResponseID;
+            $oFormattingOptions->responseMaxRecord = (int) $iToResponseID;
         } else {
-                    $oFormattingOptions->responseMaxRecord = $maxId;
+            $oFormattingOptions->responseMaxRecord = $maxId;
         }
 
         $oFormattingOptions->selectedColumns = $aFields;
