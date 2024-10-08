@@ -114,7 +114,7 @@ class SurveySidemenuWidget extends WhSelect2
                 [
                     'name' => 'generalsettings',
                     'route' => 'editorLink/index',
-                    'params' => array('route' => 'survey/' . $this->sid . '/settings/general'),
+                    'params' => array('route' => 'survey/' . $this->sid . '/settings/generalsettings'),
                 ],
                 [
                     'name' => 'surveytexts',
@@ -124,7 +124,7 @@ class SurveySidemenuWidget extends WhSelect2
                 [
                     'name' => 'datasecurity',
                     'route' => 'editorLink/index',
-                    'params' => array('route' => 'survey/' . $this->sid . '/settings/privacyPolicy'),
+                    'params' => array('route' => 'survey/' . $this->sid . '/settings/datasecurity'),
                 ],
                 [
                     'name' => 'participants',
