@@ -5,7 +5,7 @@
 
 ?>
 <div id="<?= 'dropdown_' . $id; ?>" class="dropdown ls-action_dropdown">
-    <button class="btn btn-sm btn-outline-secondary ls-dropdown-toggle" data-bs-toggle="dropdown" type="button"
+    <button class="ls-dropdown-toggle" data-bs-toggle="dropdown" type="button"
             aria-expanded="false">
         <i class="ri-more-fill"></i>
     </button>

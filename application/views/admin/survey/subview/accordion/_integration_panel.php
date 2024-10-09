@@ -50,7 +50,6 @@ echo viewHelper::getViewTestTag('surveyPanelIntegration');
                     'dataProvider'    => $model->search(),
                     'emptyText'       => gT('No parameters defined'),
                     'htmlOptions'     => ['class' => 'table-responsive grid-view-ls'],
-                    'template'        => "{items}\n<div id='integrationPanelPager'><div class=\"col-sm-4\" id=\"massive-action-container\"></div><div class=\"col-sm-4 pager-container ls-ba \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
                     'summaryText'     => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
                         gT('%s rows per page'),
                         CHtml::dropDownList(

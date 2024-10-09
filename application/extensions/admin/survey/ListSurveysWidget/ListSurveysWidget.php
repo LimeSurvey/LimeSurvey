@@ -21,11 +21,15 @@ class ListSurveysWidget extends CWidget
     public $model;                                                              // Survey model
     public $bRenderFooter    = true;                                            // Should the footer be rendered?
     public $bRenderSearchBox = true;                                            // Should the search box be rendered?
-    public $formUrl          = 'surveyAdministration/listsurveys/';
 
     public $massiveAction;                                                      // Used to render massive action in GridViews footer
     public $pageSize;                                                           // Default page size (should be set to Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']))
     public $template;
+    /**
+     * For rendering the switch to decide which view widget is rendered
+     * @var $switch bool
+     */
+    public bool $switch = false;
 
     /**
      * Run
@@ -59,17 +63,24 @@ class ListSurveysWidget extends CWidget
 
         $this->massiveAction = $this->render('massive_actions/_selector', array(), true, false);
 
-        /* ---> all gridviews will use the same footer template
-        if ($this->bRenderFooter) {
-            $this->template = "{items}\n<div class=\"row-fluid\"><div class=\"col-md-4\" id=\"massive-action-container\">$this->massiveAction</div><div class=\"col-md-4 pager-container ls-ba \">{pager}</div><div class=\"col-md-4 summary-container\">{summary}</div></div>";
-        } else {
-            $this->template = "{items}";
-        }*/
-
         if ($this->bRenderSearchBox) {
-            $this->render('searchBox');
+            $this->controller->widget('ext.admin.SearchBoxWidget.SearchBoxWidget', [
+                'model' => new Survey('search'),
+                'switch' => $this->switch
+            ]);
         }
 
         $this->render('listSurveys');
+    }
+
+    /** Initializes the widget */
+    public function init(): void
+    {
+        $this->registerClientScript();
+    }
+
+    public function registerClientScript()
+    {
+
     }
 }

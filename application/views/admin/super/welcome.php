@@ -5,7 +5,11 @@
  * TODO : make a recursive function, taking any number of box in the database, calculating how much rows are needed.
  */
 
-/** @var String $belowLogoHtml */
+/**
+ * @var $belowLogoHtml String
+ * @var $this AdminController
+ * @var $oldDashboard bool
+ **/
 
 // DO NOT REMOVE This is for automated testing to validate we see that page
 echo viewHelper::getViewTestTag('index');
@@ -27,21 +31,19 @@ gT('Themes');
 ?>
 
 <!-- Welcome view -->
-<div class="welcome full-page-wrapper">
+<div class="welcome">
 
     <!-- Logo & Presentation -->
-    <?php if ($bShowLogo) : ?>
+    <?php if ($bShowLogo && $oldDashboard) : ?>
         <div class="jumbotron" id="welcome-jumbotron">
             <img alt="logo" src="<?php echo LOGO_URL; ?>" id="lime-logo" class="profile-img-card img-fluid" />
             <p class="d-xs-none"><?php echo PRESENTATION; // Defined in AdminController
-                                    ?></p>
+            ?></p>
         </div>
     <?php endif; ?>
 
-    <?php
-        //show extra banner after logo
-        echo $belowLogoHtml;
-    ?>
+    <!-- Extra banner after logo-->
+    <?= $belowLogoHtml ?>
 
     <!-- Message when first start -->
     <?php if ($countSurveyList == 0  && Permission::model()->hasGlobalPermission('surveys', 'create')) : ?>
@@ -73,8 +75,8 @@ gT('Themes');
                             <div>
                                 <ol>
                                     <li><?php echo sprintf(
-                                            gT('Create a new survey by clicking on the %s icon.'),
-                                            "<i class='ri-add-circle-fill text-success'></i>"
+                                        gT('Create a new survey by clicking on the %s icon.'),
+                                        "<i class='ri-add-circle-fill text-success'></i>"
                                     ); ?></li>
                                     <li><?php eT('Create a new question group inside your survey.'); ?></li>
                                     <li><?php eT('Create one or more questions inside the new question group.'); ?></li>
@@ -83,7 +85,7 @@ gT('Themes');
                                             gT('Done. Test your survey using the %s icon.'),
                                             "<i class='ri-settings-5-fill text-success'></i>"
                                         );
-                                    ?></li>
+                                        ?></li>
                                 </ol>
                             </div>
                             <div>
@@ -125,10 +127,12 @@ gT('Themes');
 
     <?php endif; ?>
 
-    <?php
-    //Check for IE and show a warning box
-    if (preg_match('~MSIE|Internet Explorer~i', (string) $_SERVER['HTTP_USER_AGENT']) || (strpos((string) $_SERVER['HTTP_USER_AGENT'], 'Trident/7.0') !== false && strpos((string) $_SERVER['HTTP_USER_AGENT'], 'rv:11.0') !== false)) {
-    ?>
+    <?php //Check for IE and show a warning box ?>
+    <?php if (preg_match('~MSIE|Internet Explorer~i', (string)$_SERVER['HTTP_USER_AGENT'])
+        || (strpos((string)$_SERVER['HTTP_USER_AGENT'], 'Trident/7.0') !== false
+            && strpos((string)$_SERVER['HTTP_USER_AGENT'], 'rv:11.0') !== false
+        )
+    ) : ?>
         <div class="container">
             <?php
             $htmlContent = "
@@ -151,105 +155,107 @@ gT('Themes');
             ]);
             ?>
         </div>
-
+    <?php endif;?>
     <?php
-    }
-    App()->getClientScript()->registerScript('WelcomeCheckIESafety', "
+    App()->getClientScript()->registerScript(
+        'WelcomeCheckIESafety',
+        "
     if(!/(MSIE|Trident\/)/i.test(navigator.userAgent)) {
         $('#warningIE11').remove();
     }
-    ", LSYii_ClientScript::POS_POSTSCRIPT);
+    ",
+        LSYii_ClientScript::POS_POSTSCRIPT
+    );
     ?>
     <!-- Last visited survey/question -->
     <?php
-        // bShowLastSurveyAndQuestion is the homepage setting,
-        // - showLastSurvey & showLastQuestion are about if infos are available
-        if ($bShowLastSurveyAndQuestion && ($showLastSurvey || $showLastQuestion)) :
-    ?>
-        <div class="container text-end recent-activity">
-            <?php if ($showLastSurvey) : ?>
-                <span id="last_survey" class=""> <!-- to enable rotation again set class back to "rotateShown" -->
+    // bShowLastSurveyAndQuestion is the homepage setting,
+    // - showLastSurvey & showLastQuestion are about if infos are available
+    if ($bShowLastSurveyAndQuestion && ($showLastSurvey || $showLastQuestion)) : ?>
+        <div class="container-fluid text-end recent-activity p-2">
+        <?php if ($showLastSurvey) : ?>
+                <div id="last_survey" class=""> <!-- to enable rotation again set class back to "rotateShown" -->
                     <?php eT("Last visited survey:"); ?>
-                    <a
-                        href="<?php echo $surveyUrl; ?>"
-                        class=""><?php echo viewHelper::flatEllipsizeText($surveyTitle, true, 60); ?></a>
-                </span>
-            <?php endif; ?>
+                    <a href="<?php echo $surveyUrl; ?>">
+                        <?= viewHelper::flatEllipsizeText($surveyTitle, true, 60) ?>
+                    </a>
+                </div>
+        <?php endif; ?>
 
-            <?php if ($showLastQuestion) : ?>
-                <span id="last_question" class=""> <!-- to enable rotation again set class back to "rotateHidden" -->
+        <?php if ($showLastQuestion) : ?>
+                <div id="last_question" class=""> <!-- to enable rotation again set class back to "rotateHidden" -->
                     <?php eT("Last visited question:"); ?>
-                    <a
-                        href="<?php echo $last_question_link; ?>"
-                        class=""><?php echo viewHelper::flatEllipsizeText($last_question_name, true, 60); ?></a>
-                </span>
-            <?php endif; ?>
+                    <a href="<?php echo $last_question_link; ?>">
+                        <?= viewHelper::flatEllipsizeText($last_question_name, true, 60) ?>
+                    </a>
+                </div>
+        <?php endif; ?>
         </div>
     <?php endif; ?>
 
     <!-- Rendering all boxes in database -->
-    <?php $this->widget('ext.PanelBoxWidget.PanelBoxWidget', array(
-        'display' => 'allboxesinrows',
-        'boxesbyrow' => $iBoxesByRow,
-        'offset' => $sBoxesOffSet,
-        'boxesincontainer' => $bBoxesInContainer
-    ));
-    ?>
-
-    <?php if ($bShowSurveyList) : ?>
-        <div class="col-12 list-surveys">
-            <h2><?php eT('Survey list'); ?></h2>
-            <?php
-            $this->widget('ext.admin.survey.ListSurveysWidget.ListSurveysWidget', array(
-                'model'            => $oSurveySearch,
-                'bRenderSearchBox' => $bShowSurveyListSearch,
-            ));
-            ?>
-        </div>
+    <?php if ($oldDashboard) : ?>
+        <?php $this->widget('ext.PanelBoxWidget.PanelBoxWidget', [
+            'display'          => 'allboxesinrows',
+            'boxesbyrow'       => $iBoxesByRow,
+            'offset'           => $sBoxesOffSet,
+            'boxesincontainer' => $bBoxesInContainer
+        ]);
+        ?>
     <?php endif; ?>
 
+    <div class="survey-dashboard">
+        <?php
+        $this->widget('ext.SideBarWidget.SideBarWidget');
+        ?>
 
-    <!-- Boxes for smartphones -->
-    <div class="row d-sm-none d-md-none d-lg-none">
-        <div
-            class="card card-clickable card-primary" id="panel-7"
-            data-url="<?php echo $this->createUrl("surveyAdministration/listSurveys") ?>"
-            style="opacity: 1; top: 0px;">
-            <div class="card-header ">
-                <?php eT('List surveys'); ?>
+        <?php if (empty(App()->request->getQuery('viewtype')) && empty(SettingsUser::getUserSettingValue('welcome_page_widget'))) : ?>
+            <div class="list-surveys-container">
+                <div class="col-12">
+                    <?php $this->widget('ext.admin.survey.ListSurveysWidget.ListSurveysWidget', [
+                        'model' => $oSurveySearch,
+                        'bRenderSearchBox' => $bShowSurveyListSearch,
+                        'switch' => true
+                    ]);
+                    ?></div>
             </div>
-            <div class="card-body">
-                <a href='<?php echo $this->createUrl("surveyAdministration/listsurveys") ?>'>
-                    <span class="ri-list-unordered" style="font-size: 4em"></span>
-                    <span class="visually-hidden"><?php eT('List surveys'); ?></span>
-                </a><br><br>
-                <a
-                    href='<?php echo $this->createUrl("surveyAdministration/listsurveys") ?>'
-                ><?php eT('List surveys'); ?></a>
+        <?php elseif (
+            (!empty(App()->request->getQuery('viewtype'))
+                && App()->request->getQuery('viewtype') === 'list-widget'
+            )
+            || (empty(App()->request->getQuery('viewtype'))
+                && (SettingsUser::getUserSettingValue('welcome_page_widget') === 'list-widget')
+            )
+        ) : ?>
+            <div class="list-surveys-container">
+                <div class="col-12">
+                    <?php $this->widget('ext.admin.survey.ListSurveysWidget.ListSurveysWidget', [
+                        'model' => $oSurveySearch,
+                        'bRenderSearchBox' => $bShowSurveyListSearch,
+                        'switch' => true
+                    ]);
+                    ?></div>
             </div>
-        </div>
-
-        <div
-            class="card card-clickable card-primary" id="panel-8"
-            data-url="<?php echo $this->createUrl("admin/globalsettings") ?>"
-            style="opacity: 1; top: 0px;">
-            <div class="card-header ">
-                <?php eT('Edit global settings'); ?>
+        <?php else : ?>
+            <div class="list-surveys-container">
+                <div class="col-12">
+                <?php $this->widget('ext.admin.BoxesWidget.BoxesWidget', [
+                    'switch' => true,
+                    'items'  => [
+                        [
+                            'type'  => 0,
+                            'model' => Survey::model(),
+                            'limit' => 15,
+                        ],
+                    ]
+                ]);
+                ?>
+                </div>
             </div>
-            <div class="card-body">
-                <a href='<?php echo $this->createUrl("admin/globalsettings") ?>'>
-                    <span class="ri-settings-5-fill" style="font-size: 4em"></span>
-                    <span class="visually-hidden"><?php eT('Edit global settings'); ?></span>
-                </a><br><br>
-                <a
-                    href='<?php echo $this->createUrl("admin/globalsettings") ?>'
-                ><?php eT('Edit global settings'); ?></a>
-            </div>
-        </div>
-
-        </>
+        <?php endif; ?>
     </div>
-
     <!-- Notification setting -->
     <input type="hidden" id="absolute_notification" />
 </div>
+
+

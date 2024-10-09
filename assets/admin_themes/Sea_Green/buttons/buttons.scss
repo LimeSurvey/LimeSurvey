@@ -136,6 +136,36 @@
     }
 }
 
+.btn-g-700 {
+    color : $white;
+    &:hover, &:focus, &:active, &.active, &:active:focus {
+        color            : $white;
+        background-color : $g-700;
+        border-color     : $g-700;
+    }
+    &:hover {
+        box-shadow : $btn-hover-boxshadow;
+    }
+    &:focus, &:active, &.active, &:active:focus {
+        box-shadow : $btn-focus-boxshadow;
+    }
+}
+
+.btn-g-800 {
+    color : $white;
+    &:hover, &:focus, &:active, &.active, &:active:focus {
+        color            : $white;
+        background-color : $g-800;
+        border-color     : $g-800;
+    }
+    &:hover {
+        box-shadow : $btn-hover-boxshadow;
+    }
+    &:focus, &:active, &.active, &:active:focus {
+        box-shadow : $btn-focus-boxshadow;
+    }
+}
+
 .btn-dark {
     color : $white;
     &:hover, &:focus, &:active, &.active, &:active:focus {
@@ -296,6 +326,21 @@
     }
 }
 
+.btn-outline-g-700 {
+    color        : $g-700;
+    border-color : $g-700;
+    &:hover {
+        color        : $g-700;
+        border-color : $g-700;
+        box-shadow   : $btn-hover-boxshadow;
+    }
+    &:focus, &:active, &.active, &:active:focus, &.dropdown-toggle.show, &.dropdown-toggle.show:focus, &.show {
+        color        : $g-700;
+        border-color : $g-700;
+        box-shadow   : $btn-focus-boxshadow;
+    }
+}
+
 // btn-link should be outsourced to links.scss or whatever it will be called
 .btn-link {
     color : $active-green;
@@ -387,6 +432,28 @@
     min-height : auto;
     & [class^="ri-"], & [class*=" ri-"] {
         font-size : $font-size-base;
+    }
+}
+
+.btn-icon {
+    height          : 36px;
+    width           : 36px;
+    padding         : 0;
+    border          : none;
+    display         : flex;
+    justify-content : center;
+    align-items     : center;
+    cursor          : pointer;
+    &.btn-g-800 {
+        &:hover, &:focus {
+            background-color : $g-700;
+            box-shadow       : none;
+        }
+        &:active, &.active, &:active:focus {
+            color            : $g-800;
+            background-color : $g-200;
+            box-shadow       : none;
+        }
     }
 }
 
