@@ -5,6 +5,7 @@ namespace LimeSurvey\Api\Command\V1\Transformer\Output;
 use Survey;
 use LimeSurvey\Models\Services\QuestionAggregateService\QuestionService;
 use LimeSurvey\Api\Transformer\Output\TransformerOutputActiveRecord;
+use SurveysGroups;
 
 /**
  * TransformerOutputSurveyDetail
@@ -168,6 +169,9 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
         $survey['ownersList'] = array_map(function ($user) {
             return ['value' => $user['uid'], 'label' => $user['user'] . ' - ' . $user['full_name']];
         }, getUserList());
+
+        //todo: later this should be done with an separate endpoint or service
+        $survey['groupsList'] = SurveysGroups::getSurveyGroupsList();
 
         return $survey;
     }
