@@ -45,6 +45,7 @@ class Update_624 extends DatabaseUpdateBase
             }
         }
     }
+    
     private function getTemplatesInUpload()
     {
         $userTemplateRootDir = App()->getConfig("userthemerootdir");

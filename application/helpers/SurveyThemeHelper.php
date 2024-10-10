@@ -534,7 +534,6 @@ class SurveyThemeHelper
      */
     private static function checkDomDocument($domDocument)
     {
-
         $isChangedDomDocument = false;
 
         // Find first 'cssframework' nodes in the document
@@ -550,7 +549,7 @@ class SurveyThemeHelper
 
             foreach ($cssFrameworkNode->childNodes as $child) {
                 if ($child->nodeType === XML_TEXT_NODE) {
-                    $deafultOption = $child->nodeValue;
+                    $defaultOption = $child->nodeValue;
                 } elseif ($child->nodeName === 'dropdownoptions') {
                     $dropDownOptionsNode = $child;
                 }
@@ -566,10 +565,11 @@ class SurveyThemeHelper
                     // Loop through all 'option' nodes and move them to 'optgroup'
                     while ($dropDownOptionsNode->childNodes->length > 0) {
                         $optionNode = $dropDownOptionsNode->firstChild;
-                        if ($optionNode->nodeName != 'option') {
-                            throw new \Exception('Invalid node in the config file.');
+
+                        // Check if the 'option' node has any child nodes (non-empty)
+                        if (trim($optionNode->textContent) !== '' || $optionNode->nodeName === '#text') {
+                            $optGroupNode->appendChild($optionNode);
                         }
-                        $optGroupNode->appendChild($optionNode);
                     }
 
                     // Append the 'optgroup' with all the 'option' nodes into 'dropdownoptions'
