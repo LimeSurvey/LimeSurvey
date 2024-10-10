@@ -9,7 +9,7 @@
     <div class="container">
         <div class="row">
             <div class="col-12 content-right">
-                <h3>Generate a logic file for the survey</h3>
+                <h3><?= gT('Generate a logic file for the survey'); ?></h3>
                 <?=TbHtml::form(array('admin/expressions/sa/survey_logic_file'), 'post')?>
                     <div class="mb-3">
                         <label class="form-label" for="sid"> <?=gT('Survey ID (SID)')?></label>
@@ -17,8 +17,8 @@
                             <?=getSurveyList()?>
                         </select>
                     </div>
-                    <h4>Debug Log Level</h4>
-                    <h5>Specify which debugging features to use</h5>
+                    <h4><?= gT('Debug Log Level'); ?></h4>
+                    <h5><?= gT('Specify which debugging features to use'); ?></h5>
                     <div class="mb-3">
                         <?php echo TbHtml::label(gT("Detailed Timing"), 'LEM_DEBUG_TIMING', ['class' => " form-label"]); ?>
                         <div>
