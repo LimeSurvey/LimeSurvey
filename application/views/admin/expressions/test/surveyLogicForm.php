@@ -76,7 +76,7 @@
                         </div>
                     </div>
                     <div class="mb-3">
-                        <input type="submit" class="btn btn-outline-secondary"/></td>
+                        <input type="submit" class="btn btn-outline-secondary"/>
                     </div>
                 </form>
             </div>
