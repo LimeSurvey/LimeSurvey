@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Zend Framework
  *
@@ -16,10 +15,11 @@
  * @category   Zend
  * @package    Zend_XmlRpc
  * @subpackage Value
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Struct.php 23775 2011-03-01 17:25:24Z ralph $
+ * @version    $Id$
  */
+
 
 /**
  * Zend_XmlRpc_Value_Collection
@@ -31,7 +31,7 @@ require_once 'Zend/XmlRpc/Value/Collection.php';
  * @category   Zend
  * @package    Zend_XmlRpc
  * @subpackage Value
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_XmlRpc_Value_Struct extends Zend_XmlRpc_Value_Collection
@@ -57,19 +57,19 @@ class Zend_XmlRpc_Value_Struct extends Zend_XmlRpc_Value_Collection
     {
         $generator = $this->getGenerator();
         $generator->openElement('value')
-                    ->openElement('struct');
+                  ->openElement('struct');
 
         if (is_array($this->_value)) {
             foreach ($this->_value as $name => $val) {
-                /* @var $val Zend_XmlRpc_Value */
+                /* @var Zend_XmlRpc_Value $val */
                 $generator->openElement('member')
-                            ->openElement('name', $name)
-                            ->closeElement('name');
+                          ->openElement('name', $name)
+                          ->closeElement('name');
                 $val->generateXml();
                 $generator->closeElement('member');
             }
         }
         $generator->closeElement('struct')
-                    ->closeElement('value');
+                  ->closeElement('value');
     }
 }

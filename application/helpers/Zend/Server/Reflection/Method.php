@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Zend Framework
  *
@@ -15,7 +14,7 @@
  *
  * @category   Zend
  * @package    Zend_Server
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
@@ -31,9 +30,9 @@ require_once 'Zend/Server/Reflection/Function/Abstract.php';
  * @category   Zend
  * @package    Zend_Server
  * @subpackage Reflection
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version $Id: Method.php 23775 2011-03-01 17:25:24Z ralph $
+ * @version $Id$
  */
 class Zend_Server_Reflection_Method extends Zend_Server_Reflection_Function_Abstract
 {
@@ -58,7 +57,7 @@ class Zend_Server_Reflection_Method extends Zend_Server_Reflection_Function_Abst
      * @param array $argv
      * @return void
      */
-    public function __construct(Zend_Server_Reflection_Class $class, ReflectionMethod $r, $namespace = null, $argv = array())
+    public function __construct(Zend_Server_Reflection_Class $class, ReflectionMethod $r, $namespace = null, $argv = [])
     {
         $this->_classReflection = $class;
         $this->_reflection      = $r;
@@ -107,4 +106,5 @@ class Zend_Server_Reflection_Method extends Zend_Server_Reflection_Function_Abst
         $this->_classReflection = new Zend_Server_Reflection_Class(new ReflectionClass($this->_class), $this->getNamespace(), $this->getInvokeArguments());
         $this->_reflection = new ReflectionMethod($this->_classReflection->getName(), $this->getName());
     }
+
 }

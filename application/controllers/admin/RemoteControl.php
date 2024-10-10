@@ -111,6 +111,8 @@ class RemoteControl extends SurveyCommonAction
                 require_once('Zend/XmlRpc/Client.php');
 
                 $client = new Zend_XmlRpc_Client($serverUrl);
+                // Increase timeout (default is 10 seconds). Importing the survey may take a while.
+                $client->getHttpClient()->setConfig(['timeout' => 300]);
             } elseif ($RPCType == 'json') {
                 Yii::app()->loadLibrary('jsonRPCClient');
                 $client = new jsonRPCClient($serverUrl);

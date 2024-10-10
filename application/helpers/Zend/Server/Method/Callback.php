@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Zend Framework
  *
@@ -16,9 +15,9 @@
  * @category   Zend
  * @package    Zend_Server
  * @subpackage Method
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Callback.php 23775 2011-03-01 17:25:24Z ralph $
+ * @version    $Id$
  */
 
 /**
@@ -27,7 +26,7 @@
  * @category   Zend
  * @package    Zend_Server
  * @subpackage Method
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Server_Method_Callback
@@ -55,7 +54,7 @@ class Zend_Server_Method_Callback
     /**
      * @var array Valid callback types
      */
-    protected $_types = array('function', 'static', 'instance');
+    protected $_types = ['function', 'static', 'instance'];
 
     /**
      * Constructor
@@ -65,7 +64,7 @@ class Zend_Server_Method_Callback
      */
     public function __construct($options = null)
     {
-        if ((null !== $options) && is_array($options)) {
+        if ((null !== $options) && is_array($options))  {
             $this->setOptions($options);
         }
     }
@@ -192,9 +191,9 @@ class Zend_Server_Method_Callback
     public function toArray()
     {
         $type = $this->getType();
-        $array = array(
+        $array = [
             'type' => $type,
-        );
+        ];
         if ('function' == $type) {
             $array['function'] = $this->getFunction();
         } else {

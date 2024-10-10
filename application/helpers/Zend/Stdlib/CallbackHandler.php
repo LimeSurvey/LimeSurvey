@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Zend Framework
  *
@@ -31,6 +30,7 @@
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
+#[AllowDynamicProperties]
 class Zend_Stdlib_CallbackHandler
 {
     /**
@@ -58,7 +58,7 @@ class Zend_Stdlib_CallbackHandler
      * @param  array $options Options used by the callback handler (e.g., priority)
      * @return void
      */
-    public function __construct($callback, array $metadata = array())
+    public function __construct($callback, array $metadata = [])
     {
         $this->metadata  = $metadata;
         $this->registerCallback($callback);
@@ -93,7 +93,7 @@ class Zend_Stdlib_CallbackHandler
      */
     protected function registerCallback($callback)
     {
-        set_error_handler(array($this, 'errorHandler'), E_STRICT);
+        set_error_handler([$this, 'errorHandler'], E_STRICT);
         $callable = is_callable($callback);
         restore_error_handler();
         if (!$callable || $this->error) {
@@ -102,7 +102,7 @@ class Zend_Stdlib_CallbackHandler
         }
 
         // If pecl/weakref is not installed, simply store the callback and return
-        set_error_handler(array($this, 'errorHandler'), E_WARNING);
+        set_error_handler([$this, 'errorHandler'], E_WARNING);
         $callable = class_exists('WeakRef');
         restore_error_handler();
         if (!$callable || $this->error) {
@@ -137,7 +137,7 @@ class Zend_Stdlib_CallbackHandler
         // We have an array callback with an object as the first argument;
         // pass it to WeakRef, and then register the new callback
         $target = new WeakRef($target);
-        $this->callback = array($target, $method);
+        $this->callback = [$target, $method];
     }
 
     /**
@@ -168,7 +168,7 @@ class Zend_Stdlib_CallbackHandler
         // then return
         list($target, $method) = $callback;
         if ($target instanceof WeakRef) {
-            return array($target->get(), $method);
+            return [$target->get(), $method];
         }
 
         // Otherwise, return it
@@ -181,7 +181,7 @@ class Zend_Stdlib_CallbackHandler
      * @param  array $args Arguments to pass to callback
      * @return mixed
      */
-    public function call(array $args = array())
+    public function call(array $args = [])
     {
         $callback = $this->getCallback();
 

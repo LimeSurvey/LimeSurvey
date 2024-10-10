@@ -4,7 +4,7 @@ namespace ls\tests;
 
 use Yii;
 
-class RemoteControlTest extends TestBaseClassWeb
+class RemoteControlJsonrpcTest extends TestBaseClassWeb
 {
     private static $tmpBaseUrl;
     private static $tmpRPCType;
@@ -23,23 +23,12 @@ class RemoteControlTest extends TestBaseClassWeb
 
         self::$tmpRPCType = Yii::app()->getConfig('RPCInterface');
 
-        if (self::$tmpRPCType === 'off') {
+        if (self::$tmpRPCType !== 'json') {
             \SettingGlobal::setSetting('RPCInterface', 'json');
             $RPCType = 'json';
-        } else {
-            $RPCType = self::$tmpRPCType;
         }
-
-        if ($RPCType == 'xml') {
-            $cur_path = get_include_path();
-            set_include_path($cur_path . PATH_SEPARATOR . APPPATH . 'helpers');
-            require_once('Zend/XmlRpc/Client.php');
-
-            self::$client = new \Zend_XmlRpc_Client($serverUrl);
-        } elseif ($RPCType == 'json') {
-            Yii::app()->loadLibrary('jsonRPCClient');
-            self::$client = new \jsonRPCClient($serverUrl);
-        }
+        Yii::app()->loadLibrary('jsonRPCClient');
+        self::$client = new \jsonRPCClient($serverUrl);
     }
 
     public static function tearDownAfterClass(): void
@@ -54,7 +43,16 @@ class RemoteControlTest extends TestBaseClassWeb
 
     public function testGetSessionKey()
     {
-        $sessionKey = self::$client->call('get_session_key', ['admin', 'password']);
+        $username = getenv('ADMINUSERNAME');
+        if (!$username) {
+            $username = 'admin';
+        }
+
+        $password = getenv('PASSWORD');
+        if (!$password) {
+            $password = 'password';
+        }
+        $sessionKey = self::$client->call('get_session_key', [$username, $password]);
         $this->assertIsString($sessionKey);
 
         self::$client->call('release_session_key', [$sessionKey]);
@@ -62,7 +60,8 @@ class RemoteControlTest extends TestBaseClassWeb
 
     public function testCredentialsError()
     {
-        $sessionKey = self::$client->call('get_session_key', ['user', 'pass']);
+        /* generate a random string to get an invalid user, no restriction on users_name */
+        $sessionKey = self::$client->call('get_session_key', [Yii::app()->securityManager->generateRandomString(64), Yii::app()->securityManager->generateRandomString(64)]);
         $this->assertIsArray($sessionKey);
         $this->assertSame("Invalid user name or password", $sessionKey['status']);
 

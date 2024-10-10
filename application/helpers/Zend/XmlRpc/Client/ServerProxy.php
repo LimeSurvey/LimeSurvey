@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Zend Framework
  *
@@ -16,9 +15,9 @@
  * @category   Zend
  * @package    Zend_XmlRpc
  * @subpackage Client
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: ServerProxy.php 23775 2011-03-01 17:25:24Z ralph $
+ * @version    $Id$
  */
 
 
@@ -30,7 +29,7 @@
  * @category   Zend
  * @package    Zend_XmlRpc
  * @subpackage Client
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_XmlRpc_Client_ServerProxy
@@ -49,7 +48,7 @@ class Zend_XmlRpc_Client_ServerProxy
     /**
      * @var array of Zend_XmlRpc_Client_ServerProxy
      */
-    private $_cache = array();
+    private $_cache = [];
 
 
     /**
@@ -68,6 +67,7 @@ class Zend_XmlRpc_Client_ServerProxy
     /**
      * Get the next successive namespace
      *
+     * @param string $name
      * @return Zend_XmlRpc_Client_ServerProxy
      */
     public function __get($namespace)
@@ -83,7 +83,7 @@ class Zend_XmlRpc_Client_ServerProxy
     /**
      * Call a method in this namespace.
      *
-     * @param  string $method
+     * @param  string $methodN
      * @param  array $args
      * @return mixed
      */

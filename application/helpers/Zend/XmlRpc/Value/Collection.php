@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Zend Framework
  *
@@ -16,10 +15,11 @@
  * @category   Zend
  * @package    Zend_XmlRpc
  * @subpackage Value
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Collection.php 23775 2011-03-01 17:25:24Z ralph $
+ * @version    $Id$
  */
+
 
 /**
  * Zend_XmlRpc_Value
@@ -31,7 +31,7 @@ require_once 'Zend/XmlRpc/Value.php';
  * @category   Zend
  * @package    Zend_XmlRpc
  * @subpackage Value
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 abstract class Zend_XmlRpc_Value_Collection extends Zend_XmlRpc_Value
@@ -44,7 +44,7 @@ abstract class Zend_XmlRpc_Value_Collection extends Zend_XmlRpc_Value
      */
     public function __construct($value)
     {
-        $values = (array) $value; // Make sure that the value is an array
+        $values = (array)$value;   // Make sure that the value is an array
         foreach ($values as $key => $value) {
             // If the elements of the given array are not Zend_XmlRpc_Value objects,
             // we need to convert them as such (using auto-detection from PHP value)
@@ -63,9 +63,9 @@ abstract class Zend_XmlRpc_Value_Collection extends Zend_XmlRpc_Value
      */
     public function getValue()
     {
-        $values = (array) $this->_value;
+        $values = (array)$this->_value;
         foreach ($values as $key => $value) {
-            /* @var $value Zend_XmlRpc_Value */
+            /* @var Zend_XmlRpc_Value $value */
             $values[$key] = $value->getValue();
         }
         return $values;

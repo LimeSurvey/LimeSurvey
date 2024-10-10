@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Zend Framework
  *
@@ -29,6 +28,8 @@ require_once 'Zend/Stdlib/Exception.php';
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Stdlib_Exception_InvalidCallbackException extends DomainException implements Zend_Stdlib_Exception
+class Zend_Stdlib_Exception_InvalidCallbackException
+    extends DomainException
+    implements Zend_Stdlib_Exception
 {
 }
