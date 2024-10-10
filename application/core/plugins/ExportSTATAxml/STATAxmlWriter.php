@@ -318,7 +318,7 @@ class STATAxmlWriter extends Writer
     /* Function is called for every response
      * Here we just use it to create arrays with variable names and data
      */
-    protected function outputRecord($headers, $values, FormattingOptions $oOptions)
+    protected function outputRecord($headers, $values, FormattingOptions $oOptions, $fieldNames = [])
     {
         // function is called for every response to be exported....only write header once
         if (empty($this->headers)) {

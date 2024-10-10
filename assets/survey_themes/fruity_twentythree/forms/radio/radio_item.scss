@@ -190,3 +190,9 @@ For iPads specifically : add this : (min-device-width: 768px) and (max-device-wi
         margin-left: -18px !important;
     }
 }
+
+@media only screen and (max-width : 760px), (min-device-width : 768px) and (max-device-width : 1024px) {
+    .radio-item label.ls-label-xs-visibility > * {
+        left : auto;
+    }
+}

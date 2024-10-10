@@ -3,6 +3,7 @@
 namespace ls\tests;
 
 use Facebook\WebDriver\WebDriverBy;
+use Survey;
 
 /**
  * @group shorturl
@@ -58,7 +59,7 @@ class ShortUrlTest extends TestBaseClassWeb
         // Cleanup
         self::$testSurvey->delete();
         self::$testSurvey = null;
-        \Survey::model()->resetCache();
+        Survey::model()->resetCache();
     }
 
     /**
@@ -107,7 +108,7 @@ class ShortUrlTest extends TestBaseClassWeb
         // Cleanup
         self::$testSurvey->delete();
         self::$testSurvey = null;
-        \Survey::model()->resetCache();
+        Survey::model()->resetCache();
     }
 
     /**
@@ -158,7 +159,7 @@ class ShortUrlTest extends TestBaseClassWeb
         // Cleanup
         self::$testSurvey->delete();
         self::$testSurvey = null;
-        \Survey::model()->resetCache();
+        Survey::model()->resetCache();
     }
 
     /**
@@ -208,7 +209,7 @@ class ShortUrlTest extends TestBaseClassWeb
         // Cleanup
         self::$testSurvey->delete();
         self::$testSurvey = null;
-        \Survey::model()->resetCache();
+        Survey::model()->resetCache();
     }
 
     /**

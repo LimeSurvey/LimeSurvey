@@ -84,7 +84,7 @@ class PluginManagerShutdownFunction
 
         $plugin = \Plugin::model()->find('name = :name', [':name' => $this->currentPluginName]);
 
-        $result = \Plugin::setPluginLoadError(
+        $result = \Plugin::handlePluginLoadError(
             $plugin,
             $this->currentPluginName,
             $error

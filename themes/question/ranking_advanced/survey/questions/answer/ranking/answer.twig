@@ -44,8 +44,8 @@
             {# rows/answer_row.twig #}
             {{sSelects}}
     </ul>
-    {% set rankingView = './views/' ~ question_template_attribute.visualize ~ '.twig' %}
-    {% set rankingView = './views/blocks.twig' %}
+    {% set visualization = (question_template_attribute.visualize is not empty) ? question_template_attribute.visualize : "blocks" %}
+    {% set rankingView = './views/' ~ visualization ~ '.twig' %}
     {{ include(rankingView) }}
 </div>
 

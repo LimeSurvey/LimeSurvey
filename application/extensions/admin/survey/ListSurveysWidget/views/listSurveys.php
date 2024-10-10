@@ -38,7 +38,7 @@
                 'bindListItemclick();',
                 'switchStatusOfListActions();'
             ],
-            'rowLink'               => 'Yii::app()->createUrl("surveyAdministration/view/",array("iSurveyID"=>$data->sid))',
+            'rowLink'               => 'Yii::app()->createUrl("surveyAdministration/view/",array("iSurveyID"=>$data->sid,"allowRedirect"=>1))',
             // 'template'  => $this->template,
             'massiveActionTemplate' => $this->render('massive_actions/_selector', [], true, false),
             'columns'               => [
@@ -68,7 +68,7 @@
                 [
                     'header'            => gT('Title'),
                     'name'              => 'title',
-                    'value'             => '$data->defaultlanguage->surveyls_title',
+                    'value'             => '$data->defaultlanguage->surveyls_title ?? null',
                     'htmlOptions'       => ['class' => 'has-link'],
                     'headerHtmlOptions' => ['class' => 'text-nowrap'],
                 ],

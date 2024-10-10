@@ -202,25 +202,25 @@ class uploader {
         // COOKIES INIT
         $ip = '(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)';
         $ip = '/^' . implode('\.', array($ip, $ip, $ip, $ip)) . '$/';
-        if (preg_match($ip, $_SERVER['HTTP_HOST']) ||
-            preg_match('/^[^\.]+$/', $_SERVER['HTTP_HOST'])
+        if (preg_match($ip, (string) $_SERVER['HTTP_HOST']) ||
+            preg_match('/^[^\.]+$/', (string) $_SERVER['HTTP_HOST'])
         )
             $this->config['cookieDomain'] = "";
-        elseif (!strlen($this->config['cookieDomain']))
+        elseif (!strlen((string) $this->config['cookieDomain']))
             $this->config['cookieDomain'] = $_SERVER['HTTP_HOST'];
-        if (!strlen($this->config['cookiePath']))
+        if (!strlen((string) $this->config['cookiePath']))
             $this->config['cookiePath'] = "/";
 
         // UPLOAD FOLDER INIT
 
         // FULL URL
         if (preg_match('/^([a-z]+)\:\/\/([^\/^\:]+)(\:(\d+))?\/(.+)\/?$/',
-                $this->config['uploadURL'], $patt)
+                (string) $this->config['uploadURL'], $patt)
         ) {
             list($unused, $protocol, $domain, $unused, $port, $path) = $patt;
             $path = path::normalize($path);
             $this->config['uploadURL'] = "$protocol://$domain" . (strlen($port) ? ":$port" : "") . "/$path";
-            $this->config['uploadDir'] = $this->realpath(strlen($this->config['uploadDir'])
+            $this->config['uploadDir'] = $this->realpath(strlen((string) $this->config['uploadDir'])
                 ? path::normalize($this->config['uploadDir'])
                 : path::url2fullPath("/$path"));
             $this->typeDir = $this->realpath("{$this->config['uploadDir']}/{$this->type}");
@@ -228,7 +228,7 @@ class uploader {
 
         // SITE ROOT
         } elseif ($this->config['uploadURL'] == "/") {
-            $this->config['uploadDir'] = $this->realpath(strlen($this->config['uploadDir'])
+            $this->config['uploadDir'] = $this->realpath(strlen((string) $this->config['uploadDir'])
                 ? path::normalize($this->config['uploadDir'])
                 : path::normalize($_SERVER['DOCUMENT_ROOT']));
             $this->typeDir = $this->realpath("{$this->config['uploadDir']}/{$this->type}");
@@ -236,10 +236,10 @@ class uploader {
 
         // ABSOLUTE & RELATIVE
         } else {
-            $this->config['uploadURL'] = (substr($this->config['uploadURL'], 0, 1) === "/")
+            $this->config['uploadURL'] = (substr((string) $this->config['uploadURL'], 0, 1) === "/")
                 ? path::normalize($this->config['uploadURL'])
                 : path::rel2abs_url($this->config['uploadURL']);
-            $this->config['uploadDir'] = $this->realpath(strlen($this->config['uploadDir'])
+            $this->config['uploadDir'] = $this->realpath(strlen((string) $this->config['uploadDir'])
                 ? path::normalize($this->config['uploadDir'])
                 : path::url2fullPath($this->config['uploadURL']));
             $this->typeDir = $this->realpath("{$this->config['uploadDir']}/{$this->type}");
@@ -256,7 +256,7 @@ class uploader {
             $this->opener['name'] = $_GET['opener'];
 
             if ($_GET['opener'] == "tinymce") {
-                if (!isset($this->config['_tinyMCEPath']) || !strlen($this->config['_tinyMCEPath']))
+                if (!isset($this->config['_tinyMCEPath']) || !strlen((string) $this->config['_tinyMCEPath']))
                     $this->opener['name'] = false;
 
             } elseif ($_GET['opener'] == "tinymce4") {
@@ -272,7 +272,7 @@ class uploader {
         // LOCALIZATION
         foreach ($this->langInputNames as $key)
             if (isset($_GET[$key]) &&
-                preg_match('/^[a-z][a-z\._\-]*$/i', $_GET[$key]) &&
+                preg_match('/^[a-z][a-z\._\-]*$/i', (string) $_GET[$key]) &&
                 file_exists("lang/" . strtolower($_GET[$key]) . ".php")
             ) {
                 $this->lang = $_GET[$key];
@@ -293,7 +293,7 @@ class uploader {
                 $original = $this->get_htaccess();
                 if (!file_exists($htaccess)) {
                     if (!@file_put_contents($htaccess, $original))
-                        $this->backMsg("Cannot write to upload folder. {$this->config['uploadDir']}");
+                        $this->backMsg("Cannot write to upload folder. '{$this->config['uploadDir']}'");
                 } else {
                     if (false === ($data = @file_get_contents($htaccess)))
                         $this->backMsg("Cannot read .htaccess");
@@ -317,9 +317,9 @@ class uploader {
         // check it.
         $existing_path = $path;
         while (!file_exists($existing_path)) {
-            $existing_path = dirname($existing_path);
+            $existing_path = dirname((string) $existing_path);
         }
-        $rPath = realpath($existing_path) . substr($path, strlen($existing_path));
+        $rPath = realpath($existing_path) . substr((string) $path, strlen((string) $existing_path));
         if (strtoupper(substr(PHP_OS, 0, 3)) == "WIN")
             $rPath = str_replace("\\", "/", $rPath);
         return $rPath;
@@ -352,7 +352,7 @@ class uploader {
                 }
             }
 
-            if (!strlen($message)) {
+            if (!strlen((string) $message)) {
                 if (!is_dir(path::normalize($dir)))
                     @mkdir(path::normalize($dir), $this->config['dirPerms'], true);
 
@@ -381,13 +381,13 @@ class uploader {
             }
         }
 
-        if (strlen($message) &&
+        if (strlen((string) $message) &&
             isset($this->file['tmp_name']) &&
             file_exists($this->file['tmp_name'])
         )
             @unlink($this->file['tmp_name']);
 
-        if (strlen($message) && method_exists($this, 'errorMsg'))
+        if (strlen((string) $message) && method_exists($this, 'errorMsg'))
             $this->errorMsg($message);
         else
             $this->callBack($url, $message);
@@ -421,12 +421,12 @@ class uploader {
 
     protected function checkFilePath($file) {
         $rPath = $this->realpath($file);
-        return (substr($rPath, 0, strlen($this->typeDir)) === $this->typeDir);
+        return (substr((string) $rPath, 0, strlen($this->typeDir)) === $this->typeDir);
     }
 
     protected function checkFilename($file) {
 
-        if ((basename($file) !== $file) ||
+        if ((basename((string) $file) !== $file) ||
             (
                 isset($this->config['_normalizeFilenames']) &&
                 $this->config['_normalizeFilenames'] &&
@@ -482,12 +482,12 @@ class uploader {
             )))));
 
         // HIDDEN FILENAMES CHECK
-        elseif (substr($file['name'], 0, 1) == ".")
+        elseif (substr((string) $file['name'], 0, 1) == ".")
             return $this->label("File name shouldn't begins with '.'");
 
         // EXTENSION CHECK
         elseif (
-            (substr($file['name'], -1) == ".") ||
+            (substr((string) $file['name'], -1) == ".") ||
             !$this->validateExtension($extension, $this->type)
         )
             return $this->label("Denied file extension.");
@@ -569,12 +569,12 @@ class uploader {
     }
 
     protected function getTypeFromPath($path) {
-        return preg_match('/^([^\/]*)\/.*$/', $path, $patt)
+        return preg_match('/^([^\/]*)\/.*$/', (string) $path, $patt)
             ? $patt[1] : $path;
     }
 
     protected function removeTypeFromPath($path) {
-        return preg_match('/^[^\/]*\/(.*)$/', $path, $patt)
+        return preg_match('/^[^\/]*\/(.*)$/', (string) $path, $patt)
             ? $patt[1] : "";
     }
 
@@ -686,7 +686,7 @@ class uploader {
         if ($type === false)
             return true;
 
-        $thumb = substr($file, strlen($this->config['uploadDir']));
+        $thumb = substr((string) $file, strlen((string) $this->config['uploadDir']));
         $thumb = $this->config['uploadDir'] . "/" . $this->config['thumbsDir'] . "/" . $thumb;
         $thumb = path::normalize($thumb);
         $thumbDir = dirname($thumb);
@@ -736,7 +736,7 @@ class uploader {
         $return = isset($this->labels[$string]) ? $this->labels[$string] : $string;
         if (is_array($data))
             foreach ($data as $key => $val)
-                $return = str_replace("{{$key}}", $val, $return);
+                $return = str_replace("{{$key}}", $val, (string) $return);
         return $return;
     }
 
@@ -793,7 +793,7 @@ if (o !== false) {
     }
 
     protected function callBack_fckeditor($url, $message) {
-        $n = strlen($message) ? 1 : 0;
+        $n = strlen((string) $message) ? 1 : 0;
         return "<script type='text/javascript'>
 var par = window.parent,
     op = window.opener,

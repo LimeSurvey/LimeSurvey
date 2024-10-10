@@ -84,24 +84,27 @@ class FailedLoginAttempt extends LSActiveRecord
         $isLockedOut = false;
         $ip = substr(getRealIPAddress(), 0, 40);
 
-        // Return false if IP is whitelisted
+        // Return false if IP is allowlisted
         if ($this->isWhitelisted($ip, $attemptType)) {
             return false;
         }
 
         switch ($attemptType) {
             case FailedLoginAttempt::TYPE_LOGIN:
-                $timeOut = Yii::app()->getConfig('timeOutTime');
-                $maxLoginAttempt = Yii::app()->getConfig('maxLoginAttempt');
+                $timeOut = intval(App()->getConfig('timeOutTime'));
+                $maxLoginAttempt = intval(App()->getConfig('maxLoginAttempt'));
                 break;
             case FailedLoginAttempt::TYPE_TOKEN:
-                $timeOut = Yii::app()->getConfig('timeOutParticipants');
-                $maxLoginAttempt = Yii::app()->getConfig('maxLoginAttemptParticipants');
+                $timeOut = intval(App()->getConfig('timeOutParticipants'));
+                $maxLoginAttempt = intval(App()->getConfig('maxLoginAttemptParticipants'));
                 break;
             default:
                 throw new InvalidArgumentException(sprintf("Invalid attempt type: %s", $attemptType));
         }
-
+        // Return false if disable my maxLoginAttempt
+        if ($maxLoginAttempt <= 0) {
+            return false;
+        }
         if (Yii::app()->getConfig('DBVersion') <= 480) {
             $criteria = new CDbCriteria();
             $criteria->condition = 'number_attempts >= :attempts AND ip = :ip';
@@ -124,6 +127,7 @@ class FailedLoginAttempt extends LSActiveRecord
         if ($row != null) {
             $lastattempt = strtotime((string) $row->last_attempt);
             if (time() > $lastattempt + $timeOut) {
+                // always true if $timeOut <= 0
                 $this->deleteAttempts($attemptType);
             } else {
                 $isLockedOut = true;
@@ -172,7 +176,7 @@ class FailedLoginAttempt extends LSActiveRecord
     }
 
     /**
-     * Returns true if the specified IP is whitelisted
+     * Returns true if the specified IP is allowlisted
      *
      * @param string $ip
      * @param string $attemptType   'login' or 'token'
@@ -204,18 +208,18 @@ class FailedLoginAttempt extends LSActiveRecord
             }
             // Compare directly
             if ($whiteListEntry == $ip) {
-                // The IP is whitelisted
+                // The IP is allowlisted
                 return true;
             }
             // Compare binary representations
             $binaryWhiteListEntry = inet_pton($whiteListEntry);
             if ($binaryWhiteListEntry !== false && $binaryWhiteListEntry == $binaryIP) {
-                // The IP is whitelisted
+                // The IP is allowlisted
                 return true;
             }
         }
 
-        // Not whitelisted
+        // Not allowlisted
         return false;
     }
 }

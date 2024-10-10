@@ -82,6 +82,11 @@ class Index extends SurveyCommonAction
 
         $aData['countSurveyList'] = Survey::model()->count();
 
+        //show banner after welcome logo
+        $event = new PluginEvent('beforeWelcomePageRender');
+        App()->getPluginManager()->dispatchEvent($event);
+        $belowLogoHtml = $event->get('html');
+
         // We get the home page display setting
         $aData['bShowSurveyList'] = (getGlobalSetting('show_survey_list') == "show");
         $aData['bShowSurveyListSearch'] = (getGlobalSetting('show_survey_list_search') == "show");
@@ -91,6 +96,7 @@ class Index extends SurveyCommonAction
         $aData['iBoxesByRow'] = (int) getGlobalSetting('boxes_by_row');
         $aData['sBoxesOffSet'] = (int) getGlobalSetting('boxes_offset');
         $aData['bBoxesInContainer'] = (getGlobalSetting('boxes_in_container') == 'yes');
+        $aData['belowLogoHtml'] = $belowLogoHtml;
         $this->renderWrappedTemplate('super', 'welcome', $aData);
     }
 }

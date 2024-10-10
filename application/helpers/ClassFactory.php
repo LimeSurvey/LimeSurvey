@@ -36,7 +36,7 @@ class ClassFactory
         //          can break on eaccelerator avoid it when possible uncomment if needed:
         //krsort(self::$map);
         if (!self::$registered) {
-            self::$registered = spl_autoload_register(array(get_class(), 'autoload'), true, true);
+            self::$registered = spl_autoload_register(array(get_class(new static), 'autoload'), true, true);
         }
     }
 }

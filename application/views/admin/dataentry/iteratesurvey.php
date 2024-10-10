@@ -1,4 +1,4 @@
-<div class="side-body <?php echo getSideBodyClass(true); ?>">
+<div class="side-body">
 <h3><?php eT("Iterate survey");?></h3>
 
 <?php if($success) {?>

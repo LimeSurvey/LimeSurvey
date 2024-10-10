@@ -25,7 +25,7 @@ class EmailTemplates extends SurveyCommonAction
     /**
      * Load edit email template screen.
      * @param mixed $iSurveyId
-     * @return
+     * @return void
      */
     public function index($iSurveyId)
     {
@@ -66,10 +66,18 @@ class EmailTemplates extends SurveyCommonAction
         foreach ($grplangs as $key => $grouplang) {
             $aData['bplangs'][$key] = $grouplang;
             $aData['attrib'][$key] = SurveyLanguageSetting::model()->find('surveyls_survey_id = :ssid AND surveyls_language = :ls', array(':ssid' => $iSurveyId, ':ls' => $grouplang));
-            $attachments = unserialize($aData['attrib'][$key]['attachments']);
+            $attachments = $aData['attrib'][$key]['attachments'];
+            if (is_string($attachments)) {
+                $attachments = unserialize($attachments);
+            }
             if (is_array($attachments)) {
                 foreach ($attachments as &$template) {
                     foreach ($template as &$attachment) {
+                        // If the file is missing we add an error message
+                        if (!$this->attachmentExists($iSurveyId, $attachment)) {
+                            $attachment['error'] = gT("File not found.");
+                        }
+                        // For security reasons we don't include the full upload path in the frontend
                         if (substr((string) $attachment['url'], 0, strlen($uploadDir)) == $uploadDir) {
                             $attachment['url'] = str_replace('\\', '/', substr((string) $attachment['url'], strlen($uploadDir)));
                         }
@@ -87,12 +95,12 @@ class EmailTemplates extends SurveyCommonAction
         $aData['subaction'] = gT("Edit email templates");
         $aData['ishtml'] = $ishtml;
         $aData['grplangs'] = $grplangs;
-
+        $aData['showSaveButton'] = true;
+        $topbarData = TopbarConfiguration::getSurveyTopbarData($iSurveyId);
+        $topbarData = array_merge($topbarData, $aData);
         $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
             '/surveyAdministration/partial/topbar/surveyTopbarRight_view',
-            [
-                'showSaveButton' => true
-            ],
+            $topbarData,
             true
         );
 
@@ -103,7 +111,7 @@ class EmailTemplates extends SurveyCommonAction
 
     /**
      * Function responsible to process any change in email template.
-     * @return
+     * @return void
      */
     public function update($iSurveyId)
     {
@@ -321,5 +329,31 @@ class EmailTemplates extends SurveyCommonAction
         App()->getClientScript()->registerPackage('emailtemplates');
         $aData['display']['menu_bars']['surveysummary'] = 'editemailtemplates';
         parent::renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
+    }
+
+    /**
+     * Checks that the specified attachment exists on one of the allowed paths.
+     * @param array<string,mixed> The attachment data
+     * @return bool True if the file exists within the survey or global upload dirs.
+     */
+    private function attachmentExists($surveyId, $attachment)
+    {
+        $isInSurvey = Yii::app()->is_file(
+            $attachment['url'],
+            Yii::app()->getConfig('uploaddir') . DIRECTORY_SEPARATOR . "surveys" . DIRECTORY_SEPARATOR . $surveyId,
+            false
+        );
+
+        $isInGlobal = Yii::app()->is_file(
+            $attachment['url'],
+            Yii::app()->getConfig('uploaddir') . DIRECTORY_SEPARATOR . "global",
+            false
+        );
+
+        if ($isInSurvey || $isInGlobal) {
+            return true;
+        }
+
+        return false;
     }
 }

@@ -5,7 +5,7 @@ namespace ls\tests\unit\api\command\mixin;
 use LimeSurvey\Api\Command\Response\Response;
 use LimeSurvey\Api\Command\Response\Status;
 use LimeSurvey\Api\Command\Response\Status\StatusErrorUnauthorised;
-use LimeSurvey\Api\Auth\AuthSession;
+use LimeSurvey\Api\Auth\AuthTokenSimple;
 
 /**
  *
@@ -50,7 +50,7 @@ trait AssertResponse
 
         $this->assertResponseDataStatus(
             $response,
-            AuthSession::ERROR_INVALID_SESSION_KEY
+            AuthTokenSimple::ERROR_INVALID_SESSION_KEY
         );
     }
 }

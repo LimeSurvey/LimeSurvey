@@ -1,6 +1,6 @@
 ﻿/*
  Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
- For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
+ CKEditor 4 LTS ("Long Term Support") is available under the terms of the Extended Support Model.
 */
 CKEDITOR.plugins.setLang("a11yhelp","fr-ca",{title:"Instructions d'accessibilité",contents:"Contenu de l'aide.  Pour fermer cette fenêtre, appuyez sur ESC.",legend:[{name:"Général",items:[{name:"Barre d'outil de l'éditeur",legend:"Appuyer sur ${toolbarFocus} pour accéder à la barre d'outils. Se déplacer vers les groupes suivant ou précédent de la barre d'outil avec les touches TAB et SHIFT+TAB. Se déplacer vers les boutons suivant ou précédent de la barre d'outils avec les touches FLECHE DROITE et FLECHE GAUCHE. Appuyer sur la barre d'espace ou la touche ENTRER pour activer le bouton de barre d'outils."},
 {name:"Dialogue de l'éditeur",legend:"Inside a dialog, press TAB to navigate to the next dialog element, press SHIFT+TAB to move to the previous dialog element, press ENTER to submit the dialog, press ESC to cancel the dialog. When a dialog has multiple tabs, the tab list can be reached either with ALT+F10 or with TAB as part of the dialog tabbing order. With tab list focused, move to the next and previous tab with RIGHT and LEFT ARROW, respectively. Press ESC to discard changes and close the dialog. The focus will be moved back to the editing area upon leaving the dialog."},

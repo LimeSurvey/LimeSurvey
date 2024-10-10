@@ -33,8 +33,8 @@ if (ini_get("safe_mode"))
 
 // CMS INTEGRATION
 // Possible files -> drupal, BolmerCMS
-if(isset($_GET['cms']) && (basename($cmsFile) == $cmsFile) && preg_match("/drupal|BolmerCMS/", $_GET['cms'])){
-    $cmsFile = basename($_GET['cms']);
+if(isset($_GET['cms']) && (basename((string) $cmsFile) == $cmsFile) && preg_match("/drupal|BolmerCMS/", (string) $_GET['cms'])){
+    $cmsFile = basename((string) $_GET['cms']);
     if (is_file("integration/{$cmsFile}.php") )
         require "integration/{$cmsFile}.php";
 }
@@ -87,7 +87,7 @@ if (!function_exists("json_encode")) {
             str_replace("\n", "\\n",
             str_replace('"', "\\\"",
             str_replace("\\", "\\\\",
-        $data)))))) . '"';
+        (string) $data)))))) . '"';
     }
 }
 

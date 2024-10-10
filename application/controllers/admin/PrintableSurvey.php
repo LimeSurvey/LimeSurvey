@@ -137,6 +137,20 @@ class PrintableSurvey extends SurveyCommonAction
 
             $fieldmap = createFieldMap($oSurvey, 'full', false, false, $sLanguageCode);
 
+            // For print condition text : need questionobject of some specific question
+            $criteria = new CDBCriteria();
+            $criteria->select = ['cqid'];
+            $criteria->with = ['questions'];
+            $criteria->compare('questions.sid', $surveyid);
+            $neededTypes = [QuestionType::QT_1_ARRAY_DUAL];
+            $criteria->addInCondition('questions.type', $neededTypes);
+            $oConditions = Condition::model()->with('questions')->findAll($criteria);
+            // We need only the question attributes
+            /* array[] Needed question attributes for condition question */
+            $conditionQuestionsAttributes = [];
+            foreach ($oConditions as $oCondition) {
+                $conditionQuestionsAttributes[$oCondition->cqid] = QuestionAttribute::model()->getQuestionAttributes($oCondition->questions);
+            }
             // =========================================================
             // START doin the business:
             foreach ($arGroups as $arQuestionGroup) {
@@ -170,10 +184,7 @@ class PrintableSurvey extends SurveyCommonAction
                 foreach ($arQuestions as $arQuestion) {
                     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
                     // START doing questions
-
-                    $qidattributes = QuestionAttribute::model()->getQuestionAttributes($arQuestion['qid']);
-
-
+                    $qidattributes = QuestionAttribute::model()->getQuestionAttributes($arQuestion);
                     if ($qidattributes['hidden'] == 1 && $arQuestion['type'] != Question::QT_ASTERISK_EQUATION) {
                         continue;
                     }
@@ -184,8 +195,6 @@ class PrintableSurvey extends SurveyCommonAction
                     $sExplanation = ''; //reset conditions explanation
                     $s = 0;
                     // TMSW Condition->Relevance:  show relevance instead of this whole section to create $explanation
-
-
                     $scenarioresult = Condition::model()->getScenarios($arQuestion['qid']);
                     $scenarioresult = $scenarioresult->readAll();
                     //Loop through distinct scenarios, thus grouping them together.
@@ -238,7 +247,7 @@ class PrintableSurvey extends SurveyCommonAction
                                 // cqid == 0  ==> token attribute match
                                 $tokenData = getTokenFieldsAndNames($surveyid);
                                 preg_match('/^{TOKEN:([^}]*)}$/', (string) $distinctrow['cfieldname'], $extractedTokenAttr);
-                                $sExplanation .= "Your " . $tokenData[strtolower($extractedTokenAttr[1])]['description'] . " ";
+                                $sExplanation .= "Your " . ($tokenData[strtolower($extractedTokenAttr[1])]['description'] ?? "") . " ";
                                 if ($distinctrow['method'] == '==') {
                                     $sExplanation .= gT("is") . " ";
                                 } elseif ($distinctrow['method'] == '!=') {
@@ -256,11 +265,10 @@ class PrintableSurvey extends SurveyCommonAction
                                 } else {
                                     $sExplanation .= gT("is") . " ";
                                 }
-                                $answer_section = ' ' . $distinctrow['value'] . ' ';
+                                $answer_section = ' ' . ($distinctrow['value'] ?? "") . ' ';
                             }
 
                             $conresult = Condition::model()->getConditionsQuestions($distinctrow['cqid'], $arQuestion['qid'], $scenariorow['scenario'], $sLanguageCode);
-
                             $conditions = array();
                             foreach ($conresult->readAll() as $conrow) {
                                 $value = $conrow['value'];
@@ -389,7 +397,7 @@ class PrintableSurvey extends SurveyCommonAction
                                         $thiscquestion = $fieldmap[$conrow['cfieldname']];
                                         $condition = "parent_qid='{$conrow['cqid']}' AND title='{$thiscquestion['aid']}'";
                                         $ansresult = Question::model()->findAll(['condition' => $condition, 'order' => 'question_order']);
-                                        $cqidattributes = QuestionAttribute::model()->getQuestionAttributes($conrow['cqid']);
+                                        $cqidattributes = $conditionQuestionsAttributes[$conrow['cqid']];
                                         if ($labelIndex == 0) {
                                             if (trim((string) $cqidattributes['dualscale_headerA'][$sLanguageCode]) != '') {
                                                 $header = gT($cqidattributes['dualscale_headerA'][$sLanguageCode]);
@@ -442,7 +450,7 @@ class PrintableSurvey extends SurveyCommonAction
                             if ($distinctrow['cqid']) {
                                 $sExplanation .= " <span class='scenario-at-separator'>" . gT("at question") . "</span> '" . " [" . $subresult['title'] . "]' (" . strip_tags((string) $subresult->questionl10ns[$sLanguageCode]->question) . "$answer_section)";
                             } else {
-                                $sExplanation .= " " . $distinctrow['value'];
+                                $sExplanation .= " " . ($distinctrow['value'] ?? "");
                             }
                             //$distinctrow
                             $x++;
@@ -450,7 +458,14 @@ class PrintableSurvey extends SurveyCommonAction
                         $s++;
                     }
 
-                    $qinfo = LimeExpressionManager::GetQuestionStatus($arQuestion['qid']);
+                    //Defaulting to dummy array to avoid crashes when qinfo is not found for this question
+                    $qinfo = LimeExpressionManager::GetQuestionStatus($arQuestion['qid']) ?? [
+                        "info" => [
+                            "relevance" => ""
+                        ],
+                        "relEqn" => "",
+                        "validTip" => ""
+                    ];
                     $relevance = trim((string) $qinfo['info']['relevance']);
                     $sEquation = $qinfo['relEqn'];
 
@@ -631,7 +646,7 @@ class PrintableSurvey extends SurveyCommonAction
                                 }
                             }
 
-                            if ($arQuestion['other'] == 'Y') {
+                            if (($arQuestion['other'] == 'Y') && isset($qidattributes["printable_help"])) {
                                 /*echo '<pre>';
                                 print_r($qidattributes);
                                 echo '</pre>';
@@ -709,7 +724,7 @@ class PrintableSurvey extends SurveyCommonAction
                                     ++$colcounter;
                                 }
                             }
-                            if ($arQuestion['other'] == "Y") {
+                            if (($arQuestion['other'] == "Y") && (isset($qidattributes["printable_help"]))) {
                                 if (trim((string) $qidattributes["printable_help"][$sLanguageCode]) == '') {
                                     $qidattributes["printable_help"][$sLanguageCode] = "Other";
                                 }

@@ -90,7 +90,7 @@ abstract class image {
 
     final static function getDriver(array $drivers=array('gd')) {
         foreach ($drivers as $driver) {
-            if (!preg_match('/^[a-z0-9\_]+$/i', $driver))
+            if (!preg_match('/^[a-z0-9\_]+$/i', (string) $driver))
                 continue;
             $class = __NAMESPACE__ . "\\image_$driver";
             if (class_exists($class) && method_exists($class, "available")) {

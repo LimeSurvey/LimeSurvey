@@ -93,7 +93,7 @@
                         <div class="card-body border rounded">
                             <ul class="list-group list-group-flush">
                                 {% if oSurvey.sid %} {# pseudo condition due to reverse parsing problems while generating twig admin cache via console.php twig generateAdminCache #}
-                                    {% set tmp_url = createAbsoluteUrl("survey/index", { "sid" : oSurvey.sid, "lang" : oSurvey.language}) %}
+                                        {% set tmp_url = surveyUrls[oSurvey.language] %}
                                 {% endif %}
                                  <li class="list-group-item p-0 border-0 mb-2">
                                     <div class="ls-flex-row col-12 align-items-center">
@@ -110,7 +110,7 @@
                                 </li>
                                 {% for langname in aAdditionalLanguages %}
                                     {% if oSurvey.sid %} {# pseudo condition due to reverse parsing problems while generating twig admin cache via console.php twig generateAdminCache #}
-                                        {% set tmp_url = createAbsoluteUrl("survey/index", { "sid" : oSurvey.sid, "lang" : langname}) %}
+                                        {% set tmp_url = surveyUrls[langname] %}
                                     {% endif %}
                                     <li class="list-group-item p-0 border-0{% if not loop.last %} mb-2{% endif %}">
                                         <div class="ls-flex-row col-12 align-items-center">
@@ -140,7 +140,7 @@
                         <div class="card-body border rounded">
                             <ul class="list-group list-group-flush">
                                 {% if oSurvey.sid %} {# pseudo condition due to reverse parsing problems while generating twig admin cache via console.php twig generateAdminCache #}
-                                    {% set tmp_url = createAbsoluteUrl("survey/index", { "sid" : oSurvey.sid, "lang" : oSurvey.language}) %}
+                                        {% set tmp_url = surveyUrls[oSurvey.language] %}
                                 {% endif %}
                                     <li class="list-group-item p-0 border-0 mb-2">
                                     <div class="ls-flex-row col-12 align-items-center">
@@ -155,7 +155,7 @@
                                 </li>
                                 {% for langname in aAdditionalLanguages %}
                                     {% if oSurvey.sid %} {# pseudo condition due to reverse parsing problems while generating twig admin cache via console.php twig generateAdminCache #}
-                                        {% set tmp_url = createAbsoluteUrl("survey/index", { "sid" : oSurvey.sid, "lang" : langname}) %}
+                                        {% set tmp_url = surveyUrls[langname] %}
                                     {% endif %}
                                     <li class="list-group-item p-0 border-0{% if not loop.last %} mb-2{% endif %}">
                                         <div class="ls-flex-row col-12 align-items-center">
@@ -181,7 +181,7 @@
                         <div class="card-body border rounded">
                             <ul class="list-group list-group-flush">
                                 {% if oSurvey.sid %} {# pseudo condition due to reverse parsing problems while generating twig admin cache via console.php twig generateAdminCache #}
-                                    {% set tmp_url = createAbsoluteUrl("survey/index", { "sid" : oSurvey.sid, "lang" : oSurvey.language}) %}
+                                    {% set tmp_url = surveyUrls[oSurvey.language] %}
                                 {% endif %}
                                 <li class="list-group-item p-0 border-0 mb-2">
                                     <div class="ls-flex-row col-12 align-items-center">
@@ -197,7 +197,7 @@
                                 </li>
                                 {% for langname in aAdditionalLanguages %}
                                     {% if oSurvey.sid %} {# pseudo condition due to reverse parsing problems while generating twig admin cache via console.php twig generateAdminCache #}
-                                        {% set tmp_url = createAbsoluteUrl("survey/index", { "sid" : oSurvey.sid, "lang" : langname}) %}
+                                        {% set tmp_url = surveyUrls[langname] %}
                                     {% endif %}
                                     <li class="list-group-item p-0 border-0{% if not loop.last %} mb-2{% endif %}">
                                         <div class="ls-flex-row col-12 align-items-center">

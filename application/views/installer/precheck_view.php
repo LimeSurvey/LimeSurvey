@@ -126,6 +126,11 @@ $iconFail = "<span class='ri-error-warning-fill text-danger'></span>";
                </td>
         </tr>
         <tr>
+               <td><?php eT("PHP Intl library"); ?></td>
+               <td><span class='ri-check-fill text-success' alt="Check"></span></td>
+               <td><?= $model->isCollatorPresent ? $iconOk : $iconFail ?></td>
+        </tr>
+        <tr>
                <td><?php eT("PHP LDAP library"); ?></td>
                <td><span class='ri-check-fill text-success'></span></td>
                <td><?= $model->isPhpLdapPresent ? $iconOk : $iconFail ?></td>

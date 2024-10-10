@@ -4,7 +4,7 @@
  */
 ?>
 
-<div class='side-body <?php echo getSideBodyClass(false); ?>'>
+<div class='side-body'>
     <h3><?php eT("Import survey participants from LDAP"); ?></h3>
 
     <div class="row">

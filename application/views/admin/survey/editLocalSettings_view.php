@@ -164,7 +164,7 @@ echo viewHelper::getViewTestTag('surveyTexts');
                     "url_{$aSurveyLanguageSettings['surveyls_language']}",
                     htmlspecialchars_decode((string) $aSurveyLanguageSettings['surveyls_url']),
                     array('class' => 'form-control', 'size' => "80", 
-                            'placeholder' => 'http://', 'id' => "url_{$aSurveyLanguageSettings['surveyls_language']}")
+                            'placeholder' => 'https://', 'id' => "url_{$aSurveyLanguageSettings['surveyls_language']}")
                 ); ?>
             </div>
             <div class="mt-2">

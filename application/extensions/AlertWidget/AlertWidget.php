@@ -79,6 +79,8 @@ class AlertWidget extends CWidget
                 'inErrorMode' => $inErrorMode,
                 'htmlOptions' => $this->htmlOptions,
                 'icon' => $this->icon,
+                'type' => $this->type,
+                'isFilled' => $this->isFilled
             ]);
         }
     }

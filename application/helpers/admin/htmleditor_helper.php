@@ -118,6 +118,8 @@ function sTranslateLangCode2CK($sLanguageCode)
 
     /**
      * @param CController $controller
+     *
+     * TODO: Allow to be called automatically (and only load once) from getEditor, or from a widget.
      */
 function PrepareEditorScript($load = false, $controller = null)
 {
@@ -134,8 +136,11 @@ function PrepareEditorScript($load = false, $controller = null)
     /**
      * Returns Editor.
      *
+     * PrepareEditorScript function must be called first.
+     * If getting a JS error about missing CKEditor files, please review if PrepareEditorScript was called.
+     *
      * @param string   $fieldtype Field Type
-     * @param string   $fieldname Field Name
+     * @param string   $fieldname Field Name, the id attribute of the textarea
      * @param int|null $surveyID  Survey ID
      * @param int|null $gID       Group ID
      * @param int|null $qID       Question ID

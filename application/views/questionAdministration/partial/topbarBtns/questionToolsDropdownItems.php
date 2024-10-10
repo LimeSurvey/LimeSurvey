@@ -42,7 +42,7 @@
     <?php if (count($surveyLanguages) > 1): ?>
         <!-- Check survey logic multilanguage -->
         <li role="separator" class="dropdown-divider"></li>
-        <li class="dropdown-header"><?php eT("Survey logic file"); ?></li>
+        <li class="dropdown-header"><?php eT("Check logic"); ?></li>
         <?php foreach ($surveyLanguages as $languageCode => $languageName): ?>
             <li>
                 <a class="dropdown-item" href="<?php echo Yii::App()->createUrl("admin/expressions/sa/survey_logic_file/sid/{$surveyid}/gid/{$gid}/qid/{$qid}/lang/" . $languageCode); ?>" >

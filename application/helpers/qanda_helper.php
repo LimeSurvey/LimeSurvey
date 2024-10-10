@@ -377,12 +377,16 @@ function file_validation_popup($ia, $filenotvalidated = null)
 /**
 * @param string $disable
 * @return string
+* @todo : check if really deprecated (date : 20240902)
 */
 function return_timer_script($aQuestionAttributes, $ia, $disable = null)
 {
     global $thissurvey;
     global $gid;
-
+    $time_limit = intval($aQuestionAttributes['time_limit']);
+    if($time_limit <= 0) {
+        return;
+    }
     Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts") . 'coookies.js', CClientScript::POS_BEGIN);
     Yii::app()->getClientScript()->registerPackage('timer-addition');
 
@@ -405,27 +409,26 @@ function return_timer_script($aQuestionAttributes, $ia, $disable = null)
     //Used to count how many timer questions in a page, and ensure scripts only load once
     $thissurvey['timercount'] = (isset($thissurvey['timercount'])) ? $thissurvey['timercount']++ : 1;
 
-    $time_limit = $aQuestionAttributes['time_limit'];
     $disable_next = trim((string) $aQuestionAttributes['time_limit_disable_next']) != '' ? $aQuestionAttributes['time_limit_disable_next'] : 0;
     $disable_prev = trim((string) $aQuestionAttributes['time_limit_disable_prev']) != '' ? $aQuestionAttributes['time_limit_disable_prev'] : 0;
     $time_limit_action = trim((string) $aQuestionAttributes['time_limit_action']) != '' ? $aQuestionAttributes['time_limit_action'] : 1;
     $time_limit_message = trim((string) $aQuestionAttributes['time_limit_message'][$_SESSION['survey_' . Yii::app()->getConfig('surveyID')]['s_lang']]) != '' ? htmlspecialchars((string) $aQuestionAttributes['time_limit_message'][$_SESSION['survey_' . Yii::app()->getConfig('surveyID')]['s_lang']], ENT_QUOTES) : gT("Your time to answer this question has expired");
-    $time_limit_warning = trim((string) $aQuestionAttributes['time_limit_warning']) != '' ? $aQuestionAttributes['time_limit_warning'] : 0;
-    $time_limit_warning_2 = trim((string) $aQuestionAttributes['time_limit_warning_2']) != '' ? $aQuestionAttributes['time_limit_warning_2'] : 0;
+    $time_limit_warning = trim((string) $aQuestionAttributes['time_limit_warning']) != '' ? intval($aQuestionAttributes['time_limit_warning']) : 0;
+    $time_limit_warning_2 = trim((string) $aQuestionAttributes['time_limit_warning_2']) != '' ? intval($aQuestionAttributes['time_limit_warning_2']) : 0;
     $time_limit_countdown_message = trim((string) $aQuestionAttributes['time_limit_countdown_message'][$_SESSION['survey_' . Yii::app()->getConfig('surveyID')]['s_lang']]) != '' ? htmlspecialchars((string) $aQuestionAttributes['time_limit_countdown_message'][$_SESSION['survey_' . Yii::app()->getConfig('surveyID')]['s_lang']], ENT_QUOTES) : gT("Time remaining");
     $time_limit_warning_message = trim((string) $aQuestionAttributes['time_limit_warning_message'][$_SESSION['survey_' . Yii::app()->getConfig('surveyID')]['s_lang']]) != '' ? htmlspecialchars((string) $aQuestionAttributes['time_limit_warning_message'][$_SESSION['survey_' . Yii::app()->getConfig('surveyID')]['s_lang']], ENT_QUOTES) : gT("Your time to answer this question has nearly expired. You have {TIME} remaining.");
 
     //Render timer
-    $timer_html = doRender('/survey/questions/question_timer/timer', array('iQid' => $ia[0], 'sWarnId' => ''), true);
+    $timer_html = Yii::app()->twigRenderer->renderQuestion('/survey/questions/question_timer/timer', array('iQid' => $ia[0], 'sWarnId' => ''), true);
     $time_limit_warning_message = str_replace("{TIME}", $timer_html, $time_limit_warning_message);
-    $time_limit_warning_display_time = trim((string) $aQuestionAttributes['time_limit_warning_display_time']) != '' ? $aQuestionAttributes['time_limit_warning_display_time'] + 1 : 0;
+    $time_limit_warning_display_time = trim((string) $aQuestionAttributes['time_limit_warning_display_time']) != '' ? intval($aQuestionAttributes['time_limit_warning_display_time']) + 1 : 0;
     $time_limit_warning_2_message = trim((string) $aQuestionAttributes['time_limit_warning_2_message'][$_SESSION['survey_' . Yii::app()->getConfig('surveyID')]['s_lang']]) != '' ? htmlspecialchars((string) $aQuestionAttributes['time_limit_warning_2_message'][$_SESSION['survey_' . Yii::app()->getConfig('surveyID')]['s_lang']], ENT_QUOTES) : gT("Your time to answer this question has nearly expired. You have {TIME} remaining.");
 
     //Render timer 2
-    $timer_html = doRender('/survey/questions/question_timer/timer', array('iQid' => $ia[0], 'sWarnId' => '_Warning_2'), true);
-    $time_limit_message_delay = trim((string) $aQuestionAttributes['time_limit_message_delay']) != '' ? $aQuestionAttributes['time_limit_message_delay'] * 1000 : 1000;
+    $timer_html = Yii::app()->twigRenderer->renderQuestion('/survey/questions/question_timer/timer', array('iQid' => $ia[0], 'sWarnId' => '_Warning_2'), true);
+    $time_limit_message_delay = trim((string) $aQuestionAttributes['time_limit_message_delay']) != '' ? intval($aQuestionAttributes['time_limit_message_delay']) * 1000 : 1000;
     $time_limit_warning_2_message = str_replace("{TIME}", $timer_html, $time_limit_warning_2_message);
-    $time_limit_warning_2_display_time = trim((string) $aQuestionAttributes['time_limit_warning_2_display_time']) != '' ? $aQuestionAttributes['time_limit_warning_2_display_time'] + 1 : 0;
+    $time_limit_warning_2_display_time = trim((string) $aQuestionAttributes['time_limit_warning_2_display_time']) != '' ? intval($aQuestionAttributes['time_limit_warning_2_display_time']) + 1 : 0;
     $time_limit_message_style = trim((string) $aQuestionAttributes['time_limit_message_style']) != '' ? $aQuestionAttributes['time_limit_message_style'] : "";
     $time_limit_message_class = "d-none ls-timer-content ls-timer-message ls-no-js-hidden";
     $time_limit_warning_style = trim((string) $aQuestionAttributes['time_limit_warning_style']) != '' ? $aQuestionAttributes['time_limit_warning_style'] : "";
@@ -440,7 +443,7 @@ function return_timer_script($aQuestionAttributes, $ia, $disable = null)
         $time_limit = $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$timersessionname];
     }
 
-    $output = doRender('/survey/questions/question_timer/timer_header', array('timersessionname' => $timersessionname, 'time_limit' => $time_limit), true);
+    $output = Yii::app()->twigRenderer->renderQuestion('/survey/questions/question_timer/timer_header', array('timersessionname' => $timersessionname, 'time_limit' => $time_limit), true);
 
     if ($thissurvey['timercount'] < 2) {
         $iAction = '';
@@ -464,7 +467,7 @@ function return_timer_script($aQuestionAttributes, $ia, $disable = null)
             $iAction = '3';
         }
 
-        $output .= doRender('/survey/questions/question_timer/timer_javascript', array(
+        $output .= Yii::app()->twigRenderer->renderQuestion('/survey/questions/question_timer/timer_javascript', array(
             'timersessionname' => $timersessionname,
             'time_limit' => $time_limit,
             'iAction' => $iAction,
@@ -475,7 +478,7 @@ function return_timer_script($aQuestionAttributes, $ia, $disable = null)
             ), true);
     }
 
-    $output .= doRender(
+    $output .= Yii::app()->twigRenderer->renderQuestion(
         '/survey/questions/question_timer/timer_content',
         array(
             'iQid' => $ia[0],
@@ -494,7 +497,7 @@ function return_timer_script($aQuestionAttributes, $ia, $disable = null)
         true
     );
 
-    $output .= doRender(
+    $output .= Yii::app()->twigRenderer->renderQuestion(
         '/survey/questions/question_timer/timer_footer',
         array(
             'iQid' => $ia[0],
@@ -514,7 +517,7 @@ function return_timer_script($aQuestionAttributes, $ia, $disable = null)
 
 /**
 * Return class of a specific row (hidden by relevance)
-* @param int $surveyId actual survey id
+* @param int $surveyId actual survey ID
 * @param string $baseName the base name of the question
 * @param string $name The name of the question/row to test
 * @param array $aQuestionAttributes the question attributes
@@ -660,7 +663,7 @@ function do_list_dropdown($ia)
 
     // Question attribute variables
     $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
-    $iSurveyId              = Yii::app()->getConfig('surveyID'); // survey id
+    $iSurveyId              = Yii::app()->getConfig('surveyID'); // survey ID
     $sSurveyLang = $_SESSION['survey_' . $iSurveyId]['s_lang']; // survey language
     $othertext              = (trim((string) $aQuestionAttributes['other_replace_text'][$sSurveyLang]) != '') ? $aQuestionAttributes['other_replace_text'][$sSurveyLang] : gT('Other:'); // text for 'other'
     $optCategorySeparator   = (trim((string) $aQuestionAttributes['category_separator']) != '') ? $aQuestionAttributes['category_separator'] : '';
@@ -883,7 +886,7 @@ function do_list_radio($ia)
     global $thissurvey;
     $kpclass                = testKeypad($thissurvey['nokeyboard']); // Virtual keyboard (probably obsolete today)
     $checkconditionFunction = "checkconditions"; // name of the function to check condition TODO : check is used more than once
-    $iSurveyId              = Yii::app()->getConfig('surveyID'); // survey id
+    $iSurveyId              = Yii::app()->getConfig('surveyID'); // survey ID
     $sSurveyLang            = $_SESSION['survey_' . $iSurveyId]['s_lang']; // survey language
     $inputnames = [];
     $coreClass = "ls-answers answers-list radio-list";
@@ -1107,7 +1110,7 @@ function do_listwithcomment($ia)
     global $thissurvey;
     $kpclass                = testKeypad($thissurvey['nokeyboard']); // Virtual keyboard (probably obsolete today)
     $checkconditionFunction = "checkconditions";
-    $iSurveyId              = Yii::app()->getConfig('surveyID'); // survey id
+    $iSurveyId              = Yii::app()->getConfig('surveyID'); // survey ID
     $sSurveyLang            = $_SESSION['survey_' . $iSurveyId]['s_lang']; // survey language
     $maxoptionsize          = 35;
     $coreClass              = "ls-answers";
@@ -1399,7 +1402,7 @@ function do_multiplechoice($ia)
     $kpclass                = testKeypad($thissurvey['nokeyboard']); // Virtual keyboard (probably obsolete today)
     $inputnames             = array(); // It is used!
     $checkconditionFunction = "checkconditions"; // name of the function to check condition TODO : check is used more than once
-    $iSurveyId              = Yii::app()->getConfig('surveyID'); // survey id
+    $iSurveyId              = Yii::app()->getConfig('surveyID'); // survey ID
     $sSurveyLang            = $_SESSION['survey_' . $iSurveyId]['s_lang']; // survey language
     $coreClass = "ls-answers checkbox-list answers-list";
     // Question attribute variables
@@ -3536,7 +3539,7 @@ function do_array($ia)
             ), true);
     } else {
         $answer = doRender('/survey/questions/answer/arrays/array/dropdown/empty', [], true);
-        $inputnames = '';
+        $inputnames = [];
     }
     return array($answer, $inputnames);
 }
@@ -3962,40 +3965,33 @@ function do_array_multiflexi($ia)
     $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
 
     // Define min and max value
+    $minvalue = 1;
+    $maxvalue = 10;
     if (trim((string) $aQuestionAttributes['multiflexible_max']) != '' && trim((string) $aQuestionAttributes['multiflexible_min']) == '') {
-        $maxvalue    = $aQuestionAttributes['multiflexible_max'];
-        $minvalue    = 1;
-        $extraclass .= " maxvalue maxvalue-" . trim((string) $aQuestionAttributes['multiflexible_max']); // @todo : move to data
+        $maxvalue = $aQuestionAttributes['multiflexible_max'];
+        $minvalue = 1;
     }
-
     if (trim((string) $aQuestionAttributes['multiflexible_min']) != '' && trim((string) $aQuestionAttributes['multiflexible_max']) == '') {
-        $minvalue    = $aQuestionAttributes['multiflexible_min'];
-        $maxvalue    = $aQuestionAttributes['multiflexible_min'] + 10;
-        $extraclass .= " minvalue minvalue-" . trim((string) $aQuestionAttributes['multiflexible_max']); // @todo : move to data
+        $minvalue = $aQuestionAttributes['multiflexible_min'];
+        $maxvalue = $aQuestionAttributes['multiflexible_min'] + 10;
     }
-
-    if (trim((string) $aQuestionAttributes['multiflexible_min']) == '' && trim((string) $aQuestionAttributes['multiflexible_max']) == '') {
-        $maxvalue   = 10;
-        $minvalue   = (isset($minvalue['value']) && $minvalue['value'] == 0) ? 0 : 1;
-    }
-
     if (trim((string) $aQuestionAttributes['multiflexible_min']) != '' && trim((string) $aQuestionAttributes['multiflexible_max']) != '') {
         if ($aQuestionAttributes['multiflexible_min'] < $aQuestionAttributes['multiflexible_max']) {
-            $minvalue   = $aQuestionAttributes['multiflexible_min'];
-            $maxvalue   = $aQuestionAttributes['multiflexible_max'];
+            $minvalue = $aQuestionAttributes['multiflexible_min'];
+            $maxvalue = $aQuestionAttributes['multiflexible_max'];
         }
     }
 
     $stepvalue = (trim((string) $aQuestionAttributes['multiflexible_step']) != '' && $aQuestionAttributes['multiflexible_step'] > 0) ? $aQuestionAttributes['multiflexible_step'] : 1;
 
     if ($aQuestionAttributes['reverse'] == 1) {
-        $tmp        = $minvalue;
-        $minvalue   = $maxvalue;
-        $maxvalue   = $tmp;
-        $reverse    = true;
-        $stepvalue  = -$stepvalue;
+        $tmp = $minvalue;
+        $minvalue = $maxvalue;
+        $maxvalue = $tmp;
+        $reverse = true;
+        $stepvalue = -$stepvalue;
     } else {
-        $reverse    = false;
+        $reverse = false;
     }
 
     $checkboxlayout = false;
@@ -4401,7 +4397,12 @@ function do_arraycolumns($ia)
             $aData['checkconditionFunction'] = $checkconditionFunction;
 
             // TODO: What is this? What is happening here?
-            foreach ($labels as $ansrow) {
+            foreach ($labels as $labelIdx => $ansrow) {
+
+                // create the html ids for the table rows, which are
+                // the answer options for this question type
+                $aData['labels'][$labelIdx]['myfname'] = $ia[1] . $ansrow['code'];
+
                 // AnswerCode
                 foreach ($anscode as $j => $ld) {
                     $myfname = $ia[1] . $ld;

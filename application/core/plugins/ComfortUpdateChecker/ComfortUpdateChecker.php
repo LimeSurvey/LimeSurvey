@@ -19,7 +19,7 @@ class ComfortUpdateChecker extends PluginBase
 
     protected static $name = 'ComfortUpdateChecker';
 
-    /** @inheritdoc, this plugin didn't have any public method */
+    /** @inheritdoc this plugin didn't have any public method */
     public $allowedPublicMethods = array();
 
     protected $settings = [

@@ -97,6 +97,21 @@ class LimeSurveyWebDriver extends RemoteWebDriver
     }
 
     /**
+     * Wait until element with $id gets clickable. Max 5 sec.
+     *
+     * @param string $id
+     * @return void
+     */
+    public function waitById($id)
+    {
+        $this->wait(5)->until(
+            WebDriverExpectedCondition::elementToBeClickable(
+                WebDriverBy::id($id)
+            )
+        );
+    }
+
+    /**
      * Alias for next().
      */
     public function submit()
@@ -106,11 +121,24 @@ class LimeSurveyWebDriver extends RemoteWebDriver
 
     /**
      * @return void
+     * @todo Should be clickById
      */
     public function clickButton($id)
     {
         $button = $this->findElement(WebDriverBy::id($id));
         $button->click();
+    }
+
+    /**
+     * Click on element found by $css
+     *
+     * @param string $css
+     * @return void
+     */
+    public function clickByCss($css)
+    {
+        $elem = $this->findByCss($css);
+        $elem->click();
     }
 
     /**
@@ -148,6 +176,11 @@ class LimeSurveyWebDriver extends RemoteWebDriver
     public function findByCss($css)
     {
         return $this->findElement(WebDriverBy::cssSelector($css));
+    }
+
+    public function findManyByCss($css)
+    {
+        return $this->findElements(WebDriverBy::cssSelector($css));
     }
 
     /**
@@ -196,6 +229,11 @@ class LimeSurveyWebDriver extends RemoteWebDriver
     {
         $this->executeScript('window.scrollTo(0,document.body.scrollHeight);');
         sleep(1);
+    }
+
+    public function scrollToTop()
+    {
+        $this->executeScript('window.scrollTo(0, 0);');
     }
 
     /**

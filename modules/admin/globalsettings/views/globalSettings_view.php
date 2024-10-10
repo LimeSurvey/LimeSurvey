@@ -54,7 +54,9 @@ echo viewHelper::getViewTestTag('globalsettings');
     </div>
 
     <div id="email" class="tab-pane col-lg-10 offset-lg-1">
-        <?php $this->renderPartial("./globalsettings/_email"); ?>
+        <?php $this->renderPartial("./globalsettings/_email", [
+            'emailPlugins' => $emailPlugins,
+        ]); ?>
     </div>
 
     <div id="bounce" class="tab-pane col-lg-10 offset-lg-1">

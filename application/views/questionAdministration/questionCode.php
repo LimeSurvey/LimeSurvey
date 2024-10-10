@@ -20,6 +20,7 @@ $class = !$generalSettingsView ? 'mb-4 col-12 scoped-responsive-fix-height' : ''
                 value="<?= !empty($newTitle) ? $newTitle : $question->title; ?>"
                 required="true"
                 maxlength="20"
+                pattern="<?= empty($question->title) ?  "^[a-zA-Z][a-zA-Z0-9]*$" : "^([a-zA-Z][a-zA-Z0-9]*|" . $question->title .")$"; // Old survey with bad question code still allowed ?>"
                 data-qid="<?= (empty($question->qid) || !empty($newQid)) ? 0 : $question->qid; ?>"
         />
 

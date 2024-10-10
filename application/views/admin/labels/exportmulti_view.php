@@ -21,7 +21,7 @@
                     <select id='labelsets' multiple='multiple' name='lids[]' size='20' class="form-select">
                         <?php if (count($labelsets) > 0) {
                             foreach ($labelsets as $lb) {
-                                echo "<option value='{$lb[0]}'>{$lb[0]}: {$lb[1]}</option>\n";
+                                echo "<option value='{$lb[0]}'>{$lb[0]}: " . CHtml::encode($lb[1]) . "</option>\n";
                             }
                         } ?>
                     </select>

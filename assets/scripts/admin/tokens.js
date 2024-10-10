@@ -341,11 +341,6 @@ $(document).on('ready pjax:scriptcomplete', function(){
         }
     });
 
-    // Disable Save and Close button on click
-    $("#save-and-close-button").on('click', function() {
-        $(this).addClass('disabled');
-    });
-
     /**
      * Handle form inputs 'invalid' event.
      */
@@ -570,7 +565,7 @@ function centerInfoDialog() {
 
 function onUpdateTokenGrid() {
     reinstallParticipantsFilterDatePicker();
-    $('.edit-token').off('click.edittoken').on('click.edittoken', function () {
+    $('.edit-token').off('click.edittoken').on('click.edittoken', function (event) {
         startEditToken(event, $(this));
     });
 }

@@ -12,7 +12,6 @@
         <?php endif; ?>
     </div>
 
-    <?php if ($updateKey): ?>
     <table aria-label="<?= gT('Your update key:') ?>" class="items table w-75 m-auto">
         <!-- header -->
         <thead>
@@ -59,7 +58,7 @@
                 ?>
                 </td>
                 <td>
-                    <span data-bs-toggle="tooltip" title="<?php eT("Delete");?>" >
+                    <span data-bs-toggle="tooltip" title="<?php eT("Delete key");?>" >
                         <a
                                 data-post-url="<?= App()->createUrl('/admin/update/sa/deleteKey');?>"
                                 class="btn btn-sm btn-outline-secondary"
@@ -72,29 +71,16 @@
             </tr>
         </tbody>
     </table>
-    <?php else: ?>
-        <?php
-        $aAccountOpen = '<a class="fw-bolder" href="https://account.limesurvey.org/get-your-free-comfortupdate-trial-key" target="_blank">';
-        $aClose = '</a>';
-        $aSignUpOpen = '<a class="fw-bolder" href="https://account.limesurvey.org/sign-up">';
-        $message = sprintf(
-            gT("You can get a free trial update key from %syour account on the limesurvey.org website%s."),
-            $aAccountOpen,
-            $aClose
-        ) .
-            '<br>' . sprintf(
-                gT("If you don't have an account on limesurvey.org, please %sregister first%s."),
-                $aSignUpOpen,
-                $aClose
-            );
+    <?php
+    if ($updateKeyInfos->result === false) {
         App()->getController()->widget('ext.AlertWidget.AlertWidget', [
-            'header' => gT(
-                'The LimeSurvey ComfortUpdate is a great feature to easily update to the latest version of LimeSurvey. To use it you will need an update key.'
-            ),
-            'text' => $message,
-            'type' => 'info',
-            'htmlOptions' => ['class' => 'w-75 m-auto'],
-        ]);
-        ?>
-    <?php endif; ?>
+                'header' => gT(
+                    'Key expired or invalid?'
+                ),
+                'text' => 'To enter a new key, please delete the current one first.',
+                'type' => 'info',
+                'htmlOptions' => ['class' => 'w-75 m-auto'],
+            ]);
+    }
+    ?>
 </div>

@@ -13,7 +13,6 @@ use Exception;
  * because we catch the exception.
  *
  * @package LimeSurvey\Helpers\Update
- * @
  */
 
 class Update_605 extends DatabaseUpdateBase
@@ -23,14 +22,23 @@ class Update_605 extends DatabaseUpdateBase
      */
     public function up()
     {
+        // In Postgres we can't keep using the transaction after a command fails, so we can't just use
+        // a try/catch block. Instead, we need to use CREATE INDEX IF NOT EXISTS.
+        if ($this->db->driverName == 'pgsql') {
+            $this->db->createCommand("CREATE INDEX IF NOT EXISTS {{idx1_quota_id}} ON {{quota_languagesettings}} (quotals_quota_id)")->execute();
+            $this->db->createCommand("CREATE INDEX IF NOT EXISTS {{idx2_quota_id}} ON {{quota_members}} (quota_id)")->execute();
+            return;
+        }
+
+        // If we are not in Postgres, we can use a try/catch block and just ignore the exception
         try {
             $this->db->createCommand()->createIndex('{{idx1_quota_id}}', '{{quota_languagesettings}}', ['quotals_quota_id']);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             // Index already exists - ignore
         }
         try {
             $this->db->createCommand()->createIndex('{{idx2_quota_id}}', '{{quota_members}}', ['quota_id']);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             // Index already exists - ignore
         }
     }

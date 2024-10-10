@@ -27,7 +27,7 @@ class expressionQuestionForAll extends PluginBase
     protected static $description = 'Add QCODE.question for question with subquestion for expression Manager.';
     protected static $name = 'expressionQuestionForAll';
 
-    /** @inheritdoc, this plugin didn't have any public method */
+    /** @inheritdoc this plugin didn't have any public method */
     public $allowedPublicMethods = array();
 
     public function init()

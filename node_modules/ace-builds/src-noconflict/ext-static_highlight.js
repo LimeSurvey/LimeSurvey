@@ -1,52 +1,55 @@
-ace.define("ace/ext/static.css",["require","exports","module"], function(require, exports, module){module.exports = ".ace_static_highlight {\n    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', 'Droid Sans Mono', monospace;\n    font-size: 12px;\n    white-space: pre-wrap\n}\n\n.ace_static_highlight .ace_gutter {\n    width: 2em;\n    text-align: right;\n    padding: 0 3px 0 0;\n    margin-right: 3px;\n    contain: none;\n}\n\n.ace_static_highlight.ace_show_gutter .ace_line {\n    padding-left: 2.6em;\n}\n\n.ace_static_highlight .ace_line { position: relative; }\n\n.ace_static_highlight .ace_gutter-cell {\n    -moz-user-select: -moz-none;\n    -khtml-user-select: none;\n    -webkit-user-select: none;\n    user-select: none;\n    top: 0;\n    bottom: 0;\n    left: 0;\n    position: absolute;\n}\n\n\n.ace_static_highlight .ace_gutter-cell:before {\n    content: counter(ace_line, decimal);\n    counter-increment: ace_line;\n}\n.ace_static_highlight {\n    counter-reset: ace_line;\n}\n";
+ace.define("ace/ext/static-css",["require","exports","module"], function(require, exports, module){module.exports = ".ace_static_highlight {\n    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'Source Code Pro', 'source-code-pro', 'Droid Sans Mono', monospace;\n    font-size: 12px;\n    white-space: pre-wrap\n}\n\n.ace_static_highlight .ace_gutter {\n    width: 2em;\n    text-align: right;\n    padding: 0 3px 0 0;\n    margin-right: 3px;\n    contain: none;\n}\n\n.ace_static_highlight.ace_show_gutter .ace_line {\n    padding-left: 2.6em;\n}\n\n.ace_static_highlight .ace_line { position: relative; }\n\n.ace_static_highlight .ace_gutter-cell {\n    -moz-user-select: -moz-none;\n    -khtml-user-select: none;\n    -webkit-user-select: none;\n    user-select: none;\n    top: 0;\n    bottom: 0;\n    left: 0;\n    position: absolute;\n}\n\n\n.ace_static_highlight .ace_gutter-cell:before {\n    content: counter(ace_line, decimal);\n    counter-increment: ace_line;\n}\n.ace_static_highlight {\n    counter-reset: ace_line;\n}\n";
 
 });
 
-ace.define("ace/ext/static_highlight",["require","exports","module","ace/edit_session","ace/layer/text","ace/ext/static.css","ace/config","ace/lib/dom","ace/lib/lang"], function(require, exports, module){"use strict";
+ace.define("ace/ext/static_highlight",["require","exports","module","ace/edit_session","ace/layer/text","ace/ext/static-css","ace/config","ace/lib/dom","ace/lib/lang"], function(require, exports, module){"use strict";
 var EditSession = require("../edit_session").EditSession;
 var TextLayer = require("../layer/text").Text;
-var baseStyles = require("./static.css");
+var baseStyles = require("./static-css");
 var config = require("../config");
 var dom = require("../lib/dom");
 var escapeHTML = require("../lib/lang").escapeHTML;
-function Element(type) {
-    this.type = type;
-    this.style = {};
-    this.textContent = "";
-}
-Element.prototype.cloneNode = function () {
-    return this;
-};
-Element.prototype.appendChild = function (child) {
-    this.textContent += child.toString();
-};
-Element.prototype.toString = function () {
-    var stringBuilder = [];
-    if (this.type != "fragment") {
-        stringBuilder.push("<", this.type);
-        if (this.className)
-            stringBuilder.push(" class='", this.className, "'");
-        var styleStr = [];
-        for (var key in this.style) {
-            styleStr.push(key, ":", this.style[key]);
+var Element = /** @class */ (function () {
+    function Element(type) { this.className;
+        this.type = type;
+        this.style = {};
+        this.textContent = "";
+    }
+    Element.prototype.cloneNode = function () {
+        return this;
+    };
+    Element.prototype.appendChild = function (child) {
+        this.textContent += child.toString();
+    };
+    Element.prototype.toString = function () {
+        var stringBuilder = [];
+        if (this.type != "fragment") {
+            stringBuilder.push("<", this.type);
+            if (this.className)
+                stringBuilder.push(" class='", this.className, "'");
+            var styleStr = [];
+            for (var key in this.style) {
+                styleStr.push(key, ":", this.style[key]);
+            }
+            if (styleStr.length)
+                stringBuilder.push(" style='", styleStr.join(""), "'");
+            stringBuilder.push(">");
         }
-        if (styleStr.length)
-            stringBuilder.push(" style='", styleStr.join(""), "'");
-        stringBuilder.push(">");
-    }
-    if (this.textContent) {
-        stringBuilder.push(this.textContent);
-    }
-    if (this.type != "fragment") {
-        stringBuilder.push("</", this.type, ">");
-    }
-    return stringBuilder.join("");
-};
+        if (this.textContent) {
+            stringBuilder.push(this.textContent);
+        }
+        if (this.type != "fragment") {
+            stringBuilder.push("</", this.type, ">");
+        }
+        return stringBuilder.join("");
+    };
+    return Element;
+}());
 var simpleDom = {
-    createTextNode: function (textContent, element) {
+    createTextNode: function (/** @type {string} */ textContent, /** @type {any} */ element) {
         return escapeHTML(textContent);
     },
-    createElement: function (type) {
+    createElement: function (/** @type {string} */ type) {
         return new Element(type);
     },
     createFragment: function () {
@@ -85,7 +88,7 @@ var highlight = function (el, opts, callback) {
             data = data.trim();
     }
     highlight.render(data, mode, theme, opts.firstLineNumber, !opts.showGutter, function (highlighted) {
-        dom.importCssString(highlighted.css, "ace_highlight");
+        dom.importCssString(highlighted.css, "ace_highlight", true);
         el.innerHTML = highlighted.html;
         var container = el.firstChild.firstChild;
         for (var i = 0; i < nodes.length; i += 2) {
@@ -115,9 +118,9 @@ highlight.render = function (input, mode, theme, lineStart, disableGutter, callb
     if (typeof mode == "string") {
         waiting++;
         config.loadModule(['mode', mode], function (m) {
-            if (!modeCache[mode] || modeOptions)
-                modeCache[mode] = new m.Mode(modeOptions);
-            mode = modeCache[mode];
+            if (!modeCache[ /**@type{string}*/(mode)] || modeOptions)
+                modeCache[ /**@type{string}*/(mode)] = new m.Mode(modeOptions);
+            mode = modeCache[ /**@type{string}*/(mode)];
             --waiting || done();
         });
     }

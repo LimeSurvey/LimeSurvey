@@ -5,7 +5,7 @@
 
 $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
 ?>
-<div class='<?php if (!isset($ajax) || $ajax = false): ?>col-12 side-body <?php echo getSideBodyClass(false); ?> <?php endif; ?>'>
+<div class='<?= (!isset($ajax) || $ajax = false) ? 'col-12 side-body' : ''?>'>
     <?php if (!isset($ajax) || $ajax = false) { ?>
         <h3>
             <?php
@@ -15,7 +15,6 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
             } else {
                 eT("Add survey participant");
             }
-
             ?>
         </h3>
     <?php } ?>

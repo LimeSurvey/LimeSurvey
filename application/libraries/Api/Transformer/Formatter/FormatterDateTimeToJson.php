@@ -2,37 +2,39 @@
 
 namespace LimeSurvey\Api\Transformer\Formatter;
 
-class FormatterDateTimeToJson implements
-    FormatterInterface,
-    FormatterRevertibleInterface
+/**
+ * Formatter DateTime to Json
+ *
+ * This formatter converts date/time string values assumed to be in server timezone
+ * to UTC time and formats to the JSON standard 'Y-m-d\TH:i:s.000\Z'.
+ *
+ *
+ * For values that should always be displayed as is, we should not use this formatter
+ * but instead use only the 'date' valitator. For exmaple we use this formatter on
+ * 'survey.dateCreated' but not on 'survey.expires' or 'survey.startDate' because we
+ * want to display and edit the values of 'survey.expires' or 'survey.startDate' using
+ * the server timezone not the local timezone.
+ */
+class FormatterDateTimeToJson implements FormatterInterface
 {
-    /** @var bool */
-    private $revert = false;
-    /** @var string */
-    private $inputTimezone = 'UTC';
-
-    /**
-     * @param bool $revert If true performs reverse format conversion
-     * @param ?string $inputTimezone Defaults to date_default_timezone_get()
-     */
-    public function __construct($revert = false, $inputTimezone = null)
-    {
-        $this->revert = $revert;
-        $this->inputTimezone = $inputTimezone ?? date_default_timezone_get();
-    }
-
     /**
      * Cast UTC datetime string to JSON datetime string
      *
      * @see https://www.w3.org/TR/NOTE-datetime
      * @param ?mixed $value
+     * @param array $config
+     * @param array $options
      * @return ?mixed
      */
-    public function format($value)
+    public function format($value, $config = [], $options = [])
     {
-        return $this->revert
-            ? $this->revert($value)
-            : $this->apply($value);
+        $revert = array_key_exists(
+            'revert',
+            $config
+        ) ? $config['revert'] : false;
+        return $revert
+            ? $this->revert($value, $config)
+            : $this->apply($value, $config);
     }
 
     /**
@@ -40,13 +42,18 @@ class FormatterDateTimeToJson implements
      *
      * @see https://www.w3.org/TR/NOTE-datetime
      * @param ?mixed $value
+     * @param array $config
      * @return ?string
      */
-    private function apply($value)
+    protected function apply($value, array $config)
     {
+        $inputTimezone = array_key_exists(
+            'inputTimezone',
+            $config
+        ) ? $config['inputTimezone'] : date_default_timezone_get();
         return $this->dateFormat(
             $value,
-            $this->inputTimezone,
+            $inputTimezone,
             'UTC',
             'Y-m-d\TH:i:s.000\Z'
         );
@@ -57,15 +64,20 @@ class FormatterDateTimeToJson implements
      *
      * @see https://www.w3.org/TR/NOTE-datetime
      * @param ?mixed $value
+     * @param array $config
      * @return ?string
      */
-    public function revert($value)
+    protected function revert($value, array $config)
     {
+        $inputTimezone = array_key_exists(
+            'inputTimezone',
+            $config
+        ) ? $config['inputTimezone'] : date_default_timezone_get();
         return $this->dateFormat(
             $value,
             'UTC',
-            $this->inputTimezone,
-            'c'
+            $inputTimezone,
+            'Y-m-d H:i:s'
         );
     }
 
@@ -78,14 +90,14 @@ class FormatterDateTimeToJson implements
      * @param string $outputFormat
      * @return ?string
      */
-    private function dateFormat(
+    protected function dateFormat(
         $value,
         $inputTimeZone,
         $outputTimezone,
         $outputFormat
     ) {
         $timezone = $inputTimeZone;
-        if ($value === null || $value === "") {
+        if ($value === null || $value === '') {
             return null;
         }
         $dateTime = date_create(

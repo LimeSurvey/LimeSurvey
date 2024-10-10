@@ -8,7 +8,7 @@
 /* @var $oSurveyPermissions \LimeSurvey\Models\Services\SurveyPermissions */
 
 ?>
-<div id='edit-permission' class='side-body position-relative  ls-settings-wrapper <?= getSideBodyClass(false) ?> "'>
+<div id='edit-permission' class='side-body position-relative  ls-settings-wrapper"'>
     <?php echo viewHelper::getViewTestTag('surveyPermissions'); ?>
     <h1> <?= gT("Survey permissions") ?> </h1>
     <div class="row pt-2 pb-2 align-items-center">
@@ -26,7 +26,7 @@
                         <?= gT("User") ?>:
                     </label>
                     <div class='col-4'>
-                        <select id='uidselect' name='uid' class='form-select activate-search'>
+                        <select style="width:100%;" id='uidselect' name='uid' class='form-select activate-search'>
                             <?php
                             if (count($userList) > 0) {
                                 echo "<option value='-1' selected='selected'>" . gT("Please choose...") . "</option>";
@@ -59,7 +59,7 @@
                         <?= gT("User group") ?>:
                     </label>
                     <div class='col-4'>
-                        <select id='ugidselect' name='ugid' class='form-select activate-search'>
+                        <select style="width:100%;" id='ugidselect' name='ugid' class='form-select activate-search'>
                             <?php
                             if (count($userGroupList) > 0) {
                                 echo "<option value='-1' selected='selected'>" . gT("Please choose...") . "</option>";
@@ -152,6 +152,7 @@
                     ]
 
                 ], $baseColumns),
+                'lsAfterAjaxUpdate' => ['LS.UserManagement.bindButtons();']
 
             ]
         );

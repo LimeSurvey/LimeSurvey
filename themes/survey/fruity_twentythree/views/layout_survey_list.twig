@@ -207,7 +207,16 @@ NOTE: Feel free to ask for functions, variables, etc, that you feel are missing 
 
 
             {# Basic ThemeScript options #}
-            {{ registerScript("BasicThemeScripts", " if(window.basicThemeScripts === undefined){ window.basicThemeScripts = new ThemeScripts(); } basicThemeScripts.initGlobal(); ", "POS_END") }}
+            {{ registerScript("BasicThemeScripts", "
+            if(window.basicThemeScripts === undefined){
+                window.basicThemeScripts = new ThemeScripts();
+            }
+            if(window.navbarScripts === undefined){
+                window.navbarScripts = new NavbarScripts();
+            }
+            basicThemeScripts.initGlobal();
+            navbarScripts.initNavbarEvents();
+            ", "POS_END") }}
 
         {% endblock %}
     </div>

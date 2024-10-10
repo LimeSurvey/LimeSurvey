@@ -99,7 +99,7 @@ class path {
         // Backslash to slash convert
         if (strtoupper(substr(PHP_OS, 0, 3)) == "WIN") {
             $path = preg_replace('/([^\\\])\\\+([^\\\])/s', "$1/$2", $path);
-            if (substr($path, -1) == "\\") $path = substr($path, 0, -1);
+            if (substr((string) $path, -1) == "\\") $path = substr((string) $path, 0, -1);
             if (substr($path, 0, 1) == "\\") $path = "/" . substr($path, 1);
         }
 
@@ -110,10 +110,10 @@ class path {
             $path .= "/";
 
         $expr = '/\/([^\/]{1}|[^\.\/]{2}|[^\/]{3,})\/\.\.\//s';
-        while (preg_match($expr, $path))
-            $path = preg_replace($expr, "/", $path);
+        while (preg_match($expr, (string) $path))
+            $path = preg_replace($expr, "/", (string) $path);
 
-        $path = substr($path, 0, -1);
+        $path = substr((string) $path, 0, -1);
         $path = substr($path, 1);
         return $path;
     }

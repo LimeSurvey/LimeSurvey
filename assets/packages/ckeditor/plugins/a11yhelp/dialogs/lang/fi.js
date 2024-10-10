@@ -1,6 +1,6 @@
 ﻿/*
  Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
- For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
+ CKEditor 4 LTS ("Long Term Support") is available under the terms of the Extended Support Model.
 */
 CKEDITOR.plugins.setLang("a11yhelp","fi",{title:"Saavutettavuus ohjeet",contents:"Ohjeen sisällöt. Sulkeaksesi tämän dialogin paina ESC.",legend:[{name:"Yleinen",items:[{name:"Editorin työkalupalkki",legend:"Paina ${toolbarFocus} siirtyäksesi työkalupalkkiin. Siirry seuraavaan ja edelliseen työkalupalkin ryhmään TAB ja SHIFT+TAB näppäimillä. Siirry seuraavaan ja edelliseen työkalupainikkeeseen käyttämällä NUOLI OIKEALLE tai NUOLI VASEMMALLE näppäimillä. Paina VÄLILYÖNTI tai ENTER näppäintä aktivoidaksesi työkalupainikkeen."},
 {name:"Editorin dialogi",legend:"Inside a dialog, press TAB to navigate to the next dialog element, press SHIFT+TAB to move to the previous dialog element, press ENTER to submit the dialog, press ESC to cancel the dialog. When a dialog has multiple tabs, the tab list can be reached either with ALT+F10 or with TAB as part of the dialog tabbing order. With tab list focused, move to the next and previous tab with RIGHT and LEFT ARROW, respectively. Press ESC to discard changes and close the dialog. The focus will be moved back to the editing area upon leaving the dialog."},

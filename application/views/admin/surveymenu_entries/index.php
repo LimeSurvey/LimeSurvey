@@ -34,7 +34,7 @@ echo viewHelper::getViewTestTag('surveyMenuEntries');
             'ajaxType' => 'POST',
             'ajaxUpdate' => 'surveymenu-entries-grid',
             'massiveActionTemplate' => $massiveAction,
-            'afterAjaxUpdate' => 'surveyMenuEntryFunctions',
+            'lsAfterAjaxUpdate'        => ['bindListItemclick();', 'surveyMenuEntryFunctions();'],
         ]);
         ?>
     </div>

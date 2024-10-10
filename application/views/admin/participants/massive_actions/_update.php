@@ -56,7 +56,7 @@
                     <input type="checkbox" class="action_check_to_keep_old_value" />
                 </label>
             </div>
-            <label class="col-md-3 form-label"  for='blacklisted'><?php eT("Blacklisted?"); ?></label>
+            <label class="col-md-3 form-label"  for='blacklisted'><?php eT("Blocklisted?"); ?></label>
             <div class="col-md-8">
                     <?php echo TbHtml::dropDownList('blacklisted', 'lskeep', ['lskeep' => gT('Keep old value'), 'Y' => gT('Yes'), 'N' => gT('No')], ['disabled'=>'disabled','class'=>'form-select custom-data selector_submitField'] );?>
                 </div>

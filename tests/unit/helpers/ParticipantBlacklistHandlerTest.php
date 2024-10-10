@@ -4,6 +4,7 @@ namespace ls\tests;
 
 use Participant;
 use LimeSurvey\Models\Services\ParticipantBlacklistHandler;
+use Survey;
 
 /**
  * Tests for the ParticipantBlacklistHandler service class.
@@ -11,7 +12,7 @@ use LimeSurvey\Models\Services\ParticipantBlacklistHandler;
 class ParticipantBlacklistHandlerTest extends TestBaseClass
 {
     /**
-     * Test adding participant to blacklist
+     * Test adding participant to blocklist
      *
      * @return void
      */
@@ -30,7 +31,7 @@ class ParticipantBlacklistHandlerTest extends TestBaseClass
 
         $token = \Token::model(self::$surveyId)->findByPk(1);
 
-        // Add participant to blacklist
+        // Add participant to blocklist
         $blacklistHandler = new ParticipantBlacklistHandler();
         $blacklistResult = $blacklistHandler->addToBlacklist($token);
 
@@ -39,11 +40,11 @@ class ParticipantBlacklistHandlerTest extends TestBaseClass
         // Cleanup
         self::$testSurvey->delete();
         self::$testSurvey = null;
-        \Survey::model()->resetCache();
+        Survey::model()->resetCache();
     }
 
     /**
-     * Test removing participant from blacklist
+     * Test removing participant from blocklist
      *
      * @return void
      */
@@ -62,11 +63,11 @@ class ParticipantBlacklistHandlerTest extends TestBaseClass
 
         $token = \Token::model(self::$surveyId)->findByPk(1);
 
-        // Add participant to blacklist
+        // Add participant to blocklist
         $blacklistHandler = new ParticipantBlacklistHandler();
         $blacklistResult = $blacklistHandler->addToBlacklist($token);
 
-        // Remove from blacklist
+        // Remove from blocklist
         $blacklistResult = $blacklistHandler->removeFromBlacklist($token);
 
         $this->assertFalse($blacklistResult->isBlacklisted());
@@ -74,6 +75,6 @@ class ParticipantBlacklistHandlerTest extends TestBaseClass
         // Cleanup
         self::$testSurvey->delete();
         self::$testSurvey = null;
-        \Survey::model()->resetCache();
+        Survey::model()->resetCache();
     }
 }

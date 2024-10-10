@@ -69,17 +69,17 @@ $(document).on('ready pjax:scriptcomplete', function() {
             // Remove the text input if dropped out of the new attributes column
             if(!$(this).hasClass('newcreate') && $('input[type="text"]', newDraggable).length > 0) { 
                 $('input[type="text"]', newDraggable).remove();
-                $(newDraggable).text($(newDraggable).attr('data-name'));
+                $(newDraggable).html('<div class="card-body">' + $(newDraggable).attr('data-name') + '</div>');
             }        
 
             // Dropped in new attributes
             if($(this).hasClass('newcreate')) { 
-                newDraggable.html(newDraggable.attr('id').replace('cs_',''));
+                newDraggable.html('<div class="card-body">' + newDraggable.attr('id').replace('cs_','') + '</div>');
                 var id = newDraggable.attr('id').replace(/ /g, '');
                 var name = newDraggable.attr('data-name');
-                newDraggable.prepend('<input type="text" id="td_' + id + '" value="' + name + '">&nbsp;');
-            }  
-                        
+                newDraggable.find($('.card-body')).prepend('<input class="form-control" type="text" id="td_' + id + '" value="' + name + '">&nbsp;');
+            }
+
             // Reset the mappable attribute classes 
             $('.mappable-attribute-wrapper').removeClass('paired');
             $('.mappable-attribute-wrapper .csv-attribute').closest('.mappable-attribute-wrapper').addClass('paired');
@@ -97,7 +97,7 @@ $(document).on('ready pjax:scriptcomplete', function() {
         drop: function(event, ui) {
 
             // Insert nice arrow
-            var col = $(this).find('.col-md-6:first-child');
+            var col = $(this).find('.col-6:first-child');
             col.append('<span class="ri-arrow-left-right-fill csvatt-arrow"></span>');
 
             // Physically  move the draggable to the target (the plugin just visually moves it)
@@ -144,7 +144,7 @@ $(document).on('ready pjax:scriptcomplete', function() {
                 $(newDraggable).text($(newDraggable).attr('data-name'));
             }        
 
-            newDraggable.wrap("<div class='col-md-6'></div>");
+            newDraggable.wrap('<div class="col-6"></div>');
 
             adjustHeights();
         }
@@ -171,10 +171,11 @@ $(document).on('ready pjax:scriptcomplete', function() {
     $('#move-all').click(function () {
         $('.droppable-csv .csv-attribute-item').each(function(i, elem) {
             var $elem = $(elem);
-            $elem.html($elem.attr('id').replace('cs_',''));
+            $elem.html('<div class="card-body">' + $elem.attr('id').replace('cs_','') + '</div>');
             var id = $elem.attr('id').replace(/ /g, '');
             var name = $elem.attr('data-name');
-            $elem.prepend('<input type="text" id="td_' + id + '" value="' + name + '">');
+            $elem.find($('.card-body'))
+                .prepend('<input class="form-control" type="text" id="td_' + id + '" value="' + name + '">');
             $elem.detach().appendTo('.newcreate');
             adjustHeights();
         });

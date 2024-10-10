@@ -2,7 +2,9 @@
 
 namespace Html2Text;
 
-class DelTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class DelTest extends TestCase
 {
     public function testDel()
     {

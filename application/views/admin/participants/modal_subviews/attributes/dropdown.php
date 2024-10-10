@@ -5,9 +5,9 @@
         <?php foreach ($options as $option): ?>
             <option 
                 <?php if ($option['value'] == $value): echo 'selected'; endif; ?>
-                value='<?=$option['value']; ?>'
+                value='<?= CHtml::encode($option['value']); ?>'
             >
-                <?php echo $option['value']; ?>
+                <?php echo CHtml::encode($option['value']); ?>
             </option>
         <?php endforeach; ?>
     </select>

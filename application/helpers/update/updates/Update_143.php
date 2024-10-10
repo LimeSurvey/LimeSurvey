@@ -11,19 +11,19 @@ class Update_143 extends DatabaseUpdateBase
         $sUserTemplateRootDir = \Yii::app()->getConfig('userthemerootdir');
         $sStandardTemplateRootDir = \Yii::app()->getConfig('standardthemerootdir');
 
-        addColumn('{{questions}}', 'parent_qid', 'integer NOT NULL default 0');
-        addColumn('{{answers}}', 'scale_id', 'integer NOT NULL default 0');
-        addColumn('{{questions}}', 'scale_id', 'integer NOT NULL default 0');
-        addColumn('{{questions}}', 'same_default', 'integer NOT NULL default 0');
+        addColumn('{{questions}}', 'parent_qid', 'integer NOT NULL DEFAULT 0');
+        addColumn('{{answers}}', 'scale_id', 'integer NOT NULL DEFAULT 0');
+        addColumn('{{questions}}', 'scale_id', 'integer NOT NULL DEFAULT 0');
+        addColumn('{{questions}}', 'same_default', 'integer NOT NULL DEFAULT 0');
         dropPrimaryKey('answers');
         addPrimaryKey('answers', array('qid', 'code', 'language', 'scale_id'));
 
         $aFields = array(
-            'qid' => "integer NOT NULL default 0",
-            'scale_id' => 'integer NOT NULL default 0',
-            'sqid' => 'integer  NOT NULL default 0',
+            'qid' => "integer NOT NULL DEFAULT 0",
+            'scale_id' => 'integer NOT NULL DEFAULT 0',
+            'sqid' => 'integer  NOT NULL DEFAULT 0',
             'language' => 'string(20) NOT NULL',
-            'specialtype' => "string(20) NOT NULL default ''",
+            'specialtype' => "string(20) NOT NULL DEFAULT ''",
             'defaultvalue' => 'text',
         );
 

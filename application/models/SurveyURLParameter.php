@@ -31,11 +31,10 @@ class SurveyURLParameter extends LSActiveRecord
      */
     public function rules()
     {
-        return [
+        return  [
             ['sid', 'required'],
             ['sid', 'numerical', 'integerOnly' => true],
             ['parameter', 'required'],
-            ['targetqid', 'required'],
             ['targetqid', 'numerical', 'integerOnly' => true],
             ['targetsqid', 'numerical', 'integerOnly' => true, 'allowEmpty' => true],
         ];
@@ -177,7 +176,12 @@ class SurveyURLParameter extends LSActiveRecord
             'title'            => gT('Edit parameter'),
             'iconClass'        => 'ri-pencil-fill',
             'linkClass'        => 'surveysettings_edit_intparameter',
-            'enabledCondition' => $permissionPanelEdit
+            'enabledCondition' => $permissionPanelEdit,
+            'linkAttributes'   => [
+                'data-id'        => $this->id,
+                'data-parameter' => $this->parameter,
+                'data-qid'       => $this->targetqid,
+            ],
         ];
         $dropdownItems[] = [
             'title'            => gT('Delete parameter'),

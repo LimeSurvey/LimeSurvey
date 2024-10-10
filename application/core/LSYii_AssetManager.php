@@ -22,7 +22,14 @@ class LSYii_AssetManager extends CAssetManager
     /* @inheritdoc */
     protected function hash($path)
     {
-        return sprintf('%x', crc32($path . Yii::app()->getConfig('globalAssetsVersion')));
+        return sprintf(
+            '%x',
+            crc32(
+                $path .
+                App()->getConfig('versionnumber') . // Always reset with version number
+                App()->getConfig('globalAssetsVersion') // Force reset between version number (for dev user)
+            )
+        );
     }
 
     /**

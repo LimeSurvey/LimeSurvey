@@ -30,7 +30,7 @@ class PluginInstaller extends ExtensionInstaller
         }
 
         if (!$this->isWhitelisted()) {
-            throw new Exception('The plugin is not in the plugin whitelist.');
+            throw new Exception('The plugin is not in the plugin allowlist.');
         }
 
         $config = $this->getConfig();
@@ -62,7 +62,7 @@ class PluginInstaller extends ExtensionInstaller
         }
 
         if (!$this->isWhitelisted()) {
-            throw new Exception('The plugin is not in the plugin whitelist.');
+            throw new Exception('The plugin is not in the plugin allowlist.');
         }
 
         $config = $this->getConfig();
@@ -101,7 +101,7 @@ class PluginInstaller extends ExtensionInstaller
     }
 
     /**
-     * Returns true if the plugin name is whitelisted or the whitelist is disabled.
+     * Returns true if the plugin name is allowlisted or the allowlist is disabled.
      * @return boolean
      */
     public function isWhitelisted()

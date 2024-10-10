@@ -180,7 +180,7 @@ class LimesurveyApi
 
     /**
      * Returns an array of all available template names - does a basic check if the template might be valid
-     * @return array
+     * @return array|string
      */
     public function getTemplateList()
     {
@@ -291,7 +291,7 @@ class LimesurveyApi
     }
 
     /**
-     * Return a token object from a token id and a survey id
+     * Return a token object from a token id and a survey ID
      *
      * @param int $iSurveyId
      * @param int $iTokenId
@@ -327,7 +327,7 @@ class LimesurveyApi
     }
 
     /**
-     * Gets the table name for responses for the specified survey id.
+     * Gets the table name for responses for the specified survey ID.
      * @param int $surveyId
      * @return string
      */

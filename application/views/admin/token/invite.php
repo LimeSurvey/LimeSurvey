@@ -7,7 +7,7 @@
  */
 ?>
 
-<div class='side-body <?php echo getSideBodyClass(false); ?>'>
+<div class='side-body'>
     <h3><?php eT("Send email invitations"); ?></h3>
     <div class="row">
         <div class="col-12 content-right">
@@ -101,7 +101,7 @@
                                 $fieldsarray["{ADMINEMAIL}"] = $admin_email;
                                 $fieldsarray["{SURVEYNAME}"] = $oSurvey->languagesettings[$language]->surveyls_title;
                                 $fieldsarray["{SURVEYDESCRIPTION}"] = $oSurvey->languagesettings[$language]->surveyls_description;
-                                $fieldsarray["{EXPIRY}"] = $oSurvey->expires;
+                                $fieldsarray["{EXPIRY}"] = strval($oSurvey->expires);
 
                                 $subject = Replacefields($oSurvey->languagesettings[$language]->surveyls_email_invite_subj, $fieldsarray, false);
                                 $textarea = Replacefields($oSurvey->languagesettings[$language]->surveyls_email_invite, $fieldsarray, false);

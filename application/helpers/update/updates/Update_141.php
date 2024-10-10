@@ -6,6 +6,6 @@ class Update_141 extends DatabaseUpdateBase
 {
     public function up()
     {
-            addColumn('{{surveys}}', 'tokenlength', 'integer NOT NULL default 15');
+            addColumn('{{surveys}}', 'tokenlength', 'integer NOT NULL DEFAULT 15');
     }
 }

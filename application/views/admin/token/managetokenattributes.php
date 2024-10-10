@@ -6,7 +6,7 @@
  * @var Survey $oSurvey
  */
 ?>
-<div class='side-body <?php echo getSideBodyClass(false); ?>'>
+<div class='side-body'>
     <h3><?php eT("Manage attribute fields"); ?></h3>
 
     <div class="row">

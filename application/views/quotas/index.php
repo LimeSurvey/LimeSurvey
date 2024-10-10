@@ -7,7 +7,7 @@ echo viewHelper::getViewTestTag('surveyQuotas');
 
 ?>
 
-<div class='side-body <?php echo getSideBodyClass(false); ?>'>
+<div class='side-body'>
     <div class="row">
         <div class="col-12 content-right">
             <h3>
@@ -38,7 +38,7 @@ echo viewHelper::getViewTestTag('surveyQuotas');
                         'dataProvider'          => $oDataProvider,
                         'id'                    => 'quota-grid',
                         'ajaxUpdate'            => 'quota-grid',
-                        'afterAjaxUpdate'       => 'bindListItemclick',
+                        'lsAfterAjaxUpdate'     => ['onQuotaOpenAction();', 'bindListItemclick();'],
                         'emptyText'             => gT('No quotas'),
                         'massiveActionTemplate' => $massiveAction,
                         'summaryText'           => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
@@ -120,17 +120,21 @@ echo viewHelper::getViewTestTag('surveyQuotas');
     </div>
 </div>
 
+<script>
+    var onQuotaOpenAction =  function () {
+        $('.selector__quota_open_validation').each(function() {
+            $(this).remoteModal({
+                saveButton: false,
+            }, {
+                closeIcon : '<button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"modal\"></button>',
+                closeButton : '<button type=\"button\" class=\"btn btn-cancel\" data-bs-dismiss=\"modal\"><?= gT("Close")?></button>',
+                saveButton : '<button type=\"button\" class=\"btn btn-primary\"><?= gT("Close")?></button>'
+            })
+        });
+    }
+</script>
+
 <?php
-Yii::app()->getClientScript()->registerScript('quotas_load_validationmodal', "
-    $('.selector__quota_open_validation').each(function() {
-        $(this).remoteModal({
-            saveButton: false,
-        }, {
-            closeIcon : '<button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"modal\"></button>',
-            closeButton : '<button type=\"button\" class=\"btn btn-cancel\" data-bs-dismiss=\"modal\">".gT("Close")."</button>',
-            saveButton : '<button type=\"button\" class=\"btn btn-primary\">".gT("Close")."</button>'
-        })
-    });
-", LSYii_ClientScript::POS_POSTSCRIPT);
+Yii::app()->getClientScript()->registerScript('quotas_load_validationmodal', "onQuotaOpenAction()", LSYii_ClientScript::POS_POSTSCRIPT);
 
 ?>

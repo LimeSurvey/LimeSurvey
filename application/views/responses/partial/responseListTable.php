@@ -37,7 +37,7 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
     ?>
 </div>
 
-<div class='side-body <?php echo getSideBodyClass(false); ?>'>
+<div class='side-body'>
     <!-- Display mode -->
     <form action="<?= App()->createUrl('/responses/browse/', ['surveyId' => $surveyid]) ?>" class="pjax text-end" method="POST"
           id="change-display-mode-form">
@@ -222,8 +222,9 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                     ['afterquestion' => "<hr>", 'separator' => ['', '<br>']]);
 
                 if (!isset($filteredColumns) || in_array($column->name, $filteredColumns)) {
+                    $encodedTitle = CHtml::encode($colTitle) == '' ? ' ' : CHtml::encode($colTitle);
                     $aColumns[] = [
-                        'header'            => '<div data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-placement="bottom" title="' . $colName . '" data-bs-content="' . CHtml::encode($colTitle) . '" data-bs-html="true" data-container="#responses-grid">' . $colName . ' <br/> ' . $colDetails . $encryptionSymbol . '</div>',
+                        'header'            => '<div data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-placement="bottom" title="' . $colName . '" data-bs-content="' . $encodedTitle . '" data-bs-html="true" data-container="#responses-grid">' . $colName . ' <br/> ' . $colDetails . $encryptionSymbol . '</div>',
                         'headerHtmlOptions' => ['style' => 'min-width: 350px;'],
                         'name'              => $column->name,
                         'type'              => 'raw',
@@ -264,7 +265,9 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                 'lsAfterAjaxUpdate'     => [
                     "afterAjaxResponsesReload();",
                     "onUpdateTokenGrid();",
-                    '$("#responses-grid [data-bs-toggle=\'popover\']").popover();'
+                    '$("#responses-grid [data-bs-toggle=\'popover\']").popover();',
+                    'bindListItemclick();',
+                    'switchStatusOfListActions();'
                 ],
                 'massiveActionTemplate' => $massiveAction . $filterColumns,
                 'summaryText'           => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(

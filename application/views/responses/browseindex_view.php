@@ -11,7 +11,7 @@
 echo viewHelper::getViewTestTag('surveyResponsesBrowse');
 
 ?>
-<div class='side-body survey-response-page <?php echo getSideBodyClass(true); ?>'>
+<div class='side-body survey-response-page'>
     <h1> <?= gT("Survey responses") ?> </h1>
     <div class="mt-4">
         <?php echo $this->renderPartial(

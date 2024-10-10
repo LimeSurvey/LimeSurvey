@@ -6,7 +6,7 @@
  */
 ?>
 <?= viewHelper::getViewTestTag('surveyFailedEmail') ?>
-    <div class='side-body <?php echo getSideBodyClass(false); ?>'>
+    <div class='side-body'>
         <h3><?php eT("Failed email notifications"); ?></h3>
         <?php
         $this->widget('ext.AlertWidget.AlertWidget', [

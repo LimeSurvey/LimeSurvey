@@ -327,6 +327,7 @@ class UserManagerServiceTest extends \ls\tests\TestBaseClass
         $managingUserPermissions = array(
             'superadmin' => array(
                 'read'   => true,
+                'create' => true,
             )
         );
 
@@ -349,7 +350,7 @@ class UserManagerServiceTest extends \ls\tests\TestBaseClass
 
         $assignPermission = $userManager->canAssignRole();
 
-        $this->assertTrue($assignPermission, 'A user with superadmin / read permissions should be able to assign roles to any user.');
+        $this->assertTrue($assignPermission, 'A user with superadmin / create permissions should be able to assign roles to any user.');
 
         //Delete managing user.
         $userManagingUser->delete();
@@ -380,6 +381,7 @@ class UserManagerServiceTest extends \ls\tests\TestBaseClass
 
         $managingUserPermissions = array(
             'superadmin' => array(
+                'read'   => true,
                 'import'   => true,
             )
         );
@@ -403,7 +405,7 @@ class UserManagerServiceTest extends \ls\tests\TestBaseClass
 
         $assignPermission = $userManager->canAssignRole();
 
-        $this->assertFalse($assignPermission, 'A user without superadmin / read permissions should not be able to assign roles to any user.');
+        $this->assertFalse($assignPermission, 'A user without superadmin / create permissions should not be able to assign roles to any user.');
 
         //Delete managing user.
         $userManagingUser->delete();

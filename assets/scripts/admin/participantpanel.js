@@ -127,15 +127,16 @@ LS.CPDB = (function() {
                             dlForm.css('display', 'none').appendTo('body').submit();
                             $(self).modal("hide");
                         });
-                        $('#attributes')
-                            .multiselect({ 
-                                includeSelectAllOption:true, 
-                                selectAllValue: '0',
-                                selectAllText: sSelectAllText,
-                                nonSelectedText: sNonSelectedText,
-                                nSelectedText: sNSelectedText,
-                                maxHeight: 140 
-                            });
+
+                        $('#select-all').click(function () {
+                            if ($('#select-all').is(':checked')) {
+                                $('#attributes > option').prop('selected', 'selected');
+                                $('#attributes').trigger('change');
+                            } else {
+                                $('#attributes > option').removeAttr('selected');
+                                $('#attributes').trigger('change');
+                            }
+                        });
                     });
                     /* $.download(exporttocsvall,'searchcondition=dummy',$('#exportcsvallprocessing').dialog("close"));*/
                 }
@@ -336,7 +337,7 @@ LS.CPDB = (function() {
         });
         $('.action_attributeNames_editModal').on('click', function(e){
             e.preventDefault();
-            var data = {modalTarget: 'editattribute','attribute_id' : $(this).closest('tr').data('attribute_id')};
+            var data = {modalTarget: 'editattribute','attribute_id' : $(this).data('attribute_id')};
             runBaseModal(
                 openModalParticipantPanel,
                 data,

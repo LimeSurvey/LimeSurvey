@@ -8,6 +8,7 @@
  * @var TemplateConfig $oSurveyTheme
  * @var int $pageSize
  * @var array $aAdminThemes
+ * @var array $aTemplatesWithoutDB
  */
 
 // TODO: rename to template_list.php and move to template controller
@@ -43,8 +44,7 @@ echo viewHelper::getViewTestTag('templateOptions');
                     ]
                 ); ?>
                 <!-- Available Themes -->
-                <?php $templatewithNoDb = $oSurveyTheme->getTemplatesWithNoDb()?>
-                <?php if (count($templatewithNoDb) > 0) : ?>
+                <?php if (!empty($aTemplatesWithoutDB['valid'])) : ?>
                     <h3><?php eT('Available survey themes:'); ?></h3>
                     <div id="templates_no_db" >
                         <table class="items table table-hover">
@@ -62,7 +62,7 @@ echo viewHelper::getViewTestTag('templateOptions');
                             <tbody>
                             <?php /** @var TemplateManifest $oTemplate */ ?>
                             <?php $surveyThemeIterator = 0 ?>
-                            <?php foreach ($templatewithNoDb as $key => $oTemplate) : ?>
+                            <?php foreach ($aTemplatesWithoutDB['valid'] as $key => $oTemplate) : ?>
                                 <tr class="odd">
                                     <td class="col-lg-1"><?php echo $oTemplate->getPreview(); ?></td>
                                     <td class="col-lg-2"><?php echo $oTemplate->sTemplateName; ?></td>
@@ -112,7 +112,7 @@ echo viewHelper::getViewTestTag('templateOptions');
                                                 <?php if (Permission::model()->hasGlobalPermission('templates', 'delete')) : ?>
                                                     <a id="template_editor_link_<?= $oTemplate->sTemplateName ?>"
                                                        href="<?php echo Yii::app()->getController()->createUrl('admin/themes/sa/deleteAvailableTheme/') ?>"
-                                                       data-post='{ "templatename": "<?= $oTemplate->sTemplateName ?>" }'
+                                                       data-post='{ "templatename": "<?= CHtml::encode($oTemplate->sTemplateName) ?>" }'
                                                        data-text="<?php eT('Are you sure you want to delete this theme?'); ?>"
                                                        data-button-no="<?= gT('Cancel'); ?>"
                                                        data-button-yes="<?= gT('Delete'); ?>"
@@ -134,11 +134,8 @@ echo viewHelper::getViewTestTag('templateOptions');
                 <?php endif; ?>
                 <!-- End Available Themes -->
                 <!-- Broken Themes  -->
-                <?php $aBrokenThemes = Template::getBrokenThemes();
-                if (count($aBrokenThemes) > 0) : ?>
+                <?php if (!empty($aTemplatesWithoutDB['invalid'])) : ?>
                     <h3><?php eT('Broken survey themes'); ?></h3>
-
-
                     <div id="thembes_broken" >
                         <table class="items table table-hover">
                             <thead>
@@ -150,12 +147,11 @@ echo viewHelper::getViewTestTag('templateOptions');
                             </thead>
 
                             <tbody>
-                            <?php foreach ($aBrokenThemes as $sName => $oBrokenTheme) : ?>
-                                <?php // echo $oTemplate; ?>
+                            <?php foreach ($aTemplatesWithoutDB['invalid'] as $sName => $oBrokenTheme) : ?>
                                 <tr class="odd">
-                                    <td class="col-lg-1 text-danger"><?php echo $sName; ?></td>
+                                    <td class="col-lg-1 text-danger"><?= $sName ?></td>
                                     <td class="col-lg-8 ">
-                                        <blockquote><?php echo $oBrokenTheme->getMessage(); ?></blockquote>
+                                        <blockquote><?= $oBrokenTheme['error'] ?? '' ?></blockquote>
                                     </td>
                                     <td class="col-lg-2">
                                         <div class="d-grid gap-2">
@@ -171,7 +167,7 @@ echo viewHelper::getViewTestTag('templateOptions');
                                             <?php if (Permission::model()->hasGlobalPermission('templates', 'delete')) : ?>
                                                 <a id="button-delete"
                                                    href="<?php echo Yii::app()->getController()->createUrl('admin/themes/sa/deleteBrokenTheme/'); ?>"
-                                                   data-post='{ "templatename": "<?php echo $sName; ?>" }'
+                                                   data-post='{ "templatename": "<?php echo CHtml::encode($sName); ?>" }'
                                                    data-text="<?php eT('Are you sure you want to delete this theme?'); ?>"
                                                    data-button-no="<?= gT('Cancel'); ?>"
                                                    data-button-yes="<?= gT('Delete'); ?>"
@@ -255,7 +251,7 @@ echo viewHelper::getViewTestTag('templateOptions');
                                         <?php if ($oTheme->name === App()->getConfig('admintheme')) : ?>
                                             <h3><strong class="text-info"><?php eT("Selected") ?></strong></h3>
                                         <?php else : ?>
-                                            <a href="<?= $this->createUrl("themeOptions/setAdminTheme/", ['sAdminThemeName' => $oTheme->path]) ?>"
+                                            <a href="<?= $this->createUrl("themeOptions/setAdminTheme/", ['sAdminThemeName' => $oTheme->name]) ?>"
                                                class="btn btn-outline-secondary btn-sm">
                                                 <?= gT("Select") ?>
                                             </a>
@@ -298,9 +294,10 @@ echo viewHelper::getViewTestTag('templateOptions');
             <div class="col-12 list-surveys">
                 <?php echo '<h3>' . gT('Question themes:') . '</h3>'; ?>
                 <!-- Installed Question Themes -->
-            <?php $this->renderPartial('./installedthemelist', array('oQuestionTheme' => $oQuestionTheme, 'pageSize' => $pageSize)); ?>
-            <!-- Available Quesiton Themes and broken question themes-->
-            <?php $this->renderPartial('./availablethemelist', array('oQuestionTheme' => $oQuestionTheme, 'pageSize' => $pageSize)); ?>
+                <?php $this->renderPartial('./installedthemelist', array('oQuestionTheme' => $oQuestionTheme, 'pageSize' => $pageSize)); ?>
+                <!-- Available Quesiton Themes and broken question themes-->
+                <?php $this->renderPartial('./availablethemelist', array('oQuestionTheme' => $oQuestionTheme, 'pageSize' => $pageSize)); ?>
+            </div>
         </div>
     </div>
 </div>

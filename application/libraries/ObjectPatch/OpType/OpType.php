@@ -34,6 +34,6 @@ abstract class OpType implements OpTypeInterface
             ));
         }
         $class = __NAMESPACE__ . '\OpType' . ucfirst($type);
-        return new $class;
+        return new $class();
     }
 }

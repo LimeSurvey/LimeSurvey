@@ -30,12 +30,12 @@ class ImportSurveyCommand extends CConsoleCommand
     /**
      * Sample command: php application/commands/console.php importsurvey tmp/upload/youfile.lss
      *
-     * @param string[] $arguments
+     * @param array $args
      * @return void
      */
-    public function run($arguments)
+    public function run($args)
     {
-        $file = $arguments[0];
+        $file = $args[0];
         $result = $this->importFile($file);
         if (is_array($result) && isset($result['newsid'])) {
             echo $result['newsid'];

@@ -2,7 +2,9 @@
 
 namespace Html2Text;
 
-class InsTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class InsTest extends TestCase
 {
     public function testIns()
     {

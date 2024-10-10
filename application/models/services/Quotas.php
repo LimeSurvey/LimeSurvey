@@ -201,9 +201,12 @@ class Quotas
     {
         $oQuota = new \Quota();
         $oQuota->sid = $this->survey->sid;
+        /* new quota : remove pk */
+        unset($quotaParams['id']);
         $oQuota->attributes = $quotaParams;
         if ($oQuota->save()) {
-            foreach ($_POST['QuotaLanguageSetting'] as $language => $settingAttributes) {
+            $postQuotaLanguageSettings = (array) App()->getRequest()->getPost('QuotaLanguageSetting');
+            foreach ($postQuotaLanguageSettings as $language => $settingAttributes) {
                 $oQuotaLanguageSetting = new \QuotaLanguageSetting();
                 $oQuotaLanguageSetting->attributes = $settingAttributes;
                 $oQuotaLanguageSetting->quotals_quota_id = $oQuota->primaryKey;
@@ -305,10 +308,10 @@ class Quotas
 
     /**
      *
-     * @param $aQuotaIds
-     * @param $action
-     * @param $languageSettings
-     * @return null | array errors or null if no errors
+     * @param integer[] $aQuotaIds
+     * @param string $action
+     * @param null|array $languageSettings
+     * @return null|array errors or null if no errors
      * @throws \CDbException
      */
     public function multipleItemsAction($aQuotaIds, $action, $languageSettings = [])
@@ -317,6 +320,9 @@ class Quotas
         foreach ($aQuotaIds as $iQuotaId) {
             /** @var \Quota $oQuota */
             $oQuota = \Quota::model()->findByPk($iQuotaId);
+            if (empty($oQuota) || $oQuota->sid != $this->survey->sid) {
+                $errors [] = gT("Invalid quota ID");
+            }
             switch ($action) {
                 case 'activate':
                 case 'deactivate':
@@ -345,7 +351,7 @@ class Quotas
                     }
                     break;
                 default:
-                    $errors [] = 'No valid action';
+                    $errors [] = gT('No valid action');
             }
         }
 

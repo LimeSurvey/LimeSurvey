@@ -153,7 +153,7 @@ $(document).on('ready  pjax:scriptcomplete', function(){
         });
 
         newcurrentarray = {};
-        $('.newcreate .card-default').each(function(index, value) {
+        $('.newcreate .card').each(function(index, value) {
             var id = $(value).attr('id').substring(2);
             newcurrentarray[index] = id;
         });

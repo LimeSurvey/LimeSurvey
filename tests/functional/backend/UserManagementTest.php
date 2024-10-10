@@ -128,6 +128,7 @@ class UserManagementTest extends TestBaseClassWeb
             // Check basic attributes
             $this->assertEquals($fullname, $user->full_name);
             $this->assertEquals($email, $user->email);
+            $this->assertEquals(1, (int) $user->user_status);
 
             // Test login
             self::adminLogout();

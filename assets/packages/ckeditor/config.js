@@ -286,7 +286,7 @@ CKEDITOR.editorConfig = function (a) {
         a.toolbar_popup = [
             ["Save", "Sourcedialog", "Createlimereplacementfields"],
             ["Cut", "Copy", "Paste", "PasteText", "PasteFromWord"], "Undo Redo - Find Replace - SelectAll RemoveFormat".split(" "),
-            "Image Html5video VideoDetector Flash Table HorizontalRule EmojiPanel SpecialChar SpecialChar".split(" "), "/", "Bold Italic Underline Strike - Subscript Superscript".split(" "), 
+            "Image Html5video VideoDetector Flash Table HorizontalRule EmojiPanel SpecialChar".split(" "), "/", "Bold Italic Underline Strike - Subscript Superscript".split(" "), 
             "NumberedList BulletedList - Outdent Indent Blockquote CreateDiv".split(" "), ["JustifyLeft", "JustifyCenter", "JustifyRight", "JustifyBlock"],
             ["BidiLtr", "BidiRtl"],
             ["Link", "Unlink", "Anchor", "Iframe"], "/", ["Styles", "Format", "Font", "FontSize"],
@@ -337,6 +337,11 @@ CKEDITOR.editorConfig = function (a) {
         ];
         a.extraPlugins = "limereplacementfields,lsswitchtoolbars";
         a.removePlugins = 'sourcearea';
+        a.iframe_attributes = {
+            sandbox: 'allow-scripts allow-same-origin'
+        },
+
+        a.versionCheck = false
 }
 
 CKEDITOR.on("instanceReady", function (event) {

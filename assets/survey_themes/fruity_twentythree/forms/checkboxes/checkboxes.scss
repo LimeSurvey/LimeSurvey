@@ -144,6 +144,11 @@ table.ls-answers input[type="radio"] {
     left : -10000px;
 }
 
+@media only screen and (max-width : 760px), (min-device-width : 768px) and (max-device-width : 1024px) {
+    .checkbox-item label.ls-label-xs-visibility > * {
+        left : auto;
+    }
+}
 
 /* Align privacy policy checkbox to top */
 #datasecurity_accepted {

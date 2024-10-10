@@ -105,17 +105,6 @@ class LayoutHelper
     {
         // We don't wont the admin menu to be shown in login page
         if (!Yii::app()->user->isGuest) {
-            // Default password notification
-            if (Yii::app()->session['pw_notify'] && Yii::app()->getConfig("debug") < 2) {
-                $not = new UniqueNotification(array(
-                    'user_id' => App()->user->id,
-                    'importance' => Notification::HIGH_IMPORTANCE,
-                    'title' => gT('Password warning'),
-                    'message' => '<span class="ri-error-warning-fill"></span>&nbsp;' .
-                        gT("Warning: You are still using the default password ('password'). Please change your password and re-login again.")
-                ));
-                $not->save();
-            }
             if (!(App()->getConfig('ssl_disable_alert')) && strtolower(App()->getConfig('force_ssl') != 'on') && \Permission::model()->hasGlobalPermission("superadmin")) {
                 $not = new UniqueNotification(array(
                     'user_id' => App()->user->id,
@@ -237,6 +226,7 @@ class LayoutHelper
 
     /**
      * Display the update notification
+     * @throws CException
      */
     public function updatenotification()
     {
@@ -264,7 +254,8 @@ class LayoutHelper
             $updateNotification = $updateModel->updateNotification;
 
             if ($updateNotification->result) {
-                return Yii::app()->getController()->renderPartial(
+                App()->getClientScript()->registerScriptFile(App()->getConfig('packages') . DIRECTORY_SEPARATOR . 'comfort_update' . DIRECTORY_SEPARATOR . 'comfort_update.js');
+                return App()->getController()->renderPartial(
                     "/admin/update/_update_notification",
                     array('security_update_available' => $updateNotification->security_update)
                 );

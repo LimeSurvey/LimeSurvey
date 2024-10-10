@@ -31,7 +31,7 @@
     {% endif %}
 
     <td>
-        <input type='text' class=" form-control  " name='title_{{ language }}_{{ rowId }}' id='title_{{ language }}_{{ rowId }}' maxlength='3000' size='80' value="{{ title }}" />
+        <input type='text' class=" form-control  " name='title_{{ language }}_{{ rowId }}' id='title_{{ language }}_{{ rowId }}' maxlength='3000' size='80' value="{{ title|escape }}" />
     </td>
     <td>
         <div class="icon-btn-row">

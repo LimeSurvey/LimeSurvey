@@ -5,7 +5,7 @@
  */
 
 ?>
-<div class='side-body <?= getSideBodyClass(true); ?>'>
+<div class='side-body'>
     <div class="pagetitle h1"><?php eT('Group summary'); ?></div>
     <div id="groupdetails" class="summary-table">
         <div class="row">

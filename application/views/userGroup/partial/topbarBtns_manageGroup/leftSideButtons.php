@@ -2,20 +2,21 @@
 
 /** @var int $userGroupId */
 /** @var bool $hasPermission */
-
-$this->widget(
-    'ext.ButtonWidget.ButtonWidget',
-    [
-        'name' => 'group-mail-button',
-        'id' => 'group-mail-button',
-        'text' => gT('Mail to all Members'),
-        'icon' => 'ri-mail-send-fill',
-        'link' => $this->createUrl("userGroup/mailToAllUsersInGroup/ugid/" . $userGroupId),
-        'htmlOptions' => [
-            'class' => 'btn btn-outline-secondary',
-        ],
-    ]
-);
+if ($hasPermission) {
+    $this->widget(
+        'ext.ButtonWidget.ButtonWidget',
+        [
+            'name' => 'group-mail-button',
+            'id' => 'group-mail-button',
+            'text' => gT('Mail to all Members'),
+            'icon' => 'ri-mail-send-fill',
+            'link' => $this->createUrl("userGroup/mailToAllUsersInGroup/ugid/" . $userGroupId),
+            'htmlOptions' => [
+                'class' => 'btn btn-outline-secondary',
+            ],
+        ]
+    );
+}
 
 if ($hasPermission) {
     $this->widget(

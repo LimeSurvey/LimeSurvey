@@ -67,13 +67,13 @@ class TwoFactorAdminLogin extends AuthPluginBase
         ),
         'force2fa' => array(
             'type' => 'select',
-            'label' => 'Force 2FA on login',
+            'label' => 'Prompt to activate 2FA on login',
             'default' => '0',
             'options' => [
                 '0 ' => 'No',
                 '1' => 'Yes',
             ],
-            'help' => 'If this is active any user will be forced to create a 2FA key after first login'
+            'help' => 'Upon login, users who have not enabled two-factor authentication (2FA) will be prompted to set it up.'
         ),
     );
 
@@ -117,7 +117,7 @@ class TwoFactorAdminLogin extends AuthPluginBase
     /**
      * Event direct happen
      * Usage : index --target=value [--function=] [--option=]
-     * @return @void
+     * @return void
      */
     public function direct()
     {

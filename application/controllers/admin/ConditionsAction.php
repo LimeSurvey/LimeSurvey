@@ -148,7 +148,7 @@ class ConditionsAction extends SurveyCommonAction
         $p_csrctoken = returnGlobal('csrctoken');
         $p_prevquestionsgqa = returnGlobal('prevQuestionSGQA');
 
-        $p_canswers = null;
+        $p_canswers = [];
         if (is_array($request->getPost('canswers'))) {
             foreach ($request->getPost('canswers') as $key => $val) {
                 $p_canswers[$key] = preg_replace("/[^_.a-zA-Z0-9]@/", "", (string) $val);
@@ -260,8 +260,28 @@ class ConditionsAction extends SurveyCommonAction
             }
         }
 
+
         // Previous question parsing ==> building cquestions[] and canswers[]
         if ($questionscount > 0) {
+            $qids = [];
+            for ($index = 0; $index < count($theserows); $index++) {
+                if ($theserows[$index]['type'] == "1") {
+                    $qids[] = $theserows[$index]['qid'];
+                }
+            }
+            if (count($qids)) {
+                $rawQuestions = Question::model()->findAllByPk($qids);
+                $questions = [];
+                foreach ($rawQuestions as $rawQuestion) {
+                    $questions[$rawQuestion->qid] = $rawQuestion;
+                }
+                for ($index = 0; $index < count($theserows); $index++) {
+                    if ($theserows[$index]['type'] == "1") {
+                        $theserows[$index]['qObject'] = $questions[$theserows[$index]['qid']];
+                    }
+                }
+            }
+
             list($cquestions, $canswers) = $this->getCAnswersAndCQuestions($theserows);
         } //if questionscount > 0
         //END Gather Information for this question
@@ -682,6 +702,7 @@ class ConditionsAction extends SurveyCommonAction
         extract($args);
 
         $editSourceTab = $request->getPost('editSourceTab');
+        $editTargetTab = $request->getPost('editTargetTab');
 
         if (isset($p_cquestions) && $p_cquestions != '' && $editSourceTab == '#SRCPREVQUEST') {
             $conditionCfieldname = $p_cquestions;
@@ -697,7 +718,7 @@ class ConditionsAction extends SurveyCommonAction
             'method'     => $p_method
         );
 
-        if ($p_canswers) {
+        if ($editTargetTab == '#CANSWERSTAB') {
             $results = array();
 
             foreach ($p_canswers as $ca) {
@@ -733,7 +754,7 @@ class ConditionsAction extends SurveyCommonAction
             $request = Yii::app()->request;
 
             // Other conditions like constant, other question or token field
-            switch ($request->getPost('editTargetTab')) {
+            switch ($editTargetTab) {
                 case '#CONST':
                     $posted_condition_value = Yii::app()->request->getPost('ConditionConst', '');
                     break;
@@ -959,9 +980,11 @@ class ConditionsAction extends SurveyCommonAction
             $conditionCfieldname = $p_csrctoken;
         }
 
+        $editTargetTab = $request->getPost('editTargetTab');
+
         $results = array();
 
-        if ($p_canswers) {
+        if ($editTargetTab == '#CANSWERSTAB') {
             foreach ($p_canswers as $ca) {
                 // This is an Edit, there will only be ONE VALUE
                 $updated_data = array(
@@ -984,7 +1007,7 @@ class ConditionsAction extends SurveyCommonAction
                 Yii::app()->setFlashMessage(gT('Could not update condition.'), 'error');
             }
         } else {
-            switch ($request->getPost('editTargetTab')) {
+            switch ($editTargetTab) {
                 case "#CONST":
                     $posted_condition_value = Yii::app()->request->getPost('ConditionConst', '');
                     break;
@@ -1479,14 +1502,15 @@ class ConditionsAction extends SurveyCommonAction
                 }
                 unset($x_axis);
             } elseif ($rows['type'] == "1") {
+                /* Used to get dualscale_headerA and dualscale_headerB */
+                $attr = QuestionAttribute::model()->getQuestionAttributes($rows['qObject']);
                 //Dual scale
                 $aresult = Question::model()->with(array(
                             'questionl10ns' => array(
                                 'condition' => 'questionl10ns.language = :lang',
                                 'params' => array(':lang' => $this->language)
-                            )))->findAllByAttributes(array('parent_qid' => $rows['qid']), array('order' => 'question_order desc'));
+                            )))->findAllByAttributes(array('parent_qid' => $rows['qid']), array('order' => 'question_order ASC, scale_id ASC'));
                 foreach ($aresult as $arows) {
-                    $attr = QuestionAttribute::model()->getQuestionAttributes($rows['qid']);
                     $sLanguage = $this->language;
                     // dualscale_header are always set, but can be empty
                     $label1 = empty($attr['dualscale_headerA'][$sLanguage]) ? gT('Scale 1') : $attr['dualscale_headerA'][$sLanguage];

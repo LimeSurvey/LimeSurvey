@@ -28,17 +28,17 @@ class InstallCommand extends CConsoleCommand
     public $connection;
 
     /**
-     * @param array $aArguments
+     * @param array $args
      * @return int
      * @throws CException
      * @throws Exception
      */
-    public function run($aArguments)
+    public function run($args)
     {
-        if (isset($aArguments) && isset($aArguments[0]) && isset($aArguments[1]) && isset($aArguments[2]) && isset($aArguments[3])) {
+        if (isset($args) && isset($args[0]) && isset($args[1]) && isset($args[2]) && isset($args[3])) {
             Yii::import('application.helpers.common_helper', true);
 
-            $this->setNoisy($aArguments);
+            $this->setNoisy($args);
 
             try {
                 $this->output('Connecting to database...');
@@ -62,7 +62,7 @@ class InstallCommand extends CConsoleCommand
                 return 1;
             }
 
-            $this->createUser($aArguments);
+            $this->createUser($args);
             $this->createPermissions();
 
             $this->output('All done!');

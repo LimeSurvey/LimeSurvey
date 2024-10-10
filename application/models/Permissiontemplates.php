@@ -125,7 +125,7 @@ class Permissiontemplates extends CActiveRecord
         return $dateFormat['phpdate'];
     }
 
-    /**s
+    /**
      * Returns formatted 'created at' date.
      * @return string
      */
@@ -312,7 +312,7 @@ class Permissiontemplates extends CActiveRecord
     }
 
     /**
-     * @param ??? $xmlEntitiy
+     * @param SimpleXMLElement $xmlEntitiy
      * @param boolean $includeRootData
      * @return Permissiontemplates|boolean
      */

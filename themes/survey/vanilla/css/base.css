@@ -39,6 +39,10 @@ tbody, td, tfoot, th, thead, tr {
     border-color: inherit;
 }
 
+.video-ipad {
+    height: 50px;
+}
+
 /** On smaller screens - handle input on demand label alignment **/
 @media (max-width: 768px) {
     .form-horizontal .control-label.col-12 {

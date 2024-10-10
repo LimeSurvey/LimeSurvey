@@ -17,7 +17,7 @@ class Update_407 extends DatabaseUpdateBase
             '{{defaultvalue_l10ns}}',
             array(
                 'id' => "pk",
-                'dvid' => "integer NOT NULL default '0'",
+                'dvid' => "integer NOT NULL DEFAULT '0'",
                 'language' => "string(20) NOT NULL",
                 'defaultvalue' => "text",
             ),
@@ -42,10 +42,10 @@ class Update_407 extends DatabaseUpdateBase
             '{{defaultvalues}}',
             [
                 'dvid' => "pk",
-                'qid' => "integer NOT NULL default '0'",
-                'scale_id' => "integer NOT NULL default '0'",
-                'sqid' => "integer NOT NULL default '0'",
-                'specialtype' => "string(20) NOT NULL default ''",
+                'qid' => "integer NOT NULL DEFAULT '0'",
+                'scale_id' => "integer NOT NULL DEFAULT '0'",
+                'sqid' => "integer NOT NULL DEFAULT '0'",
+                'specialtype' => "string(20) NOT NULL DEFAULT ''",
             ],
             $this->options
         );

@@ -55,7 +55,7 @@ class HtmlWriter extends Writer
         ), gT("Survey name (ID)") . ": {$this->survey->info['surveyls_title']} ({$this->survey->info['sid']})");
     }
 
-    protected function outputRecord($headers, $values, FormattingOptions $oOptions)
+    protected function outputRecord($headers, $values, FormattingOptions $oOptions, $fieldNames = [])
     {
         if ($this->first) {
             $this->writeHeader();

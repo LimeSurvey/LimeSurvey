@@ -2,10 +2,10 @@
 
 /**
  * DemoDateSetting Plugin for LimeSurvey
- * @author : Denis Chenu
- * @copyright: LimeSurvey <https://community.limesurvey.org/>
- * @version:; 0.2.0
- * @licence MIT Licence
+ * @author Denis Chenu
+ * @copyright LimeSurvey <https://community.limesurvey.org/>
+ * @version 0.2.0
+ * @license MIT License
  */
 class DemoDateSetting extends PluginBase
 {

@@ -42,24 +42,24 @@ var PerlHighlightRules = function () {
                 token: "string.regexp",
                 regex: "[/](?:(?:\\[(?:\\\\]|[^\\]])+\\])|(?:\\\\/|[^\\]/]))*[/]\\w*\\s*(?=[).,;]|$)"
             }, {
-                token: "string",
+                token: "string", // single line
                 regex: '["](?:(?:\\\\.)|(?:[^"\\\\]))*?["]'
             }, {
-                token: "string",
+                token: "string", // multi line string start
                 regex: '["].*\\\\$',
                 next: "qqstring"
             }, {
-                token: "string",
+                token: "string", // single line
                 regex: "['](?:(?:\\\\.)|(?:[^'\\\\]))*?[']"
             }, {
-                token: "string",
+                token: "string", // multi line string start
                 regex: "['].*\\\\$",
                 next: "qstring"
             }, {
-                token: "constant.numeric",
+                token: "constant.numeric", // hex
                 regex: "0x[0-9a-fA-F]+\\b"
             }, {
-                token: "constant.numeric",
+                token: "constant.numeric", // float
                 regex: "[+-]?\\d+(?:(?:\\.\\d*)?(?:[eE][+-]?\\d+)?)?\\b"
             }, {
                 token: keywordMapper,

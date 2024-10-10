@@ -1,0 +1,8 @@
+# Don't commit IDE stuff
+.idea
+
+# Vendor folder should never be committed
+vendor
+
+# No composer.lock for libraries
+composer.lock

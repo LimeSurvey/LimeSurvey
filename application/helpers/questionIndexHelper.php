@@ -33,7 +33,7 @@ class questionIndexHelper
     private static $instance = null;
 
     /**
-     * Actual survey id
+     * Actual survey ID
      * @var int surveyid
      */
     private $iSurveyId;

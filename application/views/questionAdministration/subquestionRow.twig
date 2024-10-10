@@ -8,7 +8,6 @@
  * @var $first
  * @var $subquestion
  * @var $subquestionl10n
- * @var $oldCode ???
  *
  * NB : !!! If you edit this view, remember to check if answer option row view need also to be updated !!!
  */
@@ -34,6 +33,7 @@
                 value="{{ subquestion.title|escape('html_attr') }}"
                 required='required'
                 maxlength="20"
+                pattern="[a-zA-Z0-9]+"
                 {% if question.survey.active == 'Y' %}
                 readonly="readonly"
                 {% endif %}
@@ -59,18 +59,6 @@
 
         <!-- Code (title) -->
         <td class="code-title" style="vertical-align: middle;">
-            <!-- TODO: What is "oldCode"??? -->
-            {% if oldCode %}
-                <input
-                    type='hidden'
-                    class='oldcode code-title'
-                    maxlength="20"
-                    id='subquestions[{{ subquestion.qid }}][{{ scale_id }}][oldcode]'
-                    name='subquestions[{{ subquestion.qid }}][{{ scale_id }}][oldcode]'
-                    value="{{ subquestion.title|escape('html_attr') }}"
-                />
-            {% endif %}
-
             <input
                 type='text'
                 class="code form-control input"
@@ -80,6 +68,7 @@
                 value="{{ subquestion.title|escape('html_attr') }}"
                 required='required'
                 maxlength="20"
+                pattern="[a-zA-Z0-9]+"
                 {% if question.survey.active == 'Y' %}
                 readonly="readonly"
                 {% endif %}
@@ -102,7 +91,7 @@
 
     <!-- Subquestion text -->
     <td  class="subquestion-text" style="vertical-align: middle;">
-        <div class="input-group">        
+        <div class="input-group">
             <!-- NB: Class "answer" is used for both subquestions and answer options. -->
             <input
                 type='text'

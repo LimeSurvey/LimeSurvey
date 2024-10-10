@@ -73,11 +73,10 @@ class QuestionCreate extends Question
     }
 
     /**
-     * @param int|null $scale_id
-     * @return array|null
-     * @todo Why return both empty array and null?
+     * @inheritdoc
+     * @todo check why return both empty array and null?
      */
-    public function getOrderedAnswers($scale_id = null)
+    public function getOrderedAnswers($scale_id = null, $language = null)
     {
         if ($scale_id == null) {
             return [];

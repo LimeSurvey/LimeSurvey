@@ -8,7 +8,7 @@
 
 ?>
 
-<div id='edit-question-body' class='side-body <?php echo getSideBodyClass(false); ?>'>
+<div id='edit-question-body' class='side-body'>
 
     <?= $jsVariablesHtml; ?>
 
@@ -116,7 +116,7 @@
                                     <div class="">
                                         <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                                             'name'          => 'copyattributes',
-                                            'checkedOption' => 'Y',
+                                            'checkedOption' => '1',
                                             'selectOptions' => [
                                                 '1' => gT('Yes'),
                                                 '0' => gT('No'),

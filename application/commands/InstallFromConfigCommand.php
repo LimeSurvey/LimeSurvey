@@ -35,14 +35,14 @@ class InstallFromConfigCommand extends CConsoleCommand
     public $connection;
 
     /**
-     * @param array $aArguments
+     * @param array $args
      * @return int
      */
-    public function run($aArguments)
+    public function run($args)
     {
         
-        if (isset($aArguments) && isset($aArguments[0])) {
-            $readFromConfig = realpath($aArguments[0]);
+        if (isset($args) && isset($args[0])) {
+            $readFromConfig = realpath($args[0]);
             $this->configuration = include($readFromConfig);
             $this->dbConnectionArray = $this->configuration['components']['db'];
             
@@ -52,7 +52,7 @@ class InstallFromConfigCommand extends CConsoleCommand
 
             Yii::import('application.helpers.common_helper', true);
 
-            $this->setNoisy($aArguments);
+            $this->setNoisy($args);
 
             try {
                 $this->output('Connecting to database...');

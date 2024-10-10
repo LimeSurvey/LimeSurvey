@@ -2,7 +2,9 @@
 
 namespace Html2Text;
 
-class LinkTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class LinkTest extends TestCase
 {
     const TEST_HTML = '<a href="http://example.com">Link text</a>';
 

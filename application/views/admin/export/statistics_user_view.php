@@ -8,7 +8,7 @@
 <!-- Javascript variables  -->
 <?php $this->renderPartial('/admin/export/statistics_subviews/_statistics_view_scripts', array('sStatisticsLanguage'=>$sStatisticsLanguage, 'surveyid'=>$surveyid, 'showtextinline'=>$showtextinline)) ; ?>
 
-<div id='statisticsview' class='side-body <?php echo getSideBodyClass(false); ?>'>
+<div id='statisticsview' class='side-body'>
 
     <div class="row">
         <div class="col-12">

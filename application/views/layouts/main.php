@@ -20,7 +20,9 @@ echo "<!-- BEGIN LAYOUT MAIN (refactored controllers-->";
 
 echo $layoutHelper->renderTopbarTemplate($aData);
 
+echo "<div class='container-fluid'>";
 $layoutHelper->updatenotification();
+echo "</div>";
 
 $layoutHelper->notifications();
 

@@ -12,7 +12,7 @@
 
 ?>
 
-<div id='edit-permission' class='side-body  <?= getSideBodyClass(false) ?> "'>
+<div id='edit-permission' class='side-body'>
     <h3>
         <?php
         if ($isUserGroup) {

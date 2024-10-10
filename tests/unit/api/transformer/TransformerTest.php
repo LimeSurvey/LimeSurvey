@@ -2,6 +2,7 @@
 
 namespace ls\tests\unit\api;
 
+use LimeSurvey\DI;
 use ls\tests\TestBaseClass;
 use LimeSurvey\Api\Transformer\Transformer;
 
@@ -15,7 +16,7 @@ class TransformerOutputTest extends TestBaseClass
      */
     public function testTransformedDataIncludesOnlyFieldsSpecifiedInMap()
     {
-        $transformer = new Transformer;
+        $transformer = $this->getTransformer();
         $transformer->setDataMap([
             'first_name' => true,
             'age' => true
@@ -37,7 +38,7 @@ class TransformerOutputTest extends TestBaseClass
      */
     public function testTransformedDataExcludesFieldsWithFalseConfig()
     {
-        $transformer = new Transformer;
+        $transformer = $this->getTransformer();
         $transformer->setDataMap([
             'first_name' => false,
             'last_name' => true,
@@ -53,11 +54,30 @@ class TransformerOutputTest extends TestBaseClass
     }
 
     /**
+     * @testdox transform() keeps null values when they're set explicitly
+     */
+    public function testSetNullValuesAreKept()
+    {
+        $transformer = $this->getTransformer();
+        $transformer->setDataMap([
+            'first_name' => true,
+            'age' => true
+        ]);
+        $transformedData = $transformer->transform([
+            'first_name' => null
+        ]);
+
+        $this->assertEquals([
+            'first_name' => null
+        ], $transformedData);
+    }
+
+    /**
      * @testdox transform() Maps to specified output fields.
      */
     public function testMapsToSpecifiedOutputFields()
     {
-        $transformer = new Transformer;
+        $transformer = $this->getTransformer();
         $transformer->setDataMap([
             'first_name' => 'given_name',
             'age' => 'years_of_existence'
@@ -79,7 +99,7 @@ class TransformerOutputTest extends TestBaseClass
      */
     public function testMapsToSpecifiedOutputFieldsViaKeyConfig()
     {
-        $transformer = new Transformer;
+        $transformer = $this->getTransformer();
         $transformer->setDataMap([
             'first_name' => ['key' => 'given_name'],
             'age' => ['key' => 'years_of_existence']
@@ -101,7 +121,7 @@ class TransformerOutputTest extends TestBaseClass
      */
     public function testCastsToPrimitiveType()
     {
-        $transformer = new Transformer;
+        $transformer = $this->getTransformer();
         $transformer->setDataMap([
             'enable' => ['type' => 'boolean'],
             'fraction' => ['type' => 'float'],
@@ -155,7 +175,7 @@ class TransformerOutputTest extends TestBaseClass
         };
 
 
-        $transformer = new Transformer;
+        $transformer = $this->getTransformer();
         $transformer->setDataMap([
             'enable' => ['type' => $castBoolean],
             'fraction' => ['type' => $castFloat],
@@ -188,5 +208,97 @@ class TransformerOutputTest extends TestBaseClass
             'age' => 40,
             'name' => ''
         ], $transformedDataA);
+    }
+
+
+    /**
+     * @testdox transform() Casts all elements of a collection.
+     */
+    public function testTransformsAllElementsOfACollection()
+    {
+        $transformerUser = new Transformer();
+        $transformerUser->setDataMap([
+            'first_name' => true,
+            'age' => ['type' => 'int'],
+        ]);
+
+        $transformer = $this->getTransformer();
+        $transformer->setDataMap([
+            'users' => [
+                'collection' => true,
+                'transformer' => $transformerUser
+            ]
+        ]);
+
+        $transformedData = $transformer->transform([
+            'users' => [
+                [
+                    'first_name' => 'Kevin',
+                    'last_name' => 'Foster',
+                    'age' => '40'
+                ],
+                [
+                    'first_name' => 'Bill',
+                    'last_name' => 'Smith',
+                    'age' => '51'
+                ]
+            ]
+        ]);
+
+        $this->assertEquals([
+            'users' => [
+                [
+                    'first_name' => 'Kevin',
+                    'age' => 40
+                ],
+                [
+                    'first_name' => 'Bill',
+                    'age' => 51
+                ]
+            ]
+        ], $transformedData);
+    }
+
+    /**
+     * @testdox validate() returns array of error messages on failure
+     */
+    public function testValidateReturnsArrayOfErrorMessagesOnFailure()
+    {
+        $transformer = $this->getTransformer();
+        $transformer->setDataMap([
+            'first_name' => ['required' => true],
+            'age' => true
+        ]);
+        $errors = $transformer->validate([
+            'age' => 40
+        ]);
+        $this->assertIsArray($errors);
+        $this->assertNotEmpty($errors);
+    }
+
+    /**
+     * @testdox validateAll() returns array of error messages on failure
+     */
+    public function testValidateAllReturnsArrayOfErrorMessagesOnFailure()
+    {
+        $transformer = $this->getTransformer();
+        $transformer->setDataMap([
+            'first_name' => ['required' => true],
+            'age' => true
+        ]);
+        $errors = $transformer->validateAll([
+            ['age' => 40],
+            ['age' => 51]
+        ]);
+
+        $this->assertIsArray($errors);
+        $this->assertNotEmpty($errors);
+    }
+    
+    private function getTransformer()
+    {
+        return DI::getContainer()->get(
+            Transformer::class
+        );
     }
 }

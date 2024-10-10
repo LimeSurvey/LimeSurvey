@@ -5,7 +5,7 @@
 /** @var  $htmlOptions  array */
 ?>
 <?= CHtml::tag('div', $htmlOptions) ?>
-<nav aria-label="breadcrumb">
+<nav aria-label="<?= gT("Breadcrumb") ?>">
     <ol class="breadcrumb ls-flex-row align-items-center align-content-flex-start <?= $extraClass ?>">
         <?php foreach ($breadcrumbs as $i => $breadcrumbArray) : ?>
             <?php
@@ -14,8 +14,8 @@
             $text = $breadcrumbArray['text'];
             $lastOne = count($breadcrumbs) === $i + 1;
             ?>
-            <li class="breadcrumb-item <?= $lastOne ? 'active' : '' ?>" aria-current="page" data-bs-toggle="tooltip"
-                title="<?= $breadcrumbArray['fullText'] ?>">
+            <li class="breadcrumb-item <?= $lastOne ? 'active' : '' ?>" <?= $lastOne ? 'aria-current="page"' : '' ?> data-bs-toggle="tooltip"
+                title="<?= CHtml::encode($breadcrumbArray['fullText']) ?>">
                 <?php if ($href !== '') : ?>
                     <a id="<?= $id ?>" class="pjax animate"
                        href="<?= $href ?>">

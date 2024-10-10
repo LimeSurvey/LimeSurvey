@@ -41,7 +41,7 @@ class CsvWriter extends Writer
         }
     }
 
-    protected function outputRecord($headers, $values, FormattingOptions $oOptions)
+    protected function outputRecord($headers, $values, FormattingOptions $oOptions, $fieldNames = [])
     {
         $sRecord = '';
         if (!empty($oOptions->csvFieldSeparator)) {
@@ -96,11 +96,14 @@ class CsvWriter extends Writer
     /**
      * Returns the value with all necessary escaping needed to place it into a CSV string.
      *
-     * @param string $value
+     * @param string|null $value
      * @return string
      */
     protected function csvEscape($value)
     {
+        if (is_null($value)) {
+            return '';
+        }
         $sString = preg_replace(array('~\R~u'), array("\n"), $value);
         return '"' . str_replace('"', '""', $sString) . '"';
     }

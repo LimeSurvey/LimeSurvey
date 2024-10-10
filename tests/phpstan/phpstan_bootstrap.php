@@ -1,5 +1,19 @@
 <?php
 
+ob_start();
+
+class TmpClass
+{
+    public function init()
+    {
+    }
+
+    public function handle($event)
+    {
+        echo $event->message . PHP_EOL;
+    }
+}
+
 // Code below copied from index.php.
 // File also used for Psalm checker.
 
@@ -64,6 +78,7 @@ Yii::import('application.libraries.admin.quexmlpdf', true);  // Problem with Adm
 Yii::import('application.helpers.update.update_helper', true);
 Yii::import('application.helpers.update.updatedb_helper', true);
 Yii::import('application.helpers.admin.ajax_helper', true);
+Yii::import('application.controllers.admin.ExpressionValidate', true);
 Yii::import('webroot.installer.create-database', true);
 Yii::import('ext.GeneralOptionWidget.settings.*');
 Yii::import('zii.widgets.grid.*');

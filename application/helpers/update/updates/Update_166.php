@@ -24,7 +24,7 @@ class Update_166 extends DatabaseUpdateBase
                 'entity_id,entity,permission,uid',
                 true
             );
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             rollBackToTransactionBookmark();
         }
         upgradePermissions166();

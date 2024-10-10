@@ -24,8 +24,8 @@
                     <span class='annotation text-danger'><?php echo  gT("Required"); ?> </span>
                 </p>
 
-                <!-- New survey id -->
-                <label class=" form-label" for='copysurveyid'><?php echo  eT("New survey id:"); ?> </label>
+                <!-- New survey ID -->
+                <label class=" form-label" for='copysurveyid'><?php echo  eT("New survey ID:"); ?> </label>
                 <input type='number' step="1" min="1" max="999999" id='copysurveyid' size='82' name='copysurveyid' value='' class="form-control" />
                 <p class="form-control-static">
                     <span class='annotation text-info'><?php echo  gT("Optional"); ?> </span>

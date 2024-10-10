@@ -1,5 +1,5 @@
 <!-- Token export options -->
-<div class='side-body <?php echo getSideBodyClass(false); ?>'>
+<div class='side-body'>
     <h3><?php eT("Survey participant export options"); ?></h3>
     <div class="row">
         <div class="col-12 content-right">

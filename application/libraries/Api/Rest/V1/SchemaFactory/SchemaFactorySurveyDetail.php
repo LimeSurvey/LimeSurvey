@@ -12,10 +12,7 @@ class SchemaFactorySurveyDetail
      */
     public function make(): Schema
     {
-        $questionAttributeSchema = (new SchemaFactoryQuestionAttribute())->make();
-        $questionAttributesSchema = Schema::object('attributes')->additionalProperties(
-            $questionAttributeSchema
-        );
+        $questionAttributeSchemas = (new SchemaFactoryQuestionAttributes())->make();
 
         $answerSchema = (new SchemaFactoryAnswer())->make();
         $answersSchema = Schema::array('answers')->items(
@@ -26,18 +23,17 @@ class SchemaFactorySurveyDetail
 
         $questionSchema = (new SchemaFactoryQuestion())->make(
             $answersSchema,
-            $questionAttributesSchema
-        );
-        $questionsSchema = Schema::object('questions')->properties(
-            AllOf::create('0')->schemas(
-                $questionSchema
+            Schema::object('attributes')->properties(
+                $questionAttributeSchemas
             )
+        );
+        $questionsSchema = Schema::array('questions')->items(
+            $questionSchema
         );
 
         $questionGroupSchema = (new SchemaFactoryQuestionGroup())->make(
             $questionsSchema
         );
-
 
         $surveySchema = AllOf::create('survey')->schemas(
             (new SchemaFactorySurvey())->make(
@@ -46,10 +42,8 @@ class SchemaFactorySurveyDetail
                         Schema::string()
                     )
                 ),
-                Schema::object('questionGroups')->properties(
-                    AllOf::create('0')->schemas(
-                        $questionGroupSchema
-                    )
+                Schema::array('questionGroups')->items(
+                    $questionGroupSchema
                 ),
                 Schema::string('created_at')
                     ->format(Schema::FORMAT_DATE_TIME)

@@ -83,7 +83,7 @@ class RenderDate extends QuestionBaseRenderer
             $date_min      = trim((string) $this->getQuestionAttribute('date_min'));
             $date_time_em  = strtotime((string) LimeExpressionManager::ProcessString("{" . $date_min . "}", $this->oQuestion->qid));
         
-            if (ctype_digit($date_min) && (strlen($date_min) == 4) && ($date_min >= 1900) && ($date_min <= 2099)) {
+            if (ctype_digit($date_min) && (strlen($date_min) == 4)) {
                 $this->minDate = $date_min . '-01-01'; // backward compatibility: if only a year is given, add month and day
             } elseif (preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])/", $date_min)) {
                 // it's a YYYY-MM-DD date (use http://www.yiiframework.com/doc/api/1.1/CDateValidator ?)
@@ -94,7 +94,7 @@ class RenderDate extends QuestionBaseRenderer
                 $this->minDate = '{' . $this->getQuestionAttribute('date_min') . '}';
             }
         } else {
-            $this->minDate = '1900-01-01'; // Why 1900 ?
+            $this->minDate = '1900-01-01'; // We need some default value
         }
     }
 
@@ -105,7 +105,7 @@ class RenderDate extends QuestionBaseRenderer
             $date_max     = trim((string) $this->getQuestionAttribute('date_max'));
             $date_time_em = strtotime((string) LimeExpressionManager::ProcessString("{" . $date_max . "}", $this->oQuestion->qid));
         
-            if (ctype_digit($date_max) && (strlen($date_max) == 4) && ($date_max >= 1900) && ($date_max <= 2099)) {
+            if (ctype_digit($date_max) && (strlen($date_max) == 4)) {
                 $this->maxDate = $date_max . '-12-31'; // backward compatibility: if only a year is given, add month and day
             } elseif (preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])/", $date_max)) {
         // it's a YYYY-MM-DD date (use http://www.yiiframework.com/doc/api/1.1/CDateValidator ?)
@@ -128,7 +128,13 @@ class RenderDate extends QuestionBaseRenderer
     {
         return Yii::app()->twigRenderer->renderQuestion(
             $this->getMainView() . '/dropdown/rows/day',
-            array('dayId' => $this->sSGQA, 'currentday' => $iCurrent),
+            array(
+                'dayId' => $this->sSGQA,
+                'currentday' => $iCurrent,
+                'lang' => [
+                   'Day' => gT("Day")
+                ]
+            ),
             true
         );
     }
@@ -138,7 +144,14 @@ class RenderDate extends QuestionBaseRenderer
         
         return Yii::app()->twigRenderer->renderQuestion(
             $this->getMainView() . '/dropdown/rows/month',
-            array('monthId' => $this->sSGQA, 'currentmonth' => $iCurrent, 'montharray' => $this->getTranslatorData()['montharray']),
+            array(
+                'monthId' => $this->sSGQA,
+                'currentmonth' => $iCurrent,
+                'montharray' => $this->getTranslatorData()['montharray'],
+                'lang' => [
+                   'Month' => gT("Month")
+                ]
+            ),
             true
         );
     }
@@ -152,13 +165,13 @@ class RenderDate extends QuestionBaseRenderer
         * expressions are not supported because contents of dropbox cannot be easily updated dynamically
         */
         $yearmin = (int) substr((string) $this->minDate, 0, 4);
-        if (!isset($yearmin) || $yearmin < 1900 || $yearmin > 2187) {
+        if (empty($yearmin)) {
             $yearmin = 1900;
         }
 
         $yearmax = (int) substr((string) $this->maxDate, 0, 4);
-        if (!isset($yearmax) || $yearmax < 1900 || $yearmax > 2187) {
-            $yearmax = 2187;
+        if (empty($yearmax)) {
+            $yearmax = 2037;
         }
 
         if ($yearmin > $yearmax) {
@@ -185,7 +198,10 @@ class RenderDate extends QuestionBaseRenderer
                 'yearmax' => $yearmax,
                 'reverse' => $reverse,
                 'yearmin' => $yearmin,
-                'step' => $step
+                'step' => $step,
+                'lang' => [
+                   'Year' => gT("Year")
+                ]
             ),
             true
         );
@@ -195,7 +211,14 @@ class RenderDate extends QuestionBaseRenderer
     {
         return Yii::app()->twigRenderer->renderQuestion(
             $this->getMainView() . '/dropdown/rows/hour',
-            array('hourId' => $this->sSGQA, 'currenthour' => $iCurrent, 'datepart' => $datepart),
+            array(
+                'hourId' => $this->sSGQA,
+                'currenthour' => $iCurrent,
+                'datepart' => $datepart,
+                'lang' => [
+                   'Hour' => gT("Hour")
+                ]
+            ),
             true
         );
     }
@@ -208,7 +231,10 @@ class RenderDate extends QuestionBaseRenderer
                 'minuteId' => $this->sSGQA,
                 'currentminute' => $iCurrent,
                 'dropdown_dates_minute_step' => $this->getQuestionAttribute('dropdown_dates_minute_step'),
-                'datepart' => $datepart
+                'datepart' => $datepart,
+                'lang' => [
+                   'Minute' => gT("Minute")
+                ]
             ),
             true
         );
@@ -249,10 +275,10 @@ class RenderDate extends QuestionBaseRenderer
                         'allowInputToggle' => true,
                         'showClear' => true,
                         'sideBySide' => true,
-                        'minDate' => $this->minDate,
-                        'maxDate' => $this->maxDate,
-                        'stepping' => $this->getQuestionAttribute('dropdown_dates_minute_step'),
-                        'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']),
+                        'minDate' => strpos($this->minDate, '{') === false ? $this->minDate : '1900-01-01',
+                        'maxDate' => strpos($this->maxDate, '{') === false ? $this->maxDate : '2187-12-31',
+                        'stepping' => intval($this->getQuestionAttribute('dropdown_dates_minute_step')),
+                        'locale' => convertLStoDateTimePickerLocale(App()->getLanguage()),
                     )
                 ),
                 true
@@ -325,8 +351,7 @@ class RenderDate extends QuestionBaseRenderer
             LSYii_ClientScript::POS_POSTSCRIPT,
             true
         );
-        
-        
+
         // ==> answer
         $answer = Yii::app()->twigRenderer->renderQuestion(
             $this->getMainView() . '/dropdown/answer',
@@ -339,6 +364,14 @@ class RenderDate extends QuestionBaseRenderer
             'checkconditionFunction' => $this->checkconditionFunction . '(this.value, this.name, this.type)',
             'dateformatdetails'      => $this->aDateformatDetails['jsdate'],
             'dateformat'             => $this->aDateformatDetails['jsdate'],
+            /* language part, to be translated (see issue #19294) */
+            'lang'                   => [
+                                        'Day' => gT("Day"),
+                                        'Month' => gT("Month"),
+                                        'Year' => gT("Year"),
+                                        'Hour' => gT("Hour"),
+                                        'Minute' => gT("Minute"),
+                                    ]
             ),
             true
         );

@@ -14,7 +14,7 @@ $aLanguageNames = implode(";", $aLanguageNames);
 
 ?>
 
-<div class='side-body <?php echo getSideBodyClass(false); ?>'>
+<div class='side-body'>
     <input type='hidden' id="dateFormatDetails" name='dateFormatDetails' value='<?php echo json_encode($dateformatdetails); ?>'/>
     <input type="hidden" id="locale" name="locale" value="<?= convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']) ?>"/>
     <input type='hidden' name='rtl' value='<?php echo getLanguageRTL($_SESSION['adminlang']) ? '1' : '0'; ?>'/>

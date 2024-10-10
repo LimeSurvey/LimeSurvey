@@ -35,6 +35,11 @@ var AdvancedRankingQuestion = function (options) {
             ghostClass: "ls-rank-placeholder",
             onEnd: function(){
                 updateRankingNumber();
+            },
+            onMove: function (ev) {
+                if (max_answers > 0 && $('#sortable-rank-' + questionId + ' li').length >= max_answers) {
+                    return false;
+                }
             }
         },
         sortableObjectRank = {
@@ -149,14 +154,13 @@ var AdvancedRankingQuestion = function (options) {
             window.templateCore.alertSurveyDialog(txtAlert, '');
         }
     },
-    loadDragDropRank = function (questionId) {
-        
+    loadDragDropRank = function () {
         // Update #relevance
         $("[id^=" + relevancename + "]").val('0');
         $('#sortable-rank-' + questionId + ' .answer-item.sortable-item.ls-choice').each(function () {
             $(this).appendTo('#sortable-choice-' + questionId );
         });
-        $('#question' + questionId + ' .select-item select').each(function (index) {
+        $('#question' + questionId + ' .select-item select :selected').each(function (index) {
             if ($(this).val() != '') {
                 $("#" + relevancename + (index+1)).val("1");
                 $('#sortable-choice-' + questionId + ' #' + rankingID + $(this).val()).appendTo('#sortable-rank-' + questionId);

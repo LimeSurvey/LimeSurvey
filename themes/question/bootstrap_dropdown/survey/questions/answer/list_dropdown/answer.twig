@@ -55,9 +55,8 @@
             {% if width_entry != '' %}
             selectPicker.on('loaded.bs.select', function () {
                 selectPicker.selectpicker('open');
-                var dropdown = $('.dropdown.bootstrap-select');
-
-                var width = $('.dropdown-menu.show').width();
+                var dropdown = selectPicker.parent();
+                var width = dropdown.find('.dropdown-menu.show').width();
                 dropdown.css('width', width);
                 selectPicker.selectpicker('toggle');
                 $('.bootstrap-select .btn.dropdown-toggle').blur();

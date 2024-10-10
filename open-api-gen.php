@@ -187,8 +187,7 @@ foreach ($rest as $path => $config) {
             if ($example) {
                 if (is_string($example) && file_exists($example)) {
                     $example = (new Example)
-                        ->create()
-                        ->summary('Example')
+                        ->create('Example')
                         ->value(
                             json_decode(
                                 file_get_contents($example)
@@ -197,7 +196,7 @@ foreach ($rest as $path => $config) {
                 }
 
                 if ($example instanceof Example) {
-                    $mediaType = $mediaType->example($example);
+                    $mediaType = $mediaType->examples($example);
                 }
             }
             $requestBody = RequestBody::create()->content(

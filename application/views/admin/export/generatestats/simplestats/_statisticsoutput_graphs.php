@@ -62,6 +62,7 @@
                     'type' => 'warning',
                 ]);
                 ?>
+            </div>
         </div>
     <?php endif;?>
 

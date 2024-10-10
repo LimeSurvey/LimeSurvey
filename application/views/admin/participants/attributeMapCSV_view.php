@@ -1,4 +1,4 @@
-<div class='header'>
+<div class='header pt-2'>
     <h3 class='pagetitle'><?php neT("Select which fields to import as attributes with your {n} participant.|Select which fields to import as attributes with your {n} participants.", $linecount); ?></h3>
 </div>
 
@@ -15,12 +15,15 @@
                 <p class='help-block'><?php eT("The following additional fields were found in your CSV file."); ?></p>
                 <div class="csvatt droppable-csv">
                     <?php
-                    foreach ($firstline as $value)
-                    {
+                    foreach ($firstline as $value) {
                         echo CHtml::tag(
                             "div",
-                            array('id'=>"cs_{$value}",'data-name'=>$value,'class'=>"draggable well well-sm csv-attribute-item"),
-                            $value
+                            array(
+                                'id'        => "cs_{$value}",
+                                'data-name' => $value,
+                                'class'     => "draggable card csv-attribute-item"
+                            ),
+                            '<div class="card-body">' . $value . '</div>'
                         );
                     }
                     ?>
@@ -46,11 +49,14 @@
             <div class='card-body'>
                 <p class='help-block'><?php eT("Drop a CSV field into an existing participant attribute listed below to import your data into it."); ?></p>
                 <div class="centralatt">
-                    <?php foreach ($attributes as $key => $value): ?>
-                        <div class='col-12 droppable-map'>
-                            <div class='col-md-6'>
-                                <div id='c_<?php echo $value['attribute_id']; ?>' data-name='c_<?php echo $key; ?>' class='well well-sm csv-attribute-item'>
-                                    <?php echo $value['attribute_name']; ?>
+                    <?php foreach ($attributes as $key => $value) : ?>
+                        <div class='col-12 row droppable-map'>
+                            <div class='col-6'>
+                                <div id='c_<?php echo $value['attribute_id']; ?>' data-name='c_<?php echo $key; ?>' class='card csv-attribute-item'>
+                                    <div class='card-body'>
+                                        <?php echo $value['attribute_name']; ?>
+                                        <span class='ri-arrow-left-right-fill tokenatt-arrow'></span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -62,7 +68,7 @@
                         <label for='overwrite'><?php eT("Overwrite existing participant attribute values if a duplicate participant is found?") ?>
                         <br />
                         <?php
-                        if($participant_id_exists) {
+                        if ($participant_id_exists) {
                             eT("Duplicates will be detected using the participant_id field in this CSV file.");
                         } else {
                             eT("Duplicates will be detected by a combination of firstname, lastname and email addresses.");

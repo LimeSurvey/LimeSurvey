@@ -7,7 +7,7 @@
 
 ?>
 
-<div class="side-body <?php echo getSideBodyClass(false); ?>">
+<div class="side-body">
     <h3><span class="ri-global-line text-success" ></span>&nbsp;&nbsp;<?php eT("Translate survey"); ?></h3>
     <div class="row">
         <div class="col-lg-12 content-right">

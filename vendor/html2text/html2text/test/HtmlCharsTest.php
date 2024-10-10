@@ -2,7 +2,9 @@
 
 namespace Html2Text;
 
-class HtmlCharsTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class HtmlCharsTest extends TestCase
 {
     public function testLaquoAndRaquo()
     {
@@ -51,6 +53,15 @@ class HtmlCharsTest extends \PHPUnit_Framework_TestCase
     {
         $html = "$entity signs should be UTF-8 symbols";
         $expected = "$symbol signs should be UTF-8 symbols";
+
+        $html2text = new Html2Text($html);
+        $this->assertEquals($expected, $html2text->getText());
+    }
+
+    public function testSingleQuote()
+    {
+        $html = "Single quote&#039;s preservation";
+        $expected = "Single quote's preservation";
 
         $html2text = new Html2Text($html);
         $this->assertEquals($expected, $html2text->getText());

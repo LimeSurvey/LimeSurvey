@@ -19,7 +19,7 @@ class GroupSelectorGeneralOption extends GeneralOption
         $this->formElement = new FormElement(
             'gid',
             null,
-            gT("If you want to change the question group this question is in."),
+            gT("Reassign this question to another group by selecting a new one"),
             $question->gid,
             [
                 'classes' => ['form-control'],

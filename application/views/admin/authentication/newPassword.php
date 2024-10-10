@@ -32,7 +32,7 @@ echo viewHelper::getViewTestTag('login');
                             <?php
                             ?>
                             <span>
-                                    <label for="password_repeat" class="required" required><?= gT("Password") ?> <span
+                                    <label for="password" class="required" required><?= gT("Password") ?> <span
                                                 class="required">*</span></label>
                                     <input name="password" placeholder='********' id="password" class="form-control ls-important-field"
                                            type="password">
@@ -50,7 +50,7 @@ echo viewHelper::getViewTestTag('login');
                                     <input type="text" class="form-control" readonly name="random_example_password"
                                            value="<?= htmlspecialchars((string) $randomPassword) ?>"/>
                                 </span>
-                            <input type="hidden" name="validation_key" value="<?= $validationKey ?>">
+                            <input type="hidden" name="validation_key" value="<?= CHtml::encode($validationKey) ?>">
                         </div>
                     </div>
 

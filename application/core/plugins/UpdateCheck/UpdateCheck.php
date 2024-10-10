@@ -30,7 +30,7 @@ class UpdateCheck extends PluginBase
      */
     protected $storage = 'DbStorage';
 
-    /** @inheritdoc, this plugin didn't have any public method */
+    /** @inheritdoc this plugin didn't have any public method */
     public $allowedPublicMethods = array('checkAll');
 
     /**
