@@ -398,8 +398,8 @@ class SurveyRuntimeHelper
         }
 
         $this->aSurveyInfo['jPopup'] = json_encode($aPopup);
-        $this->aSurveyInfo['mandSoft'] = array_key_exists('mandSoft', $this->aMoveResult) ? $this->aMoveResult['mandSoft'] : false;
-        $this->aSurveyInfo['mandNonSoft'] = array_key_exists('mandNonSoft', $this->aMoveResult) ? $this->aMoveResult['mandNonSoft'] : false;
+        $this->aSurveyInfo['mandSoft'] = isset($this->aMoveResult['mandSoft']) ? $this->aMoveResult['mandSoft'] : false;
+        $this->aSurveyInfo['mandNonSoft'] = isset($this->aMoveResult['mandNonSoft']) ? $this->aMoveResult['mandNonSoft'] : false;
         $this->aSurveyInfo['mandViolation'] = $this->aStepInfo['mandViolation'] && $this->okToShowErrors;
         $this->aSurveyInfo['showPopups'] = $this->oTemplate != null ? $this->oTemplate->showpopups : false;
 
