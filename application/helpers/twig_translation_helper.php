@@ -55,4 +55,12 @@ function dummy_twig_translation_helper()
     gT("Indicates where the 'Other' option should be placed"); // From application/views/survey/questions/answer/list_dropdown/config.xml
     gT("Answer code for 'After specific answer option'"); // From application/views/survey/questions/answer/list_dropdown/config.xml
     gT("The code of the answer option after which the 'Other:' option will be placed if the position is set to 'After specific answer option'"); // From application/views/survey/questions/answer/list_dropdown/config.xml
+    gT("Normal"); // From application/views/survey/questions/answer/list_dropdown/config.xml (2023/09/09)
+    gT("Random"); // From application/views/survey/questions/answer/list_dropdown/config.xml (2023/09/09)
+    gT("Alphabetical"); // From application/views/survey/questions/answer/list_dropdown/config.xml (2023/09/09)
+    gT("Position for 'Other:' option"); // From application/views/survey/questions/answer/list_dropdown/config.xml (2023/09/09)
+    gT("Answer options order"); // From application/views/survey/questions/answer/list_dropdown/config.xml (2023/09/09)
+    gT("After specific answer option"); // From application/views/survey/questions/answer/list_dropdown/config.xml (2023/09/09)
+    gT("Before No Answer"); // From application/views/survey/questions/answer/list_dropdown/config.xml (2023/09/09)
+    gT("Present answer options in normal, random or alphabetical order"); //  From application/views/survey/questions/answer/list_dropdown/config.xml (2023/09/09)
 }
