@@ -192,9 +192,9 @@ class UploaderController extends SurveyController
             // it is also  checked at the client side, but jst double checking
             if (!in_array($ext, $valid_extensions_array)) {
                 $return = array(
-                                "success" => false,
-                                "msg" => sprintf(gT("Sorry, this file extension (%s) is not allowed!"), $cleanExt)
-                            );
+                    "success" => false,
+                    "msg" => sprintf(gT("Sorry, this file extension (%s) is not allowed!"), $cleanExt)
+                );
                 //header('Content-Type: application/json');
                 echo ls_json_encode($return);
                 Yii::app()->end();
@@ -237,11 +237,43 @@ class UploaderController extends SurveyController
                 echo ls_json_encode($return);
                 Yii::app()->end();
             }
-
+            // event to allow updating some part
+            $event = new PluginEvent('beforeMovePublicFileUploaded');
+            $event->set('surveyId', $surveyid);
+            $event->set('responseId', Yii::app()->session['survey_' . $surveyid]['srid']); // NULL if not exist
+            $event->set('qid', $oQuestion->qid);
+            $event->set('success', true);
+            $event->set('filename', $filename);
+            $event->set('size', $size);
+            $event->set('tmp_name', $_FILES['uploadfile']['tmp_name']);
+            App()->getPluginManager()->dispatchEvent($event);
+            $success = $event->get('success', true);
+            $filename = $event->get('filename');
+            $uploadfile_tmp_name = $event->get('tmp_name');
+            if ($uploadfile_tmp_name !== $_FILES['uploadfile']['tmp_name']) {
+                @unlink($_FILES['uploadfile']['tmp_name']);
+            }
+            if (!$success) {
+                @unlink($uploadfile_tmp_name);
+                $return = array(
+                    "success" => false,
+                    "msg" => $event->get('msg', gT("An unknown error occurred"))
+                );
+                echo ls_json_encode($return);
+                Yii::app()->end();
+            }
+            if (!is_file($uploadfile_tmp_name)) {
+                $return = array(
+                    "success" => false,
+                    "msg" => $event->get('msg', gT("An unknown error occurred"))
+                );
+                echo ls_json_encode($return);
+                Yii::app()->end();
+            }
             // if everything went fine and the file was uploaded successfully,
             // If this is just a preview, don't save the file
             if ($preview) {
-                if (move_uploaded_file($_FILES['uploadfile']['tmp_name'], $randfileloc)) {
+                if (move_uploaded_file($uploadfile_tmp_name, $randfileloc)) {
                     /** @psalm-suppress UndefinedVariable TODO: Dead code? */
                     $return = array(
                                 "success"       => true,
@@ -271,7 +303,7 @@ class UploaderController extends SurveyController
                     echo ls_json_encode($return);
                     Yii::app()->end();
                 }
-                if (move_uploaded_file($_FILES['uploadfile']['tmp_name'], $randfileloc)) {
+                if (move_uploaded_file($uploadfile_tmp_name, $randfileloc)) {
                     $return = array(
                         "success"  => true,
                         "size"     => $size,
@@ -292,7 +324,7 @@ class UploaderController extends SurveyController
             );
             /* Add information for for user forcedSuperAdmin right */
             if (Permission::isForcedSuperAdmin(Permission::model()->getUserId())) {
-                $return['msg'] = sprintf(gT("An unknown error happened when moving file %s to %s."), $_FILES['uploadfile']['tmp_name'], $randfileloc);
+                $return['msg'] = sprintf(gT("An unknown error happened when moving file %s to %s."), $uploadfile_tmp_name, $randfileloc);
             }
             //header('Content-Type: application/json');
             echo ls_json_encode($return);
