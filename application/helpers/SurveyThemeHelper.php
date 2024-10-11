@@ -548,7 +548,7 @@ class SurveyThemeHelper
             $dropDownOptionsNode = null;
 
             foreach ($cssFrameworkNode->childNodes as $child) {
-                if ($child->nodeType === XML_TEXT_NODE) {
+                if ($child->nodeType === XML_TEXT_NODE && trim($child->nodeValue) !== '') {
                     $defaultOption = $child->nodeValue;
                 } elseif ($child->nodeName === 'dropdownoptions') {
                     $dropDownOptionsNode = $child;
@@ -558,32 +558,44 @@ class SurveyThemeHelper
             if ($dropDownOptionsNode) {
                 $optGroupNodeList = $dropDownOptionsNode->getElementsByTagName('optgroup');
                 if ($optGroupNodeList->length === 0) {
-
+            
                     // Create a new 'optgroup' element
                     $optGroupNode = $domDocument->createElement('optgroup');
-
+            
                     // Loop through all 'option' nodes and move them to 'optgroup'
                     while ($dropDownOptionsNode->childNodes->length > 0) {
                         $optionNode = $dropDownOptionsNode->firstChild;
-
-                        // Check if the 'option' node has any child nodes (non-empty)
-                        if (trim($optionNode->textContent) !== '' || $optionNode->nodeName === '#text') {
-                            $optGroupNode->appendChild($optionNode);
+            
+                        // Skip text nodes or invalid nodes
+                        if ($optionNode->nodeName === '#text' || trim($optionNode->nodeValue) === '') {
+                            $dropDownOptionsNode->removeChild($optionNode);
+                            continue;
                         }
+            
+                        // Check if the node is a valid 'option' node
+                        if ($optionNode->nodeName != 'option') {
+                            throw new \Exception('Invalid node in the config file.');
+                        }
+            
+                        // Append valid 'option' nodes
+                        $optGroupNode->appendChild($optionNode);
                     }
-
+            
                     // Append the 'optgroup' with all the 'option' nodes into 'dropdownoptions'
-                    $dropDownOptionsNode->appendChild($optGroupNode);
-                    $isChangedDomDocument = true;
-                }  else {
+                    if ($optGroupNode->childNodes->length > 0) {
+                        $dropDownOptionsNode->appendChild($optGroupNode);
+                        $isChangedDomDocument = true;
+                    }
+            
+                } else {
                     $optGroupNode = $optGroupNodeList->item(0);
                 }
             } else {
                 throw new \Exception('No "dropdownoptions" nodes were found.');
-            }
+            }            
 
             if ($defaultOption === '' && isset($optGroupNode->firstChild)) {
-                $defaultOption = $optGroupNode->firstChild->nodeValue;
+                $defaultOption = $optGroupNode->getElementsByTagName('option')->item(0)->nodeValue;
                 if (is_string($defaultOption) && trim($defaultOption) !== '') {
                     $textNode = $domDocument->createTextNode($defaultOption);
                     $cssFrameworkNode->insertBefore($textNode, $dropDownOptionsNode);
