@@ -1870,7 +1870,8 @@ function checkCompletedQuota($surveyid, $return = false)
             ////Filter
             // For each field : test if actual responses is in quota (and is relevant)
             foreach ($aQuotaFields as $sFieldName => $aValues) {
-                $bInQuota = isset($_SESSION['survey_' . $surveyid][$sFieldName]) && in_array($_SESSION['survey_' . $surveyid][$sFieldName], $aValues);
+                $bInQuota = isset($_SESSION['survey_' . $surveyid][$sFieldName])
+                    && in_array($_SESSION['survey_' . $surveyid][$sFieldName], $aValues);
                 if ($bInQuota && $aQuotaRelevantFieldnames[$sFieldName]) {
                     $iMatchedAnswers++;
                 }
@@ -1882,17 +1883,18 @@ function checkCompletedQuota($surveyid, $return = false)
             }
 
 
-            // Condition to count quota :
-            // Answers are the same in quota + an answer is submitted at this time (bPostedField)
-            //  OR all questions is hidden (bAllHidden)
-            $bAllHidden = QuestionAttribute::model()
+            // check if any question that is part of the quotaMembers is hidden
+            $hasHiddenQuestions = QuestionAttribute::model()
                 ->countByAttributes(array(
                     'qid' => $aQuotaQid,
                     'attribute' => 'hidden',
                     'value' => '1',
-                )) == count($aQuotaQid);
+                )) > 0;
 
-            if ($iMatchedAnswers == count($aQuotaFields) && ($bPostedField || $bAllHidden)) {
+            // Condition to count quota :
+            // check if all answers match the quota AND check if the question was answered on this page or filled out as a hidden question
+            if ($iMatchedAnswers == count($aQuotaFields)
+                && ($bPostedField || $hasHiddenQuestions)) {
                 if ($oQuota->qlimit == 0) {
                     // Always add the quota if qlimit==0
                     $aMatchedQuotas[] = $oQuota->viewArray;
