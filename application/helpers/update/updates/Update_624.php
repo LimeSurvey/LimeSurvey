@@ -21,11 +21,16 @@ class Update_624 extends DatabaseUpdateBase
         $this->checkConfigFiles($templatesInUpload);
         $this->checkConfigFiles($templatesInCore);
 
-        $templateConfigurations = $this->db->createCommand()
-            ->select('id, options')
-            ->from('{{template_configuration}}')
-            ->where(['IN', 'options', '@attributes'])
-            ->queryAll();
+        $command = $this->db->createCommand()
+                    ->select('id, template_name, options')
+                    ->from('{{template_configuration}}')
+                    ->where(['like', 'options', '%@attributes%']);
+
+        // Get the SQL query
+        $sql = $command->text;
+
+        // Execute the command
+        $templateConfigurations = $command->queryAll();
 
         foreach ($templateConfigurations as $templateConfiguration) {
             $templateName = $templateConfiguration['template_name'];
