@@ -17752,7 +17752,7 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
 .box-widget .box-widget-card .box-widget-card-footer .icons .ls-dropdown-toggle {
   width: 24px;
   height: 24px;
-  background-color: white;
+  background-color: #fff;
 }
 .box-widget .card-link-highlight {
   color: var(--bs-info) !important;
@@ -17762,8 +17762,8 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
   display: block;
   align-content: center;
   text-align: center;
-  color: #6D748C;
-  border: solid 2px #6D748C;
+  color: #6E748C;
+  border: solid 2px #6E748C;
   cursor: pointer;
 }
 .box-widget .box-widget-card.card-link .box-widget-card-body {
@@ -17776,7 +17776,7 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
 }
 .box-widget .box-widget-card.card-link .box-widget-card-body i:before {
   display: block;
-  color: green;
+  color: #14AE5C;
   padding-right: 4px;
   width: 20px;
   height: 20px;
@@ -17795,7 +17795,7 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
   margin-top: 25px;
 }
 .box-widget .survey-state {
-  color: grey;
+  color: #6E748C;
 }
 
 #statisticsview .box {

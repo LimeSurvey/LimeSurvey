@@ -111,7 +111,7 @@
               .ls-dropdown-toggle {
                 width     : 24px;
                 height    : 24px;
-                background-color: white;
+                background-color: $white;
               }
             }
         }
@@ -124,8 +124,8 @@
       display: block;
       align-content: center;
       text-align: center;
-      color: #6D748C;
-      border: solid 2px #6D748C;
+      color: $g-700;
+      border: solid 2px $g-700;
       cursor: pointer;
 
         .box-widget-card-body {
@@ -137,7 +137,7 @@
           line-height: 20px;
           i:before {
             display: block;
-            color: green;
+            color: $active-green;
             padding-right: 4px;
             width: 20px;
             height: 20px;
@@ -158,6 +158,6 @@
         }
     }
   .survey-state {
-    color: grey;
+    color: $g-700;
   }
 }
