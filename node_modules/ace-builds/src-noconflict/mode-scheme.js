@@ -32,11 +32,11 @@ var SchemeHighlightRules = function () {
                     "regex": "(\\*)(\\S*)(\\*)"
                 },
                 {
-                    "token": "constant.numeric", // hex
+                    "token": "constant.numeric",
                     "regex": "#[xXoObB][0-9a-fA-F]+"
                 },
                 {
-                    "token": "constant.numeric", // float
+                    "token": "constant.numeric",
                     "regex": "[+-]?\\d+(?:(?:\\.\\d*)?(?:[eE][+-]?\\d+)?)?"
                 },
                 {

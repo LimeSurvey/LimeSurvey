@@ -139,7 +139,7 @@ oop.inherits(FoldMode, BaseFoldMode);
         var dir = keywords[val];
         var getType = function () {
             var token = stream.stepForward();
-            var type = token && token.type == "lparen" ? stream.stepForward().value : "";
+            var type = token.type == "lparen" ? stream.stepForward().value : "";
             if (dir === -1) {
                 stream.stepBackward();
                 if (type)

@@ -3,15 +3,15 @@ var oop = require("../lib/oop");
 var TextHighlightRules = require("./text_highlight_rules").TextHighlightRules;
 var DocCommentHighlightRules = function () {
     this.$rules = {
-        "start": [
-            {
+        "start": [{
                 token: "comment.doc.tag",
-                regex: "@\\w+(?=\\s|$)"
-            }, DocCommentHighlightRules.getTagRule(), {
-                defaultToken: "comment.doc.body",
+                regex: "@[\\w\\d_]+" // TODO: fix email addresses
+            },
+            DocCommentHighlightRules.getTagRule(),
+            {
+                defaultToken: "comment.doc",
                 caseInsensitive: true
-            }
-        ]
+            }]
     };
 };
 oop.inherits(DocCommentHighlightRules, TextHighlightRules);
@@ -23,14 +23,14 @@ DocCommentHighlightRules.getTagRule = function (start) {
 };
 DocCommentHighlightRules.getStartRule = function (start) {
     return {
-        token: "comment.doc", // doc comment
-        regex: /\/\*\*(?!\/)/,
+        token: "comment.doc",
+        regex: "\\/\\*(?=\\*)",
         next: start
     };
 };
 DocCommentHighlightRules.getEndRule = function (start) {
     return {
-        token: "comment.doc", // closing comment
+        token: "comment.doc",
         regex: "\\*\\/",
         next: start
     };
@@ -88,7 +88,7 @@ var DHighlightRules = function () {
             },
             DocCommentHighlightRules.getStartRule("doc-start"),
             {
-                token: "comment", // multi line comment
+                token: "comment",
                 regex: "\\/\\*",
                 next: "star-comment"
             }, {
@@ -113,15 +113,15 @@ var DHighlightRules = function () {
                 regex: 'q"(?:[a-zA-Z_]+)$',
                 next: 'identifier-heredoc-string'
             }, {
-                token: "string", // multi line string start
+                token: "string",
                 regex: '[xr]?"',
                 next: "quote-string"
             }, {
-                token: "string", // multi line string start
+                token: "string",
                 regex: '[xr]?`',
                 next: "backtick-string"
             }, {
-                token: "string", // single line
+                token: "string",
                 regex: "[xr]?['](?:(?:\\\\.)|(?:[^'\\\\]))*?['][cdw]?"
             }, {
                 token: ["keyword", "text", "paren.lparen"],
@@ -140,10 +140,10 @@ var DHighlightRules = function () {
                 token: ["keyword", "text", "variable.storage", "text"],
                 regex: "(alias|typedef)(\\s*)(" + identifierRe + ")(\\s*)"
             }, {
-                token: "constant.numeric", // hex
+                token: "constant.numeric",
                 regex: "0[xX][0-9a-fA-F_]+(l|ul|u|f|F|L|U|UL)?\\b"
             }, {
-                token: "constant.numeric", // float
+                token: "constant.numeric",
                 regex: "[+-]?\\d[\\d_]*(?:(?:\\.[\\d_]*)?(?:[eE][+-]?[\\d_]+)?)?(l|ul|u|f|F|L|U|UL)?\\b"
             }, {
                 token: "entity.other.attribute-name",
@@ -170,7 +170,7 @@ var DHighlightRules = function () {
         ],
         "star-comment": [
             {
-                token: "comment", // closing comment
+                token: "comment",
                 regex: "\\*\\/",
                 next: "start"
             }, {
@@ -179,7 +179,7 @@ var DHighlightRules = function () {
         ],
         "plus-comment": [
             {
-                token: "comment", // closing comment
+                token: "comment",
                 regex: "\\+\\/",
                 next: "start"
             }, {

@@ -150,7 +150,9 @@ var RakuHighlightRules = function () {
     }, "identifier");
     var moduleName = "[a-zA-Z_][a-zA-Z_0-9:-]*\\b";
     var hex = { token: "constant.numeric", regex: "0x[0-9a-fA-F]+\\b" };
-    var num_rat = { token: "constant.numeric", regex: "[+-.]?\\d[\\d_]*(?:(?:\\.\\d[\\d_]*)?(?:[eE][+-]?\\d[\\d_]*)?)?i?\\b" };
+    var num_rat = { token: "constant.numeric", regex: "[+-.]?\\d+(?:(?:\\.\\d*)?(?:[eE][+-]?\\d+)?)?\\b" };
+    var num_with_ = { token: "constant.numeric", regex: "(?:\\d+_?\\d+)+\\b" };
+    var complex_numbers = { token: "constant.numeric", regex: "\\+?\\d+i\\b" };
     var booleans = { token: "constant.language.boolean", regex: "(?:True|False)\\b" };
     var versions = { token: "constant.other", regex: "v[0-9](?:\\.[a-zA-Z0-9*])*\\b" };
     var lang_keywords = { token: keywordMapper, regex: "[a-zA-Z][\\:a-zA-Z0-9_-]*\\b" };
@@ -168,38 +170,40 @@ var RakuHighlightRules = function () {
     this.$rules = {
         "start": [
             {
-                token: "comment.block", // Embedded Comments - Parentheses
+                token: "comment.block",
                 regex: "#[`|=]\\(.*\\)"
             }, {
-                token: "comment.block", // Embedded Comments - Brackets
+                token: "comment.block",
                 regex: "#[`|=]\\[.*\\]"
             }, {
-                token: "comment.doc", // Multiline Comments
+                token: "comment.doc",
                 regex: "^=(?:begin)\\b",
                 next: "block_comment"
             }, {
-                token: "string.unquoted", // q Heredocs
+                token: "string.unquoted",
                 regex: "q[x|w]?\\:to/END/;",
                 next: "qheredoc"
             }, {
-                token: "string.unquoted", // qq Heredocs
+                token: "string.unquoted",
                 regex: "qq[x|w]?\\:to/END/;",
                 next: "qqheredoc"
             },
             regexp,
             qstrings,
             {
-                token: "string.quoted.double", // Double Quoted String
+                token: "string.quoted.double",
                 regex: '"',
                 next: "qqstring"
             },
             word_quoting,
             {
-                token: ["keyword", "text", "variable.module"], // use - Module Names, Pragmas, etc.
+                token: ["keyword", "text", "variable.module"],
                 regex: "(use)(\\s+)((?:" + moduleName + "\\.?)*)"
             },
             hex,
             num_rat,
+            num_with_,
+            complex_numbers,
             booleans,
             versions,
             lang_keywords,
@@ -208,7 +212,7 @@ var RakuHighlightRules = function () {
             ops_char,
             constants_unicode,
             {
-                token: "comment", // Sigle Line Comments
+                token: "comment",
                 regex: "#.*$"
             }, {
                 token: "lparen",
@@ -243,6 +247,8 @@ var RakuHighlightRules = function () {
         "qqinterpolation": [
             hex,
             num_rat,
+            num_with_,
+            complex_numbers,
             booleans,
             versions,
             lang_keywords,
@@ -295,6 +301,8 @@ var RakuHighlightRules = function () {
         "qqheredocinterpolation": [
             hex,
             num_rat,
+            num_with_,
+            complex_numbers,
             booleans,
             versions,
             lang_keywords,
