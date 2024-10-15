@@ -407,7 +407,7 @@ class remotecontrol_handle
      * @access public
      * @param string $sSessionKey Auth credentials
      * @param integer $iSurveyID - ID of the Survey
-     * @param array $aSurveyData - An array with the particular fieldnames as keys and their values to set on that particular Survey
+     * @param struct $aSurveyData - An array with the particular fieldnames as keys and their values to set on that particular Survey
      * @return array Of succeeded and failed nodifications according to internal validation
      */
     public function set_survey_properties($sSessionKey, $iSurveyID, $aSurveyData)
@@ -955,7 +955,7 @@ class remotecontrol_handle
      * @access public
      * @param string $sSessionKey Auth credentials
      * @param integer $iSurveyID  - ID of the Survey
-     * @param array $aSurveyLocaleData - An array with the particular fieldnames as keys and their values to set on that particular survey
+     * @param struct $aSurveyLocaleData - An array with the particular fieldnames as keys and their values to set on that particular survey
      * @param string $sLanguage - Optional - Language to update  - if not given the base language of the particular survey is used
      * @return array in case of success 'status'=>'OK', when save successful otherwise error text.
      */
