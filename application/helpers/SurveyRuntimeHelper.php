@@ -1845,7 +1845,7 @@ class SurveyRuntimeHelper
      * Apply the plugin even beforeQuestionRender to
      * question data.
      *
-     * @see https://manual.limesurvey.org/BeforeQuestionRender
+     * @see https://www.limesurvey.org/manual/BeforeQuestionRender
      *
      * @param array $data Question data
      * @return array Question data modified by plugin

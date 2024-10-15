@@ -1874,7 +1874,7 @@ function checkCompletedQuota($surveyid, $return = false)
                     && in_array($_SESSION['survey_' . $surveyid][$sFieldName], $aValues);
                 if ($bInQuota && $aQuotaRelevantFieldnames[$sFieldName]) {
                     $iMatchedAnswers++;
-                }
+                } 
                 if (!is_null(App()->request->getPost($sFieldName))) {
 // Need only one posted value
                     $bPostedField = true;
