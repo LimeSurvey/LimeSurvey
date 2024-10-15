@@ -3144,6 +3144,17 @@ function writeXmlFromArray(XMLWriter $xml, $aData, $sParentKey = '')
 {
     $bCloseElement = false;
     foreach ($aData as $key => $value) {
+        if (is_array($value) && isset($value['@attributes'])) {
+            // If '@attributes' exists, handle the element with attributes
+            $xml->startElement($key);
+            foreach ($value['@attributes'] as $attrName => $attrValue) {
+                $xml->writeAttribute($attrName, $attrValue);
+            }
+            writeXmlFromArray($xml, array_diff_key($value, ['@attributes' => '']));
+            $xml->endElement();
+            continue;
+        }
+
         if (!empty($value)) {
             if (is_array($value)) {
                 if (is_numeric($key)) {
@@ -3154,11 +3165,7 @@ function writeXmlFromArray(XMLWriter $xml, $aData, $sParentKey = '')
                     $bCloseElement = true;
                 }
 
-                if (is_numeric($key)) {
-                    writeXmlFromArray($xml, $value, $sParentKey);
-                } else {
-                    writeXmlFromArray($xml, $value, $key);
-                }
+                writeXmlFromArray($xml, $value, $key);
 
                 if ($bCloseElement === true) {
                     $xml->endElement();
