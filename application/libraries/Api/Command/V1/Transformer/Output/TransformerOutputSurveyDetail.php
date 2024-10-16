@@ -5,6 +5,7 @@ namespace LimeSurvey\Api\Command\V1\Transformer\Output;
 use Survey;
 use LimeSurvey\Models\Services\QuestionAggregateService\QuestionService;
 use LimeSurvey\Api\Transformer\Output\TransformerOutputActiveRecord;
+use SurveysGroups;
 
 /**
  * TransformerOutputSurveyDetail
@@ -80,15 +81,27 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
         $data = $this->setInheritedBetaOptions($data);
         $survey = $this->transformerSurvey->transform($data);
         $survey['templateInherited'] = $data->oOptions->template;
+        $templateConf = \TemplateConfiguration::getInstanceFromTemplateName($data['template']);
+        $survey['templatePreview'] = $templateConf->getPreview(true);
         $survey['formatInherited'] = $data->oOptions->format;
         $survey['languages'] = $data->allLanguages;
         $survey['previewLink'] = App()->createUrl(
             "survey/index",
-            array('sid' => $data->sid, 'newtest' => "Y", 'lang' => $data->language)
+            array(
+                'sid' => $data->sid,
+                'newtest' => "Y",
+                'lang' => $data->language
+            )
         );
-        $survey['surveyGroup'] = $this->transformerSurveyGroup->transform($data->surveygroup);
-        $survey['owner'] = $this->transformerSurveyOwner->transform($data->owner);
-        $survey['ownerInherited'] = $this->transformerSurveyOwner->transform($data->oOptions->owner);
+        $survey['surveyGroup'] = $this->transformerSurveyGroup->transform(
+            $data->surveygroup
+        );
+        $survey['owner'] = $this->transformerSurveyOwner->transform(
+            $data->owner
+        );
+        $survey['ownerInherited'] = $this->transformerSurveyOwner->transform(
+            $data->oOptions->owner
+        );
 
         // transformAll() can apply required entity sort so we must retain the sort order going forward
         // - We use a lookup array later to access entities without needing to know their position in the collection
@@ -103,7 +116,6 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
             'gid',
             $survey['questionGroups']
         );
-
 
         foreach ($data->groups as $questionGroupModel) {
             // Order of groups from the model relation may be different than from the transformed data
@@ -154,6 +166,12 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
             $options
         );
         $survey['googleAnalyticsApiKeySetting'] = $data->getGoogleanalyticsapikeysetting();
+        $survey['ownersList'] = array_map(function ($user) {
+            return ['value' => $user['uid'], 'label' => $user['user'] . ' - ' . $user['full_name']];
+        }, getUserList());
+
+        //todo: later this should be done with an separate endpoint or service
+        $survey['groupsList'] = SurveysGroups::getSurveyGroupsList();
 
         return $survey;
     }
@@ -168,8 +186,11 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
      * @param ?array $options
      * @return void
      */
-    private function transformQuestions($questionLookup, $questions, $options = [])
-    {
+    private function transformQuestions(
+        $questionLookup,
+        $questions,
+        $options = []
+    ) {
         foreach ($questions as $questionModel) {
             // questions from the model relation may be different than from the transformed data
             // - so we use the lookup to get a reference to the required entity without needing to
@@ -232,8 +253,11 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
      * @param ?array $options
      * @return void
      */
-    private function transformAnswersL10n($answerLookup, $answers, $options = [])
-    {
+    private function transformAnswersL10n(
+        $answerLookup,
+        $answers,
+        $options = []
+    ) {
         foreach ($answers as $answerModel) {
             $answer = &$answerLookup[$answerModel->aid];
 
@@ -295,6 +319,9 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
             'emailnotificationto',
             'emailresponseto',
             'googleanalyticsapikey',
+            'admin',
+            'adminemail',
+            'bounce_email',
         ];
         foreach ($affectedSettings as $setting) {
             if (
