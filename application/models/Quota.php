@@ -35,12 +35,14 @@
  */
 class Quota extends LSActiveRecord
 {
-    public const ACTION_TERMINATE = 1;
-    public const ACTION_CONFIRM_TERMINATE = 2;
+    public const TERMINATE_AFTER_ALL_VISIBLE_QUOTA_QUESTION = 1;
+    public const SOFT_TERMINATE_AFTER_ALL_VISIBLE_QUOTA_QUESTION = 2;
+    public const TERMINATE_AFTER_ALL_QUOTA_QUESTIONS = 3;
+    public const TERMINATE_AFTER_ALL_GROUPS = 4;
 
     /* Default attributes */
     public $active = 1;
-    public $action = self::ACTION_TERMINATE;
+    public $action = self::TERMINATE_AFTER_ALL_VISIBLE_QUOTA_QUESTION;
 
     /**
      * Returns the static model of Settings table
@@ -83,7 +85,7 @@ class Quota extends LSActiveRecord
             array('name', 'LSYii_Validators'), // Maybe more restrictive
             array('name', 'LSYii_NonFormulaValidator'), // Avoid CSV injection
             array('qlimit', 'numerical', 'integerOnly' => true, 'min' => '0', 'max' => 2147483647, 'allowEmpty' => true),
-            array('action', 'numerical', 'integerOnly' => true, 'min' => '1', 'max' => '2', 'allowEmpty' => true), // Default is null ?
+            array('action', 'numerical', 'integerOnly' => true, 'min' => '1', 'max' => '4', 'allowEmpty' => true), // Default is null ?
             array('active', 'numerical', 'integerOnly' => true, 'min' => '0', 'max' => '1', 'allowEmpty' => true),
             array('autoload_url', 'numerical', 'integerOnly' => true, 'min' => '0', 'max' => '1', 'allowEmpty' => true),
             array('name', 'length', 'min' => 0, 'max' => 255),

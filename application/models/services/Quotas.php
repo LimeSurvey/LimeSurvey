@@ -2,6 +2,14 @@
 
 namespace LimeSurvey\Models\Services;
 
+use CHtml;
+use LimeSurvey\PluginManager\PluginEvent;
+use LimeSurvey\PluginManager\PluginEventContent;
+use QuestionAttribute;
+use Quota;
+use Response;
+use Survey;
+
 /**
  * @todo Possible remove this warning
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
@@ -194,12 +202,12 @@ class Quotas
      * Saves the new quota and it's language settings.
      *
      * @param $quotaParams array the quota attributes
-     * @return \Quota the new quota with added QuotaLanguageSettings, or Quota with errors
+     * @return Quota the new quota with added QuotaLanguageSettings, or Quota with errors
      * @throws \CDbException
      */
-    public function saveNewQuota(array $quotaParams): \Quota
+    public function saveNewQuota(array $quotaParams): Quota
     {
-        $oQuota = new \Quota();
+        $oQuota = new Quota();
         $oQuota->sid = $this->survey->sid;
         /* new quota : remove pk */
         unset($quotaParams['id']);
@@ -237,7 +245,7 @@ class Quotas
 
     /**
      *
-     * @param \Quota $oQuota
+     * @param Quota $oQuota
      * @param array $quotaParams
      * @return bool|mixed
      */
@@ -266,11 +274,11 @@ class Quotas
     /**
      * Retunr
      *
-     * @param \Quota $oQuota
+     * @param Quota $oQuota
      * @param $language
      * @return \QuotaLanguageSetting
      */
-    public function newQuotaLanguageSetting(\Quota $oQuota, $language)
+    public function newQuotaLanguageSetting(Quota $oQuota, $language)
     {
         $oQuotaLanguageSetting = new \QuotaLanguageSetting();
         $oQuotaLanguageSetting->quotals_name = $oQuota->name;
@@ -318,8 +326,8 @@ class Quotas
     {
         $errors = null;
         foreach ($aQuotaIds as $iQuotaId) {
-            /** @var \Quota $oQuota */
-            $oQuota = \Quota::model()->findByPk($iQuotaId);
+            /** @var Quota $oQuota */
+            $oQuota = Quota::model()->findByPk($iQuotaId);
             if (empty($oQuota) || $oQuota->sid != $this->survey->sid) {
                 $errors [] = gT("Invalid quota ID");
             }
@@ -383,5 +391,213 @@ class Quotas
                 $permissionOk = false;
         }
         return $permissionOk;
+    }
+
+    /**
+     * checkCompletedQuota() returns matched quotas information for the current response
+     * @param integer $surveyid Survey ID
+     * @param array $updatedValues The fields to be updated in the current request
+     * @param bool $return Set to true to return information or false to execute the quota and display a message
+     * @return array|void Nested array, Quotas->Members->Fields, includes quota information matched in session
+     * @throws \CException
+     * @throws \CHttpException
+     * @throws \Throwable
+     * @throws \WrongTemplateVersionException
+     */
+    static public function checkCompletedQuota(int $surveyid, array $updatedValues = [], bool $return = false)
+    {
+        /* Check if session is set */
+        if (!isset(App()->session['survey_' . $surveyid]['srid'])) {
+            return;
+        }
+        /* Check if Response is already submitted : only when "do" the quota: allow to send information about quota */
+        $oResponse = Response::model($surveyid)->findByPk(App()->session['survey_' . $surveyid]['srid']);
+        if (!$return && $oResponse && !is_null($oResponse->submitdate)) {
+            return;
+        }
+        // EM call 2 times quotas with 3 lines of php code, then use static.
+        static $aMatchedQuotas;
+        if (!$aMatchedQuotas) {
+            $aMatchedQuotas = [];
+            /** @var Quota[] $aQuotas */
+            $aQuotas = Quota::model()->with('languagesettings',
+                'quotaMembers.question')->findAllByAttributes(['sid' => $surveyid]);
+            if (empty($aQuotas)) {
+                return $aMatchedQuotas;
+            }
+
+            // OK, we have some quota, then find if this $_SESSION have some set
+            // foreach ($aQuotasInfos as $aQuotaInfo)
+            foreach ($aQuotas as $oQuota) {
+                // if(!$aQuotaInfo['active']) {
+                if (!$oQuota->active) {
+                    continue;
+                }
+                // if(count($aQuotaInfo['members'])===0) {
+                if (count($oQuota->quotaMembers) === 0) {
+                    continue;
+                }
+                $iMatchedAnswers = 0;
+                $bPostedField = false;
+
+                ////Create filtering
+                // Array of field with quota array value
+                $aQuotaFields = [];
+                // Array of fieldnames with relevance value : EM fill $_SESSION with default value even is irrelevant (em_manager_helper line 6548)
+                $aQuotaRelevantFieldnames = [];
+                // To count number of hidden questions
+                $aQuotaQid = [];
+                //Fill the necessary filter arrays
+                foreach ($oQuota->quotaMembers as $oQuotaMember) {
+                    $aQuotaMember = $oQuotaMember->getMemberInfo();
+                    $aQuotaFields[$aQuotaMember['fieldname']][] = $aQuotaMember['value'];
+                    $aQuotaRelevantFieldnames[$aQuotaMember['fieldname']] = isset($_SESSION['survey_' . $surveyid]['relevanceStatus'][$aQuotaMember['qid']]) && $_SESSION['survey_' . $surveyid]['relevanceStatus'][$aQuotaMember['qid']];
+                    $aQuotaQid[] = $aQuotaMember['qid'];
+                }
+                $aQuotaQid = array_unique($aQuotaQid);
+
+                // Filter
+                // For each field : test if actual responses is in quota (and is relevant)
+                foreach ($aQuotaFields as $sFieldName => $aValues) {
+                    $bInQuota = isset($_SESSION['survey_' . $surveyid][$sFieldName])
+                        && in_array($_SESSION['survey_' . $surveyid][$sFieldName], $aValues);
+                    if ($bInQuota && $aQuotaRelevantFieldnames[$sFieldName]) {
+                        $iMatchedAnswers++;
+                    }
+                    if (!is_null(App()->request->getPost($sFieldName))) {
+                        // Need only one posted value
+                        $bPostedField = true;
+                        $aPostedQuotaFields[$sFieldName] = App()->getRequest()->getPost($sFieldName);
+                    }
+                }
+
+                ################ QUOTA ACTIONS START ################
+                $quotaAction = (int)$oQuota->action;
+                $actionBasedTriggerCondition = false;
+
+                if ($quotaAction === Quota::TERMINATE_AFTER_ALL_VISIBLE_QUOTA_QUESTION) {
+                    // check if all question that are part of the quotaMembers are hidden NOTE: this is kept for legacy compatibility
+                    $actionBasedTriggerCondition = (int)QuestionAttribute::model()
+                            ->countByAttributes([
+                                'qid'       => $aQuotaQid,
+                                'attribute' => 'hidden',
+                                'value'     => '1',
+                            ]) === count($aQuotaQid);
+                }
+                if ($quotaAction === Quota::TERMINATE_AFTER_ALL_QUOTA_QUESTIONS) {
+                    $actionBasedTriggerCondition = !empty(array_intersect_key($updatedValues, $aQuotaRelevantFieldnames));
+                }
+                if ($quotaAction === Quota::TERMINATE_AFTER_ALL_GROUPS) {
+                    $actionBasedTriggerCondition = true;
+                }
+                if ($quotaAction === Quota::SOFT_TERMINATE_AFTER_ALL_VISIBLE_QUOTA_QUESTION) {
+                    $actionBasedTriggerCondition = false;
+                }
+                ################ QUOTA ACTIONS END ################
+
+                // condition to count quota
+                // check if all answers match the quota AND check if the question was answered on this page OR if all questions are hidden
+                if ($iMatchedAnswers === count($aQuotaFields)
+                    && ($bPostedField || $actionBasedTriggerCondition)) {
+                    if ($oQuota->qlimit === 0) {
+                        // Always add the quota if qlimit is 0
+                        $aMatchedQuotas[] = $oQuota->getViewArray();
+                    } else {
+                        $iCompleted = $oQuota->completeCount;
+                        if (!is_null($iCompleted) && ($iCompleted >= $oQuota->qlimit)) {
+                            // This remove invalid quota and not completed
+                            $aMatchedQuotas[] = $oQuota->getViewArray();
+                        }
+                    }
+                }
+            }
+        }
+        if ($return) {
+            return $aMatchedQuotas;
+        }
+        if (empty($aMatchedQuotas)) {
+            return;
+        }
+        // Now we have all the information we need about the quotas and their status.
+        // We need to construct the page and do all needed action
+        $aSurveyInfo = getSurveyInfo($surveyid, $_SESSION['survey_' . $surveyid]['s_lang']);
+        $sClientToken = $_SESSION['survey_' . $surveyid]['token'] ?? "";
+        // $redata for templatereplace
+        $aDataReplacement = [
+            'thissurvey'  => $aSurveyInfo,
+            'clienttoken' => $sClientToken,
+            'token'       => $sClientToken,
+        ];
+        // We take only the first matched quota, no need for each
+        $aMatchedQuota = $aMatchedQuotas[0];
+        // If a token is used then mark the token as completed, do it before event : this allow plugin to update token information
+        $event = new PluginEvent('afterSurveyQuota');
+        $event->set('surveyId', $surveyid);
+        $event->set('responseId', $_SESSION['survey_' . $surveyid]['srid']); // We always have a responseId
+        $event->set('aMatchedQuotas', $aMatchedQuotas); // Give all the matched quota : the first is the active
+        App()->getPluginManager()->dispatchEvent($event);
+        $blocks = [];
+        foreach ($event->getAllContent() as $blockData) {
+            /* @var $blockData PluginEventContent */
+            $blocks[] = CHtml::tag('div', ['id' => $blockData->getCssId(), 'class' => $blockData->getCssClass()],
+                $blockData->getContent());
+        }
+        // Allow plugin to update message, url, url description and action
+        $sMessage = $event->get('message', $aMatchedQuota['quotals_message']);
+        $sUrl = $event->get('url', $aMatchedQuota['quotals_url']);
+        $sUrlDescription = $event->get('urldescrip', $aMatchedQuota['quotals_urldescrip']);
+        $sAction = $event->get('action', $aMatchedQuota['action']);
+        /* Tag if we close or not the survey */
+        $closeSurvey = ($sAction == "1" || App()->getRequest()->getPost('move') == 'confirmquota');
+        $sAutoloadUrl = $event->get('autoloadurl', $aMatchedQuota['autoload_url']);
+        // Doing the action and show the page
+        if ($sAction == Quota::TERMINATE_AFTER_ALL_VISIBLE_QUOTA_QUESTION && $sClientToken) {
+            submittokens(true);
+        }
+        // Construct the default message
+        $sMessage = templatereplace($sMessage, [], $aDataReplacement, 'QuotaMessage',
+            $aSurveyInfo['anonymized'] != 'N', null, [], true);
+        $sUrl = passthruReplace($sUrl, $aSurveyInfo);
+        $sUrl = templatereplace($sUrl, [], $aDataReplacement, 'QuotaUrl', $aSurveyInfo['anonymized'] != 'N', null,
+            [], true);
+        $sUrlDescription = templatereplace($sUrlDescription, [], $aDataReplacement, 'QuotaUrldescription',
+            $aSurveyInfo['anonymized'] != 'N', null, [], true);
+
+        // Datas for twig view
+        $thissurvey['sid'] = $surveyid;
+        $thissurvey['aQuotas'] = [];
+        $thissurvey['aQuotas']['sMessage'] = $sMessage;
+        $thissurvey['aQuotas']['bShowNavigator'] = !$closeSurvey;
+        $thissurvey['aQuotas']['sClientToken'] = $sClientToken;
+        $thissurvey['aQuotas']['sQuotaStep'] = 'returnfromquota';
+        $thissurvey['aQuotas']['aPostedQuotaFields'] = $aPostedQuotaFields ?? '';
+        $thissurvey['aQuotas']['sPluginBlocks'] = implode("\n", $blocks);
+        $thissurvey['aQuotas']['sUrlDescription'] = $sUrlDescription;
+        $thissurvey['aQuotas']['sUrl'] = $sUrl;
+        $thissurvey['active'] = 'Y';
+        $thissurvey['aQuotas']['hiddeninputs'] = '<input type="hidden" name="sid"      value="' . $surveyid . '" />
+                                              <input type="hidden" name="token"    value="' . $thissurvey['aQuotas']['sClientToken'] . '" />
+                                              <input type="hidden" name="thisstep" value="' . ($_SESSION['survey_' . $surveyid]['step'] ?? 0) . '" />';
+        if (!empty($thissurvey['aQuotas']['aPostedQuotaFields'])) {
+            foreach ($thissurvey['aQuotas']['aPostedQuotaFields'] as $field => $post) {
+                $thissurvey['aQuotas']['hiddeninputs'] .= '<input type="hidden" name="' . $field . '"   value="' . $post . '" />';
+            }
+        }
+        //field,post in aSurveyInfo.aQuotas.aPostedQuotaFields %}
+        if ($closeSurvey) {
+            killSurveySession($surveyid);
+
+            if ($sAutoloadUrl == 1 && $sUrl != "") {
+                /* Same than end url of survey */
+                $headToSurveyUrl = htmlspecialchars_decode($sUrl);
+                header("Location: " . $headToSurveyUrl);
+            }
+        }
+        $thissurvey['include_content'] = 'quotas';
+        App()->twigRenderer->renderTemplateFromFile(
+            "layout_global.twig",
+            ['oSurvey' => Survey::model()->findByPk($surveyid), 'aSurveyInfo' => $thissurvey],
+            false
+        );
     }
 }

@@ -2533,10 +2533,16 @@ class remotecontrol_handle
 
                 switch ($sAction) {
                     case 'terminate':
-                        $iAction = Quota::ACTION_TERMINATE;
+                        $iAction = Quota::TERMINATE_AFTER_ALL_VISIBLE_QUOTA_QUESTION;
+                        break;
+                    case 'terminate_all':
+                        $iAction = Quota::TERMINATE_AFTER_ALL_QUOTA_QUESTIONS;
+                        break;
+                    case 'terminate_always':
+                        $iAction = Quota::TERMINATE_AFTER_ALL_GROUPS;
                         break;
                     case 'confirm_terminate':
-                        $iAction = Quota::ACTION_CONFIRM_TERMINATE;
+                        $iAction = Quota::SOFT_TERMINATE_AFTER_ALL_VISIBLE_QUOTA_QUESTION;
                         break;
                     default:
                         return array('status' => 'Error: Invalid quota action');
