@@ -3,11 +3,9 @@
 class SurveySidemenuWidget extends WhSelect2
 {
     public $sid;
-//    public $surveySettings;
     public $sideMenu;
     public $activePanel;
     public $allLanguages;
-//    public $presentation;
     public $surveyEntry;
     /**
      * Runs the widget.
@@ -17,8 +15,6 @@ class SurveySidemenuWidget extends WhSelect2
         $this->render('sidemenu', [
             'sid' => $this->sid,
             'sideMenu' => $this->sideMenu,
-//            'presentation' => $this->presentation,
-//            'settings' => $this->surveySettings
         ]);
     }
 
