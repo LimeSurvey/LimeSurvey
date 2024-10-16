@@ -46,7 +46,7 @@ class SurveyGroups implements CommandInterface
      */
     public function run(Request $request)
     {
-        $surveyGroups = $this->surveyGroup::getSurveyGroupsList();
+//        $surveyGroups = $this->surveyGroup::getSurveyGroupsList();
 
         ###### get the survey droplist and return it
 

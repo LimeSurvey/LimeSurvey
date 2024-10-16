@@ -40,7 +40,7 @@ $rest['v1/survey-groups'] = [
     'GET' => [
         'description' => 'Survey groups',
         'commandClass' => SurveyGroups::class,
-        'auth' => false,
+        'auth' => true,
         'params' => [
             'pageSize' => ['type' => 'int'],
             'page' => ['type' => 'int']
