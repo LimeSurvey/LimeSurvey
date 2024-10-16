@@ -130,8 +130,7 @@
 }
 
 .btn-icon:before {
-
-    font-size: 1.5em;
+    font-size: 1.6em;
 }
 
 .btn-icon.btn-g-800:hover,
@@ -173,4 +172,14 @@
 
 .disabled {
     opacity: 0.5;
+}
+
+.sidebar-icons .sidebar-icons-item {
+    display: flex;
+    justify-content: center;
+    margin-top: 16px;
+    cursor: pointer;
+}
+.sidebar-icons .sidebar-icons-item:first-child {
+    margin-top: 0;
 }

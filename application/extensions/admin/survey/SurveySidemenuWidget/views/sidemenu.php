@@ -3,7 +3,7 @@
 <div id="left-sidebar" class="fade sidebar sidebar-left show">
     <div class="d-flex" style="height: 100%;">
         <div class="sidebar-icons" style="width: 52px;">
-            <div class="cursor-pointer d-flex justify-content-center">
+            <div class="sidebar-icons-item">
                 <div class="sidebar-icon" onclick="window.location='<?php echo App()->createUrl('editorLink/index', ['route' => 'survey/' . $sid]);?>'">
                     <div data-bs-toggle="tooltip"
                          title="<?php echo gT('Survey structure'); ?>"
@@ -13,7 +13,7 @@
                     </div>
                 </div>
             </div>
-            <div class="mt-3 cursor-pointer d-flex justify-content-center">
+            <div class="sidebar-icons-item">
                 <div class="sidebar-icon" data-target="#survey-settings-panel">
                     <div data-bs-toggle="tooltip"
                          title="<?php echo gT('Survey settings'); ?>"
@@ -23,17 +23,17 @@
                     </div>
                 </div>
             </div>
-            <div class="mt-3 cursor-pointer d-flex justify-content-center">
+            <div class="sidebar-icons-item">
                 <div class="sidebar-icon" data-target="#survey-menu-panel">
                     <div data-bs-toggle="tooltip"
                          title="<?php echo gT('Survey menu'); ?>"
                          data-bs-offset="0, 20"
                          data-bs-placement="right">
-                        <i class="ri-file-text-fill btn btn-g-800 btn-icon <?php echo $this->activePanel == 'survey-menu-panel' ? 'active' : ''?>"></i>
+                        <i class="ri-file-text-line btn btn-g-800 btn-icon <?php echo $this->activePanel == 'survey-menu-panel' ? 'active' : ''?>"></i>
                     </div>
                 </div>
             </div>
-            <div class="mt-3 cursor-pointer d-flex justify-content-center">
+            <div class="sidebar-icons-item">
                 <div class="sidebar-icon" data-target="#survey-presentation-panel">
                     <div data-bs-toggle="tooltip"
                          title="<?php echo gT('Survey presentation'); ?>"
@@ -43,7 +43,7 @@
                     </div>
                 </div>
             </div>
-            <div class="mt-3 cursor-pointer d-flex justify-content-center">
+            <div class="sidebar-icons-item">
                 <div class="sidebar-icon" data-target="#survey-permissions-panel">
                     <div data-bs-toggle="tooltip"
                          title="<?php echo gT('Survey permissions'); ?>"
@@ -54,7 +54,7 @@
                 </div>
             </div>
             <?php if (count($this->allLanguages) > 1) : ?>
-                <div class="mt-3 cursor-pointer d-flex justify-content-center">
+                <div class="sidebar-icons-item">
                     <div class="sidebar-icon" data-target="#survey-quick-translation">
                         <div style="z-index: 5000;"
                              data-bs-toggle="tooltip"
