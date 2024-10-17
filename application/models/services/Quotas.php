@@ -404,7 +404,7 @@ class Quotas
      * @throws \Throwable
      * @throws \WrongTemplateVersionException
      */
-    static public function checkCompletedQuota(int $surveyid, array $updatedValues = [], bool $return = false)
+    public static function checkCompletedQuota(int $surveyid, array $updatedValues = [], bool $return = false)
     {
         /* Check if session is set */
         if (!isset(App()->session['survey_' . $surveyid]['srid'])) {
@@ -417,11 +417,12 @@ class Quotas
         }
         // EM call 2 times quotas with 3 lines of php code, then use static.
         static $aMatchedQuotas;
-        if (!$aMatchedQuotas) {
+        if (is_null($aMatchedQuotas)) {
             $aMatchedQuotas = [];
             /** @var Quota[] $aQuotas */
-            $aQuotas = Quota::model()->with('languagesettings',
-                'quotaMembers.question')->findAllByAttributes(['sid' => $surveyid]);
+            $aQuotas = Quota::model()
+                ->with('languagesettings', 'quotaMembers.question')
+                ->findAllByAttributes(['sid' => $surveyid]);
             if (empty($aQuotas)) {
                 return $aMatchedQuotas;
             }
@@ -475,7 +476,7 @@ class Quotas
                 $quotaAction = (int)$oQuota->action;
                 $actionBasedTriggerCondition = false;
 
-                if ($quotaAction === Quota::TERMINATE_AFTER_ALL_VISIBLE_QUOTA_QUESTION) {
+                if ($quotaAction === Quota::TERMINATE_VISIBLE_QUOTA_QUESTION) {
                     // check if all question that are part of the quotaMembers are hidden NOTE: this is kept for legacy compatibility
                     $actionBasedTriggerCondition = (int)QuestionAttribute::model()
                             ->countByAttributes([
@@ -484,13 +485,13 @@ class Quotas
                                 'value'     => '1',
                             ]) === count($aQuotaQid);
                 }
-                if ($quotaAction === Quota::TERMINATE_AFTER_ALL_QUOTA_QUESTIONS) {
+                if ($quotaAction === Quota::TERMINATE_VISIBLE_AND_HIDDEN_QUOTA_QUESTIONS) {
                     $actionBasedTriggerCondition = !empty(array_intersect_key($updatedValues, $aQuotaRelevantFieldnames));
                 }
-                if ($quotaAction === Quota::TERMINATE_AFTER_ALL_GROUPS) {
+                if ($quotaAction === Quota::TERMINATE_ALL_PAGES) {
                     $actionBasedTriggerCondition = true;
                 }
-                if ($quotaAction === Quota::SOFT_TERMINATE_AFTER_ALL_VISIBLE_QUOTA_QUESTION) {
+                if ($quotaAction === Quota::SOFT_TERMINATE_VISIBLE_QUOTA_QUESTION) {
                     $actionBasedTriggerCondition = false;
                 }
                 ################ QUOTA ACTIONS END ################
@@ -546,22 +547,27 @@ class Quotas
         $sMessage = $event->get('message', $aMatchedQuota['quotals_message']);
         $sUrl = $event->get('url', $aMatchedQuota['quotals_url']);
         $sUrlDescription = $event->get('urldescrip', $aMatchedQuota['quotals_urldescrip']);
-        $sAction = $event->get('action', $aMatchedQuota['action']);
+        $sAction = (int) $event->get('action', $aMatchedQuota['action']);
         /* Tag if we close or not the survey */
-        $closeSurvey = ($sAction == "1" || App()->getRequest()->getPost('move') == 'confirmquota');
+        $closeSurvey = ($sAction === 1 || App()->getRequest()->getPost('move') === 'confirmquota');
         $sAutoloadUrl = $event->get('autoloadurl', $aMatchedQuota['autoload_url']);
         // Doing the action and show the page
-        if ($sAction == Quota::TERMINATE_AFTER_ALL_VISIBLE_QUOTA_QUESTION && $sClientToken) {
+        if ($sClientToken
+            && in_array($sAction, [
+                Quota::TERMINATE_VISIBLE_QUOTA_QUESTION,
+                Quota::TERMINATE_VISIBLE_AND_HIDDEN_QUOTA_QUESTIONS,
+                Quota::TERMINATE_ALL_PAGES
+            ], true)) {
             submittokens(true);
         }
         // Construct the default message
         $sMessage = templatereplace($sMessage, [], $aDataReplacement, 'QuotaMessage',
-            $aSurveyInfo['anonymized'] != 'N', null, [], true);
+            $aSurveyInfo['anonymized'] !== 'N', null, [], true);
         $sUrl = passthruReplace($sUrl, $aSurveyInfo);
-        $sUrl = templatereplace($sUrl, [], $aDataReplacement, 'QuotaUrl', $aSurveyInfo['anonymized'] != 'N', null,
+        $sUrl = templatereplace($sUrl, [], $aDataReplacement, 'QuotaUrl', $aSurveyInfo['anonymized'] !== 'N', null,
             [], true);
         $sUrlDescription = templatereplace($sUrlDescription, [], $aDataReplacement, 'QuotaUrldescription',
-            $aSurveyInfo['anonymized'] != 'N', null, [], true);
+            $aSurveyInfo['anonymized'] !== 'N', null, [], true);
 
         // Datas for twig view
         $thissurvey['sid'] = $surveyid;
@@ -587,7 +593,7 @@ class Quotas
         if ($closeSurvey) {
             killSurveySession($surveyid);
 
-            if ($sAutoloadUrl == 1 && $sUrl != "") {
+            if ((int) $sAutoloadUrl === 1 && $sUrl !== "") {
                 /* Same than end url of survey */
                 $headToSurveyUrl = htmlspecialchars_decode($sUrl);
                 header("Location: " . $headToSurveyUrl);

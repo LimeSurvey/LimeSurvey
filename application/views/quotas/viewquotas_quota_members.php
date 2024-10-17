@@ -5,19 +5,19 @@
 /* @var array $aQuotaItems */
 
 $quotaActions = [
-    Quota::TERMINATE_AFTER_ALL_VISIBLE_QUOTA_QUESTION => [
+    Quota::TERMINATE_VISIBLE_QUOTA_QUESTION => [
         'description' => gT("Terminate after related visible question was submitted"),
         'icon'        => 'ri-error-warning-fill'
     ],
-    Quota::TERMINATE_AFTER_ALL_QUOTA_QUESTIONS => [
+    Quota::TERMINATE_VISIBLE_AND_HIDDEN_QUOTA_QUESTIONS => [
         'description' => gT("Terminate after related visible and hidden questions were submitted"),
         'icon'        => 'ri-error-warning-fill'
     ],
-    Quota::TERMINATE_AFTER_ALL_GROUPS => [
+    Quota::TERMINATE_ALL_PAGES => [
         'description' => gT("Terminate after all page submissions"),
         'icon'        => 'ri-error-warning-fill'
     ],
-    Quota::SOFT_TERMINATE_AFTER_ALL_VISIBLE_QUOTA_QUESTION => [
+    Quota::SOFT_TERMINATE_VISIBLE_QUOTA_QUESTION => [
         'description' => gT("Soft terminate after related visible question was submitted, answer will be editable"),
         'icon'        => 'ri-alert-fill'
     ],
