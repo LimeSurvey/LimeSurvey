@@ -24,6 +24,7 @@
  */
 
 use LimeSurvey\Helpers\questionHelper;
+use LimeSurvey\Models\Services\Quotas;
 
 Yii::import('application.helpers.expressions.em_core_helper', true);
 // TODO: Fix autoloading of warnings.
@@ -5242,9 +5243,9 @@ class LimeExpressionManager
                     SavedControl::model()->updateByPk($_SESSION[$this->sessid]['scid'], ['saved_thisstep' => $_SESSION[$this->sessid]['step']]);
                 }
                 // Check Quotas
-                $aQuotas = checkCompletedQuota($this->sid, true);
+                $aQuotas = Quotas::checkCompletedQuota($this->sid, $updatedValues, true);
                 if ($aQuotas && !empty($aQuotas)) {
-                    checkCompletedQuota($this->sid);  // will create a page and quit: why not use it directly ?
+                    Quotas::checkCompletedQuota($this->sid);  // will create a page and quit: why not use it directly ?
                 } else {
                     if ($finished && ($oResponse->submitdate == null || Survey::model()->findByPk($this->sid)->isAllowEditAfterCompletion)) {
                         /* Less update : just do what you need to to */
