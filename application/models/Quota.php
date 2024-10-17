@@ -35,14 +35,14 @@
  */
 class Quota extends LSActiveRecord
 {
-    public const TERMINATE_VISIBLE_QUOTA_QUESTION = 1;
-    public const SOFT_TERMINATE_VISIBLE_QUOTA_QUESTION = 2;
+    public const TERMINATE_VISIBLE_QUOTA_QUESTIONS = 1;
+    public const SOFT_TERMINATE_VISIBLE_QUOTA_QUESTIONS = 2;
     public const TERMINATE_VISIBLE_AND_HIDDEN_QUOTA_QUESTIONS = 3;
     public const TERMINATE_ALL_PAGES = 4;
 
     /* Default attributes */
     public $active = 1;
-    public $action = self::TERMINATE_VISIBLE_QUOTA_QUESTION;
+    public $action = self::TERMINATE_VISIBLE_QUOTA_QUESTIONS;
 
     /**
      * Returns the static model of Settings table

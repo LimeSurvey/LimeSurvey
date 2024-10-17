@@ -2533,7 +2533,7 @@ class remotecontrol_handle
 
                 switch ($sAction) {
                     case 'terminate':
-                        $iAction = Quota::TERMINATE_VISIBLE_QUOTA_QUESTION;
+                        $iAction = Quota::TERMINATE_VISIBLE_QUOTA_QUESTIONS;
                         break;
                     case 'terminate_visible_hidden':
                         $iAction = Quota::TERMINATE_VISIBLE_AND_HIDDEN_QUOTA_QUESTIONS;
@@ -2542,7 +2542,7 @@ class remotecontrol_handle
                         $iAction = Quota::TERMINATE_ALL_PAGES;
                         break;
                     case 'confirm_terminate':
-                        $iAction = Quota::SOFT_TERMINATE_VISIBLE_QUOTA_QUESTION;
+                        $iAction = Quota::SOFT_TERMINATE_VISIBLE_QUOTA_QUESTIONS;
                         break;
                     default:
                         return array('status' => 'Error: Invalid quota action');

@@ -31,10 +31,10 @@
             <div class=''>
                 <?php echo $form->dropDownList($oQuota, 'action',
                     [
-                        Quota::TERMINATE_VISIBLE_QUOTA_QUESTION             => gT("Terminate after related visible question was submitted"),
+                        Quota::TERMINATE_VISIBLE_QUOTA_QUESTIONS            => gT("Terminate after related visible question was submitted"),
                         Quota::TERMINATE_VISIBLE_AND_HIDDEN_QUOTA_QUESTIONS => gT("Terminate after related visible and hidden questions were submitted"),
                         Quota::TERMINATE_ALL_PAGES                          => gT("Terminate after all page submissions"),
-                        Quota::SOFT_TERMINATE_VISIBLE_QUOTA_QUESTION        => gT("Soft terminate after related visible question was submitted, answer will be editable"),
+                        Quota::SOFT_TERMINATE_VISIBLE_QUOTA_QUESTIONS       => gT("Soft terminate after related visible question was submitted, answer will be editable"),
                     ],
                     ['class' => 'form-select']); ?>
                 <?php echo $form->error($oQuota, 'action'); ?>

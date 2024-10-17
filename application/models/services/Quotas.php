@@ -476,8 +476,9 @@ class Quotas
                 $quotaAction = (int)$oQuota->action;
                 $actionBasedTriggerCondition = false;
 
-                if ($quotaAction === Quota::TERMINATE_VISIBLE_QUOTA_QUESTION) {
-                    // check if all question that are part of the quotaMembers are hidden NOTE: this is kept for legacy compatibility
+                if ($quotaAction === Quota::TERMINATE_VISIBLE_QUOTA_QUESTIONS) {
+                    // if all quota members are hidden questions, the quota will be triggered as well
+                    // if we have quota members that are hidden mixed with visible ones, they will never be triggered.
                     $actionBasedTriggerCondition = (int)QuestionAttribute::model()
                             ->countByAttributes([
                                 'qid'       => $aQuotaQid,
@@ -491,15 +492,17 @@ class Quotas
                 if ($quotaAction === Quota::TERMINATE_ALL_PAGES) {
                     $actionBasedTriggerCondition = true;
                 }
-                if ($quotaAction === Quota::SOFT_TERMINATE_VISIBLE_QUOTA_QUESTION) {
+                if ($quotaAction === Quota::SOFT_TERMINATE_VISIBLE_QUOTA_QUESTIONS) {
                     $actionBasedTriggerCondition = false;
                 }
                 ################ QUOTA ACTIONS END ################
 
                 // condition to count quota
                 // check if all answers match the quota AND check if the question was answered on this page OR if all questions are hidden
-                if ($iMatchedAnswers === count($aQuotaFields)
-                    && ($bPostedField || $actionBasedTriggerCondition)) {
+                if (
+                    $iMatchedAnswers === count($aQuotaFields)
+                    && ($bPostedField || $actionBasedTriggerCondition)
+                ) {
                     if ($oQuota->qlimit === 0) {
                         // Always add the quota if qlimit is 0
                         $aMatchedQuotas[] = $oQuota->getViewArray();
@@ -540,8 +543,11 @@ class Quotas
         $blocks = [];
         foreach ($event->getAllContent() as $blockData) {
             /* @var $blockData PluginEventContent */
-            $blocks[] = CHtml::tag('div', ['id' => $blockData->getCssId(), 'class' => $blockData->getCssClass()],
-                $blockData->getContent());
+            $blocks[] = CHtml::tag(
+                'div',
+                ['id' => $blockData->getCssId(), 'class' => $blockData->getCssClass()],
+                $blockData->getContent()
+            );
         }
         // Allow plugin to update message, url, url description and action
         $sMessage = $event->get('message', $aMatchedQuota['quotals_message']);
@@ -552,22 +558,48 @@ class Quotas
         $closeSurvey = ($sAction === 1 || App()->getRequest()->getPost('move') === 'confirmquota');
         $sAutoloadUrl = $event->get('autoloadurl', $aMatchedQuota['autoload_url']);
         // Doing the action and show the page
-        if ($sClientToken
+        if (
+            $sClientToken
             && in_array($sAction, [
-                Quota::TERMINATE_VISIBLE_QUOTA_QUESTION,
+                Quota::TERMINATE_VISIBLE_QUOTA_QUESTIONS,
                 Quota::TERMINATE_VISIBLE_AND_HIDDEN_QUOTA_QUESTIONS,
                 Quota::TERMINATE_ALL_PAGES
-            ], true)) {
+            ], true)
+        ) {
             submittokens(true);
         }
         // Construct the default message
-        $sMessage = templatereplace($sMessage, [], $aDataReplacement, 'QuotaMessage',
-            $aSurveyInfo['anonymized'] !== 'N', null, [], true);
+        $sMessage = templatereplace(
+            $sMessage,
+            [],
+            $aDataReplacement,
+            'QuotaMessage',
+            $aSurveyInfo['anonymized'] !== 'N',
+            null,
+            [],
+            true
+        );
         $sUrl = passthruReplace($sUrl, $aSurveyInfo);
-        $sUrl = templatereplace($sUrl, [], $aDataReplacement, 'QuotaUrl', $aSurveyInfo['anonymized'] !== 'N', null,
-            [], true);
-        $sUrlDescription = templatereplace($sUrlDescription, [], $aDataReplacement, 'QuotaUrldescription',
-            $aSurveyInfo['anonymized'] !== 'N', null, [], true);
+        $sUrl = templatereplace(
+            $sUrl,
+            [],
+            $aDataReplacement,
+            'QuotaUrl',
+            $aSurveyInfo['anonymized'] !== 'N',
+            null,
+            [],
+            true
+        );
+        $sUrlDescription = templatereplace(
+            $sUrlDescription,
+            [],
+            $aDataReplacement,
+            'QuotaUrldescription',
+            $aSurveyInfo['anonymized'] !== 'N',
+            null,
+            [],
+            true
+        );
 
         // Datas for twig view
         $thissurvey['sid'] = $surveyid;

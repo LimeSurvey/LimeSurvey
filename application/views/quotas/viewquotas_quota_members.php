@@ -5,7 +5,7 @@
 /* @var array $aQuotaItems */
 
 $quotaActions = [
-    Quota::TERMINATE_VISIBLE_QUOTA_QUESTION => [
+    Quota::TERMINATE_VISIBLE_QUOTA_QUESTIONS => [
         'description' => gT("Terminate after related visible question was submitted"),
         'icon'        => 'ri-error-warning-fill'
     ],
@@ -17,7 +17,7 @@ $quotaActions = [
         'description' => gT("Terminate after all page submissions"),
         'icon'        => 'ri-error-warning-fill'
     ],
-    Quota::SOFT_TERMINATE_VISIBLE_QUOTA_QUESTION => [
+    Quota::SOFT_TERMINATE_VISIBLE_QUOTA_QUESTIONS => [
         'description' => gT("Soft terminate after related visible question was submitted, answer will be editable"),
         'icon'        => 'ri-alert-fill'
     ],
