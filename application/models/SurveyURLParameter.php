@@ -126,9 +126,10 @@ class SurveyURLParameter extends LSActiveRecord
         $criteria->compare('subquestionl10ns.question', $this->searched_value, true, 'OR');
         $criteria->addCondition('t.sid=:surveyid');
         $criteria->addCondition('questionl10ns.language=:language OR questionl10ns.language IS NULL');
-        $criteria->addCondition('subquestionl10ns.language=:language OR subquestionl10ns.language IS NULL');
+        $criteria->addCondition('subquestionl10ns.language=:language2 OR subquestionl10ns.language IS NULL');
         $criteria->params[':surveyid'] = $this->sid;
         $criteria->params[':language'] = $language;
+        $criteria->params[':language2'] = $language;    // For some reason MS SQL fails if we use the same parameter twice
 
         $sort = new CSort();
         $sort->defaultOrder = array('parameter' => false, 'target_question' => false);
