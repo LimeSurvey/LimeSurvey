@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "core-js": "^2.6.5",
-    "vue": "^2.6.10",
+    "vue": "^3.0.0",
     "vue-localstorage": "^0.6.2",
     "vuex": "^3.0.1",
     "vuex-persist": "^2.0.1"
