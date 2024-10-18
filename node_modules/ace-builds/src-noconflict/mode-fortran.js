@@ -69,38 +69,38 @@ var FortranHighlightRules = function () {
                 token: "comment",
                 regex: "!.*$"
             }, {
-                token: "string", // multi line """ string start
+                token: "string",
                 regex: strPre + '"{3}',
                 next: "qqstring3"
             }, {
-                token: "string", // " string
+                token: "string",
                 regex: strPre + '"(?=.)',
                 next: "qqstring"
             }, {
-                token: "string", // multi line ''' string start
+                token: "string",
                 regex: strPre + "'{3}",
                 next: "qstring3"
             }, {
-                token: "string", // ' string
+                token: "string",
                 regex: strPre + "'(?=.)",
                 next: "qstring"
             }, {
-                token: "constant.numeric", // imaginary
+                token: "constant.numeric",
                 regex: "(?:" + floatNumber + "|\\d+)[jJ]\\b"
             }, {
-                token: "constant.numeric", // float
+                token: "constant.numeric",
                 regex: floatNumber
             }, {
-                token: "constant.numeric", // long integer
+                token: "constant.numeric",
                 regex: integer + "[lL]\\b"
             }, {
-                token: "constant.numeric", // integer
+                token: "constant.numeric",
                 regex: integer + "\\b"
             }, {
-                token: "keyword", // pre-compiler directives
+                token: "keyword",
                 regex: "#\\s*(?:include|import|define|undef|INCLUDE|IMPORT|DEFINE|UNDEF)\\b"
             }, {
-                token: "keyword", // special case pre-compiler directive
+                token: "keyword",
                 regex: "#\\s*(?:endif|ifdef|else|elseif|ifndef|ENDIF|IFDEF|ELSE|ELSEIF|IFNDEF)\\b"
             }, {
                 token: keywordMapper,
@@ -122,7 +122,7 @@ var FortranHighlightRules = function () {
                 token: "constant.language.escape",
                 regex: stringEscape
             }, {
-                token: "string", // multi line """ string end
+                token: "string",
                 regex: '"{3}',
                 next: "start"
             }, {
@@ -132,7 +132,7 @@ var FortranHighlightRules = function () {
                 token: "constant.language.escape",
                 regex: stringEscape
             }, {
-                token: "string", // multi line """ string end
+                token: "string",
                 regex: '"{3}',
                 next: "start"
             }, {

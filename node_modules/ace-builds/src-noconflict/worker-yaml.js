@@ -413,31 +413,34 @@ exports.EventEmitter = EventEmitter;
 });
 
 ace.define("ace/range",[], function(require, exports, module){"use strict";
-var Range = /** @class */ (function () {
-    function Range(startRow, startColumn, endRow, endColumn) {
-        this.start = {
-            row: startRow,
-            column: startColumn
-        };
-        this.end = {
-            row: endRow,
-            column: endColumn
-        };
-    }
-    Range.prototype.isEqual = function (range) {
+var comparePoints = function (p1, p2) {
+    return p1.row - p2.row || p1.column - p2.column;
+};
+var Range = function (startRow, startColumn, endRow, endColumn) {
+    this.start = {
+        row: startRow,
+        column: startColumn
+    };
+    this.end = {
+        row: endRow,
+        column: endColumn
+    };
+};
+(function () {
+    this.isEqual = function (range) {
         return this.start.row === range.start.row &&
             this.end.row === range.end.row &&
             this.start.column === range.start.column &&
             this.end.column === range.end.column;
     };
-    Range.prototype.toString = function () {
+    this.toString = function () {
         return ("Range: [" + this.start.row + "/" + this.start.column +
             "] -> [" + this.end.row + "/" + this.end.column + "]");
     };
-    Range.prototype.contains = function (row, column) {
+    this.contains = function (row, column) {
         return this.compare(row, column) == 0;
     };
-    Range.prototype.compareRange = function (range) {
+    this.compareRange = function (range) {
         var cmp, end = range.end, start = range.start;
         cmp = this.compare(end.row, end.column);
         if (cmp == 1) {
@@ -468,23 +471,23 @@ var Range = /** @class */ (function () {
             }
         }
     };
-    Range.prototype.comparePoint = function (p) {
+    this.comparePoint = function (p) {
         return this.compare(p.row, p.column);
     };
-    Range.prototype.containsRange = function (range) {
+    this.containsRange = function (range) {
         return this.comparePoint(range.start) == 0 && this.comparePoint(range.end) == 0;
     };
-    Range.prototype.intersects = function (range) {
+    this.intersects = function (range) {
         var cmp = this.compareRange(range);
         return (cmp == -1 || cmp == 0 || cmp == 1);
     };
-    Range.prototype.isEnd = function (row, column) {
+    this.isEnd = function (row, column) {
         return this.end.row == row && this.end.column == column;
     };
-    Range.prototype.isStart = function (row, column) {
+    this.isStart = function (row, column) {
         return this.start.row == row && this.start.column == column;
     };
-    Range.prototype.setStart = function (row, column) {
+    this.setStart = function (row, column) {
         if (typeof row == "object") {
             this.start.column = row.column;
             this.start.row = row.row;
@@ -494,7 +497,7 @@ var Range = /** @class */ (function () {
             this.start.column = column;
         }
     };
-    Range.prototype.setEnd = function (row, column) {
+    this.setEnd = function (row, column) {
         if (typeof row == "object") {
             this.end.column = row.column;
             this.end.row = row.row;
@@ -504,7 +507,7 @@ var Range = /** @class */ (function () {
             this.end.column = column;
         }
     };
-    Range.prototype.inside = function (row, column) {
+    this.inside = function (row, column) {
         if (this.compare(row, column) == 0) {
             if (this.isEnd(row, column) || this.isStart(row, column)) {
                 return false;
@@ -515,7 +518,7 @@ var Range = /** @class */ (function () {
         }
         return false;
     };
-    Range.prototype.insideStart = function (row, column) {
+    this.insideStart = function (row, column) {
         if (this.compare(row, column) == 0) {
             if (this.isEnd(row, column)) {
                 return false;
@@ -526,7 +529,7 @@ var Range = /** @class */ (function () {
         }
         return false;
     };
-    Range.prototype.insideEnd = function (row, column) {
+    this.insideEnd = function (row, column) {
         if (this.compare(row, column) == 0) {
             if (this.isStart(row, column)) {
                 return false;
@@ -537,7 +540,7 @@ var Range = /** @class */ (function () {
         }
         return false;
     };
-    Range.prototype.compare = function (row, column) {
+    this.compare = function (row, column) {
         if (!this.isMultiLine()) {
             if (row === this.start.row) {
                 return column < this.start.column ? -1 : (column > this.end.column ? 1 : 0);
@@ -553,7 +556,7 @@ var Range = /** @class */ (function () {
             return column <= this.end.column ? 0 : 1;
         return 0;
     };
-    Range.prototype.compareStart = function (row, column) {
+    this.compareStart = function (row, column) {
         if (this.start.row == row && this.start.column == column) {
             return -1;
         }
@@ -561,7 +564,7 @@ var Range = /** @class */ (function () {
             return this.compare(row, column);
         }
     };
-    Range.prototype.compareEnd = function (row, column) {
+    this.compareEnd = function (row, column) {
         if (this.end.row == row && this.end.column == column) {
             return 1;
         }
@@ -569,7 +572,7 @@ var Range = /** @class */ (function () {
             return this.compare(row, column);
         }
     };
-    Range.prototype.compareInside = function (row, column) {
+    this.compareInside = function (row, column) {
         if (this.end.row == row && this.end.column == column) {
             return 1;
         }
@@ -580,7 +583,7 @@ var Range = /** @class */ (function () {
             return this.compare(row, column);
         }
     };
-    Range.prototype.clipRows = function (firstRow, lastRow) {
+    this.clipRows = function (firstRow, lastRow) {
         if (this.end.row > lastRow)
             var end = { row: lastRow + 1, column: 0 };
         else if (this.end.row < firstRow)
@@ -591,7 +594,7 @@ var Range = /** @class */ (function () {
             var start = { row: firstRow, column: 0 };
         return Range.fromPoints(start || this.start, end || this.end);
     };
-    Range.prototype.extend = function (row, column) {
+    this.extend = function (row, column) {
         var cmp = this.compare(row, column);
         if (cmp == 0)
             return this;
@@ -601,37 +604,37 @@ var Range = /** @class */ (function () {
             var end = { row: row, column: column };
         return Range.fromPoints(start || this.start, end || this.end);
     };
-    Range.prototype.isEmpty = function () {
+    this.isEmpty = function () {
         return (this.start.row === this.end.row && this.start.column === this.end.column);
     };
-    Range.prototype.isMultiLine = function () {
+    this.isMultiLine = function () {
         return (this.start.row !== this.end.row);
     };
-    Range.prototype.clone = function () {
+    this.clone = function () {
         return Range.fromPoints(this.start, this.end);
     };
-    Range.prototype.collapseRows = function () {
+    this.collapseRows = function () {
         if (this.end.column == 0)
             return new Range(this.start.row, 0, Math.max(this.start.row, this.end.row - 1), 0);
         else
             return new Range(this.start.row, 0, this.end.row, 0);
     };
-    Range.prototype.toScreenRange = function (session) {
+    this.toScreenRange = function (session) {
         var screenPosStart = session.documentToScreenPosition(this.start);
         var screenPosEnd = session.documentToScreenPosition(this.end);
         return new Range(screenPosStart.row, screenPosStart.column, screenPosEnd.row, screenPosEnd.column);
     };
-    Range.prototype.moveBy = function (row, column) {
+    this.moveBy = function (row, column) {
         this.start.row += row;
         this.start.column += column;
         this.end.row += row;
         this.end.column += column;
     };
-    return Range;
-}());
+}).call(Range.prototype);
 Range.fromPoints = function (start, end) {
     return new Range(start.row, start.column, end.row, end.column);
 };
+Range.comparePoints = comparePoints;
 Range.comparePoints = function (p1, p2) {
     return p1.row - p2.row || p1.column - p2.column;
 };
@@ -642,22 +645,24 @@ exports.Range = Range;
 ace.define("ace/anchor",[], function(require, exports, module){"use strict";
 var oop = require("./lib/oop");
 var EventEmitter = require("./lib/event_emitter").EventEmitter;
-var Anchor = /** @class */ (function () {
-    function Anchor(doc, row, column) {
-        this.$onChange = this.onChange.bind(this);
-        this.attach(doc);
-        if (typeof row != "number")
-            this.setPosition(row.row, row.column);
-        else
-            this.setPosition(row, column);
-    }
-    Anchor.prototype.getPosition = function () {
+var Anchor = exports.Anchor = function (doc, row, column) {
+    this.$onChange = this.onChange.bind(this);
+    this.attach(doc);
+    if (typeof column == "undefined")
+        this.setPosition(row.row, row.column);
+    else
+        this.setPosition(row, column);
+};
+(function () {
+    oop.implement(this, EventEmitter);
+    this.getPosition = function () {
         return this.$clipPositionToDocument(this.row, this.column);
     };
-    Anchor.prototype.getDocument = function () {
+    this.getDocument = function () {
         return this.document;
     };
-    Anchor.prototype.onChange = function (delta) {
+    this.$insertRight = false;
+    this.onChange = function (delta) {
         if (delta.start.row == delta.end.row && delta.start.row != this.row)
             return;
         if (delta.start.row > this.row)
@@ -665,7 +670,34 @@ var Anchor = /** @class */ (function () {
         var point = $getTransformedPoint(delta, { row: this.row, column: this.column }, this.$insertRight);
         this.setPosition(point.row, point.column, true);
     };
-    Anchor.prototype.setPosition = function (row, column, noClip) {
+    function $pointsInOrder(point1, point2, equalPointsInOrder) {
+        var bColIsAfter = equalPointsInOrder ? point1.column <= point2.column : point1.column < point2.column;
+        return (point1.row < point2.row) || (point1.row == point2.row && bColIsAfter);
+    }
+    function $getTransformedPoint(delta, point, moveIfEqual) {
+        var deltaIsInsert = delta.action == "insert";
+        var deltaRowShift = (deltaIsInsert ? 1 : -1) * (delta.end.row - delta.start.row);
+        var deltaColShift = (deltaIsInsert ? 1 : -1) * (delta.end.column - delta.start.column);
+        var deltaStart = delta.start;
+        var deltaEnd = deltaIsInsert ? deltaStart : delta.end; // Collapse insert range.
+        if ($pointsInOrder(point, deltaStart, moveIfEqual)) {
+            return {
+                row: point.row,
+                column: point.column
+            };
+        }
+        if ($pointsInOrder(deltaEnd, point, !moveIfEqual)) {
+            return {
+                row: point.row + deltaRowShift,
+                column: point.column + (point.row == deltaEnd.row ? deltaColShift : 0)
+            };
+        }
+        return {
+            row: deltaStart.row,
+            column: deltaStart.column
+        };
+    }
+    this.setPosition = function (row, column, noClip) {
         var pos;
         if (noClip) {
             pos = {
@@ -689,14 +721,14 @@ var Anchor = /** @class */ (function () {
             value: pos
         });
     };
-    Anchor.prototype.detach = function () {
+    this.detach = function () {
         this.document.off("change", this.$onChange);
     };
-    Anchor.prototype.attach = function (doc) {
+    this.attach = function (doc) {
         this.document = doc || this.document;
         this.document.on("change", this.$onChange);
     };
-    Anchor.prototype.$clipPositionToDocument = function (row, column) {
+    this.$clipPositionToDocument = function (row, column) {
         var pos = {};
         if (row >= this.document.getLength()) {
             pos.row = Math.max(0, this.document.getLength() - 1);
@@ -714,38 +746,7 @@ var Anchor = /** @class */ (function () {
             pos.column = 0;
         return pos;
     };
-    return Anchor;
-}());
-Anchor.prototype.$insertRight = false;
-oop.implement(Anchor.prototype, EventEmitter);
-function $pointsInOrder(point1, point2, equalPointsInOrder) {
-    var bColIsAfter = equalPointsInOrder ? point1.column <= point2.column : point1.column < point2.column;
-    return (point1.row < point2.row) || (point1.row == point2.row && bColIsAfter);
-}
-function $getTransformedPoint(delta, point, moveIfEqual) {
-    var deltaIsInsert = delta.action == "insert";
-    var deltaRowShift = (deltaIsInsert ? 1 : -1) * (delta.end.row - delta.start.row);
-    var deltaColShift = (deltaIsInsert ? 1 : -1) * (delta.end.column - delta.start.column);
-    var deltaStart = delta.start;
-    var deltaEnd = deltaIsInsert ? deltaStart : delta.end; // Collapse insert range.
-    if ($pointsInOrder(point, deltaStart, moveIfEqual)) {
-        return {
-            row: point.row,
-            column: point.column
-        };
-    }
-    if ($pointsInOrder(deltaEnd, point, !moveIfEqual)) {
-        return {
-            row: point.row + deltaRowShift,
-            column: point.column + (point.row == deltaEnd.row ? deltaColShift : 0)
-        };
-    }
-    return {
-        row: deltaStart.row,
-        column: deltaStart.column
-    };
-}
-exports.Anchor = Anchor;
+}).call(Anchor.prototype);
 
 });
 
@@ -755,36 +756,47 @@ var applyDelta = require("./apply_delta").applyDelta;
 var EventEmitter = require("./lib/event_emitter").EventEmitter;
 var Range = require("./range").Range;
 var Anchor = require("./anchor").Anchor;
-var Document = /** @class */ (function () {
-    function Document(textOrLines) {
+var Document = function (textOrLines) {
+    this.$lines = [""];
+    if (textOrLines.length === 0) {
         this.$lines = [""];
-        if (textOrLines.length === 0) {
-            this.$lines = [""];
-        }
-        else if (Array.isArray(textOrLines)) {
-            this.insertMergedLines({ row: 0, column: 0 }, textOrLines);
-        }
-        else {
-            this.insert({ row: 0, column: 0 }, textOrLines);
-        }
     }
-    Document.prototype.setValue = function (text) {
+    else if (Array.isArray(textOrLines)) {
+        this.insertMergedLines({ row: 0, column: 0 }, textOrLines);
+    }
+    else {
+        this.insert({ row: 0, column: 0 }, textOrLines);
+    }
+};
+(function () {
+    oop.implement(this, EventEmitter);
+    this.setValue = function (text) {
         var len = this.getLength() - 1;
         this.remove(new Range(0, 0, len, this.getLine(len).length));
         this.insert({ row: 0, column: 0 }, text || "");
     };
-    Document.prototype.getValue = function () {
+    this.getValue = function () {
         return this.getAllLines().join(this.getNewLineCharacter());
     };
-    Document.prototype.createAnchor = function (row, column) {
+    this.createAnchor = function (row, column) {
         return new Anchor(this, row, column);
     };
-    Document.prototype.$detectNewLine = function (text) {
+    if ("aaa".split(/a/).length === 0) {
+        this.$split = function (text) {
+            return text.replace(/\r\n|\r/g, "\n").split("\n");
+        };
+    }
+    else {
+        this.$split = function (text) {
+            return text.split(/\r\n|\r|\n/);
+        };
+    }
+    this.$detectNewLine = function (text) {
         var match = text.match(/^.*?(\r\n|\r|\n)/m);
         this.$autoNewLine = match ? match[1] : "\n";
         this._signal("changeNewLineMode");
     };
-    Document.prototype.getNewLineCharacter = function () {
+    this.getNewLineCharacter = function () {
         switch (this.$newLineMode) {
             case "windows":
                 return "\r\n";
@@ -794,34 +806,36 @@ var Document = /** @class */ (function () {
                 return this.$autoNewLine || "\n";
         }
     };
-    Document.prototype.setNewLineMode = function (newLineMode) {
+    this.$autoNewLine = "";
+    this.$newLineMode = "auto";
+    this.setNewLineMode = function (newLineMode) {
         if (this.$newLineMode === newLineMode)
             return;
         this.$newLineMode = newLineMode;
         this._signal("changeNewLineMode");
     };
-    Document.prototype.getNewLineMode = function () {
+    this.getNewLineMode = function () {
         return this.$newLineMode;
     };
-    Document.prototype.isNewLine = function (text) {
+    this.isNewLine = function (text) {
         return (text == "\r\n" || text == "\r" || text == "\n");
     };
-    Document.prototype.getLine = function (row) {
+    this.getLine = function (row) {
         return this.$lines[row] || "";
     };
-    Document.prototype.getLines = function (firstRow, lastRow) {
+    this.getLines = function (firstRow, lastRow) {
         return this.$lines.slice(firstRow, lastRow + 1);
     };
-    Document.prototype.getAllLines = function () {
+    this.getAllLines = function () {
         return this.getLines(0, this.getLength());
     };
-    Document.prototype.getLength = function () {
+    this.getLength = function () {
         return this.$lines.length;
     };
-    Document.prototype.getTextRange = function (range) {
+    this.getTextRange = function (range) {
         return this.getLinesForRange(range).join(this.getNewLineCharacter());
     };
-    Document.prototype.getLinesForRange = function (range) {
+    this.getLinesForRange = function (range) {
         var lines;
         if (range.start.row === range.end.row) {
             lines = [this.getLine(range.start.row).substring(range.start.column, range.end.column)];
@@ -835,24 +849,24 @@ var Document = /** @class */ (function () {
         }
         return lines;
     };
-    Document.prototype.insertLines = function (row, lines) {
+    this.insertLines = function (row, lines) {
         console.warn("Use of document.insertLines is deprecated. Use the insertFullLines method instead.");
         return this.insertFullLines(row, lines);
     };
-    Document.prototype.removeLines = function (firstRow, lastRow) {
+    this.removeLines = function (firstRow, lastRow) {
         console.warn("Use of document.removeLines is deprecated. Use the removeFullLines method instead.");
         return this.removeFullLines(firstRow, lastRow);
     };
-    Document.prototype.insertNewLine = function (position) {
+    this.insertNewLine = function (position) {
         console.warn("Use of document.insertNewLine is deprecated. Use insertMergedLines(position, ['', '']) instead.");
         return this.insertMergedLines(position, ["", ""]);
     };
-    Document.prototype.insert = function (position, text) {
+    this.insert = function (position, text) {
         if (this.getLength() <= 1)
             this.$detectNewLine(text);
         return this.insertMergedLines(position, this.$split(text));
     };
-    Document.prototype.insertInLine = function (position, text) {
+    this.insertInLine = function (position, text) {
         var start = this.clippedPos(position.row, position.column);
         var end = this.pos(position.row, position.column + text.length);
         this.applyDelta({
@@ -863,7 +877,7 @@ var Document = /** @class */ (function () {
         }, true);
         return this.clonePos(end);
     };
-    Document.prototype.clippedPos = function (row, column) {
+    this.clippedPos = function (row, column) {
         var length = this.getLength();
         if (row === undefined) {
             row = length;
@@ -881,13 +895,13 @@ var Document = /** @class */ (function () {
         column = Math.min(Math.max(column, 0), line.length);
         return { row: row, column: column };
     };
-    Document.prototype.clonePos = function (pos) {
+    this.clonePos = function (pos) {
         return { row: pos.row, column: pos.column };
     };
-    Document.prototype.pos = function (row, column) {
+    this.pos = function (row, column) {
         return { row: row, column: column };
     };
-    Document.prototype.$clipPosition = function (position) {
+    this.$clipPosition = function (position) {
         var length = this.getLength();
         if (position.row >= length) {
             position.row = Math.max(0, length - 1);
@@ -899,7 +913,7 @@ var Document = /** @class */ (function () {
         }
         return position;
     };
-    Document.prototype.insertFullLines = function (row, lines) {
+    this.insertFullLines = function (row, lines) {
         row = Math.min(Math.max(row, 0), this.getLength());
         var column = 0;
         if (row < this.getLength()) {
@@ -913,7 +927,7 @@ var Document = /** @class */ (function () {
         }
         this.insertMergedLines({ row: row, column: column }, lines);
     };
-    Document.prototype.insertMergedLines = function (position, lines) {
+    this.insertMergedLines = function (position, lines) {
         var start = this.clippedPos(position.row, position.column);
         var end = {
             row: start.row + lines.length - 1,
@@ -927,7 +941,7 @@ var Document = /** @class */ (function () {
         });
         return this.clonePos(end);
     };
-    Document.prototype.remove = function (range) {
+    this.remove = function (range) {
         var start = this.clippedPos(range.start.row, range.start.column);
         var end = this.clippedPos(range.end.row, range.end.column);
         this.applyDelta({
@@ -938,7 +952,7 @@ var Document = /** @class */ (function () {
         });
         return this.clonePos(start);
     };
-    Document.prototype.removeInLine = function (row, startColumn, endColumn) {
+    this.removeInLine = function (row, startColumn, endColumn) {
         var start = this.clippedPos(row, startColumn);
         var end = this.clippedPos(row, endColumn);
         this.applyDelta({
@@ -949,7 +963,7 @@ var Document = /** @class */ (function () {
         }, true);
         return this.clonePos(start);
     };
-    Document.prototype.removeFullLines = function (firstRow, lastRow) {
+    this.removeFullLines = function (firstRow, lastRow) {
         firstRow = Math.min(Math.max(0, firstRow), this.getLength() - 1);
         lastRow = Math.min(Math.max(0, lastRow), this.getLength() - 1);
         var deleteFirstNewLine = lastRow == this.getLength() - 1 && firstRow > 0;
@@ -968,7 +982,7 @@ var Document = /** @class */ (function () {
         });
         return deletedLines;
     };
-    Document.prototype.removeNewLine = function (row) {
+    this.removeNewLine = function (row) {
         if (row < this.getLength() - 1 && row >= 0) {
             this.applyDelta({
                 start: this.pos(row, this.getLine(row).length),
@@ -978,7 +992,7 @@ var Document = /** @class */ (function () {
             });
         }
     };
-    Document.prototype.replace = function (range, text) {
+    this.replace = function (range, text) {
         if (!(range instanceof Range))
             range = Range.fromPoints(range.start, range.end);
         if (text.length === 0 && range.isEmpty())
@@ -995,17 +1009,17 @@ var Document = /** @class */ (function () {
         }
         return end;
     };
-    Document.prototype.applyDeltas = function (deltas) {
+    this.applyDeltas = function (deltas) {
         for (var i = 0; i < deltas.length; i++) {
             this.applyDelta(deltas[i]);
         }
     };
-    Document.prototype.revertDeltas = function (deltas) {
+    this.revertDeltas = function (deltas) {
         for (var i = deltas.length - 1; i >= 0; i--) {
             this.revertDelta(deltas[i]);
         }
     };
-    Document.prototype.applyDelta = function (delta, doNotValidate) {
+    this.applyDelta = function (delta, doNotValidate) {
         var isInsert = delta.action == "insert";
         if (isInsert ? delta.lines.length <= 1 && !delta.lines[0]
             : !Range.comparePoints(delta.start, delta.end)) {
@@ -1019,14 +1033,14 @@ var Document = /** @class */ (function () {
             this._signal("change", delta);
         }
     };
-    Document.prototype.$safeApplyDelta = function (delta) {
+    this.$safeApplyDelta = function (delta) {
         var docLength = this.$lines.length;
         if (delta.action == "remove" && delta.start.row < docLength && delta.end.row < docLength
             || delta.action == "insert" && delta.start.row <= docLength) {
             this.applyDelta(delta);
         }
     };
-    Document.prototype.$splitAndapplyLargeDelta = function (delta, MAX) {
+    this.$splitAndapplyLargeDelta = function (delta, MAX) {
         var lines = delta.lines;
         var l = lines.length - MAX + 1;
         var row = delta.start.row;
@@ -1047,7 +1061,7 @@ var Document = /** @class */ (function () {
         delta.start.column = column;
         this.applyDelta(delta, true);
     };
-    Document.prototype.revertDelta = function (delta) {
+    this.revertDelta = function (delta) {
         this.$safeApplyDelta({
             start: this.clonePos(delta.start),
             end: this.clonePos(delta.end),
@@ -1055,7 +1069,7 @@ var Document = /** @class */ (function () {
             lines: delta.lines.slice()
         });
     };
-    Document.prototype.indexToPosition = function (index, startRow) {
+    this.indexToPosition = function (index, startRow) {
         var lines = this.$lines || this.getAllLines();
         var newlineLength = this.getNewLineCharacter().length;
         for (var i = startRow || 0, l = lines.length; i < l; i++) {
@@ -1065,7 +1079,7 @@ var Document = /** @class */ (function () {
         }
         return { row: l - 1, column: index + lines[l - 1].length + newlineLength };
     };
-    Document.prototype.positionToIndex = function (pos, startRow) {
+    this.positionToIndex = function (pos, startRow) {
         var lines = this.$lines || this.getAllLines();
         var newlineLength = this.getNewLineCharacter().length;
         var index = 0;
@@ -1074,36 +1088,8 @@ var Document = /** @class */ (function () {
             index += lines[i].length + newlineLength;
         return index + pos.column;
     };
-    Document.prototype.$split = function (text) {
-        return text.split(/\r\n|\r|\n/);
-    };
-    return Document;
-}());
-Document.prototype.$autoNewLine = "";
-Document.prototype.$newLineMode = "auto";
-oop.implement(Document.prototype, EventEmitter);
+}).call(Document.prototype);
 exports.Document = Document;
-
-});
-
-ace.define("ace/lib/deep_copy",[], function(require, exports, module){exports.deepCopy = function deepCopy(obj) {
-    if (typeof obj !== "object" || !obj)
-        return obj;
-    var copy;
-    if (Array.isArray(obj)) {
-        copy = [];
-        for (var key = 0; key < obj.length; key++) {
-            copy[key] = deepCopy(obj[key]);
-        }
-        return copy;
-    }
-    if (Object.prototype.toString.call(obj) !== "[object Object]")
-        return obj;
-    copy = {};
-    for (var key in obj)
-        copy[key] = deepCopy(obj[key]);
-    return copy;
-};
 
 });
 
@@ -1149,7 +1135,24 @@ exports.copyArray = function (array) {
     }
     return copy;
 };
-exports.deepCopy = require("./deep_copy").deepCopy;
+exports.deepCopy = function deepCopy(obj) {
+    if (typeof obj !== "object" || !obj)
+        return obj;
+    var copy;
+    if (Array.isArray(obj)) {
+        copy = [];
+        for (var key = 0; key < obj.length; key++) {
+            copy[key] = deepCopy(obj[key]);
+        }
+        return copy;
+    }
+    if (Object.prototype.toString.call(obj) !== "[object Object]")
+        return obj;
+    copy = {};
+    for (var key in obj)
+        copy[key] = deepCopy(obj[key]);
+    return copy;
+};
 exports.arrayToMap = function (arr) {
     var map = {};
     for (var i = 0; i < arr.length; i++) {
@@ -1241,18 +1244,6 @@ exports.delayedCall = function (fcn, defaultTimeout) {
         return timer;
     };
     return _self;
-};
-exports.supportsLookbehind = function () {
-    try {
-        new RegExp('(?<=.)');
-    }
-    catch (e) {
-        return false;
-    }
-    return true;
-};
-exports.skipEmptyMatch = function (line, last, supportsUnicodeFlag) {
-    return supportsUnicodeFlag && line.codePointAt(last) > 0xffff ? 2 : 1;
 };
 
 });
@@ -5823,10 +5814,10 @@ oop.inherits(YamlWorker, Mirror);
                 _this.sender.emit("annotate", errors);
                 return;
             }
-            var markDefined = !!error.mark;
+
             errors.push({
-                row: markDefined ? error.mark.line : 0,
-                column: markDefined ? error.mark.column : 0,
+                row: error.mark.line,
+                column: error.mark.column,
                 text: error.reason,
                 type: 'error',
                 raw: error

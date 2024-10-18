@@ -48,14 +48,14 @@ var TexHighlightRules = function (textClass) {
                 token: "comment",
                 regex: "%.*$"
             }, {
-                token: textClass, // non-command
+                token: textClass,
                 regex: "\\\\[$&%#\\{\\}]"
             }, {
-                token: "keyword", // command
+                token: "keyword",
                 regex: "\\\\(?:documentclass|usepackage|newcounter|setcounter|addtocounter|value|arabic|stepcounter|newenvironment|renewenvironment|ref|vref|eqref|pageref|label|cite[a-zA-Z]*|tag|begin|end|bibitem)\\b",
                 next: "nospell"
             }, {
-                token: "keyword", // command
+                token: "keyword",
                 regex: "\\\\(?:[a-zA-Z0-9]+|[^a-zA-Z0-9])"
             }, {
                 token: "paren.keyword.operator",
@@ -74,13 +74,13 @@ var TexHighlightRules = function (textClass) {
                 regex: "%.*$",
                 next: "start"
             }, {
-                token: "nospell." + textClass, // non-command
+                token: "nospell." + textClass,
                 regex: "\\\\[$&%#\\{\\}]"
             }, {
-                token: "keyword", // command
+                token: "keyword",
                 regex: "\\\\(?:documentclass|usepackage|newcounter|setcounter|addtocounter|value|arabic|stepcounter|newenvironment|renewenvironment|ref|vref|eqref|pageref|label|cite[a-zA-Z]*|tag|begin|end|bibitem)\\b"
             }, {
-                token: "keyword", // command
+                token: "keyword",
                 regex: "\\\\(?:[a-zA-Z0-9]+|[^a-zA-Z0-9])",
                 next: "start"
             }, {
@@ -170,29 +170,29 @@ var RHighlightRules = function () {
                 regex: "#.*$"
             },
             {
-                token: "string", // multi line string start
+                token: "string",
                 regex: '["]',
                 next: "qqstring"
             },
             {
-                token: "string", // multi line string start
+                token: "string",
                 regex: "[']",
                 next: "qstring"
             },
             {
-                token: "constant.numeric", // hex
+                token: "constant.numeric",
                 regex: "0[xX][0-9a-fA-F]+[Li]?\\b"
             },
             {
-                token: "constant.numeric", // explicit integer
+                token: "constant.numeric",
                 regex: "\\d+L\\b"
             },
             {
-                token: "constant.numeric", // number
+                token: "constant.numeric",
                 regex: "\\d+(?:\\.\\d*)?(?:[eE][+\\-]?\\d*)?i?\\b"
             },
             {
-                token: "constant.numeric", // number with leading decimal
+                token: "constant.numeric",
                 regex: "\\.\\d+(?:[eE][+\\-]?\\d*)?i?\\b"
             },
             {
@@ -221,7 +221,7 @@ var RHighlightRules = function () {
                 regex: "%%|>=|<=|==|!=|\\->|<\\-|\\|\\||&&|=|\\+|\\-|\\*|/|\\^|>|<|!|&|\\||~|\\$|:"
             },
             {
-                token: "keyword.operator", // infix operators
+                token: "keyword.operator",
                 regex: "%.*?%"
             },
             {

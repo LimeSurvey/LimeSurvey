@@ -2085,10 +2085,11 @@ exports.Lexer = function(Tokenizer, Rules) {
 
 });
 
-ace.define("ace/mode/behaviour/xml",["require","exports","module","ace/lib/oop","ace/mode/behaviour","ace/token_iterator"], function(require, exports, module){"use strict";
+ace.define("ace/mode/behaviour/xml",["require","exports","module","ace/lib/oop","ace/mode/behaviour","ace/token_iterator","ace/lib/lang"], function(require, exports, module){"use strict";
 var oop = require("../../lib/oop");
 var Behaviour = require("../behaviour").Behaviour;
 var TokenIterator = require("../../token_iterator").TokenIterator;
+var lang = require("../../lib/lang");
 function is(token, type) {
     return token && token.type.lastIndexOf(type + ".xml") > -1;
 }
@@ -2177,7 +2178,7 @@ var XmlBehaviour = function () {
             var element = token.value;
             if (tokenRow == position.row)
                 element = element.substring(0, position.column - tokenColumn);
-            if (this.voidElements && this.voidElements.hasOwnProperty(element.toLowerCase()))
+            if (this.voidElements.hasOwnProperty(element.toLowerCase()))
                 return;
             return {
                 text: ">" + "</" + element + ">",
@@ -2191,7 +2192,7 @@ var XmlBehaviour = function () {
             var line = session.getLine(cursor.row);
             var iterator = new TokenIterator(session, cursor.row, cursor.column);
             var token = iterator.getCurrentToken();
-            if (is(token, "") && token.type.indexOf("tag-close") !== -1) {
+            if (token && token.type.indexOf("tag-close") !== -1) {
                 if (token.value == "/>")
                     return;
                 while (token && token.type.indexOf("tag-name") === -1) {
@@ -2206,7 +2207,7 @@ var XmlBehaviour = function () {
                 if (!token || token.type.indexOf("end-tag") !== -1) {
                     return;
                 }
-                if (this.voidElements && !this.voidElements[tag] || !this.voidElements) {
+                if (this.voidElements && !this.voidElements[tag]) {
                     var nextToken = session.getTokenAt(cursor.row, cursor.column + 1);
                     var line = session.getLine(row);
                     var nextIndent = this.$getIndent(line);

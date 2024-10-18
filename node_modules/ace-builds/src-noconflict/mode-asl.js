@@ -3,15 +3,15 @@ var oop = require("../lib/oop");
 var TextHighlightRules = require("./text_highlight_rules").TextHighlightRules;
 var DocCommentHighlightRules = function () {
     this.$rules = {
-        "start": [
-            {
+        "start": [{
                 token: "comment.doc.tag",
-                regex: "@\\w+(?=\\s|$)"
-            }, DocCommentHighlightRules.getTagRule(), {
-                defaultToken: "comment.doc.body",
+                regex: "@[\\w\\d_]+" // TODO: fix email addresses
+            },
+            DocCommentHighlightRules.getTagRule(),
+            {
+                defaultToken: "comment.doc",
                 caseInsensitive: true
-            }
-        ]
+            }]
     };
 };
 oop.inherits(DocCommentHighlightRules, TextHighlightRules);
@@ -23,14 +23,14 @@ DocCommentHighlightRules.getTagRule = function (start) {
 };
 DocCommentHighlightRules.getStartRule = function (start) {
     return {
-        token: "comment.doc", // doc comment
-        regex: /\/\*\*(?!\/)/,
+        token: "comment.doc",
+        regex: "\\/\\*(?=\\*)",
         next: start
     };
 };
 DocCommentHighlightRules.getEndRule = function (start) {
     return {
-        token: "comment.doc", // closing comment
+        token: "comment.doc",
         regex: "\\*\\/",
         next: start
     };
@@ -114,30 +114,30 @@ var ASLHighlightRules = function () {
             },
             DocCommentHighlightRules.getStartRule("doc-start"),
             {
-                token: "comment", // multi line comment
+                token: "comment",
                 regex: "\\/\\*",
                 next: "comment"
             },
             DocCommentHighlightRules.getStartRule("doc-start"),
             {
-                token: "comment", // ignored fields / comments
+                token: "comment",
                 regex: "\\\[",
                 next: "ignoredfield"
             }, {
                 token: "variable",
                 regex: "\\Local[0-7]|\\Arg[0-6]"
             }, {
-                token: "keyword", // pre-compiler directives
+                token: "keyword",
                 regex: "#\\s*(?:define|elif|else|endif|error|if|ifdef|ifndef|include|includebuffer|line|pragma|undef|warning)\\b",
                 next: "directive"
             }, {
-                token: "string", // single line
+                token: "string",
                 regex: '["](?:(?:\\\\.)|(?:[^"\\\\]))*?["]'
             }, {
-                token: "constant.character", // single line
+                token: "constant.character",
                 regex: "['](?:(?:\\\\.)|(?:[^'\\\\]))*?[']"
             }, {
-                token: "constant.numeric", // hex
+                token: "constant.numeric",
                 regex: /0[xX][0-9a-fA-F]+\b/
             }, {
                 token: "constant.numeric",
@@ -161,7 +161,7 @@ var ASLHighlightRules = function () {
         ],
         "comment": [
             {
-                token: "comment", // closing comment
+                token: "comment",
                 regex: "\\*\\/",
                 next: "start"
             }, {
@@ -170,7 +170,7 @@ var ASLHighlightRules = function () {
         ],
         "ignoredfield": [
             {
-                token: "comment", // closing ignored fields / comments
+                token: "comment",
                 regex: "\\\]",
                 next: "start"
             }, {
@@ -192,12 +192,12 @@ var ASLHighlightRules = function () {
                 next: "start"
             },
             {
-                token: "constant.other", // single line
+                token: "constant.other",
                 regex: '\\s*["](?:(?:\\\\.)|(?:[^"\\\\]))*?["]*s',
                 next: "start"
             },
             {
-                token: "constant.other", // single line
+                token: "constant.other",
                 regex: "\\s*['](?:(?:\\\\.)|(?:[^'\\\\]))*?[']",
                 next: "start"
             },

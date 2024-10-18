@@ -32,16 +32,16 @@ var VHDLHighlightRules = function () {
                 token: "comment",
                 regex: "--.*$"
             }, {
-                token: "string", // " string
+                token: "string",
                 regex: '".*?"'
             }, {
-                token: "string", // ' string
+                token: "string",
                 regex: "'.*?'"
             }, {
-                token: "constant.numeric", // float
+                token: "constant.numeric",
                 regex: "[+-]?\\d+(?:(?:\\.\\d*)?(?:[eE][+-]?\\d+)?)?\\b"
             }, {
-                token: "keyword", // pre-compiler directives
+                token: "keyword",
                 regex: "\\s*(?:library|package|use)\\b"
             }, {
                 token: keywordMapper,
