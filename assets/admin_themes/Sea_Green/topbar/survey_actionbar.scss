@@ -1,0 +1,146 @@
+.survey-actionbar {
+    padding: 16px 10px;
+
+    .survey-actionbar-title {
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 20px;
+      color: $g-800;
+    }
+    .survey-actionbar-item {
+        display : inline-block;
+        &:not(:first-child) {
+            margin-left : 4px;
+        }
+    }
+    .survey-actionbar-button {
+        border-width  : 2px;
+        border-radius : 5px;
+        margin-bottom: 4px;
+        :hover {
+            box-shadow : none;
+        }
+    }
+    .survey-actionbar-formfield {
+        cursor        : pointer;
+        color         : $g-700;
+        border-width  : 2px;
+        border-radius : 5px;
+        border-color  : $g-700;
+    }
+    .survey-actionbar-filters {
+        margin-left : 16px;
+    }
+    .survey-actionbar-switch {
+        align-self  : center;
+        display     : flex;
+        align-items : center;
+        margin-left : 16px;
+        i {
+            cursor         : pointer;
+            display        : inline-block;
+            vertical-align : middle;
+            &[active] {
+                color : $grape;
+            }
+            &:before {
+                font-size : 1.4em;
+                opacity   : 0.8;
+            }
+            &:not(:first-child) {
+                margin-left : 16px;
+            }
+        }
+    }
+    .search-bar {
+        position : relative;
+        i {
+            position  : absolute;
+            top       : 8px;
+            right     : 5px;
+            font-size : 1.2em;
+            color     : $g-700;
+        }
+    }
+}
+
+@media (max-width: 1140px) {
+  .survey-actionbar {
+    #survey-search {
+      .align-items-baseline {
+        display: block !important;
+        width: 100%;
+        position: relative;
+
+        .survey-actionbar-switch {
+          position: absolute;
+          top: 0;
+          left: 100%;
+          margin: 0 -4rem;
+        }
+
+        .survey-actionbar-filters,
+        .survey-actionbar-actions {
+          display: inline-block !important;
+          width: 59%;
+          margin: 0 !important;
+        }
+
+        .survey-actionbar-actions {
+          width: 40%;
+          text-align: right;
+          float:right;
+        }
+
+        .survey-actionbar-filters,
+        .survey-actionbar-actions {
+          a, button, input, select {
+            font-size: 0.7em;
+          }
+        }
+
+      }
+    }
+  }
+}
+
+@media (max-width: 800px) {
+  .sidebar {
+    display: none !important;
+  }
+  .survey-actionbar {
+    #survey-search {
+      .align-items-baseline {
+        display: block !important;
+
+        .survey-actionbar-filters,
+        .survey-actionbar-actions,
+        .survey-actionbar-button {
+          display: block !important;
+          width: 100%;
+          margin: 0 !important;
+
+          .survey-actionbar-item {
+            width: 100%;
+            margin: 5px 0 !important;
+          }
+        }
+      }
+    }
+  }
+
+  .box-widget-list {
+    margin: 0 auto;
+    text-align: center;
+
+    .box-widget-card {
+      text-align: left;
+    }
+  }
+}
+
+@media (max-width: 767px) {
+  .survey-dashboard {
+    display: block !important;
+  }
+}
