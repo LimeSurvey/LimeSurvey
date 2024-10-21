@@ -295,6 +295,7 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
             'emailnotificationto',
             'emailresponseto',
             'googleanalyticsapikey',
+            'listpublic',
         ];
         foreach ($affectedSettings as $setting) {
             if (

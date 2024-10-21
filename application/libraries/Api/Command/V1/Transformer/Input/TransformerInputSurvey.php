@@ -116,6 +116,9 @@ class TransformerInputSurvey extends Transformer
                     '1', '2', '3', '4', '5', '6'
                 ]
             ],
+            'useCaptchaAccess' => null,
+            'useCaptchaRegistration' => null,
+            'useCaptchaSaveLoad' => null,
             'useTokens' => [
                 'key' => 'usetokens',
                 'formatter' => ['ynToBool' => ['revert' => true]]
@@ -195,5 +198,25 @@ class TransformerInputSurvey extends Transformer
             'template' => true,
             'format' => ['range' => ['G', 'S', 'A', 'I']]
         ]);
+    }
+
+    public function transform($data, $options = []){
+        $valueBack = parent::transform($data, $options);
+
+        //useCaptcha
+        $valueBack['usecaptcha'] = $this->transformCaptcha($valueBack);
+        unset($valueBack['usecaptchaAccess']);
+
+        return $valueBack;
+    }
+
+    private function transformCaptcha($mappedData){
+        //way back to hell
+        $useCaptcha = 'N';
+
+        //check if one of useCaptcha values has changed
+        var_dump($mappedData);
+
+        return $useCaptcha;
     }
 }

@@ -2,6 +2,7 @@
 
 namespace LimeSurvey\Api\Command\V1\Transformer\Output;
 
+use LimeSurvey\Models\Services\SurveyUseCaptcha;
 use Survey;
 use LimeSurvey\Api\Transformer\{
     Output\TransformerOutputActiveRecord,
@@ -179,6 +180,15 @@ class TransformerOutputSurvey extends TransformerOutputActiveRecord
             $data->languagesettings,
             $options
         );
+        return $this->transformUseCaptcha($survey);
+    }
+
+    private function transformUseCaptcha($survey){
+        $surveyUseCaptcha = new SurveyUseCaptcha();
+        $threeValues = $surveyUseCaptcha->convertUseCaptchaFromDB($survey['usecaptcha']);
+        $survey['useCaptchaAccess'] = $threeValues['surveyAccess'];
+        $survey['useCaptchaRegistration'] = $threeValues['registration'];
+        $survey['useCaptchaSaveLoad'] = $threeValues['saveAndLoad'];
         return $survey;
     }
 }

@@ -1789,61 +1789,8 @@ class Survey extends LSActiveRecord implements PermissionInterface
             }
         }
 
-        if ($surveyaccess == 'I' && $registration == 'I' && $saveandload == 'I') {
-            return 'E';
-        } elseif ($surveyaccess == 'Y' && $registration == 'Y' && $saveandload == 'I') {
-            return 'F';
-        } elseif ($surveyaccess == 'I' && $registration == 'Y' && $saveandload == 'Y') {
-            return 'G';
-        } elseif ($surveyaccess == 'Y' && $registration == 'I' && $saveandload == 'Y') {
-            return 'H';
-        } elseif ($surveyaccess == 'I' && $registration == 'Y' && $saveandload == 'I') {
-            return 'I';
-        } elseif ($surveyaccess == 'I' && $registration == 'I' && $saveandload == 'Y') {
-            return 'J';
-        } elseif ($surveyaccess == 'Y' && $registration == 'I' && $saveandload == 'I') {
-            return 'K';
-        } elseif ($surveyaccess == 'I' && $saveandload == 'Y') {
-            return 'L';
-        } elseif ($surveyaccess == 'I' && $registration == 'Y') {
-            return 'M';
-        } elseif ($registration == 'I' && $surveyaccess == 'Y') {
-            return 'O';
-        } elseif ($registration == 'I' && $saveandload == 'Y') {
-            return 'P';
-        } elseif ($saveandload == 'I' && $surveyaccess == 'Y') {
-            return 'T';
-        } elseif ($saveandload == 'I' && $registration == 'Y') {
-            return 'U';
-        } elseif ($surveyaccess == 'I' && $registration == 'I') {
-            return '1';
-        } elseif ($surveyaccess == 'I' && $saveandload == 'I') {
-            return '2';
-        } elseif ($registration == 'I' && $saveandload == 'I') {
-            return '3';
-        } elseif ($surveyaccess == 'I') {
-            return '4';
-        } elseif ($saveandload == 'I') {
-            return '5';
-        } elseif ($registration == 'I') {
-            return '6';
-        } elseif ($surveyaccess == 'Y' && $registration == 'Y' && $saveandload == 'Y') {
-            return 'A';
-        } elseif ($surveyaccess == 'Y' && $registration == 'Y') {
-            return 'B';
-        } elseif ($surveyaccess == 'Y' && $saveandload == 'Y') {
-            return 'C';
-        } elseif ($registration == 'Y' && $saveandload == 'Y') {
-            return 'D';
-        } elseif ($surveyaccess == 'Y') {
-            return 'X';
-        } elseif ($registration == 'Y') {
-            return 'R';
-        } elseif ($saveandload == 'Y') {
-            return 'S';
-        }
-
-        return 'N';
+        $surveyUseCaptcha = new \LimeSurvey\Models\Services\SurveyUseCaptcha($oSurvey);
+        return $surveyUseCaptcha->convertUseCaptchaForDB($surveyaccess, $registration, $saveandload);
     }
 
 
