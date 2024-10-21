@@ -103,10 +103,7 @@ class TransformerOutputSurvey extends TransformerOutputActiveRecord
                 'formatter' => ['ynToBool' => true]
             ],
             "assessments" => ['formatter' => ['ynToBool' => true]],
-            "usecaptcha" => [
-                'key' => 'useCaptcha',
-                'formatter' => ['ynToBool' => true]
-            ],
+            "usecaptcha" => 'useCaptcha',
             "usetokens" => [
                 'key' => 'useTokens',
                 'formatter' => ['ynToBool' => true]
@@ -186,9 +183,9 @@ class TransformerOutputSurvey extends TransformerOutputActiveRecord
     private function transformUseCaptcha($survey){
         $surveyUseCaptcha = new SurveyUseCaptcha();
         $threeValues = $surveyUseCaptcha->convertUseCaptchaFromDB($survey['usecaptcha']);
-        $survey['useCaptchaAccess'] = $threeValues['surveyAccess'];
-        $survey['useCaptchaRegistration'] = $threeValues['registration'];
-        $survey['useCaptchaSaveLoad'] = $threeValues['saveAndLoad'];
+        $survey['useCaptchaAccess'] = ($threeValues['surveyAccess'] == 'Y');
+        $survey['useCaptchaRegistration'] = ($threeValues['registration'] == 'Y');
+        $survey['useCaptchaSaveLoad'] = ($threeValues['saveAndLoad'] == 'Y');
         return $survey;
     }
 }

@@ -116,9 +116,15 @@ class TransformerInputSurvey extends Transformer
                     '1', '2', '3', '4', '5', '6'
                 ]
             ],
-            'useCaptchaAccess' => null,
-            'useCaptchaRegistration' => null,
-            'useCaptchaSaveLoad' => null,
+            'useCaptchaAccess' => [
+                'formatter' => ['ynToBool' => ['revert' => true]]
+            ],
+            'useCaptchaRegistration' => [
+                'formatter' => ['ynToBool' => ['revert' => true]]
+            ],
+            'useCaptchaSaveLoad' => [
+                'formatter' => ['ynToBool' => ['revert' => true]]
+            ],
             'useTokens' => [
                 'key' => 'usetokens',
                 'formatter' => ['ynToBool' => ['revert' => true]]
