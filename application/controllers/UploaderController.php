@@ -254,7 +254,6 @@ class UploaderController extends SurveyController
                 @unlink($_FILES['uploadfile']['tmp_name']);
             }
             if (!$success) {
-                @unlink($uploadfile_tmp_name);
                 $return = array(
                     "success" => false,
                     "msg" => $event->get('msg', gT("An unknown error occurred"))
