@@ -574,10 +574,10 @@ class Quotas
             $sMessage,
             [],
             $aDataReplacement,
-            'QuotaMessage',
-            $aSurveyInfo['anonymized'] !== 'N',
             null,
-            [],
+            null,
+            null,
+            null,
             true
         );
         $sUrl = passthruReplace($sUrl, $aSurveyInfo);
@@ -585,20 +585,20 @@ class Quotas
             $sUrl,
             [],
             $aDataReplacement,
-            'QuotaUrl',
-            $aSurveyInfo['anonymized'] !== 'N',
             null,
-            [],
+            null,
+            null,
+            null,
             true
         );
         $sUrlDescription = templatereplace(
             $sUrlDescription,
             [],
             $aDataReplacement,
-            'QuotaUrldescription',
-            $aSurveyInfo['anonymized'] !== 'N',
             null,
-            [],
+            null,
+            null,
+            null,
             true
         );
 
