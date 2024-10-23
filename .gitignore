@@ -64,6 +64,35 @@
 !/tmp/runtime/index.html
 !/tmp/upload/index.html
 
+# ignore plugins directory by default except LS plugin
+# if you want to add a new distributed plugin : use /application/core/plugins
+/plugins/*
+!/plugins/index.html
+!/plugins/Demo/
+
+# ignore survey theme directory by default except LS survey theme
+# if you want to add a new distributed survey theme : add the directory here
+/themes/survey/*
+!/themes/survey/index.html
+!/themes/survey/bootswatch
+!/themes/survey/fruity
+!/themes/survey/fruity_twentythree
+!/themes/survey/vanilla
+
+# ignore question theme directory by default except LS question theme
+# if you want to add a new distributed question theme : add the directory here
+/themes/question/*
+!/themes/question/README.md
+!/themes/question/bootstrap_buttons
+!/themes/question/bootstrap_buttons_multi
+!/themes/question/bootstrap_dropdown
+!/themes/question/browserdetect
+!/themes/question/image_select-listradio
+!/themes/question/image_select-multiplechoice
+!/themes/question/inputondemand
+!/themes/question/ranking_advanced
+
+
 # ignore editor contents - reserved for future use
 /editor/*
 
