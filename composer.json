@@ -77,7 +77,7 @@
 		"mockery/mockery": "^1.5"
     },
     "scripts": {
-		"phpcs": "phpcs --standard=tests/rulesets/phpcs_ruleset.xml",
+		"phpcs": "phpcs --standard=phpcs.ruleset.xml",
 		"openapi": [
 			"php ./open-api-gen.php v1"
 		],

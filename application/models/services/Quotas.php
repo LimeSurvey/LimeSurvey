@@ -395,7 +395,7 @@ class Quotas
 
     /**
      * checkCompletedQuota() returns matched quotas information for the current response
-     * @param integer $surveyid Survey ID
+     * @param int $surveyid Survey ID
      * @param array $updatedValues The fields to be updated in the current request
      * @param bool $return Set to true to return information or false to execute the quota and display a message
      * @return array|void Nested array, Quotas->Members->Fields, includes quota information matched in session
@@ -403,6 +403,7 @@ class Quotas
      * @throws \CHttpException
      * @throws \Throwable
      * @throws \WrongTemplateVersionException
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     public static function checkCompletedQuota(int $surveyid, array $updatedValues = [], bool $return = false)
     {
@@ -554,8 +555,8 @@ class Quotas
         $sUrl = $event->get('url', $aMatchedQuota['quotals_url']);
         $sUrlDescription = $event->get('urldescrip', $aMatchedQuota['quotals_urldescrip']);
         $sAction = (int) $event->get('action', $aMatchedQuota['action']);
-        /* Tag if we close or not the survey */
-        $closeSurvey = ($sAction === 1 || App()->getRequest()->getPost('move') === 'confirmquota');
+        // close the survey only when the action is a terminate type or when confirmquota is called as move action
+        $closeSurvey = ($sAction !== Quota::SOFT_TERMINATE_VISIBLE_QUOTA_QUESTIONS || App()->getRequest()->getPost('move') === 'confirmquota');
         $sAutoloadUrl = $event->get('autoloadurl', $aMatchedQuota['autoload_url']);
         // Doing the action and show the page
         if (
