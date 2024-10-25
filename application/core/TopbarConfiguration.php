@@ -211,11 +211,9 @@ class TopbarConfiguration
             $enableEditorButton = false;
         }
 
-        $editorUrl = Yii::app()->request->getUrlReferrer(
-            Yii::app()->createUrl(
-                'editorLink/index',
-                ['route' => 'survey/' . $sid]
-            )
+        $editorUrl = Yii::app()->createUrl(
+            'editorLink/index',
+            ['route' => 'survey/' . $sid]
         );
         App()->getClientScript()->registerScriptFile(
             App()->getConfig('adminscripts') . 'newQuestionEditor.js',
