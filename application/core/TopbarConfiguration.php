@@ -215,10 +215,6 @@ class TopbarConfiguration
             'editorLink/index',
             ['route' => 'survey/' . $sid]
         );
-        App()->getClientScript()->registerScriptFile(
-            App()->getConfig('adminscripts') . 'newQuestionEditor.js',
-            CClientScript::POS_END
-        );
 
         return array(
             'sid' => $sid,
