@@ -323,6 +323,7 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
             'adminemail',
             'bounce_email',
             'listpublic',
+            'usecookie',
         ];
         foreach ($affectedSettings as $setting) {
             if (
