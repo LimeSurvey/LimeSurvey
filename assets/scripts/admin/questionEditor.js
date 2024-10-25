@@ -53,7 +53,8 @@ var LS = LS || {};
 // TODO: Use component for label sets
 $(document).on('ready pjax:scriptcomplete', function () {
 
-  $('#editor-link-button').on('click', function (e) {
+  // New question editor topbar button handling
+  $('.editor-link-button').on('click', function (e) {
     window.location.assign(this.getAttribute('data-url'));
   });
 
