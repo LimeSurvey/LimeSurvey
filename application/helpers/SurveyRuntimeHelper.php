@@ -1,5 +1,7 @@
 <?php
 
+use LimeSurvey\Models\Services\Quotas;
+
 /**
  * LimeSurvey
  * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -884,7 +886,7 @@ class SurveyRuntimeHelper
     {
         /* quota submitted */
         if ($this->sMove == 'confirmquota') {
-            checkCompletedQuota($this->iSurveyid);
+            Quotas::checkCompletedQuota($this->iSurveyid);
         }
         /* quota submitted */
         if ($this->sMove == 'returnfromquota') {
