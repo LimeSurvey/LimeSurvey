@@ -15,31 +15,35 @@ class SurveyUseCaptcha
     /**
      * Code/Mapping for useCaptcha in survey access
      */
-    const SURVEY_ACCESS_YES     = ['A', 'B', 'C', 'X', 'F', 'H', 'K', 'O', 'T'];
-    const SURVEY_ACCESS_NO      = ['P', 'U', '3', '5', '6', 'D', 'R', 'S', 'N'];
+    const SURVEY_ACCESS_YES = ['A', 'B', 'C', 'X', 'F', 'H', 'K', 'O', 'T'];
+    const SURVEY_ACCESS_NO = ['P', 'U', '3', '5', '6', 'D', 'R', 'S', 'N'];
     const SURVEY_ACCESS_INHERIT = ['E', 'G', 'I', 'J', 'L', 'M', '1', '2', '4'];
 
     /**
      * Code/Mapping for useCaptcha in registration
      */
-    const REGISTRATION_YES      = ['A', 'B', 'D', 'R', 'F', 'G', 'I', 'M', 'U'];
-    const REGISTRATION_NO       = ['L', 'T', '2', '4', '5', 'C', 'X', 'S', 'N'];
-    const REGISTRATION_INHERIT  = ['E', 'H', 'J', 'K', 'O', 'P', '1', '3', '6'];
+    const REGISTRATION_YES = ['A', 'B', 'D', 'R', 'F', 'G', 'I', 'M', 'U'];
+    const REGISTRATION_NO = ['L', 'T', '2', '4', '5', 'C', 'X', 'S', 'N'];
+    const REGISTRATION_INHERIT = ['E', 'H', 'J', 'K', 'O', 'P', '1', '3', '6'];
 
     /**
      * Code/Mapping for useCaptcha in save and load
      */
-    const SAVE_LOAD_YES         = ['A', 'C', 'D', 'S', 'G', 'H', 'J', 'L', 'P'];
-    const SAVE_LOAD_NO          = ['M', 'O', '1', '4', '6', 'B', 'X', 'R', 'N'];
-    const SAVE_LOAD_INHERIT     = ['E', 'F', 'I', 'K', 'T', 'U', '2', '3', '5'];
-
+    const SAVE_LOAD_YES = ['A', 'C', 'D', 'S', 'G', 'H', 'J', 'L', 'P'];
+    const SAVE_LOAD_NO = ['M', 'O', '1', '4', '6', 'B', 'X', 'R', 'N'];
+    const SAVE_LOAD_INHERIT = ['E', 'F', 'I', 'K', 'T', 'U', '2', '3', '5'];
 
 
     /** @var \Survey */
     private $survey;
 
-    public function __construct(Survey $survey = null){
-        $this->survey = $survey;
+    public function __construct($surveyId = null, Survey $survey = null)
+    {
+        if ($survey === null) {
+            $this->$survey = Survey::model()->findByPk($surveyId);
+        } else {
+            $this->survey = $survey;
+        }
     }
 
     /**
@@ -50,11 +54,12 @@ class SurveyUseCaptcha
      *
      * @return string
      */
-    public function convertSurveyAccessToUseCaptcha($value, $mode){
+    public function convertSurveyAccessToUseCaptcha(bool $value, string $mode)
+    {
 
         //get other two values from survey
         $accessRegistrationSaveload = $this->convertUseCaptchaFromDB($this->survey->usecaptcha);
-        $convertedValue = $value? 'Y' : 'N';
+        $convertedValue = $value ? 'Y' : 'N';
 
         //overwrite value
         switch ($mode) {
@@ -118,7 +123,8 @@ class SurveyUseCaptcha
      * @param $saveAndLoad
      * @return string One character that corresponds to captcha usage
      */
-    public function convertUseCaptchaForDB($surveyAccess, $registration, $saveAndLoad){
+    public function convertUseCaptchaForDB($surveyAccess, $registration, $saveAndLoad)
+    {
         if ($surveyAccess == 'I' && $registration == 'I' && $saveAndLoad == 'I') {
             return 'E';
         } elseif ($surveyAccess == 'Y' && $registration == 'Y' && $saveAndLoad == 'I') {
@@ -179,20 +185,22 @@ class SurveyUseCaptcha
     /**
      * Converts useCaptcha from db to the real values Y/N for all three types (access, registration,saveAndLoad).
      *
-     * @param $useCaptcha
+     * @param string $useCaptcha
+     * @param bool $showInherited if set to true, then 'I' should be included. Otherwise, only Y/N should be returned as result.
      * @return array has the following structure
      *               ['surveyAccess']
      *               ['registration']
      *               ['saveAndLoad']
      */
-    public function convertUseCaptchaFromDB($useCaptcha){
+    public function convertUseCaptchaFromDB($useCaptcha, $showInherited = true)
+    {
 
         //------------------------------- SURVEY ACCESS ----------------------------------------------------
         $captchaValues['surveyAccess'] = (in_array($useCaptcha, SurveyUseCaptcha::SURVEY_ACCESS_YES))
             ? 'Y'
             : ((in_array($useCaptcha, SurveyUseCaptcha::SURVEY_ACCESS_INHERIT)) ? ('I') : ('N'));
 
-        if ($captchaValues['surveyAccess'] === 'I'){
+        if (!$showInherited && $captchaValues['surveyAccess'] === 'I') {
             $surveyGroupSettings = \SurveysGroupsettings::getInstance($this->survey->gsid);
             $captchaValues['surveyAccess'] = in_array($surveyGroupSettings->usecaptcha,
                 SurveyUseCaptcha::SURVEY_ACCESS_YES) ? 'Y' : 'N';
@@ -203,7 +211,7 @@ class SurveyUseCaptcha
             ? 'Y'
             : ((in_array($useCaptcha, SurveyUseCaptcha::REGISTRATION_INHERIT)) ? ('I') : ('N'));
 
-        if ($captchaValues['registration'] === 'I'){
+        if (!$showInherited && $captchaValues['registration'] === 'I') {
             $surveyGroupSettings = \SurveysGroupsettings::getInstance($this->survey->gsid);
             $captchaValues['registration'] = in_array($surveyGroupSettings->usecaptcha,
                 SurveyUseCaptcha::REGISTRATION_YES) ? 'Y' : 'N';
@@ -214,12 +222,34 @@ class SurveyUseCaptcha
             ? 'Y'
             : ((in_array($useCaptcha, SurveyUseCaptcha::SAVE_LOAD_INHERIT)) ? ('I') : ('N'));
 
-        if ($captchaValues['saveAndLoad'] === 'I'){
+        if (!$showInherited && $captchaValues['saveAndLoad'] === 'I') {
             $surveyGroupSettings = \SurveysGroupsettings::getInstance($this->survey->gsid);
             $captchaValues['saveAndLoad'] = in_array($surveyGroupSettings->usecaptcha,
                 SurveyUseCaptcha::SAVE_LOAD_YES) ? 'Y' : 'N';
         }
 
         return $captchaValues;
+    }
+
+    public function reCalculateUseCaptcha($data)
+    {
+        //first get the three values from original usecaptcha
+        $useCaptchaValues = $this->convertUseCaptchaFromDB($this->survey->usecaptcha);
+
+        if (isset($data['useCaptchaAccess'])) {
+            $useCaptchaValues['surveyAccess'] = $data['useCaptchaAccess'];
+        }
+        if (isset($data['useCaptchaRegistration'])) {
+            $useCaptchaValues['registration'] = $data['useCaptchaRegistration'];
+        }
+        if (isset($data['useCaptchaSaveLoad'])) {
+            $useCaptchaValues['saveAndLoad'] = $data['useCaptchaSaveLoad'];
+        }
+
+        return $this->convertUseCaptchaForDB(
+            $useCaptchaValues['surveyAccess'],
+            $useCaptchaValues['registration'],
+            $useCaptchaValues['saveAndLoad']
+        );
     }
 }

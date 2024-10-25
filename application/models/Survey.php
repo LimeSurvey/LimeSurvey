@@ -1944,7 +1944,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
             }
         }
 
-        $surveyUseCaptcha = new \LimeSurvey\Models\Services\SurveyUseCaptcha($oSurvey);
+        $surveyUseCaptcha = new \LimeSurvey\Models\Services\SurveyUseCaptcha(0, $oSurvey);
         return $surveyUseCaptcha->convertUseCaptchaForDB($surveyaccess, $registration, $saveandload);
     }
 

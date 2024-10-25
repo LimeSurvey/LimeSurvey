@@ -3,6 +3,7 @@
 namespace LimeSurvey\Api\Command\V1\Transformer\Input;
 
 use LimeSurvey\Api\Transformer\Transformer;
+use LimeSurvey\Models\Services\SurveyUseCaptcha;
 
 class TransformerInputSurvey extends Transformer
 {
@@ -210,19 +211,14 @@ class TransformerInputSurvey extends Transformer
         $valueBack = parent::transform($data, $options);
 
         //useCaptcha
-        $valueBack['usecaptcha'] = $this->transformCaptcha($valueBack);
-        unset($valueBack['usecaptchaAccess']);
+        $valueBack['usecaptcha'] = $this->transformCaptcha($valueBack, $options);
 
         return $valueBack;
     }
 
-    private function transformCaptcha($mappedData){
-        //way back to hell
-        $useCaptcha = 'N';
+    private function transformCaptcha($mappedData, $options){
+        $surveyUseCaptchaService = new SurveyUseCaptcha($options['surveyID'], null);
 
-        //check if one of useCaptcha values has changed
-        var_dump($mappedData);
-
-        return $useCaptcha;
+        return $surveyUseCaptchaService->reCalculateUseCaptcha($mappedData);
     }
 }
