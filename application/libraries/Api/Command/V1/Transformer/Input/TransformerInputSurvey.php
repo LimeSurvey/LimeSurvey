@@ -176,7 +176,7 @@ class TransformerInputSurvey extends Transformer
             ],
             'allowedItAfterCompletion' => [
                 'key' => 'alloweditaftercompletion',
-                'formatter' => ['dateTimeToJson' => ['revert' => true]]
+                'formatter' => ['ynToBool' => ['revert' => true]]
             ],
             'googleAnalyticsStyle' => [
                 'key' => 'googleanalyticsstyle',
