@@ -209,6 +209,7 @@ class UploaderController extends SurveyController
             App()->getPluginManager()->dispatchEvent($event);
             /* New state */
             $success = $event->get('success', true);
+            $message = $event->get('msg', '');
             $disableCheck = $event->get('disableCheck', false);
             $moveFile = $event->get('movefile', true);
             /* New file */
@@ -228,7 +229,7 @@ class UploaderController extends SurveyController
             if (!$success) {
                 $return = array(
                     "success" => false,
-                    "msg" => $event->get('msg', gT("An unknown error occurred"))
+                    "msg" => !empty($message) ? $message : gT("An unknown error occurred")
                 );
                 echo ls_json_encode($return);
                 Yii::app()->end();
@@ -236,7 +237,7 @@ class UploaderController extends SurveyController
             if (!is_file($uploadfile_tmp_name)) {
                 $return = array(
                     "success" => false,
-                    "msg" => $event->get('msg', gT("An unknown error occurred"))
+                    "msg" => !empty($message) ? $message : gT("An unknown error occurred")
                 );
                 echo ls_json_encode($return);
                 Yii::app()->end();
@@ -309,7 +310,7 @@ class UploaderController extends SurveyController
                     "name"     => $filename,
                     "ext"      => $cleanExt,
                     "filename" => $randfilename,
-                    "msg"      => $event->get('msg', gT("The file has been successfully uploaded."))
+                    "msg"      =>  !empty($message) ? $message : gT("The file has been successfully uploaded.")
                 );
                 //header('Content-Type: application/json');
                 echo ls_json_encode($return);
@@ -327,7 +328,7 @@ class UploaderController extends SurveyController
                                 "name"          => rawurlencode(basename((string) $filename)),
                                 "ext"           => $cleanExt,
                                 "filename"      => $randfilename,
-                                "msg"           => $event->get('msg', gT("The file has been successfully uploaded."))
+                                "msg"           =>  !empty($message) ? $message : gT("The file has been successfully uploaded.")
                             );
                     // TODO : unlink this file since this is just a preview. But we can do it only if it's not needed, and still needed to have the file content
                     // Maybe use a javascript 'onunload' on preview question/group
@@ -355,7 +356,7 @@ class UploaderController extends SurveyController
                         "name"     => $filename,
                         "ext"      => $cleanExt,
                         "filename" => $randfilename,
-                        "msg"      => $event->get('msg', gT("The file has been successfully uploaded."))
+                        "msg"      =>  !empty($message) ? $message : gT("The file has been successfully uploaded.")
                     );
                     //header('Content-Type: application/json');
                     echo ls_json_encode($return);
