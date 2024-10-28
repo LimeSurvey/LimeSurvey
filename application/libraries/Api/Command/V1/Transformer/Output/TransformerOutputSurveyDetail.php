@@ -326,12 +326,23 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
             'allowregister',
             'htmlemail',
             'sendconfirmation',
-            'tokenLength'
+            'tokenlength'
         ];
         foreach ($affectedSettings as $setting) {
+            $intBasedSettings = ['questionindex', 'navigationdelay', 'tokenlength'];
             if (
                 isset($survey->$setting)
-                && ($survey->$setting === 'I' || $survey->$setting === 'inherit')
+                && (
+                    $survey->$setting === 'I'
+                    || $survey->$setting === 'inherit'
+                    || (
+                        in_array(
+                            $setting,
+                            $intBasedSettings
+                        )
+                        && $survey->$setting == '-1'
+                    )
+                )
             ) {
                 if (isset($survey->oOptions->$setting)) {
                     $survey->$setting = $survey->oOptions->$setting;
