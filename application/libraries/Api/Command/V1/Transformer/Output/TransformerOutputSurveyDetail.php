@@ -322,6 +322,11 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
             'admin',
             'adminemail',
             'bounce_email',
+            'tokenanswerspersistence',
+            'allowregister',
+            'htmlemail',
+            'sendconfirmation',
+            'tokenLength'
         ];
         foreach ($affectedSettings as $setting) {
             if (
