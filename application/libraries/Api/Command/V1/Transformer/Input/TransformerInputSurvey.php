@@ -49,6 +49,10 @@ class TransformerInputSurvey extends Transformer
                 'key' => 'allowregister',
                 'formatter' => ['ynToBool' => ['revert' => true]]
             ],
+            'htmlEmail' => [
+                'key' => 'htmlemail',
+                'formatter' => ['ynToBool' => ['revert' => true]]
+            ],
             'allowSave' => [
                 'key' => 'allowsave',
                 'formatter' => ['ynToBool' => ['revert' => true]]

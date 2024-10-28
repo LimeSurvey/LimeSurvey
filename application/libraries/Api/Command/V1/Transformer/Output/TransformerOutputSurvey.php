@@ -101,6 +101,10 @@ class TransformerOutputSurvey extends TransformerOutputActiveRecord
                 'key' => 'tokenAnswersPersistence',
                 'formatter' => ['ynToBool' => true]
             ],
+            "htmlemail" => [
+                'key' => 'htmlEmail',
+                'formatter' => ['ynToBool' => true]
+            ],
             "assessments" => ['formatter' => ['ynToBool' => true]],
             "usecaptcha" => [
                 'key' => 'useCaptcha',
