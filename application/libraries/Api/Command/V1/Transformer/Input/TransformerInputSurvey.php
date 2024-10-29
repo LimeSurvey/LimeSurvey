@@ -133,16 +133,12 @@ class TransformerInputSurvey extends Transformer
                 'key' => 'showxquestions',
                 'formatter' => ['ynToBool' => ['revert' => true]]
             ],
-            'showGroupInfo' => [
-                'key' => 'showgroupinfo', 'range' => ['B', 'N', 'D', 'X', 'I']
-            ],
+            'showGroupInfo' => 'showgroupinfo',
             'showNoAnswer' => [
                 'key' => 'shownoanswer',
                 'formatter' => ['ynToBool' => ['revert' => true]]
             ],
-            'showQNumCode' => [
-                'key' => 'showqnumcode', 'range' => ['B', 'N', 'C', 'X', 'I']
-            ],
+            'showQNumCode' => 'showqnumcode',
             'bounceTime' => [
                 'key' => 'bouncetime', 'type' => 'int', 'numerical'
             ],
@@ -195,5 +191,47 @@ class TransformerInputSurvey extends Transformer
             'template' => true,
             'format' => ['range' => ['G', 'S', 'A', 'I']]
         ]);
+    }
+
+    public function transform($data, $options = []): array{
+        $survey = parent::transform($data);
+        if(array_key_exists('showgroupinfo', $survey)) {
+            $survey['showgroupinfo'] = $this->convertShowGroupInfo($survey['showgroupinfo']);
+        }
+        if(array_key_exists('showqnumcode', $survey)) {
+            $survey['showqnumcode'] = $this->convertShowQNumCode($survey['showqnumcode']);
+        }
+
+        return $survey;
+    }
+
+    private function convertShowGroupInfo($showGroupInfoValueArray) {
+        $showGroupName = $showGroupInfoValueArray['showGroupName'];
+        $showGroupDescription = $showGroupInfoValueArray['showGroupDescription'];
+        $combinedValue = 'X';
+        if ($showGroupName && $showGroupDescription) {
+            $combinedValue = 'B';
+        }elseif($showGroupName && !$showGroupDescription) {
+            $combinedValue = 'N';
+        }elseif(!$showGroupName && $showGroupDescription) {
+            $combinedValue = 'D';
+        }
+
+        return $combinedValue;
+    }
+
+    private function convertShowQNumCode($showQNumCodeValueArray) {
+        $showNumber = $showQNumCodeValueArray['showNumber'];
+        $showCode = $showQNumCodeValueArray['showCode'];
+        $combinedValue = 'X';
+        if ($showNumber && $showCode) {
+            $combinedValue = 'B';
+        }elseif($showNumber && !$showCode) {
+            $combinedValue = 'N';
+        }elseif(!$showNumber && $showCode) {
+            $combinedValue = 'C';
+        }
+
+        return $combinedValue;
     }
 }

@@ -32,7 +32,7 @@ class TransformerInputSurveyLanguageSettings extends Transformer
                 'key' => 'surveyls_policy_notice',
                 'length' => ['min' => 0, 'max' => 200]
             ],
-            'surveyAlias' => [
+            'alias' => [
                 'key' => 'surveyls_alias',
                 'length' => ['min' => 0, 'max' => 100],
                 'pattern' => '/^[^\d\W][\w\-]*$/u'
