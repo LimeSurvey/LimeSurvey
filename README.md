@@ -4,7 +4,7 @@
 # LimeSurvey: The world’s #1 open-source survey platform 
 It's what we love and do best since 2006...
 
-🌐 [Website](https://www.limesurvey.org) · 🔮 [Demo](https://www.limesurvey.org) · 📚 [Documentation](https://www.limesurvey.org/manual) · ⚙️ [Request a feature](https://bugs.limesurvey.org) · 🐛 [Report a bug](https://bugs.limesurvey.org) · 🐛 [Discord](https://discord.gg/DEjguXn)
+🌐 [Website](https://www.limesurvey.org) · 🔮 [Demo](https://www.limesurvey.org) · 📚 [Documentation](https://www.limesurvey.org/manual) · ⚙️ [Request a feature](https://bugs.limesurvey.org) · 🐛 [Report a bug](https://bugs.limesurvey.org) · 🗨️ [Forums](https://forums.liemsurvey.org) · 🗨️ [Discord](https://discord.gg/DEjguXn)
 
 [LimeSurvey](https://www.limesurvey.org) is a free and open-source online survey platfrom used by businesses of all sizes, professionals, academic institutions, teachers, students, governments, financial institues, and [Anja](https://www.linkedin.com/in/anja-meinders-ba3b29213/) from HR (who is hiring and looking for a **DevOps** and **Technical Support Engineer/Developer**  – [drop her a Lime…](https://www.linkedin.com/in/anja-meinders-ba3b29213/)) in 80+ countries worldwide. It offers features like conditional logic, question branching, customizable templates, multilingual support, and GDPR compliance.
 
