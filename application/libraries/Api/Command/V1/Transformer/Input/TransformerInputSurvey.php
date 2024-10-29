@@ -54,7 +54,9 @@ class TransformerInputSurvey extends Transformer
                 'formatter' => ['ynToBool' => ['revert' => true]]
             ],
             'autoNumberStart' => [
-                'key' => 'autonumber_start', 'type' => 'int', 'numerical'
+                'key' => 'autonumber_start',
+                'type' => 'int',
+                'numerical'
             ],
             'autoRedirect' => [
                 'key' => 'autoredirect',
@@ -111,9 +113,33 @@ class TransformerInputSurvey extends Transformer
             'useCaptcha' => [
                 'key' => 'usecaptcha',
                 'range' => [
-                    'A', 'B', 'C', 'D', 'X', 'R', 'S', 'N', 'E', 'F', 'G', 'H',
-                    'I', 'J', 'K', 'L', 'M', 'O', 'P', 'T', 'U',
-                    '1', '2', '3', '4', '5', '6'
+                    'A',
+                    'B',
+                    'C',
+                    'D',
+                    'X',
+                    'R',
+                    'S',
+                    'N',
+                    'E',
+                    'F',
+                    'G',
+                    'H',
+                    'I',
+                    'J',
+                    'K',
+                    'L',
+                    'M',
+                    'O',
+                    'P',
+                    'T',
+                    'U',
+                    '1',
+                    '2',
+                    '3',
+                    '4',
+                    '5',
+                    '6'
                 ]
             ],
             'useTokens' => [
@@ -140,10 +166,13 @@ class TransformerInputSurvey extends Transformer
             ],
             'showQNumCode' => 'showqnumcode',
             'bounceTime' => [
-                'key' => 'bouncetime', 'type' => 'int', 'numerical'
+                'key' => 'bouncetime',
+                'type' => 'int',
+                'numerical'
             ],
             'bounceProcessing' => [
-                'key' => 'bounceprocessing', 'range' => ['L', 'N', 'G']
+                'key' => 'bounceprocessing',
+                'range' => ['L', 'N', 'G']
             ],
             'bounceAccountType' => 'bounceaccounttype',
             'bounceAccountHost' => 'bounceaccounthost',
@@ -164,7 +193,9 @@ class TransformerInputSurvey extends Transformer
                 'numerical' => ['min' => -1, 'max' => 2]
             ],
             'navigationDelay' => [
-                'key' => 'navigationdelay', 'type' => 'int', 'numerical'
+                'key' => 'navigationdelay',
+                'type' => 'int',
+                'numerical'
             ],
             'noKeyboard' => [
                 'key' => 'nokeyboard',
@@ -193,27 +224,28 @@ class TransformerInputSurvey extends Transformer
         ]);
     }
 
-    public function transform($data, $options = []): array
+    public function transform($data, $options = [])
     {
         $survey = parent::transform($data);
-        if (array_key_exists('showgroupinfo', $survey)) {
-            $survey['showgroupinfo'] = $this->convertShowGroupInfo(
-                $survey['showgroupinfo']
-            );
+        if (is_array($survey)) {
+            if (array_key_exists('showgroupinfo', $survey)) {
+                $survey['showgroupinfo'] = $this->convertShowGroupInfo(
+                    $survey['showgroupinfo']
+                );
+            }
+            if (array_key_exists('showqnumcode', $survey)) {
+                $survey['showqnumcode'] = $this->convertShowQNumCode(
+                    $survey['showqnumcode']
+                );
+            }
         }
-        if (array_key_exists('showqnumcode', $survey)) {
-            $survey['showqnumcode'] = $this->convertShowQNumCode(
-                $survey['showqnumcode']
-            );
-        }
-
         return $survey;
     }
 
     /**
      * Converts incoming values for showGroupName and showGroupDescription
      * into a single value for the 'showgroupinfo' prop.
-     * @param $showGroupInfoValueArray
+     * @param array $showGroupInfoValueArray
      * @return string
      */
     private function convertShowGroupInfo($showGroupInfoValueArray)
@@ -235,7 +267,7 @@ class TransformerInputSurvey extends Transformer
     /**
      * Converts incoming values for showNumber and showCode
      * into a single value for the 'showqnumcode' prop.
-     * @param $showQNumCodeValueArray
+     * @param array $showQNumCodeValueArray
      * @return string
      */
     private function convertShowQNumCode($showQNumCodeValueArray)

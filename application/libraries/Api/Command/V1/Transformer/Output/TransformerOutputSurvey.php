@@ -192,7 +192,7 @@ class TransformerOutputSurvey extends TransformerOutputActiveRecord
      * Converts single value of showgroupinfo to an array with
      * showGroupName and showGroupDescription keys.
      *
-     * @param $showGroupInfoValue
+     * @param string $showGroupInfoValue
      * @return array
      */
     private function convertShowGroupInfo($showGroupInfoValue)
@@ -208,7 +208,7 @@ class TransformerOutputSurvey extends TransformerOutputActiveRecord
     /**
      * Converts single value of showqnumcode to an array with
      * showNumber and showCode keys.
-     * @param $showQNumCodeValue
+     * @param string $showQNumCodeValue
      * @return array
      */
     private function convertShowQNumCode($showQNumCodeValue)
