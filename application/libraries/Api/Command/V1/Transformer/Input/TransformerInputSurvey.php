@@ -252,13 +252,14 @@ class TransformerInputSurvey extends Transformer
     {
         $showGroupName = $showGroupInfoValueArray['showGroupName'];
         $showGroupDescription = $showGroupInfoValueArray['showGroupDescription'];
-        $combinedValue = 'X';
         if ($showGroupName && $showGroupDescription) {
             $combinedValue = 'B';
         } elseif ($showGroupName && !$showGroupDescription) {
             $combinedValue = 'N';
         } elseif (!$showGroupName && $showGroupDescription) {
             $combinedValue = 'D';
+        } else {
+            $combinedValue = 'X';
         }
 
         return $combinedValue;
@@ -274,13 +275,14 @@ class TransformerInputSurvey extends Transformer
     {
         $showNumber = $showQNumCodeValueArray['showNumber'];
         $showCode = $showQNumCodeValueArray['showCode'];
-        $combinedValue = 'X';
         if ($showNumber && $showCode) {
             $combinedValue = 'B';
         } elseif ($showNumber && !$showCode) {
             $combinedValue = 'N';
         } elseif (!$showNumber && $showCode) {
             $combinedValue = 'C';
+        } else {
+            $combinedValue = 'X';
         }
 
         return $combinedValue;
