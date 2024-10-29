@@ -1,5 +1,7 @@
 <div id="top"></div>
+<p align="center">
 <img src="https://www.limesurvey.org/images/limesurvey/svg/logo_limesurvey_head.svg" width="400" alt='LimeSurvey Logo' />
+</p>
 
 # LimeSurvey: The world’s #1 open-source survey platform 
 It's what we love and do best since 2006...
@@ -41,8 +43,9 @@ LimeSurvey is perfect for you if you are...
 - ✅ **WCAG 2.0 compliance** 🌐💚
 
 ##  Installation
-⬇️ Stable Release: We recommend downloading the [latest stable version](https://community.limesurvey.org/downloads/) for optimal reliability and performance.
-⚠️ Repository:  You can also access the development repository. Be aware that it may contain experimental versions that are not fully tested and could have bugs.
+⬇️ **Stable Release**: We recommend downloading the [latest stable version](https://community.limesurvey.org/downloads/) for optimal reliability and performance.
+
+⚠️ **Repository**:  You can also access the development repository. Be aware that it may contain versions that are not fully tested.
 
 ## Requirements
 
@@ -60,7 +63,7 @@ LimeSurvey is perfect for you if you are...
 Skip the technical setup and focus on creating and analyzing surveys. With our hosted SaaS, you get a fast, easy-to-use online survey platform that ensures security and complies with privacy regulations like GDPR. We take care of all the hosting and maintenance, so you don’t have to worry about it and can scale away: 
 👉 [Create free online survey](https://www.limesurvey.org/)!
 
-## ❤️ Join the Community
+## ❤️ Join the community
 
 - ⭐ Show your support and star this repo now
 - 🐛 Submit [bugs](https://bugs.limesurvey.org) and [feature requests](https://bugs.limesurvey.org)
@@ -68,7 +71,7 @@ Skip the technical setup and focus on creating and analyzing surveys. With our h
 - 💬 Join our [Discord](https://discord.gg/DEjguXn)
 - 🦸 Make [contributions](https://www.limesurvey.org/manual/How_to_join_the_LimeSurvey_project_team) or [join the LimeSurvey project team](https://www.limesurvey.org/manual/How_to_join_the_LimeSurvey_project_team)
 
-## All Thanks To Our Contributors
+## All Thanks to our contributors
 <a href="https://github.com/limesurvey/limesurvey/graphs/contributors">
 
 <img src="https://contrib.rocks/image?repo=limesurvey/limesurvey&max=1000" />
