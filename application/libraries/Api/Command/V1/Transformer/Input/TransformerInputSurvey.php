@@ -193,42 +193,61 @@ class TransformerInputSurvey extends Transformer
         ]);
     }
 
-    public function transform($data, $options = []): array{
+    public function transform($data, $options = []): array
+    {
         $survey = parent::transform($data);
-        if(array_key_exists('showgroupinfo', $survey)) {
-            $survey['showgroupinfo'] = $this->convertShowGroupInfo($survey['showgroupinfo']);
+        if (array_key_exists('showgroupinfo', $survey)) {
+            $survey['showgroupinfo'] = $this->convertShowGroupInfo(
+                $survey['showgroupinfo']
+            );
         }
-        if(array_key_exists('showqnumcode', $survey)) {
-            $survey['showqnumcode'] = $this->convertShowQNumCode($survey['showqnumcode']);
+        if (array_key_exists('showqnumcode', $survey)) {
+            $survey['showqnumcode'] = $this->convertShowQNumCode(
+                $survey['showqnumcode']
+            );
         }
 
         return $survey;
     }
 
-    private function convertShowGroupInfo($showGroupInfoValueArray) {
+    /**
+     * Converts incoming values for showGroupName and showGroupDescription
+     * into a single value for the 'showgroupinfo' prop.
+     * @param $showGroupInfoValueArray
+     * @return string
+     */
+    private function convertShowGroupInfo($showGroupInfoValueArray)
+    {
         $showGroupName = $showGroupInfoValueArray['showGroupName'];
         $showGroupDescription = $showGroupInfoValueArray['showGroupDescription'];
         $combinedValue = 'X';
         if ($showGroupName && $showGroupDescription) {
             $combinedValue = 'B';
-        }elseif($showGroupName && !$showGroupDescription) {
+        } elseif ($showGroupName && !$showGroupDescription) {
             $combinedValue = 'N';
-        }elseif(!$showGroupName && $showGroupDescription) {
+        } elseif (!$showGroupName && $showGroupDescription) {
             $combinedValue = 'D';
         }
 
         return $combinedValue;
     }
 
-    private function convertShowQNumCode($showQNumCodeValueArray) {
+    /**
+     * Converts incoming values for showNumber and showCode
+     * into a single value for the 'showqnumcode' prop.
+     * @param $showQNumCodeValueArray
+     * @return string
+     */
+    private function convertShowQNumCode($showQNumCodeValueArray)
+    {
         $showNumber = $showQNumCodeValueArray['showNumber'];
         $showCode = $showQNumCodeValueArray['showCode'];
         $combinedValue = 'X';
         if ($showNumber && $showCode) {
             $combinedValue = 'B';
-        }elseif($showNumber && !$showCode) {
+        } elseif ($showNumber && !$showCode) {
             $combinedValue = 'N';
-        }elseif(!$showNumber && $showCode) {
+        } elseif (!$showNumber && $showCode) {
             $combinedValue = 'C';
         }
 
