@@ -13,7 +13,7 @@ class FormatterMandatoryTest extends TestBaseClass
     /**
      * @testdox keeps S
      */
-    public function testConvertsNullToS()
+    public function testKeepsS()
     {
         $formatter = new FormatterMandatory();
         $config = $this->getConfig();
