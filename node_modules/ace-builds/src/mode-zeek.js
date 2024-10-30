@@ -309,7 +309,7 @@ var ZeekHighlightRules = function () {
                 token: "punctuation.section.parens.end",
                 regex: /\)/
             }
-        ], // state: start
+        ],
         "string-state": [
             {
                 token: "constant.character.escape",
@@ -328,7 +328,7 @@ var ZeekHighlightRules = function () {
                 token: "string.double",
                 regex: "."
             }
-        ], // state: string-state
+        ],
         "pattern-state": [
             {
                 token: "constant.character.escape",

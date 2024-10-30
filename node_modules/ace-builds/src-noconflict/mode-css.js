@@ -74,7 +74,7 @@ var CssHighlightRules = function () {
                     + "|swash|ornaments|annotation|stylistic|styleset|character-variant)"
             }],
         "comments": [{
-                token: "comment", // multi line comment
+                token: "comment",
                 regex: "\\/\\*",
                 push: [{
                         token: "comment",
@@ -103,10 +103,10 @@ var CssHighlightRules = function () {
                 token: "constant.numeric",
                 regex: numRe
             }, {
-                token: "constant.numeric", // hex6 color
+                token: "constant.numeric",
                 regex: "#[a-f0-9]{6}"
             }, {
-                token: "constant.numeric", // hex3 color
+                token: "constant.numeric",
                 regex: "#[a-f0-9]{3}"
             }, {
                 token: ["punctuation", "entity.other.attribute-name.pseudo-element.css"],
@@ -119,9 +119,6 @@ var CssHighlightRules = function () {
             }, {
                 token: keywordMapper,
                 regex: "\\-?[a-zA-Z_][a-zA-Z0-9_\\-]*"
-            }, {
-                token: "paren.lparen",
-                regex: "\\{"
             }, {
                 caseInsensitive: true
             }],

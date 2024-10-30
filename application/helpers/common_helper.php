@@ -260,7 +260,7 @@ function convertGETtoPOST($url)
     $stack = explode('?', $url);
     $calledscript = array_shift($stack);
     $query = array_shift($stack);
-    $aqueryitems = explode('&', $query);
+    $aqueryitems = explode('&', (string) $query);
     $postArray = [];
     $getArray = [];
     foreach ($aqueryitems as $queryitem) {
@@ -3647,7 +3647,7 @@ function cleanLanguagesFromSurvey($iSurveyID, $availlangs, $baselang = '')
     $iSurveyID = (int) $iSurveyID;
     $baselang = sanitize_languagecode($baselang);
     if (empty($baselang)) {
-        $baselang = Survey::model()->findByPk($sid)->language;
+        $baselang = Survey::model()->findByPk($iSurveyID)->language;
     }
     $aLanguages = [];
     if (!empty($availlangs) && $availlangs != " ") {

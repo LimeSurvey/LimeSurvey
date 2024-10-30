@@ -49,7 +49,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
 {
     /**
      * If you add a new database version add any critical database version numbers to this array. See link
-     * @link https://manual.limesurvey.org/Database_versioning for explanations
+     * @link https://www.limesurvey.org/manual/Database_versioning for explanations
      * @var array $aCriticalDBVersions An array of cricital database version.
      */
     $aCriticalDBVersions = array(310, 400, 450, 600);

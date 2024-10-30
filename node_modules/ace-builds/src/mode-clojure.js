@@ -84,38 +84,34 @@ var ClojureHighlightRules = function () {
                 token: "comment",
                 regex: ";.*$"
             }, {
-                token: "keyword", //parens
+                token: "keyword",
                 regex: "[\\(|\\)]"
             }, {
-                token: "keyword", //lists
+                token: "keyword",
                 regex: "[\\'\\(]"
             }, {
-                token: "keyword", //vectors
+                token: "keyword",
                 regex: "[\\[|\\]]"
             }, {
-                token: "string.regexp", //Regular Expressions
-                regex: '#"',
-                next: "regex"
-            }, {
-                token: "keyword", //sets and maps
+                token: "keyword",
                 regex: "[\\{|\\}|\\#\\{|\\#\\}]"
             }, {
-                token: "keyword", // ampersands
+                token: "keyword",
                 regex: '[\\&]'
             }, {
-                token: "keyword", // metadata
+                token: "keyword",
                 regex: '[\\#\\^\\{]'
             }, {
-                token: "keyword", // anonymous fn syntactic sugar
+                token: "keyword",
                 regex: '[\\%]'
             }, {
-                token: "keyword", // deref reader macro
+                token: "keyword",
                 regex: '[@]'
             }, {
-                token: "constant.numeric", // hex
+                token: "constant.numeric",
                 regex: "0[xX][0-9a-fA-F]+\\b"
             }, {
-                token: "constant.numeric", // float
+                token: "constant.numeric",
                 regex: "[+-]?\\d+(?:(?:\\.\\d*)?(?:[eE][+-]?\\d+)?)?\\b"
             }, {
                 token: "constant.language",
@@ -124,12 +120,15 @@ var ClojureHighlightRules = function () {
                 token: keywordMapper,
                 regex: "[a-zA-Z_$][a-zA-Z0-9_$\\-]*\\b"
             }, {
-                token: "string", // single line
+                token: "string",
                 regex: '"',
                 next: "string"
             }, {
-                token: "constant", // symbol
+                token: "constant",
                 regex: /:[^()\[\]{}'"\^%`,;\s]+/
+            }, {
+                token: "string.regexp",
+                regex: '/#"(?:\\.|(?:\\")|[^""\n])*"/g'
             }
         ],
         "string": [
@@ -138,47 +137,11 @@ var ClojureHighlightRules = function () {
                 regex: "\\\\.|\\\\$"
             }, {
                 token: "string",
+                regex: '[^"\\\\]+'
+            }, {
+                token: "string",
                 regex: '"',
                 next: "start"
-            }, {
-                defaultToken: "string"
-            }
-        ],
-        "regex": [
-            {
-                token: "regexp.keyword.operator",
-                regex: "\\\\(?:u[\\da-fA-F]{4}|x[\\da-fA-F]{2}|.)"
-            }, {
-                token: "string.regexp",
-                regex: '"',
-                next: "start"
-            }, {
-                token: "constant.language.escape",
-                regex: /\(\?[:=!]|\)|\{\d+\b,?\d*\}|[+*]\?|[()$^+*?.]/
-            }, {
-                token: "constant.language.delimiter",
-                regex: /\|/
-            }, {
-                token: "constant.language.escape",
-                regex: /\[\^?/,
-                next: "regex_character_class"
-            }, {
-                defaultToken: "string.regexp"
-            }
-        ],
-        "regex_character_class": [
-            {
-                token: "regexp.charclass.keyword.operator",
-                regex: "\\\\(?:u[\\da-fA-F]{4}|x[\\da-fA-F]{2}|.)"
-            }, {
-                token: "constant.language.escape",
-                regex: "]",
-                next: "regex"
-            }, {
-                token: "constant.language.escape",
-                regex: "-"
-            }, {
-                defaultToken: "string.regexp.charachterclass"
             }
         ]
     };

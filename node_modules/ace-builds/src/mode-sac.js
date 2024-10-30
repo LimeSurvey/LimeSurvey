@@ -3,15 +3,15 @@ var oop = require("../lib/oop");
 var TextHighlightRules = require("./text_highlight_rules").TextHighlightRules;
 var DocCommentHighlightRules = function () {
     this.$rules = {
-        "start": [
-            {
+        "start": [{
                 token: "comment.doc.tag",
-                regex: "@\\w+(?=\\s|$)"
-            }, DocCommentHighlightRules.getTagRule(), {
-                defaultToken: "comment.doc.body",
+                regex: "@[\\w\\d_]+" // TODO: fix email addresses
+            },
+            DocCommentHighlightRules.getTagRule(),
+            {
+                defaultToken: "comment.doc",
                 caseInsensitive: true
-            }
-        ]
+            }]
     };
 };
 oop.inherits(DocCommentHighlightRules, TextHighlightRules);
@@ -23,14 +23,14 @@ DocCommentHighlightRules.getTagRule = function (start) {
 };
 DocCommentHighlightRules.getStartRule = function (start) {
     return {
-        token: "comment.doc", // doc comment
-        regex: /\/\*\*(?!\/)/,
+        token: "comment.doc",
+        regex: "\\/\\*(?=\\*)",
         next: start
     };
 };
 DocCommentHighlightRules.getEndRule = function (start) {
     return {
-        token: "comment.doc", // closing comment
+        token: "comment.doc",
         regex: "\\*\\/",
         next: start
     };
@@ -83,11 +83,11 @@ var sacHighlightRules = function () {
             },
             DocCommentHighlightRules.getStartRule("doc-start"),
             {
-                token: "comment", // multi line comment
+                token: "comment",
                 regex: "\\/\\*",
                 next: "comment"
             }, {
-                token: "string", // character
+                token: "string",
                 regex: "'(?:" + escapeRe + "|.)?'"
             }, {
                 token: "string.start",
@@ -109,17 +109,17 @@ var sacHighlightRules = function () {
                     { defaultToken: "string" }
                 ]
             }, {
-                token: "constant.numeric", // hex
+                token: "constant.numeric",
                 regex: "0[xX][0-9a-fA-F]+(L|l|UL|ul|u|U|F|f|ll|LL|ull|ULL)?\\b"
             }, {
-                token: "constant.numeric", // float
+                token: "constant.numeric",
                 regex: "[+-]?\\d+(?:(?:\\.\\d*)?(?:[eE][+-]?\\d+)?)?(L|l|UL|ul|u|U|F|f|ll|LL|ull|ULL)?\\b"
             }, {
-                token: "keyword", // pre-compiler directives
+                token: "keyword",
                 regex: "#\\s*(?:include|import|pragma|line|define|undef)\\b",
                 next: "directive"
             }, {
-                token: "keyword", // special case pre-compiler directive
+                token: "keyword",
                 regex: "#\\s*(?:endif|if|ifdef|else|elif|ifndef)\\b"
             }, {
                 token: "support.function",
@@ -146,7 +146,7 @@ var sacHighlightRules = function () {
         ],
         "comment": [
             {
-                token: "comment", // closing comment
+                token: "comment",
                 regex: "\\*\\/",
                 next: "start"
             }, {
@@ -181,12 +181,12 @@ var sacHighlightRules = function () {
                 next: "start"
             },
             {
-                token: "constant.other", // single line
+                token: "constant.other",
                 regex: '\\s*["](?:(?:\\\\.)|(?:[^"\\\\]))*?["]',
                 next: "start"
             },
             {
-                token: "constant.other", // single line
+                token: "constant.other",
                 regex: "\\s*['](?:(?:\\\\.)|(?:[^'\\\\]))*?[']",
                 next: "start"
             },

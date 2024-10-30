@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Zend Framework
  *
@@ -38,9 +37,9 @@ class Zend_Http_UserAgent_Email extends Zend_Http_UserAgent_Desktop
      *
      * @var array
      */
-    protected static $_uaSignatures = array(
+    protected static $_uaSignatures = [
         'thunderbird',
-    );
+    ];
 
     /**
      * Comparison of the UserAgent chain and User Agent signatures

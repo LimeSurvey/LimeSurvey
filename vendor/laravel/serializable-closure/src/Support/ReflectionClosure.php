@@ -1135,10 +1135,10 @@ class ReflectionClosure extends ReflectionFunction
                             if (--$open == 0) {
                                 if (! $structIgnore) {
                                     $structures[] = [
-                                        'type'  => $structType,
-                                        'name'  => $structName,
+                                        'type' => $structType,
+                                        'name' => $structName,
                                         'start' => $startLine,
-                                        'end'   => $endLine,
+                                        'end' => $endLine,
                                     ];
                                 }
                                 $structIgnore = false;

@@ -22,11 +22,11 @@ var EiffelHighlightRules = function () {
     var simpleString = /(?:[^"%\b\f\v]|%[A-DFHLNQR-V%'"()<>]|%\/(?:0[xX][\da-fA-F](?:_*[\da-fA-F])*|0[cC][0-7](?:_*[0-7])*|0[bB][01](?:_*[01])*|\d(?:_*\d)*)\/)+?/;
     this.$rules = {
         "start": [{
-                token: "string.quoted.other", // Aligned-verbatim-strings (verbatim option not supported)
+                token: "string.quoted.other",
                 regex: /"\[/,
                 next: "aligned_verbatim_string"
             }, {
-                token: "string.quoted.other", // Non-aligned-verbatim-strings (verbatim option not supported)
+                token: "string.quoted.other",
                 regex: /"\{/,
                 next: "non-aligned_verbatim_string"
             }, {
@@ -39,7 +39,7 @@ var EiffelHighlightRules = function () {
                 token: "constant.character",
                 regex: /'(?:[^%\b\f\n\r\t\v]|%[A-DFHLNQR-V%'"()<>]|%\/(?:0[xX][\da-fA-F](?:_*[\da-fA-F])*|0[cC][0-7](?:_*[0-7])*|0[bB][01](?:_*[01])*|\d(?:_*\d)*)\/)'/
             }, {
-                token: "constant.numeric", // hexa | octal | bin
+                token: "constant.numeric",
                 regex: /\b0(?:[xX][\da-fA-F](?:_*[\da-fA-F])*|[cC][0-7](?:_*[0-7])*|[bB][01](?:_*[01])*)\b/
             }, {
                 token: "constant.numeric",
@@ -51,7 +51,7 @@ var EiffelHighlightRules = function () {
                 token: "paren.rparen",
                 regex: /[\])}]|>>|\|\)/
             }, {
-                token: "keyword.operator", // punctuation
+                token: "keyword.operator",
                 regex: /:=|->|\.(?=\w)|[;,:?]/
             }, {
                 token: "keyword.operator",

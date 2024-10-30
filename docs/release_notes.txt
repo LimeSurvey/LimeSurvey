@@ -34,6 +34,55 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.6.6 (build 241002) to 6.6.7 (build 241028) October 28, 2024
+-Fixed issue: On survey copy the new ID was not verified server-side (Carsten Schmitz)
+-Fixed issue #CT-967: Fix for progress bar going over 100% (#3957) (marticos)
+-Fixed issue #CR-1450: improved quota selection options (#3994) (Patrick Teichmann)
+-Fixed issue #19810: Error loading survey participants using LDAPv3 (AD) (kvolk2git)
+-Fixed issue #19799: No access to the panelintegration page - returns a 500 error (related to MSSQL) (#3997) (Gabriel Jenik)
+-Fixed issue #19795: array_key_exists() Argument #2 ($array) must be of type array, null given (#3992) (Gabriel Jenik)
+-Fixed issue #19781: Adding options using quick-add leads to wrong codes being shown (#3989) (Gabriel Jenik)
+-Fixed issue #19746: Auto correction of invalid input in Multiple numeric input type question could be improved (#3982) (Gabriel Jenik)
+-Fixed issue #19715: At multilingual surveys labels at the statistics tool do not show up using the base language (different language is used) (#3987) (Gabriel Jenik)
+-Fixed issue #19707: cannot export participants table to csv (#3988) (Gabriel Jenik)
+-Fixed issue #19687: php8.3 compatibility - Zend (xmlrpc related) (#3985) (Gabriel Jenik)
+-Fixed issue #19643: Date question with restrictions does not show up like in versions 3 and 5 (#3984) (Gabriel Jenik)
+-Fixed issue #19600: Some Tools Menu Items are not visible when having a lot of languages (#4001) (Gabriel Jenik)
+-Fixed issue #19575: Use localization to set the name and description when importing a group with the RemoteControl API (#3860) (Edgar Ramírez Mondragón)
+-Fixed issue #19290: Wrong Row Total in Array (Texts) (#3981) (Gabriel Jenik)
+-Fixed issue #19015: User with superadmin role does not get superadmin privileges (#3434) (Denis Chenu)
+#Updated translation: Yoruba by constantinl
+#Updated translation: Swahili by arnaullop
+#Updated translation: Slovak by jelen1
+#Updated translation: Portuguese (Portugal) by c_schmitz
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Kannada by nayakank
+#Updated translation: Japanese by nomoto
+#Updated translation: Italian by lfanfoni, Valentina Tessaro
+#Updated translation: Italian (Informal) by lfanfoni, Valentina Tessaro
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Estonian by klaster
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Catalan by qualitatuvic
+
+
+Changes from 6.6.5 (build 240924) to 6.6.6 (build 241002) October 2, 2024
+-Fixed issue: [security] XSS when using MSSQL server as database backend (Carsten Schmitz)
+-Fixed issue #19700: [security] Invalid DB value can be entered with start URL (#3974) (Denis Chenu)
+#Updated translation: Luxembourgish by c_schmitz
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz, evi3636
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 6.6.4 (build 240923) to 6.6.5 (build 240924) September 24, 2024
 Fixed issue: multiple choice question cannot be answered if "other" option has been enabled
 
