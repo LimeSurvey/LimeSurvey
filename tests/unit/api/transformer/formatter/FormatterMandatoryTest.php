@@ -43,7 +43,7 @@ class FormatterMandatoryTest extends TestBaseClass
     private function getConfig()
     {
         return [
-            'formatter' => ['mandatory' => true]
+            'formatter' => ['mandatory' => ['revert' => true]],
         ];
     }
 }
