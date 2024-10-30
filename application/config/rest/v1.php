@@ -40,4 +40,5 @@ return array_merge(
     include_once __DIR__ . '/v1/survey-group.php',
     include_once __DIR__ . '/v1/user.php',
     include_once __DIR__ . '/v1/site-settings.php',
+    include_once __DIR__ . '/v1/file-upload.php'
 );
