@@ -395,6 +395,9 @@ class Themes extends SurveyCommonAction
                             'is_folder' => $sFile['folder']
                         ];
                     }
+                    if ($sFile['stored_filename'] == "config.xml") {
+                        SurveyThemeHelper::checkConfigFiles($sFile['filename']);
+                    }
                 }
 
                 if (Template::checkIfTemplateExists($sNewDirectoryName)) {
