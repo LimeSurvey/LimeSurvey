@@ -218,7 +218,10 @@ class TransformerInputSurvey extends Transformer
                 );
             }
             //useCaptcha
-            $valueBack['usecaptcha'] = $this->transformCaptcha($valueBack, $options);
+            $survey['usecaptcha'] = $this->transformCaptcha(
+                $survey,
+                $options
+            );
         }
         return $survey;
     }
