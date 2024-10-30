@@ -11,25 +11,40 @@ class Update_625 extends DatabaseUpdateBase
      */
     public function up()
     {
+        $db = $this->db->createCommand();
+
         //Restore all default menu entries before making them non-deletable.
         $aDefaultSurveyMenuEntries = \LsDefaultDataSets::getSurveyMenuEntryData();
         foreach ($aDefaultSurveyMenuEntries as $aSurveymenuentry) {
-            if (\SurveymenuEntries::model()->findByAttributes(['name' => $aSurveymenuentry['name']]) === null) {
+            $menuEntryExist = $db->select("*")->from("{{surveymenu_entries}}")->where(
+                'name=:name',
+                [':name' => $aSurveymenuentry['name']]
+            )->query()->rowCount;
+
+            if (!$menuEntryExist) {
                 $this->db->createCommand()->insert('{{surveymenu_entries}}', $aSurveymenuentry);
             }
         }
 
         //Adjust some menu titles
-        $participantsEntry = \SurveymenuEntries::model()->find('name=:name', array(':name' => 'participants'));
+        $participantsEntry = $db->select("*")->from("{{surveymenu_entries}}")->where('name=:name', [':name' => 'participants'])->query()->rowCount;
         if ($participantsEntry) {
-            $participantsEntry->menu_title = 'Participants';
-            $participantsEntry->save();
+            $this->db->createCommand()->update(
+                '{{surveymenu_entries}}',
+                [ "menu_title" => "Participants"],
+                'name=:name',
+                [':name' => 'participants']
+            );
         }
 
-        $generalEntry = \SurveymenuEntries::model()->find('name=:name', array(':name' => 'generalsettings'));
+        $generalEntry = $db->select("*")->from("{{surveymenu_entries}}")->where('name=:name', [':name' => 'generalsettings'])->query()->rowCount;
         if ($generalEntry) {
-            $generalEntry->menu_title = 'General';
-            $generalEntry->save();
+            $this->db->createCommand()->update(
+                '{{surveymenu_entries}}',
+                ["menu_title" => "General"],
+                'name=:name',
+                [':name' => 'generalsettings']
+            );
         }
     }
 }
