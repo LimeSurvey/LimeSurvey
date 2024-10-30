@@ -329,7 +329,7 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
             'tokenlength'
         ];
         foreach ($affectedSettings as $setting) {
-            $intBasedSettings = ['questionindex', 'navigationdelay', 'tokenlength'];
+            $intBasedSettings = ['questionindex', 'navigationdelay'];
             if (
                 isset($survey->$setting)
                 && (
