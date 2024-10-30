@@ -16,8 +16,7 @@ class FormatterMandatoryTest extends TestBaseClass
     public function testKeepsS()
     {
         $formatter = new FormatterMandatory();
-        $config = $this->getConfig();
-        $this->assertEquals('S', $formatter->format('S', $config));
+        $this->assertEquals('S', $formatter->format('S', ['revert' => true]));
     }
 
     /**
@@ -26,8 +25,7 @@ class FormatterMandatoryTest extends TestBaseClass
     public function testConvertsTrueToY()
     {
         $formatter = new FormatterMandatory();
-        $config = $this->getConfig();
-        $this->assertEquals('Y', $formatter->format(true, $config));
+        $this->assertEquals('Y', $formatter->format(true, ['revert' => true]));
     }
 
     /**
@@ -36,14 +34,6 @@ class FormatterMandatoryTest extends TestBaseClass
     public function testConvertsFalseToN()
     {
         $formatter = new FormatterMandatory();
-        $config = $this->getConfig();
-        $this->assertEquals('N', $formatter->format(false, $config));
-    }
-
-    private function getConfig()
-    {
-        return [
-            'formatter' => ['mandatory' => ['revert' => true]],
-        ];
+        $this->assertEquals('N', $formatter->format(false, ['revert' => true]));
     }
 }
