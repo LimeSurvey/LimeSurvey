@@ -290,7 +290,7 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
 
     /**
      * Some survey settings are inherited from the survey group, so we need to
-     * replace the inherited info ("I") with the real values.
+     * replace the inherited info ("I", "inherit" or "-1") with the real values.
      * This is a temporary solution until we display the inherit option
      * in the new UI.
      *
@@ -300,35 +300,55 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
     private function setInheritedBetaOptions(Survey $survey)
     {
         $affectedSettings = [
-            'allowprev',
-            'showprogress',
-            'autoredirect',
-            'showwelcome',
-            'showxquestions',
-            'anonymized',
-            'alloweditaftercompletion',
-            'format',
-            'template',
-            'datestamp',
-            'ipaddr',
-            'ipanonymize',
-            'refurl',
-            'savetimings',
-            'assessments',
-            'allowsave',
-            'emailnotificationto',
-            'emailresponseto',
-            'googleanalyticsapikey',
             'admin',
             'adminemail',
+            'alloweditaftercompletion',
+            'allowprev',
+            'allowsave',
+            'anonymized',
+            'assessments',
+            'autoredirect',
             'bounce_email',
+            'datestamp',
+            'emailnotificationto',
+            'emailresponseto',
+            'format',
+            'googleanalyticsapikey',
+            'ipaddr',
+            'ipanonymize',
             'listpublic',
+            'navigationdelay',
+            'nokeyboard',
+            'printanswers',
+            'publicgraphs',
+            'publicstatistics',
+            'questionindex',
+            'refurl',
+            'savetimings',
+            'showgroupinfo',
+            'shownoanswer',
+            'showprogress',
+            'showqnumcode',
+            'showwelcome',
+            'showxquestions',
+            'template',
             'usecookie',
         ];
         foreach ($affectedSettings as $setting) {
+            $intBasedSettings = ['questionindex', 'navigationdelay'];
             if (
                 isset($survey->$setting)
-                && ($survey->$setting === 'I' || $survey->$setting === 'inherit')
+                && (
+                    $survey->$setting === 'I'
+                    || $survey->$setting === 'inherit'
+                    || (
+                        in_array(
+                            $setting,
+                            $intBasedSettings
+                        )
+                        && $survey->$setting == '-1'
+                    )
+                )
             ) {
                 if (isset($survey->oOptions->$setting)) {
                     $survey->$setting = $survey->oOptions->$setting;
