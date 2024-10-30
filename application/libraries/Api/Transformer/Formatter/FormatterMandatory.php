@@ -16,7 +16,7 @@ class FormatterMandatory extends FormatterYnToBool
      * Converts 'N' or 'n' to boolean false.
      *
      * @param ?string $value
-     * @return ?boolean
+     * @return bool|string|null
      */
     protected function apply($value)
     {
@@ -39,7 +39,7 @@ class FormatterMandatory extends FormatterYnToBool
      *
      * @param ?mixed $value
      * @param array $config
-     * @return ?mixed
+     * @return mixed|string|null
      */
     protected function revert($value, array $config = [])
     {

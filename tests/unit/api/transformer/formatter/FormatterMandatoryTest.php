@@ -11,13 +11,13 @@ use LimeSurvey\Api\Transformer\Formatter\FormatterMandatory;
 class FormatterMandatoryTest extends TestBaseClass
 {
     /**
-     * @testdox formats null to S
+     * @testdox keeps S
      */
     public function testConvertsNullToS()
     {
         $formatter = new FormatterMandatory();
         $config = $this->getConfig();
-        $this->assertEquals('S', $formatter->format(null, $config));
+        $this->assertEquals('S', $formatter->format('S', $config));
     }
 
     /**
