@@ -183,6 +183,45 @@ class TransformerOutputSurvey extends TransformerOutputActiveRecord
             $data->languagesettings,
             $options
         );
+        $survey['showGroupInfo'] = $this->convertShowGroupInfo(
+            $data['showgroupinfo']
+        );
+        $survey['showQNumCode'] = $this->convertShowQNumCode(
+            $data['showqnumcode']
+        );
         return $survey;
+    }
+
+    /**
+     * Converts single value of showgroupinfo to an array with
+     * showGroupName and showGroupDescription keys.
+     *
+     * @param string $showGroupInfoValue
+     * @return array
+     */
+    private function convertShowGroupInfo($showGroupInfoValue)
+    {
+        $showGroupName = in_array($showGroupInfoValue, ['B', 'N']);
+        $showGroupDescription = in_array($showGroupInfoValue, ['B', 'D']);
+        return [
+            'showGroupName' => $showGroupName,
+            'showGroupDescription' => $showGroupDescription,
+        ];
+    }
+
+    /**
+     * Converts single value of showqnumcode to an array with
+     * showNumber and showCode keys.
+     * @param string $showQNumCodeValue
+     * @return array
+     */
+    private function convertShowQNumCode($showQNumCodeValue)
+    {
+        $showNumber = in_array($showQNumCodeValue, ['B', 'N']);
+        $showCode = in_array($showQNumCodeValue, ['B', 'C']);
+        return [
+            'showNumber' => $showNumber,
+            'showCode' => $showCode,
+        ];
     }
 }

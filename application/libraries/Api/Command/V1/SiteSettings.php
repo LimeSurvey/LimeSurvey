@@ -42,7 +42,8 @@ class SiteSettings implements CommandInterface
             ->makeSuccess([
                 'siteName' => Yii::app()->getConfig('sitename'),
                 'timezone' => date_default_timezone_get(),
-                'languages' => getLanguageData()
+                'languages' => getLanguageData(),
+                'dateFormats' => getDateFormatData(),
             ]);
     }
 }
