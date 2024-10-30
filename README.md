@@ -67,6 +67,7 @@ Skip the technical setup and focus on creating and analyzing surveys. With our h
 ## ❤️ Join the community
 
 - ⭐ Show your support and star this repo now
+- 💬 Join the discussion in our [forums](https://forums.limesurvey.org)
 - 🐛 Submit [bugs](https://bugs.limesurvey.org) and [feature requests](https://bugs.limesurvey.org)
 - 🔗 Follow us on [LinkedIn](https://www.linkedin.com/company/limesurvey)
 - 💬 Join our [Discord](https://discord.gg/DEjguXn)
