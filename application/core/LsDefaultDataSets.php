@@ -851,6 +851,15 @@ class LsDefaultDataSets
         App()->setLanguage('en');
         $returnArray = [];
 
+        $returnArray[] = ['position'   => '1',
+                          'url'        => 'admin/index',
+                          'title'      => gT('Dashboard'),
+                          'ico'        => 'ri-function-fill',
+                          'desc'       => gT('View dashboard'),
+                          'page'       => 'welcome',
+                          'usergroup'  => '-1',
+                          'buttontext' => gt('View dashboard')
+        ];
         $returnArray[] = ['position'   => '2',
                           'url'        => 'surveyAdministration/listsurveys',
                           'title'      => gT('List surveys'),
