@@ -529,16 +529,13 @@ class Question extends LSActiveRecord
         $ids = array_merge([$this->qid], $this->allSubQuestionIds);
         $qidsCriteria = (new CDbCriteria())->addInCondition('qid', $ids);
         $qidsCriteria->addNotInCondition('aid', $exceptIds);
-        $answerIds = [];
         $answers = Answer::model()->findAll($qidsCriteria);
         if (!empty($answers)) {
             foreach ($answers as $answer) {
-                $answerIds[] = $answer->aid;
+                AnswerL10n::model()->deleteAllByAttributes(['aid' => $answer->aid]);
+                $answer->delete();
             }
         }
-        $aidsCriteria = (new CDbCriteria())->addInCondition('aid', $answerIds);
-        AnswerL10n::model()->deleteAll($aidsCriteria);
-        Answer::model()->deleteAll($qidsCriteria);
     }
 
     /**
