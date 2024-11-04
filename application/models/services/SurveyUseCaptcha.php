@@ -4,6 +4,11 @@ namespace LimeSurvey\Models\Services;
 
 use Survey;
 
+/**
+ * Class for handling survey use captcha (some functions are old)
+ *
+ * @SuppressWarnings (PHPMD.ExcessiveClassComplexity)
+ */
 class SurveyUseCaptcha
 {
     /**
