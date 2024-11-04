@@ -34,6 +34,21 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.6.7 (build 241028) to 6.6.8 (build 241104) November 4, 2024
++New feature #19758: New plugin event beforeMovePublicFileUploaded (#3991) (Denis Chenu)
+-Fixed issue: Empty/error page on invalid survey ID (Carsten Schmitz)
+-Fixed issue #MW-1348: Extended Themes before LS6 can cause issue with the @attributes when generating xml files (#3792) (marticos)
+#Updated translation: Thai by adzpire, c_schmitz, tomzt
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Korean by modernity4r
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+
+
 Changes from 6.6.6 (build 241002) to 6.6.7 (build 241028) October 28, 2024
 -Fixed issue: On survey copy the new ID was not verified server-side (Carsten Schmitz)
 -Fixed issue #CT-967: Fix for progress bar going over 100% (#3957) (marticos)
