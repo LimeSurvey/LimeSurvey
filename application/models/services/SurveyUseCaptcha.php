@@ -63,13 +63,13 @@ class SurveyUseCaptcha
 
         //overwrite value
         switch ($mode) {
-            case'surveyAccess':
+            case 'surveyAccess':
                 $accessRegistrationSaveload['surveyAccess'] = $convertedValue;
                 break;
-            case'registration':
+            case 'registration':
                 $accessRegistrationSaveload['registration'] = $convertedValue;
                 break;
-            case'saveAndLoad':
+            case 'saveAndLoad':
                 $accessRegistrationSaveload['saveAndLoad'] = $convertedValue;
                 break;
             default:
@@ -202,7 +202,8 @@ class SurveyUseCaptcha
 
         if (!$showInherited && $captchaValues['surveyAccess'] === 'I') {
             $surveyGroupSettings = \SurveysGroupsettings::getInstance($this->survey->gsid);
-            $captchaValues['surveyAccess'] = in_array($surveyGroupSettings->usecaptcha,
+            $captchaValues['surveyAccess'] = in_array(
+                $surveyGroupSettings->usecaptcha,
                 SurveyUseCaptcha::SURVEY_ACCESS_YES) ? 'Y' : 'N';
         }
 
@@ -213,7 +214,8 @@ class SurveyUseCaptcha
 
         if (!$showInherited && $captchaValues['registration'] === 'I') {
             $surveyGroupSettings = \SurveysGroupsettings::getInstance($this->survey->gsid);
-            $captchaValues['registration'] = in_array($surveyGroupSettings->usecaptcha,
+            $captchaValues['registration'] = in_array(
+                $surveyGroupSettings->usecaptcha,
                 SurveyUseCaptcha::REGISTRATION_YES) ? 'Y' : 'N';
         }
 
@@ -224,7 +226,8 @@ class SurveyUseCaptcha
 
         if (!$showInherited && $captchaValues['saveAndLoad'] === 'I') {
             $surveyGroupSettings = \SurveysGroupsettings::getInstance($this->survey->gsid);
-            $captchaValues['saveAndLoad'] = in_array($surveyGroupSettings->usecaptcha,
+            $captchaValues['saveAndLoad'] = in_array(
+                $surveyGroupSettings->usecaptcha,
                 SurveyUseCaptcha::SAVE_LOAD_YES) ? 'Y' : 'N';
         }
 
