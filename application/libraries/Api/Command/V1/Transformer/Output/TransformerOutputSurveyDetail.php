@@ -12,11 +12,10 @@ use SurveysGroups;
  */
 class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
 {
-
     /**
      * All these values are inherited values. For inherted values the output has to be different.
      */
-    const AFFECTED_INHERITED_SETTINGS =[
+    const AFFECTED_INHERITED_SETTINGS = [
         'admin', 'adminemail', 'alloweditaftercompletion', 'allowprev', 'allowsave', 'anonymized',
         'assessments', 'autoredirect', 'bounce_email', 'datestamp', 'emailnotificationto', 'emailresponseto',
         'format', 'googleanalyticsapikey', 'ipaddr', 'ipanonymize', 'listpublic', 'navigationdelay',
