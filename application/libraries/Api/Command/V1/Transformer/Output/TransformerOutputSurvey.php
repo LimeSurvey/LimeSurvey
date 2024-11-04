@@ -219,7 +219,8 @@ class TransformerOutputSurvey extends TransformerOutputActiveRecord
         ];
     }
 
-    private function transformUseCaptcha($survey){
+    private function transformUseCaptcha($survey)
+    {
         $surveyUseCaptcha = new SurveyUseCaptcha();
         $threeValues = $surveyUseCaptcha->convertUseCaptchaFromDB($survey['useCaptcha']);
         $survey['useCaptchaAccess'] = ($threeValues['surveyAccess'] == 'Y');

@@ -272,7 +272,8 @@ class TransformerInputSurvey extends Transformer
         return $combinedValue;
     }
 
-    private function transformCaptcha($mappedData, $options){
+    private function transformCaptcha($mappedData, $options)
+    {
         $surveyUseCaptchaService = new SurveyUseCaptcha($options['surveyID'], null);
 
         return $surveyUseCaptchaService->reCalculateUseCaptcha($mappedData);
