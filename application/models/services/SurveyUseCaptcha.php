@@ -7,7 +7,7 @@ use Survey;
 /**
  * Class for handling survey use captcha (some functions are old)
  *
- * @SuppressWarnings (PHPMD.ExcessiveClassComplexity)
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  */
 class SurveyUseCaptcha
 {
@@ -58,6 +58,7 @@ class SurveyUseCaptcha
      * @param $mode string mode of conversion can be 'surveyAccess', 'registration' or 'saveAndLoad'
      *
      * @return string
+     * @throws \Exception
      */
     public function convertSurveyAccessToUseCaptcha(bool $value, string $mode)
     {
