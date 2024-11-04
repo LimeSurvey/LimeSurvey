@@ -204,7 +204,8 @@ class SurveyUseCaptcha
             $surveyGroupSettings = \SurveysGroupsettings::getInstance($this->survey->gsid);
             $captchaValues['surveyAccess'] = in_array(
                 $surveyGroupSettings->usecaptcha,
-                SurveyUseCaptcha::SURVEY_ACCESS_YES) ? 'Y' : 'N';
+                SurveyUseCaptcha::SURVEY_ACCESS_YES
+            ) ? 'Y' : 'N';
         }
 
         //---------------------------------REGISTRATION -----------------------------------------------------
@@ -216,7 +217,8 @@ class SurveyUseCaptcha
             $surveyGroupSettings = \SurveysGroupsettings::getInstance($this->survey->gsid);
             $captchaValues['registration'] = in_array(
                 $surveyGroupSettings->usecaptcha,
-                SurveyUseCaptcha::REGISTRATION_YES) ? 'Y' : 'N';
+                SurveyUseCaptcha::REGISTRATION_YES
+            ) ? 'Y' : 'N';
         }
 
         //-------------------------------SAVE AND LOAD ------------------------------------------------------
@@ -228,7 +230,8 @@ class SurveyUseCaptcha
             $surveyGroupSettings = \SurveysGroupsettings::getInstance($this->survey->gsid);
             $captchaValues['saveAndLoad'] = in_array(
                 $surveyGroupSettings->usecaptcha,
-                SurveyUseCaptcha::SAVE_LOAD_YES) ? 'Y' : 'N';
+                SurveyUseCaptcha::SAVE_LOAD_YES
+            ) ? 'Y' : 'N';
         }
 
         return $captchaValues;
