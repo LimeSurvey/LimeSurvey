@@ -12,9 +12,14 @@
   .navbar-brand {
     font-style: normal;
     font-weight: 800;
-    font-size: 18px;
+    font-size: 15px;
     color: $navbar-color;
     width: auto;
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+  .navbar-brand img {
+    padding-left: 3px;
   }
   .navbar-toggler {
     margin: map-get($spacers, 2);

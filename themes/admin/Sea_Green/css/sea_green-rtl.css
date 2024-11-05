@@ -17355,9 +17355,14 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
 .navbar .navbar-brand {
   font-style: normal;
   font-weight: 800;
-  font-size: 18px;
+  font-size: 15px;
   color: #fff;
   width: auto;
+  padding-top: 1px;
+  padding-bottom: 1px;
+}
+.navbar .navbar-brand img {
+  padding-right: 3px;
 }
 .navbar .navbar-toggler {
   margin: 8px;
@@ -18827,7 +18832,7 @@ input[type=number] {
 }
 .sidebar .sidebar-icons .sidebar-icon {
   cursor: pointer;
-  margin-top: 8px;
+  margin-top: 10px;
 }
 .sidebar .sidebar-icons .sidebar-icon:first-child {
   margin-top: 0;
