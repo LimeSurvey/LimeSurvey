@@ -508,7 +508,7 @@ class Question extends LSActiveRecord
             ? array_diff($this->allSubQuestionIds, $exceptIds)
             : $this->allSubQuestionIds;
         $qidsCriteria = (new CDbCriteria())->addInCondition('qid', $ids);
-        $questions = Question::model()->deleteAll((new CDbCriteria())->addInCondition('qid', $ids));
+        $questions = Question::model()->findAll((new CDbCriteria())->addInCondition('qid', $ids));
         QuestionAttribute::model()->deleteAll($qidsCriteria);
         QuestionL10n::model()->deleteAll($qidsCriteria);
         QuotaMember::model()->deleteAll($qidsCriteria);
