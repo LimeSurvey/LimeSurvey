@@ -525,6 +525,11 @@ class SurveyIndex extends CAction
         // this check is done in buildsurveysession and error message
         // could be more interresting there (takes into accound captcha if used)
         if ($tokensexist == 1 && isset($token) && $token != "" && tableExists("{{tokens_" . $surveyid . "}}") && !$previewmode) {
+            $sError = null;
+            $aMessage = array(
+                gT("We are sorry but you are not allowed to enter this survey.")
+            );
+
             if (empty($tokenInstance) && $oToken) {
                 $now = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig("timeadjust"));
 
@@ -542,10 +547,31 @@ class SurveyIndex extends CAction
                     $sError = gT("This is a controlled survey. You need a valid access code to participate.");
                 }
 
-                $aMessage = array(
-                    gT("We are sorry but you are not allowed to enter this survey.")
-                );
+                $event = new PluginEvent('onSurveyDenied');
+                $event->set('surveyId', $surveyid);
+                $event->set('reason', 'invalidToken');
+                App()->getPluginManager()->dispatchEvent($event);
 
+                App()->getController()->renderExitMessage(
+                    $surveyid,
+                    'survey-notstart',
+                    $aMessage,
+                    null,
+                    array($sError)
+                );
+            }
+
+            // Combining "Allow multiple responses" with "Uses Left" to limit participants to a specific number of responses using the same token.
+            if (
+                $sError == null
+                && $oToken->usesleft < 1
+                && !$oSurvey->getIsTokenAnswersPersistence()
+                && $oSurvey->getIsAllowEditAfterCompletion()
+            ) {
+                $sError = gT("This invitation has no uses left.");
+            }
+
+            if ($sError) {
                 $event = new PluginEvent('onSurveyDenied');
                 $event->set('surveyId', $surveyid);
                 $event->set('reason', 'invalidToken');
