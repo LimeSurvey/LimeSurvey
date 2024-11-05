@@ -168,7 +168,8 @@ jQuery(document).on('click', '$selector', function(){
 	{
 		if(extension_loaded('imagick'))
 		{
-			$imagickFormats=Imagick::queryFormats('PNG');
+			$imagick=new Imagick();
+			$imagickFormats=$imagick->queryFormats('PNG');
 		}
 		if(extension_loaded('gd'))
 		{
