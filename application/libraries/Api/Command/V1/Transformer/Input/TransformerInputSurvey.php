@@ -272,6 +272,13 @@ class TransformerInputSurvey extends Transformer
         return $combinedValue;
     }
 
+    /**
+     * Transforms the three values for useCaptcha into one.
+     *
+     * @param array $mappedData
+     * @param array $options
+     * @return string
+     */
     private function transformCaptcha($mappedData, $options)
     {
         $surveyUseCaptchaService = new SurveyUseCaptcha($options['surveyID'], null);

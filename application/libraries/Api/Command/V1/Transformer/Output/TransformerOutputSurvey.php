@@ -219,6 +219,15 @@ class TransformerOutputSurvey extends TransformerOutputActiveRecord
         ];
     }
 
+    /**
+     * Transforms useCaptcha into three values.
+     *  -- survey access
+     *  -- registration
+     *  -- save and load
+     *
+     * @param array $survey
+     * @return array
+     */
     private function transformUseCaptcha($survey)
     {
         $surveyUseCaptcha = new SurveyUseCaptcha();

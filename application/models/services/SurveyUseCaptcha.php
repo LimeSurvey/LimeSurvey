@@ -243,6 +243,12 @@ class SurveyUseCaptcha
         return $captchaValues;
     }
 
+    /**
+     * Transforms the three values for useCaptcha into one.
+     *
+     * @param array $data
+     * @return string
+     */
     public function reCalculateUseCaptcha($data)
     {
         //first get the three values from original usecaptcha
