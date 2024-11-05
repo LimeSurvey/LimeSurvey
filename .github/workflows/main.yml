@@ -299,21 +299,22 @@ jobs:
 
       - name: Run PHPCBF
         run: |
-          ./vendor/bin/phpcbf --standard=tests/rulesets/phpcs_ruleset.xml application/models"
-          ./vendor/bin/phpcbf --standard=tests/rulesets/phpcs_ruleset.xml application/controllers"
-          ./vendor/bin/phpcbf --standard=tests/rulesets/phpcs_ruleset.xml application/libraries/ExtensionInstaller"
-          ./vendor/bin/phpcbf --standard=tests/rulesets/phpcs_ruleset.xml application/libraries/FormExtension"
-          ./vendor/bin/phpcbf --standard=tests/rulesets/phpcs_ruleset.xml application/libraries/Api"
-          ./vendor/bin/phpcbf --standard=tests/rulesets/phpcs_ruleset.xml application/helpers/update/updatedb_helper.php"
-          ./vendor/bin/phpcbf --standard=tests/rulesets/phpcs_ruleset.xml application/helpers/update/updates"
-          ./vendor/bin/phpcbf --standard=tests/rulesets/phpcs_ruleset.xml application/core/plugins/ExpressionAnswerOptions/ExpressionAnswerOptions.php"
-          ./vendor/bin/phpcbf --standard=tests/rulesets/phpcs_ruleset.xml application/core/plugins/ExpressionAnswerOptions/AnswerOptionsFunctions.php"
+          ./vendor/bin/phpcbf --standard=tests/rulesets/phpcs_ruleset.xml application/models
+          ./vendor/bin/phpcbf --standard=tests/rulesets/phpcs_ruleset.xml application/controllers
+          ./vendor/bin/phpcbf --standard=tests/rulesets/phpcs_ruleset.xml application/libraries/ExtensionInstaller
+          ./vendor/bin/phpcbf --standard=tests/rulesets/phpcs_ruleset.xml application/libraries/FormExtension
+          ./vendor/bin/phpcbf --standard=tests/rulesets/phpcs_ruleset.xml application/libraries/Api
+          ./vendor/bin/phpcbf --standard=tests/rulesets/phpcs_ruleset.xml application/helpers/update/updatedb_helper.php
+          ./vendor/bin/phpcbf --standard=tests/rulesets/phpcs_ruleset.xml application/helpers/update/updates
+          ./vendor/bin/phpcbf --standard=tests/rulesets/phpcs_ruleset.xml application/core/plugins/ExpressionAnswerOptions/ExpressionAnswerOptions.php
+          ./vendor/bin/phpcbf --standard=tests/rulesets/phpcs_ruleset.xml application/core/plugins/ExpressionAnswerOptions/AnswerOptionsFunctions.php
         continue-on-error: true
 
       - name: Commit Changes
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: Apply php-cs-fixer changes
+          file_pattern: 'application/**.php'
 
 
       - name: Run Psalm on application/ folder with low strictness
