@@ -546,19 +546,6 @@ class SurveyIndex extends CAction
                     // This can not happen
                     $sError = gT("This is a controlled survey. You need a valid access code to participate.");
                 }
-
-                $event = new PluginEvent('onSurveyDenied');
-                $event->set('surveyId', $surveyid);
-                $event->set('reason', 'invalidToken');
-                App()->getPluginManager()->dispatchEvent($event);
-
-                App()->getController()->renderExitMessage(
-                    $surveyid,
-                    'survey-notstart',
-                    $aMessage,
-                    null,
-                    array($sError)
-                );
             }
 
             // Combining "Allow multiple responses" with "Uses Left" to limit participants to a specific number of responses using the same token.
