@@ -1,6 +1,7 @@
 ol.breadcrumb.title-bar-breadcrumb {
     background : transparent;
     color      : $breadcrumb-active-color;
+    flex-wrap  : nowrap;
     a {
         color       : $breadcrumb-link-color;
         font-weight : $font-weight-normal;
@@ -11,6 +12,9 @@ ol.breadcrumb.title-bar-breadcrumb {
     li {
         background : transparent;
         color      : $breadcrumb-active-color;
+        overflow   : hidden;
+        text-overflow: ellipsis;
+        text-wrap-mode: nowrap;
         &.active {
             color       : $breadcrumb-active-color;
             font-weight : $font-weight-base;
@@ -52,8 +56,12 @@ ol.breadcrumb.title-bar-breadcrumb {
 }
 
 .ls-breadcrumb {
+    margin-bottom: 10px;
     h1 {
         margin : 0;
     }
 }
 
+#breadcrumb-container {
+    width: 100%;
+}

@@ -17149,6 +17149,7 @@ a {
 ol.breadcrumb.title-bar-breadcrumb {
   background: transparent;
   color: #1E1E1E;
+  flex-wrap: nowrap;
 }
 ol.breadcrumb.title-bar-breadcrumb a {
   color: #14AE5C;
@@ -17160,6 +17161,9 @@ ol.breadcrumb.title-bar-breadcrumb a:hover {
 ol.breadcrumb.title-bar-breadcrumb li {
   background: transparent;
   color: #1E1E1E;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-wrap-mode: nowrap;
 }
 ol.breadcrumb.title-bar-breadcrumb li.active {
   color: #1E1E1E;
@@ -17191,8 +17195,15 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
   padding-right: 6px;
 }
 
+.ls-breadcrumb {
+  margin-bottom: 10px;
+}
 .ls-breadcrumb h1, .ls-breadcrumb .h1 {
   margin: 0;
+}
+
+#breadcrumb-container {
+  width: 100%;
 }
 
 .footer {

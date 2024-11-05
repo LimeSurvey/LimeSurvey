@@ -1,8 +1,7 @@
 <?php
-/** @var  $breadcrumbs  array */
-
-/** @var  $extraClass  string */
-/** @var  $htmlOptions  array */
+/** @var  array $breadcrumbs */
+/** @var  string $extraClass */
+/** @var  array $htmlOptions */
 ?>
 <?= CHtml::tag('div', $htmlOptions) ?>
 <nav aria-label="<?= gT("Breadcrumb") ?>">

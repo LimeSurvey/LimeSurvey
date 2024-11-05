@@ -344,6 +344,24 @@ echo $oQuestionSelector->getModal();
                                 ?>
                             </div>
                         </div>
+                        <div class="col-12 col-lg-6">
+                            <!-- Breadcrumb mode -->
+                            <div class="mb-3">
+                                <?php echo TbHtml::label(gT("Breadcrumb mode:"), 'breadcrumbMode', ['class' => " form-label"]); ?>
+                                <div class="">
+                                    <?php echo TbHtml::dropDownList(
+                                        'breadcrumbMode',
+                                        ($aUserSettings['breadcrumbMode'] ?? 'default'),
+                                        [
+                                            'default' => gT("Default"),
+                                            'long'    => gT("Long breadcrumb"),
+                                            'short'   => gT("Short breadcrumb"),
+                                        ],
+                                        ['class' => "form-select"]
+                                    ); ?>
+                                </div>
+                            </div>
+                        </div>
                         <!-- Show script field in question editor -->
                         <div class="col-12 col-lg-6">
                             <div class="mb-3">
