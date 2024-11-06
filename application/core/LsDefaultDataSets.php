@@ -851,50 +851,59 @@ class LsDefaultDataSets
         App()->setLanguage('en');
         $returnArray = [];
 
-        $returnArray[] = ['position'   => '2',
-                          'url'        => 'surveyAdministration/listsurveys',
-                          'title'      => gT('List surveys'),
-                          'ico'        => 'ri-list-unordered',
-                          'desc'       => gT('List available surveys'),
-                          'page'       => 'welcome',
-                          'usergroup'  => '-1',
-                          'buttontext' => null
+        $returnArray[] = [
+            'position'   => '1',
+            'url'        => 'admin/index',
+            'title'      => gT('Dashboard'),
+            'ico'        => 'ri-layout-grid-fill',
+            'desc'       => gT('Main dashboard homepage'),
+            'page'       => 'welcome',
+            'usergroup'  => '-1',
+            'buttontext' => null
         ];
-        $returnArray[] = ['position'   => '3',
-                          'url'        => 'admin/globalsettings',
-                          'title'      => gT('Global settings'),
-                          'ico'        => 'ri-settings-5-line',
-                          'desc'       => gT('Edit global settings'),
-                          'page'       => 'welcome',
-                          'usergroup'  => '-2',
-                          'buttontext' => gt('View global settings')
+
+        $returnArray[] = [
+            'position'   => '2',
+            'url'        => 'userManagement/index',
+            'title'      => gT('Manage administrators'),
+            'ico'        => 'ri-user-settings-line',
+            'desc'       => gT('The user management allows you to add additional users to your survey administration.'),
+            'page'       => 'welcome',
+            'usergroup'  => '-2',
+            'buttontext' => gt('Manage administrators')
         ];
-        $returnArray[] = ['position'   => '4',
-                          'url'        => 'userManagement/index',
-                          'title'      => gT('Manage survey administrators'),
-                          'ico'        => 'ri-user-line',
-                          'desc'       => gT('The user management allows you to add additional users to your survey administration.'),
-                          'page'       => 'welcome',
-                          'usergroup'  => '-2',
-                          'buttontext' => gt('Manage administrators')
+
+        $returnArray[] = [
+            'position'   => '3',
+            'url'        => 'themeOptions',
+            'title'      => gT('Themes'),
+            'ico'        => 'ri-paint-fill',
+            'desc'       => gT('The themes functionality allows you to edit survey-, admin- or question themes.'),
+            'page'       => 'welcome',
+            'usergroup'  => '-2',
+            'buttontext' => gt('Edit themes')
         ];
-        $returnArray[] = ['position'   => '5',
-                          'url'        => 'admin/labels/sa/view',
-                          'title'      => gT('Label sets'),
-                          'ico'        => 'ri-price-tag-3-line',
-                          'desc'       => gT('Label sets can be used as answer options or subquestions to speed up creation of similar questions.'),
-                          'page'       => 'welcome',
-                          'usergroup'  => '-2',
-                          'buttontext' => gt('Edit label sets')
+
+        $returnArray[] = [
+            'position'   => '4',
+            'url'        => 'admin/globalsettings',
+            'title'      => gT('Global settings'),
+            'ico'        => 'ri-settings-3-fill',
+            'desc'       => gT('Edit global settings'),
+            'page'       => 'welcome',
+            'usergroup'  => '-2',
+            'buttontext' => gt('View global settings')
         ];
-        $returnArray[] = ['position'   => '6',
-                          'url'        => 'themeOptions',
-                          'title'      => gT('Themes'),
-                          'ico'        => 'ri-brush-line',
-                          'desc'       => gT('The themes functionality allows you to edit survey-, admin- or question themes.'),
-                          'page'       => 'welcome',
-                          'usergroup'  => '-2',
-                          'buttontext' => gt('Edit themes')
+
+        $returnArray[] = [
+            'position'   => '5',
+            'url'        => 'admin/pluginmanager/sa/index',
+            'title'      => gT('Plugins'),
+            'ico'        => 'ri-plug-line',
+            'desc'       => gT('Plugins can be used to add custom features'),
+            'page'       => 'welcome',
+            'usergroup'  => '-2',
+            'buttontext' => gt('Manage plugins')
         ];
 
         App()->setLanguage($sOldLanguage);

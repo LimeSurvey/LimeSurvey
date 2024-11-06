@@ -36,6 +36,11 @@ class SideBarWidget extends CWidget
             $boxData['title'] = $box->title;
             $boxData['ico'] = $box->getIconName();
             $boxData['description'] = $box->desc;
+            $boxData['selected'] = false;
+
+            if (str_contains(App()->request->requestUri, $boxData['url'])) {
+                $boxData['selected'] = true;
+            }
 
             // default permission if usergroup is not within expected values
             $canSeeBox = false;
@@ -79,6 +84,9 @@ class SideBarWidget extends CWidget
         App()->getClientScript()->registerScriptFile(
             App()->getConfig("extensionsurl") . 'admin/grid/GridActionsWidget/assets/action_dropdown.js',
             CClientScript::POS_END
+        );
+        App()->getClientScript()->registerCssFile(
+            App()->getAssetManager()->publish(dirname(__FILE__) . '/assets/side_bar.css')
         );
     }
 }

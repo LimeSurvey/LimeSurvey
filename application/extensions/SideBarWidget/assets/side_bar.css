@@ -1,0 +1,36 @@
+.main-sidebar-container {
+    position: fixed;
+    left: 0;
+    top: 62px;
+    width: 52px;
+    z-index: 6;
+    margin: 0;
+    align-content: center;
+}
+.main-sidebar-container .sidebar-left {
+    margin: 0;
+}
+.main-sidebar-container .sidebar-icons {
+    padding: 0;
+    margin: 10px;
+}
+.main-sidebar-container .sidebar-icon {
+    box-shadow: 0 4px 4px 0 rgba(0,0,0,0.25);
+    margin: 0 0 10px 0;
+}
+
+.main-sidebar-container .btn-icon i:before {
+    padding: 4px 8px;
+    margin: 8px;
+}
+#in_survey_common_action {
+    padding: 16px 48px 16px 88px;
+}
+.topbar {
+    z-index: 5;
+}
+@media (max-width: 800px) {
+    #in_survey_common_action {
+        padding: 16px 48px 16px 48px;
+    }
+}
