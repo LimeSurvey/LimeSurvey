@@ -247,17 +247,14 @@ jobs:
     runs-on: ubuntu-20.04
     env:
       DBENGINE: INNODB
-    strategy:
-      matrix:
-        # Specify what versions of php you want to test
-        php-versions: ['7.4', '8.3']
+      PHP_VERSION: '8.3'
     steps:
       - uses: actions/checkout@v4
 
       - name: Install specified PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: ${{ matrix.php-versions }}
+          php-version: ${{ env.PHP_VERSION }}
 
       - name: Setup
         run: |
@@ -310,12 +307,16 @@ jobs:
           ./vendor/bin/phpcbf --standard=tests/rulesets/phpcs_ruleset.xml application/core/plugins/ExpressionAnswerOptions/AnswerOptionsFunctions.php
         continue-on-error: true
 
+        # we need to do this because otherwise the auto commit step commits additional files
+      - name: Ignore file mode changes
+        run: |
+          git config core.fileMode false
+
       - name: Commit Changes
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: Apply php-cs-fixer changes
           file_pattern: 'application/**.php'
-
 
       - name: Run Psalm on application/ folder with low strictness
         run: |
