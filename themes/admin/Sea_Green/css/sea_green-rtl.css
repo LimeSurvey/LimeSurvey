@@ -17364,6 +17364,9 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
 .navbar .navbar-brand img {
   padding-right: 3px;
 }
+.navbar .navbar-nav > li.nav-item {
+  height: 60px;
+}
 .navbar .navbar-toggler {
   margin: 8px;
 }
