@@ -16,12 +16,12 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
      * All these values are inherited values. For inherted values the output has to be different.
      */
     const AFFECTED_INHERITED_SETTINGS = [
-        'admin', 'adminemail', 'alloweditaftercompletion', 'allowprev', 'allowsave', 'anonymized',
+        'admin', 'adminemail', 'alloweditaftercompletion', 'allowprev', 'allowsave', 'allowregister','anonymized',
         'assessments', 'autoredirect', 'bounce_email', 'datestamp', 'emailnotificationto', 'emailresponseto',
-        'format', 'googleanalyticsapikey', 'ipaddr', 'ipanonymize', 'listpublic', 'navigationdelay',
+        'format', 'googleanalyticsapikey', 'htmlemail', 'ipaddr', 'ipanonymize', 'listpublic', 'navigationdelay',
         'nokeyboard', 'printanswers', 'publicgraphs', 'publicstatistics', 'questionindex', 'refurl',
-        'savetimings', 'showgroupinfo', 'shownoanswer', 'showprogress', 'showqnumcode', 'showwelcome',
-        'showxquestions', 'template', 'usecookie',
+        'savetimings', 'sendconfirmation', 'showgroupinfo', 'shownoanswer', 'showprogress', 'showqnumcode',
+        'showwelcome', 'showxquestions', 'template', 'tokenlength', 'usecookie',
     ];
 
     private TransformerOutputSurvey $transformerSurvey;
