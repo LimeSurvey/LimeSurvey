@@ -12,6 +12,18 @@ use SurveysGroups;
  */
 class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
 {
+    /**
+     * All these values are inherited values. For inherted values the output has to be different.
+     */
+    const AFFECTED_INHERITED_SETTINGS = [
+        'admin', 'adminemail', 'alloweditaftercompletion', 'allowprev', 'allowsave', 'allowregister','anonymized',
+        'assessments', 'autoredirect', 'bounce_email', 'datestamp', 'emailnotificationto', 'emailresponseto',
+        'format', 'googleanalyticsapikey', 'htmlemail', 'ipaddr', 'ipanonymize', 'listpublic', 'navigationdelay',
+        'nokeyboard', 'printanswers', 'publicgraphs', 'publicstatistics', 'questionindex', 'refurl',
+        'savetimings', 'sendconfirmation', 'showgroupinfo', 'shownoanswer', 'showprogress', 'showqnumcode',
+        'showwelcome', 'showxquestions', 'template', 'tokenlength', 'usecookie',
+    ];
+
     private TransformerOutputSurvey $transformerSurvey;
     private TransformerOutputSurveyGroup $transformerSurveyGroup;
     private TransformerOutputQuestionGroup $transformerQuestionGroup;
@@ -299,14 +311,7 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
      */
     private function setInheritedBetaOptions(Survey $survey)
     {
-        $affectedSettings = [
-            'admin', 'adminemail', 'alloweditaftercompletion', 'allowprev', 'allowsave', 'anonymized', 'assessments', 'autoredirect',
-            'bounce_email', 'tokenanswerspersistence', 'allowregister', 'htmlemail', 'sendconfirmation', 'tokenlength', 'datestamp',
-            'emailnotificationto', 'emailresponseto', 'format', 'googleanalyticsapikey', 'ipaddr', 'ipanonymize', 'navigationdelay',
-            'nokeyboard', 'printanswers', 'publicgraphs', 'publicstatistics', 'questionindex', 'refurl', 'savetimings', 'showgroupinfo',
-            'shownoanswer', 'showprogress', 'showqnumcode', 'showwelcome', 'showxquestions', 'template',
-        ];
-        foreach ($affectedSettings as $setting) {
+        foreach (TransformerOutputSurveyDetail::AFFECTED_INHERITED_SETTINGS as $setting) {
             $intBasedSettings = ['questionindex', 'navigationdelay'];
             if (
                 isset($survey->$setting)
