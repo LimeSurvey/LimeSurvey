@@ -33,7 +33,6 @@ require('pdf.php');
 */
 class quexmlpdf extends pdf
 {
-
     /**
      * Define an inch in MM
      *
@@ -1989,7 +1988,8 @@ class quexmlpdf extends pdf
 
                 foreach ($qu->text as $ttmp) {
                     //Add a new line if we aren't at the end
-                    if ($ttmp != end($qu->text)) {
+                    $txt = (is_object($qu->text) ? get_mangled_object_vars($qu->text) : $qu->text);
+                    if ($ttmp != end($txt)) {
                         $qtmp['text'] .= "<br/>";
                     }
 
@@ -2037,7 +2037,8 @@ class quexmlpdf extends pdf
                     $sqtmp['varname'] = $sq['varName'];
 
                     if (isset($sq['defaultValue'])) {
-                        $sqtmp['defaultvalue'] = current($sq['defaultValue']);
+                        $defV = (is_object($sq['defaultValue']) ? get_mangled_object_vars($sq['defaultValue']) : $sq['defaultValue']);
+                        $sqtmp['defaultvalue'] = current($defV);
                     }
 
                     if (isset($sq->contingentQuestion)) {
@@ -2078,7 +2079,8 @@ class quexmlpdf extends pdf
                     }
 
                     if (isset($r['defaultValue'])) {
-                        $rstmp['defaultvalue'] = current($r['defaultValue']);
+                        $def = (is_object($r['defaultValue']) ? get_mangled_object_vars($r['defaultValue']) : $r['defaultValue']);
+                        $rstmp['defaultvalue'] = current($def);
                     }
 
                     if (isset($r->fixed)) {
@@ -2096,27 +2098,34 @@ class quexmlpdf extends pdf
                         $ctmp = array();
                         foreach ($r->fixed->category as $c) {
                             $cat = array();
-                            $cat['text'] = current($c->label) !== false ? current($c->label) : '';
-                            $cat['value'] = current($c->value);
+                            $lbl = (is_object($c->label) ? get_mangled_object_vars($c->label) : $c->label);
+                            $cat['text'] = current($lbl) !== false ? current($lbl) : '';
+                            $vl = (is_object($c->value) ? get_mangled_object_vars($c->value) : $c->value);
+                            $cat['value'] = current($vl);
+                            $skipTo = (is_object($c->skipTo) ? get_mangled_object_vars($c->skipTo) : $c->skipTo);
                             if (isset($c->skipTo)) {
-                                $cat['skipto'] = current($c->skipTo);
+                                $cat['skipto'] = current($skipTo);
                                 //save a skip
-                                $this->skipToRegistry[current($c->skipTo) . $this->questionTitleSuffix] = $qtmp['title'];
+                                $this->skipToRegistry[current($skipTo) . $this->questionTitleSuffix] = $qtmp['title'];
                             }
                             if (isset($c->contingentQuestion)) {
                                 //Need to handle contingent questions
                                 $oarr = array();
-                                $oarr['width'] = current($c->contingentQuestion->length);
-                                $oarr['text'] = current($c->contingentQuestion->text);
+                                $contingentQuestionLength = (is_object($c->contingentQuestion->length) ? get_mangled_object_vars($c->contingentQuestion->length) : $c->contingentQuestion->length);
+                                $oarr['width'] = current($contingentQuestionLength);
+                                $contingentQuestionText = (is_object($c->contingentQuestion->text) ? get_mangled_object_vars($c->contingentQuestion->text) : $c->contingentQuestion->text);
+                                $oarr['text'] = current($contingentQuestionText);
 
                                 $oarr['format'] = 'text';
 
                                 if (isset($c->contingentQuestion->format)) {
-                                    $oarr['format'] = current($c->contingentQuestion->format);
+                                    $contingentQuestionFormat = (is_object($c->contingentQuestion->format) ? get_mangled_object_vars($c->contingentQuestion->format) : $c->contingentQuestion->format);
+                                    $oarr['format'] = current($contingentQuestionFormat);
                                 }
 
                                 if (isset($c->contingentQuestion['defaultValue'])) {
-                                    $oarr['defaultvalue'] = current($c->contingentQuestion['defaultValue']);
+                                    $defVal = (is_object($c->contingentQuestion['defaultValue']) ? get_mangled_object_vars($c->contingentQuestion['defaultValue']) : $c->contingentQuestion['defaultValue']);
+                                    $oarr['defaultvalue'] = current($defVal);
                                 }
 
                                 $oarr['varname'] = $c->contingentQuestion['varName'];
@@ -2126,7 +2135,8 @@ class quexmlpdf extends pdf
                         }
                         $rtmp['categories'] = $ctmp;
                     } elseif (isset($r->free)) {
-                        $format = strtolower(trim(current($r->free->format)));
+                        $freeFormat = (is_object($r->free->format) ? get_mangled_object_vars($r->free->format) : $r->free->format);
+                        $format = strtolower(trim(current($freeFormat)));
                         if ($format == 'longtext') {
                             $rtmp['type'] = 'longtext';
                         } elseif ($format == 'number' || $format == 'numeric' || $format == 'integer') {
@@ -2138,8 +2148,10 @@ class quexmlpdf extends pdf
                         } else {
                             $rtmp['type'] = 'text';
                         }
-                        $rtmp['width'] = current($r->free->length);
-                        $rtmp['text'] = current($r->free->label);
+                        $freeLength = (is_object($r->free->length) ? get_mangled_object_vars($r->free->length) : $r->free->length);
+                        $rtmp['width'] = current($freeLength);
+                        $freeLabel = (is_object($r->free->lanel) ? get_mangled_object_vars($r->free->label) : $r->free->label);
+                        $rtmp['text'] = current($freeLabel);
                     } elseif (isset($r->vas)) {
                         $rtmp['type'] = 'vas';
                         $rtmp['width'] = 100;
