@@ -223,7 +223,7 @@ class TransformerInputSurvey extends Transformer
                 array_key_exists('useCaptchaRegistration', $survey) ||
                 array_key_exists('useCaptchaSaveLoad', $survey)
                 );
-            if ($useCaptchaExists && !empty($options)) {
+            if($useCaptchaExists && !empty($options)) {
                 $survey['usecaptcha'] = $this->transformCaptcha(
                     $survey,
                     $options
