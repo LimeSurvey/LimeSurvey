@@ -11365,8 +11365,8 @@ blockquote.float-end {
 }
 
 .container-fluid, .container-sm, .container-md, .container-lg, .container-xl, .container-xxl {
-  padding-right: 20px;
-  padding-left: 20px;
+  padding-right: 12px;
+  padding-left: 12px;
 }
 
 .full-page-wrapper {
@@ -17436,7 +17436,7 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
 .mega-dropdown-menu {
   margin-right: auto;
   margin-left: auto;
-  padding: 24px 20px;
+  padding: 24px 12px;
   width: 100%;
 }
 .mega-dropdown-menu .dropdown-header {
