@@ -77,7 +77,7 @@ gT('Themes');
                                     <li><?php echo sprintf(
                                         gT('Create a new survey by clicking on the %s icon.'),
                                         "<i class='ri-add-circle-fill text-success'></i>"
-                                    ); ?></li>
+                                        ); ?></li>
                                     <li><?php eT('Create a new question group inside your survey.'); ?></li>
                                     <li><?php eT('Create one or more questions inside the new question group.'); ?></li>
                                     <li><?php
@@ -128,11 +128,12 @@ gT('Themes');
     <?php endif; ?>
 
     <?php //Check for IE and show a warning box ?>
-    <?php if (preg_match('~MSIE|Internet Explorer~i', (string)$_SERVER['HTTP_USER_AGENT'])
+    <?php if (
+    preg_match('~MSIE|Internet Explorer~i', (string)$_SERVER['HTTP_USER_AGENT'])
         || (strpos((string)$_SERVER['HTTP_USER_AGENT'], 'Trident/7.0') !== false
             && strpos((string)$_SERVER['HTTP_USER_AGENT'], 'rv:11.0') !== false
         )
-    ) : ?>
+) : ?>
         <div class="container">
             <?php
             $htmlContent = "
@@ -167,31 +168,6 @@ gT('Themes');
         LSYii_ClientScript::POS_POSTSCRIPT
     );
     ?>
-    <!-- Last visited survey/question -->
-    <?php
-    // bShowLastSurveyAndQuestion is the homepage setting,
-    // - showLastSurvey & showLastQuestion are about if infos are available
-    if ($bShowLastSurveyAndQuestion && ($showLastSurvey || $showLastQuestion)) : ?>
-        <div class="container-fluid text-end recent-activity p-2">
-        <?php if ($showLastSurvey) : ?>
-                <div id="last_survey" class=""> <!-- to enable rotation again set class back to "rotateShown" -->
-                    <?php eT("Last visited survey:"); ?>
-                    <a href="<?php echo $surveyUrl; ?>">
-                        <?= viewHelper::flatEllipsizeText($surveyTitle, true, 60) ?>
-                    </a>
-                </div>
-        <?php endif; ?>
-
-        <?php if ($showLastQuestion) : ?>
-                <div id="last_question" class=""> <!-- to enable rotation again set class back to "rotateHidden" -->
-                    <?php eT("Last visited question:"); ?>
-                    <a href="<?php echo $last_question_link; ?>">
-                        <?= viewHelper::flatEllipsizeText($last_question_name, true, 60) ?>
-                    </a>
-                </div>
-        <?php endif; ?>
-        </div>
-    <?php endif; ?>
 
     <!-- Rendering all boxes in database -->
     <?php if ($oldDashboard) : ?>
@@ -223,18 +199,18 @@ gT('Themes');
             (!empty(App()->request->getQuery('viewtype'))
                 && App()->request->getQuery('viewtype') === 'list-widget'
             )
-            || (empty(App()->request->getQuery('viewtype'))
-                && (SettingsUser::getUserSettingValue('welcome_page_widget') === 'list-widget')
+                    || (empty(App()->request->getQuery('viewtype'))
+                    && (SettingsUser::getUserSettingValue('welcome_page_widget') === 'list-widget')
             )
-        ) : ?>
+) : ?>
             <div class="list-surveys-container">
                 <div class="col-12">
-                    <?php $this->widget('ext.admin.survey.ListSurveysWidget.ListSurveysWidget', [
+                        <?php $this->widget('ext.admin.survey.ListSurveysWidget.ListSurveysWidget', [
                         'model' => $oSurveySearch,
                         'bRenderSearchBox' => $bShowSurveyListSearch,
                         'switch' => true
                     ]);
-                    ?></div>
+                        ?></div>
             </div>
         <?php else : ?>
             <div class="list-surveys-container">
@@ -257,5 +233,3 @@ gT('Themes');
     <!-- Notification setting -->
     <input type="hidden" id="absolute_notification" />
 </div>
-
-
