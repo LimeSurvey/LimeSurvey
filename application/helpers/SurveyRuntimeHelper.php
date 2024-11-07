@@ -369,7 +369,7 @@ class SurveyRuntimeHelper
             }
         }
 
-        sendCacheHeaders();
+        sendSurveyHttpHeaders();
 
         Yii::app()->loadHelper('surveytranslator');
 
