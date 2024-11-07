@@ -168,6 +168,31 @@ gT('Themes');
         LSYii_ClientScript::POS_POSTSCRIPT
     );
     ?>
+    <!-- Last visited survey/question -->
+    <?php
+    // bShowLastSurveyAndQuestion is the homepage setting,
+    // - showLastSurvey & showLastQuestion are about if infos are available
+    if ($bShowLastSurveyAndQuestion && ($showLastSurvey || $showLastQuestion)) : ?>
+        <div class="container-fluid text-end recent-activity p-2">
+        <?php if ($showLastSurvey) : ?>
+                <div id="last_survey" class=""> <!-- to enable rotation again set class back to "rotateShown" -->
+                    <?php eT("Last visited survey:"); ?>
+                    <a href="<?php echo $surveyUrl; ?>">
+                        <?= viewHelper::flatEllipsizeText($surveyTitle, true, 60) ?>
+                    </a>
+                </div>
+        <?php endif; ?>
+
+        <?php if ($showLastQuestion) : ?>
+                <div id="last_question" class=""> <!-- to enable rotation again set class back to "rotateHidden" -->
+                    <?php eT("Last visited question:"); ?>
+                    <a href="<?php echo $last_question_link; ?>">
+                        <?= viewHelper::flatEllipsizeText($last_question_name, true, 60) ?>
+                    </a>
+                </div>
+        <?php endif; ?>
+        </div>
+    <?php endif; ?>
 
     <!-- Rendering all boxes in database -->
     <?php if ($oldDashboard) : ?>
