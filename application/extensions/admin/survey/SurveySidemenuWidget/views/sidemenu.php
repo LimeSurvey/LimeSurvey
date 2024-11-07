@@ -14,7 +14,7 @@
                 </div>
             </div>
             <div class="sidebar-icons-item">
-                <div class="sidebar-icon" data-target="#survey-settings-panel">
+                <div class="sidebar-icon" data-target="#survey-settings-panel" onclick="window.location='<?php echo App()->createUrl('surveyAdministration/view/', ['surveyid' => $sid]);?>'">
                     <div data-bs-toggle="tooltip"
                          title="<?php echo gT('Survey settings'); ?>"
                          data-bs-offset="0, 20"
@@ -24,7 +24,7 @@
                 </div>
             </div>
             <div class="sidebar-icons-item">
-                <div class="sidebar-icon" data-target="#survey-menu-panel">
+                <div class="sidebar-icon" data-target="#survey-menu-panel" onclick="window.location='<?php echo App()->createUrl('questionAdministration/listQuestions/', ['surveyid' => $sid]);?>'">
                     <div data-bs-toggle="tooltip"
                          title="<?php echo gT('Survey menu'); ?>"
                          data-bs-offset="0, 20"
@@ -34,7 +34,7 @@
                 </div>
             </div>
             <div class="sidebar-icons-item">
-                <div class="sidebar-icon" data-target="#survey-presentation-panel">
+                <div class="sidebar-icon" data-target="#survey-presentation-panel" onclick="window.location='<?php echo App()->createUrl('editorLink/index', ['route' => 'survey/' .  $sid . '/presentation/presentation']);?>'">
                     <div data-bs-toggle="tooltip"
                          title="<?php echo gT('Survey presentation'); ?>"
                          data-bs-offset="0, 20"
@@ -44,7 +44,7 @@
                 </div>
             </div>
             <div class="sidebar-icons-item">
-                <div class="sidebar-icon" data-target="#survey-permissions-panel">
+                <div class="sidebar-icon" data-target="#survey-permissions-panel" onclick="window.location='<?php echo App()->createUrl('surveyPermissions/index/', ['surveyid' => $sid]);?>'">
                     <div data-bs-toggle="tooltip"
                          title="<?php echo gT('Survey permissions'); ?>"
                          data-bs-offset="0, 20"
@@ -55,7 +55,7 @@
             </div>
             <?php if (count($this->allLanguages) > 1) : ?>
                 <div class="sidebar-icons-item">
-                    <div class="sidebar-icon" data-target="#survey-quick-translation">
+                    <div class="sidebar-icon" data-target="#survey-quick-translation" onclick="window.location='<?php echo App()->createUrl('quickTranslation/index/', ['surveyid' => $sid]);?>'">
                         <div style="z-index: 5000;"
                              data-bs-toggle="tooltip"
                              title="<?php echo gT('Quick Translations'); ?>"
