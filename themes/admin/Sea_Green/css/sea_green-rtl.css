@@ -18834,7 +18834,7 @@ input[type=number] {
   padding: 8px 8px 0px 8px;
 }
 .sidebar .sidebar-icons {
-  padding: 8px 0 8px 8px;
+  padding: 0px 0 8px 8px;
 }
 .sidebar .sidebar-icons .sidebar-icon {
   cursor: pointer;
