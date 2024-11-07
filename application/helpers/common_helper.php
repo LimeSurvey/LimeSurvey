@@ -944,8 +944,6 @@ function returnGlobal($stringname, $bRestrictToString = false)
 
 function sendSurveyHttpHeaders()
 {
-    App()->getPluginManager()->dispatchEvent($event);
-
     if (!headers_sent()) {
         // Default headers für surveys
         $headers = [
