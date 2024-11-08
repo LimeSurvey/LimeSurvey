@@ -17,13 +17,14 @@ echo viewHelper::getViewTestTag('surveySummary');
 
 $count         = 0;
 $surveyid      = $oSurvey->sid;
-$templateModel = Template::model()->findByPk($oSurvey->oOptions->template);
+$templateModel = Template::model()->findByPk($oSurvey->oOptions->template)->getAttributes();
 $surveylocale  = Permission::model()->hasSurveyPermission($iSurveyID, 'surveylocale', 'read');
 // EDIT SURVEY SETTINGS BUTTON
 $surveysettings = Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'read');
 $respstatsread  = Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'read')
     || Permission::model()->hasSurveyPermission($iSurveyID, 'statistics', 'read')
     || Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'export');
+$bSurveyIsListPublic = $oSurvey->getIsListPublic()
 
 
 ?>
