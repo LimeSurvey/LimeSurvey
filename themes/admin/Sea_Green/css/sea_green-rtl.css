@@ -17360,6 +17360,7 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
   width: auto;
   padding-top: 1px;
   padding-bottom: 1px;
+  margin-left: 0px;
 }
 .navbar .navbar-brand img {
   padding-right: 3px;
