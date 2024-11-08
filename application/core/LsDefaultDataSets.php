@@ -1828,6 +1828,7 @@ class LsDefaultDataSets
             ['stg_name' => 'answeroptionprefix', 'stg_value' => 'AO'],
             ['stg_name' => 'subquestionprefix', 'stg_value' => 'SQ'],
             ['stg_name' => 'lock_organizer', 'stg_value' => '0'],
+            ['stg_name' => 'breadcrumbMode', 'stg_value' => 'default'],
         ];
     }
 

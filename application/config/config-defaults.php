@@ -838,5 +838,12 @@ $config['passwordValidationRules'] = array(
 // Enable or disable single page application editor
 $config['editorEnabled'] = false;
 
+/**
+ * Default breadcrumb mode:
+ * short: Survey, Group and Question titles
+ * long: Survey, Group, Question titles plus IDs
+ */
+$config['defaultBreadcrumbMode'] = 'short';
+
 return $config;
 //settings deleted
