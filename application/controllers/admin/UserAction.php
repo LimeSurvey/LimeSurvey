@@ -1,6 +1,5 @@
 <?php
 
-use GoogleSheetsConnector\Google\Service\Calendar\Setting;
 use LimeSurvey\PluginManager\AuthPluginBase;
 
 /*

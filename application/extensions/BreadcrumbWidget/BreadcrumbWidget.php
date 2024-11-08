@@ -84,11 +84,15 @@ class BreadcrumbWidget extends CWidget
             if ($mode == 'long' || (!isset($questionGroup) && !isset($question))) {
                 $surveyTitle .= ' (' . $survey->sid . ')';
             }
+            if (empty($surveyTitle)) {
+                $surveyTitle = "&nbsp;";
+            }
             $breadcrumbs[] =
                 [
                     'id' => 'breadcrumb__survey--overview',
                     'href' => App()->createUrl('/surveyAdministration/view/', ['iSurveyID' => $survey->sid]),
                     'text' => $surveyTitle,
+                    'title' => gT('Survey overview'),
                 ];
             if (isset($subAction) && !isset($questionGroup) && !isset($question)) {
                 $breadcrumbs[] =
@@ -118,6 +122,9 @@ class BreadcrumbWidget extends CWidget
             if ($mode == 'long') {
                 $groupTitle .= ' (' . $questionGroup->gid . ')';
             }
+            if (empty($groupTitle)) {
+                $groupTitle = "&nbsp;";
+            }
             // If the questiongroup view is active right now, don't link it?
             if (!$subAction && !isset($question)) {
                 $breadcrumbs[] = [
@@ -132,6 +139,7 @@ class BreadcrumbWidget extends CWidget
                             ['surveyid' => $questionGroup->sid, 'gid' => $questionGroup->gid]
                         ),
                         'text' => $groupTitle,
+                        'title' => gT('Group summary'),
                     ];
                 if (isset($subAction) && !isset($question)) {
                     $breadcrumbs[] =
@@ -161,6 +169,9 @@ class BreadcrumbWidget extends CWidget
             if ($mode == 'long') {
                 $questionTitle .= ' (' . $question->qid . ')';
             }
+            if (empty($questionTitle)) {
+                $questionTitle = "&nbsp;";
+            }
             // If the question view is active right now, don't link it
             if (!isset($subAction)) {
                 $breadcrumbs[] =
@@ -176,6 +187,7 @@ class BreadcrumbWidget extends CWidget
                             ['surveyid' => $question->sid, 'gid' => $question->gid, 'qid' => $question->qid]
                         ),
                         'text' => $questionTitle,
+                        'title' => gT('Question summary'),
                     ];
                 $breadcrumbs[] =
                     [
