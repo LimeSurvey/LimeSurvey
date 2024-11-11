@@ -11388,8 +11388,13 @@ blockquote.float-end {
 }
 
 .container-fluid, .container-sm, .container-md, .container-lg, .container-xl, .container-xxl {
-  padding-left: 20px;
-  padding-right: 20px;
+  padding-left: 12px;
+  padding-right: 12px;
+}
+
+.container-fluid#in_survey_common_action, #in_survey_common_action.container-sm, #in_survey_common_action.container-md, #in_survey_common_action.container-lg, #in_survey_common_action.container-xl, #in_survey_common_action.container-xxl {
+  padding-left: 0px;
+  padding-right: 0px;
 }
 
 .full-page-wrapper {
@@ -17378,9 +17383,21 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
 .navbar .navbar-brand {
   font-style: normal;
   font-weight: 800;
-  font-size: 18px;
+  font-size: 15px;
   color: #fff;
   width: auto;
+  padding-top: 1px;
+  padding-bottom: 1px;
+  margin-right: 0px;
+}
+.navbar .navbar-brand img {
+  padding-left: 3px;
+}
+.navbar .navbar-nav {
+  padding-left: 46px;
+}
+.navbar .navbar-nav > li.nav-item {
+  height: 60px;
 }
 .navbar .navbar-toggler {
   margin: 8px;
@@ -17451,7 +17468,7 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
 .mega-dropdown-menu {
   margin-left: auto;
   margin-right: auto;
-  padding: 24px 20px;
+  padding: 24px 12px;
   width: 100%;
 }
 .mega-dropdown-menu .dropdown-header {
@@ -18843,14 +18860,14 @@ input[type=number] {
 
 .sidebar {
   display: flex;
-  margin: 8px 8px 8px 0;
+  padding: 8px 8px 0px 8px;
 }
 .sidebar .sidebar-icons {
-  padding: 8px 8px 8px 0;
+  padding: 0px 8px 8px 0;
 }
 .sidebar .sidebar-icons .sidebar-icon {
   cursor: pointer;
-  margin-top: 8px;
+  margin-top: 10px;
 }
 .sidebar .sidebar-icons .sidebar-icon:first-child {
   margin-top: 0;
