@@ -35,9 +35,9 @@
                             <option value="E" <?= App()->request->getQuery('active') === "E" ? "selected" : '' ?>>
                                 <?= gT('Expired') ?>
                             </option>
-                            <!--<option value="S" --><?php //= $this->model->active === "S" ? "selected" : '' ?><!-->-->
-                            <!--    --><?php //= gT('Active but not yet started') ?>
-                            <!--</option>-->
+                            <option value="S" <?= App()->request->getQuery('active') === "S" ? "selected" : '' ?>>
+                                <?= gT('Not started') ?>
+                            </option>
                         </select>
                     </div>
                 </div>
@@ -85,13 +85,16 @@
                             <option value="E" <?= App()->request->getQuery('active') === "E" ? "selected" : '' ?>>
                                 <?= gT('Expired') ?>
                             </option>
+                            <option value="S" <?= App()->request->getQuery('active') === "S" ? "selected" : '' ?>>
+                                <?= gT('Not started') ?>
+                            </option>
                         </select>
                     </div>
                     <div class="survey-actionbar-item">
                         <select name="gsid" id='survey_gsid' class="form-select survey-actionbar-formfield">
                             <option value=""><?= gT('Group') ?></option>
                             <?php foreach (SurveysGroups::getSurveyGroupsList() as $gsid => $group_title) : ?>
-                                <option value="<?= $gsid ?>" <?= ($gsid === $this->model->gsid) ? "selected" : "" ?>><?= CHtml::encode($group_title) ?></option>
+                                <option value="<?= $gsid ?>" <?= (App()->request->getQuery('gsid') == $gsid) ? "selected" : "" ?>><?= CHtml::encode($group_title) ?></option>
                             <?php endforeach; ?>
                         </select>
                     </div>
