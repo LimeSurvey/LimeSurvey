@@ -532,8 +532,9 @@ class Question extends LSActiveRecord
         $answers = Answer::model()->findAll($qidsCriteria);
         if (!empty($answers)) {
             foreach ($answers as $answer) {
+                $answerId = $answer->aid;
                 if ($answer->delete()) {
-                    AnswerL10n::model()->deleteAllByAttributes(['aid' => $answer->aid]);
+                    AnswerL10n::model()->deleteAllByAttributes(['aid' => $answerId]);
                 }
             }
         }
