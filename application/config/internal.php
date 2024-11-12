@@ -368,7 +368,10 @@ $internalConfig = array(
                     'Question' => array('qid', 'parent_qid', 'sid', 'gid', 'type', 'title', 'relevance', 'question', 'help', 'other', 'mandatory', 'language', 'scale_qid', 'questionType', 'questionl10ns', 'survey'),
                     'QuestionGroups' => array('gid', 'sid', 'group_name', 'group_order', 'description', 'language', 'randomization_group', 'grelevance'),
                     'Template' => array('title', 'name'),
-                    'QuestionType' => array('code')
+                    'QuestionType' => array('code'),
+                    'QuestionL10n' => array('question'),
+                    'Answer' => array('aid', 'answerl10ns', 'code', 'assessment_value'),
+                    'AnswerL10n' => array('answer'),
                 ),
                 'functions' => array(
                     'getLanguageData',
