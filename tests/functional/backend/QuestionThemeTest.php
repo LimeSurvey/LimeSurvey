@@ -124,7 +124,11 @@ class QuestionThemeTest extends TestBaseClassWeb
             self::$webDriver->executeScript('window.scrollTo(0,document.body.scrollHeight);');
             sleep(1);
 
-            $button = $web->findById('button-collapse-Custom_options');
+            $button = self::$webDriver->wait(5)->until(
+                WebDriverExpectedCondition::presenceOfElementLocated(
+                    WebDriverBy::id('button-collapse-Custom_options')
+                )
+            );
             $button->click();
 
             // Check that all custom attributes are displayed
