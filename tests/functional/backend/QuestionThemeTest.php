@@ -86,108 +86,116 @@ class QuestionThemeTest extends TestBaseClassWeb
      */
     public function testSelectQuestionThemeInQuestionEditor()
     {
-        // Import survey with one group and question
-        $surveyFile = self::$surveysFolder . '/limesurvey_survey_193959_testSelectQuestionThemeInEditor.lss';
-        self::importSurvey($surveyFile);
+        try {
+            // Import survey with one group and question
+            $surveyFile = self::$surveysFolder . '/limesurvey_survey_193959_testSelectQuestionThemeInEditor.lss';
+            self::importSurvey($surveyFile);
 
-        $urlMan = \Yii::app()->urlManager;
-        $web = self::$webDriver;
+            $urlMan = \Yii::app()->urlManager;
+            $web = self::$webDriver;
 
-        // Go to question editor
-        $url = $urlMan->createUrl(
-            'questionAdministration/view',
-            [
-                'surveyid' => self::$testSurvey->sid,
-                'qid' => self::$testSurvey->questions[0]->qid
-            ]
-        );
-        $web->get($url);
+            // Go to question editor
+            $url = $urlMan->createUrl(
+                'questionAdministration/view',
+                [
+                    'surveyid' => self::$testSurvey->sid,
+                    'qid' => self::$testSurvey->questions[0]->qid
+                ]
+            );
+            $web->get($url);
 
-        $button = $web->findById('questionEditorButton');
-        $button->click();
+            $button = $web->findById('questionEditorButton');
+            $button->click();
 
-        // Select question theme
-        $button = $web->findById('trigger_questionTypeSelector_button');
-        $button->click();
+            // Select question theme
+            $button = $web->findById('trigger_questionTypeSelector_button');
+            $button->click();
 
-        $group = $web->findElement(WebDriverBy::xpath("//*[contains(text(),'Mask questions')]"));
-        $group->click();
+            $group = $web->findElement(WebDriverBy::xpath("//*[contains(text(),'Mask questions')]"));
+            $group->click();
 
-        $question = $web->findByPartialLinkText('Range Slider');
-        $question->click();
+            $question = $web->findByPartialLinkText('Range Slider');
+            $question->click();
 
-        $button = $web->findById('selector__select-this-questionTypeSelector');
-        $button->click();
-        sleep(1);
+            $button = $web->findById('selector__select-this-questionTypeSelector');
+            $button->click();
+            sleep(1);
 
-        self::$webDriver->executeScript('window.scrollTo(0,document.body.scrollHeight);');
-        sleep(1);
+            self::$webDriver->executeScript('window.scrollTo(0,document.body.scrollHeight);');
+            sleep(1);
 
-        $button = $web->findById('button-collapse-Custom_options');
-        $button->click();
+            $button = $web->findById('button-collapse-Custom_options');
+            $button->click();
 
-        // Check that all custom attributes are displayed
-        $themeDir = \Yii::app()->getConfig('userquestionthemerootdir') . '/Range-Slider';
-        $file = ROOT . '/tests/data/file_upload/rangeslider_tpartner.zip';
-        /** @var ExtensionConfig */
-        $config = ExtensionConfig::loadFromZip($file);
-        $this->assertNotEmpty($config, 'Loading config.xml from range slider zip file');
-        /** @var SimpleXMLElement */
-        $attributes = $config->xml->attributes;
-        $found = 0;
-        foreach ($attributes->attribute as $attribute) {
-            if ((string) $attribute->category === 'Custom options') {
-                $name = sprintf(
-                    'advancedSettings[custom options][%s]',
-                    (string) $attribute->name
-                );
-                if ((int) $attribute->i18n) {
-                    $name .= '[en]';
-                }
-                $input = $web->findByName($name);
-                if (!empty($input)) {
-                    $found++;
+            // Check that all custom attributes are displayed
+            $themeDir = \Yii::app()->getConfig('userquestionthemerootdir') . '/Range-Slider';
+            $file = ROOT . '/tests/data/file_upload/rangeslider_tpartner.zip';
+            /** @var ExtensionConfig */
+            $config = ExtensionConfig::loadFromZip($file);
+            $this->assertNotEmpty($config, 'Loading config.xml from range slider zip file');
+            /** @var SimpleXMLElement */
+            $attributes = $config->xml->attributes;
+            $found = 0;
+            foreach ($attributes->attribute as $attribute) {
+                if ((string) $attribute->category === 'Custom options') {
+                    $name = sprintf(
+                        'advancedSettings[custom options][%s]',
+                        (string) $attribute->name
+                    );
+                    if ((int) $attribute->i18n) {
+                        $name .= '[en]';
+                    }
+                    $input = $web->findByName($name);
+                    if (!empty($input)) {
+                        $found++;
+                    }
                 }
             }
+            $this->assertEquals(16, $found, 'Found exactly 10 customer options');
+
+            // Add values to custom attributes
+            $name = 'advancedSettings[custom options][range_slider_min]';
+            $input = $web->findByName($name);
+            $input->clear()->sendKeys('1');
+
+            $name = 'advancedSettings[custom options][range_slider_max]';
+            $input = $web->findByName($name);
+            $input->clear()->sendKeys('10');
+
+            self::$webDriver->executeScript('window.scrollTo(0,0);');
+
+            // Save question
+            $button = self::$webDriver->wait(10)->until(
+                WebDriverExpectedCondition::elementToBeClickable(
+                    WebDriverBy::cssSelector('#save-button-create-question')
+                )
+            );
+            $button->click();
+            sleep(1);
+
+            // Check database
+            $rangeSliderMin = QuestionAttribute::model()->findByAttributes(
+                [
+                    'qid' => self::$testSurvey->questions[0]->qid,
+                    'attribute' => 'range_slider_min'
+                ]
+            );
+            $this->assertEquals('1', $rangeSliderMin->value);
+
+            $rangeSliderMin = QuestionAttribute::model()->findByAttributes(
+                [
+                    'qid' => self::$testSurvey->questions[0]->qid,
+                    'attribute' => 'range_slider_max'
+                ]
+            );
+            $this->assertEquals('10', $rangeSliderMin->value);
+        } catch (\Exception $e) {
+            self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '_' . __FUNCTION__);
+            $this->assertFalse(
+                true,
+                self::$testHelper->javaTrace($e)
+            );
         }
-        $this->assertEquals(16, $found, 'Found exactly 10 customer options');
-
-        // Add values to custom attributes
-        $name = 'advancedSettings[custom options][range_slider_min]';
-        $input = $web->findByName($name);
-        $input->clear()->sendKeys('1');
-
-        $name = 'advancedSettings[custom options][range_slider_max]';
-        $input = $web->findByName($name);
-        $input->clear()->sendKeys('10');
-
-        self::$webDriver->executeScript('window.scrollTo(0,0);');
-
-        // Save question
-        $button = self::$webDriver->wait(10)->until(
-            WebDriverExpectedCondition::elementToBeClickable(
-                WebDriverBy::cssSelector('#save-button-create-question')
-            )
-        );
-        $button->click();
-        sleep(1);
-
-        // Check database
-        $rangeSliderMin = QuestionAttribute::model()->findByAttributes(
-            [
-                'qid' => self::$testSurvey->questions[0]->qid,
-                'attribute' => 'range_slider_min'
-            ]
-        );
-        $this->assertEquals('1', $rangeSliderMin->value);
-
-        $rangeSliderMin = QuestionAttribute::model()->findByAttributes(
-            [
-                'qid' => self::$testSurvey->questions[0]->qid,
-                'attribute' => 'range_slider_max'
-            ]
-        );
-        $this->assertEquals('10', $rangeSliderMin->value);
     }
 
     /**
