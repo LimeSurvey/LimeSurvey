@@ -124,6 +124,8 @@ class QuestionThemeTest extends TestBaseClassWeb
             $web->executeScript('window.scrollTo(0,document.body.scrollHeight);');
             sleep(1);
 
+            $web->dismissModal();
+
             $button = $web->wait(5)->until(
                 WebDriverExpectedCondition::presenceOfElementLocated(
                     WebDriverBy::id('button-collapse-Custom_options')
