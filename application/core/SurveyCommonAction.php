@@ -70,7 +70,7 @@ class SurveyCommonAction extends CAction
 
         // Get the action classes from the admin controller as the urls necessarily do not equal the class names. Eg. survey -> surveyaction
         // Merges it with actions from admin modules
-        $aActions = array_merge(Yii::app()->getController()->getActionClasses(), Yii::app()->getController()->getAdminModulesActionClasses());
+        $aActions = array_merge(App()->getController()->getActionClasses(), Yii::app()->getController()->getAdminModulesActionClasses());
 
         if (empty($aActions[$this->getId()]) || strtolower($oMethod->getDeclaringClass()->name) != strtolower((string) $aActions[$this->getId()]) || !$oMethod->isPublic()) {
             // Either action doesn't exist in our allowlist, or the method class doesn't equal the action class or the method isn't public
