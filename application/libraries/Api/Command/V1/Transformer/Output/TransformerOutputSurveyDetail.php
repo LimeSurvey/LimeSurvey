@@ -21,7 +21,7 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
         'format', 'googleanalyticsapikey', 'htmlemail', 'ipaddr', 'ipanonymize', 'listpublic', 'navigationdelay',
         'nokeyboard', 'printanswers', 'publicgraphs', 'publicstatistics', 'questionindex', 'refurl',
         'savetimings', 'sendconfirmation', 'showgroupinfo', 'shownoanswer', 'showprogress', 'showqnumcode',
-        'showwelcome', 'showxquestions', 'template', 'tokenlength', 'usecookie',
+        'showwelcome', 'showxquestions', 'template', 'tokenanswerspersistence', 'tokenlength', 'usecookie',
     ];
 
     private TransformerOutputSurvey $transformerSurvey;
