@@ -351,7 +351,7 @@ class AdminController extends LSYii_Controller
             'htmleditorpop'    => 'HtmlEditorPop',
             'surveysgroups'    => 'SurveysGroupsController',
             'limereplacementfields' => 'limereplacementfields',
-            'index'            => 'index',
+//            'index'            => 'index',
             'labels'           => 'Labels',
             'participants'     => 'ParticipantsAction',
             'pluginmanager'    => 'PluginManagerController',
