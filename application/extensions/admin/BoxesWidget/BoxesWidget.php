@@ -48,6 +48,7 @@ class BoxesWidget extends CWidget
     public function run()
     {
         $boxes = [];
+        $itemsCount = 0;
         foreach ($this->items as $item) {
             $item = (object)$item;
 
@@ -67,6 +68,7 @@ class BoxesWidget extends CWidget
                 if (isset($_GET['active']) && !empty($_GET['active'])) {
                     $item->model->active = $_GET['active'];
                 }
+                $itemsCount = $item->model->search()->totalItemCount;
 
                 // Set number of page
                 App()->user->setState('pageSize', $item->limit);
@@ -87,7 +89,7 @@ class BoxesWidget extends CWidget
         }
         $enableLoadMoreBtn = !empty($boxes);
 
-        if (!$enableLoadMoreBtn) {
+        if (empty($boxes)) {
             if (Permission::model()->hasGlobalPermission('surveys', 'create')) {
                 $boxes[] = [
                     'type' => self::TYPE_LINK,
@@ -114,7 +116,7 @@ class BoxesWidget extends CWidget
         $this->render('boxes', [
             'items' => $boxes,
             'limit' => $this->limit,
-            'enableLoadMoreBtn' => $enableLoadMoreBtn
+            'itemsCount' => $itemsCount
         ]);
     }
 }

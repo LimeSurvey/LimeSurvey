@@ -3417,9 +3417,6 @@ class SurveyAdministrationController extends LSBaseController
                 ->search(['pageSize' => $limit, 'currentPage' => $page]);
         }
 
-        if ($limit * $page >= $surveys->totalItemCount) {
-            return false;
-        }
 
         $boxes = [];
         foreach ($surveys->getData() as $survey) {
