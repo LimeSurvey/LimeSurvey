@@ -174,12 +174,6 @@ blockquote {
 }
 // Question editor END
 
-// Main Design (to achieve 20px padding left an right for the main container) START
-.container-fluid {
-  padding-left: $container-padding;
-  padding-right: $container-padding;
-}
-
 .full-page-wrapper {
   position: relative;
   padding-bottom: 65px;
