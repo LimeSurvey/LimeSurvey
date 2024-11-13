@@ -1,8 +1,8 @@
 <?php
 
 require_once("vendor/autoload.php");
+require_once("tests/bootstrap.php");
 require_once("application/helpers/remotecontrol/remotecontrol_handle.php");
-require_once("application/controllers/LSYii_Application.php");
 require_once("application/controllers/AdminController.php");
 
 /**
@@ -831,16 +831,14 @@ function MAL_EVAL($ast, $env, $sandboxed = true) {
         return _function('MAL_EVAL', 'native', $ast[2], $env, $ast[1]);
     case "new":
         $classname = $ast[1]->value;
-        return new $classname();
+        return new $classname($ast[2]->value);
     case "test-class":
         if ($ast[2][0]->value == 'constructor') {
-            print_r($ast[2]);
             $args = array_slice($ast[2]->getArrayCopy(), 1);
             $values = [];
             foreach ($args as $arg) {
                 $values[] = MAL_EVAL($arg, $env, $sandboxed);
             }
-            print_r($values);
         }
         $classname = $ast[1]->value;
         $class = new $classname();
