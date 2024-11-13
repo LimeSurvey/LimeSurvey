@@ -2,6 +2,8 @@
 
 require_once("vendor/autoload.php");
 require_once("application/helpers/remotecontrol/remotecontrol_handle.php");
+require_once("application/controllers/LSYii_Application.php");
+require_once("application/controllers/AdminController.php");
 
 /**
  * Make a lisp
@@ -827,9 +829,21 @@ function MAL_EVAL($ast, $env, $sandboxed = true) {
         break; // Continue loop (TCO)
     case "fn*":
         return _function('MAL_EVAL', 'native', $ast[2], $env, $ast[1]);
-    case "test-class":
+    case "new":
         $classname = $ast[1]->value;
-        $class = new $classname;
+        return new $classname();
+    case "test-class":
+        if ($ast[2][0]->value == 'constructor') {
+            print_r($ast[2]);
+            $args = array_slice($ast[2]->getArrayCopy(), 1);
+            $values = [];
+            foreach ($args as $arg) {
+                $values[] = MAL_EVAL($arg, $env, $sandboxed);
+            }
+            print_r($values);
+        }
+        $classname = $ast[1]->value;
+        $class = new $classname();
         return;
     default:
         $el = eval_ast($ast, $env, $sandboxed);
