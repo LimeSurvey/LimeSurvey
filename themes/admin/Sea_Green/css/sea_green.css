@@ -19144,7 +19144,7 @@ table [class^=ri-], table [class*=" ri-"] {
 }
 .grid-view .table button, .grid-view-ls .table button {
   border-color: #fff;
-  background-color: #fff;
+  background-color: inherit;
   border: none;
 }
 .grid-view .table button:hover,

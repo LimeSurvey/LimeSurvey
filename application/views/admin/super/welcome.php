@@ -246,7 +246,7 @@ gT('Themes');
                         [
                             'type'  => 0,
                             'model' => Survey::model(),
-                            'limit' => 15,
+                            'limit' => 20, // choose value according to pageSizeOptions
                         ],
                     ]
                 ]);
