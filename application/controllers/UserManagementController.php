@@ -1,6 +1,7 @@
 <?php
 
 use LimeSurvey\Models\Services\UserManager;
+use PHPMailer\PHPMailer\PHPMailer;
 
 //LSYii_Controller
 /**
@@ -53,6 +54,12 @@ class UserManagementController extends LSBaseController
      */
     public function actionIndex()
     {
+        $parsedAdresses = PHPMailer::parseAddresses('m.l.vermeegen@university.example.org, Osc@r__Burton@university-example.org, Patrick Teichmann <patrickteichmann@gmx.de>');
+        // currently we only support 1 email address without the option to select, so we take the first one defined
+        $mail = $parsedAdresses[0]['address'];
+
+
+
         if (!Permission::model()->hasGlobalPermission('users', 'read')) {
             return $this->renderPartial(
                 'partial/error',
