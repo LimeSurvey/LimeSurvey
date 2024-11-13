@@ -1593,6 +1593,13 @@ class Survey extends LSActiveRecord implements PermissionInterface
                 'htmlOptions'       => ['class' => 'ls-sticky-column']
             ],
             [
+                'header'            => gT('Survey ID'),
+                'name'              => 'survey_id',
+                'value'             => '$data->sid',
+                'headerHtmlOptions' => ['class' => 'd-none d-sm-table-cell text-nowrap'],
+                'htmlOptions'       => ['class' => 'd-none d-sm-table-cell has-link'],
+            ],
+            [
                 'header'            => gT('Status'),
                 'name'              => 'running',
                 'value'             => '$data->running',
