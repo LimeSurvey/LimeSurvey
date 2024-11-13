@@ -95,7 +95,7 @@
 .sidebar-icons-item {
     display: flex;
     justify-content: center;
-    margin-top: 16px;
+    margin-top: 8px;
     cursor: pointer;
 }
 .sidebar-icons-item:first-child {
