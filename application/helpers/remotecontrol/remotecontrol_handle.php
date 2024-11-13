@@ -2659,7 +2659,7 @@ class remotecontrol_handle
      * Get quota attributes (RPC function)
      *
      * Get properties of a quota
-     * All internal properties of a quota are available.
+     * All internal properties and completeCount of a quota are available.
      * @see \Quota for the list of available properties
      *
      * Failure status : Invalid quota ID, Invalid session key, No permission, No valid Data
@@ -2693,6 +2693,9 @@ class remotecontrol_handle
                 array_push($aBasicDestinationFields, 'quotals_message');
                 array_push($aBasicDestinationFields, 'quotals_url');
                 array_push($aBasicDestinationFields, 'quotals_urldescrip');
+
+                # completeCount
+                array_push($aBasicDestinationFields, 'completeCount');
 
                 if (!empty($aQuotaSettings)) {
                     $aQuotaSettings = array_intersect($aQuotaSettings, $aBasicDestinationFields);
