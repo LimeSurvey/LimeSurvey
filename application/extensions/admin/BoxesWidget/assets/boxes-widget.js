@@ -6,6 +6,14 @@ let cardHeaderRedirection = function () {
     })
 };
 
+let checkLoadMoreButton = function () {
+    var count = parseInt($('#load-more').attr('data-max-count'))
+    var numItems = $('.box-widget-card').length
+    if (numItems >= count) {
+        $('.box-widget-loadmore').hide()
+    }
+};
+
 $("#load-more").click(function (event) {
     event.preventDefault();
     event.stopPropagation()
@@ -27,9 +35,8 @@ $("#load-more").click(function (event) {
                 $("#load-more").attr('data-page', parseInt(page) + 1)
                 $('.box-widget .box-widget-list').append(html);
                 cardHeaderRedirection()
-            } else {
-                $("#load-more").hide()
             }
+            checkLoadMoreButton()
         },
         error: function (requestObject, error, errorThrown) {
             console.log('error');
@@ -40,4 +47,5 @@ $("#load-more").click(function (event) {
 
 $(document).on('ready pjax:scriptcomplete', function () {
     cardHeaderRedirection()
+    checkLoadMoreButton()
 });
