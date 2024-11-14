@@ -1,13 +1,5 @@
 <?php
 
-namespace controllers;
-
-use LSBaseController;
-use Permission;
-use PluginEvent;
-use Question;
-use Survey;
-
 /**
  * Class IndexController
  */
