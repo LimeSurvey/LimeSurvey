@@ -249,10 +249,4 @@ gT('Themes');
     <!-- Notification setting -->
     <input type="hidden" id="absolute_notification" />
 </div>
-<style>
-    /* This is only for the dashboard and should be removed once the background color is changed to $g-200 */
-    body {
-        background-color: #EEEFF7;
-    }
-</style>
 
