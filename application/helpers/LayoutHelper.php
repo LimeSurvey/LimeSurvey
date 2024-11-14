@@ -388,7 +388,7 @@ class LayoutHelper
             Yii::app()->getController()->renderPartial("/layouts/sidemenu", $aData);
         } else {
             Yii::app()->session['flashmessage'] = gT("Invalid survey ID");
-            Yii::app()->getController()->redirect(array("admin/index"));
+            Yii::app()->getController()->redirect(array("dashboard/view"));
         }
     }
 

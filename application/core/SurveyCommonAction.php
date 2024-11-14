@@ -677,7 +677,7 @@ class SurveyCommonAction extends CAction
                 $this->getController()->renderPartial('/survey_view', ['display' => $questionsummary]);
             } else {
                 Yii::app()->session['flashmessage'] = gT("Invalid survey ID");
-                $this->getController()->redirect(array("admin/index"));
+                $this->getController()->redirect(array("dashboard/view"));
             }
         }
     }
@@ -888,7 +888,7 @@ class SurveyCommonAction extends CAction
             $this->getController()->renderPartial("/admin/super/sidemenu", $aData);
         } else {
             Yii::app()->session['flashmessage'] = gT("Invalid survey ID");
-            $this->getController()->redirect(array("admin/index"));
+            $this->getController()->redirect(array("dashboard/view"));
         }
     }
 

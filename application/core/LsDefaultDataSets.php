@@ -852,7 +852,7 @@ class LsDefaultDataSets
         $returnArray = [];
 
         $returnArray[] = ['position'   => '1',
-                          'url'        => 'admin/index',
+                          'url'        => 'dashboard/view',
                           'title'      => gT('Dashboard'),
                           'ico'        => 'ri-function-fill',
                           'desc'       => gT('View dashboard'),
@@ -1149,7 +1149,7 @@ class LsDefaultDataSets
                     array(
                         'element' => '#lime-logo',
                         'delayOnElement' => "{element: 'element'}",
-                        'path' => ['/admin/index'],
+                        'path' => ['/dashboard/view'],
                         'placement' => 'bottom',
                         'redirect' => true,
                         'onShow' => "(function(tour){ $('#welcomeModal').modal('hide'); })"
@@ -1165,7 +1165,7 @@ class LsDefaultDataSets
                     . '<p class="alert bg-warning">' . gT("Click on the 'Create survey' box - or 'Next' in this tutorial") . '</p>',
                 'settings' => json_encode(array(
                     'element' => '.selector__create_survey',
-                    'path' => ['/admin/index'],
+                    'path' => ['/dashboard/view'],
                     'reflex' => true,
                     'onShow' => "(function(tour){ $('#welcomeModal').modal('hide'); })",
                     'onNext' => "(function(tour){ })",

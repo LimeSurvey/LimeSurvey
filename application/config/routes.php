@@ -23,7 +23,7 @@ $route['<_sid:\d+>/*'] = "survey/index/sid/<_sid>";
 $route['<sid:\d+>'] = array('survey/index', 'matchValue'=>true);
 
 //Admin Routes
-$route['admin/index'] = "admin";
+$route['dashboard/view'] = "admin";
 $route['admin/<action:\w+>/sa/<sa:\w+>/*'] = 'admin/<action>/sa/<sa>';
 $route['admin/<action:\w+>/<sa:\w+>/*'] = 'admin/<action>/sa/<sa>';
 

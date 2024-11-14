@@ -120,7 +120,7 @@ class GlobalSettings extends SurveyCommonAction
                 'isCloseBtn' => true,
                 'isSaveAndCloseBtn' => true,
                 'isSaveBtn' => true,
-                'backUrl' => Yii::app()->createUrl('admin/index'),
+                'backUrl' => Yii::app()->createUrl('dashboard/view'),
                 'formIdSaveClose' => 'frmglobalsettings',
                 'formIdSave' => 'frmglobalsettings'
             ],
@@ -544,7 +544,7 @@ class GlobalSettings extends SurveyCommonAction
         $aData['oSurvey'] = $oSurveyGroupSetting;
 
         if ($bRedirect && App()->request->getPost('saveandclose') !== null) {
-            $this->getController()->redirect($this->getController()->createUrl('admin/index'));
+            $this->getController()->redirect($this->getController()->createUrl('dashboard/view'));
         }
 
         Yii::app()->clientScript->registerPackage('bootstrap-switch', LSYii_ClientScript::POS_BEGIN);
@@ -567,7 +567,7 @@ class GlobalSettings extends SurveyCommonAction
                 'isCloseBtn' => true,
                 'isSaveAndCloseBtn' => true,
                 'isSaveBtn' => true,
-                'backUrl' => Yii::app()->createUrl('admin/index'),
+                'backUrl' => Yii::app()->createUrl('dashboard/view'),
                 'formIdSaveClose' => 'frmglobalsettings',
                 'formIdSave' => 'frmglobalsettings'
             ],

@@ -197,8 +197,9 @@ class AdminController extends LSYii_Controller
         }
 
         $this->runModuleController($action);
-
-
+        if (empty($action) || $action === 'index') {
+            $this->redirect($this->createUrl('dashboard/view'));
+        }
         return parent::run($action);
     }
 
