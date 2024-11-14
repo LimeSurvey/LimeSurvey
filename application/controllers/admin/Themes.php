@@ -51,9 +51,21 @@ class Themes extends SurveyCommonAction
             $tempdir = Yii::app()->getConfig('tempdir');
 
             $zipfile = "$tempdir/$templatename.zip";
-            Yii::app()->loadLibrary('admin.pclzip');
-            $zip = new PclZip($zipfile, false);
-            $zip->create($templatedir, PCLZIP_OPT_REMOVE_PATH, $oEditedTemplate->path);
+            $zip = new ZipArchive();
+            $zip->open($zipfile, ZipArchive::CREATE);
+
+            $files = new RecursiveIteratorIterator(
+                new RecursiveDirectoryIterator($templatedir),
+                RecursiveIteratorIterator::LEAVES_ONLY
+            );
+            foreach ($files as $file) {
+                if (!$file->isDir()) {
+                    $filePath = $file->getRealPath();
+                    $relativePath = substr($filePath, strlen($templatedir));
+                    $zip->addFile($filePath, $relativePath);
+                }
+            }
+            $zip->close();
 
             if (is_file($zipfile)) {
                 // Send the file for download!
@@ -125,9 +137,22 @@ class Themes extends SurveyCommonAction
         $tempdir = Yii::app()->getConfig('tempdir');
 
         $zipfile = "$tempdir/$templatename.zip";
-        Yii::app()->loadLibrary('admin.pclzip');
-        $zip = new PclZip($zipfile);
-        $zip->create($templatePath, PCLZIP_OPT_REMOVE_PATH, $templatePath);
+
+        $zip = new ZipArchive();
+        $zip->open($zipfile, ZipArchive::CREATE);
+
+        $files = new RecursiveIteratorIterator(
+            new RecursiveDirectoryIterator($templatePath),
+            RecursiveIteratorIterator::LEAVES_ONLY
+        );
+        foreach ($files as $file) {
+            if (!$file->isDir()) {
+                $filePath = $file->getRealPath();
+                $relativePath = substr($filePath, strlen($templatePath));
+                $zip->addFile($filePath, $relativePath);
+            }
+        }
+        $zip->close();
 
         if (is_file($zipfile)) {
             // Send the file for download!
@@ -374,29 +399,49 @@ class Themes extends SurveyCommonAction
 
         // TODO: Move all this to new SurveyThemeInstaller class (same as done for QuestionThemeInstaller).
         if (is_file($_FILES['the_file']['tmp_name'])) {
-            $zip = new PclZip($_FILES['the_file']['tmp_name']);
-            $aExtractResult = $zip->extract(PCLZIP_OPT_PATH, $extractDir, PCLZIP_CB_PRE_EXTRACT, 'templateExtractFilter');
+            $zip = new \ZipArchive();
+            $zip->open($_FILES['the_file']['tmp_name']);
 
-            if ($aExtractResult === 0) {
+            $files = [];
+            for ($i = 0; $i < $zip->numFiles; $i++) {
+                $filename = $zip->getNameIndex($i);
+                if (empty($filename)) {
+                    continue;
+                }
+                $isFolder = (substr($filename, -1) === '/');
+                // Filter files
+                $fileInfo = [
+                    'filename' => $extractDir . DIRECTORY_SEPARATOR . $filename,
+                    'store_filename' => $filename,
+                    'folder' => $isFolder,
+                ];
+                $fileInfo = array_merge($fileInfo, $zip->statIndex($i));
+                if (!templateExtractFilter($fileInfo)) {
+                    if (!$isFolder) {
+                        $aErrorFilesInfo[] = [
+                            "filename" => $filename,
+                        ];
+                    }
+                    continue;
+                }
+                $files[] = $filename;
+                $aImportedFilesInfo[] = [
+                    "filename" => $filename,
+                    "status" => gT("OK"),
+                    'is_folder' => $isFolder
+                ];
+            }
+
+            if ($zip->extractTo($extractDir, $files) === false) {
                 App()->user->setFlash('error', gT("This file is not a valid ZIP file archive. Import failed."));
                 rmdirr($destdir);
                 $this->getController()->redirect(array("admin/themes/sa/upload"));
             } else {
                 // Successfully unpacked
-                foreach ($aExtractResult as $sFile) {
-                    if ($sFile['status'] == 'skipped' && !$sFile['folder']) {
-                        $aErrorFilesInfo[] = array(
-                            "filename" => $sFile['stored_filename'],
-                        );
-                    } else {
-                        $aImportedFilesInfo[] = [
-                            "filename" => $sFile['stored_filename'],
-                            "status" => gT("OK"),
-                            'is_folder' => $sFile['folder']
-                        ];
-                    }
-                    if ($sFile['stored_filename'] == "config.xml") {
-                        SurveyThemeHelper::checkConfigFiles($sFile['filename']);
+                foreach ($aImportedFilesInfo as $fileInfo) {
+                    if ($fileInfo['filename'] == "config.xml") {
+                        SurveyThemeHelper::checkConfigFiles($fileInfo['filename']);
+                        break;
                     }
                 }
 

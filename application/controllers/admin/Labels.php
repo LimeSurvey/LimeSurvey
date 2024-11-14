@@ -56,9 +56,6 @@ class Labels extends SurveyCommonAction
         $basedestdir = Yii::app()->getConfig('uploaddir') . "/labels";
         $destdir = $basedestdir . "/$lid/";
 
-        Yii::app()->loadLibrary('admin.pclzip');
-        $zip = new PclZip($zipfilename);
-
         if (!is_writeable($basedestdir)) {
             Yii::app()->setFlashMessage(sprintf(gT("Incorrect permissions in your %s folder."), $basedestdir), 'error');
             $this->getController()->redirect(App()->createUrl("admin/labels/sa/view/lid/{$lid}"));
@@ -72,9 +69,11 @@ class Labels extends SurveyCommonAction
         $aErrorFilesInfo = array();
 
         if (is_file($zipfilename)) {
-            if ($zip->extract($extractdir) <= 0) {
+            $zip = new ZipArchive();
+            if ($zip->open($zipfilename) !== true || $zip->extractTo($extractdir) !== true) {
                 $this->getController()->error(gT("This file is not a valid ZIP file archive. Import failed. " . $zip->errorInfo(true)), $this->getController()->createUrl("admin/labels/sa/view/lid/{$lid}"));
             }
+            $zip->close();
 
             // now read tempdir and copy authorized files only
             $folders = array('flash', 'files', 'images');

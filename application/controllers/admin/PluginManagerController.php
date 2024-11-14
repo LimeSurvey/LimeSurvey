@@ -779,12 +779,11 @@ class PluginManagerController extends SurveyCommonAction
 }
 
 /**
- * PCLZip callback for plugin ZIP install.
- * @param mixed $p_event
+ * Callback for plugin ZIP install. Filters files by extension.
  * @param mixed $p_header
  * @return int Return 1 for yes (file can be extracted), 0 for no
  */
-function pluginExtractFilter($p_event, &$p_header)
+function pluginExtractFilter(&$p_header)
 {
     $aAllowExtensions = explode(
         ',',

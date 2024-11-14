@@ -236,22 +236,39 @@ class FileFetcherUploadZip extends FileFetcher
             throw new Exception("No filter name is set, can't unzip.");
         }
 
-        $zip = new \PclZip($_FILES['the_file']['tmp_name']);
-        $aExtractResult = $zip->extract(
-            PCLZIP_OPT_PATH,
-            $tempdir,
-            PCLZIP_CB_PRE_EXTRACT,
-            $this->filterName
-        );
+        $zip = new \ZipArchive();
+        $zip->open($_FILES['the_file']['tmp_name']);
 
-        if ($aExtractResult === 0) {
+        $files = [];
+        for ($i = 0; $i < $zip->numFiles; $i++) {
+            $filename = $zip->getNameIndex($i);
+            if (empty($filename)) {
+                continue;
+            }
+            $isFolder = (substr($filename, -1) === '/');
+            // Filter files
+            if (!empty($this->filterName) && function_exists($this->filterName)) {
+                $fileInfo = [
+                    'filename' => $tempdir . DIRECTORY_SEPARATOR . $filename,
+                    'store_filename' => $filename,
+                    'folder' => $isFolder,
+                ];
+                $fileInfo = array_merge($fileInfo, $zip->statIndex($i));
+                if (!call_user_func($this->filterName, $fileInfo)) {
+                    continue;
+                }
+            }
+            $files[] = $filename;
+        }
+
+        if ($zip->extractTo($tempdir, $files) === false) {
             throw new Exception(
                 gT("This file is not a valid ZIP file archive. Import failed.")
-                . ' ' . $zip->error_string
+                . ' ' . $zip->getStatusString()
             );
-        } else {
-            // All good?
         }
+
+        $zip->close();
     }
 
     /**
