@@ -400,7 +400,7 @@ function return_timer_script($aQuestionAttributes, $ia, $disable = null)
     /* Registering script : don't go to EM : no need usage of ls_json_encode */
     App()->getClientScript()->registerScript("LSVarLangTimer", "LSvar.lang.timer=" . json_encode($langTimer) . ";", CClientScript::POS_BEGIN);
     /**
-     * The following lines cover for previewing questions, because no $_SESSION['survey_'.$iSid]['fieldarray'] exists.
+     * The following lines cover for previewing questions, because no $_SESSION['survey_'.$surveyId]['fieldarray'] exists.
      * This just stops error messages occuring
      */
     if (!isset($_SESSION['survey_' . $surveyId]['fieldarray'])) {
