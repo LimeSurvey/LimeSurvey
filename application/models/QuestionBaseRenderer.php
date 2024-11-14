@@ -92,7 +92,7 @@ abstract class QuestionBaseRenderer extends StaticModel
         Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts") . 'coookies.js', CClientScript::POS_BEGIN);
         Yii::app()->getClientScript()->registerPackage('timer-addition');
 
-        $iSid = App()->getConfig('surveyID');
+        $surveyId = App()->getConfig('surveyID');
         $langTimer = array(
             'hours' => gT("hours"),
             'mins' => gT("mins"),
@@ -104,8 +104,8 @@ abstract class QuestionBaseRenderer extends StaticModel
          * The following lines cover for previewing questions, because no $_SESSION['survey_'.$iSid]['fieldarray'] exists.
          * This just stops error messages occuring
          */
-        if (!isset($_SESSION['survey_' . $iSid]['fieldarray'])) {
-            $_SESSION['survey_' . $iSid]['fieldarray'] = [];
+        if (!isset($_SESSION['survey_' . $surveyId]['fieldarray'])) {
+            $_SESSION['survey_' . $surveyId]['fieldarray'] = [];
         }
         /* End */
 
@@ -167,14 +167,14 @@ abstract class QuestionBaseRenderer extends StaticModel
         $time_limit_warning_2_message = str_replace("{TIME}", $timer_html, $time_limit_warning_2_message);
 
         $timersessionname = "timer_question_" . $oQuestion->qid;
-        if (isset($_SESSION['survey_' . $iSid][$timersessionname])) {
-            $time_limit = $_SESSION['survey_' . $iSid][$timersessionname];
+        if (isset($_SESSION['survey_' . $surveyId][$timersessionname])) {
+            $time_limit = $_SESSION['survey_' . $surveyId][$timersessionname];
         }
 
         $disable = null;
         App()->getClientScript()->registerScript(
             "TimerQuestion" . $oQuestion->qid,
-            "countdown($oQuestion->qid, $iSid, $time_limit, $time_limit_action, $time_limit_warning, $time_limit_warning_2, $time_limit_warning_display_time, $time_limit_warning_2_display_time, '$disable');",
+            "countdown($oQuestion->qid, $surveyId, $time_limit, $time_limit_action, $time_limit_warning, $time_limit_warning_2, $time_limit_warning_display_time, $time_limit_warning_2_display_time, '$disable');",
             LSYii_ClientScript::POS_POSTSCRIPT
         );
 
