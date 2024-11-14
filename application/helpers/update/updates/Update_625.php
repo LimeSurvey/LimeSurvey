@@ -33,7 +33,7 @@ class Update_625 extends DatabaseUpdateBase
             $oDB = App()->db;
             $oDB->createCommand()->insert('{{boxes}}', [
                 'position'   => '1',
-                'url'        => 'admin/index',
+                'url'        => 'dashboard/view',
                 'title'      => gT('Dashboard'),
                 'ico'        => 'ri-function-fill',
                 'desc'       => gT('View dashboard'),

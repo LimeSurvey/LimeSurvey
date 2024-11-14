@@ -3,7 +3,7 @@
 /**
  * Class IndexController
  */
-class IndexController extends LSBaseController
+class DashboardController extends LSBaseController
 {
 
     /**
@@ -35,7 +35,7 @@ class IndexController extends LSBaseController
      */
     public function beforeRender($view)
     {
-        $this->layout = 'layout_main';
+        $this->layout = 'with_sidebar';
 
         return parent::beforeRender($view);
     }
@@ -43,7 +43,7 @@ class IndexController extends LSBaseController
     /**
      * View the dashboard index/index
      */
-    public function actionIndex(): void
+    public function actionView(): void
     {
         $aData = $this->getData();
         $this->render('welcome', $aData);
