@@ -31,13 +31,8 @@ $layoutHelper = new LayoutHelper();
 
 <?php $containerClass = !App()->user->isGuest ? 'container-fluid' : 'container-fluid ps-0' ?>
 <!-- Full page, started in SurveyCommonAction::renderWrappedTemplate() -->
-<div id="layout_sidebar">
-    <?php App()->getController()->widget('ext.SideBarWidget.SideBarWidget'); ?>
-    <div class="<?= $containerClass ?>" id="in_survey_common_action">
-        <div class="row">
-            <?= $content ?>
-        </div>
-    </div>
+<div class="<?= $containerClass ?>" id="in_survey_common_action">
+    <?= $content ?>
 </div>
 <!-- END LAYOUT_MAIN -->
 
