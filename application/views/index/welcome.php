@@ -206,19 +206,14 @@ gT('Themes');
     <?php endif; ?>
 
     <div class="survey-dashboard">
-        <?php
-        $this->widget('ext.SideBarWidget.SideBarWidget');
-        ?>
-
         <?php if (empty(App()->request->getQuery('viewtype')) && empty(SettingsUser::getUserSettingValue('welcome_page_widget'))) : ?>
-            <div class="list-surveys-container">
                 <div class="col-12">
                     <?php $this->widget('ext.admin.survey.ListSurveysWidget.ListSurveysWidget', [
                         'model' => $oSurveySearch,
                         'bRenderSearchBox' => $bShowSurveyListSearch,
                         'switch' => true
                     ]);
-                    ?></div>
+                    ?>
             </div>
         <?php elseif (
             (!empty(App()->request->getQuery('viewtype'))
@@ -227,18 +222,16 @@ gT('Themes');
                     || (empty(App()->request->getQuery('viewtype'))
                     && (SettingsUser::getUserSettingValue('welcome_page_widget') === 'list-widget')
             )
-) : ?>
-            <div class="list-surveys-container">
+        ) : ?>
                 <div class="col-12">
-                        <?php $this->widget('ext.admin.survey.ListSurveysWidget.ListSurveysWidget', [
+                    <?php $this->widget('ext.admin.survey.ListSurveysWidget.ListSurveysWidget', [
                         'model' => $oSurveySearch,
                         'bRenderSearchBox' => $bShowSurveyListSearch,
                         'switch' => true
                     ]);
-                        ?></div>
+                    ?>
             </div>
         <?php else : ?>
-            <div class="list-surveys-container">
                 <div class="col-12">
                 <?php $this->widget('ext.admin.BoxesWidget.BoxesWidget', [
                     'switch' => true,
@@ -251,10 +244,16 @@ gT('Themes');
                     ]
                 ]);
                 ?>
-                </div>
             </div>
         <?php endif; ?>
     </div>
     <!-- Notification setting -->
     <input type="hidden" id="absolute_notification" />
 </div>
+<style>
+    /* This is only for the dashboard and should be removed once the background color is changed to $g-200 */
+    body {
+        background-color: #EEEFF7;
+    }
+</style>
+
