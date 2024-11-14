@@ -19130,6 +19130,9 @@ table [class^=ri-], table [class*=" ri-"] {
 .grid-view .action-list a:not(:first-child), .grid-view-ls .action-list a:not(:first-child) {
   margin-left: 12px;
 }
+.grid-view .action-list a i::before, .grid-view-ls .action-list a i::before {
+  color: #8146F6;
+}
 .grid-view .action-list .disabled i::before, .grid-view-ls .action-list .disabled i::before {
   opacity: 0.5;
   color: #6E748C;

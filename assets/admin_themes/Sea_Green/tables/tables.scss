@@ -217,6 +217,9 @@ table {
         a:not(:first-child) {
             margin-left: 12px;
         }
+        a i::before {
+          color: $grape;
+        }
         .disabled i::before {
           opacity: 0.5;
           color: $g-700;
