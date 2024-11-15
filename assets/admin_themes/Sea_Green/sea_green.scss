@@ -63,6 +63,10 @@
 @import "lime-admin-colors";
 @import "statistics";
 
+@import "layout/body.scss";
+@import "layout/container/container.scss";
+@import "layout/ls-main-content-container.scss";
+@import "layout/layout_sidebar.scss";
 @import "authentication/authentication.scss";
 @import "buttons/buttons.scss";
 @import "buttons/btn-group.scss";
@@ -97,8 +101,6 @@
 @import "alert/alert.scss";
 @import "accordion/accordion.scss";
 @import "expressionscript/expressions.scss";
-@import "layout/ls-main-content-container.scss";
-@import "layout/layout_sidebar.scss";
 @import "fileManager/fileManager.scss";
 @import "list_group/list_group.scss";
 @import "list_group/ls-card-grid.scss";
