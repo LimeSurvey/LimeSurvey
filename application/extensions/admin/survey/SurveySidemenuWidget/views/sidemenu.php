@@ -14,7 +14,7 @@
                 </div>
             </div>
             <div class="sidebar-icons-item">
-                <div class="sidebar-icon" data-target="#survey-settings-panel" onclick="window.location='<?php echo App()->createUrl('surveyAdministration/view/', ['surveyid' => $sid]);?>'">
+                <div class="sidebar-icon" data-target="#survey-settings-panel" onclick="window.location='<?php echo App()->createUrl('editorLink/index', ['route' => 'survey/' .  $sid . '/settings/generalsettings']);?>'">
                     <div data-bs-toggle="tooltip"
                          title="<?php echo gT('Survey settings'); ?>"
                          data-bs-offset="0, 20"
@@ -24,8 +24,8 @@
                 </div>
             </div>
             <div class="sidebar-icons-item">
-                <div class="sidebar-icon" data-target="#survey-menu-panel" onclick="window.location='<?php echo App()->createUrl('questionAdministration/listQuestions/', ['surveyid' => $sid]);?>'">
-                    <div data-bs-toggle="tooltip"
+                <div class="sidebar-icon" data-target="#survey-menu-panel" onclick="window.location='<?php echo App()->createUrl("admin/tokens/sa/index/surveyid/" . $sid);?>'">
+                        <div data-bs-toggle="tooltip"
                          title="<?php echo gT('Survey menu'); ?>"
                          data-bs-offset="0, 20"
                          data-bs-placement="right">

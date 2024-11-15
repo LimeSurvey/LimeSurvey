@@ -117,18 +117,18 @@ class SurveySidemenuWidget extends WhSelect2
                 ],
                 [
                     'name' => 'participants',
-                    'route' => 'surveyAdministration/rendersidemenulink/',
-                    'params' => array('surveyid' => $this->sid, 'subaction' => 'tokens'),
+                    'route' => 'editorLink/index',
+                    'params' => array('route' => 'survey/' . $this->sid . '/settings/tokens'),
                 ],
                 [
                     'name' => 'publication',
-                    'route' => 'surveyAdministration/rendersidemenulink/',
-                    'params' =>  array('surveyid' => $this->sid, 'subaction' => 'publication'),
+                    'route' => 'editorLink/index/',
+                    'params' => array('route' => 'survey/' . $this->sid . '/settings/publication'),
                 ],
                 [
                     'name' => 'notification',
-                    'route' => 'surveyAdministration/rendersidemenulink/',
-                    'params' =>  array('surveyid' => $this->sid, 'subaction' => 'notification'),
+                    'route' => 'editorLink/index/',
+                    'params' => array('route' => 'survey/' . $this->sid . '/settings/notification'),
                 ]
             ),
             'presentation' => array(
