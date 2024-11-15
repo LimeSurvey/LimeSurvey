@@ -54,17 +54,9 @@ class Themes extends SurveyCommonAction
             $zip = new ZipArchive();
             $zip->open($zipfile, ZipArchive::CREATE);
 
-            $files = new RecursiveIteratorIterator(
-                new RecursiveDirectoryIterator($templatedir),
-                RecursiveIteratorIterator::LEAVES_ONLY
-            );
-            foreach ($files as $file) {
-                if (!$file->isDir()) {
-                    $filePath = $file->getRealPath();
-                    $relativePath = substr($filePath, strlen($templatedir));
-                    $zip->addFile($filePath, $relativePath);
-                }
-            }
+            $zipHelper = new LimeSurvey\Helpers\ZipHelper($zip);
+            $zipHelper->addFolder($templatedir);
+
             $zip->close();
 
             if (is_file($zipfile)) {
@@ -141,17 +133,9 @@ class Themes extends SurveyCommonAction
         $zip = new ZipArchive();
         $zip->open($zipfile, ZipArchive::CREATE);
 
-        $files = new RecursiveIteratorIterator(
-            new RecursiveDirectoryIterator($templatePath),
-            RecursiveIteratorIterator::LEAVES_ONLY
-        );
-        foreach ($files as $file) {
-            if (!$file->isDir()) {
-                $filePath = $file->getRealPath();
-                $relativePath = substr($filePath, strlen($templatePath));
-                $zip->addFile($filePath, $relativePath);
-            }
-        }
+        $zipHelper = new LimeSurvey\Helpers\ZipHelper($zip);
+        $zipHelper->addFolder($templatePath);
+
         $zip->close();
 
         if (is_file($zipfile)) {

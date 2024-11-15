@@ -1341,17 +1341,8 @@ class Export extends SurveyCommonAction
         $zip = new ZipArchive();
         $zip->open($zipfile, ZipArchive::CREATE);
 
-        $files = new RecursiveIteratorIterator(
-            new RecursiveDirectoryIterator($fullAssetsDir),
-            RecursiveIteratorIterator::LEAVES_ONLY
-        );
-        foreach ($files as $file) {
-            if (!$file->isDir()) {
-                $filePath = $file->getRealPath();
-                $relativePath = ltrim(substr($filePath, strlen($fullAssetsDir)), DIRECTORY_SEPARATOR);
-                $zip->addFile($filePath, $assetsDir . $relativePath);
-            }
-        }
+        $zipHelper = new LimeSurvey\Helpers\ZipHelper($zip);
+        $zipHelper->addFolder($fullAssetsDir, $assetsDir);
 
         // Store current language
         $siteLanguage = Yii::app()->language;
