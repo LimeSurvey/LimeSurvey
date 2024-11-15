@@ -49,7 +49,7 @@
                          title="<?php echo gT('Survey permissions'); ?>"
                          data-bs-offset="0, 20"
                          data-bs-placement="right">
-                        <i class="ri-lock-2-line btn btn-g-800 btn-icon <?php echo $this->activePanel == 'survey-permissions-panel' ? 'active' : ''?>"></i>
+                        <i class="ri-group-line btn btn-g-800 btn-icon <?php echo $this->activePanel == 'survey-permissions-panel' ? 'active' : ''?>"></i>
                     </div>
                 </div>
             </div>
