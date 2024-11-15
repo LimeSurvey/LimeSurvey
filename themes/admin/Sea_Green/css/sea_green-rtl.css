@@ -18975,9 +18975,14 @@ input[type=number] {
 .sidebar .sidebar-icons .sidebar-icon {
   cursor: pointer;
   margin-top: 10px;
+  box-shadow: rgba(0, 0, 0, 0.25) 0 4px 4px 0;
 }
 .sidebar .sidebar-icons .sidebar-icon:first-child {
   margin-top: 0;
+}
+.sidebar .sidebar-icons .sidebar-icon .btn-icon[selected] {
+  background-color: #fff;
+  color: #333641;
 }
 
 .badge {

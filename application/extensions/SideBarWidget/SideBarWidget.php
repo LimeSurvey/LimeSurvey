@@ -22,6 +22,7 @@ class SideBarWidget extends CWidget
      */
     public function renderActions(): void
     {
+        $route = App()->urlManager->parseUrl(App()->request);
         $boxes = Box::model()->findAll(['order' => 'position ASC']);
         $boxesData = [];
         foreach ($boxes as $box) {
@@ -36,6 +37,7 @@ class SideBarWidget extends CWidget
             $boxData['title'] = $box->title;
             $boxData['ico'] = $box->getIconName();
             $boxData['description'] = $box->desc;
+            $boxData['selected'] = $route === $box->url;
 
             // default permission if usergroup is not within expected values
             $canSeeBox = false;
