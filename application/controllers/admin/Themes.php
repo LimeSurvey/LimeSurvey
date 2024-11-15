@@ -383,52 +383,32 @@ class Themes extends SurveyCommonAction
 
         // TODO: Move all this to new SurveyThemeInstaller class (same as done for QuestionThemeInstaller).
         if (is_file($_FILES['the_file']['tmp_name'])) {
-            $zip = new \ZipArchive();
-            $zip->open($_FILES['the_file']['tmp_name']);
+            $zipExtractor = new \LimeSurvey\Models\Services\ZipExtractor($_FILES['the_file']['tmp_name']);
+            $zipExtractor->setFilterCallback('templateExtractFilter');
 
-            $files = [];
-            for ($i = 0; $i < $zip->numFiles; $i++) {
-                $filename = $zip->getNameIndex($i);
-                if (empty($filename)) {
-                    continue;
-                }
-                $isFolder = (substr($filename, -1) === '/');
-                // Filter files
-                $fileInfo = [
-                    'filename' => $extractDir . DIRECTORY_SEPARATOR . $filename,
-                    'store_filename' => $filename,
-                    'folder' => $isFolder,
-                ];
-                $fileInfo = array_merge($fileInfo, $zip->statIndex($i));
-                if (!templateExtractFilter($fileInfo)) {
-                    if (!$isFolder) {
-                        $aErrorFilesInfo[] = [
-                            "filename" => $filename,
-                        ];
-                    }
-                    continue;
-                }
-                $files[] = $filename;
-                $aImportedFilesInfo[] = [
-                    "filename" => $filename,
-                    "status" => gT("OK"),
-                    'is_folder' => $isFolder
-                ];
-            }
-
-            if ($zip->extractTo($extractDir, $files) === false) {
+            if (!$zipExtractor->extractTo($extractDir)) {
                 App()->user->setFlash('error', gT("This file is not a valid ZIP file archive. Import failed."));
                 rmdirr($destdir);
                 $this->getController()->redirect(array("admin/themes/sa/upload"));
             } else {
                 // Successfully unpacked
-                foreach ($aImportedFilesInfo as $fileInfo) {
-                    if ($fileInfo['filename'] == "config.xml") {
-                        SurveyThemeHelper::checkConfigFiles($fileInfo['filename']);
-                        break;
+                $aExtractResult = $zipExtractor->getExtractResult();
+                foreach ($aExtractResult as $sFile) {
+                    if ($sFile['status'] == 'skipped' && !$sFile['is_folder']) {
+                        $aErrorFilesInfo[] = array(
+                            "filename" => $sFile['name'],
+                        );
+                    } else {
+                        $aImportedFilesInfo[] = [
+                            "filename" => $sFile['name'],
+                            "status" => gT("OK"),
+                            'is_folder' => $sFile['is_folder']
+                        ];
+                    }
+                    if ($sFile['name'] == "config.xml") {
+                        SurveyThemeHelper::checkConfigFiles($sFile['target_filename']);
                     }
                 }
-
                 if (Template::checkIfTemplateExists($sNewDirectoryName)) {
                     App()->user->setFlash('error', gT("Can not import a theme that already exists!"));
                     rmdirr($destdir);
@@ -1489,6 +1469,7 @@ JAVASCRIPT
     /**
      * @param ZipArchive $zip
      * @return string|null
+     * @todo Remove this? Doesn't seem to be used anymore.
      */
     public function findConfigXml(ZipArchive $zip)
     {

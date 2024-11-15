@@ -780,19 +780,19 @@ class PluginManagerController extends SurveyCommonAction
 
 /**
  * Callback for plugin ZIP install. Filters files by extension.
- * @param mixed $p_header
+ * @param mixed $file
  * @return int Return 1 for yes (file can be extracted), 0 for no
  */
-function pluginExtractFilter(&$p_header)
+function pluginExtractFilter($file)
 {
     $aAllowExtensions = explode(
         ',',
         Yii::app()->getConfig('allowedpluginuploads', '')
     );
-    $info = pathinfo((string) $p_header['filename']);
+    $info = pathinfo((string) $file['name']);
 
     if (
-        $p_header['folder']
+        $file['is_folder']
         || !isset($info['extension'])
         || in_array($info['extension'], $aAllowExtensions)
     ) {

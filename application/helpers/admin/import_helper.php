@@ -1203,21 +1203,14 @@ function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyNam
             return $aImportResults;
         case 'lsa':
             // Import a survey archive
-            $zip = new ZipArchive();
-            $zip->open($sFullFilePath);
+            $zipExtractor = new \LimeSurvey\Models\Services\ZipExtractor($sFullFilePath);
+            // If file extension is not lss, lsr, lsi or lst, skip it
+            $zipExtractor->setFilterCallback(fn($file) => preg_match('/(lss|lsr|lsi|lst)$/', $file['name']));
+            $zipExtractor->extractTo(Yii::app()->getConfig('tempdir'));
 
-            $files = [];
-            for ($i = 0; $i < $zip->numFiles; $i++) {
-                $filename = $zip->getNameIndex($i);
-                // If file extension is not lss, lsr, lsi or lst, skip it
-                if (!preg_match('/(lss|lsr|lsi|lst)$/', $filename)) {
-                    continue;
-                }
-                $files[] = $filename;
-            }
+            $extractResults = $zipExtractor->getExtractResult();
+            $files = array_map(fn($file) => $file['name'], $extractResults);
 
-            $zip->extractTo(Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR, $files);
-            $zip->close();
             $aImportResults = [];
 
             if (empty($files)) {

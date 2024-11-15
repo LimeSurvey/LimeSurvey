@@ -222,8 +222,8 @@ class FileFetcherUploadZip extends FileFetcher
     protected function extractZipFile($tempdir)
     {
         \Yii::import('application.helpers.common_helper', true);
-        \Yii::app()->loadLibrary('admin.pclzip');
 
+        /** @todo: Move this after checking if the file exists? */
         $this->checkZipBomb();
 
         if (!is_file($_FILES['the_file']['tmp_name'])) {
@@ -236,39 +236,15 @@ class FileFetcherUploadZip extends FileFetcher
             throw new Exception("No filter name is set, can't unzip.");
         }
 
-        $zip = new \ZipArchive();
-        $zip->open($_FILES['the_file']['tmp_name']);
+        $zipExtractor = new \LimeSurvey\Models\Services\ZipExtractor($_FILES['the_file']['tmp_name']);
+        $zipExtractor->setFilterCallback($this->filterName);
 
-        $files = [];
-        for ($i = 0; $i < $zip->numFiles; $i++) {
-            $filename = $zip->getNameIndex($i);
-            if (empty($filename)) {
-                continue;
-            }
-            $isFolder = (substr($filename, -1) === '/');
-            // Filter files
-            if (!empty($this->filterName) && function_exists($this->filterName)) {
-                $fileInfo = [
-                    'filename' => $tempdir . DIRECTORY_SEPARATOR . $filename,
-                    'store_filename' => $filename,
-                    'folder' => $isFolder,
-                ];
-                $fileInfo = array_merge($fileInfo, $zip->statIndex($i));
-                if (!call_user_func($this->filterName, $fileInfo)) {
-                    continue;
-                }
-            }
-            $files[] = $filename;
-        }
-
-        if ($zip->extractTo($tempdir, $files) === false) {
+        if ($zipExtractor->extractTo($tempdir) === false) {
             throw new Exception(
                 gT("This file is not a valid ZIP file archive. Import failed.")
-                . ' ' . $zip->getStatusString()
+                . ' ' . $zipExtractor->getExtractStatus()
             );
         }
-
-        $zip->close();
     }
 
     /**
