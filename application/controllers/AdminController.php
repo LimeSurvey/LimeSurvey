@@ -197,6 +197,7 @@ class AdminController extends LSYii_Controller
         }
 
         $this->runModuleController($action);
+        // this will redirect the default action to the new controller previously "admin/index" or "admin" to "dashboard/view"
         if (empty($action) || $action === 'index') {
             $this->redirect($this->createUrl('dashboard/view'));
         }
