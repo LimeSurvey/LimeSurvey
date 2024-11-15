@@ -1,3 +1,5 @@
+$sidebar-shadow: rgba(0, 0, 0, 0.25) 0 4px 4px 0;
+
 .sidebar {
     display : flex;
     margin  : 8px;
@@ -6,8 +8,13 @@
         .sidebar-icon {
             cursor     : pointer;
             margin-top : 10px;
+            box-shadow: $sidebar-shadow;
             &:first-child {
                 margin-top : 0;
+            }
+            .btn-icon[selected] {
+                background-color : $white;
+                color            : $g-800;
             }
         }
     }
