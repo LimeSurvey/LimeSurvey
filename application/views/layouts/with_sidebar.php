@@ -24,7 +24,7 @@ $layoutHelper->showadminmenu($aData);
 <!-- Full page, started in SurveyCommonAction::renderWrappedTemplate() -->
 <div id="layout_sidebar">
     <?php App()->getController()->widget('ext.SideBarWidget.SideBarWidget'); ?>
-    <div class="container-fluid" id="in_survey_common_action">
+    <div class="container-40" id="in_survey_common_action">
         <?= $content ?>
     </div>
 </div>

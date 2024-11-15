@@ -1,11 +1,10 @@
 .sidebar {
     display : flex;
-    margin  : 8px 8px 8px 0;
+    margin  : 8px;
     .sidebar-icons {
-        padding : 8px 8px 8px 0;
         .sidebar-icon {
             cursor     : pointer;
-            margin-top : 8px;
+            margin-top : 10px;
             &:first-child {
                 margin-top : 0;
             }
