@@ -1508,9 +1508,6 @@ class Survey extends LSActiveRecord implements PermissionInterface
                 ['sid' => $this->sid, 'newtest' => "Y", 'lang' => $this->language]
             ),
             'enabledCondition' => $permissions['survey_update'],
-            'htmlOptions'      => [
-                'target' => '_blank',
-            ],
             'linkAttributes'   => ['target' => '_blank'],
         ];
         $dropdownItems[] = [
