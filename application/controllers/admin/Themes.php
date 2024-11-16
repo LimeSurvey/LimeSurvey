@@ -286,8 +286,6 @@ class Themes extends SurveyCommonAction
      */
     protected function uploadTemplate()
     {
-        App()->loadLibrary('admin.pclzip');
-
         // Redirect back if demo mode is set.
         $this->checkDemoMode();
 

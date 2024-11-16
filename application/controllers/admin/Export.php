@@ -973,7 +973,6 @@ class Export extends SurveyCommonAction
     {
         $aSurveys = json_decode($sSurveys);
         $aResults = array();
-        Yii::app()->loadLibrary('admin.pclzip');
         $bArchiveIsEmpty = true;
         $sTempDir        = Yii::app()->getConfig("tempdir");
         $sZip            = randomChars(30);
@@ -1152,25 +1151,6 @@ class Export extends SurveyCommonAction
                 return($aZIPFileName);
             }
         }
-    }
-
-    /**
-     * Add to zip
-     *
-     * @param PclZip $zip
-     * @param string $name
-     * @param string $full_name
-     */
-    private function addToZip(PclZip $zip, string $name, string $full_name)
-    {
-        $zip->add(
-            array(
-            array(
-            PCLZIP_ATT_FILE_NAME => $name,
-            PCLZIP_ATT_FILE_NEW_FULL_NAME => $full_name
-            )
-            )
-        );
     }
 
     /**

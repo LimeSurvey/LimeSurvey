@@ -29,7 +29,7 @@ class ZipHelper
 
         foreach ($files as $file) {
             if (!$file->isDir()) {
-                $filePath = $file->getRealPath();
+                $filePath = $file->getPathname();
                 $relativePath = ltrim(substr($filePath, strlen($folder)), DIRECTORY_SEPARATOR);
                 $this->zip->addFile($filePath, $pathInZip . $relativePath);
             }
