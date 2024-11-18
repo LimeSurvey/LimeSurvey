@@ -1,5 +1,5 @@
 ; PHP Unit test
-(test-class remotecontrol_handle
+(test-class 'remotecontrol_handle
   (constructor (new AdminController "dummyid"))
   (test-method add_participants
       (set (participant (list (map ("firstname" "John")))))

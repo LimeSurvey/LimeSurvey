@@ -423,6 +423,7 @@ class Env {
         }
     }
     public function set($key, $value) {
+        error_log('setting key ' . $key->value);
         $this->data[$key->value] = $value;
         return $value;
     }
@@ -833,15 +834,32 @@ function MAL_EVAL($ast, $env, $sandboxed = true) {
         $classname = $ast[1]->value;
         return new $classname($ast[2]->value);
     case "test-class":
+        $values = [];
         if ($ast[2][0]->value == 'constructor') {
             $args = array_slice($ast[2]->getArrayCopy(), 1);
-            $values = [];
             foreach ($args as $arg) {
                 $values[] = MAL_EVAL($arg, $env, $sandboxed);
             }
         }
         $classname = $ast[1]->value;
-        $class = new $classname();
+        if ($values) {
+            $class = new $classname(...$values);
+        } else {
+            $class = new $classname();
+        }
+        //if ($ast[3][0]->value == 'test-method') {
+            //echo 'hello';
+        //}
+        $env->set('__class_to_test', $class);
+        $el = MAL_EVAL($ast[3], $env, $sandboxed);
+        return;
+    case "test-method":
+        $methodname = $ast[1]->value;
+        $class = $env->get('__class_to_test');
+        $rest = array_slice($ast->getArrayCopy(), 2);
+        MAL_EVAL($rest, $env, $sandboxed);
+        print_r($env->get(_symbol('sessionKey')));
+        //$result = $class->$methodname();
         return;
     default:
         $el = eval_ast($ast, $env, $sandboxed);
