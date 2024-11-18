@@ -240,7 +240,7 @@ class Answer extends LSActiveRecord
      */
     public function getAnswersForStatistics($fields, $condition, $orderby)
     {
-        return Answer::model()->findAll(['condition' => $condition, 'order' => $orderby]);
+        return Answer::model()->with('answerl10ns')->findAll(['condition' => $condition, 'order' => $orderby]);
     }
 
     /**

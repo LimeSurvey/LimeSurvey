@@ -31,12 +31,12 @@ var AppleScriptHighlightRules = function () {
                 regex: "--.*$"
             },
             {
-                token: "comment", // multi line comment
+                token: "comment",
                 regex: "\\(\\*",
                 next: "comment"
             },
             {
-                token: "string", // " string
+                token: "string",
                 regex: '".*?"'
             },
             {
@@ -73,7 +73,7 @@ var AppleScriptHighlightRules = function () {
         ],
         "comment": [
             {
-                token: "comment", // closing comment
+                token: "comment",
                 regex: "\\*\\)",
                 next: "start"
             }, {

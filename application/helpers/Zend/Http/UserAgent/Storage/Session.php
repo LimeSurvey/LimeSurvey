@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Zend Framework
  *
@@ -97,8 +96,10 @@ class Zend_Http_UserAgent_Storage_Session implements Zend_Http_UserAgent_Storage
 
         // add '.' to prevent the message ''Session namespace must not start with a number'
         $this->_namespace = '.'
-                          . ($options['browser_type'] ?? self::NAMESPACE_DEFAULT);
-        $this->_member    = $options['member'] ?? self::MEMBER_DEFAULT;
+                          . (isset($options['browser_type'])
+                             ? $options['browser_type']
+                             : self::NAMESPACE_DEFAULT);
+        $this->_member    = isset($options['member']) ? $options['member'] : self::MEMBER_DEFAULT;
         $this->_session   = new Zend_Session_Namespace($this->_namespace);
     }
 

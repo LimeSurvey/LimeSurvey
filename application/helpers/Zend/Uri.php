@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Zend Framework
  *
@@ -42,9 +41,9 @@ abstract class Zend_Uri
      *
      * @var array
      */
-    protected static $_config = array(
+    static protected $_config = [
         'allow_unwise' => false
-    );
+    ];
 
     /**
      * Return a string representation of this URI.
@@ -97,7 +96,7 @@ abstract class Zend_Uri
     public static function factory($uri = 'http', $className = null)
     {
         // Separate the scheme from the scheme-specific parts
-        $uri            = explode(':', $uri, 2);
+        $uri            = explode(':', (string) $uri, 2);
         $scheme         = strtolower($uri[0]);
         $schemeSpecific = isset($uri[1]) === true ? $uri[1] : '';
 
@@ -170,7 +169,7 @@ abstract class Zend_Uri
      *
      * @param Zend_Config|array $config
      */
-    public static function setConfig($config)
+    static public function setConfig($config)
     {
         if ($config instanceof Zend_Config) {
             $config = $config->toArray();

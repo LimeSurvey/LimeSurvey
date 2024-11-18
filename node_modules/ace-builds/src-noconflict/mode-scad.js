@@ -3,15 +3,15 @@ var oop = require("../lib/oop");
 var TextHighlightRules = require("./text_highlight_rules").TextHighlightRules;
 var DocCommentHighlightRules = function () {
     this.$rules = {
-        "start": [
-            {
+        "start": [{
                 token: "comment.doc.tag",
-                regex: "@\\w+(?=\\s|$)"
-            }, DocCommentHighlightRules.getTagRule(), {
-                defaultToken: "comment.doc.body",
+                regex: "@[\\w\\d_]+" // TODO: fix email addresses
+            },
+            DocCommentHighlightRules.getTagRule(),
+            {
+                defaultToken: "comment.doc",
                 caseInsensitive: true
-            }
-        ]
+            }]
     };
 };
 oop.inherits(DocCommentHighlightRules, TextHighlightRules);
@@ -23,14 +23,14 @@ DocCommentHighlightRules.getTagRule = function (start) {
 };
 DocCommentHighlightRules.getStartRule = function (start) {
     return {
-        token: "comment.doc", // doc comment
-        regex: /\/\*\*(?!\/)/,
+        token: "comment.doc",
+        regex: "\\/\\*(?=\\*)",
         next: start
     };
 };
 DocCommentHighlightRules.getEndRule = function (start) {
     return {
-        token: "comment.doc", // closing comment
+        token: "comment.doc",
         regex: "\\*\\/",
         next: start
     };
@@ -58,34 +58,34 @@ var scadHighlightRules = function () {
             },
             DocCommentHighlightRules.getStartRule("start"),
             {
-                token: "comment", // multi line comment
+                token: "comment",
                 regex: "\\/\\*",
                 next: "comment"
             }, {
-                token: "string", // single line
+                token: "string",
                 regex: '["](?:(?:\\\\.)|(?:[^"\\\\]))*?["]'
             }, {
-                token: "string", // multi line string start
+                token: "string",
                 regex: '["].*\\\\$',
                 next: "qqstring"
             }, {
-                token: "string", // single line
+                token: "string",
                 regex: "['](?:(?:\\\\.)|(?:[^'\\\\]))*?[']"
             }, {
-                token: "string", // multi line string start
+                token: "string",
                 regex: "['].*\\\\$",
                 next: "qstring"
             }, {
-                token: "constant.numeric", // hex
+                token: "constant.numeric",
                 regex: "0[xX][0-9a-fA-F]+\\b"
             }, {
-                token: "constant.numeric", // float
+                token: "constant.numeric",
                 regex: "[+-]?\\d+(?:(?:\\.\\d*)?(?:[eE][+-]?\\d+)?)?\\b"
             }, {
-                token: "constant", // <CONSTANT>
+                token: "constant",
                 regex: "<[a-zA-Z0-9.]+>"
             }, {
-                token: "keyword", // pre-compiler directivs
+                token: "keyword",
                 regex: "(?:use|include)"
             }, {
                 token: keywordMapper,
@@ -106,7 +106,7 @@ var scadHighlightRules = function () {
         ],
         "comment": [
             {
-                token: "comment", // closing comment
+                token: "comment",
                 regex: "\\*\\/",
                 next: "start"
             }, {
@@ -286,16 +286,17 @@ oop.inherits(FoldMode, BaseFoldMode);
 
 });
 
-ace.define("ace/mode/scad",["require","exports","module","ace/lib/oop","ace/mode/text","ace/mode/scad_highlight_rules","ace/mode/matching_brace_outdent","ace/mode/folding/cstyle"], function(require, exports, module){"use strict";
+ace.define("ace/mode/scad",["require","exports","module","ace/lib/oop","ace/mode/text","ace/mode/scad_highlight_rules","ace/mode/matching_brace_outdent","ace/mode/behaviour/cstyle","ace/mode/folding/cstyle"], function(require, exports, module){"use strict";
 var oop = require("../lib/oop");
 var TextMode = require("./text").Mode;
 var scadHighlightRules = require("./scad_highlight_rules").scadHighlightRules;
 var MatchingBraceOutdent = require("./matching_brace_outdent").MatchingBraceOutdent;
+var CstyleBehaviour = require("./behaviour/cstyle").CstyleBehaviour;
 var CStyleFoldMode = require("./folding/cstyle").FoldMode;
 var Mode = function () {
     this.HighlightRules = scadHighlightRules;
     this.$outdent = new MatchingBraceOutdent();
-    this.$behaviour = this.$defaultBehaviour;
+    this.$behaviour = new CstyleBehaviour();
     this.foldingRules = new CStyleFoldMode();
 };
 oop.inherits(Mode, TextMode);

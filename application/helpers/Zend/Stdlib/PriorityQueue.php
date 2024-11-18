@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Zend Framework
  *
@@ -55,7 +54,7 @@ class Zend_Stdlib_PriorityQueue implements Countable, IteratorAggregate, Seriali
      * with keys "data" and "priority".
      * @var array
      */
-    protected $items      = array();
+    protected $items      = [];
 
     /**
      * Inner queue object
@@ -75,10 +74,10 @@ class Zend_Stdlib_PriorityQueue implements Countable, IteratorAggregate, Seriali
     public function insert($data, $priority = 1)
     {
         $priority = (int) $priority;
-        $this->items[] = array(
+        $this->items[] = [
             'data'     => $data,
             'priority' => $priority,
-        );
+        ];
         $this->getQueue()->insert($data, $priority);
         return $this;
     }
@@ -135,7 +134,7 @@ class Zend_Stdlib_PriorityQueue implements Countable, IteratorAggregate, Seriali
      *
      * @return int
      */
-    public function count()
+    public function count(): int
     {
         return count($this->items);
     }
@@ -172,7 +171,8 @@ class Zend_Stdlib_PriorityQueue implements Countable, IteratorAggregate, Seriali
      *
      * @return SplPriorityQueue
      */
-    public function getIterator()
+    #[\ReturnTypeWillChange]
+    public function getIterator(): \Traversable
     {
         $queue = $this->getQueue();
         return clone $queue;
@@ -183,9 +183,14 @@ class Zend_Stdlib_PriorityQueue implements Countable, IteratorAggregate, Seriali
      *
      * @return string
      */
-    public function serialize()
+    public function serialize(): ?string
     {
-        return serialize($this->items);
+        return serialize($this->__serialize());
+    }
+
+    public function __serialize(): array
+    {
+        return $this->items;
     }
 
     /**
@@ -196,9 +201,14 @@ class Zend_Stdlib_PriorityQueue implements Countable, IteratorAggregate, Seriali
      * @param  string $data
      * @return void
      */
-    public function unserialize($data)
+    public function unserialize($data): void
     {
-        foreach (unserialize($data) as $item) {
+        $this->__unserialize(unserialize($data));
+    }
+
+    public function __unserialize(array $data): void
+    {
+        foreach ($data as $item) {
             $this->insert($item['data'], $item['priority']);
         }
     }
@@ -219,10 +229,10 @@ class Zend_Stdlib_PriorityQueue implements Countable, IteratorAggregate, Seriali
             case self::EXTR_BOTH:
                 return $this->items;
             case self::EXTR_PRIORITY:
-                return array_map(array($this, 'returnPriority'), $this->items);
+                return array_map([$this, 'returnPriority'], $this->items);
             case self::EXTR_DATA:
             default:
-                return array_map(array($this, 'returnData'), $this->items);
+                return array_map([$this, 'returnData'], $this->items);
         }
     }
 

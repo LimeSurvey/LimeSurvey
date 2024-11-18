@@ -1,20 +1,20 @@
 ace.define("ace/ext/statusbar",["require","exports","module","ace/lib/dom","ace/lib/lang"], function(require, exports, module){"use strict";
 var dom = require("../lib/dom");
 var lang = require("../lib/lang");
-var StatusBar = /** @class */ (function () {
-    function StatusBar(editor, parentNode) {
-        this.element = dom.createElement("div");
-        this.element.className = "ace_status-indicator";
-        this.element.style.cssText = "display: inline-block;";
-        parentNode.appendChild(this.element);
-        var statusUpdate = lang.delayedCall(function () {
-            this.updateStatus(editor);
-        }.bind(this)).schedule.bind(null, 100);
-        editor.on("changeStatus", statusUpdate);
-        editor.on("changeSelection", statusUpdate);
-        editor.on("keyboardActivity", statusUpdate);
-    }
-    StatusBar.prototype.updateStatus = function (editor) {
+var StatusBar = function (editor, parentNode) {
+    this.element = dom.createElement("div");
+    this.element.className = "ace_status-indicator";
+    this.element.style.cssText = "display: inline-block;";
+    parentNode.appendChild(this.element);
+    var statusUpdate = lang.delayedCall(function () {
+        this.updateStatus(editor);
+    }.bind(this)).schedule.bind(null, 100);
+    editor.on("changeStatus", statusUpdate);
+    editor.on("changeSelection", statusUpdate);
+    editor.on("keyboardActivity", statusUpdate);
+};
+(function () {
+    this.updateStatus = function (editor) {
         var status = [];
         function add(str, separator) {
             str && status.push(str, separator || "|");
@@ -34,8 +34,7 @@ var StatusBar = /** @class */ (function () {
         status.pop();
         this.element.textContent = status.join("");
     };
-    return StatusBar;
-}());
+}).call(StatusBar.prototype);
 exports.StatusBar = StatusBar;
 
 });                (function() {

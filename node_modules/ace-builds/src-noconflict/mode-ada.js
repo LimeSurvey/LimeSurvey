@@ -19,13 +19,13 @@ var AdaHighlightRules = function () {
                 token: "comment",
                 regex: "--.*$"
             }, {
-                token: "string", // " string
+                token: "string",
                 regex: '".*?"'
             }, {
-                token: "string", // character
+                token: "string",
                 regex: "'.'"
             }, {
-                token: "constant.numeric", // float
+                token: "constant.numeric",
                 regex: "[+-]?\\d+(?:(?:\\.\\d*)?(?:[eE][+-]?\\d+)?)?\\b"
             }, {
                 token: keywordMapper,

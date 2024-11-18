@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Zend Framework
  *
@@ -38,12 +37,12 @@ class Zend_Http_UserAgent_Feed extends Zend_Http_UserAgent_AbstractDevice
      *
      * @var array
      */
-    protected static $_uaSignatures = array(
+    protected static $_uaSignatures = [
         'bloglines',
         'everyfeed',
         'feedfetcher',
         'gregarius',
-    );
+    ];
 
     /**
      * Comparison of the UserAgent chain and User Agent signatures
@@ -70,12 +69,12 @@ class Zend_Http_UserAgent_Feed extends Zend_Http_UserAgent_AbstractDevice
     /**
      * Look for features
      *
-     * @return string
+     * @return array|null
      */
     protected function _defineFeatures()
     {
-        $this->setFeature('iframes', false, 'product_capability');
-        $this->setFeature('frames', false, 'product_capability');
+        $this->setFeature('iframes',    false, 'product_capability');
+        $this->setFeature('frames',     false, 'product_capability');
         $this->setFeature('javascript', false, 'product_capability');
         return parent::_defineFeatures();
     }

@@ -74,7 +74,7 @@ var CssHighlightRules = function () {
                     + "|swash|ornaments|annotation|stylistic|styleset|character-variant)"
             }],
         "comments": [{
-                token: "comment", // multi line comment
+                token: "comment",
                 regex: "\\/\\*",
                 push: [{
                         token: "comment",
@@ -103,10 +103,10 @@ var CssHighlightRules = function () {
                 token: "constant.numeric",
                 regex: numRe
             }, {
-                token: "constant.numeric", // hex6 color
+                token: "constant.numeric",
                 regex: "#[a-f0-9]{6}"
             }, {
-                token: "constant.numeric", // hex3 color
+                token: "constant.numeric",
                 regex: "#[a-f0-9]{3}"
             }, {
                 token: ["punctuation", "entity.other.attribute-name.pseudo-element.css"],
@@ -119,9 +119,6 @@ var CssHighlightRules = function () {
             }, {
                 token: keywordMapper,
                 regex: "\\-?[a-zA-Z_][a-zA-Z0-9_\\-]*"
-            }, {
-                token: "paren.lparen",
-                regex: "\\{"
             }, {
                 caseInsensitive: true
             }],
@@ -202,7 +199,7 @@ var StylusHighlightRules = function () {
                 regex: /\/\/.*$/
             },
             {
-                token: "comment", // multi line comment
+                token: "comment",
                 regex: /\/\*/,
                 next: "comment"
             },
@@ -238,11 +235,11 @@ var StylusHighlightRules = function () {
                 regex: "(?:\\b)(a|abbr|acronym|address|area|article|aside|audio|b|base|big|blockquote|body|br|button|canvas|caption|cite|code|col|colgroup|datalist|dd|del|details|dfn|dialog|div|dl|dt|em|eventsource|fieldset|figure|figcaption|footer|form|frame|frameset|(?:h[1-6])|head|header|hgroup|hr|html|i|iframe|img|input|ins|kbd|label|legend|li|link|map|mark|menu|meta|meter|nav|noframes|noscript|object|ol|optgroup|option|output|p|param|pre|progress|q|samp|script|section|select|small|span|strike|strong|style|sub|summary|sup|table|tbody|td|textarea|tfoot|th|thead|time|title|tr|tt|ul|var|video)(?:\\b)"
             },
             {
-                token: "constant.numeric", // hex6 color
+                token: "constant.numeric",
                 regex: "#[a-fA-F0-9]{6}"
             },
             {
-                token: "constant.numeric", // hex3 color
+                token: "constant.numeric",
                 regex: "#[a-fA-F0-9]{3}"
             },
             {
@@ -289,7 +286,7 @@ var StylusHighlightRules = function () {
         ],
         "comment": [
             {
-                token: "comment", // closing comment
+                token: "comment",
                 regex: "\\*\\/",
                 next: "start"
             }, {
@@ -342,7 +339,10 @@ var Range = require("../../range").Range;
 var FoldMode = exports.FoldMode = function () { };
 oop.inherits(FoldMode, BaseFoldMode);
 (function () {
-    this.commentBlock = function (session, row) {
+    this.getFoldWidgetRange = function (session, foldStyle, row) {
+        var range = this.indentationBlock(session, row);
+        if (range)
+            return range;
         var re = /\S/;
         var line = session.getLine(row);
         var startLevel = line.search(re);
@@ -365,14 +365,6 @@ oop.inherits(FoldMode, BaseFoldMode);
             var endColumn = session.getLine(endRow).length;
             return new Range(startRow, startColumn, endRow, endColumn);
         }
-    };
-    this.getFoldWidgetRange = function (session, foldStyle, row) {
-        var range = this.indentationBlock(session, row);
-        if (range)
-            return range;
-        range = this.commentBlock(session, row);
-        if (range)
-            return range;
     };
     this.getFoldWidget = function (session, foldStyle, row) {
         var line = session.getLine(row);
