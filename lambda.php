@@ -1,5 +1,8 @@
 <?php
 
+error_reporting(E_ALL);
+ini_set('display_errors', '1');
+
 /**
  * defmacro
  * quote, backquote, antiquote
@@ -207,6 +210,7 @@ class Sexpr extends SexprBase
                 $fn   = $this->eval($sexpr->shift());
                 $list = $this->eval($sexpr->shift());
                 foreach ($list->body as $elem) {
+                    // TODO
                 }
                 break;
             case "progn":
@@ -219,17 +223,26 @@ class Sexpr extends SexprBase
             case "new":
                 $classname = $this->eval($sexpr->shift());
                 $arg = $this->eval($sexpr->shift());
-                return new $classname($arg);
+                error_log('here');
+                error_log($arg);
+                error_log($classname);
+                $class = new $classname($arg);
+                error_log('there');
+                return $class;
             case "test-class":
                 $classname = $this->eval($sexpr->shift());
                 $rest = $sexpr->shift();
+                $args = null;
                 if ($rest[1] === 'constructor') {
+                    //print_r($rest[0]);
                     $args = $this->eval($rest[0]);
                 }
-                foreach ($sexpr->pop() as $thing) {
-                    print_r($thing);
+                die('here');
+                while ($methodToTest = $sexpr->pop()) {
+                    foreach ($methodToTest as $thing) {
+                        //print_r($thing);
+                    }
                 }
-                die;
                 //print_r($sexpr->pop());
                 //print_r($sexpr->pop());
                 //die;
@@ -251,7 +264,6 @@ class Sexpr extends SexprBase
                             $this->replaceArg($arg, $repl, $newBody);
                         }
                         $newBody = $thing->macroExpand($newBody);
-                        print_r($newBody);
                         return $this->eval($newBody);
                     } else {
                         throw new RuntimeException('Unknown entity in env: ' . $op);
@@ -270,8 +282,6 @@ class Sexpr extends SexprBase
      */
     public function replaceArg($arg, $replaceWith, SplStack $body)
     {
-        print_r($arg);
-        print_r($replaceWith);
         foreach ($body as $key => $node) {
             if ($node === $arg) {
                 $body->offsetSet(count($body) - $key - 1, $replaceWith);
@@ -387,7 +397,6 @@ $source = file_get_contents($argv[1]);
 $sexp = $s->parse($source);
 while ($sex = $sexp->shift()) {
     $result = $s->eval($sex);
-    //print_r($result);
     if (count($sexp) === 0) {
         break;
     }
