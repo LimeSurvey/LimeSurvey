@@ -9,7 +9,7 @@
     <div class="container">
         <div class="row">
             <div class="col-12 content-right">
-                <h3><?= gT('Generate a logic file for the survey'); ?></h3>
+                <h3><?= gT('Check logic for the survey'); ?></h3>
                 <?=TbHtml::form(array('admin/expressions/sa/survey_logic_file'), 'post')?>
                     <div class="mb-3">
                         <label class="form-label" for="sid"> <?=gT('Survey ID (SID)')?></label>
@@ -17,7 +17,7 @@
                             <?=getSurveyList()?>
                         </select>
                     </div>
-                    <h4><?= gT('Debug Log Level'); ?></h4>
+                    <h4><?= gT('Debug log level'); ?></h4>
                     <h5><?= gT('Specify which debugging features to use'); ?></h5>
                     <div class="mb-3">
                         <?php echo TbHtml::label(gT("Detailed Timing"), 'LEM_DEBUG_TIMING', ['class' => " form-label"]); ?>
@@ -34,7 +34,7 @@
                         </div>
                     </div>
                     <div class="mb-3">
-                        <?php echo TbHtml::label(gT("Validation Summary"), 'LEM_DEBUG_VALIDATION_SUMMARY', ['class' => " form-label"]); ?>
+                        <?php echo TbHtml::label(gT("Validation summary"), 'LEM_DEBUG_VALIDATION_SUMMARY', ['class' => " form-label"]); ?>
                         <div>
                             <?php
                             $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
@@ -48,7 +48,7 @@
                         </div>
                     </div>
                     <div class="mb-3">
-                        <?php echo TbHtml::label(gT("Validation Detail (Validation Summary must also be checked to see detail)"), 'LEM_DEBUG_VALIDATION_DETAIL', ['class' => " form-label"]); ?>
+                        <?php echo TbHtml::label(gT("Validation detail (Validation summary must also be checked to see detail)"), 'LEM_DEBUG_VALIDATION_DETAIL', ['class' => " form-label"]); ?>
                         <div>
                             <?php
                             $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
@@ -62,7 +62,7 @@
                         </div>
                     </div>
                     <div class="mb-3">
-                        <?php echo TbHtml::label(gT("Pretty Print Syntax"), 'LEM_PRETTY_PRINT_ALL_SYNTAX', ['class' => " form-label"]); ?>
+                        <?php echo TbHtml::label(gT("Pretty print syntax"), 'LEM_PRETTY_PRINT_ALL_SYNTAX', ['class' => " form-label"]); ?>
                         <div>
                             <?php
                             $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
