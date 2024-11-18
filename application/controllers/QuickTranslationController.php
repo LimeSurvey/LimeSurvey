@@ -1,7 +1,9 @@
 <?php
+use Anper\Iuliia\Iuliia;
 
 class QuickTranslationController extends LSBaseController
 {
+ 
     /**
      * Here we have to use the correct layout (NOT main.php)
      *
@@ -426,10 +428,21 @@ class QuickTranslationController extends LSBaseController
         $sTolang     = Yii::app()->getRequest()->getPost('tolang', '');
         $sToconvert  = Yii::app()->getRequest()->getPost('text', '');
 
-        $aSearch     = array('zh-Hans', 'zh-Hant-HK', 'zh-Hant-TW', 'nl-informal', 'de-informal', 'de-easy', 'it-formal', 'pt-BR', 'es-MX', 'nb', 'nn', 'sr');
-        $aReplace    = array('zh-CN', 'zh-TW', 'zh-TW', 'nl', 'de', 'de', 'it', 'pt', 'es', 'no', 'no', 'sr-Cyrl');
-        $sBaselang = str_replace($aSearch, $aReplace, $sBaselang);
-        $sTolang = str_replace($aSearch, $aReplace, $sTolang);
+        $replacements = array(
+            'zh-Hans' => 'zh-CN',
+            'zh-Hant-HK' => 'zh-TW',
+            'zh-Hant-TW' => 'zh-TW',
+            'nl-informal' => 'nl',
+            'de-informal' => 'de',
+            'de-easy' => 'de',
+            'it-formal' => 'it',
+            'pt-BR' => 'pt',
+            'es-MX' => 'es',
+            'nb' => 'no',
+            'nn' => 'no',
+        );
+        $sBaselang = isset($replacements[$sBaselang]) ? $replacements[$sBaselang] : $sBaselang;
+        $sTolang = isset($replacements[$sTolang]) ? $replacements[$sTolang] : $sTolang;
 
         $error = false;
 
@@ -453,6 +466,9 @@ class QuickTranslationController extends LSBaseController
                     $convertedPart = (string) $objGt->$sProcedure($part[0]);
                     $convertedPart  = str_replace("<br>", "\r\n", $convertedPart);
                     $convertedPart  = html_entity_decode(stripcslashes($convertedPart));
+                    if ($sTolang == 'sr-Latn') {
+                        $convertedPart = Iuliia::translate($convertedPart, Iuliia::TELEGRAM);
+                    }
                     $sparts[] = $convertedPart;
                 }
             }
