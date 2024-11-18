@@ -120,11 +120,21 @@ class Sexpr extends SexprBase
         }
         switch ($op) {
             case "php":
-                $fn = $sexpr->shift();
-                $arg = $this->eval($sexpr->shift());
-                //print_r($fn);
-                //print_r($arg);
-                call_user_func($fn, $arg);
+                $fn = $sexpr->bottom();
+                if ($fn instanceof Sym) {
+                    $fn = $this->eval($sexpr->shift());
+                    $arg = $this->eval($sexpr->shift());
+                    call_user_func($fn, $arg);
+                } elseif ($fn instanceof SplStack) {
+                    $list = $this->eval($sexpr->shift());
+                    foreach ($list as $node) {
+                        $fn = $this->eval($node->shift());
+                        $arg = $this->eval($node->shift());
+                        call_user_func($fn, $arg);
+                    }
+                } else {
+                    // what
+                }
                 break;
             case "=":
                 $branch2 = $sexpr->pop();
@@ -206,9 +216,16 @@ class Sexpr extends SexprBase
                 }
                 return $result;
                 break;
+            case "new":
+                $classname = $this->eval($sexpr->shift());
+                $arg = $this->eval($sexpr->shift());
+                return new $classname($arg);
             case "test-class":
                 $name = $this->eval($sexpr->shift());
-                echo $name;
+                $rest = $sexpr->shift();
+                if ($rest[1] === 'constructor') {
+                    $this->eval($rest[0]);
+                }
                 return;
             default:
                 if (isset($this->env[$op])) {
@@ -349,6 +366,12 @@ class Macro
         }
         return null;
     }
+}
+
+/** Since require_once is not a proper PHP function */
+function req($f)
+{
+    require_once($f);
 }
 
 $s = new Sexpr();
