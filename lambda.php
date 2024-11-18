@@ -221,11 +221,19 @@ class Sexpr extends SexprBase
                 $arg = $this->eval($sexpr->shift());
                 return new $classname($arg);
             case "test-class":
-                $name = $this->eval($sexpr->shift());
+                $classname = $this->eval($sexpr->shift());
                 $rest = $sexpr->shift();
                 if ($rest[1] === 'constructor') {
-                    $this->eval($rest[0]);
+                    $args = $this->eval($rest[0]);
                 }
+                foreach ($sexpr->pop() as $thing) {
+                    print_r($thing);
+                }
+                die;
+                //print_r($sexpr->pop());
+                //print_r($sexpr->pop());
+                //die;
+                $classUnderTest = new $classname($args);
                 return;
             default:
                 if (isset($this->env[$op])) {
