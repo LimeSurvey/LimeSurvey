@@ -271,20 +271,15 @@ class UpdateForm extends CFormModel
     public function unzipUpdateFile($file_to_unzip = 'update.zip')
     {
         if (file_exists($this->tempdir . DIRECTORY_SEPARATOR . $file_to_unzip)) {
-            // To debug pcl_zip, uncomment the following line :    require_once('/var/www/limesurvey/LimeSurvey/application/libraries/admin/pclzip/pcltrace.lib.php'); require_once('/var/www/limesurvey/LimeSurvey/application/libraries/admin/pclzip/pclzip-trace.lib.php'); PclTraceOn(2);
-            // To debug pcl_zip, comment the following line:
+            $archive = new ZipArchive();
+            $archive->open($this->tempdir . DIRECTORY_SEPARATOR . $file_to_unzip);
 
-            $archive = new PclZip($this->tempdir . DIRECTORY_SEPARATOR . $file_to_unzip, false);
-
-            // TODO : RESTORE REPLACE NEWER !!
-            // To debug pcl_zip, uncomment the following line :
-            //if ($archive->extract(PCLZIP_OPT_PATH, $this->rootdir.'/', PCLZIP_OPT_REPLACE_NEWER)== 0)
-            if ($archive->extract(PCLZIP_OPT_PATH, $this->rootdir . DIRECTORY_SEPARATOR, PCLZIP_OPT_REPLACE_NEWER) == 0) {
-                // To debug pcl_zip, uncomment the following line :
-                //PclTraceDisplay(); die();
-                $return = array('result' => false, 'error' => 'unzip_error', 'message' => $archive->errorInfo(true));
+            if ($archive->extractTo($this->rootdir . DIRECTORY_SEPARATOR) == 0) {
+                $return = array('result' => false, 'error' => 'unzip_error', 'message' => $archive->getStatusString());
+                $archive->close();
                 return (object) $return;
             }
+            $archive->close();
             $return = array('result' => true);
             return (object) $return;
         } else {
@@ -299,7 +294,6 @@ class UpdateForm extends CFormModel
      */
     public function unzipUpdateUpdaterFile()
     {
-        Yii::app()->loadLibrary("admin/pclzip");
         $file_to_unzip = 'update_updater.zip';
         return $this->unzipUpdateFile($file_to_unzip);
     }
@@ -461,24 +455,37 @@ class UpdateForm extends CFormModel
             $sFileToZip = str_replace("..", "", (string) $file['file']);
 
             if (is_file($this->publicdir . $sFileToZip) === true && basename($sFileToZip) != 'config.php' && filesize($this->publicdir . $sFileToZip) > 0) {
-                $filestozip[] = $this->publicdir . $sFileToZip;
+                $filestozip[$sFileToZip] = $this->publicdir . $sFileToZip;
             }
         }
 
-        Yii::app()->loadLibrary("admin/pclzip");
         $basefilename = dateShift(date("Y-m-d H:i:s"), "Y-m-d", Yii::app()->getConfig('timeadjust')) . '_' . md5(uniqid(rand(), true));
-        $archive = new PclZip($this->tempdir . DIRECTORY_SEPARATOR . 'LimeSurvey_files_backup_' . $basefilename . '.zip');
-        $v_list = $archive->add($filestozip, PCLZIP_OPT_REMOVE_PATH, $this->publicdir);
+        $archive = new ZipArchive();
+        $archive->open($this->tempdir . DIRECTORY_SEPARATOR . 'LimeSurvey_files_backup_' . $basefilename . '.zip', ZipArchive::CREATE);
+        $success = false;
+        foreach ($filestozip as $fileInZip => $sourceFile) {
+            $success = $archive->addFile($sourceFile, $fileInZip);
+            if (!$success) {
+                break;
+            }
+        }
+
+        // The zip is not actually saved until we close it, se we do it if
+        // all files were added to the archive.
+        if ($success) {
+            $success = $archive->close();
+        }
+
         $backup = new stdClass();
 
-        if (!$v_list == 0) {
+        if ($success) {
             $backup->result = true;
             $backup->basefilename = $basefilename;
             $backup->tempdir = $this->tempdir;
         } else {
             $backup->result = false;
             $backup->error = 'cant_zip_backup';
-            $backup->message = $archive->errorInfo(true);
+            $backup->message = $archive->getStatusString();
         }
         return $backup;
     }
@@ -664,15 +671,22 @@ class UpdateForm extends CFormModel
         Yii::app()->loadHelper("admin/backupdb");
         $backupDb = new stdClass();
         $basefilename = dateShift(date("Y-m-d H:i:s"), "Y-m-d", Yii::app()->getConfig('timeadjust')) . '_' . md5(uniqid(rand(), true));
-        $sfilename = $this->tempdir . DIRECTORY_SEPARATOR . "backup_db_" . randomChars(20) . "_" . dateShift(date("Y-m-d H:i:s"), "Y-m-d", Yii::app()->getConfig('timeadjust')) . ".sql";
+        $baseSqlFileName = "backup_db_" . randomChars(20) . "_" . dateShift(date("Y-m-d H:i:s"), "Y-m-d", Yii::app()->getConfig('timeadjust')) . ".sql";
+        $sfilename = $this->tempdir . DIRECTORY_SEPARATOR . $baseSqlFileName;
         $dfilename = $this->tempdir . DIRECTORY_SEPARATOR . "LimeSurvey_database_backup_" . $basefilename . ".zip";
         outputDatabase('', false, $sfilename);
 
         if (is_file($sfilename) && filesize($sfilename)) {
-            $archive = new PclZip($dfilename);
-            $v_list = $archive->add(array($sfilename), PCLZIP_OPT_REMOVE_PATH, $this->tempdir, PCLZIP_OPT_ADD_TEMP_FILE_ON);
+            $archive = new ZipArchive();
+            $archive->open($dfilename, ZipArchive::CREATE);
+
+            $success = false;
+            if ($archive->addFile($sfilename, $baseSqlFileName)) {
+                $success = $archive->close();
+            }
             unlink($sfilename);
-            if ($v_list == 0) {
+
+            if (!$success) {
                 $backupDb->result = false;
                 $backupDb->message = 'db_backup_zip_failed';
             } else {
