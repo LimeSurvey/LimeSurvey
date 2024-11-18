@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2024-11-18 08:57:08+00:00\n"
+"POT-Creation-Date: 2024-11-18 09:09:47+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -18306,7 +18306,7 @@ msgid "Edit survey settings"
 msgstr ""
 
 #: application/views/admin/expressions/test/surveyLogicForm.php:12
-msgid "Generate a logic file for the survey"
+msgid "Check logic for the survey"
 msgstr ""
 
 #: application/views/admin/expressions/test/surveyLogicForm.php:15
@@ -18314,7 +18314,7 @@ msgid "Survey ID (SID)"
 msgstr ""
 
 #: application/views/admin/expressions/test/surveyLogicForm.php:20
-msgid "Debug Log Level"
+msgid "Debug log level"
 msgstr ""
 
 #: application/views/admin/expressions/test/surveyLogicForm.php:21
@@ -18326,15 +18326,15 @@ msgid "Detailed Timing"
 msgstr ""
 
 #: application/views/admin/expressions/test/surveyLogicForm.php:37
-msgid "Validation Summary"
+msgid "Validation summary"
 msgstr ""
 
 #: application/views/admin/expressions/test/surveyLogicForm.php:51
-msgid "Validation Detail (Validation Summary must also be checked to see detail)"
+msgid "Validation detail (Validation summary must also be checked to see detail)"
 msgstr ""
 
 #: application/views/admin/expressions/test/surveyLogicForm.php:65
-msgid "Pretty Print Syntax"
+msgid "Pretty print syntax"
 msgstr ""
 
 #: application/views/admin/expressions/test/survey_logic_file.php:14
