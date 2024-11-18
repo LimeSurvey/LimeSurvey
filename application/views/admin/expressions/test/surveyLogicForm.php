@@ -20,7 +20,7 @@
                     <h4><?= gT('Debug log level'); ?></h4>
                     <h5><?= gT('Specify which debugging features to use'); ?></h5>
                     <div class="mb-3">
-                        <?php echo TbHtml::label(gT("Detailed Timing"), 'LEM_DEBUG_TIMING', ['class' => " form-label"]); ?>
+                        <?php echo TbHtml::label(gT("Detailed timing"), 'LEM_DEBUG_TIMING', ['class' => " form-label"]); ?>
                         <div>
                             <?php
                             $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
