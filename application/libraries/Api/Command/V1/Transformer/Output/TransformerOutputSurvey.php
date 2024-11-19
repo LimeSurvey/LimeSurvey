@@ -5,8 +5,6 @@ namespace LimeSurvey\Api\Command\V1\Transformer\Output;
 use Survey;
 use LimeSurvey\Api\Transformer\{
     Output\TransformerOutputActiveRecord,
-    Formatter\FormatterYnToBool,
-    Formatter\FormatterDateTimeToJson
 };
 
 class TransformerOutputSurvey extends TransformerOutputActiveRecord
@@ -16,8 +14,6 @@ class TransformerOutputSurvey extends TransformerOutputActiveRecord
      *  @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     public function __construct(
-        FormatterYnToBool $formatterYn,
-        FormatterDateTimeToJson $formatterDateTime,
         TransformerOutputSurveyLanguageSettings $transformerOutputSurveyLanguageSettings
     ) {
         $this->transformerOutputSurveyLanguageSettings = $transformerOutputSurveyLanguageSettings;
@@ -26,60 +22,146 @@ class TransformerOutputSurvey extends TransformerOutputActiveRecord
             'sid' => ['type' => 'int'],
             'gsid' => ['type' => 'int'],
             'owner_id' => ['key' => 'ownerId', 'type' => 'int'],
-            'active' => ['formatter' => $formatterYn],
+            'active' => ['formatter' => ['ynToBool' => true]],
             'admin' => true,
             'adminemail' => 'adminEmail',
-            'language'  => true,
-            'expires' => ['key' => 'expires'],
-            'startdate' => ['key' => 'startDate'],
-            'anonymized' => ['formatter' => $formatterYn],
-            'savetimings' => ['key' => 'saveTimings', 'formatter' => $formatterYn],
+            'language' => true,
+            'expires' => [
+                'formatter' => ['dateTimeToJson' => true]
+            ],
+            'startdate' => [
+                'key' => 'startDate',
+                'formatter' => ['dateTimeToJson' => true]
+            ],
+            'anonymized' => ['formatter' => ['ynToBool' => true]],
+            'savetimings' => [
+                'key' => 'saveTimings',
+                'formatter' => ['ynToBool' => true]
+            ],
             'additional_languages' => 'additionalLanguages',
-            'datestamp' => ['formatter' => $formatterYn],
-            "usecookie" => ['key' => 'useCookie', 'formatter' => $formatterYn],
-            "allowregister" => ['key' => 'allowRegister', 'formatter' => $formatterYn],
-            "allowsave" => ['key' => 'allowSave', 'formatter' => $formatterYn],
+            'datestamp' => ['formatter' => ['ynToBool' => true]],
+            "usecookie" => [
+                'key' => 'useCookie',
+                'formatter' => ['ynToBool' => true]
+            ],
+            "allowregister" => [
+                'key' => 'allowRegister',
+                'formatter' => ['ynToBool' => true]
+            ],
+            "allowsave" => [
+                'key' => 'allowSave',
+                'formatter' => ['ynToBool' => true]
+            ],
             "autonumber_start" => ['key' => 'autoNumberStart', 'type' => 'int'],
-            "autoredirect" => ['key' => 'autoRedirect', 'formatter' => $formatterYn],
-            "allowprev" => ['key' => 'allowPrev', 'formatter' => $formatterYn],
-            "printanswers" => ['key' => 'printAnswers', 'formatter' => $formatterYn],
-            "ipaddr" => ['key' => 'ipAddr', 'formatter' => $formatterYn],
-            "ipanonymize" => ['key' => 'ipAnonymize', 'formatter' => $formatterYn],
-            "refurl" => ['key' => 'refUrl', 'formatter' => $formatterYn],
-            "datecreated" => ['key' => 'dateCreated', 'formatter' => $formatterDateTime],
-            "publicstatistics" => ['key' => 'publicStatistics', 'formatter' => $formatterYn],
-            "publicgraphs" => ['key' => 'publicGraphs', 'formatter' => $formatterYn],
-            "listpublic" => ['key' => 'listPublic', 'formatter' => $formatterYn],
-            "sendconfirmation" => ['key' => 'sendConfirmation', 'formatter' => $formatterYn],
-            "tokenanswerspersistence" => ['key' => 'tokenAnswersPersistence', 'formatter' => $formatterYn],
-            "assessments" => ['formatter' => $formatterYn],
-            "usecaptcha" => ['key' => 'useCaptcha', 'formatter' => $formatterYn],
-            "usetokens" => ['key' => 'useTokens', 'formatter' => $formatterYn],
+            "autoredirect" => [
+                'key' => 'autoRedirect',
+                'formatter' => ['ynToBool' => true]
+            ],
+            "allowprev" => [
+                'key' => 'allowPrev',
+                'formatter' => ['ynToBool' => true]
+            ],
+            "printanswers" => [
+                'key' => 'printAnswers',
+                'formatter' => ['ynToBool' => true]
+            ],
+            "ipaddr" => [
+                'key' => 'ipAddr',
+                'formatter' => ['ynToBool' => true]
+            ],
+            "ipanonymize" => [
+                'key' => 'ipAnonymize',
+                'formatter' => ['ynToBool' => true]
+            ],
+            "refurl" => [
+                'key' => 'refUrl',
+                'formatter' => ['ynToBool' => true]
+            ],
+            "datecreated" => [
+                'key' => 'dateCreated',
+                'formatter' => ['dateTimeToJson' => true]
+            ],
+            "publicstatistics" => [
+                'key' => 'publicStatistics',
+                'formatter' => ['ynToBool' => true]
+            ],
+            "publicgraphs" => [
+                'key' => 'publicGraphs',
+                'formatter' => ['ynToBool' => true]
+            ],
+            "listpublic" => [
+                'key' => 'listPublic',
+                'formatter' => ['ynToBool' => true]
+            ],
+            "sendconfirmation" => [
+                'key' => 'sendConfirmation',
+                'formatter' => ['ynToBool' => true]
+            ],
+            "tokenanswerspersistence" => [
+                'key' => 'tokenAnswersPersistence',
+                'formatter' => ['ynToBool' => true]
+            ],
+            "assessments" => ['formatter' => ['ynToBool' => true]],
+            "usecaptcha" => [
+                'key' => 'useCaptcha',
+                'formatter' => ['ynToBool' => true]
+            ],
+            "usetokens" => [
+                'key' => 'useTokens',
+                'formatter' => ['ynToBool' => true]
+            ],
             "bounce_email" => 'bounceEmail',
             "attributedescriptions" => 'attributeDescriptions',
             "emailresponseto" => 'emailResponseTo',
             "emailnotificationto" => 'emailNotificationTo',
-            "tokenlength" => ['key' =>  'tokenLength', 'type' => 'int'],
-            "showxquestions" => ['key' =>  'showXQuestions', 'formatter' => $formatterYn],
+            "tokenlength" => ['key' => 'tokenLength', 'type' => 'int'],
+            "showxquestions" => [
+                'key' => 'showXQuestions',
+                'formatter' => ['ynToBool' => true]
+            ],
             "showgroupinfo" => 'showGroupInfo',
-            "shownoanswer" => ['key' =>  'showNoAnswer', 'formatter' => $formatterYn],
+            "shownoanswer" => [
+                'key' => 'showNoAnswer',
+                'formatter' => ['ynToBool' => true]
+            ],
             "showqnumcode" => 'showQNumCode',
-            "bouncetime" => ['key' =>  'bounceTime', 'type' => 'int'],
-            "bounceprocessing" => ['key' =>  'bounceProcessing', 'formatter' => $formatterYn],
+            "bouncetime" => ['key' => 'bounceTime', 'type' => 'int'],
+            "bounceprocessing" => [
+                'key' => 'bounceProcessing',
+                'formatter' => ['ynToBool' => true]
+            ],
             "bounceaccounttype" => 'bounceAccountType',
             "bounceaccounthost" => 'bounceAccountHost',
             "bounceaccountpass" => 'bounceAccountPass',
-            "bounceaccountencryption" => ['key' =>  'bounceAccountEncryption'],
-            "bounceaccountuser" => ['key' =>  'bounceAccountUser'],
-            "showwelcome" => ['key' =>  'showWelcome', 'formatter' => $formatterYn],
-            "showprogress" => ['key' =>  'showProgress', 'formatter' => $formatterYn],
-            "questionindex" => ['key' =>  'questionIndex', 'type' => 'int'],
-            "navigationdelay" => ['key' =>  'navigationDelay', 'type' => 'int'],
-            "nokeyboard" => ['key' =>  'noKeyboard', 'formatter' => $formatterYn],
-            "alloweditaftercompletion" => ['key' =>  'allowedItAfterCompletion', 'formatter' => $formatterYn],
-            "googleanalyticsstyle" => ['key' =>  'googleAnalyticsStyle', 'type' => 'int'],
+            "bounceaccountencryption" => ['key' => 'bounceAccountEncryption'],
+            "bounceaccountuser" => ['key' => 'bounceAccountUser'],
+            "showwelcome" => [
+                'key' => 'showWelcome',
+                'formatter' => ['ynToBool' => true]
+            ],
+            "showprogress" => [
+                'key' => 'showProgress',
+                'formatter' => ['ynToBool' => true]
+            ],
+            "questionindex" => ['key' => 'questionIndex', 'type' => 'int'],
+            "navigationdelay" => ['key' => 'navigationDelay', 'type' => 'int'],
+            "nokeyboard" => [
+                'key' => 'noKeyboard',
+                'formatter' => ['ynToBool' => true]
+            ],
+            "alloweditaftercompletion" => [
+                'key' => 'allowedItAfterCompletion',
+                'formatter' => ['ynToBool' => true]
+            ],
+            "googleanalyticsstyle" => [
+                'key' => 'googleAnalyticsStyle',
+                'type' => 'int'
+            ],
             "googleanalyticsapikey" => 'googleAnalyticsApiKey',
-            "showsurveypolicynotice" => ['key' =>  'showSurveyPolicyNotice', 'type' => 'int'],
+            "showsurveypolicynotice" => [
+                'key' => 'showSurveyPolicyNotice',
+                'type' => 'int'
+            ],
             'template' => true,
             'format' => true
         ]);
@@ -93,10 +175,6 @@ class TransformerOutputSurvey extends TransformerOutputActiveRecord
             return null;
         }
         $survey = parent::transform($data);
-        $survey['defaultLanguage'] = $this->transformerOutputSurveyLanguageSettings->transform(
-            $data->defaultlanguage,
-            $options
-        );
         $survey['languageSettings'] = $this->transformerOutputSurveyLanguageSettings->transformAll(
             $data->languagesettings,
             $options

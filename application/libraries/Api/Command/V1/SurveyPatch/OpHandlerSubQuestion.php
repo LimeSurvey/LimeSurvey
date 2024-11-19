@@ -2,9 +2,9 @@
 
 namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
-use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\{
-    OpHandlerQuestionTrait,
-    OpHandlerSurveyTrait
+use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\{OpHandlerQuestionTrait,
+    OpHandlerSurveyTrait,
+    OpHandlerValidationTrait
 };
 use LimeSurvey\Api\Command\V1\Transformer\Input\{
     TransformerInputSubQuestion
@@ -33,6 +33,7 @@ class OpHandlerSubQuestion implements OpHandlerInterface
 {
     use OpHandlerSurveyTrait;
     use OpHandlerQuestionTrait;
+    use OpHandlerValidationTrait;
 
     protected QuestionAggregateService $questionAggregateService;
     protected SubQuestionsService $subQuestionsService;
@@ -150,8 +151,9 @@ class OpHandlerSubQuestion implements OpHandlerInterface
      * }
      *
      * @param OpInterface $op
-     * @throws OpHandlerException
+     * @return array
      * @throws NotFoundException
+     * @throws OpHandlerException
      * @throws PermissionDeniedException
      * @throws PersistErrorException
      */
@@ -160,13 +162,6 @@ class OpHandlerSubQuestion implements OpHandlerInterface
         $surveyId = $this->getSurveyIdFromContext($op);
         $this->questionAggregateService->checkUpdatePermission($surveyId);
         $transformOptions = ['operation' => $op->getType()->getId()];
-        $this->throwTransformerValidationErrors(
-            $this->transformer->validateAll(
-                $op->getProps(),
-                $transformOptions
-            ),
-            $op
-        );
         $data = $this->transformer->transformAll(
             $op->getProps(),
             $transformOptions
@@ -185,22 +180,41 @@ class OpHandlerSubQuestion implements OpHandlerInterface
             $question,
             $data
         );
-        return $this->getSubQuestionNewIdMapping($question, $data);
+        $mapping = $this->getSubQuestionNewIdMapping(
+            $question,
+            $data
+        );
+
+        return !empty($mapping) ? [
+            'tempIdMapping' => $mapping
+        ] : [];
     }
 
     /**
      * Checks if patch is valid for this operation.
      * @param OpInterface $op
-     * @return bool
+     * @return array
      */
-    public function isValidPatch(OpInterface $op): bool
+    public function validateOperation(OpInterface $op): array
     {
-        //when is the patch (the operation a valid operation)?
-        //--> update:  props should include qid (which means update)
-        //--> create:  props should include tempId (which means create)
-        $props = $op->getProps();
-        return is_array($props) ||
-            array_key_exists('qid', $props) ||
-            array_key_exists('tempId', $props);
+        $validationData = $this->validateSurveyIdFromContext($op, []);
+        $validationData = $this->validateCollectionIndex(
+            $op,
+            $validationData,
+            false
+        );
+        $validationData = $this->validateEntityId($op, $validationData);
+        if (empty($validationData)) {
+            $validationData = $this->transformer->validateAll(
+                $op->getProps(),
+                ['operation' => $op->getType()->getId()]
+            );
+        }
+
+        return $this->getValidationReturn(
+            gT('Could not save subquestions'),
+            !is_array($validationData) ? [] : $validationData,
+            $op
+        );
     }
 }

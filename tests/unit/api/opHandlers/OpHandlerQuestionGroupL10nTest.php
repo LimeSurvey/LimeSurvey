@@ -4,10 +4,10 @@ namespace ls\tests\unit\api\opHandlers;
 
 use LimeSurvey\Api\Command\V1\SurveyPatch\OpHandlerQuestionGroupL10n;
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestionGroupL10ns;
+use LimeSurvey\DI;
 use LimeSurvey\ObjectPatch\{
     Op\OpInterface,
     Op\OpStandard,
-    OpHandler\OpHandlerException
 };
 use ls\tests\TestBaseClass;
 use ls\tests\unit\services\QuestionGroup\QuestionGroupMockSetFactory;
@@ -18,34 +18,6 @@ use ls\tests\unit\services\QuestionGroup\QuestionGroupMockSetFactory;
 class OpHandlerQuestionGroupL10nTest extends TestBaseClass
 {
     protected OpInterface $op;
-
-    /**
-     * @testdox getTransformedLanguageProps throws no values exception
-     */
-    public function testOpQuestionGroupL10nThrowsNoValuesException()
-    {
-        $this->expectException(
-            OpHandlerException::class
-        );
-        $op = $this->getOp(
-            $this->getWrongProps()
-        );
-        $this->getOpHandler()->handle($op);
-    }
-
-    /**
-     * @testdox getTransformedLanguageProps throws missing language exception
-     */
-    public function testOpQuestionGroupL10nThrowsMissingLanguageException()
-    {
-        $this->expectException(
-            OpHandlerException::class
-        );
-        $op = $this->getOp(
-            $this->getMissingLanguageProps()
-        );
-        $this->getOpHandler()->handle($op);
-    }
 
     /**
      * @testdox can handle a questionGroupL10n update
@@ -68,6 +40,34 @@ class OpHandlerQuestionGroupL10nTest extends TestBaseClass
             'create'
         );
         self::assertFalse($this->getOpHandler()->canHandle($op));
+    }
+
+    /**
+     * @testdox validation hits if language indexes are missing
+     */
+    public function testOpQuestionGroupL10nValidationFailure()
+    {
+        $op = $this->getOp(
+            $this->getMissingLanguageProps()
+        );
+        $opHandler = $this->getOpHandler();
+        $validation = $opHandler->validateOperation($op);
+        $this->assertIsArray($validation);
+        $this->assertNotEmpty($validation);
+    }
+
+    /**
+     * @testdox validation doesn't hit when everything is fine
+     */
+    public function testOpQuestionGroupL10nValidationSuccess()
+    {
+        $op = $this->getOp(
+            $this->getDefaultProps()
+        );
+        $opHandler = $this->getOpHandler();
+        $validation = $opHandler->validateOperation($op);
+        $this->assertIsArray($validation);
+        $this->assertEmpty($validation);
     }
 
     /**
@@ -144,7 +144,7 @@ class OpHandlerQuestionGroupL10nTest extends TestBaseClass
         $mockSet = (new QuestionGroupMockSetFactory())->make();
         return new OpHandlerQuestionGroupL10n(
             $mockSet->modelQuestionGroupL10n,
-            new TransformerInputQuestionGroupL10ns()
+            DI::getContainer()->get(TransformerInputQuestionGroupL10ns::class)
         );
     }
 }

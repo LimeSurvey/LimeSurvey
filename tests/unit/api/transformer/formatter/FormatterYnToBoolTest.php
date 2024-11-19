@@ -12,39 +12,50 @@ class FormatterYnToBoolTest extends TestBaseClass
 {
     public function testConvertsYToTrue()
     {
-        $transformer = new FormatterYnToBool;
-        $this->assertTrue($transformer->format('Y'));
-        $this->assertTrue($transformer->format('y'));
+        $formatter = new FormatterYnToBool();
+        $config = $this->getConfig();
+        $this->assertTrue($formatter->format('Y', $config));
+        $this->assertTrue($formatter->format('y', $config));
     }
 
     public function testConvertsNToFalse()
     {
-        $transformer = new FormatterYnToBool;
-        $this->assertFalse($transformer->format('N'));
-        $this->assertFalse($transformer->format('n'));
+        $formatter = new FormatterYnToBool();
+        $config = $this->getConfig();
+        $this->assertFalse($formatter->format('N', $config));
+        $this->assertFalse($formatter->format('n', $config));
     }
 
     public function testConvertsEmptyStringToNull()
     {
-        $transformer = new FormatterYnToBool;
-        $this->assertNull($transformer->format(''));
+        $formatter = new FormatterYnToBool();
+        $config = $this->getConfig();
+        $this->assertNull($formatter->format('', $config));
     }
 
     public function testPassesNullUnchanged()
     {
-        $transformer = new FormatterYnToBool;
-        $this->assertNull($transformer->format(null));
+        $formatter = new FormatterYnToBool();
+        $config = $this->getConfig();
+        $this->assertNull($formatter->format(null, $config));
     }
 
     public function testRevertsTrueToY()
     {
-        $transformer = new FormatterYnToBool(true);
-        $this->assertEquals('Y', $transformer->format(true));
+        $formatter = new FormatterYnToBool();
+        $config = $this->getConfig(true);
+        $this->assertEquals('Y', $formatter->format(true, $config));
     }
 
     public function testRevertsFalseToN()
     {
-        $transformer = new FormatterYnToBool(true);
-        $this->assertEquals('N', $transformer->format(false));
+        $formatter = new FormatterYnToBool();
+        $config = $this->getConfig(true);
+        $this->assertEquals('N', $formatter->format(false, $config));
+    }
+
+    private function getConfig($revert = false)
+    {
+        return $revert ? ['revert' => true] : [];
     }
 }

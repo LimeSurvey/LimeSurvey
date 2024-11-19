@@ -4,6 +4,7 @@ namespace ls\tests\unit\api;
 
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestionAggregate;
 use LimeSurvey\DI;
+use LimeSurvey\ObjectPatch\ObjectPatchException;
 use LimeSurvey\ObjectPatch\Op\OpStandard;
 use ls\tests\TestBaseClass;
 
@@ -63,6 +64,7 @@ class TransformerInputQuestionAggregateTest extends TestBaseClass
         self::assertEquals('answer', $answerL10n['en']);
         self::assertEquals('answerger', $answerL10n['de']);
     }
+
     /**
      * @testdox test data structure of subquestions
      */
@@ -77,24 +79,30 @@ class TransformerInputQuestionAggregateTest extends TestBaseClass
     }
 
     /**
-     * @return OpStandard
-     * @throws \LimeSurvey\ObjectPatch\ObjectPatchException
+     * @testdox test data structure of question
      */
-    private function getOp(): OpStandard
+    public function testQuestionDataStructure()
+    {
+        $preparedData = $this->transform('update');
+        $this->assertArrayHasKey('question', $preparedData);
+        $question = $preparedData['question'];
+        $this->assertArrayHasKey('qid', $question);
+        $this->assertEquals(77, $question['qid']);
+    }
+
+    /**
+     * @param string $operation
+     * @return OpStandard
+     * @throws ObjectPatchException
+     */
+    private function getOp($operation = 'create'): OpStandard
     {
         return OpStandard::factory(
             'question',
-            'create',
-            0,
+            $operation,
+            77,
             [
-                'question'     => [
-                    'tempId'              => 'XXX123',
-                    'title'               => 'G01Q01',
-                    'type'                => '1',
-                    'question_theme_name' => 'arrays\/dualscale',
-                    'gid'                 => '50',
-                    'mandatory'           => null
-                ],
+                'question'     => $this->getQuestion($operation),
                 'questionL10n' => [
                     'en' => [
                         'question' => 'foo',
@@ -107,50 +115,18 @@ class TransformerInputQuestionAggregateTest extends TestBaseClass
                 ],
                 'attributes'   => [
                     "public_statistics" => [
-                        '' => [
-                            'value' => '1'
-                        ]
+                        '' => '1'
                     ],
                     'dualscale_headerA' => [
-                        'en' => [
-                            'value' => 'Header Text'
-                        ],
-                        'de' => [
-                            'value' => 'Kopf Text'
-                        ]
+                        'en' => 'Header Text',
+                        'de' => 'Kopf Text'
                     ]
                 ],
                 'answers'      => [
-                    '0' => [
-                        'tempId' => 'XXX124',
-                        'code'  => 'AO01',
-                        'l10ns' => [
-                            'en' => [
-                                'answer' => 'answer',
-                                'language' => 'en'
-                            ],
-                            'de' => [
-                                'answer' => 'answerger',
-                                'language' => 'de'
-                            ]
-                        ]
-                    ]
+                    '0' => $this->getAnswers($operation),
                 ],
                 'subquestions' => [
-                    '0' => [
-                        'tempId' => 'XXX125',
-                        'title' => 'SQ001',
-                        'l10ns' => [
-                            'en' => [
-                                'question' => 'sub 1',
-                                'language' => 'en'
-                            ],
-                            'de' => [
-                                'question' => 'subger 1',
-                                'language' => 'de'
-                            ]
-                        ]
-                    ]
+                    '0' => $this->getSubQuestions($operation)
                 ]
             ],
             [
@@ -159,14 +135,81 @@ class TransformerInputQuestionAggregateTest extends TestBaseClass
         );
     }
 
-    private function transform()
+    private function getQuestion($operation = 'create'): array
     {
-        $op = $this->getOp();
-        $transformer = DI::getContainer()->get(TransformerInputQuestionAggregate::class);
+        $question = [
+            'tempId'              => 'XXX123',
+            'title'               => 'G01Q01',
+            'type'                => '1',
+            'question_theme_name' => 'arrays\/dualscale',
+            'gid'                 => '50',
+            'mandatory'           => null
+        ];
+        if ($operation === 'update') {
+            unset($question['tempId']);
+            $question['qid'] = 77;
+        }
+
+        return $question;
+    }
+
+    private function getAnswers($operation = 'create'): array
+    {
+        $answer = [
+            'tempId' => 'XXX124',
+            'code'   => 'AO01',
+            'l10ns'  => [
+                'en' => [
+                    'answer'   => 'answer',
+                    'language' => 'en'
+                ],
+                'de' => [
+                    'answer'   => 'answerger',
+                    'language' => 'de'
+                ]
+            ]
+        ];
+        if ($operation === 'update') {
+            unset($answer['tempId']);
+            $answer['aid'] = 888;
+        }
+
+        return $answer;
+    }
+
+    private function getSubQuestions($operation = 'create'): array
+    {
+        $subQuestion = [
+            'tempId' => 'XXX125',
+            'title'  => 'SQ001',
+            'l10ns'  => [
+                'en' => [
+                    'question' => 'sub 1',
+                    'language' => 'en'
+                ],
+                'de' => [
+                    'question' => 'subger 1',
+                    'language' => 'de'
+                ]
+            ]
+        ];
+        if ($operation === 'update') {
+            unset($subQuestion['tempId']);
+            $subQuestion['qid'] = 999;
+        }
+        return $subQuestion;
+    }
+
+    private function transform($operation = 'create'): array
+    {
+        $op = $this->getOp($operation);
+        $transformer = DI::getContainer()->get(
+            TransformerInputQuestionAggregate::class
+        );
 
         return $transformer->transform(
             (array)$op->getProps(),
-            ['operation' => 'create']
+            ['operation' => $operation]
         );
     }
 }

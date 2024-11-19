@@ -4,12 +4,15 @@ namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
 use DI\DependencyException;
 use DI\NotFoundException;
-use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\OpHandlerExceptionTrait;
+use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\{
+    OpHandlerExceptionTrait,
+    OpHandlerValidationTrait,
+    OpHandlerSurveyTrait
+};
 use SurveyLanguageSetting;
 use LimeSurvey\Api\Command\V1\Transformer\{
     Input\TransformerInputSurveyLanguageSettings,
 };
-use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\OpHandlerSurveyTrait;
 use LimeSurvey\Api\Transformer\TransformerInterface;
 use LimeSurvey\Models\Services\{
     Exception\PermissionDeniedException,
@@ -27,6 +30,7 @@ class OpHandlerLanguageSettingsUpdate implements OpHandlerInterface
 {
     use OpHandlerSurveyTrait;
     use OpHandlerExceptionTrait;
+    use OpHandlerValidationTrait;
 
     protected string $entity;
     protected SurveyLanguageSetting $model;
@@ -49,20 +53,7 @@ class OpHandlerLanguageSettingsUpdate implements OpHandlerInterface
     }
 
     /**
-     * This handler accepts two different approaches to update the language settings:
-     * Approach 1 (single language):
-     * - in this case the language needs to be part of the id array
-     * - patch structure:
-     *      {
-     *          "entity": "languageSetting",
-     *          "op": "update",
-     *          "id": "de",
-     *          "props": {
-     *              "title": "Beispielfragebogen"
-     *          }
-     *      }
-     *
-     * Approach 2 (multiple languages):
+     * This handler accepts the following format to update the language settings:
      * - in this case the languages need to be indexes of the props array
      * - language must not be part of the id array
      * - patch structure:
@@ -94,55 +85,54 @@ class OpHandlerLanguageSettingsUpdate implements OpHandlerInterface
         $languageSettings = $diContainer->get(
             LanguageSettings::class
         );
+        $surveyId = $this->getSurveyIdFromContext($op);
+        $languageSettings->checkUpdatePermission($surveyId);
+        $data = $this->transformer->transformAll(
+            $op->getProps(),
+            [
+                'operation' => $op->getType()->getId(),
+                'entityId' => $op->getEntityId(),
+                'sid' => $this->getSurveyIdFromContext($op)
+            ]
+        );
+        if (empty($data)) {
+            $this->throwNoValuesException($op);
+        }
         $languageSettings->update(
-            $this->getSurveyIdFromContext($op),
-            $this->getLanguageSettingsData($op) ?? []
-        );
-    }
-
-    /**
-     * Analyzes the patch, builds and returns the correct data structure
-     * @param OpInterface $op
-     * @return ?mixed
-     * @throws OpHandlerException
-     */
-    public function getLanguageSettingsData(OpInterface $op)
-    {
-        $transformOps = ['operation' => $op->getType()->getId()];
-        $props = [];
-        $entityId = $op->getEntityId();
-        if (!empty($entityId)) {
-            // indicator for variant 1
-            $props[$entityId] = $op->getProps();
-        } else {
-            // variant 2
-            $props = $op->getProps();
-        }
-        foreach (array_keys($props) as $language) {
-            $props[$language]['sid'] = $this->getSurveyIdFromContext($op);
-            $props[$language]['language'] = $language;
-        }
-        $this->throwTransformerValidationErrors(
-            $this->transformer->validateAll(
-                $props,
-                $transformOps
-            ),
-            $op
-        );
-        return $this->transformer->transformAll(
-            $props,
-            $transformOps
+            $surveyId,
+            $data
         );
     }
 
     /**
      * Checks if patch is valid for this operation.
      * @param OpInterface $op
-     * @return bool
+     * @return array
      */
-    public function isValidPatch(OpInterface $op): bool
+    public function validateOperation(OpInterface $op): array
     {
-        // getTransformedProps will throw an exception if the patch is not valid
-        return true;
+        $validationData = [];
+        $validationData = $this->validateSurveyIdFromContext(
+            $op,
+            $validationData
+        );
+        $validationData = $this->validateCollectionIndex($op, $validationData);
+
+        if (empty($validationData)) {
+            $validationData = $this->transformer->validateAll(
+                $op->getProps(),
+                [
+                    'operation' => $op->getType()->getId(),
+                    'entityId' => $op->getEntityId(),
+                    'sid' => $this->getSurveyIdFromContext($op)
+                ]
+            );
+        }
+
+        return $this->getValidationReturn(
+            gT('Could not save language settings'),
+            !is_array($validationData) ? [] : $validationData,
+            $op
+        );
     }
 }

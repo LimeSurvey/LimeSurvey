@@ -10,14 +10,22 @@ class TransformerInputAnswer extends Transformer
         TransformerInputAnswerL10ns $transformerInputAnswerL10ns
     ) {
         $this->setDataMap([
-            'aid' => ['type' => 'int'],
+            'aid' => ['type' => 'int', 'required' => 'update'],
             'qid' => ['type' => 'int'],
             'oldCode' => 'oldcode',
-            'code' => ['required' => 'create'],
-            'sortOrder' => ['key' => 'sortorder', 'type' => 'int'],
-            'assessmentValue' => ['key' => 'assessment_value', 'type' => 'int'],
-            'scaleId' => ['key' => 'scale_id', 'type' => 'int'],
-            'tempId' => ['required' => 'create'],
+            'code' => [
+                'required' => 'create',
+                'length' => ['min' => 1, 'max' => 5],
+                'pattern' => '/^[[:alnum:]]*$/',
+            ],
+            'sortOrder' => ['key' => 'sortorder', 'type' => 'int', 'numerical'],
+            'assessmentValue' => [
+                'key' => 'assessment_value',
+                'type' => 'int',
+                'numerical'
+            ],
+            'scaleId' => ['key' => 'scale_id', 'type' => 'int', 'numerical'],
+            'tempId' => true,
             'l10ns' => [
                 'key' => 'answeroptionl10n',
                 'collection' => true,
@@ -25,6 +33,7 @@ class TransformerInputAnswer extends Transformer
             ]
         ]);
     }
+
     public function transformAll($collection, $options = [])
     {
         $collection = parent::transformAll($collection, $options);
@@ -38,7 +47,7 @@ class TransformerInputAnswer extends Transformer
             $index = array_key_exists(
                 'aid',
                 $answer
-            ) ? $answer['aid'] : $index;
+            ) && $answer['aid'] > 0 ? $answer['aid'] : $index;
             $output[$index][$scaleId] = $answer;
         }
         return $output;

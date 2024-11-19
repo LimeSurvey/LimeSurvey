@@ -1,6 +1,6 @@
 <?php
 $colClass = 'col-lg-4 col-md-12';
-if (!isset($datestamp) || $datestamp == "N"){
+if (!isset($datestamp) || $datestamp == "N") {
     $colClass = 'col-lg-6 col-md-12';
 }
 ?>
@@ -15,7 +15,7 @@ if (!isset($datestamp) || $datestamp == "N"){
                 <input class="form-control" type='number' id='idG' name='idG' size='10' value='<?php
                 if (isset($_POST['idG'])) {
                     echo sanitize_int($_POST['idG']);
-                } ?>' onkeypress="returnwindow.LS.goodchars(event,'0123456789')"/>
+                } ?>' onkeypress="return window.LS.goodchars(event,'0123456789')"/>
             </div>
         </div>
     </div>
@@ -27,13 +27,13 @@ if (!isset($datestamp) || $datestamp == "N"){
                 <input class="form-control" type='number' id='idL' name='idL' size='10' value='<?php
                 if (isset($_POST['idL'])) {
                     echo sanitize_int($_POST['idL']);
-                } ?>' onkeypress="returnwindow.LS.goodchars(event,'0123456789')"/>
+                } ?>' onkeypress="return window.LS.goodchars(event,'0123456789')"/>
             </div>
         </div>
     </div>
 </div>
 <?php
-if (isset($datestamp) && $datestamp == "Y"): ?>
+if (isset($datestamp) && $datestamp == "Y") : ?>
     <div class="row">
         <div class="col-lg-4 col-md-12">
             <div class='mb-3'>
@@ -102,5 +102,5 @@ if (isset($datestamp) && $datestamp == "Y"): ?>
         <input type='hidden' name='summary[]' value='datestampG'/>
         <input type='hidden' name='summary[]' value='datestampL'/>
     </div>
-<?php
+    <?php
 endif; ?>

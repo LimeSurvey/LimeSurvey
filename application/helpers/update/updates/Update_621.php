@@ -11,9 +11,11 @@ class Update_621 extends DatabaseUpdateBase
      */
     public function up()
     {
-        $table = \Yii::app()->db->schema->getTable('{{users}}');
-        if (isset($table->columns['user_status']) && $table->columns['user_status']->dbType != 'integer') {
-            \alterColumn('{{users}}', 'user_status', "integer", false, 1);
+        if (\Yii::app()->db->driverName == 'mysql') {
+            $table = \Yii::app()->db->schema->getTable('{{users}}');
+            if (isset($table->columns['user_status']) && $table->columns['user_status']->dbType != 'integer') {
+                \alterColumn('{{users}}', 'user_status', "integer", false, 1);
+            }
         }
     }
 }

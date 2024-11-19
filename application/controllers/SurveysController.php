@@ -86,7 +86,7 @@ class SurveysController extends LSYii_Controller
             // TODO: Remove? It seems this can never happen because it's already caught by LSYii_Application::onException() (see commit c792c2e).
             $this->spitOutJsonError($error, $oException);
         } elseif ($error) {
-            $this->spitOutHtmlError($error, $request->getParam('sid', $request->getParam('surveyid')));
+            $this->spitOutHtmlError($error, (int) $request->getParam('sid', $request->getParam('surveyid')));
         } else {
             throw new CHttpException(404, 'Page not found.');
         }
@@ -126,7 +126,7 @@ class SurveysController extends LSYii_Controller
                 /* CRSF issue */
                 $title = gT('400: Bad Request');
                 $message = gT('The request could not be understood by the server due to malformed syntax.')
-                    . gT('Please do not repeat the request without modifications.');
+                    . ' ' . gT('Please do not repeat the request without modifications.');
                 break;
             case '401':
                 $title = gT('401: Unauthorized');
@@ -156,7 +156,9 @@ class SurveysController extends LSYii_Controller
         }
         $aError['type'] = $error['code'];
         $aError['error'] = $title;
-        $aError['title'] = nl2br(CHtml::encode($error['message']) ?? '');
+        if (!empty($error['message'])) {
+            $aError['title'] = ' - ' . nl2br(CHtml::encode($error['message']) ?? '');
+        }
         $aError['message'] = $message;
         $aError['contact'] = $contact;
 

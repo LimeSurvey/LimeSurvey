@@ -7,7 +7,7 @@
  */
 ?>
 
-<div class='side-body <?php echo getSideBodyClass(true); ?>'>
+<div class='side-body'>
     <h3>
         <?php eT('Saved responses'); ?>
         <small><?php echo flattenText($sSurveyName) . ' ' . sprintf(gT('ID: %s'), $iSurveyId); ?></small>

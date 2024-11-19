@@ -4,11 +4,14 @@ namespace ls\tests\unit\api\opHandlers;
 
 use LimeSurvey\Api\Command\V1\SurveyPatch\OpHandlerQuestionL10nUpdate;
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestionL10ns;
-use LimeSurvey\Models\Services\QuestionAggregateService\L10nService;
+use LimeSurvey\DI;
+use LimeSurvey\Models\Services\{
+    QuestionAggregateService,
+    QuestionAggregateService\L10nService
+};
 use LimeSurvey\ObjectPatch\{
     ObjectPatchException,
     Op\OpStandard,
-    OpHandler\OpHandlerException
 };
 use ls\tests\TestBaseClass;
 
@@ -17,22 +20,6 @@ use ls\tests\TestBaseClass;
  */
 class OpHandlerQuestionL10nUpdateTest extends TestBaseClass
 {
-    /**
-     * @testdox throws exception when no valid values are provided
-     */
-    public function testOpQuestionL10nThrowsNoValuesException()
-    {
-        $this->expectException(
-            OpHandlerException::class
-        );
-        $op = $this->getOp(
-            $this->getWrongPropsArray(),
-            'create'
-        );
-        $opHandler = $this->getOpHandler();
-        $opHandler->handle($op);
-    }
-
     /**
      * @testdox can handle a questionL10n update
      */
@@ -56,6 +43,34 @@ class OpHandlerQuestionL10nUpdateTest extends TestBaseClass
         );
         $opHandler = $this->getOpHandler();
         self::assertFalse($opHandler->canHandle($op));
+    }
+
+    /**
+     * @testdox validation hits
+     */
+    public function testOpQuestionGroupValidationFailure()
+    {
+        $op = $this->getOp(
+            $this->getWrongPropsArray()
+        );
+        $opHandler = $this->getOpHandler();
+        $validation = $opHandler->validateOperation($op);
+        $this->assertIsArray($validation);
+        $this->assertNotEmpty($validation);
+    }
+
+    /**
+     * @testdox validation doesn't hit when everything is fine
+     */
+    public function testOpQuestionGroupValidationSuccess()
+    {
+        $op = $this->getOp(
+            $this->getCorrectPropsArray()
+        );
+        $opHandler = $this->getOpHandler();
+        $validation = $opHandler->validateOperation($op);
+        $this->assertIsArray($validation);
+        $this->assertEmpty($validation);
     }
 
     /**
@@ -85,11 +100,11 @@ class OpHandlerQuestionL10nUpdateTest extends TestBaseClass
         return [
             'en' => [
                 'question' => 'test',
-                'help'     => 'help'
+                'help' => 'help'
             ],
             'de' => [
                 'question' => 'Frage',
-                'help'     => 'Hilfe'
+                'help' => 'Hilfe'
             ],
         ];
     }
@@ -114,9 +129,14 @@ class OpHandlerQuestionL10nUpdateTest extends TestBaseClass
         $mockQuestionL10nService = \Mockery::mock(
             L10nService::class
         )->makePartial();
+        /** @var QuestionAggregateService */
+        $mockQuestionAggregateService = \Mockery::mock(
+            QuestionAggregateService::class
+        );
         return new OpHandlerQuestionL10nUpdate(
             $mockQuestionL10nService,
-            new TransformerInputQuestionL10ns()
+            DI::getContainer()->get(TransformerInputQuestionL10ns::class),
+            $mockQuestionAggregateService
         );
     }
 }

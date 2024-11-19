@@ -33,9 +33,6 @@ class AnswersServiceTest extends TestBaseClass
             BadRequestException::class
         );
 
-        $modelQuestionAttribute = Mockery::mock(QuestionAttribute::class)
-            ->makePartial();
-
         $question = Mockery::mock(Question::class)
             ->makePartial();
         $question->shouldReceive('settAttributes')
@@ -50,9 +47,8 @@ class AnswersServiceTest extends TestBaseClass
         );
         $question->shouldReceive('deleteAllAnswers')->once();
 
-
-        $answersService = new AnswersService(
-            $modelQuestionAttribute
+        $answersService = DI::getContainer()->get(
+            AnswersService::class
         );
 
         $answersService->save($question, [
@@ -70,9 +66,6 @@ class AnswersServiceTest extends TestBaseClass
         $this->expectException(
             PersistErrorException::class
         );
-
-        $modelQuestionAttribute = Mockery::mock(QuestionAttribute::class)
-            ->makePartial();
 
         $question = Mockery::mock(Question::class)
             ->makePartial();
@@ -94,15 +87,8 @@ class AnswersServiceTest extends TestBaseClass
         $answer->shouldReceive('save')
             ->andReturn(false);
 
-        DI::getContainer()->set(
-            Answer::class,
-            function () use ($answer) {
-                return $answer;
-            }
-        );
-
-        $answersService = new AnswersService(
-            $modelQuestionAttribute
+        $answersService = DI::getContainer()->get(
+            AnswersService::class
         );
 
         $answersService->save($question, [
@@ -120,9 +106,6 @@ class AnswersServiceTest extends TestBaseClass
         $this->expectException(
             PersistErrorException::class
         );
-
-        $modelQuestionAttribute = Mockery::mock(QuestionAttribute::class)
-            ->makePartial();
 
         $question = Mockery::mock(Question::class)
             ->makePartial();
@@ -143,27 +126,15 @@ class AnswersServiceTest extends TestBaseClass
         $answer->shouldReceive('settAttributes');
         $answer->shouldReceive('save')
             ->andReturn(true);
-        DI::getContainer()->set(
-            Answer::class,
-            function () use ($answer) {
-                return $answer;
-            }
-        );
 
         $l10n = Mockery::mock(AnswerL10n::class)
             ->makePartial();
         $l10n->shouldReceive('settAttributes');
         $l10n->shouldReceive('save')
             ->andReturn(false);
-        DI::getContainer()->set(
-            AnswerL10n::class,
-            function () use ($l10n) {
-                return $l10n;
-            }
-        );
 
-        $answersService = new AnswersService(
-            $modelQuestionAttribute
+        $answersService = DI::getContainer()->get(
+            AnswersService::class
         );
 
         $answersService->save($question, [

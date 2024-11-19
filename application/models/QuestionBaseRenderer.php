@@ -85,10 +85,14 @@ abstract class QuestionBaseRenderer extends StaticModel
     {
         $oQuestion = $this->oQuestion;
         $oSurvey = $this->oQuestion->survey;
-
+        $time_limit = intval($oQuestion->questionattributes['time_limit']['value']);
+        if ($time_limit <= 0) {
+            return;
+        }
         Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts") . 'coookies.js', CClientScript::POS_BEGIN);
         Yii::app()->getClientScript()->registerPackage('timer-addition');
 
+        $surveyId = App()->getConfig('surveyID');
         $langTimer = array(
             'hours' => gT("hours"),
             'mins' => gT("mins"),
@@ -97,11 +101,11 @@ abstract class QuestionBaseRenderer extends StaticModel
         /* Registering script : don't go to EM : no need usage of ls_json_encode */
         App()->getClientScript()->registerScript("LSVarLangTimer", "LSvar.lang.timer=" . json_encode($langTimer) . ";", CClientScript::POS_BEGIN);
         /**
-         * The following lines cover for previewing questions, because no $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['fieldarray'] exists.
+         * The following lines cover for previewing questions, because no $_SESSION['survey_'.$surveyId]['fieldarray'] exists.
          * This just stops error messages occuring
          */
-        if (!isset($_SESSION['survey_' . Yii::app()->getConfig('surveyID')]['fieldarray'])) {
-            $_SESSION['survey_' . Yii::app()->getConfig('surveyID')]['fieldarray'] = [];
+        if (!isset($_SESSION['survey_' . $surveyId]['fieldarray'])) {
+            $_SESSION['survey_' . $surveyId]['fieldarray'] = [];
         }
         /* End */
 
@@ -119,20 +123,19 @@ abstract class QuestionBaseRenderer extends StaticModel
         //~ }
 
         //Render timer
-        $time_limit = $oQuestion->questionattributes['time_limit']['value'];
         $disable_next = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_disable_next']['value'], 0);
         $disable_prev = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_disable_prev']['value'], 0);
         $time_limit_action = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_action']['value'], 1);
         $time_limit_message = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_message']['value'], gT("Your time to answer this question has expired"));
-        $time_limit_warning = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_warning']['value'], 0);
-        $time_limit_warning_2 = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_warning_2']['value'], 0);
+        $time_limit_warning = intval($this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_warning']['value'], 0));
+        $time_limit_warning_2 = intval($this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_warning_2']['value'], 0));
         $time_limit_countdown_message = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_countdown_message']['value'], gT("Time remaining"));
         $time_limit_warning_message = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_warning_message']['value'], gT("Your time to answer this question has nearly expired. You have {TIME} remaining."));
-        $time_limit_warning_display_time = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_warning_display_time']['value'], 0);
+        $time_limit_warning_display_time = intval($this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_warning_display_time']['value'], 0));
         $time_limit_warning_2_message = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_warning_2_message']['value'], gT("Your time to answer this question has nearly expired. You have {TIME} remaining."));
 
-        $time_limit_message_delay = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_message_delay']['value'], 1000);
-        $time_limit_warning_2_display_time = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_warning_2_display_time']['value'], 0);
+        $time_limit_message_delay = intval($this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_message_delay']['value'], 1000));
+        $time_limit_warning_2_display_time = intval($this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_warning_2_display_time']['value'], 0));
         $time_limit_message_style = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_message_style']['value'], '');
         $time_limit_message_class = "d-none ls-timer-content ls-timer-message ls-no-js-hidden";
         $time_limit_warning_style = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_warning_style']['value'], '');
@@ -164,9 +167,16 @@ abstract class QuestionBaseRenderer extends StaticModel
         $time_limit_warning_2_message = str_replace("{TIME}", $timer_html, $time_limit_warning_2_message);
 
         $timersessionname = "timer_question_" . $oQuestion->qid;
-        if (isset($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$timersessionname])) {
-            $time_limit = $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$timersessionname];
+        if (isset($_SESSION['survey_' . $surveyId][$timersessionname])) {
+            $time_limit = $_SESSION['survey_' . $surveyId][$timersessionname];
         }
+
+        $disable = null;
+        App()->getClientScript()->registerScript(
+            "TimerQuestion" . $oQuestion->qid,
+            "countdown($oQuestion->qid, $surveyId, $time_limit, $time_limit_action, $time_limit_warning, $time_limit_warning_2, $time_limit_warning_display_time, $time_limit_warning_2_display_time, '$disable');",
+            LSYii_ClientScript::POS_POSTSCRIPT
+        );
 
         $output = Yii::app()->twigRenderer->renderQuestion(
             '/survey/questions/question_timer/timer_header',
@@ -226,21 +236,7 @@ abstract class QuestionBaseRenderer extends StaticModel
             true
         );
 
-        $output .= Yii::app()->twigRenderer->renderQuestion(
-            '/survey/questions/question_timer/timer_footer',
-            array(
-                'iQid' => $oQuestion->qid,
-                'iSid' => Yii::app()->getConfig('surveyID'),
-                'time_limit' => $time_limit,
-                'time_limit_action' => $time_limit_action,
-                'time_limit_warning' => $time_limit_warning,
-                'time_limit_warning_2' => $time_limit_warning_2,
-                'time_limit_warning_display_time' => $time_limit_warning_display_time,
-                'time_limit_warning_2_display_time' => $time_limit_warning_2_display_time,
-                'disable' => false  // $disable,  // TODO When to use? Where defined?
-            ),
-            true
-        );
+        $output .= "</div>";
         return $output;
     }
 

@@ -9,7 +9,6 @@ use LimeSurvey\Api\Command\V1\SurveyPatch\OpHandlerQuestionGroup;
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestionGroupAggregate;
 use LimeSurvey\ObjectPatch\{
     Op\OpStandard,
-    OpHandler\OpHandlerException
 };
 use ls\tests\TestBaseClass;
 use ls\tests\unit\services\QuestionGroup\QuestionGroupMockSetFactory;
@@ -19,20 +18,6 @@ use ls\tests\unit\services\QuestionGroup\QuestionGroupMockSetFactory;
  */
 class OpHandlerQuestionGroupTest extends TestBaseClass
 {
-    /**
-     * @testdox throws exception if no props provided
-     */
-    public function testOpQuestionGroupThrowsNoValuesException()
-    {
-        $this->expectException(
-            OpHandlerException::class
-        );
-        $op = $this->getOp($this->getPropsInvalid());
-        $opHandler = $this->getOpHandler();
-        $opHandler->setOperationTypes($op);
-        $opHandler->handle($op);
-    }
-
     /**
      * @testdox can handle
      */
@@ -56,14 +41,76 @@ class OpHandlerQuestionGroupTest extends TestBaseClass
     }
 
     /**
+     * @testdox validation for update hits
+     */
+    public function testOpQuestionGroupValidationFailure()
+    {
+        $op = $this->getOp(
+            $this->getUpdatePropsInvalid()
+        );
+        $opHandler = $this->getOpHandler();
+        $validation = $opHandler->validateOperation($op);
+
+        $this->assertIsArray($validation);
+        $this->assertNotEmpty($validation);
+    }
+
+    /**
+     * @testdox validation for update doesn't hit when everything is fine
+     */
+    public function testOpQuestionGroupValidationSuccess()
+    {
+        $op = $this->getOp(
+            $this->getPropsValid()
+        );
+        $opHandler = $this->getOpHandler();
+        $validation = $opHandler->validateOperation($op);
+        $this->assertIsArray($validation);
+        $this->assertEmpty($validation);
+    }
+
+    /**
+     * @testdox validation for create hits
+     */
+    public function testOpQuestionGroupCreateValidationFailure()
+    {
+        $op = $this->getOp(
+            $this->getPropsValid(),
+            'create'
+        );
+        $opHandler = $this->getOpHandler();
+        $validation = $opHandler->validateOperation($op);
+        $this->assertIsArray($validation);
+        $this->assertNotEmpty($validation);
+    }
+
+    /**
+     * @testdox validation for create doesn't hit when everything is fine
+     */
+    public function testOpQuestionGroupCreateValidationSuccess()
+    {
+        $op = $this->getOp(
+            $this->getPropsValid(true),
+            'create'
+        );
+        $opHandler = $this->getOpHandler();
+        $validation = $opHandler->validateOperation($op);
+        $this->assertIsArray($validation);
+        $this->assertEmpty($validation);
+    }
+
+    /**
      * @param array $props
      * @param string $type
      * @param string $entity
      * @return OpStandard
      * @throws \LimeSurvey\ObjectPatch\OpHandlerException
      */
-    private function getOp($props = [], $type = 'update', $entity = 'questionGroup')
-    {
+    private function getOp(
+        $props = [],
+        $type = 'update',
+        $entity = 'questionGroup'
+    ) {
         return OpStandard::factory(
             $entity,
             $type,
@@ -76,19 +123,33 @@ class OpHandlerQuestionGroupTest extends TestBaseClass
     }
 
     /**
+     * @param bool $create
      * @return array
      */
-    private function getPropsValid()
+    private function getPropsValid($create = false)
     {
+        $groupProps = [
+            'randomizationGroup' => '1',
+            'gRelevevance'       => '1'
+        ];
+        if ($create) {
+            $groupProps['tempId'] = 'X123';
+        }
         return [
-            'groupOrder' => '1000'
+            'questionGroup'     => $groupProps,
+            'questionGroupL10n' => [
+                'en' => [
+                    'groupName'   => 'questionGroup',
+                    'description' => 'questionGroup descr'
+                ]
+            ]
         ];
     }
 
     /**
      * @return array
      */
-    private function getPropsInvalid()
+    private function getUpdatePropsInvalid()
     {
         return [
             'unknownA' => '2020-01-01 00:00',
@@ -108,7 +169,9 @@ class OpHandlerQuestionGroupTest extends TestBaseClass
         return new OpHandlerQuestionGroup(
             $mockSet->modelQuestionGroup,
             $mockQuestionGroupService,
-            DI::getContainer()->get(TransformerInputQuestionGroupAggregate::class)
+            DI::getContainer()->get(
+                TransformerInputQuestionGroupAggregate::class
+            )
         );
     }
 }

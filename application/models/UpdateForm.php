@@ -941,7 +941,6 @@ class UpdateForm extends CFormModel
         curl_setopt($ch, CURLOPT_COOKIEFILE, $this->path_cookie);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HEADER, false); // We don't want the header to be written in the zip file !
-        curl_setopt($ch, CURLOPT_BINARYTRANSFER, true);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
         curl_setopt($ch, CURLOPT_FILE, $pFile);
         curl_exec($ch);

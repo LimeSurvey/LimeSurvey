@@ -83,6 +83,7 @@ var UserManagement = function () {
             if (buttonClassName.includes('outline-secondary')) {
                 return false;
             }
+            $('#UserManagement--errors').addClass('d-none').removeClass('alert alert-danger');
             startSubmit();
             var data = $('#UserManagement--modalform').serializeArray();
             $.ajax({
@@ -115,8 +116,8 @@ var UserManagement = function () {
                         });
                         return;
                     }
-                    $('#UserManagement--errors').html(LS.LsGlobalNotifier.createAlert(result.errors, 'danger', {showCloseButton: true})
-                    ).removeClass('d-none');
+                    $("#usermanagement-modal-doalog").offset({ top: 10 });
+                    $('#UserManagement--errors').html(result.errors).removeClass('d-none').addClass('alert alert-danger');
                 },
                 error: function (request, status, error) {
                     if (request && request.responseJSON && request.responseJSON.message) {
@@ -124,7 +125,7 @@ var UserManagement = function () {
                             LS.LsGlobalNotifier.createAlert(
                                 request.responseJSON.message,
                                 'danger',
-                                {showCloseButton: true}
+                                {showCloseButton: true, timeout: 10000}
                             )
                         ).removeClass('d-none');
                     } else {

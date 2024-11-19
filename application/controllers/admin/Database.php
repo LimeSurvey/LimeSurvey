@@ -16,13 +16,13 @@
 use LimeSurvey\Models\Services\Exception\PersistErrorException;
 
 /**
-* Database
-*
-* @package LimeSurvey
-* @author
-* @copyright 2011
-* @access public
-*/
+ * Database
+ *
+ * @package LimeSurvey
+ * @author
+ * @copyright 2011
+ * @access public
+ */
 class Database extends SurveyCommonAction
 {
     /**
@@ -48,8 +48,8 @@ class Database extends SurveyCommonAction
 
     /**
      * Database::index()
-     * todo 1591726928167: move called functions to their respective Controllers
-     * @return
+     * @todo move called functions to their respective Controllers
+     * @return void
      */
     public function index()
     {
@@ -97,10 +97,10 @@ class Database extends SurveyCommonAction
             ->find(
                 'specialtype = :specialtype AND qid = :qid AND sqid = :sqid AND scale_id = :scale_id',
                 array(
-                ':specialtype' => $specialtype,
-                ':qid' => $qid,
-                ':sqid' => $sqid,
-                ':scale_id' => $scale_id,
+                    ':specialtype' => $specialtype,
+                    ':qid' => $qid,
+                    ':sqid' => $sqid,
+                    ':scale_id' => $scale_id,
                 )
             );
         $dvid = !empty($arDefaultValue->dvid) ? $arDefaultValue->dvid : null;
@@ -108,7 +108,7 @@ class Database extends SurveyCommonAction
         if ($defaultvalue == '') {
             // Remove the default value if it is empty
             if ($dvid !== null) {
-                DefaultValueL10n::model()->deleteAllByAttributes(array('dvid' => $dvid, 'language' => $language ));
+                DefaultValueL10n::model()->deleteAllByAttributes(array('dvid' => $dvid, 'language' => $language));
                 $iRowCount = DefaultValueL10n::model()->countByAttributes(array('dvid' => $dvid));
                 if ($iRowCount == 0) {
                     DefaultValue::model()->deleteByPk($dvid);
@@ -199,7 +199,7 @@ class Database extends SurveyCommonAction
                     }
 
                     if (Yii::app()->request->getPost('defaultanswerscale_0_' . $sLanguage) == 'EM') {
-// Case EM, write expression to database
+                        // Case EM, write expression to database
                         $this->updateDefaultValues($this->iQuestionID, 0, 0, '', $sLanguage, Yii::app()->request->getPost('defaultanswerscale_0_' . $sLanguage . '_EM'));
                     } else {
                         // Case "other", write list value to database
@@ -379,9 +379,16 @@ class Database extends SurveyCommonAction
             Yii::app()
                 ->setFlashMessage(gT('Survey settings were successfully saved.'));
         } catch (PersistErrorException $e) {
-            Yii::app()->setFlashMessage(
-                $e->getMessage(),
-                'error'
+            \Yii::app()->setFlashMessage(
+                \CHtml::errorSummary(
+                    $e->getErrorModel(),
+                    \CHtml::tag(
+                        "p",
+                        array('class' => 'strong'),
+                        gT("Survey could not be updated, please fix the following error:")
+                    )
+                ),
+                "error"
             );
         }
 

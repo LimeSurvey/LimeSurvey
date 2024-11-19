@@ -2,15 +2,22 @@
 
 namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
+use DI\DependencyException;
+use DI\NotFoundException;
+use LimeSurvey\Api\Transformer\TransformerException;
 use LimeSurvey\DI;
 use LimeSurvey\Api\Command\V1\Transformer\{
     Input\TransformerInputQuestionAggregate
 };
 use LimeSurvey\Api\Command\V1\SurveyPatch\Response\TempIdMapItem;
-use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\{
-    OpHandlerSurveyTrait,
+use LimeSurvey\Models\Services\Exception\{
+    PermissionDeniedException,
+    PersistErrorException
+};
+use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\{OpHandlerSurveyTrait,
     OpHandlerExceptionTrait,
-    OpHandlerQuestionTrait
+    OpHandlerQuestionTrait,
+    OpHandlerValidationTrait
 };
 use LimeSurvey\ObjectPatch\{
     Op\OpInterface,
@@ -26,6 +33,7 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
     use OpHandlerSurveyTrait;
     use OpHandlerExceptionTrait;
     use OpHandlerQuestionTrait;
+    use OpHandlerValidationTrait;
 
     protected string $entity;
     protected Question $model;
@@ -84,25 +92,15 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
      *                 },
      *                 "attributes": {
      *                     "dualscale_headerA": {
-     *                             "de": {
-     *                                 "value": "A ger"
-     *                             },
-     *                             "en": {
-     *                                 "value": "A"
-     *                             }
+     *                             "de": "A ger",
+     *                             "en": "A"
      *                     },
      *                     "dualscale_headerB": {
-     *                             "de": {
-     *                                 "value": "B ger"
-     *                             },
-     *                             "en": {
-     *                                 "value": "B"
-     *                             }
+     *                             "de": "B ger",
+     *                             "en": "B"
      *                     },
      *                     "public_statistics": {
-     *                             "": {
-     *                                 "value": "1"
-     *                             }
+     *                             "": "1"
      *                     }
      *                 },
      *                 "answers": {
@@ -183,39 +181,41 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
      * @param OpInterface $op
      * @return array
      * @throws OpHandlerException
+     * @throws DependencyException
+     * @throws NotFoundException
+     * @throws TransformerException
      * @throws \LimeSurvey\Models\Services\Exception\NotFoundException
-     * @throws \LimeSurvey\Models\Services\Exception\PermissionDeniedException
-     * @throws \LimeSurvey\Models\Services\Exception\PersistErrorException
+     * @throws PermissionDeniedException
+     * @throws PersistErrorException
+     * @throws \CException
      */
     public function handle(OpInterface $op): array
     {
-        $transformOptions = ['operation' => $op->getType()->getId()];
-        $this->throwTransformerValidationErrors(
-            $this->transformer->validate(
-                $op->getProps(),
-                $transformOptions
-            ),
-            $op
+        $questionService = DI::getContainer()->get(
+            QuestionAggregateService::class
         );
+        $surveyId = $this->getSurveyIdFromContext($op);
+        $questionService->checkUpdatePermission($surveyId);
+        $transformOptions = ['operation' => $op->getType()->getId()];
         $data = $this->transformer->transform(
             $op->getProps(),
             $transformOptions
         ) ?? [];
+        if (empty($data)) {
+            $this->throwNoValuesException($op);
+        }
         $questionData = $data['question'] ?? [];
         $subQuestionsData = $data['subquestions'] ?? [];
         $answerOptionsData = $data['answeroptions'] ?? [];
 
         $tempId = $this->extractTempId($questionData);
-        $questionService = DI::getContainer()->get(
-            QuestionAggregateService::class
-        );
 
         $question = $questionService->save(
-            $this->getSurveyIdFromContext($op),
+            $surveyId,
             $data
         );
 
-        return array_merge(
+        $mapping = array_merge(
             [
                 'questionsMap' => [
                     new TempIdMapItem(
@@ -235,18 +235,28 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
                 true
             )
         );
+        return ['tempIdMapping' => $mapping];
     }
 
     /**
      * Checks if patch is valid for this operation.
      * @param OpInterface $op
-     * @return bool
+     * @return array
      */
-    public function isValidPatch(OpInterface $op): bool
+    public function validateOperation(OpInterface $op): array
     {
-        // check for existing tempId props in question,
-        // subquestion and/or answer when operation validation 2.0 is developed
-
-        return true;
+        $validationData = $this->validateSurveyIdFromContext($op, []);
+        $validationData = $this->validateCollectionIndex($op, $validationData);
+        if (empty($validationData)) {
+            $validationData = $this->transformer->validate(
+                $op->getProps(),
+                ['operation' => $op->getType()->getId()]
+            );
+        }
+        return $this->getValidationReturn(
+            gT('Could not create question'),
+            !is_array($validationData) ? [] : $validationData,
+            $op
+        );
     }
 }

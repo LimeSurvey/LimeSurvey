@@ -154,22 +154,27 @@ class TwigCommand extends CConsoleCommand
     */
     public function actionGenerateAdminCache($sAdminDir = null)
     {
-
         $this->aLogs["action"] = "actionGenerateAdminCache $sAdminDir";
 
-      // Generate cache for admin area
-        $sAdminDir = $sAdminDir ?? dirname(__FILE__) . '/../views/admin';
-        $oAdminDirectory = new RecursiveDirectoryIterator($sAdminDir);
-        $oAdminIterator = new RecursiveIteratorIterator($oAdminDirectory);
-        $oAdminRegex = new RegexIterator($oAdminIterator, '/^.+\.twig$/i', RecursiveRegexIterator::GET_MATCH);
-
-        $aAdminData = array();
-        foreach ($oAdminRegex as $oTwigFile) {
-            $sTwigFile = $oTwigFile[0];
-            if (file_exists($sTwigFile)) {
-                $this->aLogs["twig"] = "$sTwigFile";
-                $line       = file_get_contents($sTwigFile);
-                $sHtml      = Yii::app()->twigRenderer->convertTwigToHtml($line);
+        // Generate cache for admin area
+        // Set directories to search for twig files
+        $directories = array(
+            dirname(__FILE__) . '/../views/admin',
+            dirname(__FILE__) . '/../views/questionAdministration',
+        );
+        foreach ($directories as $sAdminDir) {
+            $sAdminDir = $sAdminDir ?? dirname(__FILE__) . '/../views/admin';
+            $oAdminDirectory = new RecursiveDirectoryIterator($sAdminDir);
+            $oAdminIterator = new RecursiveIteratorIterator($oAdminDirectory);
+            $oAdminRegex = new RegexIterator($oAdminIterator, '/^.+\.twig$/i', RecursiveRegexIterator::GET_MATCH);
+            $aAdminData = array();
+            foreach ($oAdminRegex as $oTwigFile) {
+                $sTwigFile = $oTwigFile[0];
+                if (file_exists($sTwigFile)) {
+                    $this->aLogs["twig"] = "$sTwigFile";
+                    $line       = file_get_contents($sTwigFile);
+                    $sHtml      = Yii::app()->twigRenderer->convertTwigToHtml($line);
+                }
             }
         }
     }

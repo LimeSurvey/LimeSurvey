@@ -30,47 +30,4 @@ trait OpHandlerExceptionTrait
 
         throw new OpHandlerException($msg);
     }
-
-    /**
-     * @param OpInterface $op
-     * @param string $param
-     * @return void
-     * @throws OpHandlerException
-     */
-    private function throwRequiredParamException(
-        OpInterface $op,
-        string $param
-    ) {
-        throw new OpHandlerException(
-            sprintf(
-                'Required parameter "%s" is missing. Entity "%s"',
-                $param,
-                $op->getEntityType()
-            )
-        );
-    }
-
-    /**
-     * @param bool|array $errors
-     * @param OpInterface $op
-     * @return void
-     * @throws OpHandlerException
-     */
-    private function throwTransformerValidationErrors($errors, OpInterface $op)
-    {
-        if (is_array($errors)) {
-            throw new OpHandlerException(
-                sprintf(
-                    'Entity "%s" with id "%s" errors: "%s"',
-                    $op->getEntityType(),
-                    (
-                        !is_array($op->getEntityId())
-                        ? $op->getEntityId()
-                        : print_r($op->getEntityId(), true)
-                    ),
-                    $errors[0]
-                )
-            );
-        }
-    }
 }

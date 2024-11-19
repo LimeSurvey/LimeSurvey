@@ -2,12 +2,18 @@
 
 namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
-use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\{
-    OpHandlerSurveyTrait,
-    OpHandlerExceptionTrait
+use LimeSurvey\Api\Transformer\TransformerException;
+use LimeSurvey\Models\Services\{
+    Exception\NotFoundException,
+    Exception\PermissionDeniedException,
+    Exception\PersistErrorException,
+    QuestionAggregateService
+};
+use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\{OpHandlerSurveyTrait,
+    OpHandlerExceptionTrait,
+    OpHandlerValidationTrait
 };
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestion;
-use LimeSurvey\Models\Services\QuestionAggregateService;
 use LimeSurvey\ObjectPatch\{
     Op\OpInterface,
     OpHandler\OpHandlerException,
@@ -19,6 +25,7 @@ class OpHandlerQuestionUpdate implements OpHandlerInterface
 {
     use OpHandlerSurveyTrait;
     use OpHandlerExceptionTrait;
+    use OpHandlerValidationTrait;
 
     protected QuestionAggregateService $questionAggregateService;
     protected TransformerInputQuestion $transformer;
@@ -60,62 +67,57 @@ class OpHandlerQuestionUpdate implements OpHandlerInterface
      *
      * @param OpInterface $op
      * @throws OpHandlerException
+     * @throws TransformerException
+     * @throws NotFoundException
+     * @throws PermissionDeniedException
+     * @throws PersistErrorException
      */
     public function handle(OpInterface $op): void
     {
-        $transformOptions = ['operation' => $op->getType()->getId()];
-        $this->throwTransformerValidationErrors(
-            $this->transformer->validate(
-                $op->getProps(),
-                $transformOptions
-            ),
-            $op
-        );
-        $this->questionAggregateService->save(
-            $this->getSurveyIdFromContext($op),
-            ['question' => $this->getPreparedData($op)]
-        );
-    }
-
-    /**
-     * Organizes the patch data into the structure which
-     * is expected by the service.
-     * @param OpInterface $op
-     * @return ?array
-     * @throws OpHandlerException
-     */
-    public function getPreparedData(OpInterface $op)
-    {
-        $transformOptions = ['operation' => $op->getType()->getId()];
-        $props = $this->transformer->transform(
+        $surveyId = $this->getSurveyIdFromContext($op);
+        $this->questionAggregateService->checkUpdatePermission($surveyId);
+        $transformedProps = $this->transformer->transform(
             $op->getProps(),
-            $transformOptions
+            [
+                'operation' => $op->getType()->getId(),
+                'id' => $op->getEntityId()
+            ]
         );
-        // Set qid from op entity id
-        if (
-            is_array($props)
-            && (
-                !array_key_exists(
-                    'qid',
-                    $props
-                )
-                || $props['qid'] === null
-            )
-        ) {
-            $props['qid'] = $op->getEntityId();
+        if (empty($transformedProps)) {
+            $this->throwNoValuesException($op);
         }
-
-        return $props;
+        $this->questionAggregateService->save(
+            $surveyId,
+            [
+                'question' => $transformedProps
+            ]
+        );
     }
 
     /**
      * Checks if patch is valid for this operation.
      * @param OpInterface $op
-     * @return bool
+     * @return array
      */
-    public function isValidPatch(OpInterface $op): bool
+    public function validateOperation(OpInterface $op): array
     {
-        // patch is already checked by getPreparedData()
-        return true;
+        $validationData = $this->transformer->validate(
+            $op->getProps(),
+            ['operation' => $op->getType()->getId()]
+        );
+        $validationData = $this->validateEntityId(
+            $op,
+            !is_array($validationData) ? [] : $validationData
+        );
+        $validationData = $this->validateSurveyIdFromContext(
+            $op,
+            $validationData
+        );
+
+        return $this->getValidationReturn(
+            gT('Could not save question'),
+            $validationData,
+            $op
+        );
     }
 }

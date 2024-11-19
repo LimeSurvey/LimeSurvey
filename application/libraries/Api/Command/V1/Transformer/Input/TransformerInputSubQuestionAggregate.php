@@ -12,13 +12,13 @@ class TransformerInputSubQuestionAggregate extends Transformer
     ) {
         $this->setDataMap([
             'question' => [
-                'required' => ['required' => 'create'],
+                'required' => 'create',
                 'transformer' => $transformer
             ],
             'questionL10n' => [
                 'key' => 'questionI10N',
                 'collection' => true,
-                'required' => ['required' => 'create'],
+                'required' => 'create',
                 'transformer' => $transformerL10n
             ]
         ]);

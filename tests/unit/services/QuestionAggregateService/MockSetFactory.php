@@ -3,6 +3,7 @@
 namespace ls\tests\unit\services\QuestionAggregateService;
 
 use Permission;
+use Survey;
 use CDbConnection;
 use Mockery;
 use ls\tests\unit\services\QuestionAggregateService\{
@@ -36,6 +37,10 @@ class MockSetFactory
             ? $init->modelPermission
             : $this->getMockModelPermission();
 
+        $mockSet->modelSurvey = ($init && isset($init->modelSurvey))
+            ? $init->modelSurvey
+            : $this->getMockModelSurvey();
+
         $mockSet->yiiDb = ($init && isset($init->yiiDb))
             ? $init->yiiDb
             : $this->getMockYiiDb();
@@ -46,6 +51,12 @@ class MockSetFactory
     private function getMockModelPermission(): Permission
     {
         return Mockery::mock(Permission::class)
+            ->makePartial();
+    }
+
+    private function getMockModelSurvey(): Survey
+    {
+        return Mockery::mock(Survey::class)
             ->makePartial();
     }
 

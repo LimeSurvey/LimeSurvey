@@ -209,14 +209,14 @@ class InstallerConfigForm extends CFormModel
 
     private function checkStatus()
     {
-        $this->isPhpMbStringPresent = function_exists('mb_convert_encoding');
-        $this->isPhpFileInfoPresent = function_exists('finfo_open');
-        $this->isPhpZlibPresent = function_exists('zlib_get_coding_type');
+        $this->isPhpMbStringPresent = extension_loaded('mbstring');
+        $this->isPhpFileInfoPresent = extension_loaded('fileinfo');
+        $this->isPhpZlibPresent =  extension_loaded('zlib');
         $this->isPhpJsonPresent = function_exists('json_encode');
         $this->isMemoryLimitOK = $this->checkMemoryLimit();
-        $this->isPhpLdapPresent = function_exists('ldap_connect');
-        $this->isPhpImapPresent = function_exists('imap_open');
-        $this->isPhpZipPresent = class_exists('ZipArchive');
+        $this->isPhpLdapPresent = extension_loaded('ldap');
+        $this->isPhpImapPresent = extension_loaded('imap');
+        $this->isPhpZipPresent = extension_loaded('zip');
         $this->isSodiumPresent = function_exists('sodium_crypto_sign_open');
         $this->isCollatorPresent = class_exists('Collator');
 

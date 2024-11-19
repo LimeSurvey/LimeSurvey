@@ -176,11 +176,9 @@ class TemplateConfig extends CActiveRecord
                     $templateConfig->sTemplateName = null;
                     return $templateConfig;
                 }
-                /* @todo : same for css and js (in registered package ? ) */
-                TemplateConfiguration::uninstall($this->sTemplateName);
                 App()->setFlashMessage(
                     sprintf(
-                        gT("Theme '%s' has been uninstalled because it's not compatible with this LimeSurvey version. Can't find file: $sFile "),
+                        gT("Theme '%s' was not found, can't find file: $sFile "),
                         $this->sTemplateName
                     ),
                     'error'
@@ -823,7 +821,8 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['class']['surveylistfooter']          = ' footer ';
         $aClassAndAttributes['class']['surveylistfootercont']      = '  ';
 
-        $aClassAndAttributes['attr']['surveylistfootercontpaa']      = ' href="http://www.limesurvey.org"  target="_blank" ';
+        $aClassAndAttributes['attr']['surveylistfootercontpaa']    = ' href="https://www.limesurvey.org"  target="_blank" ';
+        $aClassAndAttributes['attr']['surveylistfootercontpab']    = ' href="https://www.limesurvey.org"  target="_blank" ';
 
         $aClassAndAttributes['attr']['surveylistrow'] = $aClassAndAttributes['attr']['surveylistrowjumbotron'] = $aClassAndAttributes['attr']['surveylistrowdiva'] = $aClassAndAttributes['attr']['surveylistrowdivadiv'] = $aClassAndAttributes['attr']['surveylistrowdivb'] = $aClassAndAttributes['attr']['surveylistrowdivbdivul'] = '';
         $aClassAndAttributes['attr']['surveylistrowdivbdivulli'] = $aClassAndAttributes['attr']['surveylistrowdivc'] = $aClassAndAttributes['attr']['surveylistfooter'] = $aClassAndAttributes['attr']['surveylistfootercont'] = $aClassAndAttributes['class']['surveylistfootercontp'] = '';
@@ -913,7 +912,7 @@ class TemplateConfig extends CActiveRecord
     {
         // check compatability with current limesurvey version
         $isCompatible = TemplateConfig::isCompatible($themePath);
-        if (!$isCompatible) {
+        if ($isCompatible === false) {
             self::uninstallThemesRecursive($themeName);
             if ($redirect) {
                 App()->setFlashMessage(
@@ -926,6 +925,14 @@ class TemplateConfig extends CActiveRecord
                 App()->getController()->redirect(["themeOptions/index", "#" => "surveythemes"]);
                 App()->end();
             }
+        } elseif ((!$isCompatible) && $redirect) {
+            App()->setFlashMessage(
+                sprintf(
+                    gT("Theme '%s' was not found."),
+                    $themeName
+                ),
+                'error'
+            );
         }
         // add more tests here
 
@@ -937,13 +944,13 @@ class TemplateConfig extends CActiveRecord
      * Checks if theme is compatible with the current limesurvey version
      * @param $themePath
      * @param bool $redirect
-     * @return bool
+     * @return bool|null
      */
-    public static function isCompatible($themePath): bool
+    public static function isCompatible($themePath)
     {
         $extensionConfig = ExtensionConfig::loadFromFile($themePath);
         if ($extensionConfig === null) {
-            return false;
+            return null;
         }
         if (!$extensionConfig->isCompatible()) {
             return false;
@@ -1116,7 +1123,10 @@ class TemplateConfig extends CActiveRecord
                     // Get the theme manifest by forcing xml load
                     try {
                         $aTemplatesWithoutDB['valid'][$sName] = Template::getTemplateConfiguration($sName, null, null, true);
-                        if (empty($aTemplatesWithoutDB['valid'][$sName]->config)) {
+                        if (
+                            empty($aTemplatesWithoutDB['valid'][$sName]->config)
+                            || empty($aTemplatesWithoutDB['valid'][$sName]->config->metadata)
+                        ) {
                             unset($aTemplatesWithoutDB['valid'][$sName]);
                             $aTemplatesWithoutDB['invalid'][$sName]['error'] = gT('Invalid theme configuration file');
                         }

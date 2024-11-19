@@ -143,36 +143,36 @@ $(document).on('ready  pjax:scriptcomplete', function(){
     // Tab management for add/edit condition
     var editTargetTab = $('input[name="editTargetTab"]').val();
     var editSourceTab = $('input[name="editSourceTab"]').val();
-    $('a[href="' + editTargetTab + '"]').trigger('click');
-    $('a[href="' + editSourceTab + '"]').trigger('click');
+    $('a[href="' + editTargetTab + '"]').tab('show');
+    $('a[href="' + editSourceTab + '"]').tab('show');
 
     // When user clicks tab, update hidden input
-    $('#editconditions .src-tab').on('click', function(e) {
-        var href = $(e.currentTarget).find('a').attr('href');
+    $('#editconditions .src-tab a.nav-link').on('shown.bs.tab', function(e) {
+        var href = $(this).attr('href');
         $('input[name="editSourceTab"]').val(href);
     });
 
     // When user clicks tab, update hidden input
-    $('#editconditions .target-tab').on('click', function(e) {
-        var href = $(e.currentTarget).find('a').attr('href');
+    $('#editconditions .target-tab a.nav-link').on('shown.bs.tab', function(e) {
+        var href = $(this).attr('href');
         $('input[name="editTargetTab"]').val(href);
     });
 
     // Tab management for quick-add modal
     var editTargetTab = $('input[name="quick-add-editTargetTab"]').val();
     var editSourceTab = $('input[name="quick-add-editSourceTab"]').val();
-    $('a[href="' + editTargetTab + '"]').trigger('click');
-    $('a[href="' + editSourceTab + '"]').trigger('click');
+    $('a[href="' + editTargetTab + '"]').tab('show');
+    $('a[href="' + editSourceTab + '"]').tab('show');
 
     // When user clicks tab, update hidden input
-    $('#quick-add-conditions-form .src-tab').on('click', function(e) {
-        var href = $(e.currentTarget).find('a').attr('href');
+    $('#quick-add-conditions-form .src-tab a.nav-link').on('shown.bs.tab', function(e) {
+        var href = $(this).attr('href');
         $('input[name="quick-add-editSourceTab"]').val(href);
     });
 
     // When user clicks tab, update hidden input
-    $('#quick-add-conditions-form .target-tab').on('click', function(e) {
-        var href = $(e.currentTarget).find('a').attr('href');
+    $('#quick-add-conditions-form .target-tab a.nav-link').on('shown.bs.tab', function(e) {
+        var href = $(this).attr('href');
         $('input[name="quick-add-editTargetTab"]').val(href);
     });
 

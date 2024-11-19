@@ -21,6 +21,6 @@ class EMWarningAssignment extends EMWarningBase
     {
         $this->token = $token;
         $this->msg = gT('Assigning a new value to a variable.', 'unescaped');
-        $this->helpLink = 'https://manual.limesurvey.org/Expression_Manager#Using_Assignment_Operator';
+        $this->helpLink = 'https://www.limesurvey.org/manual/Expression_Manager#Using_Assignment_Operator';
     }
 }

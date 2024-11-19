@@ -4,21 +4,6 @@ namespace LimeSurvey\Api\Transformer\Formatter;
 
 class FormatterYnToBool implements FormatterInterface
 {
-    /** @var bool */
-    private $revert = false;
-    /** @var bool */
-    private $lowercaseCase = false;
-
-    /**
-     * @param bool $revert
-     * @param bool $lowercase
-     */
-    public function __construct($revert = false, $lowercase = false)
-    {
-        $this->revert = $revert;
-        $this->lowercaseCase = $lowercase;
-    }
-
     /**
      * Cast y/n to boolean
      *
@@ -27,12 +12,18 @@ class FormatterYnToBool implements FormatterInterface
      * Any other value will produce null.
      *
      * @param ?mixed $value
+     * @param array $config
+     * @param array $options
      * @return ?mixed
      */
-    public function format($value)
+    public function format($value, $config = [], $options = [])
     {
-        return $this->revert
-            ? $this->revert($value)
+        $revert = array_key_exists(
+            'revert',
+            $config
+        ) ? $config['revert'] : false;
+        return $revert
+            ? $this->revert($value, $config)
             : $this->apply($value);
     }
 
@@ -44,7 +35,7 @@ class FormatterYnToBool implements FormatterInterface
      * Any other value will produce null.
      *
      * @param ?string $value
-     * @return ?boolean
+     * @return bool|string|null
      */
     protected function apply($value)
     {
@@ -52,9 +43,9 @@ class FormatterYnToBool implements FormatterInterface
             ? strtolower($value)
             : $value;
         if (
-             $value === null
-             || $value === ''
-             || !in_array($lowercase, ['y', 'n'])
+            $value === null
+            || $value === ''
+            || !in_array($lowercase, ['y', 'n'])
         ) {
             return null;
         }
@@ -69,17 +60,21 @@ class FormatterYnToBool implements FormatterInterface
      * Any other value will produce null.
      *
      * @param ?mixed $value
+     * @param array $config
      * @return ?mixed
      */
-    protected function revert($value)
+    protected function revert($value, array $config = [])
     {
         if (!is_bool($value)) {
             return null;
         }
-
+        $lowercaseCase = array_key_exists(
+            'lowercaseCase',
+            $config
+        ) ? $config['lowercaseCase'] : false;
         $string = ($value ? 'y' : 'n');
 
-        return $this->lowercaseCase
+        return $lowercaseCase
             ? $string
             : strtoupper($string);
     }

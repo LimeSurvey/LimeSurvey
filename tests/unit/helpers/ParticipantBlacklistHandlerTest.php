@@ -12,7 +12,7 @@ use Survey;
 class ParticipantBlacklistHandlerTest extends TestBaseClass
 {
     /**
-     * Test adding participant to blacklist
+     * Test adding participant to blocklist
      *
      * @return void
      */
@@ -31,7 +31,7 @@ class ParticipantBlacklistHandlerTest extends TestBaseClass
 
         $token = \Token::model(self::$surveyId)->findByPk(1);
 
-        // Add participant to blacklist
+        // Add participant to blocklist
         $blacklistHandler = new ParticipantBlacklistHandler();
         $blacklistResult = $blacklistHandler->addToBlacklist($token);
 
@@ -44,7 +44,7 @@ class ParticipantBlacklistHandlerTest extends TestBaseClass
     }
 
     /**
-     * Test removing participant from blacklist
+     * Test removing participant from blocklist
      *
      * @return void
      */
@@ -63,11 +63,11 @@ class ParticipantBlacklistHandlerTest extends TestBaseClass
 
         $token = \Token::model(self::$surveyId)->findByPk(1);
 
-        // Add participant to blacklist
+        // Add participant to blocklist
         $blacklistHandler = new ParticipantBlacklistHandler();
         $blacklistResult = $blacklistHandler->addToBlacklist($token);
 
-        // Remove from blacklist
+        // Remove from blocklist
         $blacklistResult = $blacklistHandler->removeFromBlacklist($token);
 
         $this->assertFalse($blacklistResult->isBlacklisted());

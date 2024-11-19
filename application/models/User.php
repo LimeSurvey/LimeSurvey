@@ -132,10 +132,11 @@ class User extends LSActiveRecord
     /** @inheritdoc */
     public function scopes()
     {
+        $userStatusType = \Yii::app()->db->schema->getTable('{{users}}')->columns['user_status']->dbType;
         $activeScope = array(
             'condition' => 'user_status = :active',
             'params' => array(
-                'active' => 1,
+                'active' => $userStatusType == 'boolean' ? 'TRUE' :  '1',
             )
         );
 
@@ -245,7 +246,11 @@ class User extends LSActiveRecord
     public function getFormattedDateCreated()
     {
         $dateCreated = $this->created;
-        $date = new DateTime($dateCreated);
+        /**
+         * @todo: Review this. Cast to string added to keep the original behavior (parameter can't be null since PHP 8.1).
+         *        But it returns the current date if the parameter is null (both now with the cast and pre PHP 8.1 without the cast).
+         */
+        $date = new DateTime((string) $dateCreated);
         return $date->format($this->getDateFormat());
     }
 
@@ -996,8 +1001,27 @@ class User extends LSActiveRecord
     }
 
     /**
+     * Check if user is active
+     * @return boolean
+     */
+    public function isActive()
+    {
+        /* Default is active, user_status must be set (to be tested during DB update); deactivated set user_status to 0 */
+        return !isset($this->user_status) || $this->user_status !== 0;
+    }
+
+    /**
+     * Check if user can login
+     * @return boolean
+     */
+    public function canLogin()
+    {
+        return $this->isActive() && !$this->isExpired();
+    }
+
+    /**
      * Get the decription to be used in list
-     * @return $string
+     * @return string
      */
     public function getDisplayName()
     {

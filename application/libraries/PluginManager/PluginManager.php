@@ -138,7 +138,7 @@ class PluginManager extends \CApplicationComponent
 
         $newName = (string) $extensionConfig->xml->metadata->name;
         if (!$this->isWhitelisted($newName)) {
-            return [false, gT('The plugin is not in the plugin whitelist.')];
+            return [false, gT('The plugin is not in the plugin allowlist.')];
         }
 
         $otherPlugin = Plugin::model()->findAllByAttributes(['name' => $newName]);
@@ -300,7 +300,7 @@ class PluginManager extends \CApplicationComponent
                         $plugin = Plugin::model()->find('name = :name', [':name' => $pluginName]);
                         if (
                             empty($plugin)
-                            || ($includeInstalledPlugins && $plugin->load_error == 0)
+                            || ($includeInstalledPlugins && !$plugin->getLoadError())
                         ) {
                             if (file_exists($file) && $this->isWhitelisted($pluginName)) {
                                 try {
@@ -320,9 +320,13 @@ class PluginManager extends \CApplicationComponent
                                         'message' => $ex->getMessage(),
                                         'file'  => $ex->getFile()
                                     ];
-                                    $saveResult = Plugin::setPluginLoadError($plugin, $pluginName, $error);
+                                    $saveResult = Plugin::handlePluginLoadError($plugin, $pluginName, $error);
                                     if (!$saveResult) {
-                                        // This only happens if database save fails.
+                                        // If handlePluginLoadError return 0 because debug is set
+                                        if (App()->getConfig('debug') >= 2) {
+                                            throw $ex;
+                                        }
+                                        // If handlePluginLoadError fail without debug : have a DB related issue
                                         $this->shutdownObject->disable();
                                         throw new \Exception(
                                             'Internal error: Could not save load error for plugin ' . $pluginName
@@ -330,7 +334,7 @@ class PluginManager extends \CApplicationComponent
                                     }
                                 }
                             }
-                        } elseif ($plugin->load_error == 1) {
+                        } elseif ($plugin->getLoadError()) {
                             // List faulty plugins in scan files view.
                             $result[$pluginName] = [
                                 'pluginName' => $pluginName,
@@ -464,9 +468,13 @@ class PluginManager extends \CApplicationComponent
                 'file'  => $ex->getFile()
             ];
             $plugin = Plugin::model()->find('name = :name', [':name' => $pluginName]);
-            $saveResult = Plugin::setPluginLoadError($plugin, $pluginName, $error);
+            $saveResult = Plugin::handlePluginLoadError($plugin, $pluginName, $error);
             if (!$saveResult) {
-                // This only happens if database save fails.
+                // If handlePluginLoadError return 0 because debug is set
+                if (App()->getConfig('debug') >= 2) {
+                    throw $ex;
+                }
+                // If handlePluginLoadError fail without debug : have a DB related issue
                 $this->shutdownObject->disable();
                 throw new \Exception(
                     'Internal error: Could not save load error for plugin ' . $pluginName
@@ -488,6 +496,7 @@ class PluginManager extends \CApplicationComponent
     {
         // If DB version is less than 165 : plugins table don't exist. 175 update it (boolean to integer for active).
         $dbVersion = \SettingGlobal::model()->find("stg_name=:name", array(':name' => 'DBVersion')); // Need table SettingGlobal, but settings from DB is set only in controller, not in App, see #11294
+        // @todo This previous line seems to be an unnecessary query on every page load, better would be to make the settings available to console command properly, see #11291
         if ($dbVersion && $dbVersion->stg_value >= 165) {
             $pluginModel = Plugin::model();
             if ($dbVersion->stg_value >= 411) {
@@ -499,8 +508,7 @@ class PluginManager extends \CApplicationComponent
 
             foreach ($records as $record) {
                 if (
-                    !isset($record->load_error)
-                    || $record->load_error == 0
+                    !$record->getLoadError()
                     // NB: Authdb is hardcoded since updating sometimes causes error.
                     // @see https://bugs.limesurvey.org/view.php?id=15908
                     || $record->name == 'Authdb'
@@ -522,7 +530,7 @@ class PluginManager extends \CApplicationComponent
     {
         $records = Plugin::model()->findAll();
         foreach ($records as $record) {
-            if ($record->load_error == 0) {
+            if (!$record->getLoadError()) {
                 $this->loadPlugin($record->name, $record->id, $record->active);
             }
         }
@@ -639,14 +647,14 @@ class PluginManager extends \CApplicationComponent
     }
 
     /**
-     * Returns true if the plugin name is whitelisted or the whitelist is disabled.
+     * Returns true if the plugin name is allowlisted or the allowlist is disabled.
      * @param string $pluginName
      * @return boolean
      */
     public function isWhitelisted($pluginName)
     {
         if (App()->getConfig('usePluginWhitelist')) {
-            // Get the user plugins whitelist
+            // Get the user plugins allowlist
             $whiteList = App()->getConfig('pluginWhitelist');
             // Get the list of allowed core plugins
             $coreList = $this->getAllowedCorePluginList();
@@ -689,7 +697,7 @@ class PluginManager extends \CApplicationComponent
 
     /**
      * Return the list of core plugins allowed to be loaded.
-     * That is, all core plugins not in the black list.
+     * That is, all core plugins not in the blocklist.
      * @return string[]
      */
     private function getAllowedCorePluginList()

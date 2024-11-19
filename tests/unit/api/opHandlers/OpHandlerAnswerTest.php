@@ -6,6 +6,7 @@ use LimeSurvey\DI;
 use LimeSurvey\Api\Command\V1\SurveyPatch\OpHandlerAnswer;
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputAnswer;
 use LimeSurvey\Models\Services\{
+    QuestionAggregateService,
     QuestionAggregateService\AnswersService,
     QuestionAggregateService\QuestionService
 };
@@ -56,6 +57,42 @@ class OpHandlerAnswerTest extends TestBaseClass
     }
 
     /**
+     * @testdox validation hits
+     */
+    public function testOpValidationFailure()
+    {
+        $opHandler = $this->getOpHandler();
+        $op = $this->getOp(
+            $this->getWrongProps(true, 'update'),
+            'update'
+        );
+        $validation = $opHandler->validateOperation($op);
+        $this->assertIsArray($validation);
+        $this->assertNotEmpty($validation);
+        $op = $this->getOp(
+            $this->getWrongProps(),
+            'update'
+        );
+        $validation = $opHandler->validateOperation($op);
+        $this->assertIsArray($validation);
+        $this->assertNotEmpty($validation);
+    }
+
+    /**
+     * @testdox validation doesn't hit when everything is fine
+     */
+    public function testOpValidationSuccess()
+    {
+        $op = $this->getOp(
+            $this->getCorrectProps()
+        );
+        $opHandler = $this->getOpHandler();
+        $validation = $opHandler->validateOperation($op);
+        $this->assertIsArray($validation);
+        $this->assertEmpty($validation);
+    }
+
+    /**
      * @param array $props
      * @param string $type
      * @return OpStandard
@@ -65,7 +102,7 @@ class OpHandlerAnswerTest extends TestBaseClass
         return OpStandard::factory(
             'answer',
             $type,
-            0,
+            888,
             $props,
             [
                 'id' => 123456,
@@ -74,36 +111,45 @@ class OpHandlerAnswerTest extends TestBaseClass
     }
 
     /**
+     * @param string $operation
      * @return array
+     * @throws \Exception
      */
-    private function getCorrectProps()
+    private function getCorrectProps($operation = 'create'): array
     {
-        return [
-            '0' => [
-                'code'     => 'AO01',
-                'scaleId' => '0',
-                'l10ns'    => [
-                    'en' => [
-                        'answer' => 'answer'
-                    ],
-                    'de' => [
-                        'answer' => 'answerger'
-                    ]
-                ]
-            ],
-            '1' => [
-                'code'     => 'AO01',
-                'scaleId' => '1',
-                'l10ns'    => [
-                    'en' => [
-                        'answer' => 'answer'
-                    ],
-                    'de' => [
-                        'answer' => 'answerger'
-                    ]
+        $answer = [
+            'code' => 'AO01',
+            'scaleId' => '0',
+            'l10ns' => [
+                'en' => [
+                    'answer' => 'answer',
+                    'language' => 'en'
+                ],
+                'de' => [
+                    'answer' => 'answerger',
+                    'language' => 'de'
                 ]
             ]
         ];
+        if ($operation === 'create') {
+            $answer['tempId'] = '222';
+        } else {
+            $answer['aid'] = random_int(1, 1000);
+        }
+        return [
+            '0' => $answer,
+        ];
+    }
+
+    private function getWrongProps(
+        $wrongIndex = false,
+        $operation = 'create'
+    ): array {
+        $props = $this->getCorrectProps($operation);
+        if ($wrongIndex) {
+            $props['alphabetic'] = $props[0];
+        }
+        return $props;
     }
 
     /**
@@ -119,10 +165,15 @@ class OpHandlerAnswerTest extends TestBaseClass
         $mockQuestionService = \Mockery::mock(
             QuestionService::class
         )->makePartial();
+        /** @var QuestionAggregateService */
+        $mockQuestionAggregateService = \Mockery::mock(
+            QuestionAggregateService::class
+        );
         return new OpHandlerAnswer(
             DI::getContainer()->get(TransformerInputAnswer::class),
             $mockAnswersService,
-            $mockQuestionService
+            $mockQuestionService,
+            $mockQuestionAggregateService
         );
     }
 }

@@ -2,14 +2,16 @@
 
 namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
-use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\OpHandlerSurveyTrait;
 use LimeSurvey\Models\Services\{
     Exception\PermissionDeniedException,
     QuestionAggregateService
 };
+use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\{
+    OpHandlerValidationTrait,
+    OpHandlerSurveyTrait
+};
 use LimeSurvey\ObjectPatch\{
     Op\OpInterface,
-    OpHandler\OpHandlerException,
     OpHandler\OpHandlerInterface,
     OpType\OpTypeDelete
 };
@@ -17,6 +19,7 @@ use LimeSurvey\ObjectPatch\{
 class OpHandlerAnswerDelete implements OpHandlerInterface
 {
     use OpHandlerSurveyTrait;
+    use OpHandlerValidationTrait;
 
     protected QuestionAggregateService $questionAggregateService;
 
@@ -55,10 +58,12 @@ class OpHandlerAnswerDelete implements OpHandlerInterface
      * @param OpInterface $op
      * @return void
      * @throws PermissionDeniedException
-     * @throws OpHandlerException
      */
     public function handle(OpInterface $op)
     {
+        $this->questionAggregateService->checkDeletePermission(
+            $this->getSurveyIdFromContext($op)
+        );
         $this->questionAggregateService->deleteAnswer(
             $this->getSurveyIdFromContext($op),
             $op->getEntityId()
@@ -68,11 +73,16 @@ class OpHandlerAnswerDelete implements OpHandlerInterface
     /**
      * Checks if patch is valid for this operation.
      * @param OpInterface $op
-     * @return bool
+     * @return array
      */
-    public function isValidPatch(OpInterface $op): bool
+    public function validateOperation(OpInterface $op): array
     {
-        //this is not tested in canHandle
-        return ((int)$op->getEntityId()) > 0;
+        $validationData = $this->validateSurveyIdFromContext($op, []);
+        $validationData = $this->validateEntityId($op, $validationData);
+        return $this->getValidationReturn(
+            gt('Could not delete answer option'),
+            $validationData,
+            $op
+        );
     }
 }

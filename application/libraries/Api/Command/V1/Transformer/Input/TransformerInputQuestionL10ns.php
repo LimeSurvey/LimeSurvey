@@ -2,9 +2,7 @@
 
 namespace LimeSurvey\Api\Command\V1\Transformer\Input;
 
-use LimeSurvey\Api\Transformer\{
-    Transformer
-};
+use LimeSurvey\Api\Transformer\Transformer;
 
 class TransformerInputQuestionL10ns extends Transformer
 {

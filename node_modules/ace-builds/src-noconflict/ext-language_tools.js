@@ -1326,7 +1326,8 @@ var Autocomplete = function () {
             this.$init();
         this.popup.autoSelect = this.autoSelect;
         this.popup.setData(this.completions.filtered, this.completions.filterText);
-        this.editor.textInput.setAriaOptions({ activeDescendant: getAriaId(this.popup.getRow()) });
+        if (this.editor.textInput.setAriaOptions)
+            this.editor.textInput.setAriaOptions({ activeDescendant: getAriaId(this.popup.getRow()) });
         editor.keyBinding.addKeyboardHandler(this.keyboardHandler);
         var renderer = editor.renderer;
         this.popup.setRow(this.autoSelect ? 0 : -1);

@@ -11,36 +11,36 @@ class Update_145 extends DatabaseUpdateBase
 {
     public function up()
     {
-        addColumn('{{surveys}}', 'savetimings', "string(1) NULL default 'N'");
-        addColumn('{{surveys}}', 'showXquestions', "string(1) NULL default 'Y'");
-        addColumn('{{surveys}}', 'showgroupinfo', "string(1) NULL default 'B'");
-        addColumn('{{surveys}}', 'shownoanswer', "string(1) NULL default 'Y'");
-        addColumn('{{surveys}}', 'showqnumcode', "string(1) NULL default 'X'");
+        addColumn('{{surveys}}', 'savetimings', "string(1) NULL DEFAULT 'N'");
+        addColumn('{{surveys}}', 'showXquestions', "string(1) NULL DEFAULT 'Y'");
+        addColumn('{{surveys}}', 'showgroupinfo', "string(1) NULL DEFAULT 'B'");
+        addColumn('{{surveys}}', 'shownoanswer', "string(1) NULL DEFAULT 'Y'");
+        addColumn('{{surveys}}', 'showqnumcode', "string(1) NULL DEFAULT 'X'");
         addColumn('{{surveys}}', 'bouncetime', 'integer');
-        addColumn('{{surveys}}', 'bounceprocessing', "string(1) NULL default 'N'");
+        addColumn('{{surveys}}', 'bounceprocessing', "string(1) NULL DEFAULT 'N'");
         addColumn('{{surveys}}', 'bounceaccounttype', "string(4)");
         addColumn('{{surveys}}', 'bounceaccounthost', "string(200)");
         addColumn('{{surveys}}', 'bounceaccountpass', "string(100)");
         addColumn('{{surveys}}', 'bounceaccountencryption', "string(3)");
         addColumn('{{surveys}}', 'bounceaccountuser', "string(200)");
-        addColumn('{{surveys}}', 'showwelcome', "string(1) default 'Y'");
-        addColumn('{{surveys}}', 'showprogress', "string(1) default 'Y'");
-        addColumn('{{surveys}}', 'allowjumps', "string(1) default 'N'");
-        addColumn('{{surveys}}', 'navigationdelay', "integer default 0");
-        addColumn('{{surveys}}', 'nokeyboard', "string(1) default 'N'");
-        addColumn('{{surveys}}', 'alloweditaftercompletion', "string(1) default 'N'");
+        addColumn('{{surveys}}', 'showwelcome', "string(1) DEFAULT 'Y'");
+        addColumn('{{surveys}}', 'showprogress', "string(1) DEFAULT 'Y'");
+        addColumn('{{surveys}}', 'allowjumps', "string(1) DEFAULT 'N'");
+        addColumn('{{surveys}}', 'navigationdelay', "integer DEFAULT 0");
+        addColumn('{{surveys}}', 'nokeyboard', "string(1) DEFAULT 'N'");
+        addColumn('{{surveys}}', 'alloweditaftercompletion', "string(1) DEFAULT 'N'");
 
 
         $aFields = array(
             'sid' => "integer NOT NULL",
             'uid' => "integer NOT NULL",
             'permission' => 'string(20) NOT NULL',
-            'create_p' => "integer NOT NULL default 0",
-            'read_p' => "integer NOT NULL default 0",
-            'update_p' => "integer NOT NULL default 0",
-            'delete_p' => "integer NOT NULL default 0",
-            'import_p' => "integer NOT NULL default 0",
-            'export_p' => "integer NOT NULL default 0"
+            'create_p' => "integer NOT NULL DEFAULT 0",
+            'read_p' => "integer NOT NULL DEFAULT 0",
+            'update_p' => "integer NOT NULL DEFAULT 0",
+            'delete_p' => "integer NOT NULL DEFAULT 0",
+            'import_p' => "integer NOT NULL DEFAULT 0",
+            'export_p' => "integer NOT NULL DEFAULT 0"
         );
         $this->db->createCommand()->createTable('{{survey_permissions}}', $aFields);
         addPrimaryKey('survey_permissions', array('sid', 'uid', 'permission'));
@@ -120,14 +120,14 @@ class Update_145 extends DatabaseUpdateBase
         try {
             setTransactionBookmark();
             $this->db->createCommand()->dropIndex('questions_idx4', '{{questions}}');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             rollBackToTransactionBookmark();
         }
 
         \alterColumn('{{questions}}', 'type', "string(1)", false, 'T');
         try {
             $this->db->createCommand()->createIndex('questions_idx4', '{{questions}}', 'type');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
         };
         \alterColumn('{{questions}}', 'other', "string(1)", false, 'N');
         \alterColumn('{{questions}}', 'mandatory', "string(1)");
@@ -200,7 +200,7 @@ class Update_145 extends DatabaseUpdateBase
         try {
             setTransactionBookmark();
             $this->db->createCommand()->dropIndex('email', '{{users}}');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             // do nothing
             rollBackToTransactionBookmark();
         }
@@ -212,11 +212,11 @@ class Update_145 extends DatabaseUpdateBase
 
         try {
             $this->db->createCommand()->dropIndex('user_in_groups_idx1', '{{user_in_groups}}');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
         }
         try {
             addPrimaryKey('user_in_groups', array('ugid', 'uid'));
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
         }
 
         addColumn('{{surveys_languagesettings}}', 'surveyls_numberformat', "integer NOT NULL DEFAULT 0");

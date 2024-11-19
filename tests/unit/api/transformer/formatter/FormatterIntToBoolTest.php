@@ -12,47 +12,65 @@ class FormatterIntToBoolTest extends TestBaseClass
 {
     public function testConvertsTrueyToTrue()
     {
-        $transformer = new FormatterIntToBool;
-        $this->assertTrue($transformer->format(1));
-        $this->assertTrue($transformer->format('1'));
-        $this->assertTrue($transformer->format('truey'));
+        $formatter = new FormatterIntToBool();
+        $config = $this->getConfig();
+        $this->assertTrue($formatter->format(true, $config));
+        $this->assertTrue($formatter->format(1, $config));
+        $this->assertTrue($formatter->format('1', $config));
+        $this->assertTrue($formatter->format('truey', $config));
     }
 
     public function testConvertsFalseyToFalse()
     {
-        $transformer = new FormatterIntToBool;
-        $this->assertFalse($transformer->format(0));
-        $this->assertFalse($transformer->format(-1));
-        $this->assertFalse($transformer->format('0'));
-        $this->assertFalse($transformer->format('-1'));
+        $formatter = new FormatterIntToBool();
+        $config = $this->getConfig();
+        $this->assertFalse($formatter->format(false, $config));
+        $this->assertFalse($formatter->format(0, $config));
+        $this->assertFalse($formatter->format(-1, $config));
+        $this->assertFalse($formatter->format('0', $config));
+        $this->assertFalse($formatter->format('-1', $config));
     }
 
     public function testConvertsEmptyStringToNull()
     {
-        $transformer = new FormatterIntToBool;
-        $this->assertNull($transformer->format(''));
+        $formatter = new FormatterIntToBool();
+        $config = $this->getConfig();
+        $this->assertNull($formatter->format('', $config));
     }
 
     public function testPassesNullUnchanged()
     {
-        $transformer = new FormatterIntToBool;
-        $this->assertNull($transformer->format(null));
+        $formatter = new FormatterIntToBool();
+        $config = $this->getConfig();
+        $this->assertNull($formatter->format(null, $config));
     }
 
     public function testRevertsTrueyToInt()
     {
-        $transformer = new FormatterIntToBool(true);
-        $this->assertEquals(1, $transformer->format(1));
-        $this->assertEquals(1, $transformer->format('Y'));
-        $this->assertEquals(1, $transformer->format('truey'));
+        $formatter = new FormatterIntToBool();
+        $config = $this->getConfig(true);
+        $this->assertEquals(1, $formatter->format(true, $config));
+        $this->assertEquals(1, $formatter->format(1, $config));
+        $this->assertEquals(1, $formatter->format('Y', $config));
+        $this->assertEquals(1, $formatter->format('truey', $config));
     }
 
     public function testRevertsFalseyToInt()
     {
-        $transformer = new FormatterIntToBool(true);
-        $this->assertEquals(0, $transformer->format(0));
-        $this->assertEquals(0, $transformer->format(-1));
-        $this->assertEquals(0, $transformer->format('0'));
-        $this->assertEquals(0, $transformer->format('-1'));
+        $formatter = new FormatterIntToBool();
+        $config = $this->getConfig(true);
+        $this->assertEquals(0, $formatter->format(false, $config));
+        $this->assertEquals(0, $formatter->format(0, $config));
+        $this->assertEquals(0, $formatter->format(-1, $config));
+        $this->assertEquals(0, $formatter->format('0', $config));
+        $this->assertEquals(0, $formatter->format('-1', $config));
+    }
+
+    private function getConfig($revert = false)
+    {
+        $options = $revert ? ['revert' => true] : true;
+        return [
+            'formatter' => ['intToBool' => $options]
+        ];
     }
 }

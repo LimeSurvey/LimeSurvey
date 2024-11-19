@@ -316,7 +316,7 @@ class QuestionAdministrationController extends LSBaseController
         if (!in_array($landOnSideMenuTab, ['settings', 'structure', ''])) {
             $landOnSideMenuTab = 'settings';
         }
-        // Reinit LEMlang and LEMsid: ensure LEMlang are set to default lang, surveyid are set to this survey id
+        // Reinit LEMlang and LEMsid: ensure LEMlang are set to default lang, surveyid are set to this survey ID
         // Ensure Last GetLastPrettyPrintExpression get info from this sid and default lang
         LimeExpressionManager::SetEMLanguage(Survey::model()->findByPk($iSurveyID)->language);
         LimeExpressionManager::SetSurveyId($iSurveyID);
@@ -358,7 +358,7 @@ class QuestionAdministrationController extends LSBaseController
             App()->user->setState('pageSize', (int) $_GET['pageSize']);
         }
         $aData['pageSize'] = App()->user->getState('pageSize', App()->params['defaultPageSize']);
-        // We filter the current survey id
+        // We filter the current survey ID
         $questionModel->sid = $oSurvey->sid;
         $aData['questionModel'] = $questionModel;
 
@@ -441,7 +441,7 @@ class QuestionAdministrationController extends LSBaseController
     /**
      * Returns all languages in a specific survey as a JSON document
      *
-     * todo: is this action still in use?? where in the frontend?
+     * @todo is this action still in use?? where in the frontend?
      *
      * @param int $iSurveyId
      *
@@ -470,13 +470,7 @@ class QuestionAdministrationController extends LSBaseController
 
         // Check the POST data is not truncated
         if (!$request->getPost('bFullPOST')) {
-            $message = gT(
-                'The data received seems incomplete. '
-                . 'This usually happens due to server limitations '
-                . '(PHP setting max_input_vars) - '
-                . 'please contact your system administrator.'
-            );
-
+            $message = gT('The data received seems incomplete. This usually happens due to server limitations (PHP setting max_input_vars). Please contact your system administrator.');
             if ($calledWithAjax) {
                 echo json_encode(['message' => $message]);
                 Yii::app()->end();
@@ -712,7 +706,7 @@ class QuestionAdministrationController extends LSBaseController
     {
         $oSurvey = Survey::model()->findByPk($surveyid);
         if (empty($oSurvey)) {
-            throw new CHttpException(404, gT("Invalid survey id"));
+            throw new CHttpException(404, gT("Invalid survey ID"));
         }
         if (!Permission::model()->hasSurveyPermission($oSurvey->sid, 'surveycontent', 'update')) {
             throw new CHttpException(403, gT("No permission"));
@@ -784,7 +778,7 @@ class QuestionAdministrationController extends LSBaseController
     {
         $oSurvey = Survey::model()->findByPk($surveyid);
         if (empty($oSurvey)) {
-            throw new CHttpException(404, gT("Invalid survey id"));
+            throw new CHttpException(404, gT("Invalid survey ID"));
         }
         if (!Permission::model()->hasSurveyPermission($oSurvey->sid, 'surveycontent', 'update')) {
             throw new CHttpException(403, gT("No permission"));
@@ -872,7 +866,7 @@ class QuestionAdministrationController extends LSBaseController
     {
         $oldCode = false;
 
-        // TODO: Fix question type 'A'. Needed?
+        // @todo Fix question type 'A'. Needed?
         $oQuestion = $this->getQuestionObject($qid, 'A', $gid);
         $answerOption = $oQuestion->getEmptyAnswerOption();
         $answerOption->aid = $qid;
@@ -1189,6 +1183,13 @@ class QuestionAdministrationController extends LSBaseController
             return;
         }
 
+        // If there are warnings, we don't jump to the question.
+        // We need to show the warnings to the user, and they may be too important
+        // and/or too many to be shown in a flash message.
+        if (!empty($aImportResults['importwarnings'])) {
+            $jumptoquestion = false;
+        }
+
         unlink($sFullFilepath);
 
         $aData['aImportResults'] = $aImportResults;
@@ -1374,8 +1375,8 @@ class QuestionAdministrationController extends LSBaseController
             $qid = Yii::app()->getRequest()->getPost('qid');
         }
 
-        // @todo: request should specify the survey id of the question to be deleted
-        // - survey id is verified before deletion
+        // @todo: request should specify the survey ID of the question to be deleted
+        // - survey ID is verified before deletion
         $oQuestion = Question::model()->findByPk($qid);
         $surveyid = $oQuestion->sid;
 
@@ -1525,7 +1526,7 @@ class QuestionAdministrationController extends LSBaseController
     /**
      * Loads the possible Positions where a Question could be inserted to
      *
-     * @param $gid
+     * @param int $gid
      * @param string $classes
      * @return CWidget|mixed|void
      * @throws Exception
@@ -1815,7 +1816,7 @@ class QuestionAdministrationController extends LSBaseController
         if (empty($questionType)) {
             throw new CHttpException(405, 'Internal error: No question type');
         }
-        // TODO: Difference between create and update permissions?
+        // @todo Difference between create and update permissions?
         if (!Permission::model()->hasSurveyPermission($surveyId, 'surveycontent', 'update')) {
             throw new CHttpException(403, gT('No permission'));
         }
@@ -1857,7 +1858,7 @@ class QuestionAdministrationController extends LSBaseController
         if (empty($questionType)) {
             throw new CHttpException(405, 'Internal error: No question type');
         }
-        // TODO: Difference between create and update permissions?
+        // @todo Difference between create and update permissions?
         if (!Permission::model()->hasSurveyPermission($surveyId, 'surveycontent', 'update')) {
             throw new CHttpException(403, gT('No permission'));
         }
@@ -1964,11 +1965,11 @@ class QuestionAdministrationController extends LSBaseController
     }
 
     /**
-     * Check if label set is what???
+     * Check if label set can be replaced without problems
      *
      * @param int $lid
-     * @param ??? $languages
-     * @param ??? $checkAssessments
+     * @param array $languages
+     * @param boolean $checkAssessments
      * @return void
      */
     public function actionCheckLabel($lid, $languages, $checkAssessments)
@@ -1995,7 +1996,7 @@ class QuestionAdministrationController extends LSBaseController
         }
     }
 
-    /** ++++++++++++  TODO: The following functions should be moved to model or a service class ++++++++++++++++++++++++++ */
+    /** @todo The following functions should be moved to model or a service class ++++++++++++++++++++++++++ */
 
 
     /**
@@ -2015,7 +2016,7 @@ class QuestionAdministrationController extends LSBaseController
      *
      * @param array $aQids All question id's affected
      * @param string $sOther the "other" value 'Y' or 'N'
-     * @param int $iSid survey id
+     * @param int $iSid survey ID
      */
     public static function setMultipleQuestionOtherState($aQids, $sOther, $iSid)
     {
@@ -2035,7 +2036,7 @@ class QuestionAdministrationController extends LSBaseController
      *
      * @param array $aQids All question id's affected
      * @param string $sMandatory The mandatory va
-     * @param int $iSid survey id
+     * @param int $iSid survey ID
      */
     public static function setMultipleQuestionMandatoryState($aQids, $sMandatory, $iSid)
     {
@@ -2602,7 +2603,7 @@ class QuestionAdministrationController extends LSBaseController
 
         $survey = Survey::model()->findByPk($sid);
         if (empty($survey)) {
-            throw new CHttpException(404, gT("Invalid survey id"));
+            throw new CHttpException(404, gT("Invalid survey ID"));
         }
         if ($qid) {
             $oQuestion = Question::model()->findByAttributes(['qid' => $qid, 'sid' => $sid]);

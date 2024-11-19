@@ -612,9 +612,9 @@ class LSYii_ClientScript extends CClientScript
     public function render(&$output)
     {
         /**
-         * beforeCloseHtml event @see https://manual.limesurvey.org/BeforeCloseHtml
+         * beforeCloseHtml event @see https://www.limesurvey.org/manual/BeforeCloseHtml
          * Set it before all other action allow registerScript by plugin
-         * Whitelisting available controller (public plugin not happen for PluginsController using actionDirect, actionUnsecure event)
+         * Allowlisting available controller (public plugin not happen for PluginsController using actionDirect, actionUnsecure event)
          */
         $publicControllers = array('option','optout','printanswers','register','statistics_user','survey','surveys','uploader');
         if (Yii::app()->getController() && in_array(Yii::app()->getController()->getId(), $publicControllers) && strpos($output, '</body>')) {

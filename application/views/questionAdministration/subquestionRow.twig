@@ -33,6 +33,7 @@
                 value="{{ subquestion.title|escape('html_attr') }}"
                 required='required'
                 maxlength="20"
+                pattern="[a-zA-Z0-9]+"
                 {% if question.survey.active == 'Y' %}
                 readonly="readonly"
                 {% endif %}
@@ -67,6 +68,7 @@
                 value="{{ subquestion.title|escape('html_attr') }}"
                 required='required'
                 maxlength="20"
+                pattern="[a-zA-Z0-9]+"
                 {% if question.survey.active == 'Y' %}
                 readonly="readonly"
                 {% endif %}

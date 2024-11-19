@@ -7,7 +7,6 @@ use LimeSurvey\Api\Command\V1\SurveyPatch\OpHandlerQuestionCreate;
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestionAggregate;
 use LimeSurvey\ObjectPatch\{
     Op\OpStandard,
-    OpHandler\OpHandlerException
 };
 use ls\tests\TestBaseClass;
 use ls\tests\unit\services\QuestionGroup\QuestionGroupMockSetFactory;
@@ -17,21 +16,6 @@ use ls\tests\unit\services\QuestionGroup\QuestionGroupMockSetFactory;
  */
 class OpHandlerQuestionCreateTest extends TestBaseClass
 {
-    /**
-     * @testdox throws OpHandlerException if required entity is missing
-     */
-    public function testQuestionCreateThrowsMissingEntitiesException()
-    {
-        $this->expectException(
-            OpHandlerException::class
-        );
-        $op = $this->getOp(
-            $this->getIncompleteProps()
-        );
-        $opHandler = $this->getOpHandler();
-        $opHandler->handle($op);
-    }
-
     /**
      * @testdox can handle correct patch
      */
@@ -55,6 +39,35 @@ class OpHandlerQuestionCreateTest extends TestBaseClass
         );
         $opHandler = $this->getOpHandler();
         self::assertFalse($opHandler->canHandle($op));
+    }
+
+    /**
+     * @testdox validation hits if required values are not provided
+     */
+    public function testQuestionCreateValidation()
+    {
+        $op = $this->getOp(
+            $this->getIncompleteProps(),
+            'create'
+        );
+        $opHandler = $this->getOpHandler();
+        $validation = $opHandler->validateOperation($op);
+        $this->assertIsArray($validation);
+        $this->assertNotEmpty($validation);
+    }
+
+    /**
+     * @testdox validation doesn't hit when everything's fine
+     */
+    public function testQuestionCreateValidationSuccess()
+    {
+        $op = $this->getOp(
+            $this->getCorrectProps(),
+        );
+        $opHandler = $this->getOpHandler();
+        $validation = $opHandler->validateOperation($op);
+        $this->assertIsArray($validation);
+        $this->assertEmpty($validation);
     }
 
     /**
@@ -83,6 +96,7 @@ class OpHandlerQuestionCreateTest extends TestBaseClass
     {
         return [
             'question'     => [
+                'tempId'              => 123456,
                 'title'               => 'G01Q01',
                 'type'                => '1',
                 'question_theme_name' => 'arrays\/dualscale',
@@ -97,34 +111,32 @@ class OpHandlerQuestionCreateTest extends TestBaseClass
             ],
             'attributes'   => [
                 "public_statistics" => [
-                    '' => [
-                        'value' => '1'
-                    ]
+                    '' => '1'
                 ],
                 'dualscale_headerA' => [
-                    'en' => [
-                        'value' => 'Header Text'
-                    ],
-                    'de' => [
-                        'value' => 'Kopf Text'
-                    ]
+                    'en' => 'Header Text',
+                    'de' => 'Kopf Text'
                 ]
             ],
             'answers'      => [
                 '0' => [
+                    'tempId' => 456,
                     'code'  => 'AO01',
                     'l10ns' => [
                         'en' => [
-                            'answer' => 'answer'
+                            'answer' => 'answer',
+                            'language' => 'en'
                         ],
                         'de' => [
-                            'answer' => 'answerger'
+                            'answer' => 'answerger',
+                            'language' => 'de'
                         ]
                     ]
                 ]
             ],
             'subquestions' => [
                 '0' => [
+                    'tempId' => 789,
                     'title' => 'SQ001',
                     'l10ns' => [
                         'en' => [

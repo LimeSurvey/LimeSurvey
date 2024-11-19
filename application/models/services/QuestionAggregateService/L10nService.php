@@ -27,7 +27,7 @@ class L10nService
      * @todo document me
      *
      * @param int $questionId
-     * @param array{
+     * @param array {
      *      ...<array-key, array{
      *          qid: int,
      *          question: string,

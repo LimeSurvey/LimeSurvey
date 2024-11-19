@@ -27,7 +27,7 @@ class Update_363 extends DatabaseUpdateBase
                         break;
                         // MSSQL does not support indexes on text fields so no dice
                 }
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 rollBackToTransactionBookmark();
             }
         }

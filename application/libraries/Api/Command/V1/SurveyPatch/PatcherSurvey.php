@@ -2,12 +2,12 @@
 
 namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
-use LimeSurvey\Api\Command\V1\SurveyPatch\Response\{
-    ErronousOperationItem,
-    ErronousOperations,
+use LimeSurvey\Api\Command\V1\SurveyPatch\Response\{ExceptionErrorItem,
+    ExceptionErrors,
+    SurveyResponse,
     TempIdMapItem,
-    TempIdMapping
-};
+    TempIdMapping,
+    ValidationErrors};
 use LimeSurvey\ObjectPatch\{
     ObjectPatchException,
     Op\OpStandard,
@@ -18,24 +18,20 @@ use Psr\Container\ContainerInterface;
 
 class PatcherSurvey extends Patcher
 {
-    protected TempIdMapping $tempIdMapping;
-    protected ErronousOperations $erronousOperations;
+    protected SurveyResponse $surveyResponse;
 
     /**
      * Constructor
      *
      * @param ContainerInterface $diContainer
-     * @param TempIdMapping $tempIdMapping
-     * @param ErronousOperations $erronousOperations
+     * @param SurveyResponse $surveyResponse
      * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     public function __construct(
         ContainerInterface $diContainer,
-        TempIdMapping $tempIdMapping,
-        ErronousOperations $erronousOperations
+        SurveyResponse $surveyResponse
     ) {
-        $this->tempIdMapping = $tempIdMapping;
-        $this->erronousOperations = $erronousOperations;
+        $this->surveyResponse = $surveyResponse;
         $this->addOpHandler(
             $diContainer->get(
                 OpHandlerSurveyUpdate::class
@@ -106,6 +102,11 @@ class PatcherSurvey extends Patcher
                 OpHandlerSubQuestion::class
             )
         );
+        $this->addOpHandler(
+            $diContainer->get(
+                OpHandlerSurveyStatus::class
+            )
+        );
     }
 
     /**
@@ -129,55 +130,13 @@ class PatcherSurvey extends Patcher
                     $context ?? []
                 );
                 try {
-                    $handleResponse = $this->handleOp($op);
-                    $this->tempIdMapping->incrementOperationsApplied();
-                    foreach ($handleResponse as $groupName => $mappingItem) {
-                        $this->addTempIdMapItem($mappingItem, $groupName);
-                    }
+                    $response = $this->handleOp($op);
+                    $this->surveyResponse->handleResponse($response);
                 } catch (\Exception $e) {
-                    // add error message and full operation info to ErrorItemList
-                    $erronousItem = new ErronousOperationItem(
-                        $e->getMessage() . "\n" . $e->getTraceAsString(),
-                        $patchOpData
-                    );
-                    $this->erronousOperations->addErronousOperationItem(
-                        $erronousItem
-                    );
+                    $this->surveyResponse->handleException($e, $op);
                 }
             }
         }
-        return $this->buildResponseObject();
-    }
-
-    /**
-     * Recursive function to extract TempIdMapItems from the $mappingItem
-     * @param TempIdMapItem|array $mappingItem
-     * @param string $groupName
-     * @return void
-     * @throws \LimeSurvey\ObjectPatch\OpHandler\OpHandlerException
-     */
-    private function addTempIdMapItem($mappingItem, string $groupName)
-    {
-        if ($mappingItem instanceof TempIdMapItem) {
-            $this->tempIdMapping->addTempIdMapItem(
-                $mappingItem,
-                $groupName
-            );
-        } else {
-            foreach ($mappingItem as $item) {
-                $this->addTempIdMapItem($item, $groupName);
-            }
-        }
-    }
-
-    private function buildResponseObject(): array
-    {
-        return array_merge(
-            $this->tempIdMapping->getMappingResponseObject(),
-            [
-                'erronousOperations'
-                    => $this->erronousOperations->getErronousOperationsObject()
-            ]
-        );
+        return $this->surveyResponse->buildResponseObject();
     }
 }

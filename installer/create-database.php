@@ -12,6 +12,7 @@ function populateDatabase($oDB)
     * Populate the database for a limesurvey installation
     * Rules:
     * - Use the provided addColumn, alterColumn, dropPrimaryKey etc. functions where applicable - they ensure cross-DB compatibility
+    * - DEFAULT & NULL need to be uppercase (for MSSQL driver compatibility)
     * - Never use foreign keys
     * - Only use the database field types provided by Yii as they are guaranteed to be cross-DB compatible
     * - You may also use: text / mediumtext/ longtext
@@ -49,6 +50,7 @@ function populateDatabase($oDB)
             'scale_id' => 'integer NOT NULL DEFAULT 0',
         ), $options);
 
+        $oDB->createCommand()->createIndex('{{answers_idx}}', '{{answers}}', ['qid', 'code', 'scale_id'], false);
         $oDB->createCommand()->createIndex('{{answers_idx2}}', '{{answers}}', 'sortorder', false);
 
         $oDB->createCommand()->createTable('{{answer_l10ns}}', array(
@@ -96,12 +98,12 @@ function populateDatabase($oDB)
         // conditions
         $oDB->createCommand()->createTable('{{conditions}}', array(
             'cid' => 'pk',
-            'qid' => "integer NOT NULL default '0'",
-            'cqid' => "integer NOT NULL default '0'",
-            'cfieldname' => "string(50) NOT NULL default ''",
-            'method' => "string(5) NOT NULL default ''",
-            'value' => "string(255) NOT NULL default ''",
-            'scenario' => "integer NOT NULL default 1"
+            'qid' => "integer NOT NULL DEFAULT '0'",
+            'cqid' => "integer NOT NULL DEFAULT '0'",
+            'cfieldname' => "string(50) NOT NULL DEFAULT ''",
+            'method' => "string(5) NOT NULL DEFAULT ''",
+            'value' => "string(255) NOT NULL DEFAULT ''",
+            'scenario' => "integer NOT NULL DEFAULT 1"
         ), $options);
         $oDB->createCommand()->createIndex('{{conditions_idx}}', '{{conditions}}', 'qid', false);
         $oDB->createCommand()->createIndex('{{conditions_idx3}}', '{{conditions}}', 'cqid', false);
@@ -110,17 +112,17 @@ function populateDatabase($oDB)
         // defaultvalues
         $oDB->createCommand()->createTable('{{defaultvalues}}', array(
             'dvid' =>  "pk",
-            'qid' =>  "integer NOT NULL default '0'",
-            'scale_id' =>  "integer NOT NULL default '0'",
-            'sqid' =>  "integer NOT NULL default '0'",
-            'specialtype' =>  "string(20) NOT NULL default ''",
+            'qid' =>  "integer NOT NULL DEFAULT '0'",
+            'scale_id' =>  "integer NOT NULL DEFAULT '0'",
+            'sqid' =>  "integer NOT NULL DEFAULT '0'",
+            'specialtype' =>  "string(20) NOT NULL DEFAULT ''",
         ), $options);
         $oDB->createCommand()->createIndex('{{idx1_defaultvalue}}', '{{defaultvalues}}', ['qid', 'scale_id', 'sqid', 'specialtype'], false);
 
         // defaultvalue_l10ns
         $oDB->createCommand()->createTable('{{defaultvalue_l10ns}}', array(
             'id' =>  "pk",
-            'dvid' =>  "integer NOT NULL default '0'",
+            'dvid' =>  "integer NOT NULL DEFAULT '0'",
             'language' =>  "string(20) NOT NULL",
             'defaultvalue' =>  "text",
         ), $options);
@@ -152,9 +154,9 @@ function populateDatabase($oDB)
 
         $oDB->createCommand()->createTable('{{groups}}', array(
             'gid' =>  "pk",
-            'sid' =>  "integer NOT NULL default '0'",
-            'group_order' =>  "integer NOT NULL default '0'",
-            'randomization_group' =>  "string(20) NOT NULL default ''",
+            'sid' =>  "integer NOT NULL DEFAULT '0'",
+            'group_order' =>  "integer NOT NULL DEFAULT '0'",
+            'randomization_group' =>  "string(20) NOT NULL DEFAULT ''",
             'grelevance' =>  "text NULL"
         ), $options);
         $oDB->createCommand()->createIndex('{{idx1_groups}}', '{{groups}}', 'sid', false);
@@ -173,9 +175,9 @@ function populateDatabase($oDB)
         $oDB->createCommand()->createTable('{{labels}}', array(
             'id' =>  "pk",
             'lid' =>  "integer NOT NULL DEFAULT 0",
-            'code' =>  "string(20) NOT NULL default ''",
+            'code' =>  "string(20) NOT NULL DEFAULT ''",
             'sortorder' =>  "integer NOT NULL",
-            'assessment_value' =>  "integer NOT NULL default '0'",
+            'assessment_value' =>  "integer NOT NULL DEFAULT '0'",
         ), $options);
         $oDB->createCommand()->createIndex('{{idx1_labels}}', '{{labels}}', 'code', false);
         $oDB->createCommand()->createIndex('{{idx2_labels}}', '{{labels}}', 'sortorder', false);
@@ -320,12 +322,12 @@ function populateDatabase($oDB)
             'entity_id' =>  "integer NOT NULL",
             'uid' =>  "integer NOT NULL",
             'permission' =>  "string(100) NOT NULL",
-            'create_p' =>  "integer NOT NULL default 0",
-            'read_p' =>  "integer NOT NULL default 0",
-            'update_p' =>  "integer NOT NULL default 0",
-            'delete_p' =>  "integer NOT NULL default 0",
-            'import_p' =>  "integer NOT NULL default 0",
-            'export_p' =>  "integer NOT NULL default 0",
+            'create_p' =>  "integer NOT NULL DEFAULT 0",
+            'read_p' =>  "integer NOT NULL DEFAULT 0",
+            'update_p' =>  "integer NOT NULL DEFAULT 0",
+            'delete_p' =>  "integer NOT NULL DEFAULT 0",
+            'import_p' =>  "integer NOT NULL DEFAULT 0",
+            'export_p' =>  "integer NOT NULL DEFAULT 0",
         ), $options);
 
         $oDB->createCommand()->createIndex('{{idx1_permissions}}', '{{permissions}}', ['entity_id', 'entity', 'permission', 'uid'], true);
@@ -347,11 +349,11 @@ function populateDatabase($oDB)
         $oDB->createCommand()->createTable('{{plugins}}', array(
             'id' =>  "pk",
             'name' =>  "string(50) NOT NULL",
-            'plugin_type' =>  "string(6) default 'user'",
-            'active' =>  "integer NOT NULL default 0",
-            'priority' =>  "integer NOT NULL default 0",
+            'plugin_type' =>  "string(6) DEFAULT 'user'",
+            'active' =>  "integer NOT NULL DEFAULT 0",
+            'priority' =>  "integer NOT NULL DEFAULT 0",
             'version' =>  "string(32) NULL",
-            'load_error' => 'integer default 0',
+            'load_error' => 'integer DEFAULT 0',
             'load_error_message' => 'text'
         ), $options);
 
@@ -370,22 +372,22 @@ function populateDatabase($oDB)
         // questions
         $oDB->createCommand()->createTable('{{questions}}', array(
             'qid' =>  "pk",
-            'parent_qid' =>  "integer NOT NULL default '0'",
-            'sid' =>  "integer NOT NULL default '0'",
-            'gid' =>  "integer NOT NULL default '0'",
-            'type' =>  "string(30) NOT NULL default 'T'",
-            'title' =>  "string(20) NOT NULL default ''",
+            'parent_qid' =>  "integer NOT NULL DEFAULT '0'",
+            'sid' =>  "integer NOT NULL DEFAULT '0'",
+            'gid' =>  "integer NOT NULL DEFAULT '0'",
+            'type' =>  "string(30) NOT NULL DEFAULT 'T'",
+            'title' =>  "string(20) NOT NULL DEFAULT ''",
             'preg' =>  "text",
-            'other' =>  "string(1) NOT NULL default 'N'",
+            'other' =>  "string(1) NOT NULL DEFAULT 'N'",
             'mandatory' =>  "string(1) NULL",
-            'encrypted' =>  "string(1) NULL default 'N'",
+            'encrypted' =>  "string(1) NULL DEFAULT 'N'",
             'question_order' =>  "integer NOT NULL",
-            'scale_id' =>  "integer NOT NULL default '0'",
-            'same_default' =>  "integer NOT NULL default '0'",
+            'scale_id' =>  "integer NOT NULL DEFAULT '0'",
+            'same_default' =>  "integer NOT NULL DEFAULT '0'",
             'relevance' =>  "text",
             'question_theme_name' => "string(150) NULL",
             'modulename' =>  "string(255) NULL",
-            'same_script' => "integer NOT NULL default '0'",
+            'same_script' => "integer NOT NULL DEFAULT '0'",
         ), $options);
         $oDB->createCommand()->createIndex('{{idx1_questions}}', '{{questions}}', 'sid', false);
         $oDB->createCommand()->createIndex('{{idx2_questions}}', '{{questions}}', 'gid', false);
@@ -400,7 +402,7 @@ function populateDatabase($oDB)
             'qid' =>  "integer NOT NULL",
             'question' =>  "mediumtext NOT NULL",
             'help' =>  "mediumtext",
-            'script' => " text NULL default NULL",
+            'script' => " text NULL DEFAULT NULL",
             'language' =>  "string(20) NOT NULL"
         ), $options);
 
@@ -411,7 +413,7 @@ function populateDatabase($oDB)
         // question_attributes
         $oDB->createCommand()->createTable('{{question_attributes}}', array(
             'qaid' => "pk",
-            'qid' => "integer NOT NULL default '0'",
+            'qid' => "integer NOT NULL DEFAULT '0'",
             'attribute' => "string(50) NULL",
             'value' => "mediumtext NULL",
             'language' => "string(20) NULL",
@@ -428,8 +430,8 @@ function populateDatabase($oDB)
             'name' => "string(255) NULL",
             'qlimit' => "integer NULL",
             'action' => "integer NULL",
-            'active' => "integer NOT NULL default '1'",
-            'autoload_url' => "integer NOT NULL default '0'",
+            'active' => "integer NOT NULL DEFAULT '1'",
+            'autoload_url' => "integer NOT NULL DEFAULT '0'",
         ), $options);
 
         $oDB->createCommand()->createIndex('{{idx1_quota}}', '{{quota}}', 'sid', false);
@@ -438,8 +440,8 @@ function populateDatabase($oDB)
         //quota_languagesettings
         $oDB->createCommand()->createTable('{{quota_languagesettings}}', array(
             'quotals_id' => "pk",
-            'quotals_quota_id' => "integer NOT NULL default '0'",
-            'quotals_language' => "string(45) NOT NULL default 'en'",
+            'quotals_quota_id' => "integer NOT NULL DEFAULT '0'",
+            'quotals_language' => "string(45) NOT NULL DEFAULT 'en'",
             'quotals_name' => "string(255) NULL",
             'quotals_message' => "mediumtext NOT NULL",
             'quotals_url' => "string(255)",
@@ -465,14 +467,14 @@ function populateDatabase($oDB)
         // saved_control
         $oDB->createCommand()->createTable('{{saved_control}}', array(
             'scid' => "pk",
-            'sid' => "integer NOT NULL default '0'",
-            'srid' => "integer NOT NULL default '0'",
+            'sid' => "integer NOT NULL DEFAULT '0'",
+            'srid' => "integer NOT NULL DEFAULT '0'",
             'identifier' => "text NOT NULL",
             'access_code' => "text NOT NULL",
             'email' => "string(192)",
             'ip' => "text NOT NULL",
             'saved_thisstep' => "text NOT NULL",
-            'status' => "string(1) NOT NULL default ''",
+            'status' => "string(1) NOT NULL DEFAULT ''",
             'saved_date' => "datetime NOT NULL",
             'refurl' => "text",
         ), $options);
@@ -494,7 +496,7 @@ function populateDatabase($oDB)
         // settings_global
 
         $oDB->createCommand()->createTable('{{settings_global}}', array(
-            'stg_name' =>  "string(50) NOT NULL default ''",
+            'stg_name' =>  "string(50) NOT NULL DEFAULT ''",
             'stg_value' =>  "mediumtext NOT NULL",
         ), $options);
 
@@ -617,62 +619,62 @@ function populateDatabase($oDB)
         $oDB->createCommand()->createTable('{{surveys}}', array(
             'sid' => "integer NOT NULL",
             'owner_id' => "integer NOT NULL",
-            'gsid' => "integer default '1'",
+            'gsid' => "integer DEFAULT '1'",
             'admin' => "string(50) NULL",
-            'active' => "string(1) NOT NULL default 'N'",
+            'active' => "string(1) NOT NULL DEFAULT 'N'",
             'expires' => "datetime NULL",
             'startdate' => "datetime NULL",
             'adminemail' => "string(254) NULL",
-            'anonymized' => "string(1) NOT NULL default 'N'",
+            'anonymized' => "string(1) NOT NULL DEFAULT 'N'",
             'format' => "string(1) NULL",
-            'savetimings' => "string(1) NOT NULL default 'N'",
-            'template' => "string(100) default 'default'",
+            'savetimings' => "string(1) NOT NULL DEFAULT 'N'",
+            'template' => "string(100) DEFAULT 'default'",
             'language' => "string(50) NULL",
             'additional_languages' => "text NULL",
-            'datestamp' => "string(1) NOT NULL default 'N'",
-            'usecookie' => "string(1) NOT NULL default 'N'",
-            'allowregister' => "string(1) NOT NULL default 'N'",
-            'allowsave' => "string(1) NOT NULL default 'Y'",
-            'autonumber_start' => "integer NOT NULL default '0'",
-            'autoredirect' => "string(1) NOT NULL default 'N'",
-            'allowprev' => "string(1) NOT NULL default 'N'",
-            'printanswers' => "string(1) NOT NULL default 'N'",
-            'ipaddr' => "string(1) NOT NULL default 'N'",
-            'ipanonymize' => "string(1) NOT NULL default 'N'",
-            'refurl' => "string(1) NOT NULL default 'N'",
+            'datestamp' => "string(1) NOT NULL DEFAULT 'N'",
+            'usecookie' => "string(1) NOT NULL DEFAULT 'N'",
+            'allowregister' => "string(1) NOT NULL DEFAULT 'N'",
+            'allowsave' => "string(1) NOT NULL DEFAULT 'Y'",
+            'autonumber_start' => "integer NOT NULL DEFAULT '0'",
+            'autoredirect' => "string(1) NOT NULL DEFAULT 'N'",
+            'allowprev' => "string(1) NOT NULL DEFAULT 'N'",
+            'printanswers' => "string(1) NOT NULL DEFAULT 'N'",
+            'ipaddr' => "string(1) NOT NULL DEFAULT 'N'",
+            'ipanonymize' => "string(1) NOT NULL DEFAULT 'N'",
+            'refurl' => "string(1) NOT NULL DEFAULT 'N'",
             'datecreated' => "datetime",
             'showsurveypolicynotice' => 'integer DEFAULT 0',
-            'publicstatistics' => "string(1) NOT NULL default 'N'",
-            'publicgraphs' => "string(1) NOT NULL default 'N'",
-            'listpublic' => "string(1) NOT NULL default 'N'",
-            'htmlemail' => "string(1) NOT NULL default 'Y'",
-            'sendconfirmation' => "string(1) NOT NULL default 'Y'",
-            'tokenanswerspersistence' => "string(1) NOT NULL default 'N'",
-            'assessments' => "string(1) NOT NULL default 'N'",
-            'usecaptcha' => "string(1) NOT NULL default 'N'",
-            'usetokens' => "string(1) NOT NULL default 'N'",
+            'publicstatistics' => "string(1) NOT NULL DEFAULT 'N'",
+            'publicgraphs' => "string(1) NOT NULL DEFAULT 'N'",
+            'listpublic' => "string(1) NOT NULL DEFAULT 'N'",
+            'htmlemail' => "string(1) NOT NULL DEFAULT 'Y'",
+            'sendconfirmation' => "string(1) NOT NULL DEFAULT 'Y'",
+            'tokenanswerspersistence' => "string(1) NOT NULL DEFAULT 'N'",
+            'assessments' => "string(1) NOT NULL DEFAULT 'N'",
+            'usecaptcha' => "string(1) NOT NULL DEFAULT 'N'",
+            'usetokens' => "string(1) NOT NULL DEFAULT 'N'",
             'bounce_email' => "string(254) NULL",
             'attributedescriptions' => "mediumtext",
             'emailresponseto' => "text NULL",
             'emailnotificationto' => "text NULL",
-            'tokenlength' => "integer NOT NULL default '15'",
-            'showxquestions' => "string(1) default 'Y'",
-            'showgroupinfo' => "string(1) default 'B'",
-            'shownoanswer' => "string(1) default 'Y'",
-            'showqnumcode' => "string(1) default 'X'",
+            'tokenlength' => "integer NOT NULL DEFAULT '15'",
+            'showxquestions' => "string(1) DEFAULT 'Y'",
+            'showgroupinfo' => "string(1) DEFAULT 'B'",
+            'shownoanswer' => "string(1) DEFAULT 'Y'",
+            'showqnumcode' => "string(1) DEFAULT 'X'",
             'bouncetime' => "integer",
-            'bounceprocessing' => "string(1) default 'N'",
+            'bounceprocessing' => "string(1) DEFAULT 'N'",
             'bounceaccounttype' => "string(4)",
             'bounceaccounthost' => "string(200)",
             'bounceaccountpass' => "text NULL",
             'bounceaccountencryption' => "string(3)",
             'bounceaccountuser' => "string(200)",
-            'showwelcome' => "string(1) default 'Y'",
-            'showprogress' => "string(1) default 'Y'",
-            'questionindex' => "integer default '0' NOT NULL",
-            'navigationdelay' => "integer NOT NULL default '0'",
-            'nokeyboard' => "string(1) default 'N'",
-            'alloweditaftercompletion' => "string(1) default 'N'",
+            'showwelcome' => "string(1) DEFAULT 'Y'",
+            'showprogress' => "string(1) DEFAULT 'Y'",
+            'questionindex' => "integer DEFAULT '0' NOT NULL",
+            'navigationdelay' => "integer NOT NULL DEFAULT '0'",
+            'nokeyboard' => "string(1) DEFAULT 'N'",
+            'alloweditaftercompletion' => "string(1) DEFAULT 'N'",
             'googleanalyticsstyle' => "string(1) NULL",
             'googleanalyticsapikey' => "string(25) NULL",
             'tokenencryptionoptions' => "text NULL",
@@ -1080,15 +1082,15 @@ function populateDatabase($oDB)
         // users
         $oDB->createCommand()->createTable('{{users}}', array(
             'uid' => "pk",
-            'users_name' => "string(64) NOT NULL default ''",
+            'users_name' => "string(64) NOT NULL DEFAULT ''",
             'password' => "text NOT NULL",
             'full_name' => "string(50) NOT NULL",
             'parent_id' => "integer NOT NULL",
             'lang' => "string(20)",
             'email' => "string(192)",
-            'htmleditormode' => "string(7) default 'default'",
-            'templateeditormode' => "string(7) NOT NULL default 'default'",
-            'questionselectormode' => "string(7) NOT NULL default 'default'",
+            'htmleditormode' => "string(7) DEFAULT 'default'",
+            'templateeditormode' => "string(7) NOT NULL DEFAULT 'default'",
+            'questionselectormode' => "string(7) NOT NULL DEFAULT 'default'",
             'one_time_pw' => "text",
             'dateformat' => "integer NOT NULL DEFAULT 1",
             'last_login' => "datetime NULL",
@@ -1148,7 +1150,7 @@ function populateDatabase($oDB)
             '{{message}}',
             [
                 'id' => "integer NOT NULL",
-                'language' => "string(50) NOT NULL default ''",
+                'language' => "string(50) NOT NULL DEFAULT ''",
                 'translation' => "text",
             ],
             $options

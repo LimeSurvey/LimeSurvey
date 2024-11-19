@@ -1289,7 +1289,7 @@ class ParticipantsAction extends SurveyCommonAction
      */
     public function blacklistControl()
     {
-        $title = gT("Blacklist settings");
+        $title = gT("Blocklist settings");
         $aData = array(
             'blacklistallsurveys' => Yii::app()->getConfig('blacklistallsurveys'),
             'blacklistnewsurveys' => Yii::app()->getConfig('blacklistnewsurveys'),
@@ -1306,7 +1306,7 @@ class ParticipantsAction extends SurveyCommonAction
     }
 
     /**
-     * Stores the blacklist setting to the database
+     * Stores the blocklist setting to the database
      * @return void
      */
     public function storeBlacklistValues()
@@ -1334,12 +1334,12 @@ class ParticipantsAction extends SurveyCommonAction
                 $stg->save();
             }
         }
-        Yii::app()->setFlashMessage(gT('Blacklist settings were saved.'), 'success');
+        Yii::app()->setFlashMessage(gT('Blocklist settings were saved.'), 'success');
         Yii::app()->getController()->redirect(array('admin/participants/sa/blacklistControl'));
     }
 
     /**
-     * AJAX Method to change the blacklist status of a participant
+     * AJAX Method to change the blocklist status of a participant
      * Requires POST with 'participant_id' (varchar) and 'blacklist' (boolean)
      * Echos JSON-encoded array with 'success' (boolean) and 'newValue' ('Y' || 'N')
      * @return void
@@ -2098,7 +2098,7 @@ class ParticipantsAction extends SurveyCommonAction
      * Receives an ajax call containing the participant id in the fourth segment of the url
      * Supplies list of survey links - surveys of which this participant is on the tokens table
      * URL: [localurl]/limesurvey/admin/participants/getSurveyInfoJson/pid/[participant_id]
-     * Echoes json data containing linked survey information (Survey name, survey id, token_id and date_added)
+     * Echoes json data containing linked survey information (Survey name, survey ID, token_id and date_added)
      * @return void
      * @todo Where is this called from?
      */
@@ -2559,7 +2559,7 @@ class ParticipantsAction extends SurveyCommonAction
         }
         if ($response['blacklistskipped'] > 0) {
             echo "<p>";
-            printf(gT("%s entries were skipped because they are blacklisted"), "<span class='badge rounded-pill bg-danger'>" . $response['blacklistskipped'] . "</span>");
+            printf(gT("%s entries were skipped because they are blocklisted"), "<span class='badge rounded-pill bg-danger'>" . $response['blacklistskipped'] . "</span>");
             echo "</p>";
         }
         if ($response['overwriteauto'] == "true" || $response['overwriteman'] == "true") {

@@ -6,7 +6,8 @@ use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputAnswer;
 use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\{
     OpHandlerSurveyTrait,
     OpHandlerQuestionTrait,
-    OpHandlerExceptionTrait
+    OpHandlerExceptionTrait,
+    OpHandlerValidationTrait
 };
 use LimeSurvey\ObjectPatch\{
     Op\OpInterface,
@@ -15,9 +16,10 @@ use LimeSurvey\ObjectPatch\{
     OpHandler\OpHandlerInterface,
     OpType\OpTypeUpdate
 };
-use LimeSurvey\Models\Services\QuestionAggregateService\{
-    QuestionService,
-    AnswersService
+use LimeSurvey\Models\Services\{
+    QuestionAggregateService,
+    QuestionAggregateService\QuestionService,
+    QuestionAggregateService\AnswersService
 };
 
 class OpHandlerAnswer implements OpHandlerInterface
@@ -25,21 +27,25 @@ class OpHandlerAnswer implements OpHandlerInterface
     use OpHandlerSurveyTrait;
     use OpHandlerQuestionTrait;
     use OpHandlerExceptionTrait;
+    use OpHandlerValidationTrait;
 
     protected string $entity;
     protected TransformerInputAnswer $transformer;
     protected AnswersService $answersService;
     protected QuestionService $questionService;
+    protected QuestionAggregateService $questionAggregateService;
 
     public function __construct(
         TransformerInputAnswer $transformer,
         AnswersService $answersService,
-        QuestionService $questionService
+        QuestionService $questionService,
+        QuestionAggregateService $questionAggregateService
     ) {
         $this->entity = 'answer';
         $this->transformer = $transformer;
         $this->answersService = $answersService;
         $this->questionService = $questionService;
+        $this->questionAggregateService = $questionAggregateService;
     }
 
     public function canHandle(OpInterface $op): bool
@@ -59,10 +65,6 @@ class OpHandlerAnswer implements OpHandlerInterface
      * Attention: Currently all answers not provided in the patch
      *            will be deleted by the service. Doesn't matter if
      *            create or update was chosen
-     * You could also mix updated and newly created answers in one patch.
-     * The difference is that new created answers need "tempId"
-     * and updated answers need the "aid" provided.
-     * The OpHandler doesn't care if you choose create or update as "op"!!!
      *
      * Example for "update":
      * {
@@ -164,16 +166,10 @@ class OpHandlerAnswer implements OpHandlerInterface
      */
     public function handle(OpInterface $op): array
     {
-        $this->throwTransformerValidationErrors(
-            $this->transformer->validateAll(
-                $op->getProps(),
-                ['operation' => $op->getType()->getId()]
-            ),
-            $op
-        );
-
+        $surveyId = $this->getSurveyIdFromContext($op);
+        $this->questionAggregateService->checkUpdatePermission($surveyId);
         $question = $this->questionService->getQuestionBySidAndQid(
-            $this->getSurveyIdFromContext($op),
+            $surveyId,
             $op->getEntityId()
         );
 
@@ -181,25 +177,47 @@ class OpHandlerAnswer implements OpHandlerInterface
             $op->getProps(),
             ['operation' => $op->getType()->getId()]
         );
+        if (empty($data)) {
+            $this->throwNoValuesException($op);
+        }
         $this->answersService->save(
             $question,
             $data
         );
 
-        return $this->getSubQuestionNewIdMapping(
-            $question,
-            $data,
-            true
-        );
+        return [
+            'tempIdMapping' => $this->getSubQuestionNewIdMapping(
+                $question,
+                $data,
+                true
+            )
+        ];
     }
 
     /**
      * Checks if patch is valid for this operation.
      * @param OpInterface $op
-     * @return bool
+     * @return array
      */
-    public function isValidPatch(OpInterface $op): bool
+    public function validateOperation(OpInterface $op): array
     {
-        return ((int)$op->getEntityId()) > 0;
+        $validationData = $this->validateSurveyIdFromContext($op, []);
+        $validationData = $this->validateCollectionIndex($op, $validationData, false);
+        if (empty($validationData)) {
+            $validationData = $this->transformer->validateAll(
+                $op->getProps(),
+                ['operation' => $op->getType()->getId()]
+            );
+            $validationData = $this->validateEntityId(
+                $op,
+                !is_array($validationData) ? [] : $validationData
+            );
+        }
+
+        return $this->getValidationReturn(
+            gT('Could not save answer option'),
+            $validationData,
+            $op
+        );
     }
 }

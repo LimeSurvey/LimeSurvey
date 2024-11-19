@@ -9,7 +9,7 @@ class TransformerInputSubQuestionL10ns extends Transformer
     public function __construct()
     {
         $this->setDataMap([
-            'question' => ['required' => true],
+            'question' => ['required'],
         ]);
     }
 

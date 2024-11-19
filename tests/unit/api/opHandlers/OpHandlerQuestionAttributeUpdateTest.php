@@ -4,6 +4,7 @@ namespace ls\tests\unit\api\opHandlers;
 
 use LimeSurvey\Api\Command\V1\SurveyPatch\OpHandlerQuestionAttributeUpdate;
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestionAttribute;
+use LimeSurvey\DI;
 use LimeSurvey\Models\Services\{
     QuestionAggregateService,
     QuestionAggregateService\AttributesService,
@@ -88,6 +89,7 @@ class OpHandlerQuestionAttributeUpdateTest extends TestBaseClass
      */
     private function getOpHandler()
     {
+        $transformer = DI::getContainer()->get(TransformerInputQuestionAttribute::class);
         /** @var AttributesService */
         $mockAttributesService = \Mockery::mock(AttributesService::class)
             ->makePartial();
@@ -101,7 +103,7 @@ class OpHandlerQuestionAttributeUpdateTest extends TestBaseClass
             $mockAttributesService,
             $mockQuestionService,
             $mockQuestionAggregateService,
-            new TransformerInputQuestionAttribute()
+            $transformer
         );
     }
 }

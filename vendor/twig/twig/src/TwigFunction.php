@@ -38,11 +38,13 @@ final class TwigFunction
         $this->options = array_merge([
             'needs_environment' => false,
             'needs_context' => false,
+            'needs_charset' => false,
             'is_variadic' => false,
             'is_safe' => null,
             'is_safe_callback' => null,
             'node_class' => FunctionExpression::class,
             'deprecated' => false,
+            'deprecating_package' => '',
             'alternative' => null,
         ], $options);
     }
@@ -77,6 +79,11 @@ final class TwigFunction
         return $this->arguments;
     }
 
+    public function needsCharset(): bool
+    {
+        return $this->options['needs_charset'];
+    }
+
     public function needsEnvironment(): bool
     {
         return $this->options['needs_environment'];
@@ -108,6 +115,11 @@ final class TwigFunction
     public function isDeprecated(): bool
     {
         return (bool) $this->options['deprecated'];
+    }
+
+    public function getDeprecatingPackage(): string
+    {
+        return $this->options['deprecating_package'];
     }
 
     public function getDeprecatedVersion(): string

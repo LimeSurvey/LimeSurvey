@@ -5,6 +5,8 @@
  * TODO : make a recursive function, taking any number of box in the database, calculating how much rows are needed.
  */
 
+/** @var String $belowLogoHtml */
+
 // DO NOT REMOVE This is for automated testing to validate we see that page
 echo viewHelper::getViewTestTag('index');
 ?>
@@ -35,6 +37,11 @@ gT('Themes');
                                     ?></p>
         </div>
     <?php endif; ?>
+
+    <?php
+        //show extra banner after logo
+        echo $belowLogoHtml;
+    ?>
 
     <!-- Message when first start -->
     <?php if ($countSurveyList == 0  && Permission::model()->hasGlobalPermission('surveys', 'create')) : ?>

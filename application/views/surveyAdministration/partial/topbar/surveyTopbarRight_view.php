@@ -2,8 +2,22 @@
 /**
  * @var string $closeUrl
  * @var string $returnUrl
+ * @var string $editorUrl
+ * @var bool   $enableEditorButton
+ * @var bool   $editorEnabled
  */
 
+?>
+
+<?php
+// new question editor btn
+if (isset($editorUrl)) {
+ $this->renderPartial('/surveyAdministration/partial/topbar/_newQuestionEditorBtn', [
+     'editorUrl' => $editorUrl,
+     'enableEditorButton' => $enableEditorButton,
+     'editorEnabled' => $editorEnabled
+ ]);
+}
 ?>
 
 <!-- White Close button -->
@@ -144,24 +158,3 @@ if (!empty($showImportButton)) {
     );
 }
 ?>
-
-<?php
-    if ($editorEnabled && $editorUrl) {
-        $this->widget(
-            'ext.ButtonWidget.ButtonWidget',
-            [
-                'name' => 'editor-link-button',
-                'id' => 'editor-link-button',
-                'text' => gT('Open in new editor'),
-                'icon' => 'ri-article-line',
-                'link' => $editorUrl,
-                'htmlOptions' => [
-                    'class' => 'btn btn-secondary',
-                    'role' => 'button',
-                ],
-            ]
-        );
-    }
-?>
-
-

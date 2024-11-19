@@ -4,15 +4,28 @@ namespace LimeSurvey\Api\Transformer\Formatter;
 
 class FormatterIntToBool implements FormatterInterface
 {
-    /** @var bool */
-    private $revert = false;
-
     /**
-     * @param bool $revert
+     * Cast integer to boolean
+     *
+     * Converts number greater than zero to boolean true.
+     * Converts number of zero or less to boolean false.
+     * Convert empty string to null.
+     * Null is passed through unchanged.
+     *
+     * @param ?mixed $value
+     * @param array $config
+     * @param array $options
+     * @return ?mixed
      */
-    public function __construct($revert = false)
+    public function format($value, $config = [], $options = [])
     {
-        $this->revert = $revert;
+        $revert = array_key_exists(
+            'revert',
+            $config
+        ) ? $config['revert'] : false;
+        return $revert
+            ? $this->revert($value)
+            : $this->apply($value);
     }
 
     /**
@@ -26,30 +39,14 @@ class FormatterIntToBool implements FormatterInterface
      * @param ?mixed $value
      * @return ?mixed
      */
-    public function format($value)
-    {
-        return $this->revert
-            ? $this->revert($value)
-            : $this->apply($value);
-    }
-
-    /**
-     * Cast integer to boolean
-     *
-     * Converts number greater than zero to boolean true.
-     * Converts number of zero or less to boolean false.
-     * Convert empty string to null.
-     * Null is passed through unchanged.
-     *
-     * @param ?string $value
-     * @return ?boolean
-     */
     protected function apply($value)
     {
         if ($value === null || $value === '') {
             return null;
         }
-        return !is_numeric($value) || intval($value) > 0;
+        return !is_numeric($value) && !empty($value)
+            ? true
+            : intval($value) > 0;
     }
 
     /**

@@ -19,9 +19,16 @@ class TransformerOutputSurveyOwner extends TransformerOutputActiveRecord
             'templateeditormode' => 'templateEditorMode',
             'questionselectormode' => 'questionSelectorMode',
             'dateformat' => ['key' => 'dateFormat', 'type' => 'int'],
-            'last_login' => 'lastLogin',
-            'created' => true,
-            'modified' => true,
+            'last_login' => [
+                'key' => 'lastLogin',
+                'formatter' => ['dateTimeToJson' => ['revert' => true]]
+            ],
+            'created' => [
+                'formatter' => ['dateTimeToJson' => ['revert' => true]]
+            ],
+            'modified' => [
+                'formatter' => ['dateTimeToJson' => ['revert' => true]]
+            ],
             'user_status' => 'userStatus',
         ]);
     }

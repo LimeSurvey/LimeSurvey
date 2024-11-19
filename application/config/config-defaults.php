@@ -82,12 +82,12 @@ $config['allowexportalldb']          = 0; // Default 0 will only export prefixed
 $config['deletenonvalues']           = 1; // By default, LimeSurvey does not save responses to conditional questions that haven't been answered/shown. To have LimeSurvey save these responses change this value to 0.
 $config['stringcomparizonoperators'] = 0; // By default, LimeSurvey assumes the numrical order for comparizon operators in conditions. If you need string comparizon operators, set this parameter to 1
 $config['shownoanswer']              = 2; // Show 'no answer' for non mandatory questions ( 0 = no , 1 = yes , 2 = overridden by survey settings )
-$config['blacklistallsurveys']       = 'N'; // Blacklist all current surveys for participant once the global field is set
-$config['blacklistnewsurveys']       = 'N'; // Blacklist participant for any new added survey once the global field is set
-$config['blockaddingtosurveys']      = 'Y'; // Don't allow blacklisted participants to be added to new survey
-$config['hideblacklisted']           = 'N'; // Don't show blacklisted participants
-$config['deleteblacklisted']         = 'N'; // Delete globally blacklisted participant from the database
-$config['allowunblacklist']          = 'N'; // Allow participant to unblacklist himself/herself
+$config['blacklistallsurveys']       = 'N'; // Blocklist all current surveys for participant once the global field is set
+$config['blacklistnewsurveys']       = 'N'; // Blocklist participant for any new added survey once the global field is set
+$config['blockaddingtosurveys']      = 'Y'; // Don't allow blocklisted participants to be added to new survey
+$config['hideblacklisted']           = 'N'; // Don't show blocklisted participants
+$config['deleteblacklisted']         = 'N'; // Delete globally blocklisted participant from the database
+$config['allowunblacklist']          = 'N'; // Allow participant to unblocklist himself/herself
 $config['userideditable']            = 'N'; // Allow editing of user IDs
 
 $config['defaulttheme']              = 'fruity_twentythree'; // This setting specifys the default theme used for the 'public list' of surveys
@@ -685,6 +685,13 @@ $config['mysqlEngine'] = "MyISAM";
  */
 $config['defaultfixedtheme'] = 'vanilla';
 
+/**
+ * Use default site admin email (siteadminemail) for mailto link in error page
+ * Disable to shown only the administrator name. Default to avoid more spam on administration email.
+ * @var boolean
+ */
+$config['showEmailInError'] = false;
+
 // === Advanced Setup
 //The following url and dir locations do not need to be modified unless you have a non-standard
 //LimeSurvey installation. Do not change unless you know what you are doing.
@@ -797,13 +804,13 @@ $config['max_execution_time'] = 1200;
 $config['force_xmlsettings_for_survey_rendering'] = false;
 
 /**
- * When this setting is true, plugins that are not in the white list (see 'pluginWhitelist') cannot be installed nor loaded. This may disable
+ * When this setting is true, plugins that are not in the allowlist (see 'pluginWhitelist') cannot be installed nor loaded. This may disable
  * already installed plugins.
- * Core plugins are implicitly whitelisted, but can be excluded using the black list.
+ * Core plugins are implicitly allowlisted, but can be excluded using the blocklist.
  */
 $config['usePluginWhitelist'] = false;
 
-// List of plugin names allowed to be installed and loaded when 'usePluginWhitelist' is true. Core plugins are implicitly whitelisted.
+// List of plugin names allowed to be installed and loaded when 'usePluginWhitelist' is true. Core plugins are implicitly allowlisted.
 $config['pluginWhitelist'] = [];
 
 // List of core plugin names forbidden when 'usePluginWhitelist' is true.

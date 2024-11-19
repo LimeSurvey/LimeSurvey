@@ -7,7 +7,7 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
     protected static $description = 'Core: LDAP authentication';
     protected static $name = 'LDAP';
 
-    /** @inheritdoc, this plugin didn't have any public method */
+    /** @inheritdoc this plugin didn't have any public method */
     public $allowedPublicMethods = array();
 
     /**
@@ -200,7 +200,8 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
         }
 
         $oEvent = $this->getEvent();
-        $this->_createNewUser($oEvent, flattenText(Yii::app()->request->getPost('new_user'), false, true));
+
+        $this->ldapCreateNewUser($oEvent, flattenText(Yii::app()->request->getPost('new_user'), false, true));
     }
 
     /**
@@ -211,7 +212,7 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
      * @param string $password
      * @return null|integer New user ID
      */
-    private function _createNewUser($oEvent, $new_user, $password = null)
+    private function ldapCreateNewUser($oEvent, $new_user, $password = null)
     {
         // Get configuration settings:
         $ldapmode = $this->get('ldapmode');
@@ -321,7 +322,7 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
      * Create LDAP connection and return it
      * In case of error : return an array with errorCode
      *
-     * @return array|Class|resource, array id error.
+     * @return array|LDAP\Connection , array if error.
      */
     private function createConnection()
     {
@@ -435,6 +436,7 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
         if ($identity->plugin != 'AuthLDAP') {
             return;
         }
+        $newUserSessionEvent =  $this->getEvent();
         /* unsubscribe from beforeHasPermission, else updating event */
         $this->unsubscribe('beforeHasPermission');
         // Here we do the actual authentication
@@ -566,22 +568,23 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
 
         // Finally, if user didn't exist and auto creation (i.e. autoCreateFlag == true) is enabled, we create it
         if ($autoCreateFlag) {
-            // This event can be cast to string in auth failure message to give more info.
-            $dummyEvent = new class() {
-                public $warnings;
-                public function set($a, $b) {
-                    $this->warnings[$a] = $b;
-                }
-                public function __toString() {
-                    return json_encode($this->warnings);
-                }
-            };
-            if (($iNewUID = $this->_createNewUser($dummyEvent, $username, $password)) && $this->get('automaticsurveycreation', null, null, false)) {
+            if (($iNewUID = $this->ldapCreateNewUser($newUserSessionEvent, $username, $password)) && $this->get('automaticsurveycreation', null, null, false)) {
                 Permission::model()->setGlobalPermission($iNewUID, 'surveys', array('create_p'));
             }
             $user = $this->api->getUserByName($username);
             if ($user === null) {
-                $this->setAuthFailure(self::ERROR_USERNAME_INVALID, gT('Credentials are valid but we failed to create a user'));
+                $errorCode = $newUserSessionEvent->get('errorCode');
+                if (empty($errorCode)) {
+                    $errorCode = self::ERROR_USERNAME_INVALID;
+                }
+                $message = gT('Credentials are valid, but we failed to create a user.');
+                if ($newUserSessionEvent->get('errorMessageTitle')) {
+                    $message .= $newUserSessionEvent->get('errorMessageTitle');
+                }
+                if ($newUserSessionEvent->get('errorMessageBody')) {
+                    $message .= $newUserSessionEvent->get('errorMessageBody');
+                }
+                $this->setAuthFailure($errorCode, $message);
                 return;
             }
         }

@@ -4,7 +4,9 @@ namespace ls\tests\unit\api\opHandlers;
 
 use LimeSurvey\Api\Command\V1\SurveyPatch\OpHandlerSubQuestion;
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputSubQuestion;
+use LimeSurvey\DI;
 use LimeSurvey\Models\Services\QuestionAggregateService;
+use LimeSurvey\ObjectPatch\ObjectPatchException;
 use LimeSurvey\ObjectPatch\Op\OpStandard;
 use ls\tests\TestBaseClass;
 
@@ -49,12 +51,47 @@ class OpHandlerSubquestionUpdateTest extends TestBaseClass
     }
 
     /**
+     * @testdox validation hits
+     */
+    public function testOpValidationFailure()
+    {
+        $opHandler = $this->getOpHandler();
+        $op = $this->getOp(
+            $this->getWrongProps(true),
+        );
+        $validation = $opHandler->validateOperation($op);
+        $this->assertIsArray($validation);
+        $this->assertNotEmpty($validation);
+        $op = $this->getOp(
+            $this->getWrongProps()
+        );
+        $validation = $opHandler->validateOperation($op);
+        $this->assertIsArray($validation);
+        $this->assertNotEmpty($validation);
+    }
+
+    /**
+     * @testdox validation doesn't hit when everything is fine
+     */
+    public function testOpValidationSuccess()
+    {
+        $op = $this->getOp(
+            $this->getDefaultProps()
+        );
+        $opHandler = $this->getOpHandler();
+        $validation = $opHandler->validateOperation($op);
+        $this->assertIsArray($validation);
+        $this->assertEmpty($validation);
+    }
+
+    /**
      * @param array $props
      * @param string $type
      * @return OpStandard
-     * @throws \LimeSurvey\ObjectPatch\OpHandlerException
+     * @throws ObjectPatchException
      */
-    private function getOp($props = [], $type = 'update') {
+    private function getOp(array $props = [], $type = 'update'): OpStandard
+    {
         return OpStandard::factory(
             'subquestion',
             $type,
@@ -67,14 +104,14 @@ class OpHandlerSubquestionUpdateTest extends TestBaseClass
     }
 
     /**
+     * @param string $operation
      * @return array
      */
-    private function getDefaultProps()
+    private function getDefaultProps(string $operation = 'update'): array
     {
-        return [
+        $props = [
             '0' => [
                 'qid' => 126,
-                'oldCode' => 'SQ001',
                 'title' => 'SQ001new',
                 'l10ns' => [
                     'en' => [
@@ -86,12 +123,26 @@ class OpHandlerSubquestionUpdateTest extends TestBaseClass
                 ]
             ]
         ];
+        if ($operation === 'create') {
+            $props[0]['tempId'] = 'XXX125';
+            unset($props[0]['qid']);
+        }
+        return $props;
+    }
+
+    private function getWrongProps($wrongIndex = false, $operation = 'create'): array
+    {
+        $props = $this->getDefaultProps($operation);
+        if ($wrongIndex) {
+            $props['alphabetic'] = $props[0];
+        }
+        return $props;
     }
 
     /**
      * @return OpHandlerSubQuestion
      */
-    private function getOpHandler()
+    private function getOpHandler(): OpHandlerSubQuestion
     {
         /** @var \LimeSurvey\Models\Services\QuestionAggregateService */
         $mockQuestionAggregateService = \Mockery::mock(
@@ -106,16 +157,11 @@ class OpHandlerSubquestionUpdateTest extends TestBaseClass
             QuestionAggregateService\QuestionService::class
         )->makePartial();
 
-        /** @var \LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputSubQuestion */
-        $transformerInputSubQuestion = \Mockery::mock(
-            TransformerInputSubQuestion::class
-        )->makePartial();
-
         return new OpHandlerSubQuestion(
             $mockQuestionAggregateService,
             $mockSubQuestionsService,
             $mockQuestionService,
-            $transformerInputSubQuestion
+            DI::getContainer()->get(TransformerInputSubQuestion::class)
         );
     }
 }

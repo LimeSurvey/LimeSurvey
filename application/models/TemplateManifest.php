@@ -639,17 +639,17 @@ class TemplateManifest extends TemplateConfiguration
      */
     public function getButtons()
     {
-        $sEditorUrl  = Yii::app()->getController()->createUrl('admin/themes/sa/view', array("templatename" => $this->sTemplateName));
+        //$sEditorUrl  = Yii::app()->getController()->createUrl('admin/themes/sa/view', array("templatename" => $this->sTemplateName));
         $sDeleteUrl   = Yii::app()->getController()->createUrl('admin/themes/sa/deleteAvailableTheme/');
-
+        $templatezip = Yii::app()->getController()->createUrl('admin/themes/sa/templatezip/templatename/' . $this->sTemplateName);
 
         // TODO: load to DB
-        $sEditorLink = "<a
-            id='template_editor_link_" . $this->sTemplateName . "'
-            href='" . $sEditorUrl . "'
+        $sExportLink = "<a
+            id='button-export'
+            href='" . $templatezip . "'
             class='btn btn-outline-secondary btn-sm'>
-                <span class='ri-brush-fill'></span>
-                " . gT('Theme editor') . "
+                <span class='ri-upload-2-fill'></span>
+                " . gT('Export') . "
             </a>";
 
             //
@@ -693,7 +693,7 @@ class TemplateManifest extends TemplateConfiguration
                   </a>';
         }
 
-        return '<div class="d-grid gap-2">' . $sEditorLink . $sLoadLink . $sDeleteLink . '</div>';
+        return '<div class="d-grid gap-2">' . $sLoadLink . $sExportLink . $sDeleteLink . '</div>';
     }
 
     /**
@@ -1021,12 +1021,25 @@ class TemplateManifest extends TemplateConfiguration
     {
         $this->xmlFile = $this->path . 'config.xml';
 
+        if (!file_exists(realpath($this->xmlFile)) && $path = SurveyThemeHelper::getNestedThemeConfigPath($this->sTemplateName)) {
+            $templateDir = Yii::app()->getConfig("userthemerootdir") . DIRECTORY_SEPARATOR . $this->sTemplateName;
+            $tempDir = Yii::app()->getConfig("userthemerootdir") . DIRECTORY_SEPARATOR . $this->sTemplateName . '_tmp';
+
+            mkdir($tempDir);
+            rename($path, $tempDir);
+            rmdirr($templateDir);
+            rename($tempDir, $templateDir);
+
+            $this->xmlFile = $templateDir . DIRECTORY_SEPARATOR .  'config.xml';
+        }
+
         if (file_exists(realpath($this->xmlFile))) {
             if (\PHP_VERSION_ID < 80000) {
                 $bOldEntityLoaderState = libxml_disable_entity_loader(
                     true
                 ); // @see: http://phpsecurity.readthedocs.io/en/latest/Injection-Attacks.html#xml-external-entity-injection
             }
+            SurveyThemeHelper::checkConfigFiles($this->xmlFile);
             $sXMLConfigFile = file_get_contents(
                 realpath($this->xmlFile)
             ); // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
@@ -1093,7 +1106,7 @@ class TemplateManifest extends TemplateConfiguration
 
     /**
      * Set the template name.
-     * If no templateName provided, then a survey id should be given (it will then load the template related to the survey)
+     * If no templateName provided, then a survey ID should be given (it will then load the template related to the survey)
      *
      * @var     $sTemplateName  string the name of the template
      * @var     $iSurveyId      int    the id of the survey
@@ -1101,9 +1114,9 @@ class TemplateManifest extends TemplateConfiguration
     private function setTemplateName($sTemplateName = '', $iSurveyId = '')
     {
         // If it is called from the template editor, a template name will be provided.
-        // If it is called for survey taking, a survey id will be provided
+        // If it is called for survey taking, a survey ID will be provided
         if ($sTemplateName == '' && $iSurveyId == '') {
-            /* Some controller didn't test completely survey id (PrintAnswersController for example), then set to default here */
+            /* Some controller didn't test completely survey ID (PrintAnswersController for example), then set to default here */
             $sTemplateName = App()->getConfig('defaulttheme');
         }
 
@@ -1420,6 +1433,8 @@ class TemplateManifest extends TemplateConfiguration
                 $aOptions['optionAttributes'][$key]['title'] = !empty($option['title']) ? (string)$option['title'] : '';
                 $aOptions['optionAttributes'][$key]['category'] = !empty($option['category']) ? (string)$option['category'] : gT('Simple options');
                 $aOptions['optionAttributes'][$key]['width'] = !empty($option['width']) ? (string)$option['width'] : '2';
+                /* rows for textarea */
+                $aOptions['optionAttributes'][$key]['rows'] = !empty($option['rows']) ? (string)$option['rows'] : '4';
                 $aOptions['optionAttributes'][$key]['options'] = !empty($option['options']) ? (string)$option['options'] : '';
                 $aOptions['optionAttributes'][$key]['optionlabels'] = !empty($option['optionlabels']) ? (string)$option['optionlabels'] : '';
                 $aOptions['optionAttributes'][$key]['parent'] = !empty($option['parent']) ? (string)$option['parent'] : '';

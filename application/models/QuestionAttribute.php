@@ -219,16 +219,21 @@ class QuestionAttribute extends LSActiveRecord
      * --prepare an easier/smaller array to return
      *
      * @access public
-     * @param int $iQuestionID
+     * @param int|Question $q
      * @param string $sLanguage restrict to this language (if null $oQuestion->survey->allLanguages will be used)
      * @return array|false
      *
      * @throws CException throws exception if questiontype is null
      */
-    public function getQuestionAttributes($iQuestionID, $sLanguage = null)
+    public function getQuestionAttributes($q, $sLanguage = null)
     {
+        $receivedIDOnly = (!($q instanceof Question));
+        if ($receivedIDOnly) {
+            $iQuestionID = intval($q);
+        } else {
+            $iQuestionID = $q->qid;
+        }
         static $survey = '';
-        $iQuestionID = (int)$iQuestionID;
         // Limit the size of the attribute cache due to memory usage
         $cacheKey = 'getQuestionAttributes_' . $iQuestionID . '_' . json_encode($sLanguage);
         if (EmCacheHelper::useCache()) {
@@ -238,7 +243,11 @@ class QuestionAttribute extends LSActiveRecord
             }
         }
 
-        $oQuestion = Question::model()->find("qid=:qid", ['qid' => $iQuestionID]);
+        if ($receivedIDOnly) {
+            $oQuestion = Question::model()->find("qid=:qid", ['qid' => $iQuestionID]);
+        } else {
+            $oQuestion = $q;
+        }
         if (empty($oQuestion)) {
             return false; // return false but don't set $aQuestionAttributesStatic[$iQuestionID]
         }

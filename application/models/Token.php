@@ -42,7 +42,7 @@ use LimeSurvey\PluginManager\PluginEvent;
  * @property string $emailstatus Participant's e-mail address status: OK/bounced/OptOut
  * @property string $token Participant's token
  * @property string $language Participant's language eg: en
- * @property string $blacklisted Whether participant is blacklisted: (Y/N)
+ * @property string $blacklisted Whether participant is blocklisted: (Y/N)
  * @property string $sent
  * @property string $remindersent
  * @property integer $remindercount
@@ -95,7 +95,7 @@ abstract class Token extends Dynamic
             'emailstatus' => gT('Email status'),
             'token' => gT('Access code'),
             'language' => gT('Language code'),
-            'blacklisted' => gT('Blacklisted'),
+            'blacklisted' => gT('Blocklisted'),
             'sent' => gT('Invitation sent date'),
             'remindersent' => gT('Last reminder sent date'),
             'remindercount' => gT('Total numbers of sent reminders'),
@@ -518,7 +518,7 @@ abstract class Token extends Dynamic
 
     public function onBeforeSave($event)
     {
-        // Mark token as "OptOut" if globally blacklisted and 'blacklistnewsurveys' is enabled
+        // Mark token as "OptOut" if globally blocklisted and 'blacklistnewsurveys' is enabled
         if (Yii::app()->getConfig('blacklistnewsurveys') == "Y" && $this->getIsNewRecord()) {
             $blacklistHandler = new LimeSurvey\Models\Services\ParticipantBlacklistHandler();
             if ($blacklistHandler->isTokenBlacklisted($this)) {

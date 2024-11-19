@@ -116,7 +116,7 @@ class QuotasController extends LSBaseController
         if (!empty($oSurvey->quotas)) {
             foreach ($oSurvey->quotas as $oQuota) {
                 $completed = $oQuota->completeCount;
-                echo $oQuota->name . "," . $oQuota->qlimit . "," .
+                echo csvEscape($oQuota->name) . "," . $oQuota->qlimit . "," .
                     $completed . "," . ($oQuota->qlimit - $completed) . "\r\n";
             }
         }

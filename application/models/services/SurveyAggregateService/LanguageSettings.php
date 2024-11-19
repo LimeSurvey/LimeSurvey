@@ -69,25 +69,14 @@ class LanguageSettings
      *
      * @param int $surveyId
      * @param array $input
-     * @throws PersistErrorException
+     * @return boolean
      * @throws NotFoundException
      * @throws PermissionDeniedException
-     * @return boolean
+     * @throws PersistErrorException
      */
     public function update($surveyId, $input)
     {
-        $hasPermission = $this->modelPermission
-            ->hasSurveyPermission(
-                $surveyId,
-                'surveylocale',
-                'update'
-            );
-        if (!$hasPermission) {
-            throw new PermissionDeniedException(
-                'Permission denied'
-            );
-        }
-
+        $this->checkUpdatePermission($surveyId);
         $survey = $this->modelSurvey->findByPk(
             $surveyId
         );
@@ -108,9 +97,9 @@ class LanguageSettings
      *
      * @param Survey $survey
      * @param array $input
-     * @throws PersistErrorException
-     * @throws NotFoundException
      * @return void
+     * @throws NotFoundException
+     * @throws PersistErrorException
      */
     protected function updateLanguageSettings(Survey $survey, $input)
     {
@@ -142,13 +131,15 @@ class LanguageSettings
 
             $surveyLanguageSetting->setAttributes($data);
             if (!$surveyLanguageSetting->save()) {
-                throw new PersistErrorException(
+                $e = new PersistErrorException(
                     sprintf(
                         'Failed saving language settings for survey #%s and language "%s"',
                         $survey->sid,
                         $languageCode
                     )
                 );
+                $e->setErrorModel($surveyLanguageSetting);
+                throw $e;
             }
         }
     }
@@ -194,5 +185,25 @@ class LanguageSettings
     private function getValue($data, $field, $default = null)
     {
         return isset($data[$field]) ? $data[$field] : $default;
+    }
+
+    /**
+     * @param int $surveyId
+     * @return void
+     * @throws PermissionDeniedException
+     */
+    public function checkUpdatePermission(int $surveyId)
+    {
+        $hasPermission = $this->modelPermission
+            ->hasSurveyPermission(
+                $surveyId,
+                'surveylocale',
+                'update'
+            );
+        if (!$hasPermission) {
+            throw new PermissionDeniedException(
+                'Permission denied'
+            );
+        }
     }
 }

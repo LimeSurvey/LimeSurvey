@@ -14,13 +14,14 @@ class TransformerInputSubQuestion extends Transformer
         unset($dataMap['title']);
         $dataMap['type']['required'] = false;
         $dataMap['title'] = ['key' => 'code', 'required' => 'create'];
+        $dataMap['qid'] = ['required' => 'update'];
+        $dataMap['tempId'] = true;
         $dataMap['l10ns'] = [
             'key' => 'subquestionl10n',
             'collection' => true,
-            'required' => true,
+            'required',
             'transformer' => $transformerInputSubquestionL10n
         ];
-
         $this->setDataMap($dataMap);
     }
 
@@ -34,12 +35,8 @@ class TransformerInputSubQuestion extends Transformer
     /**
      * Converts the subquestions from the raw data to the expected format.
      *
-     * @param OpInterface $op
-     * @param TransformerInputQuestion $transformerQuestion
-     * @param TransformerInputQuestionL10ns $transformerL10n
      * @param array $data
      * @return array
-     * @throws \LimeSurvey\ObjectPatch\OpHandler\OpHandlerException
      */
     private function prepareSubQuestions($data)
     {
@@ -62,7 +59,7 @@ class TransformerInputSubQuestion extends Transformer
         return array_key_exists(
             'qid',
             $questionData
-        ) ? (int)$questionData['qid'] : $index;
+        ) && (int)$questionData['qid'] > 0 ? (int)$questionData['qid'] : $index;
     }
 
     /**

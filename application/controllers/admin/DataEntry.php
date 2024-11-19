@@ -323,9 +323,11 @@ class DataEntry extends SurveyCommonAction
             $sourceSchema = $sourceTable->getTableSchema();
             $encryptedAttributes = Response::getEncryptedAttributes($iSurveyId);
             $tbl_name = $sourceSchema->name;
-            if (strpos((string) $sourceSchema->name, (string) Yii::app()->db->tablePrefix) === 0) {
-                $tbl_name = substr((string) $sourceSchema->name, strlen((string) Yii::app()->db->tablePrefix));
+
+            if (!empty(App()->db->tablePrefix) && strpos((string) $sourceSchema->name, (string) App()->db->tablePrefix) === 0) {
+                $tbl_name = substr((string) $sourceSchema->name, strlen((string) App()->db->tablePrefix));
             }
+
             $archivedTableSettings = ArchivedTableSettings::model()->findByAttributes(['tbl_name' => $tbl_name]);
             $archivedEncryptedAttributes = [];
             if ($archivedTableSettings) {
@@ -618,6 +620,18 @@ class DataEntry extends SurveyCommonAction
 
         $questionTypes = QuestionType::modelsAttributes();
         $aDataentryoutput = '';
+        /* Keep track of previous qid to not ask question model multiple time */
+        $previousQid = 0;
+        /* @var null\Question: the current question model */
+        $oQuestion = null;
+        /* @var (string|array)[] : all question attributes of this question */
+        $qidattributes = [];
+        $rawQuestions = Question::model()->findAll("sid = :sid", [":sid" => $surveyid]);
+        $qs = [];
+        $totalTime = 0;
+        foreach ($rawQuestions as $rawQuestion) {
+            $qs[$rawQuestion->qid] = $rawQuestion;
+        }
         foreach ($results as $idrow) {
             $fname = reset($fnames);
             do {
@@ -639,9 +653,9 @@ class DataEntry extends SurveyCommonAction
                 // Second column (Answer)
                 $aDataentryoutput .= "<td class=\"answers-cell\">\n";
                 //$aDataentryoutput .= "\t-={$fname[3]}=-"; //Debugging info
-                $qidattributes = [];
-                if (isset($fname['qid']) && isset($fname['type'])) {
-                    $qidattributes = QuestionAttribute::model()->getQuestionAttributes($fname['qid']);
+                if (isset($fname['qid']) && $fname['qid'] && $fname['qid'] != $previousQid) {
+                    // if $fname['qid'] : we must have a question, else survey is broken : DB have error
+                    $qidattributes = QuestionAttribute::model()->getQuestionAttributes($qs[$fname['qid']] ?? $fname['qid']);
                 }
                 /** @var array<string,string> */
                 $questionInputs = [];
@@ -758,7 +772,6 @@ class DataEntry extends SurveyCommonAction
                         break;
                     case Question::QT_L_LIST: //LIST drop-down
                     case Question::QT_EXCLAMATION_LIST_DROPDOWN: //List (Radio)
-                        $qidattributes = QuestionAttribute::model()->getQuestionAttributes($fname['qid']);
                         if (isset($qidattributes['category_separator']) && trim((string) $qidattributes['category_separator']) != '') {
                             $optCategorySeparator = $qidattributes['category_separator'];
                         } else {
@@ -816,8 +829,7 @@ class DataEntry extends SurveyCommonAction
                                     $questionInput .= ">{$optionarray['answer']}</option>\n";
                                 }
                             }
-                            $oresult = Question::model()->findByPk($fname['qid']);
-                            if ($oresult->other == "Y") {
+                            if (($oQuestion->other ?? "N") == "Y") {
                                 $questionInput .= "<option value='-oth-'";
                                 if ($idrow[$fname['fieldname']] == "-oth-") {
                                     $questionInput .= " selected='selected'";
@@ -1002,12 +1014,11 @@ class DataEntry extends SurveyCommonAction
                         if ($fname['aid'] !== 'filecount' && isset($idrow[$fname['fieldname'] . '_filecount']) && ($idrow[$fname['fieldname'] . '_filecount'] > 0)) {
                             //file metadata
                             $metadata = json_decode((string) $idrow[$fname['fieldname']], true);
-                            $qAttributes = QuestionAttribute::model()->getQuestionAttributes($fname['qid']);
-                            for ($i = 0; ($i < $qAttributes['max_num_of_files']) && isset($metadata[$i]); $i++) {
-                                if ($qAttributes['show_title']) {
+                            for ($i = 0; ($i < $qidattributes['max_num_of_files']) && isset($metadata[$i]); $i++) {
+                                if ($qidattributes['show_title']) {
                                     $questionInput .= '<tr><td>' . gT("Title") . '</td><td><input type="text" class="' . $fname['fieldname'] . '" id="' . $fname['fieldname'] . '_title_' . $i . '" name="title"    size=50 value="' . htmlspecialchars((string) $metadata[$i]["title"]) . '" /></td></tr>';
                                 }
-                                if ($qAttributes['show_comment']) {
+                                if ($qidattributes['show_comment']) {
                                     $questionInput .= '<tr><td >' . gT("Comment") . '</td><td><input type="text" class="' . $fname['fieldname'] . '" id="' . $fname['fieldname'] . '_comment_' . $i . '" name="comment"  size=50 value="' . htmlspecialchars((string) $metadata[$i]["comment"]) . '" /></td></tr>';
                                 }
 
@@ -1239,7 +1250,6 @@ class DataEntry extends SurveyCommonAction
                         $fname = prev($fnames);
                         break;
                     case Question::QT_COLON_ARRAY_NUMBERS: // Array (Numbers)
-                        $qidattributes = QuestionAttribute::model()->getQuestionAttributes($fname['qid']);
                         $minvalue = 1;
                         $maxvalue = 10;
                         if (trim((string) $qidattributes['multiflexible_max']) != '' && trim((string) $qidattributes['multiflexible_min']) == '') {
@@ -1401,6 +1411,7 @@ class DataEntry extends SurveyCommonAction
                 $aDataentryoutput .= "        </td>
                 </tr>\n";
             } while ($fname = next($fnames));
+            $previousQid = $fname['qid'] ?? 0;
         }
         $aDataentryoutput .= "</table>\n"
         . "<p>\n";
@@ -1509,7 +1520,7 @@ class DataEntry extends SurveyCommonAction
 
         $surveyid = (int) ($surveyid);
         $survey = Survey::model()->findByPk($surveyid);
-        if (!$survey->getIsActive()) {
+        if (!$survey || !$survey->getIsActive()) {
             throw new CHttpException(404, gT("Invalid survey ID"));
         }
         $id = (int)Yii::app()->request->getPost('id');
@@ -1528,6 +1539,14 @@ class DataEntry extends SurveyCommonAction
             if ($fname['type'] == "interview_time" || $fname['type'] == "page_time" || $fname['type'] == "answer_time") {
                 unset($fieldmap[$fname['fieldname']]);
             }
+        }
+
+        $rawQuestions = Question::model()->findAll("sid = :sid", [":sid" => $surveyid]);
+
+        $questions = [];
+
+        foreach ($rawQuestions as $rawQuestion) {
+            $questions[$rawQuestion->qid] = $rawQuestion;
         }
 
         $thissurvey = getSurveyInfo($surveyid);
@@ -1558,14 +1577,15 @@ class DataEntry extends SurveyCommonAction
             }
             switch ($irow['type']) {
                 case 'lastpage':
-                    // Last page not updated : not in view
+                case 'seed':
+                    // Not updated : not in view or as disabled
                     break;
                 case Question::QT_D_DATE:
                     if (empty($thisvalue)) {
                         $oResponse->$fieldname = null;
                         break;
                     }
-                    $qidattributes = QuestionAttribute::model()->getQuestionAttributes($irow['qid']);
+                    $qidattributes = QuestionAttribute::model()->getQuestionAttributes($questions[$irow['qid']] ?? Question::model()->findByPk($irow['qid']));
                     $dateformatdetails = getDateFormatDataForQID($qidattributes, $thissurvey);
                     $datetimeobj = DateTime::createFromFormat('!' . $dateformatdetails['phpdate'], $thisvalue);
                     if (!$datetimeobj) {
@@ -1682,6 +1702,15 @@ class DataEntry extends SurveyCommonAction
 
         $insertSubaction = $subaction == 'insert';
         $hasResponsesCreatePermission = Permission::model()->hasSurveyPermission($surveyid, 'responses', 'create');
+        $rawQuestions = Question::model()->findAll("sid = :sid", [":sid" => $surveyid]);
+
+        $questions = [];
+
+        $totalTime = 0;
+
+        foreach ($rawQuestions as $rawQuestion) {
+            $questions[$rawQuestion->qid] = $rawQuestion;
+        }
         if ($insertSubaction && $hasResponsesCreatePermission) {
             // TODO: $surveytable is unused. Remove it.
             $surveytable = "{{survey_{$surveyid}}}";
@@ -1704,11 +1733,13 @@ class DataEntry extends SurveyCommonAction
                 if ($lastanswfortoken == '') {
                     // token is valid, survey not anonymous, try to get last recorded response id
                     $aresult = Response::model($surveyid)->findAllByAttributes(['token' => $postToken]);
-                    foreach ($aresult as $arow) {
-                        if ($aToken->completed != "N") {
-                            $lastanswfortoken = $arow['id'];
+                    if ($aresult) {
+                        foreach ($aresult as $arow) {
+                            if ($aToken->completed != "N") {
+                                $lastanswfortoken = $arow['id'];
+                            }
+                            $rlanguage = $arow['startlanguage'];
                         }
-                        $rlanguage = $arow['startlanguage'];
                     }
                 }
             }
@@ -1718,16 +1749,8 @@ class DataEntry extends SurveyCommonAction
             // First Check if the survey uses tokens and if a token has been provided
             if ($tokenTableExists && (!$postToken)) {
                 $errormsg = $this->returnClosedAccessSurveyErrorMessage();
-            } elseif ($tokenTableExists && $lastanswfortoken == 'UnknownToken') {
-                $errormsg = $this->returnAccessCodeIsNotValidOrAlreadyInUseErrorMessage();
-            } elseif ($tokenTableExists && $lastanswfortoken != '') {
-                $errormsg = $this->returnAlreadyRecordedAnswerForAccessCodeErrorMessage();
-
-                if ($lastanswfortoken != 'PrivacyProtected') {
-                    $errormsg .= $this->returnErrorMessageIfLastAnswerForTokenIsNotPrivacyProtected($lastanswfortoken, $surveyid, $errormsg);
-                } else {
-                    $errormsg .= $this->returnErrorMessageIfLastAnswerForTokenIsPrivacyProtected($errormsg);
-                }
+            } elseif ($tokenTableExists && $lastanswfortoken == 'PrivacyProtected') {
+                $errormsg = $this->returnErrorMessageIfLastAnswerForTokenIsPrivacyProtected($errormsg);
             } else {
                 if (isset($_POST['save']) && $_POST['save'] == "on") {
                     $aData['save'] = true;
@@ -1820,7 +1843,7 @@ class DataEntry extends SurveyCommonAction
                                 }
                             }
                         } elseif ($irow['type'] == Question::QT_D_DATE) {
-                            $qidattributes = QuestionAttribute::model()->getQuestionAttributes($irow['qid']);
+                            $qidattributes = QuestionAttribute::model()->getQuestionAttributes($questions[$irow['qid']] ?? Question::model()->findByPk($irow['qid']));
                             $dateformatdetails = getDateFormatDataForQID($qidattributes, $thissurvey);
                             $datetimeobj = DateTime::createFromFormat('!' . $dateformatdetails['phpdate'], $_POST[$fieldname]);
                             if ($datetimeobj) {
@@ -1857,23 +1880,29 @@ class DataEntry extends SurveyCommonAction
                         $submitdate = date("Y-m-d H:i:s");
                     }
                     // query for updating tokens uses left
-                    $aToken = Token::model($surveyid)->findByAttributes(['token' => $_POST['token']]);
-                    if (isTokenCompletedDatestamped($thissurvey)) {
-                        if ($aToken->usesleft <= 1) {
-                            $aToken->usesleft = ((int) $aToken->usesleft) - 1;
-                            $aToken->completed = $submitdate;
+                    if ($lastanswfortoken == '' || $lastanswfortoken == 'AnonymousNotCompleted') {
+                        $aToken = Token::model($surveyid)->findByAttributes(['token' => $_POST['token']]);
+                        if (isTokenCompletedDatestamped($thissurvey)) {
+                            if ($aToken->usesleft <= 1) {
+                                $aToken->usesleft = ((int) $aToken->usesleft) - 1;
+                                if ($lastanswfortoken == 'AnonymousNotCompleted') {
+                                    $aToken->completed = "Y";
+                                } else {
+                                    $aToken->completed = $submitdate;
+                                }
+                            } else {
+                                $aToken->usesleft = ((int) $aToken->usesleft) - 1;
+                            }
                         } else {
-                            $aToken->usesleft = ((int) $aToken->usesleft) - 1;
+                            if ($aToken->usesleft <= 1) {
+                                $aToken->usesleft = ((int) $aToken->usesleft) - 1;
+                                $aToken->completed = 'Y';
+                            } else {
+                                $aToken->usesleft = ((int) $aToken->usesleft) - 1;
+                            }
                         }
-                    } else {
-                        if ($aToken->usesleft <= 1) {
-                            $aToken->usesleft = ((int) $aToken->usesleft) - 1;
-                            $aToken->completed = 'Y';
-                        } else {
-                            $aToken->usesleft = ((int) $aToken->usesleft) - 1;
-                        }
+                        $aToken->save();
                     }
-                    $aToken->save();
 
                     // save submitdate into survey table
                     $aResponse = Response::model($surveyid)->findByPk($last_db_id);
@@ -1969,8 +1998,8 @@ class DataEntry extends SurveyCommonAction
 
     /**
      * Returns the last answer for token or anonymous survey.
-     * @param Survey $survey Survey
-     * @param Token  $token  Token
+     * @param \Survey $survey Survey
+     * @param \Token  $token  Token
      * @return string
      */
     private function getLastAnswerByTokenOrAnonymousSurvey(Survey $survey, Token $token = null): string
@@ -1978,7 +2007,7 @@ class DataEntry extends SurveyCommonAction
         $lastAnswer = '';
         $isTokenNull  = $token == null;
         $isTokenEmpty = empty($token);
-        $isTokenCompleted = $token->completed;
+        $isTokenCompleted = empty($token) ? "" : $token->completed;
         $isTokenCompletedEmpty = empty($isTokenCompleted);
         $isSurveyAnonymous = $survey->isAnonymized;
 
@@ -1987,6 +2016,8 @@ class DataEntry extends SurveyCommonAction
         } elseif ($isSurveyAnonymous) {
             if (!$isTokenCompletedEmpty && $isTokenCompleted !== "N") {
                 $lastAnswer = 'PrivacyProtected';
+            } else {
+                $lastAnswer = 'AnonymousNotCompleted';
             }
         }
         return $lastAnswer;
@@ -2010,7 +2041,7 @@ class DataEntry extends SurveyCommonAction
     private function returnAccessCodeIsNotValidOrAlreadyInUseErrorMessage(): string
     {
         $errormsg = CHtml::tag('div', array('class' => 'warningheader'), gT("Error"));
-        $errormsg .= CHtml::tag('p', array(), gT("The access code have provided is not valid or has already been used."));
+        $errormsg .= CHtml::tag('p', array(), gT("The provided access code is not valid or has already been used."));
         return $errormsg;
     }
 
@@ -2108,6 +2139,14 @@ class DataEntry extends SurveyCommonAction
 
             Yii::app()->loadHelper('database');
 
+            $rawQuestions = Question::model()->findAll("sid = :sid", [":sid" => $surveyid]);
+
+            $questions = [];
+
+            foreach ($rawQuestions as $rawQuestion) {
+                $questions[$rawQuestion->qid] = $rawQuestion;
+            }
+
             // SURVEY NAME AND DESCRIPTION TO GO HERE
             $aGroups = $survey->groups;
             $aDataentryoutput = '';
@@ -2126,14 +2165,13 @@ class DataEntry extends SurveyCommonAction
                 $bgc = 'odd';
                 foreach ($aQuestions as $arQuestion) {
                     $cdata = array();
-                    $qidattributes = QuestionAttribute::model()->getQuestionAttributes($arQuestion['qid']);
+                    $qidattributes = QuestionAttribute::model()->getQuestionAttributes($questions[$arQuestion['qid']] ?? $arQuestion);
                     $cdata['qidattributes'] = $qidattributes;
 
                     $qinfo = LimeExpressionManager::GetQuestionStatus($arQuestion['qid']);
                     $relevance = trim((string) $qinfo['info']['relevance']);
                     $explanation = trim((string) $qinfo['relEqn']);
                     $validation = trim((string) $qinfo['prettyValidTip']);
-                    $qidattributes = QuestionAttribute::model()->getQuestionAttributes($arQuestion['qid']);
                     $arrayFilterHelp = flattenText($this->arrayFilterHelp($qidattributes, $sDataEntryLanguage, $surveyid));
 
                     if (true || ($relevance != '' && $relevance != '1') || ($validation != '') || ($arrayFilterHelp != '')) {

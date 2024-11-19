@@ -151,7 +151,7 @@ class remotecontrol_handle
      * @param string $sSurveyTitle Title of the new Survey
      * @param string $sSurveyLanguage Default language of the Survey
      * @param string $sformat (optional) Question appearance format (A, G or S) for "All on one page", "Group by Group", "Single questions", default to group by group (G)
-     * @return int|array The survey id in case of success
+     * @return int|array The survey ID in case of success
      */
     public function add_survey($sSessionKey, $iSurveyID, $sSurveyTitle, $sSurveyLanguage, $sformat = 'G')
     {
@@ -407,7 +407,7 @@ class remotecontrol_handle
      * @access public
      * @param string $sSessionKey Auth credentials
      * @param integer $iSurveyID - ID of the Survey
-     * @param array $aSurveyData - An array with the particular fieldnames as keys and their values to set on that particular Survey
+     * @param struct $aSurveyData - An array with the particular fieldnames as keys and their values to set on that particular Survey
      * @return array Of succeeded and failed nodifications according to internal validation
      */
     public function set_survey_properties($sSessionKey, $iSurveyID, $aSurveyData)
@@ -488,7 +488,7 @@ class remotecontrol_handle
             return array('status' => self::INVALID_SESSION_KEY);
         }
         $iSurveyID = (int) $iSurveyID;
-        // check valid survey id and current user has permission
+        // check valid survey ID and current user has permission
         if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveyactivation', 'update')) {
             return array('status' => 'No permission');
         }
@@ -955,7 +955,7 @@ class remotecontrol_handle
      * @access public
      * @param string $sSessionKey Auth credentials
      * @param integer $iSurveyID  - ID of the Survey
-     * @param array $aSurveyLocaleData - An array with the particular fieldnames as keys and their values to set on that particular survey
+     * @param struct $aSurveyLocaleData - An array with the particular fieldnames as keys and their values to set on that particular survey
      * @param string $sLanguage - Optional - Language to update  - if not given the base language of the particular survey is used
      * @return array in case of success 'status'=>'OK', when save successful otherwise error text.
      */
@@ -1134,8 +1134,8 @@ class remotecontrol_handle
      * @param int $iSurveyID The ID of the Survey that the group will belong
      * @param string $sImportData String containing the BASE 64 encoded data of a lsg,csv
      * @param string $sImportDataType  lsg,csv
-     * @param string $sNewGroupName  Optional new name for the group
-     * @param string $sNewGroupDescription  Optional new description for the group
+     * @param string $sNewGroupName  Optional new name for the group in the survey's base language
+     * @param string $sNewGroupDescription  Optional new description for the group in the survey's base language
      * @return array|integer iGroupID  - ID of the new group or status
      */
     public function import_group($sSessionKey, $iSurveyID, $sImportData, $sImportDataType, $sNewGroupName = null, $sNewGroupDescription = null)
@@ -1192,14 +1192,17 @@ class remotecontrol_handle
                     $iNewgid = $aImportResults['newgid'];
 
                     $oGroup = QuestionGroup::model()->findByAttributes(array('gid' => $iNewgid));
+                    $sLanguage = Survey::model()->findByPk($iSurveyID)->language;
+                    $oGroupL10n = $oGroup->questiongroupl10ns[$sLanguage];
+
                     if ($sNewGroupName != '') {
-                                            $oGroup->setAttribute('group_name', (string) $sNewGroupName);
+                                            $oGroupL10n->setAttribute('group_name', (string) $sNewGroupName);
                     }
                     if ($sNewGroupDescription != '') {
-                                        $oGroup->setAttribute('description', (string) $sNewGroupDescription);
+                                        $oGroupL10n->setAttribute('description', (string) $sNewGroupDescription);
                     }
                     try {
-                        $oGroup->save();
+                        $oGroupL10n->save();
                     } catch (Exception $e) {
                         // no need to throw exception
                     }
@@ -1669,7 +1672,7 @@ class remotecontrol_handle
             $iSurveyID = $oQuestion->sid;
 
             if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'read')) {
-                if (is_null($sLanguage)) {
+                if (empty($sLanguage)) {
                     $sLanguage = Survey::model()->findByPk($iSurveyID)->language;
                 }
 
@@ -1687,6 +1690,13 @@ class remotecontrol_handle
                 }
 
                 $aBasicDestinationFields = Question::model()->tableSchema->columnNames;
+                /* Push questionl10ns data, like 3.X for less update of external scripts */
+                array_push($aBasicDestinationFields, 'question');
+                array_push($aBasicDestinationFields, 'help');
+                array_push($aBasicDestinationFields, 'script');
+                /* Push questionl10ns data but complete */
+                array_push($aBasicDestinationFields, 'questionl10ns');
+                /* Other fileds */
                 array_push($aBasicDestinationFields, 'available_answers');
                 array_push($aBasicDestinationFields, 'subquestions');
                 array_push($aBasicDestinationFields, 'attributes');
@@ -1812,6 +1822,10 @@ class remotecontrol_handle
                                 array(':qid' => $iQuestionID, ':language' => $sLanguage)
                             )
                             ->defaultvalue;
+                    } elseif ($sPropertyName == 'question' || $sPropertyName == 'help' || $sPropertyName == 'script') {
+                        $aResult[$sPropertyName] = $oQuestion->questionl10ns[$sLanguage]->$sPropertyName;
+                    } elseif ($sPropertyName == 'questionl10ns') {
+                        $aResult[$sPropertyName] = $oQuestion->questionl10ns[$sLanguage]->attributes;
                     } else {
                         $aResult[$sPropertyName] = $oQuestion->$sPropertyName;
                     }
@@ -2325,7 +2339,7 @@ class remotecontrol_handle
                 $aAttributeValues = array();
                 if (count($aConditions) > 0) {
                     $aConditionFields = array_flip(Token::model($iSurveyID)->getMetaData()->tableSchema->columnNames);
-                    // NB: $valueOrTuple is either a value or tuple like [$operator, $value].                 
+                    // NB: $valueOrTuple is either a value or tuple like [$operator, $value].
                     foreach ($aConditions as $columnName => $valueOrTuple) {
                         if (is_array($valueOrTuple)) {
                             /** @var string[] List of operators allowed in query. */
@@ -2519,10 +2533,16 @@ class remotecontrol_handle
 
                 switch ($sAction) {
                     case 'terminate':
-                        $iAction = Quota::ACTION_TERMINATE;
+                        $iAction = Quota::TERMINATE_VISIBLE_QUOTA_QUESTIONS;
+                        break;
+                    case 'terminate_visible_hidden':
+                        $iAction = Quota::TERMINATE_VISIBLE_AND_HIDDEN_QUOTA_QUESTIONS;
+                        break;
+                    case 'terminate_pages':
+                        $iAction = Quota::TERMINATE_ALL_PAGES;
                         break;
                     case 'confirm_terminate':
-                        $iAction = Quota::ACTION_CONFIRM_TERMINATE;
+                        $iAction = Quota::SOFT_TERMINATE_VISIBLE_QUOTA_QUESTIONS;
                         break;
                     default:
                         return array('status' => 'Error: Invalid quota action');
@@ -3531,7 +3551,7 @@ class remotecontrol_handle
      * @param integer $iFromResponseID (optional) Frpm response id
      * @param integer $iToResponseID (optional) To response id
      * @param array $aFields (optional) Name the fields to export
-     * @param array $aAdditionalOptions (optional) Addition options for export, mainly 'convertY', 'convertN', 'nValue', 'yValue',
+     * @param array $aAdditionalOptions (optional) Addition options for export, @see \FormattingOptions, example : 'convertY', 'convertN', 'nValue', 'yValue', 'headerSpacesToUnderscores', 'useEMCode'
      * @return array|string On success: Requested file as base 64-encoded string. On failure array with error information
      * */
     public function export_responses($sSessionKey, $iSurveyID, $sDocumentType, $sLanguageCode = null, $sCompletionStatus = 'all', $sHeadingType = 'code', $sResponseType = 'short', $iFromResponseID = null, $iToResponseID = null, $aFields = null, $aAdditionalOptions = null)
@@ -3569,26 +3589,30 @@ class remotecontrol_handle
         $oFormattingOptions = new FormattingOptions();
 
         if (is_array($aAdditionalOptions)) {
-            if (isset($aAdditionalOptions['convertY']) && $aAdditionalOptions['convertY']) {
-                $oFormattingOptions->convertY = $aAdditionalOptions['convertY'];
-                $oFormattingOptions->yValue = isset($aAdditionalOptions['yValue']) ? $aAdditionalOptions['yValue'] : 'Y';
+            foreach ($aAdditionalOptions as $option => $value) {
+                if (property_exists($oFormattingOptions, $option )){
+                    $oFormattingOptions->$option = $value;
+                }
             }
-            if (isset($aAdditionalOptions['convertN']) && $aAdditionalOptions['convertN']) {
-                $oFormattingOptions->convertN = $aAdditionalOptions['convertN'];
-                $oFormattingOptions->nValue = isset($aAdditionalOptions['nValue']) ? $aAdditionalOptions['nValue'] : 'N';
+            /* fix some specific option (GUI use 1 and 2, but default for remote control are set to Y and N before) */
+            if (!empty($oFormattingOptions->convertY) && empty($oFormattingOptions->yValue)) {
+                $oFormattingOptions->yValue = 'Y';
+            }
+            if (!empty($oFormattingOptions->convertN) && empty($oFormattingOptions->nValue)) {
+                $oFormattingOptions->nValue = 'N';
             }
         }
 
         if ($iFromResponseID != null) {
-                    $oFormattingOptions->responseMinRecord = (int) $iFromResponseID;
+            $oFormattingOptions->responseMinRecord = (int) $iFromResponseID;
         } else {
-                    $oFormattingOptions->responseMinRecord = 1;
+            $oFormattingOptions->responseMinRecord = 1;
         }
 
         if ($iToResponseID != null) {
-                    $oFormattingOptions->responseMaxRecord = (int) $iToResponseID;
+            $oFormattingOptions->responseMaxRecord = (int) $iToResponseID;
         } else {
-                    $oFormattingOptions->responseMaxRecord = $maxId;
+            $oFormattingOptions->responseMaxRecord = $maxId;
         }
 
         $oFormattingOptions->selectedColumns = $aFields;

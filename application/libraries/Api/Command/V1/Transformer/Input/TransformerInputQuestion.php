@@ -4,48 +4,93 @@ namespace LimeSurvey\Api\Command\V1\Transformer\Input;
 
 use LimeSurvey\Api\Transformer\{
     Transformer,
-    TransformerException,
-    Formatter\FormatterMandatory,
-    Formatter\FormatterYnToBool
-};
+    TransformerException};
 
 class TransformerInputQuestion extends Transformer
 {
     public function __construct()
     {
-        $formatterYn = new FormatterYnToBool(true);
-        $formatterMandatory = new FormatterMandatory();
-
         $this->setDataMap([
             'qid' => ['type' => 'int'],
             'parentQid' => ['key' => 'parent_qid', 'type' => 'int'],
             'sid' => ['type' => 'int'],
-            'type' => ['required' => 'create'],
-            'title' => ['required' => 'create'],
+            'type' => [
+                'required' => 'create',
+                'length' => ['min' => 1, 'max' => 1]
+            ],
+            'title' => [
+                'required' => 'create',
+                'length' => ['min' => 1, 'max' => 20]
+            ],
             'preg' => true,
-            'other' => ['formatter' => $formatterYn],
-            'mandatory' => ['formatter' => $formatterMandatory],
-            'encrypted' => ['formatter' => $formatterYn],
-            'questionOrder' => ['key' => 'question_order', 'type' => 'int'],
-            'sortOrder' => ['key' => 'question_order', 'type' => 'int'],
-            'scaleId' => ['key' => 'scale_id', 'type' => 'int'],
-            'sameDefault' => ['key' => 'same_default', 'formatter' => $formatterYn],
+            'other' => [
+                'formatter' => ['ynToBool' => ['revert' => true]],
+                'range' => [true, false]
+            ],
+            'mandatory' => ['formatter' => ['mandatory' => ['revert' => true]]],
+            'encrypted' => [
+                'formatter' => ['ynToBool' => ['revert' => true]],
+                'range' => [true, false]
+            ],
+            'questionOrder' => [
+                'key' => 'question_order',
+                'type' => 'int',
+                'numerical'
+            ],
+            'sortOrder' => [
+                'key' => 'question_order',
+                'type' => 'int',
+                'numerical'
+            ],
+            'scaleId' => ['key' => 'scale_id', 'type' => 'int', 'numerical'],
+            'sameDefault' => [
+                'key' => 'same_default',
+                'formatter' => ['intToBool' => ['revert' => true]]
+            ],
             'questionThemeName' => 'question_theme_name',
-            'saveAsDefault' => 'save_as_default',
-            'clearDefault' => 'clear_default',
-            'moduleName' => 'modulename',
+            'saveAsDefault' => [
+                'key' => 'save_as_default',
+                'formatter' => ['ynToBool' => ['revert' => true]]
+            ],
+            'clearDefault' => [
+                'key' => 'clear_default',
+                'formatter' => ['ynToBool' => ['revert' => true]]
+            ],
+            'moduleName' => ['key' => 'modulename', 'length' => ['max' => 255]],
             'gid' => ['type' => 'int'],
-            'relevance' => true,
-            'sameScript' => ['key' => 'same_script', 'formatter' => $formatterYn],
+            'relevance' => ['filter' => 'trim'],
+            'sameScript' => [
+                'key' => 'same_script',
+                'formatter' => ['intToBool' => ['revert' => true]]
+            ],
             'tempId' => ['required' => 'create']
         ]);
     }
 
     public function transform($data, $options = [])
     {
+        $options = is_array($options) ? $options : [];
         if (empty($data)) {
             throw new TransformerException('Data can not be empty');
         }
-        return parent::transform($data, $options);
+        $props = parent::transform($data, $options);
+        // Set qid from op entity id
+        if (
+            is_array($props)
+            && (
+                !array_key_exists(
+                    'qid',
+                    $props
+                )
+                || $props['qid'] === null
+            )
+        ) {
+            $props['qid'] = array_key_exists(
+                'id',
+                $options
+            ) ? $options['id'] : null;
+        }
+
+        return $props;
     }
 }

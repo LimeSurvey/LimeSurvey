@@ -18,7 +18,7 @@ class Update_257 extends DatabaseUpdateBase
         $this->db->createCommand("UPDATE {{templates}} set folder={$sSubstringCommand}(folder,1,50)")->execute();
         try {
             dropPrimaryKey('templates');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
         };
         alterColumn('{{templates}}', 'folder', "string(50)", false);
         addPrimaryKey('templates', 'folder');

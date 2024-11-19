@@ -54,7 +54,7 @@ class QuestionService
     /**
      * Based on QuestionAdministrationController::actionSaveQuestionData()
      *
-     * @param array{
+     * @param array {
      *  ?sid: int,
      *  ?same_default: int,
      *  ?question: array{
@@ -104,7 +104,7 @@ class QuestionService
             if (!$question) {
                 throw new NotFoundException(
                     sprintf(
-                        'Could not find question with id "%s" in survey id "%s"',
+                        'Could not find question with id "%s" in survey ID "%s"',
                         $data['question']['qid'],
                         $data['question']['sid']
                     )
@@ -184,7 +184,7 @@ class QuestionService
 
         $question = $this->saveQuestionData($data, $questionGroupId);
 
-        $this->initL10nService($survey, $question->gid);
+        $this->initL10nService($survey, $question->qid);
 
         return $question;
     }
