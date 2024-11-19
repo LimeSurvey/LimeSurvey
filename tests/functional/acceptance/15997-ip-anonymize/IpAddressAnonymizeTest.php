@@ -38,12 +38,12 @@ class IpAddressAnonymizeTest extends TestBaseClassWeb
             $surveyFile = self::$surveysFolder . '/limesurvey_survey_573837.lss';
             self::importSurvey($surveyFile);
 
-        $urlMan = \Yii::app()->urlManager;
-        $urlMan->setBaseUrl('http://' . self::$domain . '/index.php');
-        $url = $urlMan->createUrl(
-            'surveyAdministration/view/surveyid/' . self::$surveyId
-        );
-        self::$webDriver->get($url);
+            $urlMan = \Yii::app()->urlManager;
+            $urlMan->setBaseUrl('http://' . self::$domain . '/index.php');
+            $url = $urlMan->createUrl(
+                'surveyAdministration/view/surveyid/' . self::$surveyId
+            );
+            self::$webDriver->get($url);
             sleep(1);
 
             self::$webDriver->dismissModal();
