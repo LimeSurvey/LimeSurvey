@@ -77,7 +77,7 @@ gT('Themes');
                                     <li><?php echo sprintf(
                                         gT('Create a new survey by clicking on the %s icon.'),
                                         "<i class='ri-add-circle-fill text-success'></i>"
-                                    ); ?></li>
+                                        ); ?></li>
                                     <li><?php eT('Create a new question group inside your survey.'); ?></li>
                                     <li><?php eT('Create one or more questions inside the new question group.'); ?></li>
                                     <li><?php
@@ -128,11 +128,12 @@ gT('Themes');
     <?php endif; ?>
 
     <?php //Check for IE and show a warning box ?>
-    <?php if (preg_match('~MSIE|Internet Explorer~i', (string)$_SERVER['HTTP_USER_AGENT'])
+    <?php if (
+    preg_match('~MSIE|Internet Explorer~i', (string)$_SERVER['HTTP_USER_AGENT'])
         || (strpos((string)$_SERVER['HTTP_USER_AGENT'], 'Trident/7.0') !== false
             && strpos((string)$_SERVER['HTTP_USER_AGENT'], 'rv:11.0') !== false
         )
-    ) : ?>
+) : ?>
         <div class="container">
             <?php
             $htmlContent = "
@@ -218,8 +219,8 @@ gT('Themes');
             (!empty(App()->request->getQuery('viewtype'))
                 && App()->request->getQuery('viewtype') === 'list-widget'
             )
-            || (empty(App()->request->getQuery('viewtype'))
-                && (SettingsUser::getUserSettingValue('welcome_page_widget') === 'list-widget')
+                    || (empty(App()->request->getQuery('viewtype'))
+                    && (SettingsUser::getUserSettingValue('welcome_page_widget') === 'list-widget')
             )
         ) : ?>
                 <div class="col-12">
@@ -238,7 +239,7 @@ gT('Themes');
                         [
                             'type'  => 0,
                             'model' => Survey::model(),
-                            'limit' => 15,
+                            'limit' => 20, // choose value according to pageSizeOptions
                         ],
                     ]
                 ]);
@@ -249,4 +250,3 @@ gT('Themes');
     <!-- Notification setting -->
     <input type="hidden" id="absolute_notification" />
 </div>
-

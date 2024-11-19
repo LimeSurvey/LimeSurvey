@@ -2,45 +2,49 @@
 
 namespace LimeSurvey\Helpers\Update;
 
-use CException;
+use LimeSurvey\Helpers\Update\DatabaseUpdateBase;
 
 class Update_625 extends DatabaseUpdateBase
 {
     /**
      * @inheritDoc
-     * @throws CException
      */
-    public function up(): void
+    public function up()
     {
-        $boxes = $this->db->createCommand()
-            ->select("*")
-            ->from("{{boxes}}")
-            ->order('position ASC')
-            ->queryAll();
+        $db = $this->db->createCommand();
 
-        if (!empty($boxes)) {
-            if ($boxes[array_key_first($boxes)]['position'] === 1) {
-                // we increase the position of all boxes by 1
-                foreach ($boxes as $box) {
-                    $this->db->createCommand()->update(
-                        '{{boxes}}',
-                        ['position' => $box['position'] + 1],
-                        "id = '{$box['id']}'"
-                    );
-                }
+        //Restore all default menu entries before making them non-deletable.
+        $aDefaultSurveyMenuEntries = \LsDefaultDataSets::getSurveyMenuEntryData();
+        foreach ($aDefaultSurveyMenuEntries as $aSurveymenuentry) {
+            $menuEntryExist = $db->select("*")->from("{{surveymenu_entries}}")->where(
+                'name=:name',
+                [':name' => $aSurveymenuentry['name']]
+            )->query()->rowCount;
+
+            if (!$menuEntryExist) {
+                $this->db->createCommand()->insert('{{surveymenu_entries}}', $aSurveymenuentry);
             }
-            // Then we recreate them
-            $oDB = App()->db;
-            $oDB->createCommand()->insert('{{boxes}}', [
-                'position'   => '1',
-                'url'        => 'dashboard/view',
-                'title'      => gT('Dashboard'),
-                'ico'        => 'ri-function-fill',
-                'desc'       => gT('View dashboard'),
-                'page'       => 'welcome',
-                'usergroup'  => '-1',
-                'buttontext' => gt('View dashboard')
-            ]);
+        }
+
+        //Adjust some menu titles
+        $participantsEntry = $db->select("*")->from("{{surveymenu_entries}}")->where('name=:name', [':name' => 'participants'])->query()->rowCount;
+        if ($participantsEntry) {
+            $this->db->createCommand()->update(
+                '{{surveymenu_entries}}',
+                [ "menu_title" => "Participants"],
+                'name=:name',
+                [':name' => 'participants']
+            );
+        }
+
+        $generalEntry = $db->select("*")->from("{{surveymenu_entries}}")->where('name=:name', [':name' => 'generalsettings'])->query()->rowCount;
+        if ($generalEntry) {
+            $this->db->createCommand()->update(
+                '{{surveymenu_entries}}',
+                ["menu_title" => "General"],
+                'name=:name',
+                [':name' => 'generalsettings']
+            );
         }
     }
 }
