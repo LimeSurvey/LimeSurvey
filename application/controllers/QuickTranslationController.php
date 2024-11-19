@@ -1,9 +1,9 @@
 <?php
+
 use Anper\Iuliia\Iuliia;
 
 class QuickTranslationController extends LSBaseController
 {
- 
     /**
      * Here we have to use the correct layout (NOT main.php)
      *
