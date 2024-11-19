@@ -17,7 +17,7 @@ The progress bar is a Bootstrap progress bar.
 #}
 {# do not show if : All in one or is not Y or on aCompleted #}
 {% if aSurveyInfo.showprogress == 'Y' and aSurveyInfo.format != 'A' and not aSurveyInfo.aCompleted %}
-    {% set progressValue  = aSurveyInfo.progress.value %}
+    {% set progressValue  = ( aSurveyInfo.progress.total > 0 ) ? intval( (aSurveyInfo.progress.currentstep - 1) / aSurveyInfo.progress.total * 100 ) : 0 %}
     <!-- Top container -->
     <div class="{{ aSurveyInfo.class.topcontainer }} container-fluid" {{ aSurveyInfo.attr.topcontainer }} >
         <div class="row justify-content-center">

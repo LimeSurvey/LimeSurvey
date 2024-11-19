@@ -32,7 +32,7 @@ if (!defined('BASEPATH')) {
 * @param null $debugSrc unused
 * @param null $anonymized unused (all done in EM now)
 * @param integer|null $questionNum - needed to support dynamic JavaScript-based tailoring within questions
-* @param null|void $registerdata - deprecated
+* @param void $registerdata - deprecated
 * @param boolean bStaticReplacement - Default off, forces non-dynamic replacements without <SPAN> tags (e.g. for the Completed page)
 * @param object|string - the template object to be used
 * @return string Text with replaced strings

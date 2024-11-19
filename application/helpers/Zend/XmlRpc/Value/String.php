@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Zend Framework
  *
@@ -15,11 +16,10 @@
  * @category   Zend
  * @package    Zend_XmlRpc
  * @subpackage Value
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id$
+ * @version    $Id: String.php 23775 2011-03-01 17:25:24Z ralph $
  */
-
 
 /**
  * Zend_XmlRpc_Value_Scalar
@@ -29,7 +29,7 @@ require_once 'Zend/XmlRpc/Value/Scalar.php';
 /**
  * @package    Zend_XmlRpc
  * @subpackage Value
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_XmlRpc_Value_String extends Zend_XmlRpc_Value_Scalar
@@ -45,7 +45,7 @@ class Zend_XmlRpc_Value_String extends Zend_XmlRpc_Value_Scalar
         $this->_type = self::XMLRPC_TYPE_STRING;
 
         // Make sure this value is string and all XML characters are encoded
-        $this->_value = (string)$value;
+        $this->_value = (string) $value;
     }
 
     /**
@@ -55,6 +55,6 @@ class Zend_XmlRpc_Value_String extends Zend_XmlRpc_Value_Scalar
      */
     public function getValue()
     {
-        return (string)$this->_value;
+        return (string) $this->_value;
     }
 }

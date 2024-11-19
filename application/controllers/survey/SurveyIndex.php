@@ -651,7 +651,7 @@ class SurveyIndex extends CAction
             resetQuestionTimers($surveyid);
         }
 
-        sendSurveyHttpHeaders();
+        sendCacheHeaders();
 
         //Send local variables to the appropriate survey type
         unset($redata);

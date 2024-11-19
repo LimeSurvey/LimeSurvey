@@ -66,7 +66,7 @@
     <!-- Delete -->
     <?php if ($oSurvey->active !== 'Y') : ?>
         <li>
-            <button
+            <a href="#" onclick="return false;"
                 class="dropdown-item"
                 data-bs-toggle="modal"
                 data-bs-target="#confirmation-modal"
@@ -74,18 +74,18 @@
                 data-title="<?= gt('Delete this question') ?>"
                 data-btntext="<?= gt('Delete') ?>"
                 data-onclick='(function() { <?php echo convertGETtoPOST(Yii::app()->createUrl("questionAdministration/delete/", ["qid" => $qid, "redirectTo" => "groupoverview"])); ?>})'
-                data-message="<?php echo CHtml::encode(gT("Deleting this question will also delete any answer options and subquestions it includes. Are you sure you want to continue?", "unescaped")); ?>"
+                data-message="<?php eT("Deleting this question will also delete any answer options and subquestions it includes. Are you sure you want to continue?", "js"); ?>"
             >
                 <span class="ri-delete-bin-fill text-danger"></span>
                 <?php eT("Delete question"); ?>
-            </button>
+            </a>
         </li>
     <?php else : ?>
-        <li class="disabled" title="<?php eT("You can't delete a question if the survey is active.");?>">
-            <button class="btntooltip dropdown-item" disabled data-bs-toggle="tooltip" data-bs-placement="bottom" disabled>
+        <li class="disabled">
+            <a class="btntooltip dropdown-item" disabled data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php eT("You can't delete a question if the survey is active."); ?>">
                 <span class="ri-delete-bin-fill text-danger"></span>
                 <?php eT("Delete question"); ?>
-            </button>
+            </a>
         </li>
     <?php endif; ?>
 <?php endif; ?>

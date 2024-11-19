@@ -1520,7 +1520,7 @@ class DataEntry extends SurveyCommonAction
 
         $surveyid = (int) ($surveyid);
         $survey = Survey::model()->findByPk($surveyid);
-        if (!$survey || !$survey->getIsActive()) {
+        if (!$survey->getIsActive()) {
             throw new CHttpException(404, gT("Invalid survey ID"));
         }
         $id = (int)Yii::app()->request->getPost('id');
@@ -1577,8 +1577,7 @@ class DataEntry extends SurveyCommonAction
             }
             switch ($irow['type']) {
                 case 'lastpage':
-                case 'seed':
-                    // Not updated : not in view or as disabled
+                    // Last page not updated : not in view
                     break;
                 case Question::QT_D_DATE:
                     if (empty($thisvalue)) {

@@ -21,6 +21,6 @@ class EMWarningInvalidComparison extends EMWarningBase
     {
         $this->token = $token;
         $this->msg = gT("This expression uses a possibly invalid comparison. Are you sure you didn't mean to do a numerical comparison? See manual for more information.", 'unescaped');
-        $this->helpLink = "https://www.limesurvey.org/manual/Expression_Manager#Warning_with_mismatch_between_number_and_string_and_alphabetic_comparison";
+        $this->helpLink = "https://manual.limesurvey.org/Expression_Manager#Warning_with_mismatch_between_number_and_string_and_alphabetic_comparison";
     }
 }

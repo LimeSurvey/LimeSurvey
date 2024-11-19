@@ -1,4 +1,4 @@
-/*! js-cookie v3.0.1 | MIT */
+/*! js-cookie v3.0.5 | MIT */
 /* eslint-disable no-var */
 function assign (target) {
   for (var i = 1; i < arguments.length; i++) {
@@ -31,7 +31,7 @@ var defaultConverter = {
 /* eslint-disable no-var */
 
 function init (converter, defaultAttributes) {
-  function set (key, value, attributes) {
+  function set (name, value, attributes) {
     if (typeof document === 'undefined') {
       return
     }
@@ -45,7 +45,7 @@ function init (converter, defaultAttributes) {
       attributes.expires = attributes.expires.toUTCString();
     }
 
-    key = encodeURIComponent(key)
+    name = encodeURIComponent(name)
       .replace(/%(2[346B]|5E|60|7C)/g, decodeURIComponent)
       .replace(/[()]/g, escape);
 
@@ -72,11 +72,11 @@ function init (converter, defaultAttributes) {
     }
 
     return (document.cookie =
-      key + '=' + converter.write(value, key) + stringifiedAttributes)
+      name + '=' + converter.write(value, name) + stringifiedAttributes)
   }
 
-  function get (key) {
-    if (typeof document === 'undefined' || (arguments.length && !key)) {
+  function get (name) {
+    if (typeof document === 'undefined' || (arguments.length && !name)) {
       return
     }
 
@@ -89,25 +89,25 @@ function init (converter, defaultAttributes) {
       var value = parts.slice(1).join('=');
 
       try {
-        var foundKey = decodeURIComponent(parts[0]);
-        jar[foundKey] = converter.read(value, foundKey);
+        var found = decodeURIComponent(parts[0]);
+        jar[found] = converter.read(value, found);
 
-        if (key === foundKey) {
+        if (name === found) {
           break
         }
       } catch (e) {}
     }
 
-    return key ? jar[key] : jar
+    return name ? jar[name] : jar
   }
 
   return Object.create(
     {
-      set: set,
-      get: get,
-      remove: function (key, attributes) {
+      set,
+      get,
+      remove: function (name, attributes) {
         set(
-          key,
+          name,
           '',
           assign({}, attributes, {
             expires: -1
@@ -131,4 +131,4 @@ function init (converter, defaultAttributes) {
 var api = init(defaultConverter, { path: '/' });
 /* eslint-enable no-var */
 
-export default api;
+export { api as default };

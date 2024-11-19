@@ -5,7 +5,9 @@
 /* @var QuotaLanguageSetting[] $aQuotaLanguageSettings */
 ?>
 <?php $form = $this->beginWidget('CActiveForm', ['id' => 'editquota',]); ?>
-<?php $this->widget('ext.AlertWidget.AlertWidget', ['errorSummaryModel' => $oQuota]); ?>
+<?php
+$this->widget('ext.AlertWidget.AlertWidget', ['errorSummaryModel' => $oQuota]);
+?>
 
 <div class="row">
     <div class="col-xl-4">
@@ -31,10 +33,8 @@
             <div class=''>
                 <?php echo $form->dropDownList($oQuota, 'action',
                     [
-                        Quota::TERMINATE_VISIBLE_QUOTA_QUESTIONS            => gT("Terminate after related visible question was submitted"),
-                        Quota::TERMINATE_VISIBLE_AND_HIDDEN_QUOTA_QUESTIONS => gT("Terminate after related visible and hidden questions were submitted"),
-                        Quota::TERMINATE_ALL_PAGES                          => gT("Terminate after all page submissions"),
-                        Quota::SOFT_TERMINATE_VISIBLE_QUOTA_QUESTIONS       => gT("Soft terminate after related visible question was submitted, answer will be editable"),
+                        Quota::ACTION_TERMINATE         => gT("Terminate survey"),
+                        Quota::ACTION_CONFIRM_TERMINATE => gT("Allow user to modify their last answers before terminating the survey."),
                     ],
                     ['class' => 'form-select']); ?>
                 <?php echo $form->error($oQuota, 'action'); ?>

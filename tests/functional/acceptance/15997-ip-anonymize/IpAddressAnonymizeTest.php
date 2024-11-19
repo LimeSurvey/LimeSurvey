@@ -34,97 +34,81 @@ class IpAddressAnonymizeTest extends TestBaseClassWeb
      */
     public function testIpAnonymizeInActiveSurvey()
     {
-        try {
-            $surveyFile = self::$surveysFolder . '/limesurvey_survey_573837.lss';
-            self::importSurvey($surveyFile);
+        $surveyFile = self::$surveysFolder . '/limesurvey_survey_573837.lss';
+        self::importSurvey($surveyFile);
 
-            $urlMan = \Yii::app()->urlManager;
-            $urlMan->setBaseUrl('http://' . self::$domain . '/index.php');
-            $url = $urlMan->createUrl(
-                'surveyAdministration/view/surveyid/' . self::$surveyId
-            );
-            self::$webDriver->get($url);
-            sleep(1);
+        $urlMan = \Yii::app()->urlManager;
+        $urlMan->setBaseUrl('http://' . self::$domain . '/index.php');
+        $url = $urlMan->createUrl(
+            'surveyAdministration/view/surveyid/'.self::$surveyId
+        );
+        self::$webDriver->get($url);
+        sleep(1);
 
-            self::$webDriver->dismissModal();
+        self::$webDriver->dismissModal();
 
-            // Click "Activate survey".
-            $overview = self::$webDriver->wait(20)->until(
-                WebDriverExpectedCondition::presenceOfElementLocated(
-                    WebDriverBy::id('ls-activate-survey')
-                )
-            );
-            $overview->click();
+        // Click "Activate survey".
+        $overview = self::$webDriver->findElement(WebDriverBy::id('ls-activate-survey'));
+        $overview->click();
 
-            sleep(1);
+        sleep(1);
 
-            //activate survey in open-access mode
-            //modal has been opend, activate survey in open-access mode
-            $overview = self::$webDriver->wait(20)->until(
-                WebDriverExpectedCondition::presenceOfElementLocated(
-                    WebDriverBy::id('saveactivateBtn')
-                )
-            );
-            $overview->click();
+        //activate survey in open-access mode
+        //modal has been opend, activate survey in open-access mode
+        $overview = self::$webDriver->findElement(WebDriverBy::id('saveactivateBtn'));
+        $overview->click();
 
-            /**
-             *
-             * // Confirm.
-             * $overview = self::$webDriver->wait(5)->until(
-             * WebDriverExpectedCondition::presenceOfElementLocated(
-             * WebDriverBy::id('activateSurvey__basicSettings--proceed')
-             * )
-             * );
-             * $overview->click();
-             *
-             * // Click "No, thanks"
-             * $overview = $exceuteBtn = self::$webDriver->wait(5)->until(
-             * WebDriverExpectedCondition::presenceOfElementLocated(
-             * WebDriverBy::id('activateTokenTable__selector--no')
-             * )
-             * );
-             * $overview->click();
-             *
-             * */
+        /**
 
-            sleep(1);
-            // Click "Run survey".
-            $exceuteBtn = self::$webDriver->wait(20)->until(
-                WebDriverExpectedCondition::presenceOfElementLocated(
-                    WebDriverBy::id('execute_survey_button')
-                )
-            );
-            $exceuteBtn->click();
+        // Confirm.
+        $overview = self::$webDriver->wait(5)->until(
+            WebDriverExpectedCondition::presenceOfElementLocated(
+                WebDriverBy::id('activateSurvey__basicSettings--proceed')
+            )
+        );
+        $overview->click();
 
-            sleep(1);
+        // Click "No, thanks"
+        $overview = $exceuteBtn = self::$webDriver->wait(5)->until(
+            WebDriverExpectedCondition::presenceOfElementLocated(
+                WebDriverBy::id('activateTokenTable__selector--no')
+            )
+        );
+        $overview->click();
+         *
+         * */
 
-            // Switch to new tab.
-            $windowHandles = self::$webDriver->getWindowHandles();
-            self::$webDriver->switchTo()->window(
-                end($windowHandles)
-            );
+        sleep(1);
+        // Click "Run survey".
+        $exceuteBtn = self::$webDriver->wait(20)->until(
+            WebDriverExpectedCondition::presenceOfElementLocated(
+                WebDriverBy::id('execute_survey_button')
+            )
+        );
+        $exceuteBtn->click();
 
-            // New tab with active survey.
-            $nextButton = self::$webDriver->wait(10)->until(
-                WebDriverExpectedCondition::presenceOfElementLocated(
-                    WebDriverBy::id('ls-button-submit')
-                )
-            );
-            $nextButton->click();
-            sleep(2);
+        sleep(1);
 
-            //now check if ip was anonymized (ipv4, last digit should be 0)
-            //get ipadr from table survey_573837 ...
-            $models = \Response::model(self::$surveyId)->findAll();
+        // Switch to new tab.
+        $windowHandles = self::$webDriver->getWindowHandles();
+        self::$webDriver->switchTo()->window(
+            end($windowHandles)
+        );
 
-            $this->assertTrue((isset($models[0]->ipaddr)) && ($models[0]->ipaddr === '127.0.0.0'));
-        }  catch (\Exception $e) {
-            self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '_' . __FUNCTION__);
-            $this->assertFalse(
-                true,
-                self::$testHelper->javaTrace($e)
-            );
-        }
+        // New tab with active survey.
+        $nextButton = self::$webDriver->wait(10)->until(
+            WebDriverExpectedCondition::presenceOfElementLocated(
+                WebDriverBy::id('ls-button-submit')
+            )
+        );
+        $nextButton->click();
+        sleep(2);
+
+        //now check if ip was anonymized (ipv4, last digit should be 0)
+        //get ipadr from table survey_573837 ...
+        $models = \Response::model(self::$surveyId)->findAll();
+
+        $this->assertTrue((isset($models[0]->ipaddr)) && ($models[0]->ipaddr==='127.0.0.0'));
     }
 
     /**
@@ -132,97 +116,89 @@ class IpAddressAnonymizeTest extends TestBaseClassWeb
      */
     public function testNormalActiveSurvey()
     {
-        try {
-            $surveyFile = self::$surveysFolder . '/limesurvey_survey_573837.lss';
-            self::importSurvey($surveyFile);
+        $surveyFile = self::$surveysFolder . '/limesurvey_survey_573837.lss';
+        self::importSurvey($surveyFile);
 
-            $urlMan = \Yii::app()->urlManager;
-            $urlMan->setBaseUrl('http://' . self::$domain . '/index.php');
-            $url = $urlMan->createUrl(
-                'surveyAdministration/view/surveyid/' . self::$surveyId
-            );
-            self::$webDriver->get($url);
-            sleep(1);
+        $urlMan = \Yii::app()->urlManager;
+        $urlMan->setBaseUrl('http://' . self::$domain . '/index.php');
+        $url = $urlMan->createUrl(
+            'surveyAdministration/view/surveyid/'.self::$surveyId
+        );
+        self::$webDriver->get($url);
+        sleep(1);
 
-            self::$webDriver->dismissModal();
+        self::$webDriver->dismissModal();
 
-            //set ipanonymize to off ...
-            $survey = \Survey::model()->findByPk(self::$surveyId);
-            $survey->ipanonymize = 'N';
-            $survey->save();
+        //set ipanonymize to off ...
+        $survey = \Survey::model()->findByPk(self::$surveyId);
+        $survey->ipanonymize = 'N';
+        $survey->save();
 
-            // Click "Activate survey".
-            $overview = self::$webDriver->wait(5)->until(
-                WebDriverExpectedCondition::presenceOfElementLocated(
-                    WebDriverBy::id('ls-activate-survey')
-                )
-            );
-            $overview->click();
+        // Click "Activate survey".
+        $overview = self::$webDriver->wait(5)->until(
+            WebDriverExpectedCondition::presenceOfElementLocated(
+                WebDriverBy::id('ls-activate-survey')
+            )
+        );
+        $overview->click();
 
-            //modal has been opend, activate survey in open-access mode
-            $overview = self::$webDriver->wait(5)->until(
-                WebDriverExpectedCondition::visibilityOfElementLocated(
-                    WebDriverBy::id('saveactivateBtn')
-                )
-            );
-            $overview->click();
+        //modal has been opend, activate survey in open-access mode
+        $overview = self::$webDriver->wait(5)->until(
+            WebDriverExpectedCondition::visibilityOfElementLocated(
+                WebDriverBy::id('saveactivateBtn')
+            )
+        );
+        $overview->click();
 
-            /**
-             * // Confirm.
-             * $overview = self::$webDriver->wait(10)->until(
-             * WebDriverExpectedCondition::presenceOfElementLocated(
-             * WebDriverBy::id('activateSurvey__basicSettings--proceed')
-             * )
-             * );
-             * $overview->click();
-             *
-             * // Click "No, thanks"
-             * $overview = self::$webDriver->wait(10)->until(
-             * WebDriverExpectedCondition::presenceOfElementLocated(
-             * WebDriverBy::id('activateTokenTable__selector--no')
-             * )
-             * );
-             * $overview->click();
-             *
-             * */
+        /**
+        // Confirm.
+        $overview = self::$webDriver->wait(10)->until(
+            WebDriverExpectedCondition::presenceOfElementLocated(
+                WebDriverBy::id('activateSurvey__basicSettings--proceed')
+            )
+        );
+        $overview->click();
 
-            sleep(1);
-            // Click "Run survey".
-            $exceuteBtn = self::$webDriver->wait(5)->until(
-                WebDriverExpectedCondition::presenceOfElementLocated(
-                    WebDriverBy::id('execute_survey_button')
-                )
-            );
-            $exceuteBtn->click();
+        // Click "No, thanks"
+        $overview = self::$webDriver->wait(10)->until(
+            WebDriverExpectedCondition::presenceOfElementLocated(
+                WebDriverBy::id('activateTokenTable__selector--no')
+            )
+        );
+        $overview->click();
+         *
+         * */
 
-            sleep(1);
+        sleep(1);
+        // Click "Run survey".
+        $exceuteBtn = self::$webDriver->wait(5)->until(
+            WebDriverExpectedCondition::presenceOfElementLocated(
+                WebDriverBy::id('execute_survey_button')
+            )
+        );
+        $exceuteBtn->click();
 
-            // Switch to new tab.
-            $windowHandles = self::$webDriver->getWindowHandles();
-            self::$webDriver->switchTo()->window(
-                end($windowHandles)
-            );
+        sleep(1);
+
+        // Switch to new tab.
+        $windowHandles = self::$webDriver->getWindowHandles();
+        self::$webDriver->switchTo()->window(
+            end($windowHandles)
+        );
 
 
-            // New tab with active survey.
-            $nextButton = self::$webDriver->wait(20)->until(
-                WebDriverExpectedCondition::presenceOfElementLocated(
-                    WebDriverBy::id('ls-button-submit')
-                )
-            );
-            $nextButton->click();
+        // New tab with active survey.
+        $nextButton = self::$webDriver->wait(20)->until(
+            WebDriverExpectedCondition::presenceOfElementLocated(
+                WebDriverBy::id('ls-button-submit')
+            )
+        );
+        $nextButton->click();
 
-            sleep(2);
+        sleep(2);
 
-            $models = \Response::model(self::$surveyId)->findAll();
+        $models = \Response::model(self::$surveyId)->findAll();
 
-            $this->assertTrue((isset($models[0]->ipaddr)) && ($models[0]->ipaddr === '127.0.0.1'));
-        }  catch (\Exception $e) {
-            self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '_' . __FUNCTION__);
-            $this->assertFalse(
-                true,
-                self::$testHelper->javaTrace($e)
-            );
-        }
+        $this->assertTrue((isset($models[0]->ipaddr)) && ($models[0]->ipaddr==='127.0.0.1'));
     }
 }

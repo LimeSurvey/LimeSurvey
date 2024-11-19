@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Zend Framework
  *
@@ -14,9 +15,9 @@
  *
  * @package    Zend_XmlRpc
  * @subpackage Server
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id$
+ * @version    $Id: Fault.php 23775 2011-03-01 17:25:24Z ralph $
  */
 
 /**
@@ -36,7 +37,7 @@ require_once 'Zend/XmlRpc/Value.php';
  *
  * @category   Zend
  * @package    Zend_XmlRpc
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_XmlRpc_Fault
@@ -63,7 +64,7 @@ class Zend_XmlRpc_Fault
      * Internal fault codes => messages
      * @var array
      */
-    protected $_internal = [
+    protected $_internal = array(
         404 => 'Unknown Error',
 
         // 610 - 619 reflection errors
@@ -95,12 +96,12 @@ class Zend_XmlRpc_Fault
         651 => 'Failed to parse response',
         652 => 'Invalid response',
         653 => 'Invalid XMLRPC value in response',
-    ];
+    );
 
     /**
      * Constructor
      *
-     * @return void
+     * @return Zend_XmlRpc_Fault
      */
     public function __construct($code = 404, $message = '')
     {
@@ -140,7 +141,7 @@ class Zend_XmlRpc_Fault
     /**
      * Retrieve fault message
      *
-     * @param string $message
+     * @param string
      * @return Zend_XmlRpc_Fault
      */
     public function setMessage($message)
@@ -203,7 +204,7 @@ class Zend_XmlRpc_Fault
         } catch (Exception $e) {
             // Not valid XML
             require_once 'Zend/XmlRpc/Exception.php';
-            throw new Zend_XmlRpc_Exception('Failed to parse XML fault: ' .  $e->getMessage(), 500, $e);
+            throw new Zend_XmlRpc_Exception('Failed to parse XML fault: ' . $e->getMessage(), 500, $e);
         }
 
         // Check for fault
@@ -279,18 +280,18 @@ class Zend_XmlRpc_Fault
     public function saveXml()
     {
         // Create fault value
-        $faultStruct = [
+        $faultStruct = array(
             'faultCode'   => $this->getCode(),
             'faultString' => $this->getMessage()
-        ];
+        );
         $value = Zend_XmlRpc_Value::getXmlRpcValue($faultStruct);
 
         $generator = Zend_XmlRpc_Value::getGenerator();
         $generator->openElement('methodResponse')
-                  ->openElement('fault');
+                    ->openElement('fault');
         $value->generateXml();
         $generator->closeElement('fault')
-                  ->closeElement('methodResponse');
+                    ->closeElement('methodResponse');
 
         return $generator->flush();
     }
@@ -302,6 +303,6 @@ class Zend_XmlRpc_Fault
      */
     public function __toString()
     {
-        return $this->saveXml();
+        return $this->saveXML();
     }
 }

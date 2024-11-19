@@ -11,12 +11,13 @@ use LimeSurvey\Api\Transformer\Formatter\FormatterMandatory;
 class FormatterMandatoryTest extends TestBaseClass
 {
     /**
-     * @testdox keeps S
+     * @testdox formats null to S
      */
-    public function testKeepsS()
+    public function testConvertsNullToS()
     {
         $formatter = new FormatterMandatory();
-        $this->assertEquals('S', $formatter->format('S', ['revert' => true]));
+        $config = $this->getConfig();
+        $this->assertEquals('S', $formatter->format(null, $config));
     }
 
     /**
@@ -25,7 +26,8 @@ class FormatterMandatoryTest extends TestBaseClass
     public function testConvertsTrueToY()
     {
         $formatter = new FormatterMandatory();
-        $this->assertEquals('Y', $formatter->format(true, ['revert' => true]));
+        $config = $this->getConfig();
+        $this->assertEquals('Y', $formatter->format(true, $config));
     }
 
     /**
@@ -34,6 +36,14 @@ class FormatterMandatoryTest extends TestBaseClass
     public function testConvertsFalseToN()
     {
         $formatter = new FormatterMandatory();
-        $this->assertEquals('N', $formatter->format(false, ['revert' => true]));
+        $config = $this->getConfig();
+        $this->assertEquals('N', $formatter->format(false, $config));
+    }
+
+    private function getConfig()
+    {
+        return [
+            'formatter' => ['mandatory' => true]
+        ];
     }
 }

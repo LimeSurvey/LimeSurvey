@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Zend Framework
  *
@@ -18,6 +19,7 @@
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
+
 require_once 'Zend/Http/UserAgent/AbstractDevice.php';
 
 /**
@@ -38,7 +40,7 @@ class Zend_Http_UserAgent_Bot extends Zend_Http_UserAgent_AbstractDevice
      *
      * @var array
      */
-    protected static $_uaSignatures = [
+    protected static $_uaSignatures = array(
         // The most common ones.
         'googlebot',
         'msnbot',
@@ -103,7 +105,7 @@ class Zend_Http_UserAgent_Bot extends Zend_Http_UserAgent_AbstractDevice
         'yahoo! slurp',
         'yandex',
         'zyborg',
-    ];
+    );
 
     /**
      * Comparison of the UserAgent chain and browser signatures

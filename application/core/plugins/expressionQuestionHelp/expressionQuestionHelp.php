@@ -36,7 +36,7 @@ class expressionQuestionHelp extends PluginBase
 
     /**
      * Add the question.help if exist in existing knowVars
-     * @link https://www.limesurvey.org/manual/ExpressionManagerStart
+     * @link https://manual.limesurvey.org/ExpressionManagerStart
      */
     public function addQuestionHelp()
     {

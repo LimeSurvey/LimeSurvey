@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Zend Framework
  *
@@ -15,9 +16,9 @@
  * @category   Zend
  * @package    Zend_XmlRpc
  * @subpackage Server
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id$
+ * @version    $Id: Server.php 23775 2011-03-01 17:25:24Z ralph $
  */
 
 /**
@@ -111,16 +112,11 @@ require_once 'Zend/Server/Reflection/Method.php';
  * @category   Zend
  * @package    Zend_XmlRpc
  * @subpackage Server
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_XmlRpc_Server extends Zend_Server_Abstract
 {
-    /**
-     * @var mixed|\Zend_XmlRpc_Server_System
-     */
-    protected $_system;
-
     /**
      * Character encoding
      * @var string
@@ -149,7 +145,7 @@ class Zend_XmlRpc_Server extends Zend_Server_Abstract
      * PHP types => XML-RPC types
      * @var array
      */
-    protected $_typeMap = [
+    protected $_typeMap = array(
         'i4'                         => 'i4',
         'int'                        => 'int',
         'integer'                    => 'int',
@@ -169,7 +165,6 @@ class Zend_XmlRpc_Server extends Zend_Server_Abstract
         'dateTime.iso8601'           => 'dateTime.iso8601',
         'date'                       => 'dateTime.iso8601',
         'time'                       => 'dateTime.iso8601',
-        'time'                       => 'dateTime.iso8601',
         'Zend_Date'                  => 'dateTime.iso8601',
         'DateTime'                   => 'dateTime.iso8601',
         'array'                      => 'array',
@@ -179,7 +174,7 @@ class Zend_XmlRpc_Server extends Zend_Server_Abstract
         'ex:nil'                     => 'nil',
         'void'                       => 'void',
         'mixed'                      => 'struct',
-    ];
+    );
 
     /**
      * Send arguments to all methods or just constructor?
@@ -216,7 +211,7 @@ class Zend_XmlRpc_Server extends Zend_Server_Abstract
             require_once 'Zend/XmlRpc/Server/Exception.php';
             throw new Zend_XmlRpc_Server_Exception('Unknown instance method called on server: ' . $method);
         }
-        return call_user_func_array([$system, $method], $params);
+        return call_user_func_array(array($system, $method), $params);
     }
 
     /**
@@ -283,13 +278,13 @@ class Zend_XmlRpc_Server extends Zend_Server_Abstract
             throw new Zend_XmlRpc_Server_Exception('Invalid method class', 610);
         }
 
-        $args = null;
+        $argv = null;
         if (2 < func_num_args()) {
-            $args = func_get_args();
-            $args = array_slice($args, 2);
+            $argv = func_get_args();
+            $argv = array_slice($argv, 2);
         }
 
-        $dispatchable = Zend_Server_Reflection::reflectClass($class, $args, $namespace);
+        $dispatchable = Zend_Server_Reflection::reflectClass($class, $argv, $namespace);
         foreach ($dispatchable->getMethods() as $reflection) {
             $this->_buildSignature($reflection, $class);
         }
@@ -325,7 +320,8 @@ class Zend_XmlRpc_Server extends Zend_Server_Abstract
     public function handle($request = false)
     {
         // Get request
-        if ((!$request || !$request instanceof Zend_XmlRpc_Request)
+        if (
+            (!$request || !$request instanceof Zend_XmlRpc_Request)
             && (null === ($request = $this->getRequest()))
         ) {
             require_once 'Zend/XmlRpc/Request/Http.php';
@@ -464,12 +460,10 @@ class Zend_XmlRpc_Server extends Zend_Server_Abstract
      */
     public function setResponseClass($class)
     {
-        /**
-         * IMPORTANT: The if condition has been fixed in LimeSurvey as it was failing without the parenthesis in the assignment.
-         */
-        if (!class_exists($class) ||
-            (($c = new ReflectionClass($class)) && !$c->isSubclassOf('Zend_XmlRpc_Response'))) {
-
+        if (
+            !class_exists($class) or
+            ($c = new ReflectionClass($class) and !$c->isSubclassOf('Zend_XmlRpc_Response'))
+        ) {
             require_once 'Zend/XmlRpc/Server/Exception.php';
             throw new Zend_XmlRpc_Server_Exception('Invalid response class');
         }
@@ -527,6 +521,7 @@ class Zend_XmlRpc_Server extends Zend_Server_Abstract
      * how to handle arguments. If set to true, all methods including constructor
      * will receive the arguments. If set to false, only constructor will receive the
      * arguments
+     * @param boolean $flag
      */
     public function sendArgumentsToAllMethods($flag = null)
     {
@@ -534,7 +529,7 @@ class Zend_XmlRpc_Server extends Zend_Server_Abstract
             return $this->_sendArgumentsToAllMethods;
         }
 
-        $this->_sendArgumentsToAllMethods = (bool)$flag;
+        $this->_sendArgumentsToAllMethods = (bool) $flag;
         return $this;
     }
 
@@ -557,7 +552,7 @@ class Zend_XmlRpc_Server extends Zend_Server_Abstract
      *
      * @param Zend_XmlRpc_Request $request
      * @return Zend_XmlRpc_Response
-     * @throws Zend_XmlRpcServer_Exception|Exception
+     * @throws Zend_XmlRpc_Server_Exception|Exception
      * Zend_XmlRpcServer_Exceptions are thrown for internal errors; otherwise,
      * any other exception may be thrown by the callback
      */
@@ -574,7 +569,7 @@ class Zend_XmlRpc_Server extends Zend_Server_Abstract
         $info     = $this->_table->getMethod($method);
         $params   = $request->getParams();
         $argv     = $info->getInvokeArguments();
-        if (0 < count($argv) && $this->sendArgumentsToAllMethods()) {
+        if (0 < count($argv) and $this->sendArgumentsToAllMethods()) {
             $params = array_merge($params, $argv);
         }
 

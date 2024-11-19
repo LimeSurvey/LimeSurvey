@@ -35,8 +35,8 @@ $surveyList
 Specify which debugging features to use
 <ul>
 <li><input type='checkbox' name='LEM_DEBUG_TIMING' id='LEM_DEBUG_TIMING' value='Y'/>Detailed Timing</li>
-<li><input type='checkbox' name='LEM_DEBUG_VALIDATION_SUMMARY' id='LEM_DEBUG_VALIDATION_SUMMARY' value='Y' checked="checked"/>Validation summary</li>
-<li><input type='checkbox' name='LEM_DEBUG_VALIDATION_DETAIL' id='LEM_DEBUG_VALIDATION_DETAIL' value='Y' checked="checked"/>Validation Detail (Validation summary must also be checked to see detail)</li>
+<li><input type='checkbox' name='LEM_DEBUG_VALIDATION_SUMMARY' id='LEM_DEBUG_VALIDATION_SUMMARY' value='Y' checked="checked"/>Validation Summary</li>
+<li><input type='checkbox' name='LEM_DEBUG_VALIDATION_DETAIL' id='LEM_DEBUG_VALIDATION_DETAIL' value='Y' checked="checked"/>Validation Detail (Validation Summary must also be checked to see detail)</li>
 <li><input type='checkbox' name='LEM_PRETTY_PRINT_ALL_SYNTAX' id='LEM_PRETTY_PRINT_ALL_SYNTAX' value='Y' checked="checked"/>Pretty Print Syntax</li>
 <li><input type='checkbox' name='deletenonvalues' id='deletenonvalues' value='Y' checked="checked"/>Delete non-relevant values</li>
 </ul></td>

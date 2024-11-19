@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Zend Framework
  *
@@ -42,7 +43,7 @@ class Zend_Http_UserAgent_Mobile extends Zend_Http_UserAgent_AbstractDevice
      *
      * @var array
      */
-    protected static $_uaSignatures = [
+    protected static $_uaSignatures = array(
         'iphone',
         'ipod',
         'ipad',
@@ -162,25 +163,25 @@ class Zend_Http_UserAgent_Mobile extends Zend_Http_UserAgent_AbstractDevice
         'j2me',
         'klondike',
         'kbrowser'
-    ];
+    );
 
     /**
      * @var array
      */
-    protected static $_haTerms = [
+    protected static $_haTerms = array(
         'midp',
         'wml',
         'vnd.rim',
         'vnd.wap',
         'j2me',
-    ];
+    );
 
     /**
      * first 4 letters of mobile User Agent chains
      *
      * @var array
      */
-    protected static $_uaBegin = [
+    protected static $_uaBegin = array(
         'w3c ',
         'acs-',
         'alav',
@@ -266,7 +267,7 @@ class Zend_Http_UserAgent_Mobile extends Zend_Http_UserAgent_AbstractDevice
         'winw',
         'xda',
         'xda-',
-    ];
+    );
 
     /**
      * Comparison of the UserAgent chain and User Agent signatures
@@ -279,7 +280,7 @@ class Zend_Http_UserAgent_Mobile extends Zend_Http_UserAgent_AbstractDevice
     {
         //  To have a quick identification, try light-weight tests first
         if (isset($server['all_http'])) {
-            if (strpos(strtolower(str_replace(' ', '', $server['all_http'])), 'operam') !== false) {
+            if (strpos(strtolower(str_replace(' ', '', (string) $server['all_http'])), 'operam') !== false) {
                 // Opera Mini or Opera Mobi
                 return true;
             }
@@ -310,7 +311,7 @@ class Zend_Http_UserAgent_Mobile extends Zend_Http_UserAgent_AbstractDevice
      * Retrieve beginning clause of user agent
      *
      * @param  string $userAgent
-     * @return bool
+     * @return string
      */
     public static function userAgentStart($userAgent)
     {
@@ -325,7 +326,7 @@ class Zend_Http_UserAgent_Mobile extends Zend_Http_UserAgent_AbstractDevice
      *
      * @return void
      */
-    public function __construct($userAgent = null, array $server = [], array $config = [])
+    public function __construct($userAgent = null, array $server = array(), array $config = array())
     {
         // For mobile detection, an adapter must be defined
         if (empty($config['mobile']['features'])) {
@@ -348,7 +349,7 @@ class Zend_Http_UserAgent_Mobile extends Zend_Http_UserAgent_AbstractDevice
     /**
      * Look for features
      *
-     * @return array
+     * @return string
      */
     protected function _defineFeatures()
     {
@@ -366,7 +367,8 @@ class Zend_Http_UserAgent_Mobile extends Zend_Http_UserAgent_AbstractDevice
         }
 
         // markup
-        if ($this->getFeature('device_os') == 'iPhone OS'
+        if (
+            $this->getFeature('device_os') == 'iPhone OS'
             || $this->getFeature('device_os_token') == 'iPhone OS'
         ) {
             $this->setFeature('markup', 'iphone');
@@ -375,7 +377,7 @@ class Zend_Http_UserAgent_Mobile extends Zend_Http_UserAgent_AbstractDevice
         }
 
         // image format
-        $this->_images = [];
+        $this->_images = array();
 
         if ($this->getFeature('png')) {
             $this->_images[] = 'png';
@@ -397,7 +399,7 @@ class Zend_Http_UserAgent_Mobile extends Zend_Http_UserAgent_AbstractDevice
      * Determine markup language expected
      *
      * @access public
-     * @return string
+     * @return __TYPE__
      */
     public function getMarkupLanguage($preferredMarkup = null)
     {
@@ -437,7 +439,7 @@ class Zend_Http_UserAgent_Mobile extends Zend_Http_UserAgent_AbstractDevice
     /**
      * Determine maximum image height supported
      *
-     * @return string|null
+     * @return int
      */
     public function getMaxImageHeight()
     {
@@ -447,7 +449,7 @@ class Zend_Http_UserAgent_Mobile extends Zend_Http_UserAgent_AbstractDevice
     /**
      * Determine maximum image width supported
      *
-     * @return string|null
+     * @return int
      */
     public function getMaxImageWidth()
     {
@@ -457,7 +459,7 @@ class Zend_Http_UserAgent_Mobile extends Zend_Http_UserAgent_AbstractDevice
     /**
      * Determine physical screen height
      *
-     * @return string|null
+     * @return int
      */
     public function getPhysicalScreenHeight()
     {
@@ -467,7 +469,7 @@ class Zend_Http_UserAgent_Mobile extends Zend_Http_UserAgent_AbstractDevice
     /**
      * Determine physical screen width
      *
-     * @return string|null
+     * @return int
      */
     public function getPhysicalScreenWidth()
     {
@@ -487,7 +489,7 @@ class Zend_Http_UserAgent_Mobile extends Zend_Http_UserAgent_AbstractDevice
     /**
      * Determine X/HTML support level
      *
-     * @return string|null
+     * @return int
      */
     public function getXhtmlSupportLevel()
     {
@@ -497,7 +499,7 @@ class Zend_Http_UserAgent_Mobile extends Zend_Http_UserAgent_AbstractDevice
     /**
      * Does the device support Flash?
      *
-     * @return string|null
+     * @return bool
      */
     public function hasFlashSupport()
     {
@@ -507,7 +509,7 @@ class Zend_Http_UserAgent_Mobile extends Zend_Http_UserAgent_AbstractDevice
     /**
      * Does the device support PDF?
      *
-     * @return string|null
+     * @return bool
      */
     public function hasPdfSupport()
     {
@@ -517,7 +519,7 @@ class Zend_Http_UserAgent_Mobile extends Zend_Http_UserAgent_AbstractDevice
     /**
      * Does the device have an associated phone number?
      *
-     * @return string|null
+     * @return bool
      */
     public function hasPhoneNumber()
     {

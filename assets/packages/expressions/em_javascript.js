@@ -139,6 +139,9 @@ function fixnum_checkconditions(value, name, type, evt_type, intonly)
         }
 
         var addition = "";
+        if(cleansedValue && cleansedValue.split("").pop().match(/(,)|(\.)/)){
+            addition = cleansedValue.split("").pop();
+        }
 
         var matchFollowingZeroes =  cleansedValue.match(/^-?([0-9])*(,|\.)(0+)$/); /* 1.0 : keep .0 */
         var matchMustGetZeroes =  cleansedValue.match(/^-?([0-9])*(,|\.)([0-9]*)$/); /* Maybe have 0 */

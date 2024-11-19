@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Zend Framework
  *
@@ -14,9 +15,9 @@
  *
  * @category   Zend
  * @package    Zend_Server
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id$
+ * @version    $Id: Cache.php 23775 2011-03-01 17:25:24Z ralph $
  */
 
 /**
@@ -24,7 +25,7 @@
  *
  * @category   Zend
  * @package    Zend_Server
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Server_Cache
@@ -32,7 +33,7 @@ class Zend_Server_Cache
     /**
      * @var array Methods to skip when caching server
      */
-    protected static $_skipMethods = [];
+    protected static $_skipMethods = array();
 
     /**
      * Cache a file containing the dispatch list.
@@ -49,9 +50,10 @@ class Zend_Server_Cache
      */
     public static function save($filename, Zend_Server_Interface $server)
     {
-        if (!is_string($filename)
-            || (!file_exists($filename) && !is_writable(dirname($filename))))
-        {
+        if (
+            !is_string($filename)
+            || (!file_exists($filename) && !is_writable(dirname($filename)))
+        ) {
             return false;
         }
 
@@ -108,10 +110,11 @@ class Zend_Server_Cache
      */
     public static function get($filename, Zend_Server_Interface $server)
     {
-        if (!is_string($filename)
+        if (
+            !is_string($filename)
             || !file_exists($filename)
-            || !is_readable($filename))
-        {
+            || !is_readable($filename)
+        ) {
             return false;
         }
 

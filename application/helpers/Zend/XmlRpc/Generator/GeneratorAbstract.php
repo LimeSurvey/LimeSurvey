@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Zend Framework
  *
@@ -15,9 +16,9 @@
  * @category   Zend
  * @package    Zend_XmlRpc
  * @subpackage Generator
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id$
+ * @version    $Id: GeneratorAbstract.php 23775 2011-03-01 17:25:24Z ralph $
  */
 
 /**
@@ -50,7 +51,7 @@ abstract class Zend_XmlRpc_Generator_GeneratorAbstract
      *
      * @param string $name XML tag name
      * @param string $value Optional value of the XML tag
-     * @return $this
+     * @return self Fluent interface
      */
     public function openElement($name, $value = null)
     {
@@ -68,7 +69,7 @@ abstract class Zend_XmlRpc_Generator_GeneratorAbstract
      * Method marks the end of an XML element
      *
      * @param string $name XML tag name
-     * @return $this
+     * @return self Fluent interface
      */
     public function closeElement($name)
     {

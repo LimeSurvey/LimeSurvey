@@ -407,7 +407,7 @@ class remotecontrol_handle
      * @access public
      * @param string $sSessionKey Auth credentials
      * @param integer $iSurveyID - ID of the Survey
-     * @param struct $aSurveyData - An array with the particular fieldnames as keys and their values to set on that particular Survey
+     * @param array $aSurveyData - An array with the particular fieldnames as keys and their values to set on that particular Survey
      * @return array Of succeeded and failed nodifications according to internal validation
      */
     public function set_survey_properties($sSessionKey, $iSurveyID, $aSurveyData)
@@ -955,7 +955,7 @@ class remotecontrol_handle
      * @access public
      * @param string $sSessionKey Auth credentials
      * @param integer $iSurveyID  - ID of the Survey
-     * @param struct $aSurveyLocaleData - An array with the particular fieldnames as keys and their values to set on that particular survey
+     * @param array $aSurveyLocaleData - An array with the particular fieldnames as keys and their values to set on that particular survey
      * @param string $sLanguage - Optional - Language to update  - if not given the base language of the particular survey is used
      * @return array in case of success 'status'=>'OK', when save successful otherwise error text.
      */
@@ -1134,8 +1134,8 @@ class remotecontrol_handle
      * @param int $iSurveyID The ID of the Survey that the group will belong
      * @param string $sImportData String containing the BASE 64 encoded data of a lsg,csv
      * @param string $sImportDataType  lsg,csv
-     * @param string $sNewGroupName  Optional new name for the group in the survey's base language
-     * @param string $sNewGroupDescription  Optional new description for the group in the survey's base language
+     * @param string $sNewGroupName  Optional new name for the group
+     * @param string $sNewGroupDescription  Optional new description for the group
      * @return array|integer iGroupID  - ID of the new group or status
      */
     public function import_group($sSessionKey, $iSurveyID, $sImportData, $sImportDataType, $sNewGroupName = null, $sNewGroupDescription = null)
@@ -1192,17 +1192,14 @@ class remotecontrol_handle
                     $iNewgid = $aImportResults['newgid'];
 
                     $oGroup = QuestionGroup::model()->findByAttributes(array('gid' => $iNewgid));
-                    $sLanguage = Survey::model()->findByPk($iSurveyID)->language;
-                    $oGroupL10n = $oGroup->questiongroupl10ns[$sLanguage];
-
                     if ($sNewGroupName != '') {
-                                            $oGroupL10n->setAttribute('group_name', (string) $sNewGroupName);
+                                            $oGroup->setAttribute('group_name', (string) $sNewGroupName);
                     }
                     if ($sNewGroupDescription != '') {
-                                        $oGroupL10n->setAttribute('description', (string) $sNewGroupDescription);
+                                        $oGroup->setAttribute('description', (string) $sNewGroupDescription);
                     }
                     try {
-                        $oGroupL10n->save();
+                        $oGroup->save();
                     } catch (Exception $e) {
                         // no need to throw exception
                     }
@@ -2533,16 +2530,10 @@ class remotecontrol_handle
 
                 switch ($sAction) {
                     case 'terminate':
-                        $iAction = Quota::TERMINATE_VISIBLE_QUOTA_QUESTIONS;
-                        break;
-                    case 'terminate_visible_hidden':
-                        $iAction = Quota::TERMINATE_VISIBLE_AND_HIDDEN_QUOTA_QUESTIONS;
-                        break;
-                    case 'terminate_pages':
-                        $iAction = Quota::TERMINATE_ALL_PAGES;
+                        $iAction = Quota::ACTION_TERMINATE;
                         break;
                     case 'confirm_terminate':
-                        $iAction = Quota::SOFT_TERMINATE_VISIBLE_QUOTA_QUESTIONS;
+                        $iAction = Quota::ACTION_CONFIRM_TERMINATE;
                         break;
                     default:
                         return array('status' => 'Error: Invalid quota action');

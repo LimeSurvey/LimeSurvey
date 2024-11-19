@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Zend Framework
  *
@@ -15,11 +16,10 @@
  * @category   Zend
  * @package    Zend_XmlRpc
  * @subpackage Client
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id$
+ * @version    $Id: Client.php 24159 2011-06-28 12:30:56Z adamlundrigan $
  */
-
 
 /**
  * For handling the HTTP connection to the XML-RPC service
@@ -71,7 +71,7 @@ require_once 'Zend/XmlRpc/Fault.php';
  * @category   Zend
  * @package    Zend_XmlRpc
  * @subpackage Client
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_XmlRpc_Client
@@ -111,7 +111,7 @@ class Zend_XmlRpc_Client
      * Proxy object for more convenient method calls
      * @var array of Zend_XmlRpc_Client_ServerProxy
      */
-    protected $_proxyCache = [];
+    protected $_proxyCache = array();
 
     /**
      * Flag for skipping system lookup
@@ -166,7 +166,7 @@ class Zend_XmlRpc_Client
     /**
      * Sets the object used to introspect remote servers
      *
-     * @param  Zend_XmlRpc_Client_ServerIntrospection $introspector
+     * @param  Zend_XmlRpc_Client_ServerIntrospection
      * @return Zend_XmlRpc_Client_ServerIntrospection
      */
     public function setIntrospector(Zend_XmlRpc_Client_ServerIntrospection $introspector)
@@ -186,7 +186,7 @@ class Zend_XmlRpc_Client
     }
 
 
-   /**
+    /**
      * The request of the last method call
      *
      * @return Zend_XmlRpc_Request
@@ -257,43 +257,36 @@ class Zend_XmlRpc_Client
     {
         $this->_lastRequest = $request;
 
-        if (PHP_VERSION_ID < 50600) {
-            iconv_set_encoding('input_encoding', 'UTF-8');
-            iconv_set_encoding('output_encoding', 'UTF-8');
-            iconv_set_encoding('internal_encoding', 'UTF-8');
-        } else {
-            ini_set('input_encoding', 'UTF-8');
-            ini_set('output_encoding', 'UTF-8');
-            ini_set('default_charset', 'UTF-8');
-        }
+        ini_set("default_charset", "UTF-8");
 
         $http = $this->getHttpClient();
-        if($http->getUri() === null) {
+        if ($http->getUri() === null) {
             $http->setUri($this->_serverAddress);
         }
 
-        $http->setHeaders([
+        $http->setHeaders(array(
             'Content-Type: text/xml; charset=utf-8',
             'Accept: text/xml',
-        ]);
+        ));
 
         if ($http->getHeader('user-agent') === null) {
-            $http->setHeaders(['User-Agent: Zend_XmlRpc_Client']);
+            $http->setHeaders(array('User-Agent: Zend_XmlRpc_Client'));
         }
 
         $xml = $this->_lastRequest->__toString();
         $http->setRawData($xml);
         $httpResponse = $http->request(Zend_Http_Client::POST);
 
-        if (! $httpResponse->isSuccessful()) {
+        if (!$httpResponse->isSuccessful()) {
             /**
              * Exception thrown when an HTTP error occurs
              * @see Zend_XmlRpc_Client_HttpException
              */
             require_once 'Zend/XmlRpc/Client/HttpException.php';
             throw new Zend_XmlRpc_Client_HttpException(
-                                    $httpResponse->getMessage(),
-                                    $httpResponse->getStatus());
+                $httpResponse->getMessage(),
+                $httpResponse->getStatus()
+            );
         }
 
         if ($response === null) {
@@ -311,7 +304,7 @@ class Zend_XmlRpc_Client
      * @return mixed
      * @throws Zend_XmlRpc_Client_FaultException
      */
-    public function call($method, $params=[])
+    public function call($method, $params = array())
     {
         if (!$this->skipSystemLookup() && ('system.' != substr($method, 0, 7))) {
             // Ensure empty array/struct params are cast correctly
@@ -323,7 +316,7 @@ class Zend_XmlRpc_Client
                 $success = false;
             }
             if ($success) {
-                $validTypes = [
+                $validTypes = array(
                     Zend_XmlRpc_Value::XMLRPC_TYPE_ARRAY,
                     Zend_XmlRpc_Value::XMLRPC_TYPE_BASE64,
                     Zend_XmlRpc_Value::XMLRPC_TYPE_BOOLEAN,
@@ -334,14 +327,13 @@ class Zend_XmlRpc_Client
                     Zend_XmlRpc_Value::XMLRPC_TYPE_NIL,
                     Zend_XmlRpc_Value::XMLRPC_TYPE_STRING,
                     Zend_XmlRpc_Value::XMLRPC_TYPE_STRUCT,
-                ];
+                );
 
                 if (!is_array($params)) {
-                    $params = [$params];
+                    $params = array($params);
                 }
 
-                foreach ($params as $key => $param)
-                {
+                foreach ($params as $key => $param) {
                     if ($param instanceof Zend_XmlRpc_Value) {
                         continue;
                     }
@@ -384,8 +376,10 @@ class Zend_XmlRpc_Client
              * @see Zend_XmlRpc_Client_FaultException
              */
             require_once 'Zend/XmlRpc/Client/FaultException.php';
-            throw new Zend_XmlRpc_Client_FaultException($fault->getMessage(),
-                                                        $fault->getCode());
+            throw new Zend_XmlRpc_Client_FaultException(
+                $fault->getMessage(),
+                $fault->getCode()
+            );
         }
 
         return $this->_lastResponse->getReturnValue();
@@ -394,6 +388,7 @@ class Zend_XmlRpc_Client
     /**
      * Create request object
      *
+     * @param string $method
      * @return Zend_XmlRpc_Request
      */
     protected function _createRequest($method, $params)

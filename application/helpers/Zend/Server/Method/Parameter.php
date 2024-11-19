@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Zend Framework
  *
@@ -15,9 +16,9 @@
  * @category   Zend
  * @package    Zend_Server
  * @subpackage Method
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id$
+ * @version    $Id: Parameter.php 23775 2011-03-01 17:25:24Z ralph $
  */
 
 /**
@@ -26,7 +27,7 @@
  * @category   Zend
  * @package    Zend_Server
  * @subpackage Method
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Server_Method_Parameter
@@ -60,7 +61,7 @@ class Zend_Server_Method_Parameter
      * Constructor
      *
      * @param  null|array $options
-     * @return void
+     * @return string
      */
     public function __construct($options = null)
     {
@@ -203,12 +204,12 @@ class Zend_Server_Method_Parameter
      */
     public function toArray()
     {
-        return [
+        return array(
             'type'         => $this->getType(),
             'name'         => $this->getName(),
             'optional'     => $this->isOptional(),
             'defaultValue' => $this->getDefaultValue(),
             'description'  => $this->getDescription(),
-        ];
+        );
     }
 }

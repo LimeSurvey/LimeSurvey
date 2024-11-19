@@ -1167,7 +1167,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
 
         // If the survey is not active, no date test is needed
         if ($this->active === 'N') {
-            $running = '<a href="' . App()->createUrl('/surveyAdministration/view/surveyid/' . $this->sid) . '" class="survey-state" data-bs-toggle="tooltip" title="' . gT('Inactive') . '"><i class="ri-stop-fill text-secondary me-1"></i>' . gT('Inactive') . '</a>';
+            $running = '<a href="' . App()->createUrl('/surveyAdministration/view/surveyid/' . $this->sid) . '" class="survey-state disabled" data-bs-toggle="tooltip" title="' . gT('Inactive') . '"><i class="ri-stop-fill text-secondary"></i>' . gT('Inactive') . '</a>';
         } elseif (!empty($this->expires) || !empty($this->startdate)) {
             // Create DateTime for now, stop and start for date comparison
             $oNow = self::shiftedDateTime("now");
@@ -1181,10 +1181,10 @@ class Survey extends LSActiveRecord implements PermissionInterface
             $sStart = !is_null($oStart) ? convertToGlobalSettingFormat($oStart->format('Y-m-d H:i:s')) : "";
 
             // Icon generaton (for CGridView)
-            $sIconRunNoEx = '<a href="' . App()->createUrl('/surveyAdministration/view/surveyid/' . $this->sid) . '" class="survey-state" data-bs-toggle="tooltip" title="' . gT('End: Never') . '"><i class="ri-play-fill text-primary me-1"></i>' . gT('End: Never') . '</a>';
-            $sIconRunning = '<a href="' . App()->createUrl('/surveyAdministration/view/surveyid/' . $this->sid) . '" class="survey-state" data-bs-toggle="tooltip" title="' . sprintf(gT('End: %s'), $sStop) . '"><i class="ri-play-fill text-primary me-1"></i>' . sprintf(gT('End: %s'), $sStop) . '</a>';
-            $sIconExpired = '<a href="' . App()->createUrl('/surveyAdministration/view/surveyid/' . $this->sid) . '" class="survey-state" data-bs-toggle="tooltip" title="' . sprintf(gT('Expired: %s'), $sStop) . '"><i class="ri-skip-forward-fill text-secondary me-1"></i>' . sprintf(gT('Expired: %s'), $sStop) . '</a>';
-            $sIconFuture  = '<a href="' . App()->createUrl('/surveyAdministration/view/surveyid/' . $this->sid) . '" class="survey-state" data-bs-toggle="tooltip" title="' . sprintf(gT('Start: %s'), $sStart) . '"><i class="ri-time-line text-secondary me-1"></i>' . sprintf(gT('Start: %s'), $sStart) . '</a>';
+            $sIconRunNoEx = '<a href="' . App()->createUrl('/surveyAdministration/view/surveyid/' . $this->sid) . '" class="survey-state" data-bs-toggle="tooltip" title="' . gT('End: Never') . '"><i class="ri-play-fill text-primary"></i>' . gT('End: Never') . '</a>';
+            $sIconRunning = '<a href="' . App()->createUrl('/surveyAdministration/view/surveyid/' . $this->sid) . '" class="survey-state" data-bs-toggle="tooltip" title="' . sprintf(gT('End: %s'), $sStop) . '"><i class="ri-play-fill text-primary"></i>' . sprintf(gT('End: %s'), $sStop) . '</a>';
+            $sIconExpired = '<a href="' . App()->createUrl('/surveyAdministration/view/surveyid/' . $this->sid) . '" class="survey-state disabled" data-bs-toggle="tooltip" title="' . sprintf(gT('Expired: %s'), $sStop) . '"><i class="ri-skip-forward-fill text-secondary"></i>' . sprintf(gT('Expired: %s'), $sStop) . '</a>';
+            $sIconFuture  = '<a href="' . App()->createUrl('/surveyAdministration/view/surveyid/' . $this->sid) . '" class="survey-state" data-bs-toggle="tooltip" title="' . sprintf(gT('Start: %s'), $sStart) . '"><i class="ri-time-line text-secondary"></i>' . sprintf(gT('Start: %s'), $sStart) . '</a>';
 
             // Icon parsing
             if ($bExpired || $bWillRun) {
@@ -1199,7 +1199,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
             }
         } else {
             // If it's active, and doesn't have expire date, it's running
-            $running = '<a href="' . App()->createUrl('/surveyAdministration/view/surveyid/' . $this->sid) . '" class="survey-state" data-bs-toggle="tooltip" title="' . gT('Active') . '"><i class="ri-play-fill text-primary me-1"></i>' . gT('Active') . '</a>';
+            $running = '<a href="' . App()->createUrl('/surveyAdministration/view/surveyid/' . $this->sid) . '" class="survey-state" data-bs-toggle="tooltip" title="' . gT('Active') . '"><i class="ri-play-fill text-primary"></i>' . gT('Active') . '</a>';
         }
 
         return $running;
@@ -1495,38 +1495,201 @@ class Survey extends LSActiveRecord implements PermissionInterface
 
         $dropdownItems = [];
         $dropdownItems[] = [
-            'title' => gT('Add new question'),
-            'url' => App()->createUrl("/questionAdministration/create/surveyid/" . $this->sid),
-            'iconClass' => 'ri-add-circle-fill',
-            'enabledCondition' =>
-                $this->active !== "Y"
-                && $permissions['responses_create']
-                && $this->groupsCount > 0,
+            'title' => gT('General settings'),
+            'url' => App()->getConfig('editorEnabled')
+                ? App()->createUrl('editorLink/index', ['route' => 'survey/' . $this->sid . '/settings/generalsettings'])
+                : App()->createUrl('surveyAdministration/rendersidemenulink/subaction/generalsettings', ['surveyid' => $this->sid]),
+            'enabledCondition' => $permissions['survey_update'],
         ];
         $dropdownItems[] = [
-            'title' => gT('Add new group'),
-            'url' => App()->createUrl("/questionGroupsAdministration/add/surveyid/" . $this->sid),
-            'iconClass' => 'ri-add-circle-fill',
-            'enabledCondition' =>
-                $this->active !== "Y"
-                && $permissions['responses_create'],
+            'title'            => gT('Preview'),
+            'url'              => Yii::App()->createUrl(
+                "survey/index",
+                ['sid' => $this->sid, 'newtest' => "Y", 'lang' => $this->language]
+            ),
+            'enabledCondition' => $permissions['survey_update'],
+            'linkAttributes'   => ['target' => '_blank'],
         ];
         $dropdownItems[] = [
+            'title' => gT('Share'),
+            'url' => App()->createUrl("/surveyAdministration/view", array('iSurveyID' => $this->sid)),
+            'enabledCondition' => $permissions['survey_update'],
+        ];
+        $dropdownItems[] = [
+            'title' => gT('Copy'),
+            'url' => App()->createUrl("/surveyAdministration/newSurvey#copy"),
+
+            'enabledCondition' => $permissions['survey_update'],
+        ];
+        $dropdownItems[] = [
+            'title' => gT('Add user'),
+            'url' => App()->createUrl("/userManagement"),
+            'enabledCondition' => $permissions['survey_update'],
+        ];
+
+        $dropdownItems[] = [
+            'title' => gT('Delete'),
+            'url' => App()->createUrl("/surveyAdministration/delete", array('iSurveyID' => $this->sid)),
+            'enabledCondition' => $permissions['survey_update'],
+        ];
+
+        return App()->getController()->widget('ext.admin.grid.GridActionsWidget.GridActionsWidget', ['dropdownItems' => $dropdownItems], true);
+    }
+
+    /**
+     * Returns buttons for gridview.
+     * @return string
+     * @throws CException
+     * @throws Exception
+     */
+    public function getActionButtons(): string
+    {
+        $permissions = [
+            'statistics_read'  => Permission::model()->hasSurveyPermission($this->sid, 'statistics', 'read'),
+            'survey_update'    => Permission::model()->hasSurveyPermission($this->sid, 'survey', 'update'),
+            'responses_create' => Permission::model()->hasSurveyPermission($this->sid, 'responses', 'create'),
+        ];
+
+        $items = [];
+        $items[] = [
+            'title' => gT('Edit survey'),
+            'url' => App()->createUrl('surveyAdministration/view', ['iSurveyID' => $this->sid]),
+            'iconClass' => 'ri-edit-line',
+            'enabledCondition' => $this->active !== "Y" && $permissions['responses_create']
+        ];
+
+        $items[] = [
+            'title' => gT('Activate'),
+            'url' => App()->createUrl('surveyAdministration/rendersidemenulink/subaction/generalsettings', ['surveyid' => $this->sid]),
+            'iconClass' => 'ri-check-line',
+            'enabledCondition' =>
+                $this->active === "N"
+                && $permissions['survey_update']
+                && $this->groupsCount > 0
+                && $this->getQuestionsCount() > 0
+        ];
+        $items[] = [
             'title' => gT('Statistics'),
-            'url' => App()->createUrl("/admin/statistics/sa/simpleStatistics/surveyid/" . $this->sid),
+            'url' => App()->createUrl('admin/statistics/sa/simpleStatistics', ['surveyid' => $this->sid]),
             'iconClass' => 'ri-line-chart-line',
             'enabledCondition' =>
                 $this->active === "Y"
                 && $permissions['statistics_read'],
         ];
-        $dropdownItems[] = [
-            'title' => gT('General settings & texts'),
-            'url' => App()->createUrl("/surveyAdministration/rendersidemenulink/subaction/generalsettings/surveyid/" . $this->sid),
-            'iconClass' => 'ri-settings-5-line',
-            'enabledCondition' => $permissions['survey_update'],
+        if (App()->getConfig('editorEnabled')) {
+            $editorSettings[] = ['url' => App()->createUrl('editorLink/index', ['route' => 'survey/' . $this->sid])];
+            $editorSettings[] = ['url' => App()->createUrl('editorLink/index', ['route' => 'survey/' . $this->sid . '/settings/generalsettings'])];
+            $editorSettings[] = [];
+            foreach ($editorSettings as $key => $editorSetting) {
+                if (isset($editorSetting['url'], $items[$key])) {
+                    $items[$key]['url'] = $editorSetting['url'];
+                }
+            }
+        }
+
+        return App()->getController()->widget('ext.admin.grid.BarActionsWidget.BarActionsWidget', ['items' => $items], true);
+    }
+
+    public function getColumns(): array
+    {
+        $columns = [
+            [
+                'id'                => 'sid',
+                'class'             => 'CCheckBoxColumn',
+                'selectableRows'    => '100',
+                'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
+                'htmlOptions'       => ['class' => 'ls-sticky-column']
+            ],
+            [
+                'header'            => gT('Status'),
+                'name'              => 'running',
+                'value'             => '$data->running',
+                'type'              => 'raw',
+                'headerHtmlOptions' => ['class' => 'd-none d-sm-table-cell text-nowrap'],
+                'htmlOptions'       => ['class' => 'd-none d-sm-table-cell has-link'],
+            ],
+            [
+                'header'            => gT('Title'),
+                'name'              => 'title',
+                'value'             => '$data->defaultlanguage->surveyls_title ?? null',
+                'htmlOptions'       => ['class' => 'has-link'],
+                'headerHtmlOptions' => ['class' => 'text-nowrap'],
+            ],
+            [
+                'header'            => gT('Created'),
+                'name'              => 'creation_date',
+                'value'             => '$data->creationdate',
+                'headerHtmlOptions' => ['class' => 'd-none d-sm-table-cell text-nowrap'],
+                'htmlOptions'       => ['class' => 'd-none d-sm-table-cell has-link'],
+            ],
+            [
+                'header'            => gT('Responses'),
+                'name'              => 'responses',
+                'value'             => '$data->countFullAnswers',
+                'headerHtmlOptions' => ['class' => 'd-md-none d-lg-table-cell'],
+                'htmlOptions'       => ['class' => 'd-md-none d-lg-table-cell has-link'],
+            ],
+            [
+                'header' => gT('Action'),
+                'name'   => 'actions',
+                'value'  => '$data->actionButtons',
+                'type'   => 'raw'
+            ]
+        ];
+        return $columns;
+    }
+    public function getAdditionalColumns(): array
+    {
+        $additionalColumns = [
+            'group' => [
+                'header'            => gT('Group'),
+                'name'              => 'group',
+                'value'             => '$data->surveygroup->title',
+                'htmlOptions'       => ['class' => 'has-link'],
+                'headerHtmlOptions' => ['class' => 'text-nowrap'],
+            ],
+            'owner' => [
+                'header'            => gT('Owner'),
+                'name'              => 'owner',
+                'value'             => '$data->ownerUserName',
+                'headerHtmlOptions' => ['class' => 'd-md-none d-xl-table-cell text-nowrap'],
+                'htmlOptions'       => ['class' => 'd-md-none d-xl-table-cell has-link'],
+            ],
+            'anonymized_responses' => [
+                'header'            => gT('Anonymized responses'),
+                'name'              => 'anonymized_responses',
+                'value'             => '$data->anonymizedResponses',
+                'headerHtmlOptions' => ['class' => 'd-md-none d-lg-table-cell'],
+                'htmlOptions'       => ['class' => 'd-md-none d-lg-table-cell has-link'],
+            ],
+            'partial' => [
+                'header'      => gT('Partial'),
+                'value'       => '$data->countPartialAnswers',
+                'name'        => 'partial',
+                'htmlOptions' => ['class' => 'has-link'],
+            ],
+            'full' => [
+                'header'      => gT('Full'),
+                'name'        => 'full',
+                'value'       => '$data->countFullAnswers',
+                'htmlOptions' => ['class' => 'has-link'],
+            ],
+            'total' => [
+                'header'      => gT('Total'),
+                'name'        => 'total',
+                'value'       => '$data->countTotalAnswers',
+                'htmlOptions' => ['class' => 'has-link'],
+            ],
+            'uses_tokens' => [
+                'header'      => gT('Closed group'),
+                'name'        => 'uses_tokens',
+                'type'        => 'raw',
+                'value'       => '$data->hasTokensTable ? gT("Yes"):gT("No")',
+                'htmlOptions' => ['class' => 'has-link'],
+            ]
         ];
 
-        return App()->getController()->widget('ext.admin.grid.GridActionsWidget.GridActionsWidget', ['dropdownItems' => $dropdownItems], true);
+        return $additionalColumns;
     }
 
     /**
@@ -2013,6 +2176,14 @@ class Survey extends LSActiveRecord implements PermissionInterface
     public function getGroupsCount()
     {
         return QuestionGroup::model()->countByAttributes(['sid' => $this->sid]);
+    }
+
+    /**
+     * Gets number of Questions inside a particular survey
+     */
+    public function getQuestionsCount()
+    {
+        return Question::model()->countByAttributes(['sid' => $this->sid]);
     }
 
     /**

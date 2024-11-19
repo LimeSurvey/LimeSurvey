@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<ruleset name="LimeSurveyPSR12">
+<ruleset name="PSR2R">
     <rule ref="PSR12">
         <exclude name="PSR1.Classes.ClassDeclaration.MissingNamespace" />
         <exclude name="Generic.Files.LineLength"/>
