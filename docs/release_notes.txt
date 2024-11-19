@@ -34,6 +34,15 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.7.0 (build 241118) to 6.8.0 (build 241119) November 19, 2024
++New feature: Plugin event 'beforeSurveyHttpHeaders' allows to modify http headers in surveys (#4021) (Carsten Schmitz)
+-Fixed issue #19774: Make labels on filtering page translatable (#3980) (aisreh)
+-Fixed issue #19829: Norwegian & Serbian not working in Quick translation (Carsten Schmitz)
+-Fixed issue #19675: If FileUploadTotalSpaceMB > 0 an error 500 is shown (lozam)
+#Updated translation: Korean by modernity4r
+#Updated translation: Japanese by nomoto
+
+
 Changes from 6.6.8 (build 241104) to 6.7.0 (build 241118) November 18, 2024
 -Fixed issue: Added correct cldr to Kurundi (run) (Patrick Teichmann)
 -Fixed issue: QE-1201 mandatory formatter for API (#4008) (Tim Willig)
