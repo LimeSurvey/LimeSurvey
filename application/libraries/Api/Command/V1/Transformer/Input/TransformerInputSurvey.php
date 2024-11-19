@@ -25,12 +25,22 @@ class TransformerInputSurvey extends Transformer
             'adminEmail' => ['key' => 'adminemail', 'filter' => 'trim'],
             'expires' => [
                 'date' => true,
-                'formatter' => ['dateTimeToJson' => ['revert' => true]]
+                'formatter' => [
+                    'dateTimeToJson' => [
+                        'revert' => true,
+                        'clearWithEmptyString' => true
+                    ]
+                ]
             ],
             'startDate' => [
                 'key' => 'startdate',
                 'date' => true,
-                'formatter' => ['dateTimeToJson' => ['revert' => true]]
+                'formatter' => [
+                    'dateTimeToJson' => [
+                        'revert' => true,
+                        'clearWithEmptyString' => true
+                    ]
+                ]
             ],
             'anonymized' => ['formatter' => ['ynToBool' => ['revert' => true]]],
             'saveTimings' => [

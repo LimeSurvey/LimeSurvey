@@ -99,6 +99,7 @@ class ComposerStaticInitddb1a145e450f862353420acc5153e40
         'A' => 
         array (
             'ArPHP\\I18N\\' => 11,
+            'Anper\\Iuliia\\' => 13,
         ),
     );
 
@@ -141,8 +142,8 @@ class ComposerStaticInitddb1a145e450f862353420acc5153e40
         ),
         'Psr\\Http\\Message\\' => 
         array (
-            0 => __DIR__ . '/..' . '/psr/http-message/src',
-            1 => __DIR__ . '/..' . '/psr/http-factory/src',
+            0 => __DIR__ . '/..' . '/psr/http-factory/src',
+            1 => __DIR__ . '/..' . '/psr/http-message/src',
         ),
         'Psr\\Http\\Client\\' => 
         array (
@@ -212,8 +213,8 @@ class ComposerStaticInitddb1a145e450f862353420acc5153e40
         ),
         'League\\OAuth2\\Client\\' => 
         array (
-            0 => __DIR__ . '/..' . '/league/oauth2-google/src',
-            1 => __DIR__ . '/..' . '/league/oauth2-client/src',
+            0 => __DIR__ . '/..' . '/league/oauth2-client/src',
+            1 => __DIR__ . '/..' . '/league/oauth2-google/src',
         ),
         'Laravel\\SerializableClosure\\' => 
         array (
@@ -262,6 +263,10 @@ class ComposerStaticInitddb1a145e450f862353420acc5153e40
         'ArPHP\\I18N\\' => 
         array (
             0 => __DIR__ . '/..' . '/khaled.alshamaa/ar-php/src',
+        ),
+        'Anper\\Iuliia\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/anper/iuliia/src',
         ),
     );
 
