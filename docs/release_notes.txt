@@ -34,6 +34,10 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.8.0 (build 241119) to 6.8.1 (build 241120) November 19, 2024
+-Fixed issue: Wrong version number (Carsten Schmitz)
+
+
 Changes from 6.7.0 (build 241118) to 6.8.0 (build 241119) November 19, 2024
 +New feature: Plugin event 'beforeSurveyHttpHeaders' allows to modify http headers in surveys (#4021) (Carsten Schmitz)
 -Fixed issue #19774: Make labels on filtering page translatable (#3980) (aisreh)
