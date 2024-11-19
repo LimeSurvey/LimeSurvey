@@ -1,0 +1,49 @@
+{
+  "name": "goldspecdigital/oooas",
+  "description": "An object oriented approach to generating OpenAPI specs, implemented in PHP.",
+  "type": "library",
+  "license": "MIT",
+  "keywords": ["php", "oas", "openapi", "swagger"],
+  "homepage": "https://github.com/goldspecdigital/oooas",
+  "authors": [
+    {
+      "name": "Matthew Inamdar",
+      "email": "matt@goldspecdigital.com"
+    },
+    {
+      "name": "Vladimir Yuldashev",
+      "email": "vladimir.yuldashev@gmail.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "GoldSpecDigital\\ObjectOrientedOAS\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "GoldSpecDigital\\ObjectOrientedOAS\\Tests\\": "tests/"
+    }
+  },
+  "require": {
+    "php": ">=7.1.0",
+    "ext-json": "*"
+  },
+  "require-dev": {
+    "phpunit/phpunit": ">=7.3",
+    "friendsofphp/php-cs-fixer": "^3",
+    "justinrainbow/json-schema": "^5.2"
+  },
+  "suggest": {
+    "justinrainbow/json-schema": "Required to perform validation (^5.2)"
+  },
+  "scripts": {
+    "test": [
+      "@test:style",
+      "@test:unit"
+    ],
+    "test:style": "@fix:style --dry-run",
+    "test:unit": "@php vendor/bin/phpunit",
+    "fix:style": "@php vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.php --allow-risky=yes --diff --verbose"
+  }
+}

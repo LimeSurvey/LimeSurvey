@@ -14,12 +14,13 @@
 class WipeCommand extends CConsoleCommand
 {
 
-    public function run($sArgument)
+    /**
+     * @return int
+     */
+    public function run($args)
     {
-        if (isset($sArgument) && isset($sArgument[0]) && $sArgument[0] = 'yes') {
+        if (isset($args) && isset($args[0]) && $args[0] = 'yes') {
             Yii::import('application.helpers.common_helper', true);
-            Yii::import('application.helpers.database_helper', true);
-
             $actquery = "truncate table {{assessments}}";
             Yii::app()->db->createCommand($actquery)->execute();
             $actquery = "truncate table {{answers}}";
@@ -118,6 +119,10 @@ class WipeCommand extends CConsoleCommand
                 $actquery = "truncate table {{auditlog_log}}";
                 Yii::app()->db->createCommand($actquery)->execute();
             }
+            if (tableExists('{{twoFactorUsers}}')) {
+                $actquery = "truncate table {{twoFactorUsers}}";
+                Yii::app()->db->createCommand($actquery)->execute();
+            }            
             $actquery = "delete from {{settings_global}} where stg_name LIKE 'last_question%'";
             Yii::app()->db->createCommand($actquery)->execute();
             $actquery = "delete from {{settings_global}} where stg_name LIKE 'last_survey%'";
@@ -131,6 +136,8 @@ class WipeCommand extends CConsoleCommand
             $actquery = "update {{settings_global}} set stg_value='Administrator' where stg_name='siteadminname'";
             Yii::app()->db->createCommand($actquery)->execute();
             $actquery = "update {{settings_global}} set stg_value='Sea_Green' where stg_name='admintheme'";
+            Yii::app()->db->createCommand($actquery)->execute();
+            $actquery = "update {{plugins}} set active=0 where name='TwoFactorAdminLogin' OR name='AuditLog'";
             Yii::app()->db->createCommand($actquery)->execute();
 
             foreach (LsDefaultDataSets::getTemplatesData() as $template) {
@@ -156,7 +163,7 @@ class WipeCommand extends CConsoleCommand
 
             $surveyidresult = dbGetTablesLike("survey\_%");
             foreach ($surveyidresult as $sv) {
-                if (strpos($sv, 'survey_links') === false && strpos($sv, 'survey_url_parameters') === false) {
+                if (strpos((string) $sv, 'survey_links') === false && strpos((string) $sv, 'survey_url_parameters') === false) {
                                     Yii::app()->db->createCommand("drop table " . $sv)->execute();
                 }
             }
@@ -170,6 +177,7 @@ class WipeCommand extends CConsoleCommand
             // TODO: a valid error process
             echo 'This CLI command wipes a LimeSurvey installation clean (including all user except for the user ID 1 and user-uploaded content). For security reasons this command can only started if you add the parameter \'yes\' to the command line.';
         }
+        return 0;
     }
 }
 

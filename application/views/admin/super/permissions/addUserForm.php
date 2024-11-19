@@ -1,9 +1,9 @@
-<?php echo CHtml::beginForm($action, 'post', array('class'=>'form-horizontal container-fluid')) ?>
+<?php echo CHtml::beginForm($action, 'post', array('class'=>'form-horizontal')) ?>
 <div class="row">
-    <label class='col-sm-2 col-md-offset-2 text-right control-label' for='uid'>
+    <label class='col-md-2 offset-lg-2 text-end form-label' for='uid'>
         <?php eT("User"); ?>
     </label>
-    <div class='col-sm-4 '>
+    <div class='col-md-4 '>
         <?php echo CHtml::dropDownList(
             'uid',
             '',
@@ -19,8 +19,8 @@
             )
         ); ?>
     </div>
-    <div class='col-sm-4 '>
-        <?php echo CHtml::button(gT("Add user"),array('class'=>'btn btn-default', 'type'=>'submit')); ?>
+    <div class='col-md-4 '>
+        <?php echo CHtml::button(gT("Add user"),array('class'=>'btn btn-outline-secondary', 'type'=>'submit')); ?>
     </div>
 </div>
 </form>

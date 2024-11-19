@@ -6,7 +6,7 @@
  * The following are the available columns in table '{{notifications}}':
  * @property integer $id
  * @property string $entity survey or user
- * @property string $entity_id survey id or user id
+ * @property string $entity_id survey ID or user id
  * @property string $title
  * @property string $message
  * @property string $status new, read
@@ -18,12 +18,12 @@
  */
 class Notification extends LSActiveRecord
 {
-    const NORMAL_IMPORTANCE = 1; // Just notification in admin menu
-    const BELL_IMPORTANCE = 2; // TODO: Bell animation
-    const HIGH_IMPORTANCE = 3; // Popup on page load
+    const NORMAL_IMPORTANCE   = 1; // Just notification in admin menu
+    const NAG_ONCE_IMPORTANCE = 2; // Like 3 but always only shown once.
+    const HIGH_IMPORTANCE     = 3; // Popup on page load
 
     /**
-     * See example usage at manual page: https://manual.limesurvey.org/Notifications#Examples
+     * See example usage at manual page: https://www.limesurvey.org/manual/Notifications#Examples
      * @param array<string, mixed>|string|null $options If string then scenario
      */
     public function __construct($options = null)
@@ -330,7 +330,7 @@ class Notification extends LSActiveRecord
     {
         $criteria = self::getCriteria($surveyId);
         $criteria2 = new CDbCriteria();
-        $criteria2->addCondition('importance = ' . self::HIGH_IMPORTANCE);
+        $criteria2->addCondition('importance = ' . self::HIGH_IMPORTANCE . ' OR ' . 'importance = ' . self::NAG_ONCE_IMPORTANCE);
         $criteria->mergeWith($criteria2, 'AND');
 
         return self::model()->count($criteria);
@@ -370,7 +370,7 @@ class Notification extends LSActiveRecord
 
     /**
      * Broadcast a message to all users
-     * See example usage at manual page: https://manual.limesurvey.org/Notifications#Examples
+     * See example usage at manual page: https://www.limesurvey.org/manual/Notifications#Examples
      * @param array $options
      * @param array $users
      */

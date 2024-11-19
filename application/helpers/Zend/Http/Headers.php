@@ -414,7 +414,7 @@ class Headers implements Countable, Iterator
                 $headers[$header->getFieldName()] = $header->getFieldValue();
             } else {
                 $matches = null;
-                preg_match('/^(?P<name>[^()><@,;:\"\\/\[\]?=}{ \t]+):\s*(?P<value>.*)$/', $header['line'], $matches);
+                preg_match('/^(?P<name>[^()><@,;:\"\\/\[\]?=}{ \t]+):\s*(?P<value>.*)$/', (string) $header['line'], $matches);
                 if ($matches) {
                     $headers[$matches['name']] = $matches['value'];
                 }

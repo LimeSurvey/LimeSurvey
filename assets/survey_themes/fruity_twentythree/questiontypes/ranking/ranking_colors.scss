@@ -1,0 +1,23 @@
+.select-sortable-lists:not(.ranking-advanced-style) {
+    .sortable-list {
+        border: none;
+    }
+    .list-group-item {
+        border: 1px solid $g-700;
+    }
+    .ranking-available-items  {
+        .sortable-item {
+            color: $g-700;
+        }
+    }
+    .ranking-sorted-items {
+        background-color: $g-100;
+        .sortable-item {
+            border: 1px solid $base_color;
+            color: $g-900;
+            .selector__dragHandle {
+                color: $g-700;
+            }
+        }
+    }
+}

@@ -1,0 +1,68 @@
+/**
+ * Custom variables for Bootstrap 5
+ */
+
+// START gray-color-variables
+$white:    #fff;
+$black:    #000;
+// END gray-color-variables
+
+// START theme-color-variables
+$primary:       #0d6efd;
+$primary-hover: #0f3e12;
+$secondary:     #6C757D;
+$success:       #198754;
+$info:          #0DCAF0;
+$warning:       #FFC107;
+$danger:        #DC3545;
+$light:         #f8f9fa;
+$dark:          #212529;
+$cancel:        #E9ECEF;
+// END theme-color-variables
+
+// START theme-colors-map
+$theme-colors: (
+
+    "primary":    $primary,
+    "secondary":  $secondary,
+    "success":    $success,
+    "info":       $info,
+    "warning":    $warning,
+    "danger":     $danger,
+    "light":      $light,
+    "dark":       $dark,
+    "cancel":     $cancel,
+);
+// END theme-colors-map
+
+// START font-variables
+$font-size-root: 14px;
+// END font-variables
+
+// START spacer
+$spacer: 1rem;
+$spacers: (
+    0: 0,
+    1: 4px,
+    2: 8px,
+    3: 12px,
+    4: 24px,
+    5: 36px,
+    6: 48px,
+    7: 96px,
+);
+// END spacer
+
+// Gutters START
+$grid-gutter-width: 24px;
+// Gutters END
+
+// START btn-variables
+$btn-hover-bg-shade-amount: 30%;
+$btn-hover-bg-tint-amount: 30%;
+// END btn-variables
+
+// START table variables
+$table-striped-bg: #f9f9f9;
+$table-hover-bg: #f5f5f5;
+// END table variables

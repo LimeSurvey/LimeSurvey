@@ -106,7 +106,7 @@ class WhChart extends CBehavior
 		$seriesData = array();
 		$cnt = 0;
 		foreach ($configSeries as $set) {
-			$seriesData[$cnt] = array('name' => isset($set['name']) ? $set['name'] : null, 'data' => array());
+			$seriesData[$cnt] = array('name' => $set['name'] ?? null, 'data' => array());
 
 			for ($row = 0; $row < $count; ++$row) {
 				$column = $this->grid->getColumnByName($set['attribute']);

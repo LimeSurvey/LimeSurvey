@@ -14,7 +14,7 @@ class Loader
         if (static::$initialized) return;
         static::$initialized = true;
         static::$parentPath = __FILE__;
-        for ($i=substr_count(get_class(), static::$nsChar);$i>=0;$i--) {
+        for ($i=substr_count(get_class(new static), (string) static::$nsChar);$i>=0;$i--) {
             static::$parentPath = dirname(static::$parentPath);
         }
         static::$paths = array();
@@ -23,7 +23,7 @@ class Loader
     
     public static function register($path,$namespace) {
         if (!static::$initialized) static::initialize();
-        static::$paths[$namespace] = trim($path,DIRECTORY_SEPARATOR);
+        static::$paths[$namespace] = trim((string) $path,DIRECTORY_SEPARATOR);
     }
     
     public static function load($class) {
@@ -31,9 +31,9 @@ class Loader
         if (!static::$initialized) static::initialize();
         
         foreach (static::$paths as $namespace => $path) {
-            if (!$namespace || $namespace.static::$nsChar === substr($class, 0, strlen($namespace.static::$nsChar))) {
+            if (!$namespace || $namespace.static::$nsChar === substr((string) $class, 0, strlen($namespace.static::$nsChar))) {
                 
-                $fileName = substr($class,strlen($namespace.static::$nsChar)-1);
+                $fileName = substr((string) $class,strlen($namespace.static::$nsChar)-1);
                 $fileName = str_replace(static::$nsChar, DIRECTORY_SEPARATOR, ltrim($fileName,static::$nsChar));
                 $fileName = static::$parentPath.DIRECTORY_SEPARATOR.$path.DIRECTORY_SEPARATOR.$fileName.'.php';
                 

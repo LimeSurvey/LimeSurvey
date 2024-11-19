@@ -25,4 +25,4 @@ module.exports = {
         '<rootDir>/src/**',
     ],
     coverageReporters: ['lcov', 'text-summary']
-}
+};

@@ -8,14 +8,7 @@
 	<!-- the ajax loader -->
 	<div id="ajaxContainerLoading" >
 		<p><?php eT('Please wait, loading data...');?></p>
-        <div class="preloader loading">
-            <span class="slice"></span>
-            <span class="slice"></span>
-            <span class="slice"></span>
-            <span class="slice"></span>
-            <span class="slice"></span>
-            <span class="slice"></span>
-        </div>
+        <i class="ri-loader-2-fill remix-3x remix-spin lsLoadingStateIndicator"></i>
 	</div>
 
 	<!-- Here come the different steps content. Content is loaded by the ajax request (see ./steps for html views)	-->

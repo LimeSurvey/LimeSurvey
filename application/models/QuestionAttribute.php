@@ -163,10 +163,10 @@ class QuestionAttribute extends LSActiveRecord
      * NOTE: We can't use self::setQuestionAttribute() because it doesn't check for question types first.
      * TODO: the question type check should be done via rules, or via a call to a question method
      *
-     * @var integer $iSid                   the sid to update  (only to check permission)
-     * @var array $aQids                    an array containing the list of primary keys for questions
-     * @var array $aAttributesToUpdate    array containing the list of attributes to update
-     * @var array $aValidQuestionTypes    the question types we can update for those attributes
+     * @param integer $iSid                   the sid to update  (only to check permission)
+     * @param array $aQids                    an array containing the list of primary keys for questions
+     * @param array $aAttributesToUpdate    array containing the list of attributes to update
+     * @param array $aValidQuestionTypes    the question types we can update for those attributes
      * @todo Missign noun in function name - set multiple what?
      */
     public function setMultiple($iSid, $aQids, $aAttributesToUpdate, $aValidQuestionTypes)
@@ -219,16 +219,21 @@ class QuestionAttribute extends LSActiveRecord
      * --prepare an easier/smaller array to return
      *
      * @access public
-     * @param int $iQuestionID
+     * @param int|Question $q
      * @param string $sLanguage restrict to this language (if null $oQuestion->survey->allLanguages will be used)
      * @return array|false
      *
      * @throws CException throws exception if questiontype is null
      */
-    public function getQuestionAttributes($iQuestionID, $sLanguage = null)
+    public function getQuestionAttributes($q, $sLanguage = null)
     {
+        $receivedIDOnly = (!($q instanceof Question));
+        if ($receivedIDOnly) {
+            $iQuestionID = intval($q);
+        } else {
+            $iQuestionID = $q->qid;
+        }
         static $survey = '';
-        $iQuestionID = (int)$iQuestionID;
         // Limit the size of the attribute cache due to memory usage
         $cacheKey = 'getQuestionAttributes_' . $iQuestionID . '_' . json_encode($sLanguage);
         if (EmCacheHelper::useCache()) {
@@ -238,7 +243,11 @@ class QuestionAttribute extends LSActiveRecord
             }
         }
 
-        $oQuestion = Question::model()->find("qid=:qid", ['qid' => $iQuestionID]);
+        if ($receivedIDOnly) {
+            $oQuestion = Question::model()->find("qid=:qid", ['qid' => $iQuestionID]);
+        } else {
+            $oQuestion = $q;
+        }
         if (empty($oQuestion)) {
             return false; // return false but don't set $aQuestionAttributesStatic[$iQuestionID]
         }
@@ -380,6 +389,8 @@ class QuestionAttribute extends LSActiveRecord
             "readonly_when_active" => false,
             "expression" => null,
             "xssfilter" => true,
+            "min" => null, // Used for integer type
+            "max" => null, // Used for integer type
         );
     }
 
@@ -389,7 +400,7 @@ class QuestionAttribute extends LSActiveRecord
      *
      * @param string $sType : type of question (this is the attribute 'question_type' in table question_theme)
      * @param boolean $advancedOnly If true, only fetch advanced attributes
-     * @return array : the attribute settings for this question type
+     * @return array The attribute settings for this question type
      *                 returns values from getGeneralAttributesFromXml and getAdvancedAttributesFromXml if this fails
      *                 getAttributesDefinition and getDefaultSettings are returned
      *
@@ -413,7 +424,7 @@ class QuestionAttribute extends LSActiveRecord
             $attributes = \LimeSurvey\Helpers\questionHelper::getAttributesDefinitions();
             /* Filter to get this question type setting */
             $aQuestionTypeAttributes = array_filter($attributes, function ($attribute) use ($sType) {
-                return stripos($attribute['types'], $sType) !== false;
+                return stripos((string) $attribute['types'], $sType) !== false;
             });
             foreach ($aQuestionTypeAttributes as $attribute => $settings) {
                   self::$questionAttributesSettings[$sType][$attribute] = array_merge(

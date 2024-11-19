@@ -87,7 +87,7 @@ class Zend_Validate_Ccnum extends Zend_Validate_Abstract
 
         $valueFiltered = self::$_filter->filter($value);
 
-        $length = strlen($valueFiltered);
+        $length = strlen((string) $valueFiltered);
 
         if ($length < 13 || $length > 19) {
             $this->_error(self::LENGTH);

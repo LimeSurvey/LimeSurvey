@@ -1,0 +1,240 @@
+{#
+    LimeSurvey
+    Copyright (C) 2007-2017 The LimeSurvey Project Team / Louis Gac
+    All rights reserved.
+    License: GNU/GPL License v2 or later, see LICENSE.php
+    LimeSurvey is free software. This version may have been modified pursuant
+    to the GNU General Public License, and as distributed it includes or
+    is derivative of works licensed under the GNU General Public License or
+    other free or open source software licenses.
+    See COPYRIGHT.php for copyright notices and details.
+
+    (¯`·._.·(¯`·._.· Save page Content  ·._.·´¯)·._.·´¯)
+
+    This file displays the page shown to a respondent when they save the survey to complete later.
+
+    Depending on survey config, a navigator allowing the respondent to change their responses can be shown, and an end url.
+
+    Form data are in: aSurveyInfo.aSaveForm (errors, css classes, captcha, etc)
+    To show this data, turn debug mode on and copy the following line to the end of the <body> element in this file:
+    {{ dump(aSurveyInfo.aSaveForm ) }} )
+
+    (¯`·._.·(¯`·._.·  Advanced ·._.·´¯)·._.·´¯)
+
+    The form is generated using the Yii function CHtml::form. You must keep it to get the CRSF token.
+    Inputs are also generated using the Yii function CHtml. Eg: input textField is generated via CHtml::textField
+    You can replace those inputs by pure Html (<input type="text" ... />), just be sure to use the correct options (id, classes, required, etc)
+    @see: http://www.yiiframework.com/wiki/48/by-example-chtml/ , http://www.yiiframework.com/doc/api/1.1/CHtml
+
+    NOTE: This content is included inside mainrow.twig
+    NOTE: see layout_global.twig for more infos
+#}
+
+
+
+
+{# Include the form opening tag #}
+{{ include('./subviews/header/start_form.twig') }} <!-- main form -->
+
+    {# This will display the script and the hidden inputs needed for ExpressionScript Engine #}
+    {{ aSurveyInfo.EM.ScriptsAndHiddenInputs  }}
+
+    <div class="{{ aSurveyInfo.class.savecontainer }} clearfix " {{ aSurveyInfo.attr.savecontainer }}>
+        <div class="">
+            <div class="{{ aSurveyInfo.class.savecontainertitle }} large-heading mb-3" {{ aSurveyInfo.attr.savecontainertitle }}>{{ gT("Save your unfinished survey") }}</div>
+            <div class="{{ aSurveyInfo.class.savecontainertext }} form-heading mb-3" {{ aSurveyInfo.attr.savecontainertext }}>
+                <p {{ aSurveyInfo.attr.savecontainertextpa }}> {{ gT("Enter a name and password for this survey and click save below.") }} </p>
+                <p {{ aSurveyInfo.attr.savecontainertextpb }}> {{ gT("Your survey will be saved using that name and password, and can be completed later by logging in with the same name and password.") }} </p>
+                <p class='{{ aSurveyInfo.class.savecontainertextpc }}' {{ aSurveyInfo.attr.savecontainertextpc }}> {{ gT("If you give an email address, an email containing the details will be sent to you.") }} </p>
+                <p {{ aSurveyInfo.attr.savecontainertextpd }}> {{ gT("After having clicked the save button you can either close this browser window or continue filling out the survey.") }} </p>
+            </div>
+            <div class="{{ aSurveyInfo.class.savecontainerwarning }} alert alert-warning" {{ aSurveyInfo.attr.savecontainerwarning }}>
+                {{ gT("To remain anonymous please use a pseudonym as your username, also an email address is not required.") }}
+            </div>
+        </div>
+    </div>
+
+    <div class="{{ aSurveyInfo.class.saveformcontainer }}" {{ aSurveyInfo.attr.saveformcontainer }}>
+
+        {% if count(aSurveyInfo.aSaveForm.aErrors) > 0 %}
+            <ul class='{{ aSurveyInfo.aSaveForm.sClass }}  {{ aSurveyInfo.class.saveformcontainerul }} alert alert-danger list-unstyled '  >
+                {% for key,error in aSurveyInfo.aSaveForm.aErrors %}
+                    <li {{ aSurveyInfo.attr.saveformcontainerli }} >{{ error }}</li>
+                    {% endfor %}
+            </ul>
+        {% endif %}
+
+        {#
+            array of attributes of the form tag.
+            To add a new attribute, just add an entry:
+            'attribute' : 'value',
+        #}
+        {% set htmlOptions = {
+                'id'          : 'form-save',
+                'name'        : 'form-save',
+                'class'       : 'ls-form',
+            }
+        %}
+
+        {#
+            This generates the opening form tag and the CRSF token.
+            It uses the Yii fuction CHtml::form.
+            See: http://www.yiiframework.com/doc/api/1.1/CHtml#form-detail
+        #}
+        <!-- Save Form -->
+        {{
+            C.Html.form(
+                ( aSurveyInfo.surveyUrl ),
+                'post',
+                (htmlOptions)
+            )
+        }}
+            <!-- Hidden fields  -->
+            {{  aSurveyInfo.aSaveForm.sHiddenField }}
+
+            <!-- Name and Password -->
+            <div class='{{ aSurveyInfo.class.saveformsurvey }} col-12' {{ aSurveyInfo.attr.saveformsurvey }}>
+                <div class='{{ aSurveyInfo.class.saveformsurveydiva }} mb-3' {{ aSurveyInfo.attr.saveformsurveydiva }}>
+
+                    <!-- Saved name  -->
+                    <label class='{{ aSurveyInfo.class.saveformsurveydivalabel }} control-label' {{ aSurveyInfo.attr.saveformsurveydivalabel }}>
+                        {{ gT("Name") }}<small class="{{ aSurveyInfo.class.saveformsurveydivalabelsmall }} asterisk ri-asterisk superset" {{ aSurveyInfo.attr.saveformsurveydivalabelsmall }} >&nbsp;</small>
+                        <span class="{{ aSurveyInfo.class.saveformsurveydivalabelspan }} visually-hidden asterisk" {{ aSurveyInfo.attr.saveformsurveydivalabelspan }}>{{ gT("Mandatory") }}</span>
+                    </label>
+                    <div class='{{ aSurveyInfo.class.saveformsurveydivb }}' {{ aSurveyInfo.attr.saveformsurveydivb }}>
+
+                        {% set htmlOptions = {
+                                'id'          : 'savename',
+                                'name'        : 'savename',
+                                'class'       : 'form-control ls-important-field',
+                                'placeholder' : gT('Enter your name'),
+                                'required'    : true,
+                            }
+                        %}
+
+                        {# using CHtml::textField because it encode (and break XSS) #}
+                        {{ C.Html.textField(
+                                'savename',
+                                getPost('savename'),
+                                (htmlOptions)
+                        )  }}
+                    </div>
+
+                </div>
+
+                <!-- Password -->
+                <div class='row mb-0 mb-md-3'>
+                    <div class='{{ aSurveyInfo.class.saveformsurveydivc }} col-md-6 col-12 mb-3 mb-md-0' {{ aSurveyInfo.attr.saveformsurveydivc }}>
+                        <label class='{{ aSurveyInfo.class.saveformsurveydivclabel }} control-label' {{ aSurveyInfo.attr.saveformsurveydivclabel }}>
+                            {{ gT("Password") }}<small class="{{ aSurveyInfo.class.saveformsurveydivcsmall }} asterisk ri-asterisk superset" {{ aSurveyInfo.attr.saveformsurveydivcsmall }} >&nbsp;</small>
+                            <span class="{{ aSurveyInfo.class.saveformsurveydivcspan }} visually-hidden asterisk" {{ aSurveyInfo.attr.saveformsurveydivcspan }}>{{ gT("Mandatory") }}</span>
+                        </label>
+
+                        <div class='{{ aSurveyInfo.class.saveformsurveydivcdiv }}' {{ aSurveyInfo.attr.saveformsurveydivcdiv }}>
+
+                            {% set htmlOptions = {
+                                    'id'          : 'savepass',
+                                    'name'        : 'savepass',
+                                    'class'       : 'form-control ls-important-field',
+                                    'placeholder' : gT('Enter password'),
+                                    'required'    : true,
+                                }
+                            %}
+
+                            {{ C.Html.passwordField(
+                                    'savepass',
+                                    getPost('savepass'),
+                                    (htmlOptions)
+                            )  }}
+                        </div>
+                    </div>
+
+                    <!-- Confirm password -->
+                    <div class='{{ aSurveyInfo.class.saveformsurveydivd }} col-md-6 col-12 mb-3 mb-md-0' {{ aSurveyInfo.attr.saveformsurveydivd }}>
+                        <label class='{{ aSurveyInfo.class.saveformsurveydivdlabel }} control-label' {{ aSurveyInfo.attr.saveformsurveydivdlabel }} >
+                            {{ gT("Repeat password") }}<small class="{{ aSurveyInfo.class.saveformsurveydivdlabelsmall }}  asterisk ri-asterisk superset" {{ aSurveyInfo.attr.saveformsurveydivdlabelsmall }}>&nbsp;</small>
+                            <span class="{{ aSurveyInfo.class.saveformsurveydivdlabelspan }} visually-hidden asterisk" {{ aSurveyInfo.attr.saveformsurveydivdlabelspan }}>{{ gT("Mandatory") }}</span>
+                        </label>
+
+                        <div class='{{ aSurveyInfo.class.saveformsurveydivddiv }}' {{ aSurveyInfo.attr.saveformsurveydivddiv }}>
+                            {% set htmlOptions = {
+                                    'id'          : 'savepass2',
+                                    'name'        : 'savepass2',
+                                    'class'       : 'form-control ls-important-field',
+                                    'placeholder' : gT('Repeat password'),
+                                    'required'    : true,
+                                }
+                            %}
+
+                            {{ C.Html.passwordField(
+                                    'savepass2',
+                                    getPost('savepass2'),
+                                    (htmlOptions)
+                            )  }}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Email -->
+                <div class='{{ aSurveyInfo.class.saveformsurveydive }}  mb-3' {{ aSurveyInfo.attr.saveformsurveydive }}>
+                    <label class='{{ aSurveyInfo.class.saveformsurveydivelabel }} control-label' {{ aSurveyInfo.attr.saveformsurveydivelabel }} >
+                        {{ gT("Your e-mail address") }}
+                    </label>
+                    <div class='{{ aSurveyInfo.class.saveformsurveydivediv }}' {{ aSurveyInfo.attr.saveformsurveydivediv }}>
+
+                        {% set htmlOptions = {
+                                'id'          : 'saveemail',
+                                'name'        : 'saveemail',
+                                'class'       : 'form-control ls-important-field',
+                                'placeholder' : gT('Enter e-mail address'),
+                            }
+                        %}
+
+                        {{ C.Html.emailField(
+                                'saveemail',
+                                getPost('saveemail'),
+                                (htmlOptions)
+                        )  }}
+                    </div>
+                </div>
+
+
+                {% if aSurveyInfo.aSaveForm.aCaptcha.show %}
+                    <!-- Captcha -->
+                    <div class='{{ aSurveyInfo.class.saveformsurveydivf }} mb-3' {{ aSurveyInfo.attr.saveformsurveydivd }} >
+                        <label class='{{ aSurveyInfo.class.saveformsurveydivflabel }} control-label' {{ aSurveyInfo.attr.saveformsurveydivdlabel }}  >
+                            {{ gT("Security question") }}
+                        </label>
+                        <div class='{{ aSurveyInfo.class.saveformsurveydivfdiv }}' {{ aSurveyInfo.attr.saveformsurveydivddiv }} >
+                            <div class='{{ aSurveyInfo.class.saveformsurveydivfdivdiv }} input-group' {{ aSurveyInfo.attr.saveformsurveydivddivdiv }}>
+                                <div class='{{ aSurveyInfo.class.saveformsurveydivfdivdivdiv }} ls-important-field' {{ aSurveyInfo.attr.saveformsurveydivddivdivdiv }} >
+                                    <img src='{{ aSurveyInfo.aSaveForm.aCaptcha.sImageUrl }}' {{ aSurveyInfo.attr.saveformsurveydivddivdivdivimg }}   />
+                                </div>
+                                <input class='{{ aSurveyInfo.class.saveformsurveydivfdivdivinput }}  form-control ls-important-field'  {{ aSurveyInfo.attr.saveformsurveydivfdivdivinput }} placeholder="{{ gT("Enter result here - numbers only") }}"/>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+                <div class="row button-row">
+                    <!-- return button -->
+                    <div class='{{ aSurveyInfo.class.saveformsurveydivh }} mb-3 col-auto' {{ aSurveyInfo.attr.saveformsurveydivh }}>
+                        <div class="{{ aSurveyInfo.class.saveformsurveydivhdiv }} " {{ aSurveyInfo.attr.saveformsurveydivhdiv }}>
+                            <a href="{{ aSurveyInfo.surveyUrl }}" class="{{ aSurveyInfo.class.saveformsurveydivhdiva }} btn btn-outline-secondary">{{ gT("Return to survey") }}</a>
+                        </div>
+                    </div>
+                    <!-- save button -->
+                    <div class='{{ aSurveyInfo.class.saveformsurveydivg }} mb-3 col-auto' {{ aSurveyInfo.attr.saveformsurveydivg }}>
+                        <div class='{{ aSurveyInfo.class.saveformsurveydivgdiv }}' {{ aSurveyInfo.attr.saveformsurveydivgdiv }}>
+                            <button {{ aSurveyInfo.attr.saveformsurveydivgdivbutton }}  class='{{ aSurveyInfo.class.saveformsurveydivgdivbutton }} btn btn-primary' >
+                                {{ gT("Save Now") }}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+    </div>
+
+</form> <!-- main form -->

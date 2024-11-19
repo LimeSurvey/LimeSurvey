@@ -1,7 +1,12 @@
 {#
 /**
  * Cell for total
+ * [[ROW_CODE]] are replaced by code of subquestion Scale Y
+ * [[ROW_NAME]] are replaced by text of subquestion Scale Y
+ * @var $basename
+ * @var $inputsize
  * @var $empty
+ *
  */
 #}
 <!-- td_total -->
@@ -9,8 +14,14 @@
     {% if empty %}
         &nbsp;
     {% else %}
-        <label class="sr-only">{{ gT("Total") }}</label>
-        <input title="[[ROW_NAME]] total" {% if inputsize %}size="{{ inputsize }}"{% endif %} value="" type="text" disabled="disabled" class="disabled form-control total"  data-number='1' />
+        <label for="totals{{ basename }}[[ROW_CODE]]_total" class="ls-label-xs-visibility" aria-hidden="true">{{ gT("Total") }}</label>
+        <input
+            type="text"
+            id="totals{{ basename }}[[ROW_CODE]]_total"
+            aria-labelledby="totals{{ basename }}_total"
+            {% if inputsize %}size="{{ inputsize }}"{% endif %}
+            value="" disabled="disabled" class="disabled form-control total"  data-number='1'
+        />
     {% endif %}
 </td>
 <!-- end of td_total -->

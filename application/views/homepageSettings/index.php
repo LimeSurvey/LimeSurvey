@@ -1,5 +1,6 @@
 <?php
 /* @var AdminController $this */
+
 /* @var CActiveDataProvider $dataProvider */
 
 // DO NOT REMOVE This is for automated testing to validate we see that page
@@ -7,117 +8,124 @@ echo viewHelper::getViewTestTag('homepageSettings');
 
 App()->getClientScript()->registerScript(
     'HomepageSettingsBSSwitcher',
-    "LS.renderBootstrapSwitch();",
     LSYii_ClientScript::POS_POSTSCRIPT
 );
 
 ?>
-<script type="text/javascript">
-    strConfirm = '<?php eT('Please confirm', 'js');?>';
-    strCancel = '<?php eT('Cancel', 'js');?>';
-    strOK = '<?php eT('OK', 'js');?>';
-</script>
 
-<div class="col-lg-12 list-surveys">
-
-    <div class="row">
-
+<div class="row">
+    <div class="col-12 list-surveys">
         <!-- Tabs -->
-        <ul class="nav nav-tabs" id="boxeslist" role="tablist">
-            <li class="active">
-                <a href='#boxes'>
+        <ul class="nav nav-tabs" id="boxeslist">
+            <li class="nav-item">
+                <a class="nav-link active" href='#boxes' data-bs-toggle="tab">
                     <?php eT('Boxes') ?>
                 </a>
             </li>
-            <li>
-                <a href='#boxsettings'>
+            <li class="nav-item">
+                <a class="nav-link" href='#boxsettings' data-bs-toggle="tab">
                     <?php eT('Box Settings'); ?>
                 </a>
             </li>
         </ul>
         <div class="tab-content">
             <!-- Boxes -->
-            <div id="boxes" class="tab-pane active">
+            <div id="boxes" class="tab-pane fade show active">
                 <?php $this->widget(
-                    'bootstrap.widgets.TbGridView',
+                    'application.extensions.admin.grid.CLSGridView',
                     [
-                        'id'           => 'boxes-grid',
+                        'id' => 'boxes-grid',
                         'dataProvider' => $dataProviderBox->search(),
-                        'htmlOptions'  => ['class' => 'table-responsive grid-view-ls'],
-                        'template'     => "{items}\n<div id='boxListPager'><div class=\"col-sm-4\" id=\"massive-action-container\"></div><div class=\"col-sm-4 pager-container ls-ba \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
-                        'summaryText'  => gT('Displaying {start}-{end} of {count} result(s).') . ' '
+                        'pager' => [
+                            'class' => 'application.extensions.admin.grid.CLSYiiPager',
+                        ],
+                        'summaryText' => gT('Displaying {start}-{end} of {count} result(s).') . ' '
                             . sprintf(
                                 gT('%s rows per page'),
                                 CHtml::dropDownList(
                                     'boxes-pageSize',
                                     Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']),
                                     Yii::app()->params['pageSizeOptions'],
-                                    array('class' => 'changePageSize form-control', 'style' => 'display: inline; width: auto')
+                                    array('class' => 'changePageSize form-select', 'style' => 'display: inline; width: auto')
                                 )
                             ),
-                        'columns'      => [
+                        'columns' => [
                             [
-                                'header'      => gT('Action'),
-                                'name'        => 'actions',
-                                'value'       => '$data->buttons',
-                                'type'        => 'raw',
+                                'header' => gT('Position'),
+                                'name' => 'position',
+                                'value' => '$data->position',
                                 'htmlOptions' => ['class' => ''],
                             ],
                             [
-                                'header'      => gT('Position'),
-                                'name'        => 'position',
-                                'value'       => '$data->position',
+                                'header' => gT('Title'),
+                                'name' => 'title',
+                                'value' => '$data->title',
                                 'htmlOptions' => ['class' => ''],
                             ],
                             [
-                                'header'      => gT('Title'),
-                                'name'        => 'title',
-                                'value'       => '$data->title',
+                                'header' => gT('Icon'),
+                                'name' => 'icon',
+                                'value' => '$data->getSpanIcon()',
+                                'type' => 'raw',
                                 'htmlOptions' => ['class' => ''],
                             ],
                             [
-                                'header'      => gT('Icon'),
-                                'name'        => 'icon',
-                                'value'       => '$data->spanicon',
-                                'type'        => 'raw',
+                                'header' => gT('Description'),
+                                'name' => 'desc',
+                                'value' => '$data->desc',
                                 'htmlOptions' => ['class' => ''],
                             ],
                             [
-                                'header'      => gT('Description'),
-                                'name'        => 'desc',
-                                'value'       => '$data->desc',
+                                'header' => gT('URL'),
+                                'name' => 'url',
+                                'value' => '$data->url',
                                 'htmlOptions' => ['class' => ''],
                             ],
                             [
-                                'header'      => gT('URL'),
-                                'name'        => 'url',
-                                'value'       => '$data->url',
+                                'header' => gT('User group'),
+                                'name' => 'url',
+                                'value' => '$data->usergroupname',
                                 'htmlOptions' => ['class' => ''],
                             ],
                             [
-                                'header'      => gT('User group'),
-                                'name'        => 'url',
-                                'value'       => '$data->usergroupname',
-                                'htmlOptions' => ['class' => ''],
+                                'header' => gT('Action'),
+                                'name' => 'actions',
+                                'value' => '$data->buttons',
+                                'type' => 'raw',
+                                'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
+                                'htmlOptions'       => ['class' => 'text-center button-column ls-sticky-column'],
                             ],
                         ],
                     ]
                 ); ?>
             </div>
             <!-- Box Settings -->
-            <div id="boxsettings" class="tab-pane">
+            <div id="boxsettings" class="tab-pane fade">
 
                 <div class="row">
-                    <label class="col-sm-2 control-label"><?php eT("Display logo:"); ?> </label>
-                    <div class="col-sm-2">
-                        <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', ['name' => 'show_logo', 'id' => 'show_logo', 'value' => $bShowLogo, 'onLabel' => gT('On'), 'offLabel' => gT('Off')]); ?>
-
+                    <label class="col-md-2 col-form-label"><?php eT("Display logo:"); ?> </label>
+                    <div class="col-md-2">
+                        <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                            'name'          => 'show_logo',
+                            'checkedOption' => $bShowLogo,
+                            'selectOptions' => [
+                                '1' => gT('On'),
+                                '0' => gT('Off'),
+                            ]
+                        ]); ?>
                         <input type="hidden" id="show_logo-url" data-url="<?php echo App()->createUrl('homepageSettings/toggleShowLogoStatus'); ?>"/>
                     </div>
 
-                    <label class="col-sm-2 control-label"><?php eT("Show last visited survey and question:"); ?> </label>
-                    <div class="col-sm-2">
-                        <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', ['name' => 'show_last_survey_and_question', 'id' => 'show_last_survey_and_question', 'value' => $bShowLastSurveyAndQuestion, 'onLabel' => gT('On'), 'offLabel' => gT('Off')]); ?>
+                    <label class="col-md-2 col-form-label"><?php eT("Show last visited survey and question:"); ?> </label>
+                    <div class="col-md-2">
+                        <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                            'name'          => 'show_last_survey_and_question',
+                            'checkedOption' => $bShowLastSurveyAndQuestion,
+                            'selectOptions' => [
+                                '1' => gT('On'),
+                                '0' => gT('Off'),
+                            ],
+                        ]); ?>
                         <input type="hidden" id="show_last_survey_and_question-url" data-url="<?php echo App()->createUrl('homepageSettings/toggleShowLastSurveyAndQuestion'); ?>"/>
                     </div>
 
@@ -125,15 +133,29 @@ App()->getClientScript()->registerScript(
                 </div>
 
                 <div class="row">
-                    <label class="col-sm-2 control-label"><?php eT("Show survey list:"); ?> </label>
-                    <div class="col-sm-2">
-                        <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', ['name' => 'show_survey_list', 'id' => 'show_survey_list', 'value' => $bShowSurveyList, 'onLabel' => gT('On'), 'offLabel' => gT('Off')]); ?>
+                    <label class="col-md-2 col-form-label"><?php eT("Show survey list:"); ?> </label>
+                    <div class="col-md-2">
+                        <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                            'name'          => 'show_survey_list',
+                            'checkedOption' => $bShowSurveyList,
+                            'selectOptions' => [
+                                '1' => gT('On'),
+                                '0' => gT('Off'),
+                            ],
+                        ]); ?>
                         <input type="hidden" id="show_survey_list-url" data-url="<?php echo App()->createUrl('homepageSettings/toggleShowSurveyList'); ?>"/>
                     </div>
 
-                    <label class="col-sm-2 control-label"><?php eT("Show search box on survey list:"); ?> </label>
-                    <div class="col-sm-2">
-                        <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', ['name' => 'show_survey_list_search', 'id' => 'show_survey_list_search', 'value' => $bShowSurveyListSearch, 'onLabel' => gT('On'), 'offLabel' => gT('Off')]); ?>
+                    <label class="col-md-2 col-form-label"><?php eT("Show search box on survey list:"); ?> </label>
+                    <div class="col-md-2">
+                        <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                            'name'          => 'show_survey_list_search',
+                            'checkedOption' => $bShowSurveyListSearch,
+                            'selectOptions' => [
+                                '1' => gT('On'),
+                                '0' => gT('Off'),
+                            ],
+                        ]); ?>
                         <input type="hidden" id="show_survey_list_search-url" data-url="<?php echo App()->createUrl('homepageSettings/toggleShowSurveyListSearch'); ?>"/>
                     </div>
 
@@ -141,9 +163,16 @@ App()->getClientScript()->registerScript(
                 </div>
 
                 <div class="row">
-                    <label class="col-sm-2 control-label"><?php eT("Wrap container around boxes"); ?> </label>
-                    <div class="col-sm-2">
-                        <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', ['name' => 'boxes_in_container', 'id' => 'boxes_in_container', 'value' => $bBoxesInContainer, 'onLabel' => gT('On'), 'offLabel' => gT('Off')]); ?>
+                    <label class="col-md-2 col-form-label"><?php eT("Wrap container around boxes"); ?> </label>
+                    <div class="col-md-2">
+                        <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                            'name'          => 'boxes_in_container',
+                            'checkedOption' => $bBoxesInContainer,
+                            'selectOptions' => [
+                                '1' => gT('On'),
+                                '0' => gT('Off'),
+                            ],
+                        ]); ?>
                         <input type="hidden" id="boxes_in_container-url" data-url="<?php echo App()->createUrl('homepageSettings/changeBoxesInContainer'); ?>"/>
                     </div>
                     <br/><br/>
@@ -151,41 +180,38 @@ App()->getClientScript()->registerScript(
                 </div>
 
                 <div class="row">
-                    <label class="col-sm-2 control-label"><?php eT("Boxes by row:"); ?></label>
-                    <div class="col-sm-1">
+                    <label class="col-md-2 col-form-label"><?php eT("Boxes by row:"); ?></label>
+                    <div class="col-md-1">
                         <input class="form-control" type="number" id="iBoxesByRow" value="<?php echo $iBoxesByRow; ?>" max="6" min="0" name="boxes_by_row"/>
                     </div>
-                    <label class="col-sm-2 col-sm-offset-1 control-label"><?php eT("Box orientation:"); ?></label>
-                    <div class="col-sm-1">
-                        <select class="form-control" id="iBoxesOffset" name="boxes_offset">
+                    <label class="col-md-2 offset-md-1 col-form-label"><?php eT("Box orientation:"); ?></label>
+                    <div class="col-md-1">
+                        <select class="form-select" id="iBoxesOffset" name="boxes_offset">
                             <option value="1" <?php if ($iBoxesOffset == '1') {
                                 echo "selected";
-                                              } ?> ><?php eT('Left to right') ?></option>
+                            } ?> ><?php eT('Left to right') ?></option>
                             <option value="2" <?php if ($iBoxesOffset == '2') {
                                 echo "selected";
-                                              } ?> ><?php eT('Right to left') ?></option>
+                            } ?> ><?php eT('Right to left') ?></option>
                             <option value="3" <?php if ($iBoxesOffset == '3') {
                                 echo "selected";
-                                              } ?> ><?php eT('Centered') ?></option>
+                            } ?> ><?php eT('Centered') ?></option>
                         </select>
                     </div>
-                    <div class="col-sm-3">
+                    <div class="col-md-3">
                         <input type="hidden" id="boxesupdatemessage" data-ajaxsuccessmessage="<?php eT('Box settings updated!'); ?>"/>
+                        <input type="hidden" id="boxeserrormessage" data-ajaxerrormessage="<?php eT('Error while updating box settings!'); ?>"/>
                     </div>
                     <br/><br/><br/><br/>
                 </div>
             </div>
         </div>
-
     </div>
 </div>
 
 <script>
     $('#boxeslist a').click(function (e) {
         window.location.hash = $(this).attr('href');
-        e.preventDefault();
-        $(this).tab('show');
-
         // Hide the save button for boxes tab
         let tabName = $(this).tab().attr('href');
         if (tabName === '#boxes') {
@@ -203,10 +229,10 @@ App()->getClientScript()->registerScript(
     });
 </script>
 <script type="text/javascript">
-    jQuery(function($) {
+    jQuery(function ($) {
         // To update rows per page via ajax
-        $(document).on("change", '#boxes-pageSize', function() {
-            $.fn.yiiGridView.update('boxes-grid', {data:{pageSize: $(this).val()}});
+        $(document).on("change", '#boxes-pageSize', function () {
+            $.fn.yiiGridView.update('boxes-grid', {data: {pageSize: $(this).val()}});
         });
     });
 </script>

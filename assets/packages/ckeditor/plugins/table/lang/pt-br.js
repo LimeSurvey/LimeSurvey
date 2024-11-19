@@ -27,6 +27,8 @@ CKEDITOR.plugins.setLang( 'table', 'pt-br', {
 		borderColor: 'Cor das bordas',
 		data: 'Dados',
 		header: 'Cabeçalho',
+		columnHeader: 'Cabeçalho da Coluna',
+		rowHeader: 'Cabeçalho da Linha',
 		yes: 'Sim',
 		no: 'Não',
 		invalidWidth: 'A largura da célula tem que ser um número.',

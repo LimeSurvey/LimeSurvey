@@ -1,0 +1,3050 @@
+/*
+
+Bash command:
+
+file="apple_blossom"
+sass --style=compressed --sourcemap=none fruity-variations-colors.scss $file && cp $file /var/www/lsinst/LimeSurveyNext/themes/survey/fruity/css/variations/
+
+
+template[apple_blossom]='#AA4340';
+template[bay_of_many]='#214F7E';
+template[black_pearl]='#071630';
+template[free_magenta]='#C63678';
+template[purple_tentacle]='#993399';
+template[sea_green]='#328637';
+template[sunset_orange]='#FE5B35';
+*/
+
+
+
+
+$base-color: #FE5B35; //
+
+///////////////////////////
+// Blacks, whites and greys
+$alabaster: #fafafa;
+$color_alabaster_approx: #f5f5f5;
+$color_alto_approx: #dadada;
+$white: #ffffff;
+
+
+
+//GREYS
+$color_gravel_approx: rgb(53, 54, 63);
+$color_celeste_approx:  #cccccc;
+$mercury: #e6e6e6;
+$color_storm_dust_approx: #636363;
+
+$color_mine_shaft_approx: #333333;
+$color_cararra_approx: #ebebeb;
+$color_silver_chalice_approx: #adadad;
+$color_mercury_approx: #e3e3e3;
+$color_buccaneer_approx: $color_mercury_approx;
+$color_gunsmoke_approx: #858585;
+$color_wild_sand_approx: #f5f5f5;
+$color_norway_approx: #e3e3e3;
+
+// TODO: test it, can it be change to white ?
+$color_desert_storm_approx: adjust-color($base-color, $hue: -124deg, $saturation: -46%, $lightness: 61%);
+
+$black: #000;
+$black_001: rgba(0, 0, 0, 0.0001);
+$black_10: rgba(0, 0, 0, 0.1);
+$black_125: rgba(0, 0, 0, 0.125);
+$black_12: rgba(0, 0, 0, 0.12);
+$black_15: rgba(0, 0, 0, 0.15);
+$black_16: rgba(0, 0, 0, 0.16);
+$black_175: rgba(0, 0, 0, 0.175);
+$black_20: rgba(0, 0, 0, 0.2);
+$black_25: rgba(0, 0, 0, 0.25);
+$black_50: rgba(0, 0, 0, 0.5);
+$black_5: rgba(0, 0, 0, 0.05);
+$black_60: rgba(0, 0, 0, 0.6);
+$black_75: rgba(0, 0, 0, 0.075);
+
+
+//////////
+// Greens (or base color variations)
+
+// $base-color: hsl(124deg, 46%, 36%);
+
+$color_deep_fir_approx: darken( $base-color, 20% );
+$color_acapulco_approx: adjust-color($base-color, $hue: 24deg, $saturation: -22%, $lightness: 25%);
+$color_aqua_forest_approx: adjust-color($base-color, $hue: 4deg, $saturation: -24%, $lightness: 14%);
+$color_paradiso_approx:adjust-color($base-color, $lightness: 5%); ;
+
+
+$color_norway_approx: adjust-color($base-color, $hue: 0deg, $saturation: -28%, $lightness: 31%);
+
+
+
+
+// RGBA :
+
+$color_cornflower_blue_approx: $base-color;
+$color_buccaneer_10_approx: rgba(99, 49, 48, 0.1);
+$color_cornflower_blue_60_approx: rgba($base-color, 0.6);
+
+$color_gunsmoke_10_approx: rgba(132, 136, 138, 0.1);
+$white_10: rgba(255, 255, 255, 0.1);
+$white_15: rgba(255, 255, 255, 0.15);
+$white_50: rgba(255, 255, 255, 0.5);
+
+
+////////
+// Reds
+
+// Fixed for danger buttons etc.
+$color_muted: $color_gunsmoke_approx;
+$color_primary: #444;
+$color_success:adjust-color($base-color, $lightness: 10%);
+//$color_success: $base-color;
+//$color_info:adjust-color($base-color, $lightness: 10%);
+$color_info: $base-color;
+$color_warning: #f6863a;
+$color_danger: #a94442;
+
+$color_background: rgba(white, 0.2);
+$color_background_variant:  rgba(white, 0.5);
+
+
+$color_stiletto_approx: #a0352f;
+$color_burnt_umber_approx: #8c2e29;
+$color_red_robin_approx: #802b26;
+$color_espresso_approx: #5d1f1b;
+
+
+$color_sandal_approx: adjust-color($base-color, $hue: -42deg, $saturation: 10%, $lightness: -8%);
+
+
+
+
+
+
+$color_rope_approx: #8c4921;
+$color_russet_approx: #80431e;
+$color_shilo_approx: $color_danger;
+$color_cadillac_approx: $color_danger;
+
+
+
+
+// $color_apple_blossom_approx: #a84947; // HSL: 1° 41% 47%
+$color_apple_blossom_approx: adjust-color($base-color, $hue: -123deg, $saturation: -5%, $lightness: 11%);
+
+// $color_bittersweet_approx: #ff716a; //   3° 100% 71%
+$color_bittersweet_approx: adjust-color($base-color, $hue: -121deg, $saturation: 54%, $lightness: 35%);
+$color_emerald_approx: $color_bittersweet_approx;
+
+// $color_brandy_rose_approx: #b59080; // HSL: 18° 26% 61%
+$color_brandy_rose_approx: adjust-color($base-color, $hue: -121deg, $saturation: 54%, $lightness: 35%);
+
+
+
+
+
+// TODO : classify all this
+$color_casal_approx: adjust-color($base-color, $lightness: 5%);
+
+
+$color_celtic_approx: adjust-color($base-color, $hue: 1deg, $saturation: 0%, $lightness: -20%);
+$color_cod_gray_approx: adjust-color($base-color, $hue: -124deg, $saturation: -46%, $lightness: -33%);
+$color_contessa_approx: adjust-color($base-color, $hue: -123deg, $saturation: -5%, $lightness: 21%);
+
+$color_dark_tan_approx: adjust-color($base-color, $hue: -124deg, $saturation: 35%, $lightness: -14%);
+
+$color_de_york_approx: adjust-color($base-color, $hue: 0deg, $saturation: -11%, $lightness: 30%);
+$color_dove_gray_approx: adjust-color($base-color, $hue: -124deg, $saturation: -46%, $lightness: 6%);
+$color_dune_approx: adjust-color($base-color, $hue: -42deg, $saturation: -25%, $lightness: -16%);
+$color_eden_approx: adjust-color($base-color, $hue: 59deg, $saturation: 7%, $lightness: -13%);
+$color_elephant_approx: adjust-color($base-color, $hue: 59deg, $saturation: 7%, $lightness: -20%);
+$color_envy_approx: adjust-color($base-color, $hue: 0deg, $saturation: -29%, $lightness: 26%);
+$color_fantasy_approx: adjust-color($base-color, $hue: 219deg, $saturation: -9%, $lightness: 60%);
+$color_fern_approx: adjust-color($base-color, $hue: 0deg, $saturation: 0%, $lightness: 20%);
+$color_forest_green_approx: adjust-color($base-color, $hue: 206deg, $saturation: 54%, $lightness: 35%);
+$color_fuscous_gray_approx: adjust-color($base-color, $hue: -124deg, $saturation: -46%, $lightness: -3%);
+$color_granny_smith_apple_approx: adjust-color($base-color, $hue: -1deg, $saturation: -8%, $lightness: 36%);
+$color_gray_nurse_approx: adjust-color($base-color, $hue: -124deg, $saturation: -46%, $lightness: 55%);
+$color_green_pea_approx: adjust-color($base-color, $hue: 0deg, $saturation: 0%, $lightness: -10%);
+$color_gulf_stream_approx: adjust-color($base-color, $hue: 57deg, $saturation: -24%, $lightness: 27%);
+
+$color_heavy_metal_approx: adjust-color($base-color, $hue: -124deg, $saturation: -46%, $lightness: -18%);
+$color_hippie_green_approx: adjust-color($base-color, $hue: 4deg, $saturation: -17%, $lightness: 7%);
+$color_hippie_pink_approx: adjust-color($base-color, $hue: 228deg, $saturation: -5%, $lightness: 13%);
+
+$color_jambalaya_approx: adjust-color($base-color, $hue: -102deg, $saturation: 17%, $lightness: -14%);
+$color_jewel_approx: adjust-color($base-color, $hue: 3deg, $saturation: 8%, $lightness: -7%);
+$color_laurel_approx: adjust-color($base-color, $hue: -1deg, $saturation: -31%, $lightness: 15%);
+$color_log_cabin_approx: adjust-color($base-color, $hue: -40deg, $saturation: -25%, $lightness: -22%);
+$color_maroon_flush_approx: adjust-color($base-color, $hue: 221deg, $saturation: 23%, $lightness: 10%);
+$color_matrix_approx: adjust-color($base-color, $hue: -123deg, $saturation: -5%, $lightness: 16%);
+
+$color_metallic_copper_approx: adjust-color($base-color, $hue: -121deg, $saturation: 9%, $lightness: -5%);
+
+$color_monsoon_approx: adjust-color($base-color, $hue: -124deg, $saturation: -46%, $lightness: 18%);
+$color_moss_green_approx: adjust-color($base-color, $hue: 0deg, $saturation: -8%, $lightness: 41%);
+$color_mountain_mist_approx: adjust-color($base-color, $hue: -124deg, $saturation: -46%, $lightness: 24%);
+$color_new_york_pink_approx: adjust-color($base-color, $hue: -123deg, $saturation: 10%, $lightness: 34%);
+
+//$color_opal_approx: adjust-color($base-color, $hue: 58deg, $saturation: -23%, $lightness: 37%);
+$color_opal_approx: $color_aqua_forest_approx;
+
+$color_parsley_approx: adjust-color($base-color, $hue: 0deg, $saturation: 16%, $lightness: -21%);
+$color_quicksand_approx: adjust-color($base-color, $hue: -96deg, $saturation: -20%, $lightness: 28%);
+
+$color_romance_approx: adjust-color($base-color, $hue: -124deg, $saturation: 54%, $lightness: 64%);
+
+$color_rose_bud_cherry_approx: adjust-color($base-color, $hue: 198deg, $saturation: 54%, $lightness: -11%);
+
+
+$color_sandrift_approx: adjust-color($base-color, $hue: -96deg, $saturation: -19%, $lightness: 23%);
+$color_sandy_brown_approx: adjust-color($base-color, $hue: -100deg, $saturation: 45%, $lightness: 34%);
+$color_sea_mist_approx: adjust-color($base-color, $hue: -1deg, $saturation: -8%, $lightness: 46%);
+$color_shadow_green_approx: adjust-color($base-color, $hue: 58deg, $saturation: -23%, $lightness: 32%);
+
+
+$color_spring_rain_approx: adjust-color($base-color, $hue: 2deg, $saturation: -26%, $lightness: 35%);
+//$color_stiletto_approx: adjust-color($base-color, $hue: -121deg, $saturation: 9%, $lightness: 5%);
+
+$color_suva_gray_approx: adjust-color($base-color, $hue: -124deg, $saturation: -46%, $lightness: 17%);
+$color_tuft_bush_approx: adjust-color($base-color, $hue: -100deg, $saturation: 46%, $lightness: 54%);
+$color_tundora_approx: adjust-color($base-color, $hue: -124deg, $saturation: -46%, $lightness: -9%);
+$color_walnut_approx: adjust-color($base-color, $hue: -102deg, $saturation: 16%, $lightness: -7%);
+
+$color_woodsmoke_approx: adjust-color($base-color, $hue: -124deg, $saturation: -46%, $lightness: -30%);
+
+$silver: adjust-color($base-color, $hue: -124deg, $saturation: -46%, $lightness: 39%);
+$yellow: adjust-color($base-color, $hue: 206deg, $saturation: 54%, $lightness: 35%);
+
+
+
+#ui-datepicker-div {
+    background-color: $white;
+    border: 1px solid $color_celeste_approx;
+}
+
+//@extend-elements
+//original selectors
+//.btn-outline-secondary:hover, .btn-outline-secondary:focus, .btn-outline-secondary:active, .btn-outline-secondary.active, .open .dropdown-toggle.btn-outline-secondary
+%extend_1 {
+    color: $color_parsley_approx;
+    border: 1px solid $color_parsley_approx;
+    background-color: rgba($color_parsley_approx, 0.1);
+}
+
+//original selectors
+//.btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open .dropdown-toggle.btn-primary
+%extend_2 {
+    color: $white;
+    background-color: $color_green_pea_approx;
+    border: 1px solid $color_parsley_approx;
+}
+
+//original selectors
+//.btn-success:hover, .btn-success:focus, .btn-success:active, .btn-success.active, .open .dropdown-toggle.btn-success
+%extend_3 {
+    color: $white;
+    background-color: $color_jewel_approx;
+    border: 1px solid $color_parsley_approx;
+}
+
+//original selectors
+//.btn-info:hover, .btn-info:focus, .btn-info:active, .btn-info.active, .open .dropdown-toggle.btn-info
+%extend_4 {
+    color: $white;
+    background-color: $color_eden_approx;
+    border: 1px solid $color_elephant_approx;
+}
+
+//original selectors
+//.btn-warning:hover, .btn-warning:focus, .btn-warning:active, .btn-warning.active, .open .dropdown-toggle.btn-warning
+%extend_5 {
+    color: $white;
+    background-color: $color_russet_approx;
+    border: 1px solid $color_jambalaya_approx;
+}
+
+
+//original selectors
+//.nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus
+%extend_7 {
+    color: $color_storm_dust_approx;
+    background-color: $white;
+    border: 1px solid $color_alto_approx;
+}
+
+//original selectors
+//pagination > li > a, .pagination > li > span
+%extend_8 {
+    color: $base-color;
+    background-color: $white;
+    border: 1px solid $color_alto_approx;
+}
+
+//original selectors
+//.pagination > li > a:hover, .pagination > li > span:hover, .pagination > li > a:focus, .pagination > li > span:focus
+%extend_9 {
+    color: $color_parsley_approx;
+    background-color: $color_norway_approx;
+    border: 1px solid $color_alto_approx;
+}
+
+//original selectors
+//.pagination > .active > a, .pagination > .active > span, .pagination > .active > a:hover, .pagination > .active > span:hover, .pagination > .active > a:focus, .pagination > .active > span:focus
+%extend_10 {
+    color: $white;
+    background-color: $base-color;
+    border: 1px solid $base-color;
+}
+
+//original selectors
+//.pagination > .disabled > span, .pagination > .disabled > span:hover, .pagination > .disabled > span:focus, .pagination > .disabled > a, .pagination > .disabled > a:hover, .pagination > .disabled > a:focus
+%extend_11 {
+    color: $color_gunsmoke_approx;
+    background-color: $white;
+    border: 1px solid $color_alto_approx;
+}
+
+//original selectors
+//a.list-group-item.active, a.list-group-item.active:hover, a.list-group-item.active:focus
+%extend_12 {
+    color: $white;
+    background-color: $base-color;
+    border: 1px solid $base-color;
+}
+
+//original selectors
+//a.list-group-item-success.active, a.list-group-item-success.active:hover, a.list-group-item-success.active:focus
+%extend_13 {
+    color: $white;
+    background-color: $base-color;
+    border: 1px solid $base-color;
+}
+
+//original selectors
+//a.list-group-item-info.active, a.list-group-item-info.active:hover, a.list-group-item-info.active:focus
+%extend_14 {
+    color: $white;
+    background-color: $color_paradiso_approx;
+    border: 1px solid $color_paradiso_approx;
+}
+
+//original selectors
+//a.list-group-item-warning.active, a.list-group-item-warning.active:hover, a.list-group-item-warning.active:focus
+%extend_15 {
+    color: $white;
+    background-color: $color_sandy_brown_approx;
+    border: 1px solid $color_sandy_brown_approx;
+}
+
+//original selectors
+//a.list-group-item-danger.active, a.list-group-item-danger.active:hover, a.list-group-item-danger.active:focus
+%extend_16 {
+    color: $white;
+    background-color: $color_shilo_approx;
+    border: 1px solid $color_shilo_approx;
+}
+
+//original selectors
+//.carousel-control:hover, .carousel-control:focus
+%extend_17 {
+    color: $white;
+    opacity: 0.9;
+    filter: alpha(opacity=90);
+}
+
+%extend_19 {
+    color: $white;
+    color: $color_mine_shaft_approx;
+    border-bottom: solid 2px $base-color;
+}
+
+%extend_20 {
+    background-color: $alabaster;
+}
+
+%extend_21 {
+    background-color: $alabaster;
+}
+
+body {
+    color: $color_gravel_approx;
+    background-color: $white;
+}
+
+.fruity {
+
+mark
+{
+    background: $yellow;
+    color: $black;
+}
+
+a {
+    color: $base-color;
+    text-decoration: underline;
+
+    &:hover {
+        color: $color_parsley_approx;
+    }
+
+    &:focus {
+        color: $color_parsley_approx;
+    }
+    &.badge {
+        &:hover {
+            color: $white;
+        }
+        &:focus {
+            color: $white;
+        }
+    }
+    &.list-group-item {
+        color: $color_fuscous_gray_approx;
+        &.active {
+            @extend %extend_12;
+            &:hover {
+                @extend %extend_12;
+                .list-group-item-text {
+                    color: $color_moss_green_approx;
+                }
+            }
+            &:focus {
+                @extend %extend_12;
+                .list-group-item-text {
+                    color: $color_moss_green_approx;
+                }
+            }
+            .list-group-item-text {
+                color: $color_moss_green_approx;
+            }
+            > .badge {
+                color: $base-color;
+                background-color: $white;
+            }
+        }
+        .list-group-item-heading {
+            color: $color_mine_shaft_approx;
+        }
+        &:hover {
+            background-color: $color_norway_approx;
+        }
+        &:focus {
+            background-color: $color_norway_approx;
+        }
+    }
+    &.thumbnail {
+        &:hover {
+            border: 1px solid $base-color;
+        }
+        &:focus {
+            border: 1px solid $base-color;
+        }
+        &.active {
+            border: 1px solid $base-color;
+        }
+    }
+    &.list-group-item-success {
+        color: $base-color;
+        &:hover {
+            color: $base-color;
+            background-color: $color_moss_green_approx;
+        }
+        &:focus {
+            color: $base-color;
+            background-color: $color_moss_green_approx;
+        }
+        &.active {
+            @extend %extend_13;
+            &:hover {
+                @extend %extend_13;
+            }
+            &:focus {
+                @extend %extend_13;
+            }
+        }
+    }
+    &.list-group-item-info {
+        color: $color_paradiso_approx;
+        &:hover {
+            color: $color_paradiso_approx;
+            background-color: $color_shadow_green_approx;
+        }
+        &:focus {
+            color: $color_paradiso_approx;
+            background-color: $color_shadow_green_approx;
+        }
+        &.active {
+            @extend %extend_14;
+            &:hover {
+                @extend %extend_14;
+            }
+            &:focus {
+                @extend %extend_14;
+            }
+        }
+    }
+    &.list-group-item-warning {
+        color: $color_sandy_brown_approx;
+        &:hover {
+            color: $color_sandy_brown_approx;
+            background-color: $color_sandrift_approx;
+        }
+        &:focus {
+            color: $color_sandy_brown_approx;
+            background-color: $color_sandrift_approx;
+        }
+        &.active {
+            @extend %extend_15;
+            &:hover {
+                @extend %extend_15;
+            }
+            &:focus {
+                @extend %extend_15;
+            }
+        }
+    }
+    &.list-group-item-danger {
+        color: $color_shilo_approx;
+        &:hover {
+            color: $color_shilo_approx;
+            background-color: $color_matrix_approx;
+        }
+        &:focus {
+            color: $color_shilo_approx;
+            background-color: $color_matrix_approx;
+        }
+        &.active {
+            @extend %extend_16;
+            &:hover {
+                @extend %extend_16;
+            }
+            &:focus {
+                @extend %extend_16;
+            }
+        }
+    }
+    &.text-primary:hover {
+        color: $color_green_pea_approx;
+    }
+    &.text-success:hover {
+        color: $color_green_pea_approx;
+    }
+    &.text-info:hover {
+        color: $color_eden_approx;
+    }
+    &.text-warning:hover {
+        color: $color_warning;
+    }
+    &.text-danger:hover {
+        color: $color_new_york_pink_approx;
+    }
+    &.bg-primary:hover {
+        background-color: $color_green_pea_approx;
+    }
+    &.bg-success:hover {
+        background-color: $color_granny_smith_apple_approx;
+    }
+    &.bg-info:hover {
+        background-color: $color_gulf_stream_approx;
+    }
+    &.bg-warning:hover {
+        background-color: $color_sandal_approx;
+    }
+    &.bg-danger:hover {
+        background-color: $color_apple_blossom_approx;
+    }
+}
+.img-thumbnail {
+    background-color: $white;
+    border: 1px solid $color_alto_approx;
+}
+hr {
+    border-top: 1px solid $color_norway_approx;
+}
+.text-muted {
+    color: $color_gunsmoke_approx;
+}
+.text-primary {
+    color: $base-color;
+}
+.text-success {
+    color: $base-color;
+}
+.text-info {
+    color: $color_info;
+}
+.text-warning {
+    color: $color_warning;
+}
+.text-danger {
+    color: $color_danger;
+}
+.bg-primary {
+    color: $white;
+    background-color: $base-color;
+}
+.bg-success {
+    background-color: $color_sea_mist_approx;
+}
+.bg-info {
+    background-color: $color_opal_approx;
+}
+.bg-warning {
+    background-color: $color_quicksand_approx;
+}
+.bg-danger {
+    background-color: $color_contessa_approx;
+}
+.page-header {
+    border-bottom: 1px solid $color_norway_approx;
+}
+abbr[data-original-title] {
+    border-bottom: 1px dotted $color_gunsmoke_approx;
+}
+blockquote {
+    border-left: 5px solid $color_norway_approx;
+    footer {
+        color: $color_gunsmoke_approx;
+    }
+    small {
+        color: $color_gunsmoke_approx;
+    }
+    .small {
+        color: $color_gunsmoke_approx;
+    }
+    &.pull-right {
+        border-right: 5px solid $color_norway_approx;
+    }
+}
+.blockquote-reverse {
+    border-right: 5px solid $color_norway_approx;
+}
+code {
+    color: $color_maroon_flush_approx;
+    background-color: $color_fantasy_approx;
+}
+kbd {
+    color: $white;
+    background-color: $color_mine_shaft_approx;
+    box-shadow: inset 0 -1px 0 $black_25;
+}
+pre {
+    color: $color_gravel_approx;
+    background-color: $color_wild_sand_approx;
+    border: 1px solid $color_celeste_approx;
+}
+.table {
+    > {
+        tbody {
+            + tbody {
+                border-top: 2px solid $color_alto_approx;
+            }
+            > tr {
+                > {
+                    td {
+                        &.active {
+                            background-color: $color_wild_sand_approx;
+                        }
+                        &.success {
+                            background-color: $color_sea_mist_approx;
+                        }
+                        &.info {
+                            background-color: $color_opal_approx;
+                        }
+                        &.warning {
+                            background-color: $color_quicksand_approx;
+                        }
+                        &.danger {
+                            background-color: $color_contessa_approx;
+                        }
+                    }
+                    th {
+                        &.active {
+                            background-color: $color_wild_sand_approx;
+                        }
+                        &.success {
+                            background-color: $color_sea_mist_approx;
+                        }
+                        &.info {
+                            background-color: $color_opal_approx;
+                        }
+                        &.warning {
+                            background-color: $color_quicksand_approx;
+                        }
+                        &.danger {
+                            background-color: $color_contessa_approx;
+                        }
+                    }
+                }
+                &.active > {
+                    td {
+                        background-color: $color_wild_sand_approx;
+                    }
+                    th {
+                        background-color: $color_wild_sand_approx;
+                    }
+                }
+                &.success > {
+                    td {
+                        background-color: $color_sea_mist_approx;
+                    }
+                    th {
+                        background-color: $color_sea_mist_approx;
+                    }
+                }
+                &.info > {
+                    td {
+                        background-color: $color_opal_approx;
+                    }
+                    th {
+                        background-color: $color_opal_approx;
+                    }
+                }
+                &.warning > {
+                    td {
+                        background-color: $color_quicksand_approx;
+                    }
+                    th {
+                        background-color: $color_quicksand_approx;
+                    }
+                }
+                &.danger > {
+                    td {
+                        background-color: $color_contessa_approx;
+                    }
+                    th {
+                        background-color: $color_contessa_approx;
+                    }
+                }
+            }
+        }
+        tfoot > tr {
+            > {
+                td {
+                    border-top: 1px solid $color_alto_approx;
+                    &.active {
+                        background-color: $color_wild_sand_approx;
+                    }
+                    &.success {
+                        background-color: $color_sea_mist_approx;
+                    }
+                    &.info {
+                        background-color: $color_opal_approx;
+                    }
+                    &.warning {
+                        background-color: $color_quicksand_approx;
+                    }
+                    &.danger {
+                        background-color: $color_contessa_approx;
+                    }
+                }
+                th {
+                    &.active {
+                        background-color: $color_wild_sand_approx;
+                    }
+                    &.success {
+                        background-color: $color_sea_mist_approx;
+                    }
+                    &.info {
+                        background-color: $color_opal_approx;
+                    }
+                    &.warning {
+                        background-color: $color_quicksand_approx;
+                    }
+                    &.danger {
+                        background-color: $color_contessa_approx;
+                    }
+                }
+            }
+            &.active > {
+                td {
+                    background-color: $color_wild_sand_approx;
+                }
+                th {
+                    background-color: $color_wild_sand_approx;
+                }
+            }
+            &.success > {
+                td {
+                    background-color: $color_sea_mist_approx;
+                }
+                th {
+                    background-color: $color_sea_mist_approx;
+                }
+            }
+            &.info > {
+                td {
+                    background-color: $color_opal_approx;
+                }
+                th {
+                    background-color: $color_opal_approx;
+                }
+            }
+            &.warning > {
+                td {
+                    background-color: $color_quicksand_approx;
+                }
+                th {
+                    background-color: $color_quicksand_approx;
+                }
+            }
+            &.danger > {
+                td {
+                    background-color: $color_contessa_approx;
+                }
+                th {
+                    background-color: $color_contessa_approx;
+                }
+            }
+        }
+        thead > tr {
+            > {
+                th {
+                    border-bottom: 2px solid $color_alto_approx;
+                    &.active {
+                        background-color: $color_wild_sand_approx;
+                    }
+                    &.success {
+                        background-color: $color_sea_mist_approx;
+                    }
+                    &.info {
+                        background-color: $color_opal_approx;
+                    }
+                    &.warning {
+                        background-color: $color_quicksand_approx;
+                    }
+                    &.danger {
+                        background-color: $color_contessa_approx;
+                    }
+                }
+                td {
+                    &.active {
+                        background-color: $color_wild_sand_approx;
+                    }
+                    &.success {
+                        background-color: $color_sea_mist_approx;
+                    }
+                    &.info {
+                        background-color: $color_opal_approx;
+                    }
+                    &.warning {
+                        background-color: $color_quicksand_approx;
+                    }
+                    &.danger {
+                        background-color: $color_contessa_approx;
+                    }
+                }
+            }
+            &.active > {
+                td {
+                    background-color: $color_wild_sand_approx;
+                }
+                th {
+                    background-color: $color_wild_sand_approx;
+                }
+            }
+            &.success > {
+                td {
+                    background-color: $color_sea_mist_approx;
+                }
+                th {
+                    background-color: $color_sea_mist_approx;
+                }
+            }
+            &.info > {
+                td {
+                    background-color: $color_opal_approx;
+                }
+                th {
+                    background-color: $color_opal_approx;
+                }
+            }
+            &.warning > {
+                td {
+                    background-color: $color_quicksand_approx;
+                }
+                th {
+                    background-color: $color_quicksand_approx;
+                }
+            }
+            &.danger > {
+                td {
+                    background-color: $color_contessa_approx;
+                }
+                th {
+                    background-color: $color_contessa_approx;
+                }
+            }
+        }
+    }
+    .table {
+        background-color: $white;
+    }
+}
+.table-bordered {
+    border: 1px solid $color_alto_approx;
+    > {
+        thead > tr > {
+            th {
+                border: 1px solid $color_alto_approx;
+            }
+            td {
+                border: 1px solid $color_alto_approx;
+            }
+        }
+        tbody > tr > {
+            th {
+                border: 1px solid $color_alto_approx;
+            }
+            td {
+                border: 1px solid $color_alto_approx;
+            }
+        }
+        tfoot > tr > {
+            th {
+                border: 1px solid $color_alto_approx;
+            }
+            td {
+                border: 1px solid $color_alto_approx;
+            }
+        }
+    }
+}
+legend {
+    color: $color_gravel_approx;
+    border-bottom: 1px solid $mercury;
+}
+output {
+    color: $color_storm_dust_approx;
+}
+.form-control {
+    color: $color_storm_dust_approx;
+    background-color: $white;
+    border: 1px solid $color_celeste_approx;
+    //Instead of the line below you could use @include box-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+    box-shadow: inset 0 1px 1px $black_75;
+    &:focus {
+        border: 1px solid $color_cornflower_blue_approx;
+        //Instead of the line below you could use @include box-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+        box-shadow: inset 0 1px 1px $black_75, 0 0 8px $color_cornflower_blue_60_approx;
+    }
+    &:-ms-input-placeholder {
+        color: $color_gunsmoke_approx;
+    }
+}
+.form-control::-moz-placeholder {
+    color: $color_gunsmoke_approx;
+    opacity: 1;
+}
+.form-control::-webkit-input-placeholder {
+    color: $color_gunsmoke_approx;
+}
+.form-control[disabled] {
+    color: $color_mercury_approx;
+    background-color: $color_wild_sand_approx;
+    opacity: 1;
+}
+.form-control[readonly] {
+    background-color: $color_wild_sand_approx;
+    opacity: 1;
+}
+fieldset[disabled] {
+    .form-control {
+        background-color: $color_wild_sand_approx;
+        opacity: 1;
+    }
+    .btn-outline-secondary {
+        background-color: rgba(white, 0.5);
+        border: 1px solid $base-color;
+        color: $base-color;
+        &:hover {
+            background-color: rgba(white, 0.5);
+            border: 1px solid $color_celeste_approx;
+
+        }
+        &:focus {
+            background-color: rgba(white, 0.5);
+            border: 1px solid $color_celeste_approx;
+        }
+        &:active {
+            background-color: rgba(white, 0.5);
+            border: 1px solid $color_celeste_approx;
+        }
+        &.active {
+            background-color: rgba(white, 0.5);
+            border: 1px solid $color_celeste_approx;
+        }
+    }
+    .btn-primary {
+        background-color: $base-color;
+        border: 1px solid $base-color;
+        &:hover {
+            background-color: $base-color;
+            border: 1px solid $base-color;
+        }
+        &:focus {
+            background-color: $base-color;
+            border: 1px solid $base-color;
+        }
+        &:active {
+            background-color: $base-color;
+            border: 1px solid $base-color;
+        }
+        &.active {
+            background-color: $base-color;
+            border: 1px solid $base-color;
+        }
+    }
+    .btn-success {
+        background-color: $base-color;
+        border: 1px solid $base-color;
+        &:hover {
+            background-color: $base-color;
+            border: 1px solid $base-color;
+        }
+        &:focus {
+            background-color: $base-color;
+            border: 1px solid $base-color;
+        }
+        &:active {
+            background-color: $base-color;
+            border: 1px solid $base-color;
+        }
+        &.active {
+            background-color: $base-color;
+            border: 1px solid $base-color;
+        }
+    }
+    .btn-info {
+        background-color: $color_paradiso_approx;
+        border: 1px solid $color_casal_approx;
+        &:hover {
+            background-color: $color_paradiso_approx;
+            border: 1px solid $color_casal_approx;
+        }
+        &:focus {
+            background-color: $color_paradiso_approx;
+            border: 1px solid $color_casal_approx;
+        }
+        &:active {
+            background-color: $color_paradiso_approx;
+            border: 1px solid $color_casal_approx;
+        }
+        &.active {
+            background-color: $color_paradiso_approx;
+            border: 1px solid $color_casal_approx;
+        }
+    }
+    .btn-warning {
+        background-color: $color_background;
+        border: 1px solid $color_warning;
+        &:hover {
+            background-color: $color_background_variant;
+            border: 1px solid $color_warning;
+        }
+        &:focus {
+            background-color: $color_background_variant;
+            border: 1px solid $color_warning;
+        }
+        &:active {
+            background-color: $color_background_variant;
+            border: 1px solid $color_warning;
+        }
+        &.active {
+            background-color: $color_background_variant;
+            border: 1px solid $color_warning;
+        }
+    }
+    .btn-danger {
+        background-color: $color_background;
+        color: $color_danger;
+        border: 1px solid $color_danger;
+        &:hover {
+            background-color: $color_background_variant;
+            border: 1px solid $color_danger;
+        }
+        &:focus {
+            background-color: $color_background_variant;
+            border: 1px solid $color_danger;
+        }
+        &:active {
+            background-color: $color_background_variant;
+            border: 1px solid $color_danger;
+        }
+        &.active {
+            background-color: $color_background_variant;
+            border: 1px solid $color_danger;
+        }
+    }
+    .btn-link {
+        &:hover {
+            text-decoration: underline;
+        }
+        &:focus {
+            text-decoration: underline;
+        }
+    }
+}
+.has-success {
+    .help-block {
+        color: $base-color;
+    }
+    .control-label {
+        color: $base-color;
+    }
+    .radio {
+        color: $base-color;
+    }
+    .checkbox {
+        color: $base-color;
+    }
+    .radio-inline {
+        color: $base-color;
+    }
+    .checkbox-inline {
+        color: $base-color;
+    }
+    .form-control {
+        border: 1px solid $base-color;
+        box-shadow: inset 0 1px 1px $black_75;
+        &:focus {
+            border: 1px solid $color_green_pea_approx;
+            box-shadow: inset 0 1px 1px $black_75, 0 0 6px $color_emerald_approx;
+        }
+    }
+    .input-group-addon {
+        color: $base-color;
+        border: 1px solid $base-color;
+        background-color: $color_sea_mist_approx;
+    }
+    .form-control-feedback {
+        color: $base-color;
+    }
+}
+.has-warning {
+    .help-block {
+        color: $color_sandy_brown_approx;
+    }
+    .control-label {
+        color: $color_sandy_brown_approx;
+    }
+    .radio {
+        color: $color_sandy_brown_approx;
+    }
+    .checkbox {
+        color: $color_sandy_brown_approx;
+    }
+    .radio-inline {
+        color: $color_sandy_brown_approx;
+    }
+    .checkbox-inline {
+        color: $color_sandy_brown_approx;
+    }
+    .form-control {
+        border: 1px solid $color_sandy_brown_approx;
+        box-shadow: inset 0 1px 1px $black_75;
+        &:focus {
+            border: 1px solid $color_warning;
+            box-shadow: inset 0 1px 1px $black_75, 0 0 6px $color_tuft_bush_approx;
+        }
+    }
+    .input-group-addon {
+        color: $color_sandy_brown_approx;
+        border: 1px solid $color_sandy_brown_approx;
+        background-color: $color_quicksand_approx;
+    }
+    .form-control-feedback {
+        color: $color_sandy_brown_approx;
+    }
+}
+.has-error {
+    .help-block {
+        color: $color_danger;
+    }
+    .control-label {
+        color: $color_danger;
+    }
+    .radio {
+        color: $color_danger;
+    }
+    .checkbox {
+        color: $color_danger;
+    }
+    .radio-inline {
+        color: $color_danger;
+    }
+    .checkbox-inline {
+        color: $color_danger;
+    }
+    .form-control {
+        border: 1px solid $color_danger;
+        box-shadow: inset 0 1px 1px $black_75;
+        &:focus {
+            border: 1px solid $color_danger;
+            box-shadow: inset 0 1px 1px $black_75, 0 0 6px $color_romance_approx;
+        }
+    }
+    .input-group-addon {
+        color: $color_danger;
+        border: 1px solid $color_danger;
+        background-color: transparent;
+    }
+    .form-control-feedback {
+        color: $color_danger;
+    }
+}
+.help-block {
+    color: $color_monsoon_approx;
+}
+
+
+/* BTN */
+
+
+.btn-outline-secondary {
+
+    background-color: $color_background;
+    border: 1px solid $base-color;
+    color: $base-color;
+
+    &:hover {
+        @extend %extend_1;
+    }
+    &:focus {
+        @extend %extend_1;
+    }
+    &:active {
+        @extend %extend_1;
+    }
+    &.active {
+        @extend %extend_1;
+    }
+    &.disabled {
+        background-color: $white;
+        border: 1px solid $color_celeste_approx;
+        &:hover {
+            background-color: $white;
+            border: 1px solid $color_celeste_approx;
+        }
+        &:focus {
+            background-color: $white;
+            border: 1px solid $color_celeste_approx;
+        }
+        &:active {
+            background-color: $white;
+            border: 1px solid $color_celeste_approx;
+        }
+        &.active {
+            background-color: $white;
+            border: 1px solid $color_celeste_approx;
+        }
+    }
+    .badge {
+        color: $white;
+        background-color: $color_mine_shaft_approx;
+    }
+}
+.btn-outline-secondary[disabled] {
+    background-color: $white;
+    border: 1px solid $color_celeste_approx;
+    &:hover {
+        background-color: $white;
+        border: 1px solid $color_celeste_approx;
+    }
+    &:focus {
+        background-color: $white;
+        border: 1px solid $color_celeste_approx;
+    }
+    &:active {
+        background-color: $white;
+        border: 1px solid $color_celeste_approx;
+    }
+    &.active {
+        background-color: $white;
+        border: 1px solid $color_celeste_approx;
+    }
+}
+.btn-primary {
+    color: $white;
+    background-color: $base-color;
+    border: 1px solid $base-color;
+    &:hover {
+        @extend %extend_2;
+    }
+    &:focus {
+        @extend %extend_2;
+    }
+    &:active {
+        @extend %extend_2;
+    }
+    &.active {
+        @extend %extend_2;
+
+        &.active {
+            @extend %extend_2;
+         }
+
+        &:focus {
+            @extend %extend_2;
+        }
+    }
+    &.disabled {
+        background-color: $base-color;
+        border: 1px solid $base-color;
+        &:hover {
+            background-color: $base-color;
+            border: 1px solid $base-color;
+        }
+        &:focus {
+            background-color: $base-color;
+            border: 1px solid $base-color;
+        }
+        &:active {
+            background-color: $base-color;
+            border: 1px solid $base-color;
+        }
+        &.active {
+            background-color: $base-color;
+            border: 1px solid $base-color;
+        }
+    }
+    .badge {
+        color: $base-color;
+        background-color: $white;
+    }
+
+    label:hover {
+        cursor: pointer;
+    }
+}
+.btn-primary[disabled] {
+    background-color: $base-color;
+    border: 1px solid $base-color;
+    &:hover {
+        background-color: $base-color;
+        border: 1px solid $base-color;
+    }
+    &:focus {
+        background-color: $base-color;
+        border: 1px solid $base-color;
+    }
+    &:active {
+        background-color: $base-color;
+        border: 1px solid $base-color;
+    }
+    &.active {
+        background-color: $base-color;
+        border: 1px solid $base-color;
+    }
+}
+.btn-success {
+    color: $white;
+    background-color: $base-color;
+    border: 1px solid $base-color;
+    &:hover {
+        @extend %extend_3;
+    }
+    &:focus {
+        @extend %extend_3;
+    }
+    &:active {
+        @extend %extend_3;
+    }
+    &.active {
+        @extend %extend_3;
+    }
+    &.disabled {
+        background-color: $base-color;
+        border: 1px solid $base-color;
+        &:hover {
+            background-color: $base-color;
+            border: 1px solid $base-color;
+        }
+        &:focus {
+            background-color: $base-color;
+            border: 1px solid $base-color;
+        }
+        &:active {
+            background-color: $base-color;
+            border: 1px solid $base-color;
+        }
+        &.active {
+            background-color: $base-color;
+            border: 1px solid $base-color;
+        }
+    }
+    .badge {
+        color: $base-color;
+        background-color: $white;
+    }
+}
+.btn-success[disabled] {
+    background-color: $base-color;
+    border: 1px solid $base-color;
+    &:hover {
+        background-color: $base-color;
+        border: 1px solid $base-color;
+    }
+    &:focus {
+        background-color: $base-color;
+        border: 1px solid $base-color;
+    }
+    &:active {
+        background-color: $base-color;
+        border: 1px solid $base-color;
+    }
+    &.active {
+        background-color: $base-color;
+        border: 1px solid $base-color;
+    }
+}
+.btn-info {
+    color: $white;
+    background-color: $color_paradiso_approx;
+    border: 1px solid $color_casal_approx;
+    &:hover {
+        @extend %extend_4;
+    }
+    &:focus {
+        @extend %extend_4;
+    }
+    &:active {
+        @extend %extend_4;
+    }
+    &.active {
+        @extend %extend_4;
+    }
+    &.disabled {
+        background-color: $color_paradiso_approx;
+        border: 1px solid $color_casal_approx;
+        &:hover {
+            background-color: $color_paradiso_approx;
+            border: 1px solid $color_casal_approx;
+        }
+        &:focus {
+            background-color: $color_paradiso_approx;
+            border: 1px solid $color_casal_approx;
+        }
+        &:active {
+            background-color: $color_paradiso_approx;
+            border: 1px solid $color_casal_approx;
+        }
+        &.active {
+            background-color: $color_paradiso_approx;
+            border: 1px solid $color_casal_approx;
+        }
+    }
+    .badge {
+        color: $color_paradiso_approx;
+        background-color: $white;
+    }
+}
+.btn-info[disabled] {
+    background-color: $color_paradiso_approx;
+    border: 1px solid $color_casal_approx;
+    &:hover {
+        background-color: $color_paradiso_approx;
+        border: 1px solid $color_casal_approx;
+    }
+    &:focus {
+        background-color: $color_paradiso_approx;
+        border: 1px solid $color_casal_approx;
+    }
+    &:active {
+        background-color: $color_paradiso_approx;
+        border: 1px solid $color_casal_approx;
+    }
+    &.active {
+        background-color: $color_paradiso_approx;
+        border: 1px solid $color_casal_approx;
+    }
+}
+.btn-warning {
+    color: $white;
+    background-color: transparent;
+    border: 1px solid $color_rope_approx;
+    &:hover {
+        @extend %extend_5;
+    }
+    &:focus {
+        @extend %extend_5;
+    }
+    &:active {
+        @extend %extend_5;
+    }
+    &.active {
+        @extend %extend_5;
+    }
+    &.disabled {
+        background-color: $color_background_variant;
+        border: 1px solid $color_warning;
+        &:hover {
+            background-color: $color_background_variant;
+            border: 1px solid $color_warning;
+        }
+        &:focus {
+            background-color: $color_background_variant;
+            border: 1px solid $color_warning;
+        }
+        &:active {
+            background-color: $color_background_variant;
+            border: 1px solid $color_warning;
+        }
+        &.active {
+            background-color: $color_background_variant;
+            border: 1px solid $color_warning;
+        }
+    }
+    .badge {
+        color: $color_background_variant;
+        background-color: $color_warning;
+    }
+}
+.btn-warning[disabled] {
+    background-color: $color_background_variant;
+    border: 1px solid $color_warning;
+    &:hover {
+        background-color: $color_background_variant;
+    }
+    &:focus {
+        background-color: $color_background_variant;
+    }
+    &:active {
+        background-color: $color_background_variant;
+    }
+    &.active {
+        background-color: $color_background_variant;
+    }
+}
+.btn-danger {
+    color: $color_danger;
+    background-color: $color_background_variant;
+    border: 1px solid $color_danger;
+
+    &:hover {
+        background-color: $color_background_variant;
+    }
+    &:focus {
+        background-color: $color_background_variant;
+    }
+    &:active {
+        background-color: $color_background_variant;
+    }
+    &.active {
+        background-color: $color_background_variant;
+    }
+
+    &.disabled {
+        background-color: $color_stiletto_approx;
+        border: 1px solid $color_burnt_umber_approx;
+        &:hover {
+            background-color: $color_stiletto_approx;
+            border: 1px solid $color_burnt_umber_approx;
+        }
+        &:focus {
+            background-color: $color_stiletto_approx;
+            border: 1px solid $color_burnt_umber_approx;
+        }
+        &:active {
+            background-color: $color_stiletto_approx;
+            border: 1px solid $color_burnt_umber_approx;
+        }
+        &.active {
+            background-color: $color_stiletto_approx;
+            border: 1px solid $color_burnt_umber_approx;
+        }
+    }
+    .badge {
+        color: $color_stiletto_approx;
+        background-color: $white;
+    }
+}
+.btn-danger[disabled] {
+    background-color: $color_stiletto_approx;
+    border: 1px solid $color_burnt_umber_approx;
+    &:hover {
+        background-color: $color_stiletto_approx;
+        border: 1px solid $color_burnt_umber_approx;
+    }
+    &:focus {
+        background-color: $color_stiletto_approx;
+        border: 1px solid $color_burnt_umber_approx;
+    }
+    &:active {
+        background-color: $color_stiletto_approx;
+        border: 1px solid $color_burnt_umber_approx;
+    }
+    &.active {
+        background-color: $color_stiletto_approx;
+        border: 1px solid $color_burnt_umber_approx;
+    }
+}
+.btn-link {
+    color: $base-color;
+    &:hover {
+        color: $color_parsley_approx;
+    }
+    &:focus {
+        color: $color_parsley_approx;
+    }
+}
+.btn-link[disabled] {
+    &:hover {
+        color: $color_gunsmoke_approx;
+    }
+    &:focus {
+        color: $color_gunsmoke_approx;
+    }
+}
+.dropdown-menu {
+    background-color: $white;
+    border: 1px solid $color_celeste_approx;
+    border: 1px solid $black_15;
+    box-shadow: 0 6px 12px $black_175;
+    .divider {
+        background-color: $mercury;
+    }
+    > {
+        li > a {
+            color: $color_gravel_approx;
+            &:hover {
+                color: $white;
+                background-color: $color_parsley_approx;
+            }
+            &:focus {
+                color: $white;
+                background-color: $color_parsley_approx;
+            }
+        }
+        .active > a {
+            color: $white;
+            background-color: $color_parsley_approx;
+            &:hover {
+                color: $white;
+                background-color: $color_parsley_approx;
+            }
+            &:focus {
+                color: $white;
+                background-color: $color_parsley_approx;
+            }
+        }
+        .disabled > a {
+            color: $color_gunsmoke_approx;
+            &:hover {
+                color: $color_gunsmoke_approx;
+            }
+            &:focus {
+                color: $color_gunsmoke_approx;
+            }
+        }
+    }
+}
+.dropdown-header {
+    color: $color_gunsmoke_approx;
+}
+.input-group-addon {
+    color: white;
+    background-color: $base-color;
+}
+.nav {
+    .nav-divider {
+        background-color: $mercury;
+    }
+    > li {
+        > a {
+            &:hover {
+                text-decoration: underline;
+            }
+            &:focus {
+                text-decoration: underline;
+            }
+        }
+        &.disabled > a {
+            color: $color_gunsmoke_approx;
+            &:hover {
+                color: $color_gunsmoke_approx;
+            }
+            &:focus {
+                color: $color_gunsmoke_approx;
+            }
+        }
+    }
+    .open > a {
+        //background-color: $color_norway_approx;
+        color: $white;
+        background-color: $color_parsley_approx;
+        border-bottom: 1px solid $white;
+        &:hover {
+            //background-color: $color_norway_approx;
+            color: $white;
+            background-color: $color_parsley_approx;
+        }
+        &:focus {
+            //background-color: $color_norway_approx;
+            color: $white;
+            background-color: $color_parsley_approx;
+        }
+    }
+}
+.nav-tabs {
+    border-bottom: 1px solid $color_alto_approx;
+    > li {
+        > a:hover {
+            border: 1px solid $color_norway_approx $color_norway_approx $color_norway_approx;
+        }
+        &.active > a {
+            @extend %extend_7;
+            &:hover {
+                @extend %extend_7;
+            }
+            &:focus {
+                @extend %extend_7;
+            }
+        }
+    }
+}
+.navbar-collapse {
+    box-shadow: inset 0 1px 0 $white_10;
+}
+.navbar-form {
+    box-shadow: inset 0 1px 0 $white_10, 0 1px 0 $white_10;
+}
+.label {
+    color: $white;
+}
+.label[href] {
+    &:hover {
+        color: $white;
+    }
+    &:focus {
+        color: $white;
+    }
+}
+.label-default {
+    background-color: $color_gunsmoke_approx;
+}
+.label-default[href] {
+    &:hover {
+        background-color: $color_dove_gray_approx;
+    }
+    &:focus {
+        background-color: $color_dove_gray_approx;
+    }
+}
+.label-primary {
+    background-color: $base-color;
+}
+.label-primary[href] {
+    &:hover {
+        background-color: $color_green_pea_approx;
+    }
+    &:focus {
+        background-color: $color_green_pea_approx;
+    }
+}
+.label-success {
+    background-color: $base-color;
+}
+.label-success[href] {
+    &:hover {
+        background-color: $color_green_pea_approx;
+    }
+    &:focus {
+        background-color: $color_green_pea_approx;
+    }
+}
+.label-info {
+    background-color: $color_paradiso_approx;
+}
+.label-info[href] {
+    &:hover {
+        background-color: $color_eden_approx;
+    }
+    &:focus {
+        background-color: $color_eden_approx;
+    }
+}
+.label-warning {
+    background-color: $color_warning;
+    color: white;
+}
+.label-warning[href] {
+    &:hover {
+        background-color: $color_walnut_approx;
+    }
+    &:focus {
+        background-color: $color_walnut_approx;
+    }
+}
+.label-danger {
+    background-color: $color_stiletto_approx;
+}
+.label-danger[href] {
+    &:hover {
+        background-color: $color_metallic_copper_approx;
+    }
+    &:focus {
+        background-color: $color_metallic_copper_approx;
+    }
+}
+.badge {
+    color: $white;
+    background-color: $color_gunsmoke_approx;
+}
+.jumbotron {
+    background-color: $color_norway_approx;
+    background-color: transparent;
+    text-align: center;
+    &.message-box {
+        background-color: transparent;
+    }
+}
+.thumbnail {
+    background-color: $white;
+    border: 1px solid $color_alto_approx;
+    .caption {
+        color: $color_gravel_approx;
+    }
+}
+.alert-success {
+    background-color: transparent;
+    border: 1px solid $color_success;
+    color: $color_success;
+    hr {
+        border-top-color: $color_success;
+    }
+    .alert-link {
+        color: $color_success;
+        text-decoration: underline;
+    }
+}
+.alert-info {
+    background-color: transparent;
+    border: 1px solid $color_info;
+    color: $color_info;
+    hr {
+        border-top-color: $color_info;
+    }
+    .alert-link {
+        color: $color_info;
+        text-decoration: underline;
+    }
+}
+.alert-warning {
+    background-color: transparent;
+    border: 1px solid $color_warning;
+    color: $color_warning;
+    hr {
+        border-top-color: $color_warning;
+    }
+    .alert-link {
+        color: $color_warning;
+        text-decoration: underline;
+    }
+}
+.alert-danger {
+    background-color: transparent;
+    border: 1px solid $color_danger;
+    color: $color_danger;
+    hr {
+        border-top-color: $color_danger;
+    }
+    .alert-link {
+        color: $color_danger;
+        text-decoration: underline;
+    }
+}
+.progress {
+    background-color: $color_wild_sand_approx;
+    box-shadow: inset 0 1px 2px $black_10;
+}
+.progress-bar {
+    color: $white;
+    background-color: $base-color;
+    box-shadow: inset 0 -1px 0 $black_15;
+}
+.progress-striped {
+    .progress-bar {
+        background-image: linear-gradient(45deg, $white_15 25%, transparent 25%, transparent 50%, $white_15 50%, $white_15 75%, transparent 75%, transparent);
+    }
+    .progress-bar-success {
+        background-image: linear-gradient(45deg, $white_15 25%, transparent 25%, transparent 50%, $white_15 50%, $white_15 75%, transparent 75%, transparent);
+    }
+    .progress-bar-info {
+        background-image: linear-gradient(45deg, $white_15 25%, transparent 25%, transparent 50%, $white_15 50%, $white_15 75%, transparent 75%, transparent);
+    }
+    .progress-bar-warning {
+        background-image: linear-gradient(45deg, $white_15 25%, transparent 25%, transparent 50%, $white_15 50%, $white_15 75%, transparent 75%, transparent);
+    }
+    .progress-bar-danger {
+        background-image: linear-gradient(45deg, $white_15 25%, transparent 25%, transparent 50%, $white_15 50%, $white_15 75%, transparent 75%, transparent);
+    }
+}
+.progress-bar-success {
+    background-color: $base-color;
+}
+.progress-bar-info {
+    background-color: $color_paradiso_approx;
+}
+.progress-bar-warning {
+    background-color: $color_warning;
+}
+.progress-bar-danger {
+    background-color: $color_stiletto_approx;
+}
+.list-group-item {
+    background-color: $white;
+    border: 1px solid $color_alto_approx;
+}
+.list-group-item-success {
+    color: $base-color;
+    background-color: $color_sea_mist_approx;
+}
+.list-group-item-info {
+    color: $color_paradiso_approx;
+    background-color: $color_opal_approx;
+}
+.list-group-item-warning {
+    color: $color_sandy_brown_approx;
+    background-color: $color_quicksand_approx;
+}
+.list-group-item-danger {
+    color: $color_shilo_approx;
+    background-color: $color_contessa_approx;
+}
+.panel {
+    background-color: $white;
+    box-shadow: 0 1px 1px $black_5;
+    > .card-body + {
+        .table {
+            border-top: 1px solid $color_alto_approx;
+        }
+        .table-responsive {
+            border-top: 1px solid $color_alto_approx;
+        }
+    }
+}
+.card-footer {
+    background-color: $color_wild_sand_approx;
+    border-top: 1px solid $color_alto_approx;
+}
+.card-group {
+    .card-header + .panel-collapse .card-body {
+        border-top: 1px solid $color_alto_approx;
+    }
+    .card-footer + .panel-collapse .card-body {
+        border-bottom: 1px solid $color_alto_approx;
+    }
+}
+.card-default {
+    border: 1px solid $color_alto_approx;
+    > {
+        .card-header {
+            color: $color_gravel_approx;
+            background-color: $color_wild_sand_approx;
+            border: 1px solid $color_alto_approx;
+            + .panel-collapse .card-body {
+                border-top-color: $color_alto_approx;
+            }
+        }
+        .card-footer + .panel-collapse .card-body {
+            border-bottom-color: $color_alto_approx;
+        }
+    }
+}
+.card-primary {
+    border: 1px solid $base-color;
+    > {
+        .card-header {
+            color: $white;
+            background-color: $base-color;
+            border: 1px solid $base-color;
+            + .panel-collapse .card-body {
+                border-top-color: $base-color;
+            }
+        }
+        .card-footer + .panel-collapse .card-body {
+            border-bottom-color: $base-color;
+        }
+    }
+}
+.card-success {
+    border: 1px solid $color_moss_green_approx;
+    > {
+        .card-header {
+            color: $base-color;
+            background-color: $color_sea_mist_approx;
+            border: 1px solid $color_moss_green_approx;
+            + .panel-collapse .card-body {
+                border-top-color: $color_moss_green_approx;
+            }
+        }
+        .card-footer + .panel-collapse .card-body {
+            border-bottom-color: $color_moss_green_approx;
+        }
+    }
+}
+.card-info {
+    border: 1px solid $color_shadow_green_approx;
+    > {
+        .card-header {
+            color: $color_paradiso_approx;
+            background-color: $color_opal_approx;
+            border: 1px solid $color_shadow_green_approx;
+            + .panel-collapse .card-body {
+                border-top-color: $color_shadow_green_approx;
+            }
+        }
+        .card-footer + .panel-collapse .card-body {
+            border-bottom-color: $color_shadow_green_approx;
+        }
+    }
+}
+.card-warning {
+    border: 1px solid $color_brandy_rose_approx;
+    > {
+        .card-header {
+            color: $color_sandy_brown_approx;
+            background-color: $color_quicksand_approx;
+            border: 1px solid $color_brandy_rose_approx;
+            + .panel-collapse .card-body {
+                border-top-color: $color_brandy_rose_approx;
+            }
+        }
+        .card-footer + .panel-collapse .card-body {
+            border-bottom-color: $color_brandy_rose_approx;
+        }
+    }
+}
+.card-danger {
+    border: 1px solid $color_cadillac_approx;
+    > {
+        .card-header {
+            color: $color_shilo_approx;
+            background-color: $color_contessa_approx;
+            border: 1px solid $color_cadillac_approx;
+            + .panel-collapse .card-body {
+                border-top-color: $color_cadillac_approx;
+            }
+        }
+        .card-footer + .panel-collapse .card-body {
+            border-bottom-color: $color_cadillac_approx;
+        }
+    }
+}
+.well {
+    background-color: $color_wild_sand_approx;
+    border: 1px solid $color_mercury_approx;
+    box-shadow: inset 0 1px 1px $black_5;
+    blockquote {
+        border: 1px solid $color_alto_approx;
+        border: 1px solid $black_15;
+    }
+}
+.close {
+    text-shadow: 0 1px 0 $white;
+}
+.modal-content {
+    background-color: $white;
+    border: 1px solid $color_mountain_mist_approx;
+    border: 1px solid $black_20;
+    box-shadow: 0 3px 9px $black_50;
+}
+.modal-backdrop {
+    background-color: $black;
+}
+.modal-header {
+    border-bottom: 1px solid $mercury;
+}
+.modal-footer {
+    border-top: 1px solid $mercury;
+}
+.tooltip-inner {
+    color: $white;
+    background-color: $black;
+}
+.tooltip {
+    &.top .tooltip-arrow {
+        border-top-color: $black;
+    }
+    &.top-left .tooltip-arrow {
+        border-top-color: $black;
+    }
+    &.top-right .tooltip-arrow {
+        border-top-color: $black;
+    }
+    &.right .tooltip-arrow {
+        border-right-color: $black;
+    }
+    &.left .tooltip-arrow {
+        border-left-color: $black;
+    }
+    &.bottom .tooltip-arrow {
+        border-bottom-color: $black;
+    }
+    &.bottom-left .tooltip-arrow {
+        border-bottom-color: $black;
+    }
+    &.bottom-right .tooltip-arrow {
+        border-bottom-color: $black;
+    }
+}
+.popover {
+    background-color: $white;
+    border: 1px solid $color_celeste_approx;
+    border: 1px solid $black_20;
+    box-shadow: 0 5px 10px $black_20;
+    &.top > .arrow {
+        border-top-color: $color_mountain_mist_approx;
+        border-top-color: $black_25;
+        &:after {
+            border-top-color: $white;
+        }
+    }
+    &.right > .arrow {
+        border-right-color: $color_mountain_mist_approx;
+        border-right-color: $black_25;
+        &:after {
+            border-right-color: $white;
+        }
+    }
+    &.bottom > .arrow {
+        border-bottom-color: $color_mountain_mist_approx;
+        border-bottom-color: $black_25;
+        &:after {
+            border-bottom-color: $white;
+        }
+    }
+    &.left > .arrow {
+        border-left-color: $color_mountain_mist_approx;
+        border-left-color: $black_25;
+        &:after {
+            border-left-color: $white;
+        }
+    }
+}
+.popover-title {
+    background-color: $color_norway_approx;
+    border-bottom: 1px solid $color_envy_approx;
+}
+.carousel-control {
+    color: $white;
+    text-shadow: 0 1px 2px $black_60;
+    &:hover {
+        @extend %extend_17;
+    }
+    &:focus {
+        @extend %extend_17;
+    }
+}
+.carousel-indicators {
+    li {
+        border: 1px solid $white;
+        background-color: $black \9;
+        background-color: rgba(0, 0, 0, 0);
+    }
+    .active {
+        background-color: $white;
+    }
+}
+.carousel-caption {
+    color: $white;
+    text-shadow: 0 1px 2px $black_60;
+}
+.side-body {
+
+    h3 {
+        @extend %extend_19;
+    }
+}
+.full-page-wrapper {
+
+}
+#welcome-jumbotron {
+    background-color: transparent;
+}
+.surveymanagerbar {
+    background-color: $color_parsley_approx;
+    color: $white;
+}
+.surveybar {
+    border-bottom: 1px solid $color_buccaneer_approx;
+    box-shadow: 0 3px 3px $color_buccaneer_10_approx;
+    background-color: $white;
+}
+.pagetitle {
+    @extend %extend_19;
+}
+.navbar {
+    background-color: $white;
+    box-shadow: 0 3px 3px $color_gunsmoke_10_approx;
+    border-radius: 0 !important;
+    a {
+        border-bottom: 1px solid $white;
+    }
+    .nav-icon-btn.nav-icon-btn-danger .label {
+        background: $color_danger;
+    }
+}
+.mega-dropdown-menu {
+    .dropdown-header {
+        color: $color_parsley_approx;
+    }
+    > li {
+        > ul {
+            > li {
+                > a {
+                    color: $color_log_cabin_approx;
+                }
+            }
+        }
+        }
+    }
+
+.footer {
+    background-color: $white;
+    border-top: solid 1px $color_alto_approx;
+}
+.alert-security-update {
+    background-color: $white;
+    border: 1px solid $color_rose_bud_cherry_approx;
+    color: $color_rose_bud_cherry_approx;
+}
+.box {
+    box-shadow: 0 2px 5px 0 $black_16, 0 2px 10px 0 $black_12;
+}
+#info-header {
+    color: $color_parsley_approx;
+}
+#info-footer {
+    color: $color_parsley_approx;
+}
+.box-icon {
+    span {
+        color: $white;
+    }
+}
+.cke_toolgroup {
+    border: 1px solid $color_alto_approx;
+    box-shadow: 0 1px 0 $white_50,0 0 2px $white_15 inset,0 1px 0 $white_15 inset;
+    background: $color_mercury_approx;
+}
+.message-box {
+    border: 1px solid $color_de_york_approx;
+    color: $color_heavy_metal_approx;
+
+}
+.message-box-error {
+    border: 1px solid $color_stiletto_approx;
+}
+.message-box-warning {
+    border: 1px solid $color_warning;
+}
+.welcome {
+    .panel {
+        box-shadow: 0 2px 5px 0 $black_16, 0 2px 10px 0 $black_12;
+    }
+}
+.login-title {
+    border-bottom: solid 1px $color_alto_approx;
+}
+.login-submit {
+    border-top: solid 1px $color_alto_approx;
+}
+
+#gs_completed {
+    color: $color_storm_dust_approx;
+    background-color: $white;
+    border: 1px solid $color_celeste_approx;
+    box-shadow: inset 0 1px 1px $black_75;
+}
+.h6 .small {
+    color: $color_gunsmoke_approx;
+}
+.table-striped > tbody > tr:nth-child(odd) > td {
+    background-color: $color_alabaster_approx;
+}
+.table-striped > tbody > tr:nth-child(odd) > th {
+    background-color: $color_alabaster_approx;
+}
+.table-hover > tbody > tr {
+    > {
+        td {
+            &.active:hover {
+                background-color: $color_gray_nurse_approx;
+            }
+            &.success:hover {
+                background-color: $color_moss_green_approx;
+            }
+            &.info:hover {
+                background-color: $color_shadow_green_approx;
+            }
+            &.warning:hover {
+                background-color: $color_sandrift_approx;
+            }
+            &.danger:hover {
+                background-color: $color_matrix_approx;
+            }
+        }
+        th {
+            &.active:hover {
+                background-color: $color_gray_nurse_approx;
+            }
+            &.success:hover {
+                background-color: $color_moss_green_approx;
+            }
+            &.info:hover {
+                background-color: $color_shadow_green_approx;
+            }
+            &.warning:hover {
+                background-color: $color_sandrift_approx;
+            }
+            &.danger:hover {
+                background-color: $color_matrix_approx;
+            }
+        }
+    }
+    &:hover > {
+        td {
+            background-color: $color_wild_sand_approx;
+        }
+        th {
+            background-color: $color_wild_sand_approx;
+        }
+    }
+    &.active:hover > {
+        td {
+            background-color: $color_gray_nurse_approx;
+        }
+        th {
+            background-color: $color_gray_nurse_approx;
+        }
+    }
+    &.success:hover > {
+        td {
+            background-color: $color_moss_green_approx;
+        }
+        th {
+            background-color: $color_moss_green_approx;
+        }
+    }
+    &.info:hover > {
+        td {
+            background-color: $color_shadow_green_approx;
+        }
+        th {
+            background-color: $color_shadow_green_approx;
+        }
+    }
+    &.warning:hover > {
+        td {
+            background-color: $color_sandrift_approx;
+        }
+        th {
+            background-color: $color_sandrift_approx;
+        }
+    }
+    &.danger:hover > {
+        td {
+            background-color: $color_matrix_approx;
+        }
+        th {
+            background-color: $color_matrix_approx;
+        }
+    }
+}
+.open .dropdown-toggle {
+    &.btn-outline-secondary {
+        @extend %extend_1;
+    }
+    &.btn-primary {
+        @extend %extend_2;
+    }
+    &.btn-success {
+        @extend %extend_3;
+    }
+    &.btn-info {
+        @extend %extend_4;
+    }
+    &.btn-warning {
+        @extend %extend_5;
+    }
+    &.btn-danger {
+        @extend %extend_6;
+    }
+}
+.btn-group.open .dropdown-toggle {
+    box-shadow: inset 0 3px 5px $black_125;
+}
+.nav-pills > {
+    li.active > a:focus {
+        color: $white;
+        background-color: $base-color;
+    }
+    .active > a > .badge {
+        color: $base-color;
+        background-color: $white;
+    }
+}
+.nav-tabs-justified > .active > a {
+    border: 1px solid $color_alto_approx;
+    &:hover {
+        border: 1px solid $color_alto_approx;
+    }
+    &:focus {
+        border: 1px solid $color_alto_approx;
+    }
+}
+pagination > li > a {
+    @extend %extend_8;
+}
+.list-surveys h3 {
+    @extend %extend_19;
+}
+.dropdown-item > a:hover {
+    background-color: $color_parsley_approx;
+    color: $white;
+}
+table.cke_editor {
+    box-shadow: 1px 1px 2px $black_16;
+}
+.hoverAction tbody tr:hover {
+    color: $white;
+    background-color: $color_laurel_approx;
+}
+.hoverAction table thead tr:hover {
+    color: $color_gravel_approx;;
+    background-color: transparent;
+}
+
+div.panel.disabled {
+    opacity: 0.5;
+    * {
+        opacity: 0.5;
+    }
+}
+.ui-widget-content .ui-state-default {
+    background-image: none;
+    background-color: transparent;
+    background-image: none;
+    background-color: transparent;
+}
+.ui-widget-header .ui-state-default {
+    background-image: none;
+    background-color: transparent;
+    background-image: none;
+    background-color: transparent;
+}
+
+// For side menu
+
+.absolute-wrapper {
+    background-color: $white;
+    border-right: 1px solid $color_mercury_approx;
+    box-shadow: 3px 0px 3px $color_gunsmoke_10_approx;
+}
+.side-menu {
+    background-color: $white;
+    border-right: 1px solid $color_mercury_approx;
+    background-color: $white;
+    .navbar {
+        background-color: $white;
+    }
+    .navbar-header {
+        border-bottom: 1px solid $color_mercury_approx;
+    }
+    .navbar-nav {
+        li {
+            border-bottom: 1px solid $color_mercury_approx;
+            a {
+            &.question-link:hover
+                {
+                    box-shadow: 0 1px 1px 1px $black_16 inset, 0 2px 1px 1px $black_12 inset;
+                }
+            }
+        }
+        .active {
+            background-color: $color_parsley_approx;
+            box-shadow: 0 1px 1px 1px $black_16 inset, 0 2px 1px 1px $black_12 inset;
+        }
+        .active a {
+            color: $white;
+        }
+
+        .question-link.active {
+            background-color: transparent;
+        }
+    }
+    #dropdown {
+        background-color: transparent;
+        box-shadow: none;
+        li {
+            &:hover {
+                color: $white;
+                background-color: $color_de_york_approx;
+            }
+            &.active:hover {
+                background-color: transparent;
+                color: $color_parsley_approx;
+                border-right: 5px solid $color_mercury_approx;
+            }
+            &.disabled:hover {
+                color: $white;
+                background-color: transparent;
+            }
+        }
+        .card-body {
+            background-color: $alabaster;
+            .navbar-nav {
+                li {
+                    border-bottom: 1px solid $color_mercury_approx;
+                    &.panel {
+                        background-color: transparent;
+                    }
+                    &.card-default {
+                        border-bottom: 1px solid $color_mercury_approx;
+                    }
+                }
+            }
+            .card-body {
+                li:last-child {
+                    border-bottom: 1px solid $color_mercury_approx;
+                }
+            }
+        }
+        > a {
+            border-bottom: 1px solid $color_mercury_approx;
+        }
+    }
+    .hide-button {
+        background-color: $alabaster;
+    }
+
+    #search {
+        .card-body {
+            .navbar-form {
+                border-top: 1px solid $color_mercury_approx;
+                .btn {
+                    background-color: $alabaster;
+                }
+            }
+        }
+    }
+}
+#explorer {
+    .questiongroupdropdown li a {
+        color: $black;
+    }
+}
+.dropdownstyle {
+    background-color: transparent;
+}
+
+#sideMenu {
+    a[aria-expanded="true"] {
+        color: $white;
+        background-color: $color_parsley_approx;
+    }
+    a[aria-expanded="false"] {
+        color: $color_deep_fir_approx;
+    }
+    #dropdown {
+        li {
+            &:hover {
+                background-color: $color_hippie_green_approx;
+            }
+            &:hover>a {
+                background-color: $color_hippie_green_approx;
+            }
+            a[aria-expanded="true"] {
+                background-color: $color_hippie_green_approx;
+            }
+            .active a:hover {
+                background-color: $color_hippie_green_approx;
+            }
+            > a:hover {
+                background-color: $color_hippie_green_approx;
+            }
+        }
+        #explorer {
+            li {
+                &:hover {
+                    background-color: $color_aqua_forest_approx;
+                }
+                &:hover>a {
+                    background-color: $color_aqua_forest_approx;
+                }
+                a[aria-expanded="true"] {
+                    background-color: $color_aqua_forest_approx;
+                }
+                .active a:hover {
+                    background-color: $color_aqua_forest_approx;
+                }
+                > a:hover {
+                    background-color: $color_aqua_forest_approx;
+                }
+            }
+            .questiongroupdropdown li {
+                &:hover {
+                    background-color: $color_spring_rain_approx;
+                }
+                &:hover>a {
+                    background-color: $color_spring_rain_approx;
+                }
+                a[aria-expanded="true"] {
+                    background-color: $color_spring_rain_approx;
+                }
+                .active a:hover {
+                    background-color: $color_spring_rain_approx;
+                }
+                > a:hover {
+                    background-color: $color_spring_rain_approx;
+                }
+            }
+        }
+    }
+    .navbar-default .navbar-nav > .active > a {
+        background-color: transparent;
+    }
+    .side-menu .dropdownlvl1 > a:hover {
+        color: $white;
+        background-color: $color_parsley_approx;
+    }
+    .sidemenuscontainer li {
+        &:hover {
+            color: $white;
+            background-color: $color_parsley_approx;
+        }
+        &:hover>a {
+            color: $white;
+            background-color: $color_parsley_approx;
+        }
+    }
+}
+@media(max-width: 768px) {
+    .side-menu {
+        border-bottom: 1px solid $color_mercury_approx;
+    }
+    .navbar-toggle {
+        background-color: $alabaster;
+    }
+    .side-menu-container > .navbar-nav {
+        border-right: 1px solid $color_mercury_approx;
+        background-color: $color_desert_storm_approx;
+    }
+}
+.toWhite a:hover {
+    color: $white;
+    background-color: $color_de_york_approx;
+}
+
+// Collapsed button for menu
+.navbar-toggle
+{
+    border: solid 1px $base-color;
+}
+
+.navbar-toggle .icon-bar {
+    background-color: $base-color;
+}
+
+
+%extend_6 {
+    color: $white;
+    background-color: $color_red_robin_approx;
+    border: 1px solid $color_espresso_approx;
+}
+
+
+.container-fluid .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-primary,
+.container-fluid .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-primary {
+    color: #fff;
+    background: $base-color;
+}
+
+.container-fluid .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-warning,
+.container-fluid .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-warning {
+    background: $color_stiletto_approx;
+    color: #fff;
+}
+
+
+
+.btn-success:hover, .btn-danger:hover, .btn-warning:hover, .btn-info:hover {
+    color: #fff;
+}
+
+
+input[type="checkbox"]:checked:after,
+.checkbox input[type="checkbox"]:checked:after,
+.checkbox-inline input[type="checkbox"]:checked:after {
+  background-color: $base-color;
+  border-color: $base-color;
+}
+
+/* jqGrid */
+.ui-dialog, .ui-jqdialog, .ui-dialog.ui-widget.ui-widget-content.ui-corner-all.ui-front.ui-dialog-buttons.ui-draggable.ui-resizable {
+    background-color: $white;
+    border: 1px solid $color_celeste_approx;
+}
+
+.ui-jqdialog-titlebar{
+    border-bottom: 2px solid $color_celeste_approx;
+}
+
+
+input[type="text"], input[type="password"], .ui-autocomplete-input, textarea, .uneditable-input {
+    color: $color_storm_dust_approx;
+}
+
+.navtable {
+    border: 1px solid $color_celeste_approx;
+}
+
+
+// Expression Manager
+.em-function{
+    color: $base-color;
+}
+
+.em-var-string{
+    color: $color_gravel_approx;
+}
+
+
+.data-entry-explanation+tr {
+    background-color: $mercury;
+}
+
+.data-entry-tbl tr.odd, .data-entry-tbl tr.even{
+    border-bottom: 1px solid $color_cararra_approx;
+}
+
+
+/**
+ * Template selector
+ */
+
+#carousel-example-generic .carousel-control {
+    color: $base-color;
+}
+
+
+#carousel-example-generic .card-title {
+    color: $base-color;
+}
+
+#carousel-example-generic .carousel-indicators .active {
+    background-color: $base-color;
+}
+
+#carousel-example-generic .carousel-indicators li {
+    border: 1px solid $base-color;
+}
+
+/**
+ * Ajax loader
+ * from : http://codepen.io/weaintplastic/pen/qEMZbx
+ */
+ @for $i from 1 through 6 {
+    @keyframes preload-show-#{$i}{
+        from{
+            transform: rotateZ(60* $i + deg) rotateY(-90deg) rotateX(0deg);
+            border-left-color: $color_deep_fir_approx;
+        }
+    }
+    @keyframes preload-hide-#{$i}{
+        to{
+            transform: rotateZ(60* $i + deg) rotateY(-90deg) rotateX(0deg);
+            border-left-color: $color_deep_fir_approx;
+        }
+    }
+
+    @keyframes preload-cycle-#{$i}{
+
+        $startIndex: $i*5;
+        $reverseIndex: (80 - $i*5);
+
+        #{$startIndex * 1%}{
+            transform: rotateZ(60* $i + deg) rotateY(90deg) rotateX(0deg);
+            border-left-color: $color_deep_fir_approx;
+        }
+        #{$startIndex + 5%},
+        #{$reverseIndex * 1%}{
+            transform: rotateZ(60* $i + deg) rotateY(0) rotateX(0deg);
+            border-left-color: $color_paradiso_approx;
+        }
+
+        #{$reverseIndex + 5%},
+        100%{
+            transform: rotateZ(60* $i + deg) rotateY(90deg) rotateX(0deg);
+            border-left-color: $base-color;
+        }
+    }
+}
+
+@keyframes preload-flip{
+    0%{
+        transform: rotateY(0deg) rotateZ(-60deg);
+    }
+    100%{
+        transform: rotateY(360deg) rotateZ(-60deg);
+    }
+}
+
+/**
+* New adminpanel
+*/
+#sidebar{
+    .btn-primary.force.color.white.onhover {
+        &:hover,
+        &:active,
+        &:focus {
+            color: $white;
+        }
+    }
+    .tabbutton.btn-primary{
+        outline: none;
+        &:hover, &:focus, &:active{
+            &:after{
+                color: $color_deep_fir_approx;
+            }
+        }
+        &:after{
+            color: $base-color;
+        }
+    }
+
+    .background.white{
+        background-color: $white;
+        box-shadow: none;
+    }
+
+    .resize-handle{
+        button{
+            &:focus,&:active,&:hover {
+                background-color: $white !important;
+            }
+            background: $white;
+        }
+    }
+
+
+    .menu-open {
+        animation-name: animate-gradient;
+        animation-duration: 450ms;
+        background: radial-gradient(circle at center,  adjust-color($base-color,  $lightness: +20%, $alpha: 0.5) 0px, adjust-color($base-color,  $lightness: +20%, $alpha: 0.5) 8px, white 9px, white 100%);
+    }
+    .selected {
+        padding-left: 20px;
+        background: linear-gradient(to right, $base-color 0px, $base-color 13px, $white 13px, $white 100%);
+        transition-property: all;
+        transition-duration: .25s;
+        transition-timing-function: cubic-bezier(1, 0.5, 0.5, 1);
+    }
+    .dragged {
+        background-color:  adjust-color($base-color,  $lightness: +10%, $alpha: 0.8) !important;
+        opacity: 0.8;
+        padding-top: 18px;
+        padding-bottom: 18px;
+        transition-property: all;
+        transition-duration: .1s;
+        transition-timing-function: ease-in-out;
+    }
+
+    .menu-selected {
+        padding-left: 10px;
+        background: linear-gradient(to right, $base-color 0px, $base-color 6px, white 6px, white 100%);
+    }
+
+    .subpanel {
+        &.level-0 {
+            .menu-selected {
+                background: linear-gradient(to right, adjust-color($base-color,  $lightness: +10%) 0px, adjust-color($base-color,  $lightness: +10%) 6px, $white 6px, $white 100%);
+            }
+            .selected {
+                background: linear-gradient(to right, adjust-color($base-color,  $lightness: +10%) 0px, adjust-color($base-color,  $lightness: +10%) 13px, $white 13px, $white 100%);
+            }
+        }
+        &.level-1 {
+            .menu-selected {
+                background: linear-gradient(to right, adjust-color($base-color,  $lightness: +15%) 0px, adjust-color($base-color,  $lightness: +15%) 6px, $white 6px, $white 100%);
+            }
+            .selected {
+                background: linear-gradient(to right, adjust-color($base-color,  $lightness: +15%) 0px, adjust-color($base-color,  $lightness: +15%) 13px, $white 13px, $white 100%);
+            }
+        }
+        &.level-2 {
+            .menu-selected {
+                background: linear-gradient(to right, adjust-color($base-color,  $lightness: +20%) 0px, adjust-color($base-color,  $lightness: +20%) 6px, $white 6px, $white 100%);
+            }
+            .selected {
+                background: linear-gradient(to right, adjust-color($base-color,  $lightness: +20%) 0px, adjust-color($base-color,  $lightness: +20%) 13px, $white 13px, $white 100%);
+            }
+        }
+    }
+
+}
+
+@keyframes animate-gradient {
+    0%   { background: radial-gradient(circle at center, adjust-color($base-color, $alpha: 0.5) 0px, adjust-color($base-color, $alpha: 0.5) 1px, $white 2px, $white 100%); }
+    10%  { background: radial-gradient(circle at center, adjust-color($base-color, $alpha: 0.5) 0px, adjust-color($base-color, $alpha: 0.5) 2px, $white 3px, $white 100%); }
+    20%  { background: radial-gradient(circle at center, adjust-color($base-color, $alpha: 0.5) 0px, adjust-color($base-color, $alpha: 0.5) 3px, $white 4px, $white 100%); }
+    30%  { background: radial-gradient(circle at center, adjust-color($base-color, $alpha: 0.5) 0px, adjust-color($base-color, $alpha: 0.5) 4px, $white 5px, $white 100%); }
+    40%  { background: radial-gradient(circle at center, adjust-color($base-color, $alpha: 0.5) 0px, adjust-color($base-color, $alpha: 0.5) 5px, $white 6px, $white 100%); }
+    50%  { background: radial-gradient(circle at center, adjust-color($base-color, $alpha: 0.5) 0px, adjust-color($base-color, $alpha: 0.5) 6px, $white 7px, $white 100%); }
+    60%  { background: radial-gradient(circle at center, adjust-color($base-color, $alpha: 0.5) 0px, adjust-color($base-color, $alpha: 0.5) 7px, $white 8px, $white 100%); }
+    70%  { background: radial-gradient(circle at center, adjust-color($base-color, $alpha: 0.5) 0px, adjust-color($base-color, $alpha: 0.5) 8px, $white 9px, $white 100%); }
+    80%  { background: radial-gradient(circle at center, adjust-color($base-color, $alpha: 0.5) 0px, adjust-color($base-color, $alpha: 0.5) 9px, $white 10px, $white 100%); }
+    90%  { background: radial-gradient(circle at center, adjust-color($base-color, $alpha: 0.5) 0px, adjust-color($base-color, $alpha: 0.5) 10px, $white 10px, $white 100%); }
+    100% { background: radial-gradient(circle at center, adjust-color($base-color, $alpha: 0.5) 0px, adjust-color($base-color, $alpha: 0.5) 8px, $white 9px, $white 100%); }
+}
+
+.ls-ba {
+    .list-group {
+        >.list-group-item {
+            .list-group {
+                .list-group-item {
+                    &:last-of-type {
+                        border-bottom: 1px solid $color_gravel_approx;
+                    }
+                }
+            }
+        }
+    }
+    .breadcrumb>li+li:before {
+        color: $white;
+    }
+}
+
+ol.breadcrumb.title-bar-breadcrumb {
+    background: transparent;
+    color: $white;
+    a {
+        color: $white;
+        &.animate::after {
+            background: $white;
+            transition: width .3s;
+        }
+    }
+    li {
+        background: transparent;
+        color: $white;
+        &.active {
+            color: $color_gravel_approx;
+        }
+    }
+}
+
+#pjax-content {
+    .surveybar {
+        box-shadow: 3px 3px 3px adjust-color($color_gravel_approx, $alpha: 0.1);
+    }
+}
+
+#pjax-file-load-container {
+    >div {
+        background: darken($base-color, 40%);
+        background: linear-gradient(to right, darken($base-color, 40%) 0%, darken($base-color, 30%) 50%, darken($base-color, 20%) 100%);
+        -webkit-transition-timing-function: ease-in-out;
+        transition-timing-function: ease-in-out;
+        -webkit-transition: width 1.6s;
+        /* Safari */
+        transition: width 1.6s;
+    }
+}
+
+
+/**
+ * comfortUpdate
+ */
+
+
+
+#comfortUpdateGeneralWrap h3.maintitle {
+  background-color: transparent;
+  color: $base-color;
+  border-bottom: 1px solid $base-color; }
+
+#comfortUpdateGeneralWrap .on span
+{
+  display: block;
+  background-color: $base-color;
+  color: #fff;
+}
+
+#sideMenu #dropdown #explorer li#questionexplorer-group-container:hover, #sideMenu #dropdown li#questionexplorer-group-container:hover > a{
+    background-color: #fafafa;
+    color: $color_deep_fir_approx;
+}
+
+.explorer-group-title a.explorer-group, .question-collapse-title{
+    color: #163c19;
+}
+
+
+#survey_title a{
+    color: $white;
+}
+
+
+.question-item {
+    padding-top: 1em;
+}
+
+
+.placeholder {
+    background-color: $color_acapulco_approx;
+}
+
+/* Sliders */
+
+.slider.slider-horizontal .slider-tick.triangle,
+.slider.slider-horizontal .slider-handle.triangle {
+  border-bottom-color: $base-color;
+}
+.slider.slider-vertical .slider-tick.triangle,
+.slider.slider-vertical .slider-handle.triangle {
+  border-left-color: $base-color;
+  border-right-color: $base-color;
+}
+.slider-handle {
+  background-color: $base-color;
+}
+.slider-handle.custom::before {
+  color: $base-color;
+}
+.slider-tick.custom::before {
+  color: $base-color;
+}
+
+.slider-selection{
+    background-image: linear-gradient(to bottom,  $color_acapulco_approx 0%, $color_paradiso_approx 100%);
+}
+
+
+/* INput errors*/
+
+.input-error input{
+    border: 1px solid $color_warning;
+    color: $color_warning;
+
+    &:focus {
+        border: 1px solid $color_danger;
+        color: $color_danger;
+    }
+}
+
+
+.question-container.input-error  {
+        box-shadow: 0 10px 20px rgba( $color_danger ,.9);
+    }
+}
+
+
+
+/* Define the color for Awesome Bootsrap Checkboxes ; based on bg-primary background-color*/
+body .answer-item label::after{background-color: $base-color}
+
+.checkbox-item input[type="checkbox"]:checked + label::after, .checkbox-item input[type="radio"]:checked + label::after { background-color:$base-color; color: white; }

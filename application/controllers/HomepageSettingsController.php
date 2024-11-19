@@ -28,6 +28,16 @@ class HomepageSettingsController extends LSBaseController
     }
 
     /**
+     * @return string[] action filters
+     */
+    public function filters()
+    {
+        return [
+            'postOnly + resetAllBoxes, updateBoxesSettings', // Only allow resetAllBoxes via POST request
+        ];
+    }
+
+    /**
      * Register js script before rendering
      *
      * @param string $view
@@ -58,16 +68,12 @@ class HomepageSettingsController extends LSBaseController
 
         $dataProviderBox = new CActiveDataProvider('Box');
 
-        $this->aData = [
-            'fullpagebar' => [
-                'boxbuttons' => true,
-                'returnbutton' => [
-                    'url' => 'admin/index',
-                    'text' => gT('Back'),
-                ],
-            ],
-            'pageTitle' => gT('Dashboard'),
-        ];
+        $aData['topbar']['title'] = gT('Dashboard');
+        $aData['topbar']['backLink'] = App()->createUrl('admin/index');
+
+        $aData['topbar']['rightButtons'] = $this->renderPartial('partial/topbarBtns/rightSideButtons', [], true);
+        $aData['topbar']['middleButtons'] = $this->renderPartial('partial/topbarBtns/leftSideButtons', [], true);
+        $this->aData = $aData;
 
         $this->render('index', [
             'dataProviderBox' => $dataProviderBox->model,
@@ -112,21 +118,22 @@ class HomepageSettingsController extends LSBaseController
             }
         }
 
-        $this->aData = [
-            'pageTitle' => gT('New box'),
-            'fullpagebar' => [
-                'savebutton' => [
-                    'form' => 'boxes-form',
-                ],
-                'saveandclosebutton' => [
-                    'form' => 'boxes-form'
-                ],
-                'white_closebutton' => [
-                    'url' => Yii::app()->createUrl('homepageSettings/index'),
-                ],
+        $aData['topbar']['title'] = gT('New box');
+        $aData['topbar']['rightButtons'] = $this->renderPartial(
+            '/layouts/partial_topbar/right_close_saveclose_save',
+            [
+                'isCloseBtn' => true,
+                'isSaveAndCloseBtn' => true,
+                'isSaveBtn' => true,
+                'backUrl' => $this->createUrl("/homepageSettings/index"),
+                'formIdSaveClose' => 'boxes-form',
+                'formIdSave' => 'boxes-form'
             ],
-            'model' => $model,
-        ];
+            true
+        );
+
+        $aData['model'] = $model;
+        $this->aData = $aData;
 
         $this->render(
             'create',
@@ -169,22 +176,22 @@ class HomepageSettingsController extends LSBaseController
                 Yii::app()->user->setFlash('error', gT('Could not update box'));
             }
         }
-        $this->aData = [
-            'pageTitle' => gT('Update box ') . $model->title,
-            'fullpagebar' => [
-                'savebutton' => [
-                    'form' => 'boxes-form',
-                ],
-                'saveandclosebutton' => [
-                    'form' => 'boxes-form'
-                ],
-                'white_closebutton' => [
-                    'url' => Yii::app()->createUrl('homepageSettings/index'),
-                ],
-             ],
-            'model' => $model,
-        ];
+        $aData['topbar']['title'] = gT('Update box');
+        $aData['topbar']['rightButtons'] = $this->renderPartial(
+            '/layouts/partial_topbar/right_close_saveclose_save',
+            [
+                'isCloseBtn' => true,
+                'isSaveAndCloseBtn' => true,
+                'isSaveBtn' => true,
+                'backUrl' => $this->createUrl("/homepageSettings/index"),
+                'formIdSaveClose' => 'boxes-form',
+                'formIdSave' => 'boxes-form'
+            ],
+            true
+        );
 
+        $aData['model'] = $model;
+        $this->aData = $aData;
         $this->render('update', $this->aData);
     }
 
@@ -283,7 +290,7 @@ class HomepageSettingsController extends LSBaseController
             $this->redirect(array('homepageSettings/index'));
         }
         if (Permission::model()->hasGlobalPermission('settings', 'update')) {
-            $bNewShowLogo = (App()->getConfig('show_logo') == "show") ? "hide" : "show";
+            $bNewShowLogo = (App()->getConfig('show_logo') == "show") ? "d-none" : "show";
             SettingGlobal::setSetting('show_logo', $bNewShowLogo);
             echo $bNewShowLogo;
         }
@@ -301,7 +308,7 @@ class HomepageSettingsController extends LSBaseController
             $this->redirect(array('homepageSettings/index'));
         }
         if (Permission::model()->hasGlobalPermission('settings', 'update')) {
-            $bNewShowLastSurveyAndQuestion = (App()->getConfig('show_last_survey_and_question') == "show") ? "hide" : "show";
+            $bNewShowLastSurveyAndQuestion = (App()->getConfig('show_last_survey_and_question') == "show") ? "d-none" : "show";
             SettingGlobal::setSetting('show_last_survey_and_question', $bNewShowLastSurveyAndQuestion);
             echo $bNewShowLastSurveyAndQuestion;
         }
@@ -320,7 +327,7 @@ class HomepageSettingsController extends LSBaseController
         }
 
         if (Permission::model()->hasGlobalPermission('settings', 'update')) {
-            $bShowSurveyList = (App()->getConfig('show_survey_list') == "show") ? "hide" : "show";
+            $bShowSurveyList = (App()->getConfig('show_survey_list') == "show") ? "d-none" : "show";
             SettingGlobal::setSetting('show_survey_list', $bShowSurveyList);
             echo $bShowSurveyList;
         }
@@ -337,7 +344,7 @@ class HomepageSettingsController extends LSBaseController
         }
 
         if (Permission::model()->hasGlobalPermission('settings', 'update')) {
-            $bShowSurveyListSearch = (App()->getConfig('show_survey_list_search') == "show") ? "hide" : "show";
+            $bShowSurveyListSearch = (App()->getConfig('show_survey_list_search') == "show") ? "d-none" : "show";
             SettingGlobal::setSetting('show_survey_list_search', $bShowSurveyListSearch);
             echo $bShowSurveyListSearch;
         }
@@ -361,29 +368,6 @@ class HomepageSettingsController extends LSBaseController
             echo $changeBoxesInContainer;
         }
     }
-
-    /**
-     * Manages all models.
-     *
-     * todo: remove this action, see comments below
-     * Action is not accessible via homepagesetting site ..(user can't accees it)
-     * Maybe it was for research/testing/experimental reason ?!?
-     *
-     * Furthermore it does not work (problems with breadcrumbs )
-     */
-    /*
-    public function actionAdmin()
-    {
-        $model = new Box('search');
-        $model->unsetAttributes(); // clear any default values
-        if (isset($_GET['Box'])) {
-            $model->attributes = $_GET['Box'];
-        }
-
-        $this->render('admin',[
-            'model' => $model
-        ]);
-    } */
 
     /**
      * Performs the AJAX validation.

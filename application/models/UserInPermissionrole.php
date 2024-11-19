@@ -54,6 +54,8 @@ class UserInPermissionrole extends CActiveRecord
         return array(
             'ptid' => 'Ptid',
             'uid' => 'Uid',
+            'name' => gT('Name'),
+            'description' => gT('Description')
         );
     }
 

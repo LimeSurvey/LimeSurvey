@@ -20,9 +20,13 @@
         <license>GNU General Public License version 2 or later</license>
         <version>3.0.1</version>
         <apiVersion>3</apiVersion>
-        <description><![CDATA[<strong>LimeSurvey Bootstrap Vanilla Survey Theme</strong><br>A clean and simple base that can be used by developers to create their own Bootstrap based theme.]]></description>
+        <description twig="on"><![CDATA[{{gT("A clean and simple base that can be used by developers to create their own Bootstrap based theme.")}}]]></description>
         <lastUpdate>2021-06-26 17:00:00</lastUpdate>
     </metadata>
+
+    <compatibility>
+        <version>6.0</version>
+    </compatibility>
 
     <!--
         Here the list of the css/js files to add to the template package.
@@ -63,25 +67,26 @@
         <showpopups type="buttons" category="Simple options" width="4" title="Show popups" options="1|0|-1" optionlabels="Popup|On page|No">1</showpopups>
         <showclearall type="buttons" category="Simple options" width="4" title="Show Clear All button" options="on|off" optionlabels="Yes|No">off</showclearall>
         <questionhelptextposition type="buttons" category="Simple options" width="4" title="Question help text position" options="top|bottom" optionlabels="Top|Bottom">top</questionhelptextposition>
-        <fixnumauto type="buttons" category="Simple options" width="4" title="Fix automatically numeric value" options="enable|partial|disable" optionlabels="Yes|For expression|No">off</fixnumauto>
+        <fixnumauto type="buttons" category="Simple options" width="4" title="Fix automatically numeric value" options="enable|partial|disable" optionlabels="Yes|For expression|No">enable</fixnumauto>
         <!-- images -->
         <brandlogo type="buttons" category="Images" width="4" title="Logo" options="on|off" optionlabels="Yes|No">on</brandlogo>
         <brandlogofile type="dropdown" category="Images" width="6" title="Logo file" parent="brandlogo">./files/logo.png</brandlogofile>
         <!-- fonts -->
+        <!--  When adding new items, please keep fonts ordered alphabetically -->
         <font type="dropdown" category="Fonts" width="12" title="Fonts" parent="font">noto
             <dropdownoptions>
-                <optgroup  label="User browser">
-                <option class="font-georgia         " value="georgia"         data-font-package="websafe" >Georgia</option>
-                <option class="font-palatino        " value="palatino"        data-font-package="websafe" >Palatino Linotype</option>
-                <option class="font-times_new_roman " value="times_new_roman" data-font-package="websafe" >Times New Roman</option>
+            <optgroup  label="User browser">
                 <option class="font-arial           " value="arial"           data-font-package="websafe" >Arial</option>
                 <option class="font-arial_black     " value="arial_black"     data-font-package="websafe" >Arial Black</option>
                 <option class="font-comic_sans      " value="comic_sans"      data-font-package="websafe" >Comic Sans</option>
-                <option class="font-impact          " value="impact"          data-font-package="websafe" >Impact</option>
-                <option class="font-lucida_sans     " value="lucida_sans"     data-font-package="websafe" >Lucida Sans</option>
-                <option class="font-trebuchet       " value="trebuchet"       data-font-package="websafe" >Trebuchet</option>
                 <option class="font-courier         " value="courier"         data-font-package="websafe" >Courier New</option>
+                <option class="font-georgia         " value="georgia"         data-font-package="websafe" >Georgia</option>
+                <option class="font-impact          " value="impact"          data-font-package="websafe" >Impact</option>
                 <option class="font-lucida_console  " value="lucida_console"  data-font-package="websafe" >Lucida Console</option>
+                <option class="font-lucida_sans     " value="lucida_sans"     data-font-package="websafe" >Lucida Sans</option>
+                <option class="font-palatino        " value="palatino"        data-font-package="websafe" >Palatino Linotype</option>
+                <option class="font-times_new_roman " value="times_new_roman" data-font-package="websafe" >Times New Roman</option>
+                <option class="font-trebuchet       " value="trebuchet"       data-font-package="websafe" >Trebuchet</option>     
             </optgroup>
             </dropdownoptions>
        </font>
@@ -103,7 +108,7 @@
         <!-- Asset manager will copy the whole theme directory to tmp. So it's possible to refer any file in the files directory in CSS via relative path (e.g: '../files/foo.jpg')   -->
         <filesdirectory>files</filesdirectory>
 
-        <!-- Here, you can publish packages set as third party extensions in application/config/third_party or  application/config/package -->
+        <!-- Here, you can publish packages set as third party extensions in application/config/vendor or  application/config/package -->
         <!-- If bootstrap is registered as a css framework, it will be loaded first -->
         <packages>
             <add>pjax</add>
@@ -336,7 +341,7 @@
                 <surveyls_url type="data" twig="on">"https://www.limesurvey.org/"</surveyls_url>
                 <surveyls_urldescription type="data" twig="on"><![CDATA[ gT("Some URL description") ]]></surveyls_urldescription>
                 <showsurveypolicynotice>2</showsurveypolicynotice>
-                <datasecurity_notice_label type="data" twig="on"><![CDATA[ <a href='#data-security-modal-' data-toggle='collapse'> {{ gT('Show privacy policy') }} </a>  ]]></datasecurity_notice_label>
+                <datasecurity_notice_label type="data" twig="on"><![CDATA[ <a href='#data-security-modal-' data-bs-toggle='collapse'> {{ gT('Show privacy policy') }} </a>  ]]></datasecurity_notice_label>
                 <datasecurity_notice type="data" twig="on"><![CDATA[ {{ gT("Your privacy policy text is shown here.") }} ]]></datasecurity_notice>
               </survey>
               <group type="core">

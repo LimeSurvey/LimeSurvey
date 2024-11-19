@@ -1,0 +1,24 @@
+{
+    "name": "vintagesucks/twig-renderer",
+    "description": "Twig 3.x for Yii 1.x",
+    "keywords": ["yii", "extension", "twig", "renderer"],
+    "homepage": "https://github.com/vintagesucks/twig-renderer",
+    "type": "yii-extension",
+    "license": "BSD-3-Clause",
+    "authors": [
+        {
+            "name": "Alexander Makarov",
+            "email": "sam@rmcreative.ru"
+        },
+        {
+            "name": "Nikolas Evers",
+            "email": "hello@nikol.as"
+        }
+    ],
+    "require": {
+        "twig/twig": "^3.0.3"
+    },
+    "require-dev": {
+        "yiisoft/yii": "^1.1"
+    }
+}

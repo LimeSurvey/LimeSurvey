@@ -42,7 +42,7 @@ use LimeSurvey\PluginManager\PluginEvent;
  * @property string $emailstatus Participant's e-mail address status: OK/bounced/OptOut
  * @property string $token Participant's token
  * @property string $language Participant's language eg: en
- * @property string $blacklisted Whether participant is blacklisted: (Y/N)
+ * @property string $blacklisted Whether participant is blocklisted: (Y/N)
  * @property string $sent
  * @property string $remindersent
  * @property integer $remindercount
@@ -95,7 +95,7 @@ abstract class Token extends Dynamic
             'emailstatus' => gT('Email status'),
             'token' => gT('Access code'),
             'language' => gT('Language code'),
-            'blacklisted' => gT('Blacklisted'),
+            'blacklisted' => gT('Blocklisted'),
             'sent' => gT('Invitation sent date'),
             'remindersent' => gT('Last reminder sent date'),
             'remindercount' => gT('Total numbers of sent reminders'),
@@ -104,7 +104,7 @@ abstract class Token extends Dynamic
             'validfrom' => gT('Valid from'),
             'validuntil' => gT('Valid until'),
         );
-        foreach (decodeTokenAttributes($this->survey->attributedescriptions) as $key => $info) {
+        foreach (decodeTokenAttributes($this->survey->attributedescriptions ?? '') as $key => $info) {
             $labels[$key] = !empty($info['description']) ? $info['description'] : '';
         }
         return $labels;
@@ -292,7 +292,7 @@ abstract class Token extends Dynamic
         if ($token === false) {
             throw new CHttpException(500, gT('Failed to generate random string for token. Please check your configuration and ensure that the openssl or mcrypt extension is enabled.'));
         }
-        $token = str_replace(array('~', '_'), array('a', 'z'), $token);
+        $token = str_replace(array('~', '_'), array('a', 'z'), (string) $token);
         $event = new PluginEvent('afterGenerateToken');
         $event->set('surveyId', $this->getSurveyId());
         $event->set('iTokenLength', $iTokenLength);
@@ -321,7 +321,8 @@ abstract class Token extends Dynamic
      */
     public static function sanitizeAttribute($attribute)
     {
-        return filter_var($attribute, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+        // TODO: Use HTML Purifier?
+        return filter_var($attribute, @FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
     }
 
     /**
@@ -424,7 +425,7 @@ abstract class Token extends Dynamic
             array('completed', 'length', 'min' => 0, 'max' => 17),
             array('remindersent', 'filter', 'filter' => array(self::class, 'sanitizeAttribute')),
             array('remindercount', 'numerical', 'integerOnly' => true, 'allowEmpty' => true),
-            array('email', 'filter', 'filter' => 'trim'),
+            array('email', 'LSYii_FilterValidator', 'filter' => 'trim', 'skipOnEmpty' => true),
             array('email', 'LSYii_EmailIDNAValidator', 'allowEmpty' => true, 'allowMultiple' => true, 'except' => 'allowinvalidemail'),
             array('emailstatus', 'default', 'value' => 'OK'),
             array('emailstatus', 'filter', 'filter' => array(self::class, 'sanitizeAttribute')),
@@ -434,11 +435,16 @@ abstract class Token extends Dynamic
             array('validfrom', 'date','format' => ['yyyy-M-d H:m:s.???','yyyy-M-d H:m:s','yyyy-M-d H:m','yyyy-M-d'],'allowEmpty' => true),
             array('validuntil','date','format' => ['yyyy-M-d H:m:s.???','yyyy-M-d H:m:s','yyyy-M-d H:m','yyyy-M-d'],'allowEmpty' => true),
         );
-        foreach (decodeTokenAttributes($this->survey->attributedescriptions) as $key => $info) {
+        foreach (decodeTokenAttributes($this->survey->attributedescriptions ?? '') as $key => $info) {
             $aRules[] = array(
                 $key, 'filter',
                 'filter' => array(self::class, 'sanitizeAttribute'),
-                'except' => 'FinalSubmit'
+                'on' => 'register'
+            );
+            $aRules[] = array(
+                $key,
+                'LSYii_Validators',
+                'except' => 'finalSubmit,register'
             );
         }
         return $aRules;
@@ -512,7 +518,7 @@ abstract class Token extends Dynamic
 
     public function onBeforeSave($event)
     {
-        // Mark token as "OptOut" if globally blacklisted and 'blacklistnewsurveys' is enabled
+        // Mark token as "OptOut" if globally blocklisted and 'blacklistnewsurveys' is enabled
         if (Yii::app()->getConfig('blacklistnewsurveys') == "Y" && $this->getIsNewRecord()) {
             $blacklistHandler = new LimeSurvey\Models\Services\ParticipantBlacklistHandler();
             if ($blacklistHandler->isTokenBlacklisted($this)) {

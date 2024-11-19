@@ -49,8 +49,8 @@
                 <?php echo $survey['size']; ?>
                 <?php if ($survey['showPurgeButton']) : ?>
                     <span
-                        class='fa fa-trash text-danger pull-right btn btn-default btn-xs'
-                        data-toggle='tooltip'
+                        class='ri-delete-bin-fill text-danger float-end btn btn-outline-secondary btn-xs'
+                        data-bs-toggle='tooltip'
                         onclick='window.location = "<?php echo $this->createUrl('surveyAdministration/purge', array('purge_sid' => $survey['sid'])); ?>"'
                         title='<?php eT('Delete survey files'); ?>'
                     >

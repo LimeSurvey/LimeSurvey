@@ -5294,7 +5294,7 @@ a.thumbnail.active {
   padding-left: 10px;
 }
 .media-left,
-.media > .pull-left {
+.media > .float-start {
   padding-right: 10px;
 }
 .media-left,
@@ -6596,7 +6596,7 @@ button.close {
 .pull-right {
   float: right !important;
 }
-.pull-left {
+.float-start {
   float: left !important;
 }
 .hide {

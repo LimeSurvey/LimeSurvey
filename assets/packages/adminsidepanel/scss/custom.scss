@@ -1,112 +1,20 @@
 /* New adminsidepanel */
 
 #sidebar {
-    padding-top: 15px;
-    width:100%;
 
-    .questiongroup-list-group>li.selected {
-        opacity: 0.9;
-        &.activated {
-            opacity: 1;
-        }
-    }
-
-    .tabbutton.btn-primary {
-        outline: none;
-        &:after {
-            position: absolute;
-            left: 43%;
-            bottom: -12px;
-            font: normal normal normal 14px/1 FontAwesome;
-            font-size: 28px;
-            text-rendering: auto;
-            -webkit-font-smoothing: antialiased;
-            content: "\F078";
-        }
-    }
-    .overflow-auto {
-        overflow-x: hidden;
-        overflow-y: auto;
-    }
-    .resize-handle {
-        position: absolute;
-        right: 14px;
-        top: 0;
-        bottom: 0;
-        height: 100%;
-        width: 4px;
-        cursor: col-resize;
-        button {
-            outline: 0;
-            &:focus,
-            &:active,
-            &:hover {
-                outline: 0 !important;
-            }
-            cursor: col-resize;
-            width:100%;
-            height:100%;
-            text-align: left;
-            border-radius: 0;
-            padding: 0px 7px 0px 4px;
-            i {
-                font-size: 12px;
-                width: 5px;
-            }
-        }
-    }
     .transition-animate-width {
         -moz-transition: all 0.5s ease;
         -webkit-transition: all 0.5s ease;
         -ms-transition: all 0.5s ease;
         transition: all 0.5s ease;
     }
-    div[class^="col-"],
-    div[class*=" col-"] {
-        &.nofloat {
-            float: none;
-        }
-    }
-    .button-sub-bar {
-        min-height: 32px;
-    }
+
     &.fill-height,
     .fill-height {
         height: 100%
     }
-    .dragPointer {
-        cursor: move;
-        &.disabled {
-            color: #999999;
-            cursor: not-allowed;
-        }
-    }
-    .question-question-list {
-        .question-question-list-item {
-            padding: 0;
-            .question-question-list-item-drag {
-                margin: 10px 15px;
-            }
-            &.selected {
-                padding-left: 20px;
-                .question-question-list-item-drag {
-                    margin: 10px 10px 10px 5px;
-                }
-            }
-            .question-question-list-item-link {
-                padding: 10px 25px 10px 10px;
-                display: inline-flex;
-                flex-wrap: wrap;
-            }
-        }
-    }
-    .question_text_ellipsize {
-        display: inline-block;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        overflow: hidden;
-        padding-left: 2px;
-    }
+
+
 }
 
 .bigIcons {
@@ -130,16 +38,16 @@
                 .list-group-item {
                     //padding-left:15px;
                     &:last-of-type {
+                        border-bottom: 1px solid #dadada;
                         margin-bottom: 10px;
                     }
                 }
             }
         }
     }
-    .breadcrumb>li+li:before {
-        padding: 0 5px;
-        content: "\f061";
-        font: normal normal normal 18px/1 FontAwesome;
+    .pager li > a, .pager li > span {
+        border-radius: 4px;
+        margin: 1px;
     }
 }
 
@@ -215,6 +123,8 @@
 #pjax-content {
     .side-body {
         min-height: 0;
+        overflow: hidden;
+
     }
 }
 
@@ -232,62 +142,6 @@
 
 .side-body {
     min-height: 400px;
-}
-
-footer.footer {
-    position: static;
-}
-
-ol.breadcrumb.title-bar-breadcrumb {
-    margin-bottom: 0px;
-    > :first-child {
-        a {
-            &.animate::after {
-                margin-left: 0px;
-            }
-        }
-    }
-    a {
-        text-decoration: none;
-        line-height: 24px;
-        font-size: 18px;
-        &.animate::after {
-            text-align: right;
-            content: '';
-            display: block;
-            width: 0;
-            height: 2px;
-        }
-        &.animate:hover::after {
-            width: 100%;
-        }
-        &.animate.home-icon:hover::after {
-            margin-left: 0;
-            width: 100% !important;
-        }
-    }
-    li {
-        line-height: 24px;
-        font-size: 18px;
-        &.active {
-            font-style: italic
-        }
-        >div {
-            display: inline-block;
-        }
-    }
-    .menu-label {
-        width: 100%;
-        display: block;
-        font-size: 85%;
-        font-style: normal;
-    }
-}
-
-.breadcrumb-title {
-    line-height: 24px;
-    font-size: 18px;
-    padding: 8px 15px;
 }
 
 #pjax-file-load-container {
@@ -323,24 +177,6 @@ ol.breadcrumb.title-bar-breadcrumb {
     }
 }
 
-.btn-group {
-    .btn{
-        input[type=radio],
-        input[type=checkbox] {
-            outline: none;
-            margin:0;
-            padding: 0;
-            border: 0;
-            &:after{
-                display:none;
-            }
-            &:before{
-                display:none;
-            }
-        }
-    }
-}
-
 .blocker-loading {
     display: block;
     height: 96%;
@@ -353,20 +189,23 @@ ol.breadcrumb.title-bar-breadcrumb {
     position: fixed;
     justify-content: center;
     align-items: center;
-    
+
     .blocker-loading-container {
         display: flex;
         justify-content: center;
         align-items: center;
         height: 100%;
         width: 100%;
-        
+
         .loading-icon-fa {
             display: flex;
             z-index: 9999;
             font-size: 13rem;
         }
     }
+}
+.simpleWrapper {
+    z-index: 999;
 }
 @media(max-width: 768px) {
     .navbar-header {
@@ -383,8 +222,20 @@ ol.breadcrumb.title-bar-breadcrumb {
         padding-right:10px;
     }
     #vue-apps-main-container,
-    footer.footer,
     .surveymanagerbar {
         margin-left:22px
     }
 }
+
+.black-caret {
+    color: black;
+}
+
+div[class^="col-"],
+div[class*=" col-"] {
+    &.nofloat {
+        float: none;
+    }
+}
+
+

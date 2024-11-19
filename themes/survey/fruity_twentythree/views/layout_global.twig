@@ -1,0 +1,157 @@
+{#
+    LimeSurvey
+    Copyright (C) 2007-2017 The LimeSurvey Project Team / Louis Gac
+    All rights reserved.
+    License: GNU/GPL License v2 or later, see LICENSE.php
+    LimeSurvey is free software. This version may have been modified pursuant
+    to the GNU General Public License, and as distributed it includes or
+    is derivative of works licensed under the GNU General Public License or
+    other free or open source software licenses.
+    See COPYRIGHT.php for copyright notices and details.
+
+    (¯`·._.·(¯`·._.· Global Layout  ·._.·´¯)·._.·´¯)
+
+    This is the global layout that will be used to displayed most pages (less the error page)
+    If you're creating your own template, remember there is no obligation to respect the current file flow of this template.
+    This is different from the old LimeSurvey template engine, where you had to provide every one of the pstpl files.
+    Here, you must have a file called main_layout.twig (called from SurveyRuntimeHelper::run() ).
+    Other than that, you're free to organize your files and inclusions as you want.
+
+
+
+    (¯`·._.·(¯`·._.· Bootstrap ·._.·´¯)·._.·´¯)
+
+    LimeSurvey uses Bootstrap.
+    See: https://getbootstrap.com
+
+    This template is an instance of Bootswatch Theme Flatly.
+    See: https://bootswatch.com/
+
+
+
+    (¯`·._.·(¯`·._.· Twig Engine  ·._.·´¯)·._.·´¯)
+
+    The template engine uses Twig.
+    See: http://twig.sensiolabs.org/
+
+    The main variable is aSurveyInfo. It's an array containing the main information about the survey.
+    aSurveyInfo also contains other needed arrays, such as aNavigator, or aQuestionGroups (which contain aQuestions), etc.
+
+    If you want to see what is availabe in aSurveyInfo, turn debug mode on in application/config.php, and copy the following line to the end of the <body> element below:
+    {{ dump(aSurveyInfo) }}
+
+    To echo a variable, just insert                      : {{ variable }}
+    To translate a string, just insert                   : {{gT( string )}}
+
+    NOTE: aSurveyInfo should be cleaned to remove the unnecessary data.
+
+
+    (¯`·._.·(¯`·._.· Twig Engine: advanced  ·._.·´¯)·._.·´¯)
+
+    For security reason, Twig is in a sandBox.
+    About sandBox, see: http://twig.sensiolabs.org/doc/2.x/api.html#sandbox-extension
+
+    Available functions/Object Methods are defined in internal.php: components => twigRenderer
+    Eg:
+         Functions : 'include', 'dump', 'flatEllipsizeText', 'getLanguageData', 'array_flip', 'array_intersect_key', 'registerPublicCssFile', 'getAllQuestionClasses', 'getShowqnumcode', 'intval'
+
+         Methods   :
+                    - CHtml::textfield() (and: form, link, emailField, beginForm, endForm, dropDownList,htmlButton)
+                    - Survey::getAllLanguages()
+                    - LSHttpRequest::getParam()
+
+    If you need to add simple functions or static methods, just add them to internal.php.
+    If you need to add complex process, use application/core/LS_Twig_Extension.php (more help/comments there)
+
+
+    NOTE: Feel free to ask for functions, variables, etc, that you feel are missing - https://bugs.limesurvey.org/my_view_page.php
+#}
+
+<!DOCTYPE html>
+<html lang="{{ aSurveyInfo.languagecode }}" dir="{{ aSurveyInfo.dir }}" class="{{ aSurveyInfo.languagecode }} dir-{{ aSurveyInfo.dir }} {{ aSurveyInfo.class.html }}" {{ aSurveyInfo.attr.html }}>
+    {% block head %}
+    {# Headers, metadata, etc #}
+    {{ include('./subviews/header/head.twig') }}
+    {% endblock %}
+    <body class=" {{ aSurveyInfo.class.body }} font-{{  aSurveyInfo.options.font }} lang-{{aSurveyInfo.languagecode}} {{aSurveyInfo.surveyformat}} {% if( aSurveyInfo.options.brandlogo == "on") %}brand-logo{%endif%}" {{ aSurveyInfo.attr.body }} data-thememode="{{ aSurveyInfo.options.thememode ? aSurveyInfo.options.thememode : 'light' }}">
+
+        {# Notice if emcache is on or off, used by tests. #}
+        {% if aSurveyInfo.emcache %}
+            <span style="display: none;" id="__emcache_debug" value="on"></span>
+        {% else %}
+            <span style="display: none;" id="__emcache_debug" value="off"></span>
+        {% endif %}
+
+        {# This used for the pjax system #}
+        {% block pjaxbegin %}
+            <div id="beginScripts" class="script-container">
+                <###begin###>
+            </div>
+        {% endblock %}       
+
+        {# Ajaxify cannot handle an element that is a direct child of body, so => create simple wrapper section #}
+        <article>
+
+            <div id="{{ aSurveyInfo.id.dynamicreload }}">
+            {% block body %}
+
+                {# Bootstrap Navigation Bar: the top menu #}
+                {% block nav_bar %}
+                    {{ include('./subviews/header/nav_bar.twig') }}
+                {% endblock %}
+
+                {# Top Container: in this template, it contains only  #}
+                {% block progress %}
+                    {{ include('./subviews/header/progress_bar.twig') }}
+                {% endblock %}
+
+                <!-- Outer Frame Container -->
+                {% block content %}
+                    {#
+                        Content depends on the action (survey, questions, register, assesments, submit, etc)
+                        Action are in ./subviews/content/
+                    #}
+                    {% set sViewContent =  './subviews/content/' ~ aSurveyInfo.include_content ~ '.twig' %}
+                    {% include './subviews/content/outerframe.twig' with {'include_content': sViewContent } %}
+                {% endblock %}
+
+                {# Bootstrap alert modal #}
+                {{ include('./subviews/messages/bootstrap_alert_modal.twig') }}
+
+                {# Basic ThemeScript options  #}
+                {{ registerScript("BasicThemeScripts", "
+                if(window.basicThemeScripts === undefined){ 
+                    window.basicThemeScripts = new ThemeScripts(); 
+                }
+                if(window.arrayScripts === undefined){
+                    window.arrayScripts = new ArrayScripts();
+                }
+                if(window.navbarScripts === undefined){
+                    window.navbarScripts = new NavbarScripts();
+                }
+                arrayScripts.initArrayEvents();
+                navbarScripts.initNavbarEvents();
+                basicThemeScripts.initGlobal();
+                ", "POS_END") }}
+
+            {% endblock %}
+            </div>
+
+        </article>
+        {% block footer %}
+            {{ include('./subviews/footer/footer.twig') }}
+        {% endblock %}
+        {% block pjaxend %}
+            <div id="bottomScripts" class="script-container">
+                <###end###>
+            </div>
+        {% endblock %}   
+
+        {% block themescripts %}
+            <script>
+                window.basicThemeScripts.init();
+            </script>
+        {% endblock %}
+        
+    </body>
+</html>

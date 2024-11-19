@@ -757,7 +757,7 @@
         const jsonstring = $("#java" + fieldname).val();
 
         if (jsonstring == '[]' || jsonstring == '') {
-          $('#' + this.fieldname + '_uploadedfiles').addClass('hidden');
+          $('#' + this.fieldname + '_uploadedfiles').addClass('d-none');
           $('#' + this.fieldname + '_uploadedfiles').find('table>tbody').html('');
           return;
         }
@@ -768,7 +768,7 @@
           try {
             jsonobj = JSON.parse(jsonstring);
           } catch (e) {}
-          $('#' + this.fieldname + '_uploadedfiles').removeClass('hidden');
+          $('#' + this.fieldname + '_uploadedfiles').removeClass('d-none');
           $('#' + this.fieldname + '_uploadedfiles').find('table>tbody').html('');
           const image_extensions = new Array('gif', 'jpeg', 'jpg', 'png', 'swf', 'psd', 'bmp', 'tiff', 'jp2', 'iff', 'bmp', 'xbm', 'ico');
           const templateHtml = $('#filerowtemplate_' + this.fieldname).html();
@@ -783,8 +783,8 @@
               imageOrPlaceholderHtml = '<div class="upload-placeholder"></div>';
             }
 
-            title = show_title != 0 ? item.title : '';
-            comment = show_comment != 0 ? item.comment : '';
+            title = show_title != 0 ? htmlentities(item.title) : '';
+            comment = show_comment != 0 ? htmlentities(item.comment) : '';
             name = item.name;
             filepointer = iterator;
             const rowHtml = this.replaceWithObject(templateHtml, {
@@ -843,26 +843,26 @@
           previewContainer.append('<div class="upload-placeholder"></div>');
         }
 
-        previewContainer.append('<span class="file-name">' + escapeHtml(decodeURIComponent(item.name)) + '</span>');
+        previewContainer.append('<span class="file-name">' + escapeHtml(item.name) + '</span>');
 
         if ($('#' + fieldname + '_show_title').val() == 1 || $('#' + fieldname + '_show_comment').val() == 1) {
           var previewTitleContainer = $('');
           var previewCommentContainer = $('');
 
           if ($('#' + fieldname + '_show_title').val() == 1) {
-            var previewTitleContainer = $('<div class="form-group"></div>');
-            $('<label class="control-label col-xs-4"></label>').attr('for', fieldname + '_title_' + i).text(options.uploadLang.titleFld).appendTo(previewTitleContainer);
+            var previewTitleContainer = $('<div class="mb-3"></div>');
+            $('<label class="control-label col-5"></label>').attr('for', fieldname + '_title_' + i).text(options.uploadLang.titleFld).appendTo(previewTitleContainer);
             $('<input class="form-control" type="text"/>').attr('id', fieldname + "_title_" + i).val(item.title).wrap('<div class="input-container"></div>').appendTo(previewTitleContainer);
           }
 
           if ($('#' + fieldname + '_show_comment').val() == 1) {
-            var previewCommentContainer = $('<div class="form-group"></div>');
-            $('<label class="control-label col-xs-4"></label>').attr('for', fieldname + '_comment_' + i).text(options.uploadLang.commentFld).appendTo(previewCommentContainer);
+            var previewCommentContainer = $('<div class="mb-3"></div>');
+            $('<label class="control-label col-5"></label>').attr('for', fieldname + '_comment_' + i).text(options.uploadLang.commentFld).appendTo(previewCommentContainer);
             $('<input class="form-control" type="text"/>').attr('id', fieldname + "_comment_" + i).val(item.comment).wrap('<div class="input-container"></div>').appendTo(previewCommentContainer);
           }
         }
 
-        var previewDeleteBlock = $('<div class="form-group"></div>').append($('<a class="btn btn-danger"></a>').html('<span class="fa fa-trash"></span>&nbsp;' + options.uploadLang.deleteFile).on('click', function () {
+        var previewDeleteBlock = $('<div class="mb-3"></div>').append($('<a class="btn btn-danger"></a>').html('<span class="fa fa-trash ri-delete-bin-fill"></span>&nbsp;' + options.uploadLang.deleteFile).on('click', function () {
           deletefile(fieldname, i);
         }).wrap('<div class="input-container text-center"></div>'));
         $('<fieldset></fieldset>').append(previewTitleContainer).append(previewCommentContainer).append(previewDeleteBlock).wrap('<div class="file-info"></div>').appendTo(previewContainer);
@@ -924,7 +924,7 @@
              * do not upload the file and display an error message ! */
 
             if (filecount >= maxfiles) {
-              $('#notice').html('<p class="alert alert-danger"><span class="fa fa-exclamation-circle"></span>&nbsp;' + uploadLang.errorNoMoreFiles + '</p>');
+              $('#notice').html('<p class="alert alert-danger"><span class="fa fa-exclamation-circle ri-error-warning-fill"></span>&nbsp;' + uploadLang.errorNoMoreFiles + '</p>');
               return false;
             }
             /* If the file being uploaded is not allowed,
@@ -939,7 +939,7 @@
             }
 
             if (allowSubmit == false) {
-              $('#notice').html('<p class="alert alert-danger"><span class="fa fa-exclamation-circle"></span>&nbsp;' + uploadLang.errorOnlyAllowed.replace('%s', $('#' + fieldname + '_allowed_filetypes').val()) + '</p>');
+              $('#notice').html('<p class="alert alert-danger"><span class="fa fa-exclamation-circle ri-error-warning-fill"></span>&nbsp;' + uploadLang.errorOnlyAllowed.replace('%s', $('#' + fieldname + '_allowed_filetypes').val()) + '</p>');
               return false;
             } // change button text, when user selects file
 
@@ -948,7 +948,7 @@
             // you can disable upload button
 
             this.disable();
-            button.append('<i id="loading-icon-fielupload" class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>');
+            button.append('<i id="loading-icon-fielupload" class="fa fa-spinner fa-pulse fa-3x fa-fw ri-loader-fill remix-pulse ri-3x" ></i>');
           },
           onComplete: function (file, response) {
             button.text(uploadLang.selectfile);
@@ -970,7 +970,7 @@
             $('#' + fieldname + '_licount').val(count);
 
             if (metadata.success) {
-              $('#notice').html('<p class="alert alert-success"><span class="fa fa-success"></span>&nbsp;' + metadata.msg + '</p>');
+              $('#notice').html('<p class="alert alert-success"><span class="fa fa-check ri-check-fill"></span>&nbsp;' + metadata.msg + '</p>');
 
               if ($('#field' + fieldname + '_listfiles').length == 0) {
                 $("<ul id='field" + fieldname + "_listfiles' class='files-list' />").insertAfter("#uploadstatus_" + options.qid);
@@ -983,9 +983,9 @@
               var maxfiles = parseInt($('#' + fieldname + '_maxfiles').val());
               $('#java' + fieldname + '_filecount').val(filecount);
               if (filecount < minfiles) $('#uploadstatus').html(options.uploadLang.errorNeedMore.replace('%s', minfiles - filecount));else if (filecount < maxfiles) $('#uploadstatus').html(options.uploadLang.errorMoreAllowed.replace('%s', maxfiles - filecount));else $('#uploadstatus').html(options.uploadLang.errorMaxReached);
-              if (filecount >= maxfiles) $('#notice').html('<p class="alert alert-success"><span class="fa fa-check"></span>&nbsp;' + options.uploadLang.errorTooMuch + '</p>');
+              if (filecount >= maxfiles) $('#notice').html('<p class="alert alert-success"><span class="fa fa-check ri-check-fill"></span>&nbsp;' + options.uploadLang.errorTooMuch + '</p>');
             } else {
-              $('#notice').html('<p class="alert alert-danger"><span class="fa fa-exclamation-circle"></span>&nbsp;' + metadata.msg + '</p>');
+              $('#notice').html('<p class="alert alert-danger"><span class="fa fa-exclamation-circle ri-error-warning-fill"></span>&nbsp;' + metadata.msg + '</p>');
             }
           }
         });
@@ -1064,7 +1064,7 @@
             YII_CSRF_TOKEN: options.csrfToken
           }
         }).done(function (msg) {
-          $('#notice').html('<p class="alert alert-success"><span class="fa fa-check"></span>&nbsp;' + msg + '</p>');
+          $('#notice').html('<p class="alert alert-success"><span class="fa fa-check ri-check-fill"></span>&nbsp;' + msg + '</p>');
           setTimeout(function () {
             $(".success").remove();
           }, 5000);

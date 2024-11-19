@@ -1,0 +1,170 @@
+.navbar-default .navbar-nav > li > a:hover {
+    text-decoration: underline;
+}
+
+.navbar-action-link{
+    padding-right:1em; /* really close to window without */
+}
+
+html body .navbar.navbar-default.navbar-fixed-top {
+    z-index: 2000;
+}
+
+/* Title of survey can be big, allow multiline, but leave the minimum */
+.navbar-brand {
+    height: auto;
+    min-height:60px;
+}
+
+
+/**********************************
+Responsive navbar-brand image CSS
+- Remove navbar-brand padding for firefox bug workaround
+- add 100% height and width auto ... similar to how bootstrap img-responsive class works
+***********************************/
+
+.logo-container {
+    padding: 0px;
+    float: left;
+
+    font-size: 18px;
+    line-height: 20px;
+}
+
+.logo-container>img {
+    max-height: 90px;
+    padding: 15px;
+    width: auto;
+}
+
+.brand-logo  .top-container .top-content{
+    padding-top: 2em;
+}
+
+/* text overflows, ellipsis and hyphens */
+.navbar-brand {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#navbar {
+    background: none; border: none;
+}
+
+.navbar-default .navbar-brand, .navbar-default  {
+    border: none;
+}
+
+.navbar-right.ms-auto {
+    margin-left  : auto !important;
+    margin-right : 0 !important;
+}
+
+.navbar {
+    border-radius    : 0 !important;
+
+
+    @media(min-width : 769px) {
+        .navbar-nav .nav-item .nav-link:hover {
+            text-decoration : none;
+        }
+        .navbar-nav .nav-item .nav-link:active {
+            text-decoration : none;
+        }
+        .navbar-nav .nav-item .nav-link:focus {
+            text-decoration : none;
+        }
+        .navbar-nav .nav-item .nav-link {
+            padding-bottom : 0;
+            padding-left   : 0;
+        }
+        .navbar-nav .nav-item {
+            position : relative;
+        }
+
+        //.navbar-nav .nav-item::after {
+        //    text-align       : right;
+        //    content          : '';
+        //    display          : block;
+        //    width            : 0;
+        //    height           : 2px;
+        //    background-color : $base-color;
+        //    transition       : width 0.3s;
+        //}
+        //.navbar-nav .nav-item:hover::after {
+        //    width : 100%;
+        //}
+    }
+    @media(max-width : 768px) {
+        padding-top    : 15px;
+        padding-bottom : 15px;
+    }
+
+}
+
+#survey-nav {
+    &.navbar {
+        box-shadow: none;
+    }
+    .navbar-toggler {
+        border: none;
+        padding-right: 0;
+        line-height: $line-height-20;
+        .ri-more-fill {
+            font-size: $font-size-xl * 1.125;
+        }
+    }
+
+    #main-dropdown {
+      min-width: 250px;
+      overflow-y: auto;
+      max-height: 90vh;
+
+      @media(max-width : 768px) {
+        max-width: 350px;
+        max-height: 70vh;
+
+        li a {
+          font-size: 0.7em !important;
+        }
+      }
+
+    }
+    .dropdown-header {
+        font-weight : $font-weight-500;
+        font-size   : $font-size-xs;
+        line-height : $line-height-16;
+    }
+    .dropdown-divider {
+        padding: 0;
+        margin: 0 1rem;
+    }
+    .dropdown-menu > li > a {
+        text-decoration : none;
+        font-weight : $font-weight-normal;
+        font-size   : $font-size-sm;
+        line-height : $line-height-20;
+    }
+    .dropdown-toggle::after {
+        font-family: "remixicon";
+        content: "\ea6e" #{"/*!rtl:'\ea64'*/"};
+        border: none;
+        vertical-align: 0;
+        position:absolute;
+        right: 0;
+        font-size: $font-size-lg;
+    }
+
+    .back-link::before {
+        font-family: "remixicon";
+        content: "\ea64" #{"/*!rtl:'\ea6e'*/"};
+        vertical-align: -0.10em;
+        position: relative;
+        left: -6px;
+        margin-right: 6px;
+        font-size: $font-size-lg;
+    }
+    .form-change-lang {
+        padding-bottom: 0;
+    }
+}

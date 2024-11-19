@@ -11,6 +11,7 @@ class AdvancedSettingWidget extends CWidget
     const SINGLEINPUTTYPE = array(
         'columns',
         'integer',
+        'float',
         'singleselect',
         'text',
         'textarea'
@@ -36,7 +37,7 @@ class AdvancedSettingWidget extends CWidget
         }
         $this->setting['hidden'] = !empty($this->setting['hidden']);
         $this->setting['i18n'] = !empty($this->setting['i18n']);
-        $this->setting['help'] = trim($this->setting['help']);
+        $this->setting['help'] = trim((string) $this->setting['help']);
         if ($this->setting['help']) {
             /* @fixme : Must be done in Model : QuestionTheme must be allowed to have own translation, plugin can have own translation */
             $this->setting['help'] = gT($this->setting['help'], 'unescaped');
@@ -49,7 +50,7 @@ class AdvancedSettingWidget extends CWidget
             }
         }
 
-        $inputBaseName = "advancedSettings[" . strtolower($this->setting['category']) . "][" . $this->setting['name'] ."]";
+        $inputBaseName = "advancedSettings[" . strtolower((string) $this->setting['category']) . "][" . $this->setting['name'] ."]";
         $content = $this->render($this->setting['inputtype'],
             ['inputBaseName' => $inputBaseName]
             , true

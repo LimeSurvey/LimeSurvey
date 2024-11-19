@@ -302,7 +302,7 @@ class TwoFactorAuthTest extends PHPUnit_Framework_TestCase
     public function testCSRNGProvidersReturnExpectedNumberOfBytes() {
         $rng = new \RobThree\Auth\Providers\Rng\CSRNGProvider();
         foreach ($this->getRngTestLengths() as $l)
-            $this->assertEquals($l, strlen($rng->getRandomBytes($l)));
+            $this->assertEquals($l, strlen((string) $rng->getRandomBytes($l)));
         $this->assertEquals(true, $rng->isCryptographicallySecure());
     }
 
@@ -313,7 +313,7 @@ class TwoFactorAuthTest extends PHPUnit_Framework_TestCase
     public function testHashRNGProvidersReturnExpectedNumberOfBytes() {
         $rng = new \RobThree\Auth\Providers\Rng\HashRNGProvider();
         foreach ($this->getRngTestLengths() as $l)
-            $this->assertEquals($l, strlen($rng->getRandomBytes($l)));
+            $this->assertEquals($l, strlen((string) $rng->getRandomBytes($l)));
         $this->assertEquals(false, $rng->isCryptographicallySecure());
     }
 
@@ -324,7 +324,7 @@ class TwoFactorAuthTest extends PHPUnit_Framework_TestCase
         if (function_exists('mcrypt_create_iv')) {
             $rng = new \RobThree\Auth\Providers\Rng\MCryptRNGProvider();
             foreach ($this->getRngTestLengths() as $l)
-                $this->assertEquals($l, strlen($rng->getRandomBytes($l)));
+                $this->assertEquals($l, strlen((string) $rng->getRandomBytes($l)));
             $this->assertEquals(true, $rng->isCryptographicallySecure());
         }
     }
@@ -335,7 +335,7 @@ class TwoFactorAuthTest extends PHPUnit_Framework_TestCase
     public function testStrongOpenSSLRNGProvidersReturnExpectedNumberOfBytes() {
         $rng = new \RobThree\Auth\Providers\Rng\OpenSSLRNGProvider(true);
         foreach ($this->getRngTestLengths() as $l)
-            $this->assertEquals($l, strlen($rng->getRandomBytes($l)));
+            $this->assertEquals($l, strlen((string) $rng->getRandomBytes($l)));
         $this->assertEquals(true, $rng->isCryptographicallySecure());
     }
 
@@ -345,7 +345,7 @@ class TwoFactorAuthTest extends PHPUnit_Framework_TestCase
     public function testNonStrongOpenSSLRNGProvidersReturnExpectedNumberOfBytes() {
         $rng = new \RobThree\Auth\Providers\Rng\OpenSSLRNGProvider(false);
         foreach ($this->getRngTestLengths() as $l)
-            $this->assertEquals($l, strlen($rng->getRandomBytes($l)));
+            $this->assertEquals($l, strlen((string) $rng->getRandomBytes($l)));
         $this->assertEquals(false, $rng->isCryptographicallySecure());
     }
 
@@ -355,7 +355,7 @@ class TwoFactorAuthTest extends PHPUnit_Framework_TestCase
     }
 
     private function DecodeDataUri($datauri) {
-        if (preg_match('/data:(?P<mimetype>[\w\.\-\/]+);(?P<encoding>\w+),(?P<data>.*)/', $datauri, $m) === 1) {
+        if (preg_match('/data:(?P<mimetype>[\w\.\-\/]+);(?P<encoding>\w+),(?P<data>.*)/', (string) $datauri, $m) === 1) {
             return array(
                 'mimetype' => $m['mimetype'],
                 'encoding' => $m['encoding'],

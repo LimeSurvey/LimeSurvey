@@ -1,0 +1,17 @@
+.modal-content {
+    background-color: $white;
+}
+.modal-backdrop {
+    background-color: $black;
+}
+.modal-header {
+    .btn-close {
+        color: $g-900;
+        &:hover {
+            background-color: $g-200;
+        }
+    }
+}
+.modal-title {
+    color: $g-900;
+}

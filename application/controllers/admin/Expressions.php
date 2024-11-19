@@ -32,7 +32,17 @@ class Expressions extends SurveyCommonAction
 
         $aData['sa'] = $sa = sanitize_paranoid_string(Yii::app()->request->getQuery('sa', 'index'));
 
-        $aData['fullpagebar']['closebutton']['url'] = 'admin/'; // Close button
+        $aData['pagetitle'] = "ExpressionManager:  {$aData['sa']}";
+        $aData['topbar']['title'] = $aData['pagetitle'];
+        $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
+            '/layouts/partial_topbar/right_close_saveclose_save',
+            [
+                'isCloseBtn' => true,
+                'isSaveBtn' => false,
+                'isSaveAndCloseBtn' => false,
+            ],
+            true
+        );
 
         if (($aData['sa'] == 'survey_logic_file' || $aData['sa'] == 'navigation_test') && $iSurveyID) {
             $needpermission = true;
@@ -51,7 +61,6 @@ class Expressions extends SurveyCommonAction
             App()->getClientScript()->registerPackage('expression-extend');
 
             $this->printOnLoad(Yii::app()->request->getQuery('sa', 'index'));
-            $aData['pagetitle'] = "ExpressionManager:  {$aData['sa']}";
             $aData['subaction'] = $this->printTitle($aData['sa']);
 
 
@@ -84,9 +93,7 @@ class Expressions extends SurveyCommonAction
     {
         $aData = array();
 
-        $sid = Yii::app()->request->getParam('sid', 0, 'integer');
-        $surveyid = Yii::app()->request->getParam('surveyid', $sid, 'integer');
-
+        $sid = (int) Yii::app()->request->getParam('sid', 0);
         $hasSurveyContentReadPermission = Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'read');
         if (!$hasSurveyContentReadPermission) {
             $message['title'] = gT('Access denied!');
@@ -133,7 +140,6 @@ class Expressions extends SurveyCommonAction
 
         $aData['title_bar']['title'] = $oSurvey->getLocalizedTitle() . " (" . gT("ID") . ":" . $sid . ")";
 
-        $aData['topBar']['name'] = 'baseTopbar_view';
         $aData['topBar']['showBackButton'] = true;
         $aData['topBar']['returnUrl'] = Yii::app()->createUrl('surveyAdministration/view/surveyid/' . $sid);
 
@@ -149,6 +155,11 @@ class Expressions extends SurveyCommonAction
             $aData['qid'] = $qid;
         }
 
+        $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
+            '/admin/expressions/partial/topbarBtns/rightSideButtons',
+            ['aData' => $aData],
+            true
+        );
         App()->getClientScript()->registerPackage('decimal');
         App()->getClientScript()->registerScriptFile('SCRIPT_PATH', 'survey_runtime.js');
         App()->getClientScript()->registerPackage('expressions');/* Why we need it ? */

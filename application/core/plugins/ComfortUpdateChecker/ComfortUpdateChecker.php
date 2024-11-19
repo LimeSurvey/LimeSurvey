@@ -19,7 +19,7 @@ class ComfortUpdateChecker extends PluginBase
 
     protected static $name = 'ComfortUpdateChecker';
 
-    /** @inheritdoc, this plugin didn't have any public method */
+    /** @inheritdoc this plugin didn't have any public method */
     public $allowedPublicMethods = array();
 
     protected $settings = [
@@ -58,7 +58,7 @@ class ComfortUpdateChecker extends PluginBase
 
         $update = (array)$this->getUpdate();
 
-        if ($update['result']) {
+        if ($update && $update['result']) {
             //Default icon class
             $iconClass = "";
             $NotificationText = gT("Update available");
@@ -78,7 +78,7 @@ class ComfortUpdateChecker extends PluginBase
                     'isSmallText' => false,
                     'label' => '<strong class="text-warning">' . $NotificationText . '</strong>',
                     'href' => $this->api->createUrl('admin/update', []),
-                    'iconClass' => 'icon-shield text-warning ' . $iconClass,
+                    'iconClass' => 'ri-shield-check-fill text-warning ' . $iconClass,
                 ];
 
                 $aMenuItems[] = (new \LimeSurvey\Menu\MenuItem($aMenuItemAdminOptions));
@@ -98,14 +98,19 @@ class ComfortUpdateChecker extends PluginBase
     /**
      * This function check if update is available from the comfort update server
      *
-     * @return void
+     * @return ?stdClass
      */
     private function getUpdate()
     {
         $buttons = 1;
         $updateModel = new UpdateForm();
-        $serverAnswer = $updateModel->getUpdateInfo($buttons);
-        return $serverAnswer;
+        // NB: Use getUpdateNotification, since it checks session for datetime to avoid multiple calls.
+        $serverAnswer = $updateModel->getUpdateNotification($buttons);
+        if ($serverAnswer && $serverAnswer->result) {
+            return $updateModel->getUpdateInfo($buttons);
+        } else {
+            return null;
+        }
     }
 
     /**

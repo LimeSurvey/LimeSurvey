@@ -2,14 +2,13 @@
 
 class ClassFactory
 {
-
     protected static $map = array();
     protected static $registered = false;
 
-    public static function autoload($className)
+    public static function autoload(string $className)
     {
         foreach (self::$map as $prefix => $baseClass) {
-            if (strpos($className, $prefix) === 0) {
+            if (strpos($className, (string) $prefix) === 0) {
                 self::createClass($baseClass, $className);
                 return true;
             }
@@ -37,7 +36,7 @@ class ClassFactory
         //          can break on eaccelerator avoid it when possible uncomment if needed:
         //krsort(self::$map);
         if (!self::$registered) {
-            self::$registered = spl_autoload_register(array(get_class(), 'autoload'), true, true);
+            self::$registered = spl_autoload_register(array(get_class(new static), 'autoload'), true, true);
         }
     }
 }

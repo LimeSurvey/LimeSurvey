@@ -1,0 +1,155 @@
+{#
+    LimeSurvey
+    Copyright (C) 2007-2017 The LimeSurvey Project Team / Louis Gac
+    All rights reserved.
+    License: GNU/GPL License v2 or later, see LICENSE.php
+    LimeSurvey is free software. This version may have been modified pursuant
+    to the GNU General Public License, and as distributed it includes or
+    is derivative of works licensed under the GNU General Public License or
+    other free or open source software licenses.
+    See COPYRIGHT.php for copyright notices and details.
+
+    (¯`·._.·(¯`·._.· Custom Header  ·._.·´¯)·._.·´¯)
+
+    If you extend a template, and want to add custom headers (js, css, scripts, meta etc), you'd rather do it here.
+    This file is empty in Vanilla, and contains the code for the background option in Fruity
+#}
+
+{# Custom backgroud option #}
+<style>
+    {% if (aSurveyInfo.options.backgroundimage == "on" and imageSrc(aSurveyInfo.options.backgroundimagefile )) %}
+        body {
+            background-image: url('{{ imageSrc(aSurveyInfo.options.backgroundimagefile ) }}');
+            background-attachment: fixed;
+            background-size: cover;
+
+        }
+
+        body .top-container {
+            background-color: rgba(236, 240, 241, 0.2);
+        }
+    {% endif %}
+
+    {% if (aSurveyInfo.options.brandlogo == "on" ) %}
+        body .top-container {
+            margin-top: 70px;
+        }
+    {% endif %}
+
+    body {
+         padding-bottom: 10px;
+         /*padding-top: 60px;!* now is redefine in JS to fit any title length *!*/
+         background-color:{{ aSurveyInfo.options.bodybackgroundcolor  }} ;
+         color: {{ aSurveyInfo.options.fontcolor  }};
+    }
+
+    .navbar-default .navbar-nav > li > a:hover {
+        color: {{ aSurveyInfo.options.fontcolor  }};
+    }
+
+    {% set checkicon = '"\\' ~  aSurveyInfo.options.checkicon   ~ '"' %}
+    .checkbox-item input[type="checkbox"]:checked + label::after, .checkbox-item input[type="radio"]:checked + label::after {
+        content: {{ checkicon }};
+    }
+
+    {% if (aSurveyInfo.options.animatecheckbox == "on" ) %}
+
+        {% if (aSurveyInfo.options.checkboxanimationduration < 1) %}
+            {% set checkboxanimationduration = 500 %}
+        {% else %}
+            {% set checkboxanimationduration = aSurveyInfo.options.checkboxanimationduration %}
+        {% endif %}
+
+        .checkbox-item input[type="checkbox"]:checked + label::after{
+            animation-name: {{ aSurveyInfo.options.checkboxanimation  }};
+            animation-duration: {{ checkboxanimationduration }}ms;
+            animation-fill-mode: both;
+            animation-iteration-count: 1;
+            display: inline-block;
+            -webkit-transform: none;
+            -ms-transform: none;
+            -o-transform: none;
+            transform: none;
+        }
+        .checkbox-item input[type="checkbox"] + label::after{
+            display: none;
+            -webkit-transform: none;
+            -ms-transform: none;
+            -o-transform: none;
+            transform: none;
+        }
+    {% endif %}
+
+    {% if (aSurveyInfo.options.animateradio == "on" ) %}
+
+        {% if (aSurveyInfo.options.radioanimationduration < 1) %}
+            {% set radioanimationduration = 500 %}
+        {% else %}
+            {% set radioanimationduration = aSurveyInfo.options.radioanimationduration %}
+        {% endif %}
+
+        .radio-item input[type="radio"]:checked + label::after{
+            animation-name: {{ aSurveyInfo.options.radioanimation  }};
+            animation-duration: {{ radioanimationduration }}ms;
+            animation-fill-mode: both;
+            animation-iteration-count: 1;
+            display: inline-block;
+            -webkit-transform: none;
+            -ms-transform: none;
+            -o-transform: none;
+            transform: none;
+        }
+        .radio-item input[type="radio"] + label::after{
+            display:none;
+            -webkit-transform: none;
+            -ms-transform: none;
+            -o-transform: none;
+            transform: none;
+        }
+    {% endif %}
+
+    {% if (aSurveyInfo.options.animatequestion == "on" ) %}
+
+        {% if (aSurveyInfo.options.questionanimationduration < 1) %}
+            {% set questionanimationduration = 500 %}
+        {% else %}
+            {% set questionanimationduration = aSurveyInfo.options.questionanimationduration %}
+        {% endif %}
+
+        .question-container {
+            animation-name: {{ aSurveyInfo.options.questionanimation  }};
+            animation-duration: {{ questionanimationduration }}ms;
+            animation-fill-mode: both;
+        }
+    {% endif %}
+
+    {% if (aSurveyInfo.options.animatealert == "on" ) %}
+
+        {% if (aSurveyInfo.options.alertanimationduration < 1) %}
+            {% set alertanimationduration = 500 %}
+        {% else %}
+            {% set alertanimationduration = aSurveyInfo.options.alertanimationduration %}
+        {% endif %}
+
+        .alert {
+            animation-name: {{ aSurveyInfo.options.alertanimation  }};
+            animation-duration: {{ alertanimationduration }}ms;
+            animation-fill-mode: both;
+        }
+    {% endif %}
+
+    {% if (aSurveyInfo.options.animatebody == "on" ) %}
+
+        {% if (aSurveyInfo.options.bodyanimationduration < 1) %}
+            {% set bodyanimationduration = 500 %}
+        {% else %}
+            {% set bodyanimationduration = aSurveyInfo.options.bodyanimationduration %}
+        {% endif %}
+
+        #outerframeContainer {
+            animation-name: {{ aSurveyInfo.options.bodyanimation  }};
+            animation-duration: {{ bodyanimationduration }}ms;
+            animation-fill-mode: both;
+        }
+    {% endif %}
+</style>

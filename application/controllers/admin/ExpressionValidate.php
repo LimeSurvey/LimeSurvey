@@ -16,7 +16,7 @@ class ExpressionValidate extends SurveyCommonAction
     public $layout = 'popup';
 
     /**
-     * @var integer : The survey id to start to fill know vars
+     * @var integer : The survey ID to start to fill know vars
      */
     private $iSurveyId;
     /**
@@ -31,7 +31,7 @@ class ExpressionValidate extends SurveyCommonAction
 
     /**
      * Check the Expression in quota
-     * @param integer $iSurveyId : the survey id : can be sid/surveyid url GET parameters
+     * @param integer $iSurveyId : the survey ID : can be sid/surveyid url GET parameters
      * @param integer $quota : the quota id
      * @param string $lang : the survey language, optional : if not set get all language of survey
      *
@@ -86,7 +86,7 @@ class ExpressionValidate extends SurveyCommonAction
     }
     /**
      * Check the Expression in email
-     * @param integer $iSurveyId : the survey id : can be sid/surveyid url GET parameters
+     * @param integer $iSurveyId : the survey ID : can be sid/surveyid url GET parameters
      * @param string $lang : the mail language
      *
      * @author Denis Chenu
@@ -181,7 +181,7 @@ class ExpressionValidate extends SurveyCommonAction
         $aReplacement["TOKEN:TOKEN"] = gT("Participant - Access code");
         $aReplacement["TOKEN:LANGUAGE"] = gT("Participant - Language");
         foreach ($aAttributes as $sAttribute => $aAttribute) {
-            $aReplacement['TOKEN:' . strtoupper($sAttribute) . ''] = sprintf(gT("Participant attribute: %s"), $aAttribute['description']);
+            $aReplacement['TOKEN:' . strtoupper((string) $sAttribute) . ''] = sprintf(gT("Participant attribute: %s"), $aAttribute['description']);
         }
 
         switch ($sType) {
@@ -198,8 +198,9 @@ class ExpressionValidate extends SurveyCommonAction
                 $aReplacement["OPTINURL"] = gT("URL for a respondent to opt-in to this survey");
                 $aReplacement["GLOBALOPTINURL"] = gT("URL for a respondent to opt-in to the central participant list for this site");
                 $aReplacement["SURVEYURL"] = gT("Survey URL");
+                $aReplacement['SURVEYIDURL'] = gT("Survey URL based on survey ID");
                 foreach ($aAttributes as $sAttribute => $aAttribute) {
-                    $aReplacement['' . strtoupper($sAttribute) . ''] = sprintf(gT("Participant - Attribute: %s"), $aAttribute['description']);
+                    $aReplacement['' . strtoupper((string) $sAttribute) . ''] = sprintf(gT("Participant - Attribute: %s"), $aAttribute['description']);
                 }
                 break;
             case 'confirmation':
@@ -207,8 +208,9 @@ class ExpressionValidate extends SurveyCommonAction
                 $aReplacement["FIRSTNAME"] = gT("Participant - Last name");
                 $aReplacement["LASTNAME"] = gT("Participant - First name");
                 $aReplacement["SURVEYURL"] = gT("Survey URL");
+                $aReplacement['SURVEYIDURL'] = gT("Survey URL without alias");
                 foreach ($aAttributes as $sAttribute => $aAttribute) {
-                    $aReplacement['' . strtoupper($sAttribute) . ''] = sprintf(gT("Participant - Attribute: %s"), $aAttribute['description']);
+                    $aReplacement['' . strtoupper((string) $sAttribute) . ''] = sprintf(gT("Participant - Attribute: %s"), $aAttribute['description']);
                 }
                 // $moveResult = LimeExpressionManager::NavigateForwards(); // Seems OK without, nut need $LEM::StartSurvey
                 break;

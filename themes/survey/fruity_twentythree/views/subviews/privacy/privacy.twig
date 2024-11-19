@@ -1,0 +1,52 @@
+{#
+    LimeSurvey
+    Copyright (C) 2007-2017 The LimeSurvey Project Team / Louis Gac
+    All rights reserved.
+    License: GNU/GPL License v2 or later, see LICENSE.php
+    LimeSurvey is free software. This version may have been modified pursuant
+    to the GNU General Public License, and as distributed it includes or
+    is derivative of works licensed under the GNU General Public License or
+    other free or open source software licenses.
+    See COPYRIGHT.php for copyright notices and details.
+
+    (¯`·._.·(¯`·._.· Privacy ·._.·´¯)·._.·´¯)
+
+    Show the privacy message (in All in One Mode)
+    see: allinone_mode_welcome_privacy.twig
+
+#}
+
+<!-- Privacy message -->
+
+<div class="{{ aSurveyInfo.class.privacycontainer }} row" {{ aSurveyInfo.attr.privacycontainer }}>
+    <div class="col-12 col-centered {{ aSurveyInfo.class.privacycol }}" {{ aSurveyInfo.attr.privacycol }}>
+        {% if (aSurveyInfo.options.hideprivacyinfo == "off" ) %}
+            {% block anonymous %}
+                {% if (aSurveyInfo.anonymized == "Y") %}
+                    <div class="ls-privacy-block">
+                        <div class="{{ aSurveyInfo.class.privacyhead }} text-uppercase" {{ aSurveyInfo.attr.privacyhead }}>
+                            {{ gT("This survey is anonymous.") }}
+                        </div>
+                        <div>
+                            <p class="{{ aSurveyInfo.class.privacybody }}" {{ aSurveyInfo.attr.privacybody }}>
+                                {{ gT("The record of your survey responses does not contain any identifying information about you, unless a specific survey question explicitly asked for it.") }}
+                            </p>
+                            <p class="{{ aSurveyInfo.class.privacybody }}">
+                                {{ gT("If you used an identifying access code to access this survey, please rest assured that this code will not be stored together with your responses. It is managed in a separate database and will only be updated to indicate whether you did (or did not) complete this survey. There is no way of matching identification access codes with survey responses.") }}
+                            </p>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endblock %}
+        {% endif %}
+        {% block datasecurity %}
+            {% if aSurveyInfo.format != 'A' %}
+                {% if (aSurveyInfo.showsurveypolicynotice == 1) %}
+                    {{include('./subviews/privacy/privacy_text.twig')}}
+                {% elseif (aSurveyInfo.showsurveypolicynotice == 2) %}
+                    {{include( './subviews/privacy/privacy_modal.twig')}}
+                {% endif %}
+            {% endif %}
+        {% endblock %}
+    </div>
+</div>

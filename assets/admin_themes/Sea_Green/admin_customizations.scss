@@ -1,0 +1,197 @@
+// Body
+body {
+  background-color: $g-100;
+
+  margin: 0;
+  padding: 0;
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+.selector_openSharePanel {
+  display: inline-block;
+}
+.summary-table {
+  font-size: $font-size-sm;
+  padding-left: 0.5rem;
+  strong {
+    font-weight: $font-weight-600;
+  }
+}
+
+// Headings
+.pagetitle {
+  padding-bottom: 4px;
+  border-bottom: solid 2px $g-400;
+  position: relative;
+  margin-bottom: 1em;
+
+  &.h3 {
+    @include h3;
+  }
+}
+.side-body {
+  h3,
+  h2 {
+    border-bottom: solid 2px $g-400;
+  }
+}
+.survey-response-page {
+  .accordion-item {
+    border: none;
+  }
+  .summary-title {
+    @include h2;
+  }
+  .ls-response-summary.table {
+    background: none;
+    border-collapse: collapse;
+
+    table,
+    th,
+    td {
+      border: none;
+    }
+  }
+  .accordion-button,
+  .accordion-body {
+    background: $g-100;
+  }
+  .accordion-button {
+    padding-left: 0;
+    padding-bottom: 5px;
+  }
+  .summary-detail {
+    @include h2;
+  }
+}
+
+/**
+ * comfortUpdate
+ */
+#ajaxContainerLoading,
+.ajaxLoading {
+  height: 130px;
+  text-align: center;
+  margin-top: 70px;
+  margin-bottom: 100px;
+  display: none;
+}
+
+#comfortUpdateIcon {
+  height: 1em;
+  margin-right: 0.5em;
+}
+
+#comfortUpdateGeneralWrap h3.maintitle {
+  background-color: transparent;
+  @include h3;
+  border-bottom: solid 2px $g-400;
+}
+
+#comfortUpdateGeneralWrap .on {
+  font-weight: bold;
+  font-size: 1em;
+  padding-left: 0.5em;
+  padding-top: 0.5em;
+}
+
+#comfortUpdateGeneralWrap .on span {
+  display: block;
+  padding: 0.1em;
+  padding-left: 0.5em;
+  width: 40%;
+  background-color: var(--bs-primary);
+  color: $white;
+}
+
+#comfortUpdateGeneralWrap .off {
+  font-size: 0.9em;
+  padding-left: 0.5em;
+  padding-top: 0.5em;
+}
+
+#comfortUpdateGeneralWrap #welcomeMessage {
+  border-right: 2px solid $g-400;
+}
+
+#comfortUpdateGeneralWrap #key-actions {
+  padding-left: 1em;
+}
+/**
+ * comfortUpdate END
+ */
+
+// Blockquotes
+blockquote {
+  border-left: 8px solid var(--bs-primary);
+  footer {
+    color: $g-600;
+  }
+  small {
+    color: $g-600;
+  }
+  .small {
+    color: $g-600;
+  }
+  &.float-end {
+    border-right: 8px solid var(--bs-primary);
+  }
+}
+.blockquote-reverse {
+  border-right: 8px solid var(--bs-primary);
+}
+// Blockquotes END
+
+// Question editor START
+/* Scrollable subquestion/answer tables*/
+.subquestions-table-wrapper,
+.answeroptions-table-wrapper {
+  display: block;
+  overflow: auto;
+  margin-bottom: 20px;
+}
+
+.subquestions-table,
+.answeroptions-table {
+  margin-bottom: 0px;
+}
+
+.subquestions-table input.code,
+.answeroptions-table input.code {
+  min-width: 70px;
+}
+
+.subquestions-table > tbody > tr > td:first-of-type,
+.answeroptions-table > tbody > tr > td:first-of-type {
+  padding-left: 0;
+}
+
+.subquestions-table > tbody > tr > td:last-of-type,
+.answeroptions-table > tbody > tr > td:last-of-type {
+  padding-right: 0;
+}
+// Question editor END
+
+// Main Design (to achieve 20px padding left an right for the main container) START
+.container-fluid {
+  padding-left: $container-padding;
+  padding-right: $container-padding;
+}
+
+.full-page-wrapper {
+  position: relative;
+  padding-bottom: 65px;
+}
+// Main Design END
+
+#surveySettingsForThisGroup {
+  column-gap: 20px;
+}
+
+#usermanagement--identity-gridPanel tr.disabled {
+  color: $g-400;
+  pointer-events: auto;
+  cursor: not-allowed;
+}

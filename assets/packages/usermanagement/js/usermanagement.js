@@ -67,7 +67,7 @@ var UserManagement = function () {
 
     var startSubmit = function () {
         $('#submitForm').append(
-            '<i class="fa fa-spinner fa-pulse UserManagement-spinner"></i>'
+            '<i class="ri-loader-2-fill remix-pulse UserManagement-spinner"></i>'
         ).prop('disabled', true);
     };
     var stopSubmit = function () {
@@ -77,8 +77,13 @@ var UserManagement = function () {
 
     var wireForm = function () {
         $('#UserManagement--modalform').on('submit.USERMANAGERMODAL', function (e) {
-            console.log(e);
             e.preventDefault();
+            const buttonClassName = e.originalEvent.submitter.className;
+            // Do nothing for outline-secondary (close) button.
+            if (buttonClassName.includes('outline-secondary')) {
+                return false;
+            }
+            $('#UserManagement--errors').addClass('d-none').removeClass('alert alert-danger');
             startSubmit();
             var data = $('#UserManagement--modalform').serializeArray();
             $.ajax({
@@ -95,7 +100,7 @@ var UserManagement = function () {
                         wireExportDummyUser();
                         if (!result.hasOwnProperty('html')) {
                             triggerModalClose();
-                            window.LS.notifyFader(result.message, 'well-lg text-center ' + (result.success ? 'bg-primary' : 'bg-danger'));
+                            window.LS.ajaxAlerts(result.message, 'success', {showCloseButton: true});
                             if (result.hasOwnProperty('href')) {
                                 setTimeout(function() {
                                     const modalSize = result.hasOwnProperty('modalsize') ? result.modalsize : '';
@@ -111,12 +116,21 @@ var UserManagement = function () {
                         });
                         return;
                     }
-                    $('#UserManagement--errors').html(
-                        "<div class='alert alert-danger'>" + result.errors + "</div>"
-                    ).removeClass('hidden');
+                    $("#usermanagement-modal-doalog").offset({ top: 10 });
+                    $('#UserManagement--errors').html(result.errors).removeClass('d-none').addClass('alert alert-danger');
                 },
-                error: function () {
-                    alert('An error occured while trying to save, please reload the page Code:1571926261195');
+                error: function (request, status, error) {
+                    if (request && request.responseJSON && request.responseJSON.message) {
+                        $('#UserManagement--errors').html(
+                            LS.LsGlobalNotifier.createAlert(
+                                request.responseJSON.message,
+                                'danger',
+                                {showCloseButton: true, timeout: 10000}
+                            )
+                        ).removeClass('d-none');
+                    } else {
+                        alert('An error occured while trying to save, please reload the page Code:1571926261195');
+                    }
                 }
             });
         });
@@ -140,7 +154,7 @@ var UserManagement = function () {
             var encodedUri = encodeURI(csvContent);
             var link = document.createElement("a");
             link.setAttribute("href", encodedUri);
-            link.setAttribute("class", 'hidden');
+            link.setAttribute("class", 'd-none');
             link.setAttribute("download", "addedUsers_" + moment().format('YYMMDDHHmm') + ".csv");
             link.innerHTML = "Click Here to download";
             document.body.appendChild(link); // Required for FF
@@ -149,14 +163,22 @@ var UserManagement = function () {
     };
 
     var wireTemplatePermissions = function () {
-        $('input[data-is-bootstrap-switch]').bootstrapSwitch();
-        $('#UserManagement--action-userthemepermissions-select-all').on('click', function(e){
-            e.preventDefault();
-            $('.UserManagement--themepermissions-themeswitch').prop('checked',true).trigger('change');
+        $('#UserManagement--action-userthemepermissions-select-all').on('click', function (e) {
+            let templatePermissionButtons = document.querySelectorAll('.UserManagement--themepermissions-themeswitch');
+            for (let templatePermissionButton of templatePermissionButtons) {
+                templatePermissionButton = templatePermissionButton.querySelector('input');
+                if (!templatePermissionButton.checked) {
+                    templatePermissionButton.checked = true;
+                }
+            }
         });
-        $('#UserManagement--action-userthemepermissions-select-none').on('click', function(e){
-            e.preventDefault();
-            $('.UserManagement--themepermissions-themeswitch').prop('checked',false).trigger('change');
+        $('#UserManagement--action-userthemepermissions-select-none').on('click', function (e) {
+            let templatePermissionButtons = document.querySelectorAll('.UserManagement--themepermissions-themeswitch');
+            for (let templatePermissionButton of templatePermissionButtons) {
+                if (templatePermissionButton.querySelector('input').checked) {
+                    templatePermissionButton.querySelector('input:last-of-type').checked = true;
+                }
+            }
         });
     };
 
@@ -171,7 +193,7 @@ var UserManagement = function () {
 
         $('.specific-permission-selector').on('click', function () {
             var thisRow = $(this).closest('tr');
-            if (thisRow.find('.specific-settings-block input:checked').size() == thisRow.find('.extended input').size()) {
+            if (thisRow.find('.specific-settings-block input:checked').size() == thisRow.find('.specific-settings-block input').size()) {
                 thisRow.find('.general-row-selector').prop('checked', true);
                 thisRow.find('.general-row-selector').removeClass('incomplete-selection');
             } else if (thisRow.find('.specific-settings-block input:checked').size() == 0) {
@@ -228,11 +250,11 @@ var UserManagement = function () {
     var wirePasswordOptions = function () {
         $('#utility_change_password').on('change', function () {
             if ($(this).prop('checked')) {
-                $('#utility_change_password_container').removeClass('hidden');
+                $('#utility_change_password_container').removeClass('d-none');
                 $('#User_Form_password').prop('disabled', false);
                 $('#password_repeat').prop('disabled', false);
             } else {
-                $('#utility_change_password_container').addClass('hidden');
+                $('#utility_change_password_container').addClass('d-none');
                 $('#User_Form_password').prop('disabled', true);
                 $('#password_repeat').prop('disabled', true);
             }
@@ -240,11 +262,11 @@ var UserManagement = function () {
         $('#utility_set_password').find('input[type=radio]').on('change', function () {
             console.log('#utility_set_password changed');
             if ($(this).attr('value') == '1') {
-                $('#utility_change_password_container').removeClass('hidden');
+                $('#utility_change_password_container').removeClass('d-none');
                 $('#User_Form_password').prop('disabled', false);
                 $('#password_repeat').prop('disabled', false);
             } else {
-                $('#utility_change_password_container').addClass('hidden');
+                $('#utility_change_password_container').addClass('d-none');
                 $('#User_Form_password').prop('disabled', true);
                 $('#password_repeat').prop('disabled', true);
             }
@@ -254,9 +276,40 @@ var UserManagement = function () {
     var wireRoleSet = function () {
         $('#UserManagement--modalform').find('select').each(
             function(i,item) {
-                $(item).select2();
+                jQuery(item).select2({'theme':'bootstrap\x2D5'});
             }
         );
+    }
+
+    var wireDatePicker = function () {
+        const expires = document.getElementById('expires');
+        let cleared = false;
+        initDatePicker(expires);
+
+        const expiresDatePicker = pickers['picker_expires'];
+
+        // Avoid using the current date.
+        expiresDatePicker.optionsStore.options.useCurrent = false;
+
+        // Set the default date to one year in the future.
+        const date = new Date();
+        date.setFullYear(date.getFullYear() + 1);
+        expiresDatePicker.optionsStore.options.defaultDate = tempusDominus.DateTime.convert(date);
+
+        // Change the behavior of the clear button a little.
+        $(expires).on('change.td', function (event) {
+            if (event.isClear === true) {
+                $('.tempus-dominus-widget').removeClass('show');
+                cleared = true;
+            }
+        });
+
+        $(expires).on('show.td', function () {
+            if (cleared === true) {
+                expiresDatePicker.dates.setValue(tempusDominus.DateTime.convert(date));
+                cleared = false;
+            }
+        });
     }
 
     var applyModalHtml = function (html) {
@@ -266,6 +319,7 @@ var UserManagement = function () {
         wireTemplatePermissions();
         wireRoleSet();
         wireForm();
+        wireDatePicker();
     }
 
 
@@ -279,15 +333,27 @@ var UserManagement = function () {
                 $(this).prop('checked', toggled);
             })
         });
-        $('input[name="alltemplates"]').on('switchChange.bootstrapSwitch', function (event, state) {
-            $('input[id$="_use"]').prop('checked', state).trigger('change');
-        });
+        //$('input[name="alltemplates"]').on('switchChange.bootstrapSwitch', function (event, state) {
+            //$('input[id$="_use"]').prop('checked', state).trigger('change');
+        //});
         $('.UserManagement--action--openmodal').on('click', function () {
             var href = $(this).data('href');
             var modalSize = $(this).data('modalsize');
-            openModal(href, modalSize);
+
+            if ($(this).attr("data-stackmodal") !== undefined) {
+                var stackablemodal = $(this).data('stackmodal');
+                var modal = $(stackablemodal);
+                var modalBs = new bootstrap.Modal(modal);
+                modalBs.show();
+
+                modal.off('hidden.bs.modal').on('hidden.bs.modal', function () {
+                    openModal(href, modalSize);
+                });
+                $('.modal-backdrop').remove();
+            } else {
+                openModal(href, modalSize);
+            }
         });
-        bindListItemclick();
     };
 
     var bindModals = function () {

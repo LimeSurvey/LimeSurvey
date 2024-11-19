@@ -52,15 +52,15 @@ class Cookie extends ArrayObject implements HeaderInterface
         list($name, $value) = GenericHeader::splitHeaderLine($headerLine);
 
         // check to ensure proper header type for this factory
-        if (strtolower($name) !== 'cookie') {
+        if (strtolower((string) $name) !== 'cookie') {
             throw new Exception\InvalidArgumentException('Invalid header line for Server string: "' . $name . '"');
         }
 
-        $nvPairs = preg_split('#;\s*#', $value);
+        $nvPairs = preg_split('#;\s*#', (string) $value);
 
         $arrayInfo = array();
         foreach ($nvPairs as $nvPair) {
-            $parts = explode('=', $nvPair, 2);
+            $parts = explode('=', (string) $nvPair, 2);
             if (count($parts) != 2) {
                 throw new Exception\RuntimeException('Malformed Cookie header found');
             }
@@ -99,7 +99,7 @@ class Cookie extends ArrayObject implements HeaderInterface
         $nvPairs = array();
 
         foreach ($this as $name => $value) {
-            $nvPairs[] = $name . '=' . (($this->encodeValue) ? urlencode($value) : $value);
+            $nvPairs[] = $name . '=' . (($this->encodeValue) ? urlencode((string) $value) : $value);
         }
 
         return implode('; ', $nvPairs);

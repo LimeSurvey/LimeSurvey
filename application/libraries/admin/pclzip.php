@@ -19,4 +19,4 @@ if (!defined('PCLZIP_TEMPORARY_DIR')) {
 }
 
 # include PclZip class
-require_once(APPPATH . '/third_party/pclzip/pclzip.lib.php');
+require_once(APPPATH . '/../vendor/pclzip/pclzip.lib.php');

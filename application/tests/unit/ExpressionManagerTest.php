@@ -774,18 +774,18 @@ EOD;
             $pre .= "</td><td>".$value."</td><td><input type='text' id='relevance".$i."' value='1' onchange='recompute()'/>\n";
             $pre .= "<input type='hidden' id='".$jsVarName."' name='".$jsVarName."' value='".$value."'/>\n";
             $pre .= "</td></tr>\n";
-            $LEMalias2varName[] = "'".substr($jsVarName, 5)."':'".$jsVarName."'";
+            $LEMalias2varName[] = "'".substr((string) $jsVarName, 5)."':'".$jsVarName."'";
             $LEMalias2varName[] = "'".$jsVarName."':'".$jsVarName."'";
             $attrInfo = "'".$jsVarName."': {'jsName':'".$jsVarName."'";
 
-            $varInfo = $vars[substr($jsVarName, 5)];
+            $varInfo = $vars[substr((string) $jsVarName, 5)];
             foreach ($varInfo as $k=>$v) {
                 if ($k == 'code') {
                     continue; // will access it from hidden node
                 }
                 if ($k == 'shown') {
                     $k = 'shown';
-                    $v = htmlspecialchars(preg_replace("/[[:space:]]/", ' ', $v), ENT_QUOTES);
+                    $v = htmlspecialchars(preg_replace("/[[:space:]]/", ' ', (string) $v), ENT_QUOTES);
                 }
                 if ($k == 'jsName') {
                     continue; // since already set

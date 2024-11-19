@@ -39,7 +39,7 @@ class OptinController extends LSYii_Controller
         $languageCode = Yii::app()->request->getQuery('langcode');
         $accessToken = Token::sanitizeToken(Yii::app()->request->getQuery('token'));
 
-        //IF there is no survey id, redirect back to the default public page
+        //IF there is no survey ID, redirect back to the default public page
         if (!$surveyId) {
             $this->redirect(['/']);
         }
@@ -91,7 +91,7 @@ class OptinController extends LSYii_Controller
         $languageCode = Yii::app()->request->getQuery('langcode');
         $accessToken = Token::sanitizeToken(Yii::app()->request->getQuery('token'));
 
-        //IF there is no survey id, redirect back to the default public page
+        //IF there is no survey ID, redirect back to the default public page
         if (!$surveyId) {
             $this->redirect(['/']);
         }
@@ -120,14 +120,14 @@ class OptinController extends LSYii_Controller
         if (!isset($token)) {
             $message = gT('You are not a participant of this survey.');
         } else {
-            $optedOutFromSurvey = substr($token->emailstatus, 0, strlen('OptOut')) == 'OptOut';
+            $optedOutFromSurvey = substr((string) $token->emailstatus, 0, strlen('OptOut')) == 'OptOut';
 
             $blacklistHandler = new LimeSurvey\Models\Services\ParticipantBlacklistHandler();
             $participant = $blacklistHandler->getCentralParticipantFromToken($token);
             $isBlacklisted = !empty($participant) && $participant->blacklisted == 'Y';
 
             if (!Yii::app()->getConfig('allowunblacklist') == "Y") {
-                $message = gT('Removing yourself from the blacklist is currently disabled.');
+                $message = gT('Removing yourself from the blocklist is currently disabled.');
             } elseif ($isBlacklisted) {
                 $message = gT('Please confirm that you want to be added back to the central participants list for this site.');
                 $link = Yii::app()->createUrl('optin/addtokens', ['surveyid' => $surveyId, 'langcode' => $baseLanguage, 'token' => $accessToken, 'global' => true]);
@@ -150,8 +150,8 @@ class OptinController extends LSYii_Controller
     }
 
     /**
-     * Add token back to the survey (remove 'OptOut' status) and/or add participant back to the CPDB (remove from blacklist).
-     * The participant is only removed from the blacklist if the 'global' URL param is true and 'allowunblacklist' is enabled.
+     * Add token back to the survey (remove 'OptOut' status) and/or add participant back to the CPDB (remove from blocklist).
+     * The participant is only removed from the blocklist if the 'global' URL param is true and 'allowunblacklist' is enabled.
      */
     public function actionaddtokens()
     {
@@ -199,7 +199,7 @@ class OptinController extends LSYii_Controller
             } else {
                 $message = gT('You have been already removed from this survey.');
             }
-            // If the $global param is true and 'allowunblacklist' is enabled, remove from the blacklist
+            // If the $global param is true and 'allowunblacklist' is enabled, remove from the blocklist
             if ($global && Yii::app()->getConfig('allowunblacklist') == "Y") {
                 $blacklistHandler = new LimeSurvey\Models\Services\ParticipantBlacklistHandler();
                 $blacklistResult = $blacklistHandler->removeFromBlacklist($token);

@@ -62,7 +62,7 @@ function fixNumbering($iQuestionID, $iSurveyID)
         foreach ($aSwitcher as $aSwitch) {
             $sQuery = "UPDATE {{conditions}}
             SET cqid=$iNewQID,
-            cfieldname='" . str_replace("X" . $iQuestionID, "X" . $iNewQID, $aSwitch['cfieldname']) . "'
+            cfieldname='" . str_replace("X" . $iQuestionID, "X" . $iNewQID, (string) $aSwitch['cfieldname']) . "'
             WHERE cqid=$iQuestionID";
             Yii::app()->db->createCommand($sQuery)->query();
         }
@@ -274,7 +274,8 @@ function checkQuestions($postsid, $iSurveyID)
     $fieldmap = createFieldMap($survey, 'full', true, false, $survey->language, $aDuplicateQIDs);
     if (count($aDuplicateQIDs)) {
         foreach ($aDuplicateQIDs as $iQID => $aDuplicate) {
-            $sFixLink = "[<a class='selector__fixConsistencyProblem' href='" . Yii::app()->getController()->createUrl("/surveyAdministration/activate/iSurveyID/{$iSurveyID}/fixnumbering/{$iQID}") . "'>Click here to fix</a>]";
+            $sFixLink = "[<a class='selector__fixConsistencyProblem'
+            href='" . Yii::app()->getController()->createUrl("/surveyAdministration/fixNumbering/iSurveyID/{$iSurveyID}/questionId/{$iQID}") . "'>Click here to fix</a>]";
             $failedcheck[] = array($iQID, $aDuplicate['question'], ": Bad duplicate fieldname {$sFixLink}", $aDuplicate['gid']);
         }
     }
@@ -337,7 +338,7 @@ function mssql_drop_primary_index($tablename)
  * @param string $tablename The table the column should be deleted
  * @param string $columnname The column that should be deleted
  */
-function mssql_drop_coulmn_with_constraints($tablename, $columnname)
+function mssql_drop_column_with_constraints($tablename, $columnname)
 {
     Yii::app()->loadHelper("database");
 
@@ -346,9 +347,9 @@ function mssql_drop_coulmn_with_constraints($tablename, $columnname)
     FROM information_schema.constraint_column_usage
     WHERE table_name = '" . $tablename . "' AND column_name = '" . $columnname . "'";
 
-    $result = Yii::app()->db->createCommand($pkquery)->queryAll();
+    $result = Yii::app()->db->createCommand($pkquery)->queryColumn();
     foreach ($result as $constraintName) {
-        Yii::app()->db->createCommand('alter table [' . $tablename . '] drop constraint "' . $constraintName['constraint_name'] . '"')->execute();
+        Yii::app()->db->createCommand('ALTER TABLE [' . $tablename . '] DROP CONSTRAINT "' . $constraintName . '"')->execute();
     }
     $success = Yii::app()->db->createCommand('ALTER TABLE [' . $tablename . '] DROP COLUMN "' . $columnname . '"')->execute();
     return $success;

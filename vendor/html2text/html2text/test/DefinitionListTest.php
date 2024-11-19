@@ -1,0 +1,28 @@
+<?php
+
+namespace Html2Text;
+
+use PHPUnit\Framework\TestCase;
+
+class DefinitionListTest extends TestCase
+{
+    public function testDefinitionList()
+    {
+        $html =<<< EOT
+<dl>
+  <dt>Definition Term:</dt>
+  <dd>Definition Description<dd>
+</dl>
+EOT;
+        $expected =<<<EOT
+ 	* Definition Term: Definition Description 
+
+
+EOT;
+
+        $html2text = new Html2Text($html);
+        $output = $html2text->getText();
+
+        $this->assertEquals($expected, $output);
+    }
+}

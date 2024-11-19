@@ -1,0 +1,167 @@
+/*
+    LimeSurvey
+
+    Copyright (C) 2007-2024 The LimeSurvey Project Team / Patrick Teichmann
+    All rights reserved.
+
+    License: GNU/GPL License v2 or later, see LICENSE.php
+    LimeSurvey is free software. This version may have been modified pursuant
+    to the GNU General Public License, and as distributed it includes or
+    is derivative of works licensed under the GNU General Public License or
+    other free or open source software licenses.
+
+    (¯`·._.·(¯`·._.·  LS team custom CSS   ·._.·´¯)·._.·´¯)
+
+    You'd rather not touch it. This file can be overwritten by an update.
+
+
+    ██████╗  ██████╗     ███╗   ██╗ ██████╗ ████████╗    ████████╗ ██████╗ ██╗   ██╗ ██████╗██╗  ██╗    ██╗
+    ██╔══██╗██╔═══██╗    ████╗  ██║██╔═══██╗╚══██╔══╝    ╚══██╔══╝██╔═══██╗██║   ██║██╔════╝██║  ██║    ██║
+    ██║  ██║██║   ██║    ██╔██╗ ██║██║   ██║   ██║          ██║   ██║   ██║██║   ██║██║     ███████║    ██║
+    ██║  ██║██║   ██║    ██║╚██╗██║██║   ██║   ██║          ██║   ██║   ██║██║   ██║██║     ██╔══██║    ╚═╝
+    ██████╔╝╚██████╔╝    ██║ ╚████║╚██████╔╝   ██║          ██║   ╚██████╔╝╚██████╔╝╚██████╗██║  ██║    ██╗
+    ╚═════╝  ╚═════╝     ╚═╝  ╚═══╝ ╚═════╝    ╚═╝          ╚═╝    ╚═════╝  ╚═════╝  ╚═════╝╚═╝  ╚═╝    ╚═╝
+
+    Please, use custom.css with "strong specificity"
+    see: https://developer.mozilla.org/en-US/docs/Web/CSS/Specificity
+
+*/
+// Custom Bootstrap 5 implementation for fruity_twentythree
+// do not modify or remove this line, it will be read for theme generation
+$base-color: #ffffff;
+
+// 1. Include functions first (so you can manipulate colors, SVGs, calc, etc)
+@import "node_modules/bootstrap/scss/functions.scss";
+
+// 2. Include any default variable overrides here
+@import "theme_variables";
+@import "theme_color_variables";
+
+// 3. Include remainder of required Bootstrap stylesheets
+@import "node_modules/bootstrap/scss/variables";
+@import "node_modules/bootstrap/scss/mixins";
+@import "ls-mixins.scss";
+@import "ls-color-mixins.scss";
+//@import "node_modules/bootstrap/scss/maps";
+@import "node_modules/bootstrap/scss/root";
+
+// 4. Include any optional Bootstrap CSS as needed
+@import "node_modules/bootstrap/scss/utilities";
+@import "node_modules/bootstrap/scss/reboot";
+@import "node_modules/bootstrap/scss/type";
+@import "node_modules/bootstrap/scss/images";
+@import "node_modules/bootstrap/scss/containers";
+@import "node_modules/bootstrap/scss/grid";
+@import "node_modules/bootstrap/scss/tables";
+@import "node_modules/bootstrap/scss/forms";
+@import "node_modules/bootstrap/scss/buttons";
+@import "node_modules/bootstrap/scss/transitions";
+@import "node_modules/bootstrap/scss/dropdown";
+@import "node_modules/bootstrap/scss/button-group";
+@import "node_modules/bootstrap/scss/nav";
+@import "node_modules/bootstrap/scss/navbar";
+@import "node_modules/bootstrap/scss/card";
+@import "node_modules/bootstrap/scss/accordion";
+@import "node_modules/bootstrap/scss/breadcrumb";
+@import "node_modules/bootstrap/scss/pagination";
+@import "node_modules/bootstrap/scss/badge";
+@import "node_modules/bootstrap/scss/alert";
+@import "node_modules/bootstrap/scss/progress";
+@import "node_modules/bootstrap/scss/list-group";
+@import "node_modules/bootstrap/scss/close";
+@import "node_modules/bootstrap/scss/toasts";
+@import "node_modules/bootstrap/scss/modal";
+@import "node_modules/bootstrap/scss/tooltip";
+@import "node_modules/bootstrap/scss/popover";
+@import "node_modules/bootstrap/scss/carousel";
+@import "node_modules/bootstrap/scss/spinners";
+@import "node_modules/bootstrap/scss/offcanvas";
+@import "node_modules/bootstrap/scss/placeholders";
+@import "node_modules/bootstrap/scss/helpers";
+
+// 5. Optionally include utilities API last to generate classes based on the Sass map in `_utilities.scss`
+@import "node_modules/bootstrap/scss/utilities/api";
+
+// 6. Add additional custom code here
+@import "old_fruity.scss";
+@import "theme_variables";
+@import "src/colors.scss";
+@import "src/definitions.scss";
+@import "src/extensions.scss";
+
+// 6.1 Components
+@import "core/old_template_core_class";
+@import "navbar/navbar.scss";
+@import "navbar/navbar_colors.scss";
+@import "buttons/buttons.scss";
+@import "buttons/buttons_colors.scss";
+@import "buttons/button-group.scss";
+@import "typography/typography.scss";
+@import "typography/typography_colors.scss";
+@import "forms/forms.scss";
+@import "forms/forms_colors.scss";
+@import "forms/radio/radio_item.scss";
+@import "forms/radio/radio_item_colors.scss";
+@import "forms/radio/radio_list.scss";
+@import "tables/tables.scss";
+@import "tables/tables_colors.scss";
+@import "forms/checkboxes/checkboxes.scss";
+@import "forms/checkboxes/checkboxes_colors.scss";
+@import "datetimepicker/datetimepicker.scss";
+@import "error/error.scss";
+@import "datetimepicker/datetimepicker_colors.scss";
+@import "slider/slider.scss";
+@import "icons/icons.scss";
+@import "modal/modal.scss";
+@import "modal/modal_colors.scss";
+@import "alert/alert.scss";
+@import "question/question.scss";
+@import "completed/completed.scss";
+@import "completed/completed_colors.scss";
+@import "question/question_states.scss";
+@import "quotas/quotas.scss";
+@import "quotas/quotas_colors.scss";
+@import "statistics/statistics.scss";
+@import "statistics/statistics_colors.scss";
+@import "group/group.scss";
+@import "printanswers/printanswers.scss";
+@import "participant/token/token";
+@import "participant/registration/registration.scss";
+@import "participant/captcha/captcha.scss";
+@import "participant/captcha/captcha_colors.scss";
+@import "participant/load_save/load_save.scss";
+@import "participant/load_save/load_save_colors.scss";
+@import "progressbar/progressbar.scss";
+@import "progressbar/progressbar_colors.scss";
+@import "list-group/list-group_colors.scss";
+@import "surveylist/surveylist.scss";
+@import "surveylist/surveylist_colors.scss";
+@import "welcome/welcome.scss";
+@import "welcome/welcome_colors.scss";
+@import "well/well.scss";
+@import "language-changer/language-changer.scss";
+@import "language-changer/language-changer_colors.scss";
+@import "video/video.scss";
+
+// 6.2 question type customizations
+@import "questiontypes/imageselect/imageselect.scss";
+@import "questiontypes/imageselect/imageselect_colors.scss";
+@import "questiontypes/ranking/ranking.scss";
+@import "questiontypes/ranking/ranking_colors.scss";
+@import "questiontypes/ranking/ranking_advanced.scss";
+@import "questiontypes/ranking/ranking_advanced_colors.scss";
+@import "questiontypes/multiple_numerical_input/multiple_numerical_input.scss";
+@import "questiontypes/multiple_numerical_input/multiple_numerical_input_colors.scss";
+@import "questiontypes/file_upload/file_upload.scss";
+@import "questiontypes/bootstrap_select/bootstrap_select.scss";
+@import "questiontypes/bootstrap_select/bootstrap_select_colors.scss";
+@import "questiontypes/array/array.scss";
+@import "questiontypes/array/array_colors.scss";
+@import "questiontypes/5pointchoice/5pointchoice.scss";
+@import "questiontypes/shortfreetext/shortfreetext.scss";
+
+// 6.3 Utilities
+@import "spacing/spacing.scss";
+
+// TODO: placeholder, will probbably be removed
+@import "darkmode/darkmode_colors.scss";

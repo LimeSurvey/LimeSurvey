@@ -49,9 +49,9 @@ class CheckIntegrity extends SurveyCommonAction
     public function index()
     {
         $aData = $this->checkintegrity();
-        $aData['pageTitle'] = gT('Check data integrity');
-        $aData['fullpagebar']['returnbutton']['url'] = 'admin/index';
-        $aData['fullpagebar']['returnbutton']['text'] = gT('Back');
+
+        $aData['topbar']['title'] = gT('Check data integrity');
+        $aData['topbar']['backLink'] = App()->createUrl('admin/index');
 
         $this->renderWrappedTemplate('checkintegrity', 'check_view', $aData);
     }
@@ -466,8 +466,15 @@ class CheckIntegrity extends SurveyCommonAction
     private function deleteQuotaLanguageSettings(array $aData)
     {
         $oCriteria = new CDbCriteria();
-        $oCriteria->join = 'LEFT JOIN {{quota}} q ON {{quota_languagesettings}}.quotals_quota_id=q.id';
-        $oCriteria->condition = '(q.id IS NULL)';
+
+        if (App()->db->driverName == 'pgsql') {
+            // This is much slower than the MySQL version, but it works
+            // PostgreSQL does not support DELETE with JOIN
+            $oCriteria->condition = '{{quota_languagesettings}}.quotals_quota_id not in (select id from {{quota}})';
+        } else {
+            $oCriteria->join = 'LEFT JOIN {{quota}} q ON {{quota_languagesettings}}.quotals_quota_id=q.id';
+            $oCriteria->condition = '(q.id IS NULL)';
+        }
         $count = QuotaLanguageSetting::model()->deleteAll($oCriteria);
         $aData['messages'][] = sprintf(gT('Deleting orphaned quota languages: %u quota languages deleted'), $count);
         return $aData;
@@ -481,8 +488,15 @@ class CheckIntegrity extends SurveyCommonAction
     private function deleteQuotas(array $aData)
     {
         $oCriteria = new CDbCriteria();
-        $oCriteria->join = 'LEFT JOIN {{surveys}} q ON {{quota}}.sid=q.sid';
-        $oCriteria->condition = '(q.sid IS NULL)';
+
+        if (App()->db->driverName == 'pgsql') {
+            // This is much slower than the MySQL version, but it works
+            // PostgreSQL does not support DELETE with JOIN
+            $oCriteria->condition = '{{quota}}.sid not in (select sid from {{surveys}})';
+        } else {
+            $oCriteria->join = 'LEFT JOIN {{surveys}} q ON {{quota}}.sid=q.sid';
+            $oCriteria->condition = '(q.sid IS NULL)';
+        }
         $count = Quota::model()->deleteAll($oCriteria);
         $aData['messages'][] = sprintf(gT('Deleting orphaned quotas: %u quotas deleted'), $count);
         return $aData;
@@ -592,7 +606,8 @@ class CheckIntegrity extends SurveyCommonAction
         }
 
         // Deactivate surveys that have a missing response table
-        $oSurveys = Survey::model()->findAll(array('order' => 'sid'));
+        $survey = new SurveyLight();
+        $oSurveys = $survey->findAll(array('order' => 'sid'));
         $oDB = Yii::app()->getDb();
         $oDB->schemaCachingDuration = 0; // Deactivate schema caching
         Yii::app()->setConfig('Updating', true);
@@ -604,81 +619,89 @@ class CheckIntegrity extends SurveyCommonAction
             }
         }
 
-        /** Check for active surveys if questions are in the correct group **/
-        foreach ($oSurveys as $oSurvey) {
-            // We get the active surveys
-            if ($oSurvey->isActive && $oSurvey->hasResponsesTable) {
-                $model    = SurveyDynamic::model($oSurvey->sid);
-                $aColumns = $model->getMetaData()->columns;
-                $aQids    = array();
+        /**
+         * Check for active surveys if questions are in the correct group
+         * This will only run if an additional URL parameter checkResponseTableFields=y is set
+         * This is to prevent this costly check from running on every page load
+         */
+        if (Yii::app()->request->getParam('checkResponseTableFields') == 'y') {
+            foreach ($oSurveys as $oSurvey) {
+                // This actually clears the schema cache, not just refreshes it
+                $oDB->schema->refresh();
+                // We get the active surveys
+                if ($oSurvey->isActive && $oSurvey->hasResponsesTable) {
+                    $model    = SurveyDynamic::model($oSurvey->sid);
+                    $aColumns = $model->getMetaData()->columns;
+                    $aQids    = array();
 
-                // We get the columns of the responses table
-                foreach ($aColumns as $oColumn) {
-                    // Question columns start with the SID
-                    if (strpos($oColumn->name, (string)$oSurvey->sid) !== false) {
-                        // Fileds are separated by X
-                        $aFields = explode('X', $oColumn->name);
+                    // We get the columns of the responses table
+                    foreach ($aColumns as $oColumn) {
+                        // Question columns start with the SID
+                        if (strpos((string) $oColumn->name, (string)$oSurvey->sid) !== false) {
+                            // Fileds are separated by X
+                            $aFields = explode('X', (string) $oColumn->name);
 
-                        if (isset($aFields[1])) {
-                            $sGid = $aFields[1];
+                            if (isset($aFields[1])) {
+                                $sGid = $aFields[1];
 
-                            // QID field can be more than just QID, like: 886other or 886A1
-                            // So we clean it by finding the first alphabetical character
-                            $sDirtyQid = $aFields[2];
-                            preg_match('~[a-zA-Z_#]~i', $sDirtyQid, $match, PREG_OFFSET_CAPTURE);
+                                // QID field can be more than just QID, like: 886other or 886A1
+                                // So we clean it by finding the first alphabetical character
+                                $sDirtyQid = $aFields[2];
+                                preg_match('~[a-zA-Z_#]~i', $sDirtyQid, $match, PREG_OFFSET_CAPTURE);
 
-                            if (isset($match[0][1])) {
-                                $sQID = substr($sDirtyQid, 0, $match[0][1]);
-                            } else {
-                                // It was just the QID.... (maybe)
-                                $sQID = $sDirtyQid;
-                            }
-
-                            // Here, we get the question as defined in backend
-                            try {
-                                $oQuestion = Question::model()->findByAttributes(['qid' => $sQID , 'sid' => $oSurvey->sid]);
-                            } catch (Exception $e) {
-                                // QID potentially invalid , see #17458, reset $oQuestion
-                                $oQuestion = null;
-                            }
-                            if (is_a($oQuestion, 'Question')) {
-                                // We check if its GID is the same as the one defined in the column name
-                                if ($oQuestion->gid != $sGid) {
-                                    // If not, we change the column name
-                                    $sNvColName = $oSurvey->sid . 'X' . $oQuestion->group->gid . 'X' . $sDirtyQid;
-
-                                    if (array_key_exists($sNvColName, $aColumns)) {
-                                        // This case will not happen often, only when QID + Subquestion ID == QID of a question in the target group
-                                        // So we'll change the group of the question question group table (so in admin interface, not in frontend)
-                                        $oQuestion->gid = $sGid;
-                                        $oQuestion->save();
-                                    } else {
-                                        $oTransaction = $oDB->beginTransaction();
-                                        $oDB->createCommand()->renameColumn($model->tableName(), $oColumn->name, $sNvColName);
-                                        $oTransaction->commit();
-                                    }
+                                if (isset($match[0][1])) {
+                                    $sQID = substr($sDirtyQid, 0, $match[0][1]);
+                                } else {
+                                    // It was just the QID.... (maybe)
+                                    $sQID = $sDirtyQid;
                                 }
-                            } else {
-                                // QID not found: The function to split the fieldname into the SGQA data is not 100% reliable
-                                // So for certain question types (for example Text Array) the field name cannot be properly derived
-                                // In this case just ignore the field - see also https://bugs.limesurvey.org/view.php?id=15642
-                                // There is still a extremely  low chance that an unwanted rename happens if a collision like this happens in the same survey
+
+                                // Here, we get the question as defined in backend
+                                try {
+                                    $oQuestion = Question::model()->findByAttributes(['qid' => $sQID , 'sid' => $oSurvey->sid]);
+                                } catch (Exception $e) {
+                                    // QID potentially invalid , see #17458, reset $oQuestion
+                                    $oQuestion = null;
+                                }
+                                if (is_a($oQuestion, 'Question')) {
+                                    // We check if its GID is the same as the one defined in the column name
+                                    if ($oQuestion->gid != $sGid) {
+                                        // If not, we change the column name
+                                        $sNvColName = $oSurvey->sid . 'X' . $oQuestion->group->gid . 'X' . $sDirtyQid;
+
+                                        if (array_key_exists($sNvColName, $aColumns)) {
+                                            // This case will not happen often, only when QID + Subquestion ID == QID of a question in the target group
+                                            // So we'll change the group of the question question group table (so in admin interface, not in frontend)
+                                            $oQuestion->gid = $sGid;
+                                            $oQuestion->save();
+                                        } else {
+                                            $oTransaction = $oDB->beginTransaction();
+                                            $oDB->createCommand()->renameColumn($model->tableName(), $oColumn->name, $sNvColName);
+                                            $oTransaction->commit();
+                                        }
+                                    }
+                                } else {
+                                    // QID not found: The function to split the fieldname into the SGQA data is not 100% reliable
+                                    // So for certain question types (for example Text Array) the field name cannot be properly derived
+                                    // In this case just ignore the field - see also https://bugs.limesurvey.org/view.php?id=15642
+                                    // There is still a extremely  low chance that an unwanted rename happens if a collision like this happens in the same survey
+                                }
                             }
                         }
                     }
                 }
             }
-        }
 
-        $oDB->schemaCachingDuration = 3600;
-        $oDB->schema->getTables();
-        $oDB->schema->refresh();
-        $oDB->active = false;
-        $oDB->active = true;
-        User::model()->refreshMetaData();
-        Yii::app()->db->schema->getTable('{{surveys}}', true);
-        Yii::app()->db->schema->getTable('{{templates}}', true);
-        Survey::model()->refreshMetaData();
+            $oDB->schema->refresh();
+            $oDB->schemaCachingDuration = 3600;
+            $oDB->schema->getTables();
+            $oDB->active = false;
+            $oDB->active = true;
+            User::model()->refreshMetaData();
+            Yii::app()->db->schema->getTable('{{surveys}}', true);
+            Yii::app()->db->schema->getTable('{{templates}}', true);
+            Survey::model()->refreshMetaData();
+        }
         /* Check method before using #14596 */
         if (method_exists(Yii::app()->cache, 'flush')) {
             Yii::app()->cache->flush();
@@ -694,12 +717,12 @@ class CheckIntegrity extends SurveyCommonAction
         // Fix subquestions
         fixSubquestions();
 
-        /*** Check for active survey tables with missing survey entry and rename them ***/
+        /*** Check for active survey tables with missing survey entry or where survey entry is inactivate and rename them ***/
         $sDBPrefix = Yii::app()->db->tablePrefix;
         $aResult = Yii::app()->db->createCommand(dbSelectTablesLike('{{survey}}\_%'))->queryColumn();
-        $sSurveyIDs = Yii::app()->db->createCommand('select sid from {{surveys}}')->queryColumn();
+        $sSurveyIDs = Yii::app()->db->createCommand("select sid from {{surveys}} where active='Y'")->queryColumn();
         foreach ($aResult as $aRow) {
-            $sTableName = (string) substr($aRow, strlen($sDBPrefix));
+            $sTableName = (string) substr((string) $aRow, strlen((string) $sDBPrefix));
             if ($sTableName == 'survey_links' || $sTableName == 'survey_url_parameters') {
                 continue;
             }
@@ -707,18 +730,37 @@ class CheckIntegrity extends SurveyCommonAction
             if (isset($aTableName[1]) && ctype_digit($aTableName[1])) {
                 $iSurveyID = $aTableName[1];
                 if (!in_array($iSurveyID, $sSurveyIDs)) {
-                    $sDate = (string) date('YmdHis') . rand(1, 1000);
+                    $datestamp = time();
+                    $date = date('YmdHis', $datestamp); //'His' adds 24hours+minutes to name to allow multiple deactiviations in a day
+                    $DBDate = date('Y-m-d H:i:s', $datestamp);
+                    $userID = Yii::app()->user->getId();
                     // Check if it's really a survey_XXX table mantis #14938
                     if (empty($aTableName[2])) {
                         $sOldTable = "survey_{$iSurveyID}";
-                        $sNewTable = "old_survey_{$iSurveyID}_{$sDate}";
+                        $sNewTable = "old_survey_{$iSurveyID}_{$date}";
                         Yii::app()->db->createCommand()->renameTable("{{{$sOldTable}}}", "{{{$sNewTable}}}");
+                        $archivedTokenSettings = new ArchivedTableSettings();
+                        $archivedTokenSettings->survey_id = $iSurveyID;
+                        $archivedTokenSettings->user_id = $userID;
+                        $archivedTokenSettings->tbl_name = $sNewTable;
+                        $archivedTokenSettings->tbl_type = 'response';
+                        $archivedTokenSettings->created = $DBDate;
+                        $archivedTokenSettings->properties = json_encode(Response::getEncryptedAttributes($iSurveyID));
+                        $archivedTokenSettings->save();
                         $bDirectlyFixed = true;
                     }
                     if (!empty($aTableName[2]) && $aTableName[2] == "timings" && empty($aTableName[3])) {
                         $sOldTable = "survey_{$iSurveyID}_timings";
-                        $sNewTable = "old_survey_{$iSurveyID}_timings_{$sDate}";
+                        $sNewTable = "old_survey_{$iSurveyID}_timings_{$date}";
                         Yii::app()->db->createCommand()->renameTable("{{{$sOldTable}}}", "{{{$sNewTable}}}");
+                        $archivedTokenSettings = new ArchivedTableSettings();
+                        $archivedTokenSettings->survey_id = $iSurveyID;
+                        $archivedTokenSettings->user_id = $userID;
+                        $archivedTokenSettings->tbl_name = $sNewTable;
+                        $archivedTokenSettings->tbl_type = 'timings';
+                        $archivedTokenSettings->created = $DBDate;
+                        $archivedTokenSettings->properties = '';
+                        $archivedTokenSettings->save();
                         $bDirectlyFixed = true;
                     }
                 }
@@ -728,7 +770,7 @@ class CheckIntegrity extends SurveyCommonAction
         /*** Check for active survey participants tables with missing survey entry ***/
         $aResult = Yii::app()->db->createCommand(dbSelectTablesLike('{{tokens}}\_%'))->queryColumn();
         foreach ($aResult as $aRow) {
-            $sTableName = (string) substr($aRow, strlen($sDBPrefix));
+            $sTableName = (string) substr((string) $aRow, strlen((string) $sDBPrefix));
             $aTableName = explode('_', $sTableName);
             $iSurveyID  = (int) substr($sTableName, strpos($sTableName, '_') + 1);
             if (isset($aTableName[1]) && ctype_digit($aTableName[1]) && empty($aTableName[2])) { // Check if it's really a token_XXX table mantis #14938
@@ -773,8 +815,8 @@ class CheckIntegrity extends SurveyCommonAction
             //Only do this if there actually is a 'cfieldname'
             if ($condition['cfieldname']) {
                 // only if cfieldname isn't Tag such as {TOKEN:EMAIL} or any other token
-                if (preg_match('/^\+{0,1}[0-9]+X[0-9]+X*$/', $condition['cfieldname'])) {
-                    list ($surveyid, $gid, $rest) = explode('X', $condition['cfieldname']);
+                if (preg_match('/^\+{0,1}[0-9]+X[0-9]+X*$/', (string) $condition['cfieldname'])) {
+                    list ($surveyid, $gid, $rest) = explode('X', (string) $condition['cfieldname']);
 
                     $iRowCount = count(QuestionGroup::model()->findAllByAttributes(array('gid' => $gid)));
                     if (!$iRowCount) {
@@ -808,8 +850,7 @@ class CheckIntegrity extends SurveyCommonAction
         $oCriteria = new CDbCriteria();
         $oCriteria->join = 'LEFT JOIN {{questions}} q ON t.qid=q.qid';
         $oCriteria->condition = 'q.qid IS NULL';
-        $aRecords = DefaultValue::model()->findAll($oCriteria);
-        $aDelete['defaultvalues'] = count($aRecords);
+        $aDelete['defaultvalues'] = DefaultValue::model()->count($oCriteria);
 
         /**********************************************************************/
         /*     Check quotas                                                   */
@@ -818,7 +859,7 @@ class CheckIntegrity extends SurveyCommonAction
         $oCriteria = new CDbCriteria();
         $oCriteria->join = 'LEFT JOIN {{surveys}} s ON t.sid=s.sid';
         $oCriteria->condition = '(s.sid IS NULL)';
-        $aDelete['quotas'] = count(Quota::model()->findAll($oCriteria));
+        $aDelete['quotas'] = Quota::model()->count($oCriteria);
 
         /**********************************************************************/
         /*     Check quota languagesettings                                   */
@@ -826,7 +867,7 @@ class CheckIntegrity extends SurveyCommonAction
         $oCriteria = new CDbCriteria();
         $oCriteria->join = 'LEFT JOIN {{quota}} s ON t.quotals_quota_id=s.id';
         $oCriteria->condition = '(s.id IS NULL)';
-        $aDelete['quotals'] = count(QuotaLanguageSetting::model()->findAll($oCriteria));
+        $aDelete['quotals'] = QuotaLanguageSetting::model()->count($oCriteria);
 
         /**********************************************************************/
         /*     Check quota members                                   */
@@ -835,7 +876,7 @@ class CheckIntegrity extends SurveyCommonAction
         $oCriteria->join = 'LEFT JOIN {{questions}} q ON t.qid=q.qid LEFT JOIN {{surveys}} s ON t.sid=s.sid';
         $oCriteria->condition = '(q.qid IS NULL) OR (s.sid IS NULL)';
 
-        $aDelete['quotamembers'] = count(QuotaMember::model()->findAll($oCriteria));
+        $aDelete['quotamembers'] = QuotaMember::model()->count($oCriteria);
 
         /**********************************************************************/
         /*     Check assessments                                              */
@@ -843,10 +884,9 @@ class CheckIntegrity extends SurveyCommonAction
         $oCriteria = new CDbCriteria();
         $oCriteria->compare('scope', 'T');
         $assessments = Assessment::model()->findAll($oCriteria);
-
+        $sSurveyIDs = Yii::app()->db->createCommand("select sid from {{surveys}}")->queryColumn();
         foreach ($assessments as $assessment) {
-            $iAssessmentCount = count(Survey::model()->findAllByPk($assessment['sid']));
-            if (!$iAssessmentCount) {
+            if (!in_array($assessment['sid'], $sSurveyIDs)) {
                 $aDelete['assessments'][] = array('id' => $assessment['id'], 'assessment' => $assessment['name'], 'reason' => gT('No matching survey'));
             }
         }
@@ -854,9 +894,11 @@ class CheckIntegrity extends SurveyCommonAction
         $oCriteria = new CDbCriteria();
         $oCriteria->compare('scope', 'G');
         $assessments = Assessment::model()->findAll($oCriteria);
+        $quotedGroups = Yii::app()->db->quoteTableName('{{groups}}');
+
+        $groupIds = Yii::app()->db->createCommand("select gid from $quotedGroups")->queryColumn();
         foreach ($assessments as $assessment) {
-            $iAssessmentCount = count(QuestionGroup::model()->findAllByPk(array('gid' => $assessment['gid'], 'language' => $assessment['language'])));
-            if (!$iAssessmentCount) {
+            if (!in_array($assessment['gid'], $groupIds)) {
                 $aDelete['assessments'][] = array('id' => $assessment['id'], 'assessment' => $assessment['name'], 'reason' => gT('No matching group'));
             }
         }
@@ -887,28 +929,27 @@ class CheckIntegrity extends SurveyCommonAction
         /*   Check survey languagesettings and restore them if they don't exist    */
         /***************************************************************************/
 
-        $surveys = Survey::model()->findAll();
+        $surveyModel = new SurveyLight();
+        $surveys = $surveyModel->findAll();
         foreach ($surveys as $survey) {
             $aLanguages = $survey->additionalLanguages;
             $aLanguages[] = $survey->language;
+            $languages = Yii::app()->db->createCommand("select surveyls_language from {{surveys_languagesettings}} where surveyls_survey_id=" . $survey->sid)->queryColumn();
             foreach ($aLanguages as $langname) {
-                if ($langname) {
-                    $oLanguageSettings = SurveyLanguageSetting::model()->find('surveyls_survey_id=:surveyid AND surveyls_language=:langname', array(':surveyid' => $survey->sid, ':langname' => $langname));
-                    if (!$oLanguageSettings) {
-                        $oLanguageSettings = new SurveyLanguageSetting();
-                        $languagedetails = getLanguageDetails($langname);
-                        $insertdata = array(
-                            'surveyls_survey_id' => $survey->sid,
-                            'surveyls_language' => $langname,
-                            'surveyls_title' => '',
-                            'surveyls_dateformat' => $languagedetails['dateformat']
-                        );
-                        foreach ($insertdata as $k => $v) {
-                            $oLanguageSettings->$k = $v;
-                        }
-                        $oLanguageSettings->save();
-                        $bDirectlyFixed = true;
+                if (!in_array($langname, $languages)) {
+                    $oLanguageSettings = new SurveyLanguageSetting();
+                    $languagedetails = getLanguageDetails($langname);
+                    $insertdata = array(
+                        'surveyls_survey_id' => $survey->sid,
+                        'surveyls_language' => $langname,
+                        'surveyls_title' => '',
+                        'surveyls_dateformat' => $languagedetails['dateformat']
+                    );
+                    foreach ($insertdata as $k => $v) {
+                        $oLanguageSettings->$k = $v;
                     }
+                    $oLanguageSettings->save();
+                    $bDirectlyFixed = true;
                 }
             }
         }
@@ -989,8 +1030,8 @@ class CheckIntegrity extends SurveyCommonAction
         /**********************************************************************/
         /*     Check old survey tables                                        */
         /**********************************************************************/
-        //1: Get list of 'old_survey' tables and extract the survey id
-        //2: Check if that survey id still exists
+        //1: Get list of 'old_survey' tables and extract the survey ID
+        //2: Check if that survey ID still exists
         //3: If it doesn't offer it for deletion
         $sQuery = dbSelectTablesLike('{{old_survey}}%');
         $aTables = Yii::app()->db->createCommand($sQuery)->queryColumn();
@@ -998,17 +1039,13 @@ class CheckIntegrity extends SurveyCommonAction
         $aOldSIDs = array();
 
         foreach ($aTables as $sTable) {
-            list($sOldText, $SurveyText, $iSurveyID, $sDate) = explode('_', substr($sTable, strlen($sDBPrefix)));
+            list($sOldText, $SurveyText, $iSurveyID, $sDate) = explode('_', substr((string) $sTable, strlen((string) $sDBPrefix)));
             $aOldSIDs[] = $iSurveyID;
             $aFullOldSIDs[$iSurveyID][] = $sTable;
         }
         $aOldSIDs = array_unique($aOldSIDs);
-        $surveys = Survey::model()->findAll();
 
-        $aSIDs = array();
-        foreach ($surveys as $survey) {
-            $aSIDs[] = $survey['sid'];
-        }
+        $aSIDs = Yii::app()->db->createCommand("select sid from {{surveys}}")->queryColumn();
         foreach ($aOldSIDs as $iOldSID) {
             if (!in_array($iOldSID, $aSIDs)) {
                 foreach ($aFullOldSIDs[$iOldSID] as $sTableName) {
@@ -1016,7 +1053,7 @@ class CheckIntegrity extends SurveyCommonAction
                 }
             } else {
                 foreach ($aFullOldSIDs[$iOldSID] as $sTableName) {
-                    $aTableParts = explode('_', substr($sTableName, strlen($sDBPrefix)));
+                    $aTableParts = explode('_', substr($sTableName, strlen((string) $sDBPrefix)));
                     $sDateTime = $sType = '';
                     $iSurveyID = $aTableParts[2];
 
@@ -1057,8 +1094,8 @@ class CheckIntegrity extends SurveyCommonAction
         /**********************************************************************/
         /*     CHECK OLD TOKEN  TABLES                                        */
         /**********************************************************************/
-        //1: Get list of 'old_token' tables and extract the survey id
-        //2: Check if that survey id still exists
+        //1: Get list of 'old_token' tables and extract the survey ID
+        //2: Check if that survey ID still exists
         //3: If it doesn't offer it for deletion
         $sQuery = dbSelectTablesLike('{{old_token}}%');
         $aTables = Yii::app()->db->createCommand($sQuery)->queryColumn();
@@ -1067,17 +1104,12 @@ class CheckIntegrity extends SurveyCommonAction
         $aFullOldTokenSIDs = array();
 
         foreach ($aTables as $sTable) {
-            list($sOldText, $SurveyText, $iSurveyID, $sDateTime) = explode('_', substr($sTable, strlen($sDBPrefix)));
+            list($sOldText, $SurveyText, $iSurveyID, $sDateTime) = explode('_', substr((string) $sTable, strlen((string) $sDBPrefix)));
             $aTokenSIDs[] = $iSurveyID;
             $aFullOldTokenSIDs[$iSurveyID][] = $sTable;
         }
         $aOldTokenSIDs = array_unique($aTokenSIDs);
-        $surveys = Survey::model()->findAll();
-
-        $aSIDs = array();
-        foreach ($surveys as $survey) {
-            $aSIDs[] = $survey['sid'];
-        }
+        $aSIDs = Yii::app()->db->createCommand("select sid from {{surveys}}")->queryColumn();
         foreach ($aOldTokenSIDs as $iOldTokenSID) {
             if (!in_array($iOldTokenSID, $aOldTokenSIDs)) {
                 foreach ($aFullOldTokenSIDs[$iOldTokenSID] as $sTableName) {
@@ -1085,7 +1117,7 @@ class CheckIntegrity extends SurveyCommonAction
                 }
             } else {
                 foreach ($aFullOldTokenSIDs[$iOldTokenSID] as $sTableName) {
-                    list($sOldText, $sTokensText, $iSurveyID, $sDateTime) = explode('_', substr($sTableName, strlen($sDBPrefix)));
+                    list($sOldText, $sTokensText, $iSurveyID, $sDateTime) = explode('_', substr($sTableName, strlen((string) $sDBPrefix)));
                     $iYear = (int) substr($sDateTime, 0, 4);
                     $iMonth = (int) substr($sDateTime, 4, 2);
                     $iDay = (int) substr($sDateTime, 6, 2);
@@ -1149,7 +1181,7 @@ class CheckIntegrity extends SurveyCommonAction
         /**********************************************************************/
         /*     CHECK CPDB SURVEY_LINKS TABLE FOR REDUNDENT Survey participants tableS       */
         /**********************************************************************/
-        //1: Get distinct list of survey_link survey ids, check if tokens
+        //1: Get distinct list of survey_link survey IDs, check if tokens
         //   table still exists for each one, and remove if not
 
 
@@ -1204,7 +1236,7 @@ class CheckIntegrity extends SurveyCommonAction
      */
     protected function checkQuestionOrderDuplicates()
     {
-        $quotedGroups = Yii::app()->db->quoteTableName('{{groups}}');
+         $quotedGroups = Yii::app()->db->quoteTableName('{{groups}}');
         $sQuery = "
             SELECT
                 q.sid,

@@ -18,7 +18,7 @@ class UserParser
     {
         $sRandomFileName = randomChars(20);
         $sFilePath = Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $sRandomFileName;
-        $aPathinfo = pathinfo($FILES['the_file']['name']);
+        $aPathinfo = pathinfo((string) $FILES['the_file']['name']);
         $sExtension = $aPathinfo['extension'];
         $bMoveFileResult = false;
 
@@ -30,7 +30,7 @@ class UserParser
         } elseif (strtolower($sExtension) == 'csv') {
             $bMoveFileResult = @move_uploaded_file($_FILES['the_file']['tmp_name'], $sFilePath);
         } else {
-            Yii::app()->setFlashMessage(gT("This is not a .csv file.") . 'It is a ' . $sExtension, 'error');
+            Yii::app()->setFlashMessage(gT("This is not a .csv file."), 'error');
             Yii::app()->getController()->redirect(array('/userManagement/index'));
             Yii::app()->end();
         }
@@ -45,20 +45,25 @@ class UserParser
         $delimiter =  self::detectCsvDelimiter($sFilePath);
         $oCSVFile = fopen($sFilePath, 'r');
         if ($oCSVFile === false) {
-            safeDie('File not found.');
+            // Throw a 500 error here : file was moved by LimeSurvey at set $bMoveFileResult : there are an install issue
+            throw new \CException('File can not be read.');
         }
 
         $aFirstLine = fgetcsv($oCSVFile, 0, $delimiter, '"');
-
+        if (empty($aFirstLine)) {
+            Yii::app()->setFlashMessage(gT("This CSV file seems to be empty"), 'error');
+            Yii::app()->getController()->redirect(array('/userManagement/index'));
+            Yii::app()->end();
+        }
         $iHeaderCount = count($aFirstLine);
         $aToBeAddedUsers = [];
         while (($row = fgetcsv($oCSVFile, 0, $delimiter, '"')) !== false) {
             $rowarray = array();
             for ($i = 0; $i < $iHeaderCount; ++$i) {
-                $val = (isset($row[$i]) ? $row[$i] : '');
+                $val = ($row[$i] ?? '');
                 // if Excel was used, it surrounds strings with quotes and doubles internal double quotes.  Fix that.
-                if (preg_match('/^".*"$/', $val)) {
-                    $val = trim(str_replace('""', '"', substr($val, 1, -1)), "\xC2\xA0\n");
+                if (preg_match('/^".*"$/', (string) $val)) {
+                    $val = trim(str_replace('""', '"', substr((string) $val, 1, -1)), "\xC2\xA0\n");
                 }
                 $rowarray[$aFirstLine[$i]] = $val;
             }

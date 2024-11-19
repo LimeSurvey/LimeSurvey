@@ -79,7 +79,7 @@ class RenderListComment extends QuestionBaseRenderer
             'name'              => $this->sSGQA . 'comment',
             'tarows'            => floor($tarows),
             'has_comment_saved' => isset($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$fname2]) && $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$fname2],
-            'comment_saved'     => htmlspecialchars($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$fname2]),
+            'comment_saved'     => htmlspecialchars((string) $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$fname2]),
             'java_name'         => 'java' . $this->sSGQA,
             'java_id'           => 'java' . $this->sSGQA,
             'java_value'        => $this->mSessionValue
@@ -104,8 +104,8 @@ class RenderListComment extends QuestionBaseRenderer
             );
             $sOptions .= Yii::app()->twigRenderer->renderQuestion($this->getMainView() . '/dropdown/rows/option', $itemData, true);
 
-            if (strlen($ansrow->answerl10ns[$this->sLanguage]->answer) > $this->maxoptionsize) {
-                $this->maxoptionsize = strlen($ansrow->answerl10ns[$this->sLanguage]->answer);
+            if (strlen((string) $ansrow->answerl10ns[$this->sLanguage]->answer) > $this->maxoptionsize) {
+                $this->maxoptionsize = strlen((string) $ansrow->answerl10ns[$this->sLanguage]->answer);
             }
         }
 
@@ -144,7 +144,7 @@ class RenderListComment extends QuestionBaseRenderer
             'label_text'             => gT('Please enter your comment here'),
             'tarows'                 => $tarows,
             'maxoptionsize'          => $this->maxoptionsize,
-            'comment_saved'          => htmlspecialchars($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$fname2]),
+            'comment_saved'          => htmlspecialchars((string) $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$fname2]),
             'value'                  => $this->mSessionValue,
             ), true);
 

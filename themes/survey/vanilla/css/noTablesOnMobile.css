@@ -1,19 +1,18 @@
-
 @media only screen and (max-width: 760px) {
     .slider-list .slider-left {
-        text-align: left
+        text-align: left!important;
     }
 
     .slider-list .slider-right {
-        text-align: right;
+        text-align: right!important;
     }
 
     .dir-rtl .slider-list .slider-left {
-        text-align: right
+        text-align: right!important;
     }
 
     .dir-rtl .slider-list .slider-right {
-        text-align: left;
+        text-align: left!important;
     }
 }
 
@@ -56,7 +55,6 @@ For iPads specifically : add this : (min-device-width: 768px) and (max-device-wi
     }
 
     /* We don't need it for accessibility : we already have the label */
-
     table.ls-answers tbody td {
         text-align: left;
     }
@@ -136,7 +134,7 @@ For iPads specifically : add this : (min-device-width: 768px) and (max-device-wi
         margin-right: 0;
     }
 
-    table.ls-answers .ls-label-xs-visibility>* {
+    table.ls-answers .ls-label-xs-visibility > * {
         position: relative;
         top: auto;
         width: auto;
@@ -144,11 +142,11 @@ For iPads specifically : add this : (min-device-width: 768px) and (max-device-wi
         overflow: auto;
     }
 
-    .dir-ltr table.ls-answers .ls-label-xs-visibility>* {
+    .dir-ltr table.ls-answers .ls-label-xs-visibility > * {
         left: auto;
     }
 
-    .dir-rtl table.ls-answers .ls-label-xs-visibility>* {
+    .dir-rtl table.ls-answers .ls-label-xs-visibility > * {
         right: auto;
     }
 
@@ -172,7 +170,7 @@ For iPads specifically : add this : (min-device-width: 768px) and (max-device-wi
         margin-right: -20px;
     }
 
-    table.ls-answers>tbody>tr:hover {
+    table.ls-answers > tbody > tr:hover {
         background-color: transparent;
     }
 
@@ -180,5 +178,10 @@ For iPads specifically : add this : (min-device-width: 768px) and (max-device-wi
     table.ls-answers td.visible-xs,
     table.ls-answers th.visible-xs {
         display: block !important
+    }
+
+    /* Don't display repeating header on mobile devices'*/
+    table.ls-answers tr.ls-heading-repeat {
+        display: none;
     }
 }

@@ -13,11 +13,14 @@ on:
 
 jobs:
   CI-pipeline:
-    runs-on: ubuntu-18.04    # ubuntu runner hosted by Github
+    runs-on: ubuntu-20.04    # ubuntu runner hosted by Github
+    concurrency: 
+      group: ${{ github.ref_name }}-main # Groups by branch and job name 
+      cancel-in-progress: true # Cancel in-progress jobs if a new job is triggered     
     strategy:
       matrix:
         # Specify what versions of php you want to test
-        php-versions: ['7.2', '8.0']
+        php-versions: ['7.4', '8.3']
     # Env vars for this job
     env:
       DBENGINE: INNODB
@@ -25,7 +28,7 @@ jobs:
     name: PHP ${{ matrix.php-versions }} # Check each version of php specified in matrix
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       # This will change the php version for every version specified in matrix https://github.com/marketplace/actions/setup-php-action
       - name: Install specified PHP
         uses: shivammathur/setup-php@v2
@@ -51,13 +54,13 @@ jobs:
           touch enabletests
           # NB: PHPUnit 6.5.* is installed with composer.
           composer install -vvv
-          ./third_party/bin/phpunit --version
+          ./vendor/bin/phpunit --version
 
       - name: Set up Apache+PHP
         run: |
           # Set up the Apache and PHP
           sudo apt-get update > /dev/null
-          sudo apt install php libapache2-mod-php -y
+          sudo apt --fix-broken install php php-mysql php8.0-mysql php7.4-mysql libapache2-mod-php8.0 -y
 
           sudo cp -f ./tests/CI-pipeline/github-actions-apache /etc/apache2/sites-available/000-default.conf
           sudo sed -e "s?%CI_BUILD_DIR%?$(pwd)?g" --in-place /etc/apache2/sites-available/000-default.conf
@@ -84,44 +87,45 @@ jobs:
           # https://discuss.gogs.io/t/solved-mysql-error-1064-while-running-first-install/1604
           # InnoDB variables ARE already set to desired values in Github runner (ubuntu-18.04)
 
+          sudo systemctl start mysql
           sudo service mysql status
+          mysql -uroot -proot -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'root';" || true
           mysql -uroot -proot -e "Show  variables like '%large%';"
           mysql -uroot -proot -e "Show  variables like '%innodb_file%';"
           mysql -uroot -proot -e "Show  variables like '%innodb_default%';"
+          mysql -uroot -proot -e "CREATE DATABASE limesurvey;"
 
       - name: Load custom console and start the Application
         run: |
-          php application/commands/console.php install admin password TravisLS no@email.com verbose
           cp application/config/config-sample-mysql.php application/config/config.php
+          php application/commands/console.php install admin password TravisLS no@email.com verbose
 
           # Enable debug=2 in config file. OBS: This assumes debug is on line 61.
           # TODO: Disable, a lines was added to config file and some tests started to fail.
           # NB: EmCache is always disabled when debug => 2
           # NB: There can be a difference in assets used when debug = 0 or 2 (minified version or not)
-          # sed -i '84s/.*/        "debug"=>2,/' application/config/config.php
+          # sed -i '60s/.*/        "debug"=>2,/' application/config/config.php
           # cat application/config/config.php
-
-      - name: Run syntax check, CodeSniffer, MessDetector, ...
-        run: composer test
 
       - name: Test the server
         run: |
           # Test server.
-          wget localhost
-          cat index.html
+          wget -O - localhost
+          #sudo tail -n 500 /var/log/apache2/error.log || true
+          #sudo tail -n 500 /var/log/nginx/error.log || true
+          #sudo tail -n 500 /var/log/php7.4-fpm.log || true
+          #sudo tail -n 500 /var/log/php8.0-fpm.log || true
+          # NOTE: php --version might not be the same as setup in apache. Use fwrite(STDERR, phpversion()); in index.php to be sure.
+          #which php
+          #php --version
+          #php -r 'phpinfo();' | grep log
+          #php --info | grep log
+          #find /var/log
 
         # Chromedriver setup.
         # Note: Keep getting timeout problems on Travis with chromedriver.
         # wget https://chromedriver.storage.googleapis.com/2.33/chromedriver_linux64.zip
         # unzip chromedriver_linux64.zip
-
-      - name: Run unit tests
-        env:
-            XDEBUG_MODE: coverage
-        run: php third_party/bin/phpunit --testdox --stop-on-failure tests/unit
-
-      - name: Check test coverage if cov.xml exists (won't work on PHP 8 with current phpunit version)
-        run: php tests/bin/check_coverage.php cov.xml 37
 
       - name: Set up Selenium with firefox (needed for integrity tests)
         run: |
@@ -130,13 +134,169 @@ jobs:
           echo `geckodriver --version`
 
           # Setup Selenium with Firefox headless mode, Gecko driver already installed
-          wget "https://selenium-release.storage.googleapis.com/3.7/selenium-server-standalone-3.7.1.jar"
+          wget "https://selenium-release.storage.googleapis.com/3.9/selenium-server-standalone-3.9.1.jar"
           export MOZ_HEADLESS=1
           export MOZ_HEADLESS_WIDTH=1280
           export MOZ_HEADLESS_HEIGHT=1024
-          java -jar selenium-server-standalone-3.7.1.jar -enablePassThrough false > /dev/null 2> /dev/null &
+          java -jar selenium-server-standalone-3.9.1.jar &
+          sleep 1
 
       - name: Run functional tests
         env:
             DOMAIN: localhost
-        run: php third_party/bin/phpunit --testdox --stop-on-failure tests/functional
+        run: php vendor/bin/phpunit --testdox --stop-on-failure tests/functional
+
+      - name: Upload Screenshots
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: screenshots
+          path: tests/tmp/screenshots/
+          retention-days: 5
+  
+  unit-tests:
+    runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        # Specify what versions of php you want to test
+        php-versions: ['7.4', '8.3']
+    env:
+      DBENGINE: INNODB
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install specified PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
+
+      - name: Setup
+        run: |
+          touch enabletests
+          composer install -vvv
+
+          sudo apt-get update > /dev/null
+          sudo apt --fix-broken install php php-mysql php8.0-mysql php7.4-mysql -y
+
+          chmod -R 777 ./tmp
+          chmod -R 777 ./upload
+          chmod -R 777 ./themes
+          chmod -R 777 ./tests/tmp
+          chmod -R 777 ./application/config
+
+      - name: Check MySQL service
+        run: |
+          # InnoDB needs large_file_prefix & Barracuda file format
+          # https://discuss.gogs.io/t/solved-mysql-error-1064-while-running-first-install/1604
+          # InnoDB variables ARE already set to desired values in Github runner (ubuntu-18.04)
+
+          sudo systemctl start mysql
+          sudo service mysql status
+          mysql -uroot -proot -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'root';" || true
+          mysql -uroot -proot -e "Show  variables like '%large%';"
+          mysql -uroot -proot -e "Show  variables like '%innodb_file%';"
+          mysql -uroot -proot -e "Show  variables like '%innodb_default%';"
+          mysql -uroot -proot -e "CREATE DATABASE limesurvey;"
+
+      - name: Load custom console and start the Application
+        run: |
+          cp application/config/config-sample-mysql.php application/config/config.php
+          php application/commands/console.php install admin password TravisLS no@email.com verbose
+
+      - name: Run unit tests
+        env:
+          XDEBUG_MODE: coverage
+        run: php vendor/bin/phpunit --testdox --stop-on-failure tests/unit
+
+      - name: Upload cov.xml
+        uses: actions/upload-artifact@v4
+        with:
+          name: cov-file-${{ matrix.php-versions }}
+          path: cov.xml
+
+  test-coverage:
+    runs-on: ubuntu-20.04
+    needs: unit-tests
+    strategy:
+      matrix:
+        # Specify what versions of php you want to test
+        php-versions: ['7.4', '8.3']
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install specified PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
+
+      - name: Check if cov.xml artefact exists
+        uses: xSAVIKx/artifact-exists-action@v0
+        id: check_coverage_artifact
+        with:
+          name: cov-file-${{ matrix.php-versions }}
+
+      - name: Download cov.xml
+        if: steps.check_coverage_artifact.outputs.exists == 'true'
+        uses: actions/download-artifact@v4
+        with:
+          name: cov-file-${{ matrix.php-versions }}
+
+      - name: Check test coverage if cov.xml exists (won't work on PHP 8 with current phpunit version)
+        run: php tests/bin/check_coverage.php cov.xml 37
+
+  code-check:
+    runs-on: ubuntu-20.04
+    env:
+      DBENGINE: INNODB
+    strategy:
+      matrix:
+        # Specify what versions of php you want to test
+        php-versions: ['7.4', '8.3']
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install specified PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
+
+      - name: Setup
+        run: |
+          touch enabletests
+          composer install -vvv
+
+          sudo apt-get update > /dev/null
+          sudo apt --fix-broken install php php-mysql php8.0-mysql php7.4-mysql -y
+
+          chmod -R 777 ./tmp
+          chmod -R 777 ./upload
+          chmod -R 777 ./themes
+          chmod -R 777 ./tests/tmp
+          chmod -R 777 ./application/config
+          chmod +x ./tests/bin/lint-*
+
+      - name: Check MySQL service
+        run: |
+          # InnoDB needs large_file_prefix & Barracuda file format
+          # https://discuss.gogs.io/t/solved-mysql-error-1064-while-running-first-install/1604
+          # InnoDB variables ARE already set to desired values in Github runner (ubuntu-18.04)
+
+          sudo systemctl start mysql
+          sudo service mysql status
+          mysql -uroot -proot -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'root';" || true
+          mysql -uroot -proot -e "Show  variables like '%large%';"
+          mysql -uroot -proot -e "Show  variables like '%innodb_file%';"
+          mysql -uroot -proot -e "Show  variables like '%innodb_default%';"
+          mysql -uroot -proot -e "CREATE DATABASE limesurvey;"
+
+      - name: Load custom console and start the Application
+        run: |
+          cp application/config/config-sample-mysql.php application/config/config.php
+          php application/commands/console.php install admin password TravisLS no@email.com verbose
+          
+      - name: Run syntax check, CodeSniffer, MessDetector, ...
+        run: composer test
+
+      - name: Run Psalm on application/ folder with low strictness
+        run: |
+          ./vendor/bin/psalm -c psalm-all.xml

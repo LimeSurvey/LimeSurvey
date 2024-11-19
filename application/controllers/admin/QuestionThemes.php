@@ -9,6 +9,8 @@ class QuestionThemes extends SurveyCommonAction
      */
     public function toggleVisibility($id)
     {
+        $this->requirePostRequest();
+
         if (!Permission::model()->hasGlobalPermission('templates', 'update')) {
             throw new CHttpException(403, gT("We are sorry but you don't have permissions to do this."));
         }

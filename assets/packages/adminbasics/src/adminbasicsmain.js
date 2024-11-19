@@ -20,15 +20,13 @@ import 'core-js';
 //Define LS Namespace
 window.LS = window.LS || {};
 
-//import css/scss to be seperately compiled
-import '../scss/loadSass.js';
-
 //import lodash
 import _ from 'lodash';
 
 //import jquery additions and prototypes
 import './jqueryAdditions/center.js';
 import './jqueryAdditions/isEmpty.js';
+import './jqueryAdditions/bootstrapconfirm.js';
 import './parts/prototypeDefinition';
 import './components/bootstrap-remote-modals';
 
@@ -37,12 +35,12 @@ import './components/bootstrap-remote-modals';
 import questionEdit from './pages/questionEditing';
 //import * as quickAction from './pages/quickaction'; ->temporary deprecated
 import {subquestionAndAnswersGlobalMethods} from './pages/subquestionandanswers';
-import {onExistBinding as surveyGrid} from './pages/surveyGrid';
 
 //import parts for globalscope
 import confirmationModal from './parts/confirmationModal';
 import {globalStartUpMethods, globalWindowMethods} from './parts/globalMethods';
-import notifyFader from './parts/notifyFader';
+import autoCloseAlerts from './parts/autoCloseAlerts';
+import ajaxAlerts, {ajaxAlertMethod} from './parts/ajaxAlerts';
 import * as AjaxHelper from './parts/ajaxHelper';
 import createUrl from './parts/createUrl';
 import saveBindings from './parts/save';
@@ -51,6 +49,7 @@ import parameterGlobals from './parts/parameterGlobals';
 // import components
 import activateSubSubMenues from './components/bootstrap-sub-submenues';
 import confirmDeletemodal from './components/confirmdeletemodal';
+import fileManagerStyle from './components/file-manager';
 import panelClickable from './components/panelclickable';
 import panelsAnimation from './components/panelsanimation';
 import notificationSystem from './components/notifications';
@@ -59,6 +58,8 @@ import EventBus from './components/eventbus';
 import LOG from './components/lslog';
 
 const AdminCore = function(){
+  
+     
     //Singelton Pattern -> the AdminCore functions can only be nound once.
     if(typeof window.LS.adminCore === 'object') {
         window.LS.adminCore.refresh();
@@ -76,18 +77,20 @@ const AdminCore = function(){
     const
         onLoadRegister = () => {
             globalStartUpMethods.bootstrapping();
-            surveyGrid();
             appendToLoad(function(){LOG.log('TRIGGERWARNING','Document ready triggered')}, 'ready');
             appendToLoad(function(){LOG.log('TRIGGERWARNING','Document scriptcomplete triggered')}, 'pjax:scriptcomplete');
             appendToLoad(saveBindings);
             appendToLoad(confirmationModal);
             appendToLoad(questionEdit);
             appendToLoad(confirmDeletemodal);
+            appendToLoad(fileManagerStyle);
             appendToLoad(panelClickable);
+            appendToLoad(window.LS.doToolTip);
             appendToLoad(panelsAnimation, null, null, 200);
             appendToLoad(notificationSystem.initNotification);
             appendToLoad(activateSubSubMenues);
             appendToLoad(globalWindowMethods.fixAccordionPosition);
+            appendToLoad(globalWindowMethods.doSelect2);
         },
         appendToLoad = (fn, event, root, delay) => {
             event = event || 'pjax:scriptcomplete ready';
@@ -117,7 +120,6 @@ const AdminCore = function(){
                     }
                 });
             });
-            surveyGrid();
         },
         addToNamespace = (object, name="globalAddition") => {
             window.LS[name] = window.LS[name] || {};
@@ -138,20 +140,23 @@ const AdminCore = function(){
                 confirmationModal,
                 questionEdit,
                 confirmDeletemodal,
+                fileManagerStyle,
                 panelClickable,
                 panelsAnimation,
                 initNotification : notificationSystem.initNotification,
             }
             const LsNameSpace = _.merge(
-                BaseNameSpace, 
-                globalWindowMethods, 
-                parameterGlobals, 
-                {AjaxHelper}, 
-                {notifyFader}, 
-                {createUrl}, 
+                BaseNameSpace,
+                globalWindowMethods,
+                parameterGlobals,
+                {AjaxHelper},
+                {createUrl},
+                autoCloseAlerts,
+                ajaxAlertMethod,
+                {ajaxAlerts},
                 {EventBus},
-                subquestionAndAnswersGlobalMethods, 
-                notificationSystem, 
+                subquestionAndAnswersGlobalMethods,
+                notificationSystem,
                 gridAction
             );
 

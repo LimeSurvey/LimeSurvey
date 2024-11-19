@@ -9,7 +9,7 @@
  * @uses YiiStrap.helpers.TbHtml
  */
 
-Yii::import('bootstrap.helpers.TbArray');
+Yii::import('yiistrap_fork.helpers.TbArray');
 
 class WhMaskInput extends CInputWidget
 {

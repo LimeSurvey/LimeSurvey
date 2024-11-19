@@ -53,9 +53,9 @@ class TopbarConfiguration
     public function __construct(array $config = [])
     {
         // Set defaults
-        $this->viewName = isset($config['name']) ? $config['name'] : 'surveyTopbar_view';
-        $this->id = isset($config['topbarId']) ? $config['topbarId'] : 'surveybarid';
-        $this->hide = isset($config['hide']) ? $config['hide'] : false;
+        $this->viewName = $config['name'] ?? 'surveyTopbar_view';
+        $this->id = $config['topbarId'] ?? 'surveybarid';
+        $this->hide = $config['hide'] ?? false;
 
         if (isset($config['leftSideView'])) {
             $this->leftSideView = $config['leftSideView'];
@@ -83,7 +83,7 @@ class TopbarConfiguration
      */
     public static function createFromViewData($aData)
     {
-        $config = isset($aData['topBar']) ? $aData['topBar'] : [];
+        $config = $aData['topBar'] ?? [];
 
         // If 'sid' is not specified in the topbar config, but is present in the $aData array, assign it to the config
         $sid = self::getSid($config);
@@ -93,7 +93,7 @@ class TopbarConfiguration
         if (!empty($sid)) {
             $config['sid'] = $sid;
         }
-     
+
         return new self($config);
     }
 
@@ -138,7 +138,7 @@ class TopbarConfiguration
      * @throws CException
      *
      */
-    protected static function getSurveyTopbarData($sid)
+    public static function getSurveyTopbarData($sid)
     {
         if (empty($sid)) {
             return [];
@@ -204,10 +204,32 @@ class TopbarConfiguration
             || $hasSurveyContentPermission
             || !is_null($extraToolsMenuItems);
 
+        $editorEnabled = $event->get('isEditorEnabled');
+        if ($editorEnabled===null) {
+            $editorEnabled = Yii::app()->getConfig('editorEnabled') ?? false;
+        }
+
+        $enableEditorButton = true;
+        if ($oSurvey->getTemplateEffectiveName() !== 'fruity_twentythree') {
+            $enableEditorButton = false;
+        }
+
+        $editorUrl = Yii::app()->request->getUrlReferrer(
+            Yii::app()->createUrl(
+                'editorLink/index',
+                ['route' => 'survey/' . $sid]
+            )
+        );
+        App()->getClientScript()->registerScriptFile(
+            App()->getConfig('adminscripts') . 'newQuestionEditor.js',
+            CClientScript::POS_END
+        );
+
         return array(
             'sid' => $sid,
             'oSurvey' => $oSurvey,
             'canactivate' => $canactivate,
+            'candeactivate' => $hasSurveyActivationPermission,
             'expired' => $expired,
             'notstarted' => $notstarted,
             'context' => $context,
@@ -232,6 +254,10 @@ class TopbarConfiguration
             'extraToolsMenuItems' => $extraToolsMenuItems ?? [],
             'beforeSurveyBarRender' => $beforeSurveyBarRender ?? [],
             'showToolsMenu' => $showToolsMenu,
+            'surveyLanguages' => self::getSurveyLanguagesArray($oSurvey),
+            'editorEnabled' => $editorEnabled,
+            'editorUrl' => $editorUrl,
+            'enableEditorButton' => $enableEditorButton,
         );
     }
 
@@ -285,10 +311,15 @@ class TopbarConfiguration
             return [];
         }
 
-        $closeUrl = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl("responses/browse/", ['surveyId' => $sid]));
+        $closeUrl = Yii::app()->request->getUrlReferrer(
+            Yii::app()->createUrl(
+                "responses/browse/",
+                ['surveyId' => $sid]
+            )
+        );
 
         return array(
-            'closeUrl' => $closeUrl,
+            'closeUrl' => $closeUrl
         );
     }
 
@@ -348,11 +379,6 @@ class TopbarConfiguration
         $hasSurveyContentCreatePermission = Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'create');
         $hasSurveyContentDeletePermission = Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'delete');
 
-        $languages = [];
-        foreach ($survey->allLanguages as $language) {
-            $languages[$language] = getLanguageNameFromCode($language, false);
-        }
-
         return array(
             'oSurvey' => $survey,
             'hasSurveyContentUpdatePermission' => $hasSurveyContentUpdatePermission,
@@ -360,7 +386,7 @@ class TopbarConfiguration
             'hasSurveyContentExportPermission' => $hasSurveyContentExportPermission,
             'hasSurveyContentCreatePermission' => $hasSurveyContentCreatePermission,
             'hasSurveyContentDeletePermission' => $hasSurveyContentDeletePermission,
-            'surveyLanguages' => $languages,
+            'surveyLanguages' => self::getSurveyLanguagesArray($survey),
         );
     }
 
@@ -425,5 +451,20 @@ class TopbarConfiguration
     public function shouldHide()
     {
         return $this->hide;
+    }
+
+    /**
+     * returns array of language codes by language name for all languages of the given survey
+     * @param Survey $survey
+     * @return array
+     */
+    private static function getSurveyLanguagesArray(Survey $survey)
+    {
+        $languages = [];
+        foreach ($survey->allLanguages as $language) {
+            $languages[$language] = getLanguageNameFromCode($language, false);
+        }
+
+        return $languages;
     }
 }

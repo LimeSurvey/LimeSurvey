@@ -21,8 +21,8 @@
 <!-- List Dropdown -->
 
 <!-- answer-->
-<div class="form-inline">
-    <div class="{{ coreClass }} form-group">
+<div class="mb-3 row align-items-center">
+    <div class="{{ coreClass }} col-auto">
         <select
                 class="form-control list-question-select {{ show_tick }}"
                 {{ data_live_search }}
@@ -30,14 +30,13 @@
                 data-none-selected-text=''
                 name="{{ name }}"
                 id="answer{{ name }}"
+                data-style="btn-outline-secondary"
                 {% if dropdownSize %} size={{ dropdownSize }} {% endif %}
                 aria-labelledby="ls-question-text-{{ basename }}"
         >
                 {# rows/option.php #}
                 {{ sOptions }}
         </select>
-            {# rows/othertext.php #}
-            {{ sOther }}
 
         {# Value for expression manager javascript (use id) ; no need to submit #}
         {{ C.Html.hiddenField("java"~name,value,({
@@ -46,10 +45,25 @@
         }))
         }}
     </div>
+    {# rows/othertext.php #}
+    {{ sOther }}
     <script type="text/javascript">
         $(function () {
-            $('#answer{{ name }}').selectpicker();
+            var selectPicker = $('#answer{{ name }}').selectpicker();
+
+            // Custom js to make width setting work with this beta version:
+            {% if width_entry != '' %}
+            selectPicker.on('loaded.bs.select', function () {
+                selectPicker.selectpicker('open');
+                var dropdown = selectPicker.parent();
+                var width = dropdown.find('.dropdown-menu.show').width();
+                dropdown.css('width', width);
+                selectPicker.selectpicker('toggle');
+                $('.bootstrap-select .btn.dropdown-toggle').blur();
+            });
+            {% endif %}
         });
+
     </script>
 </div>
 <!-- end of answer  -->

@@ -10,8 +10,8 @@
 <config>
     <!-- Those metadata are displayed in the theme configuration page.  -->
     <metadata>
-        <name>Fruity</name>
-        <title>Fruity Theme</title>
+        <name>fruity</name>
+        <title>Fruity</title>
         <type>theme</type>
         <creationDate>08/01/2016</creationDate>
         <author>LimeSurvey GmbH</author>
@@ -21,10 +21,14 @@
         <license>GNU General Public License version 2 or later</license>
         <version>3.0.1</version>
         <apiVersion>3</apiVersion>
-        <description  twig="on"><![CDATA[<strong>{{gT("LimeSurvey Fruity Theme")}}</strong><br>{{gT("A fruity theme for a flexible use. This theme offers monochromes variations and many options for easy customizations.")}}]]></description>
+        <description twig="on"><![CDATA[{{gT("A fruity theme for a flexible use. This theme offers monochromes variations and many options for easy customizations.")}}]]></description>
         <lastUpdate>2019-10-24 12:00:00</lastUpdate>
         <extends>vanilla</extends>
     </metadata>
+
+    <compatibility>
+        <version>6.0</version>
+    </compatibility>
 
     <!--
         Here the list of the css/js files to add to the template package.
@@ -78,27 +82,28 @@
         <notables type="buttons" category="Simple options" width="4" title="Break tables" options="2|1|0" optionlabels="Always on|Small screens|Off">1</notables>
         <showclearall type="buttons" category="Simple options" width="4" title="Show Clear All button" options="on|off" optionlabels="Yes|No">off</showclearall>
         <questionhelptextposition type="buttons" category="Simple options" width="4" title="Question help text position" options="top|bottom" optionlabels="Top|Bottom">top</questionhelptextposition>
-        <fixnumauto type="buttons" category="Simple options" width="4" title="Fix automatically numeric value" options="enable|partial|disable" optionlabels="Yes|For expression|No">off</fixnumauto>
+        <fixnumauto type="buttons" category="Simple options" width="4" title="Fix automatically numeric value" options="enable|partial|disable" optionlabels="Yes|For expression|No">enable</fixnumauto>
         <questionborder type="buttons" category="Simple options" width="4" title="Question borders" options="on|off" optionlabels="Yes|No">on</questionborder>
         <questioncontainershadow type="buttons" category="Simple options" width="4" title="Question shadow" options="on|off" optionlabels="Yes|No">on</questioncontainershadow>
         <!-- colors -->
         <bodybackgroundcolor type="colorpicker" category="Colors" width="4" title="Background color" options="on|off" optionlabels="Yes|No">#ffffff</bodybackgroundcolor>
         <fontcolor type="colorpicker" category="Colors" width="4" title="Font color" options="on|off" optionlabels="Yes|No">#444444</fontcolor>
         <questionbackgroundcolor type="colorpicker" category="Colors" width="4" title="Question background color" options="on|off" optionlabels="Yes|No">#ffffff</questionbackgroundcolor>
+        <!--  When adding new items, please keep them ordered alphabetically -->
         <checkicon type="icon" category="Colors" width="4" title="Check icon">f00c
             <dropdownoptions>
+                <option value="f061"> <i class="fa fa-arrow-right"></i> Arrow right </option>
+                <option value="f069"> <i class="fa fa-asterisk"></i> Asterisk </option>
                 <option value="f00c"> <i class="fa fa-check"></i> Check </option>
                 <option value="f058"> <i class="fa fa-check-circle"></i> Check circle </option>
                 <option value="f14a"> <i class="fa fa-check-square"></i> Check square </option>
+                <option value="f138"> <i class="fa fa-chevron-circle-right"></i> Chevron circle right </option>
                 <option value="f111"> <i class="fa fa-circle"></i> Circle </option>
                 <option value="f067"> <i class="fa fa-plus"></i> Plus </option>
+                <option value="f1d0"> <i class="fa fa-resistance"></i> Resistance </option>
                 <option value="f0c8"> <i class="fa fa-square"></i> Square </option>
                 <option value="f005"> <i class="fa fa-star"></i> Star </option>
                 <option value="f00d"> <i class="fa fa-times"></i> Times </option>
-                <option value="f069"> <i class="fa fa-asterisk"></i> Asterisk </option>
-                <option value="f061"> <i class="fa fa-arrow-right"></i> Arrow right </option>
-                <option value="f138"> <i class="fa fa-chevron-circle-right"></i> Chevron circle right </option>
-                <option value="f1d0"> <i class="fa fa-resistance"></i> Resistance </option>
             </dropdownoptions>
         </checkicon>
         <!-- images -->
@@ -657,34 +662,37 @@
             </dropdownoptions>
         </radioanimation>
         <radioanimationduration type="duration" category="Animations" width="2" title="Duration" parent="animateradio">500</radioanimationduration>
-       <!-- fonts -->
+        <!-- fonts -->
+        <!--  When adding new items, please keep them ordered alphabetically -->
          <font type="dropdown" category="Fonts" width="12" title="Fonts" parent="font">noto
             <dropdownoptions>
                 <optgroup  label="User browser">
-                <option class="font-georgia         " value="georgia"         data-font-package="websafe" >Georgia</option>
-                <option class="font-palatino        " value="palatino"        data-font-package="websafe" >Palatino Linotype</option>
-                <option class="font-times_new_roman " value="times_new_roman" data-font-package="websafe" >Times New Roman</option>
                 <option class="font-arial           " value="arial"           data-font-package="websafe" >Arial</option>
                 <option class="font-arial_black     " value="arial_black"     data-font-package="websafe" >Arial Black</option>
                 <option class="font-comic_sans      " value="comic_sans"      data-font-package="websafe" >Comic Sans</option>
-                <option class="font-impact          " value="impact"          data-font-package="websafe" >Impact</option>
-                <option class="font-lucida_sans     " value="lucida_sans"     data-font-package="websafe" >Lucida Sans</option>
-                <option class="font-trebuchet       " value="trebuchet"       data-font-package="websafe" >Trebuchet</option>
                 <option class="font-courier         " value="courier"         data-font-package="websafe" >Courier New</option>
+                <option class="font-georgia         " value="georgia"         data-font-package="websafe" >Georgia</option>
+                <option class="font-impact          " value="impact"          data-font-package="websafe" >Impact</option>
                 <option class="font-lucida_console  " value="lucida_console"  data-font-package="websafe" >Lucida Console</option>
+                <option class="font-lucida_sans     " value="lucida_sans"     data-font-package="websafe" >Lucida Sans</option>
+                <option class="font-palatino        " value="palatino"        data-font-package="websafe" >Palatino Linotype</option>
+                <option class="font-times_new_roman " value="times_new_roman" data-font-package="websafe" >Times New Roman</option>
+                <option class="font-trebuchet       " value="trebuchet"       data-font-package="websafe" >Trebuchet</option>     
             </optgroup>
             </dropdownoptions>
         </font>
-        <cssframework type="dropdown" category="Simple options" width="12" title="Variations" parent="cssframework">
+        <cssframework type="dropdown" category="Simple options" width="12" title="Variations" parent="cssframework">Sea Green
             <dropdownoptions>
-                <option value="css/variations/sea_green.css">Sea Green</option>
-                <option value="css/variations/apple_blossom.css">Apple Blossom</option>
-                <option value="css/variations/bay_of_many.css">Bay of Many</option>
-                <option value="css/variations/black_pearl.css">Black Pearl</option>
-                <option value="css/variations/free_magenta.css">Free Magenta</option>
-                <option value="css/variations/purple_tentacle.css">Purple Tentacle</option>
-                <option value="css/variations/sunset_orange.css">Sunset Orange</option>
-                <option value="css/variations/skyline_blue.css">Skyline Blue</option>
+                <optgroup>
+                    <option value="css/variations/sea_green.css">Sea Green</option>
+                    <option value="css/variations/apple_blossom.css">Apple Blossom</option>
+                    <option value="css/variations/bay_of_many.css">Bay of Many</option>
+                    <option value="css/variations/black_pearl.css">Black Pearl</option>
+                    <option value="css/variations/free_magenta.css">Free Magenta</option>
+                    <option value="css/variations/purple_tentacle.css">Purple Tentacle</option>
+                    <option value="css/variations/sunset_orange.css">Sunset Orange</option>
+                    <option value="css/variations/skyline_blue.css">Skyline Blue</option>
+                </optgroup>
             </dropdownoptions>
         </cssframework>
     </options>

@@ -1,0 +1,9 @@
+.pagination {
+    flex-wrap: wrap;
+    .page-item {
+        .page-link {
+            margin : 0 2px 4px 2px;
+            border-radius : 4px;
+        }
+    }
+}

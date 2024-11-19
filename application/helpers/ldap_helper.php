@@ -28,7 +28,7 @@ function ldap_getCnx($server_id = null)
     } else {
         $ds = false;
         if ($ldap_server[$server_id]['protoversion'] == 'ldapv3' && $ldap_server[$server_id]['encrypt'] != 'ldaps') {
-            $ds = ldap_connect($ldap_server[$server_id]['server'], $ldap_server[$server_id]['port']);
+            $ds = ldap_connect("ldap://" . "{$ldap_server[$server_id]['server']}:{$ldap_server[$server_id]['port']}");
             ldap_set_option($ds, LDAP_OPT_PROTOCOL_VERSION, 3);
 
             if (!$ldap_server[$server_id]['referrals']) {
@@ -40,9 +40,9 @@ function ldap_getCnx($server_id = null)
             }
         } elseif ($ldap_server[$server_id]['protoversion'] == 'ldapv2') {
             if ($ldap_server[$server_id]['encrypt'] == 'ldaps') {
-                $ds = ldap_connect("ldaps://" . $ldap_server[$server_id]['server'] . ':' . $ldap_server[$server_id]['port']);
+                $ds = ldap_connect("ldaps://" . "{$ldap_server[$server_id]['server']}:{$ldap_server[$server_id]['port']}");
             } else {
-                $ds = ldap_connect($ldap_server[$server_id]['server'], $ldap_server[$server_id]['port']);
+                $ds = ldap_connect("ldap://" . "{$ldap_server[$server_id]['server']}:{$ldap_server[$server_id]['port']}");
             }
 
             if (!$ldap_server[$server_id]['referrals']) {
@@ -79,9 +79,9 @@ function ldap_readattr($attr)
 {
 
     if (is_array($attr)) {
-        return trim($attr[0]);
+        return trim((string) $attr[0]);
     } else {
-        return trim($attr);
+        return trim((string) $attr);
     }
 }
 
@@ -128,7 +128,7 @@ function ldap_doTokenSearch($ds, $ldapq, &$ResArray, $surveyid)
 
     $aTokenAttr = getAttributeFieldNames($surveyid);
     foreach ($aTokenAttr as $thisattrfieldname) {
-        $attridx = substr($thisattrfieldname, 10); // the 'attribute_' prefix is 10 chars long
+        $attridx = substr((string) $thisattrfieldname, 10); // the 'attribute_' prefix is 10 chars long
         $userparams[] = "attr" . $attridx;
     }
 
@@ -233,7 +233,7 @@ function ldap_doTokenSearch($ds, $ldapq, &$ResArray, $surveyid)
                         $ldap_queries[$ldapq]['userbase'] != ''
                     ) {
                         // get user's rdn
-                        $user_dn_tab = explode(",", $user);
+                        $user_dn_tab = explode(",", (string) $user);
                         $user_rdn = $user_dn_tab[0];
                         $userfilter_rdn = "(&("
                         . $user_rdn . ")" . $userfilter . ")";

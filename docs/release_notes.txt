@@ -1,4 +1,4 @@
-Welcome to LimeSurvey v5.x!
+Welcome to LimeSurvey v6.x!
 
 Warranty: This program is provided "as is" without warranties of any kind, either expressed or implied,
 including, but not limited to, the implied warranties of merchantability and fitness for a particular
@@ -34,6 +34,2036 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.8.0 (build 241119) to 6.8.1 (build 241120) November 19, 2024
+-Fixed issue: Wrong version number (Carsten Schmitz)
+
+
+Changes from 6.7.0 (build 241118) to 6.8.0 (build 241119) November 19, 2024
++New feature: Plugin event 'beforeSurveyHttpHeaders' allows to modify http headers in surveys (#4021) (Carsten Schmitz)
+-Fixed issue #19774: Make labels on filtering page translatable (#3980) (aisreh)
+-Fixed issue #19829: Norwegian & Serbian not working in Quick translation (Carsten Schmitz)
+-Fixed issue #19675: If FileUploadTotalSpaceMB > 0 an error 500 is shown (lozam)
+#Updated translation: Korean by modernity4r
+#Updated translation: Japanese by nomoto
+
+
+Changes from 6.6.8 (build 241104) to 6.7.0 (build 241118) November 18, 2024
+-Fixed issue: Added correct cldr to Kurundi (run) (Patrick Teichmann)
+-Fixed issue: QE-1201 mandatory formatter for API (#4008) (Tim Willig)
+-Fixed issue #19835: (CT-1052) Time limit action for Timer not working properly (#4030) (Tim Willig)
+-Fixed issue #19818: Wrong characters displayed in French when deleting a question (#4022) (Denis Chenu)
+-Fixed issue #19805: Preview group throw PHP warning (#3999) (Gabriel Jenik)
+-Fixed issue #19784: No access to the 'Edit Poll Settings' page view in debug mode (#3986) (Gabriel Jenik)
+-Fixed issue #19779: Question Type not translated (#3983) (lozam)
+-Fixed issue #19760: When editing a response, delete current seed (#3990) (Denis Chenu)
+-Fixed issue #19835: Time limit action for Timer not working properly (Tim Willig)
+#Updated translation: Vietnamese by evi3636, hl_sales
+#Updated translation: Spanish (Spain) by evi3636, Gronnd
+#Updated translation: Slovak by jelen1
+#Updated translation: Russian by evi3636
+#Updated translation: Portuguese (Portugal) by holch, samarta
+#Updated translation: Portuguese (Brazil) by holch
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Hungarian by kkd, vargazsoltivan
+#Updated translation: German by c_schmitz
+#Updated translation: French (France) by evi3636, fgervais
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Arabic by abdelrahman.hassan, anasbensaid, evi3636
+
+
+Changes from 6.6.7 (build 241028) to 6.6.8 (build 241104) November 4, 2024
++New feature #19758: New plugin event beforeMovePublicFileUploaded (#3991) (Denis Chenu)
+-Fixed issue: Empty/error page on invalid survey ID (Carsten Schmitz)
+-Fixed issue #MW-1348: Extended Themes before LS6 can cause issue with the @attributes when generating xml files (#3792) (marticos)
+#Updated translation: Thai by adzpire, c_schmitz, tomzt
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Korean by modernity4r
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+
+
+Changes from 6.6.6 (build 241002) to 6.6.7 (build 241028) October 28, 2024
+-Fixed issue: On survey copy the new ID was not verified server-side (Carsten Schmitz)
+-Fixed issue #CT-967: Fix for progress bar going over 100% (#3957) (marticos)
+-Fixed issue #CR-1450: improved quota selection options (#3994) (Patrick Teichmann)
+-Fixed issue #19810: Error loading survey participants using LDAPv3 (AD) (kvolk2git)
+-Fixed issue #19799: No access to the panelintegration page - returns a 500 error (related to MSSQL) (#3997) (Gabriel Jenik)
+-Fixed issue #19795: array_key_exists() Argument #2 ($array) must be of type array, null given (#3992) (Gabriel Jenik)
+-Fixed issue #19781: Adding options using quick-add leads to wrong codes being shown (#3989) (Gabriel Jenik)
+-Fixed issue #19746: Auto correction of invalid input in Multiple numeric input type question could be improved (#3982) (Gabriel Jenik)
+-Fixed issue #19715: At multilingual surveys labels at the statistics tool do not show up using the base language (different language is used) (#3987) (Gabriel Jenik)
+-Fixed issue #19707: cannot export participants table to csv (#3988) (Gabriel Jenik)
+-Fixed issue #19687: php8.3 compatibility - Zend (xmlrpc related) (#3985) (Gabriel Jenik)
+-Fixed issue #19643: Date question with restrictions does not show up like in versions 3 and 5 (#3984) (Gabriel Jenik)
+-Fixed issue #19600: Some Tools Menu Items are not visible when having a lot of languages (#4001) (Gabriel Jenik)
+-Fixed issue #19575: Use localization to set the name and description when importing a group with the RemoteControl API (#3860) (Edgar Ramírez Mondragón)
+-Fixed issue #19290: Wrong Row Total in Array (Texts) (#3981) (Gabriel Jenik)
+-Fixed issue #19015: User with superadmin role does not get superadmin privileges (#3434) (Denis Chenu)
+#Updated translation: Yoruba by constantinl
+#Updated translation: Swahili by arnaullop
+#Updated translation: Slovak by jelen1
+#Updated translation: Portuguese (Portugal) by c_schmitz
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Kannada by nayakank
+#Updated translation: Japanese by nomoto
+#Updated translation: Italian by lfanfoni, Valentina Tessaro
+#Updated translation: Italian (Informal) by lfanfoni, Valentina Tessaro
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Estonian by klaster
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Catalan by qualitatuvic
+
+
+Changes from 6.6.5 (build 240924) to 6.6.6 (build 241002) October 2, 2024
+-Fixed issue: [security] XSS when using MSSQL server as database backend (Carsten Schmitz)
+-Fixed issue #19700: [security] Invalid DB value can be entered with start URL (#3974) (Denis Chenu)
+#Updated translation: Luxembourgish by c_schmitz
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz, evi3636
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Catalan by qualitatuvic
+
+
+Changes from 6.6.4 (build 240923) to 6.6.5 (build 240924) September 24, 2024
+Fixed issue: multiple choice question cannot be answered if "other" option has been enabled
+
+Changes from 6.6.3 (build 240909) to 6.6.4 (build 240923) September 23, 2024
++New feature #19722: Unable to use ExpressionScript code when export by remote control (#3948) (Denis Chenu)
+-Fixed issue #CR-1447:  Empty strpos() needle while importing answers to responses in debug mode (#3964) (Rami Shenouda)
+-Fixed issue #19750: [security] Server-Side Request Forgery attack on SPSS export style settings (#3966) (Denis Chenu)
+-Fixed issue #19744: showEmailInError missing documentation (#3969) (Denis Chenu)
+-Fixed issue #19700: [security] Invalid DB value can be entered with start URL (#3953) (Denis Chenu)
+-Fixed issue #19677: Conversion from comma to point fails (#3941) (Gabriel Jenik)
+-Fixed issue #19662: Improve .htaccess files to work with apache 2.4 w/o mod_access_compat (#3927) (Johannes Weberhofer)
+-Fixed issue #19659: Conditions based on {LANG} variable fail (#3944) (Denis Chenu)
+-Fixed issue #19658: Condition designer - first option in Multiple short text (Type: Q) question is always assigned predefined (No Answer) value (#3939) (Gabriel Jenik)
+-Fixed issue #19643: Date question with restrictions does not show up like in versions 3 and 5 (#3912) (Gabriel Jenik)
+-Fixed issue #19617: No way to get question text in get_question_properties (#3949) (Denis Chenu)
+-Fixed issue #19587: The theme option 'Background image' has a space in the name, so the image can't be loaded (#3940) (Gabriel Jenik)
+-Fixed issue #19519: When re-activating a token based survey the user is not asked to re-activate the token table (#3943) (Gabriel Jenik)
+#Updated translation: Slovak by jelen1
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Japanese by nomoto
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
+Changes from 6.6.2 (build 240827) to 6.6.3 (build 240909) September 9, 2024
+-Fixed issue: image select question, select button outside of image in certain sizes of the screen, image and column (Patrick Teichmann)
+-Fixed issue: Unable to open Quick statistics on non-MySQL databases (Carsten Schmitz)
+-Fixed issue: Database not shown in DB upgrade dialog when using MSSQL (Carsten Schmitz)
+-Fixed issue [security] #19735: XSS by simple user in image_select-listradio (Denis Chenu)
+-Fixed issue [security] #19734: XSS by simple user in image_select-multiplechoice (#3956) (Denis Chenu)
+-Fixed issue [security] #19732: XSS on date format (#3952) (Denis Chenu)
+-Fixed issue #19733: XSS by simple user with end url (#3954) (Denis Chenu)
+-Fixed issue #19729 [security] : XSS on time_limit (#3951) (Denis Chenu)
+-Fixed issue #19702 [security]: Prototype pollution in jquery-bbq - re-apply v1.4pre (Kevin Foster)
+-Fixed issue #19702 [security]: Prototype pollution in jquery-bbq (Carsten Schmitz)
+-Fixed issue #19578: After upgrading to 5 or 6 with MSSQL no way to access to plugin configuration (Carsten Schmitz)
+-Fixed issue #19534: Survey cannot be submitted if "soft force" options are used and "full index" is active (#3950) (Denis Chenu)
+-Fixed issue #19478: Error message "A column has been specified more than once in the order" when using MSSQL (Carsten Schmitz)
+-Fixed issue #19110: Using MSSQL unable to activate survey a second time (Carsten Schmitz)
+-Fixed issue  #19731: Error "null is not a countable type" when updating participant attribute (Carsten Schmitz)
+-* Fixed issue: Optional questions not working without javascript (Denis Chenu)
+-* Fixed issue #18443: Optional questions not working without "popup" (Denis Chenu)
+-* Fixed issue #18332: Mandatory soft must be related to Question not Page (Denis Chenu)
+#Updated translation: Uzbek by p_teichmann
+#Updated translation: Turkish by bulent, kayazeren
+#Updated translation: Slovak by jelen1
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Nepali by fesoj, twilllig
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
+Changes from 6.6.1 (build 240806) to 6.6.2 (build 240827) August 27, 2024
+-Fixed issue #CT-944: kal.mo was corrupted (twilligls)
+-Fixed issue #19717: SQL injection vulnerability when save survey (#3946) (Denis Chenu)
+#Updated translation: Sinhala by tixeon
+#Updated translation: Punjabi by tixeon
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Persian (Afghanistan) - Dari by tixeon
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Hazaragi by tixeon
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Finnish by Jmantysalo, puohis
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+
+
+Changes from 6.6.0 (build 240729) to 6.6.1 (build 240806) August 6, 2024
+-Fixed issue: Undefined variable $editorUrl in surveyTopbarRight_view.php (Kevin Foster)
+-Fixed issue #CT-887: Hazaragi language is now rtl (twilligls)
+-Fixed issue #19639: [security] Host Header Injection in password reset function (thanks to paoloelia) (#3920) (Denis Chenu)
+-Fixed issue #19607: Outdated libraries used with known vulnerabilities (#3904) (Gabriel Jenik)
+-Fixed issue #19589: Improve performance of survey queries (#3871) (Denis Chenu)
+-Fixed issue #18550: MSSQL response filter with underscore or bracket not working (#3900) (Denis Chenu)
+#Updated translation: Thai by tomzt
+#Updated translation: Slovak by jelen1
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Korean by modernity4r
+#Updated translation: Japanese by nomoto
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
+Changes from 6.5.18 (build 240723) to 6.6.0 (build 240729) July 29, 2024
++New feature: Updated internal REST API with more functions
+-Fixed issue #CT-907: Wrong File upload question texts in response view (#3930) (Mohab Elsheikh)
+-Fixed issue #CR-1421: Themes overview page showing error when configuration can't be loaded or is invalid (#3857) (Mohab Elsheikh)
+-Fixed issue #CT-854: Fix invalid logo path for PDF export (#3916) (Mohab Elsheikh)
+-Fixed issue #19492: Different minimum password requirements inside and outside of LimeSurvey (#3928) (Gabriel Jenik)
+#Updated translation: Korean by modernity4r
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Catalan by qualitatuvic
+
+
+Changes from 6.5.17 (build 240715) to 6.5.18 (build 240723) July 23, 2024
+-Fixed issue #QE-1019: badge info should be purple (#3913) (Patricia Stell)
+-Fixed issue #CT-877: labelset not creating dummy entries for languages not supplied by the labelset (#3914) (Patrick Teichmann)
+-Fixed issue #CT-863: response export with JSON format missing questions (#3921) (Tim Willig)
+-Fixed issue #CT-854: Fix logo path for PDF export (#3916) (Mohab Elsheikh)
+-Fixed issue #19651: Internal error when taking survey on PostgreSQL (#3919) (Gabriel Jenik)
+-Fixed issue #19455: Regex used at multi choice with comments question fails and keeps the user from going to the next page (#3909) (Gabriel Jenik)
+-Fixed issue #18207: User entered value can be parsed by expression script and is visible in validation answer string (#3925) (Denis Chenu)
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Japanese by d_inoue
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: German by c_schmitz, Mazi
+#Updated translation: German (Informal) by c_schmitz
+
+
+Changes from 6.5.16 (build 240708) to 6.5.17 (build 240715) July 15, 2024
+-Fixed issue #CT-896: Fixed question PDF export at statistics (lajosarpad)
+-Fixed issue #CT-892: Answers for array question types are not correctly displayed on mobile devices (#3911) (Patrick Teichmann)
+-Fixed issue #19631: Very hard to match attributes in the CPDB when importing CSV data (#3908) (Gabriel Jenik)
+-Fixed issue #19619: bad admin url, with the publicurl variable (#3910) (Denis Chenu)
+-Fixed issue #19105: Store XSS in Central participant management (#3902) (Gabriel Jenik)
+#Updated translation: Slovak by jelen1
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Catalan by qualitatuvic
+
+
+Changes from 6.5.15 (build 240701) to 6.5.16 (build 240708) July 8, 2024
+-Fixed issue #QE-1027: Survey progress bar does not reflect correct progress (#3898) (Rami Shenouda)
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Korean by modernity4r
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Hazaragi by tixeon
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz, der-iThieler
+
+
+Changes from 6.5.14 (build 240624) to 6.5.15 (build 240701) July 1, 2024
+-Fixed issue #19610: [security] queXML PDF discloses version specific information (#3885) (Adam Zammit)
+-Fixed issue #19604: [security] The reset password link is reusable after password change (#3895) (Denis Chenu)
+-Fixed issue #19603: [security] All admins can be deactivated by user with only users delete permission (#3896) (Denis Chenu)
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Japanese by nomoto
+#Updated translation: Finnish by Jmantysalo
+
+Changes from 6.5.13 (build 240617) to 6.5.14 (build 240624) June 24, 2024
+-Fixed issue #19608: [security] XSS under user management (thanks to OIZ Stadt Zürich and Protec7) (#3887) (Denis Chenu)
+-Fixed issue #19599: [security] Stored XSS through csv file upload (thanks to paoloelia ) (#3882) (Denis Chenu)
+-Fixed issue #19598: [security] No CSRF protection on userManagement (thanks to paoloelia) (#3880) (Denis Chenu)
+-Fixed issue #19579: Styling of question summary breaks if there is RegEx Validation (#3891) (Gabriel Jenik)
+-Fixed issue #19509: Postgres error when adding language (#3890) (Gabriel Jenik)
+-Fixed issue #14661: Plugin development needs a "Don't disable plugin" option (#3770) (Denis Chenu)
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Aanouk, c_schmitz, Han, jorynagel, kpadm, L191
+#Updated translation: Dutch (Informal) by c_schmitz, Han, jorynagel, thompol, zfocuz
+
+
+Changes from 6.5.12 (build 240611) to 6.5.13 (build 240617) June 17, 2024
+-Fixed issue #CR-1426: custom.css in survey themes and files_css not loaded correctly when using a theme variation (#3876) (Patrick Teichmann)
+#Updated translation: Korean by modernity4r
+#Updated translation: Japanese by d_inoue
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech (Informal) by jelen1
+
+
+Changes from 6.5.11 (build 240605) to 6.5.12 (build 240611) June 11, 2024
+-Fixed issue #19580: Data entry at anonymous survey with tokens crashed on save (#3873) (Denis Chenu)
+-Fixed issue #19570: JavaScript exception on survey taking on browsers not supporting localstorage (#3856) (Tõnis Ormisson)
+-Fixed issue #19457: [security] Stored Cross-Site Scripting (XSS) in file upload question (#3874) (Gabriel Jenik)
+#Updated translation: Slovak by jelen1
+#Updated translation: Korean by modernity4r
+#Updated translation: Japanese by nomoto
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
+Changes from 6.5.10 (build 240603) to 6.5.11 (build 240605) June 5, 2024
++New feature: Survey preview by Rest API (MW-1149) (lajosarpad)
+-Fixed issue: [security] Viewing surveys with popuppreview option should be limited to authorized admins (#3865) (K Foster)
+-Fixed issue #19527: Theme listing broke with invalid template (#3859) (Denis Chenu)
+-Fixed issue #19397: Editing menu entries not possible (#3862) (Denis Chenu)
+#Updated translation: Slovak by jelen1
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
+Changes from 6.5.9 (build 240521) to 6.5.10 (build 240603) June 3, 2024
+-Fixed issue #CR-1421: themes overview page showing error when configuration can't be loaded or is invalid (#3857) (Mohab Elsheikh)
+-Fixed issue #CT-778: wrong placeholder fields in html editor (#3851) (Tim Willig)
+-Fixed issue #19561: popup messages come with HTML inside (#3848) (Denis Chenu)
+#Updated translation: Slovak by jelen1
+#Updated translation: Portuguese (Brazil) by mauriciofurtado
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Korean by modernity4r
+#Updated translation: Korean by c_schmitz, modernity4r
+#Updated translation: Japanese by nomoto
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
+Changes from 6.5.8 (build 240517) to 6.5.9 (build 240521) May 21, 2024
+-Fixed issue: On group/question preview a PHP error is thrown if the qid/gid is invalid (#3849) (Carsten Schmitz)
+#Updated translation: Korean by modernity4r
+#Updated translation: Japanese by hl_sales
+
+
+Changes from 6.5.7 (build 240515) to 6.5.8 (build 240517) May 16, 2024
+-Fixed issue: L10ns must be initialized with qid not gid (Kevin Foster)
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Japanese by d_inoue, nomoto
+
+
+Changes from 6.5.6 (build 240506) to 6.5.7 (build 240515) May 15, 2024
+-Fixed issue #CT-800: Fixed styling for vanilla/fruity related to Bootstrap (twilligls)
+-Fixed issue #CT-774: Ranking advanced was not persisting answers on reload (prev, error modal) (twilligls)
+-Fixed issue #19562: Special character icon is doubled inside CKEditor (#3843) (tiborpacalat)
+-Fixed issue #19543: KCFinder needs to be updated when using with PHP 8.1 (#3837) (Gabriel Jenik)
+#Updated translation: Portuguese (Portugal) by c_schmitz, educaticteced, holch, samarta
+#Updated translation: Portuguese (Brazil) by c_schmitz, holch, samarta
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Korean by modernity4r
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Greek by baltzis
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Catalan by qualitatuvic
+
+
+Changes from 6.5.5 (build 240429) to 6.5.6 (build 240506) May 6, 2024
+-Fixed issue #CT-784: video elements are hidden on iPad beneath a certain height (#3838) (Patrick Teichmann)
+-Fixed issue #19528: Bad usability when opening participant edit in a new tab(#3826) (Denis Chenu)
+-Fixed issue #19526: debug=2 PHP8.1 - unable to send email without expiry (#3827) (Denis Chenu)
+#Updated translation: Turkish by kayazeren
+#Updated translation: Slovak by jelen1
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Odia by rajkumar_dms
+#Updated translation: Korean by modernity4r
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1, slansky
+#Updated translation: Czech (Informal) by jelen1
+
+
+Changes from 6.5.4 (build 240422) to 6.5.5 (build 240429) April 29, 2024
+-Fixed issue: Add/import user role buttons must have unique id (#3832) (K Foster)
+-Fixed issue #CT-771: clear selection and select all not working in responses grid column filter (#3828) (Patrick Teichmann)
+-Fixed issue #CT-711: email templates, add attachment, failed to open the resource manager (kcfinder) resulting in being unable to attach files to the email template (Patrick Teichmann)
+-Fixed issue #19527: Potential 500 error in survey list (#3833) (Denis Chenu)
+-Fixed issue #19504: Potential PHP Warning when get Survey listing (#3821) (Denis Chenu)
+-Fixed issue #19465: Apply new term blocklist (Carsten Schmitz)
+#Updated translation: Portuguese (Portugal) by holch, samarta
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Montenegrin by c_schmitz, kristinakom
+#Updated translation: Japanese by d_inoue
+#Updated translation: German by c_schmitz
+#Updated translation: German by Transcaretech
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Finnish by Jmantysalo
+
+
+Changes from 6.5.3 (build 240415) to 6.5.4 (build 240422) April 22, 2024
+-Fixed issue #19518: Downloading responses does not exit loading animation once finished (#3813) (Gabriel Jenik)
+-Fixed issue #19319: potential error during login, after Updating To LS 6.4.0 (#3767) (Denis Chenu)
+-Fixed issue #19302: Wrong redirect when directLogin is true (#3822) (Gabriel Jenik)
+#Updated translation: Spanish (Spain) by davidperez00
+#Updated translation: Slovak by jelen1
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Korean by modernity4r
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
+Changes from 6.5.2 (build 240402) to 6.5.3 (build 240415) April 15, 2024
+-Fixed issue: Survey general settings error message with more detail (#3809) (K Foster)
+-Fixed issue: Reduced chunk size to avoid memory-size crashes on survey archive exports (#3812) (lajosarpad)
+-Fixed issue: Missing mbstring library requirement was not properly checked during installation (Carsten Schmitz)
+-Fixed issue: Missing link in footer of index page (Carsten Schmitz)
+-Fixed issue #19514: File Upload, scrolling not possible on mobile (#3810) (Gabriel Jenik)
+-Fixed issue #19408: Users can activate a survey without groups and questions (#3808) (Gabriel Jenik)
+#Updated translation: Turkish by bulent, kayazeren
+#Updated translation: Slovak by jelen1
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Nepali by limeguy
+#Updated translation: Malay by aidi.ahmi
+#Updated translation: Korean by modernity4r
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Greek by kajetan
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by Akaer, c_schmitz
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Amharic by tibor.pacalat
+
+
+Changes from 6.5.1 (build 240320) to 6.5.2 (build 240402) April 2, 2024
+-Fixed issue: Wrong caption for function that prompts to set up 2FA after login (Carsten Schmitz)
+-Fixed issue #19484: File upload question - max_num_of_files problem (#3794) (Gabriel Jenik)
+-Fixed issue #19452: Improve usage of getQuestionAttributes PrintableSurvey (#3789) (Denis Chenu)
+-Fixed issue #19452: Improve usage of getQuestionAttributes DataEntry (#3784) (Denis Chenu)
+-Fixed issue #19452: getQuestionAttributes for UploaderController (Denis Chenu)
+#Updated translation: Portuguese (Portugal) by c_schmitz, holch, samarta, sazevedo
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Korean by modernity4r
+#Updated translation: Japanese by d_inoue
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+
+
+Changes from 6.5.0 (build 240319) to 6.5.1 (build 240320) March 20, 2024
+-Fixed issue: Error on MSSQL after install/update (Carsten Schmitz)
+#Updated translation: Slovak by dusanm, jelen1, sweetakasha
+#Updated translation: Portuguese (Brazil) by holch
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Korean by modernity4r
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1, slansky, VBraun
+#Updated translation: Czech (Informal) by jelen1, slansky, VBraun
+
+
+Changes from 6.4.12 (build 240311) to 6.5.0 (build 240319) March 19, 2024
++New feature: Updated internal REST API with more functions
+-Fixed issue: Replaced image on error screen (Carsten Schmitz)
+-Fixed issue #19459: [security] Potential XSS via ajaxHelper (#3781) (Denis Chenu)
+-Fixed issue #19456: ANSWERTABLE contains html tags with text email in admin notification (#3778) (Denis Chenu)
+-Fixed issue #19367: javascript file are outdated after update (#3707) (Denis Chenu)
+
+
+Changes from 6.4.11 (build 240304) to 6.4.12 (build 240311) March 11, 2024
+-Fixed issue: Survey not viewable if invalid str_repeat call is used in expressions (Carsten Schmitz)
+-Fixed issue: Cannot create URL panel parameters without assigning it to a question (Carsten Schmitz)
+-Fixed issue #CT-698: Fixed a link (#3788) (lajosarpad)
+-Fixed issue #CT-681: Answer options order (answer_order) is missing as an attribute definition and causes the value to not persist through tsv exports and imports (#3777) (Patrick Teichmann)
+-Fixed issue #19442: Generated analytics script does not properly escape question group name (#3761) (Matthew)
+-Fixed issue #19239: Plugin with PHP error can not be resetted (#3772) (Denis Chenu)
+-Fixed issue #19164: Extra action button for Question are really badly placed (#3766) (Denis Chenu)
+-Fixed issue #18473: Survey listing - multiple calls of template (#3738) (Denis Chenu)
+#Updated translation: Turkish by kayazeren
+#Updated translation: Portuguese (Brazil) by c_schmitz, femariso, holch, marcelovincenzi, mauriciofurtado, paulohpmoraes, samarta, thiagosmartins
+#Updated translation: Korean by modernity4r
+#Updated translation: Japanese by d_inoue
+#Updated translation: Finnish by Jmantysalo
+
+
+Changes from 6.4.10 (build 240228) to 6.4.11 (build 240304) March 4, 2024
+-Fixed issue: Cannot log in anymore after updating when using MSSQL server (Carsten Schmitz)
+-Fixed issue #19429: Menus that don't want to disappear (#3764) (Matthew)
+-Fixed issue #19394: Off-button not shown in 'Create example question group and question:' (#3765) (Matthew)
+-Fixed issue #19344: Survey activation error using MSSQL (Carsten Schmitz)
+#Updated translation: Portuguese (Portugal)
+#Updated translation: Italian by lfanfoni, mike73rn, tebala
+#Updated translation: Italian (Informal) by lfanfoni, sielte
+#Updated translation: Finnish by Jmantysalo
+
+
+Changes from 6.4.9 (build 240226) to 6.4.10 (build 240228) February 27, 2024
+-Fixed issue: Survey permission improvements (#3759) (lajosarpad)
+-Fixed issue #CT-674: other field in list(radio) is cut off after 5 characters (#3763) (Carsten Schmitz)
+-Fixed issue #19435: Input validation does not work correctly with input numeric when reload response (#3753) (Denis Chenu)
+#Updated translation: Japanese by d_inoue
+#Updated translation: French (France) by DenisChenu, mapage
+
+
+Changes from 6.4.8 (build 240221) to 6.4.9 (build 240226) February 26, 2024
+-Fixed issue: getQuestionQttributesForEMPerformance performance optimization (#3751) (lajosarpad)
+-Fixed issue: HTML tooltips for question attributes not properly showing (Carsten Schmitz)
+-Fixed issue: Assessment values not properly validated on input (Carsten Schmitz)
+-Fixed issue #19440: Pressing enter in question code circumvents validation (#3758) (Denis Chenu)
+-Fixed issue #19426: Survey listing : multiple call of same user (#3741) (Denis Chenu)
+-Fixed issue #19420: "Share survey" links not using alias (Carsten Schmitz)
+-Fixed issue #18473: Survey listing : multiple call of SurveyGroup (#3737) (Denis Chenu)
+-Fixed issue #16287: Contentious wording in the application texts (#3755) (Carsten Schmitz)
+#Updated translation: Turkish by kayazeren
+#Updated translation: Korean by modernity4r
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Finnish by Jmantysalo
+
+
+Changes from 6.4.7 (build 240219) to 6.4.8 (build 240221) February 21, 2024
+-Fixed issue: Using URL prefill you could post longer strings than allowed to a List type question resulting in a DB error (Carsten Schmitz)
+-Fixed issue: Tab-separated survey structure could not be exported if there is only one default value in the survey (Carsten Schmitz)
+-Fixed issue: Quick translation not working if server is using IPv6 (Carsten Schmitz)
+-Fixed issue: Multilingual surveys not properly saved (Carsten Schmitz)
+-Fixed issue: Improved performance of survey logic file (#3747) (lajosarpad)
+-Fixed issue #19087: [security] Account takeover through Import User function (#3735) (Denis Chenu)
+#Updated translation: Slovak by jelen1, PR_SOZA
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Portuguese (Brazil) by c_schmitz, foguinho.peruca
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Japanese by nomoto
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
+Changes from 6.4.6 (build 240212) to 6.4.7 (build 240219) February 19, 2024
+-Fixed issue: Untranslated string in optin/optout screen (Carsten Schmitz)
+-Fixed issue: Survey language consistency is checked even though only one language exists (Carsten Schmitz)
+-Fixed issue: Slow performance when saving a survey with more than one language (#3739) (Carsten Schmitz)
+-Fixed issue: Partial missing frontend validation on answer option codes (Carsten Schmitz)
+-Fixed issue: Integrity check very slow when having a lot of surveys (#3744) (Carsten Schmitz)
+-Fixed issue: Error message "Call to undefined method stdClass::decrypt()" when deleting a participant while using that to fill out the survey (Carsten Schmitz)
+-Fixed issue: Avoiding session reset upon database preview (#3745) (lajosarpad)
+-Fixed issue #LB-126: Prevent template removal when the files are temporarily unavailable (#3726) (lajosarpad)
+-Fixed issue #19399: Survey does not show translated text when on register page(#3732) (Denis Chenu)
+-Fixed issue #19392: Partial missing frontend validation on subquestion codes (#3729) (Denis Chenu)
+-Fixed issue #19383: When export multiple choice filtered : loose N/A value (#3718) (Denis Chenu)
+-Fixed issue #19359: JS error in console about CKeditor (#3730) (Gabriel Jenik)
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Mongolian by amidral
+#Updated translation: Korean by modernity4r
+#Updated translation: Japanese by d_inoue
+#Updated translation: Italian by sielte
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Catalan by qualitatuvic
+
+
+Changes from 6.4.5 (build 240205) to 6.4.6 (build 240212) February 12, 2024
+-Fixed issue #CR-1397: error in vue js code, resulting in sidebar events not being executed (#3728) (Patrick Teichmann)
+-Fixed issue #19396: Upgrade failure encountered at migration 620 (#3724) (Mohab Elsheikh)
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Japanese by d_inoue
+#Updated translation: French (France) by DenisChenu
+#Updated translation: Finnish by Jmantysalo
+
+
+Changes from 6.4.4 (build 240130) to 6.4.5 (build 240205) February 5, 2024
+-Fixed issue #LA-37: Set the timeout for notifications to 10s (#3715) (Mohab Elsheikh)
+-Fixed issue #19351: Limesurvey broken after 5.6.50 to 6.4.2 upgrade (#3713) (Mohab Elsheikh)
+-Fixed issue #19347: No generation of new user within first LDAP login (#3711) (Denis Chenu)
+-Fixed issue #19320: Error after accessing to response export view (#3683) (Gabriel Jenik)
+-Fixed issue #19313: No warning list when import same question code (#3695) (Gabriel Jenik)
+-Fixed issue #19253: CSV injection in export quota (#3677) (Gabriel Jenik)
+-Fixed issue #CT-627: incorrect qid highlighted in structure tab (#3719) (Patrick Teichmann)
+#Updated translation: Vietnamese by binhbot, dupd
+#Updated translation: Spanish (Mexican) by josanes
+#Updated translation: Spanish (Argentina) (Informal) by kwelladm
+#Updated translation: Slovenian by c_schmitz, junoslukan
+#Updated translation: Slovak by jelen1
+#Updated translation: Serbian (Latin script) by wakizashi
+#Updated translation: Russian by gcgops, sBoston
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Portuguese (Brazil) by dti.proplan, phph, Tiller
+#Updated translation: Portuguese (Brazil) by Tiller
+#Updated translation: Persian by sdhadi
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Lithuanian by Morta
+#Updated translation: Latvian by c_schmitz, daugavietis
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Hungarian by kkd
+#Updated translation: Hindi by KapilSabarwal
+#Updated translation: Hebrew by jonasfashions
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Georgian by Davitus, giorgi
+#Updated translation: French (France) by Aura97, c_schmitz, mapage, Tobixnator, twilllig
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch (Informal) by Aanouk
+#Updated translation: Danish by nonformality
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Croatian by tibor.pacalat
+#Updated translation: Chinese (Taiwan) (Traditional) by Yu-Jyun Guo
+#Updated translation: Chinese (Simplified) by flying9841, zengqing
+#Updated translation: Chinese (Simplified) by flying9841, markboo, q2019715, xiongrui
+#Updated translation: Chinese (Hong Kong) (Traditional) by GIF_IT
+#Updated translation: Arabic by mkhasawneh, Shatha
+
+
+Changes from 6.4.3 (build 240122) to 6.4.4 (build 240130) January 30, 2024
+-Fixed issue: Index cannot be set if already exists (Carsten Schmitz)
+-Fixed issue: Certain DB updates not skipped properly but end up in exception (Carsten Schmitz)
+-Fixed issue #CT-614: exporting responses in "Full answers" mode does not export the comment field of the "List with comment" question type (Patrick Teichmann)
+-Fixed issue #19331: Try to add a subquestion to a matrix type question throws an SQL error (#3686) (Gabriel Jenik)
+-Fixed issue #19251: Can't add Regex condition in survey (#3710) (Gabriel Jenik)
+-Fixed issue #18895: No way to add textarea with core config.xml (#3703) (Denis Chenu)
+#Updated translation: Slovak by dusanm, jelen1
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Czech by jelen1, slansky
+#Updated translation: Czech (Informal) by jelen1, slansky
+
+
+Changes from 6.4.2 (build 240115) to 6.4.3 (build 240122) January 22, 2024
++New feature #19299: Unmask token field (#3673) (Denis Chenu)
+-Fixed issue: LimeSurvey getting slower as more answer options are across all surveys (Carsten Schmitz)
+-Fixed issue #CT-605: column selector in responses tab wasn't working anymore (twilligls)
+-Fixed issue #CT-604: edit action in "Panel integration" wasn't working (twilligls)
+-Fixed issue #CT-598: removing additional languages didn't work anymore (twilligls)
+-Fixed issue #CR-1392: SQL not compatible with MSSQL and Postgres (#3700) (Mohab E)
+-Fixed issue #CR-1390: Translation string contains hardcoded action in placeholder (#3699) (Mohab E)
+-Fixed issue #19344: Survey activation error when create a new survey using MSSQL (#3696) (Carsten Schmitz)
+-Fixed issue #19274: Attribute encryption can not be turned OFF, it can only be turned on (#3670) (Gabriel Jenik)
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Korean by modernity4r, zist21
+#Updated translation: Japanese by nomoto
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by urbana
+#Updated translation: German (Informal) by c_schmitz, metaworx
+
+
+Changes from 6.4.1 (build 240108) to 6.4.2 (build 240115) January 15, 2024
+-Fixed issue: Don't use disk_free_space if function doesn't exist (ComfortUpdate) (Olle Haerstedt)
+-Fixed issue #2565: Label set panel description typo (Kevin Foster)
+-Fixed issue #19325: When deleting a token the participant_id is being logged while it should be the token_id (#3684) (Gabriel Jenik)
+-Fixed issue #19248: When deleting a token through the model, the AuditLog beforeDeleteToken event fails (#3676) (Gabriel Jenik)
+#Updated translation: Turkish by bulent, kayazeren
+#Updated translation: Slovak by jelen1
+#Updated translation: Portuguese (Portugal) by hurricane, samarta
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Korean by modernity4r
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: German by c_schmitz, eddylackmann
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
+Changes from 6.4.0 (build 231218) to 6.4.1 (build 240108) January 8, 2024
+-Fixed issue: Delete quota redirects to public survey list (Olle Haerstedt)
+-Fixed issue #19335: Message from submitfailed is never shown to user in one case (#3688) (Olle Härstedt)
+#Updated translation: Slovak by jelen1
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Korean by modernity4r
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han, thompol
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Catalan by qualitatuvic
+
+
+Changes from 6.3.9 (build 231211) to 6.4.0 (build 231218) December 18, 2023
++New feature #19308: Preview survey in modal (MW-728) (#3659) (lajosarpad)
++New feature #19201: Add column "active" to users, to be able to activate or deactivate users (#3550) (Mohab E)
+
+Changes from 6.3.8 (build 231204) to 6.3.9 (build 231211) December 11, 2023
+-Fixed issue: Unable to update from pre 495 version (#3607) (Denis Chenu)
+-Fixed issue #CT-531: not able to download quickCSVReport (Patrick Teichmann)
+-Fixed issue #CT-531: Timing statistics button is missing from the responses view (Patrick Teichmann)
+-Fixed issue #CT-531: Popover error on empty string in responsesListTable (twilligls)
+-Fixed issue #19262: Invalid fruity_twentythree template directory on PostgreSQL (#3642) (Olle Härstedt)
+-Fixed issue #18961: {SURVEYURL} didn't work with plugin using cli event (Gabriel Jenik)
+#Updated translation: Slovak by jelen1
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Korean by modernity4r
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Hungarian by kkd, tkazinczy
+#Updated translation: Hebrew by neaman
+#Updated translation: German by c_schmitz
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
+Changes from 6.3.7 (build 231127) to 6.3.8 (build 231204) December 4, 2023
++New feature #18880: New imagefile option type for theme options (#3621) (Gabriel Jenik)
+-Fixed issue 19255: PHP8.1 + debug : survey with only start date broke survey listing (#3629) (Denis Chenu)
+-Fixed issue #CR-1386: prevent errors when try to load uninstalled themes through the config.xml (#3646) (Patrick Teichmann)
+-Fixed issue #19276: When a user exit on quota, the theme is not applied correctly if "inherits everything" is set to off (#3639) (Gabriel Jenik)
+-Fixed issue #19271: When copy a question - question settings are lost by default (#3641) (Denis Chenu)
+-Fixed issue #19252: [security] Bad permission check when edit quota (#3633) (Denis Chenu)
+-Fixed issue #19243: date question type use always english for month and day for participant (#3625) (Denis Chenu)
+-Fixed issue #19231: (array) json_decode() is not equivalent to json_decode(, true) (#3615) (Olle Härstedt)
+-Fixed issue #19049: Cannot export LSS from survey where theme is set to one extended from 'bootswatch' (#3521) (Gabriel Jenik)
+#Updated translation: Slovak by jelen1
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Korean by modernity4r
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Catalan by qualitatuvic
+
+
+Changes from 6.3.6 (build 231120) to 6.3.7 (build 231127) November 27, 2023
+-Fixed issue #19232: Missing cssframework default values for survey theme (#3614) (Olle Härstedt)
+-Fixed issue #19228: Setting Bruteforce timeout values to empty string causes the administrator to be locked out (#3618) (Denis Chenu)
+-Fixed issue #19206: Alphabetical order can be bad with utf8 character  (#3637) (Denis Chenu)
+-Fixed issue #19168: [security] XSS in Survey menus (Menu icon type and Menu icon) (#3635) (Gabriel Jenik)
+-Fixed issue #19139: [security] CSRF in Reset Survey menus (Tests) (#3612) (Gabriel Jenik)
+-Fixed issue #18671: Potential loop with equation set question (#2984) (Denis Chenu)
+#Updated translation: Portuguese (Portugal) by twilllig
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Greek by baltzis, lenasterg
+#Updated translation: German by c_schmitz
+#Updated translation: French (France) by DenisChenu
+
+
+Changes from 6.3.5 (build 231113) to 6.3.6 (build 231120) November 20, 2023
+-Fixed issue #CT-480: CPDB attribute issues (#3620) (Tim Willig)
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Japanese by d_inoue
+#Updated translation: French (France) by mapage
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Catalan by qualitatuvic
+
+
+Changes from 6.3.4 (build 231108) to 6.3.5 (build 231113) November 13, 2023
+-Fixed issue: Update can fail if there are label codes longer than 5 characters (Carsten Schmitz)
+-Fixed issue #CR-1352: Saving subquestions and answers caused display errors (#3514) (Tim Willig)
+-Fixed issue #CR-1347: Duplicate entries in template configuration and incorrect theme being saved in general settings or loaded when a theme does not exist (#3491) (Patrick Teichmann)
+-Fixed issue #19230: Unable to create survey with debug = 2 and PHP8 (#3613) (Denis Chenu)
+-Fixed issue #19224: Advanced ranking does not respect max answers when drag-n-drop (#3608) (Gabriel Jenik)
+-Fixed issue #19218: PHP error with PHP81 and debug with strpos in asSplitStringOnExpressions function (#3597) (Denis Chenu)
+-Fixed issue #19215: PHP81 + debug PHP Notice when import some lss (#3589) (Denis Chenu)
+-Fixed issue #19214: JSON RPC response content type should be application/json (#3610) (Matthew)
+-Fixed issue #19211: [security] CSRF In Copy Survey  (#3600) (Denis Chenu)
+-Fixed issue #19162: [security] File Upload causes XSS in Central participant management/Import file CSV (#3584) (Gabriel Jenik)
+-Fixed issue #19139: [security] CSRF in Reset Survey menus  (#3603) (Gabriel Jenik)
+-Fixed issue #19118: [security] Improper permission management on bulk actions (#3580) (Denis Chenu)
+-Fixed issue #19086: Survey Theme Options - image preview does not work (#3557) (Matthew)
+-Fixed issue #19081: Lato fonts are loaded from Google fonts instead of solely using the ones shipped with limesurvey itself (#3543) (Gabriel Jenik)
+-Fixed issue #18995: [security] Confidentiality issue about username (#3512) (Gabriel Jenik)
+-Fixed issue #18350: activate_survey does not correctly set inherited properties for Notification and data management (#3595) (Matthew)
+#Updated translation: Turkish by kayazeren
+#Updated translation: Slovak by jelen1
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: French (France) by arnaud21, c_schmitz, DenisChenu, JosephM, mapage
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
+Changes from 6.3.3 (build 231106) to 6.3.4 (build 231108) November 6, 2023
+Fixed issue: Reverted noCSRFValidation enhancements, added on #19139
+
+Changes from 6.3.2 (build 231031) to 6.3.3 (build 231106) November 6, 2023
+-Fixed issue: Cannot deactivate survey properly if user has global survey permissions, but is not allowed to access the assigned SurveyGroup (Carsten Schmitz)
+-Fixed issue #19203: Alphabetical order didn't respect survey language (#3590) (Denis Chenu)
+-Fixed issue #19139: [security] CSRF in Reset Survey menus (#3588) (Gabriel Jenik)
+-Fixed issue #19133: [security] User can send email to group members, while not having permissions (#3587) (Denis Chenu)
+-Fixed issue #19117: [security] Account past their expiration date can be still active (#3525) (Denis Chenu)
+#Updated translation: Slovak by jelen1
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Korean by modernity4r
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
+Changes from 6.3.1 (build 231023) to 6.3.2 (build 231031) October 30, 2023
+-Fixed issue updates/Update_614.php should not hide privacyinfo option exists (Kevin Foster)
+-Fixed issue updates/Update_614.php should not assume template config options is an object (Kevin Foster)
+-Fixed issue statistics fails to count multi choice when encrypted (Kevin Foster)
+-Fixed issue #19188: CSS problems in survey permissions after reload (#3569) (Matthew)
+-Fixed issue #19183: No editing possible after setting the survey background (#3560) (Matthew)
+-Fixed issue #19181: Array[Number] statistics infinite loop when step is set to 0 (#3563) (Matthew)
+-Fixed issue #19177: Not able to change admin theme (#3548) (Matthew)
+-Fixed issue #19169: [security] Privilege escalation to edit survey (#3547) (Denis Chenu)
+-Fixed issue #19163: [security] Reflected XSS in HtmlEditorPop - Bypassing XSS sanitization function (#3565) (Gabriel Jenik)
+-Fixed issue #19161: Invalid adminemail/bounce_email address in lss results in white screen on import (#3556) (Gabriel Jenik)
+-Fixed issue #19140: Problem with viewing LimeSurvey notifications (#3523) (Matthew)
+-Fixed issue #19132: Icon selection in the "Dashboard editor/create box" does not work (#3515) (Matthew)
+-Fixed issue #19107: [security] Superadmin can update any admin's information (#3495) (Denis Chenu)
+-Fixed issue #19101: Array by Column Has Incorrect Table Row/Column Ids (#3500) (Matthew)
+-Fixed issue #19093: [security] Improper Authorization in Import Question function (#3513) (Gabriel Jenik)
+-Fixed issue #19085: Theme Options with an on/off switch are not disabled when page loads (#3558) (Matthew)
+-Fixed issue #19057: incorrect handling of wrong input in create dummy participant form (#3567) (Matthew)
+-Fixed issue #18436: RPC API - Inviting members with invalid language sends them an email but they're not marked as invited (#3571) (Denis Chenu)
+#Updated translation: Turkish by kayazeren
+#Updated translation: Slovak by jelen1
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Catalan by qualitatuvic
+
+
+Changes from 6.3.0 (build 231016) to 6.3.1 (build 231023) October 23, 2023
+-Fixed issue: Failed emails resend vars column needs to be mediumtext for mysql (#3545) (Tim Willig)
+-Fixed issue: Adding cldr "fr_lu" for lb language (twilligls)
+-Fixed issue: Upgrade fails on old fruity templates with error message 'cannot assign property fixnum to null' (Carsten Schmitz)
+-Fixed issue: Survey sometimes not completely deactivated, throwing error for missing response table (Carsten Schmitz)
+-Fixed issue: Core plugins AzureOAuthSMTP & GoogleOAuthSMTP not properly listed as core plugins (Carsten Schmitz)
+-Fixed issue #CT-386: missing closing div caused blank page on simple statistics for questions with more than 70 labels (twilligls)
+-Fixed issue #CT-256: Problems with ini parsing for GTranslate.php (#3555) (Tim Willig)
+-Fixed issue #19180: SMTP settings are not enabled when SMTP is selected in global settings (#3551) (Matthew)
+-Fixed issue #19170: Inserting a subquestion/answer option creates multiple rows (#3535) (Matthew)
+-Fixed issue #19114: [security] Admin with Settings & Plugins permission only can store XSS in Survey menus (#3542) (Gabriel Jenik)
+#Updated translation: Slovak by jelen1
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Japanese by d_inoue
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Catalan by mymast, qualitatuvic
+
+
+Changes from 6.2.11 (build 231007) to 6.3.0 (build 231016) October 16, 2023
++New feature #15664: Google OAuth plugin for emails (#3054) (Gabriel Jenik)
+-Fixed issue CR-1355: Image question types were gone on fresh install (#3518) (Tim Willig)
+-Fixed issue #19146: [security] Store XSS when editing label set (#3505) (Denis Chenu)
+-Fixed issue #19142: [security] CSRF in Save Box Settings (#3516) (Gabriel Jenik)
+-Fixed issue #19106: [security] Deleted account still has permissions (#3493) (Denis Chenu)
+-Fixed issue #19094: [security] Input Validation Vulnerability Leading to 500 on responses page (#3520) (Denis Chenu)
+-Fixed issue #19038: [security] Privilege escalation bug to creation survey-group with others group as parent (#3423) (Gabriel Jenik)
+-Fixed issue #18776: Question ordering not correct (#3522) (Matthew)
+-Fixed issue #18648: Unable to upload a file with theme animations enabled (#3529) (Gabriel Jenik)
+-Fixed issue #18439: Link set when create user are unusuable in text view (#3510) (Gabriel Jenik)
+-Fixed issue #18193: Question theme error - Missing metadata (Type: X) (#3252) (Denis Chenu)
+#Updated translation: Slovak by jelen1
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Japanese by d_inoue
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
+Changes from 6.2.10 (build 231004) to 6.2.11 (build 231007) October 6, 2023
+-Fixed issue: Server side subquestion unique code validation (Kevin Foster)
+-Fixed issue #CT-380: Registers necessary client scripts customization for CLSGridview (Mohab E)
+-Fixed issue #CT-380: Quotas validation modal (Mohab E)
+-Fixed issue #CT-380: Fixed the GridSettings & Added afterAjaxUpdate to grid view options (Mohab E)
+-Fixed issue #CR-1351: actions in tables not working when called through the sidemenu or ajax (#3496) (Mohab E)
+-Fixed issue #CR-1339: some actions not working for survey permissions and survey menu entries (#3474) (Mohab E)
+-Fixed issue #CR-1320: comfort update message overlapping with dropdown actions and can not be muted for a session (Patrick Teichmann)
+-Fixed issue #CR-1117: restrict naming of themes because it causes errors in some cases (#3376) (Mohab E)
+-Fixed issue #CR-1117: template name trimming & validate against any invalid characters (Mohab E)
+-Fixed issue #CR-1117: Validate theme name (Mohab E)
+-Fixed issue #CR-1117: Template name length validation (Mohab E)
+-Fixed issue #CR-1117: Fix templatename sanitization (Mohab E)
+-Fixed issue #19153: Question list edit URL expects questionId not qid (Kevin Foster)
+-Fixed issue #19134: [security] User with "Users" permission only can add arbitrary users to the not owned user group (#3509) (Denis Chenu)
+-Fixed issue #19126: [security] Incorrect Authorization check in add User role (#3506) (Denis Chenu)
+-Fixed issue #18957: Ranking Advanced: Visualization Types are not working (#3479) (Gabriel Jenik)
+#Updated translation: German by c_schmitz
+#Updated translation: Finnish by Jmantysalo
+
+
+Changes from 6.2.9 (build 230925) to 6.2.10 (build 231004) October 4, 2023
+-Fixed issue: Error on deactivation with message "11 arguments are required, 9 given" (#3490) (Mohab E)
+-Fixed issue #CR-1305: Always show "Edit default answers" option (Mohab E)
+-Fixed issue #CR-1305: Activated defaultvalues for 5pointchoice & gender (Mohab E)
+-Fixed issue #CR-1319: Global surveytheme is not inherited by global survey surveytheme (#3465) (Mohab E)
+-Fixed issue #CR-1305: Structure tab question menu should always show "Edit default answers" option (#3367) (Mohab E)
+-Fixed issue #19136: Undefined variable in admin global settings general subview (#3499) (Matthew)
+-Fixed issue #19115: Menu toggler appears when not needed (#3494) (Denis Chenu)
+-Fixed issue #19112: [security] Store XSS at Label sets list (#3503) (Denis Chenu)
+-Fixed issue #19098: Add XSD files to allowed files for plugin uploads (Marko Bischof)
+-Fixed issue #18995: [security] Confidentiality issue about username (#3447) (Gabriel Jenik)
+-Fixed issue #18294: User can not see group created and user in group created (#3504) (Denis Chenu)
+-Fixed issue #18268: Unable to get any page debug set an set_time_limit disable (#2540) (Denis Chenu)
+#Updated translation: Welsh by ChrisWilliams
+#Updated translation: Ukrainian by DermanskiyIM
+#Updated translation: Turkish by kayazeren
+#Updated translation: Slovak by jelen1
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Greek by baltzis
+#Updated translation: German by c_schmitz, DerOlli
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
+Changes from 6.2.8 (build 230921) to 6.2.9 (build 230925) September 25, 2023
+-Fixed issue #19100: [security] Store DOM XSS when creating a survey (#3469) (Denis Chenu)
+-Fixed issue #19099: [security] XSS vulnerability caused by themeOptions/importManifest (#3483) (Denis Chenu)
+-Fixed issue #19063: Import of broken lsa file yields success message (but inactive "Go to survey" button) (#3461) (Gabriel Jenik)
+-Fixed issue #19004: Can not delete or edit assessment rules  (#3456) (Gabriel Jenik)
+-Fixed issue #18986: [security] superadmin without create superadmin can create superadminu (#3485) (Denis Chenu)
+-Fixed issue #18968: User with "View/read Users" permission needs to have "User details" action available for all users, not just itself (#3475) (Gabriel Jenik)
+-Fixed issue #18938: question_template_attribute show only default value (#3481) (Denis Chenu)
+-Fixed issue #18494: TypeError during demo survey "ls205_em_tailoring" (#3452) (Gabriel Jenik)
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Italian by internet.redazione, lfanfoni
+#Updated translation: Italian (Informal) by internet.redazione, lfanfoni
+#Updated translation: Hungarian by kkd
+
+
+Changes from 6.2.7 (build 230918) to 6.2.8 (build 230921) September 21, 2023
+-Fixed issue: theme breaks when filepath inside the config includes linebreaks and empty spaces (Patrick Teichmann)
+-Fixed issue: Subquestions are not stored when saving saving and the same code exists in different scales (Carsten Schmitz)
+-Fixed issue: Iterate survey button not visible (Carsten Schmitz)
+-Fixed issue #CT-337: Wrong survey being picked up when using alias (#3427) (Gabriel Jenik)
+-Fixed issue #19096: Array by column answer options are not processed by EM before display (#3464) (Matthew)
+-Fixed issue #19025: When there are question themes installed, can't upload survey themes (#3358) (Gabriel Jenik)
+-Fixed issue #18984: [security] CSRF in Question Themes function (#3459) (Gabriel Jenik)
+-Fixed issue CR-1310: re-bind attributePanel buttons (Mohab E)
+-Fixed issue CR-1310: Fixed edit attribute bug (Mohab E)
+-Fixed issue #CR-1310: Can't edit Attribute at admin/participants/sa/attributeControl (Mohab E)
+#Updated translation: Slovak by jelen1
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Hungarian by kkd
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
+Changes from 6.2.6 (build 230904) to 6.2.7 (build 230918) September 18, 2023
+-Fixed issue #CT-374: ckeditor prevents iframes from working by adding sandbox="" (twilligls)
+-Fixed issue #CR-1308: Batch actions dropdown is disabled executing any table action (Mohab E)
+-Fixed issue #19072: CDbException with Microsoft SQL Server (#3431) (Denis Chenu)
+-Fixed issue #19068: Batch actions dropdown is disabled after first use on User management page (#3421) (Gabriel Jenik)
+-Fixed issue #19056: Save button in create dummy participants page actually saves and closes (#3426) (Gabriel Jenik)
+-Fixed issue #19052: Statistic navigate button doesn't redirect to responses (#3425) (Mohab E)
+-Fixed issue #19041: Action dropdown is blocked after filter or changing rows per page (#3398) (Gabriel Jenik)
+-Fixed issue #19039: Action Links Drop Down Menu Not Working In CPM(CPDB) (#3397) (Gabriel Jenik)
+-Fixed issue #19037: [security] Reflected XSS in LimeSurvey via user id parameter (#3406) (Gabriel Jenik)
+-Fixed issue #19033: After performing an action inside attribute table, other actions were not possible (#3424) (Mohab E)
+-Fixed issue #19031: Massive action not possible after doing another action in the survey paticipants table (#3437) (Mohab E)
+-Fixed issue #19030: Batch actions dropdown is disabled executing any table action (#3419) (Mohab E)
+-Fixed issue #19019: [security] Stored XSS in description of theme (#3359) (Gabriel Jenik)
+-Fixed issue #19018: Postgres - trying to update from 5.6.31 to master caused an error (#3370) (Gabriel Jenik)
+-Fixed issue #18981: Using ngT to translate plurals loads wrong locale folder (#3363) (Gabriel Jenik)
+-Fixed issue #18978: User is able to change survey group's code that is by default unchangeable (#3400) (Gabriel Jenik)
+-Fixed issue #18904: [security] Stored XSS with Expression Script in End page (#3402) (Gabriel Jenik)
+-Fixed issue #18602: When surveys are copied without copying attachments, attachment info is copied but not updated (#3430) (Gabriel Jenik)
+-Fixed issue #18601: No editor available when defining quota messages. (#3429) (Gabriel Jenik)
+-Fixed issue #18593: Float attributes are not supported anymore (#3411) (Gabriel Jenik)
+-Fixed issue #18557: Email Template Attachments appear to carry over with copied survey, but do not work (#2861) (Gabriel Jenik)
+-Fixed issue #18494: TypeError during demo survey "ls205_em_tailoring"  (#3443) (Gabriel Jenik)
+-Fixed issue #15310: Display dropdown boxes - Date/Time question type not working correctly if minimum date < 1900 (#3353) (Gabriel Jenik)
+#Updated translation: Turkish by bulent, kayazeren
+#Updated translation: Swedish by maxzomborszki
+#Updated translation: Spanish (Spain) by aesteban, c_schmitz, ireneoh, segui, valdomir
+#Updated translation: Slovak by jelen1
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Japanese by d_inoue
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1, slansky
+#Updated translation: Czech (Informal) by jelen1
+
+
+Changes from 6.2.5 (build 230828) to 6.2.6 (build 230904) September 4, 2023
+-Fixed issue #CR-925: Inherited options do not match value inherited (#3362) (Mohab E)
+-Fixed issue #19036: Stored XSS via user's username (#3393) (Gabriel Jenik)
+-Fixed issue #19027: Editing a selected survey from the survey list does not work after performing table action like pagination (#3404) (Patrick Teichmann)
+-Fixed issue #18905: Create automatic test for XSS Purifier: Broken HTML (#3378) (Gabriel Jenik)
+#Updated translation: Spanish (Spain) by ireneoh
+#Updated translation: Slovak by jelen1, jetSonic
+#Updated translation: Portuguese (Portugal) by algarvio, c_schmitz, effgarces, holch, hurricane, samarta, Tiller
+#Updated translation: French (France) by arnaud21, b00z00, c_schmitz, DenisChenu, JosephM, riqcles, sim.eesp
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1, slansky
+#Updated translation: Catalan by qualitatuvic
+
+
+Changes from 6.2.4 (build 230825) to 6.2.5 (build 230828) August 28, 2023
+-Fixed issue #CR-1277: Update side-menu icons (jack-han-115)
+-Fixed issue #18755: The way to open/close a question groups is too hidden (jack-han-115)
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz, maren.fritz
+#Updated translation: Finnish by Jmantysalo
+
+
+Changes from 6.2.3 (build 230821) to 6.2.4 (build 230825) August 23, 2023
++New feature: Import survey lss file via command line (lajosarpad)
+-Fixed issue #CR-1285: User should be able to reorder questions within a group of an activated survey (#3346) (Mohab E)
+-Fixed issue #CR-1285: Allow the user to rearrange questions within an activated survey within a group (Mohab E)
+-Fixed issue #CR-1272: Upload & Install button on admin theme tab shouldn't be there (#3348) (Mohab E)
+-Fixed issue #CR-1243: Fix survey default languages removal alert (#3350) (Mohab E)
+-Fixed issue #CR-1230: Deactivate survey - wrong name of the responses table (#3347) (Mohab E)
+-Fixed issue #19028: Send email only to participants with partial responses - should not be available for anonymous surveys (Kevin Foster)
+-Fixed issue #19003: [security] XSS Reflected via import file function (#3369) (Gabriel Jenik)
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: German by c_schmitz, maren.fritz
+
+
+Changes from 6.2.2 (build 230814) to 6.2.3 (build 230821) August 21, 2023
+-Fixed issue #CR-1253: Fix email validation (#3360) (Mohab E)
+-Fixed issue #19009: General settings default value is NULL (#3355) (K Foster)
+-Fixed issue #18976: Default answers should persist with subquestions (#3357) (K Foster)
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Finnish by Jmantysalo
+
+
+Changes from 6.2.1 (build 230807) to 6.2.2 (build 230814) August 14, 2023
+-Fixed issue #18821: Public URL is not used for SURVEYURL (Tests) (#3340) (Gabriel Jenik)
+-Fixed issue #CR-1282: Side menu: Loading animation is in the wrong position (#3337) (Mohab E)
+-Fixed issue #CR-1267: Facebook buttons size (#3328) (Mohab E)
+-Fixed issue #CR-1253: There is no validation on admin email, bounce email in general survey settings (#3331) (Mohab E)
+-Fixed issue #CR-1236: Layout issue: Close modal button (x) on confirmation modal (#3338) (Mohab E)
+-Fixed issue #CR-1219: Privacy policy checkbox on starting page of survey is always green when unchecked (#3343) (Mohab E)
+-Fixed issue #19000: Privacy policy view is not rendered per tab, it is stacked below each other in the same view. (#3333) (Gabriel Jenik)
+-Fixed issue #18977: [security] Improper Authorization in add role function leads to privilege escalation (#3307) (Denis Chenu)
+-Fixed issue #18958: Multiple numerical input text input box width not having an effect (#3297) (Adam Zammit)
+-Fixed issue #18949: Responses filters are case sensitive (#3339) (Gabriel Jenik)
+-Fixed issue #18931: Send test email in global settings not working (#3287) (Gabriel Jenik)
+-Fixed issue #18832: Participants can't re-enter a submitted survey if setting is using "inherit" at participant settings (#3312) (Gabriel Jenik)
+-Fixed issue #18610: Email attachments expose absolute path when exporting LSS (#3003) (Gabriel Jenik)
+-Fixed issue #18315: Uses left value goes to negative (#3060) (Gabriel Jenik)
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Khmer by PawelAtroszko
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Italian by lfanfoni, maren.fritz
+#Updated translation: Italian (Informal) by lfanfoni, myliserta
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Catalan by qualitatuvic
+
+
+Changes from 6.2.0 (build 230732) to 6.2.1 (build 230807) August 7, 2023
+-Fixed issue #CR-1279: Row link doesn't work when executing Ajax calls in grid view (Patrick Teichmann)
+-Fixed issue #CR-1265: File upload question RTL (#3315) (Tim Willig)
+-Fixed issue #CR-1257: Ownership typo (#3322) (Mohab E)
+-Fixed issue #18985: [security] Reflected XSS (#3309) (Denis Chenu)
+-Fixed issue #18979: [security] User can put survey in survey group without access permission (#3304) (Denis Chenu)
+-Fixed issue #18888: General issues with different questions (#3317) (Gabriel Jenik)
+#Updated translation: Turkish by bulent, c_schmitz, kayazeren
+#Updated translation: Slovak by jelen1
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
+Changes from 6.1.8 (build 230717) to 6.2.0 (build 230732) July 31, 2023
++New feature: Update the style of the admin file manager (#3093) (jack-han-115)
++New feature: Combine question list, group list, and reorder into one page (#3070) (jack-han-115)
++New feature #18742: Allow "User Admins" to see Users' Roles (#3048) (Valerio Bozzolan)
+-Fixed issue: show no survey menu when no survey options are available (twilligls)
+-Fixed issue: removed potential PHP notices for printanswers view (twilligls)
+-Fixed issue: image-select checkbox design was broken (twilligls)
+-Fixed issue: group description spacing wrong in mobile view (twilligls)
+-Fixed issue: changed 766px breakpoint to valid 767px (twilligls)
+-Fixed issue: captcha cols and button icon alignment (twilligls)
+-Fixed issue: Typo in vanilla save form (twilligls)
+-Fixed issue #CR-999: 5pointquestion on mobile devices (twilligls)
+-Fixed issue #CR-1283: Ensure surveyActivated is passed to views/admin/survey/organizeGroupsAndQuestions_view (#3305) (tiborpacalat)
+-Fixed issue #CR-1211: Language switcher renders differently in firefox… (#3254) (Tim Willig)
+-Fixed issue #CR-1156: error and save pages were loading twig files of wrong su… (#3164) (Tim Willig)
+-Fixed issue #18974: [security] Stored XSS via user's Full Name (#3300) (Denis Chenu)
+-Fixed issue #CR-1287: fixed invalid options string throwing errors when exporting a survey (Patrick Teichmann)
+-Fixed issue #CR-1266: Remove exclamation icon from instructions for em_tip text (Patrick Teichmann)
+-Fixed issue #CR-1210: fixed sizing and spacing of navbar, top-container, body (Patrick Teichmann)
+-Fixed issue #CR-1181: Bootstrap is loaded twice in ls6_surveytheme (Patrick Teichmann)
+-Fixed issue #CR-1049: footer positioned incorrectly and not at the end of visible page (#3039) (jack-han-115)
+-Fixed issue #18967: [security] User can import User Roles having permission (#3295) (Denis Chenu)
+-Fixed issue #18967: [security] User can add malicious content in User Roles (#3292) (Denis Chenu)
+-Fixed issue #18963: On PHP 8.2 new DateTime() can not be invoked with null (#3291) (Johannes Weberhofer)
+-Fixed issue #18936: User count in group is not OK after deleting a user (#3286) (Gabriel Jenik)
+-Fixed issue #18876: Plugin expose full path when an error is reported in the plugin list (#3283) (Gabriel Jenik)
+-Fixed issue #18798: Out-of-memory problem in statistics export (#3231) (#3267) (Gabriel Jenik)
+-Fixed issue #18725: Reorder questions/question groups can break survey (tests) (#3178) (Gabriel Jenik)
+-Fixed issue #18694: Invalid HTML for list radio questions due to missing closing ul element (#3226) (Gabriel Jenik)
+-Fixed issue #18573: Insert new box with overlapping position, makes the dashboard to show duplicate boxes (#3289) (Gabriel Jenik)
+-Fixed issue #18495: configuration tab is not visible to a user with only create label set permission (#3185) (Denis Chenu)
+-Fixed issue #18278: Quick translation - "Nothing to translate" appears wrongly (#3296) (Gabriel Jenik)
+#Updated translation: Slovak by jelen1
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Khmer by PawelAtroszko
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: German by gerzess, maren.fritz
+#Updated translation: German by c_schmitz, gerzess, maren.fritz
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz, gerzess
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Albanian by darliv
+#Updated translation and removed one file (dead code)
+#Updated translation (#3299)
+#Updated translation
+
+
+Changes from 6.1.7 (build 230710) to 6.1.8 (build 230717) July 17, 2023
+-Fixed issue #18942: Roles - Permissions Modal is too narrow (#3276) (Gabriel Jenik)
+-Fixed issue #18937: Action menu stop work after any action on any user (#3282) (Gabriel Jenik)
+-Fixed issue #18929: Cannot edit data notification entries (#3265) (Gabriel Jenik)
+-Fixed issue #18927: [security] Export user roles without authorization (#3272) (Gabriel Jenik)
+-Fixed issue #18837: Unable to replace record during reimport of VV files (#3275) (Denis Chenu)
+-Fixed issue #18368: export_statistics from API yields error (#3244) (Gabriel Jenik)
+-Fixed issue #18281: Users in group are not deleted (#2565) (Gabriel Jenik)
+#Updated translation: Swedish by c_schmitz, maxzomborszki
+#Updated translation: Slovak by jelen1
+#Updated translation: Portuguese (Brazil) by c_schmitz, holch, lucaspcs, marcelovincenzi, samarta, Tiller
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
+Changes from 6.1.6 (build 230703) to 6.1.7 (build 230710) July 10, 2023
+-Fixed issue: Auto-translate was broken (Olle Haerstedt)
+-Fixed issue #18934: [security] Stored XSS in label set administration (#3271) (Gabriel Jenik)
+-Fixed issue #18932: 404 error after importing responses from a old response table (#3273) (Gabriel Jenik)
+-Fixed issue #18928: [security] Stored XSS on Survey "Notification and data function" (#3270) (Gabriel Jenik)
+-Fixed issue #18923: [security] Admin notification permissions updated (Patrick Teichmann)
+-Fixed issue #18884: [security] Fixed more positions with survey group title not escaped (Patrick Teichmann)
+-Fixed issue #18882: [security] Stored XSS in End page (#3240) (Gabriel Jenik)
+-Fixed issue #18818: Dump when using getQuestions API  (#3234) (Gabriel Jenik)
+-Fixed issue #18356: User with only user update allowed can set/remove any role to any user (#3259) (Gabriel Jenik)
+-Fixed issue #17536: Create automatic test for XSS Purifier (#3238) (Gabriel Jenik)
+#Updated translation: Valencian by vbraque
+#Updated translation: Thai by tomzt
+#Updated translation: Slovak by jelen1
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+
+
+Changes from 6.1.5 (build 230626) to 6.1.6 (build 230703) July 3, 2023
+-Fixed issue CR-1206: Token field in responses table not actionable (#3230) (Tim Willig)
+-Fixed issue CR-1205: Request-URI Too Large on Responses page (#3235) (Tim Willig)
+-Fixed issue #18915: [security] Non-superadmin Admin user is able to edit groups not owned (#3248) (Tim Willig)
+-Fixed issue #18918: [security] Wwnership permissions update (#3251) (Patrick Teichmann)
+-Fixed issue #18917: [security] Stored XSS in the user group deletion confirmation popup (#3249) (Patrick Teichmann)
+-Fixed issue #18913: [security] Incorrect permissions for useraction (#3253) (Patrick Teichmann)
+-Fixed issue #18630: Survey list showing wrong icon for surveys. (#3232) (Gabriel Jenik)
+-Fixed issue #18356: [security] User with only user update allowed can set/remove any role to any user (#2625) (Gabriel Jenik)
+-Fixed issue CR-1234: Show more is inconsistent in Survey settings overview - Text elements card (tiborpacalat)
+-Fixed issue CR-1232: Survey settings overview - Vertical spacing between items is not equal (#3236) (tiborpacalat)
+#Updated translation: Thai by tomzt
+#Updated translation: Spanish (Spain) by ireneoh
+#Updated translation: Slovak by jelen1
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Greek by dfragkos
+#Updated translation: German by c_schmitz, eddylackmann
+#Updated translation: German (Informal) by c_schmitz, richterd
+#Updated translation: French (France) by AlainR, arnaud21, brunofr9316, c_schmitz, DenisChenu
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1, slansky, VBraun
+
+
+Changes from 6.1.4 (build 230620) to 6.1.5 (build 230626) June 26, 2023
+-Fixed issue: SQL error on import if quota member code is too long (Carsten Schmitz)
+-Fixed issue: Disable system information in demo mode (Carsten Schmitz)
+-Fixed issue [security] #18868: No CRSF control for action of label set (Denis Chenu)
+-Fixed issue [security] #18866: Label sets can be created by any admin user (#3212) (Denis Chenu)
+-Fixed issue 18821: Public url is not used for SURVEYURL (#3229) (Tim Willig)
+-Fixed issue #18912: [security] Able to change username that is by default unchangeable (Patrick Teichmann)
+-Fixed issue #18896: Error on Postgres when creating a survey and expressionQuestionHelp plugins is activated (Carsten Schmitz)
+-Fixed issue #18891: Capital letters N/Y in name of inherited survey themes are replaced by "Off" (Carsten Schmitz)
+-Fixed issue #18885: CSRF Leading to reset Boxes (#3239) (Gabriel Jenik)
+-Fixed issue #18883: [security] Stored XSS vulnerability in user profile (#3247) (Patrick Teichmann)
+-Fixed issue #18881: [security] CKeditor 4.20.2 in use which is vulnerable to CVE-2023-28439 (#3237) (Gabriel Jenik)
+-Fixed issue #18706: Cannot use expression in End url description (#3204) (Gabriel Jenik)
+-Fixed issue #18465: ComfortUpdate shows error message to contact the LimeSurvey team, while just retrying usually works (Carsten Schmitz)
+#Updated translation: Swedish by maxzomborszki
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Italian by c_schmitz, lfanfoni, mike73rn, ritapas, seccalisca
+#Updated translation: Italian (Informal) by c_schmitz, ciampix, lfanfoni, mike73rn, ritapas
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by actxcellence, c_schmitz
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Catalan by qualitatuvic
+
+
+Changes from 6.1.3 (build 230612) to 6.1.4 (build 230620) June 19, 2023
+-Fixed issue: [security] Administrator can self-delete (Carsten Schmitz)
+-Fixed issue: ComfortUpdate showing updates as unstable, even though they are not (fixed the related alert) (twilligls)
+-Fixed issue #18890: Group import leads to 500 error on translateLinks (Carsten Schmitz)
+-Fixed issue #18871: Can't add email attachment in email templates (#3215) (Gabriel Jenik)
+-Fixed issue #18793: Quick Translation crash with MS SQL Database Error (#3224) (Gabriel Jenik)
+-Fixed issue #18731: Edit a question "script" tab has disappeared (#3157) (Denis Chenu)
+-Fixed issue #18704: Error when trying to add another language to a survey and MSSQL server is used (Carsten Schmitz)
+-Fixed issue #18693: Using checkbox question for yes/no loses data when data entry view (#3018) (Gabriel Jenik)
+-Fixed issue #18459: When filtering the survey list by a parent survey group, surveys assigned to a child survey group are not listed (#3167) (Gabriel Jenik)
+-Fixed issue #18401: Unable to use checkdate function if debug set  (#3214) (Gabriel Jenik)
+-Fixed issue #17992: Unable to re-import tokens from old table (#2404) (Gabriel Jenik)
+#Updated translation: Swedish by maxzomborszki
+#Updated translation: Portuguese (Brazil) by holch
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Finnish by Jmantysalo
+
+
+Changes from 6.1.2 (build 230606) to 6.1.3 (build 230612) June 12, 2023
+-Fixed issue #18833: Mobile phone issue with formulas on columns headings with array numbers on checkbox layout (#3207) (Denis Chenu)
+-Fixed issue #18814: Array question statistics fail for Remote Control (#3191) (Gabriel Jenik)
+-Fixed issue #18808: Mandatory soft only works once per survey if over multiple pages/groups (#3195) (Denis Chenu)
+-Fixed issue #18789: Database upgrade error when trying to update from 6.0.x to any later version and using Postgres (Carsten Schmitz)
+-Fixed issue #18669: XSS simple admin via Google key (#3004) (Gabriel Jenik)
+-Fixed issue #18615: Data integrity SQL syntax error on Postgres when trying to fix quotas (Carsten Schmitz)
+-Fixed issue #16409: Emoticon style is different if emoticon is chosen (#3152) (Gabriel Jenik)
+#Updated translation: Slovak by jelen1
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Hungarian by kkd
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
+Changes from 6.1.1 (build 230530) to 6.1.2 (build 230606) June 5, 2023
+-Fixed issue #18823: STATA Export fails with certain question types (#3148) (Oz-men)
+-Fixed issue #18814: Array question statistics fail for Remote Control. (#3165) (Gabriel Jenik)
+-Fixed issue #18808: Mandatory soft only works once per survey if over multiple pages/groups (#3119) (Denis Chenu)
+-Fixed issue #18737: Missing response action: View response as queXML PDF (#3042) (Adam Zammit)
+-Fixed issue #18720: Script show as updatable for simple user with XSS (#3145) (Denis Chenu)
+-Fixed issue #17491: Multiple Short Text subquestions missing from Export Printable Survey (#3135) (Adam Zammit)
+#Updated translation: Valencian by c_schmitz, joamuran, vbraque
+#Updated translation: Turkish by kayazeren
+#Updated translation: Spanish (Spain) by ireneoh
+#Updated translation: Slovak by jelen1
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: French (France) by DenisChenu
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Catalan by mymast, qualitatuvic
+
+
+Changes from 6.1.0 (build 230522) to 6.1.1 (build 230530) May 30, 2023
+-Fixed issue: [security] Unsafe way to detect IP address against brute-force attacks (Carsten Schmitz)
+-Fixed issue: Editing a quota shows that it was saved, while it was not (Carsten Schmitz)
+-Fixed issue CR-1168: Errors for printanswers after twig upgrade from version 1 to 3 (sameas vs. same as) (twilligls)
+-Fixed issue #CR-1167: update registering new function name (jack-han-115)
+-Fixed issue #18835: Array question doesn't reload anwsers (#3162) (Denis Chenu)
+-Fixed issue #18745: table action dropdown cut off in firefox (Patrick Teichmann)
+-Fixed issue #18659: cannot install two plugins in a row (#3160) (Gabriel Jenik)
+-Fixed issue #18462: Missing option to search for survey groups at list survey screen. (#3159) (Gabriel Jenik)
+-Fixed issue #18456: Interface language parmater use exotic dropdown list. (#3112) (Gabriel Jenik)
+-Fixed issue #18246: The setting in the theme variation field (global level) is not shown (#2510) (Gabriel Jenik)
+-* Fixed issue #18456: Interface language parmater use exotic dropdown list. (Gabriel Jenik)
+#Updated translation: Slovak by jelen1
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
+Changes from 6.0.7 (build 230515) to 6.1.0 (build 230522) May 22, 2023
++New feature #18792: Allow to move question inside group and group order with activated survey (Denis Chenu)
+-Fixed issue: ComfortUpdate showing updates as unstable, even though they are not (Carsten Schmitz)
+-Fixed issue: Action dropdown menu cut off in Firefox (#3085) (jack-han-115)
+-Fixed issue CR-956: wrong color code for g-700 grey (Patrick Teichmann)
+-Fixed issue #18811: Button that triggers HTML editor in pop-up window doesn't work (Denis Chenu)
+-Fixed issue #18805: No replacement variables available on user administration page (#3113) (Denis Chenu)
+-Fixed issue #18784: timer.min.js outdated, updated the build process (#3151) (Bert Hankes)
+-Fixed issue #18736: Error exporting participants when using MSSQL DB (Carsten Schmitz)
+-Fixed issue #18725: Reorder questions/question groups can break survey (Denis Chenu)
+-Fixed issue #18670: "Validation of quota" action button always shows 1st quota (#3139) (Gabriel Jenik)
+-Fixed issue #18605: Missing success alerts in participant view (#2876) (Gabriel Jenik)
+-Fixed issue #18464: Min/max settings doesn't work for question attrib… (#2708) (Denis Chenu)
+-Fixed issue #18262: QCode.gid is not working anymore (#3138) (Denis Chenu)
+#Updated translation: Ukrainian by DermanskiyIM
+#Updated translation: Swedish by maxzomborszki
+#Updated translation: Slovak by jelen1
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Greek by baltzis, kiolalis
+#Updated translation: German by c_schmitz
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Bulgarian by bmtteam
+
+
+Changes from 6.0.6 (build 230508) to 6.0.7 (build 230515) May 15, 2023
+-Fixed issue: No proper error when entering ComfortUpdate key and server cannot be reached (Carsten Schmitz)
+-Fixed issue #18765: Answers are not populated correct in array dual scale after clicking "Back" (#3061) (Gabriel Jenik)
+#Updated translation: Slovak by jelen1
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
+Changes from 6.0.5 (build 230502) to 6.0.6 (build 230508) May 8, 2023
+-Fixed issue: Cannot add survey menu when using PHP8 (#3115) (Patricia Stell)
+-Fixed issue CR-1119: Saving change disables active status for theme option page (#3104) (Tim Willig)
+-Fixed issue #18747: User administration email - reserved words send 403 error (Denis Chenu)
+-Fixed issue #18744: Window of user permissions is not adapting to space needed by languages. (#3075) (Gabriel Jenik)
+-Fixed issue #18739: ComfortUpdate notification not being shown (#3102) (Gabriel Jenik)
+-Fixed issue #18679: API access to question type array dual scale merges scales if answer code is not unique (#3049) (Gabriel Jenik)
+-Fixed issue #18639: Token browse can be unusable with lot of data in attribute (#3082) (Denis Chenu)
+-Fixed issue #18635: When you export single response : sometimes goes to a white page (#3090) (Denis Chenu)
+-Fixed issue #18612: When surveys are copied without copying resources links are not handled (#3009) (Gabriel Jenik)
+-Fixed issue #18456: Interface language parameter use exotic dropdown list. (#3067) (Gabriel Jenik)
+-Fixed issue #18343: Problem with interpreting double slash in URL (IIS) (#3087) (Denis Chenu)
+#Updated translation: Slovak by jelen1
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Japanese by d_inoue
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
+Changes from 6.0.4 (build 230427) to 6.0.5 (build 230502) May 2, 2023
+-Fixed issue: Very slow survey start if a lot of quotas exist (Carsten Schmitz)
+-Fixed issue #18786: Error shown when token length is set to 36 characters (Carsten Schmitz)
+-Fixed issue #18782: Bad width set for array dual scale (#3078) (Denis Chenu)
+-Fixed issue #18771: Super-admin unable to rename theme (#3076) (Denis Chenu)
+-Fixed issue #18747: User administration email - reserved words send 403 error (Denis Chenu)
+-Fixed issue #18684: Missing translation. (#3053) (Gabriel Jenik)
+-Fixed issue #18604: Set empty to maximum number of files not working (#2865) (Denis Chenu)
+-Fixed issue #18343: Problem with interpreting double slash in URL (IIS) (Denis Chenu)
+#Updated translation: Swedish by c_schmitz, maxzomborszki
+#Updated translation: Spanish (Spain) by aesteban, c_schmitz, ireneoh, jmlopez, valdomir
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz, markusfluer
+#Updated translation: German (Informal) by assistedmindfulness, c_schmitz, holch, p_teichmann, richterd
+#Updated translation: French (France) by Amaury VAN ESPEN, arnaud21, b00z00, c_schmitz, DenisChenu, DenisChenu_TEST, GuillaumeZ6, nmenard, riqcles, twilllig
+
+
+Changes from 6.0.3 (build 230424) to 6.0.4 (build 230427) April 25, 2023
+-Fixed issue: Error on database upgrade (Carsten Schmitz)
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Japanese by nomoto
+#Updated translation: German by c_schmitz
+
+
+Changes from 6.0.2 (build 230417) to 6.0.3 (build 230424) April 24, 2023
+-Fixed issue: Pagination not working issue for clsgrid tables (#3063) (jack-han-115)
+-Fixed issue CR-1086: adjusted xml_path in db for imageselect questions (#3052) (Tim Willig)
+-Fixed issue #18756: Unable to set non-integer values for initial slider value (#3058) (Denis Chenu)
+-Fixed issue #18750: Incomplete translation of admin homepage buttons (Carsten Schmitz)
+-Fixed issue #18749: Tooltips text display errors in French (Carsten Schmitz)
+-Fixed issue #18739: ComfortUpdate notification not being shown (#3047) (Gabriel Jenik)
+-Fixed issue #18719: custom admin theme failing if new logo files are not set in the theme (Patrick Teichmann)
+-Fixed issue #18703: Upload files show error if not seen (using index) (#3015) (Denis Chenu)
+-Fixed issue #18696: Survey titles too short when I want to copy a survey  (#3044) (Denis Chenu)
+-Fixed issue #18191: Cannot use statCount in specific condition (#3056) (Denis Chenu)
+-Fixed issue #14108: No error proper error message when LDAP login fails due to case-sensitivity (#2692) (Denis Chenu)
+#Updated translation: German by c_schmitz
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Mongolian by amidral
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Polish by elissa
+#Updated translation: Turkish by kayazeren
+#Updated translation: German (Easy) by assistedmindfulness, holch
+#Updated translation: Polish (Informal) by elissa
+
+Changes from 6.0.1 (build 230411) to 6.0.2 (build 230417) April 17, 2023
+-Fixed issue: [security] Administrator can change his own password without entering the existing one (Carsten Schmitz)
+-Fixed issue #CR-1054: Vertical scrollbar appearing between accordion transitions in questioneditor (#3031) (jack-han-115)
+-Fixed issue #CR-1053: Accordion for survey plugins can't be opened with the icon, update to new admin theme (#3034) (jack-han-115)
+-Fixed issue #18684: Missing translation  (#3046) (Gabriel Jenik)
+-Fixed issue #18633: Inherited value doesn't match any attribute option (#3001) (Gabriel Jenik)
+-Fixed issue #17883: QueXML formatting cannot be changed (#3028) (Adam Zammit)
+#Updated translation: Slovak by jelen1
+#Updated translation: Portuguese (Portugal) by c_schmitz, mauriciofurtado, samarta
+#Updated translation: Norwegian (Bokmål) by c_schmitz, pmonstad
+#Updated translation: Japanese by nomoto
+#Updated translation: Hungarian by kkd
+#Updated translation: Czech by c_schmitz, jelen1
+#Updated translation: Czech (Informal) by jelen1, slansky
+
+
+Changes from 6.0.0 (build 230405) to 6.0.1 (build 230411) April 11, 2023
+-Fixed issue CT-74: increased timeout for autocorrect on numerical fields (Tim Willig)
+-Fixed issue #18423: SQL error when quota enabled on postgresql (#2688) (Denis Chenu)
+#Updated translation: Slovak by jelen1
+#Updated translation: Portuguese (Portugal) by c_schmitz
+#Updated translation: Portuguese (Brazil) by holch, samarta
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Hungarian by kkd
+#Updated translation: German by p_teichmann
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1, slansky
+#Updated translation: Chinese (Simplified) by c_schmitz, humandynamic
+
+
+Changes from 5.6.14 (build 230403) to 6.0.0 (build 230405) April 4, 2023
++New feature: Converted the application to the Bootstrap 5 framework
++New feature: Implemented a new administration theme
++New feature: Upgraded Twig from 1.0 to 3.0
++New feature #18453: PHP 8.1 compatibility (#2878) (Gabriel Jenik)
++New feature: Add get_available_site_settings RPC method (#2579) (Edgar R. M)
++New feature #18382: Fire afterSurveyCompleted event in preview mode (Olle Haerstedt)
++New feature #16619: Allow calling get_uploaded_files() remote control function by response ID (#2363) (Gabriel Jenik)
++New feature #18178: Add Quota CRUD RPC methods (#2458) (Edgar R. M)
+-Fixed issue #18243: ARIA Attribute role on array question not correct (#2888)
+
+
+Changes from 5.6.13 (build 230327) to 5.6.14 (build 230403) April 3, 2023
++New feature #18197: Allow Google Analytics 4 tracking (#2907) (Gabriel Jenik)
+-Fixed issue: Prevent "Division by zero" in statistics (Tim Willig)
+-Fixed issue: [security] Removed vulnerable example files (Carsten Schmitz)
+-Fixed issue: PCLZip error on last step of ComfortUpdate when trying to update from version 3 to latest version (Carsten Schmitz)
+-Fixed issue CT-55: Multiple responses participants (Previous session is set to be finished) (#3024) (Tim Willig)
+-Fixed issue CT-53: Graphs not displayed in public statistics (#3023) (Tim Willig)
+-Fixed issue #18698: Vulnerable javascript dependency used in adminsidepanel.js in limesurvey/limesurvey (#3017) (Gabriel Jenik)
+-Fixed issue #18679 API Access to Question Type Array Dual Scale merge scales if answer code is not unique. (#3025) (Gabriel Jenik)
+-Fixed issue #18381: PluginSetting type date must be saved as a common datetime string (#2753) (Denis Chenu)
+-Fixed issue #18324: mandSoft POST parameter may be passed to bypass mandatory questions (#2825) (Denis Chenu)
+-Fixed issue #18184: cpd_importParticipants with encryption turned on, fails to save the participant encrypted in CPDB, causing 500 error to CPDB (#2464) (Gabriel Jenik)
+-Fixed issue #18180: Calling set_participant_properties with an invalid token id throws an internal server error (#2465) (Gabriel Jenik)
+-Fixed issue #18071: Importing Question through Remote Control may fail if the imported question already exists (#3016) (Denis Chenu)
+#Updated translation: Slovak by jelen1
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
+Changes from 5.6.12 (build 230327) to 5.6.13 (build 230327) March 27, 2023
+
+
+Changes from 5.6.11 (build 230320) to 5.6.12 (build 230327) March 27, 2023
+-Fixed issue: [security] XSS issue in notification email address (Carsten Schmitz)
+-Fixed issue: [security] Issue in CSV user export (Carsten Schmitz)
+-Fixed issue #18674: Simple user can update javascript when scripts are disabled (Denis Chenu)
+-Fixed issue #18663: SQL error when adding survey participants along w… (#2959) (Denis Chenu)
+-Fixed issue #18657: Encrypted token attributes are shown encrypted when piped into a question body (#2948) (Gabriel Jenik)
+-Fixed issue #18655: Data loss if field in response table it missing. (#2998) (Gabriel Jenik)
+-Fixed issue #18655: Data loss if field in response table it missing (#2956) (Gabriel Jenik)
+-Fixed issue #18653: getSuperAdmin return simple user (#2968) (Denis Chenu)
+-Fixed issue #18630: Survey list showing wrong icon for surveys. (#2960) (Gabriel Jenik)
+-Fixed issue #18504: Date Calendar Selection Question (#2899) (Gabriel Jenik)
+-Fixed issue #18318: Empty line at the end of csv export (#2942) (Gabriel Jenik)
+#Updated translation: Spanish (Spain) by ireneoh
+
+
+Changes from 5.6.10 (build 230313) to 5.6.11 (build 230320) March 20, 2023
+-Fixed issue #18620: Column relevance disabling not working as expected (#2905) (Gabriel Jenik)
+#Updated translation: Slovak by jelen1
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Japanese by nomoto
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by c_schmitz, lfanfoni
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
+Changes from 5.6.9 (build 230306) to 5.6.10 (build 230313) March 13, 2023
+-Fixed issue #18644: YII_DEBUG was not used inside KCFinder (#2934) (Gabriel Jenik)
+-Fixed issue #18631: Order of answer options done on the base language are not reflected on secondary languages. (#2926) (Gabriel Jenik)
+-Fixed issue #18476: CPDB - Add attribute modal - delete language does not work (#2941) (Gabriel Jenik)
+-Fixed issue #18336: Placeholder fields VALIDFROM and VALIDUNTIL not listed at email templates (#2813) (Gabriel Jenik)
+#Updated translation: Polish by 2BITS_PL
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Italian by c_schmitz, lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+
+
+Changes from 5.6.8 (build 230227) to 5.6.9 (build 230306) March 6, 2023
+-Fixed issue: Unable to run integrity check on databases with a big number of surveys (Carsten Schmitz)
+-Fixed issue: High memory usage when exporting participants (Carsten Schmitz)
+-Fixed issue: Error when calculating quartiles on encrypted question (Carsten Schmitz)
+-Fixed issue #CT-44: Exporting survey participants exceeds PHP memory limit (Patrick Teichmann)
+-Fixed issue #18662: Update DB from 491 break on home page (#2953) (Denis Chenu)
+-Fixed issue #18658: Upload file question type not accepting certain file names (#2952) (Gabriel Jenik)
+-Fixed issue #18655: Unnoticed data loss if field in response table it missing (#2946) (Gabriel Jenik)
+-Fixed issue #18407: On-page conditions not working when pre-filling question with equation on the same page (#2921) (Denis Chenu)
+#Updated translation: Valencian by vbraque
+#Updated translation: Russian by vipgroup
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Japanese by d_inoue
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: German (Easy) by p_teichmann
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Basque by c_schmitz
+
+
+Changes from 5.6.7 (build 230222) to 5.6.8 (build 230227) February 27, 2023
+-Fixed issue #18628: Answer code updates on base language are not reflected on secondary languages (#2906) (Gabriel Jenik)
+-Fixed issue #18625: Cannot copy a survey when using a survey alias (#2927) (Gabriel Jenik)
+-Fixed issue #18619: QuestionGroup->getGroupDescription() fails (#2890) (Gabriel Jenik)
+-Fixed issue #18541: Data entry screen incorrectly assigns 0 value to empty multiflex array checkbox values (master) (Adam Zammit)
+-Fixed issue #18527: Can't validate phone number using regex if phone number starts with + (#2900) (Gabriel Jenik)
+#Updated translation: Ukrainian by c_schmitz
+#Updated translation: Malay by c_schmitz
+#Updated translation: English by lpomfret
+#Updated translation: Czech by jelen1
+
+
+Changes from 5.6.6 (build 230220) to 5.6.7 (build 230222) February 20, 2023
+-Fixed issue for #18438: Prevent translation of empty string (Tim Willig)
+
+
+Changes from 5.6.5 (build 230214) to 5.6.6 (build 230220) February 20, 2023
+-Fixed issue: [security] Minor XSS vulnerability when editing a question group (Carsten Schmitz)
+-Fixed issue: [security] Minor XSS vulnerability when editing a question (Carsten Schmitz)
+-Fixed issue: [security] Minor XSS vulnerability in general survey settings (Carsten Schmitz)
+-Fixed issue #18577: [security] Update Moment.js (#2830) (Gabriel Jenik)
+-Fixed issue #18559: Potential 500 error with LimeMailer and PHP8 (#2799) (Denis Chenu)
+-Fixed issue #18438: Wrong text in inherit-button (#2893) (Gabriel Jenik)
+-Fixed issue #17784: [security] Update CkEditor to 4.20.2 (Carsten Schmitz)
+#Updated translation: Slovak by jelen1
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Hungarian by kkd
+#Updated translation: German by c_schmitz
+#Updated translation: German (Easy) by c_schmitz
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Catalan by qualitatuvic
+
+
+Changes from 5.6.4 (build 230206) to 5.6.5 (build 230214) February 14, 2023
+-Fixed issue #CT-32: Viewing a response is not possible if the original access code (token) entry doesn't exist anymore (Patrick Teichmann)
+-Fixed issue #18625: Cannot copy a survey when using a survey alias (#2894) (Gabriel Jenik)
+-Fixed issue #18599: Placeholders {GID} and {SGQ} not replaced for "script" (#2855) (Denis Chenu)
+-Fixed issue #18590: Filenames containing an apostrophe (') cause uploaded file-list to unlist upon Resume later or Next then Previous (#2862) (Gabriel Jenik)
+-Fixed issue #18587: Question type button not visible after having chosen the type (#2881) (Gabriel Jenik)
+-Fixed issue #18542: Plugins: PasswordRequirement plugin is not working properly (#2847) (Gabriel Jenik)
+-Fixed issue #18521: Checkbox issue in the permission modal (#2870) (Gabriel Jenik)
+-Fixed issue #18501: Answers with 0 as value was not saved if encrypted (#2738) (Denis Chenu)
+-Fixed issue #18428: QuestionTheme settings are shown on Core theme settings (#2869) (Gabriel Jenik)
+-Fixed issue #17486: Current Page Values not saved if saving pressing Enter (#2889) (Gabriel Jenik)
+#Updated translation: Tagalog by c_schmitz
+#Updated translation: Slovak by jelen1
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Malay by astrasia, c_schmitz
+#Updated translation: Japanese by d_inoue
+#Updated translation: Italian (Informal) by c_schmitz
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: French (France) by boheean
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Bengali by PawelAtroszko
+
+
+Changes from 5.6.3 (build 230130) to 5.6.4 (build 230206) February 6, 2023
+-Fixed issue: Notice when trying to submit a new key (Carsten Schmitz)
+-Fixed issue: Invalid URL in public statistics (Carsten Schmitz)
+-Fixed issue [security] #18514: No CSRF control when delete token table (#2750) (Denis Chenu)
+-Fixed issue #18594: Slider: Min and max values not checked if nothing selected (#2858) (Gabriel Jenik)
+-Fixed issue #18579: Question theme are not shown in Survey Logic file (#2863) (Gabriel Jenik)
+-Fixed issue #18572: The 'duration' type field has an invalid value for 'name' (#2859) (Gabriel Jenik)
+-Fixed issue #18555: Wrong escaping in Mandatory setting help (#2860) (Gabriel Jenik)
+-Fixed issue #17486: Current Page Values not saved if saving pressing Enter (lapiudevgit)
+#Updated translation: Welsh by c_schmitz, ChrisWilliams, NortonT
+#Updated translation: Vietnamese by c_schmitz
+#Updated translation: Urdu by PawelAtroszko
+#Updated translation: Turkish by c_schmitz
+#Updated translation: Thai by c_schmitz
+#Updated translation: Swedish by c_schmitz
+#Updated translation: Spanish (Spain) by c_schmitz
+#Updated translation: Spanish (Mexican) by c_schmitz, segui
+#Updated translation: Slovak by jelen1
+#Updated translation: Russian by c_schmitz
+#Updated translation: Romanian by c_schmitz, support_cxomni
+#Updated translation: Portuguese (Portugal) by c_schmitz
+#Updated translation: Portuguese (Brazil) by c_schmitz, rafaelmaia, samarta
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Norwegian (Bokmål) by c_schmitz
+#Updated translation: Mongolian by c_schmitz
+#Updated translation: Maltese by c_schmitz
+#Updated translation: Korean by c_schmitz
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Italian by c_schmitz
+#Updated translation: Italian (Informal) by c_schmitz
+#Updated translation: Indonesian by c_schmitz
+#Updated translation: Hungarian by quasar_
+#Updated translation: Hungarian by c_schmitz
+#Updated translation: Hindi by c_schmitz, KapilSabarwal
+#Updated translation: Greek by baltzis, george01, lenasterg
+#Updated translation: German by vkm2020
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by zer0flash
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: French (France) by c_schmitz
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by c_schmitz, Han
+#Updated translation: Dutch by c_schmitz
+#Updated translation: Dutch (Informal) by c_schmitz, Han
+#Updated translation: Danish by c_schmitz, PawelAtroszko
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Croatian by c_schmitz
+#Updated translation: Chinese (Taiwan) (Traditional) by c_schmitz
+#Updated translation: Chinese (Simplified) by c_schmitz
+#Updated translation: Armenian by PawelAtroszko
+#Updated translation: Arabic by c_schmitz
+
+
+Changes from 5.6.2 (build 230125) to 5.6.3 (build 230130) January 30, 2023
+-Fixed issue #18582: RemoteControl invite_participants unexpectedly stops after first failure (#2866) (Gabriel Jenik)
+-Fixed issue #18578: Internal server error (HTTP 500) in RemoteControl get_participant_properties for removed participant (#2827) (Gabriel Jenik)
+#Updated translation: Slovak by jelen1
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Malay by PawelAtroszko
+#Updated translation: Japanese by d_inoue
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: German (Easy) by c_schmitz
+#Updated translation: French (France) by b00z00, DenisChenu
+#Updated translation: French (France) by DenisChenu
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
+Changes from 5.6.1 (build 230123) to 5.6.2 (build 230125) January 24, 2023
+-Fixed issue: KCFinder stops working after updating with ComfortUpdate (Carsten Schmitz)
+#Updated translation: French (France) by DenisChenu
+
+
+Changes from 5.6.0 (build 230116) to 5.6.1 (build 230123) January 23, 2023
+-Fixed issue #18592: When creating a survey Default group may not be the ones preselected (#2849) (Gabriel Jenik)
+-Fixed issue #18585: Click again on link by email submit again the survey (Denis Chenu)
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+
+
+Changes from 5.5.2 (build 230109) to 5.6.0 (build 230116) January 16, 2023
++New feature #7641: Options to use Y/N conversion in RemoteControl API export (#2843) (Carsten Schmitz)
+-Fixed issue #18544: Update Theme Options: Survey Group permissions are not checked correctly (#2795) (Gabriel Jenik)
+-Fixed issue #18517: Survey editing : Survey creation date is wrong (#2821) (Gabriel Jenik)
+-Fixed issue #18498: Questions with custom themes not shown on question list (#2744) (Gabriel Jenik)
+#Updated translation: Vietnamese by c_schmitz
+#Updated translation: Ukrainian by c_schmitz
+#Updated translation: Turkish by c_schmitz
+#Updated translation: Thai by c_schmitz
+#Updated translation: Swedish by c_schmitz
+#Updated translation: Spanish (Spain) by c_schmitz
+#Updated translation: Spanish (Mexican) by c_schmitz
+#Updated translation: Spanish (Argentina) (Informal) by c_schmitz
+#Updated translation: Slovenian by c_schmitz
+#Updated translation: Slovak by jelen1
+#Updated translation: Russian by c_schmitz
+#Updated translation: Romanian by c_schmitz
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Portuguese (Brazil) by c_schmitz
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Norwegian (Nynorsk) by c_schmitz
+#Updated translation: Norwegian (Bokmål) by c_schmitz
+#Updated translation: Mongolian by c_schmitz
+#Updated translation: Lithuanian by c_schmitz
+#Updated translation: Latvian by c_schmitz
+#Updated translation: Korean by c_schmitz
+#Updated translation: Japanese by d_inoue
+#Updated translation: Italian by c_schmitz
+#Updated translation: Italian (Informal) by c_schmitz
+#Updated translation: Indonesian by c_schmitz
+#Updated translation: Hungarian by c_schmitz
+#Updated translation: Hindi by c_schmitz
+#Updated translation: Greek by c_schmitz
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: German (Easy) by c_schmitz
+#Updated translation: Estonian by c_schmitz
+#Updated translation: Dutch by c_schmitz, Han
+#Updated translation: Dutch (Informal) by c_schmitz, Han
+#Updated translation: Danish by c_schmitz
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Croatian by c_schmitz
+#Updated translation: Chinese (Simplified) by c_schmitz
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Bulgarian by c_schmitz, DCLXVI, llamaloverbg, peterx, simid, tnovakova, tsb03varna
+#Updated translation: Arabic by c_schmitz
+#Updated translation: Afrikaans by c_schmitz
+
+
+Changes from 5.5.1 (build 230103) to 5.5.2 (build 230109) January 9, 2023
+-Fixed issue CR-797: Only check versions from CU server once per day (Olle Haerstedt)
+-Fixed issue #18569: Survey editing:  typo in error message (#2822) (Gabriel Jenik)
+-Fixed issue #18546: Menu System: Setting a past survey start date leads to showing current date as end date at survey overview (#2800) (Gabriel Jenik)
+-Fixed issue #18543: Question Type "Array (texts)" crashes when in combination with "array filter", "Array filter style": disabled and "show totals" (#2793) (Gabriel Jenik)
+-Fixed issue #18542: Plugins: PasswordRequirement plugin is not working properly (#2823) (Gabriel Jenik)
+-Fixed issue #18516: Create Survey button allows multiple clicking and may create multiple copies (#2812) (Gabriel Jenik)
+-Fixed issue #18507: {ANSWERTABLE} not working in basic admin notification (#2794) (Gabriel Jenik)
+-Fixed issue #18502: STATA export of simple array question fails (#2792) (Gabriel Jenik)
+-Fixed issue #18491: Theme editor : List of fonts and colors should be sorted alphabetically (#2820) (Gabriel Jenik)
+-Fixed issue #18481: Panel Configuration : Insert new box without position (#2818) (Gabriel Jenik)
+#Updated translation: Welsh by ChrisWilliams
+#Updated translation: Slovak by jelen1
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Hebrew by idan1798
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
+Changes from 5.5.0 (build 221219) to 5.5.1 (build 230103) January 3, 2023
+-Fixed issue #18564: Fixed JS part for copy functionality (#2805) (Borys)
+-Fixed issue #18503: Label sets: When adding a label set e.g. at the edit responses screen, the loaded label sets can not be searched (#2796) (Gabriel Jenik)
+-Fixed issue #18471: Data Entry: Data entry with multiple languages does not work (#2797) (Gabriel Jenik)
+#Updated translation: Slovak by jelen1
+#Updated translation: Portuguese (Portugal) by c_schmitz, samarta
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: French (France) by aschwey, DenisChenu
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Chinese (Simplified) by duestin, FangZhijian, humandynamic, xiongrui, zengqing, zhanginshanghai, Zoctan
+
+
+Changes from 5.4.15 (build 221212) to 5.5.0 (build 221219) December 19, 2022
++New feature #8436: Enable / disable users and fields to manage users (#2636) (Gabriel Jenik)
++New feature #8239: Allow for user friendly survey URLS (#2218) (Gabriel Jenik)
++New feature #18375: [security] Some plugin settings need encryption (#2645) (Gabriel Jenik)
++New feature #18204: Extend form via plugin (Olle Haerstedt)
+-Fixed issue: Return JSON instead of string from actionCheckQuestionValidateTitle (Olle Haerstedt)
+-Fixed issue: Also allow to compare with null in list_participants (Olle Haerstedt)
+-Fixed issue [security] #18553: SQL injection on surveygroup update (#2790) (Denis Chenu)
+-Fixed issue #18449: Impossible to add participant after correcting an e-mail address error (#2748) (Gabriel Jenik)
+-Fixed issue #18415: Copy Survey: New Title shouldn't be mandatory (#2709) (Gabriel Jenik)
+-Fixed issue #18373: Saving statistics exports to excel fails (#2656) (Gabriel Jenik)
+-Fixed issue #18310: Inconsistent GUI: Sort alphabetically vs. random (#2666) (Gabriel Jenik)
+-Fixed issue #18250: admin css hide logic file part (#2761) (Gabriel Jenik)
+#Updated translation: Ukrainian by apache_borys
+#Updated translation: Slovak by jelen1
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1, slansky
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Bosnian by PawelAtroszko
+#Updated translation: Azerbaijani by PawelAtroszko
+
+
+Changes from 5.4.14 (build 221205) to 5.4.15 (build 221212) December 12, 2022
+-Fixed issue #14310: Google Analytics functionality doesn't work (#2762) (Gabriel Jenik)
+#Updated translation: Slovak by jelen1
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Japanese by nomoto
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Catalan by qualitatuvic
+
+
+Changes from 5.4.13 (build 221128) to 5.4.14 (build 221205) December 5, 2022
+-Fixed issue #18337: Placeholders VALIDFROM and VALIDUNTIL at email templates do not use localized dates (#2591) (Gabriel Jenik)
+-Fixed issue #18250: Admin CSS hide logic file part (#2657) (Gabriel Jenik)
+-Fixed issue #17897: Build of statistics fails with DivisionByZero (#2704) (Gabriel Jenik)
+#Updated translation: Slovak by jelen1
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Japanese by nomoto
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: French (France) by DenisChenu
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Arabic by c_schmitz, DeveloperChris, LucaAzzalini, malbariqi, MotasemHanani, Muhammad_Hosny, mviper28, samiubuntu, shidhani, yabdali, ysaad
+
+
+Changes from 5.4.12 (build 221121) to 5.4.13 (build 221128) November 28, 2022
+-Fixed issue: gid suffix was missing in aRDP_regexpStaticAttribute array (Tim Willig)
+-Fixed issue #18463: List of uploaded files should be sorted alphabetically (#2722) (Gabriel Jenik)
+-Fixed issue #18461: Survey groups at survey list screen should be listed alphabetically (#2724) (Gabriel Jenik)
+-Fixed issue #18424: Typo in debug message (#2705) (Gabriel Jenik)
+-Fixed issue #18395: Access to limereplacementfields didn't check read permission on survey (#2655) (Gabriel Jenik)
+-Fixed issue #17648: Email received by participant is empty (#2691) (Denis Chenu)
+#Updated translation: Portuguese (Brazil) by rafaelmaia
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Luxembourgish by Mazi
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: French (France) by b00z00, DenisChenu, Nickko, sim.eesp
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Chinese (Simplified) by hdaphq, humandynamic, xiongrui, zengqing, zhanginshanghai, Zoctan
+#Updated translation: Azerbaijani by Heyder
+
+
+Changes from 5.4.11 (build 221114) to 5.4.12 (build 221121) November 21, 2022
+-Fixed issue: Placeholder fields still inserting outdated INSERTANS: placeholder (Carsten Schmitz)
+-Fixed issue: ComfortUpdate should use SSL by default (Carsten Schmitz)
+-Fixed issue #18488: Conditions are not properly highlighted if they have additional spaces (#2733) (Denis Chenu)
+-Fixed issue #18422: Remove Google font usage (#2689) (Gabriel Jenik)
+#Updated translation: Valencian by joamuran, vbraque
+#Updated translation: Thai by tomzt
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Hungarian by kkd
+
+
+Changes from 5.4.10 (build 221107) to 5.4.11 (build 221114) November 14, 2022
+-Fixed issue: Survey gets into a state where it seems to be active but isn't - to fix this run integrity check (Carsten Schmitz)
+-Fixed issue: Start boxes having invalid links on small screens (Carsten Schmitz)
+-Fixed issue: Division by zero on survey preview when no answer options exist (Carsten Schmitz)
+-Fixed issue #15195: Expiration date can be set before start date (#2714) (Gabriel Jenik)
+#Updated translation: Slovak by jelen1
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Catalan by qualitatuvic
+
+
+Changes from 5.4.9 (build 221101) to 5.4.10 (build 221107) November 7, 2022
+-Fixed issue #18451: Plugin uploading omit translation files (Bartosz Marganiec)
+-Fixed issue #18338: For participants, expiration date can be set before start date (#2679) (Gabriel Jenik)
+-Fixed issue #16187: No proper error message when copying survey and ID already exists (#2663) (Gabriel Jenik)
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Japanese by nomoto
+#Updated translation: Finnish by Jmantysalo
+
+
+Changes from 5.4.8 (build 221024) to 5.4.9 (build 221101) November 1, 2022
+-Fixed issue: No proper error message in ComfortUpdate shown when files could not be deleted (Carsten Schmitz)
+-Fixed issue: If a file/directory could not be deleted during ComfortUpdate the file/dirname would not be shown (Carsten Schmitz)
+-Fixed issue: HTML tags are not allowed for admins in participant attributes (#2627) (Denis Chenu)
+-Fixed issue: Cannot import old response table (Carsten Schmitz)
+-Fixed issue #18430: Unable to ComfortUpdate from 5.4.7 (Olle Haerstedt)
+-Fixed issue #18430: Unable to ComfortUpdate from 5.4.7 (Carsten Schmitz)
+-Fixed issue #18427: LDAP plugin error when try to create new user on PHP8.1 (#2685) (Denis Chenu)
+-Fixed issue #18414: Missing translations (#2678) (Gabriel Jenik)
+-Fixed issue #18358: Statistics filter feature is not working properly (#2635) (Gabriel Jenik)
+-Fixed issue #18102: Export Duplicate entries in the Excel Form (#2673) (Denis Chenu)
+#Updated translation: Spanish (Spain) by aesteban, c_schmitz, Ignacio, ignaciogros, ireneoh, jmlopez, jparis, rodrirokr, segui, valdomir, xtingray
+#Updated translation: Slovak by jelen1
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Italian by lfanfoni, lfortunato, ritapas
+#Updated translation: Italian (Informal) by lfanfoni, mike73rn
+#Updated translation: Hungarian by kkd
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
+Changes from 5.4.7 (build 221019) to 5.4.8 (build 221024) October 24, 2022
+-Fixed issue: Cannot edit file in theme editor (Carsten Schmitz)
+-Fixed issue #18413: Cannot authenticate with LDAP when using PHP 8.1 (Denis Chenu)
+-Fixed issue #18403: Debug output when loading demo site (#2649) (Gabriel Jenik)
+#Updated translation: Slovak by jelen1
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Japanese by nomoto
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Chinese (Simplified) by duestin, FangZhijian, xiongrui, zengqing, zhanginshanghai, Zoctan
+
+
+Changes from 5.4.6 (build 221018) to 5.4.7 (build 221019) October 18, 2022
+-Fixed issue: [security] Various major & minor security issues discovered by automated security tools (Carsten Schmitz)
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+
+
+Changes from 5.4.5 (build 221010) to 5.4.6 (build 221018) October 18, 2022
+-Fixed issue #18413: Cannot authenticate with LDAP when using PHP 8.1 (Dennis1993)
+-Fixed issue #18410: LDAP authentication option labelled as PluginBase (#2662) (Gabriel Jenik)
+#Updated translation: Portuguese (Portugal) by marcelovincenzi, samarta
+#Updated translation: Portuguese (Brazil) by holch, josesiqueira, samarta, tamiel
+#Updated translation: Mongolian by amidral
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: French (France) by DenisChenu
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Chinese (Taiwan) (Traditional) by CTFang, TuTu_chen, Yeeeeeet
+#Updated translation: Catalan by qualitatuvic
+
+
+Changes from 5.4.4 (build 221004) to 5.4.5 (build 221010) October 10, 2022
+-Fixed issue: Add bootstrap tooltip to MenuButton view (Tim Willig)
+-Fixed issue #18373: Saving statistics exports to excel fails (#2634) (Gabriel Jenik)
+-Fixed issue #18323: When copying a question with sub-questions, the sub-questions are not copied (#2644) (Gabriel Jenik)
+-Fixed issue #18307: A comment string starting with a '<' is not saved using Multiple choice with comments (#2608) (Gabriel Jenik)
+-Fixed issue #18172: MSSQL issue when import from old responses DB (#2460) (Denis Chenu)
+-Fixed issue #17950: is_int(false) returns true (#2642) (Denis Chenu)
+-Fixed issue #17825: Strings “LimeSurvey internal database” not available for translation in GlotPress (#2637) (Gabriel Jenik)
+-Fixed issue #17654: Spurious error "Incorrect username …" in webserver Auth (#2448) (Denis Chenu)
+#Updated translation: Slovak by jelen1
+#Updated translation: Portuguese (Brazil) by samarta
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: German by vkm2020
+#Updated translation: German (Informal) by bewi, c_schmitz, richterd
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
+Changes from 5.4.3 (build 220926) to 5.4.4 (build 221004) October 4, 2022
+-Fixed issue: Wording "Generate tokens" is confusing (#2589) (Arjun Srivastava)
+-Fixed issue: ComfortUpdate having a problem with bigger updates (Carsten Schmitz)
+-Fixed issue #18384: Update fails on Postgres (Olle Haerstedt)
+-Fixed issue #18380: Lock/unlock question organizer broken (Carsten Schmitz)
+-Fixed issue #18353: Unable to upload an xml file (#2613) (Denis Chenu)
+-Fixed issue #18330: SurveySetting type date doesnt show datepicker (#2632) (Denis Chenu)
+-Fixed issue #18287: Question List: Filtering doesn't work on type description (#2597) (Gabriel Jenik)
+-Fixed issue #17874: Upgrading from 3.x to 5.x shows confusing message (Carsten Schmitz)
+-Fixed issue #18347: Unable to check extension of this file type image/svg. (Denis Chenu)
+#Updated translation: Thai by tomzt
+#Updated translation: Slovak by jelen1
+#Updated translation: Russian by vipgroup
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: German by c_schmitz
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
 Changes from 5.4.2 (build 220921) to 5.4.3 (build 220926) September 26, 2022
 -Fixed issue: Typo in table name can cause error with faulty deployment (Olle Haerstedt)
 -Fixed issue #18369: ComfortUpdate from 3.x to 5.4.x shows an error at the end (Carsten Schmitz)

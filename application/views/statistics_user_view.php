@@ -4,7 +4,7 @@
 
 <div class="container public-stats">
     <div class="row">
-        <div class="col-sm-12">
+        <div class="col-12">
             <div id='statsContainer'>
                 <div id='statsHeader'>
                     <h2 class='statsSurveyTitle public-stats__title'><?php echo $thisSurveyTitle; ?></h2>

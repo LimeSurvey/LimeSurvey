@@ -1,0 +1,25 @@
+language: php
+php:
+  - 5.6
+  - 7.0
+  - 7.1
+  - 7.2
+  - 7.3
+  - 7.4
+
+cache:
+  directories:
+    - $HOME/.composer/cache
+    - $HOME/.cache/cache
+    - build/cache
+
+install:
+  - composer install --prefer-dist
+  - mkdir -p build/cache
+
+script:
+  - php vendor/bin/phpunit --coverage-clover build/logs/clover.xml
+  - vendor/bin/php-cs-fixer --cache-file=build/cache/.php_cs.cache --diff --dry-run --stop-on-violation --verbose fix
+
+after_success:
+  - travis_retry php vendor/bin/php-coveralls

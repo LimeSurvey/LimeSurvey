@@ -1,0 +1,25 @@
+cff-version: 1.2.0
+message: If you use this library, please cite it using these metadata.
+title: Ar-PHP Project
+abstract: PHP library for website developers to process Arabic content.
+authors:
+  - family-names: Al-Shamaa
+    given-names: Khaled
+    orcid: "https://orcid.org/0000-0002-7668-3798"
+version: 6.3.3
+date-released: "2023-04-01"
+identifiers:
+  - description: Ar-PHP version 6.3.3
+    type: doi
+    value: "10.5281/zenodo.7790300"
+  - description: Ar-PHP version 6.3.0
+    type: doi
+    value: "10.5281/zenodo.6657842"
+  - description: Ar-PHP version 6.2.0
+    type: doi
+    value: "10.5281/zenodo.5001594"
+  - description: Ar-PHP version 6.1.0
+    type: doi
+    value: "10.5281/zenodo.4731143"
+license: LGPL-3.0
+repository-code: "https://github.com/khaled-alshamaa/ar-php"

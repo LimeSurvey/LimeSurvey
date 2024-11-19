@@ -1,26 +1,26 @@
 {#
-    LimeSurvey
-    Copyright (C) 2007-2017 The LimeSurvey Project Team / Louis Gac
-    All rights reserved.
-    License: GNU/GPL License v2 or later, see LICENSE.php
-    LimeSurvey is free software. This version may have been modified pursuant
-    to the GNU General Public License, and as distributed it includes or
-    is derivative of works licensed under the GNU General Public License or
-    other free or open source software licenses.
-    See COPYRIGHT.php for copyright notices and details.
+LimeSurvey
+Copyright (C) 2007-2017 The LimeSurvey Project Team / Louis Gac
+All rights reserved.
+License: GNU/GPL License v2 or later, see LICENSE.php
+LimeSurvey is free software. This version may have been modified pursuant
+to the GNU General Public License, and as distributed it includes or
+is derivative of works licensed under the GNU General Public License or
+other free or open source software licenses.
+See COPYRIGHT.php for copyright notices and details.
 
-    (¯`·._.·(¯`·._.·  Question index  ·._.·´¯)·._.·´¯)
+(¯`·._.·(¯`·._.·  Question index  ·._.·´¯)·._.·´¯)
 
-    Show the question index in top menu.
+Show the question index in top menu.
 
-    There is two type of index:
-    - Full        :  show all the questions/groups
-    - Incremental :  only show the previous questions/groups
+There is two type of index:
+- Full        :  show all the questions/groups
+- Incremental :  only show the previous questions/groups
 
-    There is two possible displays for index, depending on Survey Mode:
-    - Group by Group       : Survey mode is in Group By Group mode, so the entry of the index should be groups
-    - Question by Question : Survey mode is in Question By Question mode, so the entry of the index should be questions
-    - All in One           : No index needed
+There is two possible displays for index, depending on Survey Mode:
+- Group by Group       : Survey mode is in Group By Group mode, so the entry of the index should be groups
+- Question by Question : Survey mode is in Question By Question mode, so the entry of the index should be questions
+- All in One           : No index needed
 #}
 
 {# Question index in group by group mode #}
@@ -28,32 +28,28 @@
 {% if (aSurveyInfo.aQuestionIndex.bShow == true) %}
     {% if aSurveyInfo.format == 'G' %}
         <!-- Question index, group, {{ aSurveyInfo.aQuestionIndex.type }} -->
-        <li class="{{ aSurveyInfo.class.indexmenugli }} dropdown index-menu-{{ aSurveyInfo.aQuestionIndex.type }}" {{ aSurveyInfo.attr.indexmenugli }} >
-            <a class="{{ aSurveyInfo.class.indexmenuglia }} dropdown-toggle" {{ aSurveyInfo.attr.indexmenuglia }} href="#" >
+        <li class="dropdown nav-item ls-no-js-hidden px-2 index-menu-{{ aSurveyInfo.aQuestionIndex.type }}">
+            <a class="dropdown-toggle nav-link" data-bs-toggle="dropdown" role="button" aria-haspopup="true"
+               aria-expanded="false" href="#">
                 {{ gT("Question index") }}
-                <span class="{{ aSurveyInfo.class.indexmenugspan }} caret" {{ aSurveyInfo.attr.indexmenugspan }}></span>
+                <span class="caret"></span>
             </a>
-
-            <ul class="{{ aSurveyInfo.class.indexmenusgul }} dropdown-menu" {{ aSurveyInfo.attr.indexmenusgul }}>
+            <ul class="dropdown-menu">
                 {# TODO: move back this logic to SurveyRuntime, and provide a ready to use indexItem.statusClass #}
                 {% for step, indexItem in aSurveyInfo.aQuestionIndex.items %}
-                    {% set statusClass = ''  %}
-
-                    {% if attribute(indexItem.stepStatus, 'index-item-unanswered') is defined and attribute(indexItem.stepStatus, 'index-item-unanswered') == true  %}
-                        {% set statusClass = statusClass ~ ' bg-warning'  %}
+                    {% set statusClass = '' %}
+                    {% if attribute(indexItem.stepStatus, 'index-item-unanswered') is defined and attribute(indexItem.stepStatus, 'index-item-unanswered') == true %}
+                        {% set statusClass = statusClass ~ ' bg-warning' %}
                     {% endif %}
-
-                    {% if attribute(indexItem.stepStatus, 'index-item-error') is defined and attribute(indexItem.stepStatus, 'index-item-error') == true   %}
-                        {% set statusClass = statusClass ~ ' bg-danger'  %}
+                    {% if attribute(indexItem.stepStatus, 'index-item-error') is defined and attribute(indexItem.stepStatus, 'index-item-error') == true %}
+                        {% set statusClass = statusClass ~ ' bg-danger' %}
                     {% endif %}
-
                     {% if attribute(indexItem.stepStatus, 'index-item-current') is defined and attribute(indexItem.stepStatus, 'index-item-current') == true %}
-                        {% set statusClass = statusClass ~  ' disabled'  %}
+                        {% set statusClass = statusClass ~  ' disabled' %}
                     {% endif %}
-
-
-                    <li class="{{ indexItem.coreClass }} {{ statusClass }}"  {{ aSurveyInfo.attr.indexmenusgli }}>
-                        <a href='{{ indexItem.url }}' data-limesurvey-submit='{{ indexItem.submit }}' class='aminate'>
+                    <li class="list-group-item{{ indexItem.coreClass }}">
+                        <a href='{{ indexItem.url }}' data-limesurvey-submit='{{ indexItem.submit }}'
+                           class='dropdown-item  {{ statusClass }}'>
                             {{ indexItem.text }}
                         </a>
                     </li>
@@ -65,46 +61,48 @@
     {# Question index in question by question mode #}
     {% if aSurveyInfo.format == 'S' %}
         <!-- Question index, question by question, {{ aSurveyInfo.aQuestionIndex.type }} -->
-        <li class="{{ aSurveyInfo.class.indexmenusli }} dropdown index-menu-{{ aSurveyInfo.aQuestionIndex.type }}" {{ aSurveyInfo.attr.indexmenusli }}>
-            <a class="{{ aSurveyInfo.class.indexmenuslia }} dropdown-toggle animate" {{ aSurveyInfo.attr.indexmenuslia }}>
+        <li class="dropdown nav-item ls-no-js-hidden dropdown index-menu-{{ aSurveyInfo.aQuestionIndex.type }}">
+            <a class="dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-haspopup="true"
+               aria-expanded="false">
                 {{ gT("Question index") }}
-                <span class="{{ aSurveyInfo.class.indexmenusspan }} caret" {{ aSurveyInfo.attr.indexmenusspan }}></span>
+                <span class="caret"></span>
             </a>
             <!-- TODO: Remove this when support is added -->
-            <ul class="{{ aSurveyInfo.class.indexmenusddul }} dropdown-menu" {{ aSurveyInfo.attr.indexmenusddul }}>
-            {% for group in aSurveyInfo.aQuestionIndex.items %}
-                {# TODO: move back this logic to SurveyRuntime, and provide a ready to use indexItem.statusClass #}
-                <li>
-                    <div class="{{ aSurveyInfo.class.indexmenusddh }} dropdown-header" {{ aSurveyInfo.attr.indexmenusddh }}>
-                        {{ flatEllipsizeText(group.text, true, 30, " &hellip; ", 0.6 ) }}
-                        <span class="{{ aSurveyInfo.class.indexmenusddspan }} caret" {{ aSurveyInfo.class.indexmenusddspan }}></span>
-                    </div>
-                    <ul class="{{ aSurveyInfo.class.indexmenusddul }} dropdown-menu" {{ aSurveyInfo.attr.indexmenusddul }}>
-                        {% for  step, indexItem in group.questions %}
-                            {% set statusClass = ''  %}
-                            {% if attribute(indexItem.stepStatus, 'index-item-unanswered') is defined and attribute(indexItem.stepStatus, 'index-item-unanswered') == true  %}
-                                {% set statusClass = statusClass ~ ' bg-warning'  %}
-                            {% endif %}
-                            {% if attribute(indexItem.stepStatus, 'index-item-error') is defined and attribute(indexItem.stepStatus, 'index-item-error') == true   %}
-                                {% set statusClass = statusClass ~ ' bg-danger'  %}
-                            {% endif %}
-                            {% if attribute(indexItem.stepStatus, 'index-item-current') is defined and attribute(indexItem.stepStatus, 'index-item-current') == true %}
-                                {% set statusClass = statusClass ~  ' disabled'  %}
-                            {% endif %}
-                            <li class="{{ indexItem.coreClass }} {{statusClass}}"  {{ aSurveyInfo.attr.indexmenussli }}>
-                                <a href='{{ indexItem.url }}' data-limesurvey-submit='{{ indexItem.submit }}' class='animate'>
-                                    {{ flatEllipsizeText(indexItem.text, true, 30, " &hellip; ", 0.6 ) }}
-                                </a>
-                            </li>
-                        {% endfor %}
-                    </ul>
-                </li>
-            {% endfor %}
-            {% if aSurveyInfo.aQuestionIndex.type == 'full' %}
-                <li> 
-                    {{ gT("Question by question mode not yet supported.") }}
-                </li>
-            {% endif %}
+            <ul class="dropdown-sub-menu dropdown-menu">
+                {% for group in aSurveyInfo.aQuestionIndex.items %}
+                    {# TODO: move back this logic to SurveyRuntime, and provide a ready to use indexItem.statusClass #}
+                    <li>
+                        <div class="dropdown-header">
+                            {{ flatEllipsizeText(group.text, true, 30, " &hellip; ", 0.6 ) }}
+                            <span class="caret"></span>
+                        </div>
+                        <ul class="dropdown-sub-menu dropdown-menu">
+                            {% for  step, indexItem in group.questions %}
+                                {% set statusClass = '' %}
+                                {% if attribute(indexItem.stepStatus, 'index-item-unanswered') is defined and attribute(indexItem.stepStatus, 'index-item-unanswered') == true %}
+                                    {% set statusClass = statusClass ~ ' bg-warning' %}
+                                {% endif %}
+                                {% if attribute(indexItem.stepStatus, 'index-item-error') is defined and attribute(indexItem.stepStatus, 'index-item-error') == true %}
+                                    {% set statusClass = statusClass ~ ' bg-danger' %}
+                                {% endif %}
+                                {% if attribute(indexItem.stepStatus, 'index-item-current') is defined and attribute(indexItem.stepStatus, 'index-item-current') == true %}
+                                    {% set statusClass = statusClass ~  ' disabled' %}
+                                {% endif %}
+                                <li class="{{ indexItem.coreClass }} {{ statusClass }}">
+                                    <a href='{{ indexItem.url }}' data-limesurvey-submit='{{ indexItem.submit }}'
+                                       class='animate'>
+                                        {{ flatEllipsizeText(indexItem.text, true, 30, " &hellip; ", 0.6 ) }}
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                {% endfor %}
+                {% if aSurveyInfo.aQuestionIndex.type == 'full' %}
+                    <li>
+                        {{ gT("Question by question mode not yet supported.") }}
+                    </li>
+                {% endif %}
             </ul>
         </li>
     {% endif %}

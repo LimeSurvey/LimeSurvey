@@ -3,7 +3,7 @@
 }
 /**
  * This is only for packages regarding the questiontypes
- * sees third_party.php for third party package
+ * sees vendor.php for third party package
  * or packages.php for core packages
  * @license GPL v3
  * core path is application/core/packages
@@ -13,10 +13,10 @@
  *
  */
 
-$debug = isset($userConfig['config']['debug']) ? $userConfig['config']['debug'] : 0;
+$debug = $userConfig['config']['debug'] ?? 0;
 /* To add more easily min version : config > 2 , seems really an core dev issue to fix bootstrap.js ;) */
 $minVersion = ($debug > 0) ? "" : ".min";
-/* needed ? @see third_party.php */
+/* needed ? @see vendor.php */
 if (isset($_GET['isAjax'])) {
     return array();
 }
@@ -30,7 +30,6 @@ return array(
             'css/ranking.css',
         ),
         'js'=>array(
-            'scripts/sortable.min.js',
             'scripts/ranking.js',
         ),
         'depends' => array(

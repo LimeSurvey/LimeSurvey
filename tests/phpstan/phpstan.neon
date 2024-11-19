@@ -1,3 +1,3 @@
-# ./third_party/bin/phpstan analyse application/controllers/ -c phpstan.neon -l 3 > phpstan.txt
+# ./vendor/bin/phpstan analyse application/controllers/ -c phpstan.neon -l 3 > phpstan.txt
 parameters:
     bootstrap: %currentWorkingDirectory%/tests/phpstan/phpstan_bootstrap.php

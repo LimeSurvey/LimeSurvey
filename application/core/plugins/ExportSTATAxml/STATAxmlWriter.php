@@ -125,10 +125,10 @@ class STATAxmlWriter extends Writer
         // here we go through the answers-array and check whether answer-codes are numerical. If they are not, we save the respective QIDs
         // so responses can later be set to full answer test of Question or SQ'
         foreach ($aFieldmap['answers'] as $qid => $aScale) {
-            foreach ($aFieldmap['answers'][$qid] as $iScale => $aAnswers) {
-                foreach ($aFieldmap['answers'][$qid][$iScale] as $iAnswercode => $aAnswer) {
-                    if (!is_numeric($aAnswer['code'])) {
-                        $this->aQIDnonumericalAnswers[$aAnswer['qid']] = true;
+            foreach ($aScale as $aAnswers) {
+                foreach (array_keys($aAnswers) as $iAnswercode) {
+                    if (!is_numeric($iAnswercode)) {
+                        $this->aQIDnonumericalAnswers[$qid] = true;
                     }
                 }
             }
@@ -189,7 +189,7 @@ class STATAxmlWriter extends Writer
             $aFieldmap['questions'][$sSGQAkey]['varlabel'] = $aQuestion['varlabel'];
 
             //create value labels for question types with "fixed" answers (YES/NO etc.)
-            if ((isset($aQuestion['other']) && $aQuestion['other'] == 'Y') || substr($aQuestion['fieldname'], -7) == 'comment') {
+            if ((isset($aQuestion['other']) && $aQuestion['other'] == 'Y') || substr((string) $aQuestion['fieldname'], -7) == 'comment') {
                 $aFieldmap['questions'][$sSGQAkey]['commentother'] = true; //comment/other fields: create flag, so value labels are not attached (in close())
             } else {
                 $aFieldmap['questions'][$sSGQAkey]['commentother'] = false;
@@ -274,7 +274,7 @@ class STATAxmlWriter extends Writer
      */
     protected function STATAvarname($sVarname)
     {
-        if (!preg_match("/^([a-z]|[A-Z])+.*$/", $sVarname)) {
+        if (!preg_match("/^([a-z]|[A-Z])+.*$/", (string) $sVarname)) {
 //var starting with a number?
             $sVarname = "v" . $sVarname; //add a leading 'v'
         }
@@ -294,7 +294,7 @@ class STATAxmlWriter extends Writer
             "_",
             "",
             "_"
-        ), $sVarname);
+        ), (string) $sVarname);
         return $sVarname;
     }
 
@@ -318,7 +318,7 @@ class STATAxmlWriter extends Writer
     /* Function is called for every response
      * Here we just use it to create arrays with variable names and data
      */
-    protected function outputRecord($headers, $values, FormattingOptions $oOptions)
+    protected function outputRecord($headers, $values, FormattingOptions $oOptions, $fieldNames = [])
     {
         // function is called for every response to be exported....only write header once
         if (empty($this->headers)) {
@@ -341,7 +341,7 @@ class STATAxmlWriter extends Writer
         foreach ($this->customResponsemap as $iRespId => &$aResponses) {
             // go through variables and response items
             foreach ($aResponses as $iVarid => &$response) {
-                $response = trim($response);
+                $response = trim((string) $response);
                 //recode answercode=answer if codes are non-numeric (cannot be used with value labels)
                 if (
                     $this->customFieldmap['questions'][$this->headersSGQA[$iVarid]]['nonnumericanswercodes'] == true
@@ -354,7 +354,7 @@ class STATAxmlWriter extends Writer
                     }
                     $iQID = $this->customFieldmap['questions'][$this->headersSGQA[$iVarid]]['qid'];
                     if (isset($this->customFieldmap['answers'][$iQID][$iScaleID][$response]['answer'])) {
-                        $response = trim($this->customFieldmap['answers'][$iQID][$iScaleID][$response]['answer']); // get answertext instead of answercode
+                        $response = trim((string) $this->customFieldmap['answers'][$iQID][$iScaleID][$response]['answer']); // get answertext instead of answercode
                     }
                 }
                 
@@ -401,7 +401,7 @@ class STATAxmlWriter extends Writer
                             // For radio lists, user wants code, not label
                             // TODO: We could skip this loop if we had answer code
                             foreach ($this->customFieldmap['answers'][$iQID][$iScaleID] as $answer) {
-                                if ($answer['answer'] == $response) {
+                                if (isset($answer['answer']) && $answer['answer'] == $response) {
                                     $response = $answer['code'];
                                     break;
                                 }
@@ -419,10 +419,10 @@ class STATAxmlWriter extends Writer
                        6=double
                        7=string
                     */
-                    $numberresponse = trim($response);
+                    $numberresponse = trim((string) $response);
                     if ($this->customFieldmap['info']['surveyls_numberformat'] == 1) {
 // if settings: decimal separator==','
-                        $numberresponse = str_replace(',', '.', $response); // replace comma with dot so STATA can use float variables
+                        $numberresponse = str_replace(',', '.', (string) $response); // replace comma with dot so STATA can use float variables
                     }
 
                     if (is_numeric($numberresponse)) {
@@ -449,7 +449,7 @@ class STATAxmlWriter extends Writer
                     } else {
 // non-numeric response
                         $iDatatype = 7; //string
-                        $iStringlength = strlen($response); //for strings we need the length for the format and the data type
+                        $iStringlength = strlen((string) $response); //for strings we need the length for the format and the data type
                     }
                 } else {
                     $iDatatype = 1; // response = ""
@@ -583,7 +583,7 @@ class STATAxmlWriter extends Writer
             $xml->startElement('lblname');
             $xml->writeAttribute('varname', $question['varname']);
             if (!empty($this->customFieldmap['answers'][$question['qid']]) && $question['commentother'] == false && $question['nonnumericanswercodes'] == false) {
-                $iScaleID = isset($question['scale_id']) ? $question['scale_id'] : 0;
+                $iScaleID = $question['scale_id'] ?? 0;
                 $xml->text('vall' . $question['qid'] . $iScaleID);
             }
             $xml->endElement(); //close lblname
@@ -627,9 +627,11 @@ class STATAxmlWriter extends Writer
                     $xml->startElement('vallab');
                     $xml->writeAttribute('name', 'vall' . $iQid . $iScaleID);
                     foreach ($aAnswercodes as $iAnscode => $aAnswer) {
+                        // Before version 4.0, $aAnswer was an array. Now it's just the answer option text.
+                        $answer = is_array($aAnswer) ? $aAnswer['answer'] : $aAnswer;
                         $xml->startElement('label');
                         $xml->writeAttribute('value', $iAnscode);
-                        $xml->text($aAnswer['answer']);
+                        $xml->text($answer);
                         $xml->endElement(); // close label
                     }
                     $xml->endElement(); // close vallab

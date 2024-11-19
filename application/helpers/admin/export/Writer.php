@@ -13,6 +13,7 @@ abstract class Writer implements IWriter
     /** @var Translator $translator */
     protected $translator;
     public $filename;
+    public $languageCode;
     public $webfilename;
 
     protected function translate($key, $sLanguageCode)
@@ -165,7 +166,7 @@ abstract class Writer implements IWriter
             $textHead = $fieldName;
         }
         if ($oOptions->headerSpacesToUnderscores) {
-            $textHead = str_replace(' ', '_', $textHead);
+            $textHead = str_replace(' ', '_', (string) $textHead);
         }
         return $textHead;
     }
@@ -264,7 +265,8 @@ abstract class Writer implements IWriter
     {
 
         //Output the survey.
-        $headers = array();
+        $headers = [];
+        $fieldNames = [];
         if ($bOutputHeaders) {
             foreach ($oOptions->selectedColumns as $sColumn) {
                 //Survey question field, $column value is a field name from the getFieldMap function.
@@ -284,6 +286,7 @@ abstract class Writer implements IWriter
                         break;
                 }
                 $headers[] = $value;
+                $fieldNames[] = $sColumn;
             }
         }
         //Output the results.
@@ -313,7 +316,7 @@ abstract class Writer implements IWriter
             $oResponse->decrypt();
             $aResponse = array_merge($aResponse, $oResponse->attributes);
 
-            $elementArray = array();
+            $elementArray = [];
 
             foreach ($oOptions->selectedColumns as $column) {
                 $value = $aResponse[$column];
@@ -333,18 +336,18 @@ abstract class Writer implements IWriter
                 }
             }
             if ($oOptions->output == 'display') {
-                $this->outputRecord($headers, $elementArray, $oOptions);
+                $this->outputRecord($headers, $elementArray, $oOptions, $fieldNames);
             } else {
-                $sFile .= $this->outputRecord($headers, $elementArray, $oOptions);
+                $sFile .= $this->outputRecord($headers, $elementArray, $oOptions, $fieldNames);
             }
         }
         return $sFile;
     }
 
-    protected function stripTagsFull($string)
+    protected function stripTagsFull(string $string)
     {
         $string = str_replace('-oth-', '', $string);
-        return flattenText($string, false, true, 'UTF-8', false);
+        return (string) flattenText($string, false, true, 'UTF-8', false);
     }
 
 
@@ -359,6 +362,7 @@ abstract class Writer implements IWriter
      * @param array $headers
      * @param array $values
      * @param FormattingOptions $oOptions
+     * @param array $fieldNames
      */
-    abstract protected function outputRecord($headers, $values, FormattingOptions $oOptions);
+    abstract protected function outputRecord($headers, $values, FormattingOptions $oOptions, $fieldNames = []);
 }

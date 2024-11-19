@@ -12,8 +12,8 @@
  * @var $answertextright
  */
 #}
-<tr id="javatbd{{ myfname }}" class="question-item answer-item dropdown-item {% if odd %} ls-odd {% else %} ls-even{% endif %}{% if error %} ls-error-mandatory has-error{% endif %}" >
-    <th class="answertext control-label{% if answerwidth==0 %} sr-only{% endif %}">
+<tr id="javatbd{{ myfname }}" class="question-item answer-item ls-dropdown-item {% if odd %} ls-odd {% else %} ls-even{% endif %}{% if error %} ls-error-mandatory has-error{% endif %}" >
+    <th class="answertext control-label{% if answerwidth==0 %} visually-hidden{% endif %}">
         <label for="answer{{ myfname }}">
             {{ processString(answertext) }}
         </label>
@@ -26,7 +26,7 @@
         }}
     </th>
     <td>
-        <select class="form-control" name="{{ myfname }}" id="answer{{ myfname }}">
+        <select class="form-select" name="{{ myfname }}" id="answer{{ myfname }}">
             {% for option in options %}
                 <option value="{{ option.value }}" {{ option.selected }}>
                     {{ flatString(processString(option.text,1),1) }}

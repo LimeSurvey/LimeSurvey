@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Zend Framework
  *
@@ -16,9 +15,9 @@
  * @category   Zend
  * @package    Zend_XmlRpc
  * @subpackage Server
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: System.php 23775 2011-03-01 17:25:24Z ralph $
+ * @version    $Id$
  */
 
 /**
@@ -27,7 +26,7 @@
  * @category   Zend
  * @package    Zend_XmlRpc
  * @subpackage Server
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_XmlRpc_Server_System
@@ -114,7 +113,7 @@ class Zend_XmlRpc_Server_System
      */
     public function multicall($methods)
     {
-        $responses = array();
+        $responses = [];
         foreach ($methods as $method) {
             $fault = false;
             if (!is_array($method)) {
@@ -138,8 +137,7 @@ class Zend_XmlRpc_Server_System
                     $request->setMethod($method['methodName']);
                     $request->setParams($method['params']);
                     $response = $this->_server->handle($request);
-                    if (
-                        $response instanceof Zend_XmlRpc_Fault
+                    if ($response instanceof Zend_XmlRpc_Fault
                         || $response->isFault()
                     ) {
                         $fault = $response;
@@ -152,10 +150,10 @@ class Zend_XmlRpc_Server_System
             }
 
             if ($fault) {
-                $responses[] = array(
+                $responses[] = [
                     'faultCode'   => $fault->getCode(),
                     'faultString' => $fault->getMessage()
-                );
+                ];
             }
         }
 

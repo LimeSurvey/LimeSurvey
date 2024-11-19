@@ -60,7 +60,7 @@ class RemoteControl extends SurveyCommonAction
             } elseif ($RPCType == 'json') {
                 Yii::app()->loadLibrary('LSjsonRPCServer');
                 if (!isset($_SERVER['CONTENT_TYPE'])) {
-                    $serverContentType = explode(';', $_SERVER['HTTP_CONTENT_TYPE']);
+                    $serverContentType = explode(';', (string) $_SERVER['HTTP_CONTENT_TYPE']);
                     $_SERVER['CONTENT_TYPE'] = reset($serverContentType);
                 }
                 LSjsonRPCServer::handle($oHandler);
@@ -103,7 +103,7 @@ class RemoteControl extends SurveyCommonAction
         if ($enabled) {
             $RPCType = Yii::app()->getConfig("RPCInterface");
             $serverUrl = App()->createAbsoluteUrl('/admin/remotecontrol');
-            $sFileToImport = dirname(Yii::app()->basePath) . DIRECTORY_SEPARATOR . 'docs' . DIRECTORY_SEPARATOR . 'demosurveys' . DIRECTORY_SEPARATOR . 'ls205_sample_survey_english.lss';
+            $sFileToImport = dirname((string) Yii::app()->basePath) . DIRECTORY_SEPARATOR . 'docs' . DIRECTORY_SEPARATOR . 'demosurveys' . DIRECTORY_SEPARATOR . 'ls205_sample_survey_english.lss';
 
             if ($RPCType == 'xml') {
                 $cur_path = get_include_path();
@@ -111,6 +111,8 @@ class RemoteControl extends SurveyCommonAction
                 require_once('Zend/XmlRpc/Client.php');
 
                 $client = new Zend_XmlRpc_Client($serverUrl);
+                // Increase timeout (default is 10 seconds). Importing the survey may take a while.
+                $client->getHttpClient()->setConfig(['timeout' => 300]);
             } elseif ($RPCType == 'json') {
                 Yii::app()->loadLibrary('jsonRPCClient');
                 $client = new jsonRPCClient($serverUrl);
@@ -140,7 +142,7 @@ class RemoteControl extends SurveyCommonAction
             if ($aResult['status'] == 'OK') {
                 echo 'Tokens for Survey ID ' . $iSurveyID . ' successfully activated.<br>';
             }
-            $aResult = $client->call('set_survey_properties', array($sSessionKey, $iSurveyID, array('faxto' => '0800-LIMESURVEY')));
+            $aResult = $client->call('set_survey_properties', array($sSessionKey, $iSurveyID, array('admin' => 'Admin name')));
             if (!array_key_exists('status', $aResult)) {
                 echo 'Modified survey settings for survey ' . $iSurveyID . '<br>';
             }

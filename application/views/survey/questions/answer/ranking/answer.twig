@@ -37,22 +37,27 @@
             {{sSelects}}
     </ul>
     <div class="ls-no-js-hidden answers-list{{ samechoiceheight ? " list-samechoiceheight": "" }} {{ samelistheight ? " list-samelistheight": "" }} row" aria-hidden="true">
-        <div class="col-sm-6 col-xs-6">
+        <div class="col-md-6 col-6 ranking-available-items">
             <strong class="sortable-subtitle sortable-rank-subtitle">{{choice_title}}</strong>
             <!-- @todo : move htmlblock at the good place -->
             <ul id="sortable-choice-{{qId}}" class="sortable-choice sortable-list list-group">
                 {% for ansrow in  answers %}
                     <li id="javatbd{{rankingName}}{{ansrow.code}}" class="ls-choice list-group-item answer-item sortable-item grabable sortable-enable" data-value="{{ansrow.code}}">
                         {{ processString(ansrow.answer) }}
+                        <span class="grabable selector__dragHandle d-none float-end">
+                            <svg class="" width="9" height="14" viewBox="0 0 9 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M0.4646 0.125H3.24762V2.625H0.4646V0.125ZM6.03064 0.125H8.81366V2.625H6.03064V0.125ZM0.4646 5.75H3.24762V8.25H0.4646V5.75ZM6.03064 5.75H8.81366V8.25H6.03064V5.75ZM0.4646 11.375H3.24762V13.875H0.4646V11.375ZM6.03064 11.375H8.81366V13.875H6.03064V11.375Z" fill="currentColor"/>
+                            </svg>
+                        </span>
                     </li>
                 {% endfor %}
-                <li class="hidden ls-remove"></li>
+                <li class="d-none ls-remove"></li>
             </ul>
         </div>
-        <div class="col-sm-6 col-xs-6">
+        <div class="col-md-6 col-6 ranking-sorted-items">
             <strong class="sortable-subtitle sortable-rank-subtitle">{{rank_title}}</strong>
             <ul id="sortable-rank-{{qId}}" class="sortable-rank sortable-list list-group">
-                <li class="hidden ls-remove"></li>
+                <li class="d-none ls-remove"></li>
             </ul>
         </div>
     </div>
@@ -72,8 +77,9 @@ try{
  ranking{{qId}}.init()
 } catch(e){}
 {% endset %}
+{{ registerPackage('sortablejs') }}
 {{ registerPackage('question-ranking') }}
-{{ registerScript( 
+{{ registerScript(
     'RankingQuestionTranslate'~qId, 
     'LSvar.lang.rankhelp="' ~ gT("Double-click or drag-and-drop items in the left list to move them to the right - your highest ranking item should be on the top right, moving through to your lowest ranking item.") ~ '";', 'POS_BEGIN') 
 }}

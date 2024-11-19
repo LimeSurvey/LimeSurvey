@@ -26,9 +26,10 @@ class LSCaptcha extends CCaptcha
         if (!isset($this->imageOptions['id'])) {
                     $this->imageOptions['id'] = $this->getId();
         }
+        $this->imageOptions['class'] = "img-fluid";
 
         $url = $this->getController()->createUrl($this->captchaAction, array('v' => uniqid()));
-        $alt = isset($this->imageOptions['alt']) ? $this->imageOptions['alt'] : '';
+        $alt = $this->imageOptions['alt'] ?? '';
         return CHtml::image($url, $alt, $this->imageOptions);
     }
 }

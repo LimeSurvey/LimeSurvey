@@ -1,64 +1,66 @@
 <?php
+
 /**
  * Response Summary view
  * @var $this AdminController
  * @var $num_completed_answers string
  * @var $num_total_answers string
- * @var $tokeninfo mixed
- * @var $with_token CDbTableSchema|null
  */
 
 // DO NOT REMOVE This is for automated testing to validate we see that page
-echo viewHelper::getViewTestTag('surveyResponsesIndex');
+echo viewHelper::getViewTestTag('surveyResponsesBrowse');
 
 ?>
-<div class='side-body <?php echo getSideBodyClass(true); ?>'>
-    <h3><?php eT("Response summary"); ?></h3>
-    <div class="row">
-        <div class="col-lg-12 content-right">
-            <table class='statisticssummary table'>
-                <tbody>
-                <tr>
-                    <th><?php eT("Full responses"); ?></th>
-                    <td><?php echo $num_completed_answers; ?></td>
-                </tr>
-                <tr>
-                    <th><?php eT("Incomplete responses"); ?></th>
-                    <td><?php echo($num_total_answers - $num_completed_answers); ?></td>
-                </tr>
-                </tbody>
-                <tr>
-                    <th><?php eT("Total responses"); ?></th>
-                    <td><?php echo $num_total_answers; ?></td>
-                </tr>
-            </table>
+<div class='side-body survey-response-page'>
+    <h1> <?= gT("Survey responses") ?> </h1>
+    <div class="mt-4">
+        <?php echo $this->renderPartial(
+            'partial/responseSummary',
+            [
+                'num_completed_answers' => $num_completed_answers,
+                'num_total_answers' => $num_total_answers,
+                'num_total_answers' => $num_total_answers,
+            ],
+            true
+        );
+        ?>
+    </div>
+
+    <h2 class="summary-title mt-4 pb-2 mb-3"><?php eT("Response summary"); ?></h2>
+
+    <ul class="nav nav-tabs mt-2 " role="tablist">
+        <li class="nav-item"><a class="nav-link active" href="#allResponses" aria-controls="allResponses" role="tab" data-bs-toggle="tab"><?php eT('All responses'); ?></a></li>
+        <li class="nav-item"><a class="nav-link" href="#notSubmittedResponses" aria-controls="notSubmittedResponses" role="tab" data-bs-toggle="tab"><?php eT('Saved but not submitted responses'); ?></a></li>
+    </ul>
+    <div class="tab-content p-4 h-100">
+        <div id="allResponses" class="tab-pane show fade active row">
+            <?php echo $this->renderPartial(
+                'partial/responseListTable',
+                [
+                    'surveyid' => $surveyid,
+                    'dateformatdetails' => $dateformatdetails,
+                    'model' => $model,
+                    'bHaveToken' => $bHaveToken,
+                    'language' => $language,
+                    'pageSize' => $pageSize,
+                    'fieldmap' => $fieldmap,
+                    'filteredColumns' => $filteredColumns,
+                ],
+                true
+            );
+            ?>
+        </div>
+        <div id="notSubmittedResponses" class="tab-pane row">
+            <?php echo $this->renderPartial(
+                'partial/notSubmittedResponseListTable',
+                [
+                    'model' => $savedModel,
+                    'savedResponsesPageSize' => $savedResponsesPageSize,
+                ],
+                true
+            );
+            ?>
         </div>
     </div>
-    <?php if (isset($with_token)): ?>
-        <h3><?php eT("Survey participant summary"); ?></h3>
-        <div class="row">
-            <div class="col-lg-12 content-right">
-                <table class='statisticssummary table'>
-                    <tbody>
-                    <tr>
-                        <th><?php eT("Total invitations sent"); ?></th>
-                        <td><?php echo $tokeninfo['sent']; ?></td>
-                    </tr>
-                    <tr>
-                        <th><?php eT("Total surveys completed"); ?></th>
-                        <td><?php echo $tokeninfo['completed']; ?></td>
-                    </tr>
-                    <tr>
-                        <th><?php eT("Total with no unique access code"); ?></th>
-                        <td><?php echo $tokeninfo['invalid'] ?></td>
-                    </tr>
-                    </tbody>
-                    <tr>
-                        <th><?php eT("Total records"); ?></th>
-                        <td><?php echo $tokeninfo['count']; ?></td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-    <?php endif; ?>
+
 </div>

@@ -19,7 +19,7 @@ var RankingQuestion = function (options) {
         rankingID = "javatbd" + rankingName;
 
     //define HTML snippets
-    var screenReader = "<div class='sr-only'>" + $('#question' + questionId + ' .em_default').html() + "</div><div aria-hidden='true'>" + LSvar.lang.rankhelp + "</div>"
+    var screenReader = "<div class='visually-hidden'>" + $('#question' + questionId + ' .em_default').html() + "</div><div aria-hidden='true'>" + LSvar.lang.rankhelp + "</div>"
 
     //define functions
     var createSorting = function () {
@@ -28,7 +28,7 @@ var RankingQuestion = function (options) {
             // Set up the connected sortable
             console.ls.log("Sortable activated");
             console.ls.log("With options: ", options);
-            $('#sortable-choice-' + questionId).sortable({
+            Sortable.create(document.getElementById('sortable-choice-' + questionId), {
                 group: "sortable-" + questionId,
                 filter: '.ls-irrelevant',
                 ghostClass: "ls-rank-placeholder",
@@ -36,15 +36,9 @@ var RankingQuestion = function (options) {
                 scroll: false,
                 onStart: function () {
                     console.ls.log("Move started (choice)");
-                    document.ontouchmove = function (e) {
-                        e.preventDefault();
-                    }
                 },
                 onEnd: function () {
                     console.ls.log("Move ended (choice)");
-                    document.ontouchmove = function (e) {
-                        return true;
-                    }
                 },
                 onMove: function (ev) {
                     if (max_answers > 0 && $('#sortable-rank-' + questionId + ' li').length >= max_answers) {
@@ -54,20 +48,14 @@ var RankingQuestion = function (options) {
                 }
             });
 
-            $('#sortable-rank-' + questionId).sortable({
+            Sortable.create(document.getElementById('sortable-rank-' + questionId),{
                 group: "sortable-" + questionId,
                 ghostClass: "ls-rank-placeholder",
                 onStart: function () {
                     console.ls.log("Move started (ranked)");
-                    document.ontouchmove = function (e) {
-                        e.preventDefault();
-                    }
                 },
                 onEnd: function () {
                     console.ls.log("Move ended (ranked)");
-                    document.ontouchmove = function (e) {
-                        return true;
-                    }
                 },
                 onSort: function (evt) {
                     if ($(evt.item).hasClass("disabled")) {

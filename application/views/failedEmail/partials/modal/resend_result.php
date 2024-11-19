@@ -18,5 +18,5 @@
     ]) ?>
 </div>
 <div class="modal-footer modal-footer-buttons">
-    <button id="exitForm" class="btn btn-default"><?= gT('Close') ?></button>
+    <button id="exitForm" class="btn btn-outline-secondary"><?= gT('Close') ?></button>
 </div>

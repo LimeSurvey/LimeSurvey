@@ -1,0 +1,97 @@
+// Custom Bootstrap 5 implementation for sea_green theme
+
+// 1. Include functions first (so you can manipulate colors, SVGs, calc, etc)
+@import "node_modules/bootstrap/scss/functions.scss";
+
+// 2. Include any default variable overrides here
+@import "assets/bootstrap_5/scss/variables.scss";
+@import "sea_green_variables";
+
+// 3. Include remainder of required Bootstrap stylesheets
+@import "node_modules/bootstrap/scss/variables";
+@import "node_modules/bootstrap/scss/mixins";
+@import "ls-mixins.scss";
+//@import "node_modules/bootstrap/scss/maps";
+@import "node_modules/bootstrap/scss/root";
+
+// 4. Include any optional Bootstrap CSS as needed
+@import "node_modules/bootstrap/scss/utilities";
+@import "node_modules/bootstrap/scss/reboot";
+@import "node_modules/bootstrap/scss/type";
+@import "node_modules/bootstrap/scss/images";
+@import "node_modules/bootstrap/scss/containers";
+@import "node_modules/bootstrap/scss/grid";
+@import "node_modules/bootstrap/scss/tables";
+@import "node_modules/bootstrap/scss/forms";
+@import "node_modules/bootstrap/scss/buttons";
+@import "node_modules/bootstrap/scss/transitions";
+@import "node_modules/bootstrap/scss/dropdown";
+@import "node_modules/bootstrap/scss/button-group";
+@import "node_modules/bootstrap/scss/nav";
+@import "node_modules/bootstrap/scss/navbar";
+@import "node_modules/bootstrap/scss/card";
+@import "node_modules/bootstrap/scss/accordion";
+@import "node_modules/bootstrap/scss/breadcrumb";
+@import "node_modules/bootstrap/scss/pagination";
+@import "node_modules/bootstrap/scss/badge";
+@import "node_modules/bootstrap/scss/alert";
+@import "node_modules/bootstrap/scss/progress";
+@import "node_modules/bootstrap/scss/list-group";
+@import "node_modules/bootstrap/scss/close";
+@import "node_modules/bootstrap/scss/toasts";
+@import "node_modules/bootstrap/scss/modal";
+@import "node_modules/bootstrap/scss/tooltip";
+@import "node_modules/bootstrap/scss/popover";
+@import "node_modules/bootstrap/scss/carousel";
+@import "node_modules/bootstrap/scss/spinners";
+@import "node_modules/bootstrap/scss/offcanvas";
+@import "node_modules/bootstrap/scss/placeholders";
+@import "node_modules/bootstrap/scss/helpers";
+
+
+// 5. Optionally include utilities API last to generate classes based on the Sass map in `_utilities.scss`
+@import "node_modules/bootstrap/scss/utilities/api";
+
+// 6. Add additional custom code here
+@import "assets/bootstrap_5/scss/customizations";
+@import "admin_customizations";
+
+// old adminbasics definitions
+@import "assets/admin_themes/adminbasics_temporary/loadSass.scss";
+
+// old admin theme colors
+@import "lime-admin-colors";
+@import "statistics";
+
+@import "authentication/authentication.scss";
+@import "buttons/buttons.scss";
+@import "buttons/btn-group.scss";
+@import "buttons/dropdown.scss";
+@import "buttons/help-button-dropup.scss";
+@import "modal/modal.scss";
+@import "typography/typography.scss";
+@import "tooltip/tooltip.scss";
+@import "well/well.scss";
+@import "breadcrumb/breadcrumb.scss";
+@import "footer/footer.scss";
+@import "navbar/navbar.scss";
+@import "card/card.scss";
+@import "box/box.scss";
+@import "icons/icons.scss";
+@import "topbar/topbar.scss";
+@import "panelbox/panelbox.scss";
+@import "ckeditor/ckeditor.scss";
+@import "tabs/tabs.scss";
+@import "datetimepicker/datetimepicker.scss";
+@import "forms/forms.scss";
+@import "sidebar/sidebar.scss";
+@import "badge/badge.scss";
+@import "jumbotron/jumbotron.scss";
+@import "tables/tables.scss";
+@import "tables/pagination.scss";
+@import "alert/alert.scss";
+@import "accordion/accordion.scss";
+@import "expressionscript/expressions.scss";
+@import "layout/ls-main-content-container.scss";
+@import "fileManager/fileManager.scss";
+@import "list_group/list_group.scss";

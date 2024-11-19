@@ -4632,7 +4632,7 @@
  *			}
  *		}
  *
- *		// Then, the widget user may choose one of the downcast options when setting up their editor.
+ *		// Then, the widget user may choose one of the downcast options when setting up his editor.
  *		editor.on( 'widgetDefinition', function( evt ) {
  *			if ( evt.data.name == 'image' )
  * 				evt.data.downcast = 'figure';

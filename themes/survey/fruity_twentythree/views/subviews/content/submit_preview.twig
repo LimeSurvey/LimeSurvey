@@ -1,0 +1,58 @@
+{#
+    LimeSurvey
+    Copyright (C) 2007-2017 The LimeSurvey Project Team / Louis Gac
+    All rights reserved.
+    License: GNU/GPL License v2 or later, see LICENSE.php
+    LimeSurvey is free software. This version may have been modified pursuant
+    to the GNU General Public License, and as distributed it includes or
+    is derivative of works licensed under the GNU General Public License or
+    other free or open source software licenses.
+    See COPYRIGHT.php for copyright notices and details.
+
+    (¯`·._.·(¯`·._.· Submit Preview Content  ·._.·´¯)·._.·´¯)
+
+    TODO: this file should be merged with layout_submit,
+    adding the warning message "Your survey responses have not been recorded. This survey is not yet active." to  aSurveyInfo.errorHtml.messages
+
+    NOTE: This content is included inside mainrow.twig
+    NOTE: see layout_global.twig for more infos
+#}
+{% extends "./subviews/content/submit.twig" %}
+{% block endtext %}
+    <div class="alert alert-warning"><strong class="h4 text-danger">{{ gT("Did Not Save") }} </strong>
+        {{ gT("Your survey responses have not been recorded. This survey is not yet active.") }}
+    </div>
+    {{ parent() }}
+{% endblock %}
+{% block printanswer %}
+    {#  Link to Print Answer Preview #}
+    {% if (aSurveyInfo.aCompleted.aPrintAnswers.show == true) %}
+        <!--  Link to Print Answer Preview -->
+        <div class="{{ aSurveyInfo.class.submitwrapperdiva }} disabled" {{ aSurveyInfo.attr.submitwrapperdiv }}>
+            <a href="#" title=" {{ gT("Note: This link only works if the survey is activated.") }}" class="{{ aSurveyInfo.class.submitwrapperdivaa }}" {{ aSurveyInfo.attr.submitwrapperdivaa }}>
+                <span class="ri-printer-line"></span>{{ gT("Print your answers.") }}
+            </a>
+        </div>
+    {% endif %}
+{% endblock %}
+{% block publicstatistics %}
+    {# Link to Public statistics #}
+    {% if (aSurveyInfo.aCompleted.aPublicStatistics.show == true) %}
+        <!-- Link to Public statistics -->
+        <div class="{{ aSurveyInfo.class.submitwrapperdivb }}" {{ aSurveyInfo.attr.submitwrapperdivb }}>
+            <a href="#" title=" {{ gT("Note: This link only works if the survey is activated.") }}" class="{{ aSurveyInfo.class.submitwrapperdivba }}" {{ aSurveyInfo.attr.submitwrapperdivba }}>
+                {{ gT("View the statistics for this survey.") }}
+            </a>
+        </div>
+    {% endif %}
+{% endblock %}
+{% block endurl %}
+    {% if (aSurveyInfo.aCompleted.sSurveylsUrl) %}
+        <a href="{{ str_replace('"', '%22', aSurveyInfo.aCompleted.sSurveylsUrl) }}">{{ aSurveyInfo.aCompleted.sSurveylsUrlDescription }}</a>
+        {% if(aSurveyInfo.autoredirect == "Y") %}
+            <small class="text-info">{{ gT("Note: Automatically loading the end URL works only if the survey is activated.") }}</small>
+        {% endif %}
+        </a>
+    {% endif %}
+{% endblock %}
+

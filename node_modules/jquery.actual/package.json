@@ -1,0 +1,30 @@
+{
+  "name"    : "jquery.actual",
+  "version" : "1.0.19",
+  "title"   : "jQuery Actual Plugin",
+  "author"  : "dreamerslab <ben@dreamerslab.com>",
+  "description": "Older version of jQuery has trouble finding the width/height of invisible DOM elements. With element or its parent element has css property 'display' set to 'none'. `$('.hidden').width();` will return 0 instead of the actual width; This plugin simply fix it.",
+  "keywords": [
+    "width", "height", "hidden element width", "hidden element height", "actual"
+  ],
+  "peerDependencies": {
+    "jquery": ">=1.2.3"
+  },
+  "contributors": [
+    { "name": "Ben Lin", "email": "ben@dreamerslab.com" },
+    { "name": "Erwin Derksen" },
+    { "name": "Jon Tara", "email": "jtara-github-public@spamex.com" },
+    { "name": "Matt Hinchliffe", "email": "matt@maketea.co.uk" },
+    { "name": "Ryan Millikin" },
+    { "name": "Jacob Quant" },
+    { "name": "ejn" },
+    { "name": "Rudolf", "email": "qa.kovalyov@gmail.com" },
+    { "name": "jamesallchin" }
+  ],
+  "licenses": [{
+    "type"  : "MIT",
+    "url"   : "LICENSE.txt"
+  }],
+  "main": "jquery.actual.js",
+  "homepage": "http://dreamerslab.com/blog/get-hidden-elements-width-and-height-with-jquery/"
+}

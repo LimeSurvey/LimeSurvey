@@ -7,7 +7,7 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
     protected static $description = 'Core: LDAP authentication';
     protected static $name = 'LDAP';
 
-    /** @inheritdoc, this plugin didn't have any public method */
+    /** @inheritdoc this plugin didn't have any public method */
     public $allowedPublicMethods = array();
 
     /**
@@ -199,20 +199,21 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
             return;
         }
 
-        $this->_createNewUser(flattenText(Yii::app()->request->getPost('new_user'), false, true));
+        $oEvent = $this->getEvent();
+
+        $this->ldapCreateNewUser($oEvent, flattenText(Yii::app()->request->getPost('new_user'), false, true));
     }
 
     /**
      * Create a LDAP user
      *
+     * @param Event $oEvent Either CreateNewUser event or dummy event.
      * @param string $new_user
      * @param string $password
      * @return null|integer New user ID
      */
-    private function _createNewUser($new_user, $password = null)
+    private function ldapCreateNewUser($oEvent, $new_user, $password = null)
     {
-        $oEvent = $this->getEvent();
-
         // Get configuration settings:
         $ldapmode = $this->get('ldapmode');
         $searchuserattribute = $this->get('searchuserattribute');
@@ -227,7 +228,7 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
 
         // Try to connect
         $ldapconn = $this->createConnection();
-        if (!is_resource($ldapconn)) {
+        if (is_array($ldapconn)) {
             $oEvent->set('errorCode', self::ERROR_LDAP_CONNECTION);
             $oEvent->set('errorMessageTitle', '');
             $oEvent->set('errorMessageBody', $ldapconn['errorMessage']);
@@ -238,8 +239,7 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
         if (empty($ldapmode) || $ldapmode == 'simplebind') {
             // Use the user's account for LDAP search
             $ldapbindsearch = @ldap_bind($ldapconn, $prefix . $new_user . $suffix, $password);
-        }
-        else if (empty($binddn)) {
+        } elseif (empty($binddn)) {
             // There is no account defined to do the LDAP search,
             // let's use anonymous bind instead
             $ldapbindsearch = @ldap_bind($ldapconn);
@@ -294,7 +294,14 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
         } else {
             $parentID = 1;
         }
-        $iNewUID = User::insertUser($new_user, $new_pass, $new_full_name, $parentID, $new_email);
+        $status = true;
+        $preCollectedUserArray = $oEvent->get('preCollectedUserArray', []);
+        if (!empty($preCollectedUserArray)) {
+            if (!empty($preCollectedUserArray['status'])) {
+                $status = $preCollectedUserArray['status'];
+            }
+        }
+        $iNewUID = User::insertUser($new_user, $new_pass, $new_full_name, $parentID, $new_email, null, $status);
         if (!$iNewUID) {
             $oEvent->set('errorCode', self::ERROR_ALREADY_EXISTING_USER);
             $oEvent->set('errorMessageTitle', '');
@@ -312,9 +319,10 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
     }
 
     /**
-     * Create LDAP connection
+     * Create LDAP connection and return it
+     * In case of error : return an array with errorCode
      *
-     * @return mixed
+     * @return array|LDAP\Connection , array if error.
      */
     private function createConnection()
     {
@@ -334,7 +342,7 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
             $ldapserver = 'ldap://' . $ldapserver;
         }
         $ldapconn = ldap_connect($ldapserver . ':' . (int) $ldapport);
-        if (false == $ldapconn) {
+        if ($ldapconn === false) {
             // LDAP connect does not connect, but just checks the URI
             // A real connection is only created on the first following ldap_* command
             return array("errorCode" => 2, "errorMessage" => gT('LDAP URI could not be parsed.'));
@@ -361,7 +369,6 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
                 return array("errorCode" => 100, 'errorMessage' => ldap_error($ldapconn));
             }
         }
-
         return $ldapconn;
     }
 
@@ -429,6 +436,7 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
         if ($identity->plugin != 'AuthLDAP') {
             return;
         }
+        $newUserSessionEvent =  $this->getEvent();
         /* unsubscribe from beforeHasPermission, else updating event */
         $this->unsubscribe('beforeHasPermission');
         // Here we do the actual authentication
@@ -478,9 +486,9 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
         $groupsearchbase        = $this->get('groupsearchbase');
         $groupsearchfilter      = $this->get('groupsearchfilter');
 
-        // Try to connect
+        /* Get the conexion, createConnection return an error in array, never return false */
         $ldapconn = $this->createConnection();
-        if (!is_resource($ldapconn)) {
+        if (is_array($ldapconn)) {
             $this->setAuthFailure($ldapconn['errorCode'], gT($ldapconn['errorMessage']));
             return;
         }
@@ -560,17 +568,30 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
 
         // Finally, if user didn't exist and auto creation (i.e. autoCreateFlag == true) is enabled, we create it
         if ($autoCreateFlag) {
-            if (($iNewUID = $this->_createNewUser($username, $password)) && $this->get('automaticsurveycreation', null, null, false)) {
+            if (($iNewUID = $this->ldapCreateNewUser($newUserSessionEvent, $username, $password)) && $this->get('automaticsurveycreation', null, null, false)) {
                 Permission::model()->setGlobalPermission($iNewUID, 'surveys', array('create_p'));
             }
             $user = $this->api->getUserByName($username);
             if ($user === null) {
-                $this->setAuthFailure(self::ERROR_USERNAME_INVALID, gT('Credentials are valid but we failed to create a user'));
+                $errorCode = $newUserSessionEvent->get('errorCode');
+                if (empty($errorCode)) {
+                    $errorCode = self::ERROR_USERNAME_INVALID;
+                }
+                $message = gT('Credentials are valid, but we failed to create a user.');
+                if ($newUserSessionEvent->get('errorMessageTitle')) {
+                    $message .= $newUserSessionEvent->get('errorMessageTitle');
+                }
+                if ($newUserSessionEvent->get('errorMessageBody')) {
+                    $message .= $newUserSessionEvent->get('errorMessageBody');
+                }
+                $this->setAuthFailure($errorCode, $message);
                 return;
             }
         }
         // If we made it here, authentication was a success and we do have a valid user
         $this->pluginManager->dispatchEvent(new PluginEvent('newUserLogin', $this));
+        /* Set the username as found in LimeSurvey */
+        $this->setUsername($user->users_name);
         $this->setAuthSuccess($user);
     }
 }

@@ -240,7 +240,7 @@ abstract class Zend_Validate_Abstract implements Zend_Validate_Interface
             $value = str_repeat('*', strlen($value));
         }
 
-        $message = str_replace('%value%', $value, $message);
+        $message = str_replace('%value%', $value, (string) $message);
         foreach ($this->_messageVariables as $ident => $property) {
             $message = str_replace(
                 "%$ident%",

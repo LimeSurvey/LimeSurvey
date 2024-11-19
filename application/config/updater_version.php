@@ -15,7 +15,8 @@
 
     // THIS FILE SHOULD NOT BE CHANGED MANUALLY !
 
-$config['updaterversion'] = 13;
-$config['comfort_update_server_url'] = 'comfortupdate.limesurvey.org/';
-$config['comfort_update_server_ssl'] = 0;
+$config['updaterversion'] = 20;
+$config['comfort_update_server_url'] = 'comfortupdate.limesurvey.org';
+$config['comfort_update_server_ssl'] = 1;
+$config['allow_non_public_release'] = 0;  // Used internally for debugging
 return $config;

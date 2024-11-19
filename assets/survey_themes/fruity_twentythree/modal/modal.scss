@@ -1,0 +1,51 @@
+$modal-inner-padding : 1.5rem; // 24px
+
+.modal-content {
+    border        : none;
+    box-shadow    : none;
+    border-radius : 0px;
+}
+
+.modal-header {
+    padding       : $modal-inner-padding;
+    border-bottom : none;
+
+    .btn-close {
+        width     : 0.75em;
+        height    : 0.75em;
+        opacity   : 1;
+        font-size : $btn-font-size-sm;
+
+        &:focus {
+            box-shadow : none;
+        }
+    }
+}
+
+.modal-title {
+    margin-top  : 0;
+    line-height : $line-height-26;
+}
+
+.modal-body {
+    padding : $modal-inner-padding;
+}
+
+.modal-footer {
+    border-top : none;
+    padding    : $modal-inner-padding;
+}
+
+@media only screen and (max-width : 768px) {
+  .modal-dialog {
+    position: fixed;
+    top: 0;
+    margin:0;
+    padding:10px;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1050;
+    width: 96%;
+  }
+}

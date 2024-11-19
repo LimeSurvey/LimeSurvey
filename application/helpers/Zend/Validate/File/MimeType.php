@@ -400,9 +400,9 @@ class Zend_Validate_File_MimeType extends Zend_Validate_Abstract
             return true;
         }
 
-        $types = explode('/', $this->_type);
-        $types = array_merge($types, explode('-', $this->_type));
-        $types = array_merge($types, explode(';', $this->_type));
+        $types = explode('/', (string) $this->_type);
+        $types = array_merge($types, explode('-', (string) $this->_type));
+        $types = array_merge($types, explode(';', (string) $this->_type));
         foreach ($mimetype as $mime) {
             if (in_array($mime, $types)) {
                 return true;

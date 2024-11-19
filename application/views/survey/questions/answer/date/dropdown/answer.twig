@@ -1,4 +1,4 @@
-{# 
+{#
 /**
  * Date Html, dropdown style
  *
@@ -15,17 +15,19 @@
 <!-- Date, dropdown layout -->
 
 <!-- answer -->
-<div class='form-inline'>
-    <div class="{{coreClass}} ls-no-js-hidden form-group" role="group" aria-labelledby="ls-question-text-{{name}}">
-            {# // rows/*.php #}
-            {{sRows}}
-    </div>
-    <!-- answer fo nojs action and real value sent -->
-    <div class='{{coreClass}} ls-js-hidden form-group'>
-        <label for='answer{{name}}' class='sr-only control-label'>
+<div class="{{ coreClass }} ls-no-js-hidden mb-3 row row-cols-sm-auto g-1 align-items-center" role="group"
+     aria-labelledby="ls-question-text-{{ name }}">
+    {# // rows/*.php #}
+    {{ sRows }}
+</div>
+<!-- answer fo nojs action and real value sent -->
+<div class="row">
+    <div class='{{ coreClass }} ls-js-hidden mb-3 col-3'>
+        <label for='answer{{ name }}' class='visually-hidden control-label'>
             {{ sprintf(gT('Date in the format: %s'), dateformatdetails) }}
         </label>
-        <div id="answer{{name}}_datetimepicker" class="input-group answer-item date-timepicker-group" data-basename="{{name}}"><!-- data-basename used in js function -->
+        <div id="answer{{ name }}_datetimepicker" class="input-group answer-item date-timepicker-group"
+             data-basename="{{ name }}"><!-- data-basename used in js function -->
             {{ C.Html.textField(name,dateoutput,{
                 'id' : "answer" ~ name,
                 'class' : "form-control date-control date",
@@ -33,9 +35,9 @@
             }) }}
         </div>
         <p class="tip help-block" aria-hidden='true'>
-           {{ sprintf(gT('Format: %s'),dateformatdetails) }}
+            {{ sprintf(gT('Format: %s'),dateformatdetails) }}
         </p>
     </div>
-    <input type="hidden" id="dateformat{{name}}" value="{{dateformatdetails}}"/>
 </div>
+<input type="hidden" id="dateformat{{ name }}" value="{{ dateformatdetails }}"/>
 <!-- end of answer -->

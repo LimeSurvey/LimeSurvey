@@ -1,18 +1,13 @@
 <?php
 
-
 namespace ls\tests;
-
 
 use LimeSurvey\Datavalueobjects\SimpleSurveyValues;
 use LimeSurvey\Models\Services\CreateSurvey;
 use PHPUnit\Framework\TestCase;
 
-
-
 class CreateSurveyServiceTest extends TestCase
 {
-
     /**
      * Creates a simple survey
      */

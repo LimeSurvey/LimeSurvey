@@ -3,11 +3,11 @@
 class Authwebserver extends LimeSurvey\PluginManager\AuthPluginBase
 {
     protected $storage = 'DbStorage';
-    
+
     protected static $description = 'Core: Webserver authentication';
     protected static $name = 'Webserver';
 
-    /** @inheritdoc, this plugin didn't have any public method */
+    /** @inheritdoc this plugin didn't have any public method */
     public $allowedPublicMethods = array();
 
     protected $settings = array(
@@ -21,12 +21,12 @@ class Authwebserver extends LimeSurvey\PluginManager\AuthPluginBase
             'default' => 'REMOTE_USER',
         ),
         'is_default' => array(
-                'type' => 'checkbox',
-                'label' => 'Check to make default authentication method (This disable Default LimeSurvey authentification by database)',
-                'default' => true,
-                )
+            'type' => 'checkbox',
+            'label' => 'Check to make default authentication method (This disable Default LimeSurvey authentification by database)',
+            'default' => true,
+        )
     );
-    
+
     public function init()
     {
         /**
@@ -61,26 +61,31 @@ class Authwebserver extends LimeSurvey\PluginManager\AuthPluginBase
     {
         // normal login through webserver authentication
         $serverKey = $this->get('serverkey');
+
         if (!empty($serverKey) && isset($_SERVER[$serverKey])) {
             $sUser = $_SERVER[$serverKey];
             // Only strip domain part when desired
             if ($this->get('strip_domain', null, null, false)) {
-                if (strpos($sUser, "\\") !== false) {
+                if (strpos((string) $sUser, "\\") !== false) {
                     // Get username for DOMAIN\USER
-                    $sUser = substr($sUser, strrpos($sUser, "\\") + 1);
-                } elseif (strpos($sUser, "@") !== false) {
+                    $sUser = substr((string) $sUser, strrpos((string) $sUser, "\\") + 1);
+                } elseif (strpos((string) $sUser, "@") !== false) {
                     // Get username for USER@DOMAIN
-                    $sUser = substr($sUser, 0, strrpos($sUser, "@"));
+                    $sUser = substr((string) $sUser, 0, strrpos((string) $sUser, "@"));
                 }
             }
             $aUserMappings = $this->api->getConfigKey('auth_webserver_user_map', array());
             if (isset($aUserMappings[$sUser])) {
                 $sUser = $aUserMappings[$sUser];
             }
+            $authEvent = $this->getEvent();
             $oUser = $this->api->getUserByName($sUser);
-            if ($oUser || $this->api->getConfigKey('auth_webserver_autocreate_user')) {
+            if (
+                ($oUser && Permission::model()->hasGlobalPermission('auth_webserver', 'read', $oUser->uid))
+                || (!$oUser && $this->api->getConfigKey('auth_webserver_autocreate_user'))
+            ) {
                 $this->setUsername($sUser);
-                $this->setAuthPlugin(); // This plugin handles authentication, halt further execution of auth plugins
+                $this->setAuthPlugin($authEvent); // This plugin handles authentication, halt further execution of auth plugins
                 return;
             }
         }
@@ -96,10 +101,10 @@ class Authwebserver extends LimeSurvey\PluginManager\AuthPluginBase
         if ($identity->plugin != 'Authwebserver') {
             return;
         }
-
+        /* @var $authEvent LimeSurvey\PluginManager\PluginEvent */
+        $authEvent = $this->getEvent();
         /* @var $identity LSUserIdentity */
         $sUser = $this->getUserName();
-
         $oUser = $this->api->getUserByName($sUser);
         if (is_null($oUser)) {
             if (function_exists("hook_get_auth_webserver_profile")) {
@@ -110,12 +115,11 @@ class Authwebserver extends LimeSurvey\PluginManager\AuthPluginBase
                 $aUserProfile = $this->api->getConfigKey('auth_webserver_autocreate_profile');
             }
         } else {
-            if (Permission::model()->find('permission = :permission AND uid=:uid AND read_p =1', array(":permission" => 'auth_webserver', ":uid" => $oUser->uid))) {
-                // Don't use Permission::model()->hasGlobalPermission : it's update the plugins event (and remove user/pass from event)
-                $this->setAuthSuccess($oUser);
+            if (Permission::model()->hasGlobalPermission('auth_webserver', 'read', $oUser->uid)) {
+                $this->setAuthSuccess($oUser, $authEvent);
                 return;
             } else {
-                $this->setAuthFailure(self::ERROR_AUTH_METHOD_INVALID, gT('Web server authentication method is not allowed for this user'));
+                $this->setAuthFailure(self::ERROR_AUTH_METHOD_INVALID, gT('Web server authentication method is not allowed for this user'), $authEvent);
                 return;
             }
         }
@@ -135,10 +139,10 @@ class Authwebserver extends LimeSurvey\PluginManager\AuthPluginBase
                 Permission::model()->setGlobalPermission($oUser->uid, 'auth_webserver');
 
                 // read again user from newly created entry
-                $this->setAuthSuccess($oUser);
+                $this->setAuthSuccess($oUser, $authEvent);
                 return;
             } else {
-                $this->setAuthFailure(self::ERROR_USERNAME_INVALID);
+                $this->setAuthFailure(self::ERROR_USERNAME_INVALID, gT('Unable to create user'), $authEvent);
             }
         }
     }
@@ -154,8 +158,14 @@ class Authwebserver extends LimeSurvey\PluginManager\AuthPluginBase
         $settings = parent::getPluginSettings($getValues);
 
         if (!empty($settings['serverkey']) && !empty($settings['serverkey']['current'])) {
-            if(!isset($_SERVER[$settings['serverkey']['current']])) {
-                $settings['serverkey']['help'] = "<p class='alert alert-danger'>" . gT("The server key is not currently set. If you set this plugin as default you will not be able to log in again.") . "<p>";
+            if (!isset($_SERVER[$settings['serverkey']['current']])) {
+                $settings['serverkey']['help'] = App()->getController()->widget('ext.AlertWidget.AlertWidget', [
+                    'tag' => 'p',
+                    'text' => gT(
+                        "The server key is not currently set. If you set this plugin as default you will not be able to log in again."
+                    ),
+                    'type' => 'info',
+                ], true);
             }
         }
 

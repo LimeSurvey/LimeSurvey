@@ -2,7 +2,7 @@
 
 /*
 * LimeSurvey
-* Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+* Copyright (C) 2007-2023 The LimeSurvey Project Team / Carsten Schmitz
 * All rights reserved.
 * License: GNU/GPL License v2 or later, see LICENSE.php
 * LimeSurvey is free software. This version may have been modified pursuant
@@ -42,74 +42,68 @@ class Labels extends SurveyCommonAction
      */
     public function importlabelresources()
     {
-        if (!Permission::model()->hasGlobalPermission('labelsets', 'update')) {
-            Yii::app()->session['flashmessage'] = gT('Access denied!');
-            $this->getController()->redirect(App()->createUrl("/admin"));
+        $lid = $this->validateLabelSetId(App()->request->getParam('lid'), 'update');
+        if (Yii::app()->getConfig('demoMode')) {
+            $this->getController()->error(gT("Demo mode only: Uploading files is disabled in this system."), $this->getController()->createUrl("admin/labels/sa/view/lid/{$lid}"));
         }
-        $lid = returnGlobal('lid');
-        if (!empty($lid)) {
-            if (Yii::app()->getConfig('demoMode')) {
-                $this->getController()->error(gT("Demo mode only: Uploading files is disabled in this system."), $this->getController()->createUrl("admin/labels/sa/view/lid/{$lid}"));
-            }
 
-            // Create temporary directory
-            // If dangerous content is unzipped
-            // then no one will know the path
-            Yii::import('application.helpers.common_helper', true);
-            $extractdir = createRandomTempDir();
-            $zipfilename = $_FILES['the_file']['tmp_name'];
-            $basedestdir = Yii::app()->getConfig('uploaddir') . "/labels";
-            $destdir = $basedestdir . "/$lid/";
+        // Create temporary directory
+        // If dangerous content is unzipped
+        // then no one will know the path
+        Yii::import('application.helpers.common_helper', true);
+        $extractdir = createRandomTempDir();
+        $zipfilename = $_FILES['the_file']['tmp_name'];
+        $basedestdir = Yii::app()->getConfig('uploaddir') . "/labels";
+        $destdir = $basedestdir . "/$lid/";
 
-            Yii::app()->loadLibrary('admin.pclzip');
-            $zip = new PclZip($zipfilename);
+        Yii::app()->loadLibrary('admin.pclzip');
+        $zip = new PclZip($zipfilename);
 
-            if (!is_writeable($basedestdir)) {
-                Yii::app()->setFlashMessage(sprintf(gT("Incorrect permissions in your %s folder."), $basedestdir), 'error');
-                $this->getController()->redirect(App()->createUrl("admin/labels/sa/view/lid/{$lid}"));
-            }
-
-            if (!is_dir($destdir)) {
-                mkdir($destdir);
-            }
-
-            $aImportedFilesInfo = array();
-            $aErrorFilesInfo = array();
-
-            if (is_file($zipfilename)) {
-                if ($zip->extract($extractdir) <= 0) {
-                    $this->getController()->error(gT("This file is not a valid ZIP file archive. Import failed. " . $zip->errorInfo(true)), $this->getController()->createUrl("admin/labels/sa/view/lid/{$lid}"));
-                }
-
-                // now read tempdir and copy authorized files only
-                $folders = array('flash', 'files', 'images');
-                foreach ($folders as $folder) {
-                    list($_aImportedFilesInfo, $_aErrorFilesInfo) = $this->filterImportedResources($extractdir . "/" . $folder, $destdir . $folder);
-                    $aImportedFilesInfo = array_merge($aImportedFilesInfo, $_aImportedFilesInfo);
-                    $aErrorFilesInfo = array_merge($aErrorFilesInfo, $_aErrorFilesInfo);
-                }
-
-                // Deletes the temp directory
-                rmdirr($extractdir);
-
-                // Delete the temporary file
-                unlink($zipfilename);
-
-                if (is_null($aErrorFilesInfo) && is_null($aImportedFilesInfo)) {
-                    $this->getController()->error(gT("This ZIP archive contains no valid Resources files. Import failed."), $this->getController()->createUrl("admin/labels/sa/view/lid/{$lid}"));
-                }
-            } else {
-                $this->getController()->error(gT("An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder."), $this->getController()->createUrl("admin/labels/sa/view/lid/{$lid}"));
-            }
-
-            $aData = array(
-                'aErrorFilesInfo' => $aErrorFilesInfo,
-                'aImportedFilesInfo' => $aImportedFilesInfo,
-                'lid' => $lid
-            );
-
-            $this->renderWrappedTemplate('labels', 'importlabelresources_view', $aData);
+        if (!is_writeable($basedestdir)) {
+            Yii::app()->setFlashMessage(sprintf(gT("Incorrect permissions in your %s folder."), $basedestdir), 'error');
+            $this->getController()->redirect(App()->createUrl("admin/labels/sa/view/lid/{$lid}"));
         }
+
+        if (!is_dir($destdir)) {
+            mkdir($destdir);
+        }
+
+        $aImportedFilesInfo = array();
+        $aErrorFilesInfo = array();
+
+        if (is_file($zipfilename)) {
+            if ($zip->extract($extractdir) <= 0) {
+                $this->getController()->error(gT("This file is not a valid ZIP file archive. Import failed. " . $zip->errorInfo(true)), $this->getController()->createUrl("admin/labels/sa/view/lid/{$lid}"));
+            }
+
+            // now read tempdir and copy authorized files only
+            $folders = array('flash', 'files', 'images');
+            foreach ($folders as $folder) {
+                list($_aImportedFilesInfo, $_aErrorFilesInfo) = $this->filterImportedResources($extractdir . "/" . $folder, $destdir . $folder);
+                $aImportedFilesInfo = array_merge($aImportedFilesInfo, $_aImportedFilesInfo);
+                $aErrorFilesInfo = array_merge($aErrorFilesInfo, $_aErrorFilesInfo);
+            }
+
+            // Deletes the temp directory
+            rmdirr($extractdir);
+
+            // Delete the temporary file
+            unlink($zipfilename);
+
+            if (is_null($aErrorFilesInfo) && is_null($aImportedFilesInfo)) {
+                $this->getController()->error(gT("This ZIP archive contains no valid Resources files. Import failed."), $this->getController()->createUrl("admin/labels/sa/view/lid/{$lid}"));
+            }
+        } else {
+            $this->getController()->error(gT("An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder."), $this->getController()->createUrl("admin/labels/sa/view/lid/{$lid}"));
+        }
+
+        $aData = array(
+            'aErrorFilesInfo' => $aErrorFilesInfo,
+            'aImportedFilesInfo' => $aImportedFilesInfo,
+            'lid' => $lid
+        );
+
+        $this->renderWrappedTemplate('labels', 'importlabelresources_view', $aData);
     }
 
     /**
@@ -123,7 +117,7 @@ class Labels extends SurveyCommonAction
             Yii::app()->session['flashmessage'] = gT('Access denied!');
             $this->getController()->redirect(App()->createUrl("/admin"));
         }
-        $action = returnGlobal('action');
+        $action = App()->getRequest()->getParam('action');
         $aViewUrls = array();
 
         // Check file size and redirect on error
@@ -134,7 +128,7 @@ class Labels extends SurveyCommonAction
             Yii::app()->loadHelper('admin/import');
 
             $sFullFilepath = Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . randomChars(20);
-            $aPathInfo = pathinfo($_FILES['the_file']['name']);
+            $aPathInfo = pathinfo((string) $_FILES['the_file']['name']);
             $sExtension = !empty($aPathInfo['extension']) ? $aPathInfo['extension'] : ''; // TODO: $sExtension is not used. Remove it.
 
             if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $sFullFilepath)) {
@@ -143,7 +137,7 @@ class Labels extends SurveyCommonAction
             }
             $options = $aImportResults = [];
             $options['checkforduplicates'] = 'off';
-            if ($_POST['checkforduplicates'] == 1) {
+            if (App()->getRequest()->getPost('checkforduplicates') == 1) {
                 $options['checkforduplicates'] = 'on';
             }
 
@@ -170,57 +164,62 @@ class Labels extends SurveyCommonAction
 
         $lid = sanitize_int($lid);
         $aViewUrls = $aData = [];
-
-        if (Permission::model()->hasGlobalPermission('labelsets', 'read')) {
-            if ($sa == "editlabelset" && Permission::model()->hasGlobalPermission('labelsets', 'update')) {
-                $arLabelSet = LabelSet::model()->findByAttributes(array('lid' => $lid));
-                $lbname = $arLabelSet->label_name;
-                $lblid = $arLabelSet->lid;
-                $langids = $arLabelSet->languages;
-                $aData['lbname'] = $lbname;
-                $aData['lblid'] = $lblid;
+        if (!in_array($sa, ['editlabelset', 'newlabelset'])) {
+            throw new CHttpException(400);
+        }
+        $aData['action'] = $sa;
+        $aData['lid'] = $lid;
+        /* update */
+        if ($sa == "editlabelset") {
+            $lid = $this->validateLabelSetId($lid, 'update');
+            $labelSet = LabelSet::model()->findByPk($lid);
+            $lbname = $labelSet->label_name;
+            $lblid = $labelSet->lid;
+            $langids = $labelSet->languages;
+            $aData['lbname'] = $lbname;
+            $aData['lblid'] = $lblid;
+            $tabitem = gT("Edit label set");
+            $pageTitle = gT('Edit label set');
+        }
+        /* Create */
+        if ($sa == "newlabelset") {
+            if (!Permission::model()->hasGlobalPermission('labelsets', 'create')) {
+                throw new CHttpException(403);
             }
-
-            $aData['action'] = $sa;
-            $aData['lid'] = $lid;
-
-            if ($sa == "newlabelset" && Permission::model()->hasGlobalPermission('labelsets', 'create')) {
-                $langids = Yii::app()->session['adminlang'];
-                $tabitem = gT("New label set");
-                $pageTitle = gT('Create or import new label set(s)');
-            } else {
-                $tabitem = gT("Edit label set");
-                $pageTitle = gT('Edit label set');
-            }
-
-            $langidsarray = explode(" ", trim($langids)); // Make an array of it
-
-            if (isset($row['lid'])) {
-                $panecookie = $row['lid'];
-            } else {
-                $panecookie = 'new';
-            }
-
-            $aData['langids'] = $langids;
-            $aData['langidsarray'] = $langidsarray;
-            $aData['panecookie'] = $panecookie;
-            $aData['tabitem'] = $tabitem;
-
-            $aViewUrls['editlabel_view'][] = $aData;
+            $langids = Yii::app()->session['adminlang'];
+            $tabitem = gT("New label set");
+            $pageTitle = gT('Create or import new label set(s)');
+            $lid = null;
         }
 
-        // Label Bar
-        $aData['labelbar']['buttons']['delete'] = ($sa != "newlabelset") ? true : false;
-        // Save button
-        $aData['labelbar']['buttons']['edition'] = true;
-        // Return button
-        $aData['labelbar']['buttons']['return'] = true;
-        $aData['labelbar']['savebutton']['form'] = 'labelsetform';
-        $aData['labelbar']['savebutton']['text'] = gT("Save");
+        /* other sa ? What is the default ? */
+        $langidsarray = explode(" ", trim((string) $langids)); // Make an array of it
+        /* unknow usage */
+        $panecookie = 'new';
+        /* render data */
+        $aData['langids'] = $langids;
+        $aData['langidsarray'] = $langidsarray;
+        $aData['panecookie'] = $panecookie;
+        $aData['tabitem'] = $tabitem;
+        $aViewUrls['editlabel_view'][] = $aData;
+        $aData['topbar']['title'] = $pageTitle;
+        $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
+            '/admin/labels/partials/topbarBtns_newimport/rightSideButtons',
+            [
+                'hasPermissionExport' => $lid && LabelSet::model()->findByPk($lid)->haspermission('export')
+            ],
+            true
+        );
+        $aData['topbar']['title'] = $pageTitle;
+        $aData['topbar']['backLink'] = App()->createUrl('admin/labels/sa/view');
 
-        // Green SurveyManagerBar
-        $aData['pageTitle'] = $pageTitle;
-
+        $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
+            '/admin/labels/partials/topbarBtns_newimport/rightSideButtons',
+            [
+                'hasPermissionExport' => $lid && LabelSet::model()->findByPk($lid)->haspermission('export')
+            ],
+            true
+        );
         $this->renderWrappedTemplate('labels', $aViewUrls, $aData);
     }
 
@@ -232,13 +231,6 @@ class Labels extends SurveyCommonAction
      */
     public function view(int $lid = 0)
     {
-        if (!Permission::model()->hasGlobalPermission('labelsets', 'read')) {
-            Yii::app()->session['flashmessage'] = gT('Access denied!');
-            $this->getController()->redirect(App()->createUrl("/admin"));
-        }
-        // Escapes the id variable
-        $lid = (int) $lid;
-
         Yii::app()->session['FileManagerContext'] = "edit:label:{$lid}";
 
         // Gets the current language
@@ -248,19 +240,15 @@ class Labels extends SurveyCommonAction
 
         // Includes some javascript files
         App()->getClientScript()->registerPackage('jquery-json');
-        // Checks if user have the sufficient rights to manage the labels
-        // Get a result containing labelset with the specified id
         $model = LabelSet::model()->findByPk($lid);
-        // If there is label id in the variable $lid and there are labelset records in the database
-        $labelset_exists = $model !== null;
-
-        if ($lid > 0 && $labelset_exists) {
+        if ($lid > 0) {
+            $lid = $this->validateLabelSetId($lid, 'read');
             // Now recieve all labelset information and display it
             $aData['lid'] = $lid;
             $aData['row'] = $model->attributes;
 
             // Make languages array from the current row
-            $lslanguages = explode(" ", trim($model->languages));
+            $lslanguages = explode(" ", trim((string) $model->languages));
 
             Yii::app()->loadHelper("admin.htmleditor");
 
@@ -285,7 +273,8 @@ class Labels extends SurveyCommonAction
                 'lid' => $lid,
                 'maxsortorder' => $maxSortOrder,
                 'action' => $action,
-                'model' => $model
+                'model' => $model,
+                'addRowUrl' => \Yii::app()->createUrl("/admin/labels/sa/getLabelRowForAllLanguages"),
             );
         } else {
             //show listing
@@ -295,38 +284,44 @@ class Labels extends SurveyCommonAction
 
         $aData['model'] = $model;
 
-        if ($lid == 0) {
-            $aData['labelbar']['buttons']['view'] = true;
-        } else {
-            $aData['labelbar']['buttons']['delete'] = true;
-
-            // Save Button
-            $aData['labelbar']['savebutton']['form'] = 'mainform';
-            $aData['labelbar']['savebutton']['text'] = gT("Save");
-
-            // Save and Close Button
-            $aData['labelbar']['saveandclosebutton']['form'] = 'mainform';
-            $aData['labelbar']['saveandclosebutton']['text'] = gT('Save & close');
-
-            // White Close Button
-            $aData['labelbar']['white_closebutton']['url'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl('admin/labels/sa/view'));
-            ;
-            $aData['labelbar']['white_closebutton']['text'] = gT('Close');
-
-            $aData['labelbar']['buttons']['edition'] = true;
-
-            $aData['labelbar']['buttons']['edit'] = true;
-            if (!Permission::model()->hasGlobalPermission('labelsets', 'update')) {
-                unset($aData['labelbar']['buttons']['edition']);
-            }
-        }
-
         if (isset($_GET['pageSize'])) {
             Yii::app()->user->setState('pageSize', (int) $_GET['pageSize']);
         }
 
-        // Green SurveyManagerBar Page Title
-        $aData['pageTitle'] = gT('Label sets list');
+        if ($lid == 0) {
+            $aData['topbar']['title'] = gT('Label sets list');
+            $aData['topbar']['middleButtons'] = Yii::app()->getController()->renderPartial(
+                '/admin/labels/partials/topbarBtns/leftSideButtons',
+                [
+                    'hasPermissionCreate' => Permission::model()->hasGlobalPermission('labelsets', 'create')
+                        || Permission::model()->hasGlobalPermission('labelsets', 'import')
+                ],
+                true
+            );
+            $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
+                '/admin/labels/partials/topbarBtns/rightSideButtons',
+                [
+                    'hasPermissionExport' => Permission::model()->hasGlobalPermission('labelsets', 'export')
+                ],
+                true
+            );
+        } else {
+            $aData['topbar']['title'] = gT('Label sets list');
+            $aData['topbar']['middleButtons'] = Yii::app()->getController()->renderPartial(
+                '/admin/labels/partials/topbarBtns_singlelabelset/leftSideButtons',
+                [
+                    'hasUpdatePermission' => $model->hasPermission('update'),
+                    'hasDeletePermission' => $model->hasPermission('delete'),
+                    'lid' => $lid
+                ],
+                true
+            );
+            $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
+                '/admin/labels/partials/topbarBtns_singlelabelset/rightSideButtons',
+                [],
+                true
+            );
+        }
 
         $this->renderWrappedTemplate('labels', $aViewUrls, $aData);
     }
@@ -338,30 +333,29 @@ class Labels extends SurveyCommonAction
      */
     public function process()
     {
-        if (!Permission::model()->hasGlobalPermission('labelsets', 'read')) {
-            Yii::app()->session['flashmessage'] = gT('Access denied!');
-            $this->getController()->redirect(App()->createUrl("/admin"));
-        }
-
-        $action = returnGlobal('action');
+        $action = App()->getRequest()->getParam('action');
         Yii::app()->loadHelper('admin/label');
-        $lid = (int) returnGlobal('lid');
-
-        if ($action == "updateset" && Permission::model()->hasGlobalPermission('labelsets', 'update')) {
+        if ($action == "updateset") {
+            $lid = $this->validateLabelSetId(App()->getRequest()->getPost('lid'), 'update');
             updateset($lid);
             Yii::app()->setFlashMessage(gT("Label set successfully saved."), 'success');
         }
-        if ($action == "insertlabelset" && Permission::model()->hasGlobalPermission('labelsets', 'create')) {
+        if ($action == "insertlabelset") {
+            if (!Permission::model()->hasGlobalPermission('labelsets', 'create')) {
+                throw new CHttpException(403);
+            }
+            $this->requirePostRequest();
             $oLabelSet = insertlabelset();
             $lid = $oLabelSet->lid;
         }
-        if (($action == "modlabelsetanswers" || ($action == "ajaxmodlabelsetanswers")) && Permission::model()->hasGlobalPermission('labelsets', 'update')) {
+        if ($action == "modlabelsetanswers" || ($action == "ajaxmodlabelsetanswers")) {
+            $lid = $this->validateLabelSetId(App()->getRequest()->getPost('lid'), 'update');
             modlabelsetanswers($lid);
         }
-        if ($action == "deletelabelset" && Permission::model()->hasGlobalPermission('labelsets', 'delete')) {
+        if ($action == "deletelabelset") {
+            $lid = $this->validateLabelSetId(App()->getRequest()->getPost('lid'), 'delete');
             if (LabelSet::model()->deleteLabelSet($lid)) {
                 Yii::app()->setFlashMessage(gT("Label set successfully deleted."), 'success');
-                $lid = 0;
             }
         }
 
@@ -378,15 +372,19 @@ class Labels extends SurveyCommonAction
 
     /**
      * Save new label set
-     *
+     * @todo : check if it's currently used.
      * @return void
      */
     public function saveNewLabelSet()
     {
+        if (!Permission::model()->hasGlobalPermission('labelsets', 'create')) {
+            throw new CHttpException(403);
+        }
         $label_name   = Yii::app()->request->getPost('label_name');
         $languageids  = Yii::app()->request->getPost('languageids');
         $oLabelSet = new LabelSet();
         $oLabelSet->label_name = $label_name;
+        $oLabelSet->owner_id = App()->user->getId();
         $oLabelSet->languages = implode(' ', $languageids);
         if ($oLabelSet->save()) {
             Yii::app()->setFlashMessage(gT("Label set successfully created."), 'success');
@@ -405,17 +403,10 @@ class Labels extends SurveyCommonAction
     public function delete()
     {
         $this->requirePostRequest();
-
-        if (!Permission::model()->hasGlobalPermission('labelsets', 'delete')) {
-            throw new CHttpException(403, gT("You are not authorized to delete label sets.", 'unescaped'));
-        }
-        $lid = Yii::app()->getRequest()->getParam('lid');
-        $oLabelsSet = LabelSet::model()->findByPk($lid);
-        if (empty($oLabelsSet)) {
-            throw new CHttpException(404, gT("Invalid label set."));
-        }
-        if ($oLabelsSet->deleteLabelSet($lid)) {
-            Yii::app()->setFlashMessage(sprintf(gT("Label set “%s” was successfully deleted."), CHtml::encode($oLabelsSet->label_name)));
+        $lid = $this->validateLabelSetId(App()->getRequest()->getParam('lid'), 'delete');
+        $labelSet = LabelSet::model()->findByPk($lid);
+        if ($labelSet->deleteLabelSet($lid)) {
+            Yii::app()->setFlashMessage(sprintf(gT("Label set “%s” was successfully deleted."), CHtml::encode($labelSet->label_name)));
         } else {
             Yii::app()->setFlashMessage(sprintf(gT("Unable to delete label set %s."), $lid));
         }
@@ -429,24 +420,16 @@ class Labels extends SurveyCommonAction
      */
     public function exportmulti()
     {
-        if (Permission::model()->hasGlobalPermission('labelsets', 'export')) {
-            $aData = [];
+        $aData = [];
 
-            // Save Button
-            $aData['labelbar']['buttons']['edition'] = true;
-            $aData['labelbar']['savebutton']['form'] = 'exportlabelset';
+        $aData['topbar']['title'] = gt('Export multiple label sets');
+        $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
+            '/admin/labels/partials/topbarBtns_export/rightSideButtons',
+            [],
+            true
+        );
 
-            $aData['labelbar']['savebutton']['text'] = gT("Export");
-
-            // White Close Button
-            $aData['labelbar']['white_closebutton']['url'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl('admin/labels/sa/view'));
-            $aData['labelbar']['white_closebutton']['text'] = gT('Close');
-
-            // Green Page Title
-            $aData['pageTitle'] = gT('Export multiple label sets');
-
-            $this->renderWrappedTemplate('labels', 'exportmulti_view', $aData);
-        }
+        $this->renderWrappedTemplate('labels', 'exportmulti_view', $aData);
     }
 
     /**
@@ -456,12 +439,27 @@ class Labels extends SurveyCommonAction
      */
     public function getAllSets()
     {
+        /* Using of label sets are not controlled all label sets can be used by every one */
         $results = LabelSet::model()->findAll();
-
         $output = array();
-
         foreach ($results as $row) {
             $output[$row->lid] = flattenText($row->getAttribute('label_name'));
+        }
+        header('Content-type: application/json');
+        echo ls_json_encode($output);
+    }
+
+    /**
+     * Get all label sets with permission to update
+     *
+     * @return void
+     */
+    public function getRestrictedSets()
+    {
+        $labelSets = LabelSet::model()->permission()->findAll();
+        $output = array();
+        foreach ($labelSets as $labelSet) {
+            $output[$labelSet->lid] = flattenText($labelSet->getAttribute('label_name'));
         }
         header('Content-type: application/json');
         echo ls_json_encode($output);
@@ -473,38 +471,38 @@ class Labels extends SurveyCommonAction
      * Echoes JSON
      *
      * @return void
-     * @todo Permission check
      * @todo Move save logic into service class.
      */
     public function ajaxSave()
     {
+        if (!Permission::model()->hasGlobalPermission('labelsets', 'create')) {
+            throw new CHttpException(403);
+        }
         $request   = Yii::app()->getRequest();
-        $lid       = (int) $request->getPost('lid');
         $answers   = $request->getPost('answers');
         $codes     = $request->getPost('codes');
         $labelName = $request->getPost('laname');
         $languages = implode(' ', $request->getPost('languages'));
         $assessmentValues = $request->getPost('assessmentvalues', []);
-
         if (empty($labelName)) {
             throw new CHttpException(400, gT('Could not save label set: Label set name is empty.'));
         }
-
         if (empty($answers)) {
             throw new CHttpException(400, gT('Could not save label set: Found no answers.'));
         }
-
+        /* Create new labelset */
         try {
             $transaction      = Yii::app()->db->beginTransaction();
             $lset             = new LabelSet();
             $lset->label_name = $request->getPost('laname');
             $lset->languages  = trim($languages);
+            $lset->owner_id   = App()->user->getId();
             $lset->save();
             $lid = getLastInsertID($lset->tableName());
             $this->saveLabelSetAux($lid, $codes, $answers, $assessmentValues);
             $transaction->commit();
         } catch (Exception $exception) {
-            $transation->rollback();
+            $transaction->rollback();
             throw new CHttpException(500, $exception->getMessage());
         }
 
@@ -517,27 +515,14 @@ class Labels extends SurveyCommonAction
      */
     public function ajaxUpdate()
     {
-        if (!Permission::model()->hasGlobalPermission('labelsets', 'update')) {
-            throw new CHttpException(403, gT('Access denied'));
-        }
-
         $request = Yii::app()->request;
-
-        $labelSetId = (int) $request->getPost('labelSetId');
-        if (empty($labelSetId)) {
-            throw new CHttpException(400, gT('Could not update label set: Label set id is empty.'));
-        }
-
-        $labelSet = LabelSet::model()->findByPk($labelSetId);
-        if (empty($labelSet)) {
-            throw new CHttpException(400, gT('Found no label set with this id'));
-        }
-
+        $labelSetId = $this->validateLabelSetId(App()->getRequest()->getParam('labelSetId'), 'update');
         $answers   = $request->getPost('answers');
         $codes     = $request->getPost('codes');
         $assessmentValues = $request->getPost('assessmentvalues', []);
         $languages = implode(' ', $request->getPost('languages'));
-
+        /* Update this label set */
+        $labelSet = LabelSet::model()->findByPk($labelSetId);
         try {
             $transaction = Yii::app()->db->beginTransaction();
             $labelSet->languages = $languages;
@@ -572,7 +557,7 @@ class Labels extends SurveyCommonAction
                 $label->lid = $lid;
                 $label->code = $codes[$i];
                 $label->sortorder = $i;
-                $label->assessment_value = isset($assessmentValues[$i]) ? $assessmentValues[$i] : 0;
+                $label->assessment_value = $assessmentValues[$i] ?? 0;
                 if (!$label->save()) {
                     throw new Exception('Could not save label: ' . json_encode($label->getErrors()));
                 }
@@ -627,12 +612,12 @@ class Labels extends SurveyCommonAction
             '/admin/super/_renderJson',
             ['data' => $returnArray]
         );
-        die();
+        App()->end();
     }
 
     /**
      * New label set from question editor
-     *
+     * @deprecated : not used in 6.0 and before
      * @return void
      */
     public function newLabelSetFromQuestionEditor()
@@ -642,17 +627,16 @@ class Labels extends SurveyCommonAction
         $aLabels = $aLabelSet['labels'];
         $oLabelSet->label_name = $aLabelSet['label_name'];
         $oLabelSet->languages = $aLabelSet['languages'];
+        $oLabelSet->owner_id = App()->user->getId();
         $result = $oLabelSet->save();
         $aDebug['saveLabelSet'] = $result;
 
         foreach ($aLabelSet['labels'] as $i => $aLabel) {
             $oLabel = new Label();
             $oLabel->lid = $oLabelSet->lid;
-            $oLabel->code = isset($aLabel['code'])
-                ? $aLabel['code']
-                : $aLabel['title'];
+            $oLabel->code = $aLabel['code'] ?? $aLabel['title'];
             $oLabel->sortorder = $i;
-            $oLabel->assessment_value = isset($aLabel['assessment_value']) ? $aLabel['assessment_value'] : 0;
+            $oLabel->assessment_value = $aLabel['assessment_value'] ?? 0;
             $partResult = $oLabel->save();
             $aDebug['saveLabel_' . $i] = $partResult;
             $result = $result && $partResult;
@@ -660,9 +644,7 @@ class Labels extends SurveyCommonAction
                 $oLabelL10n = new LabelL10n();
                 $oLabelL10n->label_id = $oLabel->id;
                 $oLabelL10n->language = $language;
-                $oLabelL10n->title = isset($aLabel[$language]['question'])
-                    ? $aLabel[$language]['question']
-                    : $aLabel[$language]['answer'];
+                $oLabelL10n->title = $aLabel[$language]['question'] ?? $aLabel[$language]['answer'];
 
                 $lngResult = $oLabelL10n->save();
                 $aDebug['saveLabel_' . $i . '_' . $language] = $lngResult;
@@ -677,7 +659,7 @@ class Labels extends SurveyCommonAction
                 'message' => gT('Label set successfully saved')
             ]]
         );
-        die();
+        App()->end();
     }
 
     /**
@@ -733,12 +715,87 @@ class Labels extends SurveyCommonAction
                 $aData['lid'] = 0;
             }
             $aViewUrls = (array) $aViewUrls;
-
-            array_unshift($aViewUrls, 'labelsetsbar_view');
         }
 
         $aData['display']['menu_bars'] = false;
 
         parent::renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
+    }
+
+    /**
+     * Outputs json with the html for a new label row, for each language.
+     * Eg: {"en":"<tr>...</tr>", "es":"<tr>...</tr>"}
+     * Called by ajax from the label set editor.
+     * @param int $lid
+     * @param string $newId
+     * @param string $code
+     * @param int $assessmentValue
+     * @param string $title
+     */
+    public function getLabelRowForAllLanguages($lid, $newId, $code, $assessmentValue = 0, $title = '')
+    {
+        $lid = $this->validateLabelSetId($lid, 'read');
+        $labelSet = LabelSet::model()->findByPk($lid);
+        $languages = explode(" ", (string) $labelSet->languages);
+        $rowsHtml = [];
+        $first = true;
+        foreach ($languages as $language) {
+            $rowsHtml[$language] = $this->getLabelRow($language, $first, $newId, $code, $assessmentValue, $title);
+            $first = false;
+        }
+        header('Content-Type: application/json');
+        echo json_encode($rowsHtml);
+    }
+
+    /**
+     * Returns the html for a label row.
+     * Used when user clicks "Add" in label set editor.
+     * @param string $language
+     * @param bool $first   Indicates whether the row belongs to the first language or not.
+     * @param string $newId
+     * @param string $code
+     * @param int $assessmentValue
+     * @param string $title
+     * @return string   The html of the row
+     */
+    private function getLabelRow($language, $first, $newId, $code, $assessmentValue, $title)
+    {
+        $view = 'labelRow.twig';
+        $aData = array(
+            'language' => $language,
+            'first' => $first,
+            'rowId' => $newId,
+            'code' => $code,
+            'assessmentValue' => $assessmentValue,
+            'title' => $title,
+            'hasLabelSetUpdatePermission' => Permission::model()->hasGlobalPermission('labelsets', 'update')
+        );
+
+        $html = '<!-- Inserted Row -->';
+        $html .= App()->twigRenderer->renderPartial('/admin/labels/' . $view, $aData);
+        $html .= '<!-- end of Inserted Row -->';
+        return $html;
+    }
+
+    /**
+     * Sanitize existence and permission of LabelSet->pk, throw exception if there are an issue.
+     * @param $lid mixed, sanitized to intreger
+     * @param $permisson to check
+     * @return integer : the label id
+     * @throws CHttpException
+     */
+    private function validateLabelSetId($lid, $permission = 'read')
+    {
+        $lid = sanitize_int($lid);
+        if (empty($lid)) {
+            throw new CHttpException(400);
+        }
+        if (empty(LabelSet::model()->findByPk($lid))) {
+            throw new CHttpException(404, gT("Label set not found"));
+        }
+        if (!LabelSet::model()->findByPk($lid)->hasPermission($permission)) {
+            throw new CHttpException(403);
+        }
+        return $lid;
     }
 }

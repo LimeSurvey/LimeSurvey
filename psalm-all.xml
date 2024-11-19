@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<psalm
+    errorLevel="8"
+    resolveFromConfigFile="true"
+    reportMixedIssues="false"
+    useDocblockTypes="false"
+    useDocblockPropertyTypes="false"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="https://getpsalm.org/schema/config"
+    xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
+    autoloader="tests/phpstan/phpstan_bootstrap.php"
+>
+    <issueHandlers>
+        <UndefinedDocblockClass errorLevel="suppress" />
+        <EmptyArrayAccess errorLevel="suppress" />
+        <UndefinedConstant errorLevel="suppress" />
+        <ParadoxicalCondition errorLevel="suppress" />
+        <InvalidStaticInvocation errorLevel="suppress" />
+        <UndefinedGlobalVariable errorLevel="suppress" />
+        <NoValue errorLevel="suppress" />
+    </issueHandlers>
+    <projectFiles>
+        <directory name="application/" />
+        <ignoreFiles>
+            <directory name="vendor" />
+            <directory name="application/views" />
+            <directory name="application/tests" />
+            <directory name="application/helpers/Zend" />
+            <directory name="application/libraries/*/views" />
+            <directory name="application/core/plugins/*/views" />
+            <directory name="application/core/plugins/*/vendor" />
+            <directory name="application/extensions/*/views" />
+            <directory name="application/extensions/admin/*/views" />
+            <directory name="application/extensions/admin/grid/*/views" />
+            <directory name="application/extensions/admin/survey/*/views" />
+            <directory name="application/extensions/admin/survey/question/*/views" />
+            <directory name="application/extensions/*/*/*/views" />
+            <file name="application/libraries/simpletester.php" />
+            <file name="application/libraries/admin/quexmlpdf.php" />
+            <file name="application/libraries/admin/pdf.php" />
+            <file name="application/libraries/jsonRPCClient.php" />
+            <file name="application/core/plugins/TwoFactorAdminLogin/helper/phpqrcode.php" />
+        </ignoreFiles>
+    </projectFiles>
+</psalm>

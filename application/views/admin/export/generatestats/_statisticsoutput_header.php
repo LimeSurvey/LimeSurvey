@@ -9,25 +9,23 @@
  */
 ?>
 <!-- _statisticsoutput_header -->
-<div class="col-lg-<?php echo $nbcols; ?> col-sm-12 statisticsbloc" >
-<table class='statisticstable table table-bordered printable' id="quid_<?php echo $outputs['parentqid'];?>">
+<div class="col-xl-<?php echo $nbcols; ?> col-md-12 ps-0 pe-3" >
+<table class='table table-bordered printable' id="quid_<?php echo $outputs['parentqid'];?>">
     <thead>
-        <tr class='success'>
+        <tr class="active">
             <th colspan='4' align='center' style='text-align: center; '>
                 <strong>
-                    <?php echo sprintf(gT("Summary for %s"),$outputs['qtitle']); ?>
+                    <?php echo sprintf(gT("Summary for %s"), $outputs['qtitle']); ?>
                 </strong>
-                <button class="pull-right action_js_export_to_pdf btn btn-default btn-sm hidden-print" type="button" data-question-id="quid_<?php echo $outputs['parentqid'];?>" data-toggle="tooltip" title="<?php eT('Export this question to PDF.'); ?>">
-                    <i class="fa fa-file-pdf-o"></i>
+                <button class="float-end action_js_export_to_pdf btn btn-outline-secondary btn-sm d-print-none" data-question-id="quid_<?php echo $outputs['parentqid'];?>" data-bs-toggle="tooltip" title="<?php eT('Export this question to PDF.'); ?>" onclick="return false;">
+                    <i class="ri-file-pdf-line"></i>
                 </button>
             </th>
         </tr>
         <tr>
-            <th colspan='4' align='center' style='text-align: center; '>
+            <td colspan='4' align='center' style='text-align: center; '>
                 <!-- question title -->
-                <strong>
-                    <?php echo $outputs['qquestion'];?>
-                </strong>
+                <?php echo $outputs['qquestion'];?>
             </th>
         </tr>
         <!-- width depend on how much items... -->
@@ -38,19 +36,19 @@
                 </strong>
             </th>
 
-            <?php if ($bShowCount  = true): ?>
+            <?php if ($bShowCount  = true) : ?>
                 <th width='' align='center' >
                     <strong><?php eT("Count"); ?></strong>
                 </th>
             <?php endif;?>
 
-            <?php if ($bShowPercentage  = true): ?>
-                <th width='' align='center' <?=(!$bSum ? 'colspan="2"' :'')?>>
+            <?php if ($bShowPercentage  = true) : ?>
+                <th width='' align='center' <?=(!$bSum ? 'colspan="2"' : '')?>>
                     <strong><?php eT("Gross percentage");?></strong>
                 </th>
             <?php endif;?>
 
-            <?php if($bSum): ?>
+            <?php if ($bSum) : ?>
                 <th width='' align='center' >
                     <strong>
                         <?php eT("Top 2, Middle, Bottom 2");?>

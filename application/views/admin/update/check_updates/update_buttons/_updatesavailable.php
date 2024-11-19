@@ -20,21 +20,24 @@
 <?php if(isset($updateInfos->alert)): // First we check if the server provided a specific alert message ?>
     <?php if($updateInfos->alert != ""):?>
         <!-- Alert from server -->
-        <div class="alert alert-warning" role="alert">
-            <?php echo $updateInfos->alert; ?>
-        </div>
+        <?php
+        $this->widget('ext.AlertWidget.AlertWidget', [
+            'text' => $updateInfos->alert,
+            'type' => 'warning',
+        ]);
+        ?>
     <?php endif; ?>
 <?php endif; ?>
 
 
 <div>
-    <strong><?php echo gT('The following LimeSurvey updates are available:');?></strong>
+    <strong id="ls-updates"><?php echo gT('The following LimeSurvey updates are available:');?></strong>
 </div>
 <br/>
 <br/>
 
 
-<table class="items table">
+<table aria-describedby="ls-updates" class="items table w-75 m-auto">
     <!-- header -->
     <thead>
         <tr>
@@ -72,8 +75,8 @@
             </td>
 
             <!-- stable / unstable -->
-            <?php if ($aUpdateVersion['branch']!='master'):?>
-                <td class="text-warning">
+            <?php if (!in_array($aUpdateVersion['branch'], ['master','5.x','3.x-LTS'])):?>
+                <td class="text-danger">
                     <?php  eT('unstable'); ?>
                 </td>
             <?php else: ?>
@@ -84,7 +87,7 @@
 
             <!-- security / regular -->
             <?php if($aUpdateVersion['security_update']):?>
-            <td class="text-warning">
+            <td class="text-danger">
                     <?php eT("Security update");?>
             </td>
             <?php else: ?>
@@ -94,23 +97,32 @@
             <?php endif; ?>
 
             <!-- button -->
-            <td class="text-right">
+            <td class="text-end">
                 <!-- The form launching an update process. First step is the welcome message. The form is not submitted, but catch by the javascript inserted in the end of this file -->
                 <?php echo CHtml::beginForm(App()->createUrl('admin/update/sa/getwelcome'), 'post', array('class'=>'launchUpdateForm')); ?>
                     <?php echo CHtml::hiddenField('destinationBuild' , $aUpdateVersion['build']); ?>
 
                     <!-- the button launching the update -->
-                    <button type="submit" class="btn btn-default ajax_button launch_update">
-                        <span style="height : 1em; margin-right : 0.5em;" class="icon-shield text-success"></span>
+                    <button type="submit" class="btn btn-sm btn-outline-secondary ajax_button launch_update">
+                        <span class="ri-shield-check-fill text-success"></span>
                         <?php eT("Use ComfortUpdate");?>
                     </button>
-
-                     <?php if ($aUpdateVersion['branch']!='master'): ?>
-                         <input type='button' class="ajax_button btn btn-default" onclick="window.open('https://community.limesurvey.org/downloads/', '_blank')" value='<?php eT("Download"); ?>' />
-                     <?php else: ?>
-                         <input type='button' class="ajax_button btn btn-default" onclick="window.open('https://community.limesurvey.org/downloads/', '_blank')" value='<?php eT("Download"); ?>' />
-                     <?php endif; ?>
-
+                <?php
+                $this->widget(
+                    'ext.ButtonWidget.ButtonWidget',
+                    [
+                        'name' => 'download-version',
+                        'id' => 'download-version',
+                        'text' => gT('Download'),
+                        'icon' => 'ri-download-fill',
+                        'link' => 'https://community.limesurvey.org/downloads/',
+                        'htmlOptions' => [
+                            'class' => 'ajax_button btn btn-sm btn-outline-secondary',
+                            'target' => '_blank',
+                        ],
+                    ]
+                );
+                ?>
                  <?php echo CHtml::endForm(); ?>
             </td>
         </tr>

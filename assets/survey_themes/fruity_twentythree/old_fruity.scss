@@ -1,0 +1,311 @@
+// old theme.css
+
+.group-outer-container {
+    display : flex;
+}
+
+.group-container {
+    width : 100%;
+}
+
+.group-title-container {
+    padding    : 1em;
+    background : transparent;
+}
+
+.group-description:empty {display : none}
+
+.group-title:empty {display : none}
+
+/**
+ * Navigator
+ */
+#navigator-container {
+    padding-bottom : 1em;
+}
+
+#navigator-container > hr {
+    margin-top    : 0px;
+    margin-bottom : 0px;
+}
+
+/**
+ * Question part
+ */
+/** Question Design **/
+.question-container-printanswers {
+    margin-top     : 2em;
+    margin-bottom  : 2em;
+    padding-bottom : 2em;
+    border-bottom  : 1px solid rgba(225, 225, 255, 0.6);
+}
+
+.question-valid-container {
+    position : relative;
+}
+
+.question-help-container {
+}
+
+/**
+ * Unsure part
+ */
+#main-col {
+    margin-top : 1em;
+}
+
+.col-centered {
+    float  : none;
+    margin : 0 auto;
+}
+#welcome-container {
+    max-width: 750px;
+}
+
+.question-item .other-label {
+    margin  : 0px;
+    padding : 0px;
+}
+
+/**
+ * For em-type
+ */
+.hide-tip {
+    display : none;
+}
+
+/**
+ * Surveys list
+ */
+.surveys-list {
+    margin-top : 1em;
+    list-style : none;
+}
+
+.surveys-list li {
+    padding : 0.5em;
+}
+
+.surveys-list li a {
+    margin-left : 0.5em;
+}
+
+#surveys-list-jumbotron {
+    text-align : center;
+}
+
+#surveys-list-jumbotron img.site-surveylist-logo {
+    max-width : 35%;
+    display   : block;
+    margin    : 15px auto;
+}
+
+/*#outerframeContainer {
+    height: 100%;
+}*/
+
+
+/**
+ * Specific question part
+ */
+.radio-item label, .checkbox-item label {
+    cursor : pointer;
+}
+
+.radio-item [type='radio'], .checkbox-item [type='checkbox'] { /* Why we must positionning at same place */
+    cursor : pointer;
+}
+
+/* Show more the heading in table */
+.ls-answers .ls-heading th {font-weight : 700}
+
+.file-upload-modal, .modal {
+    z-index : 2001;
+}
+
+/* Wrap text in e.g. gender button "No answer */
+.wrap-normal {
+    white-space : normal;
+}
+
+/* Center modal vertically, used by file-upload modal */
+.modal {
+    text-align : center;
+    padding    : 0 !important;
+}
+
+.modal:before {
+    content        : '';
+    display        : inline-block;
+    height         : 100%;
+    vertical-align : middle;
+    margin-right   : -4px;
+}
+
+.modal-dialog {
+    display        : inline-block;
+    text-align     : left;
+    vertical-align : middle;
+}
+
+#yii-flash-message {
+    margin-top : 3em;
+}
+
+.prefix-text-right {
+    text-align : right;
+}
+
+.align-middle {
+    vertical-align : middle !important;
+}
+
+/* Used for date-picker icon within input */
+.form-control-feedback {
+    right : 1em;
+    left  : auto;
+}
+
+/* Only use <label> to get vertical align easy. Don't want boldness. */
+.no-label {
+    font-weight : normal;
+}
+
+/**
+ * Display adjust, question type by question type
+ */
+.othertext-label-checkox-container {
+    margin-right : 5px;
+}
+
+
+/* Give help text some space */
+.questionhelp {
+    padding-bottom : 0.5em;
+}
+
+/* Arrow */
+/* Will confuse survey takers?
+.questionvalidcontainer:after {
+    top: 100%;
+    left: 50%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+    border-top-color: #233140;
+    border-width: 0.9em;
+    margin-left: -0.9em;
+}
+*/
+
+
+#outerframeContainer {
+    min-height      : 100%;
+    word-wrap       : break-word;
+    -webkit-hyphens : auto;
+    -moz-hyphens    : auto;
+    -ms-hyphens     : auto;
+    -o-hyphens      : auto;
+    hyphens         : auto;
+}
+
+.xdebug-var-dump {
+    z-index  : 10000;
+    position : relative;
+    top      : 10px;
+}
+
+div.yes-no .btn-group label {
+    white-space : normal;
+}
+
+.privacy-header {
+    font-weight : bold;
+    font-style  : italic;
+}
+
+/*** Divider for Bootstrap ***/
+.horizontal-divider.top {
+    border-top : 3px solid #323232;
+}
+
+.horizontal-divider.bottom {
+    border-bottom : 3px solid #323232;
+}
+
+.vertical-divider.left {
+    border-left : 3px solid #323232;
+}
+
+.vertical-divider.right {
+    border-right : 3px solid #323232;
+}
+
+@media (max-width : 800px) {
+    .vertical-divider.left {
+        border : none;
+    }
+    .vertical-divider.right {
+        border : none;
+    }
+}
+
+@media only screen and (max-device-width : 760px) {
+    .question-container {
+        margin-bottom : 1em;
+    }
+    .ls-questionhelp {
+        font-size : 14px;
+    }
+    .ls-answers {
+        padding-top    : 0;
+        padding-bottom : 0;
+    }
+    .help-block:last-child {
+        margin-bottom : 0;
+    }
+    .ls-questionhelp {
+        font-size : 90%;
+    }
+}
+
+p.return-to-survey {
+    clear : left;
+}
+
+/* Make sure question index menu is not too long. */
+#index-menu ul.dropdown-menu {
+    max-height : 50vh;
+    overflow-y : scroll;
+}
+
+.text-break-pre {
+    white-space : pre-line;
+}
+
+.child-row-spacing > .row {
+    padding-bottom : 8px;
+}
+
+.child-row-border-bottom > .row:last-child {
+    padding-bottom : 0;
+}
+
+.alert {
+    background : none;
+}
+
+.question-item {
+    border : none;
+}
+
+//.radio-item input[type="radio"]:focus + label::before, input[type="radio"]:focus, input[type="checkbox"]:focus{
+//    outline: none;
+//}
+
+label {
+    font-weight : bold;
+}

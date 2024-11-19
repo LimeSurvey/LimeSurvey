@@ -1,0 +1,64 @@
+/*
+ * btn-xs was removed from Bootstrap 4.
+ * @see https://stackoverflow.com/questions/33911049/btn-xs-no-longer-a-valid-option-in-bootstrap-4
+ */
+.btn-group-xs > .btn, .btn-xs {
+  height: auto;
+  padding: 1px 5px;
+  font-size: 12px;
+  line-height: 1.5;
+  border-radius: 3px;
+}
+
+.btn-group.open .dropdown-toggle {
+  box-shadow: inset 0 3px 5px $black_opac_125;
+}
+
+.btn-group .btn-check {
+  position: absolute;
+}
+
+.btn-group {
+  .btn{
+    padding: 8px 16px;
+    input[type=radio],
+    input[type=checkbox] {
+      outline: none;
+      margin:0;
+      padding: 0;
+      border: 0;
+      &:after{
+        display:none;
+      }
+      &:before{
+        display:none;
+      }
+    }
+  }
+}
+
+.btn-group {
+  .btn-check:active+.btn-outline-secondary, .btn-check:checked+.btn-outline-secondary, .btn-outline-secondary.active, .btn-outline-secondary.dropdown-toggle.show, .btn-outline-secondary:active {
+    background-color: $g-800;
+    border-color: $black;
+    color: $white;
+
+    &.disabled, &[disabled] {
+      border-color: $g-600;
+      background-color: $g-400;
+      color: $g-600;
+    }
+  }
+
+  .btn-check:active+.btn-outline-secondary:focus,
+  .btn-check:checked+.btn-outline-secondary:focus,
+  .btn-outline-secondary.active:focus,
+  .btn-outline-secondary.dropdown-toggle.show:focus,
+  .btn-outline-secondary:active:focus,
+  .btn-outline-secondary:active,
+  .btn-check:focus+.btn-outline-secondary,
+  .btn-outline-secondary:hover
+  {
+    box-shadow: none;
+  }
+}

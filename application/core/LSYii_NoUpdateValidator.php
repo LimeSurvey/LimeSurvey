@@ -21,21 +21,18 @@ class LSYii_NoUpdateValidator extends CValidator
 
     /**
      * @inheritdoc
-     * Act like a filter : automatically set to previous value
+     * Filter attribute transparently to disallow update
+     * Used for script with XSS activate currently
      * @link : https://bugs.limesurvey.org/view.php?id=15690
      */
     public function validateAttribute($object, $attribute)
     {
-        if (Yii::app()->user->isScriptUpdateAllowed()) {
-            return;
-        }
-
         if ($object->isNewRecord) {
             $object->$attribute = '';
             return;
         }
         if (empty($object->getPrimaryKey())) {
-            throw new \Exception('Unable to use LSYii_NoUpdateValidator without PrimaryKey');
+            throw new \InvalidArgumentException('Unable to use LSYii_NoUpdateValidator without PrimaryKey');
         }
         $classOfObject = get_class($object);
         $originalObject = $classOfObject::model()->findByPk($object->getPrimaryKey());

@@ -45,26 +45,30 @@ function sumTable(element) {
             sum = sum.plus(value);
         });
         //set the value of currents rows sum to the total-combat element in the current row
-        $(this).find('input:disabled').val(formatValue(sum)).trigger('change').trigger('keyup').trigger('keydown');
+        $(this).find('td.total input:disabled').val(formatValue(sum)).trigger('change').trigger('keyup').trigger('keydown');
         iGrandTotal = iGrandTotal.plus(sum);
     });
     
     // Sum all columns
-    // First get number of columns (only visible and enabled inputs)
-    var visibleRows = table.find('tbody tr:visible');
-    var iColumnNum = visibleRows.first().find('input:enabled:visible').length;
     //Get An array of jQuery Objects
     var $iRow = table.find('tr');
-    //Iterate through the columns
-    for (var i = 1; i <= iColumnNum; i++) {
-        var sum = new Decimal(0);
-        $iRow.each(function () {
-            var item = $($(this).find('td').get((i - 1))).find('input:enabled:visible'),
-                val = normalizeValue($(item).val());
-            //sum the values
-            sum = sum.plus(val);
-        });
-        $($iRow.last().find('td').get((i - 1))).find('input:disabled').val(formatValue(sum)).trigger('change').trigger('keyup').trigger('keydown');
+    // If Totals are enabled for columns, there is a row with class "total"
+    var lastRow = $iRow.last();
+    if (lastRow.hasClass('total')) {
+        // First get number of columns (only visible and enabled inputs)
+        var visibleRows = table.find('tbody tr:visible');
+        var iColumnNum = visibleRows.first().find('input:enabled:visible').length;
+        //Iterate through the columns
+        for (var i = 1; i <= iColumnNum; i++) {
+            var sum = new Decimal(0);
+            $iRow.each(function () {
+                var item = $($(this).find('td').get((i - 1))).find('input:enabled:visible'),
+                    val = normalizeValue($(item).val());
+                //sum the values
+                sum = sum.plus(val);
+            });
+            $(lastRow.find('td.total').get((i - 1))).find('input:disabled').val(formatValue(sum)).trigger('change').trigger('keyup').trigger('keydown');
+        }
     }
 
     // Grand total

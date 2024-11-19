@@ -162,7 +162,7 @@ class QuestionType extends StaticModel
                 'group' => gT("Single choice questions"),
                 'subquestions' => 0,
                 'other' => false,
-                'hasdefaultvalues' => 0,
+                'hasdefaultvalues' => 1,
                 'assessable' => 0,
                 'answerscales' => 0,
                 'class' => "choice-5-pt-radio"
@@ -239,7 +239,7 @@ class QuestionType extends StaticModel
                 'group' => gT("Mask questions"),
                 'subquestions' => 0,
                 'other' => false,
-                'hasdefaultvalues' => 0,
+                'hasdefaultvalues' => 1,
                 'assessable' => 0,
                 'answerscales' => 0,
                 'class' => 'gender'

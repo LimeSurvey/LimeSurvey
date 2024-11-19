@@ -22,8 +22,8 @@
  * @property integer $assessment_value
  * @property integer $scale_id
  *
- * @property Question $questions
- * @property Question $groups
+ * @property Question $question
+ * @property Question $group
  * @property AnswerL10n[] $answerl10ns
  */
 class Answer extends LSActiveRecord
@@ -90,7 +90,8 @@ class Answer extends LSActiveRecord
             array(
                 'code',
                 'checkUniqueness',
-                'message' => gT('Answer codes must be unique by question.')
+                'message' => gT('Answer codes must be unique by question.'),
+                'except' => 'saveall'
             ),
             array('sortorder', 'numerical', 'integerOnly' => true, 'allowEmpty' => true),
             array('assessment_value', 'numerical', 'integerOnly' => true, 'allowEmpty' => true),
@@ -239,7 +240,7 @@ class Answer extends LSActiveRecord
      */
     public function getAnswersForStatistics($fields, $condition, $orderby)
     {
-        return Answer::model()->findAll(['condition' => $condition, 'order' => $orderby]);
+        return Answer::model()->with('answerl10ns')->findAll(['condition' => $condition, 'order' => $orderby]);
     }
 
     /**

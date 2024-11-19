@@ -13798,7 +13798,7 @@ var BFHTimezonesList = {
   /* COLORPICKER CLASS DEFINITION
   * ========================= */
 
-  var toggle = '[data-toggle=bfh-colorpicker]',
+  var toggle = '[data-bs-toggle=bfh-colorpicker]',
       BFHColorPicker = function (element, options) {
         this.options = $.extend({}, $.fn.bfhcolorpicker.defaults, options);
         this.$element = $(element);
@@ -13855,7 +13855,7 @@ var BFHTimezonesList = {
       }
 
       this.$element.html(
-        '<div class="input-group bfh-colorpicker-toggle" data-toggle="bfh-colorpicker">' +
+        '<div class="input-group bfh-colorpicker-toggle" data-bs-toggle="bfh-colorpicker">' +
         iconLeft +
         '<input type="text" name="' + this.options.name + '" class="' + this.options.input + '" placeholder="' + this.options.placeholder + '" readonly>' +
         iconRight +
@@ -14567,7 +14567,7 @@ var BFHTimezonesList = {
   /* BFHDATEPICKER CLASS DEFINITION
    * ========================= */
 
-  var toggle = '[data-toggle=bfh-datepicker]',
+  var toggle = '[data-bs-toggle=bfh-datepicker]',
       BFHDatePicker = function (element, options) {
         this.options = $.extend({}, $.fn.bfhdatepicker.defaults, options);
         this.$element = $(element);
@@ -14646,7 +14646,7 @@ var BFHTimezonesList = {
       }
 
       this.$element.html(
-        '<div class="' + iconAddon + ' bfh-datepicker-toggle" data-toggle="bfh-datepicker">' +
+        '<div class="' + iconAddon + ' bfh-datepicker-toggle" data-bs-toggle="bfh-datepicker">' +
         iconLeft +
         '<input type="text" name="' + this.options.name + '" class="' + this.options.input + '" placeholder="' + this.options.placeholder + '" readonly>' +
         iconRight +
@@ -16524,7 +16524,7 @@ var BFHTimezonesList = {
   /* SELECTBOX CLASS DEFINITION
    * ========================= */
 
-  var toggle = '[data-toggle=bfh-selectbox]',
+  var toggle = '[data-bs-toggle=bfh-selectbox]',
       BFHSelectBox = function (element, options) {
         this.options = $.extend({}, $.fn.bfhselectbox.defaults, options);
         this.$element = $(element);
@@ -16546,7 +16546,7 @@ var BFHTimezonesList = {
 
       this.$element.html(
         '<input type="hidden" name="' + this.options.name + '" value="">' +
-		'<a class="bfh-selectbox-toggle ' + this.options.input + '" role="button" data-toggle="bfh-selectbox" href="#">' +
+		'<a class="bfh-selectbox-toggle ' + this.options.input + '" role="button" data-bs-toggle="bfh-selectbox" href="#">' +
 		'<span class="bfh-selectbox-option"></span>' +
 		'<span class="' + this.options.icon + ' selectbox-caret"></span>' +
 		'</a>' +
@@ -17340,7 +17340,7 @@ var BFHTimezonesList = {
  /* TIMEPICKER CLASS DEFINITION
   * ========================= */
 
-  var toggle = '[data-toggle=bfh-timepicker]',
+  var toggle = '[data-bs-toggle=bfh-timepicker]',
       BFHTimePicker = function (element, options) {
         this.options = $.extend({}, $.fn.bfhtimepicker.defaults, options);
         this.$element = $(element);
@@ -17442,7 +17442,7 @@ var BFHTimezonesList = {
       }
 
       this.$element.html(
-        '<div class="' + iconAddon + ' bfh-timepicker-toggle" data-toggle="bfh-timepicker">' +
+        '<div class="' + iconAddon + ' bfh-timepicker-toggle" data-bs-toggle="bfh-timepicker">' +
         iconLeft +
         '<input type="text" name="' + this.options.name + '" class="' + this.options.input + '" placeholder="' + this.options.placeholder + '" readonly>' +
         iconRight +
