@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Zend Framework
  *
@@ -64,8 +63,7 @@ final class Zend_Http_Header_HeaderValue
             // 32-126, 128-254 === visible
             // 127 === DEL
             // 255 === null byte
-            if (
-                ($ascii < 32 && $ascii !== 9)
+            if (($ascii < 32 && $ascii !== 9)
                 || $ascii === 127
                 || $ascii > 254
             ) {
@@ -101,8 +99,7 @@ final class Zend_Http_Header_HeaderValue
             // 32-126, 128-254 === visible
             // 127 === DEL
             // 255 === null byte
-            if (
-                ($ascii < 32 && $ascii !== 9)
+            if (($ascii < 32 && $ascii !== 9)
                 || $ascii === 127
                 || $ascii > 254
             ) {

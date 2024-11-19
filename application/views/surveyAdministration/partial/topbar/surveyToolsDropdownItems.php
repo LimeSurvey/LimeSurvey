@@ -87,17 +87,50 @@
 
             <!-- Survey logic file -->
             <li class="dropdown-header"><?php eT("Survey logic file"); ?></li>
-            <?php foreach ($oSurvey->allLanguages as $tmp_lang): ?>
-                <!-- Languages -->
 
+            <!-- Base language -->
+            <li>
+                <a class="dropdown-item"
+                    href='<?php echo App()->createUrl("admin/expressions/sa/survey_logic_file/sid/$oSurvey->sid/lang/$oSurvey->language"); ?>'>
+                    <span class="icon-expressionmanagercheck"></span>
+                    <?php echo getLanguageNameFromCode($oSurvey->language, false); ?>
+                </a>
+            </li>
+
+            <!-- Additional languages -->
+            <?php if (count($oSurvey->additionalLanguages) <= 2): ?>
+                <?php foreach ($oSurvey->additionalLanguages as $tmp_lang): ?>
+                    <li>
+                        <a class="dropdown-item"
+                            href='<?php echo App()->createUrl("admin/expressions/sa/survey_logic_file/sid/$oSurvey->sid/lang/$tmp_lang"); ?>'>
+                            <span class="icon-expressionmanagercheck"></span>
+                            <?php echo getLanguageNameFromCode($tmp_lang, false); ?>
+                        </a>
+                    </li>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <?php
+                    $languageOptions = [];
+                    foreach ($oSurvey->additionalLanguages as $language) {
+                        $languageOptions[] = [
+                            'key' => $language,
+                            'href' => Yii::app()->createUrl("admin/expressions/sa/survey_logic_file/sid/$oSurvey->sid/lang/$language"),
+                            'text' => getLanguageNameFromCode($language, false),
+                        ];
+                    }
+
+                    $languagesModal = $this->widget('ext.OptionsModalWidget.OptionsModalWidget', [
+                        'modalTitle' => gT("Select language to show Survey Logic File"),
+                        'options' => $languageOptions
+                    ]);
+                    $languagesModalId = $languagesModal->getModalId();
+                ?>
                 <li>
-                    <a class="dropdown-item"
-                       href='<?php echo App()->createUrl("admin/expressions/sa/survey_logic_file/sid/$oSurvey->sid/lang/$tmp_lang"); ?>'>
-                        <span class="icon-expressionmanagercheck"></span>
-                        <?php echo getLanguageNameFromCode($tmp_lang, false); ?>
+                    <a class="dropdown-item" data-bs-toggle="modal" href="#<?= $languagesModalId ?>">
+                        <span class="icon-expressionmanagercheck"></span> <?= gT("Other languages"); ?>
                     </a>
                 </li>
-            <?php endforeach; ?>
+            <?php endif; ?>
         <?php endif; ?>
     <?php endif; ?>
 

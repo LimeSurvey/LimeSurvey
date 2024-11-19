@@ -120,7 +120,7 @@ var C9SearchHighlightRules = function () {
                 next: "numbers"
             },
             {
-                token: "string", // single line
+                token: "string",
                 regex: "^\\S:?[^:]+",
                 next: "numbers"
             }

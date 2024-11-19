@@ -612,7 +612,7 @@ class LSYii_ClientScript extends CClientScript
     public function render(&$output)
     {
         /**
-         * beforeCloseHtml event @see https://manual.limesurvey.org/BeforeCloseHtml
+         * beforeCloseHtml event @see https://www.limesurvey.org/manual/BeforeCloseHtml
          * Set it before all other action allow registerScript by plugin
          * Allowlisting available controller (public plugin not happen for PluginsController using actionDirect, actionUnsecure event)
          */

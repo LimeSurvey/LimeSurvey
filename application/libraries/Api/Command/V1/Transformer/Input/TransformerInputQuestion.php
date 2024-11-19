@@ -27,7 +27,7 @@ class TransformerInputQuestion extends Transformer
                 'formatter' => ['ynToBool' => ['revert' => true]],
                 'range' => [true, false]
             ],
-            'mandatory' => ['formatter' => ['mandatory' => true]],
+            'mandatory' => ['formatter' => ['mandatory' => ['revert' => true]]],
             'encrypted' => [
                 'formatter' => ['ynToBool' => ['revert' => true]],
                 'range' => [true, false]
