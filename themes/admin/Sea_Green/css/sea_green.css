@@ -11356,6 +11356,16 @@ blockquote.float-end {
   padding-right: 0;
 }
 
+.container-fluid, .container-sm, .container-md, .container-lg, .container-xl, .container-xxl {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.container-fluid#in_survey_common_action, #in_survey_common_action.container-sm, #in_survey_common_action.container-md, #in_survey_common_action.container-lg, #in_survey_common_action.container-xl, #in_survey_common_action.container-xxl {
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
 .full-page-wrapper {
   position: relative;
   padding-bottom: 65px;
@@ -18993,12 +19003,15 @@ input[type=number] {
 
 .sidebar {
   display: flex;
-  margin: 8px;
+  padding: 8px 8px 0px 8px;
+}
+.sidebar .sidebar-icons {
+  padding: 0px 8px 8px 0;
 }
 .sidebar .sidebar-icons .sidebar-icon {
   cursor: pointer;
-  margin-top: 10px;
   box-shadow: rgba(0, 0, 0, 0.25) 0 4px 4px 0;
+  margin-top: 10px;
 }
 .sidebar .sidebar-icons .sidebar-icon:first-child {
   margin-top: 0;
