@@ -34,6 +34,112 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.8.0 (build 241119) to 6.8.1 (build 241120) November 19, 2024
+-Fixed issue: Wrong version number (Carsten Schmitz)
+
+
+Changes from 6.7.0 (build 241118) to 6.8.0 (build 241119) November 19, 2024
++New feature: Plugin event 'beforeSurveyHttpHeaders' allows to modify http headers in surveys (#4021) (Carsten Schmitz)
+-Fixed issue #19774: Make labels on filtering page translatable (#3980) (aisreh)
+-Fixed issue #19829: Norwegian & Serbian not working in Quick translation (Carsten Schmitz)
+-Fixed issue #19675: If FileUploadTotalSpaceMB > 0 an error 500 is shown (lozam)
+#Updated translation: Korean by modernity4r
+#Updated translation: Japanese by nomoto
+
+
+Changes from 6.6.8 (build 241104) to 6.7.0 (build 241118) November 18, 2024
+-Fixed issue: Added correct cldr to Kurundi (run) (Patrick Teichmann)
+-Fixed issue: QE-1201 mandatory formatter for API (#4008) (Tim Willig)
+-Fixed issue #19835: (CT-1052) Time limit action for Timer not working properly (#4030) (Tim Willig)
+-Fixed issue #19818: Wrong characters displayed in French when deleting a question (#4022) (Denis Chenu)
+-Fixed issue #19805: Preview group throw PHP warning (#3999) (Gabriel Jenik)
+-Fixed issue #19784: No access to the 'Edit Poll Settings' page view in debug mode (#3986) (Gabriel Jenik)
+-Fixed issue #19779: Question Type not translated (#3983) (lozam)
+-Fixed issue #19760: When editing a response, delete current seed (#3990) (Denis Chenu)
+-Fixed issue #19835: Time limit action for Timer not working properly (Tim Willig)
+#Updated translation: Vietnamese by evi3636, hl_sales
+#Updated translation: Spanish (Spain) by evi3636, Gronnd
+#Updated translation: Slovak by jelen1
+#Updated translation: Russian by evi3636
+#Updated translation: Portuguese (Portugal) by holch, samarta
+#Updated translation: Portuguese (Brazil) by holch
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Hungarian by kkd, vargazsoltivan
+#Updated translation: German by c_schmitz
+#Updated translation: French (France) by evi3636, fgervais
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Arabic by abdelrahman.hassan, anasbensaid, evi3636
+
+
+Changes from 6.6.7 (build 241028) to 6.6.8 (build 241104) November 4, 2024
++New feature #19758: New plugin event beforeMovePublicFileUploaded (#3991) (Denis Chenu)
+-Fixed issue: Empty/error page on invalid survey ID (Carsten Schmitz)
+-Fixed issue #MW-1348: Extended Themes before LS6 can cause issue with the @attributes when generating xml files (#3792) (marticos)
+#Updated translation: Thai by adzpire, c_schmitz, tomzt
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Korean by modernity4r
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+
+
+Changes from 6.6.6 (build 241002) to 6.6.7 (build 241028) October 28, 2024
+-Fixed issue: On survey copy the new ID was not verified server-side (Carsten Schmitz)
+-Fixed issue #CT-967: Fix for progress bar going over 100% (#3957) (marticos)
+-Fixed issue #CR-1450: improved quota selection options (#3994) (Patrick Teichmann)
+-Fixed issue #19810: Error loading survey participants using LDAPv3 (AD) (kvolk2git)
+-Fixed issue #19799: No access to the panelintegration page - returns a 500 error (related to MSSQL) (#3997) (Gabriel Jenik)
+-Fixed issue #19795: array_key_exists() Argument #2 ($array) must be of type array, null given (#3992) (Gabriel Jenik)
+-Fixed issue #19781: Adding options using quick-add leads to wrong codes being shown (#3989) (Gabriel Jenik)
+-Fixed issue #19746: Auto correction of invalid input in Multiple numeric input type question could be improved (#3982) (Gabriel Jenik)
+-Fixed issue #19715: At multilingual surveys labels at the statistics tool do not show up using the base language (different language is used) (#3987) (Gabriel Jenik)
+-Fixed issue #19707: cannot export participants table to csv (#3988) (Gabriel Jenik)
+-Fixed issue #19687: php8.3 compatibility - Zend (xmlrpc related) (#3985) (Gabriel Jenik)
+-Fixed issue #19643: Date question with restrictions does not show up like in versions 3 and 5 (#3984) (Gabriel Jenik)
+-Fixed issue #19600: Some Tools Menu Items are not visible when having a lot of languages (#4001) (Gabriel Jenik)
+-Fixed issue #19575: Use localization to set the name and description when importing a group with the RemoteControl API (#3860) (Edgar Ramírez Mondragón)
+-Fixed issue #19290: Wrong Row Total in Array (Texts) (#3981) (Gabriel Jenik)
+-Fixed issue #19015: User with superadmin role does not get superadmin privileges (#3434) (Denis Chenu)
+#Updated translation: Yoruba by constantinl
+#Updated translation: Swahili by arnaullop
+#Updated translation: Slovak by jelen1
+#Updated translation: Portuguese (Portugal) by c_schmitz
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Kannada by nayakank
+#Updated translation: Japanese by nomoto
+#Updated translation: Italian by lfanfoni, Valentina Tessaro
+#Updated translation: Italian (Informal) by lfanfoni, Valentina Tessaro
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Estonian by klaster
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Catalan by qualitatuvic
+
+
+Changes from 6.6.5 (build 240924) to 6.6.6 (build 241002) October 2, 2024
+-Fixed issue: [security] XSS when using MSSQL server as database backend (Carsten Schmitz)
+-Fixed issue #19700: [security] Invalid DB value can be entered with start URL (#3974) (Denis Chenu)
+#Updated translation: Luxembourgish by c_schmitz
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz, evi3636
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 6.6.4 (build 240923) to 6.6.5 (build 240924) September 24, 2024
 Fixed issue: multiple choice question cannot be answered if "other" option has been enabled
 
