@@ -959,7 +959,7 @@ function sendSurveyHttpHeaders()
         $event->set('headers', $headers);
         App()->getPluginManager()->dispatchEvent($event);
         $headers = $event->get('headers', []);
-        if (is_array($headers) {
+        if (is_array($headers)) {
             foreach ($headers as $header) {
                 header($header);
             }
