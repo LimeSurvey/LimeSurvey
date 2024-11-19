@@ -1987,12 +1987,14 @@ class quexmlpdf extends pdf
 
                 $qtmp['text'] = "";
 
+                $qucount = count($qu->text);
+                $quiterate = 0;
                 foreach ($qu->text as $ttmp) {
                     //Add a new line if we aren't at the end
-                    if ($ttmp != end($qu->text)) {
+                    if ($quiterate == $qucount - 1) {
                         $qtmp['text'] .= "<br/>";
                     }
-
+                    $quiterate++;
                     $qtmp['text'] .= $ttmp;
                 }
 
