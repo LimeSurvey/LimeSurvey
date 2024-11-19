@@ -51,12 +51,12 @@ class Dumpdb extends SurveyCommonAction
      */
     public function index()
     {
-        Yii::app()->loadHelper("admin/backupdb");
-        $sDbName = _getDbName();
-        $sFileName = 'LimeSurvey_' . $sDbName . '_dump_' . dateShift(date('Y-m-d H:i:s'), 'Y-m-d', Yii::app()->getConfig('timeadjust')) . '.sql';
-        $this->outputHeaders($sFileName);
-        outputDatabase();
-        exit;
+        $data = $this->getData();
+
+        $data['topbar']['title'] = gT('Backup entire database');
+        $data['topbar']['backLink'] = App()->createUrl('admin/index');
+
+        $this->renderWrappedTemplate('dumpdb', 'dumpdb_view', $data);
     }
 
     /**
@@ -68,5 +68,29 @@ class Dumpdb extends SurveyCommonAction
         header('Content-type: application/octet-stream');
         header('Content-Disposition: attachment; filename=' . $sFileName);
         header("Cache-Control: no-store, no-cache, must-revalidate");  // Don't store in cache because it is sensitive data
+    }
+
+    private function getData()
+    {
+        Yii::app()->loadHelper("admin/backupdb");
+        $dbSize = getDatabaseSize();
+        $downloadable = true;
+        if ($dbSize > Yii::app()->getConfig('maxDatabaseSizeForDump')) {
+            $downloadable = false;
+        }
+        return [
+            'downloadable' => $downloadable,
+            'dbSize' => $dbSize,
+        ];
+    }
+
+    public function outPutDatabase()
+    {
+        Yii::app()->loadHelper("admin/backupdb");
+        $sDbName = _getDbName();
+        $sFileName = 'LimeSurvey_' . $sDbName . '_dump_' . dateShift(date('Y-m-d H:i:s'), 'Y-m-d', Yii::app()->getConfig('timeadjust')) . '.sql';
+        $this->outputHeaders($sFileName);
+        outputDatabase();
+        return;
     }
 }
