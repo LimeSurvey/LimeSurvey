@@ -4,7 +4,7 @@ namespace LimeSurvey\Helpers\Update;
 
 use CException;
 
-class Update_625 extends DatabaseUpdateBase
+class Update_626 extends DatabaseUpdateBase
 {
     /**
      * @inheritDoc
