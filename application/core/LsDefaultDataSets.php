@@ -8,7 +8,6 @@
  */
 class LsDefaultDataSets
 {
-
     public static function getSurveyMenuEntryData()
     {
         $sOldLanguage = App()->language;
@@ -324,7 +323,6 @@ class LsDefaultDataSets
                 0,
                 1
             ],
-         
             [
                 2,
                 null,
@@ -2815,8 +2813,13 @@ class LsDefaultDataSets
             gt("Show link to legal notice in survey:"),
             gt("Show link to data policy in survey:"),
             gt("Survey legal notice:"),
-            gt("Legal notice")
-
+            gt("Legal notice"),
+            gt("Show 'Clear all' button"),
+            gt("Break tables"),
+            gt("Variations"),
+            gt("Colors"),
+            gt("Animations"),
+            gt("Fonts")
         ];
     }
 
