@@ -19,6 +19,8 @@ echo viewHelper::getViewTestTag('dumpdb');
                 <?php if ($downloadable) { // todo: remove testing boolean ?>
                     <?php
                     $this->widget('ext.AlertWidget.AlertWidget', [
+                        'name' => 'ls-db-backup-success',
+                        'id' => 'ls-db-backup-success',
                         'text' => gT("Your database can be downloaded now!"),
                         'type' => 'success',
                     ]);
@@ -35,6 +37,8 @@ echo viewHelper::getViewTestTag('dumpdb');
                 <?php } else { ?>
                     <?php
                         $this->widget('ext.AlertWidget.AlertWidget', [
+                            'name' => 'ls-db-backup-warning',
+                            'id' => 'ls-db-backup-warning',
                             'text' => gT("Your database is too large for immediate download. Please use your database client to perform a manual backup."),
                             'type' => 'warning',
                         ]);
