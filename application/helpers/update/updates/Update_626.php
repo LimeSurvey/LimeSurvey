@@ -29,6 +29,18 @@ class Update_626 extends DatabaseUpdateBase
                     );
                 }
             }
+
+            foreach ($boxes as $box) {
+                // Remove the old List surveys box
+                if (
+                    $box['url'] === 'dashboard/view' &&
+                    $box['url'] === 'surveyAdministration/listsurveys'
+                ) {
+                    $this->db->createCommand()
+                        ->delete('{{boxes}}', 'url=:url', [':url' => $box['url']]);
+                }
+            }
+
             // Then we recreate them
             $oDB = App()->db;
             $oDB->createCommand()->insert('{{boxes}}', [
