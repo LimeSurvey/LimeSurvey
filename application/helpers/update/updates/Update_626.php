@@ -33,7 +33,7 @@ class Update_626 extends DatabaseUpdateBase
             foreach ($boxes as $box) {
                 // Remove the old List surveys box
                 if (
-                    $box['url'] === 'dashboard/view' &&
+                    $box['url'] === 'dashboard/view' ||
                     $box['url'] === 'surveyAdministration/listsurveys'
                 ) {
                     $this->db->createCommand()
