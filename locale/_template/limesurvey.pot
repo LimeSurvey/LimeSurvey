@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2024-11-20 09:47:51+00:00\n"
+"POT-Creation-Date: 2024-11-20 09:50:55+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -8513,7 +8513,8 @@ msgid "Show 'Clear all' button"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:2818
-msgid "Break tables"
+#: application/helpers/twig_translation_helper.php:49
+msgid "Wrap tables"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:2819
@@ -14228,10 +14229,6 @@ msgstr ""
 
 #: application/helpers/twig_translation_helper.php:48
 msgid "Bottom"
-msgstr ""
-
-#: application/helpers/twig_translation_helper.php:49
-msgid "Wrap tables"
 msgstr ""
 
 #: application/helpers/twig_translation_helper.php:50
