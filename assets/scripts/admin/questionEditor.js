@@ -1805,6 +1805,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
               $('#question-title-warning').removeClass('d-none');
               $('#question-title-warning').text(message);
               $('#questionCode')[0].setCustomValidity(message); // must set customvalidity to avoid submit by another enter
+              $('#ls-loading').hide();
           } else {
               // Continue
           }
@@ -2000,6 +2001,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
               $('#question-title-warning').removeClass('d-none');
               $('#question-title-warning').text(message);
               $('#questionCode')[0].setCustomValidity(message); // must set customvalidity to avoid submit by another enter
+              $('#ls-loading').hide();
           } else {
             $('#question-title-warning').addClass('d-none');
             $('#question-title-warning').text('');

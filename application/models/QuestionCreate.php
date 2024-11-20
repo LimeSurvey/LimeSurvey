@@ -32,11 +32,26 @@ class QuestionCreate extends Question
             $questionThemeName = QuestionTheme::model()->getBaseThemeNameForQuestionType($questionType);
         }
         $oCurrentGroup = QuestionGroup::model()->findByPk($gid);
-        $temporaryTitle =
-            'G' . str_pad((string) $oCurrentGroup->group_order, 2, '0', STR_PAD_LEFT)
-            . 'Q' . str_pad((safecount($oSurvey->baseQuestions) + 1), 2, '0', STR_PAD_LEFT);
+
+        $oQuestion = new QuestionCreate();
+        $oQuestion->qid = 0;
+        $oQuestion->sid = $iSurveyId;
+
+        $isTitleValid = false;
+        $tries = 0;
+        while (!$isTitleValid) {
+            $tries++;
+            if ($tries > 50) {
+                throw new Exception('Failed to generate title for question');
+            }
+            $oQuestion->title = 'G' . str_pad((string) $oCurrentGroup->group_order, 2, '0', STR_PAD_LEFT)
+                . 'Q' . str_pad((safecount($oSurvey->baseQuestions) + $tries), 2, '0', STR_PAD_LEFT);
+            if ($oQuestion->validate(['title'])) {
+                $isTitleValid = true;
+            }
+        }
+
         $aQuestionData = [
-                'sid' => $iSurveyId,
                 'gid' => $gid,
                 'type' => $questionType,
                 'other' => 'N',
@@ -45,13 +60,10 @@ class QuestionCreate extends Question
                 'relevance' => 1,
                 'group_name' => '',
                 'modulename' => '',
-                'title' => $temporaryTitle,
                 'question_order' => 9999,
                 'question_theme_name' => $questionThemeName,
         ];
 
-        $oQuestion = new QuestionCreate();
-        $oQuestion->qid = 0;
         $oQuestion->setAttributes($aQuestionData, false);
         if ($oQuestion == null) {
             throw new CException("Object creation failed, input array malformed or invalid");
