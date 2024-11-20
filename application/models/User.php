@@ -407,11 +407,11 @@ class User extends LSActiveRecord
         }
         $passwordOk = ($resultDefaultRules === '');
         $oPasswordTestEvent = new PluginEvent('checkPasswordRequirement');
-        $oPasswordTestEvent->set('password', $passwordTest);
+        $oPasswordTestEvent->set('password', $password);
         $oPasswordTestEvent->set('passwordOk', $passwordOk);
         $oPasswordTestEvent->set('passwordError', $resultDefaultRules);
         Yii::app()->getPluginManager()->dispatchEvent($oPasswordTestEvent);
-        return (!$oPasswordTestEvent->get('passwordOk') ? $oPasswordTestEvent->get('passwordError') : '');
+        return ($oPasswordTestEvent->get('passwordOk') ? '' : $oPasswordTestEvent->get('passwordError'));
     }
 
     /**

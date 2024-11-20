@@ -161,7 +161,7 @@ class UserManagementController extends LSBaseController
                 ]]);
             }
             $user = new User();
-            if ($passwordError = $user->checkPasswordStrength($passwordTest) !== '') {
+            if ($passwordError = $user->checkPasswordStrength($passwordTest)) {
                 return Yii::app()->getController()->renderPartial('/admin/super/_renderJson', ["data" => [
                     'success' => false,
                     'errors' => gT('Passwords does not fulfill minimum requirement:') . '<br/>' . $passwordError,
