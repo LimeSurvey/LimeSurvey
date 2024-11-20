@@ -2815,7 +2815,7 @@ class LsDefaultDataSets
             gt("Survey legal notice:"),
             gt("Legal notice"),
             gt("Show 'Clear all' button"),
-            gt("Break tables"),
+            gt("Wrap tables"),
             gt("Variations"),
             gt("Colors"),
             gt("Animations"),
