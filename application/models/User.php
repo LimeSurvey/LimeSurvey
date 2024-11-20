@@ -49,7 +49,7 @@ use LimeSurvey\Models\Services\UserManager;
 class User extends LSActiveRecord
 {
     /** @var int maximum time the validation_key is valid*/
-    private const MAX_EXPIRATION_TIME_IN_HOURS = 48;
+    public const MAX_EXPIRATION_TIME_IN_HOURS = 48;
 
     /** @var int maximum days the validation key is valid */
     private const MAX_EXPIRATION_TIME_IN_DAYS = 2;
