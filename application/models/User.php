@@ -430,29 +430,29 @@ class User extends LSActiveRecord
      */
     public function validateNewPassword(string $newPassword, string $oldPassword, string $repeatPassword)
     {
-        $resultDefaultRulesMsg = '';
+        $errorMsg = '';
 
         if (!empty($newPassword)) {
-            $resultDefaultRulesMsg = $this->checkPasswordStrength($newPassword);
+            $errorMsg = $this->checkPasswordStrength($newPassword);
         }
 
-        if ($resultDefaultRulesMsg === '') {
+        if ($errorMsg === '') {
             if (!$this->checkPassword($oldPassword)) {
                 // Always check password
-                $resultDefaultRulesMsg = gT("Your new password was not saved because the old password was wrong.");
+                $errorMsg = gT("Your new password was not saved because the old password was wrong.");
             } elseif (trim($oldPassword) === trim($newPassword)) {
                 //First test if old and new password are identical => no need to save it (or ?)
-                $resultDefaultRulesMsg = gT("Your new password was not saved because it matches the old password.");
+                $errorMsg = gT("Your new password was not saved because it matches the old password.");
             } elseif (trim($newPassword) !== trim($repeatPassword)) {
                 //Then test the new password and the repeat password for identity
-                $resultDefaultRulesMsg = gT("Your new password was not saved because the passwords did not match.");
+                $errorMsg = gT("Your new password was not saved because the passwords did not match.");
                 //Now check if the old password matches the old password saved
             } elseif (empty(trim($newPassword))) {
-                $resultDefaultRulesMsg = gT("The new password can not be empty.");
+                $errorMsg = gT("The new password can not be empty.");
             }
         }
 
-        return $resultDefaultRulesMsg;
+        return $errorMsg;
     }
 
     /**
