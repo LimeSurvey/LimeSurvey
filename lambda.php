@@ -155,10 +155,12 @@ class Sexpr extends SexprBase
                 $branch2 = $sexpr->pop();
                 $branch1 = $sexpr->pop();
                 return ($this->eval($branch1) || $this->eval($branch2));
+            case "t":
             case "true":
-                return 1;
+                return true;
+            case "f":
             case "false":
-                return 0;
+                return false;
             case "nil":
                 return null;
             case "if":
@@ -223,30 +225,51 @@ class Sexpr extends SexprBase
             case "new":
                 $classname = $this->eval($sexpr->shift());
                 $arg = $this->eval($sexpr->shift());
-                error_log('here');
-                error_log($arg);
-                error_log($classname);
                 $class = new $classname($arg);
-                error_log('there');
                 return $class;
             case "test-class":
                 $classname = $this->eval($sexpr->shift());
-                $rest = $sexpr->shift();
-                $args = null;
-                if ($rest[1] === 'constructor') {
-                    //print_r($rest[0]);
-                    $args = $this->eval($rest[0]);
+                if (!class_exists($classname)) {
+                    throw new \Exception('Found no class ' . $classname);
                 }
-                die('here');
-                while ($methodToTest = $sexpr->pop()) {
-                    foreach ($methodToTest as $thing) {
-                        //print_r($thing);
+                $constr = $this->findFirst($sexpr, 'constructor');
+                if ($constr) {
+                    $args = $this->eval($constr->pop());
+                }
+                $tests = $this->findAll($sexpr, 'test-method');
+
+                $refl = new ReflectionClass($classname);
+                $classUnderTest = $refl->newInstanceArgs([$args]);
+                foreach ($tests as $test) {
+                    $_ = $test->shift();
+                    $methodName = $this->eval($test->shift());
+                    $method = $refl->getMethod($methodName);
+                    $method->setAccessible(true); // Make the protected method accessible
+                    $arguments = $this->findFirst($test, 'arguments');
+                    if ($arguments) {
+                        $_ = $arguments->shift();
+                        $evalArgs = [];
+                        foreach ($arguments as $arg) {
+                            $evalArgs[] = $this->eval($arg);
+                        }
+                    } else {
+                        $evalArgs = [];
+                    }
+                    $result = $method->invoke($classUnderTest, ...$evalArgs);
+                    $expectedResult = $this->findFirst($test, 'result');
+                    print_r($expectedResult);die;
+                    $expectedResult = $this->eval($expectedResult->pop());
+                    if ($expectedResult === $result) {
+                        // All good
+                        echo 'Success';
+                    } else {
+                        throw new \Exception('Wrong result');
                     }
                 }
                 //print_r($sexpr->pop());
                 //print_r($sexpr->pop());
                 //die;
-                $classUnderTest = new $classname($args);
+                die('here');
                 return;
             default:
                 if (isset($this->env[$op])) {
@@ -273,6 +296,39 @@ class Sexpr extends SexprBase
                 }
                 break;
         }
+    }
+
+    /**
+     * @param SplStack<mixed> $sexp
+     * @return ?SplStack<mixed>
+     */
+    public function findFirst(SplStack $sexp, string $symbol): ?SplStack
+    {
+        foreach ($sexp as $s) {
+            if ($s instanceof SplStack) {
+                if ($s->bottom() === $symbol) {
+                    return $s;
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * @param SplStack<mixed> $sexp
+     * @return array<mixed>
+     */
+    public function findAll(SplStack $sexp, string $symbol): array
+    {
+        $result = [];
+        foreach ($sexp as $s) {
+            if ($s instanceof SplStack) {
+                if ($s->bottom() === $symbol) {
+                    $result[] = $s;
+                }
+            }
+        }
+        return $result;
     }
 
     /**

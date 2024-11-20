@@ -20,7 +20,8 @@
     (result (list (map ("firstname" "John")))))
 
   (test-method
-    'foo
-    (arguments 1 2 3)
-    (result 10))
+    '_checkEmailFormat
+    (arguments "asd")
+    (result f)
+    )
 )
