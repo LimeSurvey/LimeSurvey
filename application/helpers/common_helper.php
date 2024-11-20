@@ -295,7 +295,7 @@ function convertGETtoPOST($url)
 */
 function calculateTotalFileUploadUsage()
 {
-    $aRows = Survey::model()->findAll();
+    $aRows = Survey::findAll();
     $iTotalSize = 0.0;
     foreach ($aRows as $aRow) {
         $sFilesPath = Yii::app()->getConfig("uploaddir") . '/surveys/' . $aRow->sid . '/files';
@@ -449,7 +449,7 @@ function setupColumns($columns, $answer_count, $wrapperclass = "", $itemclass = 
         $column_style = 'ul';
     };
     if (!is_null($column_style) && $columns != 1) {
-    // Add a global class for all column
+// Add a global class for all column
         $wrapperclass .= " colstyle-{$column_style}";
     }
     if ($columns < 2) {
@@ -526,7 +526,7 @@ function setupColumns($columns, $answer_count, $wrapperclass = "", $itemclass = 
     };
 
     return $wrapper;
-}
+};
 
 function alternation($alternate = '', $type = 'col')
 {
@@ -574,6 +574,7 @@ function alternation($alternate = '', $type = 'col')
     return $alternate;
 }
 
+
 /**
 * longestString() returns the length of the longest string past to it.
 * @peram string $new_string
@@ -590,7 +591,7 @@ function longestString($new_string, $longest_length)
         $longest_length = strlen(trim(strip_tags((string) $new_string)));
     };
     return $longest_length;
-}
+};
 
 //FIXME rename and/or document this
 function getGroupList3($gid, $surveyid)
@@ -942,28 +943,17 @@ function returnGlobal($stringname, $bRestrictToString = false)
 }
 
 
-function sendSurveyHttpHeaders()
+function sendCacheHeaders()
 {
     if (!headers_sent()) {
-        // Default headers für surveys
-        $headers = [
-                     'Cache-Control: no-store, no-cache, must-revalidate, max-age=0, post-check=0, pre-check=0',
-                     'Pragma: no-cache',
-                     'Content-Type: text/html; charset=utf-8'
-                    ];
         if (Yii::app()->getConfig('x_frame_options', 'allow') == 'sameorigin') {
-            $headers[] = 'X-Frame-Options: SAMEORIGIN';
+            header('X-Frame-Options: SAMEORIGIN');
         }
-        // plugins can modify the
-        $event = new PluginEvent('beforeSurveyHttpHeaders');
-        $event->set('headers', $headers);
-        App()->getPluginManager()->dispatchEvent($event);
-        $headers = $event->get('headers', []);
-        if (is_array($headers)) {
-            foreach ($headers as $header) {
-                header($header);
-            }
-        }
+        header('P3P:CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT"'); // this line lets IE7 run LimeSurvey in an iframe
+        header("Expires: Mon, 26 Jul 1997 05:00:00 GMT"); // Date in the past
+        header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT"); // always modified
+        header("Cache-Control: no-store, no-cache, must-revalidate"); // HTTP/1.1
+        header('Content-Type: text/html; charset=utf-8');
     }
 }
 
@@ -1593,8 +1583,10 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                     }
                     break;
             }
-        } elseif ($questionTypeMetaData[$arow['type']]['settings']->subquestions == 2 && $questionTypeMetaData[$arow['type']]['settings']->answerscales == 0) {
-            // For Multi flexi question types
+        }
+        // For Multi flexi question types
+        elseif ($questionTypeMetaData[$arow['type']]['settings']->subquestions == 2 && $questionTypeMetaData[$arow['type']]['settings']->answerscales == 0) {
+            //MULTI FLEXI
             $abrows = getSubQuestions($surveyid, $arow['qid'], $sLanguage);
             //Now first process scale=1
             $answerset = array();
@@ -3035,7 +3027,7 @@ function useFirebug()
     if (FIREBUG == true) {
         App()->getClientScript()->registerScriptFile('http://getfirebug.com/releases/lite/1.2/firebug-lite-compressed.js');
     };
-}
+};
 
 /**
 * This is a convenience function for the coversion of datetime values
@@ -3187,7 +3179,7 @@ function SSLRedirect($enforceSSLMode)
         //ob_flush();
         Yii::app()->end();
     };
-}
+};
 
 /**
 * enforceSSLMode() $force_ssl is on or off, it checks if the current
@@ -3208,7 +3200,7 @@ function enforceSSLMode()
     if ($bForceSSL == 'on' && !$bSSLActive) {
         SSLRedirect('s');
     }
-}
+};
 
 
 /**

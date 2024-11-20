@@ -10,6 +10,7 @@ $alert-status : (
 );
 
 @mixin alert-variant($color, $status) {
+  border : 1.33px solid $g-900;
 
   @if ($status== "outlined") {
     color  : $g-900;
@@ -24,7 +25,6 @@ $alert-status : (
         text-decoration: underline;
       }
     } @else {
-      border : 1.33px solid $g-900;
       color  : $g-900;
       .alert-link {
         color : $g-900;

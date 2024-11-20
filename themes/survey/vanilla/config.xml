@@ -65,7 +65,7 @@
         <hideprivacyinfo type="buttons" category="Simple options" width="4" title="Hide privacy info" options="on|off" optionlabels="Yes|No">off</hideprivacyinfo>
         <container type="buttons" category="Simple options" width="4" title="Survey container" options="on|off" optionlabels="Yes|No">on</container>
         <showpopups type="buttons" category="Simple options" width="4" title="Show popups" options="1|0|-1" optionlabels="Popup|On page|No">1</showpopups>
-        <showclearall type="buttons" category="Simple options" width="4" title="Show 'Clear all' button" options="on|off" optionlabels="Yes|No">off</showclearall>
+        <showclearall type="buttons" category="Simple options" width="4" title="Show Clear All button" options="on|off" optionlabels="Yes|No">off</showclearall>
         <questionhelptextposition type="buttons" category="Simple options" width="4" title="Question help text position" options="top|bottom" optionlabels="Top|Bottom">top</questionhelptextposition>
         <fixnumauto type="buttons" category="Simple options" width="4" title="Fix automatically numeric value" options="enable|partial|disable" optionlabels="Yes|For expression|No">enable</fixnumauto>
         <!-- images -->

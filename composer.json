@@ -57,8 +57,7 @@
 		"league/oauth2-google": "^3.0",
 		"goldspecdigital/oooas": "^2.10",
 		"php-di/php-di": "6.4.0",
-		"doctrine/annotations": "~1.10",
-		"anper/iuliia": "^1.2"
+		"doctrine/annotations": "~1.10"
 	},
     "config": {
         "vendor-dir": "vendor",

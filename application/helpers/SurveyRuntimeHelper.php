@@ -369,7 +369,7 @@ class SurveyRuntimeHelper
             }
         }
 
-        sendSurveyHttpHeaders();
+        sendCacheHeaders();
 
         Yii::app()->loadHelper('surveytranslator');
 
@@ -1796,7 +1796,7 @@ class SurveyRuntimeHelper
             }
 
             $_SESSION[$this->LEMsessid]['step'] = $this->aMoveResult['seq'] + 1; // step is index base 1?
-            $_SESSION[$this->LEMsessid]['hiddenSteps'] = $this->aMoveResult['hiddenSteps'] ?? 0;
+            $_SESSION[$this->LEMsessid]['hiddenSteps'] = $this->aMoveResult['hiddenSteps'];
 
             $this->aStepInfo = LimeExpressionManager::GetStepIndexInfo($this->aMoveResult['seq']);
 

@@ -35,7 +35,7 @@ echo viewHelper::getViewTestTag('statisticsIndex');
         'items' => [
             [
                 'id' => 'general-filters-item',
-                'title' => gT('General filters'),
+                'title' => 'General filters',
                 'open' => $filterchoice_state == '' && empty($summary),
                 'content' => $this->renderPartial(
                     '/admin/export/statistics_subviews/_general_filters',
@@ -56,7 +56,7 @@ echo viewHelper::getViewTestTag('statisticsIndex');
             ],
             [
                 'id' => 'response-filters-item',
-                'title' => gT('Response filters'),
+                'title' => 'Response filters',
                 'open' => $filterchoice_state == '' && empty($summary),
                 'content' => $this->renderPartial(
                     '/admin/export/statistics_subviews/_response_filters',

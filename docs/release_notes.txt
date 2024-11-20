@@ -34,48 +34,6 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
-Changes from 6.8.0 (build 241119) to 6.8.1 (build 241120) November 19, 2024
--Fixed issue: Wrong version number (Carsten Schmitz)
-
-
-Changes from 6.7.0 (build 241118) to 6.8.0 (build 241119) November 19, 2024
-+New feature: Plugin event 'beforeSurveyHttpHeaders' allows to modify http headers in surveys (#4021) (Carsten Schmitz)
--Fixed issue #19774: Make labels on filtering page translatable (#3980) (aisreh)
--Fixed issue #19829: Norwegian & Serbian not working in Quick translation (Carsten Schmitz)
--Fixed issue #19675: If FileUploadTotalSpaceMB > 0 an error 500 is shown (lozam)
-#Updated translation: Korean by modernity4r
-#Updated translation: Japanese by nomoto
-
-
-Changes from 6.6.8 (build 241104) to 6.7.0 (build 241118) November 18, 2024
--Fixed issue: Added correct cldr to Kurundi (run) (Patrick Teichmann)
--Fixed issue: QE-1201 mandatory formatter for API (#4008) (Tim Willig)
--Fixed issue #19835: (CT-1052) Time limit action for Timer not working properly (#4030) (Tim Willig)
--Fixed issue #19818: Wrong characters displayed in French when deleting a question (#4022) (Denis Chenu)
--Fixed issue #19805: Preview group throw PHP warning (#3999) (Gabriel Jenik)
--Fixed issue #19784: No access to the 'Edit Poll Settings' page view in debug mode (#3986) (Gabriel Jenik)
--Fixed issue #19779: Question Type not translated (#3983) (lozam)
--Fixed issue #19760: When editing a response, delete current seed (#3990) (Denis Chenu)
--Fixed issue #19835: Time limit action for Timer not working properly (Tim Willig)
-#Updated translation: Vietnamese by evi3636, hl_sales
-#Updated translation: Spanish (Spain) by evi3636, Gronnd
-#Updated translation: Slovak by jelen1
-#Updated translation: Russian by evi3636
-#Updated translation: Portuguese (Portugal) by holch, samarta
-#Updated translation: Portuguese (Brazil) by holch
-#Updated translation: Italian by lfanfoni
-#Updated translation: Italian (Informal) by lfanfoni
-#Updated translation: Hungarian by kkd, vargazsoltivan
-#Updated translation: German by c_schmitz
-#Updated translation: French (France) by evi3636, fgervais
-#Updated translation: Finnish by Jmantysalo
-#Updated translation: Dutch by Han
-#Updated translation: Dutch (Informal) by Han
-#Updated translation: Czech by jelen1
-#Updated translation: Czech (Informal) by jelen1
-#Updated translation: Arabic by abdelrahman.hassan, anasbensaid, evi3636
-
-
 Changes from 6.6.7 (build 241028) to 6.6.8 (build 241104) November 4, 2024
 +New feature #19758: New plugin event beforeMovePublicFileUploaded (#3991) (Denis Chenu)
 -Fixed issue: Empty/error page on invalid survey ID (Carsten Schmitz)
