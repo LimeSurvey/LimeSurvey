@@ -28,7 +28,7 @@ $this->notifications();
 //The load indicator for pjax
 echo ' <div id="pjax-file-load-container" class="ls-flex-row col-12"><div style="height:2px;width:0px;"></div></div>';
 
-$containerClass = !Yii::app()->user->isGuest ? 'container-fluid full-page-wrapper' : 'container-fluid ps-0';
+$containerClass = !Yii::app()->user->isGuest ? 'container-fluid' : 'container-fluid ps-0';
 echo '<!-- Full page, started in SurveyCommonAction::renderWrappedTemplate() -->
 <div class="' . $containerClass . '" id="in_survey_common_action">';
 

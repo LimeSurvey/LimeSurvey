@@ -1607,28 +1607,31 @@ class TemplateConfiguration extends TemplateConfig
     }
 
     /**
-     * Returns the html to render the previewimage of the template
-     * @return array|mixed|string|null
+     * Returns the html to render the previewimage of the template.
+     * Pass $justTheUrl = true to return just the URL of the preview image
+     * @param bool $justTheUrl
+     * @return string
      */
-    public function getPreview()
+    public function getPreview($justTheUrl = false)
     {
+        $previewUrl = '';
         if (empty($this->sPreviewImgTag)) {
             if (is_a($this->template, 'Template')) {
                 $sTemplateFileFolder = Template::getTemplatesFileFolder($this->template->name);
                 $previewPath         = Template::getTemplatePath($this->template->name) . '/' . $sTemplateFileFolder;
 
                 if ($previewPath && file_exists($previewPath . '/preview.png')) {
-                    $previewUrl = Template::getTemplateURL($this->template->name) . $sTemplateFileFolder;
+                    $previewUrl = Template::getTemplateURL($this->template->name) . $sTemplateFileFolder . '/preview.png';
                     $this->sPreviewImgTag = '<img src="' .
                         $previewUrl .
-                        '/preview.png" alt="template preview" height="200" class="img-thumbnail p-0 rounded-0" />';
+                        '" alt="template preview" height="200" class="img-thumbnail p-0 rounded-0" />';
                 }
             } else {
                 $this->sPreviewImgTag = '<em>' . gT('No preview available') . '</em>';
             }
         }
 
-        return $this->sPreviewImgTag;
+        return $justTheUrl ? $previewUrl : $this->sPreviewImgTag;
     }
 
     /**

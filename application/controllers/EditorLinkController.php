@@ -91,7 +91,7 @@ class EditorLinkController extends LSYii_Controller
         );
 
         $cookie = new CHttpCookie($cookieName, $cookieDataJson);
-        $cookie->expire = time() + (60 * 2); // 2 minutes
+        $cookie->expire = time() + 10;
 
         Yii::app()->request->cookies[$cookieName] = $cookie;
     }

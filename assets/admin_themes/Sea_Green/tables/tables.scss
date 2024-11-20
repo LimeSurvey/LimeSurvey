@@ -148,9 +148,122 @@ table {
 
 /** For all grid view table */
 .scrolling-wrapper {
-    overflow-x: scroll;
-    overflow-y: hidden;
-
-    // if go to last page of table, the action dropdown is hidden.
+    overflow-x: auto;
     min-height: 300px;
+}
+
+.grid-view, .grid-view-ls {
+    .table {
+        padding       : 20px;
+        border-radius : 4px;
+        border        : $table-border-color;
+        .ls-sticky-column, .checkbox-column {
+            //text-align : center;
+            padding    : 7px 20px;
+            box-shadow : none;
+            z-index: 1;
+        }
+        thead {
+            tr {
+                border : 0 none $white;
+                th {
+                    padding-bottom : 9px;
+                    font-weight    : 600;
+                    vertical-align : middle;
+                    border-bottom  : solid 1px $g-600;
+                    .sort-link {
+                        color       : $black;
+                        font-weight : 600;
+                        ::before {
+                            font-weight : 500;
+                            color       : $active-green;
+                        }
+                    }
+                }
+                th:hover .sort-link :before {
+                    visibility : visible;
+                }
+            }
+        }
+        tbody {
+            td input[type=checkbox]:after {
+                margin-right : 0;
+            }
+            tr {
+                border : solid 1px $g-100;
+            }
+        }
+        button {
+            border-color : $white;
+            background-color: inherit;
+            border: none;
+        }
+        button:hover,
+        button:focus {
+            color        : $black;
+            box-shadow   : none;
+            border-color : $white;
+        }
+        button.btn .ri-more-fill:before {
+            font-size : 1.1em;
+        }
+    }
+    .survey-state.disabled {
+        opacity : 0.5;
+    }
+    .action-list {
+        display : flex;
+        color   : $black;
+        a:not(:first-child) {
+            margin-left: 12px;
+        }
+        .disabled i::before {
+          opacity: 0.5;
+          color: $g-700;
+        }
+        i::before {
+            font-size : $font-size-base * 1.5;
+        }
+    }
+    .grid-view-ls-footer {
+        display: flex;
+        justify-content: space-between;
+        margin-top: $grid-gutter-width;
+        flex-flow: wrap;
+        .massive-action-container,
+        .pagination-container,
+        .summary-container {
+            flex: 1 1 0
+
+        }
+
+    }
+    .listActions,
+    #responses-column-filter-button,
+    .pager,
+    .summary {
+        margin: 4px 0;
+    }
+    #responses-column-filter-modal .checkbox label {
+        vertical-align: text-bottom;
+        white-space: nowrap;
+        overflow-x: hidden;
+    }
+
+    .responses-multiselect-checkboxes {
+        overflow-y: scroll;
+        height: 60vh;
+    }
+
+    .responses-column-filter-modal-checkbox-buttons {
+        text-align: left;
+        padding-bottom: 15px;
+    }
+}
+@media (max-width: 768px) {
+  .grid-view-ls-footer {
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: center;
+  }
 }

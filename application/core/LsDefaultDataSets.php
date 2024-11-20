@@ -50,7 +50,7 @@ class LsDefaultDataSets
                 2,
                 'generalsettings',
                 gT('General survey settings', 'unescaped'),
-                gT('General settings', 'unescaped'),
+                gT('General', 'unescaped'),
                 gT('Open general survey settings', 'unescaped'),
                 'ri-tools-line',
                 'remix',
@@ -331,7 +331,7 @@ class LsDefaultDataSets
                 4,
                 'participants',
                 gT('Survey participants', 'unescaped'),
-                gT('Survey participants', 'unescaped'),
+                gT('Participants', 'unescaped'),
                 gT('Go to survey participant and token settings', 'unescaped'),
                 '',
                 'remix',
@@ -851,15 +851,6 @@ class LsDefaultDataSets
         App()->setLanguage('en');
         $returnArray = [];
 
-        $returnArray[] = ['position'   => '1',
-                          'url'        => 'surveyAdministration/newSurvey',
-                          'title'      => gT('Create survey'),
-                          'ico'        => 'ri-add-line',
-                          'desc'       => gT('Create a new survey from scratch. Or simply copy or import an existing survey.'),
-                          'page'       => 'welcome',
-                          'usergroup'  => '-2',
-                          'buttontext' => gt('Create survey')
-        ];
         $returnArray[] = ['position'   => '2',
                           'url'        => 'surveyAdministration/listsurveys',
                           'title'      => gT('List surveys'),

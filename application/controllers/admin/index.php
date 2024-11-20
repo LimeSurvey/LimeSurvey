@@ -23,6 +23,8 @@ class Index extends SurveyCommonAction
             $aData['issuperadmin'] = true;
         }
 
+        // display old dashboard interface
+        $aData['oldDashboard'] = App()->getConfig('display_old_dashboard') === '1';
         // We get the last survey visited by user
         $setting_entry = 'last_survey_' . Yii::app()->user->getId();
         $lastsurvey = getGlobalSetting($setting_entry);

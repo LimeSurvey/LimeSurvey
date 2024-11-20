@@ -406,10 +406,12 @@ class ResponsesController extends LSBaseController
      * @param int $surveyId
      * @return void
      */
-    public function actionBrowse(int $surveyId): void
+    public function actionBrowse(int $surveyId = 0, int $surveyid = 0): void
     {
+        // Force it to accept `surveyid` as well, to maintain consistency with other menu entries.
+        $surveyId = !empty($surveyId) ? $surveyId : (!empty($surveyid) ? $surveyid : null);
         // logging for webserver when parameter is somehting like $surveyid=125<script ...
-        if (!is_numeric(Yii::app()->request->getParam('surveyId'))) {
+        if (!is_numeric($surveyId)) {
             throw new CHttpException(403, gT("Invalid survey ID"));
         }
         $survey = Survey::model()->findByPk($surveyId);

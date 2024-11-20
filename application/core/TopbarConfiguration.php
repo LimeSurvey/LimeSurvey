@@ -204,11 +204,8 @@ class TopbarConfiguration
             || $hasSurveyContentPermission
             || !is_null($extraToolsMenuItems);
 
-        $editorEnabled = $event->get('isEditorEnabled');
-        if ($editorEnabled===null) {
-            $editorEnabled = Yii::app()->getConfig('editorEnabled') ?? false;
-        }
-
+        $editorEnabled = Yii::app()->getConfig('editorEnabled') ?? false;
+        
         $enableEditorButton = true;
         if ($oSurvey->getTemplateEffectiveName() !== 'fruity_twentythree') {
             $enableEditorButton = false;
