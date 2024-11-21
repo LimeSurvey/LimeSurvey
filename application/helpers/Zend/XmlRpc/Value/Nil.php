@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Zend Framework
  *
@@ -15,11 +16,10 @@
  * @category   Zend
  * @package    Zend_XmlRpc
  * @subpackage Value
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id$
+ * @version    $Id: Nil.php 23775 2011-03-01 17:25:24Z ralph $
  */
-
 
 /**
  * Zend_XmlRpc_Value_Scalar
@@ -31,7 +31,7 @@ require_once 'Zend/XmlRpc/Value/Scalar.php';
  * @category   Zend
  * @package    Zend_XmlRpc
  * @subpackage Value
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_XmlRpc_Value_Nil extends Zend_XmlRpc_Value_Scalar
@@ -57,4 +57,3 @@ class Zend_XmlRpc_Value_Nil extends Zend_XmlRpc_Value_Scalar
         return null;
     }
 }
-

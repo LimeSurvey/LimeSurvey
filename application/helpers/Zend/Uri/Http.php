@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Zend Framework
  *
@@ -103,7 +104,7 @@ class Zend_Uri_Http extends Zend_Uri
      *
      * @var array
      */
-    protected $_regex = [];
+    protected $_regex = array();
 
     /**
      * Constructor accepts a string $scheme (e.g., http, https) and a scheme-specific part of the URI
@@ -178,12 +179,13 @@ class Zend_Uri_Http extends Zend_Uri
         $scheme         = strtolower($uri[0]);
         $schemeSpecific = isset($uri[1]) === true ? $uri[1] : '';
 
-        if (in_array($scheme, ['http', 'https']) === false) {
+        if (in_array($scheme, array('http', 'https')) === false) {
             require_once 'Zend/Uri/Exception.php';
             throw new Zend_Uri_Exception("Invalid scheme: '$scheme'");
         }
 
-        return new Zend_Uri_Http($scheme, $schemeSpecific);
+        $schemeHandler = new Zend_Uri_Http($scheme, $schemeSpecific);
+        return $schemeHandler;
     }
 
     /**
@@ -268,17 +270,16 @@ class Zend_Uri_Http extends Zend_Uri
      *
      * @return boolean
      */
-    #[\ReturnTypeWillChange]
     public function valid()
     {
         // Return true if and only if all parts of the URI have passed validation
         return $this->validateUsername()
-           && $this->validatePassword()
-           && $this->validateHost()
-           && $this->validatePort()
-           && $this->validatePath()
-           && $this->validateQuery()
-           && $this->validateFragment();
+           and $this->validatePassword()
+           and $this->validateHost()
+           and $this->validatePort()
+           and $this->validatePath()
+           and $this->validateQuery()
+           and $this->validateFragment();
     }
 
     /**
@@ -374,7 +375,7 @@ class Zend_Uri_Http extends Zend_Uri
         }
 
         // If the password is nonempty, but there is no username, then it is considered invalid
-        if (strlen($password) > 0 && strlen($this->_username) === 0) {
+        if (strlen($password) > 0 and strlen($this->_username) === 0) {
             return false;
         }
 
@@ -494,7 +495,7 @@ class Zend_Uri_Http extends Zend_Uri
         }
 
         // Check the port against the allowed values
-        return ctype_digit((string) $port) && 1 <= $port && $port <= 65535;
+        return ctype_digit((string) $port) and 1 <= $port and $port <= 65535;
     }
 
     /**
@@ -554,7 +555,7 @@ class Zend_Uri_Http extends Zend_Uri
             throw new Zend_Uri_Exception('Internal error: path validation failed');
         }
 
-        return (boolean) $status;
+        return (bool) $status;
     }
 
     /**
@@ -597,7 +598,7 @@ class Zend_Uri_Http extends Zend_Uri
     public function getQueryAsArray()
     {
         $query = $this->getQuery();
-        $querryArray = [];
+        $querryArray = array();
         if ($query !== false) {
             parse_str($query, $querryArray);
         }
@@ -740,7 +741,7 @@ class Zend_Uri_Http extends Zend_Uri
             throw new Zend_Uri_Exception('Internal error: fragment validation failed');
         }
 
-        return (boolean) $status;
+        return (bool) $status;
     }
 
     /**

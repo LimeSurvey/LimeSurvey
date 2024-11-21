@@ -2,7 +2,6 @@
 
 namespace LimeSurvey\Api\Command\V1\Transformer\Output;
 
-use LimeSurvey\Models\Services\SurveyUseCaptcha;
 use Survey;
 use LimeSurvey\Api\Transformer\{
     Output\TransformerOutputActiveRecord,
@@ -102,12 +101,11 @@ class TransformerOutputSurvey extends TransformerOutputActiveRecord
                 'key' => 'tokenAnswersPersistence',
                 'formatter' => ['ynToBool' => true]
             ],
-            "htmlemail" => [
-                'key' => 'htmlEmail',
+            "assessments" => ['formatter' => ['ynToBool' => true]],
+            "usecaptcha" => [
+                'key' => 'useCaptcha',
                 'formatter' => ['ynToBool' => true]
             ],
-            "assessments" => ['formatter' => ['ynToBool' => true]],
-            "usecaptcha" => 'useCaptcha',
             "usetokens" => [
                 'key' => 'useTokens',
                 'formatter' => ['ynToBool' => true]
@@ -187,7 +185,7 @@ class TransformerOutputSurvey extends TransformerOutputActiveRecord
         $survey['showQNumCode'] = $this->convertShowQNumCode(
             $data['showqnumcode']
         );
-        return $this->transformUseCaptcha($survey);
+        return $survey;
     }
 
     /**
@@ -221,25 +219,5 @@ class TransformerOutputSurvey extends TransformerOutputActiveRecord
             'showNumber' => $showNumber,
             'showCode' => $showCode,
         ];
-    }
-
-    /**
-     * Transforms useCaptcha into three values.
-     *  -- survey access
-     *  -- registration
-     *  -- save and load
-     *
-     * @param array $survey
-     * @return array
-     */
-    private function transformUseCaptcha($survey)
-    {
-        $surveyUseCaptcha = new SurveyUseCaptcha();
-        $threeValues = $surveyUseCaptcha->convertUseCaptchaFromDB($survey['useCaptcha']);
-        $survey['useCaptchaAccess'] = ($threeValues['surveyAccess'] == 'Y');
-        $survey['useCaptchaRegistration'] = ($threeValues['registration'] == 'Y');
-        $survey['useCaptchaSaveLoad'] = ($threeValues['saveAndLoad'] == 'Y');
-
-        return $survey;
     }
 }

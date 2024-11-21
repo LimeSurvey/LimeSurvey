@@ -1,8 +1,8 @@
 <?php $this->render('sideMenuLogo'); ?>
-<div class="sidebar-container">
+<div style="width: 350px;">
 <div id="left-sidebar" class="fade sidebar sidebar-left show">
-    <div class="d-flex">
-        <div class="sidebar-icons-container">
+    <div class="d-flex" style="height: 100%;">
+        <div class="sidebar-icons" style="width: 52px;">
             <div class="sidebar-icons-item">
                 <div class="sidebar-icon" onclick="window.location='<?php echo App()->createUrl('editorLink/index', ['route' => 'survey/' . $sid]);?>'">
                     <div data-bs-toggle="tooltip"
@@ -14,7 +14,7 @@
                 </div>
             </div>
             <div class="sidebar-icons-item">
-                <div class="sidebar-icon" data-target="#survey-settings-panel" onclick="window.location='<?php echo App()->createUrl('editorLink/index', ['route' => 'survey/' .  $sid . '/settings/generalsettings']);?>'">
+                <div class="sidebar-icon" data-target="#survey-settings-panel">
                     <div data-bs-toggle="tooltip"
                          title="<?php echo gT('Survey settings'); ?>"
                          data-bs-offset="0, 20"
@@ -24,8 +24,8 @@
                 </div>
             </div>
             <div class="sidebar-icons-item">
-                <div class="sidebar-icon" data-target="#survey-menu-panel" onclick="window.location='<?php echo App()->createUrl("admin/tokens/sa/index/surveyid/" . $sid);?>'">
-                        <div data-bs-toggle="tooltip"
+                <div class="sidebar-icon" data-target="#survey-menu-panel">
+                    <div data-bs-toggle="tooltip"
                          title="<?php echo gT('Survey menu'); ?>"
                          data-bs-offset="0, 20"
                          data-bs-placement="right">
@@ -34,7 +34,7 @@
                 </div>
             </div>
             <div class="sidebar-icons-item">
-                <div class="sidebar-icon" data-target="#survey-presentation-panel" onclick="window.location='<?php echo App()->createUrl('editorLink/index', ['route' => 'survey/' .  $sid . '/presentation/presentation']);?>'">
+                <div class="sidebar-icon" data-target="#survey-presentation-panel">
                     <div data-bs-toggle="tooltip"
                          title="<?php echo gT('Survey presentation'); ?>"
                          data-bs-offset="0, 20"
@@ -44,18 +44,18 @@
                 </div>
             </div>
             <div class="sidebar-icons-item">
-                <div class="sidebar-icon" data-target="#survey-permissions-panel" onclick="window.location='<?php echo App()->createUrl('surveyPermissions/index/', ['surveyid' => $sid]);?>'">
+                <div class="sidebar-icon" data-target="#survey-permissions-panel">
                     <div data-bs-toggle="tooltip"
                          title="<?php echo gT('Survey permissions'); ?>"
                          data-bs-offset="0, 20"
                          data-bs-placement="right">
-                        <i class="ri-group-line btn btn-g-800 btn-icon <?php echo $this->activePanel == 'survey-permissions-panel' ? 'active' : ''?>"></i>
+                        <i class="ri-lock-2-line btn btn-g-800 btn-icon <?php echo $this->activePanel == 'survey-permissions-panel' ? 'active' : ''?>"></i>
                     </div>
                 </div>
             </div>
             <?php if (count($this->allLanguages) > 1) : ?>
                 <div class="sidebar-icons-item">
-                    <div class="sidebar-icon" data-target="#survey-quick-translation" onclick="window.location='<?php echo App()->createUrl('quickTranslation/index/', ['surveyid' => $sid]);?>'">
+                    <div class="sidebar-icon" data-target="#survey-quick-translation">
                         <div style="z-index: 5000;"
                              data-bs-toggle="tooltip"
                              title="<?php echo gT('Quick Translations'); ?>"
@@ -68,8 +68,8 @@
             <?php endif; ?>
         </div>
         <div>
-            <div id="survey-settings-panel" class="side-panel d-flex <?php echo $this->activePanel !== 'survey-settings-panel' ? 'd-none' : ''?>">
-                <div class="survey-structure px-2">
+            <div id="survey-settings-panel" class="side-panel d-flex <?php echo $this->activePanel !== 'survey-settings-panel' ? 'd-none' : ''?>" style="height: 100%;">
+                <div class="survey-structure px-2" style="overflow-y: auto; width: 290px;">
                     <div class="survey-settings">
                         <div class="d-flex sidebar-header align-items-center justify-content-between right-side-bar-header primary">
                             <?php echo gT('Survey Settings'); ?>
@@ -87,9 +87,10 @@
                             </button>
                         </div>
 
+                        <?php $currentPage = App()->request->getPathInfo() . '?' . App()->request->getQueryString();?>
                         <?php foreach ($sideMenu['settings'] as $item) : ?>
                             <a href="<?php echo $item['url']; ?>">
-                                <div class="survey-settings-panel-item text-black <?php echo (isset($item['selected']) && $item['selected']) ? ' bg-primary' : ''; ?>">
+                                <div class="px-4 py-3 d-flex align-items-center cursor-pointer rounded text-black <?php echo (isset($item['selected']) && $item['selected']) ? ' bg-primary' : ''; ?>">
                                     <label class=" cursor-pointer mb-0 form-label <?php echo (isset($item['selected']) && $item['selected']) ? ' text-white' : ' text-black'; ?>">
                                         <?php echo $item['name']; ?>
                                     </label>
@@ -99,8 +100,8 @@
                     </div>
                 </div>
             </div>
-            <div id="survey-menu-panel" class="side-panel d-flex <?php echo $this->activePanel !== 'survey-menu-panel' ? 'd-none' : ''?>">
-                <div class="survey-structure px-2">
+            <div id="survey-menu-panel" class="side-panel d-flex <?php echo $this->activePanel !== 'survey-menu-panel' ? 'd-none' : ''?>" style="height: 100%;">
+                <div class="survey-structure px-2" style="overflow-y: auto; width: 290px;">
                     <div class="survey-settings">
                         <div class="d-flex sidebar-header align-items-center justify-content-between right-side-bar-header primary">
                             <?php echo gT('Survey menu'); ?>
@@ -119,7 +120,7 @@
                         </div>
                         <?php foreach ($sideMenu['menu'] as $item) : ?>
                             <a href="<?php echo $item['disabled'] ?? false ? '#' : $item['url']; ?>" class="<?php echo $item['disabled'] ?? false ? 'disabled' : ''; ?>">
-                                <div class="survey-settings-panel-item text-black <?php echo (isset($item['selected']) && $item['selected']) ? ' bg-primary' : ''; ?>">
+                                <div class="px-4 py-3 d-flex align-items-center cursor-pointer rounded text-black <?php echo (isset($item['selected']) && $item['selected']) ? ' bg-primary' : ''; ?>">
                                     <label class=" cursor-pointer mb-0 form-label <?php echo (isset($item['selected']) && $item['selected'])? ' text-white' : ' text-black'; ?>">
                                         <?php echo $item['name']; ?>
                                     </label>
@@ -129,8 +130,8 @@
                     </div>
                 </div>
             </div>
-            <div id="survey-presentation-panel" class="side-panel d-flex <?php echo $this->activePanel !== 'survey-presentation-panel' ? 'd-none' : ''?>">
-                <div class="survey-structure px-2">
+            <div id="survey-presentation-panel" class="side-panel d-flex <?php echo $this->activePanel !== 'survey-presentation-panel' ? 'd-none' : ''?>" style="height: 100%;">
+                <div class="survey-structure px-2" style="overflow-y: auto; width: 290px;">
                     <div class="survey-settings">
                         <div class="d-flex sidebar-header align-items-center justify-content-between right-side-bar-header primary">
                             <?php echo gT('Survey presentation'); ?>
@@ -149,7 +150,7 @@
                         </div>
                         <?php foreach ($sideMenu['presentation'] as $item) : ?>
                             <a href="<?php echo $item['url']; ?>">
-                                <div class="survey-settings-panel-item text-black <?php echo (isset($item['selected']) && $item['selected'])? ' bg-primary' : ''; ?>">
+                                <div class="px-4 py-3 d-flex align-items-center cursor-pointer rounded text-black <?php echo (isset($item['selected']) && $item['selected'])? ' bg-primary' : ''; ?>">
                                     <label class=" cursor-pointer mb-0 form-label <?php echo (isset($item['selected']) && $item['selected']) ? ' text-white' : ' text-black'; ?>">
                                         <?php echo $item['name']; ?>
                                     </label>
@@ -159,8 +160,8 @@
                     </div>
                 </div>
             </div>
-            <div id="survey-permissions-panel" class="side-panel d-flex <?php echo $this->activePanel !== 'survey-permissions-panel' ? 'd-none' : ''?>">
-                <div class="survey-structure px-2">
+            <div id="survey-permissions-panel" class="side-panel d-flex <?php echo $this->activePanel !== 'survey-permissions-panel' ? 'd-none' : ''?>" style="height: 100%;">
+                <div class="survey-structure px-2" style="overflow-y: auto; width: 290px;">
                     <div class="survey-settings">
                         <div class="d-flex sidebar-header align-items-center justify-content-between right-side-bar-header primary">
                             <?php echo gT('Survey permissions'); ?>
@@ -182,7 +183,7 @@
                             $url = App()->createUrl('surveyPermissions/index', ['surveyid' => $sid]);
                         ?>
                         <a href="<?php echo $url;?>">
-                            <div class="survey-settings-panel-item text-black <?php echo str_contains($url, $currentPage) ? ' bg-primary' : ''; ?>">
+                            <div class="px-4 py-3 d-flex align-items-center cursor-pointer rounded text-black <?php echo str_contains($url, $currentPage) ? ' bg-primary' : ''; ?>">
                                 <label class=" cursor-pointer mb-0 form-label <?php echo str_contains($url, $currentPage) ? ' text-white' : ' text-black'; ?>">
                                     <?php echo gT('Permissions'); ?>
                                 </label>
@@ -192,8 +193,8 @@
                 </div>
             </div>
             <?php if (count($this->allLanguages) > 1) : ?>
-                <div id="survey-quick-translation" class="side-panel d-flex <?php echo $this->activePanel !== 'survey-quick-translation' ? 'd-none' : ''?>">
-                    <div class="survey-structure px-2">
+                <div id="survey-quick-translation" class="side-panel d-flex <?php echo $this->activePanel !== 'survey-quick-translation' ? 'd-none' : ''?>" style="height: 100%;">
+                    <div class="survey-structure px-2" style="overflow-y: auto; width: 290px;">
                         <div class="survey-settings">
                             <div class="d-flex sidebar-header align-items-center justify-content-between right-side-bar-header primary">
                                 <?php echo gT('Quick translation'); ?>
@@ -216,7 +217,7 @@
                                 $url = App()->createUrl('quickTranslation/index', ['surveyid' => $sid]);
                             ?>
                             <a href="<?php echo $url; ?>">
-                                <div class="survey-settings-panel-item text-black <?php echo str_contains($url, $currentPage) ? ' bg-primary' : ''; ?>">
+                                <div class="px-4 py-3 d-flex align-items-center cursor-pointer rounded text-black <?php echo str_contains($url, $currentPage) ? ' bg-primary' : ''; ?>">
                                     <label class=" cursor-pointer mb-0 form-label <?php echo str_contains($url, $currentPage) ? ' text-white' : ' text-black'; ?>">
                                         <?php echo gT('Quick translation'); ?>
                                     </label>

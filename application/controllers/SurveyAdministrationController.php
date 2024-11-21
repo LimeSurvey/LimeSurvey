@@ -242,7 +242,7 @@ class SurveyAdministrationController extends LSBaseController
         $aData['model'] = new Survey('search');
         $aData['groupModel'] = new SurveysGroups('search');
         $aData['topbar']['title'] = gT('Survey list');
-        $aData['topbar']['backLink'] = App()->createUrl('admin/index');
+        $aData['topbar']['backLink'] = App()->createUrl('dashboard/view');
 
         $aData['topbar']['middleButtons'] = $this->renderPartial('partial/topbarBtns/leftSideButtons', [], true);
 
@@ -1862,7 +1862,7 @@ class SurveyAdministrationController extends LSBaseController
             $aData['issuperadmin'] = Permission::model()->hasGlobalPermission('superadmin', 'read');
             Survey::model()->deleteSurvey($iSurveyID);
             Yii::app()->session['flashmessage'] = gT("Survey deleted.");
-            $this->redirect(array("admin/index"));
+            $this->redirect(array("dashboard/view"));
         }
 
         $this->aData = $aData;
@@ -2283,7 +2283,7 @@ class SurveyAdministrationController extends LSBaseController
             } elseif ($action == 'copysurvey' && !$aData['bFailed']) {
                 $copyResources = Yii::app()->request->getPost('copysurveytranslinksfields') == '1';
                 $translateLinks = $copyResources;
-                $aImportResults = XMLImportSurvey('', $copysurveydata, $sNewSurveyName, sanitize_int(App()->request->getParam('copysurveyid'), '1', '999999'), $translateLinks);
+                $aImportResults = XMLImportSurvey('', $copysurveydata, $sNewSurveyName, sanitize_int(App()->request->getParam('copysurveyid')), $translateLinks);
                 if (isset($aExcludes['conditions'])) {
                     Question::model()->updateAll(array('relevance' => '1'), 'sid=' . $aImportResults['newsid']);
                     QuestionGroup::model()->updateAll(array('grelevance' => '1'), 'sid=' . $aImportResults['newsid']);
@@ -3417,9 +3417,6 @@ class SurveyAdministrationController extends LSBaseController
                 ->search(['pageSize' => $limit, 'currentPage' => $page]);
         }
 
-        if ($limit * $page >= $surveys->totalItemCount) {
-            return false;
-        }
 
         $boxes = [];
         foreach ($surveys->getData() as $survey) {

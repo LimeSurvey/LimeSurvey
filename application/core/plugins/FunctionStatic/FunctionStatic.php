@@ -42,7 +42,7 @@ class FunctionStatic extends PluginBase
     }
 
     /**
-     * @see https://www.limesurvey.org/manual/ExpressionManagerStart ExpressionManagerStart event
+     * @see https://manual.limesurvey.org/ExpressionManagerStart ExpressionManagerStart event
      * add the getAnswerOptionText static function to Expression Manager function
      * @return void
      */

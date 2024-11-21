@@ -334,7 +334,7 @@ class SurveymenuEntries extends LSActiveRecord
                 'data-menuentryid' => $this->id,
             ],
             'iconClass'        => 'ri-delete-bin-fill text-danger',
-            'enabledCondition' => $permission_settings_update && $this->created_by != 0
+            'enabledCondition' => $permission_settings_update
         ];
         return App()->getController()->widget('ext.admin.grid.GridActionsWidget.GridActionsWidget', ['dropdownItems' => $dropdownItems], true);
     }
@@ -596,13 +596,5 @@ class SurveymenuEntries extends LSActiveRecord
         /** @var self $model */
         $model = parent::model($className);
         return $model;
-    }
-
-
-    public function delete()
-    {
-        if ($this->created_by != 0) {
-            parent::delete();
-        }
     }
 }

@@ -15,7 +15,8 @@ $('.btn-close-lime').on('click', function (e) {
     $('.sidebar-icon .btn-icon').removeClass('active')
 })
 
-$('#breadcrumb-container').hide()
+$('#breadcrumb-container, #ls-activate-survey, #preview_survey_button')
+    .hide()
 
 $(".ls-breadcrumb").append($(".side-menu-logo"));
 $(window).on("load scroll", function () {

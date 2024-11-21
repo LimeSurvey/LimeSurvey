@@ -18,7 +18,7 @@ class TransformerOutputQuestion extends TransformerOutputActiveRecord
             'title' => true,
             'preg' => true,
             'other' => ['formatter' => ['ynToBool' => true]],
-            'mandatory' => ['formatter' => ['mandatory' => true]],
+            'mandatory' => ['formatter' => ['ynToBool' => true]],
             'encrypted' => ['formatter' => ['ynToBool' => true]],
             'question_order' => ['key' => 'questionOrder', 'type' => 'int'],
             'scale_id' => ['key' => 'scaleId', 'type' => 'int'],

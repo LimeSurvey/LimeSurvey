@@ -4,31 +4,19 @@
 /* @var CActiveDataProvider $oDataProvider Containing Quota item objects*/
 /* @var array $aQuotaItems */
 
-$quotaActions = [
-    Quota::TERMINATE_VISIBLE_QUOTA_QUESTIONS => [
-        'description' => gT("Terminate after related visible question was submitted"),
-        'icon'        => 'ri-error-warning-fill'
-    ],
-    Quota::TERMINATE_VISIBLE_AND_HIDDEN_QUOTA_QUESTIONS => [
-        'description' => gT("Terminate after related visible and hidden questions were submitted"),
-        'icon'        => 'ri-error-warning-fill'
-    ],
-    Quota::TERMINATE_ALL_PAGES => [
-        'description' => gT("Terminate after all page submissions"),
-        'icon'        => 'ri-error-warning-fill'
-    ],
-    Quota::SOFT_TERMINATE_VISIBLE_QUOTA_QUESTIONS => [
-        'description' => gT("Soft terminate after related visible question was submitted, answer will be editable"),
-        'icon'        => 'ri-alert-fill'
-    ],
-];
-
-$tooltip = $quotaActions[$oQuota->action]['description'] ?? gT("Unknown action");
-$icon = $quotaActions[$oQuota->action]['icon'] ?? '';
+$tooltip = null;
+$icon = null;
+if ($oQuota->action == Quota::ACTION_TERMINATE){
+    $tooltip = gT("Terminate survey");
+    $icon = 'ri-error-warning-fill';
+} elseif ($oQuota->action == Quota::ACTION_CONFIRM_TERMINATE){
+    $tooltip = gT("Allow user to modify their last answers before terminating the survey.");
+    $icon = 'ri-alert-fill';
+}
 ?>
 
 <?php /*echo "<pre>".print_r($oQuota->mainLanguagesetting->attributes,true)."</pre>";*/ ?>
-<div class="card card-primary <?= ($oQuota->active==1 ? 'border-left-success' : 'inactive border-left-warning') ?>">
+<div class="card card-primary <?php echo ($oQuota->active==1 ? 'border-left-success' : 'inactive border-left-warning') ?>">
     <div class="card-header ">
         <div class="float-end small">
             <span><span class="<?= $icon ?>"></span> <?= $tooltip ?></span>

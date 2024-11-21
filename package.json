@@ -28,7 +28,7 @@
     "vinyl-source-stream": "^2.0.0"
   },
   "dependencies": {
-    "@eonasdan/tempus-dominus": "^6.9.11",
+    "@eonasdan/tempus-dominus": "^6.2.10",
     "@fortawesome/fontawesome-free": "^6.1.1",
     "ace-builds": "^1.10.0",
     "bootstrap": "~5.1.3",

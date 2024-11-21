@@ -31,7 +31,6 @@ class GetAttrExpression extends AbstractExpression
     public function compile(Compiler $compiler): void
     {
         $env = $compiler->getEnvironment();
-        $arrayAccessSandbox = false;
 
         // optimize array calls
         if (
@@ -45,35 +44,17 @@ class GetAttrExpression extends AbstractExpression
                 ->raw('(('.$var.' = ')
                 ->subcompile($this->getNode('node'))
                 ->raw(') && is_array(')
-                ->raw($var);
-
-            if (!$env->hasExtension(SandboxExtension::class)) {
-                $compiler
-                    ->raw(') || ')
-                    ->raw($var)
-                    ->raw(' instanceof ArrayAccess ? (')
-                    ->raw($var)
-                    ->raw('[')
-                    ->subcompile($this->getNode('attribute'))
-                    ->raw('] ?? null) : null)')
-                ;
-
-                return;
-            }
-
-            $arrayAccessSandbox = true;
-
-            $compiler
+                ->raw($var)
                 ->raw(') || ')
                 ->raw($var)
-                ->raw(' instanceof ArrayAccess && in_array(')
-                ->raw('get_class('.$var.')')
-                ->raw(', CoreExtension::ARRAY_LIKE_CLASSES, true) ? (')
+                ->raw(' instanceof ArrayAccess ? (')
                 ->raw($var)
                 ->raw('[')
                 ->subcompile($this->getNode('attribute'))
-                ->raw('] ?? null) : ')
+                ->raw('] ?? null) : null)')
             ;
+
+            return;
         }
 
         $compiler->raw('CoreExtension::getAttribute($this->env, $this->source, ');
@@ -102,9 +83,5 @@ class GetAttrExpression extends AbstractExpression
             ->raw(', ')->repr($this->getNode('node')->getTemplateLine())
             ->raw(')')
         ;
-
-        if ($arrayAccessSandbox) {
-            $compiler->raw(')');
-        }
     }
 }

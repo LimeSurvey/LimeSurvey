@@ -195,7 +195,7 @@ table {
         }
         button {
             border-color : $white;
-            background-color: inherit;
+            background-color: $white;
             border: none;
         }
         button:hover,
@@ -216,6 +216,9 @@ table {
         color   : $black;
         a:not(:first-child) {
             margin-left: 12px;
+        }
+        a i::before {
+          color: $grape;
         }
         .disabled i::before {
           opacity: 0.5;

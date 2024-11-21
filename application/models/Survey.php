@@ -1496,20 +1496,19 @@ class Survey extends LSActiveRecord implements PermissionInterface
         $dropdownItems = [];
         $dropdownItems[] = [
             'title' => gT('General settings'),
-            'url' => App()->createUrl("/surveyAdministration/rendersidemenulink/subaction/generalsettings/surveyid/" . $this->sid),
-
+            'url' => App()->getConfig('editorEnabled')
+                ? App()->createUrl('editorLink/index', ['route' => 'survey/' . $this->sid . '/settings/generalsettings'])
+                : App()->createUrl('surveyAdministration/rendersidemenulink/subaction/generalsettings', ['surveyid' => $this->sid]),
             'enabledCondition' => $permissions['survey_update'],
         ];
         $dropdownItems[] = [
-            'title' => gT('Preview'),
-            'url' => Yii::App()->createUrl(
+            'title'            => gT('Preview'),
+            'url'              => Yii::App()->createUrl(
                 "survey/index",
-                array('sid' => $this->sid, 'newtest' => "Y", 'lang' => $this->language)
+                ['sid' => $this->sid, 'newtest' => "Y", 'lang' => $this->language]
             ),
             'enabledCondition' => $permissions['survey_update'],
-            'htmlOptions' => [
-                'target' => '_blank',
-            ],
+            'linkAttributes'   => ['target' => '_blank'],
         ];
         $dropdownItems[] = [
             'title' => gT('Share'),
@@ -1554,14 +1553,14 @@ class Survey extends LSActiveRecord implements PermissionInterface
         $items = [];
         $items[] = [
             'title' => gT('Edit survey'),
-            'url' => App()->createUrl("/surveyAdministration/view?iSurveyID=" . $this->sid),
+            'url' => App()->createUrl('surveyAdministration/view', ['iSurveyID' => $this->sid]),
             'iconClass' => 'ri-edit-line',
             'enabledCondition' => $this->active !== "Y" && $permissions['responses_create']
         ];
 
         $items[] = [
             'title' => gT('Activate'),
-            'url' => App()->createUrl("/surveyAdministration/rendersidemenulink/subaction/generalsettings/surveyid/" . $this->sid),
+            'url' => App()->createUrl('surveyAdministration/rendersidemenulink/subaction/generalsettings', ['surveyid' => $this->sid]),
             'iconClass' => 'ri-check-line',
             'enabledCondition' =>
                 $this->active === "N"
@@ -1571,13 +1570,22 @@ class Survey extends LSActiveRecord implements PermissionInterface
         ];
         $items[] = [
             'title' => gT('Statistics'),
-            'url' => App()->createUrl("/admin/statistics/sa/simpleStatistics/surveyid/" . $this->sid),
+            'url' => App()->createUrl('admin/statistics/sa/simpleStatistics', ['surveyid' => $this->sid]),
             'iconClass' => 'ri-line-chart-line',
             'enabledCondition' =>
                 $this->active === "Y"
                 && $permissions['statistics_read'],
         ];
-
+        if (App()->getConfig('editorEnabled')) {
+            $editorSettings[] = ['url' => App()->createUrl('editorLink/index', ['route' => 'survey/' . $this->sid])];
+            $editorSettings[] = ['url' => App()->createUrl('editorLink/index', ['route' => 'survey/' . $this->sid . '/settings/generalsettings'])];
+            $editorSettings[] = [];
+            foreach ($editorSettings as $key => $editorSetting) {
+                if (isset($editorSetting['url'], $items[$key])) {
+                    $items[$key]['url'] = $editorSetting['url'];
+                }
+            }
+        }
 
         return App()->getController()->widget('ext.admin.grid.BarActionsWidget.BarActionsWidget', ['items' => $items], true);
     }
@@ -1591,13 +1599,6 @@ class Survey extends LSActiveRecord implements PermissionInterface
                 'selectableRows'    => '100',
                 'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
                 'htmlOptions'       => ['class' => 'ls-sticky-column']
-            ],
-            [
-                'header'            => gT('Survey ID'),
-                'name'              => 'survey_id',
-                'value'             => '$data->sid',
-                'headerHtmlOptions' => ['class' => 'd-none d-sm-table-cell text-nowrap'],
-                'htmlOptions'       => ['class' => 'd-none d-sm-table-cell has-link'],
             ],
             [
                 'header'            => gT('Status'),
@@ -1951,8 +1952,61 @@ class Survey extends LSActiveRecord implements PermissionInterface
             }
         }
 
-        $surveyUseCaptcha = new \LimeSurvey\Models\Services\SurveyUseCaptcha(0, $oSurvey);
-        return $surveyUseCaptcha->convertUseCaptchaForDB($surveyaccess, $registration, $saveandload);
+        if ($surveyaccess == 'I' && $registration == 'I' && $saveandload == 'I') {
+            return 'E';
+        } elseif ($surveyaccess == 'Y' && $registration == 'Y' && $saveandload == 'I') {
+            return 'F';
+        } elseif ($surveyaccess == 'I' && $registration == 'Y' && $saveandload == 'Y') {
+            return 'G';
+        } elseif ($surveyaccess == 'Y' && $registration == 'I' && $saveandload == 'Y') {
+            return 'H';
+        } elseif ($surveyaccess == 'I' && $registration == 'Y' && $saveandload == 'I') {
+            return 'I';
+        } elseif ($surveyaccess == 'I' && $registration == 'I' && $saveandload == 'Y') {
+            return 'J';
+        } elseif ($surveyaccess == 'Y' && $registration == 'I' && $saveandload == 'I') {
+            return 'K';
+        } elseif ($surveyaccess == 'I' && $saveandload == 'Y') {
+            return 'L';
+        } elseif ($surveyaccess == 'I' && $registration == 'Y') {
+            return 'M';
+        } elseif ($registration == 'I' && $surveyaccess == 'Y') {
+            return 'O';
+        } elseif ($registration == 'I' && $saveandload == 'Y') {
+            return 'P';
+        } elseif ($saveandload == 'I' && $surveyaccess == 'Y') {
+            return 'T';
+        } elseif ($saveandload == 'I' && $registration == 'Y') {
+            return 'U';
+        } elseif ($surveyaccess == 'I' && $registration == 'I') {
+            return '1';
+        } elseif ($surveyaccess == 'I' && $saveandload == 'I') {
+            return '2';
+        } elseif ($registration == 'I' && $saveandload == 'I') {
+            return '3';
+        } elseif ($surveyaccess == 'I') {
+            return '4';
+        } elseif ($saveandload == 'I') {
+            return '5';
+        } elseif ($registration == 'I') {
+            return '6';
+        } elseif ($surveyaccess == 'Y' && $registration == 'Y' && $saveandload == 'Y') {
+            return 'A';
+        } elseif ($surveyaccess == 'Y' && $registration == 'Y') {
+            return 'B';
+        } elseif ($surveyaccess == 'Y' && $saveandload == 'Y') {
+            return 'C';
+        } elseif ($registration == 'Y' && $saveandload == 'Y') {
+            return 'D';
+        } elseif ($surveyaccess == 'Y') {
+            return 'X';
+        } elseif ($registration == 'Y') {
+            return 'R';
+        } elseif ($saveandload == 'Y') {
+            return 'S';
+        }
+
+        return 'N';
     }
 
 

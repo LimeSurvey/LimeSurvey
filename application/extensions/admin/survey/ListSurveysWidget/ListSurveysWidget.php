@@ -53,12 +53,11 @@ class ListSurveysWidget extends CWidget
         }
 
         // Set number of page
-        if (App()->getRequest()->getQuery('pageSize')) {
-            $size = (int)App()->getRequest()->getQuery('pageSize');
-            App()->user->setState('pageSize', $size);
+        if (isset($_GET['pageSize'])) {
+            Yii::app()->user->setState('pageSize', (int)$_GET['pageSize']);
         }
 
-        $this->pageSize = App()->user->getState('pageSize', App()->params['defaultPageSize']);
+        $this->pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
 
         App()->getClientScript()->registerScriptFile(App()->getAssetManager()->publish(dirname(__FILE__) . '/assets/reload.js'));
 

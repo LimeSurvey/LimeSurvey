@@ -3681,7 +3681,7 @@ function cleanLanguagesFromSurvey($iSurveyID, $availlangs, $baselang = '')
     $iSurveyID = (int) $iSurveyID;
     $baselang = sanitize_languagecode($baselang);
     if (empty($baselang)) {
-        $baselang = Survey::model()->findByPk($iSurveyID)->language;
+        $baselang = Survey::model()->findByPk($sid)->language;
     }
     $aLanguages = [];
     if (!empty($availlangs) && $availlangs != " ") {

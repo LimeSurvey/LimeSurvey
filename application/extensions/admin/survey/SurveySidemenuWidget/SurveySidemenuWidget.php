@@ -75,6 +75,7 @@ class SurveySidemenuWidget extends WhSelect2
         $oSurvey = Survey::model()->findByPk($this->sid);
         $sideMenu = array(
             'menu' => array(
+                [ 'name' => 'listQuestions' ],
                 [ 'name' => 'participants' ],
                 [ 'name' => 'emailtemplates'],
                 [ 'name' => 'failedemail' ],
@@ -105,10 +106,16 @@ class SurveySidemenuWidget extends WhSelect2
                 ],
             ),
             'settings' => array(
+                [ 'name' => 'overview' ],
                 [
                     'name' => 'generalsettings',
                     'route' => 'editorLink/index',
                     'params' => array('route' => 'survey/' . $this->sid . '/settings/generalsettings'),
+                ],
+                [
+                    'name' => 'surveytexts',
+                    'route' => 'surveyAdministration/rendersidemenulink/',
+                    'params' => array('surveyid' => $this->sid, 'subaction' => 'surveytexts'),
                 ],
                 [
                     'name' => 'datasecurity',
@@ -117,18 +124,18 @@ class SurveySidemenuWidget extends WhSelect2
                 ],
                 [
                     'name' => 'participants',
-                    'route' => 'editorLink/index',
-                    'params' => array('route' => 'survey/' . $this->sid . '/settings/tokens'),
+                    'route' => 'surveyAdministration/rendersidemenulink/',
+                    'params' => array('surveyid' => $this->sid, 'subaction' => 'tokens'),
                 ],
                 [
                     'name' => 'publication',
-                    'route' => 'editorLink/index/',
-                    'params' => array('route' => 'survey/' . $this->sid . '/settings/publication'),
+                    'route' => 'surveyAdministration/rendersidemenulink/',
+                    'params' =>  array('surveyid' => $this->sid, 'subaction' => 'publication'),
                 ],
                 [
                     'name' => 'notification',
-                    'route' => 'editorLink/index/',
-                    'params' => array('route' => 'survey/' . $this->sid . '/settings/notification'),
+                    'route' => 'surveyAdministration/rendersidemenulink/',
+                    'params' =>  array('surveyid' => $this->sid, 'subaction' => 'notification'),
                 ]
             ),
             'presentation' => array(

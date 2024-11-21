@@ -406,12 +406,10 @@ class ResponsesController extends LSBaseController
      * @param int $surveyId
      * @return void
      */
-    public function actionBrowse(int $surveyId = 0, int $surveyid = 0): void
+    public function actionBrowse(int $surveyId): void
     {
-        // Force it to accept `surveyid` as well, to maintain consistency with other menu entries.
-        $surveyId = !empty($surveyId) ? $surveyId : (!empty($surveyid) ? $surveyid : null);
         // logging for webserver when parameter is somehting like $surveyid=125<script ...
-        if (!is_numeric($surveyId)) {
+        if (!is_numeric(Yii::app()->request->getParam('surveyId'))) {
             throw new CHttpException(403, gT("Invalid survey ID"));
         }
         $survey = Survey::model()->findByPk($surveyId);
@@ -1051,7 +1049,7 @@ class ResponsesController extends LSBaseController
     {
         if (!isset($surveyId)) {
             App()->setFlashMessage(gT("Invalid survey ID"), 'warning');
-            $this->redirect(["admin/index"]);
+            $this->redirect(["dashboard/view"]);
         }
 
         $thissurvey = getSurveyInfo($surveyId);
@@ -1064,7 +1062,7 @@ class ResponsesController extends LSBaseController
 
         if (!$thissurvey) {
             App()->setFlashMessage(gT("Invalid survey ID"), 'warning');
-            $this->redirect(["admin/index"]);
+            $this->redirect(["dashboard/view"]);
         } elseif ($thissurvey['active'] !== 'Y') {
             App()->setFlashMessage(gT("This survey has not been activated. There are no results to browse."), 'warning');
             $this->redirect(["surveyAdministration/view/surveyid/{$surveyId}"]);

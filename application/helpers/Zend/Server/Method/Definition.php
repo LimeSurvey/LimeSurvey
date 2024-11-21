@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Zend Framework
  *
@@ -15,9 +16,9 @@
  * @category   Zend
  * @package    Zend_Server
  * @subpackage Method
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id$
+ * @version    $Id: Definition.php 23775 2011-03-01 17:25:24Z ralph $
  */
 
 /**
@@ -26,7 +27,7 @@
  * @category   Zend
  * @package    Zend_Server
  * @subpackage Method
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Server_Method_Definition
@@ -39,7 +40,7 @@ class Zend_Server_Method_Definition
     /**
      * @var array
      */
-    protected $_invokeArguments = [];
+    protected $_invokeArguments = array();
 
     /**
      * @var string
@@ -59,7 +60,7 @@ class Zend_Server_Method_Definition
     /**
      * @var array Array of Zend_Server_Method_Prototype objects
      */
-    protected $_prototypes = [];
+    protected $_prototypes = array();
 
     /**
      * Constructor
@@ -116,7 +117,7 @@ class Zend_Server_Method_Definition
     /**
      * Set method callback
      *
-     * @param  array|Zend_Server_Method_Callback $callback
+     * @param  Zend_Server_Method_Callback $callback
      * @return Zend_Server_Method_Definition
      */
     public function setCallback($callback)
@@ -183,7 +184,7 @@ class Zend_Server_Method_Definition
      */
     public function setPrototypes(array $prototypes)
     {
-        $this->_prototypes = [];
+        $this->_prototypes = array();
         $this->addPrototypes($prototypes);
         return $this;
     }
@@ -276,18 +277,18 @@ class Zend_Server_Method_Definition
     public function toArray()
     {
         $prototypes = $this->getPrototypes();
-        $signatures = [];
+        $signatures = array();
         foreach ($prototypes as $prototype) {
             $signatures[] = $prototype->toArray();
         }
 
-        return [
+        return array(
             'name'            => $this->getName(),
             'callback'        => $this->getCallback()->toArray(),
             'prototypes'      => $signatures,
             'methodHelp'      => $this->getMethodHelp(),
             'invokeArguments' => $this->getInvokeArguments(),
             'object'          => $this->getObject(),
-        ];
+        );
     }
 }

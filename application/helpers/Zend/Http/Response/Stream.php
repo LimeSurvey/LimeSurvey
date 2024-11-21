@@ -59,7 +59,7 @@ class Zend_Http_Response_Stream extends Zend_Http_Response
     /**
      * Get the response as stream
      *
-     * @return resource
+     * @return resourse
      */
     public function getStream()
     {
@@ -83,7 +83,8 @@ class Zend_Http_Response_Stream extends Zend_Http_Response
      *
      * @return boolean
      */
-    public function getCleanup() {
+    public function getCleanup()
+    {
         return $this->_cleanup;
     }
 
@@ -92,7 +93,8 @@ class Zend_Http_Response_Stream extends Zend_Http_Response
      *
      * @param bool $cleanup Set cleanup trigger
      */
-    public function setCleanup($cleanup = true) {
+    public function setCleanup($cleanup = true)
+    {
         $this->_cleanup = $cleanup;
     }
 
@@ -101,7 +103,8 @@ class Zend_Http_Response_Stream extends Zend_Http_Response
      *
      * @return string
      */
-    public function getStreamName() {
+    public function getStreamName()
+    {
         return $this->stream_name;
     }
 
@@ -111,7 +114,8 @@ class Zend_Http_Response_Stream extends Zend_Http_Response
      * @param string $stream_name Name to set
      * @return Zend_Http_Response_Stream
      */
-    public function setStreamName($stream_name) {
+    public function setStreamName($stream_name)
+    {
         $this->stream_name = $stream_name;
         return $this;
     }
@@ -139,7 +143,7 @@ class Zend_Http_Response_Stream extends Zend_Http_Response
     public function __construct($code, $headers, $body = null, $version = '1.1', $message = null)
     {
 
-        if(is_resource($body)) {
+        if (is_resource($body)) {
             $this->setStream($body);
             $body = '';
         }
@@ -177,7 +181,7 @@ class Zend_Http_Response_Stream extends Zend_Http_Response
      */
     public function getBody()
     {
-        if($this->stream != null) {
+        if ($this->stream != null) {
             $this->readStream();
         }
         return parent::getBody();
@@ -193,7 +197,7 @@ class Zend_Http_Response_Stream extends Zend_Http_Response
      */
     public function getRawBody()
     {
-        if($this->stream) {
+        if ($this->stream) {
             $this->readStream();
         }
         return $this->body;
@@ -208,11 +212,11 @@ class Zend_Http_Response_Stream extends Zend_Http_Response
      */
     protected function readStream()
     {
-        if(!is_resource($this->stream)) {
+        if (!is_resource($this->stream)) {
             return '';
         }
 
-        if(isset($headers['content-length'])) {
+        if (isset($headers['content-length'])) {
             $this->body = stream_get_contents($this->stream, $headers['content-length']);
         } else {
             $this->body = stream_get_contents($this->stream);
@@ -223,13 +227,12 @@ class Zend_Http_Response_Stream extends Zend_Http_Response
 
     public function __destruct()
     {
-        if(is_resource($this->stream)) {
+        if (is_resource($this->stream)) {
             fclose($this->stream);
             $this->stream = null;
         }
-        if($this->_cleanup && is_string($this->stream_name) && file_exists($this->stream_name)) {
+        if ($this->_cleanup) {
             @unlink($this->stream_name);
         }
     }
-
 }

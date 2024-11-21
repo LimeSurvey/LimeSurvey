@@ -24,14 +24,13 @@ if (!empty($showDownloadButton)) {
     $this->widget(
         'ext.ButtonWidget.ButtonWidget',
         [
-            'name' => 'export-button',
-            'id' => 'export-button',
+            'name' => 'save-button',
+            'id' => 'save-button',
             'text' => gT('Download CSV file'),
             'icon' => 'ri-download-fill',
             'htmlOptions' => [
                 'class' => 'btn btn-primary',
-                'role' => 'button',
-                'data-submit-form' => 1,
+                'role' => 'button'
             ],
         ]
     );

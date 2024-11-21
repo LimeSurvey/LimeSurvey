@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Zend Framework
  *
@@ -15,9 +16,9 @@
  * @category   Zend
  * @package    Zend_XmlRpc
  * @subpackage Server
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id$
+ * @version    $Id: Fault.php 23775 2011-03-01 17:25:24Z ralph $
  */
 
 /**
@@ -44,7 +45,7 @@ require_once 'Zend/XmlRpc/Fault.php';
  * @category   Zend
  * @package    Zend_XmlRpc
  * @subpackage Server
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_XmlRpc_Server_Fault extends Zend_XmlRpc_Fault
@@ -57,25 +58,24 @@ class Zend_XmlRpc_Server_Fault extends Zend_XmlRpc_Fault
     /**
      * @var array Array of exception classes that may define xmlrpc faults
      */
-    protected static $_faultExceptionClasses = ['Zend_XmlRpc_Server_Exception' => true];
+    protected static $_faultExceptionClasses = array('Zend_XmlRpc_Server_Exception' => true);
 
     /**
      * @var array Array of fault observers
      */
-    protected static $_observers = [];
+    protected static $_observers = array();
 
     /**
      * Constructor
      *
      * @param Exception $e
-     * @return void
+     * @return Zend_XmlRpc_Server_Fault
      */
     public function __construct(Exception $e)
     {
         $this->_exception = $e;
         $code             = 404;
         $message          = 'Unknown error';
-        $exceptionClass   = get_class($e);
 
         foreach (array_keys(self::$_faultExceptionClasses) as $class) {
             if ($e instanceof $class) {
@@ -90,7 +90,7 @@ class Zend_XmlRpc_Server_Fault extends Zend_XmlRpc_Fault
         // Notify exception observers, if present
         if (!empty(self::$_observers)) {
             foreach (array_keys(self::$_observers) as $observer) {
-                call_user_func([$observer, 'observe'], $this);
+                call_user_func(array($observer, 'observe'), $this);
             }
         }
     }
@@ -158,10 +158,11 @@ class Zend_XmlRpc_Server_Fault extends Zend_XmlRpc_Fault
      */
     public static function attachObserver($class)
     {
-        if (!is_string($class)
+        if (
+            !is_string($class)
             || !class_exists($class)
-            || !is_callable([$class, 'observe']))
-        {
+            || !is_callable(array($class, 'observe'))
+        ) {
             return false;
         }
 

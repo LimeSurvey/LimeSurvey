@@ -7,6 +7,7 @@
     * @var int $limit The number of items to load per page when "Load more" is clicked.
     * @var array $items The list of survey items to render.
     * @var object $switch Optionally used in the search box widget.
+    * @var object $itemsCount max number of surveys.
     *
     */
 ?>
@@ -24,8 +25,8 @@
                 <div class="box-widget-list">
                     <?php $this->render('box', ['items' => $items]); ?>
                 </div>
-                <div class="box-widget-loadmore <?= !$enableLoadMoreBtn ? 'd-none' : '' ?>">
-                    <a href="#" id="load-more" data-page="1" data-limit="<?= $limit ?>">
+                <div class="box-widget-loadmore">
+                    <a href="#" id="load-more" data-page="1" data-limit="<?= $limit ?>" data-max-count="<?= $itemsCount ?>">
                         <?= gT('Load more') ?>
                     </a>
                 </div>

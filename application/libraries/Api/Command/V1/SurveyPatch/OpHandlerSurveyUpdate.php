@@ -100,7 +100,7 @@ class OpHandlerSurveyUpdate implements OpHandlerInterface
         $surveyUpdater->setRestMode(true);
 
         $props = $op->getProps();
-        $transformedProps = $this->transformer->transform($props, ['surveyID' => $surveyId]);
+        $transformedProps = $this->transformer->transform($props);
 
         if ($props === null || $transformedProps === null) {
             $this->throwNoValuesException($op);

@@ -44,7 +44,7 @@
             </ul>
         </div>
 
-        <div class="collapse navbar-collapse">
+        <div class="collapse navbar-collapse justify-content-center">
             <ul class="nav navbar-nav">
                 <!-- Maintenance mode -->
                 <?php $sMaintenanceMode = getGlobalSetting('maintenancemode');

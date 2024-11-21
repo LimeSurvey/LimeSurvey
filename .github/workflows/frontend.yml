@@ -17,9 +17,6 @@ on:
 jobs:
   job_build_packages:
     runs-on: ubuntu-20.04 # ubuntu runner hosted by Github
-    concurrency: 
-      group: ${{ github.ref_name }}-frontend # Groups by branch and job name 
-      cancel-in-progress: true # Cancel in-progress jobs if a new job is triggered     
     strategy:
       matrix:
         # Specify what version of nodejs you want to test

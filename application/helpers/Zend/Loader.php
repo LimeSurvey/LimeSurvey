@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Zend Framework
  *
@@ -72,7 +73,7 @@ class Zend_Loader
                 if ($dir == '.') {
                     $dirs[$key] = $dirPath;
                 } else {
-                    $dir = rtrim($dir, '\\/');
+                    $dir = rtrim((string) $dir, '\\/');
                     $dirs[$key] = $dir . DIRECTORY_SEPARATOR . $dirPath;
                 }
             }
@@ -130,20 +131,10 @@ class Zend_Loader
         /**
          * Try finding for the plain filename in the include_path.
          */
-        // "@":
-        // - Avoid error-logs full of PHP Warnings due to autoloads from class-exists()-checks.
-        // - If a class does not exist that we really need, error will be thrown anyway.
-        // - Fatal errors from the included files are still thrown anyway.
-        // Since PHP 8.0 @ doesn't mute the errors, which makes for a lot of clutter on the error log when you are using class_exists() and it doesn't
-        // Added stream_resolve_include_path to avoid it.
         if ($once) {
-            if(stream_resolve_include_path($filename)) {
-                @include_once $filename;
-            }
+            include_once $filename;
         } else {
-            if(stream_resolve_include_path($filename)) {
-                @include $filename;
-            }
+            include $filename;
         }
 
         /**
@@ -177,7 +168,8 @@ class Zend_Loader
             return true;
         }
 
-        if (strtoupper(substr(PHP_OS, 0, 3)) == 'WIN'
+        if (
+            strtoupper(substr(PHP_OS, 0, 3)) == 'WIN'
             && preg_match('/^[a-z]:/i', $filename)
         ) {
             // If on windows, and path provided is clearly an absolute path,
@@ -274,7 +266,7 @@ class Zend_Loader
                 throw new Zend_Exception("The class \"$class\" does not have an autoload() method");
             }
 
-            $callback = [$class, 'autoload'];
+            $callback = array($class, 'autoload');
 
             if ($enabled) {
                 $autoloader->pushAutoloader($callback);

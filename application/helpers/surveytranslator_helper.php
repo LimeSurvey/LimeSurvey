@@ -562,7 +562,6 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['run']['rtl'] = false;
     $supportedLanguages['run']['dateformat'] = 1;
     $supportedLanguages['run']['radixpoint'] = 1;
-    $supportedLanguages['run']['cldr'] = 'rn';
     $supportedLanguages['run']['momentjs'] = null;
 
     // Kurdish (Sorani)

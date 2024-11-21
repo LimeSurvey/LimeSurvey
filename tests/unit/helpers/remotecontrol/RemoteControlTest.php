@@ -392,9 +392,7 @@ class RemoteControlTest extends TestBaseClass
             $sessionKey,
             self::$surveyId,
             $groupData,
-            'lsg',
-            'Test group title',
-            'Test group description'
+            'lsg'
         );
 
         $this->assertIsNumeric($result, '$result = ' . json_encode($result));
@@ -402,8 +400,6 @@ class RemoteControlTest extends TestBaseClass
         $oGroup = \QuestionGroup::model()->findByPk($result);
 
         $this->assertNotEmpty($oGroup, "Imported group not found");
-        $this->assertEquals("Test group title", $oGroup->questiongroupl10ns['en']->group_name);
-        $this->assertEquals("Test group description", $oGroup->questiongroupl10ns['en']->description);
 
         // Cleanup
         self::$testSurvey->delete();

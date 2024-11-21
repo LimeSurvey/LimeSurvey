@@ -37,7 +37,7 @@ class expressionQuestionForAll extends PluginBase
 
     /**
      * Add the question.question for question with sub question
-     * @link https://www.limesurvey.org/manual/ExpressionManagerStart
+     * @link https://manual.limesurvey.org/ExpressionManagerStart
      */
     public function addQuestionAll()
     {

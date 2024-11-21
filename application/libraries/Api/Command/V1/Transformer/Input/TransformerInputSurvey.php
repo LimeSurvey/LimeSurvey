@@ -3,7 +3,6 @@
 namespace LimeSurvey\Api\Command\V1\Transformer\Input;
 
 use LimeSurvey\Api\Transformer\Transformer;
-use LimeSurvey\Models\Services\SurveyUseCaptcha;
 
 class TransformerInputSurvey extends Transformer
 {
@@ -25,22 +24,12 @@ class TransformerInputSurvey extends Transformer
             'adminEmail' => ['key' => 'adminemail', 'filter' => 'trim'],
             'expires' => [
                 'date' => true,
-                'formatter' => [
-                    'dateTimeToJson' => [
-                        'revert' => true,
-                        'clearWithEmptyString' => true
-                    ]
-                ]
+                'formatter' => ['dateTimeToJson' => ['revert' => true]]
             ],
             'startDate' => [
                 'key' => 'startdate',
                 'date' => true,
-                'formatter' => [
-                    'dateTimeToJson' => [
-                        'revert' => true,
-                        'clearWithEmptyString' => true
-                    ]
-                ]
+                'formatter' => ['dateTimeToJson' => ['revert' => true]]
             ],
             'anonymized' => ['formatter' => ['ynToBool' => ['revert' => true]]],
             'saveTimings' => [
@@ -60,16 +49,14 @@ class TransformerInputSurvey extends Transformer
                 'key' => 'allowregister',
                 'formatter' => ['ynToBool' => ['revert' => true]]
             ],
-            'htmlEmail' => [
-                'key' => 'htmlemail',
-                'formatter' => ['ynToBool' => ['revert' => true]]
-            ],
             'allowSave' => [
                 'key' => 'allowsave',
                 'formatter' => ['ynToBool' => ['revert' => true]]
             ],
             'autoNumberStart' => [
-                'key' => 'autonumber_start', 'type' => 'int', 'numerical'
+                'key' => 'autonumber_start',
+                'type' => 'int',
+                'numerical'
             ],
             'autoRedirect' => [
                 'key' => 'autoredirect',
@@ -126,19 +113,34 @@ class TransformerInputSurvey extends Transformer
             'useCaptcha' => [
                 'key' => 'usecaptcha',
                 'range' => [
-                    'A', 'B', 'C', 'D', 'X', 'R', 'S', 'N', 'E', 'F', 'G', 'H',
-                    'I', 'J', 'K', 'L', 'M', 'O', 'P', 'T', 'U',
-                    '1', '2', '3', '4', '5', '6'
+                    'A',
+                    'B',
+                    'C',
+                    'D',
+                    'X',
+                    'R',
+                    'S',
+                    'N',
+                    'E',
+                    'F',
+                    'G',
+                    'H',
+                    'I',
+                    'J',
+                    'K',
+                    'L',
+                    'M',
+                    'O',
+                    'P',
+                    'T',
+                    'U',
+                    '1',
+                    '2',
+                    '3',
+                    '4',
+                    '5',
+                    '6'
                 ]
-            ],
-            'useCaptchaAccess' => [
-                'formatter' => ['ynToBool' => ['revert' => true]]
-            ],
-            'useCaptchaRegistration' => [
-                'formatter' => ['ynToBool' => ['revert' => true]]
-            ],
-            'useCaptchaSaveLoad' => [
-                'formatter' => ['ynToBool' => ['revert' => true]]
             ],
             'useTokens' => [
                 'key' => 'usetokens',
@@ -164,10 +166,13 @@ class TransformerInputSurvey extends Transformer
             ],
             'showQNumCode' => 'showqnumcode',
             'bounceTime' => [
-                'key' => 'bouncetime', 'type' => 'int', 'numerical'
+                'key' => 'bouncetime',
+                'type' => 'int',
+                'numerical'
             ],
             'bounceProcessing' => [
-                'key' => 'bounceprocessing', 'range' => ['L', 'N', 'G']
+                'key' => 'bounceprocessing',
+                'range' => ['L', 'N', 'G']
             ],
             'bounceAccountType' => 'bounceaccounttype',
             'bounceAccountHost' => 'bounceaccounthost',
@@ -188,7 +193,9 @@ class TransformerInputSurvey extends Transformer
                 'numerical' => ['min' => -1, 'max' => 2]
             ],
             'navigationDelay' => [
-                'key' => 'navigationdelay', 'type' => 'int', 'numerical'
+                'key' => 'navigationdelay',
+                'type' => 'int',
+                'numerical'
             ],
             'noKeyboard' => [
                 'key' => 'nokeyboard',
@@ -196,7 +203,7 @@ class TransformerInputSurvey extends Transformer
             ],
             'allowedItAfterCompletion' => [
                 'key' => 'alloweditaftercompletion',
-                'formatter' => ['ynToBool' => ['revert' => true]]
+                'formatter' => ['dateTimeToJson' => ['revert' => true]]
             ],
             'googleAnalyticsStyle' => [
                 'key' => 'googleanalyticsstyle',
@@ -229,18 +236,6 @@ class TransformerInputSurvey extends Transformer
             if (array_key_exists('showqnumcode', $survey)) {
                 $survey['showqnumcode'] = $this->convertShowQNumCode(
                     $survey['showqnumcode']
-                );
-            }
-            //useCaptcha
-            $useCaptchaExists = (
-                array_key_exists('useCaptchaAccess', $survey) ||
-                array_key_exists('useCaptchaRegistration', $survey) ||
-                array_key_exists('useCaptchaSaveLoad', $survey)
-                );
-            if ($useCaptchaExists && !empty($options)) {
-                $survey['usecaptcha'] = $this->transformCaptcha(
-                    $survey,
-                    $options
                 );
             }
         }
@@ -291,19 +286,5 @@ class TransformerInputSurvey extends Transformer
         }
 
         return $combinedValue;
-    }
-
-    /**
-     * Transforms the three values for useCaptcha into one.
-     *
-     * @param array $mappedData
-     * @param array $options
-     * @return string
-     */
-    private function transformCaptcha($mappedData, $options)
-    {
-        $surveyUseCaptchaService = new SurveyUseCaptcha($options['surveyID'], null);
-
-        return $surveyUseCaptchaService->reCalculateUseCaptcha($mappedData);
     }
 }

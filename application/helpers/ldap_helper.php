@@ -28,7 +28,7 @@ function ldap_getCnx($server_id = null)
     } else {
         $ds = false;
         if ($ldap_server[$server_id]['protoversion'] == 'ldapv3' && $ldap_server[$server_id]['encrypt'] != 'ldaps') {
-            $ds = ldap_connect("ldap://" . "{$ldap_server[$server_id]['server']}:{$ldap_server[$server_id]['port']}");
+            $ds = ldap_connect("{$ldap_server[$server_id]['server']}:{$ldap_server[$server_id]['port']}");
             ldap_set_option($ds, LDAP_OPT_PROTOCOL_VERSION, 3);
 
             if (!$ldap_server[$server_id]['referrals']) {
@@ -40,9 +40,9 @@ function ldap_getCnx($server_id = null)
             }
         } elseif ($ldap_server[$server_id]['protoversion'] == 'ldapv2') {
             if ($ldap_server[$server_id]['encrypt'] == 'ldaps') {
-                $ds = ldap_connect("ldaps://" . "{$ldap_server[$server_id]['server']}:{$ldap_server[$server_id]['port']}");
+                $ds = ldap_connect("ldaps://" . $ldap_server[$server_id]['server'] . ':' . $ldap_server[$server_id]['port']);
             } else {
-                $ds = ldap_connect("ldap://" . "{$ldap_server[$server_id]['server']}:{$ldap_server[$server_id]['port']}");
+                $ds = ldap_connect("{$ldap_server[$server_id]['server']}:{$ldap_server[$server_id]['port']}");
             }
 
             if (!$ldap_server[$server_id]['referrals']) {

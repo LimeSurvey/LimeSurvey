@@ -55,8 +55,7 @@ class FormatterDateTimeToJson implements FormatterInterface
             $value,
             $inputTimezone,
             'UTC',
-            'Y-m-d\TH:i:s.000\Z',
-            $config
+            'Y-m-d\TH:i:s.000\Z'
         );
     }
 
@@ -78,8 +77,7 @@ class FormatterDateTimeToJson implements FormatterInterface
             $value,
             'UTC',
             $inputTimezone,
-            'Y-m-d H:i:s',
-            $config
+            'Y-m-d H:i:s'
         );
     }
 
@@ -90,22 +88,17 @@ class FormatterDateTimeToJson implements FormatterInterface
      * @param string $inputTimeZone
      * @param string $outputTimezone
      * @param string $outputFormat
-     * @param array $config
      * @return ?string
      */
     protected function dateFormat(
         $value,
         $inputTimeZone,
         $outputTimezone,
-        $outputFormat,
-        $config
+        $outputFormat
     ) {
         $timezone = $inputTimeZone;
         if ($value === null || $value === '') {
-            return array_key_exists(
-                'clearWithEmptyString',
-                $config
-            ) && $config['clearWithEmptyString'] ? '' : null;
+            return null;
         }
         $dateTime = date_create(
             $value,

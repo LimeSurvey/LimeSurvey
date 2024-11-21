@@ -16,6 +16,7 @@
                     <a href="<?= $icon['url'] ?>"
                        target="<?= $icon['external'] ? '_blank' : '' ?>"
                        class="btn btn-g-800 btn-icon"
+                        <?= $icon['selected'] ? 'selected' : '' ?>
                     >
                         <i class="<?php echo CHtml::encode($icon['ico']); ?>"></i>
                     </a>

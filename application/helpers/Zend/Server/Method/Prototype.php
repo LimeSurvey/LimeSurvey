@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Zend Framework
  *
@@ -15,9 +16,9 @@
  * @category   Zend
  * @package    Zend_Server
  * @subpackage Method
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id$
+ * @version    $Id: Prototype.php 23775 2011-03-01 17:25:24Z ralph $
  */
 
 /**
@@ -26,7 +27,7 @@
  * @category   Zend
  * @package    Zend_Server
  * @subpackage Method
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Server_Method_Prototype
@@ -39,12 +40,12 @@ class Zend_Server_Method_Prototype
     /**
      * @var array Map parameter names to parameter index
      */
-    protected $_parameterNameMap = [];
+    protected $_parameterNameMap = array();
 
     /**
      * @var array Method parameters
      */
-    protected $_parameters = [];
+    protected $_parameters = array();
 
     /**
      * Constructor
@@ -96,9 +97,9 @@ class Zend_Server_Method_Prototype
             }
         } else {
             require_once 'Zend/Server/Method/Parameter.php';
-            $parameter = new Zend_Server_Method_Parameter([
+            $parameter = new Zend_Server_Method_Parameter(array(
                 'type' => (string) $parameter,
-            ]);
+            ));
             $this->_parameters[] = $parameter;
         }
         return $this;
@@ -107,7 +108,7 @@ class Zend_Server_Method_Prototype
     /**
      * Add parameters
      *
-     * @param  array $parameter
+     * @param  array $parameters
      * @return Zend_Server_Method_Prototype
      */
     public function addParameters(array $parameters)
@@ -126,8 +127,8 @@ class Zend_Server_Method_Prototype
      */
     public function setParameters(array $parameters)
     {
-        $this->_parameters       = [];
-        $this->_parameterNameMap = [];
+        $this->_parameters       = array();
+        $this->_parameterNameMap = array();
         $this->addParameters($parameters);
         return $this;
     }
@@ -139,7 +140,7 @@ class Zend_Server_Method_Prototype
      */
     public function getParameters()
     {
-        $types = [];
+        $types = array();
         foreach ($this->_parameters as $parameter) {
             $types[] = $parameter->getType();
         }
@@ -200,9 +201,9 @@ class Zend_Server_Method_Prototype
      */
     public function toArray()
     {
-        return [
+        return array(
             'returnType' => $this->getReturnType(),
             'parameters' => $this->getParameters(),
-        ];
+        );
     }
 }

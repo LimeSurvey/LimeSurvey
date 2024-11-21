@@ -27,9 +27,9 @@ abstract class TBSCertList
         'children' => [
             'version' => [
                 'type' => ASN1::TYPE_INTEGER,
-                'mapping' => ['v1', 'v2'],
+                'mapping' => ['v1', 'v2', 'v3'],
                 'optional' => true,
-                'default' => 'v1'
+                'default' => 'v2'
             ],
             'signature' => AlgorithmIdentifier::MAP,
             'issuer' => Name::MAP,
