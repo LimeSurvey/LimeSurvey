@@ -86,6 +86,16 @@ class Dumpdb extends SurveyCommonAction
 
     public function outPutDatabase()
     {
+        // Check if it's a POST request
+        if (!Yii::app()->request->isPostRequest) {
+            throw new CHttpException(405, gT("Invalid action"));
+        }
+
+        // Check if user has necessary permissions
+        if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
+        }
+
         Yii::app()->loadHelper("admin/backupdb");
         $sDbName = _getDbName();
         $sFileName = 'LimeSurvey_' . $sDbName . '_dump_' . dateShift(date('Y-m-d H:i:s'), 'Y-m-d', Yii::app()->getConfig('timeadjust')) . '.sql';
