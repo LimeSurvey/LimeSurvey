@@ -37,19 +37,7 @@ class QuestionCreate extends Question
         $oQuestion->qid = 0;
         $oQuestion->sid = $iSurveyId;
 
-        $isTitleValid = false;
-        $tries = 0;
-        while (!$isTitleValid) {
-            $tries++;
-            if ($tries > 50) {
-                throw new Exception('Failed to generate title for question');
-            }
-            $oQuestion->title = 'G' . str_pad((string) $oCurrentGroup->group_order, 2, '0', STR_PAD_LEFT)
-                . 'Q' . str_pad((safecount($oSurvey->baseQuestions) + $tries), 2, '0', STR_PAD_LEFT);
-            if ($oQuestion->validate(['title'])) {
-                $isTitleValid = true;
-            }
-        }
+        self::assignTemporaryTitle($oQuestion, $oCurrentGroup, $oSurvey);
 
         $aQuestionData = [
                 'gid' => $gid,
@@ -112,5 +100,29 @@ class QuestionCreate extends Question
             return $this->questionType->answerscales == 1 ? [[]] : [[],[]];
         }
         return null;
+    }
+
+    /**
+     * Assigns a temporary title to the question.
+     * @param Question $question
+     * @param QuestionGroup $group
+     * @param Survey $survey
+     * @throws Exception
+     */
+    public static function assignTemporaryTitle($question, $group, $survey)
+    {
+        $isTitleValid = false;
+        $tries = 0;
+        while (!$isTitleValid) {
+            $tries++;
+            if ($tries > 50) {
+                throw new Exception('Failed to generate title for question');
+            }
+            $question->title = 'G' . str_pad((string) $group->group_order, 2, '0', STR_PAD_LEFT)
+                . 'Q' . str_pad((safecount($survey->baseQuestions) + $tries), 2, '0', STR_PAD_LEFT);
+            if ($question->validate(['title'])) {
+                $isTitleValid = true;
+            }
+        }
     }
 }
