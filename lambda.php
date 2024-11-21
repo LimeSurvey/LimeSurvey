@@ -278,7 +278,7 @@ class Sexpr extends SexprBase
                     $expectedResult = $this->eval($expectedResult->pop());
                     if ($expectedResult === $result) {
                         // All good
-                        echo 'Success';
+                        echo "Success\n";
                     } else {
                         throw new \Exception('Wrong result');
                     }

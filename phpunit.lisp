@@ -19,11 +19,10 @@
     (setq (surveyId 1))
     (setq (sessionKey "abc123"))
     (arguments sessionKey surveyId participant 'false)
-    (result (list (map ("firstname" "John")))))
-
-  (test-method
-    '_checkEmailFormat
-    (arguments "asd")
-    (result f)
+    (result (list (map ("firstname" "John"))))
     )
+
+  (test-method '_checkEmailFormat (arguments "asd@asd.com") (result t))
+
+  (test-method '_checkEmailFormat (arguments "asd") (result f))
 )
