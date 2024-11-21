@@ -213,6 +213,14 @@ class Sexpr extends SexprBase
                     $l->push($el);
                 }
                 return $l;
+            case "first":
+                return $this->eval($sexpr[0]->bottom());
+            case "second":
+                $_ = $sexpr[0]->shift();
+                $res = $sexpr[0]->shift();
+                return $this->eval($res);
+            case "last":
+                return $this->eval($sexpr[0][0]);
             case "defun":
                 $name = $sexpr->shift();
                 $args = $sexpr->shift();

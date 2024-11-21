@@ -10,9 +10,12 @@
     ('req "tests/bootstrap.php")
     ('req "vendor/autoload.php")))
 
+(defmacro infix (ast) (list (second ast) (first ast) (last ast)))
+
 (defun plus (a b) (+ a b))
 
 (php 'printf (plus 3 2))
+; (php 'printf (plus 3 2))
 
 ; PHP Unit test
 (test-class 'remotecontrol_handle
