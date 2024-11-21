@@ -23,7 +23,10 @@
     (result (list (map ("firstname" "John"))))
     )
 
-  (test-method '_checkEmailFormat (arguments "asd@asd.com") (result t))
-
-  (test-method '_checkEmailFormat (arguments "asd") (result f))
+  (test-method
+    '_checkEmailFormat
+    (arguments-and-results
+      ("asd") (f)
+      ("asd@asd.asd") (t)
+      )
 )
