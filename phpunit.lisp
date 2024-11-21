@@ -1,4 +1,6 @@
 ; Bootstrap for this file
+(load "phpop.php")
+
 (php
   (list
     ('req "application/controllers/AdminController.php")

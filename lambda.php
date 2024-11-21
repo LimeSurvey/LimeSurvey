@@ -83,9 +83,40 @@ abstract class SexprBase
     }
 }
 
+class CustomOp
+{
+    /** @var string */
+    public $name;
+
+    public $_fn;
+
+    public function __construct($name, $fn)
+    {
+        $this->name = $name;
+        $this->_fn = $fn;
+    }
+
+    public function fn($that, $sexpr)
+    {
+        $_fn = $this->_fn;
+        return $_fn($that, $sexpr);
+    }
+}
+
 class Sexpr extends SexprBase
 {
-    public $env = [];
+    public $env = [
+        't' => true,
+        'f' => false,
+    ];
+
+    /** @var array<string, CustomOp> */
+    public $ops = [];
+
+    public function addOp(CustomOp $op): void
+    {
+        $this->ops[$op->name] = $op;
+    }
 
     public function eval($sexpr)
     {
@@ -99,7 +130,7 @@ class Sexpr extends SexprBase
                     // Function
                     return $this->eval($thing->body);
                 } else {
-                    // Variable
+                    // Variable or constant
                     return $thing;
                 }
             }
@@ -122,23 +153,10 @@ class Sexpr extends SexprBase
             return $this->eval($op);
         }
         switch ($op) {
-            case "php":
-                $fn = $sexpr->bottom();
-                if ($fn instanceof Sym) {
-                    $fn = $this->eval($sexpr->shift());
-                    $arg = $this->eval($sexpr->shift());
-                    call_user_func($fn, $arg);
-                } elseif ($fn instanceof SplStack) {
-                    $list = $this->eval($sexpr->shift());
-                    foreach ($list as $node) {
-                        $fn = $this->eval($node->shift());
-                        $arg = $this->eval($node->shift());
-                        call_user_func($fn, $arg);
-                    }
-                } else {
-                    // what
-                }
-                break;
+            case "load":
+                $filename = $this->eval($sexpr->shift());
+                $this->addOp(include($filename));
+                return;
             case "=":
                 $branch2 = $sexpr->pop();
                 $branch1 = $sexpr->pop();
@@ -257,7 +275,6 @@ class Sexpr extends SexprBase
                     }
                     $result = $method->invoke($classUnderTest, ...$evalArgs);
                     $expectedResult = $this->findFirst($test, 'result');
-                    print_r($expectedResult);die;
                     $expectedResult = $this->eval($expectedResult->pop());
                     if ($expectedResult === $result) {
                         // All good
@@ -266,13 +283,14 @@ class Sexpr extends SexprBase
                         throw new \Exception('Wrong result');
                     }
                 }
-                //print_r($sexpr->pop());
-                //print_r($sexpr->pop());
-                //die;
-                die('here');
                 return;
             default:
-                if (isset($this->env[$op])) {
+                // Check custom ops
+                if (isset($this->ops[$op])) {
+                    $customOp = $this->ops[$op];
+                    return $customOp->fn($this, $sexpr);
+                } else if (isset($this->env[$op])) {
+                    // Check environment
                     $thing = $this->env[$op];
                     if ($thing instanceof Fun) {
                         foreach ($thing->args as $arg) {
