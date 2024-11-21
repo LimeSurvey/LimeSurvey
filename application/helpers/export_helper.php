@@ -233,7 +233,7 @@ function SPSSExportData($iSurveyID, $iLength, $na = '', $sEmptyAnswerValue = '',
                         break;
                     case ':':
                         $aSize = explode(".", (string) $field['size']);
-                        if (isset($aSize[1]) && $aSize[1]) {
+                        if (is_numeric($row[$fieldno]) && isset($aSize[1]) && $aSize[1]) {
                             // We need to add decimal
                             echo quoteSPSS(number_format($row[$fieldno], $aSize[1], ".", ""), $q, $field);
                         } else {
