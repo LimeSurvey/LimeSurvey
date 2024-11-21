@@ -350,7 +350,7 @@ $internalConfig = array(
                     'capitalize',
                     'lower',
                     'upper',
-                    'strip_tags',
+                    'striptags',
                     'number_format',
                     'isAbsoluteUrl'
                 ),
