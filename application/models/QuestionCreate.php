@@ -31,16 +31,15 @@ class QuestionCreate extends Question
         if (empty($questionThemeName)) {
             $questionThemeName = QuestionTheme::model()->getBaseThemeNameForQuestionType($questionType);
         }
-        $oCurrentGroup = QuestionGroup::model()->findByPk($gid);
 
         $oQuestion = new QuestionCreate();
         $oQuestion->qid = 0;
         $oQuestion->sid = $iSurveyId;
+        $oQuestion->gid = $gid;
 
-        self::assignTemporaryTitle($oQuestion, $oCurrentGroup, $oSurvey);
+        $oQuestion->assignTemporaryTitle();
 
         $aQuestionData = [
-                'gid' => $gid,
                 'type' => $questionType,
                 'other' => 'N',
                 'mandatory' => 'N',
@@ -104,25 +103,24 @@ class QuestionCreate extends Question
 
     /**
      * Assigns a temporary title to the question.
-     * @param Question $question
-     * @param QuestionGroup $group
-     * @param Survey $survey
      * @throws Exception
      */
-    public static function assignTemporaryTitle($question, $group, $survey)
+    public function assignTemporaryTitle()
     {
+        $survey = Survey::model()->findByPk($this->sid);
+        $group = QuestionGroup::model()->findByPk($this->gid);
         $isTitleValid = false;
-        $tries = 0;
-        while (!$isTitleValid) {
-            $tries++;
-            if ($tries > 50) {
-                throw new Exception('Failed to generate title for question');
-            }
-            $question->title = 'G' . str_pad((string) $group->group_order, 2, '0', STR_PAD_LEFT)
-                . 'Q' . str_pad((safecount($survey->baseQuestions) + $tries), 2, '0', STR_PAD_LEFT);
-            if ($question->validate(['title'])) {
+        for ($i = 1; $i < 50; $i++) {
+            $this->title = 'G' . str_pad((string) $group->group_order, 2, '0', STR_PAD_LEFT)
+                . 'Q' . str_pad((safecount($survey->baseQuestions) + $i), 2, '0', STR_PAD_LEFT);
+            if ($this->validate(['title'])) {
                 $isTitleValid = true;
+                break;
             }
+        }
+        if (!$isTitleValid) {
+            $this->title = null;
+            throw new Exception('Failed to generate title for question');
         }
     }
 }
