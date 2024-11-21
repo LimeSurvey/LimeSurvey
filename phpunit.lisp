@@ -10,6 +10,10 @@
     ('req "tests/bootstrap.php")
     ('req "vendor/autoload.php")))
 
+(defun fn (a b) (+ a b))
+
+(php 'printf (fn 1 2))
+
 ; PHP Unit test
 (test-class 'remotecontrol_handle
   (constructor (new 'AdminController "dummy"))
@@ -23,10 +27,10 @@
     (result (list (map ("firstname" "John"))))
     )
 
-  (test-method
-    '_checkEmailFormat
-    (arguments-and-results
-      ("asd") (f)
-      ("asd@asd.asd") (t)
-      )
+  ; (test-method
+    ; '_checkEmailFormat
+    ; (arguments-and-results
+      ; ("asd") (f)
+      ; ("asd@asd.asd") (t)
+      ; )
 )

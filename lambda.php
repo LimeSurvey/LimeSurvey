@@ -20,6 +20,10 @@ ini_set('display_errors', '1');
  *               15:01 < uhuh> So since you can do computation within the macro body (which gets executed at compile-time) you don't want everything to be quoted
  *
  *
+ * 16:28 < olle__> Is (+ 1 2) different from (+ (1) (2))? 
+ * 16:41 < kagevf> olle__: yes .... (1) will look for a function called "1"
+ * 16:42 < kagevf> in C like syntax it would be the equivalent of 1 + 2 versus 1() + 2()
+ *
  * https://www.gnu.org/software/emacs/manual/html_node/elisp/Expansion.html
  */
 abstract class SexprBase
