@@ -10,9 +10,9 @@
     ('req "tests/bootstrap.php")
     ('req "vendor/autoload.php")))
 
-(defun fn (a b) (+ a b))
+(defun plus (a b) (+ a b))
 
-(php 'printf (fn 1 2))
+(php 'printf (plus 3 2))
 
 ; PHP Unit test
 (test-class 'remotecontrol_handle
