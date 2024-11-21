@@ -1,5 +1,6 @@
 ; Bootstrap for this file
 (load "phpop.php")
+(load "testclassop.php")
 
 (php
   (list
