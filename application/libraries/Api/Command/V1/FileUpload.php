@@ -2,7 +2,6 @@
 
 namespace LimeSurvey\Api\Command\V1;
 
-use LimeSurvey\Api\Command\V1\SurveyPatch\PatcherSurvey;
 use LimeSurvey\Api\Command\{
     CommandInterface,
     Request\Request,
@@ -45,13 +44,8 @@ class FileUpload implements CommandInterface
     public function run(Request $request)
     {
         $id = (string) $request->getData('_id');
-        $patch = $request->getData('patch');
-
-        $patcher = $this->diFactory->make(
-            PatcherSurvey::class
-        );
         try {
-            $returnedData = $patcher->applyPatch($patch, ['id' => $id]);
+            $returnedData = []; // todo: retrieve file and call upload service with id
         } catch (ObjectPatchException $e) {
             return $this->responseFactory->makeErrorBadRequest(
                 $e->getMessage()

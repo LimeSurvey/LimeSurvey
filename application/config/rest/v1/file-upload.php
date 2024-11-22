@@ -1,22 +1,28 @@
 <?php
 
+use GoldSpecDigital\ObjectOrientedOAS\Objects\Schema;
 use LimeSurvey\Api\Command\V1\FileUpload;
 use LimeSurvey\Api\Rest\V1\SchemaFactory\SchemaFactoryError;
 
 $errorSchema = (new SchemaFactoryError())->make();
+$fileUploadSchema = Schema::object()
+    ->properties(
+        Schema::string('file')->format('binary')->description('The file to upload')
+    );
+
 $rest = [];
 
 $rest['v1/file-upload/$id'] = [
     'POST' => [
         'tag' => 'upload',
-        'description' => 'File upload via Axios post request',
+        'multipart' => true,
+        'description' => 'File upload via  Axios post request (multipart/form-data)',
         'commandClass' => FileUpload::class,
         'params' => [
-            'pageSize' => ['type' => 'int'],
-            'page' => ['type' => 'int']
+            'file' => ['src' => 'files'],
         ],
+        'schema' => $fileUploadSchema,
         'auth' => true,
-        'example' => __DIR__ . '/example/survey-post-template.json',
         'responses' => [
             'success' => [
                 'code' => 200,
@@ -37,6 +43,6 @@ $rest['v1/file-upload/$id'] = [
             ]
         ]
     ],
-];;
+];
 
 return $rest;
