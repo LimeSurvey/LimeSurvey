@@ -97,7 +97,7 @@ class LSHttpRequest extends CHttpRequest
             if (isset($sAlternativeUrl)) {
                 $referrer = $sAlternativeUrl;
             } else {
-                return App()->createUrl('admin/index');
+                return App()->createUrl('dashboard/view');
             }
         }
         return $referrer;

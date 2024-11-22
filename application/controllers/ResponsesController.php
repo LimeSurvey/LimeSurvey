@@ -1051,7 +1051,7 @@ class ResponsesController extends LSBaseController
     {
         if (!isset($surveyId)) {
             App()->setFlashMessage(gT("Invalid survey ID"), 'warning');
-            $this->redirect(["admin/index"]);
+            $this->redirect(["dashboard/view"]);
         }
 
         $thissurvey = getSurveyInfo($surveyId);
@@ -1064,7 +1064,7 @@ class ResponsesController extends LSBaseController
 
         if (!$thissurvey) {
             App()->setFlashMessage(gT("Invalid survey ID"), 'warning');
-            $this->redirect(["admin/index"]);
+            $this->redirect(["dashboard/view"]);
         } elseif ($thissurvey['active'] !== 'Y') {
             App()->setFlashMessage(gT("This survey has not been activated. There are no results to browse."), 'warning');
             $this->redirect(["surveyAdministration/view/surveyid/{$surveyId}"]);
