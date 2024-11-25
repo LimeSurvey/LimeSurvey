@@ -3428,7 +3428,7 @@ class SurveyAdministrationController extends LSBaseController
                 'iconAlter' => $state,
                 'state' => $survey->getState(),
                 'buttons' => $survey->getButtons(),
-                'link' => App()->createUrl('/surveyAdministration/view/surveyid/' . $survey->sid),
+                'link' => App()->createUrl('/surveyAdministration/view/surveyid/' . $survey->sid . '?allowRedirect=1'),
             ];
         }
 

@@ -82,7 +82,7 @@ class BoxesWidget extends CWidget
                         'external' => $item->external ?? false,
                         'state' => $survey->getState(),
                         'buttons' => $survey->getButtons(),
-                        'link' => App()->createUrl('/surveyAdministration/view/surveyid/' . $survey->sid),
+                        'link' => App()->createUrl('/surveyAdministration/view/surveyid/' . $survey->sid . '?allowRedirect=1'),
                     ];
                 }
             }
