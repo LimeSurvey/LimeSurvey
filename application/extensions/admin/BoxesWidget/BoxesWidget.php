@@ -85,10 +85,7 @@ class BoxesWidget extends CWidget
                         'link' => App()->getConfig('editorEnabled')
                             ? App()->createUrl(
                                 'editorLink/index', 
-                                [
-                                    'route' => 'survey/' . $survey->sid, 
-                                    'allowRedirect' => 1
-                                ]
+                                ['route' => 'survey/' . $survey->sid]
                             ) 
                             : Yii::app()->createUrl(
                                 'surveyAdministration/view/', 

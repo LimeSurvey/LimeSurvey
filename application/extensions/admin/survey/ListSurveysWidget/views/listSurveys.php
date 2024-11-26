@@ -44,7 +44,7 @@
             ],
             'rowLink'               => 
                 'App()->getConfig("editorEnabled")'
-                . ' ? App()->createUrl("editorLink/index", ["route" => "survey/" . $data->sid,"allowRedirect"=>1]) '
+                . ' ? App()->createUrl("editorLink/index", ["route" => "survey/" . $data->sid]) '
                 . ' : Yii::app()->createUrl("surveyAdministration/view/",array("iSurveyID"=>$data->sid,"allowRedirect"=>1))',
             // 'template'  => $this->template,
             'massiveActionTemplate' => $this->render('massive_actions/_selector', [], true, false),
