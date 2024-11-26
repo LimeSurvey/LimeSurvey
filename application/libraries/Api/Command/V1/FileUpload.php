@@ -46,12 +46,15 @@ class FileUpload implements CommandInterface
     public function run(Request $request)
     {
         try {
-            $surveyId = (int) $request->getData('_id');
+            $surveyId = (int)$request->getData('_id');
             $diContainer = \LimeSurvey\DI::getContainer();
             $fileUploadService = $diContainer->get(
                 FileUploadService::class
             );
-            $returnedData = $fileUploadService->storeSurveyImage($surveyId, $_FILES);
+            $returnedData = $fileUploadService->storeSurveyImage(
+                $surveyId,
+                $_FILES
+            );
         } catch (Exception $e) {
             return $this->responseFactory->makeErrorBadRequest(
                 $e->getMessage()
@@ -61,5 +64,4 @@ class FileUpload implements CommandInterface
         return $this->responseFactory
             ->makeSuccess($returnedData);
     }
-
 }
