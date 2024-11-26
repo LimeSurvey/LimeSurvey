@@ -60,8 +60,8 @@ class FileUploadService
         string $directoryName = 'images'
     ) {
         $surveyDir = Yii::app()->getConfig(
-                'uploaddir'
-            ) . DIRECTORY_SEPARATOR . "surveys" . DIRECTORY_SEPARATOR . $surveyId;
+            'uploaddir'
+        ) . DIRECTORY_SEPARATOR . "surveys" . DIRECTORY_SEPARATOR . $surveyId;
         if (!is_dir($surveyDir)) {
             @mkdir($surveyDir);
         }
