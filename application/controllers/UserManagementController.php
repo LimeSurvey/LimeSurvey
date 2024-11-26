@@ -160,17 +160,11 @@ class UserManagementController extends LSBaseController
                     'errors' => gT('Passwords do not match'),
                 ]]);
             }
-
-            $oPasswordTestEvent = new PluginEvent('checkPasswordRequirement');
-            $oPasswordTestEvent->set('password', $passwordTest);
-            $oPasswordTestEvent->set('passwordOk', true);
-            $oPasswordTestEvent->set('passwordError', '');
-            Yii::app()->getPluginManager()->dispatchEvent($oPasswordTestEvent);
-
-            if (!$oPasswordTestEvent->get('passwordOk')) {
+            $user = new User();
+            if ($passwordError = $user->checkPasswordStrength($passwordTest)) {
                 return Yii::app()->getController()->renderPartial('/admin/super/_renderJson', ["data" => [
                     'success' => false,
-                    'errors' => gT('Passwords does not fulfill minimum requirement:') . '<br/>' . $oPasswordTestEvent->get('passwordError'),
+                    'errors' => gT('Passwords does not fulfill minimum requirement:') . '<br/>' . $passwordError,
                 ]]);
             }
         }
