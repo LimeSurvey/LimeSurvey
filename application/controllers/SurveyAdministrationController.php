@@ -1,6 +1,7 @@
 <?php
 
 use LimeSurvey\Models\Services\CopySurveyResources;
+use LimeSurvey\Models\Services\FileUploadService;
 use LimeSurvey\Models\Services\FilterImportedResources;
 use LimeSurvey\Models\Services\GroupHelper;
 
@@ -1508,14 +1509,11 @@ class SurveyAdministrationController extends LSBaseController
                 false
             );
         }
-        $surveyDir = Yii::app()->getConfig('uploaddir') . "/surveys/" . $iSurveyID;
-        if (!is_dir($surveyDir)) {
-            @mkdir($surveyDir);
-        }
-        if (!is_dir($surveyDir . "/images")) {
-            @mkdir($surveyDir . "/images");
-        }
-        $destdir = $surveyDir . "/images/";
+        $diContainer = \LimeSurvey\DI::getContainer();
+        $fileUploadService = $diContainer->get(
+            FileUploadService::class
+        );
+        $destdir = $fileUploadService->getSurveyUploadDirectory($iSurveyID);
         if (!is_writeable($destdir)) {
             $uploadresult = sprintf(gT("Incorrect permissions in your %s folder."), $destdir);
             return $this->renderPartial(
@@ -1526,27 +1524,16 @@ class SurveyAdministrationController extends LSBaseController
             );
         }
 
-        $filename = sanitize_filename(
-            $_FILES['file']['name'],
-            false,
-            false,
-            false
-        ); // Don't force lowercase or alphanumeric
-        $fullfilepath = $destdir . $filename;
-        $debug[] = $destdir;
-        $debug[] = $filename;
-        $debug[] = $fullfilepath;
-        if (!@move_uploaded_file($_FILES['file']['tmp_name'], $fullfilepath)) {
-            $uploadresult = gT("An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder.");
-        } else {
-            $uploadresult = sprintf(gT("File %s uploaded"), $filename);
-            $success = true;
-        };
+        $returnedData = $fileUploadService->saveFileInDirectory($_FILES['file'], $destdir);
         return $this->renderPartial(
             '/admin/super/_renderJson',
-            array('data' => ['success' => $success, 'message' => $uploadresult, 'debug' => $debug]),
-            false,
-            false
+            array(
+                'data' => [
+                    'success' => $returnedData['success'],
+                    'message' => $returnedData['uploadResultMessage'],
+                    'debug' => $returnedData['debug']
+                ]
+            ),
         );
     }
 

@@ -5,10 +5,10 @@ namespace LimeSurvey\Models\Services;
 class UploadValidator
 {
     /** @var array<string,mixed> HTTP POST variables*/
-    private $post;
+    public $post;
 
     /** @var array<string,mixed> HTTP File Upload variables*/
-    private $files;
+    public $files;
 
     /**
      * UploadValidator constructor.

@@ -6,11 +6,13 @@ use LimeSurvey\Api\Command\{
     CommandInterface,
     Request\Request,
     Response\Response,
-    Response\ResponseFactory
+    Response\ResponseFactory,
+    Exception
 };
 use LimeSurvey\Api\Command\Mixin\Auth\AuthPermissionTrait;
-use LimeSurvey\ObjectPatch\ObjectPatchException;
 use DI\FactoryInterface;
+use LimeSurvey\Models\Services\FileUploadService;
+use Yii;
 
 class FileUpload implements CommandInterface
 {
@@ -43,10 +45,14 @@ class FileUpload implements CommandInterface
      */
     public function run(Request $request)
     {
-        $id = (string) $request->getData('_id');
         try {
-            $returnedData = []; // todo: retrieve file and call upload service with id
-        } catch (ObjectPatchException $e) {
+            $surveyId = (int) $request->getData('_id');
+            $diContainer = \LimeSurvey\DI::getContainer();
+            $fileUploadService = $diContainer->get(
+                FileUploadService::class
+            );
+            $returnedData = $fileUploadService->storeSurveyImage($surveyId, $_FILES);
+        } catch (Exception $e) {
             return $this->responseFactory->makeErrorBadRequest(
                 $e->getMessage()
             );
@@ -55,4 +61,5 @@ class FileUpload implements CommandInterface
         return $this->responseFactory
             ->makeSuccess($returnedData);
     }
+
 }

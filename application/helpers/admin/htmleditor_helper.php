@@ -21,7 +21,7 @@ function initKcfinder()
 {
     Yii::app()->session['KCFINDER'] = array();
 
-    $sAllowedExtensions = implode(' ', array_map('trim', explode(',', (string) Yii::app()->getConfig('allowedresourcesuploads'))));
+    $sAllowedExtensions = getAllowedExtensions();
     $_SESSION['KCFINDER']['types'] = array(
         'files' => $sAllowedExtensions,
         'flash' => $sAllowedExtensions,
@@ -51,9 +51,7 @@ function initKcfinder()
             $surveyid = $contextarray[2];
 
             if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'update')) {
-                if (Yii::app()->getConfig('uniq_upload_dir')) {
-                    $surveyid = 'uniq';
-                }
+                $surveyid = convertSurveyIdWhenUniqUploadDir($surveyid);
 
                 $_SESSION['KCFINDER']['disabled'] = false;
                 if (preg_match('/^edit:emailsettings/', (string) $_SESSION['FileManagerContext']) != 0) {
@@ -75,7 +73,7 @@ function initKcfinder()
                     $_SESSION['KCFINDER']['uploadURL'] = Yii::app()->getConfig('uploadurl') . "/surveys/{$surveyid}/";
                 }
 
-                $_SESSION['KCFINDER']['uploadDir'] = realpath(Yii::app()->getConfig('uploaddir')) . DIRECTORY_SEPARATOR . 'surveys' . DIRECTORY_SEPARATOR . $surveyid . DIRECTORY_SEPARATOR;
+                $_SESSION['KCFINDER']['uploadDir'] = getSurveyUploadDir($surveyid);
             }
         } elseif (preg_match('/^edit:label/', (string) Yii::app()->session['FileManagerContext']) != 0) {
             $contextarray = explode(':', (string) Yii::app()->session['FileManagerContext'], 3);
@@ -149,9 +147,7 @@ function PrepareEditorScript($load = false, $controller = null)
      */
 function getEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $gID = null, $qID = null, $action = null)
 {
-    if (Yii::app()->getConfig('uniq_upload_dir') && !empty($surveyID)) {
-        $surveyID = 'uniq';
-    }
+    $surveyID = convertSurveyIdWhenUniqUploadDir($surveyID);
 
     initKcfinder();
 
@@ -195,11 +191,7 @@ function getEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $gID = 
  */
 function getPopupEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $gID = null, $qID = null, $action = null)
 {
-
-    if (Yii::app()->getConfig('uniq_upload_dir') && !empty($surveyID)) {
-        $surveyID = 'uniq';
-    }
-
+    $surveyID = convertSurveyIdWhenUniqUploadDir($surveyID);
 
     $htmlcode = '';
 
@@ -277,10 +269,7 @@ function getPopupEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $g
  */
 function getModalEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $gID = null, $qID = null, $action = null)
 {
-
-    if (Yii::app()->getConfig('uniq_upload_dir') && !empty($surveyID)) {
-        $surveyID = 'uniq';
-    }
+    $surveyID = convertSurveyIdWhenUniqUploadDir($surveyID);
 
     $htmlcode = "<a href='#' class='btn btn-sm btn-outline-secondary htmleditor--openmodal' data-target-field-id='$fieldname' data-modal-title='$fieldtext' data-bs-toggle='tooltip' data-bs-original-title='" . gT("Open editor") . "'>\n" .
                 "\t<i class='ri-pencil-fill' id='{$fieldname}_modal_icon'></i>\n" .
@@ -291,10 +280,7 @@ function getModalEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $g
 
 function getInlineEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $gID = null, $qID = null, $action = null)
 {
-    if (Yii::app()->getConfig('uniq_upload_dir') && !empty($surveyID)) {
-        $surveyID = 'uniq';
-    }
-
+    $surveyID = convertSurveyIdWhenUniqUploadDir($surveyID);
     $htmlcode = '';
     $toolbaroption = "";
     $sFileBrowserAvailable = '';
@@ -429,4 +415,25 @@ function getLoaderHTML($fieldname)
     $loaderHTML .= '    </div>';
     $loaderHTML .= '  </div>';
     return $loaderHTML;
+}
+
+function getSurveyUploadDir($surveyId) {
+    $surveyId = convertSurveyIdWhenUniqUploadDir($surveyId);
+    return realpath(Yii::app()->getConfig('uploaddir')) . DIRECTORY_SEPARATOR . 'surveys' . DIRECTORY_SEPARATOR . $surveyId . DIRECTORY_SEPARATOR;
+}
+
+/**
+ * If config param "uniq_upload_dir" is set to true, convert survey ID to 'uniq'
+ * @param $surveyId
+ * @return mixed|string
+ */
+function convertSurveyIdWhenUniqUploadDir($surveyId) {
+    if (App()->getConfig('uniq_upload_dir') && !empty($surveyId)) {
+        $surveyId = 'uniq';
+    }
+    return $surveyId;
+}
+
+function getAllowedExtensions() {
+    return implode(' ', array_map('trim', explode(',', (string) Yii::app()->getConfig('allowedresourcesuploads'))));
 }
