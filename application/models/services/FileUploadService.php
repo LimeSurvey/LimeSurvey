@@ -16,29 +16,32 @@ class FileUploadService
 
     public function storeSurveyImage(int $surveyId, array $fileInfoArray)
     {
-        Yii::import('application.helpers.admin.htmleditor_helper', true);
-        $returnedData = [];
-        $surveyId = convertSurveyIdWhenUniqUploadDir($surveyId);
+        $returnedData = ['success' => false];
+        $surveyId = $this->convertSurveyIdWhenUniqUploadDir($surveyId);
         $this->uploadValidator->post = $surveyId;
         $this->uploadValidator->files = $fileInfoArray;
         $validationError = $this->uploadValidator->getError('file');
-        // todo add validation results (validateImage and getError) to returnedData
-        if (!$validationError) {
-            $checkImage = LSYii_ImageValidator::validateImage($fileInfoArray['file']);
+        if ($validationError === null) {
+            $checkImage = LSYii_ImageValidator::validateImage(
+                $fileInfoArray['file']
+            );
             if ($checkImage['check'] !== false) {
                 $destinationDir = $this->getSurveyUploadDirectory($surveyId);
                 if (!is_writeable($destinationDir)) {
-                    $returnedData = [
-                        'success' => false,
-                        'uploadResultMessage' => gT("Could not save file")
-                    ];
+                    $returnedData['uploadResultMessage'] = gT(
+                        "Could not save file"
+                    );
                 } else {
                     $returnedData = $this->saveFileInDirectory(
                         $fileInfoArray['file'],
                         $destinationDir
                     );
                 }
+            } else {
+                $returnedData['uploadResultMessage'] = $checkImage['uploadresult'];
             }
+        } else {
+            $returnedData['uploadResultMessage'] = $validationError;
         }
         return $returnedData;
     }
@@ -74,25 +77,25 @@ class FileUploadService
     /**
      * This function will sanitize the filename to prevent potential security issues.
      * Afterwards it will store the file into the destination directory.
-     * @param array $fileInfo
+     * @param array $fileInfoArray
      * @param string $destinationDir
      * @return array
      */
-    public function saveFileInDirectory(array $fileInfo, string $destinationDir)
+    public function saveFileInDirectory(array $fileInfoArray, string $destinationDir)
     {
         $success = false;
         $fileName = sanitize_filename(
-            $fileInfo['name'],
+            $fileInfoArray['name'],
             false,
             false,
             false
         ); // Don't force lowercase or alphanumeric
         $fileName = $this->handleDuplicateFileName($fileName, $destinationDir);
         $fullFilePath = $destinationDir . $fileName;
-        $debug[] = $destinationDir;
-        $debug[] = $fileName;
-        $debug[] = $fullFilePath;
-        if (!@move_uploaded_file($fileInfo['tmp_name'], $fullFilePath)) {
+        $debugInfoArray[] = $destinationDir;
+        $debugInfoArray[] = $fileName;
+        $debugInfoArray[] = $fullFilePath;
+        if (!@move_uploaded_file($fileInfoArray['tmp_name'], $fullFilePath)) {
             $uploadResult = gT(
                 "An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder."
             );
@@ -102,7 +105,7 @@ class FileUploadService
         };
 
         return [
-            'debug' => $debug,
+            'debug' => $debugInfoArray,
             'uploadResultMessage' => $uploadResult,
             'success' => $success,
             'allFilesInDir' => []
@@ -138,5 +141,17 @@ class FileUploadService
         }
 
         return $newFileName; // Return the unique file name
+    }
+
+    /**
+     * If config param "uniq_upload_dir" is set to true, convert survey ID to 'uniq'
+     * @param $surveyId
+     * @return mixed|string
+     */
+    public function convertSurveyIdWhenUniqUploadDir($surveyId) {
+        if (App()->getConfig('uniq_upload_dir') && !empty($surveyId)) {
+            $surveyId = 'uniq';
+        }
+        return $surveyId;
     }
 }
