@@ -145,10 +145,11 @@ class FileUploadService
 
     /**
      * If config param "uniq_upload_dir" is set to true, convert survey ID to 'uniq'
-     * @param $surveyId
-     * @return mixed|string
+     * @param int|string $surveyId
+     * @return int|string
      */
-    public function convertSurveyIdWhenUniqUploadDir($surveyId) {
+    public function convertSurveyIdWhenUniqUploadDir($surveyId)
+    {
         if (App()->getConfig('uniq_upload_dir') && !empty($surveyId)) {
             $surveyId = 'uniq';
         }
