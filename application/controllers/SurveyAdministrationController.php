@@ -1477,61 +1477,54 @@ class SurveyAdministrationController extends LSBaseController
         $uploadValidator = new LimeSurvey\Models\Services\UploadValidator();
         $uploadValidator->renderJsonOnError('file', $debug);
 
-        $iSurveyID = (int) Yii::app()->request->getPost('surveyid');
+        $iSurveyID = (int)Yii::app()->request->getPost('surveyid');
         $success = false;
         $debug = [];
-        if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'update')) {
-            return $this->renderPartial(
-                '/admin/super/_renderJson',
-                array(
-                    'data' => [
-                        'success' => $success,
-                        'message' => gT("You don't have sufficient permissions to upload images in this survey"),
-                        'debug' => $debug
-                    ]
-                ),
-                false,
-                false
-            );
-        }
-        $checkImage = LSYii_ImageValidator::validateImage($_FILES["file"]);
-        if ($checkImage['check'] === false) {
-            return $this->renderPartial(
-                '/admin/super/_renderJson',
-                array(
-                    'data' => [
-                        'success' => $success,
-                        'message' => $checkImage['uploadresult'],
-                        'debug' => $checkImage['debug']
-                    ]
-                ),
-                false,
-                false
-            );
-        }
-        $diContainer = \LimeSurvey\DI::getContainer();
-        $fileUploadService = $diContainer->get(
-            FileUploadService::class
-        );
-        $destdir = $fileUploadService->getSurveyUploadDirectory($iSurveyID);
-        if (!is_writeable($destdir)) {
-            $uploadresult = sprintf(gT("Incorrect permissions in your %s folder."), $destdir);
-            return $this->renderPartial(
-                '/admin/super/_renderJson',
-                array('data' => ['success' => $success, 'message' => $uploadresult, 'debug' => $debug]),
-                false,
-                false
+        if (Permission::model()->hasSurveyPermission(
+            $iSurveyID,
+            'surveycontent',
+            'update'
+        )) {
+            $checkImage = LSYii_ImageValidator::validateImage($_FILES["file"]);
+            if ($checkImage['check'] !== false) {
+                $diContainer = \LimeSurvey\DI::getContainer();
+                $fileUploadService = $diContainer->get(
+                    FileUploadService::class
+                );
+                $destDir = $fileUploadService->getSurveyUploadDirectory(
+                    $iSurveyID
+                );
+                if (is_writeable($destDir)) {
+                    $returnedData = $fileUploadService->saveFileInDirectory(
+                        $_FILES['file'],
+                        $destDir
+                    );
+                    $message = $returnedData['uploadResultMessage'];
+                    $debug = $returnedData['debug'];
+                    $success = $returnedData['success'];
+                } else {
+                    $message = sprintf(
+                        gT("Incorrect permissions in your %s folder."),
+                        $destDir
+                    );
+                }
+            } else {
+                $message = $checkImage['uploadresult'];
+                $debug = $checkImage['debug'];
+            }
+        } else {
+            $message = gT(
+                "You don't have sufficient permissions to upload images in this survey"
             );
         }
 
-        $returnedData = $fileUploadService->saveFileInDirectory($_FILES['file'], $destdir);
         return $this->renderPartial(
             '/admin/super/_renderJson',
             array(
                 'data' => [
-                    'success' => $returnedData['success'],
-                    'message' => $returnedData['uploadResultMessage'],
-                    'debug' => $returnedData['debug']
+                    'success' => $success,
+                    'message' => $message,
+                    'debug' => $debug
                 ]
             ),
         );
