@@ -9,6 +9,8 @@ use LimeSurvey\Api\Command\{
     Response\ResponseFactory,
     Exception
 };
+use DI\DependencyException;
+use DI\NotFoundException;
 use LimeSurvey\Api\Command\Mixin\Auth\AuthPermissionTrait;
 use DI\FactoryInterface;
 use LimeSurvey\Models\Services\FileUploadService;
@@ -42,6 +44,9 @@ class FileUpload implements CommandInterface
      *
      * @param Request $request
      * @return Response
+     * @throws DependencyException
+     * @throws NotFoundException
+     * @psalm-suppress PossiblyUndefinedVariable
      */
     public function run(Request $request)
     {
