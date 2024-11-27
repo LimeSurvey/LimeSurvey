@@ -7,14 +7,10 @@ use LimeSurvey\Api\Command\{
     Request\Request,
     Response\Response,
     Response\ResponseFactory,
-    Exception
 };
-use DI\DependencyException;
-use DI\NotFoundException;
 use LimeSurvey\Api\Command\Mixin\Auth\AuthPermissionTrait;
 use DI\FactoryInterface;
 use LimeSurvey\Models\Services\FileUploadService;
-use Yii;
 
 class FileUpload implements CommandInterface
 {
@@ -26,26 +22,17 @@ class FileUpload implements CommandInterface
     /**
      * Constructor
      *
-     * @param FactoryInterface $diFactory
      * @param ResponseFactory $responseFactory
      */
     public function __construct(
-        FactoryInterface $diFactory,
         ResponseFactory $responseFactory
     ) {
-        $this->diFactory = $diFactory;
         $this->responseFactory = $responseFactory;
     }
 
     /**
-     * Run survey patch command
-     *
-     * Apply patch and respond with update patch to be applied to the source (if any).
-     *
      * @param Request $request
      * @return Response
-     * @throws DependencyException
-     * @throws NotFoundException
      * @psalm-suppress PossiblyUndefinedVariable
      */
     public function run(Request $request)
@@ -60,7 +47,7 @@ class FileUpload implements CommandInterface
                 $surveyId,
                 $_FILES
             );
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return $this->responseFactory->makeErrorBadRequest(
                 $e->getMessage()
             );
