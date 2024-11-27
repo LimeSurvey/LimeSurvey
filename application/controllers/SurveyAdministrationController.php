@@ -1480,11 +1480,13 @@ class SurveyAdministrationController extends LSBaseController
         $iSurveyID = (int)Yii::app()->request->getPost('surveyid');
         $success = false;
         $debug = [];
-        if (Permission::model()->hasSurveyPermission(
-            $iSurveyID,
-            'surveycontent',
-            'update'
-        )) {
+        if (
+            Permission::model()->hasSurveyPermission(
+                $iSurveyID,
+                'surveycontent',
+                'update'
+            )
+        ) {
             $checkImage = LSYii_ImageValidator::validateImage($_FILES["file"]);
             if ($checkImage['check'] !== false) {
                 $diContainer = \LimeSurvey\DI::getContainer();
