@@ -25,7 +25,7 @@ class FileUploadService
      */
     public function storeSurveyImage($surveyId, array $fileInfoArray)
     {
-       $this->checkUpdatePermission($surveyId);
+        $this->checkUpdatePermission($surveyId);
         $returnedData = ['success' => false];
         $surveyId = $this->convertSurveyIdWhenUniqUploadDir($surveyId);
         $destinationDir = $this->getSurveyUploadDirectory($surveyId);
@@ -73,8 +73,8 @@ class FileUploadService
         string $directoryName = 'images'
     ) {
         $surveyDir = App()->getConfig(
-                'uploaddir'
-            ) . DIRECTORY_SEPARATOR . "surveys" . DIRECTORY_SEPARATOR . $surveyId;
+            'uploaddir'
+        ) . DIRECTORY_SEPARATOR . "surveys" . DIRECTORY_SEPARATOR . $surveyId;
         if (!is_dir($surveyDir)) {
             @mkdir($surveyDir);
         }
@@ -230,7 +230,8 @@ class FileUploadService
      * @return void
      * @throws PermissionDeniedException
      */
-    private function checkUpdatePermission($surveyId) {
+    private function checkUpdatePermission($surveyId)
+    {
         if (
             !$this->modelPermission->hasSurveyPermission(
                 $surveyId,
