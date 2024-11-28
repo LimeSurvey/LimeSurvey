@@ -1,26 +1,20 @@
 .sidebar-left {
-    border-right: 1px solid #eee;
-    border-right: none !important;
-    border-right: 0 !important;
+    border-right: 1px #eeeeee solid;
     height: 100vh;
-    left: 0;
-    top: 62px;
-    margin-top: 2px;
-    max-height: calc(100vh - 56px);
-    overflow-y: auto;
-    padding-top: 4px;
     position: fixed;
-    font-size: 1.955rem;
-    font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica Neue, Noto Sans, Liberation Sans, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+    left: 0;
+    overflow-y: auto;
+    max-height: calc(100vh - 60px);
 }
 .sidebar {
     background-color: #fff;
     display: flex;
     flex-direction: column;
-    font-size: .8rem;
     height: 100%;
     max-width: 350px;
-    padding: 8px 0;
+    font-size: 0.8rem;
+    padding: 8px 8px 0px 8px;
+    margin: 0;
 }
 .fill-current {
     fill: currentColor;
@@ -32,10 +26,12 @@
     background-color: #eeeff7;
 }
 .sidebar-header {
-    font-size: .855rem;
-    font-weight: 600;
-    margin-bottom: 1rem;
+    margin-bottom: 16px;
     padding: 12px 8px 12px 18px;
+    font-size: 13.68px;
+    font-weight: 600;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    height: 47.375px
 }
 .sidebar-header .btn-close-lime {
     color: #1e1e1e;
@@ -56,10 +52,12 @@
 }
 #left-sidebar {
     z-index: 1000;
+    top: 61px;
 }
 .topbar {
-    height: 62px;
+    height: 60px;
     box-shadow: none;
+    background-color: inherit;
 }
 .topbar.scroll-shadow {
     background-color: white;
@@ -67,7 +65,14 @@
 }
 
 .btn-icon:before {
-    font-size: 1.6em;
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 19.2px;
+    text-align: start;
+}
+.ri-bar-chart-horizontal-line:before,
+.ri-settings-3-fill:before {
+    font-size: 20px;
 }
 .sidebar-row {
     align-items: center;
@@ -94,9 +99,9 @@
 }
 .sidebar-icons-item {
     display: flex;
-    justify-content: center;
-    margin-top: 8px;
+    margin-top: 10px;
     cursor: pointer;
+    width: 36px;
 }
 .sidebar-icons-item:first-child {
     margin-top: 0;
@@ -152,4 +157,12 @@
     .ls-topbar-buttons.col-md-auto.text-end {
         display: none;
     }
+}
+
+
+.side-menu-logo a{
+    color: black;
+    font-size: 15px;
+    font-weight: 800;
+    line-height: 24px
 }
