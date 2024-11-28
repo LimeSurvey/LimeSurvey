@@ -32,7 +32,7 @@ class FileUpload implements CommandInterface
     /**
      * @param Request $request
      * @return Response
-     * @psalm-suppress PossiblyUndefinedVariable
+     * @psalm-suppress PossiblyNullArgument
      */
     public function run(Request $request)
     {
