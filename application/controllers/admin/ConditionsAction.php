@@ -53,6 +53,8 @@ class ConditionsAction extends SurveyCommonAction
      */
     private $tokenFieldsAndNames;
 
+    private $surveyCondition;
+
     /**
      * Init some stuff
      * @param null $controller
@@ -85,6 +87,12 @@ class ConditionsAction extends SurveyCommonAction
             ">"  => gT("Greater than"),
             "RX" => gT("Regular expression")
         );
+
+        $diContainer = \LimeSurvey\DI::getContainer();
+
+        $this->surveyCondition = $diContainer->get(
+            LimeSurvey\Models\Services\SurveyCondition::class
+        );
     }
 
     /**
@@ -103,11 +111,10 @@ class ConditionsAction extends SurveyCommonAction
     {
         $request = Yii::app()->request;
         $iSurveyID = (int) $iSurveyID;
-        $this->iSurveyID = $iSurveyID;
-        $this->tokenTableExists = tableExists("{{tokens_$iSurveyID}}");
-        $this->tokenFieldsAndNames = getTokenFieldsAndNames($iSurveyID);
         $imageurl = Yii::app()->getConfig("adminimageurl");
-        Yii::app()->loadHelper("database");
+        list($this->iSurveyID, $this->tokenTableExists, $this->tokenFieldsAndNames) = $this->surveyCondition->initialize([
+            'iSurveyID' => $iSurveyID
+        ]);
 
         $aData = [];
         $aData['sidemenu']['state'] = false;
@@ -675,8 +682,7 @@ class ConditionsAction extends SurveyCommonAction
             )));
             Yii::app()->end();
         } else {
-            LimeExpressionManager::RevertUpgradeConditionsToRelevance($iSurveyID);
-            Condition::model()->deleteRecords("qid in (select qid from {{questions}} where sid={$iSurveyID})");
+            $this->surveyCondition->resetSurveyLogic();
             Yii::app()->setFlashMessage(gT("All conditions in this survey have been deleted."));
             $this->getController()->redirect(array('surveyAdministration/view/surveyid/' . $iSurveyID));
         }
