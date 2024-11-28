@@ -16,7 +16,6 @@ class FileUpload implements CommandInterface
 {
     use AuthPermissionTrait;
 
-    protected FactoryInterface $diFactory;
     protected ResponseFactory $responseFactory;
 
     /**
