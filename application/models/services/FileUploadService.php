@@ -54,6 +54,12 @@ class FileUploadService
             } else {
                 $returnedData['uploadResultMessage'] = $validationError;
             }
+            $returnedData['uploaded']['filePath'] = $this->convertFullIntoRelativePath(
+                $returnedData['debug'][2]
+            );
+            $returnedData['uploaded']['previewPath'] = $this->getPreviewPath(
+                $returnedData['uploaded']['filePath']
+            );
             unset($returnedData['debug']);
             $returnedData['allFilesInDir'] = $this->getFilesPathsFromDirectory(
                 $destinationDir,
@@ -218,16 +224,37 @@ class FileUploadService
         int $surveyId
     ) {
         $filesOutput = [];
-        $rootDir = App()->getConfig('rootdir');
-
-        $relativePath = substr($directory, strlen($rootDir));
+        $relativePath = $this->convertFullIntoRelativePath($directory);
         $files = $this->getFilesFromDirectory($directory, $surveyId);
         foreach ($files as $i => $file) {
             $filesOutput[$i]['filePath'] = $relativePath . $file;
-            $filesOutput[$i]['previewPath'] = $relativePath . $file; // Preview path is the same as file path for now
+            $filesOutput[$i]['previewPath'] = $this->getPreviewPath(
+                $filesOutput[$i]['filePath']
+            );
         }
 
         return $filesOutput;
+    }
+
+    /**
+     * Removes the configured "rootdir" part from the path which
+     * results in the relative path
+     * @param string $filePath
+     * @return string
+     */
+    private function convertFullIntoRelativePath(string $filePath)
+    {
+       return substr($filePath, strlen(App()->getConfig('rootdir')));
+    }
+
+    /**
+     * Logic will be added later, for images previewPath is the same as filePath
+     * @param string $filePath
+     * @return string
+     */
+    private function getPreviewPath(string $filePath)
+    {
+        return $filePath;
     }
 
     /**
