@@ -895,6 +895,7 @@ class Permission extends LSActiveRecord
                 'export' => false,
                 'title' => gT("Settings & Plugins"),
                 'description' => gT("Permission to view and update global settings & plugins and to delete and import plugins"),
+                'warning' => gT("This permission allows an admin to change security relevant settings. Please make sure to assign this only to trusted persons."),
                 'img' => 'ri-earth-fill',
             ),
             'participantpanel' => array(
