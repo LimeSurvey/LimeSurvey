@@ -1938,7 +1938,7 @@ class SurveyAdministrationController extends LSBaseController
         if (empty($survey)) {
             throw new Exception('Found no survey with id ' . $iSurveyID);
         }
-
+        /* Did all action need OptionsFromDatabase ? @see https://bugs.limesurvey.org/view.php?id=19778 */
         $survey->setOptionsFromDatabase();
 
         //Get all languages
@@ -2651,6 +2651,9 @@ class SurveyAdministrationController extends LSBaseController
      */
     protected function pluginTabSurvey($survey)
     {
+        /* Need to disable previous setOptionsFromDatabase */
+        $survey->unsetFromStaticPkCache();
+        $survey = Survey::model()->findByPk($survey->sid);
         $aData = array();
         $beforeSurveySettings = new PluginEvent('beforeSurveySettings');
         $beforeSurveySettings->set('survey', $survey->sid);
