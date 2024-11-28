@@ -897,83 +897,9 @@ class ConditionsAction extends SurveyCommonAction
         /** @var array $p_canswers */
         /** @var CHttpRequest $request */
         /** @var string $editSourceTab */
-        extract($args);
-
-        if (isset($p_cquestions) && $p_cquestions != '') {
-            $conditionCfieldname = $p_cquestions;
-        } elseif (isset($p_csrctoken) && $p_csrctoken != '') {
-            $conditionCfieldname = $p_csrctoken;
-        }
-
-        $editTargetTab = $request->getPost('editTargetTab');
-
-        $results = array();
-
-        if ($editTargetTab == '#CANSWERSTAB') {
-            foreach ($p_canswers as $ca) {
-                // This is an Edit, there will only be ONE VALUE
-                $updated_data = array(
-                    'qid' => $qid,
-                    'scenario' => $p_scenario,
-                    'cqid' => $p_cqid,
-                    'cfieldname' => $conditionCfieldname,
-                    'method' => $p_method,
-                    'value' => $ca
-                );
-                $results[] = Condition::model()->insertRecords($updated_data, true, array('cid' => $p_cid));
-            }
-
-            // Check if any result returned false
-            if (in_array(false, $results, true)) {
-                Yii::app()->setFlashMessage(gT('Could not update condition.'), 'error');
-            } elseif (!empty($results)) {
-                Yii::app()->setFlashMessage(gT('Condition updated.'), 'success');
-            } else {
-                Yii::app()->setFlashMessage(gT('Could not update condition.'), 'error');
-            }
-        } else {
-            switch ($editTargetTab) {
-                case "#CONST":
-                    $posted_condition_value = Yii::app()->request->getPost('ConditionConst', '');
-                    break;
-                case "#PREVQUESTIONS":
-                    $posted_condition_value = Yii::app()->request->getPost('prevQuestionSGQA', '');
-                    break;
-                case "#TOKENATTRS":
-                    $posted_condition_value = Yii::app()->request->getPost('tokenAttr', '');
-                    break;
-                case "#REGEXP":
-                    $posted_condition_value = Yii::app()->request->getPost('ConditionRegexp', '');
-                    break;
-                default:
-                    $posted_condition_value = null;
-            }
-
-            $result = null;
-            if ($posted_condition_value !== '') {
-                $updated_data = array(
-                    'qid' => $qid,
-                    'scenario' => $p_scenario,
-                    'cqid' => $p_cqid,
-                    'cfieldname' => $conditionCfieldname,
-                    'method' => $p_method,
-                    'value' => $posted_condition_value
-                );
-                $result = Condition::model()->insertRecords($updated_data, true, array('cid' => $p_cid));
-            }
-            if ($result) {
-                Yii::app()->setFlashMessage(gT('Condition updated.'), 'success');
-            } else {
-                if ($result === false) {
-                    Yii::app()->setFlashMessage(gT('Could not update condition.'), 'error');
-                } else {
-                    Yii::app()->setFlashMessage(gT("The condition could not be updated! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer."), 'error');
-                }
-            }
-        }
-
-        LimeExpressionManager::UpgradeConditionsToRelevance(null, $qid);
-        $this->redirectToConditionStart($qid, $gid);
+        $request = $args['request'];
+        $this->surveyCondition->updateCondition($args, $request->getPost('editTargetTab'), Yii::app()->setFlashMessage(...), Yii::app()->request->getPost('ConditionConst', ''), Yii::app()->request->getPost('prevQuestionSGQA', ''), Yii::app()->request->getPost('tokenAttr', ''), Yii::app()->request->getPost('ConditionRegexp', ''));
+        $this->redirectToConditionStart($args['qid'], $args['gid']);
     }
 
     /**
