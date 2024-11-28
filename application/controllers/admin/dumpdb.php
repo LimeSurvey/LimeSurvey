@@ -21,6 +21,12 @@
  */
 class Dumpdb extends SurveyCommonAction
 {
+
+    /**
+     * @var array Data used for rendering views
+     */
+    protected array $data = [];
+
     /**
      * Dumpdb constructor.
      * @param $controller
@@ -41,6 +47,8 @@ class Dumpdb extends SurveyCommonAction
             Yii::app()->setFlashMessage(gT('This function cannot be executed because demo mode is active.'), 'error');
             $this->getController()->redirect(Yii::app()->getController()->createUrl("/admin"));
         }
+
+        $this->data = $this->getData();
     }
 
     /**
@@ -51,12 +59,9 @@ class Dumpdb extends SurveyCommonAction
      */
     public function index()
     {
-        $data = $this->getData();
-
-        $data['topbar']['title'] = gT('Backup entire database');
-        $data['topbar']['backLink'] = App()->createUrl('admin/index');
-
-        $this->renderWrappedTemplate('dumpdb', 'dumpdb_view', $data);
+        $this->data['topbar']['title'] = gT('Backup entire database');
+        $this->data['topbar']['backLink'] = App()->createUrl('admin/index');
+        $this->renderWrappedTemplate('dumpdb', 'dumpdb_view', $this->data);
     }
 
     /**
@@ -67,21 +72,25 @@ class Dumpdb extends SurveyCommonAction
     {
         header('Content-type: application/octet-stream');
         header('Content-Disposition: attachment; filename=' . $sFileName);
+        
         header("Cache-Control: no-store, no-cache, must-revalidate");  // Don't store in cache because it is sensitive data
     }
 
     private function getData()
     {
-        Yii::app()->loadHelper("admin/backupdb");
-        $dbSize = getDatabaseSize();
-        $downloadable = true;
-        if ($dbSize > Yii::app()->getConfig('maxDatabaseSizeForDump')) {
-            $downloadable = false;
+        if ($this->data === []) {
+            Yii::app()->loadHelper("admin/backupdb");
+            $dbSize = getDatabaseSize();
+            $downloadable = true;
+            if ($dbSize > Yii::app()->getConfig('maxDatabaseSizeForDump')) {
+                $downloadable = false;
+            }
+            return [
+                'downloadable' => $downloadable,
+                'dbSize' => $dbSize,
+            ];
         }
-        return [
-            'downloadable' => $downloadable,
-            'dbSize' => $dbSize,
-        ];
+        return $this->data;
     }
 
     public function outPutDatabase()
@@ -94,6 +103,10 @@ class Dumpdb extends SurveyCommonAction
         // Check if user has necessary permissions
         if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
             throw new CHttpException(403, gT("You do not have permission to access this page."));
+        }
+
+        if ($this->data['downloadable'] === false) {
+            throw new CHttpException(403, gT("The database is too large to be downloaded. Please consider exporting it manually using your database client."));
         }
 
         Yii::app()->loadHelper("admin/backupdb");
