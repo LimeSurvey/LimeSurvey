@@ -705,95 +705,14 @@ class ConditionsAction extends SurveyCommonAction
         /** @var array $p_canswers */
         /** @var CHttpRequest $request */
         /** @var string $editSourceTab */
-        extract($args);
+
+        $request = $args['request'];
+        $gid = $args['gid'];
+        $qid = $args['qid'];
 
         $editSourceTab = $request->getPost('editSourceTab');
         $editTargetTab = $request->getPost('editTargetTab');
-
-        if (isset($p_cquestions) && $p_cquestions != '' && $editSourceTab == '#SRCPREVQUEST') {
-            $conditionCfieldname = $p_cquestions;
-        } elseif (isset($p_csrctoken) && $p_csrctoken != '') {
-            $conditionCfieldname = $p_csrctoken;
-        }
-
-        $condition_data = array(
-            'qid'        => $qid,
-            'scenario'   => $p_scenario,
-            'cqid'       => $p_cqid,
-            'cfieldname' => $conditionCfieldname,
-            'method'     => $p_method
-        );
-
-        if ($editTargetTab == '#CANSWERSTAB') {
-            $results = array();
-
-            foreach ($p_canswers as $ca) {
-                //First lets make sure there isn't already an exact replica of this condition
-                $condition_data['value'] = $ca;
-
-                $result = Condition::model()->findAllByAttributes($condition_data);
-
-                $count_caseinsensitivedupes = count($result);
-
-                if ($count_caseinsensitivedupes == 0) {
-                    $results[] = Condition::model()->insertRecords($condition_data);
-                    ;
-                }
-            }
-
-            // Check if any result returned false
-            if (in_array(false, $results, true)) {
-                Yii::app()->setFlashMessage(gT('Could not insert all conditions.'), 'error');
-            } elseif (!empty($results)) {
-                Yii::app()->setFlashMessage(gT('Condition added.'), 'success');
-            } else {
-                Yii::app()->setFlashMessage(
-                    gT(
-                        "The condition could not be added! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer.",
-                        "js"
-                    ),
-                    'error'
-                );
-            }
-        } else {
-            $posted_condition_value = null;
-            $request = Yii::app()->request;
-
-            // Other conditions like constant, other question or token field
-            switch ($editTargetTab) {
-                case '#CONST':
-                    $posted_condition_value = Yii::app()->request->getPost('ConditionConst', '');
-                    break;
-                case '#PREVQUESTIONS':
-                    $posted_condition_value = Yii::app()->request->getPost('prevQuestionSGQA', '');
-                    break;
-                case '#TOKENATTRS':
-                    $posted_condition_value = Yii::app()->request->getPost('tokenAttr', '');
-                    break;
-                case '#REGEXP':
-                    $posted_condition_value = Yii::app()->request->getPost('ConditionRegexp', '');
-                    break;
-                default:
-                    $posted_condition_value = null;
-            }
-
-            $result = null;
-            if ($posted_condition_value !== '') {
-                $condition_data['value'] = $posted_condition_value;
-                $result = Condition::model()->insertRecords($condition_data);
-            }
-            if ($result) {
-                Yii::app()->setFlashMessage(gT('Condition added.'), 'success');
-            } else {
-                if ($result === false) {
-                    Yii::app()->setFlashMessage(gT('Could not insert all conditions.'), 'error');
-                } else {
-                    Yii::app()->setFlashMessage(gT("The condition could not be added! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer."), 'error');
-                }
-            }
-        }
-
-        LimeExpressionManager::UpgradeConditionsToRelevance(null, $qid);
+        $this->surveyCondition->insertCondition($args, $editSourceTab, $editTargetTab, Yii::app()->setFlashMessage(...), Yii::app()->request->getPost('ConditionConst', ''), Yii::app()->request->getPost('prevQuestionSGQA', ''), Yii::app()->request->getPost('tokenAttr', ''), Yii::app()->request->getPost('ConditionRegexp', ''));
 
         $this->redirectToConditionStart($qid, $gid);
     }
