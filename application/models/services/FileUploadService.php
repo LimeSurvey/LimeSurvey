@@ -244,7 +244,7 @@ class FileUploadService
      */
     private function convertFullIntoRelativePath(string $filePath)
     {
-       return substr($filePath, strlen(App()->getConfig('rootdir')));
+        return substr($filePath, strlen(App()->getConfig('rootdir')));
     }
 
     /**
