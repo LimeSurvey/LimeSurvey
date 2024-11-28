@@ -27,37 +27,42 @@ class FileUploadService
     {
         $this->checkUpdatePermission($surveyId);
         $returnedData = ['success' => false];
-        $surveyId = $this->convertSurveyIdWhenUniqUploadDir($surveyId);
-        $destinationDir = $this->getSurveyUploadDirectory($surveyId);
-        $this->uploadValidator->post = ['surveyId' => $surveyId];
-        $this->uploadValidator->files = $fileInfoArray;
-        $validationError = $this->uploadValidator->getError('file');
-        if ($validationError === null) {
-            $checkImage = LSYii_ImageValidator::validateImage(
-                $fileInfoArray['file']
-            );
-            if ($checkImage['check'] !== false) {
-                if (!is_writeable($destinationDir)) {
-                    $returnedData['uploadResultMessage'] = gT(
-                        "Could not save file"
-                    );
+        if (!empty($fileInfoArray)) {
+            $surveyId = $this->convertSurveyIdWhenUniqUploadDir($surveyId);
+            $destinationDir = $this->getSurveyUploadDirectory($surveyId);
+            $this->uploadValidator->post = ['surveyId' => $surveyId];
+            $this->uploadValidator->files = $fileInfoArray;
+            $validationError = $this->uploadValidator->getError('file');
+            if ($validationError === null) {
+                $checkImage = LSYii_ImageValidator::validateImage(
+                    $fileInfoArray['file']
+                );
+                if ($checkImage['check'] !== false) {
+                    if (!is_writeable($destinationDir)) {
+                        $returnedData['uploadResultMessage'] = gT(
+                            "Could not save file"
+                        );
+                    } else {
+                        $returnedData = $this->saveFileInDirectory(
+                            $fileInfoArray['file'],
+                            $destinationDir
+                        );
+                    }
                 } else {
-                    $returnedData = $this->saveFileInDirectory(
-                        $fileInfoArray['file'],
-                        $destinationDir
-                    );
+                    $returnedData['uploadResultMessage'] = $checkImage['uploadresult'];
                 }
             } else {
-                $returnedData['uploadResultMessage'] = $checkImage['uploadresult'];
+                $returnedData['uploadResultMessage'] = $validationError;
             }
+            unset($returnedData['debug']);
+            $returnedData['allFilesInDir'] = $this->getFilesPathsFromDirectory(
+                $destinationDir,
+                $surveyId
+            );
         } else {
-            $returnedData['uploadResultMessage'] = $validationError;
+            $returnedData['uploadResultMessage'] = gT('No file uploaded');
         }
-        unset($returnedData['debug']);
-        $returnedData['allFilesInDir'] = $this->getFilesPathsFromDirectory(
-            $destinationDir,
-            $surveyId
-        );
+
         return $returnedData;
     }
 

@@ -44,7 +44,7 @@ class FileUpload implements CommandInterface
             );
             $returnedData = $fileUploadService->storeSurveyImage(
                 $surveyId,
-                $_FILES
+                $request->getData('filesGlobal', [])
             );
         } catch (\Exception $e) {
             return $this->responseFactory->makeErrorBadRequest(
