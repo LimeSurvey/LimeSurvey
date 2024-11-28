@@ -1040,9 +1040,7 @@ class ConditionsAction extends SurveyCommonAction
                 break;
             // Delete all conditions in this scenario
             case "deletescenario":
-                LimeExpressionManager::RevertUpgradeConditionsToRelevance(null, $qid); // in case deleted the last condition
-                Condition::model()->deleteRecords(array('qid' => $qid, 'scenario' => $p_scenario));
-                LimeExpressionManager::UpgradeConditionsToRelevance(null, $qid);
+                $this->surveyCondition->deleteCondition($qid, $p_scenario);
                 $this->redirectToConditionStart($qid, $gid);
                 break;
             // Update scenario

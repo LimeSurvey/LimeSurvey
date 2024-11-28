@@ -52,8 +52,8 @@ class SurveyCondition
 
     public function resetSurveyLogic()
     {
-        LimeExpressionManager::RevertUpgradeConditionsToRelevance($this->iSurveyID);
-        Condition::model()->deleteRecords("qid in (select qid from {{questions}} where sid={$this->iSurveyID})");
+        \LimeExpressionManager::RevertUpgradeConditionsToRelevance($this->iSurveyID);
+        \Condition::model()->deleteRecords("qid in (select qid from {{questions}} where sid={$this->iSurveyID})");
     }
 
     public function insertCondition(array $args, $editSourceTab, $editTargetTab, callable $f, $ConditionConst, $prevQuestionSGQA, $tokenAttr, $ConditionRegexp)
@@ -80,12 +80,12 @@ class SurveyCondition
                 //First lets make sure there isn't already an exact replica of this condition
                 $condition_data['value'] = $ca;
 
-                $result = Condition::model()->findAllByAttributes($condition_data);
+                $result = \Condition::model()->findAllByAttributes($condition_data);
 
                 $count_caseinsensitivedupes = count($result);
 
                 if ($count_caseinsensitivedupes == 0) {
-                    $results[] = Condition::model()->insertRecords($condition_data);
+                    $results[] = \Condition::model()->insertRecords($condition_data);
                     ;
                 }
             }
@@ -217,6 +217,13 @@ class SurveyCondition
             }
         }
 
+        \LimeExpressionManager::UpgradeConditionsToRelevance(null, $qid);
+    }
+
+    public function deleteCondition($qid, $p_scenario)
+    {
+        \LimeExpressionManager::RevertUpgradeConditionsToRelevance(null, $qid); // in case deleted the last condition
+        \Condition::model()->deleteRecords(array('qid' => $qid, 'scenario' => $p_scenario));
         \LimeExpressionManager::UpgradeConditionsToRelevance(null, $qid);
     }
 }
