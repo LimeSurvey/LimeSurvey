@@ -16,9 +16,11 @@
 #welcomeModal {
     z-index : 20000;
 }
+
 .list-surveys-container {
-  display: flex;
-  padding: 8px;
-  flex-grow: 1;
-  min-width: 0;
+  #survey-grid {
+    .table {
+      box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.2);
+    }
+  }
 }

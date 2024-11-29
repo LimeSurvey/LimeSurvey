@@ -242,7 +242,7 @@ class SurveyAdministrationController extends LSBaseController
         $aData['model'] = new Survey('search');
         $aData['groupModel'] = new SurveysGroups('search');
         $aData['topbar']['title'] = gT('Survey list');
-        $aData['topbar']['backLink'] = App()->createUrl('admin/index');
+        $aData['topbar']['backLink'] = App()->createUrl('dashboard/view');
 
         $aData['topbar']['middleButtons'] = $this->renderPartial('partial/topbarBtns/leftSideButtons', [], true);
 
@@ -1862,7 +1862,7 @@ class SurveyAdministrationController extends LSBaseController
             $aData['issuperadmin'] = Permission::model()->hasGlobalPermission('superadmin', 'read');
             Survey::model()->deleteSurvey($iSurveyID);
             Yii::app()->session['flashmessage'] = gT("Survey deleted.");
-            $this->redirect(array("admin/index"));
+            $this->redirect(array("dashboard/view"));
         }
 
         $this->aData = $aData;
@@ -3417,9 +3417,6 @@ class SurveyAdministrationController extends LSBaseController
                 ->search(['pageSize' => $limit, 'currentPage' => $page]);
         }
 
-        if ($limit * $page >= $surveys->totalItemCount) {
-            return false;
-        }
 
         $boxes = [];
         foreach ($surveys->getData() as $survey) {
@@ -3431,7 +3428,7 @@ class SurveyAdministrationController extends LSBaseController
                 'iconAlter' => $state,
                 'state' => $survey->getState(),
                 'buttons' => $survey->getButtons(),
-                'link' => App()->createUrl('/surveyAdministration/view/surveyid/' . $survey->sid),
+                'link' => App()->createUrl('/surveyAdministration/view/surveyid/' . $survey->sid . '?allowRedirect=1'),
             ];
         }
 

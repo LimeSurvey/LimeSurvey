@@ -48,6 +48,7 @@ class BoxesWidget extends CWidget
     public function run()
     {
         $boxes = [];
+        $itemsCount = 0;
         foreach ($this->items as $item) {
             $item = (object)$item;
 
@@ -67,6 +68,7 @@ class BoxesWidget extends CWidget
                 if (isset($_GET['active']) && !empty($_GET['active'])) {
                     $item->model->active = $_GET['active'];
                 }
+                $itemsCount = $item->model->search()->totalItemCount;
 
                 // Set number of page
                 App()->user->setState('pageSize', $item->limit);
@@ -80,14 +82,25 @@ class BoxesWidget extends CWidget
                         'external' => $item->external ?? false,
                         'state' => $survey->getState(),
                         'buttons' => $survey->getButtons(),
-                        'link' => App()->createUrl('/surveyAdministration/view/surveyid/' . $survey->sid),
+                        'link' => App()->getConfig('editorEnabled')
+                            ? App()->createUrl(
+                                'editorLink/index', 
+                                ['route' => 'survey/' . $survey->sid]
+                            ) 
+                            : Yii::app()->createUrl(
+                                'surveyAdministration/view/', 
+                                [
+                                    'iSurveyID' => $survey->sid,
+                                    'allowRedirect' => 1
+                                ]
+                            ),
                     ];
                 }
             }
         }
         $enableLoadMoreBtn = !empty($boxes);
 
-        if (!$enableLoadMoreBtn) {
+        if (empty($boxes)) {
             if (Permission::model()->hasGlobalPermission('surveys', 'create')) {
                 $boxes[] = [
                     'type' => self::TYPE_LINK,
@@ -114,7 +127,7 @@ class BoxesWidget extends CWidget
         $this->render('boxes', [
             'items' => $boxes,
             'limit' => $this->limit,
-            'enableLoadMoreBtn' => $enableLoadMoreBtn
+            'itemsCount' => $itemsCount
         ]);
     }
 }

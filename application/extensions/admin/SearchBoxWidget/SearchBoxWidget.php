@@ -7,9 +7,9 @@
 class SearchBoxWidget extends CWidget
 {
     /**
-     * @var string $formUrl The URL to which the form will be submitted. Defaults to 'admin/index'.
+     * @var string $formUrl The URL to which the form will be submitted. Defaults to 'dashboard/view'.
      */
-    public string $formUrl = 'admin/index';
+    public string $formUrl = 'dashboard/view';
 
     /**
      * @var CActiveRecord $model The model associated with the search form.
