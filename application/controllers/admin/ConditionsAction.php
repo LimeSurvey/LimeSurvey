@@ -1047,9 +1047,7 @@ class ConditionsAction extends SurveyCommonAction
                 break;
             // Delete all conditions for this question
             case "deleteallconditions":
-                LimeExpressionManager::RevertUpgradeConditionsToRelevance(null, $qid); // in case deleted the last condition
-                Condition::model()->deleteRecords(array('qid' => $qid));
-                Yii::app()->setFlashMessage(gT("All conditions for this question have been deleted."), 'success');
+                $this->surveyCondition->deleteAllConditions($qid, Yii::app()->setFlashMessage(...));
                 $this->redirectToConditionStart($qid, $gid);
                 break;
             // Renumber scenarios

@@ -227,7 +227,7 @@ class SurveyCondition
         \LimeExpressionManager::UpgradeConditionsToRelevance(null, $qid);
     }
 
-    public function updateScenario($p_newscenarionum, $qid, $p_scenario, $f)
+    public function updateScenario($p_newscenarionum, $qid, $p_scenario, callable $f)
     {
         if ($p_newscenarionum === null) {
             $f(gT("No scenario number specified"), 'error');
@@ -236,6 +236,13 @@ class SurveyCondition
                 'qid' => $qid, 'scenario' => $p_scenario));
             \LimeExpressionManager::UpgradeConditionsToRelevance(null, $qid);
         }
+    }
+
+    public function deleteAllConditions($qid, callable $f)
+    {
+        \LimeExpressionManager::RevertUpgradeConditionsToRelevance(null, $qid); // in case deleted the last condition
+        \Condition::model()->deleteRecords(array('qid' => $qid));
+        $f(gT("All conditions for this question have been deleted."), 'success');
     }
 
     public function deleteScenario($qid, $p_scenario)
