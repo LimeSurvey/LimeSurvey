@@ -220,7 +220,7 @@ class SurveyCondition
         \LimeExpressionManager::UpgradeConditionsToRelevance(null, $qid);
     }
 
-    public function deleteCondition($qid, $p_scenario)
+    public function deleteScenario($qid, $p_scenario)
     {
         \LimeExpressionManager::RevertUpgradeConditionsToRelevance(null, $qid); // in case deleted the last condition
         \Condition::model()->deleteRecords(array('qid' => $qid, 'scenario' => $p_scenario));

@@ -1040,7 +1040,7 @@ class ConditionsAction extends SurveyCommonAction
                 break;
             // Delete all conditions in this scenario
             case "deletescenario":
-                $this->surveyCondition->deleteCondition($qid, $p_scenario);
+                $this->surveyCondition->deleteScenario($qid, $p_scenario);
                 $this->redirectToConditionStart($qid, $gid);
                 break;
             // Update scenario
