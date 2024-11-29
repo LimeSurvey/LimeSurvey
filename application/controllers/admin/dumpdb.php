@@ -21,7 +21,6 @@
  */
 class Dumpdb extends SurveyCommonAction
 {
-
     /**
      * @var array Data used for rendering views
      */
@@ -73,7 +72,7 @@ class Dumpdb extends SurveyCommonAction
         header('Content-type: application/octet-stream');
         header('Content-Disposition: attachment; filename=' . $sFileName);
         
-        header("Cache-Control: no-store, no-cache, must-revalidate");  // Don't store in cache because it is sensitive data
+        header("Cache-Control: no-store, no-cache, must-revalidate"); // Don't store in cache because it is sensitive data
     }
 
     private function getData()
