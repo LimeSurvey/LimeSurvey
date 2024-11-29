@@ -40,7 +40,7 @@
         <div id="global-settings-max-size-for-db-dump-settings" class="mb-3">
             <label class="form-label" for='global-settings-max-size-for-db-dump'><?php eT("Set limit in megabytes for direct download of the database.");?></label>
             <div>
-                <input class="form-control" type="number" id="global-settings-max-size-for-db-dump" name="global-settings-max-size-for-db-dump" value="<?php echo App()->getConfig('maxDatabaseSizeForDump') ?? 256; ?>" />
+                <input class="form-control" type="number" id="global-settings-max-size-for-db-dump" min="0" step="1" name="global-settings-max-size-for-db-dump" value="<?php echo App()->getConfig('maxDatabaseSizeForDump') ?? 256; ?>" />
                 <span class='hint'>
                     <?php eT('The recommended value is 256 MB. Depending on the system, a higher value could lead to slower performance.');?>
                 </span>
