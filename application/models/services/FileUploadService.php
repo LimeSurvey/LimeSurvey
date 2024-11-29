@@ -108,24 +108,39 @@ class FileUploadService
         string $destinationDir
     ) {
         $success = false;
-        $fileName = sanitize_filename(
+        $fileName = $fileInfoArray['name'] = sanitize_filename(
             $fileInfoArray['name'],
             false,
             false,
             false
         ); // Don't force lowercase or alphanumeric
-        $fileName = $this->handleDuplicateFileName($fileName, $destinationDir);
+        $fileAlreadyExists = $this->isDuplicateFile(
+            $fileInfoArray,
+            $destinationDir
+        );
+        if (!$fileAlreadyExists) {
+            $fileName = $this->handleDuplicateFileName(
+                $fileName,
+                $destinationDir
+            );
+        }
         $fullFilePath = $destinationDir . $fileName;
         $debugInfoArray[] = $destinationDir;
         $debugInfoArray[] = $fileName;
         $debugInfoArray[] = $fullFilePath;
-        if (!@move_uploaded_file($fileInfoArray['tmp_name'], $fullFilePath)) {
+        if (
+            $fileAlreadyExists
+            || @move_uploaded_file(
+                $fileInfoArray['tmp_name'],
+                $fullFilePath
+            )
+        ) {
+            $uploadResult = sprintf(gT("File %s uploaded"), $fileName);
+            $success = true;
+        } else {
             $uploadResult = gT(
                 "An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder."
             );
-        } else {
-            $uploadResult = sprintf(gT("File %s uploaded"), $fileName);
-            $success = true;
         }
 
         return [
@@ -150,7 +165,8 @@ class FileUploadService
     {
         $fileInfo = pathinfo($fileName);
         $baseName = $fileInfo['filename'];
-        $extension = isset($fileInfo['extension']) ? '.' . $fileInfo['extension'] : '';
+        $extension = isset($fileInfo['extension']) ? '.'
+            . $fileInfo['extension'] : '';
 
         $newFileName = $fileName;
         $counter = 1;
@@ -161,6 +177,36 @@ class FileUploadService
         }
 
         return $newFileName;
+    }
+
+    /**
+     * If a file with the same name exists in the path, this function will
+     * compare the new file with the existing one.
+     * If those two files are identical, it will return true.
+     * @param array $fileInfoArray The array containing the file and name.
+     * @param string $path The directory path where the file resides.
+     * @return bool
+     */
+    private function isDuplicateFile(array $fileInfoArray, $path)
+    {
+        $newFilePath = $fileInfoArray['tmp_name'];
+        $existingFilePath = $path . $fileInfoArray['name'];
+
+        // Check if a file with the same name exists
+        if (!file_exists($existingFilePath)) {
+            return false;
+        }
+
+        // Compare file sizes
+        if (filesize($newFilePath) !== filesize($existingFilePath)) {
+            return false;
+        }
+
+        // Compare MD5 hashes
+        $newFileHash = md5_file($newFilePath);
+        $existingFileHash = md5_file($existingFilePath);
+
+        return $newFileHash === $existingFileHash;
     }
 
     /**
