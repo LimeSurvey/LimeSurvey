@@ -160,7 +160,7 @@ class Permission extends LSActiveRecord
             'export' => false,
             'title' => gT("Superadministrator"),
             'description' => gT("Unlimited administration permissions"),
-            'warning' => gT("This permission allows all actions, without any limit. Please make sure to assign this only to trusted persons."),
+            'warning' => gT("This setting allows an admin to perform all actions. Please make sure to assign this only to trusted persons."),
             'img' => 'ri-star-fill',
         );
         $aPermissions['auth_db'] = array(
@@ -883,7 +883,7 @@ class Permission extends LSActiveRecord
             'templates' => array(
                 'title' => gT("Themes"),
                 'description' => gT("Permission to create, view, update, delete, export and import themes"),
-                'warning' => gT("This permission allows to add cross-site scripting using JavaScript function. Please make sure to assign this only to trusted persons."),
+                'warning' => gT("Update/import theme allows an admin to potentially use cross-site scripting using JavaScript. Please make sure to assign this only to trusted persons."),
                 'img' => ' ri-brush-fill',
             ),
             'labelsets' => array(
