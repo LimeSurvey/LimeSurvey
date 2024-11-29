@@ -12,7 +12,7 @@ $fileUploadSchema = Schema::object()
 
 $rest = [];
 
-$rest['v1/file-upload/$id'] = [
+$rest['v1/file-upload-survey-image/$id'] = [
     'POST' => [
         'tag' => 'upload',
         'multipart' => true,
