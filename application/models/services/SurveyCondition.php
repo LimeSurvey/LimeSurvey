@@ -227,6 +227,17 @@ class SurveyCondition
         \LimeExpressionManager::UpgradeConditionsToRelevance(null, $qid);
     }
 
+    public function updateScenario($p_newscenarionum, $qid, $p_scenario, $f)
+    {
+        if ($p_newscenarionum === null) {
+            $f(gT("No scenario number specified"), 'error');
+        } else {
+            \Condition::model()->insertRecords(array('scenario' => $p_newscenarionum), true, array(
+                'qid' => $qid, 'scenario' => $p_scenario));
+            \LimeExpressionManager::UpgradeConditionsToRelevance(null, $qid);
+        }
+    }
+
     public function deleteScenario($qid, $p_scenario)
     {
         \LimeExpressionManager::RevertUpgradeConditionsToRelevance(null, $qid); // in case deleted the last condition
