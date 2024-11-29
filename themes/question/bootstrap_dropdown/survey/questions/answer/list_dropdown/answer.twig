@@ -51,15 +51,19 @@
         $(function () {
             var selectPicker = $('#answer{{ name }}').selectpicker();
 
-            // Custom js to make width setting work with this beta version:
+            {#
+                Custom js to make width setting work with this beta version.
+                The bootstrap-select's auto-width feature relies on a handler set for 'loaded.bs.select' by setWidth(),
+                which is called after the event is triggered, so the auto-width's handler is never executed.
+                This is a workaround to make the auto-width work.
+            #}
             {% if width_entry != '' %}
-            selectPicker.on('loaded.bs.select', function () {
-                selectPicker.selectpicker('open');
-                var dropdown = selectPicker.parent();
-                var width = dropdown.find('.dropdown-menu.show').width();
-                dropdown.css('width', width);
-                selectPicker.selectpicker('toggle');
-                $('.bootstrap-select .btn.dropdown-toggle').blur();
+            selectPicker.on('loaded.bs.select.firstload', function () {
+                selectPicker.off('loaded.bs.select.firstload');
+                // Trigger the event again with a slight delay to allow setWidth to run
+                setTimeout(function () {
+                    selectPicker.trigger('loaded.bs.select');
+                }, 200);
             });
             {% endif %}
         });
