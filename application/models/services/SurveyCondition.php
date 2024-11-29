@@ -251,4 +251,21 @@ class SurveyCondition
         \Condition::model()->deleteRecords(array('qid' => $qid, 'scenario' => $p_scenario));
         \LimeExpressionManager::UpgradeConditionsToRelevance(null, $qid);
     }
+
+    public function renumberScenarios(array $args, callable $f)
+    {
+        /** @var string $p_cid */
+        extract($args);
+
+        $query = "SELECT DISTINCT scenario FROM {{conditions}} WHERE qid=:qid ORDER BY scenario";
+        $result = $this->app->db->createCommand($query)->bindParam(":qid", $qid, \PDO::PARAM_INT)->query() or safeDie("Couldn't select scenario<br />$query<br />");
+        $newindex = 1;
+
+        foreach ($result->readAll() as $srow) {
+            \Condition::model()->insertRecords(array('scenario' => $newindex), true, array('qid' => $qid, 'scenario' => $srow['scenario']));
+            $newindex++;
+        }
+        \LimeExpressionManager::UpgradeConditionsToRelevance(null, $qid);
+        $f(gT("All conditions scenarios were renumbered."));
+    }
 }

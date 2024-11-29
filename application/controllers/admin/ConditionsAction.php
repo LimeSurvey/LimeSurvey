@@ -909,19 +909,7 @@ class ConditionsAction extends SurveyCommonAction
      */
     protected function renumberScenarios(array $args)
     {
-        /** @var string $p_cid */
-        extract($args);
-
-        $query = "SELECT DISTINCT scenario FROM {{conditions}} WHERE qid=:qid ORDER BY scenario";
-        $result = Yii::app()->db->createCommand($query)->bindParam(":qid", $qid, PDO::PARAM_INT)->query() or safeDie("Couldn't select scenario<br />$query<br />");
-        $newindex = 1;
-
-        foreach ($result->readAll() as $srow) {
-            Condition::model()->insertRecords(array('scenario' => $newindex), true, array('qid' => $qid, 'scenario' => $srow['scenario']));
-            $newindex++;
-        }
-        LimeExpressionManager::UpgradeConditionsToRelevance(null, $qid);
-        Yii::app()->setFlashMessage(gT("All conditions scenarios were renumbered."));
+        $this->surveyCondition->renumberScenarios($args, Yii::app()->setFlashMessage(...));
     }
 
     /**
