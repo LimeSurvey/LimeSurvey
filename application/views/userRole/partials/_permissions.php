@@ -52,7 +52,7 @@ Yii::app()->getController()->renderPartial(
                     <?php
                     echo $aCRUDPermissions['description']; ?></div>
                     <?php if (!empty($aCRUDPermissions['warning'])) : ?>
-                        <div><i class="ri-error-warning-fill text-danger opacity-50" aria-hidden="true"></i>
+                        <div class="text-danger"><i class="ri-error-warning-fill" aria-hidden="true"></i>
                         <?php echo $aCRUDPermissions['warning']; ?></div>
                     <?php endif; ?>
                 </td>
