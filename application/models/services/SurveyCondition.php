@@ -268,4 +268,83 @@ class SurveyCondition
         \LimeExpressionManager::UpgradeConditionsToRelevance(null, $qid);
         $f(gT("All conditions scenarios were renumbered."));
     }
+
+    public function copyConditions(array $args, callable $f)
+    {
+        extract($args);
+
+        $copyconditionsfrom = returnGlobal('copyconditionsfrom');
+        $copyconditionsto = returnGlobal('copyconditionsto');
+        if (isset($copyconditionsto) && is_array($copyconditionsto) && isset($copyconditionsfrom) && is_array($copyconditionsfrom)) {
+            //Get the conditions we are going to copy and quote them properly
+            foreach ($copyconditionsfrom as &$entry) {
+                $entry = $this->app->db->quoteValue($entry);
+            }
+            $query = "SELECT * FROM {{conditions}}\n"
+                . "WHERE cid in (";
+            $query .= implode(", ", $copyconditionsfrom);
+            $query .= ")";
+            $result = $this->app->db->createCommand($query)->query() or
+                safeDie("Couldn't get conditions for copy<br />$query<br />");
+
+            foreach ($result->readAll() as $row) {
+                $proformaconditions[] = array(
+                    "scenario"      =>    $row['scenario'],
+                    "cqid"          =>    $row['cqid'],
+                    "cfieldname"    =>    $row['cfieldname'],
+                    "method"        =>    $row['method'],
+                    "value"         =>    $row['value']
+                );
+            } // while
+
+            foreach ($copyconditionsto as $copyc) {
+                list(,, $newqid) = explode("X", (string) $copyc);
+                foreach ($proformaconditions as $pfc) {
+                    //TIBO
+
+                    //First lets make sure there isn't already an exact replica of this condition
+                    $conditions_data = array(
+                        'qid'        => (int) $newqid,
+                        'scenario'   => $pfc['scenario'],
+                        'cqid'       => $pfc['cqid'],
+                        'cfieldname' => $pfc['cfieldname'],
+                        'method'     => $pfc['method'],
+                        'value'      => $pfc['value']
+                    );
+
+                    $result = \Condition::model()->findAllByAttributes($conditions_data);
+
+                    $count_caseinsensitivedupes = count($result);
+
+                    $countduplicates = 0;
+                    if ($count_caseinsensitivedupes != 0) {
+                        foreach ($result as $ccrow) {
+                            if ($ccrow['value'] == $pfc['value']) {
+                                $countduplicates++;
+                            }
+                        }
+                    }
+
+                    if ($countduplicates == 0) {
+                        //If there is no match, add the condition.
+                        \Condition::model()->insertRecords($conditions_data);
+                        $conditionCopied = true;
+                    } else {
+                        $conditionDuplicated = true;
+                    }
+                }
+            }
+
+            if (isset($conditionCopied) && $conditionCopied === true) {
+                if (isset($conditionDuplicated) && $conditionDuplicated == true) {
+                    $f(gT("Condition successfully copied (some were skipped because they were duplicates)"), 'warning');
+                } else {
+                    $f(gT("Condition successfully copied"));
+                }
+            } else {
+                $f(gT("No conditions could be copied (due to duplicates)"), 'error');
+            }
+        }
+        \LimeExpressionManager::UpgradeConditionsToRelevance($this->iSurveyID); // do for whole survey, since don't know which questions affected.
+    }
 }
