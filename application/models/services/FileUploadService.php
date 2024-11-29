@@ -57,9 +57,13 @@ class FileUploadService
             $returnedData['uploaded']['filePath'] = $this->convertFullIntoRelativePath(
                 $returnedData['debug'][2]
             );
+            $returnedData['uploaded']['fileUrl'] = App()->getBaseUrl(true)
+                . $returnedData['debug'][2];
             $returnedData['uploaded']['previewPath'] = $this->getPreviewPath(
                 $returnedData['uploaded']['filePath']
             );
+            $returnedData['uploaded']['previewUrl'] = App()->getBaseUrl(true)
+                . $returnedData['uploaded']['filePath'];
             unset($returnedData['debug']);
             $returnedData['allFilesInDir'] = $this->getFilesPathsFromDirectory(
                 $destinationDir,
@@ -274,9 +278,12 @@ class FileUploadService
         $files = $this->getFilesFromDirectory($directory, $surveyId);
         foreach ($files as $i => $file) {
             $filesOutput[$i]['filePath'] = $relativePath . $file;
+            $filesOutput[$i]['fileUrl'] = App()->getBaseUrl(true) . $filesOutput[$i]['filePath'];
             $filesOutput[$i]['previewPath'] = $this->getPreviewPath(
                 $filesOutput[$i]['filePath']
             );
+            $filesOutput[$i]['previewUrl'] = App()->getBaseUrl(true) .
+                $filesOutput[$i]['filePath'];
         }
 
         return $filesOutput;

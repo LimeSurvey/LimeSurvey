@@ -58,7 +58,7 @@ class EditorLinkController extends LSYii_Controller
                 . static::REACT_APP_BASE_PATH
         );
         $editorRoute = Yii::app()->request->getQuery('route');
-        $url = $editorUrl . $editorRoute;
+        $url = 'http://ls-ce:3000/#/' . $editorRoute;
         $this->redirect($url);
     }
 
