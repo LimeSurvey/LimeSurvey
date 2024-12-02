@@ -11211,7 +11211,7 @@ textarea.form-control-lg {
 }
 .survey-response-page .accordion-button,
 .survey-response-page .accordion-body {
-  background: #F9F9FB;
+  background: #EEEFF7;
 }
 .survey-response-page .accordion-button {
   padding-right: 0;
@@ -18091,7 +18091,7 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
   padding-top: 10px;
   padding-bottom: 10px;
   z-index: 1000;
-  background-color: #F9F9FB;
+  background-color: #EEEFF7;
 }
 .topbar .ls-topbar-buttons {
   margin-bottom: -4px;
@@ -18100,6 +18100,7 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
   margin-bottom: 4px;
 }
 .topbar.scroll-shadow {
+  background-color: #fff;
   box-shadow: 0 1px 20px 0 rgb(196, 196, 196);
 }
 .topbar .ls-breadcrumb {
@@ -18399,23 +18400,23 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
   color: #1E1E1E;
   border: 0;
   border-radius: 0;
-  border-top: 2px solid #F9F9FB;
+  border-top: 2px solid #EEEFF7;
   border-bottom: 2px solid #D3D5DA;
-  background-color: #F9F9FB;
+  background-color: #EEEFF7;
   padding: 6px 20px;
 }
 .nav-tabs .nav-link:hover, .nav-tabs .nav-link:focus {
-  border-top: 2px solid #F9F9FB;
+  border-top: 2px solid #EEEFF7;
 }
 .nav-tabs .nav-link:hover:not(.active) {
   border-bottom: 2px solid rgba(123, 97, 255, 0.4);
-  border-top: 2px solid #F9F9FB;
+  border-top: 2px solid #EEEFF7;
   box-shadow: inset 0 0 0 1px rgba(123, 97, 255, 0.4);
 }
 .nav-tabs .nav-link.disabled, .nav-tabs .nav-link:disabled {
   color: #9094A7;
   border-bottom: 2px solid #D3D5DA;
-  background-color: #F9F9FB;
+  background-color: #EEEFF7;
 }
 .nav-tabs .nav-link.active,
 .nav-tabs .nav-item.show .nav-link {
