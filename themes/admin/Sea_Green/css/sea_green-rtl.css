@@ -19601,7 +19601,7 @@ table [class^=ri-], table [class*=" ri-"] {
   color: #1E1E1E;
 }
 .accordion-button:not(.collapsed) {
-  background-color: #F9F9FB;
+  background-color: #EEEFF7;
   box-shadow: none;
 }
 .accordion-button:not(.collapsed)::after {
