@@ -23,9 +23,9 @@ $(document).on('ready  pjax:scriptcomplete', function(){
 $(window).on("load scroll", function () {
     if ($(window).scrollTop() > 0) {
         $(".ls-breadcrumb .side-menu-logo").removeClass('d-none');
-        $(".topbar").css("background-color", "white");
+        // $(".topbar").css("background-color", "white");
     } else {
         $(".ls-breadcrumb .side-menu-logo").addClass('d-none');
-        $(".topbar").css("background-color", "inherit");
+        // $(".topbar").css("background-color", "inherit");
     }
 });
