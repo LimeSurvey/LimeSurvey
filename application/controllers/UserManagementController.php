@@ -151,7 +151,7 @@ class UserManagementController extends LSBaseController
             $aUser['full_name'] = flattenText($aUser['full_name'], false, true);
         }
 
-        $passwordTest = Yii::app()->request->getParam('password_repeat', false);
+        $passwordTest = Yii::app()->request->getParam('password_repeat', '');
 
         if (!empty($passwordTest)) {
             if ($passwordTest !== $aUser['password']) {
