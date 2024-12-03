@@ -19,12 +19,12 @@ App()->getClientScript()->registerScript(
         <ul class="nav nav-tabs" id="boxeslist">
             <li class="nav-item">
                 <a class="nav-link active" href='#boxes' data-bs-toggle="tab">
-                    <?php eT('Boxes') ?>
+                    <?php eT('Buttons') ?>
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href='#boxsettings' data-bs-toggle="tab">
-                    <?php eT('Box Settings'); ?>
+                    <?php eT('Settings'); ?>
                 </a>
             </li>
         </ul>
