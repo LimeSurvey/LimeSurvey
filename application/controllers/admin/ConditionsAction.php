@@ -872,7 +872,15 @@ class ConditionsAction extends SurveyCommonAction
         }
     }
 
-    protected function renderPartialView($what, $data = null, $return = false, $processOutput = false)
+    /**
+     * Maps keywords with paths so we can ensure that the service is agnostic to where the paths are which gives us flexibility
+     * @param string $what
+     * @param array $data
+     * @param bool $return
+     * @param bool $processOutput
+     * @return string
+     */
+    protected function renderPartialView(string $what, array $data = null, bool $return = false, bool $processOutput = false)
     {
         switch ($what) {
             case 'navigator':
@@ -925,7 +933,13 @@ class ConditionsAction extends SurveyCommonAction
         );
     }
 
-    protected function myCreateUrl($pathKey, $params = [])
+    /**
+     * Maps $pathKey with $path
+     * @param string $pathKey
+     * @param array $params
+     * @return string
+     */
+    protected function myCreateUrl(string $pathKey, array $params = [])
     {
         switch ($pathKey) {
             case 'quickAddCondition':
@@ -943,6 +957,13 @@ class ConditionsAction extends SurveyCommonAction
         );
     }
 
+    /**
+     * Adds a script to the view so the service can be agnostic to paths and scripts
+     * @param string $key
+     * @param string $which
+     * @param integer $how
+     * @return void
+     */
     protected function addScript($key, $which, $how)
     {
         App()->getClientScript()->registerScriptFile(App()->getConfig($key) . $which . '.js', $how);
