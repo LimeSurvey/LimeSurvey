@@ -82,17 +82,14 @@ class BoxesWidget extends CWidget
                         'external' => $item->external ?? false,
                         'state' => $survey->getState(),
                         'buttons' => $survey->getButtons(),
-                        'link' => App()->getConfig('editorEnabled')
+                        'link' => App()->getConfig('editorEnabled') && Yii::app()->getConfig("debug")
                             ? App()->createUrl(
-                                'editorLink/index', 
+                                'editorLink/index',
                                 ['route' => 'survey/' . $survey->sid]
-                            ) 
+                            )
                             : Yii::app()->createUrl(
-                                'surveyAdministration/view/', 
-                                [
-                                    'iSurveyID' => $survey->sid,
-                                    'allowRedirect' => 1
-                                ]
+                                'surveyAdministration/view/',
+                                ['iSurveyID' => $survey->sid]
                             ),
                     ];
                 }
