@@ -18123,7 +18123,7 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
   margin-bottom: 4px;
 }
 .topbar.scroll-shadow {
-  background-color: #fff;
+  background-color: inherit;
   box-shadow: 0 1px 20px 0 rgb(196, 196, 196);
 }
 .topbar .ls-breadcrumb {
