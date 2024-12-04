@@ -420,6 +420,7 @@ class GlobalSettings extends SurveyCommonAction
         SettingGlobal::setSetting('characterset', Yii::app()->getRequest()->getPost('characterset'));
         SettingGlobal::setSetting('sideMenuBehaviour', Yii::app()->getRequest()->getPost('sideMenuBehaviour', 'adaptive'));
         SettingGlobal::setSetting('overwritefiles', Yii::app()->getRequest()->getPost('overwritefiles') == '1' ? 'Y' : 'N');
+        SettingGlobal::setSetting('maxDatabaseSizeForDump', Yii::app()->getRequest()->getPost('global-settings-max-size-for-db-dump'));
         //Save user administration settings
         SettingGlobal::setSetting('sendadmincreationemail', App()->getRequest()->getPost('sendadmincreationemail'));
         SettingGlobal::setSetting('admincreationemailsubject', App()->getRequest()->getPost('admincreationemailsubject'));
