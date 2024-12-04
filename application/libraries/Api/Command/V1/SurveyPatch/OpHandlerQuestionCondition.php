@@ -62,16 +62,52 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
      * Updates multiple attributes for a single question. Format is exactly the
      * same as in Question create, so they share the prepare function.
      *
-     * patch structure:
+     *deleteAllConditions:
      * {
-     *     deleteAllConditions:
      *     "patch": [{
      *             "entity": "questionCondition",
      *             "op": "delete",
      *             "id": 809,
      *             "props": {
-     *                 qid: 15977,
-     *                 action: deleteAllConditions
+     *                 "qid": 15977,
+     *                 "action": "deleteAllConditions"
+     *             }
+     *         }
+     *     ]
+     * }
+     * deleteScenario:
+     * {
+     *     "patch": [{
+     *             "entity": "questionCondition",
+     *             "op": "delete",
+     *             "id": 809,
+     *             "props": {
+     *                 "qid": 15977,
+     *                 "scenarios": [
+     *                     {
+     *                         "scid": 3,
+     *                         "action": "deleteScenario"
+     *                     }
+     *                 ]
+     *             }
+     *         }
+     *     ]
+     * }
+     * updateScenario:
+     * {
+     *     "patch": [{
+     *             "entity": "questionCondition",
+     *             "op": "update",
+     *             "id": 809,
+     *             "props": {
+     *                 "qid": 15977,
+     *                 "scenarios": [
+     *                     {
+     *                         "scid": 3,
+     *                         "action": "updateScenario",
+     *                         "scenarioNumber": 123
+     *                     }
+     *                 ]
      *             }
      *         }
      *     ]
@@ -107,10 +143,16 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
                     $action = $scenario['action'];
                     switch ($action) {
                         case "deleteScenario":
-                            if ($op->getType()->getId() !== opTypeDelete::ID) {
+                            if ($op->getType()->getId() !== OpTypeDelete::ID) {
                                 throw new \Exception("Incompatible op with the action");
                             }
                             $this->surveyCondition->deleteScenario($qid, $scid);
+                            break;
+                        case "updateScenario":
+                            if ($op->getType()->getId() !== OpTypeUpdate::ID) {
+                                throw new \Exception("Incompatible op with the action");
+                            }
+                            $this->surveyCondition->updateScenario($scenario['scenarioNumber'], $qid, $scid, $this->message(...));
                             break;
                     }
                 }
@@ -141,6 +183,10 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
         return true;
     }
 
+    protected function validateUpdateScenario($scenario)
+    {
+        return intval($scenario['scenarioNumber'] ?? 0);
+    }
     /**
      * Checks if patch is valid for this operation.
      * @param OpInterface $op
@@ -170,6 +216,12 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
                                 if (!$this->validateDeleteScenario($scenario)) {
                                     throw new \Exception("Cannot delete scenario");
                                 }
+                                break;
+                            case "updateScenario":
+                                if (!$this->validateUpdateScenario($scenario)) {
+                                    throw new \Exception("Cannot update scenario");
+                                }
+                                break;
                         }
                     }
                 }
