@@ -18,7 +18,8 @@ use LimeSurvey\ObjectPatch\{
     Op\OpInterface,
     OpHandler\OpHandlerException,
     OpHandler\OpHandlerInterface,
-    OpType\OpTypeUpdate
+    OpType\OpTypeUpdate,
+    OpType\OpTypeDelete
 };
 
 class OpHandlerQuestionCondition implements OpHandlerInterface
@@ -90,7 +91,11 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
             $action = $op->getProps()['action'];
             switch ($action) {
                 case "deleteAllConditions":
+                    if ($op->getType()->getId() !== OpTypeDelete::ID) {
+                        throw new \Exception("Incompatible op with the action");
+                    }
                     $this->surveyCondition->deleteAllConditions($qid, $this->message(...));
+                    break;
             }
         } else {
             foreach ($op->getProps()['scenarios'] as $scenario) {
@@ -134,6 +139,10 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
                     if (!$this->validateDeleteAllConditions($props)) {
                         throw new \Exception("Invalid operation");
                     }
+            }
+        } else {
+            if (!isset($props['scenarios'])) {
+                throw new \Exception("No action for the scenarios");
             }
         }
         return [];
