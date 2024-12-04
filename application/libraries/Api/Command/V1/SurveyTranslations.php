@@ -47,7 +47,7 @@ class SurveyTranslations implements CommandInterface
      */
     public function run(Request $request)
     {
-        $surveyId = (string) $request->getData('_id');
+        $surveyId = (string)$request->getData('_id');
         $hasPermission = $this->permission->hasSurveyPermission(
             (int)$surveyId,
             'survey',
@@ -71,7 +71,7 @@ class SurveyTranslations implements CommandInterface
 
         $translations = [];
         $surveyLanguages = $surveyModel->allLanguages;
-        foreach($surveyLanguages as $language) {
+        foreach ($surveyLanguages as $language) {
             // TODO: here is the place to get all the translations and convert them to the expected format
             $translations[$language]['Structure'] = 'Structure_' . $language;
         }
