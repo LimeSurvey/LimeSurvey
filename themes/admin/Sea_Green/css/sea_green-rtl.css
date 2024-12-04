@@ -11338,11 +11338,6 @@ blockquote.float-end {
   padding-left: 12px;
 }
 
-.container-fluid#in_survey_common_action, #in_survey_common_action.container-sm, #in_survey_common_action.container-md, #in_survey_common_action.container-lg, #in_survey_common_action.container-xl, #in_survey_common_action.container-xxl {
-  padding-right: 0px;
-  padding-left: 0px;
-}
-
 .full-page-wrapper {
   position: relative;
   padding-bottom: 65px;
