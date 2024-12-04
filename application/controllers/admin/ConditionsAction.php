@@ -492,13 +492,13 @@ class ConditionsAction extends SurveyCommonAction
     }
 
     /**
-     * @param array $args
+     * @param int $qid
      * @return void
      * @throws CException
      */
-    protected function renumberScenarios(array $args)
+    protected function renumberScenarios(int $qid)
     {
-        $this->surveyCondition->renumberScenarios($args, Yii::app()->setFlashMessage(...));
+        $this->surveyCondition->renumberScenarios($qid, Yii::app()->setFlashMessage(...));
     }
 
     /**
@@ -555,7 +555,7 @@ class ConditionsAction extends SurveyCommonAction
                 break;
             // Renumber scenarios
             case "renumberscenarios":
-                $this->renumberScenarios($args);
+                $this->renumberScenarios($qid);
                 $this->redirectToConditionStart($qid, $gid);
                 break;
             // Copy conditions if this is copy

@@ -349,11 +349,9 @@ class SurveyCondition
      * @param callable $write
      * @return void
      */
-    public function renumberScenarios(array $args, callable $write)
+    public function renumberScenarios(int $qid, callable $write)
     {
         /** @var string $p_cid */
-        extract($args);
-
         $query = "SELECT DISTINCT scenario FROM {{conditions}} WHERE qid=:qid ORDER BY scenario";
         $result = $this->app->db->createCommand($query)->bindParam(":qid", $qid, \PDO::PARAM_INT)->query() or safeDie("Couldn't select scenario<br />$query<br />");
         $newindex = 1;

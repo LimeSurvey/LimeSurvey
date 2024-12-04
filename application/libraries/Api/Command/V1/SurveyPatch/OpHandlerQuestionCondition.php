@@ -53,7 +53,7 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
         return $collection;
     }
 
-    public function message($message, $type)
+    public function message($message, $type = 'success')
     {
         //dummy method at this point, because we do not support success messages yet
     }
@@ -62,7 +62,20 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
      * Updates multiple attributes for a single question. Format is exactly the
      * same as in Question create, so they share the prepare function.
      *
-     *deleteAllConditions:
+     * renumberScenarios:
+     * {
+     *     "patch": [{
+     *             "entity": "questionCondition",
+     *             "op": "update",
+     *             "id": 809,
+     *             "props": {
+     *                 "qid": 15977,
+     *                 "action": "renumberScenarios"
+     *             }
+     *         }
+     *     ]
+     * }
+     * deleteAllConditions:
      * {
      *     "patch": [{
      *             "entity": "questionCondition",
@@ -71,24 +84,6 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
      *             "props": {
      *                 "qid": 15977,
      *                 "action": "deleteAllConditions"
-     *             }
-     *         }
-     *     ]
-     * }
-     * deleteScenario:
-     * {
-     *     "patch": [{
-     *             "entity": "questionCondition",
-     *             "op": "delete",
-     *             "id": 809,
-     *             "props": {
-     *                 "qid": 15977,
-     *                 "scenarios": [
-     *                     {
-     *                         "scid": 3,
-     *                         "action": "deleteScenario"
-     *                     }
-     *                 ]
      *             }
      *         }
      *     ]
@@ -106,6 +101,24 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
      *                         "scid": 3,
      *                         "action": "updateScenario",
      *                         "scenarioNumber": 123
+     *                     }
+     *                 ]
+     *             }
+     *         }
+     *     ]
+     * }
+     * deleteScenario:
+     * {
+     *     "patch": [{
+     *             "entity": "questionCondition",
+     *             "op": "delete",
+     *             "id": 809,
+     *             "props": {
+     *                 "qid": 15977,
+     *                 "scenarios": [
+     *                     {
+     *                         "scid": 3,
+     *                         "action": "deleteScenario"
      *                     }
      *                 ]
      *             }
@@ -131,6 +144,12 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
                         throw new \Exception("Incompatible op with the action");
                     }
                     $this->surveyCondition->deleteAllConditions($qid, $this->message(...));
+                    break;
+                case "renumberScenarios":
+                    if ($op->getType()->getId() !== OpTypeUpdate::ID) {
+                        throw new \Exception("Incompatible op with the action");
+                    }
+                    $this->surveyCondition->renumberScenarios($qid, $this->message(...));
                     break;
             }
         } else {
@@ -172,6 +191,11 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
         );*/
     }
 
+    protected function validateRenumberScenarios($props)
+    {
+        return true;
+    }
+
     protected function validateDeleteAllConditions($props)
     {
         //At this point we have already checked everything we needed
@@ -187,6 +211,7 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
     {
         return intval($scenario['scenarioNumber'] ?? 0);
     }
+
     /**
      * Checks if patch is valid for this operation.
      * @param OpInterface $op
@@ -204,6 +229,12 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
                     if (!$this->validateDeleteAllConditions($props)) {
                         throw new \Exception("Invalid operation");
                     }
+                    break;
+                case 'renumberScenarios':
+                    if (!$this->validateRenumberScenarios($props)) {
+                        throw new \Exception("Cannot renumber scenarios");
+                    }
+                    break;
             }
         } else {
             if (!isset($props['scenarios'])) {
