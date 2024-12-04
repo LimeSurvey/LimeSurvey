@@ -99,7 +99,21 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
             }
         } else {
             foreach ($op->getProps()['scenarios'] as $scenario) {
-                //$scid = $scenario['scid'];
+                if (!isset($scenario['scid'])) {
+                    throw new \Exception('scid not specified');
+                }
+                $scid = $scenario['scid'];
+                if (isset($scenario['action'])) {
+                    $action = $scenario['action'];
+                    switch ($action) {
+                        case "deleteScenario":
+                            if ($op->getType()->getId() !== opTypeDelete::ID) {
+                                throw new \Exception("Incompatible op with the action");
+                            }
+                            $this->surveyCondition->deleteScenario($qid, $scid);
+                            break;
+                    }
+                }
             }
         }
         //$preparedData = $this->transformer->transformAll($op->getProps());
@@ -119,6 +133,11 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
     protected function validateDeleteAllConditions($props)
     {
         //At this point we have already checked everything we needed
+        return true;
+    }
+
+    protected function validateDeleteScenario($scenario)
+    {
         return true;
     }
 
@@ -143,6 +162,17 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
         } else {
             if (!isset($props['scenarios'])) {
                 throw new \Exception("No action for the scenarios");
+            } else {
+                foreach ($props['scenarios'] as $scenario) {
+                    if (isset($scenario['action'])) {
+                        switch ($scenario['action']) {
+                            case "deleteScenario":
+                                if (!$this->validateDeleteScenario($scenario)) {
+                                    throw new \Exception("Cannot delete scenario");
+                                }
+                        }
+                    }
+                }
             }
         }
         return [];
