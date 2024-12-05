@@ -24,16 +24,6 @@
                 </div>
             </div>
             <div class="sidebar-icons-item">
-                <div class="sidebar-icon" data-target="#survey-menu-panel" onclick="window.location='<?php echo App()->createUrl("admin/tokens/sa/index/surveyid/" . $sid);?>'">
-                        <div data-bs-toggle="tooltip"
-                         title="<?php echo gT('Survey menu'); ?>"
-                         data-bs-offset="0, 20"
-                         data-bs-placement="right">
-                        <i class="ri-file-text-line btn btn-g-800 btn-icon <?php echo $this->activePanel == 'survey-menu-panel' ? 'active' : ''?>"></i>
-                    </div>
-                </div>
-            </div>
-            <div class="sidebar-icons-item">
                 <div class="sidebar-icon" data-target="#survey-presentation-panel" onclick="window.location='<?php echo App()->createUrl('editorLink/index', ['route' => 'survey/' .  $sid . '/presentation/presentation']);?>'">
                     <div data-bs-toggle="tooltip"
                          title="<?php echo gT('Survey presentation'); ?>"
@@ -43,6 +33,17 @@
                     </div>
                 </div>
             </div>
+            <div class="sidebar-icons-item">
+                <div class="sidebar-icon" data-target="#survey-menu-panel" onclick="window.location='<?php echo App()->createUrl("admin/tokens/sa/index/surveyid/" . $sid);?>'">
+                        <div data-bs-toggle="tooltip"
+                         title="<?php echo gT('Survey menu'); ?>"
+                         data-bs-offset="0, 20"
+                         data-bs-placement="right">
+                        <i class="ri-file-text-line btn btn-g-800 btn-icon <?php echo $this->activePanel == 'survey-menu-panel' ? 'active' : ''?>"></i>
+                    </div>
+                </div>
+            </div>
+
             <div class="sidebar-icons-item">
                 <div class="sidebar-icon" data-target="#survey-permissions-panel" onclick="window.location='<?php echo App()->createUrl('surveyPermissions/index/', ['surveyid' => $sid]);?>'">
                     <div data-bs-toggle="tooltip"
