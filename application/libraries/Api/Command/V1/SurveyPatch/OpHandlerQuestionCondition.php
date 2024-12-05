@@ -76,6 +76,20 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
      *         }
      *     ]
      * }
+     * copyConditions:
+     * {
+     *     "patch": [{
+     *             "entity": "questionCondition",
+     *             "op": "create",
+     *             "id": 809,
+     *             "props": {
+     *                 "qid": 15977,
+     *                 "fromqid": 15976,
+     *                 "action": "copyConditions"
+     *             }
+     *         }
+     *     ]
+     * }
      * deleteAllConditions:
      * {
      *     "patch": [{
