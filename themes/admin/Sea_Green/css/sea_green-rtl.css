@@ -18117,6 +18117,7 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
   margin-right: 4px;
 }
 .survey-actionbar .survey-actionbar-button {
+  background-color: inherit;
   border-width: 2px;
   border-radius: 5px;
   margin-bottom: 4px;
@@ -18125,6 +18126,7 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
   box-shadow: none;
 }
 .survey-actionbar .survey-actionbar-formfield {
+  background-color: inherit;
   cursor: pointer;
   color: #6E748C;
   border-width: 2px;
