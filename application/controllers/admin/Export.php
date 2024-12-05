@@ -113,9 +113,14 @@ class Export extends SurveyCommonAction
     public function group()
     {
         $gid = sanitize_int(Yii::app()->request->getParam('gid'));
-        $iSurveyID = sanitize_int(Yii::app()->request->getParam('surveyid'));
-
-        group_export("exportstructurecsvGroup", $iSurveyID, $gid);
+        $group = QuestionGroup::model()->findByPk($gid);
+        if (empty($group)) {
+            throw new CHttpException(404, gT("Invalid group id"));
+        }
+        if (!Permission::model()->hasSurveyPermission($group->sid, 'surveycontent', 'export')) {
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
+        }
+        group_export("exportstructurecsvGroup", $group->sid, $gid);
 
         return;
     }
@@ -125,10 +130,15 @@ class Export extends SurveyCommonAction
      */
     public function question()
     {
-        $gid = sanitize_int(Yii::app()->request->getParam('gid'));
         $qid = sanitize_int(Yii::app()->request->getParam('qid'));
-        $iSurveyID = sanitize_int(Yii::app()->request->getParam('surveyid'));
-        questionExport("exportstructurecsvQuestion", $iSurveyID, $gid, $qid);
+        $question = Question::model()->findByPk($qid);
+        if (empty($question)) {
+            throw new CHttpException(404, gT("Invalid question id"));
+        }
+        if (!Permission::model()->hasSurveyPermission($question->sid, 'surveycontent', 'export')) {
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
+        }
+        questionExport("exportstructurecsvQuestion", $question->sid, $question->gid, $qid);
     }
 
     /**
