@@ -508,7 +508,7 @@ class ConditionsAction extends SurveyCommonAction
      */
     protected function copyConditions(array $args)
     {
-        $this->surveyCondition->copyConditions($args, Yii::app()->setFlashMessage(...));
+        $this->surveyCondition->copyConditions(returnGlobal('copyconditionsfrom'), returnGlobal('copyconditionsto'), Yii::app()->setFlashMessage(...));
     }
 
     /**

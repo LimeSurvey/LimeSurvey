@@ -19,6 +19,12 @@ class SurveyCondition
     protected string $language;
     protected const X = 'X';
 
+    public function setISurveyID(int $iSurveyID)
+    {
+        $this->iSurveyID = $iSurveyID;
+        return $this;
+    }
+
     /**
      * Gets the survey table by name and id
      * @param string $name
@@ -364,18 +370,24 @@ class SurveyCondition
         $write(gT("All conditions scenarios were renumbered."));
     }
 
+    public function getCidsOfQid($qid)
+    {
+        $conditions = \Condition::model()->findAllByAttributes(["qid" => $qid]);
+        $cids = [];
+        foreach ($conditions as $c) {
+            $cids[] = $c->cid;
+        }
+        return $cids;
+    }
+
     /**
      * copyConditions action
      * @param array $args
      * @param callable $write
      * @return void
      */
-    public function copyConditions(array $args, callable $write)
+    public function copyConditions($copyconditionsfrom, $copyconditionsto, callable $write)
     {
-        extract($args);
-
-        $copyconditionsfrom = returnGlobal('copyconditionsfrom');
-        $copyconditionsto = returnGlobal('copyconditionsto');
         if (isset($copyconditionsto) && is_array($copyconditionsto) && isset($copyconditionsfrom) && is_array($copyconditionsfrom)) {
             //Get the conditions we are going to copy and quote them properly
             foreach ($copyconditionsfrom as &$entry) {
@@ -405,12 +417,12 @@ class SurveyCondition
 
                     //First lets make sure there isn't already an exact replica of this condition
                     $conditions_data = array(
-                        'qid'        => (int) $newqid,
-                        'scenario'   => $pfc['scenario'],
-                        'cqid'       => $pfc['cqid'],
-                        'cfieldname' => $pfc['cfieldname'],
-                        'method'     => $pfc['method'],
-                        'value'      => $pfc['value']
+                    'qid'        => (int) $newqid,
+                    'scenario'   => $pfc['scenario'],
+                    'cqid'       => $pfc['cqid'],
+                    'cfieldname' => $pfc['cfieldname'],
+                    'method'     => $pfc['method'],
+                    'value'      => $pfc['value']
                     );
 
                     $result = \Condition::model()->findAllByAttributes($conditions_data);

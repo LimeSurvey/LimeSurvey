@@ -18,6 +18,7 @@ use LimeSurvey\ObjectPatch\{
     Op\OpInterface,
     OpHandler\OpHandlerException,
     OpHandler\OpHandlerInterface,
+    OpType\OpTypeCreate,
     OpType\OpTypeUpdate,
     OpType\OpTypeDelete
 };
@@ -151,6 +152,12 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
                     }
                     $this->surveyCondition->renumberScenarios($qid, $this->message(...));
                     break;
+                case "copyConditions":
+                    if ($op->getType()->getId() !== OpTypeCreate::ID) {
+                        throw new \Exception("Incompatible op with the action");
+                    }
+                    $question = \Question::model()->findByPk($qid);
+                    $this->surveyCondition->copyConditions($this->surveyCondition->getCidsOfQid($op->getProps()['fromqid']), [$this->surveyCondition->setISurveyID($question->sid)->getFieldName($question->sid, $question->gid, $question->qid)], $this->message(...));
             }
         } else {
             foreach ($op->getProps()['scenarios'] as $scenario) {
@@ -196,6 +203,11 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
         return true;
     }
 
+    protected function validateCopyConditions($props)
+    {
+        return intval($props['fromqid']);
+    }
+
     protected function validateDeleteAllConditions($props)
     {
         //At this point we have already checked everything we needed
@@ -225,14 +237,19 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
         }
         if (isset($props['action'])) {
             switch ($props['action']) {
-                case 'deleteAllConditions':
-                    if (!$this->validateDeleteAllConditions($props)) {
-                        throw new \Exception("Invalid operation");
-                    }
-                    break;
                 case 'renumberScenarios':
                     if (!$this->validateRenumberScenarios($props)) {
                         throw new \Exception("Cannot renumber scenarios");
+                    }
+                    break;
+                case 'copyConditions':
+                    if (!$this->validateCopyConditions($props)) {
+                        throw new \Exception("Cannot copy conditions");
+                    }
+                    break;
+                case 'deleteAllConditions':
+                    if (!$this->validateDeleteAllConditions($props)) {
+                        throw new \Exception("Invalid operation");
                     }
                     break;
             }
@@ -252,7 +269,6 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
                                 if (!$this->validateUpdateScenario($scenario)) {
                                     throw new \Exception("Cannot update scenario");
                                 }
-                                break;
                         }
                     }
                 }
