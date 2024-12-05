@@ -1,6 +1,6 @@
 <?php
 
-use LimeSurvey\Api\Command\V1\SurveyTranslations;
+use LimeSurvey\Api\Command\V1\I18n;
 use LimeSurvey\Api\Rest\V1\SchemaFactory\{
     SchemaFactoryError,
     SchemaFactorySurveyDetail,
@@ -14,11 +14,11 @@ $surveyTemplateSchema = (new SchemaFactorySurveyTemplate())->make();
 
 $rest = [];
 
-$rest['v1/survey-translations/$id'] = [
+$rest['v1/i18n/$lang'] = [
     'GET' => [
-        'tag' => 'survey',
-        'description' => 'Survey translations',
-        'commandClass' => SurveyTranslations::class,
+        'tag' => 'site-settings',
+        'description' => 'Translations',
+        'commandClass' => I18n::class,
         'auth' => true,
         'responses' => [
             'success' => [
