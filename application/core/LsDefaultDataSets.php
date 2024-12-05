@@ -885,7 +885,7 @@ class LsDefaultDataSets
             'position'   => '4',
             'url'        => 'userManagement/index',
             'title'      => gT('Manage administrators'),
-            'ico'        => 'ri-user-settings-line',
+            'ico'        => 'ri-group-line',
             'desc'       => gT('The user management allows you to add additional users to your survey administration.'),
             'page'       => 'welcome',
             'usergroup'  => '-2',
