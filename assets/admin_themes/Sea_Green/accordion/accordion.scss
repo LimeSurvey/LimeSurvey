@@ -8,7 +8,7 @@
     background-color: $white;
     color: $g-900;
     &:not(.collapsed) {
-        background-color: $g-100;
+        background-color: $g-200;
         box-shadow: none;
         &::after {
             background: transparent

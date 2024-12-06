@@ -210,7 +210,6 @@ gT('Themes');
                 <div class="col-12">
                     <?php $this->widget('ext.admin.survey.ListSurveysWidget.ListSurveysWidget', [
                         'model' => $oSurveySearch,
-                        'bRenderSearchBox' => $bShowSurveyListSearch,
                         'switch' => true
                     ]);
                     ?>
@@ -226,7 +225,6 @@ gT('Themes');
                 <div class="col-12">
                     <?php $this->widget('ext.admin.survey.ListSurveysWidget.ListSurveysWidget', [
                         'model' => $oSurveySearch,
-                        'bRenderSearchBox' => $bShowSurveyListSearch,
                         'switch' => true
                     ]);
                     ?>

@@ -1571,7 +1571,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
         $items[] = [
             'title' => gT('Statistics'),
             'url' => App()->createUrl('admin/statistics/sa/simpleStatistics', ['surveyid' => $this->sid]),
-            'iconClass' => 'ri-line-chart-line',
+            'iconClass' => 'ri-bar-chart-2-line',
             'enabledCondition' =>
                 $this->active === "Y"
                 && $permissions['statistics_read'],
