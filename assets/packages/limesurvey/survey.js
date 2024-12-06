@@ -66,7 +66,7 @@ function triggerEmRelevanceSubQuestion(){
                     $(item).prop("disabled", false );
                 });
             } else {
-                $(event.target).find('.answer-item input').each(function(itrt, item ){
+                $(event.target).find('.answer-item input, input.button-item').each(function(itrt, item ){
                     $(item).prop("disabled", false );
                 });
             }
