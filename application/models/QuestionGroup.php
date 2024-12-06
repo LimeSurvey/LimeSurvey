@@ -163,14 +163,16 @@ class QuestionGroup extends LSActiveRecord
      * Deletes a question group and all its dependencies.
      * Returns affected rows of question group table (should be 1 or null)
      * @param integer $groupId
-     * @param integer $surveyId
+     * @param integer|null $surveyId deprecated
      * @return int|null
      */
-    public static function deleteWithDependency($groupId, $surveyId)
+    public static function deleteWithDependency($groupId, $surveyId = null)
     {
+        $QuestionGroup ::self::model()->findByPk($groupId);
         // Abort if the survey is active
-        $surveyIsActive = Survey::model()->findByPk($surveyId)->active !== 'N';
+        $surveyIsActive = Survey::model()->findByPk($QuestionGroup->sid)->active !== 'N';
         if ($surveyIsActive) {
+            /* TODO : replace by a cleaner way to send error : model muts not use HTML only error system */
             Yii::app()->user->setFlash('error', gT("Can't delete question group when the survey is active"));
             return null;
         }

@@ -1087,43 +1087,39 @@ class remotecontrol_handle
      */
     public function delete_group($sSessionKey, $iSurveyID, $iGroupID)
     {
-        if ($this->_checkSessionKey($sSessionKey)) {
-            $iSurveyID = (int) $iSurveyID;
-            $iGroupID = (int) $iGroupID;
-            $oSurvey = Survey::model()->findByPk($iSurveyID);
-            if (!isset($oSurvey)) {
-                            return array('status' => 'Error: Invalid survey ID');
-            }
-
-            if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'delete')) {
-                $oGroup = QuestionGroup::model()->findByAttributes(array('gid' => $iGroupID));
-                if (!isset($oGroup)) {
-                                    return array('status' => 'Error: Invalid group ID');
-                }
-
-                if ($oSurvey->isActive) {
-                    return array('status' => 'Error:Survey is active and not editable');
-                }
-
-                $depented_on = getGroupDepsForConditions($oGroup->sid, "all", $iGroupID, "by-targgid");
-                if (isset($depented_on)) {
-                                    return array('status' => 'Group with depencdencies - deletion not allowed');
-                }
-
-                $iGroupsDeleted = QuestionGroup::deleteWithDependency($iGroupID, $iSurveyID);
-
-                if ($iGroupsDeleted === 1) {
-                    QuestionGroup::model()->updateGroupOrder($iSurveyID);
-                    return (int) $iGroupID;
-                } else {
-                                    return array('status' => 'Group deletion failed');
-                }
-            } else {
-                            return array('status' => 'No permission');
-            }
-        } else {
-                    return array('status' => self::INVALID_SESSION_KEY);
+        if (!$this->_checkSessionKey($sSessionKey)) {
+            return array('status' => self::INVALID_SESSION_KEY);
         }
+        $iSurveyID = (int) $iSurveyID;
+        $iGroupID = (int) $iGroupID;
+        $oSurvey = Survey::model()->findByPk($iSurveyID);
+        if (!isset($oSurvey)) {
+            return array('status' => 'Error: Invalid survey ID');
+        }
+        /* Find with surveyid to avoid bad parameters and don't send information on group existence
+         * @see https://bugs.limesurvey.org/view.php?id=19869 */
+        $oGroup = QuestionGroup::model()->findByAttributes(array('gid' => $iGroupID, 'sid' => $iSurveyID));
+        if (!isset($oGroup)) {
+            return array('status' => 'Error: Invalid group ID');
+        }
+        if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'delete')) {
+            return array('status' => 'No permission');
+        }
+        if ($oSurvey->isActive) {
+            return array('status' => 'Error:Survey is active and not editable');
+        }
+        $depented_on = getGroupDepsForConditions($oGroup->sid, "all", $iGroupID, "by-targgid");
+        if (isset($depented_on)) {
+            return array('status' => 'Group with depencdencies - deletion not allowed');
+        }
+        $iGroupsDeleted = QuestionGroup::deleteWithDependency($iGroupID);
+        if ($iGroupsDeleted === 1) {
+            QuestionGroup::model()->updateGroupOrder($iSurveyID);
+            return (int) $iGroupID;
+        } else {
+            return array('status' => 'Group deletion failed');
+        }
+
     }
 
     /**
