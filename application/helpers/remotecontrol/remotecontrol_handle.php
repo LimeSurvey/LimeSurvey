@@ -1041,11 +1041,11 @@ class remotecontrol_handle
                 $iSurveyID = (int) $iSurveyID;
                 $oSurvey = Survey::model()->findByPk($iSurveyID);
                 if (!isset($oSurvey)) {
-                                    return array('status' => 'Error: Invalid survey ID');
+                    return array('status' => 'Error: Invalid survey ID');
                 }
 
                 if ($oSurvey->isActive) {
-                                    return array('status' => 'Error:Survey is active and not editable');
+                    return array('status' => 'Error:Survey is active and not editable');
                 }
 
                 $oGroup = new QuestionGroup();
