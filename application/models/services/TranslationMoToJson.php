@@ -32,10 +32,9 @@ class TranslationMoToJson
     /**
      * Transforms the given MO file into a JSON representation of the translations.
      *
-     * @param $poFile
      * @return false|int|string
      */
-    public function translateMoToJson($poFile){
+    public function translateMoToJson(){
         $translations = $this->msgSource->loadMessages('', $this->language);
 
         return json_encode($translations);
