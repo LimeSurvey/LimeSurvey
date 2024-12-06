@@ -140,6 +140,158 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
      *         }
      *     ]
      * }
+     * insertCondition (field-constant):
+     * {
+     *     "patch": [{
+     *             "entity": "questionCondition",
+     *             "op": "create",
+     *             "id": 809,
+     *             "props": {
+     *                 "qid": 15977,
+     *                 "scenarios": [
+     *                     {
+     *                         "scid": 3,
+     *                         "conditions": [
+     *                             {
+     *                                 "action":"insertCondition",
+     *                                 "method":"==",
+     *                                 "csrctoken":"{TOKEN:LASTNAME}",
+     *                                 "ConditionConst":"sdfsdf",
+     *                                 "ConditionRegexp":"",
+     *                                 "cqid":0,
+     *                                 "canswersToSelect":"",
+     *                                 "editSourceTab":"#SRCTOKENATTRS",
+     *                                 "editTargetTab":"#CONST"
+     *                             }
+     *                         ]
+     *                     }
+     *                 ]
+     *             }
+     *         }
+     *     ]
+     * }
+     * insertCondition (field-field):
+     * {
+     *     "patch": [{
+     *             "entity": "questionCondition",
+     *             "op": "create",
+     *             "id": 809,
+     *             "props": {
+     *                 "qid": 15977,
+     *                 "scenarios": [
+     *                     {
+     *                         "scid": 3,
+     *                         "conditions": [
+     *                             {
+     *                                 "action":"insertCondition",
+     *                                 "method":"==",
+     *                                 "csrctoken":"{TOKEN:FIRSTNAME}",
+     *                                 "ConditionConst":"",
+     *                                 "tokenAttr":"{TOKEN:TOKEN}",
+     *                                 "ConditionRegexp":"",
+     *                                 "cqid":0,
+     *                                 "canswersToSelect":"",
+     *                                 "editSourceTab":"#SRCTOKENATTRS",
+     *                                 "editTargetTab":"#TOKENATTRS"
+     *                             }
+     *                         ]
+     *                     }
+     *                 ]
+     *             }
+     *         }
+     *     ]
+     * }
+     * insertCondition (prevc-predef):
+     * {
+     *     "patch": [{
+     *             "entity": "questionCondition",
+     *             "op": "create",
+     *             "id": 809,
+     *             "props": {
+     *                 "qid": 15977,
+     *                 "scenarios": [
+     *                     {
+     *                         "scid": 3,
+     *                         "conditions": [
+     *                             {
+     *                                 "action":"insertCondition",
+     *                                 "method":"==",
+     *                                 "cquestions":"453614X608X15979",
+     *                                 "csrctoken":"{TOKEN:EMAIL}",,
+     *                                 "canswers":[""],
+     *                                 "ConditionConst":"",
+     *                                 "ConditionRegexp":"",
+     *                                 "cqid":15979,
+     *                                 "canswersToSelect":"",
+     *                                 "editSourceTab":"#SRCPREVQUEST",
+     *                                 "editTargetTab":"#CANSWERSTAB"
+     *                             }
+     *                         ]
+     *                     }
+     *                 ]
+     *             }
+     *         }
+     *     ]
+     * }
+     * insertCondition (prevc-const):
+     * {
+     *     "patch": [{
+     *             "entity": "questionCondition",
+     *             "op": "create",
+     *             "id": 809,
+     *             "props": {
+     *                 "qid": 15977,
+     *                 "scenarios": [
+     *                     {
+     *                         "scid": 3,
+     *                         "conditions": [
+     *                             {
+     *                                 "action":"insertCondition",
+     *                                 "method":"==",
+     *                                 "cquestions":"453614X608X15978",
+     *                                 "ConditionConst":"my only virtue is modesty",
+     *                                 "ConditionRegexp":"",
+     *                                 "cqid":15978,
+     *                                 "canswersToSelect":"",
+     *                                 "editSourceTab":"#SRCPREVQUEST",
+     *                                 "editTargetTab":"#CONST"
+     *                             }
+     *                         ]
+     *                     }
+     *                 ]
+     *             }
+     *         }
+     *     ]
+     * }
+     * insertCondition (prevc-prevc)
+     * {
+     *     "patch": [{
+     *         "op": "create",
+     *         "entity": "questionCondition",
+     *         "error": false,
+     *         "props": {
+     *             "qid": 15977,
+     *             "scenarios": [
+     *                 {
+     *                     "scid": 123,
+     *                     "conditions": [
+     *                         {
+     *                             "action": "insertCondition",
+     *                             "method": "==",
+     *                             "cquestions": "453614X608X15979",
+     *                             "prevQuestionSGQA": "@453614X608X15982@",
+     *                             "ConditionRegexp": "",
+     *                             "cqid": 15979,
+     *                             "canswersToSelect": "",
+     *                             "editSourceTab": "#SRCPREVQUEST",
+     *                             "editTargetTab": "#PREVQUESTIONS"
+     *                         }
+     *                     ]
+     *                 }
+     *             ]
+     *         }}
+     *     ]
+     * }
      *
      * @param OpInterface $op
      * @return void
@@ -195,6 +347,36 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
                             $this->surveyCondition->updateScenario($scenario['scenarioNumber'], $qid, $scid, $this->message(...));
                             break;
                     }
+                } else {
+                    foreach ($scenario['conditions'] as $condition) {
+                        if (!isset($condition['action'])) {
+                            throw new \Exception('action is not specified');
+                        }
+                        $action = $condition['action'];
+                        switch ($action) {
+                            case 'insertCondition':
+                                $this->surveyCondition->insertCondition(
+                                    [
+                                    'p_cquestions' => $condition['cquestions'] ?? '',
+                                    'p_csrctoken' => $condition['csrctoken'] ?? '',
+                                    'qid' => $qid,
+                                    'p_scenario' => $scid,
+                                    'p_cqid' => $condition['cqid'] ?? 0,
+                                    'conditionCfieldname' => $condition['fieldname'] ?? '',
+                                    'p_method' => $condition['method'],
+                                    'p_canswers' => $condition['canswers'] ?? [],
+                                    ],
+                                    $condition['editSourceTab'],
+                                    $condition['editTargetTab'],
+                                    $this->message(...),
+                                    $condition['ConditionConst'] ?? '',
+                                    $condition['prevQuestionSGQA'] ?? '',
+                                    $condition['tokenAttr'] ?? '',
+                                    $condition['ConditionRegexp'] ?? ''
+                                );
+                                break;
+                        }
+                    }
                 }
             }
         }
@@ -236,6 +418,14 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
     protected function validateUpdateScenario($scenario)
     {
         return intval($scenario['scenarioNumber'] ?? 0);
+    }
+
+    protected function validateInsertCondition($condition)
+    {
+        return
+        isset($condition['method']) &&
+        isset($condition['editSourceTab']) &&
+        isset($condition['editTargetTab']);
     }
 
     /**
@@ -283,6 +473,20 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
                                 if (!$this->validateUpdateScenario($scenario)) {
                                     throw new \Exception("Cannot update scenario");
                                 }
+                        }
+                    } else {
+                        if (!isset($scenario['conditions'])) {
+                            throw new \Exception('No action for scenario');
+                        } else {
+                            foreach ($scenario['conditions'] as $condition) {
+                                switch ($condition['action']) {
+                                    case "insertCondition":
+                                        if (!$this->validateInsertCondition($condition)) {
+                                            throw new \Exception("Cannot create condition");
+                                        }
+                                        break;
+                                }
+                            }
                         }
                     }
                 }
