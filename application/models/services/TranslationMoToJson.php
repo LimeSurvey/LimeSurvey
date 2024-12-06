@@ -32,12 +32,12 @@ class TranslationMoToJson
     /**
      * Transforms the given MO file into a JSON representation of the translations.
      *
-     * @return false|int|string
+     * @return array containing the translations ("source_msg" => "translated_msg")
      */
     public function translateMoToJson(){
-        $translations = $this->msgSource->loadMessages('', $this->language);
 
-        return json_encode($translations);
+
+        return $this->msgSource->loadMessages('', $this->language);
     }
 
 }
