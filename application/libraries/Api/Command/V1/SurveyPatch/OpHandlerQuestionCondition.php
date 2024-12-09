@@ -57,6 +57,9 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
     public function message($message, $type = 'success')
     {
         //dummy method at this point, because we do not support success messages yet
+        if ($type !== 'success') {
+            throw new \Exception($message);
+        }
     }
 
     /**
@@ -201,7 +204,7 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
      *         }
      *     ]
      * }
-     * insertCondition (prevc-predef):
+     * insertCondition (prevq-predef):
      * {
      *     "patch": [{
      *             "entity": "questionCondition",
@@ -217,7 +220,7 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
      *                                 "action":"insertCondition",
      *                                 "method":"==",
      *                                 "cquestions":"453614X608X15979",
-     *                                 "csrctoken":"{TOKEN:EMAIL}",,
+     *                                 "csrctoken":"{TOKEN:EMAIL}",
      *                                 "canswers":[""],
      *                                 "ConditionConst":"",
      *                                 "ConditionRegexp":"",
@@ -233,7 +236,7 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
      *         }
      *     ]
      * }
-     * insertCondition (prevc-const):
+     * insertCondition (prevq-const):
      * {
      *     "patch": [{
      *             "entity": "questionCondition",
@@ -263,7 +266,7 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
      *         }
      *     ]
      * }
-     * insertCondition (prevc-prevc)
+     * insertCondition (prevq-prevq)
      * {
      *     "patch": [{
      *         "op": "create",
@@ -292,6 +295,342 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
      *         }}
      *     ]
      * }
+     * insertCondition (prevq-field)
+     * {
+     *     "patch": [{
+     *         "op": "create",
+     *         "entity": "questionCondition",
+     *         "error": false,
+     *         "props": {
+     *             "qid": 15977,
+     *             "scenarios": [
+     *                 {
+     *                     "scid": 123,
+     *                     "conditions": [
+     *                         {
+     *                             "action": "insertCondition",
+     *                             "method": "==",
+     *                             "cquestions": "453614X608X15979",
+     *                             "ConditionConst": "",
+     *                             "tokenAttr":"{TOKEN:FIRSTNAME}",
+     *                             "prevQuestionSGQA": "@453614X608X15979@",
+     *                             "ConditionRegexp": "",
+     *                             "cqid": 15979,
+     *                             "canswersToSelect": "",
+     *                             "editSourceTab": "#SRCPREVQUEST",
+     *                             "editTargetTab": "#TOKENATTRS"
+     *                         }
+     *                     ]
+     *                 }
+     *             ]
+     *         }}
+     *     ]
+     * }
+     * insertCondition (field-regex)
+     * {
+     *     "patch": [{
+     *         "op": "create",
+     *         "entity": "questionCondition",
+     *         "error": false,
+     *         "props": {
+     *             "qid": 15977,
+     *             "scenarios": [
+     *                 {
+     *                     "scid": 123,
+     *                     "conditions": [
+     *                         {
+     *                             "action": "insertCondition",
+     *                             "method": "RX",
+     *                             "cquestions": "453614X608X15979",
+     *                             "csrctoken": "{TOKEN:FIRSTNAME}",
+     *                             "ConditionConst": "",
+     *                             "ConditionRegexp": "La*",
+     *                             "cqid": 0,
+     *                             "canswersToSelect": "",
+     *                             "editSourceTab": "#SRCTOKENATTRS",
+     *                             "editTargetTab": "#REGEXP"
+     *                         }
+     *                     ]
+     *                 }
+     *             ]
+     *         }}
+     *     ]
+     * }
+     * insertCondition (prevq-regex)
+     * {
+     *     "patch": [{
+     *         "op": "create",
+     *         "entity": "questionCondition",
+     *         "error": false,
+     *         "props": {
+     *             "qid": 15977,
+     *             "scenarios": [
+     *                 {
+     *                     "scid": 123,
+     *                     "conditions": [
+     *                         {
+     *                             "action": "insertCondition",
+     *                             "method": "RX",
+     *                             "cquestions": "453614X608X15979",
+     *                             "ConditionConst": "",
+     *                             "ConditionRegexp": "La*",
+     *                             "cqid": 15978,
+     *                             "canswersToSelect": "",
+     *                             "editSourceTab": "#SRCPREVQUEST",
+     *                             "editTargetTab": "#REGEXP"
+     *                         }
+     *                     ]
+     *                 }
+     *             ]
+     *         }}
+     *     ]
+     * }
+     * updateCondition (prevq-regex)
+     * {
+     *     "patch": [{
+     *         "op": "update",
+     *         "entity": "questionCondition",
+     *         "error": false,
+     *         "props": {
+     *             "qid": 15977,
+     *             "scenarios": [
+     *                 {
+     *                     "scid": 123,
+     *                     "conditions": [
+     *                         {
+     *                             "cid": 2601,
+     *                             "action": "updateCondition",
+     *                             "method": "<=",
+     *                             "cquestions": "453614X608X15979",
+     *                             "canswers": ["A4988"]
+     *                             "ConditionConst": "",
+     *                             "ConditionRegexp": "",
+     *                             "cqid": 15978,
+     *                             "canswersToSelect": "A4988",
+     *                             "editSourceTab": "#SRCPREVQUEST",
+     *                             "editTargetTab": "#CANSWERSTAB"
+     *                         }
+     *                     ]
+     *                 }
+     *             ]
+     *         }}
+     *     ]
+     * }
+     * updateCondition (prevq-const)
+     * {
+     *     "patch": [{
+     *         "op": "update",
+     *         "entity": "questionCondition",
+     *         "error": false,
+     *         "props": {
+     *             "qid": 15977,
+     *             "scenarios": [
+     *                 {
+     *                     "scid": 123,
+     *                     "conditions": [
+     *                         {
+     *                             "cid": 2601,
+     *                             "action": "updateCondition",
+     *                             "method": "<=",
+     *                             "cquestions": "453614X608X15979",
+     *                             "ConditionConst": "test",
+     *                             "ConditionRegexp": "",
+     *                             "cqid": 15978,
+     *                             "canswersToSelect": "",
+     *                             "editSourceTab": "#SRCPREVQUEST",
+     *                             "editTargetTab": "#CONST"
+     *                         }
+     *                     ]
+     *                 }
+     *             ]
+     *         }}
+     *     ]
+     * }
+     * updateCondition (prevq-const)
+     * {
+     *     "patch": [{
+     *         "op": "update",
+     *         "entity": "questionCondition",
+     *         "error": false,
+     *         "props": {
+     *             "qid": 15977,
+     *             "scenarios": [
+     *                 {
+     *                     "scid": 123,
+     *                     "conditions": [
+     *                         {
+     *                             "cid": 2601,
+     *                             "action": "updateCondition",
+     *                             "method": "<=",
+     *                             "cquestions": "453614X608X15979",
+     *                             "ConditionConst": "test",
+     *                             "prevQuestionSGQA":"@453614X608X15978@",
+     *                             "ConditionRegexp": "",
+     *                             "cqid": 15978,
+     *                             "canswersToSelect": "",
+     *                             "editSourceTab": "#SRCPREVQUEST",
+     *                             "editTargetTab": "#PREVQUESTIONS"
+     *                         }
+     *                     ]
+     *                 }
+     *             ]
+     *         }}
+     *     ]
+     * }
+     * updateCondition (prevq-field)
+     * {
+     *     "patch": [{
+     *         "op": "update",
+     *         "entity": "questionCondition",
+     *         "error": false,
+     *         "props": {
+     *             "qid": 15977,
+     *             "scenarios": [
+     *                 {
+     *                     "scid": 123,
+     *                     "conditions": [
+     *                         {
+     *                             "cid": 2601,
+     *                             "action": "updateCondition",
+     *                             "method": "<=",
+     *                             "cquestions": "453614X608X15979",
+     *                             "ConditionConst": "",
+     *                             "prevQuestionSGQA":"@453614X608X15978@",
+     *                             "tokenAttr":"{TOKEN:LASTNAME}",
+     *                             "ConditionRegexp": "",
+     *                             "cqid": 15978,
+     *                             "canswersToSelect": "",
+     *                             "editSourceTab": "#SRCPREVQUEST",
+     *                             "editTargetTab": "#TOKENATTRS"
+     *                         }
+     *                     ]
+     *                 }
+     *             ]
+     *         }}
+     *     ]
+     * }
+     * updateCondition (prevq-regex)
+     * {
+     *     "patch": [{
+     *         "op": "update",
+     *         "entity": "questionCondition",
+     *         "error": false,
+     *         "props": {
+     *             "qid": 15977,
+     *             "scenarios": [
+     *                 {
+     *                     "scid": 123,
+     *                     "conditions": [
+     *                         {
+     *                             "cid": 2601,
+     *                             "action": "updateCondition",
+     *                             "method": "RX",
+     *                             "cquestions": "453614X608X15979",
+     *                             "ConditionConst": "",
+     *                             "prevQuestionSGQA":"@453614X608X15978@",
+     *                             "ConditionRegexp": "def",
+     *                             "cqid": 15978,
+     *                             "canswersToSelect": "",
+     *                             "editSourceTab": "#SRCPREVQUEST",
+     *                             "editTargetTab": "#REGEXP"
+     *                         }
+     *                     ]
+     *                 }
+     *             ]
+     *         }}
+     *     ]
+     * }
+     * updateCondition (field-constant)
+     * {
+     *     "patch": [{
+     *         "op": "update",
+     *         "entity": "questionCondition",
+     *         "error": false,
+     *         "props": {
+     *             "qid": 15977,
+     *             "scenarios": [
+     *                 {
+     *                     "scid": 123,
+     *                     "conditions": [
+     *                         {
+     *                             "cid": 2601,
+     *                             "action": "updateCondition",
+     *                             "method": "==",
+     *                             "ConditionConst": "ABCDE",
+     *                             "ConditionRegexp": "",
+     *                             "cqid": 15978,
+     *                             "canswersToSelect": "",
+     *                             "editSourceTab": "#SRCTOKENATTRS",
+     *                             "editTargetTab": "#CONST"
+     *                         }
+     *                     ]
+     *                 }
+     *             ]
+     *         }}
+     *     ]
+     * }
+     * updateCondition (field-prevq)
+     * {
+     *     "patch": [{
+     *         "op": "update",
+     *         "entity": "questionCondition",
+     *         "error": false,
+     *         "props": {
+     *             "qid": 15977,
+     *             "scenarios": [
+     *                 {
+     *                     "scid": 123,
+     *                     "conditions": [
+     *                         {
+     *                             "cid": 2601,
+     *                             "action": "updateCondition",
+     *                             "method": "==",
+     *                             "csrctoken": "{TOKEN:LASTNAME}",
+     *                             "ConditionConst": "",
+     *                             "prevQuestionSGQA": "@453614X608X15978@",
+     *                             "ConditionRegexp": "",
+     *                             "cqid": 0,
+     *                             "canswersToSelect": "",
+     *                             "editSourceTab": "#SRCTOKENATTRS",
+     *                             "editTargetTab": "#PREVQUESTIONS"
+     *                         }
+     *                     ]
+     *                 }
+     *             ]
+     *         }}
+     *     ]
+     * }
+     * updateCondition (field-regex)
+     * {
+     *     "patch": [{
+     *         "op": "update",
+     *         "entity": "questionCondition",
+     *         "error": false,
+     *         "props": {
+     *             "qid": 15977,
+     *             "scenarios": [
+     *                 {
+     *                     "scid": 123,
+     *                     "conditions": [
+     *                         {
+     *                             "cid": 2601,
+     *                             "action": "updateCondition",
+     *                             "method": "RX",
+     *                             "csrctoken": "{TOKEN:LASTNAME}",
+     *                             "ConditionConst": "",
+     *                             "ConditionRegexp": "abc",
+     *                             "cqid": 0,
+     *                             "canswersToSelect": "",
+     *                             "editSourceTab": "#SRCTOKENATTRS",
+     *                             "editTargetTab": "#REGEXP"
+     *                         }
+     *                     ]
+     *                 }
+     *             ]
+     *         }}
+     *     ]
+     * }
+     *
      *
      * @param OpInterface $op
      * @return void
@@ -375,6 +714,26 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
                                     $condition['ConditionRegexp'] ?? ''
                                 );
                                 break;
+                            case 'updateCondition':
+                                $this->surveyCondition->updateCondition(
+                                    [
+                                        'p_cquestions' => $condition['cquestions'] ?? '',
+                                        'p_csrctoken' => $condition['csrctoken'] ?? '',
+                                        'qid' => $qid,
+                                        'p_scenario' => $scid,
+                                        'p_cqid' => $condition['cqid'] ?? 0,
+                                        'conditionCfieldname' => $condition['fieldname'] ?? '',
+                                        'p_method' => $condition['method'],
+                                        'p_canswers' => $condition['canswers'] ?? [],
+                                        'p_cid' => $condition['cid']
+                                        ],
+                                    $condition['editTargetTab'],
+                                    $this->message(...),
+                                    $condition['ConditionConst'] ?? '',
+                                    $condition['prevQuestionSGQA'] ?? '',
+                                    $condition['tokenAttr'] ?? '',
+                                    $condition['ConditionRegexp'] ?? ''
+                                );
                         }
                     }
                 }
@@ -425,6 +784,14 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
         return
         isset($condition['method']) &&
         isset($condition['editSourceTab']) &&
+        isset($condition['editTargetTab']);
+    }
+
+    protected function validateUpdateCondition($condition)
+    {
+        return
+        intval($condition['cid'] ?? 0) &&
+        isset($condition['method']) &&
         isset($condition['editTargetTab']);
     }
 
@@ -483,6 +850,11 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
                                     case "insertCondition":
                                         if (!$this->validateInsertCondition($condition)) {
                                             throw new \Exception("Cannot create condition");
+                                        }
+                                        break;
+                                    case "updateCondition":
+                                        if (!$this->validateUpdateCondition($condition)) {
+                                            throw new \Exception("Cannot update condition");
                                         }
                                         break;
                                 }
