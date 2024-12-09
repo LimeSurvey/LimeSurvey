@@ -2958,28 +2958,32 @@ class remotecontrol_handle
         if (!$this->_checkSessionKey($sSessionKey)) {
             return array('status' => self::INVALID_SESSION_KEY);
         }
-        if (Permission::model()->hasGlobalPermission('surveys', 'create')) {
-            $iSurveyID = (int) $iSurveyID;
-            $oSurvey = Survey::model()->findByPk($iSurveyID);
-            if (is_null($oSurvey)) {
-                return array('status' => 'Error: Invalid survey ID');
-            }
-            if (is_array($aAttributeFields) && count($aAttributeFields) > 0) {
-                foreach ($aAttributeFields as &$sField) {
-                    $sField = intval($sField);
-                    $sField = 'attribute_' . $sField;
-                }
-                $aAttributeFields = array_unique($aAttributeFields);
-            }
-            Yii::app()->loadHelper('admin/token');
-            if (Token::createTable($iSurveyID, $aAttributeFields)) {
-                return array('status' => 'OK');
-            } else {
-                return array('status' => 'Survey participants table could not be created');
-            }
-        } else {
-                    return array('status' => 'No permission');
+        $iSurveyID = (int) $iSurveyID;
+        $oSurvey = Survey::model()->findByPk($iSurveyID);
+        if (is_null($oSurvey)) {
+            return array('status' => 'Error: Invalid survey ID');
         }
+        if (
+            /* Same test Tokens->newtokentable */
+            !Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'update') &&
+            !Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'create')
+        ) {
+            return array('status' => 'No permission');
+        }
+        if (is_array($aAttributeFields) && count($aAttributeFields) > 0) {
+            foreach ($aAttributeFields as &$sField) {
+                $sField = intval($sField);
+                $sField = 'attribute_' . $sField;
+            }
+            $aAttributeFields = array_unique($aAttributeFields);
+        }
+        Yii::app()->loadHelper('admin/token');
+        if (Token::createTable($iSurveyID, $aAttributeFields)) {
+            return array('status' => 'OK');
+        } else {
+            return array('status' => 'Survey participants table could not be created');
+        }
+
     }
 
     /**
