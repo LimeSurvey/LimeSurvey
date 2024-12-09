@@ -895,7 +895,7 @@ class LsDefaultDataSets
             'position'   => '5',
             'url'        => 'admin/pluginmanager/sa/index',
             'title'      => gT('Plugins'),
-            'ico'        => 'ri-plug-line',
+            'ico'        => 'ri-plug-fill',
             'desc'       => gT('Plugins can be used to add custom features'),
             'page'       => 'welcome',
             'usergroup'  => '-2',

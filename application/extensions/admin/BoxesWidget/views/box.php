@@ -96,7 +96,7 @@
                 </div>
             </div>
         <?php elseif ($item['type'] == BoxesWidget::TYPE_LINK) : ?>
-            <div class="box-widget-card card-link m-2 align-middle d-inline-block <?= $item['colored'] ? 'card-link-highlight' : ''; ?>"
+            <div class="box-widget-card card-link align-middle d-inline-block <?= $item['colored'] ? 'card-link-highlight' : ''; ?>"
                  data-url="<?= $item['link'] ?>" <?= $item['external'] ? 'target="_blank"' : ''?>>
                 <div class="box-widget-card-body">
                     <i class="<?= $item['icon'] ?>"></i>

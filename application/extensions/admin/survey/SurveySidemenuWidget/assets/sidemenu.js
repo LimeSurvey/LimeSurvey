@@ -21,7 +21,7 @@ $(document).on('ready  pjax:scriptcomplete', function(){
 
 });
 $(window).on("load scroll", function () {
-    if ($(window).scrollTop() > 0) {
+    if ($(window).scrollTop() > 61) {
         $(".ls-breadcrumb .side-menu-logo").removeClass('d-none');
         // $(".topbar").css("background-color", "white");
     } else {
