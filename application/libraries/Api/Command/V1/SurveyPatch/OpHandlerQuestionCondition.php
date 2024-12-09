@@ -765,18 +765,6 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
                 }
             }
         }
-        //$preparedData = $this->transformer->transformAll($op->getProps());
-        /*if (empty($preparedData)) {
-            $this->throwNoValuesException($op);
-        }*/
-        /*$questionId = $op->getEntityId();
-        $this->attributesService->saveAdvanced(
-            $this->questionService->getQuestionBySidAndQid(
-                $surveyId,
-                $questionId
-            ),
-            $preparedData
-        );*/
     }
 
     protected function validateRenumberScenarios($props)

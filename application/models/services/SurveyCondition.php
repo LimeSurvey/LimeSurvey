@@ -19,6 +19,11 @@ class SurveyCondition
     protected string $language;
     protected const X = 'X';
 
+    /**
+     * Sets the iSurveyID member of this object
+     * @param int $iSurveyID
+     * @return static
+     */
     public function setISurveyID(int $iSurveyID)
     {
         $this->iSurveyID = $iSurveyID;
@@ -370,6 +375,11 @@ class SurveyCondition
         $write(gT("All conditions scenarios were renumbered."));
     }
 
+    /**
+     * Finds the condition ids by the question's id they belong to
+     * @param mixed $qid
+     * @return int[]
+     */
     public function getCidsOfQid($qid)
     {
         $conditions = \Condition::model()->findAllByAttributes(["qid" => $qid]);
