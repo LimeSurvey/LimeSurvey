@@ -630,6 +630,28 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
      *         }}
      *     ]
      * }
+     * deleteCondition
+     * {
+     *     "patch": [{
+     *         "op": "delete",
+     *         "entity": "questionCondition",
+     *         "error": false,
+     *         "props": {
+     *             "qid": 15977,
+     *             "scenarios": [
+     *                 {
+     *                     "scid": 123,
+     *                     "conditions": [
+     *                         {
+     *                             "cid": 2601,
+     *                             "action": "deleteCondition"
+     *                         }
+     *                     ]
+     *                 }
+     *             ]
+     *         }}
+     *     ]
+     * }
      *
      *
      * @param OpInterface $op
@@ -734,6 +756,10 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
                                     $condition['tokenAttr'] ?? '',
                                     $condition['ConditionRegexp'] ?? ''
                                 );
+                                break;
+                            case 'deleteCondition':
+                                $this->surveyCondition->deleteCondition($qid, $condition['cid']);
+                                break;
                         }
                     }
                 }
@@ -793,6 +819,12 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
         intval($condition['cid'] ?? 0) &&
         isset($condition['method']) &&
         isset($condition['editTargetTab']);
+    }
+
+    protected function validateDeleteCondition($condition)
+    {
+        return
+        intval($condition['cid'] ?? 0);
     }
 
     /**
@@ -855,6 +887,11 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
                                     case "updateCondition":
                                         if (!$this->validateUpdateCondition($condition)) {
                                             throw new \Exception("Cannot update condition");
+                                        }
+                                        break;
+                                    case "deleteCondition":
+                                        if (!$this->validateDeleteCondition($condition)) {
+                                            throw new \Exception("Cannot delete condition");
                                         }
                                         break;
                                 }
