@@ -3935,12 +3935,19 @@ class remotecontrol_handle
 
             // Participant not found, so we create a new one
             if (!$model) {
+                if (Permission::model()->hasGlobalPermission('participantpanel', 'create')) {
+                    /* No permission to create : continue */
+                    continue;
+                }
                 $model = new Participant();
                 if (isset($participant['participant_id'])) {
                     $model->participant_id = $participant['participant_id'];
                 } else {
                     $model->participant_id = Participant::genUuid();
                 }
+            } elseif (!$participant->userHasPermissionToEdit()) {
+                /* No permission to update : continue */
+                continue;
             }
 
             $scenario = $model->getScenario(); // insert or update
