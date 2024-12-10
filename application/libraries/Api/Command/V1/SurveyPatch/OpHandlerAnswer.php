@@ -26,7 +26,6 @@ class OpHandlerAnswer implements OpHandlerInterface
 {
     use OpHandlerSurveyTrait;
     use OpHandlerQuestionTrait;
-    use OpHandlerExceptionTrait;
     use OpHandlerValidationTrait;
 
     protected string $entity;
