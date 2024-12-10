@@ -348,7 +348,7 @@ class Surveymenu extends LSActiveRecord
             'changed_at'    => gT('Changed on'),
             'changed_by'    => gT('Changed by'),
             'created_at'    => gT('Created on'),
-            'created_by'    => gT('Created by'),
+            'created_by'    => gT('Owner'),
         );
     }
 

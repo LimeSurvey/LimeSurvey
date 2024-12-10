@@ -103,7 +103,7 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
             'alwaysavailable'   => gT('Always available'),
             'created'           => gT('Created on'),
             'modified'          => gT('Modified on'),
-            'created_by'        => gT('Created by'),
+            'created_by'        => gT('Owner'),
         );
     }
 
@@ -167,7 +167,7 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
                 array(
                     'header' => gT('Owner'),
                     'name' => 'owner',
-                    'value' => '$data->owner->users_name',
+                    'value' => '$data->owner->displayName',
                     'htmlOptions' => ['class' => 'has-link'],
                 ),
 

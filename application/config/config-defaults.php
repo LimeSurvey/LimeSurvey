@@ -827,6 +827,13 @@ $config['encryptionsecretkey'] = '';
 $config['encryptionnonce'] = '';
 $config['encryptionsecretboxkey'] = '';
 
+// How to display admin names in the admin panel, e.g. lists
+// Possible values: 
+// 'username'  = User name
+// 'fullname' = Full name
+// 'both' = Full name (username)
+$config['adminNameDisplayType'] = 'username';
+
 $config['passwordValidationRules'] = array(
     'min' => 8,
     'max' => 0,

@@ -13,8 +13,8 @@ Yii::app()->getController()->renderPartial(
         </tr>
         <?php if ($oUser->parentUser): ?>
             <tr>
-                <td><?=gT('Created by:')?></td>
-                <td><?=CHTml::encode($oUser->parentUser['full_name'])?></td>
+                <td><?=gT('Owner:')?></td>
+                <td><?=CHTml::encode($oUser->parentUser['displayName'])?></td>
             </tr>
         <?php endif; ?>
         <tr>
