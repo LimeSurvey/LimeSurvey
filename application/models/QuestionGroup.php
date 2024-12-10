@@ -181,7 +181,7 @@ class QuestionGroup extends LSActiveRecord
         // Abort if the survey is active
         $surveyIsActive = Survey::model()->findByPk($QuestionGroup->sid)->active !== 'N';
         if ($surveyIsActive) {
-            throw new PermissionDeniedException(gt("Can't delete question group when the survey is active"));
+            throw new BadRequestException(gt("Can't delete question group when the survey is active"));
         }
 
         $questionIds = QuestionGroup::getQuestionIdsInGroup($groupId);
