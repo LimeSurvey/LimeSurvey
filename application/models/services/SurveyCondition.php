@@ -341,6 +341,19 @@ class SurveyCondition
         $write(gT("All conditions for this question have been deleted."), 'success');
     }
 
+    public function deleteAllConditionsOfSurvey($sid, callable $write)
+    {
+        \LimeExpressionManager::RevertUpgradeConditionsToRelevance($sid);
+        $qids = [0];
+        $questions = \Question::model()->findAllByAttributes(['sid' => $sid]);
+        foreach ($questions as $question) {
+            $qids [] = $question->qid;
+        }
+        $qids_str = implode(",", $qids);
+        \Condition::model()->deleteRecords("qid in ({$qids_str})");
+        $write(gT("All conditions for this survey have been deleted.", 'success'));
+    }
+
     /**
      * deleteScenario action
      * @param mixed $qid

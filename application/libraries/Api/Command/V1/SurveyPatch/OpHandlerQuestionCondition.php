@@ -660,7 +660,7 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
      */
     public function handle(OpInterface $op): void
     {
-        $qid = $op->getProps()['qid'];
+        $qid = $op->getProps()['qid'] ?? '';
         if (isset($op->getProps()['action'])) {
             $action = $op->getProps()['action'];
             switch ($action) {
@@ -682,6 +682,10 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
                     }
                     $question = \Question::model()->findByPk($qid);
                     $this->surveyCondition->copyConditions($this->surveyCondition->getCidsOfQid($op->getProps()['fromqid']), [$this->surveyCondition->setISurveyID($question->sid)->getFieldName($question->sid, $question->gid, $question->qid)], $this->message(...));
+                    break;
+                case "deleteAllConditionsOfSurvey":
+                    $this->surveyCondition->deleteAllConditionsOfSurvey($op->getProps()['sid'], $this->message(...));
+                    break;
             }
         } else {
             foreach ($op->getProps()['scenarios'] as $scenario) {
@@ -812,6 +816,11 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
         intval($condition['cid'] ?? 0);
     }
 
+    protected function validateDeleteAllConditionsOfSurvey($condition)
+    {
+        return intval($condition['sid']);
+    }
+
     /**
      * Checks if patch is valid for this operation.
      * @param OpInterface $op
@@ -820,7 +829,7 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
     public function validateOperation(OpInterface $op): array
     {
         $props = $op->getProps();
-        if (!isset($props['qid'])) {
+        if ((!isset($props['qid'])) && (!isset($props['sid']))) {
             throw new \Exception("Question id is mandatory");
         }
         if (isset($props['action'])) {
@@ -844,6 +853,15 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
                 case 'deleteAllConditions':
                     if (!$this->validateDeleteAllConditions($props)) {
                         throw new \Exception("Invalid operation");
+                    }
+                    $this->permissionMap['delete'] = false;
+                    break;
+                case 'deleteAllConditionsOfSurvey':
+                    if (!$this->validateDeleteAllConditionsOfSurvey($props)) {
+                        throw new \Exception("Invalid operation");
+                    }
+                    if (!\Permission::model()->hasSurveyPermission($props['sid'], 'surveycontent', 'delete')) {
+                        throw new \Exception("Missing delete permission from {$props['sid']}");
                     }
                     $this->permissionMap['delete'] = false;
                     break;
@@ -899,11 +917,13 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
                 }
             }
         }
-        $qid = $op->getProps()['qid'];
-        $question = \Question::model()->findByPk($qid);
-        foreach ($this->permissionMap as $permission => $value) {
-            if (!\Permission::model()->hasSurveyPermission($question->sid, 'surveycontent', $permission)) {
-                throw new \Exception("Missing {$permission} permission from {$question->sid}");
+        $qid = $op->getProps()['qid'] ?? '';
+        if ($qid) {
+            $question = \Question::model()->findByPk($qid);
+            foreach ($this->permissionMap as $permission => $value) {
+                if (!\Permission::model()->hasSurveyPermission($question->sid, 'surveycontent', $permission)) {
+                    throw new \Exception("Missing {$permission} permission from {$question->sid}");
+                }
             }
         }
         return [];
