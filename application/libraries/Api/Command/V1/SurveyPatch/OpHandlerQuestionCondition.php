@@ -2,7 +2,6 @@
 
 namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
-use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestionCondition;
 use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\{
     OpHandlerExceptionTrait,
     OpHandlerSurveyTrait,
@@ -33,15 +32,11 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
 
     protected SurveyCondition $surveyCondition;
 
-    protected TransformerInputQuestionCondition $transformer;
-
     public function __construct(
-        SurveyCondition $surveyCondition,
-        TransformerInputQuestionCondition $transformer
+        SurveyCondition $surveyCondition
     ) {
         $this->entity = 'questionCondition';
         $this->surveyCondition = $surveyCondition;
-        $this->transformer = $transformer;
     }
 
     public function canHandle(OpInterface $op): bool
