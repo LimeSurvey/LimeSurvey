@@ -32,6 +32,8 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
 
     protected SurveyCondition $surveyCondition;
 
+    protected $permissionMap = [];
+
     public function __construct(
         SurveyCondition $surveyCondition
     ) {
@@ -827,16 +829,23 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
                     if (!$this->validateRenumberScenarios($props)) {
                         throw new \Exception("Cannot renumber scenarios");
                     }
+                    $this->permissionMap['update'] = false;
                     break;
                 case 'copyConditions':
                     if (!$this->validateCopyConditions($props)) {
                         throw new \Exception("Cannot copy conditions");
                     }
+                    $sid = \Question::model()->findByPk($props['fromqid'])->sid;
+                    if (!\Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'read')) {
+                        throw new \Exception("Missing read permission from {$sid}");
+                    }
+                    $this->permissionMap['create'] = false;
                     break;
                 case 'deleteAllConditions':
                     if (!$this->validateDeleteAllConditions($props)) {
                         throw new \Exception("Invalid operation");
                     }
+                    $this->permissionMap['delete'] = false;
                     break;
             }
         } else {
@@ -850,11 +859,14 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
                                 if (!$this->validateDeleteScenario($scenario)) {
                                     throw new \Exception("Cannot delete scenario");
                                 }
+                                $this->permissionMap['delete'] = false;
                                 break;
                             case "updateScenario":
                                 if (!$this->validateUpdateScenario($scenario)) {
                                     throw new \Exception("Cannot update scenario");
                                 }
+                                $this->permissionMap['update'] = false;
+                                break;
                         }
                     } else {
                         if (!isset($scenario['conditions'])) {
@@ -866,22 +878,32 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
                                         if (!$this->validateInsertCondition($condition)) {
                                             throw new \Exception("Cannot create condition");
                                         }
+                                        $this->permissionMap['create'] = false;
                                         break;
                                     case "updateCondition":
                                         if (!$this->validateUpdateCondition($condition)) {
                                             throw new \Exception("Cannot update condition");
                                         }
+                                        $this->permissionMap['update'] = false;
                                         break;
                                     case "deleteCondition":
                                         if (!$this->validateDeleteCondition($condition)) {
                                             throw new \Exception("Cannot delete condition");
                                         }
+                                        $this->permissionMap['delete'] = false;
                                         break;
                                 }
                             }
                         }
                     }
                 }
+            }
+        }
+        $qid = $op->getProps()['qid'];
+        $question = \Question::model()->findByPk($qid);
+        foreach ($this->permissionMap as $permission => $value) {
+            if (!\Permission::model()->hasSurveyPermission($question->sid, 'surveycontent', $permission)) {
+                throw new \Exception("Missing {$permission} permission from {$question->sid}");
             }
         }
         return [];
