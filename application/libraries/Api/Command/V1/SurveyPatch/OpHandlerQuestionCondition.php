@@ -97,6 +97,19 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
      *             "op": "delete",
      *             "id": 809,
      *             "props": {
+     *                 "sid": 1234,
+     *                 "action": "deleteAllConditionsOfSurvey"
+     *             }
+     *         }
+     *     ]
+     * }
+     * deleteAllConditions:
+     * {
+     *     "patch": [{
+     *             "entity": "questionCondition",
+     *             "op": "delete",
+     *             "id": 809,
+     *             "props": {
      *                 "qid": 15977,
      *                 "action": "deleteAllConditions"
      *             }
