@@ -236,6 +236,7 @@ class Box extends CActiveRecord
             ['id' => 54, 'icon' => 'ri-paint-fill'],
             ['id' => 55, 'icon' => 'ri-settings-3-fill'],
             ['id' => 56, 'icon' => 'ri-group-line'],
+            ['id' => 57, 'icon' => 'ri-plug-fill'],
         ];
     }
 
