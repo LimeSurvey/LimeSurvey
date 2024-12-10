@@ -1598,4 +1598,29 @@ class SurveyCondition
         ];
         // TMSW Condition->Relevance:  Must call LEM->ConvertConditionsToRelevance() whenever Condition is added or updated - what is best location for that action?
     }
+
+    public function getScenariosAndConditionsOfQuestion($qid)
+    {
+        $results = [];
+        $keys = [];
+        $conditions = \Condition::model()->findAllByAttributes(["qid" => $qid], ['order' => 'scenario']);
+        foreach ($conditions as $condition) {
+            if (!isset($keys[$condition->scenario])) {
+                $keys[$condition->scenario] = count($results);
+                $results [] = [
+                    "scid" => $condition->scenario,
+                    "conditions" => []
+                ];
+            }
+            $results[$keys[$condition->scenario]]["conditions"] [] = [
+                "cid" => $condition->cid,
+                "qid" => $qid,
+                "cqid" => $condition->cqid,
+                "cfieldname" => $condition->cfieldname,
+                "method" => $condition->method,
+                "value" => $condition->value
+            ];
+        }
+        return $results;
+    }
 }
