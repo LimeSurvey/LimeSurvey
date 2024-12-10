@@ -68,9 +68,9 @@
                 </div>
             <?php endif; ?>
         </div>
-        <div>
+        <div class="panels">
             <div id="survey-settings-panel" class="side-panel d-flex <?php echo $this->activePanel !== 'survey-settings-panel' ? 'd-none' : ''?>">
-                <div class="survey-structure px-2">
+                <div class="survey-structure">
                     <div class="survey-settings">
                         <div class="d-flex sidebar-header align-items-center justify-content-between right-side-bar-header primary">
                             <?php echo gT('Survey Settings'); ?>
@@ -101,7 +101,7 @@
                 </div>
             </div>
             <div id="survey-menu-panel" class="side-panel d-flex <?php echo $this->activePanel !== 'survey-menu-panel' ? 'd-none' : ''?>">
-                <div class="survey-structure px-2">
+                <div class="survey-structure">
                     <div class="survey-settings">
                         <div class="d-flex sidebar-header align-items-center justify-content-between right-side-bar-header primary">
                             <?php echo gT('Survey menu'); ?>
@@ -131,7 +131,7 @@
                 </div>
             </div>
             <div id="survey-presentation-panel" class="side-panel d-flex <?php echo $this->activePanel !== 'survey-presentation-panel' ? 'd-none' : ''?>">
-                <div class="survey-structure px-2">
+                <div class="survey-structure">
                     <div class="survey-settings">
                         <div class="d-flex sidebar-header align-items-center justify-content-between right-side-bar-header primary">
                             <?php echo gT('Survey presentation'); ?>
@@ -161,7 +161,7 @@
                 </div>
             </div>
             <div id="survey-permissions-panel" class="side-panel d-flex <?php echo $this->activePanel !== 'survey-permissions-panel' ? 'd-none' : ''?>">
-                <div class="survey-structure px-2">
+                <div class="survey-structure">
                     <div class="survey-settings">
                         <div class="d-flex sidebar-header align-items-center justify-content-between right-side-bar-header primary">
                             <?php echo gT('Survey permissions'); ?>
@@ -194,7 +194,7 @@
             </div>
             <?php if (count($this->allLanguages) > 1) : ?>
                 <div id="survey-quick-translation" class="side-panel d-flex <?php echo $this->activePanel !== 'survey-quick-translation' ? 'd-none' : ''?>">
-                    <div class="survey-structure px-2">
+                    <div class="survey-structure">
                         <div class="survey-settings">
                             <div class="d-flex sidebar-header align-items-center justify-content-between right-side-bar-header primary">
                                 <?php echo gT('Quick translation'); ?>

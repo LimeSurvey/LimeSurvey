@@ -11,9 +11,7 @@
     display: flex;
     flex-direction: column;
     height: 100%;
-    max-width: 350px;
     font-size: 0.8rem;
-    padding: 8px 8px 0px 8px;
     margin: 0;
 }
 .fill-current {
@@ -113,7 +111,16 @@
     align-items: center;
 }
 .sidebar-icons-container {
-    width: 52px;
+    padding: 8px;
+}
+.panels .side-panel {
+    padding: 8.3px 6.2px;
+}
+.panels {
+     padding-left: 2px;
+}
+.sidebar-container {
+    width: 350px;
 }
 .side-panel {
     height: 100%;

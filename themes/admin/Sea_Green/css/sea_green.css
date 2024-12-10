@@ -17914,6 +17914,7 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
 }
 .box-widget .box-widget-card.card-link {
   display: block;
+  background-color: inherit;
   align-content: center;
   text-align: center;
   color: #6E748C;
