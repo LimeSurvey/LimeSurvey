@@ -90,7 +90,7 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
      *         }
      *     ]
      * }
-     * deleteAllConditions:
+     * deleteAllConditionsOfSurvey:
      * {
      *     "patch": [{
      *             "entity": "questionCondition",
