@@ -134,7 +134,8 @@ class GlobalSettings extends SurveyCommonAction
         $data['sGlobalSendAdminCreationEmail'] = getGlobalSetting('sendadmincreationemail');
         $data['sGlobalAdminCreationEmailTemplate'] = getGlobalSetting('admincreationemailtemplate');
         $data['sGlobalAdminCreationEmailSubject'] = getGlobalSetting('admincreationemailsubject');
-
+        $data['adminNameDisplayType'] = getGlobalSetting('adminNameDisplayType');
+        
         //Prepare editor script for global settings tabs / Textarea fields
         App()->loadHelper("admin.htmleditor");
         $data['scripts'] = PrepareEditorScript(false, $this->getController());
@@ -425,6 +426,7 @@ class GlobalSettings extends SurveyCommonAction
         SettingGlobal::setSetting('sendadmincreationemail', App()->getRequest()->getPost('sendadmincreationemail'));
         SettingGlobal::setSetting('admincreationemailsubject', App()->getRequest()->getPost('admincreationemailsubject'));
         SettingGlobal::setSetting('admincreationemailtemplate', App()->getRequest()->getPost('admincreationemailtemplate'));
+        SettingGlobal::setSetting('adminNameDisplayType', App()->getRequest()->getPost('adminNameDisplayType'));
 
         $savetime = intval((float) Yii::app()->getRequest()->getPost('timeadjust') * 60) . ' minutes'; //makes sure it is a number, at least 0
         if ((substr($savetime, 0, 1) != '-') && (substr($savetime, 0, 1) != '+')) {

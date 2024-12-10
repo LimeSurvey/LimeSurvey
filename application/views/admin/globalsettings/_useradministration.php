@@ -6,13 +6,31 @@
  * @var $sSendAdminCreationEmail
  * @var $sAdminCreationEmailSubject
  * @var $sAdminCreationEmailTemplate
+ * @var $adminNameDisplayType
  */
 
 ?>
 
 <div class="container">
     <div class="row">
-        <div class="col-6">
+        <div class="col-6">            
+            <div class="mb-3">
+                <label class="form-label" for='adminNameDisplayType'><?php eT("Name display in site administration:"); ?></label>
+                <div>
+                    <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                        'name'          => 'adminNameDisplayType',
+                        'checkedOption' => $adminNameDisplayType ?? 'username',
+                        'selectOptions' => [
+                            'username' => gT('Username'),
+                            'fullname' => gT('Full name'),
+                            'both' => gT('Full name (Username)')
+                        ],
+                        'htmlOptions'   => [
+                            'class'        => 'custom-data bootstrap-switch-boolean',
+                        ]
+                    ]); ?>
+                </div>
+            </div>
             <div class="mb-3">
                 <label class="form-label" for='sendadmincreationemail'><?php eT("Send email to new user administrators:"); ?></label>
                 <div>
