@@ -59,7 +59,6 @@ class ImportExportIrrelevantTest extends TestBaseClassWeb
             [
                 'sid' => self::$surveyId,
                 'newtest' => 'Y',
-                'lang' => 'pt'
             ]
         );
 
