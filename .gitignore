@@ -120,6 +120,10 @@ node_modules/**/src
 /node_modules/leaflet/*
 !/node_modules/leaflet/dist/
 
+!/node_modules/chart.js/
+/node_modules/chart.js/*
+!/node_modules/chart.js/dist/
+!/node_modules/chart.js/LICENSE.md
 
 vendor/**/docs/
 vendor/**/scripts/
