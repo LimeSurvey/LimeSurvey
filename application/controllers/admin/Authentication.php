@@ -238,7 +238,7 @@ class Authentication extends SurveyCommonAction
             $passwordRepeat = Yii::app()->request->getPost('password_repeat', '');
             $passwordStrengthError = $user->checkPasswordStrength($passwordRepeat) !== '';
             $passwordRules = $user->getPasswordHelpText();
-            if (($password !== null && $passwordRepeat !== null) && ($password === $passwordRepeat) && $passwordStrengthError === '') {
+            if (($password !== null && $passwordRepeat !== null) && ($password === $passwordRepeat) && $passwordStrengthError == '') {
                 //now everything is ok, save password
                 $user->setPassword($password, true);
                 // And remove validation_key
