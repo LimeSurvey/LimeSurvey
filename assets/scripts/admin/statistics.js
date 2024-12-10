@@ -144,11 +144,9 @@ function init_chart_js_graph_with_datasets($type, $qid) {
 
     if (parsedType == 'bar' || parsedType == 'line') {
         options.scales = {
-            yAxes: [{
-                ticks: {
-                    suggestedMin: 0,
-                }
-            }]
+            y: {
+                suggestedMin: 0,
+            }
         };
     }
 
@@ -201,11 +199,9 @@ function init_chart_js_graph_with_datas($type, $qid) {
 
     if (parsedType == 'bar' || parsedType == 'line') {
         options.scales = {
-            yAxes: [{
-                ticks: {
-                    suggestedMin: 0,
-                }
-            }]
+            y: {
+                suggestedMin: 0,
+            }
         };
     }
 
