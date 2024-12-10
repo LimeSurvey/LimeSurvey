@@ -636,7 +636,7 @@ class SurveyAdministrationController extends LSBaseController
 
                 foreach ($folders as $folder) {
                     list($_aImportedFilesInfo, $_aErrorFilesInfo) = $filteredImportedResources->filterImportedResources(
-                        $extractdir . "/" . $folder,
+                        $extractdir . DIRECTORY_SEPARATOR . $folder,
                         $destdir . $folder
                     );
                     $aImportedFilesInfo = array_merge($aImportedFilesInfo, $_aImportedFilesInfo);
