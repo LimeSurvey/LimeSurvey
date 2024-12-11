@@ -94,7 +94,7 @@ class SurveyDeactivate
         } else {
             //See if there is a tokens table for this survey
             if (tableExists("{{tokens_{$iSurveyID}}}")) {
-                $this->archiveToken($iSurveyID, $date, $userID, $DBDate, $aData);
+                //$this->archiveToken($iSurveyID, $date, $userID, $DBDate, $aData);
             }
             $this->handleSurveyTable($iSurveyID, $date, $aData, $userID, $DBDate);
             $this->handleTimingTable($iSurveyID, $date, $aData, $userID, $DBDate);
