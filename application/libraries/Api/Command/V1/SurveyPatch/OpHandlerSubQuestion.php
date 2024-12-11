@@ -2,7 +2,8 @@
 
 namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
-use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\{OpHandlerQuestionTrait,
+use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\{
+    OpHandlerQuestionTrait,
     OpHandlerSurveyTrait,
     OpHandlerValidationTrait
 };
@@ -166,11 +167,6 @@ class OpHandlerSubQuestion implements OpHandlerInterface
             $op->getProps(),
             $transformOptions
         );
-        //be careful here! if for any reason the incoming data is not prepared
-        //as it should, all existing subquestions will be deleted!
-        if (count($data) === 0) {
-            $this->throwNoValuesException($op);
-        }
         $questionId = $op->getEntityId();
         $question = $this->questionService->getQuestionBySidAndQid(
             $surveyId,

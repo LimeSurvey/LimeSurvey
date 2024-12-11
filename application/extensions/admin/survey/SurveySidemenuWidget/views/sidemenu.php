@@ -24,16 +24,6 @@
                 </div>
             </div>
             <div class="sidebar-icons-item">
-                <div class="sidebar-icon" data-target="#survey-menu-panel" onclick="window.location='<?php echo App()->createUrl("admin/tokens/sa/index/surveyid/" . $sid);?>'">
-                        <div data-bs-toggle="tooltip"
-                         title="<?php echo gT('Survey menu'); ?>"
-                         data-bs-offset="0, 20"
-                         data-bs-placement="right">
-                        <i class="ri-file-text-line btn btn-g-800 btn-icon <?php echo $this->activePanel == 'survey-menu-panel' ? 'active' : ''?>"></i>
-                    </div>
-                </div>
-            </div>
-            <div class="sidebar-icons-item">
                 <div class="sidebar-icon" data-target="#survey-presentation-panel" onclick="window.location='<?php echo App()->createUrl('editorLink/index', ['route' => 'survey/' .  $sid . '/presentation/presentation']);?>'">
                     <div data-bs-toggle="tooltip"
                          title="<?php echo gT('Survey presentation'); ?>"
@@ -43,6 +33,17 @@
                     </div>
                 </div>
             </div>
+            <div class="sidebar-icons-item">
+                <div class="sidebar-icon" data-target="#survey-menu-panel" onclick="window.location='<?php echo App()->createUrl("admin/tokens/sa/index/surveyid/" . $sid);?>'">
+                        <div data-bs-toggle="tooltip"
+                         title="<?php echo gT('Survey menu'); ?>"
+                         data-bs-offset="0, 20"
+                         data-bs-placement="right">
+                        <i class="ri-file-text-line btn btn-g-800 btn-icon <?php echo $this->activePanel == 'survey-menu-panel' ? 'active' : ''?>"></i>
+                    </div>
+                </div>
+            </div>
+
             <div class="sidebar-icons-item">
                 <div class="sidebar-icon" data-target="#survey-permissions-panel" onclick="window.location='<?php echo App()->createUrl('surveyPermissions/index/', ['surveyid' => $sid]);?>'">
                     <div data-bs-toggle="tooltip"
@@ -67,9 +68,9 @@
                 </div>
             <?php endif; ?>
         </div>
-        <div>
+        <div class="panels">
             <div id="survey-settings-panel" class="side-panel d-flex <?php echo $this->activePanel !== 'survey-settings-panel' ? 'd-none' : ''?>">
-                <div class="survey-structure px-2">
+                <div class="survey-structure">
                     <div class="survey-settings">
                         <div class="d-flex sidebar-header align-items-center justify-content-between right-side-bar-header primary">
                             <?php echo gT('Survey Settings'); ?>
@@ -100,7 +101,7 @@
                 </div>
             </div>
             <div id="survey-menu-panel" class="side-panel d-flex <?php echo $this->activePanel !== 'survey-menu-panel' ? 'd-none' : ''?>">
-                <div class="survey-structure px-2">
+                <div class="survey-structure">
                     <div class="survey-settings">
                         <div class="d-flex sidebar-header align-items-center justify-content-between right-side-bar-header primary">
                             <?php echo gT('Survey menu'); ?>
@@ -130,7 +131,7 @@
                 </div>
             </div>
             <div id="survey-presentation-panel" class="side-panel d-flex <?php echo $this->activePanel !== 'survey-presentation-panel' ? 'd-none' : ''?>">
-                <div class="survey-structure px-2">
+                <div class="survey-structure">
                     <div class="survey-settings">
                         <div class="d-flex sidebar-header align-items-center justify-content-between right-side-bar-header primary">
                             <?php echo gT('Survey presentation'); ?>
@@ -160,7 +161,7 @@
                 </div>
             </div>
             <div id="survey-permissions-panel" class="side-panel d-flex <?php echo $this->activePanel !== 'survey-permissions-panel' ? 'd-none' : ''?>">
-                <div class="survey-structure px-2">
+                <div class="survey-structure">
                     <div class="survey-settings">
                         <div class="d-flex sidebar-header align-items-center justify-content-between right-side-bar-header primary">
                             <?php echo gT('Survey permissions'); ?>
@@ -193,7 +194,7 @@
             </div>
             <?php if (count($this->allLanguages) > 1) : ?>
                 <div id="survey-quick-translation" class="side-panel d-flex <?php echo $this->activePanel !== 'survey-quick-translation' ? 'd-none' : ''?>">
-                    <div class="survey-structure px-2">
+                    <div class="survey-structure">
                         <div class="survey-settings">
                             <div class="d-flex sidebar-header align-items-center justify-content-between right-side-bar-header primary">
                                 <?php echo gT('Quick translation'); ?>
