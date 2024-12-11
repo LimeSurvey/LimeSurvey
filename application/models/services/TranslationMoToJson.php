@@ -27,7 +27,7 @@ class TranslationMoToJson
     /**
      * Returns the translations from MO file, as array or in JSON format.
      *
-     * @param bool $translateToJson The path to the MO file to be translated.
+     * @param bool $translateToJson
      *
      * containing the translations ("source_msg" => "translated_msg") or in case of error an array with an error message.
      *
@@ -35,7 +35,7 @@ class TranslationMoToJson
      *                      ["source_msg" => "translated_msg"]
      *                      ["error" => "error message..."]
      */
-    public function translateMoToJson($translateToJson)
+    public function translateMoToJson(bool $translateToJson = false)
     {
         $pathApplication = Yii::app()->getConfig('rootdir');
         $pathToLanguageFiles = $pathApplication . DIRECTORY_SEPARATOR . "locale" . DIRECTORY_SEPARATOR . $this->language . DIRECTORY_SEPARATOR . $this->language . '.mo';
