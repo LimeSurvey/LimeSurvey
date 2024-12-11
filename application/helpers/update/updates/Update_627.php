@@ -80,5 +80,89 @@ class Update_627 extends DatabaseUpdateBase
                 [':icon' => $iconMapping['id']]
             );
         }
+
+        $urlIconMappings = [
+            'dashboard/view' => 'ri-function-fill',
+            'admin/globalsettings' => 'ri-settings-3-fill',
+            'themeOptions' => 'ri-paint-fill',
+            'userManagement/index' => 'ri-group-line',
+            'admin/pluginmanager/sa/index' => 'ri-plug-fill',
+        ];
+
+        foreach ($urlIconMappings as $url => $icon) {
+            $this->db->createCommand()
+            ->update(
+                '{{boxes}}',
+                ['ico' => $icon],
+                "url = :url",
+                [':url' => $url]
+            );
+        }
+
+        // Fix box order
+        $boxes = $this->db->createCommand()->select("*")->from("{{boxes}}");
+        $this->db->createCommand()->truncateTable('{{boxes}}');
+        $this->db->createCommand()->insert('{{boxes}}', array(
+            'id' => '1',
+            'position' => '1',
+            'url' => 'dashboard/view',
+            'title' => 'Dashboard',
+            'buttontext' => 'View dashboard',
+            'ico' => 'ri-function-fill',
+            'desc' => 'View dashboard',
+            'page' => 'welcome',
+            'usergroup' => '-1'
+        ));
+        $this->db->createCommand()->insert('{{boxes}}', array(
+            'id' => '2',
+            'position' => '2',
+            'url' => 'admin/globalsettings',
+            'title' => 'Global settings',
+            'buttontext' => 'View global settings',
+            'ico' => 'ri-settings-3-fill',
+            'desc' => 'Edit global settings',
+            'page' => 'welcome',
+            'usergroup' => '-2'
+        ));
+        $this->db->createCommand()->insert('{{boxes}}', array(
+            'id' => '3',
+            'position' => '3',
+            'url' => 'themeOptions',
+            'title' => 'Themes',
+            'buttontext' => 'Edit themes',
+            'ico' => 'ri-paint-fill',
+            'desc' => 'The themes functionality allows you to edit survey-, admin- or question themes.',
+            'page' => 'welcome',
+            'usergroup' => '-2'
+        ));
+        $this->db->createCommand()->insert('{{boxes}}', array(
+            'id' => '4',
+            'position' => '4',
+            'url' => 'userManagement/index',
+            'title' => 'Manage administrators',
+            'buttontext' => 'Manage administrators',
+            'ico' => 'ri-group-line',
+            'desc' => 'The user management allows you to add additional users to your survey administration.',
+            'page' => 'welcome',
+            'usergroup' => '-2'
+        ));
+        $this->db->createCommand()->insert('{{boxes}}', array(
+            'id' => '5',
+            'position' => '5',
+            'url' => 'admin/pluginmanager/sa/index',
+            'title' => 'Plugins',
+            'buttontext' => 'Manage plugins',
+            'ico' => 'ri-plug-fill',
+            'desc' => 'Plugins can be used to add custom features',
+            'page' => 'welcome',
+            'usergroup' => '-2'
+        ));
+
+        $existingUrls = array_keys($urlIconMappings);
+        foreach ($boxes as $box) {
+            if (in_array($box['url'], $existingUrls)) {
+                $this->db->createCommand()->insert('{{boxes}}', $box);
+            }
+        }
     }
 }
