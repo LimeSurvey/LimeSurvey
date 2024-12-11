@@ -52,63 +52,6 @@ class Export extends SurveyCommonAction
     }
 
     /**
-     * This function exports a ZIP archives of several ZIP archives - it is used in the listSurvey controller
-     * The SIDs are read from session flashdata.
-     * @todo: Is this ever used?
-     */
-    public function surveyarchives()
-    {
-        if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
-            safeDie('Access denied.');
-        }
-
-        $aSurveyIDs = $this->session->flashdata('sids');
-        $aExportedFiles = array();
-
-        foreach ($aSurveyIDs as $iSurveyID) {
-            $iSurveyID = (int) $iSurveyID;
-
-            if ($iSurveyID > 0) {
-                $aExportedFiles[$iSurveyID] = $this->exportarchive($iSurveyID, false);
-            }
-        }
-
-        if (count($aExportedFiles) > 0) {
-            $aZIPFileName = $this->config->item("tempdir") . DIRECTORY_SEPARATOR . randomChars(30);
-
-            $this->load->library("admin/pclzip", array('p_zipname' => $aZIPFileName));
-
-            $zip = new PclZip($aZIPFileName);
-            foreach ($aExportedFiles as $iSurveyID => $sFileName) {
-                $zip->add(
-                    array(
-                        array(
-                            PCLZIP_ATT_FILE_NAME => $sFileName,
-                            PCLZIP_ATT_FILE_NEW_FULL_NAME => 'survey_archive_' . $iSurveyID . '.zip'
-                        )
-                    )
-                );
-
-                unlink($sFileName);
-            }
-        }
-
-        if (is_file($aZIPFileName)) {
-            //Send the file for download!
-            header("Expires: 0");
-            header("Cache-Control: must-revalidate, no-store, no-cache");
-            header("Content-Type: application/force-download");
-            header("Content-Disposition: attachment; filename=survey_archives_pack.zip");
-            header("Content-Description: File Transfer");
-            @readfile($aZIPFileName);
-
-            //Delete the temporary file
-            unlink($aZIPFileName);
-            return;
-        }
-    }
-
-    /**
      * Export Group
      */
     public function group()
