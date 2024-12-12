@@ -1,4 +1,5 @@
 <?php
+
 /*
  * LimeSurvey
  * Copyright (C) 2007-2020 The LimeSurvey Project Team / Carsten Schmitz
@@ -12,7 +13,7 @@
  */
 
 $config['versionnumber'] = '6.8.1';
-$config['dbversionnumber'] = 626;
+$config['dbversionnumber'] = 627;
 $config['buildnumber'] = '';
 $config['updatable'] = true;
 $config['templateapiversion']  = 3;
