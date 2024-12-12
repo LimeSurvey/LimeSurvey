@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2024-12-12 15:10:10+00:00\n"
+"POT-Creation-Date: 2024-12-12 15:17:40+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -9727,7 +9727,7 @@ msgid "No surveys found."
 msgstr ""
 
 #: application/extensions/admin/BoxesWidget/views/boxes.php:30
-msgid "Load more"
+msgid "Load more..."
 msgstr ""
 
 #: application/extensions/admin/SearchBoxWidget/views/searchBox.php:18
