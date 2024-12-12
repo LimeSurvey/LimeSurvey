@@ -42,14 +42,10 @@ class I18n implements CommandInterface
     public function run(Request $request)
     {
         $lang = (string)$request->getData('_id', 'en');
-
-        $translations = [];
-        // TODO: here is the place to get all the translations and convert them to the expected format
-        $translations[$lang]['Structure'] = 'Structure_' . $lang;
         $transLateService = new TranslationMoToJson($lang);
-        $translations[$lang]['translations'] = $transLateService->translateMoToJson();
+        $translations = $transLateService->translateMoToJson();
 
         return $this->responseFactory
-            ->makeSuccess(['surveyTranslations' => $translations]);
+            ->makeSuccess([$translations]);
     }
 }
