@@ -64,12 +64,10 @@ class ListSurveysWidget extends CWidget
 
         $this->massiveAction = $this->render('massive_actions/_selector', array(), true, false);
 
-        if ($this->bRenderSearchBox) {
-            $this->controller->widget('ext.admin.SearchBoxWidget.SearchBoxWidget', [
-                'model' => new Survey('search'),
-                'switch' => $this->switch
-            ]);
-        }
+        $this->controller->widget('ext.admin.SearchBoxWidget.SearchBoxWidget', [
+            'model' => new Survey('search'),
+            'switch' => $this->switch
+        ]);
 
         $this->render('listSurveys');
     }

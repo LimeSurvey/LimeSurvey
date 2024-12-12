@@ -2,7 +2,7 @@
     padding-top      : 10px;
     padding-bottom   : 10px;
     z-index          : 1000;
-    background-color : $g-100;
+    background-color : $g-200;
     .ls-topbar-buttons {
         margin-bottom : -4px;
     }
@@ -10,6 +10,7 @@
         margin-bottom : 4px;
     }
     &.scroll-shadow {
+        background-color: inherit;
         box-shadow : 0 1px 20px 0 rgba(196, 196, 196, 1);
     }
     .ls-breadcrumb {

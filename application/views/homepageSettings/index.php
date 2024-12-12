@@ -145,7 +145,7 @@ App()->getClientScript()->registerScript(
 //                        ]); ?>
 <!--                        <input type="hidden" id="show_survey_list-url" data-url="--><?php //echo App()->createUrl('homepageSettings/toggleShowSurveyList'); ?><!--"/>-->
 <!--                    </div>-->
-<!---->
+<!--
                     <label class="col-md-4 col-form-label"><?php eT("Show search box on survey list:"); ?> </label>
                     <div class="col-md-2">
                         <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
@@ -158,7 +158,7 @@ App()->getClientScript()->registerScript(
                         ]); ?>
                         <input type="hidden" id="show_survey_list_search-url" data-url="<?php echo App()->createUrl('homepageSettings/toggleShowSurveyListSearch'); ?>"/>
                     </div>
-<!---->
+-->
 <!--                    <br/><br/>-->
                 </div>
 

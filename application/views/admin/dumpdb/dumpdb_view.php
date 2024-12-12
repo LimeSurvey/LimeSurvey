@@ -29,7 +29,7 @@ echo viewHelper::getViewTestTag('dumpdb');
                         value='Y'
                         name='ok'
                         class="btn btn-info">
-                        <?php eT("Yes - Download now!"); ?>
+                        <?php eT("Yes - download now!"); ?>
                     </button>
                     </form>
                 <?php } else { ?>
