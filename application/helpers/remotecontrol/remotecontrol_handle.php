@@ -337,6 +337,12 @@ class remotecontrol_handle
         }
         Yii::app()->loadHelper('admin/import');
         $aImportResults = XMLImportSurvey('', $copysurveydata, $sNewSurveyName, $DestSurveyID, $btranslinksfields);
+        if (empty($aImportResults['newsid'])) {
+            return array(
+                'status' => 'Copy failed',
+                'error' => $aImportResults['error']
+            );
+        }
         if (isset($aExcludes['conditions'])) {
             Question::model()->updateAll(array('relevance' => '1'), 'sid=' . $aImportResults['newsid']);
             QuestionGroup::model()->updateAll(array('grelevance' => '1'), 'sid=' . $aImportResults['newsid']);
@@ -344,16 +350,12 @@ class remotecontrol_handle
         if (!isset($aExcludes['permissions'])) {
             Permission::model()->copySurveyPermissions($iSurveyID, $aImportResults['newsid']);
         }
-        if (!empty($aImportResults['newsid'])) {
-            return array(
-                'status' => 'OK',
-                'newsid' => $aImportResults['newsid']
-            );
-        }
         return array(
-            'status' => 'Copy failed',
-            'error' => $aImportResults['error']
+            'status' => 'OK',
+            'newsid' => $aImportResults['newsid']
         );
+
+
     }
 
     /**
