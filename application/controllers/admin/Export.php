@@ -784,7 +784,7 @@ class Export extends SurveyCommonAction
             $resourcesdir = Yii::app()->getConfig('uploaddir') . "/{$resourcesdir}/";
             $tmpdir = Yii::app()->getConfig('tempdir') . '/';
             $zipfilepath = $tmpdir . $zipfilename;
-            $zip = new ZipArchive();
+            $zip = new LimeSurvey\Zip();
             if ($zip->open($zipfilepath, ZipArchive::CREATE | ZipArchive::OVERWRITE) !== true) {
                 throw new Exception("Error : " . $zip->getStatusString());
             }
@@ -920,7 +920,7 @@ class Export extends SurveyCommonAction
         $sTempDir        = Yii::app()->getConfig("tempdir");
         $sZip            = randomChars(30);
         $aZIPFilePath    = $sTempDir . DIRECTORY_SEPARATOR . $sZip;
-        $zip = new ZipArchive();
+        $zip = new LimeSurvey\Zip();
         $zip->open($aZIPFilePath, ZipArchive::CREATE);
 
         foreach ($aSurveys as $iSurveyID) {
@@ -1050,7 +1050,7 @@ class Export extends SurveyCommonAction
         $sLSTFileName = $sTempDir . DIRECTORY_SEPARATOR . randomChars(30);
         $sLSIFileName = $sTempDir . DIRECTORY_SEPARATOR . randomChars(30);
 
-        $zip = new ZipArchive();
+        $zip = new LimeSurvey\Zip();
         $zip->open($aZIPFileName, ZipArchive::CREATE);
 
         file_put_contents($sLSSFileName, surveyGetXMLData($iSurveyID));
@@ -1222,7 +1222,7 @@ class Export extends SurveyCommonAction
             $qid = intval($quexmlpdf->getQuestionnaireId());
 
             $zipfile = Yii::app()->getConfig("tempdir") . DIRECTORY_SEPARATOR . "quexmlpdf_{$qid}_{$lang}.zip";
-            $zip = new ZipArchive();
+            $zip = new LimeSurvey\Zip();
             $zip->open($zipfile, ZipArchive::CREATE);
             $zip->addFromString("quexmlpdf_style_{$qid}_{$lang}.xml", $quexmlpdf->exportStyleXML());
             $zip->addFromString("quexf_banding_{$qid}_{$lang}.xml", $quexmlpdf->getLayout());
@@ -1261,7 +1261,7 @@ class Export extends SurveyCommonAction
         $tempdir = Yii::app()->getConfig("tempdir");
         $zipfile = "$tempdir/" . $fn;
 
-        $zip = new ZipArchive();
+        $zip = new LimeSurvey\Zip();
         $zip->open($zipfile, ZipArchive::CREATE);
 
         $zipHelper = new LimeSurvey\Helpers\ZipHelper($zip);

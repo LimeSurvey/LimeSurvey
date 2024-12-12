@@ -271,7 +271,7 @@ class UpdateForm extends CFormModel
     public function unzipUpdateFile($file_to_unzip = 'update.zip')
     {
         if (file_exists($this->tempdir . DIRECTORY_SEPARATOR . $file_to_unzip)) {
-            $archive = new ZipArchive();
+            $archive = new LimeSurvey\Zip();
             $archive->open($this->tempdir . DIRECTORY_SEPARATOR . $file_to_unzip);
 
             if ($archive->extractTo($this->rootdir . DIRECTORY_SEPARATOR) == 0) {
@@ -460,7 +460,7 @@ class UpdateForm extends CFormModel
         }
 
         $basefilename = dateShift(date("Y-m-d H:i:s"), "Y-m-d", Yii::app()->getConfig('timeadjust')) . '_' . md5(uniqid(rand(), true));
-        $archive = new ZipArchive();
+        $archive = new LimeSurvey\Zip();
         $archive->open($this->tempdir . DIRECTORY_SEPARATOR . 'LimeSurvey_files_backup_' . $basefilename . '.zip', ZipArchive::CREATE);
         $success = false;
         foreach ($filestozip as $fileInZip => $sourceFile) {
@@ -677,7 +677,7 @@ class UpdateForm extends CFormModel
         outputDatabase('', false, $sfilename);
 
         if (is_file($sfilename) && filesize($sfilename)) {
-            $archive = new ZipArchive();
+            $archive = new LimeSurvey\Zip();
             $archive->open($dfilename, ZipArchive::CREATE);
 
             $success = false;

@@ -51,7 +51,7 @@ class Themes extends SurveyCommonAction
             $tempdir = Yii::app()->getConfig('tempdir');
 
             $zipfile = "$tempdir/$templatename.zip";
-            $zip = new ZipArchive();
+            $zip = new LimeSurvey\Zip();
             $zip->open($zipfile, ZipArchive::CREATE);
 
             $zipHelper = new LimeSurvey\Helpers\ZipHelper($zip);
@@ -130,7 +130,7 @@ class Themes extends SurveyCommonAction
 
         $zipfile = "$tempdir/$templatename.zip";
 
-        $zip = new ZipArchive();
+        $zip = new LimeSurvey\Zip();
         $zip->open($zipfile, ZipArchive::CREATE);
 
         $zipHelper = new LimeSurvey\Helpers\ZipHelper($zip);

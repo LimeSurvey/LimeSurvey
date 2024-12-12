@@ -69,7 +69,7 @@ class Labels extends SurveyCommonAction
         $aErrorFilesInfo = array();
 
         if (is_file($zipfilename)) {
-            $zip = new ZipArchive();
+            $zip = new LimeSurvey\Zip();
             if ($zip->open($zipfilename) !== true || $zip->extractTo($extractdir) !== true) {
                 $this->getController()->error(gT("This file is not a valid ZIP file archive. Import failed. " . $zip->errorInfo(true)), $this->getController()->createUrl("admin/labels/sa/view/lid/{$lid}"));
             }

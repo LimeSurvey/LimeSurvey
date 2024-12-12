@@ -412,7 +412,7 @@ class UserRoleController extends LSBaseController
 
         $tempdir = Yii::app()->getConfig('tempdir');
         $zipfile = "$tempdir/$sRandomFileName.zip";
-        $zip = new ZipArchive();
+        $zip = new LimeSurvey\Zip();
         $zip->open($zipfile, ZipArchive::CREATE);
 
         foreach ($aPtids as $iPtid) {
