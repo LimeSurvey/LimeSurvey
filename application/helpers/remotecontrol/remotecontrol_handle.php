@@ -3945,7 +3945,7 @@ class remotecontrol_handle
                 } else {
                     $model->participant_id = Participant::genUuid();
                 }
-            } elseif (!$participant->userHasPermissionToEdit()) {
+            } elseif (!$model->userHasPermissionToEdit()) {
                 /* No permission to update : continue */
                 continue;
             }
