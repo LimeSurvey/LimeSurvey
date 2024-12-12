@@ -227,7 +227,7 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
                 $options
             );
 
-            $question['conditions'] = $this->surveyCondition->getScenariosAndConditionsOfQuestion($questionModel->qid);
+            $question['scenarios'] = $this->surveyCondition->getScenariosAndConditionsOfQuestion($questionModel->qid);
 
             if ($questionModel->subquestions) {
                 $question['subquestions'] = $this->transformerQuestion->transformAll(
