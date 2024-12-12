@@ -974,7 +974,7 @@ class SurveyAdministrationController extends LSBaseController
                                         ]
                                     )
                                 ) . '})',
-                                'dataMessage' => gT("Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?", "js")
+                                'dataMessage' => gT("Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?", 'unescaped')
                             ];
                         } else {
                             $curGroup['groupDropdown']['delete'] =
@@ -984,7 +984,7 @@ class SurveyAdministrationController extends LSBaseController
                                 'icon' => 'ri-delete-bin-fill text-danger',
                                 'dataTitle' => gt('Delete group'),
                                 'disabled' => true,
-                                'title' => gt("Impossible to delete this group because there is at least one question having a condition on its content")
+                                'title' => gt("Impossible to delete this group because there is at least one question having a condition on its content", 'unescaped')
                             ];
                         }
                     } else {
@@ -995,7 +995,7 @@ class SurveyAdministrationController extends LSBaseController
                             'icon' => 'ri-delete-bin-fill text-danger',
                             'dataTitle' => gt('Delete group'),
                             'disabled' => true,
-                            'title' => gt("It is not possible to add/delete groups if the survey is active.")
+                            'title' => gt("It is not possible to add/delete groups if the survey is active.", 'unescaped')
                         ];
                     }
                 }
@@ -1091,7 +1091,7 @@ class SurveyAdministrationController extends LSBaseController
                                     'dataTitle' => gt('Delete this question'),
                                     'dataBtnText' => gt('Delete'),
                                     'dataOnclick' => '(function() { ' .  convertGETtoPOST(Yii::app()->createUrl("questionAdministration/delete/", ["qid" => $question->qid, "redirectTo" => "groupoverview"])) . '})',
-                                    'dataMessage' => gT("Deleting this question will also delete any answer options and subquestions it includes. Are you sure you want to continue?")
+                                    'dataMessage' => gT("Deleting this question will also delete any answer options and subquestions it includes. Are you sure you want to continue?", 'unescaped')
                                 ];
                         } else {
                             $curQuestion['questionDropdown']['delete'] =
@@ -1101,7 +1101,7 @@ class SurveyAdministrationController extends LSBaseController
                                 'icon' => 'ri-delete-bin-fill text-danger',
                                 'dataTitle' => gt('Delete this question'),
                                 'disabled' => true,
-                                'title' => gt("You can not delete a question if the survey is active."),
+                                'title' => gt("You can not delete a question if the survey is active.", 'unescaped'),
                             ];
                         }
 
