@@ -832,7 +832,7 @@ $config['encryptionsecretboxkey'] = '';
 // 'username'  = User name
 // 'fullname' = Full name
 // 'both' = Full name (username)
-$config['adminNameDisplayType'] = 'username';
+$config['nameDisplayType'] = 'username';
 
 $config['passwordValidationRules'] = array(
     'min' => 8,

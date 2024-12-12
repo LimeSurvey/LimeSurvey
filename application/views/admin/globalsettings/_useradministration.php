@@ -6,7 +6,7 @@
  * @var $sSendAdminCreationEmail
  * @var $sAdminCreationEmailSubject
  * @var $sAdminCreationEmailTemplate
- * @var $adminNameDisplayType
+ * @var $nameDisplayType
  */
 
 ?>
@@ -15,11 +15,11 @@
     <div class="row">
         <div class="col-6">            
             <div class="mb-3">
-                <label class="form-label" for='adminNameDisplayType'><?php eT("Name display in site administration:"); ?></label>
+                <label class="form-label" for='nameDisplayType'><?php eT("Name display in site administration:"); ?></label>
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
-                        'name'          => 'adminNameDisplayType',
-                        'checkedOption' => $adminNameDisplayType ?? 'username',
+                        'name'          => 'nameDisplayType',
+                        'checkedOption' => $nameDisplayType ?? 'username',
                         'selectOptions' => [
                             'username' => gT('Username'),
                             'fullname' => gT('Full name'),

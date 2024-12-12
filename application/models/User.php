@@ -238,9 +238,20 @@ class User extends LSActiveRecord
         return $noofsurveys;
     }
 
+    /**
+     * Get the display name for the user based on the application configuration.
+     *
+     * This function returns the user's display name according to the 'nameDisplayType'
+     * configuration setting. It can return the full name, username, or a combination of both.
+     *
+     * @return string The user's display name based on the configuration setting:
+     *                - If 'fullname': returns the user's full name
+     *                - If 'both': returns a formatted string with username and full name
+     *                - If 'username' or any other value: returns the username
+     */
     public function getDisplayName()
     {
-        switch (Yii::app()->getConfig('adminNameDisplayType')) {
+        switch (Yii::app()->getConfig('nameDisplayType')) {
             case 'fullname':
                 return $this->full_name;
                 break;
@@ -251,7 +262,6 @@ class User extends LSActiveRecord
             default:
                 return $this->users_name;
         }
-        return $this->full_name? $this->full_name : $this->users_name;
     }
 
     /**

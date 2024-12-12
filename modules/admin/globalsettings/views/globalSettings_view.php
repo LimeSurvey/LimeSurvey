@@ -73,7 +73,7 @@ echo viewHelper::getViewTestTag('globalsettings');
                 'sSendAdminCreationEmail'     => $sGlobalSendAdminCreationEmail,
                 'sAdminCreationEmailSubject'  => $sGlobalAdminCreationEmailSubject,
                 'sAdminCreationEmailTemplate' => $sGlobalAdminCreationEmailTemplate,
-                'adminNameDisplayType'        => $adminNameDisplayType,
+                'nameDisplayType'        => $nameDisplayType,
             ]
         ); ?>
     </div>
