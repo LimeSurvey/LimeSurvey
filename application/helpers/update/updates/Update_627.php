@@ -169,9 +169,11 @@ class Update_627 extends DatabaseUpdateBase
         }
 
         $existingUrls = array_keys($this->urlIconMappings);
+        $startPos = count($existingUrls);
         foreach ($boxes as $box) {
             if (!in_array($box['url'], $existingUrls)) {
                 unset($box['id']);
+                $box['position'] = $startPos + $box['position'];
                 $this->db->createCommand()->insert('{{boxes}}', $box);
             }
         }
