@@ -3935,7 +3935,7 @@ class remotecontrol_handle
 
             // Participant not found, so we create a new one
             if (!$model) {
-                if (Permission::model()->hasGlobalPermission('participantpanel', 'create')) {
+                if (!Permission::model()->hasGlobalPermission('participantpanel', 'create')) {
                     /* No permission to create : continue */
                     continue;
                 }
