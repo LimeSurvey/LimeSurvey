@@ -18,7 +18,7 @@ echo viewHelper::getViewTestTag('dumpdb');
                 </p>
                 <p>
                     <?php echo "DB Size: MB " . $dbSize; ?>
-                    <?php if ($downloadable) { // todo: remove testing boolean ?>
+                    <?php if ($downloadable) { ?>
                         <?php
                         $this->widget('ext.AlertWidget.AlertWidget', [
                             'text' => gT("Your database can be downloaded now!"),
