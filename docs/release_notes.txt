@@ -34,6 +34,35 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.8.1 (build 241120) to 6.8.2 (build 241203) December 3, 2024
+-Fixed issue QE-1258: clear date via api (#4041) (Tim Willig)
+-Fixed issue CT-1050: number_format expected float but a string was given (#4047) (Rami Shenouda)
+-Fixed issue #19853: Data images crashing survey (#4065) (Gabriel Jenik)
+-Fixed issue #19843: Some texts not translated in theme options (Carsten Schmitz)
+-Fixed issue #19842: [security] Password default requirements do not get consistently applied (#4048) (Carsten Schmitz)
+-Fixed issue #19828: Hamburger menu need a accessible text (Vanilla theme) (#4059) (Denis Chenu)
+-Fixed issue #19820: Question Type Bootstrap Dropdown causes survey to jump to middle when starting (#4064) (Gabriel Jenik)
+-Fixed issue #19817: Can't create a new question after a between question is deleted (#4057) (Gabriel Jenik)
+-Fixed issue #19813: Duplicated Bootswatch Theme breaks File picker question (#4036) (Denis Chenu)
+-Fixed issue #19765: Unable to upload resources via drag'n'drop in KCFinder (#4051) (Gabriel Jenik)
+-Fixed issue #19751: Expression Manager Malfunction on Slider Answer Options (#4050) (Gabriel Jenik)
+-Fixed issue #19718: Collapsible text not scrollable on iPhone (#4049) (Gabriel Jenik)
+-Fixed issue #19694: [security] Update jQuery UI (#4043) (Carsten Schmitz)
+-Fixed issue #13732: Twig strip_tags function didn't work (#4052) (Denis Chenu)
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Korean by modernity4r
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: French (France) by aisreh, b00z00, DenisChenu, fgervais, jayce, ulysse68
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 6.8.0 (build 241119) to 6.8.1 (build 241120) November 19, 2024
 -Fixed issue: Wrong version number (Carsten Schmitz)
 

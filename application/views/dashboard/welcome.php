@@ -207,13 +207,18 @@ gT('Themes');
 
     <div class="survey-dashboard">
         <?php if (empty(App()->request->getQuery('viewtype')) && empty(SettingsUser::getUserSettingValue('welcome_page_widget'))) : ?>
-                <div class="col-12">
-                    <?php $this->widget('ext.admin.survey.ListSurveysWidget.ListSurveysWidget', [
-                        'model' => $oSurveySearch,
-                        'bRenderSearchBox' => $bShowSurveyListSearch,
-                        'switch' => true
-                    ]);
-                    ?>
+            <div class="col-12">
+                <?php $this->widget('ext.admin.BoxesWidget.BoxesWidget', [
+                    'switch' => true,
+                    'items'  => [
+                        [
+                            'type'  => 0,
+                            'model' => Survey::model(),
+                            'limit' => 20, // choose value according to pageSizeOptions
+                        ],
+                    ]
+                ]);
+                ?>
             </div>
         <?php elseif (
             (!empty(App()->request->getQuery('viewtype'))
@@ -226,7 +231,6 @@ gT('Themes');
                 <div class="col-12">
                     <?php $this->widget('ext.admin.survey.ListSurveysWidget.ListSurveysWidget', [
                         'model' => $oSurveySearch,
-                        'bRenderSearchBox' => $bShowSurveyListSearch,
                         'switch' => true
                     ]);
                     ?>
