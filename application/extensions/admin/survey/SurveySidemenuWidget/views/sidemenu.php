@@ -59,7 +59,7 @@
                     <div class="sidebar-icon" data-target="#survey-quick-translation" onclick="window.location='<?php echo App()->createUrl('quickTranslation/index/', ['surveyid' => $sid]);?>'">
                         <div style="z-index: 5000;"
                              data-bs-toggle="tooltip"
-                             title="<?php echo gT('Quick Translations'); ?>"
+                             title="<?php echo gT('Quick translation'); ?>"
                              data-bs-offset="0, 20"
                              data-bs-placement="right">
                             <i class="ri-translate-2 btn btn-g-800 btn-icon <?php echo $this->activePanel == 'survey-quick-translation' ? 'active' : ''?>"></i>
