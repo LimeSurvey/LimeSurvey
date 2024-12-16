@@ -12,11 +12,9 @@ use LimeSurvey\Api\Command\V1\Transformer\Output\TransformerOutputSurveyOwner;
 use LimeSurvey\Api\Transformer\TransformerException;
 use Permission;
 use User;
-use Yii;
 
 class UserDetail implements CommandInterface
 {
-
     use AuthPermissionTrait;
 
     protected User $user;
@@ -29,7 +27,7 @@ class UserDetail implements CommandInterface
         TransformerOutputSurveyOwner $transformerOutputSurveyOwner,
         ResponseFactory $responseFactory,
         Permission $permission
-    ){
+    ) {
         $this->transformerOutputSurveyOwner = $transformerOutputSurveyOwner;
         $this->responseFactory = $responseFactory;
         $this->permission = $permission;
@@ -46,7 +44,7 @@ class UserDetail implements CommandInterface
         $userId = $request->getData('_id');
 
         //user should only be able to get his own data (for now only the users language is needed)
-        if ( Yii::app()->user->getId() !== $userId) {
+        if (App()->user->getId() !== $userId) {
             return $this->responseFactory
                 ->makeErrorForbidden();
         }
