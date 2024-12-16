@@ -678,6 +678,7 @@ function populateDatabase($oDB)
             'googleanalyticsstyle' => "string(1) NULL",
             'googleanalyticsapikey' => "string(25) NULL",
             'tokenencryptionoptions' => "text NULL",
+            'open_mode' => "varchar(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'N'"
         ), $options);
 
         $oDB->createCommand()->addPrimaryKey('{{surveys_pk}}', '{{surveys}}', 'sid');
