@@ -18,10 +18,7 @@ class Zip extends \ZipArchive
         $result = parent::open($filename, $flags);
         $this->opened = ($result === true);
         if ($result === true && $checkZipBomb && $this->isZipBomb()) {
-            /**
-             * @todo: Throw an exception instead of die? Currently using die() to keep it consistent with the LimeSurvey's PclZip behaviour.
-             */
-            die('Abort ' . basename(__FILE__) . ' : Unzipped file is bigger than upload_max_filesize or post_max_size');
+            throw new \Exception("Unzipped file is bigger than upload_max_filesize or post_max_size");
         }
         return $result;
     }
