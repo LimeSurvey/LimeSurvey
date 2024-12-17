@@ -43,7 +43,7 @@ LimeSurvey is perfect for you if you are...
 - ✅ **GDPR compliance** and strong data security
 - ✅ **WCAG 2.0 compliance** 🌐💚
 - ✅ **Plugins** (questions themes, survey themes, audit log, ExportR, ExportSTATAxml, AuthCAS ...)
-- ✅ **Integrations** ( SAML, LDAP, SURFconext, Remote Control, REST API)
+- ✅ **Integrations** (SAML, LDAP, SURFconext, Remote Control, REST API ...)
 - ✅ **And much more ...**
 
 ##  Installation
