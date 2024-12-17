@@ -43,6 +43,11 @@ class LSYii_Validators extends CValidator
      * @var boolean
      */
     public $isLanguageMulti = false;
+    /**
+     * Filter attribute for allowDataUri (default is false)
+     * @var boolean
+     */
+    public $allowDataUri = false;
 
     public function __construct()
     {
@@ -86,6 +91,9 @@ class LSYii_Validators extends CValidator
         }
         if ($this->isLanguageMulti) {
             $object->$attribute = $this->multiLanguageFilter($object->$attribute);
+        }
+        if (!$this->allowDataUri) {
+            $object->$attribute = $this->dataUriFilter($object->$attribute);
         }
     }
 
@@ -259,5 +267,21 @@ class LSYii_Validators extends CValidator
     {
         // TODO: Recurse?
         return urldecode(html_entity_decode($string));
+    }
+
+    /**
+     * Filters data URIs.
+     * @param string $string
+     * @return string
+     */
+    public static function dataUriFilter($value)
+    {
+        /* No need to filter empty $value */
+        if (empty($value)) {
+            return strval($value);
+        }
+        // Filter out data URIs (with regex)
+        $filtered = preg_replace('/src\s*=\s*["\']data:[^\'"]+["\']/', '', $value);
+        return $filtered;
     }
 }

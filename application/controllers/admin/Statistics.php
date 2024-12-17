@@ -111,7 +111,7 @@ class Statistics extends SurveyCommonAction
         $oSurvey = Survey::model()->findByPk($surveyid);
         if (!$oSurvey) {
             Yii::app()->setFlashMessage(gT("Invalid survey ID"), 'error');
-            $this->getController()->redirect($this->getController()->createUrl("admin/index"));
+            $this->getController()->redirect($this->getController()->createUrl("dashboard/view"));
         }
 
         if (!$oSurvey->isActive) {
@@ -664,7 +664,7 @@ class Statistics extends SurveyCommonAction
 
         if (!$oSurvey) {
             Yii::app()->setFlashMessage(gT("Invalid survey ID"), 'error');
-            $this->getController()->redirect($this->getController()->createUrl("admin/index"));
+            $this->getController()->redirect($this->getController()->createUrl("dashboard/view"));
         }
 
         if (!$oSurvey->isActive) {

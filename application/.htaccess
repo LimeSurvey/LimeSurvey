@@ -1,11 +1,23 @@
 <IfVersion < 2.4>
     Order Allow,Deny
     Deny from all
+    <FilesMatch "(columns_filter\.js|filters\.js)">
+        Order Allow,Deny
+        Allow from all
+    </FilesMatch>
 </IfVersion>
+
 <IfVersion >= 2.4>
     Require all denied
+    <FilesMatch "(columns_filter\.js|filters\.js)">
+        Require all granted
+    </FilesMatch>
     <IfModule mod_access_compat.c>
         Order Allow,Deny
         Deny from all
+        <FilesMatch "(columns_filter\.js|filters\.js)">
+            Order Allow,Deny
+            Allow from all
+        </FilesMatch>
     </IfModule>
 </IfVersion>
