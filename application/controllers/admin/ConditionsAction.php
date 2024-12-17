@@ -512,6 +512,16 @@ class ConditionsAction extends SurveyCommonAction
     }
 
     /**
+     * Gets the condition text based on a qid
+     * @param int $qid
+     * @return void
+     */
+    protected function getConditionText(int $qid)
+    {
+        $this->surveyCondition->getConditionText(\Question::model()->findByPk($qid));
+    }
+
+    /**
      * Switch on action to update/copy/add condition etc
      * @param string $p_subaction
      * @param array $args
@@ -562,6 +572,8 @@ class ConditionsAction extends SurveyCommonAction
             case "copyconditions":
                 $this->copyConditions($args);
                 break;
+            case "getconditiontext":
+                $this->getConditionText($qid);
         }
     }
 

@@ -1604,7 +1604,7 @@ class SurveyCondition
             ['aData' => $aData],
             true
         );
-        $aData['conditionsoutput'] = $aViewUrls['output'];
+        $aData['conditionsoutput'] = $aViewUrls['output'] ?? '';
         return [
             'aData' => $aData,
             'aViewUrls' => $aViewUrls
@@ -1635,5 +1635,36 @@ class SurveyCondition
             ];
         }
         return $results;
+    }
+
+    /**
+     * Helper function to render form.
+     * Used by create and edit actions.
+     *
+     * @param \Question $question Question
+     * @param callable $render
+     * @return string
+     * @throws \CException
+     * @todo Move to service class
+     */
+    protected function renderFormAux(\Question $question)
+    {
+        \LimeExpressionManager::SetSurveyId($question->sid);
+        \LimeExpressionManager::StartProcessingPage(false, true);
+        \LimeExpressionManager::ProcessString(
+            "{" . trim((string) $question->relevance) . "}",
+            $question->qid
+        );
+        return \viewHelper::stripTagsEM(\LimeExpressionManager::GetLastPrettyPrintExpression());
+    }
+
+    /**
+     * Gets the condition text based on a qid
+     * @param \Question $question
+     * @return string
+     */
+    public function getConditionText(\Question $question)
+    {
+        return $this->renderFormAux($question);
     }
 }
