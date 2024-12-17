@@ -354,6 +354,16 @@ class SurveyCondition
         $write(gT("All conditions for this survey have been deleted.", 'success'));
     }
 
+    public function conditionScript($qid, $script)
+    {
+        $question = \Question::model()->findByPk($qid);
+        if ($script != $question->relevance) {
+            $question->relevance = $script;
+            $question->save();
+            \Condition::model()->deleteRecords(array('qid' => $qid));
+        }
+    }
+
     /**
      * deleteScenario action
      * @param mixed $qid

@@ -116,6 +116,20 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
      *         }
      *     ]
      * }
+     * conditionScript:
+     * {
+     *     "patch": [{
+     *             "entity": "questionCondition",
+     *             "op": "delete",
+     *             "id": 809,
+     *             "props": {
+     *                 "qid": 15977,
+     *                 "action": "conditionScript",
+     *                 "script":"((TOKEN:LASTNAME == \"pomegrenade\"
+     *             }
+     *         }
+     *     ]
+     * }
      * updateScenario:
      * {
      *     "patch": [{
@@ -699,6 +713,9 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
                 case "deleteAllConditionsOfSurvey":
                     $this->surveyCondition->deleteAllConditionsOfSurvey($op->getProps()['sid'], $this->message(...));
                     break;
+                case "conditionScript":
+                    $this->surveyCondition->conditionScript($qid, $op->getProps()['script']);
+                    break;
             }
         } else {
             foreach ($op->getProps()['scenarios'] as $scenario) {
@@ -834,6 +851,11 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
         return intval($condition['sid']);
     }
 
+    protected function validateConditionScript($props)
+    {
+        return isset($props['script']);
+    }
+
     /**
      * Checks if patch is valid for this operation.
      * @param OpInterface $op
@@ -877,6 +899,12 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
                         throw new \Exception("Missing delete permission from {$props['sid']}");
                     }
                     $this->permissionMap['delete'] = false;
+                    break;
+                case "conditionScript":
+                    if (!$this->validateConditionScript($props)) {
+                        throw new \Exception("Cannot update condition script");
+                    }
+                    $this->permissionMap['update'] = false;
                     break;
             }
         } else {
