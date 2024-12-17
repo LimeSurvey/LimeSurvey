@@ -60,7 +60,13 @@ class Dumpdb extends SurveyCommonAction
     {
         $this->data['topbar']['title'] = gT('Backup entire database');
         $this->data['topbar']['backLink'] = App()->createUrl('admin/index');
-        $this->renderWrappedTemplate('dumpdb', 'dumpdb_view', $this->data);
+
+        $event = new PluginEvent('beforeRenderDbDumpView');
+        App()->getPluginManager()->dispatchEvent($event);
+        $htmlContent = $event->get('html');
+
+        // Use the existing renderWrappedTemplate method
+        $this->renderWrappedTemplate('dumpdb', 'dumpdb_view', array_merge($this->data, ['htmlContent' => $htmlContent]));
     }
 
     /**
