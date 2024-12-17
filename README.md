@@ -26,13 +26,14 @@ LimeSurvey is perfect for you if you are...
 
 - ✅ **Unlimited surveys**
 - ✅ **Unlimited questions**
-- ✅ **28+ question types**
+- ✅ **30+ question types**
+- ✅ **900+ survey templates**
 - ✅ **Easy LimeSurvey editor**
-- ✅ **On-brand surveys** (logo, colors, fonts, CSS, JavaScript)
+- ✅ **On-brand surveys** (fonts, colors, logo, CSS, JavaScript)
 - ✅ **Multilingual surveys** (80+ languages)
 - ✅ **Skip logic and question branching**
-- ✅ **Easy survey sharing** (via link, QR code, socials)
-- ✅ **Closed access mode** (invite-only)
+- ✅ **Easy survey sharing** (via public link, QR code, socials)
+- ✅ **Closed access mode** (via personal link, invite-only)
 - ✅ **Responses & statistics**
 - ✅ **Advanced data analysis tools**
 - ✅ **RemoteControl API** (via XML-RPC / JSON-RPC)
@@ -41,6 +42,8 @@ LimeSurvey is perfect for you if you are...
 - ✅ **Two-factor** authentication
 - ✅ **GDPR compliance** and strong data security
 - ✅ **WCAG 2.0 compliance** 🌐💚
+- ✅ **Plugins** (questions themes, survey themes, audit log, ExportR, ExportSTATAxml, AuthCAS ...)
+- ✅ **Integrations** ( SAML, LDAP, SURFconext, Remote Control, REST API)
 - ✅ **And much more ...**
 
 ##  Installation
