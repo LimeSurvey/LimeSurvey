@@ -34,6 +34,42 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.8.2 (build 241203) to 6.9.0 (build 241218) December 18, 2024
++New feature: API get_quota_properties also returns completeCount (#4027) (Tõnis Ormisson)
++New feature #MW-1407: Add check for database size before download (#4066) (marticos)
+-Fixed issue: unable to save personal settings (twilligls)
+-Fixed issue: Table column customization not working on Apache (Carsten Schmitz)
+-Fixed issue: Login logo not shown if app is installed in a subdirectory (Carsten Schmitz)
+-Fixed issue: Cannot update default initial password (lajosarpad)
+-Fixed issue #QE-1275: incorrect color for icons in box view of the survey dashboard (Patrick Teichmann)
+-Fixed issue #CR-1364: Added missing classes to remove 'disabled' when unchecked (#4104) (Ahmed Abd El-Azeem)
+-Fixed issue #19885: Wrong characters displayed in when deleting a question (#4102) (Denis Chenu)
+-Fixed issue #19838: Plugin upload doesn't allow LSS, LSA, LSG and LSQ files (#4077) (Gabriel Jenik)
+-Fixed issue #19822: Subquestion should deleted by delete() method (#4013) (Marko Bischof)
+-Fixed issue #19821: Answer should deleted by delete() method (#4012) (Marko Bischof)
+-Fixed issue #19661: Data inconsistency in responses after importing LSA files (#4056) (Gabriel Jenik)
+-Fixed issue #19630: Add warning to permissions interface when assigni… (#4067) (Denis Chenu)
+#Updated translation: Ukrainian by olly
+#Updated translation: Slovak by jelen1, sinkarobert
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Portuguese (Brazil) by holch, samarta, thiagosmartins
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Korean by modernity4r
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: German by c_schmitz, ingo.reuter
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: French (France) by DenisChenu, Marie-Alice_Foujols
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Azerbaijani by nemoralis
+
+
 Changes from 6.8.1 (build 241120) to 6.8.2 (build 241203) December 3, 2024
 -Fixed issue QE-1258: clear date via api (#4041) (Tim Willig)
 -Fixed issue CT-1050: number_format expected float but a string was given (#4047) (Rami Shenouda)
